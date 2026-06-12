@@ -41,6 +41,13 @@ const PRESSURE_ITEMS = (() => {
   try { return rd(path.join(repoRoot, 'data/cost-pressure.json')).items || {}; }
   catch { return {}; }
 })();
+// HOLD-UNTIL-PROVEN bar (shared with build-cost-index-pages via the rules manifest):
+// the overlay is published only once an item's live track record earns it.
+const PROVING = (() => {
+  try { return (rd(path.join(repoRoot, 'data/pressure-rules.json')).defaults || {}).proving || { minCalls: 12, minHitRate: 0.6 }; }
+  catch { return { minCalls: 12, minHitRate: 0.6 }; }
+})();
+function pressureProven(rec) { const tr = rec && rec.track_record; return !!(tr && tr.n >= PROVING.minCalls && tr.hitRate >= PROVING.minHitRate); }
 
 function main() {
   const data = rd(JSON_IN);
@@ -81,8 +88,11 @@ function main() {
     if (ingredientsObj[key].flag) entry.flag = ingredientsObj[key].flag;
     // Pressure overlay summary (inferred direction only — never a price). Trimmed
     // to the headline so the dashboard can show "where it's headed" honestly.
+    // HOLD-UNTIL-PROVEN (matches build-cost-index-pages): the dashboard shows the
+    // inferred overlay for an item ONLY once its live track record clears the bar.
+    // Until then the seed carries no pressure for it and the UI stays measured-only.
     const pr = PRESSURE_ITEMS[key];
-    if (pr && pr.direction && pr.direction !== 'unknown') {
+    if (pr && pr.direction && pr.direction !== 'unknown' && pressureProven(pr)) {
       entry.pressure = { direction: pr.direction, confidence: pr.confidence, freshness_weeks: pr.freshness_weeks, under_review: !!pr.under_review };
       if (pr.track_record && pr.track_record.n) entry.pressure.track_record = pr.track_record;
     }

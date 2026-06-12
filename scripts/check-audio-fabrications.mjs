@@ -61,7 +61,7 @@ const __filename = fileURLToPath(import.meta.url);
 // label bundles are all excluded — this gate is about the SPOKEN script.
 const AUDIO_BASENAME = /^audio\.json$|^audio\.[a-z]{2}\.json$/;
 
-const SKIP_DIRS = [/\.git\//, /node_modules\//, /\/drafts\//];
+const SKIP_DIRS = [/\.git\//, /node_modules\//, /\/drafts\//, /(^|\/)dist\//];
 
 // Numeric tokens that are allowed to appear in narration without a source
 // match (formatting artifacts, not claims). Seed dated entries here only

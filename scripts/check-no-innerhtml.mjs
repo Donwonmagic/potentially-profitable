@@ -99,6 +99,7 @@ function walk(dir, glob, out) {
   for (const e of entries) {
     if (e.name.startsWith('.')) continue;
     if (e.name === 'node_modules') continue;
+    if (e.name === 'dist') continue; // build output — recreated fresh after this gate runs; never source
     const full = path.join(dir, e.name);
     if (e.isDirectory()) { walk(full, glob, out); continue; }
     if (glob.test(full)) out.push(full);

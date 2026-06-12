@@ -57,6 +57,18 @@
     return opts.tail ? vals.slice(-opts.tail) : vals;
   }
 
+  // ---- FRED (St. Louis Fed) -----------------------------------------
+  // json: { observations: [{ date, value }] }. Missing values arrive as ".".
+  function fredSeries(json, opts) {
+    opts = opts || {};
+    var obs = (json && json.observations) || [];
+    var arr = obs.map(function (o) { return { v: parseNum(o.value), d: String(o.date || '') }; })
+      .filter(function (o) { return o.v != null; });   // FRED missing cell is '.', parseNum → null
+    arr.sort(function (a, b) { return a.d.localeCompare(b.d); });
+    var vals = arr.map(function (o) { return o.v; });
+    return opts.tail ? vals.slice(-opts.tail) : vals;
+  }
+
   // ---- EIA Open Data v2 ---------------------------------------------
   // json: { response: { data: [{ period, value }] } } (newest-first or oldest).
   function eiaSeries(json, opts) {
@@ -141,10 +153,74 @@
   // An active event encoded as a change the engine will read as a +1 signal.
   function eventSignal(active) { return active ? 1 : 0; }
 
+  // ---- Region-rotation / transition calendar ------------------------
+  // Deterministic, keyless. Produce supply hands off between growing regions a
+  // few times a year (lettuce Salinas↔Yuma, tomato FL↔MX, onion/potato storage↔
+  // fresh); in those gap windows a soft shipment-volume reading is a PRICE EVENT,
+  // not routine seasonality (the Nov-2025 romaine spike). Returns +1 when today
+  // sits in any declared MM-DD window (handles year-wrap), else 0 — an elevated-
+  // spike-risk flag the engine reads alongside the volume signal.
+  function seasonSignal(windows, now) {
+    now = now || new Date();
+    var md = ('0' + (now.getMonth() + 1)).slice(-2) + '-' + ('0' + now.getDate()).slice(-2);
+    for (var i = 0; i < (windows || []).length; i++) {
+      var s = windows[i][0], e = windows[i][1];
+      var inW = s <= e ? (md >= s && md <= e) : (md >= s || md <= e);   // year-wrap (e.g. 12-15→01-31)
+      if (inW) return 1;
+    }
+    return 0;
+  }
+
+  // ---- AMS produce MOVEMENT aggregate -------------------------------
+  // Rows pooled from EVERY active Daily Movement city report (one report carries
+  // many commodities; many rows per day per origin/mode). For one commodity it
+  // builds three WEEKLY signals — national volume, import share, and YoY pace —
+  // so the produce panel reads supply the way the meat panels read cold storage.
+  //   rows: [{ '1 lb units', 'import/Export', report_begin_date, commodity, ... }]
+  //   opts: { commodity, commodityExact, volumeField, commodityKey, dateField, tail }
+  // Returns { volume:[weekly lbs], importShare:[weekly 0..1], pace:Δ|null, weeks:N }.
+  function movementAggregate(rows, opts) {
+    opts = opts || {};
+    var vol = opts.volumeField || '1 lb units';
+    var dateField = opts.dateField || 'report_begin_date';
+    var comKey = opts.commodityKey || 'commodity';
+    var com = opts.commodity ? String(opts.commodity).toUpperCase() : null;
+    var exact = !!opts.commodityExact;
+    var tail = opts.tail || 6;
+    var WEEK = 7 * 864e5;
+    function wkKey(s) { var m = String(s || '').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/); if (!m) return null; return Math.floor(Date.UTC(+m[3], +m[1] - 1, +m[2]) / WEEK); }
+    function isImport(r) { return /^\s*i/i.test(String(r['import/Export'] || r.import_export || '')); }
+    var byWeek = {};
+    (rows || []).forEach(function (r) {
+      if (!r) return;
+      var cu = String(r[comKey] || '').toUpperCase();
+      if (com && (exact ? cu !== com : cu.indexOf(com) < 0)) return;
+      var v = parseNum(r[vol]); if (v == null) return;
+      var wk = wkKey(r[dateField]); if (wk == null) return;
+      var b = byWeek[wk] || (byWeek[wk] = { total: 0, imp: 0 });
+      b.total += v; if (isImport(r)) b.imp += v;
+    });
+    var weeks = Object.keys(byWeek).map(Number).sort(function (a, b) { return a - b; });
+    var volSeries = weeks.map(function (w) { return byWeek[w].total; });
+    var impSeries = weeks.map(function (w) { return byWeek[w].total > 0 ? byWeek[w].imp / byWeek[w].total : 0; });
+    // YoY pace: trailing 4 weeks now vs the same 4 weeks ~52 weeks back (a window,
+    // not one week, so a single missing report can't swing it). null if either
+    // side is absent — pace just doesn't emit rather than inventing a number.
+    var pace = null;
+    if (weeks.length) {
+      var last = weeks[weeks.length - 1];
+      var range = function (lo, hi) { var s = 0, n = 0; weeks.forEach(function (w) { if (w >= lo && w <= hi) { s += byWeek[w].total; n++; } }); return n ? s : null; };
+      var now4 = range(last - 3, last), prev4 = range(last - 55, last - 52);
+      if (now4 != null && prev4 != null && prev4 > 0) pace = now4 / prev4 - 1;
+    }
+    return { volume: tail ? volSeries.slice(-tail) : volSeries, importShare: tail ? impSeries.slice(-tail) : impSeries, pace: pace, weeks: weeks.length };
+  }
+
   var api = {
     parseNum: parseNum, windowChange: windowChange,
-    nassSeries: nassSeries, eiaSeries: eiaSeries, amsSeries: amsSeries,
-    usdmSeverity: usdmSeverity, nwsFreezeActive: nwsFreezeActive, eventSignal: eventSignal
+    nassSeries: nassSeries, eiaSeries: eiaSeries, amsSeries: amsSeries, fredSeries: fredSeries,
+    usdmSeverity: usdmSeverity, nwsFreezeActive: nwsFreezeActive, eventSignal: eventSignal,
+    seasonSignal: seasonSignal, movementAggregate: movementAggregate
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof self !== 'undefined') self.MuntinPressureSources = api;

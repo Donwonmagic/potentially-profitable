@@ -17,12 +17,18 @@
     "decay": {
       "weeksPerNotch": 3,
       "floorWeeks": 8
+    },
+    "proving": {
+      "minCalls": 12,
+      "minHitRate": 0.6
     }
   },
   "sources": {
     "ams-grain": "https://www.ams.usda.gov/market-news/state-grain-reports",
+    "fred-feed": "https://fred.stlouisfed.org/series/PMAIZMTUSDM",
     "ams-mmn": "https://mymarketnews.ams.usda.gov/mymarketnews-api",
     "ams-movement": "https://www.ams.usda.gov/market-news/fruit-and-vegetable-movement-reports",
+    "ams-shipping-point": "https://www.ams.usda.gov/market-news/fruit-and-vegetable-shipping-point-market-price-reports",
     "nass-broiler": "https://www.nass.usda.gov/Surveys/Guide_to_NASS_Surveys/Broiler_Hatchery/index.php",
     "nass-cattle-on-feed": "https://www.nass.usda.gov/Surveys/Guide_to_NASS_Surveys/Cattle_On_Feed/index.php",
     "nass-hogs": "https://www.nass.usda.gov/Surveys/Guide_to_NASS_Surveys/Hog_Inventory/index.php",
@@ -40,8 +46,8 @@
       "rule_version": "2026-Q2-1",
       "indicators": [
         {
-          "id": "feed-futures",
-          "source": "ams-grain",
+          "id": "feed-grain",
+          "source": "fred-feed",
           "sign": 1,
           "weight": 3,
           "tier": "A",
@@ -51,7 +57,7 @@
             "max": 9,
             "unit": "week"
           },
-          "cite": "ers-feed-cost",
+          "cite": "fred-feed",
           "note": "feed is 50-70% of broiler cost (ERS); corn+soy settlements via AMS"
         },
         {
@@ -105,8 +111,8 @@
       "rule_version": "2026-Q2-1",
       "indicators": [
         {
-          "id": "feed-futures",
-          "source": "ams-grain",
+          "id": "feed-grain",
+          "source": "fred-feed",
           "sign": 1,
           "weight": 3,
           "tier": "A",
@@ -116,7 +122,7 @@
             "max": 9,
             "unit": "week"
           },
-          "cite": "ers-feed-cost"
+          "cite": "fred-feed"
         },
         {
           "id": "broiler-placements",
@@ -196,8 +202,8 @@
           "cite": "nass-cold-storage"
         },
         {
-          "id": "feed-futures",
-          "source": "ams-grain",
+          "id": "feed-grain",
+          "source": "fred-feed",
           "sign": 1,
           "weight": 1,
           "tier": "C",
@@ -207,7 +213,7 @@
             "max": 78,
             "unit": "week"
           },
-          "cite": "ers-cycles",
+          "cite": "fred-feed",
           "note": "feed is a weak NEAR-TERM lever for beef; herd cycle dominates"
         },
         {
@@ -259,8 +265,8 @@
           "cite": "nass-cold-storage"
         },
         {
-          "id": "feed-futures",
-          "source": "ams-grain",
+          "id": "feed-grain",
+          "source": "fred-feed",
           "sign": 1,
           "weight": 1,
           "tier": "C",
@@ -270,7 +276,7 @@
             "max": 78,
             "unit": "week"
           },
-          "cite": "ers-cycles"
+          "cite": "fred-feed"
         },
         {
           "id": "diesel",
@@ -308,8 +314,8 @@
           "note": "weight-class bins map to slaughter windows; farrowing intentions lead ~8-10 mo"
         },
         {
-          "id": "feed-futures",
-          "source": "ams-grain",
+          "id": "feed-grain",
+          "source": "fred-feed",
           "sign": 1,
           "weight": 2,
           "tier": "B",
@@ -319,7 +325,7 @@
             "max": 26,
             "unit": "week"
           },
-          "cite": "ers-feed-cost"
+          "cite": "fred-feed"
         },
         {
           "id": "cold-storage-pork",
@@ -370,8 +376,8 @@
           "cite": "nass-hogs"
         },
         {
-          "id": "feed-futures",
-          "source": "ams-grain",
+          "id": "feed-grain",
+          "source": "fred-feed",
           "sign": 1,
           "weight": 2,
           "tier": "B",
@@ -381,7 +387,7 @@
             "max": 26,
             "unit": "week"
           },
-          "cite": "ers-feed-cost"
+          "cite": "fred-feed"
         },
         {
           "id": "cold-storage-pork",
@@ -418,19 +424,52 @@
       "rule_version": "2026-Q2-1",
       "indicators": [
         {
-          "id": "ams-shipments",
+          "id": "lettuce-shipments",
           "source": "ams-movement",
           "sign": -1,
           "weight": 3,
           "tier": "A",
-          "window": "1w",
+          "window": "6w",
           "lead": {
             "min": 0,
-            "max": 2,
+            "max": 3,
             "unit": "week"
           },
+          "group": "movement",
           "cite": "ams-movement",
-          "note": "shipments down → tightening → cost up; fastest produce tell"
+          "note": "national arrivals up → supply up → cost down"
+        },
+        {
+          "id": "lettuce-imports",
+          "source": "ams-movement",
+          "sign": 1,
+          "weight": 1,
+          "tier": "B",
+          "window": "6w",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "group": "movement",
+          "cite": "ams-movement",
+          "note": "import share up → domestic supply tightening → cost up"
+        },
+        {
+          "id": "lettuce-pace",
+          "source": "ams-movement",
+          "sign": -1,
+          "weight": 1,
+          "tier": "B",
+          "window": "52w",
+          "lead": {
+            "min": 2,
+            "max": 10,
+            "unit": "week"
+          },
+          "group": "movement",
+          "cite": "ams-movement",
+          "note": "season pace above last year → ample supply → cost down"
         },
         {
           "id": "freeze-alert",
@@ -475,6 +514,21 @@
           },
           "group": "freight",
           "cite": "eia-diesel"
+        },
+        {
+          "id": "lettuce-transition",
+          "source": "ams-shipping-point",
+          "sign": 1,
+          "weight": 1,
+          "tier": "B",
+          "window": "season",
+          "lead": {
+            "min": 1,
+            "max": 4,
+            "unit": "week"
+          },
+          "cite": "ams-shipping-point",
+          "note": "region handoff window → elevated spike risk"
         }
       ]
     },
@@ -482,18 +536,52 @@
       "rule_version": "2026-Q2-1",
       "indicators": [
         {
-          "id": "ams-shipments",
+          "id": "tomato-shipments",
           "source": "ams-movement",
           "sign": -1,
           "weight": 3,
           "tier": "A",
-          "window": "1w",
+          "window": "6w",
           "lead": {
             "min": 0,
-            "max": 2,
+            "max": 3,
             "unit": "week"
           },
-          "cite": "ams-movement"
+          "group": "movement",
+          "cite": "ams-movement",
+          "note": "national arrivals up → supply up → cost down"
+        },
+        {
+          "id": "tomato-imports",
+          "source": "ams-movement",
+          "sign": 1,
+          "weight": 1,
+          "tier": "B",
+          "window": "6w",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "group": "movement",
+          "cite": "ams-movement",
+          "note": "import share up → domestic supply tightening → cost up"
+        },
+        {
+          "id": "tomato-pace",
+          "source": "ams-movement",
+          "sign": -1,
+          "weight": 1,
+          "tier": "B",
+          "window": "52w",
+          "lead": {
+            "min": 2,
+            "max": 10,
+            "unit": "week"
+          },
+          "group": "movement",
+          "cite": "ams-movement",
+          "note": "season pace above last year → ample supply → cost down"
         },
         {
           "id": "freeze-alert",
@@ -538,6 +626,21 @@
           },
           "group": "freight",
           "cite": "eia-diesel"
+        },
+        {
+          "id": "tomato-transition",
+          "source": "ams-shipping-point",
+          "sign": 1,
+          "weight": 1,
+          "tier": "B",
+          "window": "season",
+          "lead": {
+            "min": 1,
+            "max": 4,
+            "unit": "week"
+          },
+          "cite": "ams-shipping-point",
+          "note": "region handoff window → elevated spike risk"
         }
       ]
     },
@@ -545,21 +648,55 @@
       "rule_version": "2026-Q2-1",
       "indicators": [
         {
-          "id": "ams-shipments",
+          "id": "onion-shipments",
           "source": "ams-movement",
           "sign": -1,
           "weight": 2,
           "tier": "A",
-          "window": "1w",
+          "window": "6w",
           "lead": {
             "min": 0,
-            "max": 2,
+            "max": 3,
             "unit": "week"
           },
-          "cite": "ams-movement"
+          "group": "movement",
+          "cite": "ams-movement",
+          "note": "national arrivals up → supply up → cost down"
         },
         {
-          "id": "drought",
+          "id": "onion-imports",
+          "source": "ams-movement",
+          "sign": 1,
+          "weight": 1,
+          "tier": "B",
+          "window": "6w",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "group": "movement",
+          "cite": "ams-movement",
+          "note": "import share up → domestic supply tightening → cost up"
+        },
+        {
+          "id": "onion-pace",
+          "source": "ams-movement",
+          "sign": -1,
+          "weight": 1,
+          "tier": "B",
+          "window": "52w",
+          "lead": {
+            "min": 2,
+            "max": 10,
+            "unit": "week"
+          },
+          "group": "movement",
+          "cite": "ams-movement",
+          "note": "season pace above last year → ample supply → cost down"
+        },
+        {
+          "id": "drought-ca-az",
           "source": "usdm-drought",
           "sign": 1,
           "weight": 1,
@@ -586,6 +723,21 @@
           },
           "group": "freight",
           "cite": "eia-diesel"
+        },
+        {
+          "id": "onion-transition",
+          "source": "ams-shipping-point",
+          "sign": 1,
+          "weight": 1,
+          "tier": "B",
+          "window": "season",
+          "lead": {
+            "min": 1,
+            "max": 4,
+            "unit": "week"
+          },
+          "cite": "ams-shipping-point",
+          "note": "region handoff window → elevated spike risk"
         }
       ]
     },
@@ -607,21 +759,55 @@
           "cite": "nass-crop-progress"
         },
         {
-          "id": "ams-shipments",
+          "id": "potato-shipments",
           "source": "ams-movement",
           "sign": -1,
           "weight": 2,
           "tier": "A",
-          "window": "1w",
+          "window": "6w",
           "lead": {
             "min": 0,
-            "max": 2,
+            "max": 3,
             "unit": "week"
           },
-          "cite": "ams-movement"
+          "group": "movement",
+          "cite": "ams-movement",
+          "note": "national arrivals up → supply up → cost down"
         },
         {
-          "id": "drought",
+          "id": "potato-imports",
+          "source": "ams-movement",
+          "sign": 1,
+          "weight": 1,
+          "tier": "B",
+          "window": "6w",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "group": "movement",
+          "cite": "ams-movement",
+          "note": "import share up → domestic supply tightening → cost up"
+        },
+        {
+          "id": "potato-pace",
+          "source": "ams-movement",
+          "sign": -1,
+          "weight": 1,
+          "tier": "B",
+          "window": "52w",
+          "lead": {
+            "min": 2,
+            "max": 10,
+            "unit": "week"
+          },
+          "group": "movement",
+          "cite": "ams-movement",
+          "note": "season pace above last year → ample supply → cost down"
+        },
+        {
+          "id": "drought-id",
           "source": "usdm-drought",
           "sign": 1,
           "weight": 1,
@@ -648,6 +834,21 @@
           },
           "group": "freight",
           "cite": "eia-diesel"
+        },
+        {
+          "id": "potato-transition",
+          "source": "ams-shipping-point",
+          "sign": 1,
+          "weight": 1,
+          "tier": "B",
+          "window": "season",
+          "lead": {
+            "min": 1,
+            "max": 4,
+            "unit": "week"
+          },
+          "cite": "ams-shipping-point",
+          "note": "region handoff window → elevated spike risk"
         }
       ]
     },
@@ -685,8 +886,8 @@
           "note": "Cold Storage tracks butter stocks; high stocks → downward pressure"
         },
         {
-          "id": "feed-futures",
-          "source": "ams-grain",
+          "id": "feed-grain",
+          "source": "fred-feed",
           "sign": 1,
           "weight": 1,
           "tier": "C",
@@ -696,7 +897,7 @@
             "max": 26,
             "unit": "week"
           },
-          "cite": "ers-feed-cost",
+          "cite": "fred-feed",
           "note": "feed → milk cost is a slow, weaker channel"
         },
         {
@@ -749,8 +950,8 @@
           "note": "Cold Storage tracks natural-cheese stocks"
         },
         {
-          "id": "feed-futures",
-          "source": "ams-grain",
+          "id": "feed-grain",
+          "source": "fred-feed",
           "sign": 1,
           "weight": 1,
           "tier": "C",
@@ -760,7 +961,7 @@
             "max": 26,
             "unit": "week"
           },
-          "cite": "ers-feed-cost"
+          "cite": "fred-feed"
         },
         {
           "id": "diesel",

@@ -167,6 +167,76 @@ export function lifecycleMonthlyDigestEmail(body) {
   return { subject, html, text };
 }
 
+// Weekly Cost Index email. `body` carries the insight computed by
+// scripts/build-cost-index-dispatch.mjs (--json) and POSTed by the publish
+// Action to the broadcast endpoint: { asOf, basket, up, down, flat, count,
+// reprice:[{name,pct,reason}], watch:[...], risers:[{name,pct}], fallers:[...],
+// drivers:[{name,pct}], postUrl, unsubUrl, locale }. Every number is the
+// measured index's own read — no invention — so it stays inside the fact gate.
+export function costIndexWeeklyEmail(body) {
+  const locale = pickLocale(body);
+  if (locale === 'es' && typeof ES.costIndexWeeklyEmail === 'function') {
+    return ES.costIndexWeeklyEmail(body);
+  }
+  const pc = (x) => `${x >= 0 ? '+' : ''}${(Number(x) * 100).toFixed(1)}%`;
+  const asOf = String(body.asOf || '').trim();
+  const unsubUrl = String(body.unsubUrl || 'https://muntin.digital/sub/unsubscribe').trim();
+  const postUrl = String(body.postUrl || 'https://muntin.digital/cost-index/').trim();
+  const reprice = Array.isArray(body.reprice) ? body.reprice : [];
+  const watch = Array.isArray(body.watch) ? body.watch : [];
+  const risers = Array.isArray(body.risers) ? body.risers : [];
+  const fallers = Array.isArray(body.fallers) ? body.fallers : [];
+  const drivers = Array.isArray(body.drivers) ? body.drivers : [];
+
+  const subject = reprice.length
+    ? `Cost Index: ${reprice[0].name} is flashing re-price (week of ${asOf})`
+    : `Cost Index — week of ${asOf}`;
+
+  const flashRow = (label, color, i) =>
+    `<p style="margin:0 0 10px;font-size:15px;line-height:1.5;color:#2A2D33;"><strong style="color:${color};">${label} — ${escapeHtml(i.name)} ${pc(i.pct)}</strong>${i.reason ? ` <span style="color:#5B5B5B;">— ${escapeHtml(i.reason)}</span>` : ''}</p>`;
+  const flashing = [
+    ...reprice.map((i) => flashRow('Re-price', '#9C3B2E', i)),
+    ...watch.map((i) => flashRow('Watch', '#9A7A1F', i)),
+  ].join('\n') || '<p style="margin:0 0 10px;font-size:15px;color:#5B5B5B;">Nothing structural this week — the panel reads hold across the board.</p>';
+
+  const moversLine = (arr) => arr.map((i) => `${escapeHtml(i.name)} ${pc(i.pct)}`).join(' &middot; ') || '—';
+  const driverLine = drivers.map((d) => `${escapeHtml(d.name)} ${pc(d.pct)}`).join(' &middot; ');
+
+  const html = htmlShell(
+    `Cost Index — week of ${asOf}`,
+    [
+      body.basket && typeof body.basket.pct === 'number'
+        ? `<p style="margin:0 0 8px;font-size:16px;line-height:1.55;color:#2A2D33;">The basket reads <strong>${pc(body.basket.pct)} ${escapeHtml(body.basket.dir || '')}</strong> (${escapeHtml(String(body.basket.confidence || ''))} confidence). <strong>${body.up}</strong> of ${body.count} ingredients are above their tracked baseline, ${body.down} below.</p>`
+        : `<p style="margin:0 0 8px;font-size:16px;line-height:1.55;color:#2A2D33;"><strong>${body.up}</strong> of ${body.count} ingredients are above their tracked baseline, ${body.down} below.</p>`,
+      '<p style="margin:18px 0 8px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#7A7A7A;">What\'s flashing</p>',
+      flashing,
+      `<p style="margin:18px 0 4px;font-size:14px;color:#2A2D33;"><strong>Biggest gaps from baseline</strong></p><p style="margin:0 0 4px;font-size:14px;color:#5B5B5B;">Up: ${moversLine(risers)}</p><p style="margin:0 0 8px;font-size:14px;color:#5B5B5B;">Down: ${moversLine(fallers)}</p>`,
+      driverLine ? `<p style="margin:0 0 16px;font-size:13px;color:#6B6B6B;">Driver read: ${driverLine}.</p>` : '',
+      `<p style="margin:20px 0 0;"><a href="${postUrl}" style="color:#1F4E5B;text-decoration:none;border-bottom:1px solid rgba(31,78,91,0.4);font-size:15px;">Read the full week &rarr;</a></p>`,
+      '<p style="margin:18px 0 0;font-size:13px;color:#6B6B6B;font-style:italic;">A read, not advice — public wholesale levels, never your delivered price. &mdash; Don</p>',
+    ].filter(Boolean).join('\n'),
+    `Weekly Cost Index from Don Goldstein. Unsubscribe: ${unsubUrl}`
+  );
+
+  const text = [
+    `MUNTIN RESTAURANT COST INDEX — week of ${asOf}`, '',
+    body.basket && typeof body.basket.pct === 'number' ? `Basket: ${pc(body.basket.pct)} ${body.basket.dir || ''} (${body.basket.confidence || ''} confidence).` : '',
+    `${body.up} of ${body.count} above baseline, ${body.down} below.`, '',
+    'WHAT\'S FLASHING:',
+    ...reprice.map((i) => `  RE-PRICE  ${i.name} ${pc(i.pct)}${i.reason ? ' — ' + i.reason : ''}`),
+    ...watch.map((i) => `  WATCH     ${i.name} ${pc(i.pct)}${i.reason ? ' — ' + i.reason : ''}`),
+    (reprice.length || watch.length) ? '' : '  Nothing structural this week.', '',
+    `Up:   ${risers.map((i) => i.name + ' ' + pc(i.pct)).join(', ')}`,
+    `Down: ${fallers.map((i) => i.name + ' ' + pc(i.pct)).join(', ')}`, '',
+    driverLine ? `Drivers: ${drivers.map((d) => d.name + ' ' + pc(d.pct)).join(', ')}` : '',
+    '', `Read the full week: ${postUrl}`,
+    '', 'A read, not advice — public wholesale levels, never your delivered price. — Don',
+    '', 'Unsubscribe: ' + unsubUrl,
+  ].filter((l) => l !== undefined).join('\n');
+
+  return { subject, html, text };
+}
+
 // 4. lifecycleCourseStartedEmail  Trigger: first /api/course/progress
 //    POST + 24h passed. Names the bootcamp so the operator who
 //    started impulsively, then closed the tab, remembers what they

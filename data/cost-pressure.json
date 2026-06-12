@@ -19,8 +19,8 @@
       "rule_version": "2026-Q2-1",
       "contributors": [
         {
-          "indicator": "feed-futures",
-          "source": "ams-grain",
+          "indicator": "feed-grain",
+          "source": "fred-feed",
           "signed_signal": -1,
           "weight": 3,
           "lead": {
@@ -29,7 +29,7 @@
             "unit": "week"
           },
           "tier": "A",
-          "cite": "ers-feed-cost",
+          "cite": "fred-feed",
           "group": null,
           "change_pct": -0.09,
           "as_of": "2026-06-08"
@@ -98,8 +98,8 @@
       "rule_version": "2026-Q2-1",
       "contributors": [
         {
-          "indicator": "feed-futures",
-          "source": "ams-grain",
+          "indicator": "feed-grain",
+          "source": "fred-feed",
           "signed_signal": -1,
           "weight": 3,
           "lead": {
@@ -108,7 +108,7 @@
             "unit": "week"
           },
           "tier": "A",
-          "cite": "ers-feed-cost",
+          "cite": "fred-feed",
           "group": null,
           "change_pct": -0.07,
           "as_of": "2026-06-08"
@@ -209,8 +209,8 @@
           "as_of": "2026-06-08"
         },
         {
-          "indicator": "feed-futures",
-          "source": "ams-grain",
+          "indicator": "feed-grain",
+          "source": "fred-feed",
           "signed_signal": 0,
           "weight": 1,
           "lead": {
@@ -219,7 +219,7 @@
             "unit": "week"
           },
           "tier": "C",
-          "cite": "ers-cycles",
+          "cite": "fred-feed",
           "group": null,
           "change_pct": 0.01,
           "as_of": "2026-06-08"
@@ -288,8 +288,8 @@
           "as_of": "2026-06-08"
         },
         {
-          "indicator": "feed-futures",
-          "source": "ams-grain",
+          "indicator": "feed-grain",
+          "source": "fred-feed",
           "signed_signal": 0,
           "weight": 1,
           "lead": {
@@ -298,7 +298,7 @@
             "unit": "week"
           },
           "tier": "C",
-          "cite": "ers-cycles",
+          "cite": "fred-feed",
           "group": null,
           "change_pct": 0.01,
           "as_of": "2026-06-08"
@@ -351,8 +351,8 @@
           "as_of": "2026-06-08"
         },
         {
-          "indicator": "feed-futures",
-          "source": "ams-grain",
+          "indicator": "feed-grain",
+          "source": "fred-feed",
           "signed_signal": -1,
           "weight": 2,
           "lead": {
@@ -361,7 +361,7 @@
             "unit": "week"
           },
           "tier": "B",
-          "cite": "ers-feed-cost",
+          "cite": "fred-feed",
           "group": null,
           "change_pct": -0.04,
           "as_of": "2026-06-08"
@@ -430,8 +430,8 @@
           "as_of": "2026-06-08"
         },
         {
-          "indicator": "feed-futures",
-          "source": "ams-grain",
+          "indicator": "feed-grain",
+          "source": "fred-feed",
           "signed_signal": -1,
           "weight": 2,
           "lead": {
@@ -440,7 +440,7 @@
             "unit": "week"
           },
           "tier": "B",
-          "cite": "ers-feed-cost",
+          "cite": "fred-feed",
           "group": null,
           "change_pct": -0.05,
           "as_of": "2026-06-08"
@@ -483,8 +483,8 @@
       "item": "romaine-lettuce",
       "direction": "building",
       "confidence": "high",
-      "agreement": 1,
-      "score": 6,
+      "agreement": 0.7,
+      "score": 7,
       "cutoff": 2,
       "freshness_weeks": 0,
       "anchor_print_date": "2026-06-05",
@@ -493,19 +493,67 @@
       "rule_version": "2026-Q2-1",
       "contributors": [
         {
-          "indicator": "ams-shipments",
+          "indicator": "lettuce-shipments",
           "source": "ams-movement",
           "signed_signal": 1,
           "weight": 3,
           "lead": {
             "min": 0,
-            "max": 2,
+            "max": 3,
             "unit": "week"
           },
           "tier": "A",
           "cite": "ams-movement",
-          "group": null,
+          "group": "movement",
           "change_pct": -0.08,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "lettuce-imports",
+          "source": "ams-movement",
+          "signed_signal": 1,
+          "weight": 1,
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "tier": "B",
+          "cite": "ams-movement",
+          "group": "movement",
+          "change_pct": 0.03,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "lettuce-pace",
+          "source": "ams-movement",
+          "signed_signal": 1,
+          "weight": 1,
+          "lead": {
+            "min": 2,
+            "max": 10,
+            "unit": "week"
+          },
+          "tier": "B",
+          "cite": "ams-movement",
+          "group": "movement",
+          "change_pct": -0.05,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "freeze-alert",
+          "source": "nws-alerts",
+          "signed_signal": 0,
+          "weight": 3,
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "tier": "A",
+          "cite": "nws-alerts",
+          "group": null,
+          "change_pct": 0,
           "as_of": "2026-06-08"
         },
         {
@@ -539,6 +587,22 @@
           "group": "freight",
           "change_pct": 0.03,
           "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "lettuce-transition",
+          "source": "ams-shipping-point",
+          "signed_signal": 1,
+          "weight": 1,
+          "lead": {
+            "min": 1,
+            "max": 4,
+            "unit": "week"
+          },
+          "tier": "B",
+          "cite": "ams-shipping-point",
+          "group": null,
+          "change_pct": 1,
+          "as_of": "2026-06-08"
         }
       ]
     },
@@ -546,7 +610,7 @@
       "item": "tomato",
       "direction": "steady",
       "confidence": "low",
-      "agreement": 0.167,
+      "agreement": 0.1,
       "score": -1,
       "cutoff": 2,
       "freshness_weeks": 0,
@@ -556,19 +620,67 @@
       "rule_version": "2026-Q2-1",
       "contributors": [
         {
-          "indicator": "ams-shipments",
+          "indicator": "tomato-shipments",
           "source": "ams-movement",
           "signed_signal": -1,
           "weight": 3,
           "lead": {
             "min": 0,
-            "max": 2,
+            "max": 3,
             "unit": "week"
           },
           "tier": "A",
           "cite": "ams-movement",
-          "group": null,
+          "group": "movement",
           "change_pct": 0.04,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "tomato-imports",
+          "source": "ams-movement",
+          "signed_signal": 0,
+          "weight": 1,
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "tier": "B",
+          "cite": "ams-movement",
+          "group": "movement",
+          "change_pct": -0.02,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "tomato-pace",
+          "source": "ams-movement",
+          "signed_signal": -1,
+          "weight": 1,
+          "lead": {
+            "min": 2,
+            "max": 10,
+            "unit": "week"
+          },
+          "tier": "B",
+          "cite": "ams-movement",
+          "group": "movement",
+          "change_pct": 0.06,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "freeze-alert",
+          "source": "nws-alerts",
+          "signed_signal": 0,
+          "weight": 3,
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "tier": "A",
+          "cite": "nws-alerts",
+          "group": null,
+          "change_pct": 0,
           "as_of": "2026-06-08"
         },
         {
@@ -602,6 +714,22 @@
           "group": "freight",
           "change_pct": 0.01,
           "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "tomato-transition",
+          "source": "ams-shipping-point",
+          "signed_signal": 0,
+          "weight": 1,
+          "lead": {
+            "min": 1,
+            "max": 4,
+            "unit": "week"
+          },
+          "tier": "B",
+          "cite": "ams-shipping-point",
+          "group": null,
+          "change_pct": 0,
+          "as_of": "2026-06-08"
         }
       ]
     },
@@ -609,7 +737,7 @@
       "item": "onion",
       "direction": "building",
       "confidence": "high",
-      "agreement": 1,
+      "agreement": 0.8,
       "score": 4,
       "cutoff": 2,
       "freshness_weeks": 0,
@@ -619,23 +747,55 @@
       "rule_version": "2026-Q2-1",
       "contributors": [
         {
-          "indicator": "ams-shipments",
+          "indicator": "onion-shipments",
           "source": "ams-movement",
           "signed_signal": 1,
           "weight": 2,
           "lead": {
             "min": 0,
-            "max": 2,
+            "max": 3,
             "unit": "week"
           },
           "tier": "A",
           "cite": "ams-movement",
-          "group": null,
+          "group": "movement",
           "change_pct": -0.1,
           "as_of": "2026-06-08"
         },
         {
-          "indicator": "drought",
+          "indicator": "onion-imports",
+          "source": "ams-movement",
+          "signed_signal": 1,
+          "weight": 1,
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "tier": "B",
+          "cite": "ams-movement",
+          "group": "movement",
+          "change_pct": 0.04,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "onion-pace",
+          "source": "ams-movement",
+          "signed_signal": 1,
+          "weight": 1,
+          "lead": {
+            "min": 2,
+            "max": 10,
+            "unit": "week"
+          },
+          "tier": "B",
+          "cite": "ams-movement",
+          "group": "movement",
+          "change_pct": -0.06,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "drought-ca-az",
           "source": "usdm-drought",
           "signed_signal": 1,
           "weight": 1,
@@ -665,14 +825,30 @@
           "group": "freight",
           "change_pct": 0.04,
           "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "onion-transition",
+          "source": "ams-shipping-point",
+          "signed_signal": 0,
+          "weight": 1,
+          "lead": {
+            "min": 1,
+            "max": 4,
+            "unit": "week"
+          },
+          "tier": "B",
+          "cite": "ams-shipping-point",
+          "group": null,
+          "change_pct": 0,
+          "as_of": "2026-06-08"
         }
       ]
     },
     "russet-potato": {
       "item": "russet-potato",
       "direction": "easing",
-      "confidence": "high",
-      "agreement": 0.714,
+      "confidence": "moderate",
+      "agreement": 0.625,
       "score": -5,
       "cutoff": 2,
       "freshness_weeks": 0,
@@ -698,23 +874,55 @@
           "as_of": "2026-06-08"
         },
         {
-          "indicator": "ams-shipments",
+          "indicator": "potato-shipments",
           "source": "ams-movement",
           "signed_signal": -1,
           "weight": 2,
           "lead": {
             "min": 0,
-            "max": 2,
+            "max": 3,
             "unit": "week"
           },
           "tier": "A",
           "cite": "ams-movement",
-          "group": null,
+          "group": "movement",
           "change_pct": 0.05,
           "as_of": "2026-06-08"
         },
         {
-          "indicator": "drought",
+          "indicator": "potato-imports",
+          "source": "ams-movement",
+          "signed_signal": 0,
+          "weight": 1,
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "tier": "B",
+          "cite": "ams-movement",
+          "group": "movement",
+          "change_pct": 0.01,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "potato-pace",
+          "source": "ams-movement",
+          "signed_signal": -1,
+          "weight": 1,
+          "lead": {
+            "min": 2,
+            "max": 10,
+            "unit": "week"
+          },
+          "tier": "B",
+          "cite": "ams-movement",
+          "group": "movement",
+          "change_pct": 0.03,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "drought-id",
           "source": "usdm-drought",
           "signed_signal": 0,
           "weight": 1,
@@ -743,6 +951,22 @@
           "cite": "eia-diesel",
           "group": "freight",
           "change_pct": 0.01,
+          "as_of": "2026-06-08"
+        },
+        {
+          "indicator": "potato-transition",
+          "source": "ams-shipping-point",
+          "signed_signal": 0,
+          "weight": 1,
+          "lead": {
+            "min": 1,
+            "max": 4,
+            "unit": "week"
+          },
+          "tier": "B",
+          "cite": "ams-shipping-point",
+          "group": null,
+          "change_pct": 0,
           "as_of": "2026-06-08"
         }
       ]
@@ -793,8 +1017,8 @@
           "as_of": "2026-06-08"
         },
         {
-          "indicator": "feed-futures",
-          "source": "ams-grain",
+          "indicator": "feed-grain",
+          "source": "fred-feed",
           "signed_signal": 0,
           "weight": 1,
           "lead": {
@@ -803,7 +1027,7 @@
             "unit": "week"
           },
           "tier": "C",
-          "cite": "ers-feed-cost",
+          "cite": "fred-feed",
           "group": null,
           "change_pct": -0.02,
           "as_of": "2026-06-08"
@@ -872,8 +1096,8 @@
           "as_of": "2026-06-08"
         },
         {
-          "indicator": "feed-futures",
-          "source": "ams-grain",
+          "indicator": "feed-grain",
+          "source": "fred-feed",
           "signed_signal": 0,
           "weight": 1,
           "lead": {
@@ -882,7 +1106,7 @@
             "unit": "week"
           },
           "tier": "C",
-          "cite": "ers-feed-cost",
+          "cite": "fred-feed",
           "group": null,
           "change_pct": 0.01,
           "as_of": "2026-06-08"

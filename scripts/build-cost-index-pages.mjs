@@ -135,6 +135,20 @@ const PRESSURE_RULES = (() => {
   catch { return { sources: {} }; }
 })();
 const PRESSURE_SOURCES = PRESSURE_RULES.sources || {};
+
+// HOLD-UNTIL-PROVEN. The 2026-Q2 calibration (scripts/calibrate-pressure.mjs) found
+// the hand-set pressure weights have weak out-of-sample support against the best
+// free long-history price proxy. So the inferred Outlook overlay is PUBLISHED for an
+// ingredient only once its OWN live track record (predicted direction vs the realized
+// measured trend) clears this bar — it earns its public slot by demonstrated hit
+// rate, never by assertion. Until then the page ships the MEASURED read alone and the
+// overlay accrues its record silently. (Config lives here, transparent + tunable.)
+const PROVING = (PRESSURE_RULES.defaults && PRESSURE_RULES.defaults.proving) || { minCalls: 12, minHitRate: 0.6 };
+function pressureProven(rec) {
+  const tr = rec && rec.track_record;
+  return !!(tr && tr.n >= PROVING.minCalls && tr.hitRate >= PROVING.minHitRate);
+}
+function anyPressureProven() { return Object.values(PRESSURE_ITEMS).some(pressureProven); }
 const INDICATOR_NAME = {
   'feed-futures':              { en: 'Feed (corn/soy) futures', es: 'Futuros de forraje (maíz/soya)' },
   'broiler-placements':        { en: 'Broiler chick placements', es: 'Colocación de pollitos' },
@@ -147,11 +161,29 @@ const INDICATOR_NAME = {
   'cold-storage-cheese':       { en: 'Cold-storage stocks', es: 'Inventario en frío' },
   'milk-production':           { en: 'Milk production', es: 'Producción de leche' },
   'ams-shipments':             { en: 'Produce shipments', es: 'Envíos de producto' },
+  'onion-shipments':           { en: 'Shipment volume', es: 'Volumen de envíos' },
+  'lettuce-shipments':         { en: 'Shipment volume', es: 'Volumen de envíos' },
+  'tomato-shipments':          { en: 'Shipment volume', es: 'Volumen de envíos' },
+  'potato-shipments':          { en: 'Shipment volume', es: 'Volumen de envíos' },
+  'onion-imports':             { en: 'Import share', es: 'Cuota de importación' },
+  'lettuce-imports':           { en: 'Import share', es: 'Cuota de importación' },
+  'tomato-imports':            { en: 'Import share', es: 'Cuota de importación' },
+  'potato-imports':            { en: 'Import share', es: 'Cuota de importación' },
+  'onion-pace':                { en: 'Shipments vs last year', es: 'Envíos vs. año pasado' },
+  'lettuce-pace':              { en: 'Shipments vs last year', es: 'Envíos vs. año pasado' },
+  'tomato-pace':               { en: 'Shipments vs last year', es: 'Envíos vs. año pasado' },
+  'potato-pace':               { en: 'Shipments vs last year', es: 'Envíos vs. año pasado' },
   'freeze-alert':              { en: 'Freeze warnings', es: 'Alertas de helada' },
   'drought-ca-az':             { en: 'Drought (CA/AZ)', es: 'Sequía (CA/AZ)' },
   'drought-fl-ca':             { en: 'Drought (FL/CA)', es: 'Sequía (FL/CA)' },
+  'drought-id':                { en: 'Drought (Idaho)', es: 'Sequía (Idaho)' },
   'drought':                   { en: 'Drought (growing regions)', es: 'Sequía (regiones de cultivo)' },
   'crop-condition':            { en: 'Crop condition', es: 'Condición del cultivo' },
+  'onion-transition':           { en: 'Region transition', es: 'Transición de región' },
+  'lettuce-transition':           { en: 'Region transition', es: 'Transición de región' },
+  'tomato-transition':           { en: 'Region transition', es: 'Transición de región' },
+  'potato-transition':           { en: 'Region transition', es: 'Transición de región' },
+  'feed-grain':                { en: 'Feed grain (corn)', es: 'Grano forrajero (maíz)' },
   'diesel':                    { en: 'Diesel / freight', es: 'Diésel / flete' }
 };
 function sourceShort(key) {
@@ -160,6 +192,7 @@ function sourceShort(key) {
   if (key.indexOf('ams') === 0) return 'USDA AMS';
   if (key.indexOf('ers') === 0) return 'USDA ERS';
   if (key.indexOf('eia') === 0) return 'EIA';
+  if (key.indexOf('fred') === 0) return 'FRED';
   if (key.indexOf('usdm') === 0) return 'US Drought Monitor';
   if (key.indexOf('nws') === 0) return 'NWS';
   return key;
@@ -902,6 +935,7 @@ function ledeDirection(slug, locale) {
 function pressureBlock(slug, locale) {
   const rec = PRESSURE_ITEMS[slug];
   if (!rec || rec.direction === 'unknown') return '';
+  if (!pressureProven(rec)) return '';   // HOLD: overlay stays private until its track record earns it
   const es = locale === 'es';
   const dir = rec.under_review ? 'review' : rec.direction;
   const lines = {
@@ -1192,13 +1226,28 @@ function emitHubPage(locale, slugs) {
   <div class="ci-body">
     <div class="ci-cta-row">
       <a class="btn btn-primary" href="${base}/tools/cost-pulse/">${es ? 'Abrir Cost Pulse' : 'Open Cost Pulse'}</a>
-      <a class="btn btn-ghost" href="${base}/cost-index/lab/">${es ? 'Laboratorio de Presión' : 'Pressure Lab'}</a>
+      ${anyPressureProven() ? `<a class="btn btn-ghost" href="${base}/cost-index/lab/">${es ? 'Laboratorio de Presión' : 'Pressure Lab'}</a>` : ''}
       <a class="btn btn-ghost" href="${base}/glossary/cost-index/">${es ? '¿Qué es un índice de costos?' : 'What is a cost index?'}</a>
     </div>
     ${movingNowSection(shipSlugs, locale)}
     ${sections}
     ${pendingSection}
     ${driverNote}
+    <div class="ci-signup" id="weekly-email">
+      <div class="foot-newsletter">
+        <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="${lang}">
+          <p class="foot-newsletter-pitch">${es ? 'Recibe el índice cada semana por correo — una lectura corta de lo que se mueve y qué hacer al respecto. Cuatro líneas, sin relleno.' : 'Get the index in your inbox every week — a short read on what’s moving and what to do about it. A few lines, no funnels.'}</p>
+          <label class="foot-newsletter-label" for="ci-news-email">${es ? 'Tu correo' : 'Your email'}</label>
+          <input id="ci-news-email" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="you@yourrestaurant.com" />
+          <input type="hidden" name="locale" value="${lang}" />
+          <input type="hidden" name="source" value="cost-index" />
+          <input type="hidden" name="ts" value="" />
+          <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="newsletter" data-size="flexible"></div>
+          <button type="submit">${es ? 'Enviarme el índice semanal' : 'Email me the weekly index'}</button>
+        </form>
+      </div>
+    </div>
     <p class="ci-source"><strong>${es ? 'Fuente' : 'Sourced'}:</strong> ${es ? 'datos públicos de mercado (USDA AMS/LMR, BLS, FRED, EIA, NOAA), vía' : 'public market data (USDA AMS/LMR, BLS, FRED, EIA, NOAA), via'} <a href="${base}/tools/cost-pulse/">Cost Pulse</a>.</p>
   </div>` + pageTail;
 }
@@ -1271,7 +1320,7 @@ function emitLabPage(locale) {
     : 'The model is a transparent sum: P = Σ(weight × sign × signal). Each public leading indicator casts one vote — up, down, or neutral inside a deadband — weighted by its evidence tier. When P crosses the ± line, the direction flips. No subjective adjustments: the same numbers you could redo by hand. It is an inferred direction, not a price; the lead times come from USDA/EIA and the per-week weighting is our estimate.';
   const noscript = es ? 'El Laboratorio de Presión necesita JavaScript. Verás la perspectiva en vivo en cada página de ingrediente.'
     : 'The Pressure Lab needs JavaScript — you\'ll find the live outlook on each ingredient page.';
-  const v = 'v=20260608-lab1';
+  const v = 'v=20260610-season1';
   return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld, extraCss: LAB_CSS }) + `
   <nav class="breadcrumb" aria-label="Breadcrumb">
     <a href="${base}/">${es ? 'Inicio' : 'Home'}</a> ›

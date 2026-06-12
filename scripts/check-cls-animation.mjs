@@ -37,10 +37,15 @@ const repoRoot   = path.resolve(path.dirname(__filename), '..');
 const WARN_ONLY = false;
 const FORBIDDEN_PROPS = ['top', 'left', 'right', 'bottom', 'width', 'height', 'margin', 'padding', 'inset'];
 
-const SKIP_DIRS = new Set(['node_modules', '.git', '.github', 'dist', '.wrangler', 'docs']);
+// Non-dot dirs that are never site content. Dot-dirs (.git, .github,
+// .wrangler, .venv, …) are skipped wholesale below — matching the dot-dir
+// skip in check-fabrications.mjs / check-no-innerhtml.mjs — so a stray local
+// virtualenv or tool cache can't drag third-party CSS/HTML into this gate.
+const SKIP_DIRS = new Set(['node_modules', 'dist', 'docs']);
 
 function* walk(dir) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (e.name.startsWith('.')) continue;
     if (SKIP_DIRS.has(e.name)) continue;
     const p = path.join(dir, e.name);
     if (e.isDirectory()) yield* walk(p);

@@ -1,0 +1,77 @@
+# Cost Index weekly dispatch — emails the weekly price index to opted-in subscribers.
+#
+# Runs after the measured index has refreshed (data/cost-index.json is the source).
+# Computes the week's insight with build-cost-index-dispatch.mjs --json and POSTs it
+# to the Worker's secret-gated broadcast endpoint, which renders costIndexWeeklyEmail
+# and sends it to every ACTIVE subscriber whose source is 'cost-index'.
+#
+# The broadcast is IDEMPOTENT per week (Worker stamps the asOf), so a re-run never
+# double-sends. Nothing goes out unless COST_INDEX_BROADCAST_SECRET is set here AND
+# on the Worker (they must match).
+#
+# Secret (Settings → Secrets and variables → Actions):
+#   COST_INDEX_BROADCAST_SECRET — high-entropy shared secret, also `wrangler secret put`
+#                                 on the Worker as COST_INDEX_BROADCAST_SECRET.
+
+name: Cost Index weekly dispatch
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: 'dry-run = print the insight, send nothing'
+        type: boolean
+        default: true
+  schedule:
+    # Tuesdays 13:00 UTC — a day after the Monday measured/pressure refresh, so the
+    # week's data is settled before the email goes out.
+    - cron: '0 13 * * 2'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cost-index-dispatch
+  cancel-in-progress: false   # never interrupt a send mid-flight
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out
+        uses: actions/checkout@v5
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      - name: Compute the week's insight
+        run: |
+          set -e
+          node scripts/build-cost-index-dispatch.mjs --dry-run
+          node scripts/build-cost-index-dispatch.mjs --json > /tmp/insight.json
+          echo "asOf: $(node -e 'console.log(require("/tmp/insight.json").asOf)')"
+
+      # Scheduled runs send; manual dispatch only sends when dry-run=false.
+      - name: Broadcast the weekly email
+        if: ${{ github.event_name == 'schedule' || github.event.inputs.dry-run == 'false' }}
+        env:
+          BROADCAST_SECRET: ${{ secrets.COST_INDEX_BROADCAST_SECRET }}
+        run: |
+          set -e
+          if [ -z "$BROADCAST_SECRET" ]; then
+            echo "COST_INDEX_BROADCAST_SECRET not set — skipping send (nothing emailed)."
+            exit 0
+          fi
+          # postUrl points subscribers at the live hub (the dated blog archive is a follow-up).
+          node -e 'const i=require("/tmp/insight.json"); i.postUrl="https://muntin.digital/cost-index/"; require("fs").writeFileSync("/tmp/payload.json", JSON.stringify(i));'
+          code=$(curl -sS -o /tmp/resp.json -w '%{http_code}' \
+            -X POST 'https://muntin.digital/api/admin/cost-index-broadcast' \
+            -H "Authorization: Bearer $BROADCAST_SECRET" \
+            -H 'Content-Type: application/json' \
+            --data @/tmp/payload.json)
+          echo "broadcast HTTP $code"; cat /tmp/resp.json; echo
+          # 2xx (sent or already-sent) is success; anything else fails the run.
+          case "$code" in 2*) exit 0 ;; *) echo "broadcast failed"; exit 1 ;; esac

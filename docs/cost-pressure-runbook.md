@@ -22,21 +22,36 @@ API keys; the rest keyless).
 | Deterministic scorer | `tools/_shared/cost-pressure.js` | ✅ live, tested |
 | Rule manifest (panels, signs, weights, lags, cites) | `data/pressure-rules.json` | ✅ |
 | Source normalizers (raw API → window %) | `tools/_shared/pressure-sources.js` | ✅ tested |
-| Per-indicator fetch specs | `data/pressure-source-specs.json` | ⏳ 5/17 verified |
-| Source normalizers hardened (begin_code ordering, multi-area drought, withheld cells) | `tools/_shared/pressure-sources.js` | ✅ tested |
-| Fetch orchestrator | `scripts/fetch-pressure-observations.mjs` | ✅ (`--self-test` passes, messy-shape fixtures) |
+| Per-indicator fetch specs | `data/pressure-source-specs.json` | ⏳ 14/21 verified (pending: 4 AMS movement + `drought-id` + national `drought` + `feed-futures`) |
+| Source normalizers hardened (begin_code ordering, multi-area drought case-insensitive, withheld cells) | `tools/_shared/pressure-sources.js` | ✅ tested |
+| AMS produce MOVEMENT aggregate (national volume + import share + YoY pace) | `tools/_shared/pressure-sources.js` (`movementAggregate`) | ✅ self-tested; specs pending live probe |
+| Fetch orchestrator (`--self-test` / `--probe` / `--ams-discover` / `--live`) | `scripts/fetch-pressure-observations.mjs` | ✅ |
+| Refresh Action (probe / ams-discover / live, weekly cron) | `.github/workflows/cost-pressure-refresh.yml` | ✅ |
 | Scorer build → records | `scripts/build-cost-pressure.mjs` | ✅ |
 | Page render (Outlook block) | `scripts/build-cost-index-pages.mjs` | ✅ preview |
 | Honesty gate (recompute + no-price) | `scripts/check-pressure-honesty.mjs` | ✅ in check-all |
-| Source shape/readiness gate | `scripts/check-pressure-sources.mjs` | ✅ in check-all |
+| Source shape/readiness gate (resolves `ams-move` emits) | `scripts/check-pressure-sources.mjs` | ✅ in check-all |
+
+### How the layer runs now — the GitHub Action
+The whole pipeline runs in `.github/workflows/cost-pressure-refresh.yml` (GitHub
+runners have egress; keys live as repo **secrets** `EIA_KEY` / `NASS_KEY` / `AMS_KEY`).
+Trigger it from **Actions → Cost Pressure refresh → Run workflow** with a `mode`:
+- **`probe`** — tries every spec live (ignores `verified`), writes nothing; prints
+  rows/change + NASS `short_desc` + AMS `ams keys`/commodities. The verification loop.
+- **`ams-discover`** — lists MARS movement/specialty reports + produce commodity names
+  + samples a movement report's `Report Details`. How the AMS slugs were found.
+- **`live`** — `--self-test` → `--live` → build → render → `sync-includes` → honesty +
+  sources gates → **scoped commit** (data/pressure-* + cost-index pages only) → push →
+  Cloudflare deploys. The weekly Monday cron runs this.
 
 ## Go-live steps
 
-### 1. Get the two free keys
+### 1. Get the three free keys (repo secrets)
 - **EIA** (diesel/freight): register at <https://www.eia.gov/opendata/> → `EIA_KEY`.
-- **USDA NASS** (supply signals): register at <https://quickstats.nass.usda.gov/api/> → `NASS_KEY`.
+- **USDA NASS** (meat/dairy supply signals): <https://quickstats.nass.usda.gov/api/> → `NASS_KEY`.
+- **USDA AMS / My Market News** (produce movement): <https://mymarketnews.ams.usda.gov/> → `AMS_KEY` (Basic-auth username, blank password).
 - US Drought Monitor and NWS (`api.weather.gov`) are **keyless**.
-- **No paid feed is used anywhere.** Futures come *through* free USDA AMS, not CME.
+- **No paid feed is used anywhere.** All USDA/EIA/keyless public data.
 
 ### 2. Verify the 12 outstanding source specs
 
@@ -61,8 +76,16 @@ Reference endpoints when a query needs hand-tuning:
   `cold-storage-*`, `crop-condition`, `milk-production`): the Quick Stats parameter
   browser (<https://quickstats.nass.usda.gov>) — tighten the `query` (add `unit_desc`
   when `--probe` reports multiple units).
-- **AMS** (`feed-futures`, `ams-shipments`): the My Market News report slug
-  + numeric field (<https://mymarketnews.ams.usda.gov/mymarketnews-api>).
+- **AMS produce movement** (`onion-movement`, `lettuce-movement`, `tomato-movement`,
+  `potato-movement` — type `ams-move`): each pools `Report Details` across all active
+  Daily Movement city reports (`MOVEMENT_REPORTS` in the fetcher), filters one commodity
+  (exact), and emits three indicators — `<x>-shipments` (national weekly volume, field
+  `1 lb units`), `<x>-imports` (import share from `import/Export`), `<x>-pace` (trailing
+  4wk vs ~52wk-ago). `--probe` prints cities-hit / weeks / the 3 emits. Run `--ams-discover`
+  to (re)find report slugs + commodity spellings. The produce **measured anchor is already
+  AMS terminal price**, so the overlay must use *volume*, never price (circularity).
+- **AMS `feed-futures`**: permanently deferred — `AMS_3046` is a narrative report; CBOT
+  futures aren't AMS data. Left as an unwired slot on the meat panels (already 3 signals).
 
 ### 3. Prove the wiring, then fetch
 ```
@@ -81,7 +104,8 @@ npm run check-all                              # full suite
 ```
 
 ### 5. Weekly cadence
-Run steps 3–4 weekly (a Cloudflare cron, like the Cost Index fetch). The anchor
+The `cost-pressure-refresh` Action runs `mode=live` on a Monday cron (steps 3–4 in
+GitHub's runners, then a scoped commit + push → Cloudflare deploys). The anchor
 refreshes on its own report cadence; the overlay refreshes weekly and shows
 `freshness_weeks` since the last measured print. Past the decay floor
 (`defaults.decay.floorWeeks`), the overlay auto-suppresses to "under review".
