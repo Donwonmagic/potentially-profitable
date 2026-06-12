@@ -630,7 +630,7 @@ function siteFooter() {
         <p class="foot-heading" id="foot-explore">Explore</p>
         <ul class="foot-links">
           <li><a href="/studio/">Company</a></li>
-          <li><a href="/cost-index/">Cost Index</a></li>
+          <li><a href="/for/restaurants/">For restaurants</a></li>
           <li><a href="/about/">About Don</a></li>
           <li><a href="/system/">The system</a></li>
         </ul>
