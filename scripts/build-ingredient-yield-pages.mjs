@@ -157,14 +157,20 @@ function costIndexBlock(slug, locale) {
     : (es ? 'Referencia mayorista, no el precio entregado que pagas.' : 'Wholesale reference, not the delivered price you pay.');
   const srcBody = `${sources.join(' · ')} — ${es ? 'datos públicos' : 'public data'}, ${es ? 'al' : 'as of'} ${asOf}. ${disclaimer}`;
   const why = whyConfidence(point, conf, es);
-  const fv = makeFmt(es).flagVerb(entry.flag, conf);   // buy/hold/watch — same tested helper as the dashboard, hedged by confidence
+  const FMT = makeFmt(es);
+  const fv = FMT.flagVerb(entry.flag, conf);   // buy/hold/watch — same tested helper as the dashboard, hedged by confidence
   const verdictHtml = fv ? `\n  <p class="iy-ci-verdict iy-ci-${fv.tone}"><strong>${fv.verb}.</strong> ${fv.note}</p>` : '';
   const spread = cheapestLine(point, es);
   const spreadHtml = spread ? `\n  <p class="iy-ci-spread">${spread}</p>` : '';
+  // "Where today sits in its own range" — an honest COUNT over the vendored
+  // history, gated like the dashboard (never on a directional read).
+  const hist = (entry.history || []).map((h) => h && h.valueCents).filter((v) => typeof v === 'number' && isFinite(v));
+  const pctl = conf !== 'directional' ? FMT.percentileLine(hist) : '';
+  const pctlHtml = pctl ? `\n  <p class="iy-ci-pctl">${pctl}</p>` : '';
   return `
 <div class="iy-costindex">
   <p class="iy-ci-head">${head}<span class="iy-ci-badge">${badge}</span></p>
-  <p class="iy-ci-line">${line}</p>${spreadHtml}${verdictHtml}
+  <p class="iy-ci-line">${line}</p>${pctlHtml}${spreadHtml}${verdictHtml}
   <p class="iy-ci-why">${why}</p>
   <details class="iy-ci-src"><summary>${srcSummary}</summary><div>${srcBody}</div></details>
 </div>`;
@@ -388,6 +394,7 @@ main{padding-top:64px}
 .iy-ci-line{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0}
 .iy-ci-why{font-size:13px;line-height:1.5;color:var(--ink-soft);margin:5px 0 0}
 .iy-ci-spread{font-size:13px;line-height:1.5;color:var(--ink-soft);margin:4px 0 0}
+.iy-ci-pctl{font-size:13px;line-height:1.5;color:var(--ink-soft);margin:4px 0 0}
 .iy-ci-verdict{font-size:14px;line-height:1.5;color:var(--ink);margin:7px 0 0;padding:7px 11px;border-radius:6px;background:var(--surface-2,#f5f3ef);border-left:3px solid var(--stone)}
 .iy-ci-reprice{border-left-color:var(--rust)}
 .iy-ci-hold{border-left-color:var(--teal)}
