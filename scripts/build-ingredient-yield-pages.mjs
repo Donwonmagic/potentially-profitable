@@ -82,6 +82,10 @@ const COST_INDEX = (() => {
   try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-index.json'), 'utf8')).ingredients || {}; }
   catch { return {}; }
 })();
+const CI_BOUNDS = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-index-bounds.json'), 'utf8')).bounds || {}; }
+  catch { return {}; }
+})();
 const CI_SOURCE_LABELS = { 'usda-ams': 'USDA AMS', bls: 'BLS PPI', fred: 'FRED', noaa: 'NOAA Fisheries' };
 // Surface WHY a read is the strength it is — the honesty engine's reasoning, in
 // plain language. Qualitative only (no numbers to fact-gate); mirrors the
@@ -171,10 +175,26 @@ function costIndexBlock(slug, locale) {
   const today = lvl && typeof lvl.medianCents === 'number' ? lvl.medianCents : null;
   const pctl = (conf !== 'directional' && today != null) ? FMT.percentileLine([...hist, today]) : '';
   const pctlHtml = pctl ? `\n  <p class="iy-ci-pctl">${pctl}</p>` : '';
+  // Live edible-unit cost: the number an operator repeats. ONLY when the live
+  // price unit matches the yield unit (both 'lb', etc.) — never divide a $/carton
+  // price by a per-head yield (the unit-mismatch trap). Both inputs are sourced
+  // (the price via provenance, the yield cited on the page), so the result is a
+  // shown calculation, not a new claim.
+  const ing = INGREDIENTS.find((i) => i.slug === slug);
+  const bUnit = (CI_BOUNDS[slug] || {}).unit;
+  let epHtml = '';
+  if (ing && ing.yield > 0 && bUnit && bUnit === ing.unit_en && today != null) {
+    const u = es ? (ing.unit_es || bUnit) : bUnit;
+    const pctY = Math.round(ing.yield * 100);
+    const ep = money(Math.round(today / ing.yield));
+    epHtml = es
+      ? `\n  <p class="iy-ci-ep">Al precio de hoy (~${money(today)}/${u}) y el ${pctY}% de rendimiento, tu ${u} comestible cuesta unos <strong>${ep}</strong>.</p>`
+      : `\n  <p class="iy-ci-ep">At today's reference (~${money(today)}/${u}) and the ${pctY}% yield, your edible ${u} runs about <strong>${ep}</strong>.</p>`;
+  }
   return `
 <div class="iy-costindex">
   <p class="iy-ci-head">${head}<span class="iy-ci-badge">${badge}</span></p>
-  <p class="iy-ci-line">${line}</p>${pctlHtml}${spreadHtml}${verdictHtml}
+  <p class="iy-ci-line">${line}</p>${epHtml}${pctlHtml}${spreadHtml}${verdictHtml}
   <p class="iy-ci-why">${why}</p>
   <details class="iy-ci-src"><summary>${srcSummary}</summary><div>${srcBody}</div></details>
 </div>`;
@@ -418,6 +438,7 @@ main{padding-top:64px}
 .iy-ci-badge{font-weight:600;text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink-soft);margin-left:8px}
 .iy-ci-line{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0}
 .iy-ci-why{font-size:13px;line-height:1.5;color:var(--ink-soft);margin:5px 0 0}
+.iy-ci-ep{font-size:14px;line-height:1.5;color:var(--ink);margin:5px 0 0}
 .iy-ci-spread{font-size:13px;line-height:1.5;color:var(--ink-soft);margin:4px 0 0}
 .iy-ci-pctl{font-size:13px;line-height:1.5;color:var(--ink-soft);margin:4px 0 0}
 .iy-ci-verdict{font-size:14px;line-height:1.5;color:var(--ink);margin:7px 0 0;padding:7px 11px;border-radius:6px;background:var(--surface-2,#f5f3ef);border-left:3px solid var(--stone)}
