@@ -49,6 +49,12 @@ const PRESSURE_ITEMS = (() => {
   try { return rd(path.join(repoRoot, 'data/cost-pressure.json')).items || {}; }
   catch { return {}; }
 })();
+// Per-card seasonality EDUCATION (roadmap S2) — sourced bilingual primers, gated by
+// check-seasonality-education.mjs. Empty until populated on a connected run.
+const SEASON_EDU = (() => {
+  try { return rd(path.join(repoRoot, 'data/seasonality-education.json')).education || {}; }
+  catch { return {}; }
+})();
 // HOLD-UNTIL-PROVEN bar (shared with build-cost-index-pages via the rules manifest):
 // the overlay is published only once an item's live track record earns it.
 const PROVING = (() => {
@@ -93,6 +99,12 @@ function main() {
       assessment: newest,                            // already an assess()-shaped point
     };
     if (lab.seasonal) entry.seasonal = true;
+    // Sourced seasonality primer (S2) — supersedes the generic `seasonal` nudge in
+    // the UI when present. Only the rendered fields ride along.
+    const se = SEASON_EDU[key];
+    if (se && se.note_en && se.source) {
+      entry.seasonEd = { peak_en: se.peak_en, peak_es: se.peak_es, note_en: se.note_en, note_es: se.note_es, source: se.source };
+    }
     if (YIELD_SLUGS.has(key)) entry.yieldSlug = key;   // deep-link target for the dashboard→leaf rail
     // The spike-vs-structural flag (verdict + actionBias) — a build-time, fact-gated
     // "story so far" the renderer turns into a buy/hold/watch suggestion.

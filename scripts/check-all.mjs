@@ -376,6 +376,10 @@ const CHECKS = [
   // state. Pure function of the vendored history, so --check pins it in sync.
   ['Cost-index seasonality (idem)','build-seasonality.mjs','--check'],
   ['Cost-index seasonality self-test','build-seasonality.mjs','--self-test'],
+  // Seasonality education (S2) — sourced bilingual primers per card. Enforces the
+  // USDA-sourced posture: every entry carries a citation + EN/ES + a real key.
+  ['Cost-index seasonality education','check-seasonality-education.mjs'],
+  ['Cost-index seasonality education self-test','check-seasonality-education.mjs','--self-test'],
   // Shippable bar — below-bar ingredients must stay out of the browser seed
   // (no thin / no-level read on the dashboard; they live as expanding-coverage).
   ['Cost-index shippable bar','check-shippable-bar.mjs'],

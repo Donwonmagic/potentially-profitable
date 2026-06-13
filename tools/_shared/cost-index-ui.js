@@ -680,7 +680,17 @@
       fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + citeTxt + '.');
     }
 
-    if (ing.seasonal) {
+    // Sourced seasonality primer (S2) supersedes the generic seasonal nudge.
+    if (ing.seasonEd && ing.seasonEd.note_en) {
+      var se = ing.seasonEd;
+      var seTxt = L('In season: ', 'En temporada: ') + L(se.peak_en, se.peak_es) + '. ' + L(se.note_en, se.note_es);
+      var seP = el('p', 'cp-market-seasonal', seTxt);
+      if (se.source) {
+        var seCite = el('span', 'cp-cite-src', ' (' + se.source + ')');
+        seP.appendChild(seCite);
+      }
+      fig.appendChild(seP);
+    } else if (ing.seasonal) {
       fig.appendChild(el('p', 'cp-market-seasonal',
         L('Looks seasonal — it may ease, so holding is often smarter than re-pricing.',
           'Parece de temporada — podría bajar, así que mantener suele ser mejor que subir el precio.')));
