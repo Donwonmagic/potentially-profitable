@@ -151,6 +151,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .cp-conf[data-level="medium"]{background:rgba(198,138,44,.12);color:var(--status-warn-deep,#8A3E16)}
 .cp-conf[data-level="low"],.cp-conf[data-level="directional"]{background:var(--status-bad-tint,#F7E7DC);color:var(--rust)}
 .cp-market-range{font-size:16px;color:var(--ink);margin:6px 0 2px;font-variant-numeric:tabular-nums}
+.cp-tier{display:inline-flex;padding:2px 8px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border-radius:999px;background:var(--cream-2);color:var(--ink-soft)}
+.cp-tier[data-tier="measured"]{background:rgba(42,122,118,.10);color:var(--teal,#2A7A76)}
+.cp-tier[data-tier="derived"]{background:rgba(198,138,44,.12);color:var(--status-warn-deep,#8A3E16)}
+.cp-market-plate{font-size:13px;color:var(--teal,#2A7A76);margin:0 0 4px;font-variant-numeric:tabular-nums;font-weight:600}
 .cp-market-trend{font-size:13.5px;margin:0 0 2px;font-variant-numeric:tabular-nums}
 .cp-market-trend[data-dir="up"]{color:var(--rust)}
 .cp-market-trend[data-dir="down"]{color:var(--teal)}
@@ -784,7 +788,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/tools/_shared/dish-drift.js?v=20260504-w10-11"></script>
 <script src="/tools/_shared/whats-new.js?v=20260504-w14-8" defer></script>
 <script src="/tools/_shared/cost-index-format.js?v=20260608-fmt1"></script>
-<script src="/tools/_shared/cost-index-ui.js?v=20260607-live10"></script>
+<script src="/tools/_shared/cost-index-ui.js?v=20260613-tier1"></script>
 <script>
 (function () {
   'use strict';

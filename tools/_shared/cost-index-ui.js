@@ -561,12 +561,36 @@
     chip.setAttribute('data-level', r.confidence);
     chip.setAttribute('aria-label', confPhrase);   // chip shows the short word; SR hears what it means
     var headRight = el('span', 'cp-head-right');
+    // Coverage-tier badge — the honesty label: a `measured` card is a published
+    // USDA wholesale price taken as-is; `derived` is an estimate with no measured
+    // level. Tells the operator how much to trust the number at a glance.
+    if (ing.tier) {
+      var tierBadge = el('span', 'cp-tier', ({ measured: L('measured', 'medido'), derived: L('estimate', 'estim.'), absent: L('no data', 'sin datos') })[ing.tier] || ing.tier);
+      tierBadge.setAttribute('data-tier', ing.tier);
+      tierBadge.setAttribute('title', ing.tier === 'measured'
+        ? L('A published USDA wholesale price, taken as-is.', 'Un precio mayorista publicado del USDA, tal cual.')
+        : L('An estimate from public indicators — no measured price level.', 'Una estimación de indicadores públicos — sin nivel de precio medido.'));
+      headRight.appendChild(tierBadge);
+    }
     headRight.appendChild(chip);
     if (ing.key) headRight.appendChild(trackButton(ing.key));
     head.appendChild(headRight);
     fig.appendChild(head);
 
     fig.appendChild(el('p', 'cp-market-range', rangeText));
+    // Yield-adjusted TRUE plate cost — the wholesale level converted to cost per
+    // USABLE unit (illustrative trim yield; the operator's own yield governs). The
+    // number no public index shows: what the trim actually costs you.
+    if (ing.epCents && ing.yield && lvl) {
+      var yPct = Math.round(ing.yield * 100);
+      var plateTxt = L('True cost ≈ ' + money(ing.epCents) + ' per usable ' + unit + ' (' + yPct + '% trim yield)',
+                       'Costo real ≈ ' + money(ing.epCents) + ' por ' + unit + ' utilizable (rendimiento ' + yPct + '%)');
+      var plateEl = el('p', 'cp-market-plate', plateTxt);
+      plateEl.setAttribute('title', L('Wholesale price ÷ typical trim yield = true cost per usable unit. Your own yield governs.',
+                                      'Precio mayorista ÷ rendimiento típico = costo real por unidad utilizable. Tu propio rendimiento manda.'));
+      fig.appendChild(plateEl);
+      fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + plateTxt + '.');
+    }
     var tEl = el('p', 'cp-market-trend', (r.trend.dir === 'up' ? '▲ ' : r.trend.dir === 'down' ? '▼ ' : '● ') + trendText);
     tEl.setAttribute('data-dir', r.trend.dir);
     fig.appendChild(tEl);
