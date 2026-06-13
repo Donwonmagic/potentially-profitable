@@ -146,7 +146,32 @@ Decisions recorded so they aren't relitigated:
   `check-all` ("Cost-index trend↔curve") — a shown % that contradicts its curve
   now fails CI. 166/166.
 
+## Depth-at-scale + reliability wave (2026-06-13)
+- ✅ **Heartbeat freshness monitor** (`check-cost-index-freshness.mjs`) — the weekly
+  refresh failed silently (keys lapse / sources down → exit 0, last-good kept). Now
+  a persistent stall fails the scheduled run red → GitHub emails the founder.
+  Warn-only in check-all (never blocks a PR on natural aging).
+- ✅ **Answer-first depth on every page** — yield-breakdown table + 3-Q FAQ +
+  FAQPage/HowTo JSON-LD, all from the sourced yield, EN+ES. Shared `faqItems()` so
+  visible text === structured data. **Zero dollars in JSON-LD** (enforced by the new
+  `check-ingredient-jsonld.mjs` price-cleanliness gate; no Offer/Product).
+- ✅ **Two-way Cost-Index ↔ yield wiring** — leaf→dashboard (gated to shippable
+  reads) and dashboard→leaf (gated to real pages via `yieldSlug` in the seed).
+- ✅ **Manifest → `data/ingredient-yields.json`** + `check-ingredient-yields.mjs`:
+  proves every rendered yield matches the cited CIA `YIELD_TABLE` (66) or declares a
+  `yield_source` (5 FBG). Adding an ingredient is now a reviewable data row.
+- ✅ **Routable category hubs** (`/library/ingredient-yields/<category>/`, EN+ES) —
+  the taxonomy middle tier; ranked sourced yield table + guide prose; 4-level
+  breadcrumb (rendered + JSON-LD); master-hub headings now link down. Sibling rail
+  capped at 8 + "see all". Doorway/thin-content guard for scaling breadth.
+- ✅ **Ribeye ES fix** — "costilla" (short-rib, 65%) → "bife ancho" (the actual cut).
+- ☐ **Next keyless**: sitemap segmentation (now 1016 URLs), thin-content near-dup
+  gate, the entity/alias layer (DefinedTerm + `sameAs` — needs *verified* aliases).
+
 ## Gated — needs founder env (the big value)
+- ▶︎ **VERIFY PASS — turnkey runbook at `docs/cost-index-verify-runbook.md`.** 44
+  staged sources ready to flip live; the dormant features (measured spread, EIA
+  driver, live EP cost, history) light up automatically on the next live fetch.
 - ⛔ H2: flip index preview → live (USDA/BLS/FRED keys); real freshness/history; last-good banner.
 - ⛔ H3: `/v1/cost-index` = artifact ⨝ invoices; watchlist + alerts; market-vs-vendor → Plate
   seasonal + hero-loop production trigger (`queue.ts`); invoice-canonical ingredient binding.
