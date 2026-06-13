@@ -377,12 +377,22 @@ function emitJsonLd(ing, locale) {
   const crumb = locale === 'es'
     ? [['Inicio','https://muntin.digital/es/'],['Biblioteca','https://muntin.digital/es/library/'],['Rendimiento de ingredientes','https://muntin.digital/es/library/ingredient-yields/'],[catLabel,catUrl],[name,url]]
     : [['Home','https://muntin.digital/'],['Library','https://muntin.digital/library/'],['Ingredient yields','https://muntin.digital/library/ingredient-yields/'],[catLabel,catUrl],[name,url]];
+  // The ingredient as a disambiguated ENTITY (DefinedTerm) so search + LLMs resolve
+  // "ribeye" / its variants to this canonical page. Description is DERIVED from the
+  // sourced yield — no new claim, no dollar figure. alternateName/sameAs are
+  // deliberately omitted until a gated alias/QID source exists (a wrong one corrupts
+  // the graph). mainEntity binds the page to the entity.
+  const termDesc = es
+    ? `${name} rinde ${pct}% de porción comestible sobre su peso comprado (tablas de rendimiento estándar del CIA).`
+    : `${name} yields ${pct}% edible portion of its as-purchased weight (CIA Standard Yield Tables).`;
   return JSON.stringify({
     '@context': 'https://schema.org',
     '@graph': [
       { '@type': 'WebPage', '@id': url + '#webpage', 'name': name + (locale === 'es' ? ' — rendimiento' : ' yield'),
-        'url': url, 'inLanguage': locale === 'es' ? 'es-US' : 'en-US',
+        'url': url, 'inLanguage': locale === 'es' ? 'es-US' : 'en-US', 'mainEntity': { '@id': url + '#term' },
         'isPartOf': { '@id': 'https://muntin.digital/#website' }, 'publisher': { '@id': 'https://muntin.digital/#business' } },
+      { '@type': 'DefinedTerm', '@id': url + '#term', 'name': name, 'description': termDesc,
+        'inDefinedTermSet': { '@id': `https://muntin.digital${base}/library/ingredient-yields/#termset` } },
       { '@type': 'FAQPage', 'mainEntity': items.map((it) => ({ '@type': 'Question', 'name': it.q,
         'acceptedAnswer': { '@type': 'Answer', 'text': it.a } })) },
       { '@type': 'HowTo', 'name': es ? `Cómo calcular el costo de porción comestible de ${nlow}` : `How to calculate the edible-portion cost of ${nlow}`,
@@ -666,6 +676,19 @@ function emitHubPage(locale) {
       { '@type': 'CollectionPage', '@id': baseUrl + '#webpage', 'name': heroH1, 'description': heroLede, 'url': baseUrl,
         'inLanguage': locale === 'es' ? 'es-US' : 'en-US', 'isPartOf': { '@id': 'https://muntin.digital/#website' }, 'publisher': { '@id': 'https://muntin.digital/#business' } },
       { '@type': 'ItemList', 'numberOfItems': items.length, 'itemListElement': items },
+      // The hub is the ENTITY REGISTRY: a DefinedTermSet naming every ingredient term,
+      // so an LLM lands here to enumerate all of them. And it IS a sourced dataset
+      // (N ingredients × edible-portion yield) — Dataset schema makes it citable.
+      { '@type': 'DefinedTermSet', '@id': baseUrl + '#termset', 'name': heroH1, 'inLanguage': locale === 'es' ? 'es-US' : 'en-US',
+        'hasDefinedTerm': INGREDIENTS.map((i) => ({ '@id': (locale === 'es' ? canonEs : canonEn) + i.slug + '/#term' })) },
+      { '@type': 'Dataset', '@id': baseUrl + '#dataset',
+        'name': locale === 'es' ? 'Rendimiento de ingredientes de restaurante (porción comestible)' : 'Restaurant ingredient yields (edible portion)',
+        'description': locale === 'es'
+          ? `Rendimiento de porción comestible de ${items.length} ingredientes comunes de restaurante, según las tablas de rendimiento estándar del CIA.`
+          : `Edible-portion yield for ${items.length} common restaurant ingredients, per the CIA Standard Yield Tables.`,
+        'url': baseUrl, 'inLanguage': locale === 'es' ? 'es-US' : 'en-US', 'isAccessibleForFree': true,
+        'creator': { '@id': 'https://muntin.digital/#business' }, 'citation': 'CIA Standard Yield Tables / USDA Food Buying Guide',
+        'variableMeasured': locale === 'es' ? 'porcentaje de rendimiento de porción comestible' : 'edible-portion yield percent' },
       { '@type': 'BreadcrumbList', 'itemListElement': [
         ['Home','https://muntin.digital/'],['Library','https://muntin.digital/library/'],[heroH1, baseUrl]
       ].map((c, i) => ({ '@type': 'ListItem', 'position': i + 1, 'name': (locale === 'es' && i < 2 ? ['Inicio','Biblioteca'][i] : c[0]), 'item': c[1] })) }
