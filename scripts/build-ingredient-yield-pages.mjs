@@ -254,16 +254,31 @@ function costIndexBlock(slug, locale) {
       above: "That's about {pct}% above the public wholesale reference. Delivered normally runs above wholesale, so some gap is expected; a large one is worth a vendor conversation.",
       below: "That's about {pct}% below the public wholesale reference — a strong number (the reference already sits below delivered). Worth confirming it's the same grade and pack."
     };
+    // Edible-portion cost from THEIR price (the most actionable number): only when
+    // the price unit matches the yield unit, so we never divide a $/carton price by
+    // a per-head yield. {ep} is filled live in the browser = their price ÷ the cited
+    // yield — a shown calculation off two sourced inputs, not a new claim.
+    const epEligible = ing && ing.yield > 0 && bUnit && bUnit === ing.unit_en;
+    let epAttr = '', epOut = '';
+    if (epEligible) {
+      const u = es ? (ing.unit_es || bUnit) : bUnit;
+      const pctY = Math.round(ing.yield * 100);
+      tpl.ep = es
+        ? `A ese precio y el ${pctY}% de rendimiento, tu ${u} comestible cuesta unos {ep}.`
+        : `At that price and the ${pctY}% yield, your edible ${u} costs about {ep}.`;
+      epAttr = ` data-yield="${ing.yield}"`;
+      epOut = `\n    <p class="iy-pc-ep" aria-live="polite"></p>`;
+    }
     const lbl = es ? 'Tu precio (opcional)' : 'Your price (optional)';
     pcHtml = `
-  <div class="iy-pricecheck" data-ref="${today}" data-tpls="${escHtml(JSON.stringify(tpl))}">
+  <div class="iy-pricecheck" data-ref="${today}"${epAttr} data-tpls="${escHtml(JSON.stringify(tpl))}">
     <label class="iy-pc-label" for="iy-yp-${slug}">${lbl}</label>
     <div class="iy-pc-row">
       <span class="iy-pc-cur" aria-hidden="true">$</span>
       <input class="iy-pc-input" id="iy-yp-${slug}" type="number" inputmode="decimal" min="0" step="0.01" placeholder="${refDollars}" autocomplete="off" />
       <span class="iy-pc-unit">/ ${ciUnit}</span>
     </div>
-    <p class="iy-pc-out" aria-live="polite">${tpl.empty}</p>
+    <p class="iy-pc-out" aria-live="polite">${tpl.empty}</p>${epOut}
   </div>`;
   }
   // Two-way wiring: deep-link to the live dashboard card — but only when this read
@@ -591,6 +606,8 @@ main{padding-top:64px}
 .iy-pc-input{width:96px;font-size:14px;padding:5px 7px;border:1px solid var(--stone,#cfc8bb);border-radius:5px;background:#fff;color:var(--ink)}
 .iy-pc-unit{font-size:13px;color:var(--ink-soft)}
 .iy-pc-out{font-size:13px;line-height:1.5;color:var(--ink);margin:6px 0 0}
+.iy-pc-ep{font-size:13.5px;line-height:1.5;color:var(--ink);font-weight:600;margin:4px 0 0}
+.iy-pc-ep:empty{margin:0}
 .iy-related{font-size:13px;color:var(--ink-soft);margin:18px 0 0}
 .iy-related-label{display:inline-block;font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:11px;margin-right:8px}
 .iy-related a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
@@ -637,12 +654,16 @@ const pageTail = `</div>
     var input = box.querySelector('.iy-pc-input');
     if (!(ref > 0) || !out || !input) return;
     var tpl; try { tpl = JSON.parse(box.getAttribute('data-tpls')); } catch (e) { return; }
+    var yld = parseFloat(box.getAttribute('data-yield'));
+    var epOut = box.querySelector('.iy-pc-ep');
     function render(){
       var v = parseFloat(input.value);
-      if (!(v > 0)) { out.textContent = tpl.empty; return; }
+      if (!(v > 0)) { out.textContent = tpl.empty; if (epOut) epOut.textContent = ''; return; }
       var pct = (Math.round(v * 100) - ref) / ref * 100;
       var a = Math.round(Math.abs(pct));
       out.textContent = a <= 3 ? tpl.even : (pct > 0 ? tpl.above : tpl.below).replace('{pct}', a);
+      // Their edible-portion cost = entered price / cited yield (a shown calculation).
+      if (epOut && tpl.ep && yld > 0) epOut.textContent = tpl.ep.replace('{ep}', '$' + (v / yld).toFixed(2));
     }
     input.addEventListener('input', render);
   })(boxes[i]);
