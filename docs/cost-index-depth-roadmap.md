@@ -86,6 +86,24 @@ All confirmed free + public-domain unless noted.
 with key-as-username/blank-password (the auth we already use); root `/reports`
 returns the full catalog ToC; registered row limit 100k.
 
+### 3a. USDA ERS API products — triage (added 2026-06-13)
+
+ERS exposes a product-API set (this supersedes the "ERS API down" note below — the
+*data-product* APIs are live even while the Meat Price Spreads API was mid-redesign).
+Triaged against this index's actual job — **wholesale ingredient cost level +
+direction** — not everything USDA publishes earns a place:
+
+| ERS product | Fit | Verdict |
+|---|---|---|
+| **Food Dollar Series** | The farm-to-consumer cost split (farm share vs. the marketing bill: processing, transport, retail). *Explains why a wholesale tick ≠ a plate/retail move.* | **Take — as an education/context layer**, not a price. Annual, national, public-domain. Pairs with driver-attribution (§4 #5) and the per-card education theme. |
+| **ARMS** (farm financial / production practices) | Cost-of-production context (input costs, practices). Annual, aggregate, survey, lagging. | **Defer.** A weak, slow structural backdrop — not a price or a usable lead. Revisit only if a "cost-of-production pressure" driver is ever scoped. |
+| **Food Access Atlas** · **Food Environment Atlas** · **SNAP Data System** · **Farm Program Atlas** · **Atlas of Rural & Small-Town America** | Social / geographic / program data (access, assistance, county socioeconomics). | **Decline — out of scope.** None carries a wholesale ingredient price or a cost-driver signal; adding them is scope drift that dilutes the "every number earns its place" posture. The Food Environment Atlas has a *retail* price element, but retail≠wholesale and it's not a usable feed. |
+
+**Net:** one real add (**Food Dollar Series**, as context/education), one parked
+(ARMS), five declined. All staged for a **connected run** — this environment has
+no API keys and outbound is blocked (MARS/NASS/FRED all 403), so nothing here
+vendors until keys + network exist.
+
 ## 4. Actionability ladder (ranked by operator value ÷ effort)
 
 Order reflects the research consensus on value-to-effort for a solo builder:
@@ -178,11 +196,51 @@ risk). Four deliverables, sequenced so each unlocks the next.
 ### Quality throughline — public methodology page
 - A web-routable methodology page (the Urner-Barry move): how bounds, reducers,
   tiers, and sources work. The trust artifact that makes the index auditable.
-  Fold in alongside D1.
+- **Sequencing (operator directive, 2026-06-13): WRITE THIS LAST.** The
+  methodology documents how the sources work, so it can't be honest or final
+  until source integration is *done*. Squeeze every viable public source into the
+  index first (§3 + §3a, the source-integration audit), settle the tier/bounds/
+  reducer per source, *then* write the methodology against the finished surface.
+  Drafting it earlier just guarantees a rewrite. Treat the source-expansion work
+  (§3/§3a/D2) as the prerequisite gate on this page.
 
 ### Parallel / prerequisite (in flight)
 - The ~80-ingredient refresh vendor + the NOAA seafood re-flip — both feed D3
   (more history → better seasonality).
+
+## 5b. Focused workstream — Seasonality (its own track)
+
+Seasonality outgrew a single Depth-I bullet (D3). It is a distinct capability with
+its own multi-phase arc, its own data layer, and its own honest-degradation story,
+so it gets a dedicated track. Two halves that ship independently:
+
+- **The measured read** (needs history): our own "is this high *for {month}*?"
+  normal + band, computed from vendored weekly history. Gated on 2+ years per
+  month — dormant until the corpus fills (see D3 status).
+- **The education** (ships now): a short, per-ingredient seasonality primer on
+  every card — *why* this item has a season and roughly when it runs — so a card
+  teaches the pattern long before we have the years of data to measure it. This is
+  the half a reader can use today; it does not depend on our price history.
+
+**Phases:**
+
+1. **S1 — Engine + gate** *(done, 2026-06-13)*. `build-seasonality.mjs` →
+   `data/seasonality.json`, pure + `--check` + self-test, in `check-all` and the
+   refresh chain. All ingredients currently `building` with a named blocker.
+2. **S2 — Per-card education** *(next; this is the operator-facing win today)*.
+   A curated, bilingual `data/seasonality-education.json` keyed by ingredient: a
+   peak window + a one-line "why," joined into the seed and rendered as a
+   *Seasonality* line on each card — replacing today's single generic
+   `seasonal:true` nudge (`cost-index-ui.js`) with something specific per item.
+   Its own gate (shape · key-existence · EN/ES parity · length · banned-words ·
+   self-test). **Sourcing posture is the open decision** (general-illustrative
+   vs. USDA-AMS-sourced precise windows) — see reply thread.
+3. **S3 — Render hook for the measured read.** Once an ingredient crosses to
+   `ready`, the card adds the "~X% above the typical {month}" band beneath the
+   education line. Engine already emits the normals; this is seed-join + UI only.
+4. **S4 — Seasonal alerts.** Ties into the backlog's *user-built baskets + alerts*
+   item: "your tracked item is entering its typical high season." Deferred with
+   that feature (needs the account/notification layer).
 
 ## 6. Risks & constraints
 
