@@ -338,6 +338,10 @@ const CHECKS = [
   // deploy chain never does). The generator still runs; the pages stay
   // covered by the site-wide gates (OG refs, image dims, hreflang, locale
   // parity, lazy images, etc.).
+  // Ingredient-yield manifest — every page's yield must match the cited CIA table
+  // (or declare a yield_source); slugs unique/kebab, bilingual, valid category.
+  ['Ingredient-yield manifest','check-ingredient-yields.mjs','--check'],
+  ['Ingredient-yield manifest self-test','check-ingredient-yields.mjs','--self-test'],
   ['Cost-index sources','check-cost-index-sources.mjs','--check'],
   ['Cost-index sync',   'check-cost-index-sync.mjs',     '--check'],
   ['Cost-index sync self-test','check-cost-index-sync.mjs','--self-test'],

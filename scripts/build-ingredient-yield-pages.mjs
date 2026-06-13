@@ -19,9 +19,11 @@
  *   node scripts/build-ingredient-yield-pages.mjs --check    # diff-only, exit 1 on drift
  *
  * Mirrors scripts/build-cuisine-landing-pages.mjs for chrome + check
- * parity. New ingredients: append to INGREDIENTS (and a CATEGORIES
- * entry if a new bucket). The slug is registered as a non-article
- * collection in scripts/lib/library-skips.mjs.
+ * parity. New ingredients: add a row to data/ingredient-yields.json
+ * (slug, en, es, yield, yield_key→YIELD_TABLE | yield_source, cat,
+ * unit_en, unit_es, apCents) — validated by scripts/check-ingredient-yields.mjs
+ * — plus a CATEGORIES entry here if it's a new bucket. The slug is a
+ * non-article collection in scripts/lib/library-skips.mjs.
  */
 
 import fs from 'node:fs';
@@ -263,81 +265,7 @@ const CATEGORIES = {
 
 // Curated first batch (sourced yields from plate-cost.js YIELD_TABLE).
 // unit + apCents are ILLUSTRATIVE example AP prices for the worked math.
-const INGREDIENTS = [
-  { slug: 'romaine-lettuce', en: 'Romaine lettuce', es: 'Lechuga romana', yield: 0.75, cat: 'greens',     unit_en: 'head', unit_es: 'pieza',  apCents: 250 },
-  { slug: 'spinach',         en: 'Spinach',          es: 'Espinaca',       yield: 0.75, cat: 'greens',     unit_en: 'lb',   unit_es: 'libra',  apCents: 400 },
-  { slug: 'broccoli',        en: 'Broccoli',         es: 'Brócoli',        yield: 0.65, cat: 'cruciferous',unit_en: 'lb',   unit_es: 'libra',  apCents: 220 },
-  { slug: 'asparagus',       en: 'Asparagus',        es: 'Espárragos',     yield: 0.55, cat: 'stalks',     unit_en: 'lb',   unit_es: 'libra',  apCents: 350 },
-  { slug: 'onion',           en: 'Onion',            es: 'Cebolla',        yield: 0.88, cat: 'allium',     unit_en: 'lb',   unit_es: 'libra',  apCents: 90  },
-  { slug: 'garlic',          en: 'Garlic',           es: 'Ajo',            yield: 0.87, cat: 'allium',     unit_en: 'lb',   unit_es: 'libra',  apCents: 400 },
-  { slug: 'carrot',          en: 'Carrot',           es: 'Zanahoria',      yield: 0.82, cat: 'root',       unit_en: 'lb',   unit_es: 'libra',  apCents: 110 },
-  { slug: 'russet-potato',   en: 'Russet potato',    es: 'Papa russet',    yield: 0.81, cat: 'tuber',      unit_en: 'lb',   unit_es: 'libra',  apCents: 80  },
-  { slug: 'tomato',          en: 'Tomato',           es: 'Jitomate',       yield: 0.91, cat: 'fruiting',   unit_en: 'lb',   unit_es: 'libra',  apCents: 240 },
-  { slug: 'avocado',         en: 'Avocado',          es: 'Aguacate',       yield: 0.75, cat: 'fruit',      unit_en: 'each', unit_es: 'pieza',  apCents: 120 },
-  { slug: 'lime',            en: 'Lime',             es: 'Limón',          yield: 0.35, cat: 'citrus',     unit_en: 'each', unit_es: 'pieza',  apCents: 30  },
-  { slug: 'whole-chicken',   en: 'Whole chicken',    es: 'Pollo entero',   yield: 0.60, cat: 'meat',       unit_en: 'lb',   unit_es: 'libra',  apCents: 160 },
-  { slug: 'chicken-breast',  en: 'Chicken breast',   es: 'Pechuga de pollo', yield: 0.95, cat: 'meat',     unit_en: 'lb', unit_es: 'libra', apCents: 380 },
-  { slug: 'chicken-thigh',   en: 'Chicken thigh',    es: 'Muslo de pollo', yield: 0.90, cat: 'meat',       unit_en: 'lb', unit_es: 'libra', apCents: 220 },
-  { slug: 'pork-shoulder',   en: 'Pork shoulder',    es: 'Espaldilla de cerdo', yield: 0.75, cat: 'meat',  unit_en: 'lb', unit_es: 'libra', apCents: 250 },
-  { slug: 'pork-loin',       en: 'Pork loin',        es: 'Lomo de cerdo',  yield: 0.85, cat: 'meat',       unit_en: 'lb', unit_es: 'libra', apCents: 350 },
-  { slug: 'ribeye',          en: 'Ribeye',           es: 'Ribeye (bife ancho)', yield: 0.75, cat: 'beef',   unit_en: 'lb', unit_es: 'libra', apCents: 1400 },
-  { slug: 'striploin',       en: 'Striploin',        es: 'New York (bife angosto)', yield: 0.80, cat: 'beef', unit_en: 'lb', unit_es: 'libra', apCents: 1200 },
-  { slug: 'beef-tenderloin', en: 'Beef tenderloin',  es: 'Filete de res',  yield: 0.85, cat: 'beef',       unit_en: 'lb', unit_es: 'libra', apCents: 2000 },
-  { slug: 'leg-of-lamb',     en: 'Leg of lamb',      es: 'Pierna de cordero', yield: 0.70, cat: 'beef',     unit_en: 'lb', unit_es: 'libra', apCents: 900 },
-  { slug: 'whole-salmon',    en: 'Whole salmon',     es: 'Salmón entero',  yield: 0.55, cat: 'seafood',    unit_en: 'lb', unit_es: 'libra', apCents: 700 },
-  { slug: 'salmon-fillet',   en: 'Salmon fillet',    es: 'Filete de salmón', yield: 0.95, cat: 'seafood',  unit_en: 'lb', unit_es: 'libra', apCents: 1200 },
-  { slug: 'tuna-loin',       en: 'Tuna loin',        es: 'Lomo de atún',   yield: 0.85, cat: 'seafood',    unit_en: 'lb', unit_es: 'libra', apCents: 1400 },
-  { slug: 'whole-branzino',  en: 'Whole branzino',   es: 'Branzino entero', yield: 0.55, cat: 'seafood',   unit_en: 'lb', unit_es: 'libra', apCents: 900 },
-  { slug: 'shrimp',          en: 'Shrimp (shell-on)', es: 'Camarón con cáscara', yield: 0.85, cat: 'shellfish', unit_en: 'lb', unit_es: 'libra', apCents: 900 },
-  { slug: 'whole-lobster',   en: 'Whole lobster',    es: 'Langosta entera', yield: 0.30, cat: 'shellfish',  unit_en: 'lb', unit_es: 'libra', apCents: 1400 },
-  { slug: 'kale',            en: 'Kale',             es: 'Col rizada (kale)', yield: 0.70, cat: 'greens',    unit_en: 'lb',    unit_es: 'libra',  apCents: 250 },
-  { slug: 'cauliflower',     en: 'Cauliflower',      es: 'Coliflor',       yield: 0.60, cat: 'cruciferous', unit_en: 'head',  unit_es: 'pieza',  apCents: 300 },
-  { slug: 'bell-pepper',     en: 'Bell pepper',      es: 'Pimiento morrón', yield: 0.82, cat: 'fruiting',   unit_en: 'lb',    unit_es: 'libra',  apCents: 200 },
-  { slug: 'sweet-potato',    en: 'Sweet potato',     es: 'Camote',         yield: 0.75, cat: 'tuber',       unit_en: 'lb',    unit_es: 'libra',  apCents: 120 },
-  { slug: 'corn-on-the-cob', en: 'Corn on the cob',  es: 'Elote (mazorca)', yield: 0.28, cat: 'fruiting',   unit_en: 'ear',   unit_es: 'pieza',  apCents: 50 },
-  { slug: 'button-mushroom', en: 'Button mushroom',  es: 'Champiñón',      yield: 0.90, cat: 'mushroom',    unit_en: 'lb',    unit_es: 'libra',  apCents: 350 },
-  { slug: 'basil',           en: 'Basil',            es: 'Albahaca',       yield: 0.50, cat: 'herbs',       unit_en: 'bunch', unit_es: 'manojo', apCents: 200 },
-  { slug: 'cilantro',        en: 'Cilantro',         es: 'Cilantro',       yield: 0.70, cat: 'herbs',       unit_en: 'bunch', unit_es: 'manojo', apCents: 80 },
-  { slug: 'lemon',           en: 'Lemon',            es: 'Limón amarillo', yield: 0.45, cat: 'citrus',      unit_en: 'each',  unit_es: 'pieza',  apCents: 40 },
-  { slug: 'pineapple',       en: 'Pineapple',        es: 'Piña',           yield: 0.50, cat: 'fruit',       unit_en: 'each',  unit_es: 'pieza',  apCents: 300 },
-  // P2 produce coverage — yields per CIA Standard Yield Tables / USDA Food Buying Guide (cited on each page).
-  { slug: 'cucumber',        en: 'Cucumber',         es: 'Pepino',         yield: 0.95, cat: 'fruiting',    unit_en: 'lb',    unit_es: 'libra',  apCents: 150 },
-  { slug: 'celery',          en: 'Celery',           es: 'Apio',           yield: 0.75, cat: 'stalks',      unit_en: 'head',  unit_es: 'pieza',  apCents: 167 },
-  { slug: 'cabbage',         en: 'Cabbage',          es: 'Repollo',        yield: 0.80, cat: 'cruciferous', unit_en: 'head',  unit_es: 'pieza',  apCents: 110 },
-  { slug: 'eggplant',        en: 'Eggplant',         es: 'Berenjena',      yield: 0.81, cat: 'fruiting',    unit_en: 'lb',    unit_es: 'libra',  apCents: 146 },
-  { slug: 'zucchini',        en: 'Zucchini',         es: 'Calabacín',      yield: 0.95, cat: 'fruiting',    unit_en: 'lb',    unit_es: 'libra',  apCents: 161 },
-  { slug: 'beet',            en: 'Beet',             es: 'Remolacha',      yield: 0.75, cat: 'root',        unit_en: 'lb',    unit_es: 'libra',  apCents: 99  },
-  { slug: 'leek',            en: 'Leek',             es: 'Puerro',         yield: 0.50, cat: 'allium',      unit_en: 'lb',    unit_es: 'libra',  apCents: 139 },
-  { slug: 'ginger',          en: 'Ginger root',      es: 'Jengibre',       yield: 0.85, cat: 'root',        unit_en: 'lb',    unit_es: 'libra',  apCents: 100 },
-  { slug: 'yellow-squash',   en: 'Yellow squash',    es: 'Calabaza amarilla', yield: 0.95, cat: 'fruiting', unit_en: 'lb',    unit_es: 'libra',  apCents: 176 },
-  { slug: 'jalapeno',        en: 'Jalapeño',         es: 'Chile jalapeño', yield: 0.85, cat: 'fruiting',    unit_en: 'lb',    unit_es: 'libra',  apCents: 106 },
-  { slug: 'green-onion',     en: 'Green onion',      es: 'Cebollín',       yield: 0.65, cat: 'allium',      unit_en: 'bunch', unit_es: 'manojo', apCents: 109 },
-  { slug: 'green-beans',     en: 'Green beans',      es: 'Ejotes',         yield: 0.88, cat: 'fruiting',    unit_en: 'lb',    unit_es: 'libra',  apCents: 191 },
-  { slug: 'parsley',         en: 'Parsley',          es: 'Perejil',        yield: 0.70, cat: 'herbs',       unit_en: 'bunch', unit_es: 'manojo', apCents: 100 },
-  { slug: 'brussels-sprouts',en: 'Brussels sprouts', es: 'Coles de Bruselas', yield: 0.80, cat: 'cruciferous', unit_en: 'lb', unit_es: 'libra',  apCents: 249 },
-  { slug: 'butternut-squash',en: 'Butternut squash', es: 'Calabaza moscada', yield: 0.70, cat: 'fruiting',  unit_en: 'lb',    unit_es: 'libra',  apCents: 115 },
-  { slug: 'iceberg-lettuce', en: 'Iceberg lettuce',  es: 'Lechuga iceberg', yield: 0.74, cat: 'greens',     unit_en: 'head',  unit_es: 'pieza',  apCents: 162 },
-  { slug: 'bok-choy',        en: 'Bok choy',         es: 'Bok choy',       yield: 0.80, cat: 'greens',      unit_en: 'lb',    unit_es: 'libra',  apCents: 199 },
-  { slug: 'artichoke',       en: 'Artichoke',        es: 'Alcachofa',      yield: 0.40, cat: 'stalks',      unit_en: 'each',  unit_es: 'pieza',  apCents: 350 },
-  { slug: 'okra',            en: 'Okra',             es: 'Quimbombó',      yield: 0.85, cat: 'fruiting',    unit_en: 'lb',    unit_es: 'libra',  apCents: 175 },
-  // Wave 3 — all yields from the canonical plate-cost YIELD_TABLE (USDA FBG); apCents illustrative.
-  { slug: 'arugula',         en: 'Arugula',          es: 'Arúgula',        yield: 0.85, cat: 'greens',      unit_en: 'lb',    unit_es: 'libra',  apCents: 400 },
-  { slug: 'swiss-chard',     en: 'Swiss chard',      es: 'Acelga',         yield: 0.75, cat: 'greens',      unit_en: 'bunch', unit_es: 'manojo', apCents: 250 },
-  { slug: 'fennel',          en: 'Fennel',           es: 'Hinojo',         yield: 0.65, cat: 'stalks',      unit_en: 'each',  unit_es: 'pieza',  apCents: 200 },
-  { slug: 'shallot',         en: 'Shallot',          es: 'Chalota',        yield: 0.85, cat: 'allium',      unit_en: 'lb',    unit_es: 'libra',  apCents: 300 },
-  { slug: 'parsnip',         en: 'Parsnip',          es: 'Chirivía',       yield: 0.85, cat: 'root',        unit_en: 'lb',    unit_es: 'libra',  apCents: 180 },
-  { slug: 'radish',          en: 'Radish',           es: 'Rábano',         yield: 0.85, cat: 'root',        unit_en: 'bunch', unit_es: 'manojo', apCents: 150 },
-  { slug: 'turnip',          en: 'Turnip',           es: 'Nabo',           yield: 0.78, cat: 'root',        unit_en: 'lb',    unit_es: 'libra',  apCents: 150 },
-  { slug: 'yukon-potato',    en: 'Yukon Gold potato', es: 'Papa Yukon Gold', yield: 0.85, cat: 'tuber',     unit_en: 'lb',    unit_es: 'libra',  apCents: 110 },
-  { slug: 'cremini-mushroom',en: 'Cremini mushroom', es: 'Champiñón cremini', yield: 0.90, cat: 'mushroom', unit_en: 'lb',    unit_es: 'libra',  apCents: 350 },
-  { slug: 'portobello-mushroom', en: 'Portobello mushroom', es: 'Champiñón portobello', yield: 0.85, cat: 'mushroom', unit_en: 'lb', unit_es: 'libra', apCents: 400 },
-  { slug: 'shiitake-mushroom', en: 'Shiitake mushroom', es: 'Hongo shiitake', yield: 0.85, cat: 'mushroom', unit_en: 'lb',    unit_es: 'libra',  apCents: 800 },
-  { slug: 'mango',           en: 'Mango',            es: 'Mango',          yield: 0.65, cat: 'fruit',       unit_en: 'each',  unit_es: 'pieza',  apCents: 120 },
-  { slug: 'strawberry',      en: 'Strawberry',       es: 'Fresa',          yield: 0.89, cat: 'fruit',       unit_en: 'lb',    unit_es: 'libra',  apCents: 350 },
-  { slug: 'orange',          en: 'Orange',           es: 'Naranja',        yield: 0.55, cat: 'citrus',      unit_en: 'each',  unit_es: 'pieza',  apCents: 80  },
-  { slug: 'mussels',         en: 'Mussels',          es: 'Mejillones',     yield: 0.35, cat: 'shellfish',   unit_en: 'lb',    unit_es: 'libra',  apCents: 500 },
-  { slug: 'snow-peas',       en: 'Snow peas',        es: 'Arvejas de nieve', yield: 0.90, cat: 'fruiting',  unit_en: 'lb',    unit_es: 'libra',  apCents: 280 }
-];
+const INGREDIENTS = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/ingredient-yields.json'), 'utf8'));
 
 const RELATED_CAP = 8;   // cap the sibling rail so a large category can't spray 30+ links (link-farm/doorway guard)
 function relatedInCategory(ing, locale) {
