@@ -114,6 +114,13 @@ main{padding-top:64px}
 .iy-ci-src{margin-top:8px;font-size:12.5px}
 .iy-ci-src summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
 .iy-ci-src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
+.iy-pricecheck{margin:9px 0 0;padding:9px 11px;border-radius:6px;background:var(--surface-2,#f5f3ef);border:1px solid var(--hairline,#e6e1d8)}
+.iy-pc-label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin:0 0 5px}
+.iy-pc-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.iy-pc-cur{font-size:14px;color:var(--ink-soft)}
+.iy-pc-input{width:96px;font-size:14px;padding:5px 7px;border:1px solid var(--stone,#cfc8bb);border-radius:5px;background:#fff;color:var(--ink)}
+.iy-pc-unit{font-size:13px;color:var(--ink-soft)}
+.iy-pc-out{font-size:13px;line-height:1.5;color:var(--ink);margin:6px 0 0}
 .iy-related{font-size:13px;color:var(--ink-soft);margin:18px 0 0}
 .iy-related-label{display:inline-block;font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:11px;margin-right:8px}
 .iy-related a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
@@ -185,6 +192,15 @@ main{padding-top:64px}
   <p class="iy-ci-pctl">Higher than 0 of its last 26 weekly reads — near the bottom of its recent range.</p>
   <p class="iy-ci-spread">Cheapest in Baltimore (~$18.00), priciest in Boston (~$24.25).</p>
   <p class="iy-ci-verdict iy-ci-hold"><strong>Hold.</strong> Easing — this can be a chance to renegotiate, not a reason to re-price.</p>
+  <div class="iy-pricecheck" data-ref="2100" data-tpls="{&quot;empty&quot;:&quot;Enter your price to compare it against this public wholesale reference.&quot;,&quot;even&quot;:&quot;That&#39;s about even with the public wholesale reference. The reference is wholesale — your delivered price usually runs a little higher.&quot;,&quot;above&quot;:&quot;That&#39;s about {pct}% above the public wholesale reference. Delivered normally runs above wholesale, so some gap is expected; a large one is worth a vendor conversation.&quot;,&quot;below&quot;:&quot;That&#39;s about {pct}% below the public wholesale reference — a strong number (the reference already sits below delivered). Worth confirming it&#39;s the same grade and pack.&quot;}">
+    <label class="iy-pc-label" for="iy-yp-tomato">Your price (optional)</label>
+    <div class="iy-pc-row">
+      <span class="iy-pc-cur" aria-hidden="true">$</span>
+      <input class="iy-pc-input" id="iy-yp-tomato" type="number" inputmode="decimal" min="0" step="0.01" placeholder="21.00" autocomplete="off" />
+      <span class="iy-pc-unit">/ carton</span>
+    </div>
+    <p class="iy-pc-out" aria-live="polite">Enter your price to compare it against this public wholesale reference.</p>
+  </div>
   <p class="iy-ci-why">One pricing methodology backs the level, but week-to-week prices are jagged, so the trend isn't firm.</p>
   <details class="iy-ci-src"><summary>Sources · 2</summary><div>USDA AMS · BLS PPI — public data, as of 2026-06-12. Wholesale reference, not the delivered price you pay.</div></details>
 </div>
@@ -202,5 +218,28 @@ main{padding-top:64px}
 </main>
 <footer class="site-footer" id="footer"></footer>
 <!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260430-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+<script>
+/* Operator price check — pure in-memory compare against the public wholesale
+ * reference. No fetch, no localStorage: the typed price never leaves the page. */
+(function(){
+  var boxes = document.querySelectorAll('.iy-pricecheck');
+  if (!boxes.length) return;
+  for (var i = 0; i < boxes.length; i++) (function(box){
+    var ref = parseFloat(box.getAttribute('data-ref'));
+    var out = box.querySelector('.iy-pc-out');
+    var input = box.querySelector('.iy-pc-input');
+    if (!(ref > 0) || !out || !input) return;
+    var tpl; try { tpl = JSON.parse(box.getAttribute('data-tpls')); } catch (e) { return; }
+    function render(){
+      var v = parseFloat(input.value);
+      if (!(v > 0)) { out.textContent = tpl.empty; return; }
+      var pct = (Math.round(v * 100) - ref) / ref * 100;
+      var a = Math.round(Math.abs(pct));
+      out.textContent = a <= 3 ? tpl.even : (pct > 0 ? tpl.above : tpl.below).replace('{pct}', a);
+    }
+    input.addEventListener('input', render);
+  })(boxes[i]);
+})();
+</script>
 </body>
 </html>
