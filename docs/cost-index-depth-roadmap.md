@@ -104,6 +104,28 @@ direction** — not everything USDA publishes earns a place:
 no API keys and outbound is blocked (MARS/NASS/FRED all 403), so nothing here
 vendors until keys + network exist.
 
+### 3c. Non-typical source research (added 2026-06-13)
+
+Web research pass for *unconventional but reputable* public sources — aimed squarely
+at the gaps domestic wholesale data can't fill (import-heavy seafood/produce; honest
+direction where there's no level). Several need **no new credentials** (they ride the
+BLS / FRED / MARS auth we already hold). Re-verify series IDs + API shapes on a
+connected run before vendoring.
+
+| Source | What it adds | Basis / honest use | Access | Verdict |
+|---|---|---|---|---|
+| **BLS Import/Export Price Indexes (MXP)** — e.g. Fish & Shellfish `IR01000`, also vegetables/fruit end-use | Monthly import-price **direction** for import-dominated items — the missing *direction* corroborator for absent seafood | `index` (not $) → a **trend/corroboration** source, never a level (§5 bars index-as-level). Feeds the shippable bar's "single level + corroborated direction" path and the pressure overlay | **BLS API / FRED — keys we already use.** | **Take.** Highest value-for-effort: no new auth, directly attacks the seafood gap |
+| **USDA FAS GATS** (Census + UN ComTrade import/export value & volume) | **Import unit value** = customs value ÷ volume — a $/kg proxy for import-dominated ingredients (shrimp, branzino, off-season produce, garlic) | `derived` level only: customs value excludes duty/freight/importer margin and lags (monthly), so band it and label it — a sibling to the retail-spread method (§7). Can move select items `absent → derived` | FAS Open Data API key (new); Swagger + open-source SDK exist | **Take (derived).** The backdoor wholesale proxy for import items with no domestic series |
+| **USDA AMS Specialty Crops Movement reports** (shipments + border crossings + imports, by commodity) | **Volume** as a *leading* price indicator — high arrivals foreshadow softening | Not a price — a directional **pressure** input (§10), correlational and labeled | **My Market News / MARS API — auth we already use.** | **Take (pressure).** No new auth; turns volume into an honest forward read |
+| **NOAA Foreign Fishery Trade Data** | Seafood import value/volume — corroborates GATS for fish | Same `derived`/direction treatment as GATS | NOAA (public) | **Cross-check** for the seafood derived proxy |
+| **Census USA Trade Online** | Customs-value imports at HS-code granularity | Same as GATS (Census is the underlying source) | Free account / bulk | **Defer** — GATS already wraps Census; use only if finer HS detail is needed |
+
+**Net new methods this unlocks:** (1) an **import-price-index direction** corroborator
+that lets some absent seafood clear the shippable bar honestly; (2) an **import
+unit-value derived level** (§7 sibling) for import-dominated items; (3) a **movement/
+volume pressure** lead. Items 1 and 3 need *no new credentials*. All staged for a
+connected run — see the runbook.
+
 ## 4. Actionability ladder (ranked by operator value ÷ effort)
 
 Order reflects the research consensus on value-to-effort for a solo builder:

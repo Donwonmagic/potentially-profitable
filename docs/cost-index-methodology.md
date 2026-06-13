@@ -180,6 +180,16 @@ Each derived value carries a confidence band, a method link, and degrades to
     wholesale source is available. Done this way it converts some `absent`
     ingredients into honest `derived` reads from reputable sources + price history,
     exactly the spine §6 is built for.
+- **Import unit-value estimation** *(proposed — the import backdoor).* For
+  import-dominated ingredients with no domestic wholesale series (much seafood,
+  off-season produce, garlic), estimate a level from **customs value ÷ import
+  volume** (USDA FAS GATS / Census; NOAA for fish). Same honesty rules as the
+  retail back-out: `derived` only, banded, monthly + lagged, and explicitly *not*
+  wholesale (customs value excludes duty, freight, and the importer's margin). Best
+  paired with the **BLS Import Price Index** (e.g. Fish & Shellfish `IR01000`) as a
+  *direction* corroborator — an index, never shown as a dollar (§5) — which can let
+  a single such item clear the shippable bar honestly. The reputable path to a
+  number for the seafood gap that domestic data structurally cannot cover.
 
 ## 8. Freshness & series rot
 
