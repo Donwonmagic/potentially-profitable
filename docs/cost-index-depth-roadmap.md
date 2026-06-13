@@ -141,6 +141,29 @@ already hold. Connected-run integration (the National FOB Review commodity terms
 1:1 to our produce via `--discover`). This single add deepens ~60 ingredients —
 the highest depth-per-effort move left.
 
+### 3e. Per-ingredient signal map — the dominant relation for each item (added 2026-06-13)
+
+Generic produce-wide sourcing misses that each ingredient cluster has ONE dominant,
+mechanistically-tied signal. This is the "proper relation to each individual
+ingredient" layer — each passes the ratio-bridge mechanism guard (§7.0 / methodology
+§7.0), so none is a bare correlation. Treatments: *level* (or derived level),
+*direction corroborator*, or *pressure* (leading supply-shock).
+
+| Cluster | Ingredients | Dominant signal & source | Treatment / honesty |
+|---|---|---|---|
+| **Avian flu** | eggs, whole-turkey, whole-chicken, chicken-breast, chicken-thigh | **APHIS HPAI flock detections / layer culls** (1,700+ flocks since 2022; public). The dominant egg-price driver — culls → shortage → spike. | **Pressure** (leading supply-shock), not a price. Direction only, lag days→weeks; the recompute-honesty gate (§10) applies. Highest-value single add for eggs. |
+| **Import-dominated** | banana (~100% imp), avocado (~90%, 91% MX), lime (~95% MX), pineapple (CR), ginger, garlic (CN) | **FAS/Census import unit value** (customs value ÷ volume) — banana ≈ $0.24/lb, avocado ≈ $1.11/lb landed. | **Derived level** via the §7 import unit-value method; for ~100%-imported (banana) it is nearly the level itself. Banded, lagged, ratio-bridged to wholesale on the AMS overlap. |
+| **Desert-SW weather** | romaine, iceberg, butter/green-leaf/red-leaf lettuce, spinach, broccoli, cauliflower, celery | **NOAA weather, Yuma (winter) / Salinas (summer)** — Yuma grows ~90% of winter lettuce; a freeze took boxes ~$15 → $30–40 in early 2025. | **Pressure** (leading spike indicator) keyed to the active growing region by month. Direction only; mechanism strong, magnitude not modeled. |
+| **Winter-Mexican / greenhouse** | tomato, cherry-tomato, bell-pepper, cucumber, zucchini, yellow-squash, eggplant | **Mexican import share (FAS) + EIA natural gas** (greenhouse heating, winter) | Import unit value as a winter **direction corroborator**; nat gas as a **pressure** input. Both correlational, labeled. |
+| **Feed grain** *(done)* | chicken, pork, beef, eggs | corn / soybeans (BLS) — already wired as drivers | Leading, via the lead-lag analyzer (~10wk chicken → ~30mo beef). |
+
+**Net:** APHIS-HPAI is the biggest untapped per-ingredient signal (eggs/poultry);
+the import unit-value method, applied *per import-dominated item*, turns a thin
+single-source produce read into a mechanism-backed derived level; desert-SW weather
+gives leafy greens an honest leading spike indicator. All need a connected run +
+(for HPAI/weather) new normalizers — spec'd next. Each is mechanism-first, so each
+clears the §7.0 guard.
+
 ## 4. Actionability ladder (ranked by operator value ÷ effort)
 
 Order reflects the research consensus on value-to-effort for a solo builder:
