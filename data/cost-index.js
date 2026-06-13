@@ -18018,6 +18018,8373 @@
         "2026-06-11",
         "2026-06-12"
       ]
+    },
+    {
+      "key": "butter-lettuce",
+      "label_en": "Butter lettuce",
+      "label_es": "Lechuga mantequilla (Boston)",
+      "unit_en": "carton",
+      "unit_es": "caja",
+      "assessment": {
+        "asOf": "2026-06-12",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 2600,
+          "rangeCents": [
+            2397,
+            3600
+          ],
+          "rangeBasis": "markets",
+          "typeDispersion": 0,
+          "nObs": 7,
+          "nFamilies": 7,
+          "nSources": 7,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-ams-atlanta",
+              "type": "usda-ams",
+              "valueCents": 2575,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-boston",
+              "type": "usda-ams",
+              "valueCents": 2600,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-chicago",
+              "type": "usda-ams",
+              "valueCents": 3350,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-detroit",
+              "type": "usda-ams",
+              "valueCents": 2338,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-los-angeles",
+              "type": "usda-ams",
+              "valueCents": 3850,
+              "date": "2026-05-22"
+            },
+            {
+              "source": "usda-ams-miami",
+              "type": "usda-ams",
+              "valueCents": 5800,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-new-york",
+              "type": "usda-ams",
+              "valueCents": 2100,
+              "date": "2026-06-12"
+            }
+          ]
+        },
+        "trend": {
+          "pct": 0.015151515151515152,
+          "dir": "up",
+          "agreement": 0.571,
+          "nSources": 7,
+          "nFamilies": 7,
+          "nTypes": 1,
+          "noise": 0.0925
+        },
+        "confidence": "low",
+        "label": "About $23.97–$36.00 (wholesale reference), up +8.9% over the window. 7+ source(s) for level, 7 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "valueCents": 2575,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "valueCents": 2600,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "valueCents": 3350,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "valueCents": 2338,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "valueCents": 3850,
+            "date": "2026-05-22"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "valueCents": 5800,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "valueCents": 2100,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-05-07",
+            "valueCents": 3300,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-08",
+            "valueCents": 3300,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-11",
+            "valueCents": 2600,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-12",
+            "valueCents": 2600,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-13",
+            "valueCents": 2600,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-14",
+            "valueCents": 2600,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-15",
+            "valueCents": 2600,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-18",
+            "valueCents": 3013,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-19",
+            "valueCents": 3013,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-20",
+            "valueCents": 3013,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-21",
+            "valueCents": 3113,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-22",
+            "valueCents": 3175,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-26",
+            "valueCents": 3625,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-27",
+            "valueCents": 3625,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-28",
+            "valueCents": 3425,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-29",
+            "valueCents": 3425,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-01",
+            "valueCents": 3350,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-02",
+            "valueCents": 3350,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-03",
+            "valueCents": 3350,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-04",
+            "valueCents": 3225,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-05",
+            "valueCents": 3350,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-08",
+            "valueCents": 2925,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-09",
+            "valueCents": 2925,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-10",
+            "valueCents": 2925,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-11",
+            "valueCents": 3350,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-12",
+            "valueCents": 3350,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "seasonal": true,
+      "yieldSlug": "butter-lettuce",
+      "flag": {
+        "verdict": "structural",
+        "actionBias": "re-price",
+        "reason": "elevated and sustained — the increase looks real",
+        "move": 0.11184865582475938,
+        "retrace": 0,
+        "elevatedWeeks": 4,
+        "nHistory": 26
+      },
+      "tier": "measured",
+      "yield": 0.65,
+      "epCents": 4000,
+      "spark": [
+        3300,
+        3300,
+        2600,
+        2600,
+        2600,
+        2600,
+        2600,
+        3013,
+        3013,
+        3013,
+        3113,
+        3175,
+        3625,
+        3625,
+        3425,
+        3425,
+        3350,
+        3350,
+        3350,
+        3225,
+        3350,
+        2925,
+        2925,
+        2925,
+        3350,
+        3350
+      ],
+      "spark_meta": {
+        "basis": "wholesale",
+        "source": "usda-ams-chicago",
+        "from": "2026-05-07",
+        "to": "2026-06-12",
+        "n": 26
+      },
+      "spark_dates": [
+        "2026-05-07",
+        "2026-05-08",
+        "2026-05-11",
+        "2026-05-12",
+        "2026-05-13",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-29",
+        "2026-06-01",
+        "2026-06-02",
+        "2026-06-03",
+        "2026-06-04",
+        "2026-06-05",
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12"
+      ]
+    },
+    {
+      "key": "green-leaf-lettuce",
+      "label_en": "Green leaf lettuce",
+      "label_es": "Lechuga hoja verde",
+      "unit_en": "carton",
+      "unit_es": "caja",
+      "assessment": {
+        "asOf": "2026-06-12",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 3938,
+          "rangeCents": [
+            3475,
+            5000
+          ],
+          "rangeBasis": "markets",
+          "typeDispersion": 0,
+          "nObs": 8,
+          "nFamilies": 8,
+          "nSources": 8,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-ams-atlanta",
+              "type": "usda-ams",
+              "valueCents": 5150,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-baltimore",
+              "type": "usda-ams",
+              "valueCents": 3100,
+              "date": "2026-06-10"
+            },
+            {
+              "source": "usda-ams-boston",
+              "type": "usda-ams",
+              "valueCents": 3550,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-chicago",
+              "type": "usda-ams",
+              "valueCents": 4000,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-detroit",
+              "type": "usda-ams",
+              "valueCents": 5525,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-los-angeles",
+              "type": "usda-ams",
+              "valueCents": 3250,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-miami",
+              "type": "usda-ams",
+              "valueCents": 4950,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-new-york",
+              "type": "usda-ams",
+              "valueCents": 3875,
+              "date": "2026-06-12"
+            }
+          ]
+        },
+        "trend": {
+          "pct": 0.48201438848920863,
+          "dir": "up",
+          "agreement": 1,
+          "nSources": 8,
+          "nFamilies": 8,
+          "nTypes": 1,
+          "noise": 0.174
+        },
+        "confidence": "low",
+        "label": "About $34.75–$50.00 (wholesale reference), up +45.5% over the window. 8+ source(s) for level, 8 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "valueCents": 5150,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "valueCents": 3100,
+            "date": "2026-06-10"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "valueCents": 3550,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "valueCents": 4000,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "valueCents": 5525,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "valueCents": 3250,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "valueCents": 4950,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "valueCents": 3875,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-05-07",
+            "valueCents": 3475,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-08",
+            "valueCents": 3475,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-11",
+            "valueCents": 3275,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-12",
+            "valueCents": 3300,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-13",
+            "valueCents": 3300,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-14",
+            "valueCents": 4300,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-15",
+            "valueCents": 4400,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-18",
+            "valueCents": 4500,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-19",
+            "valueCents": 4775,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-20",
+            "valueCents": 4575,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-21",
+            "valueCents": 4575,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-22",
+            "valueCents": 4575,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-26",
+            "valueCents": 4575,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-27",
+            "valueCents": 4525,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-28",
+            "valueCents": 4250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-29",
+            "valueCents": 4450,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-01",
+            "valueCents": 4450,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-02",
+            "valueCents": 4450,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-03",
+            "valueCents": 4450,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-04",
+            "valueCents": 4450,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-05",
+            "valueCents": 4700,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-08",
+            "valueCents": 5150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-09",
+            "valueCents": 5150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-10",
+            "valueCents": 5150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-11",
+            "valueCents": 5150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-12",
+            "valueCents": 5150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "seasonal": true,
+      "yieldSlug": "green-leaf-lettuce",
+      "flag": {
+        "verdict": "structural",
+        "actionBias": "re-price",
+        "reason": "elevated and sustained — the increase looks real",
+        "move": 0.17045454545454544,
+        "retrace": 0,
+        "elevatedWeeks": 5,
+        "nHistory": 26
+      },
+      "tier": "measured",
+      "yield": 0.7,
+      "epCents": 5626,
+      "spark": [
+        3475,
+        3475,
+        3275,
+        3300,
+        3300,
+        4300,
+        4400,
+        4500,
+        4775,
+        4575,
+        4575,
+        4575,
+        4575,
+        4525,
+        4250,
+        4450,
+        4450,
+        4450,
+        4450,
+        4450,
+        4700,
+        5150,
+        5150,
+        5150,
+        5150,
+        5150
+      ],
+      "spark_meta": {
+        "basis": "wholesale",
+        "source": "usda-ams-atlanta",
+        "from": "2026-05-07",
+        "to": "2026-06-12",
+        "n": 26
+      },
+      "spark_dates": [
+        "2026-05-07",
+        "2026-05-08",
+        "2026-05-11",
+        "2026-05-12",
+        "2026-05-13",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-29",
+        "2026-06-01",
+        "2026-06-02",
+        "2026-06-03",
+        "2026-06-04",
+        "2026-06-05",
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12"
+      ]
+    },
+    {
+      "key": "red-leaf-lettuce",
+      "label_en": "Red leaf lettuce",
+      "label_es": "Lechuga hoja roja",
+      "unit_en": "carton",
+      "unit_es": "caja",
+      "assessment": {
+        "asOf": "2026-06-12",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 3688,
+          "rangeCents": [
+            3088,
+            4688
+          ],
+          "rangeBasis": "markets",
+          "typeDispersion": 0,
+          "nObs": 8,
+          "nFamilies": 8,
+          "nSources": 8,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-ams-atlanta",
+              "type": "usda-ams",
+              "valueCents": 5400,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-baltimore",
+              "type": "usda-ams",
+              "valueCents": 2900,
+              "date": "2026-06-01"
+            },
+            {
+              "source": "usda-ams-boston",
+              "type": "usda-ams",
+              "valueCents": 3875,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-chicago",
+              "type": "usda-ams",
+              "valueCents": 4450,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-detroit",
+              "type": "usda-ams",
+              "valueCents": 5850,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-los-angeles",
+              "type": "usda-ams",
+              "valueCents": 3050,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-miami",
+              "type": "usda-ams",
+              "valueCents": 3500,
+              "date": "2026-05-18"
+            },
+            {
+              "source": "usda-ams-new-york",
+              "type": "usda-ams",
+              "valueCents": 3100,
+              "date": "2026-06-12"
+            }
+          ]
+        },
+        "trend": {
+          "pct": 0.30120481927710846,
+          "dir": "up",
+          "agreement": 1,
+          "nSources": 8,
+          "nFamilies": 8,
+          "nTypes": 1,
+          "noise": 0.1548
+        },
+        "confidence": "low",
+        "label": "About $30.88–$46.88 (wholesale reference), up +29.8% over the window. 8+ source(s) for level, 8 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "valueCents": 5400,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "valueCents": 2900,
+            "date": "2026-06-01"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "valueCents": 3875,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "valueCents": 4450,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "valueCents": 5850,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "valueCents": 3050,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "valueCents": 3500,
+            "date": "2026-05-18"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "valueCents": 3100,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-05-07",
+            "valueCents": 4150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-08",
+            "valueCents": 4150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-11",
+            "valueCents": 4150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-12",
+            "valueCents": 3700,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-13",
+            "valueCents": 3700,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-14",
+            "valueCents": 4100,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-15",
+            "valueCents": 4250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-18",
+            "valueCents": 4250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-19",
+            "valueCents": 4250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-20",
+            "valueCents": 4100,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-21",
+            "valueCents": 4100,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-22",
+            "valueCents": 4300,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-26",
+            "valueCents": 4300,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-27",
+            "valueCents": 4300,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-28",
+            "valueCents": 4400,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-29",
+            "valueCents": 4450,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-01",
+            "valueCents": 4450,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-02",
+            "valueCents": 4450,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-03",
+            "valueCents": 4450,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-04",
+            "valueCents": 4450,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-05",
+            "valueCents": 4775,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-08",
+            "valueCents": 5100,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-09",
+            "valueCents": 5600,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-10",
+            "valueCents": 5600,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-11",
+            "valueCents": 5400,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-12",
+            "valueCents": 5400,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "seasonal": true,
+      "yieldSlug": "red-leaf-lettuce",
+      "flag": {
+        "verdict": "structural",
+        "actionBias": "re-price",
+        "reason": "elevated and sustained — the increase looks real",
+        "move": 0.30120481927710846,
+        "retrace": 0.03571428571428571,
+        "elevatedWeeks": 6,
+        "nHistory": 26
+      },
+      "tier": "measured",
+      "yield": 0.7,
+      "epCents": 5269,
+      "spark": [
+        4150,
+        4150,
+        4150,
+        3700,
+        3700,
+        4100,
+        4250,
+        4250,
+        4250,
+        4100,
+        4100,
+        4300,
+        4300,
+        4300,
+        4400,
+        4450,
+        4450,
+        4450,
+        4450,
+        4450,
+        4775,
+        5100,
+        5600,
+        5600,
+        5400,
+        5400
+      ],
+      "spark_meta": {
+        "basis": "wholesale",
+        "source": "usda-ams-atlanta",
+        "from": "2026-05-07",
+        "to": "2026-06-12",
+        "n": 26
+      },
+      "spark_dates": [
+        "2026-05-07",
+        "2026-05-08",
+        "2026-05-11",
+        "2026-05-12",
+        "2026-05-13",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-29",
+        "2026-06-01",
+        "2026-06-02",
+        "2026-06-03",
+        "2026-06-04",
+        "2026-06-05",
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12"
+      ]
+    },
+    {
+      "key": "collard-greens",
+      "label_en": "Collard greens",
+      "label_es": "Berza (collard)",
+      "unit_en": "carton",
+      "unit_es": "caja",
+      "assessment": {
+        "asOf": "2026-06-12",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 1863,
+          "rangeCents": [
+            1681,
+            1988
+          ],
+          "rangeBasis": "markets",
+          "typeDispersion": 0,
+          "nObs": 8,
+          "nFamilies": 8,
+          "nSources": 8,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-ams-atlanta",
+              "type": "usda-ams",
+              "valueCents": 2275,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-baltimore",
+              "type": "usda-ams",
+              "valueCents": 1900,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-boston",
+              "type": "usda-ams",
+              "valueCents": 1875,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-chicago",
+              "type": "usda-ams",
+              "valueCents": 1550,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-detroit",
+              "type": "usda-ams",
+              "valueCents": 1850,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-los-angeles",
+              "type": "usda-ams",
+              "valueCents": 2250,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-miami",
+              "type": "usda-ams",
+              "valueCents": 1700,
+              "date": "2026-05-19"
+            },
+            {
+              "source": "usda-ams-new-york",
+              "type": "usda-ams",
+              "valueCents": 1625,
+              "date": "2026-06-12"
+            }
+          ]
+        },
+        "trend": {
+          "pct": 0.421875,
+          "dir": "up",
+          "agreement": 0.25,
+          "nSources": 8,
+          "nFamilies": 8,
+          "nTypes": 1,
+          "noise": 0
+        },
+        "confidence": "low",
+        "label": "About $16.81–$19.88 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 8 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "valueCents": 2275,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "valueCents": 1900,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "valueCents": 1875,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "valueCents": 1550,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "valueCents": 1850,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "valueCents": 2250,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "valueCents": 1700,
+            "date": "2026-05-19"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "valueCents": 1625,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-05-07",
+            "valueCents": 1600,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-08",
+            "valueCents": 1600,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-11",
+            "valueCents": 1600,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-12",
+            "valueCents": 1600,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-13",
+            "valueCents": 1750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-14",
+            "valueCents": 1750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-15",
+            "valueCents": 1750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-18",
+            "valueCents": 1750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-19",
+            "valueCents": 1750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-20",
+            "valueCents": 1750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-21",
+            "valueCents": 1750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-22",
+            "valueCents": 1750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-26",
+            "valueCents": 1750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-27",
+            "valueCents": 1750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-28",
+            "valueCents": 1750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-29",
+            "valueCents": 1750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-01",
+            "valueCents": 1750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-02",
+            "valueCents": 1750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-03",
+            "valueCents": 1750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-04",
+            "valueCents": 1750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-05",
+            "valueCents": 2275,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-08",
+            "valueCents": 2275,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-09",
+            "valueCents": 2275,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-10",
+            "valueCents": 2275,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-11",
+            "valueCents": 2275,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-12",
+            "valueCents": 2275,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "yieldSlug": "collard-greens",
+      "flag": {
+        "verdict": "structural",
+        "actionBias": "re-price",
+        "reason": "elevated and sustained — the increase looks real",
+        "move": 0.3,
+        "retrace": 0,
+        "elevatedWeeks": 6,
+        "nHistory": 26
+      },
+      "tier": "measured",
+      "yield": 0.65,
+      "epCents": 2866,
+      "spark": [
+        1600,
+        1600,
+        1600,
+        1600,
+        1750,
+        1750,
+        1750,
+        1750,
+        1750,
+        1750,
+        1750,
+        1750,
+        1750,
+        1750,
+        1750,
+        1750,
+        1750,
+        1750,
+        1750,
+        1750,
+        2275,
+        2275,
+        2275,
+        2275,
+        2275,
+        2275
+      ],
+      "spark_meta": {
+        "basis": "wholesale",
+        "source": "usda-ams-atlanta",
+        "from": "2026-05-07",
+        "to": "2026-06-12",
+        "n": 26
+      },
+      "spark_dates": [
+        "2026-05-07",
+        "2026-05-08",
+        "2026-05-11",
+        "2026-05-12",
+        "2026-05-13",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-29",
+        "2026-06-01",
+        "2026-06-02",
+        "2026-06-03",
+        "2026-06-04",
+        "2026-06-05",
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12"
+      ]
+    },
+    {
+      "key": "rutabaga",
+      "label_en": "Rutabaga",
+      "label_es": "Colinabo (rutabaga)",
+      "unit_en": "carton",
+      "unit_es": "caja",
+      "assessment": {
+        "asOf": "2026-06-12",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 3000,
+          "rangeCents": [
+            2813,
+            3169
+          ],
+          "rangeBasis": "markets",
+          "typeDispersion": 0,
+          "nObs": 6,
+          "nFamilies": 6,
+          "nSources": 6,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-ams-atlanta",
+              "type": "usda-ams",
+              "valueCents": 3000,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-boston",
+              "type": "usda-ams",
+              "valueCents": 3000,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-chicago",
+              "type": "usda-ams",
+              "valueCents": 3225,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-detroit",
+              "type": "usda-ams",
+              "valueCents": 3300,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-los-angeles",
+              "type": "usda-ams",
+              "valueCents": 2750,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-new-york",
+              "type": "usda-ams",
+              "valueCents": 2400,
+              "date": "2026-05-29"
+            }
+          ]
+        },
+        "trend": {
+          "pct": 0,
+          "dir": "flat",
+          "agreement": 0.667,
+          "nSources": 6,
+          "nFamilies": 6,
+          "nTypes": 1,
+          "noise": 0
+        },
+        "confidence": "low",
+        "label": "About $28.13–$31.69 (wholesale reference), flat +0% over the window. 6+ source(s) for level, 6 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "valueCents": 3000,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "valueCents": 3000,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "valueCents": 3225,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "valueCents": 3300,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "valueCents": 2750,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "valueCents": 2400,
+            "date": "2026-05-29"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-05-07",
+            "valueCents": 3000,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-08",
+            "valueCents": 3000,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-11",
+            "valueCents": 3000,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-12",
+            "valueCents": 3000,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-13",
+            "valueCents": 3000,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-14",
+            "valueCents": 3000,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-15",
+            "valueCents": 3000,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-18",
+            "valueCents": 3000,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-19",
+            "valueCents": 3000,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-20",
+            "valueCents": 3000,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-21",
+            "valueCents": 3000,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-22",
+            "valueCents": 3000,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-26",
+            "valueCents": 3000,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-27",
+            "valueCents": 3000,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-28",
+            "valueCents": 3000,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-29",
+            "valueCents": 3000,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-01",
+            "valueCents": 3000,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-02",
+            "valueCents": 3000,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-03",
+            "valueCents": 3000,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-04",
+            "valueCents": 3000,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-05",
+            "valueCents": 3000,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-08",
+            "valueCents": 3000,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-09",
+            "valueCents": 3000,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-10",
+            "valueCents": 3000,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-11",
+            "valueCents": 3000,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-12",
+            "valueCents": 3000,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "yieldSlug": "rutabaga",
+      "flag": {
+        "verdict": "flat",
+        "actionBias": "hold",
+        "reason": "within the normal range",
+        "move": 0,
+        "retrace": 0,
+        "elevatedWeeks": 0,
+        "nHistory": 26
+      },
+      "tier": "measured",
+      "yield": 0.78,
+      "epCents": 3846,
+      "spark": [
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000
+      ],
+      "spark_meta": {
+        "basis": "wholesale",
+        "source": "usda-ams-atlanta",
+        "from": "2026-05-07",
+        "to": "2026-06-12",
+        "n": 26
+      },
+      "spark_dates": [
+        "2026-05-07",
+        "2026-05-08",
+        "2026-05-11",
+        "2026-05-12",
+        "2026-05-13",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-29",
+        "2026-06-01",
+        "2026-06-02",
+        "2026-06-03",
+        "2026-06-04",
+        "2026-06-05",
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12"
+      ]
+    },
+    {
+      "key": "cherry-tomato",
+      "label_en": "Cherry tomatoes",
+      "label_es": "Jitomate cherry",
+      "unit_en": "carton",
+      "unit_es": "caja",
+      "assessment": {
+        "asOf": "2026-06-12",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 2225,
+          "rangeCents": [
+            1700,
+            2863
+          ],
+          "rangeBasis": "markets",
+          "typeDispersion": 0,
+          "nObs": 8,
+          "nFamilies": 8,
+          "nSources": 8,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-ams-atlanta",
+              "type": "usda-ams",
+              "valueCents": 1800,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-baltimore",
+              "type": "usda-ams",
+              "valueCents": 4800,
+              "date": "2026-05-15"
+            },
+            {
+              "source": "usda-ams-boston",
+              "type": "usda-ams",
+              "valueCents": 2500,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-chicago",
+              "type": "usda-ams",
+              "valueCents": 1400,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-detroit",
+              "type": "usda-ams",
+              "valueCents": 3200,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-los-angeles",
+              "type": "usda-ams",
+              "valueCents": 2750,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-miami",
+              "type": "usda-ams",
+              "valueCents": 1950,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-new-york",
+              "type": "usda-ams",
+              "valueCents": 1350,
+              "date": "2026-06-12"
+            }
+          ]
+        },
+        "trend": {
+          "pct": -0.4626865671641791,
+          "dir": "down",
+          "agreement": 0.625,
+          "nSources": 8,
+          "nFamilies": 8,
+          "nTypes": 1,
+          "noise": 0.17225000000000001
+        },
+        "confidence": "low",
+        "label": "About $17.00–$28.63 (wholesale reference), down -20% over the window. 8+ source(s) for level, 8 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "valueCents": 1800,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "valueCents": 4800,
+            "date": "2026-05-15"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "valueCents": 2500,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "valueCents": 1400,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "valueCents": 3200,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "valueCents": 2750,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "valueCents": 1950,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "valueCents": 1350,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-05-07",
+            "valueCents": 3350,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-08",
+            "valueCents": 3350,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-11",
+            "valueCents": 2800,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-12",
+            "valueCents": 2025,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-13",
+            "valueCents": 2025,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-14",
+            "valueCents": 2025,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-15",
+            "valueCents": 2025,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-18",
+            "valueCents": 2025,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-19",
+            "valueCents": 2025,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-20",
+            "valueCents": 2025,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-21",
+            "valueCents": 2025,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-22",
+            "valueCents": 2025,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-26",
+            "valueCents": 2025,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-27",
+            "valueCents": 2025,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-28",
+            "valueCents": 1800,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-29",
+            "valueCents": 1800,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-01",
+            "valueCents": 1800,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-02",
+            "valueCents": 1800,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-03",
+            "valueCents": 1800,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-04",
+            "valueCents": 1800,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-05",
+            "valueCents": 1800,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-08",
+            "valueCents": 1800,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-09",
+            "valueCents": 1800,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-10",
+            "valueCents": 1800,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-11",
+            "valueCents": 1800,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-12",
+            "valueCents": 1800,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "seasonal": true,
+      "yieldSlug": "cherry-tomato",
+      "flag": {
+        "verdict": "easing",
+        "actionBias": "hold",
+        "reason": "prices have come down vs the baseline",
+        "move": -0.1111111111111111,
+        "retrace": 0,
+        "elevatedWeeks": 0,
+        "nHistory": 26
+      },
+      "tier": "measured",
+      "yield": 1,
+      "epCents": 2225,
+      "spark": [
+        3350,
+        3350,
+        2800,
+        2025,
+        2025,
+        2025,
+        2025,
+        2025,
+        2025,
+        2025,
+        2025,
+        2025,
+        2025,
+        2025,
+        1800,
+        1800,
+        1800,
+        1800,
+        1800,
+        1800,
+        1800,
+        1800,
+        1800,
+        1800,
+        1800,
+        1800
+      ],
+      "spark_meta": {
+        "basis": "wholesale",
+        "source": "usda-ams-atlanta",
+        "from": "2026-05-07",
+        "to": "2026-06-12",
+        "n": 26
+      },
+      "spark_dates": [
+        "2026-05-07",
+        "2026-05-08",
+        "2026-05-11",
+        "2026-05-12",
+        "2026-05-13",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-29",
+        "2026-06-01",
+        "2026-06-02",
+        "2026-06-03",
+        "2026-06-04",
+        "2026-06-05",
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12"
+      ]
+    },
+    {
+      "key": "acorn-squash",
+      "label_en": "Acorn squash",
+      "label_es": "Calabaza bellota",
+      "unit_en": "carton",
+      "unit_es": "caja",
+      "assessment": {
+        "asOf": "2026-06-12",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 3913,
+          "rangeCents": [
+            3575,
+            4275
+          ],
+          "rangeBasis": "markets",
+          "typeDispersion": 0,
+          "nObs": 7,
+          "nFamilies": 7,
+          "nSources": 7,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-ams-atlanta",
+              "type": "usda-ams",
+              "valueCents": 3200,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-baltimore",
+              "type": "usda-ams",
+              "valueCents": 4300,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-boston",
+              "type": "usda-ams",
+              "valueCents": 3400,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-chicago",
+              "type": "usda-ams",
+              "valueCents": 3913,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-detroit",
+              "type": "usda-ams",
+              "valueCents": 4250,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-los-angeles",
+              "type": "usda-ams",
+              "valueCents": 3750,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-new-york",
+              "type": "usda-ams",
+              "valueCents": 4400,
+              "date": "2026-06-08"
+            }
+          ]
+        },
+        "trend": {
+          "pct": 0.5609756097560976,
+          "dir": "up",
+          "agreement": 1,
+          "nSources": 7,
+          "nFamilies": 7,
+          "nTypes": 1,
+          "noise": 0.0517
+        },
+        "confidence": "low",
+        "label": "About $35.75–$42.75 (wholesale reference), up +48.3% over the window. 7+ source(s) for level, 7 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "valueCents": 3200,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "valueCents": 4300,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "valueCents": 3400,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "valueCents": 3913,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "valueCents": 4250,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "valueCents": 3750,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "valueCents": 4400,
+            "date": "2026-06-08"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-05-07",
+            "valueCents": 2050,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-08",
+            "valueCents": 2050,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-11",
+            "valueCents": 2050,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-12",
+            "valueCents": 2050,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-13",
+            "valueCents": 2050,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-14",
+            "valueCents": 2050,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-15",
+            "valueCents": 2050,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-18",
+            "valueCents": 2050,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-19",
+            "valueCents": 2050,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-20",
+            "valueCents": 2050,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-21",
+            "valueCents": 2850,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-22",
+            "valueCents": 2850,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-26",
+            "valueCents": 2850,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-27",
+            "valueCents": 3100,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-28",
+            "valueCents": 3100,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-29",
+            "valueCents": 3100,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-01",
+            "valueCents": 3100,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-02",
+            "valueCents": 3100,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-03",
+            "valueCents": 3100,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-04",
+            "valueCents": 3100,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-05",
+            "valueCents": 3100,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-08",
+            "valueCents": 3100,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-09",
+            "valueCents": 3100,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-10",
+            "valueCents": 3100,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-11",
+            "valueCents": 3100,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-12",
+            "valueCents": 3200,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "yieldSlug": "acorn-squash",
+      "flag": {
+        "verdict": "structural",
+        "actionBias": "re-price",
+        "reason": "elevated and sustained — the increase looks real",
+        "move": 0.5609756097560976,
+        "retrace": 0,
+        "elevatedWeeks": 8,
+        "nHistory": 26
+      },
+      "tier": "measured",
+      "yield": 0.7,
+      "epCents": 5590,
+      "spark": [
+        2050,
+        2050,
+        2050,
+        2050,
+        2050,
+        2050,
+        2050,
+        2050,
+        2050,
+        2050,
+        2850,
+        2850,
+        2850,
+        3100,
+        3100,
+        3100,
+        3100,
+        3100,
+        3100,
+        3100,
+        3100,
+        3100,
+        3100,
+        3100,
+        3100,
+        3200
+      ],
+      "spark_meta": {
+        "basis": "wholesale",
+        "source": "usda-ams-atlanta",
+        "from": "2026-05-07",
+        "to": "2026-06-12",
+        "n": 26
+      },
+      "spark_dates": [
+        "2026-05-07",
+        "2026-05-08",
+        "2026-05-11",
+        "2026-05-12",
+        "2026-05-13",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-29",
+        "2026-06-01",
+        "2026-06-02",
+        "2026-06-03",
+        "2026-06-04",
+        "2026-06-05",
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12"
+      ]
+    },
+    {
+      "key": "mint",
+      "label_en": "Mint",
+      "label_es": "Menta",
+      "unit_en": "carton",
+      "unit_es": "caja",
+      "assessment": {
+        "asOf": "2026-06-12",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 1263,
+          "rangeCents": [
+            844,
+            1450
+          ],
+          "rangeBasis": "markets",
+          "typeDispersion": 0,
+          "nObs": 8,
+          "nFamilies": 8,
+          "nSources": 8,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-ams-atlanta",
+              "type": "usda-ams",
+              "valueCents": 750,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-baltimore",
+              "type": "usda-ams",
+              "valueCents": 1450,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-boston",
+              "type": "usda-ams",
+              "valueCents": 1275,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-chicago",
+              "type": "usda-ams",
+              "valueCents": 1450,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-detroit",
+              "type": "usda-ams",
+              "valueCents": 1700,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-los-angeles",
+              "type": "usda-ams",
+              "valueCents": 425,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-miami",
+              "type": "usda-ams",
+              "valueCents": 875,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-new-york",
+              "type": "usda-ams",
+              "valueCents": 1250,
+              "date": "2026-06-12"
+            }
+          ]
+        },
+        "trend": {
+          "pct": 0,
+          "dir": "flat",
+          "agreement": 0.375,
+          "nSources": 8,
+          "nFamilies": 8,
+          "nTypes": 1,
+          "noise": 0
+        },
+        "confidence": "low",
+        "label": "About $8.44–$14.50 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 8 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "valueCents": 750,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "valueCents": 1450,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "valueCents": 1275,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "valueCents": 1450,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "valueCents": 1700,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "valueCents": 425,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "valueCents": 875,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "valueCents": 1250,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-05-07",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-08",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-11",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-12",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-13",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-14",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-15",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-18",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-19",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-20",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-21",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-22",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-26",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-27",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-28",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-29",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-01",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-02",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-03",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-04",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-05",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-08",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-09",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-10",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-11",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-12",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "yieldSlug": "mint",
+      "flag": {
+        "verdict": "flat",
+        "actionBias": "hold",
+        "reason": "within the normal range",
+        "move": 0,
+        "retrace": 0,
+        "elevatedWeeks": 0,
+        "nHistory": 26
+      },
+      "tier": "measured",
+      "yield": 0.7,
+      "epCents": 1804,
+      "spark": [
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750
+      ],
+      "spark_meta": {
+        "basis": "wholesale",
+        "source": "usda-ams-atlanta",
+        "from": "2026-05-07",
+        "to": "2026-06-12",
+        "n": 26
+      },
+      "spark_dates": [
+        "2026-05-07",
+        "2026-05-08",
+        "2026-05-11",
+        "2026-05-12",
+        "2026-05-13",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-29",
+        "2026-06-01",
+        "2026-06-02",
+        "2026-06-03",
+        "2026-06-04",
+        "2026-06-05",
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12"
+      ]
+    },
+    {
+      "key": "rosemary",
+      "label_en": "Rosemary",
+      "label_es": "Romero",
+      "unit_en": "carton",
+      "unit_es": "caja",
+      "assessment": {
+        "asOf": "2026-06-12",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 800,
+          "rangeCents": [
+            681,
+            850
+          ],
+          "rangeBasis": "markets",
+          "typeDispersion": 0,
+          "nObs": 8,
+          "nFamilies": 8,
+          "nSources": 8,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-ams-atlanta",
+              "type": "usda-ams",
+              "valueCents": 750,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-baltimore",
+              "type": "usda-ams",
+              "valueCents": 850,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-boston",
+              "type": "usda-ams",
+              "valueCents": 850,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-chicago",
+              "type": "usda-ams",
+              "valueCents": 800,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-detroit",
+              "type": "usda-ams",
+              "valueCents": 800,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-los-angeles",
+              "type": "usda-ams",
+              "valueCents": 438,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-miami",
+              "type": "usda-ams",
+              "valueCents": 475,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-new-york",
+              "type": "usda-ams",
+              "valueCents": 1100,
+              "date": "2026-06-12"
+            }
+          ]
+        },
+        "trend": {
+          "pct": 0,
+          "dir": "flat",
+          "agreement": 0.75,
+          "nSources": 8,
+          "nFamilies": 8,
+          "nTypes": 1,
+          "noise": 0
+        },
+        "confidence": "low",
+        "label": "About $6.81–$8.50 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 8 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "valueCents": 750,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "valueCents": 850,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "valueCents": 850,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "valueCents": 800,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "valueCents": 800,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "valueCents": 438,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "valueCents": 475,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "valueCents": 1100,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-05-07",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-08",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-11",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-12",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-13",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-14",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-15",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-18",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-19",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-20",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-21",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-22",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-26",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-27",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-28",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-29",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-01",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-02",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-03",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-04",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-05",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-08",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-09",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-10",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-11",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-12",
+            "valueCents": 750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "yieldSlug": "rosemary",
+      "flag": {
+        "verdict": "flat",
+        "actionBias": "hold",
+        "reason": "within the normal range",
+        "move": 0,
+        "retrace": 0,
+        "elevatedWeeks": 0,
+        "nHistory": 26
+      },
+      "tier": "measured",
+      "yield": 0.5,
+      "epCents": 1600,
+      "spark": [
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750
+      ],
+      "spark_meta": {
+        "basis": "wholesale",
+        "source": "usda-ams-atlanta",
+        "from": "2026-05-07",
+        "to": "2026-06-12",
+        "n": 26
+      },
+      "spark_dates": [
+        "2026-05-07",
+        "2026-05-08",
+        "2026-05-11",
+        "2026-05-12",
+        "2026-05-13",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-29",
+        "2026-06-01",
+        "2026-06-02",
+        "2026-06-03",
+        "2026-06-04",
+        "2026-06-05",
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12"
+      ]
+    },
+    {
+      "key": "thyme",
+      "label_en": "Thyme",
+      "label_es": "Tomillo",
+      "unit_en": "carton",
+      "unit_es": "caja",
+      "assessment": {
+        "asOf": "2026-06-12",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 847,
+          "rangeCents": [
+            788,
+            1021
+          ],
+          "rangeBasis": "markets",
+          "typeDispersion": 0,
+          "nObs": 8,
+          "nFamilies": 8,
+          "nSources": 8,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-ams-atlanta",
+              "type": "usda-ams",
+              "valueCents": 1011,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-baltimore",
+              "type": "usda-ams",
+              "valueCents": 894,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-boston",
+              "type": "usda-ams",
+              "valueCents": 1050,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-chicago",
+              "type": "usda-ams",
+              "valueCents": 750,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-detroit",
+              "type": "usda-ams",
+              "valueCents": 800,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-los-angeles",
+              "type": "usda-ams",
+              "valueCents": 800,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-miami",
+              "type": "usda-ams",
+              "valueCents": 638,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-new-york",
+              "type": "usda-ams",
+              "valueCents": 1100,
+              "date": "2026-06-12"
+            }
+          ]
+        },
+        "trend": {
+          "pct": 0,
+          "dir": "flat",
+          "agreement": 0.5,
+          "nSources": 8,
+          "nFamilies": 8,
+          "nTypes": 1,
+          "noise": 0
+        },
+        "confidence": "low",
+        "label": "About $7.88–$10.21 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 8 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "valueCents": 1011,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "valueCents": 894,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "valueCents": 1050,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "valueCents": 750,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "valueCents": 800,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "valueCents": 800,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "valueCents": 638,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "valueCents": 1100,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-05-07",
+            "valueCents": 1011,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-08",
+            "valueCents": 1011,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-11",
+            "valueCents": 1011,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-12",
+            "valueCents": 1011,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-13",
+            "valueCents": 1011,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-14",
+            "valueCents": 1011,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-15",
+            "valueCents": 1011,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-18",
+            "valueCents": 1011,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-19",
+            "valueCents": 1011,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-20",
+            "valueCents": 1011,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-21",
+            "valueCents": 1011,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-22",
+            "valueCents": 1011,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-26",
+            "valueCents": 1011,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-27",
+            "valueCents": 1011,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-28",
+            "valueCents": 1011,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-29",
+            "valueCents": 1011,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-01",
+            "valueCents": 1011,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-02",
+            "valueCents": 1011,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-03",
+            "valueCents": 1011,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-04",
+            "valueCents": 1011,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-05",
+            "valueCents": 1011,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-08",
+            "valueCents": 1011,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-09",
+            "valueCents": 1011,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-10",
+            "valueCents": 1011,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-11",
+            "valueCents": 1011,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-12",
+            "valueCents": 1011,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "yieldSlug": "thyme",
+      "flag": {
+        "verdict": "flat",
+        "actionBias": "hold",
+        "reason": "within the normal range",
+        "move": 0,
+        "retrace": 0,
+        "elevatedWeeks": 0,
+        "nHistory": 26
+      },
+      "tier": "measured",
+      "yield": 0.5,
+      "epCents": 1694,
+      "spark": [
+        1011,
+        1011,
+        1011,
+        1011,
+        1011,
+        1011,
+        1011,
+        1011,
+        1011,
+        1011,
+        1011,
+        1011,
+        1011,
+        1011,
+        1011,
+        1011,
+        1011,
+        1011,
+        1011,
+        1011,
+        1011,
+        1011,
+        1011,
+        1011,
+        1011,
+        1011
+      ],
+      "spark_meta": {
+        "basis": "wholesale",
+        "source": "usda-ams-atlanta",
+        "from": "2026-05-07",
+        "to": "2026-06-12",
+        "n": 26
+      },
+      "spark_dates": [
+        "2026-05-07",
+        "2026-05-08",
+        "2026-05-11",
+        "2026-05-12",
+        "2026-05-13",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-29",
+        "2026-06-01",
+        "2026-06-02",
+        "2026-06-03",
+        "2026-06-04",
+        "2026-06-05",
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12"
+      ]
+    },
+    {
+      "key": "oregano",
+      "label_en": "Oregano",
+      "label_es": "Orégano",
+      "unit_en": "carton",
+      "unit_es": "caja",
+      "assessment": {
+        "asOf": "2026-06-12",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 800,
+          "rangeCents": [
+            724,
+            877
+          ],
+          "rangeBasis": "markets",
+          "typeDispersion": 0,
+          "nObs": 8,
+          "nFamilies": 8,
+          "nSources": 8,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-ams-atlanta",
+              "type": "usda-ams",
+              "valueCents": 873,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-baltimore",
+              "type": "usda-ams",
+              "valueCents": 888,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-boston",
+              "type": "usda-ams",
+              "valueCents": 850,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-chicago",
+              "type": "usda-ams",
+              "valueCents": 719,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-detroit",
+              "type": "usda-ams",
+              "valueCents": 750,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-los-angeles",
+              "type": "usda-ams",
+              "valueCents": 613,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-miami",
+              "type": "usda-ams",
+              "valueCents": 725,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-new-york",
+              "type": "usda-ams",
+              "valueCents": 1113,
+              "date": "2026-06-12"
+            }
+          ]
+        },
+        "trend": {
+          "pct": 0,
+          "dir": "flat",
+          "agreement": 0.625,
+          "nSources": 8,
+          "nFamilies": 8,
+          "nTypes": 1,
+          "noise": 0
+        },
+        "confidence": "low",
+        "label": "About $7.24–$8.77 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 8 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "valueCents": 873,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "valueCents": 888,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "valueCents": 850,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "valueCents": 719,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "valueCents": 750,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "valueCents": 613,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "valueCents": 725,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "valueCents": 1113,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-05-07",
+            "valueCents": 873,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-08",
+            "valueCents": 873,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-11",
+            "valueCents": 873,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-12",
+            "valueCents": 873,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-13",
+            "valueCents": 873,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-14",
+            "valueCents": 873,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-15",
+            "valueCents": 873,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-18",
+            "valueCents": 873,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-19",
+            "valueCents": 873,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-20",
+            "valueCents": 873,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-21",
+            "valueCents": 873,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-22",
+            "valueCents": 873,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-26",
+            "valueCents": 873,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-27",
+            "valueCents": 873,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-28",
+            "valueCents": 873,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-29",
+            "valueCents": 873,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-01",
+            "valueCents": 873,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-02",
+            "valueCents": 873,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-03",
+            "valueCents": 873,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-04",
+            "valueCents": 873,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-05",
+            "valueCents": 873,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-08",
+            "valueCents": 873,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-09",
+            "valueCents": 873,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-10",
+            "valueCents": 873,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-11",
+            "valueCents": 873,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-12",
+            "valueCents": 873,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "yieldSlug": "oregano",
+      "flag": {
+        "verdict": "flat",
+        "actionBias": "hold",
+        "reason": "within the normal range",
+        "move": 0,
+        "retrace": 0,
+        "elevatedWeeks": 0,
+        "nHistory": 26
+      },
+      "tier": "measured",
+      "yield": 0.55,
+      "epCents": 1455,
+      "spark": [
+        873,
+        873,
+        873,
+        873,
+        873,
+        873,
+        873,
+        873,
+        873,
+        873,
+        873,
+        873,
+        873,
+        873,
+        873,
+        873,
+        873,
+        873,
+        873,
+        873,
+        873,
+        873,
+        873,
+        873,
+        873,
+        873
+      ],
+      "spark_meta": {
+        "basis": "wholesale",
+        "source": "usda-ams-atlanta",
+        "from": "2026-05-07",
+        "to": "2026-06-12",
+        "n": 26
+      },
+      "spark_dates": [
+        "2026-05-07",
+        "2026-05-08",
+        "2026-05-11",
+        "2026-05-12",
+        "2026-05-13",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-29",
+        "2026-06-01",
+        "2026-06-02",
+        "2026-06-03",
+        "2026-06-04",
+        "2026-06-05",
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12"
+      ]
+    },
+    {
+      "key": "tarragon",
+      "label_en": "Tarragon",
+      "label_es": "Estragón",
+      "unit_en": "carton",
+      "unit_es": "caja",
+      "assessment": {
+        "asOf": "2026-06-12",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 1088,
+          "rangeCents": [
+            794,
+            1213
+          ],
+          "rangeBasis": "markets",
+          "typeDispersion": 0,
+          "nObs": 6,
+          "nFamilies": 6,
+          "nSources": 6,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-ams-atlanta",
+              "type": "usda-ams",
+              "valueCents": 1250,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-boston",
+              "type": "usda-ams",
+              "valueCents": 1075,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-chicago",
+              "type": "usda-ams",
+              "valueCents": 1100,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-los-angeles",
+              "type": "usda-ams",
+              "valueCents": 700,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-miami",
+              "type": "usda-ams",
+              "valueCents": 575,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-new-york",
+              "type": "usda-ams",
+              "valueCents": 1450,
+              "date": "2026-06-12"
+            }
+          ]
+        },
+        "trend": {
+          "pct": 0,
+          "dir": "flat",
+          "agreement": 0.5,
+          "nSources": 6,
+          "nFamilies": 6,
+          "nTypes": 1,
+          "noise": 0
+        },
+        "confidence": "low",
+        "label": "About $7.94–$12.13 (wholesale reference), flat +0% over the window. 6+ source(s) for level, 6 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "valueCents": 1250,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "valueCents": 1075,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "valueCents": 1100,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "valueCents": 700,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "valueCents": 575,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "valueCents": 1450,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-05-07",
+            "valueCents": 1250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-08",
+            "valueCents": 1250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-11",
+            "valueCents": 1250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-12",
+            "valueCents": 1250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-13",
+            "valueCents": 1250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-14",
+            "valueCents": 1250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-15",
+            "valueCents": 1250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-18",
+            "valueCents": 1250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-19",
+            "valueCents": 1250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-20",
+            "valueCents": 1250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-21",
+            "valueCents": 1250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-22",
+            "valueCents": 1250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-26",
+            "valueCents": 1250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-27",
+            "valueCents": 1250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-28",
+            "valueCents": 1250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-29",
+            "valueCents": 1250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-01",
+            "valueCents": 1250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-02",
+            "valueCents": 1250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-03",
+            "valueCents": 1250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-04",
+            "valueCents": 1250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-05",
+            "valueCents": 1250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-08",
+            "valueCents": 1250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-09",
+            "valueCents": 1250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-10",
+            "valueCents": 1250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-11",
+            "valueCents": 1250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-12",
+            "valueCents": 1250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "yieldSlug": "tarragon",
+      "flag": {
+        "verdict": "flat",
+        "actionBias": "hold",
+        "reason": "within the normal range",
+        "move": 0,
+        "retrace": 0,
+        "elevatedWeeks": 0,
+        "nHistory": 26
+      },
+      "tier": "measured",
+      "yield": 0.55,
+      "epCents": 1978,
+      "spark": [
+        1250,
+        1250,
+        1250,
+        1250,
+        1250,
+        1250,
+        1250,
+        1250,
+        1250,
+        1250,
+        1250,
+        1250,
+        1250,
+        1250,
+        1250,
+        1250,
+        1250,
+        1250,
+        1250,
+        1250,
+        1250,
+        1250,
+        1250,
+        1250,
+        1250,
+        1250
+      ],
+      "spark_meta": {
+        "basis": "wholesale",
+        "source": "usda-ams-atlanta",
+        "from": "2026-05-07",
+        "to": "2026-06-12",
+        "n": 26
+      },
+      "spark_dates": [
+        "2026-05-07",
+        "2026-05-08",
+        "2026-05-11",
+        "2026-05-12",
+        "2026-05-13",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-29",
+        "2026-06-01",
+        "2026-06-02",
+        "2026-06-03",
+        "2026-06-04",
+        "2026-06-05",
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12"
+      ]
+    },
+    {
+      "key": "dill",
+      "label_en": "Dill",
+      "label_es": "Eneldo",
+      "unit_en": "carton",
+      "unit_es": "caja",
+      "assessment": {
+        "asOf": "2026-06-12",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 2450,
+          "rangeCents": [
+            1275,
+            3163
+          ],
+          "rangeBasis": "markets",
+          "typeDispersion": 0,
+          "nObs": 7,
+          "nFamilies": 7,
+          "nSources": 7,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-ams-baltimore",
+              "type": "usda-ams",
+              "valueCents": 2450,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-boston",
+              "type": "usda-ams",
+              "valueCents": 2500,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-chicago",
+              "type": "usda-ams",
+              "valueCents": 3925,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-detroit",
+              "type": "usda-ams",
+              "valueCents": 3825,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-los-angeles",
+              "type": "usda-ams",
+              "valueCents": 538,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-miami",
+              "type": "usda-ams",
+              "valueCents": 550,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-new-york",
+              "type": "usda-ams",
+              "valueCents": 2000,
+              "date": "2026-06-12"
+            }
+          ]
+        },
+        "trend": {
+          "pct": 0.3418803418803419,
+          "dir": "up",
+          "agreement": 0.571,
+          "nSources": 7,
+          "nFamilies": 7,
+          "nTypes": 1,
+          "noise": 0.0363
+        },
+        "confidence": "low",
+        "label": "About $12.75–$31.63 (wholesale reference), down -12.3% over the window. 7+ source(s) for level, 7 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "valueCents": 2450,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "valueCents": 2500,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "valueCents": 3925,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "valueCents": 3825,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "valueCents": 538,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "valueCents": 550,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "valueCents": 2000,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-05-07",
+            "valueCents": 2925,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-08",
+            "valueCents": 2925,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-11",
+            "valueCents": 2925,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-12",
+            "valueCents": 3300,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-13",
+            "valueCents": 3300,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-14",
+            "valueCents": 3300,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-15",
+            "valueCents": 3850,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-18",
+            "valueCents": 3850,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-19",
+            "valueCents": 3850,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-20",
+            "valueCents": 3925,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-21",
+            "valueCents": 3925,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-22",
+            "valueCents": 3925,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-26",
+            "valueCents": 3925,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-27",
+            "valueCents": 3925,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-28",
+            "valueCents": 3925,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-29",
+            "valueCents": 3925,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-01",
+            "valueCents": 3925,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-02",
+            "valueCents": 3925,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-03",
+            "valueCents": 3925,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-04",
+            "valueCents": 3925,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-05",
+            "valueCents": 3925,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-08",
+            "valueCents": 3925,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-09",
+            "valueCents": 3925,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-10",
+            "valueCents": 3925,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-11",
+            "valueCents": 3925,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-12",
+            "valueCents": 3925,
+            "source": "usda-ams-chicago",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "yieldSlug": "dill",
+      "flag": {
+        "verdict": "flat",
+        "actionBias": "hold",
+        "reason": "within the normal range",
+        "move": 0.01948051948051948,
+        "retrace": 0,
+        "elevatedWeeks": 0,
+        "nHistory": 26
+      },
+      "tier": "measured",
+      "yield": 0.65,
+      "epCents": 3769,
+      "spark": [
+        2925,
+        2925,
+        2925,
+        3300,
+        3300,
+        3300,
+        3850,
+        3850,
+        3850,
+        3925,
+        3925,
+        3925,
+        3925,
+        3925,
+        3925,
+        3925,
+        3925,
+        3925,
+        3925,
+        3925,
+        3925,
+        3925,
+        3925,
+        3925,
+        3925,
+        3925
+      ],
+      "spark_meta": {
+        "basis": "wholesale",
+        "source": "usda-ams-chicago",
+        "from": "2026-05-07",
+        "to": "2026-06-12",
+        "n": 26
+      },
+      "spark_dates": [
+        "2026-05-07",
+        "2026-05-08",
+        "2026-05-11",
+        "2026-05-12",
+        "2026-05-13",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-29",
+        "2026-06-01",
+        "2026-06-02",
+        "2026-06-03",
+        "2026-06-04",
+        "2026-06-05",
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12"
+      ]
+    },
+    {
+      "key": "grapefruit",
+      "label_en": "Grapefruit",
+      "label_es": "Toronja",
+      "unit_en": "carton",
+      "unit_es": "caja",
+      "assessment": {
+        "asOf": "2026-06-12",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 3250,
+          "rangeCents": [
+            2975,
+            3400
+          ],
+          "rangeBasis": "markets",
+          "typeDispersion": 0,
+          "nObs": 8,
+          "nFamilies": 8,
+          "nSources": 8,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-ams-atlanta",
+              "type": "usda-ams",
+              "valueCents": 3400,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-baltimore",
+              "type": "usda-ams",
+              "valueCents": 3900,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-boston",
+              "type": "usda-ams",
+              "valueCents": 3400,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-chicago",
+              "type": "usda-ams",
+              "valueCents": 3000,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-detroit",
+              "type": "usda-ams",
+              "valueCents": 3200,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-los-angeles",
+              "type": "usda-ams",
+              "valueCents": 2375,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-miami",
+              "type": "usda-ams",
+              "valueCents": 2900,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-new-york",
+              "type": "usda-ams",
+              "valueCents": 3300,
+              "date": "2026-06-12"
+            }
+          ]
+        },
+        "trend": {
+          "pct": 0.022556390977443608,
+          "dir": "up",
+          "agreement": 0.375,
+          "nSources": 8,
+          "nFamilies": 8,
+          "nTypes": 1,
+          "noise": 0.02375
+        },
+        "confidence": "low",
+        "label": "About $29.75–$34.00 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 8 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "valueCents": 3400,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "valueCents": 3900,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "valueCents": 3400,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "valueCents": 3000,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "valueCents": 3200,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "valueCents": 2375,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "valueCents": 2900,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "valueCents": 3300,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-05-07",
+            "valueCents": 3325,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-08",
+            "valueCents": 3325,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-11",
+            "valueCents": 3325,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-12",
+            "valueCents": 3325,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-13",
+            "valueCents": 3325,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-14",
+            "valueCents": 3325,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-15",
+            "valueCents": 3325,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-18",
+            "valueCents": 3450,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-19",
+            "valueCents": 3450,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-20",
+            "valueCents": 3450,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-21",
+            "valueCents": 3450,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-22",
+            "valueCents": 3150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-26",
+            "valueCents": 3150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-27",
+            "valueCents": 3050,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-28",
+            "valueCents": 3050,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-29",
+            "valueCents": 3050,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-01",
+            "valueCents": 3050,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-02",
+            "valueCents": 3375,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-03",
+            "valueCents": 3375,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-04",
+            "valueCents": 3375,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-05",
+            "valueCents": 3375,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-08",
+            "valueCents": 3375,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-09",
+            "valueCents": 3375,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-10",
+            "valueCents": 3375,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-11",
+            "valueCents": 3400,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-12",
+            "valueCents": 3400,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "yieldSlug": "grapefruit",
+      "flag": {
+        "verdict": "flat",
+        "actionBias": "hold",
+        "reason": "within the normal range",
+        "move": 0.022556390977443608,
+        "retrace": 0,
+        "elevatedWeeks": 0,
+        "nHistory": 26
+      },
+      "tier": "measured",
+      "yield": 0.5,
+      "epCents": 6500,
+      "spark": [
+        3325,
+        3325,
+        3325,
+        3325,
+        3325,
+        3325,
+        3325,
+        3450,
+        3450,
+        3450,
+        3450,
+        3150,
+        3150,
+        3050,
+        3050,
+        3050,
+        3050,
+        3375,
+        3375,
+        3375,
+        3375,
+        3375,
+        3375,
+        3375,
+        3400,
+        3400
+      ],
+      "spark_meta": {
+        "basis": "wholesale",
+        "source": "usda-ams-atlanta",
+        "from": "2026-05-07",
+        "to": "2026-06-12",
+        "n": 26
+      },
+      "spark_dates": [
+        "2026-05-07",
+        "2026-05-08",
+        "2026-05-11",
+        "2026-05-12",
+        "2026-05-13",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-29",
+        "2026-06-01",
+        "2026-06-02",
+        "2026-06-03",
+        "2026-06-04",
+        "2026-06-05",
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12"
+      ]
+    },
+    {
+      "key": "apple",
+      "label_en": "Apples",
+      "label_es": "Manzana",
+      "unit_en": "carton",
+      "unit_es": "caja",
+      "assessment": {
+        "asOf": "2026-06-12",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 3725,
+          "rangeCents": [
+            3550,
+            3900
+          ],
+          "rangeBasis": "markets",
+          "typeDispersion": 0,
+          "nObs": 8,
+          "nFamilies": 8,
+          "nSources": 8,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-ams-atlanta",
+              "type": "usda-ams",
+              "valueCents": 3850,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-baltimore",
+              "type": "usda-ams",
+              "valueCents": 3900,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-boston",
+              "type": "usda-ams",
+              "valueCents": 3600,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-chicago",
+              "type": "usda-ams",
+              "valueCents": 3600,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-detroit",
+              "type": "usda-ams",
+              "valueCents": 3950,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-los-angeles",
+              "type": "usda-ams",
+              "valueCents": 1375,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-miami",
+              "type": "usda-ams",
+              "valueCents": 3900,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-new-york",
+              "type": "usda-ams",
+              "valueCents": 3400,
+              "date": "2026-06-12"
+            }
+          ]
+        },
+        "trend": {
+          "pct": 0.04054054054054054,
+          "dir": "up",
+          "agreement": 0.75,
+          "nSources": 8,
+          "nFamilies": 8,
+          "nTypes": 1,
+          "noise": 0.01855
+        },
+        "confidence": "low",
+        "label": "About $35.50–$39.00 (wholesale reference), up +6.3% over the window. 8+ source(s) for level, 8 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "valueCents": 3850,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "valueCents": 3900,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "valueCents": 3600,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "valueCents": 3600,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "valueCents": 3950,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "valueCents": 1375,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "valueCents": 3900,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "valueCents": 3400,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-05-07",
+            "valueCents": 3700,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-08",
+            "valueCents": 3700,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-11",
+            "valueCents": 3700,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-12",
+            "valueCents": 3750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-13",
+            "valueCents": 3750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-14",
+            "valueCents": 3750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-15",
+            "valueCents": 3775,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-18",
+            "valueCents": 3775,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-19",
+            "valueCents": 3800,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-20",
+            "valueCents": 3750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-21",
+            "valueCents": 3750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-22",
+            "valueCents": 3750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-26",
+            "valueCents": 3775,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-27",
+            "valueCents": 3875,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-28",
+            "valueCents": 3850,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-29",
+            "valueCents": 3875,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-01",
+            "valueCents": 3850,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-02",
+            "valueCents": 3900,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-03",
+            "valueCents": 3900,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-04",
+            "valueCents": 3900,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-05",
+            "valueCents": 3875,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-08",
+            "valueCents": 3875,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-09",
+            "valueCents": 3900,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-10",
+            "valueCents": 3850,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-11",
+            "valueCents": 3850,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-12",
+            "valueCents": 3850,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "yieldSlug": "apple",
+      "flag": {
+        "verdict": "flat",
+        "actionBias": "hold",
+        "reason": "within the normal range",
+        "move": 0.02666666666666667,
+        "retrace": 0,
+        "elevatedWeeks": 0,
+        "nHistory": 26
+      },
+      "tier": "measured",
+      "yield": 0.78,
+      "epCents": 4776,
+      "spark": [
+        3700,
+        3700,
+        3700,
+        3750,
+        3750,
+        3750,
+        3775,
+        3775,
+        3800,
+        3750,
+        3750,
+        3750,
+        3775,
+        3875,
+        3850,
+        3875,
+        3850,
+        3900,
+        3900,
+        3900,
+        3875,
+        3875,
+        3900,
+        3850,
+        3850,
+        3850
+      ],
+      "spark_meta": {
+        "basis": "wholesale",
+        "source": "usda-ams-atlanta",
+        "from": "2026-05-07",
+        "to": "2026-06-12",
+        "n": 26
+      },
+      "spark_dates": [
+        "2026-05-07",
+        "2026-05-08",
+        "2026-05-11",
+        "2026-05-12",
+        "2026-05-13",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-29",
+        "2026-06-01",
+        "2026-06-02",
+        "2026-06-03",
+        "2026-06-04",
+        "2026-06-05",
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12"
+      ]
+    },
+    {
+      "key": "pear",
+      "label_en": "Pears",
+      "label_es": "Pera",
+      "unit_en": "carton",
+      "unit_es": "caja",
+      "assessment": {
+        "asOf": "2026-06-12",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 4025,
+          "rangeCents": [
+            3819,
+            4144
+          ],
+          "rangeBasis": "markets",
+          "typeDispersion": 0,
+          "nObs": 8,
+          "nFamilies": 8,
+          "nSources": 8,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-ams-atlanta",
+              "type": "usda-ams",
+              "valueCents": 4100,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-baltimore",
+              "type": "usda-ams",
+              "valueCents": 4725,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-boston",
+              "type": "usda-ams",
+              "valueCents": 3850,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-chicago",
+              "type": "usda-ams",
+              "valueCents": 4000,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-detroit",
+              "type": "usda-ams",
+              "valueCents": 4275,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-los-angeles",
+              "type": "usda-ams",
+              "valueCents": 3725,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-miami",
+              "type": "usda-ams",
+              "valueCents": 4050,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-new-york",
+              "type": "usda-ams",
+              "valueCents": 3600,
+              "date": "2026-06-12"
+            }
+          ]
+        },
+        "trend": {
+          "pct": 0.044585987261146494,
+          "dir": "up",
+          "agreement": 0.75,
+          "nSources": 8,
+          "nFamilies": 8,
+          "nTypes": 1,
+          "noise": 0.0179
+        },
+        "confidence": "low",
+        "label": "About $38.19–$41.44 (wholesale reference), up +12.5% over the window. 8+ source(s) for level, 8 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "valueCents": 4100,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "valueCents": 4725,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "valueCents": 3850,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "valueCents": 4000,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "valueCents": 4275,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "valueCents": 3725,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "valueCents": 4050,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "valueCents": 3600,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-05-07",
+            "valueCents": 3925,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-08",
+            "valueCents": 3850,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-11",
+            "valueCents": 3850,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-12",
+            "valueCents": 3750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-13",
+            "valueCents": 3850,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-14",
+            "valueCents": 3900,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-15",
+            "valueCents": 3950,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-18",
+            "valueCents": 3950,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-19",
+            "valueCents": 3950,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-20",
+            "valueCents": 3950,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-21",
+            "valueCents": 3950,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-22",
+            "valueCents": 4150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-26",
+            "valueCents": 4150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-27",
+            "valueCents": 4450,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-28",
+            "valueCents": 4450,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-29",
+            "valueCents": 4450,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-01",
+            "valueCents": 4450,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-02",
+            "valueCents": 4350,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-03",
+            "valueCents": 4350,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-04",
+            "valueCents": 4350,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-05",
+            "valueCents": 4400,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-08",
+            "valueCents": 4400,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-09",
+            "valueCents": 4400,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-10",
+            "valueCents": 4275,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-11",
+            "valueCents": 4100,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-12",
+            "valueCents": 4100,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "yieldSlug": "pear",
+      "flag": {
+        "verdict": "flat",
+        "actionBias": "hold",
+        "reason": "within the normal range",
+        "move": 0.0379746835443038,
+        "retrace": 0,
+        "elevatedWeeks": 0,
+        "nHistory": 26
+      },
+      "tier": "measured",
+      "yield": 0.78,
+      "epCents": 5160,
+      "spark": [
+        3925,
+        3850,
+        3850,
+        3750,
+        3850,
+        3900,
+        3950,
+        3950,
+        3950,
+        3950,
+        3950,
+        4150,
+        4150,
+        4450,
+        4450,
+        4450,
+        4450,
+        4350,
+        4350,
+        4350,
+        4400,
+        4400,
+        4400,
+        4275,
+        4100,
+        4100
+      ],
+      "spark_meta": {
+        "basis": "wholesale",
+        "source": "usda-ams-atlanta",
+        "from": "2026-05-07",
+        "to": "2026-06-12",
+        "n": 26
+      },
+      "spark_dates": [
+        "2026-05-07",
+        "2026-05-08",
+        "2026-05-11",
+        "2026-05-12",
+        "2026-05-13",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-29",
+        "2026-06-01",
+        "2026-06-02",
+        "2026-06-03",
+        "2026-06-04",
+        "2026-06-05",
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12"
+      ]
+    },
+    {
+      "key": "banana",
+      "label_en": "Bananas",
+      "label_es": "Plátano",
+      "unit_en": "carton",
+      "unit_es": "caja",
+      "assessment": {
+        "asOf": "2026-06-12",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 2175,
+          "rangeCents": [
+            2138,
+            2275
+          ],
+          "rangeBasis": "markets",
+          "typeDispersion": 0,
+          "nObs": 8,
+          "nFamilies": 8,
+          "nSources": 8,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-ams-atlanta",
+              "type": "usda-ams",
+              "valueCents": 2150,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-baltimore",
+              "type": "usda-ams",
+              "valueCents": 2150,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-boston",
+              "type": "usda-ams",
+              "valueCents": 2200,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-chicago",
+              "type": "usda-ams",
+              "valueCents": 2350,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-detroit",
+              "type": "usda-ams",
+              "valueCents": 2750,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-los-angeles",
+              "type": "usda-ams",
+              "valueCents": 1950,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-miami",
+              "type": "usda-ams",
+              "valueCents": 2100,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-new-york",
+              "type": "usda-ams",
+              "valueCents": 2250,
+              "date": "2026-06-12"
+            }
+          ]
+        },
+        "trend": {
+          "pct": 0,
+          "dir": "flat",
+          "agreement": 0.75,
+          "nSources": 8,
+          "nFamilies": 8,
+          "nTypes": 1,
+          "noise": 0
+        },
+        "confidence": "low",
+        "label": "About $21.38–$22.75 (wholesale reference), up +4.7% over the window. 8+ source(s) for level, 8 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "valueCents": 2150,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "valueCents": 2150,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "valueCents": 2200,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "valueCents": 2350,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "valueCents": 2750,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "valueCents": 1950,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "valueCents": 2100,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "valueCents": 2250,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-05-07",
+            "valueCents": 2150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-08",
+            "valueCents": 2150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-11",
+            "valueCents": 2150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-12",
+            "valueCents": 2150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-13",
+            "valueCents": 2150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-14",
+            "valueCents": 2150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-15",
+            "valueCents": 2150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-18",
+            "valueCents": 2150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-19",
+            "valueCents": 2150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-20",
+            "valueCents": 2150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-21",
+            "valueCents": 2150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-22",
+            "valueCents": 2150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-26",
+            "valueCents": 2150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-27",
+            "valueCents": 2150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-28",
+            "valueCents": 2150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-29",
+            "valueCents": 2150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-01",
+            "valueCents": 2150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-02",
+            "valueCents": 2150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-03",
+            "valueCents": 2150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-04",
+            "valueCents": 2150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-05",
+            "valueCents": 2150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-08",
+            "valueCents": 2150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-09",
+            "valueCents": 2150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-10",
+            "valueCents": 2150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-11",
+            "valueCents": 2150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-12",
+            "valueCents": 2150,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "yieldSlug": "banana",
+      "flag": {
+        "verdict": "flat",
+        "actionBias": "hold",
+        "reason": "within the normal range",
+        "move": 0,
+        "retrace": 0,
+        "elevatedWeeks": 0,
+        "nHistory": 26
+      },
+      "tier": "measured",
+      "yield": 0.65,
+      "epCents": 3346,
+      "spark": [
+        2150,
+        2150,
+        2150,
+        2150,
+        2150,
+        2150,
+        2150,
+        2150,
+        2150,
+        2150,
+        2150,
+        2150,
+        2150,
+        2150,
+        2150,
+        2150,
+        2150,
+        2150,
+        2150,
+        2150,
+        2150,
+        2150,
+        2150,
+        2150,
+        2150,
+        2150
+      ],
+      "spark_meta": {
+        "basis": "wholesale",
+        "source": "usda-ams-atlanta",
+        "from": "2026-05-07",
+        "to": "2026-06-12",
+        "n": 26
+      },
+      "spark_dates": [
+        "2026-05-07",
+        "2026-05-08",
+        "2026-05-11",
+        "2026-05-12",
+        "2026-05-13",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-29",
+        "2026-06-01",
+        "2026-06-02",
+        "2026-06-03",
+        "2026-06-04",
+        "2026-06-05",
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12"
+      ]
+    },
+    {
+      "key": "watermelon",
+      "label_en": "Watermelon",
+      "label_es": "Sandía",
+      "unit_en": "carton",
+      "unit_es": "caja",
+      "assessment": {
+        "asOf": "2026-06-12",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 800,
+          "rangeCents": [
+            675,
+            1975
+          ],
+          "rangeBasis": "markets",
+          "typeDispersion": 0,
+          "nObs": 3,
+          "nFamilies": 3,
+          "nSources": 3,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-ams-boston",
+              "type": "usda-ams",
+              "valueCents": 800,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-los-angeles",
+              "type": "usda-ams",
+              "valueCents": 3150,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-miami",
+              "type": "usda-ams",
+              "valueCents": 550,
+              "date": "2026-06-12"
+            }
+          ]
+        },
+        "trend": {
+          "pct": -0.058823529411764705,
+          "dir": "down",
+          "agreement": 1,
+          "nSources": 3,
+          "nFamilies": 3,
+          "nTypes": 1,
+          "noise": 0.1977
+        },
+        "confidence": "low",
+        "label": "About $6.75–$19.75 (wholesale reference), down -21.4% over the window. 3+ source(s) for level, 3 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "valueCents": 800,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "valueCents": 3150,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "valueCents": 550,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-05-07",
+            "valueCents": 850,
+            "source": "usda-ams-boston",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-08",
+            "valueCents": 850,
+            "source": "usda-ams-boston",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-11",
+            "valueCents": 850,
+            "source": "usda-ams-boston",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-12",
+            "valueCents": 800,
+            "source": "usda-ams-boston",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-13",
+            "valueCents": 800,
+            "source": "usda-ams-boston",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-14",
+            "valueCents": 825,
+            "source": "usda-ams-boston",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-15",
+            "valueCents": 825,
+            "source": "usda-ams-boston",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-18",
+            "valueCents": 875,
+            "source": "usda-ams-boston",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-19",
+            "valueCents": 875,
+            "source": "usda-ams-boston",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-20",
+            "valueCents": 875,
+            "source": "usda-ams-boston",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-21",
+            "valueCents": 875,
+            "source": "usda-ams-boston",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-22",
+            "valueCents": 875,
+            "source": "usda-ams-boston",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-26",
+            "valueCents": 875,
+            "source": "usda-ams-boston",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-27",
+            "valueCents": 875,
+            "source": "usda-ams-boston",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-28",
+            "valueCents": 875,
+            "source": "usda-ams-boston",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-29",
+            "valueCents": 875,
+            "source": "usda-ams-boston",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-01",
+            "valueCents": 750,
+            "source": "usda-ams-boston",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-02",
+            "valueCents": 750,
+            "source": "usda-ams-boston",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-03",
+            "valueCents": 750,
+            "source": "usda-ams-boston",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-04",
+            "valueCents": 750,
+            "source": "usda-ams-boston",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-05",
+            "valueCents": 750,
+            "source": "usda-ams-boston",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-08",
+            "valueCents": 800,
+            "source": "usda-ams-boston",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-09",
+            "valueCents": 800,
+            "source": "usda-ams-boston",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-10",
+            "valueCents": 800,
+            "source": "usda-ams-boston",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-11",
+            "valueCents": 800,
+            "source": "usda-ams-boston",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-12",
+            "valueCents": 800,
+            "source": "usda-ams-boston",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "yieldSlug": "watermelon",
+      "flag": {
+        "verdict": "flat",
+        "actionBias": "hold",
+        "reason": "within the normal range",
+        "move": -0.058823529411764705,
+        "retrace": 0,
+        "elevatedWeeks": 0,
+        "nHistory": 26
+      },
+      "tier": "measured",
+      "yield": 0.5,
+      "epCents": 1600,
+      "spark": [
+        850,
+        850,
+        850,
+        800,
+        800,
+        825,
+        825,
+        875,
+        875,
+        875,
+        875,
+        875,
+        875,
+        875,
+        875,
+        875,
+        750,
+        750,
+        750,
+        750,
+        750,
+        800,
+        800,
+        800,
+        800,
+        800
+      ],
+      "spark_meta": {
+        "basis": "wholesale",
+        "source": "usda-ams-boston",
+        "from": "2026-05-07",
+        "to": "2026-06-12",
+        "n": 26
+      },
+      "spark_dates": [
+        "2026-05-07",
+        "2026-05-08",
+        "2026-05-11",
+        "2026-05-12",
+        "2026-05-13",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-29",
+        "2026-06-01",
+        "2026-06-02",
+        "2026-06-03",
+        "2026-06-04",
+        "2026-06-05",
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12"
+      ]
+    },
+    {
+      "key": "blueberry",
+      "label_en": "Blueberries",
+      "label_es": "Arándano azul",
+      "unit_en": "carton",
+      "unit_es": "caja",
+      "assessment": {
+        "asOf": "2026-06-12",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 2750,
+          "rangeCents": [
+            2388,
+            3231
+          ],
+          "rangeBasis": "markets",
+          "typeDispersion": 0,
+          "nObs": 8,
+          "nFamilies": 8,
+          "nSources": 8,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-ams-atlanta",
+              "type": "usda-ams",
+              "valueCents": 3175,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-baltimore",
+              "type": "usda-ams",
+              "valueCents": 3400,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-boston",
+              "type": "usda-ams",
+              "valueCents": 2900,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-chicago",
+              "type": "usda-ams",
+              "valueCents": 2400,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-detroit",
+              "type": "usda-ams",
+              "valueCents": 2600,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-los-angeles",
+              "type": "usda-ams",
+              "valueCents": 1750,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-miami",
+              "type": "usda-ams",
+              "valueCents": 2350,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-new-york",
+              "type": "usda-ams",
+              "valueCents": 3600,
+              "date": "2026-06-12"
+            }
+          ]
+        },
+        "trend": {
+          "pct": 0.049586776859504134,
+          "dir": "up",
+          "agreement": 1,
+          "nSources": 8,
+          "nFamilies": 8,
+          "nTypes": 1,
+          "noise": 0.2517
+        },
+        "confidence": "low",
+        "label": "About $23.88–$32.31 (wholesale reference), down -21.6% over the window. 8+ source(s) for level, 8 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "valueCents": 3175,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "valueCents": 3400,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "valueCents": 2900,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "valueCents": 2400,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "valueCents": 2600,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "valueCents": 1750,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "valueCents": 2350,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "valueCents": 3600,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-05-07",
+            "valueCents": 3025,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-08",
+            "valueCents": 3025,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-11",
+            "valueCents": 3313,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-12",
+            "valueCents": 3313,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-13",
+            "valueCents": 3313,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-14",
+            "valueCents": 3025,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-15",
+            "valueCents": 2950,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-18",
+            "valueCents": 2950,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-19",
+            "valueCents": 2750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-20",
+            "valueCents": 2750,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-21",
+            "valueCents": 2500,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-22",
+            "valueCents": 2450,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-26",
+            "valueCents": 2350,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-27",
+            "valueCents": 2450,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-28",
+            "valueCents": 2450,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-29",
+            "valueCents": 2450,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-01",
+            "valueCents": 2300,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-02",
+            "valueCents": 2300,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-03",
+            "valueCents": 2300,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-04",
+            "valueCents": 2300,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-05",
+            "valueCents": 2250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-08",
+            "valueCents": 2250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-09",
+            "valueCents": 2250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-10",
+            "valueCents": 2325,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-11",
+            "valueCents": 2450,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-12",
+            "valueCents": 3175,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "yieldSlug": "blueberry",
+      "flag": {
+        "verdict": "flat",
+        "actionBias": "hold",
+        "reason": "within the normal range",
+        "move": 0.07627118644067797,
+        "retrace": 0,
+        "elevatedWeeks": 0,
+        "nHistory": 26
+      },
+      "tier": "measured",
+      "yield": 1,
+      "epCents": 2750,
+      "spark": [
+        3025,
+        3025,
+        3313,
+        3313,
+        3313,
+        3025,
+        2950,
+        2950,
+        2750,
+        2750,
+        2500,
+        2450,
+        2350,
+        2450,
+        2450,
+        2450,
+        2300,
+        2300,
+        2300,
+        2300,
+        2250,
+        2250,
+        2250,
+        2325,
+        2450,
+        3175
+      ],
+      "spark_meta": {
+        "basis": "wholesale",
+        "source": "usda-ams-atlanta",
+        "from": "2026-05-07",
+        "to": "2026-06-12",
+        "n": 26
+      },
+      "spark_dates": [
+        "2026-05-07",
+        "2026-05-08",
+        "2026-05-11",
+        "2026-05-12",
+        "2026-05-13",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-29",
+        "2026-06-01",
+        "2026-06-02",
+        "2026-06-03",
+        "2026-06-04",
+        "2026-06-05",
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12"
+      ]
+    },
+    {
+      "key": "raspberry",
+      "label_en": "Raspberries",
+      "label_es": "Frambuesa",
+      "unit_en": "carton",
+      "unit_es": "caja",
+      "assessment": {
+        "asOf": "2026-06-12",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 2700,
+          "rangeCents": [
+            1775,
+            3131
+          ],
+          "rangeBasis": "markets",
+          "typeDispersion": 0,
+          "nObs": 8,
+          "nFamilies": 8,
+          "nSources": 8,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-ams-atlanta",
+              "type": "usda-ams",
+              "valueCents": 2950,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-baltimore",
+              "type": "usda-ams",
+              "valueCents": 3450,
+              "date": "2026-06-05"
+            },
+            {
+              "source": "usda-ams-boston",
+              "type": "usda-ams",
+              "valueCents": 1100,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-chicago",
+              "type": "usda-ams",
+              "valueCents": 2450,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-detroit",
+              "type": "usda-ams",
+              "valueCents": 3025,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-los-angeles",
+              "type": "usda-ams",
+              "valueCents": 1075,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-miami",
+              "type": "usda-ams",
+              "valueCents": 3550,
+              "date": "2026-06-12"
+            },
+            {
+              "source": "usda-ams-new-york",
+              "type": "usda-ams",
+              "valueCents": 2000,
+              "date": "2026-06-12"
+            }
+          ]
+        },
+        "trend": {
+          "pct": -0.024793388429752067,
+          "dir": "down",
+          "agreement": 0.625,
+          "nSources": 8,
+          "nFamilies": 8,
+          "nTypes": 1,
+          "noise": 0.0936
+        },
+        "confidence": "low",
+        "label": "About $17.75–$31.31 (wholesale reference), up +2.1% over the window. 8+ source(s) for level, 8 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "valueCents": 2950,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "valueCents": 3450,
+            "date": "2026-06-05"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "valueCents": 1100,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "valueCents": 2450,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "valueCents": 3025,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "valueCents": 1075,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "valueCents": 3550,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "level",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "valueCents": 2000,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-atlanta",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-baltimore",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-boston",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-chicago",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-detroit",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-los-angeles",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-miami",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-new-york",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-05-07",
+            "valueCents": 3025,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-08",
+            "valueCents": 2825,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-11",
+            "valueCents": 3025,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-12",
+            "valueCents": 3025,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-13",
+            "valueCents": 3025,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-14",
+            "valueCents": 3025,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-15",
+            "valueCents": 2875,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-18",
+            "valueCents": 3050,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-19",
+            "valueCents": 3050,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-20",
+            "valueCents": 3050,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-21",
+            "valueCents": 3050,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-22",
+            "valueCents": 2900,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-26",
+            "valueCents": 3025,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-27",
+            "valueCents": 3025,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-28",
+            "valueCents": 3025,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-29",
+            "valueCents": 3025,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-01",
+            "valueCents": 2775,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-02",
+            "valueCents": 2800,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-03",
+            "valueCents": 2800,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-04",
+            "valueCents": 3050,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-05",
+            "valueCents": 3050,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-08",
+            "valueCents": 3050,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-09",
+            "valueCents": 3050,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-10",
+            "valueCents": 2250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-11",
+            "valueCents": 2250,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-12",
+            "valueCents": 2950,
+            "source": "usda-ams-atlanta",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "yieldSlug": "raspberry",
+      "flag": {
+        "verdict": "flat",
+        "actionBias": "hold",
+        "reason": "within the normal range",
+        "move": -0.024793388429752067,
+        "retrace": 0,
+        "elevatedWeeks": 0,
+        "nHistory": 26
+      },
+      "tier": "measured",
+      "yield": 1,
+      "epCents": 2700,
+      "spark": [
+        3025,
+        2825,
+        3025,
+        3025,
+        3025,
+        3025,
+        2875,
+        3050,
+        3050,
+        3050,
+        3050,
+        2900,
+        3025,
+        3025,
+        3025,
+        3025,
+        2775,
+        2800,
+        2800,
+        3050,
+        3050,
+        3050,
+        3050,
+        2250,
+        2250,
+        2950
+      ],
+      "spark_meta": {
+        "basis": "wholesale",
+        "source": "usda-ams-atlanta",
+        "from": "2026-05-07",
+        "to": "2026-06-12",
+        "n": 26
+      },
+      "spark_dates": [
+        "2026-05-07",
+        "2026-05-08",
+        "2026-05-11",
+        "2026-05-12",
+        "2026-05-13",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-29",
+        "2026-06-01",
+        "2026-06-02",
+        "2026-06-03",
+        "2026-06-04",
+        "2026-06-05",
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12"
+      ]
+    },
+    {
+      "key": "ground-beef",
+      "label_en": "Ground beef",
+      "label_es": "Carne molida de res",
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "assessment": {
+        "asOf": "2026-06-10",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 551,
+          "rangeCents": [
+            551,
+            551
+          ],
+          "rangeBasis": "point",
+          "typeDispersion": 0,
+          "nObs": 1,
+          "nFamilies": 1,
+          "nSources": 1,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-lmr",
+              "type": "usda-lmr",
+              "valueCents": 551,
+              "date": "2026-06-10"
+            }
+          ]
+        },
+        "trend": {
+          "pct": -0.02304964539007092,
+          "dir": "down",
+          "agreement": 0.5,
+          "nSources": 2,
+          "nFamilies": 2,
+          "nTypes": 2,
+          "noise": 0.0016
+        },
+        "confidence": "directional",
+        "label": "About $5.51 (wholesale reference, single source — range not yet measurable), down -2.2% over the window. 1+ source(s) for level, 2 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-lmr",
+            "type": "usda-lmr",
+            "valueCents": 551,
+            "date": "2026-06-10"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-lmr",
+            "type": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "fred",
+            "type": "fred",
+            "basis": "index"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-06-08",
+            "valueCents": 564,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-10",
+            "valueCents": 551,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "yieldSlug": "ground-beef",
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 2
+      },
+      "tier": "measured",
+      "yield": 1,
+      "epCents": 551
     }
   ],
   "drivers": [
