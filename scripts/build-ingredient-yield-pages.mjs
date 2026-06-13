@@ -339,17 +339,88 @@ function relatedInCategory(ing, locale) {
   return `<p class="iy-related"><span class="iy-related-label">${label}</span>${links}</p>`;
 }
 
+// Shared FAQ source of truth — the VISIBLE faqBlock and the FAQPage JSON-LD both
+// render from this, so the structured data can never drift from the on-page text
+// (the visible-must-match discipline AEO rewards). Every answer is SOURCED (the
+// CIA yield) or DERIVED (lossPct, the AP÷yield method) — and carries NO dollar
+// figure, because JSON-LD answer text is lifted verbatim by answer engines and an
+// illustrative price must never be laundered into a claim.
+function faqItems(ing, locale) {
+  const es = locale === 'es';
+  const name = es ? ing.es : ing.en;
+  const nlow = name.toLowerCase();
+  const pct = Math.round(ing.yield * 100);
+  const lossPct = 100 - pct;
+  const dy = ing.yield.toFixed(2);
+  return es ? [
+    { q: `¿Cuál es el rendimiento de ${nlow}?`,
+      a: `El rendimiento típico de ${nlow} es ${pct}% (porción comestible sobre el peso comprado), según las tablas de rendimiento estándar del CIA.` },
+    { q: `¿Cuánto se pierde al limpiar ${nlow}?`,
+      a: `Alrededor del ${lossPct}% del peso comprado se pierde al limpiar, pelar y recortar antes de emplatar.` },
+    { q: `¿Cómo se calcula el costo de porción comestible de ${nlow}?`,
+      a: `Divide el precio de compra entre el rendimiento: costo EP = precio AP ÷ ${dy}. Con ${pct}% de rendimiento, la merma hace que tu costo real en el plato sea bastante mayor que el precio de la factura.` },
+  ] : [
+    { q: `What is the yield of ${nlow}?`,
+      a: `${name} typically yields ${pct}% edible portion of its as-purchased weight, per the CIA Standard Yield Tables.` },
+    { q: `How much ${nlow} is lost to trim?`,
+      a: `About ${lossPct}% of the as-purchased weight is lost to cleaning, peeling, and trimming before it reaches the plate.` },
+    { q: `How do you calculate the edible-portion cost of ${nlow}?`,
+      a: `Divide the as-purchased price by the yield: EP cost = AP price ÷ ${dy}. At ${pct}% yield, the trim makes your real plated cost meaningfully higher than the invoice price.` },
+  ];
+}
+
+// The one liftable table (sourced rows, NO price column — a price column would
+// read as a claim) + the visible FAQ that mirrors the FAQPage JSON-LD.
+function faqBlock(ing, locale) {
+  const es = locale === 'es';
+  const pct = Math.round(ing.yield * 100);
+  const lossPct = 100 - pct;
+  const items = faqItems(ing, locale);
+  const tblH = es ? 'Desglose del rendimiento' : 'Yield breakdown';
+  const faqH = es ? 'Preguntas frecuentes' : 'Common questions';
+  const rAP = es ? 'Comprado (AP)' : 'As-purchased (AP)';
+  const rEP = es ? 'Porción comestible (EP)' : 'Edible portion (EP)';
+  const rLoss = es ? 'Merma al recortar' : 'Lost to trim';
+  const cap = es ? 'Fuente: tablas de rendimiento estándar del CIA.' : 'Source: CIA Standard Yield Tables.';
+  return `
+    <h2 class="iy-h2">${tblH}</h2>
+    <div class="table-scroll">
+      <table class="iy-breakdown">
+        <tbody>
+          <tr><th scope="row">${rAP}</th><td>100%</td></tr>
+          <tr><th scope="row">${rEP}</th><td>${pct}%</td></tr>
+          <tr><th scope="row">${rLoss}</th><td>${lossPct}%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="iy-breakdown-src">${cap}</p>
+    <h2 class="iy-h2">${faqH}</h2>
+    <div class="iy-faq">
+      ${items.map((it) => `<details class="iy-faq-item"><summary>${escHtml(it.q)}</summary><p>${escHtml(it.a)}</p></details>`).join('\n      ')}
+    </div>`;
+}
+
 function emitJsonLd(ing, locale) {
   const base = locale === 'es' ? '/es' : '';
   const url = `https://muntin.digital${base}/library/ingredient-yields/${ing.slug}/`;
   const name = locale === 'es' ? ing.es : ing.en;
-  const pctTxt = Math.round(ing.yield * 100) + '%';
-  const q = locale === 'es'
-    ? `¿Cuál es el rendimiento de ${name.toLowerCase()}?`
-    : `What is the yield of ${name.toLowerCase()}?`;
-  const a = locale === 'es'
-    ? `El rendimiento típico de ${name.toLowerCase()} es ${pctTxt} (porción comestible sobre peso comprado), según las tablas de rendimiento estándar del CIA.`
-    : `${name} typically yields ${pctTxt} edible portion of its as-purchased weight, per the CIA Standard Yield Tables.`;
+  const nlow = name.toLowerCase();
+  const es = locale === 'es';
+  const pct = Math.round(ing.yield * 100);
+  const dy = ing.yield.toFixed(2);
+  const unit = es ? ing.unit_es : ing.unit_en;
+  const items = faqItems(ing, locale);   // identical to the visible faqBlock
+  // HowTo for the AP→EP method — procedure only, NO dollar figures (the worked
+  // dollar example lives in the visible, illustrative-labeled iy-calc block).
+  const howSteps = es ? [
+    `Toma el precio de compra (AP) por ${unit} de tu factura.`,
+    `Busca el rendimiento: ${nlow} rinde ${pct}% (tablas de rendimiento estándar del CIA).`,
+    `Divide: costo de porción comestible = precio AP ÷ ${dy}. El resultado es tu costo real en el plato por ${unit}.`,
+  ] : [
+    `Take the as-purchased (AP) price per ${unit} from your invoice.`,
+    `Look up the yield: ${nlow} yields ${pct}% (CIA Standard Yield Tables).`,
+    `Divide: edible-portion cost = AP price ÷ ${dy}. The result is your true plated cost per ${unit}.`,
+  ];
   const crumb = locale === 'es'
     ? [['Inicio','https://muntin.digital/es/'],['Biblioteca','https://muntin.digital/es/library/'],['Rendimiento de ingredientes','https://muntin.digital/es/library/ingredient-yields/'],[name,url]]
     : [['Home','https://muntin.digital/'],['Library','https://muntin.digital/library/'],['Ingredient yields','https://muntin.digital/library/ingredient-yields/'],[name,url]];
@@ -359,8 +430,10 @@ function emitJsonLd(ing, locale) {
       { '@type': 'WebPage', '@id': url + '#webpage', 'name': name + (locale === 'es' ? ' — rendimiento' : ' yield'),
         'url': url, 'inLanguage': locale === 'es' ? 'es-US' : 'en-US',
         'isPartOf': { '@id': 'https://muntin.digital/#website' }, 'publisher': { '@id': 'https://muntin.digital/#business' } },
-      { '@type': 'QAPage', 'mainEntity': { '@type': 'Question', 'name': q,
-        'acceptedAnswer': { '@type': 'Answer', 'text': a } } },
+      { '@type': 'FAQPage', 'mainEntity': items.map((it) => ({ '@type': 'Question', 'name': it.q,
+        'acceptedAnswer': { '@type': 'Answer', 'text': it.a } })) },
+      { '@type': 'HowTo', 'name': es ? `Cómo calcular el costo de porción comestible de ${nlow}` : `How to calculate the edible-portion cost of ${nlow}`,
+        'step': howSteps.map((t, i) => ({ '@type': 'HowToStep', 'position': i + 1, 'text': t })) },
       { '@type': 'BreadcrumbList', 'itemListElement': crumb.map((c, i) => ({ '@type': 'ListItem', 'position': i + 1, 'name': c[0], 'item': c[1] })) }
     ]
   });
@@ -449,6 +522,19 @@ main{padding-top:64px}
 .iy-keep a{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:999px;background:#fff;color:#0f3a37;font-weight:600;font-size:13.5px;text-decoration:none}
 .iy-source{font-size:12.5px;color:var(--ink-soft);margin:20px 0 0}
 .iy-source a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.iy-h2{font-size:19px;line-height:1.3;margin:26px 0 10px}
+.iy-breakdown{border-collapse:collapse;width:100%;max-width:340px;font-size:15px}
+.iy-breakdown th,.iy-breakdown td{text-align:left;padding:9px 14px;border-bottom:1px solid var(--line)}
+.iy-breakdown th{font-weight:500;color:var(--ink-soft)}
+.iy-breakdown td{font-weight:600;text-align:right}
+.iy-breakdown-src{font-size:12px;color:var(--ink-soft);margin:6px 0 0}
+.iy-faq{margin:4px 0 0}
+.iy-faq-item{border-bottom:1px solid var(--line);padding:2px 0}
+.iy-faq-item summary{cursor:pointer;font-weight:600;font-size:15px;padding:11px 0;list-style:none}
+.iy-faq-item summary::-webkit-details-marker{display:none}
+.iy-faq-item summary::after{content:"+";float:right;color:var(--ink-soft);font-weight:400}
+.iy-faq-item[open] summary::after{content:"−"}
+.iy-faq-item p{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0 0 12px}
 .iy-costindex{margin:14px 0 0;padding:14px 18px;background:var(--cream-2,#EDEEF1);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:10px}
 .iy-ci-head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
 .iy-ci-badge{font-weight:600;text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink-soft);margin-left:8px}
@@ -569,7 +655,7 @@ function emitIngredientPage(ing, locale) {
     <p class="iy-hero-lede">${escHtml(lede)}</p>
   </section>
   <section class="iy-body">
-    ${body}${costIndexBlock(ing.slug, locale)}
+    ${body}${faqBlock(ing, locale)}${costIndexBlock(ing.slug, locale)}
     <div class="iy-cta-row">
       <a class="iy-cta" href="${base}/tools/plate-cost/">${calcCta} <span aria-hidden="true">→</span></a>
     </div>
