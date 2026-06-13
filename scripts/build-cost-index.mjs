@@ -25,6 +25,7 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { pointIssues, historyIssues, driverIssues } from './check-cost-index-sync.mjs';
 import { ingredientTier } from './check-source-tier.mjs';
+import { calibrationCeiling, RANK, NAME } from './check-cost-index-calibration.mjs';
 
 const require = createRequire(import.meta.url);
 const B = require('../tools/_shared/cost-basket.js');
@@ -156,6 +157,22 @@ function main() {
       ? hist.slice().reverse().map((h) => ({ level: { medianCents: h.valueCents }, asOf: h.date }))
       : pts;
     out.ingredients[k].flag = Spike.classify(fromHistory);
+  }
+
+  // Confidence honesty — cap every vendored point's confidence at the calibration
+  // ceiling its data actually supports (independent source TYPES + weeks of track
+  // record + trend stability), using check-cost-index-calibration's OWN function so
+  // build and gate cannot drift. The engine's confidenceFor() can't see the
+  // vendored track-record length (it runs pre-vendor), so a thin-but-fresh read like
+  // a just-started ingredient could claim 'low' when only 'directional' is earned.
+  // This is the floor, never a substitute for adding sources/history to raise it.
+  for (const k of Object.keys(out.ingredients)) {
+    const hist = Array.isArray(out.ingredients[k].history) ? out.ingredients[k].history : [];
+    for (const p of out.ingredients[k].points || []) {
+      if (!p || !p.confidence || RANK[p.confidence] == null) continue;
+      const ceil = calibrationCeiling(p, hist);
+      if (RANK[p.confidence] > ceil) p.confidence = NAME[ceil];
+    }
   }
 
   // Coverage tier (D1) — label every vendored card measured/derived with the SAME

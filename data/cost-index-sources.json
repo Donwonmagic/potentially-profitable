@@ -5345,6 +5345,11 @@
       },
       "bls": {
         "seriesId": "WPU022101"
+      },
+      "fred": {
+        "seriesId": "APU0000703112",
+        "basis": "index",
+        "_report": "Ground beef 100% retail (BLS APU via FRED) — ground-beef-direction TREND proxy; LMR is the level. STAGED — confirm id/title via --audit-titles / --discover-fred \"ground beef\", then --flip."
       }
     },
     "lamb-shoulder": {
