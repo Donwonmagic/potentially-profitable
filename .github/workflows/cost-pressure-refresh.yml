@@ -129,6 +129,9 @@ jobs:
           # compare + no-price/verb scan + source shape/readiness.
           node scripts/check-pressure-honesty.mjs
           node scripts/check-pressure-sources.mjs
+          # Heartbeat: AFTER the keyed live fetch, fail the scheduled run RED if the
+          # overlay is still stale (keys lapsed / every source down) — the alert.
+          node scripts/check-pressure-freshness.mjs --check
 
       - name: Commit scoped refresh
         if: env.MODE == 'live'

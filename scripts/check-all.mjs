@@ -387,6 +387,11 @@ const CHECKS = [
   // banned verb, and its rendered direction must equal what the rules recompute.
   ['Cost-pressure honesty','check-pressure-honesty.mjs'],
   ['Cost-pressure sources (shape+readiness)','check-pressure-sources.mjs'],
+  // Pressure heartbeat — informational here (the overlay ages between weekly runs,
+  // so it must never block a PR); the weekly refresh runs it with --check to turn a
+  // persistent stall into a red (alerting) scheduled run.
+  ['Cost-pressure freshness (warn)','check-pressure-freshness.mjs'],
+  ['Cost-pressure freshness self-test','check-pressure-freshness.mjs','--self-test'],
   ['Security claims',      'check-security-claims.mjs'],
   ['Data promise rail',    'check-data-promise-rail.mjs'],
   ['Security locale parity','check-security-locale-parity.mjs'],
