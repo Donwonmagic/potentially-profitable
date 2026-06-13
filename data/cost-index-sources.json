@@ -1626,7 +1626,7 @@
       "verified": false,
       "lmr": {
         "reportId": "2453",
-        "commodity": "Strip Loin",
+        "commodity": "strip, bnls, 0x1",
         "reducer": "wtdAvg",
         "unit": "lb",
         "section": "Choice Cuts",
@@ -1640,7 +1640,10 @@
             "avg_price"
           ]
         },
-        "_status": "STAGED — mirror of ribeye (LMR 2453 Choice Cuts); confirm cut term \"Strip Loin\" (IMPS 180) via --verify."
+        "_status": "RESOLVED 2026-06-13 via --list-commodities 2453 'Choice Cuts' --lmr: IMPS 180 'Loin, strip, bnls, 0x1'. Was 'Strip Loin' (matched a $0.00 row).",
+        "matchFields": [
+          "item_description"
+        ]
       }
     },
     "leg-of-lamb": {
@@ -3355,59 +3358,83 @@
         {
           "reportId": "2278",
           "market": "Atlanta",
-          "commodity": "Cabbage, Napa",
+          "commodity": "Chinese Cabbage",
           "reducer": "mostlyMid",
           "unit": "carton",
-          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+          "_status": "RESOLVED 2026-06-13 via --sample 2278/2279: commodity 'Chinese Cabbage' on field 'commodity'. Was 'Cabbage, Napa'.",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2282",
           "market": "Baltimore",
-          "commodity": "Cabbage, Napa",
+          "commodity": "Chinese Cabbage",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2286",
           "market": "Boston",
-          "commodity": "Cabbage, Napa",
+          "commodity": "Chinese Cabbage",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2291",
           "market": "Chicago",
-          "commodity": "Cabbage, Napa",
+          "commodity": "Chinese Cabbage",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2303",
           "market": "Detroit",
-          "commodity": "Cabbage, Napa",
+          "commodity": "Chinese Cabbage",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2307",
           "market": "Los Angeles",
-          "commodity": "Cabbage, Napa",
+          "commodity": "Chinese Cabbage",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2311",
           "market": "Miami",
-          "commodity": "Cabbage, Napa",
+          "commodity": "Chinese Cabbage",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2315",
           "market": "New York",
-          "commodity": "Cabbage, Napa",
+          "commodity": "Chinese Cabbage",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         }
       ],
       "bls": {
@@ -3489,59 +3516,83 @@
         {
           "reportId": "2278",
           "market": "Atlanta",
-          "commodity": "Radishes, Oriental",
+          "commodity": "Daikon",
           "reducer": "mostlyMid",
           "unit": "carton",
-          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+          "_status": "RESOLVED 2026-06-13 via --sample 2278/2279: commodity 'Daikon' on field 'commodity'. Was 'Radishes, Oriental'.",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2282",
           "market": "Baltimore",
-          "commodity": "Radishes, Oriental",
+          "commodity": "Daikon",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2286",
           "market": "Boston",
-          "commodity": "Radishes, Oriental",
+          "commodity": "Daikon",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2291",
           "market": "Chicago",
-          "commodity": "Radishes, Oriental",
+          "commodity": "Daikon",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2303",
           "market": "Detroit",
-          "commodity": "Radishes, Oriental",
+          "commodity": "Daikon",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2307",
           "market": "Los Angeles",
-          "commodity": "Radishes, Oriental",
+          "commodity": "Daikon",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2311",
           "market": "Miami",
-          "commodity": "Radishes, Oriental",
+          "commodity": "Daikon",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2315",
           "market": "New York",
-          "commodity": "Radishes, Oriental",
+          "commodity": "Daikon",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         }
       ],
       "bls": {
@@ -3757,59 +3808,83 @@
         {
           "reportId": "2278",
           "market": "Atlanta",
-          "commodity": "Peppers, Chili Type, Serrano",
+          "commodity": "Peppers, Serrano",
           "reducer": "mostlyMid",
           "unit": "carton",
-          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+          "_status": "RESOLVED 2026-06-13 via --sample 2278/2279: commodity 'Peppers, Serrano' on field 'commodity'. Was 'Peppers, Chili Type, Serrano'.",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2282",
           "market": "Baltimore",
-          "commodity": "Peppers, Chili Type, Serrano",
+          "commodity": "Peppers, Serrano",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2286",
           "market": "Boston",
-          "commodity": "Peppers, Chili Type, Serrano",
+          "commodity": "Peppers, Serrano",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2291",
           "market": "Chicago",
-          "commodity": "Peppers, Chili Type, Serrano",
+          "commodity": "Peppers, Serrano",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2303",
           "market": "Detroit",
-          "commodity": "Peppers, Chili Type, Serrano",
+          "commodity": "Peppers, Serrano",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2307",
           "market": "Los Angeles",
-          "commodity": "Peppers, Chili Type, Serrano",
+          "commodity": "Peppers, Serrano",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2311",
           "market": "Miami",
-          "commodity": "Peppers, Chili Type, Serrano",
+          "commodity": "Peppers, Serrano",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2315",
           "market": "New York",
-          "commodity": "Peppers, Chili Type, Serrano",
+          "commodity": "Peppers, Serrano",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         }
       ],
       "bls": {
@@ -3824,59 +3899,83 @@
         {
           "reportId": "2278",
           "market": "Atlanta",
-          "commodity": "Peppers, Chili Type, Poblano",
+          "commodity": "Peppers, Poblano",
           "reducer": "mostlyMid",
           "unit": "carton",
-          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+          "_status": "RESOLVED 2026-06-13 via --sample 2278/2279: commodity 'Peppers, Poblano' on field 'commodity'. Was 'Peppers, Chili Type, Poblano'.",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2282",
           "market": "Baltimore",
-          "commodity": "Peppers, Chili Type, Poblano",
+          "commodity": "Peppers, Poblano",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2286",
           "market": "Boston",
-          "commodity": "Peppers, Chili Type, Poblano",
+          "commodity": "Peppers, Poblano",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2291",
           "market": "Chicago",
-          "commodity": "Peppers, Chili Type, Poblano",
+          "commodity": "Peppers, Poblano",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2303",
           "market": "Detroit",
-          "commodity": "Peppers, Chili Type, Poblano",
+          "commodity": "Peppers, Poblano",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2307",
           "market": "Los Angeles",
-          "commodity": "Peppers, Chili Type, Poblano",
+          "commodity": "Peppers, Poblano",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2311",
           "market": "Miami",
-          "commodity": "Peppers, Chili Type, Poblano",
+          "commodity": "Peppers, Poblano",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2315",
           "market": "New York",
-          "commodity": "Peppers, Chili Type, Poblano",
+          "commodity": "Peppers, Poblano",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         }
       ],
       "bls": {
@@ -3891,59 +3990,83 @@
         {
           "reportId": "2278",
           "market": "Atlanta",
-          "commodity": "Peppers, Chili Type, Habanero",
+          "commodity": "Peppers, Habanero",
           "reducer": "mostlyMid",
           "unit": "carton",
-          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+          "_status": "RESOLVED 2026-06-13 via --sample 2278/2279: commodity 'Peppers, Habanero' on field 'commodity'. Was 'Peppers, Chili Type, Habanero'.",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2282",
           "market": "Baltimore",
-          "commodity": "Peppers, Chili Type, Habanero",
+          "commodity": "Peppers, Habanero",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2286",
           "market": "Boston",
-          "commodity": "Peppers, Chili Type, Habanero",
+          "commodity": "Peppers, Habanero",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2291",
           "market": "Chicago",
-          "commodity": "Peppers, Chili Type, Habanero",
+          "commodity": "Peppers, Habanero",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2303",
           "market": "Detroit",
-          "commodity": "Peppers, Chili Type, Habanero",
+          "commodity": "Peppers, Habanero",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2307",
           "market": "Los Angeles",
-          "commodity": "Peppers, Chili Type, Habanero",
+          "commodity": "Peppers, Habanero",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2311",
           "market": "Miami",
-          "commodity": "Peppers, Chili Type, Habanero",
+          "commodity": "Peppers, Habanero",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2315",
           "market": "New York",
-          "commodity": "Peppers, Chili Type, Habanero",
+          "commodity": "Peppers, Habanero",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         }
       ],
       "bls": {
@@ -4427,59 +4550,107 @@
         {
           "reportId": "2279",
           "market": "Atlanta",
-          "commodity": "Onions, Red",
+          "commodity": "Onions, Dry",
           "reducer": "mostlyMid",
           "unit": "sack",
-          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+          "_status": "RESOLVED 2026-06-13 via --sample 2278/2279: commodity 'Onions, Dry' + filters {\"variety\":\"RED\"} on field 'commodity'. Was 'Onions, Red'.",
+          "matchFields": [
+            "commodity"
+          ],
+          "filters": {
+            "variety": "RED"
+          }
         },
         {
           "reportId": "2283",
           "market": "Baltimore",
-          "commodity": "Onions, Red",
+          "commodity": "Onions, Dry",
           "reducer": "mostlyMid",
-          "unit": "sack"
+          "unit": "sack",
+          "matchFields": [
+            "commodity"
+          ],
+          "filters": {
+            "variety": "RED"
+          }
         },
         {
           "reportId": "2287",
           "market": "Boston",
-          "commodity": "Onions, Red",
+          "commodity": "Onions, Dry",
           "reducer": "mostlyMid",
-          "unit": "sack"
+          "unit": "sack",
+          "matchFields": [
+            "commodity"
+          ],
+          "filters": {
+            "variety": "RED"
+          }
         },
         {
           "reportId": "2292",
           "market": "Chicago",
-          "commodity": "Onions, Red",
+          "commodity": "Onions, Dry",
           "reducer": "mostlyMid",
-          "unit": "sack"
+          "unit": "sack",
+          "matchFields": [
+            "commodity"
+          ],
+          "filters": {
+            "variety": "RED"
+          }
         },
         {
           "reportId": "2304",
           "market": "Detroit",
-          "commodity": "Onions, Red",
+          "commodity": "Onions, Dry",
           "reducer": "mostlyMid",
-          "unit": "sack"
+          "unit": "sack",
+          "matchFields": [
+            "commodity"
+          ],
+          "filters": {
+            "variety": "RED"
+          }
         },
         {
           "reportId": "2308",
           "market": "Los Angeles",
-          "commodity": "Onions, Red",
+          "commodity": "Onions, Dry",
           "reducer": "mostlyMid",
-          "unit": "sack"
+          "unit": "sack",
+          "matchFields": [
+            "commodity"
+          ],
+          "filters": {
+            "variety": "RED"
+          }
         },
         {
           "reportId": "2312",
           "market": "Miami",
-          "commodity": "Onions, Red",
+          "commodity": "Onions, Dry",
           "reducer": "mostlyMid",
-          "unit": "sack"
+          "unit": "sack",
+          "matchFields": [
+            "commodity"
+          ],
+          "filters": {
+            "variety": "RED"
+          }
         },
         {
           "reportId": "2316",
           "market": "New York",
-          "commodity": "Onions, Red",
+          "commodity": "Onions, Dry",
           "reducer": "mostlyMid",
-          "unit": "sack"
+          "unit": "sack",
+          "matchFields": [
+            "commodity"
+          ],
+          "filters": {
+            "variety": "RED"
+          }
         }
       ],
       "bls": {
