@@ -35,6 +35,10 @@ const repoRoot   = path.resolve(path.dirname(__filename), '..');
 // Reuse the SAME tested, localized buy/hold/watch helper the dashboard uses, so
 // the page verdict and the tool verdict can never drift.
 const makeFmt = createRequire(import.meta.url)(path.join(repoRoot, 'tools/_shared/cost-index-format.js'));
+// Same shippable bar the dashboard seed uses — so we only deep-link to a Cost
+// Pulse card that actually exists (below-bar reads render on the page but aren't
+// on the dashboard, so linking them would be a dead anchor).
+const COST_CONF = createRequire(import.meta.url)(path.join(repoRoot, 'tools/_shared/cost-confidence.js'));
 const checkMode  = process.argv.includes('--check');
 
 function shellHash(name) {
@@ -191,12 +195,19 @@ function costIndexBlock(slug, locale) {
       ? `\n  <p class="iy-ci-ep">Al precio de hoy (~${money(today)}/${u}) y el ${pctY}% de rendimiento, tu ${u} comestible cuesta unos <strong>${ep}</strong>.</p>`
       : `\n  <p class="iy-ci-ep">At today's reference (~${money(today)}/${u}) and the ${pctY}% yield, your edible ${u} runs about <strong>${ep}</strong>.</p>`;
   }
+  // Two-way wiring: deep-link to the live dashboard card — but only when this read
+  // clears the shippable bar (so it actually has a #ci-<slug> anchor over there).
+  let dashHtml = '';
+  if (COST_CONF.isShippable(point)) {
+    const dashTxt = es ? 'Ver la lectura completa en el panel' : 'See the full market read';
+    dashHtml = `\n  <p class="iy-ci-more"><a href="${es ? '/es' : ''}/tools/cost-pulse/#ci-${slug}">${dashTxt} <span aria-hidden="true">→</span></a></p>`;
+  }
   return `
 <div class="iy-costindex">
   <p class="iy-ci-head">${head}<span class="iy-ci-badge">${badge}</span></p>
   <p class="iy-ci-line">${line}</p>${epHtml}${pctlHtml}${spreadHtml}${verdictHtml}
   <p class="iy-ci-why">${why}</p>
-  <details class="iy-ci-src"><summary>${srcSummary}</summary><div>${srcBody}</div></details>
+  <details class="iy-ci-src"><summary>${srcSummary}</summary><div>${srcBody}</div></details>${dashHtml}
 </div>`;
 }
 
@@ -328,15 +339,21 @@ const INGREDIENTS = [
   { slug: 'snow-peas',       en: 'Snow peas',        es: 'Arvejas de nieve', yield: 0.90, cat: 'fruiting',  unit_en: 'lb',    unit_es: 'libra',  apCents: 280 }
 ];
 
+const RELATED_CAP = 8;   // cap the sibling rail so a large category can't spray 30+ links (link-farm/doorway guard)
 function relatedInCategory(ing, locale) {
-  const sibs = INGREDIENTS.filter(x => x.cat === ing.cat && x.slug !== ing.slug);
-  if (!sibs.length) return '';
+  const all = INGREDIENTS.filter(x => x.cat === ing.cat && x.slug !== ing.slug);
+  if (!all.length) return '';
   const base = locale === 'es' ? '/es' : '';
+  // Nearest-by-yield first, so the shown siblings are the most comparable ones.
+  const sibs = all.slice().sort((a, b) => Math.abs(a.yield - ing.yield) - Math.abs(b.yield - ing.yield)).slice(0, RELATED_CAP);
   const links = sibs.map(s =>
     `<a href="${base}/library/ingredient-yields/${s.slug}/">${escHtml(locale === 'es' ? s.es : s.en)}</a>`
   ).join(' · ');
+  const more = all.length > RELATED_CAP
+    ? ` · <a class="iy-related-all" href="${base}/library/ingredient-yields/">${locale === 'es' ? `ver las ${all.length + 1} →` : `see all ${all.length + 1} →`}</a>`
+    : '';
   const label = locale === 'es' ? 'Misma categoría' : 'Same category';
-  return `<p class="iy-related"><span class="iy-related-label">${label}</span>${links}</p>`;
+  return `<p class="iy-related"><span class="iy-related-label">${label}</span>${links}${more}</p>`;
 }
 
 // Shared FAQ source of truth — the VISIBLE faqBlock and the FAQPage JSON-LD both
@@ -541,6 +558,8 @@ main{padding-top:64px}
 .iy-ci-line{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0}
 .iy-ci-why{font-size:13px;line-height:1.5;color:var(--ink-soft);margin:5px 0 0}
 .iy-ci-ep{font-size:14px;line-height:1.5;color:var(--ink);margin:5px 0 0}
+.iy-ci-more{font-size:13.5px;margin:9px 0 0}
+.iy-ci-more a{color:var(--teal);font-weight:600;text-decoration:none}
 .iy-ci-spread{font-size:13px;line-height:1.5;color:var(--ink-soft);margin:4px 0 0}
 .iy-ci-pctl{font-size:13px;line-height:1.5;color:var(--ink-soft);margin:4px 0 0}
 .iy-ci-verdict{font-size:14px;line-height:1.5;color:var(--ink);margin:7px 0 0;padding:7px 11px;border-radius:6px;background:var(--surface-2,#f5f3ef);border-left:3px solid var(--stone)}
