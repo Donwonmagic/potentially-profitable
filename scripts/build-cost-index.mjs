@@ -24,6 +24,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { pointIssues, historyIssues, driverIssues } from './check-cost-index-sync.mjs';
+import { ingredientTier } from './check-source-tier.mjs';
 
 const require = createRequire(import.meta.url);
 const B = require('../tools/_shared/cost-basket.js');
@@ -156,6 +157,24 @@ function main() {
       : pts;
     out.ingredients[k].flag = Spike.classify(fromHistory);
   }
+
+  // Coverage tier (D1) — label every vendored card measured/derived with the SAME
+  // rule check-source-tier.mjs enforces, and publish the `absent` gaps with their
+  // reasons so the UI can render "no public data — here's why" instead of a blank.
+  // Honest coverage is a first-class feature, not an omission.
+  for (const k of Object.keys(out.ingredients)) {
+    out.ingredients[k].tier = ingredientTier(srcIng[k]);
+    if (srcIng[k] && srcIng[k].coverage) out.ingredients[k].coverage = srcIng[k].coverage;
+  }
+  const gaps = [];
+  let nMeasured = 0, nDerived = 0;
+  for (const [slug, e] of Object.entries(srcIng)) {
+    const t = ingredientTier(e);
+    if (t === 'measured') nMeasured++;
+    else if (t === 'derived') nDerived++;
+    else gaps.push({ ingredient: slug, reason: (e && e.coverage) || '' });
+  }
+  out.coverage = { measured: nMeasured, derived: nDerived, absent: gaps.length, gaps };
 
   // Drivers (corn/soybeans/diesel/electricity): the explanatory "why" layer.
   // Gated for trend + citeable index history + leads that name known ingredients

@@ -26,7 +26,7 @@
  */
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -86,4 +86,6 @@ function run() {
   );
 }
 
-run();
+// Only run as a CLI when executed directly — not when build-cost-index.mjs
+// imports ingredientTier().
+if (import.meta.url === pathToFileURL(process.argv[1] || '').href) run();

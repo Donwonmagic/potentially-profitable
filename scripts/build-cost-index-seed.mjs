@@ -97,6 +97,10 @@ function main() {
     // The spike-vs-structural flag (verdict + actionBias) — a build-time, fact-gated
     // "story so far" the renderer turns into a buy/hold/watch suggestion.
     if (ingredientsObj[key].flag) entry.flag = ingredientsObj[key].flag;
+    // Coverage tier (D1) — the UI badges every card measured/derived so a reader
+    // can tell a published wholesale price from an honest directional estimate.
+    if (ingredientsObj[key].tier) entry.tier = ingredientsObj[key].tier;
+    if (ingredientsObj[key].coverage) entry.coverage = ingredientsObj[key].coverage;
     // Pressure overlay summary (inferred direction only — never a price). Trimmed
     // to the headline so the dashboard can show "where it's headed" honestly.
     // HOLD-UNTIL-PROVEN (matches build-cost-index-pages): the dashboard shows the
@@ -150,6 +154,16 @@ function main() {
     ingredients: out,
   };
   if (driversOut.length) seed.drivers = driversOut;
+  // Coverage honesty (D1) — pass the measured/derived/absent tally and the absent
+  // gaps (with display labels + the structural reason) so the dashboard can render
+  // "no public data — here's why" cards instead of silently omitting them.
+  if (data.coverage && typeof data.coverage === 'object') {
+    const gaps = (data.coverage.gaps || []).map((g) => {
+      const lab = labels[g.ingredient];
+      return { key: g.ingredient, label_en: lab ? lab.en : g.ingredient, label_es: lab ? lab.es : g.ingredient, reason: g.reason || '' };
+    });
+    seed.coverage = { measured: data.coverage.measured, derived: data.coverage.derived, absent: data.coverage.absent, gaps };
+  }
 
   const banner = `/**
  * Cost Index — browser seed (LIVE). GENERATED — do not edit by hand.
