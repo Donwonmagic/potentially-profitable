@@ -3,6 +3,29 @@
 Living record of the Cost Index / Plate effort. Update as items land. Status:
 ✅ done · ▶︎ in progress · ☐ todo · ⛔ gated (needs founder env/keys/counsel).
 
+## 2026-06-13 — post-merge keyless execution (branch `…-audit-d7upo`)
+Branch merged to main; the master plan (`docs/cost-index-master-plan.md`) committed.
+Then executed the keyless, verifiable-now roadmap items (each shipped at 174/174 gates):
+- ✅ **#9 pressure credibility** — dropped 7 mis-signed/freight-only starter rules
+  (pineapple, ginger, button-mushroom, sweet-potato, corn-on-the-cob, tuna-loin,
+  whole-lobster) that the category template signed against the wrong geography; added a
+  non-steady-call proving floor (`minNonSteadyCalls:4`) so a rule can't earn its overlay
+  by calling flat forever. 50 rules remain.
+- ✅ **#6 / P0 operator price-vs-benchmark** — a private "your price" input on every
+  wholesale-basis ingredient page (47 EN + 47 ES), compared live against the public
+  wholesale reference. No fetch, no localStorage. Honest framing (reference is wholesale;
+  delivered runs higher).
+- ✅ **+ EP from your price** — same-unit pages (7 EN + 7 ES) also show the operator's
+  edible-portion cost = their price ÷ the cited yield (the most actionable number).
+- ✅ **P2 alias registry** — `data/ingredient-aliases.json` (15 keys, 29 generic-synonym
+  stems, all staged) + `check-ingredient-aliases.mjs` (+self-test). The canonical
+  distributor-tie collapse layer, fact-gated.
+
+⛔ **Gated on founder keys/data (next, highest-leverage):** set FRED/BLS/AMS secrets +
+one green cron (#2) → then verify the 47 staged sources (#3), the free low→medium BLS
+trend legs (#4), and the free dairy `high` via USDA-republished CME cash spot (#5) all
+light up on refetch. FBG yield-gaps (#8) need founder verification against CIA/FBG.
+
 ## Shipped (merged to main)
 - ✅ Parity engines made real: `plate-advice.js`, `sales-mix.js`, `composite-price.js`,
   `observation-quality.js`, `cost-index-sources.js` (+ vector suites). [PR #421/#177]
