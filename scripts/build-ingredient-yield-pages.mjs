@@ -269,7 +269,7 @@ const INGREDIENTS = [
   { slug: 'chicken-thigh',   en: 'Chicken thigh',    es: 'Muslo de pollo', yield: 0.90, cat: 'meat',       unit_en: 'lb', unit_es: 'libra', apCents: 220 },
   { slug: 'pork-shoulder',   en: 'Pork shoulder',    es: 'Espaldilla de cerdo', yield: 0.75, cat: 'meat',  unit_en: 'lb', unit_es: 'libra', apCents: 250 },
   { slug: 'pork-loin',       en: 'Pork loin',        es: 'Lomo de cerdo',  yield: 0.85, cat: 'meat',       unit_en: 'lb', unit_es: 'libra', apCents: 350 },
-  { slug: 'ribeye',          en: 'Ribeye',           es: 'Ribeye (costilla)', yield: 0.75, cat: 'beef',     unit_en: 'lb', unit_es: 'libra', apCents: 1400 },
+  { slug: 'ribeye',          en: 'Ribeye',           es: 'Ribeye (bife ancho)', yield: 0.75, cat: 'beef',   unit_en: 'lb', unit_es: 'libra', apCents: 1400 },
   { slug: 'striploin',       en: 'Striploin',        es: 'New York (bife angosto)', yield: 0.80, cat: 'beef', unit_en: 'lb', unit_es: 'libra', apCents: 1200 },
   { slug: 'beef-tenderloin', en: 'Beef tenderloin',  es: 'Filete de res',  yield: 0.85, cat: 'beef',       unit_en: 'lb', unit_es: 'libra', apCents: 2000 },
   { slug: 'leg-of-lamb',     en: 'Leg of lamb',      es: 'Pierna de cordero', yield: 0.70, cat: 'beef',     unit_en: 'lb', unit_es: 'libra', apCents: 900 },
