@@ -366,9 +366,11 @@ function emitJsonLd(ing, locale) {
     `Look up the yield: ${nlow} yields ${pct}% (CIA Standard Yield Tables).`,
     `Divide: edible-portion cost = AP price ÷ ${dy}. The result is your true plated cost per ${unit}.`,
   ];
+  const catLabel = locale === 'es' ? CATEGORIES[ing.cat].es : CATEGORIES[ing.cat].en;
+  const catUrl = `https://muntin.digital${base}/library/ingredient-yields/${ing.cat}/`;
   const crumb = locale === 'es'
-    ? [['Inicio','https://muntin.digital/es/'],['Biblioteca','https://muntin.digital/es/library/'],['Rendimiento de ingredientes','https://muntin.digital/es/library/ingredient-yields/'],[name,url]]
-    : [['Home','https://muntin.digital/'],['Library','https://muntin.digital/library/'],['Ingredient yields','https://muntin.digital/library/ingredient-yields/'],[name,url]];
+    ? [['Inicio','https://muntin.digital/es/'],['Biblioteca','https://muntin.digital/es/library/'],['Rendimiento de ingredientes','https://muntin.digital/es/library/ingredient-yields/'],[catLabel,catUrl],[name,url]]
+    : [['Home','https://muntin.digital/'],['Library','https://muntin.digital/library/'],['Ingredient yields','https://muntin.digital/library/ingredient-yields/'],[catLabel,catUrl],[name,url]];
   return JSON.stringify({
     '@context': 'https://schema.org',
     '@graph': [
@@ -473,6 +475,12 @@ main{padding-top:64px}
 .iy-breakdown th{font-weight:500;color:var(--ink-soft)}
 .iy-breakdown td{font-weight:600;text-align:right}
 .iy-breakdown-src{font-size:12px;color:var(--ink-soft);margin:6px 0 0}
+.iy-cat-table{border-collapse:collapse;width:100%;font-size:15px}
+.iy-cat-table th,.iy-cat-table td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line)}
+.iy-cat-table thead th{font-size:12.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);font-weight:600}
+.iy-cat-table tbody th{font-weight:500}
+.iy-cat-table tbody td{text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+.iy-cat-table a{color:var(--teal);text-decoration:none}
 .iy-faq{margin:4px 0 0}
 .iy-faq-item{border-bottom:1px solid var(--line);padding:2px 0}
 .iy-faq-item summary{cursor:pointer;font-weight:600;font-size:15px;padding:11px 0;list-style:none}
@@ -594,6 +602,7 @@ function emitIngredientPage(ing, locale) {
     <a href="${base}/">${bcHome}</a> ›
     <a href="${base}/library/">${bcLib}</a> ›
     <a href="${base}/library/ingredient-yields/">${bcHub}</a> ›
+    <a href="${base}/library/ingredient-yields/${ing.cat}/">${escHtml(catLabel)}</a> ›
     ${escHtml(name)}
   </p>
   <section class="iy-hero">
@@ -637,7 +646,8 @@ function emitHubPage(locale) {
       const nm = locale === 'es' ? i.es : i.en;
       return `<div class="iy-card"><a href="${base}/library/ingredient-yields/${i.slug}/">${escHtml(nm)}</a><span class="iy-card-y">${Math.round(i.yield*100)}% ${locale === 'es' ? 'rendimiento' : 'yield'}</span></div>`;
     }).join('');
-    return `<h2 class="iy-cat-h">${escHtml(locale === 'es' ? c.es : c.en)}</h2><div class="iy-grid">${cards}</div>`;
+    const catName = escHtml(locale === 'es' ? c.es : c.en);
+    return `<h2 class="iy-cat-h"><a href="${base}/library/ingredient-yields/${catKey}/">${catName}</a></h2><div class="iy-grid">${cards}</div>`;
   }).join('\n');
   const items = INGREDIENTS.map((i, idx) => ({
     '@type': 'ListItem', 'position': idx + 1,
@@ -675,6 +685,77 @@ function emitHubPage(locale) {
   </section>` + pageTail;
 }
 
+// A routable category hub — the taxonomy middle tier (Library → master hub →
+// category hub → leaf). Its unique content is the category guide prose + a
+// ranked, sourced yield table of its members, so it carries data a leaf doesn't
+// and reads as a real landing page, not a doorway.
+function emitCategoryHub(catKey, locale) {
+  const lang = locale === 'es' ? 'es' : 'en';
+  const base = locale === 'es' ? '/es' : '';
+  const c = CATEGORIES[catKey];
+  const catLabel = locale === 'es' ? c.es : c.en;
+  const guide = locale === 'es' ? c.guide_es : c.guide_en;
+  const members = INGREDIENTS.filter((i) => i.cat === catKey).slice().sort((a, b) => b.yield - a.yield);
+  const canonEn = `https://muntin.digital/library/ingredient-yields/${catKey}/`;
+  const canonEs = `https://muntin.digital/es/library/ingredient-yields/${catKey}/`;
+  const title = locale === 'es' ? `Rendimiento: ${catLabel.toLowerCase()} | Muntin Digital` : `${catLabel} yield chart | Muntin Digital`;
+  const desc = locale === 'es'
+    ? `Rendimiento (porción comestible) de ${members.length} ${catLabel.toLowerCase()} de restaurante, ordenado de mayor a menor. ${guide}`
+    : `Edible-portion yield for ${members.length} restaurant ${catLabel.toLowerCase()}, ranked highest to lowest. ${guide}`;
+  const heroH1 = locale === 'es' ? `Rendimiento de ${catLabel.toLowerCase()}` : `${catLabel} yields`;
+  const colIng = locale === 'es' ? 'Ingrediente' : 'Ingredient';
+  const colY = locale === 'es' ? 'Rendimiento' : 'Yield';
+  const rows = members.map((i) => {
+    const nm = locale === 'es' ? i.es : i.en;
+    return `<tr><th scope="row"><a href="${base}/library/ingredient-yields/${i.slug}/">${escHtml(nm)}</a></th><td>${Math.round(i.yield * 100)}%</td></tr>`;
+  }).join('\n          ');
+  const baseUrl = locale === 'es' ? canonEs : canonEn;
+  const hubUrl = `https://muntin.digital${base}/library/ingredient-yields/`;
+  const items = members.map((i, idx) => ({
+    '@type': 'ListItem', 'position': idx + 1,
+    'item': { '@type': 'WebPage', 'name': (locale === 'es' ? i.es : i.en), 'url': baseUrl.replace(catKey + '/', '') + i.slug + '/' }
+  }));
+  const crumb = locale === 'es'
+    ? [['Inicio', 'https://muntin.digital/es/'], ['Biblioteca', 'https://muntin.digital/es/library/'], ['Rendimiento de ingredientes', hubUrl], [catLabel, baseUrl]]
+    : [['Home', 'https://muntin.digital/'], ['Library', 'https://muntin.digital/library/'], ['Ingredient yields', hubUrl], [catLabel, baseUrl]];
+  const jsonld = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'CollectionPage', '@id': baseUrl + '#webpage', 'name': heroH1, 'description': clampDesc(desc, 300), 'url': baseUrl,
+        'inLanguage': locale === 'es' ? 'es-US' : 'en-US', 'isPartOf': { '@id': 'https://muntin.digital/#website' }, 'publisher': { '@id': 'https://muntin.digital/#business' } },
+      { '@type': 'ItemList', 'numberOfItems': items.length, 'itemListElement': items },
+      { '@type': 'BreadcrumbList', 'itemListElement': crumb.map((cc, i) => ({ '@type': 'ListItem', 'position': i + 1, 'name': cc[0], 'item': cc[1] })) }
+    ]
+  });
+  const bcHome = locale === 'es' ? 'Inicio' : 'Home';
+  const bcLib = locale === 'es' ? 'Biblioteca' : 'Library';
+  const bcHub = locale === 'es' ? 'Rendimiento de ingredientes' : 'Ingredient yields';
+  return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld }) + `
+  <p class="breadcrumb">
+    <a href="${base}/">${bcHome}</a> ›
+    <a href="${base}/library/">${bcLib}</a> ›
+    <a href="${base}/library/ingredient-yields/">${bcHub}</a> ›
+    ${escHtml(catLabel)}
+  </p>
+  <section class="iy-hero">
+    <h1>${escHtml(heroH1)}</h1>
+    <p class="iy-hero-lede">${escHtml(guide)}</p>
+  </section>
+  <section class="iy-body">
+    <div class="table-scroll">
+      <table class="iy-cat-table">
+        <thead><tr><th scope="col">${colIng}</th><th scope="col">${colY}</th></tr></thead>
+        <tbody>
+          ${rows}
+        </tbody>
+      </table>
+    </div>
+    <p class="iy-source"><strong>${locale === 'es' ? 'Fuente' : 'Sourced'}:</strong> ${locale === 'es'
+      ? `tablas de rendimiento estándar del CIA, vía la <a href="${base}/tools/plate-cost/">Calculadora de Costo por Platillo</a>`
+      : `CIA Standard Yield Tables, via the <a href="${base}/tools/plate-cost/">Plate Cost Calculator</a>`}</p>
+  </section>` + pageTail;
+}
+
 // ---- Write or check ------------------------------------------------
 const targets = [];
 for (const ing of INGREDIENTS) {
@@ -683,6 +764,11 @@ for (const ing of INGREDIENTS) {
 }
 targets.push({ path: 'library/ingredient-yields/index.html', content: emitHubPage('en') });
 targets.push({ path: 'es/library/ingredient-yields/index.html', content: emitHubPage('es') });
+for (const catKey of Object.keys(CATEGORIES)) {
+  if (!INGREDIENTS.some((i) => i.cat === catKey)) continue;   // skip empty buckets
+  targets.push({ path: `library/ingredient-yields/${catKey}/index.html`, content: emitCategoryHub(catKey, 'en') });
+  targets.push({ path: `es/library/ingredient-yields/${catKey}/index.html`, content: emitCategoryHub(catKey, 'es') });
+}
 
 let drift = 0;
 for (const tgt of targets) {
