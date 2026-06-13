@@ -181,6 +181,43 @@ async function listCommodities(reportId, section) {
   console.log(`\nUse the exact term as ams.commodity (field-agnostic substring match on "${labelF}"). Pick the price column "${priceF || '?'}" for fields.price if it isn't auto-detected.`);
 }
 
+// --sample <reportId> [section] [--lmr] [--match <substr>] [--n <count>]: dump RAW
+// rows (every field) from a report, optionally only rows containing <substr> in any
+// field. This is the schema X-ray behind the term matcher: --list-commodities shows
+// ONE label field, but a report can blend products under it (e.g. 2279 mixes onions
+// + potatoes in "variety"). --sample reveals the OTHER fields (commodity / class …)
+// so you wire a precise ams.commodity + matchFields/filters instead of a substring
+// that catches the wrong product. Pairs with normalizeAms's matcher exactly.
+async function sampleRows(reportId, section) {
+  if (!reportId) { console.error('Usage: --sample <reportId> ["section"] [--lmr] [--match <substr>] [--n <count>]'); process.exit(1); }
+  const useLmr = process.argv.includes('--lmr');
+  if (!useLmr && !keys.AMS) { console.error('AMS_KEY required for --sample.'); process.exit(1); }
+  const auth = useLmr
+    ? (process.env.LMR_KEY ? 'Basic ' + Buffer.from(process.env.LMR_KEY + ':').toString('base64') : undefined)
+    : 'Basic ' + Buffer.from(keys.AMS + ':').toString('base64');
+  const mi = process.argv.indexOf('--match');
+  const match = mi >= 0 && process.argv[mi + 1] && !process.argv[mi + 1].startsWith('--') ? process.argv[mi + 1].toLowerCase() : null;
+  const ni = process.argv.indexOf('--n');
+  const limit = ni >= 0 ? Math.max(1, parseInt(process.argv[ni + 1], 10) || 6) : 6;
+  let j;
+  try { j = useLmr ? await F.fetchLmrReport(reportId, section, auth) : await F.fetchAmsReport(reportId, section, auth); }
+  catch (e) { console.error(`Could not fetch report ${reportId}${section ? ' / ' + section : ''}: ${e.message}`); process.exit(1); }
+  const rows = Array.isArray(j) ? j : (j.results || (j.report && j.report.results) || []);
+  if (!rows.length) {
+    const secs = j.reportSections || (j.report && j.report.reportSections) || [];
+    console.error(`Report ${reportId} returned 0 rows for section "${section || '(default)'}".`);
+    if (secs.length) console.error('Sections in this report: ' + secs.map((s) => (typeof s === 'string' ? s : s.name)).join(' · '));
+    process.exit(1);
+  }
+  const hit = match
+    ? rows.filter((r) => Object.values(r).some((v) => typeof v === 'string' && v.toLowerCase().includes(match)))
+    : rows;
+  console.log(`Report ${reportId}${section ? ' / ' + section : ''}: ${rows.length} rows · fields: ${Object.keys(rows[0] || {}).join(', ')}`);
+  console.log(`${match ? `${hit.length} rows containing "${process.argv[mi + 1]}"` : 'no --match filter'} · showing ${Math.min(limit, hit.length)}:\n`);
+  for (const r of hit.slice(0, limit)) console.log('  ' + JSON.stringify(r));
+  console.log('\nWire it: ams.commodity = a substring of the product field; add matchFields:["<field>"] to scope the match to that column, or filters:{"<field>":"<exactValue>"} to pin one variety/class (EQUALS). commodityExact:true forces the commodity to match EQUALS, not contains.');
+}
+
 // --discover-fred <query>: search the FRED catalog for the right series id (so we
 // resolve a bad/wrong id by SEARCHING rather than guessing or dropping the slot).
 // FRED indexes most BLS PPI/CPI series too, so this finds WPU*/CUUR* (trend) AND
@@ -261,6 +298,13 @@ async function main() {
     const next = process.argv[lci + 2];
     const section = next && !next.startsWith('--') ? next : undefined;
     return listCommodities(reportId, section);
+  }
+  const si = process.argv.indexOf('--sample');
+  if (si >= 0) {
+    const reportId = process.argv[si + 1];
+    const next = process.argv[si + 2];
+    const section = next && !next.startsWith('--') ? next : undefined;
+    return sampleRows(reportId, section);
   }
   const dli = process.argv.indexOf('--discover-lmr');
   if (dli >= 0) return discoverLmr(process.argv[dli + 1]);
