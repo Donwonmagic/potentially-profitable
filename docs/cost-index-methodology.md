@@ -155,6 +155,38 @@ mushroom, ground turkey) where no public series exists.
 Each derived value carries a confidence band, a method link, and degrades to
 `absent` when its inputs don't clear the method's own bar.
 
+### 7.0 The historical-ratio bridge (the general principle)
+
+The methods below are instances of one idea: **any reputable series can be utilized
+through a validated historical ratio to the wholesale number we are building.** If an
+external series *X* (retail, an import unit value, an import price index, a related
+commodity) overlaps our measured wholesale series *W* on the ingredients where we
+hold both, we can learn the historical relationship `W ≈ f(X)` there and apply it
+where we have *X* but not *W*. This is how a coarse or indirect source still earns a
+place — *even when it isn't itself a solid wholesale number.*
+
+It is also exactly where a fact-disciplined index could quietly start lying, so the
+bridge is published **only** under these guards (a relationship that fails any of
+them yields `absent`, not a number):
+
+1. **Overlap, not assertion.** The ratio is *measured* on a real overlap window
+   where both *X* and *W* exist — never assumed. No overlap ⇒ no bridge.
+2. **Stability gate.** The relationship must be stable over that overlap (bounded
+   residual variance / sufficient fit). A drifting or noisy ratio ⇒ `absent`. We do
+   not publish a number off a relationship we can't pin.
+3. **The band is the relationship's error, not the input's.** The published
+   confidence band reflects the *residual* of the historical fit — so a loose bridge
+   reads as a wide, honest band, never a false-precise point.
+4. **Mechanism, not coincidence.** A bridge needs a plausible causal/structural link
+   (feed→meat, import flow→domestic price, farm→retail spread) — not a bare
+   correlation. This is the explicit guard against spurious fits; "it correlates" is
+   not sufficient, "it correlates *and* there's a reason" is.
+5. **Always `derived`, always re-estimated.** Tagged `derived` with the method + the
+   overlap window cited; the ratio is re-fit as overlap grows, and a bridge that
+   destabilizes reverts to `absent`. A bridge never overrides a direct measured level.
+
+The instances:
+
 - **Yield-adjusted true plate cost (EP).** `EP = AP wholesale ÷ representative trim
   yield` (`data/ingredient-yields.json`). Converts a wholesale tick into the number
   an operator pays; a 40%-yield item amplifies a move ~2.5×. Yields are ranges —

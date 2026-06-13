@@ -192,6 +192,14 @@ risk). Four deliverables, sequenced so each unlocks the next.
 - Proves the "add a whole source family" pattern on the highest-grade feed.
 - **Acceptance:** butter/cheddar + ground-pork + lambs vendor from mandatory data,
   pass all gates, render `measured` with citation.
+- **Status (audited 2026-06-13): NDPSR dairy DONE.** butter + cheddar-cheese both
+  vendor `measured` from NDPSR (LMR Datamart report **2993**, `Butter_Price` /
+  `cheese_40_Price`, weekly, `verified:true`) with FRED corroboration —
+  butter ≈ $1.61/lb, cheddar ≈ $1.66/lb. Butter + cheddar are the only
+  restaurant-relevant NDPSR commodities (the rest are NFDM/whey/barrels), so the
+  dairy complex is complete. **Remaining D2 = the pork/lamb cuts**, not dairy:
+  ground-pork (LMR pork-trim 72%) + the lamb family (LM_XL552) — still `absent`,
+  pending spec wiring + a connected `--flip` (runbook §3).
 
 ### D3 — Seasonality baseline v1
 - `scripts/build-seasonality.mjs` computes a multi-year monthly normal per

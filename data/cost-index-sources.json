@@ -1719,7 +1719,7 @@
     "leg-of-lamb": {
       "verified": false,
       "lmr": {
-        "reportId": "DISCOVER",
+        "reportId": "2650",
         "commodity": "Leg",
         "reducer": "wtdAvg",
         "unit": "lb",
@@ -1732,9 +1732,9 @@
             "avg_price"
           ]
         },
-        "_status": "LMR lamb is a separate report — --discover-lmr \"lamb\" for the reportId + section, then confirm the cut (\"Leg\")."
+        "_status": "STAGED verified:false — reportId resolved 2026-06-13 to 2650 (LM_XL552, 'National Weekly Lamb Carcass and Lamb Cuts - Imported Product'). IMPORTED (AUS/NZ) product — representative for US restaurant lamb, LABEL as imported. --discover-lmr the exact Leg cut column (e.g. 'Leg boneless'/'Leg semi boneless') on 2650, tighten bounds, --flip."
       },
-      "coverage": "Pending source wiring: lamb cuts publish in the LMR lamb family (e.g., LM_XL552); slug to be wired."
+      "coverage": "Pending source wiring: lamb cuts publish weekly on LM_XL552 (report 2650, imported product); cut column to confirm via --discover, then --flip."
     },
     "whole-salmon": {
       "verified": true,
@@ -5423,11 +5423,10 @@
     "lamb-shoulder": {
       "verified": false,
       "lmr": {
-        "reportId": "DISCOVER",
+        "reportId": "2650",
         "commodity": "Shoulder",
         "reducer": "wtdAvg",
         "unit": "lb",
-        "section": "Choice Cuts",
         "priceUnit": "Dollars Per Cwt",
         "windowDays": 45,
         "fields": {
@@ -5438,7 +5437,7 @@
             "avg_price"
           ]
         },
-        "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. lamb is a separate report — --discover-lmr \"lamb\" for reportId+section"
+        "_status": "STAGED verified:false — reportId resolved 2026-06-13 to 2650 (LM_XL552, weekly lamb cuts, IMPORTED product; label as imported). Dropped the beef-style 'Choice Cuts' section — lamb sections differ; --discover-lmr the Shoulder cut column on 2650, tighten bounds, --flip."
       },
       "bls": {
         "seriesId": "WPU0223",
@@ -5480,12 +5479,12 @@
             "pork_trim_72_value"
           ]
         },
-        "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. confirm the grind/trim column on LM_PK602 — may be BLS-trend-only"
+        "_status": "STAGED verified:false — report CONFIRMED 2026-06-13: 2498 (LM_PK602) carries '72% Trim Combo' (wtd-avg ~110 $/cwt ≈ $1.10/lb, ~515k units) — a fair ground-pork proxy. The 72% trim is in the TRIMMINGS block, NOT 'Cutout and Primal Values' (that section holds the primals/belly); --discover-lmr the exact 72%-trim column + section on 2498 and tighten bounds (~80–160 ¢/lb), then --flip."
       },
       "bls": {
         "seriesId": "WPS022104"
       },
-      "coverage": "Pending source wiring: pork trim (72%) is published inside the LMR pork-cutout/FOB family (LM_PK602); slug to be wired."
+      "coverage": "Pending source wiring: pork trim (72%) on LM_PK602 (report 2498, Trimmings block); column/section to confirm via --discover, then --flip."
     },
     "whole-turkey": {
       "verified": false,
