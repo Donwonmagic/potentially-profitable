@@ -338,6 +338,14 @@ const CHECKS = [
   // deploy chain never does). The generator still runs; the pages stay
   // covered by the site-wide gates (OG refs, image dims, hreflang, locale
   // parity, lazy images, etc.).
+  // Ingredient-yield manifest — every page's yield must match the cited CIA table
+  // (or declare a yield_source); slugs unique/kebab, bilingual, valid category.
+  ['Ingredient-yield manifest','check-ingredient-yields.mjs','--check'],
+  ['Ingredient-yield manifest self-test','check-ingredient-yields.mjs','--self-test'],
+  // JSON-LD price-cleanliness — structured data (lifted verbatim by answer
+  // engines) must never carry a $ figure, price field, or Offer/Product type.
+  ['Ingredient JSON-LD clean','check-ingredient-jsonld.mjs','--check'],
+  ['Ingredient JSON-LD self-test','check-ingredient-jsonld.mjs','--self-test'],
   ['Cost-index sources','check-cost-index-sources.mjs','--check'],
   ['Cost-index sync',   'check-cost-index-sync.mjs',     '--check'],
   ['Cost-index sync self-test','check-cost-index-sync.mjs','--self-test'],
@@ -346,6 +354,16 @@ const CHECKS = [
   // upstream orchestrator confidences are reconciled (today: onion high → medium).
   ['Cost-index calibration','check-cost-index-calibration.mjs'],
   ['Cost-index calibration self-test','check-cost-index-calibration.mjs','--self-test'],
+  // Trend-vs-curve consistency — the SHOWN trend % must describe the SHOWN
+  // sparkline (guards the unwindowed-index-source bug where a multi-year change
+  // leaked into the headline while the curve stayed windowed). Same script
+  // repairs the data when run without --check.
+  ['Cost-index trend↔curve','reconcile-cost-index-trends.mjs','--check'],
+  // Freshness heartbeat — informational here (data ages naturally between weekly
+  // runs, so it must never block a PR); the weekly refresh runs it with --check
+  // to turn a persistent stall into a red (alerting) scheduled run.
+  ['Cost-index freshness (warn)','check-cost-index-freshness.mjs'],
+  ['Cost-index freshness self-test','check-cost-index-freshness.mjs','--self-test'],
   ['Cost-index health (idem)','build-cost-index-health.mjs','--check'],
   ['Cost-index health self-test','build-cost-index-health.mjs','--self-test'],
   // Shippable bar — below-bar ingredients must stay out of the browser seed

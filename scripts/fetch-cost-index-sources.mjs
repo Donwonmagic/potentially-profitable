@@ -152,6 +152,24 @@ async function liveFetch(ingredient, m) {
   return out;
 }
 
+// Trend horizon: every source's series is trimmed to this many days (relative to
+// the source's OWN latest dated point) before composing. USDA AMS/LMR already
+// arrive windowed by the fetcher, but FRED/BLS/EIA come with their full multi-year
+// history — and an unwindowed index series leaks a multi-year change into the
+// blended trend while the level + sparkline stay recent (the romaine "+159%"
+// bug). Trimming here makes every source express the SAME recent change. Matches
+// the AMS fetch window so level, trend and history share one horizon.
+const SERIES_WINDOW_DAYS = Number(process.env.COST_INDEX_SERIES_DAYS || F.AMS_WINDOW_DAYS || 120);
+function windowOutputPoints(o, days) {
+  if (!o || !Array.isArray(o.points) || o.points.length < 2 || !days || days <= 0) return o;
+  const dated = o.points.filter((p) => p && p.date && isFinite(Date.parse(p.date)));
+  if (dated.length < 2) return o;
+  const lastT = dated.reduce((mx, p) => Math.max(mx, Date.parse(p.date)), -Infinity);
+  const cut = lastT - days * 86400000;
+  const win = o.points.filter((p) => p && p.date && isFinite(Date.parse(p.date)) && Date.parse(p.date) >= cut);
+  return win.length >= 2 ? { ...o, points: win } : o;   // never trim below a 2-point series
+}
+
 // normalize raw payloads → adapter outputs, honoring the per-source basis/reducer.
 function toOutputs(ingredient, raw, m) {
   const outs = [];
@@ -199,7 +217,9 @@ function toOutputs(ingredient, raw, m) {
     if (o.points.length) outs.push(o);
   });
   if (raw.eia && typeof S.normalizeEia === 'function') { const o = S.normalizeEia(raw.eia, { source: 'eia', basis: 'index', value: (m.eia && m.eia.value) || 'price' }); o.family = (m.eia && m.eia.family) || m.family || 'eia'; o.type = 'eia'; if (o.points.length) outs.push(o); }
-  return outs;
+  // One shared recent horizon for every source → the trend describes the same
+  // window the level and sparkline do (kills the unwindowed-index-source skew).
+  return outs.map((o) => windowOutputPoints(o, SERIES_WINDOW_DAYS));
 }
 
 // quality-screen the latest level-bearing obs per source, then assess.
@@ -279,8 +299,11 @@ async function main() {
   }
 
   // Drivers (corn/soybeans/diesel/electricity) — the "why" layer: index/trend +
-  // citeable index history + the ingredients each tends to lead. LIVE only; EIA
-  // (electricity) has no fetcher in this path yet, so it skips gracefully.
+  // citeable index history + the ingredients each tends to lead. LIVE only. Each
+  // driver runs through the same liveFetch→toOutputs path as an ingredient, so
+  // BLS (corn/soybeans), FRED (diesel) and EIA (electricity) are all wired; a
+  // driver with no key set, or whose live response composes 0 points, skips
+  // gracefully without sinking the run.
   const driverMap = rd('data/cost-index-sources.json').drivers || {};
   const drivers = {};
   let driversComposed = 0;
@@ -291,7 +314,7 @@ async function main() {
       try { raw = await liveFetch(d, driverMap[d]); } catch (e) { log(`\n■ driver ${d}  ·  fetch error: ${e.message}`); continue; }
       const outs = toOutputs(d, raw, driverMap[d]);
       const dp = composeDriver(outs);
-      if (!dp) { log(`\n■ driver ${d}  ·  no source data (EIA/electricity unsupported in this path yet)`); continue; }
+      if (!dp) { log(`\n■ driver ${d}  ·  no source data (no key set, or 0 points — for EIA confirm the route/facets via a sample)`); continue; }
       drivers[d] = { kind: driverMap[d].kind, leads: Array.isArray(driverMap[d].leads) ? driverMap[d].leads : [], trend: dp.trend, history: dp.history };
       driversComposed++;
     }

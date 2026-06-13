@@ -102,6 +102,16 @@ function main() {
   let vendored = 0;
 
   for (const ingredient of Object.keys(points)) {
+    // NOAA import unit value runs ~half of true delivered wholesale, so it must never
+    // ship as a dollar LEVEL. Demote it to an index/directional read here — the level
+    // (and its provenance) is kept so the page can show the "trade-value, below
+    // delivered wholesale" caveat, but isShippable() rejects basis:'index', so it
+    // never reaches the dashboard with a misleading price.
+    const _pt = points[ingredient];
+    if (_pt && _pt.level && Array.isArray(_pt.level.provenance) && _pt.level.provenance.some((x) => x.type === 'noaa-trade')) {
+      _pt.level.basis = 'index';
+      _pt.confidence = 'directional';
+    }
     const issues = pointIssues(ingredient, points[ingredient], srcIng, boundsMap);
     if (issues.length) { for (const i of issues) dropped[i] = (dropped[i] || 0) + 1; continue; }
     const prior = (existing.ingredients?.[ingredient]?.points) || [];

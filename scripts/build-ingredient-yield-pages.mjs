@@ -19,18 +19,28 @@
  *   node scripts/build-ingredient-yield-pages.mjs --check    # diff-only, exit 1 on drift
  *
  * Mirrors scripts/build-cuisine-landing-pages.mjs for chrome + check
- * parity. New ingredients: append to INGREDIENTS (and a CATEGORIES
- * entry if a new bucket). The slug is registered as a non-article
- * collection in scripts/lib/library-skips.mjs.
+ * parity. New ingredients: add a row to data/ingredient-yields.json
+ * (slug, en, es, yield, yield_key→YIELD_TABLE | yield_source, cat,
+ * unit_en, unit_es, apCents) — validated by scripts/check-ingredient-yields.mjs
+ * — plus a CATEGORIES entry here if it's a new bucket. The slug is a
+ * non-article collection in scripts/lib/library-skips.mjs.
  */
 
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
+// Reuse the SAME tested, localized buy/hold/watch helper the dashboard uses, so
+// the page verdict and the tool verdict can never drift.
+const makeFmt = createRequire(import.meta.url)(path.join(repoRoot, 'tools/_shared/cost-index-format.js'));
+// Same shippable bar the dashboard seed uses — so we only deep-link to a Cost
+// Pulse card that actually exists (below-bar reads render on the page but aren't
+// on the dashboard, so linking them would be a dead anchor).
+const COST_CONF = createRequire(import.meta.url)(path.join(repoRoot, 'tools/_shared/cost-confidence.js'));
 const checkMode  = process.argv.includes('--check');
 
 function shellHash(name) {
@@ -78,17 +88,77 @@ const COST_INDEX = (() => {
   try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-index.json'), 'utf8')).ingredients || {}; }
   catch { return {}; }
 })();
+const CI_BOUNDS = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-index-bounds.json'), 'utf8')).bounds || {}; }
+  catch { return {}; }
+})();
 const CI_SOURCE_LABELS = { 'usda-ams': 'USDA AMS', bls: 'BLS PPI', fred: 'FRED', noaa: 'NOAA Fisheries' };
+// Surface WHY a read is the strength it is — the honesty engine's reasoning, in
+// plain language. Qualitative only (no numbers to fact-gate); mirrors the
+// confidenceFor min-of-gates on the vendored fields the point already carries.
+function whyConfidence(point, conf, es) {
+  const lvl = point.level, tr = point.trend || {};
+  if (!lvl) return es ? 'Solo dirección — aún sin un nivel de precio comparable.' : 'Direction only — no comparable dollar level yet.';
+  if (conf === 'high') return es ? 'Lectura sólida — fuentes independientes coinciden en el nivel y en el movimiento.' : 'Strong read — independent sources agree on both the level and the move.';
+  const lt = lvl.nTypes || 0, tt = tr.nTypes || 0;
+  const agree = typeof tr.agreement === 'number' ? tr.agreement : 1;
+  const noise = tr.noise == null ? 0 : tr.noise;
+  const disp = lvl.typeDispersion || 0;
+  const levelPart = lt >= 2 && disp > 0.15
+    ? (es ? 'Las fuentes de precio no coinciden en el nivel' : 'The dollar sources disagree on the level')
+    : lt >= 2
+      ? (es ? 'El nivel está bien respaldado' : 'The level is well backed')
+      : (es ? 'Una sola metodología de precio respalda el nivel' : 'One pricing methodology backs the level');
+  const trendCaveat = (typeof tr.pct !== 'number') ? ''
+    : noise > 0.20 ? (es ? 'pero los precios saltan semana a semana, así que la tendencia no es firme' : "but week-to-week prices are jagged, so the trend isn't firm")
+      : agree < 0.5 ? (es ? 'y los mercados no coinciden en la dirección' : 'and the markets disagree on direction')
+        : tt < 2 ? (es ? 'y la tendencia se apoya en una sola fuente independiente' : 'and the trend leans on a single independent source')
+          : '';
+  return `${levelPart}${trendCaveat ? ', ' + trendCaveat : ''}.`;
+}
+// "Where it's cheapest right now" — the cross-market spread the engine already
+// collects in provenance and the page throws away. Each market is individually
+// cited (honest); skipped unless ≥2 AMS markets with a real spread.
+function ciMarketName(src) {
+  if (typeof src !== 'string' || src.indexOf('usda-ams-') !== 0) return null;
+  return src.slice('usda-ams-'.length).split('-').map((w) => (w ? w[0].toUpperCase() + w.slice(1) : w)).join(' ');
+}
+function cheapestLine(point, es) {
+  const lp = (point.provenance || []).filter((p) => p.kind === 'level' && typeof p.valueCents === 'number' && p.valueCents > 0 && ciMarketName(p.source));
+  if (lp.length < 2) return '';
+  let lo = lp[0], hi = lp[0];
+  for (const p of lp) { if (p.valueCents < lo.valueCents) lo = p; if (p.valueCents > hi.valueCents) hi = p; }
+  const loM = ciMarketName(lo.source), hiM = ciMarketName(hi.source);
+  if (loM === hiM || lo.valueCents === hi.valueCents) return '';
+  return es
+    ? `Más barato en ${loM} (~${money(lo.valueCents)}), más caro en ${hiM} (~${money(hi.valueCents)}).`
+    : `Cheapest in ${loM} (~${money(lo.valueCents)}), priciest in ${hiM} (~${money(hi.valueCents)}).`;
+}
 function costIndexBlock(slug, locale) {
   const entry = COST_INDEX[slug];
   const point = entry && Array.isArray(entry.points) && entry.points[0];
   if (!point) return '';                       // nothing verified+sourced yet → render nothing
   const es = locale === 'es';
-  const conf = point.confidence || 'low';
-  const confWord = es ? ({ high: 'alta', medium: 'media', low: 'baja', directional: 'direccional' }[conf] || conf) : conf;
   const lvl = point.level;
+  // NOAA import unit value runs ~half of true delivered wholesale, so it must NOT
+  // render as a dollar LEVEL or an edible-unit cost — only a trend/direction. Detect
+  // it from provenance and force the read directional (suppresses level, EP, percentile).
+  const isImportValue = !!(lvl && Array.isArray(lvl.provenance) && lvl.provenance.some((p) => p.type === 'noaa-trade'));
+  // A 6x+ wide band (a grade/market min–max collapsed into one range) can't honestly
+  // read 'medium' — cap it at 'low'. (The engine now narrows these on the next refetch.)
+  const _rc0 = lvl && Array.isArray(lvl.rangeCents) ? lvl.rangeCents : null;
+  const wideBand = !!(_rc0 && _rc0[0] > 0 && _rc0[1] / _rc0[0] > 6);
+  const conf = isImportValue ? 'directional'
+    : (wideBand && (point.confidence === 'medium' || point.confidence === 'high') ? 'low' : (point.confidence || 'low'));
+  const confWord = es ? ({ high: 'alta', medium: 'media', low: 'baja', directional: 'direccional' }[conf] || conf) : conf;
   const basis = (lvl && lvl.basis) || 'wholesale';
-  const unitSfx = lvl && lvl.unit ? '/' + lvl.unit : '';                  // never imply a $/lb we didn't measure (produce is $/carton)
+  // Show the price unit (produce is $/carton or $/sack, proteins $/lb). The level
+  // doesn't carry a unit, so fall back to the bounds unit and localize it — an
+  // unlabeled "$32–$105" reads as $/head, which it isn't.
+  const U_ES = { lb: 'libra', carton: 'caja', sack: 'saco', each: 'pieza', head: 'pieza', bunch: 'manojo', crate: 'caja', lug: 'caja', flat: 'caja', ear: 'pieza', dozen: 'docena', cwt: 'quintal', count: 'pieza' };
+  const ciUnitRaw = (lvl && lvl.unit) || (CI_BOUNDS[slug] || {}).unit;
+  const ciUnit = ciUnitRaw ? (es ? (U_ES[ciUnitRaw] || ciUnitRaw) : ciUnitRaw) : '';
+  const unitSfx = ciUnit ? '/' + ciUnit : '';
   const basisRef = es
     ? ({ wholesale: 'referencia mayorista', retail: 'referencia minorista', delivered: 'precio entregado' }[basis] || 'referencia')
     : ({ wholesale: 'wholesale reference', retail: 'retail reference', delivered: 'delivered' }[basis] || 'reference');
@@ -101,21 +171,81 @@ function costIndexBlock(slug, locale) {
   const tr = point.trend || {};
   const dirWord = tr.dir === 'up' ? (es ? 'al alza' : 'up') : tr.dir === 'down' ? (es ? 'a la baja' : 'down') : (es ? 'estable' : 'flat');
   const trendStr = (typeof tr.pct === 'number') ? `, ${dirWord} ${(tr.pct >= 0 ? '+' : '')}${(tr.pct * 100).toFixed(1).replace(/\.0$/, '')}%` : '';
-  const sources = [...new Set((point.provenance || []).map((p) => CI_SOURCE_LABELS[p.source] || p.source).filter(Boolean))];
+  // Collapse the per-market terminal slugs (usda-ams-atlanta, …) to one clean label —
+  // raw engineering slugs in the user-facing Sources drawer read as a scraper hack.
+  const srcLabel = (s) => typeof s === 'string'
+    ? (s.indexOf('usda-ams') === 0 ? 'USDA AMS' : s.indexOf('usda-lmr') === 0 ? 'USDA LMR' : (CI_SOURCE_LABELS[s] || s))
+    : s;
+  const sources = [...new Set((point.provenance || []).map((p) => srcLabel(p.source)).filter(Boolean))];
   const asOf = point.asOf || '—';
   const head = es ? 'Lectura de mercado' : 'Market read';
-  const line = es ? `Alrededor de ${range}${trendStr} en la ventana reciente.` : `About ${range}${trendStr} over the recent window.`;
+  // Import-value seafood: no dollar level — a directional caveat + the trend only.
+  const importCaveat = es
+    ? 'Índice de valor de importación — solo dirección; el valor de importación de NOAA va por debajo del precio mayorista entregado.'
+    : 'Trade-value index — directional only; the NOAA import value runs below delivered wholesale.';
+  const pctTxt = (typeof tr.pct === 'number') ? `${(tr.pct >= 0 ? '+' : '')}${(tr.pct * 100).toFixed(1).replace(/\.0$/, '')}%` : '';
+  const trendSentence = pctTxt ? (es ? ` El mercado va ${dirWord} ${pctTxt} en la ventana reciente.` : ` The market is ${dirWord} ${pctTxt} over the recent window.`) : '';
+  const line = isImportValue
+    ? `${importCaveat}${trendSentence}`
+    : (es ? `Alrededor de ${range}${trendStr} en la ventana reciente.` : `About ${range}${trendStr} over the recent window.`);
   const badge = `${es ? 'confianza' : 'confidence'} ${confWord} · ${es ? 'al' : 'as of'} ${asOf}`;
   const srcSummary = `${es ? 'Fuentes' : 'Sources'} · ${sources.length}`;
   const disclaimer = basis === 'retail'
     ? (es ? 'Referencia minorista, no el precio mayorista ni el entregado que pagas.' : 'Retail reference, not the wholesale or delivered price you pay.')
     : (es ? 'Referencia mayorista, no el precio entregado que pagas.' : 'Wholesale reference, not the delivered price you pay.');
   const srcBody = `${sources.join(' · ')} — ${es ? 'datos públicos' : 'public data'}, ${es ? 'al' : 'as of'} ${asOf}. ${disclaimer}`;
+  const why = whyConfidence(point, conf, es);
+  const FMT = makeFmt(es);
+  const fv = FMT.flagVerb(entry.flag, conf);   // buy/hold/watch — same tested helper as the dashboard, hedged by confidence
+  const verdictHtml = fv ? `\n  <p class="iy-ci-verdict iy-ci-${fv.tone}"><strong>${fv.verb}.</strong> ${fv.note}</p>` : '';
+  const spread = cheapestLine(point, es);
+  const spreadHtml = spread ? `\n  <p class="iy-ci-spread">${spread}</p>` : '';
+  // "Where today sits in its own range" — an honest COUNT of the PUBLISHED level
+  // vs the vendored weekly history. Anchor "today" to the level median (the
+  // authoritative current read), not the history's last point (which can lag the
+  // composite), so the percentile can't contradict the level/trend. Gated like the
+  // dashboard (never on a directional read).
+  const hist = (entry.history || []).map((h) => h && h.valueCents).filter((v) => typeof v === 'number' && isFinite(v));
+  const today = (!isImportValue && lvl && typeof lvl.medianCents === 'number') ? lvl.medianCents : null;
+  // Suppress the percentile when it would CONTRADICT the trend (e.g. "near the top"
+  // while the trend is down) — that reads as a bug and erodes trust. Show it only
+  // when the rank and the direction agree.
+  let pctl = '';
+  if (conf !== 'directional' && today != null && hist.length) {
+    const rank = hist.filter((v) => v < today).length / hist.length;   // 0..1, higher = nearer the top
+    const contradicts = (tr.dir === 'down' && rank > 0.7) || (tr.dir === 'up' && rank < 0.3);
+    if (!contradicts) pctl = FMT.percentileLine([...hist, today]);
+  }
+  const pctlHtml = pctl ? `\n  <p class="iy-ci-pctl">${pctl}</p>` : '';
+  // Live edible-unit cost: the number an operator repeats. ONLY when the live
+  // price unit matches the yield unit (both 'lb', etc.) — never divide a $/carton
+  // price by a per-head yield (the unit-mismatch trap). Both inputs are sourced
+  // (the price via provenance, the yield cited on the page), so the result is a
+  // shown calculation, not a new claim.
+  const ing = INGREDIENTS.find((i) => i.slug === slug);
+  const bUnit = (CI_BOUNDS[slug] || {}).unit;
+  let epHtml = '';
+  if (ing && ing.yield > 0 && bUnit && bUnit === ing.unit_en && today != null) {
+    const u = es ? (ing.unit_es || bUnit) : bUnit;
+    const pctY = Math.round(ing.yield * 100);
+    const ep = money(Math.round(today / ing.yield));
+    epHtml = es
+      ? `\n  <p class="iy-ci-ep">Al precio de hoy (~${money(today)}/${u}) y el ${pctY}% de rendimiento, tu ${u} comestible cuesta unos <strong>${ep}</strong>.</p>`
+      : `\n  <p class="iy-ci-ep">At today's reference (~${money(today)}/${u}) and the ${pctY}% yield, your edible ${u} runs about <strong>${ep}</strong>.</p>`;
+  }
+  // Two-way wiring: deep-link to the live dashboard card — but only when this read
+  // clears the shippable bar (so it actually has a #ci-<slug> anchor over there).
+  let dashHtml = '';
+  if (COST_CONF.isShippable(point)) {
+    const dashTxt = es ? 'Ver la lectura completa en el panel' : 'See the full market read';
+    dashHtml = `\n  <p class="iy-ci-more"><a href="${es ? '/es' : ''}/tools/cost-pulse/#ci-${slug}">${dashTxt} <span aria-hidden="true">→</span></a></p>`;
+  }
   return `
 <div class="iy-costindex">
   <p class="iy-ci-head">${head}<span class="iy-ci-badge">${badge}</span></p>
-  <p class="iy-ci-line">${line}</p>
-  <details class="iy-ci-src"><summary>${srcSummary}</summary><div>${srcBody}</div></details>
+  <p class="iy-ci-line">${line}</p>${epHtml}${pctlHtml}${spreadHtml}${verdictHtml}
+  <p class="iy-ci-why">${why}</p>
+  <details class="iy-ci-src"><summary>${srcSummary}</summary><div>${srcBody}</div></details>${dashHtml}
 </div>`;
 }
 
@@ -171,78 +301,132 @@ const CATEGORIES = {
 
 // Curated first batch (sourced yields from plate-cost.js YIELD_TABLE).
 // unit + apCents are ILLUSTRATIVE example AP prices for the worked math.
-const INGREDIENTS = [
-  { slug: 'romaine-lettuce', en: 'Romaine lettuce', es: 'Lechuga romana', yield: 0.75, cat: 'greens',     unit_en: 'head', unit_es: 'pieza',  apCents: 250 },
-  { slug: 'spinach',         en: 'Spinach',          es: 'Espinaca',       yield: 0.75, cat: 'greens',     unit_en: 'lb',   unit_es: 'libra',  apCents: 400 },
-  { slug: 'broccoli',        en: 'Broccoli',         es: 'Brócoli',        yield: 0.65, cat: 'cruciferous',unit_en: 'lb',   unit_es: 'libra',  apCents: 220 },
-  { slug: 'asparagus',       en: 'Asparagus',        es: 'Espárragos',     yield: 0.55, cat: 'stalks',     unit_en: 'lb',   unit_es: 'libra',  apCents: 350 },
-  { slug: 'onion',           en: 'Onion',            es: 'Cebolla',        yield: 0.88, cat: 'allium',     unit_en: 'lb',   unit_es: 'libra',  apCents: 90  },
-  { slug: 'garlic',          en: 'Garlic',           es: 'Ajo',            yield: 0.87, cat: 'allium',     unit_en: 'lb',   unit_es: 'libra',  apCents: 400 },
-  { slug: 'carrot',          en: 'Carrot',           es: 'Zanahoria',      yield: 0.82, cat: 'root',       unit_en: 'lb',   unit_es: 'libra',  apCents: 110 },
-  { slug: 'russet-potato',   en: 'Russet potato',    es: 'Papa russet',    yield: 0.81, cat: 'tuber',      unit_en: 'lb',   unit_es: 'libra',  apCents: 80  },
-  { slug: 'tomato',          en: 'Tomato',           es: 'Jitomate',       yield: 0.91, cat: 'fruiting',   unit_en: 'lb',   unit_es: 'libra',  apCents: 240 },
-  { slug: 'avocado',         en: 'Avocado',          es: 'Aguacate',       yield: 0.75, cat: 'fruit',      unit_en: 'each', unit_es: 'pieza',  apCents: 120 },
-  { slug: 'lime',            en: 'Lime',             es: 'Limón',          yield: 0.35, cat: 'citrus',     unit_en: 'each', unit_es: 'pieza',  apCents: 30  },
-  { slug: 'whole-chicken',   en: 'Whole chicken',    es: 'Pollo entero',   yield: 0.60, cat: 'meat',       unit_en: 'lb',   unit_es: 'libra',  apCents: 160 },
-  { slug: 'chicken-breast',  en: 'Chicken breast',   es: 'Pechuga de pollo', yield: 0.95, cat: 'meat',     unit_en: 'lb', unit_es: 'libra', apCents: 380 },
-  { slug: 'chicken-thigh',   en: 'Chicken thigh',    es: 'Muslo de pollo', yield: 0.90, cat: 'meat',       unit_en: 'lb', unit_es: 'libra', apCents: 220 },
-  { slug: 'pork-shoulder',   en: 'Pork shoulder',    es: 'Espaldilla de cerdo', yield: 0.75, cat: 'meat',  unit_en: 'lb', unit_es: 'libra', apCents: 250 },
-  { slug: 'pork-loin',       en: 'Pork loin',        es: 'Lomo de cerdo',  yield: 0.85, cat: 'meat',       unit_en: 'lb', unit_es: 'libra', apCents: 350 },
-  { slug: 'ribeye',          en: 'Ribeye',           es: 'Ribeye (costilla)', yield: 0.75, cat: 'beef',     unit_en: 'lb', unit_es: 'libra', apCents: 1400 },
-  { slug: 'striploin',       en: 'Striploin',        es: 'New York (bife angosto)', yield: 0.80, cat: 'beef', unit_en: 'lb', unit_es: 'libra', apCents: 1200 },
-  { slug: 'beef-tenderloin', en: 'Beef tenderloin',  es: 'Filete de res',  yield: 0.85, cat: 'beef',       unit_en: 'lb', unit_es: 'libra', apCents: 2000 },
-  { slug: 'leg-of-lamb',     en: 'Leg of lamb',      es: 'Pierna de cordero', yield: 0.70, cat: 'beef',     unit_en: 'lb', unit_es: 'libra', apCents: 900 },
-  { slug: 'whole-salmon',    en: 'Whole salmon',     es: 'Salmón entero',  yield: 0.55, cat: 'seafood',    unit_en: 'lb', unit_es: 'libra', apCents: 700 },
-  { slug: 'salmon-fillet',   en: 'Salmon fillet',    es: 'Filete de salmón', yield: 0.95, cat: 'seafood',  unit_en: 'lb', unit_es: 'libra', apCents: 1200 },
-  { slug: 'tuna-loin',       en: 'Tuna loin',        es: 'Lomo de atún',   yield: 0.85, cat: 'seafood',    unit_en: 'lb', unit_es: 'libra', apCents: 1400 },
-  { slug: 'whole-branzino',  en: 'Whole branzino',   es: 'Branzino entero', yield: 0.55, cat: 'seafood',   unit_en: 'lb', unit_es: 'libra', apCents: 900 },
-  { slug: 'shrimp',          en: 'Shrimp (shell-on)', es: 'Camarón con cáscara', yield: 0.85, cat: 'shellfish', unit_en: 'lb', unit_es: 'libra', apCents: 900 },
-  { slug: 'whole-lobster',   en: 'Whole lobster',    es: 'Langosta entera', yield: 0.30, cat: 'shellfish',  unit_en: 'lb', unit_es: 'libra', apCents: 1400 },
-  { slug: 'kale',            en: 'Kale',             es: 'Col rizada (kale)', yield: 0.70, cat: 'greens',    unit_en: 'lb',    unit_es: 'libra',  apCents: 250 },
-  { slug: 'cauliflower',     en: 'Cauliflower',      es: 'Coliflor',       yield: 0.60, cat: 'cruciferous', unit_en: 'head',  unit_es: 'pieza',  apCents: 300 },
-  { slug: 'bell-pepper',     en: 'Bell pepper',      es: 'Pimiento morrón', yield: 0.82, cat: 'fruiting',   unit_en: 'lb',    unit_es: 'libra',  apCents: 200 },
-  { slug: 'sweet-potato',    en: 'Sweet potato',     es: 'Camote',         yield: 0.75, cat: 'tuber',       unit_en: 'lb',    unit_es: 'libra',  apCents: 120 },
-  { slug: 'corn-on-the-cob', en: 'Corn on the cob',  es: 'Elote (mazorca)', yield: 0.28, cat: 'fruiting',   unit_en: 'ear',   unit_es: 'pieza',  apCents: 50 },
-  { slug: 'button-mushroom', en: 'Button mushroom',  es: 'Champiñón',      yield: 0.90, cat: 'mushroom',    unit_en: 'lb',    unit_es: 'libra',  apCents: 350 },
-  { slug: 'basil',           en: 'Basil',            es: 'Albahaca',       yield: 0.50, cat: 'herbs',       unit_en: 'bunch', unit_es: 'manojo', apCents: 200 },
-  { slug: 'cilantro',        en: 'Cilantro',         es: 'Cilantro',       yield: 0.70, cat: 'herbs',       unit_en: 'bunch', unit_es: 'manojo', apCents: 80 },
-  { slug: 'lemon',           en: 'Lemon',            es: 'Limón amarillo', yield: 0.45, cat: 'citrus',      unit_en: 'each',  unit_es: 'pieza',  apCents: 40 },
-  { slug: 'pineapple',       en: 'Pineapple',        es: 'Piña',           yield: 0.50, cat: 'fruit',       unit_en: 'each',  unit_es: 'pieza',  apCents: 300 }
-];
+const INGREDIENTS = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/ingredient-yields.json'), 'utf8'));
 
+const RELATED_CAP = 8;   // cap the sibling rail so a large category can't spray 30+ links (link-farm/doorway guard)
 function relatedInCategory(ing, locale) {
-  const sibs = INGREDIENTS.filter(x => x.cat === ing.cat && x.slug !== ing.slug);
-  if (!sibs.length) return '';
+  const all = INGREDIENTS.filter(x => x.cat === ing.cat && x.slug !== ing.slug);
+  if (!all.length) return '';
   const base = locale === 'es' ? '/es' : '';
+  // Nearest-by-yield first, so the shown siblings are the most comparable ones.
+  const sibs = all.slice().sort((a, b) => Math.abs(a.yield - ing.yield) - Math.abs(b.yield - ing.yield)).slice(0, RELATED_CAP);
   const links = sibs.map(s =>
     `<a href="${base}/library/ingredient-yields/${s.slug}/">${escHtml(locale === 'es' ? s.es : s.en)}</a>`
   ).join(' · ');
+  const more = all.length > RELATED_CAP
+    ? ` · <a class="iy-related-all" href="${base}/library/ingredient-yields/">${locale === 'es' ? `ver las ${all.length + 1} →` : `see all ${all.length + 1} →`}</a>`
+    : '';
   const label = locale === 'es' ? 'Misma categoría' : 'Same category';
-  return `<p class="iy-related"><span class="iy-related-label">${label}</span>${links}</p>`;
+  return `<p class="iy-related"><span class="iy-related-label">${label}</span>${links}${more}</p>`;
+}
+
+// Shared FAQ source of truth — the VISIBLE faqBlock and the FAQPage JSON-LD both
+// render from this, so the structured data can never drift from the on-page text
+// (the visible-must-match discipline AEO rewards). Every answer is SOURCED (the
+// CIA yield) or DERIVED (lossPct, the AP÷yield method) — and carries NO dollar
+// figure, because JSON-LD answer text is lifted verbatim by answer engines and an
+// illustrative price must never be laundered into a claim.
+function faqItems(ing, locale) {
+  const es = locale === 'es';
+  const name = es ? ing.es : ing.en;
+  const nlow = name.toLowerCase();
+  const pct = Math.round(ing.yield * 100);
+  const lossPct = 100 - pct;
+  const dy = ing.yield.toFixed(2);
+  return es ? [
+    { q: `¿Cuál es el rendimiento de ${nlow}?`,
+      a: `El rendimiento típico de ${nlow} es ${pct}% (porción comestible sobre el peso comprado), según las tablas de rendimiento estándar del CIA.` },
+    { q: `¿Cuánto se pierde al limpiar ${nlow}?`,
+      a: `Alrededor del ${lossPct}% del peso comprado se pierde al limpiar, pelar y recortar antes de emplatar.` },
+    { q: `¿Cómo se calcula el costo de porción comestible de ${nlow}?`,
+      a: `Divide el precio de compra entre el rendimiento: costo EP = precio AP ÷ ${dy}. Con ${pct}% de rendimiento, la merma hace que tu costo real en el plato sea bastante mayor que el precio de la factura.` },
+  ] : [
+    { q: `What is the yield of ${nlow}?`,
+      a: `${name} typically yields ${pct}% edible portion of its as-purchased weight, per the CIA Standard Yield Tables.` },
+    { q: `How much ${nlow} is lost to trim?`,
+      a: `About ${lossPct}% of the as-purchased weight is lost to cleaning, peeling, and trimming before it reaches the plate.` },
+    { q: `How do you calculate the edible-portion cost of ${nlow}?`,
+      a: `Divide the as-purchased price by the yield: EP cost = AP price ÷ ${dy}. At ${pct}% yield, the trim makes your real plated cost meaningfully higher than the invoice price.` },
+  ];
+}
+
+// The one liftable table (sourced rows, NO price column — a price column would
+// read as a claim) + the visible FAQ that mirrors the FAQPage JSON-LD.
+function faqBlock(ing, locale) {
+  const es = locale === 'es';
+  const pct = Math.round(ing.yield * 100);
+  const lossPct = 100 - pct;
+  const items = faqItems(ing, locale);
+  const tblH = es ? 'Desglose del rendimiento' : 'Yield breakdown';
+  const faqH = es ? 'Preguntas frecuentes' : 'Common questions';
+  const rAP = es ? 'Comprado (AP)' : 'As-purchased (AP)';
+  const rEP = es ? 'Porción comestible (EP)' : 'Edible portion (EP)';
+  const rLoss = es ? 'Merma al recortar' : 'Lost to trim';
+  const cap = es ? 'Fuente: tablas de rendimiento estándar del CIA.' : 'Source: CIA Standard Yield Tables.';
+  return `
+    <h2 class="iy-h2">${tblH}</h2>
+    <div class="table-scroll">
+      <table class="iy-breakdown">
+        <tbody>
+          <tr><th scope="row">${rAP}</th><td>100%</td></tr>
+          <tr><th scope="row">${rEP}</th><td>${pct}%</td></tr>
+          <tr><th scope="row">${rLoss}</th><td>${lossPct}%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="iy-breakdown-src">${cap}</p>
+    <h2 class="iy-h2">${faqH}</h2>
+    <div class="iy-faq">
+      ${items.map((it) => `<details class="iy-faq-item"><summary>${escHtml(it.q)}</summary><p>${escHtml(it.a)}</p></details>`).join('\n      ')}
+    </div>`;
 }
 
 function emitJsonLd(ing, locale) {
   const base = locale === 'es' ? '/es' : '';
   const url = `https://muntin.digital${base}/library/ingredient-yields/${ing.slug}/`;
   const name = locale === 'es' ? ing.es : ing.en;
-  const pctTxt = Math.round(ing.yield * 100) + '%';
-  const q = locale === 'es'
-    ? `¿Cuál es el rendimiento de ${name.toLowerCase()}?`
-    : `What is the yield of ${name.toLowerCase()}?`;
-  const a = locale === 'es'
-    ? `El rendimiento típico de ${name.toLowerCase()} es ${pctTxt} (porción comestible sobre peso comprado), según las tablas de rendimiento estándar del CIA.`
-    : `${name} typically yields ${pctTxt} edible portion of its as-purchased weight, per the CIA Standard Yield Tables.`;
+  const nlow = name.toLowerCase();
+  const es = locale === 'es';
+  const pct = Math.round(ing.yield * 100);
+  const dy = ing.yield.toFixed(2);
+  const unit = es ? ing.unit_es : ing.unit_en;
+  const items = faqItems(ing, locale);   // identical to the visible faqBlock
+  // HowTo for the AP→EP method — procedure only, NO dollar figures (the worked
+  // dollar example lives in the visible, illustrative-labeled iy-calc block).
+  const howSteps = es ? [
+    `Toma el precio de compra (AP) por ${unit} de tu factura.`,
+    `Busca el rendimiento: ${nlow} rinde ${pct}% (tablas de rendimiento estándar del CIA).`,
+    `Divide: costo de porción comestible = precio AP ÷ ${dy}. El resultado es tu costo real en el plato por ${unit}.`,
+  ] : [
+    `Take the as-purchased (AP) price per ${unit} from your invoice.`,
+    `Look up the yield: ${nlow} yields ${pct}% (CIA Standard Yield Tables).`,
+    `Divide: edible-portion cost = AP price ÷ ${dy}. The result is your true plated cost per ${unit}.`,
+  ];
+  const catLabel = locale === 'es' ? CATEGORIES[ing.cat].es : CATEGORIES[ing.cat].en;
+  const catUrl = `https://muntin.digital${base}/library/ingredient-yields/${ing.cat}/`;
   const crumb = locale === 'es'
-    ? [['Inicio','https://muntin.digital/es/'],['Biblioteca','https://muntin.digital/es/library/'],['Rendimiento de ingredientes','https://muntin.digital/es/library/ingredient-yields/'],[name,url]]
-    : [['Home','https://muntin.digital/'],['Library','https://muntin.digital/library/'],['Ingredient yields','https://muntin.digital/library/ingredient-yields/'],[name,url]];
+    ? [['Inicio','https://muntin.digital/es/'],['Biblioteca','https://muntin.digital/es/library/'],['Rendimiento de ingredientes','https://muntin.digital/es/library/ingredient-yields/'],[catLabel,catUrl],[name,url]]
+    : [['Home','https://muntin.digital/'],['Library','https://muntin.digital/library/'],['Ingredient yields','https://muntin.digital/library/ingredient-yields/'],[catLabel,catUrl],[name,url]];
+  // The ingredient as a disambiguated ENTITY (DefinedTerm) so search + LLMs resolve
+  // "ribeye" / its variants to this canonical page. Description is DERIVED from the
+  // sourced yield — no new claim, no dollar figure. alternateName/sameAs are
+  // deliberately omitted until a gated alias/QID source exists (a wrong one corrupts
+  // the graph). mainEntity binds the page to the entity.
+  const termDesc = es
+    ? `${name} rinde ${pct}% de porción comestible sobre su peso comprado (tablas de rendimiento estándar del CIA).`
+    : `${name} yields ${pct}% edible portion of its as-purchased weight (CIA Standard Yield Tables).`;
   return JSON.stringify({
     '@context': 'https://schema.org',
     '@graph': [
       { '@type': 'WebPage', '@id': url + '#webpage', 'name': name + (locale === 'es' ? ' — rendimiento' : ' yield'),
-        'url': url, 'inLanguage': locale === 'es' ? 'es-US' : 'en-US',
+        'url': url, 'inLanguage': locale === 'es' ? 'es-US' : 'en-US', 'mainEntity': { '@id': url + '#term' },
         'isPartOf': { '@id': 'https://muntin.digital/#website' }, 'publisher': { '@id': 'https://muntin.digital/#business' } },
-      { '@type': 'QAPage', 'mainEntity': { '@type': 'Question', 'name': q,
-        'acceptedAnswer': { '@type': 'Answer', 'text': a } } },
+      { '@type': 'DefinedTerm', '@id': url + '#term', 'name': name, 'description': termDesc,
+        'inDefinedTermSet': { '@id': `https://muntin.digital${base}/library/ingredient-yields/#termset` } },
+      { '@type': 'FAQPage', 'mainEntity': items.map((it) => ({ '@type': 'Question', 'name': it.q,
+        'acceptedAnswer': { '@type': 'Answer', 'text': it.a } })) },
+      { '@type': 'HowTo', 'name': es ? `Cómo calcular el costo de porción comestible de ${nlow}` : `How to calculate the edible-portion cost of ${nlow}`,
+        'step': howSteps.map((t, i) => ({ '@type': 'HowToStep', 'position': i + 1, 'text': t })) },
       { '@type': 'BreadcrumbList', 'itemListElement': crumb.map((c, i) => ({ '@type': 'ListItem', 'position': i + 1, 'name': c[0], 'item': c[1] })) }
     ]
   });
@@ -331,10 +515,39 @@ main{padding-top:64px}
 .iy-keep a{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:999px;background:#fff;color:#0f3a37;font-weight:600;font-size:13.5px;text-decoration:none}
 .iy-source{font-size:12.5px;color:var(--ink-soft);margin:20px 0 0}
 .iy-source a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.iy-h2{font-size:19px;line-height:1.3;margin:26px 0 10px}
+.iy-breakdown{border-collapse:collapse;width:100%;max-width:340px;font-size:15px}
+.iy-breakdown th,.iy-breakdown td{text-align:left;padding:9px 14px;border-bottom:1px solid var(--line)}
+.iy-breakdown th{font-weight:500;color:var(--ink-soft)}
+.iy-breakdown td{font-weight:600;text-align:right}
+.iy-breakdown-src{font-size:12px;color:var(--ink-soft);margin:6px 0 0}
+.iy-cat-table{border-collapse:collapse;width:100%;font-size:15px}
+.iy-cat-table th,.iy-cat-table td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line)}
+.iy-cat-table thead th{font-size:12.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);font-weight:600}
+.iy-cat-table tbody th{font-weight:500}
+.iy-cat-table tbody td{text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+.iy-cat-table a{color:var(--teal);text-decoration:none}
+.iy-faq{margin:4px 0 0}
+.iy-faq-item{border-bottom:1px solid var(--line);padding:2px 0}
+.iy-faq-item summary{cursor:pointer;font-weight:600;font-size:15px;padding:11px 0;list-style:none}
+.iy-faq-item summary::-webkit-details-marker{display:none}
+.iy-faq-item summary::after{content:"+";float:right;color:var(--ink-soft);font-weight:400}
+.iy-faq-item[open] summary::after{content:"−"}
+.iy-faq-item p{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0 0 12px}
 .iy-costindex{margin:14px 0 0;padding:14px 18px;background:var(--cream-2,#EDEEF1);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:10px}
 .iy-ci-head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
 .iy-ci-badge{font-weight:600;text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink-soft);margin-left:8px}
 .iy-ci-line{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0}
+.iy-ci-why{font-size:13px;line-height:1.5;color:var(--ink-soft);margin:5px 0 0}
+.iy-ci-ep{font-size:14px;line-height:1.5;color:var(--ink);margin:5px 0 0}
+.iy-ci-more{font-size:13.5px;margin:9px 0 0}
+.iy-ci-more a{color:var(--teal);font-weight:600;text-decoration:none}
+.iy-ci-spread{font-size:13px;line-height:1.5;color:var(--ink-soft);margin:4px 0 0}
+.iy-ci-pctl{font-size:13px;line-height:1.5;color:var(--ink-soft);margin:4px 0 0}
+.iy-ci-verdict{font-size:14px;line-height:1.5;color:var(--ink);margin:7px 0 0;padding:7px 11px;border-radius:6px;background:var(--surface-2,#f5f3ef);border-left:3px solid var(--stone)}
+.iy-ci-reprice{border-left-color:var(--rust)}
+.iy-ci-hold{border-left-color:var(--teal)}
+.iy-ci-watch{border-left-color:var(--gold,#C99A2E)}
 .iy-ci-src{margin-top:8px;font-size:12.5px}
 .iy-ci-src summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
 .iy-ci-src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
@@ -436,6 +649,7 @@ function emitIngredientPage(ing, locale) {
     <a href="${base}/">${bcHome}</a> ›
     <a href="${base}/library/">${bcLib}</a> ›
     <a href="${base}/library/ingredient-yields/">${bcHub}</a> ›
+    <a href="${base}/library/ingredient-yields/${ing.cat}/">${escHtml(catLabel)}</a> ›
     ${escHtml(name)}
   </p>
   <section class="iy-hero">
@@ -444,7 +658,7 @@ function emitIngredientPage(ing, locale) {
     <p class="iy-hero-lede">${escHtml(lede)}</p>
   </section>
   <section class="iy-body">
-    ${body}${costIndexBlock(ing.slug, locale)}
+    ${body}${faqBlock(ing, locale)}${costIndexBlock(ing.slug, locale)}
     <div class="iy-cta-row">
       <a class="iy-cta" href="${base}/tools/plate-cost/">${calcCta} <span aria-hidden="true">→</span></a>
     </div>
@@ -479,7 +693,8 @@ function emitHubPage(locale) {
       const nm = locale === 'es' ? i.es : i.en;
       return `<div class="iy-card"><a href="${base}/library/ingredient-yields/${i.slug}/">${escHtml(nm)}</a><span class="iy-card-y">${Math.round(i.yield*100)}% ${locale === 'es' ? 'rendimiento' : 'yield'}</span></div>`;
     }).join('');
-    return `<h2 class="iy-cat-h">${escHtml(locale === 'es' ? c.es : c.en)}</h2><div class="iy-grid">${cards}</div>`;
+    const catName = escHtml(locale === 'es' ? c.es : c.en);
+    return `<h2 class="iy-cat-h"><a href="${base}/library/ingredient-yields/${catKey}/">${catName}</a></h2><div class="iy-grid">${cards}</div>`;
   }).join('\n');
   const items = INGREDIENTS.map((i, idx) => ({
     '@type': 'ListItem', 'position': idx + 1,
@@ -492,6 +707,19 @@ function emitHubPage(locale) {
       { '@type': 'CollectionPage', '@id': baseUrl + '#webpage', 'name': heroH1, 'description': heroLede, 'url': baseUrl,
         'inLanguage': locale === 'es' ? 'es-US' : 'en-US', 'isPartOf': { '@id': 'https://muntin.digital/#website' }, 'publisher': { '@id': 'https://muntin.digital/#business' } },
       { '@type': 'ItemList', 'numberOfItems': items.length, 'itemListElement': items },
+      // The hub is the ENTITY REGISTRY: a DefinedTermSet naming every ingredient term,
+      // so an LLM lands here to enumerate all of them. And it IS a sourced dataset
+      // (N ingredients × edible-portion yield) — Dataset schema makes it citable.
+      { '@type': 'DefinedTermSet', '@id': baseUrl + '#termset', 'name': heroH1, 'inLanguage': locale === 'es' ? 'es-US' : 'en-US',
+        'hasDefinedTerm': INGREDIENTS.map((i) => ({ '@id': (locale === 'es' ? canonEs : canonEn) + i.slug + '/#term' })) },
+      { '@type': 'Dataset', '@id': baseUrl + '#dataset',
+        'name': locale === 'es' ? 'Rendimiento de ingredientes de restaurante (porción comestible)' : 'Restaurant ingredient yields (edible portion)',
+        'description': locale === 'es'
+          ? `Rendimiento de porción comestible de ${items.length} ingredientes comunes de restaurante, según las tablas de rendimiento estándar del CIA.`
+          : `Edible-portion yield for ${items.length} common restaurant ingredients, per the CIA Standard Yield Tables.`,
+        'url': baseUrl, 'inLanguage': locale === 'es' ? 'es-US' : 'en-US', 'isAccessibleForFree': true,
+        'creator': { '@id': 'https://muntin.digital/#business' }, 'citation': 'CIA Standard Yield Tables / USDA Food Buying Guide',
+        'variableMeasured': locale === 'es' ? 'porcentaje de rendimiento de porción comestible' : 'edible-portion yield percent' },
       { '@type': 'BreadcrumbList', 'itemListElement': [
         ['Home','https://muntin.digital/'],['Library','https://muntin.digital/library/'],[heroH1, baseUrl]
       ].map((c, i) => ({ '@type': 'ListItem', 'position': i + 1, 'name': (locale === 'es' && i < 2 ? ['Inicio','Biblioteca'][i] : c[0]), 'item': c[1] })) }
@@ -517,6 +745,77 @@ function emitHubPage(locale) {
   </section>` + pageTail;
 }
 
+// A routable category hub — the taxonomy middle tier (Library → master hub →
+// category hub → leaf). Its unique content is the category guide prose + a
+// ranked, sourced yield table of its members, so it carries data a leaf doesn't
+// and reads as a real landing page, not a doorway.
+function emitCategoryHub(catKey, locale) {
+  const lang = locale === 'es' ? 'es' : 'en';
+  const base = locale === 'es' ? '/es' : '';
+  const c = CATEGORIES[catKey];
+  const catLabel = locale === 'es' ? c.es : c.en;
+  const guide = locale === 'es' ? c.guide_es : c.guide_en;
+  const members = INGREDIENTS.filter((i) => i.cat === catKey).slice().sort((a, b) => b.yield - a.yield);
+  const canonEn = `https://muntin.digital/library/ingredient-yields/${catKey}/`;
+  const canonEs = `https://muntin.digital/es/library/ingredient-yields/${catKey}/`;
+  const title = locale === 'es' ? `Rendimiento: ${catLabel.toLowerCase()} | Muntin Digital` : `${catLabel} yield chart | Muntin Digital`;
+  const desc = locale === 'es'
+    ? `Rendimiento (porción comestible) de ${members.length} ${catLabel.toLowerCase()} de restaurante, ordenado de mayor a menor. ${guide}`
+    : `Edible-portion yield for ${members.length} restaurant ${catLabel.toLowerCase()}, ranked highest to lowest. ${guide}`;
+  const heroH1 = locale === 'es' ? `Rendimiento de ${catLabel.toLowerCase()}` : `${catLabel} yields`;
+  const colIng = locale === 'es' ? 'Ingrediente' : 'Ingredient';
+  const colY = locale === 'es' ? 'Rendimiento' : 'Yield';
+  const rows = members.map((i) => {
+    const nm = locale === 'es' ? i.es : i.en;
+    return `<tr><th scope="row"><a href="${base}/library/ingredient-yields/${i.slug}/">${escHtml(nm)}</a></th><td>${Math.round(i.yield * 100)}%</td></tr>`;
+  }).join('\n          ');
+  const baseUrl = locale === 'es' ? canonEs : canonEn;
+  const hubUrl = `https://muntin.digital${base}/library/ingredient-yields/`;
+  const items = members.map((i, idx) => ({
+    '@type': 'ListItem', 'position': idx + 1,
+    'item': { '@type': 'WebPage', 'name': (locale === 'es' ? i.es : i.en), 'url': baseUrl.replace(catKey + '/', '') + i.slug + '/' }
+  }));
+  const crumb = locale === 'es'
+    ? [['Inicio', 'https://muntin.digital/es/'], ['Biblioteca', 'https://muntin.digital/es/library/'], ['Rendimiento de ingredientes', hubUrl], [catLabel, baseUrl]]
+    : [['Home', 'https://muntin.digital/'], ['Library', 'https://muntin.digital/library/'], ['Ingredient yields', hubUrl], [catLabel, baseUrl]];
+  const jsonld = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'CollectionPage', '@id': baseUrl + '#webpage', 'name': heroH1, 'description': clampDesc(desc, 300), 'url': baseUrl,
+        'inLanguage': locale === 'es' ? 'es-US' : 'en-US', 'isPartOf': { '@id': 'https://muntin.digital/#website' }, 'publisher': { '@id': 'https://muntin.digital/#business' } },
+      { '@type': 'ItemList', 'numberOfItems': items.length, 'itemListElement': items },
+      { '@type': 'BreadcrumbList', 'itemListElement': crumb.map((cc, i) => ({ '@type': 'ListItem', 'position': i + 1, 'name': cc[0], 'item': cc[1] })) }
+    ]
+  });
+  const bcHome = locale === 'es' ? 'Inicio' : 'Home';
+  const bcLib = locale === 'es' ? 'Biblioteca' : 'Library';
+  const bcHub = locale === 'es' ? 'Rendimiento de ingredientes' : 'Ingredient yields';
+  return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld }) + `
+  <p class="breadcrumb">
+    <a href="${base}/">${bcHome}</a> ›
+    <a href="${base}/library/">${bcLib}</a> ›
+    <a href="${base}/library/ingredient-yields/">${bcHub}</a> ›
+    ${escHtml(catLabel)}
+  </p>
+  <section class="iy-hero">
+    <h1>${escHtml(heroH1)}</h1>
+    <p class="iy-hero-lede">${escHtml(guide)}</p>
+  </section>
+  <section class="iy-body">
+    <div class="table-scroll">
+      <table class="iy-cat-table">
+        <thead><tr><th scope="col">${colIng}</th><th scope="col">${colY}</th></tr></thead>
+        <tbody>
+          ${rows}
+        </tbody>
+      </table>
+    </div>
+    <p class="iy-source"><strong>${locale === 'es' ? 'Fuente' : 'Sourced'}:</strong> ${locale === 'es'
+      ? `tablas de rendimiento estándar del CIA, vía la <a href="${base}/tools/plate-cost/">Calculadora de Costo por Platillo</a>`
+      : `CIA Standard Yield Tables, via the <a href="${base}/tools/plate-cost/">Plate Cost Calculator</a>`}</p>
+  </section>` + pageTail;
+}
+
 // ---- Write or check ------------------------------------------------
 const targets = [];
 for (const ing of INGREDIENTS) {
@@ -525,6 +824,11 @@ for (const ing of INGREDIENTS) {
 }
 targets.push({ path: 'library/ingredient-yields/index.html', content: emitHubPage('en') });
 targets.push({ path: 'es/library/ingredient-yields/index.html', content: emitHubPage('es') });
+for (const catKey of Object.keys(CATEGORIES)) {
+  if (!INGREDIENTS.some((i) => i.cat === catKey)) continue;   // skip empty buckets
+  targets.push({ path: `library/ingredient-yields/${catKey}/index.html`, content: emitCategoryHub(catKey, 'en') });
+  targets.push({ path: `es/library/ingredient-yields/${catKey}/index.html`, content: emitCategoryHub(catKey, 'es') });
+}
 
 let drift = 0;
 for (const tgt of targets) {

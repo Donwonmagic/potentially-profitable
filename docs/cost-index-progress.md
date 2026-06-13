@@ -89,7 +89,89 @@ Decisions recorded so they aren't relitigated:
   backfill — have the orchestrator emit historical points (FRED/BLS/AMS all carry
   history) so build-cost-index vendors the climb. Both run upstream (keys+egress).
 
+## P2 depth — page-level reads + measured spread (2026-06-12)
+- ✅ **Live edible-unit cost (Phase A.6)** on every ingredient-yield page that
+  carries a live point in a matching unit: today's sourced reference price ÷ the
+  page's cited yield → the number an operator repeats (ribeye $12.74/lb at 75% →
+  **$16.99 edible lb**; salmon $5.58 ÷ 0.95 → $5.87). Guarded by a unit match
+  (`CI_BOUNDS[slug].unit === manifest unit_en`) so we NEVER divide a $/carton
+  produce price by a per-head yield — produce reads correctly skip the line. Both
+  inputs are sourced, so it's a shown calculation, not a new claim. EN+ES. The
+  build also renders the confidence "why", the cross-market cheapest/priciest
+  spread, a level-anchored percentile, and a flagVerb buy/hold verdict.
+- ✅ **Measured market spread in the level band (Phase B)** — the engine now
+  widens `compositeLevel.rangeCents` to the ACTUAL reported trading range USDA AMS
+  publishes (`low_price..high_price` per terminal, min-low/max-high across
+  markets), not just a synthetic volatility band. `normalizeAms` captures the
+  per-day band, `buildCompositeInput` threads it as `spreadCents`, `compositeLevel`
+  unions it in and names the band `'measured'` whenever it sets an edge. UNION
+  ONLY (never narrows); an inverted/non-positive band is dropped; a band that
+  doesn't CONTAIN its own value is treated as a unit mismatch and dropped. New
+  label: "band from reported market low–high". Parity-mirrored to the Ledger TS
+  engine with 3 new vectors (24/24 storefront, TS harness green).
+- ⚠️ **Dormant until refetch**: `spreadCents` is optional, so the 16 vendored
+  points are untouched until the founder's next orchestrator run carries low/high.
+  No config change needed — the band flows straight from the report columns
+  (`low_price`/`high_price`, falling back to `mostly_low`/`mostly_high`). Expect
+  some ranges to widen visibly on refetch (e.g. romaine), which is the honest
+  picture, not a regression.
+- ☐ **Founder verify pass** (their laptop, has keys): `verify --flip` the 20 new
+  produce + earlier dormant batch; investigate the romaine trend (+159/169%)
+  series; confirm the 6 gap yields; close striploin price-0, leg-of-lamb PDF,
+  branzino NOAA.
+
+## Trend windowing bug — fixed end to end (2026-06-13)
+- 🐞 **Root cause**: the composite trend blended source series that arrived
+  UNWINDOWED. USDA AMS/LMR are windowed by the fetcher (120d), but FRED/BLS/EIA
+  carry their full multi-year history — so a single index source injected a
+  multi-year change into the headline trend % while the level and the sparkline
+  stayed recent. Result: a shown % that contradicted its OWN curve and its OWN
+  spike/structural verdict (romaine read **"+159% up"** next to an *"easing /
+  hold"* verdict; diesel **+371%**, electricity **+92%**). This was the flagged
+  "romaine trend glitch."
+- ✅ **Durable fix (orchestrator, both repos)**: `windowOutputPoints` trims every
+  source's series to a shared recent horizon (`SERIES_WINDOW_DAYS`, 120d, relative
+  to each source's own latest point) before composing — so level, trend and
+  history share one window. Storefront `fetch-cost-index-sources.mjs#toOutputs`
+  and Ledger `orchestrator.ts#composeIngredient/composeDriver` (mirrored;
+  type-checked clean).
+- ✅ **Live data repair (stopgap until next refetch)**:
+  `scripts/reconcile-cost-index-trends.mjs` recomputes each SHOWN point's
+  `trend.pct`/`dir` as `windowChange` over the exact history curve the sparkline
+  draws (engine's own `windowChange` + flat band). Repaired 20 trends (16
+  ingredients + 4 drivers); 10 were direction flips. Verdict flags were already
+  correct and untouched — the repaired trends now AGREE with them. Seed + pages
+  rebuilt.
+- ✅ **Regression gate**: `reconcile-cost-index-trends.mjs --check` wired into
+  `check-all` ("Cost-index trend↔curve") — a shown % that contradicts its curve
+  now fails CI. 166/166.
+
+## Depth-at-scale + reliability wave (2026-06-13)
+- ✅ **Heartbeat freshness monitor** (`check-cost-index-freshness.mjs`) — the weekly
+  refresh failed silently (keys lapse / sources down → exit 0, last-good kept). Now
+  a persistent stall fails the scheduled run red → GitHub emails the founder.
+  Warn-only in check-all (never blocks a PR on natural aging).
+- ✅ **Answer-first depth on every page** — yield-breakdown table + 3-Q FAQ +
+  FAQPage/HowTo JSON-LD, all from the sourced yield, EN+ES. Shared `faqItems()` so
+  visible text === structured data. **Zero dollars in JSON-LD** (enforced by the new
+  `check-ingredient-jsonld.mjs` price-cleanliness gate; no Offer/Product).
+- ✅ **Two-way Cost-Index ↔ yield wiring** — leaf→dashboard (gated to shippable
+  reads) and dashboard→leaf (gated to real pages via `yieldSlug` in the seed).
+- ✅ **Manifest → `data/ingredient-yields.json`** + `check-ingredient-yields.mjs`:
+  proves every rendered yield matches the cited CIA `YIELD_TABLE` (66) or declares a
+  `yield_source` (5 FBG). Adding an ingredient is now a reviewable data row.
+- ✅ **Routable category hubs** (`/library/ingredient-yields/<category>/`, EN+ES) —
+  the taxonomy middle tier; ranked sourced yield table + guide prose; 4-level
+  breadcrumb (rendered + JSON-LD); master-hub headings now link down. Sibling rail
+  capped at 8 + "see all". Doorway/thin-content guard for scaling breadth.
+- ✅ **Ribeye ES fix** — "costilla" (short-rib, 65%) → "bife ancho" (the actual cut).
+- ☐ **Next keyless**: sitemap segmentation (now 1016 URLs), thin-content near-dup
+  gate, the entity/alias layer (DefinedTerm + `sameAs` — needs *verified* aliases).
+
 ## Gated — needs founder env (the big value)
+- ▶︎ **VERIFY PASS — turnkey runbook at `docs/cost-index-verify-runbook.md`.** 44
+  staged sources ready to flip live; the dormant features (measured spread, EIA
+  driver, live EP cost, history) light up automatically on the next live fetch.
 - ⛔ H2: flip index preview → live (USDA/BLS/FRED keys); real freshness/history; last-good banner.
 - ⛔ H3: `/v1/cost-index` = artifact ⨝ invoices; watchlist + alerts; market-vs-vendor → Plate
   seasonal + hero-loop production trigger (`queue.ts`); invoice-canonical ingredient binding.

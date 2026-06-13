@@ -548,6 +548,4884 @@
         "type": "ppi-soybean-oil",
         "_report": "Soybean Oil PPI (trend). Retail APU0000716121 discontinued 2005 — no current free oil LEVEL via FRED/BLS. For a wholesale level, AMS report 3190 (GX_GR117, Crude Soybean Oil, Central IL, cents/lb) is the correct report (NOT 3511, which is feedstuffs/meal). Held directional: crude soybean oil runs well below refined fryer oil, so it would mislead as the operator-facing level."
       }
+    },
+    "bell-pepper": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Peppers, Bell Type",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — new produce coverage via the vegetable-terminal fan-out (same 8 reports as romaine/tomato), commodity row-filter \"Peppers, Bell Type\" (field-agnostic substring; confirm the exact AMS term via --verify). Run --verify to resolve the 8 markets + see real values; tighten bounds; add a BLS PPI trend (--discover-fred \"Peppers, Bell Type ppi\") to lift low->medium; then --flip. The /library/ingredient-yields/<slug>/ page already exists and lights up on build."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Peppers, Bell Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Peppers, Bell Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Peppers, Bell Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Peppers, Bell Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Peppers, Bell Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Peppers, Bell Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Peppers, Bell Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "broccoli": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Broccoli",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — new produce coverage via the vegetable-terminal fan-out (same 8 reports as romaine/tomato), commodity row-filter \"Broccoli\" (field-agnostic substring; confirm the exact AMS term via --verify). Run --verify to resolve the 8 markets + see real values; tighten bounds; add a BLS PPI trend (--discover-fred \"Broccoli ppi\") to lift low->medium; then --flip. The /library/ingredient-yields/<slug>/ page already exists and lights up on build."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Broccoli",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Broccoli",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Broccoli",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Broccoli",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Broccoli",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Broccoli",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Broccoli",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "cauliflower": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Cauliflower",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — new produce coverage via the vegetable-terminal fan-out (same 8 reports as romaine/tomato), commodity row-filter \"Cauliflower\" (field-agnostic substring; confirm the exact AMS term via --verify). Run --verify to resolve the 8 markets + see real values; tighten bounds; add a BLS PPI trend (--discover-fred \"Cauliflower ppi\") to lift low->medium; then --flip. The /library/ingredient-yields/<slug>/ page already exists and lights up on build."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Cauliflower",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Cauliflower",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Cauliflower",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Cauliflower",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Cauliflower",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Cauliflower",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Cauliflower",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "spinach": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Spinach",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — produce coverage via the vegetable-terminal fan-out (same 8 reports as romaine/tomato), commodity row-filter \"Spinach\" (field-agnostic substring; romaine uses the bare term \"Romaine\" and works, so \"Spinach\" should match — confirm via --verify). Resolve markets + real values, tighten bounds, add a BLS PPI trend (--discover-fred \"Spinach ppi\") to lift low->medium, then --flip. Page already exists."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Spinach",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Spinach",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Spinach",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Spinach",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Spinach",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Spinach",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Spinach",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "asparagus": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Asparagus",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — produce coverage via the vegetable-terminal fan-out (same 8 reports as romaine/tomato), commodity row-filter \"Asparagus\" (field-agnostic substring; romaine uses the bare term \"Romaine\" and works, so \"Asparagus\" should match — confirm via --verify). Resolve markets + real values, tighten bounds, add a BLS PPI trend (--discover-fred \"Asparagus ppi\") to lift low->medium, then --flip. Page already exists."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Asparagus",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Asparagus",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Asparagus",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Asparagus",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Asparagus",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Asparagus",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Asparagus",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "garlic": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Garlic",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — produce coverage via the vegetable-terminal fan-out (same 8 reports as romaine/tomato), commodity row-filter \"Garlic\" (field-agnostic substring; romaine uses the bare term \"Romaine\" and works, so \"Garlic\" should match — confirm via --verify). Resolve markets + real values, tighten bounds, add a BLS PPI trend (--discover-fred \"Garlic ppi\") to lift low->medium, then --flip. Page already exists."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Garlic",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Garlic",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Garlic",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Garlic",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Garlic",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Garlic",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Garlic",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "carrot": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Carrots",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED — vegetable-terminal fan-out; confirm \"Carrots\" + unit (may be sack) via --verify; add BLS PPI for medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Carrots",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Carrots",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Carrots",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Carrots",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Carrots",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Carrots",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Carrots",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "corn-on-the-cob": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Corn",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED — vegetable-terminal fan-out; commodity \"Sweet Corn\"; confirm via --verify; add BLS PPI."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Corn",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Corn",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Corn",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Corn",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Corn",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Corn",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Corn",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "kale": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Kale",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED — vegetable-terminal fan-out; commodity \"Kale\"; confirm via --verify; add BLS PPI."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Kale",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Kale",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Kale",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Kale",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Kale",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Kale",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Kale",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "basil": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Basil",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED — tried on the vegetable terminals; HERBS may live in a separate report — if --verify shows 0 rows, --discover \"herbs\"."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Basil",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Basil",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Basil",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Basil",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Basil",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Basil",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Basil",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "cilantro": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Cilantro",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED — tried on vegetable terminals; herbs may be a separate report — if 0 rows, --discover \"herbs\"."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Cilantro",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Cilantro",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Cilantro",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Cilantro",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Cilantro",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Cilantro",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Cilantro",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "button-mushroom": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Mushrooms",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED — tried on vegetable terminals; mushrooms are often a SEPARATE report — if 0 rows, --discover \"mushroom\"."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Mushrooms",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Mushrooms",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Mushrooms",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Mushrooms",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Mushrooms",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Mushrooms",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Mushrooms",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "sweet-potato": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Sweet Potatoes",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "CONFIRMED via --list-commodities 2278 (850 rows, \"Sweet Potatoes\", e.g. $38/carton). Moved from the potato report."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Sweet Potatoes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Sweet Potatoes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Sweet Potatoes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Sweet Potatoes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Sweet Potatoes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Sweet Potatoes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Sweet Potatoes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "avocado": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2277",
+          "market": "Atlanta",
+          "commodity": "Avocados",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED — terminal FRUIT fan-out (reportIds 2277/2281/2285/2290/2302/2306/2310/2314). commodity \"Avocados\" is a best-guess plural (veg uses \"Tomatoes\",\"Carrots\") — confirm exact term via --list-commodities 2277, then re-verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Avocados",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Avocados",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Avocados",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Avocados",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Avocados",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Avocados",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Avocados",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "lemon": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2277",
+          "market": "Atlanta",
+          "commodity": "Lemons",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED — terminal FRUIT fan-out (reportIds 2277/2281/2285/2290/2302/2306/2310/2314). commodity \"Lemons\" is a best-guess plural (veg uses \"Tomatoes\",\"Carrots\") — confirm exact term via --list-commodities 2277, then re-verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Lemons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Lemons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Lemons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Lemons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Lemons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Lemons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Lemons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "lime": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2277",
+          "market": "Atlanta",
+          "commodity": "Limes",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED — terminal FRUIT fan-out (reportIds 2277/2281/2285/2290/2302/2306/2310/2314). commodity \"Limes\" is a best-guess plural (veg uses \"Tomatoes\",\"Carrots\") — confirm exact term via --list-commodities 2277, then re-verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Limes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Limes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Limes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Limes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Limes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Limes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Limes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "pineapple": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2277",
+          "market": "Atlanta",
+          "commodity": "Pineapples",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED — terminal FRUIT fan-out (reportIds 2277/2281/2285/2290/2302/2306/2310/2314). commodity \"Pineapples\" is a best-guess plural (veg uses \"Tomatoes\",\"Carrots\") — confirm exact term via --list-commodities 2277, then re-verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Pineapples",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Pineapples",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Pineapples",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Pineapples",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Pineapples",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Pineapples",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Pineapples",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "chicken-thigh": {
+      "verified": true,
+      "ams": {
+        "reportId": "3646",
+        "commodity": "Thigh",
+        "matchFields": [
+          "item"
+        ],
+        "market": "National",
+        "reducer": "wtdAvg",
+        "priceUnit": "Cents Per Lb",
+        "unit": "lb",
+        "_status": "STAGED — mirror of chicken-breast (National Chicken Report 3646); confirm the item term (\"Thighs\" / \"Thighs - B/S\") via --verify."
+      },
+      "bls": {
+        "seriesId": "WPU0222",
+        "_status": "poultry PPI (covers thigh) — gives chicken-thigh a 2nd independent source → READY + medium."
+      }
+    },
+    "striploin": {
+      "verified": false,
+      "lmr": {
+        "reportId": "2453",
+        "commodity": "Strip Loin",
+        "reducer": "wtdAvg",
+        "unit": "lb",
+        "section": "Choice Cuts",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "Weighted_Average",
+            "weighted_average",
+            "wtd_avg_price",
+            "avg_price"
+          ]
+        },
+        "_status": "STAGED — mirror of ribeye (LMR 2453 Choice Cuts); confirm cut term \"Strip Loin\" (IMPS 180) via --verify."
+      }
+    },
+    "leg-of-lamb": {
+      "verified": false,
+      "lmr": {
+        "reportId": "DISCOVER",
+        "commodity": "Leg",
+        "reducer": "wtdAvg",
+        "unit": "lb",
+        "priceUnit": "Dollars Per Cwt",
+        "fields": {
+          "price": [
+            "Weighted_Average",
+            "weighted_average",
+            "wtd_avg_price",
+            "avg_price"
+          ]
+        },
+        "_status": "LMR lamb is a separate report — --discover-lmr \"lamb\" for the reportId + section, then confirm the cut (\"Leg\")."
+      }
+    },
+    "whole-salmon": {
+      "verified": true,
+      "noaa": {
+        "commodity": "salmon",
+        "hts": [
+          "030214",
+          "030314"
+        ],
+        "nameMatch": "SALMON",
+        "basis": "wholesale",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED — mirror of salmon-fillet; WHOLE salmon = HTS 0302/0303 (fresh/frozen whole) vs the fillet 0304 — confirm HTS via --verify. Landed-adjacent proxy, below delivered wholesale."
+      },
+      "bls": {
+        "seriesId": "WPU0223",
+        "_status": "aggregate seafood PPI (Unprocessed & Prepared Seafood) — independent trend for all seafood → READY + medium."
+      }
+    },
+    "tuna-loin": {
+      "verified": true,
+      "noaa": {
+        "commodity": "tuna",
+        "hts": [
+          "030235",
+          "030487"
+        ],
+        "nameMatch": "TUNA",
+        "basis": "wholesale",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED — NOAA tuna lines (0302 fresh / 0304.87 frozen fillet); confirm HTS via --verify."
+      },
+      "bls": {
+        "seriesId": "WPU0223",
+        "_status": "aggregate seafood PPI (Unprocessed & Prepared Seafood) — independent trend for all seafood → READY + medium."
+      }
+    },
+    "whole-lobster": {
+      "verified": true,
+      "noaa": {
+        "commodity": "lobster",
+        "hts": [
+          "030612",
+          "030632"
+        ],
+        "nameMatch": "LOBSTER",
+        "basis": "wholesale",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED — NOAA lobster lines (0306.12 frozen / 0306.32 live); confirm HTS via --verify."
+      },
+      "bls": {
+        "seriesId": "WPU0223",
+        "_status": "aggregate seafood PPI (Unprocessed & Prepared Seafood) — independent trend for all seafood → READY + medium."
+      }
+    },
+    "whole-branzino": {
+      "verified": false,
+      "noaa": {
+        "commodity": "seabass",
+        "hts": [
+          "DISCOVER"
+        ],
+        "nameMatch": "BASS",
+        "basis": "wholesale",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "branzino (European seabass) is thin/absent in NOAA FOSS at volume — likely NO free wholesale source. --discover the HTS or accept no coverage (leave verified:false)."
+      }
+    },
+    "cucumber": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Cucumbers",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Cucumbers\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Cucumbers",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Cucumbers",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Cucumbers",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Cucumbers",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Cucumbers",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Cucumbers",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Cucumbers",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "celery": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Celery",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Celery\" (commodityExact — avoids a longer-name collision), confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Celery",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Celery",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Celery",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Celery",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Celery",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Celery",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Celery",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "cabbage": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Cabbage",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Cabbage\" (commodityExact — avoids a longer-name collision), confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Cabbage",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Cabbage",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Cabbage",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Cabbage",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Cabbage",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Cabbage",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Cabbage",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "eggplant": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Eggplant",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Eggplant\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Eggplant",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Eggplant",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Eggplant",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Eggplant",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Eggplant",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Eggplant",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Eggplant",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "zucchini": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Squash, Zucchini",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Squash, Zucchini\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Squash, Zucchini",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Squash, Zucchini",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Squash, Zucchini",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Squash, Zucchini",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Squash, Zucchini",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Squash, Zucchini",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Squash, Zucchini",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "beet": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Beets",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Beets\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Beets",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Beets",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Beets",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Beets",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Beets",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Beets",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Beets",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "leek": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Leeks",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Leeks\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Leeks",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Leeks",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Leeks",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Leeks",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Leeks",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Leeks",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Leeks",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "ginger": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Ginger Root",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Ginger Root\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Ginger Root",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Ginger Root",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Ginger Root",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Ginger Root",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Ginger Root",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Ginger Root",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Ginger Root",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "yellow-squash": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Squash, Yellow Straightneck",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Squash, Yellow Straightneck\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Squash, Yellow Straightneck",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Squash, Yellow Straightneck",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Squash, Yellow Straightneck",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Squash, Yellow Straightneck",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Squash, Yellow Straightneck",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Squash, Yellow Straightneck",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Squash, Yellow Straightneck",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "jalapeno": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Peppers, Jalapeno",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Peppers, Jalapeno\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Peppers, Jalapeno",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Peppers, Jalapeno",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Peppers, Jalapeno",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Peppers, Jalapeno",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Peppers, Jalapeno",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Peppers, Jalapeno",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Peppers, Jalapeno",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "green-onion": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Onions, Green",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Onions, Green\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Onions, Green",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Onions, Green",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Onions, Green",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Onions, Green",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Onions, Green",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Onions, Green",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Onions, Green",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "green-beans": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Beans, Round Green Type",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Beans, Round Green Type\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Beans, Round Green Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Beans, Round Green Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Beans, Round Green Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Beans, Round Green Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Beans, Round Green Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Beans, Round Green Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Beans, Round Green Type",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "parsley": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Parsley",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Parsley\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Parsley",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Parsley",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Parsley",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Parsley",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Parsley",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Parsley",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Parsley",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "brussels-sprouts": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Brussels Sprouts",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Brussels Sprouts\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Brussels Sprouts",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Brussels Sprouts",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Brussels Sprouts",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Brussels Sprouts",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Brussels Sprouts",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Brussels Sprouts",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Brussels Sprouts",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "butternut-squash": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Squash, Butternut",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Squash, Butternut\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Squash, Butternut",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Squash, Butternut",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Squash, Butternut",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Squash, Butternut",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Squash, Butternut",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Squash, Butternut",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Squash, Butternut",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "iceberg-lettuce": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Lettuce, Iceberg",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Lettuce, Iceberg\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Lettuce, Iceberg",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Lettuce, Iceberg",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Lettuce, Iceberg",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Lettuce, Iceberg",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Lettuce, Iceberg",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Lettuce, Iceberg",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Lettuce, Iceberg",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "bok-choy": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Bok Choy",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Bok Choy\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Bok Choy",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Bok Choy",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Bok Choy",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Bok Choy",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Bok Choy",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Bok Choy",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Bok Choy",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "artichoke": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Artichokes",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Artichokes\" (commodityExact — avoids a longer-name collision), confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Artichokes",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Artichokes",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Artichokes",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Artichokes",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Artichokes",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Artichokes",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Artichokes",
+          "commodityExact": true,
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "okra": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Okra",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Okra\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Okra",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Okra",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Okra",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Okra",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Okra",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Okra",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Okra",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "snow-peas": {
+      "verified": true,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Peas, Snow",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — vegetable-terminal fan-out (8 reports), commodity \"Peas, Snow\", confirmed present in --list-commodities 2278. Tighten bounds + --flip after --verify. Shared fresh-veg PPI WPU01130217 (same trend as onion/tomato) → medium."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Peas, Snow",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Peas, Snow",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Peas, Snow",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Peas, Snow",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Peas, Snow",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Peas, Snow",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Peas, Snow",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls"
+      }
+    },
+    "butter-lettuce": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Lettuce, Boston",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Lettuce, Boston",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Lettuce, Boston",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Lettuce, Boston",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Lettuce, Boston",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Lettuce, Boston",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Lettuce, Boston",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Lettuce, Boston",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "green-leaf-lettuce": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Lettuce, Green Leaf",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Lettuce, Green Leaf",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Lettuce, Green Leaf",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Lettuce, Green Leaf",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Lettuce, Green Leaf",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Lettuce, Green Leaf",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Lettuce, Green Leaf",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Lettuce, Green Leaf",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "red-leaf-lettuce": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Lettuce, Red Leaf",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Lettuce, Red Leaf",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Lettuce, Red Leaf",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Lettuce, Red Leaf",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Lettuce, Red Leaf",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Lettuce, Red Leaf",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Lettuce, Red Leaf",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Lettuce, Red Leaf",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "collard-greens": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Greens, Collard",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Greens, Collard",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Greens, Collard",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Greens, Collard",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Greens, Collard",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Greens, Collard",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Greens, Collard",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Greens, Collard",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "napa-cabbage": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Cabbage, Napa",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Cabbage, Napa",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Cabbage, Napa",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Cabbage, Napa",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Cabbage, Napa",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Cabbage, Napa",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Cabbage, Napa",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Cabbage, Napa",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "rutabaga": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Rutabagas",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Rutabagas",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Rutabagas",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Rutabagas",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Rutabagas",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Rutabagas",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Rutabagas",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Rutabagas",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "daikon": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Radishes, Oriental",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Radishes, Oriental",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Radishes, Oriental",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Radishes, Oriental",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Radishes, Oriental",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Radishes, Oriental",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Radishes, Oriental",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Radishes, Oriental",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "cherry-tomato": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Tomatoes, Cherry",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Tomatoes, Cherry",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Tomatoes, Cherry",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Tomatoes, Cherry",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Tomatoes, Cherry",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Tomatoes, Cherry",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Tomatoes, Cherry",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Tomatoes, Cherry",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "acorn-squash": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Squash, Acorn",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Squash, Acorn",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Squash, Acorn",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Squash, Acorn",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Squash, Acorn",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Squash, Acorn",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Squash, Acorn",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Squash, Acorn",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "pumpkin": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Pumpkins",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Pumpkins",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Pumpkins",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Pumpkins",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Pumpkins",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Pumpkins",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Pumpkins",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Pumpkins",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "serrano-pepper": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Peppers, Chili Type, Serrano",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Peppers, Chili Type, Serrano",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Peppers, Chili Type, Serrano",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Peppers, Chili Type, Serrano",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Peppers, Chili Type, Serrano",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Peppers, Chili Type, Serrano",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Peppers, Chili Type, Serrano",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Peppers, Chili Type, Serrano",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "poblano-pepper": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Peppers, Chili Type, Poblano",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Peppers, Chili Type, Poblano",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Peppers, Chili Type, Poblano",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Peppers, Chili Type, Poblano",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Peppers, Chili Type, Poblano",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Peppers, Chili Type, Poblano",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Peppers, Chili Type, Poblano",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Peppers, Chili Type, Poblano",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "habanero-pepper": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Peppers, Chili Type, Habanero",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Peppers, Chili Type, Habanero",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Peppers, Chili Type, Habanero",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Peppers, Chili Type, Habanero",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Peppers, Chili Type, Habanero",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Peppers, Chili Type, Habanero",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Peppers, Chili Type, Habanero",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Peppers, Chili Type, Habanero",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "oyster-mushroom": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Mushrooms, Oyster",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. mushrooms are often a SEPARATE report — if --verify returns 0 rows, --discover \"mushroom\""
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Mushrooms, Oyster",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Mushrooms, Oyster",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Mushrooms, Oyster",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Mushrooms, Oyster",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Mushrooms, Oyster",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Mushrooms, Oyster",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Mushrooms, Oyster",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "mint": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Mint",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. herbs may live in a SEPARATE report — if --verify returns 0 rows, --discover \"herbs\""
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Mint",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Mint",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Mint",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Mint",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Mint",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Mint",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Mint",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "rosemary": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Rosemary",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. herbs may be a separate report — --discover \"herbs\""
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Rosemary",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Rosemary",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Rosemary",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Rosemary",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Rosemary",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Rosemary",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Rosemary",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "thyme": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Thyme",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. herbs may be a separate report — --discover \"herbs\""
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Thyme",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Thyme",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Thyme",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Thyme",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Thyme",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Thyme",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Thyme",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "oregano": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Oregano",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. herbs may be a separate report — --discover \"herbs\""
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Oregano",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Oregano",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Oregano",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Oregano",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Oregano",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Oregano",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Oregano",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "tarragon": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Tarragon",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. thin volume — likely directional; herbs may be a separate report"
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Tarragon",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Tarragon",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Tarragon",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Tarragon",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Tarragon",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Tarragon",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Tarragon",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "dill": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Dill",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. herbs may be a separate report — --discover \"herbs\""
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Dill",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Dill",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Dill",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Dill",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Dill",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Dill",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Dill",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "red-onion": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2279",
+          "market": "Atlanta",
+          "commodity": "Onions, Red",
+          "reducer": "mostlyMid",
+          "unit": "sack",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2283",
+          "market": "Baltimore",
+          "commodity": "Onions, Red",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2287",
+          "market": "Boston",
+          "commodity": "Onions, Red",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2292",
+          "market": "Chicago",
+          "commodity": "Onions, Red",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2304",
+          "market": "Detroit",
+          "commodity": "Onions, Red",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2308",
+          "market": "Los Angeles",
+          "commodity": "Onions, Red",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2312",
+          "market": "Miami",
+          "commodity": "Onions, Red",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2316",
+          "market": "New York",
+          "commodity": "Onions, Red",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "red-potato": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2279",
+          "market": "Atlanta",
+          "commodity": "Potatoes, Red",
+          "reducer": "mostlyMid",
+          "unit": "sack",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2283",
+          "market": "Baltimore",
+          "commodity": "Potatoes, Red",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2287",
+          "market": "Boston",
+          "commodity": "Potatoes, Red",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2292",
+          "market": "Chicago",
+          "commodity": "Potatoes, Red",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2304",
+          "market": "Detroit",
+          "commodity": "Potatoes, Red",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2308",
+          "market": "Los Angeles",
+          "commodity": "Potatoes, Red",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2312",
+          "market": "Miami",
+          "commodity": "Potatoes, Red",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2316",
+          "market": "New York",
+          "commodity": "Potatoes, Red",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "grapefruit": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2277",
+          "market": "Atlanta",
+          "commodity": "Grapefruit",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Grapefruit",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Grapefruit",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Grapefruit",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Grapefruit",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Grapefruit",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Grapefruit",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Grapefruit",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "apple": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2277",
+          "market": "Atlanta",
+          "commodity": "Apples",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Apples",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Apples",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Apples",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Apples",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Apples",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Apples",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Apples",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "pear": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2277",
+          "market": "Atlanta",
+          "commodity": "Pears",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Pears",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Pears",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Pears",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Pears",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Pears",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Pears",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Pears",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "banana": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2277",
+          "market": "Atlanta",
+          "commodity": "Bananas",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Bananas",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Bananas",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Bananas",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Bananas",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Bananas",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Bananas",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Bananas",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "watermelon": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2277",
+          "market": "Atlanta",
+          "commodity": "Watermelons",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Watermelons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Watermelons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Watermelons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Watermelons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Watermelons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Watermelons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Watermelons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "cantaloupe": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2277",
+          "market": "Atlanta",
+          "commodity": "Cantaloups",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Cantaloups",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Cantaloups",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Cantaloups",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Cantaloups",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Cantaloups",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Cantaloups",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Cantaloups",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "blueberry": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2277",
+          "market": "Atlanta",
+          "commodity": "Blueberries",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Blueberries",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Blueberries",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Blueberries",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Blueberries",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Blueberries",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Blueberries",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Blueberries",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "raspberry": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2277",
+          "market": "Atlanta",
+          "commodity": "Raspberries",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Raspberries",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Raspberries",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Raspberries",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Raspberries",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Raspberries",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Raspberries",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Raspberries",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "type": "bls",
+        "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
+      }
+    },
+    "short-rib": {
+      "verified": false,
+      "lmr": {
+        "reportId": "2453",
+        "commodity": "Short Rib",
+        "reducer": "wtdAvg",
+        "unit": "lb",
+        "section": "Choice Cuts",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "Weighted_Average",
+            "weighted_average",
+            "wtd_avg_price",
+            "avg_price"
+          ]
+        },
+        "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+      },
+      "bls": {
+        "seriesId": "WPU022101"
+      }
+    },
+    "ground-beef": {
+      "verified": false,
+      "lmr": {
+        "reportId": "2453",
+        "commodity": "Ground Beef",
+        "reducer": "wtdAvg",
+        "unit": "lb",
+        "section": "Choice Cuts",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "Weighted_Average",
+            "weighted_average",
+            "wtd_avg_price",
+            "avg_price"
+          ]
+        },
+        "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. ground beef may be on a separate boxed-beef grind report — confirm via --discover-lmr \"ground\""
+      },
+      "bls": {
+        "seriesId": "WPU022101"
+      }
+    },
+    "lamb-shoulder": {
+      "verified": false,
+      "lmr": {
+        "reportId": "DISCOVER",
+        "commodity": "Shoulder",
+        "reducer": "wtdAvg",
+        "unit": "lb",
+        "section": "Choice Cuts",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "Weighted_Average",
+            "weighted_average",
+            "wtd_avg_price",
+            "avg_price"
+          ]
+        },
+        "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. lamb is a separate report — --discover-lmr \"lamb\" for reportId+section"
+      },
+      "bls": {
+        "seriesId": "WPU0223",
+        "_status": "lamb PPI is thin — confirm"
+      }
+    },
+    "pork-belly": {
+      "verified": false,
+      "lmr": {
+        "reportId": "2498",
+        "reducer": "single",
+        "unit": "lb",
+        "section": "Cutout and Primal Values",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "pork_belly"
+          ]
+        },
+        "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+      },
+      "bls": {
+        "seriesId": "WPS022104"
+      }
+    },
+    "ground-pork": {
+      "verified": false,
+      "lmr": {
+        "reportId": "2498",
+        "reducer": "single",
+        "unit": "lb",
+        "section": "Cutout and Primal Values",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "pork_trim_72_value"
+          ]
+        },
+        "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. confirm the grind/trim column on LM_PK602 — may be BLS-trend-only"
+      },
+      "bls": {
+        "seriesId": "WPS022104"
+      }
+    },
+    "whole-turkey": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "DISCOVER",
+          "market": "National",
+          "commodity": "Hens",
+          "reducer": "mostlyMid",
+          "unit": "lb",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. AMS turkey is a SEPARATE report from the 3646 chicken report — --discover \"turkey\" for the reportId"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU0222"
+      }
+    },
+    "ground-turkey": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "DISCOVER",
+          "market": "National",
+          "commodity": "Ground",
+          "reducer": "mostlyMid",
+          "unit": "lb",
+          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. AMS turkey is a SEPARATE report from the 3646 chicken report — --discover \"turkey\" for the reportId"
+        }
+      ],
+      "bls": {
+        "seriesId": "WPU0222"
+      }
+    },
+    "whole-halibut": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030221",
+          "030421"
+        ],
+        "nameMatch": "HALIBUT",
+        "basis": "wholesale",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. NOAA import unit value, landed-adjacent (BELOW true delivered wholesale)",
+        "commodity": "halibut"
+      },
+      "bls": {
+        "seriesId": "WPU0223"
+      }
+    },
+    "whole-trout": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030211",
+          "030311"
+        ],
+        "nameMatch": "TROUT",
+        "basis": "wholesale",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. NOAA import unit value, landed-adjacent (BELOW true delivered wholesale)",
+        "commodity": "trout"
+      },
+      "bls": {
+        "seriesId": "WPU0223"
+      }
+    },
+    "scallops": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030721",
+          "030722",
+          "030729"
+        ],
+        "nameMatch": "SCALLOP",
+        "basis": "wholesale",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. NOAA import unit value, landed-adjacent (BELOW true delivered wholesale)",
+        "commodity": "scallops"
+      },
+      "bls": {
+        "seriesId": "WPU0223"
+      }
+    },
+    "whole-crab": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030614",
+          "030633"
+        ],
+        "nameMatch": "CRAB",
+        "basis": "wholesale",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. NOAA import unit value, landed-adjacent (BELOW true delivered wholesale)",
+        "commodity": "crab"
+      },
+      "bls": {
+        "seriesId": "WPU0223"
+      }
+    },
+    "octopus": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030751",
+          "030752",
+          "030759"
+        ],
+        "nameMatch": "OCTOPUS",
+        "basis": "wholesale",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. NOAA import unit value, landed-adjacent (BELOW true delivered wholesale)",
+        "commodity": "octopus"
+      },
+      "bls": {
+        "seriesId": "WPU0223"
+      }
+    },
+    "salmon-skin-on-fillet": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030441",
+          "030481"
+        ],
+        "nameMatch": "SALMON",
+        "basis": "wholesale",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. NOAA import unit value, landed-adjacent (BELOW true delivered wholesale)",
+        "commodity": "salmon"
+      },
+      "bls": {
+        "seriesId": "WPU0223"
+      }
+    },
+    "clams": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030771",
+          "030779"
+        ],
+        "nameMatch": "CLAM",
+        "basis": "index",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. NOAA import value runs below a usable wholesale level → basis:index, TREND/direction only",
+        "commodity": "clams"
+      },
+      "bls": {
+        "seriesId": "WPU0223"
+      }
+    },
+    "squid": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030742",
+          "030743",
+          "030749"
+        ],
+        "nameMatch": "SQUID|CUTTLE",
+        "basis": "index",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. NOAA import value runs below a usable wholesale level → basis:index, TREND/direction only",
+        "commodity": "squid"
+      },
+      "bls": {
+        "seriesId": "WPU0223"
+      }
+    },
+    "shrimp-head-on": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "0306"
+        ],
+        "nameMatch": "SHRIMP|PRAWN",
+        "basis": "index",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. NOAA import value runs below a usable wholesale level → basis:index, TREND/direction only",
+        "commodity": "shrimp"
+      },
+      "bls": {
+        "seriesId": "WPU0223"
+      }
+    },
+    "shrimp-pd": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "0306"
+        ],
+        "nameMatch": "SHRIMP|PRAWN",
+        "basis": "index",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. NOAA import value runs below a usable wholesale level → basis:index, TREND/direction only",
+        "commodity": "shrimp"
+      },
+      "bls": {
+        "seriesId": "WPU0223"
+      }
     }
   },
   "drivers": {

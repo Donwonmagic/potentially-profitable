@@ -122,8 +122,63 @@ async function discoverAms(query) {
     console.log(`  reportId=${r.slug_id}   code=${r.slug_name || '?'}   ${r.report_title || ''}   (${r.report_date || r.published_date || ''})`);
   }
   console.log('\nPut the numeric reportId into data/cost-index-sources.json (ams.reportId), then re-run verify.');
+  console.log('NEXT: `--list-commodities <reportId>` dumps every commodity term + sample price in that report — wire the EXACT term, no guessing (add "<section>" / --lmr for LMR cut reports).');
   console.log('Tip: ribeye/cuts live INSIDE a boxed-beef report — search "beef", "boxed", "cutout", "terminal", "lettuce", "vegetable".');
   console.log('     `--discover --all > /tmp/ams-reports.txt` dumps the whole directory to grep locally.');
+}
+
+// --list-commodities <reportId> [section] [--lmr]: dump every distinct commodity
+// term actually present in a report (with a sample price + unit), so you wire the
+// EXACT term instead of guessing — and see commodities you didn't know were there.
+// Field-agnostic: picks the most-varied label field (commodity / item / variety …).
+async function listCommodities(reportId, section) {
+  if (!reportId) { console.error('Usage: --list-commodities <reportId> ["section"] [--lmr]'); process.exit(1); }
+  const useLmr = process.argv.includes('--lmr');
+  if (!useLmr && !keys.AMS) { console.error('AMS_KEY required for --list-commodities.'); process.exit(1); }
+  const auth = useLmr
+    ? (process.env.LMR_KEY ? 'Basic ' + Buffer.from(process.env.LMR_KEY + ':').toString('base64') : undefined)
+    : 'Basic ' + Buffer.from(keys.AMS + ':').toString('base64');
+  let j;
+  try { j = useLmr ? await F.fetchLmrReport(reportId, section, auth) : await F.fetchAmsReport(reportId, section, auth); }
+  catch (e) { console.error(`Could not fetch report ${reportId}${section ? ' / ' + section : ''}: ${e.message}`); process.exit(1); }
+  const rows = Array.isArray(j) ? j : (j.results || (j.report && j.report.results) || []);
+  if (!rows.length) {
+    const secs = j.reportSections || (j.report && j.report.reportSections) || [];
+    console.error(`Report ${reportId} returned 0 rows for section "${section || '(default)'}".`);
+    if (secs.length) console.error('Sections in this report: ' + secs.map((s) => (typeof s === 'string' ? s : s.name)).join(' · ') + `\n  → re-run: --list-commodities ${reportId} "<section>"${useLmr ? ' --lmr' : ''}`);
+    process.exit(1);
+  }
+  const labelFields = ['commodity', 'item', 'variety', 'commodity_name', 'cut', 'description', 'item_description'];
+  const priceFields = ['avg_price', 'wtd_avg_price', 'mostly_low_price', 'low_price', 'price', 'Weighted_Average', 'weighted_average'];
+  const unitFields = ['price_unit', 'price_Unit', 'priceUnit'];
+  const skip = /date|price|_id\b|^id$|slug|year|week|begin|end|published|narrative|grade|unit|state|office|market|region|community|category/i;
+  const distinctText = (f) => new Set(rows.map((r) => r[f]).filter((v) => v != null && typeof v !== 'number' && String(v).trim() && isNaN(Number(String(v).replace(/[$,%]/g, ''))))).size;
+  let labelF = null, best = 0;
+  // 1) known commodity fields with real variety
+  for (const f of labelFields) { const n = distinctText(f); if (n >= 3 && n > best) { best = n; labelF = f; } }
+  // 2) fallback — most-varied label-like text field (catches LMR cut reports whose
+  //    cut name isn't in a 'commodity' field)
+  if (!labelF) for (const f of Object.keys(rows[0] || {})) { if (skip.test(f)) continue; const n = distinctText(f); if (n >= 2 && n <= 400 && n > best) { best = n; labelF = f; } }
+  if (!labelF) {
+    console.error(`Could not auto-detect a commodity label field in report ${reportId}. Row fields are:\n  ${Object.keys(rows[0] || {}).join(', ')}\nPick the descriptive one and use it as ams.matchFields, e.g. {"price":["${priceFields.find((f) => rows.some((r) => r[f] != null)) || 'price'}"]}.`);
+    process.exit(1);
+  }
+  const priceF = priceFields.find((f) => rows.some((r) => r[f] != null && r[f] !== '')) || null;
+  const unitF = unitFields.find((f) => rows.some((r) => r[f] != null)) || null;
+  const tally = {};
+  for (const r of rows) {
+    const v = r[labelF]; if (v == null || !String(v).trim()) continue;
+    const k = String(v).trim();
+    (tally[k] = tally[k] || { count: 0, price: null, unit: '' });
+    tally[k].count++;
+    if (tally[k].price == null && priceF && r[priceF] != null && r[priceF] !== '') { tally[k].price = r[priceF]; tally[k].unit = unitF ? (r[unitF] || '') : ''; }
+  }
+  const entries = Object.entries(tally).sort((a, b) => b[1].count - a[1].count);
+  console.log(`Report ${reportId}${section ? ' / ' + section : ''}: ${rows.length} rows · label field "${labelF}" · ${entries.length} distinct commodities${priceF ? ` · price "${priceF}"` : ''}\n`);
+  for (const [name, t] of entries) {
+    console.log(`  ${String(t.count).padStart(4)}×  ${name}${t.price != null ? `   (e.g. ${t.price}${t.unit ? ' ' + t.unit : ''})` : '   (no price field)'}`);
+  }
+  console.log(`\nUse the exact term as ams.commodity (field-agnostic substring match on "${labelF}"). Pick the price column "${priceF || '?'}" for fields.price if it isn't auto-detected.`);
 }
 
 // --discover-fred <query>: search the FRED catalog for the right series id (so we
@@ -200,6 +255,13 @@ async function auditTitles() {
 
 async function main() {
   if (process.argv.includes('--audit-titles')) return auditTitles();
+  const lci = process.argv.indexOf('--list-commodities');
+  if (lci >= 0) {
+    const reportId = process.argv[lci + 1];
+    const next = process.argv[lci + 2];
+    const section = next && !next.startsWith('--') ? next : undefined;
+    return listCommodities(reportId, section);
+  }
   const dli = process.argv.indexOf('--discover-lmr');
   if (dli >= 0) return discoverLmr(process.argv[dli + 1]);
   const dfi = process.argv.indexOf('--discover-fred');

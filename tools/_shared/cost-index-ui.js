@@ -664,6 +664,17 @@
 
     fig.appendChild(el('p', 'cp-market-meta', metaText));
 
+    // Dashboard → yield-page deep link (the other half of the two-way wiring).
+    // Only when the seed marked a real ingredient-yield leaf for this key.
+    if (ing.yieldSlug) {
+      var yl = el('p', 'cp-market-yield');
+      var ya = el('a', null, L('Yield & EP math', 'Rendimiento y costo EP'));
+      ya.href = (es ? '/es' : '') + '/library/ingredient-yields/' + ing.yieldSlug + '/';
+      ya.appendChild(document.createTextNode(' →'));
+      yl.appendChild(ya);
+      fig.appendChild(yl);
+    }
+
     // Provenance drawer — which sources fed this read.
     var prov = el('details', 'cp-market-prov');
     prov.appendChild(el('summary', null, L('Where this comes from', 'De dónde viene')));
