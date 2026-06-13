@@ -120,6 +120,32 @@ Decisions recorded so they aren't relitigated:
   series; confirm the 6 gap yields; close striploin price-0, leg-of-lamb PDF,
   branzino NOAA.
 
+## Trend windowing bug — fixed end to end (2026-06-13)
+- 🐞 **Root cause**: the composite trend blended source series that arrived
+  UNWINDOWED. USDA AMS/LMR are windowed by the fetcher (120d), but FRED/BLS/EIA
+  carry their full multi-year history — so a single index source injected a
+  multi-year change into the headline trend % while the level and the sparkline
+  stayed recent. Result: a shown % that contradicted its OWN curve and its OWN
+  spike/structural verdict (romaine read **"+159% up"** next to an *"easing /
+  hold"* verdict; diesel **+371%**, electricity **+92%**). This was the flagged
+  "romaine trend glitch."
+- ✅ **Durable fix (orchestrator, both repos)**: `windowOutputPoints` trims every
+  source's series to a shared recent horizon (`SERIES_WINDOW_DAYS`, 120d, relative
+  to each source's own latest point) before composing — so level, trend and
+  history share one window. Storefront `fetch-cost-index-sources.mjs#toOutputs`
+  and Ledger `orchestrator.ts#composeIngredient/composeDriver` (mirrored;
+  type-checked clean).
+- ✅ **Live data repair (stopgap until next refetch)**:
+  `scripts/reconcile-cost-index-trends.mjs` recomputes each SHOWN point's
+  `trend.pct`/`dir` as `windowChange` over the exact history curve the sparkline
+  draws (engine's own `windowChange` + flat band). Repaired 20 trends (16
+  ingredients + 4 drivers); 10 were direction flips. Verdict flags were already
+  correct and untouched — the repaired trends now AGREE with them. Seed + pages
+  rebuilt.
+- ✅ **Regression gate**: `reconcile-cost-index-trends.mjs --check` wired into
+  `check-all` ("Cost-index trend↔curve") — a shown % that contradicts its curve
+  now fails CI. 166/166.
+
 ## Gated — needs founder env (the big value)
 - ⛔ H2: flip index preview → live (USDA/BLS/FRED keys); real freshness/history; last-good banner.
 - ⛔ H3: `/v1/cost-index` = artifact ⨝ invoices; watchlist + alerts; market-vs-vendor → Plate

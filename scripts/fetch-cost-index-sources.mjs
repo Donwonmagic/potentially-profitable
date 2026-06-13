@@ -152,6 +152,24 @@ async function liveFetch(ingredient, m) {
   return out;
 }
 
+// Trend horizon: every source's series is trimmed to this many days (relative to
+// the source's OWN latest dated point) before composing. USDA AMS/LMR already
+// arrive windowed by the fetcher, but FRED/BLS/EIA come with their full multi-year
+// history — and an unwindowed index series leaks a multi-year change into the
+// blended trend while the level + sparkline stay recent (the romaine "+159%"
+// bug). Trimming here makes every source express the SAME recent change. Matches
+// the AMS fetch window so level, trend and history share one horizon.
+const SERIES_WINDOW_DAYS = Number(process.env.COST_INDEX_SERIES_DAYS || F.AMS_WINDOW_DAYS || 120);
+function windowOutputPoints(o, days) {
+  if (!o || !Array.isArray(o.points) || o.points.length < 2 || !days || days <= 0) return o;
+  const dated = o.points.filter((p) => p && p.date && isFinite(Date.parse(p.date)));
+  if (dated.length < 2) return o;
+  const lastT = dated.reduce((mx, p) => Math.max(mx, Date.parse(p.date)), -Infinity);
+  const cut = lastT - days * 86400000;
+  const win = o.points.filter((p) => p && p.date && isFinite(Date.parse(p.date)) && Date.parse(p.date) >= cut);
+  return win.length >= 2 ? { ...o, points: win } : o;   // never trim below a 2-point series
+}
+
 // normalize raw payloads → adapter outputs, honoring the per-source basis/reducer.
 function toOutputs(ingredient, raw, m) {
   const outs = [];
@@ -199,7 +217,9 @@ function toOutputs(ingredient, raw, m) {
     if (o.points.length) outs.push(o);
   });
   if (raw.eia && typeof S.normalizeEia === 'function') { const o = S.normalizeEia(raw.eia, { source: 'eia', basis: 'index', value: (m.eia && m.eia.value) || 'price' }); o.family = (m.eia && m.eia.family) || m.family || 'eia'; o.type = 'eia'; if (o.points.length) outs.push(o); }
-  return outs;
+  // One shared recent horizon for every source → the trend describes the same
+  // window the level and sparkline do (kills the unwindowed-index-source skew).
+  return outs.map((o) => windowOutputPoints(o, SERIES_WINDOW_DAYS));
 }
 
 // quality-screen the latest level-bearing obs per source, then assess.

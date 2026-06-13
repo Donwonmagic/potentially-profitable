@@ -346,6 +346,11 @@ const CHECKS = [
   // upstream orchestrator confidences are reconciled (today: onion high → medium).
   ['Cost-index calibration','check-cost-index-calibration.mjs'],
   ['Cost-index calibration self-test','check-cost-index-calibration.mjs','--self-test'],
+  // Trend-vs-curve consistency — the SHOWN trend % must describe the SHOWN
+  // sparkline (guards the unwindowed-index-source bug where a multi-year change
+  // leaked into the headline while the curve stayed windowed). Same script
+  // repairs the data when run without --check.
+  ['Cost-index trend↔curve','reconcile-cost-index-trends.mjs','--check'],
   ['Cost-index health (idem)','build-cost-index-health.mjs','--check'],
   ['Cost-index health self-test','build-cost-index-health.mjs','--self-test'],
   // Shippable bar — below-bar ingredients must stay out of the browser seed

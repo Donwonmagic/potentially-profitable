@@ -45,7 +45,7 @@
           ]
         },
         "trend": {
-          "pct": 0.33253451185437244,
+          "pct": 0.21333333333333335,
           "dir": "up",
           "agreement": 1,
           "nSources": 3,
@@ -345,7 +345,7 @@
           ]
         },
         "trend": {
-          "pct": -0.03271801568301579,
+          "pct": -0.023952095808383235,
           "dir": "down",
           "agreement": 0.5,
           "nSources": 2,
@@ -639,8 +639,8 @@
           ]
         },
         "trend": {
-          "pct": 0.08494122464710693,
-          "dir": "up",
+          "pct": -0.0684931506849315,
+          "dir": "down",
           "agreement": 0.667,
           "nSources": 3,
           "nFamilies": 3,
@@ -867,7 +867,7 @@
           ]
         },
         "trend": {
-          "pct": -0.2907801418439716,
+          "pct": -0.2916666666666667,
           "dir": "down",
           "agreement": 0.5,
           "nSources": 2,
@@ -1089,8 +1089,8 @@
           ]
         },
         "trend": {
-          "pct": -0.09656373294540326,
-          "dir": "down",
+          "pct": 0.07954545454545454,
+          "dir": "up",
           "agreement": 0.5,
           "nSources": 2,
           "nFamilies": 2,
@@ -1383,8 +1383,8 @@
           ]
         },
         "trend": {
-          "pct": -0.09656373294540326,
-          "dir": "down",
+          "pct": 0.014814814814814815,
+          "dir": "up",
           "agreement": 0.5,
           "nSources": 2,
           "nFamilies": 2,
@@ -1677,8 +1677,8 @@
           ]
         },
         "trend": {
-          "pct": 0.11888860565893457,
-          "dir": "up",
+          "pct": -0.07154742096505824,
+          "dir": "down",
           "agreement": 0.667,
           "nSources": 3,
           "nFamilies": 3,
@@ -1865,8 +1865,8 @@
           ]
         },
         "trend": {
-          "pct": 1.5901639344262295,
-          "dir": "up",
+          "pct": -0.056074766355140186,
+          "dir": "down",
           "agreement": 1,
           "nSources": 6,
           "nFamilies": 6,
@@ -2248,7 +2248,7 @@
           ]
         },
         "trend": {
-          "pct": -0.13392857142857142,
+          "pct": -0.48520710059171596,
           "dir": "down",
           "agreement": 0.75,
           "nSources": 8,
@@ -2663,8 +2663,8 @@
           ]
         },
         "trend": {
-          "pct": 0.16470588235294117,
-          "dir": "up",
+          "pct": -0.015121368881814564,
+          "dir": "down",
           "agreement": 0.889,
           "nSources": 9,
           "nFamilies": 9,
@@ -3090,8 +3090,8 @@
           ]
         },
         "trend": {
-          "pct": 0,
-          "dir": "flat",
+          "pct": 0.02098695405558707,
+          "dir": "up",
           "agreement": 0.111,
           "nSources": 9,
           "nFamilies": 9,
@@ -3475,7 +3475,7 @@
           ]
         },
         "trend": {
-          "pct": -0.11750164798945285,
+          "pct": -0.11538461538461539,
           "dir": "down",
           "agreement": 1,
           "nSources": 3,
@@ -3671,7 +3671,7 @@
           ]
         },
         "trend": {
-          "pct": 0.12351109907958845,
+          "pct": 0.12162162162162163,
           "dir": "up",
           "agreement": 1,
           "nSources": 3,
@@ -3844,8 +3844,8 @@
       "label_es": "Maíz (forraje)",
       "kind": "feed-grain",
       "trend": {
-        "pct": -0.015221391862474438,
-        "dir": "down",
+        "pct": 0.08822617645235291,
+        "dir": "up",
         "agreement": 1,
         "nSources": 1,
         "nFamilies": 1,
@@ -3896,8 +3896,8 @@
       "label_es": "Soya (forraje)",
       "kind": "feed-grain",
       "trend": {
-        "pct": -0.014205155874727345,
-        "dir": "down",
+        "pct": 0.037487437185929645,
+        "dir": "up",
         "agreement": 1,
         "nSources": 1,
         "nFamilies": 1,
@@ -3945,7 +3945,7 @@
       "label_es": "Diésel",
       "kind": "energy",
       "trend": {
-        "pct": 3.710669077757685,
+        "pct": 0.44321329639889195,
         "dir": "up",
         "agreement": 1,
         "nSources": 1,
@@ -3989,7 +3989,7 @@
       "label_es": "Electricidad",
       "kind": "energy",
       "trend": {
-        "pct": 0.92,
+        "pct": 0.11093375897845172,
         "dir": "up",
         "agreement": 1,
         "nSources": 1,
