@@ -5521,7 +5521,7 @@
           "commodity": "Ground",
           "reducer": "mostlyMid",
           "unit": "lb",
-          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. AMS turkey is a SEPARATE report from the 3646 chicken report — --discover \"turkey\" for the reportId"
+          "_status": "NO WHOLESALE SERIES (confirmed 2026-06-13). AMS quotes ground turkey ONLY in the retail Grocery Store Turkey Feature Activity report (advertised ~$4.87/lb, RETAIL basis) — the Weekly National Turkey Report (3647) carries whole birds + parts, not ground. Stays `absent` for wholesale; do NOT keep --discovering a wholesale ground-turkey report (there isn't one). FUTURE: a ratio-bridge `derived` candidate (methodology §7.0) — back out wholesale from the retail-feature series via the turkey retail↔wholesale spread anchored on whole-turkey (3647)."
         }
       ],
       "bls": {
