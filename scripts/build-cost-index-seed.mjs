@@ -37,6 +37,14 @@ const OUT = path.join(repoRoot, 'data/cost-index.js');
 
 const rd = (p) => JSON.parse(readFileSync(p, 'utf8'));
 
+// Slugs that have an ingredient-yield page, so a dashboard card can deep-link to
+// its yield + EP-math leaf (the dashboard→leaf half of the two-way wiring). Only
+// keys with a real page get the link — never a 404.
+const YIELD_SLUGS = (() => {
+  try { return new Set(rd(path.join(repoRoot, 'data/ingredient-yields.json')).map((r) => r.slug)); }
+  catch { return new Set(); }
+})();
+
 const PRESSURE_ITEMS = (() => {
   try { return rd(path.join(repoRoot, 'data/cost-pressure.json')).items || {}; }
   catch { return {}; }
@@ -83,6 +91,7 @@ function main() {
       assessment: newest,                            // already an assess()-shaped point
     };
     if (lab.seasonal) entry.seasonal = true;
+    if (YIELD_SLUGS.has(key)) entry.yieldSlug = key;   // deep-link target for the dashboard→leaf rail
     // The spike-vs-structural flag (verdict + actionBias) — a build-time, fact-gated
     // "story so far" the renderer turns into a buy/hold/watch suggestion.
     if (ingredientsObj[key].flag) entry.flag = ingredientsObj[key].flag;

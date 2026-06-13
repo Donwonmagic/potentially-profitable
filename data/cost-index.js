@@ -241,6 +241,7 @@
           }
         ]
       },
+      "yieldSlug": "ribeye",
       "flag": {
         "verdict": "structural",
         "actionBias": "re-price",
@@ -535,6 +536,7 @@
           }
         ]
       },
+      "yieldSlug": "beef-tenderloin",
       "flag": {
         "verdict": "flat",
         "actionBias": "hold",
@@ -781,6 +783,7 @@
           }
         ]
       },
+      "yieldSlug": "chicken-breast",
       "flag": {
         "verdict": "easing",
         "actionBias": "hold",
@@ -1003,6 +1006,7 @@
           }
         ]
       },
+      "yieldSlug": "whole-chicken",
       "flag": {
         "verdict": "easing",
         "actionBias": "hold",
@@ -1279,6 +1283,7 @@
           }
         ]
       },
+      "yieldSlug": "pork-loin",
       "flag": {
         "verdict": "flat",
         "actionBias": "hold",
@@ -1573,6 +1578,7 @@
           }
         ]
       },
+      "yieldSlug": "pork-shoulder",
       "flag": {
         "verdict": "flat",
         "actionBias": "hold",
@@ -1771,6 +1777,7 @@
           }
         ]
       },
+      "yieldSlug": "salmon-fillet",
       "flag": {
         "verdict": "flat",
         "actionBias": "hold",
@@ -2108,6 +2115,7 @@
         ]
       },
       "seasonal": true,
+      "yieldSlug": "romaine-lettuce",
       "flag": {
         "verdict": "easing",
         "actionBias": "hold",
@@ -2517,6 +2525,7 @@
         ]
       },
       "seasonal": true,
+      "yieldSlug": "tomato",
       "flag": {
         "verdict": "easing",
         "actionBias": "hold",
@@ -2944,6 +2953,7 @@
           }
         ]
       },
+      "yieldSlug": "onion",
       "flag": {
         "verdict": "flat",
         "actionBias": "hold",
@@ -3371,6 +3381,7 @@
           }
         ]
       },
+      "yieldSlug": "russet-potato",
       "flag": {
         "verdict": "flat",
         "actionBias": "hold",
