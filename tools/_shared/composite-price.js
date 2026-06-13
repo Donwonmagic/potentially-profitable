@@ -111,7 +111,13 @@
           measLo = measLo == null ? sp.lo : Math.min(measLo, sp.lo);
           measHi = measHi == null ? sp.hi : Math.max(measHi, sp.hi);
         });
-        if (measLo != null && measHi != null) {
+        if (measLo != null && measHi != null && famKeys.length < 2) {
+          // Single market only: the reported low–high is that market's real
+          // trading range (better than a synthetic volatility band). Across
+          // MULTIPLE markets the p25–p75 of market medians already gives an honest
+          // cross-market range; unioning every market's reported low/high would
+          // import grade/size outliers (a $4.25 cull vs a $96 jumbo) into a
+          // uselessly wide band.
           var newLo = Math.min(range[0], Math.round(measLo));
           var newHi = Math.max(range[1], Math.round(measHi));
           if (newLo < range[0] || newHi > range[1]) rangeBasis = 'measured';

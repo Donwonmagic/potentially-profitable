@@ -169,22 +169,31 @@ test('RANGE-WIDENING: a single market gets an honest band from recent volatility
   assert.ok(lvl.rangeCents[0] < 1400 && lvl.rangeCents[1] > 1400); // band straddles the median
 });
 
-test('MEASURED SPREAD: a reported market low–high widens the band and names it "measured"', () => {
+test('MEASURED SPREAD: a SINGLE market\'s reported low–high widens the band and names it "measured"', () => {
   const lvl = C.compositeLevel([
-    { source: 'usda-ams-boston', basis: 'wholesale', valueCents: 1400, family: 'boston', type: 'usda-ams', spreadCents: { lo: 1200, hi: 1500 } },
-    { source: 'usda-ams-chicago', basis: 'wholesale', valueCents: 1450, family: 'chicago', type: 'usda-ams', spreadCents: { lo: 1300, hi: 1650 } },
+    { source: 'usda-lmr', basis: 'wholesale', valueCents: 1400, family: 'lmr', type: 'usda-lmr', spreadCents: { lo: 1200, hi: 1650 } },
   ]);
   assert.equal(lvl.rangeBasis, 'measured');
-  assert.equal(lvl.rangeCents[0], 1200);   // min reported low across markets
-  assert.equal(lvl.rangeCents[1], 1650);   // max reported high across markets
+  assert.equal(lvl.rangeCents[0], 1200);   // the market's reported low
+  assert.equal(lvl.rangeCents[1], 1650);   // the market's reported high
+});
+
+test('MEASURED SPREAD: across MULTIPLE markets the reported low/high is NOT unioned (avoids grade outliers)', () => {
+  const lvl = C.compositeLevel([
+    { source: 'm1', basis: 'wholesale', valueCents: 1500, family: 'm1', spreadCents: { lo: 425, hi: 1550 } },
+    { source: 'm2', basis: 'wholesale', valueCents: 2400, family: 'm2', spreadCents: { lo: 2300, hi: 9600 } },
+  ]);
+  // A $4.25 cull and a $96 jumbo must not blow the band out; p25–p75 of the two
+  // market medians governs instead.
+  assert.notEqual(lvl.rangeBasis, 'measured');
+  assert.ok(lvl.rangeCents[0] >= 1500 && lvl.rangeCents[1] <= 2400);
 });
 
 test('MEASURED SPREAD: a band that does NOT contain its own value is a unit mismatch — rejected', () => {
   const lvl = C.compositeLevel([
     { source: 'a', basis: 'wholesale', valueCents: 1000, family: 'a', spreadCents: { lo: 1380, hi: 1420 } },
-    { source: 'b', basis: 'wholesale', valueCents: 1800, family: 'b', spreadCents: { lo: 1380, hi: 1420 } },
   ]);
-  // Neither value sits inside 1380–1420 (e.g. a $/lb value with a $/carton band) → band ignored.
+  // The value 1000 doesn't sit inside 1380–1420 (e.g. a $/lb value with a $/carton band) → band ignored.
   assert.notEqual(lvl.rangeBasis, 'measured');
 });
 
