@@ -126,6 +126,21 @@ unit-value derived level** (§7 sibling) for import-dominated items; (3) a **mov
 volume pressure** lead. Items 1 and 3 need *no new credentials*. All staged for a
 connected run — see the runbook.
 
+### 3d. Produce depth — the 2nd independent source (added 2026-06-13)
+
+The biggest *depth* (not coverage) gap: **60 shippable produce items are
+single-source** (USDA AMS *terminal-market* only), which is why they sit at `low`
+confidence. The honest 2nd source is AMS **shipping-point F.O.B.** prices — the
+**National FOB Review** (one MARS report covering many commodities; `mpr` /
+`fvdfob`), an origin price point genuinely independent of the terminal (destination)
+price. **Honesty constraint:** F.O.B. sits *below* terminal by freight, so it is a
+**direction corroborator, not a 2nd level** — averaging the two levels would mix
+bases; use F.O.B. to add an independent *trend* type (lifts trend confidence, the
+binding cap for most of these items, toward `medium`). Rides the MARS auth we
+already hold. Connected-run integration (the National FOB Review commodity terms map
+1:1 to our produce via `--discover`). This single add deepens ~60 ingredients —
+the highest depth-per-effort move left.
+
 ## 4. Actionability ladder (ranked by operator value ÷ effort)
 
 Order reflects the research consensus on value-to-effort for a solo builder:

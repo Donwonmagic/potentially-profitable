@@ -72,6 +72,16 @@ cards (needs a NASS key). Correlational, method-linked (roadmap D4 / methodology
 FRED, index basis) — an aggregate seafood-complex direction feeding the lead-lag
 analyzer for the seafood items. Inert until FRED is fetched; just run the loop.
 
+## 5b. Produce depth — add the National FOB Review as a 2nd source (~60 items)
+
+Highest depth-per-effort move (roadmap §3d). The 60 single-source produce items
+(AMS terminal only, `low` confidence) gain an independent **direction** corroborator
+from AMS shipping-point F.O.B. (National FOB Review, MARS — auth we already hold).
+`--discover` the National FOB Review commodity terms, map to our produce slugs, wire
+it as a **trend-type** source (NOT a 2nd level — F.O.B. sits below terminal by
+freight; mixing the levels would mis-base). Loop; expect many produce items to lift
+`low → medium`. Rides existing auth.
+
 ## 6. The retail↔wholesale spread method (methodology §7)
 
 Stage the ERS Food Dollar Series (farm/marketing share) + a BLS APU retail series
