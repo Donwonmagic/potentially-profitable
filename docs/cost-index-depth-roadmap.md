@@ -196,6 +196,10 @@ risk). Four deliverables, sequenced so each unlocks the next.
 ### Quality throughline — public methodology page
 - A web-routable methodology page (the Urner-Barry move): how bounds, reducers,
   tiers, and sources work. The trust artifact that makes the index auditable.
+- **Draft exists:** `docs/cost-index-methodology.md` — the internal canonical
+  methodology (PRA/UB-structured, transparency-first, grounded in the implemented
+  gates). It carries §7's retail↔wholesale-spread derived method and the source
+  register that gates publication.
 - **Sequencing (operator directive, 2026-06-13): WRITE THIS LAST.** The
   methodology documents how the sources work, so it can't be honest or final
   until source integration is *done*. Squeeze every viable public source into the
