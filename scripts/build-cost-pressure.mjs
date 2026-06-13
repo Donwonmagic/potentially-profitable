@@ -111,7 +111,7 @@ for (const [item, rec] of Object.entries(items)) {
   const pairs = arr.filter((e) => e.realized).map((e) => ({ predicted: e.direction, realized: e.realized }));
   if (Accuracy.shouldSuppress(pairs)) rec.under_review = true;
   const acc = Accuracy.scoreCalls(pairs);
-  if (acc.n) rec.track_record = { n: acc.n, hits: acc.hits, hitRate: acc.hitRate };
+  if (acc.n) rec.track_record = { n: acc.n, hits: acc.hits, hitRate: acc.hitRate, nonSteady: acc.nonSteady };
 }
 
 if (DRY) { console.log(`(dry-run) ${built} pressure record(s) + 2 Lab seed(s).`); }

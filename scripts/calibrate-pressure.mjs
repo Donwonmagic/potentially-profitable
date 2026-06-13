@@ -50,17 +50,17 @@ const PROXY = {
   // BLS has no item-level fresh-veg PPI, so the calibration report flags it; a distinct PPI
   // per item (via --discover-fred "<item> ppi") is the de-correlation path to finer backfill.
   'bell-pepper': 'WPU0113', 'broccoli': 'WPU0113', 'cauliflower': 'WPU0113', 'spinach': 'WPU0113',
-  'asparagus': 'WPU0113', 'garlic': 'WPU0113', 'carrot': 'WPU0113', 'corn-on-the-cob': 'WPU0113',
-  'kale': 'WPU0113', 'basil': 'WPU0113', 'cilantro': 'WPU0113', 'button-mushroom': 'WPU0113',
-  'sweet-potato': 'WPU0113', 'cucumber': 'WPU0113', 'celery': 'WPU0113', 'cabbage': 'WPU0113',
+  'asparagus': 'WPU0113', 'garlic': 'WPU0113', 'carrot': 'WPU0113',
+  'kale': 'WPU0113', 'basil': 'WPU0113', 'cilantro': 'WPU0113',
+  'cucumber': 'WPU0113', 'celery': 'WPU0113', 'cabbage': 'WPU0113',
   'eggplant': 'WPU0113', 'zucchini': 'WPU0113', 'beet': 'WPU0113', 'leek': 'WPU0113',
-  'ginger': 'WPU0113', 'yellow-squash': 'WPU0113', 'jalapeno': 'WPU0113', 'green-onion': 'WPU0113',
+  'yellow-squash': 'WPU0113', 'jalapeno': 'WPU0113', 'green-onion': 'WPU0113',
   'green-beans': 'WPU0113', 'parsley': 'WPU0113', 'brussels-sprouts': 'WPU0113',
   'butternut-squash': 'WPU0113', 'iceberg-lettuce': 'WPU0113', 'bok-choy': 'WPU0113',
   'artichoke': 'WPU0113', 'okra': 'WPU0113', 'snow-peas': 'WPU0113',
-  'avocado': 'WPU0111', 'lemon': 'WPU0111', 'lime': 'WPU0111', 'pineapple': 'WPU0111',
+  'avocado': 'WPU0111', 'lemon': 'WPU0111', 'lime': 'WPU0111',
   'chicken-thigh': 'WPU022203',
-  'whole-salmon': 'WPU0223', 'tuna-loin': 'WPU0223', 'whole-lobster': 'WPU0223',
+  'whole-salmon': 'WPU0223',
   'eggs': 'WPU017107', 'vegetable-oil': 'WPU0278'
 };
 // Indicator source families that are themselves a PRICE in the proxy's pipeline →

@@ -52,10 +52,12 @@ const PRESSURE_ITEMS = (() => {
 // HOLD-UNTIL-PROVEN bar (shared with build-cost-index-pages via the rules manifest):
 // the overlay is published only once an item's live track record earns it.
 const PROVING = (() => {
-  try { return (rd(path.join(repoRoot, 'data/pressure-rules.json')).defaults || {}).proving || { minCalls: 12, minHitRate: 0.6 }; }
-  catch { return { minCalls: 12, minHitRate: 0.6 }; }
+  try { return (rd(path.join(repoRoot, 'data/pressure-rules.json')).defaults || {}).proving || { minCalls: 12, minHitRate: 0.6, minNonSteadyCalls: 4 }; }
+  catch { return { minCalls: 12, minHitRate: 0.6, minNonSteadyCalls: 4 }; }
 })();
-function pressureProven(rec) { const tr = rec && rec.track_record; return !!(tr && tr.n >= PROVING.minCalls && tr.hitRate >= PROVING.minHitRate); }
+// Non-steady floor (matches build-cost-index-pages): the overlay also requires enough
+// real directional calls, so a rule can't be "proven" on a streak of flat 'steady' calls.
+function pressureProven(rec) { const tr = rec && rec.track_record; return !!(tr && tr.n >= PROVING.minCalls && tr.hitRate >= PROVING.minHitRate && (tr.nonSteady || 0) >= (PROVING.minNonSteadyCalls || 0)); }
 
 function main() {
   const data = rd(JSON_IN);

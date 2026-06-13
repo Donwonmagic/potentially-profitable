@@ -29,14 +29,23 @@
   function scoreCalls(pairs) {
     var scored = (pairs || []).filter(function (p) { return p && EXPECT[p.predicted] && p.realized; });
     var hits = 0;
-    scored.forEach(function (p) { if (EXPECT[p.predicted] === p.realized) hits++; });
+    var nonSteady = 0;
+    scored.forEach(function (p) {
+      if (EXPECT[p.predicted] === p.realized) hits++;
+      // A real directional call (building/easing) — not 'steady'. Counted so the
+      // proving gate can refuse to "prove" a rule that only ever called flat: a
+      // perpetual 'steady' call racks up a high hitRate (flat is the common case)
+      // without the model ever sticking its neck out. The non-steady floor closes
+      // that loophole — see pressureProven in the page/seed builders.
+      if (p.predicted !== 'steady') nonSteady++;
+    });
     // Trailing miss-streak: consecutive misses counting back from the newest.
     var streak = 0;
     for (var i = scored.length - 1; i >= 0; i--) {
       if (EXPECT[scored[i].predicted] === scored[i].realized) break;
       streak++;
     }
-    return { n: scored.length, hits: hits, hitRate: scored.length ? +(hits / scored.length).toFixed(3) : null, missStreak: streak };
+    return { n: scored.length, hits: hits, hitRate: scored.length ? +(hits / scored.length).toFixed(3) : null, missStreak: streak, nonSteady: nonSteady };
   }
 
   // Regime-breaker: enough scored calls AND a cold streak → suppress the arrow.

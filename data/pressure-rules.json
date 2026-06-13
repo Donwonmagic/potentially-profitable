@@ -1,7 +1,12 @@
 {
   "_doc": "Muntin Cost PRESSURE rules — the transparent, versioned manifest the deterministic engine (tools/_shared/cost-pressure.js) scores into an inferred 'where it's headed' direction per ingredient. THIS IS NOT A PRICE. Each indicator declares: a public free SOURCE, a direction SIGN (does indicator-up mean cost-up +1 or cost-down -1), an evidence-tier WEIGHT, a sourced LEAD range, and a CITE. The reports + lead ranges are USDA/EIA-sourced and citeable; the per-indicator WEIGHTS are Muntin's evidence-tier judgment (illustrative, frozen per _version). Enforced by scripts/check-pressure-honesty.mjs: every indicator needs source+lead+cite, weight above tier C needs a cite, and the rendered direction must equal what this manifest + the engine recompute. A weight/sign change REQUIRES a _version bump + changelog. Sequencing: status:'preview' (demo observations) until the free fetchers (NASS Quick Stats, EIA, AMS MMN/MARS, USDM, NWS) are wired; then live.",
-  "_version": "2026-Q2-14",
+  "_version": "2026-Q2-15",
   "_changelog": [
+    {
+      "version": "2026-Q2-15",
+      "date": "2026-06-13",
+      "note": "Pressure credibility cleanup (audit #5). DROP 7 mis-signed/under-supported starter rules so the manifest can't prove out on a wrong model: pineapple+ginger (tropical imports — CA/AZ drought-ca-az + CA/AZ freeze-alert don't apply; no credible free origin-specific leading indicator wired, MXN FX is also wrong origin), button-mushroom (indoor climate-controlled houses — neither field drought nor freeze applies), sweet-potato (NC storage crop, sold year-round from storage — not a CA/AZ winter-freeze story), corn-on-the-cob (summer FL/GA/NY sweet-corn — the CA/AZ winter-produce template is off-season). These were created by the category template and carried drought-ca-az+freeze-alert+mxn-fx+diesel verbatim. Re-region or drop per the audit; dropped, since none has a credible FREE leading indicator in the wired source set — freight (diesel) alone is not a per-item arrow. Also DROP tuna-loin + whole-lobster: their only indicators were deep-sea-freight+diesel (freight-only) — freight rides every ingredient and is not a credible standalone directional call. (d) Add minNonSteadyCalls:4 to defaults.proving: pressureProven now also requires >=4 real directional (non-'steady') scored calls, closing the trivially-proven-steady loophole — a rule that only ever calls flat can't earn the overlay on flat's high base-rate. 50 rules remain."
+    },
     {
       "version": "2026-Q2-14",
       "date": "2026-06-11",
@@ -82,7 +87,8 @@
     },
     "proving": {
       "minCalls": 12,
-      "minHitRate": 0.6
+      "minHitRate": 0.6,
+      "minNonSteadyCalls": 4
     }
   },
   "sources": {
@@ -2054,71 +2060,6 @@
         }
       ]
     },
-    "corn-on-the-cob": {
-      "rule_version": "2026-Q2-starter-1",
-      "indicators": [
-        {
-          "id": "drought-ca-az",
-          "source": "usdm-drought",
-          "sign": 1,
-          "weight": 2,
-          "tier": "B",
-          "window": "4w",
-          "lead": {
-            "min": 4,
-            "max": 17,
-            "unit": "week"
-          },
-          "cite": "usdm-drought"
-        },
-        {
-          "id": "mxn-fx",
-          "source": "fred-mxn-fx",
-          "sign": -1,
-          "weight": 1,
-          "tier": "C",
-          "window": "4w",
-          "lead": {
-            "min": 3,
-            "max": 8,
-            "unit": "week"
-          },
-          "cite": "fred-mxn-fx",
-          "note": "intl-test: Mexico winter produce; peso-per-USD, peso weaker → cheaper in USD → cost down"
-        },
-        {
-          "id": "freeze-alert",
-          "source": "nws-alerts",
-          "sign": 1,
-          "weight": 3,
-          "tier": "A",
-          "window": "active",
-          "lead": {
-            "min": 1,
-            "max": 6,
-            "unit": "week"
-          },
-          "cite": "nws-alerts",
-          "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
-        }
-      ]
-    },
     "kale": {
       "rule_version": "2026-Q2-starter-1",
       "indicators": [
@@ -2250,136 +2191,6 @@
       ]
     },
     "cilantro": {
-      "rule_version": "2026-Q2-starter-1",
-      "indicators": [
-        {
-          "id": "drought-ca-az",
-          "source": "usdm-drought",
-          "sign": 1,
-          "weight": 2,
-          "tier": "B",
-          "window": "4w",
-          "lead": {
-            "min": 4,
-            "max": 17,
-            "unit": "week"
-          },
-          "cite": "usdm-drought"
-        },
-        {
-          "id": "mxn-fx",
-          "source": "fred-mxn-fx",
-          "sign": -1,
-          "weight": 1,
-          "tier": "C",
-          "window": "4w",
-          "lead": {
-            "min": 3,
-            "max": 8,
-            "unit": "week"
-          },
-          "cite": "fred-mxn-fx",
-          "note": "intl-test: Mexico winter produce; peso-per-USD, peso weaker → cheaper in USD → cost down"
-        },
-        {
-          "id": "freeze-alert",
-          "source": "nws-alerts",
-          "sign": 1,
-          "weight": 3,
-          "tier": "A",
-          "window": "active",
-          "lead": {
-            "min": 1,
-            "max": 6,
-            "unit": "week"
-          },
-          "cite": "nws-alerts",
-          "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
-        }
-      ]
-    },
-    "button-mushroom": {
-      "rule_version": "2026-Q2-starter-1",
-      "indicators": [
-        {
-          "id": "drought-ca-az",
-          "source": "usdm-drought",
-          "sign": 1,
-          "weight": 2,
-          "tier": "B",
-          "window": "4w",
-          "lead": {
-            "min": 4,
-            "max": 17,
-            "unit": "week"
-          },
-          "cite": "usdm-drought"
-        },
-        {
-          "id": "mxn-fx",
-          "source": "fred-mxn-fx",
-          "sign": -1,
-          "weight": 1,
-          "tier": "C",
-          "window": "4w",
-          "lead": {
-            "min": 3,
-            "max": 8,
-            "unit": "week"
-          },
-          "cite": "fred-mxn-fx",
-          "note": "intl-test: Mexico winter produce; peso-per-USD, peso weaker → cheaper in USD → cost down"
-        },
-        {
-          "id": "freeze-alert",
-          "source": "nws-alerts",
-          "sign": 1,
-          "weight": 3,
-          "tier": "A",
-          "window": "active",
-          "lead": {
-            "min": 1,
-            "max": 6,
-            "unit": "week"
-          },
-          "cite": "nws-alerts",
-          "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
-        }
-      ]
-    },
-    "sweet-potato": {
       "rule_version": "2026-Q2-starter-1",
       "indicators": [
         {
@@ -2835,71 +2646,6 @@
       ]
     },
     "leek": {
-      "rule_version": "2026-Q2-starter-1",
-      "indicators": [
-        {
-          "id": "drought-ca-az",
-          "source": "usdm-drought",
-          "sign": 1,
-          "weight": 2,
-          "tier": "B",
-          "window": "4w",
-          "lead": {
-            "min": 4,
-            "max": 17,
-            "unit": "week"
-          },
-          "cite": "usdm-drought"
-        },
-        {
-          "id": "mxn-fx",
-          "source": "fred-mxn-fx",
-          "sign": -1,
-          "weight": 1,
-          "tier": "C",
-          "window": "4w",
-          "lead": {
-            "min": 3,
-            "max": 8,
-            "unit": "week"
-          },
-          "cite": "fred-mxn-fx",
-          "note": "intl-test: Mexico winter produce; peso-per-USD, peso weaker → cheaper in USD → cost down"
-        },
-        {
-          "id": "freeze-alert",
-          "source": "nws-alerts",
-          "sign": 1,
-          "weight": 3,
-          "tier": "A",
-          "window": "active",
-          "lead": {
-            "min": 1,
-            "max": 6,
-            "unit": "week"
-          },
-          "cite": "nws-alerts",
-          "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
-        }
-      ]
-    },
-    "ginger": {
       "rule_version": "2026-Q2-starter-1",
       "indicators": [
         {
@@ -3939,71 +3685,6 @@
         }
       ]
     },
-    "pineapple": {
-      "rule_version": "2026-Q2-starter-1",
-      "indicators": [
-        {
-          "id": "drought-ca-az",
-          "source": "usdm-drought",
-          "sign": 1,
-          "weight": 2,
-          "tier": "B",
-          "window": "4w",
-          "lead": {
-            "min": 4,
-            "max": 17,
-            "unit": "week"
-          },
-          "cite": "usdm-drought"
-        },
-        {
-          "id": "mxn-fx",
-          "source": "fred-mxn-fx",
-          "sign": -1,
-          "weight": 1,
-          "tier": "C",
-          "window": "4w",
-          "lead": {
-            "min": 3,
-            "max": 8,
-            "unit": "week"
-          },
-          "cite": "fred-mxn-fx",
-          "note": "intl-test: Mexico winter produce; peso-per-USD, peso weaker → cheaper in USD → cost down"
-        },
-        {
-          "id": "freeze-alert",
-          "source": "nws-alerts",
-          "sign": 1,
-          "weight": 3,
-          "tier": "A",
-          "window": "active",
-          "lead": {
-            "min": 1,
-            "max": 6,
-            "unit": "week"
-          },
-          "cite": "nws-alerts",
-          "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
-        }
-      ]
-    },
     "chicken-thigh": {
       "rule_version": "2026-Q2-starter-1",
       "indicators": [
@@ -4225,80 +3906,6 @@
           },
           "group": "freight",
           "cite": "eia-diesel"
-        }
-      ]
-    },
-    "tuna-loin": {
-      "rule_version": "2026-Q2-starter-1",
-      "indicators": [
-        {
-          "id": "deep-sea-freight",
-          "source": "fred-deep-sea-freight",
-          "sign": 1,
-          "weight": 1,
-          "tier": "C",
-          "window": "4w",
-          "lead": {
-            "min": 4,
-            "max": 10,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "fred-deep-sea-freight",
-          "note": "intl-test: ocean-freight PPI; air-freighted fresh salmon still rides landed-cost pressure"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
-        }
-      ]
-    },
-    "whole-lobster": {
-      "rule_version": "2026-Q2-starter-1",
-      "indicators": [
-        {
-          "id": "deep-sea-freight",
-          "source": "fred-deep-sea-freight",
-          "sign": 1,
-          "weight": 1,
-          "tier": "C",
-          "window": "4w",
-          "lead": {
-            "min": 4,
-            "max": 10,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "fred-deep-sea-freight",
-          "note": "intl-test: ocean-freight PPI; air-freighted fresh salmon still rides landed-cost pressure"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },

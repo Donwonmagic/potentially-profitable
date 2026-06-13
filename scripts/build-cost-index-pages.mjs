@@ -143,10 +143,14 @@ const PRESSURE_SOURCES = PRESSURE_RULES.sources || {};
 // measured trend) clears this bar — it earns its public slot by demonstrated hit
 // rate, never by assertion. Until then the page ships the MEASURED read alone and the
 // overlay accrues its record silently. (Config lives here, transparent + tunable.)
-const PROVING = (PRESSURE_RULES.defaults && PRESSURE_RULES.defaults.proving) || { minCalls: 12, minHitRate: 0.6 };
+const PROVING = (PRESSURE_RULES.defaults && PRESSURE_RULES.defaults.proving) || { minCalls: 12, minHitRate: 0.6, minNonSteadyCalls: 4 };
 function pressureProven(rec) {
   const tr = rec && rec.track_record;
-  return !!(tr && tr.n >= PROVING.minCalls && tr.hitRate >= PROVING.minHitRate);
+  // Three floors, all required: enough scored calls, a real hit rate, AND enough
+  // of those calls were actual directional (non-'steady') bets — so a rule can't
+  // earn its public overlay by calling flat forever and riding flat's base rate.
+  return !!(tr && tr.n >= PROVING.minCalls && tr.hitRate >= PROVING.minHitRate
+    && (tr.nonSteady || 0) >= (PROVING.minNonSteadyCalls || 0));
 }
 function anyPressureProven() { return Object.values(PRESSURE_ITEMS).some(pressureProven); }
 const INDICATOR_NAME = {
