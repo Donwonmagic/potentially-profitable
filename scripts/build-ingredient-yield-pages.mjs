@@ -143,7 +143,13 @@ function costIndexBlock(slug, locale) {
   const confWord = es ? ({ high: 'alta', medium: 'media', low: 'baja', directional: 'direccional' }[conf] || conf) : conf;
   const lvl = point.level;
   const basis = (lvl && lvl.basis) || 'wholesale';
-  const unitSfx = lvl && lvl.unit ? '/' + lvl.unit : '';                  // never imply a $/lb we didn't measure (produce is $/carton)
+  // Show the price unit (produce is $/carton or $/sack, proteins $/lb). The level
+  // doesn't carry a unit, so fall back to the bounds unit and localize it — an
+  // unlabeled "$32–$105" reads as $/head, which it isn't.
+  const U_ES = { lb: 'libra', carton: 'caja', sack: 'saco', each: 'pieza', head: 'pieza', bunch: 'manojo', crate: 'caja', lug: 'caja', flat: 'caja', ear: 'pieza', dozen: 'docena', cwt: 'quintal', count: 'pieza' };
+  const ciUnitRaw = (lvl && lvl.unit) || (CI_BOUNDS[slug] || {}).unit;
+  const ciUnit = ciUnitRaw ? (es ? (U_ES[ciUnitRaw] || ciUnitRaw) : ciUnitRaw) : '';
+  const unitSfx = ciUnit ? '/' + ciUnit : '';
   const basisRef = es
     ? ({ wholesale: 'referencia mayorista', retail: 'referencia minorista', delivered: 'precio entregado' }[basis] || 'referencia')
     : ({ wholesale: 'wholesale reference', retail: 'retail reference', delivered: 'delivered' }[basis] || 'reference');
