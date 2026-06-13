@@ -52,10 +52,12 @@ const PRESSURE_ITEMS = (() => {
 // HOLD-UNTIL-PROVEN bar (shared with build-cost-index-pages via the rules manifest):
 // the overlay is published only once an item's live track record earns it.
 const PROVING = (() => {
-  try { return (rd(path.join(repoRoot, 'data/pressure-rules.json')).defaults || {}).proving || { minCalls: 12, minHitRate: 0.6 }; }
-  catch { return { minCalls: 12, minHitRate: 0.6 }; }
+  try { return (rd(path.join(repoRoot, 'data/pressure-rules.json')).defaults || {}).proving || { minCalls: 12, minHitRate: 0.6, minNonSteadyCalls: 4 }; }
+  catch { return { minCalls: 12, minHitRate: 0.6, minNonSteadyCalls: 4 }; }
 })();
-function pressureProven(rec) { const tr = rec && rec.track_record; return !!(tr && tr.n >= PROVING.minCalls && tr.hitRate >= PROVING.minHitRate); }
+// Non-steady floor (matches build-cost-index-pages): the overlay also requires enough
+// real directional calls, so a rule can't be "proven" on a streak of flat 'steady' calls.
+function pressureProven(rec) { const tr = rec && rec.track_record; return !!(tr && tr.n >= PROVING.minCalls && tr.hitRate >= PROVING.minHitRate && (tr.nonSteady || 0) >= (PROVING.minNonSteadyCalls || 0)); }
 
 function main() {
   const data = rd(JSON_IN);
@@ -95,6 +97,10 @@ function main() {
     // The spike-vs-structural flag (verdict + actionBias) — a build-time, fact-gated
     // "story so far" the renderer turns into a buy/hold/watch suggestion.
     if (ingredientsObj[key].flag) entry.flag = ingredientsObj[key].flag;
+    // Coverage tier (D1) — the UI badges every card measured/derived so a reader
+    // can tell a published wholesale price from an honest directional estimate.
+    if (ingredientsObj[key].tier) entry.tier = ingredientsObj[key].tier;
+    if (ingredientsObj[key].coverage) entry.coverage = ingredientsObj[key].coverage;
     // Pressure overlay summary (inferred direction only — never a price). Trimmed
     // to the headline so the dashboard can show "where it's headed" honestly.
     // HOLD-UNTIL-PROVEN (matches build-cost-index-pages): the dashboard shows the
@@ -148,6 +154,16 @@ function main() {
     ingredients: out,
   };
   if (driversOut.length) seed.drivers = driversOut;
+  // Coverage honesty (D1) — pass the measured/derived/absent tally and the absent
+  // gaps (with display labels + the structural reason) so the dashboard can render
+  // "no public data — here's why" cards instead of silently omitting them.
+  if (data.coverage && typeof data.coverage === 'object') {
+    const gaps = (data.coverage.gaps || []).map((g) => {
+      const lab = labels[g.ingredient];
+      return { key: g.ingredient, label_en: lab ? lab.en : g.ingredient, label_es: lab ? lab.es : g.ingredient, reason: g.reason || '' };
+    });
+    seed.coverage = { measured: data.coverage.measured, derived: data.coverage.derived, absent: data.coverage.absent, gaps };
+  }
 
   const banner = `/**
  * Cost Index — browser seed (LIVE). GENERATED — do not edit by hand.

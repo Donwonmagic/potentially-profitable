@@ -342,11 +342,16 @@ const CHECKS = [
   // (or declare a yield_source); slugs unique/kebab, bilingual, valid category.
   ['Ingredient-yield manifest','check-ingredient-yields.mjs','--check'],
   ['Ingredient-yield manifest self-test','check-ingredient-yields.mjs','--self-test'],
+  // Distributor-tie alias registry — every canonical alias key is a real Cost
+  // Index key; every stem is in canonical extractStem form, unambiguous, sourced.
+  ['Ingredient alias registry','check-ingredient-aliases.mjs','--check'],
+  ['Ingredient alias registry self-test','check-ingredient-aliases.mjs','--self-test'],
   // JSON-LD price-cleanliness — structured data (lifted verbatim by answer
   // engines) must never carry a $ figure, price field, or Offer/Product type.
   ['Ingredient JSON-LD clean','check-ingredient-jsonld.mjs','--check'],
   ['Ingredient JSON-LD self-test','check-ingredient-jsonld.mjs','--self-test'],
   ['Cost-index sources','check-cost-index-sources.mjs','--check'],
+  ['Cost-index source tier','check-source-tier.mjs',    '--check'],
   ['Cost-index sync',   'check-cost-index-sync.mjs',     '--check'],
   ['Cost-index sync self-test','check-cost-index-sync.mjs','--self-test'],
   // Confidence calibration (P1 #36) — min-of-gates ceiling governs precision.
