@@ -309,6 +309,22 @@ const INGREDIENTS = [
   { slug: 'bok-choy',        en: 'Bok choy',         es: 'Bok choy',       yield: 0.80, cat: 'greens',      unit_en: 'lb',    unit_es: 'libra',  apCents: 199 },
   { slug: 'artichoke',       en: 'Artichoke',        es: 'Alcachofa',      yield: 0.40, cat: 'stalks',      unit_en: 'each',  unit_es: 'pieza',  apCents: 350 },
   { slug: 'okra',            en: 'Okra',             es: 'Quimbombó',      yield: 0.85, cat: 'fruiting',    unit_en: 'lb',    unit_es: 'libra',  apCents: 175 },
+  // Wave 3 — all yields from the canonical plate-cost YIELD_TABLE (USDA FBG); apCents illustrative.
+  { slug: 'arugula',         en: 'Arugula',          es: 'Arúgula',        yield: 0.85, cat: 'greens',      unit_en: 'lb',    unit_es: 'libra',  apCents: 400 },
+  { slug: 'swiss-chard',     en: 'Swiss chard',      es: 'Acelga',         yield: 0.75, cat: 'greens',      unit_en: 'bunch', unit_es: 'manojo', apCents: 250 },
+  { slug: 'fennel',          en: 'Fennel',           es: 'Hinojo',         yield: 0.65, cat: 'stalks',      unit_en: 'each',  unit_es: 'pieza',  apCents: 200 },
+  { slug: 'shallot',         en: 'Shallot',          es: 'Chalota',        yield: 0.85, cat: 'allium',      unit_en: 'lb',    unit_es: 'libra',  apCents: 300 },
+  { slug: 'parsnip',         en: 'Parsnip',          es: 'Chirivía',       yield: 0.85, cat: 'root',        unit_en: 'lb',    unit_es: 'libra',  apCents: 180 },
+  { slug: 'radish',          en: 'Radish',           es: 'Rábano',         yield: 0.85, cat: 'root',        unit_en: 'bunch', unit_es: 'manojo', apCents: 150 },
+  { slug: 'turnip',          en: 'Turnip',           es: 'Nabo',           yield: 0.78, cat: 'root',        unit_en: 'lb',    unit_es: 'libra',  apCents: 150 },
+  { slug: 'yukon-potato',    en: 'Yukon Gold potato', es: 'Papa Yukon Gold', yield: 0.85, cat: 'tuber',     unit_en: 'lb',    unit_es: 'libra',  apCents: 110 },
+  { slug: 'cremini-mushroom',en: 'Cremini mushroom', es: 'Champiñón cremini', yield: 0.90, cat: 'mushroom', unit_en: 'lb',    unit_es: 'libra',  apCents: 350 },
+  { slug: 'portobello-mushroom', en: 'Portobello mushroom', es: 'Champiñón portobello', yield: 0.85, cat: 'mushroom', unit_en: 'lb', unit_es: 'libra', apCents: 400 },
+  { slug: 'shiitake-mushroom', en: 'Shiitake mushroom', es: 'Hongo shiitake', yield: 0.85, cat: 'mushroom', unit_en: 'lb',    unit_es: 'libra',  apCents: 800 },
+  { slug: 'mango',           en: 'Mango',            es: 'Mango',          yield: 0.65, cat: 'fruit',       unit_en: 'each',  unit_es: 'pieza',  apCents: 120 },
+  { slug: 'strawberry',      en: 'Strawberry',       es: 'Fresa',          yield: 0.89, cat: 'fruit',       unit_en: 'lb',    unit_es: 'libra',  apCents: 350 },
+  { slug: 'orange',          en: 'Orange',           es: 'Naranja',        yield: 0.55, cat: 'citrus',      unit_en: 'each',  unit_es: 'pieza',  apCents: 80  },
+  { slug: 'mussels',         en: 'Mussels',          es: 'Mejillones',     yield: 0.35, cat: 'shellfish',   unit_en: 'lb',    unit_es: 'libra',  apCents: 500 },
   { slug: 'snow-peas',       en: 'Snow peas',        es: 'Arvejas de nieve', yield: 0.90, cat: 'fruiting',  unit_en: 'lb',    unit_es: 'libra',  apCents: 280 }
 ];
 
