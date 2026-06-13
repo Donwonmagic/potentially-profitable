@@ -351,6 +351,11 @@ const CHECKS = [
   // leaked into the headline while the curve stayed windowed). Same script
   // repairs the data when run without --check.
   ['Cost-index trend↔curve','reconcile-cost-index-trends.mjs','--check'],
+  // Freshness heartbeat — informational here (data ages naturally between weekly
+  // runs, so it must never block a PR); the weekly refresh runs it with --check
+  // to turn a persistent stall into a red (alerting) scheduled run.
+  ['Cost-index freshness (warn)','check-cost-index-freshness.mjs'],
+  ['Cost-index freshness self-test','check-cost-index-freshness.mjs','--self-test'],
   ['Cost-index health (idem)','build-cost-index-health.mjs','--check'],
   ['Cost-index health self-test','build-cost-index-health.mjs','--self-test'],
   // Shippable bar — below-bar ingredients must stay out of the browser seed

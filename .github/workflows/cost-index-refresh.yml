@@ -122,3 +122,12 @@ jobs:
           fi
           git commit -m "data(cost-index): weekly read $(date -u +%F)"
           git push
+
+      - name: Heartbeat freshness check
+        if: steps.keys.outputs.configured == 'true'
+        # Keys are set, so the index IS expected to be current. If the freshest
+        # vendored read is older than the threshold, the heartbeat is not landing
+        # data (keys lapsed / sources down for weeks) — fail so the scheduled run
+        # goes red and GitHub emails the founder. This is the alert the silent
+        # last-good posture otherwise swallows.
+        run: node scripts/check-cost-index-freshness.mjs --check
