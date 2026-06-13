@@ -193,6 +193,25 @@ function main() {
   }
   out.coverage = { measured: nMeasured, derived: nDerived, absent: gaps.length, gaps };
 
+  // Yield-adjusted true plate cost (the #1 operator-value lever) — EP cost =
+  // AP wholesale ÷ representative trim yield (data/ingredient-yields.json). A
+  // labeled ESTIMATE beside the measured wholesale level (yields are ranges; the
+  // operator's own yield governs), never a replacement. Only where a level exists.
+  let yieldMap = {};
+  try {
+    yieldMap = Object.fromEntries(rd(path.join(repoRoot, 'data/ingredient-yields.json'))
+      .filter((r) => r && r.slug && typeof r.yield === 'number' && r.yield > 0)
+      .map((r) => [r.slug, r.yield]));
+  } catch { /* no yield table → skip plate-cost */ }
+  for (const k of Object.keys(out.ingredients)) {
+    const y = yieldMap[k];
+    const lvl = ((out.ingredients[k].points || [])[0] || {}).level;
+    if (y && lvl && typeof lvl.medianCents === 'number') {
+      out.ingredients[k].yield = y;
+      out.ingredients[k].epCents = Math.round(lvl.medianCents / y);
+    }
+  }
+
   // Drivers (corn/soybeans/diesel/electricity): the explanatory "why" layer.
   // Gated for trend + citeable index history + leads that name known ingredients
   // (the source universe — a lead isn't "bad" just because it had a thin week).

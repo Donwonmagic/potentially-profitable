@@ -101,6 +101,12 @@ function main() {
     // can tell a published wholesale price from an honest directional estimate.
     if (ingredientsObj[key].tier) entry.tier = ingredientsObj[key].tier;
     if (ingredientsObj[key].coverage) entry.coverage = ingredientsObj[key].coverage;
+    // Yield-adjusted true plate cost — the wholesale level converted to cost per
+    // EDIBLE pound (illustrative trim yield; the operator's own yield governs).
+    if (ingredientsObj[key].yield && ingredientsObj[key].epCents) {
+      entry.yield = ingredientsObj[key].yield;
+      entry.epCents = ingredientsObj[key].epCents;
+    }
     // Pressure overlay summary (inferred direction only — never a price). Trimmed
     // to the headline so the dashboard can show "where it's headed" honestly.
     // HOLD-UNTIL-PROVEN (matches build-cost-index-pages): the dashboard shows the
