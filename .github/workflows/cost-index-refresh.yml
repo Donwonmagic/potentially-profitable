@@ -101,6 +101,9 @@ jobs:
         run: |
           node scripts/check-cost-index-sync.mjs
           node scripts/check-cost-index-calibration.mjs
+          # A fresh fetch must never publish a trend % that contradicts its own
+          # sparkline (the unwindowed-index-source bug). Fail the run before commit.
+          node scripts/reconcile-cost-index-trends.mjs --check
 
       - name: Commit the weekly read
         if: steps.keys.outputs.configured == 'true'
