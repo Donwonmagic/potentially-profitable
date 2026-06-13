@@ -696,6 +696,29 @@
           'Parece de temporada — podría bajar, así que mantener suele ser mejor que subir el precio.')));
     }
 
+    // S3 — measured seasonal read: where is today's level vs. OUR typical level for
+    // this calendar month? Only present for ingredients the engine marked `ready`
+    // (>=2yr per month); the normal + band come from the seed, the comparison is
+    // computed here against the live level (methodology §7 keeps the artifact pure).
+    if (ing.seasonalNormals && lvl && typeof lvl.medianCents === 'number') {
+      var nowMM = (new Date()).toISOString().slice(5, 7);
+      var norm = ing.seasonalNormals[nowMM];
+      if (norm && typeof norm.medianCents === 'number' && norm.medianCents > 0) {
+        var MONTHS_EN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        var MONTHS_ES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+        var mName = L(MONTHS_EN[parseInt(nowMM, 10) - 1], MONTHS_ES[parseInt(nowMM, 10) - 1]);
+        var dPct = Math.abs(Math.round((lvl.medianCents - norm.medianCents) / norm.medianCents * 100));
+        var aboveBand = typeof norm.p75Cents === 'number' && lvl.medianCents > norm.p75Cents;
+        var belowBand = typeof norm.p25Cents === 'number' && lvl.medianCents < norm.p25Cents;
+        var seasonalReadTxt = aboveBand
+          ? L('About ' + dPct + '% above the typical ' + mName + '.', 'Alrededor de ' + dPct + '% por encima del ' + mName + ' típico.')
+          : belowBand
+            ? L('About ' + dPct + '% below the typical ' + mName + '.', 'Alrededor de ' + dPct + '% por debajo del ' + mName + ' típico.')
+            : L('In line with the typical ' + mName + ' (within its usual range).', 'En línea con el ' + mName + ' típico (dentro de su rango habitual).');
+        fig.appendChild(el('p', 'cp-market-seasonal-read', seasonalReadTxt));
+      }
+    }
+
     fig.appendChild(el('p', 'cp-market-meta', metaText));
 
     // Dashboard → yield-page deep link (the other half of the two-way wiring).

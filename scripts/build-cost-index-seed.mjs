@@ -55,6 +55,18 @@ const SEASON_EDU = (() => {
   try { return rd(path.join(repoRoot, 'data/seasonality-education.json')).education || {}; }
   catch { return {}; }
 })();
+// Measured seasonal normals (roadmap S3) — per-month median/band from our own
+// history, but ONLY for ingredients the engine marked `ready` (>=2yr per month).
+// The UI computes the current-vs-normal delta at render time (methodology §7), so
+// only the normals ride along. Dormant until the corpus crosses the readiness bar.
+const SEASON_NORMALS = (() => {
+  try {
+    const rows = rd(path.join(repoRoot, 'data/seasonality.json')).ingredients || [];
+    const m = {};
+    for (const r of rows) if (r.ready && r.months && Object.keys(r.months).length) m[r.key] = r.months;
+    return m;
+  } catch { return {}; }
+})();
 // HOLD-UNTIL-PROVEN bar (shared with build-cost-index-pages via the rules manifest):
 // the overlay is published only once an item's live track record earns it.
 const PROVING = (() => {
@@ -105,6 +117,7 @@ function main() {
     if (se && se.note_en && se.source) {
       entry.seasonEd = { peak_en: se.peak_en, peak_es: se.peak_es, note_en: se.note_en, note_es: se.note_es, source: se.source };
     }
+    if (SEASON_NORMALS[key]) entry.seasonalNormals = SEASON_NORMALS[key];   // S3: measured "vs typical {month}"
     if (YIELD_SLUGS.has(key)) entry.yieldSlug = key;   // deep-link target for the dashboard→leaf rail
     // The spike-vs-structural flag (verdict + actionBias) — a build-time, fact-gated
     // "story so far" the renderer turns into a buy/hold/watch suggestion.
