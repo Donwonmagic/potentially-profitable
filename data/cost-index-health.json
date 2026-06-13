@@ -4,9 +4,9 @@
   "summary": {
     "total": 56,
     "byConfidence": {
-      "medium": 27,
+      "medium": 23,
       "low": 27,
-      "directional": 2
+      "directional": 6
     },
     "withDollarLevel": 54,
     "highEligible": 0,
@@ -371,23 +371,6 @@
       "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis"
     },
     {
-      "key": "salmon-fillet",
-      "confidence": "medium",
-      "withinAuditCeiling": true,
-      "hasDollarLevel": true,
-      "basis": "wholesale",
-      "rangeBasis": "volatility",
-      "levelFamilies": 1,
-      "levelTypes": 1,
-      "trendTypes": 3,
-      "trendAgreement": 0.667,
-      "trendNoise": 0.0175,
-      "typeDispersion": 0,
-      "weeks": 4,
-      "asOf": "2026-05-01",
-      "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis"
-    },
-    {
       "key": "snow-peas",
       "confidence": "medium",
       "withinAuditCeiling": true,
@@ -405,23 +388,6 @@
       "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis; trend agreement is only moderate"
     },
     {
-      "key": "tuna-loin",
-      "confidence": "medium",
-      "withinAuditCeiling": true,
-      "hasDollarLevel": true,
-      "basis": "wholesale",
-      "rangeBasis": "volatility",
-      "levelFamilies": 1,
-      "levelTypes": 1,
-      "trendTypes": 2,
-      "trendAgreement": 0.5,
-      "trendNoise": 0.01165,
-      "typeDispersion": 0,
-      "weeks": 4,
-      "asOf": "2026-05-01",
-      "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis; trend agreement is only moderate"
-    },
-    {
       "key": "whole-chicken",
       "confidence": "medium",
       "withinAuditCeiling": true,
@@ -436,40 +402,6 @@
       "typeDispersion": 0,
       "weeks": 17,
       "asOf": "2026-06-08",
-      "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis; trend agreement is only moderate"
-    },
-    {
-      "key": "whole-lobster",
-      "confidence": "medium",
-      "withinAuditCeiling": true,
-      "hasDollarLevel": true,
-      "basis": "wholesale",
-      "rangeBasis": "volatility",
-      "levelFamilies": 1,
-      "levelTypes": 1,
-      "trendTypes": 2,
-      "trendAgreement": 0.5,
-      "trendNoise": 0.05405,
-      "typeDispersion": 0,
-      "weeks": 4,
-      "asOf": "2026-05-01",
-      "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis; trend agreement is only moderate"
-    },
-    {
-      "key": "whole-salmon",
-      "confidence": "medium",
-      "withinAuditCeiling": true,
-      "hasDollarLevel": true,
-      "basis": "wholesale",
-      "rangeBasis": "volatility",
-      "levelFamilies": 1,
-      "levelTypes": 1,
-      "trendTypes": 2,
-      "trendAgreement": 0.5,
-      "trendNoise": 0.01085,
-      "typeDispersion": 0,
-      "weeks": 4,
-      "asOf": "2026-05-01",
       "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis; trend agreement is only moderate"
     },
     {
@@ -932,6 +864,23 @@
       "toHigh": "trend is too noisy (jagged) to trust as a move"
     },
     {
+      "key": "salmon-fillet",
+      "confidence": "directional",
+      "withinAuditCeiling": true,
+      "hasDollarLevel": true,
+      "basis": "index",
+      "rangeBasis": "volatility",
+      "levelFamilies": 1,
+      "levelTypes": 1,
+      "trendTypes": 3,
+      "trendAgreement": 0.667,
+      "trendNoise": 0.0175,
+      "typeDispersion": 0,
+      "weeks": 4,
+      "asOf": "2026-05-01",
+      "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis"
+    },
+    {
       "key": "shrimp",
       "confidence": "directional",
       "withinAuditCeiling": true,
@@ -949,6 +898,23 @@
       "toHigh": "no dollar level exists (directional) — needs a comparable wholesale $ source on a measurable basis"
     },
     {
+      "key": "tuna-loin",
+      "confidence": "directional",
+      "withinAuditCeiling": true,
+      "hasDollarLevel": true,
+      "basis": "index",
+      "rangeBasis": "volatility",
+      "levelFamilies": 1,
+      "levelTypes": 1,
+      "trendTypes": 2,
+      "trendAgreement": 0.5,
+      "trendNoise": 0.01165,
+      "typeDispersion": 0,
+      "weeks": 4,
+      "asOf": "2026-05-01",
+      "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis; trend agreement is only moderate"
+    },
+    {
       "key": "vegetable-oil",
       "confidence": "directional",
       "withinAuditCeiling": true,
@@ -964,6 +930,40 @@
       "weeks": 5,
       "asOf": "2026-05-01",
       "toHigh": "no dollar level exists (directional) — needs a comparable wholesale $ source on a measurable basis"
+    },
+    {
+      "key": "whole-lobster",
+      "confidence": "directional",
+      "withinAuditCeiling": true,
+      "hasDollarLevel": true,
+      "basis": "index",
+      "rangeBasis": "volatility",
+      "levelFamilies": 1,
+      "levelTypes": 1,
+      "trendTypes": 2,
+      "trendAgreement": 0.5,
+      "trendNoise": 0.05405,
+      "typeDispersion": 0,
+      "weeks": 4,
+      "asOf": "2026-05-01",
+      "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis; trend agreement is only moderate"
+    },
+    {
+      "key": "whole-salmon",
+      "confidence": "directional",
+      "withinAuditCeiling": true,
+      "hasDollarLevel": true,
+      "basis": "index",
+      "rangeBasis": "volatility",
+      "levelFamilies": 1,
+      "levelTypes": 1,
+      "trendTypes": 2,
+      "trendAgreement": 0.5,
+      "trendNoise": 0.01085,
+      "typeDispersion": 0,
+      "weeks": 4,
+      "asOf": "2026-05-01",
+      "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis; trend agreement is only moderate"
     }
   ]
 }

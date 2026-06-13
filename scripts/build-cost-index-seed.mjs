@@ -68,7 +68,7 @@ function main() {
   for (const key of keys) {
     const pts = (ingredientsObj[key] && ingredientsObj[key].points) || [];
     if (!pts.length) continue;                       // nothing vendored for this ingredient
-    const newest = pts[0];                            // mergePoints sorts newest-first
+    const newest = pts[0];                            // mergePoints sorts newest-first (noaa-trade demoted upstream in the vendor)
     const hasLevel = newest.level && typeof newest.level.medianCents === 'number';
     const hasTrend = newest.trend && typeof newest.trend.pct === 'number';
     if (!hasLevel && !hasTrend) continue;            // defensive — gate already enforces this
