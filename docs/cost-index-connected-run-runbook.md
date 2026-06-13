@@ -67,6 +67,11 @@ Proves the "add a whole source family" pattern (roadmap D2).
 Wire a corn or cold-storage series as a labeled "what's moving this" line on protein
 cards (needs a NASS key). Correlational, method-linked (roadmap D4 / methodology §10).
 
+**Already staged (activates on the next FRED fetch — no new step):** the
+`seafood-import` driver (BLS Import Price Index Fish & Shellfish, `IR01000` via
+FRED, index basis) — an aggregate seafood-complex direction feeding the lead-lag
+analyzer for the seafood items. Inert until FRED is fetched; just run the loop.
+
 ## 6. The retail↔wholesale spread method (methodology §7)
 
 Stage the ERS Food Dollar Series (farm/marketing share) + a BLS APU retail series

@@ -5781,6 +5781,33 @@
       "kind": "energy",
       "family": "energy",
       "_report": "EIA commercial electricity retail price (cents/kWh) — coincident ON-SITE energy gauge (refrigeration/ops). The distinct EIA signal (diesel stays on FRED GASDESW to avoid duplication). Confirm facet form via a sample if 0 points."
+    },
+    "seafood-import": {
+      "fred": {
+        "seriesId": "IR01000",
+        "basis": "index"
+      },
+      "kind": "trade",
+      "family": "trade",
+      "leads": [
+        "salmon-fillet",
+        "whole-salmon",
+        "salmon-skin-on-fillet",
+        "shrimp",
+        "shrimp-head-on",
+        "shrimp-pd",
+        "tuna-loin",
+        "whole-lobster",
+        "whole-halibut",
+        "whole-trout",
+        "scallops",
+        "whole-crab",
+        "octopus",
+        "clams",
+        "squid",
+        "whole-branzino"
+      ],
+      "_report": "BLS Import Price Index, Fish & Shellfish (IR01000 via FRED, index basis) — an AGGREGATE seafood-complex import-price DIRECTION, staged 2026-06-13. Most US restaurant seafood is imported, so this is a reputable association for the complex. STRICT honesty: it is an index (never a $ level), it is one shared series (NOT an independent per-species confidence corroborator — methodology §5), and the lead-lag analyzer measures the actual lag empirically on the connected run (likely coincident-to-slightly-leading). Inert until FRED is fetched."
     }
   }
 }
