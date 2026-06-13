@@ -139,9 +139,18 @@ function costIndexBlock(slug, locale) {
   const point = entry && Array.isArray(entry.points) && entry.points[0];
   if (!point) return '';                       // nothing verified+sourced yet → render nothing
   const es = locale === 'es';
-  const conf = point.confidence || 'low';
-  const confWord = es ? ({ high: 'alta', medium: 'media', low: 'baja', directional: 'direccional' }[conf] || conf) : conf;
   const lvl = point.level;
+  // NOAA import unit value runs ~half of true delivered wholesale, so it must NOT
+  // render as a dollar LEVEL or an edible-unit cost — only a trend/direction. Detect
+  // it from provenance and force the read directional (suppresses level, EP, percentile).
+  const isImportValue = !!(lvl && Array.isArray(lvl.provenance) && lvl.provenance.some((p) => p.type === 'noaa-trade'));
+  // A 6x+ wide band (a grade/market min–max collapsed into one range) can't honestly
+  // read 'medium' — cap it at 'low'. (The engine now narrows these on the next refetch.)
+  const _rc0 = lvl && Array.isArray(lvl.rangeCents) ? lvl.rangeCents : null;
+  const wideBand = !!(_rc0 && _rc0[0] > 0 && _rc0[1] / _rc0[0] > 6);
+  const conf = isImportValue ? 'directional'
+    : (wideBand && (point.confidence === 'medium' || point.confidence === 'high') ? 'low' : (point.confidence || 'low'));
+  const confWord = es ? ({ high: 'alta', medium: 'media', low: 'baja', directional: 'direccional' }[conf] || conf) : conf;
   const basis = (lvl && lvl.basis) || 'wholesale';
   // Show the price unit (produce is $/carton or $/sack, proteins $/lb). The level
   // doesn't carry a unit, so fall back to the bounds unit and localize it — an
@@ -162,10 +171,23 @@ function costIndexBlock(slug, locale) {
   const tr = point.trend || {};
   const dirWord = tr.dir === 'up' ? (es ? 'al alza' : 'up') : tr.dir === 'down' ? (es ? 'a la baja' : 'down') : (es ? 'estable' : 'flat');
   const trendStr = (typeof tr.pct === 'number') ? `, ${dirWord} ${(tr.pct >= 0 ? '+' : '')}${(tr.pct * 100).toFixed(1).replace(/\.0$/, '')}%` : '';
-  const sources = [...new Set((point.provenance || []).map((p) => CI_SOURCE_LABELS[p.source] || p.source).filter(Boolean))];
+  // Collapse the per-market terminal slugs (usda-ams-atlanta, …) to one clean label —
+  // raw engineering slugs in the user-facing Sources drawer read as a scraper hack.
+  const srcLabel = (s) => typeof s === 'string'
+    ? (s.indexOf('usda-ams') === 0 ? 'USDA AMS' : s.indexOf('usda-lmr') === 0 ? 'USDA LMR' : (CI_SOURCE_LABELS[s] || s))
+    : s;
+  const sources = [...new Set((point.provenance || []).map((p) => srcLabel(p.source)).filter(Boolean))];
   const asOf = point.asOf || '—';
   const head = es ? 'Lectura de mercado' : 'Market read';
-  const line = es ? `Alrededor de ${range}${trendStr} en la ventana reciente.` : `About ${range}${trendStr} over the recent window.`;
+  // Import-value seafood: no dollar level — a directional caveat + the trend only.
+  const importCaveat = es
+    ? 'Índice de valor de importación — solo dirección; el valor de importación de NOAA va por debajo del precio mayorista entregado.'
+    : 'Trade-value index — directional only; the NOAA import value runs below delivered wholesale.';
+  const pctTxt = (typeof tr.pct === 'number') ? `${(tr.pct >= 0 ? '+' : '')}${(tr.pct * 100).toFixed(1).replace(/\.0$/, '')}%` : '';
+  const trendSentence = pctTxt ? (es ? ` El mercado va ${dirWord} ${pctTxt} en la ventana reciente.` : ` The market is ${dirWord} ${pctTxt} over the recent window.`) : '';
+  const line = isImportValue
+    ? `${importCaveat}${trendSentence}`
+    : (es ? `Alrededor de ${range}${trendStr} en la ventana reciente.` : `About ${range}${trendStr} over the recent window.`);
   const badge = `${es ? 'confianza' : 'confidence'} ${confWord} · ${es ? 'al' : 'as of'} ${asOf}`;
   const srcSummary = `${es ? 'Fuentes' : 'Sources'} · ${sources.length}`;
   const disclaimer = basis === 'retail'
@@ -184,8 +206,16 @@ function costIndexBlock(slug, locale) {
   // composite), so the percentile can't contradict the level/trend. Gated like the
   // dashboard (never on a directional read).
   const hist = (entry.history || []).map((h) => h && h.valueCents).filter((v) => typeof v === 'number' && isFinite(v));
-  const today = lvl && typeof lvl.medianCents === 'number' ? lvl.medianCents : null;
-  const pctl = (conf !== 'directional' && today != null) ? FMT.percentileLine([...hist, today]) : '';
+  const today = (!isImportValue && lvl && typeof lvl.medianCents === 'number') ? lvl.medianCents : null;
+  // Suppress the percentile when it would CONTRADICT the trend (e.g. "near the top"
+  // while the trend is down) — that reads as a bug and erodes trust. Show it only
+  // when the rank and the direction agree.
+  let pctl = '';
+  if (conf !== 'directional' && today != null && hist.length) {
+    const rank = hist.filter((v) => v < today).length / hist.length;   // 0..1, higher = nearer the top
+    const contradicts = (tr.dir === 'down' && rank > 0.7) || (tr.dir === 'up' && rank < 0.3);
+    if (!contradicts) pctl = FMT.percentileLine([...hist, today]);
+  }
   const pctlHtml = pctl ? `\n  <p class="iy-ci-pctl">${pctl}</p>` : '';
   // Live edible-unit cost: the number an operator repeats. ONLY when the live
   // price unit matches the yield unit (both 'lb', etc.) — never divide a $/carton
@@ -517,6 +547,7 @@ main{padding-top:64px}
 .iy-ci-verdict{font-size:14px;line-height:1.5;color:var(--ink);margin:7px 0 0;padding:7px 11px;border-radius:6px;background:var(--surface-2,#f5f3ef);border-left:3px solid var(--stone)}
 .iy-ci-reprice{border-left-color:var(--rust)}
 .iy-ci-hold{border-left-color:var(--teal)}
+.iy-ci-watch{border-left-color:var(--gold,#C99A2E)}
 .iy-ci-src{margin-top:8px;font-size:12.5px}
 .iy-ci-src summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
 .iy-ci-src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
