@@ -371,6 +371,11 @@ const CHECKS = [
   ['Cost-index freshness self-test','check-cost-index-freshness.mjs','--self-test'],
   ['Cost-index health (idem)','build-cost-index-health.mjs','--check'],
   ['Cost-index health self-test','build-cost-index-health.mjs','--self-test'],
+  // Seasonal baseline (D3) — a month earns a "typical" normal only once observed
+  // across 2+ years; until then every ingredient sits in a transparent `building`
+  // state. Pure function of the vendored history, so --check pins it in sync.
+  ['Cost-index seasonality (idem)','build-seasonality.mjs','--check'],
+  ['Cost-index seasonality self-test','build-seasonality.mjs','--self-test'],
   // Shippable bar — below-bar ingredients must stay out of the browser seed
   // (no thin / no-level read on the dashboard; they live as expanding-coverage).
   ['Cost-index shippable bar','check-shippable-bar.mjs'],

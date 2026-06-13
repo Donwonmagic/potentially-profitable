@@ -159,6 +159,15 @@ risk). Four deliverables, sequenced so each unlocks the next.
   (`viz-spark`/`viz-bars` overlay), flagged `derived` with a confidence band.
 - **Acceptance:** ingredients with ≥2yr history show a seasonal band + plain read
   ("~12% above the June norm"); thin history degrades to "insufficient history."
+- **Status (2026-06-13): engine + gate shipped, dormant by design.**
+  `scripts/build-seasonality.mjs` → `data/seasonality.json` is live and pure
+  (`--check` idempotency + `--self-test`, both in `check-all` and the refresh
+  workflow). A month earns a normal only once observed across `minYearsPerMonth`
+  (2) distinct years; today's corpus is ~4 months (one partial year), so all 80
+  ingredients sit in a transparent `building` state that names its blocker — no
+  fake "typical June" off a single June. The artifact self-enriches weekly; the
+  remaining work is the **seed/UI render hook** (the "vs. typical {month}" band),
+  which lights up automatically once ingredients cross into `ready`.
 
 ### D4 (stretch) — Driver attribution v1
 - Wire one driver via NASS QuickStats (cold storage or corn) as a labeled "what's
