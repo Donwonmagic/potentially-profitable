@@ -195,6 +195,12 @@ risk). Four deliverables, sequenced so each unlocks the next.
 - Substitution economics.
 - Regional spread (surface NY-vs-LA instead of a single midpoint).
 - IOSCO-style published methodology + an annual self-assurance note.
+- **User-built baskets + alerts** *(deferred — only after the depth plan above
+  is fully shipped).* Let an operator assemble their own basket of ingredients
+  to keep tabs on, and opt into alerts when a tracked item moves. Adds an
+  account/notification layer the static no-fetch surface doesn't have today —
+  scope the storage + delivery path (and whether it stays client-side) when it
+  comes up; until then it sits last in the queue.
 
 ## 8. Source notes / caveats
 
