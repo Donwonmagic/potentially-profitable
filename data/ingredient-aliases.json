@@ -1,0 +1,21 @@
+{
+  "_doc": "Canonical ingredient alias registry (distributor-tie P2). Maps generic culinary synonyms / standard variety names to one Cost Index ingredient key, so the same item under a different distributor label collapses to one tracked read. Gated by scripts/check-ingredient-aliases.mjs: every canonical key must be a real Cost Index key; every alias stem must already be in extractStem() canonical form (tools/_shared/stem.js); no stem may shadow a different tracked key, and no stem may map to two ingredients. verified:false = a staged alias not yet confirmed against a real distributor catalog (same fact-gate regime as staged price sources) — it ships only when flipped true. We seed ONLY general-knowledge synonyms/variety names here; brand SKUs (Calrose/Nishiki/etc.) require a sourced catalog before they enter.",
+  "_version": "2026-06-13-1",
+  "aliases": {
+    "cilantro": { "stems": ["coriander", "chinese parsley"], "verified": false, "note": "Same plant (Coriandrum sativum); distributors often label the fresh leaf 'coriander' or 'Chinese parsley'." },
+    "green-onion": { "stems": ["scallion", "spring onion"], "verified": false, "note": "Standard synonyms for the immature onion sold in bunches." },
+    "eggplant": { "stems": ["aubergine"], "verified": false, "note": "British/Commonwealth name for the same vegetable." },
+    "zucchini": { "stems": ["courgette"], "verified": false, "note": "British/French name for the same summer squash." },
+    "bell-pepper": { "stems": ["capsicum", "sweet pepper"], "verified": false, "note": "Commonwealth 'capsicum' / generic 'sweet pepper' for the same fruit." },
+    "romaine-lettuce": { "stems": ["cos lettuce", "cos"], "verified": false, "note": "Romaine is sold as 'cos' lettuce in many catalogs." },
+    "butter-lettuce": { "stems": ["bibb lettuce", "boston lettuce", "butterhead lettuce"], "verified": false, "note": "Butterhead family; Bibb and Boston are the two common market types." },
+    "napa-cabbage": { "stems": ["chinese cabbage", "wong bok"], "verified": false, "note": "Napa is the common US name for Chinese (wong bok) cabbage." },
+    "bok-choy": { "stems": ["pak choi", "bok choi", "chinese white cabbage"], "verified": false, "note": "Spelling/label variants for the same brassica." },
+    "daikon": { "stems": ["white radish", "mooli", "chinese radish"], "verified": false, "note": "Standard alternate names for the long white radish." },
+    "rutabaga": { "stems": ["swede"], "verified": false, "note": "Commonwealth name for the same root." },
+    "snow-peas": { "stems": ["mangetout", "chinese pea pod"], "verified": false, "note": "Flat edible-pod pea, sold under these labels." },
+    "green-beans": { "stems": ["string beans", "french beans"], "verified": false, "note": "Common market synonyms for the same bean." },
+    "cantaloupe": { "stems": ["muskmelon", "rockmelon"], "verified": false, "note": "Regional names for the netted-rind melon." },
+    "shrimp": { "stems": ["prawn"], "verified": false, "note": "Generic synonym; collapses bare 'prawn' to the base shrimp read (head-on / P&D variants stay their own keys)." }
+  }
+}
