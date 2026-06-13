@@ -1,6 +1,6 @@
 {
   "_doc": "Muntin Cost PRESSURE rules — the transparent, versioned manifest the deterministic engine (tools/_shared/cost-pressure.js) scores into an inferred 'where it's headed' direction per ingredient. THIS IS NOT A PRICE. Each indicator declares: a public free SOURCE, a direction SIGN (does indicator-up mean cost-up +1 or cost-down -1), an evidence-tier WEIGHT, a sourced LEAD range, and a CITE. The reports + lead ranges are USDA/EIA-sourced and citeable; the per-indicator WEIGHTS are Muntin's evidence-tier judgment (illustrative, frozen per _version). Enforced by scripts/check-pressure-honesty.mjs: every indicator needs source+lead+cite, weight above tier C needs a cite, and the rendered direction must equal what this manifest + the engine recompute. A weight/sign change REQUIRES a _version bump + changelog. Sequencing: status:'preview' (demo observations) until the free fetchers (NASS Quick Stats, EIA, AMS MMN/MARS, USDM, NWS) are wired; then live.",
-  "_version": "2026-Q2-15",
+  "_version": "2026-Q2-16",
   "_changelog": [
     {
       "version": "2026-Q2-15",
@@ -71,7 +71,8 @@
       "version": "2026-Q2-3",
       "date": "2026-06-11",
       "note": "Anchor track complete — all 12 anchors resolve on real weekly prices (romaine/onion via client-side filtering of LA-terminal 2307/2308; chicken monthly edges via the deep BLS-PPI guard now that 3646 is only 3.8y). romaine-lettuce/drought-ca-az is the third calibration-validated edge (+1 sign, holds OOS, N=293) — annotated; weak average R2 (0.007) is the expected shape of an episodic drought signal. With the engine now maximally fed (12y anchors, resolution-matched, deep-PPI guard), chicken/feed-grain is fairly tested at N=81 and honestly fails OOS — a real null, not a data limit. Net: 3 modest validated edges; the free-public-indicator nowcast remains weakly predictive, so the overlay stays held per the per-item proving gate."
-    }
+    },
+    "2026-Q2-16: +33 ingredient rules (proteins, seafood, leaf-lettuce, herbs, domestic veg, fruit) — reasoned per-ingredient estimates from validated analogs + production reality; uncalibrated, held until track-record-proven."
   ],
   "_methodology": "P = Σ(weight × sign × discretize(window-change, deadband)); correlated indicators share one weight bucket (group); |P|≥cutoffT → building/easing else steady; confidence from sign-agreement, decayed by weeks since the last MEASURED print, suppressed to 'under review' past the floor. Lags are biological/empirical (USDA ERS); the month-by-month pass-through weighting is Muntin's estimate, never a USDA figure.",
   "defaults": {
@@ -3995,6 +3996,1935 @@
           "group": "freight",
           "cite": "eia-diesel",
           "note": "freight rides every ingredient"
+        }
+      ]
+    },
+    "short-rib": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "cattle-on-feed-placements",
+          "source": "nass-cattle-on-feed",
+          "sign": -1,
+          "weight": 2,
+          "tier": "B",
+          "window": "1m",
+          "lead": {
+            "min": 16,
+            "max": 26,
+            "unit": "week"
+          },
+          "cite": "nass-cattle-on-feed",
+          "note": "placements forecast marketings 4-6 mo out (NASS)"
+        },
+        {
+          "id": "cold-storage-beef",
+          "source": "nass-cold-storage",
+          "sign": -1,
+          "weight": 1,
+          "tier": "C",
+          "window": "1m",
+          "lead": {
+            "min": 4,
+            "max": 8,
+            "unit": "week"
+          },
+          "cite": "nass-cold-storage"
+        },
+        {
+          "id": "feed-grain",
+          "source": "fred-feed",
+          "sign": 1,
+          "weight": 1,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 26,
+            "max": 78,
+            "unit": "week"
+          },
+          "cite": "fred-feed",
+          "note": "feed weak near-term for beef; herd cycle dominates"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "ground-beef": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "cattle-on-feed-placements",
+          "source": "nass-cattle-on-feed",
+          "sign": -1,
+          "weight": 2,
+          "tier": "B",
+          "window": "1m",
+          "lead": {
+            "min": 16,
+            "max": 26,
+            "unit": "week"
+          },
+          "cite": "nass-cattle-on-feed",
+          "note": "placements forecast marketings 4-6 mo out (NASS)"
+        },
+        {
+          "id": "cold-storage-beef",
+          "source": "nass-cold-storage",
+          "sign": -1,
+          "weight": 1,
+          "tier": "C",
+          "window": "1m",
+          "lead": {
+            "min": 4,
+            "max": 8,
+            "unit": "week"
+          },
+          "cite": "nass-cold-storage"
+        },
+        {
+          "id": "feed-grain",
+          "source": "fred-feed",
+          "sign": 1,
+          "weight": 1,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 26,
+            "max": 78,
+            "unit": "week"
+          },
+          "cite": "fred-feed",
+          "note": "feed weak near-term for beef; herd cycle dominates"
+        },
+        {
+          "id": "aud-fx",
+          "source": "fred-aud-fx",
+          "sign": 1,
+          "weight": 1,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 6,
+            "max": 12,
+            "unit": "week"
+          },
+          "cite": "fred-aud-fx",
+          "note": "AU/NZ lean-trim import for grinding; AUD stronger → US import beef cost up"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "pork-belly": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "hogs-market-supply",
+          "source": "nass-hogs",
+          "sign": -1,
+          "weight": 2,
+          "tier": "B",
+          "window": "1q",
+          "lead": {
+            "min": 8,
+            "max": 26,
+            "unit": "week"
+          },
+          "cite": "nass-hogs"
+        },
+        {
+          "id": "feed-soymeal",
+          "source": "fred-soymeal",
+          "sign": 1,
+          "weight": 1,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 13,
+            "max": 26,
+            "unit": "week"
+          },
+          "group": "feed",
+          "cite": "fred-soymeal"
+        },
+        {
+          "id": "feed-grain",
+          "source": "fred-feed",
+          "sign": 1,
+          "weight": 2,
+          "tier": "B",
+          "window": "4w",
+          "lead": {
+            "min": 13,
+            "max": 26,
+            "unit": "week"
+          },
+          "cite": "fred-feed"
+        },
+        {
+          "id": "cold-storage-pork",
+          "source": "nass-cold-storage",
+          "sign": -1,
+          "weight": 2,
+          "tier": "C",
+          "window": "1m",
+          "lead": {
+            "min": 4,
+            "max": 8,
+            "unit": "week"
+          },
+          "cite": "nass-cold-storage"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "tuna-loin": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "deep-sea-freight",
+          "source": "fred-deep-sea-freight",
+          "sign": 1,
+          "weight": 1,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 10,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "fred-deep-sea-freight",
+          "note": "ocean-freight PPI; imported product rides landed cost"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "whole-lobster": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "deep-sea-freight",
+          "source": "fred-deep-sea-freight",
+          "sign": 1,
+          "weight": 1,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 10,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "fred-deep-sea-freight",
+          "note": "ocean-freight PPI; imported product rides landed cost"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "shrimp-head-on": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "imf-shrimp-price",
+          "source": "fred-imf-shrimp",
+          "sign": 1,
+          "weight": 2,
+          "tier": "B",
+          "window": "1m",
+          "lead": {
+            "min": 4,
+            "max": 13,
+            "unit": "week"
+          },
+          "cite": "fred-imf-shrimp",
+          "note": "world shrimp price leads US import cost"
+        },
+        {
+          "id": "shrimp-import-volume",
+          "source": "noaa-foss",
+          "sign": -1,
+          "weight": 1,
+          "tier": "C",
+          "window": "1m",
+          "lead": {
+            "min": 4,
+            "max": 10,
+            "unit": "week"
+          },
+          "cite": "noaa-foss",
+          "note": "NOAA FOSS US import volume — supply up → cost down"
+        },
+        {
+          "id": "deep-sea-freight",
+          "source": "fred-deep-sea-freight",
+          "sign": 1,
+          "weight": 1,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 10,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "fred-deep-sea-freight",
+          "note": "ocean-freight PPI; imported product rides landed cost"
+        },
+        {
+          "id": "feed-soymeal",
+          "source": "fred-soymeal",
+          "sign": 1,
+          "weight": 1,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 13,
+            "max": 26,
+            "unit": "week"
+          },
+          "group": "feed",
+          "cite": "fred-soymeal"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "shrimp-pd": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "imf-shrimp-price",
+          "source": "fred-imf-shrimp",
+          "sign": 1,
+          "weight": 2,
+          "tier": "B",
+          "window": "1m",
+          "lead": {
+            "min": 4,
+            "max": 13,
+            "unit": "week"
+          },
+          "cite": "fred-imf-shrimp",
+          "note": "world shrimp price leads US import cost"
+        },
+        {
+          "id": "shrimp-import-volume",
+          "source": "noaa-foss",
+          "sign": -1,
+          "weight": 1,
+          "tier": "C",
+          "window": "1m",
+          "lead": {
+            "min": 4,
+            "max": 10,
+            "unit": "week"
+          },
+          "cite": "noaa-foss",
+          "note": "NOAA FOSS US import volume — supply up → cost down"
+        },
+        {
+          "id": "deep-sea-freight",
+          "source": "fred-deep-sea-freight",
+          "sign": 1,
+          "weight": 1,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 10,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "fred-deep-sea-freight",
+          "note": "ocean-freight PPI; imported product rides landed cost"
+        },
+        {
+          "id": "feed-soymeal",
+          "source": "fred-soymeal",
+          "sign": 1,
+          "weight": 1,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 13,
+            "max": 26,
+            "unit": "week"
+          },
+          "group": "feed",
+          "cite": "fred-soymeal"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "butter-lettuce": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "ca-frost",
+          "source": "open-meteo",
+          "sign": -1,
+          "weight": 1,
+          "tier": "C",
+          "window": "1m",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "open-meteo",
+          "note": "CA/AZ growing-region temp"
+        },
+        {
+          "id": "mxn-fx",
+          "source": "fred-mxn-fx",
+          "sign": -1,
+          "weight": 1,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 3,
+            "max": 8,
+            "unit": "week"
+          },
+          "cite": "fred-mxn-fx",
+          "note": "Mexico winter import; peso weaker → cheaper USD → cost down"
+        },
+        {
+          "id": "lettuce-shipments",
+          "source": "ams-movement",
+          "sign": -1,
+          "weight": 3,
+          "tier": "B",
+          "window": "6w",
+          "lead": {
+            "min": 0,
+            "max": 3,
+            "unit": "week"
+          },
+          "group": "movement",
+          "cite": "ams-movement",
+          "note": "arrivals up → supply up → cost down"
+        },
+        {
+          "id": "freeze-alert",
+          "source": "nws-alerts",
+          "sign": 1,
+          "weight": 3,
+          "tier": "A",
+          "window": "active",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "nws-alerts"
+        },
+        {
+          "id": "drought-ca-az",
+          "source": "usdm-drought",
+          "sign": 1,
+          "weight": 2,
+          "tier": "B",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 17,
+            "unit": "week"
+          },
+          "cite": "usdm-drought"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "green-leaf-lettuce": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "ca-frost",
+          "source": "open-meteo",
+          "sign": -1,
+          "weight": 1,
+          "tier": "C",
+          "window": "1m",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "open-meteo",
+          "note": "CA/AZ growing-region temp"
+        },
+        {
+          "id": "mxn-fx",
+          "source": "fred-mxn-fx",
+          "sign": -1,
+          "weight": 1,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 3,
+            "max": 8,
+            "unit": "week"
+          },
+          "cite": "fred-mxn-fx",
+          "note": "Mexico winter import; peso weaker → cheaper USD → cost down"
+        },
+        {
+          "id": "lettuce-shipments",
+          "source": "ams-movement",
+          "sign": -1,
+          "weight": 3,
+          "tier": "B",
+          "window": "6w",
+          "lead": {
+            "min": 0,
+            "max": 3,
+            "unit": "week"
+          },
+          "group": "movement",
+          "cite": "ams-movement",
+          "note": "arrivals up → supply up → cost down"
+        },
+        {
+          "id": "freeze-alert",
+          "source": "nws-alerts",
+          "sign": 1,
+          "weight": 3,
+          "tier": "A",
+          "window": "active",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "nws-alerts"
+        },
+        {
+          "id": "drought-ca-az",
+          "source": "usdm-drought",
+          "sign": 1,
+          "weight": 2,
+          "tier": "B",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 17,
+            "unit": "week"
+          },
+          "cite": "usdm-drought"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "red-leaf-lettuce": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "ca-frost",
+          "source": "open-meteo",
+          "sign": -1,
+          "weight": 1,
+          "tier": "C",
+          "window": "1m",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "open-meteo",
+          "note": "CA/AZ growing-region temp"
+        },
+        {
+          "id": "mxn-fx",
+          "source": "fred-mxn-fx",
+          "sign": -1,
+          "weight": 1,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 3,
+            "max": 8,
+            "unit": "week"
+          },
+          "cite": "fred-mxn-fx",
+          "note": "Mexico winter import; peso weaker → cheaper USD → cost down"
+        },
+        {
+          "id": "lettuce-shipments",
+          "source": "ams-movement",
+          "sign": -1,
+          "weight": 3,
+          "tier": "B",
+          "window": "6w",
+          "lead": {
+            "min": 0,
+            "max": 3,
+            "unit": "week"
+          },
+          "group": "movement",
+          "cite": "ams-movement",
+          "note": "arrivals up → supply up → cost down"
+        },
+        {
+          "id": "freeze-alert",
+          "source": "nws-alerts",
+          "sign": 1,
+          "weight": 3,
+          "tier": "A",
+          "window": "active",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "nws-alerts"
+        },
+        {
+          "id": "drought-ca-az",
+          "source": "usdm-drought",
+          "sign": 1,
+          "weight": 2,
+          "tier": "B",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 17,
+            "unit": "week"
+          },
+          "cite": "usdm-drought"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "collard-greens": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "drought-ca-az",
+          "source": "usdm-drought",
+          "sign": 1,
+          "weight": 2,
+          "tier": "B",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 17,
+            "unit": "week"
+          },
+          "cite": "usdm-drought"
+        },
+        {
+          "id": "freeze-alert",
+          "source": "nws-alerts",
+          "sign": 1,
+          "weight": 3,
+          "tier": "A",
+          "window": "active",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "nws-alerts"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "mint": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "drought-ca-az",
+          "source": "usdm-drought",
+          "sign": 1,
+          "weight": 2,
+          "tier": "B",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 17,
+            "unit": "week"
+          },
+          "cite": "usdm-drought"
+        },
+        {
+          "id": "mxn-fx",
+          "source": "fred-mxn-fx",
+          "sign": -1,
+          "weight": 1,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 3,
+            "max": 8,
+            "unit": "week"
+          },
+          "cite": "fred-mxn-fx",
+          "note": "Mexico winter import; peso weaker → cheaper USD → cost down"
+        },
+        {
+          "id": "freeze-alert",
+          "source": "nws-alerts",
+          "sign": 1,
+          "weight": 3,
+          "tier": "A",
+          "window": "active",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "nws-alerts"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "rosemary": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "drought-ca-az",
+          "source": "usdm-drought",
+          "sign": 1,
+          "weight": 2,
+          "tier": "B",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 17,
+            "unit": "week"
+          },
+          "cite": "usdm-drought"
+        },
+        {
+          "id": "mxn-fx",
+          "source": "fred-mxn-fx",
+          "sign": -1,
+          "weight": 1,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 3,
+            "max": 8,
+            "unit": "week"
+          },
+          "cite": "fred-mxn-fx",
+          "note": "Mexico winter import; peso weaker → cheaper USD → cost down"
+        },
+        {
+          "id": "freeze-alert",
+          "source": "nws-alerts",
+          "sign": 1,
+          "weight": 3,
+          "tier": "A",
+          "window": "active",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "nws-alerts"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "thyme": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "drought-ca-az",
+          "source": "usdm-drought",
+          "sign": 1,
+          "weight": 2,
+          "tier": "B",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 17,
+            "unit": "week"
+          },
+          "cite": "usdm-drought"
+        },
+        {
+          "id": "mxn-fx",
+          "source": "fred-mxn-fx",
+          "sign": -1,
+          "weight": 1,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 3,
+            "max": 8,
+            "unit": "week"
+          },
+          "cite": "fred-mxn-fx",
+          "note": "Mexico winter import; peso weaker → cheaper USD → cost down"
+        },
+        {
+          "id": "freeze-alert",
+          "source": "nws-alerts",
+          "sign": 1,
+          "weight": 3,
+          "tier": "A",
+          "window": "active",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "nws-alerts"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "oregano": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "drought-ca-az",
+          "source": "usdm-drought",
+          "sign": 1,
+          "weight": 2,
+          "tier": "B",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 17,
+            "unit": "week"
+          },
+          "cite": "usdm-drought"
+        },
+        {
+          "id": "mxn-fx",
+          "source": "fred-mxn-fx",
+          "sign": -1,
+          "weight": 1,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 3,
+            "max": 8,
+            "unit": "week"
+          },
+          "cite": "fred-mxn-fx",
+          "note": "Mexico winter import; peso weaker → cheaper USD → cost down"
+        },
+        {
+          "id": "freeze-alert",
+          "source": "nws-alerts",
+          "sign": 1,
+          "weight": 3,
+          "tier": "A",
+          "window": "active",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "nws-alerts"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "tarragon": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "drought-ca-az",
+          "source": "usdm-drought",
+          "sign": 1,
+          "weight": 2,
+          "tier": "B",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 17,
+            "unit": "week"
+          },
+          "cite": "usdm-drought"
+        },
+        {
+          "id": "mxn-fx",
+          "source": "fred-mxn-fx",
+          "sign": -1,
+          "weight": 1,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 3,
+            "max": 8,
+            "unit": "week"
+          },
+          "cite": "fred-mxn-fx",
+          "note": "Mexico winter import; peso weaker → cheaper USD → cost down"
+        },
+        {
+          "id": "freeze-alert",
+          "source": "nws-alerts",
+          "sign": 1,
+          "weight": 3,
+          "tier": "A",
+          "window": "active",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "nws-alerts"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "dill": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "drought-ca-az",
+          "source": "usdm-drought",
+          "sign": 1,
+          "weight": 2,
+          "tier": "B",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 17,
+            "unit": "week"
+          },
+          "cite": "usdm-drought"
+        },
+        {
+          "id": "mxn-fx",
+          "source": "fred-mxn-fx",
+          "sign": -1,
+          "weight": 1,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 3,
+            "max": 8,
+            "unit": "week"
+          },
+          "cite": "fred-mxn-fx",
+          "note": "Mexico winter import; peso weaker → cheaper USD → cost down"
+        },
+        {
+          "id": "freeze-alert",
+          "source": "nws-alerts",
+          "sign": 1,
+          "weight": 3,
+          "tier": "A",
+          "window": "active",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "nws-alerts"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "corn-on-the-cob": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "freeze-alert",
+          "source": "nws-alerts",
+          "sign": 1,
+          "weight": 3,
+          "tier": "A",
+          "window": "active",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "nws-alerts"
+        },
+        {
+          "id": "drought-ca-az",
+          "source": "usdm-drought",
+          "sign": 1,
+          "weight": 2,
+          "tier": "B",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 17,
+            "unit": "week"
+          },
+          "cite": "usdm-drought"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "button-mushroom": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "sweet-potato": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "drought-ca-az",
+          "source": "usdm-drought",
+          "sign": 1,
+          "weight": 2,
+          "tier": "B",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 17,
+            "unit": "week"
+          },
+          "cite": "usdm-drought"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "rutabaga": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "drought-ca-az",
+          "source": "usdm-drought",
+          "sign": 1,
+          "weight": 2,
+          "tier": "B",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 17,
+            "unit": "week"
+          },
+          "cite": "usdm-drought"
+        },
+        {
+          "id": "freeze-alert",
+          "source": "nws-alerts",
+          "sign": 1,
+          "weight": 2,
+          "tier": "A",
+          "window": "active",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "nws-alerts"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "acorn-squash": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "drought-ca-az",
+          "source": "usdm-drought",
+          "sign": 1,
+          "weight": 2,
+          "tier": "B",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 17,
+            "unit": "week"
+          },
+          "cite": "usdm-drought"
+        },
+        {
+          "id": "freeze-alert",
+          "source": "nws-alerts",
+          "sign": 1,
+          "weight": 2,
+          "tier": "A",
+          "window": "active",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "nws-alerts"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "pumpkin": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "drought-ca-az",
+          "source": "usdm-drought",
+          "sign": 1,
+          "weight": 2,
+          "tier": "B",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 17,
+            "unit": "week"
+          },
+          "cite": "usdm-drought"
+        },
+        {
+          "id": "freeze-alert",
+          "source": "nws-alerts",
+          "sign": 1,
+          "weight": 2,
+          "tier": "A",
+          "window": "active",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "nws-alerts"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "cherry-tomato": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "mxn-fx",
+          "source": "fred-mxn-fx",
+          "sign": -1,
+          "weight": 1,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 3,
+            "max": 8,
+            "unit": "week"
+          },
+          "cite": "fred-mxn-fx",
+          "note": "Mexico winter import; peso weaker → cheaper USD → cost down"
+        },
+        {
+          "id": "tomato-shipments",
+          "source": "ams-movement",
+          "sign": -1,
+          "weight": 3,
+          "tier": "B",
+          "window": "6w",
+          "lead": {
+            "min": 0,
+            "max": 3,
+            "unit": "week"
+          },
+          "group": "movement",
+          "cite": "ams-movement",
+          "note": "arrivals up → supply up → cost down"
+        },
+        {
+          "id": "freeze-alert",
+          "source": "nws-alerts",
+          "sign": 1,
+          "weight": 3,
+          "tier": "A",
+          "window": "active",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "nws-alerts"
+        },
+        {
+          "id": "drought-ca-az",
+          "source": "usdm-drought",
+          "sign": 1,
+          "weight": 2,
+          "tier": "B",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 17,
+            "unit": "week"
+          },
+          "cite": "usdm-drought"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "grapefruit": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "freeze-alert",
+          "source": "nws-alerts",
+          "sign": 1,
+          "weight": 3,
+          "tier": "A",
+          "window": "active",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "nws-alerts"
+        },
+        {
+          "id": "drought-ca-az",
+          "source": "usdm-drought",
+          "sign": 1,
+          "weight": 2,
+          "tier": "B",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 17,
+            "unit": "week"
+          },
+          "cite": "usdm-drought"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "apple": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "drought-ca-az",
+          "source": "usdm-drought",
+          "sign": 1,
+          "weight": 2,
+          "tier": "B",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 17,
+            "unit": "week"
+          },
+          "cite": "usdm-drought"
+        },
+        {
+          "id": "freeze-alert",
+          "source": "nws-alerts",
+          "sign": 1,
+          "weight": 2,
+          "tier": "A",
+          "window": "active",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "nws-alerts"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "pear": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "drought-ca-az",
+          "source": "usdm-drought",
+          "sign": 1,
+          "weight": 2,
+          "tier": "B",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 17,
+            "unit": "week"
+          },
+          "cite": "usdm-drought"
+        },
+        {
+          "id": "freeze-alert",
+          "source": "nws-alerts",
+          "sign": 1,
+          "weight": 2,
+          "tier": "A",
+          "window": "active",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "nws-alerts"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "banana": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "deep-sea-freight",
+          "source": "fred-deep-sea-freight",
+          "sign": 1,
+          "weight": 2,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 10,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "fred-deep-sea-freight",
+          "note": "ocean-freight PPI; imported product rides landed cost"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "pineapple": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "deep-sea-freight",
+          "source": "fred-deep-sea-freight",
+          "sign": 1,
+          "weight": 2,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 10,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "fred-deep-sea-freight",
+          "note": "ocean-freight PPI; imported product rides landed cost"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "ginger": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "deep-sea-freight",
+          "source": "fred-deep-sea-freight",
+          "sign": 1,
+          "weight": 2,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 10,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "fred-deep-sea-freight",
+          "note": "ocean-freight PPI; imported product rides landed cost"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "watermelon": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "drought-ca-az",
+          "source": "usdm-drought",
+          "sign": 1,
+          "weight": 2,
+          "tier": "B",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 17,
+            "unit": "week"
+          },
+          "cite": "usdm-drought"
+        },
+        {
+          "id": "freeze-alert",
+          "source": "nws-alerts",
+          "sign": 1,
+          "weight": 2,
+          "tier": "A",
+          "window": "active",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "nws-alerts"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "blueberry": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "freeze-alert",
+          "source": "nws-alerts",
+          "sign": 1,
+          "weight": 3,
+          "tier": "A",
+          "window": "active",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "nws-alerts"
+        },
+        {
+          "id": "drought-ca-az",
+          "source": "usdm-drought",
+          "sign": 1,
+          "weight": 2,
+          "tier": "B",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 17,
+            "unit": "week"
+          },
+          "cite": "usdm-drought"
+        },
+        {
+          "id": "mxn-fx",
+          "source": "fred-mxn-fx",
+          "sign": -1,
+          "weight": 1,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 3,
+            "max": 8,
+            "unit": "week"
+          },
+          "cite": "fred-mxn-fx",
+          "note": "Mexico winter import; peso weaker → cheaper USD → cost down"
+        },
+        {
+          "id": "deep-sea-freight",
+          "source": "fred-deep-sea-freight",
+          "sign": 1,
+          "weight": 1,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 10,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "fred-deep-sea-freight",
+          "note": "ocean-freight PPI; imported product rides landed cost"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
+        }
+      ]
+    },
+    "raspberry": {
+      "rule_version": "2026-Q2-16",
+      "indicators": [
+        {
+          "id": "freeze-alert",
+          "source": "nws-alerts",
+          "sign": 1,
+          "weight": 3,
+          "tier": "A",
+          "window": "active",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "nws-alerts"
+        },
+        {
+          "id": "drought-ca-az",
+          "source": "usdm-drought",
+          "sign": 1,
+          "weight": 2,
+          "tier": "B",
+          "window": "4w",
+          "lead": {
+            "min": 4,
+            "max": 17,
+            "unit": "week"
+          },
+          "cite": "usdm-drought"
+        },
+        {
+          "id": "mxn-fx",
+          "source": "fred-mxn-fx",
+          "sign": -1,
+          "weight": 1,
+          "tier": "C",
+          "window": "4w",
+          "lead": {
+            "min": 3,
+            "max": 8,
+            "unit": "week"
+          },
+          "cite": "fred-mxn-fx",
+          "note": "Mexico winter import; peso weaker → cheaper USD → cost down"
+        },
+        {
+          "id": "diesel",
+          "source": "eia-diesel",
+          "sign": 1,
+          "weight": 1,
+          "tier": "A",
+          "window": "4w",
+          "lead": {
+            "min": 0,
+            "max": 4,
+            "unit": "week"
+          },
+          "group": "freight",
+          "cite": "eia-diesel"
         }
       ]
     }
