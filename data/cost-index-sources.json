@@ -5067,59 +5067,83 @@
         {
           "reportId": "2277",
           "market": "Atlanta",
-          "commodity": "Cantaloups",
+          "commodity": "Cantaloup",
           "reducer": "mostlyMid",
           "unit": "carton",
-          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify."
+          "_status": "RESOLVED 2026-06-13: stem 'Cantaloup' (was 'Cantaloups' — plural couldn't substring-match the singular commodity field; mirrors working 'Watermelons').",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2281",
           "market": "Baltimore",
-          "commodity": "Cantaloups",
+          "commodity": "Cantaloup",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2285",
           "market": "Boston",
-          "commodity": "Cantaloups",
+          "commodity": "Cantaloup",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2290",
           "market": "Chicago",
-          "commodity": "Cantaloups",
+          "commodity": "Cantaloup",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2302",
           "market": "Detroit",
-          "commodity": "Cantaloups",
+          "commodity": "Cantaloup",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2306",
           "market": "Los Angeles",
-          "commodity": "Cantaloups",
+          "commodity": "Cantaloup",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2310",
           "market": "Miami",
-          "commodity": "Cantaloups",
+          "commodity": "Cantaloup",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         },
         {
           "reportId": "2314",
           "market": "New York",
-          "commodity": "Cantaloups",
+          "commodity": "Cantaloup",
           "reducer": "mostlyMid",
-          "unit": "carton"
+          "unit": "carton",
+          "matchFields": [
+            "commodity"
+          ]
         }
       ],
       "bls": {
@@ -5379,12 +5403,21 @@
       "verified": false,
       "ams": [
         {
-          "reportId": "DISCOVER",
+          "reportId": "3647",
           "market": "National",
-          "commodity": "Hens",
-          "reducer": "mostlyMid",
+          "commodity": "Whole Young",
+          "matchFields": [
+            "item"
+          ],
+          "reducer": "wtdAvg",
           "unit": "lb",
-          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. AMS turkey is a SEPARATE report from the 3646 chicken report — --discover \"turkey\" for the reportId"
+          "priceUnit": "Cents Per Lb",
+          "fields": {
+            "price": [
+              "wtd_avg_price"
+            ]
+          },
+          "_status": "RESOLVED 2026-06-13 via --list-commodities 3647: item 'Whole Young' (179.5 c/lb). Pairs with BLS WPU0222 trend."
         }
       ],
       "bls": {
