@@ -547,7 +547,8 @@
         "family": "ppi-soybean-oil",
         "type": "ppi-soybean-oil",
         "_report": "Soybean Oil PPI (trend). Retail APU0000716121 discontinued 2005 — no current free oil LEVEL via FRED/BLS. For a wholesale level, AMS report 3190 (GX_GR117, Crude Soybean Oil, Central IL, cents/lb) is the correct report (NOT 3511, which is feedstuffs/meal). Held directional: crude soybean oil runs well below refined fryer oil, so it would mislead as the operator-facing level."
-      }
+      },
+      "coverage": "Trend-only: no free public wholesale price *level* exists for refined cooking oil; direction tracked via BLS PPI + FRED soybean-oil PPI."
     },
     "bell-pepper": {
       "verified": true,
@@ -1644,7 +1645,8 @@
         "matchFields": [
           "item_description"
         ]
-      }
+      },
+      "coverage": "Staged: source resolved (LMR 2453, IMPS 180 boneless strip), pending live verification."
     },
     "leg-of-lamb": {
       "verified": false,
@@ -1663,7 +1665,8 @@
           ]
         },
         "_status": "LMR lamb is a separate report — --discover-lmr \"lamb\" for the reportId + section, then confirm the cut (\"Leg\")."
-      }
+      },
+      "coverage": "Pending source wiring: lamb cuts publish in the LMR lamb family (e.g., LM_XL552); slug to be wired."
     },
     "whole-salmon": {
       "verified": true,
@@ -1738,7 +1741,8 @@
         "unit": "lb",
         "years": 2,
         "_status": "branzino (European seabass) is thin/absent in NOAA FOSS at volume — likely NO free wholesale source. --discover the HTS or accept no coverage (leave verified:false)."
-      }
+      },
+      "coverage": "No free public wholesale source: European seabass is thin/absent in NOAA FOSS; a daily quote needs a paid reporter network (Urner Barry tier)."
     },
     "cucumber": {
       "verified": true,
@@ -3441,7 +3445,8 @@
         "seriesId": "WPU01130217",
         "type": "bls",
         "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
-      }
+      },
+      "coverage": "Staged: AMS commodity term resolved (\"Chinese Cabbage\"), pending live verification."
     },
     "rutabaga": {
       "verified": true,
@@ -3599,7 +3604,8 @@
         "seriesId": "WPU01130217",
         "type": "bls",
         "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
-      }
+      },
+      "coverage": "Staged: AMS commodity term resolved (\"Daikon\"), pending live verification."
     },
     "cherry-tomato": {
       "verified": true,
@@ -3891,7 +3897,8 @@
         "seriesId": "WPU01130217",
         "type": "bls",
         "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
-      }
+      },
+      "coverage": "Staged: AMS commodity term resolved (\"Peppers, Serrano\"), pending live verification."
     },
     "poblano-pepper": {
       "verified": false,
@@ -3982,7 +3989,8 @@
         "seriesId": "WPU01130217",
         "type": "bls",
         "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
-      }
+      },
+      "coverage": "Staged: AMS commodity term resolved (\"Peppers, Poblano\"), pending live verification."
     },
     "habanero-pepper": {
       "verified": false,
@@ -4073,7 +4081,8 @@
         "seriesId": "WPU01130217",
         "type": "bls",
         "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
-      }
+      },
+      "coverage": "Staged: AMS commodity term resolved (\"Peppers, Habanero\"), pending live verification."
     },
     "oyster-mushroom": {
       "verified": false,
@@ -4140,7 +4149,8 @@
         "seriesId": "WPU01130217",
         "type": "bls",
         "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
-      }
+      },
+      "coverage": "No distinct public series: USDA AMS terminal reports carry only a generic \"Mushrooms\" commodity — no oyster-specific wholesale quote is published."
     },
     "mint": {
       "verified": true,
@@ -4657,7 +4667,8 @@
         "seriesId": "WPU01130217",
         "type": "bls",
         "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
-      }
+      },
+      "coverage": "Staged: AMS term resolved (\"Onions, Dry\" + variety RED filter), pending live verification."
     },
     "red-potato": {
       "verified": false,
@@ -4724,7 +4735,8 @@
         "seriesId": "WPU01130217",
         "type": "bls",
         "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
-      }
+      },
+      "coverage": "Staged: AMS commodity term resolved (\"ROUND RED\"), pending live verification."
     },
     "grapefruit": {
       "verified": true,
@@ -5150,7 +5162,8 @@
         "seriesId": "WPU01130217",
         "type": "bls",
         "_status": "shared fresh-produce PPI — confirm a distinct item PPI via --discover-fred to lift low->medium"
-      }
+      },
+      "coverage": "Staged: AMS commodity stem resolved (\"Cantaloup\"), pending live verification."
     },
     "blueberry": {
       "verified": true,
@@ -5357,7 +5370,8 @@
       "bls": {
         "seriesId": "WPU0223",
         "_status": "lamb PPI is thin — confirm"
-      }
+      },
+      "coverage": "Pending source wiring: lamb cuts publish in the LMR lamb family (e.g., LM_XL552); slug to be wired."
     },
     "pork-belly": {
       "verified": true,
@@ -5397,7 +5411,8 @@
       },
       "bls": {
         "seriesId": "WPS022104"
-      }
+      },
+      "coverage": "Pending source wiring: pork trim (72%) is published inside the LMR pork-cutout/FOB family (LM_PK602); slug to be wired."
     },
     "whole-turkey": {
       "verified": false,
@@ -5422,7 +5437,8 @@
       ],
       "bls": {
         "seriesId": "WPU0222"
-      }
+      },
+      "coverage": "Staged: AMS source resolved (National Turkey Report 3647, \"Whole Young\"), pending live verification."
     },
     "ground-turkey": {
       "verified": false,
@@ -5438,7 +5454,8 @@
       ],
       "bls": {
         "seriesId": "WPU0222"
-      }
+      },
+      "coverage": "No public ground-turkey series: USDA’s National Turkey Report quotes whole birds and parts, not ground; LMR does not cover poultry."
     },
     "whole-halibut": {
       "verified": false,
@@ -5457,7 +5474,8 @@
       },
       "bls": {
         "seriesId": "WPU0223"
-      }
+      },
+      "coverage": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
     },
     "whole-trout": {
       "verified": false,
@@ -5476,7 +5494,8 @@
       },
       "bls": {
         "seriesId": "WPU0223"
-      }
+      },
+      "coverage": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
     },
     "scallops": {
       "verified": false,
@@ -5496,7 +5515,8 @@
       },
       "bls": {
         "seriesId": "WPU0223"
-      }
+      },
+      "coverage": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
     },
     "whole-crab": {
       "verified": false,
@@ -5515,7 +5535,8 @@
       },
       "bls": {
         "seriesId": "WPU0223"
-      }
+      },
+      "coverage": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
     },
     "octopus": {
       "verified": false,
@@ -5535,7 +5556,8 @@
       },
       "bls": {
         "seriesId": "WPU0223"
-      }
+      },
+      "coverage": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
     },
     "salmon-skin-on-fillet": {
       "verified": false,
@@ -5554,7 +5576,8 @@
       },
       "bls": {
         "seriesId": "WPU0223"
-      }
+      },
+      "coverage": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
     },
     "clams": {
       "verified": false,
@@ -5573,7 +5596,8 @@
       },
       "bls": {
         "seriesId": "WPU0223"
-      }
+      },
+      "coverage": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
     },
     "squid": {
       "verified": false,
@@ -5593,7 +5617,8 @@
       },
       "bls": {
         "seriesId": "WPU0223"
-      }
+      },
+      "coverage": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
     },
     "shrimp-head-on": {
       "verified": true,
