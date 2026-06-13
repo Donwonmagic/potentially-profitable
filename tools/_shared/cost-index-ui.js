@@ -777,6 +777,28 @@
     listEl.appendChild(fig);
   });
 
+  // Coverage honesty — the `absent` gaps, explained. Making "no public data, and
+  // here's the structural reason" a first-class, VISIBLE state is the trust play:
+  // we only show a price a public USDA series backs; everything else says why not.
+  if (DATA.coverage && DATA.coverage.gaps && DATA.coverage.gaps.length) {
+    var gaps = DATA.coverage.gaps;
+    var det = el('details', 'cp-coverage-gaps');
+    det.appendChild(el('summary', 'cp-coverage-summary',
+      L('Not yet covered (' + gaps.length + ') — and why', 'Aún sin cobertura (' + gaps.length + ') — y por qué')));
+    det.appendChild(el('p', 'cp-coverage-note',
+      L('We show a price only when a public USDA series backs it. These have no free wholesale source yet — listed so the gap is honest, not hidden.',
+        'Mostramos un precio solo cuando una serie pública del USDA lo respalda. Estos aún no tienen fuente mayorista gratuita — se listan para que la falta sea honesta, no oculta.')));
+    var ul = el('ul', 'cp-coverage-list');
+    gaps.forEach(function (g) {
+      var li = el('li', 'cp-coverage-item');
+      li.appendChild(el('span', 'cp-coverage-name', L(g.label_en, g.label_es)));
+      if (g.reason) li.appendChild(el('span', 'cp-coverage-reason', ' — ' + g.reason));
+      ul.appendChild(li);
+    });
+    det.appendChild(ul);
+    listEl.appendChild(det);
+  }
+
   // Scan-level orientation above the cards: lead with the gestalt, then detail.
   var ups = movers.filter(function (m) { return m.dir === 'up'; }).length;
   var downs = movers.filter(function (m) { return m.dir === 'down'; }).length;
