@@ -72,7 +72,8 @@
       "date": "2026-06-11",
       "note": "Anchor track complete — all 12 anchors resolve on real weekly prices (romaine/onion via client-side filtering of LA-terminal 2307/2308; chicken monthly edges via the deep BLS-PPI guard now that 3646 is only 3.8y). romaine-lettuce/drought-ca-az is the third calibration-validated edge (+1 sign, holds OOS, N=293) — annotated; weak average R2 (0.007) is the expected shape of an episodic drought signal. With the engine now maximally fed (12y anchors, resolution-matched, deep-PPI guard), chicken/feed-grain is fairly tested at N=81 and honestly fails OOS — a real null, not a data limit. Net: 3 modest validated edges; the free-public-indicator nowcast remains weakly predictive, so the overlay stays held per the per-item proving gate."
     },
-    "2026-Q2-16: +33 ingredient rules (proteins, seafood, leaf-lettuce, herbs, domestic veg, fruit) — reasoned per-ingredient estimates from validated analogs + production reality; uncalibrated, held until track-record-proven."
+    "2026-Q2-16: +33 ingredient rules (proteins, seafood, leaf-lettuce, herbs, domestic veg, fruit) — reasoned per-ingredient estimates from validated analogs + production reality; uncalibrated, held until track-record-proven.",
+    "2026-Q2-17: +ca-frost (calibratable Open-Meteo Yuma/Imperial min-temp) to 6 desert-SW leaf/cole crops (iceberg-lettuce, spinach, broccoli, cauliflower, celery, cabbage) that carried only the non-calibratable freeze-alert — brings them to parity with romaine/green-leaf/red-leaf lettuce (roadmap §3e). sign -1 (min-temp up → less freeze → cost down), tier C, held until track-record-proven."
   ],
   "_methodology": "P = Σ(weight × sign × discretize(window-change, deadband)); correlated indicators share one weight bucket (group); |P|≥cutoffT → building/easing else steady; confidence from sign-agreement, decayed by weeks since the last MEASURED print, suppressed to 'under review' past the floor. Lags are biological/empirical (USDA ERS); the month-by-month pass-through weighting is Muntin's estimate, never a USDA figure.",
   "defaults": {
@@ -1672,8 +1673,23 @@
       ]
     },
     "broccoli": {
-      "rule_version": "2026-Q2-starter-1",
+      "rule_version": "2026-Q2-17",
       "indicators": [
+        {
+          "id": "ca-frost",
+          "source": "open-meteo",
+          "sign": -1,
+          "weight": 1,
+          "tier": "C",
+          "window": "1m",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "open-meteo",
+          "note": "CA/AZ growing-region temp — Yuma/Imperial winter freeze risk (calibratable companion to freeze-alert)"
+        },
         {
           "id": "drought-ca-az",
           "source": "usdm-drought",
@@ -1737,8 +1753,23 @@
       ]
     },
     "cauliflower": {
-      "rule_version": "2026-Q2-starter-1",
+      "rule_version": "2026-Q2-17",
       "indicators": [
+        {
+          "id": "ca-frost",
+          "source": "open-meteo",
+          "sign": -1,
+          "weight": 1,
+          "tier": "C",
+          "window": "1m",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "open-meteo",
+          "note": "CA/AZ growing-region temp — Yuma/Imperial winter freeze risk (calibratable companion to freeze-alert)"
+        },
         {
           "id": "drought-ca-az",
           "source": "usdm-drought",
@@ -1802,8 +1833,23 @@
       ]
     },
     "spinach": {
-      "rule_version": "2026-Q2-starter-1",
+      "rule_version": "2026-Q2-17",
       "indicators": [
+        {
+          "id": "ca-frost",
+          "source": "open-meteo",
+          "sign": -1,
+          "weight": 1,
+          "tier": "C",
+          "window": "1m",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "open-meteo",
+          "note": "CA/AZ growing-region temp — Yuma/Imperial winter freeze risk (calibratable companion to freeze-alert)"
+        },
         {
           "id": "drought-ca-az",
           "source": "usdm-drought",
@@ -2322,8 +2368,23 @@
       ]
     },
     "celery": {
-      "rule_version": "2026-Q2-starter-1",
+      "rule_version": "2026-Q2-17",
       "indicators": [
+        {
+          "id": "ca-frost",
+          "source": "open-meteo",
+          "sign": -1,
+          "weight": 1,
+          "tier": "C",
+          "window": "1m",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "open-meteo",
+          "note": "CA/AZ growing-region temp — Yuma/Imperial winter freeze risk (calibratable companion to freeze-alert)"
+        },
         {
           "id": "drought-ca-az",
           "source": "usdm-drought",
@@ -2387,8 +2448,23 @@
       ]
     },
     "cabbage": {
-      "rule_version": "2026-Q2-starter-1",
+      "rule_version": "2026-Q2-17",
       "indicators": [
+        {
+          "id": "ca-frost",
+          "source": "open-meteo",
+          "sign": -1,
+          "weight": 1,
+          "tier": "C",
+          "window": "1m",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "open-meteo",
+          "note": "CA/AZ growing-region temp — Yuma/Imperial winter freeze risk (calibratable companion to freeze-alert)"
+        },
         {
           "id": "drought-ca-az",
           "source": "usdm-drought",
@@ -3167,8 +3243,23 @@
       ]
     },
     "iceberg-lettuce": {
-      "rule_version": "2026-Q2-starter-1",
+      "rule_version": "2026-Q2-17",
       "indicators": [
+        {
+          "id": "ca-frost",
+          "source": "open-meteo",
+          "sign": -1,
+          "weight": 1,
+          "tier": "C",
+          "window": "1m",
+          "lead": {
+            "min": 1,
+            "max": 6,
+            "unit": "week"
+          },
+          "cite": "open-meteo",
+          "note": "CA/AZ growing-region temp — Yuma/Imperial winter freeze risk (calibratable companion to freeze-alert)"
+        },
         {
           "id": "drought-ca-az",
           "source": "usdm-drought",
