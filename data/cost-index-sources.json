@@ -5476,10 +5476,10 @@
         "windowDays": 45,
         "fields": {
           "price": [
-            "pork_trim_72_value"
+            "pork_butt"
           ]
         },
-        "_status": "STAGED verified:false — report CONFIRMED 2026-06-13: 2498 (LM_PK602) carries '72% Trim Combo' (wtd-avg ~110 $/cwt ≈ $1.10/lb, ~515k units) — a fair ground-pork proxy. The 72% trim is in the TRIMMINGS block, NOT 'Cutout and Primal Values' (that section holds the primals/belly); --discover-lmr the exact 72%-trim column + section on 2498 and tighten bounds (~80–160 ¢/lb), then --flip."
+        "_status": "RESOLVED 2026-06-13: ground pork = shoulder; wired to pork_butt (Boston butt) in 'Cutout and Primal Values' on 2498 — confirmed column, same section as working pork-belly. PROXY for ground pork (true 72% trim sits in a trimmings section the API doesn't expose here); label as shoulder-based. --flip to verify."
       },
       "bls": {
         "seriesId": "WPS022104"
@@ -5499,12 +5499,7 @@
           "reducer": "wtdAvg",
           "unit": "lb",
           "priceUnit": "Cents Per Lb",
-          "fields": {
-            "price": [
-              "wtd_avg_price"
-            ]
-          },
-          "_status": "RESOLVED 2026-06-13 via --list-commodities 3647: item 'Whole Young' (179.5 c/lb). Pairs with BLS WPU0222 trend."
+          "_status": "RESOLVED 2026-06-13: mirror working whole-chicken(3646) shape — commodity 'Whole Young' (179.5 c/lb confirmed via --list-commodities 3647), matchFields item, no fields/section override. --flip to verify."
         }
       ],
       "bls": {
