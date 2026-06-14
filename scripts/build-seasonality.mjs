@@ -18,6 +18,15 @@
  * a single June. The renderer reads this artifact; the current-vs-normal delta is
  * computed by the consumer at its own run time so this file stays pure.
  *
+ * Backfill readiness: an OPTIONAL deep-history store, data/cost-index-history.json,
+ * shaped `{ "_doc":"…", "ingredients": { "<key>": [ {"date":"YYYY-MM-DD",
+ * "valueCents":N}, … oldest→newest ] } }`, can carry the full multi-year series a
+ * connected fetch backfills. When present, build-seasonality uses the deep series
+ * for any key whose deep series is LONGER than the capped cost-index.json history,
+ * letting the seasonal band activate without touching the live seed. The file does
+ * not exist yet; while absent the engine is fully INERT (output byte-identical to
+ * the capped-history path), so data/seasonality.json and --check do not move.
+ *
  *   node scripts/build-seasonality.mjs            # write data/seasonality.json
  *   node scripts/build-seasonality.mjs --check    # CI: fail if the committed file is stale
  *   node scripts/build-seasonality.mjs --self-test
@@ -102,10 +111,40 @@ export function ingredientSeasonality(key, entry) {
   };
 }
 
-export function build(data) {
+// Optional deep-history store (backfill readiness). The capped history inside
+// data/cost-index.json is intentionally short (recent weeks only). A connected
+// fetch can populate data/cost-index-history.json with the FULL multi-year series
+// per ingredient, letting the seasonal band activate from backfilled data without
+// touching the live seed. Contract:
+//
+//   {
+//     "_doc": "…",
+//     "ingredients": {
+//       "<key>": [ { "date": "YYYY-MM-DD", "valueCents": N }, …oldest→newest ]
+//     }
+//   }
+//
+// For each ingredient, if this deep store carries a LONGER series for that key,
+// build-seasonality uses it INSTEAD of the capped cost-index.json history;
+// otherwise it falls back to the current behavior. INERT until the file exists —
+// while it is absent, output is byte-for-byte identical to today, so
+// data/seasonality.json and the --check gate are unchanged.
+export function deepHistoryFor(deep, key, fallbackHistory) {
+  const series = deep && deep.ingredients && Array.isArray(deep.ingredients[key]) ? deep.ingredients[key] : null;
+  if (!series) return fallbackHistory;
+  const clean = series.filter((h) => h && typeof h.valueCents === 'number' && typeof h.date === 'string');
+  // Only override when the deep store is actually longer — never shorten a series.
+  return clean.length > (Array.isArray(fallbackHistory) ? fallbackHistory.length : 0) ? clean : fallbackHistory;
+}
+
+export function build(data, deep) {
   const ings = data.ingredients || {};
   const rows = Object.keys(ings)
-    .map((k) => ingredientSeasonality(k, ings[k]))
+    .map((k) => {
+      const entry = ings[k] || {};
+      const history = deepHistoryFor(deep, k, (entry && Array.isArray(entry.history)) ? entry.history : []);
+      return ingredientSeasonality(k, { ...entry, history });
+    })
     .filter((r) => r.weeks > 0)   // only ingredients that carry history
     .sort((a, b) => (b.establishedMonths - a.establishedMonths) || (b.weeks - a.weeks) || a.key.localeCompare(b.key));
   return {
@@ -127,8 +166,14 @@ function run() {
   let data;
   try { data = JSON.parse(readFileSync(path.join(repoRoot, 'data/cost-index.json'), 'utf8')); }
   catch (e) { console.error('seasonality: cannot read data/cost-index.json —', e.message); process.exit(1); }
+  // Optional deep-history store — absent by default (a connected fetch populates
+  // it later). When missing, `deep` stays null and build() reproduces today's
+  // output exactly, so the committed file and --check gate do not move.
+  let deep = null;
+  try { deep = JSON.parse(readFileSync(path.join(repoRoot, 'data/cost-index-history.json'), 'utf8')); }
+  catch { /* deep store not present yet → inert, fall back to capped history */ }
   const outPath = path.join(repoRoot, 'data/seasonality.json');
-  const built = JSON.stringify(build(data), null, 2) + '\n';
+  const built = JSON.stringify(build(data, deep), null, 2) + '\n';
   const s = JSON.parse(built);
   const tag = `${s.summary.total} ingredient(s) with history, ${s.summary.ready} ready / ${s.summary.building} building`;
 
@@ -188,6 +233,31 @@ function selfTest() {
 
   // No history → dropped from the matrix by build().
   ok('no history → weeks 0', ingredientSeasonality('z', { history: [] }).weeks, 0);
+
+  // Deep-history backfill: a synthetic 2-year series in the optional deep store
+  // (6 months observed across BOTH years) activates the seasonal band — `ready`
+  // with populated `months` — even though the capped seed history is a single point.
+  const deepData = { ingredients: { romaine: { history: [{ date: '2026-06-01', valueCents: 200 }] } } };
+  const deepStore = { ingredients: { romaine: [] } };
+  for (const yr of ['2025', '2026']) {
+    for (const mm of ['01', '02', '03', '04', '05', '06']) {
+      deepStore.ingredients.romaine.push({ date: `${yr}-${mm}-05`, valueCents: 100 + Number(mm) });
+      deepStore.ingredients.romaine.push({ date: `${yr}-${mm}-19`, valueCents: 140 + Number(mm) });
+    }
+  }
+  // deepHistoryFor must prefer the longer deep series over the capped seed history.
+  ok('deepHistoryFor prefers longer series', deepHistoryFor(deepStore, 'romaine', deepData.ingredients.romaine.history).length, 24);
+  // ...and a key absent from the deep store falls back to the seed history untouched.
+  ok('deepHistoryFor falls back when key absent', deepHistoryFor(deepStore, 'butter', [{ date: '2026-06-01', valueCents: 9 }]).length, 1);
+  const builtDeep = build(deepData, deepStore);
+  const romaineRow = builtDeep.ingredients.find((r) => r.key === 'romaine');
+  ok('deep series → ingredient ready', !!romaineRow && romaineRow.ready, true);
+  ok('deep series → 6 established months', romaineRow && romaineRow.establishedMonths, 6);
+  ok('deep series → months populated', romaineRow && Object.keys(romaineRow.months).length, 6);
+  // INERT guarantee: with no deep store, build() reproduces the capped-history path.
+  const builtFlat = build(deepData, null);
+  const flatRow = builtFlat.ingredients.find((r) => r.key === 'romaine');
+  ok('no deep store → not ready (inert)', !flatRow || !flatRow.ready, true);
 
   const failed = cases.filter((c) => !c.pass);
   for (const c of failed) console.error(`  ✗ ${c.name}: got ${JSON.stringify(c.got)}, want ${JSON.stringify(c.want)}`);

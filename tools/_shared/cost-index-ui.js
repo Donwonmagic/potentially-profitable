@@ -402,9 +402,20 @@
   }
 
   document.getElementById('cpMarketHeading').textContent = L("What the market's doing", 'Qué hace el mercado');
-  document.getElementById('cpMarketDek').textContent = L(
+  var dekEl = document.getElementById('cpMarketDek');
+  dekEl.textContent = L(
     'Wholesale and index signals for common ingredients, blended across public sources. Use it to tell a real market move from a vendor markup.',
     'Señales de mayoreo e índices para ingredientes comunes, combinadas de fuentes públicas. Úsalo para distinguir un movimiento real del mercado de un sobreprecio del proveedor.');
+
+  // Freshness trust line — the seed's top-level build date, surfaced verbatim so
+  // an operator (and an answer engine) sees how current the whole read is at a
+  // glance. Dynamic from the seed; never a hardcoded date. Sits under the dek.
+  if (DATA.generatedAt) {
+    var freshEl = el('p', 'cp-market-asof');
+    freshEl.appendChild(el('strong', null, L('Market data as of ', 'Datos de mercado al ')));
+    freshEl.appendChild(document.createTextNode(DATA.generatedAt));
+    dekEl.parentNode.insertBefore(freshEl, dekEl.nextSibling);
+  }
   if (DATA.status === 'preview') {
     var pv = document.getElementById('cpMarketPreview');
     pv.hidden = false;
@@ -556,7 +567,11 @@
       confPhrase + ' ' + metaText + '.');
 
     var head = el('div', 'cp-market-head');
-    head.appendChild(el('span', 'cp-market-name', name));
+    // Real heading: each ingredient name is an <h3> nesting under the section's
+    // <h2> (#cpMarketHeading), so the card grid has a proper outline + SR landmark
+    // nav. Safe re: the h2-anchor-id gate — that gate only scans static <h2> in
+    // blog/glossary/learn, never these JS-built tool cards.
+    head.appendChild(el('h3', 'cp-market-name', name));
     var chip = el('span', 'cp-conf', conf);
     chip.setAttribute('data-level', r.confidence);
     chip.setAttribute('aria-label', confPhrase);   // chip shows the short word; SR hears what it means
