@@ -1295,6 +1295,92 @@
           }
         ]
       },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 93,
+          "p25Cents": 90,
+          "p75Cents": 94,
+          "n": 14,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 84,
+          "p25Cents": 83,
+          "p75Cents": 88,
+          "n": 13,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 83,
+          "p25Cents": 82,
+          "p75Cents": 85,
+          "n": 14,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 84,
+          "p25Cents": 82,
+          "p75Cents": 86,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 87,
+          "p25Cents": 85,
+          "p75Cents": 89,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 89,
+          "p25Cents": 88,
+          "p75Cents": 91,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 90,
+          "p25Cents": 89,
+          "p75Cents": 93,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 92,
+          "p25Cents": 90,
+          "p75Cents": 100,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 96,
+          "p25Cents": 94,
+          "p75Cents": 99,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 99,
+          "p25Cents": 97,
+          "p75Cents": 100,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 97,
+          "p25Cents": 96,
+          "p75Cents": 98,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 97,
+          "p25Cents": 95,
+          "p75Cents": 98,
+          "n": 12,
+          "years": 3
+        }
+      },
       "yieldSlug": "pork-loin",
       "flag": {
         "verdict": "flat",
@@ -1592,6 +1678,92 @@
             "basis": "wholesale"
           }
         ]
+      },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 112,
+          "p25Cents": 105,
+          "p75Cents": 116,
+          "n": 14,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 107,
+          "p25Cents": 106,
+          "p75Cents": 108,
+          "n": 13,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 110,
+          "p25Cents": 109,
+          "p75Cents": 111,
+          "n": 14,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 106,
+          "p25Cents": 103,
+          "p75Cents": 110,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 109,
+          "p25Cents": 105,
+          "p75Cents": 112,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 113,
+          "p25Cents": 110,
+          "p75Cents": 116,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 116,
+          "p25Cents": 110,
+          "p75Cents": 121,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 130,
+          "p25Cents": 129,
+          "p75Cents": 132,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 135,
+          "p25Cents": 129,
+          "p75Cents": 145,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 121,
+          "p25Cents": 115,
+          "p75Cents": 129,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 108,
+          "p25Cents": 107,
+          "p75Cents": 113,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 121,
+          "p25Cents": 107,
+          "p75Cents": 125,
+          "n": 12,
+          "years": 3
+        }
       },
       "yieldSlug": "pork-shoulder",
       "flag": {
@@ -3501,6 +3673,92 @@
           }
         ]
       },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 284,
+          "p25Cents": 196,
+          "p75Cents": 308,
+          "n": 12,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 271,
+          "p25Cents": 171,
+          "p75Cents": 304,
+          "n": 14,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 262,
+          "p25Cents": 164,
+          "p75Cents": 268,
+          "n": 13,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 259,
+          "p25Cents": 149,
+          "p75Cents": 262,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 259,
+          "p25Cents": 163,
+          "p75Cents": 265,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 248,
+          "p25Cents": 200,
+          "p75Cents": 277,
+          "n": 14,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 234,
+          "p25Cents": 189,
+          "p75Cents": 286,
+          "n": 12,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 235,
+          "p25Cents": 175,
+          "p75Cents": 279,
+          "n": 14,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 248,
+          "p25Cents": 245,
+          "p75Cents": 305,
+          "n": 13,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 253,
+          "p25Cents": 244,
+          "p75Cents": 312,
+          "n": 13,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 260,
+          "p25Cents": 253,
+          "p75Cents": 311,
+          "n": 14,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 269,
+          "p25Cents": 244,
+          "p75Cents": 311,
+          "n": 13,
+          "years": 3
+        }
+      },
       "flag": {
         "verdict": "easing",
         "actionBias": "hold",
@@ -3689,6 +3947,92 @@
             "basis": "wholesale"
           }
         ]
+      },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 191,
+          "p25Cents": 178,
+          "p75Cents": 223,
+          "n": 12,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 178,
+          "p25Cents": 177,
+          "p75Cents": 194,
+          "n": 14,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 170,
+          "p25Cents": 166,
+          "p75Cents": 178,
+          "n": 13,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 153,
+          "p25Cents": 144,
+          "p75Cents": 178,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 154,
+          "p25Cents": 142,
+          "p75Cents": 191,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 161,
+          "p25Cents": 157,
+          "p75Cents": 191,
+          "n": 14,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 162,
+          "p25Cents": 155,
+          "p75Cents": 171,
+          "n": 12,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 166,
+          "p25Cents": 165,
+          "p75Cents": 174,
+          "n": 14,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 188,
+          "p25Cents": 166,
+          "p75Cents": 192,
+          "n": 13,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 183,
+          "p25Cents": 150,
+          "p75Cents": 193,
+          "n": 13,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 174,
+          "p25Cents": 172,
+          "p75Cents": 194,
+          "n": 14,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 200,
+          "p25Cents": 184,
+          "p75Cents": 201,
+          "n": 13,
+          "years": 3
+        }
       },
       "flag": {
         "verdict": "flat",

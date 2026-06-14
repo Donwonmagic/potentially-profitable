@@ -1,0 +1,3782 @@
+{
+  "_doc": "Deep backfill history for the Cost Index seasonal engine (scripts/build-seasonality.mjs). Per ingredient, the FULL weekly wholesale series on the SAME valueCents scale as data/cost-index.json (so seasonal normals are comparable to the live level). Written by fetch-cost-index-sources.mjs --history-out with a deep window (set COST_INDEX_SERIES_DAYS, e.g. 4500 ≈ 12y). Re-run to extend; build-seasonality uses the deep series wherever it is longer than the capped live history.",
+  "generatedAt": "2026-06-14T04:53:10.167Z",
+  "ingredients": {
+    "pork-loin": [
+      {
+        "date": "2023-06-14",
+        "valueCents": 88
+      },
+      {
+        "date": "2023-06-21",
+        "valueCents": 91
+      },
+      {
+        "date": "2023-06-28",
+        "valueCents": 95
+      },
+      {
+        "date": "2023-07-05",
+        "valueCents": 97
+      },
+      {
+        "date": "2023-07-12",
+        "valueCents": 99
+      },
+      {
+        "date": "2023-07-19",
+        "valueCents": 101
+      },
+      {
+        "date": "2023-07-26",
+        "valueCents": 101
+      },
+      {
+        "date": "2023-08-02",
+        "valueCents": 100
+      },
+      {
+        "date": "2023-08-09",
+        "valueCents": 98
+      },
+      {
+        "date": "2023-08-16",
+        "valueCents": 96
+      },
+      {
+        "date": "2023-08-23",
+        "valueCents": 96
+      },
+      {
+        "date": "2023-08-30",
+        "valueCents": 94
+      },
+      {
+        "date": "2023-09-06",
+        "valueCents": 96
+      },
+      {
+        "date": "2023-09-13",
+        "valueCents": 98
+      },
+      {
+        "date": "2023-09-20",
+        "valueCents": 98
+      },
+      {
+        "date": "2023-09-27",
+        "valueCents": 97
+      },
+      {
+        "date": "2023-10-04",
+        "valueCents": 96
+      },
+      {
+        "date": "2023-10-11",
+        "valueCents": 94
+      },
+      {
+        "date": "2023-10-18",
+        "valueCents": 93
+      },
+      {
+        "date": "2023-10-25",
+        "valueCents": 90
+      },
+      {
+        "date": "2023-11-01",
+        "valueCents": 88
+      },
+      {
+        "date": "2023-11-08",
+        "valueCents": 88
+      },
+      {
+        "date": "2023-11-15",
+        "valueCents": 85
+      },
+      {
+        "date": "2023-11-22",
+        "valueCents": 83
+      },
+      {
+        "date": "2023-11-29",
+        "valueCents": 83
+      },
+      {
+        "date": "2023-12-06",
+        "valueCents": 83
+      },
+      {
+        "date": "2023-12-13",
+        "valueCents": 84
+      },
+      {
+        "date": "2023-12-20",
+        "valueCents": 82
+      },
+      {
+        "date": "2023-12-27",
+        "valueCents": 83
+      },
+      {
+        "date": "2024-01-03",
+        "valueCents": 82
+      },
+      {
+        "date": "2024-01-10",
+        "valueCents": 82
+      },
+      {
+        "date": "2024-01-17",
+        "valueCents": 84
+      },
+      {
+        "date": "2024-01-24",
+        "valueCents": 86
+      },
+      {
+        "date": "2024-01-31",
+        "valueCents": 85
+      },
+      {
+        "date": "2024-02-07",
+        "valueCents": 84
+      },
+      {
+        "date": "2024-02-14",
+        "valueCents": 84
+      },
+      {
+        "date": "2024-02-21",
+        "valueCents": 85
+      },
+      {
+        "date": "2024-02-28",
+        "valueCents": 85
+      },
+      {
+        "date": "2024-03-06",
+        "valueCents": 86
+      },
+      {
+        "date": "2024-03-13",
+        "valueCents": 87
+      },
+      {
+        "date": "2024-03-20",
+        "valueCents": 89
+      },
+      {
+        "date": "2024-03-27",
+        "valueCents": 91
+      },
+      {
+        "date": "2024-04-03",
+        "valueCents": 94
+      },
+      {
+        "date": "2024-04-10",
+        "valueCents": 96
+      },
+      {
+        "date": "2024-04-17",
+        "valueCents": 99
+      },
+      {
+        "date": "2024-04-24",
+        "valueCents": 99
+      },
+      {
+        "date": "2024-05-01",
+        "valueCents": 100
+      },
+      {
+        "date": "2024-05-08",
+        "valueCents": 100
+      },
+      {
+        "date": "2024-05-15",
+        "valueCents": 103
+      },
+      {
+        "date": "2024-05-22",
+        "valueCents": 101
+      },
+      {
+        "date": "2024-05-29",
+        "valueCents": 102
+      },
+      {
+        "date": "2024-06-05",
+        "valueCents": 101
+      },
+      {
+        "date": "2024-06-12",
+        "valueCents": 101
+      },
+      {
+        "date": "2024-06-19",
+        "valueCents": 100
+      },
+      {
+        "date": "2024-06-26",
+        "valueCents": 96
+      },
+      {
+        "date": "2024-07-03",
+        "valueCents": 95
+      },
+      {
+        "date": "2024-07-10",
+        "valueCents": 96
+      },
+      {
+        "date": "2024-07-17",
+        "valueCents": 96
+      },
+      {
+        "date": "2024-07-24",
+        "valueCents": 97
+      },
+      {
+        "date": "2024-07-31",
+        "valueCents": 97
+      },
+      {
+        "date": "2024-08-07",
+        "valueCents": 97
+      },
+      {
+        "date": "2024-08-14",
+        "valueCents": 97
+      },
+      {
+        "date": "2024-08-21",
+        "valueCents": 96
+      },
+      {
+        "date": "2024-08-28",
+        "valueCents": 95
+      },
+      {
+        "date": "2024-09-04",
+        "valueCents": 94
+      },
+      {
+        "date": "2024-09-11",
+        "valueCents": 95
+      },
+      {
+        "date": "2024-09-18",
+        "valueCents": 94
+      },
+      {
+        "date": "2024-09-25",
+        "valueCents": 93
+      },
+      {
+        "date": "2024-10-02",
+        "valueCents": 93
+      },
+      {
+        "date": "2024-10-09",
+        "valueCents": 91
+      },
+      {
+        "date": "2024-10-16",
+        "valueCents": 90
+      },
+      {
+        "date": "2024-10-23",
+        "valueCents": 89
+      },
+      {
+        "date": "2024-10-30",
+        "valueCents": 88
+      },
+      {
+        "date": "2024-11-06",
+        "valueCents": 85
+      },
+      {
+        "date": "2024-11-13",
+        "valueCents": 84
+      },
+      {
+        "date": "2024-11-20",
+        "valueCents": 82
+      },
+      {
+        "date": "2024-11-27",
+        "valueCents": 81
+      },
+      {
+        "date": "2024-12-04",
+        "valueCents": 80
+      },
+      {
+        "date": "2024-12-11",
+        "valueCents": 81
+      },
+      {
+        "date": "2024-12-18",
+        "valueCents": 82
+      },
+      {
+        "date": "2024-12-23",
+        "valueCents": 82
+      },
+      {
+        "date": "2024-12-31",
+        "valueCents": 82
+      },
+      {
+        "date": "2025-01-08",
+        "valueCents": 80
+      },
+      {
+        "date": "2025-01-15",
+        "valueCents": 80
+      },
+      {
+        "date": "2025-01-22",
+        "valueCents": 83
+      },
+      {
+        "date": "2025-01-29",
+        "valueCents": 84
+      },
+      {
+        "date": "2025-02-05",
+        "valueCents": 85
+      },
+      {
+        "date": "2025-02-12",
+        "valueCents": 86
+      },
+      {
+        "date": "2025-02-19",
+        "valueCents": 87
+      },
+      {
+        "date": "2025-02-26",
+        "valueCents": 87
+      },
+      {
+        "date": "2025-03-05",
+        "valueCents": 88
+      },
+      {
+        "date": "2025-03-12",
+        "valueCents": 88
+      },
+      {
+        "date": "2025-03-19",
+        "valueCents": 87
+      },
+      {
+        "date": "2025-03-26",
+        "valueCents": 89
+      },
+      {
+        "date": "2025-04-02",
+        "valueCents": 88
+      },
+      {
+        "date": "2025-04-09",
+        "valueCents": 89
+      },
+      {
+        "date": "2025-04-16",
+        "valueCents": 87
+      },
+      {
+        "date": "2025-04-23",
+        "valueCents": 87
+      },
+      {
+        "date": "2025-04-30",
+        "valueCents": 89
+      },
+      {
+        "date": "2025-05-07",
+        "valueCents": 88
+      },
+      {
+        "date": "2025-05-14",
+        "valueCents": 87
+      },
+      {
+        "date": "2025-05-21",
+        "valueCents": 90
+      },
+      {
+        "date": "2025-05-28",
+        "valueCents": 92
+      },
+      {
+        "date": "2025-06-04",
+        "valueCents": 94
+      },
+      {
+        "date": "2025-06-11",
+        "valueCents": 96
+      },
+      {
+        "date": "2025-06-18",
+        "valueCents": 98
+      },
+      {
+        "date": "2025-06-25",
+        "valueCents": 99
+      },
+      {
+        "date": "2025-07-02",
+        "valueCents": 98
+      },
+      {
+        "date": "2025-07-09",
+        "valueCents": 99
+      },
+      {
+        "date": "2025-07-16",
+        "valueCents": 100
+      },
+      {
+        "date": "2025-07-23",
+        "valueCents": 101
+      },
+      {
+        "date": "2025-07-30",
+        "valueCents": 100
+      },
+      {
+        "date": "2025-08-06",
+        "valueCents": 99
+      },
+      {
+        "date": "2025-08-13",
+        "valueCents": 99
+      },
+      {
+        "date": "2025-08-20",
+        "valueCents": 98
+      },
+      {
+        "date": "2025-08-27",
+        "valueCents": 96
+      },
+      {
+        "date": "2025-09-03",
+        "valueCents": 97
+      },
+      {
+        "date": "2025-09-10",
+        "valueCents": 98
+      },
+      {
+        "date": "2025-09-17",
+        "valueCents": 98
+      },
+      {
+        "date": "2025-09-24",
+        "valueCents": 98
+      },
+      {
+        "date": "2025-10-01",
+        "valueCents": 97
+      },
+      {
+        "date": "2025-10-08",
+        "valueCents": 95
+      },
+      {
+        "date": "2025-10-15",
+        "valueCents": 94
+      },
+      {
+        "date": "2025-10-22",
+        "valueCents": 94
+      },
+      {
+        "date": "2025-10-29",
+        "valueCents": 91
+      },
+      {
+        "date": "2025-11-05",
+        "valueCents": 90
+      },
+      {
+        "date": "2025-11-12",
+        "valueCents": 88
+      },
+      {
+        "date": "2025-11-19",
+        "valueCents": 84
+      },
+      {
+        "date": "2025-11-26",
+        "valueCents": 83
+      },
+      {
+        "date": "2025-12-03",
+        "valueCents": 84
+      },
+      {
+        "date": "2025-12-10",
+        "valueCents": 85
+      },
+      {
+        "date": "2025-12-17",
+        "valueCents": 85
+      },
+      {
+        "date": "2025-12-24",
+        "valueCents": 87
+      },
+      {
+        "date": "2025-12-31",
+        "valueCents": 86
+      },
+      {
+        "date": "2026-01-07",
+        "valueCents": 86
+      },
+      {
+        "date": "2026-01-14",
+        "valueCents": 86
+      },
+      {
+        "date": "2026-01-21",
+        "valueCents": 88
+      },
+      {
+        "date": "2026-01-28",
+        "valueCents": 89
+      },
+      {
+        "date": "2026-02-04",
+        "valueCents": 89
+      },
+      {
+        "date": "2026-02-11",
+        "valueCents": 90
+      },
+      {
+        "date": "2026-02-18",
+        "valueCents": 91
+      },
+      {
+        "date": "2026-02-25",
+        "valueCents": 93
+      },
+      {
+        "date": "2026-03-04",
+        "valueCents": 93
+      },
+      {
+        "date": "2026-03-11",
+        "valueCents": 92
+      },
+      {
+        "date": "2026-03-18",
+        "valueCents": 93
+      },
+      {
+        "date": "2026-03-25",
+        "valueCents": 91
+      },
+      {
+        "date": "2026-04-01",
+        "valueCents": 91
+      },
+      {
+        "date": "2026-04-08",
+        "valueCents": 91
+      },
+      {
+        "date": "2026-04-15",
+        "valueCents": 90
+      },
+      {
+        "date": "2026-04-22",
+        "valueCents": 90
+      },
+      {
+        "date": "2026-04-29",
+        "valueCents": 90
+      },
+      {
+        "date": "2026-05-06",
+        "valueCents": 90
+      },
+      {
+        "date": "2026-05-13",
+        "valueCents": 91
+      },
+      {
+        "date": "2026-05-20",
+        "valueCents": 92
+      },
+      {
+        "date": "2026-05-27",
+        "valueCents": 94
+      },
+      {
+        "date": "2026-06-03",
+        "valueCents": 95
+      },
+      {
+        "date": "2026-06-10",
+        "valueCents": 94
+      },
+      {
+        "date": "2026-06-12",
+        "valueCents": 93
+      }
+    ],
+    "pork-shoulder": [
+      {
+        "date": "2023-06-14",
+        "valueCents": 137
+      },
+      {
+        "date": "2023-06-21",
+        "valueCents": 145
+      },
+      {
+        "date": "2023-06-28",
+        "valueCents": 161
+      },
+      {
+        "date": "2023-07-05",
+        "valueCents": 163
+      },
+      {
+        "date": "2023-07-12",
+        "valueCents": 147
+      },
+      {
+        "date": "2023-07-19",
+        "valueCents": 119
+      },
+      {
+        "date": "2023-07-26",
+        "valueCents": 110
+      },
+      {
+        "date": "2023-08-02",
+        "valueCents": 105
+      },
+      {
+        "date": "2023-08-09",
+        "valueCents": 100
+      },
+      {
+        "date": "2023-08-16",
+        "valueCents": 102
+      },
+      {
+        "date": "2023-08-23",
+        "valueCents": 107
+      },
+      {
+        "date": "2023-08-30",
+        "valueCents": 114
+      },
+      {
+        "date": "2023-09-06",
+        "valueCents": 117
+      },
+      {
+        "date": "2023-09-13",
+        "valueCents": 120
+      },
+      {
+        "date": "2023-09-20",
+        "valueCents": 123
+      },
+      {
+        "date": "2023-09-27",
+        "valueCents": 121
+      },
+      {
+        "date": "2023-10-04",
+        "valueCents": 117
+      },
+      {
+        "date": "2023-10-11",
+        "valueCents": 116
+      },
+      {
+        "date": "2023-10-18",
+        "valueCents": 111
+      },
+      {
+        "date": "2023-10-25",
+        "valueCents": 104
+      },
+      {
+        "date": "2023-11-01",
+        "valueCents": 101
+      },
+      {
+        "date": "2023-11-08",
+        "valueCents": 104
+      },
+      {
+        "date": "2023-11-15",
+        "valueCents": 108
+      },
+      {
+        "date": "2023-11-22",
+        "valueCents": 109
+      },
+      {
+        "date": "2023-11-29",
+        "valueCents": 109
+      },
+      {
+        "date": "2023-12-06",
+        "valueCents": 108
+      },
+      {
+        "date": "2023-12-13",
+        "valueCents": 110
+      },
+      {
+        "date": "2023-12-20",
+        "valueCents": 110
+      },
+      {
+        "date": "2023-12-27",
+        "valueCents": 109
+      },
+      {
+        "date": "2024-01-03",
+        "valueCents": 106
+      },
+      {
+        "date": "2024-01-10",
+        "valueCents": 102
+      },
+      {
+        "date": "2024-01-17",
+        "valueCents": 103
+      },
+      {
+        "date": "2024-01-24",
+        "valueCents": 102
+      },
+      {
+        "date": "2024-01-31",
+        "valueCents": 98
+      },
+      {
+        "date": "2024-02-07",
+        "valueCents": 99
+      },
+      {
+        "date": "2024-02-14",
+        "valueCents": 101
+      },
+      {
+        "date": "2024-02-21",
+        "valueCents": 106
+      },
+      {
+        "date": "2024-02-28",
+        "valueCents": 109
+      },
+      {
+        "date": "2024-03-06",
+        "valueCents": 111
+      },
+      {
+        "date": "2024-03-13",
+        "valueCents": 112
+      },
+      {
+        "date": "2024-03-20",
+        "valueCents": 113
+      },
+      {
+        "date": "2024-03-27",
+        "valueCents": 113
+      },
+      {
+        "date": "2024-04-03",
+        "valueCents": 116
+      },
+      {
+        "date": "2024-04-10",
+        "valueCents": 121
+      },
+      {
+        "date": "2024-04-17",
+        "valueCents": 126
+      },
+      {
+        "date": "2024-04-24",
+        "valueCents": 130
+      },
+      {
+        "date": "2024-05-01",
+        "valueCents": 130
+      },
+      {
+        "date": "2024-05-08",
+        "valueCents": 129
+      },
+      {
+        "date": "2024-05-15",
+        "valueCents": 130
+      },
+      {
+        "date": "2024-05-22",
+        "valueCents": 132
+      },
+      {
+        "date": "2024-05-29",
+        "valueCents": 131
+      },
+      {
+        "date": "2024-06-05",
+        "valueCents": 128
+      },
+      {
+        "date": "2024-06-12",
+        "valueCents": 127
+      },
+      {
+        "date": "2024-06-19",
+        "valueCents": 128
+      },
+      {
+        "date": "2024-06-26",
+        "valueCents": 127
+      },
+      {
+        "date": "2024-07-03",
+        "valueCents": 122
+      },
+      {
+        "date": "2024-07-10",
+        "valueCents": 117
+      },
+      {
+        "date": "2024-07-17",
+        "valueCents": 114
+      },
+      {
+        "date": "2024-07-24",
+        "valueCents": 112
+      },
+      {
+        "date": "2024-07-31",
+        "valueCents": 112
+      },
+      {
+        "date": "2024-08-07",
+        "valueCents": 108
+      },
+      {
+        "date": "2024-08-14",
+        "valueCents": 107
+      },
+      {
+        "date": "2024-08-21",
+        "valueCents": 108
+      },
+      {
+        "date": "2024-08-28",
+        "valueCents": 108
+      },
+      {
+        "date": "2024-09-04",
+        "valueCents": 107
+      },
+      {
+        "date": "2024-09-11",
+        "valueCents": 106
+      },
+      {
+        "date": "2024-09-18",
+        "valueCents": 105
+      },
+      {
+        "date": "2024-09-25",
+        "valueCents": 105
+      },
+      {
+        "date": "2024-10-02",
+        "valueCents": 105
+      },
+      {
+        "date": "2024-10-09",
+        "valueCents": 103
+      },
+      {
+        "date": "2024-10-16",
+        "valueCents": 105
+      },
+      {
+        "date": "2024-10-23",
+        "valueCents": 105
+      },
+      {
+        "date": "2024-10-30",
+        "valueCents": 105
+      },
+      {
+        "date": "2024-11-06",
+        "valueCents": 106
+      },
+      {
+        "date": "2024-11-13",
+        "valueCents": 107
+      },
+      {
+        "date": "2024-11-20",
+        "valueCents": 107
+      },
+      {
+        "date": "2024-11-27",
+        "valueCents": 106
+      },
+      {
+        "date": "2024-12-04",
+        "valueCents": 107
+      },
+      {
+        "date": "2024-12-11",
+        "valueCents": 106
+      },
+      {
+        "date": "2024-12-18",
+        "valueCents": 109
+      },
+      {
+        "date": "2024-12-23",
+        "valueCents": 110
+      },
+      {
+        "date": "2024-12-31",
+        "valueCents": 111
+      },
+      {
+        "date": "2025-01-08",
+        "valueCents": 111
+      },
+      {
+        "date": "2025-01-15",
+        "valueCents": 109
+      },
+      {
+        "date": "2025-01-22",
+        "valueCents": 106
+      },
+      {
+        "date": "2025-01-29",
+        "valueCents": 104
+      },
+      {
+        "date": "2025-02-05",
+        "valueCents": 104
+      },
+      {
+        "date": "2025-02-12",
+        "valueCents": 105
+      },
+      {
+        "date": "2025-02-19",
+        "valueCents": 108
+      },
+      {
+        "date": "2025-02-26",
+        "valueCents": 109
+      },
+      {
+        "date": "2025-03-05",
+        "valueCents": 109
+      },
+      {
+        "date": "2025-03-12",
+        "valueCents": 106
+      },
+      {
+        "date": "2025-03-19",
+        "valueCents": 106
+      },
+      {
+        "date": "2025-03-26",
+        "valueCents": 110
+      },
+      {
+        "date": "2025-04-02",
+        "valueCents": 111
+      },
+      {
+        "date": "2025-04-09",
+        "valueCents": 110
+      },
+      {
+        "date": "2025-04-16",
+        "valueCents": 109
+      },
+      {
+        "date": "2025-04-23",
+        "valueCents": 109
+      },
+      {
+        "date": "2025-04-30",
+        "valueCents": 110
+      },
+      {
+        "date": "2025-05-07",
+        "valueCents": 110
+      },
+      {
+        "date": "2025-05-14",
+        "valueCents": 117
+      },
+      {
+        "date": "2025-05-21",
+        "valueCents": 127
+      },
+      {
+        "date": "2025-05-28",
+        "valueCents": 129
+      },
+      {
+        "date": "2025-06-04",
+        "valueCents": 131
+      },
+      {
+        "date": "2025-06-11",
+        "valueCents": 136
+      },
+      {
+        "date": "2025-06-18",
+        "valueCents": 145
+      },
+      {
+        "date": "2025-06-25",
+        "valueCents": 149
+      },
+      {
+        "date": "2025-07-02",
+        "valueCents": 141
+      },
+      {
+        "date": "2025-07-09",
+        "valueCents": 129
+      },
+      {
+        "date": "2025-07-16",
+        "valueCents": 127
+      },
+      {
+        "date": "2025-07-23",
+        "valueCents": 122
+      },
+      {
+        "date": "2025-07-30",
+        "valueCents": 117
+      },
+      {
+        "date": "2025-08-06",
+        "valueCents": 112
+      },
+      {
+        "date": "2025-08-13",
+        "valueCents": 113
+      },
+      {
+        "date": "2025-08-20",
+        "valueCents": 119
+      },
+      {
+        "date": "2025-08-27",
+        "valueCents": 122
+      },
+      {
+        "date": "2025-09-03",
+        "valueCents": 124
+      },
+      {
+        "date": "2025-09-10",
+        "valueCents": 126
+      },
+      {
+        "date": "2025-09-17",
+        "valueCents": 126
+      },
+      {
+        "date": "2025-09-24",
+        "valueCents": 126
+      },
+      {
+        "date": "2025-10-01",
+        "valueCents": 126
+      },
+      {
+        "date": "2025-10-08",
+        "valueCents": 123
+      },
+      {
+        "date": "2025-10-15",
+        "valueCents": 116
+      },
+      {
+        "date": "2025-10-22",
+        "valueCents": 113
+      },
+      {
+        "date": "2025-10-29",
+        "valueCents": 112
+      },
+      {
+        "date": "2025-11-05",
+        "valueCents": 108
+      },
+      {
+        "date": "2025-11-12",
+        "valueCents": 109
+      },
+      {
+        "date": "2025-11-19",
+        "valueCents": 107
+      },
+      {
+        "date": "2025-11-26",
+        "valueCents": 107
+      },
+      {
+        "date": "2025-12-03",
+        "valueCents": 109
+      },
+      {
+        "date": "2025-12-10",
+        "valueCents": 109
+      },
+      {
+        "date": "2025-12-17",
+        "valueCents": 114
+      },
+      {
+        "date": "2025-12-24",
+        "valueCents": 118
+      },
+      {
+        "date": "2025-12-31",
+        "valueCents": 120
+      },
+      {
+        "date": "2026-01-07",
+        "valueCents": 116
+      },
+      {
+        "date": "2026-01-14",
+        "valueCents": 110
+      },
+      {
+        "date": "2026-01-21",
+        "valueCents": 108
+      },
+      {
+        "date": "2026-01-28",
+        "valueCents": 113
+      },
+      {
+        "date": "2026-02-04",
+        "valueCents": 113
+      },
+      {
+        "date": "2026-02-11",
+        "valueCents": 112
+      },
+      {
+        "date": "2026-02-18",
+        "valueCents": 114
+      },
+      {
+        "date": "2026-02-25",
+        "valueCents": 114
+      },
+      {
+        "date": "2026-03-04",
+        "valueCents": 116
+      },
+      {
+        "date": "2026-03-11",
+        "valueCents": 116
+      },
+      {
+        "date": "2026-03-18",
+        "valueCents": 116
+      },
+      {
+        "date": "2026-03-25",
+        "valueCents": 117
+      },
+      {
+        "date": "2026-04-01",
+        "valueCents": 116
+      },
+      {
+        "date": "2026-04-08",
+        "valueCents": 117
+      },
+      {
+        "date": "2026-04-15",
+        "valueCents": 116
+      },
+      {
+        "date": "2026-04-22",
+        "valueCents": 119
+      },
+      {
+        "date": "2026-04-29",
+        "valueCents": 128
+      },
+      {
+        "date": "2026-05-06",
+        "valueCents": 132
+      },
+      {
+        "date": "2026-05-13",
+        "valueCents": 139
+      },
+      {
+        "date": "2026-05-20",
+        "valueCents": 146
+      },
+      {
+        "date": "2026-05-27",
+        "valueCents": 150
+      },
+      {
+        "date": "2026-06-03",
+        "valueCents": 148
+      },
+      {
+        "date": "2026-06-10",
+        "valueCents": 134
+      },
+      {
+        "date": "2026-06-12",
+        "valueCents": 131
+      }
+    ],
+    "salmon-fillet": [
+      {
+        "date": "2025-02-01",
+        "valueCents": 601
+      },
+      {
+        "date": "2025-03-01",
+        "valueCents": 631
+      },
+      {
+        "date": "2025-05-01",
+        "valueCents": 570
+      },
+      {
+        "date": "2025-06-01",
+        "valueCents": 525
+      },
+      {
+        "date": "2025-07-01",
+        "valueCents": 502
+      },
+      {
+        "date": "2026-01-01",
+        "valueCents": 539
+      },
+      {
+        "date": "2026-02-01",
+        "valueCents": 523
+      },
+      {
+        "date": "2026-03-01",
+        "valueCents": 556
+      },
+      {
+        "date": "2026-04-01",
+        "valueCents": 558
+      }
+    ],
+    "shrimp": [
+      {
+        "date": "2025-02-01",
+        "valueCents": 369
+      },
+      {
+        "date": "2025-03-01",
+        "valueCents": 360
+      },
+      {
+        "date": "2025-04-01",
+        "valueCents": 375
+      },
+      {
+        "date": "2025-05-01",
+        "valueCents": 364
+      },
+      {
+        "date": "2025-06-01",
+        "valueCents": 370
+      },
+      {
+        "date": "2025-07-01",
+        "valueCents": 322
+      },
+      {
+        "date": "2026-01-01",
+        "valueCents": 399
+      },
+      {
+        "date": "2026-02-01",
+        "valueCents": 341
+      },
+      {
+        "date": "2026-03-01",
+        "valueCents": 378
+      },
+      {
+        "date": "2026-04-01",
+        "valueCents": 373
+      }
+    ],
+    "butter": [
+      {
+        "date": "2023-06-10",
+        "valueCents": 248
+      },
+      {
+        "date": "2023-06-17",
+        "valueCents": 248
+      },
+      {
+        "date": "2023-06-24",
+        "valueCents": 248
+      },
+      {
+        "date": "2023-07-01",
+        "valueCents": 243
+      },
+      {
+        "date": "2023-07-08",
+        "valueCents": 243
+      },
+      {
+        "date": "2023-07-15",
+        "valueCents": 243
+      },
+      {
+        "date": "2023-07-22",
+        "valueCents": 244
+      },
+      {
+        "date": "2023-07-29",
+        "valueCents": 246
+      },
+      {
+        "date": "2023-08-05",
+        "valueCents": 252
+      },
+      {
+        "date": "2023-08-12",
+        "valueCents": 254
+      },
+      {
+        "date": "2023-08-19",
+        "valueCents": 263
+      },
+      {
+        "date": "2023-08-26",
+        "valueCents": 264
+      },
+      {
+        "date": "2023-09-02",
+        "valueCents": 268
+      },
+      {
+        "date": "2023-09-09",
+        "valueCents": 268
+      },
+      {
+        "date": "2023-09-16",
+        "valueCents": 269
+      },
+      {
+        "date": "2023-09-23",
+        "valueCents": 269
+      },
+      {
+        "date": "2023-09-30",
+        "valueCents": 271
+      },
+      {
+        "date": "2023-10-07",
+        "valueCents": 277
+      },
+      {
+        "date": "2023-10-14",
+        "valueCents": 294
+      },
+      {
+        "date": "2023-10-21",
+        "valueCents": 309
+      },
+      {
+        "date": "2023-10-28",
+        "valueCents": 327
+      },
+      {
+        "date": "2023-11-04",
+        "valueCents": 327
+      },
+      {
+        "date": "2023-11-11",
+        "valueCents": 327
+      },
+      {
+        "date": "2023-11-18",
+        "valueCents": 326
+      },
+      {
+        "date": "2023-11-25",
+        "valueCents": 315
+      },
+      {
+        "date": "2023-12-02",
+        "valueCents": 285
+      },
+      {
+        "date": "2023-12-09",
+        "valueCents": 276
+      },
+      {
+        "date": "2023-12-16",
+        "valueCents": 269
+      },
+      {
+        "date": "2023-12-23",
+        "valueCents": 262
+      },
+      {
+        "date": "2023-12-30",
+        "valueCents": 262
+      },
+      {
+        "date": "2024-01-06",
+        "valueCents": 262
+      },
+      {
+        "date": "2024-01-13",
+        "valueCents": 264
+      },
+      {
+        "date": "2024-01-20",
+        "valueCents": 262
+      },
+      {
+        "date": "2024-01-27",
+        "valueCents": 262
+      },
+      {
+        "date": "2024-02-03",
+        "valueCents": 265
+      },
+      {
+        "date": "2024-02-10",
+        "valueCents": 265
+      },
+      {
+        "date": "2024-02-17",
+        "valueCents": 266
+      },
+      {
+        "date": "2024-02-24",
+        "valueCents": 275
+      },
+      {
+        "date": "2024-03-02",
+        "valueCents": 276
+      },
+      {
+        "date": "2024-03-09",
+        "valueCents": 277
+      },
+      {
+        "date": "2024-03-16",
+        "valueCents": 282
+      },
+      {
+        "date": "2024-03-23",
+        "valueCents": 282
+      },
+      {
+        "date": "2024-03-30",
+        "valueCents": 286
+      },
+      {
+        "date": "2024-04-06",
+        "valueCents": 286
+      },
+      {
+        "date": "2024-04-13",
+        "valueCents": 287
+      },
+      {
+        "date": "2024-04-20",
+        "valueCents": 288
+      },
+      {
+        "date": "2024-04-27",
+        "valueCents": 291
+      },
+      {
+        "date": "2024-05-04",
+        "valueCents": 293
+      },
+      {
+        "date": "2024-05-11",
+        "valueCents": 297
+      },
+      {
+        "date": "2024-05-18",
+        "valueCents": 299
+      },
+      {
+        "date": "2024-05-25",
+        "valueCents": 302
+      },
+      {
+        "date": "2024-06-01",
+        "valueCents": 302
+      },
+      {
+        "date": "2024-06-08",
+        "valueCents": 305
+      },
+      {
+        "date": "2024-06-15",
+        "valueCents": 307
+      },
+      {
+        "date": "2024-06-22",
+        "valueCents": 308
+      },
+      {
+        "date": "2024-06-29",
+        "valueCents": 310
+      },
+      {
+        "date": "2024-07-06",
+        "valueCents": 312
+      },
+      {
+        "date": "2024-07-13",
+        "valueCents": 313
+      },
+      {
+        "date": "2024-07-20",
+        "valueCents": 313
+      },
+      {
+        "date": "2024-07-27",
+        "valueCents": 313
+      },
+      {
+        "date": "2024-08-03",
+        "valueCents": 313
+      },
+      {
+        "date": "2024-08-10",
+        "valueCents": 312
+      },
+      {
+        "date": "2024-08-17",
+        "valueCents": 312
+      },
+      {
+        "date": "2024-08-24",
+        "valueCents": 310
+      },
+      {
+        "date": "2024-08-31",
+        "valueCents": 311
+      },
+      {
+        "date": "2024-09-07",
+        "valueCents": 311
+      },
+      {
+        "date": "2024-09-14",
+        "valueCents": 314
+      },
+      {
+        "date": "2024-09-21",
+        "valueCents": 317
+      },
+      {
+        "date": "2024-09-28",
+        "valueCents": 317
+      },
+      {
+        "date": "2024-10-05",
+        "valueCents": 317
+      },
+      {
+        "date": "2024-10-12",
+        "valueCents": 308
+      },
+      {
+        "date": "2024-10-19",
+        "valueCents": 290
+      },
+      {
+        "date": "2024-10-26",
+        "valueCents": 274
+      },
+      {
+        "date": "2024-11-02",
+        "valueCents": 271
+      },
+      {
+        "date": "2024-11-09",
+        "valueCents": 271
+      },
+      {
+        "date": "2024-11-16",
+        "valueCents": 271
+      },
+      {
+        "date": "2024-11-23",
+        "valueCents": 271
+      },
+      {
+        "date": "2024-11-30",
+        "valueCents": 271
+      },
+      {
+        "date": "2024-12-07",
+        "valueCents": 268
+      },
+      {
+        "date": "2024-12-14",
+        "valueCents": 265
+      },
+      {
+        "date": "2024-12-21",
+        "valueCents": 260
+      },
+      {
+        "date": "2024-12-28",
+        "valueCents": 259
+      },
+      {
+        "date": "2025-01-04",
+        "valueCents": 259
+      },
+      {
+        "date": "2025-01-11",
+        "valueCents": 259
+      },
+      {
+        "date": "2025-01-18",
+        "valueCents": 260
+      },
+      {
+        "date": "2025-01-25",
+        "valueCents": 260
+      },
+      {
+        "date": "2025-02-01",
+        "valueCents": 260
+      },
+      {
+        "date": "2025-02-08",
+        "valueCents": 260
+      },
+      {
+        "date": "2025-02-15",
+        "valueCents": 257
+      },
+      {
+        "date": "2025-02-22",
+        "valueCents": 254
+      },
+      {
+        "date": "2025-03-01",
+        "valueCents": 250
+      },
+      {
+        "date": "2025-03-08",
+        "valueCents": 250
+      },
+      {
+        "date": "2025-03-15",
+        "valueCents": 246
+      },
+      {
+        "date": "2025-03-22",
+        "valueCents": 235
+      },
+      {
+        "date": "2025-03-29",
+        "valueCents": 234
+      },
+      {
+        "date": "2025-04-05",
+        "valueCents": 234
+      },
+      {
+        "date": "2025-04-12",
+        "valueCents": 234
+      },
+      {
+        "date": "2025-04-19",
+        "valueCents": 234
+      },
+      {
+        "date": "2025-04-26",
+        "valueCents": 234
+      },
+      {
+        "date": "2025-05-03",
+        "valueCents": 235
+      },
+      {
+        "date": "2025-05-10",
+        "valueCents": 235
+      },
+      {
+        "date": "2025-05-17",
+        "valueCents": 235
+      },
+      {
+        "date": "2025-05-24",
+        "valueCents": 235
+      },
+      {
+        "date": "2025-05-31",
+        "valueCents": 236
+      },
+      {
+        "date": "2025-06-07",
+        "valueCents": 236
+      },
+      {
+        "date": "2025-06-14",
+        "valueCents": 241
+      },
+      {
+        "date": "2025-06-21",
+        "valueCents": 245
+      },
+      {
+        "date": "2025-06-28",
+        "valueCents": 248
+      },
+      {
+        "date": "2025-07-05",
+        "valueCents": 251
+      },
+      {
+        "date": "2025-07-12",
+        "valueCents": 253
+      },
+      {
+        "date": "2025-07-19",
+        "valueCents": 257
+      },
+      {
+        "date": "2025-07-26",
+        "valueCents": 257
+      },
+      {
+        "date": "2025-08-02",
+        "valueCents": 257
+      },
+      {
+        "date": "2025-08-09",
+        "valueCents": 255
+      },
+      {
+        "date": "2025-08-16",
+        "valueCents": 253
+      },
+      {
+        "date": "2025-08-23",
+        "valueCents": 252
+      },
+      {
+        "date": "2025-08-30",
+        "valueCents": 249
+      },
+      {
+        "date": "2025-09-06",
+        "valueCents": 244
+      },
+      {
+        "date": "2025-09-13",
+        "valueCents": 239
+      },
+      {
+        "date": "2025-09-20",
+        "valueCents": 227
+      },
+      {
+        "date": "2025-09-27",
+        "valueCents": 214
+      },
+      {
+        "date": "2025-10-04",
+        "valueCents": 198
+      },
+      {
+        "date": "2025-10-11",
+        "valueCents": 190
+      },
+      {
+        "date": "2025-10-18",
+        "valueCents": 180
+      },
+      {
+        "date": "2025-10-25",
+        "valueCents": 177
+      },
+      {
+        "date": "2025-11-01",
+        "valueCents": 175
+      },
+      {
+        "date": "2025-11-08",
+        "valueCents": 170
+      },
+      {
+        "date": "2025-11-15",
+        "valueCents": 167
+      },
+      {
+        "date": "2025-11-22",
+        "valueCents": 166
+      },
+      {
+        "date": "2025-11-29",
+        "valueCents": 164
+      },
+      {
+        "date": "2025-12-06",
+        "valueCents": 164
+      },
+      {
+        "date": "2025-12-13",
+        "valueCents": 160
+      },
+      {
+        "date": "2025-12-20",
+        "valueCents": 160
+      },
+      {
+        "date": "2025-12-27",
+        "valueCents": 153
+      },
+      {
+        "date": "2026-01-03",
+        "valueCents": 152
+      },
+      {
+        "date": "2026-01-10",
+        "valueCents": 149
+      },
+      {
+        "date": "2026-01-17",
+        "valueCents": 143
+      },
+      {
+        "date": "2026-01-24",
+        "valueCents": 142
+      },
+      {
+        "date": "2026-01-31",
+        "valueCents": 142
+      },
+      {
+        "date": "2026-02-07",
+        "valueCents": 142
+      },
+      {
+        "date": "2026-02-14",
+        "valueCents": 150
+      },
+      {
+        "date": "2026-02-21",
+        "valueCents": 158
+      },
+      {
+        "date": "2026-02-28",
+        "valueCents": 164
+      },
+      {
+        "date": "2026-03-07",
+        "valueCents": 167
+      },
+      {
+        "date": "2026-03-14",
+        "valueCents": 182
+      },
+      {
+        "date": "2026-03-21",
+        "valueCents": 186
+      },
+      {
+        "date": "2026-03-28",
+        "valueCents": 189
+      },
+      {
+        "date": "2026-04-04",
+        "valueCents": 189
+      },
+      {
+        "date": "2026-04-11",
+        "valueCents": 189
+      },
+      {
+        "date": "2026-04-18",
+        "valueCents": 181
+      },
+      {
+        "date": "2026-04-25",
+        "valueCents": 177
+      },
+      {
+        "date": "2026-05-02",
+        "valueCents": 175
+      },
+      {
+        "date": "2026-05-09",
+        "valueCents": 175
+      },
+      {
+        "date": "2026-05-16",
+        "valueCents": 171
+      },
+      {
+        "date": "2026-05-23",
+        "valueCents": 168
+      },
+      {
+        "date": "2026-05-30",
+        "valueCents": 162
+      },
+      {
+        "date": "2026-06-06",
+        "valueCents": 161
+      }
+    ],
+    "cheddar-cheese": [
+      {
+        "date": "2023-06-10",
+        "valueCents": 166
+      },
+      {
+        "date": "2023-06-17",
+        "valueCents": 163
+      },
+      {
+        "date": "2023-06-24",
+        "valueCents": 157
+      },
+      {
+        "date": "2023-07-01",
+        "valueCents": 153
+      },
+      {
+        "date": "2023-07-08",
+        "valueCents": 150
+      },
+      {
+        "date": "2023-07-15",
+        "valueCents": 147
+      },
+      {
+        "date": "2023-07-22",
+        "valueCents": 145
+      },
+      {
+        "date": "2023-07-29",
+        "valueCents": 145
+      },
+      {
+        "date": "2023-08-05",
+        "valueCents": 145
+      },
+      {
+        "date": "2023-08-12",
+        "valueCents": 154
+      },
+      {
+        "date": "2023-08-19",
+        "valueCents": 170
+      },
+      {
+        "date": "2023-08-26",
+        "valueCents": 184
+      },
+      {
+        "date": "2023-09-02",
+        "valueCents": 194
+      },
+      {
+        "date": "2023-09-09",
+        "valueCents": 199
+      },
+      {
+        "date": "2023-09-16",
+        "valueCents": 201
+      },
+      {
+        "date": "2023-09-23",
+        "valueCents": 201
+      },
+      {
+        "date": "2023-09-30",
+        "valueCents": 201
+      },
+      {
+        "date": "2023-10-07",
+        "valueCents": 198
+      },
+      {
+        "date": "2023-10-14",
+        "valueCents": 194
+      },
+      {
+        "date": "2023-10-21",
+        "valueCents": 188
+      },
+      {
+        "date": "2023-10-28",
+        "valueCents": 182
+      },
+      {
+        "date": "2023-11-04",
+        "valueCents": 178
+      },
+      {
+        "date": "2023-11-11",
+        "valueCents": 177
+      },
+      {
+        "date": "2023-11-18",
+        "valueCents": 177
+      },
+      {
+        "date": "2023-11-25",
+        "valueCents": 176
+      },
+      {
+        "date": "2023-12-02",
+        "valueCents": 175
+      },
+      {
+        "date": "2023-12-09",
+        "valueCents": 170
+      },
+      {
+        "date": "2023-12-16",
+        "valueCents": 167
+      },
+      {
+        "date": "2023-12-23",
+        "valueCents": 166
+      },
+      {
+        "date": "2023-12-30",
+        "valueCents": 164
+      },
+      {
+        "date": "2024-01-06",
+        "valueCents": 163
+      },
+      {
+        "date": "2024-01-13",
+        "valueCents": 158
+      },
+      {
+        "date": "2024-01-20",
+        "valueCents": 153
+      },
+      {
+        "date": "2024-01-27",
+        "valueCents": 153
+      },
+      {
+        "date": "2024-02-03",
+        "valueCents": 153
+      },
+      {
+        "date": "2024-02-10",
+        "valueCents": 154
+      },
+      {
+        "date": "2024-02-17",
+        "valueCents": 154
+      },
+      {
+        "date": "2024-02-24",
+        "valueCents": 159
+      },
+      {
+        "date": "2024-03-02",
+        "valueCents": 161
+      },
+      {
+        "date": "2024-03-09",
+        "valueCents": 161
+      },
+      {
+        "date": "2024-03-16",
+        "valueCents": 161
+      },
+      {
+        "date": "2024-03-23",
+        "valueCents": 160
+      },
+      {
+        "date": "2024-03-30",
+        "valueCents": 160
+      },
+      {
+        "date": "2024-04-06",
+        "valueCents": 156
+      },
+      {
+        "date": "2024-04-13",
+        "valueCents": 151
+      },
+      {
+        "date": "2024-04-20",
+        "valueCents": 151
+      },
+      {
+        "date": "2024-04-27",
+        "valueCents": 151
+      },
+      {
+        "date": "2024-05-04",
+        "valueCents": 151
+      },
+      {
+        "date": "2024-05-11",
+        "valueCents": 158
+      },
+      {
+        "date": "2024-05-18",
+        "valueCents": 166
+      },
+      {
+        "date": "2024-05-25",
+        "valueCents": 172
+      },
+      {
+        "date": "2024-06-01",
+        "valueCents": 182
+      },
+      {
+        "date": "2024-06-08",
+        "valueCents": 190
+      },
+      {
+        "date": "2024-06-15",
+        "valueCents": 190
+      },
+      {
+        "date": "2024-06-22",
+        "valueCents": 192
+      },
+      {
+        "date": "2024-06-29",
+        "valueCents": 192
+      },
+      {
+        "date": "2024-07-06",
+        "valueCents": 192
+      },
+      {
+        "date": "2024-07-13",
+        "valueCents": 193
+      },
+      {
+        "date": "2024-07-20",
+        "valueCents": 193
+      },
+      {
+        "date": "2024-07-27",
+        "valueCents": 194
+      },
+      {
+        "date": "2024-08-03",
+        "valueCents": 194
+      },
+      {
+        "date": "2024-08-10",
+        "valueCents": 194
+      },
+      {
+        "date": "2024-08-17",
+        "valueCents": 195
+      },
+      {
+        "date": "2024-08-24",
+        "valueCents": 195
+      },
+      {
+        "date": "2024-08-31",
+        "valueCents": 197
+      },
+      {
+        "date": "2024-09-07",
+        "valueCents": 200
+      },
+      {
+        "date": "2024-09-14",
+        "valueCents": 206
+      },
+      {
+        "date": "2024-09-21",
+        "valueCents": 211
+      },
+      {
+        "date": "2024-09-28",
+        "valueCents": 217
+      },
+      {
+        "date": "2024-10-05",
+        "valueCents": 224
+      },
+      {
+        "date": "2024-10-12",
+        "valueCents": 224
+      },
+      {
+        "date": "2024-10-19",
+        "valueCents": 224
+      },
+      {
+        "date": "2024-10-26",
+        "valueCents": 222
+      },
+      {
+        "date": "2024-11-02",
+        "valueCents": 213
+      },
+      {
+        "date": "2024-11-09",
+        "valueCents": 205
+      },
+      {
+        "date": "2024-11-16",
+        "valueCents": 199
+      },
+      {
+        "date": "2024-11-23",
+        "valueCents": 195
+      },
+      {
+        "date": "2024-11-30",
+        "valueCents": 190
+      },
+      {
+        "date": "2024-12-07",
+        "valueCents": 185
+      },
+      {
+        "date": "2024-12-14",
+        "valueCents": 179
+      },
+      {
+        "date": "2024-12-21",
+        "valueCents": 178
+      },
+      {
+        "date": "2024-12-28",
+        "valueCents": 178
+      },
+      {
+        "date": "2025-01-04",
+        "valueCents": 178
+      },
+      {
+        "date": "2025-01-11",
+        "valueCents": 178
+      },
+      {
+        "date": "2025-01-18",
+        "valueCents": 183
+      },
+      {
+        "date": "2025-01-25",
+        "valueCents": 188
+      },
+      {
+        "date": "2025-02-01",
+        "valueCents": 191
+      },
+      {
+        "date": "2025-02-08",
+        "valueCents": 192
+      },
+      {
+        "date": "2025-02-15",
+        "valueCents": 192
+      },
+      {
+        "date": "2025-02-22",
+        "valueCents": 192
+      },
+      {
+        "date": "2025-03-01",
+        "valueCents": 192
+      },
+      {
+        "date": "2025-03-08",
+        "valueCents": 192
+      },
+      {
+        "date": "2025-03-15",
+        "valueCents": 192
+      },
+      {
+        "date": "2025-03-22",
+        "valueCents": 192
+      },
+      {
+        "date": "2025-03-29",
+        "valueCents": 186
+      },
+      {
+        "date": "2025-04-05",
+        "valueCents": 182
+      },
+      {
+        "date": "2025-04-12",
+        "valueCents": 175
+      },
+      {
+        "date": "2025-04-19",
+        "valueCents": 171
+      },
+      {
+        "date": "2025-04-26",
+        "valueCents": 171
+      },
+      {
+        "date": "2025-05-03",
+        "valueCents": 171
+      },
+      {
+        "date": "2025-05-10",
+        "valueCents": 175
+      },
+      {
+        "date": "2025-05-17",
+        "valueCents": 178
+      },
+      {
+        "date": "2025-05-24",
+        "valueCents": 180
+      },
+      {
+        "date": "2025-05-31",
+        "valueCents": 181
+      },
+      {
+        "date": "2025-06-07",
+        "valueCents": 183
+      },
+      {
+        "date": "2025-06-14",
+        "valueCents": 188
+      },
+      {
+        "date": "2025-06-21",
+        "valueCents": 193
+      },
+      {
+        "date": "2025-06-28",
+        "valueCents": 193
+      },
+      {
+        "date": "2025-07-05",
+        "valueCents": 193
+      },
+      {
+        "date": "2025-07-12",
+        "valueCents": 191
+      },
+      {
+        "date": "2025-07-19",
+        "valueCents": 183
+      },
+      {
+        "date": "2025-07-26",
+        "valueCents": 177
+      },
+      {
+        "date": "2025-08-02",
+        "valueCents": 173
+      },
+      {
+        "date": "2025-08-09",
+        "valueCents": 172
+      },
+      {
+        "date": "2025-08-16",
+        "valueCents": 172
+      },
+      {
+        "date": "2025-08-23",
+        "valueCents": 173
+      },
+      {
+        "date": "2025-08-30",
+        "valueCents": 174
+      },
+      {
+        "date": "2025-09-06",
+        "valueCents": 178
+      },
+      {
+        "date": "2025-09-13",
+        "valueCents": 184
+      },
+      {
+        "date": "2025-09-20",
+        "valueCents": 183
+      },
+      {
+        "date": "2025-09-27",
+        "valueCents": 183
+      },
+      {
+        "date": "2025-10-04",
+        "valueCents": 179
+      },
+      {
+        "date": "2025-10-11",
+        "valueCents": 176
+      },
+      {
+        "date": "2025-10-18",
+        "valueCents": 173
+      },
+      {
+        "date": "2025-10-25",
+        "valueCents": 173
+      },
+      {
+        "date": "2025-11-01",
+        "valueCents": 173
+      },
+      {
+        "date": "2025-11-08",
+        "valueCents": 176
+      },
+      {
+        "date": "2025-11-15",
+        "valueCents": 178
+      },
+      {
+        "date": "2025-11-22",
+        "valueCents": 178
+      },
+      {
+        "date": "2025-11-29",
+        "valueCents": 178
+      },
+      {
+        "date": "2025-12-06",
+        "valueCents": 172
+      },
+      {
+        "date": "2025-12-13",
+        "valueCents": 166
+      },
+      {
+        "date": "2025-12-20",
+        "valueCents": 160
+      },
+      {
+        "date": "2025-12-27",
+        "valueCents": 155
+      },
+      {
+        "date": "2026-01-03",
+        "valueCents": 150
+      },
+      {
+        "date": "2026-01-10",
+        "valueCents": 144
+      },
+      {
+        "date": "2026-01-17",
+        "valueCents": 142
+      },
+      {
+        "date": "2026-01-24",
+        "valueCents": 141
+      },
+      {
+        "date": "2026-01-31",
+        "valueCents": 140
+      },
+      {
+        "date": "2026-02-07",
+        "valueCents": 140
+      },
+      {
+        "date": "2026-02-14",
+        "valueCents": 140
+      },
+      {
+        "date": "2026-02-21",
+        "valueCents": 140
+      },
+      {
+        "date": "2026-02-28",
+        "valueCents": 142
+      },
+      {
+        "date": "2026-03-07",
+        "valueCents": 144
+      },
+      {
+        "date": "2026-03-14",
+        "valueCents": 148
+      },
+      {
+        "date": "2026-03-21",
+        "valueCents": 150
+      },
+      {
+        "date": "2026-03-28",
+        "valueCents": 156
+      },
+      {
+        "date": "2026-04-04",
+        "valueCents": 159
+      },
+      {
+        "date": "2026-04-11",
+        "valueCents": 161
+      },
+      {
+        "date": "2026-04-18",
+        "valueCents": 162
+      },
+      {
+        "date": "2026-04-25",
+        "valueCents": 165
+      },
+      {
+        "date": "2026-05-02",
+        "valueCents": 165
+      },
+      {
+        "date": "2026-05-09",
+        "valueCents": 165
+      },
+      {
+        "date": "2026-05-16",
+        "valueCents": 166
+      },
+      {
+        "date": "2026-05-23",
+        "valueCents": 166
+      },
+      {
+        "date": "2026-05-30",
+        "valueCents": 166
+      },
+      {
+        "date": "2026-06-06",
+        "valueCents": 166
+      }
+    ],
+    "whole-salmon": [
+      {
+        "date": "2025-02-01",
+        "valueCents": 429
+      },
+      {
+        "date": "2025-03-01",
+        "valueCents": 402
+      },
+      {
+        "date": "2025-04-01",
+        "valueCents": 404
+      },
+      {
+        "date": "2025-05-01",
+        "valueCents": 359
+      },
+      {
+        "date": "2025-06-01",
+        "valueCents": 372
+      },
+      {
+        "date": "2026-01-01",
+        "valueCents": 417
+      },
+      {
+        "date": "2026-02-01",
+        "valueCents": 389
+      },
+      {
+        "date": "2026-03-01",
+        "valueCents": 409
+      },
+      {
+        "date": "2026-04-01",
+        "valueCents": 403
+      }
+    ],
+    "tuna-loin": [
+      {
+        "date": "2025-02-01",
+        "valueCents": 566
+      },
+      {
+        "date": "2025-03-01",
+        "valueCents": 560
+      },
+      {
+        "date": "2025-04-01",
+        "valueCents": 1112
+      },
+      {
+        "date": "2025-05-01",
+        "valueCents": 534
+      },
+      {
+        "date": "2025-06-01",
+        "valueCents": 497
+      },
+      {
+        "date": "2025-07-01",
+        "valueCents": 464
+      },
+      {
+        "date": "2026-01-01",
+        "valueCents": 545
+      },
+      {
+        "date": "2026-02-01",
+        "valueCents": 534
+      },
+      {
+        "date": "2026-03-01",
+        "valueCents": 523
+      },
+      {
+        "date": "2026-04-01",
+        "valueCents": 522
+      }
+    ],
+    "whole-lobster": [
+      {
+        "date": "2025-02-01",
+        "valueCents": 1259
+      },
+      {
+        "date": "2025-03-01",
+        "valueCents": 1249
+      },
+      {
+        "date": "2025-04-01",
+        "valueCents": 1036
+      },
+      {
+        "date": "2025-05-01",
+        "valueCents": 996
+      },
+      {
+        "date": "2025-06-01",
+        "valueCents": 1116
+      },
+      {
+        "date": "2025-07-01",
+        "valueCents": 1298
+      },
+      {
+        "date": "2026-01-01",
+        "valueCents": 1183
+      },
+      {
+        "date": "2026-02-01",
+        "valueCents": 1241
+      },
+      {
+        "date": "2026-03-01",
+        "valueCents": 1358
+      },
+      {
+        "date": "2026-04-01",
+        "valueCents": 1090
+      }
+    ],
+    "ground-pork": [
+      {
+        "date": "2023-06-14",
+        "valueCents": 137
+      },
+      {
+        "date": "2023-06-21",
+        "valueCents": 145
+      },
+      {
+        "date": "2023-06-28",
+        "valueCents": 161
+      },
+      {
+        "date": "2023-07-05",
+        "valueCents": 163
+      },
+      {
+        "date": "2023-07-12",
+        "valueCents": 147
+      },
+      {
+        "date": "2023-07-19",
+        "valueCents": 119
+      },
+      {
+        "date": "2023-07-26",
+        "valueCents": 110
+      },
+      {
+        "date": "2023-08-02",
+        "valueCents": 105
+      },
+      {
+        "date": "2023-08-09",
+        "valueCents": 100
+      },
+      {
+        "date": "2023-08-16",
+        "valueCents": 102
+      },
+      {
+        "date": "2023-08-23",
+        "valueCents": 107
+      },
+      {
+        "date": "2023-08-30",
+        "valueCents": 114
+      },
+      {
+        "date": "2023-09-06",
+        "valueCents": 117
+      },
+      {
+        "date": "2023-09-13",
+        "valueCents": 120
+      },
+      {
+        "date": "2023-09-20",
+        "valueCents": 123
+      },
+      {
+        "date": "2023-09-27",
+        "valueCents": 121
+      },
+      {
+        "date": "2023-10-04",
+        "valueCents": 117
+      },
+      {
+        "date": "2023-10-11",
+        "valueCents": 116
+      },
+      {
+        "date": "2023-10-18",
+        "valueCents": 111
+      },
+      {
+        "date": "2023-10-25",
+        "valueCents": 104
+      },
+      {
+        "date": "2023-11-01",
+        "valueCents": 101
+      },
+      {
+        "date": "2023-11-08",
+        "valueCents": 104
+      },
+      {
+        "date": "2023-11-15",
+        "valueCents": 108
+      },
+      {
+        "date": "2023-11-22",
+        "valueCents": 109
+      },
+      {
+        "date": "2023-11-29",
+        "valueCents": 109
+      },
+      {
+        "date": "2023-12-06",
+        "valueCents": 108
+      },
+      {
+        "date": "2023-12-13",
+        "valueCents": 110
+      },
+      {
+        "date": "2023-12-20",
+        "valueCents": 110
+      },
+      {
+        "date": "2023-12-27",
+        "valueCents": 109
+      },
+      {
+        "date": "2024-01-03",
+        "valueCents": 106
+      },
+      {
+        "date": "2024-01-10",
+        "valueCents": 102
+      },
+      {
+        "date": "2024-01-17",
+        "valueCents": 103
+      },
+      {
+        "date": "2024-01-24",
+        "valueCents": 102
+      },
+      {
+        "date": "2024-01-31",
+        "valueCents": 98
+      },
+      {
+        "date": "2024-02-07",
+        "valueCents": 99
+      },
+      {
+        "date": "2024-02-14",
+        "valueCents": 101
+      },
+      {
+        "date": "2024-02-21",
+        "valueCents": 106
+      },
+      {
+        "date": "2024-02-28",
+        "valueCents": 109
+      },
+      {
+        "date": "2024-03-06",
+        "valueCents": 111
+      },
+      {
+        "date": "2024-03-13",
+        "valueCents": 112
+      },
+      {
+        "date": "2024-03-20",
+        "valueCents": 113
+      },
+      {
+        "date": "2024-03-27",
+        "valueCents": 113
+      },
+      {
+        "date": "2024-04-03",
+        "valueCents": 116
+      },
+      {
+        "date": "2024-04-10",
+        "valueCents": 121
+      },
+      {
+        "date": "2024-04-17",
+        "valueCents": 126
+      },
+      {
+        "date": "2024-04-24",
+        "valueCents": 130
+      },
+      {
+        "date": "2024-05-01",
+        "valueCents": 130
+      },
+      {
+        "date": "2024-05-08",
+        "valueCents": 129
+      },
+      {
+        "date": "2024-05-15",
+        "valueCents": 130
+      },
+      {
+        "date": "2024-05-22",
+        "valueCents": 132
+      },
+      {
+        "date": "2024-05-29",
+        "valueCents": 131
+      },
+      {
+        "date": "2024-06-05",
+        "valueCents": 128
+      },
+      {
+        "date": "2024-06-12",
+        "valueCents": 127
+      },
+      {
+        "date": "2024-06-19",
+        "valueCents": 128
+      },
+      {
+        "date": "2024-06-26",
+        "valueCents": 127
+      },
+      {
+        "date": "2024-07-03",
+        "valueCents": 122
+      },
+      {
+        "date": "2024-07-10",
+        "valueCents": 117
+      },
+      {
+        "date": "2024-07-17",
+        "valueCents": 114
+      },
+      {
+        "date": "2024-07-24",
+        "valueCents": 112
+      },
+      {
+        "date": "2024-07-31",
+        "valueCents": 112
+      },
+      {
+        "date": "2024-08-07",
+        "valueCents": 108
+      },
+      {
+        "date": "2024-08-14",
+        "valueCents": 107
+      },
+      {
+        "date": "2024-08-21",
+        "valueCents": 108
+      },
+      {
+        "date": "2024-08-28",
+        "valueCents": 108
+      },
+      {
+        "date": "2024-09-04",
+        "valueCents": 107
+      },
+      {
+        "date": "2024-09-11",
+        "valueCents": 106
+      },
+      {
+        "date": "2024-09-18",
+        "valueCents": 105
+      },
+      {
+        "date": "2024-09-25",
+        "valueCents": 105
+      },
+      {
+        "date": "2024-10-02",
+        "valueCents": 105
+      },
+      {
+        "date": "2024-10-09",
+        "valueCents": 103
+      },
+      {
+        "date": "2024-10-16",
+        "valueCents": 105
+      },
+      {
+        "date": "2024-10-23",
+        "valueCents": 105
+      },
+      {
+        "date": "2024-10-30",
+        "valueCents": 105
+      },
+      {
+        "date": "2024-11-06",
+        "valueCents": 106
+      },
+      {
+        "date": "2024-11-13",
+        "valueCents": 107
+      },
+      {
+        "date": "2024-11-20",
+        "valueCents": 107
+      },
+      {
+        "date": "2024-11-27",
+        "valueCents": 106
+      },
+      {
+        "date": "2024-12-04",
+        "valueCents": 107
+      },
+      {
+        "date": "2024-12-11",
+        "valueCents": 106
+      },
+      {
+        "date": "2024-12-18",
+        "valueCents": 109
+      },
+      {
+        "date": "2024-12-23",
+        "valueCents": 110
+      },
+      {
+        "date": "2024-12-31",
+        "valueCents": 111
+      },
+      {
+        "date": "2025-01-08",
+        "valueCents": 111
+      },
+      {
+        "date": "2025-01-15",
+        "valueCents": 109
+      },
+      {
+        "date": "2025-01-22",
+        "valueCents": 106
+      },
+      {
+        "date": "2025-01-29",
+        "valueCents": 104
+      },
+      {
+        "date": "2025-02-05",
+        "valueCents": 104
+      },
+      {
+        "date": "2025-02-12",
+        "valueCents": 105
+      },
+      {
+        "date": "2025-02-19",
+        "valueCents": 108
+      },
+      {
+        "date": "2025-02-26",
+        "valueCents": 109
+      },
+      {
+        "date": "2025-03-05",
+        "valueCents": 109
+      },
+      {
+        "date": "2025-03-12",
+        "valueCents": 106
+      },
+      {
+        "date": "2025-03-19",
+        "valueCents": 106
+      },
+      {
+        "date": "2025-03-26",
+        "valueCents": 110
+      },
+      {
+        "date": "2025-04-02",
+        "valueCents": 111
+      },
+      {
+        "date": "2025-04-09",
+        "valueCents": 110
+      },
+      {
+        "date": "2025-04-16",
+        "valueCents": 109
+      },
+      {
+        "date": "2025-04-23",
+        "valueCents": 109
+      },
+      {
+        "date": "2025-04-30",
+        "valueCents": 110
+      },
+      {
+        "date": "2025-05-07",
+        "valueCents": 110
+      },
+      {
+        "date": "2025-05-14",
+        "valueCents": 117
+      },
+      {
+        "date": "2025-05-21",
+        "valueCents": 127
+      },
+      {
+        "date": "2025-05-28",
+        "valueCents": 129
+      },
+      {
+        "date": "2025-06-04",
+        "valueCents": 131
+      },
+      {
+        "date": "2025-06-11",
+        "valueCents": 136
+      },
+      {
+        "date": "2025-06-18",
+        "valueCents": 145
+      },
+      {
+        "date": "2025-06-25",
+        "valueCents": 149
+      },
+      {
+        "date": "2025-07-02",
+        "valueCents": 141
+      },
+      {
+        "date": "2025-07-09",
+        "valueCents": 129
+      },
+      {
+        "date": "2025-07-16",
+        "valueCents": 127
+      },
+      {
+        "date": "2025-07-23",
+        "valueCents": 122
+      },
+      {
+        "date": "2025-07-30",
+        "valueCents": 117
+      },
+      {
+        "date": "2025-08-06",
+        "valueCents": 112
+      },
+      {
+        "date": "2025-08-13",
+        "valueCents": 113
+      },
+      {
+        "date": "2025-08-20",
+        "valueCents": 119
+      },
+      {
+        "date": "2025-08-27",
+        "valueCents": 122
+      },
+      {
+        "date": "2025-09-03",
+        "valueCents": 124
+      },
+      {
+        "date": "2025-09-10",
+        "valueCents": 126
+      },
+      {
+        "date": "2025-09-17",
+        "valueCents": 126
+      },
+      {
+        "date": "2025-09-24",
+        "valueCents": 126
+      },
+      {
+        "date": "2025-10-01",
+        "valueCents": 126
+      },
+      {
+        "date": "2025-10-08",
+        "valueCents": 123
+      },
+      {
+        "date": "2025-10-15",
+        "valueCents": 116
+      },
+      {
+        "date": "2025-10-22",
+        "valueCents": 113
+      },
+      {
+        "date": "2025-10-29",
+        "valueCents": 112
+      },
+      {
+        "date": "2025-11-05",
+        "valueCents": 108
+      },
+      {
+        "date": "2025-11-12",
+        "valueCents": 109
+      },
+      {
+        "date": "2025-11-19",
+        "valueCents": 107
+      },
+      {
+        "date": "2025-11-26",
+        "valueCents": 107
+      },
+      {
+        "date": "2025-12-03",
+        "valueCents": 109
+      },
+      {
+        "date": "2025-12-10",
+        "valueCents": 109
+      },
+      {
+        "date": "2025-12-17",
+        "valueCents": 114
+      },
+      {
+        "date": "2025-12-24",
+        "valueCents": 118
+      },
+      {
+        "date": "2025-12-31",
+        "valueCents": 120
+      },
+      {
+        "date": "2026-01-07",
+        "valueCents": 116
+      },
+      {
+        "date": "2026-01-14",
+        "valueCents": 110
+      },
+      {
+        "date": "2026-01-21",
+        "valueCents": 108
+      },
+      {
+        "date": "2026-01-28",
+        "valueCents": 113
+      },
+      {
+        "date": "2026-02-04",
+        "valueCents": 113
+      },
+      {
+        "date": "2026-02-11",
+        "valueCents": 112
+      },
+      {
+        "date": "2026-02-18",
+        "valueCents": 114
+      },
+      {
+        "date": "2026-02-25",
+        "valueCents": 114
+      },
+      {
+        "date": "2026-03-04",
+        "valueCents": 116
+      },
+      {
+        "date": "2026-03-11",
+        "valueCents": 116
+      },
+      {
+        "date": "2026-03-18",
+        "valueCents": 116
+      },
+      {
+        "date": "2026-03-25",
+        "valueCents": 117
+      },
+      {
+        "date": "2026-04-01",
+        "valueCents": 116
+      },
+      {
+        "date": "2026-04-08",
+        "valueCents": 117
+      },
+      {
+        "date": "2026-04-15",
+        "valueCents": 116
+      },
+      {
+        "date": "2026-04-22",
+        "valueCents": 119
+      },
+      {
+        "date": "2026-04-29",
+        "valueCents": 128
+      },
+      {
+        "date": "2026-05-06",
+        "valueCents": 132
+      },
+      {
+        "date": "2026-05-13",
+        "valueCents": 139
+      },
+      {
+        "date": "2026-05-20",
+        "valueCents": 146
+      },
+      {
+        "date": "2026-05-27",
+        "valueCents": 150
+      },
+      {
+        "date": "2026-06-03",
+        "valueCents": 148
+      },
+      {
+        "date": "2026-06-10",
+        "valueCents": 134
+      },
+      {
+        "date": "2026-06-12",
+        "valueCents": 131
+      }
+    ],
+    "whole-halibut": [
+      {
+        "date": "2025-02-01",
+        "valueCents": 719
+      },
+      {
+        "date": "2025-04-01",
+        "valueCents": 854
+      },
+      {
+        "date": "2025-05-01",
+        "valueCents": 885
+      },
+      {
+        "date": "2025-06-01",
+        "valueCents": 908
+      },
+      {
+        "date": "2025-07-01",
+        "valueCents": 886
+      },
+      {
+        "date": "2026-01-01",
+        "valueCents": 787
+      },
+      {
+        "date": "2026-02-01",
+        "valueCents": 833
+      },
+      {
+        "date": "2026-03-01",
+        "valueCents": 882
+      },
+      {
+        "date": "2026-04-01",
+        "valueCents": 931
+      }
+    ],
+    "whole-trout": [
+      {
+        "date": "2025-02-01",
+        "valueCents": 388
+      },
+      {
+        "date": "2025-03-01",
+        "valueCents": 400
+      },
+      {
+        "date": "2025-04-01",
+        "valueCents": 341
+      },
+      {
+        "date": "2025-05-01",
+        "valueCents": 326
+      },
+      {
+        "date": "2025-06-01",
+        "valueCents": 320
+      },
+      {
+        "date": "2025-07-01",
+        "valueCents": 296
+      },
+      {
+        "date": "2026-01-01",
+        "valueCents": 376
+      },
+      {
+        "date": "2026-02-01",
+        "valueCents": 413
+      },
+      {
+        "date": "2026-03-01",
+        "valueCents": 432
+      },
+      {
+        "date": "2026-04-01",
+        "valueCents": 396
+      }
+    ],
+    "scallops": [
+      {
+        "date": "2025-02-01",
+        "valueCents": 548
+      },
+      {
+        "date": "2025-03-01",
+        "valueCents": 999
+      },
+      {
+        "date": "2025-04-01",
+        "valueCents": 751
+      },
+      {
+        "date": "2025-05-01",
+        "valueCents": 923
+      },
+      {
+        "date": "2025-06-01",
+        "valueCents": 849
+      },
+      {
+        "date": "2025-07-01",
+        "valueCents": 591
+      },
+      {
+        "date": "2026-01-01",
+        "valueCents": 1005
+      },
+      {
+        "date": "2026-02-01",
+        "valueCents": 761
+      },
+      {
+        "date": "2026-03-01",
+        "valueCents": 637
+      },
+      {
+        "date": "2026-04-01",
+        "valueCents": 865
+      }
+    ],
+    "whole-crab": [
+      {
+        "date": "2025-02-01",
+        "valueCents": 932
+      },
+      {
+        "date": "2025-03-01",
+        "valueCents": 980
+      },
+      {
+        "date": "2025-04-01",
+        "valueCents": 996
+      },
+      {
+        "date": "2025-05-01",
+        "valueCents": 950
+      },
+      {
+        "date": "2025-06-01",
+        "valueCents": 917
+      },
+      {
+        "date": "2025-07-01",
+        "valueCents": 893
+      },
+      {
+        "date": "2026-01-01",
+        "valueCents": 756
+      },
+      {
+        "date": "2026-02-01",
+        "valueCents": 938
+      },
+      {
+        "date": "2026-03-01",
+        "valueCents": 1021
+      },
+      {
+        "date": "2026-04-01",
+        "valueCents": 994
+      }
+    ],
+    "octopus": [
+      {
+        "date": "2025-02-01",
+        "valueCents": 383
+      },
+      {
+        "date": "2025-03-01",
+        "valueCents": 354
+      },
+      {
+        "date": "2025-04-01",
+        "valueCents": 381
+      },
+      {
+        "date": "2025-05-01",
+        "valueCents": 388
+      },
+      {
+        "date": "2025-06-01",
+        "valueCents": 413
+      },
+      {
+        "date": "2025-07-01",
+        "valueCents": 347
+      },
+      {
+        "date": "2026-01-01",
+        "valueCents": 457
+      },
+      {
+        "date": "2026-02-01",
+        "valueCents": 307
+      },
+      {
+        "date": "2026-03-01",
+        "valueCents": 422
+      },
+      {
+        "date": "2026-04-01",
+        "valueCents": 429
+      }
+    ],
+    "salmon-skin-on-fillet": [
+      {
+        "date": "2025-02-01",
+        "valueCents": 601
+      },
+      {
+        "date": "2025-03-01",
+        "valueCents": 631
+      },
+      {
+        "date": "2025-05-01",
+        "valueCents": 570
+      },
+      {
+        "date": "2025-06-01",
+        "valueCents": 525
+      },
+      {
+        "date": "2025-07-01",
+        "valueCents": 502
+      },
+      {
+        "date": "2026-01-01",
+        "valueCents": 539
+      },
+      {
+        "date": "2026-02-01",
+        "valueCents": 523
+      },
+      {
+        "date": "2026-03-01",
+        "valueCents": 556
+      },
+      {
+        "date": "2026-04-01",
+        "valueCents": 558
+      }
+    ],
+    "clams": [
+      {
+        "date": "2025-02-01",
+        "valueCents": 258
+      },
+      {
+        "date": "2025-03-01",
+        "valueCents": 302
+      },
+      {
+        "date": "2025-04-01",
+        "valueCents": 294
+      },
+      {
+        "date": "2025-05-01",
+        "valueCents": 299
+      },
+      {
+        "date": "2025-06-01",
+        "valueCents": 304
+      },
+      {
+        "date": "2025-07-01",
+        "valueCents": 304
+      },
+      {
+        "date": "2026-01-01",
+        "valueCents": 271
+      },
+      {
+        "date": "2026-02-01",
+        "valueCents": 275
+      },
+      {
+        "date": "2026-03-01",
+        "valueCents": 281
+      },
+      {
+        "date": "2026-04-01",
+        "valueCents": 306
+      }
+    ],
+    "squid": [
+      {
+        "date": "2025-02-01",
+        "valueCents": 273
+      },
+      {
+        "date": "2025-03-01",
+        "valueCents": 275
+      },
+      {
+        "date": "2025-04-01",
+        "valueCents": 276
+      },
+      {
+        "date": "2025-05-01",
+        "valueCents": 277
+      },
+      {
+        "date": "2025-06-01",
+        "valueCents": 273
+      },
+      {
+        "date": "2025-07-01",
+        "valueCents": 283
+      },
+      {
+        "date": "2026-01-01",
+        "valueCents": 262
+      },
+      {
+        "date": "2026-02-01",
+        "valueCents": 255
+      },
+      {
+        "date": "2026-03-01",
+        "valueCents": 253
+      },
+      {
+        "date": "2026-04-01",
+        "valueCents": 266
+      }
+    ],
+    "shrimp-head-on": [
+      {
+        "date": "2025-02-01",
+        "valueCents": 369
+      },
+      {
+        "date": "2025-03-01",
+        "valueCents": 360
+      },
+      {
+        "date": "2025-04-01",
+        "valueCents": 375
+      },
+      {
+        "date": "2025-05-01",
+        "valueCents": 364
+      },
+      {
+        "date": "2025-06-01",
+        "valueCents": 370
+      },
+      {
+        "date": "2025-07-01",
+        "valueCents": 322
+      },
+      {
+        "date": "2026-01-01",
+        "valueCents": 399
+      },
+      {
+        "date": "2026-02-01",
+        "valueCents": 341
+      },
+      {
+        "date": "2026-03-01",
+        "valueCents": 378
+      },
+      {
+        "date": "2026-04-01",
+        "valueCents": 373
+      }
+    ],
+    "shrimp-pd": [
+      {
+        "date": "2025-02-01",
+        "valueCents": 369
+      },
+      {
+        "date": "2025-03-01",
+        "valueCents": 360
+      },
+      {
+        "date": "2025-04-01",
+        "valueCents": 375
+      },
+      {
+        "date": "2025-05-01",
+        "valueCents": 364
+      },
+      {
+        "date": "2025-06-01",
+        "valueCents": 370
+      },
+      {
+        "date": "2025-07-01",
+        "valueCents": 322
+      },
+      {
+        "date": "2026-01-01",
+        "valueCents": 399
+      },
+      {
+        "date": "2026-02-01",
+        "valueCents": 341
+      },
+      {
+        "date": "2026-03-01",
+        "valueCents": 378
+      },
+      {
+        "date": "2026-04-01",
+        "valueCents": 373
+      }
+    ]
+  }
+}
