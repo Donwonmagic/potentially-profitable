@@ -568,7 +568,7 @@ ${tailScripts}
   const existed = existsSync(outFile);
   writeFileSync(outFile, body);
   console.log(`${existed ? 'overwrote' : 'wrote'} blog/${slug}/index.html  (basket ${basketPlain}, ${ins.up}/${ins.count} above baseline, asOf ${asOf})`);
-  console.log('Next: node scripts/sync-includes.mjs  +  the build-chain inject/build scripts, then node scripts/check-all.mjs');
+  console.log('Next: node scripts/sync-includes.mjs  +  node scripts/inject-library-cost-index-hero.mjs  +  the build-chain inject/build scripts, then node scripts/check-all.mjs');
   return { slug, url, asOf };
 }
 
