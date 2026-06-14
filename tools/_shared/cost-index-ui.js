@@ -938,6 +938,20 @@
   var method = el('details', 'cp-method');
   method.appendChild(el('summary', null, L('How we read the market', 'Cómo leemos el mercado')));
   var mp = el('div', 'cp-method-body');
+  // Lead with the liftable one-sentence definition + a glossary anchor, so a
+  // reader (and an answer engine) gets a clean, attributable "what this is"
+  // co-located with the data.
+  (function () {
+    var defP = el('p', 'cp-method-def');
+    defP.appendChild(document.createTextNode(L(
+      'A cost index is a read of where common ingredients are priced across public market sources — a typical range and a direction, never your delivered price. ',
+      'Un índice de costos es una lectura de dónde se ubican los precios de ingredientes comunes en fuentes públicas — un rango típico y una dirección, nunca tu precio entregado. ')));
+    var defA = el('a', null, L('What a cost index is', 'Qué es un índice de costos'));
+    defA.href = (es ? '/es' : '') + '/glossary/cost-index/';
+    defP.appendChild(defA);
+    defP.appendChild(document.createTextNode('.'));
+    mp.appendChild(defP);
+  })();
   [
     L('Range: the typical price across public sources — the middle half, p25 to p75. We never blend different price types (delivered, wholesale, an index) into one number.',
       'Rango: el precio típico entre fuentes públicas — la mitad central, p25 a p75. Nunca mezclamos tipos de precio distintos (entregado, mayoreo, índice) en un solo número.'),
@@ -948,6 +962,16 @@
     L('Freshness: "As of" shows the oldest contributing date, not when we fetched. A stale source is dropped, never carried forward.',
       'Frescura: "Al" muestra la fecha más antigua que aporta, no cuándo consultamos. Una fuente vieja se descarta, nunca se arrastra.')
   ].forEach(function (txt) { mp.appendChild(el('p', null, txt)); });
+  // Prominent link to the full, dated, citable methodology — the surface's
+  // strongest trust + quotability asset. Travels with the card in any locale.
+  (function () {
+    var moreP = el('p', 'cp-method-more');
+    var moreA = el('a', null, L('Read the full methodology', 'Lee la metodología completa'));
+    moreA.href = (es ? '/es' : '') + '/cost-index/methodology/';
+    moreA.appendChild(document.createTextNode(' →'));
+    moreP.appendChild(moreA);
+    mp.appendChild(moreP);
+  })();
   method.appendChild(mp);
   card.insertBefore(method, document.getElementById('cpMarketCta'));
 
