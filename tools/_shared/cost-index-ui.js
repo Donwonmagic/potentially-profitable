@@ -593,6 +593,31 @@
     fig.appendChild(head);
 
     fig.appendChild(el('p', 'cp-market-range', rangeText));
+
+    // The liftable verdict — the single most quotable line the index emits, and
+    // the wedge no incumbent fills: a plain "are you overpaying?" test stated
+    // against the PUBLIC band, before the operator types anything. Promotes the
+    // per-card basis machinery (renderYou/updateYouSummary) from buried-input to
+    // a headline. Only minted when a real MEASURED dollar range exists (a true
+    // p25–p75, not a one-source point, not an index) — every number is read from
+    // lvl.rangeCents, so it stays inside the fact gate (no invented figures).
+    if (lvl && !single && ing.tier === 'measured') {
+      var loTxt = money(lvl.rangeCents[0]);
+      var hiTxt = money(lvl.rangeCents[1]);
+      var basisEl = el('p', 'cp-market-basis');
+      basisEl.appendChild(el('strong', null, L('Public wholesale: ', 'Mayoreo público: ')
+        + loTxt + '–' + hiTxt + L(' a ', ' por ') + unit + '. '));
+      basisEl.appendChild(document.createTextNode(L('If your invoice is ', 'Si tu factura está ')));
+      var aboveTest = el('span', 'cp-basis-test',
+        L('above ' + hiTxt, 'arriba de ' + hiTxt));
+      basisEl.appendChild(aboveTest);
+      basisEl.appendChild(document.createTextNode(L(", you're paying over market.", ', estás pagando por encima del mercado.')));
+      fig.appendChild(basisEl);
+      var basisAlt = L('Public wholesale runs ' + loTxt + ' to ' + hiTxt + ' a ' + unit + '. If your invoice is above ' + hiTxt + ', you are paying over market.',
+                       'El mayoreo público va de ' + loTxt + ' a ' + hiTxt + ' por ' + unit + '. Si tu factura está arriba de ' + hiTxt + ', estás pagando por encima del mercado.');
+      fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + basisAlt);
+    }
+
     // Yield-adjusted TRUE plate cost — the wholesale level converted to cost per
     // USABLE unit (illustrative trim yield; the operator's own yield governs). The
     // number no public index shows: what the trim actually costs you.
