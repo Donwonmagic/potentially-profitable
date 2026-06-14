@@ -8034,9 +8034,9 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
    don't load site.js and reflow late — so the banner can no longer overlap
    the nav. The measured value still wins when it is larger (a two-line
    banner on narrow widths). */
-body:has(.batch-marquee) header.nav{top:max(var(--banner-h,50px),50px)}
-body:has(.batch-marquee) main{padding-top:calc(64px + max(var(--banner-h,50px),50px))}
-@media (max-width:640px){:root{--banner-h:72px}}
+body:has(.batch-marquee) header.nav{top:max(var(--banner-h,60px),60px)}
+body:has(.batch-marquee) main{padding-top:calc(64px + max(var(--banner-h,60px),60px))}
+@media (max-width:640px){:root{--banner-h:96px}}
 
 /* @shell:core === Phase 9 — Light refresh (micro-interactions, depth, voice search, dark-mode polish) === */
 /* ============ Phase 9 — Light refresh ============

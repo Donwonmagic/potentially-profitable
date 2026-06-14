@@ -179,9 +179,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=50d2a26a11a5" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=50d2a26a11a5"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -193,9 +193,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <!-- batch-banner:start -->
 <aside class="batch-marquee" data-batch="menu-inflation-2026" role="complementary" aria-label="New dispatch · Restaurant menu inflation, May 2026" style="background:#16181D;color:#F6F7F8;font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(246,247,248,0.16);box-shadow:inset 0 1px 0 rgba(255,255,255,0.05)">
   <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;flex:1 1 auto">
-      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:#2A50C8;color:#F6F7F8;padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">New dispatch</span>
-      <span style="font-family:'Fraunces',Georgia,'Times New Roman',serif;font-size:14px;font-style:italic;line-height:1.35;min-width:0;color:#F6F7F8">Restaurant prices are now rising faster than groceries.</span>
+    <div style="display:flex;flex-direction:column;gap:2px;min-width:0;flex:1 1 auto">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0">
+        <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:#2A50C8;color:#F6F7F8;padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">New dispatch</span>
+        <span style="font-family:'Fraunces',Georgia,'Times New Roman',serif;font-size:14px;font-style:italic;line-height:1.3;min-width:0;color:#F6F7F8">Restaurant prices are now rising faster than groceries.</span>
+      </div>
+      <span style="font-family:Inter,system-ui,sans-serif;font-size:12px;line-height:1.3;color:rgba(246,247,248,0.72);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;min-width:0">What the May 2026 CPI means for your menu — beef up 12.1%, eggs down, and how to price around it.</span>
     </div>
     <a href="/blog/restaurant-menu-inflation-2026/" style="display:inline-flex;align-items:center;gap:6px;color:#16181D;background:#F6F7F8;text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:13px;padding:6px 14px;border-radius:999px;white-space:nowrap;flex-shrink:0;box-shadow:0 1px 2px rgba(0,0,0,0.18);transition:transform .15s ease,box-shadow .15s ease">Read the dispatch <span aria-hidden="true">&rarr;</span></a>
   </div>
@@ -454,6 +457,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li>4 quarterly research notes</li>
       </ul>
     </header>
+
+    <!-- cost-index-hero:start -->
+<a class="ci-hero" href="/blog/cost-index-week-2026-06-05/" style="display:block;margin:0 0 40px;padding:28px 32px;border-radius:16px;background:radial-gradient(140% 180% at 92% 50%,rgba(42,80,200,0.18) 0%,rgba(22,24,29,0) 62%),#16181D;color:#F6F7F8;text-decoration:none;border:1px solid rgba(246,247,248,0.12);box-shadow:0 18px 40px -28px rgba(0,0,0,0.5)">
+  <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-weight:700;color:#9DB4FF;margin-bottom:10px">This week’s Cost Index · June 5, 2026</span>
+  <h2 style="font-family:var(--font-display),Georgia,serif;font-size:clamp(23px,2.8vw,31px);font-weight:500;line-height:1.12;margin:0 0 10px;color:#F6F7F8;letter-spacing:-0.01em">Restaurant Cost Index: where the basket stands</h2>
+  <p style="font-family:Inter,system-ui,sans-serif;font-size:16px;line-height:1.55;color:rgba(246,247,248,0.80);margin:0 0 16px;max-width:680px">The weekly read on wholesale ingredient costs: the basket sits at +9.1% against baseline, 9 of 13 ingredients above their tracked window.</p>
+  <span style="font-family:Inter,system-ui,sans-serif;font-size:14px;font-weight:700;color:#F6F7F8;border-bottom:1px dashed rgba(246,247,248,0.5);padding-bottom:1px">Read this week’s read &rarr;</span>
+</a>
+<!-- cost-index-hero:end -->
 
     <section class="lib-three" aria-label="Three entry doors">
       <div class="lib-door">
