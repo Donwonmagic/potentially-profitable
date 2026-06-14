@@ -125,6 +125,11 @@ function weeklyDedup(hist) {
 
 async function liveFetch(ingredient, m) {
   const out = { ams: [] };
+  // Deep-backfill window: when COST_INDEX_SERIES_DAYS is set (the --history-out
+  // path), it FLOORS each source's per-report fetch window so the API actually
+  // returns years, not the ~45–150d the spec uses for a normal vendor run.
+  const DEEP_DAYS = Number(process.env.COST_INDEX_SERIES_DAYS) || 0;
+  const win = (wd) => (DEEP_DAYS > (wd || 0) ? DEEP_DAYS : wd);
   if (m.fred && process.env.FRED_KEY) {
     // Fan out FRED series (e.g. a BLS-rehost trend + an independent IMF series)
     // in parallel; each settles on its own so one bad series_id drops only itself.
@@ -145,7 +150,7 @@ async function liveFetch(ingredient, m) {
     // so one market missing the commodity or one slow report drops only itself —
     // the others still contribute (the cardinal rule), without 8 sequential waits.
     const settled = await F.mapLimit(amsSpecs(m), F.AMS_CONCURRENCY,
-      (spec) => F.fetchAmsReport(spec.reportId, spec.section, auth, spec.windowDays).then((json) => ({ json, spec })));
+      (spec) => F.fetchAmsReport(spec.reportId, spec.section, auth, win(spec.windowDays)).then((json) => ({ json, spec })));
     settled.forEach((r) => { if (r.ok) out.ams.push(r.value); });
   }
   if (m.lmr) {
@@ -154,13 +159,13 @@ async function liveFetch(ingredient, m) {
     const lauth = process.env.LMR_KEY ? 'Basic ' + Buffer.from(process.env.LMR_KEY + ':').toString('base64') : undefined;
     out.lmr = [];
     const settled = await F.mapLimit(lmrSpecs(m), F.AMS_CONCURRENCY,
-      (spec) => F.fetchLmrReport(spec.reportId, spec.section, lauth, spec.windowDays, spec.dateField).then((json) => ({ json, spec })));
+      (spec) => F.fetchLmrReport(spec.reportId, spec.section, lauth, win(spec.windowDays), spec.dateField).then((json) => ({ json, spec })));
     settled.forEach((r) => { if (r.ok) out.lmr.push(r.value); });
   }
   if (m.noaa && typeof S.normalizeNoaaTrade === 'function') {
     // NOAA Fisheries import unit value (keyless). One trade dump, cached + reused
     // across species; normalizeNoaaTrade filters by commodity.
-    try { out.noaa = await F.fetchNoaaTrade({ years: m.noaa.years }); } catch (e) { /* skip; others contribute */ }
+    try { out.noaa = await F.fetchNoaaTrade({ years: DEEP_DAYS ? Math.max(m.noaa.years || 2, Math.ceil(DEEP_DAYS / 365)) : m.noaa.years }); } catch (e) { /* skip; others contribute */ }
   }
   if (m.eia && process.env.EIA_KEY) {
     // EIA v2 (electricity etc.) — needs EIA_KEY; an energy-direction index signal.
