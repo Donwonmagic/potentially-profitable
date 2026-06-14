@@ -230,11 +230,55 @@ async function mapLimit(items, limit, fn) {
   return out;
 }
 
+// Deep multi-year AMS fetch for the seasonal backfill. MARS truncates a single
+// report_begin_date window (~180d), so a multi-year ask in ONE call returns a short
+// or empty slice — which is exactly why the produce deep-history backfill came back
+// nearly empty. Stitch fixed 150-day windows back `days` and MERGE their detail rows
+// (the proven recipe from calibrate-pressure.fetchReportWindowed), kept here in the
+// shared transport so the vendor's --history-out path gets full produce history on the
+// SAME normalize path (no scale drift). Returns the report-JSON shape
+// ({ results, reportSection }) so normalizeAms consumes it unchanged. Per-window
+// failures are tolerated (one gap can't sink the series); fetchJson already retries 5xx.
+async function fetchAmsReportDeep(reportId, sectionRaw, auth, days, winField) {
+  winField = winField || 'report_begin_date';
+  var h = auth ? { Authorization: auth } : {};
+  var base = MARS_BASE + reportId;
+  var f = function (d) { return ('0' + (d.getMonth() + 1)).slice(-2) + '/' + ('0' + d.getDate()).slice(-2) + '/' + d.getFullYear(); };
+  var rangeUrl = function (section, s, e) {
+    var path = section === '' ? '' : '/' + encodeURIComponent(section);
+    return base + path + '?q=' + encodeURIComponent(winField + '=' + f(s) + ':' + f(e));
+  };
+  var STEP = 150 * 864e5, now = Date.now();
+  // Resolve the real detail section ONCE on the newest window (handles the
+  // "Report Header" → detail correction), then reuse it for every window.
+  var section = sectionRaw === '' ? '' : (sectionRaw || 'Report Details');
+  try {
+    var probe = await fetchJson(rangeUrl(section, new Date(now - STEP), new Date(now)), { headers: h });
+    if (section && probe && probe.reportSection === 'Report Header' && Array.isArray(probe.reportSections)) {
+      var secs = probe.reportSections.filter(function (s) { return s && s !== 'Report Header'; });
+      var detail = secs.find(function (s) { return /report detail/i.test(s); }) || secs.find(function (s) { return /detail/i.test(s); }) || secs[0];
+      if (detail) section = detail;
+    }
+  } catch (e) { /* probe failed → proceed; each window still tries the default section */ }
+  var ranges = [];
+  for (var end = now; end > now - days * 864e5; end -= STEP) ranges.push([new Date(end - STEP), new Date(end)]);
+  var merged = [];
+  for (var i = 0; i < ranges.length; i += AMS_CONCURRENCY) {
+    var batch = ranges.slice(i, i + AMS_CONCURRENCY).map(function (r) {
+      return fetchJson(rangeUrl(section, r[0], r[1]), { headers: h })
+        .then(function (j) { return (j && j.results) || []; }, function () { return []; });   // tolerate a dead window
+    });
+    (await Promise.all(batch)).forEach(function (rows) { for (var k = 0; k < rows.length; k++) merged.push(rows[k]); });
+  }
+  return { results: merged, reportSection: section };
+}
+
 module.exports = {
   fetchJson: fetchJson,
   isTransient: isTransient,
   amsWindow: amsWindow,
   fetchAmsReport: fetchAmsReport,
+  fetchAmsReportDeep: fetchAmsReportDeep,
   fetchLmrReport: fetchLmrReport,
   fetchNoaaTrade: fetchNoaaTrade,
   fetchEia: fetchEia,

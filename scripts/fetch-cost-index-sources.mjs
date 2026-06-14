@@ -150,7 +150,10 @@ async function liveFetch(ingredient, m) {
     // so one market missing the commodity or one slow report drops only itself —
     // the others still contribute (the cardinal rule), without 8 sequential waits.
     const settled = await F.mapLimit(amsSpecs(m), F.AMS_CONCURRENCY,
-      (spec) => F.fetchAmsReport(spec.reportId, spec.section, auth, win(spec.windowDays)).then((json) => ({ json, spec })));
+      (spec) => (DEEP_DAYS > (spec.windowDays || 0)
+        ? F.fetchAmsReportDeep(spec.reportId, spec.section, auth, DEEP_DAYS)   // backfill: stitch 150-day windows (MARS caps a single window)
+        : F.fetchAmsReport(spec.reportId, spec.section, auth, spec.windowDays)
+      ).then((json) => ({ json, spec })));
     settled.forEach((r) => { if (r.ok) out.ams.push(r.value); });
   }
   if (m.lmr) {
