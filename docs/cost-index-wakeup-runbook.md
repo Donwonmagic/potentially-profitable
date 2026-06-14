@@ -5,20 +5,15 @@
 > secrets exported (this is the connected work the cloud agent can't do).
 > Run from the **`potentially-profitable`** clone (NOT the `extract` / invoice repo).
 
-## Step 0 — bank your uncommitted backfill run FIRST
-Your last session left an *uncommitted* local run (the flips + the 20-item deep
-backfill → 100 measured / 6 absent / 4 seasonal bands). Commit it before pulling, or
-it's at risk:
+## Step 0 — already done (branch is green)
+Overnight I banked your vendor+backfill state and closed the last 3 gate failures
+(short-rib label + re-seed, glossary stamps, dataset date) — **origin is 182/182 green.**
+So just sync:
 ```sh
 cd ~/path/to/potentially-profitable
-# short-rib still needs a label (the seed skipped it):
-#   add to data/cost-index-labels.json "labels": "short-rib": { "en":"Short rib","es":"Costilla corta de res","unit_en":"lb","unit_es":"libra" },
-node scripts/build-cost-index-seed.mjs
-node scripts/inject-glossary-verified-stamp.mjs
-node scripts/inject-glossary-article-schema.mjs
-node scripts/check-all.mjs                 # expect green (181/181)
-git add -A && git commit -m "Cost Index: bank live vendor + 20-item backfill (4 seasonal bands)"
-git push origin claude/muntin-invoice-decoder-audit-d7upo
+git status                                 # if CLEAN → go to Step 1.
+# If you have uncommitted local changes, commit or stash them first so the pull is clean:
+#   git stash --include-untracked   (recover later with: git stash pop)
 ```
 
 ## Step 1 — pull the night's code
