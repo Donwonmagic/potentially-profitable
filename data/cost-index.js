@@ -48,13 +48,13 @@
           "pct": 0.21333333333333335,
           "dir": "up",
           "agreement": 1,
-          "nSources": 2,
-          "nFamilies": 2,
-          "nTypes": 2,
-          "noise": 0.0277
+          "nSources": 3,
+          "nFamilies": 3,
+          "nTypes": 3,
+          "noise": 0.0184
         },
         "confidence": "medium",
-        "label": "About $12.27–$13.21 (wholesale reference, single market — band from recent volatility), up +4.1% over the window. 1+ source(s) for level, 2 for trend.",
+        "label": "About $12.27–$13.21 (wholesale reference, single market — band from recent volatility), up +5.2% over the window. 1+ source(s) for level, 3 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -68,6 +68,12 @@
             "source": "usda-lmr",
             "type": "usda-lmr",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           },
           {
             "kind": "trend",
@@ -313,6 +319,304 @@
       ]
     },
     {
+      "key": "beef-tenderloin",
+      "label_en": "Beef tenderloin",
+      "label_es": "Lomo fino de res",
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "assessment": {
+        "asOf": "2026-06-12",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 1467,
+          "rangeCents": [
+            1454,
+            1480
+          ],
+          "rangeBasis": "volatility",
+          "typeDispersion": 0,
+          "nObs": 1,
+          "nFamilies": 1,
+          "nSources": 1,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-lmr",
+              "type": "usda-lmr",
+              "valueCents": 1467,
+              "date": "2026-06-12"
+            }
+          ]
+        },
+        "trend": {
+          "pct": -0.023952095808383235,
+          "dir": "down",
+          "agreement": 0.5,
+          "nSources": 2,
+          "nFamilies": 2,
+          "nTypes": 2,
+          "noise": 0.0183
+        },
+        "confidence": "medium",
+        "label": "About $14.54–$14.80 (wholesale reference, single market — band from recent volatility), down -0.9% over the window. 1+ source(s) for level, 2 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-lmr",
+            "type": "usda-lmr",
+            "valueCents": 1467,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-lmr",
+            "type": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-05-06",
+            "valueCents": 1503,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-07",
+            "valueCents": 1495,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-08",
+            "valueCents": 1529,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-11",
+            "valueCents": 1552,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-12",
+            "valueCents": 1551,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-14",
+            "valueCents": 1532,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-15",
+            "valueCents": 1487,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-18",
+            "valueCents": 1570,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-19",
+            "valueCents": 1551,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-20",
+            "valueCents": 1498,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-21",
+            "valueCents": 1510,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-22",
+            "valueCents": 1489,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-26",
+            "valueCents": 1486,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-27",
+            "valueCents": 1497,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-28",
+            "valueCents": 1487,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-29",
+            "valueCents": 1512,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-01",
+            "valueCents": 1533,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-02",
+            "valueCents": 1545,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-03",
+            "valueCents": 1519,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-04",
+            "valueCents": 1476,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-05",
+            "valueCents": 1527,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-08",
+            "valueCents": 1476,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-09",
+            "valueCents": 1498,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-10",
+            "valueCents": 1508,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-11",
+            "valueCents": 1500,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-12",
+            "valueCents": 1467,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "yieldSlug": "beef-tenderloin",
+      "flag": {
+        "verdict": "flat",
+        "actionBias": "hold",
+        "reason": "within the normal range",
+        "move": -0.02847682119205298,
+        "retrace": 0,
+        "elevatedWeeks": 0,
+        "nHistory": 26
+      },
+      "tier": "measured",
+      "yield": 0.85,
+      "epCents": 1726,
+      "spark": [
+        1503,
+        1495,
+        1529,
+        1552,
+        1551,
+        1532,
+        1487,
+        1570,
+        1551,
+        1498,
+        1510,
+        1489,
+        1486,
+        1497,
+        1487,
+        1512,
+        1533,
+        1545,
+        1519,
+        1476,
+        1527,
+        1476,
+        1498,
+        1508,
+        1500,
+        1467
+      ],
+      "spark_meta": {
+        "basis": "wholesale",
+        "source": "usda-lmr",
+        "from": "2026-05-06",
+        "to": "2026-06-12",
+        "n": 26
+      },
+      "spark_dates": [
+        "2026-05-06",
+        "2026-05-07",
+        "2026-05-08",
+        "2026-05-11",
+        "2026-05-12",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-29",
+        "2026-06-01",
+        "2026-06-02",
+        "2026-06-03",
+        "2026-06-04",
+        "2026-06-05",
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12"
+      ]
+    },
+    {
       "key": "chicken-breast",
       "label_en": "Chicken breast (boneless)",
       "label_es": "Pechuga de pollo (sin hueso)",
@@ -345,14 +649,14 @@
         "trend": {
           "pct": -0.0684931506849315,
           "dir": "down",
-          "agreement": 0.5,
-          "nSources": 2,
-          "nFamilies": 2,
-          "nTypes": 2,
-          "noise": 0.064
+          "agreement": 0.333,
+          "nSources": 3,
+          "nFamilies": 3,
+          "nTypes": 3,
+          "noise": 0.003
         },
         "confidence": "medium",
-        "label": "About $1.11–$1.56 (wholesale reference — band from reported market low–high), down -7.1% over the window. 1+ source(s) for level, 2 for trend.",
+        "label": "About $1.11–$1.56 (wholesale reference — band from reported market low–high), flat -0.2% over the window. 1+ source(s) for level, 3 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -366,6 +670,12 @@
             "source": "usda-ams-national",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           },
           {
             "kind": "trend",
@@ -539,6 +849,828 @@
       ]
     },
     {
+      "key": "whole-chicken",
+      "label_en": "Whole chicken",
+      "label_es": "Pollo entero",
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "assessment": {
+        "asOf": "2026-06-08",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 85,
+          "rangeCents": [
+            72,
+            112
+          ],
+          "rangeBasis": "measured",
+          "typeDispersion": 0,
+          "nObs": 1,
+          "nFamilies": 1,
+          "nSources": 1,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-ams-national",
+              "type": "usda-ams",
+              "valueCents": 85,
+              "date": "2026-06-08"
+            }
+          ]
+        },
+        "trend": {
+          "pct": -0.2916666666666667,
+          "dir": "down",
+          "agreement": 0.5,
+          "nSources": 2,
+          "nFamilies": 2,
+          "nTypes": 2,
+          "noise": 0.016300000000000002
+        },
+        "confidence": "medium",
+        "label": "About $0.72–$1.12 (wholesale reference — band from reported market low–high), down -29.1% over the window. 1+ source(s) for level, 2 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-ams-national",
+            "type": "usda-ams",
+            "valueCents": 85,
+            "date": "2026-06-08"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-national",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-02-16",
+            "valueCents": 120,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-02-23",
+            "valueCents": 116,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-03-02",
+            "valueCents": 105,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-03-09",
+            "valueCents": 99,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-03-16",
+            "valueCents": 98,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-03-23",
+            "valueCents": 96,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-03-30",
+            "valueCents": 98,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-04-06",
+            "valueCents": 100,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-04-13",
+            "valueCents": 93,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-04-20",
+            "valueCents": 90,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-04-27",
+            "valueCents": 90,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-04",
+            "valueCents": 88,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-11",
+            "valueCents": 90,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-18",
+            "valueCents": 87,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-25",
+            "valueCents": 83,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-01",
+            "valueCents": 83,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-08",
+            "valueCents": 85,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "yieldSlug": "whole-chicken",
+      "flag": {
+        "verdict": "easing",
+        "actionBias": "hold",
+        "reason": "prices have come down vs the baseline",
+        "move": -0.1414141414141414,
+        "retrace": 0,
+        "elevatedWeeks": 0,
+        "nHistory": 17
+      },
+      "tier": "measured",
+      "yield": 0.6,
+      "epCents": 142,
+      "spark": [
+        120,
+        116,
+        105,
+        99,
+        98,
+        96,
+        98,
+        100,
+        93,
+        90,
+        90,
+        88,
+        90,
+        87,
+        83,
+        83,
+        85
+      ],
+      "spark_meta": {
+        "basis": "wholesale",
+        "source": "usda-ams-national",
+        "from": "2026-02-16",
+        "to": "2026-06-08",
+        "n": 17
+      },
+      "spark_dates": [
+        "2026-02-16",
+        "2026-02-23",
+        "2026-03-02",
+        "2026-03-09",
+        "2026-03-16",
+        "2026-03-23",
+        "2026-03-30",
+        "2026-04-06",
+        "2026-04-13",
+        "2026-04-20",
+        "2026-04-27",
+        "2026-05-04",
+        "2026-05-11",
+        "2026-05-18",
+        "2026-05-25",
+        "2026-06-01",
+        "2026-06-08"
+      ]
+    },
+    {
+      "key": "pork-loin",
+      "label_en": "Pork loin",
+      "label_es": "Lomo de cerdo",
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "assessment": {
+        "asOf": "2026-06-12",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 95,
+          "rangeCents": [
+            92,
+            98
+          ],
+          "rangeBasis": "volatility",
+          "typeDispersion": 0,
+          "nObs": 1,
+          "nFamilies": 1,
+          "nSources": 1,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-lmr",
+              "type": "usda-lmr",
+              "valueCents": 95,
+              "date": "2026-06-12"
+            }
+          ]
+        },
+        "trend": {
+          "pct": 0.07954545454545454,
+          "dir": "up",
+          "agreement": 0.5,
+          "nSources": 2,
+          "nFamilies": 2,
+          "nTypes": 2,
+          "noise": 0.0352
+        },
+        "confidence": "medium",
+        "label": "About $0.92–$0.98 (wholesale reference, single market — band from recent volatility), down -16% over the window. 1+ source(s) for level, 2 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-lmr",
+            "type": "usda-lmr",
+            "valueCents": 95,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-lmr",
+            "type": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-05-07",
+            "valueCents": 88,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-08",
+            "valueCents": 94,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-11",
+            "valueCents": 93,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-12",
+            "valueCents": 88,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-13",
+            "valueCents": 90,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-14",
+            "valueCents": 92,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-15",
+            "valueCents": 93,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-18",
+            "valueCents": 95,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-19",
+            "valueCents": 91,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-20",
+            "valueCents": 90,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-21",
+            "valueCents": 92,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-22",
+            "valueCents": 95,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-26",
+            "valueCents": 95,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-27",
+            "valueCents": 93,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-28",
+            "valueCents": 94,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-29",
+            "valueCents": 96,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-01",
+            "valueCents": 96,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-02",
+            "valueCents": 94,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-03",
+            "valueCents": 94,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-04",
+            "valueCents": 92,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-05",
+            "valueCents": 99,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-08",
+            "valueCents": 95,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-09",
+            "valueCents": 92,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-10",
+            "valueCents": 94,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-11",
+            "valueCents": 91,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-12",
+            "valueCents": 95,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "yieldSlug": "pork-loin",
+      "flag": {
+        "verdict": "flat",
+        "actionBias": "hold",
+        "reason": "within the normal range",
+        "move": 0.03260869565217391,
+        "retrace": 0,
+        "elevatedWeeks": 0,
+        "nHistory": 26
+      },
+      "tier": "measured",
+      "yield": 0.85,
+      "epCents": 112,
+      "spark": [
+        88,
+        94,
+        93,
+        88,
+        90,
+        92,
+        93,
+        95,
+        91,
+        90,
+        92,
+        95,
+        95,
+        93,
+        94,
+        96,
+        96,
+        94,
+        94,
+        92,
+        99,
+        95,
+        92,
+        94,
+        91,
+        95
+      ],
+      "spark_meta": {
+        "basis": "wholesale",
+        "source": "usda-lmr",
+        "from": "2026-05-07",
+        "to": "2026-06-12",
+        "n": 26
+      },
+      "spark_dates": [
+        "2026-05-07",
+        "2026-05-08",
+        "2026-05-11",
+        "2026-05-12",
+        "2026-05-13",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-29",
+        "2026-06-01",
+        "2026-06-02",
+        "2026-06-03",
+        "2026-06-04",
+        "2026-06-05",
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12"
+      ]
+    },
+    {
+      "key": "pork-shoulder",
+      "label_en": "Pork shoulder",
+      "label_es": "Espaldilla de cerdo",
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "assessment": {
+        "asOf": "2026-06-12",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 137,
+          "rangeCents": [
+            129,
+            145
+          ],
+          "rangeBasis": "volatility",
+          "typeDispersion": 0,
+          "nObs": 1,
+          "nFamilies": 1,
+          "nSources": 1,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-lmr",
+              "type": "usda-lmr",
+              "valueCents": 137,
+              "date": "2026-06-12"
+            }
+          ]
+        },
+        "trend": {
+          "pct": 0.014814814814814815,
+          "dir": "up",
+          "agreement": 0.5,
+          "nSources": 2,
+          "nFamilies": 2,
+          "nTypes": 2,
+          "noise": 0.0461
+        },
+        "confidence": "medium",
+        "label": "About $1.29–$1.45 (wholesale reference, single market — band from recent volatility), down -16% over the window. 1+ source(s) for level, 2 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-lmr",
+            "type": "usda-lmr",
+            "valueCents": 137,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-lmr",
+            "type": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-05-07",
+            "valueCents": 135,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-08",
+            "valueCents": 137,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-11",
+            "valueCents": 139,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-12",
+            "valueCents": 140,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-13",
+            "valueCents": 143,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-14",
+            "valueCents": 142,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-15",
+            "valueCents": 144,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-18",
+            "valueCents": 148,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-19",
+            "valueCents": 148,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-20",
+            "valueCents": 148,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-21",
+            "valueCents": 150,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-22",
+            "valueCents": 147,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-26",
+            "valueCents": 152,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-27",
+            "valueCents": 151,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-28",
+            "valueCents": 152,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-29",
+            "valueCents": 149,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-01",
+            "valueCents": 149,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-02",
+            "valueCents": 149,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-03",
+            "valueCents": 143,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-04",
+            "valueCents": 140,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-05",
+            "valueCents": 147,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-08",
+            "valueCents": 133,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-09",
+            "valueCents": 125,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-10",
+            "valueCents": 124,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-11",
+            "valueCents": 124,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-12",
+            "valueCents": 137,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "yieldSlug": "pork-shoulder",
+      "flag": {
+        "verdict": "flat",
+        "actionBias": "hold",
+        "reason": "within the normal range",
+        "move": -0.04861111111111111,
+        "retrace": 0,
+        "elevatedWeeks": 0,
+        "nHistory": 26
+      },
+      "tier": "measured",
+      "yield": 0.75,
+      "epCents": 183,
+      "spark": [
+        135,
+        137,
+        139,
+        140,
+        143,
+        142,
+        144,
+        148,
+        148,
+        148,
+        150,
+        147,
+        152,
+        151,
+        152,
+        149,
+        149,
+        149,
+        143,
+        140,
+        147,
+        133,
+        125,
+        124,
+        124,
+        137
+      ],
+      "spark_meta": {
+        "basis": "wholesale",
+        "source": "usda-lmr",
+        "from": "2026-05-07",
+        "to": "2026-06-12",
+        "n": 26
+      },
+      "spark_dates": [
+        "2026-05-07",
+        "2026-05-08",
+        "2026-05-11",
+        "2026-05-12",
+        "2026-05-13",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-29",
+        "2026-06-01",
+        "2026-06-02",
+        "2026-06-03",
+        "2026-06-04",
+        "2026-06-05",
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12"
+      ]
+    },
+    {
       "key": "romaine-lettuce",
       "label_en": "Romaine lettuce",
       "label_es": "Lechuga romana",
@@ -548,16 +1680,16 @@
         "asOf": "2026-06-12",
         "level": {
           "basis": "wholesale",
-          "medianCents": 7988,
+          "medianCents": 8025,
           "rangeCents": [
-            7175,
-            8801
+            7100,
+            8950
           ],
           "rangeBasis": "markets",
           "typeDispersion": 0,
-          "nObs": 8,
-          "nFamilies": 8,
-          "nSources": 8,
+          "nObs": 7,
+          "nFamilies": 7,
+          "nSources": 7,
           "nTypes": 1,
           "provenance": [
             {
@@ -576,12 +1708,6 @@
               "source": "usda-ams-boston",
               "type": "usda-ams",
               "valueCents": 8600,
-              "date": "2026-06-12"
-            },
-            {
-              "source": "usda-ams-chicago",
-              "type": "usda-ams",
-              "valueCents": 5750,
               "date": "2026-06-12"
             },
             {
@@ -616,11 +1742,11 @@
           "agreement": 1,
           "nSources": 8,
           "nFamilies": 8,
-          "nTypes": 1,
+          "nTypes": 2,
           "noise": 0.32075
         },
         "confidence": "low",
-        "label": "About $71.75–$88.01 (wholesale reference), up +145.7% over the window. 8+ source(s) for level, 8 for trend.",
+        "label": "About $71.00–$89.50 (wholesale reference), up +155.3% over the window. 7+ source(s) for level, 8 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -641,13 +1767,6 @@
             "source": "usda-ams-boston",
             "type": "usda-ams",
             "valueCents": 8600,
-            "date": "2026-06-12"
-          },
-          {
-            "kind": "level",
-            "source": "usda-ams-chicago",
-            "type": "usda-ams",
-            "valueCents": 5750,
             "date": "2026-06-12"
           },
           {
@@ -698,12 +1817,6 @@
           },
           {
             "kind": "trend",
-            "source": "usda-ams-chicago",
-            "type": "usda-ams",
-            "basis": "wholesale"
-          },
-          {
-            "kind": "trend",
             "source": "usda-ams-detroit",
             "type": "usda-ams",
             "basis": "wholesale"
@@ -725,6 +1838,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -899,7 +2018,7 @@
       },
       "tier": "measured",
       "yield": 0.75,
-      "epCents": 10651,
+      "epCents": 10700,
       "spark": [
         4550,
         4550,
@@ -981,9 +2100,9 @@
           ],
           "rangeBasis": "markets",
           "typeDispersion": 0,
-          "nObs": 8,
-          "nFamilies": 8,
-          "nSources": 8,
+          "nObs": 7,
+          "nFamilies": 7,
+          "nSources": 7,
           "nTypes": 1,
           "provenance": [
             {
@@ -1002,12 +2121,6 @@
               "source": "usda-ams-boston",
               "type": "usda-ams",
               "valueCents": 2425,
-              "date": "2026-06-12"
-            },
-            {
-              "source": "usda-ams-chicago",
-              "type": "usda-ams",
-              "valueCents": 1900,
               "date": "2026-06-12"
             },
             {
@@ -1039,14 +2152,14 @@
         "trend": {
           "pct": -0.48520710059171596,
           "dir": "down",
-          "agreement": 0.75,
+          "agreement": 0.625,
           "nSources": 8,
           "nFamilies": 8,
-          "nTypes": 1,
-          "noise": 0.35014999999999996
+          "nTypes": 2,
+          "noise": 0.4044
         },
         "confidence": "low",
-        "label": "About $16.62–$25.38 (wholesale reference), down -14.7% over the window. 8+ source(s) for level, 8 for trend.",
+        "label": "About $16.62–$25.38 (wholesale reference), down -11.2% over the window. 7+ source(s) for level, 8 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -1067,13 +2180,6 @@
             "source": "usda-ams-boston",
             "type": "usda-ams",
             "valueCents": 2425,
-            "date": "2026-06-12"
-          },
-          {
-            "kind": "level",
-            "source": "usda-ams-chicago",
-            "type": "usda-ams",
-            "valueCents": 1900,
             "date": "2026-06-12"
           },
           {
@@ -1124,12 +2230,6 @@
           },
           {
             "kind": "trend",
-            "source": "usda-ams-chicago",
-            "type": "usda-ams",
-            "basis": "wholesale"
-          },
-          {
-            "kind": "trend",
             "source": "usda-ams-detroit",
             "type": "usda-ams",
             "basis": "wholesale"
@@ -1151,6 +2251,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -1465,14 +2571,14 @@
         "trend": {
           "pct": -0.015121368881814564,
           "dir": "down",
-          "agreement": 0.875,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.889,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.031149999999999997
         },
-        "confidence": "low",
-        "label": "About $22.50–$25.69 (wholesale reference), up +15.5% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $22.50–$25.69 (wholesale reference), up +16.5% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -1577,6 +2683,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -1890,14 +3002,14 @@
         "trend": {
           "pct": 0.02098695405558707,
           "dir": "up",
-          "agreement": 0.125,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
-          "noise": 0.0229
+          "agreement": 0.111,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
+          "noise": 0.0211
         },
         "confidence": "low",
-        "label": "About $16.19–$22.63 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 8 for trend.",
+        "label": "About $16.19–$22.63 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -2002,6 +3114,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -2273,14 +3391,14 @@
         "trend": {
           "pct": -0.13440860215053763,
           "dir": "down",
-          "agreement": 1,
-          "nSources": 2,
-          "nFamilies": 2,
-          "nTypes": 2,
-          "noise": 0.00725
+          "agreement": 0.667,
+          "nSources": 3,
+          "nFamilies": 3,
+          "nTypes": 3,
+          "noise": 0.0122
         },
         "confidence": "medium",
-        "label": "About $1.56–$1.66 (wholesale reference, single market — band from recent volatility), down -13.4% over the window. 1+ source(s) for level, 2 for trend.",
+        "label": "About $1.56–$1.66 (wholesale reference, single market — band from recent volatility), down -10.4% over the window. 1+ source(s) for level, 3 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -2294,6 +3412,12 @@
             "source": "usda-lmr",
             "type": "usda-lmr",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           },
           {
             "kind": "trend",
@@ -2456,14 +3580,14 @@
         "trend": {
           "pct": 0.10666666666666667,
           "dir": "up",
-          "agreement": 0.5,
-          "nSources": 2,
-          "nFamilies": 2,
-          "nTypes": 2,
-          "noise": 0.0063
+          "agreement": 0.667,
+          "nSources": 3,
+          "nFamilies": 3,
+          "nTypes": 3,
+          "noise": 0.0027
         },
         "confidence": "medium",
-        "label": "About $1.65–$1.67 (wholesale reference, single market — band from recent volatility), down -5% over the window. 1+ source(s) for level, 2 for trend.",
+        "label": "About $1.65–$1.67 (wholesale reference, single market — band from recent volatility), up +4.9% over the window. 1+ source(s) for level, 3 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -2477,6 +3601,12 @@
             "source": "usda-lmr",
             "type": "usda-lmr",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           },
           {
             "kind": "trend",
@@ -2640,13 +3770,13 @@
           "pct": -0.06666666666666667,
           "dir": "down",
           "agreement": 1,
-          "nSources": 2,
-          "nFamilies": 2,
-          "nTypes": 2,
-          "noise": 0.07095
+          "nSources": 3,
+          "nFamilies": 3,
+          "nTypes": 3,
+          "noise": 0.1271
         },
         "confidence": "medium",
-        "label": "About $0.51–$0.61 (wholesale reference, single market — band from recent volatility), down -15% over the window. 1+ source(s) for level, 2 for trend.",
+        "label": "About $0.51–$0.61 (wholesale reference, single market — band from recent volatility), down -10.7% over the window. 1+ source(s) for level, 3 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -2660,6 +3790,12 @@
             "source": "usda-ams",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           },
           {
             "kind": "trend",
@@ -2774,9 +3910,9 @@
           ],
           "rangeBasis": "markets",
           "typeDispersion": 0,
-          "nObs": 8,
-          "nFamilies": 8,
-          "nSources": 8,
+          "nObs": 7,
+          "nFamilies": 7,
+          "nSources": 7,
           "nTypes": 1,
           "provenance": [
             {
@@ -2795,12 +3931,6 @@
               "source": "usda-ams-boston",
               "type": "usda-ams",
               "valueCents": 2500,
-              "date": "2026-06-12"
-            },
-            {
-              "source": "usda-ams-chicago",
-              "type": "usda-ams",
-              "valueCents": 2200,
               "date": "2026-06-12"
             },
             {
@@ -2832,14 +3962,14 @@
         "trend": {
           "pct": 0,
           "dir": "flat",
-          "agreement": 0.75,
+          "agreement": 0.625,
           "nSources": 8,
           "nFamilies": 8,
-          "nTypes": 1,
-          "noise": 0.1678
+          "nTypes": 2,
+          "noise": 0.1691
         },
-        "confidence": "low",
-        "label": "About $22.00–$28.00 (wholesale reference), down -10.7% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $22.00–$28.00 (wholesale reference), down -3.1% over the window. 7+ source(s) for level, 8 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -2860,13 +3990,6 @@
             "source": "usda-ams-boston",
             "type": "usda-ams",
             "valueCents": 2500,
-            "date": "2026-06-12"
-          },
-          {
-            "kind": "level",
-            "source": "usda-ams-chicago",
-            "type": "usda-ams",
-            "valueCents": 2200,
             "date": "2026-06-12"
           },
           {
@@ -2917,12 +4040,6 @@
           },
           {
             "kind": "trend",
-            "source": "usda-ams-chicago",
-            "type": "usda-ams",
-            "basis": "wholesale"
-          },
-          {
-            "kind": "trend",
             "source": "usda-ams-detroit",
             "type": "usda-ams",
             "basis": "wholesale"
@@ -2944,6 +4061,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -3192,16 +4315,16 @@
         "asOf": "2026-06-12",
         "level": {
           "basis": "wholesale",
-          "medianCents": 2625,
+          "medianCents": 2750,
           "rangeCents": [
-            2025,
-            3225
+            2150,
+            3350
           ],
           "rangeBasis": "markets",
           "typeDispersion": 0,
-          "nObs": 8,
-          "nFamilies": 8,
-          "nSources": 8,
+          "nObs": 7,
+          "nFamilies": 7,
+          "nSources": 7,
           "nTypes": 1,
           "provenance": [
             {
@@ -3220,12 +4343,6 @@
               "source": "usda-ams-boston",
               "type": "usda-ams",
               "valueCents": 2300,
-              "date": "2026-06-12"
-            },
-            {
-              "source": "usda-ams-chicago",
-              "type": "usda-ams",
-              "valueCents": 2250,
               "date": "2026-06-12"
             },
             {
@@ -3257,14 +4374,14 @@
         "trend": {
           "pct": -0.2361111111111111,
           "dir": "down",
-          "agreement": 0.875,
+          "agreement": 0.75,
           "nSources": 8,
           "nFamilies": 8,
-          "nTypes": 1,
-          "noise": 0.26815
+          "nTypes": 2,
+          "noise": 0.2472
         },
         "confidence": "low",
-        "label": "About $20.25–$32.25 (wholesale reference), down -43.8% over the window. 8+ source(s) for level, 8 for trend.",
+        "label": "About $21.50–$33.50 (wholesale reference), down -34.5% over the window. 7+ source(s) for level, 8 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -3285,13 +4402,6 @@
             "source": "usda-ams-boston",
             "type": "usda-ams",
             "valueCents": 2300,
-            "date": "2026-06-12"
-          },
-          {
-            "kind": "level",
-            "source": "usda-ams-chicago",
-            "type": "usda-ams",
-            "valueCents": 2250,
             "date": "2026-06-12"
           },
           {
@@ -3342,12 +4452,6 @@
           },
           {
             "kind": "trend",
-            "source": "usda-ams-chicago",
-            "type": "usda-ams",
-            "basis": "wholesale"
-          },
-          {
-            "kind": "trend",
             "source": "usda-ams-detroit",
             "type": "usda-ams",
             "basis": "wholesale"
@@ -3369,6 +4473,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -3542,7 +4652,7 @@
       },
       "tier": "measured",
       "yield": 0.65,
-      "epCents": 4038,
+      "epCents": 4231,
       "spark": [
         3600,
         3600,
@@ -3682,14 +4792,14 @@
         "trend": {
           "pct": -0.27924882629107983,
           "dir": "down",
-          "agreement": 0.875,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.778,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.08535000000000001
         },
-        "confidence": "low",
-        "label": "About $27.00–$39.10 (wholesale reference), down -28.9% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $27.00–$39.10 (wholesale reference), down -23.6% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -3794,6 +4904,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -4107,14 +5223,14 @@
         "trend": {
           "pct": 0,
           "dir": "flat",
-          "agreement": 0.625,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.556,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.033949999999999994
         },
-        "confidence": "low",
-        "label": "About $21.00–$23.03 (wholesale reference), down -3.2% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $21.00–$23.03 (wholesale reference), down -2.2% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -4219,6 +5335,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -4532,14 +5654,14 @@
         "trend": {
           "pct": -0.46715328467153283,
           "dir": "down",
-          "agreement": 0.75,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.667,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.1738
         },
-        "confidence": "low",
-        "label": "About $27.38–$45.13 (wholesale reference), down -16.3% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $27.38–$45.13 (wholesale reference), down -16.3% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -4644,6 +5766,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -4957,14 +6085,14 @@
         "trend": {
           "pct": -0.11811023622047244,
           "dir": "down",
-          "agreement": 0.875,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.778,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.018500000000000003
         },
-        "confidence": "low",
-        "label": "About $47.00–$60.50 (wholesale reference), down -17.3% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $47.00–$60.50 (wholesale reference), down -17.3% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -5069,6 +6197,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -5383,13 +6517,13 @@
           "pct": 0.007352941176470588,
           "dir": "up",
           "agreement": 1,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.02835
         },
-        "confidence": "low",
-        "label": "About $31.63–$39.00 (wholesale reference), up +16.9% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $31.63–$39.00 (wholesale reference), up +19.2% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -5494,6 +6628,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -5807,14 +6947,14 @@
         "trend": {
           "pct": -0.14473684210526316,
           "dir": "down",
-          "agreement": 0.75,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.667,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.2058
         },
         "confidence": "low",
-        "label": "About $17.56–$33.63 (wholesale reference), down -18% over the window. 8+ source(s) for level, 8 for trend.",
+        "label": "About $17.56–$33.63 (wholesale reference), down -7.1% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -5919,6 +7059,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -6232,14 +7378,14 @@
         "trend": {
           "pct": 0.16129032258064516,
           "dir": "up",
-          "agreement": 0.625,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.667,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.01855
         },
-        "confidence": "low",
-        "label": "About $18.00–$28.00 (wholesale reference), up +12.2% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $18.00–$28.00 (wholesale reference), up +12.5% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -6344,6 +7490,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -6657,14 +7809,14 @@
         "trend": {
           "pct": 0,
           "dir": "flat",
-          "agreement": 0.375,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.333,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0
         },
-        "confidence": "low",
-        "label": "About $6.79–$8.94 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $6.79–$8.94 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -6769,6 +7921,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -7082,14 +8240,14 @@
         "trend": {
           "pct": 0.32857142857142857,
           "dir": "up",
-          "agreement": 0.5,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.556,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.1011
         },
-        "confidence": "low",
-        "label": "About $24.00–$29.06 (wholesale reference), down -4.9% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $24.00–$29.06 (wholesale reference), up +8.6% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -7194,6 +8352,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -7507,14 +8671,14 @@
         "trend": {
           "pct": 0,
           "dir": "flat",
-          "agreement": 0.5,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.444,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0
         },
-        "confidence": "low",
-        "label": "About $16.63–$23.38 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $16.63–$23.38 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -7619,6 +8783,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -7926,14 +9096,14 @@
         "trend": {
           "pct": 0,
           "dir": "flat",
-          "agreement": 0.571,
-          "nSources": 7,
-          "nFamilies": 7,
-          "nTypes": 1,
+          "agreement": 0.625,
+          "nSources": 8,
+          "nFamilies": 8,
+          "nTypes": 2,
           "noise": 0
         },
-        "confidence": "low",
-        "label": "About $24.75–$43.63 (wholesale reference), up +3.7% over the window. 7+ source(s) for level, 7 for trend.",
+        "confidence": "medium",
+        "label": "About $24.75–$43.63 (wholesale reference), up +3.7% over the window. 7+ source(s) for level, 8 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -8025,6 +9195,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -8338,14 +9514,14 @@
         "trend": {
           "pct": 0.708029197080292,
           "dir": "up",
-          "agreement": 0.875,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.889,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.06235
         },
-        "confidence": "low",
-        "label": "About $47.37–$70.13 (wholesale reference), up +83.1% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $47.37–$70.13 (wholesale reference), up +90% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -8450,6 +9626,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -8763,14 +9945,14 @@
         "trend": {
           "pct": 0.12209302325581395,
           "dir": "up",
-          "agreement": 0.875,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.889,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.0508
         },
-        "confidence": "low",
-        "label": "About $39.19–$49.48 (wholesale reference), up +48.5% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $39.19–$49.48 (wholesale reference), up +58.1% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -8875,6 +10057,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -9188,14 +10376,14 @@
         "trend": {
           "pct": -0.3763440860215054,
           "dir": "down",
-          "agreement": 0.875,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.778,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.20074999999999998
         },
         "confidence": "low",
-        "label": "About $26.19–$32.81 (wholesale reference), down -22.8% over the window. 8+ source(s) for level, 8 for trend.",
+        "label": "About $26.19–$32.81 (wholesale reference), down -21.6% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -9300,6 +10488,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -9613,14 +10807,14 @@
         "trend": {
           "pct": -0.20512820512820512,
           "dir": "down",
-          "agreement": 0.5,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.222,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.07355
         },
         "confidence": "low",
-        "label": "About $15.69–$17.19 (wholesale reference), down -2.9% over the window. 8+ source(s) for level, 8 for trend.",
+        "label": "About $15.69–$17.19 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -9725,6 +10919,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -9964,6 +11164,232 @@
       ]
     },
     {
+      "key": "chicken-thigh",
+      "label_en": "Chicken thigh",
+      "label_es": "Muslo de pollo",
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "assessment": {
+        "asOf": "2026-06-08",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 142,
+          "rangeCents": [
+            75,
+            229
+          ],
+          "rangeBasis": "measured",
+          "typeDispersion": 0,
+          "nObs": 1,
+          "nFamilies": 1,
+          "nSources": 1,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-ams-national",
+              "type": "usda-ams",
+              "valueCents": 142,
+              "date": "2026-06-08"
+            }
+          ]
+        },
+        "trend": {
+          "pct": 0.3523809523809524,
+          "dir": "up",
+          "agreement": 1,
+          "nSources": 2,
+          "nFamilies": 2,
+          "nTypes": 2,
+          "noise": 0.01455
+        },
+        "confidence": "medium",
+        "label": "About $0.75–$2.29 (wholesale reference — band from reported market low–high), up +1.8% over the window. 1+ source(s) for level, 2 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-ams-national",
+            "type": "usda-ams",
+            "valueCents": 142,
+            "date": "2026-06-08"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-ams-national",
+            "type": "usda-ams",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-02-16",
+            "valueCents": 105,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-02-23",
+            "valueCents": 108,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-03-02",
+            "valueCents": 111,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-03-09",
+            "valueCents": 117,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-03-16",
+            "valueCents": 123,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-03-23",
+            "valueCents": 127,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-03-30",
+            "valueCents": 129,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-04-06",
+            "valueCents": 129,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-04-13",
+            "valueCents": 129,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-04-20",
+            "valueCents": 131,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-04-27",
+            "valueCents": 133,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-04",
+            "valueCents": 137,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-11",
+            "valueCents": 138,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-18",
+            "valueCents": 137,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-25",
+            "valueCents": 140,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-01",
+            "valueCents": 143,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-08",
+            "valueCents": 142,
+            "source": "usda-ams-national",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "yieldSlug": "chicken-thigh",
+      "flag": {
+        "verdict": "structural",
+        "actionBias": "re-price",
+        "reason": "elevated and sustained — the increase looks real",
+        "move": 0.15447154471544716,
+        "retrace": 0.006993006993006993,
+        "elevatedWeeks": 7,
+        "nHistory": 17
+      },
+      "tier": "measured",
+      "yield": 0.9,
+      "epCents": 158,
+      "spark": [
+        105,
+        108,
+        111,
+        117,
+        123,
+        127,
+        129,
+        129,
+        129,
+        131,
+        133,
+        137,
+        138,
+        137,
+        140,
+        143,
+        142
+      ],
+      "spark_meta": {
+        "basis": "wholesale",
+        "source": "usda-ams-national",
+        "from": "2026-02-16",
+        "to": "2026-06-08",
+        "n": 17
+      },
+      "spark_dates": [
+        "2026-02-16",
+        "2026-02-23",
+        "2026-03-02",
+        "2026-03-09",
+        "2026-03-16",
+        "2026-03-23",
+        "2026-03-30",
+        "2026-04-06",
+        "2026-04-13",
+        "2026-04-20",
+        "2026-04-27",
+        "2026-05-04",
+        "2026-05-11",
+        "2026-05-18",
+        "2026-05-25",
+        "2026-06-01",
+        "2026-06-08"
+      ]
+    },
+    {
       "key": "cucumber",
       "label_en": "Cucumber",
       "label_es": "Pepino",
@@ -10038,14 +11464,14 @@
         "trend": {
           "pct": -0.34513274336283184,
           "dir": "down",
-          "agreement": 1,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.889,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.18615
         },
-        "confidence": "low",
-        "label": "About $18.38–$24.56 (wholesale reference), down -30.8% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $18.38–$24.56 (wholesale reference), down -22.2% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -10150,6 +11576,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -10463,14 +11895,14 @@
         "trend": {
           "pct": -0.15478260869565216,
           "dir": "down",
-          "agreement": 1,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.889,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.26385000000000003
         },
         "confidence": "low",
-        "label": "About $36.00–$40.82 (wholesale reference), down -30.6% over the window. 8+ source(s) for level, 8 for trend.",
+        "label": "About $36.00–$40.82 (wholesale reference), down -29.1% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -10575,6 +12007,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -10888,14 +12326,14 @@
         "trend": {
           "pct": 0.18199481865284975,
           "dir": "up",
-          "agreement": 0.625,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.667,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.0577
         },
-        "confidence": "low",
-        "label": "About $18.81–$24.75 (wholesale reference), up +4.3% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $18.81–$24.75 (wholesale reference), up +6.5% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -11000,6 +12438,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -11313,14 +12757,14 @@
         "trend": {
           "pct": -0.43103448275862066,
           "dir": "down",
-          "agreement": 0.625,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.556,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.0828
         },
-        "confidence": "low",
-        "label": "About $24.75–$34.63 (wholesale reference), down -15.6% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $24.75–$34.63 (wholesale reference), down -12.4% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -11425,6 +12869,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -11738,14 +13188,14 @@
         "trend": {
           "pct": -0.43902439024390244,
           "dir": "down",
-          "agreement": 0.75,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.667,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.2278
         },
         "confidence": "low",
-        "label": "About $12.63–$23.00 (wholesale reference), down -38.9% over the window. 8+ source(s) for level, 8 for trend.",
+        "label": "About $12.63–$23.00 (wholesale reference), down -38.9% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -11850,6 +13300,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -12163,14 +13619,14 @@
         "trend": {
           "pct": -0.07407407407407407,
           "dir": "down",
-          "agreement": 0.625,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.667,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.037450000000000004
         },
-        "confidence": "low",
-        "label": "About $21.75–$24.25 (wholesale reference), up +2% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $21.75–$24.25 (wholesale reference), up +18.9% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -12275,6 +13731,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -12588,14 +14050,14 @@
         "trend": {
           "pct": -0.049586776859504134,
           "dir": "down",
-          "agreement": 0.25,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.222,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.01675
         },
         "confidence": "low",
-        "label": "About $26.75–$32.00 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 8 for trend.",
+        "label": "About $26.75–$32.00 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -12700,6 +14162,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -13007,14 +14475,14 @@
         "trend": {
           "pct": 0.03125,
           "dir": "up",
-          "agreement": 0.857,
-          "nSources": 7,
-          "nFamilies": 7,
-          "nTypes": 1,
+          "agreement": 0.75,
+          "nSources": 8,
+          "nFamilies": 8,
+          "nTypes": 2,
           "noise": 0.0278
         },
-        "confidence": "low",
-        "label": "About $37.50–$47.50 (wholesale reference), down -18.4% over the window. 7+ source(s) for level, 7 for trend.",
+        "confidence": "medium",
+        "label": "About $37.50–$47.50 (wholesale reference), down -18.4% over the window. 7+ source(s) for level, 8 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -13106,6 +14574,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -13419,14 +14893,14 @@
         "trend": {
           "pct": -0.5,
           "dir": "down",
-          "agreement": 0.875,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.778,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.27975
         },
         "confidence": "low",
-        "label": "About $15.50–$22.00 (wholesale reference), down -19.2% over the window. 8+ source(s) for level, 8 for trend.",
+        "label": "About $15.50–$22.00 (wholesale reference), down -16.1% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -13531,6 +15005,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -13844,14 +15324,14 @@
         "trend": {
           "pct": -0.5181818181818182,
           "dir": "down",
-          "agreement": 0.625,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.556,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.34635
         },
         "confidence": "low",
-        "label": "About $25.13–$28.50 (wholesale reference), down -8.6% over the window. 8+ source(s) for level, 8 for trend.",
+        "label": "About $25.13–$28.50 (wholesale reference), down -5.6% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -13956,6 +15436,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -14269,14 +15755,14 @@
         "trend": {
           "pct": -0.08695652173913043,
           "dir": "down",
-          "agreement": 1,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.889,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.1642
         },
-        "confidence": "low",
-        "label": "About $18.81–$22.00 (wholesale reference), down -64.3% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $18.81–$22.00 (wholesale reference), down -58.3% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -14381,6 +15867,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -14694,14 +16186,14 @@
         "trend": {
           "pct": 0.06086956521739131,
           "dir": "up",
-          "agreement": 0.875,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.778,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.30415000000000003
         },
         "confidence": "low",
-        "label": "About $30.13–$36.25 (wholesale reference), down -34.9% over the window. 8+ source(s) for level, 8 for trend.",
+        "label": "About $30.13–$36.25 (wholesale reference), down -31.6% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -14806,6 +16298,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -15119,14 +16617,14 @@
         "trend": {
           "pct": 0.16869565217391305,
           "dir": "up",
-          "agreement": 0.375,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.333,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.027
         },
-        "confidence": "low",
-        "label": "About $26.97–$32.25 (wholesale reference), flat -0.5% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $26.97–$32.25 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -15231,6 +16729,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -15544,14 +17048,14 @@
         "trend": {
           "pct": -0.1320754716981132,
           "dir": "down",
-          "agreement": 1,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.889,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.12285
         },
-        "confidence": "low",
-        "label": "About $28.75–$36.69 (wholesale reference), down -43.8% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $28.75–$36.69 (wholesale reference), down -41.1% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -15656,6 +17160,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -15969,14 +17479,14 @@
         "trend": {
           "pct": 0.20155844155844155,
           "dir": "up",
-          "agreement": 0.5,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.556,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.0414
         },
-        "confidence": "low",
-        "label": "About $19.25–$27.69 (wholesale reference), down -3.6% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $19.25–$27.69 (wholesale reference), up +3.1% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -16081,6 +17591,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -16394,14 +17910,14 @@
         "trend": {
           "pct": 0.017857142857142856,
           "dir": "up",
-          "agreement": 0.875,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.889,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.35414999999999996
         },
         "confidence": "low",
-        "label": "About $52.88–$64.50 (wholesale reference), up +16.3% over the window. 8+ source(s) for level, 8 for trend.",
+        "label": "About $52.88–$64.50 (wholesale reference), up +21.1% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -16506,6 +18022,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -16819,14 +18341,14 @@
         "trend": {
           "pct": 0.015151515151515152,
           "dir": "up",
-          "agreement": 0.75,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.778,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.0566
         },
-        "confidence": "low",
-        "label": "About $29.88–$35.50 (wholesale reference), up +8.1% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $29.88–$35.50 (wholesale reference), up +15.1% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -16931,6 +18453,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -17244,14 +18772,14 @@
         "trend": {
           "pct": 0.3333333333333333,
           "dir": "up",
-          "agreement": 0.75,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.778,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.05075
         },
-        "confidence": "low",
-        "label": "About $47.00–$55.13 (wholesale reference), up +9.1% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $47.00–$55.13 (wholesale reference), up +11.6% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -17356,6 +18884,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -17669,14 +19203,14 @@
         "trend": {
           "pct": 0,
           "dir": "flat",
-          "agreement": 0.75,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.667,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.1081
         },
-        "confidence": "low",
-        "label": "About $21.00–$28.44 (wholesale reference), down -17.6% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $21.00–$28.44 (wholesale reference), down -15.7% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -17781,6 +19315,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -18088,14 +19628,14 @@
         "trend": {
           "pct": 0.015151515151515152,
           "dir": "up",
-          "agreement": 0.571,
-          "nSources": 7,
-          "nFamilies": 7,
-          "nTypes": 1,
+          "agreement": 0.625,
+          "nSources": 8,
+          "nFamilies": 8,
+          "nTypes": 2,
           "noise": 0.0925
         },
-        "confidence": "low",
-        "label": "About $23.97–$36.00 (wholesale reference), up +8.9% over the window. 7+ source(s) for level, 7 for trend.",
+        "confidence": "medium",
+        "label": "About $23.97–$36.00 (wholesale reference), up +8.9% over the window. 7+ source(s) for level, 8 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -18187,6 +19727,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -18502,13 +20048,13 @@
           "pct": 0.48201438848920863,
           "dir": "up",
           "agreement": 1,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.174
         },
-        "confidence": "low",
-        "label": "About $34.75–$50.00 (wholesale reference), up +45.5% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $34.75–$50.00 (wholesale reference), up +52% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -18613,6 +20159,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -18928,13 +20480,13 @@
           "pct": 0.30120481927710846,
           "dir": "up",
           "agreement": 1,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.1548
         },
-        "confidence": "low",
-        "label": "About $30.88–$46.88 (wholesale reference), up +29.8% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $30.88–$46.88 (wholesale reference), up +39.1% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -19039,6 +20591,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -19353,14 +20911,14 @@
         "trend": {
           "pct": 0.421875,
           "dir": "up",
-          "agreement": 0.25,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.222,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0
         },
         "confidence": "low",
-        "label": "About $16.81–$19.88 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 8 for trend.",
+        "label": "About $16.81–$19.88 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -19465,6 +21023,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -19766,14 +21330,14 @@
         "trend": {
           "pct": 0,
           "dir": "flat",
-          "agreement": 0.667,
-          "nSources": 6,
-          "nFamilies": 6,
-          "nTypes": 1,
+          "agreement": 0.571,
+          "nSources": 7,
+          "nFamilies": 7,
+          "nTypes": 2,
           "noise": 0
         },
-        "confidence": "low",
-        "label": "About $28.13–$31.69 (wholesale reference), flat +0% over the window. 6+ source(s) for level, 6 for trend.",
+        "confidence": "medium",
+        "label": "About $28.13–$31.69 (wholesale reference), flat +0% over the window. 6+ source(s) for level, 7 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -19852,6 +21416,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -20165,14 +21735,14 @@
         "trend": {
           "pct": -0.4626865671641791,
           "dir": "down",
-          "agreement": 0.625,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.444,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.17225000000000001
         },
-        "confidence": "low",
-        "label": "About $17.00–$28.63 (wholesale reference), down -20% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $17.00–$28.63 (wholesale reference), up +13.6% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -20277,6 +21847,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -20586,13 +22162,13 @@
           "pct": 0.5609756097560976,
           "dir": "up",
           "agreement": 1,
-          "nSources": 7,
-          "nFamilies": 7,
-          "nTypes": 1,
+          "nSources": 8,
+          "nFamilies": 8,
+          "nTypes": 2,
           "noise": 0.0517
         },
-        "confidence": "low",
-        "label": "About $35.75–$42.75 (wholesale reference), up +48.3% over the window. 7+ source(s) for level, 7 for trend.",
+        "confidence": "medium",
+        "label": "About $35.75–$42.75 (wholesale reference), up +60% over the window. 7+ source(s) for level, 8 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -20684,6 +22260,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -20997,14 +22579,14 @@
         "trend": {
           "pct": 0,
           "dir": "flat",
-          "agreement": 0.375,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.333,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0
         },
-        "confidence": "low",
-        "label": "About $8.44–$14.50 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $8.44–$14.50 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -21109,6 +22691,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -21422,14 +23010,14 @@
         "trend": {
           "pct": 0,
           "dir": "flat",
-          "agreement": 0.75,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.667,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0
         },
-        "confidence": "low",
-        "label": "About $6.81–$8.50 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $6.81–$8.50 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -21534,6 +23122,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -21847,14 +23441,14 @@
         "trend": {
           "pct": 0,
           "dir": "flat",
-          "agreement": 0.5,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.556,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0
         },
-        "confidence": "low",
-        "label": "About $7.88–$10.21 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $7.88–$10.21 (wholesale reference), up +6.7% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -21959,6 +23553,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -22272,14 +23872,14 @@
         "trend": {
           "pct": 0,
           "dir": "flat",
-          "agreement": 0.625,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.556,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0
         },
-        "confidence": "low",
-        "label": "About $7.24–$8.77 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $7.24–$8.77 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -22384,6 +23984,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -22685,14 +24291,14 @@
         "trend": {
           "pct": 0,
           "dir": "flat",
-          "agreement": 0.5,
-          "nSources": 6,
-          "nFamilies": 6,
-          "nTypes": 1,
+          "agreement": 0.429,
+          "nSources": 7,
+          "nFamilies": 7,
+          "nTypes": 2,
           "noise": 0
         },
-        "confidence": "low",
-        "label": "About $7.94–$12.13 (wholesale reference), flat +0% over the window. 6+ source(s) for level, 6 for trend.",
+        "confidence": "medium",
+        "label": "About $7.94–$12.13 (wholesale reference), flat +0% over the window. 6+ source(s) for level, 7 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -22771,6 +24377,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -23078,14 +24690,14 @@
         "trend": {
           "pct": 0.3418803418803419,
           "dir": "up",
-          "agreement": 0.571,
-          "nSources": 7,
-          "nFamilies": 7,
-          "nTypes": 1,
+          "agreement": 0.125,
+          "nSources": 8,
+          "nFamilies": 8,
+          "nTypes": 2,
           "noise": 0.0363
         },
         "confidence": "low",
-        "label": "About $12.75–$31.63 (wholesale reference), down -12.3% over the window. 7+ source(s) for level, 7 for trend.",
+        "label": "About $12.75–$31.63 (wholesale reference), flat +0% over the window. 7+ source(s) for level, 8 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -23177,6 +24789,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -23490,14 +25108,14 @@
         "trend": {
           "pct": 0.022556390977443608,
           "dir": "up",
-          "agreement": 0.375,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.333,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.02375
         },
-        "confidence": "low",
-        "label": "About $29.75–$34.00 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $29.75–$34.00 (wholesale reference), flat +0% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -23602,6 +25220,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -23915,14 +25539,14 @@
         "trend": {
           "pct": 0.04054054054054054,
           "dir": "up",
-          "agreement": 0.75,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.778,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.01855
         },
-        "confidence": "low",
-        "label": "About $35.50–$39.00 (wholesale reference), up +6.3% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $35.50–$39.00 (wholesale reference), up +9% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -24027,6 +25651,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -24340,14 +25970,14 @@
         "trend": {
           "pct": 0.044585987261146494,
           "dir": "up",
-          "agreement": 0.75,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.778,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.0179
         },
-        "confidence": "low",
-        "label": "About $38.19–$41.44 (wholesale reference), up +12.5% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $38.19–$41.44 (wholesale reference), up +15.2% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -24452,6 +26082,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -24765,14 +26401,14 @@
         "trend": {
           "pct": 0,
           "dir": "flat",
-          "agreement": 0.75,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.778,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0
         },
-        "confidence": "low",
-        "label": "About $21.38–$22.75 (wholesale reference), up +4.7% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $21.38–$22.75 (wholesale reference), up +4.9% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -24877,6 +26513,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -25160,14 +26802,14 @@
         "trend": {
           "pct": -0.058823529411764705,
           "dir": "down",
-          "agreement": 1,
-          "nSources": 3,
-          "nFamilies": 3,
-          "nTypes": 1,
+          "agreement": 0.75,
+          "nSources": 4,
+          "nFamilies": 4,
+          "nTypes": 2,
           "noise": 0.1977
         },
-        "confidence": "low",
-        "label": "About $6.75–$19.75 (wholesale reference), down -21.4% over the window. 3+ source(s) for level, 3 for trend.",
+        "confidence": "medium",
+        "label": "About $6.75–$19.75 (wholesale reference), down -21.4% over the window. 3+ source(s) for level, 4 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -25207,6 +26849,12 @@
             "source": "usda-ams-miami",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -25520,14 +27168,14 @@
         "trend": {
           "pct": 0.049586776859504134,
           "dir": "up",
-          "agreement": 1,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.889,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.2517
         },
         "confidence": "low",
-        "label": "About $23.88–$32.31 (wholesale reference), down -21.6% over the window. 8+ source(s) for level, 8 for trend.",
+        "label": "About $23.88–$32.31 (wholesale reference), down -17.1% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -25632,6 +27280,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -25945,14 +27599,14 @@
         "trend": {
           "pct": -0.024793388429752067,
           "dir": "down",
-          "agreement": 0.625,
-          "nSources": 8,
-          "nFamilies": 8,
-          "nTypes": 1,
+          "agreement": 0.667,
+          "nSources": 9,
+          "nFamilies": 9,
+          "nTypes": 2,
           "noise": 0.0936
         },
-        "confidence": "low",
-        "label": "About $17.75–$31.31 (wholesale reference), up +2.1% over the window. 8+ source(s) for level, 8 for trend.",
+        "confidence": "medium",
+        "label": "About $17.75–$31.31 (wholesale reference), up +4.5% over the window. 8+ source(s) for level, 9 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -26057,6 +27711,12 @@
             "source": "usda-ams-new-york",
             "type": "usda-ams",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           }
         ],
         "history": [
@@ -26328,14 +27988,14 @@
         "trend": {
           "pct": -0.02304964539007092,
           "dir": "down",
-          "agreement": 0.5,
-          "nSources": 2,
-          "nFamilies": 2,
-          "nTypes": 2,
-          "noise": 0.0016
+          "agreement": 0.333,
+          "nSources": 3,
+          "nFamilies": 3,
+          "nTypes": 3,
+          "noise": 0.0067
         },
         "confidence": "directional",
-        "label": "About $5.51 (wholesale reference, single source — range not yet measurable), down -2.2% over the window. 1+ source(s) for level, 2 for trend.",
+        "label": "About $5.51 (wholesale reference, single source — range not yet measurable), flat -0.1% over the window. 1+ source(s) for level, 3 for trend.",
         "provenance": [
           {
             "kind": "level",
@@ -26349,6 +28009,12 @@
             "source": "usda-lmr",
             "type": "usda-lmr",
             "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
           },
           {
             "kind": "trend",
@@ -26388,6 +28054,65 @@
     }
   ],
   "drivers": [
+    {
+      "key": "corn",
+      "label_en": "Corn (feed)",
+      "label_es": "Maíz (forraje)",
+      "kind": "feed-grain",
+      "trend": {
+        "pct": 0.10362173038229376,
+        "dir": "up",
+        "agreement": 1,
+        "nSources": 1,
+        "nFamilies": 1,
+        "nTypes": 1,
+        "noise": 0.0325
+      },
+      "leads": [
+        "chicken-breast",
+        "whole-chicken",
+        "pork-loin",
+        "pork-shoulder",
+        "ribeye",
+        "beef-tenderloin",
+        "eggs"
+      ],
+      "spark": [
+        15904,
+        15845,
+        16961,
+        15951,
+        17552
+      ]
+    },
+    {
+      "key": "soybeans",
+      "label_en": "Soybeans (feed)",
+      "label_es": "Soya (forraje)",
+      "kind": "feed-grain",
+      "trend": {
+        "pct": 0.19784172661870503,
+        "dir": "up",
+        "agreement": 1,
+        "nSources": 1,
+        "nFamilies": 1,
+        "nTypes": 1,
+        "noise": 0.032
+      },
+      "leads": [
+        "chicken-breast",
+        "whole-chicken",
+        "pork-loin",
+        "pork-shoulder"
+      ],
+      "spark": [
+        17236,
+        18743,
+        20007,
+        19434,
+        20646
+      ]
+    },
     {
       "key": "diesel",
       "label_en": "Diesel",
@@ -26463,7 +28188,7 @@
         "key": "leg-of-lamb",
         "label_en": "leg-of-lamb",
         "label_es": "leg-of-lamb",
-        "reason": "Pending source wiring: lamb cuts publish in the LMR lamb family (e.g., LM_XL552); slug to be wired."
+        "reason": "Pending source wiring: lamb cuts publish weekly on LM_XL552 (report 2650, imported product); cut column to confirm via --discover, then --flip."
       },
       {
         "key": "whole-branzino",
@@ -26535,7 +28260,7 @@
         "key": "ground-pork",
         "label_en": "ground-pork",
         "label_es": "ground-pork",
-        "reason": "Pending source wiring: pork trim (72%) is published inside the LMR pork-cutout/FOB family (LM_PK602); slug to be wired."
+        "reason": "Pending source wiring: pork trim (72%) on LM_PK602 (report 2498, Trimmings block); column/section to confirm via --discover, then --flip."
       },
       {
         "key": "whole-turkey",
