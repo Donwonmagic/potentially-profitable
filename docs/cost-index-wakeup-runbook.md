@@ -55,6 +55,7 @@ node scripts/build-cost-index-pages.mjs
 node scripts/build-ingredient-yield-pages.mjs
 node scripts/sync-includes.mjs && node scripts/inject-lazy-script-loader.mjs && node scripts/build-sitemap.mjs
 node scripts/inject-site-counts.mjs
+node scripts/inject-cost-index-dataset-date.mjs        # re-stamp Dataset dateModified after the hub regen (gated)
 node scripts/inject-glossary-verified-stamp.mjs && node scripts/inject-glossary-article-schema.mjs
 
 # (e) Gate + bank
