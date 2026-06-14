@@ -28300,6 +28300,304 @@
       ]
     },
     {
+      "key": "short-rib",
+      "label_en": "Short rib",
+      "label_es": "Costilla corta de res",
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "assessment": {
+        "asOf": "2026-06-12",
+        "level": {
+          "basis": "wholesale",
+          "medianCents": 610,
+          "rangeCents": [
+            599,
+            621
+          ],
+          "rangeBasis": "volatility",
+          "typeDispersion": 0,
+          "nObs": 1,
+          "nFamilies": 1,
+          "nSources": 1,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "usda-lmr",
+              "type": "usda-lmr",
+              "valueCents": 610,
+              "date": "2026-06-12"
+            }
+          ]
+        },
+        "trend": {
+          "pct": 0.030405405405405407,
+          "dir": "up",
+          "agreement": 1,
+          "nSources": 2,
+          "nFamilies": 2,
+          "nTypes": 2,
+          "noise": 0.0138
+        },
+        "confidence": "medium",
+        "label": "About $5.99–$6.21 (wholesale reference, single market — band from recent volatility), up +4.1% over the window. 1+ source(s) for level, 2 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "usda-lmr",
+            "type": "usda-lmr",
+            "valueCents": 610,
+            "date": "2026-06-12"
+          },
+          {
+            "kind": "trend",
+            "source": "usda-lmr",
+            "type": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-05-07",
+            "valueCents": 592,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-08",
+            "valueCents": 598,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-11",
+            "valueCents": 603,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-12",
+            "valueCents": 613,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-13",
+            "valueCents": 581,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-14",
+            "valueCents": 590,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-15",
+            "valueCents": 579,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-18",
+            "valueCents": 615,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-19",
+            "valueCents": 597,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-20",
+            "valueCents": 613,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-21",
+            "valueCents": 594,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-22",
+            "valueCents": 593,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-26",
+            "valueCents": 627,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-27",
+            "valueCents": 600,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-28",
+            "valueCents": 596,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-05-29",
+            "valueCents": 585,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-01",
+            "valueCents": 608,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-02",
+            "valueCents": 620,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-03",
+            "valueCents": 601,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-04",
+            "valueCents": 590,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-05",
+            "valueCents": 601,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-08",
+            "valueCents": 607,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-09",
+            "valueCents": 629,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-10",
+            "valueCents": 614,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-11",
+            "valueCents": 601,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-06-12",
+            "valueCents": 610,
+            "source": "usda-lmr",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "yieldSlug": "short-rib",
+      "flag": {
+        "verdict": "flat",
+        "actionBias": "hold",
+        "reason": "within the normal range",
+        "move": 0.021775544388609715,
+        "retrace": 0,
+        "elevatedWeeks": 0,
+        "nHistory": 26
+      },
+      "tier": "measured",
+      "yield": 0.65,
+      "epCents": 938,
+      "spark": [
+        592,
+        598,
+        603,
+        613,
+        581,
+        590,
+        579,
+        615,
+        597,
+        613,
+        594,
+        593,
+        627,
+        600,
+        596,
+        585,
+        608,
+        620,
+        601,
+        590,
+        601,
+        607,
+        629,
+        614,
+        601,
+        610
+      ],
+      "spark_meta": {
+        "basis": "wholesale",
+        "source": "usda-lmr",
+        "from": "2026-05-07",
+        "to": "2026-06-12",
+        "n": 26
+      },
+      "spark_dates": [
+        "2026-05-07",
+        "2026-05-08",
+        "2026-05-11",
+        "2026-05-12",
+        "2026-05-13",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-28",
+        "2026-05-29",
+        "2026-06-01",
+        "2026-06-02",
+        "2026-06-03",
+        "2026-06-04",
+        "2026-06-05",
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12"
+      ]
+    },
+    {
       "key": "ground-beef",
       "label_en": "Ground beef",
       "label_es": "Carne molida de res",
