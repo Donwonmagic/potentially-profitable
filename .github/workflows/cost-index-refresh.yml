@@ -90,6 +90,12 @@ jobs:
           # Rebuild the browser seed (data/cost-index.js) so Cost Pulse / the
           # client read the fresh numbers — not just the server-rendered pages.
           node scripts/build-cost-index-seed.mjs
+          # Regenerate the coverage/health matrix + seasonal baseline — both are
+          # pure functions of the freshly vendored data/cost-index.json and are
+          # --check-gated in CI, so they must be rewritten here or the next PR
+          # trips the stale gate.
+          node scripts/build-cost-index-health.mjs
+          node scripts/build-seasonality.mjs
           # Re-render hub / per-ingredient / lab pages.
           node scripts/build-cost-index-pages.mjs
           # Re-render the ingredient-yield library pages — their market-read block
@@ -104,6 +110,10 @@ jobs:
           # refresh the sitemap (both required after any page generation).
           node scripts/inject-lazy-script-loader.mjs
           node scripts/build-sitemap.mjs
+          # Stamp the seed's generatedAt into the Dataset / DataCatalog JSON-LD
+          # dateModified (methodology EN+ES + hub) so the machine-readable
+          # freshness signal tracks each daily read. In place, idempotent.
+          node scripts/inject-cost-index-dataset-date.mjs
 
       - name: Fact + calibration gates
         if: steps.keys.outputs.configured == 'true'

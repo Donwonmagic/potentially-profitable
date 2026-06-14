@@ -25,6 +25,7 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { pointIssues, historyIssues, driverIssues } from './check-cost-index-sync.mjs';
 import { ingredientTier } from './check-source-tier.mjs';
+import { calibrationCeiling, RANK, NAME } from './check-cost-index-calibration.mjs';
 
 const require = createRequire(import.meta.url);
 const B = require('../tools/_shared/cost-basket.js');
@@ -158,6 +159,22 @@ function main() {
     out.ingredients[k].flag = Spike.classify(fromHistory);
   }
 
+  // Confidence honesty — cap every vendored point's confidence at the calibration
+  // ceiling its data actually supports (independent source TYPES + weeks of track
+  // record + trend stability), using check-cost-index-calibration's OWN function so
+  // build and gate cannot drift. The engine's confidenceFor() can't see the
+  // vendored track-record length (it runs pre-vendor), so a thin-but-fresh read like
+  // a just-started ingredient could claim 'low' when only 'directional' is earned.
+  // This is the floor, never a substitute for adding sources/history to raise it.
+  for (const k of Object.keys(out.ingredients)) {
+    const hist = Array.isArray(out.ingredients[k].history) ? out.ingredients[k].history : [];
+    for (const p of out.ingredients[k].points || []) {
+      if (!p || !p.confidence || RANK[p.confidence] == null) continue;
+      const ceil = calibrationCeiling(p, hist);
+      if (RANK[p.confidence] > ceil) p.confidence = NAME[ceil];
+    }
+  }
+
   // Coverage tier (D1) — label every vendored card measured/derived with the SAME
   // rule check-source-tier.mjs enforces, and publish the `absent` gaps with their
   // reasons so the UI can render "no public data — here's why" instead of a blank.
@@ -175,6 +192,25 @@ function main() {
     else gaps.push({ ingredient: slug, reason: (e && e.coverage) || '' });
   }
   out.coverage = { measured: nMeasured, derived: nDerived, absent: gaps.length, gaps };
+
+  // Yield-adjusted true plate cost (the #1 operator-value lever) — EP cost =
+  // AP wholesale ÷ representative trim yield (data/ingredient-yields.json). A
+  // labeled ESTIMATE beside the measured wholesale level (yields are ranges; the
+  // operator's own yield governs), never a replacement. Only where a level exists.
+  let yieldMap = {};
+  try {
+    yieldMap = Object.fromEntries(rd(path.join(repoRoot, 'data/ingredient-yields.json'))
+      .filter((r) => r && r.slug && typeof r.yield === 'number' && r.yield > 0)
+      .map((r) => [r.slug, r.yield]));
+  } catch { /* no yield table → skip plate-cost */ }
+  for (const k of Object.keys(out.ingredients)) {
+    const y = yieldMap[k];
+    const lvl = ((out.ingredients[k].points || [])[0] || {}).level;
+    if (y && lvl && typeof lvl.medianCents === 'number') {
+      out.ingredients[k].yield = y;
+      out.ingredients[k].epCents = Math.round(lvl.medianCents / y);
+    }
+  }
 
   // Drivers (corn/soybeans/diesel/electricity): the explanatory "why" layer.
   // Gated for trend + citeable index history + leads that name known ingredients

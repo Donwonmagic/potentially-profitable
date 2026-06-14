@@ -371,13 +371,31 @@ const CHECKS = [
   ['Cost-index freshness self-test','check-cost-index-freshness.mjs','--self-test'],
   ['Cost-index health (idem)','build-cost-index-health.mjs','--check'],
   ['Cost-index health self-test','build-cost-index-health.mjs','--self-test'],
+  // Seasonal baseline (D3) — a month earns a "typical" normal only once observed
+  // across 2+ years; until then every ingredient sits in a transparent `building`
+  // state. Pure function of the vendored history, so --check pins it in sync.
+  ['Cost-index seasonality (idem)','build-seasonality.mjs','--check'],
+  ['Cost-index seasonality self-test','build-seasonality.mjs','--self-test'],
+  // Seasonality education (S2) — sourced bilingual primers per card. Enforces the
+  // USDA-sourced posture: every entry carries a citation + EN/ES + a real key.
+  ['Cost-index seasonality education','check-seasonality-education.mjs'],
+  ['Cost-index seasonality education self-test','check-seasonality-education.mjs','--self-test'],
   // Shippable bar — below-bar ingredients must stay out of the browser seed
   // (no thin / no-level read on the dashboard; they live as expanding-coverage).
   ['Cost-index shippable bar','check-shippable-bar.mjs'],
+  // Dataset freshness — the JSON-LD dateModified on the methodology pages + hub
+  // catalog must equal the seed's generatedAt (machine-readable freshness, a
+  // top AI-citation factor). Stamped in place; --check pins it in sync.
+  ['Cost-index dataset date','inject-cost-index-dataset-date.mjs','--check'],
   // Pressure honesty — the inferred outlook can't carry a price, can't use a
   // banned verb, and its rendered direction must equal what the rules recompute.
   ['Cost-pressure honesty','check-pressure-honesty.mjs'],
   ['Cost-pressure sources (shape+readiness)','check-pressure-sources.mjs'],
+  // Pressure heartbeat — informational here (the overlay ages between weekly runs,
+  // so it must never block a PR); the weekly refresh runs it with --check to turn a
+  // persistent stall into a red (alerting) scheduled run.
+  ['Cost-pressure freshness (warn)','check-pressure-freshness.mjs'],
+  ['Cost-pressure freshness self-test','check-pressure-freshness.mjs','--self-test'],
   ['Security claims',      'check-security-claims.mjs'],
   ['Data promise rail',    'check-data-promise-rail.mjs'],
   ['Security locale parity','check-security-locale-parity.mjs'],

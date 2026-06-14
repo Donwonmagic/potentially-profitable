@@ -106,8 +106,30 @@ function buildHistory(outputs, capN = 26) {
   return primary.points.slice(-capN).map((p) => ({ date: p.date, valueCents: Math.round(p.value * 100), source: primary.source, basis: primary.basis }));
 }
 
+// Collapse a dated {date, valueCents} series to one point per ISO week (mean),
+// keeping the week's latest date — for the DEEP backfill store (a 12-year daily
+// LMR/AMS pull → ~weekly, so the file stays sane and seasonality buckets cleanly).
+// Same valueCents scale as buildHistory, so the deep history matches the live level.
+function weeklyDedup(hist) {
+  const byWk = new Map();
+  for (const h of hist || []) {
+    if (!h || !h.date || typeof h.valueCents !== 'number' || !isFinite(Date.parse(h.date))) continue;
+    const wk = Math.floor(Date.parse(h.date + 'T00:00:00Z') / (7 * 864e5));
+    const cur = byWk.get(wk);
+    if (!cur) byWk.set(wk, { date: h.date, sum: h.valueCents, n: 1 });
+    else { cur.sum += h.valueCents; cur.n++; if (h.date > cur.date) cur.date = h.date; }
+  }
+  return [...byWk.values()].map((b) => ({ date: b.date, valueCents: Math.round(b.sum / b.n) }))
+    .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
+}
+
 async function liveFetch(ingredient, m) {
   const out = { ams: [] };
+  // Deep-backfill window: when COST_INDEX_SERIES_DAYS is set (the --history-out
+  // path), it FLOORS each source's per-report fetch window so the API actually
+  // returns years, not the ~45–150d the spec uses for a normal vendor run.
+  const DEEP_DAYS = Number(process.env.COST_INDEX_SERIES_DAYS) || 0;
+  const win = (wd) => (DEEP_DAYS > (wd || 0) ? DEEP_DAYS : wd);
   if (m.fred && process.env.FRED_KEY) {
     // Fan out FRED series (e.g. a BLS-rehost trend + an independent IMF series)
     // in parallel; each settles on its own so one bad series_id drops only itself.
@@ -128,7 +150,10 @@ async function liveFetch(ingredient, m) {
     // so one market missing the commodity or one slow report drops only itself —
     // the others still contribute (the cardinal rule), without 8 sequential waits.
     const settled = await F.mapLimit(amsSpecs(m), F.AMS_CONCURRENCY,
-      (spec) => F.fetchAmsReport(spec.reportId, spec.section, auth, spec.windowDays).then((json) => ({ json, spec })));
+      (spec) => (DEEP_DAYS > (spec.windowDays || 0)
+        ? F.fetchAmsReportDeep(spec.reportId, spec.section, auth, DEEP_DAYS)   // backfill: stitch 150-day windows (MARS caps a single window)
+        : F.fetchAmsReport(spec.reportId, spec.section, auth, spec.windowDays)
+      ).then((json) => ({ json, spec })));
     settled.forEach((r) => { if (r.ok) out.ams.push(r.value); });
   }
   if (m.lmr) {
@@ -137,13 +162,13 @@ async function liveFetch(ingredient, m) {
     const lauth = process.env.LMR_KEY ? 'Basic ' + Buffer.from(process.env.LMR_KEY + ':').toString('base64') : undefined;
     out.lmr = [];
     const settled = await F.mapLimit(lmrSpecs(m), F.AMS_CONCURRENCY,
-      (spec) => F.fetchLmrReport(spec.reportId, spec.section, lauth, spec.windowDays, spec.dateField).then((json) => ({ json, spec })));
+      (spec) => F.fetchLmrReport(spec.reportId, spec.section, lauth, win(spec.windowDays), spec.dateField).then((json) => ({ json, spec })));
     settled.forEach((r) => { if (r.ok) out.lmr.push(r.value); });
   }
   if (m.noaa && typeof S.normalizeNoaaTrade === 'function') {
     // NOAA Fisheries import unit value (keyless). One trade dump, cached + reused
     // across species; normalizeNoaaTrade filters by commodity.
-    try { out.noaa = await F.fetchNoaaTrade({ years: m.noaa.years }); } catch (e) { /* skip; others contribute */ }
+    try { out.noaa = await F.fetchNoaaTrade({ years: DEEP_DAYS ? Math.max(m.noaa.years || 2, Math.ceil(DEEP_DAYS / 365)) : m.noaa.years }); } catch (e) { /* skip; others contribute */ }
   }
   if (m.eia && process.env.EIA_KEY) {
     // EIA v2 (electricity etc.) — needs EIA_KEY; an energy-direction index signal.
@@ -268,12 +293,18 @@ function fmt(point, ingredient) {
 async function main() {
   const arg = (k) => { const i = process.argv.indexOf(k); return i >= 0 ? process.argv[i + 1] : null; };
   const outFile = arg('--out');
-  const jsonMode = process.argv.includes('--json') || !!outFile;
+  // --history-out <file>: the DEEP backfill store. Run with a large window
+  // (COST_INDEX_SERIES_DAYS=4500 ≈ 12y) to fetch the full per-ingredient series;
+  // this writes data/cost-index-history.json (weekly, vendor-scale) which
+  // build-seasonality.mjs reads to activate the "vs. typical {month}" band early.
+  const historyOutFile = arg('--history-out');
+  const jsonMode = process.argv.includes('--json') || !!outFile || !!historyOutFile;
   const log = jsonMode ? () => {} : (...a) => console.log(...a);   // stay quiet in JSON mode
 
   log(`Cost Index orchestrator — ${LIVE ? 'LIVE' : 'DEMO (canned payloads)'} mode`);
   const ingredients = LIVE ? Object.keys(sourceMap) : Object.keys(FIXTURES);
   const artifact = { generatedAt: new Date().toISOString(), points: {} };
+  const deepHistory = {};   // --history-out: per-ingredient FULL weekly series (vendor-scale)
   let composed = 0, skipped = 0;
   for (const ing of ingredients) {
     const m = sourceMap[ing] || {};
@@ -295,6 +326,12 @@ async function main() {
     // history = the citeable curve behind it (gaps verbatim), if any.
     const history = buildHistory(point.kept);
     artifact.points[ing] = { asOf: point.result.asOf, ...point.result, ...(history.length ? { history } : {}) };
+    // Deep backfill store: the FULL (uncapped) primary series, weekly-deduped, on the
+    // exact vendor scale — so build-seasonality's normals are comparable to the live level.
+    if (historyOutFile) {
+      const deep = weeklyDedup(buildHistory(point.kept, Number.MAX_SAFE_INTEGER));
+      if (deep.length) deepHistory[ing] = deep;
+    }
     composed++;
   }
 
@@ -349,6 +386,24 @@ async function main() {
     const withHist = Object.values(artifact.points).filter((p) => Array.isArray(p.history) && p.history.length).length;
     log(`\n— ${composed} ingredient(s) composed (${withHist} with history), ${driversComposed} driver(s)${LIVE ? `, ${skipped} skipped (verified:false — confirm source ids first, pin #8)` : ''}.`);
     if (!LIVE) log('  Run with --live + FRED_KEY/BLS_KEY/AMS_KEY once source ids are verified to fetch real data.');
+  }
+
+  // --history-out: write the deep backfill store for the seasonal engine.
+  if (historyOutFile) {
+    if (LIVE && composed === 0) {
+      console.error(`Refusing to write ${historyOutFile}: 0 points composed (all sources failed?). Last-good store left intact.`);
+      process.exit(1);
+    }
+    const fs = await import('node:fs');
+    const keys = Object.keys(deepHistory);
+    const totalPts = keys.reduce((n, k) => n + deepHistory[k].length, 0);
+    const store = {
+      _doc: 'Deep backfill history for the Cost Index seasonal engine (scripts/build-seasonality.mjs). Per ingredient, the FULL weekly wholesale series on the SAME valueCents scale as data/cost-index.json (so seasonal normals are comparable to the live level). Written by fetch-cost-index-sources.mjs --history-out with a deep window (set COST_INDEX_SERIES_DAYS, e.g. 4500 ≈ 12y). Re-run to extend; build-seasonality uses the deep series wherever it is longer than the capped live history.',
+      generatedAt: artifact.generatedAt,
+      ingredients: deepHistory,
+    };
+    fs.writeFileSync(historyOutFile, JSON.stringify(store, null, 2) + '\n');
+    console.log(`Wrote deep history → ${historyOutFile}: ${keys.length} ingredient(s), ${totalPts} weekly point(s). Next: node scripts/build-seasonality.mjs && node scripts/check-all.mjs`);
   }
 }
 

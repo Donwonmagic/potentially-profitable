@@ -1,0 +1,1405 @@
+{
+  "_doc": "Per-ingredient seasonal baseline for the Cost Index, derived purely from the vendored history in data/cost-index.json by scripts/build-seasonality.mjs (CI runs --check). A month appears under `months` only once observed across 2+ distinct years; `ready` means enough established months to read a season. Until then `building` names what it waits for. The current-vs-normal delta is computed by the consumer at render time so this file stays date-independent. Regenerate after every vendor.",
+  "generatedFrom": "2026-06-13",
+  "params": {
+    "minYearsPerMonth": 2,
+    "minEstablishedMonths": 6,
+    "weeksTarget": 78
+  },
+  "summary": {
+    "total": 82,
+    "ready": 4,
+    "building": 78
+  },
+  "ingredients": [
+    {
+      "key": "pork-loin",
+      "ready": true,
+      "weeks": 158,
+      "distinctYears": 4,
+      "distinctMonths": 12,
+      "establishedMonths": 12,
+      "progress": "building baseline — 158 of ~78 weeks · 4 of 2 years · 12 established month(s)",
+      "blocker": null,
+      "months": {
+        "10": {
+          "medianCents": 93,
+          "p25Cents": 90,
+          "p75Cents": 94,
+          "n": 14,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 84,
+          "p25Cents": 83,
+          "p75Cents": 88,
+          "n": 13,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 83,
+          "p25Cents": 82,
+          "p75Cents": 85,
+          "n": 14,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 84,
+          "p25Cents": 82,
+          "p75Cents": 86,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 87,
+          "p25Cents": 85,
+          "p75Cents": 89,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 89,
+          "p25Cents": 88,
+          "p75Cents": 91,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 90,
+          "p25Cents": 89,
+          "p75Cents": 93,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 92,
+          "p25Cents": 90,
+          "p75Cents": 100,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 96,
+          "p25Cents": 94,
+          "p75Cents": 99,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 99,
+          "p25Cents": 97,
+          "p75Cents": 100,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 97,
+          "p25Cents": 96,
+          "p75Cents": 98,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 97,
+          "p25Cents": 95,
+          "p75Cents": 98,
+          "n": 12,
+          "years": 3
+        }
+      }
+    },
+    {
+      "key": "pork-shoulder",
+      "ready": true,
+      "weeks": 158,
+      "distinctYears": 4,
+      "distinctMonths": 12,
+      "establishedMonths": 12,
+      "progress": "building baseline — 158 of ~78 weeks · 4 of 2 years · 12 established month(s)",
+      "blocker": null,
+      "months": {
+        "10": {
+          "medianCents": 112,
+          "p25Cents": 105,
+          "p75Cents": 116,
+          "n": 14,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 107,
+          "p25Cents": 106,
+          "p75Cents": 108,
+          "n": 13,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 110,
+          "p25Cents": 109,
+          "p75Cents": 111,
+          "n": 14,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 106,
+          "p25Cents": 103,
+          "p75Cents": 110,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 109,
+          "p25Cents": 105,
+          "p75Cents": 112,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 113,
+          "p25Cents": 110,
+          "p75Cents": 116,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 116,
+          "p25Cents": 110,
+          "p75Cents": 121,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 130,
+          "p25Cents": 129,
+          "p75Cents": 132,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 135,
+          "p25Cents": 129,
+          "p75Cents": 145,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 121,
+          "p25Cents": 115,
+          "p75Cents": 129,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 108,
+          "p25Cents": 107,
+          "p75Cents": 113,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 121,
+          "p25Cents": 107,
+          "p75Cents": 125,
+          "n": 12,
+          "years": 3
+        }
+      }
+    },
+    {
+      "key": "butter",
+      "ready": true,
+      "weeks": 157,
+      "distinctYears": 4,
+      "distinctMonths": 12,
+      "establishedMonths": 12,
+      "progress": "building baseline — 157 of ~78 weeks · 4 of 2 years · 12 established month(s)",
+      "blocker": null,
+      "months": {
+        "10": {
+          "medianCents": 284,
+          "p25Cents": 196,
+          "p75Cents": 308,
+          "n": 12,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 271,
+          "p25Cents": 171,
+          "p75Cents": 304,
+          "n": 14,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 262,
+          "p25Cents": 164,
+          "p75Cents": 268,
+          "n": 13,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 259,
+          "p25Cents": 149,
+          "p75Cents": 262,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 259,
+          "p25Cents": 163,
+          "p75Cents": 265,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 248,
+          "p25Cents": 200,
+          "p75Cents": 277,
+          "n": 14,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 234,
+          "p25Cents": 189,
+          "p75Cents": 286,
+          "n": 12,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 235,
+          "p25Cents": 175,
+          "p75Cents": 279,
+          "n": 14,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 248,
+          "p25Cents": 245,
+          "p75Cents": 305,
+          "n": 13,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 253,
+          "p25Cents": 244,
+          "p75Cents": 312,
+          "n": 13,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 260,
+          "p25Cents": 253,
+          "p75Cents": 311,
+          "n": 14,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 269,
+          "p25Cents": 244,
+          "p75Cents": 311,
+          "n": 13,
+          "years": 3
+        }
+      }
+    },
+    {
+      "key": "cheddar-cheese",
+      "ready": true,
+      "weeks": 157,
+      "distinctYears": 4,
+      "distinctMonths": 12,
+      "establishedMonths": 12,
+      "progress": "building baseline — 157 of ~78 weeks · 4 of 2 years · 12 established month(s)",
+      "blocker": null,
+      "months": {
+        "10": {
+          "medianCents": 191,
+          "p25Cents": 178,
+          "p75Cents": 223,
+          "n": 12,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 178,
+          "p25Cents": 177,
+          "p75Cents": 194,
+          "n": 14,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 170,
+          "p25Cents": 166,
+          "p75Cents": 178,
+          "n": 13,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 153,
+          "p25Cents": 144,
+          "p75Cents": 178,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 154,
+          "p25Cents": 142,
+          "p75Cents": 191,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 161,
+          "p25Cents": 157,
+          "p75Cents": 191,
+          "n": 14,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 162,
+          "p25Cents": 155,
+          "p75Cents": 171,
+          "n": 12,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 166,
+          "p25Cents": 165,
+          "p75Cents": 174,
+          "n": 14,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 188,
+          "p25Cents": 166,
+          "p75Cents": 192,
+          "n": 13,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 183,
+          "p25Cents": 150,
+          "p75Cents": 193,
+          "n": 13,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 174,
+          "p25Cents": 172,
+          "p75Cents": 194,
+          "n": 14,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 200,
+          "p25Cents": 184,
+          "p75Cents": 201,
+          "n": 13,
+          "years": 3
+        }
+      }
+    },
+    {
+      "key": "shrimp",
+      "ready": false,
+      "weeks": 10,
+      "distinctYears": 2,
+      "distinctMonths": 7,
+      "establishedMonths": 3,
+      "progress": "building baseline — 10 of ~78 weeks · 2 of 2 years · 3 established month(s)",
+      "blocker": "need 6 months proven across 2+ years (have 3)",
+      "months": {
+        "02": {
+          "medianCents": 355,
+          "p25Cents": 348,
+          "p75Cents": 362,
+          "n": 2,
+          "years": 2
+        },
+        "03": {
+          "medianCents": 369,
+          "p25Cents": 365,
+          "p75Cents": 374,
+          "n": 2,
+          "years": 2
+        },
+        "04": {
+          "medianCents": 374,
+          "p25Cents": 374,
+          "p75Cents": 375,
+          "n": 2,
+          "years": 2
+        }
+      }
+    },
+    {
+      "key": "shrimp-head-on",
+      "ready": false,
+      "weeks": 10,
+      "distinctYears": 2,
+      "distinctMonths": 7,
+      "establishedMonths": 3,
+      "progress": "building baseline — 10 of ~78 weeks · 2 of 2 years · 3 established month(s)",
+      "blocker": "need 6 months proven across 2+ years (have 3)",
+      "months": {
+        "02": {
+          "medianCents": 355,
+          "p25Cents": 348,
+          "p75Cents": 362,
+          "n": 2,
+          "years": 2
+        },
+        "03": {
+          "medianCents": 369,
+          "p25Cents": 365,
+          "p75Cents": 374,
+          "n": 2,
+          "years": 2
+        },
+        "04": {
+          "medianCents": 374,
+          "p25Cents": 374,
+          "p75Cents": 375,
+          "n": 2,
+          "years": 2
+        }
+      }
+    },
+    {
+      "key": "shrimp-pd",
+      "ready": false,
+      "weeks": 10,
+      "distinctYears": 2,
+      "distinctMonths": 7,
+      "establishedMonths": 3,
+      "progress": "building baseline — 10 of ~78 weeks · 2 of 2 years · 3 established month(s)",
+      "blocker": "need 6 months proven across 2+ years (have 3)",
+      "months": {
+        "02": {
+          "medianCents": 355,
+          "p25Cents": 348,
+          "p75Cents": 362,
+          "n": 2,
+          "years": 2
+        },
+        "03": {
+          "medianCents": 369,
+          "p25Cents": 365,
+          "p75Cents": 374,
+          "n": 2,
+          "years": 2
+        },
+        "04": {
+          "medianCents": 374,
+          "p25Cents": 374,
+          "p75Cents": 375,
+          "n": 2,
+          "years": 2
+        }
+      }
+    },
+    {
+      "key": "tuna-loin",
+      "ready": false,
+      "weeks": 10,
+      "distinctYears": 2,
+      "distinctMonths": 7,
+      "establishedMonths": 3,
+      "progress": "building baseline — 10 of ~78 weeks · 2 of 2 years · 3 established month(s)",
+      "blocker": "need 6 months proven across 2+ years (have 3)",
+      "months": {
+        "02": {
+          "medianCents": 550,
+          "p25Cents": 542,
+          "p75Cents": 558,
+          "n": 2,
+          "years": 2
+        },
+        "03": {
+          "medianCents": 542,
+          "p25Cents": 532,
+          "p75Cents": 551,
+          "n": 2,
+          "years": 2
+        },
+        "04": {
+          "medianCents": 817,
+          "p25Cents": 670,
+          "p75Cents": 965,
+          "n": 2,
+          "years": 2
+        }
+      }
+    },
+    {
+      "key": "whole-lobster",
+      "ready": false,
+      "weeks": 10,
+      "distinctYears": 2,
+      "distinctMonths": 7,
+      "establishedMonths": 3,
+      "progress": "building baseline — 10 of ~78 weeks · 2 of 2 years · 3 established month(s)",
+      "blocker": "need 6 months proven across 2+ years (have 3)",
+      "months": {
+        "02": {
+          "medianCents": 1250,
+          "p25Cents": 1246,
+          "p75Cents": 1255,
+          "n": 2,
+          "years": 2
+        },
+        "03": {
+          "medianCents": 1304,
+          "p25Cents": 1276,
+          "p75Cents": 1331,
+          "n": 2,
+          "years": 2
+        },
+        "04": {
+          "medianCents": 1063,
+          "p25Cents": 1050,
+          "p75Cents": 1077,
+          "n": 2,
+          "years": 2
+        }
+      }
+    },
+    {
+      "key": "whole-salmon",
+      "ready": false,
+      "weeks": 9,
+      "distinctYears": 2,
+      "distinctMonths": 6,
+      "establishedMonths": 3,
+      "progress": "building baseline — 9 of ~78 weeks · 2 of 2 years · 3 established month(s)",
+      "blocker": "need 6 months proven across 2+ years (have 3)",
+      "months": {
+        "02": {
+          "medianCents": 409,
+          "p25Cents": 399,
+          "p75Cents": 419,
+          "n": 2,
+          "years": 2
+        },
+        "03": {
+          "medianCents": 406,
+          "p25Cents": 404,
+          "p75Cents": 407,
+          "n": 2,
+          "years": 2
+        },
+        "04": {
+          "medianCents": 404,
+          "p25Cents": 403,
+          "p75Cents": 404,
+          "n": 2,
+          "years": 2
+        }
+      }
+    },
+    {
+      "key": "salmon-fillet",
+      "ready": false,
+      "weeks": 9,
+      "distinctYears": 2,
+      "distinctMonths": 7,
+      "establishedMonths": 2,
+      "progress": "building baseline — 9 of ~78 weeks · 2 of 2 years · 2 established month(s)",
+      "blocker": "need 6 months proven across 2+ years (have 2)",
+      "months": {
+        "02": {
+          "medianCents": 562,
+          "p25Cents": 543,
+          "p75Cents": 582,
+          "n": 2,
+          "years": 2
+        },
+        "03": {
+          "medianCents": 594,
+          "p25Cents": 575,
+          "p75Cents": 612,
+          "n": 2,
+          "years": 2
+        }
+      }
+    },
+    {
+      "key": "chicken-breast",
+      "ready": false,
+      "weeks": 17,
+      "distinctYears": 1,
+      "distinctMonths": 5,
+      "establishedMonths": 0,
+      "progress": "building baseline — 17 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "chicken-thigh",
+      "ready": false,
+      "weeks": 17,
+      "distinctYears": 1,
+      "distinctMonths": 5,
+      "establishedMonths": 0,
+      "progress": "building baseline — 17 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "whole-chicken",
+      "ready": false,
+      "weeks": 17,
+      "distinctYears": 1,
+      "distinctMonths": 5,
+      "establishedMonths": 0,
+      "progress": "building baseline — 17 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "eggs",
+      "ready": false,
+      "weeks": 8,
+      "distinctYears": 1,
+      "distinctMonths": 3,
+      "establishedMonths": 0,
+      "progress": "building baseline — 8 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "beef-tenderloin",
+      "ready": false,
+      "weeks": 7,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 7 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "acorn-squash",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "apple",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "artichoke",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "asparagus",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "avocado",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "banana",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "basil",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "beet",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "bell-pepper",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "blueberry",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "bok-choy",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "broccoli",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "brussels-sprouts",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "butter-lettuce",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "butternut-squash",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "button-mushroom",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "cabbage",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "carrot",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "cauliflower",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "celery",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "cherry-tomato",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "cilantro",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "collard-greens",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "corn-on-the-cob",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "cucumber",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "dill",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "eggplant",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "garlic",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "ginger",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "grapefruit",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "green-beans",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "green-leaf-lettuce",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "green-onion",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "iceberg-lettuce",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "jalapeno",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "kale",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "leek",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "lemon",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "lime",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "mint",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "onion",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "oregano",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "parsley",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "pear",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "pineapple",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "raspberry",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "red-leaf-lettuce",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "ribeye",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "romaine-lettuce",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "rosemary",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "russet-potato",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "rutabaga",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "short-rib",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "snow-peas",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "spinach",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "sweet-potato",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "tarragon",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "thyme",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "tomato",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "watermelon",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "yellow-squash",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "zucchini",
+      "ready": false,
+      "weeks": 6,
+      "distinctYears": 1,
+      "distinctMonths": 2,
+      "establishedMonths": 0,
+      "progress": "building baseline — 6 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "pork-belly",
+      "ready": false,
+      "weeks": 5,
+      "distinctYears": 1,
+      "distinctMonths": 5,
+      "establishedMonths": 0,
+      "progress": "building baseline — 5 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "vegetable-oil",
+      "ready": false,
+      "weeks": 5,
+      "distinctYears": 1,
+      "distinctMonths": 5,
+      "establishedMonths": 0,
+      "progress": "building baseline — 5 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    },
+    {
+      "key": "pumpkin",
+      "ready": false,
+      "weeks": 3,
+      "distinctYears": 2,
+      "distinctMonths": 3,
+      "establishedMonths": 0,
+      "progress": "building baseline — 3 of ~78 weeks · 2 of 2 years · 0 established month(s)",
+      "blocker": "need 6 months proven across 2+ years (have 0)",
+      "months": {}
+    },
+    {
+      "key": "ground-beef",
+      "ready": false,
+      "weeks": 1,
+      "distinctYears": 1,
+      "distinctMonths": 1,
+      "establishedMonths": 0,
+      "progress": "building baseline — 1 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "blocker": "need a second year of history to know a typical month (have 1)",
+      "months": {}
+    }
+  ]
+}

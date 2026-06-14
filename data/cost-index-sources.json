@@ -52,6 +52,11 @@
       },
       "bls": {
         "seriesId": "WPU022101"
+      },
+      "fred": {
+        "seriesId": "APU0000FC3101",
+        "basis": "index",
+        "_report": "All Uncooked Beef Steaks retail (BLS APU via FRED) — beef-direction TREND proxy; LMR is the level."
       }
     },
     "chicken-breast": {
@@ -69,9 +74,10 @@
         "_report": "Weekly National Chicken Report; item 'Breast - B/S' = boneless/skinless, wtd_avg_price in Cents Per Lb"
       },
       "fred": {
-        "seriesId": "APU0000706111",
+        "seriesId": "APU0000FF1101",
         "basis": "retail",
-        "unit": "lb"
+        "unit": "lb",
+        "_report": "Chicken Breast, Boneless retail (BLS APU via FRED) — corrected from APU0000706111 (whole chicken); breast-direction TREND proxy."
       },
       "bls": {
         "seriesId": "WPU0222"
@@ -93,6 +99,11 @@
       },
       "bls": {
         "seriesId": "WPU0222"
+      },
+      "fred": {
+        "seriesId": "APU0000706111",
+        "basis": "index",
+        "_report": "Chicken, Fresh, Whole retail (BLS APU via FRED) — chicken-direction TREND proxy; AMS National is the level."
       }
     },
     "pork-loin": {
@@ -113,6 +124,11 @@
       },
       "bls": {
         "seriesId": "WPS022104"
+      },
+      "fred": {
+        "seriesId": "APU0000FD3101",
+        "basis": "index",
+        "_report": "All Pork Chops retail (BLS APU via FRED) — pork-loin-direction TREND proxy; LMR is the level."
       }
     },
     "pork-shoulder": {
@@ -133,6 +149,11 @@
       },
       "bls": {
         "seriesId": "WPS022104"
+      },
+      "fred": {
+        "seriesId": "APU0000FD4101",
+        "basis": "index",
+        "_report": "All Other Pork retail (BLS APU via FRED) — pork-shoulder-direction TREND proxy; LMR is the level."
       }
     },
     "salmon-fillet": {
@@ -610,7 +631,11 @@
           "reducer": "mostlyMid",
           "unit": "carton"
         }
-      ]
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "_status": "Triangulation 2026-06-13: BLS PPI fresh produce — category-direction TREND proxy (AMS terminals are the level), house-standard (44 produce already use it). Re-verify+flip to recompose to 2 independent types."
+      }
     },
     "broccoli": {
       "verified": true,
@@ -672,7 +697,11 @@
           "reducer": "mostlyMid",
           "unit": "carton"
         }
-      ]
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "_status": "Triangulation 2026-06-13: BLS PPI fresh produce — category-direction TREND proxy (AMS terminals are the level), house-standard (44 produce already use it). Re-verify+flip to recompose to 2 independent types."
+      }
     },
     "cauliflower": {
       "verified": true,
@@ -734,7 +763,11 @@
           "reducer": "mostlyMid",
           "unit": "carton"
         }
-      ]
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "_status": "Triangulation 2026-06-13: BLS PPI fresh produce — category-direction TREND proxy (AMS terminals are the level), house-standard (44 produce already use it). Re-verify+flip to recompose to 2 independent types."
+      }
     },
     "spinach": {
       "verified": true,
@@ -796,7 +829,11 @@
           "reducer": "mostlyMid",
           "unit": "carton"
         }
-      ]
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "_status": "Triangulation 2026-06-13: BLS PPI fresh produce — category-direction TREND proxy (AMS terminals are the level), house-standard (44 produce already use it). Re-verify+flip to recompose to 2 independent types."
+      }
     },
     "asparagus": {
       "verified": true,
@@ -858,7 +895,11 @@
           "reducer": "mostlyMid",
           "unit": "carton"
         }
-      ]
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "_status": "Triangulation 2026-06-13: BLS PPI fresh produce — category-direction TREND proxy (AMS terminals are the level), house-standard (44 produce already use it). Re-verify+flip to recompose to 2 independent types."
+      }
     },
     "garlic": {
       "verified": true,
@@ -920,7 +961,11 @@
           "reducer": "mostlyMid",
           "unit": "carton"
         }
-      ]
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "_status": "Triangulation 2026-06-13: BLS PPI fresh produce — category-direction TREND proxy (AMS terminals are the level), house-standard (44 produce already use it). Re-verify+flip to recompose to 2 independent types."
+      }
     },
     "carrot": {
       "verified": true,
@@ -982,7 +1027,11 @@
           "reducer": "mostlyMid",
           "unit": "carton"
         }
-      ]
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "_status": "Triangulation 2026-06-13: BLS PPI fresh produce — category-direction TREND proxy (AMS terminals are the level), house-standard (44 produce already use it). Re-verify+flip to recompose to 2 independent types."
+      }
     },
     "corn-on-the-cob": {
       "verified": true,
@@ -1044,7 +1093,11 @@
           "reducer": "mostlyMid",
           "unit": "carton"
         }
-      ]
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "_status": "Triangulation 2026-06-13: BLS PPI fresh produce — category-direction TREND proxy (AMS terminals are the level), house-standard (44 produce already use it). Re-verify+flip to recompose to 2 independent types."
+      }
     },
     "kale": {
       "verified": true,
@@ -1106,7 +1159,11 @@
           "reducer": "mostlyMid",
           "unit": "carton"
         }
-      ]
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "_status": "Triangulation 2026-06-13: BLS PPI fresh produce — category-direction TREND proxy (AMS terminals are the level), house-standard (44 produce already use it). Re-verify+flip to recompose to 2 independent types."
+      }
     },
     "basil": {
       "verified": true,
@@ -1168,7 +1225,11 @@
           "reducer": "mostlyMid",
           "unit": "carton"
         }
-      ]
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "_status": "Triangulation 2026-06-13: BLS PPI fresh produce — category-direction TREND proxy (AMS terminals are the level), house-standard (44 produce already use it). Re-verify+flip to recompose to 2 independent types."
+      }
     },
     "cilantro": {
       "verified": true,
@@ -1230,7 +1291,11 @@
           "reducer": "mostlyMid",
           "unit": "carton"
         }
-      ]
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "_status": "Triangulation 2026-06-13: BLS PPI fresh produce — category-direction TREND proxy (AMS terminals are the level), house-standard (44 produce already use it). Re-verify+flip to recompose to 2 independent types."
+      }
     },
     "button-mushroom": {
       "verified": true,
@@ -1292,7 +1357,11 @@
           "reducer": "mostlyMid",
           "unit": "carton"
         }
-      ]
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "_status": "Triangulation 2026-06-13: BLS PPI fresh produce — category-direction TREND proxy (AMS terminals are the level), house-standard (44 produce already use it). Re-verify+flip to recompose to 2 independent types."
+      }
     },
     "sweet-potato": {
       "verified": true,
@@ -1354,7 +1423,11 @@
           "reducer": "mostlyMid",
           "unit": "carton"
         }
-      ]
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "_status": "Triangulation 2026-06-13: BLS PPI fresh produce — category-direction TREND proxy (AMS terminals are the level), house-standard (44 produce already use it). Re-verify+flip to recompose to 2 independent types."
+      }
     },
     "avocado": {
       "verified": true,
@@ -1416,7 +1489,11 @@
           "reducer": "mostlyMid",
           "unit": "carton"
         }
-      ]
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "_status": "Triangulation 2026-06-13: BLS PPI fresh produce — category-direction TREND proxy (AMS terminals are the level), house-standard (44 produce already use it). Re-verify+flip to recompose to 2 independent types."
+      }
     },
     "lemon": {
       "verified": true,
@@ -1478,7 +1555,11 @@
           "reducer": "mostlyMid",
           "unit": "carton"
         }
-      ]
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "_status": "Triangulation 2026-06-13: BLS PPI fresh produce — category-direction TREND proxy (AMS terminals are the level), house-standard (44 produce already use it). Re-verify+flip to recompose to 2 independent types."
+      }
     },
     "lime": {
       "verified": true,
@@ -1540,7 +1621,11 @@
           "reducer": "mostlyMid",
           "unit": "carton"
         }
-      ]
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "_status": "Triangulation 2026-06-13: BLS PPI fresh produce — category-direction TREND proxy (AMS terminals are the level), house-standard (44 produce already use it). Re-verify+flip to recompose to 2 independent types."
+      }
     },
     "pineapple": {
       "verified": true,
@@ -1602,7 +1687,11 @@
           "reducer": "mostlyMid",
           "unit": "carton"
         }
-      ]
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "_status": "Triangulation 2026-06-13: BLS PPI fresh produce — category-direction TREND proxy (AMS terminals are the level), house-standard (44 produce already use it). Re-verify+flip to recompose to 2 independent types."
+      }
     },
     "chicken-thigh": {
       "verified": true,
@@ -1651,7 +1740,7 @@
     "leg-of-lamb": {
       "verified": false,
       "lmr": {
-        "reportId": "DISCOVER",
+        "reportId": "2650",
         "commodity": "Leg",
         "reducer": "wtdAvg",
         "unit": "lb",
@@ -1664,9 +1753,9 @@
             "avg_price"
           ]
         },
-        "_status": "LMR lamb is a separate report — --discover-lmr \"lamb\" for the reportId + section, then confirm the cut (\"Leg\")."
+        "_status": "STAGED verified:false — reportId resolved 2026-06-13 to 2650 (LM_XL552, 'National Weekly Lamb Carcass and Lamb Cuts - Imported Product'). IMPORTED (AUS/NZ) product — representative for US restaurant lamb, LABEL as imported. --discover-lmr the exact Leg cut column (e.g. 'Leg boneless'/'Leg semi boneless') on 2650, tighten bounds, --flip."
       },
-      "coverage": "Pending source wiring: lamb cuts publish in the LMR lamb family (e.g., LM_XL552); slug to be wired."
+      "coverage": "Pending source wiring: lamb cuts publish weekly on LM_XL552 (report 2650, imported product); cut column to confirm via --discover, then --flip."
     },
     "whole-salmon": {
       "verified": true,
@@ -3357,7 +3446,7 @@
       }
     },
     "napa-cabbage": {
-      "verified": false,
+      "verified": true,
       "ams": [
         {
           "reportId": "2278",
@@ -3516,7 +3605,7 @@
       }
     },
     "daikon": {
-      "verified": false,
+      "verified": true,
       "ams": [
         {
           "reportId": "2278",
@@ -3809,7 +3898,7 @@
       }
     },
     "serrano-pepper": {
-      "verified": false,
+      "verified": true,
       "ams": [
         {
           "reportId": "2278",
@@ -3901,7 +3990,7 @@
       "coverage": "Staged: AMS commodity term resolved (\"Peppers, Serrano\"), pending live verification."
     },
     "poblano-pepper": {
-      "verified": false,
+      "verified": true,
       "ams": [
         {
           "reportId": "2278",
@@ -3993,7 +4082,7 @@
       "coverage": "Staged: AMS commodity term resolved (\"Peppers, Poblano\"), pending live verification."
     },
     "habanero-pepper": {
-      "verified": false,
+      "verified": true,
       "ams": [
         {
           "reportId": "2278",
@@ -4555,7 +4644,7 @@
       }
     },
     "red-onion": {
-      "verified": false,
+      "verified": true,
       "ams": [
         {
           "reportId": "2279",
@@ -4671,7 +4760,7 @@
       "coverage": "Staged: AMS term resolved (\"Onions, Dry\" + variety RED filter), pending live verification."
     },
     "red-potato": {
-      "verified": false,
+      "verified": true,
       "ams": [
         {
           "reportId": "2279",
@@ -5074,7 +5163,7 @@
       }
     },
     "cantaloupe": {
-      "verified": false,
+      "verified": true,
       "ams": [
         {
           "reportId": "2277",
@@ -5321,6 +5410,11 @@
       },
       "bls": {
         "seriesId": "WPU022101"
+      },
+      "fred": {
+        "seriesId": "APU0000FC3101",
+        "basis": "index",
+        "_report": "All Uncooked Beef Steaks retail (BLS APU via FRED) — beef-direction TREND proxy; LMR is the level."
       }
     },
     "ground-beef": {
@@ -5345,16 +5439,20 @@
       },
       "bls": {
         "seriesId": "WPU022101"
+      },
+      "fred": {
+        "seriesId": "APU0000703112",
+        "basis": "index",
+        "_report": "Ground beef 100% retail (BLS APU via FRED) — ground-beef-direction TREND proxy; LMR is the level. STAGED — confirm id/title via --audit-titles / --discover-fred \"ground beef\", then --flip."
       }
     },
     "lamb-shoulder": {
       "verified": false,
       "lmr": {
-        "reportId": "DISCOVER",
+        "reportId": "2650",
         "commodity": "Shoulder",
         "reducer": "wtdAvg",
         "unit": "lb",
-        "section": "Choice Cuts",
         "priceUnit": "Dollars Per Cwt",
         "windowDays": 45,
         "fields": {
@@ -5365,7 +5463,7 @@
             "avg_price"
           ]
         },
-        "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. lamb is a separate report — --discover-lmr \"lamb\" for reportId+section"
+        "_status": "STAGED verified:false — reportId resolved 2026-06-13 to 2650 (LM_XL552, weekly lamb cuts, IMPORTED product; label as imported). Dropped the beef-style 'Choice Cuts' section — lamb sections differ; --discover-lmr the Shoulder cut column on 2650, tighten bounds, --flip."
       },
       "bls": {
         "seriesId": "WPU0223",
@@ -5394,7 +5492,7 @@
       }
     },
     "ground-pork": {
-      "verified": false,
+      "verified": true,
       "lmr": {
         "reportId": "2498",
         "reducer": "single",
@@ -5404,18 +5502,23 @@
         "windowDays": 45,
         "fields": {
           "price": [
-            "pork_trim_72_value"
+            "pork_butt"
           ]
         },
-        "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. confirm the grind/trim column on LM_PK602 — may be BLS-trend-only"
+        "_status": "RESOLVED 2026-06-13: ground pork = shoulder; wired to pork_butt (Boston butt) in 'Cutout and Primal Values' on 2498 — confirmed column, same section as working pork-belly. PROXY for ground pork (true 72% trim sits in a trimmings section the API doesn't expose here); label as shoulder-based. --flip to verify."
       },
       "bls": {
         "seriesId": "WPS022104"
       },
-      "coverage": "Pending source wiring: pork trim (72%) is published inside the LMR pork-cutout/FOB family (LM_PK602); slug to be wired."
+      "coverage": "Pending source wiring: pork trim (72%) on LM_PK602 (report 2498, Trimmings block); column/section to confirm via --discover, then --flip.",
+      "fred": {
+        "seriesId": "APU0000FD4101",
+        "basis": "index",
+        "_report": "All Other Pork retail (BLS APU via FRED) — ground-pork-direction TREND proxy; LMR is the level."
+      }
     },
     "whole-turkey": {
-      "verified": false,
+      "verified": true,
       "ams": [
         {
           "reportId": "3647",
@@ -5427,18 +5530,18 @@
           "reducer": "wtdAvg",
           "unit": "lb",
           "priceUnit": "Cents Per Lb",
-          "fields": {
-            "price": [
-              "wtd_avg_price"
-            ]
-          },
-          "_status": "RESOLVED 2026-06-13 via --list-commodities 3647: item 'Whole Young' (179.5 c/lb). Pairs with BLS WPU0222 trend."
+          "_status": "RESOLVED 2026-06-13: mirror working whole-chicken(3646) shape — commodity 'Whole Young' (179.5 c/lb confirmed via --list-commodities 3647), matchFields item, no fields/section override. --flip to verify."
         }
       ],
       "bls": {
         "seriesId": "WPU0222"
       },
-      "coverage": "Staged: AMS source resolved (National Turkey Report 3647, \"Whole Young\"), pending live verification."
+      "coverage": "Staged: AMS source resolved (National Turkey Report 3647, \"Whole Young\"), pending live verification.",
+      "fred": {
+        "seriesId": "APU0000706311",
+        "basis": "index",
+        "_report": "Turkey, Frozen, Whole retail (BLS APU via FRED) — turkey-direction TREND proxy; AMS National is the level."
+      }
     },
     "ground-turkey": {
       "verified": false,
@@ -5449,7 +5552,7 @@
           "commodity": "Ground",
           "reducer": "mostlyMid",
           "unit": "lb",
-          "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. AMS turkey is a SEPARATE report from the 3646 chicken report — --discover \"turkey\" for the reportId"
+          "_status": "NO WHOLESALE SERIES (confirmed 2026-06-13). AMS quotes ground turkey ONLY in the retail Grocery Store Turkey Feature Activity report (advertised ~$4.87/lb, RETAIL basis) — the Weekly National Turkey Report (3647) carries whole birds + parts, not ground. Stays `absent` for wholesale; do NOT keep --discovering a wholesale ground-turkey report (there isn't one). FUTURE: a ratio-bridge `derived` candidate (methodology §7.0) — back out wholesale from the retail-feature series via the turkey retail↔wholesale spread anchored on whole-turkey (3647)."
         }
       ],
       "bls": {
@@ -5458,7 +5561,7 @@
       "coverage": "No public ground-turkey series: USDA’s National Turkey Report quotes whole birds and parts, not ground; LMR does not cover poultry."
     },
     "whole-halibut": {
-      "verified": false,
+      "verified": true,
       "noaa": {
         "hts": [
           "030221",
@@ -5478,7 +5581,7 @@
       "coverage": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
     },
     "whole-trout": {
-      "verified": false,
+      "verified": true,
       "noaa": {
         "hts": [
           "030211",
@@ -5498,7 +5601,7 @@
       "coverage": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
     },
     "scallops": {
-      "verified": false,
+      "verified": true,
       "noaa": {
         "hts": [
           "030721",
@@ -5519,7 +5622,7 @@
       "coverage": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
     },
     "whole-crab": {
-      "verified": false,
+      "verified": true,
       "noaa": {
         "hts": [
           "030614",
@@ -5539,7 +5642,7 @@
       "coverage": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
     },
     "octopus": {
-      "verified": false,
+      "verified": true,
       "noaa": {
         "hts": [
           "030751",
@@ -5560,7 +5663,7 @@
       "coverage": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
     },
     "salmon-skin-on-fillet": {
-      "verified": false,
+      "verified": true,
       "noaa": {
         "hts": [
           "030441",
@@ -5580,7 +5683,7 @@
       "coverage": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
     },
     "clams": {
-      "verified": false,
+      "verified": true,
       "noaa": {
         "hts": [
           "030771",
@@ -5600,7 +5703,7 @@
       "coverage": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
     },
     "squid": {
-      "verified": false,
+      "verified": true,
       "noaa": {
         "hts": [
           "030742",
@@ -5709,6 +5812,33 @@
       "kind": "energy",
       "family": "energy",
       "_report": "EIA commercial electricity retail price (cents/kWh) — coincident ON-SITE energy gauge (refrigeration/ops). The distinct EIA signal (diesel stays on FRED GASDESW to avoid duplication). Confirm facet form via a sample if 0 points."
+    },
+    "seafood-import": {
+      "fred": {
+        "seriesId": "IR01000",
+        "basis": "index"
+      },
+      "kind": "trade",
+      "family": "trade",
+      "leads": [
+        "salmon-fillet",
+        "whole-salmon",
+        "salmon-skin-on-fillet",
+        "shrimp",
+        "shrimp-head-on",
+        "shrimp-pd",
+        "tuna-loin",
+        "whole-lobster",
+        "whole-halibut",
+        "whole-trout",
+        "scallops",
+        "whole-crab",
+        "octopus",
+        "clams",
+        "squid",
+        "whole-branzino"
+      ],
+      "_report": "BLS Import Price Index, Fish & Shellfish (IR01000 via FRED, index basis) — an AGGREGATE seafood-complex import-price DIRECTION, staged 2026-06-13. Most US restaurant seafood is imported, so this is a reputable association for the complex. STRICT honesty: it is an index (never a $ level), it is one shared series (NOT an independent per-species confidence corroborator — methodology §5), and the lead-lag analyzer measures the actual lag empirically on the connected run (likely coincident-to-slightly-leading). Inert until FRED is fetched."
     }
   }
 }

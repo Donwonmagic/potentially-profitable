@@ -8,18 +8,18 @@
   "status": "preview",
   "asOf": "2026-06-08",
   "anchor": {
-    "chicken-breast": "2026-06-01",
-    "whole-chicken": "2026-06-01",
-    "ribeye": "2026-06-05",
-    "beef-tenderloin": "2026-06-05",
-    "pork-loin": "2026-06-05",
-    "pork-shoulder": "2026-06-05",
-    "romaine-lettuce": "2026-06-05",
-    "tomato": "2026-06-05",
-    "onion": "2026-06-05",
-    "russet-potato": "2026-06-05",
-    "butter": "2026-05-30",
-    "cheddar-cheese": "2026-05-30"
+    "chicken-breast": "2026-06-08",
+    "whole-chicken": "2026-06-08",
+    "ribeye": "2026-06-12",
+    "beef-tenderloin": "2026-06-12",
+    "pork-loin": "2026-06-12",
+    "pork-shoulder": "2026-06-12",
+    "romaine-lettuce": "2026-06-12",
+    "tomato": "2026-06-12",
+    "onion": "2026-06-12",
+    "russet-potato": "2026-06-12",
+    "butter": "2026-06-06",
+    "cheddar-cheese": "2026-06-06"
   },
   "observations": {
     "chicken-breast": {

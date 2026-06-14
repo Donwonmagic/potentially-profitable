@@ -47,8 +47,8 @@ const SELF_TEST = process.argv.includes('--self-test');
 // orchestrator confidences are reconciled — see the `onion` note above).
 const FAIL_ON_DRIFT = process.env.COST_INDEX_WARN_ONLY !== '1';   // strict by default; COST_INDEX_WARN_ONLY=1 → warn
 
-const RANK = { directional: 0, low: 1, medium: 2, high: 3 };
-const NAME = ['directional', 'low', 'medium', 'high'];
+export const RANK = { directional: 0, low: 1, medium: 2, high: 3 };
+export const NAME = ['directional', 'low', 'medium', 'high'];
 
 // Collapse a source id to its METHODOLOGY type. Terminals of one agency
 // (usda-ams-boston, …-chicago) collapse to a single type — they are correlated

@@ -34,10 +34,18 @@ on:
     # slower clock; this overlay refreshes weekly and tracks freshness_weeks since
     # the last measured print (auto-suppresses to "under review" past the decay floor).
     - cron: '0 11 * * 1'
+    # 1st of the month 12:00 UTC — monthly CALIBRATE pass. The continuous,
+    # monthly-cadence sources (open-meteo weather, FX, FOSS/SSB trade, ONI, EU-agri,
+    # the BLS/FRED proxies) are NOT in the weekly live nowcast — they refresh + get
+    # re-validated here. Calibrate "writes nothing to the repo", so this is a safe
+    # liveness + relationship heartbeat: it surfaces a source that stopped publishing
+    # and keeps the proven-edge set current. (See docs/cost-index-refresh-audit.md.)
+    - cron: '0 12 1 * *'
 
-# Scheduled runs have no inputs → default to 'live'. Dispatch honors the choice.
+# Scheduled runs have no inputs → the weekly cron runs 'live'; the monthly cron runs
+# 'calibrate'. Dispatch honors the explicit choice.
 env:
-  MODE: ${{ github.event.inputs.mode || 'live' }}
+  MODE: ${{ github.event.inputs.mode || (github.event.schedule == '0 12 1 * *' && 'calibrate' || 'live') }}
 
 permissions:
   contents: write   # the live mode commits the refreshed data + pages back
@@ -121,6 +129,9 @@ jobs:
           # compare + no-price/verb scan + source shape/readiness.
           node scripts/check-pressure-honesty.mjs
           node scripts/check-pressure-sources.mjs
+          # Heartbeat: AFTER the keyed live fetch, fail the scheduled run RED if the
+          # overlay is still stale (keys lapsed / every source down) — the alert.
+          node scripts/check-pressure-freshness.mjs --check
 
       - name: Commit scoped refresh
         if: env.MODE == 'live'

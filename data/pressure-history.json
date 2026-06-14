@@ -1,6 +1,6 @@
 {
   "_doc": "Pressure call track record — predicted direction vs the realized measured trend, scored once the next price prints. No price. Append-only, capped.",
-  "_version": "2026-Q2-1",
+  "_version": "2026-Q2-18",
   "items": {
     "chicken-breast": [
       {
@@ -8,7 +8,7 @@
         "anchor": "2026-06-01",
         "direction": "easing",
         "score": -5,
-        "realized": null
+        "realized": "down"
       }
     ],
     "whole-chicken": [
@@ -17,7 +17,7 @@
         "anchor": "2026-06-01",
         "direction": "easing",
         "score": -5,
-        "realized": null
+        "realized": "down"
       }
     ],
     "ribeye": [
@@ -26,7 +26,7 @@
         "anchor": "2026-06-05",
         "direction": "building",
         "score": 4,
-        "realized": null
+        "realized": "up"
       }
     ],
     "beef-tenderloin": [
@@ -35,7 +35,7 @@
         "anchor": "2026-06-05",
         "direction": "building",
         "score": 3,
-        "realized": null
+        "realized": "down"
       }
     ],
     "pork-loin": [
@@ -44,7 +44,7 @@
         "anchor": "2026-06-05",
         "direction": "easing",
         "score": -4,
-        "realized": null
+        "realized": "up"
       }
     ],
     "pork-shoulder": [
@@ -53,7 +53,7 @@
         "anchor": "2026-06-05",
         "direction": "easing",
         "score": -4,
-        "realized": null
+        "realized": "up"
       }
     ],
     "romaine-lettuce": [
@@ -62,7 +62,7 @@
         "anchor": "2026-06-05",
         "direction": "building",
         "score": 6,
-        "realized": null
+        "realized": "up"
       }
     ],
     "tomato": [
@@ -71,7 +71,7 @@
         "anchor": "2026-06-05",
         "direction": "steady",
         "score": -1,
-        "realized": null
+        "realized": "down"
       }
     ],
     "onion": [
@@ -80,7 +80,7 @@
         "anchor": "2026-06-05",
         "direction": "building",
         "score": 6,
-        "realized": null
+        "realized": "down"
       }
     ],
     "russet-potato": [
@@ -89,7 +89,7 @@
         "anchor": "2026-06-05",
         "direction": "easing",
         "score": -5,
-        "realized": null
+        "realized": "up"
       }
     ],
     "butter": [
@@ -98,7 +98,7 @@
         "anchor": "2026-05-30",
         "direction": "easing",
         "score": -4,
-        "realized": null
+        "realized": "down"
       }
     ],
     "cheddar-cheese": [
@@ -107,7 +107,7 @@
         "anchor": "2026-05-30",
         "direction": "building",
         "score": 5,
-        "realized": null
+        "realized": "up"
       }
     ]
   }

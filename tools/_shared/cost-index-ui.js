@@ -402,9 +402,20 @@
   }
 
   document.getElementById('cpMarketHeading').textContent = L("What the market's doing", 'Qué hace el mercado');
-  document.getElementById('cpMarketDek').textContent = L(
+  var dekEl = document.getElementById('cpMarketDek');
+  dekEl.textContent = L(
     'Wholesale and index signals for common ingredients, blended across public sources. Use it to tell a real market move from a vendor markup.',
     'Señales de mayoreo e índices para ingredientes comunes, combinadas de fuentes públicas. Úsalo para distinguir un movimiento real del mercado de un sobreprecio del proveedor.');
+
+  // Freshness trust line — the seed's top-level build date, surfaced verbatim so
+  // an operator (and an answer engine) sees how current the whole read is at a
+  // glance. Dynamic from the seed; never a hardcoded date. Sits under the dek.
+  if (DATA.generatedAt) {
+    var freshEl = el('p', 'cp-market-asof');
+    freshEl.appendChild(el('strong', null, L('Market data as of ', 'Datos de mercado al ')));
+    freshEl.appendChild(document.createTextNode(DATA.generatedAt));
+    dekEl.parentNode.insertBefore(freshEl, dekEl.nextSibling);
+  }
   if (DATA.status === 'preview') {
     var pv = document.getElementById('cpMarketPreview');
     pv.hidden = false;
@@ -556,17 +567,70 @@
       confPhrase + ' ' + metaText + '.');
 
     var head = el('div', 'cp-market-head');
-    head.appendChild(el('span', 'cp-market-name', name));
+    // Real heading: each ingredient name is an <h3> nesting under the section's
+    // <h2> (#cpMarketHeading), so the card grid has a proper outline + SR landmark
+    // nav. Safe re: the h2-anchor-id gate — that gate only scans static <h2> in
+    // blog/glossary/learn, never these JS-built tool cards.
+    head.appendChild(el('h3', 'cp-market-name', name));
     var chip = el('span', 'cp-conf', conf);
     chip.setAttribute('data-level', r.confidence);
     chip.setAttribute('aria-label', confPhrase);   // chip shows the short word; SR hears what it means
     var headRight = el('span', 'cp-head-right');
+    // Coverage-tier badge — the honesty label: a `measured` card is a published
+    // USDA wholesale price taken as-is; `derived` is an estimate with no measured
+    // level. Tells the operator how much to trust the number at a glance.
+    if (ing.tier) {
+      var tierBadge = el('span', 'cp-tier', ({ measured: L('measured', 'medido'), derived: L('estimate', 'estim.'), absent: L('no data', 'sin datos') })[ing.tier] || ing.tier);
+      tierBadge.setAttribute('data-tier', ing.tier);
+      tierBadge.setAttribute('title', ing.tier === 'measured'
+        ? L('A published USDA wholesale price, taken as-is.', 'Un precio mayorista publicado del USDA, tal cual.')
+        : L('An estimate from public indicators — no measured price level.', 'Una estimación de indicadores públicos — sin nivel de precio medido.'));
+      headRight.appendChild(tierBadge);
+    }
     headRight.appendChild(chip);
     if (ing.key) headRight.appendChild(trackButton(ing.key));
     head.appendChild(headRight);
     fig.appendChild(head);
 
     fig.appendChild(el('p', 'cp-market-range', rangeText));
+
+    // The liftable verdict — the single most quotable line the index emits, and
+    // the wedge no incumbent fills: a plain "are you overpaying?" test stated
+    // against the PUBLIC band, before the operator types anything. Promotes the
+    // per-card basis machinery (renderYou/updateYouSummary) from buried-input to
+    // a headline. Only minted when a real MEASURED dollar range exists (a true
+    // p25–p75, not a one-source point, not an index) — every number is read from
+    // lvl.rangeCents, so it stays inside the fact gate (no invented figures).
+    if (lvl && !single && ing.tier === 'measured') {
+      var loTxt = money(lvl.rangeCents[0]);
+      var hiTxt = money(lvl.rangeCents[1]);
+      var basisEl = el('p', 'cp-market-basis');
+      basisEl.appendChild(el('strong', null, L('Public wholesale: ', 'Mayoreo público: ')
+        + loTxt + '–' + hiTxt + L(' a ', ' por ') + unit + '. '));
+      basisEl.appendChild(document.createTextNode(L('If your invoice is ', 'Si tu factura está ')));
+      var aboveTest = el('span', 'cp-basis-test',
+        L('above ' + hiTxt, 'arriba de ' + hiTxt));
+      basisEl.appendChild(aboveTest);
+      basisEl.appendChild(document.createTextNode(L(", you're paying over market.", ', estás pagando por encima del mercado.')));
+      fig.appendChild(basisEl);
+      var basisAlt = L('Public wholesale runs ' + loTxt + ' to ' + hiTxt + ' a ' + unit + '. If your invoice is above ' + hiTxt + ', you are paying over market.',
+                       'El mayoreo público va de ' + loTxt + ' a ' + hiTxt + ' por ' + unit + '. Si tu factura está arriba de ' + hiTxt + ', estás pagando por encima del mercado.');
+      fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + basisAlt);
+    }
+
+    // Yield-adjusted TRUE plate cost — the wholesale level converted to cost per
+    // USABLE unit (illustrative trim yield; the operator's own yield governs). The
+    // number no public index shows: what the trim actually costs you.
+    if (ing.epCents && ing.yield && lvl) {
+      var yPct = Math.round(ing.yield * 100);
+      var plateTxt = L('True cost ≈ ' + money(ing.epCents) + ' per usable ' + unit + ' (' + yPct + '% trim yield)',
+                       'Costo real ≈ ' + money(ing.epCents) + ' por ' + unit + ' utilizable (rendimiento ' + yPct + '%)');
+      var plateEl = el('p', 'cp-market-plate', plateTxt);
+      plateEl.setAttribute('title', L('Wholesale price ÷ typical trim yield = true cost per usable unit. Your own yield governs.',
+                                      'Precio mayorista ÷ rendimiento típico = costo real por unidad utilizable. Tu propio rendimiento manda.'));
+      fig.appendChild(plateEl);
+      fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + plateTxt + '.');
+    }
     var tEl = el('p', 'cp-market-trend', (r.trend.dir === 'up' ? '▲ ' : r.trend.dir === 'down' ? '▼ ' : '● ') + trendText);
     tEl.setAttribute('data-dir', r.trend.dir);
     fig.appendChild(tEl);
@@ -656,10 +720,43 @@
       fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + citeTxt + '.');
     }
 
-    if (ing.seasonal) {
+    // Sourced seasonality primer (S2) supersedes the generic seasonal nudge.
+    if (ing.seasonEd && ing.seasonEd.note_en) {
+      var se = ing.seasonEd;
+      var seTxt = L('In season: ', 'En temporada: ') + L(se.peak_en, se.peak_es) + '. ' + L(se.note_en, se.note_es);
+      var seP = el('p', 'cp-market-seasonal', seTxt);
+      if (se.source) {
+        var seCite = el('span', 'cp-cite-src', ' (' + se.source + ')');
+        seP.appendChild(seCite);
+      }
+      fig.appendChild(seP);
+    } else if (ing.seasonal) {
       fig.appendChild(el('p', 'cp-market-seasonal',
         L('Looks seasonal — it may ease, so holding is often smarter than re-pricing.',
           'Parece de temporada — podría bajar, así que mantener suele ser mejor que subir el precio.')));
+    }
+
+    // S3 — measured seasonal read: where is today's level vs. OUR typical level for
+    // this calendar month? Only present for ingredients the engine marked `ready`
+    // (>=2yr per month); the normal + band come from the seed, the comparison is
+    // computed here against the live level (methodology §7 keeps the artifact pure).
+    if (ing.seasonalNormals && lvl && typeof lvl.medianCents === 'number') {
+      var nowMM = (new Date()).toISOString().slice(5, 7);
+      var norm = ing.seasonalNormals[nowMM];
+      if (norm && typeof norm.medianCents === 'number' && norm.medianCents > 0) {
+        var MONTHS_EN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        var MONTHS_ES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+        var mName = L(MONTHS_EN[parseInt(nowMM, 10) - 1], MONTHS_ES[parseInt(nowMM, 10) - 1]);
+        var dPct = Math.abs(Math.round((lvl.medianCents - norm.medianCents) / norm.medianCents * 100));
+        var aboveBand = typeof norm.p75Cents === 'number' && lvl.medianCents > norm.p75Cents;
+        var belowBand = typeof norm.p25Cents === 'number' && lvl.medianCents < norm.p25Cents;
+        var seasonalReadTxt = aboveBand
+          ? L('About ' + dPct + '% above the typical ' + mName + '.', 'Alrededor de ' + dPct + '% por encima del ' + mName + ' típico.')
+          : belowBand
+            ? L('About ' + dPct + '% below the typical ' + mName + '.', 'Alrededor de ' + dPct + '% por debajo del ' + mName + ' típico.')
+            : L('In line with the typical ' + mName + ' (within its usual range).', 'En línea con el ' + mName + ' típico (dentro de su rango habitual).');
+        fig.appendChild(el('p', 'cp-market-seasonal-read', seasonalReadTxt));
+      }
     }
 
     fig.appendChild(el('p', 'cp-market-meta', metaText));
@@ -752,6 +849,28 @@
 
     listEl.appendChild(fig);
   });
+
+  // Coverage honesty — the `absent` gaps, explained. Making "no public data, and
+  // here's the structural reason" a first-class, VISIBLE state is the trust play:
+  // we only show a price a public USDA series backs; everything else says why not.
+  if (DATA.coverage && DATA.coverage.gaps && DATA.coverage.gaps.length) {
+    var gaps = DATA.coverage.gaps;
+    var det = el('details', 'cp-coverage-gaps');
+    det.appendChild(el('summary', 'cp-coverage-summary',
+      L('Not yet covered (' + gaps.length + ') — and why', 'Aún sin cobertura (' + gaps.length + ') — y por qué')));
+    det.appendChild(el('p', 'cp-coverage-note',
+      L('We show a price only when a public USDA series backs it. These have no free wholesale source yet — listed so the gap is honest, not hidden.',
+        'Mostramos un precio solo cuando una serie pública del USDA lo respalda. Estos aún no tienen fuente mayorista gratuita — se listan para que la falta sea honesta, no oculta.')));
+    var ul = el('ul', 'cp-coverage-list');
+    gaps.forEach(function (g) {
+      var li = el('li', 'cp-coverage-item');
+      li.appendChild(el('span', 'cp-coverage-name', L(g.label_en, g.label_es)));
+      if (g.reason) li.appendChild(el('span', 'cp-coverage-reason', ' — ' + g.reason));
+      ul.appendChild(li);
+    });
+    det.appendChild(ul);
+    listEl.appendChild(det);
+  }
 
   // Scan-level orientation above the cards: lead with the gestalt, then detail.
   var ups = movers.filter(function (m) { return m.dir === 'up'; }).length;
@@ -859,6 +978,20 @@
   var method = el('details', 'cp-method');
   method.appendChild(el('summary', null, L('How we read the market', 'Cómo leemos el mercado')));
   var mp = el('div', 'cp-method-body');
+  // Lead with the liftable one-sentence definition + a glossary anchor, so a
+  // reader (and an answer engine) gets a clean, attributable "what this is"
+  // co-located with the data.
+  (function () {
+    var defP = el('p', 'cp-method-def');
+    defP.appendChild(document.createTextNode(L(
+      'A cost index is a read of where common ingredients are priced across public market sources — a typical range and a direction, never your delivered price. ',
+      'Un índice de costos es una lectura de dónde se ubican los precios de ingredientes comunes en fuentes públicas — un rango típico y una dirección, nunca tu precio entregado. ')));
+    var defA = el('a', null, L('What a cost index is', 'Qué es un índice de costos'));
+    defA.href = (es ? '/es' : '') + '/glossary/cost-index/';
+    defP.appendChild(defA);
+    defP.appendChild(document.createTextNode('.'));
+    mp.appendChild(defP);
+  })();
   [
     L('Range: the typical price across public sources — the middle half, p25 to p75. We never blend different price types (delivered, wholesale, an index) into one number.',
       'Rango: el precio típico entre fuentes públicas — la mitad central, p25 a p75. Nunca mezclamos tipos de precio distintos (entregado, mayoreo, índice) en un solo número.'),
@@ -869,6 +1002,16 @@
     L('Freshness: "As of" shows the oldest contributing date, not when we fetched. A stale source is dropped, never carried forward.',
       'Frescura: "Al" muestra la fecha más antigua que aporta, no cuándo consultamos. Una fuente vieja se descarta, nunca se arrastra.')
   ].forEach(function (txt) { mp.appendChild(el('p', null, txt)); });
+  // Prominent link to the full, dated, citable methodology — the surface's
+  // strongest trust + quotability asset. Travels with the card in any locale.
+  (function () {
+    var moreP = el('p', 'cp-method-more');
+    var moreA = el('a', null, L('Read the full methodology', 'Lee la metodología completa'));
+    moreA.href = (es ? '/es' : '') + '/cost-index/methodology/';
+    moreA.appendChild(document.createTextNode(' →'));
+    moreP.appendChild(moreA);
+    mp.appendChild(moreP);
+  })();
   method.appendChild(mp);
   card.insertBefore(method, document.getElementById('cpMarketCta'));
 

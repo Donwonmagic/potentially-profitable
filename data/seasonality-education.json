@@ -1,0 +1,14 @@
+{
+  "_doc": "Per-ingredient seasonality EDUCATION for the Cost Index (roadmap S2). Short, bilingual, SOURCED primers — 'when is this in season and why' — rendered as a Seasonality line on each Cost Pulse card by tools/_shared/cost-index-ui.js (joined into the seed by scripts/build-cost-index-seed.mjs). This is the education half of the seasonality track; it is independent of our own price history (the measured 'is this high for {month}?' read is build-seasonality.mjs). SOURCING POSTURE (operator decision, 2026-06-13): precise USDA-sourced windows. Every entry MUST carry a `source` citation (e.g. the USDA AMS Seasonal Produce Guide) — scripts/check-seasonality-education.mjs fails CI on a missing source, a missing EN/ES side, an unknown ingredient key, an over-long primer, or a banned word. Populate on a connected run where the USDA source is reachable to cite precisely; until then this stays empty and no card renders a seasonality line. Schema per key: { peak_en, peak_es, note_en, note_es, source }.",
+  "_schema_example": {
+    "asparagus": {
+      "peak_en": "Spring (example — replace with the USDA-sourced window)",
+      "peak_es": "Primavera (ejemplo — reemplazar con la ventana de USDA)",
+      "note_en": "One sentence on why the season runs when it does and what it means for price.",
+      "note_es": "Una frase sobre por qué la temporada ocurre cuando ocurre y qué significa para el precio.",
+      "source": "USDA AMS Seasonal Produce Guide"
+    },
+    "_note": "This _schema_example block is documentation only — keys beginning with _ are ignored by the build join and the gate. Real entries go in `education`."
+  },
+  "education": {}
+}

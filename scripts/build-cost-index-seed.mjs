@@ -49,6 +49,24 @@ const PRESSURE_ITEMS = (() => {
   try { return rd(path.join(repoRoot, 'data/cost-pressure.json')).items || {}; }
   catch { return {}; }
 })();
+// Per-card seasonality EDUCATION (roadmap S2) — sourced bilingual primers, gated by
+// check-seasonality-education.mjs. Empty until populated on a connected run.
+const SEASON_EDU = (() => {
+  try { return rd(path.join(repoRoot, 'data/seasonality-education.json')).education || {}; }
+  catch { return {}; }
+})();
+// Measured seasonal normals (roadmap S3) — per-month median/band from our own
+// history, but ONLY for ingredients the engine marked `ready` (>=2yr per month).
+// The UI computes the current-vs-normal delta at render time (methodology §7), so
+// only the normals ride along. Dormant until the corpus crosses the readiness bar.
+const SEASON_NORMALS = (() => {
+  try {
+    const rows = rd(path.join(repoRoot, 'data/seasonality.json')).ingredients || [];
+    const m = {};
+    for (const r of rows) if (r.ready && r.months && Object.keys(r.months).length) m[r.key] = r.months;
+    return m;
+  } catch { return {}; }
+})();
 // HOLD-UNTIL-PROVEN bar (shared with build-cost-index-pages via the rules manifest):
 // the overlay is published only once an item's live track record earns it.
 const PROVING = (() => {
@@ -93,6 +111,13 @@ function main() {
       assessment: newest,                            // already an assess()-shaped point
     };
     if (lab.seasonal) entry.seasonal = true;
+    // Sourced seasonality primer (S2) — supersedes the generic `seasonal` nudge in
+    // the UI when present. Only the rendered fields ride along.
+    const se = SEASON_EDU[key];
+    if (se && se.note_en && se.source) {
+      entry.seasonEd = { peak_en: se.peak_en, peak_es: se.peak_es, note_en: se.note_en, note_es: se.note_es, source: se.source };
+    }
+    if (SEASON_NORMALS[key]) entry.seasonalNormals = SEASON_NORMALS[key];   // S3: measured "vs typical {month}"
     if (YIELD_SLUGS.has(key)) entry.yieldSlug = key;   // deep-link target for the dashboard→leaf rail
     // The spike-vs-structural flag (verdict + actionBias) — a build-time, fact-gated
     // "story so far" the renderer turns into a buy/hold/watch suggestion.
@@ -101,6 +126,12 @@ function main() {
     // can tell a published wholesale price from an honest directional estimate.
     if (ingredientsObj[key].tier) entry.tier = ingredientsObj[key].tier;
     if (ingredientsObj[key].coverage) entry.coverage = ingredientsObj[key].coverage;
+    // Yield-adjusted true plate cost — the wholesale level converted to cost per
+    // EDIBLE pound (illustrative trim yield; the operator's own yield governs).
+    if (ingredientsObj[key].yield && ingredientsObj[key].epCents) {
+      entry.yield = ingredientsObj[key].yield;
+      entry.epCents = ingredientsObj[key].epCents;
+    }
     // Pressure overlay summary (inferred direction only — never a price). Trimmed
     // to the headline so the dashboard can show "where it's headed" honestly.
     // HOLD-UNTIL-PROVEN (matches build-cost-index-pages): the dashboard shows the

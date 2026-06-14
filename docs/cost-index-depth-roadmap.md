@@ -86,6 +86,84 @@ All confirmed free + public-domain unless noted.
 with key-as-username/blank-password (the auth we already use); root `/reports`
 returns the full catalog ToC; registered row limit 100k.
 
+### 3a. USDA ERS API products — triage (added 2026-06-13)
+
+ERS exposes a product-API set (this supersedes the "ERS API down" note below — the
+*data-product* APIs are live even while the Meat Price Spreads API was mid-redesign).
+Triaged against this index's actual job — **wholesale ingredient cost level +
+direction** — not everything USDA publishes earns a place:
+
+| ERS product | Fit | Verdict |
+|---|---|---|
+| **Food Dollar Series** | The farm-to-consumer cost split (farm share vs. the marketing bill: processing, transport, retail). *Explains why a wholesale tick ≠ a plate/retail move.* | **Take — as an education/context layer**, not a price. Annual, national, public-domain. Pairs with driver-attribution (§4 #5) and the per-card education theme. |
+| **ARMS** (farm financial / production practices) | Cost-of-production context (input costs, practices). Annual, aggregate, survey, lagging. | **Defer.** A weak, slow structural backdrop — not a price or a usable lead. Revisit only if a "cost-of-production pressure" driver is ever scoped. |
+| **Food Access Atlas** · **Food Environment Atlas** · **SNAP Data System** · **Farm Program Atlas** · **Atlas of Rural & Small-Town America** | Social / geographic / program data (access, assistance, county socioeconomics). | **Decline — out of scope.** None carries a wholesale ingredient price or a cost-driver signal; adding them is scope drift that dilutes the "every number earns its place" posture. The Food Environment Atlas has a *retail* price element, but retail≠wholesale and it's not a usable feed. |
+
+**Net:** one real add (**Food Dollar Series**, as context/education), one parked
+(ARMS), five declined. All staged for a **connected run** — this environment has
+no API keys and outbound is blocked (MARS/NASS/FRED all 403), so nothing here
+vendors until keys + network exist.
+
+### 3c. Non-typical source research (added 2026-06-13)
+
+Web research pass for *unconventional but reputable* public sources — aimed squarely
+at the gaps domestic wholesale data can't fill (import-heavy seafood/produce; honest
+direction where there's no level). Several need **no new credentials** (they ride the
+BLS / FRED / MARS auth we already hold). Re-verify series IDs + API shapes on a
+connected run before vendoring.
+
+| Source | What it adds | Basis / honest use | Access | Verdict |
+|---|---|---|---|---|
+| **BLS Import/Export Price Indexes (MXP)** — e.g. Fish & Shellfish `IR01000`, also vegetables/fruit end-use | Monthly import-price **direction** for import-dominated items — the missing *direction* corroborator for absent seafood | `index` (not $) → a **trend/corroboration** source, never a level (§5 bars index-as-level). Feeds the shippable bar's "single level + corroborated direction" path and the pressure overlay | **BLS API / FRED — keys we already use.** | **Take.** Highest value-for-effort: no new auth, directly attacks the seafood gap |
+| **USDA FAS GATS** (Census + UN ComTrade import/export value & volume) | **Import unit value** = customs value ÷ volume — a $/kg proxy for import-dominated ingredients (shrimp, branzino, off-season produce, garlic) | `derived` level only: customs value excludes duty/freight/importer margin and lags (monthly), so band it and label it — a sibling to the retail-spread method (§7). Can move select items `absent → derived` | FAS Open Data API key (new); Swagger + open-source SDK exist | **Take (derived).** The backdoor wholesale proxy for import items with no domestic series |
+| **USDA AMS Specialty Crops Movement reports** (shipments + border crossings + imports, by commodity) | **Volume** as a *leading* price indicator — high arrivals foreshadow softening | Not a price — a directional **pressure** input (§10), correlational and labeled | **My Market News / MARS API — auth we already use.** | **Take (pressure).** No new auth; turns volume into an honest forward read |
+| **NOAA Foreign Fishery Trade Data** | Seafood import value/volume — corroborates GATS for fish | Same `derived`/direction treatment as GATS | NOAA (public) | **Cross-check** for the seafood derived proxy |
+| **Census USA Trade Online** | Customs-value imports at HS-code granularity | Same as GATS (Census is the underlying source) | Free account / bulk | **Defer** — GATS already wraps Census; use only if finer HS detail is needed |
+
+**Net new methods this unlocks:** (1) an **import-price-index direction** corroborator
+that lets some absent seafood clear the shippable bar honestly; (2) an **import
+unit-value derived level** (§7 sibling) for import-dominated items; (3) a **movement/
+volume pressure** lead. Items 1 and 3 need *no new credentials*. All staged for a
+connected run — see the runbook.
+
+### 3d. Produce depth — the 2nd independent source (added 2026-06-13)
+
+The biggest *depth* (not coverage) gap: **60 shippable produce items are
+single-source** (USDA AMS *terminal-market* only), which is why they sit at `low`
+confidence. The honest 2nd source is AMS **shipping-point F.O.B.** prices — the
+**National FOB Review** (one MARS report covering many commodities; `mpr` /
+`fvdfob`), an origin price point genuinely independent of the terminal (destination)
+price. **Honesty constraint:** F.O.B. sits *below* terminal by freight, so it is a
+**direction corroborator, not a 2nd level** — averaging the two levels would mix
+bases; use F.O.B. to add an independent *trend* type (lifts trend confidence, the
+binding cap for most of these items, toward `medium`). Rides the MARS auth we
+already hold. Connected-run integration (the National FOB Review commodity terms map
+1:1 to our produce via `--discover`). This single add deepens ~60 ingredients —
+the highest depth-per-effort move left.
+
+### 3e. Per-ingredient signal map — the dominant relation for each item (added 2026-06-13)
+
+Generic produce-wide sourcing misses that each ingredient cluster has ONE dominant,
+mechanistically-tied signal. This is the "proper relation to each individual
+ingredient" layer — each passes the ratio-bridge mechanism guard (§7.0 / methodology
+§7.0), so none is a bare correlation. Treatments: *level* (or derived level),
+*direction corroborator*, or *pressure* (leading supply-shock).
+
+| Cluster | Ingredients | Dominant signal & source | Treatment / honesty |
+|---|---|---|---|
+| **Avian flu** | eggs, whole-turkey, whole-chicken, chicken-breast, chicken-thigh | **APHIS HPAI flock detections / layer culls** (1,700+ flocks since 2022; public). The dominant egg-price driver — culls → shortage → spike. | **Pressure** (leading supply-shock), not a price. Direction only, lag days→weeks; the recompute-honesty gate (§10) applies. Highest-value single add for eggs. |
+| **Import-dominated** | banana (~100% imp), avocado (~90%, 91% MX), lime (~95% MX), pineapple (CR), ginger, garlic (CN) | **FAS/Census import unit value** (customs value ÷ volume) — banana ≈ $0.24/lb, avocado ≈ $1.11/lb landed. | **Derived level** via the §7 import unit-value method; for ~100%-imported (banana) it is nearly the level itself. Banded, lagged, ratio-bridged to wholesale on the AMS overlap. |
+| **Desert-SW weather** | romaine, iceberg, butter/green-leaf/red-leaf lettuce, spinach, broccoli, cauliflower, celery | **NOAA weather, Yuma (winter) / Salinas (summer)** — Yuma grows ~90% of winter lettuce; a freeze took boxes ~$15 → $30–40 in early 2025. | **Pressure** (leading spike indicator) keyed to the active growing region by month. Direction only; mechanism strong, magnitude not modeled. |
+| **Winter-Mexican / greenhouse** | tomato, cherry-tomato, bell-pepper, cucumber, zucchini, yellow-squash, eggplant | **Mexican import share (FAS) + EIA natural gas** (greenhouse heating, winter) | Import unit value as a winter **direction corroborator**; nat gas as a **pressure** input. Both correlational, labeled. |
+| **Feed grain** *(done)* | chicken, pork, beef, eggs | corn / soybeans (BLS) — already wired as drivers | Leading, via the lead-lag analyzer (~10wk chicken → ~30mo beef). |
+
+**Net:** APHIS-HPAI is the biggest untapped per-ingredient signal (eggs/poultry);
+the import unit-value method, applied *per import-dominated item*, turns a thin
+single-source produce read into a mechanism-backed derived level; desert-SW weather
+gives leafy greens an honest leading spike indicator. All need a connected run +
+(for HPAI/weather) new normalizers — spec'd next. Each is mechanism-first, so each
+clears the §7.0 guard.
+
 ## 4. Actionability ladder (ranked by operator value ÷ effort)
 
 Order reflects the research consensus on value-to-effort for a solo builder:
@@ -152,6 +230,14 @@ risk). Four deliverables, sequenced so each unlocks the next.
 - Proves the "add a whole source family" pattern on the highest-grade feed.
 - **Acceptance:** butter/cheddar + ground-pork + lambs vendor from mandatory data,
   pass all gates, render `measured` with citation.
+- **Status (audited 2026-06-13): NDPSR dairy DONE.** butter + cheddar-cheese both
+  vendor `measured` from NDPSR (LMR Datamart report **2993**, `Butter_Price` /
+  `cheese_40_Price`, weekly, `verified:true`) with FRED corroboration —
+  butter ≈ $1.61/lb, cheddar ≈ $1.66/lb. Butter + cheddar are the only
+  restaurant-relevant NDPSR commodities (the rest are NFDM/whey/barrels), so the
+  dairy complex is complete. **Remaining D2 = the pork/lamb cuts**, not dairy:
+  ground-pork (LMR pork-trim 72%) + the lamb family (LM_XL552) — still `absent`,
+  pending spec wiring + a connected `--flip` (runbook §3).
 
 ### D3 — Seasonality baseline v1
 - `scripts/build-seasonality.mjs` computes a multi-year monthly normal per
@@ -159,6 +245,15 @@ risk). Four deliverables, sequenced so each unlocks the next.
   (`viz-spark`/`viz-bars` overlay), flagged `derived` with a confidence band.
 - **Acceptance:** ingredients with ≥2yr history show a seasonal band + plain read
   ("~12% above the June norm"); thin history degrades to "insufficient history."
+- **Status (2026-06-13): engine + gate shipped, dormant by design.**
+  `scripts/build-seasonality.mjs` → `data/seasonality.json` is live and pure
+  (`--check` idempotency + `--self-test`, both in `check-all` and the refresh
+  workflow). A month earns a normal only once observed across `minYearsPerMonth`
+  (2) distinct years; today's corpus is ~4 months (one partial year), so all 80
+  ingredients sit in a transparent `building` state that names its blocker — no
+  fake "typical June" off a single June. The artifact self-enriches weekly; the
+  remaining work is the **seed/UI render hook** (the "vs. typical {month}" band),
+  which lights up automatically once ingredients cross into `ready`.
 
 ### D4 (stretch) — Driver attribution v1
 - Wire one driver via NASS QuickStats (cold storage or corn) as a labeled "what's
@@ -169,11 +264,55 @@ risk). Four deliverables, sequenced so each unlocks the next.
 ### Quality throughline — public methodology page
 - A web-routable methodology page (the Urner-Barry move): how bounds, reducers,
   tiers, and sources work. The trust artifact that makes the index auditable.
-  Fold in alongside D1.
+- **Draft exists:** `docs/cost-index-methodology.md` — the internal canonical
+  methodology (PRA/UB-structured, transparency-first, grounded in the implemented
+  gates). It carries §7's retail↔wholesale-spread derived method and the source
+  register that gates publication.
+- **Sequencing (operator directive, 2026-06-13): WRITE THIS LAST.** The
+  methodology documents how the sources work, so it can't be honest or final
+  until source integration is *done*. Squeeze every viable public source into the
+  index first (§3 + §3a, the source-integration audit), settle the tier/bounds/
+  reducer per source, *then* write the methodology against the finished surface.
+  Drafting it earlier just guarantees a rewrite. Treat the source-expansion work
+  (§3/§3a/D2) as the prerequisite gate on this page.
 
 ### Parallel / prerequisite (in flight)
 - The ~80-ingredient refresh vendor + the NOAA seafood re-flip — both feed D3
   (more history → better seasonality).
+
+## 5b. Focused workstream — Seasonality (its own track)
+
+Seasonality outgrew a single Depth-I bullet (D3). It is a distinct capability with
+its own multi-phase arc, its own data layer, and its own honest-degradation story,
+so it gets a dedicated track. Two halves that ship independently:
+
+- **The measured read** (needs history): our own "is this high *for {month}*?"
+  normal + band, computed from vendored weekly history. Gated on 2+ years per
+  month — dormant until the corpus fills (see D3 status).
+- **The education** (ships now): a short, per-ingredient seasonality primer on
+  every card — *why* this item has a season and roughly when it runs — so a card
+  teaches the pattern long before we have the years of data to measure it. This is
+  the half a reader can use today; it does not depend on our price history.
+
+**Phases:**
+
+1. **S1 — Engine + gate** *(done, 2026-06-13)*. `build-seasonality.mjs` →
+   `data/seasonality.json`, pure + `--check` + self-test, in `check-all` and the
+   refresh chain. All ingredients currently `building` with a named blocker.
+2. **S2 — Per-card education** *(next; this is the operator-facing win today)*.
+   A curated, bilingual `data/seasonality-education.json` keyed by ingredient: a
+   peak window + a one-line "why," joined into the seed and rendered as a
+   *Seasonality* line on each card — replacing today's single generic
+   `seasonal:true` nudge (`cost-index-ui.js`) with something specific per item.
+   Its own gate (shape · key-existence · EN/ES parity · length · banned-words ·
+   self-test). **Sourcing posture is the open decision** (general-illustrative
+   vs. USDA-AMS-sourced precise windows) — see reply thread.
+3. **S3 — Render hook for the measured read.** Once an ingredient crosses to
+   `ready`, the card adds the "~X% above the typical {month}" band beneath the
+   education line. Engine already emits the normals; this is seed-join + UI only.
+4. **S4 — Seasonal alerts.** Ties into the backlog's *user-built baskets + alerts*
+   item: "your tracked item is entering its typical high season." Deferred with
+   that feature (needs the account/notification layer).
 
 ## 6. Risks & constraints
 
@@ -195,6 +334,12 @@ risk). Four deliverables, sequenced so each unlocks the next.
 - Substitution economics.
 - Regional spread (surface NY-vs-LA instead of a single midpoint).
 - IOSCO-style published methodology + an annual self-assurance note.
+- **User-built baskets + alerts** *(deferred — only after the depth plan above
+  is fully shipped).* Let an operator assemble their own basket of ingredients
+  to keep tabs on, and opt into alerts when a tracked item moves. Adds an
+  account/notification layer the static no-fetch surface doesn't have today —
+  scope the storage + delivery path (and whether it stays client-side) when it
+  comes up; until then it sits last in the queue.
 
 ## 8. Source notes / caveats
 
