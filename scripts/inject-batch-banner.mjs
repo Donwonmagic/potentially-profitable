@@ -64,6 +64,7 @@ function buildBanner(locale) {
   const headline = locale === 'es' ? batch.headline_es : batch.headline_en;
   const cta = locale === 'es' ? (batch.cta_es || 'Leer el lote') : (batch.cta_en || 'Read the batch');
   const href = locale === 'es' ? batch.overview_es : batch.overview_en;
+  const blurb = locale === 'es' ? batch.blurb_es : batch.blurb_en;
   const arrow = '&rarr;';
   // Banner is the first thing visible above the nav, so it has to read
   // as "something new shipped" within a second of first paint AND stay
@@ -103,9 +104,12 @@ function buildBanner(locale) {
     '<!-- batch-banner:start -->',
     `<aside class="batch-marquee" data-batch="${escAttr(batch.key)}" role="complementary" aria-label="${escAttr(label)}" style="background:${ground};color:#F6F7F8;font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(246,247,248,0.16);box-shadow:inset 0 1px 0 rgba(255,255,255,0.05)">`,
     `  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">`,
-    `    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;flex:1 1 auto">`,
-    `      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:${pillBg};color:${pillFg};padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">${escHtml(pillText)}</span>`,
-    `      <span style="font-family:'Fraunces',Georgia,'Times New Roman',serif;font-size:14px;font-style:italic;line-height:1.35;min-width:0;color:#F6F7F8">${escHtml(headline)}</span>`,
+    `    <div style="display:flex;flex-direction:column;gap:3px;min-width:0;flex:1 1 auto">`,
+    `      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0">`,
+    `        <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:${pillBg};color:${pillFg};padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">${escHtml(pillText)}</span>`,
+    `        <span style="font-family:'Fraunces',Georgia,'Times New Roman',serif;font-size:14px;font-style:italic;line-height:1.35;min-width:0;color:#F6F7F8">${escHtml(headline)}</span>`,
+    `      </div>`,
+    blurb ? `      <span style="font-family:Inter,system-ui,sans-serif;font-size:12px;line-height:1.4;color:rgba(246,247,248,0.74);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-width:0">${escHtml(blurb)}</span>` : '',
     `    </div>`,
     `    <a href="${escAttr(href)}" style="display:inline-flex;align-items:center;gap:6px;color:${ctaFg};background:${ctaBg};text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:13px;padding:6px 14px;border-radius:999px;white-space:nowrap;flex-shrink:0;box-shadow:0 1px 2px rgba(0,0,0,0.18);transition:transform .15s ease,box-shadow .15s ease">${escHtml(cta)} <span aria-hidden="true">${arrow}</span></a>`,
     `  </div>`,
