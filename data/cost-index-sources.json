@@ -52,6 +52,11 @@
       },
       "bls": {
         "seriesId": "WPU022101"
+      },
+      "fred": {
+        "seriesId": "APU0000FC3101",
+        "basis": "index",
+        "_report": "All Uncooked Beef Steaks retail (BLS APU via FRED) — beef-direction TREND proxy; LMR is the level."
       }
     },
     "chicken-breast": {
@@ -69,9 +74,10 @@
         "_report": "Weekly National Chicken Report; item 'Breast - B/S' = boneless/skinless, wtd_avg_price in Cents Per Lb"
       },
       "fred": {
-        "seriesId": "APU0000706111",
+        "seriesId": "APU0000FF1101",
         "basis": "retail",
-        "unit": "lb"
+        "unit": "lb",
+        "_report": "Chicken Breast, Boneless retail (BLS APU via FRED) — corrected from APU0000706111 (whole chicken); breast-direction TREND proxy."
       },
       "bls": {
         "seriesId": "WPU0222"
@@ -93,6 +99,11 @@
       },
       "bls": {
         "seriesId": "WPU0222"
+      },
+      "fred": {
+        "seriesId": "APU0000706111",
+        "basis": "index",
+        "_report": "Chicken, Fresh, Whole retail (BLS APU via FRED) — chicken-direction TREND proxy; AMS National is the level."
       }
     },
     "pork-loin": {
@@ -113,6 +124,11 @@
       },
       "bls": {
         "seriesId": "WPS022104"
+      },
+      "fred": {
+        "seriesId": "APU0000FD3101",
+        "basis": "index",
+        "_report": "All Pork Chops retail (BLS APU via FRED) — pork-loin-direction TREND proxy; LMR is the level."
       }
     },
     "pork-shoulder": {
@@ -133,6 +149,11 @@
       },
       "bls": {
         "seriesId": "WPS022104"
+      },
+      "fred": {
+        "seriesId": "APU0000FD4101",
+        "basis": "index",
+        "_report": "All Other Pork retail (BLS APU via FRED) — pork-shoulder-direction TREND proxy; LMR is the level."
       }
     },
     "salmon-fillet": {
@@ -5389,6 +5410,11 @@
       },
       "bls": {
         "seriesId": "WPU022101"
+      },
+      "fred": {
+        "seriesId": "APU0000FC3101",
+        "basis": "index",
+        "_report": "All Uncooked Beef Steaks retail (BLS APU via FRED) — beef-direction TREND proxy; LMR is the level."
       }
     },
     "ground-beef": {
@@ -5484,7 +5510,12 @@
       "bls": {
         "seriesId": "WPS022104"
       },
-      "coverage": "Pending source wiring: pork trim (72%) on LM_PK602 (report 2498, Trimmings block); column/section to confirm via --discover, then --flip."
+      "coverage": "Pending source wiring: pork trim (72%) on LM_PK602 (report 2498, Trimmings block); column/section to confirm via --discover, then --flip.",
+      "fred": {
+        "seriesId": "APU0000FD4101",
+        "basis": "index",
+        "_report": "All Other Pork retail (BLS APU via FRED) — ground-pork-direction TREND proxy; LMR is the level."
+      }
     },
     "whole-turkey": {
       "verified": false,
@@ -5505,7 +5536,12 @@
       "bls": {
         "seriesId": "WPU0222"
       },
-      "coverage": "Staged: AMS source resolved (National Turkey Report 3647, \"Whole Young\"), pending live verification."
+      "coverage": "Staged: AMS source resolved (National Turkey Report 3647, \"Whole Young\"), pending live verification.",
+      "fred": {
+        "seriesId": "APU0000706311",
+        "basis": "index",
+        "_report": "Turkey, Frozen, Whole retail (BLS APU via FRED) — turkey-direction TREND proxy; AMS National is the level."
+      }
     },
     "ground-turkey": {
       "verified": false,
