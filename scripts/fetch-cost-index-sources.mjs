@@ -306,9 +306,19 @@ async function main() {
   const artifact = { generatedAt: new Date().toISOString(), points: {} };
   const deepHistory = {};   // --history-out: per-ingredient FULL weekly series (vendor-scale)
   let composed = 0, skipped = 0;
+  // Deep backfill (--history-out) is otherwise silent (jsonMode) and can run many
+  // minutes across the windowed AMS stitch — emit a per-ingredient tick to stderr
+  // (never stdout, so the --json / --out artifact contract stays untouched) so the
+  // run is visibly alive and any single-source stall is pinpointed by the last
+  // name printed before it stops.
+  const tick = historyOutFile ? (s) => process.stderr.write(s) : () => {};
+  const total = ingredients.length;
+  let idx = 0;
   for (const ing of ingredients) {
     const m = sourceMap[ing] || {};
+    idx++;
     if (LIVE && !m.verified) { skipped++; continue; }   // cardinal rule: unverified contributes nothing
+    tick(`  [${idx}/${total}] ${ing}\n`);
     let raw;
     try {
       raw = LIVE ? await liveFetch(ing, m) : (FIXTURES[ing] || {});
@@ -341,6 +351,7 @@ async function main() {
   // BLS (corn/soybeans), FRED (diesel) and EIA (electricity) are all wired; a
   // driver with no key set, or whose live response composes 0 points, skips
   // gracefully without sinking the run.
+  tick(`  · ingredients done (${composed} composed) — fetching drivers…\n`);
   const driverMap = rd('data/cost-index-sources.json').drivers || {};
   const drivers = {};
   let driversComposed = 0;
