@@ -1,7 +1,12 @@
 {
   "_doc": "Muntin Cost PRESSURE rules — the transparent, versioned manifest the deterministic engine (tools/_shared/cost-pressure.js) scores into an inferred 'where it's headed' direction per ingredient. THIS IS NOT A PRICE. Each indicator declares: a public free SOURCE, a direction SIGN (does indicator-up mean cost-up +1 or cost-down -1), an evidence-tier WEIGHT, a sourced LEAD range, and a CITE. The reports + lead ranges are USDA/EIA-sourced and citeable; the per-indicator WEIGHTS are Muntin's evidence-tier judgment (illustrative, frozen per _version). Enforced by scripts/check-pressure-honesty.mjs: every indicator needs source+lead+cite, weight above tier C needs a cite, and the rendered direction must equal what this manifest + the engine recompute. A weight/sign change REQUIRES a _version bump + changelog. Sequencing: status:'preview' (demo observations) until the free fetchers (NASS Quick Stats, EIA, AMS MMN/MARS, USDM, NWS) are wired; then live.",
-  "_version": "2026-Q2-16",
+  "_version": "2026-Q2-18",
   "_changelog": [
+    {
+      "version": "2026-Q2-18",
+      "date": "2026-06-14",
+      "note": "HONEST FORWARD LAYER — apply the full 12-year pressure calibration (data/pressure-calibration.json: BH false-discovery control + out-of-sample sign hold + N gate, indicators tested against each ingredient's published wholesale anchor at min(anchor,indicator) cadence). Proven-or-silent: every surfaced edge is now backed by 12y evidence; refuted edges are removed, not shipped. (1) APPLIED the 4 edges that survived the full bar — whole-chicken/sa-precip (-1, N=41, OOS hold, NNLS ~0.02), beef-tenderloin/cattle-on-feed-placements (-1, N=42, p=0.009, OOS hold, NNLS ~-0.93@3mo), pork-loin/cold-storage-pork (-1, N=102, p=0.008, OOS hold, NNLS ~-0.905@0mo coincident), romaine-lettuce/drought-ca-az (+1, N=293, OOS hold, NNLS ~0.011@9wk) — signs already matched empirical, so annotated 'PROVEN' with the NNLS lag/weight; prior operating weights retained as the operator's evidence-tier judgment (the OOS-shrunk standalone weights are documented, not auto-applied). pork-loin/hogs-market-supply HELD PROVEN (holds OOS with the rule's -1 sign though below the strict survivor bar) — annotated, unchanged. (2) DROPPED all 19 SIGN-FLIP edges where the 12y empirical sign disagrees with the hand-set sign AND the empirical direction has no honest forward mechanism (§7.0 #4 mechanism-not-coincidence): these are confounded / reverse-causal / coarse-proxy artifacts — never flipped to a spurious sign and never kept at a refuted sign. Structural drivers whose textbook channel the data inverts -> DROP not flip: pork-loin/feed-grain & pork-shoulder/feed-grain (feed->pork cost is +1; empirical -1 is feed/hog cycle co-movement), butter/milk-production & cheddar-cheese/milk-production (milk->dairy is -1; empirical +1 is reverse causation — high price pulls production), russet-potato/crop-condition (better crop -> -1; empirical +1 has no mechanism), tomato/drought-fl-ca & russet-potato/drought-id (drought -> +1; empirical -1 nonsensical, produce on the coarse shared WPU0113 proxy), romaine-lettuce/ca-frost (warmer min-temp -> -1; empirical +1 has no mechanism), ribeye/cold-storage-beef & beef-tenderloin/cold-storage-beef (stocks -> -1; empirical +1 is inventory-cycle confounding). Freight flips -> DROP (precedent audit #5 — freight rides every ingredient, not a per-item arrow, and a -1 diesel is mechanism-less): ribeye/diesel, romaine-lettuce/diesel, tomato/diesel, onion/diesel, cheddar-cheese/diesel. FX flips -> DROP (the documented quote-convention sign is the well-reasoned mechanism; the empirical flip has no honest forward story — FX co-moves with broad commodity-demand cycles, dairy GDT clears in USD pre-absorbing FX, produce is on the coarse proxy): ribeye/aud-fx, romaine-lettuce/mxn-fx, onion/mxn-fx, butter/nzd-fx. Per-edge flips are surgical: the same indicator that flips on one item is RETAINED where the calibration did not flag it (beef-tenderloin/aud-fx, tomato/mxn-fx, onion/drought-ca-az, cheddar-cheese/nzd-fx, russet-potato/diesel stand). (3) UNTOUCHED: 'insufficient'-history produce edges (most fresh produce shares the coarse WPU0113 proxy and calibrates later) and every unproven edge — the hold-until-proven overlay gate is intact; nothing is surfaced as proven that didn't clear it. Each affected item retains >=2 indicators; cost-pressure.json + the Lab seeds were regenerated against the corrected manifest so the honesty recompute stays exact."
+    },
     {
       "version": "2026-Q2-15",
       "date": "2026-06-13",
@@ -248,7 +253,16 @@
             "unit": "week"
           },
           "cite": "open-meteo",
-          "note": "intl-test: Brazil soy-belt precipitation (moisture proxy) → feed → chicken (moisture up → cost down)"
+          "note": "intl-test: Brazil soy-belt precipitation (moisture proxy) → feed → chicken (moisture up → cost down)",
+          "calibrated": {
+            "date": "2026-06-14",
+            "empSign": -1,
+            "empLeadWk": 30,
+            "oos": "hold",
+            "n": 41,
+            "suggestWeight": 0.02,
+            "note": "12y full BH+OOS+N calibration (data/pressure-calibration.json) — one of 4 edges that survived the full bar. Confirms the -1 sign (wet soy-belt → ample soy → feed eases → chicken cost down) and holds OOS at a long, diffuse lead. NNLS suggested weight is small (~0.02); prior weight 1 retained as the operator's evidence-tier judgment."
+          }
         },
         {
           "id": "feed-grain",
@@ -339,21 +353,6 @@
       "rule_version": "2026-Q2-5",
       "indicators": [
         {
-          "id": "aud-fx",
-          "source": "fred-aud-fx",
-          "sign": 1,
-          "weight": 1,
-          "tier": "C",
-          "window": "4w",
-          "lead": {
-            "min": 6,
-            "max": 12,
-            "unit": "week"
-          },
-          "cite": "fred-aud-fx",
-          "note": "intl-test: Australia lean-trim; USD-per-AUD, AUD stronger → US import beef cost up"
-        },
-        {
           "id": "cattle-on-feed-placements",
           "source": "nass-cattle-on-feed",
           "sign": -1,
@@ -369,20 +368,6 @@
           "note": "placements forecast marketings 4-6 mo out (NASS)"
         },
         {
-          "id": "cold-storage-beef",
-          "source": "nass-cold-storage",
-          "sign": -1,
-          "weight": 1,
-          "tier": "C",
-          "window": "1m",
-          "lead": {
-            "min": 4,
-            "max": 8,
-            "unit": "week"
-          },
-          "cite": "nass-cold-storage"
-        },
-        {
           "id": "feed-grain",
           "source": "fred-feed",
           "sign": 1,
@@ -396,21 +381,6 @@
           },
           "cite": "fred-feed",
           "note": "feed is a weak NEAR-TERM lever for beef; herd cycle dominates"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -446,29 +416,17 @@
           },
           "cite": "nass-cattle-on-feed",
           "calibrated": {
-            "date": "2026-06-11",
+            "date": "2026-06-14",
             "empSign": -1,
             "empLeadWk": 13,
             "oos": "hold",
             "n": 42,
             "r2": 0.28,
             "suggestWeight": 0.1,
-            "note": "12y LMR-2453 anchor backtest confirms the -1 sign and holds OOS (BH-passed). Lead kept biological 16-26w (NASS placements->marketings); |r|-best empirical lag was ~13w. OOS-shrunk weight 0.1 = real but weak; prior weight 2 retained as the operator's evidence-tier judgment."
+            "nnlsWeight": -0.93,
+            "nnlsLeadMo": 3,
+            "note": "PROVEN — one of the 4 edges that survived the full 12y BH+OOS+N bar (data/pressure-calibration.json, 2026-06-14). 12y LMR-2453 anchor backtest confirms the -1 sign and holds OOS. Lead kept biological 16-26w (NASS placements->marketings); |r|-best empirical lag ~13w; sign-constrained NNLS placed it at ~-0.93 @ 3mo within the per-item joint fit. OOS-shrunk standalone weight 0.1; prior operating weight 2 retained as the operator's evidence-tier judgment (the strongest single proven edge)."
           }
-        },
-        {
-          "id": "cold-storage-beef",
-          "source": "nass-cold-storage",
-          "sign": -1,
-          "weight": 1,
-          "tier": "C",
-          "window": "1m",
-          "lead": {
-            "min": 4,
-            "max": 8,
-            "unit": "week"
-          },
-          "cite": "nass-cold-storage"
         },
         {
           "id": "feed-grain",
@@ -517,7 +475,13 @@
             "unit": "week"
           },
           "cite": "nass-hogs",
-          "note": "weight-class bins map to slaughter windows; farrowing intentions lead ~8-10 mo"
+          "note": "weight-class bins map to slaughter windows; farrowing intentions lead ~8-10 mo",
+          "calibrated": {
+            "date": "2026-06-14",
+            "empSign": -1,
+            "oos": "hold",
+            "note": "HELD PROVEN — the 12y full calibration (data/pressure-calibration.json, 2026-06-14) holds OOS with the rule's hand-set -1 sign (more market hogs → more pork → cost down). It did not clear the strictest BH+OOS+N survivor bar that pork-loin/cold-storage-pork did, but the evidence corroborates the prior and refutes nothing — so the sign + prior operating weight 2 stand unchanged."
+          }
         },
         {
           "id": "feed-soymeal",
@@ -536,20 +500,6 @@
           "note": "intl-test: soybean-meal protein-feed lead beyond corn"
         },
         {
-          "id": "feed-grain",
-          "source": "fred-feed",
-          "sign": 1,
-          "weight": 2,
-          "tier": "B",
-          "window": "4w",
-          "lead": {
-            "min": 13,
-            "max": 26,
-            "unit": "week"
-          },
-          "cite": "fred-feed"
-        },
-        {
           "id": "cold-storage-pork",
           "source": "nass-cold-storage",
           "sign": -1,
@@ -563,14 +513,16 @@
           },
           "cite": "nass-cold-storage",
           "calibrated": {
-            "date": "2026-06-11",
+            "date": "2026-06-14",
             "empSign": -1,
             "empLeadWk": 0,
             "oos": "hold",
             "n": 102,
             "r2": 0.18,
             "suggestWeight": 0.1,
-            "note": "12y LMR-2498 cutout anchor backtest confirms the -1 sign and holds OOS (BH-passed). Empirical relationship is ~coincident (|r|-best lag ~0w), so cold storage reads more as a concurrent supply confirm than a 4-8w leader; lead range retained pending more evidence. OOS-shrunk weight 0.1."
+            "nnlsWeight": -0.905,
+            "nnlsLeadMo": 0,
+            "note": "PROVEN — one of the 4 edges that survived the full 12y BH+OOS+N bar (data/pressure-calibration.json, 2026-06-14). 12y LMR-2498 cutout anchor backtest confirms the -1 sign and holds OOS. Empirical relationship is ~coincident (|r|-best lag ~0w; NNLS ~-0.905 @ 0mo), so cold storage reads as a concurrent supply confirm more than a 4-8w leader; lead range retained pending more evidence. OOS-shrunk standalone weight 0.1; prior operating weight 1 retained."
           }
         },
         {
@@ -624,20 +576,6 @@
           "note": "intl-test: soybean-meal protein-feed lead beyond corn"
         },
         {
-          "id": "feed-grain",
-          "source": "fred-feed",
-          "sign": 1,
-          "weight": 2,
-          "tier": "B",
-          "window": "4w",
-          "lead": {
-            "min": 13,
-            "max": 26,
-            "unit": "week"
-          },
-          "cite": "fred-feed"
-        },
-        {
           "id": "cold-storage-pork",
           "source": "nass-cold-storage",
           "sign": -1,
@@ -671,36 +609,6 @@
     "romaine-lettuce": {
       "rule_version": "2026-Q2-11",
       "indicators": [
-        {
-          "id": "ca-frost",
-          "source": "open-meteo",
-          "sign": -1,
-          "weight": 1,
-          "tier": "C",
-          "window": "4w",
-          "lead": {
-            "min": 1,
-            "max": 6,
-            "unit": "week"
-          },
-          "cite": "open-meteo",
-          "note": "intl-test: Yuma/Imperial daily min-temp; a freeze damages the crop → spike (min-temp up → cost down); a calibratable version of the skipped NWS freeze-alert"
-        },
-        {
-          "id": "mxn-fx",
-          "source": "fred-mxn-fx",
-          "sign": -1,
-          "weight": 1,
-          "tier": "C",
-          "window": "4w",
-          "lead": {
-            "min": 3,
-            "max": 8,
-            "unit": "week"
-          },
-          "cite": "fred-mxn-fx",
-          "note": "intl-test: Mexico winter produce; peso-per-USD, peso weaker → cheaper in USD → cost down"
-        },
         {
           "id": "lettuce-shipments",
           "source": "ams-movement",
@@ -778,30 +686,17 @@
           },
           "cite": "usdm-drought",
           "calibrated": {
-            "date": "2026-06-11",
+            "date": "2026-06-14",
             "empSign": 1,
             "empLeadWk": 9,
             "oos": "hold",
             "n": 293,
             "r2": 0.007,
             "suggestWeight": 0.1,
-            "note": "Backtest against the 6y LA-terminal-2307 weekly romaine anchor confirms the +1 sign and holds OOS (BH-passed); empirical lag ~9w sits inside the 4-17w rule window. Low average R2 (0.007) is the expected shape of an EPISODIC drought signal — quiet most weeks, decisive in a drought year. Prior weight 2 retained."
+            "nnlsWeight": 0.011,
+            "nnlsLeadWk": 9,
+            "note": "PROVEN — one of the 4 edges that survived the full 12y BH+OOS+N bar (data/pressure-calibration.json, 2026-06-14). Backtest against the 6y LA-terminal-2307 weekly romaine anchor confirms the +1 sign and holds OOS; empirical lag ~9w sits inside the 4-17w rule window; sign-constrained NNLS ~0.011 @ 9wk. Low average R2 (0.007) is the expected shape of an EPISODIC drought signal — quiet most weeks, decisive in a drought year. Prior operating weight 2 retained."
           }
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         },
         {
           "id": "lettuce-transition",
@@ -902,35 +797,6 @@
           "note": "FL freezes drove field tomato to an 8-yr high in 2026"
         },
         {
-          "id": "drought-fl-ca",
-          "source": "usdm-drought",
-          "sign": 1,
-          "weight": 2,
-          "tier": "B",
-          "window": "4w",
-          "lead": {
-            "min": 4,
-            "max": 17,
-            "unit": "week"
-          },
-          "cite": "usdm-drought"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
-        },
-        {
           "id": "tomato-transition",
           "source": "ams-shipping-point",
           "sign": 1,
@@ -950,21 +816,6 @@
     "onion": {
       "rule_version": "2026-Q2-14",
       "indicators": [
-        {
-          "id": "mxn-fx",
-          "source": "fred-mxn-fx",
-          "sign": -1,
-          "weight": 1,
-          "tier": "C",
-          "window": "4w",
-          "lead": {
-            "min": 3,
-            "max": 8,
-            "unit": "week"
-          },
-          "cite": "fred-mxn-fx",
-          "note": "intl-test: Mexico winter onion share; peso weaker → cheaper in USD → cost down"
-        },
         {
           "id": "onion-shipments",
           "source": "ams-movement",
@@ -1028,21 +879,6 @@
           "cite": "usdm-drought"
         },
         {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
-        },
-        {
           "id": "onion-transition",
           "source": "ams-shipping-point",
           "sign": 1,
@@ -1062,20 +898,6 @@
     "russet-potato": {
       "rule_version": "2026-Q2-1",
       "indicators": [
-        {
-          "id": "crop-condition",
-          "source": "nass-crop-progress",
-          "sign": -1,
-          "weight": 3,
-          "tier": "B",
-          "window": "2w",
-          "lead": {
-            "min": 2,
-            "max": 8,
-            "unit": "week"
-          },
-          "cite": "nass-crop-progress"
-        },
         {
           "id": "potato-shipments",
           "source": "ams-movement",
@@ -1123,20 +945,6 @@
           "group": "movement",
           "cite": "ams-movement",
           "note": "season pace above last year → ample supply → cost down"
-        },
-        {
-          "id": "drought-id",
-          "source": "usdm-drought",
-          "sign": 1,
-          "weight": 1,
-          "tier": "C",
-          "window": "4w",
-          "lead": {
-            "min": 4,
-            "max": 17,
-            "unit": "week"
-          },
-          "cite": "usdm-drought"
         },
         {
           "id": "diesel",
@@ -1187,36 +995,6 @@
           },
           "cite": "eu-agrifood",
           "note": "intl-test: EU weekly butter price; EU butterfat export price leads US import cost"
-        },
-        {
-          "id": "nzd-fx",
-          "source": "fred-nzd-fx",
-          "sign": 1,
-          "weight": 1,
-          "tier": "C",
-          "window": "4w",
-          "lead": {
-            "min": 6,
-            "max": 12,
-            "unit": "week"
-          },
-          "cite": "fred-nzd-fx",
-          "note": "intl-test: NZ is the marginal global dairy price-setter; USD-per-NZD, NZD stronger → US butterfat import cost up (GDT clears in USD → partly pre-absorbed)"
-        },
-        {
-          "id": "milk-production",
-          "source": "nass-milk",
-          "sign": -1,
-          "weight": 2,
-          "tier": "B",
-          "window": "1m",
-          "lead": {
-            "min": 4,
-            "max": 12,
-            "unit": "week"
-          },
-          "cite": "nass-milk",
-          "note": "more milk → more butterfat → cost down; production leads the churn"
         },
         {
           "id": "cold-storage-butter",
@@ -1299,20 +1077,6 @@
           "note": "intl-test: NZ global dairy price-setter; USD-per-NZD, NZD stronger → US cheese import cost up"
         },
         {
-          "id": "milk-production",
-          "source": "nass-milk",
-          "sign": -1,
-          "weight": 2,
-          "tier": "B",
-          "window": "1m",
-          "lead": {
-            "min": 4,
-            "max": 12,
-            "unit": "week"
-          },
-          "cite": "nass-milk"
-        },
-        {
           "id": "cold-storage-cheese",
           "source": "nass-cold-storage",
           "sign": -1,
@@ -1340,21 +1104,6 @@
             "unit": "week"
           },
           "cite": "fred-feed"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
