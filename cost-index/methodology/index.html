@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<title>How the Cost Index works — methodology | Muntin Digital</title>
+<meta name="description" content="How the Muntin Cost Index is built: public sources, the measured/derived/absent honesty spine, dual confidence, and the shippable bar." />
+<meta name="theme-color" content="#2A50C8" />
+<link rel="canonical" href="https://muntin.digital/cost-index/methodology/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/cost-index/methodology/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/cost-index/methodology/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/cost-index/methodology/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="es_US" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="How the Cost Index works — methodology | Muntin Digital" />
+<meta property="og:description" content="How the Muntin Cost Index is built: public sources, the measured/derived/absent honesty spine, dual confidence, and the shippable bar." />
+<meta property="og:url" content="https://muntin.digital/cost-index/methodology/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="How the Cost Index works — methodology | Muntin Digital" />
+<meta name="twitter:description" content="How the Muntin Cost Index is built: public sources, the measured/derived/absent honesty spine, dual confidence, and the shippable bar." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","@id":"https://muntin.digital/cost-index/methodology/#article","headline":"How the Muntin Restaurant Cost Index works","description":"The full methodology behind the Muntin Restaurant Cost Index: public sourcing principles, the measured/derived/absent honesty spine, the dual level/trend confidence model, the shippable bar, derived ratio-bridge methods, freshness, and the revision and correction policy.","inLanguage":"en-US","url":"https://muntin.digital/cost-index/methodology/","isAccessibleForFree":true,"datePublished":"2026-06-14","dateModified":"2026-06-14","author":{"@id":"https://muntin.digital/#don-goldstein"},"publisher":{"@id":"https://muntin.digital/#business"},"about":{"@id":"https://muntin.digital/cost-index/#catalog"},"isPartOf":{"@id":"https://muntin.digital/cost-index/methodology/#page"},"mainEntityOfPage":"https://muntin.digital/cost-index/methodology/"},{"@type":"WebPage","@id":"https://muntin.digital/cost-index/methodology/#page","url":"https://muntin.digital/cost-index/methodology/","name":"How the Cost Index works — methodology","inLanguage":"en-US","isPartOf":{"@id":"https://muntin.digital/#website"},"primaryImageOfPage":"https://muntin.digital/brand/og/tool-cost-pulse.png","breadcrumb":{"@id":"https://muntin.digital/cost-index/methodology/#breadcrumbs"}},{"@type":"BreadcrumbList","@id":"https://muntin.digital/cost-index/methodology/#breadcrumbs","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Cost index","item":"https://muntin.digital/cost-index/"},{"@type":"ListItem","position":3,"name":"Methodology","item":"https://muntin.digital/cost-index/methodology/"}]},{"@type":"FAQPage","@id":"https://muntin.digital/cost-index/methodology/#faq","mainEntity":[{"@type":"Question","name":"Where do the prices come from?","acceptedAnswer":{"@type":"Answer","text":"Only from public U.S. market data: USDA mandatory and terminal-market reports, the National Dairy Product Sales Report, BLS, FRED, EIA, and NOAA Fisheries. No private survey, no phoned-in assessment, no vendor feed. Every published number traces to a dated public report a reader can look up."}},{"@type":"Question","name":"How is this different from Urner Barry?","acceptedAnswer":{"@type":"Answer","text":"Urner Barry is an assessed, judgment benchmark whose value is daily timeliness; its method is necessarily private. The Muntin Cost Index does not try to out-quote it on granularity. It out-explains it: every number traces to a citable public report, every estimate is labeled an estimate, and every gap is named with its structural reason."}},{"@type":"Question","name":"What do measured, derived, and absent mean?","acceptedAnswer":{"@type":"Answer","text":"Measured means a published government series, shown as-is. Derived means our own estimate from public inputs, drawn with a dashed line, a confidence band, and an estimate badge. Absent means no credible public series exists, shown as a greyed card that names the structural reason instead of inventing a number."}},{"@type":"Question","name":"Why does an ingredient sometimes show no price at all?","acceptedAnswer":{"@type":"Answer","text":"Because it does not clear the shippable bar. An ingredient earns a public reading only when there is a credible wholesale dollar level: either a measured cross-market range or a single authoritative source whose direction is corroborated and not pathologically noisy. A lone, uncorroborated source is held back rather than dressed up as certainty."}},{"@type":"Question","name":"Is this a forecast of where prices are going?","acceptedAnswer":{"@type":"Answer","text":"No. The index publishes measured levels, measured directions, and an inferred directional pressure overlay that carries a direction but never a price. It never publishes a price forecast."}},{"@type":"Question","name":"What happens when a source revises or discontinues a series?","acceptedAnswer":{"@type":"Answer","text":"A revision is re-vendored on the next refresh with a new vintage date; the prior value stays recoverable in version control rather than being silently overwritten. A discontinued or suppressed series turns the ingredient absent with the reason, never frozen at a stale last value pretending to be current."}}]}]}</script>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<style>
+:root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--white:#fff;--line:#E3E5E9;--font-display:'Fraunces',Georgia,serif;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#16181D;color:#F6F7F8;padding:12px 16px;z-index:100}
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D7DAE0}
+header.nav{min-height:64px}
+.nav{position:fixed;top:0;left:0;right:0;background:var(--cream);z-index:50;border-bottom:1px solid #E3E5E9}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:64px;padding:12px 0}
+.logo{display:flex;align-items:center;gap:10px;font-family:Georgia,serif;font-size:22px;font-weight:600;letter-spacing:-0.02em;flex-shrink:0;white-space:nowrap;color:inherit;text-decoration:none}
+.logo-mark{width:28px;height:28px;flex:0 0 28px}
+.nav-links{display:flex;gap:36px;font-size:15px}
+.nav-toggle{display:none}
+.nav-search-btn,.lang-switch{display:none}
+@media (max-width:1100px){.nav-links{display:none}}
+main{padding-top:64px}
+.breadcrumb{font-size:13px;color:var(--ink-soft);margin:24px 0 0}
+.breadcrumb a{color:var(--ink-soft);text-decoration:none;border-bottom:1px dashed currentColor}
+.breadcrumb a:hover{color:var(--teal)}
+.ci-hero{padding:40px 0 8px}
+.ci-eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
+.ci-eyebrow a{color:var(--teal);text-decoration:none}
+.ci-hero h1{font-family:var(--font-display);font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.12;color:var(--ink);margin:0 0 14px}
+.ci-lede{font-size:18px;line-height:1.6;color:var(--ink);margin:0;max-width:720px}
+.ci-body{margin:8px auto 0;max-width:760px}
+.ci-body h2{font-family:var(--font-display);font-size:clamp(20px,3vw,26px);font-weight:500;color:var(--ink);margin:38px 0 10px;line-height:1.2}
+.ci-body h3{font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--ink);margin:24px 0 8px;line-height:1.25}
+.ci-body p{margin:0 0 16px;font-size:16px;line-height:1.7}
+.ci-body ol,.ci-body ul{margin:0 0 16px;padding-left:22px;font-size:16px;line-height:1.7}
+.ci-body li{margin:0 0 8px}
+.ci-body strong{font-weight:700}
+.ci-tldr{margin:22px 0 8px;padding:18px 22px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px}
+.ci-tldr__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.ci-tldr p{font-size:16px;line-height:1.6;margin:0 0 10px}
+.ci-tldr ul{margin:6px 0 0;padding-left:20px}
+.ci-tldr li{margin:0 0 6px;font-size:15.5px;line-height:1.55}
+.ci-tldr li:last-child{margin-bottom:0}
+.ci-spine{width:100%;border-collapse:collapse;margin:6px 0 16px;font-size:15px}
+.ci-spine caption{text-align:left;font-size:12.5px;color:var(--ink-soft);margin:0 0 8px;font-style:italic}
+.ci-spine th,.ci-spine td{text-align:left;vertical-align:top;padding:10px 12px;border:1px solid var(--line);line-height:1.5}
+.ci-spine th{background:var(--cream-2);font-weight:700;font-size:13px;letter-spacing:.02em}
+.ci-spine code{font-size:13px}
+.ci-tier{display:inline-block;font-weight:700;font-size:11px;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:var(--cream);border:1px solid var(--line);color:var(--ink-soft)}
+.ci-callout{margin:18px 0;padding:14px 18px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px}
+.ci-callout p{margin:0;font-size:15.5px;line-height:1.6}
+.ci-faq{margin:38px 0 0}
+.ci-faq__item{margin:0 0 18px}
+.ci-faq__q{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink);margin:0 0 6px}
+.ci-faq__a{font-size:15.5px;line-height:1.65;color:var(--ink-soft);margin:0}
+.ci-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 8px}
+.ci-source{font-size:12.5px;color:var(--ink-soft);margin:28px 0 40px}
+.ci-source a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-body a.ci-inline{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+</style>
+<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<!-- batch-banner:start --><!-- batch-banner:end -->
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g fill="currentColor">
+          <path d="M32 8 H58 V46 H8 V32 A24 24 0 0 1 32 8 Z"/>
+          <path d="M70 8 H96 A24 24 0 0 1 120 32 V46 H70 V8 Z"/>
+          <path d="M8 58 H58 V120 H32 A24 24 0 0 1 8 96 V58 Z"/>
+          <path d="M70 58 H120 V96 A24 24 0 0 1 96 120 H70 V58 Z"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
+    </a>
+    <!-- Phase 7: 5-item nav, per launch plan Part II.
+         Library / Tools / Studio / Sign in.
+         Library points at the canonical /library/ hub (the
+         three-doors page). Tools is promoted from the old Library
+         mega-menu to a top-level item. Studio replaces Services +
+         Restaurants + About — they all live under /studio/ now,
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
+         retired (the hub IS the menu now); the controller script
+         is gone too.
+
+         /work/ was retired with the Phase 8 portfolio-sunset pass:
+         the company-as-resume framing made the personal-portfolio
+         showcase redundant. Legacy /work/* URLs 301 to /studio/
+         via _redirects so old backlinks land softly. -->
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/library/">Library</a>
+      <a href="/start/">Start</a>
+      <a href="/tools/">Tools</a>
+      <a href="/studio/">Company</a>
+      <!-- Ledger — sister product (the privacy-forward invoice ledger)
+           on its own subdomain. Plain external link so it passes link
+           equity to ledger.muntin.digital; Plausible's automatic
+           outbound-link tracking measures the nav click. -->
+      <a href="https://ledger.muntin.digital/">Ledger</a>
+      <!-- Both sign-in / workshop ship hidden by default; the
+           auth-state JS at the bottom of this file calls
+           /api/auth/me and reveals exactly one. No-JS visitors see
+           neither, which is acceptable: the library and tools work
+           fully without sign-in (Workshop is the only auth surface). -->
+      <a class="js-nav-signin nav-link-auth" href="/sign-in/" hidden>Sign in</a>
+      <a class="js-nav-workshop nav-link-auth" href="/workbench/" hidden>Workshop</a>
+    </nav>
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+      <span class="nav-search-label">Search</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
+    </button>
+    <nav class="lang-switch" aria-label="Language">
+      <a href="/es/cost-index/methodology/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
+      <span class="lang-switch-current" aria-current="true">EN</span>
+    </nav>
+    <!-- Phase 7 — dark-mode toggle. The icon SVG flips between sun
+         and moon via CSS based on the [data-theme] state set by
+         theme-toggle.js. With JS off the button stays in its
+         default state (sun) and clicks do nothing; the OS
+         preference still drives dark-mode tokens via media query. -->
+    <button type="button" class="theme-toggle js-theme-toggle" aria-label="Toggle dark mode" aria-pressed="false" hidden>
+      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+        <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+        <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
+        <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
+      </svg>
+      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">
+      <!-- Phase 5+ — site-wide pulse propagation. Hidden by default;
+           window-state.js reveals when lastSeen <4h. Decorative; the
+           label "Reach Don" remains the accessible affordance. -->
+      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don is around"></span>
+      Reach Don
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <!-- Mobile menu mirrors the 5-item desktop nav, plus search, lang
+       switcher, and the Reach Don CTA. The auth-state JS below
+       toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+    <a href="/library/">Library</a>
+    <a href="/start/">Start</a>
+    <a href="/tools/">Tools</a>
+    <a href="/studio/">Company</a>
+    <a href="https://ledger.muntin.digital/">Ledger</a>
+    <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
+    <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
+    <button type="button" class="mobile-search js-open-search">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Search the library</span>
+    </button>
+    <!-- Mobile dark-mode toggle. The desktop .theme-toggle is hidden on
+         phones (≤640px), so this surfaces the same control inside the
+         menu. Same .js-theme-toggle hook — theme-toggle.js wires every
+         instance and keeps them in sync. Shows a text label (the desktop
+         one is icon-only). Un-hidden by the script so no-JS users don't
+         see a dead control. -->
+    <button type="button" class="theme-toggle mobile-theme js-theme-toggle" aria-pressed="false" aria-label="Toggle dark mode" data-label-dark="Dark mode" data-label-light="Light mode" hidden>
+      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+        <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+        <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
+        <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
+      </svg>
+      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <span class="theme-toggle__label js-theme-label">Light mode</span>
+    </button>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don</a>
+    <a href="/es/cost-index/methodology/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
+  </nav>
+
+  <!-- Opt-in Spanish banner. Rendered hidden by default; site.js
+       removes the hidden attribute only when (a) the reader's browser
+       lists Spanish in navigator.languages, (b) no md_locale cookie
+       has been set yet, and (c) the banner hasn't been dismissed.
+       Speaks directly in Spanish because its audience, by definition,
+       is a Spanish-speaking visitor. Link target is the page's own
+       hreflang="es" alternate from <head>, read at runtime. -->
+  <aside class="lang-hint" id="langHint" role="complementary" aria-label="Sugerencia de idioma" lang="es" hidden>
+    <div class="container lang-hint-inner">
+      <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
+      <a href="/es/cost-index/methodology/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
+      <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Mega-menu controller retired in Phase 7: Library is a single
+       link to /library/ now (the canonical three-doors hub IS the
+       menu). The CSS rules in site.css for .nav-library-* remain in
+       place defensively so any future mega-menu reuses the pattern. -->
+
+  <!-- Phase 2 (Workshop) — auth-state toggle for the nav.
+       Calls /api/auth/me and reveals either the "Sign in" or
+       "Workshop" link based on the response. Both links ship hidden
+       so anonymous visitors with JS disabled see neither (the
+       library + tools work fully without sign-in, so the missing
+       affordance is acceptable). The script runs once, fire-and-
+       forget; no observable side effects on a 401. -->
+  <script>
+    /* Phase 3C-perf — deferred via requestIdleCallback so the
+       /api/auth/me round-trip stays off the critical path. Both
+       .js-nav-signin / .js-nav-workshop ship hidden, so a one-frame
+       delay before the correct affordance reveals is invisible. */
+    (window.requestIdleCallback || function (cb) { return setTimeout(cb, 200); })(function () {
+      var signin   = document.querySelectorAll('.js-nav-signin');
+      var workshop = document.querySelectorAll('.js-nav-workshop');
+      if (!signin.length && !workshop.length) return;
+      var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 200) {
+            show(workshop);
+            // Phase G.10 — append (N) badge with the user's save count.
+            fetch('/api/workbench/count', { credentials: 'same-origin' })
+              .then(function (r2) { return r2.ok ? r2.json() : null; })
+              .then(function (j) {
+                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
+                workshop.forEach(function (n) {
+                  if (n.querySelector('.nav-workshop-count')) return;
+                  var b = document.createElement('span');
+                  b.className = 'nav-workshop-count';
+                  b.textContent = ' (' + j.count + ')';
+                  n.appendChild(b);
+                });
+              })
+              .catch(function () { /* silent */ });
+            // Course progress dot — appended after the workshop link
+            // when the operator is mid-bootcamp (> 0 but < 16 lessons
+            // done). Decorative + aria-hidden; the operator can still
+            // click the workshop link to see the canonical count.
+            fetch('/api/course/progress', { credentials: 'same-origin' })
+              .then(function (r3) { return r3.ok ? r3.json() : null; })
+              .then(function (j) {
+                if (!j || !j.progress || !Array.isArray(j.progress.completed)) return;
+                var n = j.progress.completed.length;
+                if (n <= 0 || n >= 16) return;
+                workshop.forEach(function (w) {
+                  if (w.querySelector('.nav-course-dot')) return;
+                  var dot = document.createElement('span');
+                  dot.className = 'nav-course-dot';
+                  dot.setAttribute('aria-hidden', 'true');
+                  dot.title = 'Open the Doors — lesson ' + n + ' / 16';
+                  dot.style.cssText = 'display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--teal);margin-left:6px;vertical-align:middle';
+                  w.appendChild(dot);
+                });
+              })
+              .catch(function () { /* silent — course endpoint optional */ });
+            return;
+          }
+          show(signin);
+        })
+        .catch(function () { show(signin); });
+    });
+  </script>
+  <!-- Phase 7 — dark-mode toggle handler. Loaded after the nav
+       partial so the .js-theme-toggle button is in the DOM. -->
+  <script src="/assets/theme-toggle.js?v=phase8"></script>
+</header>
+<main id="main" role="main">
+<div class="container">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a> ›
+    <a href="/cost-index/">Cost index</a> ›
+    Methodology
+  </nav>
+  <section class="ci-hero">
+    <p class="ci-eyebrow">Cost Index · Methodology</p>
+    <h1>How the Cost Index works</h1>
+    <p class="ci-lede">The Muntin Restaurant Cost Index publishes, per ingredient, a wholesale dollar level and a direction — each carrying an honest confidence and a public source with a report date. This page documents exactly how those numbers are built, where they come from, and where they deliberately stop. The whole point is a number you can check, not a number you have to trust.</p>
+  </section>
+  <div class="ci-body">
+
+    <div class="ci-tldr" id="tldr">
+      <p class="ci-tldr__head">In one minute</p>
+      <p>Every reading is built from <strong>public U.S. market data</strong> — USDA mandatory and terminal-market reports, the dairy sales report, BLS, FRED, EIA, NOAA — run through an automated, logged pipeline. We never phone a number in, and we never invent one.</p>
+      <ul>
+        <li><strong>Three states, one of them honest about the gap.</strong> An ingredient is <em>measured</em> (a published series, shown as-is), <em>derived</em> (our labeled estimate from public inputs), or <em>absent</em> (no credible public series — shown greyed, with the reason).</li>
+        <li><strong>Confidence is scored twice.</strong> The dollar level and the direction get separate confidence scores; the headline is the lower of the two, so a noisy week can't undercut a well-measured price.</li>
+        <li><strong>Ship complete, or not at all.</strong> An ingredient shows a price only when the data supports an honest one. A lone, uncorroborated source is held back, not dressed up.</li>
+        <li><strong>Every estimate is labeled, every gap is named.</strong> That is the difference from an assessed benchmark: not a number, but a citable, reproducible number.</li>
+      </ul>
+    </div>
+
+    <div class="ci-cta-row">
+      <a class="btn btn-primary" href="/tools/cost-pulse/">Open Cost Pulse</a>
+      <a class="btn btn-ghost" href="/glossary/cost-index/">What is a cost index?</a>
+    </div>
+
+    <h2 id="what-this-is">What this index is, and how it differs from an assessed benchmark</h2>
+    <p>For each common restaurant ingredient, the index publishes a <a class="ci-inline" href="/glossary/cost-index/">wholesale dollar level</a> and a direction, with a confidence and a dated public citation. It is a decision tool for one question an operator actually asks: <em>is this a real market move, or just my vendor?</em></p>
+    <p>The reference bar for proteins is Urner Barry, and we take its rigor seriously. But Urner Barry is an <strong>assessed, judgment benchmark</strong>: market reporters speak with participants and publish a normalized private assessment. Daily timeliness is its strength; the closed method is the trade-off. We do not try to out-quote it on daily granularity. We out-<em>explain</em> it — every number traces to a public report, every estimate is labeled as one, and every gap is named with its structural reason.</p>
+    <p>That posture is deliberate. An opaque, self-reported commodity index can fail badly: the Georgia Dock broiler index was discontinued in 2016 after questions about thinly-sourced, unverified contributions, with USDA and Urner Barry cited as the better-verified alternatives. Our position is the inverse — <strong>verification is the moat, and opacity is the risk.</strong></p>
+    <div class="ci-callout">
+      <p>What makes a number quotable in search and in AI answers is not the number itself. It is that the number is <strong>citable and reproducible</strong>: it traces to a dated public report and a named method, and the whole surface can be re-derived from the open data.</p>
+    </div>
+    <details class="cite">
+      <summary>Source: Georgia Dock discontinuation &amp; the assessed-benchmark comparison</summary>
+      <div class="cite-body">
+        <p><span class="cite-source">USDA Agricultural Marketing Service</span> &amp; <span class="cite-source">Urner Barry</span> — public reporting on poultry price benchmarks.</p>
+        <p>The Georgia Department of Agriculture's "Georgia Dock" broiler price was discontinued in 2016 after scrutiny of its thin, self-reported contributor base, and was widely replaced in contracts by USDA and Urner Barry quotes. Urner Barry is described here as an assessed, judgment-based market benchmark — a fair characterization of how a price-reporting agency operates, used to contrast its private method with this index's public, reproducible one. We credit both organizations by name rather than deep-linking a specific page; see <a href="https://www.ams.usda.gov/" target="_blank" rel="noopener">USDA AMS</a> for the public market reports this index builds on.</p>
+      </div>
+    </details>
+
+    <h2 id="specification">Specification &amp; quotation basis (what, exactly, is priced)</h2>
+    <p>The hallmark of a defensible methodology — and where a silent number falls short — is stating precisely <em>what</em> each quote represents. Every ingredient carries an explicit specification:</p>
+    <ul>
+      <li><strong>Commodity &amp; grade.</strong> The exact source term and grade — meat cuts by their IMPS/NAMP number (for example, a striploin is IMPS 180 boneless strip), produce by its AMS commodity term (for example, "Lettuce, Green Leaf").</li>
+      <li><strong>Unit.</strong> The quoted unit (pound, carton, hundredweight); where a unit conversion is involved, the conversion is declared, not silent.</li>
+      <li><strong>Pricing basis &amp; point.</strong> Whether the figure is a <a class="ci-inline" href="/glossary/cost-index/">wholesale</a> dollar or an index, and the market level it represents (a USDA terminal-market shipping point, an FOB cutout, and so on). A figure on an index basis is never shown as a dollar.</li>
+      <li><strong>Geographic basis.</strong> A national composite or a named multi-market range; whether the range spans market families or a single source is recorded, because it drives the shippable bar below. Regional splits are a future item, not yet quoted.</li>
+    </ul>
+    <p>A quote is published only once its specification is verified — staged sources never reach a reader.</p>
+
+    <h2 id="sourcing">Sourcing principles, in priority order</h2>
+    <ol>
+      <li><strong>Public and public-domain.</strong> We build only on sources we can cite by report identifier and date. USDA data is republishable, including derived values.</li>
+      <li><strong>Mandatory and transaction-verified first.</strong> USDA Livestock Mandatory Reporting (cattle, hogs, beef, pork — transaction-reported under federal law), the mandatory weekly National Dairy Product Sales Report, and AMS terminal-market reports outrank survey or index series.</li>
+      <li><strong>Verification before publication.</strong> A source is staged as unverified and only flips to verified after a live probe confirms its report identifier, commodity term, unit, and price field all resolve. Until then it never reaches a reader.</li>
+      <li><strong>Name the ceiling, don't fake it.</strong> Where public data is structurally coarser than an assessed benchmark — poultry and shell-egg granularity, daily seafood — we label the limit rather than paper over it.</li>
+    </ol>
+
+    <h2 id="pipeline">The assessment pipeline</h2>
+    <p>The path from raw report to published reading is automated and logged: <strong>fetch, normalize, bound, reduce, composite, assess, gate.</strong> No human keys in a number; the audit trail is the version history of the data files.</p>
+    <ul>
+      <li><strong>Normalize.</strong> Each source family has an adapter that maps a raw payload to a value, a basis, and an as-of date, on a declared basis (wholesale versus index).</li>
+      <li><strong>Bound.</strong> Every ingredient carries per-source sanity bounds; an out-of-bounds reading is rejected before it can move a level — the guard against a mis-parsed unit or a misplaced decimal. Staying in-bounds is a hard gate, not a warning.</li>
+      <li><strong>Reduce.</strong> A single report that spans a range of markets or grades collapses to one number via a declared reducer — trim-the-tails-take-the-middle for terminal produce, a volume-weighted average for mandatory cuts. The reducer is part of the spec, so the same report always reduces the same way.</li>
+      <li><strong>Composite.</strong> Independent sources blend into a level (the dollar) and a trend (the direction) as separate sub-objects.</li>
+      <li><strong>Assess.</strong> The point is stamped with its level and trend confidence and its provenance — which source families and types backed it.</li>
+    </ul>
+    <p>Collection runs on each source's native cadence — AMS terminal reports daily, mandatory reporting daily or weekly, the dairy report weekly, BLS and FRED monthly — and records each report's own publication date as the value's vintage.</p>
+
+    <h2 id="honesty-spine">The measured / derived / absent honesty spine</h2>
+    <p>Every ingredient is tagged as exactly one of three states. Making <em>absent</em> a first-class, explained state is more trustworthy than a silent number — and it is the honest answer for the handful of ingredients where no public series exists.</p>
+    <table class="ci-spine">
+      <caption>The three-tier spine. An untagged ingredient fails the build.</caption>
+      <thead>
+        <tr><th scope="col">State</th><th scope="col">Meaning</th><th scope="col">How it is shown</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="ci-tier">measured</span></td><td>A published USDA, BLS, EIA, or dairy-report series, shown as-is.</td><td>Solid line, source link, report date.</td></tr>
+        <tr><td><span class="ci-tier">derived</span></td><td>Our own estimate from public inputs (see below).</td><td>Dashed line, confidence band, an "estimate" badge, and a link to the method.</td></tr>
+        <tr><td><span class="ci-tier">absent</span></td><td>No credible public series exists.</td><td>A greyed "no public data — here's why" card naming the structural reason (for example, USDA's small-cell confidentiality suppression).</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="confidence">Confidence — level and trend, scored separately</h2>
+    <p>The headline confidence is the <strong>lower of two independently-scored stories</strong>. Scoring them apart stops a noisy week-to-week direction from stamping a well-measured price as low-confidence.</p>
+    <ul>
+      <li><strong>Level confidence</strong> rates the dollar. High requires at least two independent dollar types that agree within a tight dispersion band; one type is medium; an index-basis or absent level scores no dollar at all. Two types that disagree are capped at medium — independence without agreement is not certainty.</li>
+      <li><strong>Trend confidence</strong> rates the direction. High requires at least two independent trend types agreeing on direction most of the time; a jagged, noisy path is capped at low no matter how the endpoints line up — a noisy series is noise dressed as a trend.</li>
+      <li><strong>The calibration ceiling.</strong> The published confidence may never exceed what the data supports, and the health matrix proves on every build that nothing is overstated.</li>
+    </ul>
+
+    <h2 id="shippable-bar">The shippable bar — ship complete, or not at all</h2>
+    <p>An ingredient earns a public reading only if it clears the shippable bar: a credible wholesale dollar level — <strong>either</strong> a measured cross-market range spanning several market families, <strong>or</strong> a single authoritative source whose direction is corroborated by at least two independent types and isn't pathologically noisy. No dollar level, or a lone uncorroborated source, and it does not ship.</p>
+    <p>There are no apologetic "no published figure" readings on the dashboard. Below-bar ingredients live only as honest expanding-coverage pages — present, named, and explained, but without a fabricated price.</p>
+
+    <h2 id="freshness">Freshness &amp; series rot</h2>
+    <p>Every value stores its vintage. A freshness heartbeat reports the oldest reading, and the weekly refresh turns a persistent stall red. Public series get revised or retired on their own schedules — when one vanishes, the ingredient becomes <em>absent</em> with the reason, <strong>never a silent zero</strong> and never a frozen last value pretending to be current.</p>
+    <p>Separately, the percentage we show must describe the line we draw: every displayed trend is reconciled to its own sparkline before publish, so the headline change and the curve never tell different stories.</p>
+
+    <h2 id="derived-methods">The derived methods — a labeled estimate, never a measurement</h2>
+    <p>Derived values let a coarse or indirect source still earn a place. Each one carries a confidence band, a link to the method, and degrades to <em>absent</em> when its inputs don't clear the method's own bar. They are tagged <em>derived</em>, never <em>measured</em>.</p>
+
+    <h3 id="ratio-bridge">The historical-ratio bridge (the general principle)</h3>
+    <p>The methods below are instances of one idea: <strong>any reputable series can be put to use through a validated historical ratio to the wholesale number we are building.</strong> If an outside series overlaps our measured wholesale series on the ingredients where we hold both, we can learn the historical relationship there and apply it where we have the outside series but not a direct wholesale one — even when the outside series isn't itself a clean wholesale number.</p>
+    <p>That is also exactly where a fact-disciplined index could quietly start lying, so the bridge is published only under firm guards. A relationship that fails any of them yields <em>absent</em>, not a number:</p>
+    <ol>
+      <li><strong>Overlap, not assertion.</strong> The ratio is measured on a real overlap window where both series exist — never assumed. No overlap, no bridge.</li>
+      <li><strong>Stability gate.</strong> The relationship must be stable over that window. A drifting or noisy ratio yields <em>absent</em>; we don't publish off a relationship we can't pin down.</li>
+      <li><strong>The band is the relationship's error.</strong> The published band reflects the residual of the historical fit, so a loose bridge reads as a wide, honest band — never a false-precise point.</li>
+      <li><strong>Mechanism, not coincidence.</strong> A bridge needs a plausible causal link (feed to meat, import flow to domestic price, farm to retail spread) — not a bare correlation. "It correlates" is not enough; "it correlates and there is a reason" is.</li>
+      <li><strong>Always derived, always re-estimated.</strong> The ratio is re-fit as overlap grows, and a bridge that destabilizes reverts to <em>absent</em>. A bridge never overrides a direct measured level.</li>
+    </ol>
+    <p>The instances of the bridge:</p>
+    <ul>
+      <li><strong>Yield-adjusted true plate cost.</strong> The <a class="ci-inline" href="/glossary/edible-portion/">edible-portion</a> cost is the wholesale price divided by a representative trim <a class="ci-inline" href="/glossary/yield-percent/">yield</a> — converting a wholesale tick into the number an operator actually pays. Yields are ranges, labeled illustrative; the operator's own yield governs, so this is a guide to <a class="ci-inline" href="/glossary/plate-cost/">plate cost</a>, not a guaranteed one.</li>
+      <li><strong>Seasonal normalization.</strong> A month earns a "typical" median and band only once it has been observed across two or more distinct years; until then the card reads a transparent building-baseline state. No "typical June" off a single June.</li>
+      <li><strong>Indirect estimation from the retail-to-wholesale spread.</strong> Where no direct wholesale series exists but a reputable retail series and a published spread both do, we estimate wholesale from retail and the spread, validated against our own observed wholesale-to-retail ratio. The honesty constraint is built in: retail is sticky and lags, so a retail-derived wholesale understates volatility and lags turns — it is a labeled cross-check or fallback, never a primary level when a direct source is available.</li>
+      <li><strong>Import unit-value estimation.</strong> For import-dominated ingredients with no domestic wholesale series, a level can be estimated from customs value divided by import volume, paired with an import price index as a direction corroborator. Same rules: derived only, banded, monthly and lagged, and explicitly not wholesale — customs value excludes duty, freight, and the importer's margin.</li>
+    </ul>
+
+    <h2 id="pressure">The leading-indicator pressure overlay</h2>
+    <p>Forward signals — feed prices leading protein, drought leading beef, diesel leading freight — are published as <strong>inferred direction only, never a price</strong>, and only once a rule's live track record clears a hold-until-proven bar (a minimum number of calls, a minimum hit rate, and enough non-steady calls to be meaningful). The recomputed direction must match what's rendered. This is the one part of the index that looks forward, and it is bounded hard: a direction, with a track record attached, and no dollar figure.</p>
+
+    <h2 id="revision">Revision &amp; correction policy</h2>
+    <p>A price-reporting method lives or dies on how it handles a number that changes. Ours:</p>
+    <ul>
+      <li><strong>Source revisions.</strong> When a source republishes a revised value, the next refresh re-vendors it; the new vintage and the version-control diff are the record. History is not silently overwritten — the prior value is recoverable.</li>
+      <li><strong>Corrections.</strong> A discovered error — a mis-parsed unit, a wrong commodity term — is fixed at the source specification, re-verified, and re-vendored. A correction that changes a published reading is noted in the change log.</li>
+      <li><strong>Withdrawals.</strong> A discontinued or suppressed series transitions the ingredient to <em>absent</em> with the reason, rather than being frozen at a stale last value.</li>
+    </ul>
+
+    <h2 id="governance">Governance &amp; fact discipline</h2>
+    <p>The methodology is versioned with the code. A change to how a number is assessed — a threshold, a reducer, a new derived method — is a reviewable commit with a dated change-log entry, so a reader can see not just the current method but how it evolved.</p>
+    <p>The fact discipline behind it is absolute. No number, date, or claim is invented: every figure is a published source value, a labeled derived estimate, or labeled illustrative in the prose. The narration of this index is read aloud verbatim in six languages, so a fabrication would be spoken aloud — which is precisely why the gate has no soft edge. Every published number traces to a dated public report and a named reducer, and the entire surface is reproducible by re-running the open checks against the committed data. That reproducibility — not any single quote — is the citable asset.</p>
+
+    <h2 id="limitations">Stated limitations &amp; biases</h2>
+    <p>Naming the limits is part of the method, not an afterthought:</p>
+    <ul>
+      <li><strong>The public-data ceiling.</strong> Poultry and shell-egg granularity, and daily seafood, are structurally coarser in public data than an assessed benchmark's quotes. We label these, and several ingredients are honestly <em>absent</em> rather than faked.</li>
+      <li><strong>Derived-method lag.</strong> The retail-to-wholesale back-out understates volatility and lags turning points; it is a labeled fallback, never a primary level.</li>
+      <li><strong>Yield ranges.</strong> The edible-portion cost uses representative trim yields; the operator's own yield governs, so it is illustrative, not a guaranteed plate cost.</li>
+      <li><strong>Seasonal thinness.</strong> Seasonal normals need at least two years per month; until the corpus fills, the seasonal reading is an honest building baseline, not a normal.</li>
+      <li><strong>No forecast.</strong> We publish measured levels, measured directions, and inferred directional pressure — never a price forecast.</li>
+    </ul>
+
+    <section class="ci-faq" aria-labelledby="faq-heading">
+      <h2 id="faq-heading">Questions about the method</h2>
+      <div class="ci-faq__item">
+        <p class="ci-faq__q">Where do the prices come from?</p>
+        <p class="ci-faq__a">Only from public U.S. market data: USDA mandatory and terminal-market reports, the National Dairy Product Sales Report, BLS, FRED, EIA, and NOAA Fisheries. No private survey, no phoned-in assessment, no vendor feed. Every published number traces to a dated public report a reader can look up.</p>
+      </div>
+      <div class="ci-faq__item">
+        <p class="ci-faq__q">How is this different from Urner Barry?</p>
+        <p class="ci-faq__a">Urner Barry is an assessed, judgment benchmark whose value is daily timeliness; its method is necessarily private. This index does not try to out-quote it on granularity. It out-explains it: every number traces to a citable public report, every estimate is labeled an estimate, and every gap is named with its structural reason.</p>
+      </div>
+      <div class="ci-faq__item">
+        <p class="ci-faq__q">What do measured, derived, and absent mean?</p>
+        <p class="ci-faq__a">Measured means a published government series, shown as-is. Derived means our own estimate from public inputs, drawn with a dashed line, a confidence band, and an estimate badge. Absent means no credible public series exists, shown as a greyed card that names the structural reason instead of inventing a number.</p>
+      </div>
+      <div class="ci-faq__item">
+        <p class="ci-faq__q">Why does an ingredient sometimes show no price at all?</p>
+        <p class="ci-faq__a">Because it does not clear the shippable bar. An ingredient earns a public reading only when there is a credible wholesale dollar level: either a measured cross-market range or a single authoritative source whose direction is corroborated and not pathologically noisy. A lone, uncorroborated source is held back rather than dressed up as certainty.</p>
+      </div>
+      <div class="ci-faq__item">
+        <p class="ci-faq__q">Is this a forecast of where prices are going?</p>
+        <p class="ci-faq__a">No. The index publishes measured levels, measured directions, and an inferred directional pressure overlay that carries a direction but never a price. It never publishes a price forecast.</p>
+      </div>
+      <div class="ci-faq__item">
+        <p class="ci-faq__q">What happens when a source revises or discontinues a series?</p>
+        <p class="ci-faq__a">A revision is re-vendored on the next refresh with a new vintage date; the prior value stays recoverable in version control rather than being silently overwritten. A discontinued or suppressed series turns the ingredient absent with the reason, never frozen at a stale last value pretending to be current.</p>
+      </div>
+    </section>
+
+    <div class="ci-cta-row">
+      <a class="btn btn-primary" href="/tools/cost-pulse/">Open Cost Pulse</a>
+      <a class="btn btn-ghost" href="/cost-index/">Browse the index</a>
+    </div>
+
+    <p class="ci-source"><strong>Sourced:</strong> public U.S. market data — USDA AMS and Livestock Mandatory Reporting, the National Dairy Product Sales Report, BLS, FRED, EIA, and NOAA Fisheries — surfaced live through <a href="/tools/cost-pulse/">Cost Pulse</a>. Method last reviewed 2026-06-14.</p>
+  </div>
+</main>
+<footer class="site-footer" id="footer"></footer>
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260430-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+</body>
+</html>
