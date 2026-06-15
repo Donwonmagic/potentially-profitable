@@ -6589,6 +6589,41 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .foot-newsletter-form button:hover{filter:brightness(1.08)}
 .foot-newsletter-form[data-state="ok"] input,.foot-newsletter-form[data-state="ok"] button{display:none}
 .foot-newsletter-form[data-state="ok"] .foot-newsletter-pitch::after{content:" — got it. Check your inbox.";opacity:1;font-style:italic}
+/* Muntin Ledger pre-launch — founding-member waitlist band (homepage).
+   A light, centered band that sits in the page rhythm between the
+   field-notes rail and the product cards. Uses section.block padding
+   for vertical spacing; a faint teal-tint wash + hairline rules mark
+   it as its own zone without going dark. The .founding-form posts to
+   /api/waitlist and gets ts-stamp + async submit + inline success from
+   first-touch.js via the shared .js-signup-form handler. */
+.founding-band{background:linear-gradient(180deg, var(--teal-tint) 0%, var(--cream) 70%);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.founding-band .section-header{margin-bottom:36px}
+.founding-band .section-header .eyebrow{justify-content:center}
+.founding-band .section-header p{margin-inline:auto;color:var(--ink-soft)}
+.founding-form{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.founding-form-fields{display:flex;flex-direction:column;gap:14px}
+@media(min-width:560px){.founding-form-fields{flex-direction:row;gap:12px}.founding-field{flex:1 1 0;min-width:0}}
+.founding-field{display:flex;flex-direction:column;gap:6px;text-align:left}
+.founding-form-label{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-soft)}
+.founding-optional{font-weight:400;letter-spacing:0.02em;text-transform:none;color:var(--stone)}
+.founding-form input[type="email"],.founding-form input[type="text"]:not([name="hp"]){width:100%;box-sizing:border-box;padding:12px 14px;min-height:46px;border:1px solid var(--line-input);border-radius:var(--r-sm);background:var(--white);color:var(--ink);font:inherit;font-size:16px}
+.founding-form input[type="email"]::placeholder,.founding-form input[type="text"]:not([name="hp"])::placeholder{color:var(--stone)}
+.founding-form input[type="email"]:focus-visible,.founding-form input[type="text"]:not([name="hp"]):focus-visible{outline:2px solid var(--teal);outline-offset:1px;border-color:var(--teal)}
+.founding-form .cf-turnstile{margin:2px auto 0}
+.founding-form button{align-self:center;padding:13px 28px;min-height:48px;border:0;border-radius:var(--r-sm);background:var(--teal);color:#fff;font:inherit;font-weight:600;font-size:16px;cursor:pointer;letter-spacing:0.02em}
+.founding-form button:hover{background:var(--teal-dark)}
+.founding-form button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+/* Inline success: the confirm line is hidden until the async submit
+   flips data-state="ok", at which point the fields/Turnstile/button
+   collapse and the centered confirmation takes their place. */
+.founding-form-confirm{display:none;margin:0;text-align:center;font-family:var(--font-display);font-style:italic;font-size:18px;line-height:1.4;color:var(--teal-dark)}
+.js-signup-form[data-state="ok"] .founding-form-fields,.js-signup-form[data-state="ok"] .cf-turnstile,.js-signup-form[data-state="ok"] button{display:none}
+.js-signup-form[data-state="ok"] .founding-form-confirm{display:block}
+.founding-demo-note{margin:24px auto 0;text-align:center;font-family:var(--font-body);font-size:var(--fs-body);color:var(--stone)}
+.founding-demo-note a{color:var(--teal);font-weight:600;border-bottom:1px solid color-mix(in srgb, var(--teal) 30%, transparent)}
+.founding-demo-note a:hover,.founding-demo-note a:focus-visible{color:var(--teal-dark);border-bottom-color:var(--teal-dark)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .founding-band{background:linear-gradient(180deg,#1B1E24 0%,#16181D 70%);border-block-color:#2C3038}:root:not([data-theme="light"]) .founding-form input[type="email"],:root:not([data-theme="light"]) .founding-form input[type="text"]:not([name="hp"]){background:#16181D;border-color:#3A3F49;color:#F1EDE5}:root:not([data-theme="light"]) .founding-form-confirm{color:#7AA7FF}}
+
 
 
 /* @shell:article === Inline graphics — globalized from gold articles === */

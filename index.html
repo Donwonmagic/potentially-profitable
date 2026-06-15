@@ -159,9 +159,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=b70da981fa3f" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=b70da981fa3f"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=2830bb0a913c" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=158a407ca00a" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=2830bb0a913c"><link rel="stylesheet" href="/assets/site-article.css?v=158a407ca00a"></noscript>
 </head>
 <body>
 
@@ -421,10 +421,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      cost-intelligence work: the Cost Index, the free tools, and
      Muntin Ledger.
      Three CTAs in priority order: Run my free audit (primary, the
-     audit is the highest-intent door) → See pricing (secondary, the
-     the operator who already knows they want to hire) → Or take the
-     60-minute tour (tertiary text link, for the researcher). The
-     library count strip survives below as the proof line. -->
+     audit is the highest-intent door) → Join the founding list
+     (secondary, the operator who wants first access to Muntin Ledger,
+     anchors the #founding band below) → Or take the 60-minute tour
+     (tertiary text link, for the researcher). The library count strip
+     survives below as the proof line. -->
 <section class="hero">
   <div class="container hero-grid">
     <div>
@@ -440,7 +441,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
         <a class="btn btn-ghost" href="/tools/">Browse the free tools</a>
-        <a class="btn btn-ghost" href="https://ledger.muntin.digital/">See pricing</a>
+        <a class="btn btn-ghost" href="#founding">Join the founding list</a>
         <!-- Phase 4 (Workshop) — Continue-your-work reveal. The
              js-nav-workshop class is already toggled by the nav's
              /api/auth/me lookup (lives in _includes/nav.html); a
@@ -669,6 +670,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </thead>
       <tbody>
       <tr>
+        <td class="lib-idx-title"><a href="/blog/restaurant-menu-inflation-2026/">Restaurant prices are now rising faster than groceries — what May 2026's numbers mean for your menu</a></td>
+        <td class="lib-idx-section">Articles</td>
+        <td class="lib-idx-date" aria-label="2026-06-14"><time datetime="2026-06-14">2026-06-14</time></td>
+        <td class="lib-idx-contributor">Don Goldstein</td>
+      </tr>
+      <tr>
         <td class="lib-idx-title"><a href="/blog/restaurant-website-technical-seo-checklist/">Restaurant Website Technical SEO Checklist (2026): The Operator's Audit</a></td>
         <td class="lib-idx-section">Articles</td>
         <td class="lib-idx-date" aria-label="2026-06-03"><time datetime="2026-06-03">2026-06-03</time></td>
@@ -710,12 +717,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <td class="lib-idx-date" aria-label="2026-05-31"><time datetime="2026-05-31">2026-05-31</time></td>
         <td class="lib-idx-contributor">Don Goldstein</td>
       </tr>
-      <tr>
-        <td class="lib-idx-title"><a href="/blog/commission-free-online-ordering-restaurants/">Commission-Free Online Ordering for Restaurants (2026): Owner.com vs Toast vs Your Own Site</a></td>
-        <td class="lib-idx-section">Articles</td>
-        <td class="lib-idx-date" aria-label="2026-05-31"><time datetime="2026-05-31">2026-05-31</time></td>
-        <td class="lib-idx-contributor">Don Goldstein</td>
-      </tr>
       </tbody>
     </table>
     </div>
@@ -728,6 +729,53 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      data/article-fieldnotes.json. Surfaces the 3 most recent
      approved field notes so reader voices reach the front door. -->
 <!-- field-notes-rail:start --><!-- field-notes-rail:end -->
+
+<!-- ============ FOUNDING MEMBERS (Muntin Ledger pre-launch) ============ -->
+<!-- Soft pre-launch capture. No price, no date — the Stripe price isn't
+     final and the launch can slip, so framing stays "first access when
+     Muntin Ledger opens this fall" and defers specifics to
+     ledger.muntin.digital. The form posts to the first-party
+     /api/waitlist proxy, which forwards to the product API; the product
+     owns storage + the confirmation email. The .js-signup-form class
+     gets ts-stamping + async submit + inline success from first-touch.js. -->
+<section class="block founding-band" id="founding" aria-labelledby="founding-heading">
+  <div class="container">
+    <div class="section-header" style="max-width:760px;margin-inline:auto;text-align:center;">
+      <span class="eyebrow">Founding members</span>
+      <h2 id="founding-heading">Be first when <span class="serif-italic">Muntin Ledger</span> opens this fall.</h2>
+      <p>A deterministic engine reads your vendor invoices into a searchable ledger &mdash; no AI reads your numbers, no ads, no tracking. Founding members get first access when it opens. Your numbers stay yours.</p>
+    </div>
+
+    <!-- founding-capture:start -->
+    <form action="/api/waitlist" method="post" class="js-signup-form founding-form" data-locale="en" data-event="Waitlist Signup" data-surface="studio-hero">
+      <div class="founding-form-fields">
+        <div class="founding-field">
+          <label class="founding-form-label" for="founding-email">Your email</label>
+          <input id="founding-email" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="you@yourrestaurant.com" />
+        </div>
+        <div class="founding-field">
+          <label class="founding-form-label" for="founding-name">Your name <span class="founding-optional">(optional)</span></label>
+          <input id="founding-name" name="name" type="text" autocomplete="name" autocapitalize="words" placeholder="First name" />
+        </div>
+      </div>
+      <input type="hidden" name="source" value="studio-hero" />
+      <input type="hidden" name="founding_member" value="true" />
+      <input type="hidden" name="locale" value="en" />
+      <input type="hidden" name="ts" value="" />
+      <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+      <!-- Turnstile widget (Phase 3B). Auto-injects a hidden
+           cf-turnstile-response field on the form when the user
+           passes; the worker validates via /api/lib/turnstile.js. -->
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="waitlist" data-size="flexible"></div>
+      <p class="founding-form-confirm" aria-live="polite">Thanks &mdash; check your inbox to confirm your spot.</p>
+      <button type="submit">Join the founding list</button>
+    </form>
+    <!-- founding-capture:end -->
+
+    <p class="founding-demo-note">Want to see it first? <a href="https://ledger.muntin.digital/demo">Watch the guided demo &rarr;</a></p>
+  </div>
+</section>
+<!-- /founding -->
 
 <!-- ============ PRODUCT (Phase 9: the services teaser retired with the
      services sunset, 2026-06-11 — the company sells the product and
