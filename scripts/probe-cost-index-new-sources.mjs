@@ -32,7 +32,7 @@ async function probeNass() {
     ['milk $/cwt', { commodity_desc: 'MILK', statisticcat_desc: 'PRICE RECEIVED' }],
     ['cattle $/cwt', { commodity_desc: 'CATTLE', statisticcat_desc: 'PRICE RECEIVED' }],
     ['hogs $/cwt', { commodity_desc: 'HOGS', statisticcat_desc: 'PRICE RECEIVED' }],
-    ['sheep $/cwt', { commodity_desc: 'SHEEP', statisticcat_desc: 'PRICE RECEIVED' }],
+    ['sheep/lamb $/cwt', { commodity_desc: 'SHEEP, INCLUDING LAMBS', statisticcat_desc: 'PRICE RECEIVED' }],
     ['potatoes $/cwt', { commodity_desc: 'POTATOES', statisticcat_desc: 'PRICE RECEIVED' }],
     ['sweet potatoes', { commodity_desc: 'SWEET POTATOES', statisticcat_desc: 'PRICE RECEIVED' }],
     ['carrots', { commodity_desc: 'CARROTS', statisticcat_desc: 'PRICE RECEIVED' }],
@@ -85,13 +85,13 @@ async function probeBls() {
 async function probeCensus() {
   const key = K('CENSUS_KEY');
   if (!key) return rec('Census', '(all)', 'SKIP', 'set CENSUS_KEY (free: api.census.gov/data/key_signup.html)');
-  const hs = { avocado: '0804400000', lime: '0805502000', banana: '0803901100', garlic: '0703200000', pineapple: '0804300040', ginger: '0910110000', 'bell-pepper': '0709604000' };
-  // most recent closed month is ~6 weeks back; try a few.
-  const months = (() => { const out = []; const d = new Date(); for (let i = 2; i <= 5; i++) { const m = new Date(d.getFullYear(), d.getMonth() - i, 1); out.push(`${m.getFullYear()}-${String(m.getMonth() + 1).padStart(2, '0')}`); } return out; })();
+  const hs = { avocado: '080440', lime: '080550', banana: '080390', garlic: '070320', pineapple: '080430', ginger: '091011', 'bell-pepper': '070960' };
+  // most recent closed month is ~6 weeks back; try a wider window.
+  const months = (() => { const out = []; const d = new Date(); for (let i = 2; i <= 8; i++) { const m = new Date(d.getFullYear(), d.getMonth() - i, 1); out.push(`${m.getFullYear()}-${String(m.getMonth() + 1).padStart(2, '0')}`); } return out; })();
   for (const [label, code] of Object.entries(hs)) {
     let done = false;
     for (const t of months) {
-      const url = `https://api.census.gov/data/timeseries/intltrade/imports/hs?get=GEN_VAL_MO,GEN_QY1_MO,UNIT_QY1,I_COMMODITY_LDESC&I_COMMODITY=${code}&COMM_LVL=HS10&time=${t}&key=${key}`;
+      const url = `https://api.census.gov/data/timeseries/intltrade/imports/hs?get=GEN_VAL_MO,GEN_QY1_MO,UNIT_QY1,I_COMMODITY_LDESC&I_COMMODITY=${code}&COMM_LVL=HS6&time=${t}&key=${key}`;
       try {
         const r = await j(url);
         if (Array.isArray(r) && r.length > 1) {
@@ -142,11 +142,17 @@ async function probeFred() {
 async function probeAms() {
   const key = K('AMS_KEY');
   if (!key) return rec('AMS', '(all)', 'SKIP', 'set AMS_KEY');
-  const auth = 'Basic ' + Buffer.from(key + ':').toString('base64');
-  const reports = [['lamb cutout 2649', '2649'], ['lamb boxed 2648', '2648'], ['retail chicken 2499', '2499'], ['retail turkey 3375', '3375']];
-  for (const [label, id] of reports) {
+  const lmrAuth = process.env.LMR_KEY ? 'Basic ' + Buffer.from(process.env.LMR_KEY + ':').toString('base64') : undefined;
+  const amsAuth = 'Basic ' + Buffer.from(key + ':').toString('base64');
+  // lamb cutout/boxed are LMR Datamart reports (not the MARS produce endpoint);
+  // retail chicken/turkey are MMN reports (slug-based) — try MARS, may need MMN.
+  const reports = [
+    ['lamb cutout 2649', '2649', 'lmr'], ['lamb boxed 2648', '2648', 'lmr'],
+    ['retail chicken 2499', '2499', 'ams'], ['retail turkey 3375', '3375', 'ams'],
+  ];
+  for (const [label, id, kind] of reports) {
     try {
-      const r = await F.fetchAmsReport(id, null, auth, 30);
+      const r = kind === 'lmr' ? await F.fetchLmrReport(id, null, lmrAuth, 30) : await F.fetchAmsReport(id, null, amsAuth, 30);
       const rowsR = (r && (r.results || (r.report && r.report.results))) || (Array.isArray(r) ? r : []);
       if (rowsR && rowsR.length) {
         const fields = Object.keys(rowsR[0] || {}).slice(0, 6).join(',');
