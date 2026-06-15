@@ -28,6 +28,17 @@ test('trendConfidence: clean corroborated trend → high; noisy → capped', () 
   assert.equal(trendConfidence(null), null);
 });
 
+test('trendConfidence: cross-market dispersion (≥3 markets, one type) earns medium, never high', () => {
+  // 8 USDA terminal markets agreeing on direction — one methodology (nTypes=1).
+  assert.equal(trendConfidence({ pct: 0.1, nTypes: 1, nFamilies: 8, agreement: 0.875, noise: 0.05 }), 'medium');
+  // Capped at medium even with perfect agreement — 'high' needs ≥2 independent dollar types (the moat).
+  assert.equal(trendConfidence({ pct: 0.1, nTypes: 1, nFamilies: 8, agreement: 1, noise: 0.02 }), 'medium');
+  // Fewer than 3 markets, one type → low (no cross-market basis to lean on).
+  assert.equal(trendConfidence({ pct: 0.1, nTypes: 1, nFamilies: 2, agreement: 1, noise: 0.02 }), 'low');
+  // A noisy cross-market path still self-caps to low (jagged = noise dressed as trend).
+  assert.equal(trendConfidence({ pct: 0.1, nTypes: 1, nFamilies: 8, agreement: 0.875, noise: 0.30 }), 'low');
+});
+
 test('SHIPPABLE BAR: measured cross-market range ships (produce)', () => {
   assert.equal(isShippable({ level: measuredRange, trend: { pct: -0.089, nTypes: 2, agreement: 0.625, noise: 0.378 } }), true,
     'a 7-market measured range ships even with a noisy trend');
