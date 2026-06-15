@@ -1718,7 +1718,12 @@
         "years": 2,
         "_status": "STAGED — NOAA tuna lines (0302 fresh / 0304.87 frozen fillet); confirm HTS via --verify."
       },
-      "coverage": "Single-market NOAA import unit value; the WPU0223 seafood grab-bag retired 2026-06-15 (heterogeneous — see docs). No species-specific free 2nd trend type yet → expanding coverage, not shipping. Pending own-seafood-data sourcing."
+      "coverage": "NOAA import unit value (level) + species-specific BLS PPI Tuna (WPU02230136, staged — verify on keyed run). Honest species corroboration replacing the retired WPU0223 grab-bag.",
+      "bls": {
+        "seriesId": "WPU02230136",
+        "_status": "STAGED 2026-06-15 — species-specific BLS PPI (per the seafood-sourcing research), replacing the retired WPU0223 grab-bag. Verify it resolves via the BLS API on the next keyed run; the code follows the proven WPU0223xx pattern (same mechanism as shrimp WPU02230501). If it resolves, this item re-ships with honest species corroboration; if not, it stays expanding-coverage.",
+        "_report": "BLS PPI Tuna (species-specific, current)."
+      }
     },
     "whole-lobster": {
       "verified": true,
@@ -1735,7 +1740,12 @@
         "years": 2,
         "_status": "STAGED — NOAA lobster lines (0306.12 frozen / 0306.32 live); confirm HTS via --verify."
       },
-      "coverage": "Single-market NOAA import unit value; the WPU0223 seafood grab-bag retired 2026-06-15 (heterogeneous — see docs). No species-specific free 2nd trend type yet → expanding coverage, not shipping. Pending own-seafood-data sourcing."
+      "coverage": "NOAA import unit value (level) + species-specific BLS PPI Lobsters (WPU02230503, staged — verify on keyed run). Honest species corroboration replacing the retired WPU0223 grab-bag.",
+      "bls": {
+        "seriesId": "WPU02230503",
+        "_status": "STAGED 2026-06-15 — species-specific BLS PPI (per the seafood-sourcing research), replacing the retired WPU0223 grab-bag. Verify it resolves via the BLS API on the next keyed run; the code follows the proven WPU0223xx pattern (same mechanism as shrimp WPU02230501). If it resolves, this item re-ships with honest species corroboration; if not, it stays expanding-coverage.",
+        "_report": "BLS PPI Lobsters (species-specific, current)."
+      }
     },
     "whole-branzino": {
       "verified": false,
@@ -5261,7 +5271,12 @@
         "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. NOAA import unit value, landed-adjacent (BELOW true delivered wholesale)",
         "commodity": "halibut"
       },
-      "coverage": "Single-market NOAA import unit value; the WPU0223 seafood grab-bag retired 2026-06-15 (heterogeneous — see docs). No species-specific free 2nd trend type yet → expanding coverage, not shipping. Pending own-seafood-data sourcing."
+      "coverage": "NOAA import unit value (level) + species-specific BLS PPI Halibut (WPU02230102, staged — verify on keyed run). Honest species corroboration replacing the retired WPU0223 grab-bag.",
+      "bls": {
+        "seriesId": "WPU02230102",
+        "_status": "STAGED 2026-06-15 — species-specific BLS PPI (per the seafood-sourcing research), replacing the retired WPU0223 grab-bag. Verify it resolves via the BLS API on the next keyed run; the code follows the proven WPU0223xx pattern (same mechanism as shrimp WPU02230501). If it resolves, this item re-ships with honest species corroboration; if not, it stays expanding-coverage.",
+        "_report": "BLS PPI Halibut (species-specific, current)."
+      }
     },
     "whole-trout": {
       "verified": true,
@@ -5278,7 +5293,7 @@
         "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. NOAA import unit value, landed-adjacent (BELOW true delivered wholesale)",
         "commodity": "trout"
       },
-      "coverage": "Single-market NOAA import unit value; the WPU0223 seafood grab-bag retired 2026-06-15 (heterogeneous — see docs). No species-specific free 2nd trend type yet → expanding coverage, not shipping. Pending own-seafood-data sourcing."
+      "coverage": "Single-market NOAA import value; no US per-species PPI (mostly farmed/freshwater; NOAA landings often confidentiality-suppressed) → expanding coverage. Honest dead-end pending EUMOFA-illustrative."
     },
     "scallops": {
       "verified": true,
@@ -5296,7 +5311,12 @@
         "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. NOAA import unit value, landed-adjacent (BELOW true delivered wholesale)",
         "commodity": "scallops"
       },
-      "coverage": "Single-market NOAA import unit value; the WPU0223 seafood grab-bag retired 2026-06-15 (heterogeneous — see docs). No species-specific free 2nd trend type yet → expanding coverage, not shipping. Pending own-seafood-data sourcing."
+      "coverage": "NOAA import unit value (level) + species-specific BLS PPI Sea Scallops (WPU02230506, staged — verify on keyed run). Honest species corroboration replacing the retired WPU0223 grab-bag.",
+      "bls": {
+        "seriesId": "WPU02230506",
+        "_status": "STAGED 2026-06-15 — species-specific BLS PPI (per the seafood-sourcing research), replacing the retired WPU0223 grab-bag. Verify it resolves via the BLS API on the next keyed run; the code follows the proven WPU0223xx pattern (same mechanism as shrimp WPU02230501). If it resolves, this item re-ships with honest species corroboration; if not, it stays expanding-coverage.",
+        "_report": "BLS PPI Sea Scallops (species-specific, current)."
+      }
     },
     "whole-crab": {
       "verified": true,
@@ -5313,7 +5333,12 @@
         "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. NOAA import unit value, landed-adjacent (BELOW true delivered wholesale)",
         "commodity": "crab"
       },
-      "coverage": "Single-market NOAA import unit value; the WPU0223 seafood grab-bag retired 2026-06-15 (heterogeneous — see docs). No species-specific free 2nd trend type yet → expanding coverage, not shipping. Pending own-seafood-data sourcing."
+      "coverage": "NOAA import unit value (level) + species-specific BLS PPI Crabs (WPU02230502, staged — verify on keyed run). Honest species corroboration replacing the retired WPU0223 grab-bag.",
+      "bls": {
+        "seriesId": "WPU02230502",
+        "_status": "STAGED 2026-06-15 — species-specific BLS PPI (per the seafood-sourcing research), replacing the retired WPU0223 grab-bag. Verify it resolves via the BLS API on the next keyed run; the code follows the proven WPU0223xx pattern (same mechanism as shrimp WPU02230501). If it resolves, this item re-ships with honest species corroboration; if not, it stays expanding-coverage.",
+        "_report": "BLS PPI Crabs (species-specific, current)."
+      }
     },
     "octopus": {
       "verified": true,
@@ -5331,7 +5356,7 @@
         "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. NOAA import unit value, landed-adjacent (BELOW true delivered wholesale)",
         "commodity": "octopus"
       },
-      "coverage": "Single-market NOAA import unit value; the WPU0223 seafood grab-bag retired 2026-06-15 (heterogeneous — see docs). No species-specific free 2nd trend type yet → expanding coverage, not shipping. Pending own-seafood-data sourcing."
+      "coverage": "Single-market NOAA import value; NO free US per-species price exists (only EU EUMOFA first-sale / JP Toyosu — foreign geography) → expanding coverage. Honest US dead-end."
     },
     "salmon-skin-on-fillet": {
       "verified": true,
