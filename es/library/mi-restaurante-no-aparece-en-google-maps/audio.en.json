@@ -1,0 +1,355 @@
+{
+  "version": 1,
+  "generatedAt": "2026-06-15T09:38:01.671Z",
+  "engine": "f5",
+  "model": "don-reference.m4a",
+  "voice": "f5:don-reference.m4a",
+  "language": "en",
+  "total": 399.39,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "En resumen",
+      "start": 0,
+      "end": 0.48
+    },
+    {
+      "id": 1,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Cuatro causas explican la mayor parte de la invisibilidad del map pack de restaurantes: Google Business Profile no reclamado, categoría primaria incorrecta, listing suspendido, y listing duplicado. Las primeras tres son corregibles por el operador el mismo día; los duplicados pueden tomar 7, 21 días para fusionarse.",
+      "start": 1.03,
+      "end": 16.53
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "El map pack casi siempre es un problema de Google Business Profile, no del sitio web. Diagnostica el G B P antes de tocar el sitio.",
+      "start": 17.03,
+      "end": 23.45
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "La mayoría de los restaurantes encuentran el arreglo en las primeras tres revisiones; el orden diagnóstico abajo pone los chequeos de mayor rendimiento primero.",
+      "start": 23.95,
+      "end": 31.9
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Esta es una de las llamadas más frecuentes que recibo. \"Don, mi restaurante no sale en Google Maps. Mi competencia sí. ¿Qué pasa?\" La buena noticia: el 90% de las veces es uno de cuatro problemas, y todos se arreglan en menos de una semana.",
+      "start": 32.7,
+      "end": 44.46
+    },
+    {
+      "id": 5,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "El árbol de decisión del diagnóstico. Empieza arriba: ¿has reclamado tu Perfil de Negocio en Google? Si la respuesta es no, la causa raíz es una ficha no reclamada, reclámala en business punto google punto com. Si la respuesta es sí, pregunta: ¿tu nombre, dirección y teléfono son consistentes en tres o más directorios? Si no, la causa raíz es inconsistencia de N A P, limpia los treinta directorios principales. Si sí, pregunta: ¿tu categoría primaria es una categoría específica de restaurante, como Restaurante Italiano o Restaurante Vietnamita, y no la genérica Restaurante? Si no, la causa raíz es categoría incorrecta, cámbiala a la cocina específica más estrecha. Si sí, pregunta: ¿hay cinco o más fotos subidas en los últimos sesenta días? Si no, la causa raíz es un perfil estancado, sube fotos frescas esta semana. Si sí, la causa raíz casi con seguridad es ficha suspendida o ficha duplicada, abre el dashboard y busca el banner, luego busca tu dirección en Maps por un segundo pin.",
+      "start": 45.56,
+      "end": 95.13
+    },
+    {
+      "id": 6,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Causa 1, No has reclamado el listing (40% de los casos).",
+      "start": 96.63,
+      "end": 99.37
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Google crea automáticamente un listing para tu restaurante cuando suficientes personas lo buscan. Si nunca lo reclamaste, existe pero está \"huérfano\", sin fotos, sin horarios actualizados, ranqueando bajo.",
+      "start": 100.32,
+      "end": 110.53
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Cómo verificar: busca tu restaurante en Google. Si ves un panel con tu nombre pero NO ves el botón \"Soy el dueño de este negocio,\" entonces ya está reclamado por alguien. Si lo ves, hazle clic.",
+      "start": 111.33,
+      "end": 121
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Cómo arreglarlo: sigue los 7 pasos para configurar G B P . La verificación tarda 5-14 días por correo postal.",
+      "start": 121.8,
+      "end": 127.29
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Causa 2, La categoría primaria está mal (30%).",
+      "start": 128.79,
+      "end": 131.14
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Tu categoría primaria controla para qué búsquedas Google te muestra. Si elegiste \"Restaurant\" en general en vez de \"Mexican Restaurant\" específico, no compites en las búsquedas que realmente importan.",
+      "start": 132.09,
+      "end": 142.15
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Cómo verificar: corre G B P Grader sobre tu listing. Te dice qué categoría primaria tienes y cuáles deberías considerar.",
+      "start": 142.95,
+      "end": 149.08
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Cómo arreglarlo: en G B P, ve a Edit profile → Business information → Category → Primary category. Cámbialo a la opción más específica para la que tu restaurante realmente califica.",
+      "start": 149.88,
+      "end": 159.31
+    },
+    {
+      "id": 14,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Causa 3, El listing está suspendido (15%).",
+      "start": 160.81,
+      "end": 162.91
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Google suspende listings cuando detecta inconsistencias entre tu dirección, tu nombre legal, y la información en tu sitio web. Síntoma: el listing existe pero no aparece en búsquedas, ni siquiera para tu propio nombre.",
+      "start": 163.86,
+      "end": 174.76
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Cómo verificar: busca tu restaurante por nombre + ciudad. Si no aparece pero sí aparecen otros restaurantes que NO mencionaste, está suspendido.",
+      "start": 175.56,
+      "end": 182.77
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Cómo arreglarlo: necesitas reinstaurarlo. Hazlo desde tu cuenta G B P, Settings → Reinstate. Te piden documentación: foto del frontis con tu nombre visible, factura de servicios públicos a tu nombre comercial, y a veces licencia de funcionamiento. Tarda 5-21 días.",
+      "start": 183.57,
+      "end": 196.61
+    },
+    {
+      "id": 18,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Causa 4, Listing duplicado (15%).",
+      "start": 198.11,
+      "end": 199.72
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Si Google detecta dos listings para la misma dirección (porque cambiaste de nombre, te mudaste 3 cuadras, o un agregador creó uno automáticamente), suprime ambos hasta que uno se \"gane.\" Síntoma: aparece a veces, otras no, dependiendo del día.",
+      "start": 200.67,
+      "end": 212.63
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Cómo verificar: busca tu dirección en Google Maps. Si ves dos pines del mismo establecimiento (o nombres similares), tienes duplicado.",
+      "start": 213.43,
+      "end": 220.1
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Cómo arreglarlo: marca el incorrecto como \"Place is permanently closed\" desde tu cuenta G B P. Tarda 7-14 días para que Google fusione.",
+      "start": 220.9,
+      "end": 227.62
+    },
+    {
+      "id": 22,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "A dónde suele rastrearse la invisibilidad del map pack, ordenado por frecuencia relativa. Perfil de Negocio en Google no reclamado es la causa más común. N A P inconsistente, nombre, dirección, teléfono, entre directorios es la segunda más común. Categoría primaria incorrecta es la tercera. Fichas duplicadas y fichas suspendidas son menos comunes pero todavía representan una porción significativa. Todo lo demás es el residuo.",
+      "start": 228.72,
+      "end": 249.9
+    },
+    {
+      "id": 23,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "El plan de 10 minutos.",
+      "start": 251.4,
+      "end": 252.47
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Pon un temporizador. Diez revisiones, un minuto cada una. No deliberes, si un paso es un “sí” claro, sigue; si es un “no,” márcalo y continúa. Las marcadas las arreglas después del diagnóstico.",
+      "start": 253.42,
+      "end": 263.53
+    },
+    {
+      "id": 25,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "El diagnóstico de diez minutos, paso a paso. Minuto uno: abre el dashboard del Perfil de Negocio en Google en business punto google punto com. Minuto dos: verifica que nombre, dirección y teléfono coincidan exactamente con el letrero de tu fachada. Minuto tres: revisa tu categoría primaria, debe ser una cocina específica, no Restaurante genérico. Minuto cuatro: revisa tus horarios, incluyendo días festivos y horarios especiales. Minuto cinco: busca tu dirección exacta en Maps y cuenta los pines para detectar duplicados. Minuto seis: cuenta las fotos subidas en los últimos sesenta días. Minuto siete: busca el nombre de tu restaurante más la ciudad en Google y mira si apareces en el map pack. Minuto ocho: busca una consulta near me, como Restaurante italiano cerca de mí, desde dentro de tu radio de servicio. Minuto nueve: repite ambas búsquedas en una ventana de incógnito con la ubicación fijada en tu fachada. Minuto diez: si algo está mal, abre un ticket de reparación de Business Profile y captura el dashboard como documentación.",
+      "start": 264.63,
+      "end": 315.97
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Si después de revisar los cuatro no encuentras la causa, es posible que estés en un mercado super-competitivo y simplemente no ranquees alto suficiente. Restaurant Audit compara tu listing contra el promedio de tu zona y te dice qué falta.",
+      "start": 316.97,
+      "end": 328.64
+    },
+    {
+      "id": 27,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Si quieres que mire tu caso específico, escríbeme por La Ventana . Leo cada mensaje.",
+      "start": 329.44,
+      "end": 333.65
+    },
+    {
+      "id": 28,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "Qué hacer ahora",
+      "start": 334.45,
+      "end": 335.22
+    },
+    {
+      "id": 29,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Lee: el término del glosario relacionado →",
+      "start": 335.77,
+      "end": 337.97
+    },
+    {
+      "id": 30,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Prueba: la herramienta que acompaña este artículo →",
+      "start": 338.47,
+      "end": 341.16
+    },
+    {
+      "id": 31,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "O escríbele a Don: La Ventana →",
+      "start": 341.66,
+      "end": 343.31
+    },
+    {
+      "id": 32,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Lo que importa",
+      "start": 343.86,
+      "end": 344.53
+    },
+    {
+      "id": 33,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "La categoría primaria “Restaurante” es la peor elección posible, te pone en competencia con todo otro restaurante en tu código postal; elige la categoría específica de cocina más estrecha.",
+      "start": 345.08,
+      "end": 354.8
+    },
+    {
+      "id": 34,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Los listings no reclamados rankean más bajo que los reclamados por defecto y no aparecen en el map pack en absoluto post-Q1-twenty twenty-four.",
+      "start": 355.3,
+      "end": 362.36
+    },
+    {
+      "id": 35,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Un listing suspendido se lee como “Tu perfil ha sido suspendido” en el dashboard; el reinstate necesita contrato de renta, licencia de negocio o cuenta de servicios como documentación.",
+      "start": 362.86,
+      "end": 372.14
+    },
+    {
+      "id": 36,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Los listings duplicados sacan ambos pines del map pack porque Google no puede decir cuál es canónico, pide la eliminación del duplicado con prueba.",
+      "start": 372.64,
+      "end": 380
+    },
+    {
+      "id": 37,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "Si la caminata de 10 minutos no resuelve, el ~5% residual necesita limpieza de consistencia N A P en los top 30 directorios (60, 90 minutos de trabajo).",
+      "start": 380.5,
+      "end": 387.96
+    },
+    {
+      "id": 38,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "Conceptos clave",
+      "start": 388.76,
+      "end": 389.49
+    },
+    {
+      "id": 39,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Ficha de Google Business, Glosario Muntin Digital",
+      "start": 390.04,
+      "end": 392.48
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Embudo, Glosario Muntin Digital",
+      "start": 392.98,
+      "end": 394.54
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Tasa de conversión, Glosario Muntin Digital",
+      "start": 395.04,
+      "end": 397.24
+    },
+    {
+      "id": 42,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Cubierto, Glosario Muntin Digital",
+      "start": 397.74,
+      "end": 399.39
+    }
+  ]
+}
