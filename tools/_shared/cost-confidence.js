@@ -41,8 +41,12 @@
   function trendConfidence(trend) {
     if (!trend || trend.pct == null) return null;
     var tt = trend.nTypes != null ? trend.nTypes : (trend.nFamilies != null ? trend.nFamilies : trend.nSources) || 0;
+    var tf = trend.nFamilies != null ? trend.nFamilies : tt;
     var agree = trend.agreement || 0;
-    var ceil = (tt >= 2 && agree >= 0.66) ? 2 : (tt >= 2 && agree >= 0.33) ? 1 : 0;
+    // Cross-market dispersion (≥3 independent markets, one methodology, agreeing)
+    // earns MEDIUM — never high (high needs ≥2 independent dollar types). Mirrors
+    // composite-price.js confidenceFor() exactly; kept in lockstep by the tests.
+    var ceil = (tt >= 2 && agree >= 0.66) ? 2 : (tt >= 2 && agree >= 0.33) ? 1 : (tf >= 3 && agree >= 0.66) ? 1 : 0;
     // A jagged path is noise dressed as a trend; endpoints agreeing doesn't redeem it.
     if (trend.noise != null) {
       if (trend.noise > 0.20) ceil = 0;

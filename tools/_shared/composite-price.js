@@ -218,7 +218,17 @@
     if (lt >= 2 && level.typeDispersion != null && level.typeDispersion > 0.15) levelCeil = 1;
     var trendCeil;
     if (!trend || trend.pct == null) trendCeil = 2;          // no trend signal → don't cap the level
-    else trendCeil = (tt >= 2 && agree >= 0.66) ? 2 : (tt >= 2 && agree >= 0.33) ? 1 : 0;
+    else {
+      var tf = trend.nFamilies != null ? trend.nFamilies : tt;
+      // Cross-market dispersion earns MEDIUM honestly: ≥3 INDEPENDENT markets
+      // (one methodology, e.g. USDA-AMS terminals) agreeing on direction is real
+      // per-item corroboration — stronger than a shared category index. It can
+      // never buy 'high'; that still requires ≥2 independent dollar TYPES (the moat).
+      trendCeil = (tt >= 2 && agree >= 0.66) ? 2
+        : (tt >= 2 && agree >= 0.33) ? 1
+        : (tf >= 3 && agree >= 0.66) ? 1
+        : 0;
+    }
     // Stability: a jagged path is noise dressed as a trend — endpoints agreeing
     // doesn't redeem it. >20% residual scatter → low; >8% → at most medium.
     if (trend && trend.noise != null) {

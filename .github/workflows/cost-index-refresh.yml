@@ -132,7 +132,14 @@ jobs:
           # Stage ONLY the measured data + the cost-index surfaces, then discard
           # the incidental site-wide nav re-stamp from sync-includes, so the commit
           # is always exactly the dated read — never a surprise sweep.
-          git add data/cost-index.json data/cost-index.js cost-index/ es/cost-index/ \
+          # Stage the measured data, the derived matrices (health + seasonality —
+          # both are pure functions of cost-index.json and are --check-gated, so
+          # leaving them out lets them drift stale until the next full build), and
+          # the cost-index surfaces. Then discard the incidental site-wide nav
+          # re-stamp from sync-includes, so the commit is always exactly the read.
+          git add data/cost-index.json data/cost-index.js \
+            data/cost-index-health.json data/seasonality.json \
+            cost-index/ es/cost-index/ \
             library/ingredient-yields/ es/library/ingredient-yields/ sitemap.xml
           git checkout -- . 2>/dev/null || true
           if git diff --cached --quiet; then

@@ -159,6 +159,30 @@ test('CONFIDENCE counts TYPES not families: correlated terminals cannot reach "h
   assert.notEqual(r.confidence, 'high');
 });
 
+test('CROSS-MARKET: ≥3 terminal markets agreeing earns MEDIUM on dispersion (never high)', () => {
+  // The honest produce rule: many INDEPENDENT markets (one methodology) agreeing
+  // on direction is real per-item corroboration → medium. It can never buy high;
+  // that still requires ≥2 independent dollar TYPES (the moat). Replaces the old
+  // shared-category-index crutch that faked a 2nd type to lift 44 produce items.
+  const r = C.assess({
+    levelObs: [
+      { source: 'usda-ams-atlanta', basis: 'wholesale', valueCents: 2400, family: 'usda-ams-atlanta', type: 'usda-ams' },
+      { source: 'usda-ams-chicago', basis: 'wholesale', valueCents: 2500, family: 'usda-ams-chicago', type: 'usda-ams' },
+      { source: 'usda-ams-miami', basis: 'wholesale', valueCents: 2300, family: 'usda-ams-miami', type: 'usda-ams' },
+      { source: 'usda-ams-boston', basis: 'wholesale', valueCents: 2450, family: 'usda-ams-boston', type: 'usda-ams' },
+    ],
+    sourceSeries: {
+      'usda-ams-atlanta': { basis: 'wholesale', values: [2200, 2250, 2300, 2400], family: 'usda-ams-atlanta', type: 'usda-ams' },
+      'usda-ams-chicago': { basis: 'wholesale', values: [2300, 2350, 2400, 2500], family: 'usda-ams-chicago', type: 'usda-ams' },
+      'usda-ams-miami': { basis: 'wholesale', values: [2100, 2150, 2200, 2300], family: 'usda-ams-miami', type: 'usda-ams' },
+      'usda-ams-boston': { basis: 'wholesale', values: [2250, 2300, 2350, 2450], family: 'usda-ams-boston', type: 'usda-ams' },
+    },
+  });
+  assert.equal(r.level.nTypes, 1);                              // one methodology
+  assert.ok(r.trend.nFamilies >= 3 && r.trend.agreement >= 0.66);
+  assert.equal(r.confidence, 'medium');                        // earned on cross-market dispersion
+});
+
 test('RANGE-WIDENING: a single market gets an honest band from recent volatility', () => {
   const lvl = C.compositeLevel([
     { source: 'usda-lmr', basis: 'wholesale', valueCents: 1400, family: 'lmr', recent: [1300, 1500, 1350, 1450, 1400] },
