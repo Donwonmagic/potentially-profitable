@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "generatedAt": "2026-06-15T21:25:19.763Z",
+  "engine": "f5",
+  "model": "don-reference.m4a",
+  "voice": "f5:don-reference.m4a",
+  "language": "en",
+  "total": 112.13,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Bounce probability by mobile page-load time, indexed against a one-second baseline. At 1 second: baseline reference. At 3 seconds: 32 percent higher bounce probability. At 6 seconds: 106 percent higher. At 10 seconds: 123 percent higher.",
+      "start": 0,
+      "end": 11.42
+    },
+    {
+      "id": 1,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Key findings.",
+      "start": 12.92,
+      "end": 13.54
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "53% of mobile site visits are abandoned if a page takes longer than three seconds to load.",
+      "start": 14.49,
+      "end": 18.9
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "The average mobile site in the study took 22 seconds to fully load, roughly seven times the threshold.",
+      "start": 19.4,
+      "end": 24.4
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Bounce probability rises sharply in the 3, 10 second range: a 3s load has a bounce probability 32% higher than a 1s load; at 6s it is 106% higher; at 10s it is 123% higher.",
+      "start": 24.9,
+      "end": 33.34
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "The study measured 11.8 million mobile pages across retail, travel, and publisher verticals, giving it real statistical weight.",
+      "start": 33.84,
+      "end": 40.07
+    },
+    {
+      "id": 6,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "Google's subsequent Core Web Vitals framework (twenty twenty onwards) codified the three-second threshold into the Largest Contentful Paint metric, where the \"good\" bucket ends at 2.5 seconds.",
+      "start": 40.57,
+      "end": 50
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "How Muntin uses this.",
+      "start": 51.5,
+      "end": 52.57
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "This is the anchor study behind every \"mobile speed matters\" claim in the library. It shows up in:",
+      "start": 53.52,
+      "end": 58.32
+    },
+    {
+      "id": 9,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Why your restaurant loses reservations every night Leak number 1, slow mobile load, is grounded in this study. The 53% bounce rate is what makes the \"lose half your traffic before the menu\" framing real rather than rhetorical.",
+      "start": 58.87,
+      "end": 69.96
+    },
+    {
+      "id": 10,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "How much does a custom restaurant website cost? The performance-budget section of the pricing article points at this study to explain why a sub-two-second mobile load is treated as a baseline deliverable, not an upgrade.",
+      "start": 70.46,
+      "end": 81.27
+    },
+    {
+      "id": 11,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Wix versus custom for restaurants: what breaks first Break number 2, the platform performance ceiling, references this study to explain why the three-second threshold is not reachable on most template builders without a rebuild.",
+      "start": 81.77,
+      "end": 92.85
+    },
+    {
+      "id": 12,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Full citation.",
+      "start": 94.35,
+      "end": 95.02
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "An, D. (twenty seventeen, February). Find out how you stack up to new industry benchmarks for mobile page speed . Think with Google. thinkwithgoogle.com",
+      "start": 95.97,
+      "end": 103.43
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Last reviewed: April twenty twenty-six, the underlying finding is reinforced by Google's current Core Web Vitals data and remains cited widely in mobile U X research.",
+      "start": 103.98,
+      "end": 112.13
+    }
+  ]
+}
