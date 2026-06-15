@@ -3023,7 +3023,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .tool-data-promise__links a:hover{border-bottom-color:var(--teal)}
 
 
-/* ===== [core] Newsletter capture (in global footer; on every page) (lines 6571-6593) ===== */
+/* ===== [core] Newsletter capture (in global footer; on every page) (lines 6571-6628) ===== */
 
 /* Phase G.10 (Growth) — quiet newsletter capture in the global footer.
    Two short lines, one input, one button — no badges, no pop-ups, no
@@ -3044,10 +3044,45 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .foot-newsletter-form button:hover{filter:brightness(1.08)}
 .foot-newsletter-form[data-state="ok"] input,.foot-newsletter-form[data-state="ok"] button{display:none}
 .foot-newsletter-form[data-state="ok"] .foot-newsletter-pitch::after{content:" — got it. Check your inbox.";opacity:1;font-style:italic}
+/* Muntin Ledger pre-launch — founding-member waitlist band (homepage).
+   A light, centered band that sits in the page rhythm between the
+   field-notes rail and the product cards. Uses section.block padding
+   for vertical spacing; a faint teal-tint wash + hairline rules mark
+   it as its own zone without going dark. The .founding-form posts to
+   /api/waitlist and gets ts-stamp + async submit + inline success from
+   first-touch.js via the shared .js-signup-form handler. */
+.founding-band{background:linear-gradient(180deg, var(--teal-tint) 0%, var(--cream) 70%);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.founding-band .section-header{margin-bottom:36px}
+.founding-band .section-header .eyebrow{justify-content:center}
+.founding-band .section-header p{margin-inline:auto;color:var(--ink-soft)}
+.founding-form{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.founding-form-fields{display:flex;flex-direction:column;gap:14px}
+@media(min-width:560px){.founding-form-fields{flex-direction:row;gap:12px}.founding-field{flex:1 1 0;min-width:0}}
+.founding-field{display:flex;flex-direction:column;gap:6px;text-align:left}
+.founding-form-label{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-soft)}
+.founding-optional{font-weight:400;letter-spacing:0.02em;text-transform:none;color:var(--stone)}
+.founding-form input[type="email"],.founding-form input[type="text"]:not([name="hp"]){width:100%;box-sizing:border-box;padding:12px 14px;min-height:46px;border:1px solid var(--line-input);border-radius:var(--r-sm);background:var(--white);color:var(--ink);font:inherit;font-size:16px}
+.founding-form input[type="email"]::placeholder,.founding-form input[type="text"]:not([name="hp"])::placeholder{color:var(--stone)}
+.founding-form input[type="email"]:focus-visible,.founding-form input[type="text"]:not([name="hp"]):focus-visible{outline:2px solid var(--teal);outline-offset:1px;border-color:var(--teal)}
+.founding-form .cf-turnstile{margin:2px auto 0}
+.founding-form button{align-self:center;padding:13px 28px;min-height:48px;border:0;border-radius:var(--r-sm);background:var(--teal);color:#fff;font:inherit;font-weight:600;font-size:16px;cursor:pointer;letter-spacing:0.02em}
+.founding-form button:hover{background:var(--teal-dark)}
+.founding-form button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+/* Inline success: the confirm line is hidden until the async submit
+   flips data-state="ok", at which point the fields/Turnstile/button
+   collapse and the centered confirmation takes their place. */
+.founding-form-confirm{display:none;margin:0;text-align:center;font-family:var(--font-display);font-style:italic;font-size:18px;line-height:1.4;color:var(--teal-dark)}
+.js-signup-form[data-state="ok"] .founding-form-fields,.js-signup-form[data-state="ok"] .cf-turnstile,.js-signup-form[data-state="ok"] button{display:none}
+.js-signup-form[data-state="ok"] .founding-form-confirm{display:block}
+.founding-demo-note{margin:24px auto 0;text-align:center;font-family:var(--font-body);font-size:var(--fs-body);color:var(--stone)}
+.founding-demo-note a{color:var(--teal);font-weight:600;border-bottom:1px solid color-mix(in srgb, var(--teal) 30%, transparent)}
+.founding-demo-note a:hover,.founding-demo-note a:focus-visible{color:var(--teal-dark);border-bottom-color:var(--teal-dark)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .founding-band{background:linear-gradient(180deg,#1B1E24 0%,#16181D 70%);border-block-color:#2C3038}:root:not([data-theme="light"]) .founding-form input[type="email"],:root:not([data-theme="light"]) .founding-form input[type="text"]:not([name="hp"]){background:#16181D;border-color:#3A3F49;color:#F1EDE5}:root:not([data-theme="light"]) .founding-form-confirm{color:#7AA7FF}}
 
 
 
-/* ===== [core] Touch-device hover hygiene (lines 6656-6694) ===== */
+
+/* ===== [core] Touch-device hover hygiene (lines 6691-6729) ===== */
 /* ============================================================
    Touch-device hover hygiene — neutralize sticky :hover effects
    on devices that don't have a hover capability. CSS :hover on
@@ -3087,7 +3122,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   *:hover { transition-duration: 0ms !important; }
 }
 
-/* ===== [core] Hero mobile reorder (homepage) (lines 6695-6719) ===== */
+/* ===== [core] Hero mobile reorder (homepage) (lines 6730-6754) ===== */
 
 /* ============================================================
    Hero mobile reorder — phones first, primary CTA above the fold.
@@ -3113,7 +3148,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Hero count chips (homepage) (lines 6795-6826) ===== */
+/* ===== [core] Hero count chips (homepage) (lines 6830-6861) ===== */
 
 /* ============================================================
    Hero count chips — small pill row showing library counts
@@ -3146,7 +3181,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   color: var(--teal);
 }
 
-/* ===== [core] Trust strip (homepage) (lines 6827-6853) ===== */
+/* ===== [core] Trust strip (homepage) (lines 6862-6888) ===== */
 
 /* ============================================================
    Trust strip — single thin band immediately under flagship
@@ -3174,7 +3209,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   color: var(--stone);
 }
 
-/* ===== [core] Compare cards (homepage) (lines 6854-6939) ===== */
+/* ===== [core] Compare cards (homepage) (lines 6889-6974) ===== */
 
 /* ============================================================
    Compare cards — three-column Patchwork / Agency / Muntin
@@ -3261,7 +3296,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Window Phase 2/3.6/4/5+ additions (sash/sidelight, attach, now, pulses, admin) (lines 7327-7590) ===== */
+/* ===== [core] Window Phase 2/3.6/4/5+ additions (sash/sidelight, attach, now, pulses, admin) (lines 7362-7625) ===== */
 /* ============ THE WINDOW — Phase 2/3.6/4/5+ additions ============
    Sash/sidelight named-pane composer (Phase 2.1), photo+voice attach
    row (Phase 3.2-3.6), now-line widget (Phase 4), site-wide pulse
@@ -3526,7 +3561,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .admin-callbacks__voice-label--deleted{color:var(--stone)}
 .admin-callbacks__meta{font-size:12px;color:var(--ink-soft);font-style:italic;margin:8px 0 0}
 
-/* ===== [core] Phase 1 — design tokens + MuntinUI component shells (.mtn-*) (lines 7591-7803) ===== */
+/* ===== [core] Phase 1 — design tokens + MuntinUI component shells (.mtn-*) (lines 7626-7838) ===== */
 
 /* ============ Phase 1 tokens (tool-suite upgrade) ============
    Additive tokens that the MuntinUI primitives consume. Existing
@@ -3740,7 +3775,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   }
 }
 
-/* ===== [core] Phase 2 — hub tier badge + tool-tier-filter strip (lines 7804-7857) ===== */
+/* ===== [core] Phase 2 — hub tier badge + tool-tier-filter strip (lines 7839-7892) ===== */
 
 /* ============ Phase 2 hub styles (tool-suite upgrade) ============
    Tier badge on each tool card + a JS-enhanced filter strip that
@@ -3795,7 +3830,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   display:none;
 }
 
-/* ===== [core] Phase 5 — dark-mode token override (prefers-color-scheme + [data-theme]) (lines 7858-7919) ===== */
+/* ===== [core] Phase 5 — dark-mode token override (prefers-color-scheme + [data-theme]) (lines 7893-7954) ===== */
 
 /* ============ Phase 5 dark-mode tokens (tool-suite upgrade) ============
    The Phase 1 component primitives all reference --mtn-surface /
@@ -3858,7 +3893,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Phase 7 — dark-mode toggle button (.theme-toggle) (lines 7920-7980) ===== */
+/* ===== [core] Phase 7 — dark-mode toggle button (.theme-toggle) (lines 7955-8015) ===== */
 /* ============ Phase 7 — dark-mode toggle button =============
    Sits in the nav next to lang-switch. Two SVG icons (sun + moon)
    stacked; CSS shows one based on the current [data-theme] state.
@@ -3920,7 +3955,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .mobile-theme .theme-toggle__label{display:inline}
 
 
-/* ===== [core] Phase 4 — next-tool recommendation card (.mtn-next-tool) (lines 7981-8021) ===== */
+/* ===== [core] Phase 4 — next-tool recommendation card (.mtn-next-tool) (lines 8016-8056) ===== */
 /* ============ Phase 4 — next-tool recommendation card =============
    Mounted at the end of a tool's result region by
    MuntinNextTool.render(). Visually quiet so it doesn't compete
@@ -3962,13 +3997,13 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .mtn-next-tool__link:focus-visible{outline:none;box-shadow:var(--ring-focus)}
 
 
-/* ===== [core] Phase G — About portrait frame (real photo overlay) (lines 8022-8026) ===== */
+/* ===== [core] Phase G — About portrait frame (real photo overlay) (lines 8057-8061) ===== */
 /* ===== Phase G — About portrait frame (real photo overlay; reused on homepage About teaser + /about/) ===== */
 .about-portrait-frame{position:relative;width:100%;aspect-ratio:4/5;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line-dark);background:var(--cream-2)}
 .about-portrait-frame .portrait{position:absolute;inset:0;border:0;border-radius:0;aspect-ratio:auto;width:100%;height:100%}
 .about-portrait-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 
-/* ===== [core] Batch marquee (lines 8027-8040) ===== */
+/* ===== [core] Batch marquee (lines 8062-8075) ===== */
 /* ===== Batch marquee — fixed strip above the nav (.batch-marquee is on every page when a batch is active) ===== */
 .batch-marquee{position:fixed;top:0;left:0;right:0;z-index:60}
 /* The fixed nav is offset below the fixed banner by --banner-h (set to the
@@ -3983,7 +4018,7 @@ body:has(.batch-marquee) main{padding-top:calc(64px + max(var(--banner-h,50px),5
 @media (max-width:640px){:root{--banner-h:72px}}
 
 
-/* ===== [core] Phase 9 — Light refresh (micro-interactions, depth, voice search, dark-mode polish) (lines 8041-8245) ===== */
+/* ===== [core] Phase 9 — Light refresh (micro-interactions, depth, voice search, dark-mode polish) (lines 8076-8280) ===== */
 /* ============ Phase 9 — Light refresh ============
    A small, additive cosmetic pass that layers on top of every
    previous phase without re-declaring anything. Five concerns:
@@ -4189,7 +4224,7 @@ body:has(.batch-marquee) main{padding-top:calc(64px + max(var(--banner-h,50px),5
 :root[data-theme="dark"] .theme-toggle:hover{background:var(--refresh-surface-1);border-color:var(--teal)}
 
 
-/* ===== [core] Dark-mode contrast completion (lines 8246-8515) ===== */
+/* ===== [core] Dark-mode contrast completion (lines 8281-8550) ===== */
 /* GEN:dark-mode:start — generated by scripts/build-dark-mode.mjs. DO NOT EDIT BY HAND. */
 /* TOKEN-FLIP dark theme (see scripts/build-dark-mode.mjs). The base palette
    is remapped at the dark root so every surface and its text flip together;

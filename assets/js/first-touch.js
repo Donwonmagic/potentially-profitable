@@ -252,7 +252,7 @@
   'use strict';
   if (typeof document === 'undefined') return;
   function init() {
-    var forms = document.querySelectorAll('.foot-newsletter-form');
+    var forms = document.querySelectorAll('.foot-newsletter-form, .js-signup-form');
     Array.prototype.forEach.call(forms, function (form) {
       // Stamp ts so the silent-200 server gate accepts the submit.
       var tsField = form.querySelector('input[name="ts"]');
@@ -271,7 +271,9 @@
         }).then(function () {
           form.dataset.state = 'ok';
           if (typeof window.plausible === 'function') {
-            try { window.plausible('Newsletter Signup', { props: { surface: form.dataset.locale === 'es' ? 'footer-es' : 'footer-en' } }); } catch (_) {}
+            var evName = form.dataset.event || 'Newsletter Signup';
+            var surface = form.dataset.surface || (form.dataset.locale === 'es' ? 'footer-es' : 'footer-en');
+            try { window.plausible(evName, { props: { surface: surface } }); } catch (_) {}
           }
         }).catch(function () { /* silent — error UI not needed for fire-and-forget */ });
       });
