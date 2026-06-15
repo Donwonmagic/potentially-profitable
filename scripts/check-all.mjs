@@ -384,6 +384,11 @@ const CHECKS = [
   // Shippable bar — below-bar ingredients must stay out of the browser seed
   // (no thin / no-level read on the dashboard; they live as expanding-coverage).
   ['Cost-index shippable bar','check-shippable-bar.mjs'],
+  // Band coverage — the published prediction band is a CONFORMAL interval whose
+  // realized coverage is backtested against deep history; this gate fails if the
+  // 80% band doesn't actually cover ~80% of next prints (verified, not asserted).
+  ['Cost-index band coverage','check-band-coverage.mjs'],
+  ['Cost-index band coverage self-test','check-band-coverage.mjs','--self-test'],
   // Dataset freshness — the JSON-LD dateModified on the methodology pages + hub
   // catalog must equal the seed's generatedAt (machine-readable freshness, a
   // top AI-citation factor). Stamped in place; --check pins it in sync.
