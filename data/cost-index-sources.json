@@ -1636,7 +1636,7 @@
       }
     },
     "striploin": {
-      "verified": false,
+      "verified": true,
       "lmr": {
         "reportId": "2453",
         "commodity": "strip, bnls, 0x1",
@@ -1653,12 +1653,16 @@
             "avg_price"
           ]
         },
-        "_status": "RESOLVED 2026-06-13 via --list-commodities 2453 'Choice Cuts' --lmr: IMPS 180 'Loin, strip, bnls, 0x1'. Was 'Strip Loin' (matched a $0.00 row).",
         "matchFields": [
           "item_description"
         ]
       },
-      "coverage": "Staged: source resolved (LMR 2453, IMPS 180 boneless strip), pending live verification."
+      "coverage": "Live: LMR 2453 boneless strip loin (IMPS 180) + FRED steak-retail corroborator. Ships like ribeye/tenderloin.",
+      "fred": {
+        "seriesId": "APU0000FC3101",
+        "basis": "retail",
+        "_note": "Beef steak retail (BLS via FRED) — the 2nd trend type that lets a single-market boxed-beef cut ship, matching ribeye/beef-tenderloin. Retail direction corroborates wholesale direction (§7 bridge)."
+      }
     },
     "leg-of-lamb": {
       "verified": false,
@@ -1676,9 +1680,9 @@
             "avg_price"
           ]
         },
-        "_status": "STAGED verified:false — reportId resolved 2026-06-13 to 2650 (LM_XL552, 'National Weekly Lamb Carcass and Lamb Cuts - Imported Product'). IMPORTED (AUS/NZ) product — representative for US restaurant lamb, LABEL as imported. --discover-lmr the exact Leg cut column (e.g. 'Leg boneless'/'Leg semi boneless') on 2650, tighten bounds, --flip."
+        "_status": "HONEST GAP (confirmed 2026-06-15): USDA LMR boxed-lamb-cuts reports (2648 domestic 5-day avg, 2650 imported) return only daily VOLUME summaries via the Datamart API — no per-cut price column (Leg/Shoulder live only in the PDF). 2649/2651 are carcass cutout, not cuts. No free per-cut wholesale price exists; leave verified:false and name the gap rather than force a number. Do NOT re-chase."
       },
-      "coverage": "Pending source wiring: lamb cuts publish weekly on LM_XL552 (report 2650, imported product); cut column to confirm via --discover, then --flip."
+      "coverage": "Honestly absent — no free per-cut lamb wholesale price (LMR feed is volume-only; cut prices are PDF-only)."
     },
     "whole-salmon": {
       "verified": true,
@@ -5156,13 +5160,13 @@
             "avg_price"
           ]
         },
-        "_status": "STAGED verified:false — reportId resolved 2026-06-13 to 2650 (LM_XL552, weekly lamb cuts, IMPORTED product; label as imported). Dropped the beef-style 'Choice Cuts' section — lamb sections differ; --discover-lmr the Shoulder cut column on 2650, tighten bounds, --flip."
+        "_status": "HONEST GAP (confirmed 2026-06-15): USDA LMR boxed-lamb-cuts reports (2648 domestic 5-day avg, 2650 imported) return only daily VOLUME summaries via the Datamart API — no per-cut price column (Leg/Shoulder live only in the PDF). 2649/2651 are carcass cutout, not cuts. No free per-cut wholesale price exists; leave verified:false and name the gap rather than force a number. Do NOT re-chase."
       },
       "bls": {
         "seriesId": "WPU0223",
         "_status": "lamb PPI is thin — confirm"
       },
-      "coverage": "Pending source wiring: lamb cuts publish in the LMR lamb family (e.g., LM_XL552); slug to be wired."
+      "coverage": "Honestly absent — no free per-cut lamb wholesale price (LMR feed is volume-only; cut prices are PDF-only)."
     },
     "pork-belly": {
       "verified": true,
