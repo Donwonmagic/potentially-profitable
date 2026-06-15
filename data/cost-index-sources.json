@@ -171,10 +171,6 @@
         "years": 2,
         "_report": "NOAA FOSS trade_data IMPORT unit value (sum val / sum kilos -> $/lb). HTS 030441 (salmon fillet fresh/chilled) + 030481 (frozen) only — bare 0304 dilutes with other species. Lands ~$5-7/lb, inside salmon-fillet bounds; a conservative landed-adjacent proxy, BELOW true delivered wholesale (excludes duty/freight/margin). Cited to NOAA in provenance."
       },
-      "bls": {
-        "seriesId": "WPU0223",
-        "_report": "Aggregate seafood PPI (Unprocessed & Prepared Seafood, current). Salmon-specific WPU02230103 is stale; this is the fresh seafood trend."
-      },
       "fred": {
         "seriesId": "PSALMUSDM",
         "basis": "index",
@@ -1636,7 +1632,7 @@
       }
     },
     "striploin": {
-      "verified": false,
+      "verified": true,
       "lmr": {
         "reportId": "2453",
         "commodity": "strip, bnls, 0x1",
@@ -1653,12 +1649,16 @@
             "avg_price"
           ]
         },
-        "_status": "RESOLVED 2026-06-13 via --list-commodities 2453 'Choice Cuts' --lmr: IMPS 180 'Loin, strip, bnls, 0x1'. Was 'Strip Loin' (matched a $0.00 row).",
         "matchFields": [
           "item_description"
         ]
       },
-      "coverage": "Staged: source resolved (LMR 2453, IMPS 180 boneless strip), pending live verification."
+      "coverage": "Live: LMR 2453 boneless strip loin (IMPS 180) + FRED steak-retail corroborator. Ships like ribeye/tenderloin.",
+      "fred": {
+        "seriesId": "APU0000FC3101",
+        "basis": "retail",
+        "_note": "Beef steak retail (BLS via FRED) — the 2nd trend type that lets a single-market boxed-beef cut ship, matching ribeye/beef-tenderloin. Retail direction corroborates wholesale direction (§7 bridge)."
+      }
     },
     "leg-of-lamb": {
       "verified": false,
@@ -1676,9 +1676,9 @@
             "avg_price"
           ]
         },
-        "_status": "STAGED verified:false — reportId resolved 2026-06-13 to 2650 (LM_XL552, 'National Weekly Lamb Carcass and Lamb Cuts - Imported Product'). IMPORTED (AUS/NZ) product — representative for US restaurant lamb, LABEL as imported. --discover-lmr the exact Leg cut column (e.g. 'Leg boneless'/'Leg semi boneless') on 2650, tighten bounds, --flip."
+        "_status": "HONEST GAP (confirmed 2026-06-15): USDA LMR boxed-lamb-cuts reports (2648 domestic 5-day avg, 2650 imported) return only daily VOLUME summaries via the Datamart API — no per-cut price column (Leg/Shoulder live only in the PDF). 2649/2651 are carcass cutout, not cuts. No free per-cut wholesale price exists; leave verified:false and name the gap rather than force a number. Do NOT re-chase."
       },
-      "coverage": "Pending source wiring: lamb cuts publish weekly on LM_XL552 (report 2650, imported product); cut column to confirm via --discover, then --flip."
+      "coverage": "Honestly absent — no free per-cut lamb wholesale price (LMR feed is volume-only; cut prices are PDF-only)."
     },
     "whole-salmon": {
       "verified": true,
@@ -1695,9 +1695,12 @@
         "years": 2,
         "_status": "STAGED — mirror of salmon-fillet; WHOLE salmon = HTS 0302/0303 (fresh/frozen whole) vs the fillet 0304 — confirm HTS via --verify. Landed-adjacent proxy, below delivered wholesale."
       },
-      "bls": {
-        "seriesId": "WPU0223",
-        "_status": "aggregate seafood PPI (Unprocessed & Prepared Seafood) — independent trend for all seafood → READY + medium."
+      "fred": {
+        "seriesId": "PSALMUSDM",
+        "basis": "index",
+        "family": "imf-salmon",
+        "type": "imf",
+        "_report": "FRED/IMF Global price of Fish/Salmon (index, monthly). Species-coherent 2nd trend type (replaces the retired WPU0223 grab-bag)."
       }
     },
     "tuna-loin": {
@@ -1715,9 +1718,11 @@
         "years": 2,
         "_status": "STAGED — NOAA tuna lines (0302 fresh / 0304.87 frozen fillet); confirm HTS via --verify."
       },
+      "coverage": "NOAA import unit value (level) + species-specific BLS PPI Tuna (WPU02230136, staged — verify on keyed run). Honest species corroboration replacing the retired WPU0223 grab-bag.",
       "bls": {
-        "seriesId": "WPU0223",
-        "_status": "aggregate seafood PPI (Unprocessed & Prepared Seafood) — independent trend for all seafood → READY + medium."
+        "seriesId": "WPU02230136",
+        "_status": "STAGED 2026-06-15 — species-specific BLS PPI (per the seafood-sourcing research), replacing the retired WPU0223 grab-bag. Verify it resolves via the BLS API on the next keyed run; the code follows the proven WPU0223xx pattern (same mechanism as shrimp WPU02230501). If it resolves, this item re-ships with honest species corroboration; if not, it stays expanding-coverage.",
+        "_report": "BLS PPI Tuna (species-specific, current)."
       }
     },
     "whole-lobster": {
@@ -1735,9 +1740,11 @@
         "years": 2,
         "_status": "STAGED — NOAA lobster lines (0306.12 frozen / 0306.32 live); confirm HTS via --verify."
       },
+      "coverage": "NOAA import unit value (level) + species-specific BLS PPI Lobsters (WPU02230503, staged — verify on keyed run). Honest species corroboration replacing the retired WPU0223 grab-bag.",
       "bls": {
-        "seriesId": "WPU0223",
-        "_status": "aggregate seafood PPI (Unprocessed & Prepared Seafood) — independent trend for all seafood → READY + medium."
+        "seriesId": "WPU02230503",
+        "_status": "STAGED 2026-06-15 — species-specific BLS PPI (per the seafood-sourcing research), replacing the retired WPU0223 grab-bag. Verify it resolves via the BLS API on the next keyed run; the code follows the proven WPU0223xx pattern (same mechanism as shrimp WPU02230501). If it resolves, this item re-ships with honest species corroboration; if not, it stays expanding-coverage.",
+        "_report": "BLS PPI Lobsters (species-specific, current)."
       }
     },
     "whole-branzino": {
@@ -5156,13 +5163,9 @@
             "avg_price"
           ]
         },
-        "_status": "STAGED verified:false — reportId resolved 2026-06-13 to 2650 (LM_XL552, weekly lamb cuts, IMPORTED product; label as imported). Dropped the beef-style 'Choice Cuts' section — lamb sections differ; --discover-lmr the Shoulder cut column on 2650, tighten bounds, --flip."
+        "_status": "HONEST GAP (confirmed 2026-06-15): USDA LMR boxed-lamb-cuts reports (2648 domestic 5-day avg, 2650 imported) return only daily VOLUME summaries via the Datamart API — no per-cut price column (Leg/Shoulder live only in the PDF). 2649/2651 are carcass cutout, not cuts. No free per-cut wholesale price exists; leave verified:false and name the gap rather than force a number. Do NOT re-chase."
       },
-      "bls": {
-        "seriesId": "WPU0223",
-        "_status": "lamb PPI is thin — confirm"
-      },
-      "coverage": "Pending source wiring: lamb cuts publish in the LMR lamb family (e.g., LM_XL552); slug to be wired."
+      "coverage": "Honestly absent — no free per-cut lamb wholesale price (LMR feed is volume-only; cut prices are PDF-only)."
     },
     "pork-belly": {
       "verified": true,
@@ -5268,10 +5271,12 @@
         "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. NOAA import unit value, landed-adjacent (BELOW true delivered wholesale)",
         "commodity": "halibut"
       },
+      "coverage": "NOAA import unit value (level) + species-specific BLS PPI Halibut (WPU02230102, staged — verify on keyed run). Honest species corroboration replacing the retired WPU0223 grab-bag.",
       "bls": {
-        "seriesId": "WPU0223"
-      },
-      "coverage": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
+        "seriesId": "WPU02230102",
+        "_status": "STAGED 2026-06-15 — species-specific BLS PPI (per the seafood-sourcing research), replacing the retired WPU0223 grab-bag. Verify it resolves via the BLS API on the next keyed run; the code follows the proven WPU0223xx pattern (same mechanism as shrimp WPU02230501). If it resolves, this item re-ships with honest species corroboration; if not, it stays expanding-coverage.",
+        "_report": "BLS PPI Halibut (species-specific, current)."
+      }
     },
     "whole-trout": {
       "verified": true,
@@ -5288,10 +5293,7 @@
         "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. NOAA import unit value, landed-adjacent (BELOW true delivered wholesale)",
         "commodity": "trout"
       },
-      "bls": {
-        "seriesId": "WPU0223"
-      },
-      "coverage": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
+      "coverage": "Single-market NOAA import value; no US per-species PPI (mostly farmed/freshwater; NOAA landings often confidentiality-suppressed) → expanding coverage. Honest dead-end pending EUMOFA-illustrative."
     },
     "scallops": {
       "verified": true,
@@ -5309,10 +5311,12 @@
         "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. NOAA import unit value, landed-adjacent (BELOW true delivered wholesale)",
         "commodity": "scallops"
       },
+      "coverage": "NOAA import unit value (level) + species-specific BLS PPI Sea Scallops (WPU02230506, staged — verify on keyed run). Honest species corroboration replacing the retired WPU0223 grab-bag.",
       "bls": {
-        "seriesId": "WPU0223"
-      },
-      "coverage": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
+        "seriesId": "WPU02230506",
+        "_status": "STAGED 2026-06-15 — species-specific BLS PPI (per the seafood-sourcing research), replacing the retired WPU0223 grab-bag. Verify it resolves via the BLS API on the next keyed run; the code follows the proven WPU0223xx pattern (same mechanism as shrimp WPU02230501). If it resolves, this item re-ships with honest species corroboration; if not, it stays expanding-coverage.",
+        "_report": "BLS PPI Sea Scallops (species-specific, current)."
+      }
     },
     "whole-crab": {
       "verified": true,
@@ -5329,10 +5333,12 @@
         "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. NOAA import unit value, landed-adjacent (BELOW true delivered wholesale)",
         "commodity": "crab"
       },
+      "coverage": "NOAA import unit value (level) + species-specific BLS PPI Crabs (WPU02230502, staged — verify on keyed run). Honest species corroboration replacing the retired WPU0223 grab-bag.",
       "bls": {
-        "seriesId": "WPU0223"
-      },
-      "coverage": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
+        "seriesId": "WPU02230502",
+        "_status": "STAGED 2026-06-15 — species-specific BLS PPI (per the seafood-sourcing research), replacing the retired WPU0223 grab-bag. Verify it resolves via the BLS API on the next keyed run; the code follows the proven WPU0223xx pattern (same mechanism as shrimp WPU02230501). If it resolves, this item re-ships with honest species corroboration; if not, it stays expanding-coverage.",
+        "_report": "BLS PPI Crabs (species-specific, current)."
+      }
     },
     "octopus": {
       "verified": true,
@@ -5350,10 +5356,7 @@
         "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. NOAA import unit value, landed-adjacent (BELOW true delivered wholesale)",
         "commodity": "octopus"
       },
-      "bls": {
-        "seriesId": "WPU0223"
-      },
-      "coverage": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
+      "coverage": "Single-market NOAA import value; NO free US per-species price exists (only EU EUMOFA first-sale / JP Toyosu — foreign geography) → expanding coverage. Honest US dead-end."
     },
     "salmon-skin-on-fillet": {
       "verified": true,
@@ -5370,10 +5373,14 @@
         "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. NOAA import unit value, landed-adjacent (BELOW true delivered wholesale)",
         "commodity": "salmon"
       },
-      "bls": {
-        "seriesId": "WPU0223"
-      },
-      "coverage": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
+      "coverage": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip.",
+      "fred": {
+        "seriesId": "PSALMUSDM",
+        "basis": "index",
+        "family": "imf-salmon",
+        "type": "imf",
+        "_report": "FRED/IMF Global price of Fish/Salmon (index, monthly). Species-coherent 2nd trend type (replaces the retired WPU0223 grab-bag)."
+      }
     },
     "clams": {
       "verified": true,
@@ -5390,10 +5397,7 @@
         "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. NOAA import value runs below a usable wholesale level → basis:index, TREND/direction only",
         "commodity": "clams"
       },
-      "bls": {
-        "seriesId": "WPU0223"
-      },
-      "coverage": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
+      "coverage": "NOAA import index only (no dollar level); WPU0223 retired → directional, no species corroborator yet. Pending own-seafood-data sourcing."
     },
     "squid": {
       "verified": true,
@@ -5411,10 +5415,7 @@
         "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. NOAA import value runs below a usable wholesale level → basis:index, TREND/direction only",
         "commodity": "squid"
       },
-      "bls": {
-        "seriesId": "WPU0223"
-      },
-      "coverage": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
+      "coverage": "NOAA import index only (no dollar level); WPU0223 retired → directional, no species corroborator yet. Pending own-seafood-data sourcing."
     },
     "shrimp-head-on": {
       "verified": true,
@@ -5431,7 +5432,15 @@
         "commodity": "shrimp"
       },
       "bls": {
-        "seriesId": "WPU0223"
+        "seriesId": "WPU02230501",
+        "_report": "BLS shrimp PPI — species-coherent (mirrors parent shrimp; replaces WPU0223)."
+      },
+      "fred": {
+        "seriesId": "PSHRIUSDM",
+        "basis": "index",
+        "family": "imf-shrimp",
+        "type": "imf",
+        "_report": "FRED/IMF Global price of Shrimp (index, monthly). Species-coherent trend (replaces WPU0223)."
       }
     },
     "shrimp-pd": {
@@ -5449,7 +5458,15 @@
         "commodity": "shrimp"
       },
       "bls": {
-        "seriesId": "WPU0223"
+        "seriesId": "WPU02230501",
+        "_report": "BLS shrimp PPI — species-coherent (mirrors parent shrimp; replaces WPU0223)."
+      },
+      "fred": {
+        "seriesId": "PSHRIUSDM",
+        "basis": "index",
+        "family": "imf-shrimp",
+        "type": "imf",
+        "_report": "FRED/IMF Global price of Shrimp (index, monthly). Species-coherent trend (replaces WPU0223)."
       }
     }
   },

@@ -880,7 +880,20 @@ function whyItMatters(slug, locale) {
       ? `<p>${name} es de temporada: un precio alto hoy puede ceder cuando vuelve la oferta. Si el rango está caro pero la dirección apunta a la baja, a veces conviene aguantar el platillo unas semanas antes de re-cotizarlo.</p>`
       : `<p>${name} is seasonal: a high read today can ease as supply returns. If the range is expensive but the direction points down, holding the dish a few weeks can beat re-pricing it.</p>`)
     : '';
-  return `<h2 id="why-it-matters">${h}</h2>${unitLine}${moveLine}${seasonalLine}`;
+  // Category-direction context (produce only): the fresh fruits & vegetables PPI
+  // as a whole. Explicitly framed as CATEGORY context, never this item's own read
+  // — it must not be mistaken for the cross-market level/trend above. Guarded: it
+  // renders only once the fresh-produce driver has been vendored.
+  const fp = DRIVERS['fresh-produce'];
+  const categoryLine = (meta.cat === 'produce' && fp && fp.trend && typeof fp.trend.pct === 'number')
+    ? (() => {
+      const pctTxt = `${(fp.trend.pct >= 0 ? '+' : '')}${(fp.trend.pct * 100).toFixed(1).replace(/\.0$/, '')}%`;
+      return es
+        ? `<p>Como contexto de categoría: las frutas y verduras frescas <em>en conjunto</em> se han movido <strong>${pctTxt}</strong> en el periodo (índice PPI de BLS, frutas y verduras frescas). Es la dirección general del mercado de productos frescos — no la lectura propia de ${lc}, que está arriba.</p>`
+        : `<p>For category context: fresh fruits &amp; vegetables <em>as a whole</em> moved <strong>${pctTxt}</strong> over the window (BLS PPI, fresh fruits &amp; vegetables). That's the broad produce market's direction — not ${lc}'s own read, which is above.</p>`;
+    })()
+    : '';
+  return `<h2 id="why-it-matters">${h}</h2>${unitLine}${moveLine}${seasonalLine}${categoryLine}`;
 }
 
 function howToUse(slug, locale) {
