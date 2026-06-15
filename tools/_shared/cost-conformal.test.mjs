@@ -70,6 +70,26 @@ test('coverage is null (provisional) when too few steps to verify', () => {
   assert.equal(r.coverage, null, 'but refuses to claim a coverage rate');
 });
 
+test('CALIBRATE: widens an under-covering band toward nominal (ACI-style)', () => {
+  const v = walk(400, 7, (r) => (r - 0.5) * 80);   // this walk's raw 80% band under-covers (~0.765)
+  const raw = conformalNext(v, { alpha: 0.20, window: 52 });
+  const cal = conformalNext(v, { alpha: 0.20, window: 52, calibrate: true });
+  assert.ok(raw.coverage < raw.nominal, 'raw under-covers');
+  assert.ok(cal.scale > 1, 'calibration widened the band');
+  assert.ok(cal.coverage >= raw.coverage, 'calibrated coverage is no worse');
+  assert.ok(cal.coverage >= raw.nominal - 0.02, 'calibrated coverage reaches ~nominal');
+  assert.ok(cal.interval[1] - cal.interval[0] > raw.interval[1] - raw.interval[0], 'wider band');
+});
+
+test('CALIBRATE: leaves an already-covering band alone (scale=1)', () => {
+  // Fat-tailed steps → wide residual band that already over-covers (~0.81).
+  const v = walk(500, 123, (r) => (r < 0.9 ? (r - 0.45) * 16 : (r - 0.5) * 500));
+  const raw = conformalNext(v, { alpha: 0.20, window: 60 });
+  const cal = conformalNext(v, { alpha: 0.20, window: 60, calibrate: true });
+  assert.ok(raw.coverage >= raw.nominal, 'raw already covers');
+  assert.equal(cal.scale, 1, 'no needless widening when the raw band already covers');
+});
+
 test('asymmetric residuals → asymmetric band (captures rockets-and-feathers)', () => {
   // Up moves big, down moves small → upper tail wider than lower around the last value.
   const v = walk(300, 21, (r) => (r < 0.5 ? r * 120 : -(r - 0.5) * 20));

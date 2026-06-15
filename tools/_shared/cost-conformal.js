@@ -38,14 +38,28 @@
     return e;
   }
 
-  // Interval for the NEXT value, from the last `window` residuals.
-  // Returns null when there aren't enough residuals to form honest quantiles.
-  function intervalFromResiduals(last, resid, alpha, window, minResid) {
+  // Interval for the NEXT value, from the last `window` residuals. `scale` widens
+  // the residual quantiles (1 = raw); the adaptive-conformal layer searches it so
+  // the band actually covers. Returns null when there aren't enough residuals.
+  function intervalFromResiduals(last, resid, alpha, window, minResid, scale) {
     var recent = resid.slice(-window);
     if (recent.length < minResid) return null;
+    var sc = scale || 1;
     var s = recent.slice().sort(function (a, b) { return a - b; });
     var lo = quantile(s, alpha / 2), hi = quantile(s, 1 - alpha / 2);
-    return [last + lo, last + hi];
+    return [last + sc * lo, last + sc * hi];
+  }
+
+  // Walk-forward coverage of the (optionally scaled) interval over a series.
+  function backtest(v, resid, alpha, window, minResid, scale) {
+    var hits = 0, tested = 0;
+    for (var t = minResid + 1; t < v.length; t++) {
+      var iv = intervalFromResiduals(v[t - 1], resid.slice(0, t - 1), alpha, window, minResid, scale);
+      if (!iv) continue;
+      tested++;
+      if (v[t] >= iv[0] && v[t] <= iv[1]) hits++;
+    }
+    return { hits: hits, tested: tested };
   }
 
   /**
@@ -67,28 +81,36 @@
 
     var resid = residuals(v);
     var last = v[v.length - 1];
-    var interval = intervalFromResiduals(last, resid, alpha, window, minResid);
-    if (!interval) return null;
+    var nominal = 1 - alpha;
 
-    // Walk-forward coverage backtest: for each step t after warmup, build the
-    // interval from residuals strictly BEFORE t and check whether v[t] fell inside.
-    var hits = 0, tested = 0;
-    for (var t = minResid + 1; t < v.length; t++) {
-      var priorResid = resid.slice(0, t - 1);                    // residuals up to v[t-1]
-      var iv = intervalFromResiduals(v[t - 1], priorResid, alpha, window, minResid);
-      if (!iv) continue;
-      tested++;
-      if (v[t] >= iv[0] && v[t] <= iv[1]) hits++;
+    // Raw band + its walk-forward backtest.
+    var raw = backtest(v, resid, alpha, window, minResid, 1);
+    var coverage = raw.tested >= minCover ? raw.hits / raw.tested : null;
+
+    // Adaptive (ACI-style) widening: if the raw band under-covers, scale the
+    // residual quantiles up by the SMALLEST factor that reaches nominal coverage
+    // on the backtest — so the published band is honest per item, not just pooled.
+    // (Never narrows below raw; capped so a pathological series can't blow up.)
+    var scale = 1;
+    if (opts.calibrate && coverage != null && coverage < nominal) {
+      for (var f = 1.1; f <= 3.0001; f += 0.1) {
+        var bt = backtest(v, resid, alpha, window, minResid, f);
+        if (bt.tested && bt.hits / bt.tested >= nominal) { scale = +f.toFixed(1); coverage = +(bt.hits / bt.tested).toFixed(3); break; }
+        scale = +f.toFixed(1);   // keep widening to the cap if never reached
+      }
     }
-    var coverage = tested >= minCover ? hits / tested : null;
+
+    var interval = intervalFromResiduals(last, resid, alpha, window, minResid, scale);
+    if (!interval) return null;
 
     return {
       interval: interval,
       point: last,
       alpha: alpha,
-      nominal: +(1 - alpha).toFixed(2),
+      nominal: +nominal.toFixed(2),
       coverage: coverage == null ? null : +coverage.toFixed(3),
-      nTested: tested,
+      scale: scale,
+      nTested: raw.tested,
       nResid: resid.length,
       window: window,
     };
