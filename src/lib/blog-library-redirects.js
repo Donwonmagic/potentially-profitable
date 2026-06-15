@@ -65,6 +65,22 @@ export const BLOG_LIBRARY_REDIRECTS = new Map([
   ['/blog/third-party-delivery-comparison/',                                 '/library/third-party-delivery-comparison/'],
   ['/blog/restaurant-app-decision/',                                         '/library/restaurant-app-decision/'],
   ['/blog/third-party-delivery-economics/',                                  '/library/third-party-delivery-economics/'],
+  // EN kept-slug gap-close (2026-06-13): eight more library articles
+  // emitted /blog/<slug>/ links with no matching 301. Four are the
+  // merge/rename TARGETS (their own kept slug was never redirected to
+  // itself); four (the 2026-06-03 batch) were authored directly in
+  // /library/ and never had a /blog/ home. Generators key off
+  // library-tags.json#blog_posts and stay namespace-blind, so the
+  // kept-slug /blog/ links 404'd until now. /library/<slug>/ verified
+  // present on disk for each.
+  ['/blog/google-review-response-playbook/',                                 '/library/google-review-response-playbook/'],
+  ['/blog/ai-mode-reservation-strategy/',                                    '/library/ai-mode-reservation-strategy/'],
+  ['/blog/restaurant-schema-markup-guide/',                                  '/library/restaurant-schema-markup-guide/'],
+  ['/blog/reservation-conversion-guide/',                                    '/library/reservation-conversion-guide/'],
+  ['/blog/restaurant-website-technical-seo-checklist/',                       '/library/restaurant-website-technical-seo-checklist/'],
+  ['/blog/restaurant-brand-system-colors-type-logo/',                        '/library/restaurant-brand-system-colors-type-logo/'],
+  ['/blog/restaurant-menu-engineering/',                                     '/library/restaurant-menu-engineering/'],
+  ['/blog/restaurant-website-legal-essentials/',                             '/library/restaurant-website-legal-essentials/'],
 
   // EN rename moves (de-timed)
   ['/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/',          '/library/custom-restaurant-website-pricing/'],
@@ -141,6 +157,21 @@ export const BLOG_LIBRARY_REDIRECTS = new Map([
   ['/es/blog/toast-vs-square-vs-clover-for-restaurants/',                             '/es/library/toast-vs-square-vs-clover-para-restaurantes/'],
   ['/es/blog/what-should-be-on-a-restaurant-website/',                                '/es/library/que-debe-tener-un-sitio-web-de-restaurante/'],
   ['/es/blog/wix-vs-custom-for-restaurants/',                                         '/es/library/wix-vs-custom-para-restaurantes/'],
+
+  // Cross-language gap-close (2026-06-13): ES counterparts of the eight
+  // EN kept-slug entries added above. The four merge/rename targets have
+  // a native /es/library/ home and route there; the four 2026-06-03
+  // articles have no ES translation yet, so they route to the EN
+  // /library/ canonical (the documented EN-fallback pattern above) until
+  // a Spanish edition ships. All targets verified present on disk.
+  ['/es/blog/google-review-response-playbook/',                                       '/es/library/como-responder-resenas-google-restaurante-playbook-2026/'],
+  ['/es/blog/ai-mode-reservation-strategy/',                                          '/es/library/reserva-en-google-ai-mode-restaurante-2026/'],
+  ['/es/blog/restaurant-schema-markup-guide/',                                        '/es/library/los-6-tipos-de-schema-markup-que-google-usa/'],
+  ['/es/blog/reservation-conversion-guide/',                                          '/es/library/guia-conversion-reservas/'],
+  ['/es/blog/restaurant-website-technical-seo-checklist/',                            '/library/restaurant-website-technical-seo-checklist/'],
+  ['/es/blog/restaurant-brand-system-colors-type-logo/',                              '/library/restaurant-brand-system-colors-type-logo/'],
+  ['/es/blog/restaurant-menu-engineering/',                                           '/library/restaurant-menu-engineering/'],
+  ['/es/blog/restaurant-website-legal-essentials/',                                   '/library/restaurant-website-legal-essentials/'],
 ]);
 
 // Returns the redirect target path for a /blog/ or /es/blog/ pathname,

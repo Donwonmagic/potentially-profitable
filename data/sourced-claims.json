@@ -324,6 +324,72 @@
       "date_verified": "2026-05-14",
       "url_status": "deep-link",
       "notes": "NRA research-reports landing page. Verified via search 2026-05-14. 2026 State of the Industry projects industry sales ~$1.55T; ~100,000 jobs added; total employment 15.8M. URL was correct in the library's original citation."
+    },
+    "cpi_food_away_from_home_may_2026": {
+      "claim": "Over the 12 months ending May 2026, the U.S. CPI food-away-from-home index rose 3.5% (full-service meals 3.8%, limited-service meals 3.3%).",
+      "source_url": "https://www.bls.gov/news.release/cpi.nr0.htm",
+      "source_name": "U.S. Bureau of Labor Statistics, CPI for May 2026 (released June 10, 2026)",
+      "date_verified": "2026-06-14",
+      "used_in": [
+        "restaurant-menu-inflation-2026",
+        "inflacion-de-menu-de-restaurante-2026"
+      ],
+      "notes": "Not seasonally adjusted, 12-month change. Verified from the primary release text."
+    },
+    "cpi_food_at_home_may_2026": {
+      "claim": "Over the 12 months ending May 2026, the U.S. CPI food-at-home index rose 2.7% and the all-food index rose 3.1%.",
+      "source_url": "https://www.bls.gov/news.release/cpi.nr0.htm",
+      "source_name": "U.S. Bureau of Labor Statistics, CPI for May 2026 (released June 10, 2026)",
+      "date_verified": "2026-06-14",
+      "used_in": [
+        "restaurant-menu-inflation-2026",
+        "inflacion-de-menu-de-restaurante-2026"
+      ],
+      "notes": "Not seasonally adjusted, 12-month change."
+    },
+    "usda_beef_veal_forecast_2026": {
+      "claim": "USDA ERS forecasts 2026 retail beef and veal prices up 12.1% (prediction interval 6.6 to 18.1%), the largest food-category increase, citing a U.S. cattle herd shrinking since 2019 against strong demand.",
+      "source_url": "https://www.ers.usda.gov/data-products/food-price-outlook/summary-findings",
+      "source_name": "USDA Economic Research Service, Food Price Outlook (May 2026 forecast)",
+      "date_verified": "2026-06-14",
+      "used_in": [
+        "restaurant-menu-inflation-2026",
+        "inflacion-de-menu-de-restaurante-2026"
+      ],
+      "notes": "Midpoint forecast; range is the 95% prediction interval."
+    },
+    "usda_eggs_forecast_2026": {
+      "claim": "USDA ERS forecasts 2026 retail egg prices down 29.8% (prediction interval -38.8 to -18.3%) as the laying flock recovers from the HPAI avian-flu outbreak.",
+      "source_url": "https://www.ers.usda.gov/data-products/food-price-outlook/summary-findings",
+      "source_name": "USDA Economic Research Service, Food Price Outlook (May 2026 forecast)",
+      "date_verified": "2026-06-14",
+      "used_in": [
+        "restaurant-menu-inflation-2026",
+        "inflacion-de-menu-de-restaurante-2026"
+      ],
+      "notes": "Retail price forecast; distinct from farm-level PPI (-81.6%) and the April retail YoY (-39.2%). Measures kept separate."
+    },
+    "usda_allfood_forecast_2026": {
+      "claim": "USDA ERS forecasts 2026 all-food prices up 3.4%, food away from home up 3.5%, and food at home up 3.2%.",
+      "source_url": "https://www.ers.usda.gov/data-products/food-price-outlook/summary-findings",
+      "source_name": "USDA Economic Research Service, Food Price Outlook (May 2026 forecast)",
+      "date_verified": "2026-06-14",
+      "used_in": [
+        "restaurant-menu-inflation-2026",
+        "inflacion-de-menu-de-restaurante-2026"
+      ],
+      "notes": "Full-year 2026 midpoint forecasts."
+    },
+    "muntin_cost_index_ribeye_2026_06": {
+      "claim": "The Muntin Cost Index put wholesale ribeye near $11.59 per pound as of June 5, 2026 (sourced from USDA Livestock Mandatory Reporting), flagged flat within its normal weekly range despite an upward two-year trend.",
+      "source_url": "https://muntin.digital/cost-index/",
+      "source_name": "Muntin Cost Index (data/cost-index.json, generated from verified sources only)",
+      "date_verified": "2026-06-14",
+      "used_in": [
+        "restaurant-menu-inflation-2026",
+        "inflacion-de-menu-de-restaurante-2026"
+      ],
+      "notes": "In-repo fact-gated value; provenance usda-lmr, asOf 2026-06-05, weekly flag verdict 'flat'."
     }
   },
   "operator_experience_claims": {
