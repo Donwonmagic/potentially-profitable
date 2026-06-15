@@ -12,610 +12,8 @@
   'use strict';
   var DATA = {
   "status": "live",
-  "generatedAt": "2026-06-13",
+  "generatedAt": "2026-06-14",
   "ingredients": [
-    {
-      "key": "ribeye",
-      "label_en": "Ribeye",
-      "label_es": "Ribeye (bife ancho)",
-      "unit_en": "lb",
-      "unit_es": "libra",
-      "assessment": {
-        "asOf": "2026-06-12",
-        "level": {
-          "basis": "wholesale",
-          "medianCents": 1274,
-          "rangeCents": [
-            1227,
-            1321
-          ],
-          "rangeBasis": "volatility",
-          "typeDispersion": 0,
-          "nObs": 1,
-          "nFamilies": 1,
-          "nSources": 1,
-          "nTypes": 1,
-          "provenance": [
-            {
-              "source": "usda-lmr",
-              "type": "usda-lmr",
-              "valueCents": 1274,
-              "date": "2026-06-12"
-            }
-          ]
-        },
-        "trend": {
-          "pct": 0.21333333333333335,
-          "dir": "up",
-          "agreement": 1,
-          "nSources": 3,
-          "nFamilies": 3,
-          "nTypes": 3,
-          "noise": 0.0184
-        },
-        "confidence": "medium",
-        "label": "About $12.27–$13.21 (wholesale reference, single market — band from recent volatility), up +5.2% over the window. 1+ source(s) for level, 3 for trend.",
-        "provenance": [
-          {
-            "kind": "level",
-            "source": "usda-lmr",
-            "type": "usda-lmr",
-            "valueCents": 1274,
-            "date": "2026-06-12"
-          },
-          {
-            "kind": "trend",
-            "source": "usda-lmr",
-            "type": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "kind": "trend",
-            "source": "bls",
-            "type": "bls",
-            "basis": "index"
-          },
-          {
-            "kind": "trend",
-            "source": "fred",
-            "type": "fred",
-            "basis": "index"
-          }
-        ],
-        "history": [
-          {
-            "date": "2026-05-07",
-            "valueCents": 1050,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-08",
-            "valueCents": 1077,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-11",
-            "valueCents": 1086,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-12",
-            "valueCents": 1206,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-13",
-            "valueCents": 1164,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-14",
-            "valueCents": 1139,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-15",
-            "valueCents": 1178,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-18",
-            "valueCents": 986,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-19",
-            "valueCents": 1188,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-20",
-            "valueCents": 1170,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-21",
-            "valueCents": 1143,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-22",
-            "valueCents": 1083,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-26",
-            "valueCents": 1214,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-27",
-            "valueCents": 1212,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-28",
-            "valueCents": 1189,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-29",
-            "valueCents": 1093,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-01",
-            "valueCents": 1107,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-02",
-            "valueCents": 1226,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-03",
-            "valueCents": 1227,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-04",
-            "valueCents": 1121,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-05",
-            "valueCents": 1159,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-08",
-            "valueCents": 1241,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-09",
-            "valueCents": 1230,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-10",
-            "valueCents": 1254,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-11",
-            "valueCents": 1249,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-12",
-            "valueCents": 1274,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          }
-        ]
-      },
-      "yieldSlug": "ribeye",
-      "flag": {
-        "verdict": "structural",
-        "actionBias": "re-price",
-        "reason": "elevated and sustained — the increase looks real",
-        "move": 0.11461067366579178,
-        "retrace": 0,
-        "elevatedWeeks": 4,
-        "nHistory": 26
-      },
-      "tier": "measured",
-      "yield": 0.75,
-      "epCents": 1699,
-      "spark": [
-        1050,
-        1077,
-        1086,
-        1206,
-        1164,
-        1139,
-        1178,
-        986,
-        1188,
-        1170,
-        1143,
-        1083,
-        1214,
-        1212,
-        1189,
-        1093,
-        1107,
-        1226,
-        1227,
-        1121,
-        1159,
-        1241,
-        1230,
-        1254,
-        1249,
-        1274
-      ],
-      "spark_meta": {
-        "basis": "wholesale",
-        "source": "usda-lmr",
-        "from": "2026-05-07",
-        "to": "2026-06-12",
-        "n": 26
-      },
-      "spark_dates": [
-        "2026-05-07",
-        "2026-05-08",
-        "2026-05-11",
-        "2026-05-12",
-        "2026-05-13",
-        "2026-05-14",
-        "2026-05-15",
-        "2026-05-18",
-        "2026-05-19",
-        "2026-05-20",
-        "2026-05-21",
-        "2026-05-22",
-        "2026-05-26",
-        "2026-05-27",
-        "2026-05-28",
-        "2026-05-29",
-        "2026-06-01",
-        "2026-06-02",
-        "2026-06-03",
-        "2026-06-04",
-        "2026-06-05",
-        "2026-06-08",
-        "2026-06-09",
-        "2026-06-10",
-        "2026-06-11",
-        "2026-06-12"
-      ]
-    },
-    {
-      "key": "beef-tenderloin",
-      "label_en": "Beef tenderloin",
-      "label_es": "Lomo fino de res",
-      "unit_en": "lb",
-      "unit_es": "libra",
-      "assessment": {
-        "asOf": "2026-06-12",
-        "level": {
-          "basis": "wholesale",
-          "medianCents": 1467,
-          "rangeCents": [
-            1454,
-            1480
-          ],
-          "rangeBasis": "volatility",
-          "typeDispersion": 0,
-          "nObs": 1,
-          "nFamilies": 1,
-          "nSources": 1,
-          "nTypes": 1,
-          "provenance": [
-            {
-              "source": "usda-lmr",
-              "type": "usda-lmr",
-              "valueCents": 1467,
-              "date": "2026-06-12"
-            }
-          ]
-        },
-        "trend": {
-          "pct": -0.023952095808383235,
-          "dir": "down",
-          "agreement": 0.5,
-          "nSources": 2,
-          "nFamilies": 2,
-          "nTypes": 2,
-          "noise": 0.0183
-        },
-        "confidence": "medium",
-        "label": "About $14.54–$14.80 (wholesale reference, single market — band from recent volatility), down -0.9% over the window. 1+ source(s) for level, 2 for trend.",
-        "provenance": [
-          {
-            "kind": "level",
-            "source": "usda-lmr",
-            "type": "usda-lmr",
-            "valueCents": 1467,
-            "date": "2026-06-12"
-          },
-          {
-            "kind": "trend",
-            "source": "usda-lmr",
-            "type": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "kind": "trend",
-            "source": "bls",
-            "type": "bls",
-            "basis": "index"
-          }
-        ],
-        "history": [
-          {
-            "date": "2026-05-06",
-            "valueCents": 1503,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-07",
-            "valueCents": 1495,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-08",
-            "valueCents": 1529,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-11",
-            "valueCents": 1552,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-12",
-            "valueCents": 1551,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-14",
-            "valueCents": 1532,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-15",
-            "valueCents": 1487,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-18",
-            "valueCents": 1570,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-19",
-            "valueCents": 1551,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-20",
-            "valueCents": 1498,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-21",
-            "valueCents": 1510,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-22",
-            "valueCents": 1489,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-26",
-            "valueCents": 1486,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-27",
-            "valueCents": 1497,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-28",
-            "valueCents": 1487,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-29",
-            "valueCents": 1512,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-01",
-            "valueCents": 1533,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-02",
-            "valueCents": 1545,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-03",
-            "valueCents": 1519,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-04",
-            "valueCents": 1476,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-05",
-            "valueCents": 1527,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-08",
-            "valueCents": 1476,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-09",
-            "valueCents": 1498,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-10",
-            "valueCents": 1508,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-11",
-            "valueCents": 1500,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-12",
-            "valueCents": 1467,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          }
-        ]
-      },
-      "yieldSlug": "beef-tenderloin",
-      "flag": {
-        "verdict": "flat",
-        "actionBias": "hold",
-        "reason": "within the normal range",
-        "move": -0.02847682119205298,
-        "retrace": 0,
-        "elevatedWeeks": 0,
-        "nHistory": 26
-      },
-      "tier": "measured",
-      "yield": 0.85,
-      "epCents": 1726,
-      "spark": [
-        1503,
-        1495,
-        1529,
-        1552,
-        1551,
-        1532,
-        1487,
-        1570,
-        1551,
-        1498,
-        1510,
-        1489,
-        1486,
-        1497,
-        1487,
-        1512,
-        1533,
-        1545,
-        1519,
-        1476,
-        1527,
-        1476,
-        1498,
-        1508,
-        1500,
-        1467
-      ],
-      "spark_meta": {
-        "basis": "wholesale",
-        "source": "usda-lmr",
-        "from": "2026-05-06",
-        "to": "2026-06-12",
-        "n": 26
-      },
-      "spark_dates": [
-        "2026-05-06",
-        "2026-05-07",
-        "2026-05-08",
-        "2026-05-11",
-        "2026-05-12",
-        "2026-05-14",
-        "2026-05-15",
-        "2026-05-18",
-        "2026-05-19",
-        "2026-05-20",
-        "2026-05-21",
-        "2026-05-22",
-        "2026-05-26",
-        "2026-05-27",
-        "2026-05-28",
-        "2026-05-29",
-        "2026-06-01",
-        "2026-06-02",
-        "2026-06-03",
-        "2026-06-04",
-        "2026-06-05",
-        "2026-06-08",
-        "2026-06-09",
-        "2026-06-10",
-        "2026-06-11",
-        "2026-06-12"
-      ]
-    },
     {
       "key": "chicken-breast",
       "label_en": "Chicken breast (boneless)",
@@ -788,6 +186,92 @@
             "basis": "wholesale"
           }
         ]
+      },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 136,
+          "p25Cents": 120,
+          "p75Cents": 148,
+          "n": 13,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 115,
+          "p25Cents": 107,
+          "p75Cents": 146,
+          "n": 12,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 117,
+          "p25Cents": 105,
+          "p75Cents": 147,
+          "n": 14,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 126,
+          "p25Cents": 119,
+          "p75Cents": 147,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 146,
+          "p25Cents": 129,
+          "p75Cents": 161,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 160,
+          "p25Cents": 147,
+          "p75Cents": 215,
+          "n": 14,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 175,
+          "p25Cents": 169,
+          "p75Cents": 265,
+          "n": 13,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 184,
+          "p25Cents": 161,
+          "p75Cents": 276,
+          "n": 12,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 168,
+          "p25Cents": 137,
+          "p75Cents": 204,
+          "n": 15,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 175,
+          "p25Cents": 121,
+          "p75Cents": 184,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 190,
+          "p25Cents": 153,
+          "p75Cents": 197,
+          "n": 12,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 168,
+          "p25Cents": 150,
+          "p75Cents": 179,
+          "n": 14,
+          "years": 3
+        }
       },
       "yieldSlug": "chicken-breast",
       "flag": {
@@ -1015,6 +499,92 @@
           }
         ]
       },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 168,
+          "p25Cents": 111,
+          "p75Cents": 191,
+          "n": 13,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 160,
+          "p25Cents": 106,
+          "p75Cents": 189,
+          "n": 12,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 158,
+          "p25Cents": 98,
+          "p75Cents": 189,
+          "n": 14,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 171,
+          "p25Cents": 118,
+          "p75Cents": 190,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 188,
+          "p25Cents": 121,
+          "p75Cents": 190,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 145,
+          "p25Cents": 101,
+          "p75Cents": 199,
+          "n": 14,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 138,
+          "p25Cents": 100,
+          "p75Cents": 227,
+          "n": 13,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 115,
+          "p25Cents": 90,
+          "p75Cents": 226,
+          "n": 12,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 121,
+          "p25Cents": 89,
+          "p75Cents": 196,
+          "n": 15,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 167,
+          "p25Cents": 111,
+          "p75Cents": 259,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 173,
+          "p25Cents": 140,
+          "p75Cents": 233,
+          "n": 12,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 163,
+          "p25Cents": 150,
+          "p75Cents": 229,
+          "n": 14,
+          "years": 3
+        }
+      },
       "yieldSlug": "whole-chicken",
       "flag": {
         "verdict": "easing",
@@ -1072,774 +642,6 @@
         "2026-05-25",
         "2026-06-01",
         "2026-06-08"
-      ]
-    },
-    {
-      "key": "pork-loin",
-      "label_en": "Pork loin",
-      "label_es": "Lomo de cerdo",
-      "unit_en": "lb",
-      "unit_es": "libra",
-      "assessment": {
-        "asOf": "2026-06-12",
-        "level": {
-          "basis": "wholesale",
-          "medianCents": 95,
-          "rangeCents": [
-            92,
-            98
-          ],
-          "rangeBasis": "volatility",
-          "typeDispersion": 0,
-          "nObs": 1,
-          "nFamilies": 1,
-          "nSources": 1,
-          "nTypes": 1,
-          "provenance": [
-            {
-              "source": "usda-lmr",
-              "type": "usda-lmr",
-              "valueCents": 95,
-              "date": "2026-06-12"
-            }
-          ]
-        },
-        "trend": {
-          "pct": 0.07954545454545454,
-          "dir": "up",
-          "agreement": 0.5,
-          "nSources": 2,
-          "nFamilies": 2,
-          "nTypes": 2,
-          "noise": 0.0352
-        },
-        "confidence": "medium",
-        "label": "About $0.92–$0.98 (wholesale reference, single market — band from recent volatility), down -16% over the window. 1+ source(s) for level, 2 for trend.",
-        "provenance": [
-          {
-            "kind": "level",
-            "source": "usda-lmr",
-            "type": "usda-lmr",
-            "valueCents": 95,
-            "date": "2026-06-12"
-          },
-          {
-            "kind": "trend",
-            "source": "usda-lmr",
-            "type": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "kind": "trend",
-            "source": "bls",
-            "type": "bls",
-            "basis": "index"
-          }
-        ],
-        "history": [
-          {
-            "date": "2026-05-07",
-            "valueCents": 88,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-08",
-            "valueCents": 94,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-11",
-            "valueCents": 93,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-12",
-            "valueCents": 88,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-13",
-            "valueCents": 90,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-14",
-            "valueCents": 92,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-15",
-            "valueCents": 93,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-18",
-            "valueCents": 95,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-19",
-            "valueCents": 91,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-20",
-            "valueCents": 90,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-21",
-            "valueCents": 92,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-22",
-            "valueCents": 95,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-26",
-            "valueCents": 95,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-27",
-            "valueCents": 93,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-28",
-            "valueCents": 94,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-29",
-            "valueCents": 96,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-01",
-            "valueCents": 96,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-02",
-            "valueCents": 94,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-03",
-            "valueCents": 94,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-04",
-            "valueCents": 92,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-05",
-            "valueCents": 99,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-08",
-            "valueCents": 95,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-09",
-            "valueCents": 92,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-10",
-            "valueCents": 94,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-11",
-            "valueCents": 91,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-12",
-            "valueCents": 95,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          }
-        ]
-      },
-      "seasonalNormals": {
-        "10": {
-          "medianCents": 93,
-          "p25Cents": 90,
-          "p75Cents": 94,
-          "n": 14,
-          "years": 3
-        },
-        "11": {
-          "medianCents": 84,
-          "p25Cents": 83,
-          "p75Cents": 88,
-          "n": 13,
-          "years": 3
-        },
-        "12": {
-          "medianCents": 83,
-          "p25Cents": 82,
-          "p75Cents": 85,
-          "n": 14,
-          "years": 3
-        },
-        "01": {
-          "medianCents": 84,
-          "p25Cents": 82,
-          "p75Cents": 86,
-          "n": 13,
-          "years": 3
-        },
-        "02": {
-          "medianCents": 87,
-          "p25Cents": 85,
-          "p75Cents": 89,
-          "n": 12,
-          "years": 3
-        },
-        "03": {
-          "medianCents": 89,
-          "p25Cents": 88,
-          "p75Cents": 91,
-          "n": 12,
-          "years": 3
-        },
-        "04": {
-          "medianCents": 90,
-          "p25Cents": 89,
-          "p75Cents": 93,
-          "n": 14,
-          "years": 3
-        },
-        "05": {
-          "medianCents": 92,
-          "p25Cents": 90,
-          "p75Cents": 100,
-          "n": 13,
-          "years": 3
-        },
-        "06": {
-          "medianCents": 96,
-          "p25Cents": 94,
-          "p75Cents": 99,
-          "n": 14,
-          "years": 4
-        },
-        "07": {
-          "medianCents": 99,
-          "p25Cents": 97,
-          "p75Cents": 100,
-          "n": 14,
-          "years": 3
-        },
-        "08": {
-          "medianCents": 97,
-          "p25Cents": 96,
-          "p75Cents": 98,
-          "n": 13,
-          "years": 3
-        },
-        "09": {
-          "medianCents": 97,
-          "p25Cents": 95,
-          "p75Cents": 98,
-          "n": 12,
-          "years": 3
-        }
-      },
-      "yieldSlug": "pork-loin",
-      "flag": {
-        "verdict": "flat",
-        "actionBias": "hold",
-        "reason": "within the normal range",
-        "move": 0.03260869565217391,
-        "retrace": 0,
-        "elevatedWeeks": 0,
-        "nHistory": 26
-      },
-      "tier": "measured",
-      "yield": 0.85,
-      "epCents": 112,
-      "spark": [
-        88,
-        94,
-        93,
-        88,
-        90,
-        92,
-        93,
-        95,
-        91,
-        90,
-        92,
-        95,
-        95,
-        93,
-        94,
-        96,
-        96,
-        94,
-        94,
-        92,
-        99,
-        95,
-        92,
-        94,
-        91,
-        95
-      ],
-      "spark_meta": {
-        "basis": "wholesale",
-        "source": "usda-lmr",
-        "from": "2026-05-07",
-        "to": "2026-06-12",
-        "n": 26
-      },
-      "spark_dates": [
-        "2026-05-07",
-        "2026-05-08",
-        "2026-05-11",
-        "2026-05-12",
-        "2026-05-13",
-        "2026-05-14",
-        "2026-05-15",
-        "2026-05-18",
-        "2026-05-19",
-        "2026-05-20",
-        "2026-05-21",
-        "2026-05-22",
-        "2026-05-26",
-        "2026-05-27",
-        "2026-05-28",
-        "2026-05-29",
-        "2026-06-01",
-        "2026-06-02",
-        "2026-06-03",
-        "2026-06-04",
-        "2026-06-05",
-        "2026-06-08",
-        "2026-06-09",
-        "2026-06-10",
-        "2026-06-11",
-        "2026-06-12"
-      ]
-    },
-    {
-      "key": "pork-shoulder",
-      "label_en": "Pork shoulder",
-      "label_es": "Espaldilla de cerdo",
-      "unit_en": "lb",
-      "unit_es": "libra",
-      "assessment": {
-        "asOf": "2026-06-12",
-        "level": {
-          "basis": "wholesale",
-          "medianCents": 137,
-          "rangeCents": [
-            129,
-            145
-          ],
-          "rangeBasis": "volatility",
-          "typeDispersion": 0,
-          "nObs": 1,
-          "nFamilies": 1,
-          "nSources": 1,
-          "nTypes": 1,
-          "provenance": [
-            {
-              "source": "usda-lmr",
-              "type": "usda-lmr",
-              "valueCents": 137,
-              "date": "2026-06-12"
-            }
-          ]
-        },
-        "trend": {
-          "pct": 0.014814814814814815,
-          "dir": "up",
-          "agreement": 0.5,
-          "nSources": 2,
-          "nFamilies": 2,
-          "nTypes": 2,
-          "noise": 0.0461
-        },
-        "confidence": "medium",
-        "label": "About $1.29–$1.45 (wholesale reference, single market — band from recent volatility), down -16% over the window. 1+ source(s) for level, 2 for trend.",
-        "provenance": [
-          {
-            "kind": "level",
-            "source": "usda-lmr",
-            "type": "usda-lmr",
-            "valueCents": 137,
-            "date": "2026-06-12"
-          },
-          {
-            "kind": "trend",
-            "source": "usda-lmr",
-            "type": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "kind": "trend",
-            "source": "bls",
-            "type": "bls",
-            "basis": "index"
-          }
-        ],
-        "history": [
-          {
-            "date": "2026-05-07",
-            "valueCents": 135,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-08",
-            "valueCents": 137,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-11",
-            "valueCents": 139,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-12",
-            "valueCents": 140,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-13",
-            "valueCents": 143,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-14",
-            "valueCents": 142,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-15",
-            "valueCents": 144,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-18",
-            "valueCents": 148,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-19",
-            "valueCents": 148,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-20",
-            "valueCents": 148,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-21",
-            "valueCents": 150,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-22",
-            "valueCents": 147,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-26",
-            "valueCents": 152,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-27",
-            "valueCents": 151,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-28",
-            "valueCents": 152,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-29",
-            "valueCents": 149,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-01",
-            "valueCents": 149,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-02",
-            "valueCents": 149,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-03",
-            "valueCents": 143,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-04",
-            "valueCents": 140,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-05",
-            "valueCents": 147,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-08",
-            "valueCents": 133,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-09",
-            "valueCents": 125,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-10",
-            "valueCents": 124,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-11",
-            "valueCents": 124,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-12",
-            "valueCents": 137,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          }
-        ]
-      },
-      "seasonalNormals": {
-        "10": {
-          "medianCents": 112,
-          "p25Cents": 105,
-          "p75Cents": 116,
-          "n": 14,
-          "years": 3
-        },
-        "11": {
-          "medianCents": 107,
-          "p25Cents": 106,
-          "p75Cents": 108,
-          "n": 13,
-          "years": 3
-        },
-        "12": {
-          "medianCents": 110,
-          "p25Cents": 109,
-          "p75Cents": 111,
-          "n": 14,
-          "years": 3
-        },
-        "01": {
-          "medianCents": 106,
-          "p25Cents": 103,
-          "p75Cents": 110,
-          "n": 13,
-          "years": 3
-        },
-        "02": {
-          "medianCents": 109,
-          "p25Cents": 105,
-          "p75Cents": 112,
-          "n": 12,
-          "years": 3
-        },
-        "03": {
-          "medianCents": 113,
-          "p25Cents": 110,
-          "p75Cents": 116,
-          "n": 12,
-          "years": 3
-        },
-        "04": {
-          "medianCents": 116,
-          "p25Cents": 110,
-          "p75Cents": 121,
-          "n": 14,
-          "years": 3
-        },
-        "05": {
-          "medianCents": 130,
-          "p25Cents": 129,
-          "p75Cents": 132,
-          "n": 13,
-          "years": 3
-        },
-        "06": {
-          "medianCents": 135,
-          "p25Cents": 129,
-          "p75Cents": 145,
-          "n": 14,
-          "years": 4
-        },
-        "07": {
-          "medianCents": 121,
-          "p25Cents": 115,
-          "p75Cents": 129,
-          "n": 14,
-          "years": 3
-        },
-        "08": {
-          "medianCents": 108,
-          "p25Cents": 107,
-          "p75Cents": 113,
-          "n": 13,
-          "years": 3
-        },
-        "09": {
-          "medianCents": 121,
-          "p25Cents": 107,
-          "p75Cents": 125,
-          "n": 12,
-          "years": 3
-        }
-      },
-      "yieldSlug": "pork-shoulder",
-      "flag": {
-        "verdict": "flat",
-        "actionBias": "hold",
-        "reason": "within the normal range",
-        "move": -0.04861111111111111,
-        "retrace": 0,
-        "elevatedWeeks": 0,
-        "nHistory": 26
-      },
-      "tier": "measured",
-      "yield": 0.75,
-      "epCents": 183,
-      "spark": [
-        135,
-        137,
-        139,
-        140,
-        143,
-        142,
-        144,
-        148,
-        148,
-        148,
-        150,
-        147,
-        152,
-        151,
-        152,
-        149,
-        149,
-        149,
-        143,
-        140,
-        147,
-        133,
-        125,
-        124,
-        124,
-        137
-      ],
-      "spark_meta": {
-        "basis": "wholesale",
-        "source": "usda-lmr",
-        "from": "2026-05-07",
-        "to": "2026-06-12",
-        "n": 26
-      },
-      "spark_dates": [
-        "2026-05-07",
-        "2026-05-08",
-        "2026-05-11",
-        "2026-05-12",
-        "2026-05-13",
-        "2026-05-14",
-        "2026-05-15",
-        "2026-05-18",
-        "2026-05-19",
-        "2026-05-20",
-        "2026-05-21",
-        "2026-05-22",
-        "2026-05-26",
-        "2026-05-27",
-        "2026-05-28",
-        "2026-05-29",
-        "2026-06-01",
-        "2026-06-02",
-        "2026-06-03",
-        "2026-06-04",
-        "2026-06-05",
-        "2026-06-08",
-        "2026-06-09",
-        "2026-06-10",
-        "2026-06-11",
-        "2026-06-12"
       ]
     },
     {
@@ -2178,6 +980,92 @@
         ]
       },
       "seasonal": true,
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 2750,
+          "p25Cents": 2599,
+          "p75Cents": 3080,
+          "n": 14,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 3800,
+          "p25Cents": 2825,
+          "p75Cents": 6850,
+          "n": 13,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 3550,
+          "p25Cents": 2580,
+          "p75Cents": 4069,
+          "n": 13,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 2470,
+          "p25Cents": 2375,
+          "p75Cents": 2955,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 2526,
+          "p25Cents": 2318,
+          "p75Cents": 3028,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 3405,
+          "p25Cents": 2514,
+          "p75Cents": 3579,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 3105,
+          "p25Cents": 2795,
+          "p75Cents": 3524,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 4745,
+          "p25Cents": 2838,
+          "p75Cents": 5100,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 3298,
+          "p25Cents": 2698,
+          "p75Cents": 4628,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 3180,
+          "p25Cents": 2643,
+          "p75Cents": 3350,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 2600,
+          "p25Cents": 2505,
+          "p75Cents": 2950,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 2694,
+          "p25Cents": 2524,
+          "p75Cents": 3050,
+          "n": 12,
+          "years": 3
+        }
+      },
       "yieldSlug": "romaine-lettuce",
       "flag": {
         "verdict": "structural",
@@ -2591,6 +1479,92 @@
         ]
       },
       "seasonal": true,
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 1899,
+          "p25Cents": 1773,
+          "p75Cents": 2170,
+          "n": 14,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 1938,
+          "p25Cents": 1680,
+          "p75Cents": 2900,
+          "n": 13,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 2190,
+          "p25Cents": 1500,
+          "p75Cents": 3050,
+          "n": 13,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 2000,
+          "p25Cents": 1700,
+          "p75Cents": 3000,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 2470,
+          "p25Cents": 1436,
+          "p75Cents": 2510,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 2218,
+          "p25Cents": 1860,
+          "p75Cents": 2748,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 2500,
+          "p25Cents": 1960,
+          "p75Cents": 4424,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 2155,
+          "p25Cents": 2000,
+          "p75Cents": 2450,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 1925,
+          "p25Cents": 1850,
+          "p75Cents": 2018,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 2100,
+          "p25Cents": 2017,
+          "p75Cents": 2194,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 2140,
+          "p25Cents": 2040,
+          "p75Cents": 2495,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 2050,
+          "p25Cents": 2000,
+          "p75Cents": 2132,
+          "n": 12,
+          "years": 3
+        }
+      },
       "yieldSlug": "tomato",
       "flag": {
         "verdict": "easing",
@@ -3021,6 +1995,92 @@
             "basis": "wholesale"
           }
         ]
+      },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 2605,
+          "p25Cents": 2572,
+          "p75Cents": 2636,
+          "n": 14,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 2660,
+          "p25Cents": 2620,
+          "p75Cents": 2800,
+          "n": 13,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 2635,
+          "p25Cents": 2581,
+          "p75Cents": 2769,
+          "n": 14,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 2750,
+          "p25Cents": 2600,
+          "p75Cents": 2800,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 2693,
+          "p25Cents": 2649,
+          "p75Cents": 2776,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 2687,
+          "p25Cents": 2516,
+          "p75Cents": 2820,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 2600,
+          "p25Cents": 2525,
+          "p75Cents": 2860,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 2770,
+          "p25Cents": 2600,
+          "p75Cents": 2930,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 2600,
+          "p25Cents": 2514,
+          "p75Cents": 2975,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 2600,
+          "p25Cents": 2525,
+          "p75Cents": 3125,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 2790,
+          "p25Cents": 2700,
+          "p75Cents": 3325,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 2650,
+          "p25Cents": 2580,
+          "p75Cents": 3065,
+          "n": 12,
+          "years": 3
+        }
       },
       "yieldSlug": "onion",
       "flag": {
@@ -3453,6 +2513,92 @@
           }
         ]
       },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 1938,
+          "p25Cents": 1723,
+          "p75Cents": 2030,
+          "n": 14,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 1907,
+          "p25Cents": 1816,
+          "p75Cents": 2091,
+          "n": 13,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 1991,
+          "p25Cents": 1541,
+          "p75Cents": 2150,
+          "n": 14,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 1988,
+          "p25Cents": 1825,
+          "p75Cents": 2157,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 1775,
+          "p25Cents": 1465,
+          "p75Cents": 1943,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 1690,
+          "p25Cents": 1650,
+          "p75Cents": 1819,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 1733,
+          "p25Cents": 1460,
+          "p75Cents": 1881,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 1700,
+          "p25Cents": 1456,
+          "p75Cents": 1750,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 1870,
+          "p25Cents": 1774,
+          "p75Cents": 2005,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 2098,
+          "p25Cents": 1872,
+          "p75Cents": 3191,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 2375,
+          "p25Cents": 2160,
+          "p75Cents": 3595,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 2120,
+          "p25Cents": 1990,
+          "p75Cents": 2784,
+          "n": 12,
+          "years": 3
+        }
+      },
       "yieldSlug": "russet-potato",
       "flag": {
         "verdict": "flat",
@@ -3528,556 +2674,6 @@
         "2026-06-10",
         "2026-06-11",
         "2026-06-12"
-      ]
-    },
-    {
-      "key": "butter",
-      "label_en": "Butter (AA, bulk)",
-      "label_es": "Mantequilla (AA, a granel)",
-      "unit_en": "lb",
-      "unit_es": "libra",
-      "assessment": {
-        "asOf": "2026-06-06",
-        "level": {
-          "basis": "wholesale",
-          "medianCents": 161,
-          "rangeCents": [
-            156,
-            166
-          ],
-          "rangeBasis": "volatility",
-          "typeDispersion": 0,
-          "nObs": 1,
-          "nFamilies": 1,
-          "nSources": 1,
-          "nTypes": 1,
-          "provenance": [
-            {
-              "source": "usda-lmr",
-              "type": "usda-lmr",
-              "valueCents": 161,
-              "date": "2026-06-06"
-            }
-          ]
-        },
-        "trend": {
-          "pct": -0.13440860215053763,
-          "dir": "down",
-          "agreement": 0.667,
-          "nSources": 3,
-          "nFamilies": 3,
-          "nTypes": 3,
-          "noise": 0.0122
-        },
-        "confidence": "medium",
-        "label": "About $1.56–$1.66 (wholesale reference, single market — band from recent volatility), down -10.4% over the window. 1+ source(s) for level, 3 for trend.",
-        "provenance": [
-          {
-            "kind": "level",
-            "source": "usda-lmr",
-            "type": "usda-lmr",
-            "valueCents": 161,
-            "date": "2026-06-06"
-          },
-          {
-            "kind": "trend",
-            "source": "usda-lmr",
-            "type": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "kind": "trend",
-            "source": "bls",
-            "type": "bls",
-            "basis": "index"
-          },
-          {
-            "kind": "trend",
-            "source": "fred",
-            "type": "fred",
-            "basis": "retail"
-          }
-        ],
-        "history": [
-          {
-            "date": "2026-03-21",
-            "valueCents": 186,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-03-28",
-            "valueCents": 189,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-04-04",
-            "valueCents": 189,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-04-11",
-            "valueCents": 189,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-04-18",
-            "valueCents": 181,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-04-25",
-            "valueCents": 177,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-02",
-            "valueCents": 175,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-09",
-            "valueCents": 175,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-16",
-            "valueCents": 171,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-23",
-            "valueCents": 168,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-30",
-            "valueCents": 162,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-06",
-            "valueCents": 161,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          }
-        ]
-      },
-      "seasonalNormals": {
-        "10": {
-          "medianCents": 284,
-          "p25Cents": 196,
-          "p75Cents": 308,
-          "n": 12,
-          "years": 3
-        },
-        "11": {
-          "medianCents": 271,
-          "p25Cents": 171,
-          "p75Cents": 304,
-          "n": 14,
-          "years": 3
-        },
-        "12": {
-          "medianCents": 262,
-          "p25Cents": 164,
-          "p75Cents": 268,
-          "n": 13,
-          "years": 3
-        },
-        "01": {
-          "medianCents": 259,
-          "p25Cents": 149,
-          "p75Cents": 262,
-          "n": 13,
-          "years": 3
-        },
-        "02": {
-          "medianCents": 259,
-          "p25Cents": 163,
-          "p75Cents": 265,
-          "n": 12,
-          "years": 3
-        },
-        "03": {
-          "medianCents": 248,
-          "p25Cents": 200,
-          "p75Cents": 277,
-          "n": 14,
-          "years": 3
-        },
-        "04": {
-          "medianCents": 234,
-          "p25Cents": 189,
-          "p75Cents": 286,
-          "n": 12,
-          "years": 3
-        },
-        "05": {
-          "medianCents": 235,
-          "p25Cents": 175,
-          "p75Cents": 279,
-          "n": 14,
-          "years": 3
-        },
-        "06": {
-          "medianCents": 248,
-          "p25Cents": 245,
-          "p75Cents": 305,
-          "n": 13,
-          "years": 4
-        },
-        "07": {
-          "medianCents": 253,
-          "p25Cents": 244,
-          "p75Cents": 312,
-          "n": 13,
-          "years": 3
-        },
-        "08": {
-          "medianCents": 260,
-          "p25Cents": 253,
-          "p75Cents": 311,
-          "n": 14,
-          "years": 3
-        },
-        "09": {
-          "medianCents": 269,
-          "p25Cents": 244,
-          "p75Cents": 311,
-          "n": 13,
-          "years": 3
-        }
-      },
-      "flag": {
-        "verdict": "easing",
-        "actionBias": "hold",
-        "reason": "prices have come down vs the baseline",
-        "move": -0.14133333333333334,
-        "retrace": 0,
-        "elevatedWeeks": 0,
-        "nHistory": 12
-      },
-      "tier": "measured",
-      "spark": [
-        186,
-        189,
-        189,
-        189,
-        181,
-        177,
-        175,
-        175,
-        171,
-        168,
-        162,
-        161
-      ],
-      "spark_meta": {
-        "basis": "wholesale",
-        "source": "usda-lmr",
-        "from": "2026-03-21",
-        "to": "2026-06-06",
-        "n": 12
-      },
-      "spark_dates": [
-        "2026-03-21",
-        "2026-03-28",
-        "2026-04-04",
-        "2026-04-11",
-        "2026-04-18",
-        "2026-04-25",
-        "2026-05-02",
-        "2026-05-09",
-        "2026-05-16",
-        "2026-05-23",
-        "2026-05-30",
-        "2026-06-06"
-      ]
-    },
-    {
-      "key": "cheddar-cheese",
-      "label_en": "Cheddar cheese",
-      "label_es": "Queso cheddar",
-      "unit_en": "lb",
-      "unit_es": "libra",
-      "assessment": {
-        "asOf": "2026-06-06",
-        "level": {
-          "basis": "wholesale",
-          "medianCents": 166,
-          "rangeCents": [
-            165,
-            167
-          ],
-          "rangeBasis": "volatility",
-          "typeDispersion": 0,
-          "nObs": 1,
-          "nFamilies": 1,
-          "nSources": 1,
-          "nTypes": 1,
-          "provenance": [
-            {
-              "source": "usda-lmr",
-              "type": "usda-lmr",
-              "valueCents": 166,
-              "date": "2026-06-06"
-            }
-          ]
-        },
-        "trend": {
-          "pct": 0.10666666666666667,
-          "dir": "up",
-          "agreement": 0.667,
-          "nSources": 3,
-          "nFamilies": 3,
-          "nTypes": 3,
-          "noise": 0.0027
-        },
-        "confidence": "medium",
-        "label": "About $1.65–$1.67 (wholesale reference, single market — band from recent volatility), up +4.9% over the window. 1+ source(s) for level, 3 for trend.",
-        "provenance": [
-          {
-            "kind": "level",
-            "source": "usda-lmr",
-            "type": "usda-lmr",
-            "valueCents": 166,
-            "date": "2026-06-06"
-          },
-          {
-            "kind": "trend",
-            "source": "usda-lmr",
-            "type": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "kind": "trend",
-            "source": "bls",
-            "type": "bls",
-            "basis": "index"
-          },
-          {
-            "kind": "trend",
-            "source": "fred",
-            "type": "fred",
-            "basis": "retail"
-          }
-        ],
-        "history": [
-          {
-            "date": "2026-03-21",
-            "valueCents": 150,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-03-28",
-            "valueCents": 156,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-04-04",
-            "valueCents": 159,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-04-11",
-            "valueCents": 161,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-04-18",
-            "valueCents": 162,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-04-25",
-            "valueCents": 165,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-02",
-            "valueCents": 165,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-09",
-            "valueCents": 165,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-16",
-            "valueCents": 166,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-23",
-            "valueCents": 166,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-30",
-            "valueCents": 166,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-06",
-            "valueCents": 166,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          }
-        ]
-      },
-      "seasonalNormals": {
-        "10": {
-          "medianCents": 191,
-          "p25Cents": 178,
-          "p75Cents": 223,
-          "n": 12,
-          "years": 3
-        },
-        "11": {
-          "medianCents": 178,
-          "p25Cents": 177,
-          "p75Cents": 194,
-          "n": 14,
-          "years": 3
-        },
-        "12": {
-          "medianCents": 170,
-          "p25Cents": 166,
-          "p75Cents": 178,
-          "n": 13,
-          "years": 3
-        },
-        "01": {
-          "medianCents": 153,
-          "p25Cents": 144,
-          "p75Cents": 178,
-          "n": 13,
-          "years": 3
-        },
-        "02": {
-          "medianCents": 154,
-          "p25Cents": 142,
-          "p75Cents": 191,
-          "n": 12,
-          "years": 3
-        },
-        "03": {
-          "medianCents": 161,
-          "p25Cents": 157,
-          "p75Cents": 191,
-          "n": 14,
-          "years": 3
-        },
-        "04": {
-          "medianCents": 162,
-          "p25Cents": 155,
-          "p75Cents": 171,
-          "n": 12,
-          "years": 3
-        },
-        "05": {
-          "medianCents": 166,
-          "p25Cents": 165,
-          "p75Cents": 174,
-          "n": 14,
-          "years": 3
-        },
-        "06": {
-          "medianCents": 188,
-          "p25Cents": 166,
-          "p75Cents": 192,
-          "n": 13,
-          "years": 4
-        },
-        "07": {
-          "medianCents": 183,
-          "p25Cents": 150,
-          "p75Cents": 193,
-          "n": 13,
-          "years": 3
-        },
-        "08": {
-          "medianCents": 174,
-          "p25Cents": 172,
-          "p75Cents": 194,
-          "n": 14,
-          "years": 3
-        },
-        "09": {
-          "medianCents": 200,
-          "p25Cents": 184,
-          "p75Cents": 201,
-          "n": 13,
-          "years": 3
-        }
-      },
-      "flag": {
-        "verdict": "flat",
-        "actionBias": "hold",
-        "reason": "within the normal range",
-        "move": 0.0375,
-        "retrace": 0,
-        "elevatedWeeks": 0,
-        "nHistory": 12
-      },
-      "tier": "measured",
-      "spark": [
-        150,
-        156,
-        159,
-        161,
-        162,
-        165,
-        165,
-        165,
-        166,
-        166,
-        166,
-        166
-      ],
-      "spark_meta": {
-        "basis": "wholesale",
-        "source": "usda-lmr",
-        "from": "2026-03-21",
-        "to": "2026-06-06",
-        "n": 12
-      },
-      "spark_dates": [
-        "2026-03-21",
-        "2026-03-28",
-        "2026-04-04",
-        "2026-04-11",
-        "2026-04-18",
-        "2026-04-25",
-        "2026-05-02",
-        "2026-05-09",
-        "2026-05-16",
-        "2026-05-23",
-        "2026-05-30",
-        "2026-06-06"
       ]
     },
     {
@@ -4198,6 +2794,50 @@
             "basis": "wholesale"
           }
         ]
+      },
+      "seasonalNormals": {
+        "01": {
+          "medianCents": 95,
+          "p25Cents": 76,
+          "p75Cents": 138,
+          "n": 5,
+          "years": 2
+        },
+        "02": {
+          "medianCents": 470,
+          "p25Cents": 120,
+          "p75Cents": 820,
+          "n": 8,
+          "years": 2
+        },
+        "03": {
+          "medianCents": 286,
+          "p25Cents": 157,
+          "p75Cents": 393,
+          "n": 10,
+          "years": 2
+        },
+        "04": {
+          "medianCents": 215,
+          "p25Cents": 60,
+          "p75Cents": 370,
+          "n": 8,
+          "years": 2
+        },
+        "05": {
+          "medianCents": 182,
+          "p25Cents": 65,
+          "p75Cents": 348,
+          "n": 8,
+          "years": 2
+        },
+        "06": {
+          "medianCents": 301,
+          "p25Cents": 177,
+          "p75Cents": 303,
+          "n": 7,
+          "years": 2
+        }
       },
       "flag": {
         "verdict": "flat",
@@ -4571,6 +3211,92 @@
             "basis": "wholesale"
           }
         ]
+      },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 1862,
+          "p25Cents": 1550,
+          "p75Cents": 2253,
+          "n": 14,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 1940,
+          "p25Cents": 1800,
+          "p75Cents": 2800,
+          "n": 13,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 2820,
+          "p25Cents": 2395,
+          "p75Cents": 3191,
+          "n": 14,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 2860,
+          "p25Cents": 2210,
+          "p75Cents": 3000,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 2780,
+          "p25Cents": 2085,
+          "p75Cents": 3040,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 3075,
+          "p25Cents": 2049,
+          "p75Cents": 3625,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 2308,
+          "p25Cents": 1970,
+          "p75Cents": 3615,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 1925,
+          "p25Cents": 1915,
+          "p75Cents": 2300,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 2177,
+          "p25Cents": 1903,
+          "p75Cents": 2481,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 2630,
+          "p25Cents": 2225,
+          "p75Cents": 2830,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 2370,
+          "p25Cents": 2295,
+          "p75Cents": 2440,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 2200,
+          "p25Cents": 2080,
+          "p75Cents": 2313,
+          "n": 12,
+          "years": 3
+        }
       },
       "yieldSlug": "bell-pepper",
       "flag": {
@@ -4983,6 +3709,92 @@
             "basis": "wholesale"
           }
         ]
+      },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 3759,
+          "p25Cents": 3582,
+          "p75Cents": 4266,
+          "n": 14,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 3525,
+          "p25Cents": 3070,
+          "p75Cents": 4140,
+          "n": 13,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 3400,
+          "p25Cents": 2888,
+          "p75Cents": 3750,
+          "n": 13,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 3188,
+          "p25Cents": 2933,
+          "p75Cents": 3385,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 3305,
+          "p25Cents": 2590,
+          "p75Cents": 4349,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 2753,
+          "p25Cents": 2517,
+          "p75Cents": 3316,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 3000,
+          "p25Cents": 2566,
+          "p75Cents": 3426,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 3200,
+          "p25Cents": 2510,
+          "p75Cents": 4950,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 2963,
+          "p25Cents": 2644,
+          "p75Cents": 3335,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 3308,
+          "p25Cents": 3240,
+          "p75Cents": 3843,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 3025,
+          "p25Cents": 2995,
+          "p75Cents": 3455,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 3483,
+          "p25Cents": 3136,
+          "p75Cents": 3989,
+          "n": 12,
+          "years": 3
+        }
       },
       "yieldSlug": "broccoli",
       "flag": {
@@ -5415,6 +4227,92 @@
           }
         ]
       },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 4700,
+          "p25Cents": 4700,
+          "p75Cents": 5230,
+          "n": 14,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 4700,
+          "p25Cents": 4700,
+          "p75Cents": 5340,
+          "n": 13,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 4700,
+          "p25Cents": 4700,
+          "p75Cents": 5738,
+          "n": 13,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 4700,
+          "p25Cents": 4410,
+          "p75Cents": 4744,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 4700,
+          "p25Cents": 4700,
+          "p75Cents": 5156,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 5225,
+          "p25Cents": 4700,
+          "p75Cents": 5478,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 5100,
+          "p25Cents": 4700,
+          "p75Cents": 5800,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 5290,
+          "p25Cents": 4700,
+          "p75Cents": 5540,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 4700,
+          "p25Cents": 4700,
+          "p75Cents": 4700,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 4700,
+          "p25Cents": 4700,
+          "p75Cents": 4700,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 4700,
+          "p25Cents": 4175,
+          "p75Cents": 5900,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 4700,
+          "p25Cents": 4688,
+          "p75Cents": 4700,
+          "n": 12,
+          "years": 3
+        }
+      },
       "yieldSlug": "cauliflower",
       "flag": {
         "verdict": "easing",
@@ -5845,6 +4743,92 @@
             "basis": "wholesale"
           }
         ]
+      },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 1975,
+          "p25Cents": 1956,
+          "p75Cents": 2200,
+          "n": 14,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 1925,
+          "p25Cents": 1700,
+          "p75Cents": 2100,
+          "n": 13,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 2200,
+          "p25Cents": 2100,
+          "p75Cents": 2243,
+          "n": 14,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 2200,
+          "p25Cents": 2100,
+          "p75Cents": 2250,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 2200,
+          "p25Cents": 2100,
+          "p75Cents": 2250,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 2200,
+          "p25Cents": 2100,
+          "p75Cents": 2250,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 2200,
+          "p25Cents": 2125,
+          "p75Cents": 2250,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 2200,
+          "p25Cents": 2100,
+          "p75Cents": 2200,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 2150,
+          "p25Cents": 2100,
+          "p75Cents": 2200,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 2200,
+          "p25Cents": 2108,
+          "p75Cents": 2200,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 2200,
+          "p25Cents": 2200,
+          "p75Cents": 2250,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 2200,
+          "p25Cents": 1981,
+          "p75Cents": 2250,
+          "n": 12,
+          "years": 3
+        }
       },
       "yieldSlug": "spinach",
       "flag": {
@@ -6277,6 +5261,92 @@
           }
         ]
       },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 4407,
+          "p25Cents": 3479,
+          "p75Cents": 4986,
+          "n": 14,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 3450,
+          "p25Cents": 3113,
+          "p75Cents": 3550,
+          "n": 13,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 4170,
+          "p25Cents": 3680,
+          "p75Cents": 4344,
+          "n": 13,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 4175,
+          "p25Cents": 4050,
+          "p75Cents": 5190,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 3432,
+          "p25Cents": 3148,
+          "p75Cents": 3850,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 2840,
+          "p25Cents": 2211,
+          "p75Cents": 3415,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 4013,
+          "p25Cents": 3374,
+          "p75Cents": 4285,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 3490,
+          "p25Cents": 3180,
+          "p75Cents": 5719,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 3138,
+          "p25Cents": 2988,
+          "p75Cents": 3665,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 3943,
+          "p25Cents": 3075,
+          "p75Cents": 4273,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 4090,
+          "p25Cents": 3835,
+          "p75Cents": 4175,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 4240,
+          "p25Cents": 4050,
+          "p75Cents": 4646,
+          "n": 12,
+          "years": 3
+        }
+      },
       "yieldSlug": "asparagus",
       "flag": {
         "verdict": "easing",
@@ -6707,6 +5777,92 @@
             "basis": "wholesale"
           }
         ]
+      },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 7500,
+          "p25Cents": 7006,
+          "p75Cents": 7500,
+          "n": 14,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 7300,
+          "p25Cents": 7300,
+          "p75Cents": 7800,
+          "n": 13,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 7288,
+          "p25Cents": 7200,
+          "p75Cents": 7700,
+          "n": 14,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 7200,
+          "p25Cents": 6900,
+          "p75Cents": 7550,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 7000,
+          "p25Cents": 6950,
+          "p75Cents": 7560,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 6950,
+          "p25Cents": 6780,
+          "p75Cents": 7725,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 7173,
+          "p25Cents": 6223,
+          "p75Cents": 7279,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 7150,
+          "p25Cents": 6240,
+          "p75Cents": 7580,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 6170,
+          "p25Cents": 5641,
+          "p75Cents": 7175,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 6230,
+          "p25Cents": 6200,
+          "p75Cents": 7500,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 6200,
+          "p25Cents": 6200,
+          "p75Cents": 7640,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 6470,
+          "p25Cents": 6367,
+          "p75Cents": 7500,
+          "n": 12,
+          "years": 3
+        }
       },
       "yieldSlug": "garlic",
       "flag": {
@@ -7139,6 +6295,92 @@
           }
         ]
       },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 3200,
+          "p25Cents": 2760,
+          "p75Cents": 3250,
+          "n": 14,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 3190,
+          "p25Cents": 2840,
+          "p75Cents": 3230,
+          "n": 13,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 3015,
+          "p25Cents": 2835,
+          "p75Cents": 3169,
+          "n": 14,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 2950,
+          "p25Cents": 2875,
+          "p75Cents": 3200,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 3203,
+          "p25Cents": 3075,
+          "p75Cents": 3396,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 3098,
+          "p25Cents": 3028,
+          "p75Cents": 3374,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 3088,
+          "p25Cents": 3000,
+          "p75Cents": 3278,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 3350,
+          "p25Cents": 3000,
+          "p75Cents": 3350,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 3113,
+          "p25Cents": 2993,
+          "p75Cents": 3263,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 3035,
+          "p25Cents": 2850,
+          "p75Cents": 3250,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 3200,
+          "p25Cents": 2850,
+          "p75Cents": 3250,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 3070,
+          "p25Cents": 2850,
+          "p75Cents": 3250,
+          "n": 12,
+          "years": 3
+        }
+      },
       "yieldSlug": "carrot",
       "flag": {
         "verdict": "flat",
@@ -7569,6 +6811,92 @@
             "basis": "wholesale"
           }
         ]
+      },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 2200,
+          "p25Cents": 2081,
+          "p75Cents": 2680,
+          "n": 14,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 2400,
+          "p25Cents": 1575,
+          "p75Cents": 2790,
+          "n": 13,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 2100,
+          "p25Cents": 1720,
+          "p75Cents": 2780,
+          "n": 13,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 2763,
+          "p25Cents": 2290,
+          "p75Cents": 3200,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 2382,
+          "p25Cents": 1844,
+          "p75Cents": 3655,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 2490,
+          "p25Cents": 1823,
+          "p75Cents": 4345,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 1710,
+          "p25Cents": 1578,
+          "p75Cents": 4263,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 1430,
+          "p25Cents": 1400,
+          "p75Cents": 1500,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 1530,
+          "p25Cents": 1439,
+          "p75Cents": 1738,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 2180,
+          "p25Cents": 1864,
+          "p75Cents": 2508,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 2200,
+          "p25Cents": 2175,
+          "p75Cents": 2850,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 2105,
+          "p25Cents": 2095,
+          "p75Cents": 2269,
+          "n": 12,
+          "years": 3
+        }
       },
       "yieldSlug": "corn-on-the-cob",
       "flag": {
@@ -8001,6 +7329,92 @@
           }
         ]
       },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 2800,
+          "p25Cents": 2538,
+          "p75Cents": 2850,
+          "n": 14,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 2800,
+          "p25Cents": 2450,
+          "p75Cents": 2975,
+          "n": 13,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 2800,
+          "p25Cents": 2800,
+          "p75Cents": 2975,
+          "n": 13,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 2800,
+          "p25Cents": 2800,
+          "p75Cents": 3225,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 3000,
+          "p25Cents": 2800,
+          "p75Cents": 3350,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 3200,
+          "p25Cents": 2800,
+          "p75Cents": 3350,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 3015,
+          "p25Cents": 2800,
+          "p75Cents": 3200,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 2800,
+          "p25Cents": 2800,
+          "p75Cents": 2950,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 2900,
+          "p25Cents": 2813,
+          "p75Cents": 2950,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 2850,
+          "p25Cents": 2800,
+          "p75Cents": 2850,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 2850,
+          "p25Cents": 2800,
+          "p75Cents": 2850,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 2800,
+          "p25Cents": 2740,
+          "p75Cents": 2850,
+          "n": 12,
+          "years": 3
+        }
+      },
       "yieldSlug": "kale",
       "flag": {
         "verdict": "flat",
@@ -8431,6 +7845,92 @@
             "basis": "wholesale"
           }
         ]
+      },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 838,
+          "p25Cents": 838,
+          "p75Cents": 838,
+          "n": 10,
+          "years": 2
+        },
+        "11": {
+          "medianCents": 838,
+          "p25Cents": 838,
+          "p75Cents": 838,
+          "n": 8,
+          "years": 2
+        },
+        "12": {
+          "medianCents": 838,
+          "p25Cents": 838,
+          "p75Cents": 838,
+          "n": 10,
+          "years": 2
+        },
+        "01": {
+          "medianCents": 894,
+          "p25Cents": 725,
+          "p75Cents": 975,
+          "n": 11,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 1000,
+          "p25Cents": 725,
+          "p75Cents": 1016,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 1000,
+          "p25Cents": 725,
+          "p75Cents": 1100,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 1000,
+          "p25Cents": 725,
+          "p75Cents": 1100,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 1000,
+          "p25Cents": 725,
+          "p75Cents": 1100,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 1000,
+          "p25Cents": 725,
+          "p75Cents": 1050,
+          "n": 11,
+          "years": 3
+        },
+        "07": {
+          "medianCents": 838,
+          "p25Cents": 838,
+          "p75Cents": 848,
+          "n": 10,
+          "years": 2
+        },
+        "08": {
+          "medianCents": 838,
+          "p25Cents": 838,
+          "p75Cents": 838,
+          "n": 8,
+          "years": 2
+        },
+        "09": {
+          "medianCents": 838,
+          "p25Cents": 838,
+          "p75Cents": 838,
+          "n": 8,
+          "years": 2
+        }
       },
       "yieldSlug": "basil",
       "flag": {
@@ -8863,6 +8363,92 @@
           }
         ]
       },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 2925,
+          "p25Cents": 2723,
+          "p75Cents": 3000,
+          "n": 10,
+          "years": 2
+        },
+        "11": {
+          "medianCents": 2640,
+          "p25Cents": 2619,
+          "p75Cents": 2783,
+          "n": 8,
+          "years": 2
+        },
+        "12": {
+          "medianCents": 2632,
+          "p25Cents": 2625,
+          "p75Cents": 2658,
+          "n": 10,
+          "years": 2
+        },
+        "01": {
+          "medianCents": 2600,
+          "p25Cents": 2590,
+          "p75Cents": 3075,
+          "n": 12,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 2775,
+          "p25Cents": 2475,
+          "p75Cents": 3075,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 2700,
+          "p25Cents": 2350,
+          "p75Cents": 2776,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 2700,
+          "p25Cents": 2438,
+          "p75Cents": 2925,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 2700,
+          "p25Cents": 2625,
+          "p75Cents": 2925,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 2925,
+          "p25Cents": 2550,
+          "p75Cents": 2963,
+          "n": 11,
+          "years": 3
+        },
+        "07": {
+          "medianCents": 3200,
+          "p25Cents": 2610,
+          "p75Cents": 3700,
+          "n": 10,
+          "years": 2
+        },
+        "08": {
+          "medianCents": 2935,
+          "p25Cents": 2700,
+          "p75Cents": 3475,
+          "n": 8,
+          "years": 2
+        },
+        "09": {
+          "medianCents": 2820,
+          "p25Cents": 2700,
+          "p75Cents": 3048,
+          "n": 8,
+          "years": 2
+        }
+      },
       "yieldSlug": "cilantro",
       "flag": {
         "verdict": "structural",
@@ -9294,6 +8880,92 @@
           }
         ]
       },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 1475,
+          "p25Cents": 1475,
+          "p75Cents": 1475,
+          "n": 14,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 1475,
+          "p25Cents": 1475,
+          "p75Cents": 1475,
+          "n": 13,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 1475,
+          "p25Cents": 1475,
+          "p75Cents": 1475,
+          "n": 14,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 1475,
+          "p25Cents": 1475,
+          "p75Cents": 1475,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 1475,
+          "p25Cents": 1475,
+          "p75Cents": 1475,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 1475,
+          "p25Cents": 1475,
+          "p75Cents": 1475,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 1475,
+          "p25Cents": 1475,
+          "p75Cents": 1475,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 1475,
+          "p25Cents": 1475,
+          "p75Cents": 1475,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 1475,
+          "p25Cents": 1475,
+          "p75Cents": 1475,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 1475,
+          "p25Cents": 1475,
+          "p75Cents": 1475,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 1475,
+          "p25Cents": 1475,
+          "p75Cents": 1475,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 1475,
+          "p25Cents": 1475,
+          "p75Cents": 1475,
+          "n": 12,
+          "years": 3
+        }
+      },
       "yieldSlug": "button-mushroom",
       "flag": {
         "verdict": "flat",
@@ -9705,6 +9377,92 @@
             "basis": "wholesale"
           }
         ]
+      },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 1930,
+          "p25Cents": 1850,
+          "p75Cents": 1950,
+          "n": 14,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 1850,
+          "p25Cents": 1850,
+          "p75Cents": 1950,
+          "n": 13,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 1950,
+          "p25Cents": 1850,
+          "p75Cents": 2150,
+          "n": 13,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 1950,
+          "p25Cents": 1850,
+          "p75Cents": 2150,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 1950,
+          "p25Cents": 1850,
+          "p75Cents": 2150,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 1950,
+          "p25Cents": 1850,
+          "p75Cents": 2150,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 1950,
+          "p25Cents": 1850,
+          "p75Cents": 2150,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 1950,
+          "p25Cents": 1850,
+          "p75Cents": 2150,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 1950,
+          "p25Cents": 1875,
+          "p75Cents": 1950,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 1950,
+          "p25Cents": 1850,
+          "p75Cents": 1990,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 1950,
+          "p25Cents": 1850,
+          "p75Cents": 2000,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 1950,
+          "p25Cents": 1850,
+          "p75Cents": 2000,
+          "n": 12,
+          "years": 3
+        }
       },
       "yieldSlug": "sweet-potato",
       "flag": {
@@ -10136,6 +9894,92 @@
             "basis": "wholesale"
           }
         ]
+      },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 5513,
+          "p25Cents": 3593,
+          "p75Cents": 6085,
+          "n": 14,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 4800,
+          "p25Cents": 3545,
+          "p75Cents": 6500,
+          "n": 13,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 4670,
+          "p25Cents": 3436,
+          "p75Cents": 6222,
+          "n": 14,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 4681,
+          "p25Cents": 3700,
+          "p75Cents": 6120,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 4877,
+          "p25Cents": 3681,
+          "p75Cents": 7856,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 4970,
+          "p25Cents": 3771,
+          "p75Cents": 8323,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 5310,
+          "p25Cents": 4044,
+          "p75Cents": 7290,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 5660,
+          "p25Cents": 5333,
+          "p75Cents": 7406,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 7055,
+          "p25Cents": 6193,
+          "p75Cents": 7178,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 6768,
+          "p25Cents": 6060,
+          "p75Cents": 7217,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 7675,
+          "p25Cents": 6880,
+          "p75Cents": 8020,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 5853,
+          "p25Cents": 4793,
+          "p75Cents": 6478,
+          "n": 12,
+          "years": 3
+        }
       },
       "yieldSlug": "avocado",
       "flag": {
@@ -25731,6 +25575,92 @@
           }
         ]
       },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 3793,
+          "p25Cents": 3225,
+          "p75Cents": 3900,
+          "n": 13,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 3815,
+          "p25Cents": 3600,
+          "p75Cents": 3963,
+          "n": 9,
+          "years": 2
+        },
+        "12": {
+          "medianCents": 4000,
+          "p25Cents": 3565,
+          "p75Cents": 4100,
+          "n": 9,
+          "years": 2
+        },
+        "01": {
+          "medianCents": 4028,
+          "p25Cents": 4000,
+          "p75Cents": 4125,
+          "n": 9,
+          "years": 2
+        },
+        "02": {
+          "medianCents": 3767,
+          "p25Cents": 3400,
+          "p75Cents": 4013,
+          "n": 8,
+          "years": 2
+        },
+        "03": {
+          "medianCents": 3550,
+          "p25Cents": 3490,
+          "p75Cents": 4088,
+          "n": 9,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 3400,
+          "p25Cents": 3290,
+          "p75Cents": 3753,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 3230,
+          "p25Cents": 3200,
+          "p75Cents": 3780,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 3450,
+          "p25Cents": 3200,
+          "p75Cents": 3723,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 3604,
+          "p25Cents": 3118,
+          "p75Cents": 3931,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 3725,
+          "p25Cents": 3390,
+          "p75Cents": 3815,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 3800,
+          "p25Cents": 3356,
+          "p75Cents": 3800,
+          "n": 12,
+          "years": 3
+        }
+      },
       "yieldSlug": "grapefruit",
       "flag": {
         "verdict": "flat",
@@ -26161,6 +26091,92 @@
             "basis": "wholesale"
           }
         ]
+      },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 3628,
+          "p25Cents": 3554,
+          "p75Cents": 3740,
+          "n": 14,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 3600,
+          "p25Cents": 3600,
+          "p75Cents": 3635,
+          "n": 13,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 3563,
+          "p25Cents": 3500,
+          "p75Cents": 3600,
+          "n": 14,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 3500,
+          "p25Cents": 3488,
+          "p75Cents": 3538,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 3525,
+          "p25Cents": 3483,
+          "p75Cents": 3561,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 3500,
+          "p25Cents": 3155,
+          "p75Cents": 3500,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 3590,
+          "p25Cents": 3455,
+          "p75Cents": 3835,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 3580,
+          "p25Cents": 3430,
+          "p75Cents": 3900,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 3500,
+          "p25Cents": 3393,
+          "p75Cents": 3900,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 3613,
+          "p25Cents": 3229,
+          "p75Cents": 4369,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 3750,
+          "p25Cents": 3500,
+          "p75Cents": 4900,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 3828,
+          "p25Cents": 3485,
+          "p75Cents": 4368,
+          "n": 12,
+          "years": 3
+        }
       },
       "yieldSlug": "apple",
       "flag": {
@@ -26593,6 +26609,92 @@
           }
         ]
       },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 4050,
+          "p25Cents": 3838,
+          "p75Cents": 4648,
+          "n": 14,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 4170,
+          "p25Cents": 4050,
+          "p75Cents": 4900,
+          "n": 13,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 4245,
+          "p25Cents": 4200,
+          "p75Cents": 4479,
+          "n": 14,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 4200,
+          "p25Cents": 4100,
+          "p75Cents": 4500,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 4200,
+          "p25Cents": 4165,
+          "p75Cents": 4500,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 4250,
+          "p25Cents": 4200,
+          "p75Cents": 4455,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 3950,
+          "p25Cents": 3928,
+          "p75Cents": 4098,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 3800,
+          "p25Cents": 3600,
+          "p75Cents": 3800,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 3800,
+          "p25Cents": 3574,
+          "p75Cents": 3850,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 3980,
+          "p25Cents": 3800,
+          "p75Cents": 4538,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 4200,
+          "p25Cents": 4100,
+          "p75Cents": 4590,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 4100,
+          "p25Cents": 3565,
+          "p75Cents": 4573,
+          "n": 12,
+          "years": 3
+        }
+      },
       "yieldSlug": "pear",
       "flag": {
         "verdict": "flat",
@@ -27024,6 +27126,92 @@
           }
         ]
       },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 2350,
+          "p25Cents": 2174,
+          "p75Cents": 2443,
+          "n": 14,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 2350,
+          "p25Cents": 2100,
+          "p75Cents": 2375,
+          "n": 13,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 2350,
+          "p25Cents": 2155,
+          "p75Cents": 2369,
+          "n": 14,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 2080,
+          "p25Cents": 2050,
+          "p75Cents": 2100,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 2100,
+          "p25Cents": 2050,
+          "p75Cents": 2103,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 2118,
+          "p25Cents": 2050,
+          "p75Cents": 2125,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 2200,
+          "p25Cents": 2150,
+          "p75Cents": 2264,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 2280,
+          "p25Cents": 2150,
+          "p75Cents": 2400,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 2295,
+          "p25Cents": 2150,
+          "p75Cents": 2375,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 2257,
+          "p25Cents": 2044,
+          "p75Cents": 2419,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 2350,
+          "p25Cents": 2120,
+          "p75Cents": 2450,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 2350,
+          "p25Cents": 2100,
+          "p75Cents": 2450,
+          "n": 12,
+          "years": 3
+        }
+      },
       "yieldSlug": "banana",
       "flag": {
         "verdict": "flat",
@@ -27359,6 +27547,92 @@
             "basis": "wholesale"
           }
         ]
+      },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 562,
+          "p25Cents": 550,
+          "p75Cents": 691,
+          "n": 14,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 563,
+          "p25Cents": 550,
+          "p75Cents": 650,
+          "n": 13,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 725,
+          "p25Cents": 513,
+          "p75Cents": 725,
+          "n": 13,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 850,
+          "p25Cents": 725,
+          "p75Cents": 1500,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 715,
+          "p25Cents": 679,
+          "p75Cents": 1650,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 1033,
+          "p25Cents": 750,
+          "p75Cents": 2164,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 1093,
+          "p25Cents": 761,
+          "p75Cents": 1765,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 700,
+          "p25Cents": 650,
+          "p75Cents": 713,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 592,
+          "p25Cents": 564,
+          "p75Cents": 685,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 575,
+          "p25Cents": 550,
+          "p75Cents": 601,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 560,
+          "p25Cents": 525,
+          "p75Cents": 650,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 560,
+          "p25Cents": 498,
+          "p75Cents": 650,
+          "n": 12,
+          "years": 3
+        }
       },
       "yieldSlug": "watermelon",
       "flag": {
@@ -27791,6 +28065,92 @@
           }
         ]
       },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 4655,
+          "p25Cents": 3990,
+          "p75Cents": 5529,
+          "n": 14,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 2825,
+          "p25Cents": 2570,
+          "p75Cents": 3610,
+          "n": 13,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 2745,
+          "p25Cents": 1919,
+          "p75Cents": 2993,
+          "n": 14,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 3094,
+          "p25Cents": 2290,
+          "p75Cents": 3175,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 2450,
+          "p25Cents": 2160,
+          "p75Cents": 3511,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 2315,
+          "p25Cents": 1886,
+          "p75Cents": 3248,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 3835,
+          "p25Cents": 3076,
+          "p75Cents": 4320,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 2505,
+          "p25Cents": 1720,
+          "p75Cents": 2820,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 1873,
+          "p25Cents": 1651,
+          "p75Cents": 2340,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 1870,
+          "p25Cents": 1743,
+          "p75Cents": 2247,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 1820,
+          "p25Cents": 1620,
+          "p75Cents": 1970,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 2635,
+          "p25Cents": 2324,
+          "p75Cents": 3439,
+          "n": 12,
+          "years": 3
+        }
+      },
       "yieldSlug": "blueberry",
       "flag": {
         "verdict": "flat",
@@ -28222,6 +28582,92 @@
           }
         ]
       },
+      "seasonalNormals": {
+        "10": {
+          "medianCents": 1483,
+          "p25Cents": 1125,
+          "p75Cents": 1671,
+          "n": 14,
+          "years": 3
+        },
+        "11": {
+          "medianCents": 1600,
+          "p25Cents": 988,
+          "p75Cents": 2138,
+          "n": 13,
+          "years": 3
+        },
+        "12": {
+          "medianCents": 1870,
+          "p25Cents": 1624,
+          "p75Cents": 2501,
+          "n": 14,
+          "years": 3
+        },
+        "01": {
+          "medianCents": 2345,
+          "p25Cents": 1980,
+          "p75Cents": 2663,
+          "n": 13,
+          "years": 3
+        },
+        "02": {
+          "medianCents": 2470,
+          "p25Cents": 2124,
+          "p75Cents": 3471,
+          "n": 12,
+          "years": 3
+        },
+        "03": {
+          "medianCents": 2535,
+          "p25Cents": 2426,
+          "p75Cents": 2648,
+          "n": 12,
+          "years": 3
+        },
+        "04": {
+          "medianCents": 2528,
+          "p25Cents": 2105,
+          "p75Cents": 2978,
+          "n": 14,
+          "years": 3
+        },
+        "05": {
+          "medianCents": 2465,
+          "p25Cents": 1850,
+          "p75Cents": 3550,
+          "n": 13,
+          "years": 3
+        },
+        "06": {
+          "medianCents": 1269,
+          "p25Cents": 1201,
+          "p75Cents": 1354,
+          "n": 14,
+          "years": 4
+        },
+        "07": {
+          "medianCents": 1267,
+          "p25Cents": 915,
+          "p75Cents": 2548,
+          "n": 14,
+          "years": 3
+        },
+        "08": {
+          "medianCents": 1970,
+          "p25Cents": 1640,
+          "p75Cents": 2450,
+          "n": 13,
+          "years": 3
+        },
+        "09": {
+          "medianCents": 2214,
+          "p25Cents": 1609,
+          "p75Cents": 2754,
+          "n": 12,
+          "years": 3
+        }
+      },
       "yieldSlug": "raspberry",
       "flag": {
         "verdict": "flat",
@@ -28298,527 +28744,12 @@
         "2026-06-11",
         "2026-06-12"
       ]
-    },
-    {
-      "key": "short-rib",
-      "label_en": "Short rib",
-      "label_es": "Costilla corta de res",
-      "unit_en": "lb",
-      "unit_es": "libra",
-      "assessment": {
-        "asOf": "2026-06-12",
-        "level": {
-          "basis": "wholesale",
-          "medianCents": 610,
-          "rangeCents": [
-            599,
-            621
-          ],
-          "rangeBasis": "volatility",
-          "typeDispersion": 0,
-          "nObs": 1,
-          "nFamilies": 1,
-          "nSources": 1,
-          "nTypes": 1,
-          "provenance": [
-            {
-              "source": "usda-lmr",
-              "type": "usda-lmr",
-              "valueCents": 610,
-              "date": "2026-06-12"
-            }
-          ]
-        },
-        "trend": {
-          "pct": 0.030405405405405407,
-          "dir": "up",
-          "agreement": 1,
-          "nSources": 2,
-          "nFamilies": 2,
-          "nTypes": 2,
-          "noise": 0.0138
-        },
-        "confidence": "medium",
-        "label": "About $5.99–$6.21 (wholesale reference, single market — band from recent volatility), up +4.1% over the window. 1+ source(s) for level, 2 for trend.",
-        "provenance": [
-          {
-            "kind": "level",
-            "source": "usda-lmr",
-            "type": "usda-lmr",
-            "valueCents": 610,
-            "date": "2026-06-12"
-          },
-          {
-            "kind": "trend",
-            "source": "usda-lmr",
-            "type": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "kind": "trend",
-            "source": "bls",
-            "type": "bls",
-            "basis": "index"
-          }
-        ],
-        "history": [
-          {
-            "date": "2026-05-07",
-            "valueCents": 592,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-08",
-            "valueCents": 598,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-11",
-            "valueCents": 603,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-12",
-            "valueCents": 613,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-13",
-            "valueCents": 581,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-14",
-            "valueCents": 590,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-15",
-            "valueCents": 579,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-18",
-            "valueCents": 615,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-19",
-            "valueCents": 597,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-20",
-            "valueCents": 613,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-21",
-            "valueCents": 594,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-22",
-            "valueCents": 593,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-26",
-            "valueCents": 627,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-27",
-            "valueCents": 600,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-28",
-            "valueCents": 596,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-05-29",
-            "valueCents": 585,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-01",
-            "valueCents": 608,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-02",
-            "valueCents": 620,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-03",
-            "valueCents": 601,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-04",
-            "valueCents": 590,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-05",
-            "valueCents": 601,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-08",
-            "valueCents": 607,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-09",
-            "valueCents": 629,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-10",
-            "valueCents": 614,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-11",
-            "valueCents": 601,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-12",
-            "valueCents": 610,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          }
-        ]
-      },
-      "yieldSlug": "short-rib",
-      "flag": {
-        "verdict": "flat",
-        "actionBias": "hold",
-        "reason": "within the normal range",
-        "move": 0.021775544388609715,
-        "retrace": 0,
-        "elevatedWeeks": 0,
-        "nHistory": 26
-      },
-      "tier": "measured",
-      "yield": 0.65,
-      "epCents": 938,
-      "spark": [
-        592,
-        598,
-        603,
-        613,
-        581,
-        590,
-        579,
-        615,
-        597,
-        613,
-        594,
-        593,
-        627,
-        600,
-        596,
-        585,
-        608,
-        620,
-        601,
-        590,
-        601,
-        607,
-        629,
-        614,
-        601,
-        610
-      ],
-      "spark_meta": {
-        "basis": "wholesale",
-        "source": "usda-lmr",
-        "from": "2026-05-07",
-        "to": "2026-06-12",
-        "n": 26
-      },
-      "spark_dates": [
-        "2026-05-07",
-        "2026-05-08",
-        "2026-05-11",
-        "2026-05-12",
-        "2026-05-13",
-        "2026-05-14",
-        "2026-05-15",
-        "2026-05-18",
-        "2026-05-19",
-        "2026-05-20",
-        "2026-05-21",
-        "2026-05-22",
-        "2026-05-26",
-        "2026-05-27",
-        "2026-05-28",
-        "2026-05-29",
-        "2026-06-01",
-        "2026-06-02",
-        "2026-06-03",
-        "2026-06-04",
-        "2026-06-05",
-        "2026-06-08",
-        "2026-06-09",
-        "2026-06-10",
-        "2026-06-11",
-        "2026-06-12"
-      ]
-    },
-    {
-      "key": "ground-beef",
-      "label_en": "Ground beef",
-      "label_es": "Carne molida de res",
-      "unit_en": "lb",
-      "unit_es": "libra",
-      "assessment": {
-        "asOf": "2026-06-10",
-        "level": {
-          "basis": "wholesale",
-          "medianCents": 551,
-          "rangeCents": [
-            551,
-            551
-          ],
-          "rangeBasis": "point",
-          "typeDispersion": 0,
-          "nObs": 1,
-          "nFamilies": 1,
-          "nSources": 1,
-          "nTypes": 1,
-          "provenance": [
-            {
-              "source": "usda-lmr",
-              "type": "usda-lmr",
-              "valueCents": 551,
-              "date": "2026-06-10"
-            }
-          ]
-        },
-        "trend": {
-          "pct": -0.02304964539007092,
-          "dir": "down",
-          "agreement": 0.333,
-          "nSources": 3,
-          "nFamilies": 3,
-          "nTypes": 3,
-          "noise": 0.0067
-        },
-        "confidence": "directional",
-        "label": "About $5.51 (wholesale reference, single source — range not yet measurable), flat -0.1% over the window. 1+ source(s) for level, 3 for trend.",
-        "provenance": [
-          {
-            "kind": "level",
-            "source": "usda-lmr",
-            "type": "usda-lmr",
-            "valueCents": 551,
-            "date": "2026-06-10"
-          },
-          {
-            "kind": "trend",
-            "source": "usda-lmr",
-            "type": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "kind": "trend",
-            "source": "bls",
-            "type": "bls",
-            "basis": "index"
-          },
-          {
-            "kind": "trend",
-            "source": "fred",
-            "type": "fred",
-            "basis": "index"
-          }
-        ],
-        "history": [
-          {
-            "date": "2026-06-08",
-            "valueCents": 564,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          },
-          {
-            "date": "2026-06-10",
-            "valueCents": 551,
-            "source": "usda-lmr",
-            "basis": "wholesale"
-          }
-        ]
-      },
-      "yieldSlug": "ground-beef",
-      "flag": {
-        "verdict": "insufficient",
-        "actionBias": "watch",
-        "reason": "not enough history to tell a spike from a real trend — treat as real",
-        "move": null,
-        "retrace": null,
-        "elevatedWeeks": null,
-        "nHistory": 2
-      },
-      "tier": "measured",
-      "yield": 1,
-      "epCents": 551
-    }
-  ],
-  "drivers": [
-    {
-      "key": "corn",
-      "label_en": "Corn (feed)",
-      "label_es": "Maíz (forraje)",
-      "kind": "feed-grain",
-      "trend": {
-        "pct": 0.10362173038229376,
-        "dir": "up",
-        "agreement": 1,
-        "nSources": 1,
-        "nFamilies": 1,
-        "nTypes": 1,
-        "noise": 0.0325
-      },
-      "leads": [
-        "chicken-breast",
-        "whole-chicken",
-        "pork-loin",
-        "pork-shoulder",
-        "ribeye",
-        "beef-tenderloin",
-        "eggs"
-      ],
-      "spark": [
-        15904,
-        15845,
-        16961,
-        15951,
-        17552
-      ]
-    },
-    {
-      "key": "soybeans",
-      "label_en": "Soybeans (feed)",
-      "label_es": "Soya (forraje)",
-      "kind": "feed-grain",
-      "trend": {
-        "pct": 0.19784172661870503,
-        "dir": "up",
-        "agreement": 1,
-        "nSources": 1,
-        "nFamilies": 1,
-        "nTypes": 1,
-        "noise": 0.032
-      },
-      "leads": [
-        "chicken-breast",
-        "whole-chicken",
-        "pork-loin",
-        "pork-shoulder"
-      ],
-      "spark": [
-        17236,
-        18743,
-        20007,
-        19434,
-        20646
-      ]
-    },
-    {
-      "key": "diesel",
-      "label_en": "Diesel",
-      "label_es": "Diésel",
-      "kind": "energy",
-      "trend": {
-        "pct": 0.41192411924119243,
-        "dir": "up",
-        "agreement": 1,
-        "nSources": 1,
-        "nFamilies": 1,
-        "nTypes": 1,
-        "noise": 0.0985
-      },
-      "leads": [],
-      "spark": [
-        369,
-        371,
-        381,
-        390,
-        486,
-        507,
-        538,
-        540,
-        564,
-        561,
-        540,
-        535,
-        564,
-        564,
-        560,
-        552,
-        535,
-        521
-      ]
-    },
-    {
-      "key": "electricity",
-      "label_en": "Electricity",
-      "label_es": "Electricidad",
-      "kind": "energy",
-      "trend": {
-        "pct": 0.05534495830174378,
-        "dir": "up",
-        "agreement": 1,
-        "nSources": 1,
-        "nFamilies": 1,
-        "nTypes": 1,
-        "noise": 0.0139
-      },
-      "leads": [],
-      "spark": [
-        1319,
-        1363,
-        1364,
-        1437,
-        1392
-      ]
     }
   ],
   "coverage": {
-    "measured": 82,
+    "measured": 100,
     "derived": 1,
-    "absent": 24,
+    "absent": 6,
     "gaps": [
       {
         "key": "striploin",
@@ -28839,58 +28770,10 @@
         "reason": "No free public wholesale source: European seabass is thin/absent in NOAA FOSS; a daily quote needs a paid reporter network (Urner Barry tier)."
       },
       {
-        "key": "napa-cabbage",
-        "label_en": "napa-cabbage",
-        "label_es": "napa-cabbage",
-        "reason": "Staged: AMS commodity term resolved (\"Chinese Cabbage\"), pending live verification."
-      },
-      {
-        "key": "daikon",
-        "label_en": "daikon",
-        "label_es": "daikon",
-        "reason": "Staged: AMS commodity term resolved (\"Daikon\"), pending live verification."
-      },
-      {
-        "key": "serrano-pepper",
-        "label_en": "serrano-pepper",
-        "label_es": "serrano-pepper",
-        "reason": "Staged: AMS commodity term resolved (\"Peppers, Serrano\"), pending live verification."
-      },
-      {
-        "key": "poblano-pepper",
-        "label_en": "poblano-pepper",
-        "label_es": "poblano-pepper",
-        "reason": "Staged: AMS commodity term resolved (\"Peppers, Poblano\"), pending live verification."
-      },
-      {
-        "key": "habanero-pepper",
-        "label_en": "habanero-pepper",
-        "label_es": "habanero-pepper",
-        "reason": "Staged: AMS commodity term resolved (\"Peppers, Habanero\"), pending live verification."
-      },
-      {
         "key": "oyster-mushroom",
         "label_en": "oyster-mushroom",
         "label_es": "oyster-mushroom",
         "reason": "No distinct public series: USDA AMS terminal reports carry only a generic \"Mushrooms\" commodity — no oyster-specific wholesale quote is published."
-      },
-      {
-        "key": "red-onion",
-        "label_en": "red-onion",
-        "label_es": "red-onion",
-        "reason": "Staged: AMS term resolved (\"Onions, Dry\" + variety RED filter), pending live verification."
-      },
-      {
-        "key": "red-potato",
-        "label_en": "red-potato",
-        "label_es": "red-potato",
-        "reason": "Staged: AMS commodity term resolved (\"ROUND RED\"), pending live verification."
-      },
-      {
-        "key": "cantaloupe",
-        "label_en": "cantaloupe",
-        "label_es": "cantaloupe",
-        "reason": "Staged: AMS commodity stem resolved (\"Cantaloup\"), pending live verification."
       },
       {
         "key": "lamb-shoulder",
@@ -28899,70 +28782,10 @@
         "reason": "Pending source wiring: lamb cuts publish in the LMR lamb family (e.g., LM_XL552); slug to be wired."
       },
       {
-        "key": "ground-pork",
-        "label_en": "ground-pork",
-        "label_es": "ground-pork",
-        "reason": "Pending source wiring: pork trim (72%) on LM_PK602 (report 2498, Trimmings block); column/section to confirm via --discover, then --flip."
-      },
-      {
-        "key": "whole-turkey",
-        "label_en": "whole-turkey",
-        "label_es": "whole-turkey",
-        "reason": "Staged: AMS source resolved (National Turkey Report 3647, \"Whole Young\"), pending live verification."
-      },
-      {
         "key": "ground-turkey",
         "label_en": "ground-turkey",
         "label_es": "ground-turkey",
         "reason": "No public ground-turkey series: USDA’s National Turkey Report quotes whole birds and parts, not ground; LMR does not cover poultry."
-      },
-      {
-        "key": "whole-halibut",
-        "label_en": "whole-halibut",
-        "label_es": "whole-halibut",
-        "reason": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
-      },
-      {
-        "key": "whole-trout",
-        "label_en": "whole-trout",
-        "label_es": "whole-trout",
-        "reason": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
-      },
-      {
-        "key": "scallops",
-        "label_en": "scallops",
-        "label_es": "scallops",
-        "reason": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
-      },
-      {
-        "key": "whole-crab",
-        "label_en": "whole-crab",
-        "label_es": "whole-crab",
-        "reason": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
-      },
-      {
-        "key": "octopus",
-        "label_en": "octopus",
-        "label_es": "octopus",
-        "reason": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
-      },
-      {
-        "key": "salmon-skin-on-fillet",
-        "label_en": "salmon-skin-on-fillet",
-        "label_es": "salmon-skin-on-fillet",
-        "reason": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
-      },
-      {
-        "key": "clams",
-        "label_en": "clams",
-        "label_es": "clams",
-        "reason": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
-      },
-      {
-        "key": "squid",
-        "label_en": "squid",
-        "label_es": "squid",
-        "reason": "Verified NOAA FOSS source, deferred by a transient NOAA outage — pending re-flip."
       }
     ]
   }
