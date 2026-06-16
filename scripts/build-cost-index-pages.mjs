@@ -97,8 +97,8 @@ function verifiedNote(slug, entry, point, locale) {
   if (r && r.coverage != null && r.nTested >= 12 && r.coverage >= 0.75) {
     const pct = Math.round(r.coverage * 100);
     bits.push(es
-      ? `su banda del 80% ha contenido la siguiente impresión el ${pct}% de las veces (${r.nTested} semanas de historial)`
-      : `its 80% band has contained the next print ${pct}% of the time (${r.nTested} weeks of history)`);
+      ? `nuestro rango de precio del 80% ha acertado el ${pct}% de las veces (${r.nTested} semanas de historial)`
+      : `our 80% price range has been right ${pct}% of the time (${r.nTested} weeks of history)`);
   }
   const st = point ? MuntinStaleness.stalenessOf(point, {}) : null;
   if (st) bits.push(st.overdue
@@ -490,7 +490,10 @@ function movingNowSection(slugs, locale) {
     const base = es ? '/es' : '';
     return `<li class="ci-moving-item">${verdictChip(x.v, locale)}<a href="${base}/cost-index/${x.s}/">${escHtml(nm)}</a> <span class="ci-moving-reason">— ${escHtml(reasonFor(x.s, x.v, locale))}</span></li>`;
   }).join('');
-  return `<section class="ci-moving"><h2 class="ci-cat-h" id="moving">${head}</h2><ul class="ci-moving-list">${lis}</ul></section>`;
+  const key = es
+    ? `<strong>Re-precificar</strong> = una subida que parece durar · <strong>Vigilar</strong> = un movimiento real, aún sin confirmar · <strong>Mantener</strong> = dentro de su rango normal`
+    : `<strong>Re-price</strong> = a rise that looks durable · <strong>Watch</strong> = a real move, not yet confirmed · <strong>Hold</strong> = within its normal range`;
+  return `<section class="ci-moving"><h2 class="ci-cat-h" id="moving">${head}</h2><p class="ci-vkey">${key}</p><ul class="ci-moving-list">${lis}</ul></section>`;
 }
 
 // ---- History sparkline + "normally X–Y, right now Z" capsule -------
@@ -537,7 +540,11 @@ function sparkBlock(r, locale) {
   const recent = vals.slice(Math.max(0, vals.length - 13), vals.length - 1);
   const above = recent.filter((v) => now > v).length;
   const rank = recent.length >= 8
-    ? (es ? `Más alto que ${above} de sus últimas ${recent.length} lecturas.` : `Higher than ${above} of its last ${recent.length} reads.`)
+    ? (above === 0
+        ? (es ? `Más bajo que cada una de sus últimas ${recent.length} lecturas.` : `Lower than every one of its last ${recent.length} reads.`)
+        : above === recent.length
+        ? (es ? `Más alto que cada una de sus últimas ${recent.length} lecturas.` : `Higher than every one of its last ${recent.length} reads.`)
+        : (es ? `Más alto que ${above} de sus últimas ${recent.length} lecturas.` : `Higher than ${above} of its last ${recent.length} reads.`))
     : '';
   const alt = (es ? 'Precio ' : 'Price ') + shape + '. ' + capsule + (rank ? ' ' + rank : '');
   const svg = MuntinSparkline.render(vals, {
@@ -923,6 +930,8 @@ main{padding-top:64px}
 .ci-moving-item a:hover{color:var(--teal)}
 .ci-moving-reason{color:var(--ink-soft);font-size:14px}
 .ci-moving-calm{margin:0;font-size:15.5px;color:var(--ink)}
+.ci-vkey{margin:2px 0 12px;font-size:12.5px;color:var(--ink-soft);line-height:1.6}
+.ci-vkey strong{color:var(--ink)}
 .ci-card--pending{opacity:.72;background:var(--cream-2)}
 .ci-card--pending a{color:var(--ink-soft)}
 .ci-pending-note{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
