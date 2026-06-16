@@ -407,6 +407,11 @@ const CHECKS = [
   // sits above its staleness ceiling, so CI won't ship a stale-but-confident reading.
   ['Cost-index staleness honesty','check-staleness-honesty.mjs'],
   ['Cost-index staleness honesty self-test','check-staleness-honesty.mjs','--self-test'],
+  // Rigorous bridge — a derived dollar level may publish from an outside series only
+  // when the two are COINTEGRATED (Engle–Granger), never on a spurious correlation.
+  // Self-test proves the spurious trap is rejected; the gate validates any live bridge.
+  ['Cost-index bridge cointegration','check-bridge-cointegration.mjs'],
+  ['Cost-index bridge cointegration self-test','check-bridge-cointegration.mjs','--self-test'],
   // Dataset freshness — the JSON-LD dateModified on the methodology pages + hub
   // catalog must equal the seed's generatedAt (machine-readable freshness, a
   // top AI-citation factor). Stamped in place; --check pins it in sync.
