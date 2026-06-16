@@ -94,7 +94,7 @@ const noteVerb = isES ? "O envíale una nota a Don:" : "Or send Don a note:";
 const windowHref = isES ? `/es/window/?topic=${smart_next.topic_slug}` : `/window/?topic=${smart_next.topic_slug}`;
 
 const ogImageUrl = `https://muntin.digital/brand/og/${og_image_slug}.png`;
-const ogLocale = isES ? "es_ES" : "en_US";
+const ogLocale = isES ? "es_US" : "en_US";
 const inLang = isES ? "es-ES" : "en-US";
 
 const html = `<!doctype html>

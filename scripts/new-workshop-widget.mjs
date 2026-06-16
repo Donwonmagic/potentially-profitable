@@ -126,7 +126,7 @@ function demoHtml(locale) {
   const canonicalUrl = `https://muntin.digital${canonicalPath}`;
   const altPath = isES ? canonicalPath.replace(/^\/es\//, '/') : `/es${canonicalPath}`;
   const altUrl = `https://muntin.digital${altPath}`;
-  const ogLocale = isES ? 'es_ES' : 'en_US';
+  const ogLocale = isES ? 'es_US' : 'en_US';
   const ogLocaleAlt = isES ? 'en_US' : 'es_US';
   const inLang = isES ? 'es-ES' : 'en-US';
 
