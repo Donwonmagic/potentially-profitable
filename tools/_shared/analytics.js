@@ -383,6 +383,9 @@
       'Lifecycle Email Opened',
       'Newsletter Confirmed',
       'Newsletter Signup',
+      // Ledger founding-list capture — fired by the hero founding-form
+      // (index.html + es/index.html, data-event="Waitlist Signup").
+      'Waitlist Signup',
     ],
     // Phase G.11 (Growth) — share-snapshot recipient banner click.
     share: [
