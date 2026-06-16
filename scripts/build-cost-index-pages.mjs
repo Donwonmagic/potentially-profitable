@@ -583,6 +583,7 @@ function marketReadBlock(slug, locale) {
     <p class="ci-read__head">${head}<span class="ci-read__badge">${badge}</span></p>
     <p class="ci-read__line">${line}</p>${trendLine}${verdict}${spark}
     <details class="ci-read__src"><summary>${es ? 'Fuentes' : 'Sources'} · ${(shortList.length || agencies.length)}</summary><div>${srcBody}</div></details>
+    <p class="ci-read__method"><a href="${es ? '/es' : ''}/cost-index/methodology/#track-record">${es ? 'Cómo verificamos este número' : 'How we verify this number'} <span aria-hidden="true">→</span></a></p>
     <p class="ci-read__live"><a href="${es ? '/es' : ''}/tools/cost-pulse/#ci-${slug}">${liveLabel} <span aria-hidden="true">→</span></a></p>
   </aside>`;
 }
@@ -828,8 +829,9 @@ main{padding-top:64px}
 .ci-read__src{margin-top:8px;font-size:12.5px}
 .ci-read__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
 .ci-read__src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
-.ci-read__live{margin:10px 0 0;font-size:14px}
-.ci-read__live a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-read__live,.ci-read__method{margin:10px 0 0;font-size:14px}
+.ci-read__live a,.ci-read__method a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-read__method{margin-top:6px;font-size:13px}
 .ci-faq{margin:34px 0 0}
 .ci-faq__item{margin:0 0 18px}
 .ci-faq__q{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink);margin:0 0 6px}
