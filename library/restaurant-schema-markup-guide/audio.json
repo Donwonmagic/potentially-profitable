@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-30T19:42:34.877Z",
-  "engine": "kokoro",
-  "model": "kokoro-v1.0.onnx",
-  "voice": "am_michael",
+  "generatedAt": "2026-06-15T04:05:33.746Z",
+  "engine": "f5",
+  "model": "don-reference.m4a",
+  "voice": "f5:don-reference.m4a",
   "language": "en",
-  "total": 611.99,
+  "total": 970.7,
   "chunks": [
     {
       "id": 0,
@@ -13,471 +13,727 @@
       "selector": "#post-body > p:nth-of-type(1)",
       "text": "TL;DR",
       "start": 0,
-      "end": 1
+      "end": 0.73
     },
     {
       "id": 1,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Google reads six schema.org types first for restaurant pages — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, F A Q.",
-      "start": 1.35,
-      "end": 12.2
+      "text": "Google reads six schema.org types first for restaurant pages, Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, F A Q.",
+      "start": 1.28,
+      "end": 8.3
     },
     {
       "id": 2,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
       "text": "Most independent restaurant sites have two of the six. The other four are missing or malformed.",
-      "start": 12.52,
-      "end": 18.66
+      "start": 8.8,
+      "end": 13.45
     },
     {
       "id": 3,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
       "text": "Each missing type is a different Google surface you are not eligible for: local-pack card, AI Overview citation, Reserve button, rich snippet, holiday-hours badge.",
-      "start": 18.98,
-      "end": 30.9
+      "start": 13.95,
+      "end": 22.14
     },
     {
       "id": 4,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
       "text": "Schema rots quietly when C M S or template updates touch the templates. A monthly schema check catches the drift before the reviews do.",
-      "start": 31.22,
-      "end": 40.93
+      "start": 22.64,
+      "end": 29.26
     },
     {
       "id": 5,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
-      "text": "If you opened a restaurant after twenty eighteen and never touched the schema markup on your site, you have schema markup. Your C M S or template builder almost certainly stamped some — the question is whether it is the right schema, whether it is complete, and whether Google can actually use it.",
-      "start": 41.45,
-      "end": 59.7
+      "text": "If you opened a restaurant after twenty eighteen and never touched the schema markup on your site, you have schema markup. Your C M S or template builder almost certainly stamped some, the question is whether it is the right schema, whether it is complete, and whether Google can actually use it.",
+      "start": 30.06,
+      "end": 44.38
     },
     {
       "id": 6,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(3)",
-      "text": "The pattern repeats: most sites have two of the six schema types Google reads first; the other four are missing or malformed. Each missing piece is a different surface in Google's results you are not eligible for. The compounding part is that the missing types unlock different surfaces — the local-pack card, AI Overview citations, the Reserve button, the rich snippet, the holiday-hours badge — so the gap between &ldquo;some schema&rdquo; and &ldquo;all six&rdquo; is not linear.",
-      "start": 60.22,
-      "end": 91.97
+      "text": "The pattern repeats: most sites have two of the six schema types Google reads first; the other four are missing or malformed. Each missing piece is a different surface in Google's results you are not eligible for. The compounding part is that the missing types unlock different surfaces, the local-pack card, AI Overview citations, the Reserve button, the rich snippet, the holiday-hours badge, so the gap between &ldquo;some schema&rdquo; and &ldquo;all six&rdquo; is not linear.",
+      "start": 45.18,
+      "end": 68.53
     },
     {
       "id": 7,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "This post is the honest version of restaurant schema markup in twenty twenty-six. The six types Google actually uses, what each one does for you, the minimum viable JSON-LD for each, and the tools that validate it.",
-      "start": 92.49,
-      "end": 107.34
+      "text": "This post is the honest version of restaurant schema markup. The six types Google actually uses, what each one does for you, the minimum viable Json-LD for each, and the tools that validate it.",
+      "start": 69.33,
+      "end": 78.8
     },
     {
       "id": 8,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "The 6 schema types Google reads first · what each unlocks. Restaurant: Cuisine queries, local-pack eligibility, the basic identity card. (foundational). Menu: Dish-level ranking + AI Overview citations of dish descriptions. (long-tail). OpeningHoursSpecification: \"Open now\" badge + holiday-hours accuracy. (walk-ins). AggregateRating: The star pattern in your snippet. CTR +8–15%. (CTR lift). Reservation: The \"Reserve a table\" button in your panel. (Find a Table). F A Q: The highest-leverage AI-citation surface in twenty twenty-six. (AI search). The 6 schema types Google reads first · what each unlocks.",
-      "start": 108.14,
-      "end": 153.35
+      "text": "How Google reads a restaurant page, in two passes, and why schema is the second pass. Pass one: the crawler reads your visible prose, the menu text, the hours line, the About paragraph. It guesses you are a restaurant, but it has to infer your cuisine, your price band, and your hours from sentences written for humans, and it guesses wrong often. Pass two: the crawler reads your Json-LD, the invisible structured block. Now the same facts arrive labeled, type Restaurant, servesCuisine Italian, priceRange one dollar sign, opens seventeen hundred. No inference, no guessing. The third beat is what changes on the results page: the labeled facts are what Google is willing to render as stars, an open-now chip, a price chip, and a Reserve button, because it now trusts them enough to show them. The prose alone gets you a plain blue link; the schema is what unlocks the rich result. That is the whole mechanism this guide installs.",
+      "start": 79.9,
+      "end": 124.85
     },
     {
       "id": 9,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "1. Restaurant — the foundational type.",
-      "start": 154.45,
-      "end": 156.9
+      "text": "1. Restaurant, the foundational type.",
+      "start": 126.35,
+      "end": 128.15
     },
     {
       "id": 10,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
       "text": "This is the one you cannot skip. Restaurant schema tells Google what business type you are, your address, your phone, your price range , and a handful of other facts that determine whether you appear in queries like \"Italian restaurants near me\" at all.",
-      "start": 157.6,
-      "end": 173.84
+      "start": 129.1,
+      "end": 141.3
     },
     {
       "id": 11,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(6)",
-      "text": "Minimum viable JSON-LD:",
-      "start": 174.36,
-      "end": 176.41
+      "text": "Minimum viable Json-LD:",
+      "start": 142.1,
+      "end": 143.22
     },
     {
       "id": 12,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "The servesCuisine array is doing more work than people realize — it is how Google knows to show you for cuisine-specific queries. Do not put more than two cuisines unless you actually serve them; ambiguity demotes you in queries you should win.",
-      "start": 176.76,
-      "end": 192.75
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "The minimum viable Restaurant block: type Restaurant, name, image U R L, phone, price range, a PostalAddress object with street, locality, region, postal code, country, a servesCuisine array, and acceptsReservations as True or False. Without this block, every other schema you ship sits orphaned, Google has nothing to attach the menu, hours, or reviews to.",
+      "start": 144.32,
+      "end": 161.64
     },
     {
       "id": 13,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "2. Menu — the type most restaurants fake.",
-      "start": 193.85,
-      "end": 196.37
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "The servesCuisine array is doing more work than people realize, it is how Google knows to show you for cuisine-specific queries. Do not put more than two cuisines unless you actually serve them; ambiguity demotes you in queries you should win.",
+      "start": 162.64,
+      "end": 174.36
     },
     {
       "id": 14,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "Almost every restaurant site I audit has either no Menu schema at all, or the platform stamped it as a single string blob. Either way, Google cannot parse individual dishes and you do not rank for \"tacos al pastor near me\" at the dish level.",
-      "start": 197.07,
-      "end": 213.76
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "2. Menu, the type most restaurants fake.",
+      "start": 175.86,
+      "end": 177.81
     },
     {
       "id": 15,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "The structure that works:",
-      "start": 214.28,
-      "end": 215.5
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Almost every restaurant site I audit has either no Menu schema at all, or the platform stamped it as a single string blob. Either way, Google cannot parse individual dishes and you do not rank for \"tacos al pastor near me\" at the dish level.",
+      "start": 178.76,
+      "end": 190.38
     },
     {
       "id": 16,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "The description matters more than the name — that is the field Google's AI Overviews lift verbatim when someone asks \"what are tacos al pastor like at Bistro Petit.\" Empty descriptions = no AI citation.",
-      "start": 215.85,
-      "end": 230.94
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "The structure that works:",
+      "start": 191.18,
+      "end": 192.4
     },
     {
       "id": 17,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "3. OpeningHoursSpecification — the one that costs you walk-ins.",
-      "start": 232.04,
-      "end": 236.44
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "A Menu block, with hasMenuSection wrapping hasMenuItem entries. Each item gets a name, a description, and an Offer with price and currency. The description field is doing more work than people realize, it&apos;s what Google&apos;s AI Overviews lift verbatim when someone asks what tacos al pastor are like at your restaurant. Empty description, no AI citation.",
+      "start": 193.5,
+      "end": 211.37
     },
     {
       "id": 18,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "If your hours are wrong on Google, your hours are wrong everywhere. OpeningHoursSpecification is the schema that powers the \"Open now\" / \"Closes at 10 PM\" badge on your search panel — and the one that gets stale when you change Sunday hours and forget to update the site.",
-      "start": 237.14,
-      "end": 255.91
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "The description matters more than the name, that is the field Google's AI Overviews lift verbatim when someone asks \"what are tacos al pastor like at Bistro Petit.\" Empty descriptions = no AI citation.",
+      "start": 212.37,
+      "end": 222.63
     },
     {
       "id": 19,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "Holiday overrides go in a separate specialOpeningHoursSpecification block — both Google and Apple Maps read it, and a missing holiday closure is the most common reason an angry-on-Christmas-Eve review lands. The failure mode worth naming: C M S or template updates can quietly strip JSON-LD overnight. If you do not have a monthly schema check on your calendar, the first time you will know your hours block went missing is when the one-star reviews start arriving.",
-      "start": 256.43,
-      "end": 287.56
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(4)",
+      "text": "The same restaurant query in Google, with and without the six schema types shipped. Without schema: a bare blue link, just the page title, the U R L, and a meta description. No stars, no price range, no open-now indicator, no map pin, no Reserve button. With schema: the same title and U R L, plus a four point seven star rating with four hundred twelve reviews, a dollar-sign price chip, an open-now indicator showing closes at ten PM, a map-pack pin, and a Reserve a Table button. Same page, same meta description, the schema is what surfaces the six new elements.",
+      "start": 223.73,
+      "end": 251.11
     },
     {
       "id": 20,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "Run Schema Checker on your homepage to see whether your current hours schema is valid; Open Hours generates the JSON-LD if you need a fresh start.",
-      "start": 288.08,
-      "end": 298.03
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "3. OpeningHoursSpecification, the one that costs you walk-ins.",
+      "start": 252.61,
+      "end": 255.64
     },
     {
       "id": 21,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "4. AggregateRating — the one that boosts CTR by double digits.",
-      "start": 299.13,
-      "end": 303.88
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "If your hours are wrong on Google, your hours are wrong everywhere. OpeningHoursSpecification is the schema that powers the \"Open now\" / \"Closes at 10 PM\" badge on your search panel, and the one that gets stale when you change Sunday hours and forget to update the site.",
+      "start": 256.59,
+      "end": 269.63
     },
     {
       "id": 22,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "If you have reviews on your own site, AggregateRating shows up as the gold-star pattern in your search snippet. The CTR lift is real — typically 8-15% for restaurant queries.",
-      "start": 304.58,
-      "end": 317.53
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(5)",
+      "text": "An openingHoursSpecification array, one entry per day-of-week group. dayOfWeek is an array of weekday names; opens and closes are twenty-four-hour strings. The cost of skipping this is direct, customers see &apos;hours unavailable&apos; on the Google panel and walk past. Holiday overrides go in a separate specialOpeningHoursSpecification block, which is the most common reason an angry-on-Christmas-Eve review lands.",
+      "start": 270.73,
+      "end": 291.06
     },
     {
       "id": 23,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "The constraint: the reviews have to be on your site . You cannot aggregate Google's reviews into your own AggregateRating — that violates Google's structured-data policies and can earn a manual action that takes weeks to lift.",
-      "start": 318.05,
-      "end": 332.57
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Holiday overrides go in a separate specialOpeningHoursSpecification block, both Google and Apple Maps read it, and a missing holiday closure is the most common reason an angry-on-Christmas-Eve review lands. The failure mode worth naming: C M S or template updates can quietly strip Json-LD overnight. If you do not have a monthly schema check on your calendar, the first time you will know your hours block went missing is when the one-star reviews start arriving.",
+      "start": 292.06,
+      "end": 314.43
     },
     {
       "id": 24,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "5. Reservation — the one that unlocks Find a Table.",
-      "start": 333.67,
-      "end": 337.26
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Run Schema Checker on your homepage to see whether your current hours schema is valid; Open Hours generates the Json-LD if you need a fresh start.",
+      "start": 315.23,
+      "end": 322.39
     },
     {
       "id": 25,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(16)",
-      "text": "If you are on OpenTable, Resy, Tock, or SevenRooms, your reservation system already publishes the right schema. But if your booking is a custom form on your own site, you need to publish Reservation schema yourself — otherwise Google cannot show the \"Reserve a table\" button in your panel.",
-      "start": 337.96,
-      "end": 357.38
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "4. AggregateRating, the one that boosts Ctr by double digits.",
+      "start": 323.89,
+      "end": 326.88
     },
     {
       "id": 26,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(17)",
-      "text": "The integration with Find a Table requires this schema to be valid AND your booking endpoint to be publicly reachable. Check both with Schema Checker .",
-      "start": 357.9,
-      "end": 367.28
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "If you have reviews on your own site, AggregateRating shows up as the gold-star pattern in your search snippet. The Ctr lift is real, typically 8-15% for restaurant queries.",
+      "start": 327.83,
+      "end": 336.32
     },
     {
       "id": 27,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(6)",
-      "text": "6. F A Q — the AI-citation magnet.",
-      "start": 368.38,
-      "end": 371.26
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(6)",
+      "text": "An AggregateRating block with ratingValue and reviewCount, a four point seven rating across four hundred twelve reviews. This is what puts the gold stars in your search snippet, and the click-through lift is typically eight to fifteen percent on restaurant queries. The constraint: the reviews have to be on your own site. Aggregating Google&apos;s reviews into your own AggregateRating violates Google&apos;s policy and earns a manual action.",
+      "start": 337.42,
+      "end": 358.75
     },
     {
       "id": 28,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(18)",
-      "text": "F A Q schema is not restaurant-specific, but it is the highest-leverage AI-citation surface for restaurant pages in twenty twenty-six. ChatGPT, Perplexity, and Google's AI Overviews read F A Q blocks first when answering operational questions.",
-      "start": 371.96,
-      "end": 390.15
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "The constraint: the reviews have to be on your site . You cannot aggregate Google's reviews into your own AggregateRating, that violates Google's structured-data policies and can earn a manual action that takes weeks to lift.",
+      "start": 359.75,
+      "end": 370.8
     },
     {
       "id": 29,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(19)",
-      "text": "Six well-written F A Q entries — actually useful operational questions, not marketing copy — typically lift AI-search-driven traffic 20-40% within 60 days.",
-      "start": 390.67,
-      "end": 403.65
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "5. Reservation, the one that unlocks Find a Table.",
+      "start": 372.3,
+      "end": 374.74
     },
     {
       "id": 30,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(2)",
-      "text": "Schema coverage on a typical S E O-sweep restaurant site · 6 types Google looks for. Restaurant: usually present, often incomplete. Menu: string blob or missing entirely. OpeningHours: present but stale. AggregateRating: often absent on restaurant sites. Reservation: only auto-published by OpenTable etc.. F A Q: rarest of the six. Schema coverage on a typical S E O-sweep restaurant site · 6 types Google looks for.",
-      "start": 404.45,
-      "end": 433.89
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "If you are on OpenTable, Resy, Tock, or SevenRooms, your reservation system already publishes the right schema. But if your booking is a custom form on your own site, you need to publish Reservation schema yourself, otherwise Google cannot show the \"Reserve a table\" button in your panel.",
+      "start": 375.69,
+      "end": 389.81
     },
     {
       "id": 31,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(7)",
-      "text": "How to check what you have today.",
-      "start": 434.99,
-      "end": 436.61
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "The integration with Find a Table requires this schema to be valid And your booking endpoint to be publicly reachable. Check both with Schema Checker .",
+      "start": 390.61,
+      "end": 398.02
     },
     {
       "id": 32,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(20)",
-      "text": "Run your homepage through Schema Checker . It returns a present/valid/missing verdict for each of these six types and points at the broken pieces. Save the result to your Restaurant Audit and re-run monthly — schema rots when C M S updates touch templates.",
-      "start": 437.31,
-      "end": 454.75
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(1)",
+      "text": "F A Q schema is the cheapest AI-citation surface a restaurant has. The fact that almost nobody ships it is the opportunity.",
+      "start": 399.02,
+      "end": 405.25
     },
     {
       "id": 33,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(21)",
-      "text": "The compounding argument: each missing schema type is a different Google surface you are not eligible for. The six types together unlock the local-pack card, AI Overview citations, the Reserve button, the rich snippet, and the holiday-hours badge. Add them in order, and the cumulative effect on impressions usually lands somewhere between 20% and 60% within a quarter.",
-      "start": 455.27,
-      "end": 480.4
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "6. F A Q, the AI-citation magnet.",
+      "start": 406.75,
+      "end": 408.55
     },
     {
       "id": 34,
-      "kind": "quote",
-      "selector": "#post-body > blockquote:nth-of-type(1)",
-      "text": "Schema is not optional. Each missing type is a Google surface you have voluntarily disqualified yourself from.",
-      "start": 481.15,
-      "end": 488.56
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "F A Q schema is not restaurant-specific, but it is the highest-leverage AI-citation surface for restaurant pages. ChatGPT, Perplexity, and Google's AI Overviews read F A Q blocks first when answering operational questions.",
+      "start": 409.5,
+      "end": 420.72
     },
     {
       "id": 35,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(22)",
-      "text": "Key takeaways",
-      "start": 489.31,
-      "end": 490.25
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(7)",
+      "text": "An FAQPage block with mainEntity holding Question and Answer pairs. Each Question has a name field, the literal question, and an acceptedAnswer with a text field holding your reply. This is the format AI assistants pull verbatim into citations. Write the answer the way you&apos;d want to see it quoted back to a customer.",
+      "start": 421.82,
+      "end": 437.62
     },
     {
       "id": 36,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Restaurant schema is foundational — without it you may not appear for cuisine queries at all.",
-      "start": 490.6,
-      "end": 496.38
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Six well-written F A Q entries, actually useful operational questions, not marketing copy, typically lift AI-search-driven traffic 20-40% within 60 days.",
+      "start": 438.62,
+      "end": 446.32
     },
     {
       "id": 37,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Menu schema with structured MenuItem + description fields is what AI Overviews quote verbatim.",
-      "start": 496.7,
-      "end": 503.95
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(8)",
+      "text": "Schema coverage on a typical restaurant site, by type. Restaurant: about eighty percent of sites have it, usually present but often incomplete. Menu: about twenty-five percent parse, most are string blobs or missing entirely. OpeningHoursSpecification: about sixty percent are valid; the rest are stale. AggregateRating: about thirty percent present; the rest absent. Reservation: about forty percent present, almost always auto-published by OpenTable, Resy, or Tock. F A Q: about fifteen percent present, rarest of the six. The pattern: the most operator-friendly schema, F A Q, is also the one almost nobody ships, which is why it&rsquo;s the highest-leverage edit in twenty twenty-six.",
+      "start": 447.42,
+      "end": 480.74
     },
     {
       "id": 38,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "OpeningHoursSpecification + specialOpeningHoursSpecification together prevent the \"closed even though Google said open\" review.",
-      "start": 504.27,
-      "end": 513.1
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "How to check what you have today.",
+      "start": 482.24,
+      "end": 483.85
     },
     {
       "id": 39,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "AggregateRating with reviews from your own site lifts CTR by 8–15% on restaurant queries; aggregating Google's reviews violates policy.",
-      "start": 513.42,
-      "end": 524.25
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "The coverage chart says which types are usually absent. But &ldquo;present&rdquo; isn&rsquo;t the same as &ldquo;working&rdquo;, the more common failure is schema that&rsquo;s technically on the page but silently disqualified. Walk the four questions below in order; the first &ldquo;no&rdquo; is your problem.",
+      "start": 484.8,
+      "end": 499.81
     },
     {
       "id": 40,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
-      "text": "F A Q schema is the highest-leverage AI-citation surface on a restaurant page in twenty twenty-six.",
-      "start": 524.57,
-      "end": 531.99
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(9)",
+      "text": "A four-question diagnostic for finding the schema type that is silently broken even though it is on the page. Question one: is there a Json-LD script tag in the rendered head at all? If no, nothing downstream matters, the C M S or a template update stripped it, and that is the whole problem. Question two: does the validator pass with no red errors? A single unknown property or a missing required field disqualifies the whole block, so the stars never appear even though the rating value is right there. Question three: is the AggregateRating sourced from reviews on your own site rather than aggregated from Google? Aggregating Google's reviews violates policy and earns a manual action that pulls the stars and takes weeks to lift. Question four: does your name, address, and phone match across the site, Google Business Profile, and Yelp? If the N A P conflicts, valid schema still loses the local pack to the more coherent competitor, because schema cannot paper over a contradiction. The first no is the fix.",
+      "start": 500.91,
+      "end": 549.94
     },
     {
       "id": 41,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(23)",
-      "text": "See which of the six types your site is missing.",
-      "start": 532.51,
-      "end": 534.94
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "Run your homepage through Schema Checker . It returns a present/valid/missing verdict for each of these six types and points at the broken pieces. Save the result to your Restaurant Audit and re-run monthly, schema rots when C M S updates touch templates.",
+      "start": 550.94,
+      "end": 563.25
     },
     {
       "id": 42,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(24)",
-      "text": "Schema Checker runs your homepage through all six types and returns a present / valid / missing verdict for each. Save the result to your Workshop and re-run monthly — schema rots when C M S updates touch templates.",
-      "start": 535.46,
-      "end": 550.65
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "The compounding argument: each missing schema type is a different Google surface you are not eligible for. The six types together unlock the local-pack card, AI Overview citations, the Reserve button, the rich snippet, and the holiday-hours badge. Add them in order, and the cumulative effect on impressions usually lands somewhere between 20% and 60% within a quarter.",
+      "start": 564.05,
+      "end": 582.16
     },
     {
       "id": 43,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(25)",
-      "text": "What to do next",
-      "start": 551.17,
-      "end": 552.12
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "The move is: ship Restaurant + OpeningHours + Menu this week, F A Q next, and let AggregateRating + Reservation come from your booking platform. Six types in roughly two weeks of deliberate work. The surfaces queue up behind them.",
+      "start": 582.96,
+      "end": 594.03
     },
     {
       "id": 44,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Read: the related glossary term →",
-      "start": 552.47,
-      "end": 555.05
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(2)",
+      "text": "Schema is not optional. Each missing type is a Google surface you have voluntarily disqualified yourself from.",
+      "start": 595.03,
+      "end": 600.43
     },
     {
       "id": 45,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Try: the tool that pairs with this article →",
-      "start": 555.37,
-      "end": 558.42
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "The complete, paste-ready Restaurant Json-LD.",
+      "start": 601.93,
+      "end": 604.13
     },
     {
       "id": 46,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Or send Don a note: The Window →",
-      "start": 558.74,
-      "end": 561.51
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "The six types above describe what Google can use. This section is the how, a single production-grade Json-LD payload that ships Restaurant + Menu + OpeningHoursSpecification + F A Q together, in the validated shape we drop into the (code) of every restaurant site we build. Adapt the values to your own restaurant, validate, deploy.",
+      "start": 605.08,
+      "end": 621.18
     },
     {
       "id": 47,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(26)",
-      "text": "See also",
-      "start": 561.86,
-      "end": 562.62
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(9)",
+      "text": "How to use it.",
+      "start": 622.68,
+      "end": 623.35
     },
     {
       "id": 48,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
-      "text": "Article Recovering reservations from Google's Find a Table How Reservation schema in this post connects to the booking surface in Google's panel.",
-      "start": 562.97,
-      "end": 572.2
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "Three steps:",
+      "start": 624.3,
+      "end": 624.88
     },
     {
       "id": 49,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
-      "text": "Tool Schema Checker Validates the six types on any restaurant homepage and points at the broken pieces.",
-      "start": 572.52,
-      "end": 579.25
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Copy the block below into a single (code) tag inside your <head>. One tag, not six.",
+      "start": 625.43,
+      "end": 629.49
     },
     {
       "id": 50,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
-      "text": "Research Structured data impact on local search The evidence behind the cumulative-impressions claim in this post.",
-      "start": 579.57,
-      "end": 586.62
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Change the seven fields marked // Edit : the restaurant name, address parts (street, city, region, zip), phone, opening hours, and the menu items.",
+      "start": 629.99,
+      "end": 637.15
     },
     {
       "id": 51,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(27)",
-      "text": "Tell us",
-      "start": 587.14,
-      "end": 587.69
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Validate at validator.schema.org by pasting the U R L of your page. Fix anything red. Most errors are missing commas or stray quotes.",
+      "start": 637.65,
+      "end": 644.18
     },
     {
       "id": 52,
       "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(8)",
-      "text": "Have you tried this in your kitchen?",
-      "start": 588.79,
-      "end": 590.48
+      "selector": "#post-body > h2:nth-of-type(10)",
+      "text": "The complete example.",
+      "start": 645.68,
+      "end": 646.69
     },
     {
       "id": 53,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(28)",
-      "text": "100–400 words, your name on it, Don reads every one.",
-      "start": 591.18,
-      "end": 595.68
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "Below is the schema I ran on a 60-seat Dmv Italian restaurant. The structure nests six types: Restaurant (root), Menu, OpeningHoursSpecification, AggregateRating, Reservation, and F A Q. Each one unlocks a different Google surface (per the six-types article). Save it as a starting point; tighten as needed.",
+      "start": 647.64,
+      "end": 662.51
     },
     {
       "id": 54,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(29)",
-      "text": "Sign in to share your experience &rarr;",
-      "start": 596.2,
-      "end": 598.47
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "That&rsquo;s 60 lines of Json-LD covering the six types Google reads first on a restaurant page. The seven // Edit fields are everything you have to change to make it yours.",
+      "start": 663.31,
+      "end": 671.8
     },
     {
       "id": 55,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(31)",
-      "text": "Keep reading",
-      "start": 598.82,
-      "end": 599.57
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(10)",
+      "text": "The same restaurant's Google result, before and after the paste-ready schema. Before: a bare blue-link result, title 'Roma Cucina, Italian Restaurant in Silver Spring,' the U R L, and a meta description. No stars, no hours, no map pin. After: the same title and U R L, plus a four point six star rating with four hundred twelve reviews, a price-range chip showing two dollar signs, an open-now indicator with closes at ten p m, a map-pack pin with directions, and a Reserve a table button. Six new surface elements added to one search result by sixty lines of Json-LD.",
+      "start": 672.9,
+      "end": 700.82
     },
     {
       "id": 56,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(32)",
-      "text": "The schema-to-surface connection on the booking side.",
-      "start": 599.92,
-      "end": 602.62
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(11)",
+      "text": "Before you publish.",
+      "start": 702.32,
+      "end": 703.24
     },
     {
       "id": 57,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(33)",
-      "text": "The other side of structured data — the surface schema feeds.",
-      "start": 603.14,
-      "end": 606.62
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "Three checks. Each one catches a class of error that&rsquo;s otherwise invisible until you&rsquo;re wondering why the local-pack still hasn&rsquo;t shown you.",
+      "start": 704.19,
+      "end": 711.94
     },
     {
       "id": 58,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Run it through validator.schema.org . Paste your page U R L. The validator reports unknown properties (typos), missing required fields, and incorrect nesting. Fix the red items. Yellow is usually fine to ship.",
+      "start": 712.74,
+      "end": 723
+    },
+    {
+      "id": 59,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Confirm the rendered page matches . Open your page in a browser, view-source, search for application/ld+json . Confirm the script tag is there and the Json is what you expect. C M S escaping bugs sometimes strip quotes; you have to see the rendered output.",
+      "start": 723.5,
+      "end": 735.85
+    },
+    {
+      "id": 60,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Test with Google&rsquo;s Rich Results test . This is the official tool Google uses to decide whether your schema qualifies for rich results . It tells you which surfaces your schema is eligible for. Run it after the validator passes.",
+      "start": 736.35,
+      "end": 747.57
+    },
+    {
+      "id": 61,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(11)",
+      "text": "The four-step paste, test, wait, verify workflow after pasting the schema. Step one: paste the Json-LD into the head of every public page, not just the homepage. Step two: run Google's Rich Results Test on three URLs and fix every red error before walking away. Step three: wait seven to fourteen days for the re-crawl, Googlebot needs to see the schema in production before any feature appears. Step four: verify in Search Console under Enhancements, where each schema type gets its own report showing valid pages and errors.",
+      "start": 748.67,
+      "end": 774.09
+    },
+    {
+      "id": 62,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(12)",
+      "text": "What happens after you ship.",
+      "start": 775.59,
+      "end": 776.96
+    },
+    {
+      "id": 63,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(29)",
+      "text": "Don&rsquo;t expect immediate effect. Google&rsquo;s crawler may take 24, 72 hours to revisit your page and pick up the new schema. Some surfaces (the local-pack, AggregateRating stars) update within a week. Others (Reservation deep links via Find a Table, F A Q rich snippets) can take 30+ days. The longest-tail ones are the AI Overview citations, which can take 90 days to start landing.",
+      "start": 777.91,
+      "end": 797
+    },
+    {
+      "id": 64,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(30)",
+      "text": "Once it&rsquo;s shipped, leave the schema alone. The crawler revisits cited URLs more often than uncited ones, and a stable Json-LD block builds entity confidence over time. Touch one field if a fact changes (new closing time, new menu item, updated review count), but resist the urge to refactor.",
+      "start": 797.8,
+      "end": 812.17
+    },
+    {
+      "id": 65,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(12)",
+      "text": "Rich-result appearance odds, ninety days after pasting the schema, by type. AggregateRating: gold stars in the snippet appear on roughly ninety percent of queries within thirty days. OpeningHoursSpecification: the open-now badge appears on roughly eighty-five percent of queries within thirty days. Restaurant plus PostalAddress: the local-pack card appears on roughly seventy percent of branded queries within sixty days. Menu: dish-level ranking and AI Overview citations appear on roughly fifty-five percent of dish-name queries within sixty days. FAQPage: the F A Q rich snippet appears on roughly forty percent of question-shaped queries within sixty days. ReserveAction: the Reserve a table button appears on roughly thirty-five percent of branded queries within ninety days.",
+      "start": 813.27,
+      "end": 851.2
+    },
+    {
+      "id": 66,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(31)",
+      "text": "Key takeaways",
+      "start": 852.2,
+      "end": 852.82
+    },
+    {
+      "id": 67,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Restaurant schema is foundational, without it you may not appear for cuisine queries at all.",
+      "start": 853.37,
+      "end": 857.88
+    },
+    {
+      "id": 68,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Menu schema with structured MenuItem + description fields is what AI Overviews quote verbatim.",
+      "start": 858.38,
+      "end": 863.18
+    },
+    {
+      "id": 69,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "OpeningHoursSpecification + specialOpeningHoursSpecification together prevent the \"closed even though Google said open\" review.",
+      "start": 863.68,
+      "end": 869.91
+    },
+    {
+      "id": 70,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "AggregateRating with reviews from your own site lifts Ctr by 8, 15% on restaurant queries; aggregating Google's reviews violates policy.",
+      "start": 870.41,
+      "end": 877.08
+    },
+    {
+      "id": 71,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "F A Q schema is the highest-leverage AI-citation surface on a restaurant page.",
+      "start": 877.58,
+      "end": 881.59
+    },
+    {
+      "id": 72,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(32)",
+      "text": "See which of the six types your site is missing.",
+      "start": 882.39,
+      "end": 884.74
+    },
+    {
+      "id": 73,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(33)",
+      "text": "Schema Checker runs your homepage through all six types and returns a present / valid / missing verdict for each. Save the result to your Workshop and re-run monthly, schema rots when C M S updates touch templates.",
+      "start": 885.54,
+      "end": 896.05
+    },
+    {
+      "id": 74,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(34)",
-      "text": "The plain-English definition of what JSON-LD is and why Google reads it.",
-      "start": 607.14,
-      "end": 611.99
+      "text": "What to do next",
+      "start": 896.85,
+      "end": 897.58
+    },
+    {
+      "id": 75,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Read: the related glossary term →",
+      "start": 898.13,
+      "end": 899.84
+    },
+    {
+      "id": 76,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Try: the tool that pairs with this article →",
+      "start": 900.34,
+      "end": 902.59
+    },
+    {
+      "id": 77,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Or send Don a note: The Window →",
+      "start": 903.09,
+      "end": 904.74
+    },
+    {
+      "id": 78,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(35)",
+      "text": "More from the library.",
+      "start": 905.29,
+      "end": 906.36
+    },
+    {
+      "id": 79,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(36)",
+      "text": "See also",
+      "start": 907.16,
+      "end": 908.13
+    },
+    {
+      "id": 80,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Tool Google Business Profile Grader How your Google listing scores across rating, reviews, photos, categories, hours, with the exact fixes that move it up.",
+      "start": 908.68,
+      "end": 916.29
+    },
+    {
+      "id": 81,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Article 6 min read Instagram Is a Search Engine Now. Post Like It. Google has indexed Instagram captions since twenty twenty-four and the in-app search bar handles 40% of restaurant discovery for under-35 guests. Five caption-level moves that make a restaurant post indexable, with the 4.3x save lift from running the discipline on a real account.",
+      "start": 916.79,
+      "end": 933.62
+    },
+    {
+      "id": 82,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Research 2 min read What visitors look for on a local business website The most-searched-for information on a local business website is hours and location, and both are the most commonly hidden.",
+      "start": 934.12,
+      "end": 943.65
+    },
+    {
+      "id": 83,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(37)",
+      "text": "Tell us",
+      "start": 944.45,
+      "end": 945.29
+    },
+    {
+      "id": 84,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(13)",
+      "text": "Be the first field note on this piece.",
+      "start": 946.79,
+      "end": 948.65
+    },
+    {
+      "id": 85,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(38)",
+      "text": "Tried this in your own restaurant? 100, 400 words, your name on it. Don reads every one. Your note shows up here once approved.",
+      "start": 949.6,
+      "end": 955.83
+    },
+    {
+      "id": 86,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(39)",
+      "text": "Sign in to share your experience →",
+      "start": 956.63,
+      "end": 958.38
+    },
+    {
+      "id": 87,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(41)",
+      "text": "Keep reading",
+      "start": 958.93,
+      "end": 959.51
+    },
+    {
+      "id": 88,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(42)",
+      "text": "The schema-to-surface connection on the booking side.",
+      "start": 960.06,
+      "end": 962.65
+    },
+    {
+      "id": 89,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(43)",
+      "text": "The other side of structured data, the surface schema feeds.",
+      "start": 963.45,
+      "end": 966.38
+    },
+    {
+      "id": 90,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(44)",
+      "text": "The plain-English definition of what Json-LD is and why Google reads it.",
+      "start": 967.18,
+      "end": 970.7
     }
   ]
 }

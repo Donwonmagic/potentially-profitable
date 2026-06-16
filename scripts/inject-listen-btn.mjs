@@ -50,6 +50,27 @@ const args     = new Set(process.argv.slice(2));
 const checkOnly = args.has('--check');
 const dryRun    = args.has('--dry-run');
 
+// Phased activation controls.
+//   --languages en[,es,…]  Restrict which languages the button advertises
+//                          (further intersected with what's actually on
+//                          disk). Default: every declared language whose
+//                          audio file is present. This is what keeps a
+//                          page from offering a language whose MP3 hasn't
+//                          rendered yet (the player would 404 on it).
+//   --sections blog,library,research,checklists
+//                          Only process these manifest sections. Default:
+//                          all. Lets an English-only activation skip the
+//                          /es/ Spanish-locale pages.
+const argv = process.argv.slice(2);
+function argVal(name) {
+  const i = argv.indexOf(name);
+  return i >= 0 && argv[i + 1] && !argv[i + 1].startsWith('--') ? argv[i + 1] : null;
+}
+const requestedLangs = (argVal('--languages') || '')
+  .split(',').map((s) => s.trim().toLowerCase()).filter(Boolean);
+const requestedSections = (argVal('--sections') || '')
+  .split(',').map((s) => s.trim()).filter(Boolean);
+
 const MANIFEST = path.join(repoRoot, 'data', 'article-audio.json');
 if (!fs.existsSync(MANIFEST)) {
   console.error(`inject-listen-btn: manifest not found at data/article-audio.json`);
@@ -71,19 +92,63 @@ const LISTEN_LABEL = {
   es: 'Escuchar este artículo',
 };
 
+// The audio filename for a language on a page whose source language is
+// `sourceLang`. The source-language narration lives at the unsuffixed
+// audio.mp3; every other language is audio.<lang>.mp3. Mirrors
+// audioName() in scripts/render-post-audio.mjs.
+function audioFileFor(lang, sourceLang) {
+  return lang === sourceLang ? 'audio.mp3' : `audio.${lang}.mp3`;
+}
+
+// Languages this page can actually play right now: declared ∩ on-disk,
+// intersected with --languages when given. The source language leads so
+// it's the default track. Falls back to [sourceLang] so the attribute is
+// never empty. This is the gate that delivers "English now, the rest as
+// they render" — a language is advertised only once its MP3 exists.
+function availableLanguagesFor(articleDir, declared, sourceLang) {
+  const pool = requestedLangs.length
+    ? declared.filter((l) => requestedLangs.includes(l))
+    : declared.slice();
+  const present = pool.filter((l) =>
+    fs.existsSync(path.join(articleDir, audioFileFor(l, sourceLang))));
+  if (!present.includes(sourceLang)
+      && fs.existsSync(path.join(articleDir, 'audio.mp3'))
+      && (!requestedLangs.length || requestedLangs.includes(sourceLang))) {
+    present.unshift(sourceLang);
+  }
+  return present.length ? present : [sourceLang];
+}
+
+// Normalize a #listen-btn opening tag's audio attributes to the current
+// on-disk reality: data-audio-src present iff the source MP3 exists,
+// data-audio-source-lang only for non-English source pages, and
+// data-audio-languages set to the live list. Idempotent.
+function setButtonAudioAttrs(openTag, { hasStudio, langs, sourceLang }) {
+  let tag = openTag
+    .replace(/\s+data-audio-src="[^"]*"/g, '')
+    .replace(/\s+data-audio-source-lang="[^"]*"/g, '')
+    .replace(/\s+data-audio-languages="[^"]*"/g, '');
+  const srcAttr  = hasStudio ? ' data-audio-src="audio.mp3"' : '';
+  const slgAttr  = sourceLang !== 'en' ? ` data-audio-source-lang="${sourceLang}"` : '';
+  const langAttr = ` data-audio-languages="${langs}"`;
+  return tag.replace(/>\s*$/, `${srcAttr}${slgAttr}${langAttr}>`);
+}
+
 /**
  * Build the button markup. data-audio-src is included only when
  * audio.mp3 actually exists in the article directory (so listen.js
  * uses studio mode); otherwise the attribute is omitted and listen.js
  * falls back to Web Speech API.
  */
-function buildButton({ articleDir, locale }) {
+function buildButton({ articleDir, locale, declared }) {
   const hasStudio = fs.existsSync(path.join(articleDir, 'audio.mp3'));
-  const audioAttr = hasStudio ? ' data-audio-src="audio.mp3"' : '';
+  const langs = availableLanguagesFor(articleDir, declared, locale).join(',');
+  const baseTag = '<button type="button" id="listen-btn" class="listen-btn" aria-pressed="false" data-state="idle">';
+  const openTag = setButtonAudioAttrs(baseTag, { hasStudio, langs, sourceLang: locale });
   const label = LISTEN_LABEL[locale] || LISTEN_LABEL.en;
   return [
     '      <div class="row-center">',
-    `        <button type="button" id="listen-btn" class="listen-btn" aria-pressed="false" data-state="idle"${audioAttr} data-audio-languages="en,es,fr,it,pt,zh">`,
+    `        ${openTag}`,
     '          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">',
     '            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/>',
     '            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>',
@@ -148,6 +213,7 @@ let alreadyOk = 0;
 const failures = [];
 
 for (const section of SECTIONS) {
+  if (requestedSections.length && !requestedSections.includes(section.key)) continue;
   const entries = manifest[section.key] || {};
   for (const [slug, spec] of Object.entries(entries)) {
     if (slug.startsWith('_')) continue;
@@ -158,32 +224,32 @@ for (const section of SECTIONS) {
       skipped++;
       continue;
     }
+    const articleDir = path.join(section.root, slug);
     const src = fs.readFileSync(articlePath, 'utf8');
     if (/id="listen-btn"/.test(src)) {
-      // Already present — but make sure data-audio-src reflects the
-      // current studio-readiness state (gain studio mode the moment
-      // audio.mp3 lands; lose it if removed).
-      const hasStudio = fs.existsSync(path.join(section.root, slug, 'audio.mp3'));
-      const studioRe = /(<button[^>]*\bid="listen-btn"[^>]*?)(\s+data-audio-src="[^"]*")?(\s+data-audio-languages)/;
-      const m = src.match(studioRe);
+      // Already present — re-normalize its audio attributes (src +
+      // source-lang + advertised languages) to the current on-disk
+      // reality. Gains studio mode the moment audio.mp3 lands; advertises
+      // each language only once its MP3 is present.
+      const hasStudio = fs.existsSync(path.join(articleDir, 'audio.mp3'));
+      const langs = availableLanguagesFor(articleDir, spec.languages, section.locale).join(',');
+      const btnRe = /<button\b[^>]*\bid="listen-btn"[^>]*?>/;
+      const m = src.match(btnRe);
       if (m) {
-        const want = hasStudio ? ' data-audio-src="audio.mp3"' : '';
-        const cur  = m[2] || '';
-        if (cur !== want) {
-          const next = src.replace(studioRe, `$1${want}$3`);
-          if (next !== src) {
-            if (!checkOnly && !dryRun) fs.writeFileSync(articlePath, next);
-            changed++;
-            console.log(`${dryRun ? 'would update' : checkOnly ? 'would update' : 'updated'} (audio-src): ${path.relative(repoRoot, articlePath)}`);
-            continue;
-          }
+        const nextTag = setButtonAudioAttrs(m[0], { hasStudio, langs, sourceLang: section.locale });
+        if (nextTag !== m[0]) {
+          const next = src.replace(btnRe, nextTag);
+          if (!checkOnly && !dryRun) fs.writeFileSync(articlePath, next);
+          changed++;
+          console.log(`${dryRun || checkOnly ? 'would update' : 'updated'} (audio attrs): ${path.relative(repoRoot, articlePath)}`);
+          continue;
         }
       }
       alreadyOk++;
       continue;
     }
 
-    const button = buildButton({ articleDir: path.dirname(articlePath), locale: section.locale });
+    const button = buildButton({ articleDir, locale: section.locale, declared: spec.languages });
     const next = section.insertAfter(src, button);
     if (next == null) {
       failures.push(`${path.relative(repoRoot, articlePath)}: no <h1> or <p class="post-meta"> anchor — manual placement required`);

@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-09T20:02:38.043Z",
-  "engine": "kokoro",
-  "model": "kokoro-v1.0.onnx",
-  "voice": "am_michael",
+  "generatedAt": "2026-06-15T21:01:34.663Z",
+  "engine": "f5",
+  "model": "don-reference.m4a",
+  "voice": "f5:don-reference.m4a",
   "language": "en",
-  "total": 661.7,
+  "total": 435.24,
   "chunks": [
     {
       "id": 0,
@@ -13,351 +13,351 @@
       "selector": "#post-body > p:nth-of-type(1)",
       "text": "Research note &middot; May 2, twenty twenty-six &middot; 11 min read &middot; By Don Goldstein",
       "start": 0,
-      "end": 7.52
+      "end": 4.61
     },
     {
       "id": 1,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
-      "text": "A small, named, dated study. Fifty independent restaurant websites in the DMV and tri-state northeast, audited for the six most common reservation-and-conversion leaks: deeplink-broken reservation buttons, hidden hours, slow LCP, missing direct-order CTAs, dead Spanish, and aggregator-only ordering. Each leak measured in dollars per month against the operator&rsquo;s own reported revenue. The median operator is leaving 0.94% of revenue on the table. The worst quartile is leaking 2.3% .",
-      "start": 7.87,
-      "end": 43.66
+      "text": "A small, named, dated study. Fifty independent restaurant websites in the Dmv and tri-state northeast, audited for the six most common reservation-and-conversion leaks: deeplink-broken reservation buttons, hidden hours, slow Lcp, missing direct-order CTAs, dead Spanish, and aggregator-only ordering. Each leak measured in dollars per month against the operator&rsquo;s own reported revenue. The median operator is leaving 0.94% of revenue on the table. The worst quartile is leaking 2.3% .",
+      "start": 5.16,
+      "end": 28.81
     },
     {
       "id": 2,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
       "text": "50 Independent restaurants audited",
-      "start": 44.18,
-      "end": 46.41
+      "start": 29.61,
+      "end": 31.26
     },
     {
       "id": 3,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
       "text": "0.94% Median revenue leaked through site friction",
-      "start": 46.73,
-      "end": 51.11
+      "start": 31.76,
+      "end": 34.15
     },
     {
       "id": 4,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
       "text": "3,128 dollars Median monthly dollar leak per operator",
-      "start": 51.43,
-      "end": 56.41
+      "start": 34.65,
+      "end": 37.24
     },
     {
       "id": 5,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
       "text": "43/50 Have at least 3 of 6 leaks active right now",
-      "start": 56.73,
-      "end": 61.2
+      "start": 37.74,
+      "end": 40.13
     },
     {
       "id": 6,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(1)",
       "text": "Where the 1% comes from.",
-      "start": 62.3,
-      "end": 63.8
+      "start": 41.63,
+      "end": 42.79
     },
     {
       "id": 7,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(3)",
       "text": "The 1% number isn&rsquo;t a hunch. It&rsquo;s a sum across six measured leaks, each with a published lift figure from primary research, applied to the operator&rsquo;s own reported revenue. The methodology is below; the headline result is in this table.",
-      "start": 64.5,
-      "end": 84.36
+      "start": 43.74,
+      "end": 55.95
     },
     {
       "id": 8,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "The single biggest leak is the one that affects the fewest operators: aggregator-only ordering with no direct path. When it&rsquo;s present, the impact is large — nearly half a point of revenue — because every order goes through a 30% commission instead of a 3.6% processor fee. The two leaks that affect the most operators (mobile LCP and missing direct-order C T A) are smaller per-incident but compound across more orders.",
-      "start": 84.88,
-      "end": 113.2
+      "text": "The single biggest leak is the one that affects the fewest operators: aggregator-only ordering with no direct path. When it&rsquo;s present, the impact is large, nearly half a point of revenue, because every order goes through a 30% commission instead of a 3.6% processor fee. The two leaks that affect the most operators (mobile Lcp and missing direct-order C T A) are smaller per-incident but compound across more orders.",
+      "start": 56.75,
+      "end": 77.09
     },
     {
       "id": 9,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(2)",
       "text": "Distribution of leakage.",
-      "start": 114.3,
-      "end": 115.85
+      "start": 78.59,
+      "end": 79.75
     },
     {
       "id": 10,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
-      "text": "The distribution isn&rsquo;t flat. It clusters: most operators are in the 0.5%–1.5% band, but a long tail of operators is leaking well over 2% — usually because they have all six leaks active at once.",
-      "start": 116.55,
-      "end": 134.27
+      "text": "The distribution isn&rsquo;t flat. It clusters: most operators are in the 0.5%, 1.5% band, but a long tail of operators is leaking well over 2%, usually because they have all six leaks active at once.",
+      "start": 80.7,
+      "end": 90.51
     },
     {
       "id": 11,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(1)",
       "text": "Leakage distribution across all 50 restaurants. The largest cluster is the 0.5 to 1 percent band, with 17 of 50 operators. 15 sit in the 1 to 1.5 percent band. 7 are under half a percent and 7 sit between 1.5 and 2 percent. The worst-quartile tail above 2 percent has 4 operators.",
-      "start": 135.07,
-      "end": 158.6
+      "start": 91.61,
+      "end": 105.15
     },
     {
       "id": 12,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(6)",
-      "text": "The operators in the under-0.5% band shared three things: they were all on custom-coded or BentoBox-hosted sites (no Wix), they all had a real /es/ mirror or were in non-bilingual neighborhoods, and they all had a direct-order button positioned above their third-party links. They were also overrepresented in the &ldquo;family-owned for 20+ years&rdquo; category — not because old operators are tech-forward, but because they&rsquo;ve been quietly fixing one leak per quarter for a long time.",
-      "start": 159.35,
-      "end": 193.92
+      "text": "The operators in the under-0.5% band shared three things: they were all on custom-coded or BentoBox-hosted sites (no Wix), they all had a real /es/ mirror or were in non-bilingual neighborhoods, and they all had a direct-order button positioned above their third-party links. They were also overrepresented in the &ldquo;family-owned for 20+ years&rdquo; category, not because old operators are tech-forward, but because they&rsquo;ve been quietly fixing one leak per quarter for a long time.",
+      "start": 106.15,
+      "end": 130.04
     },
     {
       "id": 13,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(3)",
       "text": "What 0.94% means in dollars.",
-      "start": 195.02,
-      "end": 198.23
+      "start": 131.54,
+      "end": 132.91
     },
     {
       "id": 14,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(7)",
-      "text": "Applied to the median operator&rsquo;s reported revenue (~1.6 dollarsM annual, 133 dollarsK monthly), 0.94% is 1,250 dollars per month, or 15,012 dollars per year . For a worst-quartile operator at the same revenue band but 2.3% leakage, that&rsquo;s 3,069 dollars per month, or 36,830 dollars per year . For comparison, a Full Service tier rebuild at this studio is 5,000 dollars–9,000 dollars — the rebuild pays for itself in 2–7 months at median leakage, and inside two months at worst-quartile.",
-      "start": 198.93,
-      "end": 245.29
+      "text": "Applied to the median operator&rsquo;s reported revenue (~1.6 dollarsM annual, 133 dollarsK monthly), 0.94% is 1,250 dollars per month, or 15,012 dollars per year . For a worst-quartile operator at the same revenue band but 2.3% leakage, that&rsquo;s 3,069 dollars per month, or 36,830 dollars per year . For comparison, a Full Service tier rebuild at this studio is 5,000 dollars, 9,000 dollars, the rebuild pays for itself in 2, 7 months at median leakage, and inside two months at worst-quartile.",
+      "start": 133.86,
+      "end": 157.94
     },
     {
       "id": 15,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(4)",
       "text": "Per-leak fix difficulty.",
-      "start": 246.39,
-      "end": 247.76
+      "start": 159.44,
+      "end": 160.6
     },
     {
       "id": 16,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(8)",
       "text": "Not every leak takes the same effort to fix. Ranked by difficulty (easiest first):",
-      "start": 248.46,
-      "end": 253.93
+      "start": 161.55,
+      "end": 165.56
     },
     {
       "id": 17,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
       "text": "Reservation button doesn&rsquo;t deeplink (5 minutes). Replace https://opentable.com with https://www.opentable.com/restref/client/?rid=YOUR_VENUE_ID . Same fix on Resy and Tock. Test on mobile.",
-      "start": 254.28,
-      "end": 276.66
+      "start": 166.11,
+      "end": 175.73
     },
     {
       "id": 18,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
       "text": "Hours buried (15 minutes). Move the &ldquo;Hours&rdquo; block above the hero image. Add same-day hours in plain text, not just as part of a graphic. The graphic can stay; the text has to be there too.",
-      "start": 276.98,
-      "end": 292.65
+      "start": 176.23,
+      "end": 186.04
     },
     {
       "id": 19,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
       "text": "Direct-order C T A missing (30 minutes). Add a primary-color &ldquo;Order direct&rdquo; button above any third-party order link. Wire it to your P O S&rsquo;s online-ordering U R L (Toast, Square Online, Olo, ChowNow). Match-or-beat the third-party menu price.",
-      "start": 292.97,
-      "end": 313.77
+      "start": 186.54,
+      "end": 199.29
     },
     {
       "id": 20,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "Mobile LCP > 3.0s (1–3 hours). Compress the hero image, switch to AVIF + WebP fallback, drop unused JS, lazy-load below-the-fold images. Test with Lighthouse on Slow 4G + 4&times; CPU before declaring victory.",
-      "start": 314.09,
-      "end": 334.13
+      "text": "Mobile Lcp > 3.0s (1, 3 hours). Compress the hero image, switch to Avif + WebP fallback, drop unused JS, lazy-load below-the-fold images. Test with Lighthouse on Slow 4G + 4&times; Cpu before declaring victory.",
+      "start": 199.79,
+      "end": 210.2
     },
     {
       "id": 21,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "Aggregator-only ordering (4–8 hours of setup, then maintenance). Stand up a Toast Online Ordering or Square Online flow if you don&rsquo;t already have one. Match menu prices. Mention the savings on the order receipt and on the takeout-bag insert. The hardest part is not the tech — it&rsquo;s the operational change of running two ordering flows in parallel for the first month.",
-      "start": 334.45,
-      "end": 360.85
+      "text": "Aggregator-only ordering (4, 8 hours of setup, then maintenance). Stand up a Toast Online Ordering or Square Online flow if you don&rsquo;t already have one. Match menu prices. Mention the savings on the order receipt and on the takeout-bag insert. The hardest part is not the tech, it&rsquo;s the operational change of running two ordering flows in parallel for the first month.",
+      "start": 210.7,
+      "end": 229.11
     },
     {
       "id": 22,
       "kind": "list",
       "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
       "text": "Real /es/ mirror (one week). The hardest of the six, and the one with the second-largest impact. A real localized mirror, not a Google Translate plugin. The menu drop-in covers this for the highest-leverage page; a full-site mirror is a Full Service tier project.",
-      "start": 361.17,
-      "end": 380.32
+      "start": 229.61,
+      "end": 242.31
     },
     {
       "id": 23,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(9)",
-      "text": "The first three fixes — under an hour combined, no developer required — recover roughly half of the median leak. They&rsquo;re a Saturday afternoon, not a project.",
-      "start": 380.84,
-      "end": 392.17
+      "text": "The first three fixes, under an hour combined, no developer required, recover roughly half of the median leak. They&rsquo;re a Saturday afternoon, not a project.",
+      "start": 243.11,
+      "end": 251.01
     },
     {
       "id": 24,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(5)",
       "text": "What I expected to find that wasn&rsquo;t there.",
-      "start": 393.27,
-      "end": 396.79
+      "start": 252.51,
+      "end": 254.86
     },
     {
       "id": 25,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
       "text": "Photography quality didn&rsquo;t correlate with leakage. Restaurants with phenomenal photos and restaurants with operator-iPhone snapshots leaked at roughly the same rates. Photography drives consideration, not conversion. Reorder your priorities accordingly.",
-      "start": 397.49,
-      "end": 416.19
+      "start": 255.81,
+      "end": 268.35
     },
     {
       "id": 26,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Older sites didn&rsquo;t leak more than newer ones. Some of the lowest-leakage sites were built in twenty eighteen and never touched again. The features that cause leaks (heavy JS, third-party reservations widget that doesn&rsquo;t deeplink, hero-photo-blocking-the-hours) are twenty twenty-two–twenty twenty-four patterns.",
-      "start": 416.51,
-      "end": 438.98
+      "text": "Older sites didn&rsquo;t leak more than newer ones. Some of the lowest-leakage sites were built in twenty eighteen and never touched again. The features that cause leaks (heavy JS, third-party reservations widget that doesn&rsquo;t deeplink, hero-photo-blocking-the-hours) are twenty twenty-two, twenty twenty-four patterns.",
+      "start": 268.85,
+      "end": 284.55
     },
     {
       "id": 27,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
       "text": "Wix isn&rsquo;t universally bad. Of 11 Wix sites in the sample, 4 were in the under-1% band. They were the ones whose owners had spent time fixing the template, not accepting the defaults.",
-      "start": 439.3,
-      "end": 453.79
+      "start": 285.05,
+      "end": 294.48
     },
     {
       "id": 28,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
       "text": "Fine-dining didn&rsquo;t leak more than casual. The reservation-deeplink leak hits both equally; both lose roughly the same percent of revenue when they have it.",
-      "start": 454.11,
-      "end": 465.59
+      "start": 294.98,
+      "end": 302.88
     },
     {
       "id": 29,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(6)",
       "text": "Methodology.",
-      "start": 466.69,
-      "end": 467.67
+      "start": 304.38,
+      "end": 304.96
     },
     {
       "id": 30,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(10)",
-      "text": "Sample: 50 independently-owned restaurants, no national chains, no PE-owned brands. Geographic mix: 60% DMV (DC + MD + VA), 40% NY-NJ-CT tri-state. Revenue band: 800 dollarsK–3 dollarsM annual (the median DMV independent). Cuisine mix roughly matches RAMW&rsquo;s twenty twenty-five corridor distribution.",
-      "start": 468.37,
-      "end": 496.16
+      "text": "Sample: 50 independently-owned restaurants, no national chains, no PE-owned brands. Geographic mix: 60% Dmv (DC + MD + VA), 40% NY-NJ-CT tri-state. Revenue band: 800 dollarsK, 3 dollarsM annual (the median Dmv independent). Cuisine mix roughly matches Ramw&rsquo;s twenty twenty-five corridor distribution.",
+      "start": 305.91,
+      "end": 321.02
     },
     {
       "id": 31,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(11)",
-      "text": "Audit period: February–April twenty twenty-six. Each restaurant graded by hand on the six leaks. Per-leak revenue impact applied using published conversion-lift figures: Whitespark twenty twenty-four Local Search Ranking Factors , Baymard Institute&rsquo;s twenty twenty-four mobile-conversion benchmarks, Toast&rsquo;s twenty twenty-five Restaurant Industry Report, and Don&rsquo;s direct operating data from Tacombi Bethesda and the Irish Inn at Glen Echo (sample size of 2 restaurants for the operator-side calibration).",
-      "start": 496.68,
-      "end": 535.01
+      "text": "Audit period: February, April twenty twenty-six. Each restaurant graded by hand on the six leaks. Per-leak revenue impact applied using published conversion-lift figures: Whitespark twenty twenty-four Local Search Ranking Factors , Baymard Institute&rsquo;s twenty twenty-four mobile-conversion benchmarks, Toast&rsquo;s twenty twenty-five Restaurant Industry Report, and Don&rsquo;s direct operating data from Tacombi Bethesda and the Irish Inn at Glen Echo (sample size of 2 restaurants for the operator-side calibration).",
+      "start": 321.82,
+      "end": 347.69
     },
     {
       "id": 32,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(12)",
       "text": "Revenue figures self-reported by operator, verified against published estimates where available (Yelp Reservations volume, OpenTable Sales Index, public liquor-license records). Where revenue couldn&rsquo;t be verified, the operator&rsquo;s figure was used as-is; one outlier was excluded for refusing to confirm a band.",
-      "start": 535.53,
-      "end": 559.28
+      "start": 348.49,
+      "end": 364.04
     },
     {
       "id": 33,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(13)",
-      "text": "What this study is not: a randomized sample (operators were recruited from RAMW + DMV restaurant slack groups), a controlled study (no before/after measurements were taken), or an exhaustive list of leaks (six were chosen because each is well-published). It&rsquo;s a directional snapshot, deliberately small, named, and dated.",
-      "start": 559.8,
-      "end": 584.27
+      "text": "What this study is not: a randomized sample (operators were recruited from Ramw + Dmv restaurant slack groups), a controlled study (no before/after measurements were taken), or an exhaustive list of leaks (six were chosen because each is well-published). It&rsquo;s a directional snapshot, deliberately small, named, and dated.",
+      "start": 364.84,
+      "end": 380.69
     },
     {
       "id": 34,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(7)",
       "text": "Run yours.",
-      "start": 585.37,
-      "end": 586.19
+      "start": 382.19,
+      "end": 382.67
     },
     {
       "id": 35,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(14)",
       "text": "The free restaurant audit tool grades your site on the same six leaks, in 30 seconds, in your browser. Result tells you which leaks you have and what they&rsquo;re likely costing you per month.",
-      "start": 586.89,
-      "end": 599.76
+      "start": 383.62,
+      "end": 393.09
     },
     {
       "id": 36,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(15)",
-      "text": "If you want the same six checks run on your own site, the free Restaurant Website Audit at /tools/audits/restaurant/ takes about thirty seconds, no signup.",
-      "start": 600.28,
-      "end": 614.9
+      "text": "If you&rsquo;d rather have me run a 499 dollars deep audit and walk you through the fixes on a Loom, /services/audit/ . The audit credits toward a build inside 60 days.",
+      "start": 393.89,
+      "end": 402.14
     },
     {
       "id": 37,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(16)",
-      "text": "Don Goldstein manages two DMV restaurants and runs Muntin Digital . He is a member of RAMW and ServSafe certified. The 50-site sample (anonymized) and per-leak scoring rubric are available on request to don@muntin.digital .",
-      "start": 615.42,
-      "end": 633.66
+      "text": "Don Goldstein is a restaurant operator and runs Muntin Digital . He is a member of Ramw and ServSafe certified. The 50-site sample (anonymized) and per-leak scoring rubric are available on request to don@muntin.digital .",
+      "start": 402.94,
+      "end": 413.79
     },
     {
       "id": 38,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(17)",
       "text": "Companion pieces",
-      "start": 634.18,
-      "end": 635.34
+      "start": 414.59,
+      "end": 415.36
     },
     {
       "id": 39,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
-      "text": "An honest DoorDash math, twenty twenty-six — the per-order math behind leak number 6",
-      "start": 635.69,
-      "end": 641.4
+      "text": "An honest DoorDash math, twenty twenty-six, the per-order math behind leak number 6",
+      "start": 415.91,
+      "end": 420.03
     },
     {
       "id": 40,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
-      "text": "DMV restaurant G B P audit, twenty twenty-six — the discovery side of the same problem",
-      "start": 641.72,
-      "end": 648.49
+      "text": "Dmv restaurant G B P audit, twenty twenty-six, the discovery side of the same problem",
+      "start": 420.53,
+      "end": 424.69
     },
     {
       "id": 41,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
-      "text": "Why your restaurant loses reservations every night — the long-form companion",
-      "start": 648.81,
-      "end": 653.52
+      "text": "Why your restaurant loses reservations every night, the long-form companion",
+      "start": 425.19,
+      "end": 428.86
     },
     {
       "id": 42,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
-      "text": "Five website changes that recover 1% margin — the fix list, ranked",
-      "start": 653.84,
-      "end": 658.85
+      "text": "Five website changes that recover 1% margin, the fix list, ranked",
+      "start": 429.36,
+      "end": 432.54
     },
     {
       "id": 43,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
       "text": "Run the free 30-second audit on your own site",
-      "start": 659.17,
-      "end": 661.7
+      "start": 433.04,
+      "end": 435.24
     }
   ]
 }

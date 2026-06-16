@@ -1,203 +1,219 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-22T23:11:51.175Z",
-  "engine": "kokoro",
-  "model": "kokoro-v1.0.onnx",
-  "voice": "am_michael",
+  "generatedAt": "2026-06-10T23:19:18.432Z",
+  "engine": "f5",
+  "model": "don-reference.m4a",
+  "voice": "f5:don-reference.m4a",
   "language": "en",
-  "total": 340.27,
+  "total": 334.46,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Op-ed · May 25, twenty twenty-six · 7 min read &middot; By Don Goldstein",
+      "text": "Op-ed · May 23, twenty twenty-six · 7 min read &middot; By Don Goldstein",
       "start": 0,
-      "end": 6.01
+      "end": 3.63
     },
     {
       "id": 1,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
-      "text": "At I/O on May 19, Google rebuilt AI Mode and gave it the ability to book a table without leaving the answer. The local result is now generated, not listed — and that changes which restaurants get named.",
-      "start": 6.36,
-      "end": 21.08
+      "text": "At I/O on May 19, Google rebuilt AI Mode and gave it the ability to book a table without leaving the answer. The local result is now generated, not listed, and that changes which restaurants get named.",
+      "start": 4.18,
+      "end": 14.24
     },
     {
       "id": 2,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(3)",
       "text": "In short",
-      "start": 21.6,
-      "end": 22.23
+      "start": 15.04,
+      "end": 16.01
     },
     {
       "id": 3,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
       "text": "At I/O on May 19, Google rebuilt AI Mode on a new model and gave it the ability to book a restaurant table directly through OpenTable, Resy, and Tock.",
-      "start": 22.58,
-      "end": 33.79
+      "start": 16.56,
+      "end": 24.26
     },
     {
       "id": 4,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "The local result is now generated, not listed — Google composes a short answer naming a few places and can act on it, instead of returning ten links.",
-      "start": 34.11,
-      "end": 44.55
+      "text": "The local result is now generated, not listed, Google composes a short answer naming a few places and can act on it, instead of returning ten links.",
+      "start": 24.76,
+      "end": 32.02
     },
     {
       "id": 5,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
       "text": "Three moves keep you in it: a complete Google Business Profile, a connected booking provider, and the answer written in plain text plus schema.",
-      "start": 44.87,
-      "end": 53.94
+      "start": 32.52,
+      "end": 39.54
     },
     {
       "id": 6,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "On May 19 at its I/O conference, Google rebuilt AI Mode — the conversational layer that increasingly sits where the ten blue links used to be. A new underlying model, a redesigned search box (the first real change to that box in more than two decades), background agents that go research on their own, and one feature that matters more to a restaurant than all the rest: the answer can now book the table . AI Mode already reaches more than a billion people a month, and the rebuild rolls out across the US over the summer.",
-      "start": 54.46,
-      "end": 88.48
+      "text": "On May 19 at its I/O conference, Google rebuilt AI Mode, the conversational layer that increasingly sits where the ten blue links used to be. A new underlying model, a redesigned search box (the first real change to that box in more than two decades), background agents that go research on their own, and one feature that matters more to a restaurant than all the rest: the answer can now book the table . AI Mode already reaches more than a billion people a month, and the rebuild rolls out across the US over the summer.",
+      "start": 40.34,
+      "end": 65.95
     },
     {
       "id": 7,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
-      "text": "For an operator, the headline is not the model. It is that the local result stopped being a list and became a composition . Google no longer hands the diner ten links and a map and lets them sort it out. It reads the question, picks a few places, writes a short answer about them, and offers to act. The job changed from &ldquo;rank in the list&rdquo; to &ldquo;be one of the few the model decides to name — and can act on.&rdquo;",
-      "start": 89,
-      "end": 116.89
+      "text": "For an operator, the headline is not the model. It is that the local result stopped being a list and became a composition . Google no longer hands the diner ten links and a map and lets them sort it out. It reads the question, picks a few places, writes a short answer about them, and offers to act. The job changed from &ldquo;rank in the list&rdquo; to &ldquo;be one of the few the model decides to name, and can act on.&rdquo;",
+      "start": 66.75,
+      "end": 87.61
     },
     {
       "id": 8,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(1)",
       "text": "What &ldquo;generative&rdquo; changes about a restaurant result.",
-      "start": 117.99,
-      "end": 123.59
+      "start": 89.11,
+      "end": 92.25
     },
     {
       "id": 9,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(6)",
-      "text": "A generated answer — the same surface as a Google AI Overview — is assembled from whatever the model can read and trust about you: your Google Business Profile , your reviews, the text on your own pages. It is not a ranked feed. The old map pack rewarded proximity and rating; the generated answer rewards legibility — can the model state, in a sentence it&rsquo;s willing to put its name on, what you serve, when you&rsquo;re open, and whether you fit the diner&rsquo;s ask. If that sentence isn&rsquo;t readable somewhere, you&rsquo;re not in the paragraph. We walked the four signals that decide it in the four-number check .",
-      "start": 124.29,
-      "end": 166.46
+      "text": "A generated answer, the same surface as a Google AI Overview, is assembled from whatever the model can read and trust about you: your Google Business Profile , your reviews, the text on your own pages. It is not a ranked feed. The old map pack rewarded proximity and rating; the generated answer rewards legibility, can the model state, in a sentence it&rsquo;s willing to put its name on, what you serve, when you&rsquo;re open, and whether you fit the diner&rsquo;s ask. If that sentence isn&rsquo;t readable somewhere, you&rsquo;re not in the paragraph. We walked the four signals that decide it in the four-number check .",
+      "start": 93.2,
+      "end": 123.67
     },
     {
       "id": 10,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "The agentic part is the bigger shift.",
-      "start": 167.56,
-      "end": 169.74
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "The same diner query, run on the two surfaces. Before the I/O rebuild, the result is a map plus a ranked list of about ten restaurants, the diner taps, scrolls, calls, and decides on their own. You compete by ranking in the list. After the rebuild, the result is a generated paragraph that names roughly three places by name with booking buttons inline; the assistant can complete the reservation through OpenTable, Resy, or Tock without sending the diner anywhere. You compete by being one of the few the model names.",
+      "start": 124.77,
+      "end": 149.94
     },
     {
       "id": 11,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "Generated answers have been creeping in for a year. The new thing at I/O is that the assistant can complete a task — and for restaurants, the task is the reservation. Through OpenTable, Resy, and Tock, AI Mode can book a table inside the answer, without sending the diner to your site at all. That is a gift if you&rsquo;re connected to one of those providers and a quiet leak if you&rsquo;re not: the diner asks for &ldquo;a quiet spot for four on Friday,&rdquo; the assistant finds one that can be booked, and books it. A restaurant that takes reservations by phone only — with no reservation link the agent can complete — is invisible to that flow no matter how good it is.",
-      "start": 170.44,
-      "end": 215.9
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "The agentic part is the bigger shift.",
+      "start": 151.44,
+      "end": 153.24
     },
     {
       "id": 12,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "Three things the I/O twenty twenty-six rebuild changed about a local restaurant result. One: the answer is generated, not listed — Google composes a short answer naming a few places instead of returning ten links and a map. Two: the assistant can book the table, through OpenTable, Resy, or Tock, inside the answer. Three: fewer restaurants get named — a composed answer mentions a handful of places, and everyone else is absent rather than ranked lower.",
-      "start": 216.7,
-      "end": 246.03
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Generated answers have been creeping in for a year. The new thing at I/O is that the assistant can complete a task, and for restaurants, the task is the reservation. Through OpenTable, Resy, and Tock, AI Mode can book a table inside the answer, without sending the diner to your site at all. That is a gift if you&rsquo;re connected to one of those providers and a quiet leak if you&rsquo;re not: the diner asks for &ldquo;a quiet spot for four on Friday,&rdquo; the assistant finds one that can be booked, and books it. A restaurant that takes reservations by phone only, with no reservation link the agent can complete, is invisible to that flow no matter how good it is.",
+      "start": 154.19,
+      "end": 186.97
     },
     {
       "id": 13,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "Three moves that keep you in the answer.",
-      "start": 247.13,
-      "end": 249.11
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "Three things the I/O twenty twenty-six rebuild changed about a local restaurant result. One: the answer is generated, not listed, Google composes a short answer naming a few places instead of returning ten links and a map. Two: the assistant can book the table, through OpenTable, Resy, or Tock, inside the answer. Three: fewer restaurants get named, a composed answer mentions a handful of places, and everyone else is absent rather than ranked lower.",
+      "start": 188.07,
+      "end": 210.21
     },
     {
       "id": 14,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "None of this rewards a bigger ad budget. It rewards being readable and bookable — both of which you control.",
-      "start": 249.81,
-      "end": 256.88
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Three moves that keep you in the answer.",
+      "start": 211.71,
+      "end": 213.66
     },
     {
       "id": 15,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Complete the profile. Hours by day, cuisine, attributes, the menu link — the fields the model quotes. Run the G B P grader to find the blanks.",
-      "start": 257.4,
-      "end": 267.94
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "None of this rewards a bigger ad budget. It rewards being readable and bookable, both of which you control.",
+      "start": 214.61,
+      "end": 219.86
     },
     {
       "id": 16,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "Connect a booking provider. If you take reservations, get them into OpenTable, Resy, or Tock so the agent can finish the job. The how-to is in booking inside the AI answer .",
-      "start": 268.46,
-      "end": 280.56
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Complete the profile. Hours by day, cuisine, attributes, the menu link, the fields the model quotes. Run the G B P grader to find the blanks.",
+      "start": 220.66,
+      "end": 227.57
     },
     {
       "id": 17,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "Write the answer in text. Put the facts a diner asks for in plain text, backed by restaurant schema so the model can lift them, then check the whole front door with storefront health .",
-      "start": 281.08,
-      "end": 292.9
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Connect a booking provider. If you take reservations, get them into OpenTable, Resy, or Tock so the agent can finish the job. The how-to is in booking inside the AI answer .",
+      "start": 228.37,
+      "end": 237.2
     },
     {
       "id": 18,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "The rebuild is not a reason to panic. It is a reason to be legible. The restaurants that lose are the ones the model can&rsquo;t read and can&rsquo;t book — and both of those are fixable this week, without a contract or an ad spend.",
-      "start": 293.42,
-      "end": 310.34
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Write the answer in text. Put the facts a diner asks for in plain text, backed by restaurant schema so the model can lift them, then check the whole front door with storefront health .",
+      "start": 238,
+      "end": 247.03
     },
     {
       "id": 19,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "Key takeaways",
-      "start": 310.86,
-      "end": 311.8
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "A three-question diagnostic an operator can walk to find out whether their restaurant is ready for the generated AI Mode answer, and what to fix first. Question one: is your Google Business Profile complete, hours by day, cuisine, attributes, and the menu link, with no blanks? If no, the model has gaps in the file it builds the answer from; fill the blank fields first. If yes, go on. Question two: are your reservations connected to a booking provider the agent can use, OpenTable, Resy, or Tock? If no, a phone-only restaurant gets named but cannot be booked inside the answer, so the diner picks one the agent can complete; connect a provider. If yes, go on. Question three: does the answer to what a diner would ask live in plain text on your own site, backed by restaurant schema? If no, the facts sit in a photo or a P D F the model cannot lift, so it quotes a competitor; write the answer in text and mark it up. If yes to all three, the model can read you and the agent can book you, you are built to stay in the answer.",
+      "start": 248.13,
+      "end": 298.03
     },
     {
       "id": 20,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "A generated answer rewards legibility, not just proximity and rating — the model has to be able to state what you are.",
-      "start": 312.15,
-      "end": 320.18
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "The rebuild is not a reason to panic. It is a reason to be legible. The restaurants that lose are the ones the model can&rsquo;t read and can&rsquo;t book, and both of those are fixable this week, without a contract or an ad spend.",
+      "start": 299.03,
+      "end": 310.15
     },
     {
       "id": 21,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "AI Mode can complete the reservation through OpenTable, Resy, or Tock; a phone-only restaurant is skipped.",
-      "start": 320.5,
-      "end": 327.77
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Key takeaways",
+      "start": 310.95,
+      "end": 311.57
     },
     {
       "id": 22,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "The job moved from ranking in a list to being one of the few places the model names and can book.",
-      "start": 328.09,
-      "end": 333.92
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "A generated answer rewards legibility, not just proximity and rating, the model has to be able to state what you are.",
+      "start": 312.12,
+      "end": 317.86
     },
     {
       "id": 23,
       "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "AI Mode can complete the reservation through OpenTable, Resy, or Tock; a phone-only restaurant is skipped.",
+      "start": 318.36,
+      "end": 323.9
+    },
+    {
+      "id": 24,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "The job moved from ranking in a list to being one of the few places the model names and can book.",
+      "start": 324.4,
+      "end": 329.16
+    },
+    {
+      "id": 25,
+      "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "None of the three moves costs an ad budget — they cost an afternoon of being readable and bookable.",
-      "start": 334.24,
-      "end": 340.27
+      "text": "None of the three moves costs an ad budget, they cost an afternoon of being readable and bookable.",
+      "start": 329.66,
+      "end": 334.46
     }
   ]
 }
