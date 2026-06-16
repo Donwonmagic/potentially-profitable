@@ -15,7 +15,7 @@
  * statement, the property that out-reasons a single-source quote.
  *
  * PARITY: mirrored by the Muntin Ledger TS port at
- * ledger-spec/cost-index/src/cost-conformal.ts — vectors copied verbatim; change
+ * packages/cost-alerts/src/cost-conformal.ts — vectors copied verbatim; change
  * the math in one repo, change it in the other in the same commit.
  *
  * Pure, deterministic, integer-friendly, no DOM/network.  Browser: window.MuntinConformal.

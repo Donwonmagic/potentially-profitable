@@ -16,7 +16,7 @@
  *   bridgeFit(y, x, opts)        -> rigorous verdict + predict(xNow) -> { level, band }
  *
  * PARITY: mirrored by the Muntin Ledger TS port at
- * ledger-spec/cost-index/src/cost-cointegration.ts — vectors copied verbatim; change
+ * packages/cost-alerts/src/cost-cointegration.ts — vectors copied verbatim; change
  * the math in one repo, change it in the other in the same commit.
  *
  * Pure, deterministic, no DOM/network. Browser: window.MuntinCointegration.

@@ -18,7 +18,7 @@
  *   capConfidence(conf, ceil)  -> step-min of a confidence label and a ceiling
  *
  * PARITY: mirrored by the Muntin Ledger TS port at
- * ledger-spec/cost-index/src/cost-staleness.ts — vectors copied verbatim; change
+ * packages/cost-alerts/src/cost-staleness.ts — vectors copied verbatim; change
  * the math in one repo, change it in the other in the same commit.
  *
  * Pure, no DOM/network. Browser: window.MuntinStaleness.

@@ -14,7 +14,7 @@
  * ~baseline — that's a true finding (the arrow should be humble), not a bug.
  *
  * PARITY: mirrored by the Muntin Ledger TS port at
- * ledger-spec/cost-index/src/cost-reliability.ts — vectors copied verbatim; change
+ * packages/cost-alerts/src/cost-reliability.ts — vectors copied verbatim; change
  * the math in one repo, change it in the other in the same commit.
  *
  * Pure, deterministic, no DOM/network. Browser: window.MuntinReliability.
