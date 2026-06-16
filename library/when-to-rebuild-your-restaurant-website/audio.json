@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-30T19:49:00.741Z",
-  "engine": "kokoro",
-  "model": "kokoro-v1.0.onnx",
-  "voice": "am_michael",
+  "generatedAt": "2026-06-13T02:25:22.326Z",
+  "engine": "f5",
+  "model": "don-reference.m4a",
+  "voice": "f5:don-reference.m4a",
   "language": "en",
-  "total": 634.34,
+  "total": 603.46,
   "chunks": [
     {
       "id": 0,
@@ -13,479 +13,519 @@
       "selector": "#post-body > p:nth-of-type(1)",
       "text": "TL;DR",
       "start": 0,
-      "end": 1
+      "end": 0.73
     },
     {
       "id": 1,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Most independent restaurants rebuild their website 12–24 months later than they should — when the cost is higher and the funnel is already leaking.",
-      "start": 1.35,
-      "end": 10.62
+      "text": "Most independent restaurants rebuild their website 12, 24 months later than they should, when the cost is higher and the funnel is already leaking.",
+      "start": 1.28,
+      "end": 8.49
     },
     {
       "id": 2,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
       "text": "A seven-question diagnostic separates \"rebuild\" from \"fix the leaks for another year\" without a consultant in the loop.",
-      "start": 10.94,
-      "end": 18.43
+      "start": 8.99,
+      "end": 14.82
     },
     {
       "id": 3,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
       "text": "Three case patterns: a high-scoring site that just needs targeted fixes; a sub-60 site where the platform itself is the ceiling; a mid-range site where a partial rebuild is the right cost-benefit trade.",
-      "start": 18.75,
-      "end": 32.8
+      "start": 15.32,
+      "end": 25.24
     },
     {
       "id": 4,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
       "text": "The decision is rarely \"rebuild or not.\" It is \"what level of rebuild, and what does the 18-month do-nothing case look like.\"",
-      "start": 33.12,
-      "end": 41.7
+      "start": 25.74,
+      "end": 31.87
     },
     {
       "id": 5,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
       "text": "The conversation almost always starts the same way: an operator has two quotes for a rebuild that differ by 3-4x, neither developer has asked what is actually broken, and the operator is not really asking which quote to take. They are asking whether to rebuild at all. That is the harder question, and almost nobody helps operators answer it.",
-      "start": 42.05,
-      "end": 64.55
+      "start": 32.42,
+      "end": 49.01
     },
     {
       "id": 6,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(3)",
-      "text": "The honest answer is that most independent restaurants rebuild 12-24 months later than they should — by which time the rebuild costs more (because there is more to migrate), takes longer (because the bookings funnel has gotten worse), and the operator is making the decision under stress instead of under planning.",
-      "start": 65.07,
-      "end": 85.59
+      "text": "The honest answer is that most independent restaurants rebuild 12-24 months later than they should, by which time the rebuild costs more (because there is more to migrate), takes longer (because the bookings funnel has gotten worse), and the operator is making the decision under stress instead of under planning.",
+      "start": 49.81,
+      "end": 64.97
     },
     {
       "id": 7,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "This is the seven-question diagnostic I run through before recommending a rebuild — or, just as often, recommending against one and pointing at three small changes that buy another year.",
-      "start": 86.11,
-      "end": 99.1
+      "text": "This is the seven-question diagnostic I run through before recommending a rebuild, or, just as often, recommending against one and pointing at three small changes that buy another year.",
+      "start": 65.77,
+      "end": 74.85
     },
     {
       "id": 8,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "Storefront Health score · what it tells you about rebuild readiness. Do not rebuild: Fix the lowest sub-score. Sometimes a C D N + image pass earns another year. (fix leaks). Maybe rebuild: Walk through the seven questions — three or more \"yes\" = rebuild. (diagnose). Rebuild: Every quarter you wait costs more than the rebuild itself. (rebuild now). Storefront Health score · what it tells you about rebuild readiness.",
-      "start": 99.9,
-      "end": 126.27
+      "text": "Where three example Storefront Health scores fall against the two decision lines on the zero-to-one-hundred scale. The rebuild line sits at sixty and the fix-the-leaks line sits at eighty. A site scoring fifty-five falls left of the rebuild line, so the platform is almost certainly the ceiling and a rebuild is the verdict. A site scoring sixty-eight lands in the band between the two lines, the maybe-rebuild zone where the seven questions decide it. A site scoring eighty-four clears the fix-the-leaks line, so a targeted C D N and image pass usually buys another year without a rebuild. Read your own score against the two lines before you price a single quote.",
+      "start": 75.95,
+      "end": 107.99
     },
     {
       "id": 9,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(1)",
       "text": "Question 1: How does it score on Storefront Health?",
-      "start": 127.37,
-      "end": 130.44
+      "start": 109.49,
+      "end": 111.99
     },
     {
       "id": 10,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Run Storefront Health on your site. The composite scorecard rolls speed, S E O, mobile, schema, G B P, and the Restaurant Audit into one number, 0-100.",
-      "start": 131.14,
-      "end": 143.61
+      "text": "Run Storefront Health on your site. The composite scorecard rolls speed, S E O, mobile, schema, G B P, and the Restaurant Audit into one number, 0-100. The chart above maps the bands. The cheap path: a sub-score below the rest is usually one targeted fix away from pulling the composite back into the green.",
+      "start": 112.94,
+      "end": 127.81
     },
     {
       "id": 11,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "80+: Do not rebuild. Fix the lowest sub-score.",
-      "start": 144.13,
-      "end": 147.48
-    },
-    {
-      "id": 12,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "60-79: Maybe rebuild. Read the next six questions.",
-      "start": 147.8,
-      "end": 152.42
-    },
-    {
-      "id": 13,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Below 60: Rebuild — every quarter you wait costs more than the rebuild.",
-      "start": 152.74,
-      "end": 157.31
-    },
-    {
-      "id": 14,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(2)",
       "text": "Question 2: Can your C M S update without breaking the site?",
-      "start": 158.41,
-      "end": 162.32
+      "start": 129.31,
+      "end": 132.24
     },
     {
-      "id": 15,
+      "id": 12,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(6)",
       "text": "Old C M S installs accumulate technical debt the way ductwork accumulates dust. The test: when's the last time someone tried to update the platform? If the answer is \"we do not, because it broke last time,\" that is a rebuild signal.",
-      "start": 163.02,
-      "end": 179.59
+      "start": 133.19,
+      "end": 144.36
     },
     {
-      "id": 16,
+      "id": 13,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(3)",
       "text": "Question 3: Does the menu live in H T M L?",
-      "start": 180.69,
-      "end": 184.01
+      "start": 145.86,
+      "end": 147.91
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "If your menu is a P D F, an image, or \"managed by Wix's menu widget,\" you are invisible to Google's dish-level queries and to AI search. Switching to a real H T M L menu alone is sometimes enough to defer a rebuild, sometimes it requires one.",
+      "start": 148.86,
+      "end": 160.82
+    },
+    {
+      "id": 15,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Question 4: How does the site score on Core Web Vitals?",
+      "start": 162.32,
+      "end": 165.01
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "If Lcp is above 4 seconds on mobile, or Cls is above 0.25, you are being penalized in search And bouncing visitors before the menu loads. Sometimes a C D N + image compression fixes it; sometimes the platform is the problem and only a rebuild will do.",
+      "start": 165.96,
+      "end": 178.07
     },
     {
       "id": 17,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "If your menu is a P D F, an image, or \"managed by Wix's menu widget,\" you are invisible to Google's dish-level queries and to AI search. Switching to a real H T M L menu alone is sometimes enough to defer a rebuild — sometimes it requires one.",
-      "start": 184.71,
-      "end": 203.78
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Run Speed Test on the homepage and the busiest interior page. If the homepage is fast but the menu page is slow, the platform is not the issue, the page is. If both are slow, the platform usually is.",
+      "start": 178.87,
+      "end": 188.64
     },
     {
       "id": 18,
       "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "Question 4: How does the site score on Core Web Vitals?",
-      "start": 204.88,
-      "end": 208.66
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Question 5: Can you ship a small change in under an hour?",
+      "start": 190.14,
+      "end": 192.92
     },
     {
       "id": 19,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "If LCP is above 4 seconds on mobile, or CLS is above 0.25, you are being penalized in search AND bouncing visitors before the menu loads. Sometimes a C D N + image compression fixes it; sometimes the platform is the problem and only a rebuild will do.",
-      "start": 209.36,
-      "end": 229.77
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Test: try to update the holiday hours on your homepage in the next 60 minutes. If you cannot (no access, complex C M S, requires a developer), that is a rebuild signal, not because the technical limitation is fatal, but because the operational burden compounds quietly. Every change you delay is a small leak.",
+      "start": 193.87,
+      "end": 208.83
     },
     {
       "id": 20,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Run Speed Test on the homepage and the busiest interior page. If the homepage is fast but the menu page is slow, the platform is not the issue — the page is. If both are slow, the platform usually is.",
-      "start": 230.29,
-      "end": 244.59
-    },
-    {
-      "id": 21,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "Question 5: Can you ship a small change in under an hour?",
-      "start": 245.69,
-      "end": 249.37
-    },
-    {
-      "id": 22,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "Test: try to update the holiday hours on your homepage in the next 60 minutes. If you cannot (no access, complex C M S, requires a developer), that is a rebuild signal — not because the technical limitation is fatal, but because the operational burden compounds quietly. Every change you delay is a small leak.",
-      "start": 250.07,
-      "end": 272
-    },
-    {
-      "id": 23,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(6)",
       "text": "Question 6: Does the brand match the room?",
-      "start": 273.1,
-      "end": 275.74
+      "start": 210.33,
+      "end": 212.38
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Open your homepage on the phone you carry. Then walk into your dining room. Do they feel like the same place? If not, if the room is warm, considered, intentional, and the site is templated, generic, \"we picked the cleanest Squarespace template\", that is a brand-design rebuild signal, separate from the technical ones.",
+      "start": 213.33,
+      "end": 228.84
+    },
+    {
+      "id": 22,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "Question 7: What happens to bookings if you do nothing for 18 months?",
+      "start": 230.34,
+      "end": 233.72
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Look at your monthly booking trend. If it is flat or declining and your site has been the same for 24+ months, doing nothing is not actually neutral, the gap to your local competitors is widening even when your numbers look stable. The 18-month \"do nothing\" projection is almost always negative for a stale restaurant site.",
+      "start": 234.67,
+      "end": 250.32
     },
     {
       "id": 24,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "Open your homepage on the phone you carry. Then walk into your dining room. Do they feel like the same place? If not — if the room is warm, considered, intentional, and the site is templated, generic, \"we picked the cleanest Squarespace template\" — that is a brand-design rebuild signal, separate from the technical ones.",
-      "start": 276.44,
-      "end": 296.72
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "Three rebuild patterns · score band, scope, typical payback. High-scoring site, targeted fixes: Score 75, 85. C D N, compress, schema fix. ~5, 10% of rebuild cost. (defer). Sub-60 site, full rebuild: Platform itself caps the ceiling. Real H T M L menu, full schema, fast funnel. (9, 14 mo payback). Mid-range, partial rebuild: Front-end + photos, keep C M S. ~40% of full-rebuild cost. Watch the ceiling. (tradeoff). Three rebuild patterns · score band, scope, typical payback.",
+      "start": 251.42,
+      "end": 274.52
     },
     {
       "id": 25,
       "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(7)",
-      "text": "Question 7: What happens to bookings if you do nothing for 18 months?",
-      "start": 297.82,
-      "end": 302.22
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "Three case threads.",
+      "start": 276.02,
+      "end": 276.94
     },
     {
       "id": 26,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "Look at your monthly booking trend. If it is flat or declining and your site has been the same for 24+ months, doing nothing is not actually neutral — the gap to your local competitors is widening even when your numbers look stable. The 18-month \"do nothing\" projection is almost always negative for a stale restaurant site.",
-      "start": 302.92,
-      "end": 324.16
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Case 1, Bistro on a 75 score, does not rebuild: A six-year-old French bistro scoring 75 on Storefront Health. Mobile speed dragging the score down. We added a C D N, recompressed every image, fixed the menu schema. Score moved to 88; they deferred the rebuild for two more years and saved roughly 11 dollarsK.",
+      "start": 277.89,
+      "end": 292.85
     },
     {
       "id": 27,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(2)",
-      "text": "Three rebuild patterns · score band, scope, typical payback. High-scoring site, targeted fixes: Score 75–85. C D N, compress, schema fix. ~5–10% of rebuild cost. (defer). Sub-60 site, full rebuild: Platform itself caps the ceiling. Real H T M L menu, full schema, fast funnel. (9–14 mo payback). Mid-range, partial rebuild: Front-end + photos, keep C M S. ~40% of full-rebuild cost. Watch the ceiling. (tradeoff). Three rebuild patterns · score band, scope, typical payback.",
-      "start": 324.96,
-      "end": 362.24
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Case 2, Site below 60, rebuilds: Old front-end, slow on mobile, menu schema malformed, booking funnel hidden. The platform itself is the ceiling. The rebuild here is full custom: real H T M L menu, dish-level structured data , the booking funnel cleaned up. Score lands in the high 80s or 90s. Search-driven reservations roughly triple within 90 days because the missing schema starts firing in local-pack queries the site never appeared for before. Payback windows on rebuilds in this range are typically 9-14 months, but the leverage compounds as Google's index updates.",
+      "start": 293.65,
+      "end": 321.33
     },
     {
       "id": 28,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(8)",
-      "text": "Three case threads.",
-      "start": 363.34,
-      "end": 364.49
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Case 3, Site at 65-70, partial rebuild: Platform fine, brand tired. Keep the C M S, replace the front-end and the photos at roughly 40% of a full-rebuild cost. Score moves into the low-mid 80s. Bookings tick up, but not as steeply as Case 2. The honest tradeoff worth flagging: a partial rebuild caps your ceiling at whatever the underlying platform allows for schema, speed, and indexing. Sometimes the right call; sometimes worth revisiting in 18 months when the platform's ceiling becomes the next constraint.",
+      "start": 322.13,
+      "end": 346.85
     },
     {
       "id": 29,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "Case 1 — Bistro on a 75 score, does not rebuild: A six-year-old French bistro scoring 75 on Storefront Health. Mobile speed dragging the score down. We added a C D N, recompressed every image, fixed the menu schema. Score moved to 88; they deferred the rebuild for two more years and saved roughly 11 dollarsK.",
-      "start": 365.19,
-      "end": 388.67
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "Storefront Health scores after each case's recommended action. Case A, the bistro that fixed leaks instead of rebuilding, moved from a starting score of seventy-five to eighty-eight. Case B, the sub-sixty site that committed to a full custom rebuild, lands in the high eighties or nineties, roughly ninety. Case C, the mid-range site that took the partial rebuild, moves from sixty-five to seventy into the low-mid eighties, roughly eighty-two. Three different starting scores, three different scopes of work, three landing spots in the same green band.",
+      "start": 347.95,
+      "end": 374.69
     },
     {
       "id": 30,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "Case 2 — Site below 60, rebuilds: Old front-end, slow on mobile, menu schema malformed, booking funnel hidden. The platform itself is the ceiling. The rebuild here is full custom: real H T M L menu, dish-level structured data, the booking funnel cleaned up. Score lands in the high 80s or 90s. Search-driven reservations roughly triple within 90 days because the missing schema starts firing in local-pack queries the site never appeared for before. Payback windows on rebuilds in this range are typically 9-14 months — but the leverage compounds as Google's index updates.",
-      "start": 389.19,
-      "end": 430.82
-    },
-    {
-      "id": 31,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "Case 3 — Site at 65-70, partial rebuild: Platform fine, brand tired. Keep the C M S, replace the front-end and the photos at roughly 40% of a full-rebuild cost. Score moves into the low-mid 80s. Bookings tick up — but not as steeply as Case 2. The honest tradeoff worth flagging: a partial rebuild caps your ceiling at whatever the underlying platform allows for schema, speed, and indexing. Sometimes the right call; sometimes worth revisiting in 18 months when the platform's ceiling becomes the next constraint.",
-      "start": 431.34,
-      "end": 466.16
-    },
-    {
-      "id": 32,
       "kind": "quote",
       "selector": "#post-body > blockquote:nth-of-type(1)",
       "text": "Doing nothing is not neutral. The gap to your local competitors widens every quarter your site does not.",
-      "start": 466.91,
-      "end": 473.34
+      "start": 375.69,
+      "end": 380.79
+    },
+    {
+      "id": 31,
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(2)",
+      "text": "Most operators do not rebuild because they cannot picture what the rebuilt thing looks like. The framework is a forcing function. Run the questions. The answer almost always already exists.",
+      "start": 381.79,
+      "end": 391.07
+    },
+    {
+      "id": 32,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(4)",
+      "text": "The seven-question rebuild diagnostic, each question carrying the verdict its answer produces. Question one, the Storefront Health score: below sixty is a rebuild verdict on its own, sixty to seventy-nine sends you to keep walking the questions, eighty and up is a fix-the-leaks verdict. Question two, whether the C M S updates without breaking: if it broke last time, that is a rebuild signal. Question three, whether the menu lives in H T M L: a P D F or widget menu is invisible to dish-level search and counts as a signal. Question four, Core Web Vitals: Lcp above four seconds on mobile or Cls above zero point two five is a signal. Question five, whether a small change ships in under an hour: if it cannot, the operational burden is already a leak. Question six, whether the brand matches the room: a templated site behind a considered dining room is a brand-design signal. Question seven, the eighteen-month do-nothing projection: flat or declining bookings on a stale site is rarely neutral. Tally the signals, one or two means fix the leaks, three or more means the rebuild is past due.",
+      "start": 392.17,
+      "end": 444.96
     },
     {
       "id": 33,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(9)",
       "text": "How to use this framework.",
-      "start": 474.44,
-      "end": 475.87
+      "start": 446.46,
+      "end": 447.72
     },
     {
       "id": 34,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(16)",
-      "text": "Run Storefront Health first. Save the score to your Workshop . Walk through the seven questions, write down the honest answer to each, and look at the pattern. If three or more are pointing at \"rebuild,\" you are past due. If one or two are, you are in fix-the-leak territory — read Five Website Changes That Recover 1% Margin for the targeted-fix approach.",
-      "start": 476.57,
-      "end": 499.72
+      "text": "Run Storefront Health first. Save the score to your Workshop . Walk through the seven questions, write down the honest answer to each, and look at the pattern. If three or more are pointing at \"rebuild,\" you are past due. If one or two are, you are in fix-the-leak territory, read Five Website Changes That Recover 1% Margin for the targeted-fix approach.",
+      "start": 448.67,
+      "end": 465.9
     },
     {
       "id": 35,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(17)",
       "text": "If you want a second pair of eyes on the framework as it applies to your site, write through The Window . I read every one.",
-      "start": 500.24,
-      "end": 507.38
+      "start": 466.7,
+      "end": 472.73
     },
     {
       "id": 36,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(18)",
       "text": "Key takeaways",
-      "start": 507.9,
-      "end": 508.84
+      "start": 473.53,
+      "end": 474.15
     },
     {
       "id": 37,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
-      "text": "Run Storefront Health first. Sub-60 = rebuild now. 60–79 = walk through the seven questions. 80+ = fix the lowest sub-score.",
-      "start": 509.19,
-      "end": 520.65
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Run Storefront Health first. Sub-60 = rebuild now. 60, 79 = walk through the seven questions. 80+ = fix the lowest sub-score.",
+      "start": 474.7,
+      "end": 480.83
     },
     {
       "id": 38,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
-      "text": "C M S that cannot update without breaking is a rebuild signal — accumulating debt compounds.",
-      "start": 520.97,
-      "end": 527.75
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "C M S that cannot update without breaking is a rebuild signal, accumulating debt compounds.",
+      "start": 481.33,
+      "end": 485.79
     },
     {
       "id": 39,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
       "text": "P D F or widget-locked menus cap your indexability. Sometimes a menu rewrite alone defers a rebuild a year.",
-      "start": 528.07,
-      "end": 536.43
+      "start": 486.29,
+      "end": 491.54
     },
     {
       "id": 40,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
       "text": "If you cannot ship a small change in under an hour, the operational burden is already a leak.",
-      "start": 536.75,
-      "end": 542.53
+      "start": 492.04,
+      "end": 496.59
     },
     {
       "id": 41,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
       "text": "Doing nothing is not neutral. The gap to local competitors widens every quarter your site does not.",
-      "start": 542.85,
-      "end": 549.17
+      "start": 497.09,
+      "end": 501.94
     },
     {
       "id": 42,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(19)",
-      "text": "Get the score before you make the call.",
-      "start": 549.69,
-      "end": 551.64
+      "text": "Audit before you rebuild.",
+      "start": 502.74,
+      "end": 503.96
     },
     {
       "id": 43,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(20)",
-      "text": "Storefront Health is a free composite scorecard that rolls speed, S E O, mobile, schema, and G B P into one number 0–100. The decision framework above only works once you have the score. Run it now and save it to your Workshop.",
-      "start": 552.16,
-      "end": 569.37
+      "text": "The Website Conversion Checklist runs 12 mobile checkpoints on your live site with priority ratings. If you score 11 or 12, the rebuild may be the wrong project, fix the one or two leaks instead. Print it, save it as Csv, or save it to your Workshop and re-run after each fix.",
+      "start": 504.76,
+      "end": 518.09
     },
     {
       "id": 44,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(21)",
-      "text": "What to do next",
-      "start": 569.89,
-      "end": 570.84
+      "text": "Build it · Lesson 5",
+      "start": 518.89,
+      "end": 519.86
     },
     {
       "id": 45,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Read: the related glossary term →",
-      "start": 571.19,
-      "end": 573.77
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(10)",
+      "text": "Audit your current site.",
+      "start": 521.36,
+      "end": 522.52
     },
     {
       "id": 46,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Try: the tool that pairs with this article →",
-      "start": 574.09,
-      "end": 577.14
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "The article tells you when. The lesson is the audit, six leak points, your own U R L, decided in 30 minutes.",
+      "start": 523.47,
+      "end": 528.76
     },
     {
       "id": 47,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Or send Don a note: The Window →",
-      "start": 577.46,
-      "end": 580.23
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "Open the lesson →",
+      "start": 529.56,
+      "end": 530.48
     },
     {
       "id": 48,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(22)",
-      "text": "See also",
-      "start": 580.58,
-      "end": 581.34
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "What to do next",
+      "start": 531.03,
+      "end": 531.76
     },
     {
       "id": 49,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
-      "text": "Article Five website changes that recover 1% of margin The targeted-fix approach for sites scoring 80+ — what to ship instead of rebuilding.",
-      "start": 581.69,
-      "end": 592.36
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Read: the related glossary term →",
+      "start": 532.31,
+      "end": 534.02
     },
     {
       "id": 50,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
-      "text": "Tool Storefront Health The composite score this framework uses as its first input.",
-      "start": 592.68,
-      "end": 598.05
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Try: the tool that pairs with this article →",
+      "start": 534.52,
+      "end": 536.77
     },
     {
       "id": 51,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
-      "text": "Article How much does a custom restaurant website cost in twenty twenty-six? The cost side of the rebuild question, once you have decided to rebuild.",
-      "start": 598.37,
-      "end": 607.91
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Or send Don a note: The Window →",
+      "start": 537.27,
+      "end": 538.92
     },
     {
       "id": 52,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(23)",
-      "text": "Tell us",
-      "start": 608.43,
-      "end": 608.98
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "More from the library.",
+      "start": 539.47,
+      "end": 540.54
     },
     {
       "id": 53,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(10)",
-      "text": "Have you tried this in your kitchen?",
-      "start": 610.08,
-      "end": 611.77
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "See also",
+      "start": 541.34,
+      "end": 542.31
     },
     {
       "id": 54,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(24)",
-      "text": "100–400 words, your name on it, Don reads every one.",
-      "start": 612.47,
-      "end": 616.97
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Article 5 min read Uber Eats vs DoorDash vs Grubhub: The Honest Math The headline 30% commission looks identical across all three platforms. The second-layer fee stack, sponsored listings, Pro membership, communication fee, opens a 2.5-point spread. Side-by-side margin walks on the same 42 dollars ticket, plus which platform to drop first.",
+      "start": 542.86,
+      "end": 559.6
     },
     {
       "id": 55,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(25)",
-      "text": "Sign in to share your experience &rarr;",
-      "start": 617.49,
-      "end": 619.76
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Tool Compare Run your site and a competitor's through speed, mobile, S E O, and accessibility audits side-by-side.",
+      "start": 560.1,
+      "end": 565.69
     },
     {
       "id": 56,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(27)",
-      "text": "Keep reading",
-      "start": 620.11,
-      "end": 620.86
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Research 2 min read How Lighthouse Scores Performance Lighthouse's performance metric is a composite of Lcp, Cls, Inp , and other Core Web Vitals; understanding the weighting helps prioritize fixes.",
+      "start": 566.19,
+      "end": 576
     },
     {
       "id": 57,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(28)",
-      "text": "When the answer to the rebuild question is \"no, fix the leaks instead.\"",
-      "start": 621.21,
-      "end": 625.48
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "Tell us",
+      "start": 576.8,
+      "end": 577.64
     },
     {
       "id": 58,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(29)",
-      "text": "The honest budget conversation when the answer is rebuild.",
-      "start": 625.83,
-      "end": 629.38
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(11)",
+      "text": "Be the first field note on this piece.",
+      "start": 579.14,
+      "end": 581
     },
     {
       "id": 59,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(30)",
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "Tried this in your own restaurant? 100, 400 words, your name on it. Don reads every one. Your note shows up here once approved.",
+      "start": 581.95,
+      "end": 588.18
+    },
+    {
+      "id": 60,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(29)",
+      "text": "Sign in to share your experience →",
+      "start": 588.98,
+      "end": 590.73
+    },
+    {
+      "id": 61,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(31)",
+      "text": "Keep reading",
+      "start": 591.28,
+      "end": 591.86
+    },
+    {
+      "id": 62,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(32)",
+      "text": "When the answer to the rebuild question is \"no, fix the leaks instead.\"",
+      "start": 592.41,
+      "end": 595.89
+    },
+    {
+      "id": 63,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(33)",
+      "text": "The honest budget conversation when the answer is rebuild.",
+      "start": 596.44,
+      "end": 599.28
+    },
+    {
+      "id": 64,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(34)",
       "text": "The platform-level decision often hidden inside the rebuild decision.",
-      "start": 629.9,
-      "end": 634.34
+      "start": 600.08,
+      "end": 603.46
     }
   ]
 }

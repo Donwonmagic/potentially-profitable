@@ -1,299 +1,731 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-14T23:09:24.819Z",
-  "engine": "kokoro",
-  "model": "kokoro-v1.0.onnx",
-  "voice": "am_michael",
+  "generatedAt": "2026-06-15T05:08:19.436Z",
+  "engine": "f5",
+  "model": "don-reference.m4a",
+  "voice": "f5:don-reference.m4a",
   "language": "en",
-  "total": 582.56,
+  "total": 1126.27,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Op-ed &middot; May 2, twenty twenty-six &middot; 7 min read &middot; By The Muntin Desk",
+      "text": "7 min read &middot; By The Muntin Desk",
       "start": 0,
-      "end": 6.8
+      "end": 1.9
     },
     {
       "id": 1,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
-      "text": "I&rsquo;m front-of-house manager at a DMV restaurant. Every quarter I run the same calculation against the same DoorDash partner statement, and every quarter the answer is more or less the same: the platform isn&rsquo;t a marketing channel. It&rsquo;s a margin tax with delivery as a side benefit. Here&rsquo;s the math, the breakeven, and the website fix that pays for itself in two months.",
-      "start": 7.15,
-      "end": 35.18
+      "text": "I&rsquo;m front-of-house manager at a Dmv restaurant. Every quarter I run the same calculation against the same DoorDash partner statement, and every quarter the answer is more or less the same: the platform isn&rsquo;t a marketing channel. It&rsquo;s a margin tax with delivery as a side benefit. Here&rsquo;s the math, the breakeven, and the website fix that pays for itself in two months.",
+      "start": 2.45,
+      "end": 21.49
     },
     {
       "id": 2,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(3)",
-      "text": "I&rsquo;m going to do this with a real average ticket and real numbers I can defend. The ticket is 42 dollars — that&rsquo;s our twenty twenty-five average DoorDash check at one of the restaurants I manage. Your ticket may be higher or lower; the percentages are what carry the argument.",
-      "start": 35.7,
-      "end": 56.48
+      "text": "In short",
+      "start": 22.29,
+      "end": 23.26
     },
     {
       "id": 3,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "One 42 dollars DoorDash ticket, broken down.",
-      "start": 57.58,
-      "end": 60.94
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "100 dollars of DoorDash revenue becomes roughly 52 dollars-58 dollars after commission, packaging, food cost, labor, and the marketing-fee uptick, closer to 40 dollars-45 dollars if you&rsquo;re paying sponsored-listing fees.",
+      "start": 23.81,
+      "end": 34.9
     },
     {
       "id": 4,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(4)",
-      "text": "Below is the full margin walk. The line items are familiar to anyone who&rsquo;s read a partner statement, but it&rsquo;s rare to see them stacked in one column with the actual percentages applied. I&rsquo;m using DoorDash Marketplace Plus (30% commission tier, the most common one for independents under three locations) and the standard payment-processing rate they pass through.",
-      "start": 61.64,
-      "end": 88.42
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "A worked 42 dollars-ticket margin walk on the Marketplace Plus tier shows where each dollar actually goes; the kept share is 18.4% on the headline scenario.",
+      "start": 35.4,
+      "end": 43.06
     },
     {
       "id": 5,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "Where each dollar of a 42-dollar DoorDash ticket goes. DoorDash commission, at the Marketplace Plus tier of 30 percent, takes 12 dollars 60. Payment processing takes another dollar 43. The promotion or sponsored-listing fee takes a dollar 20 on average. Packaging takes another dollar 40. Food cost is 28 percent, or 11 dollars 76. Variable labor is 14 percent, or 5 dollars 88. What stays in the restaurant: 7 dollars 73, or 18.4 percent of the ticket. The slider below lets you swap the commission rate from 15 to 35 percent and watch the kept share recompute.",
-      "start": 89.22,
-      "end": 132.01
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Marginal profitability only works if the kitchen has idle capacity. A full kitchen running DoorDash orders cannibalizes higher-margin direct work.",
+      "start": 43.56,
+      "end": 50.77
     },
     {
       "id": 6,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Eighteen percent. That&rsquo;s before fixed costs — rent, utilities, salaried management, insurance — which on a typical DMV independent run another 12 to 14 points. The contribution margin to fixed costs and profit is, if you&rsquo;re lucky, around four percent. If you ran a sponsored listing on that order, or if your packaging is heavier than average, you&rsquo;re working for free.",
-      "start": 132.76,
-      "end": 159.06
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "When DoorDash is still the right answer: dormant direct channel, underused kitchen, or acquiring a neighborhood that doesn&rsquo;t know your name yet. Otherwise the math points elsewhere.",
+      "start": 51.27,
+      "end": 60.5
     },
     {
       "id": 7,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "Now run the same exercise on the same 42 dollars ticket, ordered direct from your own website, paid through your own Stripe account.",
-      "start": 159.58,
-      "end": 168.3
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "The honest recommendation, by daily volume: under 200 orders/week the math doesn&rsquo;t work; 200-800 run it lean; 800+ you&rsquo;ve earned the right to negotiate commission down.",
+      "start": 61,
+      "end": 69.83
     },
     {
       "id": 8,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(2)",
-      "text": "The same 42-dollar ticket, ordered direct from your own website with your own last-mile delivery. Stripe or Square processing takes a dollar 51. Direct-channel marketing amortization takes 80 cents per order. Packaging stays at a dollar 40. Food cost stays at 11 dollars 76. Variable labor stays at 5 dollars 88. Last-mile DoorDash Drive flat fee, optional, is 8 dollars 50. What stays in the restaurant with your own delivery: 12 dollars 15, or 28.9 percent. Compared to the DoorDash channel, that is a 4 dollar 42 swing per order toward the restaurant.",
-      "start": 169.1,
-      "end": 210.68
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "I&rsquo;m going to do this with a real average ticket and real numbers I can defend. The ticket is 42 dollars, that&rsquo;s our twenty twenty-five average DoorDash check at one of the restaurants I manage. Your ticket may be higher or lower; the percentages are what carry the argument.",
+      "start": 70.63,
+      "end": 84.51
     },
     {
       "id": 9,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "Twenty-nine percent kept on the same ticket. The marginal lift — the answer to &ldquo;what does it pay to move an order from DoorDash&rsquo;s app to your own website?&rsquo;&rsquo; — is 4.42 dollars per order . Even if you eat the entire DoorDash Drive last-mile fee yourself, you&rsquo;re ten points better. If your customer picks up, twenty-eight points better.",
-      "start": 211.43,
-      "end": 237
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "One 42 dollars DoorDash ticket, broken down.",
+      "start": 86.01,
+      "end": 88.21
     },
     {
       "id": 10,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "What that means for your year.",
-      "start": 238.1,
-      "end": 239.48
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Below is the full margin walk. The line items are familiar to anyone who&rsquo;s read a partner statement, but it&rsquo;s rare to see them stacked in one column with the actual percentages applied. I&rsquo;m using DoorDash Marketplace Plus (30% commission tier, the most common one for independents under three locations) and the standard payment-processing rate they pass through.",
+      "start": 89.16,
+      "end": 107.72
     },
     {
       "id": 11,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "Take the average DMV independent doing 2,400 third-party-app orders per year — about seven per day, on the lower end of what I see for casual operators. Move 40% of those orders to direct over twelve months and the math:",
-      "start": 240.18,
-      "end": 257.03
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Where each dollar of a 42-dollar DoorDash ticket goes. DoorDash commission, at the Marketplace Plus tier of 30 percent, takes 12 dollars 60. Payment processing takes another dollar 43. The promotion or sponsored-listing fee takes a dollar 20 on average. Packaging takes another dollar 40. Food cost is 28 percent, or 11 dollars 76. Variable labor is 14 percent, or 5 dollars 88. What stays in the restaurant: 7 dollars 73, or 18.4 percent of the ticket. The slider below lets you swap the commission rate from 15 to 35 percent and watch the kept share recompute.",
+      "start": 108.82,
+      "end": 136.1
     },
     {
       "id": 12,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "If you operate at the higher end — say a busy lunch spot doing 6,000 third-party orders per year — and pull off a 40% switch, the same math returns 10,608 dollars a year. Year two compounds, because the customers you converted to direct have learned the flow.",
-      "start": 257.38,
-      "end": 277.53
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Eighteen percent. That&rsquo;s before fixed costs, rent, utilities, salaried management, insurance, which on a typical Dmv independent run another 12 to 14 points. The contribution margin to fixed costs and profit is, if you&rsquo;re lucky, around four percent. If you ran a sponsored listing on that order, or if your packaging is heavier than average, you&rsquo;re working for free.",
+      "start": 137.1,
+      "end": 155.76
     },
     {
       "id": 13,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "The website fix that does it.",
-      "start": 278.63,
-      "end": 280.16
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Now run the same exercise on the same 42 dollars ticket, ordered direct from your own website, paid through your own Stripe account.",
+      "start": 156.56,
+      "end": 163.03
     },
     {
       "id": 14,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "You don&rsquo;t need an app. You don&rsquo;t need a CRM. The switch happens through one button on your existing menu page, and the way you signal which button matters most. Three changes, in this order:",
-      "start": 280.86,
-      "end": 296.45
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "The same 42-dollar ticket, ordered direct from your own website with your own last-mile delivery. Stripe or Square processing takes a dollar 51. Direct-channel marketing amortization takes 80 cents per order. Packaging stays at a dollar 40. Food cost stays at 11 dollars 76. Variable labor stays at 5 dollars 88. Last-mile DoorDash Drive flat fee, optional, is 8 dollars 50. What stays in the restaurant with your own delivery: 12 dollars 15, or 28.9 percent. Compared to the DoorDash channel, that is a 4 dollar 42 swing per order toward the restaurant.",
+      "start": 164.13,
+      "end": 191.02
     },
     {
       "id": 15,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Add a primary &ldquo;Order direct&rdquo; button above the third-party links on your menu page, mobile and desktop. Larger button. Brand color. Immediately above the fold. The third-party app links go below it, smaller, as &ldquo;Other ways to order.&rdquo;",
-      "start": 296.8,
-      "end": 316.27
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Twenty-nine percent kept on the same ticket. The marginal lift, the answer to &ldquo;what does it pay to move an order from DoorDash&rsquo;s app to your own website?&rsquo;&rsquo;, is 4.42 dollars per order . Even if you eat the entire DoorDash Drive last-mile fee yourself, you&rsquo;re ten points better. If your customer picks up, twenty-eight points better.",
+      "start": 192.02,
+      "end": 209.64
     },
     {
       "id": 16,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Wire your direct order flow through your P O S — Toast Online Ordering, Square Online, ChowNow, or a Stripe-backed custom flow if you&rsquo;ve got a developer. Not a Wix forms page that emails you the order.",
-      "start": 316.59,
-      "end": 332.04
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "What that means for your year.",
+      "start": 211.14,
+      "end": 212.6
     },
     {
       "id": 17,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Match or beat the third-party price. Independent operators are afraid to undercut DoorDash. They shouldn&rsquo;t be. The 30% commission means you can run a direct-channel discount of 2 dollars–4 dollars on the same item and still keep more margin than the platform left you. The customer notices — they&rsquo;re paying the &ldquo;DoorDash service fee&rdquo; on top of your menu price; you&rsquo;re showing them what their meal actually costs.",
-      "start": 332.36,
-      "end": 362.73
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Take the average Dmv independent doing 2,400 third-party-app orders per year, about seven per day, on the lower end of what I see for casual operators. Move 40% of those orders to direct over twelve months and the math:",
+      "start": 213.55,
+      "end": 224.3
     },
     {
       "id": 18,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "Run those three changes on your existing site and the average independent recovers the 4,243 dollars first-year lift inside two months. The website itself probably costs less than that to build properly, even at studio pricing.",
-      "start": 363.25,
-      "end": 380.18
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "If you operate at the higher end, say a busy lunch spot doing 6,000 third-party orders per year, and pull off a 40% switch, the same math returns 10,608 dollars a year. Year two compounds, because the customers you converted to direct have learned the flow.",
+      "start": 224.85,
+      "end": 237.25
     },
     {
       "id": 19,
       "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "The argument for not delisting (yet).",
-      "start": 381.28,
-      "end": 383.56
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "The website fix that does it.",
+      "start": 238.75,
+      "end": 240.16
     },
     {
       "id": 20,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "I am not telling you to delist. DoorDash is, structurally, a customer-acquisition tool that costs you 30%. For an independent restaurant with a kitchen capable of 60% incremental volume, that 30% is the price you pay for the marginal cover — and it&rsquo;s a fair price if you treat the platform as a discovery channel, not a relationship channel .",
-      "start": 384.26,
-      "end": 409.48
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "You don&rsquo;t need an app. You don&rsquo;t need a Crm. The switch happens through one button on your existing menu page, and the way you signal which button matters most. Three changes, in this order:",
+      "start": 241.11,
+      "end": 251.03
     },
     {
       "id": 21,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "The problem isn&rsquo;t that you&rsquo;re on DoorDash. The problem is that you&rsquo;re on DoorDash and not actively converting those customers to direct. The first-time DoorDash order is a 4.42 dollars loss versus direct. The second-time order, also through DoorDash, is the same. The customer&rsquo;s third order is the one where margin compounds — and the third order is the one most independents never recapture, because there&rsquo;s no website call-to-action that asks them to.",
-      "start": 410,
-      "end": 444.32
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Add a primary &ldquo;Order direct&rdquo; button above the third-party links on your menu page, mobile and desktop. Larger button. Brand color. Immediately above the fold . The third-party app links go below it, smaller, as &ldquo;Other ways to order.&rdquo;",
+      "start": 251.58,
+      "end": 263.98
     },
     {
       "id": 22,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "An order-confirmation receipt with a 5%-off coupon to your direct site, mailed through DoorDash&rsquo;s own customer-receipt flow, is a free conversion lever. So is the QR code on the takeout bag. So is a card in the bag that says, in plain English, &ldquo;next time, save 3 dollars by ordering direct.&rdquo;",
-      "start": 444.84,
-      "end": 468.66
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Wire your direct order flow through your P O S, Toast Online Ordering, Square Online, ChowNow, or a Stripe-backed custom flow if you&rsquo;ve got a developer. Not a Wix forms page that emails you the order.",
+      "start": 264.48,
+      "end": 274.74
     },
     {
       "id": 23,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "Run your own version.",
-      "start": 469.76,
-      "end": 470.91
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Match or beat the third-party price. Independent operators are afraid to undercut DoorDash. They shouldn&rsquo;t be. The 30% commission means you can run a direct-channel discount of 2 dollars, 4 dollars on the same item and still keep more margin than the platform left you. The customer notices, they&rsquo;re paying the &ldquo;DoorDash service fee&rdquo; on top of your menu price; you&rsquo;re showing them what their meal actually costs.",
+      "start": 275.24,
+      "end": 296.63
     },
     {
       "id": 24,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "The numbers above are mine. Yours will be different — different commission tier, different ticket, different kitchen labor pattern. The free Margin Math tool runs the calculation against your inputs in your browser, and the result is yours alone — nothing leaves the page:",
-      "start": 471.61,
-      "end": 489.08
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Run those three changes on your existing site and the average independent recovers the 4,243 dollars first-year lift inside two months. The website itself probably costs less than that to build properly, even at studio pricing.",
+      "start": 297.43,
+      "end": 308.58
     },
     {
       "id": 25,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(16)",
-      "text": "Run Margin Math &rarr;",
-      "start": 489.43,
-      "end": 491.05
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "The argument for not delisting (yet).",
+      "start": 310.08,
+      "end": 311.88
     },
     {
       "id": 26,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(17)",
-      "text": "If your site needs the &ldquo;Order direct&rdquo; button rebuilt and you&rsquo;d rather have someone else handle it, the 1,500 dollars menu drop-in is the smaller commitment. The 499 dollars audit gets you a written diagnosis first if you&rsquo;d rather see it on paper before you spend.",
-      "start": 491.4,
-      "end": 514.14
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "I am not telling you to delist. DoorDash is, structurally, a customer-acquisition tool that costs you 30%. For an independent restaurant with a kitchen capable of 60% incremental volume, that 30% is the price you pay for the marginal cover, and it&rsquo;s a fair price if you treat the platform as a discovery channel, not a relationship channel .",
+      "start": 312.83,
+      "end": 329.7
     },
     {
       "id": 27,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(18)",
-      "text": "The honest answer to &ldquo;is DoorDash worth it&rdquo; is the same as the honest answer to most operating questions: it depends on what else you&rsquo;re doing. If your direct channel is dormant, it&rsquo;s not worth it. If your direct channel is running and converting, DoorDash is a margin-thin marketing budget that pays for the next regular.",
-      "start": 514.66,
-      "end": 539.71
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "The problem isn&rsquo;t that you&rsquo;re on DoorDash. The problem is that you&rsquo;re on DoorDash and not actively converting those customers to direct. The first-time DoorDash order is a 4.42 dollars loss versus direct. The second-time order, also through DoorDash, is the same. The customer&rsquo;s third order is the one where margin compounds, and the third order is the one most independents never recapture, because there&rsquo;s no website call-to-action that asks them to.",
+      "start": 330.5,
+      "end": 353.95
     },
     {
       "id": 28,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(19)",
-      "text": "Don Goldstein is a restaurant operator and runs Muntin Digital . He is a member of RAMW , ServSafe certified, and the math above is dated May twenty twenty-six.",
-      "start": 540.23,
-      "end": 552.58
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "An order-confirmation receipt with a 5%-off coupon to your direct site, mailed through DoorDash&rsquo;s own customer-receipt flow, is a free conversion lever. So is the QR code on the takeout bag. So is a card in the bag that says, in plain English, &ldquo;next time, save 3 dollars by ordering direct.&rdquo;",
+      "start": 354.75,
+      "end": 369.81
     },
     {
       "id": 29,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(20)",
-      "text": "Keep going",
-      "start": 553.1,
-      "end": 553.82
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Run your own version.",
+      "start": 371.31,
+      "end": 372.32
     },
     {
       "id": 30,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Uber Eats vs DoorDash vs Grubhub — side-by-side math on the same 42 dollars ticket",
-      "start": 554.17,
-      "end": 561.04
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "The numbers above are mine. Yours will be different, different commission tier, different ticket, different kitchen labor pattern. The free Margin Math tool runs the calculation against your inputs in your browser, and the result is yours alone, nothing leaves the page:",
+      "start": 373.27,
+      "end": 386.31
     },
     {
       "id": 31,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "30 days after leaving DoorDash — the field-notes case study",
-      "start": 561.36,
-      "end": 565.25
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Run Margin Math &rarr;",
+      "start": 386.86,
+      "end": 387.93
     },
     {
       "id": 32,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Loyalty programs that work — what to layer on the direct channel",
-      "start": 565.57,
-      "end": 569.27
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "If your site needs the &ldquo;Order direct&rdquo; button rebuilt and you&rsquo;d rather have someone else handle it, the 1,500 dollars menu drop-in is the smaller commitment. The 499 dollars audit gets you a written diagnosis first if you&rsquo;d rather see it on paper before you spend.",
+      "start": 388.48,
+      "end": 402.37
     },
     {
       "id": 33,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "Margin Math tool — run the calculation on your numbers",
-      "start": 569.59,
-      "end": 573.05
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "The honest answer to &ldquo;is DoorDash worth it&rdquo; is the same as the honest answer to most operating questions: it depends on what else you&rsquo;re doing. If your direct channel is dormant, it&rsquo;s not worth it. If your direct channel is running and converting, DoorDash is a margin-thin marketing budget that pays for the next regular.",
+      "start": 403.17,
+      "end": 420.05
     },
     {
       "id": 34,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "Is DoorDash worth it for restaurants in twenty twenty-six? — the strategic frame",
-      "start": 573.37,
-      "end": 578.38
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Zoom out: is DoorDash worth it?",
+      "start": 421.55,
+      "end": 423.11
     },
     {
       "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "The 42 dollars-ticket math above is one tactical view. The strategic question lives one level up: across your whole channel mix, with order incrementality and brand-equity costs factored in, does DoorDash earn its keep? This section reframes the same dollars in a normalized 100 dollars view, names when the platform is actually right, and gives the honest recommendation by volume tier.",
+      "start": 424.06,
+      "end": 442.91
+    },
+    {
+      "id": 36,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "What 100 dollars of DoorDash revenue actually becomes.",
+      "start": 444.41,
+      "end": 447.1
+    },
+    {
+      "id": 37,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "Pair with paperwork",
+      "start": 448.05,
+      "end": 448.97
+    },
+    {
+      "id": 38,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "If your napkin math just landed somewhere uncomfortable, the channel P&L sheet runs the numbers in your browser, gross sales minus commission, marketing fees, refunds, packaging, and incremental labor. None of it leaves the page.",
+      "start": 449.52,
+      "end": 460.55
+    },
+    {
+      "id": 39,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "Third-Party Channel P&L · True margin per channel and the breakeven menu markup if you keep the channel on.",
+      "start": 461.35,
+      "end": 466.64
+    },
+    {
+      "id": 40,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "Here is the thing nobody wants to put on a wall. On a standard DoorDash marketplace arrangement for an independent restaurant in twenty twenty-six, a hundred-dollar order comes with a commission rate somewhere between 15% and 30% depending on your plan. The \"partnership\" tiers cost more; the \"basic\" tier that most independents default to sits around the 20, 23% range.",
+      "start": 467.44,
+      "end": 485.46
+    },
+    {
+      "id": 41,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "Then there&rsquo;s payment processing, yes, still, because DoorDash&rsquo;s payment processing isn&rsquo;t free either, even though the platform is already taking a commission. That&rsquo;s another roughly 2% off what&rsquo;s left.",
+      "start": 486.26,
+      "end": 497.43
+    },
+    {
+      "id": 42,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "Here&rsquo;s what a hundred bucks looks like on both sides of the decision:",
+      "start": 498.23,
+      "end": 501.9
+    },
+    {
+      "id": 43,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "Here is the hundred-dollar comparison, side by side. On DoorDash: food and drink revenue starts at a hundred dollars. DoorDash commission takes somewhere between fifteen and thirty dollars depending on your plan, average around twenty-two. Payment processing takes another two dollars. You keep somewhere between sixty-five and seventy-five dollars, typical average sixty-eight. Then from that sixty-eight you still have to pay for the food itself, about thirty percent of the original hundred, so thirty dollars of cost of goods, plus the labor to make it. Net contribution to your business: often single-digit dollars per hundred of DoorDash gross. On your own ordering page: food and drink revenue also starts at a hundred. Payment processing takes about three dollars. Your own ordering software, if you use something like Square Online or a simple Toast integration, takes about two dollars. You keep ninety-five dollars. Food cost is still thirty. Labor is the same. Net contribution: roughly three times higher per order. Same guest, same food, same labor, the difference is entirely in who gets the order and where the commission goes.",
+      "start": 503,
+      "end": 558.25
+    },
+    {
+      "id": 44,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "On the same hundred dollars of guest spend, you keep almost 20 additional dollars when it comes through your own site instead of DoorDash's. Over a year, even for a restaurant doing a modest 80 dollarsK in delivery annually, that is around 15,000 dollars staying in the business, roughly one line cook. And this isn&rsquo;t accounting for the fact that your own-site customer has given you their phone number and their email, which means you can bring them back at a marginal cost of zero.",
+      "start": 559.25,
+      "end": 582.9
+    },
+    {
+      "id": 45,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "But wait, does the order even exist without DoorDash?",
+      "start": 584.4,
+      "end": 587.03
+    },
+    {
+      "id": 46,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "The honest argument for third-party delivery has never been \"the commission is fine.\" It is always been incrementality : the claim that the customer who ordered through DoorDash wouldn&rsquo;t have ordered from you at all otherwise. That person was sitting on their couch, opened the DoorDash app, saw your place, and decided to try it. Absent the app, they ordered from Sweetgreen instead. You didn&rsquo;t \"lose\" 30% of the order; you gained 100% of an order that didn&rsquo;t exist without the platform.",
+      "start": 587.98,
+      "end": 612.51
+    },
+    {
+      "id": 47,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(29)",
+      "text": "That argument was directionally true in twenty nineteen. In twenty twenty-six, it&rsquo;s much weaker than it used to be, for three specific reasons.",
+      "start": 613.31,
+      "end": 620.62
+    },
+    {
+      "id": 48,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(1)",
+      "text": "1. Guests already know about you from somewhere else.",
+      "start": 622.12,
+      "end": 624.71
+    },
+    {
+      "id": 49,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(30)",
+      "text": "Five years of Google Business Profile dominance mean that when someone thinks \"I want Thai tonight,\" their discovery path is now much more likely to be Google Maps than a delivery app. They search, they see your restaurant with photos, reviews, hours, and, crucially, a \"Website\" link. They&rsquo;ve already found you. The question is just whether they end up on your site or on DoorDash&rsquo;s listing of you.",
+      "start": 625.66,
+      "end": 645.69
+    },
+    {
+      "id": 50,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(31)",
+      "text": "So the incremental-customer claim only holds if DoorDash is the only way they would have encountered your restaurant. For restaurants that run a decent G B P, an Instagram presence, and a functional website, this is increasingly rare.",
+      "start": 646.49,
+      "end": 657.81
+    },
+    {
+      "id": 51,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(2)",
+      "text": "2. DoorDash&rsquo;s &ldquo;in-app search&rdquo; behaves more like intent than discovery now.",
+      "start": 659.31,
+      "end": 663.86
+    },
+    {
+      "id": 52,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(32)",
+      "text": "Most restaurant operators still describe DoorDash traffic as \"new customers finding me in the app.\" A lot of that traffic is actually people who already knew you, opened the app because they knew you, and could&rsquo;ve tapped through to your own ordering page if you&rsquo;d had one and made it obvious. Those guests cost you 22% when they didn&rsquo;t have to.",
+      "start": 664.81,
+      "end": 682.43
+    },
+    {
+      "id": 53,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(33)",
+      "text": "The way to check this for your restaurant specifically: pull the order-source data out of DoorDash&rsquo;s merchant portal and see how many of your orders came from guests whose first touch with your brand was the app versus guests who searched your name directly. Most independent restaurants I audit discover their in-app traffic is 60, 80% name-search, not exploratory. That&rsquo;s not incremental. That&rsquo;s a tax.",
+      "start": 683.23,
+      "end": 703.58
+    },
+    {
+      "id": 54,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(4)",
+      "text": "The in-app traffic split for a typical independent restaurant on DoorDash. Guests who searched your name directly, already knew you, just opened the app to order, run sixty to eighty percent of in-app orders, with seventy percent typical. Guests who genuinely found you for the first time inside DoorDash run twenty to forty percent, with thirty percent typical. The seventy-percent slice is the tax, orders you could have taken on your own ordering page at zero commission, paying twenty-two percent because the regular tapped the wrong icon.",
+      "start": 704.68,
+      "end": 731.04
+    },
+    {
+      "id": 55,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(3)",
+      "text": "3. Own-ordering infrastructure got 10x easier.",
+      "start": 732.54,
+      "end": 734.79
+    },
+    {
+      "id": 56,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(34)",
+      "text": "In twenty twenty, setting up a decent own-ordering flow meant either an expensive integrator or a clunky bolt-on widget that looked like it belonged on a different website. In twenty twenty-six, you can have a professional-looking ordering page wired to your P O S for something like 0 dollars, 79 dollars/month , depending on your stack. Square Online is free if you already use Square for P O S. Toast Online Ordering is included in their restaurant plan. Even third-party white-labels like Owner.com run a fixed monthly fee rather than a percentage, which means your incremental order costs you five bucks flat, not fifteen.",
+      "start": 735.74,
+      "end": 765.91
+    },
+    {
+      "id": 57,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(35)",
+      "text": "This alone changes the math from \"DoorDash or no delivery\" to \"DoorDash or own-ordering,\" and the own-ordering side now wins in most cases.",
+      "start": 766.71,
+      "end": 773.62
+    },
+    {
+      "id": 58,
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(36)",
+      "text": "The DoorDash argument used to be \"incremental revenue is better than no revenue.\" In twenty twenty-six, the real question is whether that order was ever incremental in the first place, or whether it was just a tax you volunteered to pay.",
+      "start": 774.62,
+      "end": 786.09
+    },
+    {
+      "id": 59,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(9)",
+      "text": "When DoorDash is still the right answer.",
+      "start": 787.59,
+      "end": 789.58
+    },
+    {
+      "id": 60,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(37)",
+      "text": "I&rsquo;m not here to tell you to walk away from DoorDash tomorrow. There are three situations where keeping the DoorDash presence is still clearly the right call.",
+      "start": 790.53,
+      "end": 798.63
+    },
+    {
+      "id": 61,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(6)",
-      "text": "499 dollars audit — the written diagnosis",
-      "start": 578.7,
-      "end": 582.56
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "You&rsquo;re genuinely discovery-constrained. Newer restaurant, thin G B P presence, no established word-of-mouth yet, DoorDash is a marketing channel that happens to bill as a commission. Pay the tax while you build the audience, then re-evaluate.",
+      "start": 799.43,
+      "end": 811.44
+    },
+    {
+      "id": 62,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Your own-ordering volume is under 50 orders a week. Below that threshold, the fixed costs of an own-ordering setup (photography, menu maintenance, occasional customer service) eat the margin savings. Wait for volume.",
+      "start": 811.94,
+      "end": 822.54
+    },
+    {
+      "id": 63,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "You have a takeout-heavy concept in a high-commute area. Office-worker lunch orders, dinner-on-the-commute pickups, guests in these contexts heavily use delivery apps because that&rsquo;s where their routine already lives. Meet them where they are.",
+      "start": 823.04,
+      "end": 835.01
+    },
+    {
+      "id": 64,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(38)",
+      "text": "And there&rsquo;s one situation where the answer isn&rsquo;t \"stop DoorDash\", it&rsquo;s \" compete with DoorDash.\" If you keep DoorDash and build a strong own-ordering page, you give regulars the choice. Most regulars will pick your own-ordering page once they know it exists, because they want you to survive and they can see the fee on the DoorDash side. You don&rsquo;t need to fire the platform. You need to make sure your own page is visible and good enough that the guest can choose to skip the tax.",
+      "start": 835.81,
+      "end": 860.38
+    },
+    {
+      "id": 65,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(10)",
+      "text": "The honest recommendation, by volume.",
+      "start": 861.88,
+      "end": 863.68
+    },
+    {
+      "id": 66,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(39)",
+      "text": "If you want the shortcut version of this whole post, here&rsquo;s the framework I use when an operator asks me whether to stay, leave, or compete:",
+      "start": 864.63,
+      "end": 871.79
+    },
+    {
+      "id": 67,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(5)",
+      "text": "What a hundred dollars of revenue actually becomes after each channel takes its cut, in a sortable table where every net-to-you cell carries a small magnitude bar. DoorDash Basic at thirty percent commission leaves you sixty-six to sixty-eight dollars net. Plus tier at twenty-five percent leaves seventy-one to seventy-three. Premier at fifteen percent leaves eighty-one to eighty-three, and that&apos;s before packaging. Toast or Square direct ordering nets you ninety-three to ninety-eight. ChowNow with a flat monthly fee nets ninety-six to ninety-eight. A dine-in cover with no third party is a clean hundred. The gap between DoorDash Basic and your own ordering is roughly thirty dollars on every hundred, that&apos;s the question this whole article exists to answer.",
+      "start": 872.89,
+      "end": 910.38
+    },
+    {
+      "id": 68,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(40)",
+      "text": "The numbers above do not include the prep-time delta, DoorDash orders take 4-6 minutes longer than dine-in on average, which is real labor cost most operators forget to model.",
+      "start": 911.38,
+      "end": 920.02
+    },
+    {
+      "id": 69,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Under 50 delivery orders a week. Stay on DoorDash, tighten your G B P, don&rsquo;t invest in own-ordering yet.",
+      "start": 920.82,
+      "end": 926.26
+    },
+    {
+      "id": 70,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "50, 200 delivery orders a week. Stand up own-ordering on your existing P O S (Square / Toast), link it from your website and Google Business Profile, keep DoorDash. Let regulars migrate themselves. Expect 30, 50% of DoorDash volume to shift within 6 months.",
+      "start": 926.76,
+      "end": 939.26
+    },
+    {
+      "id": 71,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "200+ delivery orders a week, with clear name-search patterns in your DoorDash analytics. Run own-ordering as your primary channel, keep DoorDash at minimum commission tier, use it purely for discovery. The math starts favoring you dramatically here.",
+      "start": 939.76,
+      "end": 951.87
+    },
+    {
+      "id": 72,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Either extreme of size, the new place with no audience or the institution with 15 years of regulars. The new place needs DoorDash as marketing. The institution shouldn&rsquo;t need DoorDash at all.",
+      "start": 952.37,
+      "end": 962.14
+    },
+    {
+      "id": 73,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(6)",
+      "text": "A four-question volume diagnostic; walk the questions in order and stop at the first yes. Question one: are you under fifty delivery orders a week? If yes, stay on DoorDash, tighten your Google Business Profile, and hold off on own-ordering, because below this threshold the fixed costs of an own-ordering setup eat the margin savings. Question two: are you between fifty and two hundred delivery orders a week? If yes, stand up own-ordering on your existing P O S such as Square or Toast, link it from your website and your Google profile, and keep DoorDash; expect thirty to fifty percent of DoorDash volume to migrate within six months. Question three: are you over two hundred delivery orders a week with clear name-search patterns in your DoorDash analytics? If yes, flip the primary: run own-ordering as your main channel and keep DoorDash at the minimum commission tier purely for discovery. Question four: are you at either extreme of size? A brand-new place with no audience needs DoorDash as marketing; an institution with fifteen years of regulars should not need DoorDash at all.",
+      "start": 963.24,
+      "end": 1016.14
+    },
+    {
+      "id": 74,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(41)",
+      "text": "None of this is \"fire DoorDash.\" It is \"stop paying them for orders they didn&rsquo;t earn.\" Which is a very different move.",
+      "start": 1017.14,
+      "end": 1023.27
+    },
+    {
+      "id": 75,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(42)",
+      "text": "Your regulars aren&rsquo;t loyal to DoorDash, they&rsquo;re loyal to you, and they use whichever channel is in front of them. Make your own channel the one in front of them. Put the \"Order online\" button above the fold on your homepage. Put the QR code for your ordering page at the host stand and on the receipt. Have the cashier say \"next time, order direct from our site and we save fifteen percent in fees.\" Every regular who switches is fifteen bucks back in your pocket on a hundred-dollar order.",
+      "start": 1024.07,
+      "end": 1048.41
+    },
+    {
+      "id": 76,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(43)",
+      "text": "That&rsquo;s not rebellion. That&rsquo;s just running the math.",
+      "start": 1049.21,
+      "end": 1052.29
+    },
+    {
+      "id": 77,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(44)",
+      "text": "Don Goldstein is a restaurant operator and runs Muntin Digital . He is a member of Ramw , ServSafe certified, and the math above is dated May twenty twenty-six.",
+      "start": 1053.09,
+      "end": 1060.99
+    },
+    {
+      "id": 78,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(45)",
+      "text": "Keep going",
+      "start": 1061.79,
+      "end": 1062.27
+    },
+    {
+      "id": 79,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Uber Eats vs DoorDash vs Grubhub, side-by-side math on the same 42 dollars ticket",
+      "start": 1062.82,
+      "end": 1066.98
+    },
+    {
+      "id": 80,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "30 days after leaving DoorDash, the field-notes case study",
+      "start": 1067.48,
+      "end": 1070.36
+    },
+    {
+      "id": 81,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Loyalty programs that work, what to layer on the direct channel",
+      "start": 1070.86,
+      "end": 1073.94
+    },
+    {
+      "id": 82,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Margin Math tool, run the calculation on your numbers",
+      "start": 1074.44,
+      "end": 1077.03
+    },
+    {
+      "id": 83,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "499 dollars audit, the written diagnosis",
+      "start": 1077.53,
+      "end": 1079.48
+    },
+    {
+      "id": 84,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(46)",
+      "text": "Key takeaways",
+      "start": 1080.03,
+      "end": 1080.65
+    },
+    {
+      "id": 85,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "100 dollars of DoorDash revenue becomes roughly 52 dollars-58 dollars after commission, packaging, food cost, labor allocation, and the marketing-fee uptick, closer to 40 dollars-45 dollars if you are paying sponsored-listing fees.",
+      "start": 1081.2,
+      "end": 1092.38
+    },
+    {
+      "id": 86,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "Marginal profitability, the dollar question, only works if the kitchen has idle capacity. A full kitchen running DoorDash orders cannibalizes higher-margin direct work.",
+      "start": 1092.88,
+      "end": 1101.17
+    },
+    {
+      "id": 87,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "DoorDash is still the right answer when your direct channel is dormant, your kitchen is underused, or you are acquiring a new neighborhood that does not know your name yet.",
+      "start": 1101.67,
+      "end": 1110.16
+    },
+    {
+      "id": 88,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
+      "text": "Honest recommendation by volume: under 200 orders/week, the math does not work, drop it. 200-800, run it lean. 800+, you have earned the right to negotiate commission down.",
+      "start": 1110.66,
+      "end": 1119.1
+    },
+    {
+      "id": 89,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(5)",
+      "text": "The website fix that pays for itself in two months: a fast, mobile-clean \"Order direct\" button visible above the fold on your menu page.",
+      "start": 1119.6,
+      "end": 1126.27
     }
   ]
 }

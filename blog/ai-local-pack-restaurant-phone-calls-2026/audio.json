@@ -1,179 +1,211 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-22T23:52:08.875Z",
-  "engine": "kokoro",
-  "model": "kokoro-v1.0.onnx",
-  "voice": "am_michael",
+  "generatedAt": "2026-06-10T23:27:54.166Z",
+  "engine": "f5",
+  "model": "don-reference.m4a",
+  "voice": "f5:don-reference.m4a",
   "language": "en",
-  "total": 287.21,
+  "total": 325.23,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Op-ed · May 25, twenty twenty-six · 6 min read &middot; By Don Goldstein",
+      "text": "Op-ed · May 23, twenty twenty-six · 6 min read &middot; By Don Goldstein",
       "start": 0,
-      "end": 5.99
+      "end": 3.63
     },
     {
       "id": 1,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
-      "text": "You can rank number 1 on the map and still watch the phone go quiet. AI answers increasingly resolve the question — hours, address, whether you are busy — before the diner ever taps call or directions.",
-      "start": 6.34,
-      "end": 20.02
+      "text": "You can rank number 1 on the map and still watch the phone go quiet. AI answers increasingly resolve the question, hours, address, whether you are busy, before the diner ever taps call or directions.",
+      "start": 4.18,
+      "end": 14.14
     },
     {
       "id": 2,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(3)",
       "text": "In short",
-      "start": 20.54,
-      "end": 21.17
+      "start": 14.94,
+      "end": 15.91
     },
     {
       "id": 3,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "You can rank number 1 on the map and still lose calls — AI answers resolve hours, address, and whether you are any good before the diner taps call or directions.",
-      "start": 21.52,
-      "end": 32.06
+      "text": "You can rank number 1 on the map and still lose calls, AI answers resolve hours, address, and whether you are any good before the diner taps call or directions.",
+      "start": 16.46,
+      "end": 24.5
     },
     {
       "id": 4,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
       "text": "A twenty twenty-six analysis put restaurant Maps views down 40.1% and food orders down 25.7% over two years while rankings held; AI local packs drop the call button on about 7% of local searches.",
-      "start": 32.38,
-      "end": 49
+      "start": 25,
+      "end": 34.77
     },
     {
       "id": 5,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
       "text": "Move the conversion off the call: a booking or order link you own, an answer good enough to be chosen, and a captured customer.",
-      "start": 49.32,
-      "end": 57.3
+      "start": 35.27,
+      "end": 41.5
     },
     {
       "id": 6,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "You can rank first on the map and still watch the phone go quiet. The ranking didn&rsquo;t break; the path to the call did. More and more, the AI answer at the top of the result resolves the diner&rsquo;s question — are you open, where are you, are you any good — before they ever tap call or directions . The visit still happens. The tap doesn&rsquo;t — so your dashboard shows a drop you can&rsquo;t explain from your rank.",
-      "start": 57.82,
-      "end": 85.26
+      "text": "You can rank first on the map and still watch the phone go quiet. The ranking didn&rsquo;t break; the path to the call did. More and more, the AI answer at the top of the result resolves the diner&rsquo;s question, are you open, where are you, are you any good, before they ever tap call or directions . The visit still happens. The tap doesn&rsquo;t, so your dashboard shows a drop you can&rsquo;t explain from your rank.",
+      "start": 42.3,
+      "end": 63.01
     },
     {
       "id": 7,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
-      "text": "The numbers are real. A twenty twenty-six local-search analysis found restaurant Google Maps views down 40.1% and food orders from those listings down 25.7% over two years, even as rankings held. A separate twenty twenty-six survey found AI local packs — the AI-written block that sometimes replaces the classic three-pack — appearing on roughly 7% of tracked local searches, and dropping the click-to-call button when they do.",
-      "start": 85.78,
-      "end": 115.22
+      "text": "The numbers are real. A twenty twenty-six local-search analysis found restaurant Google Maps views down 40.1% and food orders from those listings down 25.7% over two years, even as rankings held. A separate twenty twenty-six survey found AI local packs, the AI-written block that sometimes replaces the classic three-pack, appearing on roughly 7% of tracked local searches, and dropping the click-to-call button when they do.",
+      "start": 63.81,
+      "end": 84.65
     },
     {
       "id": 8,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "What fell on restaurant Maps listings over two years, per a twenty twenty-six local-search analysis. Google Maps views for restaurants fell about forty percent. Food orders from those listings fell about twenty-six percent. Rankings held over the same period — the decline is in engagement, not position.",
-      "start": 116.02,
-      "end": 135.97
+      "text": "What moved on restaurant Maps listings over two years, per a twenty twenty-six local-search analysis, with each bar measured as a drop from the flat baseline where rankings sat. Average ranking position held essentially flat, no measurable change. Google Maps views for restaurants fell about forty percent. Food orders from those listings fell about twenty-six percent. The thin reference line on every track marks the flat rankings baseline, so the eye reads the gap directly: position did not move while engagement collapsed. The decline is in what diners do with the listing, not where it sits.",
+      "start": 85.75,
+      "end": 114.71
     },
     {
       "id": 9,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(1)",
       "text": "What&rsquo;s actually intercepting the call.",
-      "start": 137.07,
-      "end": 140.27
+      "start": 116.21,
+      "end": 118.35
     },
     {
       "id": 10,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(6)",
-      "text": "Three things, stacked. First, the majority of Google searches now end without a click at all — the answer is on the results page, so there&rsquo;s nothing to tap. Second, when the diner does get an AI answer , it often states your hours and address inline, which is exactly what the call used to be for. Third, on the queries that trigger an AI local pack, the call and directions buttons that anchored the old map pack simply aren&rsquo;t rendered. None of that is a ranking problem. You cannot out-rank a missing button.",
-      "start": 140.97,
-      "end": 174.45
+      "text": "Three things, stacked. First, the majority of Google searches now end without a click at all, the answer is on the results page, so there&rsquo;s nothing to tap. Second, when the diner does get an AI answer , it often states your hours and address inline, which is exactly what the call used to be for. Third, on the queries that trigger an AI local pack, the call and directions buttons that anchored the old map pack simply aren&rsquo;t rendered. None of that is a ranking problem. You cannot out-rank a missing button.",
+      "start": 119.3,
+      "end": 144.87
     },
     {
       "id": 11,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "This is the same surface we covered in the four-number check : the answer decides, and the answer is built from your profile and your reviews. The difference here is the conversion — even when you win the mention, the tap that used to follow it is disappearing.",
-      "start": 174.97,
-      "end": 191.06
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "Where the missed call went, the four steps that used to end at a tap and now end inside the answer. Step one: the diner searches and sees an AI local pack at the top of the result. Step two: the AI answer resolves hours, address, and whether you are any good, all inline. Step three: with the question already answered, no tap on call or directions happens. Step four: the visit may still happen or it may not, but the operator never knows the diner considered them.",
+      "start": 145.97,
+      "end": 168.83
     },
     {
       "id": 12,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "Three paths that replace the button.",
-      "start": 192.16,
-      "end": 194.08
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "This is the same surface we covered in the four-number check : the answer decides, and the answer is built from your profile and your reviews. The difference here is the conversion, even when you win the mention, the tap that used to follow it is disappearing.",
+      "start": 169.83,
+      "end": 182.38
     },
     {
       "id": 13,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "If the call is being intercepted, stop depending on it. Move the conversion onto paths the AI answer can&rsquo;t quietly remove.",
-      "start": 194.78,
-      "end": 204.46
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "How often the button is actually missing.",
+      "start": 183.88,
+      "end": 185.87
     },
     {
       "id": 14,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(2)",
-      "text": "Three conversion paths that replace the disappearing call button. One: a reservation or order link you own, so the conversion becomes a booking or an order rather than a phone call the AI can resolve. Two: an answer good enough to be chosen — a complete profile and fresh reviews, so when the AI summarizes you, the summary sells. Three: a captured customer — an email or loyalty sign-up, so the next visit does not route through Google at all.",
-      "start": 205.26,
-      "end": 233.83
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "The share is small in headline terms and large in practice. On roughly 7% of tracked local searches, the AI local pack replaces the classic three-pack and quietly drops the click-to-call button along with it. Seven percent across all local queries is a sliver; on the high-intent &ldquo;restaurants near me&rdquo; and &ldquo;[cuisine] open now&rdquo; queries that used to drive your phone, the rate is meaningfully higher, and growing.",
+      "start": 186.82,
+      "end": 208.17
     },
     {
       "id": 15,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Start by seeing your own funnel: the storefront health check shows whether your booking and order paths actually work on a phone, and the G B P grader shows whether the profile is complete enough to be chosen. The reservation side is covered in why your restaurant loses reservations every night . The phone may stay quiet. The covers don&rsquo;t have to.",
-      "start": 234.58,
-      "end": 257.96
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "On about seven percent of tracked local searches, the AI local pack appears and the click-to-call button is dropped. On the remaining ninety-three percent, the classic map pack still renders with its call button. The seven-percent slice is small in headline terms but disproportionately concentrated on high-intent restaurant queries, where the call used to come from.",
+      "start": 209.27,
+      "end": 227.33
     },
     {
       "id": 16,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "Key takeaways",
-      "start": 258.48,
-      "end": 259.42
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Three paths that replace the button.",
+      "start": 228.83,
+      "end": 230.58
     },
     {
       "id": 17,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "A missing button is not a ranking problem — you cannot out-rank a result that no longer shows call or directions.",
-      "start": 259.77,
-      "end": 266.75
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "If the call is being intercepted, stop depending on it. Move the conversion onto paths the AI answer can&rsquo;t quietly remove.",
+      "start": 231.53,
+      "end": 238
     },
     {
       "id": 18,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Most Google searches now end without a click, so the tap that followed your mention is disappearing.",
-      "start": 267.07,
-      "end": 272.99
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(4)",
+      "text": "A decision tree for picking which replacement path to build first, branching on what your restaurant already has. First question: do you take reservations or online orders? If yes, the fastest win is making your own booking or order link the primary call-to-action, so the conversion becomes a booking the AI cannot answer for you; if you are walk-in only, skip it. Second question: is your Google Business Profile complete with fresh reviews? If no, fix that first, because the AI summary is built from your profile and reviews, and a thin profile means the summary that replaces your listing does not sell. Third question: do you capture any diner contact today, an email or a loyalty sign-up? If no, this is the highest-leverage build, because a captured customer routes the next visit around Google and its AI entirely. The verdict pills mark which branch is the priority build for your situation.",
+      "start": 239.1,
+      "end": 283.11
     },
     {
       "id": 19,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "The fix is to move conversions onto paths the AI answer cannot remove: your own booking, order, and email capture.",
-      "start": 273.31,
-      "end": 281.23
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Start by seeing your own funnel : the storefront health check shows whether your booking and order paths actually work on a phone, and the G B P grader shows whether the profile is complete enough to be chosen. The reservation side is covered in why your restaurant loses reservations every night . The phone may stay quiet. The covers don&rsquo;t have to.",
+      "start": 284.11,
+      "end": 301.38
     },
     {
       "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Key takeaways",
+      "start": 302.18,
+      "end": 302.8
+    },
+    {
+      "id": 21,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "A missing button is not a ranking problem, you cannot out-rank a result that no longer shows call or directions.",
+      "start": 303.35,
+      "end": 308.84
+    },
+    {
+      "id": 22,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Most Google searches now end without a click, so the tap that followed your mention is disappearing.",
+      "start": 309.34,
+      "end": 314.24
+    },
+    {
+      "id": 23,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "The fix is to move conversions onto paths the AI answer cannot remove: your own booking, order, and email capture.",
+      "start": 314.74,
+      "end": 320.52
+    },
+    {
+      "id": 24,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "Watch your own dashboard, not the industry averages — the decline shows up there first.",
-      "start": 281.55,
-      "end": 287.21
+      "text": "Watch your own dashboard, not the industry averages, the decline shows up there first.",
+      "start": 321.02,
+      "end": 325.23
     }
   ]
 }
