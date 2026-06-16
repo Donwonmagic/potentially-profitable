@@ -69,6 +69,44 @@ const MuntinCostVerdict = require(path.join(repoRoot, 'tools/_shared/cost-verdic
 // Level/trend confidence split + the shippable bar — so a solid multi-market
 // price isn't buried under a noisy trend's "low", and nothing apologetic ships.
 const MuntinCostConfidence = require(path.join(repoRoot, 'tools/_shared/cost-confidence.js'));
+// Per-item VERIFIED credential — the calibration work surfaced on the page itself:
+// the conformal band's backtested COVERAGE (a track-record stat, never a forward price
+// forecast — the index doesn't forecast) + the freshness/staleness read. Both are
+// deterministic functions of the frozen vendored data, so the page never churns.
+const MuntinConformal = require(path.join(repoRoot, 'tools/_shared/cost-conformal.js'));
+const MuntinStaleness = require(path.join(repoRoot, 'tools/_shared/cost-staleness.js'));
+const DEEP_HIST = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-index-history.json'), 'utf8')).ingredients || {}; }
+  catch { return {}; }
+})();
+// Prefer the deep backfill (enough points to backtest coverage); fall back to the
+// vendored capped history.
+function bandSeries(slug, entry) {
+  const d = DEEP_HIST[slug];
+  if (Array.isArray(d) && d.length >= 20) return d.map((p) => p.valueCents).filter((x) => typeof x === 'number');
+  const h = entry && Array.isArray(entry.history) ? entry.history : [];
+  return h.map((p) => p.valueCents).filter((x) => typeof x === 'number');
+}
+// The per-item verified line: backtested coverage (only when it genuinely holds — an
+// honest per-item record, not the pooled claim) + the freshness read. '' when neither
+// is verifiable, so the generic method link stands alone.
+function verifiedNote(slug, entry, point, locale) {
+  const es = locale === 'es';
+  const bits = [];
+  const r = MuntinConformal.conformalNext(bandSeries(slug, entry), { alpha: 0.20, window: 52, calibrate: true });
+  if (r && r.coverage != null && r.nTested >= 12 && r.coverage >= 0.75) {
+    const pct = Math.round(r.coverage * 100);
+    bits.push(es
+      ? `su banda del 80% ha contenido la siguiente impresión el ${pct}% de las veces (${r.nTested} semanas de historial)`
+      : `its 80% band has contained the next print ${pct}% of the time (${r.nTested} weeks of history)`);
+  }
+  const st = point ? MuntinStaleness.stalenessOf(point, {}) : null;
+  if (st) bits.push(st.overdue
+    ? (es ? `lectura con ${st.staleDays} días de atraso para su cadencia` : `${st.staleDays} days overdue for its source's cadence`)
+    : (es ? 'al día para la cadencia de su fuente' : 'current for its source’s cadence'));
+  if (!bits.length) return '';
+  return `<p class="ci-read__verified"><strong>${es ? 'Verificado' : 'Verified'}:</strong> ${bits.join(' · ')}.</p>`;
+}
 const checkMode  = process.argv.includes('--check');
 const onlyArg    = (process.argv.find((a) => a.startsWith('--only=')) || '').slice('--only='.length);
 const ONLY       = onlyArg ? new Set(onlyArg.split(',').map((s) => s.trim()).filter(Boolean)) : null;
@@ -516,6 +554,8 @@ function marketReadBlock(slug, locale) {
   const r = readingOf(slug);
   if (!r) return '';
   const es = locale === 'es';
+  const point = r.entry && Array.isArray(r.entry.points) ? r.entry.points[0] : null;
+  const verified = verifiedNote(slug, r.entry, point, locale);
   const verdict = verdictLine(r.entry.flag, r.conf, locale);
   const spark = sparkBlock(r, locale);
   const lab = LABELS[slug] || {};
@@ -583,6 +623,7 @@ function marketReadBlock(slug, locale) {
     <p class="ci-read__head">${head}<span class="ci-read__badge">${badge}</span></p>
     <p class="ci-read__line">${line}</p>${trendLine}${verdict}${spark}
     <details class="ci-read__src"><summary>${es ? 'Fuentes' : 'Sources'} · ${(shortList.length || agencies.length)}</summary><div>${srcBody}</div></details>
+    ${verified}
     <p class="ci-read__method"><a href="${es ? '/es' : ''}/cost-index/methodology/#track-record">${es ? 'Cómo verificamos este número' : 'How we verify this number'} <span aria-hidden="true">→</span></a></p>
     <p class="ci-read__live"><a href="${es ? '/es' : ''}/tools/cost-pulse/#ci-${slug}">${liveLabel} <span aria-hidden="true">→</span></a></p>
   </aside>`;
@@ -829,6 +870,8 @@ main{padding-top:64px}
 .ci-read__src{margin-top:8px;font-size:12.5px}
 .ci-read__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
 .ci-read__src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
+.ci-read__verified{margin:10px 0 0;font-size:13px;color:var(--ink);background:var(--teal-wash,rgba(20,120,110,.06));border-left:3px solid var(--teal);padding:6px 10px;border-radius:3px}
+.ci-read__verified strong{color:var(--teal)}
 .ci-read__live,.ci-read__method{margin:10px 0 0;font-size:14px}
 .ci-read__live a,.ci-read__method a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
 .ci-read__method{margin-top:6px;font-size:13px}
