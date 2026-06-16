@@ -1,0 +1,33 @@
+{
+  "_doc": "Verified calibration record for the Cost Index. Built by scripts/build-cost-index-calibration-report.mjs from the vendored price data + deep history; CI re-checks it (--check). Hand-edit nothing.",
+  "_version": 1,
+  "band": {
+    "method": "split/EnbPI conformal, ACI-widened",
+    "nominal": 0.8,
+    "pooledCoverage": 0.833,
+    "items": 83,
+    "scoredSteps": 5912,
+    "widened": 42
+  },
+  "trend": {
+    "method": "price-only direction call, reliability by signal strength",
+    "baseline": 0.503,
+    "overallHitRate": 0.539,
+    "scoredCalls": 1879,
+    "items": 47,
+    "tiers": {
+      "low": {
+        "n": 319,
+        "hitRate": 0.483
+      },
+      "medium": {
+        "n": 673,
+        "hitRate": 0.508
+      },
+      "high": {
+        "n": 887,
+        "hitRate": 0.582
+      }
+    }
+  }
+}

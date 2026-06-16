@@ -24,6 +24,9 @@ const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const { conformalNext } = require(path.join(repo, 'tools/_shared/cost-conformal.js'));
 const { reliabilityCurve } = require(path.join(repo, 'tools/_shared/cost-reliability.js'));
 const OUT = path.join(repo, 'data/cost-index-calibration-report.json');
+// A routable public copy so a skeptic can OPEN the calibration table, not just read the
+// numbers quoted on the methodology page. Linked from /cost-index/methodology/#track-record.
+const PUBLIC_OUT = path.join(repo, 'cost-index/calibration.json');
 
 const ALPHA = 0.20, WINDOW = 52;
 
@@ -98,13 +101,15 @@ function main() {
     process.exit(failed.length ? 1 : 0);
   }
   if (process.argv.includes('--check')) {
-    let cur = '';
+    let cur = '', pub = '';
     try { cur = readFileSync(OUT, 'utf8'); } catch {}
-    if (cur !== json) { console.error('✗ data/cost-index-calibration-report.json is stale — run: node scripts/build-cost-index-calibration-report.mjs'); process.exit(1); }
-    console.log('✓ calibration report in sync with the data.');
+    try { pub = readFileSync(PUBLIC_OUT, 'utf8'); } catch {}
+    if (cur !== json || pub !== json) { console.error('✗ calibration report is stale (data/ or the public cost-index/calibration.json) — run: node scripts/build-cost-index-calibration-report.mjs'); process.exit(1); }
+    console.log('✓ calibration report in sync with the data (data/ + public copy).');
     return;
   }
   writeFileSync(OUT, json);
+  writeFileSync(PUBLIC_OUT, json);
   console.log(`Wrote data/cost-index-calibration-report.json — band ${(report.band.pooledCoverage * 100).toFixed(1)}% coverage, trend high ${(report.trend.tiers.high.hitRate * 100).toFixed(0)}% vs ${(report.trend.baseline * 100).toFixed(0)}% baseline.`);
 }
 

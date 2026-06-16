@@ -27,8 +27,11 @@ function values(es) {
     'band.steps': int(report.band.scoredSteps),
     'band.items': int(report.band.items),
     'trend.high': pct(report.trend.tiers.high.hitRate),
+    'trend.medium': pct(report.trend.tiers.medium.hitRate),
     'trend.low': pct(report.trend.tiers.low.hitRate),
     'trend.baseline': pct(report.trend.baseline),
+    'band.nominal': pct(report.band.nominal),
+    'band.widened': int(report.band.widened),
   };
 }
 
