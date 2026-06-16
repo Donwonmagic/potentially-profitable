@@ -266,7 +266,20 @@ const ING_META = {
   'butter':          { cat: 'dairy-eggs', drivers: ['corn', 'soybeans', 'diesel'] },
   'cheddar-cheese':  { cat: 'dairy-eggs', drivers: ['corn', 'soybeans', 'diesel'] },
   'eggs':            { cat: 'dairy-eggs', drivers: ['corn', 'soybeans', 'diesel'] },
-  'vegetable-oil':   { cat: 'pantry',     drivers: ['soybeans', 'diesel'] }
+  'vegetable-oil':   { cat: 'pantry',     drivers: ['soybeans', 'diesel'] },
+  // Batch 1 (high-traffic) — labels already curated in data/cost-index-labels.json.
+  'ground-beef':     { cat: 'beef',       drivers: ['corn', 'soybeans', 'diesel'] },
+  'short-rib':       { cat: 'beef',       drivers: ['corn', 'soybeans', 'diesel'] },
+  'chicken-thigh':   { cat: 'poultry',    drivers: ['corn', 'soybeans', 'diesel'] },
+  'whole-salmon':    { cat: 'seafood',    drivers: ['diesel'] },
+  'tuna-loin':       { cat: 'seafood',    drivers: ['diesel'] },
+  'bell-pepper':     { cat: 'produce',    drivers: ['diesel'] },
+  'garlic':          { cat: 'produce',    drivers: ['diesel'] },
+  'avocado':         { cat: 'produce',    drivers: ['diesel'] },
+  'lemon':           { cat: 'produce',    drivers: ['diesel'] },
+  'button-mushroom': { cat: 'produce',    drivers: ['diesel'] },
+  'cucumber':        { cat: 'produce',    drivers: ['diesel'] },
+  'broccoli':        { cat: 'produce',    drivers: ['diesel'] }
 };
 // Hub display order, grouped by category.
 const CATEGORY_ORDER = ['beef', 'poultry', 'pork', 'seafood', 'produce', 'dairy-eggs', 'pantry'];
