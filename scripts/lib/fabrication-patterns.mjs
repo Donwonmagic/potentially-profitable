@@ -234,6 +234,27 @@ export const BLOCKED = [
     fix: 'Replace with TLD-only link (https://restaurant.org/) and credit the National Restaurant Association by name.',
     langs: ['invariant'],
   },
+  // Operator-economics figures presented as measured (the May-2026 fabrication
+  // class). docs/fact-check.md names these explicitly: a measured "kept margin
+  // climbed 56%" and a "$4,000 incremental margin" were invented, never sourced.
+  // The card deks carried the "56%" summary long after the article body was
+  // rewritten to illustrative ranges; this rule closes that gap so the summary
+  // surfaces (deks/abstracts/smart-next cards) can't reintroduce it. EN shape
+  // here; the ES shapes ("margen retenido subió N%", etc.) land with the ES
+  // case-study re-sync — es/blog/30-dias-... is a stale pre-cleanup translation
+  // still tracked for remediation (body + 6-language audio).
+  {
+    pattern: /\b(?:kept |recovered )?margin (?:climbed|grew|rose|jumped|increased)\s+\d{1,3}\s*%/gi,
+    label: 'fabrication: measured "margin climbed N%" (operator-economics as measured)',
+    fix: 'Only the sourced kept-rate figures are usable (~18% Marketplace Plus vs ~29% direct, doordash_marketplace_tiers). Reframe the margin change as an illustrative range or remove. See docs/fact-check.md.',
+    langs: ['en'],
+  },
+  {
+    pattern: /\$[\d,]+\s+incremental margin\b/gi,
+    label: 'fabrication: "$N incremental margin" (invented operator-economics dollar figure)',
+    fix: 'This dollar figure was never measured. Reframe as illustrative or remove. See docs/fact-check.md.',
+    langs: ['en'],
+  },
 ];
 
 // Phrases-in-context that are allowed even though they pattern-match. These
