@@ -14,6 +14,10 @@
  * a card say "our 80% band has covered 79% of the last N prints" — a verified
  * statement, the property that out-reasons a single-source quote.
  *
+ * PARITY: mirrored by the Muntin Ledger TS port at
+ * ledger-spec/cost-index/src/cost-conformal.ts — vectors copied verbatim; change
+ * the math in one repo, change it in the other in the same commit.
+ *
  * Pure, deterministic, integer-friendly, no DOM/network.  Browser: window.MuntinConformal.
  */
 (function (root) {
