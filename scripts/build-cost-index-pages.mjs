@@ -340,6 +340,12 @@ const ING_META = {
   'blueberry':         { cat: 'produce',    drivers: ['diesel'] },
   'raspberry':         { cat: 'produce',    drivers: ['diesel'] },
   'whole-turkey':      { cat: 'poultry',    drivers: ['corn', 'soybeans', 'diesel'] },
+  'whole-halibut':     { cat: 'seafood',    drivers: ['diesel'] },
+  'whole-trout':       { cat: 'seafood',    drivers: ['diesel'] },
+  'scallops':          { cat: 'seafood',    drivers: ['diesel'] },
+  'whole-crab':        { cat: 'seafood',    drivers: ['diesel'] },
+  'octopus':           { cat: 'seafood',    drivers: ['diesel'] },
+  'salmon-skin-on-fillet':{ cat: 'seafood',    drivers: ['diesel'] },
 };
 // Hub display order, grouped by category.
 const CATEGORY_ORDER = ['beef', 'poultry', 'pork', 'seafood', 'produce', 'dairy-eggs', 'pantry'];
