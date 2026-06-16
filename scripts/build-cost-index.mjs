@@ -30,6 +30,7 @@ import { calibrationCeiling, RANK, NAME } from './check-cost-index-calibration.m
 const require = createRequire(import.meta.url);
 const B = require('../tools/_shared/cost-basket.js');
 const Spike = require('../tools/_shared/cost-spike.js');
+const Stale = require('../tools/_shared/cost-staleness.js');
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const arg = (k) => { const i = process.argv.indexOf(k); return i >= 0 ? process.argv[i + 1] : null; };
 const DRY = process.argv.includes('--dry-run');
@@ -172,6 +173,12 @@ function main() {
       if (!p || !p.confidence || RANK[p.confidence] == null) continue;
       const ceil = calibrationCeiling(p, hist);
       if (RANK[p.confidence] > ceil) p.confidence = NAME[ceil];
+      // Staleness penalty — also cap by how overdue the freshest contributing print
+      // is for its source's cadence (old != overdue: a monthly series a month old
+      // reads fresh). Self-heals: a stalled source's read auto-downgrades on the next
+      // vendor instead of tripping the staleness-honesty gate. No-op while current.
+      const sc = Stale.stalenessOf(p, {});
+      if (sc && sc.ceiling) p.confidence = Stale.capConfidence(p.confidence, sc.ceiling);
     }
   }
 
