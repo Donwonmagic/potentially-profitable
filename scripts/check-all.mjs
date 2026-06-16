@@ -395,6 +395,12 @@ const CHECKS = [
   // means high), so the trend's confidence label is earned, not asserted.
   ['Cost-index trend skill','check-trend-skill.mjs'],
   ['Cost-index trend skill self-test','check-trend-skill.mjs','--self-test'],
+  // Calibration record — the verified band-coverage + trend-skill numbers, pooled
+  // into one versioned artifact the methodology page cites; --check keeps the file
+  // (and the published claim) in lockstep with the data.
+  ['Cost-index calibration report self-test','build-cost-index-calibration-report.mjs','--self-test'],
+  ['Cost-index calibration report sync','build-cost-index-calibration-report.mjs','--check'],
+  ['Cost-index calibration page sentinels','inject-cost-index-calibration.mjs','--check'],
   // Dataset freshness — the JSON-LD dateModified on the methodology pages + hub
   // catalog must equal the seed's generatedAt (machine-readable freshness, a
   // top AI-citation factor). Stamped in place; --check pins it in sync.
