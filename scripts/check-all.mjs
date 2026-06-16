@@ -389,6 +389,12 @@ const CHECKS = [
   // 80% band doesn't actually cover ~80% of next prints (verified, not asserted).
   ['Cost-index band coverage','check-band-coverage.mjs'],
   ['Cost-index band coverage self-test','check-band-coverage.mjs','--self-test'],
+  // Trend skill — the reliability-diagram half: a price-only direction call is
+  // replayed over deep history and bucketed by strength; the gate fails unless a
+  // stronger arrow verifies more often AND beats the no-skill baseline ("high"
+  // means high), so the trend's confidence label is earned, not asserted.
+  ['Cost-index trend skill','check-trend-skill.mjs'],
+  ['Cost-index trend skill self-test','check-trend-skill.mjs','--self-test'],
   // Dataset freshness — the JSON-LD dateModified on the methodology pages + hub
   // catalog must equal the seed's generatedAt (machine-readable freshness, a
   // top AI-citation factor). Stamped in place; --check pins it in sync.
