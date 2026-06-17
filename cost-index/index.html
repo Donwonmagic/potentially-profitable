@@ -90,6 +90,10 @@ main{padding-top:64px}
 .ci-read__src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
 .ci-read__live{margin:10px 0 0;font-size:14px}
 .ci-read__live a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-read--basket{margin:8px 0 0}
+.ci-read--basket .ci-read__line{font-size:17px}
+.ci-read__basket-note{margin:10px 0 0;font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
+.ci-read__basket-note a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-faq{margin:34px 0 0}
 .ci-faq__item{margin:0 0 18px}
 .ci-faq__q{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink);margin:0 0 6px}
@@ -375,6 +379,12 @@ main{padding-top:64px}
     <p class="ci-lede">Where 13 common restaurant ingredients are priced wholesale — a typical range and a trend, drawn from public USDA, BLS and FRED data — so you can tell a real market move from a vendor markup. Pick an ingredient for its reading, or open Cost Pulse to see them all at once.</p>
   </section>
   <div class="ci-body">
+
+    <aside class="ci-read ci-read--basket" data-layer="measured" aria-label="The Muntin Restaurant Basket">
+      <p class="ci-read__head">The Muntin Restaurant Basket<span class="ci-read__badge">100% of the basket priced · 16 of 16 ingredients · medium confidence</span></p>
+      <p class="ci-read__line">Taken together, the basket is trending down ~2% over the window — a directional read. It's the direction of a declared basket, not a price level.</p><p class="ci-read__trend">Freshest complete read: 2026-05-01 — the date of the oldest contributing ingredient (the honest freshness floor).</p>
+      <p class="ci-read__basket-note">A weighted median of per-ingredient moves across public market sources. The weights are internal judgment (illustrative), not a sourced fact — <a href="/cost-index/methodology/">how it's built</a>.</p>
+    </aside>
     <div class="ci-cta-row">
       <a class="btn btn-primary" href="/tools/cost-pulse/">Open Cost Pulse</a>
       

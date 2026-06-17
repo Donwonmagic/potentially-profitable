@@ -69,6 +69,12 @@ const MuntinCostVerdict = require(path.join(repoRoot, 'tools/_shared/cost-verdic
 // Level/trend confidence split + the shippable bar — so a solid multi-market
 // price isn't buried under a noisy trend's "low", and nothing apologetic ships.
 const MuntinCostConfidence = require(path.join(repoRoot, 'tools/_shared/cost-confidence.js'));
+// The headline Restaurant Basket compute — the SAME module + the SAME inputs
+// build-cost-index.mjs#computeBasket uses, so the page can never disagree with
+// the vendored read when the data is consistent. We recompute here (rather than
+// trust a possibly-stale vendored CI.basket) so the headline always traces to
+// the CURRENT gated points[0] sitting above it on the very same page.
+const MuntinBasket = require(path.join(repoRoot, 'tools/_shared/cost-basket.js'));
 const checkMode  = process.argv.includes('--check');
 const onlyArg    = (process.argv.find((a) => a.startsWith('--only=')) || '').slice('--only='.length);
 const ONLY       = onlyArg ? new Set(onlyArg.split(',').map((s) => s.trim()).filter(Boolean)) : null;
@@ -117,6 +123,26 @@ const CI = (() => {
 })();
 const COST_INDEX = CI.ingredients || {};
 const DRIVERS = CI.drivers || {};
+
+// Frozen, versioned basket weights (data/cost-basket-weights.json) + the headline
+// Basket, recomputed from the newest gated point per ingredient via the shared
+// cost-basket.js — mirroring build-cost-index.mjs#computeBasket exactly. Honest
+// coverage = the share of declared weight that actually priced. Falls back to the
+// vendored CI.basket only if the weights file is unreadable (then the block
+// degrades to its "not enough priced yet" state rather than inventing a number).
+const BASKET_WEIGHTS = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-basket-weights.json'), 'utf8')).weights || {}; }
+  catch { return {}; }
+})();
+const BASKET = (() => {
+  if (!Object.keys(BASKET_WEIGHTS).length) return CI.basket || null;
+  const latest = {};
+  for (const k of Object.keys(COST_INDEX)) {
+    const pts = (COST_INDEX[k] && COST_INDEX[k].points) || [];
+    if (pts.length) latest[k] = pts[0];   // points are stored newest-first
+  }
+  return MuntinBasket.basketTrend(latest, BASKET_WEIGHTS);
+})();
 const LABELS_DOC  = (() => {
   try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-index-labels.json'), 'utf8')); }
   catch { return { labels: {}, drivers: {} }; }
@@ -751,6 +777,10 @@ main{padding-top:64px}
 .ci-read__src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
 .ci-read__live{margin:10px 0 0;font-size:14px}
 .ci-read__live a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-read--basket{margin:8px 0 0}
+.ci-read--basket .ci-read__line{font-size:17px}
+.ci-read__basket-note{margin:10px 0 0;font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
+.ci-read__basket-note a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-faq{margin:34px 0 0}
 .ci-faq__item{margin:0 0 18px}
 .ci-faq__q{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink);margin:0 0 6px}
@@ -1156,6 +1186,93 @@ function hubCardNote(slug, locale) {
   return es ? `por ${unit}, referencia mayorista` : `per ${unit}, wholesale reference`;
 }
 
+// ---- The Muntin Restaurant Basket headline + freshness line --------
+// The one named headline for the whole index: a weighted-MEDIAN rate-of-change
+// for the FROZEN declared basket (data/cost-basket-weights.json), via the shared
+// tools/_shared/cost-basket.js (see BASKET above) — never hand-typed.
+//
+// HONESTY CONTRACT (data/cost-basket-weights.json#_doc), all enforced below:
+//   - It is a basis-AGNOSTIC DIRECTION for a declared basket, never a price
+//     level and never "what restaurants pay" — so the copy is a trend verb
+//     ("trending up ~3%"), never a dollar figure.
+//   - The weights are internal judgment, labeled illustrative, with the
+//     methodology one click away.
+//   - Coverage + confidence are stated plainly; when confidence is not high,
+//     the read is framed as "directional", not precise.
+//   - Freshness is the basket's own asOf — the OLDEST contributing date, the
+//     honest freshness floor — worded as "freshest complete read", never as a
+//     fetch time or a cadence the data can't support.
+// Degrades to an honest "not enough of the basket priced yet" when nothing has
+// cleared the fact gate.
+function basketBlock(locale) {
+  const es = locale === 'es';
+  const b = BASKET || null;
+  const head = es ? 'La Canasta de Restaurante Muntin' : 'The Muntin Restaurant Basket';
+  const methodHref = `${es ? '/es' : ''}/cost-index/methodology/`;
+  const methodLink = es
+    ? `<a href="${methodHref}">cómo se construye</a>`
+    : `<a href="${methodHref}">how it's built</a>`;
+
+  // Nothing priced yet — say so, no number.
+  if (!b || b.pct == null) {
+    const line = es
+      ? 'Aún no hay suficiente de la canasta con precio para publicar una lectura de conjunto.'
+      : 'Not enough of the basket has priced yet to publish a whole-basket reading.';
+    return `
+    <aside class="ci-read ci-read--basket" data-layer="measured" aria-label="${head}">
+      <p class="ci-read__head">${head}</p>
+      <p class="ci-read__line">${line}</p>
+    </aside>`;
+  }
+
+  // Direction verb (never a level) + a rounded magnitude with a ~ to signal
+  // that it is a directional read, not a precise figure.
+  const mag = Math.abs(b.pct * 100);
+  const magTxt = '~' + (mag < 1 ? mag.toFixed(1).replace(/\.0$/, '') : Math.round(mag)) + '%';
+  const verb = b.dir === 'up'
+    ? (es ? `va al alza ${magTxt}` : `trending up ${magTxt}`)
+    : b.dir === 'down'
+      ? (es ? `va a la baja ${magTxt}` : `trending down ${magTxt}`)
+      : (es ? 'se mantiene casi estable' : 'holding about flat');
+  // When confidence isn't high, name the read "directional" so the magnitude is
+  // never read as precision the data doesn't carry.
+  const soft = b.confidence !== 'high'
+    ? (es ? ' — una lectura direccional' : ' — a directional read')
+    : '';
+  const line = es
+    ? `En conjunto, la canasta ${verb} en la ventana${soft}. Es la dirección de una canasta declarada, no un precio.`
+    : `Taken together, the basket is ${verb} over the window${soft}. It's the direction of a declared basket, not a price level.`;
+
+  // Coverage + confidence, stated plainly.
+  const cov = Math.round(b.coverage * 100);
+  const confWord = es
+    ? ({ high: 'alta', medium: 'media', low: 'baja' }[b.confidence] || b.confidence)
+    : b.confidence;
+  const badge = es
+    ? `${cov}% de la canasta con precio · ${b.nContributing} de ${b.nDeclared} ingredientes · confianza ${confWord}`
+    : `${cov}% of the basket priced · ${b.nContributing} of ${b.nDeclared} ingredients · ${confWord} confidence`;
+
+  // Freshness — the basket's own asOf (the oldest contributing date = the honest
+  // floor), labeled so it can't be mistaken for a fetch time.
+  const freshLine = b.asOf
+    ? (es
+      ? `<p class="ci-read__trend">Lectura completa más reciente: ${b.asOf} — la fecha del ingrediente más antiguo que contribuye (el piso de frescura honesto).</p>`
+      : `<p class="ci-read__trend">Freshest complete read: ${b.asOf} — the date of the oldest contributing ingredient (the honest freshness floor).</p>`)
+    : '';
+
+  // Method note — weights are illustrative internal judgment, one click away.
+  const note = es
+    ? `Una mediana ponderada de movimientos por ingrediente en fuentes públicas de mercado. Las ponderaciones son un criterio interno (ilustrativo), no un dato citado — ${methodLink}.`
+    : `A weighted median of per-ingredient moves across public market sources. The weights are internal judgment (illustrative), not a sourced fact — ${methodLink}.`;
+
+  return `
+    <aside class="ci-read ci-read--basket" data-layer="measured" aria-label="${head}">
+      <p class="ci-read__head">${head}<span class="ci-read__badge">${badge}</span></p>
+      <p class="ci-read__line">${line}</p>${freshLine}
+      <p class="ci-read__basket-note">${note}</p>
+    </aside>`;
+}
+
 function emitHubPage(locale, slugs) {
   const es = locale === 'es';
   const lang = es ? 'es' : 'en';
@@ -1241,6 +1358,7 @@ function emitHubPage(locale, slugs) {
     <p class="ci-lede">${escHtml(heroLede)}</p>
   </section>
   <div class="ci-body">
+    ${basketBlock(locale)}
     <div class="ci-cta-row">
       <a class="btn btn-primary" href="${base}/tools/cost-pulse/">${es ? 'Abrir Cost Pulse' : 'Open Cost Pulse'}</a>
       ${anyPressureProven() ? `<a class="btn btn-ghost" href="${base}/cost-index/lab/">${es ? 'Laboratorio de Presión' : 'Pressure Lab'}</a>` : ''}

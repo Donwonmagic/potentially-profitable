@@ -90,6 +90,10 @@ main{padding-top:64px}
 .ci-read__src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
 .ci-read__live{margin:10px 0 0;font-size:14px}
 .ci-read__live a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-read--basket{margin:8px 0 0}
+.ci-read--basket .ci-read__line{font-size:17px}
+.ci-read__basket-note{margin:10px 0 0;font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
+.ci-read__basket-note a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-faq{margin:34px 0 0}
 .ci-faq__item{margin:0 0 18px}
 .ci-faq__q{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink);margin:0 0 6px}
@@ -299,6 +303,12 @@ main{padding-top:64px}
     <p class="ci-lede">Dónde se cotizan al mayoreo 13 ingredientes comunes de restaurante — un rango típico y una tendencia, de datos públicos de USDA, BLS y FRED — para distinguir un movimiento real de mercado de un sobreprecio de proveedor. Elige un ingrediente para su lectura, o abre Cost Pulse para verlos todos a la vez.</p>
   </section>
   <div class="ci-body">
+
+    <aside class="ci-read ci-read--basket" data-layer="measured" aria-label="La Canasta de Restaurante Muntin">
+      <p class="ci-read__head">La Canasta de Restaurante Muntin<span class="ci-read__badge">100% de la canasta con precio · 16 de 16 ingredientes · confianza media</span></p>
+      <p class="ci-read__line">En conjunto, la canasta va a la baja ~2% en la ventana — una lectura direccional. Es la dirección de una canasta declarada, no un precio.</p><p class="ci-read__trend">Lectura completa más reciente: 2026-05-01 — la fecha del ingrediente más antiguo que contribuye (el piso de frescura honesto).</p>
+      <p class="ci-read__basket-note">Una mediana ponderada de movimientos por ingrediente en fuentes públicas de mercado. Las ponderaciones son un criterio interno (ilustrativo), no un dato citado — <a href="/es/cost-index/methodology/">cómo se construye</a>.</p>
+    </aside>
     <div class="ci-cta-row">
       <a class="btn btn-primary" href="/es/tools/cost-pulse/">Abrir Cost Pulse</a>
       
