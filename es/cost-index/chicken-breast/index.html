@@ -34,7 +34,7 @@
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
 <style>
-:root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--white:#fff;--line:#E3E5E9;--font-display:'Fraunces',Georgia,serif;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+:root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--white:#fff;--line:#E3E5E9;--teal-wash:rgba(42,80,200,.06);--font-display:'Fraunces',Georgia,serif;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
 html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
 .container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
@@ -61,6 +61,7 @@ main{padding-top:64px}
 .ci-eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
 .ci-eyebrow a{color:var(--teal);text-decoration:none}
 .ci-hero h1{font-family:var(--font-display);font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.12;color:var(--ink);margin:0 0 14px}
+.ci-answer{font-size:clamp(18px,3vw,22px);font-weight:600;color:var(--ink);margin:0 0 14px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
 .ci-lede{font-size:18px;line-height:1.6;color:var(--ink);margin:0;max-width:720px}
 .ci-body{margin:8px auto 0;max-width:760px}
 .ci-body h2{font-family:var(--font-display);font-size:clamp(20px,3vw,26px);font-weight:500;color:var(--ink);margin:34px 0 10px;line-height:1.2}
@@ -75,7 +76,7 @@ main{padding-top:64px}
 .ci-read__verdict{margin:10px 0 0;font-size:15px;line-height:1.5;color:var(--ink)}
 .ci-read__verb{display:inline-block;font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-right:8px;vertical-align:1px;background:var(--cream);border:1px solid var(--line);color:var(--ink-soft)}
 .ci-read__verb[data-bias="hold"]{color:#2A50C8;border-color:#2A50C8}
-.ci-read__verb[data-bias="watch"]{color:#8a6d1f;border-color:#cdb368}
+.ci-read__verb[data-bias="watch"]{color:#6b540f;border-color:#9a7d2e}
 .ci-read__verb[data-bias="re-price"]{color:#A23B2D;border-color:#A23B2D}
 .ci-read__spark{margin:12px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
 .ci-read__spark .mtn-spark{flex:0 0 auto;overflow:visible}
@@ -88,8 +89,12 @@ main{padding-top:64px}
 .ci-read__src{margin-top:8px;font-size:12.5px}
 .ci-read__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
 .ci-read__src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
-.ci-read__live{margin:10px 0 0;font-size:14px}
-.ci-read__live a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-read__verified{margin:10px 0 0;font-size:13px;color:var(--ink);background:var(--teal-wash);border-left:3px solid var(--teal);padding:6px 10px;border-radius:3px}
+.ci-read__verified strong{color:var(--teal)}
+.ci-read__live,.ci-read__method{margin:10px 0 0;font-size:14px}
+.ci-read__live a,.ci-read__method a,.ci-read__data a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-read__method{margin-top:6px;font-size:13px}
+.ci-read__data{margin:4px 0 0;font-size:13px;color:var(--ink-soft)}
 .ci-faq{margin:34px 0 0}
 .ci-faq__item{margin:0 0 18px}
 .ci-faq__q{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink);margin:0 0 6px}
@@ -98,6 +103,10 @@ main{padding-top:64px}
 .ci-sibs-label{display:inline-block;font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:11px;margin-right:8px}
 .ci-sibs a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 8px}
+.ci-orient{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));margin:18px 0 8px}
+.ci-orient__cell{background:var(--cream-2);border-radius:6px;padding:14px 16px}
+.ci-orient__h{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+.ci-orient__b{font-size:14px;line-height:1.5;color:var(--ink);margin:0}
 .ci-source{font-size:12.5px;color:var(--ink-soft);margin:24px 0 40px}
 .ci-source a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));margin:14px 0 0}
@@ -115,6 +124,8 @@ main{padding-top:64px}
 .ci-moving-item a:hover{color:var(--teal)}
 .ci-moving-reason{color:var(--ink-soft);font-size:14px}
 .ci-moving-calm{margin:0;font-size:15.5px;color:var(--ink)}
+.ci-vkey{margin:2px 0 12px;font-size:12.5px;color:var(--ink-soft);line-height:1.6}
+.ci-vkey strong{color:var(--ink)}
 .ci-card--pending{opacity:.72;background:var(--cream-2)}
 .ci-card--pending a{color:var(--ink-soft)}
 .ci-pending-note{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
@@ -131,6 +142,38 @@ main{padding-top:64px}
 .ci-outlook__panel li{margin:0 0 4px}
 .ci-outlook__lab{margin:10px 0 0;font-size:13.5px}
 .ci-outlook__lab a{color:#6b4fa1;text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+/* a11y: a keyboard/switch user must always see focus (only the skip-link had one). */
+.ci-card a:focus-visible,.ci-read a:focus-visible,.ci-sibs a:focus-visible,.breadcrumb a:focus-visible,.ci-source a:focus-visible,summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:2px}
+/* touch: lift the drawer summaries to a real tap target (WCAG 2.5.8). */
+.ci-read__src summary,.ci-outlook__how summary{display:inline-block;padding:6px 0;min-height:24px}
+/* the pre-rendered sparkline must never clip in a narrower container. */
+.mtn-spark{max-width:100%;height:auto}
+/* print: the controller-PDFs-a-reading-for-a-vendor workflow. Drop the chrome, force the
+   provenance drawers open, and print the verdict with a border + its word (never color-only). */
+@media print{
+  .nav,.ci-cta-row,.ci-sibs,.ci-read__live,.ci-read__method,.skip-link,form,footer{display:none!important}
+  main{padding-top:0!important}
+  body{background:#fff!important;color:#000!important}
+  .ci-read{break-inside:avoid;border-color:#000}
+  details>*:not(summary){display:block!important}
+  details summary{font-weight:700}
+  .ci-read__verb{border:1px solid #000!important;color:#000!important;background:#fff!important}
+  a[href]::after{content:""!important}
+}
+/* dark mode: the inline tokens hardcoded light, so the reading area stayed cream in dark.
+   Redefine the cost-index tokens (light text on dark = high-contrast by construction) and
+   lighten the three verdict accents so they stay legible. Honors OS preference AND the
+   site theme toggle ([data-theme]); a forced-light toggle wins over OS dark. */
+:root[data-theme="dark"]{--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12)}
+:root[data-theme="dark"] .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
+:root[data-theme="dark"] .ci-read__verb[data-bias="watch"]{color:#d8bd6a;border-color:#8a7530}
+:root[data-theme="dark"] .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12)}
+  :root:not([data-theme="light"]) .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
+  :root:not([data-theme="light"]) .ci-read__verb[data-bias="watch"]{color:#d8bd6a;border-color:#8a7530}
+  :root:not([data-theme="light"]) .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
+}
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=2830bb0a913c" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=158a407ca00a" onload="this.onload=null;this.rel='stylesheet'">
@@ -298,6 +341,7 @@ main{padding-top:64px}
   <section class="ci-hero">
     <p class="ci-eyebrow"><a href="/es/cost-index/#poultry">Aves</a></p>
     <h1>Pechuga de pollo (sin hueso)</h1>
+    <p class="ci-answer"><strong>a la baja</strong> · ~$1.11–$1.56/libra · al 2026-06-08 <span class="ci-read__verb" data-bias="hold">Mantener</span></p>
     <p class="ci-lede">Pechuga de pollo (sin hueso) se cotiza con un precio de referencia de mayoreo que cambia semana a semana; ahora va <strong>a la baja</strong> según fuentes públicas (al 2026-06-08). Para ver el número en vivo, el rango típico y dónde queda tu precio, abre la lectura de abajo — y compárala con tu última factura.</p>
   </section>
   <div class="ci-body">
@@ -306,8 +350,11 @@ main{padding-top:64px}
     <p class="ci-read__head">Lectura de mercado<span class="ci-read__badge">confianza media · al 2026-06-08</span></p>
     <p class="ci-read__line">Alrededor de $1.11–$1.56/libra (referencia mayorista, un mercado USDA), al 2026-06-08.</p><p class="ci-read__trend">Tendencia: a la baja -6.8% en la ventana reciente.</p>
     <p class="ci-read__verdict"><span class="ci-read__verb" data-bias="hold">Mantener</span>Bajando — puede ser oportunidad de renegociar, no razón para reajustar.</p>
-    <div class="ci-read__spark"><svg class="mtn-spark" width="248" height="46" viewBox="0 0 248 46" role="img" aria-label="Precio subió a lo largo de la ventana. Normalmente $1.46–$1.64, ahora $1.36 — por debajo de su rango habitual — buena compra. Más alto que 0 de sus últimas 12 lecturas."><path d="M3.0,32.7L18.1,35.8L33.3,33.8L48.4,32.7L63.5,23.5L78.6,14.3L93.8,8.1L108.9,3.0L124.0,6.1L139.1,10.2L154.3,17.4L169.4,17.4L184.5,19.4L199.6,25.6L214.8,32.7L229.9,42.0L245.0,43.0 L245.0,43.0 L3.0,43.0 Z" fill="rgba(31,111,106,0.12)" stroke="none" /><line x1="3" x2="245" y1="23.5" y2="23.5" stroke="#2A50C8" stroke-width="1" stroke-dasharray="2,3" opacity="0.45" /><path d="M3.0,32.7L18.1,35.8L33.3,33.8L48.4,32.7L63.5,23.5L78.6,14.3L93.8,8.1L108.9,3.0L124.0,6.1L139.1,10.2L154.3,17.4L169.4,17.4L184.5,19.4L199.6,25.6L214.8,32.7L229.9,42.0L245.0,43.0" fill="none" stroke="#2A50C8" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" /><circle cx="245.0" cy="43.0" r="2.5" fill="#2A50C8" /></svg><p class="ci-read__capsule">Normalmente $1.46–$1.64, ahora $1.36 — por debajo de su rango habitual — buena compra. <span class="ci-read__rank">Más alto que 0 de sus últimas 12 lecturas.</span> <span class="ci-read__capsule-note">(en la ventana seguida)</span></p></div>
-    <details class="ci-read__src"><summary>Fuentes · 3</summary><div>USDA AMS · BLS · FRED — datos públicos, al 2026-06-08. Referencia mayorista, no el precio entregado que pagas.</div></details>
+    <div class="ci-read__spark"><svg class="mtn-spark" width="248" height="46" viewBox="0 0 248 46" role="img" aria-label="Precio subió a lo largo de la ventana. Normalmente $1.46–$1.64, ahora $1.36 — por debajo de su rango habitual — buena compra. Más bajo que cada una de sus últimas 12 lecturas."><path d="M3.0,32.7L18.1,35.8L33.3,33.8L48.4,32.7L63.5,23.5L78.6,14.3L93.8,8.1L108.9,3.0L124.0,6.1L139.1,10.2L154.3,17.4L169.4,17.4L184.5,19.4L199.6,25.6L214.8,32.7L229.9,42.0L245.0,43.0 L245.0,43.0 L3.0,43.0 Z" fill="rgba(31,111,106,0.12)" stroke="none" /><line x1="3" x2="245" y1="23.5" y2="23.5" stroke="#2A50C8" stroke-width="1" stroke-dasharray="2,3" opacity="0.45" /><path d="M3.0,32.7L18.1,35.8L33.3,33.8L48.4,32.7L63.5,23.5L78.6,14.3L93.8,8.1L108.9,3.0L124.0,6.1L139.1,10.2L154.3,17.4L169.4,17.4L184.5,19.4L199.6,25.6L214.8,32.7L229.9,42.0L245.0,43.0" fill="none" stroke="#2A50C8" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" /><circle cx="245.0" cy="43.0" r="2.5" fill="#2A50C8" /></svg><p class="ci-read__capsule">Normalmente $1.46–$1.64, ahora $1.36 — por debajo de su rango habitual — buena compra. <span class="ci-read__rank">Más bajo que cada una de sus últimas 12 lecturas.</span> <span class="ci-read__capsule-note">(en la ventana seguida)</span></p></div>
+    <details class="ci-read__src"><summary>Fuentes · 3</summary><div>USDA AMS · BLS · FRED — datos públicos, al 2026-06-08. Referencia mayorista (aproximadamente lo que pagan los distribuidores), no el precio entregado que pagas.</div></details>
+    <p class="ci-read__verified"><strong>Verificado:</strong> nuestro rango de precio del 80% ha acertado el 81% de las veces (149 semanas de historial) · al día para la cadencia de su fuente.</p>
+    <p class="ci-read__method"><a href="/es/cost-index/methodology/#track-record">Cómo verificamos este número <span aria-hidden="true">→</span></a></p>
+    <p class="ci-read__data">Descarga los datos: <a href="/cost-index/chicken-breast/series.csv" download>CSV</a> · <a href="/cost-index/chicken-breast/series.json">JSON</a></p>
     <p class="ci-read__live"><a href="/es/tools/cost-pulse/#ci-chicken-breast">Ver pechuga de pollo (sin hueso) en vivo en Cost Pulse <span aria-hidden="true">→</span></a></p>
   </aside>
     
@@ -331,7 +378,7 @@ main{padding-top:64px}
   <div class="ci-faq__item"><h3 class="ci-faq__q">¿En qué unidad se cotiza pechuga de pollo (sin hueso)?</h3><p class="ci-faq__a">Se cotiza por libra como referencia mayorista — no es el precio entregado que pagas, así que compara con tu factura en la misma unidad.</p></div>
   <div class="ci-faq__item"><h3 class="ci-faq__q">¿Estoy pagando de más por pechuga de pollo (sin hueso)?</h3><p class="ci-faq__a">Pon tu precio sobre el rango típico de arriba. Debajo del rango es buen trato; dentro es normal; por encima del rango vale una conversación con el proveedor.</p></div>
 </section>
-    <p class="ci-sibs"><span class="ci-sibs-label">Más en aves</span><a href="/es/cost-index/whole-chicken/">Pollo entero</a></p>
+    <p class="ci-sibs"><span class="ci-sibs-label">Más en aves</span><a href="/es/cost-index/whole-chicken/">Pollo entero</a> · <a href="/es/cost-index/chicken-thigh/">Muslo de pollo</a> · <a href="/es/cost-index/whole-turkey/">Pavo entero</a></p>
     <div class="ci-cta-row">
       <a class="btn btn-primary" href="/es/tools/cost-pulse/#ci-chicken-breast">Abrir Cost Pulse</a>
       <a class="btn btn-ghost" href="/es/cost-index/">Ver todas las lecturas</a>

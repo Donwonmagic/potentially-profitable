@@ -69,6 +69,44 @@ const MuntinCostVerdict = require(path.join(repoRoot, 'tools/_shared/cost-verdic
 // Level/trend confidence split + the shippable bar — so a solid multi-market
 // price isn't buried under a noisy trend's "low", and nothing apologetic ships.
 const MuntinCostConfidence = require(path.join(repoRoot, 'tools/_shared/cost-confidence.js'));
+// Per-item VERIFIED credential — the calibration work surfaced on the page itself:
+// the conformal band's backtested COVERAGE (a track-record stat, never a forward price
+// forecast — the index doesn't forecast) + the freshness/staleness read. Both are
+// deterministic functions of the frozen vendored data, so the page never churns.
+const MuntinConformal = require(path.join(repoRoot, 'tools/_shared/cost-conformal.js'));
+const MuntinStaleness = require(path.join(repoRoot, 'tools/_shared/cost-staleness.js'));
+const DEEP_HIST = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-index-history.json'), 'utf8')).ingredients || {}; }
+  catch { return {}; }
+})();
+// Prefer the deep backfill (enough points to backtest coverage); fall back to the
+// vendored capped history.
+function bandSeries(slug, entry) {
+  const d = DEEP_HIST[slug];
+  if (Array.isArray(d) && d.length >= 20) return d.map((p) => p.valueCents).filter((x) => typeof x === 'number');
+  const h = entry && Array.isArray(entry.history) ? entry.history : [];
+  return h.map((p) => p.valueCents).filter((x) => typeof x === 'number');
+}
+// The per-item verified line: backtested coverage (only when it genuinely holds — an
+// honest per-item record, not the pooled claim) + the freshness read. '' when neither
+// is verifiable, so the generic method link stands alone.
+function verifiedNote(slug, entry, point, locale) {
+  const es = locale === 'es';
+  const bits = [];
+  const r = MuntinConformal.conformalNext(bandSeries(slug, entry), { alpha: 0.20, window: 52, calibrate: true });
+  if (r && r.coverage != null && r.nTested >= 12 && r.coverage >= 0.75) {
+    const pct = Math.round(r.coverage * 100);
+    bits.push(es
+      ? `nuestro rango de precio del 80% ha acertado el ${pct}% de las veces (${r.nTested} semanas de historial)`
+      : `our 80% price range has been right ${pct}% of the time (${r.nTested} weeks of history)`);
+  }
+  const st = point ? MuntinStaleness.stalenessOf(point, {}) : null;
+  if (st) bits.push(st.overdue
+    ? (es ? `lectura con ${st.staleDays} días de atraso para su cadencia` : `${st.staleDays} days overdue for its source's cadence`)
+    : (es ? 'al día para la cadencia de su fuente' : 'current for its source’s cadence'));
+  if (!bits.length) return '';
+  return `<p class="ci-read__verified"><strong>${es ? 'Verificado' : 'Verified'}:</strong> ${bits.join(' · ')}.</p>`;
+}
 const checkMode  = process.argv.includes('--check');
 const onlyArg    = (process.argv.find((a) => a.startsWith('--only=')) || '').slice('--only='.length);
 const ONLY       = onlyArg ? new Set(onlyArg.split(',').map((s) => s.trim()).filter(Boolean)) : null;
@@ -266,7 +304,86 @@ const ING_META = {
   'butter':          { cat: 'dairy-eggs', drivers: ['corn', 'soybeans', 'diesel'] },
   'cheddar-cheese':  { cat: 'dairy-eggs', drivers: ['corn', 'soybeans', 'diesel'] },
   'eggs':            { cat: 'dairy-eggs', drivers: ['corn', 'soybeans', 'diesel'] },
-  'vegetable-oil':   { cat: 'pantry',     drivers: ['soybeans', 'diesel'] }
+  'vegetable-oil':   { cat: 'pantry',     drivers: ['soybeans', 'diesel'] },
+  // Batch 1 (high-traffic) — labels already curated in data/cost-index-labels.json.
+  'ground-beef':     { cat: 'beef',       drivers: ['corn', 'soybeans', 'diesel'] },
+  'short-rib':       { cat: 'beef',       drivers: ['corn', 'soybeans', 'diesel'] },
+  'chicken-thigh':   { cat: 'poultry',    drivers: ['corn', 'soybeans', 'diesel'] },
+  'whole-salmon':    { cat: 'seafood',    drivers: ['diesel'] },
+  'tuna-loin':       { cat: 'seafood',    drivers: ['diesel'] },
+  'bell-pepper':     { cat: 'produce',    drivers: ['diesel'] },
+  'garlic':          { cat: 'produce',    drivers: ['diesel'] },
+  'avocado':         { cat: 'produce',    drivers: ['diesel'] },
+  'lemon':           { cat: 'produce',    drivers: ['diesel'] },
+  'button-mushroom': { cat: 'produce',    drivers: ['diesel'] },
+  'cucumber':        { cat: 'produce',    drivers: ['diesel'] },
+  'broccoli':        { cat: 'produce',    drivers: ['diesel'] },
+  'cauliflower':       { cat: 'produce',    drivers: ['diesel'] },
+  'spinach':           { cat: 'produce',    drivers: ['diesel'] },
+  'asparagus':         { cat: 'produce',    drivers: ['diesel'] },
+  'carrot':            { cat: 'produce',    drivers: ['diesel'] },
+  'corn-on-the-cob':   { cat: 'produce',    drivers: ['diesel'] },
+  'kale':              { cat: 'produce',    drivers: ['diesel'] },
+  'basil':             { cat: 'produce',    drivers: ['diesel'] },
+  'cilantro':          { cat: 'produce',    drivers: ['diesel'] },
+  'sweet-potato':      { cat: 'produce',    drivers: ['diesel'] },
+  'lime':              { cat: 'produce',    drivers: ['diesel'] },
+  'pineapple':         { cat: 'produce',    drivers: ['diesel'] },
+  'whole-lobster':     { cat: 'seafood',    drivers: ['diesel'] },
+  'celery':            { cat: 'produce',    drivers: ['diesel'] },
+  'cabbage':           { cat: 'produce',    drivers: ['diesel'] },
+  'eggplant':          { cat: 'produce',    drivers: ['diesel'] },
+  'zucchini':          { cat: 'produce',    drivers: ['diesel'] },
+  'beet':              { cat: 'produce',    drivers: ['diesel'] },
+  'leek':              { cat: 'produce',    drivers: ['diesel'] },
+  'ginger':            { cat: 'produce',    drivers: ['diesel'] },
+  'yellow-squash':     { cat: 'produce',    drivers: ['diesel'] },
+  'jalapeno':          { cat: 'produce',    drivers: ['diesel'] },
+  'green-onion':       { cat: 'produce',    drivers: ['diesel'] },
+  'green-beans':       { cat: 'produce',    drivers: ['diesel'] },
+  'parsley':           { cat: 'produce',    drivers: ['diesel'] },
+  'brussels-sprouts':  { cat: 'produce',    drivers: ['diesel'] },
+  'butternut-squash':  { cat: 'produce',    drivers: ['diesel'] },
+  'iceberg-lettuce':   { cat: 'produce',    drivers: ['diesel'] },
+  'bok-choy':          { cat: 'produce',    drivers: ['diesel'] },
+  'artichoke':         { cat: 'produce',    drivers: ['diesel'] },
+  'okra':              { cat: 'produce',    drivers: ['diesel'] },
+  'snow-peas':         { cat: 'produce',    drivers: ['diesel'] },
+  'butter-lettuce':    { cat: 'produce',    drivers: ['diesel'] },
+  'green-leaf-lettuce': { cat: 'produce',    drivers: ['diesel'] },
+  'red-leaf-lettuce':  { cat: 'produce',    drivers: ['diesel'] },
+  'collard-greens':    { cat: 'produce',    drivers: ['diesel'] },
+  'napa-cabbage':      { cat: 'produce',    drivers: ['diesel'] },
+  'rutabaga':          { cat: 'produce',    drivers: ['diesel'] },
+  'daikon':            { cat: 'produce',    drivers: ['diesel'] },
+  'cherry-tomato':     { cat: 'produce',    drivers: ['diesel'] },
+  'acorn-squash':      { cat: 'produce',    drivers: ['diesel'] },
+  'serrano-pepper':    { cat: 'produce',    drivers: ['diesel'] },
+  'poblano-pepper':    { cat: 'produce',    drivers: ['diesel'] },
+  'habanero-pepper':   { cat: 'produce',    drivers: ['diesel'] },
+  'mint':              { cat: 'produce',    drivers: ['diesel'] },
+  'rosemary':          { cat: 'produce',    drivers: ['diesel'] },
+  'thyme':             { cat: 'produce',    drivers: ['diesel'] },
+  'oregano':           { cat: 'produce',    drivers: ['diesel'] },
+  'tarragon':          { cat: 'produce',    drivers: ['diesel'] },
+  'dill':              { cat: 'produce',    drivers: ['diesel'] },
+  'red-onion':         { cat: 'produce',    drivers: ['diesel'] },
+  'red-potato':        { cat: 'produce',    drivers: ['diesel'] },
+  'grapefruit':        { cat: 'produce',    drivers: ['diesel'] },
+  'apple':             { cat: 'produce',    drivers: ['diesel'] },
+  'pear':              { cat: 'produce',    drivers: ['diesel'] },
+  'banana':            { cat: 'produce',    drivers: ['diesel'] },
+  'watermelon':        { cat: 'produce',    drivers: ['diesel'] },
+  'cantaloupe':        { cat: 'produce',    drivers: ['diesel'] },
+  'blueberry':         { cat: 'produce',    drivers: ['diesel'] },
+  'raspberry':         { cat: 'produce',    drivers: ['diesel'] },
+  'whole-turkey':      { cat: 'poultry',    drivers: ['corn', 'soybeans', 'diesel'] },
+  'whole-halibut':     { cat: 'seafood',    drivers: ['diesel'] },
+  'whole-trout':       { cat: 'seafood',    drivers: ['diesel'] },
+  'scallops':          { cat: 'seafood',    drivers: ['diesel'] },
+  'whole-crab':        { cat: 'seafood',    drivers: ['diesel'] },
+  'octopus':           { cat: 'seafood',    drivers: ['diesel'] },
+  'salmon-skin-on-fillet':{ cat: 'seafood',    drivers: ['diesel'] },
 };
 // Hub display order, grouped by category.
 const CATEGORY_ORDER = ['beef', 'poultry', 'pork', 'seafood', 'produce', 'dairy-eggs', 'pantry'];
@@ -373,7 +490,10 @@ function movingNowSection(slugs, locale) {
     const base = es ? '/es' : '';
     return `<li class="ci-moving-item">${verdictChip(x.v, locale)}<a href="${base}/cost-index/${x.s}/">${escHtml(nm)}</a> <span class="ci-moving-reason">— ${escHtml(reasonFor(x.s, x.v, locale))}</span></li>`;
   }).join('');
-  return `<section class="ci-moving"><h2 class="ci-cat-h" id="moving">${head}</h2><ul class="ci-moving-list">${lis}</ul></section>`;
+  const key = es
+    ? `<strong>Re-precificar</strong> = una subida que parece durar · <strong>Vigilar</strong> = un movimiento real, aún sin confirmar · <strong>Mantener</strong> = dentro de su rango normal`
+    : `<strong>Re-price</strong> = a rise that looks durable · <strong>Watch</strong> = a real move, not yet confirmed · <strong>Hold</strong> = within its normal range`;
+  return `<section class="ci-moving"><h2 class="ci-cat-h" id="moving">${head}</h2><p class="ci-vkey">${key}</p><ul class="ci-moving-list">${lis}</ul></section>`;
 }
 
 // ---- History sparkline + "normally X–Y, right now Z" capsule -------
@@ -420,7 +540,11 @@ function sparkBlock(r, locale) {
   const recent = vals.slice(Math.max(0, vals.length - 13), vals.length - 1);
   const above = recent.filter((v) => now > v).length;
   const rank = recent.length >= 8
-    ? (es ? `Más alto que ${above} de sus últimas ${recent.length} lecturas.` : `Higher than ${above} of its last ${recent.length} reads.`)
+    ? (above === 0
+        ? (es ? `Más bajo que cada una de sus últimas ${recent.length} lecturas.` : `Lower than every one of its last ${recent.length} reads.`)
+        : above === recent.length
+        ? (es ? `Más alto que cada una de sus últimas ${recent.length} lecturas.` : `Higher than every one of its last ${recent.length} reads.`)
+        : (es ? `Más alto que ${above} de sus últimas ${recent.length} lecturas.` : `Higher than ${above} of its last ${recent.length} reads.`))
     : '';
   const alt = (es ? 'Precio ' : 'Price ') + shape + '. ' + capsule + (rank ? ' ' + rank : '');
   const svg = MuntinSparkline.render(vals, {
@@ -433,10 +557,28 @@ function sparkBlock(r, locale) {
 }
 
 // ---- The visible "Market read" data block --------------------------
+// The 5-second answer, promoted above the lede: direction · price range · as-of · verdict.
+// Reuses the same helpers as the full reading so the two can never disagree.
+function answerBanner(slug, locale) {
+  const r = readingOf(slug);
+  if (!r || !r.emitRange || !Array.isArray(r.rc)) return '';
+  const es = locale === 'es';
+  const lab = LABELS[slug] || {};
+  const unit = (es ? (lab.unit_es || lab.unit_en) : lab.unit_en) || '';
+  const unitSfx = unit ? `/${unit}` : '';
+  const range = r.rc[0] !== r.rc[1] ? `${money(r.rc[0])}–${money(r.rc[1])}` : money(r.rc[0]);
+  const dw = r.trend && r.trend.dir ? dirWord(r.trend, locale) : '';
+  const asOf = r.asOf || '—';
+  const chip = verdictChip(ingVerdict(slug), locale);
+  return `<p class="ci-answer">${dw ? `<strong>${dw}</strong> · ` : ''}~${range}${unitSfx} · ${es ? 'al' : 'as of'} ${asOf} ${chip}</p>`;
+}
+
 function marketReadBlock(slug, locale) {
   const r = readingOf(slug);
   if (!r) return '';
   const es = locale === 'es';
+  const point = r.entry && Array.isArray(r.entry.points) ? r.entry.points[0] : null;
+  const verified = verifiedNote(slug, r.entry, point, locale);
   const verdict = verdictLine(r.entry.flag, r.conf, locale);
   const spark = sparkBlock(r, locale);
   const lab = LABELS[slug] || {};
@@ -496,7 +638,7 @@ function marketReadBlock(slug, locale) {
   const shortList = [...new Set((r.point.provenance || []).map((p) => shortSource(p.source)))];
   const disclaimer = r.basis === 'retail'
     ? (es ? 'Referencia minorista, no el precio mayorista ni el entregado que pagas.' : 'Retail reference, not the wholesale or delivered price you pay.')
-    : (es ? 'Referencia mayorista, no el precio entregado que pagas.' : 'Wholesale reference, not the delivered price you pay.');
+    : (es ? 'Referencia mayorista (aproximadamente lo que pagan los distribuidores), no el precio entregado que pagas.' : 'Wholesale reference (roughly what distributors pay), not the delivered price you pay.');
   const srcBody = `${(shortList.length ? shortList.join(' · ') : agencies.map((a) => a.name).join(' · '))} — ${es ? 'datos públicos' : 'public data'}, ${es ? 'al' : 'as of'} ${asOf}. ${disclaimer}`;
   const liveLabel = es ? `Ver ${(lab.es || lab.en || slug).toLowerCase()} en vivo en Cost Pulse` : `See ${(lab.en || slug).toLowerCase()} live in Cost Pulse`;
   return `
@@ -504,6 +646,9 @@ function marketReadBlock(slug, locale) {
     <p class="ci-read__head">${head}<span class="ci-read__badge">${badge}</span></p>
     <p class="ci-read__line">${line}</p>${trendLine}${verdict}${spark}
     <details class="ci-read__src"><summary>${es ? 'Fuentes' : 'Sources'} · ${(shortList.length || agencies.length)}</summary><div>${srcBody}</div></details>
+    ${verified}
+    <p class="ci-read__method"><a href="${es ? '/es' : ''}/cost-index/methodology/#track-record">${es ? 'Cómo verificamos este número' : 'How we verify this number'} <span aria-hidden="true">→</span></a></p>
+    <p class="ci-read__data">${es ? 'Descarga los datos' : 'Download this series'}: <a href="/cost-index/${slug}/series.csv" download>CSV</a> · <a href="/cost-index/${slug}/series.json">JSON</a></p>
     <p class="ci-read__live"><a href="${es ? '/es' : ''}/tools/cost-pulse/#ci-${slug}">${liveLabel} <span aria-hidden="true">→</span></a></p>
   </aside>`;
 }
@@ -695,7 +840,7 @@ function pageHead(opts) {
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
 <style>
-:root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--white:#fff;--line:#E3E5E9;--font-display:'Fraunces',Georgia,serif;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+:root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--white:#fff;--line:#E3E5E9;--teal-wash:rgba(42,80,200,.06);--font-display:'Fraunces',Georgia,serif;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
 html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
 .container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
@@ -722,6 +867,7 @@ main{padding-top:64px}
 .ci-eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
 .ci-eyebrow a{color:var(--teal);text-decoration:none}
 .ci-hero h1{font-family:var(--font-display);font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.12;color:var(--ink);margin:0 0 14px}
+.ci-answer{font-size:clamp(18px,3vw,22px);font-weight:600;color:var(--ink);margin:0 0 14px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
 .ci-lede{font-size:18px;line-height:1.6;color:var(--ink);margin:0;max-width:720px}
 .ci-body{margin:8px auto 0;max-width:760px}
 .ci-body h2{font-family:var(--font-display);font-size:clamp(20px,3vw,26px);font-weight:500;color:var(--ink);margin:34px 0 10px;line-height:1.2}
@@ -736,7 +882,7 @@ main{padding-top:64px}
 .ci-read__verdict{margin:10px 0 0;font-size:15px;line-height:1.5;color:var(--ink)}
 .ci-read__verb{display:inline-block;font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-right:8px;vertical-align:1px;background:var(--cream);border:1px solid var(--line);color:var(--ink-soft)}
 .ci-read__verb[data-bias="hold"]{color:#2A50C8;border-color:#2A50C8}
-.ci-read__verb[data-bias="watch"]{color:#8a6d1f;border-color:#cdb368}
+.ci-read__verb[data-bias="watch"]{color:#6b540f;border-color:#9a7d2e}
 .ci-read__verb[data-bias="re-price"]{color:#A23B2D;border-color:#A23B2D}
 .ci-read__spark{margin:12px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
 .ci-read__spark .mtn-spark{flex:0 0 auto;overflow:visible}
@@ -749,8 +895,12 @@ main{padding-top:64px}
 .ci-read__src{margin-top:8px;font-size:12.5px}
 .ci-read__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
 .ci-read__src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
-.ci-read__live{margin:10px 0 0;font-size:14px}
-.ci-read__live a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-read__verified{margin:10px 0 0;font-size:13px;color:var(--ink);background:var(--teal-wash);border-left:3px solid var(--teal);padding:6px 10px;border-radius:3px}
+.ci-read__verified strong{color:var(--teal)}
+.ci-read__live,.ci-read__method{margin:10px 0 0;font-size:14px}
+.ci-read__live a,.ci-read__method a,.ci-read__data a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-read__method{margin-top:6px;font-size:13px}
+.ci-read__data{margin:4px 0 0;font-size:13px;color:var(--ink-soft)}
 .ci-faq{margin:34px 0 0}
 .ci-faq__item{margin:0 0 18px}
 .ci-faq__q{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink);margin:0 0 6px}
@@ -759,6 +909,10 @@ main{padding-top:64px}
 .ci-sibs-label{display:inline-block;font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:11px;margin-right:8px}
 .ci-sibs a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 8px}
+.ci-orient{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));margin:18px 0 8px}
+.ci-orient__cell{background:var(--cream-2);border-radius:6px;padding:14px 16px}
+.ci-orient__h{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+.ci-orient__b{font-size:14px;line-height:1.5;color:var(--ink);margin:0}
 .ci-source{font-size:12.5px;color:var(--ink-soft);margin:24px 0 40px}
 .ci-source a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));margin:14px 0 0}
@@ -776,6 +930,8 @@ main{padding-top:64px}
 .ci-moving-item a:hover{color:var(--teal)}
 .ci-moving-reason{color:var(--ink-soft);font-size:14px}
 .ci-moving-calm{margin:0;font-size:15.5px;color:var(--ink)}
+.ci-vkey{margin:2px 0 12px;font-size:12.5px;color:var(--ink-soft);line-height:1.6}
+.ci-vkey strong{color:var(--ink)}
 .ci-card--pending{opacity:.72;background:var(--cream-2)}
 .ci-card--pending a{color:var(--ink-soft)}
 .ci-pending-note{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
@@ -792,6 +948,38 @@ main{padding-top:64px}
 .ci-outlook__panel li{margin:0 0 4px}
 .ci-outlook__lab{margin:10px 0 0;font-size:13.5px}
 .ci-outlook__lab a{color:#6b4fa1;text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+/* a11y: a keyboard/switch user must always see focus (only the skip-link had one). */
+.ci-card a:focus-visible,.ci-read a:focus-visible,.ci-sibs a:focus-visible,.breadcrumb a:focus-visible,.ci-source a:focus-visible,summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:2px}
+/* touch: lift the drawer summaries to a real tap target (WCAG 2.5.8). */
+.ci-read__src summary,.ci-outlook__how summary{display:inline-block;padding:6px 0;min-height:24px}
+/* the pre-rendered sparkline must never clip in a narrower container. */
+.mtn-spark{max-width:100%;height:auto}
+/* print: the controller-PDFs-a-reading-for-a-vendor workflow. Drop the chrome, force the
+   provenance drawers open, and print the verdict with a border + its word (never color-only). */
+@media print{
+  .nav,.ci-cta-row,.ci-sibs,.ci-read__live,.ci-read__method,.skip-link,form,footer{display:none!important}
+  main{padding-top:0!important}
+  body{background:#fff!important;color:#000!important}
+  .ci-read{break-inside:avoid;border-color:#000}
+  details>*:not(summary){display:block!important}
+  details summary{font-weight:700}
+  .ci-read__verb{border:1px solid #000!important;color:#000!important;background:#fff!important}
+  a[href]::after{content:""!important}
+}
+/* dark mode: the inline tokens hardcoded light, so the reading area stayed cream in dark.
+   Redefine the cost-index tokens (light text on dark = high-contrast by construction) and
+   lighten the three verdict accents so they stay legible. Honors OS preference AND the
+   site theme toggle ([data-theme]); a forced-light toggle wins over OS dark. */
+:root[data-theme="dark"]{--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12)}
+:root[data-theme="dark"] .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
+:root[data-theme="dark"] .ci-read__verb[data-bias="watch"]{color:#d8bd6a;border-color:#8a7530}
+:root[data-theme="dark"] .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12)}
+  :root:not([data-theme="light"]) .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
+  :root:not([data-theme="light"]) .ci-read__verb[data-bias="watch"]{color:#d8bd6a;border-color:#8a7530}
+  :root:not([data-theme="light"]) .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
+}
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=${SHELL_HASH.core}" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=${SHELL_HASH.article}" onload="this.onload=null;this.rel='stylesheet'">
@@ -1130,6 +1318,7 @@ function emitIngredientPage(slug, locale) {
   <section class="ci-hero">
     <p class="ci-eyebrow"><a href="${base}/cost-index/#${meta.cat}">${escHtml(es ? cat.es : cat.en)}</a></p>
     <h1>${escHtml(name)}</h1>
+    ${answerBanner(slug, locale)}
     <p class="ci-lede">${lede}</p>
   </section>
   <div class="ci-body">
@@ -1154,6 +1343,22 @@ function hubCardNote(slug, locale) {
   const lab = LABELS[slug] || {};
   const unit = (es ? (lab.unit_es || lab.unit_en) : lab.unit_en) || (es ? 'unidad' : 'unit');
   return es ? `por ${unit}, referencia mayorista` : `per ${unit}, wholesale reference`;
+}
+
+// Front-door orientation: a first-timer learns what this is, who it's for, and the one
+// thing that makes it defensible (citable public data, not a paywalled assessed quote).
+function hubOrientation(locale) {
+  const es = locale === 'es';
+  const cells = es ? [
+    ['Qué es', 'Rangos mayoristas típicos de ingredientes comunes de restaurante, tomados de reportes públicos del USDA, BLS y FRED.'],
+    ['Para quién', 'Distingue un movimiento real del mercado del recargo de tu proveedor — antes de ajustar el precio de un plato.'],
+    ['En qué se diferencia', 'Cada número se rastrea hasta un reporte público con fecha que puedes abrir. No una cotización valorada de pago — un número que puedes verificar.'],
+  ] : [
+    ['What it is', 'Typical wholesale ranges for common restaurant ingredients, drawn from public USDA, BLS and FRED reports.'],
+    ['Who it’s for', 'Tell a real market move from your vendor’s markup — before you re-price a dish.'],
+    ['How it’s different', 'Every number traces to a dated public report you can open. Not a paywalled, assessed quote — a number you can check.'],
+  ];
+  return `<div class="ci-orient">${cells.map(([h, b]) => `<div class="ci-orient__cell"><p class="ci-orient__h">${h}</p><p class="ci-orient__b">${b}</p></div>`).join('')}</div>`;
 }
 
 function emitHubPage(locale, slugs) {
@@ -1243,9 +1448,11 @@ function emitHubPage(locale, slugs) {
   <div class="ci-body">
     <div class="ci-cta-row">
       <a class="btn btn-primary" href="${base}/tools/cost-pulse/">${es ? 'Abrir Cost Pulse' : 'Open Cost Pulse'}</a>
+      <a class="btn btn-ghost" href="${base}/cost-index/methodology/">${es ? 'Cómo funciona' : 'How this index works'}</a>
       ${anyPressureProven() ? `<a class="btn btn-ghost" href="${base}/cost-index/lab/">${es ? 'Laboratorio de Presión' : 'Pressure Lab'}</a>` : ''}
       <a class="btn btn-ghost" href="${base}/glossary/cost-index/">${es ? '¿Qué es un índice de costos?' : 'What is a cost index?'}</a>
     </div>
+    ${hubOrientation(locale)}
     ${movingNowSection(shipSlugs, locale)}
     ${sections}
     ${pendingSection}

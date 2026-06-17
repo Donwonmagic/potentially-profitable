@@ -178,6 +178,10 @@
         "type": "imf",
         "_status": "STAGED verified:false — confirm via `--discover-fred \"global price fish salmon\"` (try PSALMUSDM / PFISHUSDM). Independent trend type beyond NOAA ex-vessel + BLS.",
         "_report": "FRED/IMF Global price of Fish/Salmon (index, monthly)."
+      },
+      "bls": {
+        "seriesId": "WPU02230103",
+        "_report": "BLS PPI Salmon (3rd independent type alongside NOAA + IMF; confirmed live)."
       }
     },
     "shrimp": {
@@ -329,7 +333,11 @@
           "reducer": "mostlyMid",
           "unit": "carton"
         }
-      ]
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "_report": "BLS PPI Tomatoes (own per-commodity index — confirmed live 2026-06-15 probe)."
+      }
     },
     "onion": {
       "verified": true,
@@ -618,7 +626,11 @@
           "reducer": "mostlyMid",
           "unit": "carton"
         }
-      ]
+      ],
+      "bls": {
+        "seriesId": "WPU01130228",
+        "_report": "BLS PPI Green Peppers (confirmed live)."
+      }
     },
     "broccoli": {
       "verified": true,
@@ -1486,7 +1498,11 @@
           "reducer": "mostlyMid",
           "unit": "carton"
         }
-      ]
+      ],
+      "bls": {
+        "seriesId": "WPU01110104",
+        "_report": "BLS PPI Lemons (confirmed live)."
+      }
     },
     "lime": {
       "verified": true,
@@ -1701,6 +1717,10 @@
         "family": "imf-salmon",
         "type": "imf",
         "_report": "FRED/IMF Global price of Fish/Salmon (index, monthly). Species-coherent 2nd trend type (replaces the retired WPU0223 grab-bag)."
+      },
+      "bls": {
+        "seriesId": "WPU02230103",
+        "_report": "BLS PPI Salmon (confirmed live)."
       }
     },
     "tuna-loin": {
@@ -1823,7 +1843,11 @@
           "reducer": "mostlyMid",
           "unit": "carton"
         }
-      ]
+      ],
+      "bls": {
+        "seriesId": "WPU01130234",
+        "_report": "BLS PPI Cucumbers (confirmed live)."
+      }
     },
     "celery": {
       "verified": true,
@@ -2025,7 +2049,11 @@
           "reducer": "mostlyMid",
           "unit": "carton"
         }
-      ]
+      ],
+      "bls": {
+        "seriesId": "WPU01130229",
+        "_report": "BLS PPI Eggplant (confirmed live)."
+      }
     },
     "zucchini": {
       "verified": true,
@@ -2149,7 +2177,11 @@
           "reducer": "mostlyMid",
           "unit": "carton"
         }
-      ]
+      ],
+      "bls": {
+        "seriesId": "WPU01130232",
+        "_report": "BLS PPI Beets (confirmed live)."
+      }
     },
     "leek": {
       "verified": true,
@@ -3571,7 +3603,11 @@
           "reducer": "mostlyMid",
           "unit": "carton"
         }
-      ]
+      ],
+      "bls": {
+        "seriesId": "WPU01130217",
+        "_report": "BLS PPI Tomatoes (proxy for cherry; generic tomato code)."
+      }
     },
     "acorn-squash": {
       "verified": true,
@@ -4565,7 +4601,11 @@
           "unit": "sack"
         }
       ],
-      "coverage": "Staged: AMS commodity term resolved (\"ROUND RED\"), pending live verification."
+      "coverage": "Staged: AMS commodity term resolved (\"ROUND RED\"), pending live verification.",
+      "bls": {
+        "seriesId": "WPU01130604",
+        "_report": "BLS PPI Round Red Potatoes (confirmed live)."
+      }
     },
     "grapefruit": {
       "verified": true,
@@ -4627,7 +4667,11 @@
           "reducer": "mostlyMid",
           "unit": "carton"
         }
-      ]
+      ],
+      "bls": {
+        "seriesId": "WPU01110101",
+        "_report": "BLS PPI Grapefruits (confirmed live)."
+      }
     },
     "apple": {
       "verified": true,
@@ -5380,6 +5424,10 @@
         "family": "imf-salmon",
         "type": "imf",
         "_report": "FRED/IMF Global price of Fish/Salmon (index, monthly). Species-coherent 2nd trend type (replaces the retired WPU0223 grab-bag)."
+      },
+      "bls": {
+        "seriesId": "WPU02230103",
+        "_report": "BLS PPI Salmon (confirmed live)."
       }
     },
     "clams": {
@@ -5397,7 +5445,11 @@
         "_status": "STAGED verified:false — confirm via --list-commodities/--discover, tighten bounds, --flip after --verify. NOAA import value runs below a usable wholesale level → basis:index, TREND/direction only",
         "commodity": "clams"
       },
-      "coverage": "NOAA import index only (no dollar level); WPU0223 retired → directional, no species corroborator yet. Pending own-seafood-data sourcing."
+      "coverage": "NOAA import index only (no dollar level); WPU0223 retired → directional, no species corroborator yet. Pending own-seafood-data sourcing.",
+      "bls": {
+        "seriesId": "WPU02230504",
+        "_report": "BLS PPI Clams (own species index; confirmed live — replaces lost corroboration)."
+      }
     },
     "squid": {
       "verified": true,
