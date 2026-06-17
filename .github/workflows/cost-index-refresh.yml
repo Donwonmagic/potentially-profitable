@@ -149,6 +149,52 @@ jobs:
           git commit -m "data(cost-index): daily read $(date -u +%F)"
           git push
 
+      - name: Publish the dispatch if it has fallen behind the data
+        if: steps.keys.outputs.configured == 'true'
+        # Self-healing safety net for the weekly write-up. The Tuesday dispatch
+        # workflow normally keeps blog/cost-index-week-<asOf>/ within a week of the
+        # data. If that single weekly run is ever missed (cron skipped, a red gate,
+        # the broadcast secret lapsed), the published post drifts behind the fresh
+        # data we just committed — exactly the 2026-06-16 drift. The freshness gate
+        # detects that lag; when it trips, publish the dated post NOW so the write-up
+        # can never trail the index by more than a week, whatever happened on Tuesday.
+        #
+        # POST ONLY — this never POSTs the broadcast. The weekly EMAIL stays the
+        # dispatch workflow's job (idempotent per week), so a daily refresh can never
+        # mail subscribers. Worst case the post publishes here and Tuesday's run finds
+        # it already current and just sends the email.
+        run: |
+          set -e
+          if node scripts/check-cost-index-dispatch-fresh.mjs; then
+            echo "Dispatch is current — no catch-up post needed."
+            exit 0
+          fi
+          echo "Dispatch has fallen behind the data — publishing the dated post."
+          # Same emit + register chain the weekly dispatch runs (minus the broadcast).
+          node scripts/build-cost-index-dispatch.mjs
+          node scripts/sync-includes.mjs
+          node scripts/build-library-recent.mjs              || true
+          node scripts/wire-glossary-knit.mjs                || true
+          node scripts/inject-glossary-article-backlinks.mjs || true
+          node scripts/build-rss.mjs                          || true
+          node scripts/build-sitemap.mjs                      || true
+          node scripts/build-llms-txt.mjs                     || true
+          # Gate the generated post — fail the run before committing if it's malformed.
+          node scripts/check-article-graphics.mjs
+          ASOF=$(node -e 'console.log((require("fs").readFileSync("data/cost-index.js","utf8").match(/"generatedAt"\s*:\s*"(\d{4}-\d{2}-\d{2})"/)||[])[1]||"")')
+          # Scoped commit: only the post + its registration surfaces (git identity is
+          # already configured by the daily-read commit step earlier in this job).
+          git add "blog/cost-index-week-${ASOF}/" "es/blog/cost-index-week-${ASOF}/" \
+                  blog/index.html feed.xml sitemap.xml llms.txt data/library-tags.json \
+                  glossary 2>/dev/null || true
+          git checkout -- . 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "Nothing to commit for the catch-up post."
+          else
+            git commit -m "data(cost-index): catch-up dispatch ${ASOF}"
+            git push
+          fi
+
       - name: Heartbeat freshness check
         if: steps.keys.outputs.configured == 'true'
         # Keys are set, so the index IS expected to be current. On a DAILY cadence
