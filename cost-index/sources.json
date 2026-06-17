@@ -1,0 +1,2410 @@
+{
+  "name": "Muntin Restaurant Cost Index — source provenance",
+  "description": "Per-ingredient provenance for the Cost Index: every published reading mapped to the public U.S. government data series behind it, by report identifier. Method: https://muntin.digital/cost-index/methodology/. Public-domain inputs; estimates and gaps are labeled on the index itself.",
+  "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "methodology": "https://muntin.digital/cost-index/methodology/",
+  "index": "https://muntin.digital/cost-index/",
+  "data": "https://muntin.digital/cost-index/index.json",
+  "lastReviewed": "2026-06-16",
+  "count": 82,
+  "ingredients": [
+    {
+      "slug": "ribeye",
+      "name": "Ribeye",
+      "sources": [
+        {
+          "agency": "USDA Livestock, Poultry & Grain Market News",
+          "reportId": "2453",
+          "url": "https://www.ams.usda.gov/market-news/livestock-poultry-grain"
+        },
+        {
+          "agency": "U.S. Bureau of Labor Statistics (PPI)",
+          "seriesId": "WPU022101",
+          "url": "https://www.bls.gov/ppi/"
+        },
+        {
+          "agency": "FRED, Federal Reserve Bank of St. Louis",
+          "seriesId": "APU0000FC3101",
+          "url": "https://fred.stlouisfed.org/"
+        }
+      ]
+    },
+    {
+      "slug": "beef-tenderloin",
+      "name": "Beef tenderloin",
+      "sources": [
+        {
+          "agency": "USDA Livestock, Poultry & Grain Market News",
+          "reportId": "2453",
+          "url": "https://www.ams.usda.gov/market-news/livestock-poultry-grain"
+        },
+        {
+          "agency": "U.S. Bureau of Labor Statistics (PPI)",
+          "seriesId": "WPU022101",
+          "url": "https://www.bls.gov/ppi/"
+        },
+        {
+          "agency": "FRED, Federal Reserve Bank of St. Louis",
+          "seriesId": "APU0000FC3101",
+          "url": "https://fred.stlouisfed.org/"
+        }
+      ]
+    },
+    {
+      "slug": "chicken-breast",
+      "name": "Chicken breast (boneless)",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportId": "3646",
+          "url": "https://www.ams.usda.gov/market-news"
+        },
+        {
+          "agency": "U.S. Bureau of Labor Statistics (PPI)",
+          "seriesId": "WPU0222",
+          "url": "https://www.bls.gov/ppi/"
+        },
+        {
+          "agency": "FRED, Federal Reserve Bank of St. Louis",
+          "seriesId": "APU0000FF1101",
+          "url": "https://fred.stlouisfed.org/"
+        }
+      ]
+    },
+    {
+      "slug": "whole-chicken",
+      "name": "Whole chicken",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportId": "3646",
+          "url": "https://www.ams.usda.gov/market-news"
+        },
+        {
+          "agency": "U.S. Bureau of Labor Statistics (PPI)",
+          "seriesId": "WPU0222",
+          "url": "https://www.bls.gov/ppi/"
+        },
+        {
+          "agency": "FRED, Federal Reserve Bank of St. Louis",
+          "seriesId": "APU0000706111",
+          "url": "https://fred.stlouisfed.org/"
+        }
+      ]
+    },
+    {
+      "slug": "pork-loin",
+      "name": "Pork loin",
+      "sources": [
+        {
+          "agency": "USDA Livestock, Poultry & Grain Market News",
+          "reportId": "2498",
+          "url": "https://www.ams.usda.gov/market-news/livestock-poultry-grain"
+        },
+        {
+          "agency": "U.S. Bureau of Labor Statistics (PPI)",
+          "seriesId": "WPS022104",
+          "url": "https://www.bls.gov/ppi/"
+        },
+        {
+          "agency": "FRED, Federal Reserve Bank of St. Louis",
+          "seriesId": "APU0000FD3101",
+          "url": "https://fred.stlouisfed.org/"
+        }
+      ]
+    },
+    {
+      "slug": "pork-shoulder",
+      "name": "Pork shoulder",
+      "sources": [
+        {
+          "agency": "USDA Livestock, Poultry & Grain Market News",
+          "reportId": "2498",
+          "url": "https://www.ams.usda.gov/market-news/livestock-poultry-grain"
+        },
+        {
+          "agency": "U.S. Bureau of Labor Statistics (PPI)",
+          "seriesId": "WPS022104",
+          "url": "https://www.bls.gov/ppi/"
+        },
+        {
+          "agency": "FRED, Federal Reserve Bank of St. Louis",
+          "seriesId": "APU0000FD4101",
+          "url": "https://fred.stlouisfed.org/"
+        }
+      ]
+    },
+    {
+      "slug": "romaine-lettuce",
+      "name": "Romaine lettuce",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        },
+        {
+          "agency": "U.S. Bureau of Labor Statistics (PPI)",
+          "seriesId": "WPU01130215",
+          "url": "https://www.bls.gov/ppi/"
+        }
+      ]
+    },
+    {
+      "slug": "tomato",
+      "name": "Tomatoes (round)",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        },
+        {
+          "agency": "U.S. Bureau of Labor Statistics (PPI)",
+          "seriesId": "WPU01130217",
+          "url": "https://www.bls.gov/ppi/"
+        }
+      ]
+    },
+    {
+      "slug": "onion",
+      "name": "Onions",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2279",
+            "2283",
+            "2287",
+            "2292",
+            "2304",
+            "2308",
+            "2312",
+            "2316"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "russet-potato",
+      "name": "Russet potatoes",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2279",
+            "2283",
+            "2287",
+            "2292",
+            "2304",
+            "2308",
+            "2312",
+            "2316"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        },
+        {
+          "agency": "U.S. Bureau of Labor Statistics (PPI)",
+          "seriesId": "WPU01130603",
+          "url": "https://www.bls.gov/ppi/"
+        }
+      ]
+    },
+    {
+      "slug": "butter",
+      "name": "Butter (AA, bulk)",
+      "sources": [
+        {
+          "agency": "USDA Livestock, Poultry & Grain Market News",
+          "reportId": "2993",
+          "url": "https://www.ams.usda.gov/market-news/livestock-poultry-grain"
+        },
+        {
+          "agency": "U.S. Bureau of Labor Statistics (PPI)",
+          "seriesId": "WPU0232",
+          "url": "https://www.bls.gov/ppi/"
+        },
+        {
+          "agency": "FRED, Federal Reserve Bank of St. Louis",
+          "seriesId": "APU0000FS1101",
+          "url": "https://fred.stlouisfed.org/"
+        }
+      ]
+    },
+    {
+      "slug": "cheddar-cheese",
+      "name": "Cheddar cheese",
+      "sources": [
+        {
+          "agency": "USDA Livestock, Poultry & Grain Market News",
+          "reportId": "2993",
+          "url": "https://www.ams.usda.gov/market-news/livestock-poultry-grain"
+        },
+        {
+          "agency": "U.S. Bureau of Labor Statistics (PPI)",
+          "seriesId": "PCU3115133115131",
+          "url": "https://www.bls.gov/ppi/"
+        },
+        {
+          "agency": "FRED, Federal Reserve Bank of St. Louis",
+          "seriesId": "APU0000710212",
+          "url": "https://fred.stlouisfed.org/"
+        }
+      ]
+    },
+    {
+      "slug": "eggs",
+      "name": "Eggs",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportId": "2848",
+          "url": "https://www.ams.usda.gov/market-news"
+        },
+        {
+          "agency": "U.S. Bureau of Labor Statistics (PPI)",
+          "seriesId": "WPU017107",
+          "url": "https://www.bls.gov/ppi/"
+        },
+        {
+          "agency": "FRED, Federal Reserve Bank of St. Louis",
+          "seriesId": "APU0000708111",
+          "url": "https://fred.stlouisfed.org/"
+        }
+      ]
+    },
+    {
+      "slug": "ground-beef",
+      "name": "Ground beef",
+      "sources": [
+        {
+          "agency": "USDA Livestock, Poultry & Grain Market News",
+          "reportId": "2453",
+          "url": "https://www.ams.usda.gov/market-news/livestock-poultry-grain"
+        },
+        {
+          "agency": "U.S. Bureau of Labor Statistics (PPI)",
+          "seriesId": "WPU022101",
+          "url": "https://www.bls.gov/ppi/"
+        },
+        {
+          "agency": "FRED, Federal Reserve Bank of St. Louis",
+          "seriesId": "APU0000703112",
+          "url": "https://fred.stlouisfed.org/"
+        }
+      ]
+    },
+    {
+      "slug": "short-rib",
+      "name": "Short rib",
+      "sources": [
+        {
+          "agency": "USDA Livestock, Poultry & Grain Market News",
+          "reportId": "2453",
+          "url": "https://www.ams.usda.gov/market-news/livestock-poultry-grain"
+        },
+        {
+          "agency": "U.S. Bureau of Labor Statistics (PPI)",
+          "seriesId": "WPU022101",
+          "url": "https://www.bls.gov/ppi/"
+        },
+        {
+          "agency": "FRED, Federal Reserve Bank of St. Louis",
+          "seriesId": "APU0000FC3101",
+          "url": "https://fred.stlouisfed.org/"
+        }
+      ]
+    },
+    {
+      "slug": "chicken-thigh",
+      "name": "Chicken thigh",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportId": "3646",
+          "url": "https://www.ams.usda.gov/market-news"
+        },
+        {
+          "agency": "U.S. Bureau of Labor Statistics (PPI)",
+          "seriesId": "WPU0222",
+          "url": "https://www.bls.gov/ppi/"
+        }
+      ]
+    },
+    {
+      "slug": "bell-pepper",
+      "name": "Bell pepper",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        },
+        {
+          "agency": "U.S. Bureau of Labor Statistics (PPI)",
+          "seriesId": "WPU01130228",
+          "url": "https://www.bls.gov/ppi/"
+        }
+      ]
+    },
+    {
+      "slug": "garlic",
+      "name": "Garlic",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "avocado",
+      "name": "Avocado",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2277",
+            "2281",
+            "2285",
+            "2290",
+            "2302",
+            "2306",
+            "2310",
+            "2314"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "lemon",
+      "name": "Lemon",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2277",
+            "2281",
+            "2285",
+            "2290",
+            "2302",
+            "2306",
+            "2310",
+            "2314"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        },
+        {
+          "agency": "U.S. Bureau of Labor Statistics (PPI)",
+          "seriesId": "WPU01110104",
+          "url": "https://www.bls.gov/ppi/"
+        }
+      ]
+    },
+    {
+      "slug": "button-mushroom",
+      "name": "Button mushroom",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "cucumber",
+      "name": "Cucumber",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        },
+        {
+          "agency": "U.S. Bureau of Labor Statistics (PPI)",
+          "seriesId": "WPU01130234",
+          "url": "https://www.bls.gov/ppi/"
+        }
+      ]
+    },
+    {
+      "slug": "broccoli",
+      "name": "Broccoli",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "cauliflower",
+      "name": "Cauliflower",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "spinach",
+      "name": "Spinach",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "asparagus",
+      "name": "Asparagus",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "carrot",
+      "name": "Carrot",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "corn-on-the-cob",
+      "name": "Corn on the cob",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "kale",
+      "name": "Kale",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "basil",
+      "name": "Basil",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "cilantro",
+      "name": "Cilantro",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "sweet-potato",
+      "name": "Sweet potato",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "lime",
+      "name": "Lime",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2277",
+            "2281",
+            "2285",
+            "2290",
+            "2302",
+            "2306",
+            "2310",
+            "2314"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "pineapple",
+      "name": "Pineapple",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2277",
+            "2281",
+            "2285",
+            "2290",
+            "2302",
+            "2306",
+            "2310",
+            "2314"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "celery",
+      "name": "Celery",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "cabbage",
+      "name": "Cabbage",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "eggplant",
+      "name": "Eggplant",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        },
+        {
+          "agency": "U.S. Bureau of Labor Statistics (PPI)",
+          "seriesId": "WPU01130229",
+          "url": "https://www.bls.gov/ppi/"
+        }
+      ]
+    },
+    {
+      "slug": "zucchini",
+      "name": "Zucchini",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "beet",
+      "name": "Beet",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        },
+        {
+          "agency": "U.S. Bureau of Labor Statistics (PPI)",
+          "seriesId": "WPU01130232",
+          "url": "https://www.bls.gov/ppi/"
+        }
+      ]
+    },
+    {
+      "slug": "leek",
+      "name": "Leek",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "ginger",
+      "name": "Ginger root",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "yellow-squash",
+      "name": "Yellow squash",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "jalapeno",
+      "name": "Jalapeño",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "green-onion",
+      "name": "Green onion",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "green-beans",
+      "name": "Green beans",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "parsley",
+      "name": "Parsley",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "brussels-sprouts",
+      "name": "Brussels sprouts",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "butternut-squash",
+      "name": "Butternut squash",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "iceberg-lettuce",
+      "name": "Iceberg lettuce",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "bok-choy",
+      "name": "Bok choy",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "artichoke",
+      "name": "Artichoke",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "okra",
+      "name": "Okra",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "snow-peas",
+      "name": "Snow peas",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "butter-lettuce",
+      "name": "Butter lettuce",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "green-leaf-lettuce",
+      "name": "Green leaf lettuce",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "red-leaf-lettuce",
+      "name": "Red leaf lettuce",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "collard-greens",
+      "name": "Collard greens",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "napa-cabbage",
+      "name": "Napa cabbage",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "rutabaga",
+      "name": "Rutabaga",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "daikon",
+      "name": "Daikon radish",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "cherry-tomato",
+      "name": "Cherry tomatoes",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        },
+        {
+          "agency": "U.S. Bureau of Labor Statistics (PPI)",
+          "seriesId": "WPU01130217",
+          "url": "https://www.bls.gov/ppi/"
+        }
+      ]
+    },
+    {
+      "slug": "acorn-squash",
+      "name": "Acorn squash",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "serrano-pepper",
+      "name": "Serrano pepper",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "poblano-pepper",
+      "name": "Poblano pepper",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "habanero-pepper",
+      "name": "Habanero pepper",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "mint",
+      "name": "Mint",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "rosemary",
+      "name": "Rosemary",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "thyme",
+      "name": "Thyme",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "oregano",
+      "name": "Oregano",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "tarragon",
+      "name": "Tarragon",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "dill",
+      "name": "Dill",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "red-onion",
+      "name": "Red onion",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2279",
+            "2283",
+            "2287",
+            "2292",
+            "2304",
+            "2308",
+            "2312",
+            "2316"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "red-potato",
+      "name": "Red potato",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2279",
+            "2283",
+            "2287",
+            "2292",
+            "2304",
+            "2308",
+            "2312",
+            "2316"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        },
+        {
+          "agency": "U.S. Bureau of Labor Statistics (PPI)",
+          "seriesId": "WPU01130604",
+          "url": "https://www.bls.gov/ppi/"
+        }
+      ]
+    },
+    {
+      "slug": "grapefruit",
+      "name": "Grapefruit",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2277",
+            "2281",
+            "2285",
+            "2290",
+            "2302",
+            "2306",
+            "2310",
+            "2314"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        },
+        {
+          "agency": "U.S. Bureau of Labor Statistics (PPI)",
+          "seriesId": "WPU01110101",
+          "url": "https://www.bls.gov/ppi/"
+        }
+      ]
+    },
+    {
+      "slug": "apple",
+      "name": "Apples",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2277",
+            "2281",
+            "2285",
+            "2290",
+            "2302",
+            "2306",
+            "2310",
+            "2314"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "pear",
+      "name": "Pears",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2277",
+            "2281",
+            "2285",
+            "2290",
+            "2302",
+            "2306",
+            "2310",
+            "2314"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "banana",
+      "name": "Bananas",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2277",
+            "2281",
+            "2285",
+            "2290",
+            "2302",
+            "2306",
+            "2310",
+            "2314"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "watermelon",
+      "name": "Watermelon",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2277",
+            "2281",
+            "2285",
+            "2290",
+            "2302",
+            "2306",
+            "2310",
+            "2314"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "cantaloupe",
+      "name": "Cantaloupe",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2277",
+            "2281",
+            "2285",
+            "2290",
+            "2302",
+            "2306",
+            "2310",
+            "2314"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "blueberry",
+      "name": "Blueberries",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2277",
+            "2281",
+            "2285",
+            "2290",
+            "2302",
+            "2306",
+            "2310",
+            "2314"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "raspberry",
+      "name": "Raspberries",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2277",
+            "2281",
+            "2285",
+            "2290",
+            "2302",
+            "2306",
+            "2310",
+            "2314"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        }
+      ]
+    },
+    {
+      "slug": "whole-turkey",
+      "name": "Whole turkey",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "3647"
+          ],
+          "markets": [
+            "National"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        },
+        {
+          "agency": "U.S. Bureau of Labor Statistics (PPI)",
+          "seriesId": "WPU0222",
+          "url": "https://www.bls.gov/ppi/"
+        },
+        {
+          "agency": "FRED, Federal Reserve Bank of St. Louis",
+          "seriesId": "APU0000706311",
+          "url": "https://fred.stlouisfed.org/"
+        }
+      ]
+    }
+  ]
+}

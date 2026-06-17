@@ -373,6 +373,7 @@ const CHECKS = [
   ['Cost-index freshness (warn)','check-cost-index-freshness.mjs'],
   ['Cost-index freshness self-test','check-cost-index-freshness.mjs','--self-test'],
   ['Cost-index health (idem)','build-cost-index-health.mjs','--check'],
+  ['Cost-index provenance (idem)','build-cost-index-provenance.mjs','--check'],
   ['Cost-index health self-test','build-cost-index-health.mjs','--self-test'],
   // Seasonal baseline (D3) — a month earns a "typical" normal only once observed
   // across 2+ years; until then every ingredient sits in a transparent `building`
