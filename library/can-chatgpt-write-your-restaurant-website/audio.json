@@ -1,419 +1,451 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-08T22:35:32.975Z",
-  "engine": "kokoro",
-  "model": "kokoro-v1.0.onnx",
-  "voice": "am_michael",
+  "generatedAt": "2026-06-11T00:36:23.288Z",
+  "engine": "f5",
+  "model": "don-reference.m4a",
+  "voice": "f5:don-reference.m4a",
   "language": "en",
-  "total": 704.14,
+  "total": 647.68,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Leer este art&iacute;culo en espa&ntilde;ol &rarr;",
+      "text": "In short",
       "start": 0,
-      "end": 4.91
+      "end": 0.97
     },
     {
       "id": 1,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(2)",
-      "text": "TL;DR",
-      "start": 5.26,
-      "end": 6.24
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "ChatGPT is genuinely good at first-draft body copy, alt-text, and structured F A Q generation for restaurant sites.",
+      "start": 1.52,
+      "end": 7.3
     },
     {
       "id": 2,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "ChatGPT is genuinely good at first-draft body copy, alt-text, and structured F A Q generation for restaurant sites.",
-      "start": 6.59,
-      "end": 15.71
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Where it gets you quietly wrong: room-specific details, hyperlocal language, the menu's actual voice.",
+      "start": 7.8,
+      "end": 12.75
     },
     {
       "id": 3,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Where it gets you quietly wrong: room-specific details, hyperlocal language, the menu's actual voice.",
-      "start": 16.03,
-      "end": 22.87
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "The one-page briefing that fixes it: 12 prompts that pin the model to your restaurant's specifics, not the model's averages.",
+      "start": 13.25,
+      "end": 19.33
     },
     {
       "id": 4,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "The one-page briefing that fixes it: 12 prompts that pin the model to your restaurant's specifics, not the model's averages.",
-      "start": 23.19,
-      "end": 31.34
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Leer este art&iacute;culo en espa&ntilde;ol &rarr;",
+      "start": 20.13,
+      "end": 22.57
     },
     {
       "id": 5,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(3)",
       "text": "If you have ever opened ChatGPT, typed \"write the About page for my Italian restaurant,\" and immediately felt something clench in your stomach when the output came back, you already know the answer to half of this post. The copy was fine. It was also the exact same copy every other Italian restaurant owner has been staring at on their screen for two years now, with minor word swaps. You could feel, without being able to articulate it, that the output could be any restaurant. That&rsquo;s the problem.",
-      "start": 31.86,
-      "end": 63.88
+      "start": 23.12,
+      "end": 47.65
     },
     {
       "id": 6,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "But the full answer is more useful than \"AI can&rsquo;t write a restaurant website.\" It absolutely can write parts of one, fast and well. The trick is knowing which parts, how to brief it, and where to stop — because the parts of your website that make guests choose you instead of the place across the street are exactly the parts AI is worst at writing unprompted.",
-      "start": 64.4,
-      "end": 87.98
+      "text": "But the full answer is more useful than \"AI can&rsquo;t write a restaurant website.\" It absolutely can write parts of one, fast and well. The trick is knowing which parts, how to brief it, and where to stop, because the parts of your website that make guests choose you instead of the place across the street are exactly the parts AI is worst at writing unprompted.",
+      "start": 48.45,
+      "end": 66.56
     },
     {
       "id": 7,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
       "text": "Let me show you what I mean with the same prompt, three different levels of effort.",
-      "start": 88.5,
-      "end": 92.99
+      "start": 67.36,
+      "end": 71.42
     },
     {
       "id": 8,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "Here is the same prompt — 'write the intro paragraph for a neighborhood Italian restaurant's About page' — run three ways. Generic first pass: 'Our authentic Italian dining experience brings the flavors of Italy to your neighborhood. Experience hospitality and tradition at our family-owned restaurant.' That is a sentence you have read on five hundred other restaurant websites. It tells the guest nothing specific. Lightly prompted, with basic context about the restaurant: 'A neighborhood trattoria in the heart of Silver Spring, serving handmade pasta daily and the wood-fired pizzas we have perfected over fifteen years.' Better — location, specifics, some character — but still reads like a brochure. Natively written, by a human who actually knows the place: 'Every Sunday since nineteen ninety-eight, Nonna has made the same red sauce. Eight hours, no shortcuts, no negotiation. It is on every pasta dish we serve, because changing it would be a fight none of us would win.' Same information, entirely different register. That specific voice, grounded in a specific story, is what makes a guest feel like they are choosing this restaurant and not a template.",
-      "start": 93.79,
-      "end": 166.51
+      "text": "Here is the same prompt, 'write the intro paragraph for a neighborhood Italian restaurant's About page', run three ways. Generic first pass: 'Our authentic Italian dining experience brings the flavors of Italy to your neighborhood. Experience hospitality and tradition at our family-owned restaurant.' That is a sentence you have read on five hundred other restaurant websites. It tells the guest nothing specific. Lightly prompted, with basic context about the restaurant: 'A neighborhood trattoria in the heart of Silver Spring, serving handmade pasta daily and the wood-fired pizzas we have perfected over fifteen years.' Better, location, specifics, some character, but still reads like a brochure. Natively written, by a human who actually knows the place: 'Every Sunday since nineteen ninety-eight, Nonna has made the same red sauce. Eight hours, no shortcuts, no negotiation. It is on every pasta dish we serve, because changing it would be a fight none of us would win.' Same information, entirely different register. That specific voice, grounded in a specific story, is what makes a guest feel like they are choosing this restaurant and not a template.",
+      "start": 72.52,
+      "end": 128.33
     },
     {
       "id": 9,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(6)",
       "text": "All three are grammatical. All three would \"pass\" an editor's review. Only one of them makes a guest want to eat there.",
-      "start": 167.26,
-      "end": 174.64
+      "start": 129.33,
+      "end": 135.16
     },
     {
       "id": 10,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(1)",
       "text": "Where AI is genuinely good for a restaurant website.",
-      "start": 175.74,
-      "end": 178.83
+      "start": 136.66,
+      "end": 139.4
     },
     {
       "id": 11,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(7)",
       "text": "I am not an AI skeptic. I use ChatGPT every day. It has real, durable use cases for an independent restaurant operator who is also trying to do their own website work at eleven p.m. on a Tuesday. Three of them specifically:",
-      "start": 179.53,
-      "end": 196.41
+      "start": 140.35,
+      "end": 151.43
     },
     {
       "id": 12,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(1)",
       "text": "1. Menu item descriptions at scale.",
-      "start": 197.51,
-      "end": 199.94
+      "start": 152.93,
+      "end": 154.64
     },
     {
       "id": 13,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(8)",
       "text": "If you have got a fifty-item menu and no time, AI is very good at turning a one-line internal prep note (\"brick chicken, lemon, rosemary, served over potato\") into a two-sentence guest-facing description. That&rsquo;s genuinely useful. It replaces the \"same dish name with no description\" default most restaurant sites ship with.",
-      "start": 200.64,
-      "end": 223.96
+      "start": 155.59,
+      "end": 171.73
     },
     {
       "id": 14,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(9)",
       "text": "The key is the prompt has to include your voice samples. Give ChatGPT three menu items that are already written the way you want, then ask it to match that register for the rest. Without the voice samples, you get the stage-1 output above, applied fifty times.",
-      "start": 224.48,
-      "end": 242.39
+      "start": 172.53,
+      "end": 185.22
     },
     {
       "id": 15,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(2)",
-      "text": "2. Draft copy for pages the guest won&rsquo;t actually read carefully.",
-      "start": 243.49,
-      "end": 248.83
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "Same prep note for the same dish, two outputs. The prep note: brick chicken, lemon, rosemary, served over potato. The AI default, no voice samples in the prompt: 'Our succulent brick chicken is expertly prepared with fresh lemon and aromatic rosemary, served over a bed of perfectly seasoned potato.' Generic, sensory-by-numbers, reads like a hundred other menus. The same prompt with three of the restaurant's own menu items pasted in as voice samples: 'Half a chicken, pressed flat under a brick so the skin crisps the way it should, lemon, rosemary, on the potatoes.' Same dish, half the words, the operator's register intact.",
+      "start": 186.32,
+      "end": 216.78
     },
     {
       "id": 16,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "Not every page on your website is load-bearing. Your Privacy Policy is not closing reservations. Your Allergen Information page is not changing a guest's mind. For compliance-flavored pages that just need to exist and be competent, AI is fine. Ship it, move on.",
-      "start": 249.53,
-      "end": 268.59
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(2)",
+      "text": "2. Draft copy for pages the guest won&rsquo;t actually read carefully.",
+      "start": 218.28,
+      "end": 221.7
     },
     {
       "id": 17,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(3)",
-      "text": "3. Structure and outlining.",
-      "start": 269.69,
-      "end": 271.44
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Not every page on your website is load-bearing. Your Privacy Policy is not closing reservations. Your Allergen Information page is not changing a guest's mind. For compliance-flavored pages that just need to exist and be competent, AI is fine. Ship it, move on.",
+      "start": 222.65,
+      "end": 235.44
     },
     {
       "id": 18,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "AI is genuinely better than most humans at outlining. Ask ChatGPT \"what sections does a restaurant About page typically have, ranked by how much they affect a guest&rsquo;s decision to book,\" and you&rsquo;ll get a useful framework in thirty seconds. Use the outline. Write the actual words yourself.",
-      "start": 272.14,
-      "end": 294.44
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(3)",
+      "text": "3. Structure and outlining.",
+      "start": 236.94,
+      "end": 238.25
     },
     {
       "id": 19,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "Where AI gets your restaurant quietly wrong.",
-      "start": 295.54,
-      "end": 298
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "AI is genuinely better than most humans at outlining. Ask ChatGPT \"what sections does a restaurant About page typically have, ranked by how much they affect a guest&rsquo;s decision to book,\" and you&rsquo;ll get a useful framework in thirty seconds. Use the outline. Write the actual words yourself.",
+      "start": 239.2,
+      "end": 254.07
     },
     {
       "id": 20,
       "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(4)",
-      "text": "1. The specifics that make guests trust you.",
-      "start": 299.1,
-      "end": 301.55
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Where AI gets your restaurant quietly wrong.",
+      "start": 255.57,
+      "end": 257.92
     },
     {
       "id": 21,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "Restaurant websites work or don&rsquo;t on specifics. \"We source from a farm in Poolesville\" is worth ten sentences about \"locally sourced ingredients.\" \"Our pastry chef trained at Del Posto\" is worth a paragraph about \"our talented team.\" AI, unprompted, defaults to the general because the general is what&rsquo;s in its training data. Guests trust the specific because the specific is the opposite of a template.",
-      "start": 302.25,
-      "end": 329.83
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(4)",
+      "text": "1. The specifics that make guests trust you.",
+      "start": 259.42,
+      "end": 261.56
     },
     {
       "id": 22,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(5)",
-      "text": "2. Your cadence.",
-      "start": 330.93,
-      "end": 332.02
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Restaurant websites work or don&rsquo;t on specifics. \"We source from a farm in Poolesville\" is worth ten sentences about \"locally sourced ingredients.\" \"Our pastry chef trained at Del Posto\" is worth a paragraph about \"our talented team.\" AI, unprompted, defaults to the general because the general is what&rsquo;s in its training data. Guests trust the specific because the specific is the opposite of a template.",
+      "start": 262.51,
+      "end": 282.66
     },
     {
       "id": 23,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "Every restaurant that&rsquo;s written its own copy has a cadence — how long the sentences run, where the em-dashes fall, what register the voice sits in. AI flattens that within the first paragraph. You can brief it to fix this, but most operators don&rsquo;t, because briefing the AI properly takes about the same amount of time as just writing the thing.",
-      "start": 332.72,
-      "end": 357.06
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(5)",
+      "text": "2. Your cadence.",
+      "start": 284.16,
+      "end": 284.93
     },
     {
       "id": 24,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(6)",
-      "text": "3. The moments that require judgment.",
-      "start": 358.16,
-      "end": 360.54
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Every restaurant that&rsquo;s written its own copy has a cadence, how long the sentences run, where the em-dashes fall, what register the voice sits in. AI flattens that within the first paragraph. You can brief it to fix this, but most operators don&rsquo;t, because briefing the AI properly takes about the same amount of time as just writing the thing.",
+      "start": 285.88,
+      "end": 303.5
     },
     {
       "id": 25,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "The hardest part of writing restaurant copy isn&rsquo;t finding words — it&rsquo;s knowing which three things to say in a four-sentence paragraph and which seven not to. That&rsquo;s judgment, and judgment is exactly what a language model can&rsquo;t do. It doesn&rsquo;t know that the story about opening during the first winter of the pandemic is the one that sells the room, and that the story about the soft opening menu change three years later isn&rsquo;t. You know that. You&rsquo;re the one who has to type it.",
-      "start": 361.24,
-      "end": 398.73
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(6)",
+      "text": "3. The moments that require judgment.",
+      "start": 305,
+      "end": 306.8
     },
     {
       "id": 26,
-      "kind": "quote",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "The parts of a restaurant website that make guests choose you are precisely the parts an AI is worst at writing. Which means the time you save with ChatGPT has to be reinvested somewhere, or the site gets flatter, not faster.",
-      "start": 399.48,
-      "end": 414.97
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "The hardest part of writing restaurant copy isn&rsquo;t finding words, it&rsquo;s knowing which three things to say in a four-sentence paragraph and which seven not to. That&rsquo;s judgment, and judgment is exactly what a language model can&rsquo;t do. It doesn&rsquo;t know that the story about opening during the first winter of the pandemic is the one that sells the room, and that the story about the soft opening menu change three years later isn&rsquo;t. You know that. You&rsquo;re the one who has to type it.",
+      "start": 307.75,
+      "end": 332.73
     },
     {
       "id": 27,
       "kind": "quote",
-      "selector": "#post-body > blockquote:nth-of-type(1)",
-      "text": "ChatGPT can write your restaurant's website. It cannot decide which parts of you make it onto the page. That is still your job.",
-      "start": 415.72,
-      "end": 424.24
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "The parts of a restaurant website that make guests choose you are precisely the parts an AI is worst at writing. Which means the time you save with ChatGPT has to be reinvested somewhere, or the site gets flatter, not faster.",
+      "start": 333.73,
+      "end": 344.91
     },
     {
       "id": 28,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "The one-page briefing that fixes it.",
-      "start": 425.34,
-      "end": 427.31
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(1)",
+      "text": "ChatGPT can write your restaurant's website. It cannot decide which parts of you make it onto the page. That is still your job.",
+      "start": 345.91,
+      "end": 352.29
     },
     {
       "id": 29,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(16)",
-      "text": "If you&rsquo;re going to use AI for your restaurant copy — and you should — you need to give it something other than \"write my About page.\" Here&rsquo;s the briefing template I use when I&rsquo;m working with operators who want to handle their own content. Write this once, save it in a Google Doc, paste it as the first prompt every time you open a new ChatGPT conversation.",
-      "start": 428.01,
-      "end": 453.82
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "The one-page briefing that fixes it.",
+      "start": 353.79,
+      "end": 355.54
     },
     {
       "id": 30,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "The restaurant, in one sentence. Neighborhood, cuisine, years open, one distinctive detail. &ldquo;A twelve-year-old Italian place in Takoma Park known for its Sunday red sauce.&rdquo; One sentence.",
-      "start": 454.34,
-      "end": 469.73
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "If you&rsquo;re going to use AI for your restaurant copy, and you should, you need to give it something other than \"write my About page.\" Here&rsquo;s the briefing template I use when I&rsquo;m working with operators who want to handle their own content. Write this once, save it in a Google Doc, paste it as the first prompt every time you open a new ChatGPT conversation.",
+      "start": 356.49,
+      "end": 374.73
     },
     {
       "id": 31,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Three real specifics. The farm you source from, the chef&rsquo;s background, the one dish guests ask about most. Specific nouns, specific people, specific places. These are what AI otherwise refuses to invent (rightly).",
-      "start": 470.05,
-      "end": 486.6
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "The one-page briefing in five blocks. One: the restaurant in one sentence, neighborhood, cuisine, years open, one distinctive detail. Two: three real specifics, the farm you source from, the chef's background, the dish guests ask about most. Three: three voice samples, the best Instagram caption, the best existing menu description, the best email to your regulars. Four: three banned words, authentic, passionate, elevated, and anything else every restaurant defaults to. Five: the task, narrow, not 'write my About page' but a 150-word intro paragraph that mentions the Sunday red sauce and ends with a line that books this weekend. With those five blocks in place the model jumps from stage one output to roughly stage two.",
+      "start": 375.83,
+      "end": 410.92
     },
     {
       "id": 32,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Three voice samples. Three short paragraphs already written the way you want to sound. Your best Instagram caption, your best menu description, your best email to your regulars. AI is a mimic; give it something real to mimic.",
-      "start": 486.92,
-      "end": 502.14
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "The restaurant, in one sentence. Neighborhood, cuisine, years open, one distinctive detail. &ldquo;A twelve-year-old Italian place in Takoma Park known for its Sunday red sauce.&rdquo; One sentence.",
+      "start": 411.92,
+      "end": 421.84
     },
     {
       "id": 33,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "Three things you never want it to say. &ldquo;Authentic,&rdquo; &ldquo;passionate,&rdquo; &ldquo;elevated&rdquo; — the words every restaurant copy default defaults to. Ban them explicitly.",
-      "start": 502.46,
-      "end": 518.46
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Three real specifics. The farm you source from, the chef&rsquo;s background, the one dish guests ask about most. Specific nouns, specific people, specific places. These are what AI otherwise refuses to invent (rightly).",
+      "start": 422.34,
+      "end": 433.28
     },
     {
       "id": 34,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "The task, narrow. Don&rsquo;t say &ldquo;write my About page.&rdquo; Say &ldquo;write a 150-word intro paragraph for the About page that mentions the Sunday red sauce and ends with a line that makes a new guest want to book this weekend.&rdquo;",
-      "start": 518.78,
-      "end": 539.47
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Three voice samples. Three short paragraphs already written the way you want to sound. Your best Instagram caption, your best menu description, your best email to your regulars. AI is a mimic; give it something real to mimic.",
+      "start": 433.78,
+      "end": 444.81
     },
     {
       "id": 35,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(17)",
-      "text": "With that briefing in place, AI goes from giving you stage-1 output to giving you something closer to stage-2. It won&rsquo;t reach stage-3 — the native voice, the part that feels like only your restaurant could have written this — but it&rsquo;ll get you 70% of the way there. Your job is the last 30%: adding the one specific detail the AI didn&rsquo;t know, cutting the sentence that reads a little too brochure-y, swapping a generic adjective for a concrete noun.",
-      "start": 539.82,
-      "end": 570.85
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Three things you never want it to say. &ldquo;Authentic,&rdquo; &ldquo;passionate,&rdquo; &ldquo;elevated&rdquo;, the words every restaurant copy default defaults to. Ban them explicitly.",
+      "start": 445.31,
+      "end": 454.48
     },
     {
       "id": 36,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "So… should it?",
-      "start": 571.95,
-      "end": 572.77
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "The task, narrow. Don&rsquo;t say &ldquo;write my About page.&rdquo; Say &ldquo;write a 150-word intro paragraph for the About page that mentions the Sunday red sauce and ends with a line that makes a new guest want to book this weekend.&rdquo;",
+      "start": 454.98,
+      "end": 466.74
     },
     {
       "id": 37,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(18)",
-      "text": "Yes, for menu descriptions, outlines, and compliance copy. Hesitantly, for first drafts of pages you&rsquo;ll heavily edit. No, for the three pages that actually close a guest: your homepage hero, your About story, and the one-line reason someone should pick your restaurant over the identical-looking one four blocks away.",
-      "start": 573.47,
-      "end": 595.87
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "With that briefing in place, AI goes from giving you stage-1 output to giving you something closer to stage-2. It won&rsquo;t reach stage-3, the native voice, the part that feels like only your restaurant could have written this, but it&rsquo;ll get you 70% of the way there. Your job is the last 30%: adding the one specific detail the AI didn&rsquo;t know, cutting the sentence that reads a little too brochure-y, swapping a generic adjective for a concrete noun.",
+      "start": 467.29,
+      "end": 490.09
     },
     {
       "id": 38,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(19)",
-      "text": "Those three, you write. Even if it takes you a weekend. Even if the first draft is bad. Because a weekend of bad sentences written by the person who owns the restaurant will always beat a polished AI draft written by no-one in particular. That&rsquo;s not sentimentality — it&rsquo;s a conversion point. Guests can feel the difference between &ldquo;someone who cares about this place wrote this&rdquo; and &ldquo;something that didn&rsquo;t care about anything wrote this.&rdquo; The conversion difference between the two is measurable, and not small.",
-      "start": 596.39,
-      "end": 634.42
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(4)",
+      "text": "How a well-briefed AI draft splits, by share of the finished page. With the five-block briefing in place, the model delivers roughly seventy percent of the page, passable structure, decent first-draft sentences, the general shape of the argument. The remaining thirty percent, the specific detail the model did not know, the sentence that reads a little too brochure-y, the generic adjective that needs to be swapped for a concrete noun, is the operator's job. Seventy versus thirty is not a small remainder. Thirty percent is where the voice lives, and the voice is what books the table.",
+      "start": 491.19,
+      "end": 519.86
     },
     {
       "id": 39,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(20)",
-      "text": "ChatGPT is a power tool. It&rsquo;s very good at moving heavy things across the room. It is not a carpenter. Use it for what it&rsquo;s for, and keep the judgment work — the voice, the specifics, the moments that make a restaurant feel like a place and not a business — for yourself.",
-      "start": 634.94,
-      "end": 654.73
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "So. should it?",
+      "start": 521.36,
+      "end": 522.03
     },
     {
       "id": 40,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(21)",
-      "text": "Or hire a carpenter.",
-      "start": 655.25,
-      "end": 656.52
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(5)",
+      "text": "Where ChatGPT earns its place on the site, and where it doesn&apos;t. Yes for menu item descriptions, photo alt text, and your privacy and terms pages, generic compliance copy is exactly what AI does well, and sensory menu writing is its sweet spot. Yes-with-heavy-editing for F A Q schema and blog posts: generate twelve questions, prune to six, rewrite the answers in your voice. No for the homepage hero, the About page, and any hyperlocal claim, AI can&apos;t fake earned voice, and it&apos;ll confidently invent restaurants on your block that don&apos;t exist.",
+      "start": 523.13,
+      "end": 551.01
     },
     {
       "id": 41,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(22)",
-      "text": "Key takeaways",
-      "start": 657.04,
-      "end": 657.98
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "Yes, for menu descriptions, outlines, and compliance copy. Hesitantly, for first drafts of pages you&rsquo;ll heavily edit. No, for the three pages that actually close a guest: your homepage hero, your About story, and the one-line reason someone should pick your restaurant over the identical-looking one four blocks away.",
+      "start": 552.01,
+      "end": 567.66
     },
     {
       "id": 42,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "AI-generated copy ranks fine for S E O; it just sounds generic, which kills bookings.",
-      "start": 658.33,
-      "end": 664.58
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Those three, you write. Even if it takes you a weekend. Even if the first draft is bad. Because a weekend of bad sentences written by the person who owns the restaurant will always beat a polished AI draft written by no-one in particular. That&rsquo;s not sentimentality, it&rsquo;s a conversion point. Guests can feel the difference between &ldquo;someone who cares about this place wrote this&rdquo; and &ldquo;something that didn&rsquo;t care about anything wrote this.&rdquo; The conversion difference between the two is measurable, and not small.",
+      "start": 568.46,
+      "end": 595.09
     },
     {
       "id": 43,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Feed the model your printed menu P D F, not just dish names — the descriptions carry the voice.",
-      "start": 664.9,
-      "end": 671.47
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "ChatGPT is a power tool. It&rsquo;s very good at moving heavy things across the room. It is not a carpenter. Use it for what it&rsquo;s for, and keep the judgment work, the voice, the specifics, the moments that make a restaurant feel like a place and not a business, for yourself.",
+      "start": 595.89,
+      "end": 609.63
     },
     {
       "id": 44,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Have a human re-write every \"approximately\" / \"roughly\" / \"various\" — those are AI tells.",
-      "start": 671.79,
-      "end": 678.23
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "Or hire a carpenter.",
+      "start": 610.43,
+      "end": 611.4
     },
     {
       "id": 45,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "F A Q schema is one of the highest-leverage AI uses; let the model write 12 questions and prune to 6.",
-      "start": 678.55,
-      "end": 686.23
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "Key takeaways",
+      "start": 612.2,
+      "end": 612.82
     },
     {
       "id": 46,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
-      "text": "Run Menu Copy Inspector on the AI output before publishing; it catches the dead-language patterns.",
-      "start": 686.55,
-      "end": 693.28
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "AI-generated copy ranks fine for S E O; it just sounds generic, which kills bookings.",
+      "start": 613.37,
+      "end": 617.73
     },
     {
       "id": 47,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(23)",
-      "text": "What to do next",
-      "start": 693.8,
-      "end": 694.75
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Feed the model your printed menu P D F, not just dish names, the descriptions carry the voice.",
+      "start": 618.23,
+      "end": 622.84
     },
     {
       "id": 48,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Read: the related glossary term →",
-      "start": 695.1,
-      "end": 697.68
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Have a human re-write every \"approximately\" / \"roughly\" / \"various\", those are AI tells.",
+      "start": 623.34,
+      "end": 627.85
     },
     {
       "id": 49,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Try: the tool that pairs with this article →",
-      "start": 698,
-      "end": 701.05
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "F A Q schema is one of the highest-leverage AI uses; let the model write 12 questions and prune to 6.",
+      "start": 628.35,
+      "end": 633.49
     },
     {
       "id": 50,
       "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "Run Menu Copy Inspector on the AI output before publishing; it catches the dead-language patterns.",
+      "start": 633.99,
+      "end": 638.99
+    },
+    {
+      "id": 51,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "What to do next",
+      "start": 639.79,
+      "end": 640.52
+    },
+    {
+      "id": 52,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Read: the related glossary term →",
+      "start": 641.07,
+      "end": 642.78
+    },
+    {
+      "id": 53,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Try: the tool that pairs with this article →",
+      "start": 643.28,
+      "end": 645.53
+    },
+    {
+      "id": 54,
+      "kind": "list",
       "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
       "text": "Or send Don a note: The Window →",
-      "start": 701.37,
-      "end": 704.14
+      "start": 646.03,
+      "end": 647.68
     }
   ]
 }

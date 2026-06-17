@@ -1,0 +1,595 @@
+{
+  "version": 1,
+  "generatedAt": "2026-06-15T08:50:35.417Z",
+  "engine": "f5",
+  "model": "don-reference.m4a",
+  "voice": "f5:don-reference.m4a",
+  "language": "en",
+  "total": 1304.4,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Library &middot; Operations & Margin &middot; 11 min read &middot; By The Muntin Desk",
+      "start": 0,
+      "end": 4.21
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Restaurant menu engineering is not a clever name for raising prices. It is the back-of-house discipline that decides what a dish actually costs to send to the pass, which dishes carry the room, and which ones quietly drain the bank account, and it gets every operator a few points of margin back without the guest ever opening the menu and feeling that something has changed.",
+      "start": 4.76,
+      "end": 22.97
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "In short",
+      "start": 23.77,
+      "end": 24.74
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Restaurant menu engineering is the discipline of pricing and positioning each dish by its margin and its popularity, not a fancy phrase for raising headline prices across the board.",
+      "start": 25.29,
+      "end": 34.18
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Plate cost is the number that runs the kitchen; food-cost percentage is the number that reads the result at month end. The difference matters because the kitchen pays per dish, not per period.",
+      "start": 34.68,
+      "end": 44.11
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Edible portion and yield are where roughly thirty percent of food cost hides; an as-purchased pound of strip loin is not a pound of strip loin on a plate, and operators who skip the yield correction read their margins four to six points high.",
+      "start": 44.61,
+      "end": 56.28
+    },
+    {
+      "id": 6,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "The four-quadrant matrix, stars, puzzles, plow horses, dogs, tells you which dish gets which edit. Stars get protected; puzzles get repositioned; plow horses get re-engineered; dogs get a hard look before they get cut.",
+      "start": 56.78,
+      "end": 67.48
+    },
+    {
+      "id": 7,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "Quarterly is the right cadence; every figure on this page is directional, anchored to public benchmarks plus Muntin client audits across twenty twenty-five, twenty twenty-six, and your numbers will read different on your menu.",
+      "start": 67.98,
+      "end": 79.13
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Most of the writing on restaurant menu engineering falls into one of two registers: textbook, which restates Kasavana & Smith&rsquo;s four-quadrant framework for the hundredth time and stops there, or vendor, which is a Toast or Lightspeed blog post written to funnel an operator into a product trial. Neither is the version a working operator needs at 9 AM. on a Wednesday with the produce invoice in one hand and last week&rsquo;s sales report in the other. This page is that version: plate cost, the edible-portion correction, the four-quadrant matrix walked as edits not theory, the elasticity test for a real price bump, and the variable-cost lines an operator can actually move. Numbers are directional anchors throughout; specific percentages and ranges come from public industry benchmarks plus Muntin client audits across twenty twenty-five and twenty twenty-six.",
+      "start": 79.93,
+      "end": 121.96
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "What menu engineering actually is (and why it&rsquo;s not just raising prices).",
+      "start": 123.46,
+      "end": 127.33
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Menu engineering is the discipline of pricing each dish by its margin and its popularity, the menu as a portfolio of decisions, not a list of items. The output is a list of edits per dish, not a flat percentage on every price.",
+      "start": 128.28,
+      "end": 139.37
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "The frame matters because every operator who hears &ldquo;raise prices&rdquo; instinctively thinks of a flat-percentage bump on every item, and a flat-percentage bump is the worst possible move. It costs the guest&rsquo;s trust on the anchor items they recognize, leaves the signature items underpriced, and never touches the dogs that should not be on the menu at all. Menu engineering replaces the single lever, price up or hold, with a portfolio of four moves: protect, reposition, re-engineer, sunset. The same menu, the same dishes, a different verb per row.",
+      "start": 140.17,
+      "end": 167.4
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "The discipline came out of Michael Kasavana and Donald Smith&rsquo;s 1990 framework at Michigan State, the original four-quadrant matrix that still sits behind every modern menu-engineering tool. What changed in the intervening years is not the framework but the operating reality around it: supplier prices move under the operator more often than annually, online ordering and marketplace channels carry different margins on the same dish, and the back-office math has migrated from a paper recipe card to a P O S report nobody reads carefully. The framework is still the floor. The version that earns its keep on a working floor adds the per-dish kitchen math under it.",
+      "start": 168.2,
+      "end": 200.53
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "The other half of the frame is what menu engineering does not do. It does not solve a labor problem; it does not solve a rent problem; it does not save a concept that is mispositioned against its market. The discipline lives in the contribution-margin layer of the P&L, sales minus the cost of the dish itself, not in fixed costs or overhead. An operator who picks up the menu-engineering tool expecting it to fix a 32% labor line will put it down disappointed. The dish-level lever is real, and it adds up to real money across hundreds of weekly covers, but it is one lever among several. The price-side companion to this work lives at how to raise restaurant menu prices without losing reservations ; this page is its back-of-house twin.",
+      "start": 201.33,
+      "end": 237.01
+    },
+    {
+      "id": 14,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Plate cost vs cost-of-goods: the per-dish math that runs the kitchen.",
+      "start": 238.51,
+      "end": 241.89
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Plate cost is what one specific dish costs to make once, ingredient by ingredient. Food-cost percentage is the same kitchen&rsquo;s ingredient spend across a period as a share of sales. Plate cost makes the math; food-cost percentage reads the result.",
+      "start": 242.84,
+      "end": 254.96
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "The two numbers get used interchangeably in operator conversation and they shouldn&rsquo;t. Plate cost is a per-dish, per-recipe computation: take the recipe, list every ingredient at its edible-portion cost (more on that in the next section), multiply by the quantity used, sum, divide by the batch yield if the recipe is a batch. That number is the floor the menu price has to clear; the standard target is roughly three times plate cost for full-service independents, which lands food cost in the 28, 33% range. The plate-cost number is what the kitchen pays the moment the ticket is fired.",
+      "start": 255.76,
+      "end": 284.47
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Food-cost percentage is the lookback. It is the cost-of-goods-sold line from the P&L, the inventory the kitchen actually used across the period, divided by food sales across the same period. Healthy bands are 28, 33% for casual full-service, 25, 30% for fast-casual, and 32, 36% for steakhouses and seafood concepts where the protein cost is structurally higher. The number reads where the kitchen ended up; it does not say which dish dragged the average up. Plate cost is the per-row math; food-cost percentage is the column total.",
+      "start": 285.27,
+      "end": 310.99
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "The reason the distinction matters is that the kitchen pays per dish, not per period. A menu where the top-selling item runs a 42% plate cost will read a 31% food-cost average if the rest of the menu runs 25, 28%, and the operator will think the kitchen is fine. The operator who pulls the per-dish numbers will see the 42% dish and either re-engineer the recipe, reprice the dish, or move it to a less-prominent menu slot. The aggregate hides the lever; the plate-cost number names it. For the studio&rsquo;s working tool on this calculation, see the plate-cost tool .",
+      "start": 311.79,
+      "end": 339.32
+    },
+    {
+      "id": 19,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Edible portion and yield: where 30% of your food cost goes that nobody tracks.",
+      "start": 340.82,
+      "end": 344.64
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Edible portion is the cost of an ingredient after trim, peel, bone, and shrink. Yield percent is the share of an as-purchased pound that survives the cut. Skip the correction and plate cost reads four to six points low.",
+      "start": 345.59,
+      "end": 356.34
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "The math is straightforward once an operator sees it once. Edible-portion cost equals as-purchased cost divided by yield percent. A whole strip loin at 12 dollars a pound that yields 65% after fat trim, silverskin removal, and end-cuts works out to 18.46 dollars a pound in edible portion. The recipe that calls for an eight-ounce portion is not paying 6 dollars for the strip; it is paying 9.23 dollars once the yield is honest. That difference is the gap between a kitchen reading a clean food-cost number and a kitchen quietly losing four to six points to invisible waste.",
+      "start": 357.14,
+      "end": 384.97
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "The same correction runs on produce, fish, and most batch-cooked items. A 10-pound case of butternut squash yields roughly 70% after peel and seed; a side of salmon yields 55, 65% after skin and pin-bone removal; a head of romaine yields about 75% after core and outer-leaf trim. Cooking shrink layers on top of the trim loss, braised chuck loses roughly 30% of its weight in the braise, which means the eight-ounce portion the menu describes started life as roughly eleven and a half ounces of raw chuck. None of these losses appear on the invoice. They appear on the plate cost only when the operator does the yield correction.",
+      "start": 385.77,
+      "end": 416.05
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "The operator move is to run a yield test on the five highest-volume protein ingredients the kitchen buys. Weigh in on receipt, weigh after primary butchery, weigh again after cooking if the cook causes meaningful shrink. Record yield as a percentage. Use that percentage in plate-cost computations going forward, and rerun the yield test every quarter or every time the kitchen changes purveyors. The first time a kitchen does this, the typical correction lands somewhere between 4 and 6 points of food cost, not because the kitchen was wasteful, but because the math the kitchen had been doing was running on the AP price instead of the EP price. Closing that gap is the cheapest margin recovery available to most independents, and it requires zero menu changes.",
+      "start": 416.85,
+      "end": 453.71
+    },
+    {
+      "id": 24,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "A cost stack of one eight-ounce strip portion showing what the yield correction does to its true plate cost. The honest plate cost is nine dollars and twenty-three cents. Of that, six dollars is the as-purchased read: eight ounces at the twelve-dollar-a-pound invoice price, the number a kitchen sees on the invoice and stops at. The remaining three dollars and twenty-three cents is the trim-and-shrink premium that nobody puts on the plate cost: the cost of the fat, silverskin, and end-cuts that were paid for but never reached the pass, because the strip only yields sixty-five percent. A kitchen that prices off the six-dollar as-purchased read instead of the nine-dollar-twenty-three honest plate cost is reading its margin on this dish roughly fifty percent light, which is where the four-to-six points of food cost hide.",
+      "start": 454.81,
+      "end": 494.42
+    },
+    {
+      "id": 25,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "The four-quadrant menu matrix (stars &middot; puzzles &middot; plow horses &middot; dogs).",
+      "start": 495.92,
+      "end": 500.33
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "The four-quadrant matrix sorts every dish on two axes: popularity (its share of menu mix ) and contribution margin (its dollars after plate cost). Four boxes, four labels, four edits.",
+      "start": 501.28,
+      "end": 510.26
+    },
+    {
+      "id": 27,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "Read the matrix as a list of verbs, not a list of categories. A star is a dish in the high-popularity, high-margin quadrant, the burger that runs 18% of menu mix and contributes 11 dollars a plate, the brunch hash that anchors the Sunday menu and clears 9 dollars on a 13 dollars cost. The verb is protect : do not change the recipe, do not move the dish off the page-one position, do not adjust the price more than the smallest amount the data supports. A star is the dish that pays the rent.",
+      "start": 511.06,
+      "end": 534.86
+    },
+    {
+      "id": 28,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "A puzzle sits high-margin, low-popularity, the duck breast that contributes 19 dollars a plate but moves four covers a week, the chef&rsquo;s tasting course that clears 42 dollars per cover but rarely sells. The verb is reposition : change the description, move the dish to the page-one upper-right quadrant where eyes land first, train the floor to mention it, photograph it for the website. Puzzles are usually mispriced down by the kitchen out of caution; the work is making the puzzle visible without changing what it is.",
+      "start": 535.66,
+      "end": 561.03
+    },
+    {
+      "id": 29,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "A plow horse is high-popularity, low-margin, the pasta of the day that runs 22% of menu mix and only contributes 6 dollars a plate, the kids&rsquo; menu that moves volume at a loss. The verb is re-engineer : rework the recipe to bring the plate cost down (smaller protein, different sauce, garnish change), reprice carefully if the dish is anchor-priced, or move the dish off the prominent menu position to slow the order rate. Plow horses are dangerous because they look like wins on the cover count; they read like losses on the contribution-margin line.",
+      "start": 561.83,
+      "end": 588.73
+    },
+    {
+      "id": 30,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "A dog sits low-popularity, low-margin, the salad that sells two a week at a 4 dollars contribution, the cocktail that nobody orders but is still on the printed menu. The verb is sunset, repositioned : pull the dish, or fix the reason it isn&rsquo;t selling (the description is bad, the photograph is missing, the price feels wrong in context). Removing a dog should be a last move, not a first. A dog that has been on the menu for six months has institutional weight, regulars notice when it disappears, and the sunset move should be tested against the soft edits first.",
+      "start": 589.53,
+      "end": 617.11
+    },
+    {
+      "id": 31,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "A horizontal bar chart of the four menu-engineering quadrants and the share of a typical independent menu that lands in each. Bar one, stars, the high-popularity, high-margin dishes you protect: roughly twenty percent of menu items, drawn teal because this is the quadrant that pays the rent. Bar two, puzzles, the low-popularity, high-margin dishes you reposition through description and placement: roughly twenty percent of menu items, drawn teal because the margin work is on the right side of the matrix. Bar three, plow horses, the high-popularity, low-margin dishes you re-engineer through recipe rework or careful repricing: roughly thirty-five percent of menu items, drawn rust because these are the silent margin drain. Bar four, dogs, the low-popularity, low-margin dishes that get a hard look before they get cut: roughly twenty-five percent of menu items, drawn rust because they need a verdict. The four numbers are directional anchors from the Kasavana and Smith framework plus Muntin client audits across twenty twenty-five and twenty twenty-six; specific percentages vary by concept and seasonal menu cadence.",
+      "start": 618.21,
+      "end": 672.48
+    },
+    {
+      "id": 32,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "The reason the matrix matters is that it stops the flat-percentage instinct. An operator working from a single price-bump idea will raise the burger 6% (the star that should have been protected), miss the duck breast entirely (the puzzle that should have been repositioned), raise the pasta of the day 6% (the plow horse where the margin work was a recipe edit, not a price), and leave the dog on the menu (the dish that should have been sunsetted). The matrix replaces the one move with four. The work is doing the four. A guest reading the menu will not notice that any one of them happened; the year-end P&L will.",
+      "start": 673.48,
+      "end": 703.11
+    },
+    {
+      "id": 33,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "The elasticity test: how to know if a 1 dollars price bump actually loses orders.",
+      "start": 704.61,
+      "end": 708.58
+    },
+    {
+      "id": 34,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "Price elasticity is how much demand moves when price moves. The honest test is whether the operator keeps more total dollars after the change, not whether the price is higher. The decision tree below walks the four questions that decide raise, hold, re-engineer, or sunset.",
+      "start": 709.53,
+      "end": 722.72
+    },
+    {
+      "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "Most operators run a price bump on instinct, watch the cover count for a week, and conclude the bump &ldquo;worked&rdquo; or &ldquo;didn&rsquo;t&rdquo; based on whether the dish kept selling. That is the wrong measurement. A dish that drops from 300 to 280 weekly orders after a 1 dollars bump on a 14 dollars menu price still earned roughly 300 dollars more weekly revenue at the new price; the bump &ldquo;worked&rdquo; even though the cover count went down. A dish that drops from 300 to 220 weekly orders after the same bump lost weekly revenue; that bump didn&rsquo;t. The test is whether the total contribution dollars rose, not whether the dish kept selling at the same rate.",
+      "start": 723.52,
+      "end": 756.39
+    },
+    {
+      "id": 36,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "A four-branch decision tree for whether a one-dollar price bump on a specific dish is the right move. Branch one asks whether the dish is a star in the four-quadrant matrix, meaning high-popularity and high-margin; if yes, the verdict is hold and protect, because moving a star price gets talked about and the dish already pays the rent. Branch two asks whether the absolute increase is small relative to the existing price; a one-dollar bump on a fourteen-dollar dish is roughly seven percent and inside guest memory tolerance, but a one-dollar bump on a six-dollar side dish is sixteen percent and reads as a different price bracket. Branch three asks whether the dish anchors a category, meaning guests use it as a reference price for the section it sits in; if yes, the verdict is hold even when the margin says raise, because the anchor is doing trust work the margin line cannot replace. Branch four asks whether there is a close substitute on the same menu that the guest could trade down to; if yes, the bump risks shifting orders to a lower-margin dish, and the verdict is re-engineer the recipe instead. The four branches end in verdicts: raise, hold, re-engineer, or sunset. The test on every branch is whether total weekly contribution dollars are higher after the change, not whether the dish kept selling at the same rate.",
+      "start": 757.49,
+      "end": 821.87
+    },
+    {
+      "id": 37,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "The cleanest way to run the test in practice is the ninety-day window. Pull the dish&rsquo;s order count and contribution-margin dollars from the trailing ninety days; run the bump; measure the same two numbers across the next ninety days. The number to watch is total weekly contribution dollars, not order count. If contribution dollars are up at the end of the window, the bump worked. If order count held but contribution dollars are flat, the kitchen probably absorbed a supplier cost increase that nobody flagged. If contribution dollars are down, the bump shifted orders to lower-margin dishes, the elasticity was real, and the right next move is either to walk the price back or to re-engineer the recipe instead.",
+      "start": 822.87,
+      "end": 857.66
+    },
+    {
+      "id": 38,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "One operator note: a price bump tested in isolation reads cleaner than a bump tested alongside a menu rewrite. If the description, the photograph, and the menu position all change at the same time, the elasticity signal is unrecoverable, the operator cannot tell whether the new price drove the change or the new description did. The test isolates one variable. The other edits get staged across the next quarter once the price baseline is settled.",
+      "start": 858.46,
+      "end": 880.05
+    },
+    {
+      "id": 39,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Variable costs in a restaurant: the levers you actually control versus the ones you don&rsquo;t.",
+      "start": 881.55,
+      "end": 886.25
+    },
+    {
+      "id": 40,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "Variable costs scale with sales volume. The honest split is between the levers an operator actually controls dish by dish (ingredient sourcing, portion size, recipe) and the ones the operator inherits (credit-card processing, marketplace commissions, utility usage per cover).",
+      "start": 887.2,
+      "end": 900.54
+    },
+    {
+      "id": 41,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "The dish-controllable levers are where menu engineering does most of its real work. Ingredient sourcing, switching from a Sysco price on cherry tomatoes to a smaller regional purveyor, or vice versa, depending on yield and consistency. Portion size, a six-ounce strip instead of an eight-ounce strip, served with a more generous sauce, lands lighter on the plate cost without reading lighter on the plate. Recipe composition, replacing veal stock with chicken stock in a sauce that doesn&rsquo;t need the veal flavor structure, swapping a roasted garnish for a quick-pickled one, finishing with a cheaper oil. None of these are visible to the guest unless the kitchen does them sloppily. All of them move plate cost by points.",
+      "start": 901.34,
+      "end": 936.38
+    },
+    {
+      "id": 42,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(29)",
+      "text": "The inherited variable costs sit outside the dish lever. Card-not-present processing is roughly 2.9% plus 30 cents per online order, the same rate every operator pays regardless of menu edits. Marketplace commissions on third-party-delivery channels run 15, 30% on the order subtotal, a structural tax on the dish margin that menu engineering on its own cannot fix. Variable utility usage per cover (gas for cooking, water for dishwashing, electricity for refrigeration) tracks volume but is largely set by the equipment and the building, not the recipe. The operator who tries to fix the marketplace commission line through menu edits will not succeed; the operator who routes orders direct will, by changing the channel, not the dish. The full marketplace-tax walk lives at third-party delivery economics , and the path to direct ordering at commission-free online ordering for restaurants .",
+      "start": 937.18,
+      "end": 980.22
+    },
+    {
+      "id": 43,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(30)",
+      "text": "The taxonomy matters because operators routinely waste menu-engineering effort on the wrong lever. The dish lever fixes the recipe, the portion, the sourcing, and the menu position. The channel lever fixes which surface the order arrives through. The price lever fixes what the menu reads. Three separate jobs, three separate tools. A kitchen that runs a clean plate-cost regime, a yield correction on its top proteins, and a quarterly four-quadrant audit will recover the four-to-six points of margin that hide inside trim, shrink, and mispositioned dogs, without ever touching the marketplace channel or the menu prices the guest sees. That is the version of menu engineering that earns its keep on a working floor. The other versions read clean in the textbook and run aground on the line.",
+      "start": 981.02,
+      "end": 1019.1
+    },
+    {
+      "id": 44,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "The honest menu close.",
+      "start": 1020.6,
+      "end": 1021.67
+    },
+    {
+      "id": 45,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(31)",
+      "text": "The menu is the cheapest tool an independent restaurant owns, and the one most operators leave on the bench. Honest menu pricing is not a luxury or a marketing posture; it is the operating norm that lets the discipline above work.",
+      "start": 1022.62,
+      "end": 1033.7
+    },
+    {
+      "id": 46,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(32)",
+      "text": "Every move in this article assumes a menu the guest reads accurately, prices shown plainly, descriptions that match what arrives at the table, no surprise add-on charges that surface on the check. The reason is mechanical: menu engineering depends on a reliable signal from the order count to the price, and a menu that hides numbers, layers in fee-creep, or asks the guest to flip pages to find a price destroys the signal the elasticity test relies on. An operator running honest pricing can test a one-dollar bump and read the result; an operator running surprise fees cannot, because the guest&rsquo;s reaction is to the surprise, not to the price. The discipline and the menu posture travel together.",
+      "start": 1034.5,
+      "end": 1068.5
+    },
+    {
+      "id": 47,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(33)",
+      "text": "The other half is the guest-facing menu surface itself, the website menu, the printed page, the QR-code P D F. A back-of-house plate-cost regime that lands a 28% food cost on paper still leaks margin if the website menu shows a Canva image instead of H T M L text, or if the description reads as a price hike instead of a restaurant investing in its product. The customer-facing twin of this work sits at restaurant online menu best practices ; the price-side companion at how to raise restaurant menu prices without losing reservations . Read together, the three pieces cover the kitchen math, the menu surface, and the price-raise discipline as one operating loop.",
+      "start": 1069.3,
+      "end": 1101.44
+    },
+    {
+      "id": 48,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(34)",
+      "text": "If the work above lands as more than one quarter of effort, that is the right read of it. Quarterly is the cadence; the four-quadrant audit is the framework; the per-dish plate-cost regime with yield correction is the math; the elasticity test isolates one variable at a time; honest pricing makes the signal readable. Most independents who run this loop for two quarters recover the four-to-six points of margin the kitchen had been quietly leaking. The headline menu prices the guest sees do not change. That is the version of menu engineering worth doing.",
+      "start": 1102.24,
+      "end": 1129.23
+    },
+    {
+      "id": 49,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(35)",
+      "text": "Key takeaways",
+      "start": 1130.03,
+      "end": 1130.65
+    },
+    {
+      "id": 50,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Menu engineering is a portfolio of four verbs per dish, protect, reposition, re-engineer, sunset, not a flat percentage raise across every price.",
+      "start": 1131.2,
+      "end": 1138.31
+    },
+    {
+      "id": 51,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Plate cost runs the kitchen; food-cost percentage reads the result. The per-dish number is what permits a recipe edit; the period average is the box score after the game.",
+      "start": 1138.81,
+      "end": 1147.15
+    },
+    {
+      "id": 52,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Edible-portion correction is where roughly thirty percent of food cost hides; an as-purchased pound is not a pound on the plate, and the typical correction recovers four to six points of food cost on first run.",
+      "start": 1147.65,
+      "end": 1157.95
+    },
+    {
+      "id": 53,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "The four-quadrant matrix maps each dish to a verb: stars get protected, puzzles get repositioned, plow horses get re-engineered, dogs get a hard look before they get cut.",
+      "start": 1158.45,
+      "end": 1166.79
+    },
+    {
+      "id": 54,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "The elasticity test isolates one variable. Watch contribution-margin dollars across a ninety-day window, not the cover count, and stage other menu edits across the next quarter so the signal stays readable.",
+      "start": 1167.29,
+      "end": 1177.4
+    },
+    {
+      "id": 55,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(6)",
+      "text": "Quarterly is the right cadence for the whole loop, the four-quadrant audit, the per-dish plate-cost regime, the yield correction on top proteins, and the price-side companion edits together.",
+      "start": 1177.9,
+      "end": 1187.22
+    },
+    {
+      "id": 56,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(36)",
+      "text": "Run the plate-cost tool on your top 5 dishes.",
+      "start": 1188.02,
+      "end": 1190.22
+    },
+    {
+      "id": 57,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(37)",
+      "text": "Open the plate-cost tool, list the ingredients of your five top-selling items, apply the yield correction on the proteins, and read the per-dish margin. The output is the per-dish floor every menu-engineering edit walks against.",
+      "start": 1191.02,
+      "end": 1202.21
+    },
+    {
+      "id": 58,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(38)",
+      "text": "What to do next",
+      "start": 1203.01,
+      "end": 1203.74
+    },
+    {
+      "id": 59,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Read: the related glossary term →",
+      "start": 1204.29,
+      "end": 1206
+    },
+    {
+      "id": 60,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Try: the tool that pairs with this article →",
+      "start": 1206.5,
+      "end": 1208.75
+    },
+    {
+      "id": 61,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Or send Don a note: The Window →",
+      "start": 1209.25,
+      "end": 1210.9
+    },
+    {
+      "id": 62,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(39)",
+      "text": "More from the library.",
+      "start": 1211.45,
+      "end": 1212.52
+    },
+    {
+      "id": 63,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(40)",
+      "text": "See also",
+      "start": 1213.32,
+      "end": 1214.29
+    },
+    {
+      "id": 64,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Article How to raise restaurant menu prices without losing reservations The price-side companion to menu engineering, the three-tier raise that recovers margin without the wrong reservation showing up at the wrong table.",
+      "start": 1214.84,
+      "end": 1225.65
+    },
+    {
+      "id": 65,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Article Commission-free online ordering for restaurants Where the marketplace commission cuts into the per-dish margin, and the four operating models that route orders direct without the 15, 30% tax.",
+      "start": 1226.15,
+      "end": 1235.92
+    },
+    {
+      "id": 66,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Article Restaurant online menu best practices The customer-facing twin of the same dish, how the menu reads on the website surface, and the description, photograph, and price moves that make the margin stick.",
+      "start": 1236.42,
+      "end": 1246.63
+    },
+    {
+      "id": 67,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(41)",
+      "text": "Tell us",
+      "start": 1247.43,
+      "end": 1248.27
+    },
+    {
+      "id": 68,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "Be the first field note on this piece.",
+      "start": 1249.77,
+      "end": 1251.63
+    },
+    {
+      "id": 69,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(42)",
+      "text": "Tried this in your own restaurant? 100, 400 words, your name on it. Don reads every one. Your note shows up here once approved.",
+      "start": 1252.58,
+      "end": 1258.81
+    },
+    {
+      "id": 70,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(43)",
+      "text": "Sign in to share your experience →",
+      "start": 1259.61,
+      "end": 1261.36
+    },
+    {
+      "id": 71,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(45)",
+      "text": "Sourcing",
+      "start": 1261.91,
+      "end": 1262.88
+    },
+    {
+      "id": 72,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(46)",
+      "text": "The four-quadrant matrix and the stars/puzzles/plow-horses/dogs labels come from Michael Kasavana and Donald Smith&rsquo;s menu-engineering framework, the standard reference for hospitality menu analysis since 1990. Operating-cost bands (28, 33% food cost, 55, 65% prime cost) are anchored to the National Restaurant Association&rsquo;s annual State of the Restaurant Industry report and the joint Nra / Deloitte Restaurant Operations Report. Yield-grade references for proteins draw on Usda documentation plus standard chef-training yield tables. The per-quadrant share figures and the four-to-six-point typical yield-correction recovery are directional anchors drawn from Muntin client audits across twenty twenty-five and twenty twenty-six, not from a published industry survey; specific percentages will vary by concept and seasonal menu cadence.",
+      "start": 1263.43,
+      "end": 1304.4
+    }
+  ]
+}

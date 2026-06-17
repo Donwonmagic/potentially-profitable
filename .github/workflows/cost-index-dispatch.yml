@@ -1,6 +1,14 @@
 # Cost Index weekly dispatch — publishes the dated write-up, then emails it.
 #
-# Runs after the Monday measured refresh has committed fresh data/cost-index.json.
+# Runs an hour after the daily measured refresh (cost-index-refresh.yml, 13:00 UTC)
+# so the day's fresh data/cost-index.json is committed and checked out before the
+# post is built — never a race that writes the post off yesterday's numbers.
+#
+# Note the daily refresh now SELF-HEALS the post: if this weekly run is ever missed,
+# the next daily refresh republishes the dated post (post only, no email) the moment
+# the data is more than a week ahead of it. This Tuesday run remains the canonical
+# cadence and is the one that sends the weekly broadcast email.
+#
 # Each Tuesday it: (1) generates the dated dispatch at blog/cost-index-week-<asOf>/,
 # registers it (RSS, sitemap, blog index, glossary backlinks), gates it, and commits
 # it so Cloudflare deploys the published post; then (2) POSTs the week's insight to
@@ -26,9 +34,10 @@ on:
         type: boolean
         default: true
   schedule:
-    # Tuesdays 13:00 UTC — a day after the Monday measured/pressure refresh, so the
-    # week's data is settled before the post publishes and the email goes out.
-    - cron: '0 13 * * 2'
+    # Tuesdays 14:00 UTC — an hour after the daily 13:00 UTC measured refresh, so the
+    # day's data is committed and settled before the post publishes and the email
+    # goes out (the refresh has a 20-minute timeout, so an hour clears it cleanly).
+    - cron: '0 14 * * 2'
 
 permissions:
   contents: write   # publishes the dated dispatch post

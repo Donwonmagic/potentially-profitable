@@ -385,10 +385,40 @@ const CHECKS = [
   // Shippable bar — below-bar ingredients must stay out of the browser seed
   // (no thin / no-level read on the dashboard; they live as expanding-coverage).
   ['Cost-index shippable bar','check-shippable-bar.mjs'],
+  // Band coverage — the published prediction band is a CONFORMAL interval whose
+  // realized coverage is backtested against deep history; this gate fails if the
+  // 80% band doesn't actually cover ~80% of next prints (verified, not asserted).
+  ['Cost-index band coverage','check-band-coverage.mjs'],
+  ['Cost-index band coverage self-test','check-band-coverage.mjs','--self-test'],
+  // Trend skill — the reliability-diagram half: a price-only direction call is
+  // replayed over deep history and bucketed by strength; the gate fails unless a
+  // stronger arrow verifies more often AND beats the no-skill baseline ("high"
+  // means high), so the trend's confidence label is earned, not asserted.
+  ['Cost-index trend skill','check-trend-skill.mjs'],
+  ['Cost-index trend skill self-test','check-trend-skill.mjs','--self-test'],
+  // Calibration record — the verified band-coverage + trend-skill numbers, pooled
+  // into one versioned artifact the methodology page cites; --check keeps the file
+  // (and the published claim) in lockstep with the data.
+  ['Cost-index calibration report self-test','build-cost-index-calibration-report.mjs','--self-test'],
+  ['Cost-index calibration report sync','build-cost-index-calibration-report.mjs','--check'],
+  ['Cost-index calibration page sentinels','inject-cost-index-calibration.mjs','--check'],
+  // Staleness penalty — a complete read still has to be CURRENT. Caps confidence by
+  // how overdue the freshest contributing print is for its source's cadence (old ≠
+  // overdue: a monthly series a month old reads fresh); fails if any published label
+  // sits above its staleness ceiling, so CI won't ship a stale-but-confident reading.
+  ['Cost-index staleness honesty','check-staleness-honesty.mjs'],
+  ['Cost-index staleness honesty self-test','check-staleness-honesty.mjs','--self-test'],
+  // Rigorous bridge — a derived dollar level may publish from an outside series only
+  // when the two are COINTEGRATED (Engle–Granger), never on a spurious correlation.
+  // Self-test proves the spurious trap is rejected; the gate validates any live bridge.
+  ['Cost-index bridge cointegration','check-bridge-cointegration.mjs'],
+  ['Cost-index bridge cointegration self-test','check-bridge-cointegration.mjs','--self-test'],
   // Dataset freshness — the JSON-LD dateModified on the methodology pages + hub
   // catalog must equal the seed's generatedAt (machine-readable freshness, a
   // top AI-citation factor). Stamped in place; --check pins it in sync.
   ['Cost-index dataset date','inject-cost-index-dataset-date.mjs','--check'],
+  ['Cost-index dispatch freshness','check-cost-index-dispatch-fresh.mjs'],
+  ['Cost-index dispatch freshness self-test','check-cost-index-dispatch-fresh.mjs','--self-test'],
   // Pressure honesty — the inferred outlook can't carry a price, can't use a
   // banned verb, and its rendered direction must equal what the rules recompute.
   ['Cost-pressure honesty','check-pressure-honesty.mjs'],

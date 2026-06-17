@@ -98,6 +98,10 @@ export const STALE_AUDIO_WAIVERS = [
     dir: 'library/does-my-restaurant-need-a-website',
     note: '2026-06-08: stale render (audio gen 2026-05-10) — two-restaurants bio, 6 langs. HTML clean. Awaiting re-render.',
   },
+  {
+    dir: 'library/how-to-tell-if-a-restaurant-tool-is-safe',
+    note: '2026-06-17: stale render — speaks "Kept margin climbed 56%" (the DoorDash recirculation-card figure de-fabricated in HTML; this audio predates the fix). HTML clean. Awaiting re-render.',
+  },
 ];
 
 export function waiverFor(rel) {
