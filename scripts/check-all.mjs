@@ -170,6 +170,7 @@ const CHECKS = [
   ['Article sheet callouts (idem)','inject-article-sheet-callouts.mjs','--check'],
   ['Glossary OG seed (idem)','seed-glossary-og.mjs',       '--check'],
   ['Glossary OG meta (idem)','inject-glossary-og.mjs',     '--check'],
+  ['Receipts KPIs (idem)','inject-receipts-kpis.mjs',      '--check'],
   ['OG template grid',    'check-og-template-grid.mjs',    '--check'],
   ['Kind registry',       'check-kind-registry.mjs',       '--check'],
   // Operator Sheets — parity gate. Warn-only during initial rollout
