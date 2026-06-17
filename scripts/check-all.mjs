@@ -302,6 +302,7 @@ const CHECKS = [
   ['Tool verified stamp (idem)','inject-tool-verified-stamp.mjs','--check'],
   ['Tool verified stamp', 'check-tool-verified-stamp.mjs', '--check'],
   ['llms.txt (idem)',     'build-llms-txt.mjs',            '--check'],
+  ['Claims ledger (idem)','build-claims-json.mjs',         '--check'],
   ['Tool HowTo schema (idem)','inject-tool-howto.mjs',     '--check'],
   ['Glossary article schema (idem)','inject-glossary-article-schema.mjs','--check'],
   ['RSS feeds (idem)',    'build-rss.mjs',                 '--check'],

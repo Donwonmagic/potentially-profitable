@@ -1,6 +1,15 @@
 # CLAUDE.md
 
-Project memory for Claude Code sessions on `muntin.digital` — a one-person restaurant web studio in Silver Spring, MD. Static site (HTML + inline CSS + a few sentinel-driven build scripts), no framework, no CMS.
+Project memory for Claude Code sessions on `muntin.digital` — a one-person, **product-only** restaurant company in Silver Spring, MD (the Cost Index, free operator tools, and Muntin Ledger; the website-build/services line is retired). Static site (HTML + inline CSS + a few sentinel-driven build scripts), no framework, no CMS.
+
+## Recent retirements & freezes (keep new work on-funnel)
+
+New work consolidates around the cost-intelligence funnel (the Cost Index, the live free tools, Muntin Ledger). Do **not** reinvest in these:
+
+  - **Frozen:** the build-a-website course (`/course/`) — kept live, no further investment.
+  - **Cut 2026-06-17:** fr/it/pt/zh article audio (EN + ES only now); the "coming soon" tool roadmap (the 6 unbuilt tools removed; `data/tools.json` `roadmap` is empty; `tools.coming` = 0).
+  - **Retired earlier:** the web-studio services tiers (301 to `/studio/`, which is now the company page); the Menu Design Suite + Invoice Decoder tools (their `/never/` marketing was removed 2026-06-17).
+  - **Prune candidates (off-funnel, do not expand):** the brand/design operator-sheet pack.
 
 ## Where things live
 

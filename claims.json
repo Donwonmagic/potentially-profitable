@@ -1,0 +1,354 @@
+{
+  "_doc": "Public, machine-readable claim ledger for muntin.digital. Every externally-verifiable factual claim used across the library, paired with its primary public source and the date it was last checked. Generated from data/sourced-claims.json by scripts/build-claims-json.mjs — do not edit by hand. Operator-experience claims (first-hand, no public URL) are documented at https://muntin.digital/about/#timeline.",
+  "as_of": "2026-06-14",
+  "count": 33,
+  "claims": [
+    {
+      "id": "ai_overview_share_march_2025",
+      "claim": "Google AI Overviews appeared on 13.14% of US desktop queries in March 2025",
+      "source_name": "Search Engine Land (March 2025 analysis)",
+      "source_url": "https://searchengineland.com/google-ai-overviews-13-searches-455057",
+      "date_verified": "2026-05-14",
+      "used_in": [
+        "how-to-get-cited-in-google-ai-overviews-restaurant",
+        "may-2026-wave-publishing-for-citation"
+      ]
+    },
+    {
+      "id": "baymard_institute_reference",
+      "claim": "Baymard Institute publishes a meta-analysis of cart-abandonment rate statistics",
+      "source_name": "Baymard Institute — \"50 Cart Abandonment Rate Statistics 2026\"",
+      "source_url": "https://baymard.com/lists/cart-abandonment-rate",
+      "date_verified": "2026-05-14",
+      "used_in": [
+        "why-your-restaurant-loses-reservations-every-night",
+        "learn/research/cart-abandonment-rate"
+      ]
+    },
+    {
+      "id": "brightedge_gemini_referral_2026",
+      "claim": "Gemini became the #2 AI referral source in 2026, rising from 4.3% to 11.6% of AI referrals in Q1 and 13.2% by April, while ChatGPT fell from 89.2% to 81.4%.",
+      "source_name": "BrightEdge — AI referral data (May 2026)",
+      "source_url": "https://www.brightedge.com/about/press-releases",
+      "date_verified": "2026-05-22",
+      "used_in": [
+        "gemini-ai-referral-traffic-restaurants-2026"
+      ]
+    },
+    {
+      "id": "como_pricing",
+      "claim": "Como standalone loyalty platform — no openly published pricing",
+      "source_name": "Como",
+      "source_url": "https://www.como.com/",
+      "date_verified": "2026-05-14",
+      "used_in": [
+        "loyalty-programs-for-independent-restaurants-what-works-2026"
+      ]
+    },
+    {
+      "id": "cpi_food_at_home_may_2026",
+      "claim": "Over the 12 months ending May 2026, the U.S. CPI food-at-home index rose 2.7% and the all-food index rose 3.1%.",
+      "source_name": "U.S. Bureau of Labor Statistics, CPI for May 2026 (released June 10, 2026)",
+      "source_url": "https://www.bls.gov/news.release/cpi.nr0.htm",
+      "date_verified": "2026-06-14",
+      "used_in": [
+        "restaurant-menu-inflation-2026",
+        "inflacion-de-menu-de-restaurante-2026"
+      ]
+    },
+    {
+      "id": "cpi_food_away_from_home_may_2026",
+      "claim": "Over the 12 months ending May 2026, the U.S. CPI food-away-from-home index rose 3.5% (full-service meals 3.8%, limited-service meals 3.3%).",
+      "source_name": "U.S. Bureau of Labor Statistics, CPI for May 2026 (released June 10, 2026)",
+      "source_url": "https://www.bls.gov/news.release/cpi.nr0.htm",
+      "date_verified": "2026-06-14",
+      "used_in": [
+        "restaurant-menu-inflation-2026",
+        "inflacion-de-menu-de-restaurante-2026"
+      ]
+    },
+    {
+      "id": "dc_initiative_82",
+      "claim": "DC Initiative 82 (Tipped Wage Workers Fairness Act) phases out the tipped minimum wage in the District of Columbia",
+      "source_name": "DC Office of Human Rights — Tipped Wage Workers Fairness Act",
+      "source_url": "https://ohr.dc.gov/page/tipped-wage-workers-fairness-act",
+      "date_verified": "2026-05-14",
+      "used_in": [
+        "service-charges-vs-tipping-restaurant-operator-math-2026"
+      ]
+    },
+    {
+      "id": "doordash_marketplace_tiers",
+      "claim": "DoorDash Marketplace commission tiers: Basic 15%, Plus 25%, Premier 30%",
+      "source_name": "DoorDash Merchant docs",
+      "source_url": "https://merchants.doordash.com/en-us/pricing",
+      "date_verified": "2026-05-14",
+      "used_in": [
+        "an-honest-doordash-math-for-independent-restaurants-2026",
+        "uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026",
+        "30-days-after-leaving-doordash-restaurant-case-study",
+        "is-doordash-worth-it-for-restaurants-in-2026"
+      ]
+    },
+    {
+      "id": "fivestars_pricing",
+      "claim": "Fivestars standalone loyalty platform — no openly published pricing",
+      "source_name": "Fivestars",
+      "source_url": "https://www.fivestars.com/",
+      "date_verified": "2026-05-14",
+      "used_in": [
+        "loyalty-programs-for-independent-restaurants-what-works-2026"
+      ]
+    },
+    {
+      "id": "google_ai_mode_io_2026",
+      "claim": "At Google I/O on May 19, 2026, Google rebuilt AI Mode on a new model with a redesigned search box and agentic capabilities, including booking restaurant tables through OpenTable, Resy, and Tock; AI Mode reaches 1B+ monthly users with US rollout over summer 2026.",
+      "source_name": "Google — The Keyword, I/O 2026 Search updates",
+      "source_url": "https://blog.google/products-and-platforms/products/search/search-io-2026/",
+      "date_verified": "2026-05-22",
+      "used_in": [
+        "google-ai-mode-restaurant-local-results-2026",
+        "google-ai-mode-reservation-booking-restaurant-2026"
+      ]
+    },
+    {
+      "id": "google_business_profile_help_photos",
+      "claim": "Google states that businesses with photos receive significantly more directions requests and click-throughs than businesses without",
+      "source_name": "Google Business Profile Help — Add photos and videos",
+      "source_url": "https://support.google.com/business/answer/6123536",
+      "date_verified": "2026-05-14",
+      "used_in": [
+        "how-to-set-up-google-business-profile-for-your-restaurant"
+      ]
+    },
+    {
+      "id": "google_core_update_may_2026",
+      "claim": "Google's May 2026 core update began rolling out on May 21, 2026 and may take up to two weeks to complete; it is the second core update of the year.",
+      "source_name": "Google Search Status Dashboard",
+      "source_url": "https://status.search.google.com/",
+      "date_verified": "2026-05-22",
+      "used_in": [
+        "may-2026-discovery-changed-under-you"
+      ]
+    },
+    {
+      "id": "google_local_ranking_signals",
+      "claim": "Google ranks local results by distance, relevance, and prominence — and review-response activity is one of the signals weighted toward prominence",
+      "source_name": "Google Business Profile Help — Improve your local ranking",
+      "source_url": "https://support.google.com/business/answer/7091",
+      "date_verified": "2026-05-14",
+      "used_in": [
+        "how-to-respond-to-google-reviews-restaurant-playbook-2026",
+        "my-restaurant-isnt-on-google-maps-10-minute-diagnostic",
+        "how-to-set-up-google-business-profile-for-your-restaurant"
+      ]
+    },
+    {
+      "id": "google_schema_supported_types",
+      "claim": "Google Search Central documents Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQPage as supported schema types for restaurant pages",
+      "source_name": "Google Search Central — Local Business structured data",
+      "source_url": "https://developers.google.com/search/docs/appearance/structured-data/local-business",
+      "date_verified": "2026-05-14",
+      "used_in": [
+        "restaurant-schema-markup-6-types-google-uses",
+        "restaurant-schema-markup-complete-paste-ready-example"
+      ]
+    },
+    {
+      "id": "grubhub_published_rates",
+      "claim": "Grubhub commission tiers and second-layer fee structure",
+      "source_name": "Grubhub Merchant",
+      "source_url": "https://get.grubhub.com/grubhub-pricing-and-fees/",
+      "date_verified": "2026-05-14",
+      "used_in": [
+        "uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026"
+      ]
+    },
+    {
+      "id": "instagram_2024_algorithm_update",
+      "claim": "Meta's late-2024 algorithm update penalizes stacked-hashtag posts",
+      "source_name": "Meta — Creator updates",
+      "source_url": "https://creators.instagram.com/",
+      "date_verified": "2026-05-14",
+      "used_in": [
+        "instagram-as-restaurant-seo-strategy-2026"
+      ]
+    },
+    {
+      "id": "klaviyo_pricing",
+      "claim": "Klaviyo email tier monthly cost",
+      "source_name": "Klaviyo",
+      "source_url": "https://www.klaviyo.com/pricing",
+      "date_verified": "2026-05-14",
+      "used_in": [
+        "loyalty-programs-for-independent-restaurants-what-works-2026"
+      ]
+    },
+    {
+      "id": "mailchimp_pricing",
+      "claim": "Mailchimp email tier monthly cost",
+      "source_name": "Mailchimp",
+      "source_url": "https://mailchimp.com/pricing/marketing/",
+      "date_verified": "2026-05-14",
+      "used_in": [
+        "loyalty-programs-for-independent-restaurants-what-works-2026"
+      ]
+    },
+    {
+      "id": "muntin_cost_index_ribeye_2026_06",
+      "claim": "The Muntin Cost Index put wholesale ribeye near $11.59 per pound as of June 5, 2026 (sourced from USDA Livestock Mandatory Reporting), flagged flat within its normal weekly range despite an upward two-year trend.",
+      "source_name": "Muntin Cost Index (data/cost-index.json, generated from verified sources only)",
+      "source_url": "https://muntin.digital/cost-index/",
+      "date_verified": "2026-06-14",
+      "used_in": [
+        "restaurant-menu-inflation-2026",
+        "inflacion-de-menu-de-restaurante-2026"
+      ]
+    },
+    {
+      "id": "national_restaurant_association_reports",
+      "claim": "The National Restaurant Association publishes annual State of the Industry research",
+      "source_name": "National Restaurant Association — Research Reports",
+      "source_url": "https://restaurant.org/research-and-media/research/research-reports/",
+      "date_verified": "2026-05-14",
+      "used_in": []
+    },
+    {
+      "id": "nielsen_norman_group_reference",
+      "claim": "Nielsen Norman Group has published research on Fitts's Law and broader web usability",
+      "source_name": "Nielsen Norman Group — \"Fitts's Law and Its Applications in UX\"",
+      "source_url": "https://www.nngroup.com/articles/fitts-law/",
+      "date_verified": "2026-05-14",
+      "used_in": [
+        "why-your-restaurant-loses-reservations-every-night",
+        "learn/research/fittss-law",
+        "learn/research/local-business-websites"
+      ]
+    },
+    {
+      "id": "opentable_direct_booking_pref_2026",
+      "claim": "65% of diners prefer to book directly on a restaurant's own website rather than through a third party (OpenTable, 2026).",
+      "source_name": "OpenTable — 2026 diner trends",
+      "source_url": "https://www.opentable.com/restaurant-solutions/2026-diner-trends/",
+      "date_verified": "2026-05-22",
+      "used_in": [
+        "google-ai-mode-reservation-booking-restaurant-2026"
+      ]
+    },
+    {
+      "id": "rio_seo_restaurant_decline_2026",
+      "claim": "A 2026 local-search analysis found restaurant Google Maps views down 40.1% and food orders from those listings down 25.7% over two years, even as rankings held.",
+      "source_name": "Rio SEO — 2026 Local Search Report",
+      "source_url": "https://www.rioseo.com/blog/2026-local-search-report/",
+      "date_verified": "2026-05-22",
+      "used_in": [
+        "ai-local-pack-restaurant-phone-calls-2026"
+      ]
+    },
+    {
+      "id": "square_loyalty_pricing",
+      "claim": "Square Loyalty monthly cost (starts $25/month per Square)",
+      "source_name": "Square — Loyalty pricing help article",
+      "source_url": "https://squareup.com/help/us/en/article/6382-square-loyalty-pricing",
+      "date_verified": "2026-05-14",
+      "used_in": [
+        "loyalty-programs-for-independent-restaurants-what-works-2026"
+      ]
+    },
+    {
+      "id": "sterling_sky_ai_local_pack_2026",
+      "claim": "AI local packs appeared on roughly 7% of tracked local keywords in 2026 and dropped the click-to-call button when shown.",
+      "source_name": "Sterling Sky — The State of Local SEO in 2026",
+      "source_url": "https://www.sterlingsky.ca/the-state-of-local-seo-in-2026/",
+      "date_verified": "2026-05-22",
+      "used_in": [
+        "ai-local-pack-restaurant-phone-calls-2026"
+      ]
+    },
+    {
+      "id": "think_with_google_mobile_speed",
+      "claim": "Think with Google has published research on mobile page-speed industry benchmarks",
+      "source_name": "Think with Google — \"New Industry Benchmarks for Mobile Page Speed\" (Daniel An, Feb 2017)",
+      "source_url": "https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/",
+      "date_verified": "2026-05-14",
+      "used_in": [
+        "wix-vs-custom-for-restaurants",
+        "why-your-restaurant-loses-reservations-every-night",
+        "learn/research/mobile-page-speed-3-second-rule"
+      ]
+    },
+    {
+      "id": "toast_rewards_pricing",
+      "claim": "Toast Loyalty add-on monthly cost (~$50/month per Toast)",
+      "source_name": "Toast — Loyalty product page",
+      "source_url": "https://pos.toasttab.com/products/loyalty",
+      "date_verified": "2026-05-14",
+      "used_in": [
+        "loyalty-programs-for-independent-restaurants-what-works-2026"
+      ]
+    },
+    {
+      "id": "uber_eats_published_rates",
+      "claim": "Uber Eats commission tiers and Pro membership cost",
+      "source_name": "Uber Eats Merchant",
+      "source_url": "https://merchants.ubereats.com/us/en/pricing/",
+      "date_verified": "2026-05-14",
+      "used_in": [
+        "uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026"
+      ]
+    },
+    {
+      "id": "uberall_ai_invisibility_2026",
+      "claim": "A 2026 Uberall study found 83% of restaurants do not appear in AI search results, despite 86% having a Google Business Profile; AI assistants name only 3-5 brands per query.",
+      "source_name": "Uberall — Fast Food, Faster Discovery: The 2026 GEO Playbook for Multi-Location QSRs",
+      "source_url": "https://uberall.com/en-us/geo-playbook",
+      "date_verified": "2026-05-22",
+      "used_in": [
+        "how-to-appear-in-ai-search-restaurant-2026"
+      ]
+    },
+    {
+      "id": "uberall_ai_rating_floors_2026",
+      "claim": "AI assistants apply minimum star-rating thresholds before recommending a restaurant: roughly 4.3 for ChatGPT, 4.1 for Perplexity, and 3.9 for Gemini (Uberall, 2026).",
+      "source_name": "Uberall — 2026 GEO Playbook",
+      "source_url": "https://uberall.com/en-us/geo-playbook",
+      "date_verified": "2026-05-22",
+      "used_in": [
+        "how-to-appear-in-ai-search-restaurant-2026"
+      ]
+    },
+    {
+      "id": "usda_allfood_forecast_2026",
+      "claim": "USDA ERS forecasts 2026 all-food prices up 3.4%, food away from home up 3.5%, and food at home up 3.2%.",
+      "source_name": "USDA Economic Research Service, Food Price Outlook (May 2026 forecast)",
+      "source_url": "https://www.ers.usda.gov/data-products/food-price-outlook/summary-findings",
+      "date_verified": "2026-06-14",
+      "used_in": [
+        "restaurant-menu-inflation-2026",
+        "inflacion-de-menu-de-restaurante-2026"
+      ]
+    },
+    {
+      "id": "usda_beef_veal_forecast_2026",
+      "claim": "USDA ERS forecasts 2026 retail beef and veal prices up 12.1% (prediction interval 6.6 to 18.1%), the largest food-category increase, citing a U.S. cattle herd shrinking since 2019 against strong demand.",
+      "source_name": "USDA Economic Research Service, Food Price Outlook (May 2026 forecast)",
+      "source_url": "https://www.ers.usda.gov/data-products/food-price-outlook/summary-findings",
+      "date_verified": "2026-06-14",
+      "used_in": [
+        "restaurant-menu-inflation-2026",
+        "inflacion-de-menu-de-restaurante-2026"
+      ]
+    },
+    {
+      "id": "usda_eggs_forecast_2026",
+      "claim": "USDA ERS forecasts 2026 retail egg prices down 29.8% (prediction interval -38.8 to -18.3%) as the laying flock recovers from the HPAI avian-flu outbreak.",
+      "source_name": "USDA Economic Research Service, Food Price Outlook (May 2026 forecast)",
+      "source_url": "https://www.ers.usda.gov/data-products/food-price-outlook/summary-findings",
+      "date_verified": "2026-06-14",
+      "used_in": [
+        "restaurant-menu-inflation-2026",
+        "inflacion-de-menu-de-restaurante-2026"
+      ]
+    }
+  ]
+}

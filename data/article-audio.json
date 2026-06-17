@@ -1,15 +1,11 @@
 {
   "_doc": "Audio coverage manifest for the Muntin library. Source of truth for which written pieces ship a 'Listen to this article' studio audio edition, in which languages.",
   "_status": "v1 — 2026-05-08. Tracks the studio-tier audio rollout. The pipeline that consumes this is scripts/render-post-audio.mjs (synthesis) + scripts/lib/translate.py (translation) + scripts/check-audio-coverage.mjs (audit).",
-  "_render_command": "node scripts/render-post-audio.mjs --manifest data/article-audio.json --languages en,es,fr,it,pt,zh --kokoro-model <path> --kokoro-voices <path>",
+  "_render_command": "node scripts/render-post-audio.mjs --manifest data/article-audio.json --languages en,es --kokoro-model <path> --kokoro-voices <path>",
   "_audit_command": "node scripts/check-audio-coverage.mjs",
   "_languages": {
     "en": "English — primary, narrated by F5-TTS voice clone (Don) when available, otherwise Kokoro am_michael",
-    "es": "Spanish — Kokoro em_alex",
-    "fr": "French — Kokoro ff_siwis",
-    "it": "Italian — Kokoro im_nicola",
-    "pt": "Portuguese (Brazilian) — Kokoro pm_alex",
-    "zh": "Mandarin — Kokoro zm_yunxi"
+    "es": "Spanish — Kokoro em_alex"
   },
   "_voice_canon": "One curated Kokoro voice per language, used across the entire library so brand recognition compounds. Don may swap voices via render-post-audio.mjs --kokoro-voice-<lang> when a better voice ships.",
   "_translation_canon": "Each non-EN edition runs the source EN chunks through scripts/lib/translate.py — document-context batched translation with the GLOSSARY of brand + restaurant-industry terms preserved. The ES edition for posts with a hand-translated ES mirror SHOULD use --use-existing-translations against the ES article HTML so the audio matches Don's authored Spanish prose. Other languages use translate.py.",
@@ -21,22 +17,14 @@
     "ai-search-restaurant-website-platform-recommendations-2026": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "may-2026-discovery-changed-under-you": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "rendered",
       "owner": "f5+kokoro"
@@ -44,11 +32,7 @@
     "how-to-appear-in-ai-search-restaurant-2026": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "rendered",
       "owner": "f5+kokoro"
@@ -56,11 +40,7 @@
     "google-ai-mode-restaurant-local-results-2026": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "rendered",
       "owner": "f5+kokoro"
@@ -68,11 +48,7 @@
     "ai-local-pack-restaurant-phone-calls-2026": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "rendered",
       "owner": "f5+kokoro"
@@ -80,11 +56,7 @@
     "gemini-ai-referral-traffic-restaurants-2026": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "rendered",
       "owner": "f5+kokoro"
@@ -92,44 +64,28 @@
     "instagram-as-restaurant-seo-strategy-2026": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "30-days-after-leaving-doordash-restaurant-case-study": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "may-2026-wave-publishing-for-citation": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "restaurant-menu-inflation-2026": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     }
@@ -142,242 +98,154 @@
     "can-chatgpt-write-your-restaurant-website": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "does-my-restaurant-need-a-website": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "how-to-get-cited-in-google-ai-overviews-restaurant": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "how-to-get-more-google-reviews-for-your-restaurant": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "how-to-raise-restaurant-menu-prices-without-losing-reservations": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "how-to-read-restaurant-google-search-console": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "how-to-set-up-google-business-profile-for-your-restaurant": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "how-to-tell-if-a-restaurant-tool-is-safe": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "privacy-forward-restaurant-bookkeeping": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "my-restaurant-isnt-on-google-maps-10-minute-diagnostic": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "restaurant-photo-spec-sheet": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "toast-vs-square-vs-clover-for-restaurants": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "what-should-be-on-a-restaurant-website": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "when-to-rebuild-your-restaurant-website": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "wix-vs-custom-for-restaurants": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "custom-restaurant-website-pricing": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "third-party-delivery-comparison": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "service-charge-vs-tipping-model": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "google-review-response-playbook": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "loyalty-program-roi": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "restaurant-app-decision": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "ai-mode-reservation-strategy": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial",
       "owner": "f5+kokoro"
@@ -385,11 +253,7 @@
     "restaurant-schema-markup-guide": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial",
       "needs_rerender": "Wave 5 fold from restaurant-schema-markup-complete-paste-ready-example added 209 lines; audio chunk map is stale for the appended sections."
@@ -397,11 +261,7 @@
     "reservation-conversion-guide": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial",
       "needs_rerender": "Wave 5 fold from five-restaurant-website-changes-recover-one-percent-margin + how-to-recover-reservations-from-googles-find-a-table added 308 lines; audio chunk map is stale for the appended sections."
@@ -409,11 +269,7 @@
     "third-party-delivery-economics": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial",
       "needs_rerender": "Wave 5 fold from is-doordash-worth-it-for-restaurants-in-2026 added 222 lines; audio chunk map is stale for the appended sections."
@@ -421,99 +277,63 @@
     "restaurant-local-seo": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "best-restaurant-website-platform": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "commission-free-online-ordering-restaurants": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "how-to-hire-a-restaurant-web-designer": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "restaurant-online-menu-best-practices": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "restaurant-website-technical-seo-checklist": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "restaurant-brand-system-colors-type-logo": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "restaurant-menu-engineering": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "restaurant-website-legal-essentials": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     }
@@ -523,11 +343,7 @@
     "como-hacer-sitio-web-para-mi-restaurante": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending",
       "source_lang": "es"
@@ -535,11 +351,7 @@
     "mi-restaurante-no-aparece-en-google-maps": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending",
       "source_lang": "es"
@@ -547,11 +359,7 @@
     "cuanto-cuesta-una-pagina-web-para-restaurante-2026": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending",
       "source_lang": "es"
@@ -559,11 +367,7 @@
     "como-salir-de-doordash-mi-restaurante": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending",
       "source_lang": "es",
@@ -572,11 +376,7 @@
     "los-6-tipos-de-schema-markup-que-google-usa": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial",
       "source_lang": "es",
@@ -587,77 +387,49 @@
     "the-1-percent-margin-audit-50-restaurant-websites-2026": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "lighthouse-performance-scoring": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "dmv-restaurant-gbp-audit-2026": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "cart-abandonment-rate": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "mobile-page-speed-3-second-rule": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "local-business-websites": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     },
     "fittss-law": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "partial"
     }
@@ -667,11 +439,7 @@
     "audit-any-tool": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "deferred",
       "defer_reason": "post-body wraps <main> with nested <section><div class='container'><h2/p/li>... — extractor selectors don't resolve at runtime"
@@ -679,11 +447,7 @@
     "restaurant-website-checklist": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "deferred",
       "defer_reason": "same as audit-any-tool, plus 2,500-line length amplifies the impact of any selector misalignment"
@@ -694,220 +458,140 @@
     "m1-orient/welcome": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending"
     },
     "m1-orient/what-a-site-does": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending"
     },
     "m1-orient/one-promise": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending"
     },
     "m2-decide/customer": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending"
     },
     "m2-decide/fresh/naming": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending"
     },
     "m2-decide/rebuild/audit": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending"
     },
     "m2-decide/fresh/positioning": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending"
     },
     "m2-decide/rebuild/leaks": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending"
     },
     "m2-decide/palette-voice": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending"
     },
     "m3-assemble/menu": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending"
     },
     "m3-assemble/fresh/photos": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending"
     },
     "m3-assemble/rebuild/photos": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending"
     },
     "m3-assemble/hours-contact": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending"
     },
     "m3-assemble/fresh/gbp": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending"
     },
     "m3-assemble/rebuild/gbp": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending"
     },
     "m4-launch/local-seo": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending"
     },
     "m4-launch/reviews": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending"
     },
     "m4-launch/generator": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending"
     },
     "m4-launch/deploy": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending"
     },
     "m4-launch/rhythm": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending"
     }
@@ -917,11 +601,7 @@
     "m1-orient/welcome": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending",
       "source_lang": "es"
@@ -929,11 +609,7 @@
     "m1-orient/what-a-site-does": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending",
       "source_lang": "es"
@@ -941,11 +617,7 @@
     "m1-orient/one-promise": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending",
       "source_lang": "es"
@@ -953,11 +625,7 @@
     "m2-decide/customer": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending",
       "source_lang": "es"
@@ -965,11 +633,7 @@
     "m2-decide/fresh/naming": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending",
       "source_lang": "es"
@@ -977,11 +641,7 @@
     "m2-decide/rebuild/audit": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending",
       "source_lang": "es"
@@ -989,11 +649,7 @@
     "m2-decide/fresh/positioning": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending",
       "source_lang": "es"
@@ -1001,11 +657,7 @@
     "m2-decide/rebuild/leaks": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending",
       "source_lang": "es"
@@ -1013,11 +665,7 @@
     "m2-decide/palette-voice": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending",
       "source_lang": "es"
@@ -1025,11 +673,7 @@
     "m3-assemble/menu": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending",
       "source_lang": "es"
@@ -1037,11 +681,7 @@
     "m3-assemble/fresh/photos": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending",
       "source_lang": "es"
@@ -1049,11 +689,7 @@
     "m3-assemble/rebuild/photos": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending",
       "source_lang": "es"
@@ -1061,11 +697,7 @@
     "m3-assemble/hours-contact": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending",
       "source_lang": "es"
@@ -1073,11 +705,7 @@
     "m3-assemble/fresh/gbp": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending",
       "source_lang": "es"
@@ -1085,11 +713,7 @@
     "m3-assemble/rebuild/gbp": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending",
       "source_lang": "es"
@@ -1097,11 +721,7 @@
     "m4-launch/local-seo": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending",
       "source_lang": "es"
@@ -1109,11 +729,7 @@
     "m4-launch/reviews": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending",
       "source_lang": "es"
@@ -1121,11 +737,7 @@
     "m4-launch/generator": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending",
       "source_lang": "es"
@@ -1133,11 +745,7 @@
     "m4-launch/deploy": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending",
       "source_lang": "es"
@@ -1145,11 +753,7 @@
     "m4-launch/rhythm": {
       "languages": [
         "en",
-        "es",
-        "fr",
-        "it",
-        "pt",
-        "zh"
+        "es"
       ],
       "status": "pending",
       "source_lang": "es"
