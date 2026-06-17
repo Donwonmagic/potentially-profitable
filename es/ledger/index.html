@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<title>Muntin Ledger &mdash; el libro de facturas para restaurantes</title>
+<meta name="description" content="Muntin Ledger lee tus facturas con reglas, no con un modelo de lenguaje — las archiva consultables y marca subas contra tu propio historial." />
+<meta name="theme-color" content="#2A50C8" />
+<link rel="canonical" href="https://muntin.digital/es/ledger/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/ledger/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/ledger/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/ledger/" />
+<meta property="og:locale" content="es_US" />
+<meta property="og:locale:alternate" content="en_US" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Muntin Ledger &mdash; el libro de facturas para restaurantes" />
+<meta property="og:description" content="Lectura determinista de facturas, un libro consultable, exportación limpia — y sin comisión por pedido. La trastienda del restaurante, por fin legible. De Muntin Digital." />
+<meta property="og:url" content="https://muntin.digital/es/ledger/" />
+<meta property="og:site_name" content="Muntin Digital" />
+
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://muntin.digital/es/ledger/#webpage",
+      "name": "Muntin Ledger — el libro de facturas para restaurantes",
+      "description": "Muntin Ledger lee las facturas de proveedores con plantillas y reglas — sin modelo de lenguaje en el camino — las archiva en un libro consultable, y marca subas de precio contra tu propio historial de seis meses.",
+      "url": "https://muntin.digital/es/ledger/",
+      "inLanguage": "es-US",
+      "isPartOf": { "@id": "https://muntin.digital/#website" },
+      "publisher": { "@id": "https://muntin.digital/#business" },
+      "dateModified": "2026-06-17"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/es/" },
+        { "@type": "ListItem", "position": 2, "name": "Muntin Ledger", "item": "https://muntin.digital/es/ledger/" }
+      ]
+    }
+  ]
+}
+</script>
+
+<style>
+.breadcrumb{padding-top:100px}
+.studio-toc{display:flex;flex-wrap:wrap;gap:8px;margin:32px 0 0;padding:0;list-style:none;font-size:13px}
+.studio-toc a{display:inline-block;padding:6px 14px;background:var(--cream-2);border:1px solid var(--line);border-radius:999px;color:var(--ink);text-decoration:none;transition:background var(--t-fast) var(--ease)}
+.studio-toc a:hover,.studio-toc a:focus-visible{background:var(--teal-tint);border-color:var(--teal)}
+.studio-section{margin:64px 0;padding-top:24px;border-top:1px solid var(--line);scroll-margin-top:90px}
+.studio-section:first-of-type{border-top:0;margin-top:32px}
+.studio-section h2{font-family:var(--font-display);font-size:clamp(28px,3.6vw,42px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 12px}
+.studio-section .lead{font-size:17px;line-height:1.55;color:var(--ink-soft);margin:0 0 24px;max-width:640px}
+.studio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media (max-width:780px){.studio-grid{grid-template-columns:1fr}}
+.studio-card{padding:22px 24px;background:var(--cream-2);border:1px solid var(--line);border-radius:12px;text-decoration:none;color:inherit;display:block;transition:border-color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+.studio-card__label{font-family:var(--font-display);font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+.studio-card h3{font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 8px}
+.studio-card p{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:0}
+.ledger-asym{list-style:none;padding:0;margin:0;display:grid;gap:14px;max-width:760px}
+.ledger-asym li{padding:18px 22px;background:var(--cream-2);border:1px solid var(--line);border-radius:10px;font-size:15.5px;line-height:1.6;color:var(--ink)}
+.ledger-asym li strong{font-family:var(--font-display);font-weight:600;color:var(--ink)}
+.studio-cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+</style>
+<style>
+/* Critical CSS — prevents flash of unstyled content while the main
+   stylesheet (assets/site.css) loads non-render-blocking via the
+   <link> below. Carries: token vars used in inline styles elsewhere,
+   body baseline (cream + ink + body-size + line-height), container
+   width, skip-link affordance, and a min-height reservation for the
+   fixed nav so layout doesn't shift when site.css applies. ~600
+   bytes. Documented in Phase 3B perf cutover; the full token set
+   reapplies once site.css arrives. */
+:root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#16181D;color:#F6F7F8;padding:12px 16px;z-index:100}
+/* injected by inject-critical-link-color.mjs */
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D7DAE0}
+/* injected by inject-critical-link-color.mjs */
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D7DAE0}
+header.nav{min-height:64px}
+/* nav-critical */
+.nav{position:fixed;top:0;left:0;right:0;background:var(--cream);z-index:50;border-bottom:1px solid #E3E5E9}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:64px;padding:12px 0}
+.logo{display:flex;align-items:center;gap:10px;font-family:Georgia,serif;font-size:22px;font-weight:600;letter-spacing:-0.02em;flex-shrink:0;white-space:nowrap;color:inherit;text-decoration:none}
+.logo-mark{width:28px;height:28px;flex:0 0 28px}
+.tm{font-size:0.5em;vertical-align:super;margin-left:1px}
+.nav-links{display:flex;gap:36px;font-size:15px}
+.nav-links a{text-decoration:none;color:inherit}
+.nav-toggle{display:none}
+.nav-search-btn,.lang-switch{display:none}
+@media (max-width:1100px){.nav-links{display:none}.nav-toggle{display:flex;width:44px;height:44px;flex-direction:column;justify-content:center;align-items:center;gap:5px;background:transparent;border:0;padding:0}.nav-toggle span{display:block;width:22px;height:2px;background:var(--ink)}.nav-inner .btn-primary{display:none}}
+main{padding-top:64px}
+/* perf-critical */
+:root{--font-display:'Fraunces','Fraunces Fallback',Georgia,'Times New Roman',serif;--font-body:'Inter','Inter Fallback',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--ink-soft:#4A4F59;--teal:#2A50C8;--teal-dark:#1F3A93;--stone:#6B7280;--line:#E3E5E9;--line-dark:#D7DAE0}
+body{font-family:var(--font-body)}
+h1,h2,h3,h4,h5,.serif-italic{font-family:var(--font-display)}
+@font-face{font-family:'Fraunces';font-style:normal;font-weight:100 900;font-display:swap;src:url('/assets/fonts/fraunces-variable-latin-wght-normal.woff2') format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Fraunces';font-style:italic;font-weight:100 900;font-display:swap;src:url('/assets/fonts/fraunces-variable-latin-wght-italic.woff2') format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Inter';font-style:normal;font-weight:100 900;font-display:swap;src:url('/assets/fonts/inter-variable-latin-wght-normal.woff2') format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Inter';font-style:italic;font-weight:100 900;font-display:swap;src:url('/assets/fonts/inter-variable-latin-wght-italic.woff2') format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Fraunces Fallback';src:local('Times New Roman');size-adjust:100%;ascent-override:97.8%;descent-override:25.5%;line-gap-override:0%}
+@font-face{font-family:'Inter Fallback';src:local('Arial');size-adjust:100%;ascent-override:96.875%;descent-override:24.121%;line-gap-override:0%}
+.hero{padding:160px 0 100px;position:relative;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:60px;align-items:center}
+@media (max-width:960px){.hero{padding:130px 0 60px}.hero-grid{grid-template-columns:1fr;gap:48px}}
+.hero h1{margin-top:24px;text-wrap:balance;max-width:18ch}
+.hero h1 .serif-italic{font-style:italic;font-weight:400;color:var(--teal)}
+.hero-sub{margin-top:28px;max-width:520px;font-size:clamp(17px,1.35vw,20px);line-height:1.55;color:var(--ink-soft)}
+.hero-ctas{margin-top:40px;display:flex;gap:14px;flex-wrap:wrap}
+.hero-counts{display:flex;flex-wrap:wrap;gap:10px 14px;list-style:none;padding:0;margin:18px 0 22px;font-size:13.5px;font-weight:600;letter-spacing:0.02em;color:var(--ink-soft)}
+.hero-counts__chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--cream-2)}
+.hero-counts__chip strong{color:var(--teal)}
+section.block{padding:clamp(80px,10vw,140px) 0}
+.bg-cream2{background:var(--cream-2)}
+.section-header{max-width:760px;margin-bottom:64px}
+.section-header h2{margin-top:16px}
+.section-header p{margin-top:20px;font-size:19px;line-height:1.55;color:var(--ink-soft);max-width:640px}
+.section-center{text-align:center;margin-left:auto;margin-right:auto}
+.compare,.services,.care,.steps{display:grid;grid-template-columns:1fr;gap:20px}
+.work{display:grid;grid-template-columns:repeat(12,1fr);gap:24px}
+.work-item{grid-column:span 12}
+.about-grid{display:grid;grid-template-columns:1fr;gap:48px;align-items:center}
+.contact-grid{display:grid;grid-template-columns:1fr;gap:clamp(40px,6vw,80px);align-items:start}
+.form-row{display:grid;grid-template-columns:1fr;gap:16px}
+@media (min-width:961px){.compare,.services,.care{grid-template-columns:repeat(3,1fr)}.steps{grid-template-columns:repeat(4,1fr)}.work-item:nth-child(1){grid-column:span 7}.work-item:nth-child(2){grid-column:span 5}.work-item:nth-child(3){grid-column:span 5}.work-item:nth-child(4){grid-column:span 7}.about-grid{grid-template-columns:0.9fr 1.1fr;gap:80px}.contact-grid{grid-template-columns:1fr 1.2fr}}
+@media (min-width:641px){.form-row{grid-template-columns:1fr 1fr}}
+@media (max-width:960px){.window,.window-caption{display:none}}
+.mobile-cta-bar{display:none}
+.trust-strip{padding:18px 0;background:var(--cream-2);border-block:1px solid var(--line)}
+.trust-strip__list{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 18px;list-style:none;padding:0;margin:0;font-size:13.5px;color:var(--ink-soft);line-height:1.5}
+footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;border-top:1px solid rgba(250,247,242,0.08);font-size:14px}
+.foot-cta{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-bottom:40px;margin-bottom:48px;border-bottom:1px solid rgba(250,247,242,0.08)}
+.foot-cta-text{color:var(--cream);font-family:var(--font-display);font-size:clamp(22px,2.6vw,30px);line-height:1.2;letter-spacing:-0.01em;max-width:460px}
+.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1.1fr;gap:clamp(24px,3vw,44px);padding-bottom:48px;margin-bottom:32px;border-bottom:1px solid rgba(250,247,242,0.08)}
+@media (max-width:1100px){.foot-grid{grid-template-columns:1fr 1fr 1fr 1fr;gap:36px}}
+@media (max-width:960px){.foot-grid{grid-template-columns:1fr 1fr 1fr;gap:40px}}
+@media (max-width:640px){.foot-grid{grid-template-columns:1fr 1fr}.foot-cta{flex-direction:column;align-items:flex-start;gap:20px}}
+@media (max-width:420px){.foot-grid{grid-template-columns:1fr}}
+.foot-bottom{display:flex;justify-content:space-between;gap:24px;align-items:center;flex-wrap:wrap}
+.below-fold-island{content-visibility:auto;contain-intrinsic-size:auto 1200px}
+@media print{.below-fold-island{content-visibility:visible}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body{background:#16181D;color:#F1EDE5}:root:not([data-theme="light"]) .nav{background:#16181D;border-bottom-color:#2C3038}:root:not([data-theme="light"]) .nav-toggle span{background:#F1EDE5}:root:not([data-theme="light"]) .logo{color:#F1EDE5}:root:not([data-theme="light"]) h1,:root:not([data-theme="light"]) h2,:root:not([data-theme="light"]) h3,:root:not([data-theme="light"]) h4{color:#F1EDE5}:root:not([data-theme="light"]) .hero h1 .serif-italic{color:#7AA7FF}:root:not([data-theme="light"]) .hero-sub,:root:not([data-theme="light"]) .hero-counts,:root:not([data-theme="light"]) .section-header p,:root:not([data-theme="light"]) .trust-strip__list{color:#B8B3A8}:root:not([data-theme="light"]) .hero-counts__chip{background:#1B1E24;border-color:#2C3038}:root:not([data-theme="light"]) .hero-counts__chip strong{color:#7AA7FF}:root:not([data-theme="light"]) .bg-cream2{background:#1B1E24}:root:not([data-theme="light"]) .trust-strip{background:#1B1E24;border-block-color:#2C3038}:root:not([data-theme="light"]) .btn-ghost{color:#F1EDE5;border-color:#707784}:root:not([data-theme="light"]) .btn-primary{background:#F1EDE5;color:#16181D}}
+</style>
+<!-- Preload the two above-the-fold web fonts so they arrive in
+     parallel with site.css instead of being discovered after parse. -->
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-italic.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-italic.woff2" crossorigin>
+<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
+     (with a <noscript> fallback for the JS-disabled path). The
+     onload assigns this.rel='stylesheet', which the browser then
+     applies; before that the critical CSS above carries the page. -->
+<link rel="preload" as="style" href="/assets/site-core.css?v=2830bb0a913c" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=158a407ca00a" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=2830bb0a913c"><link rel="stylesheet" href="/assets/site-article.css?v=158a407ca00a"></noscript>
+
+<!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Saltar al contenido</a>
+
+<!-- batch-banner:start -->
+<aside class="batch-marquee" data-batch="menu-inflation-2026" role="complementary" aria-label="Nuevo informe · Inflación de menú de restaurante, mayo 2026" style="background:#16181D;color:#F6F7F8;font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(246,247,248,0.16);box-shadow:inset 0 1px 0 rgba(255,255,255,0.05)">
+  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;flex:1 1 auto">
+      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:#2A50C8;color:#F6F7F8;padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">Nuevo informe</span>
+      <span style="font-family:'Fraunces',Georgia,'Times New Roman',serif;font-size:14px;font-style:italic;line-height:1.35;min-width:0;color:#F6F7F8">Los precios de restaurante ya suben más rápido que los del súper.</span>
+    </div>
+    <a href="/es/blog/inflacion-de-menu-de-restaurante-2026/" style="display:inline-flex;align-items:center;gap:6px;color:#16181D;background:#F6F7F8;text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:13px;padding:6px 14px;border-radius:999px;white-space:nowrap;flex-shrink:0;box-shadow:0 1px 2px rgba(0,0,0,0.18);transition:transform .15s ease,box-shadow .15s ease">Leer el informe <span aria-hidden="true">&rarr;</span></a>
+  </div>
+</aside>
+<script>(function(){var d=document.documentElement;function s(){var b=document.querySelector('.batch-marquee');if(b){d.style.setProperty('--banner-h',b.offsetHeight+'px');}}s();addEventListener('resize',s,{passive:true});addEventListener('orientationchange',s);if(document.fonts&&document.fonts.ready){document.fonts.ready.then(s);}})();</script>
+<!-- batch-banner:end -->
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
+<header class="nav" id="nav">
+  <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
+             Placed inside <header> so sync-includes replaces it atomically
+             along with the rest of the nav block on every build, keeping
+             the partial strictly idempotent. Valid HTML5: <script> may
+             appear in any flow-content context. */
+  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","audio.byline_studio":"Narrado para The Muntin Desk","audio.byline_browser":"Leído por tu navegador","audio.preview":"Escucha 30 segundos primero →","audio.resume_chip_aria":"Reanudar desde la posición guardada","audio.share_aria":"Copiar enlace en este momento","audio.dismiss":"Descartar","audio.kicker":"Edición en audio","audio.headline":"¿Prefieres escucharlo?","audio.sub":"Pulsa reproducir y leeremos el artículo entero — gráficos incluidos.","audio.meta_handsfree":"manos libres","audio.meta_min":"min","audio.now_reading":"Reproduciendo","audio.resume_continue":"Continuar desde","audio.help_aria":"Ver atajos de teclado e información del reproductor","audio.help_title":"Consejos para escuchar","audio.help_chapters_eyebrow":"Capítulos","audio.finished_done":"Listo.","audio.finished_browse":"Explora la biblioteca →","audio.share_toast_ok":"Enlace copiado en {time}","audio.share_toast_fail":"No se pudo copiar — portapapeles bloqueado","audio.language_label":"Idioma","lesson.widget_wait":"Don está esperando — usa el widget","lesson.widget_wait_labeled":"Don está esperando — {label}","lesson.opener_recorded":"Don abre esta lección","lesson.wrap_recorded":"Don cierra esta lección","audio.help_kbd_eyebrow":"Teclado","audio.kbd_space":"Espacio","audio.kbd_space_help":"Reproducir o pausar","audio.kbd_jk_help":"Retroceder 15 segundos / avanzar 15 segundos","audio.kbd_arrows_help":"Párrafo anterior / siguiente párrafo","audio.help_about_eyebrow":"Sobre la voz","audio.help_about_body":"The Muntin Desk usa una voz generada por computadora ajustada para una lectura clara. Usamos la misma voz en cada artículo para que te resulte familiar. Cada grabación se produce una sola vez y se guarda como un archivo de audio que puedes descargar.","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","search.voice_start":"Buscar por voz","search.voice_stop":"Detener la escucha","search.voice_hint":"Escuchando… habla ahora","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
+  <div class="container nav-inner">
+    <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
+      <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="53" x2="110" y2="53"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
+    </a>
+    <!-- Phase 7: nav de 4 elementos, según el plan de lanzamiento Parte II.
+         Biblioteca / Herramientas / Estudio / Acceder.
+         Biblioteca apunta al hub canónico /es/library/. Herramientas
+         se promueve del antiguo mega-menú a un elemento de primer
+         nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
+         Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
+         se retira (el hub ES el menú); el controlador del script
+         también desaparece.
+
+         /es/work/ se retiró en la pasada de portfolio-sunset de la
+         Fase 8 (el encuadre de la empresa-como-CV hizo redundante
+         el portafolio personal). Las URLs /es/work/* hacen 301 a
+         /es/studio/ vía _redirects. -->
+    <nav class="nav-links" aria-label="Principal">
+      <a href="/es/library/">Biblioteca</a>
+      <a href="/es/start/">Comienza</a>
+      <a href="/es/tools/">Herramientas</a>
+      <a href="/es/studio/">Empresa</a>
+      <a href="https://ledger.muntin.digital/">Ledger</a>
+      <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
+      <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
+    </nav>
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Abrir búsqueda (Cmd+K)" title="Buscar — Cmd K">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+      <span class="nav-search-label">Buscar</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
+    </button>
+    <nav class="lang-switch" aria-label="Idioma">
+      <a href="/ledger/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
+      <span class="lang-switch-current" aria-current="true">ES</span>
+    </nav>
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">
+      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don está cerca"></span>
+      Contacta a Don
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
+    <a href="/es/library/">Biblioteca</a>
+    <a href="/es/start/">Comienza</a>
+    <a href="/es/tools/">Herramientas</a>
+    <a href="/es/studio/">Empresa</a>
+    <a href="https://ledger.muntin.digital/">Ledger</a>
+    <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
+    <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
+    <button type="button" class="mobile-search js-open-search">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Buscar en la biblioteca</span>
+    </button>
+    <!-- Interruptor de modo oscuro para móvil (el de escritorio se oculta
+         en teléfonos ≤640px). Mismo gancho .js-theme-toggle. -->
+    <button type="button" class="theme-toggle mobile-theme js-theme-toggle" aria-pressed="false" aria-label="Cambiar modo oscuro" data-label-dark="Modo oscuro" data-label-light="Modo claro" hidden>
+      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+        <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+        <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
+        <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
+      </svg>
+      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <span class="theme-toggle__label js-theme-label">Modo claro</span>
+    </button>
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Contacta a Don</a>
+    <a href="/ledger/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
+  </nav>
+
+  <!-- Mega-menu controller retired in Phase 7: Biblioteca is now a
+       single link to /es/library/ (the canonical three-doors hub IS
+       the menu). Las reglas CSS de .nav-library-* permanecen para
+       reusar el patrón si vuelve un mega-menú en el futuro. -->
+
+  <!-- Phase 2 (Workshop) — toggle del estado de auth para el nav.
+       Llama a /api/auth/me y revela el enlace "Acceder" o "El Taller"
+       según la respuesta. Ambos enlaces empiezan ocultos para que un
+       visitante anónimo sin JS no vea ninguno (la biblioteca y las
+       herramientas funcionan completas sin acceso, así que la
+       affordance ausente es aceptable). -->
+  <script>
+    (function () {
+      var signin   = document.querySelectorAll('.js-nav-signin');
+      var workshop = document.querySelectorAll('.js-nav-workshop');
+      if (!signin.length && !workshop.length) return;
+      var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 200) {
+            show(workshop);
+            fetch('/api/workbench/count', { credentials: 'same-origin' })
+              .then(function (r2) { return r2.ok ? r2.json() : null; })
+              .then(function (j) {
+                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
+                workshop.forEach(function (n) {
+                  if (n.querySelector('.nav-workshop-count')) return;
+                  var b = document.createElement('span');
+                  b.className = 'nav-workshop-count';
+                  b.textContent = ' (' + j.count + ')';
+                  n.appendChild(b);
+                });
+              })
+              .catch(function () {});
+            return;
+          }
+          show(signin);
+        })
+        .catch(function () { show(signin); });
+    })();
+  </script>
+  <!-- Phase 7 — manejador del modo oscuro. Cargado después del nav
+       para que el botón .js-theme-toggle ya esté en el DOM. (Faltaba
+       en el nav en español, así que el interruptor no funcionaba en
+       las páginas /es/.) -->
+  <script src="/assets/theme-toggle.js?v=phase8"></script>
+</header>
+
+<main id="main">
+  <nav class="breadcrumb container" aria-label="Ruta" style="margin-top:90px">
+    <ol style="list-style:none;padding:0;margin:0;display:flex;gap:8px;font-size:13px;color:var(--stone)">
+      <li><a href="/es/" style="color:var(--teal)">Inicio</a></li>
+      <li aria-hidden="true">›</li>
+      <li aria-current="page">Muntin Ledger</li>
+    </ol>
+  </nav>
+
+  <article class="container" style="max-width:980px;margin:32px auto 80px;padding:0 var(--pad-x)">
+    <header style="margin-bottom:8px">
+      <p class="eyebrow">El producto &middot; Disponibilidad general el 13 de noviembre de 2026</p>
+      <h1 style="font-family:var(--font-display);font-size:clamp(40px,6vw,64px);font-weight:500;line-height:1.05;letter-spacing:-0.5px;margin:0 0 18px">
+        Tu POS cuenta las ventas. <span class="serif-italic">Muntin Ledger lee las facturas.</span>
+      </h1>
+      <p style="font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0;max-width:720px">
+        Soy gerente de salón en un restaurante del área de DC. El lado de las ventas está bien cableado &mdash; cada cubierto, cada cuenta. El lado de los costos llega como una pila de facturas de proveedores que nadie lee hasta que el mes ya cerró. Muntin Ledger las lee el día que llegan, las archiva donde puedes encontrarlas, y te avisa cuando un precio se movió.
+      </p>
+      <ul class="studio-toc" aria-label="En esta página">
+        <li><a href="#what">Qué hace</a></li>
+        <li><a href="#why">Por qué una plataforma no puede copiarlo</a></li>
+        <li><a href="#proof">Prueba las cuentas gratis</a></li>
+        <li><a href="#pricing">Precios y lista fundadora</a></li>
+        <li><a href="#about">Quién está detrás</a></li>
+        <li><a href="#contact">Contacto</a></li>
+      </ul>
+    </header>
+
+    <section class="studio-section" id="what" aria-labelledby="what-h">
+      <h2 id="what-h">Leída, archivada, marcada.</h2>
+      <p class="lead">Tres tareas, ninguna de las cuales debería costarte la noche. Muntin Ledger hace la parte del trabajo de margen que un punto de venta nunca toca: el papel que llega de tus proveedores.</p>
+      <div class="studio-grid">
+        <div class="studio-card">
+          <p class="studio-card__label">Leer</p>
+          <h3>Plantillas y reglas, no un modelo.</h3>
+          <p>Toma una foto o sube una factura de proveedor. Plantillas y reglas extraen las líneas &mdash; proveedor, artículo, cantidad, precio, impuesto. Ningún modelo de lenguaje lee tus documentos; un gate de CI impide que alguien agregue uno.</p>
+        </div>
+        <div class="studio-card">
+          <p class="studio-card__label">Archivar</p>
+          <h3>Un libro que puedes buscar.</h3>
+          <p>Cada factura queda archivada y consultable &mdash; por proveedor, por artículo, por fecha. Exporta el registro completo a un CSV limpio, o publícalo en QuickBooks Online, cuando lo pidas.</p>
+        </div>
+        <div class="studio-card">
+          <p class="studio-card__label">Marcar</p>
+          <h3>Subas de precio, contra tu propio historial.</h3>
+          <p>Un proveedor sube un precio y Ledger lo marca contra tu propio historial de seis meses. Los platos que ese ingrediente toca se recalculan el mismo día &mdash; el costo de plato se mantiene al día sin una hoja de cálculo.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="studio-section" id="why" aria-labelledby="why-h">
+      <h2 id="why-h">Por qué una plataforma no puede copiar esto.</h2>
+      <p class="lead">Cada promesa de abajo es adversa a cómo ganan dinero los proveedores más grandes. Ese es el punto &mdash; una empresa que vive de una comisión por pedido o de revender tus datos no puede escribir estas frases sin acusar a su propio negocio.</p>
+      <ul class="ledger-asym">
+        <li><strong>Sin comisión por pedido.</strong> Muntin no toma nada de tus tickets. El incentivo de empujarte a vender o pedir más no está en el modelo, porque el modelo no es un corte de tus ventas.</li>
+        <li><strong>Sin modelo de lenguaje en el camino de la factura.</strong> Tus números nunca se vuelven datos de entrenamiento. La prohibición no es un párrafo de privacidad &mdash; es un gate del build que tumba el lanzamiento si alguien intenta agregar uno.</li>
+        <li><strong>Tus datos siguen siendo tuyos.</strong> Exporta el libro completo cuando quieras, en un formato que puedes abrir sin nosotros. Bórralo y desaparece.</li>
+        <li><strong>Precios publicados por escrito.</strong> El número está en la página, con la cuenta del costo por factura al lado. Sin llamada, sin cotización, sin &laquo;contactar a ventas&raquo;.</li>
+      </ul>
+    </section>
+
+    <section class="studio-section" id="proof" aria-labelledby="proof-h">
+      <h2 id="proof-h">Prueba las cuentas antes de confiar en el producto.</h2>
+      <p class="lead">No tienes que creerme con las cuentas de costos &mdash; están corriendo gratis, ahora mismo. Las herramientas de costo de plato y de margen calculan los mismos números que Ledger mantiene al día, en tu navegador, sin registro y sin que nada salga de la página. El Índice de Costos publica las lecturas de precios mayoristas detrás de ellas, con fecha y con fuente.</p>
+      <div class="studio-cta-row">
+        <a class="btn btn-ghost" href="/es/tools/">Explorar las herramientas</a>
+        <a class="btn btn-ghost" href="/es/cost-index/">Leer el índice</a>
+      </div>
+    </section>
+
+    <section class="studio-section" id="pricing" aria-labelledby="pricing-h">
+      <h2 id="pricing-h">Precios y la lista fundadora.</h2>
+      <p class="lead">Muntin Ledger es gratis durante la beta privada; la disponibilidad general es el 13 de noviembre de 2026. Los precios están publicados por escrito en <a href="https://ledger.muntin.digital/" style="color:var(--teal)">ledger.muntin.digital</a>, con la cuenta del costo por factura al lado. Los operadores que se unan a la lista fundadora antes del lanzamiento obtienen la tarifa fundadora. La lista y los números viven en el sitio del producto.</p>
+      <div class="studio-cta-row">
+        <a class="btn btn-primary" href="https://ledger.muntin.digital/">Ver Muntin Ledger</a>
+      </div>
+    </section>
+
+    <section class="studio-section" id="about" aria-labelledby="about-h">
+      <h2 id="about-h">Quién está detrás.</h2>
+      <p class="lead">Muntin Digital es una sola persona: Don Goldstein, gerente de salón de tiempo completo en Tacombi en Bethesda, con una década en pisos de hospitalidad antes de eso. Ledger existe porque corro cada semana los mismos números que calcula. La línea de tiempo completa está en la <a href="/es/about/" style="color:var(--teal)">página sobre Don</a>.</p>
+    </section>
+
+    <section class="studio-section" id="contact" aria-labelledby="contact-h">
+      <h2 id="contact-h">Un siguiente paso.</h2>
+      <p class="lead">Preguntas, una cifra que se ve mal, o un formato de proveedor que Ledger debería aprender a leer &mdash; la Ventana llega directo a mí, y cada nota se lee.</p>
+      <p><a class="btn btn-primary js-window" href="/es/window/">Escribirle a Don</a></p>
+    </section>
+  </article>
+</main>
+
+<footer>
+  <div class="container">
+    <!-- Phase 2.3: pulse propagation — same footer pulse as the EN
+         partial. Stays hidden until assets/js/window-state.js confirms
+         Don has been seen recently. -->
+    <div class="foot-cta">
+      <div class="foot-cta-text">
+        <span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don está cerca"></span>
+        ¿Tienes una pregunta? La Ventana está abierta.
+      </div>
+      <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Contacta a Don
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      </a>
+    </div>
+
+    <div class="foot-grid">
+      <div class="foot-col foot-brand">
+        <a href="/es/" class="foot-lockup-wrap" aria-label="Muntin Digital — inicio">
+          <!-- alt="" porque el <a> que envuelve ya está etiquetado.
+               Sin esto, los lectores de pantalla anuncian dos veces
+               "Muntin Digital" en el enlace del logotipo. -->
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="" width="240" height="53" loading="lazy" decoding="async">
+          <sup class="tm" aria-hidden="true">&#8482;</sup>
+        </a>
+        <p class="foot-tagline">La ventana.</p>
+        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->36<!-- /count --> art&iacute;culos, <!-- count:tools.live -->13<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->151<!-- /count --> t&eacute;rminos &mdash; de Muntin Digital, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
+      </div>
+
+      <!-- El orden de columnas refleja la navegación principal de 5
+           ítems (Biblioteca, Estudio, Confianza, Contacto). La
+           Biblioteca apunta primero al hub /es/library/ (las tres
+           puertas: Lee, Busca, Haz); el antiguo /es/learn/ sigue
+           resolviendo pero ya no necesita su propio enlace de pie.
+           id="foot-learn" es el marcador canónico que usa
+           scripts/sync-includes.mjs (FOOTER_MAIN_FUNNEL_MARKER), así
+           que el id se mantiene aunque la etiqueta visible sea
+           "Biblioteca". -->
+      <nav class="foot-col" aria-labelledby="foot-learn">
+        <p class="foot-heading" id="foot-learn">Biblioteca</p>
+        <ul class="foot-links">
+          <li><a href="/es/library/">Explora la biblioteca</a></li>
+          <li><a href="/es/glossary/">Glosario</a></li>
+          <li><a href="/es/tools/">Herramientas gratis</a></li>
+          <li><a href="/es/sheets/">Hojas del operador</a></li>
+          <li><a href="/es/blog/">Comentarios</a></li>
+        </ul>
+      </nav>
+
+      <!-- Fase 8 (portfolio sunset): la fila "Proyectos" enlazaba a
+           /es/work/, el portafolio personal. Ese hub se retiró cuando
+           la empresa pasó a ser el currículum; la fila ya no está y
+           /es/work/* hace 301 a /es/studio/. -->
+      <!-- Fase 9 (cierre de servicios, 2026-06-11): las filas de
+           Precios / Comparar / Proceso vendían los servicios retirados.
+           La columna ahora es Empresa — el producto, los datos
+           públicos, la página de la empresa, el fundador. -->
+      <nav class="foot-col" aria-labelledby="foot-studio">
+        <p class="foot-heading" id="foot-studio">Empresa</p>
+        <ul class="foot-links">
+          <li><a href="/es/ledger/">Muntin Ledger</a></li>
+          <li><a href="/es/cost-index/">&Iacute;ndice de costos</a></li>
+          <li><a href="/es/studio/">La empresa</a></li>
+          <li><a href="/es/about/">Sobre Don</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-trust">
+        <p class="foot-heading" id="foot-trust">Confianza</p>
+        <ul class="foot-links">
+          <li><a href="/es/never/">Lo que nunca hacemos</a></li>
+          <li><a href="/es/ai/">Pol&iacute;tica de IA</a></li>
+          <li><a href="/es/methods/">M&eacute;todos y fuentes</a></li>
+          <li><a href="/es/changelog/">Registro de cambios</a></li>
+          <li><a href="/es/receipts/">Recibos</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col foot-contact" aria-labelledby="foot-contact">
+        <p class="foot-heading" id="foot-contact">Contacto</p>
+        <ul class="foot-links">
+          <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
+          <li><a href="/es/window/">Contacta a Don</a></li>
+          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (se abre en una pestaña nueva)</span></a></li>
+        </ul>
+        <p class="foot-trust"><strong>Respuesta:</strong> en menos de 4 horas de lunes a viernes; fines de semana, el lunes.</p>
+      </nav>
+    </div>
+
+    <!-- newsletter-capture:start -->
+    <div class="foot-newsletter">
+      <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="es">
+        <p class="foot-newsletter-pitch">Te aviso cuando publique algo &mdash; cuatro notas por trimestre, sin secuencias automatizadas.</p>
+        <label class="foot-newsletter-label" for="foot-news-email">Tu correo</label>
+        <input id="foot-news-email" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="tu@turestaurante.com" />
+        <input type="hidden" name="locale" value="es" />
+        <input type="hidden" name="source" value="footer" />
+        <input type="hidden" name="ts" value="" />
+        <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+        <!-- Turnstile (Phase 3B). Auto-injects cf-turnstile-response on pass. -->
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="newsletter" data-language="es" data-size="flexible"></div>
+        <button type="submit">Suscribirme</button>
+      </form>
+    </div>
+    <!-- newsletter-capture:end -->
+
+    <div class="foot-bottom">
+      <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; LLC de Maryland &middot; Silver Spring, MD</p>
+      <nav class="foot-legal" aria-label="Legal">
+        <a href="/es/terms.html">Términos</a>
+        <a href="/es/privacy.html">Privacidad</a>
+        <a href="/es/security/">Datos y seguridad</a>
+        <a href="/es/accessibility.html">Accesibilidad</a>
+        <a href="/es/cookies.html">Cookies</a>
+        <a href="/es/feed.xml" type="application/rss+xml" title="Muntin Digital RSS">RSS</a>
+      </nav>
+    </div>
+  </div>
+  <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Acciones r&aacute;pidas">
+    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/es/tools/audits/restaurant/" data-event="sticky-cta-audit">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+      Auditor&iacute;a gratis
+    </a>
+    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/es/window/" data-event="sticky-cta-window">
+      <span class="mobile-cta-bar__pulse" id="mobileCtaBarPulse" hidden aria-hidden="true" title="Don está cerca"></span>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      Contacta a Don
+    </a>
+  </aside>
+  <script>
+    (function () {
+      var bar = document.getElementById('mobileCtaBar');
+      if (!bar) return;
+      var hide = document.body.dataset && document.body.dataset.hideStickyBar !== undefined;
+      var path = location.pathname;
+      if (hide || /^\/(window|sign-in|account|workbench|admin|es\/(window|sign-in|account|workbench|admin))/.test(path)) {
+        bar.hidden = true;
+      }
+    })();
+  </script>
+</footer>
+<script src="/assets/js/first-touch.js" defer></script>
+<script src="/assets/js/save-next-time.js" defer></script>
+<script src="/assets/js/share-hydrate.js" defer></script>
+<script src="/assets/js/window-state.js" defer></script>
+<!-- Cloudflare Turnstile (Phase 3B). Carga global porque el formulario
+     de newsletter vive en este pie de página y aparece en cada vista. -->
+<!-- Skip Turnstile on localhost / 127.0.0.1 / dev hosts (ver footer EN para detalle). -->
+<script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
+
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260501-engagement";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+</body>
+</html>
