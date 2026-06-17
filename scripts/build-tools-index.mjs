@@ -265,7 +265,7 @@ function renderSheetsBand(locale) {
   const sub      = locale === 'en' ? 'Recipe cost cards, weekly prime cost, GBP monthly audit, daily P&L. Free, no signup. None of your numbers leave the page.' : 'Tarjetas de costo, costo primo semanal, auditoría mensual de GBP, P&G diario. Gratis, sin registro. Tus números no salen de la página.';
   const cta      = locale === 'en' ? 'Browse the sheets'                    : 'Explora las hojas';
   const url      = locale === 'en' ? '/sheets/'                              : '/es/sheets/';
-  return `<aside class="tool-sheets-band" aria-labelledby="tool-sheets-band-h" style="margin:32px 0 0;padding:22px 24px;border:1px solid var(--line,#E5DFD2);border-left:4px solid var(--teal,#1F4E5B);border-radius:var(--r-md,12px);background:var(--white,#FFFFFF);display:flex;flex-wrap:wrap;align-items:center;gap:18px;">
+  return `<aside class="tool-sheets-band" aria-labelledby="tool-sheets-band-h" style="margin:32px 0 0;padding:22px 24px;border:1px solid var(--line,#E5DFD2);border-left:4px solid var(--teal,#2A50C8);border-radius:var(--r-md,12px);background:var(--white,#FFFFFF);display:flex;flex-wrap:wrap;align-items:center;gap:18px;">
       <div style="flex:1;min-width:240px;">
         <span class="eyebrow" style="display:block;margin-bottom:4px;">${escText(eyebrow)}</span>
         <h2 id="tool-sheets-band-h" style="font-family:var(--font-display,'Fraunces',Georgia,serif);font-size:22px;font-weight:500;margin:0 0 6px;color:var(--ink,#14161A);">${escText(headline)}</h2>

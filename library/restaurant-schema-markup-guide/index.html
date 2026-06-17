@@ -725,7 +725,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>Holiday overrides go in a separate <code>specialOpeningHoursSpecification</code> block — both Google and <!-- LIBRARY:autolink:start --><a href="/glossary/apple-bing-maps/" data-glossary-head="Apple Maps &amp; Bing Places" data-glossary-blurb="The non-Google map services — Apple Maps Connect (for iPhone users) and Bing Places (for Edge, Cortana, and ChatGPT-style Copilot) — where you can also claim and edit your…">Apple Maps</a><!-- LIBRARY:autolink:end --> read it, and a missing holiday closure is the most common reason an angry-on-Christmas-Eve review lands. The failure mode worth naming: CMS or template updates can quietly strip JSON-LD overnight. If you don't have a monthly schema check on your calendar, the first time you'll know your hours block went missing is when the one-star reviews start arriving.</p>
 
-      <p>Run <a href="/tools/schema-check/">Schema Checker</a> on your homepage to see whether your current hours schema is valid; <a href="/tools/open-hours/">Open Hours</a> generates the JSON-LD if you need a fresh start.</p>
+      <p>Run <a href="/tools/audits/restaurant/">Schema Checker</a> on your homepage to see whether your current hours schema is valid; <a href="/tools/open-hours/">Open Hours</a> generates the JSON-LD if you need a fresh start.</p>
 
       <h2 id="4-aggregaterating-the-one-that-boosts-ctr-by-double-digits">4. AggregateRating — the one that boosts CTR by double digits</h2>
 
@@ -745,7 +745,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>If you're on OpenTable, Resy, Tock, or SevenRooms, your reservation system already publishes the right schema. But if your booking is a custom form on your own site, you need to publish Reservation schema yourself — otherwise Google can't show the "Reserve a table" button in your panel.</p>
 
-      <p>The integration with <a href="/library/reservation-conversion-guide/">Find a Table</a> requires this schema to be valid AND your booking endpoint to be publicly reachable. Check both with <a href="/tools/schema-check/">Schema Checker</a>.</p>
+      <p>The integration with <a href="/library/reservation-conversion-guide/">Find a Table</a> requires this schema to be valid AND your booking endpoint to be publicly reachable. Check both with <a href="/tools/audits/restaurant/">Schema Checker</a>.</p>
 
       <blockquote class="pullquote">
         <p>FAQ schema is the cheapest AI-citation surface a restaurant has. The fact that almost nobody ships it is the opportunity.</p>
@@ -858,7 +858,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption>&ldquo;Present&rdquo; isn&rsquo;t &ldquo;working.&rdquo; Each question gates a different way valid-looking schema gets silently disqualified &mdash; stripped tag, validator error, policy violation, NAP conflict. The first &ldquo;no&rdquo; is the fix.</figcaption>
       </figure>
 
-      <p>Run your homepage through <a href="/tools/schema-check/">Schema Checker</a>. It returns a present/valid/missing verdict for each of these six types and points at the broken pieces. Save the result to your <a href="/tools/audits/restaurant/">Restaurant Audit</a> and re-run monthly — schema rots when CMS updates touch templates.</p>
+      <p>Run your homepage through <a href="/tools/audits/restaurant/">Schema Checker</a>. It returns a present/valid/missing verdict for each of these six types and points at the broken pieces. Save the result to your <a href="/tools/audits/restaurant/">Restaurant Audit</a> and re-run monthly — schema rots when CMS updates touch templates.</p>
 
       <p>The compounding argument: each missing schema type is a different Google surface you're not eligible for. The six types together unlock the local-pack card, AI Overview citations, the Reserve button, the rich snippet, and the holiday-hours badge. Add them in order, and the cumulative effect on impressions usually lands somewhere between 20% and 60% within a quarter.</p>
 
@@ -1096,7 +1096,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <aside class="post-end-cta" aria-label="Workshop next step">
       <p class="post-end-cta-headline">See which of the six types your site is missing.</p>
       <p class="post-end-cta-body">Schema Checker runs your homepage through all six types and returns a present / valid / missing verdict for each. Save the result to your Workshop and re-run monthly — schema rots when CMS updates touch templates.</p>
-      <a class="btn btn-primary" href="/tools/schema-check/?from=blog%2Frestaurant-schema-markup-6-types-google-uses&intent=watch">Run Schema Checker<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
+      <a class="btn btn-primary" href="/tools/audits/restaurant/?from=blog%2Frestaurant-schema-markup-6-types-google-uses&intent=watch">Run Schema Checker<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
     </aside>
     <!-- post-end-cta:end -->
 

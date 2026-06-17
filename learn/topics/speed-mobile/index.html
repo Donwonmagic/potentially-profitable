@@ -486,7 +486,7 @@
         </a>
       </li>
 <li>
-        <a class="topic-tool-card" href="/tools/compare/">
+        <a class="topic-tool-card" href="/tools/audits/restaurant/">
           <h4>Compare</h4>
           <p>Run your site and a competitor&#39;s through speed, mobile, SEO, and accessibility audits side-by-side.</p>
           <span class="topic-tool-cta">Open the tool <span aria-hidden="true">→</span></span>
@@ -507,7 +507,7 @@
         </a>
       </li>
 <li>
-        <a class="topic-tool-card" href="/tools/page-health/">
+        <a class="topic-tool-card" href="/tools/audits/restaurant/">
           <h4>Speed Test</h4>
           <p>PageSpeed Insights, restated for owners. Score, the four metrics that matter, and what to fix first.</p>
           <span class="topic-tool-cta">Open the tool <span aria-hidden="true">→</span></span>
@@ -578,7 +578,7 @@
         <li><strong>INP &le; 200ms.</strong> Interaction to next paint (replaced FID in March 2024) &mdash; how long the page takes to respond to a tap. INP is the killer for tools and reservation widgets; if your &ldquo;Book a table&rdquo; button takes 400ms to react, the visitor double-taps and starts a duplicate reservation flow. The fix: defer non-critical JS, code-split, and avoid main-thread blocking from third-party widgets.</li>
       </ul>
 
-      <p>You can read your CWV in three places: <a href="https://pagespeed.web.dev/" target="_blank" rel="noopener">PageSpeed Insights</a> (synthetic + 28-day field data from real Chrome users), Search Console&rsquo;s &ldquo;Core Web Vitals&rdquo; report (field data only, but reported by URL group), and Plausible if you&rsquo;ve hooked up <a href="https://github.com/GoogleChrome/web-vitals" target="_blank" rel="noopener">web-vitals</a> client-side. The free <a href="/tools/page-health/">Speed Test</a> tool runs the synthetic version on any URL.</p>
+      <p>You can read your CWV in three places: <a href="https://pagespeed.web.dev/" target="_blank" rel="noopener">PageSpeed Insights</a> (synthetic + 28-day field data from real Chrome users), Search Console&rsquo;s &ldquo;Core Web Vitals&rdquo; report (field data only, but reported by URL group), and Plausible if you&rsquo;ve hooked up <a href="https://github.com/GoogleChrome/web-vitals" target="_blank" rel="noopener">web-vitals</a> client-side. The free <a href="/tools/audits/restaurant/">Speed Test</a> tool runs the synthetic version on any URL.</p>
 
       <h3>Why mobile is different</h3>
 
@@ -602,7 +602,7 @@
         <li><strong>Lazy-load below-the-fold images (15 minutes).</strong> <code>loading="lazy"</code> attribute on every img below the hero. Saves 40&ndash;60% of total bytes on a typical menu page where the visitor never scrolls past the third dish.</li>
       </ol>
 
-      <p>Run <a href="/tools/page-health/">the free Speed Test</a> on your URL before and after each fix. The score moves immediately; the field-data signal in Search Console takes 28 days to roll over.</p>
+      <p>Run <a href="/tools/audits/restaurant/">the free Speed Test</a> on your URL before and after each fix. The score moves immediately; the field-data signal in Search Console takes 28 days to roll over.</p>
 
       <h3>What slows down a restaurant site that nothing else does</h3>
 
@@ -620,7 +620,7 @@
 
       <ol>
         <li><strong>Run <a href="https://pagespeed.web.dev/" target="_blank" rel="noopener">PageSpeed Insights</a> on your homepage and your menu page.</strong> Read the &ldquo;Core Web Vitals&rdquo; section. If LCP is over 3 seconds or CLS is over 0.1, you have an actionable problem. Save the result.</li>
-        <li><strong>Run the free <a href="/tools/page-health/">Speed Test</a> on the same two URLs.</strong> The two reports cross-validate; if they disagree by more than 0.5s on LCP, that&rsquo;s usually because your hero image is being served from a cache that one tool hits and the other doesn&rsquo;t. Treat the worse number as truth.</li>
+        <li><strong>Run the free <a href="/tools/audits/restaurant/">Speed Test</a> on the same two URLs.</strong> The two reports cross-validate; if they disagree by more than 0.5s on LCP, that&rsquo;s usually because your hero image is being served from a cache that one tool hits and the other doesn&rsquo;t. Treat the worse number as truth.</li>
         <li><strong>Pick the heaviest hero image you have. Re-encode it as AVIF.</strong> Drop the file size under 200KB. Replace the &lt;img&gt; src. Re-run both tools. The score moves; the visitor experience changes immediately.</li>
       </ol>
 
