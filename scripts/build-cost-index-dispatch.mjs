@@ -36,10 +36,52 @@ const rd = (p) => JSON.parse(readFileSync(path.join(repoRoot, p), 'utf8'));
 const arg = (f) => process.argv.includes(f);
 const pct = (x) => `${x >= 0 ? '+' : ''}${(x * 100).toFixed(1)}%`;
 
+// Human labels for the Pressure layer's driving-factor indicators — mirrored from the
+// canonical map in tools/_shared/pressure-lab-ui.js (EN side). The dispatch is EN-only,
+// so we copy the EN labels rather than import the browser UI module. Keep in sync if a
+// new indicator is added there.
+const INDICATOR_LABEL = {
+  'feed-futures': 'feed (corn/soy) futures', 'broiler-placements': 'broiler chick placements',
+  'cattle-on-feed-placements': 'cattle-on-feed placements', 'hogs-market-supply': 'market-hog supply',
+  'cold-storage-poultry': 'cold-storage stocks', 'cold-storage-beef': 'cold-storage stocks',
+  'cold-storage-pork': 'cold-storage stocks', 'cold-storage-butter': 'cold-storage stocks',
+  'cold-storage-cheese': 'cold-storage stocks', 'milk-production': 'milk production',
+  'ams-shipments': 'produce shipments', 'onion-shipments': 'shipment volume',
+  'lettuce-shipments': 'shipment volume', 'tomato-shipments': 'shipment volume',
+  'potato-shipments': 'shipment volume', 'onion-imports': 'import share', 'lettuce-imports': 'import share',
+  'tomato-imports': 'import share', 'potato-imports': 'import share', 'onion-pace': 'shipments vs last year',
+  'lettuce-pace': 'shipments vs last year', 'tomato-pace': 'shipments vs last year',
+  'potato-pace': 'shipments vs last year', 'freeze-alert': 'freeze warnings', 'drought-ca-az': 'drought (CA/AZ)',
+  'drought-fl-ca': 'drought (FL/CA)', 'drought-id': 'drought (Idaho)', 'drought': 'drought',
+  'crop-condition': 'crop condition', 'onion-transition': 'growing-region transition',
+  'lettuce-transition': 'growing-region transition', 'tomato-transition': 'growing-region transition',
+  'potato-transition': 'growing-region transition', 'feed-grain': 'feed grain (corn)', 'diesel': 'diesel / freight',
+};
+const indLabel = (id) => INDICATOR_LABEL[id] || id;
+
 // ---- compute the week's insight from the measured index --------------------
+// Pull the dominant driving factor (the highest-weight contributor) and lead time from a
+// Pressure read — the inferred-direction layer (data/cost-pressure.json), never a price.
+function pressureRead(items, key) {
+  const it = items && items[key];
+  if (!it || !it.direction || it.direction === 'flat') return null;
+  const top = (it.contributors || []).slice().sort((a, b) => (b.weight || 0) - (a.weight || 0))[0];
+  if (!top) return null;
+  // Singular unit — the lead reads adjectivally ("a 16–26 week lead").
+  const lead = top.lead && typeof top.lead.min === 'number'
+    ? `${top.lead.min}–${top.lead.max} ${top.lead.unit || 'week'}`
+    : null;
+  return { dir: it.direction, confidence: it.confidence || null, force: indLabel(top.indicator), lead, asOf: it.as_of || it.asOf || null };
+}
+
 function computeInsight() {
   const ci = rd('data/cost-index.json');
   const labels = (rd('data/cost-index-labels.json').labels) || {};
+  // The Pressure layer: inferred building/easing direction per staple from public lead
+  // indicators (feed, placements, cold storage, shipments, drought, diesel). Optional —
+  // preview-status, may be absent; the dispatch degrades to "no pressure read" cleanly.
+  let pressureItems = {}, pressureAsOf = null;
+  try { const pf = rd('data/cost-pressure.json'); pressureItems = pf.items || {}; pressureAsOf = pf.asOf || pf.generatedAt || null; } catch { /* optional */ }
   const driverNames = (rd('data/cost-index-labels.json').drivers) || {};
   const name = (k) => (labels[k] && labels[k].en) || k;
   const nameEs = (k) => (labels[k] && (labels[k].es || labels[k].en)) || k;
@@ -64,6 +106,7 @@ function computeInsight() {
       rangeCents: Array.isArray(lvl.rangeCents) && lvl.rangeCents.length === 2 ? lvl.rangeCents : null,
       unit: (labels[key] && labels[key].unit_en) || null,
       unitEs: (labels[key] && labels[key].unit_es) || null,
+      pressure: pressureRead(pressureItems, key),
     });
   }
 
@@ -102,15 +145,24 @@ function computeInsight() {
     .filter((c) => typeof c.pct === 'number' && typeof c.weight === 'number')
     .map((c) => ({
       key: c.ingredient, name: name(c.ingredient), nameEs: nameEs(c.ingredient),
-      pct: c.pct, weight: c.weight, points: c.weight * c.pct,
+      pct: c.pct, weight: c.weight, points: c.weight * c.pct, pressure: pressureRead(pressureItems, c.ingredient),
     }))
     .sort((a, b) => Math.abs(b.points) - Math.abs(a.points));
   const heaviest = contributors.length
     ? contributors.reduce((m, c) => (c.weight > m.weight ? c : m), contributors[0]) : null;
-  const topPush = contributors.find((c) => c.points > 0) || null;
-  const topEase = [...contributors].reverse().find((c) => c.points < 0) || null;
+  // Biggest pusher / easer by signed contribution (not the smallest by magnitude).
+  const topPush = contributors.filter((c) => c.points > 0).sort((a, b) => b.points - a.points)[0] || null;
+  const topEase = contributors.filter((c) => c.points < 0).sort((a, b) => a.points - b.points)[0] || null;
 
-  return { asOf, count: items.length, up, down, flat, reprice, watch, risers, fallers, drivers, basket, contributors, heaviest, topPush, topEase };
+  // The driving-factors digest: every staple that carries a pressure read, building
+  // first then easing, each with the named lead force behind it. This is the "why" the
+  // dispatch threads through — inferred direction from public lead indicators, no price.
+  const pressure = Object.keys(pressureItems)
+    .map((k) => { const r = pressureRead(pressureItems, k); return r ? { key: k, name: name(k), ...r } : null; })
+    .filter(Boolean)
+    .sort((a, b) => (a.dir === b.dir ? 0 : a.dir === 'building' ? -1 : 1));
+
+  return { asOf, count: items.length, up, down, flat, reprice, watch, risers, fallers, drivers, basket, contributors, heaviest, topPush, topEase, pressure, pressureAsOf };
 }
 
 // ---- dry-run: print the narrative (no file written) ------------------------
@@ -140,8 +192,14 @@ function narrate(ins) {
   L.push('  Down: ' + (ins.fallers.map((i) => `${i.name} ${pct(i.pct)}`).join(' · ') || '—'));
   L.push('');
 
+  if (ins.pressure && ins.pressure.length) {
+    L.push('WHAT\'S BEHIND THE MOVES (pressure layer — inferred direction on a lead, no price):');
+    for (const p of ins.pressure) L.push(`  • ${p.name} — ${p.dir}, led by ${p.force}${p.lead ? ` (${p.lead} lead)` : ''}${p.confidence ? `, ${p.confidence} conf` : ''}`);
+    L.push('');
+  }
+
   if (ins.drivers.length) {
-    L.push('DRIVER CONTEXT:');
+    L.push('FEED DRIVER CONTEXT:');
     for (const d of ins.drivers) L.push(`  • ${d.name} ${pct(d.pct)} ${d.dir || ''} — leads ${d.leads.slice(0, 4).join(', ')}${d.leads.length > 4 ? ', …' : ''}`);
   }
   return L.join('\n');
@@ -169,6 +227,13 @@ function dollarPhrase(i, { es = false } = {}) {
   const u = (es ? i.unitEs : i.unit) ? `/${es ? i.unitEs : i.unit}` : '';
   const range = i.rangeCents ? ` (${es ? 'rango' : 'range'} ${money(i.rangeCents[0])}–${money(i.rangeCents[1])})` : '';
   return `${es ? 'unos' : 'about'} ${money(i.medianCents)}${u} ${es ? 'mayorista' : 'wholesale'}${range}`;
+}
+// Render a Pressure read as a clause naming the force and its lead time, e.g.
+// "the pressure read is building, led by cattle-on-feed placements on a 16–26 weeks lead".
+function pressurePhrase(p) {
+  if (!p) return '';
+  const lead = p.lead ? ` on a ${p.lead} lead` : '';
+  return `the pressure read is <strong>${esc(p.dir)}</strong>, led by ${esc(p.force)}${lead}`;
 }
 
 function sliceDonor(html, startMarker, endMarker, { includeStart = true, includeEnd = true } = {}) {
@@ -382,7 +447,17 @@ function emit() {
     ins.reprice.length
       ? `${ins.reprice[0].name} is the structural signal to act on first; ${ins.watch.length ? `${ins.watch[0].name} is on watch.` : 'nothing else is flashing yet.'}`
       : `Nothing structural this week is a signal too: hold your prices and keep the panel in view.`,
-    `${ins.drivers.length ? `Feed context: ${ins.drivers.map((d) => `${d.name} ${fmtPctPlain(d.pct)}`).join(', ')}.` : 'No credible feed-driver read this week.'} Watch your own delivered invoices, not the wholesale panel alone.`,
+    (() => {
+      const fb = ins.pressure.find((p) => p.dir === 'building');
+      const fe = ins.pressure.find((p) => p.dir === 'easing');
+      if (ins.pressure.length && (fb || fe)) {
+        const parts = [];
+        if (fb) parts.push(`${fb.name} is building (${fb.force}${fb.lead ? `, ${fb.lead} lead` : ''})`);
+        if (fe) parts.push(`${fe.name} is easing (${fe.force})`);
+        return `What's behind the moves: ${parts.join('; ')}. The pressure layer points a direction on a multi-week lead, never a price — watch your delivered invoices against it.`;
+      }
+      return `${ins.drivers.length ? `Feed context: ${ins.drivers.map((d) => `${d.name} ${fmtPctPlain(d.pct)}`).join(', ')}.` : 'No credible driver read this week.'} Watch your own delivered invoices, not the wholesale panel alone.`;
+    })(),
   ];
 
   const barsFig = buildBars(ins);
@@ -393,8 +468,10 @@ function emit() {
   // Plain-language decomposition of the basket headline — names the staple doing the
   // pushing, the one easing, and the heavy anchor, all from the basket's own contributors.
   const heaviest = ins.heaviest, topPush = ins.topPush, topEase = ins.topEase;
+  const pushWhy = (topPush && topPush.pressure) ? ` &mdash; ${pressurePhrase(topPush.pressure)}` : '';
+  const easeWhy = (topEase && topEase.pressure) ? ` (${pressurePhrase(topEase.pressure)})` : '';
   const contribLead = (contribFig && topPush)
-    ? `<p>The basket is not one number &mdash; it is a weighted blend of ${ins.basket && ins.basket.nContributing || ins.count} staples, so the headline ${basketRead} is really a tug-of-war. ${heaviest ? `A heavy line barely moving anchors it: ${esc(heaviest.name)} is ${Math.round(heaviest.weight * 100)}% of the basket, so it steadies the whole read. ` : ''}But the swing comes from elsewhere. This week ${esc(topPush.name)}, at just ${Math.round(topPush.weight * 100)}% of the basket but reading ${fmtPct(topPush.pct)} against its baseline, adds about ${fmtPts(topPush.points)}${topEase ? `, while ${esc(topEase.name)} pulls back ${fmtPts(topEase.points)}` : ''}. Here is the headline taken apart, so ${basketRead} is a story you can see rather than a figure to take on faith.</p>`
+    ? `<p>The basket is not one number &mdash; it is a weighted blend of ${ins.basket && ins.basket.nContributing || ins.count} staples, so the headline ${basketRead} is really a tug-of-war. ${heaviest ? `A heavy line barely moving anchors it: ${esc(heaviest.name)} is ${Math.round(heaviest.weight * 100)}% of the basket, so it steadies the whole read. ` : ''}But the swing comes from elsewhere. This week ${esc(topPush.name)}, at just ${Math.round(topPush.weight * 100)}% of the basket but reading ${fmtPct(topPush.pct)} against its baseline, adds about ${fmtPts(topPush.points)}${pushWhy}${topEase ? `, while ${esc(topEase.name)} pulls back ${fmtPts(topEase.points)}${easeWhy}` : ''}. Here is the headline taken apart, so ${basketRead} is a story you can see rather than a figure to take on faith.</p>`
     : '';
   const contribClose = (contribFig && topPush)
     ? `<p>That is the honest shape of an index: a couple of volatile lines do most of the talking, and the steady staples keep it from whipping around. So read ${basketRead} as &ldquo;${esc(topPush.name)} pushing${topEase ? `, ${esc(topEase.name)} easing` : ''}&rdquo; &mdash; not as every shelf in the walk-in moving together. If the line doing the pushing is not one you carry, the basket may be louder than your own invoice this week.</p>`
@@ -414,6 +491,29 @@ ${contribClose}
   const fallersStr = ins.fallers.map((i) => `${esc(i.name)} ${fmtPct(i.pct)}`).join(' &middot; ') || '&mdash;';
   const driverCtx = ins.drivers.length
     ? ins.drivers.map((d) => `${esc(d.name)} reads ${fmtPct(d.pct)} against its baseline`).join(', and ')
+    : '';
+
+  // "What's behind the moves" — the driving-factors layer. Names the force and lead time
+  // under each staple's direction (cost-pressure.json), with the feed flow as one visual
+  // chain. Inferred direction only, sourced, never a price.
+  const pressureRows = ins.pressure.map((p) => {
+    const lead = p.lead ? ` <span style="opacity:.6">(${esc(p.lead)} lead)</span>` : '';
+    const conf = p.confidence ? `, ${esc(p.confidence)} confidence` : '';
+    return `        <li><strong>${esc(p.name)}</strong> &mdash; <strong>${esc(p.dir)}</strong>, led by ${esc(p.force)}${lead}${conf}.</li>`;
+  }).join('\n');
+  const pressureSection = (ins.pressure.length || driverCtx)
+    ? `      <h2 id="whats-behind-the-moves">What's behind the moves</h2>
+      <p>A percentage tells you <em>what</em> moved; it does not tell you <em>why</em>. The cost index carries a second, slower read for that &mdash; the <strong>pressure layer</strong>, which infers whether each staple is building or easing from the public lead indicators underneath it: feed grain and cattle-on-feed placements for proteins, cold-storage stocks for dairy, shipment volume and drought for produce, diesel for freight. It points a direction on a lead, never a price.</p>
+${ins.pressure.length ? `      <p>Where the panel's tracked staples sit this week${ins.pressureAsOf ? `, as of ${ins.pressureAsOf}` : ''}:</p>
+      <ul>
+${pressureRows}
+      </ul>
+      <details class="cite"><summary>Sources for the pressure read</summary><p>Inferred direction only &mdash; composed from public USDA NASS (Cattle-on-Feed, Broiler Hatchery, Cold Storage), USDA AMS movement and shipment reports, EIA diesel, and the U.S. Drought Monitor. No delivered price. See the <a href="/cost-index/methodology/">Cost Index methodology</a>.</p></details>
+` : ''}${driverCtx ? `      <p>The feed market is the clearest of these chains. This week, ${driverCtx} &mdash; a feed read that flows through to the proteins it sits behind on a lag:</p>
+
+${flowFig}
+` : ''}      <p>Read the pressure layer like a forecast, not a thermometer: it tells you which way the wind is blowing on a multi-week lead, so a vendor quote moving the other way is worth a question. The dollar level above is today; this is the direction underneath it.</p>
+`
     : '';
 
   const body = `<!doctype html>
@@ -603,12 +703,7 @@ ${barsFig}
 
       <p>Read these as gaps, not verdicts. A wide rust bar on a seasonal item often unwinds when the season turns; a wide teal bar can be a vendor clearing inventory rather than a durable easing. The bar tells you where to look; your delivered invoice tells you whether it reached your back door.</p>
 
-      ${driverCtx ? `<h2 id="the-feed-context-behind-the-proteins">The feed context behind the proteins</h2>
-      <p>Proteins do not move on their own &mdash; the feed market underneath them sets a floor that flows through on a lag. This week, ${driverCtx}. A feed read that is easing is the context behind a protein reading softer than its baseline; a feed read that is building is the early-warning on one heading the other way.</p>
-
-${flowFig}
-
-      <p>The feed-to-protein chain is directional context, drawn from the same measured index &mdash; never a forecast and never a delivered price. It tells you which way the wind is blowing on the proteins you carry, so a quote that moves the other way is worth a question to your vendor.</p>` : ''}
+${pressureSection}
 
       <h2 id="how-to-read-this-and-what-it-is-not">How to read this, and what it is not</h2>
       <p>Three rules keep this honest. First, every number is a <strong>public wholesale level, never your delivered price</strong> &mdash; freight, contract, and pack size all sit between this panel and your invoice. Second, each percentage is a read versus that ingredient's <em>own tracked baseline window</em>, a state-of-play snapshot of what is flashing, not a week-over-week move. Third, the panel is drawn from public USDA, BLS, and FRED data; when an input cannot earn a credible reading, it stays off the page rather than showing you a guess. Watch your own delivered invoices against these reads &mdash; the gap between the two is where a vendor conversation lives, and it is the first place a moving <a href="/glossary/prime-cost/">prime cost</a> shows up.</p>
