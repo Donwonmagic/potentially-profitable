@@ -416,6 +416,8 @@ const CHECKS = [
   // catalog must equal the seed's generatedAt (machine-readable freshness, a
   // top AI-citation factor). Stamped in place; --check pins it in sync.
   ['Cost-index dataset date','inject-cost-index-dataset-date.mjs','--check'],
+  ['Cost-index dispatch freshness','check-cost-index-dispatch-fresh.mjs'],
+  ['Cost-index dispatch freshness self-test','check-cost-index-dispatch-fresh.mjs','--self-test'],
   // Pressure honesty — the inferred outlook can't carry a price, can't use a
   // banned verb, and its rendered direction must equal what the rules recompute.
   ['Cost-pressure honesty','check-pressure-honesty.mjs'],
