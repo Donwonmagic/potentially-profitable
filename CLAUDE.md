@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Project memory for Claude Code sessions on `muntin.digital` — a one-person restaurant web studio in Silver Spring, MD. Static site (HTML + inline CSS + a few sentinel-driven build scripts), no framework, no CMS.
+Project memory for Claude Code sessions on `muntin.digital` — a one-person, **product-only** restaurant company in Silver Spring, MD (the Cost Index, free operator tools, and Muntin Ledger; the website-build/services line is retired). Static site (HTML + inline CSS + a few sentinel-driven build scripts), no framework, no CMS.
 
 ## Where things live
 

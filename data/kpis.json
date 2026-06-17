@@ -1,7 +1,7 @@
 {
-  "_doc": "Phase G.12 (Growth) — north-star KPI registry. /admin/kpis/ reads this file and renders 5 tiles with live Plausible queries + targets + trend arrows. scripts/check-kpi-doc.mjs asserts _lastReviewed is ≤90 days old; fails CI past that to force a quarterly re-look. Targets are aspirational, not promises — adjust them as data comes in.",
+  "_doc": "Phase G.12 (Growth) — north-star KPI registry. /admin/kpis/ reads this file and renders 4 tiles with live Plausible queries + targets + trend arrows. scripts/check-kpi-doc.mjs asserts _lastReviewed is ≤90 days old; fails CI past that to force a quarterly re-look. Targets are aspirational, not promises — adjust them as data comes in. Services-era 'lead-to-call-rate' removed 2026-06-17 (product-only; no more services/build work).",
 
-  "_lastReviewed": "2026-04-30",
+  "_lastReviewed": "2026-06-17",
 
   "kpis": [
     {
@@ -44,16 +44,6 @@
       "window": "30d",
       "target_initial": 0.08,
       "what_it_measures": "Share of signed-in operators who actually write to Don. Bottom-of-funnel intent."
-    },
-    {
-      "id": "lead-to-call-rate",
-      "label_en": "Lead-to-call rate",
-      "label_es": "Tasa de prospecto a llamada",
-      "plausible_filter": "event:goal=Window Thread Resolved + props.outcome IN (call, contract)",
-      "metric": "ratio: resolved-as-call+contract ÷ total threads",
-      "window": "30d",
-      "target_initial": 0.15,
-      "what_it_measures": "Of Window threads that get an outcome stamp, the share that escalate to a call or signed contract."
     }
   ]
 }
