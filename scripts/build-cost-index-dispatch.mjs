@@ -53,10 +53,17 @@ function computeInsight() {
     // Only ingredients that earn a live reading on the hub — never flag an item
     // a clicked-through subscriber would find under "expanding coverage".
     if (!isShippable(p)) continue;
+    // The measured dollar LEVEL behind the percentage — so the write-up can ground
+    // every "+4.1%" in a real wholesale price ("about $12.14/lb"), not an abstraction.
+    const lvl = p.level || {};
     items.push({
       key, name: name(key), nameEs: nameEs(key), pct: t.pct, dir: t.dir || (t.pct > 0 ? 'up' : t.pct < 0 ? 'down' : 'flat'),
       verdict: f.verdict || null, bias: f.actionBias || null, reason: f.reason || null,
-      confidence: p.confidence || null, seasonal: !!(labels[key] && labels[key].seasonal)
+      confidence: p.confidence || null, seasonal: !!(labels[key] && labels[key].seasonal),
+      medianCents: typeof lvl.medianCents === 'number' ? lvl.medianCents : null,
+      rangeCents: Array.isArray(lvl.rangeCents) && lvl.rangeCents.length === 2 ? lvl.rangeCents : null,
+      unit: (labels[key] && labels[key].unit_en) || null,
+      unitEs: (labels[key] && labels[key].unit_es) || null,
     });
   }
 
@@ -86,7 +93,24 @@ function computeInsight() {
   const asOf = asOfs.sort().slice(-1)[0] || ci._lastReviewed || ci.generatedAt || new Date().toISOString().slice(0, 10);
   const basket = ci.basket || null;
 
-  return { asOf, count: items.length, up, down, flat, reprice, watch, risers, fallers, drivers, basket };
+  // Decompose the basket so the headline number is a story, not a figure to take on
+  // faith: each staple's CONTRIBUTION is its weight × its own read (points = weight*pct,
+  // in the same units as the basket %). A heavy item barely moving anchors the basket;
+  // a light item moving hard can still swing it. We use the basket's OWN contributor
+  // reads (not the live per-item trend) so the parts reconcile to the whole it explains.
+  const contributors = ((basket && basket.contributors) || [])
+    .filter((c) => typeof c.pct === 'number' && typeof c.weight === 'number')
+    .map((c) => ({
+      key: c.ingredient, name: name(c.ingredient), nameEs: nameEs(c.ingredient),
+      pct: c.pct, weight: c.weight, points: c.weight * c.pct,
+    }))
+    .sort((a, b) => Math.abs(b.points) - Math.abs(a.points));
+  const heaviest = contributors.length
+    ? contributors.reduce((m, c) => (c.weight > m.weight ? c : m), contributors[0]) : null;
+  const topPush = contributors.find((c) => c.points > 0) || null;
+  const topEase = [...contributors].reverse().find((c) => c.points < 0) || null;
+
+  return { asOf, count: items.length, up, down, flat, reprice, watch, risers, fallers, drivers, basket, contributors, heaviest, topPush, topEase };
 }
 
 // ---- dry-run: print the narrative (no file written) ------------------------
@@ -97,9 +121,17 @@ function narrate(ins) {
     L.push(`Basket${ins.basket.asOf ? ` (as of ${ins.basket.asOf})` : ''}: ${pct(ins.basket.pct)} ${ins.basket.dir || ''} (${ins.basket.confidence || '?'} confidence, ${ins.basket.nContributing || ins.count} ingredients).`);
   L.push(`Spread: ${ins.up} of ${ins.count} reading above their tracked baseline, ${ins.down} below, ${ins.flat} flat.\n`);
 
+  if (ins.contributors && ins.contributors.length) {
+    L.push('WHAT\'S MOVING THE BASKET (weight × each staple\'s own read = contribution):');
+    for (const c of ins.contributors.slice(0, 6))
+      L.push(`  • ${c.name} (${Math.round(c.weight * 100)}% of basket, ${pct(c.pct)}) → ${(c.points >= 0 ? '+' : '-')}${Math.abs(c.points * 100).toFixed(1)} pts`);
+    L.push('');
+  }
+
   L.push('WHAT\'S FLASHING (calibrated suggestions — directional, not advice):');
-  if (ins.reprice.length) for (const i of ins.reprice) L.push(`  • RE-PRICE  ${i.name} — ${pct(i.pct)}, ${i.reason || i.verdict || 'structural'}${i.seasonal ? ' (typically eases in season)' : ''}`);
-  if (ins.watch.length) for (const i of ins.watch) L.push(`  • WATCH     ${i.name} — ${pct(i.pct)}, ${i.reason || i.verdict || 'emerging'}`);
+  const dol = (i) => { const d = dollarPhrase(i); return d ? `, ${d}` : ''; };
+  if (ins.reprice.length) for (const i of ins.reprice) L.push(`  • RE-PRICE  ${i.name} — ${pct(i.pct)}${dol(i)}, ${i.reason || i.verdict || 'structural'}${i.seasonal ? ' (typically eases in season)' : ''}`);
+  if (ins.watch.length) for (const i of ins.watch) L.push(`  • WATCH     ${i.name} — ${pct(i.pct)}${dol(i)}, ${i.reason || i.verdict || 'emerging'}`);
   if (!ins.reprice.length && !ins.watch.length) L.push('  • Nothing structural this week — the panel reads hold across the board.');
   L.push('');
 
@@ -126,6 +158,18 @@ const escAttr = (s) => esc(s).replace(/"/g, '&quot;');
 const widthOf = (p, max) => (max > 0 ? Math.min(1, Math.abs(p) / max) : 0);
 const fmtPct = (x) => `${x >= 0 ? '+' : '−'}${Math.abs(x * 100).toFixed(1)}%`; // − for display
 const fmtPctPlain = (x) => `${x >= 0 ? '+' : '-'}${Math.abs(x * 100).toFixed(1)}%`; // ascii, for narration
+const money = (cents) => `$${(cents / 100).toFixed(2)}`;
+const fmtPts = (x) => `${x >= 0 ? '+' : '−'}${Math.abs(x * 100).toFixed(1)} pts`; // basket contribution, display
+const fmtPtsPlain = (x) => `${x >= 0 ? '+' : '-'}${Math.abs(x * 100).toFixed(1)} points`; // for narration
+// Ground a percentage in the measured wholesale dollar level behind it, so a "+4.1%"
+// reads as a real price ("about $12.14/lb, range $11.72–$12.56"). Empty when the item
+// carries no level — never invents one.
+function dollarPhrase(i, { es = false } = {}) {
+  if (!i || i.medianCents == null) return '';
+  const u = (es ? i.unitEs : i.unit) ? `/${es ? i.unitEs : i.unit}` : '';
+  const range = i.rangeCents ? ` (${es ? 'rango' : 'range'} ${money(i.rangeCents[0])}–${money(i.rangeCents[1])})` : '';
+  return `${es ? 'unos' : 'about'} ${money(i.medianCents)}${u} ${es ? 'mayorista' : 'wholesale'}${range}`;
+}
 
 function sliceDonor(html, startMarker, endMarker, { includeStart = true, includeEnd = true } = {}) {
   const s = html.indexOf(startMarker);
@@ -237,6 +281,35 @@ function buildFlow(ins) {
       </figure>`;
 }
 
+function buildContrib(ins) {
+  const rows = (ins.contributors || []).slice(0, 6);
+  if (rows.length < 2) return '';
+  const max = Math.max(...rows.map((c) => Math.abs(c.points)), 0.0001);
+  const barRows = rows.map((c) => {
+    const tone = c.points >= 0 ? 'rust' : 'teal';
+    const w = widthOf(c.points, max).toFixed(3);
+    const wpct = Math.round(c.weight * 100);
+    return `          <div class="viz-bars__row">
+            <p class="viz-bars__label">${esc(c.name)} <span style="opacity:.6">(${wpct}% of basket)</span></p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="${tone}" style="--w:${w}"></span></div>
+            <p class="viz-bars__num">${fmtPts(c.points)}</p>
+          </div>`;
+  }).join('\n');
+
+  const narr = rows.map((c) => `${c.name}, ${Math.round(c.weight * 100)} percent of the basket and reading ${fmtPctPlain(c.pct)} against baseline, contributes ${fmtPtsPlain(c.points)}`).join('; ');
+  const basketPlain = ins.basket && typeof ins.basket.pct === 'number' ? fmtPctPlain(ins.basket.pct) : 'no reading';
+  const alt = `What makes up the basket reading this week, ingredient by ingredient. The weighted basket reads ${basketPlain} against baseline, and that single number is the sum of each staple's weight times its own read. Rust bars push the basket up, teal bars pull it down; the bars are scaled so the largest contributor fills the track. ${narr}. The contributions sum, with offsets, to the headline basket figure — a couple of movers usually do most of the talking while the steady staples hold it down.`;
+
+  return `      <figure class="viz-figure article-figure" data-audio-alt="${escAttr(alt)}">
+        <div class="viz-bars">
+          <p class="viz-bars__title">What's moving the basket this week (each staple's weight × its own read; rust pushes the basket up, teal pulls it down)</p>
+${barRows}
+          <p class="viz-bars__note">A "point" is one one-hundredth of the basket percentage. Each bar is <strong>weight × that ingredient's read</strong> &mdash; a heavy staple barely moving anchors the basket, a light one moving hard can still swing it.</p>
+        </div>
+        <figcaption>The basket figure, decomposed: each staple's contribution is its weight times its own read. Rust pushes up, teal pulls down.</figcaption>
+      </figure>`;
+}
+
 function repriceList(ins) {
   const items = [];
   for (const i of ins.reprice) items.push({ tag: 'Re-price', i });
@@ -244,7 +317,9 @@ function repriceList(ins) {
   if (!items.length) return '<p>Nothing structural is flashing this week &mdash; the panel reads hold across the board. That is its own signal: hold your prices and keep watching.</p>';
   const lis = items.map(({ tag, i }) => {
     const seasonal = i.seasonal ? ' This one is seasonal, so it typically eases when the season turns.' : '';
-    return `        <li><strong>${tag} &mdash; ${esc(i.name)}.</strong> It reads ${fmtPct(i.pct)} against its baseline; ${esc(i.reason || i.verdict || 'a move worth tracking')}.${seasonal}</li>`;
+    const dollar = dollarPhrase(i);
+    const grounded = dollar ? ` &mdash; ${dollar}` : '';
+    return `        <li><strong>${tag} &mdash; ${esc(i.name)}.</strong> It reads ${fmtPct(i.pct)} against its baseline${grounded}; ${esc(i.reason || i.verdict || 'a move worth tracking')}.${seasonal}</li>`;
   }).join('\n');
   return `      <ul>\n${lis}\n      </ul>`;
 }
@@ -313,6 +388,24 @@ function emit() {
   const barsFig = buildBars(ins);
   const ringsFig = buildRings(ins);
   const flowFig = buildFlow(ins);
+  const contribFig = buildContrib(ins);
+
+  // Plain-language decomposition of the basket headline — names the staple doing the
+  // pushing, the one easing, and the heavy anchor, all from the basket's own contributors.
+  const heaviest = ins.heaviest, topPush = ins.topPush, topEase = ins.topEase;
+  const contribLead = (contribFig && topPush)
+    ? `<p>The basket is not one number &mdash; it is a weighted blend of ${ins.basket && ins.basket.nContributing || ins.count} staples, so the headline ${basketRead} is really a tug-of-war. ${heaviest ? `A heavy line barely moving anchors it: ${esc(heaviest.name)} is ${Math.round(heaviest.weight * 100)}% of the basket, so it steadies the whole read. ` : ''}But the swing comes from elsewhere. This week ${esc(topPush.name)}, at just ${Math.round(topPush.weight * 100)}% of the basket but reading ${fmtPct(topPush.pct)} against its baseline, adds about ${fmtPts(topPush.points)}${topEase ? `, while ${esc(topEase.name)} pulls back ${fmtPts(topEase.points)}` : ''}. Here is the headline taken apart, so ${basketRead} is a story you can see rather than a figure to take on faith.</p>`
+    : '';
+  const contribClose = (contribFig && topPush)
+    ? `<p>That is the honest shape of an index: a couple of volatile lines do most of the talking, and the steady staples keep it from whipping around. So read ${basketRead} as &ldquo;${esc(topPush.name)} pushing${topEase ? `, ${esc(topEase.name)} easing` : ''}&rdquo; &mdash; not as every shelf in the walk-in moving together. If the line doing the pushing is not one you carry, the basket may be louder than your own invoice this week.</p>`
+    : '';
+  const contribSection = contribFig
+    ? `      <h2 id="what-s-moving-the-basket">What's moving the basket</h2>
+${contribLead}
+${contribFig}
+${contribClose}
+`
+    : '';
 
   const tldrLis = tldr.map((t) => `        <li>${esc(t)}</li>`).join('\n');
   const takeLis = takeaways.map((t) => `        <li>${esc(t)}</li>`).join('\n');
@@ -495,6 +588,7 @@ ${tldrLis}
 
 ${ringsFig}
 
+${contribSection}
       <h2 id="what-s-flashing-this-week">What's flashing this week</h2>
       <p>The panel sorts into a short action list: ${ins.reprice.length ? `${ins.reprice.length} re-price signal${ins.reprice.length > 1 ? 's' : ''}` : 'no re-price signal'}, ${ins.watch.length ? `${ins.watch.length} on watch` : 'nothing on watch'}. A re-price flag means the move looks structural &mdash; elevated and sustained against the baseline. A watch flag means a real move that has not persisted long enough to act on yet. Neither is advice; both are calibrated, low-regret reads off the measured index.</p>
 
