@@ -5,13 +5,8 @@
   "basis": "wholesale",
   "currency": "USD",
   "note": "Wholesale reference prices compiled from public U.S. market sources (USDA AMS/LMR, BLS, FRED, EIA, NOAA). Values are in US dollars per unit. Not a delivered or retail price. Source: muntin.digital/cost-index/ribeye/",
-  "asOf": "2026-06-12",
+  "asOf": "2026-06-15",
   "observations": [
-    {
-      "date": "2026-05-07",
-      "priceUsd": 10.5,
-      "source": "usda-lmr"
-    },
     {
       "date": "2026-05-08",
       "priceUsd": 10.77,
@@ -135,6 +130,11 @@
     {
       "date": "2026-06-12",
       "priceUsd": 12.74,
+      "source": "usda-lmr"
+    },
+    {
+      "date": "2026-06-15",
+      "priceUsd": 12.14,
       "source": "usda-lmr"
     }
   ]

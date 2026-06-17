@@ -1,0 +1,555 @@
+{
+  "version": 1,
+  "generatedAt": "2026-06-12T01:53:42.779Z",
+  "engine": "f5",
+  "model": "don-reference.m4a",
+  "voice": "f5:don-reference.m4a",
+  "language": "en",
+  "total": 933.76,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Leer este art&iacute;culo en espa&ntilde;ol &rarr;",
+      "start": 0,
+      "end": 2.44
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "TL;DR",
+      "start": 2.99,
+      "end": 3.72
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "A restaurant&rsquo;s digital ledger holds the most sensitive numbers the business has, invoices, prime cost, the supplier list, payroll. Privacy-forward bookkeeping starts by treating those numbers as the asset, not the exhaust.",
+      "start": 4.27,
+      "end": 15.46
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "There are five things a digital ledger should never do with your numbers: resell them, train a model on them, pool them into a benchmark, hold them hostage behind an export wall, or quietly widen who can read them.",
+      "start": 15.96,
+      "end": 26.47
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Each of the five has a verification step you can run in a browser, a contract, or an export, trust is an architecture you can check, not a promise you have to take on faith.",
+      "start": 26.97,
+      "end": 35.46
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "The same four-tier data model that governs any restaurant tool governs the ledger: invoices and prime cost are Tier 2 and Tier 3 data, and they never flow up a tier to a platform or a benchmark without a contract.",
+      "start": 35.96,
+      "end": 46.41
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Privacy-forward restaurant bookkeeping begins with one reframe: the numbers in your ledger are the business, not the byproduct. A restaurant&rsquo;s digital ledger holds the supplier list, the real food cost , the labor line, the margin on every invoice that comes through the back door, the line items that together build prime cost . That is exactly the data a competitor, a broker, or a model-training pipeline would most like to have. The question that separates a privacy-forward ledger from an extractive one is not how it looks. It is what it does with your numbers the moment you type them.",
+      "start": 47.21,
+      "end": 76.17
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "This is the companion to the tool-safety audit. How to tell if a restaurant tool is safe covers the free tool you try once in a browser. A digital ledger is different: it is the tool you live in, the one that stores your numbers on purpose, across months, so you can read them back. The audit framework still applies, but the stakes are higher and the storage is the point. So the standard has to be sharper.",
+      "start": 76.97,
+      "end": 96.8
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "What follows is the line a privacy-forward digital ledger never crosses, five things it should never do with your numbers, each paired with the way you verify it yourself. Everything below is either generally true of how software handles data or labeled where a figure would be illustrative. The numbers in your ledger are yours; the burden of proof is the tool&rsquo;s.",
+      "start": 97.6,
+      "end": 115.56
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "1. It should never resell or broker your numbers.",
+      "start": 117.06,
+      "end": 119.45
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "A privacy-forward ledger never resells or brokers your numbers. Your invoices, your prime cost , your supplier list, none of it leaves your account as a data product or a hand-off to a marketing partner. The ledger holds; it does not trade.",
+      "start": 120.4,
+      "end": 131.96
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "The email of the regular who left a one-star review, the covers per service, the line-item history that lets a competitor reconstruct your menu, none of that is exhaust. It is the business.",
+      "start": 132.76,
+      "end": 142.04
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "This is the oldest pattern in &ldquo;free&rdquo; business software, and it is the one operators underprice. The reorder data a restaurant generates, which distributor, what volume, what price, how often, is commercially valuable to the people selling to that restaurant. A ledger that quietly monetizes it has turned the operator into the product, the same way a free margin audit does, only now it is doing it every month, with the full ledger, instead of once. The opposite posture is what a tool like Cost Pulse demonstrates: drift alerts, category sparklines, and rolling medians computed only over the invoices you have saved, with no pooled benchmark and no third party in the loop.",
+      "start": 142.84,
+      "end": 176.01
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "The verification is the contract, read in two places. First, the privacy policy and the data-processing terms: a privacy-forward tool names its sub-processors, states a retention window, and says in plain language that it does not sell or share your data for anyone else&rsquo;s commercial purpose. Second, the network tab: open the ledger, watch what leaves your browser, and confirm the only destinations are the tool&rsquo;s own infrastructure, not a roster of ad networks and data brokers. If the policy hedges and the network is busy, the ledger is brokering. That is the tell.",
+      "start": 176.81,
+      "end": 204.98
+    },
+    {
+      "id": 14,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "The five things a privacy-forward restaurant digital ledger should never do with your numbers, drawn as a sequence with the verification step beside each. One: never resell or broker your numbers, verify by reading the data-processing terms for a no-sale clause and watching the network tab for broker destinations. Two: never train a model on your invoices, verify by reading the AI or model-training clause and confirming an opt-out that is off by default. Three: never pool your numbers into a shared benchmark without consent, verify that any comparison feature is opt-in and that your raw figures, not just anonymized aggregates, never leave your account. Four: never hold your data hostage behind an export wall, verify by exporting a clean Csv or standard file on a free or trial account before you commit. Five: never quietly widen who can read your numbers, verify the access log and the default sharing scope, which should start closed. Each row pairs a never with a check you can run yourself.",
+      "start": 206.08,
+      "end": 254.55
+    },
+    {
+      "id": 15,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "2. It should never train a model on your invoices without your say-so.",
+      "start": 256.05,
+      "end": 259.47
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "A privacy-forward ledger never trains a model on your invoices without explicit, off-by-default consent. Extracting line items from a document is operational; retaining the originals to train a system other businesses benefit from is a separate deal, opt-in, never opt-out.",
+      "start": 260.42,
+      "end": 273.61
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Reading an invoice once, on your behalf, is the tool doing its job. Keeping a copy of the original so a future model can be sharpened on the price you paid your seafood guy is a different transaction. The first has your consent inside the engagement. The second needs your consent on the outside of it, in writing.",
+      "start": 274.41,
+      "end": 289.61
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "The distinction matters because the two get blurred on purpose. &ldquo;We use your data to improve our service&rdquo; is a sentence that can mean a bug fix or can mean your supplier pricing is now in a training set. A privacy-forward tool draws the line in writing: extraction is operational and necessary; model training on your content is separate, optional, and dark by default. If the only place the distinction lives is a brochure adjective, treat it as the brochure.",
+      "start": 290.41,
+      "end": 313.17
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "The verification is the model-training clause, read literally. Look for three things: a statement that your documents are not used to train models by default, a named retention window for any original you upload, and a control you can see and toggle, not a support ticket you have to file. A ledger that reads your invoice and then forgets the original, keeping only the structured numbers you confirmed, is handling your data the way a privacy-forward tool should. The mechanism is the message.",
+      "start": 313.97,
+      "end": 337.86
+    },
+    {
+      "id": 20,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "3. It should never pool your numbers into a shared benchmark without consent.",
+      "start": 339.36,
+      "end": 343.13
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "A privacy-forward ledger never folds your numbers into a pooled benchmark without consent. Industry comparisons are built from real restaurants&rsquo; real numbers; yours join the pool only when you say yes, and what leaves is anonymized aggregate, never raw line items.",
+      "start": 344.08,
+      "end": 357.12
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Every operator wants to know whether their food cost is high for their concept. That curiosity is fair; the price of satisfying it should not be your supplier list joining a comparison dataset you never agreed to seed. Opt-in, not opt-out. Aggregate, not raw.",
+      "start": 357.92,
+      "end": 370.42
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "The trap is that a benchmark feels like a gift while it is taking inventory of your business. The moment your supplier costs become a row in someone&rsquo;s comparison dataset, they have left your control, and you cannot pull them back. This is the four-tier model from the tool-safety audit applied to bookkeeping: your monthly P&L and food-cost percentage are Tier 3, operational-confidential data; your supplier list and real cost of goods are Tier 2. Neither flows up a tier into a shared benchmark just because the feature exists.",
+      "start": 371.22,
+      "end": 397.07
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "The verification has two parts. First, the default: a privacy-forward ledger ships comparison features off, and turning one on is a deliberate choice with a clear statement of what leaves your account. Second, the shape of what travels: even in an opt-in benchmark, what should leave is an anonymized aggregate, never your raw line items. If a tool&rsquo;s pitch leads with &ldquo;see how you stack up against other restaurants&rdquo; and you never agreed to contribute, your numbers are already in the pool. The honest version of the feature says, plainly, that your data stays yours and the benchmark is something you join, not something done to you.",
+      "start": 397.87,
+      "end": 429.48
+    },
+    {
+      "id": 25,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "A before-and-after contrast of one line in a restaurant digital ledger's privacy terms, rewritten from extractive to privacy-forward. The before version reads: we may use and share your business data, including invoices and financial figures, with partners and to improve and benchmark our services. That single sentence bundles resale, model training, and pooled benchmarking into a vague grant the operator cannot verify. The after version reads: your invoices and figures stay in your account; we read each document once to extract the numbers you confirm, then we do not train models on it; comparison benchmarks are opt-in and share only anonymized aggregates, never your raw line items; you can export everything as Csv at any time. The rewrite names the mechanism for each promise so the operator can check it rather than trust it. This is illustrative contract language, not a quote from any specific product.",
+      "start": 430.58,
+      "end": 474.79
+    },
+    {
+      "id": 26,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "4. It should never hold your numbers hostage behind an export wall.",
+      "start": 476.29,
+      "end": 479.56
+    },
+    {
+      "id": 27,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "A privacy-forward ledger treats the exit ramp as part of the build. Numbers go in; they come back as a clean Csv your accountant or the next tool can read, whenever you ask. Data you cannot export is data you do not really control.",
+      "start": 480.51,
+      "end": 491.63
+    },
+    {
+      "id": 28,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Lock-in by export wall is what the vendor charges instead of charging you in dollars: a lever, held over you, repriced at every renewal. The privacy-forward posture says &ldquo;the day you decide to leave, you take everything, in a format the next tool can open, with no migration package on the invoice.&rdquo;",
+      "start": 492.43,
+      "end": 507.49
+    },
+    {
+      "id": 29,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "Lock-in by export wall is quieter than resale, and it compounds. A ledger that makes it trivial to get your data in and painful to get it out is betting that the cost of leaving rises faster than your patience. The privacy-forward posture is the opposite: the day you decide to leave, you take everything, with no &ldquo;migration package&rdquo; line item and no proprietary format that only the vendor can open. This is the same promise the studio behind this library keeps in writing, see what this studio never does , where &ldquo;never lock you in&rdquo; is the first line.",
+      "start": 508.04,
+      "end": 535.95
+    },
+    {
+      "id": 30,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "The verification is the cheapest one on this list: export before you commit. On a free tier or a trial, put in a few invoices and pull them back out. A privacy-forward ledger hands you a Csv you can open in a spreadsheet, with your line items intact and a schema your bookkeeper recognizes. A free in-browser tool like Plate Cost demonstrates the posture in miniature, you type numbers into the page, the math runs client-side , and nothing leaves the browser. A real ledger should keep the same posture at scale: a tool that buries export three menus deep, gates it behind a paid plan, or returns a format nothing else can read is telling you what leaving will cost, before you have even arrived.",
+      "start": 536.75,
+      "end": 570.36
+    },
+    {
+      "id": 31,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "5. It should never quietly widen who can read your numbers.",
+      "start": 571.86,
+      "end": 574.74
+    },
+    {
+      "id": 32,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "A privacy-forward ledger starts access closed and opens it only when you say so, visibly. Who can read your numbers is a setting you control and a logged event, not a default that drifts wider with each release.",
+      "start": 575.69,
+      "end": 586.05
+    },
+    {
+      "id": 33,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "The principle from the four-tier model holds: data never flows up a tier to a wider audience without a deliberate decision. The team-share toggle is a deliberate decision. The accountant integration that asks for read on everything is a deliberate decision. The default that quietly opens last quarter&rsquo;s feature to the whole staff is not, and that is exactly the failure mode.",
+      "start": 586.85,
+      "end": 605.4
+    },
+    {
+      "id": 34,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "This is where a ledger quietly betrays the operator most often, because access creep does not feel like a breach. A new &ldquo;team&rdquo; feature defaults to sharing the whole ledger. An accountant integration gets read access to everything instead of the one report it needs. A support tool can see your originals. None of it is malicious; all of it widens the circle of people who can read your most sensitive numbers, one convenient default at a time. Across years on restaurant floors I have watched the same drift happen with shared spreadsheets, the file that started with two readers and ended with the whole staff and a former vendor still on the share list.",
+      "start": 606.2,
+      "end": 638.34
+    },
+    {
+      "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "The verification is the access log and the default scope. A privacy-forward ledger can show you who has read or changed what, and a privacy-forward integration asks for the narrowest access that does the job, not blanket read on the whole account. Check the default when you add a teammate or connect a tool: does it share everything, or the minimum. Tier 4 data, anything regulated, like an Ein or payroll detail, should sit behind the tightest access of all, with a log that records every look. If the tool cannot tell you who can see your numbers, the honest answer is that you do not know.",
+      "start": 639.14,
+      "end": 667.84
+    },
+    {
+      "id": 36,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "A decision tree for choosing a restaurant digital ledger on privacy grounds, walking the operator from the top question down to a verdict. Start: does the tool's data-processing terms include a plain no-sale, no-broker clause? If no, stop, it fails the first never; walk away. If yes, ask: is model training on your documents off by default with a visible opt-out? If no, treat the tool as a training pipeline and walk away. If yes, ask: are comparison benchmarks opt-in, sharing only anonymized aggregates? If no, your raw numbers are being pooled; walk away. If yes, ask: can you export a clean Csv on a free or trial account right now? If no, it is an export wall; walk away. If yes, ask: does access start closed, with a log of who can read your numbers? If no, access will creep wider quietly; proceed only with caution. If yes to all five, the ledger is privacy-forward and you can verify each promise yourself. Any single no ends the evaluation, the same logic as the tool-safety audit.",
+      "start": 668.94,
+      "end": 716.88
+    },
+    {
+      "id": 37,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "6. What a privacy-forward ledger looks like in practice.",
+      "start": 718.38,
+      "end": 721.12
+    },
+    {
+      "id": 38,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "A privacy-forward ledger is one where every promise on this page is a mechanism you can check, not an adjective you take on faith. The pattern is verifiable trust, end to end.",
+      "start": 722.07,
+      "end": 730.66
+    },
+    {
+      "id": 39,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "It reads your invoice once and keeps the numbers you confirm. It does not sell, broker, or train on your data. Benchmarks are something you opt into. Export is a Csv away. Access starts closed with a log. Each of those is a verb you can perform inside the tool, not a noun the marketing page hands you.",
+      "start": 731.46,
+      "end": 746.08
+    },
+    {
+      "id": 40,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "That standard is exactly why the studio behind this library built one. Muntin Ledger is the privacy-forward extension of the same posture the free tools take: it reads a vendor invoice to extract the line items, files them in a ledger you can search across devices, and lets you export a clean Csv or post to your existing books when you are ready. Originals can be locked so only your recovery phrase reopens them; the data terms name the sub-processors and the retention window; and the promises are published claim by claim, the way the studio&rsquo;s never page publishes the studio&rsquo;s. It is not the only way to keep a ledger. It is what it looks like when the five nevers are the spec.",
+      "start": 746.88,
+      "end": 780.49
+    },
+    {
+      "id": 41,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(29)",
+      "text": "Whatever you choose, choose it the same way you would audit any tool that touches your numbers: read the terms, watch the network, run the export, check the access log. A digital ledger holds the data that is hardest to get back once it leaves. The operator who treats their numbers as the asset, and the tool as something that has to earn the right to hold them, is the one who still owns those numbers a year from now.",
+      "start": 781.29,
+      "end": 801.5
+    },
+    {
+      "id": 42,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(30)",
+      "text": "Key takeaways",
+      "start": 802.3,
+      "end": 802.92
+    },
+    {
+      "id": 43,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Treat the numbers in your ledger as the asset, not the exhaust. A privacy-forward tool earns the right to hold them.",
+      "start": 803.47,
+      "end": 809.16
+    },
+    {
+      "id": 44,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Five nevers: no resale, no model training without consent, no pooled benchmark without consent, no export wall, no quiet access creep.",
+      "start": 809.66,
+      "end": 816.23
+    },
+    {
+      "id": 45,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Each never has a check, the data terms, the network tab, the model-training clause, a trial export, the access log.",
+      "start": 816.73,
+      "end": 822.37
+    },
+    {
+      "id": 46,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Invoices and prime cost are Tier 2 and Tier 3 data. They never flow up a tier to a platform or benchmark without a contract.",
+      "start": 822.87,
+      "end": 828.95
+    },
+    {
+      "id": 47,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "Trust is an architecture you can verify, not a promise you take on faith. If the only proof is the brochure, treat it as the brochure.",
+      "start": 829.45,
+      "end": 836.02
+    },
+    {
+      "id": 48,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(31)",
+      "text": "Audit the ledger you use now against the five nevers.",
+      "start": 836.82,
+      "end": 839.41
+    },
+    {
+      "id": 49,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(32)",
+      "text": "Open your current bookkeeping tool. Read its data-processing terms for a no-sale clause, watch the network tab while you work, and try to export a clean Csv. Walk the decision tree above and see where your tool stops.",
+      "start": 840.21,
+      "end": 850.87
+    },
+    {
+      "id": 50,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(33)",
+      "text": "What to do next",
+      "start": 851.67,
+      "end": 852.4
+    },
+    {
+      "id": 51,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Read: the related glossary term →",
+      "start": 852.95,
+      "end": 854.66
+    },
+    {
+      "id": 52,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Try: the tool that pairs with this article →",
+      "start": 855.16,
+      "end": 857.41
+    },
+    {
+      "id": 53,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Or send Don a note: The Window →",
+      "start": 857.91,
+      "end": 859.56
+    },
+    {
+      "id": 54,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(34)",
+      "text": "A ledger built around the five nevers.",
+      "start": 860.11,
+      "end": 861.97
+    },
+    {
+      "id": 55,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(35)",
+      "text": "Muntin Ledger reads vendor invoices to extract the line items, files them in a ledger you can search across devices, and lets you export a clean Csv whenever you ask, the privacy posture this article describes, shipped as a product.",
+      "start": 862.77,
+      "end": 873.99
+    },
+    {
+      "id": 56,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(36)",
+      "text": "More from the library.",
+      "start": 874.79,
+      "end": 875.86
+    },
+    {
+      "id": 57,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(37)",
+      "text": "See also",
+      "start": 876.66,
+      "end": 877.63
+    },
+    {
+      "id": 58,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Article 9 min read How to Tell If a Restaurant Tool Is Safe (Before You Type a Real Number) The companion audit. A 5-test browser framework + the same four-tier data model, pointed at the free tool you try once instead of the ledger you live in.",
+      "start": 878.18,
+      "end": 889.99
+    },
+    {
+      "id": 59,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Tool Cost Pulse Drift alerts, category sparklines, and rolling medians across the invoices you&rsquo;ve saved. Your data only, no pooled benchmarks.",
+      "start": 890.49,
+      "end": 897.75
+    },
+    {
+      "id": 60,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Trust What this studio never does The promises the studio behind this library keeps in writing, published claim by claim, with the mechanism behind each one. &ldquo;Never lock you in&rdquo; is the first line.",
+      "start": 898.25,
+      "end": 908.46
+    },
+    {
+      "id": 61,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(38)",
+      "text": "Tell us",
+      "start": 909.26,
+      "end": 910.1
+    },
+    {
+      "id": 62,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "Be the first field note on this piece.",
+      "start": 911.6,
+      "end": 913.46
+    },
+    {
+      "id": 63,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(39)",
+      "text": "Tried this in your own restaurant? 100, 400 words, your name on it. Don reads every one. Your note shows up here once approved.",
+      "start": 914.41,
+      "end": 920.64
+    },
+    {
+      "id": 64,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(40)",
+      "text": "Sign in to share your experience →",
+      "start": 921.44,
+      "end": 923.19
+    },
+    {
+      "id": 65,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(42)",
+      "text": "Keep reading",
+      "start": 923.74,
+      "end": 924.32
+    },
+    {
+      "id": 66,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(43)",
+      "text": "The companion audit, pointed at the free tool you try once, not the ledger you live in.",
+      "start": 924.87,
+      "end": 929.14
+    },
+    {
+      "id": 67,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(44)",
+      "text": "The promises kept in writing, claim by claim, with the mechanism for each one.",
+      "start": 929.94,
+      "end": 933.76
+    }
+  ]
+}

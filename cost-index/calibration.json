@@ -4,25 +4,25 @@
   "band": {
     "method": "split/EnbPI conformal, ACI-widened",
     "nominal": 0.8,
-    "pooledCoverage": 0.833,
-    "items": 83,
-    "scoredSteps": 5912,
-    "widened": 42
+    "pooledCoverage": 0.835,
+    "items": 84,
+    "scoredSteps": 5929,
+    "widened": 43
   },
   "trend": {
     "method": "price-only direction call, reliability by signal strength",
     "baseline": 0.503,
-    "overallHitRate": 0.539,
+    "overallHitRate": 0.538,
     "scoredCalls": 1879,
-    "items": 47,
+    "items": 48,
     "tiers": {
       "low": {
-        "n": 319,
-        "hitRate": 0.483
+        "n": 320,
+        "hitRate": 0.481
       },
       "medium": {
-        "n": 673,
-        "hitRate": 0.508
+        "n": 672,
+        "hitRate": 0.507
       },
       "high": {
         "n": 887,

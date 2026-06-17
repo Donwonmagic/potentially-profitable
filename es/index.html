@@ -266,9 +266,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=50d2a26a11a5" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=50d2a26a11a5"><link rel="stylesheet" href="/assets/site-article.css?v=36af39b8b96e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=2830bb0a913c" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=158a407ca00a" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=2830bb0a913c"><link rel="stylesheet" href="/assets/site-article.css?v=158a407ca00a"></noscript>
 </head>
 <body>
 
@@ -286,12 +286,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <!-- batch-banner:start -->
 <aside class="batch-marquee" data-batch="menu-inflation-2026" role="complementary" aria-label="Nuevo informe · Inflación de menú de restaurante, mayo 2026" style="background:#16181D;color:#F6F7F8;font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(246,247,248,0.16);box-shadow:inset 0 1px 0 rgba(255,255,255,0.05)">
   <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-    <div style="display:flex;flex-direction:column;gap:2px;min-width:0;flex:1 1 auto">
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0">
-        <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:#2A50C8;color:#F6F7F8;padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">Nuevo informe</span>
-        <span style="font-family:'Fraunces',Georgia,'Times New Roman',serif;font-size:14px;font-style:italic;line-height:1.3;min-width:0;color:#F6F7F8">Los precios de restaurante ya suben más rápido que los del súper.</span>
-      </div>
-      <span style="font-family:Inter,system-ui,sans-serif;font-size:12px;line-height:1.3;color:rgba(246,247,248,0.72);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;min-width:0">Lo que el IPC de mayo 2026 significa para tu menú — la carne de res sube 12.1%, el huevo baja, y cómo fijar precios.</span>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;flex:1 1 auto">
+      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:#2A50C8;color:#F6F7F8;padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">Nuevo informe</span>
+      <span style="font-family:'Fraunces',Georgia,'Times New Roman',serif;font-size:14px;font-style:italic;line-height:1.35;min-width:0;color:#F6F7F8">Los precios de restaurante ya suben más rápido que los del súper.</span>
     </div>
     <a href="/es/blog/inflacion-de-menu-de-restaurante-2026/" style="display:inline-flex;align-items:center;gap:6px;color:#16181D;background:#F6F7F8;text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:13px;padding:6px 14px;border-radius:999px;white-space:nowrap;flex-shrink:0;box-shadow:0 1px 2px rgba(0,0,0,0.18);transition:transform .15s ease,box-shadow .15s ease">Leer el informe <span aria-hidden="true">&rarr;</span></a>
   </div>
@@ -465,7 +462,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <a class="btn btn-primary" href="/es/tools/audits/restaurant/">Hacer el diagn&oacute;stico gratis
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
-        <a class="btn btn-ghost" href="https://ledger.muntin.digital/">Ver precios</a>
+        <a class="btn btn-ghost" href="#founding">Unirme a la lista fundadora</a>
         <!-- Fase 4 (Taller) — Reveal "Continúa tu trabajo". -->
         <a class="btn btn-ghost js-nav-workshop" href="/es/workbench/" hidden>Continúa tu trabajo
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
@@ -645,6 +642,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </thead>
       <tbody>
       <tr>
+        <td class="lib-idx-title"><a href="/es/blog/restaurant-menu-inflation-2026/">Restaurant prices are now rising faster than groceries — what May 2026's numbers mean for your menu</a></td>
+        <td class="lib-idx-section">Artículos</td>
+        <td class="lib-idx-date" aria-label="2026-06-14"><time datetime="2026-06-14">2026-06-14</time></td>
+        <td class="lib-idx-contributor">Don Goldstein</td>
+      </tr>
+      <tr>
         <td class="lib-idx-title"><a href="/es/blog/restaurant-website-technical-seo-checklist/">Restaurant Website Technical SEO Checklist (2026): The Operator's Audit</a></td>
         <td class="lib-idx-section">Artículos</td>
         <td class="lib-idx-date" aria-label="2026-06-03"><time datetime="2026-06-03">2026-06-03</time></td>
@@ -686,12 +689,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <td class="lib-idx-date" aria-label="2026-05-31"><time datetime="2026-05-31">2026-05-31</time></td>
         <td class="lib-idx-contributor">Don Goldstein</td>
       </tr>
-      <tr>
-        <td class="lib-idx-title"><a href="/es/blog/commission-free-online-ordering-restaurants/">Commission-Free Online Ordering for Restaurants (2026): Owner.com vs Toast vs Your Own Site</a></td>
-        <td class="lib-idx-section">Artículos</td>
-        <td class="lib-idx-date" aria-label="2026-05-31"><time datetime="2026-05-31">2026-05-31</time></td>
-        <td class="lib-idx-contributor">Don Goldstein</td>
-      </tr>
       </tbody>
     </table>
     </div>
@@ -703,6 +700,52 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <!-- Stamped por scripts/inject-homepage-fieldnotes-rail.mjs desde
      data/article-fieldnotes.json. -->
 <!-- field-notes-rail:start --><!-- field-notes-rail:end -->
+
+<!-- ============ MIEMBROS FUNDADORES (Muntin Ledger pre-lanzamiento) ============ -->
+<!-- Captura suave de pre-lanzamiento. Sin precio, sin fecha — el precio
+     de Stripe no es final y el lanzamiento puede moverse, así que el
+     marco se queda en "primer acceso cuando abra Muntin Ledger este
+     otoño" y deja los detalles a ledger.muntin.digital. El formulario
+     publica al proxy de primera parte /api/waitlist, que reenvía a la
+     API del producto; el producto guarda el dato y manda el correo de
+     confirmación. La clase .js-signup-form recibe el sello de ts + el
+     envío asíncrono + el éxito en línea desde first-touch.js. -->
+<section class="block founding-band" id="founding" aria-labelledby="founding-heading">
+  <div class="container">
+    <div class="section-header reveal" style="max-width:760px;margin-inline:auto;text-align:center;">
+      <span class="eyebrow">Miembros fundadores</span>
+      <h2 id="founding-heading">S&eacute; de los primeros cuando abra <span class="serif-italic">Muntin Ledger</span> este oto&ntilde;o.</h2>
+      <p>Un motor determinista lee tus facturas de proveedores y las archiva en un libro consultable &mdash; ning&uacute;n modelo lee tus n&uacute;meros, sin anuncios, sin rastreo. Los miembros fundadores tienen el primer acceso cuando abra. Tus n&uacute;meros siguen siendo tuyos.</p>
+    </div>
+
+    <!-- founding-capture:start -->
+    <form action="/api/waitlist" method="post" class="js-signup-form founding-form" data-locale="es" data-event="Waitlist Signup" data-surface="studio-hero">
+      <div class="founding-form-fields">
+        <div class="founding-field">
+          <label class="founding-form-label" for="founding-email">Tu correo</label>
+          <input id="founding-email" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="tu@turestaurante.com" />
+        </div>
+        <div class="founding-field">
+          <label class="founding-form-label" for="founding-name">Tu nombre <span class="founding-optional">(opcional)</span></label>
+          <input id="founding-name" name="name" type="text" autocomplete="name" autocapitalize="words" placeholder="Nombre" />
+        </div>
+      </div>
+      <input type="hidden" name="source" value="studio-hero" />
+      <input type="hidden" name="founding_member" value="true" />
+      <input type="hidden" name="locale" value="es" />
+      <input type="hidden" name="ts" value="" />
+      <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+      <!-- Turnstile (Phase 3B). Auto-injects cf-turnstile-response on pass. -->
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="waitlist" data-language="es" data-size="flexible"></div>
+      <p class="founding-form-confirm" aria-live="polite">Gracias &mdash; revisa tu correo para confirmar tu lugar.</p>
+      <button type="submit">Unirme a la lista fundadora</button>
+    </form>
+    <!-- founding-capture:end -->
+
+    <p class="founding-demo-note">&iquest;Quieres verlo primero? <a href="https://ledger.muntin.digital/demo">Mira el recorrido guiado &rarr;</a></p>
+  </div>
+</section>
+<!-- /founding -->
 
 <!-- ============ PRODUCTO (Fase 9: el teaser de servicios se retiró con el
      cierre de servicios, 2026-06-11 — la empresa vende el producto y

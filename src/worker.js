@@ -180,6 +180,10 @@ const FORM_RATE_LIMIT_PATHS = new Set([
   '/api/course/progress',
   '/api/course/config',
   '/api/course/reset',
+  // 2026-06-15 (Muntin Ledger pre-launch) — founding-member waitlist.
+  // Each POST triggers an upstream call to api.muntin.digital, so the
+  // tighter form-tier (10/IP/hour) is the right gate.
+  '/api/waitlist',
 ]);
 // D1: /api/audit-snapshot intentionally stays on the lighter
 // api-tier (30/min/IP) — a legit shared link might be opened by
@@ -460,6 +464,10 @@ const API_ROUTES = {
   '/api/admin/window/now':           handleAdminWindowNow,
   // Phase G.10 (Growth) — newsletter subscription + double-opt confirm.
   '/api/subscribe':                  handleSubscribe,
+  // Pre-launch (Muntin Ledger) — founding-member waitlist. First-party
+  // proxy: forwards server-to-server to api.muntin.digital; the product
+  // owns storage + the confirmation email. Auto-gated POST-only below.
+  '/api/waitlist':                   handleWaitlist,
   // Weekly Cost Index broadcast — secret-gated, called by the publish Action.
   '/api/admin/cost-index-broadcast': handleCostIndexBroadcast,
   // Phase 3B — Plausible analytics events proxy. Self-hosted tracker
@@ -8775,6 +8783,85 @@ async function handleSubscribe(request, env, ctx) {
   const tmpl = subscriberConfirmEmail({ confirmUrl, locale });
   ctx.waitUntil(sendEmail({ env, to: email, subject: tmpl.subject, html: tmpl.html, text: tmpl.text }));
   return SILENT_OK;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Pre-launch (Muntin Ledger) — founding-member waitlist proxy.
+//
+// First-party /api/waitlist endpoint. Mirrors handleSubscribe's
+// anti-spam gates (origin → honeypot → timestamp → threat-IP →
+// Turnstile → email validity), then forwards the lead server-to-
+// server to the product API at api.muntin.digital. The product owns
+// storage + the double-opt confirmation email; we never persist the
+// lead here. Same silent-200-on-failure posture so a network observer
+// can't distinguish a real signup from spam; hard-503 only when the
+// upstream call itself fails (so the client's inline-success UI is
+// honest — it only flips to "check your inbox" on a 200).
+const WAITLIST_SOURCES  = new Set(['studio', 'studio-hero', 'studio-product', 'studio-banner']);
+const WAITLIST_UPSTREAM  = 'https://api.muntin.digital/v1/waitlist';
+
+async function handleWaitlist(request, env, ctx) {
+  if (!isOriginAllowed(request)) return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  let body;
+  try { body = await parseFormBody(request); } catch (_) { return jsonResponse({ ok: false, error: 'invalid-body' }, 400); }
+  const lenGate = enforceMaxLengths(body, { email: 254, name: 120, business: 160, source: 32, locale: 8, founding_member: 8, hp: 100, ts: 30 });
+  if (!lenGate.ok) return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+
+  const SILENT_OK = jsonResponse({ ok: true }, 200);
+  if (isSpamHoneypot(body))    return SILENT_OK;
+  if (!isTimestampSane(body))  return SILENT_OK;
+  if (isHighThreatIP(request)) return SILENT_OK;
+  // Layer-2 anti-spam: Turnstile. Skipped until the secret is wired.
+  const turnstile = await checkTurnstile(body, env, request);
+  if (!turnstile.ok && !turnstile.skipped) return SILENT_OK;
+  const email = typeof body.email === 'string' ? body.email.trim() : '';
+  if (!isValidEmail(email))    return SILENT_OK;
+
+  const bodyLang = typeof body.locale === 'string' ? body.locale.toLowerCase() : '';
+  const locale = (bodyLang === 'es' || bodyLang === 'en') ? bodyLang : pickLang(request);
+  const source = WAITLIST_SOURCES.has(body.source) ? body.source : 'studio';
+  const name = typeof body.name === 'string' ? body.name.trim() : '';
+  const business = typeof body.business === 'string' ? body.business.trim() : '';
+  // Default to founding-member opt-in; only an explicit 'false' opts out.
+  const foundingMember = String(body.founding_member).toLowerCase() !== 'false';
+
+  // Forward server-to-server. The product API owns storage and the
+  // confirmation email; we just relay the validated lead. The proxy
+  // key + real-visitor IP let the product rate-limit per visitor
+  // (the worker is the only origin it ever sees otherwise).
+  const upstreamUrl = String(env.WAITLIST_UPSTREAM_URL || WAITLIST_UPSTREAM);
+  const params = new URLSearchParams();
+  params.set('email', email);
+  params.set('name', name);
+  params.set('business', business);
+  params.set('founding_member', foundingMember ? 'true' : 'false');
+  params.set('source', source);
+  params.set('locale', locale);
+
+  const headers = { 'content-type': 'application/x-www-form-urlencoded' };
+  if (env.WAITLIST_PROXY_KEY) {
+    headers['x-muntin-proxy-key'] = String(env.WAITLIST_PROXY_KEY);
+    headers['x-muntin-client-ip'] = request.headers.get('cf-connecting-ip') || '';
+  }
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 8_000);
+  try {
+    const res = await fetch(upstreamUrl, {
+      method: 'POST',
+      headers,
+      body: params.toString(),
+      signal: controller.signal,
+    });
+    if (res.ok) return jsonResponse({ ok: true }, 200);
+    // Never leak upstream status/body — a generic 503 is all the
+    // client needs to keep the form in its pre-submit state.
+    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  } catch (_) {
+    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 async function handleSubscribeConfirm(request, env, ctx) {
