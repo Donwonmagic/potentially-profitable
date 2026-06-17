@@ -32,7 +32,31 @@ function values(es) {
     'trend.baseline': pct(report.trend.baseline),
     'band.nominal': pct(report.band.nominal),
     'band.widened': int(report.band.widened),
+    'chart.reliability': reliabilityChart(es),
   };
+}
+
+// A small, accessible reliability bar chart (the trend tiers, each a horizontal bar) —
+// the calibration "picture" the prose ladder describes. Drift-safe: rebuilt from the
+// report on every inject, --check keeps it in sync. Inline-styled bar widths; uses the
+// page's tokens (var) so it dark-adapts.
+function reliabilityChart(es) {
+  const t = report.trend.tiers;
+  const p = (x) => Math.round(x * 100);
+  const rows = [
+    [es ? 'Señales débiles' : 'Weak calls', t.low.hitRate],
+    [es ? 'Señales intermedias' : 'Middling calls', t.medium.hitRate],
+    [es ? 'Señales fuertes' : 'Strong calls', t.high.hitRate],
+  ];
+  const bars = rows.map(([lab, v]) =>
+    `<div class="ci-rel__row"><span class="ci-rel__lab">${lab}</span><span class="ci-rel__track"><span class="ci-rel__bar" style="width:${p(v)}%"></span></span><span class="ci-rel__val">${p(v)}%</span></div>`).join('');
+  const cap = es
+    ? `Cada nivel más fuerte acierta más a menudo — y todos superan la línea base sin habilidad del ${p(report.trend.baseline)}%.`
+    : `Each stronger tier verifies more often — and all clear the ${p(report.trend.baseline)}% no-skill baseline.`;
+  const alt = es
+    ? `Confiabilidad de la flecha por fuerza de señal: débiles ${p(t.low.hitRate)}%, intermedias ${p(t.medium.hitRate)}%, fuertes ${p(t.high.hitRate)}%, todas por encima de la línea base del ${p(report.trend.baseline)}%.`
+    : `Trend-arrow reliability by signal strength: weak ${p(t.low.hitRate)}%, middling ${p(t.medium.hitRate)}%, strong ${p(t.high.hitRate)}%, all above the ${p(report.trend.baseline)}% baseline.`;
+  return `<figure class="ci-rel" role="img" aria-label="${alt}">${bars}<figcaption>${cap}</figcaption></figure>`;
 }
 
 const TARGETS = [
