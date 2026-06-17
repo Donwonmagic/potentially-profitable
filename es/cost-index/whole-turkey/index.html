@@ -160,6 +160,20 @@ main{padding-top:64px}
   .ci-read__verb{border:1px solid #000!important;color:#000!important;background:#fff!important}
   a[href]::after{content:""!important}
 }
+/* dark mode: the inline tokens hardcoded light, so the reading area stayed cream in dark.
+   Redefine the cost-index tokens (light text on dark = high-contrast by construction) and
+   lighten the three verdict accents so they stay legible. Honors OS preference AND the
+   site theme toggle ([data-theme]); a forced-light toggle wins over OS dark. */
+:root[data-theme="dark"]{--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12)}
+:root[data-theme="dark"] .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
+:root[data-theme="dark"] .ci-read__verb[data-bias="watch"]{color:#d8bd6a;border-color:#8a7530}
+:root[data-theme="dark"] .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12)}
+  :root:not([data-theme="light"]) .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
+  :root:not([data-theme="light"]) .ci-read__verb[data-bias="watch"]{color:#d8bd6a;border-color:#8a7530}
+  :root:not([data-theme="light"]) .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
+}
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=50d2a26a11a5" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=36af39b8b96e" onload="this.onload=null;this.rel='stylesheet'">
@@ -196,7 +210,7 @@ main{padding-top:64px}
     <p class="ci-read__line">Alrededor de $1.73–$1.86/libra (referencia mayorista, un mercado USDA), al 2026-06-08.</p><p class="ci-read__trend">Tendencia: al alza +7.1% en la ventana reciente.</p>
     <p class="ci-read__verdict"><span class="ci-read__verb" data-bias="hold">Mantener</span>Dentro de su rango usual — nada que hacer.</p>
     <div class="ci-read__spark"><svg class="mtn-spark" width="248" height="46" viewBox="0 0 248 46" role="img" aria-label="Precio subió a lo largo de la ventana. Normalmente $1.69–$1.76, ahora $1.80 — en la parte alta de su rango habitual. Más alto que 11 de sus últimas 12 lecturas."><path d="M3.0,43.0L18.1,43.0L33.3,39.7L48.4,39.7L63.5,39.7L78.6,43.0L93.8,33.0L108.9,26.3L124.0,23.0L139.1,19.7L154.3,16.3L169.4,16.3L184.5,16.3L199.6,16.3L214.8,16.3L229.9,3.0L245.0,3.0 L245.0,43.0 L3.0,43.0 Z" fill="rgba(31,111,106,0.12)" stroke="none" /><line x1="3" x2="245" y1="23.0" y2="23.0" stroke="#2A50C8" stroke-width="1" stroke-dasharray="2,3" opacity="0.45" /><path d="M3.0,43.0L18.1,43.0L33.3,39.7L48.4,39.7L63.5,39.7L78.6,43.0L93.8,33.0L108.9,26.3L124.0,23.0L139.1,19.7L154.3,16.3L169.4,16.3L184.5,16.3L199.6,16.3L214.8,16.3L229.9,3.0L245.0,3.0" fill="none" stroke="#2A50C8" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" /><circle cx="245.0" cy="3.0" r="2.5" fill="#2A50C8" /></svg><p class="ci-read__capsule">Normalmente $1.69–$1.76, ahora $1.80 — en la parte alta de su rango habitual. <span class="ci-read__rank">Más alto que 11 de sus últimas 12 lecturas.</span> <span class="ci-read__capsule-note">(en la ventana seguida)</span></p></div>
-    <details class="ci-read__src"><summary>Fuentes · 3</summary><div>USDA AMS · BLS · FRED — datos públicos, al 2026-06-08. Referencia mayorista, no el precio entregado que pagas.</div></details>
+    <details class="ci-read__src"><summary>Fuentes · 3</summary><div>USDA AMS · BLS · FRED — datos públicos, al 2026-06-08. Referencia mayorista (aproximadamente lo que pagan los distribuidores), no el precio entregado que pagas.</div></details>
     <p class="ci-read__verified"><strong>Verificado:</strong> nuestro rango de precio del 80% ha acertado el 82% de las veces (147 semanas de historial) · al día para la cadencia de su fuente.</p>
     <p class="ci-read__method"><a href="/es/cost-index/methodology/#track-record">Cómo verificamos este número <span aria-hidden="true">→</span></a></p>
     <p class="ci-read__data">Descarga los datos: <a href="/cost-index/whole-turkey/series.csv" download>CSV</a> · <a href="/cost-index/whole-turkey/series.json">JSON</a></p>

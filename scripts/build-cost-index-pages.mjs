@@ -638,7 +638,7 @@ function marketReadBlock(slug, locale) {
   const shortList = [...new Set((r.point.provenance || []).map((p) => shortSource(p.source)))];
   const disclaimer = r.basis === 'retail'
     ? (es ? 'Referencia minorista, no el precio mayorista ni el entregado que pagas.' : 'Retail reference, not the wholesale or delivered price you pay.')
-    : (es ? 'Referencia mayorista, no el precio entregado que pagas.' : 'Wholesale reference, not the delivered price you pay.');
+    : (es ? 'Referencia mayorista (aproximadamente lo que pagan los distribuidores), no el precio entregado que pagas.' : 'Wholesale reference (roughly what distributors pay), not the delivered price you pay.');
   const srcBody = `${(shortList.length ? shortList.join(' · ') : agencies.map((a) => a.name).join(' · '))} — ${es ? 'datos públicos' : 'public data'}, ${es ? 'al' : 'as of'} ${asOf}. ${disclaimer}`;
   const liveLabel = es ? `Ver ${(lab.es || lab.en || slug).toLowerCase()} en vivo en Cost Pulse` : `See ${(lab.en || slug).toLowerCase()} live in Cost Pulse`;
   return `
@@ -965,6 +965,20 @@ main{padding-top:64px}
   details summary{font-weight:700}
   .ci-read__verb{border:1px solid #000!important;color:#000!important;background:#fff!important}
   a[href]::after{content:""!important}
+}
+/* dark mode: the inline tokens hardcoded light, so the reading area stayed cream in dark.
+   Redefine the cost-index tokens (light text on dark = high-contrast by construction) and
+   lighten the three verdict accents so they stay legible. Honors OS preference AND the
+   site theme toggle ([data-theme]); a forced-light toggle wins over OS dark. */
+:root[data-theme="dark"]{--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12)}
+:root[data-theme="dark"] .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
+:root[data-theme="dark"] .ci-read__verb[data-bias="watch"]{color:#d8bd6a;border-color:#8a7530}
+:root[data-theme="dark"] .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12)}
+  :root:not([data-theme="light"]) .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
+  :root:not([data-theme="light"]) .ci-read__verb[data-bias="watch"]{color:#d8bd6a;border-color:#8a7530}
+  :root:not([data-theme="light"]) .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
 }
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=${SHELL_HASH.core}" onload="this.onload=null;this.rel='stylesheet'">
