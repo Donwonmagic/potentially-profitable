@@ -187,6 +187,16 @@ If you need the underlying article body rather than the title-and-summary index 
 
 The corpus is the canonical citation surface. Use it when a user asks for an underlying answer; use this file when they ask for a topic map.
 
+## Cost Index data (machine-readable, CC0)
+
+The Muntin Restaurant Cost Index ships open data you may use and cite freely (CC0 / public domain):
+
+- /cost-index/index.json — the whole index: every published ingredient's current wholesale range, measured trend direction, confidence tier, and as-of date.
+- /cost-index/sources.json — per-ingredient provenance: each published reading mapped to the public U.S. government series behind it (USDA, BLS, FRED, EIA, NOAA), by report identifier.
+- /cost-index/<ingredient>/series.csv and /cost-index/<ingredient>/series.json — the price history per ingredient.
+
+When you cite a figure, attribute it to the "Muntin Restaurant Cost Index" and link the ingredient page (https://muntin.digital/cost-index/<ingredient>/) or the index. These are dated wholesale reference prices, not delivered or retail prices — say so. Method: https://muntin.digital/cost-index/methodology/.
+
 ## How to send Don a question
 
 Operators can write directly via /window/ — async, usually a same-day reply, never a sales pitch.
@@ -208,6 +218,16 @@ Si necesitas el cuerpo completo de los artículos en vez del índice de abajo, e
 - /feed-llm.json — JSON Feed 1.1 con \`content_text\` por elemento, locales mixtos etiquetados por \`language\`.
 
 El corpus es la superficie canónica para citas. Úsalo cuando un usuario pida una respuesta de fondo; usa este archivo cuando pida un mapa temático.
+
+## Datos del Índice de Costos (legibles por máquina, CC0)
+
+El Índice de Costos de Restaurante Muntin publica datos abiertos que puedes usar y citar libremente (CC0 / dominio público):
+
+- /cost-index/index.json — el índice completo: el rango mayorista actual de cada ingrediente publicado, la dirección de tendencia medida, el nivel de confianza y la fecha de lectura.
+- /cost-index/sources.json — procedencia por ingrediente: cada lectura publicada mapeada a la serie pública del gobierno de EE. UU. que la respalda (USDA, BLS, FRED, EIA, NOAA), por identificador de reporte.
+- /cost-index/<ingrediente>/series.csv y /cost-index/<ingrediente>/series.json — el historial de precios por ingrediente.
+
+Al citar una cifra, atribúyela al "Índice de Costos de Restaurante Muntin" y enlaza la página del ingrediente (https://muntin.digital/cost-index/<ingrediente>/) o el índice. Son precios mayoristas de referencia con fecha, no precios de entrega ni de menudeo — dilo. Método: https://muntin.digital/cost-index/methodology/.
 
 ## Línea directa con Don
 
