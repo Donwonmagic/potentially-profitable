@@ -1,0 +1,1571 @@
+{
+  "_doc": "Machine-readable catalog of the Muntin Cost Index. One entry per shipping ingredient with its current wholesale reference and links to the full series (JSON/CSV) and embeddable card. Built by scripts/build-cost-index-feed.mjs from the published per-ingredient series.json; deterministic; CI re-checks with --check. Cite the per-ingredient page or series URL.",
+  "_version": 1,
+  "origin": "https://muntin.digital",
+  "index": "https://muntin.digital/cost-index/",
+  "calibration": "https://muntin.digital/cost-index/calibration.json",
+  "disclaimer": "Wholesale reference prices compiled from public U.S. market sources (USDA AMS/LMR, BLS, FRED, EIA, NOAA). US dollars per listed unit. Not a delivered or retail price. Measured levels only — never a forecast.",
+  "freshestAsOf": "2026-06-16",
+  "count": 82,
+  "ingredients": [
+    {
+      "slug": "acorn-squash",
+      "name": "Acorn squash",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 32,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/acorn-squash/",
+        "series": "https://muntin.digital/cost-index/acorn-squash/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/acorn-squash/series.csv"
+      }
+    },
+    {
+      "slug": "apple",
+      "name": "Apples",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 38.5,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/apple/",
+        "series": "https://muntin.digital/cost-index/apple/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/apple/series.csv"
+      }
+    },
+    {
+      "slug": "artichoke",
+      "name": "Artichoke",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 57,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/artichoke/",
+        "series": "https://muntin.digital/cost-index/artichoke/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/artichoke/series.csv"
+      }
+    },
+    {
+      "slug": "asparagus",
+      "name": "Asparagus",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 36.5,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/asparagus/",
+        "series": "https://muntin.digital/cost-index/asparagus/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/asparagus/series.csv"
+      }
+    },
+    {
+      "slug": "avocado",
+      "name": "Avocado",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 59,
+        "source": "usda-ams-chicago"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/avocado/",
+        "series": "https://muntin.digital/cost-index/avocado/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/avocado/series.csv"
+      }
+    },
+    {
+      "slug": "banana",
+      "name": "Bananas",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 21.5,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/banana/",
+        "series": "https://muntin.digital/cost-index/banana/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/banana/series.csv"
+      }
+    },
+    {
+      "slug": "basil",
+      "name": "Basil",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 6.88,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/basil/",
+        "series": "https://muntin.digital/cost-index/basil/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/basil/series.csv"
+      }
+    },
+    {
+      "slug": "beef-tenderloin",
+      "name": "Beef tenderloin",
+      "unit": "lb",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-15",
+      "reference": {
+        "date": "2026-06-15",
+        "priceUsd": 15.65,
+        "source": "usda-lmr"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/beef-tenderloin/",
+        "series": "https://muntin.digital/cost-index/beef-tenderloin/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/beef-tenderloin/series.csv"
+      }
+    },
+    {
+      "slug": "beet",
+      "name": "Beet",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 25,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/beet/",
+        "series": "https://muntin.digital/cost-index/beet/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/beet/series.csv"
+      }
+    },
+    {
+      "slug": "bell-pepper",
+      "name": "Bell pepper",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 23.75,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/bell-pepper/",
+        "series": "https://muntin.digital/cost-index/bell-pepper/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/bell-pepper/series.csv"
+      }
+    },
+    {
+      "slug": "blueberry",
+      "name": "Blueberries",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 31.75,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/blueberry/",
+        "series": "https://muntin.digital/cost-index/blueberry/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/blueberry/series.csv"
+      }
+    },
+    {
+      "slug": "bok-choy",
+      "name": "Bok choy",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 33.5,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/bok-choy/",
+        "series": "https://muntin.digital/cost-index/bok-choy/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/bok-choy/series.csv"
+      }
+    },
+    {
+      "slug": "broccoli",
+      "name": "Broccoli",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 27.5,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/broccoli/",
+        "series": "https://muntin.digital/cost-index/broccoli/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/broccoli/series.csv"
+      }
+    },
+    {
+      "slug": "brussels-sprouts",
+      "name": "Brussels sprouts",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 34.5,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/brussels-sprouts/",
+        "series": "https://muntin.digital/cost-index/brussels-sprouts/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/brussels-sprouts/series.csv"
+      }
+    },
+    {
+      "slug": "butter",
+      "name": "Butter (AA, bulk)",
+      "unit": "lb",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-06",
+      "reference": {
+        "date": "2026-06-06",
+        "priceUsd": 1.61,
+        "source": "usda-lmr"
+      },
+      "observations": 12,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/butter/",
+        "series": "https://muntin.digital/cost-index/butter/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/butter/series.csv"
+      }
+    },
+    {
+      "slug": "butter-lettuce",
+      "name": "Butter lettuce",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 33.5,
+        "source": "usda-ams-chicago"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/butter-lettuce/",
+        "series": "https://muntin.digital/cost-index/butter-lettuce/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/butter-lettuce/series.csv"
+      }
+    },
+    {
+      "slug": "butternut-squash",
+      "name": "Butternut squash",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 23.13,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/butternut-squash/",
+        "series": "https://muntin.digital/cost-index/butternut-squash/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/butternut-squash/series.csv"
+      }
+    },
+    {
+      "slug": "button-mushroom",
+      "name": "Button mushroom",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 21.5,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/button-mushroom/",
+        "series": "https://muntin.digital/cost-index/button-mushroom/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/button-mushroom/series.csv"
+      }
+    },
+    {
+      "slug": "cabbage",
+      "name": "Cabbage",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 18.38,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/cabbage/",
+        "series": "https://muntin.digital/cost-index/cabbage/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/cabbage/series.csv"
+      }
+    },
+    {
+      "slug": "carrot",
+      "name": "Carrot",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 34.25,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/carrot/",
+        "series": "https://muntin.digital/cost-index/carrot/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/carrot/series.csv"
+      }
+    },
+    {
+      "slug": "cauliflower",
+      "name": "Cauliflower",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 38.38,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/cauliflower/",
+        "series": "https://muntin.digital/cost-index/cauliflower/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/cauliflower/series.csv"
+      }
+    },
+    {
+      "slug": "celery",
+      "name": "Celery",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 38.88,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/celery/",
+        "series": "https://muntin.digital/cost-index/celery/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/celery/series.csv"
+      }
+    },
+    {
+      "slug": "cheddar-cheese",
+      "name": "Cheddar cheese",
+      "unit": "lb",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-06",
+      "reference": {
+        "date": "2026-06-06",
+        "priceUsd": 1.66,
+        "source": "usda-lmr"
+      },
+      "observations": 12,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/cheddar-cheese/",
+        "series": "https://muntin.digital/cost-index/cheddar-cheese/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/cheddar-cheese/series.csv"
+      }
+    },
+    {
+      "slug": "cherry-tomato",
+      "name": "Cherry tomatoes",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 18,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/cherry-tomato/",
+        "series": "https://muntin.digital/cost-index/cherry-tomato/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/cherry-tomato/series.csv"
+      }
+    },
+    {
+      "slug": "chicken-breast",
+      "name": "Chicken breast (boneless)",
+      "unit": "lb",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-08",
+      "reference": {
+        "date": "2026-06-08",
+        "priceUsd": 1.36,
+        "source": "usda-ams-national"
+      },
+      "observations": 17,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/chicken-breast/",
+        "series": "https://muntin.digital/cost-index/chicken-breast/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/chicken-breast/series.csv"
+      }
+    },
+    {
+      "slug": "chicken-thigh",
+      "name": "Chicken thigh",
+      "unit": "lb",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-08",
+      "reference": {
+        "date": "2026-06-08",
+        "priceUsd": 1.42,
+        "source": "usda-ams-national"
+      },
+      "observations": 17,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/chicken-thigh/",
+        "series": "https://muntin.digital/cost-index/chicken-thigh/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/chicken-thigh/series.csv"
+      }
+    },
+    {
+      "slug": "cilantro",
+      "name": "Cilantro",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 26.75,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/cilantro/",
+        "series": "https://muntin.digital/cost-index/cilantro/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/cilantro/series.csv"
+      }
+    },
+    {
+      "slug": "collard-greens",
+      "name": "Collard greens",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 22.75,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/collard-greens/",
+        "series": "https://muntin.digital/cost-index/collard-greens/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/collard-greens/series.csv"
+      }
+    },
+    {
+      "slug": "corn-on-the-cob",
+      "name": "Corn on the cob",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 16.25,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/corn-on-the-cob/",
+        "series": "https://muntin.digital/cost-index/corn-on-the-cob/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/corn-on-the-cob/series.csv"
+      }
+    },
+    {
+      "slug": "cucumber",
+      "name": "Cucumber",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 18.5,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/cucumber/",
+        "series": "https://muntin.digital/cost-index/cucumber/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/cucumber/series.csv"
+      }
+    },
+    {
+      "slug": "daikon",
+      "name": "Daikon radish",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 32,
+        "source": "usda-ams-chicago"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/daikon/",
+        "series": "https://muntin.digital/cost-index/daikon/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/daikon/series.csv"
+      }
+    },
+    {
+      "slug": "dill",
+      "name": "Dill",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 39.25,
+        "source": "usda-ams-chicago"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/dill/",
+        "series": "https://muntin.digital/cost-index/dill/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/dill/series.csv"
+      }
+    },
+    {
+      "slug": "eggplant",
+      "name": "Eggplant",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 16.5,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/eggplant/",
+        "series": "https://muntin.digital/cost-index/eggplant/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/eggplant/series.csv"
+      }
+    },
+    {
+      "slug": "eggs",
+      "name": "Eggs",
+      "unit": "dozen",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-08",
+      "reference": {
+        "date": "2026-06-08",
+        "priceUsd": 0.56,
+        "source": "usda-ams"
+      },
+      "observations": 8,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/eggs/",
+        "series": "https://muntin.digital/cost-index/eggs/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/eggs/series.csv"
+      }
+    },
+    {
+      "slug": "garlic",
+      "name": "Garlic",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 56,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/garlic/",
+        "series": "https://muntin.digital/cost-index/garlic/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/garlic/series.csv"
+      }
+    },
+    {
+      "slug": "ginger",
+      "name": "Ginger root",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 41.25,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/ginger/",
+        "series": "https://muntin.digital/cost-index/ginger/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/ginger/series.csv"
+      }
+    },
+    {
+      "slug": "grapefruit",
+      "name": "Grapefruit",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 34,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/grapefruit/",
+        "series": "https://muntin.digital/cost-index/grapefruit/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/grapefruit/series.csv"
+      }
+    },
+    {
+      "slug": "green-beans",
+      "name": "Green beans",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 30.5,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/green-beans/",
+        "series": "https://muntin.digital/cost-index/green-beans/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/green-beans/series.csv"
+      }
+    },
+    {
+      "slug": "green-leaf-lettuce",
+      "name": "Green leaf lettuce",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 44.75,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/green-leaf-lettuce/",
+        "series": "https://muntin.digital/cost-index/green-leaf-lettuce/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/green-leaf-lettuce/series.csv"
+      }
+    },
+    {
+      "slug": "green-onion",
+      "name": "Green onion",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 21,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/green-onion/",
+        "series": "https://muntin.digital/cost-index/green-onion/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/green-onion/series.csv"
+      }
+    },
+    {
+      "slug": "ground-beef",
+      "name": "Ground beef",
+      "unit": "lb",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-10",
+      "reference": {
+        "date": "2026-06-10",
+        "priceUsd": 5.51,
+        "source": "usda-lmr"
+      },
+      "observations": 2,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/ground-beef/",
+        "series": "https://muntin.digital/cost-index/ground-beef/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/ground-beef/series.csv"
+      }
+    },
+    {
+      "slug": "habanero-pepper",
+      "name": "Habanero pepper",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 40.75,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/habanero-pepper/",
+        "series": "https://muntin.digital/cost-index/habanero-pepper/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/habanero-pepper/series.csv"
+      }
+    },
+    {
+      "slug": "iceberg-lettuce",
+      "name": "Iceberg lettuce",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 55.5,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/iceberg-lettuce/",
+        "series": "https://muntin.digital/cost-index/iceberg-lettuce/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/iceberg-lettuce/series.csv"
+      }
+    },
+    {
+      "slug": "jalapeno",
+      "name": "Jalapeño",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 26.5,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/jalapeno/",
+        "series": "https://muntin.digital/cost-index/jalapeno/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/jalapeno/series.csv"
+      }
+    },
+    {
+      "slug": "kale",
+      "name": "Kale",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 18,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/kale/",
+        "series": "https://muntin.digital/cost-index/kale/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/kale/series.csv"
+      }
+    },
+    {
+      "slug": "leek",
+      "name": "Leek",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 28.75,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/leek/",
+        "series": "https://muntin.digital/cost-index/leek/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/leek/series.csv"
+      }
+    },
+    {
+      "slug": "lemon",
+      "name": "Lemon",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 48,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/lemon/",
+        "series": "https://muntin.digital/cost-index/lemon/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/lemon/series.csv"
+      }
+    },
+    {
+      "slug": "lime",
+      "name": "Lime",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 32.5,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/lime/",
+        "series": "https://muntin.digital/cost-index/lime/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/lime/series.csv"
+      }
+    },
+    {
+      "slug": "mint",
+      "name": "Mint",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 7.5,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/mint/",
+        "series": "https://muntin.digital/cost-index/mint/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/mint/series.csv"
+      }
+    },
+    {
+      "slug": "napa-cabbage",
+      "name": "Napa cabbage",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 29,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/napa-cabbage/",
+        "series": "https://muntin.digital/cost-index/napa-cabbage/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/napa-cabbage/series.csv"
+      }
+    },
+    {
+      "slug": "okra",
+      "name": "Okra",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 23.5,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/okra/",
+        "series": "https://muntin.digital/cost-index/okra/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/okra/series.csv"
+      }
+    },
+    {
+      "slug": "onion",
+      "name": "Onions",
+      "unit": "sack",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 24.75,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/onion/",
+        "series": "https://muntin.digital/cost-index/onion/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/onion/series.csv"
+      }
+    },
+    {
+      "slug": "oregano",
+      "name": "Oregano",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 8.73,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/oregano/",
+        "series": "https://muntin.digital/cost-index/oregano/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/oregano/series.csv"
+      }
+    },
+    {
+      "slug": "parsley",
+      "name": "Parsley",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 26.88,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/parsley/",
+        "series": "https://muntin.digital/cost-index/parsley/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/parsley/series.csv"
+      }
+    },
+    {
+      "slug": "pear",
+      "name": "Pears",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 41,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/pear/",
+        "series": "https://muntin.digital/cost-index/pear/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/pear/series.csv"
+      }
+    },
+    {
+      "slug": "pineapple",
+      "name": "Pineapple",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 15.5,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/pineapple/",
+        "series": "https://muntin.digital/cost-index/pineapple/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/pineapple/series.csv"
+      }
+    },
+    {
+      "slug": "poblano-pepper",
+      "name": "Poblano pepper",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 33,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/poblano-pepper/",
+        "series": "https://muntin.digital/cost-index/poblano-pepper/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/poblano-pepper/series.csv"
+      }
+    },
+    {
+      "slug": "pork-loin",
+      "name": "Pork loin",
+      "unit": "lb",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-15",
+      "reference": {
+        "date": "2026-06-15",
+        "priceUsd": 0.94,
+        "source": "usda-lmr"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/pork-loin/",
+        "series": "https://muntin.digital/cost-index/pork-loin/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/pork-loin/series.csv"
+      }
+    },
+    {
+      "slug": "pork-shoulder",
+      "name": "Pork shoulder",
+      "unit": "lb",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-15",
+      "reference": {
+        "date": "2026-06-15",
+        "priceUsd": 1.27,
+        "source": "usda-lmr"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/pork-shoulder/",
+        "series": "https://muntin.digital/cost-index/pork-shoulder/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/pork-shoulder/series.csv"
+      }
+    },
+    {
+      "slug": "raspberry",
+      "name": "Raspberries",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 29.5,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/raspberry/",
+        "series": "https://muntin.digital/cost-index/raspberry/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/raspberry/series.csv"
+      }
+    },
+    {
+      "slug": "red-leaf-lettuce",
+      "name": "Red leaf lettuce",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 54,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/red-leaf-lettuce/",
+        "series": "https://muntin.digital/cost-index/red-leaf-lettuce/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/red-leaf-lettuce/series.csv"
+      }
+    },
+    {
+      "slug": "red-onion",
+      "name": "Red onion",
+      "unit": "sack",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 19.5,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/red-onion/",
+        "series": "https://muntin.digital/cost-index/red-onion/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/red-onion/series.csv"
+      }
+    },
+    {
+      "slug": "red-potato",
+      "name": "Red potato",
+      "unit": "sack",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 27.5,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/red-potato/",
+        "series": "https://muntin.digital/cost-index/red-potato/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/red-potato/series.csv"
+      }
+    },
+    {
+      "slug": "ribeye",
+      "name": "Ribeye",
+      "unit": "lb",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-15",
+      "reference": {
+        "date": "2026-06-15",
+        "priceUsd": 12.14,
+        "source": "usda-lmr"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/ribeye/",
+        "series": "https://muntin.digital/cost-index/ribeye/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/ribeye/series.csv",
+        "embed": "https://muntin.digital/cost-index/ribeye/embed.html"
+      }
+    },
+    {
+      "slug": "romaine-lettuce",
+      "name": "Romaine lettuce",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-15",
+        "priceUsd": 50.5,
+        "source": "usda-ams-los-angeles"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/romaine-lettuce/",
+        "series": "https://muntin.digital/cost-index/romaine-lettuce/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/romaine-lettuce/series.csv"
+      }
+    },
+    {
+      "slug": "rosemary",
+      "name": "Rosemary",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 7.5,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/rosemary/",
+        "series": "https://muntin.digital/cost-index/rosemary/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/rosemary/series.csv"
+      }
+    },
+    {
+      "slug": "russet-potato",
+      "name": "Russet potatoes",
+      "unit": "sack",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 18,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/russet-potato/",
+        "series": "https://muntin.digital/cost-index/russet-potato/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/russet-potato/series.csv"
+      }
+    },
+    {
+      "slug": "rutabaga",
+      "name": "Rutabaga",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 30,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/rutabaga/",
+        "series": "https://muntin.digital/cost-index/rutabaga/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/rutabaga/series.csv"
+      }
+    },
+    {
+      "slug": "salmon-fillet",
+      "name": "Salmon fillet",
+      "unit": "lb",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-05-01",
+      "reference": {
+        "date": "2026-04-01",
+        "priceUsd": 5.58,
+        "source": "noaa"
+      },
+      "observations": 9,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/salmon-fillet/",
+        "series": "https://muntin.digital/cost-index/salmon-fillet/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/salmon-fillet/series.csv"
+      }
+    },
+    {
+      "slug": "serrano-pepper",
+      "name": "Serrano pepper",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 33.25,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/serrano-pepper/",
+        "series": "https://muntin.digital/cost-index/serrano-pepper/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/serrano-pepper/series.csv"
+      }
+    },
+    {
+      "slug": "short-rib",
+      "name": "Short rib",
+      "unit": "lb",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-15",
+      "reference": {
+        "date": "2026-06-15",
+        "priceUsd": 5.88,
+        "source": "usda-lmr"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/short-rib/",
+        "series": "https://muntin.digital/cost-index/short-rib/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/short-rib/series.csv"
+      }
+    },
+    {
+      "slug": "snow-peas",
+      "name": "Snow peas",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 28.25,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/snow-peas/",
+        "series": "https://muntin.digital/cost-index/snow-peas/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/snow-peas/series.csv"
+      }
+    },
+    {
+      "slug": "spinach",
+      "name": "Spinach",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 22.75,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/spinach/",
+        "series": "https://muntin.digital/cost-index/spinach/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/spinach/series.csv"
+      }
+    },
+    {
+      "slug": "sweet-potato",
+      "name": "Sweet potato",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 21.25,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/sweet-potato/",
+        "series": "https://muntin.digital/cost-index/sweet-potato/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/sweet-potato/series.csv"
+      }
+    },
+    {
+      "slug": "tarragon",
+      "name": "Tarragon",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 12.5,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/tarragon/",
+        "series": "https://muntin.digital/cost-index/tarragon/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/tarragon/series.csv"
+      }
+    },
+    {
+      "slug": "thyme",
+      "name": "Thyme",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 10.11,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/thyme/",
+        "series": "https://muntin.digital/cost-index/thyme/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/thyme/series.csv"
+      }
+    },
+    {
+      "slug": "tomato",
+      "name": "Tomatoes (round)",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 21.75,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/tomato/",
+        "series": "https://muntin.digital/cost-index/tomato/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/tomato/series.csv"
+      }
+    },
+    {
+      "slug": "watermelon",
+      "name": "Watermelon",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 8,
+        "source": "usda-ams-boston"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/watermelon/",
+        "series": "https://muntin.digital/cost-index/watermelon/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/watermelon/series.csv"
+      }
+    },
+    {
+      "slug": "whole-chicken",
+      "name": "Whole chicken",
+      "unit": "lb",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-08",
+      "reference": {
+        "date": "2026-06-08",
+        "priceUsd": 0.85,
+        "source": "usda-ams-national"
+      },
+      "observations": 17,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/whole-chicken/",
+        "series": "https://muntin.digital/cost-index/whole-chicken/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/whole-chicken/series.csv"
+      }
+    },
+    {
+      "slug": "whole-turkey",
+      "name": "Whole turkey",
+      "unit": "lb",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-08",
+      "reference": {
+        "date": "2026-06-08",
+        "priceUsd": 1.8,
+        "source": "usda-ams-national"
+      },
+      "observations": 17,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/whole-turkey/",
+        "series": "https://muntin.digital/cost-index/whole-turkey/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/whole-turkey/series.csv"
+      }
+    },
+    {
+      "slug": "yellow-squash",
+      "name": "Yellow squash",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 11,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/yellow-squash/",
+        "series": "https://muntin.digital/cost-index/yellow-squash/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/yellow-squash/series.csv"
+      }
+    },
+    {
+      "slug": "zucchini",
+      "name": "Zucchini",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-16",
+      "reference": {
+        "date": "2026-06-16",
+        "priceUsd": 11.5,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/zucchini/",
+        "series": "https://muntin.digital/cost-index/zucchini/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/zucchini/series.csv"
+      }
+    }
+  ]
+}

@@ -412,6 +412,11 @@ const CHECKS = [
   // feed so an embedded card can never drift from the page that produced it.
   ['Cost-index embed self-test','build-cost-index-embed.mjs','--self-test'],
   ['Cost-index embed sync','build-cost-index-embed.mjs','--check'],
+  // Data feed (idea #3, machine half) — one machine-readable catalog of every shipping
+  // ingredient's current wholesale reference, built from the per-ingredient series.json;
+  // --check keeps the catalog in lockstep with the feeds it summarizes.
+  ['Cost-index data feed self-test','build-cost-index-feed.mjs','--self-test'],
+  ['Cost-index data feed sync','build-cost-index-feed.mjs','--check'],
   // Staleness penalty — a complete read still has to be CURRENT. Caps confidence by
   // how overdue the freshest contributing print is for its source's cadence (old ≠
   // overdue: a monthly series a month old reads fresh); fails if any published label
