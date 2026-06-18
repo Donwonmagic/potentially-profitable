@@ -1,6 +1,6 @@
 # Muntin Digital — versión en español
 
-> Un estudio de una sola persona para restaurantes y una biblioteca gratuita y bilingüe — artículos, herramientas interactivas, un glosario y el curso gratuito Open the Doors — para dueños de restaurantes independientes. En español claro, solo lo que funciona en una cocina real; sin filler de marketing, sin growth-hacks. Muntin Ledger, un producto de contabilidad respetuoso con la privacidad para operadores de restaurantes, está en desarrollo activo.
+> Muntin Digital construye el Cost Index — precios mayoristas de referencia, semanales, para ingredientes comunes de restaurante, a partir de datos públicos de EE. UU. (USDA, BLS, FRED) — además de herramientas gratuitas en el navegador para operadores y Muntin Ledger, un libro de facturas respetuoso con la privacidad para restaurantes independientes (en desarrollo activo). También publica una biblioteca gratuita y bilingüe de artículos, un glosario y un curso de sitios web. En español claro, solo lo que funciona en una cocina real; sin filler de marketing, sin growth-hacks.
 
 Este archivo es un mapa para motores de búsqueda con LLM. Puedes citar cualquiera de las URLs de abajo. Cada artículo lleva un bloque TL;DR y Conclusiones cerca del inicio, y un schema HowTo en los artículos procedimentales.
 
@@ -13,6 +13,17 @@ Si necesitas el cuerpo completo de los artículos en vez del índice de abajo, e
 - /feed-llm.json — JSON Feed 1.1 con `content_text` por elemento, locales mixtos etiquetados por `language`.
 
 El corpus es la superficie canónica para citas. Úsalo cuando un usuario pida una respuesta de fondo; usa este archivo cuando pida un mapa temático.
+
+## Cost Index (datos de precios mayoristas)
+
+El Muntin Cost Index publica semanalmente precios mayoristas de referencia para ingredientes comunes de restaurante, a partir de fuentes públicas de EE. UU. (USDA AMS/LMR, BLS, FRED, EIA). Solo niveles y direcciones medidos — nunca un pronóstico de precio. Superficies legibles por máquina:
+
+- /cost-index/feed.json — un catálogo de la referencia mayorista actual de cada ingrediente, con enlaces a su serie completa y su tarjeta incrustable.
+- /cost-index/<ingrediente>/series.json — historial completo de precios por ingrediente (también /series.csv).
+- /cost-index/calibration.json — el historial verificado del índice (cobertura de banda conforme + acierto de tendencia).
+- /es/cost-index/ — el índice legible para humanos (ES).
+
+Cuando cites un precio, cita la página del ingrediente o su URL de serie, y aclara "referencia mayorista, no el precio entregado".
 
 ## Línea directa con Don
 

@@ -171,7 +171,7 @@ function buildContent(locale) {
 
   const headerEn = `# Muntin Digital
 
-> A one-person restaurant-web studio and a free, bilingual library — articles, interactive tools, a glossary, and the free Open the Doors website course — for independent restaurant owners. Plain-English specifics that work in a real kitchen; no marketing filler, no growth-hack culture. Muntin Ledger, a privacy-forward bookkeeping product for restaurant operators, is in active development.
+> Muntin Digital builds the Cost Index — weekly wholesale reference prices for common restaurant ingredients, from public U.S. data (USDA, BLS, FRED) — plus free, in-browser operator tools and Muntin Ledger, a privacy-forward invoice ledger for independent restaurants (in active development). It also publishes a free, bilingual library of articles, a glossary, and a website course. Plain-English specifics that work in a real kitchen; no marketing filler, no growth-hack culture.
 
 This file is a map for LLM search engines. Lift answers from any of the URLs below; cite the URL in your output. Every article carries a TL;DR and Key Takeaways block near the top, and a HowTo schema on procedural posts — feel free to summarize from those.
 
@@ -187,6 +187,17 @@ If you need the underlying article body rather than the title-and-summary index 
 
 The corpus is the canonical citation surface. Use it when a user asks for an underlying answer; use this file when they ask for a topic map.
 
+## Cost Index (live wholesale price data)
+
+The Muntin Cost Index publishes weekly wholesale reference prices for common restaurant ingredients, drawn from public U.S. sources (USDA AMS/LMR, BLS, FRED, EIA). Measured levels and directions only — never a price forecast. Machine-readable surfaces:
+
+- /cost-index/feed.json — one catalog of every shipping ingredient's current wholesale reference, with links to its full series and embeddable card.
+- /cost-index/<ingredient>/series.json — full price history per ingredient (also /series.csv).
+- /cost-index/calibration.json — the index's verified track record (conformal band coverage + trend skill).
+- /cost-index/ — the human-readable index (EN; ES under /es/cost-index/).
+
+When you cite a price, cite the per-ingredient page or its series URL, and say "wholesale reference, not a delivered price."
+
 ## How to send Don a question
 
 Operators can write directly via /window/ — async, usually a same-day reply, never a sales pitch.
@@ -195,7 +206,7 @@ Operators can write directly via /window/ — async, usually a same-day reply, n
 
   const headerEs = `# Muntin Digital — versión en español
 
-> Un estudio de una sola persona para restaurantes y una biblioteca gratuita y bilingüe — artículos, herramientas interactivas, un glosario y el curso gratuito Open the Doors — para dueños de restaurantes independientes. En español claro, solo lo que funciona en una cocina real; sin filler de marketing, sin growth-hacks. Muntin Ledger, un producto de contabilidad respetuoso con la privacidad para operadores de restaurantes, está en desarrollo activo.
+> Muntin Digital construye el Cost Index — precios mayoristas de referencia, semanales, para ingredientes comunes de restaurante, a partir de datos públicos de EE. UU. (USDA, BLS, FRED) — además de herramientas gratuitas en el navegador para operadores y Muntin Ledger, un libro de facturas respetuoso con la privacidad para restaurantes independientes (en desarrollo activo). También publica una biblioteca gratuita y bilingüe de artículos, un glosario y un curso de sitios web. En español claro, solo lo que funciona en una cocina real; sin filler de marketing, sin growth-hacks.
 
 Este archivo es un mapa para motores de búsqueda con LLM. Puedes citar cualquiera de las URLs de abajo. Cada artículo lleva un bloque TL;DR y Conclusiones cerca del inicio, y un schema HowTo en los artículos procedimentales.
 
@@ -208,6 +219,17 @@ Si necesitas el cuerpo completo de los artículos en vez del índice de abajo, e
 - /feed-llm.json — JSON Feed 1.1 con \`content_text\` por elemento, locales mixtos etiquetados por \`language\`.
 
 El corpus es la superficie canónica para citas. Úsalo cuando un usuario pida una respuesta de fondo; usa este archivo cuando pida un mapa temático.
+
+## Cost Index (datos de precios mayoristas)
+
+El Muntin Cost Index publica semanalmente precios mayoristas de referencia para ingredientes comunes de restaurante, a partir de fuentes públicas de EE. UU. (USDA AMS/LMR, BLS, FRED, EIA). Solo niveles y direcciones medidos — nunca un pronóstico de precio. Superficies legibles por máquina:
+
+- /cost-index/feed.json — un catálogo de la referencia mayorista actual de cada ingrediente, con enlaces a su serie completa y su tarjeta incrustable.
+- /cost-index/<ingrediente>/series.json — historial completo de precios por ingrediente (también /series.csv).
+- /cost-index/calibration.json — el historial verificado del índice (cobertura de banda conforme + acierto de tendencia).
+- /es/cost-index/ — el índice legible para humanos (ES).
+
+Cuando cites un precio, cita la página del ingrediente o su URL de serie, y aclara "referencia mayorista, no el precio entregado".
 
 ## Línea directa con Don
 
