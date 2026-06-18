@@ -24,6 +24,13 @@ const repoRoot   = path.resolve(path.dirname(__filename), '..');
 const checkOnly  = process.argv.includes('--check');
 
 const SENTINEL_RE = /<!-- article-course-rail:start -->[\s\S]*?<!-- article-course-rail:end -->\n?/;
+// Replace WITHOUT consuming the trailing newline: the block ends at
+// "...:end -->" with no newline, so the \n? form would swallow the newline
+// that separates this block from whatever follows (e.g. an adjacent empty
+// <!-- smart-next:start --> block). That made course-rail and smart-next
+// fight over the boundary newline forever (non-idempotent). The removal path
+// below keeps the \n? form so deletion stays clean.
+const SENTINEL_REPLACE_RE = /<!-- article-course-rail:start -->[\s\S]*?<!-- article-course-rail:end -->/;
 const KNIT_END_RE = /<!-- knit-rail:end -->/;
 
 function escText(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
@@ -222,7 +229,7 @@ for (const { file, locale, slug } of TARGETS) {
   let next;
   if (block) {
     if (SENTINEL_RE.test(src)) {
-      next = src.replace(SENTINEL_RE, block);
+      next = src.replace(SENTINEL_REPLACE_RE, block);
     } else {
       const m = KNIT_END_RE.exec(src);
       if (!m) { skipped++; continue; }

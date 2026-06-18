@@ -302,6 +302,12 @@ const CHECKS = [
   ['Glossary hub',        'check-glossary-hub.mjs',         '--check'],
   ['Topic pillar essay (idem)','inject-topic-pillar-essay.mjs','--check'],
   ['Topic page schema (idem)','inject-topic-page-schema.mjs','--check'],
+  // Topical authority — topic (pillar) pages must link their member articles
+  // at the canonical path: 34 of 45 members are namespace:library and live at
+  // /library/<slug>/, not /blog/<slug>/. Also resolves ES card slugs to the ES
+  // counterpart. Post-processor (build-library.mjs, which emits the cards, is
+  // stale/divergent — must not be re-run); --check pins the links in sync.
+  ['Topic card links (idem)','inject-topic-card-links.mjs','--check'],
   ['Hub collection schema (idem)','inject-hub-collection-schema.mjs','--check'],
   ['Author chip (idem)',  'inject-article-author-chip.mjs', '--check'],
   ['Sitemap (idem)',      'build-sitemap.mjs',              '--check'],
