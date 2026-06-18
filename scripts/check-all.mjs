@@ -417,6 +417,11 @@ const CHECKS = [
   // --check keeps the catalog in lockstep with the feeds it summarizes.
   ['Cost-index data feed self-test','build-cost-index-feed.mjs','--self-test'],
   ['Cost-index data feed sync','build-cost-index-feed.mjs','--check'],
+  // Revisions / audit trail (PRA-grade trust signal) — append-only ledger of changes to
+  // previously-published readings, a deterministic diff of the series feeds vs the prior
+  // vintage. --check fails if readings drifted since the last revisions build.
+  ['Cost-index revisions self-test','build-cost-revisions.mjs','--self-test'],
+  ['Cost-index revisions sync','build-cost-revisions.mjs','--check'],
   // Staleness penalty — a complete read still has to be CURRENT. Caps confidence by
   // how overdue the freshest contributing print is for its source's cadence (old ≠
   // overdue: a monthly series a month old reads fresh); fails if any published label

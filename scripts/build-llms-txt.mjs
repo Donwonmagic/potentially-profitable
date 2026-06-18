@@ -194,6 +194,7 @@ The Muntin Cost Index publishes weekly wholesale reference prices for common res
 - /cost-index/feed.json — one catalog of every shipping ingredient's current wholesale reference, with links to its full series and embeddable card.
 - /cost-index/<ingredient>/series.json — full price history per ingredient (also /series.csv).
 - /cost-index/calibration.json — the index's verified track record (conformal band coverage + trend skill).
+- /cost-index/revisions.json — append-only audit trail of any change to a previously-published reading.
 - /cost-index/ — the human-readable index (EN; ES under /es/cost-index/).
 
 When you cite a price, cite the per-ingredient page or its series URL, and say "wholesale reference, not a delivered price."
@@ -227,6 +228,7 @@ El Muntin Cost Index publica semanalmente precios mayoristas de referencia para 
 - /cost-index/feed.json — un catálogo de la referencia mayorista actual de cada ingrediente, con enlaces a su serie completa y su tarjeta incrustable.
 - /cost-index/<ingrediente>/series.json — historial completo de precios por ingrediente (también /series.csv).
 - /cost-index/calibration.json — el historial verificado del índice (cobertura de banda conforme + acierto de tendencia).
+- /cost-index/revisions.json — registro append-only de cualquier cambio en una lectura ya publicada.
 - /es/cost-index/ — el índice legible para humanos (ES).
 
 Cuando cites un precio, cita la página del ingrediente o su URL de serie, y aclara "referencia mayorista, no el precio entregado".

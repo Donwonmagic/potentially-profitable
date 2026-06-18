@@ -79,6 +79,7 @@ function build() {
     origin: ORIGIN,
     index: `${ORIGIN}/cost-index/`,
     calibration: `${ORIGIN}/cost-index/calibration.json`,
+    revisions: `${ORIGIN}/cost-index/revisions.json`,
     disclaimer: DISCLAIMER,
     freshestAsOf: freshest || null,
     count: ingredients.length,
