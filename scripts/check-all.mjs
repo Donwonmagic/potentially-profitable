@@ -407,6 +407,11 @@ const CHECKS = [
   // term-structure direction carries signal momentum doesn't. Deterministic; --check pins it.
   ['Cost-index forecast backtest self-test','backtest-cost-forecast.mjs','--self-test'],
   ['Cost-index forecast backtest sync','backtest-cost-forecast.mjs','--check'],
+  // Anomaly record (Track B build 1) — Hampel point-outliers + Pettitt regime breaks over the
+  // committed history; additive, ships to no page. The cost-anomaly.test.mjs vectors are picked
+  // up automatically by the Unit tests step.
+  ['Cost-index anomaly log self-test','build-cost-anomaly-log.mjs','--self-test'],
+  ['Cost-index anomaly log sync','build-cost-anomaly-log.mjs','--check'],
   // Embeddable wholesale-reference card (idea #3) — a self-contained, noindex iframe
   // fragment built from the published series.json; --check keeps it in lockstep with the
   // feed so an embedded card can never drift from the page that produced it.
