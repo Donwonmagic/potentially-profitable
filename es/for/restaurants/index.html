@@ -51,6 +51,14 @@
       "inLanguage": "es"
     },
     {
+      "@type": "DefinedTerm",
+      "@id": "https://muntin.digital/es/for/restaurants/#restaurant-cost-intelligence",
+      "name": "Inteligencia de costos para restaurantes",
+      "description": "La práctica de operar un restaurante con costos que puedes rastrear — datos mayoristas de fuente primaria, el propio historial de facturas del restaurante y la cuenta del costo por plato que los conecta — en vez de adivinanzas o precios que una plataforma no te muestra.",
+      "inDefinedTermSet": "https://muntin.digital/es/glossary/#glossary",
+      "url": "https://muntin.digital/es/for/restaurants/#que-es-la-inteligencia-de-costos"
+    },
+    {
       "@type": "SoftwareApplication",
       "@id": "https://ledger.muntin.digital/#app",
       "name": "Muntin Ledger",
@@ -71,6 +79,7 @@
       "@type": "FAQPage",
       "inLanguage": "es",
       "mainEntity": [
+        { "@type": "Question", "name": "¿Qué es la inteligencia de costos para restaurantes?", "acceptedAnswer": { "@type": "Answer", "text": "La inteligencia de costos para restaurantes es la práctica de operar un restaurante con costos que puedes rastrear — datos mayoristas de fuente primaria, tu propio historial de facturas y la cuenta del costo por plato que los conecta — en vez de adivinanzas o un número que una plataforma no te muestra. Muntin Digital construye las herramientas para eso: el Índice de Costos público, las herramientas gratuitas del operador y Muntin Ledger." } },
         { "@type": "Question", "name": "¿Qué es Muntin Ledger?", "acceptedAnswer": { "@type": "Answer", "text": "Muntin Ledger lee tus facturas de proveedores y las archiva en un libro buscable. Tomas una foto o sueltas el PDF; queda leída, archivada y buscable, con alertas de alza de precio contra tu propio historial de compras." } },
         { "@type": "Question", "name": "¿Un modelo de IA lee los datos de mis facturas?", "acceptedAnswer": { "@type": "Answer", "text": "No. Muntin Ledger lee las facturas con plantillas y reglas — los bytes nunca pasan a un modelo de lenguaje, y tus datos nunca se venden." } },
         { "@type": "Question", "name": "¿Cuánto cuesta Muntin Ledger?", "acceptedAnswer": { "@type": "Answer", "text": "Los precios están publicados en ledger.muntin.digital. Las herramientas gratuitas del operador y el Índice de Costos público de este sitio siguen gratis de cualquier forma." } },
@@ -398,6 +407,21 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   </div>
 </section>
 
+<!-- ============ QUÉ ES LA INTELIGENCIA DE COSTOS ============
+     Definición de categoría (primero la respuesta). El término se acuña
+     aquí; el título y los metadatos ya lo llevan. El DefinedTerm vive en
+     el @graph y la respuesta se refleja como la primera entrada del FAQ. -->
+<section class="block" id="que-es-la-inteligencia-de-costos" aria-labelledby="rci-heading">
+  <div class="container">
+    <div class="section-header reveal" style="max-width:820px">
+      <span class="eyebrow">La categor&iacute;a</span>
+      <h2 id="rci-heading">&iquest;Qu&eacute; es la <span class="serif-italic">inteligencia de costos para restaurantes?</span></h2>
+      <p style="max-width:720px">La inteligencia de costos para restaurantes es la pr&aacute;ctica de operar un restaurante con costos que puedes rastrear &mdash; la lectura del mercado mayorista desde fuentes primarias, tu propio historial de facturas de proveedores y la cuenta del costo por plato que los conecta &mdash; en vez de adivinanzas, la palabra de un proveedor o un n&uacute;mero que una plataforma no te muestra.</p>
+      <p style="max-width:720px">Son tres lecturas en una sola vista: cu&aacute;nto cuestan los ingredientes en el mercado amplio, cu&aacute;nto te cuestan <em>a ti</em>, y qu&eacute; significa eso para el margen de cada plato. Muntin Digital construye las herramientas para eso &mdash; el <a href="/es/cost-index/">&Iacute;ndice de Costos</a> p&uacute;blico, las <a href="/es/tools/">herramientas gratuitas del operador</a> y <a href="https://ledger.muntin.digital/">Muntin Ledger</a>, el libro de facturas &mdash; y nunca se queda con un corte de las ventas que te ayuda a medir.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ============ LAS TRES SUPERFICIES ============ -->
 <section class="block" id="what-you-get" aria-labelledby="what-you-get-heading">
   <div class="container">
@@ -523,6 +547,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </div>
 
     <div class="faq-grid reveal">
+      <details class="faq-item">
+        <summary>&iquest;Qu&eacute; es la inteligencia de costos para restaurantes?</summary>
+        <p>La inteligencia de costos para restaurantes es la pr&aacute;ctica de operar un restaurante con costos que puedes rastrear &mdash; datos mayoristas de fuente primaria, tu propio historial de facturas y la cuenta del costo por plato que los conecta &mdash; en vez de adivinanzas o un n&uacute;mero que una plataforma no te muestra. Muntin Digital construye las herramientas para eso: el &Iacute;ndice de Costos p&uacute;blico, las herramientas gratuitas del operador y Muntin Ledger.</p>
+      </details>
       <details class="faq-item">
         <summary>&iquest;Qu&eacute; es Muntin Ledger?</summary>
         <p>Muntin Ledger lee tus facturas de proveedores y las archiva en un libro buscable. Tomas una foto o sueltas el PDF; queda le&iacute;da, archivada y buscable, con alertas de alza de precio contra tu propio historial de compras.</p>

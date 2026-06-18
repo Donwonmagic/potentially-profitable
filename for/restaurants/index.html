@@ -61,6 +61,14 @@
       "about": { "@id": "https://muntin.digital/#business" }
     },
     {
+      "@type": "DefinedTerm",
+      "@id": "https://muntin.digital/for/restaurants/#restaurant-cost-intelligence",
+      "name": "Restaurant Cost Intelligence",
+      "description": "The practice of running a restaurant on traceable costs — primary-source wholesale market data, a restaurant's own vendor-invoice history, and the plate-cost math connecting them — instead of guesswork or platform-obscured pricing.",
+      "inDefinedTermSet": "https://muntin.digital/glossary/#glossary",
+      "url": "https://muntin.digital/for/restaurants/#what-is-restaurant-cost-intelligence"
+    },
+    {
       "@type": "SoftwareApplication",
       "@id": "https://ledger.muntin.digital/#app",
       "name": "Muntin Ledger",
@@ -90,6 +98,14 @@
     {
       "@type": "FAQPage",
       "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is restaurant cost intelligence?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Restaurant cost intelligence is the practice of running a restaurant on costs you can trace — primary-source wholesale market data, your own vendor-invoice history, and the plate-cost math connecting them — instead of guesswork or a number a platform won't show you. Muntin Digital builds the tools for it: the public Cost Index, the free operator tools, and Muntin Ledger."
+          }
+        },
         {
           "@type": "Question",
           "name": "What is Muntin Ledger?",
@@ -558,6 +574,22 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   </div>
 </section>
 
+<!-- ============ WHAT IS RESTAURANT COST INTELLIGENCE ============
+     Category definition (answer-first). The term is coined and owned
+     here; the page title and metadata already carry it. DefinedTerm
+     lives in the @graph above and the answer is mirrored as the first
+     FAQ entry for answer-engine extraction. -->
+<section class="block" id="what-is-restaurant-cost-intelligence" aria-labelledby="rci-heading">
+  <div class="container">
+    <div class="section-header reveal" style="max-width:820px">
+      <span class="eyebrow">The category</span>
+      <h2 id="rci-heading">What is <span class="serif-italic">restaurant cost intelligence?</span></h2>
+      <p style="max-width:720px">Restaurant cost intelligence is the practice of running a restaurant on costs you can trace &mdash; the wholesale market read from primary sources, your own vendor-invoice history, and the plate-cost math that connects them &mdash; instead of guesswork, a vendor&rsquo;s word, or a number a platform won&rsquo;t show you.</p>
+      <p style="max-width:720px">It&rsquo;s three readings in one view: what ingredients cost in the wider market, what they cost <em>you</em>, and what that means for the margin on every plate. Muntin Digital builds the tools for it &mdash; the public <a href="/cost-index/">Cost Index</a>, the <a href="/tools/">free operator tools</a>, and <a href="https://ledger.muntin.digital/">Muntin Ledger</a>, the invoice ledger &mdash; and never takes a cut of the sales it helps you measure.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ============ THE THREE SURFACES ============ -->
 <section class="block" id="what-you-get" aria-labelledby="what-you-get-heading">
   <div class="container">
@@ -683,6 +715,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </div>
 
     <div class="faq-grid reveal">
+      <details class="faq-item">
+        <summary>What is restaurant cost intelligence?</summary>
+        <p>Restaurant cost intelligence is the practice of running a restaurant on costs you can trace &mdash; primary-source wholesale market data, your own vendor-invoice history, and the plate-cost math connecting them &mdash; instead of guesswork or a number a platform won't show you. Muntin Digital builds the tools for it: the public Cost Index, the free operator tools, and Muntin Ledger.</p>
+      </details>
       <details class="faq-item">
         <summary>What is Muntin Ledger?</summary>
         <p>Muntin Ledger reads your vendor invoices and files them into a searchable ledger. Snap a photo or drop a PDF; it lands read, filed, and searchable, with price-hike flags against your own purchase history.</p>
