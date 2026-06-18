@@ -1,7 +1,7 @@
 {
   "_doc": "Machine-readable methodology statement for the Muntin Cost Index — the versioned, citable specification a reader (or auditor, or LLM) can resolve. A faithful mirror of /cost-index/methodology/; the human page renders the version and change log from this file via sentinels (scripts/build-cost-index-methodology.mjs --check keeps them in lockstep). No claim here that is not on the page.",
   "_version": 1,
-  "methodologyVersion": "1.2.0",
+  "methodologyVersion": "1.3.0",
   "effectiveDate": "2026-06-18",
   "lastReviewed": "2026-06-14",
   "page": "https://muntin.digital/cost-index/methodology/",
@@ -43,10 +43,20 @@
   },
   "artifacts": {
     "calibration": "https://muntin.digital/cost-index/calibration.json",
+    "confidenceCalibration": "https://muntin.digital/cost-index/confidence-calibration.json",
     "revisions": "https://muntin.digital/cost-index/revisions.json",
     "feed": "https://muntin.digital/cost-index/feed.json"
   },
   "changelog": [
+    {
+      "version": "1.3.0",
+      "date": "2026-06-18",
+      "change": {
+        "en": "Published a confidence-label calibration record (/cost-index/confidence-calibration.json): realized band coverage and trend hit-rate grouped by the published confidence label, so a reader can check that a higher label verifies more often. No change to how any reading is assessed.",
+        "es": "Se publicó un registro de calibración de las etiquetas de confianza (/cost-index/confidence-calibration.json): cobertura de banda realizada y acierto de tendencia agrupados por la etiqueta de confianza publicada, para que un lector pueda comprobar que una etiqueta más alta acierta más a menudo. Sin cambios en cómo se evalúa ninguna lectura."
+      },
+      "affectsPublishedReadings": false
+    },
     {
       "version": "1.2.0",
       "date": "2026-06-18",

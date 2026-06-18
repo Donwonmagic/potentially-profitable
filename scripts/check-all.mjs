@@ -434,6 +434,10 @@ const CHECKS = [
   // so the "rebuild our number" recipe can never quote a stale value.
   ['Cost-index reproduce self-test','build-cost-index-reproduce.mjs','--self-test'],
   ['Cost-index reproduce sync','build-cost-index-reproduce.mjs','--check'],
+  // Confidence-label calibration — proves the user-facing label (low/medium/high/directional)
+  // tracks realized accuracy; reads the shared modules, changes none (parity-safe).
+  ['Cost-index confidence calibration self-test','build-cost-confidence-calibration.mjs','--self-test'],
+  ['Cost-index confidence calibration sync','build-cost-confidence-calibration.mjs','--check'],
   // Staleness penalty — a complete read still has to be CURRENT. Caps confidence by
   // how overdue the freshest contributing print is for its source's cadence (old ≠
   // overdue: a monthly series a month old reads fresh); fails if any published label

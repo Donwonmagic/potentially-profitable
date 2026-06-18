@@ -80,6 +80,7 @@ function build() {
     index: `${ORIGIN}/cost-index/`,
     methodology: `${ORIGIN}/cost-index/methodology.json`,
     calibration: `${ORIGIN}/cost-index/calibration.json`,
+    confidenceCalibration: `${ORIGIN}/cost-index/confidence-calibration.json`,
     revisions: `${ORIGIN}/cost-index/revisions.json`,
     disclaimer: DISCLAIMER,
     freshestAsOf: freshest || null,

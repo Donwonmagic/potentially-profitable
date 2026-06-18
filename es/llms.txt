@@ -22,6 +22,7 @@ El Muntin Cost Index publica semanalmente precios mayoristas de referencia para 
 - /cost-index/feed.json — un catálogo de la referencia mayorista actual de cada ingrediente, con enlaces a su serie completa y su tarjeta incrustable.
 - /cost-index/<ingrediente>/series.json — historial completo de precios por ingrediente (también /series.csv).
 - /cost-index/calibration.json — el historial verificado del índice (cobertura de banda conforme + acierto de tendencia).
+- /cost-index/confidence-calibration.json — precisión realizada agrupada por la etiqueta de confianza publicada (¿una etiqueta más alta acierta más a menudo?).
 - /cost-index/revisions.json — registro append-only de cualquier cambio en una lectura ya publicada.
 - /es/cost-index/ — el índice legible para humanos (ES).
 
