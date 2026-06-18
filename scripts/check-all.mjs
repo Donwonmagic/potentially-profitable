@@ -439,6 +439,10 @@ const CHECKS = [
   // catalog must equal the seed's generatedAt (machine-readable freshness, a
   // top AI-citation factor). Stamped in place; --check pins it in sync.
   ['Cost-index dataset date','inject-cost-index-dataset-date.mjs','--check'],
+  // AEO — speakable WebPage node on every per-ingredient page so voice/answer
+  // engines lift the name + answer-first reading (.ci-answer). Post-processor,
+  // like the dataset-date stamp above; --check pins it in sync.
+  ['Cost-index speakable (idem)','inject-cost-index-speakable.mjs','--check'],
   ['Cost-index dispatch freshness','check-cost-index-dispatch-fresh.mjs'],
   ['Cost-index dispatch freshness self-test','check-cost-index-dispatch-fresh.mjs','--self-test'],
   // Pressure honesty — the inferred outlook can't carry a price, can't use a
