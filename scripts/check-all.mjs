@@ -450,6 +450,11 @@ const CHECKS = [
   // tracks realized accuracy; reads the shared modules, changes none (parity-safe).
   ['Cost-index confidence calibration self-test','build-cost-confidence-calibration.mjs','--self-test'],
   ['Cost-index confidence calibration sync','build-cost-confidence-calibration.mjs','--check'],
+  // Calibrated confidence score — Landing A: the score kernel's shadow report (current vs
+  // proposed label + median-split skill test). Reports only; changes no live label. The
+  // cost-confidence-score.test.mjs vectors are picked up by the Unit tests step.
+  ['Cost-index confidence shadow self-test','build-cost-confidence-shadow.mjs','--self-test'],
+  ['Cost-index confidence shadow sync','build-cost-confidence-shadow.mjs','--check'],
   // Staleness penalty — a complete read still has to be CURRENT. Caps confidence by
   // how overdue the freshest contributing print is for its source's cadence (old ≠
   // overdue: a monthly series a month old reads fresh); fails if any published label
