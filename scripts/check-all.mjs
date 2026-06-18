@@ -414,6 +414,11 @@ const CHECKS = [
   // term-structure direction carries signal momentum doesn't. Deterministic; --check pins it.
   ['Cost-index forecast backtest self-test','backtest-cost-forecast.mjs','--self-test'],
   ['Cost-index forecast backtest sync','backtest-cost-forecast.mjs','--check'],
+  // Anomaly record (Track B build 1) — Hampel point-outliers + Pettitt regime breaks over the
+  // committed history; additive, ships to no page. The cost-anomaly.test.mjs vectors are picked
+  // up automatically by the Unit tests step.
+  ['Cost-index anomaly log self-test','build-cost-anomaly-log.mjs','--self-test'],
+  ['Cost-index anomaly log sync','build-cost-anomaly-log.mjs','--check'],
   // Embeddable wholesale-reference card (idea #3) — a self-contained, noindex iframe
   // fragment built from the published series.json; --check keeps it in lockstep with the
   // feed so an embedded card can never drift from the page that produced it.
@@ -424,6 +429,27 @@ const CHECKS = [
   // --check keeps the catalog in lockstep with the feeds it summarizes.
   ['Cost-index data feed self-test','build-cost-index-feed.mjs','--self-test'],
   ['Cost-index data feed sync','build-cost-index-feed.mjs','--check'],
+  // Revisions / audit trail (PRA-grade trust signal) — append-only ledger of changes to
+  // previously-published readings, a deterministic diff of the series feeds vs the prior
+  // vintage. --check fails if readings drifted since the last revisions build.
+  ['Cost-index revisions self-test','build-cost-revisions.mjs','--self-test'],
+  ['Cost-index revisions sync','build-cost-revisions.mjs','--check'],
+  // Methodology versioning — machine statement (cost-index/methodology.json) + the page's
+  // rendered version/changelog kept in lockstep, closing the #governance over-promise.
+  ['Cost-index methodology self-test','build-cost-index-methodology.mjs','--self-test'],
+  ['Cost-index methodology sync','build-cost-index-methodology.mjs','--check'],
+  // Independence invariant — proves the number-producing pipeline reads only public data,
+  // never customer/invoice/delivered-price (the firewall behind the #independence claim).
+  ['Cost-index independence self-test','check-cost-index-independence.mjs','--self-test'],
+  ['Cost-index independence','check-cost-index-independence.mjs',''],
+  // Reproducibility worked example — keeps the #reproduce figure pinned to the live feed
+  // so the "rebuild our number" recipe can never quote a stale value.
+  ['Cost-index reproduce self-test','build-cost-index-reproduce.mjs','--self-test'],
+  ['Cost-index reproduce sync','build-cost-index-reproduce.mjs','--check'],
+  // Confidence-label calibration — proves the user-facing label (low/medium/high/directional)
+  // tracks realized accuracy; reads the shared modules, changes none (parity-safe).
+  ['Cost-index confidence calibration self-test','build-cost-confidence-calibration.mjs','--self-test'],
+  ['Cost-index confidence calibration sync','build-cost-confidence-calibration.mjs','--check'],
   // Staleness penalty — a complete read still has to be CURRENT. Caps confidence by
   // how overdue the freshest contributing print is for its source's cadence (old ≠
   // overdue: a monthly series a month old reads fresh); fails if any published label

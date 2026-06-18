@@ -481,10 +481,33 @@ main{padding-top:64px}
       <li><strong>Corrections.</strong> A discovered error — a mis-parsed unit, a wrong commodity term — is fixed at the source specification, re-verified, and re-vendored. A correction that changes a published reading is noted in the change log.</li>
       <li><strong>Withdrawals.</strong> A discontinued or suppressed series transitions the ingredient to <em>absent</em> with the reason, rather than being frozen at a stale last value.</li>
     </ul>
+    <p>The policy is backed by a public ledger: every change to a previously-published reading is recorded in the append-only <a href="/cost-index/revisions.json">revisions audit trail</a>, a deterministic diff re-checked on every build — empty until a reading is ever revised, and impossible to overwrite silently.</p>
 
     <h2 id="governance">Governance &amp; fact discipline</h2>
     <p>The methodology is versioned with the code. A change to how a number is assessed — a threshold, a reducer, a new derived method — is a reviewable commit with a dated change-log entry, so a reader can see not just the current method but how it evolved.</p>
+    <p>This page runs methodology version <strong><!-- method:version -->1.3.0<!-- /method --></strong>, effective <!-- method:effectiveDate -->2026-06-18<!-- /method -->. The full specification is published as a machine-readable statement at <a href="/cost-index/methodology.json">/cost-index/methodology.json</a>; the change log below is rendered from it and re-checked on every build.</p>
+    <!-- method:changelog --><ul class="ci-changelog"><li><strong>1.3.0</strong> — 2026-06-18: Published a confidence-label calibration record (/cost-index/confidence-calibration.json): realized band coverage and trend hit-rate grouped by the published confidence label, so a reader can check that a higher label verifies more often. No change to how any reading is assessed.</li><li><strong>1.2.0</strong> — 2026-06-18: Added a worked reproducibility example (#reproduce): how to reconstruct ribeye's published wholesale reference from USDA LMR report 2453. The quoted figure is kept in sync with the live feed by a build check. No change to how any reading is assessed.</li><li><strong>1.1.0</strong> — 2026-06-18: Published an explicit independence & conflict-of-interest statement (#independence), backed by a CI check (check-cost-index-independence.mjs) asserting the index pipeline reads no customer, invoice, or delivered-price data. No change to how any reading is assessed.</li><li><strong>1.0.0</strong> — 2026-06-18: Formalized the machine-readable methodology statement and published the public revisions/audit-trail ledger at /cost-index/revisions.json. No change to how any reading is assessed.</li></ul><!-- /method -->
     <p>The fact discipline behind it is absolute. No number, date, or claim is invented: every figure is a published source value, a labeled derived estimate, or labeled illustrative in the prose. The narration of this index is read aloud verbatim in six languages, so a fabrication would be spoken aloud — which is precisely why the gate has no soft edge. Every published number traces to a dated public report and a named reducer, and the entire surface is reproducible by re-running the open checks against the committed data. That reproducibility — not any single quote — is the citable asset.</p>
+
+    <h2 id="reproduce">Reproduce a number yourself</h2>
+    <p>Reproducibility is the citable asset, so here is a worked example you can run. Take ribeye, whose published wholesale reference was <!-- repro:value -->$12.14<!-- /repro -->/lb as of <!-- repro:asOf -->2026-06-15<!-- /repro -->:</p>
+    <ol>
+      <li><strong>The source.</strong> USDA Livestock Mandatory Reporting, Datamart report <strong>2453</strong> (LM_XB403, afternoon), section <em>Choice Cuts</em>, commodity <em>Ribeye</em> (IMPS 109E/112A) — a public report anyone can open.</li>
+      <li><strong>The reducer.</strong> Take the report's <em>weighted-average</em> price column over the trailing 45-day window — the named reducer registered for this ingredient.</li>
+      <li><strong>The unit.</strong> LMR prices choice cuts in dollars per hundredweight; divide by 100 for the dollars-per-pound figure we publish.</li>
+      <li><strong>The corroboration.</strong> The level is LMR; the direction is cross-checked against BLS PPI series WPU022101 and FRED series APU0000FC3101.</li>
+      <li><strong>The check.</strong> Every input is committed to the open repository and the build is deterministic, so re-running the open checks against the committed data recomputes the same published number — no private step in between.</li>
+    </ol>
+    <p>That is the difference between this index and an assessed benchmark: the recipe is public. The same procedure backs every shipping ingredient; ribeye is simply the cleanest single-source illustration.</p>
+
+    <h2 id="independence">Independence &amp; conflicts of interest</h2>
+    <p>An index is only as trustworthy as its distance from the money. This one is built to have none of the usual conflicts, by construction:</p>
+    <ul>
+      <li><strong>No submitters.</strong> Every input is a public U.S. government series — USDA AMS and Livestock Mandatory Reporting, the National Dairy Product Sales Report, BLS, FRED, EIA, NOAA Fisheries. No market participant submits a price to us, so no one the index reports on can shade the number; the submitter-capture risk that an assessed, contributor-fed benchmark must manage is structurally absent here.</li>
+      <li><strong>No paid placements.</strong> No vendor feed, no sponsorship, no pay-to-be-listed. An ingredient is added, weighted, or held back only by the mechanical <a class="ci-inline" href="#shippable-bar">shippable bar</a> — never to favor anyone.</li>
+      <li><strong>Firewalled from the product.</strong> Muntin Ledger is a separate product. The Cost Index pipeline has no input path for customer data, invoice data, or any delivered price — it reads only public sources and publishes a wholesale reference, never your delivered price. No Ledger relationship can move a published reading, and a build check asserts on every CI run that the pipeline reads no customer or product data.</li>
+      <li><strong>Independent and reproducible.</strong> The index is built by an independent one-person operation and rebuilds from public data by re-running the open checks — so the independence claimed here is something you can verify, not just read.</li>
+    </ul>
 
     <h2 id="limitations">Stated limitations &amp; biases</h2>
     <p>Naming the limits is part of the method, not an afterthought:</p>

@@ -1,0 +1,87 @@
+{
+  "_doc": "Does the published confidence LABEL track realized accuracy? Every backtestable ingredient is grouped by the label it ships with (directional/low/medium/high); per label we report realized conformal band coverage and realized trend hit-rate. A higher label should verify at least as often as a lower one. Built deterministically from the price history by scripts/build-cost-confidence-calibration.mjs; reads the shared modules, changes none. Re-checked on every build.",
+  "_version": 1,
+  "nominal": 0.8,
+  "byPublishedConfidence": [
+    {
+      "tier": "directional",
+      "rank": 0,
+      "items": 20,
+      "band": {
+        "items": 4,
+        "scoredSteps": 232,
+        "coverage": 0.81
+      },
+      "trend": {
+        "items": 4,
+        "calls": 119,
+        "hitRate": 0.521,
+        "baseline": 0.504,
+        "lift": 0.017
+      }
+    },
+    {
+      "tier": "low",
+      "rank": 1,
+      "items": 68,
+      "band": {
+        "items": 68,
+        "scoredSteps": 4365,
+        "coverage": 0.841
+      },
+      "trend": {
+        "items": 31,
+        "calls": 1051,
+        "hitRate": 0.487,
+        "baseline": 0.515,
+        "lift": -0.028
+      }
+    },
+    {
+      "tier": "medium",
+      "rank": 2,
+      "items": 13,
+      "band": {
+        "items": 12,
+        "scoredSteps": 1332,
+        "coverage": 0.821
+      },
+      "trend": {
+        "items": 13,
+        "calls": 709,
+        "hitRate": 0.616,
+        "baseline": 0.532,
+        "lift": 0.084
+      }
+    },
+    {
+      "tier": "high",
+      "rank": 3,
+      "items": 0,
+      "band": {
+        "items": 0,
+        "scoredSteps": 0,
+        "coverage": null
+      },
+      "trend": {
+        "items": 0,
+        "calls": 0,
+        "hitRate": null,
+        "baseline": null,
+        "lift": null
+      }
+    }
+  ],
+  "monotonicity": {
+    "band": {
+      "powered": 3,
+      "monotone": true
+    },
+    "trend": {
+      "powered": 3,
+      "monotone": true
+    },
+    "tolerance": 0.07,
+    "note": "monotone=null means too few powered tiers to claim ordering yet (a coverage limitation, not a failure)."
+  }
+}

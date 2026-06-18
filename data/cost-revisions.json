@@ -1,0 +1,8 @@
+{
+  "_doc": "Append-only audit trail of changes to PREVIOUSLY-PUBLISHED Cost Index readings. A revision = a date whose published wholesale reference changed between vintages; a withdrawal = a previously-published date no longer published. Built deterministically by scripts/build-cost-revisions.mjs from the per-ingredient series.json feeds; CI keeps it in sync (--check). An empty list means no published reading has ever been revised.",
+  "_version": 1,
+  "origin": "https://muntin.digital",
+  "methodology": "https://muntin.digital/cost-index/methodology/#revision",
+  "count": 0,
+  "revisions": []
+}

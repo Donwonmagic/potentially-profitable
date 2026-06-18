@@ -1,0 +1,920 @@
+{
+  "_doc": "Deterministic anomaly record for the Cost Index. Per ingredient: Hampel rolling-MAD point-outlier flags and a Pettitt single regime-break date, computed over the committed public price history. Historical classification only — no price asserted, no forecast. Thresholds (k, nSigma, alpha) are illustrative internal calibration. Built by scripts/build-cost-anomaly-log.mjs; ships to no page; CI re-checks with --check.",
+  "_version": 1,
+  "source": {
+    "history": "data/cost-index-history.json"
+  },
+  "params": {
+    "hampel": {
+      "k": 3,
+      "nSigma": 4
+    },
+    "pettitt": {
+      "minN": 12,
+      "alpha": 0.05
+    }
+  },
+  "summary": {
+    "ingredients": 53,
+    "withHistory": 53,
+    "pointOutliers": 50,
+    "regimeBreaks": 40
+  },
+  "items": [
+    {
+      "key": "apple",
+      "n": 158,
+      "pointOutliers": [
+        {
+          "index": 19,
+          "date": "2023-10-25",
+          "valueCents": 3510,
+          "score": 10.117
+        },
+        {
+          "index": 68,
+          "date": "2024-10-02",
+          "valueCents": 3890,
+          "score": 5.733
+        }
+      ],
+      "changePoint": {
+        "index": 79,
+        "date": "2024-12-18",
+        "K": 3306,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "asparagus",
+      "n": 157,
+      "pointOutliers": [
+        {
+          "index": 9,
+          "date": "2023-08-16",
+          "valueCents": 4000,
+          "score": 4.047
+        },
+        {
+          "index": 136,
+          "date": "2026-01-28",
+          "valueCents": 3420,
+          "score": 5.471
+        }
+      ],
+      "changePoint": {
+        "index": 111,
+        "date": "2025-08-06",
+        "K": 3087,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "avocado",
+      "n": 158,
+      "pointOutliers": [
+        {
+          "index": 148,
+          "date": "2026-04-15",
+          "valueCents": 4015,
+          "score": 4.834
+        },
+        {
+          "index": 149,
+          "date": "2026-04-22",
+          "valueCents": 4130,
+          "score": 7.419
+        }
+      ],
+      "changePoint": {
+        "index": 114,
+        "date": "2025-08-20",
+        "K": 4358,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "banana",
+      "n": 158,
+      "pointOutliers": [
+        {
+          "index": 9,
+          "date": "2023-08-16",
+          "valueCents": 2230,
+          "score": 4.384
+        }
+      ],
+      "changePoint": {
+        "index": 40,
+        "date": "2024-03-20",
+        "K": 3588,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "basil",
+      "n": 127,
+      "pointOutliers": [
+        {
+          "index": 108,
+          "date": "2026-02-11",
+          "valueCents": 1780,
+          "score": 4.28
+        }
+      ],
+      "changePoint": {
+        "index": 103,
+        "date": "2026-01-07",
+        "K": 2184,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "beef-tenderloin",
+      "n": 36,
+      "pointOutliers": [],
+      "changePoint": {
+        "index": 19,
+        "date": "2024-12-01",
+        "K": 316,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "bell-pepper",
+      "n": 158,
+      "pointOutliers": [],
+      "changePoint": {
+        "index": 137,
+        "date": "2026-01-28",
+        "K": 1957,
+        "pApprox": 0.006,
+        "significant": true
+      }
+    },
+    {
+      "key": "blueberry",
+      "n": 158,
+      "pointOutliers": [
+        {
+          "index": 0,
+          "date": "2023-06-14",
+          "valueCents": 2785,
+          "score": 5.024
+        },
+        {
+          "index": 18,
+          "date": "2023-10-18",
+          "valueCents": 6620,
+          "score": 5.107
+        }
+      ],
+      "changePoint": {
+        "index": 115,
+        "date": "2025-08-27",
+        "K": 2685,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "broccoli",
+      "n": 157,
+      "pointOutliers": [],
+      "changePoint": {
+        "index": 116,
+        "date": "2025-09-10",
+        "K": 3210,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "butter",
+      "n": 157,
+      "pointOutliers": [],
+      "changePoint": {
+        "index": 87,
+        "date": "2025-02-08",
+        "K": 5799,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "button-mushroom",
+      "n": 158,
+      "pointOutliers": [],
+      "changePoint": {
+        "index": 0,
+        "date": "2023-06-14",
+        "K": 0,
+        "pApprox": 1,
+        "significant": false
+      }
+    },
+    {
+      "key": "cantaloupe",
+      "n": 158,
+      "pointOutliers": [
+        {
+          "index": 155,
+          "date": "2026-06-03",
+          "valueCents": 19025,
+          "score": 70.274
+        },
+        {
+          "index": 156,
+          "date": "2026-06-10",
+          "valueCents": 12335,
+          "score": 25.061
+        }
+      ],
+      "changePoint": {
+        "index": 108,
+        "date": "2025-07-09",
+        "K": 1601,
+        "pApprox": 0.042,
+        "significant": true
+      }
+    },
+    {
+      "key": "carrot",
+      "n": 158,
+      "pointOutliers": [
+        {
+          "index": 18,
+          "date": "2023-10-18",
+          "valueCents": 2900,
+          "score": 4.778
+        }
+      ],
+      "changePoint": {
+        "index": 94,
+        "date": "2025-04-02",
+        "K": 3710,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "cauliflower",
+      "n": 157,
+      "pointOutliers": [
+        {
+          "index": 144,
+          "date": "2026-03-25",
+          "valueCents": 4700,
+          "score": 17.312
+        }
+      ],
+      "changePoint": {
+        "index": 49,
+        "date": "2024-05-22",
+        "K": 4073,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "cheddar-cheese",
+      "n": 157,
+      "pointOutliers": [],
+      "changePoint": {
+        "index": 129,
+        "date": "2025-11-29",
+        "K": 2675,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "chicken-breast",
+      "n": 158,
+      "pointOutliers": [
+        {
+          "index": 125,
+          "date": "2025-10-27",
+          "valueCents": 120,
+          "score": 4.047
+        },
+        {
+          "index": 130,
+          "date": "2025-12-01",
+          "valueCents": 121,
+          "score": 4.047
+        }
+      ],
+      "changePoint": {
+        "index": 40,
+        "date": "2024-03-11",
+        "K": 3378,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "cilantro",
+      "n": 128,
+      "pointOutliers": [],
+      "changePoint": {
+        "index": 18,
+        "date": "2024-05-15",
+        "K": 1956,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "clams",
+      "n": 10,
+      "pointOutliers": [
+        {
+          "index": 0,
+          "date": "2025-02-01",
+          "valueCents": 258,
+          "score": 6.492
+        }
+      ],
+      "changePoint": null
+    },
+    {
+      "key": "corn-on-the-cob",
+      "n": 157,
+      "pointOutliers": [
+        {
+          "index": 79,
+          "date": "2024-12-18",
+          "valueCents": 3160,
+          "score": 20.598
+        },
+        {
+          "index": 101,
+          "date": "2025-05-28",
+          "valueCents": 2338,
+          "score": 11.979
+        },
+        {
+          "index": 135,
+          "date": "2026-01-21",
+          "valueCents": 2350,
+          "score": 4.047
+        }
+      ],
+      "changePoint": {
+        "index": 39,
+        "date": "2024-03-13",
+        "K": 2043,
+        "pApprox": 0.003,
+        "significant": true
+      }
+    },
+    {
+      "key": "eggs",
+      "n": 72,
+      "pointOutliers": [],
+      "changePoint": {
+        "index": 32,
+        "date": "2025-09-08",
+        "K": 1287,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "garlic",
+      "n": 158,
+      "pointOutliers": [
+        {
+          "index": 20,
+          "date": "2023-11-01",
+          "valueCents": 6940,
+          "score": 8.768
+        },
+        {
+          "index": 29,
+          "date": "2024-01-03",
+          "valueCents": 6200,
+          "score": 4.721
+        },
+        {
+          "index": 137,
+          "date": "2026-01-28",
+          "valueCents": 7275,
+          "score": 5.059
+        }
+      ],
+      "changePoint": {
+        "index": 68,
+        "date": "2024-10-02",
+        "K": 4165,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "grapefruit",
+      "n": 137,
+      "pointOutliers": [],
+      "changePoint": {
+        "index": 71,
+        "date": "2024-10-22",
+        "K": 4108,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "ground-beef",
+      "n": 36,
+      "pointOutliers": [
+        {
+          "index": 34,
+          "date": "2026-04-01",
+          "valueCents": 690,
+          "score": 10.117
+        }
+      ],
+      "changePoint": {
+        "index": 15,
+        "date": "2024-08-01",
+        "K": 318,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "ground-pork",
+      "n": 158,
+      "pointOutliers": [],
+      "changePoint": {
+        "index": 99,
+        "date": "2025-05-07",
+        "K": 3093,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "kale",
+      "n": 157,
+      "pointOutliers": [],
+      "changePoint": {
+        "index": 86,
+        "date": "2025-02-12",
+        "K": 5198,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "octopus",
+      "n": 10,
+      "pointOutliers": [],
+      "changePoint": null
+    },
+    {
+      "key": "onion",
+      "n": 158,
+      "pointOutliers": [
+        {
+          "index": 32,
+          "date": "2024-01-24",
+          "valueCents": 2905,
+          "score": 14.164
+        },
+        {
+          "index": 68,
+          "date": "2024-10-02",
+          "valueCents": 2745,
+          "score": 5.552
+        },
+        {
+          "index": 74,
+          "date": "2024-11-13",
+          "valueCents": 2950,
+          "score": 13.04
+        }
+      ],
+      "changePoint": {
+        "index": 48,
+        "date": "2024-05-15",
+        "K": 4459,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "pear",
+      "n": 158,
+      "pointOutliers": [
+        {
+          "index": 7,
+          "date": "2023-08-02",
+          "valueCents": 4680,
+          "score": 6.07
+        },
+        {
+          "index": 70,
+          "date": "2024-10-16",
+          "valueCents": 4175,
+          "score": 4.553
+        }
+      ],
+      "changePoint": {
+        "index": 43,
+        "date": "2024-04-10",
+        "K": 4638,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "pork-loin",
+      "n": 158,
+      "pointOutliers": [],
+      "changePoint": {
+        "index": 68,
+        "date": "2024-10-02",
+        "K": 1701,
+        "pApprox": 0.025,
+        "significant": true
+      }
+    },
+    {
+      "key": "pork-shoulder",
+      "n": 158,
+      "pointOutliers": [],
+      "changePoint": {
+        "index": 99,
+        "date": "2025-05-07",
+        "K": 3093,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "raspberry",
+      "n": 158,
+      "pointOutliers": [
+        {
+          "index": 1,
+          "date": "2023-06-21",
+          "valueCents": 1688,
+          "score": 7.475
+        },
+        {
+          "index": 2,
+          "date": "2023-06-28",
+          "valueCents": 1820,
+          "score": 4.479
+        },
+        {
+          "index": 55,
+          "date": "2024-07-03",
+          "valueCents": 840,
+          "score": 4.761
+        },
+        {
+          "index": 108,
+          "date": "2025-07-09",
+          "valueCents": 675,
+          "score": 8.383
+        }
+      ],
+      "changePoint": {
+        "index": 49,
+        "date": "2024-05-22",
+        "K": 1933,
+        "pApprox": 0.007,
+        "significant": true
+      }
+    },
+    {
+      "key": "red-potato",
+      "n": 158,
+      "pointOutliers": [
+        {
+          "index": 0,
+          "date": "2023-06-14",
+          "valueCents": 3660,
+          "score": 6.745
+        },
+        {
+          "index": 55,
+          "date": "2024-07-03",
+          "valueCents": 3465,
+          "score": 16.019
+        },
+        {
+          "index": 66,
+          "date": "2024-09-18",
+          "valueCents": 3400,
+          "score": 13.49
+        }
+      ],
+      "changePoint": {
+        "index": 70,
+        "date": "2024-10-16",
+        "K": 4022,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "ribeye",
+      "n": 36,
+      "pointOutliers": [],
+      "changePoint": {
+        "index": 19,
+        "date": "2024-12-01",
+        "K": 316,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "romaine-lettuce",
+      "n": 157,
+      "pointOutliers": [],
+      "changePoint": {
+        "index": 104,
+        "date": "2025-06-18",
+        "K": 3752,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "russet-potato",
+      "n": 158,
+      "pointOutliers": [
+        {
+          "index": 26,
+          "date": "2023-12-13",
+          "valueCents": 2335,
+          "score": 17.986
+        },
+        {
+          "index": 30,
+          "date": "2024-01-10",
+          "valueCents": 1823,
+          "score": 19.448
+        },
+        {
+          "index": 39,
+          "date": "2024-03-13",
+          "valueCents": 2310,
+          "score": 5.519
+        },
+        {
+          "index": 147,
+          "date": "2026-04-08",
+          "valueCents": 1710,
+          "score": 4.497
+        }
+      ],
+      "changePoint": {
+        "index": 39,
+        "date": "2024-03-13",
+        "K": 3940,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "salmon-fillet",
+      "n": 9,
+      "pointOutliers": [],
+      "changePoint": null
+    },
+    {
+      "key": "salmon-skin-on-fillet",
+      "n": 9,
+      "pointOutliers": [],
+      "changePoint": null
+    },
+    {
+      "key": "scallops",
+      "n": 10,
+      "pointOutliers": [],
+      "changePoint": null
+    },
+    {
+      "key": "short-rib",
+      "n": 36,
+      "pointOutliers": [],
+      "changePoint": {
+        "index": 19,
+        "date": "2024-12-01",
+        "K": 316,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "shrimp",
+      "n": 37,
+      "pointOutliers": [
+        {
+          "index": 23,
+          "date": "2025-04-01",
+          "valueCents": 659,
+          "score": 4.047
+        }
+      ],
+      "changePoint": {
+        "index": 7,
+        "date": "2023-12-01",
+        "K": 120,
+        "pApprox": 0.38,
+        "significant": false
+      }
+    },
+    {
+      "key": "shrimp-head-on",
+      "n": 10,
+      "pointOutliers": [
+        {
+          "index": 5,
+          "date": "2025-07-01",
+          "valueCents": 322,
+          "score": 4.047
+        }
+      ],
+      "changePoint": null
+    },
+    {
+      "key": "shrimp-pd",
+      "n": 10,
+      "pointOutliers": [
+        {
+          "index": 5,
+          "date": "2025-07-01",
+          "valueCents": 322,
+          "score": 4.047
+        }
+      ],
+      "changePoint": null
+    },
+    {
+      "key": "spinach",
+      "n": 158,
+      "pointOutliers": [],
+      "changePoint": {
+        "index": 77,
+        "date": "2024-12-04",
+        "K": 4581,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "squid",
+      "n": 10,
+      "pointOutliers": [],
+      "changePoint": null
+    },
+    {
+      "key": "sweet-potato",
+      "n": 157,
+      "pointOutliers": [],
+      "changePoint": {
+        "index": 126,
+        "date": "2025-11-19",
+        "K": 3810,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "tomato",
+      "n": 157,
+      "pointOutliers": [
+        {
+          "index": 41,
+          "date": "2024-03-27",
+          "valueCents": 2080,
+          "score": 7.901
+        }
+      ],
+      "changePoint": {
+        "index": 81,
+        "date": "2025-01-08",
+        "K": 2767,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "vegetable-oil",
+      "n": 37,
+      "pointOutliers": [],
+      "changePoint": {
+        "index": 21,
+        "date": "2025-02-01",
+        "K": 308,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "watermelon",
+      "n": 157,
+      "pointOutliers": [
+        {
+          "index": 93,
+          "date": "2025-04-02",
+          "valueCents": 2318,
+          "score": 45.455
+        },
+        {
+          "index": 100,
+          "date": "2025-05-21",
+          "valueCents": 800,
+          "score": 5.396
+        }
+      ],
+      "changePoint": {
+        "index": 30,
+        "date": "2024-01-10",
+        "K": 3405,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "whole-chicken",
+      "n": 158,
+      "pointOutliers": [],
+      "changePoint": {
+        "index": 91,
+        "date": "2025-03-03",
+        "K": 4649,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "whole-crab",
+      "n": 10,
+      "pointOutliers": [],
+      "changePoint": null
+    },
+    {
+      "key": "whole-halibut",
+      "n": 9,
+      "pointOutliers": [],
+      "changePoint": null
+    },
+    {
+      "key": "whole-trout",
+      "n": 10,
+      "pointOutliers": [],
+      "changePoint": null
+    },
+    {
+      "key": "whole-turkey",
+      "n": 156,
+      "pointOutliers": [
+        {
+          "index": 11,
+          "date": "2023-08-21",
+          "valueCents": 136,
+          "score": 4.047
+        },
+        {
+          "index": 40,
+          "date": "2024-03-11",
+          "valueCents": 118,
+          "score": 9.443
+        },
+        {
+          "index": 44,
+          "date": "2024-04-08",
+          "valueCents": 92,
+          "score": 7.419
+        },
+        {
+          "index": 45,
+          "date": "2024-04-15",
+          "valueCents": 91,
+          "score": 8.094
+        }
+      ],
+      "changePoint": {
+        "index": 93,
+        "date": "2025-03-24",
+        "K": 5337,
+        "pApprox": 0,
+        "significant": true
+      }
+    }
+  ]
+}
