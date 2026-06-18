@@ -131,6 +131,11 @@ const CHECKS = [
   // suite and scripts/run-article-graphics-tests.mjs for why a
   // wrapper is needed.
   ['Article graphics tests', 'run-article-graphics-tests.mjs'],
+  // AEO — answer-first snippet shape. Flags question-style H2s whose first
+  // paragraph opens with a transition ("Below…", "Empieza por…") instead of
+  // the liftable answer answer engines extract. Warn-first during rollout;
+  // promote to --check once the backlog is clear. See check-snippet-shape.mjs.
+  ['Snippet shape (warn)', 'check-snippet-shape.mjs'],
   // Phase SEO — H2 anchor IDs let AI search engines (Google AI Overview,
   // Perplexity, ChatGPT) deep-link to a specific section instead of the
   // article root. See scripts/inject-h2-anchor-ids.mjs for the slug
@@ -434,6 +439,10 @@ const CHECKS = [
   // catalog must equal the seed's generatedAt (machine-readable freshness, a
   // top AI-citation factor). Stamped in place; --check pins it in sync.
   ['Cost-index dataset date','inject-cost-index-dataset-date.mjs','--check'],
+  // AEO — speakable WebPage node on every per-ingredient page so voice/answer
+  // engines lift the name + answer-first reading (.ci-answer). Post-processor,
+  // like the dataset-date stamp above; --check pins it in sync.
+  ['Cost-index speakable (idem)','inject-cost-index-speakable.mjs','--check'],
   ['Cost-index dispatch freshness','check-cost-index-dispatch-fresh.mjs'],
   ['Cost-index dispatch freshness self-test','check-cost-index-dispatch-fresh.mjs','--self-test'],
   // Pressure honesty — the inferred outlook can't carry a price, can't use a

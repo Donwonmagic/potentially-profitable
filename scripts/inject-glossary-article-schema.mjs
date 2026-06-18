@@ -108,6 +108,15 @@ function buildBlock({ slug, locale, term, sameAs, src }) {
       url: baseUrl,
       mainEntityOfPage: { '@id': `${baseUrl}#term` },
       about: { '@id': `${baseUrl}#term` },
+      // AEO — mark the term name + its definition as the liftable answer for
+      // voice assistants and answer engines. Glossary pages are the site's
+      // densest "what is X" / "qué es X" surface; the .term-def paragraph is
+      // the answer-first definition. Selectors match the rendered markup
+      // (h1.term-h1 + p.term-def) on every term page in both locales.
+      speakable: {
+        '@type': 'SpeakableSpecification',
+        cssSelector: ['h1.term-h1', '.term-def'],
+      },
       inLanguage: locale === 'es' ? 'es-US' : 'en-US',
       author: {
         '@type': 'Person',
