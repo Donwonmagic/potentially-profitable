@@ -422,6 +422,10 @@ const CHECKS = [
   // vintage. --check fails if readings drifted since the last revisions build.
   ['Cost-index revisions self-test','build-cost-revisions.mjs','--self-test'],
   ['Cost-index revisions sync','build-cost-revisions.mjs','--check'],
+  // Methodology versioning — machine statement (cost-index/methodology.json) + the page's
+  // rendered version/changelog kept in lockstep, closing the #governance over-promise.
+  ['Cost-index methodology self-test','build-cost-index-methodology.mjs','--self-test'],
+  ['Cost-index methodology sync','build-cost-index-methodology.mjs','--check'],
   // Staleness penalty — a complete read still has to be CURRENT. Caps confidence by
   // how overdue the freshest contributing print is for its source's cadence (old ≠
   // overdue: a monthly series a month old reads fresh); fails if any published label

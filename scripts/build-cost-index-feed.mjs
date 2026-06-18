@@ -78,6 +78,7 @@ function build() {
     _version: 1,
     origin: ORIGIN,
     index: `${ORIGIN}/cost-index/`,
+    methodology: `${ORIGIN}/cost-index/methodology.json`,
     calibration: `${ORIGIN}/cost-index/calibration.json`,
     revisions: `${ORIGIN}/cost-index/revisions.json`,
     disclaimer: DISCLAIMER,

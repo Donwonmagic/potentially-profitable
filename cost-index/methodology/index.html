@@ -479,9 +479,12 @@ main{padding-top:64px}
       <li><strong>Corrections.</strong> A discovered error — a mis-parsed unit, a wrong commodity term — is fixed at the source specification, re-verified, and re-vendored. A correction that changes a published reading is noted in the change log.</li>
       <li><strong>Withdrawals.</strong> A discontinued or suppressed series transitions the ingredient to <em>absent</em> with the reason, rather than being frozen at a stale last value.</li>
     </ul>
+    <p>The policy is backed by a public ledger: every change to a previously-published reading is recorded in the append-only <a href="/cost-index/revisions.json">revisions audit trail</a>, a deterministic diff re-checked on every build — empty until a reading is ever revised, and impossible to overwrite silently.</p>
 
     <h2 id="governance">Governance &amp; fact discipline</h2>
     <p>The methodology is versioned with the code. A change to how a number is assessed — a threshold, a reducer, a new derived method — is a reviewable commit with a dated change-log entry, so a reader can see not just the current method but how it evolved.</p>
+    <p>This page runs methodology version <strong><!-- method:version -->1.0.0<!-- /method --></strong>, effective <!-- method:effectiveDate -->2026-06-18<!-- /method -->. The full specification is published as a machine-readable statement at <a href="/cost-index/methodology.json">/cost-index/methodology.json</a>; the change log below is rendered from it and re-checked on every build.</p>
+    <!-- method:changelog --><ul class="ci-changelog"><li><strong>1.0.0</strong> — 2026-06-18: Formalized the machine-readable methodology statement and published the public revisions/audit-trail ledger at /cost-index/revisions.json. No change to how any reading is assessed.</li></ul><!-- /method -->
     <p>The fact discipline behind it is absolute. No number, date, or claim is invented: every figure is a published source value, a labeled derived estimate, or labeled illustrative in the prose. The narration of this index is read aloud verbatim in six languages, so a fabrication would be spoken aloud — which is precisely why the gate has no soft edge. Every published number traces to a dated public report and a named reducer, and the entire surface is reproducible by re-running the open checks against the committed data. That reproducibility — not any single quote — is the citable asset.</p>
 
     <h2 id="limitations">Stated limitations &amp; biases</h2>

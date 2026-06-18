@@ -1,0 +1,52 @@
+{
+  "_doc": "Machine-readable methodology statement for the Muntin Cost Index — the versioned, citable specification a reader (or auditor, or LLM) can resolve. A faithful mirror of /cost-index/methodology/; the human page renders the version and change log from this file via sentinels (scripts/build-cost-index-methodology.mjs --check keeps them in lockstep). No claim here that is not on the page.",
+  "_version": 1,
+  "methodologyVersion": "1.0.0",
+  "effectiveDate": "2026-06-18",
+  "lastReviewed": "2026-06-14",
+  "page": "https://muntin.digital/cost-index/methodology/",
+  "scope": "Weekly wholesale reference prices for common restaurant ingredients in the United States, from public market data only. Measured levels, measured directions, and an inferred directional-pressure overlay — never a price forecast.",
+  "sources": [
+    { "id": "usda-ams", "name": "USDA AMS Market News (terminal & national reports)", "url": "https://www.ams.usda.gov/market-news" },
+    { "id": "usda-lmr", "name": "USDA Livestock Mandatory Reporting", "url": "https://www.ams.usda.gov/market-news/livestock-mandatory-reporting" },
+    { "id": "ndpsr", "name": "USDA National Dairy Product Sales Report", "url": "https://www.ams.usda.gov/market-news/dairy" },
+    { "id": "bls", "name": "U.S. Bureau of Labor Statistics (PPI/CPI)", "url": "https://www.bls.gov/" },
+    { "id": "fred", "name": "Federal Reserve Economic Data (FRED)", "url": "https://fred.stlouisfed.org/" },
+    { "id": "eia", "name": "U.S. Energy Information Administration", "url": "https://www.eia.gov/" },
+    { "id": "noaa-fisheries", "name": "NOAA Fisheries", "url": "https://www.fisheries.noaa.gov/" }
+  ],
+  "dataClasses": {
+    "measured": "A published government series, shown as-is.",
+    "derived": "Our own estimate from public inputs, drawn with a dashed line, a confidence band, and an estimate badge — via a validated historical-ratio bridge (cointegration-gated).",
+    "absent": "No credible public series exists; a greyed card names the structural reason instead of inventing a number."
+  },
+  "sections": {
+    "specification": { "anchor": "#specification", "summary": "What each published price represents: a wholesale reference, not a delivered or retail price." },
+    "sourcing": { "anchor": "#sourcing", "summary": "Public U.S. market data only; every number traces to a dated public report." },
+    "pipeline": { "anchor": "#pipeline", "summary": "Fetch → normalize → quality-screen → composite → fact-gated vendor." },
+    "confidence": { "anchor": "#confidence", "summary": "Level and trend scored separately; the headline is the lower of the two; a calibration ceiling caps every label and is proven on each build." },
+    "shippableBar": { "anchor": "#shippable-bar", "summary": "Ship a credible wholesale level (measured cross-market range OR a single authoritative source with corroborated, non-noisy direction), or do not ship." },
+    "freshness": { "anchor": "#freshness", "summary": "Every value stores its vintage; a print overdue for its source's own cadence is marked down; old is not the same as overdue." },
+    "derivedMethods": { "anchor": "#derived-methods", "summary": "Labeled estimates via a cointegration-gated historical-ratio bridge; never a measurement, degrade to absent when inputs fail the bar." },
+    "pressure": { "anchor": "#pressure", "summary": "Leading-indicator overlay published as inferred direction only, never a price, and only once a rule clears a hold-until-proven bar." },
+    "revisionPolicy": { "anchor": "#revision", "summary": "Source revisions are re-vendored with a new vintage and recorded in the public revisions ledger; corrections that change a published reading are logged; discontinued series go absent, never frozen." },
+    "governance": { "anchor": "#governance", "summary": "Methodology versioned with the code; this statement is the machine mirror. Fact discipline is absolute: every figure is a published source value, a labeled derived estimate, or labeled illustrative. Reproducibility is the citable asset." },
+    "limitations": { "anchor": "#limitations", "summary": "Public-data ceiling on poultry/egg granularity and daily seafood; derived-method lag; yield ranges; seasonal thinness; no forecast." }
+  },
+  "artifacts": {
+    "calibration": "https://muntin.digital/cost-index/calibration.json",
+    "revisions": "https://muntin.digital/cost-index/revisions.json",
+    "feed": "https://muntin.digital/cost-index/feed.json"
+  },
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2026-06-18",
+      "change": {
+        "en": "Formalized the machine-readable methodology statement and published the public revisions/audit-trail ledger at /cost-index/revisions.json. No change to how any reading is assessed.",
+        "es": "Se formalizó la declaración de metodología legible por máquina y se publicó el registro público de revisiones en /cost-index/revisions.json. Sin cambios en cómo se evalúa ninguna lectura."
+      },
+      "affectsPublishedReadings": false
+    }
+  ]
+}
