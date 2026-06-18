@@ -70,14 +70,21 @@
   "seasonalTermStructure": {
     "method": "seasonal monthly-median direction vs realized next-step sign, calendar-month aware; compared to persistence and majority baseline",
     "items": 40,
-    "scoredSteps": 969,
     "seasonal": {
-      "hitRate": 0.669
+      "hitRate": 0.669,
+      "scored": 969
     },
     "persistence": {
-      "hitRate": 0.562
+      "hitRate": 0.653,
+      "scored": 3307
     },
     "majorityBaseline": 0.511,
+    "headToHead": {
+      "bothCalled": 873,
+      "disagreements": 346,
+      "seasonalWinOnDisagree": 0.566,
+      "addsSignalOverMomentum": true
+    },
     "seasonalBeatsPersistence": true,
     "seasonalBeatsBaseline": true
   },

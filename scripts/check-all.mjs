@@ -402,6 +402,11 @@ const CHECKS = [
   ['Cost-index calibration report self-test','build-cost-index-calibration-report.mjs','--self-test'],
   ['Cost-index calibration report sync','build-cost-index-calibration-report.mjs','--check'],
   ['Cost-index calibration page sentinels','inject-cost-index-calibration.mjs','--check'],
+  // Forecast backtest — a research artifact (ships to no page): proves how far a forward
+  // cone may honestly reach (directional skill dies after 1 step) and whether the seasonal
+  // term-structure direction carries signal momentum doesn't. Deterministic; --check pins it.
+  ['Cost-index forecast backtest self-test','backtest-cost-forecast.mjs','--self-test'],
+  ['Cost-index forecast backtest sync','backtest-cost-forecast.mjs','--check'],
   // Staleness penalty — a complete read still has to be CURRENT. Caps confidence by
   // how overdue the freshest contributing print is for its source's cadence (old ≠
   // overdue: a monthly series a month old reads fresh); fails if any published label

@@ -109,13 +109,21 @@ function coneAtHorizon(seriesByKey, h) {
 }
 
 // (2) Seasonal term structure: seasonal monthly-median direction vs persistence vs majority.
+// Each method is scored on ITS OWN callable steps (a method must not be charged a miss on a
+// step where it abstains) — so seasonal coverage and persistence coverage are reported on
+// their own denominators, not a shared one that would understate whichever abstains more.
 function seasonalTermStructure(seriesByKey, seasonality) {
   const ready = {};
   for (const e of (seasonality && seasonality.ingredients) || []) {
     if (e && e.ready && e.months) ready[e.key] = e.months;
   }
   const monthOf = (date) => date.slice(5, 7);     // "MM" — matches seasonality month keys
-  let items = 0, scored = 0, sHits = 0, pHits = 0, up = 0, down = 0;
+  let items = 0;
+  let sScored = 0, sHits = 0, up = 0, down = 0;   // seasonal, scored on seasonal-callable steps
+  let pScored = 0, pHits = 0;                       // persistence, scored on its own callable steps
+  // Head-to-head on steps where BOTH call: the decisive test of whether seasonality adds
+  // anything OVER momentum. On steps where they DISAGREE, who is right more often?
+  let bothScored = 0, disagree = 0, sWinDisagree = 0, pWinDisagree = 0;
   for (const k of Object.keys(seriesByKey)) {
     const months = ready[k];
     if (!months) continue;
@@ -125,30 +133,47 @@ function seasonalTermStructure(seriesByKey, seasonality) {
     for (let t = 1; t + 1 < pts.length; t++) {
       const mNow = monthOf(pts[t].date), mNext = monthOf(pts[t + 1].date);
       const sNow = months[mNow], sNext = months[mNext];
-      if (!sNow || !sNext) continue;
-      const seasonalDir = sgn(sNext.medianCents - sNow.medianCents);
-      const persistDir = sgn(pts[t].valueCents - pts[t - 1].valueCents);
       const realized = sgn(pts[t + 1].valueCents - pts[t].valueCents);
-      if (realized === 0) continue;               // flat = push
-      if (seasonalDir === 0) continue;            // no seasonal call (same month / flat curve)
-      scored++; used = true;
-      if (realized > 0) up++; else down++;
-      if (seasonalDir === realized) sHits++;
-      if (persistDir !== 0 && persistDir === realized) pHits++;
+      if (realized === 0) continue;               // flat next step = push, not a call for anyone
+      const persistDir = sgn(pts[t].valueCents - pts[t - 1].valueCents);
+      const seasonalDir = (sNow && sNext) ? sgn(sNext.medianCents - sNow.medianCents) : 0;
+      if (persistDir !== 0) { pScored++; if (persistDir === realized) pHits++; }
+      if (seasonalDir !== 0) {
+        sScored++; used = true;
+        if (realized > 0) up++; else down++;
+        if (seasonalDir === realized) sHits++;
+      }
+      if (seasonalDir !== 0 && persistDir !== 0) {
+        bothScored++;
+        if (seasonalDir !== persistDir) {
+          disagree++;
+          if (seasonalDir === realized) sWinDisagree++;
+          else if (persistDir === realized) pWinDisagree++;
+        }
+      }
     }
     if (used) items++;
   }
-  const majority = up + down ? Math.max(up, down) / (up + down) : null;
-  const seasonalRate = scored ? sHits / scored : null;
-  const persistRate = scored ? pHits / scored : null;
+  const majority = up + down ? Math.max(up, down) / (up + down) : null;  // baseline over seasonal-callable steps
+  const seasonalRate = sScored ? sHits / sScored : null;
+  const persistRate = pScored ? pHits / pScored : null;
+  const enough = sScored >= MIN_STEPS && pScored >= MIN_STEPS;
+  // On disagreements, seasonal's win share (vs persistence). >0.5 means seasonality carries
+  // signal momentum doesn't; ~0.5 means the seasonal line adds nothing over the trend arrow.
+  const seasonalWinOnDisagree = disagree >= MIN_STEPS ? sWinDisagree / disagree : null;
   return {
     items,
-    scoredSteps: scored,
-    seasonal: { hitRate: scored >= MIN_STEPS ? r3(seasonalRate) : null },
-    persistence: { hitRate: scored >= MIN_STEPS ? r3(persistRate) : null },
+    seasonal: { hitRate: sScored >= MIN_STEPS ? r3(seasonalRate) : null, scored: sScored },
+    persistence: { hitRate: pScored >= MIN_STEPS ? r3(persistRate) : null, scored: pScored },
     majorityBaseline: majority == null ? null : r3(majority),
-    seasonalBeatsPersistence: scored >= MIN_STEPS ? seasonalRate > persistRate : null,
-    seasonalBeatsBaseline: scored >= MIN_STEPS && majority != null ? seasonalRate > majority : null,
+    headToHead: {
+      bothCalled: bothScored,
+      disagreements: disagree,
+      seasonalWinOnDisagree: seasonalWinOnDisagree == null ? null : r3(seasonalWinOnDisagree),
+      addsSignalOverMomentum: seasonalWinOnDisagree == null ? null : seasonalWinOnDisagree > 0.5,
+    },
+    seasonalBeatsPersistence: enough ? seasonalRate > persistRate : null,
+    seasonalBeatsBaseline: sScored >= MIN_STEPS && majority != null ? seasonalRate > majority : null,
   };
 }
 
@@ -184,7 +209,11 @@ function build() {
     },
     verdict: {
       coneHonestThroughH,
-      seasonalUseful: seasonal.seasonalBeatsPersistence === true && seasonal.seasonalBeatsBaseline === true,
+      // The seasonal line earns a page only if it beats baseline AND carries signal the trend
+      // arrow doesn't — i.e. wins the head-to-head on steps where it disagrees with momentum.
+      seasonalUseful:
+        seasonal.seasonalBeatsBaseline === true &&
+        seasonal.headToHead.addsSignalOverMomentum === true,
     },
   };
 }
