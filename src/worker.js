@@ -1559,10 +1559,10 @@ export function buildSnapshotMetaOverrides(snapshot, token, reqUrl) {
 //              path; a future iteration adds it.
 const EXPERIMENTS = Object.freeze({
   'window-cta-copy': {
-    status: 'draft',
+    status: 'running',
     treatments: ['control', 'warmer'],
     weight: [50, 50],
-    surfaces: ['/', '/window/'],
+    surfaces: ['/'],
   },
 });
 
