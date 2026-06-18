@@ -426,6 +426,10 @@ const CHECKS = [
   // rendered version/changelog kept in lockstep, closing the #governance over-promise.
   ['Cost-index methodology self-test','build-cost-index-methodology.mjs','--self-test'],
   ['Cost-index methodology sync','build-cost-index-methodology.mjs','--check'],
+  // Independence invariant — proves the number-producing pipeline reads only public data,
+  // never customer/invoice/delivered-price (the firewall behind the #independence claim).
+  ['Cost-index independence self-test','check-cost-index-independence.mjs','--self-test'],
+  ['Cost-index independence','check-cost-index-independence.mjs',''],
   // Staleness penalty — a complete read still has to be CURRENT. Caps confidence by
   // how overdue the freshest contributing print is for its source's cadence (old ≠
   // overdue: a monthly series a month old reads fresh); fails if any published label

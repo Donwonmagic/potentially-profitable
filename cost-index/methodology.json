@@ -1,7 +1,7 @@
 {
   "_doc": "Machine-readable methodology statement for the Muntin Cost Index — the versioned, citable specification a reader (or auditor, or LLM) can resolve. A faithful mirror of /cost-index/methodology/; the human page renders the version and change log from this file via sentinels (scripts/build-cost-index-methodology.mjs --check keeps them in lockstep). No claim here that is not on the page.",
   "_version": 1,
-  "methodologyVersion": "1.0.0",
+  "methodologyVersion": "1.1.0",
   "effectiveDate": "2026-06-18",
   "lastReviewed": "2026-06-14",
   "page": "https://muntin.digital/cost-index/methodology/",
@@ -31,7 +31,14 @@
     "pressure": { "anchor": "#pressure", "summary": "Leading-indicator overlay published as inferred direction only, never a price, and only once a rule clears a hold-until-proven bar." },
     "revisionPolicy": { "anchor": "#revision", "summary": "Source revisions are re-vendored with a new vintage and recorded in the public revisions ledger; corrections that change a published reading are logged; discontinued series go absent, never frozen." },
     "governance": { "anchor": "#governance", "summary": "Methodology versioned with the code; this statement is the machine mirror. Fact discipline is absolute: every figure is a published source value, a labeled derived estimate, or labeled illustrative. Reproducibility is the citable asset." },
+    "independence": { "anchor": "#independence", "summary": "Public government data only; no submitters, no paid placements, no sponsorship; firewalled from Muntin Ledger — the pipeline has no input path for customer, invoice, or delivered-price data, asserted by a build check." },
     "limitations": { "anchor": "#limitations", "summary": "Public-data ceiling on poultry/egg granularity and daily seafood; derived-method lag; yield ranges; seasonal thinness; no forecast." }
+  },
+  "conflictsOfInterest": {
+    "noSubmitters": "Every input is a public U.S. government series; no market participant submits a price, so no one the index reports on can shade the number.",
+    "noPaidPlacements": "No vendor feed, no sponsorship, no pay-to-be-listed. An ingredient is added, weighted, or held back only by the mechanical shippable bar.",
+    "firewalledFromProduct": "Muntin Ledger is a separate product. The Cost Index pipeline has no input path for customer data, invoice data, or any delivered price; it reads only public sources and publishes a wholesale reference. A build check (scripts/check-cost-index-independence.mjs) asserts this on every CI run.",
+    "independentAndReproducible": "Built by an independent one-person operation and reproducible by re-running the open checks against public data — independence you can verify, not just read."
   },
   "artifacts": {
     "calibration": "https://muntin.digital/cost-index/calibration.json",
@@ -39,6 +46,15 @@
     "feed": "https://muntin.digital/cost-index/feed.json"
   },
   "changelog": [
+    {
+      "version": "1.1.0",
+      "date": "2026-06-18",
+      "change": {
+        "en": "Published an explicit independence & conflict-of-interest statement (#independence), backed by a CI check (check-cost-index-independence.mjs) asserting the index pipeline reads no customer, invoice, or delivered-price data. No change to how any reading is assessed.",
+        "es": "Se publicó una declaración explícita de independencia y conflictos de interés (#independence), respaldada por un control de CI (check-cost-index-independence.mjs) que verifica que el pipeline del índice no lee datos de clientes, facturas ni precios entregados. Sin cambios en cómo se evalúa ninguna lectura."
+      },
+      "affectsPublishedReadings": false
+    },
     {
       "version": "1.0.0",
       "date": "2026-06-18",
