@@ -4,20 +4,20 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-<title>Confianza &mdash; cada promesa, y c&oacute;mo verificarla | Muntin Digital</title>
-<meta name="description" content="Cada promesa de Muntin Digital en un lugar: cifras con fuente, sin rastreo, l&iacute;mites de IA, recibos en vez de rese&ntilde;as &mdash; y el mecanismo de cada una." />
+<title>La Cesta de Restaurante Muntin &mdash; el Cost Index principal | Muntin Digital</title>
+<meta name="description" content="La Cesta de Restaurante Muntin: la cesta fija y ponderada de 16 ingredientes mayoristas detr&aacute;s del Cost Index principal &mdash; composici&oacute;n, pesos y m&eacute;todo." />
 <meta name="theme-color" content="#2A50C8" />
-<link rel="canonical" href="https://muntin.digital/es/trust/" />
-<link rel="alternate" hreflang="en" href="https://muntin.digital/trust/" />
-<link rel="alternate" hreflang="es" href="https://muntin.digital/es/trust/" />
-<link rel="alternate" hreflang="x-default" href="https://muntin.digital/trust/" />
+<link rel="canonical" href="https://muntin.digital/es/cost-index/basket/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/cost-index/basket/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/cost-index/basket/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/cost-index/basket/" />
 <meta property="og:locale" content="es_US" />
 <meta property="og:locale:alternate" content="en_US" />
 
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Confianza &mdash; Muntin Digital" />
-<meta property="og:description" content="Cada promesa en un lugar &mdash; cifras con fuente, sin rastreo, l&iacute;mites de IA, recibos en vez de rese&ntilde;as &mdash; con el mecanismo de cada una." />
-<meta property="og:url" content="https://muntin.digital/es/trust/" />
+<meta property="og:title" content="La Cesta de Restaurante Muntin &mdash; Muntin Digital" />
+<meta property="og:description" content="La cesta fija y ponderada de 16 ingredientes mayoristas detr&aacute;s del Cost Index principal &mdash; una tasa de cambio citable de una cesta declarada." />
+<meta property="og:url" content="https://muntin.digital/es/cost-index/basket/" />
 <meta property="og:site_name" content="Muntin Digital" />
 
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
@@ -31,20 +31,35 @@
   "@graph": [
     {
       "@type": "WebPage",
-      "@id": "https://muntin.digital/es/trust/#webpage",
-      "name": "Confianza — Muntin Digital",
-      "description": "El centro de confianza — cada promesa de esta empresa de una persona, el mecanismo que la sostiene, y cómo verificarla.",
-      "url": "https://muntin.digital/es/trust/",
+      "@id": "https://muntin.digital/es/cost-index/basket/#webpage",
+      "name": "La Cesta de Restaurante Muntin — Muntin Digital",
+      "description": "La cesta fija y ponderada de ingredientes mayoristas detrás del Cost Index principal de Muntin — su composición, sus pesos y su método.",
+      "url": "https://muntin.digital/es/cost-index/basket/",
       "inLanguage": "es-US",
       "isPartOf": { "@id": "https://muntin.digital/#website" },
       "publisher": { "@id": "https://muntin.digital/#business" },
-      "dateModified": "2026-06-18"
+      "dateModified": "2026-06-18",
+      "mainEntity": { "@id": "https://muntin.digital/es/cost-index/basket/#dataset" }
+    },
+    {
+      "@type": "Dataset",
+      "@id": "https://muntin.digital/es/cost-index/basket/#dataset",
+      "name": "The Muntin Restaurant Basket",
+      "alternateName": "Muntin Cost Index headline basket",
+      "description": "A frozen, weighted basket of 16 wholesale ingredients approximating a representative independent-restaurant purchase mix. The index reports a basis-agnostic rate-of-change for this declared basket on public US wholesale data — not a national price level, and not what any restaurant pays. Weights are Muntin's internal judgment (illustrative, not a sourced figure), frozen at version 2026-Q2.",
+      "version": "2026-Q2",
+      "url": "https://muntin.digital/es/cost-index/basket/",
+      "creator": { "@id": "https://muntin.digital/#business" },
+      "isAccessibleForFree": true,
+      "measurementTechnique": "Weighted median of each ingredient's composite wholesale price trend",
+      "variableMeasured": "Rate-of-change of a declared wholesale ingredient basket"
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/es/" },
-        { "@type": "ListItem", "position": 2, "name": "Confianza", "item": "https://muntin.digital/es/trust/" }
+        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
+        { "@type": "ListItem", "position": 2, "name": "Cost Index", "item": "https://muntin.digital/es/cost-index/" },
+        { "@type": "ListItem", "position": 3, "name": "The Muntin Restaurant Basket", "item": "https://muntin.digital/es/cost-index/basket/" }
       ]
     }
   ]
@@ -232,7 +247,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
     </button>
     <nav class="lang-switch" aria-label="Idioma">
-      <a href="/trust/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
+      <a href="/cost-index/basket/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
     <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">
@@ -272,7 +287,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <span class="theme-toggle__label js-theme-label">Modo claro</span>
     </button>
     <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Contacta a Don</a>
-    <a href="/trust/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
+    <a href="/cost-index/basket/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
   </nav>
 
   <!-- Mega-menu controller retired in Phase 7: Biblioteca is now a
@@ -328,69 +343,126 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <ol style="list-style:none;padding:0;margin:0;display:flex;gap:8px;font-size:13px;color:var(--stone)">
       <li><a href="/es/" style="color:var(--teal)">Inicio</a></li>
       <li aria-hidden="true">›</li>
-      <li aria-current="page">Confianza</li>
+      <li><a href="/es/cost-index/" style="color:var(--teal)">Cost Index</a></li>
+      <li aria-hidden="true">›</li>
+      <li aria-current="page">La cesta</li>
     </ol>
   </nav>
 
   <article class="container" style="max-width:760px;margin:32px auto 80px;padding:0 var(--pad-x)">
-    <header style="margin-bottom:48px">
-      <p class="eyebrow">El centro de confianza</p>
+    <header style="margin-bottom:40px">
+      <p class="eyebrow">El Cost Index principal</p>
       <h1 style="font-family:var(--font-display);font-size:clamp(40px,6vw,64px);font-weight:500;line-height:1.05;letter-spacing:-0.5px;margin:0 0 18px">
-        Todo aquí se puede <span class="serif-italic">verificar.</span>
+        La Cesta de <span class="serif-italic">Restaurante Muntin.</span>
       </h1>
       <p style="font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0">
-        La honestidad no es una frase de valores en este sitio &mdash; es el producto. Cada cifra se rastrea a una fuente primaria, cada promesa tiene un mecanismo que la sostiene, y nada sobre ti se rastrea ni se vende. Esta página es el mapa: cada compromiso de abajo, dónde vive, y cómo comprobarlo tú mismo. Si algo no se sostiene, la última sección es cómo señalarlo.
+        El n&uacute;mero principal del Cost Index no es un solo ingrediente &mdash; es una cesta. La Cesta de Restaurante Muntin es un conjunto fijo y ponderado de 16 ingredientes mayoristas elegidos para aproximar lo que un restaurante independiente realmente compra. Reporta una sola cosa: la <strong>tasa de cambio</strong> de esa cesta declarada, sobre datos mayoristas p&uacute;blicos de EE.&nbsp;UU. No es un nivel de precios nacional, ni lo que paga ning&uacute;n restaurante en particular.
       </p>
     </header>
 
-    <section style="margin-bottom:48px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 14px">Las promesas</h2>
-      <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0">Cinco garantías que una plataforma rentada estructuralmente no puede hacer &mdash; cada una atada al mecanismo que la vuelve cierta, no una promesa que tengas que creer a ciegas. <a href="/es/never/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Lo que nunca hacemos &rarr;</a></p>
+    <section style="margin-bottom:8px">
+      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 14px">Qu&eacute; contiene</h2>
+      <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0 0 18px">Diecis&eacute;is ingredientes, ponderados hacia donde de verdad va el dinero &mdash; las prote&iacute;nas y el aceite de cocina cargan cerca del 62% de la cesta, porque ah&iacute; se concentra el gasto de una cocina independiente. Los huevos y las verduras est&aacute;n limitados: son los m&aacute;s vol&aacute;tiles, pero una porci&oacute;n peque&ntilde;a del gasto, as&iacute; que sus picos se muestran por ingrediente en vez de dejar que sacudan el n&uacute;mero principal.</p>
+      <!-- basket:weights:start -->
+      <p style="font-size:12.5px;letter-spacing:0.04em;text-transform:uppercase;color:var(--stone);margin:0 0 6px;display:flex;justify-content:space-between"><span>Ingrediente</span><span>Peso relativo</span></p>
+      <ul style="list-style:none;padding:0;margin:0">
+        <li style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)">
+          <span><a href="/es/cost-index/chicken-breast/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">Pechuga de pollo</a> <span style="color:var(--stone);font-size:13px">&middot; Proteína</span></span>
+          <span style="font-variant-numeric:tabular-nums;color:var(--ink-soft);font-size:14px">0.17</span>
+        </li>
+        <li style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)">
+          <span><a href="/es/cost-index/vegetable-oil/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">Aceite vegetal</a> <span style="color:var(--stone);font-size:13px">&middot; Grasa</span></span>
+          <span style="font-variant-numeric:tabular-nums;color:var(--ink-soft);font-size:14px">0.12</span>
+        </li>
+        <li style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)">
+          <span><a href="/es/cost-index/ribeye/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">Ribeye</a> <span style="color:var(--stone);font-size:13px">&middot; Proteína</span></span>
+          <span style="font-variant-numeric:tabular-nums;color:var(--ink-soft);font-size:14px">0.11</span>
+        </li>
+        <li style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)">
+          <span><a href="/es/cost-index/pork-loin/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">Lomo de cerdo</a> <span style="color:var(--stone);font-size:13px">&middot; Proteína</span></span>
+          <span style="font-variant-numeric:tabular-nums;color:var(--ink-soft);font-size:14px">0.07</span>
+        </li>
+        <li style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)">
+          <span><a href="/es/cost-index/butter/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">Mantequilla</a> <span style="color:var(--stone);font-size:13px">&middot; Lácteo</span></span>
+          <span style="font-variant-numeric:tabular-nums;color:var(--ink-soft);font-size:14px">0.06</span>
+        </li>
+        <li style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)">
+          <span><a href="/es/cost-index/cheddar-cheese/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">Queso cheddar</a> <span style="color:var(--stone);font-size:13px">&middot; Lácteo</span></span>
+          <span style="font-variant-numeric:tabular-nums;color:var(--ink-soft);font-size:14px">0.06</span>
+        </li>
+        <li style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)">
+          <span><a href="/es/cost-index/whole-chicken/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">Pollo entero</a> <span style="color:var(--stone);font-size:13px">&middot; Proteína</span></span>
+          <span style="font-variant-numeric:tabular-nums;color:var(--ink-soft);font-size:14px">0.06</span>
+        </li>
+        <li style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)">
+          <span><a href="/es/cost-index/onion/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">Cebolla</a> <span style="color:var(--stone);font-size:13px">&middot; Verdura</span></span>
+          <span style="font-variant-numeric:tabular-nums;color:var(--ink-soft);font-size:14px">0.055</span>
+        </li>
+        <li style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)">
+          <span><a href="/es/cost-index/russet-potato/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">Papa russet</a> <span style="color:var(--stone);font-size:13px">&middot; Verdura</span></span>
+          <span style="font-variant-numeric:tabular-nums;color:var(--ink-soft);font-size:14px">0.055</span>
+        </li>
+        <li style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)">
+          <span><a href="/es/cost-index/eggs/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">Huevos</a> <span style="color:var(--stone);font-size:13px">&middot; Huevos</span></span>
+          <span style="font-variant-numeric:tabular-nums;color:var(--ink-soft);font-size:14px">0.05</span>
+        </li>
+        <li style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)">
+          <span><a href="/es/cost-index/pork-shoulder/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">Paleta de cerdo</a> <span style="color:var(--stone);font-size:13px">&middot; Proteína</span></span>
+          <span style="font-variant-numeric:tabular-nums;color:var(--ink-soft);font-size:14px">0.05</span>
+        </li>
+        <li style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)">
+          <span><a href="/es/cost-index/romaine-lettuce/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">Lechuga romana</a> <span style="color:var(--stone);font-size:13px">&middot; Verdura</span></span>
+          <span style="font-variant-numeric:tabular-nums;color:var(--ink-soft);font-size:14px">0.05</span>
+        </li>
+        <li style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)">
+          <span><a href="/es/cost-index/tomato/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">Tomate</a> <span style="color:var(--stone);font-size:13px">&middot; Verdura</span></span>
+          <span style="font-variant-numeric:tabular-nums;color:var(--ink-soft);font-size:14px">0.05</span>
+        </li>
+        <li style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)">
+          <span><a href="/es/cost-index/beef-tenderloin/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">Lomo de res</a> <span style="color:var(--stone);font-size:13px">&middot; Proteína</span></span>
+          <span style="font-variant-numeric:tabular-nums;color:var(--ink-soft);font-size:14px">0.04</span>
+        </li>
+        <li style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)">
+          <span><a href="/es/cost-index/shrimp/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">Camarón</a> <span style="color:var(--stone);font-size:13px">&middot; Mariscos</span></span>
+          <span style="font-variant-numeric:tabular-nums;color:var(--ink-soft);font-size:14px">0.04</span>
+        </li>
+        <li style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)">
+          <span><a href="/es/cost-index/salmon-fillet/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">Filete de salmón</a> <span style="color:var(--stone);font-size:13px">&middot; Mariscos</span></span>
+          <span style="font-variant-numeric:tabular-nums;color:var(--ink-soft);font-size:14px">0.03</span>
+        </li>
+      </ul>
+      <!-- basket:weights:end -->
+      <p style="font-size:13.5px;line-height:1.6;color:var(--stone);margin:18px 0 0">Los pesos son el criterio interno de Muntin sobre una mezcla de compra representativa &mdash; ilustrativos, no una cifra con fuente &mdash; y est&aacute;n <strong>congelados en la versi&oacute;n 2026-Q2</strong>. Nunca se reponderan hacia los datos m&aacute;s densos; un cambio exige una nota de metodolog&iacute;a versionada, para que una lectura siga siendo comparable entre trimestres.</p>
+    </section>
+
+    <section style="margin:44px 0">
+      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 14px">C&oacute;mo se calcula</h2>
+      <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0">Cada ingrediente aporta su propia tendencia compuesta de precio mayorista. La cesta toma la <strong>mediana ponderada</strong> de esas tendencias &mdash; la mediana, no el promedio, para que un solo valor at&iacute;pico no cargue el n&uacute;mero. La cobertura es la porci&oacute;n del peso declarado que se resolvi&oacute; desde una fuente p&uacute;blica viva; la confianza baja cuando caen la cobertura o el acuerdo. El m&eacute;todo completo est&aacute; en la <a href="/es/cost-index/methodology/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">p&aacute;gina de metodolog&iacute;a</a>.</p>
+    </section>
+
+    <section style="margin:44px 0;padding:24px 28px;background:var(--cream-2);border-radius:12px;border:1px solid var(--line)">
+      <h2 style="font-size:20px;font-weight:600;color:var(--ink);margin:0 0 12px">Qu&eacute; es, y qu&eacute; no</h2>
+      <ul style="font-size:15.5px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
+        <li><strong>Es</strong> una tasa de cambio de una cesta fija y declarada, sobre datos mayoristas e &iacute;ndices p&uacute;blicos.</li>
+        <li><strong>No es</strong> un nivel de precios nacional, un precio minorista, ni &laquo;lo que pagan los restaurantes&raquo; &mdash; eso depende de tus proveedores, tu regi&oacute;n y tu volumen.</li>
+        <li><strong>Est&aacute; congelada y versionada</strong>, para que una lectura de este trimestre sea comparable con la del siguiente.</li>
+        <li><strong>Es citable.</strong> Nómbrala la Cesta de Restaurante Muntin (v2026-Q2) y enlaza esta p&aacute;gina.</li>
+      </ul>
     </section>
 
     <section style="margin-bottom:48px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 14px">De dónde salen las cifras</h2>
-      <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0">Cada cifra de la biblioteca está citada en línea en un cajón de fuente plegable &mdash; la investigación externa a su fuente primaria, los números de piso a la documentación pública del proveedor o etiquetados como experiencia de operador. La política completa de fuentes y fechas está en Métodos, y las afirmaciones verificables se publican como un registro legible por máquina que puedes revisar, cada una emparejada con su fuente y la fecha en que se verificó. <a href="/es/methods/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Métodos y fuentes &rarr;</a> &middot; <a href="/es/claims/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">El registro de afirmaciones &rarr;</a></p>
+      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 14px">Lee el &iacute;ndice en vivo</h2>
+      <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0">Esta p&aacute;gina es la definici&oacute;n de la cesta. La lectura en vivo &mdash; lo que la cesta est&aacute; haciendo ahora, y cada ingrediente debajo &mdash; est&aacute; en el <a href="/es/cost-index/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Cost Index</a>, fechada en la fuente.</p>
     </section>
 
-    <section style="margin-bottom:48px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 14px">El Índice de Costos, mostrado con honestidad</h2>
-      <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0">El Índice de Costos publica un precio mayorista de referencia solo cuando los datos públicos de EE. UU. lo sostienen &mdash; niveles y direcciones medidos, nunca un pronóstico, nunca un precio de entrega o de menudeo disfrazado de cotización. El método, las fuentes por ingrediente y el historial verificado están abiertos, y los datos se publican en CC0. <a href="/es/cost-index/methodology/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">El método &rarr;</a> &middot; <a href="/es/cost-index/sources/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Fuentes por ingrediente &rarr;</a> &middot; <a href="/es/cost-index/basket/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">La cesta &rarr;</a></p>
-    </section>
-
-    <section style="margin-bottom:48px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 14px">Cómo se usa la IA</h2>
-      <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0">La IA hace borradores y triaje; nunca entrena con tus datos, nunca escribe sin supervisión lo que lees, nunca falsifica una reseña, ni responde tu mensaje como si fuera yo. El stack con nombre y los límites duros están por escrito, con fecha. <a href="/es/ai/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Política de IA &rarr;</a></p>
-    </section>
-
-    <section style="margin-bottom:48px;padding:24px 28px;background:var(--cream-2);border-radius:12px;border:1px solid var(--line)">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 14px">Tus datos siguen siendo tuyos</h2>
-      <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0">Las herramientas corren en tu navegador &mdash; los números que escribes nunca llegan a un servidor. Sin rastreo de terceros, sin píxeles de anuncios, sin banner de cookies porque no hay nada que consentir. Los detalles, la versión legal y la lista corta de cookies están todos por escrito. <a href="/es/security/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Datos y seguridad &rarr;</a> &middot; <a href="/es/privacy.html" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Privacidad &rarr;</a> &middot; <a href="/es/cookies.html" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Cookies &rarr;</a></p>
-    </section>
-
-    <section style="margin-bottom:48px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 14px">Recibos, no reseñas</h2>
-      <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0">Aquí la prueba son resultados medidos y trabajo fechado, no un muro de testimonios de cinco estrellas. Una calificación agregada aparece solo cuando existen reseñas reales, con nombre, que la respalden. <a href="/es/receipts/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Los recibos &rarr;</a></p>
-    </section>
-
-    <section style="margin-bottom:48px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 14px">Qué cambió, y cuándo</h2>
-      <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0">Las correcciones no son silenciosas. Cada cambio importante a una página o a una promesa aterriza en el registro de cambios, con fecha &mdash; para que veas qué se movió y cuándo. <a href="/es/changelog/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Registro de cambios &rarr;</a></p>
-    </section>
-
-    <section style="margin-bottom:48px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 14px">Hecho para que lo use cualquiera</h2>
-      <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0">El sitio apunta a la conformidad con WCAG &mdash; rutas de teclado, contraste, y narración completa en cada gráfico a través de su <code>data-audio-alt</code>. La postura de conformidad está por escrito, no asumida. <a href="/es/accessibility.html" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Accesibilidad &rarr;</a></p>
-    </section>
-
-    <section style="margin-bottom:48px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 14px">Cómo se mantiene todo correcto</h2>
-      <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0">La vista en vivo de la maquinaria detrás de estas promesas &mdash; la compuerta automática que pasa cada cambio, el refresco diario de datos, y el historial verificado de precisión del Índice de Costos &mdash; es la página de estado. <a href="/es/status/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Estado y confiabilidad &rarr;</a></p>
-    </section>
-
-    <section style="margin-bottom:48px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 14px">Si algo no se sostiene</h2>
-      <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0">Una afirmación que no resuelve, un número que se ve raro, una promesa que no se está cumpliendo &mdash; ese es el mensaje más útil que puedes enviar. <a href="mailto:don@muntin.digital" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">don@muntin.digital</a> o <a href="/es/window/?topic=trust" class="js-window" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">La Ventana &rarr;</a>. Leo cada uno; las correcciones aparecen en el registro de cambios en menos de dos días hábiles.</p>
+    <section style="margin-top:8px;padding-top:28px;border-top:1px solid var(--line)">
+      <p class="eyebrow" style="margin-bottom:10px">Superficies hermanas</p>
+      <ul style="font-size:15.5px;line-height:1.7;color:var(--teal);margin:0;padding-left:22px">
+        <li><a href="/es/cost-index/">Cost Index</a> &mdash; la lectura en vivo, ingrediente por ingrediente</li>
+        <li><a href="/es/cost-index/methodology/">Metodolog&iacute;a</a> &mdash; c&oacute;mo se calcula el n&uacute;mero</li>
+        <li><a href="/es/cost-index/sources/">Fuentes</a> &mdash; los datos p&uacute;blicos detr&aacute;s de cada ingrediente</li>
+        <li><a href="/es/claims/">Registro de afirmaciones</a> &mdash; cada cifra que publicamos, con su fuente</li>
+      </ul>
     </section>
   </article>
 </main>
