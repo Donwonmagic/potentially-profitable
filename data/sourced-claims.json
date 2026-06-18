@@ -18,6 +18,52 @@
     "  notes:       what to watch for if the source changes"
   ],
   "claims": {
+    "food_cost_target_band_2026": {
+      "claim": "The long-standing industry target for restaurant food cost is 28–35% of food sales, and it varies by service model: quick-service / fast-casual roughly 25–30%, casual ~30–34%, and fine dining ~34–40% (premium ingredients, lower covers).",
+      "source_url": "https://www.restaurant365.com/blog/cooking-up-success-understanding-what-is-a-good-food-cost-percentage/",
+      "source_name": "Restaurant365 — What is a good food cost percentage?",
+      "date_verified": "2026-06-18",
+      "url_status": "deep-link",
+      "used_in": [
+        "tools/plate-cost/",
+        "docs/strategy-cost-intelligence-app.md"
+      ],
+      "notes": "28–35% band and service-model breakdown cross-checked across Restaurant365, NetSuite restaurant benchmarks, getmeez, and ChowNow (snippet-verified; full fetch blocked 403). Grounds the default food-cost target in tools/_shared/plate-market-recost.js. Segment edges are approximate industry ranges, not one authority's exact figure — keep labeled as a band."
+    },
+    "protein_highest_cost_category_2026": {
+      "claim": "Protein is typically the highest-cost ingredient category on a restaurant menu, and protein price volatility is a primary driver of food-cost-percentage swings.",
+      "source_url": "https://www.getmeez.com/blog/how-to-calculate-food-cost",
+      "source_name": "meez — How to calculate food cost",
+      "date_verified": "2026-06-18",
+      "url_status": "deep-link",
+      "used_in": [
+        "docs/strategy-cost-intelligence-app.md"
+      ],
+      "notes": "Snippet-verified across meez and ChowNow (full fetch blocked 403). Directional industry claim; supports prioritizing protein lines in the cost-pressure and market-recost surfaces."
+    },
+    "menu_price_lag_wholesale_2025": {
+      "claim": "Menus lag supplier costs: U.S. full-service menu prices rose about 4.4% year-over-year as of mid-2025, while wholesale food costs remained far above pre-pandemic levels (the source cites 36%+).",
+      "source_url": "https://www.barmetrix.com/blog/restaurant-inflation",
+      "source_name": "Barmetrix — Restaurant Inflation (2025)",
+      "date_verified": "2026-06-18",
+      "url_status": "deep-link",
+      "used_in": [
+        "docs/strategy-cost-intelligence-app.md"
+      ],
+      "notes": "Snippet-verified (full fetch blocked 403). The ~4.4% YoY menu figure aligns with the BLS 'food away from home' CPI trend; the 36%+ wholesale-vs-pre-pandemic figure is Barmetrix's compilation. Re-check against BLS CPI/PPI before any hard number lands in prose; treat as directional. This gap is the core motivation for automatic market recost."
+    },
+    "menu_recost_cadence_six_months_2026": {
+      "claim": "Operators are advised to revisit menu pricing in smaller increments roughly every six months rather than infrequent large jumps, because a dish costed six months earlier may have drifted significantly as supplier prices move.",
+      "source_url": "https://www.gofoodservice.com/guides/guide-to-pricing-menu-items-at-your-restaurant",
+      "source_name": "GoFoodService — Menu Pricing Guide",
+      "date_verified": "2026-06-18",
+      "url_status": "deep-link",
+      "used_in": [
+        "tools/plate-cost/",
+        "docs/strategy-cost-intelligence-app.md"
+      ],
+      "notes": "Snippet-verified across GoFoodService and MarketMan recipe-costing guidance (full fetch blocked 403). Grounds the recost capability's value proposition: automatic market recost vs the existing 'quarterly check-in' manual banner."
+    },
     "google_core_update_may_2026": {
       "claim": "Google's May 2026 core update began rolling out on May 21, 2026 and may take up to two weeks to complete; it is the second core update of the year.",
       "source_url": "https://status.search.google.com/",

@@ -52,6 +52,24 @@
     return isFinite(n) ? n : null;
   }
 
+  // Expert-grounded food-cost targets (% of food sales). The decades-long
+  // industry band is 28–35%, varying by service model. Sourced in
+  // data/sourced-claims.json #food_cost_target_band_2026 (Restaurant365 /
+  // NetSuite / meez / ChowNow, snippet-verified). Midpoints are used when a
+  // service model is named but no explicit target is given; 30% is the
+  // canonical full-service default. The operator can always override.
+  var FOOD_COST_TARGETS = {
+    'quick-service': { min: 25, max: 30 },
+    'fast-casual':   { min: 25, max: 30 },
+    'casual':        { min: 30, max: 34 },
+    'fine-dining':   { min: 34, max: 40 }
+  };
+  var DEFAULT_TARGET_PCT = 30;
+  function targetFor(model) {
+    var b = model && FOOD_COST_TARGETS[String(model).toLowerCase()];
+    return b ? +((b.min + b.max) / 2).toFixed(1) : DEFAULT_TARGET_PCT;
+  }
+
   // Yield is stored as a 0–1 fraction (ingredient-yields.json uses 0.75). Be
   // defensive: a "75" typed into the Yield % column means 0.75. Clamp to a sane
   // band so an absurd value can't distort a plate cost.
@@ -104,8 +122,10 @@
     var bridge = opts.bridge || _bridge();
     var seed = opts.seed || (root && root.MUNTIN_COST_INDEX) || null;
     var dishes = Array.isArray(opts.dishes) ? opts.dishes : [];
+    // Target = explicit opts.targetPct, else the band for a named service model,
+    // else the 30% full-service default (all expert-grounded; see FOOD_COST_TARGETS).
     var targetPct = num(opts.targetPct);
-    if (targetPct == null || targetPct <= 0) targetPct = 30; // food-cost % target
+    if (targetPct == null || targetPct <= 0) targetPct = targetFor(opts.serviceModel);
     if (!lookup || !lookup.match || !bridge || !seed || !dishes.length) return [];
 
     var out = [];
@@ -220,7 +240,7 @@
     return out;
   }
 
-  var api = { compute: compute };
+  var api = { compute: compute, targetFor: targetFor, FOOD_COST_TARGETS: FOOD_COST_TARGETS };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof self !== 'undefined') self.MuntinPlateMarketRecost = api;
   if (root) root.MuntinPlateMarketRecost = api;

@@ -40,6 +40,28 @@ test('recosts a dish against the live market and computes the delta', () => {
   assert.equal(e.wholesaleReference, true);   // the honesty flag is always set
 });
 
+test('exposes expert-grounded food-cost target bands (28–35%, by service model)', () => {
+  const { targetFor, FOOD_COST_TARGETS } = require('./plate-market-recost.js');
+  assert.equal(targetFor('fine-dining'), 37);     // (34+40)/2
+  assert.equal(targetFor('casual'), 32);          // (30+34)/2
+  assert.equal(targetFor('quick-service'), 27.5); // (25+30)/2
+  assert.equal(targetFor(undefined), 30);         // canonical full-service default
+  assert.equal(FOOD_COST_TARGETS['casual'].min, 30);
+});
+
+test('compute uses the service-model band when no explicit target is given', () => {
+  // Same dish, different concept → different verdict. 35.47% food cost is over a
+  // casual 32% target but under a fine-dining 37% target.
+  const dish = [{
+    name: 'Ribeye plate', price: 18,
+    rows: [{ ingredient: 'Ribeye', apPrice: 10, apQty: 1, apUnit: 'lb', usedQty: 8, usedUnit: 'oz', yieldPercent: 1 }]
+  }];
+  assert.equal(compute(opts(dish, { serviceModel: 'casual' }))[0].belowTarget, true);
+  const fine = compute(opts(dish, { serviceModel: 'fine-dining' }))[0];
+  assert.equal(fine.targetPct, 37);
+  assert.equal(fine.belowTarget, false);
+});
+
 test('flags a dish that crossed below target margin', () => {
   const e = compute(opts([{
     name: 'Ribeye plate', price: 18,

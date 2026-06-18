@@ -1,7 +1,7 @@
 {
   "_doc": "Public, machine-readable claim ledger for muntin.digital. Every externally-verifiable factual claim used across the library, paired with its primary public source and the date it was last checked. Generated from data/sourced-claims.json by scripts/build-claims-json.mjs — do not edit by hand. Operator-experience claims (first-hand, no public URL) are documented at https://muntin.digital/about/#timeline.",
   "as_of": "2026-06-18",
-  "count": 36,
+  "count": 40,
   "claims": [
     {
       "id": "ai_overview_share_march_2025",
@@ -111,6 +111,17 @@
       ]
     },
     {
+      "id": "food_cost_target_band_2026",
+      "claim": "The long-standing industry target for restaurant food cost is 28–35% of food sales, and it varies by service model: quick-service / fast-casual roughly 25–30%, casual ~30–34%, and fine dining ~34–40% (premium ingredients, lower covers).",
+      "source_name": "Restaurant365 — What is a good food cost percentage?",
+      "source_url": "https://www.restaurant365.com/blog/cooking-up-success-understanding-what-is-a-good-food-cost-percentage/",
+      "date_verified": "2026-06-18",
+      "used_in": [
+        "tools/plate-cost/",
+        "docs/strategy-cost-intelligence-app.md"
+      ]
+    },
+    {
       "id": "google_ai_mode_io_2026",
       "claim": "At Google I/O on May 19, 2026, Google rebuilt AI Mode on a new model with a redesigned search box and agentic capabilities, including booking restaurant tables through OpenTable, Resy, and Tock; AI Mode reaches 1B+ monthly users with US rollout over summer 2026.",
       "source_name": "Google — The Keyword, I/O 2026 Search updates",
@@ -205,6 +216,27 @@
       ]
     },
     {
+      "id": "menu_price_lag_wholesale_2025",
+      "claim": "Menus lag supplier costs: U.S. full-service menu prices rose about 4.4% year-over-year as of mid-2025, while wholesale food costs remained far above pre-pandemic levels (the source cites 36%+).",
+      "source_name": "Barmetrix — Restaurant Inflation (2025)",
+      "source_url": "https://www.barmetrix.com/blog/restaurant-inflation",
+      "date_verified": "2026-06-18",
+      "used_in": [
+        "docs/strategy-cost-intelligence-app.md"
+      ]
+    },
+    {
+      "id": "menu_recost_cadence_six_months_2026",
+      "claim": "Operators are advised to revisit menu pricing in smaller increments roughly every six months rather than infrequent large jumps, because a dish costed six months earlier may have drifted significantly as supplier prices move.",
+      "source_name": "GoFoodService — Menu Pricing Guide",
+      "source_url": "https://www.gofoodservice.com/guides/guide-to-pricing-menu-items-at-your-restaurant",
+      "date_verified": "2026-06-18",
+      "used_in": [
+        "tools/plate-cost/",
+        "docs/strategy-cost-intelligence-app.md"
+      ]
+    },
+    {
       "id": "muntin_cost_index_ribeye_2026_06",
       "claim": "The Muntin Cost Index put wholesale ribeye near $11.59 per pound as of June 5, 2026 (sourced from USDA Livestock Mandatory Reporting), flagged flat within its normal weekly range despite an upward two-year trend.",
       "source_name": "Muntin Cost Index (data/cost-index.json, generated from verified sources only)",
@@ -263,6 +295,16 @@
       "date_verified": "2026-06-18",
       "used_in": [
         "get-found-fathers-day-weekend-2026"
+      ]
+    },
+    {
+      "id": "protein_highest_cost_category_2026",
+      "claim": "Protein is typically the highest-cost ingredient category on a restaurant menu, and protein price volatility is a primary driver of food-cost-percentage swings.",
+      "source_name": "meez — How to calculate food cost",
+      "source_url": "https://www.getmeez.com/blog/how-to-calculate-food-cost",
+      "date_verified": "2026-06-18",
+      "used_in": [
+        "docs/strategy-cost-intelligence-app.md"
       ]
     },
     {

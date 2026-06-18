@@ -87,6 +87,36 @@ Degraded modes:
 +Decoder → your-price recost + fair-price gap + error-catch → +Inventory →
 buy-now-or-wait + variance → +Ledger → P&L, margin-at-risk, cash-flow.
 
+## Expert grounding (sourced)
+
+The load-bearing assumptions are grounded in industry/expert sources, registered in
+`data/sourced-claims.json` (snippet-verified; several full fetches were 403-blocked,
+noted per entry). These directly back the shipped capability's defaults and claims:
+
+- **Food-cost target band — `#food_cost_target_band_2026`.** The decades-long
+  industry target is **28–35% of food sales**, by service model: quick-service /
+  fast-casual ~25–30%, casual ~30–34%, fine dining ~34–40%. Cross-checked across
+  Restaurant365, NetSuite, meez, ChowNow. → grounds the engine's `FOOD_COST_TARGETS`
+  bands and the 30% full-service default (was a bare magic number).
+- **Protein is the highest-cost, most volatile category — `#protein_highest_cost_category_2026`.**
+  meez / ChowNow. → why protein lines dominate recost drift and deserve priority.
+- **Menus lag supplier costs — `#menu_price_lag_wholesale_2025`.** Full-service menu
+  prices rose ~4.4% YoY (mid-2025) while wholesale food costs stayed far above
+  pre-pandemic levels (source cites 36%+). Barmetrix. → the gap automatic recost closes.
+- **Recost cadence — `#menu_recost_cadence_six_months_2026`.** Experts advise smaller
+  price moves ~every six months because "a dish costed six months ago may have drifted
+  significantly." GoFoodService / MarketMan. → the value of *automatic* recost over the
+  existing manual "quarterly check-in" banner.
+
+Honest caveats: the segment edges are approximate industry ranges, not one authority's
+exact figure (kept labeled as a band); the 36%+ wholesale figure is a compilation to
+re-check against BLS CPI/PPI before any hard number lands in library prose.
+
+**Falsifiable claim (now grounded):** if expert guidance is to recost only every ~6
+months while wholesale moves far faster than menus (the lag above), then independent
+plate margins should drift measurably *between* recostings — muntin can quantify that
+per-quarter drift from market data alone and publish it first.
+
 ## The category thesis
 
 > **muntin is the Bloomberg terminal of restaurant costs — the honest, composable
@@ -113,7 +143,9 @@ target margin since you priced them — and by how much — because the market m
 
 **Honesty:** the index is a wholesale reference, never the delivered price; the panel
 says so every time and only uses medium+ confidence levels (gated by
-`MuntinCostIndexLookup`).
+`MuntinCostIndexLookup`). The "below target" flag uses an expert-grounded food-cost
+band (`FOOD_COST_TARGETS`): 30% full-service default, or the service-model midpoint
+when named — quick-service ~27.5%, casual 32%, fine-dining 37% — never a bare number.
 
 **Falsifiable claim to discover & publish:** independent-restaurant plate margins
 compress by a measurable amount per quarter from input-price drift that static menus
@@ -122,7 +154,8 @@ never track — computable from market data alone.
 **What shipped**
 - `tools/_shared/plate-market-recost.js` — pure, deterministic compute engine (the
   Index-only sibling of `dish-drift.js`); reuses `MuntinCostIndexLookup` +
-  `MuntinPortionBridge`. No DOM, no fetch.
+  `MuntinPortionBridge`. No DOM, no fetch. Exposes expert-grounded `FOOD_COST_TARGETS`
+  + `targetFor(serviceModel)` so the margin verdict is sourced, not arbitrary.
 - `tools/_shared/plate-market-recost.test.mjs` — `node:test` suite (auto-run by
   `scripts/check-tests.mjs`): recost math, target-margin flag, unpriced/fuzzy
   exclusions, unit-bridge guard, yield normalization, sort, graceful degradation.
