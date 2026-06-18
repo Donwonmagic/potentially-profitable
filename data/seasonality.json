@@ -1,6 +1,6 @@
 {
   "_doc": "Per-ingredient seasonal baseline for the Cost Index, derived purely from the vendored history in data/cost-index.json by scripts/build-seasonality.mjs (CI runs --check). A month appears under `months` only once observed across 2+ distinct years; `ready` means enough established months to read a season. Until then `building` names what it waits for. The current-vs-normal delta is computed by the consumer at render time so this file stays date-independent. Regenerate after every vendor.",
-  "generatedFrom": "2026-06-16",
+  "generatedFrom": "2026-06-18",
   "params": {
     "minYearsPerMonth": 2,
     "minEstablishedMonths": 6,
@@ -4251,11 +4251,11 @@
     {
       "key": "chicken-thigh",
       "ready": false,
-      "weeks": 17,
+      "weeks": 16,
       "distinctYears": 1,
       "distinctMonths": 5,
       "establishedMonths": 0,
-      "progress": "building baseline — 17 of ~78 weeks · 1 of 2 years · 0 established month(s)",
+      "progress": "building baseline — 16 of ~78 weeks · 1 of 2 years · 0 established month(s)",
       "blocker": "need a second year of history to know a typical month (have 1)",
       "months": {}
     },

@@ -4,8 +4,8 @@
   "summary": {
     "total": 101,
     "byConfidence": {
-      "medium": 13,
-      "low": 68,
+      "medium": 20,
+      "low": 61,
       "directional": 20
     },
     "withDollarLevel": 93,
@@ -27,8 +27,25 @@
       "trendNoise": 0.0184,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-15",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis"
+    },
+    {
+      "key": "beet",
+      "confidence": "medium",
+      "withinAuditCeiling": true,
+      "hasDollarLevel": true,
+      "basis": "wholesale",
+      "rangeBasis": "markets",
+      "levelFamilies": 8,
+      "levelTypes": 1,
+      "trendTypes": 2,
+      "trendAgreement": 0.556,
+      "trendNoise": 0.039,
+      "typeDispersion": 0,
+      "weeks": 6,
+      "asOf": "2026-06-17",
+      "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis; trend agreement is only moderate"
     },
     {
       "key": "butter",
@@ -41,10 +58,10 @@
       "levelTypes": 1,
       "trendTypes": 3,
       "trendAgreement": 0.667,
-      "trendNoise": 0.0122,
+      "trendNoise": 0.0117,
       "typeDispersion": 0,
-      "weeks": 12,
-      "asOf": "2026-06-06",
+      "weeks": 13,
+      "asOf": "2026-06-13",
       "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis"
     },
     {
@@ -60,9 +77,26 @@
       "trendAgreement": 0.667,
       "trendNoise": 0.0027,
       "typeDispersion": 0,
-      "weeks": 12,
-      "asOf": "2026-06-06",
+      "weeks": 13,
+      "asOf": "2026-06-13",
       "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis"
+    },
+    {
+      "key": "cherry-tomato",
+      "confidence": "medium",
+      "withinAuditCeiling": true,
+      "hasDollarLevel": true,
+      "basis": "wholesale",
+      "rangeBasis": "markets",
+      "levelFamilies": 8,
+      "levelTypes": 1,
+      "trendTypes": 2,
+      "trendAgreement": 0.556,
+      "trendNoise": 0.13325,
+      "typeDispersion": 0,
+      "weeks": 6,
+      "asOf": "2026-06-17",
+      "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis; trend agreement is only moderate"
     },
     {
       "key": "chicken-breast",
@@ -77,7 +111,7 @@
       "trendAgreement": 0.333,
       "trendNoise": 0.003,
       "typeDispersion": 0,
-      "weeks": 17,
+      "weeks": 16,
       "asOf": "2026-06-08",
       "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis; trend agreement is only moderate"
     },
@@ -92,10 +126,44 @@
       "levelTypes": 1,
       "trendTypes": 2,
       "trendAgreement": 1,
-      "trendNoise": 0.01455,
+      "trendNoise": 0.0121,
       "typeDispersion": 0,
-      "weeks": 17,
+      "weeks": 16,
       "asOf": "2026-06-08",
+      "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis"
+    },
+    {
+      "key": "cucumber",
+      "confidence": "medium",
+      "withinAuditCeiling": true,
+      "hasDollarLevel": true,
+      "basis": "wholesale",
+      "rangeBasis": "markets",
+      "levelFamilies": 8,
+      "levelTypes": 1,
+      "trendTypes": 2,
+      "trendAgreement": 0.889,
+      "trendNoise": 0.1599,
+      "typeDispersion": 0,
+      "weeks": 6,
+      "asOf": "2026-06-17",
+      "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis; trend is mildly noisy"
+    },
+    {
+      "key": "eggplant",
+      "confidence": "medium",
+      "withinAuditCeiling": true,
+      "hasDollarLevel": true,
+      "basis": "wholesale",
+      "rangeBasis": "markets",
+      "levelFamilies": 8,
+      "levelTypes": 1,
+      "trendTypes": 2,
+      "trendAgreement": 0.778,
+      "trendNoise": 0.07395,
+      "typeDispersion": 0,
+      "weeks": 6,
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis"
     },
     {
@@ -109,11 +177,45 @@
       "levelTypes": 1,
       "trendTypes": 3,
       "trendAgreement": 1,
-      "trendNoise": 0.1271,
+      "trendNoise": 0.1051,
       "typeDispersion": 0,
-      "weeks": 8,
-      "asOf": "2026-06-08",
+      "weeks": 9,
+      "asOf": "2026-06-15",
       "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis; trend is mildly noisy"
+    },
+    {
+      "key": "grapefruit",
+      "confidence": "medium",
+      "withinAuditCeiling": true,
+      "hasDollarLevel": true,
+      "basis": "wholesale",
+      "rangeBasis": "markets",
+      "levelFamilies": 8,
+      "levelTypes": 1,
+      "trendTypes": 2,
+      "trendAgreement": 0.556,
+      "trendNoise": 0.0194,
+      "typeDispersion": 0,
+      "weeks": 6,
+      "asOf": "2026-06-17",
+      "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis; trend agreement is only moderate"
+    },
+    {
+      "key": "lemon",
+      "confidence": "medium",
+      "withinAuditCeiling": true,
+      "hasDollarLevel": true,
+      "basis": "wholesale",
+      "rangeBasis": "markets",
+      "levelFamilies": 8,
+      "levelTypes": 1,
+      "trendTypes": 2,
+      "trendAgreement": 1,
+      "trendNoise": 0.0441,
+      "typeDispersion": 0,
+      "weeks": 6,
+      "asOf": "2026-06-17",
+      "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis"
     },
     {
       "key": "pork-loin",
@@ -126,10 +228,10 @@
       "levelTypes": 1,
       "trendTypes": 3,
       "trendAgreement": 0.667,
-      "trendNoise": 0.0247,
+      "trendNoise": 0.0264,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-15",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis"
     },
     {
@@ -146,7 +248,24 @@
       "trendNoise": 0.0429,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-15",
+      "asOf": "2026-06-17",
+      "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis"
+    },
+    {
+      "key": "red-potato",
+      "confidence": "medium",
+      "withinAuditCeiling": true,
+      "hasDollarLevel": true,
+      "basis": "wholesale",
+      "rangeBasis": "markets",
+      "levelFamilies": 8,
+      "levelTypes": 1,
+      "trendTypes": 2,
+      "trendAgreement": 0.889,
+      "trendNoise": 0.0151,
+      "typeDispersion": 0,
+      "weeks": 6,
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis"
     },
     {
@@ -163,7 +282,7 @@
       "trendNoise": 0.0184,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-15",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis"
     },
     {
@@ -176,12 +295,12 @@
       "levelFamilies": 8,
       "levelTypes": 1,
       "trendTypes": 2,
-      "trendAgreement": 0.556,
-      "trendNoise": 0.0223,
+      "trendAgreement": 0.667,
+      "trendNoise": 0.0178,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
-      "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis; trend agreement is only moderate"
+      "asOf": "2026-06-17",
+      "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis"
     },
     {
       "key": "short-rib",
@@ -194,10 +313,10 @@
       "levelTypes": 1,
       "trendTypes": 3,
       "trendAgreement": 0.667,
-      "trendNoise": 0.0167,
+      "trendNoise": 0.0184,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-15",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis"
     },
     {
@@ -213,7 +332,7 @@
       "trendAgreement": 0.333,
       "trendNoise": 0.003,
       "typeDispersion": 0,
-      "weeks": 17,
+      "weeks": 16,
       "asOf": "2026-06-08",
       "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis; trend agreement is only moderate"
     },
@@ -228,9 +347,9 @@
       "levelTypes": 1,
       "trendTypes": 3,
       "trendAgreement": 1,
-      "trendNoise": 0.0066,
+      "trendNoise": 0.0057,
       "typeDispersion": 0,
-      "weeks": 17,
+      "weeks": 16,
       "asOf": "2026-06-08",
       "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis"
     },
@@ -262,10 +381,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.875,
-      "trendNoise": 0.018000000000000002,
+      "trendNoise": 0.017849999999999998,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -279,10 +398,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.75,
-      "trendNoise": 0.03635,
+      "trendNoise": 0.01725,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -296,10 +415,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.875,
-      "trendNoise": 0.18185,
+      "trendNoise": 0.1956,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -309,14 +428,14 @@
       "hasDollarLevel": true,
       "basis": "wholesale",
       "rangeBasis": "markets",
-      "levelFamilies": 7,
+      "levelFamilies": 8,
       "levelTypes": 1,
       "trendTypes": 1,
-      "trendAgreement": 0.857,
-      "trendNoise": 0.0642,
+      "trendAgreement": 0.875,
+      "trendNoise": 0.0674,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -333,7 +452,7 @@
       "trendNoise": 0,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -350,24 +469,7 @@
       "trendNoise": 0,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
-      "toHigh": "add a 2nd independent trend source"
-    },
-    {
-      "key": "beet",
-      "confidence": "low",
-      "withinAuditCeiling": true,
-      "hasDollarLevel": true,
-      "basis": "wholesale",
-      "rangeBasis": "markets",
-      "levelFamilies": 8,
-      "levelTypes": 1,
-      "trendTypes": 1,
-      "trendAgreement": 0.625,
-      "trendNoise": 0.04245,
-      "typeDispersion": 0,
-      "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -377,15 +479,15 @@
       "hasDollarLevel": true,
       "basis": "wholesale",
       "rangeBasis": "markets",
-      "levelFamilies": 8,
+      "levelFamilies": 6,
       "levelTypes": 1,
-      "trendTypes": 1,
-      "trendAgreement": 0.75,
-      "trendNoise": 0.16904999999999998,
+      "trendTypes": 2,
+      "trendAgreement": 0.714,
+      "trendNoise": 0.2125,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
-      "toHigh": "add a 2nd independent trend source"
+      "asOf": "2026-06-17",
+      "toHigh": "trend is too noisy (jagged) to trust as a move"
     },
     {
       "key": "blueberry",
@@ -398,10 +500,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.875,
-      "trendNoise": 0.25785,
+      "trendNoise": 0.2262,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "trend is too noisy (jagged) to trust as a move"
     },
     {
@@ -414,11 +516,11 @@
       "levelFamilies": 8,
       "levelTypes": 1,
       "trendTypes": 1,
-      "trendAgreement": 0.625,
-      "trendNoise": 0.0561,
+      "trendAgreement": 0.75,
+      "trendNoise": 0.0552,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -428,14 +530,14 @@
       "hasDollarLevel": true,
       "basis": "wholesale",
       "rangeBasis": "markets",
-      "levelFamilies": 8,
+      "levelFamilies": 6,
       "levelTypes": 1,
       "trendTypes": 1,
-      "trendAgreement": 0.875,
-      "trendNoise": 0.26739999999999997,
+      "trendAgreement": 1,
+      "trendNoise": 0.26180000000000003,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "trend is too noisy (jagged) to trust as a move"
     },
     {
@@ -449,10 +551,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 1,
-      "trendNoise": 0.12060000000000001,
+      "trendNoise": 0.11615,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -466,10 +568,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.571,
-      "trendNoise": 0.0903,
+      "trendNoise": 0.0902,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -483,10 +585,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.625,
-      "trendNoise": 0.0397,
+      "trendNoise": 0.06505,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -503,7 +605,7 @@
       "trendNoise": 0,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -516,11 +618,11 @@
       "levelFamilies": 8,
       "levelTypes": 1,
       "trendTypes": 1,
-      "trendAgreement": 0.625,
-      "trendNoise": 0.059,
+      "trendAgreement": 0.5,
+      "trendNoise": 0.05615,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -534,10 +636,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 1,
-      "trendNoise": 0.025,
+      "trendNoise": 0.020749999999999998,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -551,10 +653,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.75,
-      "trendNoise": 0.08555,
+      "trendNoise": 0.08565,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -568,28 +670,11 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 1,
-      "trendNoise": 0.26744999999999997,
+      "trendNoise": 0.2472,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "trend is too noisy (jagged) to trust as a move"
-    },
-    {
-      "key": "cherry-tomato",
-      "confidence": "low",
-      "withinAuditCeiling": true,
-      "hasDollarLevel": true,
-      "basis": "wholesale",
-      "rangeBasis": "markets",
-      "levelFamilies": 8,
-      "levelTypes": 1,
-      "trendTypes": 1,
-      "trendAgreement": 0.5,
-      "trendNoise": 0.15935,
-      "typeDispersion": 0,
-      "weeks": 6,
-      "asOf": "2026-06-16",
-      "toHigh": "add a 2nd independent trend source"
     },
     {
       "key": "cilantro",
@@ -602,10 +687,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.625,
-      "trendNoise": 0.1011,
+      "trendNoise": 0.09670000000000001,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -618,11 +703,11 @@
       "levelFamilies": 8,
       "levelTypes": 1,
       "trendTypes": 1,
-      "trendAgreement": 0.25,
+      "trendAgreement": 0.5,
       "trendNoise": 0,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -636,28 +721,11 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.75,
-      "trendNoise": 0.21610000000000001,
+      "trendNoise": 0.21494999999999997,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "trend is too noisy (jagged) to trust as a move"
-    },
-    {
-      "key": "cucumber",
-      "confidence": "low",
-      "withinAuditCeiling": true,
-      "hasDollarLevel": true,
-      "basis": "wholesale",
-      "rangeBasis": "markets",
-      "levelFamilies": 8,
-      "levelTypes": 1,
-      "trendTypes": 1,
-      "trendAgreement": 1,
-      "trendNoise": 0.16235,
-      "typeDispersion": 0,
-      "weeks": 6,
-      "asOf": "2026-06-16",
-      "toHigh": "add a 2nd independent trend source"
     },
     {
       "key": "daikon",
@@ -670,10 +738,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.833,
-      "trendNoise": 0.0108,
+      "trendNoise": 0.01005,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -687,27 +755,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.571,
-      "trendNoise": 0.0333,
+      "trendNoise": 0.0337,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
-      "toHigh": "add a 2nd independent trend source"
-    },
-    {
-      "key": "eggplant",
-      "confidence": "low",
-      "withinAuditCeiling": true,
-      "hasDollarLevel": true,
-      "basis": "wholesale",
-      "rangeBasis": "markets",
-      "levelFamilies": 8,
-      "levelTypes": 1,
-      "trendTypes": 1,
-      "trendAgreement": 0.75,
-      "trendNoise": 0.07485,
-      "typeDispersion": 0,
-      "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -721,10 +772,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.875,
-      "trendNoise": 0.01295,
+      "trendNoise": 0.01335,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -741,24 +792,7 @@
       "trendNoise": 0.0278,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
-      "toHigh": "add a 2nd independent trend source"
-    },
-    {
-      "key": "grapefruit",
-      "confidence": "low",
-      "withinAuditCeiling": true,
-      "hasDollarLevel": true,
-      "basis": "wholesale",
-      "rangeBasis": "markets",
-      "levelFamilies": 8,
-      "levelTypes": 1,
-      "trendTypes": 1,
-      "trendAgreement": 0.5,
-      "trendNoise": 0.018500000000000003,
-      "typeDispersion": 0,
-      "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -772,10 +806,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 1,
-      "trendNoise": 0.30585,
+      "trendNoise": 0.31265,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "trend is too noisy (jagged) to trust as a move"
     },
     {
@@ -789,10 +823,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 1,
-      "trendNoise": 0.17235,
+      "trendNoise": 0.1767,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -806,10 +840,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.875,
-      "trendNoise": 0.1507,
+      "trendNoise": 0.14329999999999998,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -823,10 +857,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.875,
-      "trendNoise": 0.0621,
+      "trendNoise": 0.0576,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -840,10 +874,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.875,
-      "trendNoise": 0.35555000000000003,
+      "trendNoise": 0.3378,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "trend is too noisy (jagged) to trust as a move"
     },
     {
@@ -857,10 +891,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.75,
-      "trendNoise": 0.3226,
+      "trendNoise": 0.315,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "trend is too noisy (jagged) to trust as a move"
     },
     {
@@ -874,10 +908,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.125,
-      "trendNoise": 0.03185,
+      "trendNoise": 0.0403,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -890,28 +924,11 @@
       "levelFamilies": 8,
       "levelTypes": 1,
       "trendTypes": 1,
-      "trendAgreement": 0.25,
-      "trendNoise": 0.0143,
+      "trendAgreement": 0.125,
+      "trendNoise": 0.0144,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
-      "toHigh": "add a 2nd independent trend source"
-    },
-    {
-      "key": "lemon",
-      "confidence": "low",
-      "withinAuditCeiling": true,
-      "hasDollarLevel": true,
-      "basis": "wholesale",
-      "rangeBasis": "markets",
-      "levelFamilies": 8,
-      "levelTypes": 1,
-      "trendTypes": 1,
-      "trendAgreement": 1,
-      "trendNoise": 0.048100000000000004,
-      "typeDispersion": 0,
-      "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -924,11 +941,11 @@
       "levelFamilies": 8,
       "levelTypes": 1,
       "trendTypes": 1,
-      "trendAgreement": 0.875,
-      "trendNoise": 0.1779,
+      "trendAgreement": 1,
+      "trendNoise": 0.17795,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -945,7 +962,7 @@
       "trendNoise": 0,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -959,10 +976,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.5,
-      "trendNoise": 0.0693,
+      "trendNoise": 0.06995,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -976,10 +993,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 1,
-      "trendNoise": 0.1003,
+      "trendNoise": 0.1058,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -993,10 +1010,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.875,
-      "trendNoise": 0.03155,
+      "trendNoise": 0.03395,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -1013,7 +1030,7 @@
       "trendNoise": 0,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -1027,10 +1044,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.25,
-      "trendNoise": 0.027549999999999998,
+      "trendNoise": 0.0322,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -1044,10 +1061,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.75,
-      "trendNoise": 0.0182,
+      "trendNoise": 0.01845,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -1061,10 +1078,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.625,
-      "trendNoise": 0.07425,
+      "trendNoise": 0.1143,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -1078,10 +1095,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.75,
-      "trendNoise": 0.1772,
+      "trendNoise": 0.19695000000000001,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -1094,11 +1111,11 @@
       "levelFamilies": 8,
       "levelTypes": 1,
       "trendTypes": 1,
-      "trendAgreement": 0.5,
+      "trendAgreement": 0.625,
       "trendNoise": 0.0936,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -1112,10 +1129,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.875,
-      "trendNoise": 0.14775,
+      "trendNoise": 0.14300000000000002,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -1129,27 +1146,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 1,
-      "trendNoise": 0.0682,
+      "trendNoise": 0.06735,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
-      "toHigh": "add a 2nd independent trend source"
-    },
-    {
-      "key": "red-potato",
-      "confidence": "low",
-      "withinAuditCeiling": true,
-      "hasDollarLevel": true,
-      "basis": "wholesale",
-      "rangeBasis": "markets",
-      "levelFamilies": 8,
-      "levelTypes": 1,
-      "trendTypes": 1,
-      "trendAgreement": 0.75,
-      "trendNoise": 0.02075,
-      "typeDispersion": 0,
-      "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -1163,10 +1163,10 @@
       "levelTypes": 1,
       "trendTypes": 2,
       "trendAgreement": 1,
-      "trendNoise": 0.2952,
+      "trendNoise": 0.2981,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "trend is too noisy (jagged) to trust as a move"
     },
     {
@@ -1183,7 +1183,7 @@
       "trendNoise": 0,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -1200,7 +1200,7 @@
       "trendNoise": 0,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -1214,10 +1214,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.75,
-      "trendNoise": 0.1651,
+      "trendNoise": 0.1794,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -1231,10 +1231,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.75,
-      "trendNoise": 0.10385,
+      "trendNoise": 0.10705,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -1248,10 +1248,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.625,
-      "trendNoise": 0.033949999999999994,
+      "trendNoise": 0.03825,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -1265,10 +1265,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 1,
-      "trendNoise": 0.0121,
+      "trendNoise": 0.0119,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-15",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -1285,7 +1285,7 @@
       "trendNoise": 0,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -1302,7 +1302,7 @@
       "trendNoise": 0,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -1319,7 +1319,7 @@
       "trendNoise": 0,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -1329,14 +1329,14 @@
       "hasDollarLevel": true,
       "basis": "wholesale",
       "rangeBasis": "markets",
-      "levelFamilies": 7,
+      "levelFamilies": 6,
       "levelTypes": 1,
-      "trendTypes": 1,
-      "trendAgreement": 0.714,
-      "trendNoise": 0.3968,
+      "trendTypes": 2,
+      "trendAgreement": 0.571,
+      "trendNoise": 0.373,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "trend is too noisy (jagged) to trust as a move"
     },
     {
@@ -1350,11 +1350,11 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 1,
-      "trendNoise": 0.2012,
+      "trendNoise": 0.1986,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
-      "toHigh": "trend is too noisy (jagged) to trust as a move"
+      "asOf": "2026-06-17",
+      "toHigh": "add a 2nd independent trend source"
     },
     {
       "key": "yellow-squash",
@@ -1367,10 +1367,10 @@
       "levelTypes": 1,
       "trendTypes": 1,
       "trendAgreement": 0.875,
-      "trendNoise": 0.29265,
+      "trendNoise": 0.2948,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "trend is too noisy (jagged) to trust as a move"
     },
     {
@@ -1383,11 +1383,11 @@
       "levelFamilies": 8,
       "levelTypes": 1,
       "trendTypes": 1,
-      "trendAgreement": 0.75,
-      "trendNoise": 0.22849999999999998,
+      "trendAgreement": 0.875,
+      "trendNoise": 0.25925,
       "typeDispersion": 0,
       "weeks": 6,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "trend is too noisy (jagged) to trust as a move"
     },
     {
@@ -1400,11 +1400,11 @@
       "levelFamilies": 8,
       "levelTypes": 1,
       "trendTypes": 1,
-      "trendAgreement": 0.875,
-      "trendNoise": 0.13895000000000002,
+      "trendAgreement": 1,
+      "trendNoise": 0.14734999999999998,
       "typeDispersion": 0,
       "weeks": 0,
-      "asOf": "2026-06-16",
+      "asOf": "2026-06-17",
       "toHigh": "add a 2nd independent trend source"
     },
     {
@@ -1417,10 +1417,10 @@
       "levelFamilies": 0,
       "levelTypes": 0,
       "trendTypes": 2,
-      "trendAgreement": 1,
-      "trendNoise": 0.0189,
+      "trendAgreement": 0.5,
+      "trendNoise": 0.01015,
       "typeDispersion": 0,
-      "weeks": 4,
+      "weeks": 5,
       "asOf": "2026-05-01",
       "toHigh": "no dollar level exists (directional) — needs a comparable wholesale $ source on a measurable basis"
     },
@@ -1501,13 +1501,13 @@
       "rangeBasis": "volatility",
       "levelFamilies": 1,
       "levelTypes": 1,
-      "trendTypes": 2,
-      "trendAgreement": 0.5,
+      "trendTypes": 3,
+      "trendAgreement": 0.667,
       "trendNoise": 0.012150000000000001,
       "typeDispersion": 0,
       "weeks": 4,
       "asOf": "2026-05-01",
-      "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis; trend agreement is only moderate"
+      "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis"
     },
     {
       "key": "salmon-skin-on-fillet",
@@ -1518,13 +1518,13 @@
       "rangeBasis": "volatility",
       "levelFamilies": 1,
       "levelTypes": 1,
-      "trendTypes": 2,
-      "trendAgreement": 0.5,
+      "trendTypes": 3,
+      "trendAgreement": 0.667,
       "trendNoise": 0.012150000000000001,
       "typeDispersion": 0,
       "weeks": 4,
       "asOf": "2026-05-01",
-      "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis; trend agreement is only moderate"
+      "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis"
     },
     {
       "key": "scallops",
@@ -1705,7 +1705,7 @@
       "rangeBasis": "volatility",
       "levelFamilies": 1,
       "levelTypes": 1,
-      "trendTypes": 2,
+      "trendTypes": 3,
       "trendAgreement": 1,
       "trendNoise": 0.0109,
       "typeDispersion": 0,

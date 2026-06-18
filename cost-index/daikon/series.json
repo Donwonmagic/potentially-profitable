@@ -5,13 +5,8 @@
   "basis": "wholesale",
   "currency": "USD",
   "note": "Wholesale reference prices compiled from public U.S. market sources (USDA AMS/LMR, BLS, FRED, EIA, NOAA). Values are in US dollars per unit. Not a delivered or retail price. Source: muntin.digital/cost-index/daikon/",
-  "asOf": "2026-06-16",
+  "asOf": "2026-06-17",
   "observations": [
-    {
-      "date": "2026-05-11",
-      "priceUsd": 32,
-      "source": "usda-ams-chicago"
-    },
     {
       "date": "2026-05-12",
       "priceUsd": 32,
@@ -134,6 +129,11 @@
     },
     {
       "date": "2026-06-16",
+      "priceUsd": 32,
+      "source": "usda-ams-chicago"
+    },
+    {
+      "date": "2026-06-17",
       "priceUsd": 32,
       "source": "usda-ams-chicago"
     }
