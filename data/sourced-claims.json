@@ -390,6 +390,39 @@
         "inflacion-de-menu-de-restaurante-2026"
       ],
       "notes": "In-repo fact-gated value; provenance usda-lmr, asOf 2026-06-05, weekly flag verdict 'flat'."
+    },
+    "fathers_day_2026_date": {
+      "claim": "Father's Day 2026 falls on Sunday, June 21 (the third Sunday in June).",
+      "source_url": "https://www.opentable.com/events/fathers-day",
+      "source_name": "U.S. calendar (third Sunday in June); corroborated by OpenTable Father's Day 2026 listings.",
+      "date_verified": "2026-06-18",
+      "url_status": "deep-link",
+      "used_in": [
+        "get-found-fathers-day-weekend-2026"
+      ],
+      "notes": "Verifiable calendar fact."
+    },
+    "nra_fathers_day_dining": {
+      "claim": "The National Restaurant Association's research ranks Father's Day among the most popular holidays for dining out (after Mother's Day and Valentine's Day).",
+      "source_url": "https://restaurant.org/research-and-media/research/industry-statistics/national-statistics/",
+      "source_name": "National Restaurant Association — consumer dining research.",
+      "date_verified": "2026-06-18",
+      "url_status": "deep-link",
+      "used_in": [
+        "get-found-fathers-day-weekend-2026"
+      ],
+      "notes": "Qualitative ranking from NRA research; no specific volume cited in the post."
+    },
+    "opentable_fathers_day_reservations": {
+      "claim": "Restaurant reservations for Father's Day rise year over year, per OpenTable.",
+      "source_url": "https://www.opentable.com/restaurant-solutions/2026-diner-trends/",
+      "source_name": "OpenTable — 2026 diner trends.",
+      "date_verified": "2026-06-18",
+      "url_status": "deep-link",
+      "used_in": [
+        "get-found-fathers-day-weekend-2026"
+      ],
+      "notes": "Directional trend; the post states no specific percentage."
     }
   },
   "operator_experience_claims": {

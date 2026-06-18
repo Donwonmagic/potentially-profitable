@@ -1,7 +1,7 @@
 {
   "_doc": "Public, machine-readable claim ledger for muntin.digital. Every externally-verifiable factual claim used across the library, paired with its primary public source and the date it was last checked. Generated from data/sourced-claims.json by scripts/build-claims-json.mjs — do not edit by hand. Operator-experience claims (first-hand, no public URL) are documented at https://muntin.digital/about/#timeline.",
-  "as_of": "2026-06-14",
-  "count": 33,
+  "as_of": "2026-06-18",
+  "count": 36,
   "claims": [
     {
       "id": "ai_overview_share_march_2025",
@@ -88,6 +88,16 @@
         "uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026",
         "30-days-after-leaving-doordash-restaurant-case-study",
         "is-doordash-worth-it-for-restaurants-in-2026"
+      ]
+    },
+    {
+      "id": "fathers_day_2026_date",
+      "claim": "Father's Day 2026 falls on Sunday, June 21 (the third Sunday in June).",
+      "source_name": "U.S. calendar (third Sunday in June); corroborated by OpenTable Father's Day 2026 listings.",
+      "source_url": "https://www.opentable.com/events/fathers-day",
+      "date_verified": "2026-06-18",
+      "used_in": [
+        "get-found-fathers-day-weekend-2026"
       ]
     },
     {
@@ -226,6 +236,16 @@
       ]
     },
     {
+      "id": "nra_fathers_day_dining",
+      "claim": "The National Restaurant Association's research ranks Father's Day among the most popular holidays for dining out (after Mother's Day and Valentine's Day).",
+      "source_name": "National Restaurant Association — consumer dining research.",
+      "source_url": "https://restaurant.org/research-and-media/research/industry-statistics/national-statistics/",
+      "date_verified": "2026-06-18",
+      "used_in": [
+        "get-found-fathers-day-weekend-2026"
+      ]
+    },
+    {
       "id": "opentable_direct_booking_pref_2026",
       "claim": "65% of diners prefer to book directly on a restaurant's own website rather than through a third party (OpenTable, 2026).",
       "source_name": "OpenTable — 2026 diner trends",
@@ -233,6 +253,16 @@
       "date_verified": "2026-05-22",
       "used_in": [
         "google-ai-mode-reservation-booking-restaurant-2026"
+      ]
+    },
+    {
+      "id": "opentable_fathers_day_reservations",
+      "claim": "Restaurant reservations for Father's Day rise year over year, per OpenTable.",
+      "source_name": "OpenTable — 2026 diner trends.",
+      "source_url": "https://www.opentable.com/restaurant-solutions/2026-diner-trends/",
+      "date_verified": "2026-06-18",
+      "used_in": [
+        "get-found-fathers-day-weekend-2026"
       ]
     },
     {
