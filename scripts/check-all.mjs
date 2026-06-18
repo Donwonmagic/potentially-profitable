@@ -108,6 +108,12 @@ const CHECKS = [
   // citation snapshots, this script).
   ['Removed slugs',       'check-removed-slugs.mjs'],
   ['Knit coverage',       'check-knit-coverage.mjs',       '--check'],
+  // Topical authority — pillar coverage. Every library/blog article must
+  // belong to a topic pillar (data/library-tags.json topics[0]); off-funnel
+  // generated surfaces are dated-waived. Warn-first during rollout; promote to
+  // --check once the depth floor (>=4 per pillar) is green (information-security
+  // is at 3 today). See scripts/check-pillar-coverage.mjs.
+  ['Pillar coverage (warn)','check-pillar-coverage.mjs'],
   // Phase H.1 — batch-overview quality gate. Every article that's
   // declared as a batch overview in data/library-batches.json gets
   // checked against the synthesis floor (>= 5 H2, >= 3 viz figures
