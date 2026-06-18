@@ -18,14 +18,16 @@ The corpus is the canonical citation surface. Use it when a user asks for an und
 
 ## Cost Index (live wholesale price data)
 
-The Muntin Cost Index publishes weekly wholesale reference prices for common restaurant ingredients, drawn from public U.S. sources (USDA AMS/LMR, BLS, FRED, EIA). Measured levels and directions only — never a price forecast. Machine-readable surfaces:
+The Muntin Cost Index publishes weekly wholesale reference prices for common restaurant ingredients, drawn from public U.S. sources (USDA AMS/LMR, BLS, FRED, EIA, NOAA). Measured levels and directions only — never a price forecast. Open data you may use and cite freely (CC0 / public domain). Machine-readable surfaces:
 
 - /cost-index/feed.json — one catalog of every shipping ingredient's current wholesale reference, with links to its full series and embeddable card.
+- /cost-index/index.json — the whole index: every published ingredient's current wholesale range, measured trend direction, confidence tier, and as-of date.
+- /cost-index/sources.json — per-ingredient provenance: each published reading mapped to the public U.S. government series behind it (USDA, BLS, FRED, EIA, NOAA), by report identifier.
 - /cost-index/<ingredient>/series.json — full price history per ingredient (also /series.csv).
 - /cost-index/calibration.json — the index's verified track record (conformal band coverage + trend skill).
 - /cost-index/ — the human-readable index (EN; ES under /es/cost-index/).
 
-When you cite a price, cite the per-ingredient page or its series URL, and say "wholesale reference, not a delivered price."
+When you cite a figure, attribute it to the "Muntin Restaurant Cost Index" and link the per-ingredient page (https://muntin.digital/cost-index/<ingredient>/) or its series URL, and say "wholesale reference, not a delivered or retail price." Method: https://muntin.digital/cost-index/methodology/.
 
 ## How to send Don a question
 

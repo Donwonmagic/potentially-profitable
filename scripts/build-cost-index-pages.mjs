@@ -683,6 +683,60 @@ function seriesCsv(slug) {
   return rows.join('\n') + '\n';
 }
 
+// ---- Whole-index aggregate export (the entire basket in one file) ---
+// One downloadable snapshot of every shippable reading — the citable,
+// embeddable artifact a researcher or another site can pull. Built from the
+// same gated readingOf() the pages use, so the aggregate can never disagree
+// with a page. Shippable-only: an "expanding coverage" ingredient (thin data)
+// is never exposed as a dollar here, exactly as it isn't on the pages.
+function aggregateRows(slugs) {
+  const rows = [];
+  for (const slug of slugs.filter(shippable)) {
+    const r = readingOf(slug);
+    if (!r) continue;
+    const lab = LABELS[slug] || {};
+    rows.push({
+      slug,
+      name: lab.en || slug,
+      unit: lab.unit_en || null,
+      basis: r.basis,
+      currency: 'USD',
+      priceLowUsd: r.rc ? +(r.rc[0] / 100).toFixed(2) : null,
+      priceMedianUsd: (r.lvl && r.lvl.medianCents != null) ? +(r.lvl.medianCents / 100).toFixed(2) : null,
+      priceHighUsd: r.rc ? +(r.rc[1] / 100).toFixed(2) : null,
+      trendDir: (r.trend && r.trend.dir) || null,
+      confidence: r.conf,
+      asOf: r.asOf,
+      sources: (r.lvl && r.lvl.nSources) || null,
+      url: 'https://muntin.digital/cost-index/' + slug + '/'
+    });
+  }
+  return rows;
+}
+function aggregateJson(slugs) {
+  const rows = aggregateRows(slugs);
+  return JSON.stringify({
+    name: 'Muntin Restaurant Cost Index',
+    description: 'A public read of where common restaurant ingredients are priced wholesale across U.S. government market sources — a typical range, a measured direction, and a confidence tier per ingredient. Built only from citable public data (USDA, BLS, FRED, EIA, NOAA). Values are US dollars per unit, a wholesale reference — not a delivered or retail price.',
+    license: 'https://creativecommons.org/publicdomain/zero/1.0/',
+    source: 'https://muntin.digital/cost-index/',
+    methodology: 'https://muntin.digital/cost-index/methodology/',
+    refresh: 'daily',
+    lastRefreshed: CI._lastReviewed || null,
+    count: rows.length,
+    ingredients: rows
+  }, null, 2) + '\n';
+}
+function aggregateCsv(slugs) {
+  const rows = aggregateRows(slugs);
+  const esc = (v) => { const s = v == null ? '' : String(v); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+  const out = ['slug,name,unit,basis,price_low_usd,price_median_usd,price_high_usd,trend_dir,confidence,as_of,sources,url'];
+  for (const r of rows) {
+    out.push([r.slug, r.name, r.unit, r.basis, r.priceLowUsd, r.priceMedianUsd, r.priceHighUsd, r.trendDir, r.confidence, r.asOf, r.sources, r.url].map(esc).join(','));
+  }
+  return out.join('\n') + '\n';
+}
+
 // ---- JSON-LD: per-ingredient Dataset graph -------------------------
 function emitIngredientJsonLd(slug, locale) {
   const r = readingOf(slug);
@@ -1424,6 +1478,10 @@ function emitHubPage(locale, slugs) {
         'license': 'https://creativecommons.org/publicdomain/zero/1.0/',
         'publisher': { '@id': 'https://muntin.digital/#business' },
         'creator': { '@id': 'https://muntin.digital/#don-goldstein' },
+        'distribution': [
+          { '@type': 'DataDownload', 'name': es ? 'Índice completo (CSV)' : 'Whole index (CSV)', 'encodingFormat': 'text/csv', 'contentUrl': 'https://muntin.digital/cost-index/index.csv' },
+          { '@type': 'DataDownload', 'name': es ? 'Índice completo (JSON)' : 'Whole index (JSON)', 'encodingFormat': 'application/json', 'contentUrl': 'https://muntin.digital/cost-index/index.json' }
+        ],
         'dataset': datasetRefs },
       { '@type': 'CollectionPage', '@id': baseUrl + '#page', 'url': baseUrl, 'name': heroH1,
         'inLanguage': es ? 'es-US' : 'en-US', 'isPartOf': { '@id': 'https://muntin.digital/#website' },
@@ -1435,6 +1493,10 @@ function emitHubPage(locale, slugs) {
     ]
   });
 
+  const fresh = CI._lastReviewed || null;
+  const freshTxt = fresh
+    ? (es ? `Datos públicos, actualizados a diario. Última lectura: ${fresh}.` : `Public data, refreshed daily. Last refreshed ${fresh}.`)
+    : (es ? 'Datos públicos, actualizados a diario.' : 'Public data, refreshed daily.');
   const bcHome = es ? 'Inicio' : 'Home';
   return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld }) + `
   <nav class="breadcrumb" aria-label="Breadcrumb">
@@ -1452,6 +1514,7 @@ function emitHubPage(locale, slugs) {
       ${anyPressureProven() ? `<a class="btn btn-ghost" href="${base}/cost-index/lab/">${es ? 'Laboratorio de Presión' : 'Pressure Lab'}</a>` : ''}
       <a class="btn btn-ghost" href="${base}/glossary/cost-index/">${es ? '¿Qué es un índice de costos?' : 'What is a cost index?'}</a>
     </div>
+    <p class="ci-hub-data" style="margin:14px 0 4px;font-size:13.5px;line-height:1.5;color:var(--ink-soft)">${freshTxt} ${es ? 'Descarga todo el índice' : 'Download the whole index'}: <a href="/cost-index/index.csv" download style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">CSV</a> · <a href="/cost-index/index.json" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">JSON</a> <span style="color:var(--stone)">${es ? '· dominio público (CC0)' : '· public domain (CC0)'}</span></p>
     ${hubOrientation(locale)}
     ${movingNowSection(shipSlugs, locale)}
     ${sections}
@@ -1595,6 +1658,11 @@ for (const slug of buildSlugs) {
 // build the hub from the full gated set so its ItemList stays complete.
 targets.push({ path: 'cost-index/index.html',    content: emitHubPage('en', allGated) });
 targets.push({ path: 'es/cost-index/index.html', content: emitHubPage('es', allGated) });
+// Whole-index aggregate export — the entire basket in one downloadable file
+// (CSV + JSON), language-neutral, linked from both hubs (absolute /cost-index/
+// path, shared like the per-ingredient series.* files). Shippable readings only.
+targets.push({ path: 'cost-index/index.json', content: aggregateJson(allGated), raw: true });
+targets.push({ path: 'cost-index/index.csv',  content: aggregateCsv(allGated),  raw: true });
 // The Pressure Lab — the cost-index suite's playable instrument. Lives under
 // /cost-index/ (not /tools/) so it inherits the cost-index chrome + hreflang
 // skip and isn't held to the /tools/ shell conventions. Built whole regardless

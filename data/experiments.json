@@ -3,12 +3,12 @@
 
   "experiments": {
     "window-cta-copy": {
-      "status": "draft",
+      "status": "running",
       "_status_help": "draft → running → promoted | rolled-back",
       "treatments": ["control", "warmer"],
       "weight": [50, 50],
-      "surfaces": ["/", "/window/"],
-      "startedAt": null,
+      "surfaces": ["/"],
+      "startedAt": "2026-06-17",
       "concludedAt": null,
       "minExposuresPerArm": 200,
       "minConversionDelta": 10,
