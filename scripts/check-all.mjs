@@ -131,6 +131,11 @@ const CHECKS = [
   // suite and scripts/run-article-graphics-tests.mjs for why a
   // wrapper is needed.
   ['Article graphics tests', 'run-article-graphics-tests.mjs'],
+  // AEO — answer-first snippet shape. Flags question-style H2s whose first
+  // paragraph opens with a transition ("Below…", "Empieza por…") instead of
+  // the liftable answer answer engines extract. Warn-first during rollout;
+  // promote to --check once the backlog is clear. See check-snippet-shape.mjs.
+  ['Snippet shape (warn)', 'check-snippet-shape.mjs'],
   // Phase SEO — H2 anchor IDs let AI search engines (Google AI Overview,
   // Perplexity, ChatGPT) deep-link to a specific section instead of the
   // article root. See scripts/inject-h2-anchor-ids.mjs for the slug
