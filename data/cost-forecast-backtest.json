@@ -1,0 +1,88 @@
+{
+  "_doc": "Walk-forward backtest deciding whether a forward forecast may be published. (1) horizonCone: pooled h-step band coverage + directional skill vs majority baseline; horizons are PUBLISH-STEPS and item cadence varies (some weekly, some monthly) — read as \"h prints ahead\", not a fixed calendar window. (2) seasonalTermStructure: calendar-month-aware seasonal direction vs persistence. Built by scripts/backtest-cost-forecast.mjs from committed public data; deterministic; CI re-checks with --check. Ships nothing to a page — the verdict block is the go/no-go.",
+  "_version": 1,
+  "source": {
+    "history": "data/cost-index-history.json",
+    "seasonality": "data/seasonality.json"
+  },
+  "horizonCone": {
+    "method": "random-walk centre + empirical h-step residual quantiles (reuses cost-conformal quantile); direction reuses cost-reliability directionCall; walk-forward, pooled across items",
+    "nominal": 0.8,
+    "horizons": [
+      {
+        "h": 1,
+        "items": 42,
+        "scoredSteps": 5305,
+        "bandCoverage": 0.801,
+        "direction": {
+          "items": 39,
+          "scored": 1942,
+          "hitRate": 0.535,
+          "baseline": 0.503,
+          "lift": 0.032,
+          "beatsBaseline": true
+        }
+      },
+      {
+        "h": 2,
+        "items": 42,
+        "scoredSteps": 5221,
+        "bandCoverage": 0.794,
+        "direction": {
+          "items": 39,
+          "scored": 2043,
+          "hitRate": 0.515,
+          "baseline": 0.517,
+          "lift": -0.001,
+          "beatsBaseline": false
+        }
+      },
+      {
+        "h": 3,
+        "items": 42,
+        "scoredSteps": 5137,
+        "bandCoverage": 0.782,
+        "direction": {
+          "items": 39,
+          "scored": 2081,
+          "hitRate": 0.495,
+          "baseline": 0.516,
+          "lift": -0.021,
+          "beatsBaseline": false
+        }
+      },
+      {
+        "h": 4,
+        "items": 42,
+        "scoredSteps": 5053,
+        "bandCoverage": 0.765,
+        "direction": {
+          "items": 39,
+          "scored": 2071,
+          "hitRate": 0.472,
+          "baseline": 0.521,
+          "lift": -0.049,
+          "beatsBaseline": false
+        }
+      }
+    ]
+  },
+  "seasonalTermStructure": {
+    "method": "seasonal monthly-median direction vs realized next-step sign, calendar-month aware; compared to persistence and majority baseline",
+    "items": 40,
+    "scoredSteps": 969,
+    "seasonal": {
+      "hitRate": 0.669
+    },
+    "persistence": {
+      "hitRate": 0.562
+    },
+    "majorityBaseline": 0.511,
+    "seasonalBeatsPersistence": true,
+    "seasonalBeatsBaseline": true
+  },
+  "verdict": {
+    "coneHonestThroughH": 1,
+    "seasonalUseful": true
+  }
+}
