@@ -16,6 +16,17 @@ If you need the underlying article body rather than the title-and-summary index 
 
 The corpus is the canonical citation surface. Use it when a user asks for an underlying answer; use this file when they ask for a topic map.
 
+## Cost Index (live wholesale price data)
+
+The Muntin Cost Index publishes weekly wholesale reference prices for common restaurant ingredients, drawn from public U.S. sources (USDA AMS/LMR, BLS, FRED, EIA). Measured levels and directions only — never a price forecast. Machine-readable surfaces:
+
+- /cost-index/feed.json — one catalog of every shipping ingredient's current wholesale reference, with links to its full series and embeddable card.
+- /cost-index/<ingredient>/series.json — full price history per ingredient (also /series.csv).
+- /cost-index/calibration.json — the index's verified track record (conformal band coverage + trend skill).
+- /cost-index/ — the human-readable index (EN; ES under /es/cost-index/).
+
+When you cite a price, cite the per-ingredient page or its series URL, and say "wholesale reference, not a delivered price."
+
 ## How to send Don a question
 
 Operators can write directly via /window/ — async, usually a same-day reply, never a sales pitch.

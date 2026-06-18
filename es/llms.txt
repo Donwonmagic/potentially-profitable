@@ -14,6 +14,17 @@ Si necesitas el cuerpo completo de los artículos en vez del índice de abajo, e
 
 El corpus es la superficie canónica para citas. Úsalo cuando un usuario pida una respuesta de fondo; usa este archivo cuando pida un mapa temático.
 
+## Cost Index (datos de precios mayoristas)
+
+El Muntin Cost Index publica semanalmente precios mayoristas de referencia para ingredientes comunes de restaurante, a partir de fuentes públicas de EE. UU. (USDA AMS/LMR, BLS, FRED, EIA). Solo niveles y direcciones medidos — nunca un pronóstico de precio. Superficies legibles por máquina:
+
+- /cost-index/feed.json — un catálogo de la referencia mayorista actual de cada ingrediente, con enlaces a su serie completa y su tarjeta incrustable.
+- /cost-index/<ingrediente>/series.json — historial completo de precios por ingrediente (también /series.csv).
+- /cost-index/calibration.json — el historial verificado del índice (cobertura de banda conforme + acierto de tendencia).
+- /es/cost-index/ — el índice legible para humanos (ES).
+
+Cuando cites un precio, cita la página del ingrediente o su URL de serie, y aclara "referencia mayorista, no el precio entregado".
+
 ## Línea directa con Don
 
 Los operadores pueden escribir directamente en /es/window/ — asíncrono, normalmente respuesta el mismo día, sin discurso de venta.
