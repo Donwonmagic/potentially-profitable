@@ -108,6 +108,12 @@ const CHECKS = [
   // citation snapshots, this script).
   ['Removed slugs',       'check-removed-slugs.mjs'],
   ['Knit coverage',       'check-knit-coverage.mjs',       '--check'],
+  // Topical authority — pillar coverage. Every library/blog article must
+  // belong to a topic pillar (data/library-tags.json topics[0]); off-funnel
+  // generated surfaces are dated-waived. Warn-first during rollout; promote to
+  // --check once the depth floor (>=4 per pillar) is green (information-security
+  // is at 3 today). See scripts/check-pillar-coverage.mjs.
+  ['Pillar coverage (warn)','check-pillar-coverage.mjs'],
   // Phase H.1 — batch-overview quality gate. Every article that's
   // declared as a batch overview in data/library-batches.json gets
   // checked against the synthesis floor (>= 5 H2, >= 3 viz figures
@@ -302,6 +308,12 @@ const CHECKS = [
   ['Glossary hub',        'check-glossary-hub.mjs',         '--check'],
   ['Topic pillar essay (idem)','inject-topic-pillar-essay.mjs','--check'],
   ['Topic page schema (idem)','inject-topic-page-schema.mjs','--check'],
+  // Topical authority — topic (pillar) pages must link their member articles
+  // at the canonical path: 34 of 45 members are namespace:library and live at
+  // /library/<slug>/, not /blog/<slug>/. Also resolves ES card slugs to the ES
+  // counterpart. Post-processor (build-library.mjs, which emits the cards, is
+  // stale/divergent — must not be re-run); --check pins the links in sync.
+  ['Topic card links (idem)','inject-topic-card-links.mjs','--check'],
   ['Hub collection schema (idem)','inject-hub-collection-schema.mjs','--check'],
   ['Author chip (idem)',  'inject-article-author-chip.mjs', '--check'],
   ['Sitemap (idem)',      'build-sitemap.mjs',              '--check'],
