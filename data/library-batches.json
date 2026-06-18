@@ -3,7 +3,7 @@
   "_status": "v2 — 2026-05-30. Now drives course/standalone launches as well as weekly batches via an optional 'type' field ('course' renders a marigold pill + course CTA; default renders the blue 'New this week' batch pill). Add an entry, set 'current_batch' to its key, run scripts/inject-batch-banner.mjs to push the banner across all pages. Old entries stay for reference; only current_batch shows. type:'course' fields: pill_en/es (the pill text), headline_en/es (Fraunces italic line), cta_en/es, overview_en/es (the destination).",
   "_consumed_by": "scripts/inject-batch-banner.mjs (renders the site-wide banner), homepage 'Latest batch' section (manual link to overview), and future scripts/build-library-recent.mjs may use the batch metadata to badge articles that belong to it.",
   "_cadence": "One batch per week, Sun 8pm ET → Mon 9am ET publish window. expires = date + 14 days (banner shows for two weeks; after that, the next batch should already be in place and current_batch flipped). If a week is genuinely quiet, leave the prior batch's entry as current — the cadence is editorial, not robotic.",
-  "current_batch": "menu-inflation-2026",
+  "current_batch": "fathers-day-2026",
   "batches": {
     "course-open-the-doors": {
       "key": "course-open-the-doors",
@@ -71,6 +71,25 @@
       "blurb_es": "Lo que el IPC de mayo 2026 significa para tu menú — la carne de res sube 12.1%, el huevo baja, y cómo fijar precios.",
       "overview_en": "/blog/restaurant-menu-inflation-2026/",
       "overview_es": "/es/blog/inflacion-de-menu-de-restaurante-2026/",
+      "cta_en": "Read the dispatch",
+      "cta_es": "Leer el informe",
+      "article_count": 1
+    },
+    "fathers-day-2026": {
+      "key": "fathers-day-2026",
+      "type": "dispatch",
+      "date": "2026-06-18",
+      "expires": "2026-06-22",
+      "pill_en": "New dispatch",
+      "pill_es": "Nuevo informe",
+      "label_en": "New dispatch · Get found for Father’s Day weekend",
+      "label_es": "Nuevo informe · Que te encuentren para el Día del Padre",
+      "headline_en": "It’s Father’s Day weekend. Can a searching family find you?",
+      "headline_es": "Es el fin de semana del Día del Padre. ¿Una familia que busca puede encontrarte?",
+      "blurb_en": "The searches are happening now. Four free fixes to be the place they find — and book — before Sunday.",
+      "blurb_es": "Las búsquedas están ocurriendo ahora. Cuatro arreglos gratis para ser el lugar que encuentran — y reservan — antes del domingo.",
+      "overview_en": "/blog/get-found-fathers-day-weekend-2026/",
+      "overview_es": "/es/blog/dia-del-padre-que-te-encuentren-2026/",
       "cta_en": "Read the dispatch",
       "cta_es": "Leer el informe",
       "article_count": 1
