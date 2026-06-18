@@ -404,6 +404,21 @@ const CHECKS = [
   ['Cost-index calibration report self-test','build-cost-index-calibration-report.mjs','--self-test'],
   ['Cost-index calibration report sync','build-cost-index-calibration-report.mjs','--check'],
   ['Cost-index calibration page sentinels','inject-cost-index-calibration.mjs','--check'],
+  // Forecast backtest — a research artifact (ships to no page): proves how far a forward
+  // cone may honestly reach (directional skill dies after 1 step) and whether the seasonal
+  // term-structure direction carries signal momentum doesn't. Deterministic; --check pins it.
+  ['Cost-index forecast backtest self-test','backtest-cost-forecast.mjs','--self-test'],
+  ['Cost-index forecast backtest sync','backtest-cost-forecast.mjs','--check'],
+  // Embeddable wholesale-reference card (idea #3) — a self-contained, noindex iframe
+  // fragment built from the published series.json; --check keeps it in lockstep with the
+  // feed so an embedded card can never drift from the page that produced it.
+  ['Cost-index embed self-test','build-cost-index-embed.mjs','--self-test'],
+  ['Cost-index embed sync','build-cost-index-embed.mjs','--check'],
+  // Data feed (idea #3, machine half) — one machine-readable catalog of every shipping
+  // ingredient's current wholesale reference, built from the per-ingredient series.json;
+  // --check keeps the catalog in lockstep with the feeds it summarizes.
+  ['Cost-index data feed self-test','build-cost-index-feed.mjs','--self-test'],
+  ['Cost-index data feed sync','build-cost-index-feed.mjs','--check'],
   // Staleness penalty — a complete read still has to be CURRENT. Caps confidence by
   // how overdue the freshest contributing print is for its source's cadence (old ≠
   // overdue: a monthly series a month old reads fresh); fails if any published label
