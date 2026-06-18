@@ -407,6 +407,11 @@ const CHECKS = [
   // term-structure direction carries signal momentum doesn't. Deterministic; --check pins it.
   ['Cost-index forecast backtest self-test','backtest-cost-forecast.mjs','--self-test'],
   ['Cost-index forecast backtest sync','backtest-cost-forecast.mjs','--check'],
+  // Embeddable wholesale-reference card (idea #3) — a self-contained, noindex iframe
+  // fragment built from the published series.json; --check keeps it in lockstep with the
+  // feed so an embedded card can never drift from the page that produced it.
+  ['Cost-index embed self-test','build-cost-index-embed.mjs','--self-test'],
+  ['Cost-index embed sync','build-cost-index-embed.mjs','--check'],
   // Staleness penalty — a complete read still has to be CURRENT. Caps confidence by
   // how overdue the freshest contributing print is for its source's cadence (old ≠
   // overdue: a monthly series a month old reads fresh); fails if any published label
