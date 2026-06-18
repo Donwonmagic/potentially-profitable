@@ -1,7 +1,7 @@
 {
   "_doc": "Machine-readable methodology statement for the Muntin Cost Index — the versioned, citable specification a reader (or auditor, or LLM) can resolve. A faithful mirror of /cost-index/methodology/; the human page renders the version and change log from this file via sentinels (scripts/build-cost-index-methodology.mjs --check keeps them in lockstep). No claim here that is not on the page.",
   "_version": 1,
-  "methodologyVersion": "1.1.0",
+  "methodologyVersion": "1.2.0",
   "effectiveDate": "2026-06-18",
   "lastReviewed": "2026-06-14",
   "page": "https://muntin.digital/cost-index/methodology/",
@@ -31,6 +31,7 @@
     "pressure": { "anchor": "#pressure", "summary": "Leading-indicator overlay published as inferred direction only, never a price, and only once a rule clears a hold-until-proven bar." },
     "revisionPolicy": { "anchor": "#revision", "summary": "Source revisions are re-vendored with a new vintage and recorded in the public revisions ledger; corrections that change a published reading are logged; discontinued series go absent, never frozen." },
     "governance": { "anchor": "#governance", "summary": "Methodology versioned with the code; this statement is the machine mirror. Fact discipline is absolute: every figure is a published source value, a labeled derived estimate, or labeled illustrative. Reproducibility is the citable asset." },
+    "reproduce": { "anchor": "#reproduce", "summary": "A worked example (ribeye, from USDA LMR report 2453, weighted-average reducer, $/cwt→$/lb) showing how anyone can reconstruct a published reading from public data and the open, deterministic build." },
     "independence": { "anchor": "#independence", "summary": "Public government data only; no submitters, no paid placements, no sponsorship; firewalled from Muntin Ledger — the pipeline has no input path for customer, invoice, or delivered-price data, asserted by a build check." },
     "limitations": { "anchor": "#limitations", "summary": "Public-data ceiling on poultry/egg granularity and daily seafood; derived-method lag; yield ranges; seasonal thinness; no forecast." }
   },
@@ -46,6 +47,15 @@
     "feed": "https://muntin.digital/cost-index/feed.json"
   },
   "changelog": [
+    {
+      "version": "1.2.0",
+      "date": "2026-06-18",
+      "change": {
+        "en": "Added a worked reproducibility example (#reproduce): how to reconstruct ribeye's published wholesale reference from USDA LMR report 2453. The quoted figure is kept in sync with the live feed by a build check. No change to how any reading is assessed.",
+        "es": "Se añadió un ejemplo trabajado de reproducibilidad (#reproduce): cómo reconstruir la referencia mayorista publicada del ribeye a partir del reporte 2453 del USDA LMR. La cifra citada se mantiene sincronizada con el feed en vivo mediante un control de build. Sin cambios en cómo se evalúa ninguna lectura."
+      },
+      "affectsPublishedReadings": false
+    },
     {
       "version": "1.1.0",
       "date": "2026-06-18",

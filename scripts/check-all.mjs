@@ -430,6 +430,10 @@ const CHECKS = [
   // never customer/invoice/delivered-price (the firewall behind the #independence claim).
   ['Cost-index independence self-test','check-cost-index-independence.mjs','--self-test'],
   ['Cost-index independence','check-cost-index-independence.mjs',''],
+  // Reproducibility worked example — keeps the #reproduce figure pinned to the live feed
+  // so the "rebuild our number" recipe can never quote a stale value.
+  ['Cost-index reproduce self-test','build-cost-index-reproduce.mjs','--self-test'],
+  ['Cost-index reproduce sync','build-cost-index-reproduce.mjs','--check'],
   // Staleness penalty — a complete read still has to be CURRENT. Caps confidence by
   // how overdue the freshest contributing print is for its source's cadence (old ≠
   // overdue: a monthly series a month old reads fresh); fails if any published label
