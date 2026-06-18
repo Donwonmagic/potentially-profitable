@@ -1,0 +1,494 @@
+{
+  "_doc": "Quarterly plate-cost drift — derived-with-stated-method from committed public Cost Index history (data/cost-index-history.json; USDA AMS/LMR etc.). Tests the claim that independent plate margins drift measurably between recostings. ingredientDrift = monthly-median wholesale % change over the quarter per ingredient (scale-invariant; all units kept). plateArchetypes = the INDEXED COMPONENT (protein+fat only, not a full dish) of ILLUSTRATIVE archetype plates with standard culinary portions (not operator data), recosted start vs end; mis-scaled levels (>$60/lb) and non-bridgeable units are excluded and counted, never guessed — so we report component cost & its drift, never a food-cost %. Window is the latest quarter with >=90% ingredient coverage. Deterministic; derived from the data, not wall-clock. Ships to no page. Built by scripts/build-cost-plate-drift.mjs; CI re-checks with --check.",
+  "_version": 1,
+  "source": {
+    "history": "data/cost-index-history.json",
+    "labels": "data/cost-index-labels.json"
+  },
+  "method": "per-ingredient pct = (median(to-month) - median(from-month)) / median(from-month); component cost via tools/_shared/portion-bridge.js quoteAtPortion at each endpoint; implausible per-lb levels (>$60) excluded",
+  "asOf": "2026-06-14T18:32:30.355Z",
+  "window": {
+    "from": "2026-01-01",
+    "to": "2026-04-01",
+    "months": 3
+  },
+  "ingredientDrift": {
+    "count": 53,
+    "medianPct": 3.53,
+    "p25Pct": -5.95,
+    "p75Pct": 14.31,
+    "shareOver5pct": 0.679,
+    "maxRiser": {
+      "slug": "tomato",
+      "pct": 235.17
+    },
+    "maxFaller": {
+      "slug": "eggs",
+      "pct": -29.82
+    },
+    "proteins": {
+      "count": 20,
+      "medianPct": 5.13
+    },
+    "byIngredient": [
+      {
+        "slug": "tomato",
+        "fromCents": 1635,
+        "toCents": 5480,
+        "pct": 235.17
+      },
+      {
+        "slug": "watermelon",
+        "fromCents": 740,
+        "toCents": 1870,
+        "pct": 152.7
+      },
+      {
+        "slug": "corn-on-the-cob",
+        "fromCents": 2295,
+        "toCents": 5720,
+        "pct": 149.24
+      },
+      {
+        "slug": "bell-pepper",
+        "fromCents": 2080,
+        "toCents": 3860,
+        "pct": 85.58
+      },
+      {
+        "slug": "chicken-breast",
+        "fromCents": 129,
+        "toCents": 170,
+        "pct": 31.78
+      },
+      {
+        "slug": "whole-crab",
+        "fromCents": 756,
+        "toCents": 994,
+        "pct": 31.48
+      },
+      {
+        "slug": "blueberry",
+        "fromCents": 3250,
+        "toCents": 4260,
+        "pct": 31.08
+      },
+      {
+        "slug": "butter",
+        "fromCents": 143,
+        "toCents": 185,
+        "pct": 29.37
+      },
+      {
+        "slug": "carrot",
+        "fromCents": 2904,
+        "toCents": 3510,
+        "pct": 20.87
+      },
+      {
+        "slug": "raspberry",
+        "fromCents": 1965,
+        "toCents": 2370,
+        "pct": 20.61
+      },
+      {
+        "slug": "basil",
+        "fromCents": 922,
+        "toCents": 1100,
+        "pct": 19.31
+      },
+      {
+        "slug": "whole-halibut",
+        "fromCents": 787,
+        "toCents": 931,
+        "pct": 18.3
+      },
+      {
+        "slug": "cauliflower",
+        "fromCents": 4700,
+        "toCents": 5500,
+        "pct": 17.02
+      },
+      {
+        "slug": "vegetable-oil",
+        "fromCents": 27113,
+        "toCents": 30994,
+        "pct": 14.31
+      },
+      {
+        "slug": "cheddar-cheese",
+        "fromCents": 142,
+        "toCents": 162,
+        "pct": 13.73
+      },
+      {
+        "slug": "clams",
+        "fromCents": 271,
+        "toCents": 306,
+        "pct": 12.92
+      },
+      {
+        "slug": "broccoli",
+        "fromCents": 3523,
+        "toCents": 3865,
+        "pct": 9.72
+      },
+      {
+        "slug": "avocado",
+        "fromCents": 3580,
+        "toCents": 3830,
+        "pct": 6.98
+      },
+      {
+        "slug": "beef-tenderloin",
+        "fromCents": 1230,
+        "toCents": 1302,
+        "pct": 5.85
+      },
+      {
+        "slug": "ribeye",
+        "fromCents": 1230,
+        "toCents": 1302,
+        "pct": 5.85
+      },
+      {
+        "slug": "short-rib",
+        "fromCents": 1230,
+        "toCents": 1302,
+        "pct": 5.85
+      },
+      {
+        "slug": "whole-trout",
+        "fromCents": 376,
+        "toCents": 396,
+        "pct": 5.32
+      },
+      {
+        "slug": "ground-pork",
+        "fromCents": 112,
+        "toCents": 117,
+        "pct": 4.93
+      },
+      {
+        "slug": "pork-shoulder",
+        "fromCents": 112,
+        "toCents": 117,
+        "pct": 4.93
+      },
+      {
+        "slug": "banana",
+        "fromCents": 2050,
+        "toCents": 2150,
+        "pct": 4.88
+      },
+      {
+        "slug": "asparagus",
+        "fromCents": 4150,
+        "toCents": 4300,
+        "pct": 3.61
+      },
+      {
+        "slug": "salmon-fillet",
+        "fromCents": 539,
+        "toCents": 558,
+        "pct": 3.53
+      },
+      {
+        "slug": "salmon-skin-on-fillet",
+        "fromCents": 539,
+        "toCents": 558,
+        "pct": 3.53
+      },
+      {
+        "slug": "pork-loin",
+        "fromCents": 87,
+        "toCents": 90,
+        "pct": 3.45
+      },
+      {
+        "slug": "ground-beef",
+        "fromCents": 675,
+        "toCents": 690,
+        "pct": 2.22
+      },
+      {
+        "slug": "romaine-lettuce",
+        "fromCents": 3123,
+        "toCents": 3190,
+        "pct": 2.15
+      },
+      {
+        "slug": "squid",
+        "fromCents": 262,
+        "toCents": 266,
+        "pct": 1.53
+      },
+      {
+        "slug": "whole-turkey",
+        "fromCents": 173,
+        "toCents": 175,
+        "pct": 0.87
+      },
+      {
+        "slug": "button-mushroom",
+        "fromCents": 1475,
+        "toCents": 1475,
+        "pct": 0
+      },
+      {
+        "slug": "spinach",
+        "fromCents": 2200,
+        "toCents": 2200,
+        "pct": 0
+      },
+      {
+        "slug": "sweet-potato",
+        "fromCents": 2150,
+        "toCents": 2150,
+        "pct": 0
+      },
+      {
+        "slug": "kale",
+        "fromCents": 3425,
+        "toCents": 3350,
+        "pct": -2.19
+      },
+      {
+        "slug": "shrimp",
+        "fromCents": 727,
+        "toCents": 702,
+        "pct": -3.44
+      },
+      {
+        "slug": "cilantro",
+        "fromCents": 3075,
+        "toCents": 2925,
+        "pct": -4.88
+      },
+      {
+        "slug": "pear",
+        "fromCents": 4200,
+        "toCents": 3950,
+        "pct": -5.95
+      },
+      {
+        "slug": "apple",
+        "fromCents": 4150,
+        "toCents": 3900,
+        "pct": -6.02
+      },
+      {
+        "slug": "octopus",
+        "fromCents": 457,
+        "toCents": 429,
+        "pct": -6.13
+      },
+      {
+        "slug": "shrimp-head-on",
+        "fromCents": 399,
+        "toCents": 373,
+        "pct": -6.52
+      },
+      {
+        "slug": "shrimp-pd",
+        "fromCents": 399,
+        "toCents": 373,
+        "pct": -6.52
+      },
+      {
+        "slug": "onion",
+        "fromCents": 2735,
+        "toCents": 2410,
+        "pct": -11.88
+      },
+      {
+        "slug": "scallops",
+        "fromCents": 1005,
+        "toCents": 865,
+        "pct": -13.93
+      },
+      {
+        "slug": "garlic",
+        "fromCents": 7200,
+        "toCents": 6150,
+        "pct": -14.58
+      },
+      {
+        "slug": "grapefruit",
+        "fromCents": 4000,
+        "toCents": 3400,
+        "pct": -15
+      },
+      {
+        "slug": "whole-chicken",
+        "fromCents": 108,
+        "toCents": 92,
+        "pct": -15.28
+      },
+      {
+        "slug": "cantaloupe",
+        "fromCents": 2788,
+        "toCents": 2300,
+        "pct": -17.5
+      },
+      {
+        "slug": "red-potato",
+        "fromCents": 3430,
+        "toCents": 2700,
+        "pct": -21.28
+      },
+      {
+        "slug": "russet-potato",
+        "fromCents": 1763,
+        "toCents": 1305,
+        "pct": -25.96
+      },
+      {
+        "slug": "eggs",
+        "fromCents": 86,
+        "toCents": 60,
+        "pct": -29.82
+      }
+    ]
+  },
+  "plateArchetypes": [
+    {
+      "name": "Pan-seared ribeye",
+      "illustrative": true,
+      "indexedComponentOnly": true,
+      "coveredLines": 2,
+      "totalLines": 2,
+      "componentCostFrom": 7.3247,
+      "componentCostTo": 7.7744,
+      "driftPct": 6.14,
+      "drivers": [
+        {
+          "ingredient": "Ribeye",
+          "slug": "ribeye",
+          "covered": true,
+          "perPortionFrom": 7.2353,
+          "perPortionTo": 7.6588
+        },
+        {
+          "ingredient": "Butter",
+          "slug": "butter",
+          "covered": true,
+          "perPortionFrom": 0.0894,
+          "perPortionTo": 0.1156
+        }
+      ]
+    },
+    {
+      "name": "Roast chicken breast",
+      "illustrative": true,
+      "indexedComponentOnly": true,
+      "coveredLines": 2,
+      "totalLines": 2,
+      "componentCostFrom": 0.5539,
+      "componentCostTo": 0.7289,
+      "driftPct": 31.59,
+      "drivers": [
+        {
+          "ingredient": "Chicken breast",
+          "slug": "chicken-breast",
+          "covered": true,
+          "perPortionFrom": 0.5092,
+          "perPortionTo": 0.6711
+        },
+        {
+          "ingredient": "Butter",
+          "slug": "butter",
+          "covered": true,
+          "perPortionFrom": 0.0447,
+          "perPortionTo": 0.0578
+        }
+      ]
+    },
+    {
+      "name": "Cheeseburger",
+      "illustrative": true,
+      "indexedComponentOnly": true,
+      "coveredLines": 2,
+      "totalLines": 2,
+      "componentCostFrom": 2.62,
+      "componentCostTo": 2.6884,
+      "driftPct": 2.61,
+      "drivers": [
+        {
+          "ingredient": "Ground beef",
+          "slug": "ground-beef",
+          "covered": true,
+          "perPortionFrom": 2.5313,
+          "perPortionTo": 2.5875
+        },
+        {
+          "ingredient": "Cheddar",
+          "slug": "cheddar-cheese",
+          "covered": true,
+          "perPortionFrom": 0.0887,
+          "perPortionTo": 0.1009
+        }
+      ]
+    },
+    {
+      "name": "Pulled pork",
+      "illustrative": true,
+      "indexedComponentOnly": true,
+      "coveredLines": 2,
+      "totalLines": 2,
+      "componentCostFrom": 0.9515,
+      "componentCostTo": 1.0039,
+      "driftPct": 5.51,
+      "drivers": [
+        {
+          "ingredient": "Pork shoulder",
+          "slug": "pork-shoulder",
+          "covered": true,
+          "perPortionFrom": 0.9292,
+          "perPortionTo": 0.975
+        },
+        {
+          "ingredient": "Butter",
+          "slug": "butter",
+          "covered": true,
+          "perPortionFrom": 0.0223,
+          "perPortionTo": 0.0289
+        }
+      ]
+    },
+    {
+      "name": "Shrimp scampi",
+      "illustrative": true,
+      "indexedComponentOnly": true,
+      "coveredLines": 2,
+      "totalLines": 2,
+      "componentCostFrom": 3.2968,
+      "componentCostTo": 3.2127,
+      "driftPct": -2.55,
+      "drivers": [
+        {
+          "ingredient": "Shrimp",
+          "slug": "shrimp",
+          "covered": true,
+          "perPortionFrom": 3.2074,
+          "perPortionTo": 3.0971
+        },
+        {
+          "ingredient": "Butter",
+          "slug": "butter",
+          "covered": true,
+          "perPortionFrom": 0.0894,
+          "perPortionTo": 0.1156
+        }
+      ]
+    }
+  ],
+  "headline": {
+    "windowMonths": 3,
+    "medianIngredientPct": 3.53,
+    "shareOver5pct": 0.679,
+    "proteinMedianPct": 5.13,
+    "archetypeComponentMedianDriftPct": 5.51,
+    "archetypesCovered": 5
+  }
+}

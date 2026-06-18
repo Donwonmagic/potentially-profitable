@@ -431,6 +431,11 @@ const CHECKS = [
   // up automatically by the Unit tests step.
   ['Cost-index anomaly log self-test','build-cost-anomaly-log.mjs','--self-test'],
   ['Cost-index anomaly log sync','build-cost-anomaly-log.mjs','--check'],
+  // Plate-cost drift (truth-discovery for Live Plate Margin) — quantifies how much
+  // a protein-forward plate's indexed component drifts over the latest fully-covered
+  // quarter, derived-with-stated-method from the deep history; ships to no page.
+  ['Cost-index plate-cost drift self-test','build-cost-plate-drift.mjs','--self-test'],
+  ['Cost-index plate-cost drift sync','build-cost-plate-drift.mjs','--check'],
   // Embeddable wholesale-reference card (idea #3) — a self-contained, noindex iframe
   // fragment built from the published series.json; --check keeps it in lockstep with the
   // feed so an embedded card can never drift from the page that produced it.

@@ -117,6 +117,40 @@ months while wholesale moves far faster than menus (the lag above), then indepen
 plate margins should drift measurably *between* recostings — muntin can quantify that
 per-quarter drift from market data alone and publish it first.
 
+## Discovered: quarterly plate-cost drift (derived; muntin-first)
+
+Measured by `scripts/build-cost-plate-drift.mjs` → `data/cost-plate-drift.json`,
+**derived-with-stated-method** from the committed Cost Index deep history
+(`data/cost-index-history.json`, USDA AMS/LMR etc.). Deterministic; window is the
+latest quarter with ≥90% ingredient coverage. *These are derived market figures, not
+operator data; they move as the index refreshes. Confidence: medium — directional,
+on a dataset with some known placeholder/mis-scaled entries (handled, see caveats).*
+
+**The finding (window 2026-01 → 2026-04, 53 ingredients):**
+- Median ingredient drift **+3.5%**, but the spread is wide (p25/p75 **−6.0% / +14.3%**).
+- **~68% of tracked wholesale ingredients moved more than 5%** in the single quarter —
+  i.e. a menu priced a quarter ago is already off on roughly two-thirds of its inputs.
+- Proteins (20 bridgeable) moved a median **+5.1%**. Extremes were real and clean
+  (tomato +235% seasonal; eggs −30%).
+- Indexed-component cost of illustrative protein-forward plates drifted **−2.6% to
+  +31.6%** (median **+5.5%**) — chicken-breast plates moved most (+32%), shrimp eased.
+
+**This tests the claim and supports it:** plate cost drifts materially within one
+quarter from market moves alone — the case for *automatic* recost over a twice-a-year
+manual pass.
+
+**Honesty caveats (flag-don't-fabricate):**
+- Plate archetypes measure ONLY the indexed protein+fat component (not a full recipe),
+  so they carry **no food-cost %** — just component cost and its drift.
+- The build excludes mis-scaled levels (e.g. `vegetable-oil` reads ~$290/"lb", a
+  non-lb basis mislabeled) via a >$60/lb guard, and avoids deep-history placeholder
+  clones (`short-rib`/`beef-tenderloin` are byte-identical to `ribeye`). These are
+  Cost Index **data-quality issues to fix upstream**; until then the figures are
+  directional. Endpoints use each month's **median** to avoid sub-monthly peaks.
+- **Out of scope (follow-up):** publishing this to the public weekly dispatch / a blog
+  post — that crosses the article-graphics + audio + locale-parity gates and needs its
+  own pass with inline `<details class="cite">` method drawers.
+
 ## The category thesis
 
 > **muntin is the Bloomberg terminal of restaurant costs — the honest, composable
