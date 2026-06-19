@@ -447,6 +447,10 @@ const CHECKS = [
   // --check keeps it in lockstep with the data.
   ['Cost-index data-quality audit self-test','build-cost-index-audit.mjs','--self-test'],
   ['Cost-index data-quality audit sync','build-cost-index-audit.mjs','--check'],
+  // Regression GATE — fails CI if a NEW clone bug or implausible level appears
+  // beyond the dated baseline in build-cost-index-audit.mjs (HISTORICAL_WAIVERS
+  // idiom). Known issues (beef trio, vegetable-oil) are baselined and pass.
+  ['Cost-index data-quality gate','build-cost-index-audit.mjs','--gate'],
   // Embeddable wholesale-reference card (idea #3) — a self-contained, noindex iframe
   // fragment built from the published series.json; --check keeps it in lockstep with the
   // feed so an embedded card can never drift from the page that produced it.

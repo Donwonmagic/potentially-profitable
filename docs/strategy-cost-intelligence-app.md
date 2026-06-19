@@ -193,6 +193,14 @@ is the standing triage list; `data/cost-index-proxies.json` is the authoritative
 independence map. *No vendored values or `verified` flags were touched — these are
 surfacing artifacts for the owner's `--verify`/`--flip` workflow.*
 
+**Now self-enforcing (regression gate).** `build-cost-index-audit.mjs --gate` (wired into
+CI) fails the build if a **new** unexplained clone or implausible per-lb level appears
+beyond a dated baseline (`KNOWN_UNEXPLAINED_CLONES` / `KNOWN_IMPLAUSIBLE_LEVELS`, the
+repo's `HISTORICAL_WAIVERS` idiom). The two known defects are baselined (pass today);
+the gate warns to prune a baseline entry once the upstream fix lands. So the discovery
+becomes a standing guarantee: the Cost Index can't quietly regress with new clone bugs or
+mis-scales.
+
 ## The category thesis
 
 > **muntin is the Bloomberg terminal of restaurant costs — the honest, composable

@@ -54,6 +54,16 @@ const REFERENCES = {
 };
 const DEV_LO = 0.5, DEV_HI = 2.0;
 
+// Documented baseline (dated, with the fix) — the gate fails only on NEW defects
+// beyond these, like the repo's HISTORICAL_WAIVERS idiom. Prune an entry once the
+// upstream pipeline fixes it (the gate warns when a baseline entry is gone).
+const KNOWN_UNEXPLAINED_CLONES = {
+  'beef-tenderloin|ribeye|short-rib': '2026-06-19 — LMR-2453 maps these to distinct commodities (Ribeye / Butt Tender / Short Rib) but the vendored history is identical. Fix: populate tenderloin & short-rib from their mapped commodities.'
+};
+const KNOWN_IMPLAUSIBLE_LEVELS = {
+  'vegetable-oil': '2026-06-19 — PPI index value carried as a cents level (~$350/"lb"); registry basis=index. Fix: publish vegetable-oil directional-only (no $-level).'
+};
+
 function unitOf(labels, k) {
   const e = labels[k];
   return (e && (e.unit_en || e.unit)) || null;
@@ -173,6 +183,31 @@ function build() {
 function main() {
   const report = build();
   const json = JSON.stringify(report, null, 2) + '\n';
+
+  if (process.argv.includes('--gate')) {
+    if (report.error) { console.error('✗ cost-index quality gate: inputs missing'); process.exit(1); }
+    const cloneKey = (c) => c.members.join('|');
+    const bugs = report.clones.filter((c) => c.classification === 'unexplained-bug');
+    const newBugs = bugs.filter((c) => !KNOWN_UNEXPLAINED_CLONES[cloneKey(c)]);
+    const newImpl = report.implausibleLevels.filter((x) => !KNOWN_IMPLAUSIBLE_LEVELS[x.slug]);
+
+    // Warn (don't fail) when a baseline entry no longer appears — fixed upstream, prune it.
+    const presentClones = new Set(bugs.map(cloneKey));
+    const presentImpl = new Set(report.implausibleLevels.map((x) => x.slug));
+    Object.keys(KNOWN_UNEXPLAINED_CLONES).filter((k) => !presentClones.has(k))
+      .forEach((k) => console.log('  ⚠ baseline clone resolved — prune KNOWN_UNEXPLAINED_CLONES: ' + k));
+    Object.keys(KNOWN_IMPLAUSIBLE_LEVELS).filter((k) => !presentImpl.has(k))
+      .forEach((k) => console.log('  ⚠ baseline level resolved — prune KNOWN_IMPLAUSIBLE_LEVELS: ' + k));
+
+    if (newBugs.length || newImpl.length) {
+      newBugs.forEach((c) => console.error('  ✗ NEW unexplained clone (distinct sources, identical history): [' + c.members.join(', ') + ']'));
+      newImpl.forEach((x) => console.error('  ✗ NEW implausible per-lb level: ' + x.slug + ' $' + x.lastUsd));
+      console.error('✗ cost-index quality gate: FAIL — data defect(s) beyond the documented baseline.');
+      process.exit(1);
+    }
+    console.log(`✓ cost-index quality gate: OK — ${presentClones.size} known clone bug(s), ${presentImpl.size} known implausible level(s), all baselined.`);
+    return;
+  }
 
   if (process.argv.includes('--self-test')) {
     const s = report.summary || {};
