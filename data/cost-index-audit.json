@@ -1,10 +1,11 @@
 {
-  "_doc": "Critical data-quality audit of the Cost Index deep history (data/cost-index-history.json), reconciled against registry LEVEL provenance (data/cost-index-proxies.json). Surfaces (1) clone clusters (byte-identical series) CLASSIFIED as documented-proxy (same registry source — expected), index-no-level (directional, no $-level), or unexplained-bug (DISTINCT registry sources that should not be identical); (2) implausible per-lb levels vs an expert-grounded band (annotated with registry level-basis); (3) index levels deviating >2x/<0.5x from a hard USDA/CME wholesale reference. Bands + references grounded in data/sourced-claims.json #usda_wholesale_protein_oil_refs_2026 (directional wholesale, not delivered). Surfacing report for UPSTREAM triage — does not fail CI on findings; --check only keeps it in lockstep. Deterministic. Built by scripts/build-cost-index-audit.mjs.",
+  "_doc": "Critical data-quality audit of the Cost Index deep history (data/cost-index-history.json), reconciled against registry LEVEL provenance (data/cost-index-proxies.json) AND the current published level (data/cost-index.json). Clone clusters (byte-identical archive series) are CLASSIFIED as documented-proxy (same registry source — expected), index-no-level (directional), history-archive-stale (distinct sources, archive cloned but the LIVE level is distinct & fine → re-vendor the archive only; not live-facing), or unexplained-bug (live level ALSO cloned — a real live-facing bug). Also: implausible per-lb levels vs an expert-grounded band, and index levels deviating >2x/<0.5x from a USDA/CME reference. Bands/refs grounded in data/sourced-claims.json #usda_wholesale_protein_oil_refs_2026. Surfacing report for UPSTREAM triage; --check keeps it in lockstep. Deterministic. Built by scripts/build-cost-index-audit.mjs.",
   "_version": 1,
   "source": {
     "history": "data/cost-index-history.json",
     "labels": "data/cost-index-labels.json",
-    "proxies": "data/cost-index-proxies.json"
+    "proxies": "data/cost-index-proxies.json",
+    "live": "data/cost-index.json"
   },
   "grounding": "data/sourced-claims.json#usda_wholesale_protein_oil_refs_2026",
   "asOf": "2026-06-14T18:32:30.355Z",
@@ -17,11 +18,12 @@
     "cloneClusters": 4,
     "clonedIngredients": 9,
     "clonesByClass": {
-      "unexplained-bug": 1,
+      "history-archive-stale": 1,
       "documented-proxy": 2,
       "index-no-level": 1
     },
-    "unexplainedBugs": 1,
+    "unexplainedBugs": 0,
+    "archiveStale": 1,
     "implausibleLevels": 1,
     "referenceDeviations": 1
   },
@@ -32,10 +34,15 @@
         "ribeye",
         "short-rib"
       ],
-      "classification": "unexplained-bug",
+      "classification": "history-archive-stale",
       "lastCents": 1280,
+      "liveLevels": {
+        "beef-tenderloin": 1504,
+        "ribeye": 1277,
+        "short-rib": 575
+      },
       "points": 36,
-      "note": "identical series, but the registry maps these to DISTINCT level sources — the vendored history should differ. Real data bug to fix upstream."
+      "note": "the deep ARCHIVE is a clone of another series, but the CURRENT published level is distinct and fine — only the deep history needs re-vendoring (affects backtest/drift/seasonality; plate-cost-drift already collapses it). Not live-facing."
     },
     {
       "members": [
@@ -44,6 +51,10 @@
       ],
       "classification": "documented-proxy",
       "lastCents": 131,
+      "liveLevels": {
+        "ground-pork": null,
+        "pork-shoulder": 118
+      },
       "points": 158,
       "note": "identical series, and the registry draws all members from one source — an expected proxy; collapse to one for independence."
     },
@@ -54,6 +65,10 @@
       ],
       "classification": "documented-proxy",
       "lastCents": 558,
+      "liveLevels": {
+        "salmon-fillet": 558,
+        "salmon-skin-on-fillet": 558
+      },
       "points": 9,
       "note": "identical series, and the registry draws all members from one source — an expected proxy; collapse to one for independence."
     },
@@ -64,6 +79,10 @@
       ],
       "classification": "index-no-level",
       "lastCents": 373,
+      "liveLevels": {
+        "shrimp-head-on": 11593,
+        "shrimp-pd": 11593
+      },
       "points": 10,
       "note": "identical series, but these are index-basis (directional) — no $-level should be published anyway."
     }

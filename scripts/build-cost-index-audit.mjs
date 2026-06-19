@@ -54,14 +54,18 @@ const REFERENCES = {
 };
 const DEV_LO = 0.5, DEV_HI = 2.0;
 
-// Documented baseline (dated, with the fix) — the gate fails only on NEW defects
+// Documented baselines (dated, with the fix) — the gate fails only on NEW defects
 // beyond these, like the repo's HISTORICAL_WAIVERS idiom. Prune an entry once the
 // upstream pipeline fixes it (the gate warns when a baseline entry is gone).
-const KNOWN_UNEXPLAINED_CLONES = {
-  'beef-tenderloin|ribeye|short-rib': '2026-06-19 — LMR-2453 maps these to distinct commodities (Ribeye / Butt Tender / Short Rib) but the vendored history is identical. Fix: populate tenderloin & short-rib from their mapped commodities.'
-};
+// LIVE-FACING (hard fail): the current published level is wrong/cloned. None today.
+const KNOWN_UNEXPLAINED_CLONES = {};
 const KNOWN_IMPLAUSIBLE_LEVELS = {
   'vegetable-oil': '2026-06-19 — PPI index value carried as a cents level (~$350/"lb"); registry basis=index. Fix: publish vegetable-oil directional-only (no $-level).'
+};
+// ARCHIVE-ONLY (warn): the deep history is cloned but the live level is distinct &
+// fine — re-vendor the archive; not user-facing. plate-cost-drift already collapses these.
+const KNOWN_ARCHIVE_STALE_CLONES = {
+  'beef-tenderloin|ribeye|short-rib': '2026-06-19 — deep archive cloned to ribeye, but live levels are distinct (tenderloin ~$15.04, short-rib ~$5.75, ribeye ~$12.77). Fix: re-vendor the deep history for tenderloin & short-rib.'
 };
 
 function unitOf(labels, k) {
@@ -81,17 +85,36 @@ function build() {
   const slugs = Object.keys(H).sort();
   const pIng = (prox && prox.ingredients) || {};
 
+  // The CURRENT published level (data/cost-index.json) — used to tell a clone that
+  // only the deep ARCHIVE is stale (live level is distinct & fine) from one where
+  // the live level is ALSO cloned (truly broken). Latest history point per item.
+  const live = (rd('data/cost-index.json') || {}).ingredients || {};
+  function liveLatest(slug) {
+    const r = live[slug]; if (!r) return null;
+    const h = r.history || r.points; if (!Array.isArray(h) || !h.length) return null;
+    const p = h[h.length - 1];
+    return p.valueCents != null ? p.valueCents : (p.priceUsd != null ? Math.round(p.priceUsd * 100) : null);
+  }
+  // Are the members' current published levels distinct (i.e. live is NOT cloned)?
+  function liveDistinct(members) {
+    const vals = members.map(liveLatest).filter((v) => v != null);
+    return vals.length === members.length && new Set(vals).size === members.length;
+  }
+
   // Reconcile a structural clone (byte-identical history) against the registry's
-  // LEVEL provenance: is it a documented proxy (same source), an index-basis
-  // series (no $-level published anyway), or distinct sources that should NOT be
-  // identical — i.e. a real vendoring bug?
+  // LEVEL provenance AND the current published level: documented proxy (same
+  // source), index-basis (no $-level), history-archive-stale (distinct sources,
+  // archive cloned but LIVE level distinct → re-vendor the archive only), or a
+  // true unexplained-bug (live level also cloned).
   function classifyClone(members) {
     const info = members.map((m) => pIng[m]).filter(Boolean);
     if (!info.length) return 'unclassified';
     if (info.every((i) => i.levelBasis === 'index')) return 'index-no-level';
     const keys = new Set(info.map((i) => i.sourceKey));
     if (keys.size === 1 && !keys.has(null)) return 'documented-proxy';
-    if (info.some((i) => i.levelBasis === 'wholesale') && keys.size > 1) return 'unexplained-bug';
+    if (info.some((i) => i.levelBasis === 'wholesale') && keys.size > 1) {
+      return liveDistinct(members) ? 'history-archive-stale' : 'unexplained-bug';
+    }
     return 'mixed';
   }
 
@@ -109,7 +132,8 @@ function build() {
       const NOTE = {
         'documented-proxy': 'identical series, and the registry draws all members from one source — an expected proxy; collapse to one for independence.',
         'index-no-level': 'identical series, but these are index-basis (directional) — no $-level should be published anyway.',
-        'unexplained-bug': 'identical series, but the registry maps these to DISTINCT level sources — the vendored history should differ. Real data bug to fix upstream.',
+        'history-archive-stale': 'the deep ARCHIVE is a clone of another series, but the CURRENT published level is distinct and fine — only the deep history needs re-vendoring (affects backtest/drift/seasonality; plate-cost-drift already collapses it). Not live-facing.',
+        'unexplained-bug': 'identical series AND the current published level is also cloned — the registry maps these to DISTINCT sources, so this is a real live-facing data bug to fix upstream.',
         'mixed': 'identical series across mixed provenance — review.',
         'unclassified': 'identical series; no registry provenance found.'
       };
@@ -117,6 +141,7 @@ function build() {
         members,
         classification,
         lastCents: H[members[0]].slice(-1)[0].valueCents,
+        liveLevels: members.reduce((m, s) => { m[s] = liveLatest(s); return m; }, {}),
         points: H[members[0]].length,
         note: NOTE[classification]
       };
@@ -159,9 +184,9 @@ function build() {
   const clonedIngredients = clones.reduce((n, c) => n + c.members.length, 0);
   const clonesByClass = clones.reduce((m, c) => { m[c.classification] = (m[c.classification] || 0) + 1; return m; }, {});
   return {
-    _doc: 'Critical data-quality audit of the Cost Index deep history (data/cost-index-history.json), reconciled against registry LEVEL provenance (data/cost-index-proxies.json). Surfaces (1) clone clusters (byte-identical series) CLASSIFIED as documented-proxy (same registry source — expected), index-no-level (directional, no $-level), or unexplained-bug (DISTINCT registry sources that should not be identical); (2) implausible per-lb levels vs an expert-grounded band (annotated with registry level-basis); (3) index levels deviating >2x/<0.5x from a hard USDA/CME wholesale reference. Bands + references grounded in data/sourced-claims.json #usda_wholesale_protein_oil_refs_2026 (directional wholesale, not delivered). Surfacing report for UPSTREAM triage — does not fail CI on findings; --check only keeps it in lockstep. Deterministic. Built by scripts/build-cost-index-audit.mjs.',
+    _doc: 'Critical data-quality audit of the Cost Index deep history (data/cost-index-history.json), reconciled against registry LEVEL provenance (data/cost-index-proxies.json) AND the current published level (data/cost-index.json). Clone clusters (byte-identical archive series) are CLASSIFIED as documented-proxy (same registry source — expected), index-no-level (directional), history-archive-stale (distinct sources, archive cloned but the LIVE level is distinct & fine → re-vendor the archive only; not live-facing), or unexplained-bug (live level ALSO cloned — a real live-facing bug). Also: implausible per-lb levels vs an expert-grounded band, and index levels deviating >2x/<0.5x from a USDA/CME reference. Bands/refs grounded in data/sourced-claims.json #usda_wholesale_protein_oil_refs_2026. Surfacing report for UPSTREAM triage; --check keeps it in lockstep. Deterministic. Built by scripts/build-cost-index-audit.mjs.',
     _version: 1,
-    source: { history: 'data/cost-index-history.json', labels: 'data/cost-index-labels.json', proxies: 'data/cost-index-proxies.json' },
+    source: { history: 'data/cost-index-history.json', labels: 'data/cost-index-labels.json', proxies: 'data/cost-index-proxies.json', live: 'data/cost-index.json' },
     grounding: 'data/sourced-claims.json#usda_wholesale_protein_oil_refs_2026',
     asOf: hist.generatedAt || null,
     lbBand: LB_BAND,
@@ -171,6 +196,7 @@ function build() {
       clonedIngredients,
       clonesByClass,
       unexplainedBugs: clonesByClass['unexplained-bug'] || 0,
+      archiveStale: clonesByClass['history-archive-stale'] || 0,
       implausibleLevels: implausibleLevels.length,
       referenceDeviations: referenceDeviations.length
     },
@@ -188,24 +214,31 @@ function main() {
     if (report.error) { console.error('✗ cost-index quality gate: inputs missing'); process.exit(1); }
     const cloneKey = (c) => c.members.join('|');
     const bugs = report.clones.filter((c) => c.classification === 'unexplained-bug');
+    const stale = report.clones.filter((c) => c.classification === 'history-archive-stale');
     const newBugs = bugs.filter((c) => !KNOWN_UNEXPLAINED_CLONES[cloneKey(c)]);
     const newImpl = report.implausibleLevels.filter((x) => !KNOWN_IMPLAUSIBLE_LEVELS[x.slug]);
+    const newStale = stale.filter((c) => !KNOWN_ARCHIVE_STALE_CLONES[cloneKey(c)]);
 
-    // Warn (don't fail) when a baseline entry no longer appears — fixed upstream, prune it.
-    const presentClones = new Set(bugs.map(cloneKey));
+    // Warn (don't fail) on archive-only clones and on baseline entries that no
+    // longer appear (fixed upstream — prune them).
+    const presentBugs = new Set(bugs.map(cloneKey));
     const presentImpl = new Set(report.implausibleLevels.map((x) => x.slug));
-    Object.keys(KNOWN_UNEXPLAINED_CLONES).filter((k) => !presentClones.has(k))
+    const presentStale = new Set(stale.map(cloneKey));
+    newStale.forEach((c) => console.log('  ⚠ NEW archive-stale clone (live level OK; re-vendor archive): [' + c.members.join(', ') + ']'));
+    Object.keys(KNOWN_UNEXPLAINED_CLONES).filter((k) => !presentBugs.has(k))
       .forEach((k) => console.log('  ⚠ baseline clone resolved — prune KNOWN_UNEXPLAINED_CLONES: ' + k));
+    Object.keys(KNOWN_ARCHIVE_STALE_CLONES).filter((k) => !presentStale.has(k))
+      .forEach((k) => console.log('  ⚠ baseline archive-stale resolved — prune KNOWN_ARCHIVE_STALE_CLONES: ' + k));
     Object.keys(KNOWN_IMPLAUSIBLE_LEVELS).filter((k) => !presentImpl.has(k))
       .forEach((k) => console.log('  ⚠ baseline level resolved — prune KNOWN_IMPLAUSIBLE_LEVELS: ' + k));
 
     if (newBugs.length || newImpl.length) {
-      newBugs.forEach((c) => console.error('  ✗ NEW unexplained clone (distinct sources, identical history): [' + c.members.join(', ') + ']'));
+      newBugs.forEach((c) => console.error('  ✗ NEW live-facing clone (current level also cloned): [' + c.members.join(', ') + ']'));
       newImpl.forEach((x) => console.error('  ✗ NEW implausible per-lb level: ' + x.slug + ' $' + x.lastUsd));
-      console.error('✗ cost-index quality gate: FAIL — data defect(s) beyond the documented baseline.');
+      console.error('✗ cost-index quality gate: FAIL — live-facing data defect(s) beyond the documented baseline.');
       process.exit(1);
     }
-    console.log(`✓ cost-index quality gate: OK — ${presentClones.size} known clone bug(s), ${presentImpl.size} known implausible level(s), all baselined.`);
+    console.log(`✓ cost-index quality gate: OK — ${presentBugs.size} live-facing clone bug(s), ${presentStale.size} archive-stale (baselined), ${presentImpl.size} known implausible level(s).`);
     return;
   }
 
@@ -215,6 +248,7 @@ function main() {
       ['inputs present', !report.error],
       ['clone clusters have >=2 members', report.clones.every((c) => c.members.length >= 2)],
       ['every clone is classified', report.clones.every((c) => typeof c.classification === 'string' && c.classification.length > 0)],
+      ['archive-stale clones have distinct live levels', report.clones.filter((c) => c.classification === 'history-archive-stale').every((c) => { const v = c.members.map((m) => c.liveLevels[m]).filter((x) => x != null); return v.length === c.members.length && new Set(v).size === c.members.length; })],
       ['implausible levels are outside band', report.implausibleLevels.every((x) => x.lastUsd < report.lbBand[0] || x.lastUsd > report.lbBand[1])],
       ['deviations are outside tolerance', report.referenceDeviations.every((x) => x.ratio < 0.5 || x.ratio > 2.0)],
       ['summary counts match arrays', s.cloneClusters === report.clones.length && s.implausibleLevels === report.implausibleLevels.length && s.referenceDeviations === report.referenceDeviations.length],

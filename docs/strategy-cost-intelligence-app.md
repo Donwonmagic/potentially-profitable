@@ -165,41 +165,42 @@ Two derived artifacts, both deterministic and wired into CI as self-test + sync 
   classifying each structural clone against that provenance. Bands/references grounded in
   USDA AMS boxed-beef/pork + CME soybean oil (`#usda_wholesale_protein_oil_refs_2026`).
 
-**The sharpened finding (53 deep-history ingredients):** of 4 byte-identical clone
-clusters, only **one is a real bug** —
-- **`[ribeye, beef-tenderloin, short-rib]` → `unexplained-bug`.** The registry maps these
-  to **distinct** LMR-2453 commodities (Ribeye / Butt Tender / Short Rib), so their
-  histories should differ; identical series means the vendored archive failed to populate
-  tenderloin (USDA ~$16, grass-fed $25–44) and short-rib (~$8–10.5) independently — both
-  currently sit at ribeye's $12.80.
+**The sharpened finding (cross-checked against the LIVE published level,
+`data/cost-index.json`):** of 4 byte-identical clone clusters, **zero are live-facing
+bugs** — the audit distinguishes a stale deep *archive* from a wrong *current* level:
+- **`[ribeye, beef-tenderloin, short-rib]` → `history-archive-stale`.** The deep history
+  cloned all three to ribeye, but the **current published levels are distinct and correct**
+  (tenderloin $15.04 ≈ USDA $15.91, short-rib $5.75, ribeye $12.77). So fair-price-gap /
+  recost / the live tool serve the *right* numbers; only the deep archive is stale (it
+  affects backtest/drift/seasonality, and plate-cost-drift already collapses it). Re-vendor
+  the archive — not a user-facing bug.
 - `[ground-pork, pork-shoulder]` and `[salmon-fillet, salmon-skin-on-fillet]` →
-  **`documented-proxy`** (each pair draws one shared source — expected, not a bug).
-- `[shrimp-head-on, shrimp-pd]` → **`index-no-level`** (`basis:index`; no $-level is
-  published anyway).
-- **`vegetable-oil` ~$350/"lb"** — implausible AND registry level-basis is `index`
-  (PPI only; "no free oil price LEVEL exists"): a PPI index value carried as a cents
-  level. No dollar level should be published. (730× the CME soybean-oil reference.)
-- **0 false positives** — ribeye (1.2× ref) and ground beef (1.6× ref) pass tolerance.
+  **`documented-proxy`** (each draws one shared source — expected).
+- `[shrimp-head-on, shrimp-pd]` → **`index-no-level`** (`basis:index`; no $-level published).
+- **`vegetable-oil` ~$350/"lb"** → the **one live-facing defect**: implausible AND registry
+  level-basis is `index` (PPI only). A PPI value carried as a cents level; no dollar level
+  should be published. (730× the CME soybean-oil reference.)
+- **0 false positives** — ribeye (1.2× ref), ground beef (1.6× ref) pass tolerance.
 
-**Acted on (self-critique of my own artifact):** the plate-drift build collapses clone
-series to one representative (`clonesCollapsed: 5`) so duplicates don't inflate the
-distribution, and the veg-oil mis-scale is excluded by the >$60/lb guard.
+**Acted on (self-critique of my own artifacts):** plate-drift collapses clone series
+(`clonesCollapsed: 5`) so duplicates don't inflate the distribution; veg-oil is excluded by
+the >$60/lb guard; the outlook's pressure tilt was checked and does **not** double-count the
+clones (their cost-*pressure* signals are genuinely distinct — building/high vs building/
+moderate — so collapsing would discard real signal).
 
-**Recommended upstream fix (registry-level, no fabrication):** populate independent
-histories for `beef-tenderloin` and `short-rib` from their already-mapped LMR-2453
-commodities, and suppress `vegetable-oil`'s dollar level (publish it directional-only,
-matching its registry intent). The proxy pairs are correct as-is. `data/cost-index-audit.json`
-is the standing triage list; `data/cost-index-proxies.json` is the authoritative
-independence map. *No vendored values or `verified` flags were touched — these are
-surfacing artifacts for the owner's `--verify`/`--flip` workflow.*
+**Recommended upstream fix (no fabrication):** re-vendor the deep history for
+`beef-tenderloin` and `short-rib` from their already-mapped LMR-2453 commodities (the live
+fetch already produces the right values); and publish `vegetable-oil` directional-only,
+matching its registry intent. The proxy pairs are correct as-is. *No vendored values or
+`verified` flags were touched — these are surfacing artifacts for the `--verify`/`--flip` workflow.*
 
-**Now self-enforcing (regression gate).** `build-cost-index-audit.mjs --gate` (wired into
-CI) fails the build if a **new** unexplained clone or implausible per-lb level appears
-beyond a dated baseline (`KNOWN_UNEXPLAINED_CLONES` / `KNOWN_IMPLAUSIBLE_LEVELS`, the
-repo's `HISTORICAL_WAIVERS` idiom). The two known defects are baselined (pass today);
-the gate warns to prune a baseline entry once the upstream fix lands. So the discovery
-becomes a standing guarantee: the Cost Index can't quietly regress with new clone bugs or
-mis-scales.
+**Now self-enforcing (regression gate).** `build-cost-index-audit.mjs --gate` (wired into CI)
+**hard-fails** on a *new live-facing* defect — a clone whose **current** level is also wrong,
+or a new implausible per-lb level — beyond a dated baseline (`KNOWN_*` constants, the repo's
+`HISTORICAL_WAIVERS` idiom). Archive-only clones (live level fine) **warn**, not fail, since
+they aren't user-facing. Today: 0 live-facing bugs, 1 archive-stale (baselined), 1 implausible
+(baselined). The gate also warns to prune a baseline once upstream fixes it — so the Cost
+Index can't quietly regress with a new *user-facing* clone or mis-scale.
 
 ## The category thesis
 
