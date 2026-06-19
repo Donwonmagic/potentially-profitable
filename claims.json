@@ -1,7 +1,7 @@
 {
   "_doc": "Public, machine-readable claim ledger for muntin.digital. Every externally-verifiable factual claim used across the library, paired with its primary public source and the date it was last checked. Generated from data/sourced-claims.json by scripts/build-claims-json.mjs — do not edit by hand. Operator-experience claims (first-hand, no public URL) are documented at https://muntin.digital/about/#timeline.",
   "as_of": "2026-06-19",
-  "count": 41,
+  "count": 42,
   "claims": [
     {
       "id": "ai_overview_share_march_2025",
@@ -173,6 +173,17 @@
       "used_in": [
         "restaurant-schema-markup-6-types-google-uses",
         "restaurant-schema-markup-complete-paste-ready-example"
+      ]
+    },
+    {
+      "id": "gpo_independent_savings_2026",
+      "claim": "Independent restaurants commonly report saving roughly 10–30% on food and supply costs by buying through a group purchasing organization, which aggregates volume to reach pricing tiers a single operator buying direct from a distributor cannot.",
+      "source_name": "Restaurant Business — GPO 101",
+      "source_url": "https://www.restaurantbusinessonline.com/technology/gpo-101-what-are-gpos-how-do-they-work-how-can-they-help-save-food-costs",
+      "date_verified": "2026-06-19",
+      "used_in": [
+        "tools/vendor-benchmark/",
+        "tools/_shared/fair-price-gap.js"
       ]
     },
     {

@@ -255,3 +255,31 @@ while an unmatched ingredient is reported `unpriced (no-match)` rather than gues
 
 **Next:** when the Decoder lands, the same panel swaps the market level for the
 operator's actual paid price per line — the Index→Index+Decoder step on the arc.
+
+## Shipped: Fair-Price Gap (capability #2, Index-only)
+
+The market×purchases fusion, manual/Index-only — the complement of Muntin Bench
+(which checks a price against the operator's *own* history): type an item and what
+you paid, and it places that price against the live Cost Index wholesale reference.
+
+- `tools/_shared/fair-price-gap.js` — pure `assess()` reusing `MuntinCostIndexLookup`
+  + `MuntinPortionBridge`. **Honesty rule baked in:** the index is a *wholesale*
+  reference and delivered prices legitimately run above it, so a price above the
+  reference is **never** called overpaying — the verdict is relative to the
+  reference, and only an extreme gap (>60% by default) raises a *directional*
+  "worth asking" flag. Degrades to `unknown` on no match / no firm level /
+  index-basis / cross-family unit — never a fabricated gap.
+- `tools/_shared/fair-price-gap.test.mjs` — 10 tests (auto-run); verified on the
+  live seed (ribeye $14/lb → +9.6% at-reference; $26/lb → +104% worth-asking;
+  romaine → no-level; unmatched → no-match).
+- `tools/vendor-benchmark/market-gap-panel.js` — additive, fail-silent panel wired
+  into Muntin Bench; shows the market gap beside Bench's own-history verdict.
+- **Grounded:** the "worth asking" copy cites the 10–30% group-purchasing savings
+  range (`data/sourced-claims.json#gpo_independent_savings_2026`), framed as
+  negotiation upside, not a guaranteed saving.
+
+**Truth to discover & publish (next):** with the Decoder/peer pool on, how far above
+the honest market independents actually pay, by category — the publishable benchmark.
+**Enhancements:** +Decoder → every invoice line automatically + true delivered price;
++peer pool → percentile vs peers (the inert `bench.peerBenchmark`); +Ledger →
+switch-savings into the P&L.

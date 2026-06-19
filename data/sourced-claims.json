@@ -18,6 +18,18 @@
     "  notes:       what to watch for if the source changes"
   ],
   "claims": {
+    "gpo_independent_savings_2026": {
+      "claim": "Independent restaurants commonly report saving roughly 10–30% on food and supply costs by buying through a group purchasing organization, which aggregates volume to reach pricing tiers a single operator buying direct from a distributor cannot.",
+      "source_url": "https://www.restaurantbusinessonline.com/technology/gpo-101-what-are-gpos-how-do-they-work-how-can-they-help-save-food-costs",
+      "source_name": "Restaurant Business — GPO 101",
+      "date_verified": "2026-06-19",
+      "url_status": "deep-link",
+      "used_in": [
+        "tools/vendor-benchmark/",
+        "tools/_shared/fair-price-gap.js"
+      ],
+      "notes": "10–30% savings range cross-checked across Restaurant Business (GPO 101 / Dining Alliance, Foodbuy), FoodIndustry.com, and SevenRooms (snippet-verified; full fetches 403-blocked). Directional leverage figure used in the Fair-Price Gap 'worth asking' copy — it frames the upside of negotiating/aggregating when a paid price sits far above the wholesale reference, not a guaranteed saving."
+    },
     "usda_wholesale_protein_oil_refs_2026": {
       "claim": "USDA/CME wholesale reference levels (2026): boxed ribeye ~$10.71/lb and tenderloin ~$15.91/lb (grass-fed whole tenderloin $25–44/lb); ground beef 81/85% lean ~$3.91–4.41/lb; short ribs ~$8–10.5/lb; boneless skinless chicken breast ~$1.14–1.97/lb; CME soybean oil ~$0.48/lb (bulk ~$0.50–1.20/lb).",
       "source_url": "https://www.ams.usda.gov/mnreports/ams_2461.pdf",
