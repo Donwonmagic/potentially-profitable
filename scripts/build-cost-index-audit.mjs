@@ -62,12 +62,28 @@ function unitOf(labels, k) {
 function build() {
   const hist = rd('data/cost-index-history.json');
   const labelsRaw = rd('data/cost-index-labels.json');
+  const prox = rd('data/cost-index-proxies.json'); // registry-derived level provenance
   if (!hist || !hist.ingredients || !labelsRaw) {
     return { _doc: 'inputs missing', _version: 1, error: 'missing-inputs' };
   }
   const H = hist.ingredients;
   const labels = labelsRaw.labels || labelsRaw;
   const slugs = Object.keys(H).sort();
+  const pIng = (prox && prox.ingredients) || {};
+
+  // Reconcile a structural clone (byte-identical history) against the registry's
+  // LEVEL provenance: is it a documented proxy (same source), an index-basis
+  // series (no $-level published anyway), or distinct sources that should NOT be
+  // identical — i.e. a real vendoring bug?
+  function classifyClone(members) {
+    const info = members.map((m) => pIng[m]).filter(Boolean);
+    if (!info.length) return 'unclassified';
+    if (info.every((i) => i.levelBasis === 'index')) return 'index-no-level';
+    const keys = new Set(info.map((i) => i.sourceKey));
+    if (keys.size === 1 && !keys.has(null)) return 'documented-proxy';
+    if (info.some((i) => i.levelBasis === 'wholesale') && keys.size > 1) return 'unexplained-bug';
+    return 'mixed';
+  }
 
   // ---- 1. clone clusters (identical full value sequence) ----
   const bySig = {};
@@ -79,11 +95,20 @@ function build() {
     .filter((sig) => bySig[sig].length > 1)
     .map((sig) => {
       const members = bySig[sig].slice().sort();
+      const classification = classifyClone(members);
+      const NOTE = {
+        'documented-proxy': 'identical series, and the registry draws all members from one source — an expected proxy; collapse to one for independence.',
+        'index-no-level': 'identical series, but these are index-basis (directional) — no $-level should be published anyway.',
+        'unexplained-bug': 'identical series, but the registry maps these to DISTINCT level sources — the vendored history should differ. Real data bug to fix upstream.',
+        'mixed': 'identical series across mixed provenance — review.',
+        'unclassified': 'identical series; no registry provenance found.'
+      };
       return {
         members,
+        classification,
         lastCents: H[members[0]].slice(-1)[0].valueCents,
         points: H[members[0]].length,
-        note: 'identical full series — likely placeholder seeding; treat all but one as non-independent'
+        note: NOTE[classification]
       };
     })
     .sort((a, b) => a.members[0].localeCompare(b.members[0]));
@@ -94,9 +119,13 @@ function build() {
     if (unitOf(labels, k) !== 'lb') continue;
     const usd = H[k].slice(-1)[0].valueCents / 100;
     if (usd < LB_BAND[0] || usd > LB_BAND[1]) {
+      const lb = pIng[k] && pIng[k].levelBasis;
       implausibleLevels.push({
         slug: k, unit: 'lb', lastUsd: round(usd, 2), band: LB_BAND,
-        note: 'latest level outside the plausible per-lb band — likely a non-lb basis mislabeled'
+        registryLevelBasis: lb || null,
+        note: lb === 'index'
+          ? 'latest level outside the plausible per-lb band AND the registry source is index/directional — no dollar level should be published (a PPI index value carried as a cents level).'
+          : 'latest level outside the plausible per-lb band — likely a non-lb basis mislabeled.'
       });
     }
   }
@@ -118,10 +147,11 @@ function build() {
   }
 
   const clonedIngredients = clones.reduce((n, c) => n + c.members.length, 0);
+  const clonesByClass = clones.reduce((m, c) => { m[c.classification] = (m[c.classification] || 0) + 1; return m; }, {});
   return {
-    _doc: 'Critical data-quality audit of the Cost Index deep history (data/cost-index-history.json). Surfaces (1) clone clusters — ingredients with byte-identical series, i.e. placeholder seeding; (2) implausible per-lb levels vs an expert-grounded band; (3) index levels deviating >2x/<0.5x from a hard USDA/CME wholesale reference. Plausibility band + references grounded in data/sourced-claims.json #usda_wholesale_protein_oil_refs_2026 (directional wholesale, not delivered). Surfacing report for UPSTREAM triage — does not fail CI on findings; --check only keeps it in lockstep with the data. Deterministic; derived from the data, not wall-clock. Built by scripts/build-cost-index-audit.mjs.',
+    _doc: 'Critical data-quality audit of the Cost Index deep history (data/cost-index-history.json), reconciled against registry LEVEL provenance (data/cost-index-proxies.json). Surfaces (1) clone clusters (byte-identical series) CLASSIFIED as documented-proxy (same registry source — expected), index-no-level (directional, no $-level), or unexplained-bug (DISTINCT registry sources that should not be identical); (2) implausible per-lb levels vs an expert-grounded band (annotated with registry level-basis); (3) index levels deviating >2x/<0.5x from a hard USDA/CME wholesale reference. Bands + references grounded in data/sourced-claims.json #usda_wholesale_protein_oil_refs_2026 (directional wholesale, not delivered). Surfacing report for UPSTREAM triage — does not fail CI on findings; --check only keeps it in lockstep. Deterministic. Built by scripts/build-cost-index-audit.mjs.',
     _version: 1,
-    source: { history: 'data/cost-index-history.json', labels: 'data/cost-index-labels.json' },
+    source: { history: 'data/cost-index-history.json', labels: 'data/cost-index-labels.json', proxies: 'data/cost-index-proxies.json' },
     grounding: 'data/sourced-claims.json#usda_wholesale_protein_oil_refs_2026',
     asOf: hist.generatedAt || null,
     lbBand: LB_BAND,
@@ -129,6 +159,8 @@ function build() {
       ingredientsScanned: slugs.length,
       cloneClusters: clones.length,
       clonedIngredients,
+      clonesByClass,
+      unexplainedBugs: clonesByClass['unexplained-bug'] || 0,
       implausibleLevels: implausibleLevels.length,
       referenceDeviations: referenceDeviations.length
     },
@@ -147,6 +179,7 @@ function main() {
     const checks = [
       ['inputs present', !report.error],
       ['clone clusters have >=2 members', report.clones.every((c) => c.members.length >= 2)],
+      ['every clone is classified', report.clones.every((c) => typeof c.classification === 'string' && c.classification.length > 0)],
       ['implausible levels are outside band', report.implausibleLevels.every((x) => x.lastUsd < report.lbBand[0] || x.lastUsd > report.lbBand[1])],
       ['deviations are outside tolerance', report.referenceDeviations.every((x) => x.ratio < 0.5 || x.ratio > 2.0)],
       ['summary counts match arrays', s.cloneClusters === report.clones.length && s.implausibleLevels === report.implausibleLevels.length && s.referenceDeviations === report.referenceDeviations.length],
@@ -168,7 +201,7 @@ function main() {
 
   writeFileSync(OUT, json);
   const s = report.summary;
-  console.log(`cost-index-audit: ${s.cloneClusters} clone cluster(s) (${s.clonedIngredients} ingredients), ${s.implausibleLevels} implausible level(s), ${s.referenceDeviations} reference deviation(s) across ${s.ingredientsScanned} ingredient(s).`);
+  console.log(`cost-index-audit: ${s.cloneClusters} clone cluster(s) [${s.unexplainedBugs} unexplained bug(s)], ${s.implausibleLevels} implausible level(s), ${s.referenceDeviations} reference deviation(s) across ${s.ingredientsScanned} ingredient(s).`);
 }
 
 main();

@@ -436,9 +436,15 @@ const CHECKS = [
   // quarter, derived-with-stated-method from the deep history; ships to no page.
   ['Cost-index plate-cost drift self-test','build-cost-plate-drift.mjs','--self-test'],
   ['Cost-index plate-cost drift sync','build-cost-plate-drift.mjs','--check'],
-  // Data-quality audit — surfaces clone clusters, implausible per-lb levels, and
-  // deviations from USDA/CME wholesale references for upstream triage. Report-only
-  // (does not fail on findings); --check keeps it in lockstep with the data.
+  // Level provenance — derives each ingredient's level-basis (wholesale vs
+  // index/directional) and shared-source proxy groups from the source registry.
+  // Built before the audit, which reconciles structural clones against it.
+  ['Cost-index level provenance self-test','build-cost-index-proxies.mjs','--self-test'],
+  ['Cost-index level provenance sync','build-cost-index-proxies.mjs','--check'],
+  // Data-quality audit — surfaces clone clusters (classified vs the provenance
+  // above), implausible per-lb levels, and deviations from USDA/CME wholesale
+  // references for upstream triage. Report-only (does not fail on findings);
+  // --check keeps it in lockstep with the data.
   ['Cost-index data-quality audit self-test','build-cost-index-audit.mjs','--self-test'],
   ['Cost-index data-quality audit sync','build-cost-index-audit.mjs','--check'],
   // Embeddable wholesale-reference card (idea #3) — a self-contained, noindex iframe

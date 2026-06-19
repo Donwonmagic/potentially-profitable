@@ -153,32 +153,45 @@ manual pass.
 
 ## Critical audit: Cost Index data quality (grounded)
 
-The drift work tripped over real defects, so they're now scanned systematically by
-`scripts/build-cost-index-audit.mjs` → `data/cost-index-audit.json` (report-only;
-wired into CI as a self-test + sync pair, does not fail on findings). Plausibility
-bands and reference levels are grounded in USDA AMS boxed-beef / pork and CME soybean
-oil (`data/sourced-claims.json#usda_wholesale_protein_oil_refs_2026`).
+The drift work tripped over real defects, so they're now scanned systematically and —
+crucially — **reconciled against the source registry's own intent** rather than guessed.
+Two derived artifacts, both deterministic and wired into CI as self-test + sync pairs
+(report-only; they do not fail on findings):
+- `scripts/build-cost-index-proxies.mjs` → `data/cost-index-proxies.json` — per-ingredient
+  LEVEL provenance from `data/cost-index-sources.json`: `wholesale` (an LMR/NOAA $-level)
+  vs `index` (only PPI/directional — no dollar level), and which ingredients draw the
+  **same** source (so their levels aren't independent).
+- `scripts/build-cost-index-audit.mjs` → `data/cost-index-audit.json` — the audit, now
+  classifying each structural clone against that provenance. Bands/references grounded in
+  USDA AMS boxed-beef/pork + CME soybean oil (`#usda_wholesale_protein_oil_refs_2026`).
 
-**What it found (53 deep-history ingredients):**
-- **4 clone clusters (9 ingredients)** — byte-identical series, i.e. placeholder
-  seeding: `[beef-tenderloin, ribeye, short-rib]`, `[ground-pork, pork-shoulder]`,
-  `[salmon-fillet, salmon-skin-on-fillet]`, `[shrimp-head-on, shrimp-pd]`. Tenderloin
-  at ribeye's $12.80 is wrong (USDA wholesale tenderloin ~$16, grass-fed $25–44);
-  short-rib should be ~$8–10.5.
-- **1 implausible per-lb level** — `vegetable-oil` at ~$350/"lb", **730× the CME
-  soybean-oil reference (~$0.48/lb)**: a non-lb basis mislabeled as lb.
-- **0 false positives** on legitimate prices — ribeye (1.2× ref) and ground beef
-  (1.6× ref) sit inside the 0.5×–2× tolerance and are not flagged.
+**The sharpened finding (53 deep-history ingredients):** of 4 byte-identical clone
+clusters, only **one is a real bug** —
+- **`[ribeye, beef-tenderloin, short-rib]` → `unexplained-bug`.** The registry maps these
+  to **distinct** LMR-2453 commodities (Ribeye / Butt Tender / Short Rib), so their
+  histories should differ; identical series means the vendored archive failed to populate
+  tenderloin (USDA ~$16, grass-fed $25–44) and short-rib (~$8–10.5) independently — both
+  currently sit at ribeye's $12.80.
+- `[ground-pork, pork-shoulder]` and `[salmon-fillet, salmon-skin-on-fillet]` →
+  **`documented-proxy`** (each pair draws one shared source — expected, not a bug).
+- `[shrimp-head-on, shrimp-pd]` → **`index-no-level`** (`basis:index`; no $-level is
+  published anyway).
+- **`vegetable-oil` ~$350/"lb"** — implausible AND registry level-basis is `index`
+  (PPI only; "no free oil price LEVEL exists"): a PPI index value carried as a cents
+  level. No dollar level should be published. (730× the CME soybean-oil reference.)
+- **0 false positives** — ribeye (1.2× ref) and ground beef (1.6× ref) pass tolerance.
 
-**Acted on (self-critique of my own artifact):** the plate-drift build now collapses
-clone series to one representative (`clonesCollapsed: 5`), so duplicate beef cuts no
-longer inflate the distribution — the finding above is the de-duplicated version. The
-veg-oil mis-scale was already excluded by the >$60/lb guard.
+**Acted on (self-critique of my own artifact):** the plate-drift build collapses clone
+series to one representative (`clonesCollapsed: 5`) so duplicates don't inflate the
+distribution, and the veg-oil mis-scale is excluded by the >$60/lb guard.
 
-**Recommended upstream fix (out of scope here):** the Cost Index pipeline should give
-`beef-tenderloin` / `short-rib` / `ground-pork` / the salmon & shrimp variants their
-own series, and correct `vegetable-oil`'s unit basis. Until then, `data/cost-index-audit.json`
-is the standing triage list.
+**Recommended upstream fix (registry-level, no fabrication):** populate independent
+histories for `beef-tenderloin` and `short-rib` from their already-mapped LMR-2453
+commodities, and suppress `vegetable-oil`'s dollar level (publish it directional-only,
+matching its registry intent). The proxy pairs are correct as-is. `data/cost-index-audit.json`
+is the standing triage list; `data/cost-index-proxies.json` is the authoritative
+independence map. *No vendored values or `verified` flags were touched — these are
+surfacing artifacts for the owner's `--verify`/`--flip` workflow.*
 
 ## The category thesis
 
