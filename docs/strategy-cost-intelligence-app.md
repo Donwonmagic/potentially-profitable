@@ -313,3 +313,36 @@ on and returns the single highest-value action this week, no dashboard to read.
 **Next (wiring):** a weekly "Leak of the week" panel/digest needs a browser
 cost-pressure seed (a `data/cost-pressure.js` wrapper like `data/cost-index.js`) so
 the panel stays no-fetch; the compute spine is done and verified.
+
+## Shipped: Basket Forecast (capability #3, Index-only)
+
+The "weather service" — a directional outlook for the basket you actually buy,
+surfacing the already-validated frontier layers instead of inventing a forecast.
+
+- `tools/_shared/basket-forecast.js` — pure `forecast()` composing cost-pressure
+  (proven edges only), the **backtest verdict as governor**, and seasonality.
+  **The honesty gate is `coneHonestThroughH`:** it only makes a forward call to the
+  reach the backtest earns (currently ~1 print ahead); if that's 0 it returns
+  `no-forward-call` and shows the measured state only — it never forecasts further
+  than the data supports, and never reports a price.
+- **Storability-aware actions (grounded):** building + storable → lock/pre-buy;
+  building + perishable → watch & negotiate (proteins/produce can't be
+  forward-locked); easing → feature-it-now. Conservative `isStorable` defaults to
+  perishable so it never tells you to stockpile something fresh.
+- `tools/_shared/basket-forecast.test.mjs` — 8 tests (horizon gate, no-forward-call,
+  storability routing, proven-only, basket scoping, seasonal cue). Unit gate 314/0.
+- **Verified on real data:** outlook `mixed` (5 building / 7 easing across 12 proven
+  edges), gated to 1 print ahead; perishable builders (beef tenderloin, onion,
+  romaine) → watch, easing items (chicken, butter) → feature, no lock candidates
+  (correctly — the builders are all unlockable proteins/produce).
+- **Grounded** in forward-buying guidance (storables lockable, proteins/produce
+  market-driven — Fastmarkets, Expana, USDA ERS, 2026).
+- **Module contract:** Min = cost-pressure + backtest verdict (default basket);
+  +saved recipes → operator's basket; +seasonality → seasonal cues; +Inventory →
+  true buy-now-or-wait with quantity & timing.
+
+**Roadmap now:** capabilities #1–#4 shipped (Live Plate Margin, Fair-Price Gap,
+Basket Forecast, Leak of the Week), all Index-only and composable; #5 Peer
+Benchmark, #6 OCR Error-Catch, #7 Margin-at-Risk await the Decoder / peer pool /
+Ledger. The remaining Index-side work is wiring (no-fetch panels) and the proxy-loop
+closure, not new compute.
