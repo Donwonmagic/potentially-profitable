@@ -126,11 +126,11 @@ latest quarter with ≥90% ingredient coverage. *These are derived market figure
 operator data; they move as the index refreshes. Confidence: medium — directional,
 on a dataset with some known placeholder/mis-scaled entries (handled, see caveats).*
 
-**The finding (window 2026-01 → 2026-04, 53 ingredients):**
-- Median ingredient drift **+3.5%**, but the spread is wide (p25/p75 **−6.0% / +14.3%**).
-- **~68% of tracked wholesale ingredients moved more than 5%** in the single quarter —
+**The finding (window 2026-01 → 2026-04, 48 ingredients after collapsing clones):**
+- Median ingredient drift **+3.5%**, but the spread is wide (p25/p75 **−6.0% / +17.3%**).
+- **~69% of tracked wholesale ingredients moved more than 5%** in the single quarter —
   i.e. a menu priced a quarter ago is already off on roughly two-thirds of its inputs.
-- Proteins (20 bridgeable) moved a median **+5.1%**. Extremes were real and clean
+- Proteins (16 bridgeable) moved a median **+4.4%**. Extremes were real and clean
   (tomato +235% seasonal; eggs −30%).
 - Indexed-component cost of illustrative protein-forward plates drifted **−2.6% to
   +31.6%** (median **+5.5%**) — chicken-breast plates moved most (+32%), shrimp eased.
@@ -150,6 +150,35 @@ manual pass.
 - **Out of scope (follow-up):** publishing this to the public weekly dispatch / a blog
   post — that crosses the article-graphics + audio + locale-parity gates and needs its
   own pass with inline `<details class="cite">` method drawers.
+
+## Critical audit: Cost Index data quality (grounded)
+
+The drift work tripped over real defects, so they're now scanned systematically by
+`scripts/build-cost-index-audit.mjs` → `data/cost-index-audit.json` (report-only;
+wired into CI as a self-test + sync pair, does not fail on findings). Plausibility
+bands and reference levels are grounded in USDA AMS boxed-beef / pork and CME soybean
+oil (`data/sourced-claims.json#usda_wholesale_protein_oil_refs_2026`).
+
+**What it found (53 deep-history ingredients):**
+- **4 clone clusters (9 ingredients)** — byte-identical series, i.e. placeholder
+  seeding: `[beef-tenderloin, ribeye, short-rib]`, `[ground-pork, pork-shoulder]`,
+  `[salmon-fillet, salmon-skin-on-fillet]`, `[shrimp-head-on, shrimp-pd]`. Tenderloin
+  at ribeye's $12.80 is wrong (USDA wholesale tenderloin ~$16, grass-fed $25–44);
+  short-rib should be ~$8–10.5.
+- **1 implausible per-lb level** — `vegetable-oil` at ~$350/"lb", **730× the CME
+  soybean-oil reference (~$0.48/lb)**: a non-lb basis mislabeled as lb.
+- **0 false positives** on legitimate prices — ribeye (1.2× ref) and ground beef
+  (1.6× ref) sit inside the 0.5×–2× tolerance and are not flagged.
+
+**Acted on (self-critique of my own artifact):** the plate-drift build now collapses
+clone series to one representative (`clonesCollapsed: 5`), so duplicate beef cuts no
+longer inflate the distribution — the finding above is the de-duplicated version. The
+veg-oil mis-scale was already excluded by the >$60/lb guard.
+
+**Recommended upstream fix (out of scope here):** the Cost Index pipeline should give
+`beef-tenderloin` / `short-rib` / `ground-pork` / the salmon & shrimp variants their
+own series, and correct `vegetable-oil`'s unit basis. Until then, `data/cost-index-audit.json`
+is the standing triage list.
 
 ## The category thesis
 

@@ -436,6 +436,11 @@ const CHECKS = [
   // quarter, derived-with-stated-method from the deep history; ships to no page.
   ['Cost-index plate-cost drift self-test','build-cost-plate-drift.mjs','--self-test'],
   ['Cost-index plate-cost drift sync','build-cost-plate-drift.mjs','--check'],
+  // Data-quality audit — surfaces clone clusters, implausible per-lb levels, and
+  // deviations from USDA/CME wholesale references for upstream triage. Report-only
+  // (does not fail on findings); --check keeps it in lockstep with the data.
+  ['Cost-index data-quality audit self-test','build-cost-index-audit.mjs','--self-test'],
+  ['Cost-index data-quality audit sync','build-cost-index-audit.mjs','--check'],
   // Embeddable wholesale-reference card (idea #3) — a self-contained, noindex iframe
   // fragment built from the published series.json; --check keeps it in lockstep with the
   // feed so an embedded card can never drift from the page that produced it.

@@ -1,7 +1,7 @@
 {
   "_doc": "Public, machine-readable claim ledger for muntin.digital. Every externally-verifiable factual claim used across the library, paired with its primary public source and the date it was last checked. Generated from data/sourced-claims.json by scripts/build-claims-json.mjs — do not edit by hand. Operator-experience claims (first-hand, no public URL) are documented at https://muntin.digital/about/#timeline.",
-  "as_of": "2026-06-18",
-  "count": 40,
+  "as_of": "2026-06-19",
+  "count": 41,
   "claims": [
     {
       "id": "ai_overview_share_march_2025",
@@ -420,6 +420,17 @@
       "used_in": [
         "restaurant-menu-inflation-2026",
         "inflacion-de-menu-de-restaurante-2026"
+      ]
+    },
+    {
+      "id": "usda_wholesale_protein_oil_refs_2026",
+      "claim": "USDA/CME wholesale reference levels (2026): boxed ribeye ~$10.71/lb and tenderloin ~$15.91/lb (grass-fed whole tenderloin $25–44/lb); ground beef 81/85% lean ~$3.91–4.41/lb; short ribs ~$8–10.5/lb; boneless skinless chicken breast ~$1.14–1.97/lb; CME soybean oil ~$0.48/lb (bulk ~$0.50–1.20/lb).",
+      "source_name": "USDA AMS National Weekly Boxed Beef Cutout; CME soybean oil",
+      "source_url": "https://www.ams.usda.gov/mnreports/ams_2461.pdf",
+      "date_verified": "2026-06-19",
+      "used_in": [
+        "scripts/build-cost-index-audit.mjs",
+        "docs/strategy-cost-intelligence-app.md"
       ]
     }
   ]

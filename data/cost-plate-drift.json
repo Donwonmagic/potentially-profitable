@@ -1,5 +1,5 @@
 {
-  "_doc": "Quarterly plate-cost drift — derived-with-stated-method from committed public Cost Index history (data/cost-index-history.json; USDA AMS/LMR etc.). Tests the claim that independent plate margins drift measurably between recostings. ingredientDrift = monthly-median wholesale % change over the quarter per ingredient (scale-invariant; all units kept). plateArchetypes = the INDEXED COMPONENT (protein+fat only, not a full dish) of ILLUSTRATIVE archetype plates with standard culinary portions (not operator data), recosted start vs end; mis-scaled levels (>$60/lb) and non-bridgeable units are excluded and counted, never guessed — so we report component cost & its drift, never a food-cost %. Window is the latest quarter with >=90% ingredient coverage. Deterministic; derived from the data, not wall-clock. Ships to no page. Built by scripts/build-cost-plate-drift.mjs; CI re-checks with --check.",
+  "_doc": "Quarterly plate-cost drift — derived-with-stated-method from committed public Cost Index history (data/cost-index-history.json; USDA AMS/LMR etc.). Tests the claim that independent plate margins drift measurably between recostings. ingredientDrift = monthly-median wholesale % change over the quarter per ingredient (scale-invariant; all units kept; placeholder clone series collapsed to one representative — see build-cost-index-audit.mjs). plateArchetypes = the INDEXED COMPONENT (protein+fat only, not a full dish) of ILLUSTRATIVE archetype plates with standard culinary portions (not operator data), recosted start vs end; mis-scaled levels (>$60/lb) and non-bridgeable units are excluded and counted, never guessed — so we report component cost & its drift, never a food-cost %. Window is the latest quarter with >=90% ingredient coverage. Deterministic; derived from the data, not wall-clock. Ships to no page. Built by scripts/build-cost-plate-drift.mjs; CI re-checks with --check.",
   "_version": 1,
   "source": {
     "history": "data/cost-index-history.json",
@@ -13,11 +13,12 @@
     "months": 3
   },
   "ingredientDrift": {
-    "count": 53,
-    "medianPct": 3.53,
-    "p25Pct": -5.95,
-    "p75Pct": 14.31,
-    "shareOver5pct": 0.679,
+    "count": 48,
+    "clonesCollapsed": 5,
+    "medianPct": 3.49,
+    "p25Pct": -5.97,
+    "p75Pct": 17.34,
+    "shareOver5pct": 0.688,
     "maxRiser": {
       "slug": "tomato",
       "pct": 235.17
@@ -27,8 +28,8 @@
       "pct": -29.82
     },
     "proteins": {
-      "count": 20,
-      "medianPct": 5.13
+      "count": 16,
+      "medianPct": 4.43
     },
     "byIngredient": [
       {
@@ -146,18 +147,6 @@
         "pct": 5.85
       },
       {
-        "slug": "ribeye",
-        "fromCents": 1230,
-        "toCents": 1302,
-        "pct": 5.85
-      },
-      {
-        "slug": "short-rib",
-        "fromCents": 1230,
-        "toCents": 1302,
-        "pct": 5.85
-      },
-      {
         "slug": "whole-trout",
         "fromCents": 376,
         "toCents": 396,
@@ -165,12 +154,6 @@
       },
       {
         "slug": "ground-pork",
-        "fromCents": 112,
-        "toCents": 117,
-        "pct": 4.93
-      },
-      {
-        "slug": "pork-shoulder",
         "fromCents": 112,
         "toCents": 117,
         "pct": 4.93
@@ -189,12 +172,6 @@
       },
       {
         "slug": "salmon-fillet",
-        "fromCents": 539,
-        "toCents": 558,
-        "pct": 3.53
-      },
-      {
-        "slug": "salmon-skin-on-fillet",
         "fromCents": 539,
         "toCents": 558,
         "pct": 3.53
@@ -285,12 +262,6 @@
       },
       {
         "slug": "shrimp-head-on",
-        "fromCents": 399,
-        "toCents": 373,
-        "pct": -6.52
-      },
-      {
-        "slug": "shrimp-pd",
         "fromCents": 399,
         "toCents": 373,
         "pct": -6.52
@@ -485,9 +456,9 @@
   ],
   "headline": {
     "windowMonths": 3,
-    "medianIngredientPct": 3.53,
-    "shareOver5pct": 0.679,
-    "proteinMedianPct": 5.13,
+    "medianIngredientPct": 3.49,
+    "shareOver5pct": 0.688,
+    "proteinMedianPct": 4.43,
     "archetypeComponentMedianDriftPct": 5.51,
     "archetypesCovered": 5
   }

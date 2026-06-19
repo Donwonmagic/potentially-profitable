@@ -1,0 +1,82 @@
+{
+  "_doc": "Critical data-quality audit of the Cost Index deep history (data/cost-index-history.json). Surfaces (1) clone clusters — ingredients with byte-identical series, i.e. placeholder seeding; (2) implausible per-lb levels vs an expert-grounded band; (3) index levels deviating >2x/<0.5x from a hard USDA/CME wholesale reference. Plausibility band + references grounded in data/sourced-claims.json #usda_wholesale_protein_oil_refs_2026 (directional wholesale, not delivered). Surfacing report for UPSTREAM triage — does not fail CI on findings; --check only keeps it in lockstep with the data. Deterministic; derived from the data, not wall-clock. Built by scripts/build-cost-index-audit.mjs.",
+  "_version": 1,
+  "source": {
+    "history": "data/cost-index-history.json",
+    "labels": "data/cost-index-labels.json"
+  },
+  "grounding": "data/sourced-claims.json#usda_wholesale_protein_oil_refs_2026",
+  "asOf": "2026-06-14T18:32:30.355Z",
+  "lbBand": [
+    0.3,
+    60
+  ],
+  "summary": {
+    "ingredientsScanned": 53,
+    "cloneClusters": 4,
+    "clonedIngredients": 9,
+    "implausibleLevels": 1,
+    "referenceDeviations": 1
+  },
+  "clones": [
+    {
+      "members": [
+        "beef-tenderloin",
+        "ribeye",
+        "short-rib"
+      ],
+      "lastCents": 1280,
+      "points": 36,
+      "note": "identical full series — likely placeholder seeding; treat all but one as non-independent"
+    },
+    {
+      "members": [
+        "ground-pork",
+        "pork-shoulder"
+      ],
+      "lastCents": 131,
+      "points": 158,
+      "note": "identical full series — likely placeholder seeding; treat all but one as non-independent"
+    },
+    {
+      "members": [
+        "salmon-fillet",
+        "salmon-skin-on-fillet"
+      ],
+      "lastCents": 558,
+      "points": 9,
+      "note": "identical full series — likely placeholder seeding; treat all but one as non-independent"
+    },
+    {
+      "members": [
+        "shrimp-head-on",
+        "shrimp-pd"
+      ],
+      "lastCents": 373,
+      "points": 10,
+      "note": "identical full series — likely placeholder seeding; treat all but one as non-independent"
+    }
+  ],
+  "implausibleLevels": [
+    {
+      "slug": "vegetable-oil",
+      "unit": "lb",
+      "lastUsd": 350.46,
+      "band": [
+        0.3,
+        60
+      ],
+      "note": "latest level outside the plausible per-lb band — likely a non-lb basis mislabeled"
+    }
+  ],
+  "referenceDeviations": [
+    {
+      "slug": "vegetable-oil",
+      "indexUsd": 350.46,
+      "referenceUsd": 0.48,
+      "ratio": 730.13,
+      "reference": "CME soybean oil, 2026-06-12",
+      "note": "index level far ABOVE wholesale reference"
+    }
+  ]
+}

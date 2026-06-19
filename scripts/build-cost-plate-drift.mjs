@@ -156,9 +156,21 @@ function build() {
   const from = quarterBefore(to);
   const fromMonth = from.slice(0, 7);
 
+  // Collapse placeholder clones (byte-identical series — see the data-quality
+  // audit, build-cost-index-audit.mjs): keep one representative per cluster so
+  // the distribution isn't inflated by duplicate beef cuts etc.
+  const seenSig = {};
+  const skipClone = {};
+  let clonesCollapsed = 0;
+  for (const slug of Object.keys(H).sort()) {
+    const sig = H[slug].map((p) => p.valueCents).join(',');
+    if (seenSig[sig]) { skipClone[slug] = true; clonesCollapsed++; } else seenSig[sig] = slug;
+  }
+
   // ---- layer 1: per-ingredient drift over the quarter ----
   const drifts = [];
   for (const slug of Object.keys(H).sort()) {
+    if (skipClone[slug]) continue;
     const s = H[slug];
     const a = priceInMonth(s, fromMonth), b = priceInMonth(s, toMonth);
     if (a == null || b == null || a <= 0) continue;
@@ -171,6 +183,7 @@ function build() {
 
   const ingredientDrift = {
     count: drifts.length,
+    clonesCollapsed: clonesCollapsed,
     medianPct: pcts.length ? round(quantile(pcts, 0.5), 2) : null,
     p25Pct: pcts.length ? round(quantile(pcts, 0.25), 2) : null,
     p75Pct: pcts.length ? round(quantile(pcts, 0.75), 2) : null,
@@ -216,7 +229,7 @@ function build() {
   const archDrifts = covered.map((p) => p.driftPct).sort((x, y) => x - y);
 
   return {
-    _doc: 'Quarterly plate-cost drift — derived-with-stated-method from committed public Cost Index history (data/cost-index-history.json; USDA AMS/LMR etc.). Tests the claim that independent plate margins drift measurably between recostings. ingredientDrift = monthly-median wholesale % change over the quarter per ingredient (scale-invariant; all units kept). plateArchetypes = the INDEXED COMPONENT (protein+fat only, not a full dish) of ILLUSTRATIVE archetype plates with standard culinary portions (not operator data), recosted start vs end; mis-scaled levels (>$60/lb) and non-bridgeable units are excluded and counted, never guessed — so we report component cost & its drift, never a food-cost %. Window is the latest quarter with >=90% ingredient coverage. Deterministic; derived from the data, not wall-clock. Ships to no page. Built by scripts/build-cost-plate-drift.mjs; CI re-checks with --check.',
+    _doc: 'Quarterly plate-cost drift — derived-with-stated-method from committed public Cost Index history (data/cost-index-history.json; USDA AMS/LMR etc.). Tests the claim that independent plate margins drift measurably between recostings. ingredientDrift = monthly-median wholesale % change over the quarter per ingredient (scale-invariant; all units kept; placeholder clone series collapsed to one representative — see build-cost-index-audit.mjs). plateArchetypes = the INDEXED COMPONENT (protein+fat only, not a full dish) of ILLUSTRATIVE archetype plates with standard culinary portions (not operator data), recosted start vs end; mis-scaled levels (>$60/lb) and non-bridgeable units are excluded and counted, never guessed — so we report component cost & its drift, never a food-cost %. Window is the latest quarter with >=90% ingredient coverage. Deterministic; derived from the data, not wall-clock. Ships to no page. Built by scripts/build-cost-plate-drift.mjs; CI re-checks with --check.',
     _version: 1,
     source: { history: 'data/cost-index-history.json', labels: 'data/cost-index-labels.json' },
     method: 'per-ingredient pct = (median(to-month) - median(from-month)) / median(from-month); component cost via tools/_shared/portion-bridge.js quoteAtPortion at each endpoint; implausible per-lb levels (>$60) excluded',

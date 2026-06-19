@@ -18,6 +18,18 @@
     "  notes:       what to watch for if the source changes"
   ],
   "claims": {
+    "usda_wholesale_protein_oil_refs_2026": {
+      "claim": "USDA/CME wholesale reference levels (2026): boxed ribeye ~$10.71/lb and tenderloin ~$15.91/lb (grass-fed whole tenderloin $25–44/lb); ground beef 81/85% lean ~$3.91–4.41/lb; short ribs ~$8–10.5/lb; boneless skinless chicken breast ~$1.14–1.97/lb; CME soybean oil ~$0.48/lb (bulk ~$0.50–1.20/lb).",
+      "source_url": "https://www.ams.usda.gov/mnreports/ams_2461.pdf",
+      "source_name": "USDA AMS National Weekly Boxed Beef Cutout; CME soybean oil",
+      "date_verified": "2026-06-19",
+      "url_status": "deep-link",
+      "used_in": [
+        "scripts/build-cost-index-audit.mjs",
+        "docs/strategy-cost-intelligence-app.md"
+      ],
+      "notes": "Snippet-verified across USDA AMS boxed-beef reports (ams.usda.gov/mnreports), beefitswhatsfordinner wholesale update, IndexBox (2026-03-16), USDA pork summary, and CME soybean oil (2026-06-12); several full fetches 403-blocked. Used ONLY to ground the Cost Index data-quality audit's plausibility bands and reference deviations — directional wholesale references, not delivered prices. Re-check against the live USDA/CME reports before any hard figure lands in prose."
+    },
     "food_cost_target_band_2026": {
       "claim": "The long-standing industry target for restaurant food cost is 28–35% of food sales, and it varies by service model: quick-service / fast-casual roughly 25–30%, casual ~30–34%, and fine dining ~34–40% (premium ingredients, lower covers).",
       "source_url": "https://www.restaurant365.com/blog/cooking-up-success-understanding-what-is-a-good-food-cost-percentage/",
