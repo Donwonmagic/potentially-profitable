@@ -341,6 +341,15 @@ surfacing the already-validated frontier layers instead of inventing a forecast.
   +saved recipes → operator's basket; +seasonality → seasonal cues; +Inventory →
   true buy-now-or-wait with quantity & timing.
 
+**Published as data (data-as-moat):** `scripts/build-cost-outlook.mjs` runs the
+Basket Forecast over the declared basket and writes `data/cost-outlook.json` — the
+forward-looking, honesty-gated companion to the measured `cost-index/feed.json`,
+consumable by the weekly dispatch, an answer engine, or a future no-fetch panel.
+Deterministic (stamped from `pressure.asOf`), self-test + `--check` wired into CI;
+the self-test asserts it never forecasts beyond the validated reach and never leaks
+a price. Current read: outlook `mixed`, weighted tilt −0.145 (net slightly easing),
+gated to ~1 print ahead.
+
 **Roadmap now:** capabilities #1–#4 shipped (Live Plate Margin, Fair-Price Gap,
 Basket Forecast, Leak of the Week), all Index-only and composable; #5 Peer
 Benchmark, #6 OCR Error-Catch, #7 Margin-at-Risk await the Decoder / peer pool /

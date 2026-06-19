@@ -451,6 +451,11 @@ const CHECKS = [
   // beyond the dated baseline in build-cost-index-audit.mjs (HISTORICAL_WAIVERS
   // idiom). Known issues (beef trio, vegetable-oil) are baselined and pass.
   ['Cost-index data-quality gate','build-cost-index-audit.mjs','--gate'],
+  // Published weekly outlook — Basket Forecast over the declared basket, gated to
+  // the backtest-validated reach; the forward companion to feed.json. Self-test +
+  // sync pair; ships to no page.
+  ['Cost-index outlook self-test','build-cost-outlook.mjs','--self-test'],
+  ['Cost-index outlook sync','build-cost-outlook.mjs','--check'],
   // Embeddable wholesale-reference card (idea #3) — a self-contained, noindex iframe
   // fragment built from the published series.json; --check keeps it in lockstep with the
   // feed so an embedded card can never drift from the page that produced it.
