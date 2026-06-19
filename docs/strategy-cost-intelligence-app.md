@@ -283,3 +283,33 @@ the honest market independents actually pay, by category — the publishable ben
 **Enhancements:** +Decoder → every invoice line automatically + true delivered price;
 +peer pool → percentile vs peers (the inert `bench.peerBenchmark`); +Ledger →
 switch-savings into the P&L.
+
+## Shipped: Leak of the Week (capability #4, the intelligence layer)
+
+The "one honest alert" — the composable capstone that consumes whatever signals are
+on and returns the single highest-value action this week, no dashboard to read.
+
+- `tools/_shared/leak-of-the-week.js` — pure `pick()` that fuses the shipped
+  capabilities, each honesty-gated at its source: **plate drift**
+  (`plate-market-recost`, $-quantified per plate from the operator's own recipe),
+  **overpay** (`fair-price-gap`, directional — never an overpayment claim from
+  wholesale alone), and **cost pressure** (`data/cost-pressure.json`, proven edges
+  only, directional — the layer carries no price, so no $ is invented).
+- **Honest ranking:** a real per-plate $ leak outranks directional ones; directional
+  leaks order overpay (act now) → pressure (act soon). Returns `{ leak: null }` when
+  nothing clears the bars — it stays quietly dark rather than nagging.
+- `tools/_shared/leak-of-the-week.test.mjs` — 8 tests (ranking, every degraded mode,
+  proven-only pressure, basket scoping, "no leak" silence). Unit gate now 306/0.
+- **Verified on real data:** with a saved recipe → "Chicken sandwich $0.10/plate,
+  +23.6%"; Index-only → directional pressure leak (romaine, building, high
+  confidence); saved overpay → "+111% vs reference, worth asking."
+- **Grounded:** the leak taxonomy (plate drift, vendor price creep, building cost)
+  maps to the expert-cited controllable leaks (over-portioning, vendor creep, waste;
+  ClearCOGS / Rezku / QSR, 2026) — waste/shrink leaks arrive with +Inventory.
+- **Module contract:** Min = Index + cost-pressure (directional market leak);
+  +recipes → $ plate leaks; +saved prices → overpay; +Decoder → real per-line
+  overpay; +Inventory → waste/shrink; +Ledger → P&L-weighted ranking.
+
+**Next (wiring):** a weekly "Leak of the week" panel/digest needs a browser
+cost-pressure seed (a `data/cost-pressure.js` wrapper like `data/cost-index.js`) so
+the panel stays no-fetch; the compute spine is done and verified.
