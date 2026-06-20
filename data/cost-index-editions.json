@@ -1,0 +1,523 @@
+{
+  "_doc": "Append-only archive of weekly Cost Index dispatch snapshots. One entry per asOf; never overwrite a prior entry except via a dated revision. The publication's citable time series. reconstructed:true entries are backfilled from published HTML at basket level only and never anchor a per-ingredient week-over-week claim.",
+  "_version": "1.0",
+  "editions": [
+    {
+      "asOf": "2026-06-05",
+      "publishedAt": "2026-06-05T13:00:00-04:00",
+      "reconstructed": true,
+      "basketWeightsVersion": "2026-Q2",
+      "methodologyVersion": "1.3.0",
+      "basket": {
+        "pct": 0.091,
+        "dir": "up",
+        "confidence": "high",
+        "asOf": "2026-04-01",
+        "nContributing": 16,
+        "contributors": []
+      },
+      "spread": {
+        "above": 9,
+        "below": 3,
+        "flat": 1,
+        "panel": 13
+      },
+      "flags": [],
+      "panelMembers": [],
+      "reads": {},
+      "drivers": [],
+      "pressureAsOf": null
+    },
+    {
+      "asOf": "2026-06-16",
+      "publishedAt": "2026-06-16T13:00:00-04:00",
+      "reconstructed": true,
+      "basketWeightsVersion": "2026-Q2",
+      "methodologyVersion": "1.3.0",
+      "basket": {
+        "pct": 0.032,
+        "dir": "up",
+        "confidence": "medium",
+        "asOf": "2026-05-01",
+        "nContributing": 16,
+        "contributors": []
+      },
+      "spread": {
+        "above": 32,
+        "below": 37,
+        "flat": 13,
+        "panel": 82
+      },
+      "flags": [],
+      "panelMembers": [],
+      "reads": {},
+      "drivers": [],
+      "pressureAsOf": null
+    },
+    {
+      "asOf": "2026-06-18",
+      "publishedAt": "2026-06-18T13:00:00-04:00",
+      "basketWeightsVersion": "2026-Q2",
+      "methodologyVersion": "1.3.0",
+      "basket": {
+        "pct": 0.03225806451612903,
+        "dir": "up",
+        "confidence": "medium",
+        "asOf": "2026-05-01",
+        "nContributing": 16,
+        "contributors": [
+          {
+            "ingredient": "romaine-lettuce",
+            "pct": 1.1142857142857143,
+            "weight": 0.05,
+            "points": 0.055714285714285716
+          },
+          {
+            "ingredient": "onion",
+            "pct": 0.2222222222222222,
+            "weight": 0.055,
+            "points": 0.012222222222222221
+          },
+          {
+            "ingredient": "vegetable-oil",
+            "pct": 0.08397938104944885,
+            "weight": 0.12,
+            "points": 0.010077525725933862
+          },
+          {
+            "ingredient": "butter",
+            "pct": -0.10358202144649788,
+            "weight": 0.06,
+            "points": -0.006214921286789872
+          },
+          {
+            "ingredient": "ribeye",
+            "pct": 0.051572021537008794,
+            "weight": 0.11,
+            "points": 0.005672922369070968
+          },
+          {
+            "ingredient": "pork-shoulder",
+            "pct": -0.11076969197331929,
+            "weight": 0.05,
+            "points": -0.005538484598665965
+          },
+          {
+            "ingredient": "eggs",
+            "pct": -0.10678895991070197,
+            "weight": 0.05,
+            "points": -0.0053394479955350994
+          },
+          {
+            "ingredient": "cheddar-cheese",
+            "pct": 0.04867136084858531,
+            "weight": 0.06,
+            "points": 0.0029202816509151185
+          },
+          {
+            "ingredient": "pork-loin",
+            "pct": 0.039422543031649056,
+            "weight": 0.07,
+            "points": 0.0027595780122154343
+          },
+          {
+            "ingredient": "tomato",
+            "pct": -0.045454545454545456,
+            "weight": 0.05,
+            "points": -0.002272727272727273
+          },
+          {
+            "ingredient": "shrimp",
+            "pct": -0.04913075141256692,
+            "weight": 0.04,
+            "points": -0.0019652300565026768
+          },
+          {
+            "ingredient": "russet-potato",
+            "pct": 0.03225806451612903,
+            "weight": 0.055,
+            "points": 0.0017741935483870967
+          },
+          {
+            "ingredient": "beef-tenderloin",
+            "pct": 0.04064379775646237,
+            "weight": 0.04,
+            "points": 0.0016257519102584948
+          },
+          {
+            "ingredient": "salmon-fillet",
+            "pct": -0.022797578685303306,
+            "weight": 0.03,
+            "points": -0.0006839273605590992
+          },
+          {
+            "ingredient": "chicken-breast",
+            "pct": 0.0014405762304922514,
+            "weight": 0.17,
+            "points": 0.0002448979591836828
+          },
+          {
+            "ingredient": "whole-chicken",
+            "pct": -0.002449779519843162,
+            "weight": 0.06,
+            "points": -0.0001469867711905897
+          }
+        ]
+      },
+      "spread": {
+        "above": 36,
+        "below": 34,
+        "flat": 12,
+        "panel": 82
+      },
+      "flags": [
+        {
+          "ingredient": "avocado",
+          "name": "Avocado",
+          "pct": 0.6857142857142857,
+          "bias": "re-price",
+          "medianCents": 5650,
+          "elevatedWeeks": 8
+        },
+        {
+          "ingredient": "acorn-squash",
+          "name": "Acorn squash",
+          "pct": 0.5609756097560976,
+          "bias": "re-price",
+          "medianCents": 3913,
+          "elevatedWeeks": 8
+        },
+        {
+          "ingredient": "red-leaf-lettuce",
+          "name": "Red leaf lettuce",
+          "pct": 0.4594594594594595,
+          "bias": "re-price",
+          "medianCents": 3913,
+          "elevatedWeeks": 8
+        },
+        {
+          "ingredient": "cilantro",
+          "name": "Cilantro",
+          "pct": 0.37602880658436216,
+          "bias": "re-price",
+          "medianCents": 2675,
+          "elevatedWeeks": 6
+        },
+        {
+          "ingredient": "chicken-thigh",
+          "name": "Chicken thigh",
+          "pct": 0.3148148148148148,
+          "bias": "re-price",
+          "medianCents": 142,
+          "elevatedWeeks": 5
+        },
+        {
+          "ingredient": "collard-greens",
+          "name": "Collard greens",
+          "pct": 0.3,
+          "bias": "re-price",
+          "medianCents": 1863,
+          "elevatedWeeks": 8
+        },
+        {
+          "ingredient": "iceberg-lettuce",
+          "name": "Iceberg lettuce",
+          "pct": 0.2824858757062147,
+          "bias": "re-price",
+          "medianCents": 5750,
+          "elevatedWeeks": 8
+        },
+        {
+          "ingredient": "lemon",
+          "name": "Lemon",
+          "pct": 0.24675324675324675,
+          "bias": "re-price",
+          "medianCents": 4800,
+          "elevatedWeeks": 8
+        },
+        {
+          "ingredient": "parsley",
+          "name": "Parsley",
+          "pct": 0.18478260869565216,
+          "bias": "re-price",
+          "medianCents": 3150,
+          "elevatedWeeks": 6
+        },
+        {
+          "ingredient": "cabbage",
+          "name": "Cabbage",
+          "pct": 0.16698412698412698,
+          "bias": "re-price",
+          "medianCents": 2125,
+          "elevatedWeeks": 8
+        },
+        {
+          "ingredient": "pear",
+          "name": "Pears",
+          "pct": 0.12987012987012986,
+          "bias": "re-price",
+          "medianCents": 4025,
+          "elevatedWeeks": 4
+        },
+        {
+          "ingredient": "ribeye",
+          "name": "Ribeye",
+          "pct": 0.12886597938144329,
+          "bias": "re-price",
+          "medianCents": 1314,
+          "elevatedWeeks": 4
+        },
+        {
+          "ingredient": "red-potato",
+          "name": "Red potato",
+          "pct": 0.0891089108910891,
+          "bias": "re-price",
+          "medianCents": 3175,
+          "elevatedWeeks": 6
+        },
+        {
+          "ingredient": "habanero-pepper",
+          "name": "Habanero pepper",
+          "pct": 0.05844155844155844,
+          "bias": "re-price",
+          "medianCents": 3763,
+          "elevatedWeeks": 5
+        },
+        {
+          "ingredient": "artichoke",
+          "name": "Artichoke",
+          "pct": 0.02242152466367713,
+          "bias": "re-price",
+          "medianCents": 5113,
+          "elevatedWeeks": 8
+        },
+        {
+          "ingredient": "blueberry",
+          "name": "Blueberries",
+          "pct": -0.04165408994868699,
+          "bias": "re-price",
+          "medianCents": 3038,
+          "elevatedWeeks": 5
+        },
+        {
+          "ingredient": "green-beans",
+          "name": "Green beans",
+          "pct": -0.06153846153846154,
+          "bias": "re-price",
+          "medianCents": 3025,
+          "elevatedWeeks": 8
+        },
+        {
+          "ingredient": "corn-on-the-cob",
+          "name": "Corn on the cob",
+          "pct": 0.39705882352941174,
+          "bias": "watch",
+          "medianCents": 2800,
+          "elevatedWeeks": 2
+        },
+        {
+          "ingredient": "cantaloupe",
+          "name": "Cantaloupe",
+          "pct": 0.34210526315789475,
+          "bias": "watch",
+          "medianCents": 3532,
+          "elevatedWeeks": null
+        },
+        {
+          "ingredient": "ground-beef",
+          "name": "Ground beef",
+          "pct": -0.02304964539007092,
+          "bias": "watch",
+          "medianCents": 551,
+          "elevatedWeeks": null
+        }
+      ],
+      "panelMembers": [
+        "ribeye",
+        "beef-tenderloin",
+        "chicken-breast",
+        "whole-chicken",
+        "pork-loin",
+        "pork-shoulder",
+        "romaine-lettuce",
+        "tomato",
+        "onion",
+        "russet-potato",
+        "butter",
+        "cheddar-cheese",
+        "eggs",
+        "bell-pepper",
+        "broccoli",
+        "cauliflower",
+        "spinach",
+        "asparagus",
+        "garlic",
+        "carrot",
+        "corn-on-the-cob",
+        "kale",
+        "basil",
+        "cilantro",
+        "button-mushroom",
+        "sweet-potato",
+        "avocado",
+        "lemon",
+        "lime",
+        "pineapple",
+        "chicken-thigh",
+        "cucumber",
+        "celery",
+        "cabbage",
+        "eggplant",
+        "zucchini",
+        "beet",
+        "leek",
+        "ginger",
+        "yellow-squash",
+        "jalapeno",
+        "green-onion",
+        "green-beans",
+        "parsley",
+        "brussels-sprouts",
+        "butternut-squash",
+        "iceberg-lettuce",
+        "bok-choy",
+        "artichoke",
+        "okra",
+        "snow-peas",
+        "butter-lettuce",
+        "green-leaf-lettuce",
+        "red-leaf-lettuce",
+        "collard-greens",
+        "napa-cabbage",
+        "rutabaga",
+        "daikon",
+        "cherry-tomato",
+        "serrano-pepper",
+        "poblano-pepper",
+        "habanero-pepper",
+        "mint",
+        "rosemary",
+        "thyme",
+        "oregano",
+        "tarragon",
+        "dill",
+        "red-onion",
+        "red-potato",
+        "grapefruit",
+        "apple",
+        "pear",
+        "banana",
+        "watermelon",
+        "cantaloupe",
+        "blueberry",
+        "raspberry",
+        "short-rib",
+        "ground-beef",
+        "whole-turkey",
+        "acorn-squash"
+      ],
+      "reads": {
+        "ribeye": 0.12886597938144329,
+        "beef-tenderloin": -0.03481624758220503,
+        "chicken-breast": -0.055944055944055944,
+        "whole-chicken": -0.2672413793103448,
+        "pork-loin": 0.044444444444444446,
+        "pork-shoulder": -0.16783216783216784,
+        "romaine-lettuce": 0.15671641791044777,
+        "tomato": -0.45038167938931295,
+        "onion": -0.015121368881814564,
+        "russet-potato": 0.02098695405558707,
+        "butter": -0.13440860215053763,
+        "cheddar-cheese": 0.1,
+        "eggs": 0.12,
+        "bell-pepper": 0,
+        "broccoli": -0.4875,
+        "cauliflower": -0.5641025641025641,
+        "spinach": -0.08791208791208792,
+        "asparagus": -0.4112903225806452,
+        "garlic": -0.11811023622047244,
+        "carrot": 0.007352941176470588,
+        "corn-on-the-cob": 0.39705882352941174,
+        "kale": 0.02857142857142857,
+        "basil": 0,
+        "cilantro": 0.37602880658436216,
+        "button-mushroom": 0.03488372093023256,
+        "sweet-potato": 0,
+        "avocado": 0.6857142857142857,
+        "lemon": 0.24675324675324675,
+        "lime": -0.2916666666666667,
+        "pineapple": -0.20512820512820512,
+        "chicken-thigh": 0.3148148148148148,
+        "cucumber": -0.3728813559322034,
+        "celery": -0.19,
+        "cabbage": 0.16698412698412698,
+        "eggplant": -0.43103448275862066,
+        "zucchini": -0.4024390243902439,
+        "beet": -0.14814814814814814,
+        "leek": -0.049586776859504134,
+        "ginger": 0.03125,
+        "yellow-squash": -0.5,
+        "jalapeno": -0.273972602739726,
+        "green-onion": -0.08695652173913043,
+        "green-beans": -0.06153846153846154,
+        "parsley": 0.18478260869565216,
+        "brussels-sprouts": -0.18867924528301888,
+        "butternut-squash": 0.20155844155844155,
+        "iceberg-lettuce": 0.2824858757062147,
+        "bok-choy": 0.015151515151515152,
+        "artichoke": 0.02242152466367713,
+        "okra": -0.020833333333333332,
+        "snow-peas": -0.02586206896551724,
+        "butter-lettuce": 0.28846153846153844,
+        "green-leaf-lettuce": 0.3560606060606061,
+        "red-leaf-lettuce": 0.4594594594594595,
+        "collard-greens": 0.3,
+        "napa-cabbage": -0.2054794520547945,
+        "rutabaga": 0,
+        "daikon": 0,
+        "cherry-tomato": -0.1111111111111111,
+        "serrano-pepper": -0.45041322314049587,
+        "poblano-pepper": -0.3744075829383886,
+        "habanero-pepper": 0.05844155844155844,
+        "mint": 0,
+        "rosemary": 0,
+        "thyme": 0,
+        "oregano": 0,
+        "tarragon": 0,
+        "dill": 0.1893939393939394,
+        "red-onion": 0.08333333333333333,
+        "red-potato": 0.0891089108910891,
+        "grapefruit": 0.022556390977443608,
+        "apple": 0.03333333333333333,
+        "pear": 0.12987012987012986,
+        "banana": 0,
+        "watermelon": 0,
+        "cantaloupe": 0.34210526315789475,
+        "blueberry": -0.04165408994868699,
+        "raspberry": -0.024793388429752067,
+        "short-rib": 0.01549053356282272,
+        "ground-beef": -0.02304964539007092,
+        "whole-turkey": 0.07142857142857142,
+        "acorn-squash": 0.5609756097560976
+      },
+      "drivers": [
+        {
+          "key": "corn",
+          "pct": 0.10362173038229376,
+          "dir": "up"
+        },
+        {
+          "key": "soybeans",
+          "pct": 0.19784172661870503,
+          "dir": "up"
+        },
+        {
+          "key": "seafood-import",
+          "pct": 0.018822100789314043,
+          "dir": "up"
+        }
+      ],
+      "pressureAsOf": "2026-06-08"
+    }
+  ]
+}

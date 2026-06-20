@@ -16,11 +16,15 @@
  *
  * The default invocation writes one dated post per week, unique by the insight's
  * asOf date. Re-running for the same week overwrites in place and bumps dateModified.
- * It also upserts the post's blog-index card source (data/library-tags.json), pruning
- * any prior cost-index-week-* entry so the registration files never grow unbounded.
- * After emission, run scripts/sync-includes.mjs and the build-chain inject/build scripts
- * (build-blog-index, build-rss, build-sitemap, build-llms-txt, inject-* CTAs) so the post
- * registers in the blog index, RSS, sitemap, smart-next, and the post-end CTA.
+ * It also upserts the post's blog-index card source (data/library-tags.json) — every
+ * weekly edition is RETAINED now (the dated editions are the publication's archive),
+ * and appended to the longitudinal spine (data/cost-index-editions.json) plus a citable
+ * per-week snapshot (cost-index/week-<asOf>.json + .csv). After emission, run the
+ * build-chain inject/build scripts (build-cost-index-archive, build-blog-index, build-rss,
+ * build-sitemap, build-llms-txt, inject-library-cost-index-hero, inject-* CTAs) so the post
+ * registers in the archive, blog index, RSS, sitemap, smart-next, and the post-end CTA.
+ * NOTE: do not run sync-includes here — the _includes footer template is stale vs the live
+ * count sentinels and would regress them; the generators copy chrome from live donor pages.
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import path from 'node:path';
@@ -76,6 +80,13 @@ function pressureRead(items, key) {
 
 function computeInsight() {
   const ci = rd('data/cost-index.json');
+  // Disclosable versions of the two things that can break commensurability between
+  // editions: the frozen basket weights and the methodology. The longitudinal spine
+  // (cost-index-editions.json) records these so a week-over-week claim is only ever
+  // made across editions built with the SAME ruler.
+  let basketWeightsVersion = null, methodologyVersion = null;
+  try { basketWeightsVersion = rd('data/cost-basket-weights.json')._version || null; } catch { /* optional */ }
+  try { methodologyVersion = JSON.parse(readFileSync(path.join(repoRoot, 'cost-index/methodology.json'), 'utf8')).methodologyVersion || null; } catch { /* optional */ }
   const labels = (rd('data/cost-index-labels.json').labels) || {};
   // The Pressure layer: inferred building/easing direction per staple from public lead
   // indicators (feed, placements, cold storage, shipments, drought, diesel). Optional —
@@ -102,6 +113,9 @@ function computeInsight() {
       key, name: name(key), nameEs: nameEs(key), pct: t.pct, dir: t.dir || (t.pct > 0 ? 'up' : t.pct < 0 ? 'down' : 'flat'),
       verdict: f.verdict || null, bias: f.actionBias || null, reason: f.reason || null,
       confidence: p.confidence || null, seasonal: !!(labels[key] && labels[key].seasonal),
+      // Per-ingredient sustained-elevation counter (already measured in cost-index.json).
+      // Surfacing it is the first honest longitudinal claim — needs no snapshot archive.
+      elevatedWeeks: typeof f.elevatedWeeks === 'number' ? f.elevatedWeeks : null,
       medianCents: typeof lvl.medianCents === 'number' ? lvl.medianCents : null,
       rangeCents: Array.isArray(lvl.rangeCents) && lvl.rangeCents.length === 2 ? lvl.rangeCents : null,
       unit: (labels[key] && labels[key].unit_en) || null,
@@ -162,7 +176,94 @@ function computeInsight() {
     .filter(Boolean)
     .sort((a, b) => (a.dir === b.dir ? 0 : a.dir === 'building' ? -1 : 1));
 
-  return { asOf, count: items.length, up, down, flat, reprice, watch, risers, fallers, drivers, basket, contributors, heaviest, topPush, topEase, pressure, pressureAsOf };
+  return { asOf, count: items.length, up, down, flat, reprice, watch, risers, fallers, drivers, basket, contributors, heaviest, topPush, topEase, pressure, pressureAsOf, items, basketWeightsVersion, methodologyVersion };
+}
+
+// ---- longitudinal spine: the append-only edition archive -------------------
+// data/cost-index-editions.json is the publication's time series. One frozen entry per
+// asOf, never deleted (same immutability rule as cost-revisions.json). Each entry records
+// the basket reading, the spread, every panel member's read, and the two version stamps —
+// so an honest week-over-week is computable ONLY across commensurable editions, and is
+// withheld (with a stated reason) across a re-weight or a re-anchor.
+const EDITIONS_FILE = 'data/cost-index-editions.json';
+
+function loadEditions() {
+  try { return rd(EDITIONS_FILE); }
+  catch { return { _doc: 'Append-only archive of weekly Cost Index dispatch snapshots. One entry per asOf; never overwrite a prior entry except via a dated revision. The publication\'s citable time series.', _version: '1.0', editions: [] }; }
+}
+
+// Build the frozen snapshot object for one edition from a computed insight.
+function editionFromInsight(ins, { reconstructed = false, publishedAt = null } = {}) {
+  const b = ins.basket || {};
+  const reads = {};
+  for (const it of (ins.items || [])) if (typeof it.pct === 'number') reads[it.key] = it.pct;
+  return {
+    asOf: ins.asOf,
+    publishedAt: publishedAt || `${ins.asOf}T13:00:00-04:00`,
+    ...(reconstructed ? { reconstructed: true } : {}),
+    basketWeightsVersion: ins.basketWeightsVersion || null,
+    methodologyVersion: ins.methodologyVersion || null,
+    basket: {
+      pct: typeof b.pct === 'number' ? b.pct : null,
+      dir: b.dir || null,
+      confidence: b.confidence || null,
+      asOf: b.asOf || null,
+      nContributing: b.nContributing || null,
+      contributors: (ins.contributors || []).map((c) => ({ ingredient: c.key, pct: c.pct, weight: c.weight, points: c.points })),
+    },
+    spread: { above: ins.up, below: ins.down, flat: ins.flat, panel: ins.count },
+    flags: [...ins.reprice, ...ins.watch].map((i) => ({ ingredient: i.key, name: i.name, pct: i.pct, bias: i.bias, medianCents: i.medianCents, elevatedWeeks: i.elevatedWeeks })),
+    panelMembers: (ins.items || []).map((i) => i.key),
+    reads,
+    drivers: (ins.drivers || []).map((d) => ({ key: d.key, pct: d.pct, dir: d.dir })),
+    pressureAsOf: ins.pressureAsOf || null,
+  };
+}
+
+function upsertEdition(archive, ins) {
+  const entry = editionFromInsight(ins);
+  archive.editions = (archive.editions || []).filter((e) => e.asOf !== ins.asOf);
+  archive.editions.push(entry);
+  archive.editions.sort((a, b) => (a.asOf < b.asOf ? -1 : a.asOf > b.asOf ? 1 : 0));
+  writeFileSync(path.join(repoRoot, EDITIONS_FILE), JSON.stringify(archive, null, 2) + '\n');
+  return entry;
+}
+
+// The newest archived edition strictly BEFORE this asOf — the honest prior reading.
+function priorEdition(archive, asOf) {
+  const before = (archive.editions || []).filter((e) => e.asOf < asOf);
+  return before.length ? before[before.length - 1] : null;
+}
+
+// Compute the honest week-over-week story. The whole point is the GUARD: a basket delta is
+// only reported across editions built with the same weights AND a refreshed basket anchor;
+// otherwise the move is withheld and the reason stated. Per-ingredient deltas need the prior
+// edition to carry a reads-map (reconstructed basket-only seeds don't, so they degrade clean).
+function computeWoW(ins, prev) {
+  if (!prev) return { state: 'first' };
+  const wv = ins.basketWeightsVersion, pv = prev.basketWeightsVersion;
+  if (wv && pv && wv !== pv) return { state: 'reweighted', from: pv, to: wv };
+  const curAnchor = (ins.basket || {}).asOf, prevAnchor = (prev.basket || {}).asOf;
+  const curPct = (ins.basket || {}).pct, prevPct = (prev.basket || {}).pct;
+  let basket;
+  if (curAnchor && prevAnchor && curAnchor === prevAnchor) {
+    basket = { state: 'anchor-unchanged', anchor: curAnchor };
+  } else if (typeof curPct === 'number' && typeof prevPct === 'number') {
+    basket = { state: 'moved', from: prevPct, to: curPct, deltaPts: curPct - prevPct, fromAsOf: prevAnchor, toAsOf: curAnchor };
+  } else {
+    basket = { state: 'unavailable' };
+  }
+  // Per-ingredient moves for the flagged set, where the prior edition can back them.
+  const reads = prev.reads || {};
+  const ingredient = [];
+  if (Object.keys(reads).length) {
+    for (const i of ins.reprice.concat(ins.watch)) {
+      if (typeof reads[i.key] === 'number' && typeof i.pct === 'number') {
+        ingredient.push({ key: i.key, name: i.name, from: reads[i.key], to: i.pct, deltaPts: i.pct - reads[i.key] });
+      }
+    }
+  }
+  return { state: 'available', prevAsOf: prev.asOf, prevReconstructed: !!prev.reconstructed, basket, ingredient };
 }
 
 // ---- dry-run: print the narrative (no file written) ------------------------
@@ -225,8 +326,32 @@ const fmtPtsPlain = (x) => `${x >= 0 ? '+' : '-'}${Math.abs(x * 100).toFixed(1)}
 function dollarPhrase(i, { es = false } = {}) {
   if (!i || i.medianCents == null) return '';
   const u = (es ? i.unitEs : i.unit) ? `/${es ? i.unitEs : i.unit}` : '';
-  const range = i.rangeCents ? ` (${es ? 'rango' : 'range'} ${money(i.rangeCents[0])}–${money(i.rangeCents[1])})` : '';
+  // A degenerate range (lo === hi) is a single observation, not a range — printing it as
+  // "$5.51–$5.51" reads as false precision. Suppress the range and say single-source.
+  const degenerate = i.rangeCents && i.rangeCents[0] === i.rangeCents[1];
+  const range = (i.rangeCents && !degenerate)
+    ? ` (${es ? 'rango' : 'range'} ${money(i.rangeCents[0])}–${money(i.rangeCents[1])})`
+    : (degenerate ? (es ? ' (fuente única)' : ' (single-source)') : '');
   return `${es ? 'unos' : 'about'} ${money(i.medianCents)}${u} ${es ? 'mayorista' : 'wholesale'}${range}`;
+}
+
+// Sign-aware flag reason. The measured `reason` string in cost-index.json is keyed to the
+// verdict, so a NEGATIVE re-price read inherits "the increase looks real" — a contradiction
+// the audio renderer would speak aloud. Override when the sign disagrees with the wording.
+function flagReason(i) {
+  let r = i.reason || i.verdict || 'a move worth tracking';
+  if (i.pct < 0 && /increase/i.test(r)) {
+    r = i.bias === 're-price'
+      ? 'reading well below baseline and holding — the move looks structural'
+      : 'a downward move worth tracking — watch the next read';
+  }
+  return r;
+}
+// "elevated N weeks running" — the per-ingredient longitudinal claim, when the counter
+// supports it (≥2). Honest because it is the measured sustained-elevation count, not a delta.
+function elevatedClause(i) {
+  return (typeof i.elevatedWeeks === 'number' && i.elevatedWeeks >= 2)
+    ? ` It has flagged ${i.elevatedWeeks} weeks running.` : '';
 }
 // Render a Pressure read as a clause naming the force and its lead time, e.g.
 // "the pressure read is building, led by cattle-on-feed placements on a 16–26 weeks lead".
@@ -267,7 +392,7 @@ function buildBars(ins) {
 ${rows}
           <p class="viz-bars__note">Each bar is a read versus <strong>that ingredient's own tracked baseline window</strong> &mdash; a state-of-play snapshot of what's flashing, not a move since last week.</p>
         </div>
-        <figcaption>The widest gaps from each ingredient's tracked baseline this week. Rust bars are building cost; teal bars are easing.</figcaption>
+        <figcaption>The widest gaps from each ingredient's tracked baseline, week of ${ins.asOf}. Rust bars are building cost; teal bars are easing.</figcaption>
       </figure>`;
 }
 
@@ -305,7 +430,7 @@ function buildRings(ins) {
 ${spreadRing}
 ${basketRing}
         </div>
-        <figcaption>Where the panel sits this week: the spread of reads above baseline, and the weighted basket's own reading. Both are reads versus each baseline window, not a week-over-week move.</figcaption>
+        <figcaption>Where the panel sits, week of ${ins.asOf}: the spread of reads above baseline, and the weighted basket's own reading. Both are reads versus each baseline window, not a week-over-week move.</figcaption>
       </figure>`;
 }
 
@@ -342,7 +467,7 @@ function buildFlow(ins) {
             </li>
           </ol>
         </div>
-        <figcaption>The feed-to-protein chain behind this week's reads. Directional context from the measured index, never a forecast.</figcaption>
+        <figcaption>The feed-to-protein chain behind the reads for the week of ${ins.asOf}. Directional context from the measured index, never a forecast.</figcaption>
       </figure>`;
 }
 
@@ -371,7 +496,7 @@ function buildContrib(ins) {
 ${barRows}
           <p class="viz-bars__note">A "point" is one one-hundredth of the basket percentage. Each bar is <strong>weight × that ingredient's read</strong> &mdash; a heavy staple barely moving anchors the basket, a light one moving hard can still swing it.</p>
         </div>
-        <figcaption>The basket figure, decomposed: each staple's contribution is its weight times its own read. Rust pushes up, teal pulls down.</figcaption>
+        <figcaption>The basket figure for the week of ${ins.asOf}, decomposed: each staple's contribution is its weight times its own read. Rust pushes up, teal pulls down.</figcaption>
       </figure>`;
 }
 
@@ -381,23 +506,23 @@ function repriceList(ins) {
   for (const i of ins.watch) items.push({ tag: 'Watch', i });
   if (!items.length) return '<p>Nothing structural is flashing this week &mdash; the panel reads hold across the board. That is its own signal: hold your prices and keep watching.</p>';
   const lis = items.map(({ tag, i }) => {
-    const seasonal = i.seasonal ? ' This one is seasonal, so it typically eases when the season turns.' : '';
+    const seasonal = i.seasonal ? ' This one is seasonal, so it eases when the season turns.' : '';
     const dollar = dollarPhrase(i);
     const grounded = dollar ? ` &mdash; ${dollar}` : '';
-    return `        <li><strong>${tag} &mdash; ${esc(i.name)}.</strong> It reads ${fmtPct(i.pct)} against its baseline${grounded}; ${esc(i.reason || i.verdict || 'a move worth tracking')}.${seasonal}</li>`;
+    return `        <li><strong>${tag} &mdash; ${esc(i.name)}.</strong> It reads ${fmtPct(i.pct)} against its baseline${grounded}; ${esc(flagReason(i))}.${elevatedClause(i)}${seasonal}</li>`;
   }).join('\n');
   return `      <ul>\n${lis}\n      </ul>`;
 }
 
 function upsertLibraryTags(slug, asOf, basketPlain, ins) {
-  // build-blog-index.mjs renders the blog index card from this entry. One weekly
-  // dispatch entry at a time; prune stale cost-index-week-* keys so it never grows.
+  // build-blog-index.mjs renders the blog index card from this entry. Every weekly
+  // dispatch is RETAINED now (the prior prune-to-one drifted from the ItemList and left
+  // half-pruned editions) — the dated editions are the publication's archive. They carry
+  // hide_from_recents so they don't flood the homepage "Recently Added" strip; the Cost
+  // Index archive page (build-cost-index-archive.mjs) is their canonical home.
   const f = path.join(repoRoot, 'data/library-tags.json');
   const data = JSON.parse(readFileSync(f, 'utf8'));
   data.blog_posts = data.blog_posts || {};
-  for (const k of Object.keys(data.blog_posts)) {
-    if (/^cost-index-week-\d{4}-\d{2}-\d{2}$/.test(k) && k !== slug) delete data.blog_posts[k];
-  }
   data.blog_posts[slug] = {
     topics: ['operations-margin'],
     title: `Restaurant Cost Index: where the basket stands, week of ${asOf}`,
@@ -409,12 +534,100 @@ function upsertLibraryTags(slug, asOf, basketPlain, ins) {
   writeFileSync(f, JSON.stringify(data, null, 2) + '\n');
 }
 
+// Per-edition machine snapshot — the citable dataset behind each dispatch. Mirrors the
+// feed.json conventions (CC0, sourced, never a forecast) so an analyst or AI pulls a
+// stable, addressable record per week, not prose scraped from HTML.
+function writePerWeekData(ins) {
+  const dir = path.join(repoRoot, 'cost-index');
+  mkdirSync(dir, { recursive: true });
+  const edition = editionFromInsight(ins);
+  const json = {
+    _doc: 'Frozen weekly snapshot of the Muntin Restaurant Cost Index dispatch. Public wholesale levels, never delivered prices. Measured levels only — never a forecast.',
+    license: 'https://creativecommons.org/publicdomain/zero/1.0/',
+    methodology: 'https://muntin.digital/cost-index/methodology/',
+    edition: 'https://muntin.digital/blog/cost-index-week-' + ins.asOf + '/',
+    ...edition,
+  };
+  writeFileSync(path.join(dir, `week-${ins.asOf}.json`), JSON.stringify(json, null, 2) + '\n');
+
+  // Flat CSV mirror (one row per panel ingredient), matching the series.csv convention.
+  const rows = [['ingredient', 'pct_vs_baseline', 'direction', 'flag', 'median_cents', 'elevated_weeks']];
+  const flagByKey = {};
+  for (const fl of edition.flags) flagByKey[fl.ingredient] = fl;
+  for (const it of (ins.items || [])) {
+    const fl = flagByKey[it.key] || {};
+    rows.push([it.key, (it.pct).toFixed(4), it.dir || '', fl.bias || '', it.medianCents == null ? '' : it.medianCents, it.elevatedWeeks == null ? '' : it.elevatedWeeks]);
+  }
+  const csv = rows.map((r) => r.map((c) => /[",\n]/.test(String(c)) ? `"${String(c).replace(/"/g, '""')}"` : String(c)).join(',')).join('\n') + '\n';
+  writeFileSync(path.join(dir, `week-${ins.asOf}.csv`), csv);
+}
+
+// ---- prose builders for the longitudinal + citability layers ---------------
+// The honesty paragraph, now WoW-aware. When a commensurable prior edition exists it ADDS
+// the move-since-last-edition; when the basket re-anchored or re-weighted it WITHHOLDS the
+// number and says why. Withholding, stated plainly, is itself the trust signal.
+function honestyPara(ins, wow, basketPlain) {
+  const fixed = `And every figure is a <strong>public wholesale level, never your delivered price</strong>: this is a read on the <a href="/glossary/cost-index/">cost index</a>, not a line for your <a href="/glossary/food-cost/">food cost</a> sheet. The point is direction and gap, not a number to paste into a cost sheet.`;
+  let lead;
+  if (!wow || wow.state === 'first') {
+    lead = `Each ingredient's percentage here is its read against <em>its own tracked baseline window</em> &mdash; a state-of-play "what's flashing this week." This is the first edition written into the dispatch's permanent archive, so from next week the panel can also show the honest move since the prior edition; this week it reports the standing gap.`;
+  } else if (wow.state === 'reweighted') {
+    lead = `Each ingredient's percentage here is its read against <em>its own tracked baseline window</em>. The basket weights changed version this edition (${esc(wow.from)} &rarr; ${esc(wow.to)}), so a week-over-week basket number would compare two different rulers &mdash; I am not printing one. The standing gap is below.`;
+  } else {
+    // state available
+    const b = wow.basket || {};
+    let bsent;
+    if (b.state === 'anchor-unchanged') {
+      bsent = `The basket's data anchor has not refreshed since the prior edition (still ${esc(b.anchor)}), so there is no new basket move to report &mdash; rather than invent one, I say so. The weekly panel underneath it did move, and the per-ingredient reads below are current.`;
+    } else if (b.state === 'moved') {
+      const dir = b.deltaPts > 0 ? 'widened' : b.deltaPts < 0 ? 'narrowed' : 'held';
+      bsent = `Move since the prior edition (${esc(wow.prevAsOf)}): the basket's gap to baseline ${dir} ${fmtPts(Math.abs(b.deltaPts))}, from ${fmtPct(b.from)} to ${fmtPct(b.to)}.`;
+    } else {
+      bsent = `The per-ingredient reads below are current; a basket week-over-week is withheld this edition because the anchors are not comparable.`;
+    }
+    lead = `Each ingredient's percentage here is its read against <em>its own tracked baseline window</em> &mdash; the gap, not a price. New: the dispatch now carries a permanent edition archive, so it can show the honest move since last week where the rulers match. ${bsent}`;
+  }
+  return `<p>One honesty line before the numbers, because it changes how you read every one of them. ${lead} ${fixed}</p>`;
+}
+
+// "Cite this edition" — the copy-paste citation + reproducibility statement. Delivers four
+// north-star pieces at once: versioned-basket disclosure, named sources, the stable
+// permalink, and the reproducibility recipe.
+function citeBlock(ins, url) {
+  const wv = ins.basketWeightsVersion ? `basket weights v${esc(ins.basketWeightsVersion)}, ` : '';
+  const mv = ins.methodologyVersion ? `methodology v${esc(ins.methodologyVersion)}` : 'methodology';
+  return `  <aside class="cite-this" data-llm="citation" aria-label="How to cite this edition" style="margin:32px auto;max-width:720px;padding:18px 22px;background:var(--cream-2);border-left:3px solid var(--teal);border-radius:8px">
+    <p class="cite-this__eyebrow" style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--teal);margin:0 0 8px">Cite this edition</p>
+    <p class="cite-this__text" style="margin:0 0 10px;font-size:14.5px;line-height:1.55">Muntin Digital. &ldquo;Restaurant Cost Index: where the basket stands, week of ${esc(ins.asOf)}.&rdquo; Muntin Restaurant Cost Index, ${wv}${mv}. Published ${esc(ins.asOf)}. <a href="${url}">${url}</a>. Data: <a href="https://muntin.digital/cost-index/week-${esc(ins.asOf)}.json">/cost-index/week-${esc(ins.asOf)}.json</a> (CC0).</p>
+    <p class="cite-this__repro" style="margin:0;font-size:13.5px;line-height:1.5;color:var(--ink-soft)">Reproducible from public USDA, BLS, and FRED data via the methodology's <a href="/cost-index/methodology/#reproduce">worked example</a>. Public wholesale levels, never your delivered price.</p>
+  </aside>`;
+}
+
+// "Go deeper" — the tiered-depth descent. Keeps the top read short by LINKING the heavier
+// layers (per-ingredient pages, the machine feed, the archive) instead of inlining them.
+function goDeeperBlock(ins) {
+  return `      <h2 id="go-deeper">Go deeper</h2>
+      <p>This dispatch is the surface read. The layers underneath it are addressable, so an analyst &mdash; or an answer engine &mdash; can descend without the top read bloating:</p>
+      <ul>
+        <li><strong>Per-ingredient pages</strong> &mdash; every flagged item has its own live page with the full reading and its sources, e.g. <a href="/cost-index/">the Cost Index hub</a>.</li>
+        <li><strong>This edition as data</strong> &mdash; <a href="/cost-index/week-${esc(ins.asOf)}.json">week-${esc(ins.asOf)}.json</a> and <a href="/cost-index/week-${esc(ins.asOf)}.csv">.csv</a>: the frozen per-ingredient snapshot behind this page.</li>
+        <li><strong>The full series &amp; feed</strong> &mdash; <a href="/cost-index/feed.json">feed.json</a> (machine catalog) and the <a href="/cost-index/weekly/">edition archive</a> (every week).</li>
+        <li><strong>Methodology &amp; confidence</strong> &mdash; the <a href="/cost-index/methodology/">versioned methodology</a>${ins.methodologyVersion ? ` (v${esc(ins.methodologyVersion)})` : ''}, including why nothing here is rated <em>high</em> (that needs two independent dollar sources) and the published band-coverage backtest.</li>
+      </ul>`;
+}
+
 function emit() {
   const ins = computeInsight();
   const asOf = ins.asOf;
   const slug = `cost-index-week-${asOf}`;
   const url = `https://muntin.digital/blog/${slug}/`;
   const today = new Date().toISOString().slice(0, 10);
+
+  // Longitudinal spine: read the archive and the honest prior edition BEFORE upserting
+  // this one, so the week-over-week story compares against last week, not itself.
+  const archive = loadEditions();
+  const prevEd = priorEdition(archive, asOf);
+  const wow = computeWoW(ins, prevEd);
 
   const donorHtml = readFileSync(path.join(repoRoot, DONOR), 'utf8');
   const headBoiler = sliceDonor(donorHtml,
@@ -434,13 +647,22 @@ function emit() {
   const basketPlain = ins.basket && typeof ins.basket.pct === 'number' ? fmtPctPlain(ins.basket.pct) : 'no reading';
   const basketConf = (ins.basket && ins.basket.confidence) || 'unstated';
 
+  // The honest week-over-week line for the surface read — only when the rulers match.
+  const wowTldr = (() => {
+    if (!wow || wow.state !== 'available') return null;
+    const b = wow.basket || {};
+    if (b.state === 'moved') { const dir = b.deltaPts > 0 ? 'widened' : b.deltaPts < 0 ? 'narrowed' : 'held'; return `Since the prior edition (${wow.prevAsOf}), the basket's gap to baseline ${dir} ${fmtPtsPlain(Math.abs(b.deltaPts))}.`; }
+    if (b.state === 'anchor-unchanged') return `The basket's data anchor has not refreshed since the prior edition (${wow.prevAsOf}), so there is no new basket move to report; the weekly panel below is current.`;
+    return null;
+  })();
+  const topReprice = ins.reprice[0];
   const tldr = [
     `The weekly restaurant cost index for the week of ${asOf}: the weighted basket reads ${basketPlain} against its baseline at ${basketConf} confidence.`,
     `${ins.up} of ${ins.count} tracked ingredients are reading above their own baseline window, ${ins.down} below, ${ins.flat} flat.`,
     ins.reprice.length
-      ? `Flashing re-price: ${ins.reprice.map((i) => `${i.name} (${fmtPctPlain(i.pct)})`).join(', ')}. Each read is state-of-play versus that item's baseline, never a move since last week.`
+      ? `${ins.reprice.length} re-price signal${ins.reprice.length > 1 ? 's' : ''}, led by ${topReprice.name} (${fmtPctPlain(topReprice.pct)}${typeof topReprice.elevatedWeeks === 'number' && topReprice.elevatedWeeks >= 2 ? `, ${topReprice.elevatedWeeks} weeks running` : ''}). Each read is state-of-play versus that item's baseline.`
       : `Nothing structural is flashing this week; the panel reads hold across the board.`,
-  ];
+  ].concat(wowTldr ? [wowTldr] : []);
   const takeaways = [
     `The basket reads ${basketPlain} against its baseline this week &mdash; public wholesale levels, never your delivered price.`,
     `Each ingredient's percentage is a read versus its own tracked baseline window, a state-of-play "what's flashing", not a week-over-week move.`,
@@ -599,6 +821,33 @@ ${flowFig}
       }
     },
     {
+      "@type": "Dataset",
+      "@id": "${url}#dataset",
+      "name": "Muntin Restaurant Cost Index — weekly reading, ${asOf}",
+      "description": ${JSON.stringify(`Weighted 16-staple wholesale-cost basket reading (${basketPlain} vs baseline) and per-ingredient flags for the week of ${asOf}. Public wholesale levels, not delivered prices. Measured levels only — never a forecast.`)},
+      "url": "${url}",
+      "isPartOf": { "@id": "https://muntin.digital/cost-index/#index-dataset" },
+      "datePublished": "${asOf}",
+      "dateModified": "${today}",
+      "temporalCoverage": "${asOf}",
+      "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "creator": { "@id": "https://muntin.digital/#business" },
+      "publisher": { "@id": "https://muntin.digital/#business" },
+      "variableMeasured": [
+        {
+          "@type": "PropertyValue",
+          "name": "Weighted basket vs baseline",
+          "value": "${basketPlain}",
+          "measurementTechnique": "Weighted median of 16 staples, each read against its own tracked baseline window"
+        }
+      ],
+      "isBasedOn": ["USDA AMS/LMR", "USDA NASS", "BLS", "FRED", "EIA"],
+      "distribution": [
+        { "@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://muntin.digital/cost-index/week-${asOf}.json" },
+        { "@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://muntin.digital/cost-index/week-${asOf}.csv" }
+      ]
+    },
+    {
       "@type": "BreadcrumbList",
       "itemListElement": [
         {
@@ -684,7 +933,7 @@ ${tldrLis}
 
       <p>Here is the read I run on a Tuesday between the produce drop and the pre-shift, and it is the same read this dispatch carries. The cost index for the week of ${asOf} has the weighted basket sitting at <strong>${basketRead}</strong> against its baseline, at ${basketConf} confidence across ${ins.basket && ins.basket.nContributing || ins.count} contributing ingredients. You already watch your own invoices &mdash; this is the wholesale market underneath them, so a delivered-price jump can be checked against whether the market actually moved or your vendor did.</p>
 
-      <p>One honesty line before the numbers, because it changes how you read every one of them. Each ingredient's percentage here is its read against <em>its own tracked baseline window</em> &mdash; a state-of-play "what's flashing this week," never "moved ${basketPlain} since last week." The panel does not archive weekly snapshots yet, so I will not pretend it measures a week-over-week delta it cannot see. And every figure is a <strong>public wholesale level, never your delivered price</strong>: this is a read on the <a href="/glossary/cost-index/">cost index</a>, not a line for your <a href="/glossary/food-cost/">food cost</a> sheet. The point is direction and gap, not a number to paste into a cost sheet.</p>
+      ${honestyPara(ins, wow, basketPlain)}
 
 ${ringsFig}
 
@@ -705,8 +954,12 @@ ${barsFig}
 
 ${pressureSection}
 
+${goDeeperBlock(ins)}
+
       <h2 id="how-to-read-this-and-what-it-is-not">How to read this, and what it is not</h2>
-      <p>Three rules keep this honest. First, every number is a <strong>public wholesale level, never your delivered price</strong> &mdash; freight, contract, and pack size all sit between this panel and your invoice. Second, each percentage is a read versus that ingredient's <em>own tracked baseline window</em>, a state-of-play snapshot of what is flashing, not a week-over-week move. Third, the panel is drawn from public USDA, BLS, and FRED data; when an input cannot earn a credible reading, it stays off the page rather than showing you a guess. Watch your own delivered invoices against these reads &mdash; the gap between the two is where a vendor conversation lives, and it is the first place a moving <a href="/glossary/prime-cost/">prime cost</a> shows up.</p>
+      <p>Three rules keep this honest. First, every number is a <strong>public wholesale level, never your delivered price</strong> &mdash; freight, contract, and pack size all sit between this panel and your invoice. Second, each percentage is a read versus that ingredient's <em>own tracked baseline window</em>, a state-of-play snapshot of what is flashing; where this dispatch reports a move since last edition, it says so explicitly and only where the basket's ruler has not changed. Third, the panel is drawn from public USDA, BLS, and FRED data; when an input cannot earn a credible reading, it stays off the page rather than showing you a guess. Watch your own delivered invoices against these reads &mdash; the gap between the two is where a vendor conversation lives, and it is the first place a moving <a href="/glossary/prime-cost/">prime cost</a> shows up.</p>
+
+${citeBlock(ins, url)}
 
   <!-- article-takeaways:start -->
             <aside class="key-takeaways" data-llm="takeaways" aria-label="Key takeaways">
@@ -750,6 +1003,10 @@ ${tailScripts}
 `;
 
   upsertLibraryTags(slug, asOf, basketPlain, ins);
+  // Write the publication's time series: append this edition to the archive, and emit the
+  // citable per-week machine snapshot (JSON + CSV) referenced by the Dataset markup.
+  upsertEdition(archive, ins);
+  writePerWeekData(ins);
 
   const outDir = path.join(repoRoot, 'blog', slug);
   mkdirSync(outDir, { recursive: true });
