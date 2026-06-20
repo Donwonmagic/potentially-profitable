@@ -1,0 +1,107 @@
+{
+  "_doc": "Published weekly cost OUTLOOK — the forward-looking companion to cost-index/feed.json. Basket Forecast (tools/_shared/basket-forecast.js) run over the declared Restaurant Basket (data/cost-basket-weights.json): a directional outlook gated to the backtest-validated reach (coneHonestThroughH), proven cost-pressure edges only, storability-aware actions. Directional only — never a price, never a guarantee, never forecast beyond what the backtest earns. Deterministic; stamped from the data asOf; ships to no page. Built by scripts/build-cost-outlook.mjs; CI re-checks with --check.",
+  "_version": 1,
+  "source": {
+    "pressure": "data/cost-pressure.json",
+    "backtest": "data/cost-forecast-backtest.json",
+    "seasonality": "data/seasonality.json",
+    "basket": "data/cost-basket-weights.json"
+  },
+  "asOf": "2026-06-08",
+  "month": 6,
+  "horizonHonest": 1,
+  "basket": [
+    "beef-tenderloin",
+    "butter",
+    "cheddar-cheese",
+    "chicken-breast",
+    "eggs",
+    "onion",
+    "pork-loin",
+    "pork-shoulder",
+    "ribeye",
+    "romaine-lettuce",
+    "russet-potato",
+    "salmon-fillet",
+    "shrimp",
+    "tomato",
+    "vegetable-oil",
+    "whole-chicken"
+  ],
+  "weightedTilt": -0.145,
+  "outlook": "mixed",
+  "counts": {
+    "building": 5,
+    "easing": 7,
+    "steady": 0,
+    "n": 12
+  },
+  "lockCandidates": [],
+  "watchCandidates": [
+    "beef-tenderloin",
+    "onion",
+    "romaine-lettuce",
+    "cheddar-cheese",
+    "ribeye"
+  ],
+  "featureCandidates": [
+    "chicken-breast",
+    "whole-chicken",
+    "butter",
+    "pork-loin",
+    "pork-shoulder",
+    "russet-potato",
+    "tomato"
+  ],
+  "movers": [
+    {
+      "slug": "beef-tenderloin",
+      "direction": "building",
+      "confidence": "high",
+      "storable": false,
+      "action": "watch-negotiate",
+      "seasonalNote": null
+    },
+    {
+      "slug": "chicken-breast",
+      "direction": "easing",
+      "confidence": "high",
+      "storable": false,
+      "action": "feature-now",
+      "seasonalNote": null
+    },
+    {
+      "slug": "onion",
+      "direction": "building",
+      "confidence": "high",
+      "storable": false,
+      "action": "watch-negotiate",
+      "seasonalNote": null
+    },
+    {
+      "slug": "romaine-lettuce",
+      "direction": "building",
+      "confidence": "high",
+      "storable": false,
+      "action": "watch-negotiate",
+      "seasonalNote": null
+    },
+    {
+      "slug": "whole-chicken",
+      "direction": "easing",
+      "confidence": "high",
+      "storable": false,
+      "action": "feature-now",
+      "seasonalNote": null
+    },
+    {
+      "slug": "butter",
+      "direction": "easing",
+      "confidence": "moderate",
+      "storable": false,
+      "action": "feature-now",
+      "seasonalNote": null
+    }
+  ],
+  "note": "Directional outlook ~1 print(s) ahead (the reach the backtest earns), proven edges only. Wholesale direction, not a price or a guarantee."
+}
