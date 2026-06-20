@@ -1,0 +1,76 @@
+{
+  "_doc": "Registered driver catalog for the Cost Index dispatch. Each entry is a STANDING, public-sourced correlation between a driver class and the ingredients it plausibly moves — never an invented dated event. The dispatch may attach a driver as context to a flagged mover ONLY when (a) the ingredient is in `affects` and (b) the ingredient's measured direction this week agrees with `directionExpected`. Language is pitched to `strength`; every line carries 'association, not a measured cause' and a cite drawer with `source` + `retrievedAt`. The do-not-assert line: never a magnitude attributed to a driver, never causation, never a forecast. Gate: scripts/check-cost-index-drivers.mjs.",
+  "_version": "1.0",
+  "_strengthVocab": {
+    "correlation": "tracks / moves with / standing context (association, not cause)",
+    "strong-correlation": "consistently moves ahead of / a reliable lead on",
+    "mechanism-established": "feeds directly into (reserved for chains the methodology treats as mechanism, e.g. feed -> protein)"
+  },
+  "drivers": [
+    {
+      "id": "hpai-poultry-eggs",
+      "class": "animal-disease",
+      "label": "Avian influenza (HPAI)",
+      "affects": ["eggs", "whole-chicken", "chicken-breast", "chicken-thigh"],
+      "directionExpected": "up",
+      "strength": "correlation",
+      "mechanism": "Laying-flock and broiler losses from HPAI detections tighten egg and poultry supply",
+      "source": "USDA APHIS — Confirmed HPAI Detections in Commercial & Backyard Flocks",
+      "sourceUrl": "https://www.aphis.usda.gov/",
+      "retrievedAt": "2026-06-20",
+      "note": "Standing supply risk for eggs and poultry. Spoken only when the measured read is up — a detection backdrop does not explain an easing print."
+    },
+    {
+      "id": "leafy-greens-weather",
+      "class": "weather",
+      "label": "Desert-Southwest growing conditions",
+      "affects": ["romaine-lettuce", "iceberg-lettuce", "red-leaf-lettuce", "butter-lettuce", "cilantro", "parsley", "collard-greens"],
+      "directionExpected": "up",
+      "strength": "correlation",
+      "mechanism": "Heat, drought, and short harvest windows in the CA/AZ desert growing regions tighten leafy-green supply",
+      "source": "U.S. Drought Monitor; USDA AMS Specialty Crops movement & shipment reports",
+      "sourceUrl": "https://droughtmonitor.unl.edu/",
+      "retrievedAt": "2026-06-20",
+      "note": "Leafy greens cluster on the same growing regions, so they often flash together when the region is stressed."
+    },
+    {
+      "id": "field-produce-weather",
+      "class": "weather",
+      "label": "Field-crop growing conditions",
+      "affects": ["acorn-squash", "butternut-squash", "cabbage", "artichoke", "green-beans", "cucumber", "bell-pepper", "habanero-pepper", "eggplant", "celery", "broccoli", "cauliflower"],
+      "directionExpected": "up",
+      "strength": "correlation",
+      "mechanism": "Heat, drought, and harvest-window timing in the major U.S. growing regions tighten field-crop supply",
+      "source": "U.S. Drought Monitor; USDA AMS Specialty Crops movement & shipment reports",
+      "sourceUrl": "https://droughtmonitor.unl.edu/",
+      "retrievedAt": "2026-06-20",
+      "note": "Broader field produce; same growing-condition channel as the leafy greens, different crops."
+    },
+    {
+      "id": "imports-logistics",
+      "class": "trade",
+      "label": "Import supply & cross-border logistics",
+      "affects": ["avocado", "lemon", "lime", "tomato", "banana", "pineapple", "mango", "shrimp"],
+      "directionExpected": "up",
+      "strength": "correlation",
+      "mechanism": "Import-dominated items track foreign growing supply and cross-border / ocean logistics rather than domestic harvest",
+      "source": "USDA AMS import & terminal-market movement; NOAA Fisheries trade data (seafood); EIA diesel (freight)",
+      "sourceUrl": "https://www.ams.usda.gov/",
+      "retrievedAt": "2026-06-20",
+      "note": "For these the domestic-harvest story does not apply; supply and freight from the source country do."
+    },
+    {
+      "id": "energy-oils",
+      "class": "energy",
+      "label": "Energy & oilseed costs",
+      "affects": ["vegetable-oil", "canola-oil", "olive-oil"],
+      "directionExpected": "up",
+      "strength": "correlation",
+      "mechanism": "Oilseed crush economics and energy/biofuel demand move edible-oil costs",
+      "source": "USDA NASS; FRED oilseed & energy series; EIA",
+      "sourceUrl": "https://fred.stlouisfed.org/",
+      "retrievedAt": "2026-06-20",
+      "note": "Edible-oil channel, distinct from the produce and protein chains."
+    }
+  ]
+}

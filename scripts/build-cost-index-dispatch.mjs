@@ -217,6 +217,7 @@ function editionFromInsight(ins, { reconstructed = false, publishedAt = null } =
     reads,
     drivers: (ins.drivers || []).map((d) => ({ key: d.key, pct: d.pct, dir: d.dir })),
     pressureAsOf: ins.pressureAsOf || null,
+    ...(ins.editorsNote ? { editorsNote: ins.editorsNote } : {}),
   };
 }
 
@@ -616,6 +617,52 @@ function goDeeperBlock(ins) {
       </ul>`;
 }
 
+// host label for a TLD/landing URL, e.g. "https://www.aphis.usda.gov/" -> "aphis.usda.gov".
+function hostOf(url) {
+  try { return new URL(url).host.replace(/^www\./, ''); } catch { return url; }
+}
+
+// ---- the citable driver layer ----------------------------------------------
+// Attaches STANDING, public-sourced driver context to the flagged movers — but only the
+// clusters whose measured direction this week agrees with the catalog's directionExpected.
+// Never a magnitude, never causation, never a forecast: each line is "association, not a
+// measured cause" with a cite drawer. This is the Urner-Barry discipline — the dramatic
+// story (e.g. HPAI for eggs) is withheld when the number disagrees (eggs easing -> no HPAI).
+function buildFlagDrivers(ins, catalog) {
+  const flagged = [...(ins.reprice || []), ...(ins.watch || [])];
+  if (!flagged.length) return '';
+  const groups = [];
+  for (const d of (catalog.drivers || [])) {
+    if (!Array.isArray(d.affects)) continue;
+    const matched = flagged.filter((i) => d.affects.includes(i.key) && i.dir === d.directionExpected);
+    if (matched.length) groups.push({ d, matched });
+  }
+  if (!groups.length) return '';
+  const rows = groups.map(({ d, matched }) => {
+    const names = matched.map((m) => esc(m.name)).join(', ');
+    return `        <li><strong>${esc(d.label)}.</strong> ${names}. ${esc(d.mechanism)} &mdash; the standing context behind these reads, an association and not a measured cause of this week's prints.
+          <details class="cite"><summary>Source</summary><p>${esc(d.source)} &mdash; <a href="${escAttr(d.sourceUrl)}" rel="nofollow">${esc(hostOf(d.sourceUrl))}</a>. Retrieved ${esc(d.retrievedAt)}. Standing correlation, direction-gated to this week's measured read; no delivered price, no forecast.</p></details></li>`;
+  }).join('\n');
+  return `      <h2 id="whats-driving-the-flags">What's driving the flags</h2>
+      <p>The flags above are measured reads; this layer adds the public, standing context behind clusters of them &mdash; what an item moves with, sourced and pitched as association, never a measured cause. A driver appears only where this week's read agrees with it, so the page never tells a supply-shock story over a number that is easing.</p>
+      <ul>
+${rows}
+      </ul>`;
+}
+
+// ---- the human seat: a gated "from the floor" note -------------------------
+// Optional, absent by default. The note is authored by Don in data/cost-index-editors-notes.json
+// keyed by asOf; it interprets what is ON the page and may not introduce a new number,
+// ingredient, or forecast. Same fact gate as any dispatch text, plus the dedicated
+// scripts/check-cost-index-editors-note.mjs (numeric traceability + no-forecast + bio).
+function editorsNoteBlock(note) {
+  if (!note || !note.text) return '';
+  return `  <aside class="editors-note" data-llm="commentary" aria-label="From the floor" style="margin:32px auto;max-width:720px;padding:20px 24px;background:var(--cream-2);border-left:3px solid var(--ink);border-radius:8px">
+    <p class="editors-note__eyebrow" style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--ink-soft);margin:0 0 8px">From the floor &mdash; ${esc(note.author || 'Don Goldstein')}</p>
+    <p style="margin:0;font-size:16px;line-height:1.6;font-style:italic">${esc(note.text)}</p>
+  </aside>`;
+}
+
 function emit() {
   const ins = computeInsight();
   const asOf = ins.asOf;
@@ -628,6 +675,15 @@ function emit() {
   const archive = loadEditions();
   const prevEd = priorEdition(archive, asOf);
   const wow = computeWoW(ins, prevEd);
+
+  // The citable driver catalog (standing, sourced correlations) and the optional Don note.
+  let driverCatalog = { drivers: [] };
+  try { driverCatalog = rd('data/cost-index-drivers.json'); } catch { /* optional */ }
+  let editorsNote = null;
+  try { editorsNote = (rd('data/cost-index-editors-notes.json').notes || {})[asOf] || null; } catch { /* optional */ }
+  if (editorsNote && editorsNote.text) ins.editorsNote = editorsNote.text;
+  const flagDriversSection = buildFlagDrivers(ins, driverCatalog);
+  const noteBlock = editorsNoteBlock(editorsNote);
 
   const donorHtml = readFileSync(path.join(repoRoot, DONOR), 'utf8');
   const headBoiler = sliceDonor(donorHtml,
@@ -953,6 +1009,10 @@ ${barsFig}
       <p>Read these as gaps, not verdicts. A wide rust bar on a seasonal item often unwinds when the season turns; a wide teal bar can be a vendor clearing inventory rather than a durable easing. The bar tells you where to look; your delivered invoice tells you whether it reached your back door.</p>
 
 ${pressureSection}
+
+${flagDriversSection}
+
+${noteBlock}
 
 ${goDeeperBlock(ins)}
 
