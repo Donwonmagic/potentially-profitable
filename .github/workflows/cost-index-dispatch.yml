@@ -74,7 +74,14 @@ jobs:
         run: |
           set -e
           # Emit blog/cost-index-week-<asOf>/index.html from the measured index.
+          # This also appends the longitudinal spine (data/cost-index-editions.json)
+          # and writes the citable per-week snapshot (cost-index/week-<asOf>.json + .csv)
+          # that the dispatch's Dataset JSON-LD and "Cite this" block link to.
           node scripts/build-cost-index-dispatch.mjs
+          # Rebuild the edition archive page (reads the spine) and re-point the library
+          # hero at the newest week — both must run here or those surfaces drift behind.
+          node scripts/build-cost-index-archive.mjs
+          node scripts/inject-library-cost-index-hero.mjs
           # Restore canonical nav, then register the post in the standard surfaces
           # (same scripts the deploy build runs — RSS, sitemap, blog index, glossary
           # backlinks). The Cloudflare build regenerates these anyway, but committing
@@ -88,11 +95,19 @@ jobs:
           node scripts/build-llms-txt.mjs                  || true
           # Gate the generated post — fail the run before committing if it's malformed.
           node scripts/check-article-graphics.mjs
+          # Fact-gate the driver catalog + the optional "from the floor" note, so a
+          # malformed driver entry or an untraceable number fails BEFORE publish.
+          node scripts/check-cost-index-drivers.mjs
+          node scripts/check-cost-index-editors-note.mjs
           # Scoped commit: only the post + its registration surfaces; discard the
           # incidental site-wide sync-includes sweep so the commit is exactly the post.
           git config user.name  "muntin-cost-index-bot"
           git config user.email "actions@users.noreply.github.com"
           git add "blog/cost-index-week-${ASOF}/" "es/blog/cost-index-week-${ASOF}/" \
+                  data/cost-index-editions.json \
+                  cost-index/week-*.json cost-index/week-*.csv \
+                  cost-index/weekly/ es/cost-index/weekly/ \
+                  library/index.html es/library/index.html \
                   blog/index.html feed.xml sitemap.xml llms.txt data/library-tags.json \
                   glossary 2>/dev/null || true
           git checkout -- . 2>/dev/null || true
