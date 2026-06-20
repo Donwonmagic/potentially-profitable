@@ -5,7 +5,7 @@
   "basis": "wholesale",
   "currency": "USD",
   "note": "Wholesale reference prices compiled from public U.S. market sources (USDA AMS/LMR, BLS, FRED, EIA, NOAA). Values are in US dollars per unit. Not a delivered or retail price. Source: muntin.digital/cost-index/chicken-breast/",
-  "asOf": "2026-06-08",
+  "asOf": "2026-06-15",
   "observations": [
     {
       "date": "2026-02-23",
@@ -85,6 +85,11 @@
     {
       "date": "2026-06-08",
       "priceUsd": 1.36,
+      "source": "usda-ams-national"
+    },
+    {
+      "date": "2026-06-15",
+      "priceUsd": 1.35,
       "source": "usda-ams-national"
     }
   ]
