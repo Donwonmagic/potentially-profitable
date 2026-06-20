@@ -4,15 +4,15 @@
 - **Date:** 2026-06-20
 - **Owner:** Expanded-vocabulary panel (proposing); Gate authors own `check-article-graphics.mjs`
 - **Review by:** 2026-09-20
-- **Relates to:** ADR-005 (convening); ADR-007 (imagery priority); ADR-008 (provenance registry); `scripts/check-article-graphics.mjs` rules 1–2; `voice-canon-library.md` §8 / `voice-canon-blog.md` §7
+- **Relates to:** ADR-005 (convening); ADR-007 (imagery priority); ADR-008 (provenance registry); ADR-009 (rendered illustrations — the `render` kind); `scripts/check-article-graphics.mjs` rules 1–2; `voice-canon-library.md` §8 / `voice-canon-blog.md` §7
 
 > Proposal: stop counting only the ten `viz-*` diagram families as "content
 > figures." Recognize an **enrichment-element taxonomy** — `viz` diagrams,
-> photographs, document/receipt scans, data tables, maps, and annotated
-> screenshots — where each non-`viz` element counts toward the two-figure floor and
-> toward "variety," provided it carries the same narration + caption + (where
-> sourced) provenance contract. The floor and the protections stay; the vocabulary
-> widens.
+> **rendered literal illustrations**, photographs, document/receipt scans, data
+> tables, maps, and annotated screenshots — where each non-`viz` element counts
+> toward the two-figure floor and toward "variety," provided it carries the same
+> narration + caption + (where sourced) provenance contract. The floor and the
+> protections stay; the vocabulary widens.
 
 ## Context
 
@@ -43,7 +43,8 @@ robust signal the gate keys on (inference is a fallback, not the contract):
 
 | `data-figure-kind` | What it is | Inner shape | Counts as kind |
 |---|---|---|---|
-| `viz` | the existing diagram families | one of ten `viz-*` classes | the specific `viz-*` sub-kind (unchanged) |
+| `viz` | the existing abstract diagram families | one of ten `viz-*` classes | the specific `viz-*` sub-kind (unchanged) |
+| `render` | a **rendered literal illustration** of the topic — authored as SVG/HTML, rendered to image at build time; first-party by construction (ADR-009) | inline `<svg>` **or** rendered `<img>`/`<picture>` | `render` |
 | `photo` | a photograph (first-party preferred — ADR-007) | `<img>`/`<picture>` | `photo` |
 | `scan` | a document/receipt/pay-stub scan, **redacted** | `<img>`/`<picture>` | `scan` |
 | `table` | an honest data table (exportable, copy-pasteable) | `<table class="viz-table">` | `table` |
@@ -79,8 +80,11 @@ robust signal the gate keys on (inference is a fallback, not the contract):
 
 `detectKind(figure)`: if `data-figure-kind` present → use it; else if inner has a
 `viz-*` class → `viz` + sub-kind; else if inner has `<table>` → `table`; else if
-inner has `<img>`/`<picture>` → `photo` (require `data-figure-kind` to disambiguate
-`scan`/`map`/`shot`, else default `photo` with a warn to encourage explicitness).
+inner has `<img>`/`<picture>` or inline `<svg>` → require `data-figure-kind` to
+disambiguate `render`/`photo`/`scan`/`map`/`shot` (a rendered illustration and a
+photograph are visually indistinguishable to the gate but carry *opposite* honesty
+contracts — ADR-009 vs. ADR-007/008 — so the attribute is mandatory here, not
+inferred; default to a fail asking the author to declare).
 Update `test-article-graphics.mjs` to pin: a photo+table post passes floor+variety;
 a two-`viz-bars` post still fails variety; a photo without `data-audio-alt`≥80 still
 fails rule 3.
