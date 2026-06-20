@@ -34,7 +34,7 @@ const checkOnly  = process.argv.includes('--check');
 
 const ROOTS = ['cost-index', 'es/cost-index'];
 // Non-ingredient cost-index pages: the hub + editorial/data surfaces.
-const SKIP = new Set(['methodology', 'sources', 'embed']);
+const SKIP = new Set(['methodology', 'sources', 'embed', 'basket']);
 
 const LD_RE = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/;
 
