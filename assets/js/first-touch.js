@@ -254,6 +254,11 @@
   function init() {
     var forms = document.querySelectorAll('.foot-newsletter-form, .js-signup-form');
     Array.prototype.forEach.call(forms, function (form) {
+      // The footer ships an eager inline enhancer that wires this form
+      // at parse time; this idle-loaded copy is only a backstop. Skip
+      // any form already wired so we never double-bind (double submit).
+      if (form.dataset.enhanced === '1') return;
+      form.dataset.enhanced = '1';
       // Stamp ts so the silent-200 server gate accepts the submit.
       var tsField = form.querySelector('input[name="ts"]');
       if (tsField) tsField.value = String(Date.now());

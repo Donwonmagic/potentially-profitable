@@ -118,7 +118,7 @@
         "@id": "https://muntin.digital/#business"
       },
       "image": "https://muntin.digital/brand/og/glossary-privacy-policy-es.png",
-      "datePublished": "2026-06-06T17:12:31+00:00",
+      "datePublished": "2026-06-02T13:38:16+00:00",
       "isPartOf": {
         "@id": "https://muntin.digital/glossary/#muntin-glossary"
       }
@@ -554,6 +554,51 @@
       </form>
     </div>
     <!-- newsletter-capture:end -->
+
+    <!-- Alta al boletín — mejora progresiva temprana. El resto del JS
+         del sitio carga en requestIdleCallback; este controlador se
+         engancha al renderizar el pie, para que un envío rápido no haga
+         un POST nativo que muestre el {"ok":true} crudo de la API.
+         Sella ts para el filtro antispam, envía por fetch y cambia
+         data-state="ok" para la confirmación en línea. Protegido por
+         data-enhanced para que la copia diferida en first-touch.js no
+         se enganche dos veces. -->
+    <script>
+      (function () {
+        'use strict';
+        if (typeof document === 'undefined') return;
+        function wire(form) {
+          if (!form || form.dataset.enhanced === '1') return;
+          form.dataset.enhanced = '1';
+          var ts = form.querySelector('input[name="ts"]');
+          if (ts) ts.value = String(Date.now());
+          form.addEventListener('submit', function (ev) {
+            ev.preventDefault();
+            var params = new URLSearchParams();
+            new FormData(form).forEach(function (v, k) { params.append(k, v); });
+            fetch(form.action, {
+              method: 'POST',
+              headers: { 'content-type': 'application/x-www-form-urlencoded' },
+              body: params.toString(),
+              credentials: 'same-origin',
+            }).then(function () {
+              form.dataset.state = 'ok';
+              if (typeof window.plausible === 'function') {
+                var evName = form.dataset.event || 'Newsletter Signup';
+                var surface = form.dataset.surface || (form.dataset.locale === 'es' ? 'footer-es' : 'footer-en');
+                try { window.plausible(evName, { props: { surface: surface } }); } catch (_) {}
+              }
+            }).catch(function () { /* fire-and-forget; sin UI de error por diseño */ });
+          });
+        }
+        function init() {
+          var forms = document.querySelectorAll('.foot-newsletter-form, .js-signup-form');
+          Array.prototype.forEach.call(forms, wire);
+        }
+        init();
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+      })();
+    </script>
 
     <div class="foot-bottom">
       <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; LLC de Maryland &middot; Silver Spring, MD</p>
