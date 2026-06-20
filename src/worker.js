@@ -8729,12 +8729,35 @@ async function handleCostIndexBroadcast(request, env, ctx) {
 
 async function handleSubscribe(request, env, ctx) {
   if (!isOriginAllowed(request)) return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+
+  // A native form POST — JS disabled, or a submit that beat the page's
+  // eager enhancer — arrives as a browser *navigation*, not a fetch.
+  // Returning JSON paints the raw {"ok":true} in the address bar; send
+  // those visitors back to the page they came from instead. Same-origin
+  // referers only (never honor an off-site referer — that would be an
+  // open redirect). The enhanced path posts via fetch and still gets
+  // JSON. A no-JS POST can't clear the ts/Turnstile gates anyway, so
+  // this only avoids the raw-JSON screen; it does not claim a signup
+  // that did not happen.
+  let okReply = jsonResponse({ ok: true }, 200);
+  if ((request.headers.get('sec-fetch-mode') || '') === 'navigate') {
+    let backTo = '/';
+    try {
+      const ref = request.headers.get('referer');
+      if (ref) {
+        const r = new URL(ref);
+        if (r.origin === new URL(request.url).origin) backTo = r.pathname + r.search + r.hash;
+      }
+    } catch (_) { /* malformed referer → home */ }
+    okReply = new Response(null, { status: 303, headers: { location: backTo } });
+  }
+
   let body;
   try { body = await parseFormBody(request); } catch (_) { return jsonResponse({ ok: false, error: 'invalid-body' }, 400); }
   const lenGate = enforceMaxLengths(body, { email: 254, source: 32, locale: 8, hp: 100, ts: 30 });
   if (!lenGate.ok) return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
 
-  const SILENT_OK = jsonResponse({ ok: true }, 200);
+  const SILENT_OK = okReply;
   if (isSpamHoneypot(body))    return SILENT_OK;
   if (!isTimestampSane(body))  return SILENT_OK;
   if (isHighThreatIP(request)) return SILENT_OK;
