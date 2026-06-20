@@ -374,6 +374,8 @@ const CHECKS = [
   ['Ingredient JSON-LD self-test','check-ingredient-jsonld.mjs','--self-test'],
   ['Cost-index sources','check-cost-index-sources.mjs','--check'],
   ['Cost-index source tier','check-source-tier.mjs',    '--check'],
+  ['Cost-index driver catalog','check-cost-index-drivers.mjs','--check'],
+  ['Cost-index editors note','check-cost-index-editors-note.mjs','--check'],
   ['Cost-index sync',   'check-cost-index-sync.mjs',     '--check'],
   ['Cost-index sync self-test','check-cost-index-sync.mjs','--self-test'],
   // Confidence calibration (P1 #36) — min-of-gates ceiling governs precision.

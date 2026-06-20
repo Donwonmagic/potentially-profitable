@@ -171,7 +171,13 @@ jobs:
           fi
           echo "Dispatch has fallen behind the data — publishing the dated post."
           # Same emit + register chain the weekly dispatch runs (minus the broadcast).
+          # The generator also appends the spine (data/cost-index-editions.json) and
+          # writes the per-week snapshot (cost-index/week-<asOf>.json + .csv) the
+          # Dataset JSON-LD links to; the archive + hero rebuilds keep those surfaces
+          # current too. All three must be committed below or they're discarded.
           node scripts/build-cost-index-dispatch.mjs
+          node scripts/build-cost-index-archive.mjs
+          node scripts/inject-library-cost-index-hero.mjs
           node scripts/sync-includes.mjs
           node scripts/build-library-recent.mjs              || true
           node scripts/wire-glossary-knit.mjs                || true
@@ -181,10 +187,17 @@ jobs:
           node scripts/build-llms-txt.mjs                     || true
           # Gate the generated post — fail the run before committing if it's malformed.
           node scripts/check-article-graphics.mjs
+          # Fact-gate the driver catalog + the optional note before any catch-up publish.
+          node scripts/check-cost-index-drivers.mjs
+          node scripts/check-cost-index-editors-note.mjs
           ASOF=$(node -e 'console.log((require("fs").readFileSync("data/cost-index.js","utf8").match(/"generatedAt"\s*:\s*"(\d{4}-\d{2}-\d{2})"/)||[])[1]||"")')
           # Scoped commit: only the post + its registration surfaces (git identity is
           # already configured by the daily-read commit step earlier in this job).
           git add "blog/cost-index-week-${ASOF}/" "es/blog/cost-index-week-${ASOF}/" \
+                  data/cost-index-editions.json \
+                  cost-index/week-*.json cost-index/week-*.csv \
+                  cost-index/weekly/ es/cost-index/weekly/ \
+                  library/index.html es/library/index.html \
                   blog/index.html feed.xml sitemap.xml llms.txt data/library-tags.json \
                   glossary 2>/dev/null || true
           git checkout -- . 2>/dev/null || true
