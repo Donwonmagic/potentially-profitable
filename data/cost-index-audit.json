@@ -37,9 +37,9 @@
       "classification": "history-archive-stale",
       "lastCents": 1280,
       "liveLevels": {
-        "beef-tenderloin": 1504,
-        "ribeye": 1277,
-        "short-rib": 575
+        "beef-tenderloin": 1497,
+        "ribeye": 1314,
+        "short-rib": 590
       },
       "points": 36,
       "note": "the deep ARCHIVE is a clone of another series, but the CURRENT published level is distinct and fine — only the deep history needs re-vendoring (affects backtest/drift/seasonality; plate-cost-drift already collapses it). Not live-facing."
@@ -53,7 +53,7 @@
       "lastCents": 131,
       "liveLevels": {
         "ground-pork": null,
-        "pork-shoulder": 118
+        "pork-shoulder": 119
       },
       "points": 158,
       "note": "identical series, and the registry draws all members from one source — an expected proxy; collapse to one for independence."
