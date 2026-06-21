@@ -79,7 +79,7 @@ Same data; a strictly better first move. The ~$27/week vendor share earns a phon
 3. **The vendor-ask copy layer — ✅ now built** as `tools/_shared/vendor-ask.js` (`MuntinVendorAsk.build`; pure EN/ES, 7 passing vectors). Turns a decomposition into the owner card: leads with the recoverable `$/week` and a show-your-work vendor script when the move is the vendor's; on a `market` attribution it says so and emits **no** ask (a false alarm lowers IAR); a `gated` decomposition returns `show:false` (caller shows each side alone); it never invents a dollar figure (no dish `$/week` → no money clause). E2's cheaper-vendor numbers reuse `cross-vendor.projectMonthlySaving`.
 4. **One branch in `recostForHike`** — when `attribution === 'vendor'`, lead the card with the ask and route the fork. New events: `vendor_ask_opened`, `vendor_switch_logged`, `reprice_after_vendor_declined`, `dismiss_as_expected`.
 
-**Build status (this branch):** the pure cores of **both** flagships are built and green here (28 vectors, `node --test`): E1's `spread-decompose.js` (14) + `vendor-ask.js` (7), and E2's `vendor-switch.js` (7) — all pure / deterministic / no-LLM, EN + ES, parity-locked for the Ledger port. What remains is Ledger-side and MVP-dependent: `vendorPriceSeries` (the SQL that feeds both flagships) and the `recostForHike` branch. Those belong to the Ledger build track.
+**Build status (this branch):** built and green here (**36 vectors**, `node --test`) — E1's `spread-decompose.js` (14) + `vendor-ask.js` (7), E2's `vendor-switch.js` (7), and E3's `pack-shrink.js` (8); all pure / deterministic / no-LLM, EN + ES, parity-locked for the Ledger port. What remains is Ledger-side and MVP-dependent: `vendorPriceSeries` (the SQL that feeds the flagships) and the `recostForHike` branch. Those belong to the Ledger build track.
 
 ---
 
@@ -113,9 +113,9 @@ Each entry carries: **inputs · owner one-liner (EN/ES) · trigger & cadence · 
 - **ES:** "Tu caja de aceite de oliva parece el mismo precio — pero el paquete pasó de 6×1 gal a **4×1 gal**. Estás pagando **50% más por galón**, y el mercado del aceite no se ha movido. Es un cambio de paquete, no un precio que tengas que aceptar. **[Márcalo para re-cotizar]**"
 - **Trigger/cadence:** event-driven, when `pack_count`/`pack_weight` changes for a canonical but `cents_per_base` jumps.
 - **Action:** flag for re-quote (carries the per-gallon receipt to the vendor).
-- **Confidence/honesty:** `cents_per_base` is exact; the "market hasn't moved" clause needs index `confidence ≥ medium` for that ingredient, else state the pack math alone.
+- **Confidence/honesty:** `cents_per_base` is exact; the "market hasn't moved" clause needs index `confidence ≥ medium` for that ingredient, else state the pack math alone; and it only fires when the **sticker stayed quiet** (a sticker that also moved is an ordinary hike, not a pack trick).
 - **Privacy:** per-org. No gate.
-- **Phase:** MVP-extension. Pack math computable today.
+- **Phase:** MVP-extension. Pack math computable today. **✅ detector built** (`tools/_shared/pack-shrink.js`, 8 vectors).
 
 ### E4 — Silent-bleed leaderboard ($/week, not %)
 - **Inputs:** invoices × recipes × `covers_per_week`.
