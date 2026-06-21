@@ -688,7 +688,7 @@ main{padding-top:64px}
     <hr style="margin:48px 0 32px;border:0;border-top:1px solid var(--line)">
 
     <p style="font-style:italic;font-size:15px;color:var(--ink-soft);text-align:center;margin:0">
-      Don Goldstein is a restaurant operator and runs <a href="/" style="color:var(--teal)">Muntin Digital</a>. The paragraph-shape rules above are derived from public AI Overview output patterns and Google&rsquo;s own guidance on what makes a passage extractable. The 13.14% figure for March 2025 is from a March 2025 Search Engine Land analysis of US desktop searches.
+      Don Goldstein is a restaurant operator and runs <a href="/" style="color:var(--teal)">Muntin Digital</a>. The paragraph-shape rules above are derived from public AI Overview output patterns and Google&rsquo;s own guidance on what makes a passage extractable. The 13.14% figure for March 2025 is from a March 2025 Search Engine Land analysis of US desktop searches &mdash; published, with its source and the date it was checked, in Muntin&rsquo;s public claim ledger at <a href="/claims/" style="color:var(--teal)">/claims/</a>, the same traceable-provenance practice this piece argues makes a page citable.
     </p>
 
     <section style="margin-top:48px;padding-top:32px;border-top:1px solid var(--line)">
@@ -923,6 +923,51 @@ main{padding-top:64px}
       </form>
     </div>
     <!-- newsletter-capture:end -->
+
+    <!-- Newsletter signup — eager progressive enhancement. The rest of
+         the site's JS lazy-loads on requestIdleCallback; this tiny
+         handler wires up at footer parse instead, so a quick submit
+         can't beat it and fall back to a native POST that paints the
+         API's raw {"ok":true}. It stamps ts for the server anti-spam
+         gate, posts via fetch, and flips data-state="ok" for the inline
+         confirmation. Guarded by data-enhanced so the idle-time copy in
+         first-touch.js can't double-bind (double submit). -->
+    <script>
+      (function () {
+        'use strict';
+        if (typeof document === 'undefined') return;
+        function wire(form) {
+          if (!form || form.dataset.enhanced === '1') return;
+          form.dataset.enhanced = '1';
+          var ts = form.querySelector('input[name="ts"]');
+          if (ts) ts.value = String(Date.now());
+          form.addEventListener('submit', function (ev) {
+            ev.preventDefault();
+            var params = new URLSearchParams();
+            new FormData(form).forEach(function (v, k) { params.append(k, v); });
+            fetch(form.action, {
+              method: 'POST',
+              headers: { 'content-type': 'application/x-www-form-urlencoded' },
+              body: params.toString(),
+              credentials: 'same-origin',
+            }).then(function () {
+              form.dataset.state = 'ok';
+              if (typeof window.plausible === 'function') {
+                var evName = form.dataset.event || 'Newsletter Signup';
+                var surface = form.dataset.surface || (form.dataset.locale === 'es' ? 'footer-es' : 'footer-en');
+                try { window.plausible(evName, { props: { surface: surface } }); } catch (_) {}
+              }
+            }).catch(function () { /* fire-and-forget; no error UI by design */ });
+          });
+        }
+        function init() {
+          var forms = document.querySelectorAll('.foot-newsletter-form, .js-signup-form');
+          Array.prototype.forEach.call(forms, wire);
+        }
+        init();
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+      })();
+    </script>
 
     <div class="foot-bottom">
       <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p>

@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>The menu is a photograph. The market is the weather. | Muntin Digital</title>
+<meta name="description" content="A menu is a fixed bet on a moving line. Derived from the Muntin Cost Index: over one quarter, most wholesale staples moved more than 5% — enough to quietly pull a plate below target before anyone reprints anything." />
+<link rel="canonical" href="https://muntin.digital/blog/restaurant-wholesale-cost-drift-2026/" />
+<link rel="preload" as="style" href="/assets/site-core.css" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css"><link rel="stylesheet" href="/assets/site-article.css"></noscript>
+</head>
+<body>
+
+<!--
+  ============================================================================
+  PRE-PUBLISH DRAFT — staged in docs/drafts/ (gate-excluded) on purpose.
+  This environment has no SVG->PNG rasterizer (rsvg-convert/cairosvg absent),
+  so a per-post OG card PNG cannot be generated here, and check-og-coverage /
+  check-og-images require a real PNG even for blog/drafts/. Faking the card
+  would be dishonest, so the finished piece lives here until promotion.
+
+  PROMOTION RUNBOOK (move to blog/restaurant-wholesale-cost-drift-2026/index.html):
+  1. Wrap in the standard blog chrome (sync-includes nav/footer, listen button,
+     full JSON-LD person refs) — copy the skeleton from any blog/<slug>/index.html.
+  2. Add the OG card: append an entry to brand/og/cards.json (kind:"article",
+     accent:"gold" for margin/operations, glyph:"margin"), then
+       node scripts/build-og-cards.mjs --only blog-restaurant-wholesale-cost-drift-2026
+       python3 scripts/render-og-pngs.py            # needs rsvg-convert + fonts
+     and add og:image/twitter:image meta pointing at the .png.
+  3. Register the post: add to data/library-tags.json, then run build-blog-index,
+     build-rss, build-sitemap, build-llms-txt, and the inject-* CTA passes.
+  4. Audio: add a data/article-audio.json entry (status:"deferred" is fine) or
+     render EN/ES tracks.
+  5. build-site-counts + inject-site-counts (blog count +1); node scripts/check-all.mjs.
+  6. Numbers below are derived from data/cost-plate-drift.json — re-confirm against
+     the latest build before publishing (they move as the index refreshes).
+  ============================================================================
+-->
+
+<article class="container article-body" id="post-body" data-draft="true" style="max-width:720px;margin:24px auto 80px;padding:0 var(--pad-x)">
+  <header style="margin-bottom:32px">
+    <p class="eyebrow">Dispatch &middot; June 19, 2026 &middot; 6 min read &middot; By <a href="/about/#don-goldstein" style="color:var(--teal)">Don Goldstein</a></p>
+    <h1 style="font-family:var(--font-display);font-size:clamp(36px,5.5vw,56px);font-weight:500;line-height:1.05;letter-spacing:-0.5px;margin:0 0 18px">
+      The menu is a photograph. The market is the <span class="serif-italic">weather.</span>
+    </h1>
+    <p style="font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0">You priced the chicken sandwich in January. You photographed the cost of a chicken breast on one particular Tuesday, framed it at sixteen dollars, and hung it on the wall. Then you walked away &mdash; because that&rsquo;s what a menu is, a print you stop looking at. The trouble is that the thing you photographed kept moving after the shutter closed.</p>
+  </header>
+
+  <p>I wanted to know how far it moves. Not the scary headline number, not &ldquo;inflation&rdquo; in the abstract &mdash; the actual distance between the price you set and the market you set it against, over the kind of gap most kitchens leave between menu updates. So I went to the Muntin Cost Index&rsquo;s own history and measured one clean quarter: where each staple&rsquo;s wholesale level sat in January, where it sat in April, and the line between. No invoices, no operator data. Just the weather, recorded against itself.</p>
+
+  <p>The chicken sandwich is the one that stops you. Over that quarter, wholesale boneless skinless breast went from about a dollar twenty-nine a pound to about a dollar seventy. Same recipe, same menu price, same little photo on the wall &mdash; and the protein under it had quietly gotten almost a third more expensive to put on the plate.</p>
+
+  <figure class="viz-figure article-figure" data-audio-alt="Quarterly drift in the indexed cost component of four illustrative protein-forward plates, drawn to scale where a full track equals a one hundred percent move. The roast chicken breast plate&rsquo;s indexed component rose thirty-one point six percent, the largest mover on the chart, driven by boneless skinless chicken breast climbing from about a dollar twenty-nine to a dollar seventy a pound over the quarter. The pan-seared ribeye plate rose six point one percent. The pulled pork plate rose five point five percent. The cheeseburger rose two point six percent. Each figure is the protein-and-fat component the market moves, not a full recipe, and a wholesale reference rather than a delivered price.">
+    <div class="viz-bars">
+      <p class="viz-bars__title">One quarter, four plates, the part of the cost the market controls</p>
+      <div class="viz-bars__row">
+        <p class="viz-bars__label">Chicken sandwich <span>breast + fat</span></p>
+        <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.316"></span></div>
+        <p class="viz-bars__num">+31.6%</p>
+      </div>
+      <div class="viz-bars__row">
+        <p class="viz-bars__label">Pan-seared ribeye <span>ribeye + butter</span></p>
+        <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.061"></span></div>
+        <p class="viz-bars__num">+6.1%</p>
+      </div>
+      <div class="viz-bars__row">
+        <p class="viz-bars__label">Pulled pork <span>shoulder + fat</span></p>
+        <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.055"></span></div>
+        <p class="viz-bars__num">+5.5%</p>
+      </div>
+      <div class="viz-bars__row">
+        <p class="viz-bars__label">Cheeseburger <span>beef + cheddar</span></p>
+        <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.026"></span></div>
+        <p class="viz-bars__num">+2.6%</p>
+      </div>
+      <p class="viz-bars__note">&ldquo;The part the market controls&rdquo; is the protein and fat the Cost Index tracks, costed at each end of the quarter &mdash; not the whole plate. A shrimp plate actually eased about 2.6% over the same window. The market doesn&rsquo;t move your menu in one direction; it just moves it.</p>
+    </div>
+    <figcaption>Four plates that didn&rsquo;t change, priced against a market that did. The chicken sandwich aged worst &mdash; up almost a third &mdash; while the burger barely drifted.</figcaption>
+    <details class="cite">
+      <summary>How these figures were derived</summary>
+      <div class="cite-body">
+        <p><span class="cite-source">Method</span> &mdash; derived from <code>data/cost-plate-drift.json</code> (built by <code>scripts/build-cost-plate-drift.mjs</code>) over the latest fully-covered quarter of the committed Cost Index deep history. Each plate&rsquo;s protein-and-fat component is costed at the quarter&rsquo;s start and end through the shared portion bridge; the figure is the change between them. Portions and the plates themselves are illustrative archetypes, not anyone&rsquo;s real recipe.</p>
+        <p><span class="cite-source">Honesty notes</span> &mdash; these are wholesale reference levels (USDA AMS / CME), not your delivered price, which runs higher. Duplicate placeholder series in the source data are collapsed, and index-only directional series are excluded from any dollar math, so a mis-scaled level can&rsquo;t inflate a number. Everything here moves as the index refreshes.</p>
+      </div>
+    </details>
+  </figure>
+
+  <h2 id="the-spread">It isn&rsquo;t one ingredient. It&rsquo;s most of them.</h2>
+  <p>If it were only chicken, you&rsquo;d fix chicken and move on. It isn&rsquo;t. Across the whole tracked panel that quarter, roughly two out of every three staples moved more than five percent from where they started. The typical item drifted only about three and a half percent &mdash; but &ldquo;typical&rdquo; hides the story, because the spread was enormous. A quarter of the panel fell six percent or more. Another quarter climbed seventeen percent or more. Wholesale tomatoes more than tripled on their way into spring; eggs fell by about a third as the flock came back.</p>
+
+  <p>That dispersion is the whole trap. A five-percent move on one line is invisible inside a menu you set in winter. You don&rsquo;t notice any single shutter-click of the weather. You notice the season &mdash; later, as a month that came in thinner than it should have, with no one decision you can point to.</p>
+
+  <figure class="viz-figure article-figure" data-audio-alt="The mechanism by which a static menu price quietly loses margin, in four steps. Step one: wholesale prices move every week, and a single quarter is long enough for most staples to shift more than five percent. Step two: the menu price does not move, because it was set once and then left alone. Step three: the gap between the two lands directly in margin, so the plate costs more to make than it did when it was priced. Step four, the fix: recost each plate against this week&rsquo;s market number automatically, so a dish is caught the moment it crosses below its target rather than at the end of the quarter when it shows up in the books.">
+    <div class="viz-flow">
+      <ol class="viz-flow__list">
+        <li class="viz-flow__step" data-tone="teal">
+          <span class="viz-flow__num">1</span>
+          <div class="viz-flow__body">
+            <p class="viz-flow__title">The weather moves weekly</p>
+            <p class="viz-flow__detail">A quarter is long enough for most staples to shift more than 5% from where you photographed them.</p>
+          </div>
+        </li>
+        <li class="viz-flow__step" data-tone="teal">
+          <span class="viz-flow__num">2</span>
+          <div class="viz-flow__body">
+            <p class="viz-flow__title">The photograph doesn&rsquo;t</p>
+            <p class="viz-flow__detail">The menu price was set once and framed. The print never reacts to a vendor invoice.</p>
+          </div>
+        </li>
+        <li class="viz-flow__step" data-tone="teal">
+          <span class="viz-flow__num">3</span>
+          <div class="viz-flow__body">
+            <p class="viz-flow__title">The gap becomes your margin</p>
+            <p class="viz-flow__detail">It doesn&rsquo;t arrive as a bill. It arrives as a quietly thinner month you can&rsquo;t trace to one night.</p>
+          </div>
+        </li>
+        <li class="viz-flow__step" data-tone="rust">
+          <span class="viz-flow__num">4</span>
+          <div class="viz-flow__body">
+            <p class="viz-flow__title">Re-develop the photo</p>
+            <p class="viz-flow__detail">Recost each plate against this week&rsquo;s number so the one dish that slipped gets caught now &mdash; not in April&rsquo;s P&amp;L.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+    <figcaption>The leak isn&rsquo;t a bad decision. It&rsquo;s the slow distance between a market that moves every week and a price that was meant to hold for a year.</figcaption>
+    <details class="cite">
+      <summary>Sources for the lag and the recost cadence</summary>
+      <div class="cite-body">
+        <p><span class="cite-source">Menus lag wholesale</span> &mdash; full-service menu prices rose about 4.4% year-over-year in mid-2025 while wholesale food costs stayed far above pre-pandemic levels; the print reacts slower than the supplier does. Directional industry figures (Barmetrix; cross-checked), registered in <code>data/sourced-claims.json#menu_price_lag_wholesale_2025</code>.</p>
+        <p><span class="cite-source">Recost cadence</span> &mdash; operators are advised to revisit pricing in small steps roughly every six months, precisely because a dish costed six months ago may have drifted a long way (GoFoodService / MarketMan), registered as <code>#menu_recost_cadence_six_months_2026</code>.</p>
+      </div>
+    </details>
+  </figure>
+
+  <h2 id="the-move">Don&rsquo;t reprice more. Re-develop the photo.</h2>
+  <p>The instinct after reading any of this is to reach for the whole board and bump every price a dollar. Resist it &mdash; a board-wide bump to cover one ingredient just teaches your regulars to read prices, and it punishes the dishes that didn&rsquo;t move. The skill isn&rsquo;t repricing more often. It&rsquo;s knowing, plate by plate, which photographs the market has aged past their frame, and re-developing only those.</p>
+
+  <p>That&rsquo;s the whole reason the free <a href="/tools/plate-cost/">Plate Cost</a> tool now recosts your saved recipes against the live Cost Index and flags the dishes that slipped: it re-develops the photo for you, against this week&rsquo;s light. When you want the same check run automatically off your own invoices instead of the market average, that&rsquo;s the job <a href="https://ledger.muntin.digital/">Muntin Ledger</a> exists to do.</p>
+
+  <p>A menu is a photograph of a market that has already left the room. You can&rsquo;t make the weather hold still for the print. You can only decide how long you&rsquo;re willing to keep selling January&rsquo;s prices in April.</p>
+</article>
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "_doc": "Optional 'from the floor' notes for the weekly Cost Index dispatch, authored by Don Goldstein and keyed by edition asOf. The note interprets what is ON the page; it may NOT introduce a new number, a new ingredient, or a forecast. Every number in the text must trace to that edition's snapshot in data/cost-index-editions.json (or to data/sourced-claims.json). Gated by scripts/check-cost-index-editors-note.mjs, plus the standard fabrication + banned-words gates. Most weeks ship without a note; absence is the default.",
+  "_version": "1.0",
+  "notes": {
+    "2026-06-18": {
+      "author": "Don Goldstein",
+      "dateModified": "2026-06-20",
+      "text": "The produce side is doing all the talking this week. Avocado at +68.6% against its baseline and the lettuces clustered right behind it, while the proteins sit quiet against their own windows. When the board tilts this hard toward produce, the move I make is narrow: re-price the salads and the garnish-heavy plates, leave the center of the plate alone, and check the avocado invoice against the wholesale read before assuming the jump is mine to eat."
+    }
+  }
+}

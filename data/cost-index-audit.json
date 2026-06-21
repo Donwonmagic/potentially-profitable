@@ -1,0 +1,113 @@
+{
+  "_doc": "Critical data-quality audit of the Cost Index deep history (data/cost-index-history.json), reconciled against registry LEVEL provenance (data/cost-index-proxies.json) AND the current published level (data/cost-index.json). Clone clusters (byte-identical archive series) are CLASSIFIED as documented-proxy (same registry source — expected), index-no-level (directional), history-archive-stale (distinct sources, archive cloned but the LIVE level is distinct & fine → re-vendor the archive only; not live-facing), or unexplained-bug (live level ALSO cloned — a real live-facing bug). Also: implausible per-lb levels vs an expert-grounded band, and index levels deviating >2x/<0.5x from a USDA/CME reference. Bands/refs grounded in data/sourced-claims.json #usda_wholesale_protein_oil_refs_2026. Surfacing report for UPSTREAM triage; --check keeps it in lockstep. Deterministic. Built by scripts/build-cost-index-audit.mjs.",
+  "_version": 1,
+  "source": {
+    "history": "data/cost-index-history.json",
+    "labels": "data/cost-index-labels.json",
+    "proxies": "data/cost-index-proxies.json",
+    "live": "data/cost-index.json"
+  },
+  "grounding": "data/sourced-claims.json#usda_wholesale_protein_oil_refs_2026",
+  "asOf": "2026-06-14T18:32:30.355Z",
+  "lbBand": [
+    0.3,
+    60
+  ],
+  "summary": {
+    "ingredientsScanned": 53,
+    "cloneClusters": 4,
+    "clonedIngredients": 9,
+    "clonesByClass": {
+      "history-archive-stale": 1,
+      "documented-proxy": 2,
+      "index-no-level": 1
+    },
+    "unexplainedBugs": 0,
+    "archiveStale": 1,
+    "implausibleLevels": 1,
+    "referenceDeviations": 1
+  },
+  "clones": [
+    {
+      "members": [
+        "beef-tenderloin",
+        "ribeye",
+        "short-rib"
+      ],
+      "classification": "history-archive-stale",
+      "lastCents": 1280,
+      "liveLevels": {
+        "beef-tenderloin": 1497,
+        "ribeye": 1314,
+        "short-rib": 590
+      },
+      "points": 36,
+      "note": "the deep ARCHIVE is a clone of another series, but the CURRENT published level is distinct and fine — only the deep history needs re-vendoring (affects backtest/drift/seasonality; plate-cost-drift already collapses it). Not live-facing."
+    },
+    {
+      "members": [
+        "ground-pork",
+        "pork-shoulder"
+      ],
+      "classification": "documented-proxy",
+      "lastCents": 131,
+      "liveLevels": {
+        "ground-pork": null,
+        "pork-shoulder": 119
+      },
+      "points": 158,
+      "note": "identical series, and the registry draws all members from one source — an expected proxy; collapse to one for independence."
+    },
+    {
+      "members": [
+        "salmon-fillet",
+        "salmon-skin-on-fillet"
+      ],
+      "classification": "documented-proxy",
+      "lastCents": 558,
+      "liveLevels": {
+        "salmon-fillet": 558,
+        "salmon-skin-on-fillet": 558
+      },
+      "points": 9,
+      "note": "identical series, and the registry draws all members from one source — an expected proxy; collapse to one for independence."
+    },
+    {
+      "members": [
+        "shrimp-head-on",
+        "shrimp-pd"
+      ],
+      "classification": "index-no-level",
+      "lastCents": 373,
+      "liveLevels": {
+        "shrimp-head-on": 11593,
+        "shrimp-pd": 11593
+      },
+      "points": 10,
+      "note": "identical series, but these are index-basis (directional) — no $-level should be published anyway."
+    }
+  ],
+  "implausibleLevels": [
+    {
+      "slug": "vegetable-oil",
+      "unit": "lb",
+      "lastUsd": 350.46,
+      "band": [
+        0.3,
+        60
+      ],
+      "registryLevelBasis": "index",
+      "note": "latest level outside the plausible per-lb band AND the registry source is index/directional — no dollar level should be published (a PPI index value carried as a cents level)."
+    }
+  ],
+  "referenceDeviations": [
+    {
+      "slug": "vegetable-oil",
+      "indexUsd": 350.46,
+      "referenceUsd": 0.48,
+      "ratio": 730.13,
+      "reference": "CME soybean oil, 2026-06-12",
+      "note": "index level far ABOVE wholesale reference"
+    }
+  ]
+}

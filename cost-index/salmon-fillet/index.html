@@ -30,7 +30,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://muntin.digital/cost-index/salmon-fillet/#page","url":"https://muntin.digital/cost-index/salmon-fillet/","name":"Salmon fillet","inLanguage":"en-US","isPartOf":{"@id":"https://muntin.digital/#website"},"description":"We don't publish a wholesale price for salmon fillet yet — the index shows a number only when public data supports an honest, complete read."},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Cost index","item":"https://muntin.digital/cost-index/"},{"@type":"ListItem","position":3,"name":"Salmon fillet","item":"https://muntin.digital/cost-index/salmon-fillet/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://muntin.digital/cost-index/salmon-fillet/#page","url":"https://muntin.digital/cost-index/salmon-fillet/","name":"Salmon fillet","inLanguage":"en-US","isPartOf":{"@id":"https://muntin.digital/#website"},"description":"We don't publish a wholesale price for salmon fillet yet — the index shows a number only when public data supports an honest, complete read.","speakable":{"@type":"SpeakableSpecification","cssSelector":["h1",".ci-read__head"]}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Cost index","item":"https://muntin.digital/cost-index/"},{"@type":"ListItem","position":3,"name":"Salmon fillet","item":"https://muntin.digital/cost-index/salmon-fillet/"}]}]}</script>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
 <style>
@@ -445,6 +445,48 @@ main{padding-top:64px}
   </div></div>
 </main>
 <footer class="site-footer" id="footer"></footer>
+<!-- Newsletter signup — eager progressive enhancement. This page ships
+     an empty footer (no footer assets, so first-touch.js never loads
+     here); wire the in-page #weekly-email form at parse time so a quick
+     submit can't fall back to a native POST that paints the API's raw
+     {"ok":true}. Stamps ts for the anti-spam gate, posts via fetch, and
+     flips data-state="ok" for the inline confirmation. -->
+<script>
+(function () {
+  'use strict';
+  if (typeof document === 'undefined') return;
+  function wire(form) {
+    if (!form || form.dataset.enhanced === '1') return;
+    form.dataset.enhanced = '1';
+    var ts = form.querySelector('input[name="ts"]');
+    if (ts) ts.value = String(Date.now());
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var params = new URLSearchParams();
+      new FormData(form).forEach(function (v, k) { params.append(k, v); });
+      fetch(form.action, {
+        method: 'POST',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        body: params.toString(),
+        credentials: 'same-origin',
+      }).then(function () {
+        form.dataset.state = 'ok';
+        if (typeof window.plausible === 'function') {
+          var evName = form.dataset.event || 'Newsletter Signup';
+          var surface = form.dataset.surface || (form.dataset.locale === 'es' ? 'cost-index-es' : 'cost-index-en');
+          try { window.plausible(evName, { props: { surface: surface } }); } catch (_) {}
+        }
+      }).catch(function () { /* fire-and-forget; no error UI by design */ });
+    });
+  }
+  function init() {
+    var forms = document.querySelectorAll('.foot-newsletter-form, .js-signup-form');
+    Array.prototype.forEach.call(forms, wire);
+  }
+  init();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
 <!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260430-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 </body>
 </html>

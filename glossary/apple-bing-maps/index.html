@@ -118,7 +118,7 @@
         "@id": "https://muntin.digital/#business"
       },
       "image": "https://muntin.digital/brand/og/glossary-apple-bing-maps.png",
-      "datePublished": "2026-06-06T17:12:31+00:00",
+      "datePublished": "2026-06-02T13:38:16+00:00",
       "isPartOf": {
         "@id": "https://muntin.digital/glossary/#muntin-glossary"
       }
@@ -421,7 +421,7 @@
             <p class="term-example">Example: A Silver Spring taqueria fixed its hours on Google but forgot Apple Maps, so every iPhone owner asking Siri for directions kept getting sent to the address it occupied two years ago until the owner claimed the Apple Maps listing.</p>
             <!-- term-example:end -->
       <!-- glossary-verified:start -->
-            <p class="glossary-verified">Last verified: <time datetime="2026-06-06">June 6, 2026</time></p>
+            <p class="glossary-verified">Last verified: <time datetime="2026-06-02">June 2, 2026</time></p>
             <!-- glossary-verified:end -->
       <!-- glossary-backlinks:start --><!-- glossary-backlinks:end -->
       
@@ -639,6 +639,51 @@
       </form>
     </div>
     <!-- newsletter-capture:end -->
+
+    <!-- Newsletter signup — eager progressive enhancement. The rest of
+         the site's JS lazy-loads on requestIdleCallback; this tiny
+         handler wires up at footer parse instead, so a quick submit
+         can't beat it and fall back to a native POST that paints the
+         API's raw {"ok":true}. It stamps ts for the server anti-spam
+         gate, posts via fetch, and flips data-state="ok" for the inline
+         confirmation. Guarded by data-enhanced so the idle-time copy in
+         first-touch.js can't double-bind (double submit). -->
+    <script>
+      (function () {
+        'use strict';
+        if (typeof document === 'undefined') return;
+        function wire(form) {
+          if (!form || form.dataset.enhanced === '1') return;
+          form.dataset.enhanced = '1';
+          var ts = form.querySelector('input[name="ts"]');
+          if (ts) ts.value = String(Date.now());
+          form.addEventListener('submit', function (ev) {
+            ev.preventDefault();
+            var params = new URLSearchParams();
+            new FormData(form).forEach(function (v, k) { params.append(k, v); });
+            fetch(form.action, {
+              method: 'POST',
+              headers: { 'content-type': 'application/x-www-form-urlencoded' },
+              body: params.toString(),
+              credentials: 'same-origin',
+            }).then(function () {
+              form.dataset.state = 'ok';
+              if (typeof window.plausible === 'function') {
+                var evName = form.dataset.event || 'Newsletter Signup';
+                var surface = form.dataset.surface || (form.dataset.locale === 'es' ? 'footer-es' : 'footer-en');
+                try { window.plausible(evName, { props: { surface: surface } }); } catch (_) {}
+              }
+            }).catch(function () { /* fire-and-forget; no error UI by design */ });
+          });
+        }
+        function init() {
+          var forms = document.querySelectorAll('.foot-newsletter-form, .js-signup-form');
+          Array.prototype.forEach.call(forms, wire);
+        }
+        init();
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+      })();
+    </script>
 
     <div class="foot-bottom">
       <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p>

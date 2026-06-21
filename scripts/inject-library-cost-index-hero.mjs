@@ -4,10 +4,9 @@
  * (/library/ + /es/library/) between <!-- cost-index-hero:start --> and
  * <!-- cost-index-hero:end -->.
  *
- * Self-updating: build-cost-index-dispatch.mjs prunes the weekly post to
- * exactly one current `cost-index-week-<date>` entry in
- * data/library-tags.json#blog_posts, so this always points the library
- * hero at the latest week. Run it after the weekly dispatch ships.
+ * Self-updating: the archive now retains every `cost-index-week-<date>` entry
+ * in data/library-tags.json#blog_posts, so this picks the LATEST by date and
+ * points the library hero at the newest week. Run it after the weekly dispatch ships.
  *
  *   node scripts/inject-library-cost-index-hero.mjs           # write
  *   node scripts/inject-library-cost-index-hero.mjs --check   # diff-only (exit 1 on drift)
@@ -20,8 +19,11 @@ const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const checkOnly = process.argv.includes('--check');
 
 const tags = JSON.parse(fs.readFileSync(path.join(REPO, 'data', 'library-tags.json'), 'utf8'));
+// The archive now retains EVERY weekly edition (the prune-to-one was removed), so pick the
+// LATEST by date rather than the first match — the hero always points at the newest week.
 const entry = Object.entries(tags.blog_posts || {})
-  .find(([k]) => /^cost-index-week-\d{4}-\d{2}-\d{2}$/.test(k));
+  .filter(([k]) => /^cost-index-week-\d{4}-\d{2}-\d{2}$/.test(k))
+  .sort(([, a], [, b]) => String((b && b.date) || '').localeCompare(String((a && a.date) || '')))[0];
 
 if (!entry) {
   console.log('cost-index-hero: no cost-index-week-* post in library-tags; nothing to stamp.');

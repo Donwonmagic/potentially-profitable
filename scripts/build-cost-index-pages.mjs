@@ -1057,6 +1057,48 @@ ${extraCss || ''}</head>
 const pageTail = `</div>
 </main>
 <footer class="site-footer" id="footer"></footer>
+<!-- Newsletter signup — eager progressive enhancement. This page ships
+     an empty footer (no footer assets, so first-touch.js never loads
+     here); wire the in-page #weekly-email form at parse time so a quick
+     submit can't fall back to a native POST that paints the API's raw
+     {"ok":true}. Stamps ts for the anti-spam gate, posts via fetch, and
+     flips data-state="ok" for the inline confirmation. -->
+<script>
+(function () {
+  'use strict';
+  if (typeof document === 'undefined') return;
+  function wire(form) {
+    if (!form || form.dataset.enhanced === '1') return;
+    form.dataset.enhanced = '1';
+    var ts = form.querySelector('input[name="ts"]');
+    if (ts) ts.value = String(Date.now());
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var params = new URLSearchParams();
+      new FormData(form).forEach(function (v, k) { params.append(k, v); });
+      fetch(form.action, {
+        method: 'POST',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        body: params.toString(),
+        credentials: 'same-origin',
+      }).then(function () {
+        form.dataset.state = 'ok';
+        if (typeof window.plausible === 'function') {
+          var evName = form.dataset.event || 'Newsletter Signup';
+          var surface = form.dataset.surface || (form.dataset.locale === 'es' ? 'cost-index-es' : 'cost-index-en');
+          try { window.plausible(evName, { props: { surface: surface } }); } catch (_) {}
+        }
+      }).catch(function () { /* fire-and-forget; no error UI by design */ });
+    });
+  }
+  function init() {
+    var forms = document.querySelectorAll('.foot-newsletter-form, .js-signup-form');
+    Array.prototype.forEach.call(forms, wire);
+  }
+  init();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
 <!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260430-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 </body>
 </html>

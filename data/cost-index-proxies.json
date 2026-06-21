@@ -1,0 +1,685 @@
+{
+  "_doc": "Per-ingredient LEVEL provenance, derived from data/cost-index-sources.json. levelBasis \"wholesale\" = an LMR/NOAA source yields a $-level; \"index\" = only PPI/index (FRED/BLS) or NOAA index sources exist → DIRECTIONAL, no dollar level. sharedSourceGroups = ingredients drawing the identical level source (their levels are not independent — e.g. a documented proxy). Derived only; nothing invented, no verified flag touched. Deterministic. Built by scripts/build-cost-index-proxies.mjs; CI re-checks with --check.",
+  "_version": 1,
+  "source": {
+    "registry": "data/cost-index-sources.json"
+  },
+  "asOf": null,
+  "summary": {
+    "count": 107,
+    "withWholesaleLevel": 24,
+    "indexOnly": 83,
+    "sharedSourceGroups": 2,
+    "ingredientsSharingSource": 4
+  },
+  "sharedSourceGroups": [
+    {
+      "sourceKey": "lmr:2498:pork_butt",
+      "members": [
+        "ground-pork",
+        "pork-shoulder"
+      ],
+      "canonical": "ground-pork"
+    },
+    {
+      "sourceKey": "noaa:030441+030481",
+      "members": [
+        "salmon-fillet",
+        "salmon-skin-on-fillet"
+      ],
+      "canonical": "salmon-fillet"
+    }
+  ],
+  "ingredients": {
+    "acorn-squash": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "apple": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "artichoke": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "asparagus": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "avocado": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "banana": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "basil": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "beef-tenderloin": {
+      "levelBasis": "wholesale",
+      "sourceKey": "lmr:2453:Butt Tender",
+      "independentLevel": true,
+      "sharedWith": []
+    },
+    "beet": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "bell-pepper": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "blueberry": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "bok-choy": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "broccoli": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "brussels-sprouts": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "butter": {
+      "levelBasis": "wholesale",
+      "sourceKey": "lmr:2993:Butter_Price",
+      "independentLevel": true,
+      "sharedWith": []
+    },
+    "butter-lettuce": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "butternut-squash": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "button-mushroom": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "cabbage": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "cantaloupe": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "carrot": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "cauliflower": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "celery": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "cheddar-cheese": {
+      "levelBasis": "wholesale",
+      "sourceKey": "lmr:2993:cheese_40_Price|Cheddar_Price|Block_Price",
+      "independentLevel": true,
+      "sharedWith": []
+    },
+    "cherry-tomato": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "chicken-breast": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "chicken-thigh": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "cilantro": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "clams": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "collard-greens": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "corn-on-the-cob": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "cucumber": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "daikon": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "dill": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "eggplant": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "eggs": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "garlic": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "ginger": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "grapefruit": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "green-beans": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "green-leaf-lettuce": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "green-onion": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "ground-beef": {
+      "levelBasis": "wholesale",
+      "sourceKey": "lmr:2453:Ground Beef",
+      "independentLevel": true,
+      "sharedWith": []
+    },
+    "ground-pork": {
+      "levelBasis": "wholesale",
+      "sourceKey": "lmr:2498:pork_butt",
+      "independentLevel": false,
+      "sharedWith": [
+        "pork-shoulder"
+      ]
+    },
+    "ground-turkey": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "habanero-pepper": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "iceberg-lettuce": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "jalapeno": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "kale": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "lamb-shoulder": {
+      "levelBasis": "wholesale",
+      "sourceKey": "lmr:2650:Shoulder",
+      "independentLevel": true,
+      "sharedWith": []
+    },
+    "leek": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "leg-of-lamb": {
+      "levelBasis": "wholesale",
+      "sourceKey": "lmr:2650:Leg",
+      "independentLevel": true,
+      "sharedWith": []
+    },
+    "lemon": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "lime": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "mint": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "napa-cabbage": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "octopus": {
+      "levelBasis": "wholesale",
+      "sourceKey": "noaa:030751+030752+030759",
+      "independentLevel": true,
+      "sharedWith": []
+    },
+    "okra": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "onion": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "oregano": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "oyster-mushroom": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "parsley": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "pear": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "pineapple": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "poblano-pepper": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "pork-belly": {
+      "levelBasis": "wholesale",
+      "sourceKey": "lmr:2498:pork_belly",
+      "independentLevel": true,
+      "sharedWith": []
+    },
+    "pork-loin": {
+      "levelBasis": "wholesale",
+      "sourceKey": "lmr:2498:pork_loin",
+      "independentLevel": true,
+      "sharedWith": []
+    },
+    "pork-shoulder": {
+      "levelBasis": "wholesale",
+      "sourceKey": "lmr:2498:pork_butt",
+      "independentLevel": false,
+      "sharedWith": [
+        "ground-pork"
+      ]
+    },
+    "pumpkin": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "raspberry": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "red-leaf-lettuce": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "red-onion": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "red-potato": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "ribeye": {
+      "levelBasis": "wholesale",
+      "sourceKey": "lmr:2453:Ribeye",
+      "independentLevel": true,
+      "sharedWith": []
+    },
+    "romaine-lettuce": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "rosemary": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "russet-potato": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "rutabaga": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "salmon-fillet": {
+      "levelBasis": "wholesale",
+      "sourceKey": "noaa:030441+030481",
+      "independentLevel": false,
+      "sharedWith": [
+        "salmon-skin-on-fillet"
+      ]
+    },
+    "salmon-skin-on-fillet": {
+      "levelBasis": "wholesale",
+      "sourceKey": "noaa:030441+030481",
+      "independentLevel": false,
+      "sharedWith": [
+        "salmon-fillet"
+      ]
+    },
+    "scallops": {
+      "levelBasis": "wholesale",
+      "sourceKey": "noaa:030721+030722+030729",
+      "independentLevel": true,
+      "sharedWith": []
+    },
+    "serrano-pepper": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "short-rib": {
+      "levelBasis": "wholesale",
+      "sourceKey": "lmr:2453:Short Rib",
+      "independentLevel": true,
+      "sharedWith": []
+    },
+    "shrimp": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "shrimp-head-on": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "shrimp-pd": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "snow-peas": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "spinach": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "squid": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "striploin": {
+      "levelBasis": "wholesale",
+      "sourceKey": "lmr:2453:strip, bnls, 0x1",
+      "independentLevel": true,
+      "sharedWith": []
+    },
+    "sweet-potato": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "tarragon": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "thyme": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "tomato": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "tuna-loin": {
+      "levelBasis": "wholesale",
+      "sourceKey": "noaa:030235+030487",
+      "independentLevel": true,
+      "sharedWith": []
+    },
+    "vegetable-oil": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "watermelon": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "whole-branzino": {
+      "levelBasis": "wholesale",
+      "sourceKey": "noaa:DISCOVER",
+      "independentLevel": true,
+      "sharedWith": []
+    },
+    "whole-chicken": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "whole-crab": {
+      "levelBasis": "wholesale",
+      "sourceKey": "noaa:030614+030633",
+      "independentLevel": true,
+      "sharedWith": []
+    },
+    "whole-halibut": {
+      "levelBasis": "wholesale",
+      "sourceKey": "noaa:030221+030421",
+      "independentLevel": true,
+      "sharedWith": []
+    },
+    "whole-lobster": {
+      "levelBasis": "wholesale",
+      "sourceKey": "noaa:030612+030632",
+      "independentLevel": true,
+      "sharedWith": []
+    },
+    "whole-salmon": {
+      "levelBasis": "wholesale",
+      "sourceKey": "noaa:030214+030314",
+      "independentLevel": true,
+      "sharedWith": []
+    },
+    "whole-trout": {
+      "levelBasis": "wholesale",
+      "sourceKey": "noaa:030211+030311",
+      "independentLevel": true,
+      "sharedWith": []
+    },
+    "whole-turkey": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "yellow-squash": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "zucchini": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    }
+  }
+}

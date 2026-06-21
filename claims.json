@@ -1,7 +1,7 @@
 {
   "_doc": "Public, machine-readable claim ledger for muntin.digital. Every externally-verifiable factual claim used across the library, paired with its primary public source and the date it was last checked. Generated from data/sourced-claims.json by scripts/build-claims-json.mjs — do not edit by hand. Operator-experience claims (first-hand, no public URL) are documented at https://muntin.digital/about/#timeline.",
-  "as_of": "2026-06-18",
-  "count": 36,
+  "as_of": "2026-06-19",
+  "count": 42,
   "claims": [
     {
       "id": "ai_overview_share_march_2025",
@@ -111,6 +111,17 @@
       ]
     },
     {
+      "id": "food_cost_target_band_2026",
+      "claim": "The long-standing industry target for restaurant food cost is 28–35% of food sales, and it varies by service model: quick-service / fast-casual roughly 25–30%, casual ~30–34%, and fine dining ~34–40% (premium ingredients, lower covers).",
+      "source_name": "Restaurant365 — What is a good food cost percentage?",
+      "source_url": "https://www.restaurant365.com/blog/cooking-up-success-understanding-what-is-a-good-food-cost-percentage/",
+      "date_verified": "2026-06-18",
+      "used_in": [
+        "tools/plate-cost/",
+        "docs/strategy-cost-intelligence-app.md"
+      ]
+    },
+    {
       "id": "google_ai_mode_io_2026",
       "claim": "At Google I/O on May 19, 2026, Google rebuilt AI Mode on a new model with a redesigned search box and agentic capabilities, including booking restaurant tables through OpenTable, Resy, and Tock; AI Mode reaches 1B+ monthly users with US rollout over summer 2026.",
       "source_name": "Google — The Keyword, I/O 2026 Search updates",
@@ -165,6 +176,17 @@
       ]
     },
     {
+      "id": "gpo_independent_savings_2026",
+      "claim": "Independent restaurants commonly report saving roughly 10–30% on food and supply costs by buying through a group purchasing organization, which aggregates volume to reach pricing tiers a single operator buying direct from a distributor cannot.",
+      "source_name": "Restaurant Business — GPO 101",
+      "source_url": "https://www.restaurantbusinessonline.com/technology/gpo-101-what-are-gpos-how-do-they-work-how-can-they-help-save-food-costs",
+      "date_verified": "2026-06-19",
+      "used_in": [
+        "tools/vendor-benchmark/",
+        "tools/_shared/fair-price-gap.js"
+      ]
+    },
+    {
       "id": "grubhub_published_rates",
       "claim": "Grubhub commission tiers and second-layer fee structure",
       "source_name": "Grubhub Merchant",
@@ -202,6 +224,27 @@
       "date_verified": "2026-05-14",
       "used_in": [
         "loyalty-programs-for-independent-restaurants-what-works-2026"
+      ]
+    },
+    {
+      "id": "menu_price_lag_wholesale_2025",
+      "claim": "Menus lag supplier costs: U.S. full-service menu prices rose about 4.4% year-over-year as of mid-2025, while wholesale food costs remained far above pre-pandemic levels (the source cites 36%+).",
+      "source_name": "Barmetrix — Restaurant Inflation (2025)",
+      "source_url": "https://www.barmetrix.com/blog/restaurant-inflation",
+      "date_verified": "2026-06-18",
+      "used_in": [
+        "docs/strategy-cost-intelligence-app.md"
+      ]
+    },
+    {
+      "id": "menu_recost_cadence_six_months_2026",
+      "claim": "Operators are advised to revisit menu pricing in smaller increments roughly every six months rather than infrequent large jumps, because a dish costed six months earlier may have drifted significantly as supplier prices move.",
+      "source_name": "GoFoodService — Menu Pricing Guide",
+      "source_url": "https://www.gofoodservice.com/guides/guide-to-pricing-menu-items-at-your-restaurant",
+      "date_verified": "2026-06-18",
+      "used_in": [
+        "tools/plate-cost/",
+        "docs/strategy-cost-intelligence-app.md"
       ]
     },
     {
@@ -263,6 +306,16 @@
       "date_verified": "2026-06-18",
       "used_in": [
         "get-found-fathers-day-weekend-2026"
+      ]
+    },
+    {
+      "id": "protein_highest_cost_category_2026",
+      "claim": "Protein is typically the highest-cost ingredient category on a restaurant menu, and protein price volatility is a primary driver of food-cost-percentage swings.",
+      "source_name": "meez — How to calculate food cost",
+      "source_url": "https://www.getmeez.com/blog/how-to-calculate-food-cost",
+      "date_verified": "2026-06-18",
+      "used_in": [
+        "docs/strategy-cost-intelligence-app.md"
       ]
     },
     {
@@ -378,6 +431,17 @@
       "used_in": [
         "restaurant-menu-inflation-2026",
         "inflacion-de-menu-de-restaurante-2026"
+      ]
+    },
+    {
+      "id": "usda_wholesale_protein_oil_refs_2026",
+      "claim": "USDA/CME wholesale reference levels (2026): boxed ribeye ~$10.71/lb and tenderloin ~$15.91/lb (grass-fed whole tenderloin $25–44/lb); ground beef 81/85% lean ~$3.91–4.41/lb; short ribs ~$8–10.5/lb; boneless skinless chicken breast ~$1.14–1.97/lb; CME soybean oil ~$0.48/lb (bulk ~$0.50–1.20/lb).",
+      "source_name": "USDA AMS National Weekly Boxed Beef Cutout; CME soybean oil",
+      "source_url": "https://www.ams.usda.gov/mnreports/ams_2461.pdf",
+      "date_verified": "2026-06-19",
+      "used_in": [
+        "scripts/build-cost-index-audit.mjs",
+        "docs/strategy-cost-intelligence-app.md"
       ]
     }
   ]
