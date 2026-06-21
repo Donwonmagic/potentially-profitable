@@ -44,6 +44,8 @@ import {
   getDataAudioAlt,
   hasFigcaption,
   detectVizKinds,
+  detectNonVizKinds,
+  ENRICHMENT_KINDS,
   hashFigureInner,
   numTextToShare,
   findAutolinkInAttribute,
@@ -223,4 +225,48 @@ test('findAutolinkInAttribute reports the line number for diagnostics', () => {
   const hits = findAutolinkInAttribute(html);
   assert.equal(hits.length, 1);
   assert.equal(hits[0].line, 4);
+});
+
+// --- ADR-006 enrichment taxonomy (the table/photo/scan/map/shot/render kinds) ---
+
+test('ENRICHMENT_KINDS lists the non-viz figure kinds', () => {
+  assert.deepEqual([...ENRICHMENT_KINDS].sort(),
+    ['map', 'photo', 'render', 'scan', 'shot', 'table']);
+});
+
+test('detectNonVizKinds recognizes a real <table> as the table kind', () => {
+  const kinds = detectNonVizKinds('', '<table class="viz-table"><tr><td>x</td></tr></table>');
+  assert.ok(kinds.has('table'));
+});
+
+test('detectNonVizKinds reads data-figure-kind from the figure attributes', () => {
+  const kinds = detectNonVizKinds(' data-figure-kind="photo" data-audio-alt="…"', '<img src="x.webp">');
+  assert.ok(kinds.has('photo'));
+});
+
+test('detectNonVizKinds ignores an unknown data-figure-kind value', () => {
+  const kinds = detectNonVizKinds(' data-figure-kind="bogus"', '<p>no table here</p>');
+  assert.equal(kinds.size, 0);
+});
+
+test('variety can be met by one viz-* kind plus a data table (ADR-006)', () => {
+  // The reason the gate amendment exists: a post should clear the
+  // two-distinct-kinds floor with a diagram + a table, not only two diagrams.
+  const vizFig = '<figure class="viz-figure"><div class="viz-bars"></div></figure>';
+  const tableFig = '<figure class="viz-figure" data-figure-kind="table"><table><tr><td>1</td></tr></table></figure>';
+  const all = new Set([
+    ...detectVizKinds(vizFig), ...detectNonVizKinds('', vizFig),
+    ...detectVizKinds(tableFig), ...detectNonVizKinds(' data-figure-kind="table"', tableFig),
+  ]);
+  assert.ok(all.size >= 2, `expected ≥2 distinct kinds, got ${[...all].join(', ')}`);
+  assert.ok(all.has('viz-bars') && all.has('table'));
+});
+
+test('two figures of the same viz kind still fail variety (unchanged)', () => {
+  const fig = '<figure class="viz-figure"><div class="viz-bars"></div></figure>';
+  const all = new Set([
+    ...detectVizKinds(fig), ...detectNonVizKinds('', fig),
+    ...detectVizKinds(fig), ...detectNonVizKinds('', fig),
+  ]);
+  assert.equal(all.size, 1);
 });
