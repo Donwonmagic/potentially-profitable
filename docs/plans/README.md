@@ -11,6 +11,12 @@ Permanent, version-controlled copies of the product plans (the durable record).
   (vendor-vs-market, vendor-vs-vendor, pack-shrink, silent-bleed, …). Ranked +
   phased, EN/ES owner copy, the measurement model, the honesty/antitrust rails,
   and the DO-NOT-BUILD list.
+- **[muntin-plate-modularity-audit.md](./muntin-plate-modularity-audit.md)** —
+  coverage audit of the insight layer against the modularity test: does each
+  subset of connected tools (invoices-only, recipes-only, +inventory, +POS,
+  full) get a complete standalone experience? Maps insight→dataset
+  dependencies, the per-profile coverage matrix, the gaps (invoice-only
+  vendor-switch/pack-shrink go silent today), and the prioritized fixes.
 - **[muntin-bench.md](./muntin-bench.md)** — Muntin Bench: the free vendor-price
   benchmark tool + the cross-product PINNED founder action list (master state).
 - **[muntin-cost-index.md](./muntin-cost-index.md)** — the Muntin Restaurant

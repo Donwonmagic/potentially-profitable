@@ -1,0 +1,85 @@
+# Muntin Plate — Modularity & Coverage Audit (every tool combination earns its keep)
+
+*Audit of where the Plate insight layer stands against a single test: **does each subset of connected tools get a great standalone experience, without being forced to adopt the others?** Grounded in a code read of the Ledger (`Muntin-Invoice-Decoder/apps/api`) routes, stores, and the storefront catalog. 2026-06-21.*
+
+## Context — why this audit
+
+The insight catalog (`muntin-plate-insight-catalog.md`) defines each insight by its **inputs** (invoices × recipes × Cost Index × inventory × POS × yields × cohort). The product promise is **modularity**: every tool is valuable alone and better together — an operator who connects only invoices, or recipes-but-not-invoices, or refuses to share recipes at all, must still get incredible, actionable insight. The risk is **silent recipe-gating**: the strongest new insights (E1, E2) flow through recipe lines, so a non-recipe operator gets an empty payload with no explanation. This audit maps coverage across the realistic combinations, names where insights go dark, and prioritizes the fixes that make each tool a complete product on its own.
+
+## The modular building blocks (what an operator can connect)
+
+| Tool / dataset | What it is | Operator action to connect |
+|---|---|---|
+| **Cost Index** | public market rate-of-change, 100+ ingredients | none — always on (free) |
+| **Invoices** (Ledger core) | `line_item_observations` (vendor, `canonical_id`, `cents_per_base`) | forward/scan invoices |
+| **Recipes** (Plate) | `org_recipes` + `recipe_line_items.canonical_id` | build recipes (optional; privacy-sensitive) |
+| **Inventory** | counts, pars, days-of-cover | periodic counts |
+| **POS / sales** | `v_sales_weekly` (Square or manual paste), covers | connect Square or paste sales |
+| **Learned yields** | `recordYieldObservation` | weigh-and-record (V2) |
+| **Cohort** | k-anon peer pool | opt-in (counsel-gated) |
+
+The first principle the audit confirms: **invoices are the spine; everything else is an optional enrichment that never blocks invoice operations.** That is the right architecture for modularity. The question is whether each *other* subset, and each *partial* combination, is served.
+
+## Insight → dataset dependency map
+
+| Insight | Invoices | Recipes | Index | Inventory | POS | Notes |
+|---|:--:|:--:|:--:|:--:|:--:|---|
+| **E12** market-implied teaser | – | template | ✓ | – | – | needs nothing — the funnel floor |
+| **E3** pack-shrink | ✓ | – | ◐ | – | – | invoice-only (index only for "market flat" clause) |
+| **E2** vendor-vs-vendor | ✓ | ◐ | – | – | – | **invoice-only**; recipes only to add $/week |
+| **E10/E11** cohort percentile | ✓ | – | – | – | – | invoice-only; opt-in/counsel-gated |
+| Ledger-native: vendor-pricing-scorecard, cash-flow-forecast, use-tax, price_creep, reorder_due | ✓ | – | – | ◐ | – | already shipped, invoice-only |
+| **E1** vendor-vs-market on the dish | ✓ | ✓ | ✓ | – | – | dish-level → recipes required by design |
+| **E4/E5/E6** silent-bleed / blast-radius / margin-map | ✓ | ✓ | – | ◐ | – | recipe fan-out |
+| **E9** yield-beats-book | ✓ | ✓ | – | – | – | + learned yields |
+| **E7** buy-now-vs-wait | ✓ | – | ✓ | ✓ | – | invoice + inventory |
+| food-cost % (Ledger-native) | ✓ | – | – | – | ✓ | actual COGS ÷ sales |
+| **E8** theoretical-vs-actual | ✓ | ✓ | – | ✓ | ✓ | the full-stack crown (V3) |
+
+(✓ required · ◐ enriches but optional · – not used.)
+
+## Coverage by operator profile — today vs. the gap
+
+The heart of the audit. **Built** = works now; **Gap** = silent/empty today; the **one fix** column is the single highest-leverage build to complete that tier.
+
+| Profile (who) | Gets today (built) | Goes silent (gap) | The one fix |
+|---|---|---|---|
+| **Cost Index only** (prospect, no account) | E12 market-implied teaser (storefront free tool) | — | (none — this tier is complete) |
+| **Invoices only** *(incl. "won't share recipes")* | price_hike / price_creep / reorder_due verdicts; vendor-pricing-scorecard; cash-flow-forecast; use-tax-watch | **E2 vendor-switch (empty)**, **E3 pack-shrink (unwired)**, cohort (dormant) | **invoice-only vendor-switch + pack-shrink** |
+| **Recipes only** *(pre-invoice / won't share invoices)* | plate `/cost` with manual prices | lines with no price → `covered:false`, $0 (no market estimate) | **cost-index estimate fallback in plate-cost** |
+| **Invoices + Recipes** | E1 vendor-vs-market (wired end-to-end), E2 per-recipe + digest, recost hero loop, `/cost` | E4/E5/E6 (engines built, no Ledger route), E9 (V2) | E4/E5/E6 routes |
+| **Invoices + Inventory** | days-of-cover, reorder_due, inventory cost-index valuation | E7 buy-now-vs-wait (designed, V2) | E7 wiring |
+| **Inventory only** | counts visible; reorder_due (needs invoice cadence for cover) | theoretical usage dark (needs recipes); cover null w/o invoice cadence | name the dependency + manual buy-rate |
+| **Invoices + POS** | food-cost % (actual, weekly), daypart, prime-cost | no link to dish theoretical (needs recipes) | (full only at the crown) |
+| **Full stack** (inv+rec+inventory+POS) | everything above | **E8 theoretical-vs-actual** (V3 hero, not built) | E8 (the crown) |
+
+### What this reveals
+1. **The floor is already strong.** Invoices-alone is *not* a barren tier — the Ledger ships price-hike/creep verdicts, the vendor-pricing scorecard, cash-flow forecast, and use-tax watch, none of them recipe-gated. The "won't share recipes" operator is already a real customer. **This is the modularity win to protect and build on.**
+2. **The two best invoice-only insights are the ones missing.** E2 (vendor-vs-vendor "found money") and E3 (pack-shrink "the silent hike") are, per the catalog, *invoice-only* — yet E2's only server path iterates recipe lines (silent for non-recipe orgs) and E3 isn't wired into the Ledger at all. The strongest floor-tier insights are dark for the floor-tier operator. **This is the #1 gap.**
+3. **Recipes-only can't see an estimate.** Inventory valuation already falls back to the Cost-Index market price (`resolveCostIndexCentsPerBase`), but `plate-cost` does not — a recipe line with no invoice and no manual price contributes `$0`, not a labeled market estimate. A pre-invoice operator can't get a costed plate, so E12's promise ("a dish like yours would feel ~+$0.20") never lands *inside* Plate.
+4. **There is no orchestration layer.** No `hasRecipes/hasInventory/hasPOS` capability signal, no "here's what you have, connect X to unlock Y" surface. Each route returns its data or an empty array; the UI must infer the tier from emptiness. **Modularity is implemented but not legible** — the product never tells the operator what they'd gain, so a missing tool reads as "nothing here" instead of "one tap from more."
+
+## The modularity design principle (make it binding)
+
+Three rules that turn "silent empty" into "complete at every tier":
+
+1. **Every tool is a complete product alone.** Invoices → the cost-watch + vendor + cash-flow surface. Recipes → a costed menu (with estimates pre-invoice). Inventory → par/cover/reorder. POS → food-cost %. None requires another to deliver its core value.
+2. **Graceful degradation is *named*, never silent.** The catalog's honesty spine already says "name what's missing, never present partial as complete." Extend it: when a dependency is absent, return the partial insight **plus the one-tap to unlock the fuller one** — "You're paying 14% more for mozzarella with Sysco. Add it to a recipe to see the $/week." A missing tool must read as an *unlock prompt*, not an empty screen.
+3. **No forced bundling; privacy is first-class.** The "I won't share recipes" operator gets the entire invoice-only catalog (E2, E3, cohort, scorecard, cash-flow). Recipe-bound insights are an *opt-in deepening*, never a tax on the base experience.
+
+## Prioritized recommendations (value × ease)
+
+1. **Ungate E2 — invoice-only vendor-switch** *(highest value, small build)*. Add `recipes-store.listCanonicalsWithVendors(orgId)` (the org's canonicals that have ≥2 vendors in invoice history — a `line_item_keys` GROUP BY, no recipe join) → reuse `vendorPriceSeries` → `compareVendors` → `buildVendorSwitch` (gap% card, $/week omitted honestly). Surface at `GET /v1/insights/vendor-switches` (invoice-only) with the per-recipe route adding $/week when recipes exist. **Makes the flagship "found money" insight available at the floor tier and to non-recipe operators.**
+2. **Wire E3 pack-shrink into ingest** *(invoice-only, high-trust)*. On a new observation whose `pack_size` changed but `cents_per_base` jumped while the sticker stayed quiet, emit a `pack_shrink` verdict (mirror the `price_hike` producer in `verdicts-store`). The storefront `pack-shrink.js` engine already exists to port. Catches a silent margin killer with zero recipe dependency.
+3. **Cost-index estimate fallback in `plate-cost`** *(unlocks recipes-only)*. After the manual-price check and before `covered:false`, call `resolveCostIndexTrend`/`resolveCostIndexCentsPerBase` for a market estimate, flagged `source:"market_estimate"` and labeled theoretical. A pre-invoice operator gets a costed plate; E12 lands inside Plate.
+4. **A capability / insight-index surface** *(the modularity spine)*. `GET /v1/capabilities` (or fold into `/v1/today`) returns, per the org's connected datasets, the available insights **and** the next-unlock prompts ("connect Square to see food-cost %", "add recipes to dish-ize your vendor savings"). Turns implicit emptiness into an explicit, guided tier ladder. Drive it off cheap presence checks (`activeRecipeCount>0`, an inventory-count exists, an active POS integration, ≥1 invoice).
+5. **Activate cohort (E10/E11) post-counsel** *(the universal invoice layer)*. Peer percentile is the one insight every invoice operator gets regardless of any other tool — the latent floor-tier upgrade once the antitrust gate clears.
+
+**Sequencing:** 1 + 2 close the floor-tier gaps (most operators, least dependency). 3 unlocks the recipes-only entry. 4 makes the whole ladder legible (and de-risks every "empty" payload). 5 waits on counsel.
+
+## Verification (how to confirm modularity holds)
+
+- **Per-profile smoke test:** seed an org with each subset (invoices-only, recipes-only, +inventory, +POS, full) and assert each returns a non-empty, honest insight set — or, where a tier is genuinely empty, an *unlock prompt* rather than `[]`.
+- **The "no forced bundling" test:** an org with invoices + a deliberately-empty recipe book still gets E2/E3/scorecard/cash-flow — never a dead dashboard.
+- **The honesty test (unchanged):** every degraded/estimated insight is labeled (market estimate, partial coverage, gap%-without-$) — graceful degradation never silently fabricates the missing dimension.
+- **Parity:** the invoice-only E2 card and the recipe-dish E2 card share `compareVendors`/`buildVendorSwitch` (one engine, two depths) — no divergent logic per tier.
