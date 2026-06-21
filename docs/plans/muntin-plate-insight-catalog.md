@@ -79,7 +79,7 @@ Same data; a strictly better first move. The ~$27/week vendor share earns a phon
 3. **The vendor-ask copy layer — ✅ now built** as `tools/_shared/vendor-ask.js` (`MuntinVendorAsk.build`; pure EN/ES, 7 passing vectors). Turns a decomposition into the owner card: leads with the recoverable `$/week` and a show-your-work vendor script when the move is the vendor's; on a `market` attribution it says so and emits **no** ask (a false alarm lowers IAR); a `gated` decomposition returns `show:false` (caller shows each side alone); it never invents a dollar figure (no dish `$/week` → no money clause). E2's cheaper-vendor numbers reuse `cross-vendor.projectMonthlySaving`.
 4. **One branch in `recostForHike`** — when `attribution === 'vendor'`, lead the card with the ask and route the fork. New events: `vendor_ask_opened`, `vendor_switch_logged`, `reprice_after_vendor_declined`, `dismiss_as_expected`.
 
-**Build status (this branch):** built and green here (**36 vectors**, `node --test`) — E1's `spread-decompose.js` (14) + `vendor-ask.js` (7), E2's `vendor-switch.js` (7), and E3's `pack-shrink.js` (8); all pure / deterministic / no-LLM, EN + ES, parity-locked for the Ledger port. What remains is Ledger-side and MVP-dependent: `vendorPriceSeries` (the SQL that feeds the flagships) and the `recostForHike` branch. Those belong to the Ledger build track.
+**Build status (this branch):** built and green here (**46 vectors**, `node --test`) — E1's `spread-decompose.js` (14) + `vendor-ask.js` (7), E2's `vendor-switch.js` (7), E3's `pack-shrink.js` (8), E4's `silent-bleed.js` (6), and E5's `blast-radius.js` (4); all pure / deterministic / no-LLM, EN + ES, parity-locked for the Ledger port. What remains is Ledger-side and MVP-dependent: `vendorPriceSeries` (the SQL that feeds the flagships) and the `recostForHike` branch. Those belong to the Ledger build track.
 
 ---
 
@@ -119,13 +119,13 @@ Each entry carries: **inputs · owner one-liner (EN/ES) · trigger & cadence · 
 
 ### E4 — Silent-bleed leaderboard ($/week, not %)
 - **Inputs:** invoices × recipes × `covers_per_week`.
-- **EN:** "This week's price moves hit 4 dishes. Ranked by what they actually cost you: **Caesar −$47/wk, Wings −$22, Cobb −$14, Side salad −$3.** Start at the top — fixing Caesar alone recovers two-thirds of it."
-- **ES:** "Los cambios de precio de esta semana tocaron 4 platillos. Ordenados por lo que de verdad te cuestan: **Caesar −$47/sem, Alitas −$22, Cobb −$14, Ensalada −$3.** Empieza por arriba — arreglar el Caesar recupera dos tercios."
+- **EN:** "This week's price moves hit 4 dishes. Ranked by what they cost you per week: **Caesar −$47, Wings −$22, Cobb −$14, Side salad −$3.** Start at the top — fixing Caesar alone recovers more than half of it." *(47/86 ≈ 55% — the engine computes the share and picks an honest band, never a false fraction.)*
+- **ES:** "Los cambios de precio de esta semana tocaron 4 platillos. Ordenados por lo que te cuestan por semana: **Caesar −$47, Alitas −$22, Cobb −$14, Ensalada −$3.** Empieza por arriba — arreglar el Caesar recupera más de la mitad."
 - **Trigger/cadence:** weekly digest (the rhythm).
 - **Action:** tap the top item → its re-price/re-portion/hold fork.
 - **Confidence/honesty:** $/week needs `covers_per_week`; if missing, show $/plate and "add covers to see the weekly hit." Never invent covers. The spend-weighting is the point — a 2% hike on the bestseller beats a 20% hike on a rarely-ordered dish.
 - **Privacy:** per-org.
-- **Phase:** MVP-extension (weekly-digest framing of the hero loop).
+- **Phase:** MVP-extension (weekly-digest framing of the hero loop). **✅ ranker built** (`tools/_shared/silent-bleed.js`, 6 vectors).
 
 ### E5 — Cross-dish blast radius
 - **Inputs:** invoices × recipes (canonical fan-out).
@@ -133,8 +133,8 @@ Each entry carries: **inputs · owner one-liner (EN/ES) · trigger & cadence · 
 - **ES:** "La mozzarella está en **7 de tus platillos.** Este solo cambio los toca todos — **$61 por semana** en total. Un cambio o una llamada arregla siete problemas de una vez. **[Ver los 7]**"
 - **Trigger/cadence:** event-driven, on a hike for a high-fan-out canonical.
 - **Action:** vendor call / substitute evaluation (links to E2 when a cheaper vendor exists).
-- **Confidence/honesty:** exact fan-out from `recipe_line_items`; $/week carries E4's covers caveat.
-- **Privacy:** per-org. **Phase:** MVP-extension.
+- **Confidence/honesty:** exact fan-out from `recipe_line_items`; $/week carries E4's covers caveat (no total unless every dish has covers).
+- **Privacy:** per-org. **Phase:** MVP-extension. **✅ card built** (`tools/_shared/blast-radius.js`, 4 vectors).
 
 ### E6 — Menu margin map — "which dishes crossed your line"
 - **Inputs:** invoices × recipes × owner target margin.
