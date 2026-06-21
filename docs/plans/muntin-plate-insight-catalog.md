@@ -79,7 +79,7 @@ Same data; a strictly better first move. The ~$27/week vendor share earns a phon
 3. **The vendor-ask copy layer — ✅ now built** as `tools/_shared/vendor-ask.js` (`MuntinVendorAsk.build`; pure EN/ES, 7 passing vectors). Turns a decomposition into the owner card: leads with the recoverable `$/week` and a show-your-work vendor script when the move is the vendor's; on a `market` attribution it says so and emits **no** ask (a false alarm lowers IAR); a `gated` decomposition returns `show:false` (caller shows each side alone); it never invents a dollar figure (no dish `$/week` → no money clause). E2's cheaper-vendor numbers reuse `cross-vendor.projectMonthlySaving`.
 4. **One branch in `recostForHike`** — when `attribution === 'vendor'`, lead the card with the ask and route the fork. New events: `vendor_ask_opened`, `vendor_switch_logged`, `reprice_after_vendor_declined`, `dismiss_as_expected`.
 
-**Build status (this branch):** 2 of the 4 net-new pieces are built and green here — `spread-decompose.js` (14 vectors) and `vendor-ask.js` (7 vectors), both pure / deterministic / no-LLM and parity-locked for the Ledger port. The remaining two — `vendorPriceSeries` (SQL) and the `recostForHike` branch — live in the Ledger repo and depend on the Plate MVP tables; they're specified above and belong to that build track.
+**Build status (this branch):** the pure cores of **both** flagships are built and green here (28 vectors, `node --test`): E1's `spread-decompose.js` (14) + `vendor-ask.js` (7), and E2's `vendor-switch.js` (7) — all pure / deterministic / no-LLM, EN + ES, parity-locked for the Ledger port. What remains is Ledger-side and MVP-dependent: `vendorPriceSeries` (the SQL that feeds both flagships) and the `recostForHike` branch. Those belong to the Ledger build track.
 
 ---
 
@@ -99,12 +99,12 @@ Each entry carries: **inputs · owner one-liner (EN/ES) · trigger & cadence · 
 
 ### E2 — Vendor-vs-Vendor — "you already buy it cheaper" · *ship first*
 - **Inputs:** invoices × invoices (vendor split on a canonical) [× recipes to dish-ize].
-- **EN:** "You buy mozzarella from two vendors. US Foods has been **9% cheaper** than Sysco for 6 weeks — same 5-lb pack. Moving just this one item saves about **$18/week** across your pizza and your caprese. **[Make US Foods the default]**"
-- **ES:** "Compras mozzarella de dos proveedores. US Foods ha estado **9% más barato** que Sysco por 6 semanas — el mismo paquete de 5 lb. Cambiar solo este producto ahorra como **$18 por semana** en tu pizza y tu caprese. **[Pon US Foods de preferido]**"
+- **EN:** "You buy mozzarella from two vendors. **Sysco's been running about 9% more** than US Foods for 6 weeks — same 5-lb pack. Switching just this one item saves about **$18/week** across your pizza and your caprese. **[Make US Foods the default]**"
+- **ES:** "Compras mozzarella de dos proveedores. **Sysco ha estado como 9% más caro** que US Foods por 6 semanas — el mismo paquete de 5 lb. Cambiar solo este producto ahorra como **$18 por semana** en tu pizza y tu caprese. **[Pon US Foods de preferido]**"
 - **Trigger/cadence:** weekly digest (a *persistent* gap, never a one-off blip).
 - **Action:** re-bind the recipe line's price to the cheaper vendor (or just flag it).
 - **Confidence/honesty:** `compare()`'s ≥3-sample-per-vendor bar; compared on `cents_per_base` (same pack and grade); period-median to discard promos; framed "based on your last 6 weeks of invoices."
-- **Privacy:** per-org (entirely the operator's own data). No gate. **Engine already exists** (`cross-vendor.js`).
+- **Privacy:** per-org (entirely the operator's own data). No gate. **Engine already exists** (`cross-vendor.js`); the **card is built** (`tools/_shared/vendor-switch.js`, 7 vectors). The "9% more" wording uses `gapPctVsCheapest` exactly (how much more the current vendor runs) — never the inverse "9% cheaper," which would overstate.
 - **Phase:** MVP-extension. Computable today.
 
 ### E3 — Pack-shrink silent hike
