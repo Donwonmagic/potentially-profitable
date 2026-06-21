@@ -79,7 +79,7 @@ Same data; a strictly better first move. The ~$27/week vendor share earns a phon
 3. **The vendor-ask copy layer — ✅ now built** as `tools/_shared/vendor-ask.js` (`MuntinVendorAsk.build`; pure EN/ES, 7 passing vectors). Turns a decomposition into the owner card: leads with the recoverable `$/week` and a show-your-work vendor script when the move is the vendor's; on a `market` attribution it says so and emits **no** ask (a false alarm lowers IAR); a `gated` decomposition returns `show:false` (caller shows each side alone); it never invents a dollar figure (no dish `$/week` → no money clause). E2's cheaper-vendor numbers reuse `cross-vendor.projectMonthlySaving`.
 4. **One branch in `recostForHike`** — when `attribution === 'vendor'`, lead the card with the ask and route the fork. New events: `vendor_ask_opened`, `vendor_switch_logged`, `reprice_after_vendor_declined`, `dismiss_as_expected`.
 
-**Build status (this branch):** built and green here (**46 vectors**, `node --test`) — E1's `spread-decompose.js` (14) + `vendor-ask.js` (7), E2's `vendor-switch.js` (7), E3's `pack-shrink.js` (8), E4's `silent-bleed.js` (6), and E5's `blast-radius.js` (4); all pure / deterministic / no-LLM, EN + ES, parity-locked for the Ledger port. What remains is Ledger-side and MVP-dependent: `vendorPriceSeries` (the SQL that feeds the flagships) and the `recostForHike` branch. Those belong to the Ledger build track.
+**Build status (this branch):** **all of Bucket A — every computable-today insight — is built and green here** (**56 vectors**, `node --test`): E1 `spread-decompose.js` (14) + `vendor-ask.js` (7), E2 `vendor-switch.js` (7), E3 `pack-shrink.js` (8), E4 `silent-bleed.js` (6), E5 `blast-radius.js` (4), E6 `margin-map.js` (5), and E12 `market-implied.js` (5); all pure / deterministic / no-LLM, EN + ES, parity-locked for the Ledger port. What remains is Ledger-side and MVP-dependent: `vendorPriceSeries` (the SQL that feeds the flagships) and the `recostForHike` branch — those belong to the Ledger build track. The Bucket-B insights (E7–E11) are V2/V3 and/or counsel-gated and are deliberately not built here.
 
 ---
 
@@ -143,7 +143,7 @@ Each entry carries: **inputs · owner one-liner (EN/ES) · trigger & cadence · 
 - **Trigger/cadence:** weekly digest + on-demand dashboard rollup.
 - **Action:** tap a dish → its fork.
 - **Confidence/honesty:** anchored on the owner's target (default 30%, labeled a starting point), never a textbook 28/30/33; theoretical plate cost labeled theoretical.
-- **Privacy:** per-org. **Phase:** MVP-extension (full stars/dogs menu-engineering = V2).
+- **Privacy:** per-org. **Phase:** MVP-extension (full stars/dogs menu-engineering = V2). **✅ rollup built** (`tools/_shared/margin-map.js`, 5 vectors).
 
 ### E12 — Market-implied dish drift (free teaser, honestly labeled)
 - **Inputs:** index × recipe-template (before the operator connects invoices).
@@ -152,7 +152,7 @@ Each entry carries: **inputs · owner one-liner (EN/ES) · trigger & cadence · 
 - **Trigger/cadence:** monthly / on the free tool.
 - **Action:** Connect one invoice (the funnel CTA — fires only on an actionable signal, never on a healthy verdict).
 - **Confidence/honesty:** MUST label "market estimate, not your price." This is the only insight allowed a template instead of the operator's own BOM — *because* it is labeled theoretical.
-- **Privacy:** per-org / public. **Phase:** MVP-extension (Track A storefront / demand engine).
+- **Privacy:** per-org / public. **Phase:** MVP-extension (Track A storefront / demand engine). **✅ teaser built** (`tools/_shared/market-implied.js`, 5 vectors).
 
 ### E9 — "Your kitchen beats the book" (operator-learned-yield truth)
 - **Inputs:** yields (operator-learned) × recipes × invoices.
