@@ -5,6 +5,12 @@ Permanent, version-controlled copies of the product plans (the durable record).
 - **[muntin-plate.md](./muntin-plate.md)** — Muntin Plate: the recipe↔invoice
   food-cost bridge (the hero "which dishes stopped making money" loop) + the
   Track B build-ready Ledger MVP spec.
+- **[muntin-plate-insight-catalog.md](./muntin-plate-insight-catalog.md)** — the
+  emergent insight layer above Plate: insights that exist only because Muntin
+  unifies invoices × recipes × Cost Index × inventory × yields × cohort
+  (vendor-vs-market, vendor-vs-vendor, pack-shrink, silent-bleed, …). Ranked +
+  phased, EN/ES owner copy, the measurement model, the honesty/antitrust rails,
+  and the DO-NOT-BUILD list.
 - **[muntin-bench.md](./muntin-bench.md)** — Muntin Bench: the free vendor-price
   benchmark tool + the cross-product PINNED founder action list (master state).
 - **[muntin-cost-index.md](./muntin-cost-index.md)** — the Muntin Restaurant
