@@ -65,7 +65,7 @@ Three rules that turn "silent empty" into "complete at every tier":
 
 1. **Every tool is a complete product alone.** Invoices → the cost-watch + vendor + cash-flow surface. Recipes → a costed menu (with estimates pre-invoice). Inventory → par/cover/reorder. POS → food-cost %. None requires another to deliver its core value.
 2. **Graceful degradation is *named*, never silent.** The catalog's honesty spine already says "name what's missing, never present partial as complete." Extend it: when a dependency is absent, return the partial insight **plus the one-tap to unlock the fuller one** — "You're paying 14% more for mozzarella with Sysco. Add it to a recipe to see the $/week." A missing tool must read as an *unlock prompt*, not an empty screen.
-3. **No forced bundling; privacy is first-class.** The "I won't share recipes" operator gets the entire invoice-only catalog (E2, E3, cohort, scorecard, cash-flow). Recipe-bound insights are an *opt-in deepening*, never a tax on the base experience.
+3. **No forced bundling; privacy is first-class.** The "I won't share recipes" operator gets the entire invoice-only catalog (E2, E3, cohort, scorecard, cash-flow). Recipe-bound insights are an *opt-in deepening*, never a tax on the base experience. **✅ Realized:** the recipe hub (`GET /v1/recipes/hub`) is the pre-first-recipe surface — what Plate is, the benefits, and a *grounded* safety story (row-level isolation → no other operator/vendor sees them; the only cross-operator data is opt-in-off, anonymized invoice ranges, never recipes; no-AI; deletable) — so adding recipes is an informed, trust-first choice, not a leap of faith. (E6 menu margin-map also now has a Ledger route.)
 
 ## Prioritized recommendations (value × ease)
 
