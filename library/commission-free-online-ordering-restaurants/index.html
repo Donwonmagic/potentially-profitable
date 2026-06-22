@@ -546,7 +546,13 @@ main{padding-top:64px}
             </aside>
             <!-- article-tldr:end -->
 
-    <p>If you have ever asked &ldquo;what does <em>commission-free online ordering</em> actually cost?&rdquo; you have already met the framing problem. Every vendor in the category calls itself commission-free; not one of them is free. Someone always pays &mdash; the restaurant on a flat monthly bill, the guest on a support fee, the operator on a higher processing rate, or the future operator on a switching cost &mdash; and the honest comparison is who pays which slice, on what volume, and what each model gives up in exchange. The rest of this page is that comparison, with prices read from vendor pages as of May 2026 and every range pinned to a source.</p>
+    <p>This is a decision before it is a comparison, and it lands on your desk as two questions stacked on top of each other: <em>should</em> I move ordering off the marketplace, and if so, <em>how</em>. So read this the way you&rsquo;d make the call. <strong>Commission-free online ordering wins whenever you can carry the volume direct without paying more in monthly fees than the marketplace was taking in rake &mdash; and the marketplace stays worth its 15&ndash;30% cut only as a discovery channel for guests who would never have found you otherwise.</strong> That single line is the whole verdict; the rest of the page is the walk that gets you to your version of it, branch by branch, with prices read from vendor pages as of May 2026 and every range pinned to a source.</p>
+
+    <p>Start with the trap in the name. Every vendor in the category calls itself commission-free; not one of them is free. Someone always pays &mdash; the restaurant on a flat monthly bill, the guest on a support fee, the operator on a higher processing rate, or the future operator on a switching cost. The question is never free-or-not-free. It is who pays which slice, on what volume, and what each model gives up in exchange &mdash; and the answer changes with the restaurant doing the asking.</p>
+
+    <blockquote class="pullquote">
+      <p>Commission-free is not a product you buy. It is a trade you make: the marketplace&rsquo;s rake for a bill you carry yourself &mdash; and the trade only pays if your volume is on the right side of the math.</p>
+    </blockquote>
 
     <h2 id="what-commission-free-actually-means">What &ldquo;commission-free&rdquo; actually means &mdash; the four costs that don&rsquo;t go away</h2>
 
@@ -577,6 +583,21 @@ main{padding-top:64px}
 
     <p>The second-layer fees are where the spread opens. DoorDash adds a sponsored-listing charge of roughly 2&ndash;3% on promo-attributed orders, the opt-in that the discovery surface effectively requires. Uber Eats charges a Pro membership fee of roughly $2.25 per opted-in order on top of the 30%. Grubhub charges a per-order communication fee of roughly 3.3% that is not opt-in &mdash; it lands on every order, every time. The combined effect is an effective cut between 28% (DoorDash Marketplace Plus, on the full margin walk linked below) and 35% (Uber Eats Pro at low ticket sizes). On the same $42 average ticket, DoorDash Marketplace Plus keeps the restaurant 18.4%, Grubhub Premium 17.6%, and Uber Eats Pro 15.9% &mdash; with direct ordering keeping 28.9%.</p>
 
+    <figure class="viz-figure" data-audio-alt="A single circular dial showing the marketplace&rsquo;s effective cut on one order. The headline commission runs fifteen to thirty percent across DoorDash, Uber Eats, and Grubhub, but once the second-layer fees stack &mdash; sponsored listings, a Pro membership charge, a per-order communication fee &mdash; the effective cut lands between twenty-eight and thirty-five percent of every order on the standard tier most independents pay. The arc is drawn to the top of that band at thirty-five percent and shaded rust because it is a cost, not a kept share. This is the single proportion the entire commission-free decision is measured against: more than a quarter, and often more than a third, of each marketplace order is gone before the kitchen has paid for the food.">
+      <div class="viz-rings reveal">
+        <div class="viz-ring" data-band="bad" style="--score:35;">
+          <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-marketplace-cut" focusable="false">
+            <title id="ring-marketplace-cut">The marketplace&rsquo;s effective cut runs 28 to 35 percent of each order once second-layer fees stack</title>
+            <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
+            <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
+            <text class="viz-ring__num" x="60" y="60" text-anchor="middle">28&ndash;35%</text>
+          </svg>
+          <p class="viz-ring__label"><strong>Effective marketplace cut</strong>15&ndash;30% headline, plus the second-layer fees that stack on top</p>
+        </div>
+      </div>
+      <figcaption>One proportion, the one the whole decision is measured against: more than a quarter &mdash; often more than a third &mdash; of every marketplace order is gone before the food is paid for. The arc is drawn to the top of the effective band; verify your tier on each merchant page.</figcaption>
+    </figure>
+
     <details class="cite">
       <summary>Source: marketplace fee structures, May 2026</summary>
       <div class="cite-body">
@@ -588,8 +609,30 @@ main{padding-top:64px}
     <p>What the marketplace cut <em>does not</em> buy is the relationship with the guest. The guest&rsquo;s email and phone number sit inside the platform; the next order rides the marketplace surface again, not your direct site; the loyalty program is the platform&rsquo;s, not yours. The honest case for the marketplace as a discovery channel is real &mdash; the new guest who finds you in the app would not have found you on Google &mdash; but a guest who has ordered from you three times on DoorDash is a guest the marketplace owns. Commission-free is the move that flips ownership back. For the full marketplace-economics walk on a $42 ticket, see <a href="/library/third-party-delivery-comparison/">/library/third-party-delivery-comparison/</a>; for the same math on a $100 ticket with the breakeven for the switch, see <a href="/library/third-party-delivery-economics/">/library/third-party-delivery-economics/</a>.</p>
 
     <div class="callout">
-      <p><strong>The 30% is on the menu price, not the take-home.</strong> A $42 marketplace ticket walks out of the kitchen owing $12.60 to the platform before the kitchen has paid for the chicken. The commission compounds against revenue, not against profit &mdash; which is why operators who treat the marketplace as a marketing line on the P&amp;L tend to read the math wrong.</p>
+      <p class="callout-eyebrow">The number the whole decision turns on</p>
+      <p class="callout-body"><strong>$12.60 leaves a $42 marketplace ticket before the kitchen has paid for the chicken</strong> &mdash; the 30% cut lands on the menu price, not the take-home. That is the dollar figure every commission-free option is competing against, and it is why the compare is lopsided: the marketplace cut compounds against revenue, while the direct models below cost $3&ndash;$4 against the same order. Operators who file the marketplace as a marketing line on the P&amp;L read the math wrong; it is a revenue-share line, and a 30% one.</p>
     </div>
+
+    <p>Before the vendor-by-vendor walk, put the two real finalists side by side &mdash; not a specific platform yet, but the two <em>postures</em> the whole decision chooses between. Everything below is a variation on one of these two columns.</p>
+
+    <div role="group" aria-label="Your own ordering versus the marketplace, head to head" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0">
+      <div class="snippet-box" data-tone="good">
+        <span class="snippet-label">Your own ordering</span>
+        <p style="margin:0 0 8px"><strong>Costs:</strong> $3&ndash;$4 per $100 order &mdash; processing plus an amortized monthly fee or a guest surcharge. No platform cut on the subtotal.</p>
+        <p style="margin:0 0 8px"><strong>You own:</strong> the guest&rsquo;s contact, the re-order, the loyalty list. The next order rides a surface you control.</p>
+        <p style="margin:0 0 8px"><strong>You carry:</strong> the order-management surface &mdash; someone watches the dashboard on a Friday night, and the upfront build or monthly fee is yours.</p>
+        <p style="margin:0"><strong>Wins when:</strong> your volume is high enough that the monthly bill amortizes below the rake, or the relationship is the asset you&rsquo;re building.</p>
+      </div>
+      <div class="snippet-box" data-tone="bad">
+        <span class="snippet-label">The marketplace</span>
+        <p style="margin:0 0 8px"><strong>Costs:</strong> 15&ndash;30% headline, 28&ndash;35% effective once second-layer fees stack &mdash; $12.60+ on that $42 ticket, compounding against revenue.</p>
+        <p style="margin:0 0 8px"><strong>It owns:</strong> the guest&rsquo;s contact, the re-order, the loyalty program. A guest who&rsquo;s ordered three times on DoorDash is the marketplace&rsquo;s guest.</p>
+        <p style="margin:0 0 8px"><strong>It carries:</strong> in-app discovery, the courier network, and the last-mile support layer &mdash; real labor the 30% pays for.</p>
+        <p style="margin:0"><strong>Worth it when:</strong> it is pure discovery &mdash; the new guest who found you in the app would never have found you any other way.</p>
+      </div>
+    </div>
+
+    <p>Most restaurants do not pick one outright; they pick a center of gravity. The vendor sections that follow are the rungs between these two posts &mdash; Owner.com, Toast, ChowNow, Square Online, GloriaFood, and a custom build &mdash; each one a different answer to the same trade. Read them as candidates for the &ldquo;your own ordering&rdquo; column, and hold the marketplace column in view as the thing each is trying to beat.</p>
 
     <h2 id="owner-com-flat-vs-flex">Owner.com Flat vs Flex &mdash; the honest math on each tier</h2>
 
@@ -744,9 +787,14 @@ main{padding-top:64px}
 
     <p>The interesting line in the chart is not the marketplace row &mdash; it is how close the three commission-free models sit to each other. Custom, Toast direct, and Owner.com Flat all land between $3.20 and $4.50 per $100 order at typical volume. The decision among them is not the per-order cost; it is the upfront cost, the monthly bill, and the posture each model demands. A platform that runs cheaper per order in May only beats a custom site if the restaurant is still on that platform in May three years from now.</p>
 
-    <h2 id="who-fits-each-decision-tree">Who fits each &mdash; decision tree by volume and posture</h2>
+    <h2 id="who-fits-each-decision-tree">Who fits each &mdash; the decision tree by volume and posture</h2>
 
-    <p>Four restaurant shapes map cleanly to four channel postures. The fit is determined by weekly online-order volume and by what the restaurant&rsquo;s brand needs the site to do &mdash; not by the headline commission rate alone.</p>
+    <p>This is the spine the whole walk has been building toward: four restaurant shapes, each mapping cleanly to one channel posture. The fit is set by weekly online-order volume and by what the brand needs the site to do &mdash; not by the headline commission rate alone. Read it as a sequence of if-then calls. <strong>If</strong> you run under 100 online orders a week and the room is mostly dine-in, <strong>then</strong> the monthly fee is the binding cost and a custom page or thin Toast Lite stack wins. <strong>If</strong> you sit between 100 and 1,000 and ordering is real revenue, <strong>then</strong> the fee amortizes and Owner.com or Toast direct earns its keep. <strong>If</strong> the brand leads and orders are occasional, <strong>then</strong> spend the budget on design, not a $499 ordering stack. <strong>If</strong> your volume is structurally on the marketplace, <strong>then</strong> you do not leave overnight &mdash; you bolt a direct surface on top and migrate over months.</p>
+
+    <aside class="callout callout--field">
+      <p class="callout-eyebrow">From the floor</p>
+      <p class="callout-body">The mistake I watch operators make is picking the model off the per-order price in the chart, when the per-order price is the part that barely moves &mdash; custom, Toast direct, and Owner.com Flat all land within a dollar of each other. The decision that actually bites is the monthly bill against your real volume and the switching cost three years out. So I don&rsquo;t start an operator on the cheapest row. I start them on the branch below that names their volume and their posture, and let the per-order number break the tie only when two branches genuinely overlap. The headline rate is the marketing; the branch is the decision.</p>
+    </aside>
 
     <figure class="viz-figure" data-audio-alt="A decision tree of four restaurant shapes mapped to the commission-free ordering model that fits each one. Branch one: low online-order volume, dine-in heavy &mdash; the fit is a custom site or Toast Lite. At under one hundred online orders per week the monthly fee on Owner.com Flat is too high to amortize, the marketplace cut is irrelevant because volume is low, and a custom site with Stripe or a thin Toast Lite POS setup costs nothing per month beyond hosting. Branch two: mid volume with ordering-as-revenue &mdash; the fit is Owner.com or Toast direct. Between one hundred and one thousand online orders per week the monthly fee amortizes cleanly and the marketing stack on Owner.com or the integrated POS-and-ordering stack on Toast pays for itself. Branch three: brand-led upscale restaurant with low order count &mdash; the fit is a custom site or BentoBox. A reservations-first concept where online ordering is occasional should not pay a $499 monthly fee for a channel that runs ten orders a week; the right answer is brand-quality design, with the ordering pipeline kept small. Branch four: marketplace-dependent restaurant &mdash; the fit is keep the marketplace and bolt a commission-free site on top. The honest play for restaurants whose order volume is structurally on DoorDash or Uber Eats is not to leave the marketplace overnight, but to add a commission-free direct surface and run the transition over six to twelve months. Each verdict is the first cut; the trade-offs are walked under each branch.">
       <ol class="viz-tree">
