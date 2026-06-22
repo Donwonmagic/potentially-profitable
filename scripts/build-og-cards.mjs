@@ -698,6 +698,55 @@ const focusModules = {
             font-weight="500" fill="${fg}" opacity="0.78">${caption}</text>
     `;
   },
+
+  /**
+   * Horizontal comparison bars — ranked labeled magnitudes. For
+   * audit findings shaped as "share that misses X" or "prevalence
+   * of Y" — the cases where funnel (monotonic dropoff) and stat
+   * (one number) both under-tell the story. focus.items =
+   * [{ label, value }] (numeric value), up to 4; focus.label =
+   * column header; focus.suffix = unit appended to the value
+   * (default "%"). Bars scale to the largest value; the top bar
+   * takes the accent so the eye lands on the worst offender first.
+   */
+  bars: ({ card, fg, accentHex, onLight = false }) => {
+    const items = (card.focus?.items ?? []).slice(0, 4);
+    if (!items.length) return "";
+    const label = xmlEscape((card.focus?.label ?? "").toUpperCase());
+    const suffix = card.focus?.suffix ?? "%";
+    const x = 700;
+    const maxW = 320;
+    const top = Math.max(...items.map((it) => Number(it.value) || 0)) || 1;
+    const yStart = snap(160);
+    const rowGap = 96;     // label + bar + breathing room, snap-friendly
+    const barH = 22;
+    const trackColor = onLight ? "rgba(22,24,29,0.10)" : "rgba(246,247,248,0.16)";
+    const restColor = onLight ? PALETTE.muted : PALETTE.dim;
+    const labelColor = onLight ? PALETTE.ink : fg;
+    const rows = items.map((it, i) => {
+      const v = Number(it.value) || 0;
+      const w = Math.max(4, Math.round((v / top) * maxW));
+      const yLabel = yStart + 28 + i * rowGap;
+      const yBar = yLabel + 14;
+      const color = i === 0 ? accentHex : restColor;
+      return `
+        <text x="${x}" y="${yLabel}"
+              font-family="Inter, Arial, sans-serif" font-size="17"
+              font-weight="500" fill="${labelColor}" opacity="0.9">${xmlEscape(it.label)}</text>
+        <rect x="${x}" y="${yBar}" width="${maxW}" height="${barH}" rx="4" fill="${trackColor}"/>
+        <rect x="${x}" y="${yBar}" width="${w}" height="${barH}" rx="4" fill="${color}"/>
+        <text x="${x + maxW + 16}" y="${yBar + barH - 3}"
+              font-family="Fraunces, Georgia, serif" font-size="26"
+              font-weight="500" fill="${color}">${xmlEscape(String(v) + suffix)}</text>
+      `;
+    }).join("");
+    return `
+      <text x="${x}" y="${yStart}"
+            font-family="Inter, Arial, sans-serif" font-size="12"
+            font-weight="700" letter-spacing="3" fill="${labelColor}" opacity="0.5">${label}</text>
+      ${rows}
+    `;
+  },
 };
 
 // -------------------------------------------------------------

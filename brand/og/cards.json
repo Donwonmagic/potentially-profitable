@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft-07/schema#",
-  "_comment": "OG card manifest. Each entry produces <slug>.svg + <slug>.png in brand/og/. kind selects the template (page|article|research|tool). accent keys into PALETTE in scripts/build-og-cards.mjs (per accent rule: speed/mobile=teal, conversions/reservations=rust, local-seo=teal, margin/operations=gold, trust=ink, brand=cream-on-ink/teal-on-cream, research=rust, tools=gold, hubs=ink). glyph keys into the GLYPHS registry in build-og-cards.mjs and renders left of the eyebrow as a subject cue. focus is an optional module { type: 'type'|'funnel'|'stat'|'score-ring'|'list'|'quote'|'checks', ...data }. locale is for hreflang pairing; ES cards use slug '-es' suffix.",
+  "_comment": "OG card manifest. Each entry produces <slug>.svg + <slug>.png in brand/og/. kind selects the template (page|article|research|tool). accent keys into PALETTE in scripts/build-og-cards.mjs (per accent rule: speed/mobile=teal, conversions/reservations=rust, local-seo=teal, margin/operations=gold, trust=ink, brand=cream-on-ink/teal-on-cream, research=rust, tools=gold, hubs=ink). glyph keys into the GLYPHS registry in build-og-cards.mjs and renders left of the eyebrow as a subject cue. focus is an optional module { type: 'type'|'funnel'|'stat'|'score-ring'|'list'|'quote'|'checks'|'bars', ...data }. locale is for hreflang pairing; ES cards use slug '-es' suffix.",
   "cards": [
     {
       "slug": "library-best-restaurant-website-platform",
@@ -4009,7 +4009,30 @@
       "title_italic": "audit",
       "title_2": "2026.",
       "dek": "100 listings graded across eight dimensions. Median 5.4 / 8.",
-      "glyph": "research"
+      "glyph": "research",
+      "focus": {
+        "type": "bars",
+        "label": "Most-skipped fields",
+        "suffix": "%",
+        "items": [
+          {
+            "label": "Holiday hours",
+            "value": 81
+          },
+          {
+            "label": "Q&A activity",
+            "value": 71
+          },
+          {
+            "label": "Reservation link",
+            "value": 59
+          },
+          {
+            "label": "Review responses",
+            "value": 56
+          }
+        ]
+      }
     },
     {
       "slug": "research-dmv-gbp-audit-2026-es",
@@ -4020,7 +4043,30 @@
       "title_italic": "GBP del DMV",
       "title_2": "2026.",
       "dek": "100 listados calificados en ocho dimensiones. Mediana 5.4 / 8.",
-      "glyph": "research"
+      "glyph": "research",
+      "focus": {
+        "type": "bars",
+        "label": "Campos más omitidos",
+        "suffix": "%",
+        "items": [
+          {
+            "label": "Horario festivo",
+            "value": 81
+          },
+          {
+            "label": "Preguntas y respuestas",
+            "value": 71
+          },
+          {
+            "label": "Enlace de reserva",
+            "value": 59
+          },
+          {
+            "label": "Respuestas a reseñas",
+            "value": 56
+          }
+        ]
+      }
     },
     {
       "slug": "research-1-percent-margin-2026",
@@ -4030,8 +4076,14 @@
       "title_1": "The 1%",
       "title_italic": "margin",
       "title_2": "audit.",
-      "dek": "50 sites, six leaks, every fix in dollars. Median 0.94%.",
-      "glyph": "research"
+      "dek": "50 sites, six reservation leaks, every fix priced in dollars.",
+      "glyph": "research",
+      "focus": {
+        "type": "stat",
+        "value": "0.94%",
+        "caption": "of revenue leaking · median of 50 sites",
+        "source": "Muntin audit · 2026"
+      }
     },
     {
       "slug": "research-1-percent-margin-2026-es",
@@ -4041,8 +4093,14 @@
       "title_1": "Auditoría",
       "title_italic": "del 1%",
       "title_2": "de margen.",
-      "dek": "50 sitios, seis fugas, cada arreglo en dólares. Mediana 0.94%.",
-      "glyph": "research"
+      "dek": "50 sitios, seis fugas de reserva, cada arreglo en dolares.",
+      "glyph": "research",
+      "focus": {
+        "type": "stat",
+        "value": "0.94%",
+        "caption": "de ingresos fugándose · mediana de 50 sitios",
+        "source": "Auditoría Muntin · 2026"
+      }
     },
     {
       "slug": "topic-ai-search",
