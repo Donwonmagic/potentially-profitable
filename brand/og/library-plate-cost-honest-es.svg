@@ -57,9 +57,41 @@
 
   <text x="80" y="408"
         font-family="Inter, Arial, sans-serif" font-size="20"
-        font-weight="400" fill="#4A4F59"><tspan x="80" dy="0">Cuesta la porción comestible, recalcula el día que un precio se mueve, y sube, recorta o aguanta.</tspan></text>
+        font-weight="400" fill="#4A4F59"><tspan x="80" dy="0">Cuesta la porción comestible, recalcula el día que un</tspan><tspan x="80" dy="28">precio se mueve, y sube, recorta o aguanta.</tspan></text>
 
   
+      <text x="760" y="150"
+            font-family="Inter, Arial, sans-serif" font-size="12"
+            font-weight="700" letter-spacing="3" fill="#16181D" opacity="0.5">SI SUBE EL COSTO</text>
+      
+        <circle cx="760" cy="176" r="18" fill="none"
+                stroke="#2A50C8" stroke-width="1.5" opacity="0.75"/>
+        <text x="760" y="181" text-anchor="middle"
+              font-family="Fraunces, Georgia, serif" font-style="italic"
+              font-size="18" font-weight="500" fill="#2A50C8">1</text>
+        <text x="796" y="182"
+              font-family="Inter, Arial, sans-serif" font-size="18"
+              font-weight="500" fill="#16181D" opacity="0.88">Sube el precio</text>
+      
+        <circle cx="760" cy="240" r="18" fill="none"
+                stroke="#2A50C8" stroke-width="1.5" opacity="0.75"/>
+        <text x="760" y="245" text-anchor="middle"
+              font-family="Fraunces, Georgia, serif" font-style="italic"
+              font-size="18" font-weight="500" fill="#2A50C8">2</text>
+        <text x="796" y="246"
+              font-family="Inter, Arial, sans-serif" font-size="18"
+              font-weight="500" fill="#16181D" opacity="0.88">Recorta la porción</text>
+      
+        <circle cx="760" cy="304" r="18" fill="none"
+                stroke="#2A50C8" stroke-width="1.5" opacity="0.75"/>
+        <text x="760" y="309" text-anchor="middle"
+              font-family="Fraunces, Georgia, serif" font-style="italic"
+              font-size="18" font-weight="500" fill="#2A50C8">3</text>
+        <text x="796" y="310"
+              font-family="Inter, Arial, sans-serif" font-size="18"
+              font-weight="500" fill="#16181D" opacity="0.88">Aguanta y absorbe</text>
+      
+    
 
   
     <g transform="translate(80, 552)" fill="#4A4F59" opacity="0.6">

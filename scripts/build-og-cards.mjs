@@ -884,7 +884,7 @@ function renderResearch(card) {
 
   <text x="${EDGE}" y="${yDek}"
         font-family="Inter, Arial, sans-serif" font-size="20"
-        font-weight="400" fill="${PALETTE.muted}">${dekTspans(card.dek ?? "", EDGE, { fontSize: 20, lineHeight: 28 })}</text>
+        font-weight="400" fill="${PALETTE.muted}">${dekTspans(card.dek ?? "", EDGE, { fontSize: 20, lineHeight: 28, maxWidth: focus ? 600 : (CANVAS_W - 2 * EDGE) })}</text>
 
   ${focus}
 
@@ -949,7 +949,7 @@ function renderArticle(card) {
 
   <text x="${EDGE}" y="${yDek}"
         font-family="Inter, Arial, sans-serif" font-size="20"
-        font-weight="400" fill="${PALETTE.muted}">${dekTspans(card.dek ?? "", EDGE, { fontSize: 20, lineHeight: 28 })}</text>
+        font-weight="400" fill="${PALETTE.muted}">${dekTspans(card.dek ?? "", EDGE, { fontSize: 20, lineHeight: 28, maxWidth: focus ? 600 : (CANVAS_W - 2 * EDGE) })}</text>
 
   ${focus}
 
