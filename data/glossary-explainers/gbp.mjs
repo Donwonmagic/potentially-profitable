@@ -29,7 +29,7 @@ export default {
     { id: 'move',  ms: 14000, caption: 'So treat it like the storefront it is. Fix hours before every holiday, post a few photos every week, and reply to every review — good and bad — within a day.' },
     { id: 'land',  ms: 14000, caption: 'Your website is where you tell your story. Your Google profile is where the decision actually gets made. Tend the profile first.' },
   ],
-  svg: `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of what a Google Business Profile is and why it is the real decision surface for diners">
+  svg: `<svg width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of what a Google Business Profile is and why it is the real decision surface for diners">
   <defs>
     <linearGradient id="gb-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>

@@ -33,7 +33,7 @@ export default {
     { id: 'move',  ms: 14000, caption: 'The fixes are unglamorous: compress the giant hero image, cut the heaviest scripts, and set sizes on images so nothing jumps. You rarely need a rebuild — you need a diet.' },
     { id: 'land',  ms: 14000, caption: 'Your visitor never reads a speed score. They feel it, and they leave if it drags. Build for the thumb on a phone in a parking lot.' },
   ],
-  svg: `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of Core Web Vitals — the three speed scores a real visitor feels and Google grades">
+  svg: `<svg width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of Core Web Vitals — the three speed scores a real visitor feels and Google grades">
   <defs>
     <linearGradient id="cw-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>

@@ -31,7 +31,7 @@ export default {
     { id: 'move',  ms: 15000, caption: 'So the move is concrete. Put a complete answer in the first forty or so words under a question-shaped heading. That liftable span is what the box can quote without rewriting.' },
     { id: 'land',  ms: 14000, caption: 'You cannot buy your way into the box. You earn it by being the clearest, best-corroborated answer to the exact question a diner typed.' },
   ],
-  svg: `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of how Google's AI Overview answer box chooses which restaurant page it quotes">
+  svg: `<svg width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of how Google's AI Overview answer box chooses which restaurant page it quotes">
   <defs>
     <linearGradient id="ao-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>

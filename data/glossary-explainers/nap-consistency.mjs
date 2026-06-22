@@ -34,7 +34,7 @@ export default {
     { id: 'move',   ms: 14000, caption: 'So pick one exact format. Write it down. Then fix it everywhere — Google first, then the big directories, then hunt the stale ones. Re-check after any move or new phone number.' },
     { id: 'land',   ms: 14000, caption: 'The machine cannot ask you to confirm. It just counts who agrees. Make every source tell the same story.' },
   ],
-  svg: `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of NAP consistency — name, address, and phone matching across every source so search engines can cross-check and trust your restaurant">
+  svg: `<svg width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of NAP consistency — name, address, and phone matching across every source so search engines can cross-check and trust your restaurant">
   <defs>
     <linearGradient id="np-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>

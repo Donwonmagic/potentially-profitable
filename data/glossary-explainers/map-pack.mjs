@@ -32,7 +32,7 @@ export default {
     { id: 'move',  ms: 14000, caption: 'So nail the category, keep the Google profile fresh and reviewed, and the pack is where that work pays off. Distance you cannot change; the other two you can, every week.' },
     { id: 'land',  ms: 14000, caption: 'The map pack is the new front door for "near me." Three seats — earn one by being the obvious, active, nearby answer.' },
   ],
-  svg: `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of the local map pack — the three results at the top of a near-me search and how Google chooses them by relevance, distance, and prominence">
+  svg: `<svg width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of the local map pack — the three results at the top of a near-me search and how Google chooses them by relevance, distance, and prominence">
   <defs>
     <linearGradient id="mp-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>

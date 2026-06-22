@@ -26,7 +26,7 @@ export default {
     { id: 'move',   ms: 15000, caption: 'So watch the funnel — visitors, then page, then action. Find the step with the biggest drop-off and remove one piece of friction. One tap fewer, one clearer button. Measured, not guessed.' },
     { id: 'land',   ms: 14000, caption: 'Traffic is who showed up. Conversion is who you did not lose. Fix the leak before you buy more water.' },
   ],
-  svg: `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of restaurant conversion rate: visitors becoming bookings, why lifting conversion beats buying traffic, and where it leaks">
+  svg: `<svg width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of restaurant conversion rate: visitors becoming bookings, why lifting conversion beats buying traffic, and where it leaks">
   <defs>
     <linearGradient id="cr-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>

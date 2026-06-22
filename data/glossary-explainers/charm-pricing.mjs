@@ -27,7 +27,7 @@ export default {
     { id: 'move',     ms: 15000, caption: 'So match the ending to the room. Value and volume: charm-price it, dollar-ninety-five. Premium and signature: round it, clean dollars. The price ending is a tone, not just a number.' },
     { id: 'land',     ms: 14000, caption: 'The penny was never about the penny. It is the signal it sends — deal or quality. Choose the one the room expects.' },
   ],
-  svg: `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of charm pricing — why a price ending just under a round number reads as cheaper, and when it backfires">
+  svg: `<svg width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of charm pricing — why a price ending just under a round number reads as cheaper, and when it backfires">
   <defs>
     <linearGradient id="ch-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>

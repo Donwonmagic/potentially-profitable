@@ -27,7 +27,7 @@ export default {
     { id: 'trap',   ms: 15000, caption: 'Here is the trap. A discount fills seats but cuts the contribution per cover — which pushes break-even higher. You can be busier on Friday and further from break-even than you were on Tuesday.' },
     { id: 'land',   ms: 14000, caption: 'Break-even is not a number you hit once. It is the line every pricing and cost decision moves. Know where yours sits before you run the next promotion.' },
   ],
-  svg: `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of restaurant break-even — the covers you must sell before a dollar is yours">
+  svg: `<svg width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of restaurant break-even — the covers you must sell before a dollar is yours">
   <defs>
     <linearGradient id="be-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>

@@ -29,7 +29,7 @@ export default {
     { id: 'move',   ms: 13000, caption: 'So if you switch, say it everywhere — menu, website, the check, the server’s own words — and tell guests what it funds: a fair kitchen wage, no tip expected. The transparency is the whole game.' },
     { id: 'land',   ms: 14000, caption: 'A tip rewards the server. A service charge funds the house. Neither is wrong — but only one of them has to be explained before the check lands.' },
   ],
-  svg: `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of a restaurant service charge: a flat house fee on the check, and why it is not a tip">
+  svg: `<svg width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of a restaurant service charge: a flat house fee on the check, and why it is not a tip">
   <defs>
     <linearGradient id="sc-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>

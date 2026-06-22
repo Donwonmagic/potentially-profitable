@@ -28,7 +28,7 @@ export default {
     { id: 'good',     ms: 14000, caption: 'Same shot. Eight crops. The hero breathes. OG works. The Instagram grid lands square on the plate. The story has air for caption copy at the bottom. A five-minute pass on shoot day — not a second photo session.' },
     { id: 'land',     ms: 12000, caption: 'You’re not taking eight photos. You’re composing one photo aware of eight destinations. That’s the entire difference.' },
   ],
-  svg: `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of photo aspect ratios">
+  svg: `<svg width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of photo aspect ratios">
   <defs>
     <linearGradient id="ar-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>

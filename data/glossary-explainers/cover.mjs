@@ -29,7 +29,7 @@ export default {
     { id: 'move',   ms: 15000, caption: 'So track covers — per shift, per server, per hour. It is the denominator sitting under your check average, your labor percentage, and next week’s forecast.' },
     { id: 'land',   ms: 14000, caption: 'Tables are furniture. Covers are people. Run the numbers on the people.' },
   ],
-  svg: `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of a restaurant cover — one guest served as the unit behind every restaurant number">
+  svg: `<svg width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of a restaurant cover — one guest served as the unit behind every restaurant number">
   <defs>
     <linearGradient id="cv-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>

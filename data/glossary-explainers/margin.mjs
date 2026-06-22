@@ -27,7 +27,7 @@ export default {
     { id: 'rule',  ms: 15000, caption: 'The clean way: price equals cost divided by one minus the margin you want. A three-dollar cost at a seventy percent target margin is three divided by zero-point-three — ten dollars. Not three times one-point-seven.' },
     { id: 'land',  ms: 14000, caption: 'Markup is how much you added. Margin is how much you keep. Always price to the margin — the keep is the only number that pays rent.' },
   ],
-  svg: `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of restaurant margin, how it differs from markup, and pricing to a target margin">
+  svg: `<svg width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of restaurant margin, how it differs from markup, and pricing to a target margin">
   <defs>
     <linearGradient id="mg-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>

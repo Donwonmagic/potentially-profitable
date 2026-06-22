@@ -28,7 +28,7 @@ export default {
     { id: 'move',  ms: 15000, caption: 'So use aggregators for the one thing they do well — getting found by someone who did not already know you. Then give that guest a reason to come direct next time: a card in the bag, a better deal on your own ordering page.' },
     { id: 'land',  ms: 14000, caption: 'An aggregator rents you a customer by the order. Your own channel lets you keep one. Use the rental to fill the seats you own.' },
   ],
-  svg: `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of how a delivery aggregator app works and who owns the customer">
+  svg: `<svg width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of how a delivery aggregator app works and who owns the customer">
   <defs>
     <linearGradient id="ag-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>

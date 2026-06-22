@@ -30,7 +30,7 @@ export default {
     { id: 'match',  ms: 15000, caption: 'You do not hand-write it. Most platforms emit it; your job is to make sure it matches the page — same hours, same price — and covers the restaurant, the menu, the hours. A label that disagrees with the page is worse than none.' },
     { id: 'land',   ms: 14000, caption: 'Structured data is you telling the machine what you are, in its own language. Say it clearly, or leave it to guess.' },
   ],
-  svg: `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of how structured data labels a restaurant page so a search engine can quote it with confidence">
+  svg: `<svg width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of how structured data labels a restaurant page so a search engine can quote it with confidence">
   <defs>
     <linearGradient id="sd-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>

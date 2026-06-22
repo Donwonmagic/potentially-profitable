@@ -27,7 +27,7 @@ export default {
     { id: 'move',   ms: 15000, caption: 'So track it by shift and by server. The spread between your best server and your average one, times covers, is found money — and it is a training problem, not a pricing problem.' },
     { id: 'land',   ms: 14000, caption: 'You do not always need more guests. Often you need two more dollars from the ones already sitting down.' },
   ],
-  svg: `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of restaurant average check: sales divided by covers, and how two dollars per cover compounds across a week and a year">
+  svg: `<svg width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of restaurant average check: sales divided by covers, and how two dollars per cover compounds across a week and a year">
   <defs>
     <linearGradient id="ac-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>

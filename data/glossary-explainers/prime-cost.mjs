@@ -28,7 +28,7 @@ export default {
     { id: 'fix',       ms: 17000, caption: 'Watch what happens when you act. Cut food cost three points — portion specs, waste logs, a supplier audit. Flatten Wednesday’s lunch shift. You drop to 65. Same covers. Margin back.' },
     { id: 'land',      ms: 12000, caption: 'Prime cost is the one weekly lever you can actually move. Know the number. Decide toward it.' },
   ],
-  svg: `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of restaurant prime cost">
+  svg: `<svg width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of restaurant prime cost">
   <defs>
     <linearGradient id="pc-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>

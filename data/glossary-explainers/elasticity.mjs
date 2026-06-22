@@ -27,7 +27,7 @@ export default {
     { id: 'move',   ms: 15000, caption: 'So do not raise the whole menu by a flat percent. Raise the inelastic items, hold the elastic ones, and watch total dollars per week — not order count.' },
     { id: 'land',   ms: 14000, caption: 'The question is never "will I lose an order." It is "will I keep more money." Price the dish, not the fear.' },
   ],
-  svg: `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of restaurant price elasticity and keeping total dollars">
+  svg: `<svg width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of restaurant price elasticity and keeping total dollars">
   <defs>
     <linearGradient id="el-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>

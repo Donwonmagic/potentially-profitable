@@ -27,7 +27,7 @@ export default {
     { id: 'gap',         ms: 16000, caption: 'The gap is over-portioning, waste, comps, theft, and prices that crept up since you last costed the recipe. On a restaurant doing eighty thousand a month in food sales, six points is roughly forty-eight hundred dollars — every month.' },
     { id: 'land',        ms: 14000, caption: 'So do not chase a lower percent by cheapening the plate. Chase the gap: count, portion to the recipe, and re-cost when an invoice moves. The percent is what it costs; the gap is what you can actually win back.' },
   ],
-  svg: `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of restaurant food cost percentage and the theoretical-versus-actual gap">
+  svg: `<svg width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of restaurant food cost percentage and the theoretical-versus-actual gap">
   <defs>
     <linearGradient id="fc-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>

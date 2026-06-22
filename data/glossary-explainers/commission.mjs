@@ -27,7 +27,7 @@ export default {
     { id: 'toggle', ms: 14000, caption: 'The exact same order through your own site or POS costs roughly three to five dollars in processing — not twelve in commission. The gap between those two is the rake.' },
     { id: 'land',   ms: 14000, caption: 'The rake is the business model, not a fee you negotiate down. Use marketplaces for discovery; move the repeat orders to a channel you own.' },
   ],
-  svg: `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of a delivery-marketplace commission take-rate on one example order">
+  svg: `<svg width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of a delivery-marketplace commission take-rate on one example order">
   <defs>
     <linearGradient id="cm-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>

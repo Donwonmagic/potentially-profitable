@@ -27,7 +27,7 @@ export default {
     { id: 'move',  ms: 15000, caption: 'You do not have to drop the marketplaces. Use them to get found, then convert: a card in every bag, a better price on your own page, a reason to skip the app next time.' },
     { id: 'land',  ms: 14000, caption: 'The marketplace rents you an order. Direct ordering keeps the customer. Get found there; get them back here.' },
   ],
-  svg: `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of direct ordering — taking the order through a channel you own instead of a delivery marketplace">
+  svg: `<svg width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of direct ordering — taking the order through a channel you own instead of a delivery marketplace">
   <defs>
     <linearGradient id="do-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>

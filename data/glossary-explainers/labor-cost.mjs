@@ -28,7 +28,7 @@ export default {
     { id: 'lever',  ms: 15000, caption: 'You do not fix labor by cutting people mid-shift. You schedule to the demand curve — match the people on the floor to the covers coming through the door, hour by hour, shift by shift.' },
     { id: 'land',   ms: 14000, caption: 'Labor is the one big cost you steer in real time. Prime cost tells you whether there is room; the schedule is where you actually find it.' },
   ],
-  svg: `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of restaurant labor cost as a share of sales and the prime-cost rule of thumb">
+  svg: `<svg width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of restaurant labor cost as a share of sales and the prime-cost rule of thumb">
   <defs>
     <linearGradient id="lc-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>

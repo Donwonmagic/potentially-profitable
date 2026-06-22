@@ -26,7 +26,7 @@ export default {
     { id: 'move',   ms: 15000, caption: 'So engineer the mix: menu placement, the description, the server’s mention, the special. Steer guests toward the dishes that keep more. It is the cheapest margin lever you have, because the guest never sees a price change.' },
     { id: 'land',   ms: 14000, caption: 'Price is what you charge. Mix is what they pick. Move the mix and the margin moves with it — quietly.' },
   ],
-  svg: `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of restaurant menu mix as a margin lever">
+  svg: `<svg width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of restaurant menu mix as a margin lever">
   <defs>
     <linearGradient id="mx-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>
