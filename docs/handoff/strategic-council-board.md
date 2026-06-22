@@ -8,8 +8,10 @@ externalized so a fresh session can resume in one read. The environment is
 ephemeral and a new session does not remember the prior chat — only what's in the
 repo survives. Update this file as threads move.
 
-**Branches:** both repos develop on `claude/muntin-digital-strategy-07sowb`
-(storefront `potentially-profitable`, product `Muntin-Invoice-Decoder`).
+**Branches:** both repos develop on `claude/muntin-strategic-council-rqdehe`
+(storefront `potentially-profitable`, product `Muntin-Invoice-Decoder`). The prior
+dev branch `claude/muntin-digital-strategy-07sowb` is merged to main (storefront
+PR #482, product PR #227) and closed — start fresh from `main`.
 
 ## The singular vision (the thing everything ladders to)
 
@@ -37,7 +39,7 @@ Don't loosen gates. Fact gate is absolute (it's spoken aloud in EN+ES).
 | OG-card rebrand | `home`/`learn`/`about` (EN) + `home-es`/`about-es` (ES) → "Modern tools. Old-fashioned honest." / cost-intelligence; orphaned retired-services cards removed (770→768) |
 | Honest landing-claim fix | product `page.tsx` reworded (claim the universal core, drop untested verticals) |
 | Cost Index "of record" | last gap closed — per-ingredient driver attribution for flagged movers (standing context, not causation) |
-| **PRs open** | storefront **#482**, product **#227** — awaiting review |
+| **Landed** | storefront **#482** + product **#227** — reviewed and **merged to main** |
 
 ## The queue (remaining threads)
 
