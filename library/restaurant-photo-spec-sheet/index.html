@@ -594,9 +594,22 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             </aside>
             <!-- article-tldr:end -->
 
+      <p>Pull up the photo most operators upload as their hero: the dim phone shot of the dining room, taken at 7&nbsp;PM under tungsten cans, portrait orientation because that&rsquo;s how a phone sits in the hand. Now read it against the surface it landed on. The Google panel wanted 16:9 and cropped a grey-barred sliver out of the middle; the menu page wanted one consistent shape and got a portrait that broke the grid; the file was 1200&nbsp;px on the long edge, so the hero looks soft and the thumbnail looks fine. Nothing is wrong with the room. Everything is wrong with the fit. This is a teardown of that photo &mdash; what the spec actually demands of it, row by row, and the one fix each row triggers.</p>
+
       <p>Every restaurant ends up needing the same dozen image sizes, but almost no one shoots them at once. The result: a <!-- LIBRARY:autolink:start --><a href="/glossary/gbp/" data-glossary-head="Google Business Profile" data-glossary-aka="GBP, formerly Google My Business" data-glossary-blurb="Your business's free listing on Google Maps and Google Search — the panel on the right of a search that shows your name, hours, photos, reviews, and a link to your menu or booking.">Google Business Profile</a><!-- LIBRARY:autolink:end --> <!-- LIBRARY:autolink:start --><a href="/glossary/cover/" data-glossary-head="Cover" data-glossary-aka="one customer served" data-glossary-blurb="One customer seated and served.">cover</a><!-- LIBRARY:autolink:end --> that's the wrong <a href="/glossary/aspect-ratio/" data-glossary-head="Aspect ratio" data-glossary-blurb="The ratio of an image&amp;#39;s width to its height, expressed as w:h." target="_blank" rel="noopener">aspect ratio</a> and got cropped weirdly, a Yelp photo that's portrait when Yelp wants landscape, a menu page where every dish photo is a different shape and the layout breaks.</p>
 
-      <p>This is the spec sheet I send every studio client and every photographer I work with. One shoot, the right specs in advance, and the result drops cleanly into every surface.</p>
+      <p>The spec sheet below is the document that closes that gap &mdash; the one I hand a photographer the morning of a shoot, or run myself off a phone. One shoot, the right specs decided in advance, and the result drops cleanly into every surface instead of getting cropped into one.</p>
+
+      <div role="group" aria-label="The typical operator photo read against what the spec demands, side by side" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0">
+        <aside class="callout">
+          <p class="callout-eyebrow">The photo on the listing now</p>
+          <p class="callout-body" style="font-size:14.5px">Portrait, because that&rsquo;s how the phone was held. Shot at 7&nbsp;PM under orange overhead cans. 1200&nbsp;px on the long edge. One file, uploaded to every surface and cropped by each one differently &mdash; a sliver in the Google panel, a grey-barred letterbox on Yelp, a broken shape in the menu grid.</p>
+        </aside>
+        <aside class="callout">
+          <p class="callout-eyebrow">What the spec demands</p>
+          <p class="callout-body" style="font-size:14.5px">16:9 native for the cover, shot in daylight, 2400&nbsp;px+ on the long edge so it can serve the hero down to the thumbnail. One source file, exported into ten derivatives at the right aspect each &mdash; never the same crop forced onto ten shapes. The fix isn&rsquo;t a better camera; it&rsquo;s deciding the shapes before the shutter.</p>
+        </aside>
+      </div>
 
       <h2 id="the-10-image-sizes-you-actually-need">The 10 image sizes you actually need</h2>
 
@@ -685,6 +698,21 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </details>
       </aside>
 
+      <p>That table is the artifact. Here is how to read it the way it gets used &mdash; not top to bottom as a reference, but as four lines the dim phone photo above failed, each one naming the single fix it triggers.</p>
+
+      <ol class="spec-teardown">
+        <li><strong>Aspect ratio &mdash; the line that crops you.</strong> The cover wants 16:9, the gallery 4:3, the menu thumbnail one shape held consistent, Instagram portrait at 4:5. The phone photo was portrait, so every landscape surface clipped it to a center sliver and every square one padded grey bars top and bottom. <em>The fix this row triggers:</em> tap the phone&rsquo;s aspect picker before the shot, or frame the subject inside the centre 60% so the wings can be cropped without losing it.</li>
+        <li><strong>Resolution &mdash; the line you can&rsquo;t walk back.</strong> The largest surface on the list is the 2400&nbsp;px site hero; the smallest floor is the 720&nbsp;px GBP profile. The phone file was 1200&nbsp;px, so it was already too small for the hero the day it was shot. <em>The fix this row triggers:</em> shoot at the top-of-list width plus 30%, because you can always crop down and you can never crop up.</li>
+        <li><strong>File weight &mdash; the line nobody reads until the page is slow.</strong> The same hero ships to a phone over cell data and to a desktop on fibre, and the JPG straight off the camera is heavier than either needs. <em>The fix this row triggers:</em> export site images as WebP at 80% quality before they ever touch the page.</li>
+        <li><strong>Lighting &mdash; the line the camera can&rsquo;t fix in post.</strong> The phone photo was shot at 7&nbsp;PM under tungsten, which reads orange and dingy on a phone sensor no matter how good the phone is. <em>The fix this row triggers:</em> shoot 11&nbsp;AM to 2&nbsp;PM near a window; daylight is the one variable a better camera can&rsquo;t buy back.</li>
+      </ol>
+      <style>.spec-teardown{margin:24px 0;padding-left:1.2em;list-style:decimal}.spec-teardown li{margin:0 0 14px;line-height:1.6}.spec-teardown li em{color:var(--ink-soft);font-style:italic}</style>
+
+      <aside class="callout callout--field">
+        <p class="callout-eyebrow">From the floor</p>
+        <p class="callout-body">The row I learned the hard way is the resolution one. Early on I shot a whole set on a phone in good light, loved how the dishes looked on the menu page, and only found the ceiling weeks later when I tried to pull one of those frames up as a site hero and it came out soft and pixel-thin. The light was right; the framing was right; the file was simply too small to crop up from, and there is no undo for that. Now the first thing I check before a shoot &mdash; before angle, before plating &mdash; is that the camera is set to its largest size. The thumbnail will always forgive you. The hero never does.</p>
+      </aside>
+
       <h2 id="resolution-rules">Resolution rules</h2>
 
       <figure class="viz-figure article-figure" data-audio-alt="The pixel-width of the largest surface dimension a restaurant image needs to deliver, ranked. The site hero is the largest at twenty-four hundred pixels wide — twenty-one by nine aspect, the visual that defines the feel of the entire site. The Google Business Profile cover comes next at twenty-one hundred and twenty pixels — sixteen by nine, the hero of the panel. The Instagram square is next at one thousand and eighty pixels, used for grid posts. The GBP gallery sits at ten twenty-four pixels in four by three. The GBP profile circle and the menu thumbnails sit at seven hundred and twenty pixels and below. Shoot at the largest pixel-width on the list plus thirty percent — every smaller surface crops down from the same source. The shoot-once rule is a measurement, not a vibe.">
@@ -728,6 +756,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <p>Every image needs <a href="/glossary/alt-text/" data-glossary-head="Alt text" data-glossary-blurb="A short written description of every image, set via the alt=&quot;…&quot; attribute in the HTML." target="_blank" rel="noopener">alt text</a>. Not "IMG_4521.jpg," not the menu name, not "delicious food." A specific descriptive sentence: "Plate of carnitas with cilantro, white onion, and lime on a wood board." Costs 5 seconds per photo and earns you SEO + accessibility + AI-search citation.</p>
 
       <p>For a 30-photo restaurant shoot, that's 150 seconds — or two minutes — of writing. Skip it and you've left every photo's SEO value on the floor.</p>
+
+      <div class="callout">
+        <p class="callout-eyebrow">The number to anchor on</p>
+        <p class="callout-body"><strong>5 seconds per photo.</strong> That is the entire cost of the highest-leverage row on the spec sheet &mdash; 150 seconds across a full 30-photo shoot. The teardown below is the cleanest one in the whole article, because the broken version and the fixed version are the same image; the only thing that changed is one attribute Google reads first. Skip the 5 seconds and the photo ranks for nothing. Spend them and the same file earns its SEO, its accessibility, and its AI-search citation.</p>
+      </div>
+
+      <p>So this is the artifact to put under the glass. Two versions of the same carnitas photo&rsquo;s alt attribute &mdash; what a parser throws away on the left, what it keeps on the right:</p>
 
       <figure class="viz-figure" data-audio-alt="A before-and-after of the alt-text attribute on the same carnitas photo, showing what Google's parser keeps and what it discards. The before version is the useless default: an alt value reading I M G underscore 4 5 2 1 dot J P G on one image, and a marketing line reading delicious food at our restaurant on the next. The filename names nothing, and Google strips the marketing language entirely, so the photo ranks for nothing and a screen-reader user hears noise. The after version follows the three rules the spec sheet teaches. Rule one, a specific subject: name the dish, plate of carnitas, not delicious food and not lunch. Rule two, a context noun: say where the photo is, with cilantro, white onion, and lime on a wood board, not just what is in it. Rule three, no filename and no marketing: describe, do not sell. The finished sentence reads plate of carnitas with cilantro, white onion, and lime on a wood board, and that one sentence earns the photo its SEO, its accessibility, and its AI-search citation for the five seconds it cost to write.">
         <style>.viz-ba.viz-ba--stack{padding:16px}.viz-ba.viz-ba--stack .snippet-box{margin:0 0 12px;background:var(--cream)}.viz-ba.viz-ba--stack .snippet-box:last-child{margin-bottom:0}.snippet-box{padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px;margin:12px 0;font-size:15.5px;line-height:1.6;color:var(--ink)}.snippet-box[data-tone="bad"]{border-left:3px solid var(--rust)}.snippet-box[data-tone="good"]{border-left:3px solid var(--teal)}.snippet-label{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);margin-bottom:6px;font-weight:600}.snippet-box[data-tone="bad"] .snippet-label{color:var(--rust)}.snippet-box[data-tone="good"] .snippet-label{color:var(--teal)}.snippet-box p{margin:0 0 10px}.snippet-box p:last-child{margin-bottom:0}.snippet-box .snippet-note{font-size:13.5px;color:var(--stone);font-style:italic}.snippet-box code{font-family:ui-monospace,Menlo,Monaco,Consolas,monospace;font-size:13.5px;color:var(--ink)}</style>
