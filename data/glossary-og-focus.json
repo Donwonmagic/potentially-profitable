@@ -1,0 +1,15 @@
+{
+  "_comment": "Per-term OG-card focus modules, merged into the glossary cards by scripts/seed-glossary-og.mjs. A focus added straight to brand/og/cards.json would be stripped on the next re-seed (the generator rewrites every glossary-* entry), so curated focuses live here. Keyed by glossary slug; value is { en: {focus}, es: {focus} }. type keys into focusModules in scripts/build-og-cards.mjs (stat | bars | list | quote | checks | funnel | score-ring). Every number MUST already appear on the term's own /glossary/<slug>/ page — the fact gate applies to cards too.",
+  "commission": {
+    "en": { "type": "stat", "value": "15–30%", "caption": "kept per order by aggregators", "source": "Typical range" },
+    "es": { "type": "stat", "value": "15–30%", "caption": "que retiene un agregador por pedido", "source": "Rango típico" }
+  },
+  "prime-cost": {
+    "en": { "type": "stat", "value": "55–65%", "caption": "food + labor, healthy band", "source": "Independent target" },
+    "es": { "type": "stat", "value": "55–65%", "caption": "comida + mano de obra, banda sana", "source": "Meta de independientes" }
+  },
+  "food-cost": {
+    "en": { "type": "stat", "value": "28–32%", "caption": "of sales, most formats", "source": "Target band" },
+    "es": { "type": "stat", "value": "28–32%", "caption": "de ventas, la mayoría de formatos", "source": "Banda meta" }
+  }
+}

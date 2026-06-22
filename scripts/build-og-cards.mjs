@@ -682,16 +682,23 @@ const focusModules = {
    * focus.caption = line under value, focus.source = attribution line.
    */
   stat: ({ card, fg, accentHex }) => {
-    const value = xmlEscape(card.focus?.value ?? "");
+    const rawValue = String(card.focus?.value ?? "");
+    const value = xmlEscape(rawValue);
     const caption = xmlEscape(card.focus?.caption ?? "");
     const source = xmlEscape((card.focus?.source ?? "").toUpperCase());
     const x = 780;
+    // Auto-fit the value so a wide string (a range like "15–30%")
+    // can't run past the right edge; single figures keep full 128px.
+    const valueSize = fitTitle(rawValue, {
+      font: "Fraunces", maxSize: 128, minSize: 72,
+      maxWidth: CANVAS_W - EDGE - x, step: 8,
+    }).size;
     return `
       <text x="${x}" y="${snap(200)}"
             font-family="Inter, Arial, sans-serif" font-size="12"
             font-weight="700" letter-spacing="3" fill="${fg}" opacity="0.5">${source}</text>
       <text x="${x}" y="${snap(320)}"
-            font-family="Fraunces, Georgia, serif" font-size="128"
+            font-family="Fraunces, Georgia, serif" font-size="${valueSize}"
             font-weight="500" letter-spacing="-4" fill="${accentHex}">${value}</text>
       <text x="${x}" y="${snap(376)}"
             font-family="Inter, Arial, sans-serif" font-size="18"
@@ -976,6 +983,15 @@ function renderGlossary(card) {
   const aka  = xmlEscape(card.title_italic ?? "");
   const dek  = xmlEscape(card.dek ?? "");
 
+  // Optional right-column focus module (stat / bars / list) — the same
+  // system the research and article cards use. When present, the term
+  // and definition stay inside the left ~600px so they never collide
+  // with it. Glossary focus is curated in data/glossary-og-focus.json
+  // and merged by seed-glossary-og.mjs (so a re-seed can't strip it).
+  const focusFn = focusModules[card.focus?.type];
+  const focus = focusFn ? focusFn({ card, fg, accentHex, onLight: true }) : "";
+  const leftW = focus ? 600 : (CANVAS_W - 2 * EDGE);
+
   // Phase D — engage real shrinking + lift dek when AKA is empty.
   // fitTitle: 64→56→52→48px steps for terms that overflow at 64px.
   // gridRow: when there's no AKA, dek lifts to 'dek-tight' so a
@@ -988,7 +1004,7 @@ function renderGlossary(card) {
     font: "Fraunces",
     maxSize: 64,
     minSize: 48,
-    maxWidth: CANVAS_W - 2 * EDGE,
+    maxWidth: leftW,
     step: 4,
   });
 
@@ -1019,7 +1035,9 @@ function renderGlossary(card) {
 
   <text x="${EDGE}" y="${yDek}"
         font-family="Inter, Arial, sans-serif" font-size="22"
-        font-weight="400" fill="${PALETTE.muted}">${dekTspans(card.dek ?? "", EDGE, { fontSize: 22, lineHeight: 30 })}</text>
+        font-weight="400" fill="${PALETTE.muted}">${dekTspans(card.dek ?? "", EDGE, { fontSize: 22, lineHeight: 30, maxWidth: leftW })}</text>
+
+  ${focus}
 
   ${ornament({ color: PALETTE.muted })}
   ${footer({ color: PALETTE.muted, ruleColor: PALETTE.rule })}
