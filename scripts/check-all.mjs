@@ -161,6 +161,11 @@ const CHECKS = [
   ['Hidden attribute',    'check-hidden-attribute.mjs',    '--check'],
   ['OG image refs',       'check-og-images.mjs'],
   ['OG coverage',         'check-og-coverage.mjs',         '--check'],
+  // Native-Spanish parity guard for social cards. Catches an ES article
+  // page serving the EN card (or a wrong card) — invisible to og-images
+  // (the ref still resolves) and og-coverage (not a generic fallback).
+  // Asserts each ES card is locale:"es" and mirrors its EN sibling's focus.
+  ['OG locale parity',    'check-og-locale-parity.mjs',    '--check'],
   // SEO hygiene — meta-description length. Google truncates the SERP
   // snippet ~155 chars; over-length descriptions leak their tail (CTA +
   // long-tail keyword) and cost CTR. Now fail-CI: the over-length
