@@ -877,9 +877,30 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             </aside>
             <!-- article-tldr:end -->
 
+      <p>Read the three sales decks side by side and you get the same sentence three times. Toast: <em>&ldquo;integrates with your website.&rdquo;</em> Square: <em>&ldquo;integrates with your website.&rdquo;</em> Clover: <em>&ldquo;integrates with your website.&rdquo;</em> Identical on the first line. It&rsquo;s the second line — what the integration actually does once an order lands — where the three split. Score them on the ten integration features that touch a real website and the sentence stops being identical: <strong>Toast and Square both land 7 confident-yes marks out of 10; Clover lands 1.</strong> That 7&ndash;7&ndash;1 split is the whole comparison, and the rest of this read is the second line behind each deck.</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:24px 0">
+        <div class="snippet-box" data-tone="good">
+          <span class="snippet-label">Toast &mdash; the deck vs. the scorecard</span>
+          The deck says &ldquo;integrates with your website.&rdquo; The scorecard says <strong>7 / 10 confident-yes</strong> &mdash; 1 partial, 2 outright gaps. The yes marks are real: native ordering, menu sync, real-time 86.
+        </div>
+        <div class="snippet-box" data-tone="good">
+          <span class="snippet-label">Square &mdash; the deck vs. the scorecard</span>
+          Same deck sentence. Same headline number: <strong>7 / 10 confident-yes</strong> &mdash; 3 partials, 0 outright gaps. The only POS here with public, flat-rate pricing on its own site.
+        </div>
+        <div class="snippet-box" data-tone="bad">
+          <span class="snippet-label">Clover &mdash; the deck vs. the scorecard</span>
+          Same deck sentence. Different reality: <strong>1 / 10 confident-yes</strong> &mdash; 8 rows land in &ldquo;partial, depending on the reseller you bought from.&rdquo; Wins hardware variety; trails on everything that touches a site.
+        </div>
+      </div>
+
+      <blockquote class="pullquote">
+        <p>Every POS deck says &ldquo;integrates with your website.&rdquo; Then the scorecard reads 7, 7, and 1 &mdash; and a 60-point gap is hiding inside one identical sentence.</p>
+      </blockquote>
+
       <p>Every restaurant has a POS. And sooner or later — usually a few months after the hardware's already paid for — every restaurant owner realizes that their POS choice affects their website in ways nobody told them about during the sales pitch. Menu sync, online ordering, reservation handoff, loyalty programs, receipt links — all of it runs through the POS. If you picked the POS based on the cashier hardware and the transaction fee alone, you probably discovered the website-side limitations the hard way. The right pairing keeps your <a href="/glossary/direct-ordering/">direct ordering</a> on your <a href="/glossary/owned-channel/">owned channel</a> and away from a 30%-<!-- LIBRARY:autolink:start --><a href="/glossary/commission/" data-glossary-head="Commission" data-glossary-aka="the % a platform takes per order" data-glossary-blurb="The percentage an aggregator or payment platform keeps per transaction.">commission</a><!-- LIBRARY:autolink:end --> marketplace.</p>
 
-      <p>This post compares the three POS systems I see most often in independent restaurant audits: <strong>Toast</strong>, <strong>Square for Restaurants</strong>, and <strong>Clover</strong>. I'll walk through what each one does well for website integration, where each one quietly limits you, and — in the closing — which one I'd pick for which restaurant type. If you're about to sign a POS contract, this is the post I'd want you to read first.</p>
+      <p>This post compares the three POS systems I see most often on independent restaurant floors: <strong>Toast</strong>, <strong>Square for Restaurants</strong>, and <strong>Clover</strong>. I'll walk through what each one does well for website integration, where each one quietly limits you, and — in the closing — which one I'd pick for which restaurant type. If you're about to sign a POS contract, this is the post I'd want you to read first.</p>
 
       <p>A quick note upfront: all three are legitimate products run by real companies, and all three have customers who love them and customers who regret the choice. I'm not here to crown a winner or dunk on a loser — the question is which one fits <em>your</em> restaurant.</p>
 
@@ -905,18 +926,18 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li><strong>Native online ordering</strong> with a direct pipeline from website checkout to kitchen ticket — no separate tablet handoff required.</li>
         <li><strong>Automatic menu sync</strong> from Toast's menu editor to their website widgets, including images, modifiers, and allergen tags.</li>
         <li><strong>Real-time 86ing</strong> — when you mark a dish out of stock on the POS, the change propagates to the online menu immediately.</li>
-        <li><strong>A mature developer API</strong> that lets a custom-built website (not Toast's own templates) tap into the same order, menu, and guest data Toast's native surfaces use. This is the part I care most about in my audits — it means you can have a custom site on a modern stack and still use Toast as the engine.</li>
+        <li><strong>A mature developer API</strong> that lets a custom-built website (not Toast's own templates) tap into the same order, menu, and guest data Toast's native surfaces use. This is the part I care most about when I look at an operator's stack — it means you can have a custom site on a modern stack and still use Toast as the engine.</li>
       </ul>
 
       <h3>Where Toast's website story gets complicated</h3>
       <ul>
-        <li>Toast's own hosted restaurant sites are functional but template-bound. In my audit experience, sites built on Toast's native website templates share a recognizable layout and typography system — they "look like a Toast restaurant site" even when the colors are different.</li>
+        <li>Toast's own hosted restaurant sites are functional but template-bound. Every Toast-hosted site I've looked at shares a recognizable layout and typography system — they "look like a Toast restaurant site" even when the colors are different.</li>
         <li>Transaction fees on delivery and pickup orders routed through Toast's integrated ordering can stack up compared to a custom checkout running on your own payment processor. The exact numbers depend on your Toast contract tier, so check <a href="https://pos.toasttab.com/products/loyalty" target="_blank" rel="noopener">Toast's current pricing page</a> for your situation.</li>
         <li>"Powered by Toast" branding in the checkout flow is difficult to fully remove without moving to a higher contract tier.</li>
         <li>Contract commitments tend to run multi-year, which matters if you're not sure which POS will still fit your operation three years from now.</li>
       </ul>
 
-      <p>In my audit experience: <strong>Toast is the strongest choice if you want "it all just works" from day one</strong> and you accept the tradeoffs of a walled garden. And if you have a custom-built website and want Toast to be the kitchen-side engine, their API is mature enough to support that — just expect to pay a developer to wire it up cleanly.</p>
+      <p>What I see on the floor: <strong>Toast is the strongest choice if you want "it all just works" from day one</strong> and you accept the tradeoffs of a walled garden. And if you have a custom-built website and want Toast to be the kitchen-side engine, their API is mature enough to support that — just expect to pay a developer to wire it up cleanly.</p>
 
       <h2 id="square-for-restaurants">Square for Restaurants</h2>
       <p>Square's approach is almost the opposite of Toast's. Where Toast is restaurant-specific from the ground up, Square started as a general retail and payments platform and added restaurant-specific features on top of its broader product. That shows up as both a strength and a limitation. According to <a href="https://squareup.com/help/us/en/article/6382-square-loyalty-pricing" target="_blank" rel="noopener">Square's own product documentation</a>, Square for Restaurants includes menu management, online ordering, table management, and loyalty — all with the same public, flat-rate pricing structure Square is known for in retail.</p>
@@ -931,12 +952,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <h3>Where Square's website story gets complicated</h3>
       <ul>
-        <li>Square for Restaurants is younger and less restaurant-dedicated than Toast. In my audit experience, some features a full-service restaurant wants — server-by-server sales reports for a <!-- LIBRARY:autolink:start --><a href="/glossary/subtype-fine-dining/" data-glossary-head="Fine-dining" data-glossary-aka="tasting menus, prix-fixe, destination dining" data-glossary-blurb="Tasting-menu or prix-fixe restaurants where the reservation is the conversion, the wine list is marketing, and OpenTable/Resy/Tock integration defines the booking funnel.">fine-dining</a><!-- LIBRARY:autolink:end --> room, deep modifier chains, complex coursing — are thinner or absent compared to Toast's restaurant-native implementation.</li>
+        <li>Square for Restaurants is younger and less restaurant-dedicated than Toast. Some features a full-service restaurant wants — server-by-server sales reports for a <!-- LIBRARY:autolink:start --><a href="/glossary/subtype-fine-dining/" data-glossary-head="Fine-dining" data-glossary-aka="tasting menus, prix-fixe, destination dining" data-glossary-blurb="Tasting-menu or prix-fixe restaurants where the reservation is the conversion, the wine list is marketing, and OpenTable/Resy/Tock integration defines the booking funnel.">fine-dining</a><!-- LIBRARY:autolink:end --> room, deep modifier chains, complex coursing — are thinner or absent compared to Toast's restaurant-native implementation.</li>
         <li>Square Online's ordering flow feels retail-first. It works, but the visual and interaction rhythm doesn't quite match the vibe of a tablecloth room — Square Online looks like Square Online.</li>
         <li>Menu sync from Square to a custom external website requires you to write the API bridge. Square provides the pipe; you build what runs through it. This is fine if you have a developer; it's a blocker if you don't.</li>
       </ul>
 
-      <p>In my audit experience: <strong>Square is the strongest pick for a single-location independent restaurant that wants a clean API, fair public fees, and the flexibility to switch tools later without regret.</strong> The developer-friendliness makes it the easiest POS in this trio to pair with a fully custom site.</p>
+      <p>What I see on the floor: <strong>Square is the strongest pick for a single-location independent restaurant that wants a clean API, fair public fees, and the flexibility to switch tools later without regret.</strong> The developer-friendliness makes it the easiest POS in this trio to pair with a fully custom site.</p>
 
       <h2 id="clover">Clover</h2>
       <p>Clover is the widest-distributed POS system of the three, because it's sold through merchant services providers — banks, payment processors, and local ISOs — in addition to direct from Clover itself. That distribution model is Clover's biggest strength and its biggest source of confusion, simultaneously. According to <a href="https://www.clover.com/restaurants" target="_blank" rel="noopener">Clover's own restaurant product page</a>, the restaurant offering includes menu management, online ordering, table management, and third-party delivery integrations — though the specific feature set you see depends on which distribution channel you bought through.</p>
@@ -950,15 +971,50 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <h3>Where Clover's website story gets complicated</h3>
       <ul>
-        <li><strong>Fragmented ecosystem.</strong> Clover Station, Mini, Flex, Go, and Kiosk on the hardware side, plus plan tiers like Dining and Register on the software side — each combination has a slightly different feature set, and understanding which package your merchant provider sold you is a small research project on its own. In my audits, I've lost hours to "does this Clover have native online ordering enabled?" and the answer was "depends on your plan tier."</li>
+        <li><strong>Fragmented ecosystem.</strong> Clover Station, Mini, Flex, Go, and Kiosk on the hardware side, plus plan tiers like Dining and Register on the software side — each combination has a slightly different feature set, and understanding which package your merchant provider sold you is a small research project on its own. I've lost hours to "does this Clover have native online ordering enabled?" and the answer was "depends on your plan tier."</li>
         <li><strong>The developer API exists but is less mature</strong> than Square's or Toast's. Integrating Clover into a custom website often requires more plumbing work than either alternative, in my experience.</li>
         <li><strong>Pricing lives in your contract, not on a page.</strong> Transaction fees and monthly costs depend heavily on the specific merchant services contract you signed, not on a public pricing page. Before you commit, read the fee schedule in your actual contract — I've seen identical Clover setups running 30% apart in monthly cost at different restaurants.</li>
       </ul>
 
-      <p>In my audit experience: <strong>Clover is the right call when you need specific hardware Clover makes and the others don't</strong> — handheld tableside for a high-volume bar, an integrated scale for a butcher counter, a kiosk for a <!-- LIBRARY:autolink:start --><a href="/glossary/subtype-fast-casual/" data-glossary-head="Fast-casual / quick-service" data-glossary-aka="counter-service, grab-and-go" data-glossary-blurb="Counter-service restaurants where online ordering IS the business model.">fast-casual</a><!-- LIBRARY:autolink:end --> line — or when the merchant services provider relationship itself is valuable (for example, when your local bank bundled the POS with a business loan or line of credit). For pure website-integration quality, it's my third pick of the three. But "third pick" here still means "legitimately usable" — just that Toast and Square are usually easier starting points if you have a free choice.</p>
+      <p>What I see on the floor: <strong>Clover is the right call when you need specific hardware Clover makes and the others don't</strong> — handheld tableside for a high-volume bar, an integrated scale for a butcher counter, a kiosk for a <!-- LIBRARY:autolink:start --><a href="/glossary/subtype-fast-casual/" data-glossary-head="Fast-casual / quick-service" data-glossary-aka="counter-service, grab-and-go" data-glossary-blurb="Counter-service restaurants where online ordering IS the business model.">fast-casual</a><!-- LIBRARY:autolink:end --> line — or when the merchant services provider relationship itself is valuable (for example, when your local bank bundled the POS with a business loan or line of credit). For pure website-integration quality, it's my third pick of the three. But "third pick" here still means "legitimately usable" — just that Toast and Square are usually easier starting points if you have a free choice.</p>
+
+      <aside class="callout callout--field">
+        <p class="callout-eyebrow">From the floor</p>
+        <p class="callout-body">The line that always lands hardest is the pricing one, because there is no page to point at. I've seen two identical Clover setups — same hardware, same plan name — running 30% apart in monthly cost at different restaurants, purely because one bought through a bank and the other through an ISO. With Square I can open a browser tab and read the rate to an operator on the spot. With Clover I have to ask which reseller sold it before I can answer a single fee question, and that one extra question tells you most of what you need to know about the contract you're about to sign.</p>
+      </aside>
 
       <h2 id="side-by-side">Side by side</h2>
       <p>Here's the same question answered across ten features, in one glance. <strong>Green</strong> is a confident yes. <strong>Amber</strong> is a partial or "depends on your plan." <strong>Rust</strong> is a meaningful gap worth knowing about before you sign a contract.</p>
+
+      <div class="callout">
+        <p class="callout-eyebrow">The figure the whole comparison turns on</p>
+        <p class="callout-body"><strong>7, 7, and 1.</strong> Out of ten website-integration features, Toast lands 7 confident-yes marks, Square lands 7, and Clover lands 1. That 60-point spread between the two leaders and Clover is the headline number here — wider than any single feature difference, and the reason the choice between Toast and Square comes down to <em>which</em> seven each one delivers, while the choice to use Clover for website integration comes down to whether the hardware is worth the other nine.</p>
+      </div>
+
+      <p>Read the scorecard as a ranking before you read it row by row. Toast and Square sit on top of each other — same height, different gaps underneath. Clover sits far below, not because its hardware is weak but because the features that touch a website are the ones the reseller patchwork makes unpredictable. The bar below is the 7&ndash;7&ndash;1 split drawn to scale; everything after it explains the second line behind each number.</p>
+
+      <figure class="viz-figure article-figure reveal" data-audio-alt="A ranked bar chart of confident-yes marks out of ten website-integration features, drawn to scale. Toast and Square tie at the top with seven of ten each, their bars the same length. Clover sits far below at one of ten — a single confident yes against nine rows that are either partial or depend on which reseller sold the system. The visual point is the gap, not the order: the two leaders are interchangeable on the headline number, and Clover trails by sixty points on the features that touch a real website.">
+        <div class="viz-bars" data-animate="grow">
+          <p class="viz-bars__title">Confident-yes marks out of 10 website-integration features</p>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Toast</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.70"></span></div>
+            <p class="viz-bars__num">7 / 10</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Square for Restaurants</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.70"></span></div>
+            <p class="viz-bars__num">7 / 10</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Clover</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.10"></span></div>
+            <p class="viz-bars__num">1 / 10</p>
+          </div>
+          <p class="viz-bars__note">Same ten features as the table below, rolled up to one bar each. The teal bars are the two systems that pair cleanly with a real website; the rust bar is the one whose website features hinge on which reseller sold it.</p>
+        </div>
+        <figcaption>The 7&ndash;7&ndash;1 split drawn to scale &mdash; Toast and Square are interchangeable on the headline number; Clover trails by 60 points on website integration specifically.</figcaption>
+      </figure>
 
       <figure class="viz-figure article-figure reveal" data-audio-alt="The ten-feature comparison rolled up to a single number per platform: Toast and Square both score 7 confident-yes marks out of 10. Toast pairs its seven with one partial and two outright gaps; Square pairs its seven with three partials and no outright gap. Clover scores 1 confident-yes mark out of 10, with eight of its rows landing in partial-or-depends. The 60-point gap between the leaders and Clover is the headline; the difference between Toast and Square is in which features each one leaves on the table.">
         <div class="viz-rings">
@@ -1042,7 +1098,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
                 <td><span class="mark no" aria-label="No">✕</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Works with a fully custom website<span class="note">Clean pairing with a Muntin-style custom build</span></td>
+                <td class="feature-name">Works with a fully custom website<span class="note">Clean pairing with a hand-built site on a modern stack</span></td>
                 <td><span class="mark yes" aria-label="Yes">✓</span></td>
                 <td><span class="mark yes" aria-label="Yes">✓</span></td>
                 <td><span class="mark partial" aria-label="Partial">~</span></td>
@@ -1074,7 +1130,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </figure>
 
       <h2 id="which-one-i-d-pick-by-restaurant-type">Which one I'd pick, by restaurant type</h2>
-      <p>Here's how I'd match each POS to a restaurant type, based on what I see in audits. These are opinions, not rules — your actual best fit depends on variables I can't see from a blog post, so treat this as a starting point for your own evaluation, not a verdict.</p>
+      <p>Here's how I'd match each POS to a restaurant type, based on what I see on the floor. These are opinions, not rules — your actual best fit depends on variables I can't see from a blog post, so treat this as a starting point for your own evaluation, not a verdict.</p>
 
       <figure class="article-figure" data-audio-alt="Three POS picks mapped to restaurant shape, in a decision-tree shape, each with the fit and the cost of that fit. Branch one — single-location independent — Square for Restaurants is the best fit, because of the clean API, public flat-rate pricing, short contracts, and lower switching cost if you outgrow it; the trade-off is thinner full-service features — deep modifier chains, coursing, and server-by-server reports trail Toast's restaurant-native build. Branch two — growing two-to-five location group — Toast is the best fit, because of the native ordering pipeline, mature menu sync, real-time 86, and developer API that scales with the group; the trade-off is the walled garden — multi-year contracts, and leaving Toast means leaving every layer at once. Branch three — hardware-heavy or hybrid concept — Clover is the best fit, because of the widest hardware selection, handheld tableside, kiosk variants, integrated scales, and app marketplace depth; the trade-off is the reseller patchwork — the feature set and fees depend on which bank or ISO sold the system, and pricing lives in the contract, not on a page. Three operating realities, three best fits, three named costs.">
         <ol class="viz-tree" aria-label="Three POS picks mapped to restaurant shape">
@@ -1135,7 +1191,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <div class="inline-cta">
         <h4 class="i18n">Stuck between POS choices for your restaurant?</h4>
-        <p class="i18n">Twenty minutes on Zoom. I'll walk through the specific POS question you're weighing, tell you how it maps to a real website build for your restaurant type, and give you an honest read on which tradeoffs you'll actually feel in year two. No pitch.</p>
+        <p class="i18n">Run the free <a href="/tools/audits/restaurant/">Tech Stack</a> check against your current site first — it reads which integration features your existing setup already delivers. Then, if you're still weighing a specific POS question against the 7&ndash;7&ndash;1 scorecard above, send Don the details and you'll get an honest read on which tradeoffs you'll actually feel in year two.</p>
         <a class="btn btn-primary js-window" href="/window/">Email Don
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
