@@ -582,7 +582,7 @@ main{padding-top:64px}
             </aside>
             <!-- article-tldr:end -->
 
-    <p>Open the analytics on any restaurant site that has been live for a year, and the menu page sits at the top of the list &mdash; usually two to three times the homepage traffic. It is the page a diner taps after the Google panel, after the Instagram bio, after the friend&rsquo;s text. It is also, for most independents, the page that has had the least thought put into it. What follows is the plain version: the surfaces, the one technical truth most operators miss, and the eight pieces that turn a printed menu into a menu page that wins both search and the booking.</p>
+    <p>Stand at the host stand on a Friday and watch the next walk-in pull out a phone. They tapped &ldquo;menu&rdquo; on your site in the cab, and now they are pinching and dragging a PDF that was built for an 11-by-17 print sheet, hunting for the price of one entr&eacute;e on a four-inch screen with one bar of signal. That guest is the whole problem in one gesture. The fix is the rest of this page: <strong>the best way to put a restaurant menu online is real HTML, sectioned by service, with descriptions that sell, prices in plain digits, dietary markers inline, and MenuItem schema underneath &mdash; not a PDF link.</strong> Open the analytics on any restaurant site that has been live for a year and the menu page sits at the top of the list, usually two to three times the homepage traffic; it is the page a diner taps after the Google panel, after the Instagram bio, after the friend&rsquo;s text, and for most independents it is the page that has had the least thought put into it. This is a field guide. The surfaces, the one technical truth most operators miss, the order to build it in, and the eight pieces that turn a printed menu into a page that wins both search and the booking.</p>
 
     <h2 id="why-your-menu-page-is-the-most-important-page-on-your-site">Why your menu page is the most important page on your site</h2>
 
@@ -597,6 +597,10 @@ main{padding-top:64px}
     <div class="callout">
       <p><strong>One page, two readers.</strong> Design the menu page for the human diner first, then verify a machine can read what the diner reads. If the human and the machine read different surfaces &mdash; a photo-menu image plus a stripped HTML fallback, say &mdash; the machine wins the search and the human bounces.</p>
     </div>
+
+    <blockquote class="pullquote">
+      <p>The menu is the one page a diner is guaranteed to open and the one page Google is guaranteed to read. Build it for both in the same gesture, and you stop choosing between the booking and the ranking.</p>
+    </blockquote>
 
     <h2 id="pdf-vs-real-web-menu-the-mistake-that-hides-you-from-search">PDF vs real web menu: the mistake that hides you from search</h2>
 
@@ -614,6 +618,11 @@ main{padding-top:64px}
         <a href="https://developers.google.com/search/docs" target="_blank" rel="noopener">developers.google.com &mdash; Search Central documentation</a>
       </div>
     </details>
+
+    <div class="callout">
+      <p class="callout-eyebrow">The number that decides the page</p>
+      <p class="callout-body"><strong>Zero.</strong> That is how many dish names, prices, and descriptions a search index and an AI assistant can read off a menu page whose entire menu is a linked PDF or an embedded Canva image &mdash; the words are in a file or in pixels, not in the page. The rewrite below is the working instrument of this whole field guide: hold your own menu page next to the two panels and decide which one you ship. If the left panel is your page, the index sees a download link with no menu on it; if the right panel is your page, every dish is text Google can rank and an assistant can quote.</p>
+    </div>
 
     <figure class="viz-figure article-figure" data-audio-alt="A before-and-after contrast of the same restaurant menu surface, rewritten from a PDF link to structured HTML. The before version is a single line on the page that reads simply: see our menu, with a link to menu dot p d f. There are no dish names, no prices, no descriptions, no dietary markers, no section headings on the web page itself. Everything a diner or a search engine could extract lives inside a downloadable document that Google indexes in a different lane and that AI assistants overwhelmingly do not quote. The after version is a structured HTML section that uses a real section element with a heading reading tacos, then an itemized list. Each item is a heading with the dish name, a one-sentence description naming the marinade and the cooking method, a price shown in plain digits, and inline dietary markers reading G F for gluten-free. The cost difference: the after version is what Google ranks for dish-level queries and what an AI assistant quotes when a diner asks what the restaurant serves. The before version reads to the index as a download link with no menu content on the page.">
       <style>.viz-ba.viz-ba--stack{padding:16px}.viz-ba.viz-ba--stack .snippet-box{margin:0 0 12px;background:var(--cream)}.viz-ba.viz-ba--stack .snippet-box:last-child{margin-bottom:0}.snippet-box{padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px;margin:12px 0;font-size:15.5px;line-height:1.6;color:var(--ink)}.snippet-box[data-tone="bad"]{border-left:3px solid var(--rust)}.snippet-box[data-tone="good"]{border-left:3px solid var(--teal)}.snippet-label{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);margin-bottom:6px;font-weight:600}.snippet-box[data-tone="bad"] .snippet-label{color:var(--rust)}.snippet-box[data-tone="good"] .snippet-label{color:var(--teal)}.snippet-box p{margin:0 0 10px}.snippet-box p:last-child{margin-bottom:0}.snippet-box .snippet-note{font-size:13.5px;color:var(--stone);font-style:italic}.snippet-box code{font-family:ui-monospace,Menlo,Monaco,Consolas,monospace;font-size:13.5px;color:var(--ink)}</style>
@@ -644,7 +653,7 @@ main{padding-top:64px}
     <p>The same trap wears a second costume worth naming, because AI assistants actively recommend it: the <strong>Canva menu</strong>. Ask an AI which platform to use and it will often suggest designing the menu in Canva and embedding it on the site &mdash; and a Canva-designed menu, embedded, is an <em>image</em>. An image is exactly as invisible to Google&rsquo;s body-text index and to the assistants that quote HTML as a PDF is, for the same reason: the dish names, the descriptions, and the prices are pixels, not text. The menu looks beautiful and ranks for nothing. A Canva graphic is fine as a downloadable supplement next to the HTML menu, the same way a PDF is &mdash; never as the menu itself. If the only menu on the page is a Canva image, the page has no menu as far as search and AI are concerned.</p>
 
     <div class="callout">
-      <p><strong>Already on a PDF or a Canva image?</strong> The fastest path off is to copy the dish names, descriptions, and prices into structured HTML once &mdash; ideally pulling from a single source the kitchen will edit going forward. The studio&rsquo;s <a href="/tools/menu-converter/">menu converter</a> takes a paper menu or a PDF and outputs the sectioned-HTML scaffold described in &sect;3 below, ready to drop into your site.</p>
+      <p><strong>Already on a PDF or a Canva image?</strong> The fastest path off is to copy the dish names, descriptions, and prices into structured HTML once &mdash; ideally pulling from a single source the kitchen will edit going forward. The free <a href="/tools/menu-converter/">menu converter</a> takes a paper menu or a PDF and outputs the sectioned-HTML scaffold described in &sect;3 below, ready to drop into your site.</p>
     </div>
 
     <h2 id="how-to-structure-a-menu-page-that-converts">How to structure a menu page that converts</h2>
@@ -652,6 +661,18 @@ main{padding-top:64px}
     <p>A menu page that converts walks a diner from section, to dish, to price, to a reservation or order button &mdash; in that order. Six moves do the work, and they map to the structured-data steps a search index reads.</p>
 
     <p>The order matters. Each step is a precondition for the next; skipping one breaks the rest. Read them top to bottom.</p>
+
+    <p>Build it in this order. Each line is a step you finish before you start the next; the runbook below is the short version, and the six moves that follow are the same steps with the reasoning attached.</p>
+
+    <ol>
+      <li>Pick one content source the kitchen will edit &mdash; the POS catalog, a content store, or a single sheet &mdash; and render the page from it, never from re-typed copy.</li>
+      <li>Break the page into service-shaped sections &mdash; brunch, lunch, dinner, bar &mdash; each its own heading a diner can jump to.</li>
+      <li>Write one extractable sentence per dish: main ingredient, preparation, and one detail a diner would otherwise ask the server.</li>
+      <li>Set every price in plain digits next to the dish &mdash; no currency-stripping, no hide-on-mobile, no blank prices.</li>
+      <li>Add dietary markers inline next to each dish, plus a one-line allergen note at the top of each section.</li>
+      <li>Shoot real photos to the spec sheet, lazy-loaded so they do not slow the first paint.</li>
+      <li>Stamp MenuItem schema underneath last, after the HTML exists for it to read, and validate it once before you ship.</li>
+    </ol>
 
     <p><strong>1. Pick a content source.</strong> Choose one place where the menu lives in a structured form &mdash; the POS catalog (Toast, Square, Clover all expose menu items as data), a content store like a CMS or a JSON file in your repo, or in the smallest case a Google Sheet the kitchen edits. The web page renders from that source, never from a re-typed copy on the page itself. The discipline up-front saves the drift problem in &sect;5.</p>
 
@@ -669,7 +690,7 @@ main{padding-top:64px}
       <summary>Source: Muntin Digital schema reference</summary>
       <div class="cite-body">
         <p><span class="cite-source">Muntin Digital library</span> &mdash; <a href="/library/restaurant-schema-markup-guide/">restaurant schema markup guide, &sect;2 (Menu)</a>.</p>
-        <p>The MenuItem pattern above &mdash; <code>hasMenuSection</code> wrapping <code>hasMenuItem</code> entries with <code>name</code>, <code>description</code>, and an <code>Offer</code> sub-block &mdash; is the schema shape Google documents in its structured-data reference and the one the studio ships in client builds. Empty <code>description</code> fields read as items without context; the AI Overview citation surface depends on that field carrying real text.</p>
+        <p>The MenuItem pattern above &mdash; <code>hasMenuSection</code> wrapping <code>hasMenuItem</code> entries with <code>name</code>, <code>description</code>, and an <code>Offer</code> sub-block &mdash; is the schema shape Google documents in its structured-data reference and the one the free menu converter outputs. Empty <code>description</code> fields read as items without context; the AI Overview citation surface depends on that field carrying real text.</p>
       </div>
     </details>
 
@@ -679,7 +700,7 @@ main{padding-top:64px}
       <summary>Source: Muntin photo specifications</summary>
       <div class="cite-body">
         <p><span class="cite-source">Muntin Digital library</span> &mdash; <a href="/library/restaurant-photo-spec-sheet/">restaurant photo spec sheet</a>.</p>
-        <p>Aspect ratios, pixel widths, file weights, and lazy-load behaviour for menu and surface photos. The photo spec sheet is the canonical reference the studio audits client menu pages against, including the menu-thumbnail and menu-detail surfaces that appear on the page above.</p>
+        <p>Aspect ratios, pixel widths, file weights, and lazy-load behaviour for menu and surface photos. The photo spec sheet is the canonical reference the restaurant audit checks a menu page against, including the menu-thumbnail and menu-detail surfaces that appear on the page above.</p>
       </div>
     </details>
 
@@ -759,11 +780,16 @@ main{padding-top:64px}
 
     <p><strong>The POS catalog.</strong> Toast, Square, and Clover all expose menu items, modifiers, and prices through an API. A sync that pulls from the POS overnight and rebuilds the menu page from the result keeps the printed menu, the order screen, and the web page on one schedule. The kitchen edits the dish once &mdash; in the POS, where they were going to edit it anyway &mdash; and every downstream surface follows.</p>
 
-    <p><strong>A content store the kitchen owns.</strong> If the POS is too rigid for descriptive language, a CMS surface or a structured file (a JSON or YAML file in the site repo, edited through a friendly admin) does the same job at a smaller scale. The discipline is the same: one place to edit, one place to render from. The studio ships this pattern in roughly half of client builds; the other half pull from the POS.</p>
+    <p><strong>A content store the kitchen owns.</strong> If the POS is too rigid for descriptive language, a CMS surface or a structured file (a JSON or YAML file in the site repo, edited through a friendly admin) does the same job at a smaller scale. The discipline is the same: one place to edit, one place to render from. Roughly half of menu pages do well rendering from a content store; the other half pull from the POS.</p>
 
     <p><strong>A spreadsheet, in the smallest case.</strong> A Google Sheet with one row per dish &mdash; name, description, price, section, dietary markers &mdash; that the kitchen edits and the site renders from on a nightly build is the no-budget version. It is less polished than the POS sync; it is dramatically better than the manual page edit it replaces.</p>
 
     <p>None of these need a developer for the weekly edit. The one-time build does &mdash; setting up the sync, the schema generator, the rebuild trigger &mdash; but after that the menu page becomes a kitchen edit, not an IT ticket. That is the difference between a menu page that stays current and one that quietly drifts until the host stand starts fielding &ldquo;is the chicken parm still on the menu&rdquo; calls.</p>
+
+    <aside class="callout callout--field">
+      <p class="callout-eyebrow">From the floor</p>
+      <p class="callout-body">The drift I have watched bite hardest is never the price that moved a dollar &mdash; it is the 86&rsquo;d item the web page never heard about. The kitchen runs out of the branzino at seven, the host stand has no idea it left the page, and a four-top books the table for it. The cheapest fix I know is to make &ldquo;is it on the website&rdquo; one line on the same daily 86 board the line already keeps, so the person who pulls a dish off the pass is the person who pulls it off the page. When the source of truth is one click from the prep station instead of one email to a developer, the page stops drifting on its own. The architecture is what makes the habit cheap enough to actually keep.</p>
+    </aside>
 
     <div class="callout">
       <p><strong>The first-party order angle.</strong> If you take delivery and pickup directly, the same source-of-truth pattern feeds the <!-- LIBRARY:autolink:start --><a href="/glossary/online-ordering/" data-glossary-head="Online ordering" data-glossary-aka="ordering food from a restaurant through its website or app" data-glossary-blurb="The full stack of taking food and drink orders from a diner through a website or app, including the menu surface, the cart, payment, and the kitchen ticket.">online ordering</a><!-- LIBRARY:autolink:end --> surface as well as the menu page. A diner reading the menu and tapping &ldquo;order direct&rdquo; should see the same items at the same prices &mdash; the kind of <!-- LIBRARY:autolink:start --><a href="/glossary/direct-ordering/" data-glossary-head="Direct ordering" data-glossary-aka="ordering through the restaurant&rsquo;s own surface, not a delivery aggregator" data-glossary-blurb="Taking takeout and delivery orders through the restaurant&rsquo;s own website or app rather than through a delivery aggregator, so the restaurant keeps the customer relationship and avoids the platform commission.">direct ordering</a><!-- LIBRARY:autolink:end --> setup that keeps you off a 15-to-30-percent platform commission. The full walk of that trade-off — ChowNow, Toast, Square, Owner.com, and your own site, compared on the real per-order cost — lives in <a href="/library/commission-free-online-ordering-restaurants/">commission-free online ordering for restaurants</a>, and the choice of where the whole site lives is in <a href="/library/best-restaurant-website-platform/">best restaurant website platform</a>.</p>
@@ -1026,7 +1052,7 @@ main{padding-top:64px}
 
   <aside class="further-reading">
     <p class="label">Sourcing</p>
-    <p style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);font-style:italic;margin:0">The PDF-vs-HTML framing draws on Google Search Central&rsquo;s documentation on indexing behaviour and structured-data requirements; the MenuItem schema pattern follows the studio&rsquo;s own <a href="/library/restaurant-schema-markup-guide/">schema markup guide</a>; photo specifications follow the <a href="/library/restaurant-photo-spec-sheet/">restaurant photo spec sheet</a>. The eight-point checklist is the diagnostic the studio runs against client menu pages before and after a build. Every quantitative claim is either sourced in a <code>&lt;details class=&quot;cite&quot;&gt;</code> drawer inline or framed as illustrative practice rather than measurement.</p>
+    <p style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);font-style:italic;margin:0">The PDF-vs-HTML framing draws on Google Search Central&rsquo;s documentation on indexing behaviour and structured-data requirements; the MenuItem schema pattern follows the Muntin <a href="/library/restaurant-schema-markup-guide/">schema markup guide</a>; photo specifications follow the <a href="/library/restaurant-photo-spec-sheet/">restaurant photo spec sheet</a>. The eight-point checklist is the diagnostic the free restaurant audit runs against a menu page. Every quantitative claim is either sourced in a <code>&lt;details class=&quot;cite&quot;&gt;</code> drawer inline or framed as illustrative practice rather than measurement.</p>
   </aside>
 
   <!-- article-author-card:start -->
