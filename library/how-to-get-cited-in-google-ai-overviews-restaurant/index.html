@@ -477,7 +477,9 @@ main{padding-top:64px}
             </aside>
             <!-- article-tldr:end -->
 
-    <p>The pattern that decides which paragraphs get cited is visible if you do the obvious thing &mdash; type the natural-language questions your guests would type, watch which sources the box names, then read those paragraphs against the ones it didn&rsquo;t cite. The rules below are what falls out. None of them are about backlinks or domain authority or any of the levers SEO writing in 2023 was about. They&rsquo;re about paragraph shape.</p>
+    <p>Try it on yourself before you read another word. Open a clean browser, type the question a guest would actually type &mdash; your neighborhood, your cuisine, &ldquo;open late,&rdquo; &ldquo;takes reservations&rdquo; &mdash; and read the paragraph Google writes back. Most operators do this once and go quiet, because the box quotes the place two blocks over and not them. That sting is the whole assignment. The pattern that decides which paragraphs get cited is visible if you do the obvious thing the box just did for you: watch which sources it names, then read those paragraphs against the ones it skipped. The rules below are what falls out. None of them are about backlinks or domain authority or any of the levers SEO writing in 2023 was about. They&rsquo;re about paragraph shape.</p>
+
+    <p>This guide is the runbook for closing that gap. Not a survey of the surface &mdash; a checklist you run against a real page, in the order it pays off, until your domain is the chip on the answer instead of the competitor&rsquo;s.</p>
 
     <figure class="viz-figure article-figure" data-audio-alt="AI Overview share of US desktop searches, both measurements from the same Search Engine Land analysis. January twenty twenty-five measured six point four nine percent. March twenty twenty-five measured thirteen point one four percent — the share doubled in two months. A tick on each bar marks the one-in-five level, twenty percent, the share this surface is approaching by the start of twenty twenty-six. The direction since the March measurement has been rising, not flat, and restaurant queries trigger the box more often than the all-categories average.">
       <div class="viz-bars">
@@ -511,7 +513,12 @@ main{padding-top:64px}
 
     <h2 id="the-five-moves-that-get-cited">The five moves that get cited</h2>
 
-    <p>Before the moves, watch the machine. The diagram below is the walk an extractor makes through your page &mdash; the five stations where it decides what your page is worth quoting. The five moves that follow map onto these stations one to one, in the same order they pay off in.</p>
+    <div class="callout">
+      <p class="callout-eyebrow">The number that makes this urgent</p>
+      <p class="callout-body"><strong>13.14% of US desktop searches got an AI Overview in March 2025 &mdash; double the 6.49% measured two months earlier.</strong> Restaurant queries trip the box above that average, and the share has kept rising toward one in five. Pin that to the wall before you touch a page: the box is not a future you can wait out, it is the result your guest is reading this Friday, and the only question is whether your paragraph is in it.</p>
+    </div>
+
+    <p>So before the moves, watch the machine. The diagram below is your working instrument for the rest of this guide &mdash; the walk an extractor makes through your page, the five stations where it decides what your page is worth quoting. Keep it open in a second tab; the five moves that follow map onto these stations one to one, in the same order they pay off in. When a move feels abstract, come back here and find the station it answers.</p>
 
     <figure class="viz-figure article-figure" data-audio-alt="How the AI Overview extractor walks a restaurant page, in five stations. Station one: it reads each H2 heading as the question that section answers; a vague heading means the extractor cannot tell what it found. Station two: it takes the first paragraph under the H2 — the cut-point is usually thirty-five to fifty-five words, and shorter paragraphs are quoted verbatim more often than paraphrased. Station three: it parses each sentence into subject, predicate, object, and prunes hedge tokens like approximately and usually; a hedged sentence loses its fact before it ever ranks. Station four: it cross-references every entity in the prose — name, hours, prices — against the page's JSON-LD; a match flags the page citation-worthy, a mismatch deboosts it. Station five: it lifts the cleanest extractable answer, names the source, and revisits that URL more often than uncited ones. The five moves in this guide are the operator-side answer to these five stations.">
       <ol class="viz-flow">
@@ -560,6 +567,11 @@ main{padding-top:64px}
 
     <p>Forty-five words is the ceiling. I&rsquo;ve seen the box quote longer paragraphs, but the cut-point is usually 35&ndash;55 words, and shorter is more often quoted verbatim than paraphrased. Verbatim is what you want &mdash; paraphrase loses the entity-to-schema match the model just made.</p>
 
+    <aside class="callout callout--field">
+      <p class="callout-eyebrow">From the floor</p>
+      <p class="callout-body">When I rewrite a page&rsquo;s first paragraph, I read it back with my thumb over everything below the first sentence. If the answer to the H2&rsquo;s question is gone once the rest is covered, the paragraph still sets up instead of answers, and the box will skip it the same way I just did. The fix is almost always to delete the warm-up clause and start on the fact &mdash; the part I instinctively wrote second belongs first.</p>
+    </aside>
+
     <h2 id="move-2-anchor-every-entity-in-schema">Move 2: Anchor every entity in schema</h2>
 
     <p>The model reads your prose, then reads your JSON-LD, then asks itself: are these consistent? When the answer is yes, the page gets a citation-boost flag. When the answer is no &mdash; menu prices in prose don&rsquo;t match the Menu schema, hours in prose don&rsquo;t match OpeningHours &mdash; the page gets a deboost flag. There&rsquo;s no public signal for this. It&rsquo;s visible only in which pages get cited and which don&rsquo;t.</p>
@@ -598,6 +610,10 @@ main{padding-top:64px}
     </figure>
 
     <p>Read both out loud. The first one feels human. The second one feels almost mechanical. That&rsquo;s the trade. The AI Overview surface doesn&rsquo;t reward conversational writing &mdash; the surface above it does. The conversation is what your menu page, your About page, your social channels are for. The citation paragraph is its own register. It exists to be quoted.</p>
+
+    <blockquote class="pullquote">
+      <p>The citation paragraph isn&rsquo;t written for a reader. It&rsquo;s written for the machine that decides which paragraph the reader ever sees.</p>
+    </blockquote>
 
     <h2 id="move-5-stable-urls-stable-answers">Move 5: Stable URLs. Stable answers.</h2>
 
@@ -655,7 +671,16 @@ main{padding-top:64px}
 
     <h2 id="where-to-start">Where to start</h2>
 
-    <p>Pick three pages. Your hours/contact page, your menu page, and your most-trafficked blog post. Walk each through moves 1&ndash;4 on the first paragraph below every H2. Don&rsquo;t touch the rest of the page yet. Publish, wait two weeks, then run the citation-check loop above on the questions those pages should be answering.</p>
+    <p>Pick three pages. Your hours/contact page, your menu page, and your most-trafficked blog post. Walk each through moves 1&ndash;4 on the first paragraph below every H2. Don&rsquo;t touch the rest of the page yet. Publish, wait two weeks, then run the citation-check loop above on the questions those pages should be answering. Here is that walk, step by step, the way I run it on a real page:</p>
+
+    <ol>
+      <li>Open the page and find the first paragraph below each H2 &mdash; that is the only paragraph the extractor reliably reads. Ignore everything else on the page for now.</li>
+      <li>Cut each of those paragraphs to its answer and stop at the ceiling: answer the heading&rsquo;s implied question completely in the opening sentence, under forty-five words (Move 1).</li>
+      <li>Put a number in that first sentence &mdash; a price, a time, a count, a year. A sentence without one competes with every vague sentence on the internet (Move 3).</li>
+      <li>Strike the hedges: <em>approximately</em>, <em>usually</em>, <em>in some cases</em>, <em>most</em>, <em>often</em>, <em>typically</em>, <em>around</em>, <em>tend to</em>, <em>may</em>, <em>can</em>. Each one reads as noise and takes the fact down with it (Move 4).</li>
+      <li>Check the prose against your JSON-LD &mdash; hours, prices, name. Make the words and the schema say the same thing, down to &ldquo;10pm&rdquo; instead of &ldquo;late&rdquo; (Move 2).</li>
+      <li>Publish, wait two weeks, and run the citation-check loop on the questions the page should answer. If your domain is one of the chips at the bottom of the box, freeze the page &mdash; don&rsquo;t move the URL, don&rsquo;t reword the paragraph (Move 5).</li>
+    </ol>
 
     <figure class="viz-figure article-figure" data-audio-alt="Time to first citation across the three priority pages, measured from publish date. Hours and contact page: two weeks. Menu page: three weeks. Most-trafficked blog post: four to six weeks. The simpler the answer the page exists to give, the faster the citation arrives. Hours pages clear first because the question is one short fact; blog posts take longer because the extractor has to settle on which paragraph carries the answer.">
       <div class="viz-bars">
