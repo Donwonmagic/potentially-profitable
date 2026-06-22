@@ -583,7 +583,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             </aside>
             <!-- article-tldr:end -->
 
-      <p><a href="/glossary/search-console/" data-glossary-head="Google Search Console" data-glossary-blurb="The free Google dashboard that shows you which search terms people used to find your site, which pages they landed on, and whether Google has any indexing…" target="_blank" rel="noopener">Google Search Console</a> is free, official, and tells you exactly which queries Google shows your restaurant for, how often visitors click through, and which pages are working. The interface is the problem. It's built for SEO professionals; the labels assume terminology a restaurant operator doesn't have.</p>
+      <p>Sit down in front of it once. The Performance tab is open, the query table is glowing, and four big numbers run across the top. Clicks down 11% this month. Average position 6.2. The operator's eye goes straight to position, reads "6.2" as the verdict, and concludes the restaurant is losing the ranking war. That reading is wrong, and it's the most expensive misread in the dashboard — it sends a Tuesday afternoon chasing a number that moves over months, while the number that moves this week sits two rows up, untouched.</p>
+
+      <p>So let's not read it that way. Let's tear the report down row by row — what each metric actually is, the misreading an operator reaches for first, and the one move each row should trigger.</p>
+
+      <p><a href="/glossary/search-console/" data-glossary-head="Google Search Console" data-glossary-blurb="The free Google dashboard that shows you which search terms people used to find your site, which pages they landed on, and whether Google has any indexing…" target="_blank" rel="noopener">Google Search Console</a> is free, official, and tells you exactly which queries Google shows your restaurant for, how often visitors click through, and which pages are working. The interface is the problem. It's built for SEO professionals; the labels assume terminology a restaurant operator doesn't have. So we'll supply the terminology — and read the artifact in front of us instead of the marketing tour of it.</p>
 
       <p>You're thinking: I already have Google Analytics. Yes. And it tells you what they did once they got there. Search Console is what they typed before they got there. Different question.</p>
 
@@ -644,6 +648,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li><strong>Average position</strong> — your average rank across all queries that showed your site.</li>
       </ul>
 
+      <p>Now read them in the order the math runs, not the order the screen lists them. Walk the four rows top to bottom the way you'd walk a line check — one station at a time, asking what each one is telling you and what it is not:</p>
+
+      <ol>
+        <li><strong>Total clicks (the row your eye lands on first).</strong> Misread: "clicks are down, the site is broken." Correct read: clicks are an <em>output</em>, never a cause. This row tells you a result, not a reason. Don't act on it — use it to decide whether to walk the other three rows at all. A flat clicks row means close the tab.</li>
+        <li><strong>Total impressions.</strong> Misread: skipped entirely, because it has no obvious action attached. Correct read: this is the row that tells you whether a clicks drop is a demand problem or a snippet problem. If impressions held steady while clicks fell, Google still showed you just as often — people just stopped clicking. That points the finger one row down.</li>
+        <li><strong>Average CTR — the only row you can move this week.</strong> Misread: treated as a fixed property of the site, like square footage. Correct read: CTR is the share of appearances your snippet converts, and it's written by the title and meta description — text you can rewrite this afternoon. A branded-query CTR (your own name) below 40% is the loudest single signal in the report: the snippet is broken.</li>
+        <li><strong>Average position (the row your eye lands on <em>second</em>, and over-weights).</strong> Misread: "6.2 is bad, we're losing." Correct read: position is the slowest number on the screen — it moves over months, and a #4 with a sharp snippet out-earns a #2 with a generic one. It sets a ceiling on impressions; it does not set your clicks. It's the row to note and the last row to act on.</li>
+      </ol>
+
+      <p>The figure below is the centerpiece of the whole teardown. It's the same four numbers, re-stacked into causal order — the order the report would print them in if it cared whether you understood it. Read it once and the misread above stops being available to you:</p>
+
       <figure class="viz-figure article-figure" data-audio-alt="The four Performance numbers rearranged into the order the math actually runs, which is not the order Google displays them. Step one: average position — where you rank decides how often Google shows you at all. Step two: total impressions — every appearance position earned, whether anyone clicked or not. Step three: average CTR — the share of those appearances where your snippet won the click. This is the step marked as the lever, because it is the only one of the four you can rewrite on a Tuesday afternoon, and a branded CTR below forty percent means the snippet is broken. Step four: total clicks — the output, impressions multiplied by CTR. The reason this order matters: when clicks drop, walk the chain backwards. If impressions held and clicks fell, the leak is at step three and the fix is a snippet rewrite, not a ranking campaign.">
         <div class="viz-flow">
           <ol class="viz-flow__list">
@@ -680,7 +695,29 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption>Not the dashboard order &mdash; the causal order. When clicks drop, walk the chain backwards: impressions held but clicks fell means the leak is at step 3, and the fix is a snippet rewrite, not a ranking campaign.</figcaption>
       </figure>
 
+      <blockquote class="pullquote">
+        <p>The dashboard lists the four numbers in the order that panics you. The math runs them in the order that fixes you. The teardown is just learning to read the second order off a screen printed in the first.</p>
+      </blockquote>
+
       <p>The leverage is almost always in CTR, not in position. A restaurant ranked #4 with a strong title + <!-- LIBRARY:autolink:start --><a href="/glossary/meta-description/" data-glossary-head="Meta description" data-glossary-blurb="The short paragraph of text Google shows underneath the blue headline in a search result.">meta description</a><!-- LIBRARY:autolink:end --> outperforms a restaurant ranked #2 with a generic one. If your CTR for branded queries (your restaurant name) is below 40%, the snippet is broken — almost always the meta description. The pattern shows up sharpest when branded-query CTR is healthy (a customer searching for you by name finds you and clicks) but the cuisine-query CTR is in the low single digits. Same site. Same domain authority. Two different snippets — one written by a human who knows the room, one autogenerated from the <!-- LIBRARY:autolink:start --><a href="/glossary/title-tag/" data-glossary-head="Title tag" data-glossary-aka="the page's &lt;title&gt;" data-glossary-blurb="The line of text that shows up as the clickable blue headline of your page in Google search results, and as the name of the tab in a browser.">page title</a><!-- LIBRARY:autolink:end -->.</p>
+
+      <div class="callout">
+        <p class="callout-eyebrow">The number to anchor on</p>
+        <p class="callout-body">Branded-query CTR <strong>below 40%</strong> is the single loudest reading in the whole report — a customer typed your name and still didn't click the result with your name on it. That threshold reflects observed median patterns, not a controlled study (see Sources), so treat it as a tripwire rather than a target. When it trips, the fix lives in the meta description, not the ranking. Everything else in this teardown is a footnote to that one row.</p>
+      </div>
+
+      <p>Put the two readings side by side. Same screen, same four numbers — the only thing that changes is which column you're reading from:</p>
+
+      <div role="group" aria-label="The same Performance row read two ways: the reflex misreading next to the correct reading" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0">
+        <div class="callout">
+          <p class="callout-eyebrow">The misreading</p>
+          <p class="callout-body" style="font-size:14.5px">Eye lands on <strong>clicks down</strong>, then on <strong>position 6.2</strong>, and stops. Verdict: "we're falling in the rankings." The Tuesday gets spent on a ranking campaign — backlinks, keyword stuffing, a call to someone who "does SEO" — chasing a number that moves over months. Impressions and CTR go unread. The snippet never gets touched.</p>
+        </div>
+        <div class="callout">
+          <p class="callout-eyebrow">The correct reading</p>
+          <p class="callout-body" style="font-size:14.5px">Start at impressions: did Google still show you as often? If yes, this isn't a ranking problem — it's a <strong>clicking</strong> problem, and that's CTR, and CTR is the title and meta you can rewrite this afternoon. Position is noted and set aside as the slowest, ceiling-setting number. The Tuesday gets spent rewriting one snippet, and the clicks row answers next week.</p>
+        </div>
+      </div>
 
       <h2 id="report-2-queries-what-people-typed-to-find-you">Report 2: Queries — what people typed to find you</h2>
 
@@ -730,6 +767,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <blockquote class="pullquote">
         <p>The Queries report is the only place a customer's actual words land in your dashboard. Read it like a server reads a comment card.</p>
       </blockquote>
+
+      <aside class="callout callout--field">
+        <p class="callout-eyebrow">From the floor</p>
+        <p class="callout-body">When I read the Queries report, I read it the way I read the back of a stack of comment cards at the end of a shift — top to bottom, looking for the phrase that shows up twice. Not the rank, not the impression count first. The words. Half the time the row that matters isn't a query I'd have thought to chase; it's one I'd never have written down, sitting at page two, where the guest already half-decided I might be the answer. The dashboard hands me the customer's exact language, and the only skill the report rewards is the one a floor manager already practices nightly: reading what people actually asked for instead of what I assumed they wanted.</p>
+      </aside>
 
       <h2 id="report-3-pages-which-pages-are-doing-the-work">Report 3: Pages — which pages are doing the work</h2>
 
