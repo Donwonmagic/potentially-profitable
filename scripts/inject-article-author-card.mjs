@@ -60,8 +60,8 @@ function buildCard(locale) {
   // audit' framed the retired services business. Muntin Digital is a
   // product company now — the library, the Cost Index, Muntin Ledger.
   const bio = locale === 'es'
-    ? 'Soy Don. Soy gerente de sal&oacute;n en Tacombi en Bethesda y fundador de Muntin Digital &mdash; la empresa detr&aacute;s de esta biblioteca, el &Iacute;ndice de Costos y Muntin Ledger. Cada art&iacute;culo aqu&iacute; sale de un problema que vi en piso.'
-    : 'I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.';
+    ? 'Soy Don. Soy gerente de sal&oacute;n en Tacombi en Bethesda y Arlington, y fundador de Muntin Digital &mdash; la empresa detr&aacute;s de esta biblioteca, el &Iacute;ndice de Costos y Muntin Ledger. Cada art&iacute;culo aqu&iacute; sale de un problema que vi en piso.'
+    : 'I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and Arlington, and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.';
   const moreLabel = locale === 'es' ? 'Conoce a Don &rarr;' : 'More about Don &rarr;';
   const writeLabel = locale === 'es' ? 'Escr&iacute;bele &rarr;' : 'Email Don &rarr;';
   return [

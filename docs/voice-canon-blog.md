@@ -153,7 +153,8 @@ the cause is operator reading.
 Muntin Digital is the storefront, never the speaker. No royal "we." No
 brand-as-character. The byline is Don Goldstein. The studio's
 **current** operator credential is Front-of-House Manager at Tacombi
-in Bethesda — see `docs/fact-check.md` for the bio rule. Past roles
+in Bethesda and Arlington — one restaurant, two locations; see
+`docs/fact-check.md` for the bio rule. Past roles
 are in `/about/` and `data/sourced-claims.json#operator_experience_claims.past_roles`.
 
 The blog uses *you* more than the library does, on purpose. The
