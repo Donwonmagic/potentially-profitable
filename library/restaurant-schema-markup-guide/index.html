@@ -593,11 +593,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             </aside>
             <!-- article-tldr:end -->
 
-      <p>If you opened a restaurant after 2018 and never touched the <!-- LIBRARY:autolink:start --><a href="/glossary/schema/" data-glossary-head="Schema markup" data-glossary-aka="JSON-LD, structured data, schema.org" data-glossary-blurb="Invisible tags on your page that spell out, in a format Google can read directly, exactly what kind of business you are — &quot;I'm a Restaurant, here's my cuisine, my address, my…">schema markup</a><!-- LIBRARY:autolink:end --> on your site, you have schema markup. Your CMS or template builder almost certainly stamped some — the question is whether it's the right schema, whether it's complete, and whether Google can actually use it.</p>
+      <p>Here is a rich result that never showed. A 60-seat Italian place ships a homepage with a stars block, an hours block, a menu block — all present, all in the <code>&lt;head&gt;</code>, all stamped by the theme. The owner pastes the URL into the validator and one line comes back red: <code>"priceRnge": "$"</code>. A four-letter typo. Google reads the whole block as malformed and renders a plain blue link — no stars, no price chip, no Reserve button — for the eight months nobody thinks to re-check. The schema was there the entire time. It just didn&rsquo;t <em>work</em>, and &ldquo;present&rdquo; and &ldquo;working&rdquo; are the two words this whole guide lives between.</p>
 
-      <p>The pattern repeats: most sites have two of the six schema types Google reads first; the other four are missing or malformed. Each missing piece is a different surface in Google's results you're not eligible for. The compounding part is that the missing types unlock different surfaces — the local-pack card, AI Overview citations, the Reserve button, the rich snippet, the holiday-hours badge — so the gap between &ldquo;some schema&rdquo; and &ldquo;all six&rdquo; isn't linear.</p>
+      <p>That is the failure this teardown is built to catch. <strong>The honest version of restaurant schema markup is six schema.org types — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQ — and the job is less &ldquo;add schema&rdquo; than &ldquo;tear down the broken block your CMS already stamped and paste the one Google can actually read.&rdquo;</strong> Most independent sites have two of the six working; the other four are missing, or present-but-malformed in exactly the way the typo above is — valid-looking, silently disqualified.</p>
 
-      <p>This post is the honest version of restaurant schema markup. The six types Google actually uses, what each one does for you, the minimum viable JSON-LD for each, and the tools that validate it.</p>
+      <p>Each broken or absent type is a different surface in Google&rsquo;s results you&rsquo;re not eligible for — the local-pack card, AI Overview citations, the Reserve button, the rich snippet, the holiday-hours badge. So the gap between &ldquo;some <!-- LIBRARY:autolink:start --><a href="/glossary/schema/" data-glossary-head="Schema markup" data-glossary-aka="JSON-LD, structured data, schema.org" data-glossary-blurb="Invisible tags on your page that spell out, in a format Google can read directly, exactly what kind of business you are — &quot;I'm a Restaurant, here's my cuisine, my address, my…">schema markup</a><!-- LIBRARY:autolink:end -->&rdquo; and &ldquo;all six, working&rdquo; isn&rsquo;t linear. Below: the broken block torn down beside the fixed one for each of the six types, what Google reads from each, and the validator pass that tells you which version you&rsquo;re actually running.</p>
 
             <figure class="viz-figure article-figure" data-audio-alt="How Google reads a restaurant page, in two passes, and why schema is the second pass. Pass one: the crawler reads your visible prose — the menu text, the hours line, the About paragraph. It guesses you're a restaurant, but it has to infer your cuisine, your price band, and your hours from sentences written for humans, and it guesses wrong often. Pass two: the crawler reads your JSON-LD, the invisible structured block. Now the same facts arrive labeled — type Restaurant, servesCuisine Italian, priceRange one dollar sign, opens seventeen hundred. No inference, no guessing. The third beat is what changes on the results page: the labeled facts are what Google is willing to render as stars, an open-now chip, a price chip, and a Reserve button, because it now trusts them enough to show them. The prose alone gets you a plain blue link; the schema is what unlocks the rich result. That is the whole mechanism this guide installs.">
         <ol class="viz-flow reveal" aria-label="How Google reads a restaurant page in two passes">
@@ -657,11 +657,26 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <h2 id="2-menu-the-type-most-restaurants-fake">2. Menu — the type most restaurants fake</h2>
 
-      <p>Almost every restaurant site I audit has either no <a href="/glossary/schema/">Menu schema</a> at all, or the platform stamped it as a single string blob. Either way, Google can't parse individual dishes and you don't rank for "tacos al pastor near me" at the dish level.</p>
+      <p>This is the most common teardown of the six. Almost every restaurant site has either no <a href="/glossary/schema/">Menu schema</a> at all, or the platform stamped the entire menu as one <code>text</code> string — the whole carte jammed into a single field. It validates. It is also useless: Google can&rsquo;t parse individual dishes out of a blob, so you don&rsquo;t rank for "tacos al pastor near me" at the dish level, and the AI Overviews have nothing to lift.</p>
 
-      <p>The structure that works:</p>
+      <p>Here is the broken block your builder probably stamped, torn down beside the structured one that actually ranks. Read what Google gets from each:</p>
 
-      <figure class="article-figure" data-audio-alt="A Menu block, with hasMenuSection wrapping hasMenuItem entries. Each item gets a name, a description, and an Offer with price and currency. The description field is doing more work than people realize — it&apos;s what Google&apos;s AI Overviews lift verbatim when someone asks what tacos al pastor are like at your restaurant. Empty description, no AI citation."><pre><code>{
+      <figure class="viz-figure article-figure" data-audio-alt="A teardown of Menu schema, broken next to fixed. The broken version, what most platforms stamp: an @type Menu whose entire menu is a single text field — a comma-run of dish names and prices, tacos al pastor fourteen dollars, carnitas thirteen, all jammed into one string. It validates, but Google reads it as one undifferentiated text blob, so no dish ranks on its own and the AI Overviews have nothing to quote. The fixed version: the same dishes nested as hasMenuSection wrapping hasMenuItem entries, each item carrying a name, a description, and an Offer with price and currency. Now Google reads tacos al pastor as a distinct dish with a distinct description and price. The description field is the one doing the most work — it is what Google's AI Overviews lift verbatim when someone asks what the tacos al pastor are like at your restaurant. The difference between the two blocks is not validity, both pass. The difference is whether Google can see one dish or only a wall of text.">
+        <div class="viz-ba">
+          <p class="viz-ba__label">Menu schema, torn down: the blob your builder stamps vs the block Google can read</p>
+          <div class="snippet-box" data-tone="bad">
+            <span class="snippet-label">Broken &mdash; the whole menu as one string (validates, ranks nothing)</span>
+            <pre style="margin:8px 0 0;white-space:pre-wrap;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.5;color:var(--ink)"><code>{
+  "@type": "Menu",
+  "text": "Tacos al Pastor $14, Carnitas
+    $13, Pollo $12, Veggie $11,
+    Chips &amp; Salsa $6 ..."
+}</code></pre>
+            <p style="margin:10px 0 0;font-size:13.5px;color:var(--rust)"><strong>What Google reads:</strong> one text field. No dish is a thing. Nothing ranks at the dish level; AI Overviews get a wall of text they won&rsquo;t quote.</p>
+          </div>
+          <div class="snippet-box" data-tone="good">
+            <span class="snippet-label">Fixed &mdash; structured, paste-ready (same dishes, ranks each one)</span>
+            <pre style="margin:8px 0 0;white-space:pre-wrap;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.5;color:var(--ink)"><code>{
   "@context": "https://schema.org",
   "@type": "Menu",
   "name": "Dinner",
@@ -676,14 +691,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     }]
   }]
 }</code></pre>
-<figcaption class="figure-caption">Menu schema — hasMenuSection wrapping hasMenuItem entries</figcaption>
-</figure>
+            <p style="margin:10px 0 0;font-size:13.5px;color:var(--teal)"><strong>What Google reads:</strong> a named dish, a real description, a price. The dish can rank on its own &mdash; and the <code>description</code> is the field AI Overviews quote verbatim.</p>
+          </div>
+        </div>
+        <figcaption>Both blocks validate. Only the right one is legible to Google dish-by-dish &mdash; the teardown isn&rsquo;t about errors, it&rsquo;s about the structure a blob silently throws away.</figcaption>
+      </figure>
 
-      <p>The description matters more than the name — that's the field Google's AI Overviews lift verbatim when someone asks "what are tacos al pastor like at Bistro Petit." Empty descriptions = no AI citation.</p>
+      <p>The description matters more than the name — that's the field Google's AI Overviews lift verbatim when someone asks "what are tacos al pastor like at Bistro Petit." An empty description, or a dish swallowed into the blob above, earns no AI citation.</p>
 
       <figure class="viz-figure article-figure" data-audio-alt="The same restaurant query in Google, with and without the six schema types shipped. Without schema: a bare blue link &mdash; just the page title, the URL, and a meta description. No stars, no price range, no open-now indicator, no map pin, no Reserve button. With schema: the same title and URL, plus a four point seven star rating with four hundred twelve reviews, a dollar-sign price chip, an open-now indicator showing closes at ten PM, a map-pack pin, and a Reserve a Table button. Same page, same meta description &mdash; the schema is what surfaces the six new elements.">
         <div class="viz-ba">
-          <p class="viz-ba__label">The same Google result, with and without the six schema types</p>
+          <p class="viz-ba__label">The teardown, at the level the guest sees it: the same result, broken vs fixed schema</p>
           <div class="snippet-box" data-tone="bad">
             <span class="snippet-label">Without schema &mdash; a bare blue link</span>
             <p style="font-family:Arial,sans-serif;color:#1a0dab;font-size:18px;margin:0 0 4px"><strong>Your Restaurant &mdash; Italian Bistro in Your City</strong></p>
@@ -727,6 +745,48 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>Run <a href="/tools/audits/restaurant/">Schema Checker</a> on your homepage to see whether your current hours schema is valid; <a href="/tools/open-hours/">Open Hours</a> generates the JSON-LD if you need a fresh start.</p>
 
+      <p>Four field-level mistakes disqualify a block the way the hours example does — quietly, with no error a human notices. Each has a torn-down twin: the field as builders leave it, and the field as Google needs it.</p>
+
+      <div role="group" aria-label="Each broken schema field next to the fix that makes it legible to Google" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0">
+        <div class="snippet-box" data-tone="bad">
+          <span class="snippet-label">Broken field</span>
+          <code>"opens": "5:00 PM"</code> &mdash; the 12-hour clock. Google reads <code>opens</code> as 24-hour only, so the open-now badge never fires.
+        </div>
+        <div class="snippet-box" data-tone="good">
+          <span class="snippet-label">Fixed field</span>
+          <code>"opens": "17:00"</code> &mdash; 24-hour, zero-padded. Now the panel can compute &ldquo;Open &middot; closes 10 PM&rdquo; in the guest&rsquo;s own timezone.
+        </div>
+        <div class="snippet-box" data-tone="bad">
+          <span class="snippet-label">Broken field</span>
+          <code>"priceRange": "moderate"</code> &mdash; a word where Google expects a symbol pattern. The price chip stays blank.
+        </div>
+        <div class="snippet-box" data-tone="good">
+          <span class="snippet-label">Fixed field</span>
+          <code>"priceRange": "$$"</code> &mdash; the dollar-sign band Google renders directly as the price chip on the result.
+        </div>
+        <div class="snippet-box" data-tone="bad">
+          <span class="snippet-label">Broken field</span>
+          <code>"telephone": "(301) 555-0123"</code> with a different number on the contact page. The mismatch demotes the listing.
+        </div>
+        <div class="snippet-box" data-tone="good">
+          <span class="snippet-label">Fixed field</span>
+          <code>"telephone": "+1-301-555-0123"</code> &mdash; E.164, identical everywhere. One number, one entity, no contradiction to resolve.
+        </div>
+        <div class="snippet-box" data-tone="bad">
+          <span class="snippet-label">Broken field</span>
+          <code>"servesCuisine": ["Italian","Pizza","Bar","Cafe","Brunch"]</code> &mdash; five cuisines dilutes the one you should win.
+        </div>
+        <div class="snippet-box" data-tone="good">
+          <span class="snippet-label">Fixed field</span>
+          <code>"servesCuisine": ["Italian"]</code> &mdash; one or two you actually are. Ambiguity demotes you in the query you should own.
+        </div>
+      </div>
+
+      <aside class="callout callout--field">
+        <p class="callout-eyebrow">From the floor</p>
+        <p class="callout-body">The one I check first on any block, before I read a single property, is the hours. Not because it&rsquo;s the most important type &mdash; it&rsquo;s because it&rsquo;s the type that rots without anyone touching the code. I changed our Sunday close by an hour for a private event one December, updated the GBP, and forgot the JSON-LD sat in a separate template. For two weeks the site said one thing and the panel said another, and the only reason I caught it was a guest who showed up to a locked door and left the one-star that told me. Now the hours block is the first line of a monthly fifteen-minute walk I do on the first of the month. The teardown you do once; the drift is forever, so the calendar reminder is the actual fix.</p>
+      </aside>
+
       <h2 id="4-aggregaterating-the-one-that-boosts-ctr-by-double-digits">4. AggregateRating — the one that boosts CTR by double digits</h2>
 
       <p>If you have reviews on your own site, <a href="/glossary/rich-results/">AggregateRating</a> shows up as the gold-star pattern in your search snippet. The CTR lift is real — typically 8-15% for restaurant queries.</p>
@@ -740,6 +800,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 </figure>
 
       <p>The constraint: the reviews <em>have to be on your site</em>. You can't aggregate Google's reviews into your own AggregateRating — that violates Google's structured-data policies and can earn a manual action that takes weeks to lift.</p>
+
+      <div class="callout">
+        <p class="callout-eyebrow">The teardown that looks like a feature</p>
+        <p class="callout-body">This is the broken block that hurts most, because it doesn&rsquo;t look broken &mdash; it looks like initiative. Someone copies the Google star average into <code>AggregateRating</code> to &ldquo;match the listing,&rdquo; the validator goes green, the stars appear for a week. Then the manual action lands and pulls every rich result on the domain, not just the stars. A type that&rsquo;s <em>absent</em> costs you one surface. A type that&rsquo;s <em>wrong this way</em> can cost you all of them. Tear it down to your own on-site reviews, or don&rsquo;t ship the block at all.</p>
+      </div>
 
       <h2 id="5-reservation-the-one-that-unlocks-find-a-table">5. Reservation — the one that unlocks Find a Table</h2>
 
@@ -868,7 +933,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <p>Schema isn't optional. Each missing type is a Google surface you've voluntarily disqualified yourself from.</p>
       </blockquote>
       <h2 id="the-complete-paste-ready-restaurant-jsonld">The complete, paste-ready Restaurant JSON-LD</h2>
-      <p>The six types above describe <em>what</em> Google can use. This section is the <em>how</em> &mdash; a single production-grade JSON-LD payload that ships Restaurant + Menu + OpeningHoursSpecification + FAQ together, in the validated shape we drop into the <code>&lt;head&gt;</code> of every restaurant site we build. Adapt the values to your own restaurant, validate, deploy.</p>
+      <p>The six types above describe <em>what</em> Google can use. This section is the <em>how</em> &mdash; a single production-grade JSON-LD payload that ships Restaurant + Menu + OpeningHoursSpecification + FAQ together, in the validated shape that drops into the <code>&lt;head&gt;</code> of a restaurant page. Adapt the values to your own restaurant, validate, deploy.</p>
 
 <h2 id="how-to-use-it">How to use it</h2>
 
@@ -882,7 +947,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <h2 id="the-complete-example">The complete example</h2>
 
-    <p>Below is the <a href="/glossary/schema/" style="color:var(--teal)">schema</a> I ran on a 60-seat DMV Italian restaurant. The structure nests six types: Restaurant (root), Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQ. Each one unlocks a different Google surface (per the six-types article). Save it as a starting point; tighten as needed.</p>
+    <p>Below is a complete worked <a href="/glossary/schema/" style="color:var(--teal)">schema</a> for an illustrative 60-seat DMV Italian restaurant. The structure nests six types: Restaurant (root), Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQ. Each one unlocks a different Google surface (per the six-types article). Save it as a starting point; tighten as needed.</p>
 
     <pre style="background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px;padding:18px 20px;overflow-x:auto;font-size:13px;line-height:1.5;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink);margin:20px 0">&lt;script type="application/ld+json"&gt;
 {
