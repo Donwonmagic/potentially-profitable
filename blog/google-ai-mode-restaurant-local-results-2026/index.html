@@ -509,33 +509,39 @@ header.nav{min-height:64px}
       <h2 id="the-agentic-part-is-the-bigger-shift">The agentic part is the bigger shift</h2>
       <p>Generated answers have been creeping in for a year. The new thing at I/O is that the assistant can <em>complete a task</em> &mdash; and for restaurants, the task is the reservation. Through OpenTable, Resy, and Tock, AI Mode can book a table inside the answer, without sending the diner to your site at all. That is a gift if you&rsquo;re connected to one of those providers and a quiet leak if you&rsquo;re not: the diner asks for &ldquo;a quiet spot for four on Friday,&rdquo; the assistant finds one that <em>can</em> be booked, and books it. A restaurant that takes reservations by phone only &mdash; with no <a href="/glossary/reservation-link/">reservation link</a> the agent can complete &mdash; is invisible to that flow no matter how good it is.</p>
 
+      <div class="callout">
+        <p class="callout-eyebrow">The number behind the shrug</p>
+        <p class="callout-body">The host who set the phone face-down was deciding this was someone else&rsquo;s problem. It is not: AI Mode already reaches <strong>more than a billion people a month</strong>, per Google&rsquo;s own I/O recap below, and the booking rebuild rolls out across the US over the summer. That is the scale at which &ldquo;the answer names a few places and books one of them&rdquo; quietly becomes the front door to a forty-seat room &mdash; whether or not anyone on the floor reads the announcement.</p>
+      </div>
+
+      <p>And the squeeze the rebuild creates is a question of arithmetic. The old list showed roughly ten restaurants and let the diner sort them; the composed answer names a handful and books one. Picture that as a dial &mdash; how much of the old ten-name list survives into the paragraph the model writes.</p>
+
       <figure class="viz-figure article-figure" data-audio-alt="Three things the I/O twenty twenty-six rebuild changed about a local restaurant result. One: the answer is generated, not listed — Google composes a short answer naming a few places instead of returning ten links and a map. Two: the assistant can book the table, through OpenTable, Resy, or Tock, inside the answer. Three: fewer restaurants get named — a composed answer mentions a handful of places, and everyone else is absent rather than ranked lower.">
-        <div class="viz-flow">
-          <ol class="viz-flow__list">
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">1</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">The answer is generated, not listed</p>
-                <p class="viz-flow__detail">Google composes a short answer naming a few places, instead of returning ten links and a map to sort through.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="teal">
-              <span class="viz-flow__num">2</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">The assistant can book the table</p>
-                <p class="viz-flow__detail">Through OpenTable, Resy, or Tock, the reservation completes inside the answer &mdash; the diner never reaches your site.</p>
-              </div>
-            </li>
-            <li class="viz-flow__step" data-tone="rust">
-              <span class="viz-flow__num">3</span>
-              <div class="viz-flow__body">
-                <p class="viz-flow__title">Fewer restaurants get named</p>
-                <p class="viz-flow__detail">A composed answer mentions a handful of places. Everyone else is absent from the paragraph, not ranked lower in a list.</p>
-              </div>
-            </li>
-          </ol>
+        <p style="font-family:var(--font-display);font-size:14px;font-weight:500;color:var(--ink);margin:0 0 14px;letter-spacing:-0.005em">Roughly how much of the old ten-name list survives into the composed answer (illustrative)</p>
+        <div class="viz-gauges" style="grid-template-columns:1fr;max-width:300px;margin-inline:auto">
+          <div class="viz-gauge" data-band="bad" style="--score:30;">
+            <svg class="viz-gauge__svg" viewBox="0 0 220 130" width="220" height="130" role="img" aria-labelledby="named-gauge-title" focusable="false">
+              <title id="named-gauge-title">About three of the old ten names survive into the composed answer &mdash; an illustrative share, roughly thirty percent</title>
+              <defs>
+                <linearGradient id="viz-gauge-named-share" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0" stop-color="#B14B3A" stop-opacity="0.30"/>
+                  <stop offset="1" stop-color="#B14B3A" stop-opacity="1"/>
+                </linearGradient>
+              </defs>
+              <path class="viz-gauge__band" d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke="url(#viz-gauge-named-share)" stroke-width="22" stroke-linecap="butt"/>
+              <path class="viz-gauge__track" d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke-width="2"/>
+              <line class="viz-gauge__tick" x1="110" y1="20" x2="110" y2="32"/>
+              <g class="viz-gauge__needle">
+                <line x1="110" y1="110" x2="110" y2="38" stroke-width="3" stroke-linecap="round"/>
+                <circle cx="110" cy="38" r="4"/>
+              </g>
+              <circle class="viz-gauge__pivot" cx="110" cy="110" r="7"/>
+            </svg>
+            <p class="viz-gauge__num">~3 of 10</p>
+            <p class="viz-gauge__label"><strong>Named in the answer</strong>the rest are absent, not ranked lower &mdash; and the named one can be booked on the spot</p>
+          </div>
         </div>
-        <figcaption>What the I/O 2026 rebuild changed about a local restaurant result &mdash; from a list you ranked in to an answer you have to be named in.</figcaption>
+        <figcaption>The list named about ten and let the diner choose; the composed answer names a handful, books one, and leaves everyone else off the page. Shares are illustrative &mdash; the shift from many to few is the point, not a precise count.</figcaption>
       </figure>
 
       <h2 id="three-moves-that-keep-you-in-the-answer">Three moves that keep you in the answer</h2>
@@ -543,6 +549,11 @@ header.nav{min-height:64px}
       <p><strong>Complete the profile.</strong> Hours by day, cuisine, attributes, the menu link &mdash; the fields the model quotes. Run the <a href="/tools/gbp-grader/">GBP grader</a> to find the blanks.</p>
       <p><strong>Connect a booking provider.</strong> If you take reservations, get them into OpenTable, Resy, or Tock so the agent can finish the job. The how-to is in <a href="/library/ai-mode-reservation-strategy/">booking inside the AI answer</a>.</p>
       <p><strong>Write the answer in text.</strong> Put the facts a diner asks for in plain text, backed by <a href="/tools/audits/restaurant/">restaurant schema</a> so the model can lift them, then check the whole front door with <a href="/tools/storefront-health/">storefront health</a>.</p>
+
+      <aside class="callout callout--field">
+        <p class="callout-eyebrow">From the floor</p>
+        <p class="callout-body">I read all three the way I&rsquo;d read a pre-shift line check, and they take an afternoon, not a budget. The profile is whether the kitchen wrote it down &mdash; can a machine find our hours, our cuisine, our &ldquo;yes, we&rsquo;ll seat a four-top at nine&rdquo; in plain text. The provider is whether the pass is open &mdash; can a table be claimed without someone picking up the phone we keep too busy on a Friday. The schema is whether any of it is legible to a reader that never tastes the food. The host who set her phone face-down had nothing wrong with the room; she just couldn&rsquo;t see that the answer naming a few places had quietly moved to the front of the line.</p>
+      </aside>
 
       <figure class="viz-figure article-figure" data-audio-alt="A three-question diagnostic an operator can walk to find out whether their restaurant is ready for the generated AI Mode answer, and what to fix first. Question one: is your Google Business Profile complete — hours by day, cuisine, attributes, and the menu link, with no blanks? If no, the model has gaps in the file it builds the answer from; fill the blank fields first. If yes, go on. Question two: are your reservations connected to a booking provider the agent can use — OpenTable, Resy, or Tock? If no, a phone-only restaurant gets named but cannot be booked inside the answer, so the diner picks one the agent can complete; connect a provider. If yes, go on. Question three: does the answer to what a diner would ask live in plain text on your own site, backed by restaurant schema? If no, the facts sit in a photo or a PDF the model cannot lift, so it quotes a competitor; write the answer in text and mark it up. If yes to all three, the model can read you and the agent can book you — you are built to stay in the answer.">
         <ol class="viz-tree" aria-label="Diagnostic: is your restaurant ready for the generated AI Mode answer?">
@@ -580,7 +591,7 @@ header.nav{min-height:64px}
         <figcaption>Walk it top to bottom; stop at the first &ldquo;no.&rdquo; None of the three moves is new &mdash; all three are newly load-bearing. The restaurants that stay named are the ones the model can read and the agent can book in one pass.</figcaption>
       </figure>
 
-      <p>The rebuild is not a reason to panic. It is a reason to be legible. The restaurants that lose are the ones the model can&rsquo;t read and can&rsquo;t book &mdash; and both of those are fixable this week, without a contract or an ad spend.</p>
+      <p>The host went back to folding napkins, and she was right to &mdash; there is no emergency on the floor tonight. But the surface that sends a diner to her door changed shape on a Monday in May, and it will keep its new shape whether or not anyone clocks it. The rebuild is not a reason to panic. It is a reason to be legible. The restaurants that lose are the ones the model can&rsquo;t read and can&rsquo;t book &mdash; and both of those are fixable this week, without a contract or an ad spend. The phone may keep ringing less. The answer, once you&rsquo;re written into it, names you anyway.</p>
 
   <!-- article-takeaways:start -->
             <aside class="key-takeaways" data-llm="takeaways" aria-label="Key takeaways">
