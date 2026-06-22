@@ -60,7 +60,7 @@ export default {
       caption: 'The chef’s favorite isn’t always the restaurant’s hero. Menu engineering is what tells you which is which.',
     },
   ],
-  svg: `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of menu engineering">
+  svg: `<svg width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of menu engineering">
   <defs>
     <linearGradient id="me-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>

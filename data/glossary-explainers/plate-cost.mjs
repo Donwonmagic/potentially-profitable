@@ -27,7 +27,7 @@ export default {
     { id: 'price',   ms: 14000, caption: 'At a 30 percent food cost, that plate needs to land at sixty-four dollars. List it at forty-two because twenty-two-a-pound looked fine, and you’re selling silver at seventy-five cents on the dollar — every night.' },
     { id: 'land',    ms: 13000, caption: 'Most independents work from the chef’s gut. Yield math turns the gut into an audit — costable dish by dish, defensible invoice by invoice.' },
   ],
-  svg: `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of restaurant plate cost">
+  svg: `<svg width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of restaurant plate cost">
   <defs>
     <linearGradient id="pl-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>
