@@ -513,6 +513,16 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      the shared .viz-gauges component (assets/site-article.css → "Article
      viz components"). The Break #2 chart now renders as two side-by-
      side animated half-donut gauges with sweeping needles. */
+
+  /* Two-column compare. Copied verbatim from the shared corpus idiom
+     (library/loyalty-program-roi, library/toast-vs-square-vs-clover-for-restaurants)
+     pending extraction to assets/site-article.css alongside .callout. */
+  .snippet-box{padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px;margin:12px 0;font-size:15.5px;line-height:1.6;color:var(--ink)}
+  .snippet-box[data-tone="bad"]{border-left:3px solid var(--rust)}
+  .snippet-box[data-tone="good"]{border-left:3px solid var(--teal)}
+  .snippet-label{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);margin-bottom:6px;font-weight:600}
+  .snippet-box[data-tone="bad"] .snippet-label{color:var(--rust)}
+  .snippet-box[data-tone="good"] .snippet-label{color:var(--teal)}
 </style>
 <!-- article-abstract-mentions:start -->
 <script type="application/ld+json">
@@ -885,7 +895,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <p class="esl-bridge" style="font-size:14px;color:var(--ink-soft);margin:0 0 24px;padding:0;border-left:2px solid var(--teal);padding-left:12px"><a href="https://muntin.digital/es/library/wix-vs-custom-for-restaurants/" lang="es" hreflang="es">Leer este art&iacute;culo en espa&ntilde;ol &rarr;</a></p>
 <!-- esl-bridge:end -->
 
-      <p>I don't hate Wix. I've built things on Wix. For a lot of small businesses it's genuinely the right answer — the first day is easy, the monthly cost is small, and the result is "a site that exists," which is better than "no site at all." But restaurants are a specific kind of small business, and they hit Wix's walls faster than almost any other industry I work with. This post is the honest version of the comparison: <strong>six places Wix breaks for independent restaurants, the ROI math, and when Wix is actually the right call</strong>.</p>
+      <p>Run the two-year total cost both ways and the numbers come out closer than the sticker price suggests: <strong>about $3,600 to stay on Wix versus $5,500 to $10,900 for a hand-built site</strong> — a raw gap of roughly $1,900. Then the second number lands. A slow Wix site, loading in the 40s out of 100 on mobile with a menu Google can't read, can quietly cost a restaurant on the order of <strong>$8,500 a year</strong> in reservations that booked somewhere else. The $1,900 you save on the platform is dwarfed by the revenue the platform leaks. <strong>For an established restaurant doing real volume, the figures say the hand-built site usually pays for itself inside the first year — and the case for staying on Wix is strongest exactly when the site is disposable.</strong></p>
+
+      <p>That is the whole argument in two lines, and the rest of this read is the math behind it: <strong>six places Wix runs out of room for an independent restaurant, the cost-of-ownership numbers, and the cases where Wix is genuinely the right call.</strong> Wix is not the villain here — for a brand-new room or a pop-up, $25 a month for "a site that exists" is the right budget. Restaurants past their first year are a different buyer, and they hit Wix's walls faster than almost any other kind of small business. Here is where the numbers turn.</p>
 
       <h2 id="where-wix-actually-wins">Where Wix actually wins</h2>
       <p>Let me be fair about this first, because the rest of the post is going to feel lopsided if I don't:</p>
@@ -993,6 +1005,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <a href="https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/" target="_blank" rel="noopener">Read the full study on Think with Google</a>
         </div>
       </details>
+
+      <div class="callout">
+        <p class="callout-eyebrow">The number the whole comparison turns on</p>
+        <p class="callout-body"><strong>45 versus 95.</strong> The typical Wix restaurant template I see lands around 45 of 100 on mobile Lighthouse — squarely in the Poor band. A well-built hand-coded site sits around 95, in the Good band. That 50-point spread is the single widest gap in this entire piece, and it sits below the three-second line where Google's own research says most mobile visitors leave. Read the two gauges below as one picture: the needle on the left is parked in the red the diner sees before the menu paints; the needle on the right is the version that holds them long enough to book.</p>
+      </div>
 
       <figure class="viz-figure article-figure reveal" data-audio-alt="Illustrative mobile Lighthouse scores. A typical Wix restaurant template scores about 45 out of 100 — squarely in the Poor band. A well-built custom site scores about 95 out of 100 — in the Good band. Lighthouse cuts the scale at 49 and 89: 0 to 49 is Poor (red), 50 to 89 is Needs work (gold), 90 to 100 is Good (green).">
         <div class="viz-gauges">
@@ -1109,7 +1126,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 </figure>
       <ul>
         <li><strong>Wix over two years:</strong> ~$25 a month × 24 months = <strong>$600</strong>, plus roughly 120 hours of your own time keeping it updated (at even a conservative $25/hour opportunity cost, that's another $3,000). Two-year real total: about <strong>$3,600</strong>.</li>
-        <li><strong>Custom site over two years:</strong> $2,500 upfront (a small-studio base tier — Muntin's own 2026 rate, before the build service retired) + $125–$350/month care plan × 24 months ($3,000–$8,400). Two-year total: <strong>$5,500–$10,900</strong>.</li>
+        <li><strong>Hand-built site over two years:</strong> $2,500 upfront (a representative small-studio base-build rate for the market — sourced below) + $125–$350/month care plan × 24 months ($3,000–$8,400). Two-year total: <strong>$5,500–$10,900</strong>.</li>
       </ul>
       <details class="cite">
         <summary>Source: Wix pricing + Muntin pricing</summary>
@@ -1121,30 +1138,51 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </div>
       </details>
 
+      <p>Here is what the two-year math actually says, the two paths side by side on the figures already on the table — the cheaper line item and the one that owns the outcome:</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(248px,1fr));gap:12px;margin:24px 0">
+        <div class="snippet-box" data-tone="bad">
+          <span class="snippet-label">Wix (DIY) &mdash; the cheaper line item</span>
+          <strong>~$3,600 over two years</strong> &mdash; $600 in software plus ~120 hours of your own time at $25/hour. Mobile speed lands <strong>40&ndash;50 / 100</strong>, and you don&rsquo;t own the code: the day you leave, the rebuild starts from scratch.
+        </div>
+        <div class="snippet-box" data-tone="good">
+          <span class="snippet-label">Hand-built &mdash; the one that owns the outcome</span>
+          <strong>$5,500&ndash;$10,900 over two years</strong> &mdash; $2,500 upfront plus a $125&ndash;$350/month care plan. Mobile speed lands <strong>90+ / 100</strong>, you own the code, and the menu is real HTML Google can read. Roughly two to three times the cash, against the $8,500-a-year reservation leak it closes.
+        </div>
+      </div>
+
       <p>The raw difference is about $1,900 over two years. That's real money. Now layer in the thing the Wix math conveniently leaves out:</p>
       <p>A Wix site loading slowly on mobile, with thin schema and a hard-to-read menu, in my audit experience can easily cost a restaurant <strong>several reservations a week</strong> compared to what a well-built site would convert — people who tapped the link, waited three seconds, couldn't read the menu on their phone, and booked somewhere else. At an average <!-- LIBRARY:autolink:start --><a href="/glossary/cover/" data-glossary-head="Cover" data-glossary-aka="one customer served" data-glossary-blurb="One customer seated and served.">cover</a><!-- LIBRARY:autolink:end --> of $55, even three lost reservations a week works out to roughly <strong>$8,500 a year</strong> in gross revenue that never walked through the door. (Your actual numbers will depend on your volume and menu, but the direction is always the same.)</p>
-      <p>The custom site pays for itself somewhere in the first four months of recovered reservations. Everything after that is pure delta.</p>
 
-      <p class="pull-quote">The custom site pays for itself in the first four months of recovered reservations. Everything after that is pure delta.</p>
+      <aside class="callout callout--field">
+        <p class="callout-eyebrow">From the floor</p>
+        <p class="callout-body">Three lost covers a week never feels like a leak on a busy night — the room is full, the night reads as a good one. I only ever see it on the spreadsheet, the same way I check a delivery statement against the floor: a $55 cover is small enough to shrug off one at a time, and $8,500 a year is exactly what those shrugs add up to. The reservations a slow site loses are the quietest line item a restaurant carries, because nobody who bounced off a four-second menu ever calls to tell you they ate somewhere else.</p>
+      </aside>
+
+      <p>The hand-built site pays for itself somewhere in the first four months of recovered reservations. Everything after that is pure delta.</p>
+
+      <blockquote class="pullquote">
+        <p>The raw cash gap is about $1,900 over two years. The reservations a slow site leaks run roughly $8,500 a year. The platform you save on is dwarfed by the revenue it costs you.</p>
+      </blockquote>
 
       <h2 id="so-when-is-wix-actually-the-right-call">So when is Wix actually the right call?</h2>
-      <p>I meant what I said in the intro — Wix isn't evil, and it's the right answer in a few specific situations:</p>
+      <p>The intro said it and the math backs it: Wix isn't the villain, and it's the right answer in a few specific situations:</p>
       <ul>
         <li><strong>You just opened.</strong> The menu is still settling, you don't know what Tuesdays look like yet, and spending $5,000 on a website before you know whether the concept works is the wrong bet. A Wix placeholder is fine for the first six to twelve months.</li>
         <li><strong>You're a pop-up or seasonal concept.</strong> The whole thing might not exist next spring. Disposability is a feature.</li>
         <li><strong>You genuinely only need a phone number and hours.</strong> If your whole menu is "we serve whatever the chef feels like" and your whole booking system is "call us," a one-page Wix site does the job.</li>
-        <li><strong>You are a single owner-operator doing everything yourself</strong> and the website is the thirtieth thing on your list. A placeholder that exists is better than a custom site that gets delayed by six months because you don't have time to hire a studio.</li>
+        <li><strong>You are a single owner-operator doing everything yourself</strong> and the website is the thirtieth thing on your list. A placeholder that exists is better than a hand-built site that gets delayed by six months because you don't have time to brief and hire a developer.</li>
       </ul>
       <p>Everyone else — the established restaurant with regulars, a photographed menu, and an actual brand — is usually past Wix's ceiling and paying more than they think to stay there.</p>
 
       <h2 id="the-real-test">The real test</h2>
       <p>Here's the question I use when I'm trying to figure out whether someone's Wix site is actually working or just technically online: <em>would you be proud to hand this URL to a food critic?</em></p>
-      <p>If the answer is no, no template upgrade is going to fix that. And the hours you'd spend trying to make it yes — learning the menu widget, fighting the layout, watching your Lighthouse score refuse to improve — are almost always more than the cost of just building the right thing.</p>
+      <p>If the answer is no, no template upgrade is going to fix that. And the hours you'd spend trying to make it yes — learning the menu widget, fighting the layout, watching your Lighthouse score refuse to improve — are almost always worth more, at $25 an hour of your own time, than what it costs to have the right thing built once.</p>
 
       <div class="inline-cta">
-        <h4 class="i18n">On Wix and ready to see the math for your restaurant?</h4>
-        <p class="i18n">Twenty minutes on Zoom. I'll audit your current Wix site live, show you exactly what's leaking conversions, and give you a realistic budget and timeline to replace it. No pitch, no pressure.</p>
-        <a class="btn btn-primary js-window" href="/window/">Email Don
+        <h4 class="i18n">Want the 45-versus-95 number for your own Wix site?</h4>
+        <p class="i18n">Paste your URL into the free Restaurant Website Audit. It runs the same mobile Lighthouse score, schema, and menu checks from this piece against your live site in about thirty seconds — no signup. The figure it returns is Break&nbsp;#2, measured on your own room.</p>
+        <a class="btn btn-primary" href="/tools/audits/restaurant/?from=library%2Fwix-vs-custom-for-restaurants&amp;intent=watch">Run the free audit
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
       </div>
