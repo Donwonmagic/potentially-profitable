@@ -487,7 +487,11 @@ main{padding-top:64px}
             </aside>
             <!-- article-tldr:end -->
 
-    <p>The headline rate &mdash; the commission &mdash; is roughly the same across all three. What differs is the layer of incidental fees stacked on top, the cap on which orders you can actually opt out of, and what the platform does to your direct-channel conversion. This article is the side-by-side I wish someone had handed me in 2022 when I first started keeping spreadsheets.</p>
+    <p>So read this as a decision, not a leaderboard. The question on your desk is never &ldquo;which platform wins&rdquo; in the abstract &mdash; it is <em>which one to keep, which to drop, and whether a given order type belongs on a platform at all</em>, given the restaurant you actually run. <strong>For most independents the verdict lands the same way: keep DoorDash, weigh Uber Eats against your local discovery surface, and drop Grubhub first.</strong> That single line is the whole answer; everything below is the walk that gets you to your version of it &mdash; branch by branch, with the fee math read from each platform&rsquo;s public merchant documentation and not one number invented. The headline rate is roughly the same across all three. What separates them is the layer of incidental fees stacked on top, the cap on which orders you can actually opt out of, and what each platform does to your direct-channel conversion. This is the side-by-side I wish someone had handed me in 2022 when I first started keeping spreadsheets.</p>
+
+    <blockquote class="pullquote">
+      <p>You are not picking a favorite platform. You are deciding which discovery tax is worth paying, for which orders &mdash; and which one you can stop paying tomorrow without losing a single guest.</p>
+    </blockquote>
 
     <h2 id="the-same-42-ticket-three-platforms">The same $42 ticket, three platforms</h2>
 
@@ -683,6 +687,11 @@ main{padding-top:64px}
 
     <p>The DoorDash row is repeated from my earlier <a href="/library/third-party-delivery-economics/" style="color:var(--teal)">DoorDash margin walk</a>. The headline numbers are about the same across the three platforms. The story is in the spread &mdash; eighteen point four to fifteen point nine percent &mdash; and where that spread comes from.</p>
 
+    <div class="callout">
+      <p class="callout-eyebrow">The number the decision turns on</p>
+      <p class="callout-body"><strong>$12.60 leaves a $42 ticket before the kitchen has paid for the chicken</strong> &mdash; the 30% headline lands on the menu price, not the take-home, and it is identical on all three platforms. So the platform choice is never about that $12.60; it is decided entirely by the 2.5-point spread the second-layer fees open underneath it. That is the lever every branch below pulls on.</p>
+    </div>
+
     <figure class="viz-figure article-figure" data-audio-alt="The summary view, side by side: on a forty-two dollar ticket DoorDash Marketplace Plus keeps seven dollars seventy-three or eighteen point four percent. Grubhub Premium keeps seven dollars forty or seventeen point six percent. Uber Eats Pro keeps six dollars sixty-eight or fifteen point nine percent. Direct, on your own website with your own checkout, keeps twelve dollars fifteen or twenty-eight point nine percent. Direct keeps more than four dollars per ticket above the best third-party tier.">
       <div class="viz-bars">
         <p class="viz-bars__title">What stays in the restaurant on a $42 ticket &mdash; summary</p>
@@ -734,7 +743,67 @@ main{padding-top:64px}
 
     <p>The harder call is dropping Uber Eats. The kept-percent is the worst of the three. But Uber Eats has the highest first-order conversion to a return customer in this market, and the in-app cross-pollination with Uber rides means the platform brings discovery volume that the other two don&rsquo;t. If your restaurant is in a high-foot-traffic urban node where Uber rides are a meaningful customer-flow source, Uber Eats is probably the one to keep.</p>
 
+    <p>Before the walk, put the two ends of the decision side by side &mdash; the platform you almost always keep against the one you almost always cut first. Everything in the tree below is a variation on choosing between these two columns.</p>
+
+    <div role="group" aria-label="The platform to keep versus the one to drop first, head to head" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0">
+      <div class="snippet-box" data-tone="good">
+        <span class="snippet-label">Keep: DoorDash</span>
+        <p style="margin:0 0 8px"><strong>Kept on $42:</strong> $7.73, or 18.4% &mdash; the highest of the three third-party tiers.</p>
+        <p style="margin:0 0 8px"><strong>Second layer:</strong> a sponsored-listing promo fee averaging $1.20 per opted-in order &mdash; the smallest of the three, and one you can decline.</p>
+        <p style="margin:0"><strong>Keep it when:</strong> you run only one platform and want the most margin per third-party order. It is the default keep.</p>
+      </div>
+      <div class="snippet-box" data-tone="bad">
+        <span class="snippet-label">Drop first: Grubhub</span>
+        <p style="margin:0 0 8px"><strong>Kept on $42:</strong> $7.40, or 17.6% &mdash; the middle of the pack, so dropping it costs the least kept margin per lost order.</p>
+        <p style="margin:0 0 8px"><strong>Second layer:</strong> a $1.38 communication fee on every order &mdash; non-opt-in, the one line you cannot decline.</p>
+        <p style="margin:0"><strong>Drop it when:</strong> volume runs lowest (3&ndash;5&times; below the others here) and phantom listings are a brand-control problem. For most independents, that is always.</p>
+      </div>
+    </div>
+
     <p>I&rsquo;m on DoorDash and Uber Eats at one restaurant and DoorDash only at the other. Grubhub I dropped two years ago and have not regretted. The dropped Grubhub volume came back to the restaurants through other channels within a quarter &mdash; almost entirely to direct &mdash; suggesting the Grubhub orders were displaced, not net-new.</p>
+
+    <aside class="callout callout--field">
+      <p class="callout-eyebrow">From the floor</p>
+      <p class="callout-body">That&rsquo;s the call I land on when I run the same numbers for a friend opening a place &mdash; but I never lead with &ldquo;drop Grubhub.&rdquo; I walk the spine below with them, because the right answer is the one their own market reaches, not the one I hand over a beer. I&rsquo;ve seen Grubhub be exactly wrong to cut for a counter wedged next to an office tower where it somehow out-pulled the other two, and exactly right to cut everywhere else. Same math, opposite calls. The verdict is mine; the platform is theirs to walk to.</p>
+    </aside>
+
+    <p>So don&rsquo;t take the verdict on faith &mdash; walk the spine. Three questions, top to bottom; the first one that names your real situation hands you the move and stops you.</p>
+
+    <figure class="viz-figure article-figure" data-audio-alt="A decision tree for which delivery platform to keep, drop, or skip, built only from the numbers in this article. First branch: how many platforms are you on right now? On all three, the move is to drop Grubhub first, because it keeps seventeen point six percent on a forty-two dollar ticket, runs the lowest order volume of the three by a factor of three to five, and carries a one dollar thirty-eight communication fee you cannot opt out of. Second branch: if you are down to two and weighing the cut to one, keep DoorDash, because it keeps the most of any third-party tier at eighteen point four percent, and decide the second platform by your local discovery surface. Third branch: is your block a high-foot-traffic node where Uber rides feed real customer flow? If yes, keep Uber Eats despite its worst-of-three fifteen point nine percent kept rate, because its first-order conversion and ride cross-pollination earn the spend; if no, Uber Eats is the second platform to let go. The verdict pills read keep in green, drop in rust, and decide in amber.">
+      <ol class="viz-tree" aria-label="Three-branch decision tree for which delivery platform to keep or drop">
+        <li class="viz-tree__node">
+          <details open>
+            <summary><span class="viz-tree__num">1</span><span class="viz-tree__title">On all three platforms right now?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+            <div class="viz-tree__body">
+              <p>Grubhub keeps 17.6% on a $42 ticket &mdash; middle of the pack, so dropping it costs the least kept margin per lost order &mdash; while running the lowest order volume of the three (3&ndash;5&times; below the others) and charging a $1.38 communication fee you can&rsquo;t opt out of.</p>
+              <p><span class="viz-tree__verdict" data-tone="fail">Drop Grubhub first</span> The displaced volume tends to return through other channels within a quarter, mostly to direct.</p>
+              <p><span class="viz-tree__verdict" data-tone="warn">Down to two? Go to branch 2</span> You&rsquo;ve already cut the easy one. The next call is harder.</p>
+            </div>
+          </details>
+        </li>
+        <li class="viz-tree__node">
+          <details>
+            <summary><span class="viz-tree__num">2</span><span class="viz-tree__title">Weighing the cut from two platforms to one?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+            <div class="viz-tree__body">
+              <p>DoorDash Marketplace Plus keeps 18.4% on the $42 ticket &mdash; the highest of any third-party tier here &mdash; and its second-layer promo fee ($1.20, opt-in) is the smallest and the most optional of the three.</p>
+              <p><span class="viz-tree__verdict" data-tone="pass">Keep DoorDash</span> When you run a single platform, it is the default keep on margin alone.</p>
+              <p><span class="viz-tree__verdict" data-tone="warn">Go to branch 3</span> Which means the real question is whether the second platform &mdash; Uber Eats &mdash; earns its keep. Keep going.</p>
+            </div>
+          </details>
+        </li>
+        <li class="viz-tree__node">
+          <details>
+            <summary><span class="viz-tree__num">3</span><span class="viz-tree__title">Is your block a high-foot-traffic, Uber-rides node?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+            <div class="viz-tree__body">
+              <p>Uber Eats keeps the least of the three &mdash; 15.9% on the $42 ticket, dragged down by a $2.25 Pro membership fee &mdash; but it posts the highest first-order conversion to a return customer, and the in-app cross-pollination with Uber rides brings discovery volume the other two don&rsquo;t.</p>
+              <p><span class="viz-tree__verdict" data-tone="pass">Keep Uber Eats</span> Yes &mdash; where rides feed real customer flow, the discovery earns the worst kept-percent. This is the one case the lowest-margin platform survives the cut.</p>
+              <p><span class="viz-tree__verdict" data-tone="fail">Drop Uber Eats</span> No &mdash; off a ride corridor, the 15.9% kept rate is the one to let go, leaving DoorDash to carry the channel.</p>
+            </div>
+          </details>
+        </li>
+      </ol>
+      <figcaption>Three branches, decided by platform count and your block&rsquo;s discovery surface: Grubhub goes first, DoorDash stays on margin, and Uber Eats survives only where Uber rides feed the door.</figcaption>
+    </figure>
 
     <h2 id="what-this-changes-about-your-channel-mix">What this changes about your channel mix</h2>
 
