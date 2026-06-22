@@ -30,7 +30,7 @@ New work consolidates around the cost-intelligence funnel (the Cost Index, the l
   - `docs/voice-canon-sheets.md` — operator-sheets canon.
   - `docs/fact-check.md` + `data/sourced-claims.json` — the absolute fact gate. Every number, date, name, anecdote, percentage must be (a) registered in `sourced-claims.json`, (b) cited inline via `<details class="cite">`, or (c) labeled illustrative in the prose. Zero inventions.
 
-The current operator bio is singular: **Don Goldstein, full-time Front-of-House Manager at Tacombi in Bethesda.** Past roles live in `/about/#timeline` and in `data/sourced-claims.json#operator_experience_claims.past_roles`. Phrases that frame Don as currently managing more than one restaurant are blocked by `scripts/check-fabrications.mjs`.
+The operator bio: **Don Goldstein, full-time Front-of-House Manager at Tacombi — one restaurant brand, two locations: Bethesda, MD and Arlington, VA.** Past roles live in `/about/#timeline` and in `data/sourced-claims.json#operator_experience_claims.past_roles`. Tacombi is one restaurant with two locations — "Bethesda and Arlington," "both locations," and "DMV locations" are all true. What stays blocked by `scripts/check-fabrications.mjs` is any framing of Don as running a *second restaurant* or multiple distinct restaurants (rather than one brand across two locations).
 
 ## Key gates
 

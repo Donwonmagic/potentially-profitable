@@ -182,6 +182,16 @@
 .breadcrumb{padding-top:100px}
 .callout{padding:18px 22px;background:var(--cream-2);border-left:3px solid var(--teal);border-radius:8px;margin:24px 0}
 .callout p{margin:0;font-size:15.5px;line-height:1.6;color:var(--ink)}
+/* .snippet-box — the two-posture compare pattern, copied verbatim from the
+   decision-walkthrough library scaffold (service-charge-vs-tipping-model,
+   restaurant-app-decision). Rust border = the costlier/locked-in posture,
+   teal = the owned posture, matching the site's tone semantics. */
+.snippet-box{padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px;margin:12px 0;font-size:15.5px;line-height:1.6;color:var(--ink)}
+.snippet-box[data-tone="bad"]{border-left:3px solid var(--rust)}
+.snippet-box[data-tone="good"]{border-left:3px solid var(--teal)}
+.snippet-label{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);margin-bottom:6px;font-weight:600}
+.snippet-box[data-tone="bad"] .snippet-label{color:var(--rust)}
+.snippet-box[data-tone="good"] .snippet-label{color:var(--teal)}
 /* POS comparison table — reused from the toast-vs-square scaffold, repurposed
    for the eight-platform comparison. Pill-marks dropped in favor of plain
    text rows since this comparison is about pricing and fit, not feature
@@ -574,7 +584,13 @@ main{padding-top:64px}
             </aside>
             <!-- article-tldr:end -->
 
-    <p>If you have already searched for the best restaurant website platform and found every result was published by Wix, Squarespace, BentoBox, Popmenu, Owner.com, or Toast themselves, you have already noticed the problem. The vendor with a horse in the race writes the comparison; the platform that pays the affiliate gets the verdict. What follows is the version a vendor will not write: the three durable axes &mdash; ownership, the commission per online order, and the fit &mdash; before any feature checklist; the eight options side by side; and the decision tree that gets you to a platform you will still be on three years from now.</p>
+    <p>Picture the desk this gets decided on. Five tabs open across the top of the screen &mdash; Wix, Squarespace, BentoBox, Owner.com, Toast &mdash; each one a pricing page that looks reasonable in isolation and contradicts the other four side by side. A demo call is booked for Thursday. The reservation system renews next week. And every tab was written by the company selling the tab, so the comparison the operator actually needs &mdash; the one that puts all of them on the same row &mdash; is the one tab that does not exist. So this is not another ranked list to add to the pile; it is the walkthrough that turns the five tabs into one decision: a few questions, asked in order, where the first one that names your real situation hands you the platform and lets you close the rest.</p>
+
+    <p>Here is the answer first, so the rest of the page is the proof and not the suspense: <strong>the best restaurant website platform is the one whose ownership model, per-order commission, and built-for fit match your operation &mdash; not the one with the longest feature list.</strong> There is no single winner, and any page that names one is selling it. What there is, instead, is a clean order of questions: own it or rent it; what each one takes per online order; and how much done-for-you you actually want. Walk those three, in that order, and the eight options below sort themselves into the one or two that fit the restaurant you are actually running.</p>
+
+    <blockquote class="pullquote">
+      <p>The platform decision is never &ldquo;which builder is best.&rdquo; It is &ldquo;which one fits the budget you have, the person who will keep it current, and the single job the site has to do&rdquo; &mdash; and the right answer is almost never the one with the most features.</p>
+    </blockquote>
 
     <h2 id="what-owning-your-website-actually-means">What &ldquo;owning your website&rdquo; actually means (and why it&rsquo;s the first question)</h2>
 
@@ -583,6 +599,25 @@ main{padding-top:64px}
     <p>The split is sharper than most operators realize before the migration quote arrives. On a custom build, the HTML and CSS are yours, the <!-- LIBRARY:autolink:start --><a href="/glossary/menu-copy/" data-glossary-head="Menu copy" data-glossary-aka="the language doing the selling, separate from the dish" data-glossary-blurb="The words next to each item — the descriptive sentence, the dish name, the price as it appears on the page — viewed as a separate craft from the cooking itself.">menu copy</a><!-- LIBRARY:autolink:end --> is yours, the photographs are yours, the domain is registered in your name, and the hosting bill is on your card. Walking to a new host is a one-week handoff, not a rebuild. On every other option in this article &mdash; Wix, Squarespace, Square Online, BentoBox, Popmenu, Owner.com, Toast &mdash; the design lives inside the vendor&rsquo;s system. Squarespace lets you export your content as XML; Wix does not give you a portable site at all. Restaurant-specific platforms ship even less of the underlying file when you leave: the menu text, sometimes, but not the page structure, not the photographs in their served sizes, not the integrations. The export, where it exists, gets you out the door with a folder of plain text and a domain to point somewhere new.</p>
 
     <p>The reason this is the first question is that ownership is the variable you cannot retrofit. A restaurant that picks a builder for the first three years and grows past it will rebuild from scratch when it leaves &mdash; or stay locked in past the point the platform earns its keep. A restaurant that starts on a custom site can layer Wix or Squarespace on top of it later for a campaign microsite, and the underlying brand site stays put. The decision is asymmetric. The cost of starting custom is paid once, up front, in a quoted build. The cost of starting on a platform is paid every month, every commission, every renewal, and every time the vendor changes their pricing without asking.</p>
+
+    <p>Put the two underlying postures side by side before the platform names crowd them out &mdash; not a specific product yet, but the two ways a restaurant can hold its website over time. Almost every option below is a variation on one of these two columns.</p>
+
+    <div role="group" aria-label="A site you maintain on a rented platform versus a site built once that you own, head to head" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0">
+      <div class="snippet-box" data-tone="bad">
+        <span class="snippet-label">Rented &amp; maintained</span>
+        <p style="margin:0 0 8px"><strong>Who keeps it current:</strong> you, inside the vendor&rsquo;s editor, every month &mdash; or it drifts. The platform supplies the tools; the upkeep is still your evening.</p>
+        <p style="margin:0 0 8px"><strong>What you pay:</strong> a monthly fee forever, plus whatever the platform takes per online order, plus the next price increase you did not vote on.</p>
+        <p style="margin:0 0 8px"><strong>If you leave:</strong> you leave the website. The design, the page structure, and the served images stay behind; the export, where it exists, is a folder of plain text and a domain to repoint.</p>
+        <p style="margin:0"><strong>Right when:</strong> the website is a marketing surface, you want it live this month, and the monthly bill is small enough that lock-in is a fair trade for speed.</p>
+      </div>
+      <div class="snippet-box" data-tone="good">
+        <span class="snippet-label">Built once &amp; owned</span>
+        <p style="margin:0 0 8px"><strong>Who keeps it current:</strong> whoever you choose &mdash; the files are plain HTML and CSS, editable by you or any developer, on a host you can leave at any time.</p>
+        <p style="margin:0 0 8px"><strong>What you pay:</strong> the build once, up front, then roughly $0&ndash;10 a month for hosting and about $10 a year for the domain &mdash; and 0% platform commission on every order.</p>
+        <p style="margin:0 0 8px"><strong>If you leave:</strong> nothing to leave. The files, the content, and the domain are already in your name; moving hosts is a one-week handoff, not a rebuild.</p>
+        <p style="margin:0"><strong>Right when:</strong> you plan to keep the site for years, the ordering volume rewards a 0% channel, and owning the brand surface is worth a once-up-front cost.</p>
+      </div>
+    </div>
 
     <details class="cite">
       <summary>Source: Squarespace export documentation</summary>
@@ -697,7 +732,7 @@ main{padding-top:64px}
 
     <h3 id="bentobox">BentoBox</h3>
 
-    <p>BentoBox is the premium done-for-you platform for upscale, full-service restaurants where the website is part of the brand experience. The studio designs the site, custom photography pairs with editorial menu pages, and the result reads closer to a print magazine than a builder template. Pricing tiers run from a Foundations plan around $279 per month to a Signature plan around $479 a month per secondary coverage of BentoBox&rsquo;s pricing page; verify on getbento.com before signing, because the tiers have shifted before. Online ordering is an add-on with per-order or percentage fees layered on top of the monthly base. For an operator whose differentiation is the experience and whose marketing budget already supports a designer relationship, BentoBox earns its place. For a small or mid-tier operator, the monthly bill is the first thing to stress-test against the order volume.</p>
+    <p>BentoBox is the premium done-for-you platform for upscale, full-service restaurants where the website is part of the brand experience. BentoBox&rsquo;s own design team builds the site, custom photography pairs with editorial menu pages, and the result reads closer to a print magazine than a builder template. Pricing tiers run from a Foundations plan around $279 per month to a Signature plan around $479 a month per secondary coverage of BentoBox&rsquo;s pricing page; verify on getbento.com before signing, because the tiers have shifted before. Online ordering is an add-on with per-order or percentage fees layered on top of the monthly base. For an operator whose differentiation is the experience and whose marketing budget already supports a designer relationship, BentoBox earns its place. For a small or mid-tier operator, the monthly bill is the first thing to stress-test against the order volume.</p>
 
     <details class="cite">
       <summary>Source: BentoBox pricing page + secondary coverage</summary>
@@ -763,7 +798,7 @@ main{padding-top:64px}
 
     <p>The table below is the picture a vendor will never publish: their option on the same line as the seven others, with the trade-offs each one asks the operator to accept. Click any column header to re-rank the eight rows &mdash; the small bars under the monthly column draw each platform&rsquo;s bill against Toast&rsquo;s top of range, so the cost spread reads at a glance. Read the &ldquo;best for&rdquo; column twice &mdash; the platform that fits an upscale, brand-driven concept is not the platform that fits a high-volume pickup-only operation, and the platform that fits a Toast-on-POS shop is not the one that fits a no-POS dine-in restaurant.</p>
 
-    <figure class="viz-figure" style="margin:48px 0;" data-audio-alt="A sortable comparison table of eight restaurant website platforms with four columns: do you own the site, the platform commission per online order, the monthly cost as of May twenty twenty-six, and the operator the platform fits. Row one, custom Muntin-built: yes you own it, zero percent platform commission on top of your own payment processor, roughly zero to ten dollars a month for hosting plus an annual domain on top of the upfront build, fits owner-operators who need to control the site for the long haul. Row two, Wix: no, lock-in to Wix, marketed as commission-free with tier-dependent fees per secondary coverage, sixteen to thirty-nine dollars a month on common tiers, fits a small dine-in restaurant launching tonight. Row three, Squarespace: no, content exports as XML only, zero percent platform commission with payment processor on top, twenty-three to forty-nine dollars a month on commerce tiers, fits a brand-led small restaurant whose ordering volume is low. Row four, Square Online: no, locked to Square Payments, no platform commission with processor fees varying by tier, free to about thirty-five dollars a month for the paid tier, fits a Square-on-POS shop that wants a basic ordering page. Row five, BentoBox: no, hosted by BentoBox, online ordering is a per-order or percentage add-on, two hundred seventy-nine to four hundred seventy-nine dollars a month plus add-ons per secondary coverage, fits an upscale full-service restaurant whose brand is the differentiator. Row six, Popmenu: no, hosted with a twelve-month contract, online ordering add-on around fifty dollars a month plus a dollar per order, one hundred seventy-nine to four hundred ninety-nine dollars a month plus three hundred dollars per extra location per secondary coverage, fits a multi-location group running marketing automation. Row seven, Owner dot com: no, hosted, zero percent platform commission with a five-percent guest support fee on Flat or five-percent restaurant commission on Flex, two hundred forty-nine to four hundred ninety-nine dollars a month, fits a restaurant whose direct ordering is the business. Row eight, Toast: no, hosted as part of the POS stack, zero percent platform commission on direct ordering with processing layered, three hundred to two thousand dollars a month all-in depending on terminals and add-ons, fits a restaurant where the website, the ordering, and the POS are one billed stack. The numbers are public-page reported figures or secondary coverage as of May twenty twenty-six. Verify with each vendor before signing.">
+    <figure class="viz-figure" style="margin:48px 0;" data-audio-alt="A sortable comparison table of eight restaurant website platforms with four columns: do you own the site, the platform commission per online order, the monthly cost as of May twenty twenty-six, and the operator the platform fits. Row one, custom build with your own files: yes you own it, zero percent platform commission on top of your own payment processor, roughly zero to ten dollars a month for hosting plus an annual domain on top of the upfront build, fits owner-operators who need to control the site for the long haul. Row two, Wix: no, lock-in to Wix, marketed as commission-free with tier-dependent fees per secondary coverage, sixteen to thirty-nine dollars a month on common tiers, fits a small dine-in restaurant launching tonight. Row three, Squarespace: no, content exports as XML only, zero percent platform commission with payment processor on top, twenty-three to forty-nine dollars a month on commerce tiers, fits a brand-led small restaurant whose ordering volume is low. Row four, Square Online: no, locked to Square Payments, no platform commission with processor fees varying by tier, free to about thirty-five dollars a month for the paid tier, fits a Square-on-POS shop that wants a basic ordering page. Row five, BentoBox: no, hosted by BentoBox, online ordering is a per-order or percentage add-on, two hundred seventy-nine to four hundred seventy-nine dollars a month plus add-ons per secondary coverage, fits an upscale full-service restaurant whose brand is the differentiator. Row six, Popmenu: no, hosted with a twelve-month contract, online ordering add-on around fifty dollars a month plus a dollar per order, one hundred seventy-nine to four hundred ninety-nine dollars a month plus three hundred dollars per extra location per secondary coverage, fits a multi-location group running marketing automation. Row seven, Owner dot com: no, hosted, zero percent platform commission with a five-percent guest support fee on Flat or five-percent restaurant commission on Flex, two hundred forty-nine to four hundred ninety-nine dollars a month, fits a restaurant whose direct ordering is the business. Row eight, Toast: no, hosted as part of the POS stack, zero percent platform commission on direct ordering with processing layered, three hundred to two thousand dollars a month all-in depending on terminals and add-ons, fits a restaurant where the website, the ordering, and the POS are one billed stack. The numbers are public-page reported figures or secondary coverage as of May twenty twenty-six. Verify with each vendor before signing.">
       <div class="pos-table-wrap">
         <div class="table-scroll"><table class="pos-table" data-viz-sortable>
           <thead>
@@ -777,7 +812,7 @@ main{padding-top:64px}
           </thead>
           <tbody>
             <tr>
-              <td class="feature-name">Custom (Muntin-built)<span class="note">HTML/CSS on a host you control</span></td>
+              <td class="feature-name">Custom build (your own files)<span class="note">HTML/CSS on a host you control</span></td>
               <td>Yes &mdash; files and domain in your name</td>
               <td>0% platform &middot; processor only (~2.9% + 30&cent;)</td>
               <td>~$0&ndash;10/mo hosting + ~$10/yr domain<span class="viz-magbar" style="--w:0.005" aria-hidden="true"></span><span class="note">Upfront build cost separate</span></td>
@@ -856,16 +891,26 @@ main{padding-top:64px}
     </details>
 
     <div class="callout">
-      <p><strong>The pricing comparison.</strong> For the line-itemized cost of a Muntin-style custom build &mdash; design, content, integrations, and the ongoing ten-dollar-month hosting line &mdash; see <a href="/library/custom-restaurant-website-pricing/">how much does a custom restaurant website cost</a>.</p>
+      <p><strong>The pricing comparison.</strong> For the line-itemized cost of a custom build &mdash; design, content, integrations, and the ongoing ten-dollar-month hosting line &mdash; see <a href="/library/custom-restaurant-website-pricing/">how much does a custom restaurant website cost</a>.</p>
     </div>
 
     <h2 id="how-to-choose-by-goal">How to choose, by what you&rsquo;re optimizing for</h2>
 
-    <p>The right platform is the one that fits what you are actually optimizing for &mdash; not the one with the longest feature list. Five operator profiles cover most cases; pick the one that maps closest to yours and the platform decision follows.</p>
+    <p>This is the spine of the whole decision: five operator goals, each routing to the platform that fits it, with the trade-off named under every branch. The right platform is the one that fits what you are actually optimizing for &mdash; not the one with the longest feature list. Open the branch that sounds like your restaurant first; the others are there for when your situation is on the seam between two.</p>
 
-    <p>The branches below are how an honest comparison would route an operator who showed up wanting an answer. They are not a verdict; they are the first cut, and the right platform under each branch is the one whose ownership, commission, and fit actually match. Read top to bottom; the first match is the starting point.</p>
+    <div class="callout">
+      <p class="callout-eyebrow">The number that decides which branch you can afford</p>
+      <p class="callout-body"><strong>On a $100 online order, the three direct-ordering routes land within a couple of dollars of each other &mdash; about $3 to $5 &mdash; while a marketplace keeps $15 to $30.</strong> That spread is why the tree below sorts on the channel before the features: a platform&rsquo;s per-order cut, not its monthly fee, is what compounds against your margin. Pick the branch whose math you can carry every week, then let the feature list break the tie inside it.</p>
+    </div>
 
-    <figure class="viz-figure" data-audio-alt="A decision tree of five operator goals mapped to the platform that fits each one, with the trade-offs named under each branch. Branch one, you need to own the site and want top page speed: a custom Muntin-style build is the fit, because the files and the domain are in your name and the hosting bill is ten dollars a month. Trade-off, the upfront build cost is paid once. Branch two, you need to ship tonight on a credit-card budget: Squarespace or Square Online is the fit, because the templates are clean and the monthly bill is under forty dollars. Trade-off, you do not own the site and the restaurant tooling is thin. Branch three, online ordering is the business: Owner dot com or Toast is the fit, because both are commission-free at the platform level and the math earns its keep at volume. Trade-off, the monthly bill is the highest in the comparison, and leaving the platform means rebuilding the channel. Branch four, you want upscale done-for-you brand design: BentoBox is the fit, because the studio takes the brief and ships a magazine-quality site. Trade-off, the bill compounds with add-ons. Branch five, you want marketing automation on autopilot: Popmenu is the fit because of the per-dish SEO pages and the automation stack, but read the twelve-month contract before signing &mdash; cancellation complaints are documented. Five branches, five honest first cuts. The verdict is what your numbers do under each.">
+    <p>Read the branches as <strong>if&rarr;then</strong>, not as a ranking. <strong>If</strong> you need to own the channel and want top page speed, <strong>then</strong> the answer is a custom build. <strong>If</strong> you need a clean site live this month on a credit-card budget, <strong>then</strong> it is Squarespace or Square Online. <strong>If</strong> online ordering is the business, <strong>then</strong> it is Owner.com or Toast. <strong>If</strong> the brand experience is the product, <strong>then</strong> it is BentoBox. <strong>If</strong> marketing automation across locations is the job, <strong>then</strong> it is Popmenu &mdash; with the contract read twice. They are not a verdict; they are the first cut, and the right platform under each branch is the one whose ownership, commission, and fit actually match.</p>
+
+    <aside class="callout callout--field">
+      <p class="callout-eyebrow">From the floor</p>
+      <p class="callout-body">When a friend opening a place asks me which platform to pick, I never start with a name. I ask who is going to keep the menu current at eleven on a Tuesday night &mdash; them, a manager, or nobody &mdash; because that one answer eliminates half the list before we talk price. The operators who pick the platform with the longest feature demo are the ones I watch abandon it by spring, because the features were never the bottleneck; the upkeep was. So I walk the branches below with them and let the goal they can least afford to get wrong pick the platform. The verdict is theirs to reach, not mine to hand them.</p>
+    </aside>
+
+    <figure class="viz-figure" data-audio-alt="A decision tree of five operator goals mapped to the platform that fits each one, with the trade-offs named under each branch. Branch one, you need to own the site and want top page speed: a custom build is the fit, because the files and the domain are in your name and the hosting bill is ten dollars a month. Trade-off, the upfront build cost is paid once. Branch two, you need to ship tonight on a credit-card budget: Squarespace or Square Online is the fit, because the templates are clean and the monthly bill is under forty dollars. Trade-off, you do not own the site and the restaurant tooling is thin. Branch three, online ordering is the business: Owner dot com or Toast is the fit, because both are commission-free at the platform level and the math earns its keep at volume. Trade-off, the monthly bill is the highest in the comparison, and leaving the platform means rebuilding the channel. Branch four, you want upscale done-for-you brand design: BentoBox is the fit, because BentoBox's own design team takes the brief and ships a magazine-quality site. Trade-off, the bill compounds with add-ons. Branch five, you want marketing automation on autopilot: Popmenu is the fit because of the per-dish SEO pages and the automation stack, but read the twelve-month contract before signing &mdash; cancellation complaints are documented. Five branches, five honest first cuts. The verdict is what your numbers do under each.">
       <ol class="viz-tree" aria-label="How to choose a restaurant website platform, by goal">
         <li class="viz-tree__node">
           <details open>
@@ -1109,7 +1154,7 @@ main{padding-top:64px}
   <div class="article-author-card__body" style="flex:1 1 280px;min-width:0">
     <p class="article-author-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px" id="article-author-h">About the author</p>
     <p class="article-author-card__name" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px"><a href="/about/" style="color:var(--ink)">Don Goldstein</a></p>
-    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.</p>
+    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and Arlington, and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.</p>
     <p class="article-author-card__creds" style="font-size:12px;color:var(--stone);margin:0 0 12px;letter-spacing:0.01em">ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC</p>
     <p class="article-author-card__cta" style="font-size:14px;margin:0">
       <a href="/about/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none;margin-right:14px">More about Don &rarr;</a>
@@ -1117,8 +1162,7 @@ main{padding-top:64px}
     </p>
   </div>
 </aside>
-<!-- article-author-card:end -->
-  </article>
+<!-- article-author-card:end -->  </article>
 
 </main>
 

@@ -273,13 +273,16 @@ and dollar figure on a library page must fit one of three patterns:
 There is no fourth pattern. If a claim doesn't fit any of these three,
 it doesn't ship.
 
-**The bio is singular.** The current operator bio is: *Don Goldstein,
-full-time Front-of-House Manager at Tacombi in Bethesda.* Past roles
+**The bio: one restaurant, two locations.** The current operator bio is: *Don Goldstein,
+full-time Front-of-House Manager at Tacombi in Bethesda and Arlington.* Past roles
 live in `/about/#timeline` and in
 `data/sourced-claims.json#operator_experience_claims.past_roles`.
-Phrases that frame Don as currently managing more than one restaurant
-are blocked by `scripts/check-fabrications.mjs` and must not appear in
-any library prose, audio script, or feed.
+Tacombi is one restaurant brand with two locations (Bethesda, MD and
+Arlington, VA); "Bethesda and Arlington," "both locations," and "DMV
+locations" are all true and fine. What stays blocked is framing Don as
+running more than one *restaurant* (e.g. "two restaurants," "both
+restaurants") — `scripts/check-fabrications.mjs` rejects those, and they
+must not appear in any library prose, audio script, or feed.
 
 **When the canon and a deadline disagree, the canon wins.** A clean
 article with one verified figure beats a confident article with three

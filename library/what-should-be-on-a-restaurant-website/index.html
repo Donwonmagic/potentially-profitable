@@ -675,8 +675,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <!-- esl-bridge:end -->
 
       <h2 id="why-seven">Why seven?</h2>
-      <p>Most restaurant websites have too many pages. A "Careers" page nobody updates. An "Awards" page with a list from three years ago. A "Gallery" page with forty photos and no captions. Every dead page dilutes the pages that actually convert — and confuses Google about what the site is really about.</p>
-      <p>Here are the seven pages that earn their keep on nearly every independent restaurant site. Each one has a job. If a page doesn't have a job, it doesn't earn its place on the nav bar.</p>
+      <p>Picture the guest who decides whether to eat at your place tonight. She's on the sidewalk a block away, phone in one hand, deciding between you and the spot with the line out front. She thumbs your name, the site loads, and in a few seconds she's either walking toward your door or tapping back to the map. <strong>What should be on a restaurant website is whatever answers her three questions before she gives up: what kind of food, where, and how to book.</strong> Seven pages carry that load. Everything else is weight.</p>
+      <p>This is a field guide, not a theory of websites. Each of the seven pages below has one job, and the test for every page is the same: does it move a real person from the sidewalk to a booked table, or does it just sit there. A "Careers" page nobody updates, an "Awards" list from three years ago, a "Gallery" of forty captionless photos — each one dilutes the pages that convert and muddies what Google thinks the site is about. If a page doesn't have a job, it doesn't earn its place on the nav bar.</p>
+
+      <div class="callout">
+        <p class="callout-eyebrow">The window you're building for</p>
+        <p class="callout-body">The whole visit is decided in the first few seconds on a phone, on a slow connection, often in direct sunlight — before the guest has read a word of your story. The diagram below is the working instrument for this guide: trace the diner's walk from the search result to the front door, and build the page that carries each step. Five of the seven pages are stations on that walk. The other two wait off to the side to catch the inquiries the walk can't.</p>
+      </div>
 
       <figure class="viz-figure article-figure" data-audio-alt="The diner&rsquo;s walk from search result to front door, as five stations, each carried by one of the seven pages. Station one, the five-second test: the homepage answers what kind of food, where, and how to book before the thumb moves on &mdash; fail it and the visit ends on the sidewalk. Station two, the decision: the menu page, in real HTML text, lets the diner pick what to eat before they arrive &mdash; a PDF here means pinch-and-zoom in direct sunlight. Station three, the tiebreak: the about page gives a first-time customer a reason to choose you over the identical-looking restaurant next door &mdash; specifics, not passion-for-food copy. Station four, the conversion: the reservations or order page turns intent into action in the fewest possible taps, with the widget embedded rather than linked out. Station five, the arrival: location and hours remove every friction point between I want to go and I am walking in the door. Two of the seven pages sit off the walk on purpose: private events catches the high-value inquiry that has no Google Business Profile field, and contact catches everyone who needs a human without calling during dinner rush.">
         <ol class="viz-flow">
@@ -732,7 +737,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <h3>2. Menu</h3>
       <p><strong>Job:</strong> let someone decide what to eat before they arrive.</p>
-      <p>This is the most-visited page on every restaurant site I've ever audited. It's also the one most restaurants get wrong. The menu should be <strong>real HTML text</strong> — not a PDF, not a photo of a printed card, not an iframe from a third-party widget. Real text means: Google can crawl it, phones can render it at readable sizes, screen readers can read it, and you can update it in thirty seconds when you change the prix fixe.</p>
+      <p>On nearly every restaurant site, this is the most-visited page — and the one most restaurants get wrong. The menu should be <strong>real HTML text</strong> — not a PDF, not a photo of a printed card, not an iframe from a third-party widget. Real text means: Google can crawl it, phones can render it at readable sizes, screen readers can read it, and you can update it in thirty seconds when you change the prix fixe.</p>
       <ul>
         <li>Dish names, descriptions, and prices in real text</li>
         <li>Organized by course or category with clear headings</li>
@@ -740,7 +745,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li>A <!-- LIBRARY:autolink:start --><a href="/glossary/last-updated-signal/" data-glossary-head="Last-updated signal" data-glossary-aka="seasonal menu badge, &quot;this week&quot;, dated posts" data-glossary-blurb="Anything on your site that subtly tells a visitor &quot;someone is still running this place&quot; — a seasonal menu badge, a &quot;this week's specials&quot; block, a recent blog post, a dated press…">"last updated" date</a><!-- LIBRARY:autolink:end --> so customers know the prices are current</li>
       </ul>
 
-      <p class="pull-quote">If your menu is a PDF, you've already lost the customer who's reading it on a phone in direct sunlight.</p>
+      <blockquote class="pullquote">
+        <p>If your menu is a PDF, you've already lost the customer who's reading it on a phone in direct sunlight.</p>
+      </blockquote>
 
       <figure class="viz-figure article-figure" data-audio-alt="Two versions of the same menu, side by side. The first, marked as what is there now, is a PDF link — diners pinch and zoom on a phone, Google cannot crawl the dish names, screen readers cannot read it, and updating the prix fixe means re-exporting and re-uploading the file. The second, marked as what should be there, is real HTML — dish names, descriptions, and prices in plain text, organized by course with dietary markers and a last-updated date. Google indexes every dish, the page renders at readable sizes on every phone, screen readers can read it, and a price change takes thirty seconds.">
         <div class="snippet-box" data-tone="bad">
@@ -761,7 +768,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <h3>4. Reservations / Order Online</h3>
       <p><strong>Job:</strong> convert intent into action with the fewest possible clicks.</p>
       <p>This might be a dedicated page or a persistent button that lives on every page — either way, the customer should never be more than one tap away from booking a table or starting an order. If you use OpenTable, Resy, Tock, or another platform, embed the widget directly in your page rather than linking out. Every click away from your site is a chance for the customer to get distracted.</p>
-      <p>If you do your own takeout or delivery, route orders through your POS (Toast, Square, ChowNow) rather than through third-party marketplace apps. The <!-- LIBRARY:autolink:start --><a href="/glossary/commission/" data-glossary-head="Commission" data-glossary-aka="the % a platform takes per order" data-glossary-blurb="The percentage an aggregator or payment platform keeps per transaction.">commission</a><!-- LIBRARY:autolink:end --> savings alone — often 15–30% per order — pay for the website within months.</p>
+      <p>If you do your own takeout or delivery, route orders through your POS (Toast, Square, ChowNow) rather than through third-party marketplace apps. The <!-- LIBRARY:autolink:start --><a href="/glossary/commission/" data-glossary-head="Commission" data-glossary-aka="the % a platform takes per order" data-glossary-blurb="The percentage an aggregator or payment platform keeps per transaction.">commission</a><!-- LIBRARY:autolink:end --> a marketplace keeps — often 15–30% per order — stays in the house on every order that comes through your own page instead.</p>
+
+      <aside class="callout callout--field">
+        <p class="callout-eyebrow">From the floor</p>
+        <p class="callout-body">The test I run on this page is a stopwatch. From a cold homepage on my phone, how many taps to a held table? If it's more than two, something is in the way — a splash screen, a "reservations" link that opens a new tab, a widget that takes a beat to load on the dining-room Wi-Fi. I'd rather the booking button be the loudest thing above the fold and the prettiest hero photo come second. Nobody ever left because the reserve button was too easy to find.</p>
+      </aside>
 
       <h3>5. Private Events / Catering</h3>
       <p><strong>Job:</strong> capture high-value inquiries that have nowhere to live on Google.</p>
@@ -872,15 +884,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption>Three gates &mdash; any page that fails all three is a page that&rsquo;s costing the site more than it gives back.</figcaption>
       </figure>
 
-      <p>Here's the <!-- LIBRARY:autolink:start --><a href="/glossary/sitemap/" data-glossary-head="Sitemap" data-glossary-aka="sitemap.xml" data-glossary-blurb="A file at /sitemap.xml on your domain that lists every public page on your site.">sitemap</a><!-- LIBRARY:autolink:end --> I start with for most independent restaurant builds:</p>
+      <p>Build the page in this order. The sequence isn't about importance — every one of the seven matters — it's about unblocking the diner's walk earliest. Ship the pages that get a hungry stranger from the search result to a held table first; ship the pages that catch the off-the-walk inquiries last. Each step maps to a slot in your <!-- LIBRARY:autolink:start --><a href="/glossary/sitemap/" data-glossary-head="Sitemap" data-glossary-aka="sitemap.xml" data-glossary-blurb="A file at /sitemap.xml on your domain that lists every public page on your site.">sitemap</a><!-- LIBRARY:autolink:end -->.</p>
       <ol>
-        <li><strong>Homepage</strong> — cuisine, location, vibe, hours, <!-- LIBRARY:autolink:start --><a href="/glossary/cta/" data-glossary-head="Call to action" data-glossary-aka="CTA" data-glossary-blurb="The specific button or link that asks a visitor to do the next thing — &quot;Reserve a Table&quot;, &quot;Order Online&quot;, &quot;Book a Class&quot;, &quot;Get a Quote&quot;.">CTA</a><!-- LIBRARY:autolink:end --></li>
-        <li><strong>Menu</strong> — real HTML, organized, priced, dated</li>
-        <li><strong>About</strong> — sourcing, team, story, one good photo</li>
-        <li><strong>Reservations / Order</strong> — embedded widget, one-tap</li>
-        <li><strong>Private Events</strong> — spaces, capacity, inquiry form</li>
-        <li><strong>Location &amp; Hours</strong> — map, address, parking, transit</li>
-        <li><strong>Contact</strong> — form, email, phone, social</li>
+        <li>Build the <strong>Menu</strong> page first — real HTML, organized by course, priced, dated. It's the most-visited page; if nothing else ships, this one has to.</li>
+        <li>Build the <strong>Location &amp; Hours</strong> page next — copyable address, embedded map, today's hours, parking, transit. This is the arrival; it removes the last friction before the door.</li>
+        <li>Wire up <strong>Reservations / Order</strong> — embed the widget, make it one tap, and put the button above the fold on every page.</li>
+        <li>Build the <strong>Homepage</strong> on top of those three — cuisine, location, vibe, today's hours, and the <!-- LIBRARY:autolink:start --><a href="/glossary/cta/" data-glossary-head="Call to action" data-glossary-aka="CTA" data-glossary-blurb="The specific button or link that asks a visitor to do the next thing — &quot;Reserve a Table&quot;, &quot;Order Online&quot;, &quot;Book a Class&quot;, &quot;Get a Quote&quot;.">CTA</a><!-- LIBRARY:autolink:end -->, all answered in the first few seconds.</li>
+        <li>Write the <strong>About / Our Story</strong> page — sourcing, team, the room, one real photo. This is the tiebreak, so it can follow the conversion path, not lead it.</li>
+        <li>Stand up the <strong>Private Events</strong> page — spaces, capacity ranges, a sample menu, an inquiry form. It catches the high-value inquiry that has nowhere else to land.</li>
+        <li>Finish with <strong>Contact</strong> — a working form, email, phone, social. Keep it to name, email, and message.</li>
       </ol>
       <p>Seven pages. Each one has a job. If your site has more than this, ask yourself what each extra page is doing. If the answer is "nothing," cut it. Your visitors and Google will both thank you.</p>
 
@@ -902,7 +914,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <div class="article-author-card__body" style="flex:1 1 280px;min-width:0">
     <p class="article-author-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px" id="article-author-h">About the author</p>
     <p class="article-author-card__name" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px"><a href="/about/" style="color:var(--ink)">Don Goldstein</a></p>
-    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.</p>
+    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and Arlington, and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.</p>
     <p class="article-author-card__creds" style="font-size:12px;color:var(--stone);margin:0 0 12px;letter-spacing:0.01em">ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC</p>
     <p class="article-author-card__cta" style="font-size:14px;margin:0">
       <a href="/about/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none;margin-right:14px">More about Don &rarr;</a>

@@ -238,6 +238,20 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <link rel="preload" as="style" href="/assets/site-core.css?v=2830bb0a913c" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=158a407ca00a" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="/assets/site-core.css?v=2830bb0a913c"><link rel="stylesheet" href="/assets/site-article.css?v=158a407ca00a"></noscript>
+<style>
+  /* ============ TWO-COLUMN REBUILD-VS-PATCH COMPARE ============ */
+  /* Same .snippet-box pattern the decision-walkthrough library articles
+     ship inline (restaurant-app-decision, service-charge, commission-free).
+     Two postures head to head: rebuild the site (rust) vs patch the leaks
+     (teal). The grid wrapper is inline on the markup; these rules carry the
+     card chrome. */
+  .snippet-box { padding: 16px 20px; background: var(--cream-2); border: 1px solid var(--line); border-radius: 8px; margin: 12px 0; font-size: 15.5px; line-height: 1.6; color: var(--ink); }
+  .snippet-box[data-tone="bad"] { border-left: 3px solid var(--rust); }
+  .snippet-box[data-tone="good"] { border-left: 3px solid var(--teal); }
+  .snippet-label { display: block; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--stone); margin-bottom: 6px; font-weight: 600; }
+  .snippet-box[data-tone="bad"] .snippet-label { color: var(--rust); }
+  .snippet-box[data-tone="good"] .snippet-label { color: var(--teal); }
+</style>
 <!-- article-abstract-mentions:start -->
 <script type="application/ld+json">
 {
@@ -549,7 +563,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <div class="post-hero">
         <h1>When to Rebuild Your Restaurant Website: A Decision Framework</h1>
         <p class="post-dek">
-          Most operators rebuild 18 months too late. The seven-question framework I run with every studio client — and three case threads showing what each answer actually changes.
+          Most operators rebuild 18 months too late. A seven-question framework for the rebuild-or-fix-it call — and three case threads showing what each answer actually changes.
         </p>
         <p class="post-meta">
           8 min read · By <a href="/about/" class="author-chip"><strong>The Muntin Desk</strong></a>
@@ -603,11 +617,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             </aside>
             <!-- article-tldr:end -->
 
-      <p>The conversation almost always starts the same way: an operator has two quotes for a rebuild that differ by 3-4x, neither developer has asked what's actually broken, and the operator isn't really asking which quote to take. They're asking whether to rebuild at all. That's the harder question, and almost nobody helps operators answer it.</p>
+      <p>The site still works. Hours load, the menu&rsquo;s there, the reserve button reaches the right form. But you opened it on your phone last week next to a competitor&rsquo;s, and yours felt three years old next to theirs. Somewhere underneath &ldquo;it&rsquo;s fine&rdquo; a question has been forming: <em>should we just start over?</em> That&rsquo;s the question worth answering carefully, because the wrong answer costs money in both directions &mdash; a rebuild you didn&rsquo;t need, or a year of leaks you could have stopped for a few hundred dollars.</p>
 
-      <p>The honest answer is that most independent restaurants rebuild 12-24 months later than they should — by which time the rebuild costs more (because there's more to migrate), takes longer (because the bookings <!-- LIBRARY:autolink:start --><a href="/glossary/funnel/" data-glossary-head="Funnel" data-glossary-aka="the path from visitor to customer" data-glossary-blurb="The sequence of steps a visitor goes through before becoming a customer — landing page → menu page → reserve button → reservation form → confirmation.">funnel</a><!-- LIBRARY:autolink:end --> has gotten worse), and the operator is making the decision under stress instead of under planning.</p>
+      <p>Here is the answer-first version, so the rest of the page is the proof and not the suspense: <strong>the decision is almost never &ldquo;rebuild or don&rsquo;t&rdquo; &mdash; it&rsquo;s &ldquo;rebuild, patch, or leave it,&rdquo; and your site&rsquo;s own numbers already point at one of the three.</strong> The honest pattern is that most independent restaurants rebuild 12-24 months later than they should &mdash; by which time the rebuild costs more (there&rsquo;s more to migrate), takes longer (the bookings <!-- LIBRARY:autolink:start --><a href="/glossary/funnel/" data-glossary-head="Funnel" data-glossary-aka="the path from visitor to customer" data-glossary-blurb="The sequence of steps a visitor goes through before becoming a customer — landing page → menu page → reserve button → reservation form → confirmation.">funnel</a><!-- LIBRARY:autolink:end --> has decayed further), and the call gets made under stress instead of under planning.</p>
 
-      <p>This is the seven-question diagnostic I run through before recommending a rebuild — or, just as often, recommending against one and pointing at three small changes that buy another year.</p>
+      <p>So don&rsquo;t take that on faith &mdash; walk it. What follows is a seven-question diagnostic you run on your own site, top to bottom, no consultant in the loop. Each question hands you a signal, you tally the signals, and the tally lands you on one of three verdicts: <strong>rebuild now</strong>, <strong>patch the leaks for another year</strong>, or <strong>leave it &mdash; the site isn&rsquo;t the constraint yet</strong>. Start with the one number that frames all seven.</p>
 
             <figure class="viz-figure article-figure" data-audio-alt="Where three example Storefront Health scores fall against the two decision lines on the zero-to-one-hundred scale. The rebuild line sits at sixty and the fix-the-leaks line sits at eighty. A site scoring fifty-five falls left of the rebuild line, so the platform is almost certainly the ceiling and a rebuild is the verdict. A site scoring sixty-eight lands in the band between the two lines, the maybe-rebuild zone where the seven questions decide it. A site scoring eighty-four clears the fix-the-leaks line, so a targeted CDN and image pass usually buys another year without a rebuild. Read your own score against the two lines before you price a single quote.">
         <div class="viz-bars">
@@ -634,7 +648,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <h2 id="question-1-how-does-it-score-on-storefront-health">Question 1: How does it score on Storefront Health?</h2>
 
-      <p>Run <a href="/tools/storefront-health/">Storefront Health</a> on your site. The composite scorecard rolls speed, SEO, mobile, schema, GBP, and the Restaurant Audit into one number, 0-100. The chart above maps the bands. The cheap path: a sub-score below the rest is usually one targeted fix away from pulling the composite back into the green.</p>
+      <p>Run <a href="/tools/storefront-health/">Storefront Health</a> on your site. The composite scorecard rolls speed, SEO, mobile, schema, GBP, and the Restaurant Audit into one number, 0-100. The chart above maps the bands.</p>
+
+      <p>Read the number against the two lines and you have a provisional verdict before you touch the other six questions. <strong>If</strong> you score below 60, <strong>then</strong> the platform itself is almost certainly the ceiling, and the rest of the diagnostic mostly confirms a rebuild you can already see coming. <strong>If</strong> you score 80 or above, <strong>then</strong> you&rsquo;re in patch territory: a single sub-score is dragging the composite, and one targeted fix usually pulls it back into the green for another year. <strong>If</strong> you land in the 60-79 band, <strong>then</strong> hold the verdict open &mdash; the next six questions are what decide it, and they&rsquo;re where the call actually gets earned.</p>
 
       <h2 id="question-2-can-your-cms-update-without-breaking-the-site">Question 2: Can your CMS update without breaking the site?</h2>
 
@@ -650,6 +666,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>Run <a href="/tools/speed-test/">Speed Test</a> on the homepage and the busiest interior page. If the homepage is fast but the menu page is slow, the platform isn't the issue — the page is. If both are slow, the platform usually is.</p>
 
+      <blockquote class="pullquote">
+        <p>Most operators don&rsquo;t rebuild because they can&rsquo;t picture what the rebuilt thing looks like. The framework is a forcing function. Run the questions. The answer almost always already exists.</p>
+      </blockquote>
+
+      <p>Questions 1 through 4 are the platform&rsquo;s report card &mdash; speed, indexing, the bones. The last three are about whether the site fits how you actually run the room. They&rsquo;re softer signals, but they&rsquo;re the ones that quietly decide whether &ldquo;fine&rdquo; is really fine.</p>
+
       <h2 id="question-5-can-you-ship-a-small-change-in-under-an-hour">Question 5: Can you ship a small change in under an hour?</h2>
 
       <p>Test: try to update the <!-- LIBRARY:autolink:start --><a href="/glossary/holiday-hours/" data-glossary-head="Holiday hours" data-glossary-aka="the recurring per-date overrides every restaurant has to make every year" data-glossary-blurb="The subset of special hours that recur on a calendar — closed on Thanksgiving and Christmas Day, early-close on Christmas Eve, brunch-only on Mother's Day, extended hours for St.">holiday hours</a><!-- LIBRARY:autolink:end --> on your homepage in the next 60 minutes. If you can't (no access, complex CMS, requires a developer), that's a rebuild signal — not because the technical limitation is fatal, but because the operational burden compounds quietly. Every change you delay is a small leak.</p>
@@ -662,73 +684,16 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>Look at your monthly booking trend. If it's flat or declining and your site has been the same for 24+ months, doing nothing isn't actually neutral — the gap to your local competitors is widening even when your numbers look stable. The 18-month "do nothing" projection is almost always negative for a stale restaurant site.</p>
 
-            <figure class="article-figure" data-audio-alt="Three rebuild patterns · score band, scope, typical payback. High-scoring site, targeted fixes: Score 75–85. CDN, compress, schema fix. ~5–10% of rebuild cost. (defer). Sub-60 site, full rebuild: Platform itself caps the ceiling. Real HTML menu, full schema, fast funnel. (9–14 mo payback). Mid-range, partial rebuild: Front-end + photos, keep CMS. ~40% of full-rebuild cost. Watch the ceiling. (tradeoff). Three rebuild patterns · score band, scope, typical payback.">
-        <div class="recovery-stack reveal" role="img" aria-label="Three rebuild patterns · score band, scope, typical payback">
-          <div class="recovery-row recovery-1">
-            <div class="recovery-num">A</div>
-            <div>
-              <h4 class="i18n">High-scoring site, targeted fixes</h4>
-              <p class="recovery-sub i18n">Score 75–85. CDN, compress, schema fix. ~5–10% of rebuild cost.</p>
-            </div>
-            <div class="recovery-val">defer</div>
-          </div>
-          <div class="recovery-row recovery-2">
-            <div class="recovery-num">B</div>
-            <div>
-              <h4 class="i18n">Sub-60 site, full rebuild</h4>
-              <p class="recovery-sub i18n">Platform itself caps the ceiling. Real <!-- LIBRARY:autolink:start --><a href="/glossary/html-menu/" data-glossary-head="HTML menu" data-glossary-aka="not a PDF, not an image" data-glossary-blurb="A menu built as real text on a web page, instead of as a PDF file or a photograph of a printed card.">HTML menu</a><!-- LIBRARY:autolink:end -->, full schema, fast funnel.</p>
-            </div>
-            <div class="recovery-val">9–14 mo payback</div>
-          </div>
-          <div class="recovery-row recovery-3">
-            <div class="recovery-num">C</div>
-            <div>
-              <h4 class="i18n">Mid-range, partial rebuild</h4>
-              <p class="recovery-sub i18n">Front-end + photos, keep CMS. ~40% of full-rebuild cost. Watch the ceiling.</p>
-            </div>
-            <div class="recovery-val">tradeoff</div>
-          </div>
-        </div>
-        <figcaption class="i18n">Three rebuild patterns · score band, scope, typical payback</figcaption>
-      </figure>
-
-      <h2 id="three-case-threads">Three case threads</h2>
-
-      <p><strong>Case 1 — Bistro on a 75 score, doesn't rebuild:</strong> A six-year-old French bistro scoring 75 on Storefront Health. Mobile speed dragging the score down. We added a CDN, recompressed every image, fixed the menu schema. Score moved to 88; they deferred the rebuild for two more years and saved roughly $11K.</p>
-
-      <p><strong>Case 2 — Site below 60, rebuilds:</strong> Old front-end, slow on mobile, menu schema malformed, booking funnel hidden. The platform itself is the ceiling. The rebuild here is full custom: real HTML menu, dish-level <!-- LIBRARY:autolink:start --><a href="/glossary/structured-data/" data-glossary-head="Structured data" data-glossary-aka="the machine-readable copy of your site that Google reads" data-glossary-blurb="A small JSON block embedded in your website's &lt;head&gt; that mirrors the human-facing content (hours, address, menu items, reviews, prices) in a format search engines can index…">structured data</a><!-- LIBRARY:autolink:end -->, the booking funnel cleaned up. Score lands in the high 80s or 90s. Search-driven reservations roughly triple within 90 days because the missing schema starts firing in local-pack queries the site never appeared for before. Payback windows on rebuilds in this range are typically 9-14 months — but the leverage compounds as Google's index updates.</p>
-
-      <p><strong>Case 3 — Site at 65-70, partial rebuild:</strong> Platform fine, brand tired. Keep the CMS, replace the front-end and the photos at roughly 40% of a full-rebuild cost. Score moves into the low-mid 80s. Bookings tick up — but not as steeply as Case 2. The honest tradeoff worth flagging: a partial rebuild caps your ceiling at whatever the underlying platform allows for schema, speed, and indexing. Sometimes the right call; sometimes worth revisiting in 18 months when the platform's ceiling becomes the next constraint.</p>
-
-      <figure class="viz-figure article-figure" data-audio-alt="Storefront Health scores after each case's recommended action. Case A, the bistro that fixed leaks instead of rebuilding, moved from a starting score of seventy-five to eighty-eight. Case B, the sub-sixty site that committed to a full custom rebuild, lands in the high eighties or nineties — roughly ninety. Case C, the mid-range site that took the partial rebuild, moves from sixty-five to seventy into the low-mid eighties — roughly eighty-two. Three different starting scores, three different scopes of work, three landing spots in the same green band.">
-        <div class="viz-bars">
-          <p class="viz-bars__title">Storefront Health score after each case's action</p>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Case A · fix the leaks</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.88"></span></div>
-            <p class="viz-bars__num">75 &rarr; 88</p>
-          </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Case B · full rebuild</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.90"></span></div>
-            <p class="viz-bars__num">&lt;60 &rarr; ~90</p>
-          </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Case C · partial rebuild</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.82"></span></div>
-            <p class="viz-bars__num">65&ndash;70 &rarr; ~82</p>
-          </div>
-        </div>
-        <figcaption>Three starting scores, three scopes of work, three landings in the green band &mdash; but Case C's ceiling sits below the other two, which is the partial-rebuild tradeoff in one chart.</figcaption>
-      </figure>
+      <div class="callout">
+        <p class="callout-eyebrow">The number that reframes &ldquo;leave it&rdquo;</p>
+        <p class="callout-body"><strong>On a small-business site left unchanged, conversion tends to decay 10&ndash;30% over a 24-month window</strong> &mdash; not because the site got worse, but because competitors&rsquo; sites got better. That is the cost of the do-nothing path, and it is the number Question 7 is really measuring. Hold it against any rebuild quote before you decide the leave-it column is free: a flat trend on a stale site is a slow decline wearing a calm face.</p>
+      </div>
 
       <blockquote class="pullquote">
-        <p>Doing nothing isn't neutral. The gap to your local competitors widens every quarter your site doesn't.</p>
+        <p>Doing nothing isn&rsquo;t neutral. The gap to your local competitors widens every quarter your site doesn&rsquo;t.</p>
       </blockquote>
 
-      <blockquote class="pullquote">
-        <p>Most operators don't rebuild because they can't picture what the rebuilt thing looks like. The framework is a forcing function. Run the questions. The answer almost always already exists.</p>
-      </blockquote>
+      <p>That is all seven questions in front of you. Now collapse them into a single spine. Open each branch, read the verdict its answer earns, and keep a running tally &mdash; the count at the bottom is your verdict, not anyone else&rsquo;s opinion of your site.</p>
 
       <figure class="viz-figure article-figure" data-audio-alt="The seven-question rebuild diagnostic, each question carrying the verdict its answer produces. Question one, the Storefront Health score: below sixty is a rebuild verdict on its own, sixty to seventy-nine sends you to keep walking the questions, eighty and up is a fix-the-leaks verdict. Question two, whether the CMS updates without breaking: if it broke last time, that is a rebuild signal. Question three, whether the menu lives in HTML: a PDF or widget menu is invisible to dish-level search and counts as a signal. Question four, Core Web Vitals: LCP above four seconds on mobile or CLS above zero point two five is a signal. Question five, whether a small change ships in under an hour: if it cannot, the operational burden is already a leak. Question six, whether the brand matches the room: a templated site behind a considered dining room is a brand-design signal. Question seven, the eighteen-month do-nothing projection: flat or declining bookings on a stale site is rarely neutral. Tally the signals — one or two means fix the leaks, three or more means the rebuild is past due.">
         <ol class="viz-tree">
@@ -799,6 +764,92 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </ol>
         <figcaption>Open each question and read the verdict its answer earns &mdash; one or two signals means fix the leaks, three or more means the rebuild is past due.</figcaption>
       </figure>
+
+            <figure class="article-figure" data-audio-alt="Three rebuild patterns · score band, scope, typical payback. High-scoring site, targeted fixes: Score 75–85. CDN, compress, schema fix. ~5–10% of rebuild cost. (defer). Sub-60 site, full rebuild: Platform itself caps the ceiling. Real HTML menu, full schema, fast funnel. (9–14 mo payback). Mid-range, partial rebuild: Front-end + photos, keep CMS. ~40% of full-rebuild cost. Watch the ceiling. (tradeoff). Three rebuild patterns · score band, scope, typical payback.">
+        <div class="recovery-stack reveal" role="img" aria-label="Three rebuild patterns · score band, scope, typical payback">
+          <div class="recovery-row recovery-1">
+            <div class="recovery-num">A</div>
+            <div>
+              <h4 class="i18n">High-scoring site, targeted fixes</h4>
+              <p class="recovery-sub i18n">Score 75–85. CDN, compress, schema fix. ~5–10% of rebuild cost.</p>
+            </div>
+            <div class="recovery-val">defer</div>
+          </div>
+          <div class="recovery-row recovery-2">
+            <div class="recovery-num">B</div>
+            <div>
+              <h4 class="i18n">Sub-60 site, full rebuild</h4>
+              <p class="recovery-sub i18n">Platform itself caps the ceiling. Real <!-- LIBRARY:autolink:start --><a href="/glossary/html-menu/" data-glossary-head="HTML menu" data-glossary-aka="not a PDF, not an image" data-glossary-blurb="A menu built as real text on a web page, instead of as a PDF file or a photograph of a printed card.">HTML menu</a><!-- LIBRARY:autolink:end -->, full schema, fast funnel.</p>
+            </div>
+            <div class="recovery-val">9–14 mo payback</div>
+          </div>
+          <div class="recovery-row recovery-3">
+            <div class="recovery-num">C</div>
+            <div>
+              <h4 class="i18n">Mid-range, partial rebuild</h4>
+              <p class="recovery-sub i18n">Front-end + photos, keep CMS. ~40% of full-rebuild cost. Watch the ceiling.</p>
+            </div>
+            <div class="recovery-val">tradeoff</div>
+          </div>
+        </div>
+        <figcaption class="i18n">Three rebuild patterns · score band, scope, typical payback</figcaption>
+      </figure>
+
+      <h2 id="three-case-threads">Three case threads</h2>
+
+      <p>The tally lands every site in one of three places. Here is what each verdict looks like once it stops being a score and becomes a plan &mdash; three composite patterns, drawn from the kind of site each band describes.</p>
+
+      <p><strong>Case 1 — Bistro on a 75 score, doesn't rebuild:</strong> A six-year-old French bistro scoring 75 on Storefront Health, mobile speed dragging the number down. The fix is targeted, not structural: add a CDN, recompress every image, repair the menu schema. The score moves to 88, the rebuild defers for two more years, and the spend is a fraction of a full build &mdash; on the order of $11K saved against the quote that wasn&rsquo;t needed.</p>
+
+      <p><strong>Case 2 — Site below 60, rebuilds:</strong> Old front-end, slow on mobile, menu schema malformed, booking funnel hidden. The platform itself is the ceiling. The rebuild here is full custom: real HTML menu, dish-level <!-- LIBRARY:autolink:start --><a href="/glossary/structured-data/" data-glossary-head="Structured data" data-glossary-aka="the machine-readable copy of your site that Google reads" data-glossary-blurb="A small JSON block embedded in your website's &lt;head&gt; that mirrors the human-facing content (hours, address, menu items, reviews, prices) in a format search engines can index…">structured data</a><!-- LIBRARY:autolink:end -->, the booking funnel cleaned up. Score lands in the high 80s or 90s. Search-driven reservations roughly triple within 90 days because the missing schema starts firing in local-pack queries the site never appeared for before. Payback windows on rebuilds in this range are typically 9-14 months — but the leverage compounds as Google's index updates.</p>
+
+      <p><strong>Case 3 — Site at 65-70, partial rebuild:</strong> Platform fine, brand tired. Keep the CMS, replace the front-end and the photos at roughly 40% of a full-rebuild cost. Score moves into the low-mid 80s. Bookings tick up — but not as steeply as Case 2. The honest tradeoff worth flagging: a partial rebuild caps your ceiling at whatever the underlying platform allows for schema, speed, and indexing. Sometimes the right call; sometimes worth revisiting in 18 months when the platform's ceiling becomes the next constraint.</p>
+
+      <p>Strip the three cases down and the real fork is binary: is the platform the ceiling, or isn&rsquo;t it? Put the two postures side by side and the choice usually names itself.</p>
+
+      <div role="group" aria-label="Rebuild the site versus patch the leaks, head to head" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0">
+        <div class="snippet-box" data-tone="bad">
+          <span class="snippet-label">Rebuild now</span>
+          <p style="margin:0 0 8px"><strong>The tell:</strong> sub-60 score, a CMS you&rsquo;re afraid to update, a PDF or widget menu, both homepage and menu page slow. The platform itself is the cap.</p>
+          <p style="margin:0 0 8px"><strong>Scope:</strong> real HTML menu, dish-level schema, a clean booking funnel, fast on mobile &mdash; the bones, not the paint.</p>
+          <p style="margin:0"><strong>Payback:</strong> typically 9&ndash;14 months as the new schema starts firing in local-pack queries the old site never appeared for.</p>
+        </div>
+        <div class="snippet-box" data-tone="good">
+          <span class="snippet-label">Patch the leaks</span>
+          <p style="margin:0 0 8px"><strong>The tell:</strong> 80+ score with one sub-score lagging, a CMS that updates cleanly, an HTML menu already in place. One lever is loose, not the whole frame.</p>
+          <p style="margin:0 0 8px"><strong>Scope:</strong> a CDN, image compression, a schema repair, an hour of edits &mdash; days of work, not a project.</p>
+          <p style="margin:0"><strong>Payback:</strong> a fraction of a rebuild&rsquo;s cost buys another year, and you re-run the seven questions when something actually shifts.</p>
+        </div>
+      </div>
+
+      <p>The 60-79 band is the partial rebuild &mdash; the third column that lives between these two. It buys most of the lift for roughly 40% of a full build, with one caveat the chart below makes plain: it caps your ceiling at whatever the underlying platform allows.</p>
+
+      <figure class="viz-figure article-figure" data-audio-alt="Storefront Health scores after each case's recommended action. Case A, the bistro that fixed leaks instead of rebuilding, moved from a starting score of seventy-five to eighty-eight. Case B, the sub-sixty site that committed to a full custom rebuild, lands in the high eighties or nineties — roughly ninety. Case C, the mid-range site that took the partial rebuild, moves from sixty-five to seventy into the low-mid eighties — roughly eighty-two. Three different starting scores, three different scopes of work, three landing spots in the same green band.">
+        <div class="viz-bars">
+          <p class="viz-bars__title">Storefront Health score after each case's action</p>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Case A · fix the leaks</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.88"></span></div>
+            <p class="viz-bars__num">75 &rarr; 88</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Case B · full rebuild</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.90"></span></div>
+            <p class="viz-bars__num">&lt;60 &rarr; ~90</p>
+          </div>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label">Case C · partial rebuild</p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.82"></span></div>
+            <p class="viz-bars__num">65&ndash;70 &rarr; ~82</p>
+          </div>
+        </div>
+        <figcaption>Three starting scores, three scopes of work, three landings in the green band &mdash; but Case C's ceiling sits below the other two, which is the partial-rebuild tradeoff in one chart.</figcaption>
+      </figure>
+
+      <aside class="callout callout--field">
+        <p class="callout-eyebrow">From the floor</p>
+        <p class="callout-body">When a fellow operator asks me this over a beer, I never open with &ldquo;rebuild&rdquo; or &ldquo;don&rsquo;t.&rdquo; I open with the score and the seven questions, because the right verdict is the one their own site reaches, not the one I hand them. I&rsquo;ve sat with someone whose 84 just needed a CDN and an afternoon, and with someone whose 52 was never going to climb out of the platform it was trapped in &mdash; same conversation, opposite endings. The call isn&rsquo;t mine to declare. It&rsquo;s theirs to walk to.</p>
+      </aside>
 
       <h2 id="how-to-use-this-framework">How to use this framework</h2>
 
@@ -1025,7 +1076,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <div class="article-author-card__body" style="flex:1 1 280px;min-width:0">
     <p class="article-author-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px" id="article-author-h">About the author</p>
     <p class="article-author-card__name" style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 6px"><a href="/about/" style="color:var(--ink)">Don Goldstein</a></p>
-    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.</p>
+    <p class="article-author-card__bio" style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px">I&rsquo;m Don. I&rsquo;m front-of-house manager at Tacombi in Bethesda and Arlington, and the founder of Muntin Digital &mdash; the company behind this library, the Cost Index, and Muntin Ledger. Every article here comes from a problem I saw on the floor.</p>
     <p class="article-author-card__creds" style="font-size:12px;color:var(--stone);margin:0 0 12px;letter-spacing:0.01em">ServSafe Manager &middot; ServSafe Allergens &middot; RAM Alcohol Awareness &middot; Maryland LLC</p>
     <p class="article-author-card__cta" style="font-size:14px;margin:0">
       <a href="/about/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none;margin-right:14px">More about Don &rarr;</a>
