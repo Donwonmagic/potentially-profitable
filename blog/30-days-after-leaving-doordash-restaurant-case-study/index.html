@@ -499,44 +499,55 @@ main{padding-top:64px}
             </aside>
             <!-- article-tldr:end -->
 
-    <p>Start from the channel math. On the standard <a href="https://merchants.doordash.com/en-us/pricing" rel="noopener" style="color:var(--teal)">Marketplace Plus tier (30% <a href="/glossary/commission/" style="color:var(--teal)">commission</a>)</a>, the kept rate on a third-party ticket lands near 18% after all fees and food/<!-- LIBRARY:autolink:start --><a href="/glossary/labor-cost/" data-glossary-head="Labor cost" data-glossary-aka="wages + payroll taxes, as a % of sales" data-glossary-blurb="Wages, payroll taxes, and the tipped-employee contribution expressed as a percentage of sales.">labor cost</a><!-- LIBRARY:autolink:end -->; the same ticket ordered direct keeps closer to 29%. Those are the two numbers the entire delisting decision rests on, and the side-by-side walkthrough is in the <a href="/library/third-party-delivery-economics/" style="color:var(--teal)">DoorDash margin walk</a>. The case for delisting is not that the platform is bad &mdash; it&rsquo;s that the operator is usually carrying the channel on a belief about discovery that doesn&rsquo;t survive contact with their own books.</p>
+    <p>It&rsquo;s a Sunday night after the close, and the only thing left on the screen is a toggle. Pause storefront. The operator&rsquo;s thumb has been over it for a week &mdash; ever since the statement came back and the kept rate on the platform tickets read like a number somebody had typed wrong. They press it. The store goes dark on the app. No announcement, no countdown, no email blast. Monday opens like any other Monday, except one channel is gone, and nobody on the floor knows yet what that does to the next thirty days.</p>
 
-    <p>The decision lands on a Sunday night: close the storefront, don&rsquo;t reopen, don&rsquo;t announce. The phone calls and walk-ins keep coming. The next four weeks have a shape worth knowing in advance.</p>
+    <p>I&rsquo;ve watched that exact pause from across a host stand, and watched the month that follows it. <strong>Delisting from DoorDash without a discovery replacement produces a predictable shape: a single-digit revenue dip in week one, most of it recovered by week four, and a kept margin per ticket that climbs because every recaptured order moves from the ~18% kept-rate third-party channel to the ~29% kept-rate direct channel.</strong> Those two numbers &mdash; 18% kept on the standard <a href="https://merchants.doordash.com/en-us/pricing" rel="noopener" style="color:var(--teal)">Marketplace Plus tier (30% <a href="/glossary/commission/" style="color:var(--teal)">commission</a>)</a> after every fee and food/<!-- LIBRARY:autolink:start --><a href="/glossary/labor-cost/" data-glossary-head="Labor cost" data-glossary-aka="wages + payroll taxes, as a % of sales" data-glossary-blurb="Wages, payroll taxes, and the tipped-employee contribution expressed as a percentage of sales.">labor cost</a><!-- LIBRARY:autolink:end -->, against 29% kept on the same ticket ordered direct &mdash; are the whole decision. The side-by-side walkthrough lives in the <a href="/library/third-party-delivery-economics/" style="color:var(--teal)">DoorDash margin walk</a>.</p>
 
-    <figure class="viz-figure article-figure" data-audio-alt="The misread that the whole delisting turns on, shown as two splits of the same third-party order volume. Before delisting, the operator believes the platform is doing real discovery work: roughly forty percent net-new customers the restaurant would never have reached, sixty percent existing regulars using a more convenient app. After delisting, the recaptured-order data usually reveals the opposite shape: closer to ten percent net-new discovery, ninety percent displaced relationship orders that were always going to come back. The gap between those two pictures, an illustrative thirty-point swing, is why revenue recovers far faster than the operator braced for, and why the kept-margin lift on direct orders is nearly all upside.">
-      <div class="viz-bars">
-        <p class="viz-bars__title">What the third-party channel was actually doing: belief vs. recaptured-order reality (illustrative split of the same order volume)</p>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">Belief — net-new discovery</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.40"></span></div>
-          <p class="viz-bars__num">~40%</p>
+    <p>You&rsquo;re not crazy if that pause has been yours. The case for delisting was never that the platform is bad. It&rsquo;s that the channel rides on a belief about discovery &mdash; that the app is bringing in strangers who&rsquo;d never have found you &mdash; and that belief doesn&rsquo;t survive contact with your own books. What follows is the month, told in the order it arrives: the Sunday toggle, the four weeks after, and the one misread that makes the whole thing recover faster than the operator braced for.</p>
+
+    <blockquote class="pullquote">
+      <p>The case for delisting is not that the platform is bad. It&rsquo;s that the operator is carrying the channel on a belief about discovery that doesn&rsquo;t survive contact with their own books.</p>
+    </blockquote>
+
+    <figure class="viz-figure article-figure" data-audio-alt="The misread that the whole delisting turns on, shown as the single proportion it rests on: how much of the third-party channel was genuinely net-new discovery. Two rings of the same order volume. On the left, what the operator believes before delisting — roughly forty percent net-new customers the restaurant would never have reached on its own, the rest existing regulars using a more convenient app. On the right, what the recaptured-order data usually shows after delisting — closer to ten percent net-new discovery, the other ninety percent displaced relationship orders that were always going to come back through the door. That gap, an illustrative thirty-point drop in the discovery share, is why revenue recovers far faster than the operator braced for and why the kept-margin lift on direct orders is nearly all upside.">
+      <div class="viz-rings">
+        <div class="viz-ring" data-band="warn" style="--score:40;">
+          <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-belief" focusable="false">
+            <title id="ring-belief">Belief: about forty percent of platform orders are net-new discovery</title>
+            <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
+            <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
+            <text class="viz-ring__num" x="60" y="60" text-anchor="middle">~40%</text>
+          </svg>
+          <p class="viz-ring__label"><strong>What you believe</strong>net-new discovery, before delisting</p>
         </div>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">Belief — displaced regulars</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.60"></span></div>
-          <p class="viz-bars__num">~60%</p>
+        <div class="viz-ring" data-band="bad" style="--score:10;--delay:140ms;">
+          <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-reality" focusable="false">
+            <title id="ring-reality">Reality: about ten percent of platform orders are net-new discovery</title>
+            <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
+            <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
+            <text class="viz-ring__num" x="60" y="60" text-anchor="middle">~10%</text>
+          </svg>
+          <p class="viz-ring__label"><strong>What the orders show</strong>net-new discovery, after delisting</p>
         </div>
-        <p class="viz-bars__note"><strong>After delisting, the same volume usually re-sorts the other way:</strong></p>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">Reality — net-new discovery</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.10"></span></div>
-          <p class="viz-bars__num">~10%</p>
-        </div>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">Reality — displaced regulars</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.90"></span></div>
-          <p class="viz-bars__num">~90%</p>
-        </div>
-        <p class="viz-bars__note">Illustrative shares, not a measured cohort. The point is the <strong>direction</strong> of the misread: discovery is smaller, relationship is larger. That is what makes the recovery fast and the kept-margin lift nearly free.</p>
       </div>
-      <figcaption>The delisting decision rests on this re-sort. When most of the channel turns out to be displaced regulars rather than net-new discovery, those orders come back through the direct door at the 29% kept rate instead of 18% — per the <a href="/library/third-party-delivery-economics/">DoorDash margin walk</a>.</figcaption>
+      <figcaption>The delisting decision rests on one proportion: the share of the channel that was genuinely net-new. Illustrative, not a measured cohort &mdash; but when most of it turns out to be displaced regulars, those orders come back through the direct door at the 29% kept rate instead of 18%, per the <a href="/library/third-party-delivery-economics/">DoorDash margin walk</a>.</figcaption>
     </figure>
 
     <h2 id="week-1-panic-that-didn-t-arrive">Week 1: panic that didn&rsquo;t arrive</h2>
 
-    <p>Most operators brace for a 20&ndash;30% revenue drop in week one. The actual drop is usually smaller because the platform&rsquo;s third-party order volume partially redistributes inside the same week &mdash; some to walk-in, some to phone orders, some to your own website. The drop is real, but the bigger surprise is how much of it doesn&rsquo;t leave for good.</p>
+    <p>The first week is the one the operator loses sleep over before it starts. Everyone braces for a 20&ndash;30% revenue drop the morning the channel goes dark. What actually arrives is smaller, because the third-party order volume doesn&rsquo;t evaporate &mdash; it redistributes inside the same week, some to walk-in, some to the phone, some to the website. The drop is real. The surprise is how little of it leaves for good. Hold those two pictures side by side:</p>
 
-    <p>Week-one recovery is not passive. The seven-day playbook below is what to run starting Monday morning, day-after-delisting. None of it requires a new tool, a new vendor, or a new line item on the P&amp;L. The order matters: the highest-converting moves go first while the customer attention is still on the change.</p>
+    <div class="snippet-box" data-tone="bad">
+      <span class="snippet-label">What you brace for</span>
+      A 20&ndash;30% hole that opens Monday and stays open. The dining room quiet, the phone silent, the month already written off. The fear that delisting was the mistake everyone warned about.
+    </div>
+
+    <div class="snippet-box" data-tone="good">
+      <span class="snippet-label">What week one delivers</span>
+      A single-digit dip, not a cliff. Orders re-routing to channels you already own. A wave of &ldquo;wait, are you closed?&rdquo; that turns out to be the recapture conversation, not the obituary. Illustrative ranges, anchored to the margin walk.
+    </div>
+
+    <p>That gap doesn&rsquo;t close on its own. Week-one recovery is active work, and the order of operations matters &mdash; the highest-converting moves go first, while the customer&rsquo;s attention is still on the change. None of it needs a new tool, a new vendor, or a new line on the P&amp;L. Here is the week as it actually runs, Monday to Sunday:</p>
 
     <figure class="viz-figure article-figure" data-audio-alt="The seven-day playbook for the first week off DoorDash. Day one Monday: text the top repeat guests from the POS export with a personal note and a ten percent direct-order code. Day two Tuesday: rewrite the restaurant menu page so the order direct button sits above the third-party links, larger, in brand color. Day three Wednesday: post a Google Business Profile update with the new direct-order link pinned. Day four Thursday: pin an Instagram post and an Instagram story explaining the change. Day five Friday: print bag-stuffer cards reading next time, save the platform fee by ordering direct. Day six Saturday: train the host and the line on the new direct-channel script for when a third-party question comes in. Day seven Sunday: pull the week-one numbers and compare them to the projection.">
       <div class="viz-flow">
@@ -601,6 +612,11 @@ main{padding-top:64px}
 
     <p>Most of these conversations are recapturable. The script: we left the platform, you can order direct from the website at a lower price, here&rsquo;s the link. Some convert immediately. Some stop ordering. A handful stay in the &ldquo;thinking about it&rdquo; bucket. Budget for a small direct-channel credit ($10&ndash;$20) for the loudest complaints &mdash; most negative reviews come down once the customer accepts the credit and places a direct order.</p>
 
+    <aside class="callout callout--field">
+      <p class="callout-eyebrow">From the floor</p>
+      <p class="callout-body">The second week is the one I&rsquo;d warn a host stand about, because it doesn&rsquo;t feel like recovery &mdash; it feels like the phone turned on you. The call I heard most was a flat, slightly accusing &ldquo;are you guys closed?&rdquo; from a regular who&rsquo;d only ever known the app. The instinct is to apologize. Don&rsquo;t. The line that worked was warm and short: &ldquo;Not closed &mdash; we left the platform so we&rsquo;re not paying their cut, and you can order straight from us for less. Want the link?&rdquo; Said that way, the complaint becomes the recapture. The ones who stayed annoyed almost always softened once a small credit landed and the next order went through direct.</p>
+    </aside>
+
     <h2 id="week-3-the-cost-line-that-flexes">Week 3: the cost-line that flexes</h2>
 
     <p>The unexpected line is usually packaging. Recaptured orders run larger than third-party orders did &mdash; bigger tickets, more items per order, more delivery containers per order if you&rsquo;re fulfilling through a last-mile service like DoorDash Drive flat-fee. Per-order packaging cost climbs even when total order volume is flat. It&rsquo;s an operational headache, not a <!-- LIBRARY:autolink:start --><a href="/glossary/margin/" data-glossary-head="Margin" data-glossary-aka="sales minus costs; several kinds" data-glossary-blurb="Sales minus costs.">margin</a><!-- LIBRARY:autolink:end --> problem.</p>
@@ -610,6 +626,11 @@ main{padding-top:64px}
     <h2 id="week-4-where-it-lands">Week 4: where it lands</h2>
 
     <p>By the end of the month, revenue is usually back within single-digit-percent of baseline &mdash; inside the noise floor most independents already see week-on-week from weather, events, and seasonality. The kept margin in dollars per day, however, is materially higher than baseline, because every recaptured order is now at the ~29% direct-channel kept rate instead of the ~18% kept rate on the third-party channel. The shift is what makes the math work; total revenue is lower, but retained dollars per ticket are higher.</p>
+
+    <div class="callout">
+      <p class="callout-eyebrow">The number the month turns on</p>
+      <p class="callout-body">On a $42 ticket, the kept share moves from 18.4&cent; on the dollar to 28.9&cent; &mdash; an illustrative <strong>$4.42 more kept per order</strong>, same kitchen, same food cost, same labor. Total revenue can land lower for the month and the restaurant still keeps more, because the swing rides every recaptured ticket. Ranges anchored to the <a href="/library/third-party-delivery-economics/" style="color:var(--teal)">DoorDash margin walk</a>.</p>
+    </div>
 
     <p>The clearest way to see why is to put the two tickets side by side &mdash; the same $42 average order, run through the third-party fee stack and the direct fee stack:</p>
 
@@ -752,6 +773,8 @@ main{padding-top:64px}
     <h2 id="what-the-math-gets-right">What the math gets right</h2>
 
     <p>The basic premise &mdash; that the third-party channel is roughly a 30% margin tax on what may be a smaller incremental-revenue surface than the operator believes &mdash; holds up across most independent restaurants. The kept-margin lift on direct orders is the cleanest evidence available for the thesis. The decision works for restaurants where the channel is mostly relationship-displacement; it doesn&rsquo;t work for restaurants in genuinely discovery-driven contexts (urban density, transit-corridor flow, tourist neighborhoods) where the platform is actually bringing in new customers.</p>
+
+    <p>Thirty days after that Sunday-night toggle, the screen the operator stares at is a different one &mdash; their own statement, not the app&rsquo;s dashboard. The dining room sounds the same. The phone has stopped asking if they&rsquo;re closed. What changed is invisible from the floor and unmistakable on the page: more of every ticket stays. The pause that felt like a leap was mostly the operator catching up to a number the platform had been keeping quiet. That&rsquo;s the whole arc &mdash; not a dramatic turnaround, but a quiet correction to what was always true.</p>
 
     <div class="callout">
       <p><strong>The 30-day verdict, in three lines.</strong> Revenue usually recovers to within single-digit-percent of baseline by week four. Kept-margin-per-day climbs because every recaptured order moves from a ~18% kept rate to a ~29% kept rate. Most operators discover the platform was a relationship lever they&rsquo;d misread as a discovery lever &mdash; the cost of that misread compounds annually until the math gets put on paper.</p>

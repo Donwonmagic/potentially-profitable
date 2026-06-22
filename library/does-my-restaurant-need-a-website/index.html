@@ -284,6 +284,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .article-body a.btn.btn-ghost { color: var(--ink); }
 
   .pull-quote { font-family: var(--font-display); font-style: italic; font-size: clamp(24px, 2.8vw, 30px); line-height: 1.35; color: var(--teal); max-width: 580px; margin: 56px auto; text-align: center; padding: 36px 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  /* ============ TWO-COLUMN POSTURE COMPARE ============ */
+  /* Same .snippet-box pattern the decision-walkthrough library
+     articles ship inline (service-charge, commission-free, app-decision).
+     Two postures head to head: need it now (teal) vs can wait (rust). The
+     grid wrapper is inline on the markup; these rules carry the card chrome. */
+  .snippet-box { padding: 16px 20px; background: var(--cream-2); border: 1px solid var(--line); border-radius: 8px; margin: 12px 0; font-size: 15.5px; line-height: 1.6; color: var(--ink); }
+  .snippet-box[data-tone="bad"] { border-left: 3px solid var(--rust); }
+  .snippet-box[data-tone="good"] { border-left: 3px solid var(--teal); }
+  .snippet-label { display: block; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--stone); margin-bottom: 6px; font-weight: 600; }
+  .snippet-box[data-tone="bad"] .snippet-label { color: var(--rust); }
+  .snippet-box[data-tone="good"] .snippet-label { color: var(--teal); }
   .inline-cta { margin: 56px 0; padding: 36px 40px; background: var(--cream-2); border: 1px solid var(--line); border-radius: 16px; text-align: center; }
   .inline-cta h4 { font-family: var(--font-display); font-size: 24px; font-weight: 500; margin: 0 0 10px; color: var(--ink); letter-spacing: -0.01em; }
   .inline-cta p { font-size: 15px !important; color: var(--stone) !important; margin: 0 0 20px !important; line-height: 1.6 !important; }
@@ -644,8 +655,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <!-- esl-bridge:end -->
 
       <h2 id="the-short-answer">The short answer</h2>
-      <p><strong>Probably yes.</strong> But not for the reason most web designers will tell you, and not in the way you're probably imagining.</p>
-      <p>I&rsquo;m front-of-house manager at a restaurant in the DMV. I also build websites for restaurants through my studio, Muntin Digital. That means I've been on both sides of this question — the side that's paying for a site and the side that's selling one. So here's the version I'd give a friend who asked me at the bar after a shift: you need a website if your <!-- LIBRARY:autolink:start --><a href="/glossary/gbp/" data-glossary-head="Google Business Profile" data-glossary-aka="GBP, formerly Google My Business" data-glossary-blurb="Your business's free listing on Google Maps and Google Search — the panel on the right of a search that shows your name, hours, photos, reviews, and a link to your menu or booking.">Google Business Profile</a><!-- LIBRARY:autolink:end --> isn't enough to answer the questions a first-time customer has before they walk in. For most restaurants, it isn't.</p>
+      <p>You already have a Google listing, an Instagram, and an ordering page on your POS. So the real question isn&rsquo;t whether to be online &mdash; you are. It&rsquo;s whether those three leave a gap a website has to fill. <strong>For most restaurants, the answer is yes.</strong> But not for the reason most pitches will give you, and the better way to settle it is to walk the decision yourself rather than take anyone&rsquo;s verdict on faith.</p>
+      <p>So here&rsquo;s the version I&rsquo;d give a friend who asked me at the bar after a shift: <strong>you need a website if your <!-- LIBRARY:autolink:start --><a href="/glossary/gbp/" data-glossary-head="Google Business Profile" data-glossary-aka="GBP, formerly Google My Business" data-glossary-blurb="Your business's free listing on Google Maps and Google Search — the panel on the right of a search that shows your name, hours, photos, reviews, and a link to your menu or booking.">Google Business Profile</a><!-- LIBRARY:autolink:end --> isn&rsquo;t enough to answer the questions a first-time customer has before they walk in.</strong> For most restaurants, it isn&rsquo;t &mdash; and the rest of this page is a branching walk that ends in a clear verdict for <em>your</em> room: yes, no, or not yet. Front-of-house is my day job, so I&rsquo;ve sat on the paying side of this question more than once; the walk below is the one I trust over any sales deck.</p>
 
       <h2 id="what-your-google-business-profile-already-does">What your Google Business Profile already does</h2>
       <p>A Google Business Profile already covers the basics for free: your hours and location with one-tap directions, a tap-to-call phone number, official and customer photos, reviews, and a &ldquo;Reserve a table&rdquo; button when you use a major booking platform. For a counter-service spot or a food truck, that can be the whole job.</p>
@@ -658,6 +669,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li><strong>Reservation links.</strong> If you use OpenTable, Resy, or another major platform, Google shows a "Reserve a table" button directly in the listing.</li>
       </ul>
       <p>If your restaurant is a <!-- LIBRARY:autolink:start --><a href="/glossary/subtype-food-truck/" data-glossary-head="Food truck / pop-up" data-glossary-aka="mobile kitchen, schedule-led" data-glossary-blurb="Mobile kitchens and pop-ups where the primary content question is &quot;where are you today?&quot; — and static storefront maps are worse than no map at all.">taco truck, a pop-up</a><!-- LIBRARY:autolink:end -->, or a counter-service spot where the entire customer journey is "see you on Google Maps, drive there, order at the counter" — a website might genuinely be optional. Google Business Profile handles the essentials, and you could spend that website budget on better signage, a faster POS, or a neighborhood postcard campaign instead.</p>
+
+      <aside class="callout callout--field">
+        <p class="callout-eyebrow">From the floor</p>
+        <p class="callout-body">When a friend opening a place asks me this, I don&rsquo;t answer it &mdash; I make them open their own phone at the table and search for themselves the way a first-timer would. Half the time they go quiet for a second, because the listing they thought told the whole story stops short the moment a real question lands. That pause is the answer. The walk below is just that same phone test, slowed down enough that you can score it instead of feeling it.</p>
+      </aside>
 
       <h2 id="where-google-business-profile-falls-short">Where Google Business Profile falls short</h2>
       <p>A Google Business Profile cannot carry five things a restaurant often needs: your full menu the way you want it (Google&rsquo;s editor is plain text), your story and who cooks the food, commission-free online ordering through your own POS, a private-events or catering page, and the long-tail search discovery that ranks below the map pack. Each gap is a job for the website.</p>
@@ -720,14 +736,19 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </div>
       </details>
 
-      <p class="pull-quote">The question isn't "do I need a website?" It's "is there anything my customers need to know that Google Business Profile can't tell them?"</p>
-
       <blockquote class="pullquote">
-        <p>You need a website if your Google Business Profile can't answer the question a first-time customer is about to ask. For most independent restaurants, it can't.</p>
+        <p>The real question was never &ldquo;do I need a website?&rdquo; It&rsquo;s &ldquo;is there anything a first-time customer needs to know that my Google listing can&rsquo;t tell them?&rdquo; For most independent restaurants, there is.</p>
       </blockquote>
 
       <h2 id="the-five-minute-test">The five-minute test</h2>
-      <p>Open your Google Business Profile listing on your phone as if you were a first-time customer. Ask yourself:</p>
+      <p>Stop reading and run the walk on your own room. Open your Google Business Profile listing on your phone as if you were a first-time customer, and score one point for every &ldquo;no.&rdquo; Before the spine below, here is the one number the whole score is measured against.</p>
+
+      <div class="callout">
+        <p class="callout-eyebrow">The threshold the verdict turns on</p>
+        <p class="callout-body"><strong>Two.</strong> Two unanswered questions out of five is the line between &ldquo;your listing is doing the job&rdquo; and &ldquo;a website earns its keep.&rdquo; Not five, not three &mdash; two, because every failed question is a diner who picked the place on the same block whose listing <em>did</em> answer it. One gap you can live with; two is a leak you&rsquo;re paying for in covers you never see. Score honestly against the five branches below, then read your total against that line.</p>
+      </div>
+
+      <p>Ask yourself:</p>
       <ol>
         <li>Can I read the full menu without downloading a PDF?</li>
         <li>Can I make a reservation without leaving Google?</li>
@@ -789,14 +810,32 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </figure>
 
       <h2 id="when-you-genuinely-don-t-need-one">When you genuinely don't need one</h2>
-      <p>I promised honesty, so here it is. You can skip the website if:</p>
+      <p>A score under two doesn&rsquo;t always mean &ldquo;never&rdquo; &mdash; sometimes it means &ldquo;not yet.&rdquo; I promised honesty, so here it is. You can skip the website, for now, if:</p>
       <ul>
         <li><strong>You're a pop-up or seasonal concept</strong> that might not exist in six months. Put that budget into signage and a strong Instagram instead.</li>
         <li><strong>Your entire model is counter-service with no menu complexity.</strong> A taco window, a coffee cart, a single-item concept. Google Maps + a phone number is genuinely all you need.</li>
         <li><strong>You just opened and the concept is still changing.</strong> Wait until the menu settles and you know what Tuesdays look like before investing in a site. A Wix placeholder is fine for the first six to twelve months while you figure out who you are.</li>
         <li><strong>You're in a food hall.</strong> The food hall's website handles discovery. You just need to show up in their vendor list.</li>
       </ul>
-      <p>For everyone else — full-service restaurants, multi-location groups, places with private dining programs, anyone who wants to rank in discovery searches, anyone paying third-party commission on orders they could route directly — a website pays for itself. The question is just when and how much.</p>
+
+      <p>So the verdict isn&rsquo;t binary &mdash; it&rsquo;s three doors, and your score picks one. <strong>If</strong> you scored two or more, <strong>then</strong> it&rsquo;s a yes, and the only open questions are when and how much. <strong>If</strong> you scored under two but a bullet above describes you, <strong>then</strong> it&rsquo;s a not-yet: bank the money and re-run the five questions when the menu settles. <strong>If</strong> you scored zero <em>and</em> none of those bullets fit, <strong>then</strong> it&rsquo;s an honest no &mdash; spend the budget where your customers actually are. Here is the same fork as two postures, side by side.</p>
+
+      <div role="group" aria-label="Need a website now versus can wait, the two verdicts side by side" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0">
+        <div class="snippet-box" data-tone="good">
+          <span class="snippet-label">Need it now</span>
+          <p style="margin:0 0 8px"><strong>Who:</strong> full-service rooms, multi-location groups, anywhere with a private-dining or catering program, anyone paying third-party commission on orders they could route direct.</p>
+          <p style="margin:0 0 8px"><strong>The tell:</strong> two or more &ldquo;no&rdquo; answers on the five questions &mdash; the listing is leaking covers to the block neighbor whose page answers them.</p>
+          <p style="margin:0"><strong>Do next:</strong> treat it as a yes; the open question is scope, not whether.</p>
+        </div>
+        <div class="snippet-box" data-tone="bad">
+          <span class="snippet-label">Can wait</span>
+          <p style="margin:0 0 8px"><strong>Who:</strong> pop-ups and seasonal concepts, single-item counter service, a food-hall stall riding the hall&rsquo;s own site, a just-opened room still rewriting the menu.</p>
+          <p style="margin:0 0 8px"><strong>The tell:</strong> zero or one &ldquo;no,&rdquo; and the customer journey really is &ldquo;find on Maps, show up, order at the counter.&rdquo;</p>
+          <p style="margin:0"><strong>Do next:</strong> bank the budget for signage, a faster POS, or a postcard run &mdash; and re-run the five questions when the concept settles.</p>
+        </div>
+      </div>
+
+      <p>For everyone in the left column — a website pays for itself. The question is just when and how much.</p>
 
       <div class="inline-cta">
         <h4 class="i18n">Want to see what your current site is doing (or not doing)?</h4>

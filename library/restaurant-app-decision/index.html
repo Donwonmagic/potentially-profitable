@@ -336,6 +336,19 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     .app-map.reveal .app-row:nth-child(6) { transition-delay: 400ms; }
     .app-map.reveal .app-row:nth-child(7) { transition-delay: 480ms; }
   }
+
+  /* ============ TWO-COLUMN POSTURE COMPARE ============ */
+  /* Same .snippet-box pattern the decision-walkthrough library
+     articles ship inline (service-charge, commission-free). Two
+     postures head to head: build the app (rust) vs use the phone the
+     guest already has (teal). The grid wrapper is inline on the markup;
+     these rules carry the card chrome. */
+  .snippet-box { padding: 16px 20px; background: var(--cream-2); border: 1px solid var(--line); border-radius: 8px; margin: 12px 0; font-size: 15.5px; line-height: 1.6; color: var(--ink); }
+  .snippet-box[data-tone="bad"] { border-left: 3px solid var(--rust); }
+  .snippet-box[data-tone="good"] { border-left: 3px solid var(--teal); }
+  .snippet-label { display: block; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--stone); margin-bottom: 6px; font-weight: 600; }
+  .snippet-box[data-tone="bad"] .snippet-label { color: var(--rust); }
+  .snippet-box[data-tone="good"] .snippet-label { color: var(--teal); }
 </style>
 <!-- article-abstract-mentions:start -->
 <script type="application/ld+json">
@@ -689,13 +702,36 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             </aside>
             <!-- article-tldr:end -->
 
-      <p>An agency emailed you last week. Or maybe a friend-of-a-friend who "does apps" sat across from you at a coffee shop and told you, with real conviction, that your restaurant is leaving money on the table because it doesn&rsquo;t have one. The pitch is always the same three slides: loyalty program, push notifications, branded customer experience. The number at the end of the deck is usually somewhere between $15,000 and $40,000, and the monthly maintenance starts at $400.</p>
+      <p>The pitch deck is already open on your phone when you start reading this. Three slides, always the same three: a loyalty program, push notifications, a branded customer experience. The number on the last slide sits somewhere between $15,000 and $40,000, with monthly maintenance from $400. And the question it leaves on your desk isn&rsquo;t really &ldquo;is this a good app&rdquo; &mdash; it&rsquo;s a decision you have to make this week, with a sales rep waiting on a reply. So don&rsquo;t read this as a verdict handed down. Read it as the walkthrough: a few yes-or-no questions, top to bottom, and the first one that names your actual situation hands you the answer and stops you.</p>
 
-      <p>Here&rsquo;s the honest answer, which no agency is going to give you: <strong>probably not.</strong> For the vast majority of independent restaurants, a native app is a solution looking for a problem, at a price that doesn&rsquo;t match the size of the problem it&rsquo;s actually solving.</p>
+      <p>Here is the answer-first version, so the rest of the page is the proof and not the suspense: <strong>for the vast majority of independent restaurants, a native app is the wrong call</strong> &mdash; it is a solution looking for a problem, priced for a problem far larger than the one it actually solves. Two narrow situations flip that to yes, and we walk to both. Everywhere else, the decision ends with three cheaper tools that already live on your guest&rsquo;s phone.</p>
 
-      <p>But "no" by itself is a useless answer, because the <em>reasons</em> you want an app are real. You want regulars to come back more often. You want to reach them without paying Meta for the privilege. You want your brand in the guest&rsquo;s hand, not buried under the DoorDash logo. Those are all legitimate goals. The app just isn&rsquo;t how you get there.</p>
+      <p>Start by refusing the framing that the app is the goal. It is the proposed <em>means</em>; the goal is underneath it, and the goal is real. You want regulars back more often. You want to reach them without renting the audience back from Meta. You want your brand in the guest&rsquo;s hand, not buried three taps under the DoorDash logo. Hold those three goals fixed. The whole walkthrough is just sorting which tool reaches each one for the least money &mdash; and whether, for your particular room, that tool is ever an app at all.</p>
 
-      <p>Here&rsquo;s the map. On the left, the thing you think you want. On the right, the thing that actually delivers it &mdash; for a tiny fraction of the cost.</p>
+      <blockquote class="pullquote">
+        <p>The decision is never &ldquo;app or no app.&rdquo; It&rsquo;s &ldquo;which surface already in the guest&rsquo;s pocket carries each thing you actually wanted&rdquo; &mdash; and the app only wins when the answer to every gate is yes.</p>
+      </blockquote>
+
+      <p>Before the line-by-line map, put the two real postures side by side &mdash; not a specific tool yet, but the two ways a restaurant can answer the goals above. Everything that follows is a variation on one of these two columns.</p>
+
+      <div role="group" aria-label="Build a native app versus use the phone the guest already has, head to head" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0">
+        <div class="snippet-box" data-tone="bad">
+          <span class="snippet-label">Build the native app</span>
+          <p style="margin:0 0 8px"><strong>Costs:</strong> $15K&ndash;$40K up front, $400+/month to maintain, plus the standing cost of convincing guests to install a new icon.</p>
+          <p style="margin:0 0 8px"><strong>Reach:</strong> under 2% of guests ever install, under 0.6% still using it at six months. The relationship lives behind a download.</p>
+          <p style="margin:0 0 8px"><strong>You carry:</strong> an app-store presence, two OS update treadmills, and the ongoing job of getting the 187th-most-important app on the phone opened.</p>
+          <p style="margin:0"><strong>Right when:</strong> the volume or the concept genuinely needs app-level behavior &mdash; the two narrow situations below, and almost nowhere else.</p>
+        </div>
+        <div class="snippet-box" data-tone="good">
+          <span class="snippet-label">Use what&rsquo;s already in the pocket</span>
+          <p style="margin:0 0 8px"><strong>Costs:</strong> roughly $30&ndash;$80/month all-in, plus a week of setup. No build, no app-store account, nothing to install.</p>
+          <p style="margin:0 0 8px"><strong>Reach:</strong> the mobile website reaches 100% of guests on the first tap; an SMS list opts in 20%+ of walk-ins and opens at 90%+.</p>
+          <p style="margin:0 0 8px"><strong>You carry:</strong> a POS loyalty toggle, an SMS list, a sharp Google Business Profile, and a site good enough to save to the home screen.</p>
+          <p style="margin:0"><strong>Right when:</strong> you are a sit-down independent who wants regulars back, brand in-hand, and messaging that lands &mdash; which is almost everyone reading this.</p>
+        </div>
+      </div>
+
+      <p>Most operators don&rsquo;t pick one column outright; they pick a center of gravity, and for a normal restaurant it sits hard on the right. So read the map below the way you&rsquo;d actually make the call. <strong>If</strong> what you want is a loyalty program, <strong>then</strong> the answer is your POS, not an app. <strong>If</strong> what you want is to reach regulars, <strong>then</strong> it&rsquo;s an SMS list. <strong>If</strong> what you want is your brand in their hand, <strong>then</strong> it&rsquo;s a mobile-excellent site plus your Google Business Profile. On the left, the thing you think you want; on the right, the thing that actually delivers it &mdash; for a tiny fraction of the cost.</p>
 
       <figure class="article-figure" data-audio-alt="Here's the map of what operators actually want when they ask about an app, and the cheaper tool that delivers each thing. When you say 'I want a loyalty program,' what actually works is a punch-card or points system built into your POS (Square and Toast both have one included), or a web-based loyalty page with SMS opt-in. When you say 'I want to send push notifications to regulars,' what actually delivers is an SMS list — higher open rates, no app install required, already works on every phone. When you say 'I want my brand in the guest's hand,' what you actually need is a mobile-excellent website plus a well-designed Google Business Profile — that's where guests actually interact with your brand on their phone. When you say 'I want own-ordering in the guest's pocket,' what delivers is a progressive web app version of your ordering page, saved to the home screen with one tap. When you say 'I want data on my regulars,' what delivers is a CRM connected to your POS. None of these require a native app. All of them together cost a fraction of what a native app costs, and none of them require your regulars to download anything.">
         <div class="app-map reveal" role="img" aria-label="What you think you want from a restaurant app vs. the tool that actually delivers it for far less">
@@ -767,34 +803,26 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <h2 id="the-install-problem-nobody-talks-about">The install problem nobody talks about</h2>
 
-      <p>The average independent restaurant that launches a native app sees <strong>under 2% of its guests install it</strong>, and fewer than a third of those installers are still using it six months later. That is the install problem agencies pitching restaurant apps never want to discuss: a mobile website reaches every guest with zero friction, while the app reaches a sliver and then bleeds most of it out by month six. I&rsquo;ve seen the dashboards. You get a flurry of downloads in the first two weeks from regulars who want to be supportive, then the curve flattens.</p>
+      <p>Here is the gate most pitch decks walk you straight past. The average independent restaurant that launches a native app sees <strong>under 2% of its guests install it</strong>, and fewer than a third of those installers are still using it six months later. A mobile website, by contrast, reaches every guest with zero friction; the app reaches a sliver and then bleeds most of that sliver out by month six. The pattern is always the same shape &mdash; a flurry of downloads in the first two weeks from regulars who want to be supportive, then a curve that flattens to nothing.</p>
 
-      <figure class="viz-figure article-figure" data-audio-alt="The reach funnel for an independent-restaurant native app, starting from one hundred percent of guests. Roughly two percent of guests install the app — that is the install ceiling. Of those installers, fewer than thirty percent are still active six months later, which works out to under zero point six percent of the original guest base still using the app at the six-month mark. For comparison, a mobile website reaches one hundred percent of guests with zero install friction. The bars show the same one-hundred-percent denominator: website at one hundred percent, app install at two percent, and six-month app retention at zero point six percent.">
-        <div class="viz-bars">
-          <p class="viz-bars__title">Reach of each channel as a share of your guest base</p>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Mobile website (any visit)</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:1.0"></span></div>
-            <p class="viz-bars__num">100%</p>
+      <div class="callout">
+        <p class="callout-eyebrow">The number that ends most app projects</p>
+        <p class="callout-body"><strong>Under 2% of guests ever install an independent restaurant&rsquo;s app, and under 0.6% are still using it at six months.</strong> Hold that against the channel you already own: a mobile website reaches 100% of guests the instant they tap your link. Before any feature comparison, this single proportion settles the question for almost every room &mdash; you are building a private door that under one guest in fifty walks through, to replace a public one that all of them already use.</p>
+      </div>
+
+      <figure class="viz-figure article-figure" data-audio-alt="A single ring showing the install ceiling for an independent restaurant's native app. Roughly two percent of guests ever install it — drawn as a thin rust arc on an almost-empty ring, because two percent of the circle is barely a sliver. That two percent is the high-water mark, not the steady state: fewer than a third of those installers are still active six months later, which works out to under zero point six percent of the original guest base. The contrast that matters lives in the prose around this ring — a mobile website reaches one hundred percent of guests with zero install friction, where the app peaks at two percent and bleeds out to under nought point six. This is the one proportion the whole app decision is measured against.">
+        <div class="viz-rings reveal">
+          <div class="viz-ring" data-band="bad" style="--score:2;">
+            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-app-install" focusable="false">
+              <title id="ring-app-install">Under 2 percent of an independent restaurant&rsquo;s guests ever install its native app</title>
+              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
+              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
+              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">&lt;2%</text>
+            </svg>
+            <p class="viz-ring__label"><strong>Guests who ever install the app</strong>and under 0.6% still using it at six months &mdash; against 100% reach from the website you already own</p>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">SMS opt-in (at host stand)</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.20"></span></div>
-            <p class="viz-bars__num">~20%</p>
-          </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Native app &mdash; installed</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.02"></span></div>
-            <p class="viz-bars__num">&lt;2%</p>
-          </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Native app &mdash; still active at 6 mo</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.006"></span></div>
-            <p class="viz-bars__num">&lt;0.6%</p>
-          </div>
-          <p class="viz-bars__note">The app bars are slivers on purpose: install peaks under <strong>2%</strong> of guests, then two-thirds of those installers drift away by month six, leaving under <strong>0.6%</strong> of your base still using it. A website starts where the app finishes &mdash; full reach, zero install.</p>
         </div>
-        <figcaption>The website starts at 100% reach; the app never clears 2% and bleeds out to under 0.6% by six months. Per industry benchmarks from Toast, Bluedot, and Restaurant Dive.</figcaption>
+        <figcaption>One proportion, the one the whole decision turns on: the install arc never clears 2% and decays to under 0.6% by month six, while a mobile website starts at full reach. Per industry benchmarks from Toast, Bluedot, and Restaurant Dive.</figcaption>
       </figure>
 
       <p>This isn&rsquo;t because your restaurant isn&rsquo;t beloved. It&rsquo;s because your guests already have too many apps on their phone, and yours is the 187th notification competing for their attention. They love you. They also love the dry cleaner across the street and the gym around the corner, and none of those places have convinced them to install an app either. The friction-to-benefit ratio just isn&rsquo;t there.</p>
@@ -818,6 +846,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <p><!-- LIBRARY:autolink:start --><a href="/glossary/subtype-ghost-kitchen/" data-glossary-head="Ghost kitchen / delivery-only" data-glossary-aka="virtual brand, cloud kitchen" data-glossary-blurb="Virtual brands and cloud kitchens that operate exclusively through aggregators — no dine-in, no pickup window, customers never visit.">Ghost kitchens</a><!-- LIBRARY:autolink:end --> running multiple concepts out of one space. Pre-order-only meal prep services where every order is scheduled 48 hours in advance. Subscription dining clubs. These are <em>actually</em> app-shaped products &mdash; the app is the product, not a marketing layer on top of a restaurant.</p>
 
       <p>If your concept is "sit-down independent restaurant where people walk in, eat, and leave," that isn&rsquo;t app-shaped. The app is marketing overhead. If your concept is "subscription tasting club that ships a box every Tuesday," the app might be the entire distribution mechanism. Different animals.</p>
+
+      <aside class="callout callout--field">
+        <p class="callout-eyebrow">From the floor</p>
+        <p class="callout-body">When a friend opening a place asks me this over a beer, I never lead with &ldquo;don&rsquo;t.&rdquo; I walk the gates below with them, because the honest answer is the one their own numbers reach, not the one I hand them. I&rsquo;ve sat with an operator who genuinely cleared gate one on pre-order volume and should look hard at an app &mdash; and far more often with one who was three slides into a pitch for a dining room that fails the very first gate. Same four questions, opposite endings. The verdict isn&rsquo;t mine to declare; it&rsquo;s theirs to walk to.</p>
+      </aside>
+
+      <p>So don&rsquo;t take the &ldquo;probably not&rdquo; on faith &mdash; walk the spine yourself. Four gates, top to bottom; any single <em>no</em> ends it, and for almost every independent room the <em>no</em> arrives at gate one.</p>
 
       <figure class="viz-figure article-figure" data-audio-alt="A four-gate decision tree for whether your restaurant should build a native app, where any single No ends the process. Gate one: do you have at least five thousand app-relevant transactions a week, counting pre-orders, mobile orders, and reservations together? No means stop and build nothing. Yes moves you to gate two. Gate two: is the app the product itself, like a subscription dining club, a meal-prep service, or a ghost-kitchen brand? Yes means build, because the app is the business, not a marketing layer. No moves you to gate three. Gate three: are you already running five or more locations with mature loyalty velocity? Two locations is not enough and the order-frequency math still fails, so No means do not build. Yes moves you to the final gate. Gate four: has an honest profit-margin model shown payback inside eighteen months in real recovered dollars, not download counts or engagement? Yes is the only path that justifies building. No means walk away. The verdict pills read build in green, stop in rust, and continue in amber so the reader can see at a glance that almost every independent restaurant fails at gate one.">
         <ol class="viz-tree" aria-label="Four-gate decision tree for whether a restaurant should build a native app">
@@ -868,8 +903,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <p class="pull-quote">The reasons you want an app are real. The app is just a much more expensive and much less-used way to get them than the tools that already live on your guest&rsquo;s phone.</p>
 
       <div class="inline-cta">
-        <h4 class="i18n">Want the honest &ldquo;do we need an app&rdquo; answer for your specific restaurant?</h4>
-        <p class="i18n">Bring the agency pitch to a 20-minute call and I&rsquo;ll walk through it with you line by line &mdash; what&rsquo;s real value, what&rsquo;s markup, and what your current website + POS stack is already capable of delivering. Free for independent operators.</p>
+        <h4 class="i18n">Not sure which gate your restaurant lands on?</h4>
+        <p class="i18n">Run the free <a href="/tools/audits/restaurant/">Tech Stack audit</a> first &mdash; it reads what your current website and POS already cover, so you can see which rows of the map above you&rsquo;ve quietly already built before anyone quotes you an app. Still stuck on the call? Send it through the Window and I&rsquo;ll point you at the gate you&rsquo;re standing on.</p>
         <a class="btn btn-primary js-window" href="/window/">Email Don
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
@@ -905,7 +940,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <h2 id="what-to-do-instead-in-order">What to do instead, in order</h2>
 
-      <p>If this post has talked you off the app ledge, here&rsquo;s the honest sequence. Do these first, in this order. If at the end of step four you <em>still</em> feel like you need a native app, call me and I&rsquo;ll connect you with an agency who does them well. (Run <a href="/tools/audits/restaurant/">Tech Stack</a> first to see what your current tools already <!-- LIBRARY:autolink:start --><a href="/glossary/cover/" data-glossary-head="Cover" data-glossary-aka="one customer served" data-glossary-blurb="One customer seated and served.">cover</a><!-- LIBRARY:autolink:end -->.)</p>
+      <p>If the walkthrough has talked you off the app ledge, here&rsquo;s the honest sequence &mdash; the numbered runbook the whole decision resolves into. Do these first, in this order. If at the end of step four you <em>still</em> land on &ldquo;app,&rdquo; then you&rsquo;ll walk into that agency conversation knowing exactly which gate you cleared and what you&rsquo;re actually buying &mdash; which is the only position worth signing a build contract from. (Run <a href="/tools/audits/restaurant/">Tech Stack</a> first to see what your current tools already <!-- LIBRARY:autolink:start --><a href="/glossary/cover/" data-glossary-head="Cover" data-glossary-aka="one customer served" data-glossary-blurb="One customer seated and served.">cover</a><!-- LIBRARY:autolink:end -->.)</p>
 
       <ol>
         <li><strong>Turn on your POS&rsquo;s loyalty program.</strong> Square Loyalty, Toast Loyalty &mdash; both included. Ten-minute setup. Every regular who pays with a card is automatically earning points starting tomorrow. No install required, nothing new on your guest&rsquo;s phone.</li>

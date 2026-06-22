@@ -210,6 +210,20 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <link rel="preload" as="style" href="/assets/site-core.css?v=2830bb0a913c" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=158a407ca00a" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="/assets/site-core.css?v=2830bb0a913c"><link rel="stylesheet" href="/assets/site-article.css?v=158a407ca00a"></noscript>
+<style>
+/* Two-column "safe signal vs red flag" compare — the same .snippet-box
+   pattern the decision-walkthrough library articles ship inline
+   (service-charge, the 10-minute Google Maps diagnostic). The grid
+   wrapper is inline on the markup; these rules carry the card chrome.
+   data-tone="good" reads teal (a safe signal), data-tone="bad" reads
+   rust (a red flag). */
+.snippet-box{padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px;margin:12px 0;font-size:15.5px;line-height:1.6;color:var(--ink)}
+.snippet-box[data-tone="bad"]{border-left:3px solid var(--rust)}
+.snippet-box[data-tone="good"]{border-left:3px solid var(--teal)}
+.snippet-label{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);margin-bottom:6px;font-weight:600}
+.snippet-box[data-tone="bad"] .snippet-label{color:var(--rust)}
+.snippet-box[data-tone="good"] .snippet-label{color:var(--teal)}
+</style>
 <!-- article-abstract-mentions:start -->
 <script type="application/ld+json">
 {
@@ -558,11 +572,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             </aside>
             <!-- article-tldr:end -->
 
-      <p>Most &ldquo;free <!-- LIBRARY:autolink:start --><a href="/glossary/margin/" data-glossary-head="Margin" data-glossary-aka="sales minus costs; several kinds" data-glossary-blurb="Sales minus costs.">margin</a><!-- LIBRARY:autolink:end --> audit&rdquo; tools have a price tag. It's just paid in data. The pattern is well-worn: you type your real ticket, your real <!-- LIBRARY:autolink:start --><a href="/glossary/food-cost/" data-glossary-head="Food cost" data-glossary-aka="cost of goods sold, as a % of sales" data-glossary-blurb="The cost of ingredients, alcohol, and consumables (paper goods, to-go packaging) expressed as a percentage of sales.">food cost</a><!-- LIBRARY:autolink:end -->, your real labor — and the tool returns a number. It also tends to return sales reps in your inbox by morning, each with a proposal built on numbers that were never supposed to leave your office. The tool was the <!-- LIBRARY:autolink:start --><a href="/glossary/funnel/" data-glossary-head="Funnel" data-glossary-aka="the path from visitor to customer" data-glossary-blurb="The sequence of steps a visitor goes through before becoming a customer — landing page → menu page → reserve button → reservation form → confirmation.">funnel</a><!-- LIBRARY:autolink:end -->. Your numbers were the qualifier.</p>
+      <p>The screen asks for your POS login. Or it asks you to drop in your sales export — &ldquo;just paste your last month so we can show you what you&rsquo;re leaving on the table.&rdquo; The cursor is blinking in the box. This is the moment the whole question lives in: not after you&rsquo;ve typed, after the report has already scrolled past and the damage is done, but right here, before the first real number leaves your hand. <strong>Before you type a real number into any free restaurant tool, you can find out in under a minute whether that number ever leaves your browser.</strong> That is the entire job of this page.</p>
 
-      <p>The pattern hides because nobody asks the obvious question: where do my inputs go the moment I type them? In a working browser, you can answer that question in under a minute. This article is the framework — five tests, four data tiers, one worked example — and at the end, a checklist you can run on any tool you encounter.</p>
+      <p>Because most &ldquo;free <!-- LIBRARY:autolink:start --><a href="/glossary/margin/" data-glossary-head="Margin" data-glossary-aka="sales minus costs; several kinds" data-glossary-blurb="Sales minus costs.">margin</a><!-- LIBRARY:autolink:end --> audit&rdquo; tools have a price tag — it&rsquo;s just paid in data. The pattern is well-worn: you type your real ticket, your real <!-- LIBRARY:autolink:start --><a href="/glossary/food-cost/" data-glossary-head="Food cost" data-glossary-aka="cost of goods sold, as a % of sales" data-glossary-blurb="The cost of ingredients, alcohol, and consumables (paper goods, to-go packaging) expressed as a percentage of sales.">food cost</a><!-- LIBRARY:autolink:end -->, your real labor — and the tool returns a number. It also tends to return sales reps in your inbox by morning, each with a proposal built on numbers that were never supposed to leave your office. The tool was the <!-- LIBRARY:autolink:start --><a href="/glossary/funnel/" data-glossary-head="Funnel" data-glossary-aka="the path from visitor to customer" data-glossary-blurb="The sequence of steps a visitor goes through before becoming a customer — landing page → menu page → reserve button → reservation form → confirmation.">funnel</a><!-- LIBRARY:autolink:end -->. Your numbers were the qualifier.</p>
 
-      <p>The tools that pass these tests will tell you so, plainly. The tools that fail are about to explain why the tests don't apply to them. That's the tell.</p>
+      <p>The pattern hides because nobody asks the obvious question at the cursor: where do my inputs go the moment I type them? So treat what follows as a walkthrough you run with the sign-up screen still open in front of you — five tests, four data tiers, one worked example, and a verdict tree that ends in a plain keep-or-walk-away call on the exact tool you&rsquo;re looking at. The tools that pass will tell you so, plainly. The tools that fail are about to explain why the tests don&rsquo;t apply to them. That&rsquo;s the tell.</p>
+
+      <blockquote class="pullquote">
+        <p>The screen wants your real numbers before it gives you anything. The one minute before you type is the only leverage you&rsquo;ll ever have over that tool &mdash; spend it.</p>
+      </blockquote>
 
       <h2 id="1-the-five-tests-run-before-you-type">1. The five tests — run before you type</h2>
 
@@ -577,6 +595,51 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </ol>
 
       <p>Pass all five and the tool is at least honest about its data flow. Fail any of them and the tool either doesn't know or doesn't want you to know — both are reasons to leave.</p>
+
+      <p>Each test has a tell you can read at a glance. Here is what a safe signal looks like beside the red flag it&rsquo;s standing in for &mdash; same five tests, sorted into the two columns you&rsquo;re actually deciding between.</p>
+
+      <div role="group" aria-label="Safe signal versus red flag, drawn from the five tests" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0">
+        <div class="snippet-box" data-tone="good">
+          <span class="snippet-label">Safe signal</span>
+          You type a full number and the Network tab stays still &mdash; nothing fires until you choose to submit.
+        </div>
+        <div class="snippet-box" data-tone="bad">
+          <span class="snippet-label">Red flag</span>
+          A request lands on every keystroke. The tool is shipping your inputs to a server in real time, before you press anything.
+        </div>
+        <div class="snippet-box" data-tone="good">
+          <span class="snippet-label">Safe signal</span>
+          The privacy claim sits right where you type, in plain sight, telling you what happens to the number you&rsquo;re about to enter.
+        </div>
+        <div class="snippet-box" data-tone="bad">
+          <span class="snippet-label">Red flag</span>
+          The only privacy language is a footer link three clicks deep &mdash; or there isn&rsquo;t one at the input at all.
+        </div>
+        <div class="snippet-box" data-tone="good">
+          <span class="snippet-label">Safe signal</span>
+          The result loads with no account, no email box, no cookie wall standing between you and the number you came for.
+        </div>
+        <div class="snippet-box" data-tone="bad">
+          <span class="snippet-label">Red flag</span>
+          &ldquo;Enter your email to see your results.&rdquo; Your numbers are the price of admission &mdash; the tool is not free.
+        </div>
+        <div class="snippet-box" data-tone="good">
+          <span class="snippet-label">Safe signal</span>
+          Filter Network by JS and the origins are familiar &mdash; no surveillance vendor sitting on the inputs you typed.
+        </div>
+        <div class="snippet-box" data-tone="bad">
+          <span class="snippet-label">Red flag</span>
+          Google Analytics, Meta Pixel, HubSpot, FullStory, or Hotjar are loaded &mdash; watchers who were never part of the deal.
+        </div>
+        <div class="snippet-box" data-tone="good">
+          <span class="snippet-label">Safe signal</span>
+          View Source shows a small, unminified script with every function named &mdash; a tool you can actually audit.
+        </div>
+        <div class="snippet-box" data-tone="bad">
+          <span class="snippet-label">Red flag</span>
+          A four-megabyte minified SaaS bundle. You can&rsquo;t read what it does, which means you can&rsquo;t verify a word of the pitch.
+        </div>
+      </div>
 
       <figure class="viz-figure article-figure" data-audio-alt="The five-test browser audit, in the order you run them. Test one: open the Network tab and type a number. If a request fires on every keystroke, the tool is shipping your inputs to a server before you submit — walk away. Test two: look for the privacy claim at the point of input, not three clicks deep in a footer. Test three: check for an account, newsletter, or cookie gate — &quot;enter your email to see your results&quot; means your numbers are the price of admission. Test four: filter Network by JS and look for Google Analytics, Meta Pixel, HubSpot, FullStory, Hotjar — third-party surveillance vendors recording inputs you did not agree to share. Test five: right-click and View Source. A small, readable, unminified script is auditable; a four-megabyte minified bundle is not. Any single failure ends the audit.">
         <div class="viz-flow reveal">
@@ -721,6 +784,18 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </aside>
 
       <p>The full version with each claim's specific DevTools verification step lives at <a href="/security/">/security/</a>. Four of them (1, 2, 4, 5) are <strong>build invariants</strong> — the cohesion-check pass that runs on every deploy fails CI if a future tool ships a forbidden pattern. So &ldquo;verifiable&rdquo; isn't marketing copy; it's a contract enforced by the build, with a public hash of the production bundle published at <a href="/security/integrity.txt"><code>/security/integrity.txt</code></a>.</p>
+
+      <aside class="callout callout--field">
+        <p class="callout-eyebrow">From the floor</p>
+        <p class="callout-body">When a vendor demos a tool to me, I don&rsquo;t argue the privacy claim &mdash; I open the Network tab while they&rsquo;re still talking and type a fake $40 ticket. The conversation tells you nothing; the request list tells you everything. The honest tools never flinch at this, because there&rsquo;s nothing in the tab to find. The ones that flinch are the ones that learned, mid-sentence, that I was going to look.</p>
+      </aside>
+
+      <div class="callout">
+        <p class="callout-eyebrow">The claim that the build won&rsquo;t let slide</p>
+        <p class="callout-body"><strong>Four of the nine claims &mdash; 1, 2, 4, and 5 &mdash; are enforced as build invariants</strong>, not promises. A tool that ships a forbidden pattern fails the deploy outright. That&rsquo;s the difference the tree below is built to read: a claim a vendor can quietly break the week after you sign up versus one a machine re-checks on every release. Read your own audit the same way &mdash; worst failure first, and let the first hard fail decide it.</p>
+      </div>
+
+      <p>So stop reading the five tests as a checklist and read them as a verdict. Walk the spine top to bottom; the first branch that fires hands you a keep-or-walk-away call on the exact tool in front of you, and you&rsquo;re done.</p>
 
       <figure class="viz-figure article-figure" data-audio-alt="A verdict tree for reading your DevTools results, where the failures are ordered by how serious they are. Start at the top. Did a network request fire on a keystroke, before you submitted anything? If yes, stop here and walk away — the tool is shipping your raw inputs to a server in real time, which is the most serious failure and overrides everything below it. If no, ask the next question: is there an account, email, or cookie gate between you and the result? If yes, the tool is not free; your numbers are the price of admission, so decline unless you would happily hand those numbers to the vendor's sales team. If no, ask whether third-party surveillance scripts like Meta Pixel, FullStory, or Hotjar are recording the page. If yes, treat it as a soft fail: the inputs may stay client-side, but the vendor invited watchers you never agreed to. If no third-party watchers, the last check is whether the source is readable and the privacy claim sits at the point of input. If both hold, the tool passes — it is at least honest about its data flow, the standard every Muntin tool is held to and enforces as a build invariant. The verdict pills read walk away in rust, not free and watched in amber, and safe to use in green.">
         <ol class="viz-tree" aria-label="Verdict tree for interpreting your DevTools audit results">

@@ -471,9 +471,9 @@ header.nav{min-height:64px}
             </aside>
             <!-- article-tldr:end -->
 
-<p>Ask your phone, out loud, for a good taco place near you. You will hear three names. Maybe five. Not ten blue links, not a map with twenty pins &mdash; three names, summarized at the top of the answer. If your restaurant is not one of them, the diner never learns you exist, and your position on the old Google map never gets read.</p>
+<p>Stand at your pass on a slow afternoon, pull out your phone, and ask it out loud for a good version of what you serve, near you. Don&rsquo;t scroll &mdash; just listen. You get three names. Maybe five. Not ten blue links, not a map with twenty pins &mdash; three names, read off the top of the answer. Now the only question that matters for the next hour: was one of them yours? If it wasn&rsquo;t, the diner never learned you exist, and your hard-won position on the old Google map never got read aloud.</p>
 
-      <p>This is the part operators miss. A 2026 Uberall study of multi-location restaurants found that <strong>83% never appear in AI search results</strong> &mdash; even though <strong>86% of them keep a <!-- LIBRARY:autolink:start --><a href="/glossary/gbp/" data-glossary-head="Google Business Profile" data-glossary-aka="GBP, formerly Google My Business" data-glossary-blurb="Your business's free listing on Google Maps and Google Search — the panel on the right of a search that shows your name, hours, photos, reviews, and a link to your menu or booking.">Google Business Profile</a><!-- LIBRARY:autolink:end --></strong>. Having the listing is not the same as being named. The assistant has already decided who makes the shortlist before ranking ever enters the picture.</p>
+      <p>That ten-second test is the whole game in miniature, and most operators have never run it on their own listing. <strong>To appear in AI search, a restaurant has to clear four numbers &mdash; its star rating against the assistant&rsquo;s floor, review recency, profile completeness, and whether its own site holds an answer the AI can quote &mdash; and you can read all four this week without a consultant.</strong> A 2026 Uberall study of multi-location restaurants found that <strong>83% never appear in AI search results</strong>, even though <strong>86% of them keep a <!-- LIBRARY:autolink:start --><a href="/glossary/gbp/" data-glossary-head="Google Business Profile" data-glossary-aka="GBP, formerly Google My Business" data-glossary-blurb="Your business's free listing on Google Maps and Google Search — the panel on the right of a search that shows your name, hours, photos, reviews, and a link to your menu or booking.">Google Business Profile</a><!-- LIBRARY:autolink:end --></strong>. Having the listing is not the same as being named. The assistant decides who makes the shortlist before ranking ever enters the picture &mdash; and this is the field guide to reading the four numbers that decision turns on.</p>
 
       <figure class="viz-figure article-figure" data-audio-alt="The invisibility gap. Eighty-six percent of multi-location restaurants keep an active Google Business Profile. Eighty-three percent of those same restaurants are invisible in AI search — never named when a diner asks an assistant for a recommendation. The two columns sit nearly side by side, almost the same height, showing how presence and inclusion have come apart: keeping the listing no longer gets you into the answer.">
         <div class="viz-bars">
@@ -538,29 +538,90 @@ header.nav{min-height:64px}
         <figcaption>The surface keeps narrowing. The map used to show everyone nearby; the pack showed about ten; the AI answer names three to five. Per Uberall&rsquo;s 2026 shortlist measurement.</figcaption>
       </figure>
 
-      <p>So the goal moved. Ranking first in the <a href="/glossary/map-pack/">map pack</a> still matters, but it no longer guarantees the assistant repeats your name. The assistant filters on a handful of signals first, then writes. Four of those signals are numbers you control.</p>
+      <p>So the goal moved. Ranking first in the <a href="/glossary/map-pack/">map pack</a> still matters, but it no longer guarantees the assistant repeats your name. The assistant filters on a handful of signals first, then writes. Four of those signals are numbers you control &mdash; so the rest of this guide is a runbook for reading them, in order, on your own listing.</p>
+
+      <div class="callout">
+        <p class="callout-eyebrow">The number this whole guide is built on</p>
+        <p class="callout-body">Uberall measured the AI shortlist at <strong>three to five brands per query</strong> in 2026. That is the whole budget. Three to five seats, and the assistant fills them from the four numbers below before it writes a word &mdash; so this is not a contest you place in, it&rsquo;s a cutoff you clear. Treat the figure as Uberall&rsquo;s reported range, not a hard constant; the point is how few seats there are.</p>
+      </div>
+
+      <blockquote class="pullquote">
+        <p>You are not competing for a rank anymore. You are clearing four bars before the assistant will say your name out loud.</p>
+      </blockquote>
 
       <h2 id="number-one-your-rating-against-the-floor">Number one &mdash; your rating against the floor</h2>
       <p>Each assistant appears to apply a minimum star rating before it will name a place at all. Uberall&rsquo;s 2026 figures put the floors at roughly <strong>4.3 for ChatGPT, 4.1 for Perplexity, and 3.9 for Gemini</strong>. Below the floor, completeness and rank do not save you &mdash; you are filtered out before the assistant starts choosing.</p>
       <p>The move is not &ldquo;get more stars.&rdquo; It is to know your current number and the gap to the nearest floor. A restaurant sitting at 4.0 is invisible to ChatGPT&rsquo;s shortlist no matter how good the food is; the same restaurant clears Gemini&rsquo;s 3.9 today. Pull your number, write down the gap, and you know exactly which assistant you are losing. The <a href="/tools/gbp-grader/">GBP grader</a> reads it for you if you would rather not do the arithmetic by hand.</p>
 
       <figure class="viz-figure article-figure" data-audio-alt="Minimum star rating to be named by each AI assistant, on a scale from three point five stars to four point five stars. ChatGPT will not name a restaurant under about four point three stars. Perplexity's floor is about four point one. Gemini's is about three point nine. Floors are Uberall's twenty twenty-six reported figures. A restaurant sitting at four point zero clears Gemini's floor but falls below both Perplexity and ChatGPT.">
-        <div class="viz-bars">
-          <p class="viz-bars__title">Minimum star rating to be named, by assistant (scale: 3.5&ndash;4.5★)</p>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">ChatGPT floor</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.80"></span></div>
-            <p class="viz-bars__num">4.3★</p>
+        <style>.viz-gauges.viz-gauges--floors{grid-template-columns:repeat(3,1fr);gap:16px}@media (max-width:600px){.viz-gauges.viz-gauges--floors{grid-template-columns:1fr;gap:12px}}.viz-gauges--floors .viz-gauge__scale{font-family:var(--font-body);font-size:11px;color:var(--stone);margin:2px 0 0;letter-spacing:0.02em}</style>
+        <p style="font-family:var(--font-display);font-size:14px;font-weight:500;color:var(--ink);margin:0 0 14px;letter-spacing:-0.005em">Where each assistant&rsquo;s floor sits on the 3.5&ndash;4.5★ dial</p>
+        <div class="viz-gauges viz-gauges--floors">
+          <div class="viz-gauge" style="--score:80;">
+            <svg class="viz-gauge__svg" viewBox="0 0 220 130" width="220" height="130" role="img" aria-labelledby="floor-gauge-chatgpt" focusable="false">
+              <title id="floor-gauge-chatgpt">ChatGPT floor: about 4.3 stars on the 3.5 to 4.5 dial</title>
+              <defs>
+                <linearGradient id="viz-gauge-floor-chatgpt" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0" stop-color="#2A50C8" stop-opacity="0.30"/>
+                  <stop offset="1" stop-color="#2A50C8" stop-opacity="1"/>
+                </linearGradient>
+              </defs>
+              <path class="viz-gauge__band" d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke="url(#viz-gauge-floor-chatgpt)" stroke-width="22" stroke-linecap="butt"/>
+              <path class="viz-gauge__track" d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke-width="2"/>
+              <line class="viz-gauge__tick" x1="110" y1="20" x2="110" y2="32"/>
+              <g class="viz-gauge__needle">
+                <line x1="110" y1="110" x2="110" y2="38" stroke-width="3" stroke-linecap="round"/>
+                <circle cx="110" cy="38" r="4"/>
+              </g>
+              <circle class="viz-gauge__pivot" cx="110" cy="110" r="7"/>
+            </svg>
+            <p class="viz-gauge__num">4.3★</p>
+            <p class="viz-gauge__label"><strong>ChatGPT floor</strong>the highest bar of the three</p>
+            <p class="viz-gauge__scale">3.5★ &mdash;&mdash; 4.5★</p>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Perplexity floor</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.60"></span></div>
-            <p class="viz-bars__num">4.1★</p>
+          <div class="viz-gauge" style="--score:60;">
+            <svg class="viz-gauge__svg" viewBox="0 0 220 130" width="220" height="130" role="img" aria-labelledby="floor-gauge-perplexity" focusable="false">
+              <title id="floor-gauge-perplexity">Perplexity floor: about 4.1 stars on the 3.5 to 4.5 dial</title>
+              <defs>
+                <linearGradient id="viz-gauge-floor-perplexity" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0" stop-color="#2A50C8" stop-opacity="0.30"/>
+                  <stop offset="1" stop-color="#2A50C8" stop-opacity="1"/>
+                </linearGradient>
+              </defs>
+              <path class="viz-gauge__band" d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke="url(#viz-gauge-floor-perplexity)" stroke-width="22" stroke-linecap="butt"/>
+              <path class="viz-gauge__track" d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke-width="2"/>
+              <line class="viz-gauge__tick" x1="110" y1="20" x2="110" y2="32"/>
+              <g class="viz-gauge__needle" style="transition-delay:120ms;">
+                <line x1="110" y1="110" x2="110" y2="38" stroke-width="3" stroke-linecap="round"/>
+                <circle cx="110" cy="38" r="4"/>
+              </g>
+              <circle class="viz-gauge__pivot" cx="110" cy="110" r="7"/>
+            </svg>
+            <p class="viz-gauge__num">4.1★</p>
+            <p class="viz-gauge__label"><strong>Perplexity floor</strong>the middle bar</p>
+            <p class="viz-gauge__scale">3.5★ &mdash;&mdash; 4.5★</p>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Gemini floor</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.40"></span></div>
-            <p class="viz-bars__num">3.9★</p>
+          <div class="viz-gauge" style="--score:40;">
+            <svg class="viz-gauge__svg" viewBox="0 0 220 130" width="220" height="130" role="img" aria-labelledby="floor-gauge-gemini" focusable="false">
+              <title id="floor-gauge-gemini">Gemini floor: about 3.9 stars on the 3.5 to 4.5 dial</title>
+              <defs>
+                <linearGradient id="viz-gauge-floor-gemini" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0" stop-color="#2A50C8" stop-opacity="0.30"/>
+                  <stop offset="1" stop-color="#2A50C8" stop-opacity="1"/>
+                </linearGradient>
+              </defs>
+              <path class="viz-gauge__band" d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke="url(#viz-gauge-floor-gemini)" stroke-width="22" stroke-linecap="butt"/>
+              <path class="viz-gauge__track" d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke-width="2"/>
+              <line class="viz-gauge__tick" x1="110" y1="20" x2="110" y2="32"/>
+              <g class="viz-gauge__needle" style="transition-delay:240ms;">
+                <line x1="110" y1="110" x2="110" y2="38" stroke-width="3" stroke-linecap="round"/>
+                <circle cx="110" cy="38" r="4"/>
+              </g>
+              <circle class="viz-gauge__pivot" cx="110" cy="110" r="7"/>
+            </svg>
+            <p class="viz-gauge__num">3.9★</p>
+            <p class="viz-gauge__label"><strong>Gemini floor</strong>the lowest bar &mdash; clear this first</p>
+            <p class="viz-gauge__scale">3.5★ &mdash;&mdash; 4.5★</p>
           </div>
         </div>
         <figcaption>Bars proportional to the 3.5&ndash;4.5★ window. A restaurant at 4.0★ clears Gemini (3.9) but sits below Perplexity (4.1) and ChatGPT (4.3) &mdash; named by one assistant of three. Floors are Uberall&rsquo;s 2026 reported figures.</figcaption>
@@ -573,6 +634,11 @@ header.nav{min-height:64px}
           <p>Per-assistant minimum-rating thresholds (ChatGPT ~4.3, Perplexity ~4.1, Gemini ~3.9) are Uberall&rsquo;s reported figures. Treat them as published ranges, not a guaranteed cutoff &mdash; assistants change their weighting often.</p>
         </div>
       </details>
+
+      <aside class="callout callout--field">
+        <p class="callout-eyebrow">From the floor</p>
+        <p class="callout-body">The first time I ran this on a listing I knew well, the rating read 4.2 and I&rsquo;d have called that &ldquo;fine&rdquo; all day. Against the dial it&rsquo;s a near-miss: over Gemini and Perplexity, a tenth of a star under ChatGPT. That tenth is the difference between being in two of three answers and all three. I stopped thinking about the rating as a grade and started thinking about it as a clearance height &mdash; the only question is which doorways you fit through today, and which one you&rsquo;re ducking by a hair.</p>
+      </aside>
 
       <h2 id="number-two-review-recency-not-just-the-count">Number two &mdash; review recency, not just the count</h2>
       <p>A 4.6 built on twelve reviews, the newest from eighteen months ago, reads as a closed restaurant to a model trained to weight freshness. A 4.4 with a handful of reviews this month reads as open, busy, and current. Count earns the attention; recency keeps it.</p>
@@ -589,8 +655,47 @@ header.nav{min-height:64px}
       <h2 id="the-fixes-that-backfire">The fixes that backfire</h2>
       <p>Two reflexes make the numbers worse. Buying reviews spikes the count and then tanks recency the moment the batch ages, and Google&rsquo;s filters increasingly strip them &mdash; so the average drops and the dates go stale at once. Stuffing keywords into your business name is a suspension risk that can pull the whole listing, taking all four numbers to zero in a day. The signals that move AI search are the slow, real ones: good food showing up as fresh reviews, a complete profile, and answers written in plain text.</p>
 
+      <style>.fixes-compare{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0}@media (max-width:600px){.fixes-compare{grid-template-columns:1fr}}.fixes-compare .snippet-box{margin:0}.fixes-compare .snippet-box p{margin:0}.fixes-compare ul{margin:6px 0 0;padding-left:18px;font-size:15px;line-height:1.6;color:var(--ink)}.fixes-compare li{margin:0 0 4px}</style>
+      <div class="fixes-compare" role="group" aria-label="Shortcuts that backfire versus signals that compound">
+        <div class="snippet-box" data-tone="bad">
+          <span class="snippet-label">Don&rsquo;t &mdash; the shortcuts that backfire</span>
+          <ul>
+            <li>Buy a batch of reviews (recency craters when they age; filters strip them)</li>
+            <li>Stuff keywords into your business name (a suspension risk that zeroes all four)</li>
+            <li>Hide your answers in a photographed menu or a PDF</li>
+            <li>Chase rank while the rating sits under the floor</li>
+          </ul>
+        </div>
+        <div class="snippet-box" data-tone="good">
+          <span class="snippet-label">Do &mdash; the signals that compound</span>
+          <ul>
+            <li>Earn fresh reviews by visibly answering the ones you have</li>
+            <li>Keep the legal name; fill every structured field instead</li>
+            <li>Write the answer in plain text on a page you own</li>
+            <li>Clear the nearest floor first, then keep feeding the profile</li>
+          </ul>
+        </div>
+      </div>
+
       <h2 id="the-ten-minute-version">The ten-minute version</h2>
-      <p>You do not have to fix all four today. You have to read all four today, so you know which one is costing you.</p>
+      <p>You do not have to fix all four today. You have to read all four today, so you know which one is costing you. Here is the field check, in order &mdash; open your listing on your phone, set a ten-minute timer, and write the four answers on whatever&rsquo;s nearest.</p>
+
+      <style>
+        .field-runbook{counter-reset:rb;list-style:none;margin:28px 0;padding:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--cream-2)}
+        .field-runbook li{counter-increment:rb;position:relative;margin:0;padding:18px 22px 18px 60px;border-bottom:1px solid var(--line);font-size:16px;line-height:1.6;color:var(--ink-soft)}
+        .field-runbook li:last-child{border-bottom:0}
+        .field-runbook li::before{content:counter(rb);position:absolute;left:18px;top:18px;width:28px;height:28px;border-radius:50%;background:var(--teal);color:var(--cream);font-family:var(--font-body);font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;letter-spacing:0}
+        .field-runbook li strong{color:var(--ink)}
+      </style>
+      <ol class="field-runbook">
+        <li><strong>Read your rating against the floors.</strong> Open your Google listing and note the star number to one decimal. Subtract: how far above &mdash; or below &mdash; 3.9 (Gemini), 4.1 (Perplexity), 4.3 (ChatGPT)? Write the gap to the nearest floor you&rsquo;re under. That gap is the one assistant you&rsquo;re losing.</li>
+        <li><strong>Check the date on your newest review.</strong> Not the count &mdash; the date. This week? This month? Or has it been a season? A stale top-of-list reads as a closed kitchen no matter how high the average. Write the month of the most recent one.</li>
+        <li><strong>Walk the profile for blanks.</strong> Hours by day, cuisine, dietary attributes, outdoor seating, the menu link &mdash; tap through each. Every empty field is a question the assistant can&rsquo;t answer about you. Write down how many blanks you find.</li>
+        <li><strong>Search your own site for the answer.</strong> Pick a real question a diner asks &mdash; &ldquo;vegan entr&eacute;e,&rdquo; &ldquo;group of eight,&rdquo; &ldquo;patio booking&rdquo; &mdash; and find where it lives. If the answer is only inside a photo or a PDF, mark it &ldquo;not extractable.&rdquo; That&rsquo;s the number most operators have never checked.</li>
+      </ol>
+
+      <p>Four answers on a scrap of paper, and you know which number is keeping you out of the answer. Close the nearest gap first &mdash; the one that needs the smallest move to clear a floor or fill a field.</p>
+
       <p>The fourth number is the one that decides number four, so it is worth seeing the difference up close. Here is the same fact &mdash; &ldquo;can you seat a group of eight on the patio&rdquo; &mdash; written two ways. The first is how most restaurants ship it; the second is what the model can actually quote.</p>
 
       <figure class="viz-figure article-figure" data-audio-alt="A before-and-after of the same restaurant fact, written two ways, showing why number four decides whether an AI assistant can name you. The before version is an image: a photographed menu card that reads, in a script font, large parties welcome on the terrace. A human can read it; the model sees only an image file with no extractable text, so when a diner asks whether you seat a group of eight on the patio, the assistant has nothing to lift and quotes a competitor who wrote the answer in plain text. The after version is plain text on the restaurant's own page under a clearly worded heading: yes, our covered patio seats groups up to twelve, and we hold patio tables for parties of six or more with a reservation. Same fact, but now it is machine-readable, so the assistant can quote it directly and name the restaurant in the answer. The lesson: the answer has to live as text the model can lift, not as a picture only a person can read.">
