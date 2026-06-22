@@ -273,6 +273,25 @@ export function detectVizKinds(inner) {
   return kinds;
 }
 
+// Non-viz enrichment kinds — ADR-006 (2026-06-20). A figure declares its
+// kind via `data-figure-kind` on the <figure>; a real <table> inner counts
+// as 'table' even without the attribute. Each distinct non-viz kind counts
+// as one "kind" for the variety rule, ALONGSIDE the viz-* sub-kinds — so a
+// post can satisfy variety with (e.g.) one viz-bars + one data table, not
+// only with two diagram families. This is purely additive: a post with no
+// tables and no data-figure-kind yields the same kind-set it did before,
+// so the ~48 existing viz-only articles are unaffected.
+export const ENRICHMENT_KINDS = ['render', 'photo', 'scan', 'table', 'map', 'shot'];
+
+export function detectNonVizKinds(openAttrs, inner) {
+  const kinds = new Set();
+  const m = /\bdata-figure-kind=(['"])([a-z]+)\1/.exec(openAttrs || '');
+  if (m && ENRICHMENT_KINDS.includes(m[2])) kinds.add(m[2]);
+  // A real <table> is a 'table' enrichment even if the attribute is absent.
+  if (/<table\b/.test(inner)) kinds.add('table');
+  return kinds;
+}
+
 // Detect the autolink-marker-inside-attribute corruption pattern.
 // Returns an array of attribute-context strings that contain the marker.
 // The marker should only appear inside body text; finding it inside an
@@ -447,9 +466,10 @@ for (const root of SCAN_ROOTS) {
 
     const figs = collectContentFigures(html);
     const slugPath = relSlugPath(abs);
-    const vizKinds = new Set();
+    const vizKinds = new Set(); // now holds ALL figure kinds (viz sub-kinds + non-viz, ADR-006)
     for (const f of figs) {
       for (const k of detectVizKinds(f.inner)) vizKinds.add(k);
+      for (const k of detectNonVizKinds(f.openAttrs, f.inner)) vizKinds.add(k);
       const h = hashFigureInner(f.inner);
       f.hash = h;
       if (!hashToSlugs.has(h)) hashToSlugs.set(h, new Set());
@@ -477,12 +497,14 @@ for (const art of articles) {
     });
   }
 
-  // Rule 2 — variety. Only meaningful when the floor is met.
+  // Rule 2 — variety. Only meaningful when the floor is met. A "kind" is a
+  // distinct viz-* sub-kind OR a non-viz enrichment kind (table/photo/scan/
+  // map/shot/render — ADR-006), so the floor can be met more than one way.
   if (figs.length >= 2 && vizKinds.size < 2 && !isWaived(slugPath, 2)) {
     const detected = [...vizKinds].sort().join(', ') || '(none detected)';
     failures.push({
       file: rel, rule: 2,
-      msg: `only ${vizKinds.size} viz-* kind(s) — ${detected}; canon wants at least 2 distinct kinds`,
+      msg: `only ${vizKinds.size} distinct figure kind(s) — ${detected}; canon wants at least 2 distinct kinds (viz-* sub-kinds and/or table/photo/scan/map/shot/render)`,
     });
   }
 
@@ -579,7 +601,7 @@ for (const [file, vs] of byFile) {
 }
 console.error('Rules:');
 console.error('  1 — ≥ 2 content <figure> per article (viz-figure or article-figure).');
-console.error(`  2 — ≥ 2 distinct viz-* kinds across the figures.`);
+console.error(`  2 — ≥ 2 distinct figure kinds (viz-* sub-kinds and/or table/photo/scan/map/shot/render — ADR-006).`);
 console.error(`  3 — every content figure carries data-audio-alt of at least ${DATA_AUDIO_ALT_MIN} chars.`);
 console.error('  4 — every content figure contains a <figcaption>.');
 console.error('  5 — data-tone="teal" figures must be paired with data-tone="rust" somewhere in the post.');

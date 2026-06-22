@@ -20,6 +20,86 @@
 `{site}` = `potentially-profitable` (muntin.digital) · `{product}` =
 `Muntin-Invoice-Decoder` (Muntin Ledger).
 
+> **2026 visual evolution (added 2026-06-20).** §0 below is the canonical framing
+> added by `decisions/ADR-001-visual-evolution-v1.md`: it names the spine duality as
+> the literal expression of the storefront line **"Modern tools. Old-fashioned honest."**
+> Sections 1–5 (the code-verified guideline) remain the detailed authority and are
+> unchanged. Values in §0 are read from `assets/site-core.css :root` and
+> `data/muntin.tokens.json`.
+
+---
+
+## 0. The duality is the positioning — "Modern tools. Old-fashioned honest."
+
+The brand has exactly one visual idea, and it is the storefront line made visible:
+
+- **The cool slate/blue spine = the MODERN.** Financial-grade, calm, data-first. This is
+  "modern tools." It is the whole architecture — frame, glass, rigor.
+- **Fraunces + the Golden-Hour "light through the pane" = the OLD-FASHIONED HONEST.** A
+  warm display serif with real history in its letterforms, plus a rationed marigold→coral
+  light that blooms through the muntin grid on earned moments. This is the human, honest,
+  hand-built half — warmth carried by **type and light, never by chrome color.**
+
+One spine, two things said at once: the rigor *and* the honesty. That tension is the brand.
+
+### The token spine — summary (real values)
+
+Read from `assets/site-core.css :root` (editorial register) and `data/muntin.tokens.json`
+(the cross-repo canonical spine). Lowercase = product anchor; the site `:root` mirrors it.
+
+| Axis | Tokens / values |
+|---|---|
+| **Color — surfaces** | `--cream` (bg) `#F6F7F8` · `--cream-2` `#EDEEF1` · `--white` `#FFFFFF` (slate 0/25/50/100 etc. in the spine `core.slate`) |
+| **Color — ink / text** | `--ink` `#16181D` · `--ink-soft` `#4A4F59` · `--stone` `#6B7280` · `--stone-2` `#9AA0AB` (decoration-only — fails AAA as body text) |
+| **Color — accent (blue)** | editorial `--teal` `#2A50C8` (AA on cream) · press `--teal-dark` `#1F3A93` · tint `--teal-tint` `#EAF0FE`. Product register: `#3b68f5` (dark `#5b82ff`). The name `--teal` is legacy; the pigment is blue. |
+| **Color — status** | `--rust` `#C42E2E` (danger/alert) · `--gold` `#B7791F` (warning) · lines `--line` `#E3E5E9` / `--line-dark` `#D7DAE0` / `--line-input` `#868D9A` |
+| **Type — families** | `--font-display: 'Fraunces'…serif` · `--font-body: 'Inter'…sans-serif` |
+| **Type — fluid scale** | `--fs-eyebrow` 11→13 · `--fs-body` 15→17 · **`--fs-emphasis` 16→18 (new, ADR-001)** · `--fs-lead` 17→20 · `--fs-h4` 17→19 · `--fs-h3` 20→26 (clamp() px) |
+| **Spacing / layout** | `--max: 1200px` · `--pad-x: clamp(20px, 4vw, 64px)` |
+| **Radii** | **`--r-xs` 4px (new, ADR-001)** · `--r-sm` 8px · `--r-input` 12px · `--r-md` 14px · `--r-lg` 22px · pill `999px` |
+| **Elevation / motion** | shadows via `--elev-1/2/3` + `--ring-focus` (see drift guard) · eases `--ease` / `--ease-out` / `--ease-spring` · durations `--t-fast` 180 / `--t-med` 420 / `--t-slow` 900 / `--t-micro` 120ms |
+
+The spine values above are **frozen** — the 2026 evolution is additive (the two `(new)`
+tokens) and documentary only. Do not change a spine value without a confirm-tier ADR
+(ADR-000) — it is a cross-repo, dual-hash event.
+
+### When Golden Hour is earned
+
+Golden Hour is the **expressive warm layer**, not routine UI. Approved warm stops:
+**marigold `#FFB020`** and **coral `#FF6B5C`** (sanctioned editorial accents, never on the
+retired-warm blocklist, never in the shared spine — see §3).
+
+- **Earned (positive / brand moments):** hero light washes, OG / share cards, lifecycle
+  "win" states, the Tools / free-course badge hue (marigold), and the "light through the
+  pane" bloom on brand-forward surfaces.
+- **Never:** routine chrome, body text, form states, data-viz default tones, dense UI, or
+  anything in the product register. Warmth there comes from Fraunces + layout, not pigment.
+
+### Two registers, one spine
+
+The accent blue is **one hue at two values**, and that is deliberate, not drift:
+
+- **Editorial accent `#2A50C8`** — the deeper blue. It carries **AA on cream**, so it is
+  the studio's primary on its light, type-warm surfaces.
+- **Product accent `#3b68f5`** — the brighter blue. It is **dark-first readable**, so it is
+  the Ledger's primary on dark grounds (dark theme lifts to `#5b82ff`).
+
+Same hue, two values chosen for contrast on opposite backgrounds. The shared cool palette,
+the Pane mark, and the muntin metaphor keep them one brand; only **type, theme, and which
+blue is primary** diverge (the three sanctioned axes — see §1).
+
+### OG card system — overview
+
+Share images are spec-driven and are the most visible place the duality lives (cool grounds
++ Golden-Hour light through the muntin field). **Source of truth:
+`scripts/build-og-cards.mjs`** — it holds the `PALETTE`, the per-kind templates
+(`page / article / research / tool / glossary / people`), the muntin-field texture, the
+`goldenHour()` light layer, and the focus modules; `brand/og/cards.json` is the manifest.
+Card `accent` values must be PALETTE keys (`teal / rust / gold / ink / cream`), gate-enforced
+by `scripts/check-og-accents.mjs`. Detailed kind/coverage rules live in §5 and in
+`scripts/build-og-cards.mjs`. (Any *visible* OG template change is Tier 3 — render-verified
+on preview first; see ADR-001.)
+
 ---
 
 ## 1. One palette, two registers
