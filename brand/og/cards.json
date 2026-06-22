@@ -4671,7 +4671,13 @@
       "title_1": "Aggregator",
       "title_italic": "third-party delivery platform",
       "title_2": "",
-      "dek": "A third-party marketplace that takes orders on your behalf (DoorDash, Uber Eats, Grubhub) and keeps a commission per transaction."
+      "dek": "A third-party marketplace that takes orders on your behalf (DoorDash, Uber Eats, Grubhub) and keeps a commission per transaction.",
+      "focus": {
+        "type": "stat",
+        "value": "15–30%",
+        "caption": "cut on every delivery order",
+        "source": "Typical commission"
+      }
     },
     {
       "slug": "glossary-ai-overview",
@@ -4767,7 +4773,13 @@
       "title_1": "Bounce rate",
       "title_italic": "",
       "title_2": "",
-      "dek": "The percentage of visitors who land on your site and leave without clicking anything — no menu page, no reserve button, no second page."
+      "dek": "The percentage of visitors who land on your site and leave without clicking anything — no menu page, no reserve button, no second page.",
+      "focus": {
+        "type": "stat",
+        "value": "70%+",
+        "caption": "homepage bounce = a problem",
+        "source": "Rule of thumb"
+      }
     },
     {
       "slug": "glossary-brand-identity",
@@ -4851,7 +4863,13 @@
       "title_1": "Charm pricing",
       "title_italic": "prices ending in .95, .99, or .49",
       "title_2": "",
-      "dek": "A pricing convention in which the cents portion ends in a number designed to make the price feel lower than the next round figure — \\$19.95 instead of \\$20, \\$11.99 instead of…"
+      "dek": "A pricing convention in which the cents portion ends in a number designed to make the price feel lower than the next round figure — \\$19.95 instead of \\$20, \\$11.99 instead of…",
+      "focus": {
+        "type": "stat",
+        "value": "~8%",
+        "caption": "lift from dropping the $ sign",
+        "source": "Cornell study"
+      }
     },
     {
       "slug": "glossary-clearspace",
@@ -5013,7 +5031,22 @@
       "title_1": "Conversion rate",
       "title_italic": "",
       "title_2": "",
-      "dek": "The percentage of visitors who do the specific thing you wanted them to do — book a reservation, place an order, fill out a contact form."
+      "dek": "The percentage of visitors who do the specific thing you wanted them to do — book a reservation, place an order, fill out a contact form.",
+      "focus": {
+        "type": "bars",
+        "label": "Restaurant site benchmark",
+        "suffix": "%",
+        "items": [
+          {
+            "label": "Reservation (solid)",
+            "value": 3
+          },
+          {
+            "label": "Online order (great)",
+            "value": 10
+          }
+        ]
+      }
     },
     {
       "slug": "glossary-cookie-banner",
@@ -5181,7 +5214,13 @@
       "title_1": "Edible portion (EP)",
       "title_italic": "the cost of one usable ounce after trim",
       "title_2": "",
-      "dek": "The cost of one unit of an ingredient after yield correction: EP cost = AP cost &divide; yield."
+      "dek": "The cost of one unit of an ingredient after yield correction: EP cost = AP cost &divide; yield.",
+      "focus": {
+        "type": "stat",
+        "value": "20–30%",
+        "caption": "under-priced if you use AP cost",
+        "source": "Produce-heavy menus"
+      }
     },
     {
       "slug": "glossary-elasticity",
@@ -5193,7 +5232,13 @@
       "title_1": "Price elasticity",
       "title_italic": "how cover count moves with price",
       "title_2": "",
-      "dek": "How much cover count changes when prices change."
+      "dek": "How much cover count changes when prices change.",
+      "focus": {
+        "type": "stat",
+        "value": "6%",
+        "caption": "raise loses 2–3% of covers",
+        "source": "Working rule"
+      }
     },
     {
       "slug": "glossary-favicon",
@@ -5319,7 +5364,13 @@
       "title_1": "GBP photo count",
       "title_italic": "Google profile photos, carousel coverage",
       "title_2": "",
-      "dek": "How many photos are attached to your Google Business Profile — visible in the photo carousel at the top of your Google search panel and Maps listing."
+      "dek": "How many photos are attached to your Google Business Profile — visible in the photo carousel at the top of your Google search panel and Maps listing.",
+      "focus": {
+        "type": "stat",
+        "value": "15–20",
+        "caption": "strong photos to add",
+        "source": "Recommended"
+      }
     },
     {
       "slug": "glossary-gift-card-checkout",
@@ -5331,7 +5382,13 @@
       "title_1": "Gift-card checkout",
       "title_italic": "e-gift, digital gift card",
       "title_2": "",
-      "dek": "A page on your site where someone can buy a gift card in minutes, usually delivered as an email with a code the recipient redeems in-house or online."
+      "dek": "A page on your site where someone can buy a gift card in minutes, usually delivered as an email with a code the recipient redeems in-house or online.",
+      "focus": {
+        "type": "stat",
+        "value": "~25%",
+        "caption": "of gift cards never redeemed",
+        "source": "Typical"
+      }
     },
     {
       "slug": "glossary-hero",
@@ -5391,7 +5448,13 @@
       "title_1": "Web hosting",
       "title_italic": "where your site actually lives",
       "title_2": "",
-      "dek": "The server, somewhere on the internet, that sends your website to a visitor's phone when they type your domain."
+      "dek": "The server, somewhere on the internet, that sends your website to a visitor's phone when they type your domain.",
+      "focus": {
+        "type": "stat",
+        "value": "$5–$30",
+        "caption": "small-business hosting / month",
+        "source": "Typical range"
+      }
     },
     {
       "slug": "glossary-hours-of-operation",
@@ -5487,7 +5550,13 @@
       "title_1": "Labor cost",
       "title_italic": "wages + payroll taxes, as a % of sales",
       "title_2": "",
-      "dek": "Wages, payroll taxes, and the tipped-employee contribution expressed as a percentage of sales."
+      "dek": "Wages, payroll taxes, and the tipped-employee contribution expressed as a percentage of sales.",
+      "focus": {
+        "type": "stat",
+        "value": "28–32%",
+        "caption": "of sales, most formats",
+        "source": "Target range"
+      }
     },
     {
       "slug": "glossary-last-updated-signal",
@@ -5595,7 +5664,13 @@
       "title_1": "Menu copy",
       "title_italic": "the language doing the selling, separate from the dish",
       "title_2": "",
-      "dek": "The words next to each item — the descriptive sentence, the dish name, the price as it appears on the page — viewed as a separate craft from the cooking itself."
+      "dek": "The words next to each item — the descriptive sentence, the dish name, the price as it appears on the page — viewed as a separate craft from the cooking itself.",
+      "focus": {
+        "type": "stat",
+        "value": "27%",
+        "caption": "more orders, just from words",
+        "source": "Wansink, 2005"
+      }
     },
     {
       "slug": "glossary-menu-engineering",
@@ -5811,7 +5886,13 @@
       "title_1": "Plate cost",
       "title_italic": "the real ingredient cost of one finished plate",
       "title_2": "",
-      "dek": "What it costs you in ingredients to send one plate of a dish to the pass, after trim, peel, bone, and shrink."
+      "dek": "What it costs you in ingredients to send one plate of a dish to the pass, after trim, peel, bone, and shrink.",
+      "focus": {
+        "type": "stat",
+        "value": "3–5 pts",
+        "caption": "food cost found dish-by-dish",
+        "source": "Typical reveal"
+      }
     },
     {
       "slug": "glossary-prime-cost",
@@ -5961,7 +6042,13 @@
       "title_1": "Sensory adjective",
       "title_italic": "a word that names a flavor, texture, temperature, or preparation",
       "title_2": "",
-      "dek": "A modifier in a menu description that names a perceptual quality of the dish — flavor (smoky, briny, tangy), texture (crispy, silky, chewy), temperature (chilled, blistering,…"
+      "dek": "A modifier in a menu description that names a perceptual quality of the dish — flavor (smoky, briny, tangy), texture (crispy, silky, chewy), temperature (chilled, blistering,…",
+      "focus": {
+        "type": "stat",
+        "value": "+27%",
+        "caption": "lift from sensory words",
+        "source": "Wansink research"
+      }
     },
     {
       "slug": "glossary-service-charge",
@@ -5973,7 +6060,13 @@
       "title_1": "Service charge",
       "title_italic": "a fixed % the restaurant adds to the check",
       "title_2": "",
-      "dek": "A percentage (commonly 18–22%) the restaurant adds to the guest check automatically, in lieu of or alongside tipping."
+      "dek": "A percentage (commonly 18–22%) the restaurant adds to the guest check automatically, in lieu of or alongside tipping.",
+      "focus": {
+        "type": "stat",
+        "value": "18–22%",
+        "caption": "added to the check",
+        "source": "Common range"
+      }
     },
     {
       "slug": "glossary-social-proof",
@@ -6345,7 +6438,26 @@
       "title_1": "Yield percent",
       "title_italic": "the share of what you bought that ends up on a plate",
       "title_2": "",
-      "dek": "For a given ingredient: the percentage of as-purchased weight that survives trim, peel, bone, fat, and cooking shrinkage."
+      "dek": "For a given ingredient: the percentage of as-purchased weight that survives trim, peel, bone, fat, and cooking shrinkage.",
+      "focus": {
+        "type": "bars",
+        "label": "Yield after trim",
+        "suffix": "%",
+        "items": [
+          {
+            "label": "Romaine",
+            "value": 75
+          },
+          {
+            "label": "Whole chicken",
+            "value": 60
+          },
+          {
+            "label": "Whole halibut",
+            "value": 50
+          }
+        ]
+      }
     },
     {
       "slug": "glossary-above-the-fold-es",
@@ -6381,7 +6493,13 @@
       "title_1": "Agregador",
       "title_italic": "plataforma de delivery de terceros",
       "title_2": "",
-      "dek": "Un marketplace de terceros que toma órdenes en tu nombre (DoorDash, Uber Eats, Grubhub) y se queda con una comisión por transacción."
+      "dek": "Un marketplace de terceros que toma órdenes en tu nombre (DoorDash, Uber Eats, Grubhub) y se queda con una comisión por transacción.",
+      "focus": {
+        "type": "stat",
+        "value": "15–30%",
+        "caption": "tajada de cada pedido",
+        "source": "Comisión típica"
+      }
     },
     {
       "slug": "glossary-ai-overview-es",
@@ -6477,7 +6595,13 @@
       "title_1": "Tasa de rebote",
       "title_italic": "",
       "title_2": "",
-      "dek": "El porcentaje de visitantes que llegan a tu sitio y se van sin hacer clic en nada — ninguna página de menú, ningún botón de reservar, ninguna segunda página."
+      "dek": "El porcentaje de visitantes que llegan a tu sitio y se van sin hacer clic en nada — ninguna página de menú, ningún botón de reservar, ninguna segunda página.",
+      "focus": {
+        "type": "stat",
+        "value": "70%+",
+        "caption": "rebote en portada = problema",
+        "source": "Regla general"
+      }
     },
     {
       "slug": "glossary-brand-identity-es",
@@ -6561,7 +6685,13 @@
       "title_1": "Precio psicológico",
       "title_italic": "precios que terminan en .95, .99 o .49",
       "title_2": "",
-      "dek": "Una convención de precios en la que la porción de centavos termina en un número diseñado para hacer sentir el precio menor que la siguiente cifra redonda — \\$19.95 en vez de \\$20,…"
+      "dek": "Una convención de precios en la que la porción de centavos termina en un número diseñado para hacer sentir el precio menor que la siguiente cifra redonda — \\$19.95 en vez de \\$20,…",
+      "focus": {
+        "type": "stat",
+        "value": "~8%",
+        "caption": "alza al quitar el signo $",
+        "source": "Estudio Cornell"
+      }
     },
     {
       "slug": "glossary-clearspace-es",
@@ -6723,7 +6853,22 @@
       "title_1": "Tasa de conversión",
       "title_italic": "",
       "title_2": "",
-      "dek": "El porcentaje de visitantes que hacen la cosa específica que querías que hicieran — reservar, hacer un pedido, llenar un formulario de contacto."
+      "dek": "El porcentaje de visitantes que hacen la cosa específica que querías que hicieran — reservar, hacer un pedido, llenar un formulario de contacto.",
+      "focus": {
+        "type": "bars",
+        "label": "Referencia de sitio",
+        "suffix": "%",
+        "items": [
+          {
+            "label": "Reserva (sólida)",
+            "value": 3
+          },
+          {
+            "label": "Pedido (excelente)",
+            "value": 10
+          }
+        ]
+      }
     },
     {
       "slug": "glossary-cookie-banner-es",
@@ -6891,7 +7036,13 @@
       "title_1": "Porción comestible (EP)",
       "title_italic": "el costo de una onza usable después de limpiar",
       "title_2": "",
-      "dek": "El costo de una unidad de un ingrediente después de la corrección por rendimiento: costo EP = costo AP &divide; rendimiento."
+      "dek": "El costo de una unidad de un ingrediente después de la corrección por rendimiento: costo EP = costo AP &divide; rendimiento.",
+      "focus": {
+        "type": "stat",
+        "value": "20–30%",
+        "caption": "subvalúa si usas costo AP",
+        "source": "Menús de producto"
+      }
     },
     {
       "slug": "glossary-elasticity-es",
@@ -6903,7 +7054,13 @@
       "title_1": "Elasticidad de precio",
       "title_italic": "cómo se mueven los cubiertos con el precio",
       "title_2": "",
-      "dek": "Cuánto cambia el conteo de cubiertos cuando cambian los precios."
+      "dek": "Cuánto cambia el conteo de cubiertos cuando cambian los precios.",
+      "focus": {
+        "type": "stat",
+        "value": "6%",
+        "caption": "alza pierde 2–3% de cubiertos",
+        "source": "Regla práctica"
+      }
     },
     {
       "slug": "glossary-favicon-es",
@@ -7029,7 +7186,13 @@
       "title_1": "Cantidad de fotos del Perfil de Google",
       "title_italic": "fotos del perfil, cobertura del carrusel",
       "title_2": "",
-      "dek": "Cuántas fotos tiene tu Perfil de Empresa de Google — visibles en el carrusel arriba del panel de búsqueda y en la ficha de Maps."
+      "dek": "Cuántas fotos tiene tu Perfil de Empresa de Google — visibles en el carrusel arriba del panel de búsqueda y en la ficha de Maps.",
+      "focus": {
+        "type": "stat",
+        "value": "15–20",
+        "caption": "fotos buenas que agregar",
+        "source": "Recomendado"
+      }
     },
     {
       "slug": "glossary-gift-card-checkout-es",
@@ -7041,7 +7204,13 @@
       "title_1": "Compra de tarjeta de regalo",
       "title_italic": "e-gift, tarjeta de regalo digital",
       "title_2": "",
-      "dek": "Una página en tu sitio donde alguien puede comprar una tarjeta de regalo en minutos, que normalmente llega como un correo con un código que la persona que la recibe canjea en el…"
+      "dek": "Una página en tu sitio donde alguien puede comprar una tarjeta de regalo en minutos, que normalmente llega como un correo con un código que la persona que la recibe canjea en el…",
+      "focus": {
+        "type": "stat",
+        "value": "~25%",
+        "caption": "de tarjetas nunca se canjean",
+        "source": "Típico"
+      }
     },
     {
       "slug": "glossary-hero-es",
@@ -7101,7 +7270,13 @@
       "title_1": "Hosting web",
       "title_italic": "dónde vive de verdad tu sitio",
       "title_2": "",
-      "dek": "El servidor, en algún lugar del internet, que le envía tu sitio al celular del visitante cuando este tipea tu dominio."
+      "dek": "El servidor, en algún lugar del internet, que le envía tu sitio al celular del visitante cuando este tipea tu dominio.",
+      "focus": {
+        "type": "stat",
+        "value": "$5–$30",
+        "caption": "hosting de negocio / mes",
+        "source": "Rango típico"
+      }
     },
     {
       "slug": "glossary-hours-of-operation-es",
@@ -7197,7 +7372,13 @@
       "title_1": "Labor cost",
       "title_italic": "sueldos + impuestos de nómina, como % de ventas",
       "title_2": "",
-      "dek": "Sueldos, impuestos de nómina y el aporte del empleado de propinas expresado como porcentaje de ventas."
+      "dek": "Sueldos, impuestos de nómina y el aporte del empleado de propinas expresado como porcentaje de ventas.",
+      "focus": {
+        "type": "stat",
+        "value": "28–32%",
+        "caption": "de ventas, casi todo formato",
+        "source": "Rango objetivo"
+      }
     },
     {
       "slug": "glossary-last-updated-signal-es",
@@ -7305,7 +7486,13 @@
       "title_1": "Copy de menú",
       "title_italic": "el lenguaje que vende, separado del plato",
       "title_2": "",
-      "dek": "Las palabras que acompañan a cada plato — la oración descriptiva, el nombre del plato, el precio tal como aparece en la página — vistas como un oficio aparte de la cocina misma."
+      "dek": "Las palabras que acompañan a cada plato — la oración descriptiva, el nombre del plato, el precio tal como aparece en la página — vistas como un oficio aparte de la cocina misma.",
+      "focus": {
+        "type": "stat",
+        "value": "27%",
+        "caption": "más pedidos, solo con palabras",
+        "source": "Wansink, 2005"
+      }
     },
     {
       "slug": "glossary-menu-engineering-es",
@@ -7521,7 +7708,13 @@
       "title_1": "Costo del plato",
       "title_italic": "el costo real de ingredientes de un plato terminado",
       "title_2": "",
-      "dek": "Lo que te cuesta en ingredientes mandar un plato al pase, después de la limpieza, el pelado, el deshuesado y la merma."
+      "dek": "Lo que te cuesta en ingredientes mandar un plato al pase, después de la limpieza, el pelado, el deshuesado y la merma.",
+      "focus": {
+        "type": "stat",
+        "value": "3–5 pts",
+        "caption": "costo hallado plato por plato",
+        "source": "Hallazgo típico"
+      }
     },
     {
       "slug": "glossary-prime-cost-es",
@@ -7671,7 +7864,13 @@
       "title_1": "Adjetivo sensorial",
       "title_italic": "una palabra que nombra sabor, textura, temperatura o preparación",
       "title_2": "",
-      "dek": "Un modificador en la descripción de un plato que nombra una cualidad perceptual — sabor (ahumado, salobre, picante), textura (crocante, sedoso, masticable), temperatura (helado,…"
+      "dek": "Un modificador en la descripción de un plato que nombra una cualidad perceptual — sabor (ahumado, salobre, picante), textura (crocante, sedoso, masticable), temperatura (helado,…",
+      "focus": {
+        "type": "stat",
+        "value": "+27%",
+        "caption": "alza por palabras sensoriales",
+        "source": "Investig. Wansink"
+      }
     },
     {
       "slug": "glossary-service-charge-es",
@@ -7683,7 +7882,13 @@
       "title_1": "Cargo de servicio",
       "title_italic": "un porcentaje fijo que el restaurante agrega a la cuenta",
       "title_2": "",
-      "dek": "Un porcentaje (comúnmente 18–22%) que el restaurante agrega a la cuenta del comensal automáticamente, en lugar de o además de la propina."
+      "dek": "Un porcentaje (comúnmente 18–22%) que el restaurante agrega a la cuenta del comensal automáticamente, en lugar de o además de la propina.",
+      "focus": {
+        "type": "stat",
+        "value": "18–22%",
+        "caption": "agregado a la cuenta",
+        "source": "Rango común"
+      }
     },
     {
       "slug": "glossary-social-proof-es",
@@ -8055,7 +8260,26 @@
       "title_1": "Porcentaje de rendimiento",
       "title_italic": "la parte de lo comprado que termina en un plato",
       "title_2": "",
-      "dek": "Para un ingrediente dado: el porcentaje del peso tal como se compra que sobrevive a la limpieza, el pelado, los huesos, la grasa y la merma de cocción."
+      "dek": "Para un ingrediente dado: el porcentaje del peso tal como se compra que sobrevive a la limpieza, el pelado, los huesos, la grasa y la merma de cocción.",
+      "focus": {
+        "type": "bars",
+        "label": "Rendimiento útil",
+        "suffix": "%",
+        "items": [
+          {
+            "label": "Lechuga romana",
+            "value": 75
+          },
+          {
+            "label": "Pollo entero",
+            "value": 60
+          },
+          {
+            "label": "Fletán entero",
+            "value": 50
+          }
+        ]
+      }
     }
   ]
 }

@@ -53,9 +53,32 @@
 
   <text x="80" y="400"
         font-family="Inter, Arial, sans-serif" font-size="22"
-        font-weight="400" fill="#4A4F59"><tspan x="80" dy="0">El porcentaje de visitantes que hacen la cosa específica que querías que hicieran —</tspan><tspan x="80" dy="30">reservar, hacer un pedido, llenar un formulario de contacto.</tspan></text>
+        font-weight="400" fill="#4A4F59"><tspan x="80" dy="0">El porcentaje de visitantes que hacen la cosa</tspan><tspan x="80" dy="30">específica que querías que hicieran — reservar,</tspan><tspan x="80" dy="30">hacer un pedido, llenar un formulario de contacto.</tspan></text>
 
   
+      <text x="700" y="160"
+            font-family="Inter, Arial, sans-serif" font-size="12"
+            font-weight="700" letter-spacing="3" fill="#16181D" opacity="0.5">REFERENCIA DE SITIO</text>
+      
+        <text x="700" y="188"
+              font-family="Inter, Arial, sans-serif" font-size="17"
+              font-weight="500" fill="#16181D" opacity="0.9">Reserva (sólida)</text>
+        <rect x="700" y="202" width="320" height="22" rx="4" fill="rgba(22,24,29,0.10)"/>
+        <rect x="700" y="202" width="96" height="22" rx="4" fill="#C42E2E"/>
+        <text x="1036" y="221"
+              font-family="Fraunces, Georgia, serif" font-size="26"
+              font-weight="500" fill="#C42E2E">3%</text>
+      
+        <text x="700" y="284"
+              font-family="Inter, Arial, sans-serif" font-size="17"
+              font-weight="500" fill="#16181D" opacity="0.9">Pedido (excelente)</text>
+        <rect x="700" y="298" width="320" height="22" rx="4" fill="rgba(22,24,29,0.10)"/>
+        <rect x="700" y="298" width="320" height="22" rx="4" fill="#4A4F59"/>
+        <text x="1036" y="317"
+              font-family="Fraunces, Georgia, serif" font-size="26"
+              font-weight="500" fill="#4A4F59">10%</text>
+      
+    
 
   
     <g transform="translate(80, 552)" fill="#4A4F59" opacity="0.6">

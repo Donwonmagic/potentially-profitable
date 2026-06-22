@@ -45,7 +45,7 @@
         font-weight="700" letter-spacing="4" fill="#FFB020">GLOSARIO · OPERACIONES Y MARGEN</text>
 
   <text x="80" y="232"
-        font-family="Fraunces, Georgia, serif" font-size="64"
+        font-family="Fraunces, Georgia, serif" font-size="52"
         font-weight="500" letter-spacing="-2" fill="#16181D">Porcentaje de rendimiento</text>
 
   <text x="80" y="296"
@@ -55,9 +55,41 @@
 
   <text x="80" y="456"
         font-family="Inter, Arial, sans-serif" font-size="22"
-        font-weight="400" fill="#4A4F59"><tspan x="80" dy="0">Para un ingrediente dado: el porcentaje del peso tal como se compra que sobrevive a la</tspan><tspan x="80" dy="30">limpieza, el pelado, los huesos, la grasa y la merma de cocción.</tspan></text>
+        font-weight="400" fill="#4A4F59"><tspan x="80" dy="0">Para un ingrediente dado: el porcentaje del peso tal</tspan><tspan x="80" dy="30">como se compra que sobrevive a la limpieza, el</tspan><tspan x="80" dy="30">pelado, los huesos, la grasa y la merma de cocción.</tspan></text>
 
   
+      <text x="700" y="160"
+            font-family="Inter, Arial, sans-serif" font-size="12"
+            font-weight="700" letter-spacing="3" fill="#16181D" opacity="0.5">RENDIMIENTO ÚTIL</text>
+      
+        <text x="700" y="188"
+              font-family="Inter, Arial, sans-serif" font-size="17"
+              font-weight="500" fill="#16181D" opacity="0.9">Lechuga romana</text>
+        <rect x="700" y="202" width="320" height="22" rx="4" fill="rgba(22,24,29,0.10)"/>
+        <rect x="700" y="202" width="320" height="22" rx="4" fill="#FFB020"/>
+        <text x="1036" y="221"
+              font-family="Fraunces, Georgia, serif" font-size="26"
+              font-weight="500" fill="#FFB020">75%</text>
+      
+        <text x="700" y="284"
+              font-family="Inter, Arial, sans-serif" font-size="17"
+              font-weight="500" fill="#16181D" opacity="0.9">Pollo entero</text>
+        <rect x="700" y="298" width="320" height="22" rx="4" fill="rgba(22,24,29,0.10)"/>
+        <rect x="700" y="298" width="256" height="22" rx="4" fill="#4A4F59"/>
+        <text x="1036" y="317"
+              font-family="Fraunces, Georgia, serif" font-size="26"
+              font-weight="500" fill="#4A4F59">60%</text>
+      
+        <text x="700" y="380"
+              font-family="Inter, Arial, sans-serif" font-size="17"
+              font-weight="500" fill="#16181D" opacity="0.9">Fletán entero</text>
+        <rect x="700" y="394" width="320" height="22" rx="4" fill="rgba(22,24,29,0.10)"/>
+        <rect x="700" y="394" width="213" height="22" rx="4" fill="#4A4F59"/>
+        <text x="1036" y="413"
+              font-family="Fraunces, Georgia, serif" font-size="26"
+              font-weight="500" fill="#4A4F59">50%</text>
+      
+    
 
   
     <g transform="translate(80, 552)" fill="#4A4F59" opacity="0.6">
