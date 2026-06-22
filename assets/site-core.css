@@ -93,6 +93,11 @@
      rhythm so card type doesn't feel frozen against the hero. */
   --fs-eyebrow: clamp(11px, .18vw + 10px, 13px);
   --fs-body:    clamp(15px, .25vw + 14px, 17px);
+  /* Emphasis body — a half-step above --fs-body for lead-ins / pull
+     sentences that should read warmer than body but not as loud as
+     --fs-lead. Declared for craft completeness; not yet applied to any
+     component (additive — see ADR-001). */
+  --fs-emphasis: clamp(16px, .3vw + 14px, 18px);
   --fs-lead:    clamp(17px, .4vw  + 15px, 20px);
   --fs-h4:      clamp(17px, .35vw + 15px, 19px);
   --fs-h3:      clamp(20px, 1vw   + 16px, 26px);
@@ -107,6 +112,11 @@
      8/10/12/14 drift the next tool was going to introduce. Keep
      --r-sm (8px) for compact UI and --r-md (14px) for cards / CTAs. */
   --r-input: 12px;
+  /* Extra-small radius — the bottom of the curve scale, for code chips
+     / micro-pills / tight tags where --r-sm (8px) reads too round.
+     Declared for craft completeness; not yet applied to any component
+     (additive — see ADR-001). */
+  --r-xs: 4px;
 
   /* Status palette — used by tool result UIs that grade or assess
      (Restaurant Audit, GBP Grader, Margin Math health bands, Brand
