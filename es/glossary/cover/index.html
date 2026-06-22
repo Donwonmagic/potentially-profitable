@@ -372,7 +372,11 @@
       <p class="term-why">Cubiertos por día × ticket promedio = ingresos. La mayoría de la matemática de restaurante empieza aquí. Al comparar turnos, ubicaciones o temporadas, los cubiertos son la métrica más limpia porque no los distorsionan los cambios de precios en el menú. La calculadora de <a href="/tools/margin-math/#break-even-covers">Cubiertos para romper el punto</a> responde "¿cuántos cubiertos por día exige mi overhead fijo?"</p>
       
       <!-- glossary-explainer-cue:start -->
-      <!-- glossary-explainer-cue:end -->
+<p style="margin-top:18px"><a class="term-explainer-cue" href="#cover-explainer">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+  Mira el explicador de 90 segundos
+</a></p>
+<!-- glossary-explainer-cue:end -->
       <!-- glossary-faq:start -->
       <section class="term-faq" aria-labelledby="term-faq-h">
         <h2 class="term-faq__h" id="term-faq-h">Preguntas frecuentes</h2>
@@ -391,6 +395,181 @@
 </section>
 
 <!-- glossary-explainer:start -->
+<aside id="cover-explainer" class="term-explainer" data-term-slug="cover" tabindex="0" aria-label="El explicador de 90 segundos">
+  <header class="term-explainer__head">
+    <span class="eyebrow">El explicador de 90 segundos</span>
+    <h2>Cover, in 90 seconds.</h2>
+    <p class="term-explainer__sub"><strong>The one unit every restaurant number is really measured in.</strong> <span aria-hidden="true">·</span> 73s</p>
+  </header>
+  <div class="term-explainer__stage">
+    <svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of a restaurant cover — one guest served as the unit behind every restaurant number">
+  <defs>
+    <linearGradient id="cv-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>
+      <stop offset="100%" stop-color="var(--cream,#FAF7F2)"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#cv-bg)"/>
+
+  <!-- ============ DEFINE ============ -->
+  <g class="explainer-scene is-active" data-scene-id="define">
+    <text class="scene-label text-stone" x="40" y="46" data-anim="fade">One guest, one cover</text>
+    <!-- the table -->
+    <g data-anim="rise" style="--delay:160ms">
+      <rect x="320" y="200" width="160" height="100" rx="10" fill="var(--cream-2,#F3EEE3)" stroke="var(--line,#E8E2D6)" stroke-width="2"/>
+      <text class="text-stone" x="400" y="256" text-anchor="middle" font-size="13" letter-spacing="0.1em">ONE TABLE</text>
+    </g>
+    <!-- four seats, highlighted -->
+    <g data-anim="grow-x" style="--delay:500ms">
+      <circle cx="370" cy="172" r="22" fill="var(--teal,#1F4E5B)"/>
+      <circle cx="430" cy="172" r="22" fill="var(--teal,#1F4E5B)"/>
+      <circle cx="370" cy="328" r="22" fill="var(--teal,#1F4E5B)"/>
+      <circle cx="430" cy="328" r="22" fill="var(--teal,#1F4E5B)"/>
+    </g>
+    <!-- two shared entrees on the table -->
+    <g data-anim="fade" style="--delay:900ms">
+      <circle cx="372" cy="250" r="13" fill="var(--white,#fff)" stroke="var(--rust,#B8541A)" stroke-width="1.5"/>
+      <circle cx="428" cy="250" r="13" fill="var(--white,#fff)" stroke="var(--rust,#B8541A)" stroke-width="1.5"/>
+      <text class="text-stone" x="400" y="290" text-anchor="middle" font-size="11">2 entrees, split</text>
+    </g>
+    <!-- the count -->
+    <g data-anim="rise" style="--delay:1200ms">
+      <text class="text-rust" x="620" y="240" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="96">4</text>
+      <text class="text-stone" x="620" y="288" text-anchor="middle" font-size="16" letter-spacing="0.08em">COVERS</text>
+    </g>
+    <text class="text-soft" x="400" y="416" text-anchor="middle" font-size="14" font-style="italic" data-anim="fade" style="--delay:1600ms">Not the table. Not the two tickets. The four people.</text>
+  </g>
+
+  <!-- ============ UNIT ============ -->
+  <g class="explainer-scene" data-scene-id="unit">
+    <text class="scene-label text-stone" x="40" y="46" data-anim="fade">Everything is really per-cover</text>
+    <!-- formula 1: average check -->
+    <g data-anim="rise" style="--delay:140ms">
+      <rect x="80" y="120" width="640" height="74" rx="10" fill="var(--white,#fff)" stroke="var(--line,#E8E2D6)"/>
+      <text class="text-soft" x="108" y="165" font-size="16">Average check</text>
+      <text class="text-stone" x="360" y="165" font-size="15">=</text>
+      <text class="text-soft" x="690" y="165" text-anchor="end" font-family="Fraunces, Georgia, serif" font-size="22">sales <tspan class="text-stone" font-size="18" font-family="-apple-system, system-ui, sans-serif">/</tspan> covers</text>
+    </g>
+    <!-- formula 2: labor productivity -->
+    <g data-anim="rise" style="--delay:420ms">
+      <rect x="80" y="208" width="640" height="74" rx="10" fill="var(--white,#fff)" stroke="var(--line,#E8E2D6)"/>
+      <text class="text-soft" x="108" y="253" font-size="16">Labor productivity</text>
+      <text class="text-stone" x="360" y="253" font-size="15">=</text>
+      <text class="text-soft" x="690" y="253" text-anchor="end" font-family="Fraunces, Georgia, serif" font-size="22">covers <tspan class="text-stone" font-size="18" font-family="-apple-system, system-ui, sans-serif">/</tspan> labor hour</text>
+    </g>
+    <!-- formula 3: rent per cover -->
+    <g data-anim="rise" style="--delay:700ms">
+      <rect x="80" y="296" width="640" height="74" rx="10" fill="var(--white,#fff)" stroke="var(--line,#E8E2D6)"/>
+      <text class="text-soft" x="108" y="341" font-size="16">Even rent</text>
+      <text class="text-stone" x="360" y="341" font-size="15">=</text>
+      <text class="text-soft" x="690" y="341" text-anchor="end" font-family="Fraunces, Georgia, serif" font-size="22">rent <tspan class="text-stone" font-size="18" font-family="-apple-system, system-ui, sans-serif">/</tspan> cover</text>
+    </g>
+    <text class="text-teal" x="400" y="420" text-anchor="middle" font-size="14" font-style="italic" data-anim="fade" style="--delay:1100ms">Count covers and the math lines up.</text>
+  </g>
+
+  <!-- ============ TRAP ============ -->
+  <g class="explainer-scene" data-scene-id="trap">
+    <text class="scene-label text-stone" x="40" y="46" data-anim="fade">Same tables, different night</text>
+    <!-- Friday A: full seats -->
+    <g data-anim="rise" style="--delay:140ms">
+      <rect x="90" y="110" width="280" height="270" rx="14" fill="var(--white,#fff)" stroke="var(--teal,#1F4E5B)" stroke-width="1.5"/>
+      <text class="text-teal" x="114" y="150" font-size="11" letter-spacing="0.1em">FRIDAY · SEATS FILLED</text>
+      <!-- four-top, all four full -->
+      <rect x="170" y="180" width="120" height="64" rx="8" fill="var(--cream-2,#F3EEE3)" stroke="var(--line,#E8E2D6)"/>
+      <circle cx="200" cy="174" r="12" fill="var(--teal,#1F4E5B)"/>
+      <circle cx="260" cy="174" r="12" fill="var(--teal,#1F4E5B)"/>
+      <circle cx="200" cy="250" r="12" fill="var(--teal,#1F4E5B)"/>
+      <circle cx="260" cy="250" r="12" fill="var(--teal,#1F4E5B)"/>
+      <text class="text-stone" x="230" y="296" text-anchor="middle" font-size="12">80 tables</text>
+      <text class="text-teal" x="230" y="346" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="40">210</text>
+      <text class="text-stone" x="230" y="366" text-anchor="middle" font-size="11" letter-spacing="0.08em">COVERS</text>
+    </g>
+    <!-- Friday B: twos at four-tops -->
+    <g data-anim="rise" style="--delay:520ms">
+      <rect x="430" y="110" width="280" height="270" rx="14" fill="var(--white,#fff)" stroke="var(--rust,#B8541A)"/>
+      <text class="text-rust" x="454" y="150" font-size="11" letter-spacing="0.1em">FRIDAY · TWOS AT FOUR-TOPS</text>
+      <!-- four-top, only two full -->
+      <rect x="510" y="180" width="120" height="64" rx="8" fill="var(--cream-2,#F3EEE3)" stroke="var(--line,#E8E2D6)"/>
+      <circle cx="540" cy="174" r="12" fill="var(--rust,#B8541A)"/>
+      <circle cx="600" cy="174" r="12" fill="var(--rust,#B8541A)"/>
+      <circle cx="540" cy="250" r="12" fill="var(--white,#fff)" stroke="var(--line-dark,#D4CCBC)" stroke-dasharray="3 3"/>
+      <circle cx="600" cy="250" r="12" fill="var(--white,#fff)" stroke="var(--line-dark,#D4CCBC)" stroke-dasharray="3 3"/>
+      <text class="text-stone" x="570" y="296" text-anchor="middle" font-size="12">80 tables</text>
+      <text class="text-rust" x="570" y="346" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="40">150</text>
+      <text class="text-stone" x="570" y="366" text-anchor="middle" font-size="11" letter-spacing="0.08em">COVERS</text>
+    </g>
+    <text class="text-soft" x="400" y="424" text-anchor="middle" font-size="14" font-style="italic" data-anim="fade" style="--delay:1100ms">Same table count. Thousands of dollars apart.</text>
+  </g>
+
+  <!-- ============ MOVE ============ -->
+  <g class="explainer-scene" data-scene-id="move">
+    <text class="scene-label text-stone" x="40" y="46" data-anim="fade">Track the denominator</text>
+    <!-- the per-shift covers tally -->
+    <g data-anim="rise" style="--delay:140ms">
+      <rect x="120" y="100" width="560" height="190" rx="12" fill="var(--white,#fff)" stroke="var(--line-dark,#D4CCBC)"/>
+      <text class="text-stone" x="148" y="138" font-size="11" letter-spacing="0.12em">COVERS · FRIDAY DINNER</text>
+      <line x1="148" y1="156" x2="652" y2="156" stroke="var(--line,#E8E2D6)"/>
+      <text class="text-soft" x="148" y="192" font-size="14">5–7 pm</text>
+      <text class="text-soft" x="652" y="192" text-anchor="end" font-family="Fraunces, Georgia, serif" font-size="20">64</text>
+      <text class="text-soft" x="148" y="226" font-size="14">7–9 pm</text>
+      <text class="text-soft" x="652" y="226" text-anchor="end" font-family="Fraunces, Georgia, serif" font-size="20">98</text>
+      <text class="text-soft" x="148" y="260" font-size="14">9–11 pm</text>
+      <text class="text-soft" x="652" y="260" text-anchor="end" font-family="Fraunces, Georgia, serif" font-size="20">48</text>
+      <line x1="148" y1="276" x2="652" y2="276" stroke="var(--ink,#14161A)" stroke-width="1.5"/>
+    </g>
+    <g data-anim="rise" style="--delay:700ms">
+      <text class="text-stone" x="148" y="324" font-size="13" letter-spacing="0.1em">SHIFT TOTAL</text>
+      <text class="text-teal" x="652" y="332" text-anchor="end" font-family="Fraunces, Georgia, serif" font-size="40">210</text>
+    </g>
+    <!-- what it feeds -->
+    <g data-anim="fade" style="--delay:1100ms">
+      <text class="text-stone" x="400" y="392" text-anchor="middle" font-size="13">feeds:</text>
+      <text class="text-soft" x="400" y="416" text-anchor="middle" font-size="14">check average&#160;&#160;·&#160;&#160;labor %&#160;&#160;·&#160;&#160;next week’s forecast</text>
+    </g>
+  </g>
+
+  <!-- ============ LAND ============ -->
+  <g class="explainer-scene" data-scene-id="land">
+    <rect x="0" y="0" width="800" height="500" fill="var(--cream,#FAF7F2)" data-anim="fade"/>
+    <text data-anim="rise" style="--delay:200ms" class="scene-label text-teal" x="400" y="170" text-anchor="middle">Cover</text>
+    <g data-anim="rise" style="--delay:380ms">
+      <text x="400" y="252" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="40" fill="var(--ink,#14161A)">Tables are furniture.</text>
+      <text x="400" y="306" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="40" font-style="italic" fill="var(--rust,#B8541A)">Covers are people.</text>
+    </g>
+    <text data-anim="fade" style="--delay:820ms" class="text-stone" x="400" y="362" text-anchor="middle" font-size="15">Run the numbers on the people.</text>
+    <line data-anim="grow-x" style="--delay:1020ms; transform-origin:center" x1="340" y1="392" x2="460" y2="392" stroke="var(--teal,#1F4E5B)" stroke-width="2"/>
+  </g>
+</svg>
+  </div>
+  <div class="term-explainer__chrome">
+    <button type="button" class="term-explainer__playpause" aria-label="Reproducir">
+      <svg class="icon-play"  viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+      <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+    </button>
+    <div class="term-explainer__scrub" role="presentation">
+      <div class="term-explainer__scrub-fill"></div>
+      <div class="term-explainer__scrub-dots">
+        <button type="button" class="term-explainer__scrub-dot" aria-label="Escena 1 de 5"></button>
+        <button type="button" class="term-explainer__scrub-dot" aria-label="Escena 2 de 5"></button>
+        <button type="button" class="term-explainer__scrub-dot" aria-label="Escena 3 de 5"></button>
+        <button type="button" class="term-explainer__scrub-dot" aria-label="Escena 4 de 5"></button>
+        <button type="button" class="term-explainer__scrub-dot" aria-label="Escena 5 de 5"></button>
+      </div>
+    </div>
+    <span class="term-explainer__time">0:00 / 1:13</span>
+    <button type="button" class="term-explainer__restart">Reiniciar</button>
+  </div>
+  <div class="term-explainer__captions">
+    <h3 class="sr-only">Transcripción</h3>
+    <ol>
+        <li data-scene-id="define" data-duration-ms="13000" class="is-active">Un comensal es una persona servida — no una mesa, no un ticket, no una orden. Una mesa de cuatro que comparte dos platos fuertes sigue siendo cuatro comensales. El comensal es la persona en la silla.</li>
+        <li data-scene-id="unit" data-duration-ms="16000">Casi todo número que importa es, en realidad, por comensal. El ticket promedio son las ventas divididas entre los comensales. La productividad de la mano de obra son comensales por hora trabajada. Hasta la renta tiene sentido como renta por comensal. Cuenta mesas y se te escapan las personas; cuenta comensales y la matemática cuadra.</li>
+        <li data-scene-id="trap" data-duration-ms="15000">"Hicimos ochenta mesas" te dice menos que "hicimos doscientos diez comensales." Dos viernes llenos con el mismo número de mesas pueden estar a miles de dólares de distancia, porque uno llenó las sillas y el otro dejó pares de personas en mesas para cuatro.</li>
+        <li data-scene-id="move" data-duration-ms="15000">Así que lleva la cuenta de los comensales — por turno, por mesero, por hora. Es el denominador que vive debajo de tu ticket promedio, de tu porcentaje de mano de obra, y del pronóstico de la semana que viene.</li>
+        <li data-scene-id="land" data-duration-ms="14000">Las mesas son muebles. Los comensales son personas. Saca las cuentas sobre las personas.</li>
+    </ol>
+  </div>
+</aside>
 <!-- glossary-explainer:end -->
 
 <section class="term-siblings">
