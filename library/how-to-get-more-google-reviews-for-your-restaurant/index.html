@@ -303,6 +303,30 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .further-reading a:last-child { border-bottom: 0; }
   .further-reading h4 { font-family: var(--font-display); font-size: 20px; font-weight: 500; margin: 0 0 4px; color: var(--ink); }
   .further-reading p { font-size: 14px; color: var(--stone); margin: 0; }
+
+  /* Side-by-side do/don't compare: the host-stand handoff, two ways.
+     Same pattern as the GBP setup guide's profile-compare. */
+  .profile-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 40px 0; padding: 0; }
+  @media (max-width: 640px) { .profile-compare { grid-template-columns: 1fr; } }
+  .profile-card { padding: 22px 22px 24px; border-radius: 14px; border: 1px solid var(--line); background: var(--white); }
+  .profile-card.bad  { opacity: 0.86; }
+  .profile-card.good { background: var(--ink); border-color: var(--ink); }
+  .profile-card-label { font-family: var(--font-body); font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; margin: 0 0 12px; }
+  .profile-card.bad  .profile-card-label { color: #C42E2E; }
+  .profile-card.good .profile-card-label { color: #C5A059; }
+  .profile-card-name { font-family: var(--font-display); font-size: 20px; font-weight: 500; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .profile-card.bad  .profile-card-name { color: var(--ink); }
+  .profile-card.good .profile-card-name { color: var(--cream); }
+  .profile-card-sub { font-size: 13px; margin: 0 0 14px; line-height: 1.4; }
+  .profile-card.bad  .profile-card-sub { color: var(--stone); }
+  .profile-card.good .profile-card-sub { color: rgba(250,247,242,0.72); }
+  .profile-card ul { list-style: none; padding: 0; margin: 0; font-size: 13.5px; line-height: 1.7; }
+  .profile-card li { padding: 3px 0; }
+  .profile-card.bad  li { color: var(--stone); }
+  .profile-card.good li { color: var(--cream); }
+  .profile-card li::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin: 0 10px 2px 0; vertical-align: middle; }
+  .profile-card.bad  li::before { background: #D9C8A8; }
+  .profile-card.good li::before { background: #C5A059; }
 </style>
 <!-- article-howto:start -->
 <script type="application/ld+json">
@@ -692,6 +716,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <p class="esl-bridge" style="font-size:14px;color:var(--ink-soft);margin:0 0 24px;padding:0;border-left:2px solid var(--teal);padding-left:12px"><a href="https://muntin.digital/es/library/how-to-get-more-google-reviews-for-your-restaurant/" lang="es" hreflang="es">Leer este art&iacute;culo en espa&ntilde;ol &rarr;</a></p>
 <!-- esl-bridge:end -->
 
+      <p>A four-top finishes dinner on a Saturday. Plates cleared, check paid, coats half on. One of them says &mdash; out loud, to the table, not to anyone who works here &mdash; &ldquo;that was so much better than the last place.&rdquo; They mean it. They&rsquo;d give you five stars right now if a star were in front of them. Then they stand up, slot the chairs back, and walk out into the night, and that review never gets written, because nobody put it in front of them. That moment &mdash; the happy guest with their phone already in their hand and nobody asking &mdash; is the leak this whole guide is about plugging.</p>
+
+      <p><strong>To get more Google reviews for your restaurant without begging, build a system that does the asking for you: a printed QR card linking straight to your review page, handed over after the check is paid; a two-sentence staff habit; and a manager who answers every review.</strong> That sentence is the whole job. The rest of this is the order to do it in, the timing that makes the ask land as a compliment instead of a chore, and the lines that quietly kill a review program before it starts.</p>
+
+      <p>I&rsquo;ve run the review program on the floor at Tacombi in Bethesda, and the thing nobody tells you is that it isn&rsquo;t a marketing problem &mdash; it&rsquo;s a host-stand problem. The reviews are already out there, sitting in the heads of people who just had a good night. The job is a mechanism that catches them on the way to the door, every shift, without depending on any one server remembering. Here&rsquo;s the mechanism, in the order I&rsquo;d build it.</p>
+
       <h2 id="why-reviews-matter-more-than-you-think">Why reviews matter more than you think</h2>
       <p>Google reviews are the single most visible trust signal a restaurant has. Before a new customer walks through your door, they've already read what the last thirty people said about you — and they did it on the same screen where they checked your hours, your menu, and your location. Your <!-- LIBRARY:autolink:start --><a href="/glossary/gbp/" data-glossary-head="Google Business Profile" data-glossary-aka="GBP, formerly Google My Business" data-glossary-blurb="Your business's free listing on Google Maps and Google Search — the panel on the right of a search that shows your name, hours, photos, reviews, and a link to your menu or booking.">Google Business Profile</a><!-- LIBRARY:autolink:end --> is your storefront for people who haven't been in yet, and reviews are the window display.</p>
       <p>But here's the part most restaurant owners miss: <strong>reviews aren't just <!-- LIBRARY:autolink:start --><a href="/glossary/social-proof/" data-glossary-head="Social proof" data-glossary-aka="reviews, press, star ratings" data-glossary-blurb="A quote, star rating, or press mention surfaced on your homepage — ideally in or near the hero, not buried on a Testimonials page — that tells a first-time visitor other people…">social proof</a><!-- LIBRARY:autolink:end -->. They're a ranking factor.</strong> Google's own documentation confirms that review count and review score influence how your business ranks in local search results and Google Maps. SEO industry research also consistently shows that recency matters — restaurants with a steady stream of recent reviews tend to rank above those with stale profiles. A restaurant with 340 reviews and a 4.6 average will consistently appear above an identical restaurant with 28 reviews and a 4.8, because Google weighs volume alongside the star count, and fresh reviews signal an active business.</p>
@@ -708,7 +738,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <p>The math is simple. If you serve 200 covers a day and 1% of them leave a review, you're adding two reviews a day — sixty a month. Most of your competitors are adding two a month, maybe five. Within six months, you're the most-reviewed restaurant in your neighborhood on Google Maps. That's not a marketing campaign. That's a system.</p>
 
       <h2 id="the-system-five-pieces-that-run-themselves">The system: five pieces that run themselves</h2>
-      <p>I built a review program at Tacombi's Bethesda and Arlington locations that didn't depend on any single person remembering to ask. Here's the structure, honestly — it's not complicated, it's just disciplined.</p>
+      <p>The review program I ran on the floor at Tacombi never depended on any single person remembering to ask. That's the whole design goal — take the ask off the staff's memory and put it on a card and a calendar. Here's the structure, honestly: it's not complicated, it's just disciplined.</p>
 
       <figure class="viz-figure article-figure" data-audio-alt="Five pieces, in order. One: the QR postcard &mdash; print-once, hand-out card with a direct review link. Two: the timing &mdash; hand it out after the meal is paid, never with the check. Three: the staff buy-in &mdash; explain the why, make it zero-effort, never tie it to performance. Four: the response habit &mdash; five minutes a day, every review, kept short and human. Five: the in-store visibility &mdash; a small sign near the host stand showing your live rating. Three of these are one-time setup. Two are habits that compound over months.">
         <ol class="viz-flow reveal" aria-label="Five pieces of a self-running review program">
@@ -770,6 +800,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <p>Don't hand the card out with the check. Hand it out <strong>after the meal is paid</strong> — when the customer is standing, happy, and about to walk out. The psychology is straightforward: they've already committed to the experience, the transaction is closed, and they're in the highest-satisfaction moment of the visit. If you hand it to them while they're still deciding on dessert, it feels like a survey. If you hand it to them as they're putting on their coat, it feels like a compliment.</p>
       <p>At Tacombi, the host or the server would hand the card with a simple "Thanks for coming in — if you have thirty seconds, we'd love a Google review. There's a little thank-you on the back." That's it. No script longer than two sentences.</p>
 
+      <aside class="callout callout--field">
+        <p class="callout-eyebrow">From the floor</p>
+        <p class="callout-body">The detail that changed everything for me was <strong>physically handing the card over</strong> instead of leaving a stack by the register. A stack by the register gets ignored &mdash; it reads as decor. A card pressed into someone's hand on the way out, with eye contact and a thank-you, reads as a small personal favor, and people return favors. I watched the same printed card do almost nothing in a holder on the host stand and then do real work the week we made the rule that it goes hand-to-hand or it doesn't go at all. Same card, same QR, same review link. The only variable was whether a human handed it to a human.</p>
+      </aside>
+
       <h3>3. The staff buy-in</h3>
       <p>The system dies the moment your staff thinks it's annoying. Here's how to prevent that:</p>
       <ul>
@@ -778,17 +813,42 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li><strong>Never tie it to performance metrics.</strong> The moment you say "I want each server to get three reviews per shift," you've turned a genuine ask into a quota, and your staff will resent it. Let the postcards do the volume work.</li>
       </ul>
 
+      <p>If it helps to make it concrete, here is the same thirty-second handoff done two ways &mdash; the version that earns reviews and the version that quietly trains your guests to ignore the card:</p>
+
+      <div class="profile-compare" role="group" aria-label="The host-stand handoff, done well versus done badly">
+        <div class="profile-card good">
+          <p class="profile-card-label">Do this</p>
+          <p class="profile-card-name">The card as a small favor</p>
+          <p class="profile-card-sub">Hand-to-hand, after the check, two sentences.</p>
+          <ul>
+            <li>Wait until the check is paid and they&rsquo;re standing</li>
+            <li>Press it into a hand, with eye contact and a thank-you</li>
+            <li>&ldquo;If you&rsquo;ve got thirty seconds, we&rsquo;d love a Google review&rdquo;</li>
+            <li>Mention the thank-you on the back &mdash; then stop talking</li>
+          </ul>
+        </div>
+        <div class="profile-card bad">
+          <p class="profile-card-label">Not this</p>
+          <p class="profile-card-name">The card as furniture</p>
+          <p class="profile-card-sub">A stack by the register nobody is asked about.</p>
+          <ul>
+            <li>Leaving a pile by the host stand and hoping</li>
+            <li>Dropping it with the check, mid-dessert decision</li>
+            <li>A long pitch: &ldquo;would you mind, it really helps us&hellip;&rdquo;</li>
+            <li>A per-server quota that turns the ask into a chore</li>
+          </ul>
+        </div>
+      </div>
+
       <h3>4. The response habit</h3>
       <p>Responding to reviews — especially the bad ones — matters more than most owners realize. Google's own help documentation says that responding to reviews improves your local ranking. But the real reason is simpler: <strong>a potential customer reading a bad review followed by a thoughtful owner response thinks "that place cares."</strong> A bad review with no response says "they don't read these."</p>
       <p>Set a daily alarm. Five minutes, once a day, respond to every new review. Keep it short, specific, and human. "Thanks, Maria — glad you liked the esquites. See you next Tuesday" beats "Thank you for your kind words! We look forward to serving you again!" every time. The first one sounds like a person. The second one sounds like a bot. Drag the divider to see the same five-star review answered both ways:</p>
 
       <figure class="viz-figure article-figure" data-audio-alt="The same five-star review for the esquites, answered two ways. The bot version reads: thank you so much for your kind words, we are thrilled you enjoyed your visit, we look forward to serving you again very soon. The human version reads: thanks, Maria, glad you liked the esquites, see you next Tuesday, signed Don. Same review, same restaurant. The future reader scanning the thread is the audience for the response, and the human one is the only one that signals an owner actually reads these.">
-        <div class="snippet-box" data-tone="bad">
-          <span class="snippet-label">The bot &mdash; generic, unsigned, reads like a form letter</span>
+        <div class="viz-ba" role="img" aria-label="The same five-star review answered two ways: a generic form-letter reply versus a named, specific, signed one">
+          <p class="viz-ba__label viz-ba__label--before">The bot &mdash; generic, unsigned, reads like a form letter</p>
           <p>&ldquo;Thank you so much for your kind words! We are thrilled you enjoyed your visit and we look forward to serving you again very soon!&rdquo;</p>
-        </div>
-        <div class="snippet-box" data-tone="good">
-          <span class="snippet-label">The person &mdash; named, specific, signed by the operator</span>
+          <p class="viz-ba__label viz-ba__label--after">The person &mdash; named, specific, signed by the operator</p>
           <p>&ldquo;Thanks, Maria &mdash; glad you liked the esquites. See you next Tuesday. &mdash; Don&rdquo;</p>
         </div>
         <figcaption>The five-star guest keeps coming back either way. The win is the next reader scanning the thread, who can tell in one line whether a human is on the other end &mdash; so the response is written for them, not the reviewer.</figcaption>
@@ -800,6 +860,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <h2 id="what-not-to-do">What not to do</h2>
       <p>I've watched restaurants sabotage their own review programs in a few predictable ways. The one that catches well-meaning operators most often is the incentive line &mdash; the rule isn&rsquo;t &ldquo;never offer anything,&rdquo; it&rsquo;s &ldquo;never <em>tie</em> the offer to the review.&rdquo; Walk a planned ask through the three questions below before you print it; the first &ldquo;yes&rdquo; that lands on a fail is the thing to change.</p>
+
+      <blockquote class="pullquote">
+        <p>Every shortcut here &mdash; buying reviews, gating for the happy ones, dangling a discount &mdash; trades a few stars today for the whole profile tomorrow. The slow, uniform ask is the only one that survives Google's spam pass.</p>
+      </blockquote>
 
       <figure class="viz-figure article-figure" data-audio-alt="A three-question compliance check for a planned review ask, built on Google's policy that you can ask for reviews and you can run promotions, but you cannot connect the two. Question one: does the customer get anything — a discount, a free item, an entry into a drawing — in exchange for leaving a review? If yes, that's an incentivized review and it violates Google's policy, which can strip the review, suspend the profile, or draw an FTC penalty; remove the link between the reward and the review. If no, continue. Question two: does the flow only show the Google review link to customers who first say their experience was positive? If yes, that's review-gating, which Google explicitly prohibits; ask everyone the same way, not just the happy ones. If no, continue. Question three: are you asking everyone the same way at the same moment, like a postcard handed to every table after the check is paid? If yes, the ask is compliant — print it. A standalone neighbor discount on the back of the card is fine precisely because it isn't conditioned on the review.">
         <ol class="viz-tree" aria-label="Three-question compliance check for a planned review ask">
@@ -847,6 +911,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <h2 id="the-compounding-effect">The compounding effect</h2>
       <p>Here's what most owners don't see because they quit after two weeks: <strong>Google reviews compound.</strong> A restaurant that gets 60 reviews a month doesn't just have more reviews — it has more <em>recent</em> reviews. Google weighs recency. A potential customer sees "2 weeks ago" on the most recent review and thinks "this place is active." They see "8 months ago" and think "is this place still open?"</p>
+
+      <div class="callout">
+        <p class="callout-eyebrow">The number that does the compounding</p>
+        <p class="callout-body">Serve <strong>200 covers a day</strong> and convert just <strong>1%</strong>, and you're handing over <strong>~60 reviews a month</strong> while the block next door adds two or three. Treat those figures as illustrative &mdash; the conversion rate swings with your room, your timing, and how the card gets handed over &mdash; but the direction is the point: a uniform ask at a 1% take-rate is enough to make you the most-reviewed door on the street inside two quarters. The math isn't the hard part. The discipline of doing it every shift is.</p>
+      </div>
       <p>The pattern at restaurants that run this system consistently: after six months of steady postcard distribution, the review velocity puts the restaurant near the top of its neighborhood&rsquo;s reviewed-restaurants list on Google Maps. Not because of ads. Not because of begging. Because the system runs in the background and compounds.</p>
 
       <p class="pull-quote">Reviews compound. Sixty a month doesn't just mean more stars — it means more recent stars, which is what Google and customers both care about.</p>
