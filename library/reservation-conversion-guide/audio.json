@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "generatedAt": "2026-06-15T04:37:31.249Z",
+  "generatedAt": "2026-06-23T20:23:21.359Z",
   "engine": "f5",
   "model": "don-reference.m4a",
   "voice": "f5:don-reference.m4a",
   "language": "en",
-  "total": 1332.79,
+  "total": 1369.42,
   "chunks": [
     {
       "id": 0,
@@ -59,753 +59,769 @@
       "id": 6,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(3)",
-      "text": "Every night your restaurant is open, a certain number of people decide to book a table at your place. They tap your website, something goes wrong somewhere along the way, and they quietly book somewhere else. You never see them. They never complain. They just leave, and you find out about it never.",
+      "text": "Start with one number: out of every 100 mobile diners who arrive at a typical independent restaurant website ready to book, roughly 47 finish the reservation. The other 53 tapped your link with their credit card all but out, and then quietly booked somewhere else. You never saw them. They never complained. A restaurant losing reservations this way finds out about it never.",
       "start": 31.62,
-      "end": 46.08
+      "end": 49.83
     },
     {
       "id": 7,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "I am going to call those lost reservations . In my experience auditing independent restaurant websites, most operators are leaking somewhere between a quarter and a half of their intent-driven mobile traffic before the reservation flow even gets a chance to work. This post breaks that loss down into its six specific causes, shows you how to estimate what each one is costing you in real dollars, and gives you the fix for every one.",
-      "start": 46.88,
-      "end": 67.76
+      "text": "That 47-of-100 figure is illustrative, drawn from the drop-off pattern I keep seeing across independent restaurant websites rather than from a published dataset, so treat the digits as the shape of the leak, not a measured rate. But the shape is the point, and the shape barely moves from site to site. Below is where those 53 diners go, leak by leak. This piece walks the evidence in order: the six specific places intent-driven mobile traffic drains out before the reservation flow even gets a chance to work, what each leak costs, and the fix for every one.",
+      "start": 50.63,
+      "end": 77.71
     },
     {
       "id": 8,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(1)",
       "text": "The reservation funnel, what it typically looks like.",
-      "start": 69.26,
-      "end": 71.85
+      "start": 79.21,
+      "end": 81.8
     },
     {
       "id": 9,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Below is the shape of a reservation funnel for a typical independent restaurant website, the kind I see when I audit real sites. I am drawing this from patterns I observe repeatedly, not from a published dataset, so treat the specific numbers as illustrative, not measured. Your own restaurant's numbers will vary based on your menu, your neighborhood, your clientele, and whether it is a Tuesday in January or a Saturday in June.",
-      "start": 72.8,
-      "end": 93.72
+      "text": "Here is the shape of a reservation funnel for a typical independent restaurant website. These numbers are illustrative, a composite of the drop-off pattern I see repeatedly, not a published dataset, so read them as direction, not measurement. Your own restaurant's numbers will vary with your menu, your neighborhood, your clientele, and whether it is a Tuesday in January or a Saturday in June. What does not vary is the order of the leaks: every restaurant site loses diners in roughly these places, in roughly this sequence.",
+      "start": 82.75,
+      "end": 108.22
     },
     {
       "id": 10,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "What does not vary is the shape of the leak. Every restaurant site I have ever audited has drop-offs in roughly these places, in roughly this order.",
-      "start": 94.52,
-      "end": 101.78
-    },
-    {
-      "id": 11,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(1)",
       "text": "Here is the shape of that funnel. Out of a hundred mobile visitors who arrive with intent, about fifteen are lost to slow page load. Another eight drop off when the menu will not open on their phone. Four more leave because they cannot tell if you are open right now. Ten lose the scent because the reservation button is hidden. Thirteen bounce from a clunky third-party booking embed. Three more fall off at confirmation anxiety, no reassurance that the booking actually went through. By the end, forty-seven of the original hundred complete a reservation. Roughly half. Your numbers will vary, but the shape of the leak does not.",
-      "start": 102.88,
-      "end": 133.25
+      "start": 109.32,
+      "end": 139.69
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Roughly half. More than half on a bad site. About a third of the drop happens before the visitor has even seen your menu, which is the part that stings, that is traffic you paid for with Google Business Profile optimization and a Wednesday Instagram post, and it is leaving without ever reading a dish description.",
+      "start": 140.69,
+      "end": 155.9
     },
     {
       "id": 12,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "Roughly half. More than half on a bad site. About a third of the drop happens before the visitor has even seen your menu, which is the part that stings, that is traffic you paid for with Google Business Profile optimization and a Wednesday Instagram post, and it is leaving without ever reading a dish description.",
-      "start": 134.25,
-      "end": 149.46
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(1)",
+      "text": "Half your booking-ready diners never reach the reserve button. The leaks are not exotic, they sit in six predictable places, and the numbers point straight at which two to close first.",
+      "start": 156.9,
+      "end": 165.93
     },
     {
       "id": 13,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(2)",
       "text": "Why the reservation funnel is the most honest marketing stat you will find.",
-      "start": 150.96,
-      "end": 154.63
+      "start": 167.43,
+      "end": 171.1
     },
     {
       "id": 14,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
+      "selector": "#post-body > p:nth-of-type(7)",
       "text": "Most website metrics for restaurants are vanity. Page views, unique visitors, bounce rate , average session duration, they are floating numbers that do not obviously connect to the business, which is why most restaurant owners glance at them once a quarter and then close the analytics tab.",
-      "start": 155.58,
-      "end": 169.61
+      "start": 172.05,
+      "end": 186.08
     },
     {
       "id": 15,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
+      "selector": "#post-body > p:nth-of-type(8)",
       "text": "The reservation funnel is the only metric that maps directly and unambiguously to revenue. If you lose 50 reservations a month, and your average cover is fifty-five dollars, then you can do the math in your head, without estimating, without interpreting, without caring whether the \"bounce rate\" was 37% or 42%. You know exactly how much money you left on the table.",
-      "start": 170.41,
-      "end": 188.18
+      "start": 186.88,
+      "end": 204.65
     },
     {
       "id": 16,
       "kind": "figure",
       "selector": "#post-body > div:nth-of-type(1)",
       "text": "Here is the honest number. If you leave fifty reservations on the table each month, at a fifty-five dollar average cover across twelve months, that is thirty-three thousand dollars a year, revenue that never walked through the door.",
-      "start": 189.28,
-      "end": 200.46
+      "start": 205.75,
+      "end": 216.93
     },
     {
       "id": 17,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
+      "selector": "#post-body > p:nth-of-type(9)",
       "text": "For most independent restaurants, that number is larger than the cost of a full custom rebuild, a year of ongoing care, and a professional photographer combined. And the loss is happening every night, quietly, while you are in the kitchen focused on service, which means it is the easiest kind of revenue recovery there is, because the customers already wanted to book. They just could not.",
-      "start": 201.46,
-      "end": 220.4
+      "start": 217.93,
+      "end": 236.87
     },
     {
       "id": 18,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(3)",
       "text": "The six leaks, in order.",
-      "start": 221.9,
-      "end": 223.06
+      "start": 238.37,
+      "end": 239.53
     },
     {
       "id": 19,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
+      "selector": "#post-body > p:nth-of-type(10)",
       "text": "Here is what is actually going wrong at each drop point, and how to plug it.",
-      "start": 224.01,
-      "end": 227.73
+      "start": 240.48,
+      "end": 244.2
     },
     {
       "id": 20,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(2)",
       "text": "The same six leaks, re-sorted by how much each one actually costs, biggest first, instead of by the order they hit. A slow phone load is the largest at fifteen visitors lost per hundred. Reservation-flow friction is second at thirteen. The buried reservation button is third at ten. A P D F menu is fourth at eight. Hidden hours costs four. Confirmation anxiety costs three. The illustrative reference line marks where the running total crosses half of all loss: it falls right after the top two leaks, which means slow load and flow friction together account for more than half of every diner you lose. Fix those two and you have closed the majority of the leak before touching the other four.",
-      "start": 228.83,
-      "end": 262.28
+      "start": 245.3,
+      "end": 278.75
     },
     {
       "id": 21,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(1)",
       "text": "Leak number 1, Your site is slow on a phone.",
-      "start": 263.78,
-      "end": 265.92
+      "start": 280.25,
+      "end": 282.39
     },
     {
       "id": 22,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
+      "selector": "#post-body > p:nth-of-type(11)",
       "text": "If your homepage takes longer than three seconds to load on a phone, you have probably already lost about half of the people who tapped your link. That is not my number, it is Google's. Their mobile page-speed research consistently shows that the majority of mobile visitors bounce from pages that take longer than three seconds to load , and every additional second after that makes the bounce rate climb sharply.",
-      "start": 266.87,
-      "end": 286.99
+      "start": 283.34,
+      "end": 303.46
     },
     {
       "id": 23,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "Most restaurant sites I audit load in four to seven seconds on a real 4G connection. Sometimes ten. The owner almost never knows, because they have only ever loaded their site from their desk, on office wifi, already cached in their browser.",
-      "start": 287.79,
-      "end": 299.41
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Most of the restaurant sites I pull up load in four to seven seconds on a real 4G connection. Sometimes ten. The owner almost never knows, because they have only ever loaded their site from their desk, on office wifi, already cached in their browser.",
+      "start": 304.26,
+      "end": 316.32
     },
     {
       "id": 24,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
+      "selector": "#post-body > p:nth-of-type(13)",
       "text": "How to test it in thirty seconds: pull up your site on your phone. Use cellular data, not wifi. Start timing the moment you tap the link, stop timing the moment you can see and tap the \"Reserve\" button. If it is more than three seconds, you have got Leak number 1, and you can confirm the exact number in our free Restaurant Website Audit .",
-      "start": 300.21,
-      "end": 316.7
+      "start": 317.12,
+      "end": 333.61
     },
     {
       "id": 25,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(15)",
+      "selector": "#post-body > p:nth-of-type(14)",
       "text": "The fix: on a template like Wix or Squarespace, you can compress images and disable decorative widgets, but you are eventually bumping into the platform's ceiling. On a custom site, sub-two-second mobile load is not an upgrade, it is the starting point.",
-      "start": 317.5,
-      "end": 329.86
+      "start": 334.41,
+      "end": 346.77
     },
     {
       "id": 26,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(2)",
       "text": "Leak number 2, Your menu is a P D F.",
-      "start": 331.36,
-      "end": 333.11
+      "start": 348.27,
+      "end": 350.02
     },
     {
       "id": 27,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(16)",
+      "selector": "#post-body > p:nth-of-type(15)",
       "text": "Here is the fun part about PDFs: technically they are documents, not web pages. Safari on iPhone has to download them, hand them to a separate P D F viewer, and then render them at desktop size, which means your customer sees a tiny wall of unreadable text and has to pinch-zoom to read a single dish name. If they are walking somewhere hungry on a Tuesday night, they do not do that work. They just close the tab and try the next place on Google Maps.",
-      "start": 334.06,
-      "end": 355.88
+      "start": 350.97,
+      "end": 372.79
     },
     {
       "id": 28,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(17)",
+      "selector": "#post-body > p:nth-of-type(16)",
       "text": "P D F menus exist because they are easy for restaurants to produce. You export the printed menu from Illustrator, upload it, link to it. Done. But \"easy for the restaurant\" and \"easy for the customer\" are not the same thing, and the customer is the one with the credit card.",
-      "start": 356.68,
-      "end": 369.92
+      "start": 373.59,
+      "end": 386.83
     },
     {
       "id": 29,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(18)",
+      "selector": "#post-body > p:nth-of-type(17)",
       "text": "How to test it in thirty seconds: open your menu link on your phone. Can you read the name and the price of the first dish without pinching to zoom? If no, Leak number 2.",
-      "start": 370.72,
-      "end": 379.06
+      "start": 387.63,
+      "end": 395.97
     },
     {
       "id": 30,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(19)",
+      "selector": "#post-body > p:nth-of-type(18)",
       "text": "The fix: replace the P D F with a real H T M L menu page. Yes, it means you now have to maintain two versions (the printed card and the web page), but a well-built custom site can drive both from one source of truth, you update a Google Sheet or a C M S, and both the web menu and the print export refresh together. That is a half-day of setup that pays for itself every week after.",
-      "start": 379.86,
-      "end": 398.41
+      "start": 396.77,
+      "end": 415.32
     },
     {
       "id": 31,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(3)",
       "text": "Leak number 3, Your hours are hiding.",
-      "start": 399.91,
-      "end": 401.71
+      "start": 416.82,
+      "end": 418.62
     },
     {
       "id": 32,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(20)",
+      "selector": "#post-body > p:nth-of-type(19)",
       "text": "The single most common question on a restaurant website is \"are you open right now?\", and most sites answer it by burying the hours in the footer, hiding them behind a \"Visit\" tab, or showing them only on a separate Contact page. The visitor rarely clicks. They just switch back to Google and book somewhere else.",
-      "start": 402.66,
-      "end": 417.82
+      "start": 419.57,
+      "end": 434.73
     },
     {
       "id": 33,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(21)",
+      "selector": "#post-body > p:nth-of-type(20)",
       "text": "This is not my hunch. Read Don's 2-minute summary ↗ Public usability research on small-business websites consistently finds that hours and location are the most-searched-for information on small-business sites, and the most frequently hidden. Owners often think the hours liv \"in the footer, where people will find them,\" without testing what happens when a first-time visitor, who is never seen the footer exist, tries to find them in five seconds.",
-      "start": 418.62,
-      "end": 440.36
+      "start": 435.53,
+      "end": 457.27
     },
     {
       "id": 34,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(22)",
+      "selector": "#post-body > p:nth-of-type(21)",
       "text": "How to test it in thirty seconds: open your site cold. Time how many seconds pass before you can see today's hours without scrolling or clicking anything. If it is more than five, you have got Leak number 3.",
-      "start": 441.16,
-      "end": 451.33
+      "start": 458.07,
+      "end": 468.24
     },
     {
       "id": 35,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(23)",
+      "selector": "#post-body > p:nth-of-type(22)",
       "text": "The fix: put hours in the hero, or in a sticky header, or in a small \"Open Now · until 10 PM\" badge that auto-updates based on the current time. The badge is my favorite, it takes about thirty lines of JavaScript and it reassures the visitor at exactly the moment they need it.",
-      "start": 452.13,
-      "end": 465.57
+      "start": 469.04,
+      "end": 482.48
     },
     {
       "id": 36,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(4)",
       "text": "Leak number 4, The reservation button is buried or missing.",
-      "start": 467.07,
-      "end": 469.95
+      "start": 483.98,
+      "end": 486.86
     },
     {
       "id": 37,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(24)",
+      "selector": "#post-body > p:nth-of-type(23)",
       "text": "Some restaurant sites do not have a reservation button on the homepage at all. Others have one, but it is in a dropdown menu at the top right, or it is a small text link at the bottom of a long hero, or it only lives on the \"Contact\" page. This is the leak that frustrates me the most, because the fix is so cheap and the impact is so obvious.",
-      "start": 470.9,
-      "end": 487.54
+      "start": 487.81,
+      "end": 504.45
     },
     {
       "id": 38,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(25)",
+      "selector": "#post-body > p:nth-of-type(24)",
       "text": "There is a well-established U X principle here, Read Don's 2-minute summary ↗ Fitts's Law , which in plain English says: the harder a button is to reach, the less often people press it . A reservation button at the top of a nav that requires a tap to open and then a second tap to select is twice as hard to hit as a button that is permanently visible at the bottom of the screen. You lose conversion at every step of the tap path.",
-      "start": 488.34,
-      "end": 509.13
+      "start": 505.25,
+      "end": 526.04
     },
     {
       "id": 39,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(26)",
+      "selector": "#post-body > p:nth-of-type(25)",
       "text": "How to test it in thirty seconds: open your homepage on your phone. Without scrolling or opening any menus, can you tap \"Reserve\" in a single gesture? If not, Leak number 4.",
-      "start": 509.93,
-      "end": 518.42
+      "start": 526.84,
+      "end": 535.33
     },
     {
       "id": 40,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(27)",
-      "text": "The fix: add a sticky bottom-of-screen reservation C T A on every mobile page. It is maybe an hour of work on a custom site. On most template builders you can approximate it with a floating widget. Either way, it is the single highest-R O I change you can make for conversion, and most of the restaurants I have audited have never even considered it.",
-      "start": 519.22,
-      "end": 536.2
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "The fix: add a sticky bottom-of-screen reservation C T A on every mobile page. It is maybe an hour of work on a custom site. On most template builders you can approximate it with a floating widget. Either way, it is the single highest-R O I change you can make for conversion, and most of the restaurant sites I look at have never even considered it.",
+      "start": 536.13,
+      "end": 553.11
     },
     {
       "id": 41,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(5)",
       "text": "Leak number 5, Reservation flow friction.",
-      "start": 537.7,
-      "end": 539.69
+      "start": 554.61,
+      "end": 556.6
     },
     {
       "id": 42,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(28)",
+      "selector": "#post-body > p:nth-of-type(27)",
       "text": "This is where most restaurant reservation funnels actually fall apart. The visitor tapped \"Reserve,\" which means they are in, the conversion is one or two clicks from happening. And most restaurant sites use a booking platform that turns those one or two clicks into seven.",
-      "start": 540.64,
-      "end": 553.82
+      "start": 557.55,
+      "end": 570.73
     },
     {
       "id": 43,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(29)",
+      "selector": "#post-body > p:nth-of-type(28)",
       "text": "Here is what a typical reservation widget asks for: party size, date, time, alternative time, name, phone, email, password for the account you are being quietly signed up for, phone-verification code, \"agree to terms,\" sometimes a credit card held as collateral, sometimes a captcha to prove you are human. By step seven, the customer has forgotten why they wanted Italian food.",
-      "start": 554.62,
-      "end": 572.97
+      "start": 571.53,
+      "end": 589.88
     },
     {
       "id": 44,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(30)",
-      "text": "Baymard Institute's research on e-commerce checkout abandonment finds that the average cart-abandonment rate in online retail hovers around 70% , and one of the top reasons cited by shoppers is \"the site wanted me to create an account.\" Reservation forms are checkout forms wearing a different hat, and they suffer the same dynamic: every additional field, every unnecessary account, every extra screen correlates directly with people dropping out.",
-      "start": 573.77,
-      "end": 595.39
+      "selector": "#post-body > p:nth-of-type(29)",
+      "text": "That checkout finding is why the shape of the reservation widget matters so much: every additional field, every unnecessary account, every extra screen correlates directly with people dropping out. Reservation forms suffer it the same way.",
+      "start": 590.68,
+      "end": 602.2
     },
     {
       "id": 45,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(31)",
-      "text": "How to test it in thirty seconds: pretend you are a first-time customer and actually book a table at your own restaurant end-to-end. Count the distinct screens and required fields. If you got past six, that is Leak number 5, and most restaurants I audit land between eight and twelve.",
-      "start": 596.19,
-      "end": 609.92
+      "selector": "#post-body > p:nth-of-type(30)",
+      "text": "How to test it in thirty seconds: pretend you are a first-time customer and actually book a table at your own restaurant end-to-end. Count the distinct screens and required fields. If you got past six, that is Leak number 5, and the flows I see most often land between eight and twelve.",
+      "start": 603,
+      "end": 616.83
     },
     {
       "id": 46,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(3)",
       "text": "A rough field-count comparison across three reservation flows. A clean embedded form needs five fields, name, date, time, party size, email. The typical third-party booking widget asks for eight to twelve, including a forced account and a phone-verification step. The worst flows audit at thirteen or more, with a credit card hold and a captcha. Every additional field correlates with dropoff. Counts are from restaurant audits; not a single published dataset.",
-      "start": 611.02,
-      "end": 633.18
+      "start": 617.93,
+      "end": 640.09
     },
     {
       "id": 47,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(32)",
+      "selector": "#post-body > p:nth-of-type(31)",
       "text": "The fix: pick a reservation platform whose default flow has fewer steps (the major players vary a lot), or, if your volume is low enough, use a simple embedded form that asks for name, date, time, party size, and email, and emails your host stand. When your volume grows, you revisit the platform decision. Do not pay a complex system for simple bookings.",
-      "start": 634.18,
-      "end": 651.41
+      "start": 641.09,
+      "end": 658.32
     },
     {
       "id": 48,
       "kind": "heading",
       "selector": "#post-body > h3:nth-of-type(6)",
       "text": "Leak number 6, Confirmation anxiety.",
-      "start": 652.91,
-      "end": 654.66
+      "start": 659.82,
+      "end": 661.57
     },
     {
       "id": 49,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(33)",
+      "selector": "#post-body > p:nth-of-type(32)",
       "text": "This one is small on the funnel (about three people out of a hundred) but it is nasty because it is invisible to you. Here is what happens: the customer completes the booking, the reservation widget flashes a \"thanks!\" screen, and then. nothing. No email. No text message. No paper trail. They wait a few hours, start to doubt the booking went through, and quietly call somewhere else \"just in case.\" Sometimes they show up expecting a table that does not exist in the system. Either outcome is a worse experience than if they would never tried to book at all.",
-      "start": 655.61,
-      "end": 682.7
+      "start": 662.52,
+      "end": 689.61
     },
     {
       "id": 50,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(34)",
+      "selector": "#post-body > p:nth-of-type(33)",
       "text": "How to test it in thirty seconds: book a real reservation at your own restaurant right now. Does a confirmation email arrive within a minute? Is it from your restaurant's name, or a generic \"OpenTable Reservations\" address? Does it clearly state the date, time, party size, and how to modify or cancel? Is it signed by the restaurant, or does it feel like a robot wrote it?",
-      "start": 683.5,
-      "end": 701.65
+      "start": 690.41,
+      "end": 708.56
     },
     {
       "id": 51,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(35)",
+      "selector": "#post-body > p:nth-of-type(34)",
       "text": "The fix: it is pure operations. Make sure your reservation system sends an instant, well-formatted confirmation email. Customize the sender name to be the restaurant, not the platform. Add a reminder email the day-of. If your current platform will not let you customize the confirmation, ask your provider, most will turn it on when asked. If they will not, that is a reason to change platforms.",
-      "start": 702.45,
-      "end": 721.64
+      "start": 709.36,
+      "end": 728.55
     },
     {
       "id": 52,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(4)",
       "text": "The fix math.",
-      "start": 723.14,
-      "end": 723.76
+      "start": 730.05,
+      "end": 730.67
     },
     {
       "id": 53,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(36)",
-      "text": "Here is the thing that usually surprises restaurant owners most: fixing the top four leaks, slow load, P D F menu, hidden hours, and missing reservation button, typically takes a single focused afternoon on a custom-built site. Four of the six leaks, closed in one session, for the cost of an audit plus a few hours of work. On a template site like Wix or Squarespace, three of the four are not really fixable without a rebuild, which is the quiet cost of the \"cheap\" platform, you cannot close the leaks even after you find them.",
-      "start": 724.71,
-      "end": 750.47
+      "selector": "#post-body > p:nth-of-type(35)",
+      "text": "Here is the thing that usually surprises restaurant owners most: fixing the top four leaks, slow load, P D F menu, hidden hours, and missing reservation button, typically takes a single focused afternoon on a custom-built site. Four of the six leaks, closed in one session, for a few hours of work. On a template site like Wix or Squarespace, three of the four are not really fixable without a rebuild, which is the quiet cost of the \"cheap\" platform, you cannot close the leaks even after you find them.",
+      "start": 731.62,
+      "end": 756.1
     },
     {
       "id": 54,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(4)",
-      "text": "Roughly how much of the lost traffic each tier of fixes recovers. Closing just the first three leaks, slow load, P D F menu, hidden hours, typically recovers eight to fifteen percent of lost bookings. Closing the top four, which adds a sticky reservation button, takes a single focused afternoon on a custom site. Closing all six, which adds reservation-flow simplification and a real confirmation email, recovers somewhere between thirty and fifty percent. The compounding is real because each fix unlocks the steps below it.",
-      "start": 751.57,
-      "end": 776.99
+      "text": "Roughly how much of the lost traffic each tier of fixes recovers, shown as three rising dials. Closing just the first three leaks, slow load, P D F menu, hidden hours, typically recovers eight to fifteen percent of lost bookings. Closing the top four, which adds a sticky reservation button, takes a single focused afternoon on a custom site and recovers fifteen to twenty-five percent. Closing all six, which adds reservation-flow simplification and a real confirmation email, recovers somewhere between thirty and fifty percent. Each dial's arc is drawn to the top of its illustrative range; the compounding is real because each fix unlocks the steps below it.",
+      "start": 757.2,
+      "end": 789.08
     },
     {
       "id": 55,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(37)",
+      "selector": "#post-body > p:nth-of-type(36)",
       "text": "The remaining two leaks (reservation flow friction and confirmation anxiety) usually are not code problems at all, they are platform-choice or operational problems. They take longer to address, but they are almost always worth the effort.",
-      "start": 777.99,
-      "end": 789.46
+      "start": 790.08,
+      "end": 801.55
     },
     {
       "id": 56,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(38)",
+      "selector": "#post-body > p:nth-of-type(37)",
       "text": "If you close all six, you will probably recover somewhere between 30 and 50% of the traffic you are losing today. Your actual recovery will depend on your menu, your clientele, and how badly the site was leaking to start with, but the direction is one-way, and the compounding is real. Every month you leave the leaks in place, you are lighting money on fire that the customer was already holding out to you.",
-      "start": 790.26,
-      "end": 810.09
+      "start": 802.35,
+      "end": 822.18
     },
     {
       "id": 57,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(5)",
       "text": "The five website moves that fix the leaks.",
-      "start": 811.59,
-      "end": 813.64
+      "start": 823.68,
+      "end": 825.73
     },
     {
       "id": 58,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(39)",
+      "selector": "#post-body > p:nth-of-type(38)",
       "text": "The funnel above tells you where dinners are leaking. This section tells you what to change, five specific website moves, each with a measured conversion-rate lift on independent restaurants. The lifts are additive: a site that lands all five typically claws back the full leak ceiling. The percentages below are headline-rate improvements, not absolute revenue lifts; the dollar math depends on your ticket size and cover count.",
-      "start": 814.59,
-      "end": 835.45
+      "start": 826.68,
+      "end": 847.54
     },
     {
       "id": 59,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(6)",
       "text": "Move 1, Hours visible above the fold &middot; +0.20%.",
-      "start": 836.95,
-      "end": 839.54
+      "start": 849.04,
+      "end": 851.63
     },
     {
       "id": 60,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(40)",
+      "selector": "#post-body > p:nth-of-type(39)",
       "text": "The most common question on a restaurant website is \"are you open right now.\" The most common place that question gets answered is the footer , or on a separate Contact page three clicks away. That gap, between what the guest came to find and where you put it, is the single highest-leverage leak on most independent restaurant sites.",
-      "start": 840.49,
-      "end": 856.68
+      "start": 852.58,
+      "end": 868.77
     },
     {
       "id": 61,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(41)",
+      "selector": "#post-body > p:nth-of-type(40)",
       "text": "Put your hours in the hero. Or in a sticky bar under the nav. Or as a small \"Open now &middot; until 10 PM\" indicator that updates with a little JavaScript. Any of these work; the specific implementation matters less than the principle: the visitor should see whether you&rsquo;re open within three seconds of the page loading, without scrolling, without clicking.",
-      "start": 857.48,
-      "end": 875.14
+      "start": 869.57,
+      "end": 887.23
     },
     {
       "id": 62,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(42)",
+      "selector": "#post-body > p:nth-of-type(41)",
       "text": "The hour of work: write today&rsquo;s hours into the hero section of your homepage and every page that has a visible header block. If you&rsquo;re on Wix or Squarespace, this is a 10-minute content edit. If you&rsquo;re on a custom site, it&rsquo;s 30 minutes with a web developer. Either way, one hour tops.",
-      "start": 875.94,
-      "end": 891
+      "start": 888.03,
+      "end": 903.09
     },
     {
       "id": 63,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(7)",
       "text": "Move 2, One primary reservation C T A &middot; +0.25%.",
-      "start": 892.5,
-      "end": 895.13
+      "start": 904.59,
+      "end": 907.22
     },
     {
       "id": 64,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(43)",
+      "selector": "#post-body > p:nth-of-type(42)",
       "text": "Most restaurant sites have the reservation C T A in three places: a button in the nav, a block in the middle of the homepage, and a \"Book now\" callout in the footer. Each one is a different color, a different size, and, critically, sometimes even points to different destinations (OpenTable for the nav, a phone number for the middle, an email for the footer).",
-      "start": 896.08,
-      "end": 913.59
+      "start": 908.17,
+      "end": 925.68
     },
     {
       "id": 65,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(44)",
+      "selector": "#post-body > p:nth-of-type(43)",
       "text": "Pick one. Make it prominent. Point all of them at the same place. The neuroscience here is boring and well-documented: when you give a visitor two equal-weighted options for the same action, they pick neither and leave. When you give them one, they pick it.",
-      "start": 914.39,
-      "end": 926.79
+      "start": 926.48,
+      "end": 938.88
     },
     {
       "id": 66,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(45)",
+      "selector": "#post-body > p:nth-of-type(44)",
       "text": "The hour of work: decide which reservation destination is your primary (OpenTable? Resy? Your own form?). Update the three C T A spots to all point there, same label, same visual weight. If you want to keep the phone number as a secondary option, put it in small text next to the main button, not competing with it.",
-      "start": 927.59,
-      "end": 943
+      "start": 939.68,
+      "end": 955.09
     },
     {
       "id": 67,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(8)",
       "text": "Move 3, Direct own-ordering link up top &middot; +0.30%.",
-      "start": 944.5,
-      "end": 947.24
+      "start": 956.59,
+      "end": 959.33
     },
     {
       "id": 68,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(46)",
+      "selector": "#post-body > p:nth-of-type(45)",
       "text": "This one&rsquo;s the biggest single win, and it&rsquo;s also the one most restaurants accidentally sabotage. If you use Square or Toast for P O S, you already have an own-ordering page at something like yourrestaurant.square.site or yourrestaurant.toasttab.com . Most restaurants bury that link three clicks deep in a \"Takeout\" page that nobody finds. Meanwhile the DoorDash button on your homepage is huge and yellow.",
-      "start": 948.19,
-      "end": 968.34
+      "start": 960.28,
+      "end": 980.43
     },
     {
       "id": 69,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(47)",
+      "selector": "#post-body > p:nth-of-type(46)",
       "text": "Put the own-ordering link in the nav, above the fold , in a visually strong button. If you&rsquo;re going to keep a DoorDash link, put it below your own link, smaller, with something like \"or order via DoorDash &rarr;\" so the guest who wants the DoorDash experience still has it but the default path is your direct site.",
-      "start": 969.14,
-      "end": 984.79
+      "start": 981.23,
+      "end": 996.88
     },
     {
       "id": 70,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(48)",
+      "selector": "#post-body > p:nth-of-type(47)",
       "text": "The math here is leveraged: every direct order you steal back from DoorDash is roughly 20% more margin on that order. Even shifting 15% of weekly delivery volume to direct ordering recovers real money.",
-      "start": 985.59,
-      "end": 995.51
+      "start": 997.68,
+      "end": 1007.6
     },
     {
       "id": 71,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(49)",
-      "text": "The hour of work: add a single \"Order direct &rarr;\" button to your nav and your homepage hero, link it to your existing Square/Toast/other own-ordering page. Make sure the button is the brightest thing above the fold.",
-      "start": 996.31,
-      "end": 1007.01
+      "selector": "#post-body > p:nth-of-type(48)",
+      "text": "From the floor",
+      "start": 1008.4,
+      "end": 1009.07
     },
     {
       "id": 72,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(9)",
-      "text": "Move 4, Better descriptions on top-margin items &middot; +0.15%.",
-      "start": 1008.51,
-      "end": 1011.65
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(49)",
+      "text": "On the floor I watch the same reflex every shift: a guest pulls up the restaurant on their phone, and the first ordering button their thumb lands on is whatever is biggest and brightest. If that button is the aggregator's, the roughly 20% margin on the order walks out the door with it, and the guest never knew they had a cheaper-for-the-house option one tap away. The order was going to happen either way. The only decision the layout makes is who keeps the margin.",
+      "start": 1009.62,
+      "end": 1032.14
     },
     {
       "id": 73,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(50)",
-      "text": "Look at your last 90 days of item-level sales. Rank every dish by contribution margin per cover, what that dish pays you after food cost . You&rsquo;ll find three or four items that are substantially more profitable than your average. On most menus, those are: the pasta with the cheap-grain base and the expensive-protein garnish, the pizza, the signature cocktail, and one dessert.",
-      "start": 1012.6,
-      "end": 1030.99
+      "text": "The hour of work: add a single \"Order direct &rarr;\" button to your nav and your homepage hero, link it to your existing Square/Toast/other own-ordering page. Make sure the button is the brightest thing above the fold.",
+      "start": 1032.94,
+      "end": 1043.64
     },
     {
       "id": 74,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(51)",
-      "text": "Those are the items your menu descriptions should work hardest to sell. Most restaurants give their signature steak a three-paragraph description and leave the house pasta with two words. Invert that for the items you actually make money on. \"Orecchiette\" becomes \"Hand-cut orecchiette, slow-cooked lamb rag&ugrave;, pecorino from our supplier in Lazio since twenty nineteen, the dish the kitchen argues about.\" Now it&rsquo;s the dish the guest wants to order.",
-      "start": 1031.79,
-      "end": 1054
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(9)",
+      "text": "Move 4, Better descriptions on top-margin items &middot; +0.15%.",
+      "start": 1045.14,
+      "end": 1048.28
     },
     {
       "id": 75,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(52)",
-      "text": "The hour of work: identify your top 3, 4 margin items, write 2 sentences each with specific sourcing / preparation / story detail. Update the menu page on your website.",
-      "start": 1054.8,
-      "end": 1063.05
+      "selector": "#post-body > p:nth-of-type(51)",
+      "text": "Look at your last 90 days of item-level sales. Rank every dish by contribution margin per cover, what that dish pays you after food cost . You&rsquo;ll find three or four items that are substantially more profitable than your average. On most menus, those are: the pasta with the cheap-grain base and the expensive-protein garnish, the pizza, the signature cocktail, and one dessert.",
+      "start": 1049.23,
+      "end": 1067.62
     },
     {
       "id": 76,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(10)",
-      "text": "Move 5, Delete every stale promo and old P D F &middot; +0.10%.",
-      "start": 1064.55,
-      "end": 1067.63
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(52)",
+      "text": "Those are the items your menu descriptions should work hardest to sell. Most restaurants give their signature steak a three-paragraph description and leave the house pasta with two words. Invert that for the items you actually make money on. \"Orecchiette\" becomes \"Hand-cut orecchiette, slow-cooked lamb rag&ugrave;, pecorino from our supplier in Lazio since twenty nineteen, the dish the kitchen argues about.\" Now it&rsquo;s the dish the guest wants to order.",
+      "start": 1068.42,
+      "end": 1090.63
     },
     {
       "id": 77,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(53)",
-      "text": "Walk your own website as if you were a first-time visitor with no context. You will find at least one: a happy-hour card that still references twenty twenty-three pricing, a banner promoting a summer special that ended in October, a P D F menu titled &ldquo;Fall twenty twenty-four&rdquo; still linked from a sidebar, a gift-card promo that expired six months ago.",
-      "start": 1068.58,
-      "end": 1086.25
+      "text": "The hour of work: identify your top 3, 4 margin items, write 2 sentences each with specific sourcing / preparation / story detail. Update the menu page on your website.",
+      "start": 1091.43,
+      "end": 1099.68
     },
     {
       "id": 78,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(54)",
-      "text": "Each of these is a tiny trust break. The guest sees one stale item and unconsciously starts to wonder what else on the site isn&rsquo;t current. That erodes the tiny moment of confidence that leads to a booking. Kill them all.",
-      "start": 1087.05,
-      "end": 1098.14
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(10)",
+      "text": "Move 5, Delete every stale promo and old P D F &middot; +0.10%.",
+      "start": 1101.18,
+      "end": 1104.26
     },
     {
       "id": 79,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(55)",
-      "text": "The hour of work: open every page of your site, note every price / promo / seasonal reference that isn&rsquo;t current, remove or update. You&rsquo;ll find 4, 8 of these on a typical site. None take more than 5 minutes each to fix.",
-      "start": 1098.94,
-      "end": 1110.06
+      "selector": "#post-body > p:nth-of-type(54)",
+      "text": "Walk your own website as if you were a first-time visitor with no context. You will find at least one: a happy-hour card that still references twenty twenty-three pricing, a banner promoting a summer special that ended in October, a P D F menu titled &ldquo;Fall twenty twenty-four&rdquo; still linked from a sidebar, a gift-card promo that expired six months ago.",
+      "start": 1105.21,
+      "end": 1122.88
     },
     {
       "id": 80,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(5)",
-      "text": "The five moves in priority order, each tagged with the hour of work it actually takes. Move one, hours visible above the fold, returns zero point two zero percent of margin and is a thirty minute content edit on most platforms. Move two, one primary reservation call to action, returns zero point two five percent and takes about an hour to decide a destination and update all three spots. Move three, the direct own-ordering link, returns zero point three zero percent, the single biggest move, and is one hour to add the button to your nav and hero. Move four, better descriptions on your top three or four margin items, returns zero point one five percent and is roughly an hour to identify the items and write two sentences each. Move five, deleting every stale promo and old P D F, returns zero point one zero percent and is four to eight cleanups of about five minutes each. The whole stack fits in a single slow Sunday and returns one full point of margin.",
-      "start": 1111.16,
-      "end": 1157.63
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(55)",
+      "text": "Each of these is a tiny trust break. The guest sees one stale item and unconsciously starts to wonder what else on the site isn&rsquo;t current. That erodes the tiny moment of confidence that leads to a booking. Kill them all.",
+      "start": 1123.68,
+      "end": 1134.77
     },
     {
       "id": 81,
-      "kind": "quote",
+      "kind": "body",
       "selector": "#post-body > p:nth-of-type(56)",
-      "text": "Five moves. None of them are redesigns. None of them require a consultant. Done on a slow Sunday, they return one full point of margin, which is more than most restaurants will get from a year of switching suppliers.",
-      "start": 1158.63,
-      "end": 1169.23
+      "text": "The hour of work: open every page of your site, note every price / promo / seasonal reference that isn&rsquo;t current, remove or update. You&rsquo;ll find 4, 8 of these on a typical site. None take more than 5 minutes each to fix.",
+      "start": 1135.57,
+      "end": 1146.69
     },
     {
       "id": 82,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(11)",
-      "text": "The honest compounding argument.",
-      "start": 1170.73,
-      "end": 1172.29
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(5)",
+      "text": "The five moves in priority order, each tagged with the hour of work it actually takes. Move one, hours visible above the fold, returns zero point two zero percent of margin and is a thirty minute content edit on most platforms. Move two, one primary reservation call to action, returns zero point two five percent and takes about an hour to decide a destination and update all three spots. Move three, the direct own-ordering link, returns zero point three zero percent, the single biggest move, and is one hour to add the button to your nav and hero. Move four, better descriptions on your top three or four margin items, returns zero point one five percent and is roughly an hour to identify the items and write two sentences each. Move five, deleting every stale promo and old P D F, returns zero point one zero percent and is four to eight cleanups of about five minutes each. The whole stack fits in a single slow Sunday and returns one full point of margin.",
+      "start": 1147.79,
+      "end": 1194.26
     },
     {
       "id": 83,
-      "kind": "body",
+      "kind": "quote",
       "selector": "#post-body > p:nth-of-type(57)",
-      "text": "Pair with paperwork",
-      "start": 1173.24,
-      "end": 1174.16
+      "text": "Five moves. None of them are redesigns. None of them require a consultant. Done on a slow Sunday, they return one full point of margin, which is more than most restaurants will get from a year of switching suppliers.",
+      "start": 1195.26,
+      "end": 1205.86
     },
     {
       "id": 84,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(58)",
-      "text": "The twelve-point checklist works as a printable companion to this article. Open it on a real phone, walk every checkpoint with priority ratings, and keep the punch list as a Csv when you hand it to your developer.",
-      "start": 1174.71,
-      "end": 1185.16
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(11)",
+      "text": "The honest compounding argument.",
+      "start": 1207.36,
+      "end": 1208.92
     },
     {
       "id": 85,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(59)",
-      "text": "Website Conversion Checklist · Pass-or-fail per row, with fix priority for the developer.",
-      "start": 1185.96,
-      "end": 1190.37
+      "selector": "#post-body > p:nth-of-type(58)",
+      "text": "Pair with paperwork",
+      "start": 1209.87,
+      "end": 1210.79
     },
     {
       "id": 86,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(60)",
-      "text": "One percent doesn&rsquo;t sound impressive in a pitch. It&rsquo;s the kind of number a consultant would bury on slide seven. But here&rsquo;s the thing about margin recovery on a restaurant: it compounds with volume. A restaurant doing 1.2 dollarsM/year that gains a point of margin gains 12 dollarsK. A restaurant doing 2.5 dollarsM that gains the same point gains 25 dollarsK. And next year, when you&rsquo;re doing a little more volume, the same stack of five moves returns a little more money, because the percentage is always against the larger revenue number.",
-      "start": 1191.17,
-      "end": 1218.51
+      "selector": "#post-body > p:nth-of-type(59)",
+      "text": "The twelve-point checklist works as a printable companion to this article. Open it on a real phone, walk every checkpoint with priority ratings, and keep the punch list as a Csv when you hand it to your developer.",
+      "start": 1211.34,
+      "end": 1221.79
     },
     {
       "id": 87,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(6)",
-      "text": "What one point of margin is worth, in dollars, at three different annual revenue levels. At one point two million dollars in revenue, one percent of margin is twelve thousand dollars a year. At one point five million in revenue, the upper end of the typical independent restaurant range used in this article, one percent is fifteen thousand. At two point five million, the same one percent compounds to twenty five thousand. The percentage is fixed; the dollar value scales with the revenue line. Every year you grow, the same five moves return more money.",
-      "start": 1219.61,
-      "end": 1246.5
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(60)",
+      "text": "Website Conversion Checklist · Pass-or-fail per row, with fix priority for the developer.",
+      "start": 1222.59,
+      "end": 1227
     },
     {
       "id": 88,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(61)",
-      "text": "Over five years, a single point of margin on a growing independent restaurant is conservatively 60 dollarsK, 100 dollarsK back in the business. That&rsquo;s a real thing. That&rsquo;s a year of a line cook&rsquo;s salary. That&rsquo;s a new hood vent. That&rsquo;s the down payment on the patio build-out you&rsquo;ve been putting off.",
-      "start": 1247.5,
-      "end": 1263.73
+      "text": "One percent doesn&rsquo;t sound impressive in a pitch. It&rsquo;s the kind of number a consultant would bury on slide seven. But here&rsquo;s the thing about margin recovery on a restaurant: it compounds with volume. A restaurant doing 1.2 dollarsM/year that gains a point of margin gains 12 dollarsK. A restaurant doing 2.5 dollarsM that gains the same point gains 25 dollarsK. And next year, when you&rsquo;re doing a little more volume, the same stack of five moves returns a little more money, because the percentage is always against the larger revenue number.",
+      "start": 1227.8,
+      "end": 1255.14
     },
     {
       "id": 89,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(62)",
-      "text": "All five of these moves can be done this Sunday. None of them require hiring anybody. None of them require a redesign. They just require an hour of attention each, and the willingness to treat your website as an operating system for your restaurant, not as a brochure you did once and forgot.",
-      "start": 1264.53,
-      "end": 1278.66
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(6)",
+      "text": "What one point of margin is worth, in dollars, at three different annual revenue levels. At one point two million dollars in revenue, one percent of margin is twelve thousand dollars a year. At one point five million in revenue, the upper end of the typical independent restaurant range used in this article, one percent is fifteen thousand. At two point five million, the same one percent compounds to twenty five thousand. The percentage is fixed; the dollar value scales with the revenue line. Every year you grow, the same five moves return more money.",
+      "start": 1256.24,
+      "end": 1283.13
     },
     {
       "id": 90,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(63)",
-      "text": "The margin is already there. Go get it.",
-      "start": 1279.46,
-      "end": 1281.36
+      "selector": "#post-body > p:nth-of-type(62)",
+      "text": "Over five years, a single point of margin on a growing independent restaurant is conservatively 60 dollarsK, 100 dollarsK back in the business. That&rsquo;s a real thing. That&rsquo;s a year of a line cook&rsquo;s salary. That&rsquo;s a new hood vent. That&rsquo;s the down payment on the patio build-out you&rsquo;ve been putting off.",
+      "start": 1284.13,
+      "end": 1300.36
     },
     {
       "id": 91,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(64)",
-      "text": "Key takeaways",
-      "start": 1282.16,
-      "end": 1282.78
+      "selector": "#post-body > p:nth-of-type(63)",
+      "text": "All five of these moves can be done this Sunday. None of them require hiring anybody. None of them require a redesign. They just require an hour of attention each, and the willingness to treat your website as an operating system for your restaurant, not as a brochure you did once and forgot.",
+      "start": 1301.16,
+      "end": 1315.29
     },
     {
       "id": 92,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "The reservation funnel is the most honest marketing stat in restaurant ops, six leaks, in order: hours unclear, reservation-C T A buried, mobile slow, menu missing, photos cold, schema absent.",
-      "start": 1283.33,
-      "end": 1292.76
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(64)",
+      "text": "The margin is already there. Go get it.",
+      "start": 1316.09,
+      "end": 1317.99
     },
     {
       "id": 93,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Hours visible above the fold: +0.20% margin, 30 minutes of work, the highest single-fix impact in field tests.",
-      "start": 1293.26,
-      "end": 1298.66
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(65)",
+      "text": "Key takeaways",
+      "start": 1318.79,
+      "end": 1319.41
     },
     {
       "id": 94,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "One primary reservation C T A: +0.25%, replaces every other booking link.",
-      "start": 1299.16,
-      "end": 1302.73
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "The reservation funnel is the most honest marketing stat in restaurant ops, six leaks, in order: hours unclear, reservation-C T A buried, mobile slow, menu missing, photos cold, schema absent.",
+      "start": 1319.96,
+      "end": 1329.39
     },
     {
       "id": 95,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "Direct own-ordering link up top: +0.30%, beats every third-party platform on margin.",
-      "start": 1303.23,
-      "end": 1307.35
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Hours visible above the fold: +0.20% margin, 30 minutes of work, the highest single-fix impact in field tests.",
+      "start": 1329.89,
+      "end": 1335.29
     },
     {
       "id": 96,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
-      "text": "Better descriptions on top-margin items: +0.15%; delete every stale promo and old P D F: +0.10%, the cleanup nobody schedules.",
-      "start": 1307.85,
-      "end": 1314.03
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "One primary reservation C T A: +0.25%, replaces every other booking link.",
+      "start": 1335.79,
+      "end": 1339.36
     },
     {
       "id": 97,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(6)",
-      "text": "Find a Table: get on OpenTable, Resy, Tock, or SevenRooms, do not disable reservations in G B P, and add reservation schema so Google can verify the integration.",
-      "start": 1314.53,
-      "end": 1322.63
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Direct own-ordering link up top: +0.30%, beats every third-party platform on margin.",
+      "start": 1339.86,
+      "end": 1343.98
     },
     {
       "id": 98,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(7)",
-      "text": "Closing all six leaks typically recovers 30-50% of lost bookings; the first three fixes alone capture 8-15%.",
-      "start": 1323.13,
-      "end": 1328.42
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "Better descriptions on top-margin items: +0.15%; delete every stale promo and old P D F: +0.10%, the cleanup nobody schedules.",
+      "start": 1344.48,
+      "end": 1350.66
     },
     {
       "id": 99,
       "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(6)",
+      "text": "Find a Table: get on OpenTable, Resy, Tock, or SevenRooms, do not disable reservations in G B P, and add reservation schema so Google can verify the integration.",
+      "start": 1351.16,
+      "end": 1359.26
+    },
+    {
+      "id": 100,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(7)",
+      "text": "Closing all six leaks typically recovers 30-50% of lost bookings; the first three fixes alone capture 8-15%.",
+      "start": 1359.76,
+      "end": 1365.05
+    },
+    {
+      "id": 101,
+      "kind": "list",
       "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(8)",
       "text": "Run Restaurant Audit, save the score, fix the top two flags, re-run in 30 days.",
-      "start": 1328.92,
-      "end": 1332.79
+      "start": 1365.55,
+      "end": 1369.42
     }
   ]
 }
