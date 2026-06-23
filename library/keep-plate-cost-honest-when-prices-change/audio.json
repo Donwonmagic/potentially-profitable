@@ -1,0 +1,531 @@
+{
+  "version": 1,
+  "generatedAt": "2026-06-23T19:10:19.660Z",
+  "engine": "f5",
+  "model": "don-reference.m4a",
+  "voice": "f5:don-reference.m4a",
+  "language": "en",
+  "total": 1059.76,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "In short",
+      "start": 0,
+      "end": 0.97
+    },
+    {
+      "id": 1,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Plate cost is the edible-portion cost of one serving, cost the yield, not the as-purchased case, or every number reads four to six points low.",
+      "start": 1.52,
+      "end": 8.49
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Margin erodes quietly because invoices move weekly and menus move twice a year; recompute the day a price posts, not at quarter-end.",
+      "start": 8.99,
+      "end": 15.46
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "A price binds to a canonical item, so recompute only the dishes that ingredient touches, and rank the drivers, don&rsquo;t just print the new total.",
+      "start": 15.96,
+      "end": 23.22
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Three honest moves: raise the inelastic signatures, re-portion the elastic anchors, hold-and-absorb the deliberate loss-leaders, then charm-round to your menu&rsquo;s own ladder.",
+      "start": 23.72,
+      "end": 32.46
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "Tell a seasonal spike (hold) from a structural rise (re-price), and label plate cost as theoretical, the gap to actual food cost is the waste it just made visible.",
+      "start": 32.96,
+      "end": 40.96
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Leer este art&iacute;culo en espa&ntilde;ol &rarr;",
+      "start": 41.76,
+      "end": 44.2
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "The invoice is on the prep bench, and the case of beef on it costs more than it did last Tuesday. Not a lot more, enough that you notice, not enough that you stop. The recipe card taped inside the cabinet still says what the dish costs; the costing spreadsheet you built in March still divides by the old number. Both are now wrong, and neither will tell you so. This is the field guide for the back-office hour that keeps them honest, what to recost, when, and the one move to make when a price moves under you.",
+      "start": 44.75,
+      "end": 69.47
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "A plate cost is one number that goes out of date the moment a vendor changes a price. The dish costs what its ingredients cost, and the ingredients cost what last week&rsquo;s invoice says, not what the recipe card said the day it was written. The gap between those two is where margin goes to die, quietly, one delivery at a time. Keeping plate cost honest is the discipline of closing that gap on purpose instead of discovering it on the P&L three months late.",
+      "start": 70.27,
+      "end": 92.54
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "The mechanism is not complicated, but it is unforgiving about order of operations. Cost the edible portion, not the case. Recompute only the dishes a price actually touches. Read the result against the target you set, not a textbook number. Then make one move, raise, re-portion, or hold, and write down why. This page walks each of those steps in the order the math has to walk them. The worked figures here are illustrative ranges, drawn from how the arithmetic behaves on a typical independent menu, not from a published dataset; the shape of the move is the part that generalizes.",
+      "start": 93.34,
+      "end": 121.62
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Plate cost is the edible-portion cost of one serving.",
+      "start": 123.12,
+      "end": 125.71
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Plate cost is what the ingredients in one served portion cost you after trim, after cooking loss, after the parts that never reach the plate. It is built on the edible portion, not the as-purchased price, and that single distinction is the difference between a number you can price against and a number that reads four to six points low on every dish.",
+      "start": 126.66,
+      "end": 143.68
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "The as-purchased price is what the invoice charges: a case, a sack, a whole fish. The edible portion is what survives prep: the romaine after the core and the outer leaves, the tenderloin after the chain and the silverskin, the salmon after the head, frame, and skin. A case of romaine that yields seventy percent edible does not cost what the case cost, it costs the case price divided by the weight that actually plates. Cost on the case and the dish looks cheaper than it is, the food cost percentage reads artificially low, and the price you set on that false floor cannot hold.",
+      "start": 144.48,
+      "end": 172.64
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Two numbers ride along here, and they are not the same number. Yield is the intrinsic loss of turning a raw ingredient into an edible one, the trim a perfect cook still cannot avoid. Waste is operational: the over-portioned ladle, the steak sent back, the prep that spoiled in the walk-in. A recipe card that folds waste into yield hides a kitchen problem inside a costing number, and the operator chasing a high food cost ends up re-pricing a dish when the real fix was a portion scale. Keep them in separate columns. The yield is the ingredient&rsquo;s truth; the waste is the floor&rsquo;s.",
+      "start": 173.44,
+      "end": 202.15
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Pack size is the silent third actor. A vendor who holds the case price but moves the count, twenty-four to twenty, the same dollars, has raised the per-unit cost twenty percent, and the invoice total never moved to warn you. Cost per base unit is the only honest comparison across a relabel, a repack, or a switched brand. This is exactly the normalization a ledger does on the way in, and the reason a recost reads the same whether the vendor renamed the Sku or quietly shrank the box.",
+      "start": 202.95,
+      "end": 226.39
+    },
+    {
+      "id": 15,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Why the margin leaves quietly.",
+      "start": 227.89,
+      "end": 229.35
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Margin erodes because the two clocks run at different speeds. The invoice clock ticks weekly, produce twice a week, proteins on their own cadence, dairy whenever the truck comes. The menu-price clock ticks twice a year, if that. Between those two cadences sits a widening gap that nobody feels in the moment, because no single delivery moves the number enough to notice.",
+      "start": 230.3,
+      "end": 248.25
+    },
+    {
+      "id": 17,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "A bar chart showing what one ingredient hike does to a dish you do not re-price. The dish was costed at thirty percent food cost. Your own target ceiling sits at thirty-three percent. After a roughly twelve-percent jump on its main protein, the same dish, still sold at the same menu price, now runs at thirty-four percent food cost. The bar crosses the ceiling. Nothing on the menu changed; the only thing that moved was an invoice, and the margin quietly crossed from healthy into watch.",
+      "start": 249.35,
+      "end": 272.95
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Frame the gap in dollars per week, not in points. &ldquo;Up four points&rdquo; is abstract; &ldquo;quietly costing you about seventy dollars a week across three dishes&rdquo; is a number an owner acts on. The translation is simple, the added cost per plate times the covers that dish sells in a week, and it is the framing that turns a costing report into a decision. Loss framed as a weekly bleed gets fixed; the same loss framed as a percentage gets filed.",
+      "start": 273.95,
+      "end": 296.03
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "The arithmetic of the gap is worth sitting with, because it is bigger than it feels. A dish that drifts from thirty to thirty-four percent food cost has lost four points of margin on every cover it sells, and a busy dish sells hundreds of covers between menu prints. Four points on a dish doing two hundred covers a week is real money walking out the back door every week the menu sits unchanged, not a rounding error, and not a problem that waits politely for quarter-end. The slowness of the bleed is what makes it dangerous: a fast loss gets noticed and fixed, a slow one gets absorbed into &ldquo;business is just harder this year&rdquo; until the year is over.",
+      "start": 296.83,
+      "end": 328.87
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "The cause is rarely the owner and almost always the price. Beef went up. Romaine spiked after a cold snap. The packer shorted the case. Naming the cause that way is not just kinder; it is more accurate, and it points at the right fix. The dish did not get worse and the kitchen did not get sloppy, an input moved, and the menu has not caught up yet. That is recoverable, it is small if caught early, and it compounds into the difference between a profitable year and a confusing one if it is not.",
+      "start": 329.67,
+      "end": 353.62
+    },
+    {
+      "id": 21,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "The day a price moves, recompute only what it touches.",
+      "start": 355.12,
+      "end": 357.75
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "When an invoice posts a new price on an ingredient, the honest response is narrow: recompute every dish that uses that ingredient, and only those dishes. The price binds to a canonical item; the canonical item appears on a known set of recipes; those recipes are the ones whose plate cost just changed. Everything else on the menu is unaffected and should not move.",
+      "start": 358.7,
+      "end": 376.42
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "This is where the binding earns its keep. An ingredient that survives a vendor relabel, the same canonical item whether it arrived as &ldquo;Romaine 24ct&rdquo; or &ldquo;Lettuce, Romaine, 24 head&rdquo;, lets a price change find its dishes without the operator hunting through recipe cards. The recost is mechanical: pull the affected recipes, re-price the changed line on the edible portion, write a new cost snapshot. The dish&rsquo;s new plate cost is its old cost plus the added cost on that one line, and nothing else.",
+      "start": 377.22,
+      "end": 402.54
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Then rank the drivers. A dish whose cost jumped will have one or two ingredients responsible for most of the move, and naming them, &ldquo;romaine is plus thirty-one cents a plate on the Caesar, everything else held&rdquo;, tells the operator exactly where the fix lives. A recost that only prints the new total hides the lever; a recost that ranks the drivers hands it over. The whole point of recomputing on the day the price moves, rather than at quarter-end, is that the cause is still legible: this invoice, this ingredient, this dish, this many dollars a week.",
+      "start": 403.34,
+      "end": 430.71
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "From the floor",
+      "start": 431.51,
+      "end": 432.18
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "My own habit is to recost at the bench while the box is still open, not at a desk that night. When an invoice posts a price I didn&rsquo;t expect, I pull the two or three recipe cards that ingredient lives on, write the new line cost on a sticky note, and circle the one number that moved. The card goes back in the cabinet with the sticky on it until I&rsquo;ve made the call. The reason is plain: at the bench the cause is still in front of me, this case, this ingredient, this dish. By the desk that night it has already turned into &ldquo;food cost feels high lately,&rdquo; which is a feeling, not a fix.",
+      "start": 432.73,
+      "end": 462.22
+    },
+    {
+      "id": 27,
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "A plate cost that updates the day a price moves is a smoke detector. A plate cost you recompute at quarter-end is a coroner&rsquo;s report.",
+      "start": 463.22,
+      "end": 470.04
+    },
+    {
+      "id": 28,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Raise, re-portion, or hold.",
+      "start": 471.54,
+      "end": 472.85
+    },
+    {
+      "id": 29,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "A recost is not a decision; it is the input to one. When a dish crosses your ceiling, there are exactly three honest moves, and the right one depends on the dish, not on a rule. Raise the price. Re-portion to hold the margin at the current price. Or hold both, on purpose, and absorb the cost because the dish earns its keep some other way.",
+      "start": 473.8,
+      "end": 490.29
+    },
+    {
+      "id": 30,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "Raise the dishes the guest cannot comparison-shop. A signature plate, a chef&rsquo;s special, the one thing only your kitchen makes this way carries no reference price in the guest&rsquo;s head, so a few percent moves without comment. Re-portion the elastic anchors, the dishes a guest does carry a price memory for, where a half-ounce trim or a swapped garnish holds the plate cost without touching the number on the menu. Hold and absorb the deliberate loss-leader: the dish that runs thin on purpose because it sells the table on two cocktails and a dessert. Re-pricing a loss-leader to hit a food-cost target is a way to win the dish and lose the check.",
+      "start": 491.09,
+      "end": 522.73
+    },
+    {
+      "id": 31,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "Drag the slider in this image to compare one menu line before and after an honest re-price. On the left, the before: Caesar at fourteen dollars, with a note that its plate cost has crept to thirty-six percent after the romaine and parmesan hikes. On the right, the after: Caesar at fifteen dollars, a single charm-rounded dollar up, with the food cost back near thirty percent. Same dish, one dollar, and the margin is recovered without a re-portion the guest would feel.",
+      "start": 523.83,
+      "end": 546.54
+    },
+    {
+      "id": 32,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "The discipline is to make the move deliberately and record it, not to flinch. An operator who re-prices in a panic the week a cost spikes, then re-prices back when it settles, teaches regulars to distrust the menu; an operator who never moves at all teaches the P&L to bleed. The middle path is a standing habit: read the recost, pick one of the three moves, note the reason next to the dish, and revisit on a known cadence rather than on adrenaline. A dish costed and decided on purpose holds; a dish re-priced on reflex wanders.",
+      "start": 547.54,
+      "end": 573.15
+    },
+    {
+      "id": 33,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "Whichever move you pick, round it to the menu&rsquo;s own convention. A menu that lives at 13.95 dollars and 15.95 dollars should not suddenly post a 14.27 dollars; a menu that runs clean whole dollars should not grow a stray ninety-five. The leading digit is what the guest reads first, so a jump from 14 dollars to 15 dollars lands softer than its size suggests, and a jump from 19 dollars to 21 dollars lands harder, the price ladder is part of the decision, not an afterthought. Charm-round to the convention already on the page, and check that the re-price does not break the ladder the rest of the menu sets.",
+      "start": 573.95,
+      "end": 603.47
+    },
+    {
+      "id": 34,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Seasonal spike or structural rise.",
+      "start": 604.97,
+      "end": 606.62
+    },
+    {
+      "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "Not every hike deserves a re-price. A February tomato that spiked on a cold snap will revert by spring; re-pricing the caprese in February means re-pricing it back in April, training the guest to watch your menu like a stock ticker. A structural rise, a packer consolidation, a feed-cost shift that holds, a freight increase that is not coming back, is the one that earns a permanent menu move. Telling them apart is the difference between a steady menu and a nervous one.",
+      "start": 607.57,
+      "end": 630.33
+    },
+    {
+      "id": 36,
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(1)",
+      "text": "A spike is a weather report; a structural rise is a climate change. You dress for one and you move house for the other, and the menu is the house.",
+      "start": 631.33,
+      "end": 638.49
+    },
+    {
+      "id": 37,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "The tell is the trend, not the single invoice. A price that jumped this week against a market that is flat is probably a spike, and the move is to hold and watch. A price that moved with a market that has been climbing for two quarters is structural, and the move is to re-price. Reading your own invoice against where the broader market is heading, up, flat, or reverting, turns &ldquo;the price went up&rdquo; into &ldquo;the price went up and it is going to stay there,&rdquo; which is the only version that justifies reprinting the menu.",
+      "start": 639.49,
+      "end": 665.63
+    },
+    {
+      "id": 38,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "When the signal is ambiguous, hold the price and re-portion or absorb for a cycle, then re-read. A spike costs you a few weeks of thin margin on one dish; a panicked re-price on a reverting input costs you a guest who noticed the number move twice. The asymmetry favors patience on anything that looks seasonal and decisiveness on anything that looks structural.",
+      "start": 666.43,
+      "end": 684
+    },
+    {
+      "id": 39,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "From cost to a price you trust.",
+      "start": 685.5,
+      "end": 687
+    },
+    {
+      "id": 40,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "The cost target is the floor, not the answer. &ldquo;Cost divided by thirty percent&rdquo; produces a number, not a price, it ignores what the guest will pay, where the dish sits on the menu ladder, and whether the dish is an anchor or a signature. Anchor every target on your own number, the food-cost percent you decided this concept runs at, not a textbook 28 or 30. The textbook figure is a starting point; your own P&L is the real one.",
+      "start": 687.95,
+      "end": 709.13
+    },
+    {
+      "id": 41,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "Optimize contribution dollars across covers, not food-cost percent in isolation. A dish at thirty-five percent food cost that sells two hundred a week and clears strong contribution dollars is worth more to the business than a thirty-percent dish that sells twenty. Menu engineering is the discipline of reading cost and volume together, which dishes earn their menu space, which ones sell but barely pay, which ones to push and which to quietly retire. A re-price decision made on percentage alone can cut the dish that funds the room.",
+      "start": 709.93,
+      "end": 735.61
+    },
+    {
+      "id": 42,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(29)",
+      "text": "The reason the recost is urgent is mechanical: on a held menu price, every cent a vendor adds to plate cost comes straight out of contribution. Take the 14 dollars Caesar from the slider above, costed at a 30% food cost when the recipe was written, 4.20 dollars of plate cost, 9.80 dollars of contribution. Drag the plate-cost share and watch the contribution dollars fall one-for-one. Your own ceiling sits at 33%; the crept dish in this article runs 36%. The dishes are illustrative, but the one-for-one trade is exactly how the arithmetic behaves.",
+      "start": 736.41,
+      "end": 763
+    },
+    {
+      "id": 43,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "An interactive cost stack for one fourteen-dollar Caesar on a held menu price. As written, the dish runs a thirty-percent food cost: four dollars and twenty cents of plate cost, nine dollars and eighty cents of contribution margin. Drag the slider to move the plate-cost share from twenty-eight up to forty percent and watch the contribution segment shrink one-for-one, because the menu price is held. At your own thirty-three percent ceiling the contribution is nine dollars and thirty-eight cents; at the thirty-six percent the crept dish in this article runs, contribution falls to eight dollars and ninety-six cents, eighty-four cents a plate gone with nothing on the menu changed. These are illustrative figures, but the trade is exact: on a held price, every cent added to plate cost leaves contribution one-for-one.",
+      "start": 764.1,
+      "end": 803.84
+    },
+    {
+      "id": 44,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(30)",
+      "text": "When the inputs are thin, widen the band rather than print false precision. A dish costed off two invoice prices and three estimates is a range, not a point, and saying so, &ldquo;this runs roughly 4.10 dollars to 4.60 dollars a plate, here is what we are sure of&rdquo;, is more useful than a confident 4.37 dollars built on guesses. Confidence is a number the operator deserves to see alongside the cost; a low-confidence figure is a prompt to bind one more invoice, not a price to set in print.",
+      "start": 804.84,
+      "end": 828.83
+    },
+    {
+      "id": 45,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "Theoretical versus actual, label the gap.",
+      "start": 830.33,
+      "end": 832.32
+    },
+    {
+      "id": 46,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(31)",
+      "text": "Plate cost is theoretical by construction. It is what the dish should cost if every portion is exact, every yield holds, and nothing is wasted, the best-case number, the floor under reality. Actual food cost, the one the P&L reports, is always higher, because real kitchens over-portion, drop plates, and lose product to the walk-in. Label the theoretical number as theoretical, every time, or the operator reconciles it against the P&L, finds a gap, and stops trusting the tool.",
+      "start": 833.27,
+      "end": 856.36
+    },
+    {
+      "id": 47,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(32)",
+      "text": "The gap itself is information. A theoretical plate cost of thirty percent against an actual food cost of thirty-six is not a broken calculator; it is six points of over-portioning, waste, or theft that the theoretical number just made visible. The honest version of plate cost does not hide that gap, it names the theoretical floor, lets the operator compare it to the P&L, and turns the difference into the next thing to investigate on the line.",
+      "start": 857.16,
+      "end": 878.63
+    },
+    {
+      "id": 48,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(33)",
+      "text": "The same honesty governs partial coverage. A dish with three of eight ingredients not yet bound to a real invoice price is partially costed, and it must say so, &ldquo;five of eight ingredients priced from your invoices, three estimated&rdquo;, never present a partial number as a complete one. A missing price is &ldquo;we don&rsquo;t have this yet,&rdquo; never a silent zero that flatters the dish. Every figure should tap open to its receipt: two ounces of mozzarella at seventy-one cents an ounce is 1.42 dollars, from the invoice dated the day it posted. Boring, checkable, and yours, which is the only kind of number an operator should price a menu against.",
+      "start": 879.43,
+      "end": 911.64
+    },
+    {
+      "id": 49,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(34)",
+      "text": "When a price moves, the back-office runbook",
+      "start": 912.44,
+      "end": 914.54
+    },
+    {
+      "id": 50,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(35)",
+      "text": "Run this the day the invoice posts, at the bench, while the cause is still in front of you. It is the whole article turned into the order the hands have to work.",
+      "start": 915.09,
+      "end": 922.99
+    },
+    {
+      "id": 51,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Cost the edible portion, not the case. Take the new invoice price down to the cost per base unit, then to the yield, what survives trim and the cook. Price off the case and every number that follows reads low.",
+      "start": 923.79,
+      "end": 934.05
+    },
+    {
+      "id": 52,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Pull only the dishes the ingredient touches. The price binds to one canonical item; recompute the recipes that use it, and leave the rest of the menu alone. Nothing else moved.",
+      "start": 934.55,
+      "end": 943.19
+    },
+    {
+      "id": 53,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Rank the drivers, don&rsquo;t just print the total. Name the one or two lines responsible for most of the jump, plate by plate, so the fix has an address instead of a vibe.",
+      "start": 943.69,
+      "end": 952.13
+    },
+    {
+      "id": 54,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Read the recost against your own ceiling. Not a textbook number, the food-cost percent you decided this concept runs at. Translate the gap into dollars a week so it reads as a decision, not a rounding error.",
+      "start": 952.63,
+      "end": 962.8
+    },
+    {
+      "id": 55,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "Tell a spike from a structural rise. Check your invoice against where the broader market is heading. Reverting on a flat market means hold and watch; climbing with a two-quarter trend means re-price.",
+      "start": 963.3,
+      "end": 973.07
+    },
+    {
+      "id": 56,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
+      "text": "Make one move, raise, re-portion, or hold. Raise the inelastic signatures, re-portion the elastic anchors, hold-and-absorb the deliberate loss-leaders. Then charm-round to the ladder the rest of the menu already sets.",
+      "start": 973.57,
+      "end": 984.23
+    },
+    {
+      "id": 57,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(7)",
+      "text": "Write down which, and why, and a date to re-read. A move recorded holds; a move made on reflex wanders. Note it next to the dish and revisit on a known cadence, not on adrenaline.",
+      "start": 984.73,
+      "end": 993.52
+    },
+    {
+      "id": 58,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(36)",
+      "text": "Honest plate cost is a habit, not a spreadsheet you build once. Cost on the edible portion. Recompute the day a price moves, and only the dishes it touches. Read the result against your own target. Tell a spike from a structural rise. Then raise, re-portion, or hold, and write down which, and why. Do that, and the menu stops drifting out from under you one delivery at a time, and starts telling you the day a dish needs attention, while the fix is still a dollar.",
+      "start": 994.32,
+      "end": 1016.79
+    },
+    {
+      "id": 59,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(37)",
+      "text": "Key takeaways",
+      "start": 1017.59,
+      "end": 1018.21
+    },
+    {
+      "id": 60,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Cost the edible portion, not the as-purchased case, and keep yield (the ingredient&rsquo;s intrinsic trim) in a separate column from waste (the floor&rsquo;s operational loss).",
+      "start": 1018.76,
+      "end": 1027.4
+    },
+    {
+      "id": 61,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Margin erodes because invoices move weekly and menus move twice a year; recompute the day a price posts, not at quarter-end.",
+      "start": 1027.9,
+      "end": 1033.98
+    },
+    {
+      "id": 62,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "A price binds to a canonical item, so recompute only the dishes that ingredient touches, and rank the drivers, don&rsquo;t just print the new total.",
+      "start": 1034.48,
+      "end": 1041.74
+    },
+    {
+      "id": 63,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Three honest moves: raise the inelastic signatures, re-portion the elastic anchors, hold-and-absorb the deliberate loss-leaders, then charm-round to the menu&rsquo;s own ladder.",
+      "start": 1042.24,
+      "end": 1050.92
+    },
+    {
+      "id": 64,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "Tell a seasonal spike (hold) from a structural rise (re-price), and always label plate cost as theoretical, the gap to actual food cost is the waste it just made visible.",
+      "start": 1051.42,
+      "end": 1059.76
+    }
+  ]
+}
