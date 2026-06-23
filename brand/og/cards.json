@@ -5461,6 +5461,27 @@
       "dek": "The ratio of an image's width to its height, expressed as w:h."
     },
     {
+      "slug": "glossary-assessed-benchmark",
+      "kind": "glossary",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSSARY · COST DATA & SOURCES",
+      "title_1": "Assessed price (benchmark)",
+      "title_italic": "an editor-judged market price",
+      "title_2": "",
+      "dek": "A market price set by a private price-reporting agency's editors, who interview buyers and sellers and publish one judged figure that contracts then settle against.",
+      "focus": {
+        "type": "list",
+        "label": "A number you can check",
+        "items": [
+          "Assessed: editors judge a price",
+          "Proprietary + usually paywalled",
+          "This index: public data only"
+        ]
+      }
+    },
+    {
       "slug": "glossary-average-check",
       "kind": "glossary",
       "locale": "en",
@@ -5558,6 +5579,37 @@
       "title_italic": "where revenue equals costs",
       "title_2": "",
       "dek": "The sales volume at which revenue equals total costs."
+    },
+    {
+      "slug": "glossary-calibration",
+      "kind": "glossary",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSSARY · COST DATA & SOURCES",
+      "title_1": "Calibration (track record)",
+      "title_italic": "does the confidence earn its name?",
+      "title_2": "",
+      "dek": "Testing whether stated confidence matches the real hit-rate.",
+      "focus": {
+        "type": "bars",
+        "label": "Trend calls that came true",
+        "suffix": "%",
+        "items": [
+          {
+            "label": "Weak",
+            "value": 48
+          },
+          {
+            "label": "Medium",
+            "value": 51
+          },
+          {
+            "label": "Strong",
+            "value": 58
+          }
+        ]
+      }
     },
     {
       "slug": "glossary-canonical-url",
@@ -5695,7 +5747,7 @@
       "title_1": "CME (Chicago Mercantile Exchange)",
       "title_italic": "the U.S. commodity futures market",
       "title_2": "",
-      "dek": "The U.S. commodity futures market, run by CME Group, where traders buy and sell standardized contracts on the future price of cattle, hogs, milk and dairy, and grains. The Muntin…",
+      "dek": "The U.S. commodity futures market, run by CME Group, where traders buy and sell standardized contracts on the future price of cattle, hogs, milk and dairy, and grains. The Cost…",
       "focus": {
         "type": "list",
         "label": "futures, not your invoice",
@@ -5995,7 +6047,7 @@
       "title_1": "EIA (U.S. Energy Information Administration)",
       "title_italic": "the U.S. federal energy-statistics agency",
       "title_2": "",
-      "dek": "The U.S. federal agency for energy statistics. Its most restaurant-relevant series is the weekly retail price of diesel and gasoline — public, free, and on a fixed schedule. The…",
+      "dek": "The U.S. federal agency for energy statistics. Its most restaurant-relevant series is the weekly retail price of diesel and gasoline — public, free, and on a fixed schedule.",
       "focus": {
         "type": "list",
         "label": "EIA · weekly + free",
@@ -6058,7 +6110,7 @@
       "title_1": "FDA (U.S. Food and Drug Administration)",
       "title_italic": "the U.S. food-safety & labeling regulator",
       "title_2": "",
-      "dek": "The federal agency that regulates food safety: recalls, labeling rules, facility inspections, additive approvals, and the prevention rules under FSMA (the Food Safety…",
+      "dek": "The federal agency that regulates food safety: recalls, labeling rules, facility inspections, additive approvals, and the prevention rules under FSMA.",
       "focus": {
         "type": "list",
         "label": "FDA · safety, not price",
@@ -6141,6 +6193,27 @@
           "Aggregates public data series",
           "One free, open API",
           "The shelf, not the producer"
+        ]
+      }
+    },
+    {
+      "slug": "glossary-freshness",
+      "kind": "glossary",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSSARY · COST DATA & SOURCES",
+      "title_1": "Freshness & series rot",
+      "title_italic": "how current the data is",
+      "title_2": "",
+      "dek": "How current a number is.",
+      "focus": {
+        "type": "list",
+        "label": "A number's age matters",
+        "items": [
+          "Series publish on a schedule",
+          "A number ages between releases",
+          "Series rot gets flagged"
         ]
       }
     },
@@ -6481,6 +6554,27 @@
       "dek": "Four browser-side calculators — Delivery Break-Even, Prime Cost Check, Break-Even Covers, Price-Raise Simulator — plus a printable Monthly Margin Report, shareable URL-fragment…"
     },
     {
+      "slug": "glossary-measured-derived-absent",
+      "kind": "glossary",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSSARY · COST DATA & SOURCES",
+      "title_1": "Measured, derived, absent",
+      "title_italic": "measured, derived, or honestly absent",
+      "title_2": "",
+      "dek": "A data-honesty taxonomy that labels every reading as exactly one of three states.",
+      "focus": {
+        "type": "list",
+        "label": "The honesty spine",
+        "items": [
+          "Measured: shown as-is",
+          "Derived: a labeled estimate",
+          "Absent: said plainly"
+        ]
+      }
+    },
+    {
       "slug": "glossary-menu-copy",
       "kind": "glossary",
       "locale": "en",
@@ -6742,6 +6836,66 @@
       }
     },
     {
+      "slug": "glossary-prediction-band",
+      "kind": "glossary",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSSARY · COST DATA & SOURCES",
+      "title_1": "Prediction band",
+      "title_italic": "a calibrated uncertainty range",
+      "title_2": "",
+      "dek": "A calibrated uncertainty range, not a single guessed number.",
+      "focus": {
+        "type": "stat",
+        "value": "~84%",
+        "caption": "of the time the band held (80% target)",
+        "source": "Verified · 84 items"
+      }
+    },
+    {
+      "slug": "glossary-pressure-overlay",
+      "kind": "glossary",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSSARY · COST DATA & SOURCES",
+      "title_1": "Pressure overlay (leading indicator)",
+      "title_italic": "leading signals of cost pressure",
+      "title_2": "",
+      "dek": "A leading indicator is something that reliably moves before the thing you care about, giving early warning.",
+      "focus": {
+        "type": "list",
+        "label": "Looks forward, stays a direction",
+        "items": [
+          "Leading signals (diesel → freight)",
+          "A direction, never a price",
+          "Only after it proves out"
+        ]
+      }
+    },
+    {
+      "slug": "glossary-price-confidence",
+      "kind": "glossary",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSSARY · COST DATA & SOURCES",
+      "title_1": "Confidence (level vs trend)",
+      "title_italic": "level certainty vs trend certainty",
+      "title_2": "",
+      "dek": "Two separate certainties about a price: how sure you are of the dollar figure (level confidence) and how sure you are of which way it is moving (trend confidence).",
+      "focus": {
+        "type": "list",
+        "label": "Confidence · scored in two",
+        "items": [
+          "Level: the dollar",
+          "Trend: the direction",
+          "Headline = the lower one"
+        ]
+      }
+    },
+    {
       "slug": "glossary-prime-cost",
       "kind": "glossary",
       "locale": "en",
@@ -6782,6 +6936,27 @@
       "title_italic": "you@yourdomain.com",
       "title_2": "",
       "dek": "Email that runs on your own domain (hello@rowhousegarden.com) rather than a free Gmail or Yahoo address. Usually $6–$12/month per mailbox through Google Workspace or Microsoft 365."
+    },
+    {
+      "slug": "glossary-ratio-bridge",
+      "kind": "glossary",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSSARY · COST DATA & SOURCES",
+      "title_1": "Historical-ratio bridge",
+      "title_italic": "a labeled estimate from a stable ratio",
+      "title_2": "",
+      "dek": "A way to estimate a number you can't measure directly by anchoring it to one you can, through a relationship that has held steady over time — and labeling the result an estimate,…",
+      "focus": {
+        "type": "list",
+        "label": "A labeled estimate, never faked",
+        "items": [
+          "No direct series for an item?",
+          "Bridge from a stable ratio",
+          "Labeled an estimate, not a fact"
+        ]
+      }
     },
     {
       "slug": "glossary-real-photos",
@@ -6830,6 +7005,27 @@
       "title_italic": "owner reply rate, Google review replies",
       "title_2": "",
       "dek": "The percentage of your recent Google reviews to which the business owner has posted a reply — visible right under each review on your Google Business Profile."
+    },
+    {
+      "slug": "glossary-revisions",
+      "kind": "glossary",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSSARY · COST DATA & SOURCES",
+      "title_1": "Revisions & vintage",
+      "title_italic": "how published numbers get corrected",
+      "title_2": "",
+      "dek": "Published numbers are versioned.",
+      "focus": {
+        "type": "list",
+        "label": "Logged, not overwritten",
+        "items": [
+          "Sources revise: prelim → final",
+          "The index revises with them",
+          "Logged, not silently overwritten"
+        ]
+      }
     },
     {
       "slug": "glossary-rich-results",
@@ -6913,6 +7109,27 @@
         "value": "18–22%",
         "caption": "added to the check",
         "source": "Common range"
+      }
+    },
+    {
+      "slug": "glossary-shippable-bar",
+      "kind": "glossary",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSSARY · COST DATA & SOURCES",
+      "title_1": "The shippable bar",
+      "title_italic": "publish only when it clears the bar",
+      "title_2": "",
+      "dek": "The publish-or-withhold gate behind the Cost Index.",
+      "focus": {
+        "type": "list",
+        "label": "Ship complete, or not at all",
+        "items": [
+          "A measured cross-market range",
+          "or one corroborated source",
+          "else: held back, not shipped"
+        ]
       }
     },
     {
@@ -7472,6 +7689,27 @@
       "dek": "La razón entre el ancho y la altura de una imagen, expresada como w:h."
     },
     {
+      "slug": "glossary-assessed-benchmark-es",
+      "kind": "glossary",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSARIO · DATOS Y FUENTES DE COSTOS",
+      "title_1": "Precio evaluado (referente)",
+      "title_italic": "un precio de mercado fijado a criterio",
+      "title_2": "",
+      "dek": "Un precio de mercado que fijan los editores de una agencia privada de reportes de precios, que entrevistan a compradores y vendedores y publican una sola cifra a criterio, contra…",
+      "focus": {
+        "type": "list",
+        "label": "Un número que puedes verificar",
+        "items": [
+          "Evaluado: editores fijan a criterio",
+          "Propietario + tras muro de pago",
+          "Este índice: solo datos públicos"
+        ]
+      }
+    },
+    {
       "slug": "glossary-average-check-es",
       "kind": "glossary",
       "locale": "es",
@@ -7493,7 +7731,7 @@
       "title_1": "BLS (Oficina de Estadísticas Laborales)",
       "title_italic": "la agencia de estadísticas de precios, salarios y empleo de EE. UU.",
       "title_2": "",
-      "dek": "La agencia federal de estadísticas de Estados Unidos para precios, salarios y empleo.",
+      "dek": "La agencia federal de estadísticas de EE.",
       "focus": {
         "type": "list",
         "label": "BLS EE. UU. · público y gratis",
@@ -7569,6 +7807,37 @@
       "title_italic": "donde los ingresos igualan los costos",
       "title_2": "",
       "dek": "El volumen de ventas al que los ingresos igualan los costos totales."
+    },
+    {
+      "slug": "glossary-calibration-es",
+      "kind": "glossary",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSARIO · DATOS Y FUENTES DE COSTOS",
+      "title_1": "Calibración (historial)",
+      "title_italic": "¿la confianza se gana su nombre?",
+      "title_2": "",
+      "dek": "Comprobar si la confianza declarada coincide con los aciertos reales.",
+      "focus": {
+        "type": "bars",
+        "label": "Aciertos de tendencia",
+        "suffix": "%",
+        "items": [
+          {
+            "label": "Débil",
+            "value": 48
+          },
+          {
+            "label": "Media",
+            "value": 51
+          },
+          {
+            "label": "Fuerte",
+            "value": 58
+          }
+        ]
+      }
     },
     {
       "slug": "glossary-canonical-url-es",
@@ -8156,6 +8425,27 @@
       }
     },
     {
+      "slug": "glossary-freshness-es",
+      "kind": "glossary",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSARIO · DATOS Y FUENTES DE COSTOS",
+      "title_1": "Frescura y pudrición de series",
+      "title_italic": "qué tan actual es el dato",
+      "title_2": "",
+      "dek": "Qué tan actual es un número.",
+      "focus": {
+        "type": "list",
+        "label": "La edad del número importa",
+        "items": [
+          "Las series salen en calendario",
+          "Un número envejece entre datos",
+          "La pudrición se marca"
+        ]
+      }
+    },
+    {
       "slug": "glossary-funnel-es",
       "kind": "glossary",
       "locale": "es",
@@ -8492,6 +8782,27 @@
       "dek": "Cuatro calculadoras que corren en tu navegador — Punto de equilibrio con delivery, Chequeo de prime cost, Cubiertos para romper el punto, Simulador de alza de precios — más un…"
     },
     {
+      "slug": "glossary-measured-derived-absent-es",
+      "kind": "glossary",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSARIO · DATOS Y FUENTES DE COSTOS",
+      "title_1": "Medido, derivado, ausente",
+      "title_italic": "medido, derivado o ausente declarado",
+      "title_2": "",
+      "dek": "Una taxonomía de honestidad de datos que etiqueta cada lectura como exactamente uno de tres estados.",
+      "focus": {
+        "type": "list",
+        "label": "La columna de honestidad",
+        "items": [
+          "Medido: mostrado tal cual",
+          "Derivado: estimación etiquetada",
+          "Ausente: dicho claramente"
+        ]
+      }
+    },
+    {
       "slug": "glossary-menu-copy-es",
       "kind": "glossary",
       "locale": "es",
@@ -8613,7 +8924,7 @@
       "glyph": "source",
       "eyebrow": "GLOSARIO · DATOS Y FUENTES DE COSTOS",
       "title_1": "NOAA Fisheries",
-      "title_italic": "la agencia de pesquerías oceánicas y desembarques de EE. UU.",
+      "title_italic": "la agencia de pesquerías y desembarques",
       "title_2": "",
       "dek": "La agencia de Estados Unidos que administra las pesquerías oceánicas del país y publica los desembarques comerciales — el volumen y el valor en muelle (ex-vessel) del marisco…",
       "focus": {
@@ -8753,6 +9064,66 @@
       }
     },
     {
+      "slug": "glossary-prediction-band-es",
+      "kind": "glossary",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSARIO · DATOS Y FUENTES DE COSTOS",
+      "title_1": "Banda de predicción",
+      "title_italic": "un rango de incertidumbre calibrado",
+      "title_2": "",
+      "dek": "Un rango de incertidumbre calibrado, no un solo número adivinado.",
+      "focus": {
+        "type": "stat",
+        "value": "~84%",
+        "caption": "de las veces la banda acertó (meta 80%)",
+        "source": "Verificado · 84 ítems"
+      }
+    },
+    {
+      "slug": "glossary-pressure-overlay-es",
+      "kind": "glossary",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSARIO · DATOS Y FUENTES DE COSTOS",
+      "title_1": "Capa de presión (indicador adelantado)",
+      "title_italic": "señales adelantadas de presión de costos",
+      "title_2": "",
+      "dek": "Un indicador adelantado es algo que se mueve de forma confiable antes que la cosa que te importa, dando un aviso temprano.",
+      "focus": {
+        "type": "list",
+        "label": "Mira adelante, es una dirección",
+        "items": [
+          "Señales adelantadas (diésel → flete)",
+          "Una dirección, nunca un precio",
+          "Solo después de comprobarse"
+        ]
+      }
+    },
+    {
+      "slug": "glossary-price-confidence-es",
+      "kind": "glossary",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSARIO · DATOS Y FUENTES DE COSTOS",
+      "title_1": "Confianza (nivel vs. tendencia)",
+      "title_italic": "certeza del nivel vs. certeza del rumbo",
+      "title_2": "",
+      "dek": "Dos certezas distintas sobre un precio: qué tan seguro estás del monto en dólares (confianza de nivel) y qué tan seguro estás de hacia dónde se mueve (confianza de tendencia).",
+      "focus": {
+        "type": "list",
+        "label": "Confianza · en dos partes",
+        "items": [
+          "Nivel: el dólar",
+          "Tendencia: la dirección",
+          "Titular = la menor"
+        ]
+      }
+    },
+    {
       "slug": "glossary-prime-cost-es",
       "kind": "glossary",
       "locale": "es",
@@ -8793,6 +9164,27 @@
       "title_italic": "tu@tudominio.com",
       "title_2": "",
       "dek": "Correo que corre en tu propio dominio (hola@rowhousegarden.com) en vez de una dirección gratis de Gmail o Yahoo. Suele costar entre USD 6 y 12 al mes por buzón con Google…"
+    },
+    {
+      "slug": "glossary-ratio-bridge-es",
+      "kind": "glossary",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSARIO · DATOS Y FUENTES DE COSTOS",
+      "title_1": "Puente de razón histórica",
+      "title_italic": "estimación marcada de una razón estable",
+      "title_2": "",
+      "dek": "Una forma de estimar un número que no puedes medir de forma directa anclándolo a uno que sí puedes, mediante una relación que se ha mantenido estable con el tiempo — y etiquetando…",
+      "focus": {
+        "type": "list",
+        "label": "Estimación marcada, nunca inventada",
+        "items": [
+          "¿Sin serie directa?",
+          "Cruza desde una razón estable",
+          "Marcado estimación, no un hecho"
+        ]
+      }
     },
     {
       "slug": "glossary-real-photos-es",
@@ -8841,6 +9233,27 @@
       "title_italic": "tasa de respuesta del dueño, respuestas a Google",
       "title_2": "",
       "dek": "El porcentaje de tus reseñas recientes de Google a las que el dueño del negocio respondió — visible justo debajo de cada reseña en tu Perfil de Empresa de Google."
+    },
+    {
+      "slug": "glossary-revisions-es",
+      "kind": "glossary",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSARIO · DATOS Y FUENTES DE COSTOS",
+      "title_1": "Revisiones y versión del dato",
+      "title_italic": "cómo se corrigen los números",
+      "title_2": "",
+      "dek": "Los números publicados tienen versiones.",
+      "focus": {
+        "type": "list",
+        "label": "Registrado, no sobrescrito",
+        "items": [
+          "Las fuentes revisan: prelim → final",
+          "El índice se revisa con ellas",
+          "Registrado, no en silencio"
+        ]
+      }
     },
     {
       "slug": "glossary-rich-results-es",
@@ -8924,6 +9337,27 @@
         "value": "18–22%",
         "caption": "agregado a la cuenta",
         "source": "Rango común"
+      }
+    },
+    {
+      "slug": "glossary-shippable-bar-es",
+      "kind": "glossary",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSARIO · DATOS Y FUENTES DE COSTOS",
+      "title_1": "El umbral de publicación",
+      "title_italic": "publica solo cuando pasa el umbral",
+      "title_2": "",
+      "dek": "La regla de publicar o retener detrás del Índice de costos.",
+      "focus": {
+        "type": "list",
+        "label": "Publica completo, o nada",
+        "items": [
+          "Un rango medido entre mercados",
+          "o una fuente corroborada",
+          "si no: retenido, no publicado"
+        ]
       }
     },
     {

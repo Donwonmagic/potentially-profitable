@@ -475,5 +475,219 @@
         "El índice usa el contado"
       ]
     }
+  },
+  "measured-derived-absent": {
+    "en": {
+      "type": "list",
+      "label": "The honesty spine",
+      "items": [
+        "Measured: shown as-is",
+        "Derived: a labeled estimate",
+        "Absent: said plainly"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "La columna de honestidad",
+      "items": [
+        "Medido: mostrado tal cual",
+        "Derivado: estimación etiquetada",
+        "Ausente: dicho claramente"
+      ]
+    }
+  },
+  "price-confidence": {
+    "en": {
+      "type": "list",
+      "label": "Confidence · scored in two",
+      "items": [
+        "Level: the dollar",
+        "Trend: the direction",
+        "Headline = the lower one"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "Confianza · en dos partes",
+      "items": [
+        "Nivel: el dólar",
+        "Tendencia: la dirección",
+        "Titular = la menor"
+      ]
+    }
+  },
+  "shippable-bar": {
+    "en": {
+      "type": "list",
+      "label": "Ship complete, or not at all",
+      "items": [
+        "A measured cross-market range",
+        "or one corroborated source",
+        "else: held back, not shipped"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "Publica completo, o nada",
+      "items": [
+        "Un rango medido entre mercados",
+        "o una fuente corroborada",
+        "si no: retenido, no publicado"
+      ]
+    }
+  },
+  "prediction-band": {
+    "en": {
+      "type": "stat",
+      "value": "~84%",
+      "caption": "of the time the band held (80% target)",
+      "source": "Verified · 84 items"
+    },
+    "es": {
+      "type": "stat",
+      "value": "~84%",
+      "caption": "de las veces la banda acertó (meta 80%)",
+      "source": "Verificado · 84 ítems"
+    }
+  },
+  "calibration": {
+    "en": {
+      "type": "bars",
+      "label": "Trend calls that came true",
+      "suffix": "%",
+      "items": [
+        {
+          "label": "Weak",
+          "value": 48
+        },
+        {
+          "label": "Medium",
+          "value": 51
+        },
+        {
+          "label": "Strong",
+          "value": 58
+        }
+      ]
+    },
+    "es": {
+      "type": "bars",
+      "label": "Aciertos de tendencia",
+      "suffix": "%",
+      "items": [
+        {
+          "label": "Débil",
+          "value": 48
+        },
+        {
+          "label": "Media",
+          "value": 51
+        },
+        {
+          "label": "Fuerte",
+          "value": 58
+        }
+      ]
+    }
+  },
+  "ratio-bridge": {
+    "en": {
+      "type": "list",
+      "label": "A labeled estimate, never faked",
+      "items": [
+        "No direct series for an item?",
+        "Bridge from a stable ratio",
+        "Labeled an estimate, not a fact"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "Estimación marcada, nunca inventada",
+      "items": [
+        "¿Sin serie directa?",
+        "Cruza desde una razón estable",
+        "Marcado estimación, no un hecho"
+      ]
+    }
+  },
+  "freshness": {
+    "en": {
+      "type": "list",
+      "label": "A number's age matters",
+      "items": [
+        "Series publish on a schedule",
+        "A number ages between releases",
+        "Series rot gets flagged"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "La edad del número importa",
+      "items": [
+        "Las series salen en calendario",
+        "Un número envejece entre datos",
+        "La pudrición se marca"
+      ]
+    }
+  },
+  "pressure-overlay": {
+    "en": {
+      "type": "list",
+      "label": "Looks forward, stays a direction",
+      "items": [
+        "Leading signals (diesel → freight)",
+        "A direction, never a price",
+        "Only after it proves out"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "Mira adelante, es una dirección",
+      "items": [
+        "Señales adelantadas (diésel → flete)",
+        "Una dirección, nunca un precio",
+        "Solo después de comprobarse"
+      ]
+    }
+  },
+  "revisions": {
+    "en": {
+      "type": "list",
+      "label": "Logged, not overwritten",
+      "items": [
+        "Sources revise: prelim → final",
+        "The index revises with them",
+        "Logged, not silently overwritten"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "Registrado, no sobrescrito",
+      "items": [
+        "Las fuentes revisan: prelim → final",
+        "El índice se revisa con ellas",
+        "Registrado, no en silencio"
+      ]
+    }
+  },
+  "assessed-benchmark": {
+    "en": {
+      "type": "list",
+      "label": "A number you can check",
+      "items": [
+        "Assessed: editors judge a price",
+        "Proprietary + usually paywalled",
+        "This index: public data only"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "Un número que puedes verificar",
+      "items": [
+        "Evaluado: editores fijan a criterio",
+        "Propietario + tras muro de pago",
+        "Este índice: solo datos públicos"
+      ]
+    }
   }
 }

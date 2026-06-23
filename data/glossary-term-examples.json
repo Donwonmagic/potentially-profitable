@@ -616,6 +616,46 @@
     "cme": {
       "en": "Example: Your beef vendor points at \"the CME limit-up on cattle\" to justify a mid-week price hike. That's a futures move — a bet on prices months out. The Cost Index ignores the screen and reads the cash side: USDA's wholesale beef reports for what cattle and cutout actually traded at this week, so you can tell a real market move from a vendor's framing.",
       "es": "Ejemplo: Tu proveedor de carne señala \"el límite al alza de la CME en el ganado\" para justificar un aumento a media semana. Eso es un movimiento de futuros — una apuesta sobre precios dentro de meses. El Índice de costos ignora la pantalla y lee el lado al contado: los reportes mayoristas de res del USDA sobre lo que el ganado y el corte de verdad se negociaron esta semana, para que distingas un movimiento real del mercado del argumento de un proveedor."
+    },
+    "measured-derived-absent": {
+      "en": "Example: in a price table, cheddar shows a solid line straight from the dairy report (measured), edible-portion beef shows a dashed line with an “estimate” badge (derived), and a niche herb shows a greyed “no public data — here’s why” card (absent) — three states, each one labeled so you know how far to trust it.",
+      "es": "Ejemplo: en una tabla de precios, el cheddar muestra una línea sólida directa del reporte lácteo (medido), la carne en porción comestible muestra una línea punteada con una insignia de “estimación” (derivado), y una hierba poco común muestra una tarjeta en gris de “sin datos públicos — aquí está por qué” (ausente) — tres estados, cada uno etiquetado para que sepas cuánto confiar."
+    },
+    "price-confidence": {
+      "en": "Example: the Cost Index is sure beef is climbing but won't pin the exact dollar — trend confidence is high, level confidence is medium, so the headline reads medium. You can act on the direction without trusting the cent.",
+      "es": "Ejemplo: el Índice de costos está seguro de que la carne sube pero no fija el dólar exacto — la confianza de tendencia es alta, la de nivel es media, así que el titular queda en media. Puedes actuar sobre la dirección sin confiar en el centavo."
+    },
+    "shippable-bar": {
+      "en": "Example: striploin shows a price because three public terminal markets agree on a wholesale range; a niche specialty mushroom shows no price at all — its only source is one thin, jumpy feed, so it's held back as absent rather than shipped as if it were solid.",
+      "es": "Ejemplo: el bife angosto muestra precio porque tres mercados públicos terminales coinciden en un rango mayorista; un hongo especializado de nicho no muestra precio alguno — su única fuente es un feed delgado y saltón, así que se retiene como ausente en vez de publicarse como si fuera sólido."
+    },
+    "prediction-band": {
+      "en": "Example: instead of forecasting “beef will be $4.20 next week,” a prediction band says “somewhere between $4.05 and $4.40 — and over a long run of weeks, the real price lands inside a band like this about 8 times out of 10.”",
+      "es": "Ejemplo: en vez de pronosticar “la carne costará $4.20 la próxima semana”, una banda de predicción dice “entre $4.05 y $4.40 — y a lo largo de muchas semanas, el precio real cae dentro de una banda así unas 8 de cada 10 veces”."
+    },
+    "calibration": {
+      "en": "Example: the Cost Index tags a beef move “strong.” That word isn’t a vibe — across 1,877 graded calls, the ones it labeled strong came true about 58% of the time versus a coin-flip near 50%, so a strong tag is a checked claim, not a hunch.",
+      "es": "Ejemplo: el Índice de costos etiqueta un movimiento de la carne como “fuerte.” Esa palabra no es una corazonada — en 1,877 llamadas evaluadas, las que etiquetó fuertes acertaron cerca del 58% de las veces frente a un volado cercano al 50%, así que una etiqueta fuerte es una afirmación comprobada, no una intuición."
+    },
+    "ratio-bridge": {
+      "en": "Example: an import-only ingredient has no public wholesale series, but customs value per pound has tracked it within a steady band for years — so the index reads the customs figure and bridges across, drawn as a dashed estimate with a band, never a solid measured price.",
+      "es": "Ejemplo: un ingrediente solo de importación no tiene una serie mayorista pública, pero el valor de aduana por libra lo ha seguido dentro de una banda estable durante años — así que el índice lee la cifra de aduana y cruza el puente, dibujado como una estimación punteada con banda, nunca como un precio medido sólido."
+    },
+    "freshness": {
+      "en": "Example: a dashboard shows a produce price that looks reasonable, but the figure is from a weekly report that hasn't published in over a month — the feed has quietly rotted, and the \"current\" number is really last month's wearing today's date.",
+      "es": "Ejemplo: un tablero muestra un precio de verdura que parece razonable, pero la cifra viene de un reporte semanal que no se publica desde hace más de un mes — el flujo se pudrió en silencio, y el número \"actual\" es en realidad el del mes pasado con la fecha de hoy."
+    },
+    "pressure-overlay": {
+      "en": "Example: diesel has climbed for a month. Diesel leads freight, and freight is part of delivered cost, so the overlay flips the freight-pressure signal to “leaning up” — a heads-up that delivery surcharges may be coming before they hit an invoice. It does not say how much; it never names a dollar. The arrow only appears because that diesel-to-freight rule already cleared its live track record.",
+      "es": "Ejemplo: el diésel lleva un mes subiendo. El diésel adelanta al flete, y el flete es parte del costo entregado, así que la capa pone la señal de presión del flete en “inclinándose hacia arriba” — un aviso de que pueden venir recargos de entrega antes de que lleguen a una factura. No dice cuánto; nunca nombra un dólar. La flecha solo aparece porque esa regla de diésel a flete ya superó su historial real."
+    },
+    "revisions": {
+      "en": "Example: USDA prints a weekly beef figure on Friday, then revises it the next week as more transactions clear. A number that quietly overwrites the first print can't tell you it ever moved; one that re-vendors with a new vintage date and keeps the old value can — so you can see the revision, not just inherit it.",
+      "es": "Ejemplo: el USDA publica una cifra semanal de carne el viernes y la revisa a la semana siguiente conforme se cierran más transacciones. Un número que sobrescribe en silencio la primera publicación no puede decirte que alguna vez se movió; uno que la vuelve a cargar con una nueva fecha de versión y conserva el valor viejo sí puede — así ves la revisión, no solo la heredas."
+    },
+    "assessed-benchmark": {
+      "en": "Example: a beef contract settles each week against an assessor's published strip-loin number, so when a vendor quotes \"the market,\" both sides are pointing at the same paid-for figure — fast and convenient, but a number you rent, not one you can pull and re-check yourself.",
+      "es": "Ejemplo: un contrato de carne se liquida cada semana contra el número de bife angosto que publica un evaluador, así que cuando un proveedor cita \"el mercado\", ambas partes apuntan a la misma cifra pagada — rápida y cómoda, pero un número que rentas, no uno que puedas descargar y volver a verificar por tu cuenta."
     }
   }
 }

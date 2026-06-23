@@ -106,6 +106,66 @@
           "@id": "https://muntin.digital/es/glossary/cme/#term",
           "name": "CME (Bolsa Mercantil de Chicago)",
           "url": "https://muntin.digital/es/glossary/cme/"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://muntin.digital/es/glossary/measured-derived-absent/#term",
+          "name": "Medido, derivado, ausente",
+          "url": "https://muntin.digital/es/glossary/measured-derived-absent/"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://muntin.digital/es/glossary/price-confidence/#term",
+          "name": "Confianza (nivel vs. tendencia)",
+          "url": "https://muntin.digital/es/glossary/price-confidence/"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://muntin.digital/es/glossary/shippable-bar/#term",
+          "name": "El umbral de publicación",
+          "url": "https://muntin.digital/es/glossary/shippable-bar/"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://muntin.digital/es/glossary/prediction-band/#term",
+          "name": "Banda de predicción",
+          "url": "https://muntin.digital/es/glossary/prediction-band/"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://muntin.digital/es/glossary/calibration/#term",
+          "name": "Calibración (historial)",
+          "url": "https://muntin.digital/es/glossary/calibration/"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://muntin.digital/es/glossary/ratio-bridge/#term",
+          "name": "Puente de razón histórica",
+          "url": "https://muntin.digital/es/glossary/ratio-bridge/"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://muntin.digital/es/glossary/freshness/#term",
+          "name": "Frescura y pudrición de series",
+          "url": "https://muntin.digital/es/glossary/freshness/"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://muntin.digital/es/glossary/pressure-overlay/#term",
+          "name": "Capa de presión (indicador adelantado)",
+          "url": "https://muntin.digital/es/glossary/pressure-overlay/"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://muntin.digital/es/glossary/revisions/#term",
+          "name": "Revisiones y versión del dato",
+          "url": "https://muntin.digital/es/glossary/revisions/"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://muntin.digital/es/glossary/assessed-benchmark/#term",
+          "name": "Precio evaluado (referente)",
+          "url": "https://muntin.digital/es/glossary/assessed-benchmark/"
         }
       ]
     },
@@ -143,7 +203,7 @@
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="/" class="logo" aria-label="Muntin Digital home">
-       width=
+      <svg class="logo-mark" width="128" height="128" viewBox="0 0 128 128" fill="none" aria-hidden="true">
         <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
           <rect x="18" y="18" width="92" height="92"/>
           <line x1="64" y1="18" x2="64" y2="110"/>
@@ -159,7 +219,7 @@
       <a href="/about/">About</a>
     </nav>
     <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
-       width=
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="11" cy="11" r="7"/>
         <line x1="21" y1="21" x2="16.5" y2="16.5"/>
       </svg>
@@ -171,7 +231,7 @@
       <span class="lang-switch-current" aria-current="true">EN</span>
     </nav>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Write to Don
-       width=<line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -183,7 +243,7 @@
     <a href="/studio/">Company</a>
     <a href="/about/">About</a>
     <button type="button" class="mobile-search js-open-search">
-       width=<circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Search the library</span>
     </button>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Write to Don</a>
@@ -195,7 +255,7 @@
       <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
       <a href="/glossary/cost-data/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
       <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
-         width=<line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
       </button>
     </div>
   </aside>
@@ -226,7 +286,7 @@
   <div class="container">
     <header class="topic-section-head">
       <span class="eyebrow">Términos</span>
-      <h2>9 definiciones.</h2>
+      <h2>19 definiciones.</h2>
     </header>
     <ul class="term-siblings-list">
       <li><a href="/es/glossary/bls/"><strong>BLS (Oficina de Estadísticas Laborales)</strong><span> — la agencia de estadísticas de precios, salarios y empleo de EE. UU.</span></a></li>
@@ -238,6 +298,16 @@
       <li><a href="/es/glossary/noaa-fisheries/"><strong>NOAA Fisheries</strong><span> — la agencia de pesquerías y desembarques</span></a></li>
       <li><a href="/es/glossary/fda/"><strong>FDA (Administración de Alimentos y Medicamentos de EE. UU.)</strong><span> — el regulador de seguridad y etiquetado</span></a></li>
       <li><a href="/es/glossary/cme/"><strong>CME (Bolsa Mercantil de Chicago)</strong><span> — el mercado de futuros de materias primas</span></a></li>
+      <li><a href="/es/glossary/measured-derived-absent/"><strong>Medido, derivado, ausente</strong><span> — medido, derivado o ausente declarado</span></a></li>
+      <li><a href="/es/glossary/price-confidence/"><strong>Confianza (nivel vs. tendencia)</strong><span> — certeza del nivel vs. certeza del rumbo</span></a></li>
+      <li><a href="/es/glossary/shippable-bar/"><strong>El umbral de publicación</strong><span> — publica solo cuando pasa el umbral</span></a></li>
+      <li><a href="/es/glossary/prediction-band/"><strong>Banda de predicción</strong><span> — un rango de incertidumbre calibrado</span></a></li>
+      <li><a href="/es/glossary/calibration/"><strong>Calibración (historial)</strong><span> — ¿la confianza se gana su nombre?</span></a></li>
+      <li><a href="/es/glossary/ratio-bridge/"><strong>Puente de razón histórica</strong><span> — estimación marcada de una razón estable</span></a></li>
+      <li><a href="/es/glossary/freshness/"><strong>Frescura y pudrición de series</strong><span> — qué tan actual es el dato</span></a></li>
+      <li><a href="/es/glossary/pressure-overlay/"><strong>Capa de presión (indicador adelantado)</strong><span> — señales adelantadas de presión de costos</span></a></li>
+      <li><a href="/es/glossary/revisions/"><strong>Revisiones y versión del dato</strong><span> — cómo se corrigen los números</span></a></li>
+      <li><a href="/es/glossary/assessed-benchmark/"><strong>Precio evaluado (referente)</strong><span> — un precio de mercado fijado a criterio</span></a></li>
     </ul>
     <div class="hero-ctas reveal hero-ctas-center" style="margin-top:32px">
       <a class="btn btn-ghost" href="/es/glossary/">Glosario completo</a>
@@ -253,7 +323,7 @@
     <div class="foot-cta">
       <div class="foot-cta-text">Ready to build something worth the time?</div>
       <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Write to Don
-         width=<line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
       </a>
     </div>
 
@@ -264,7 +334,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->161<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->171<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
