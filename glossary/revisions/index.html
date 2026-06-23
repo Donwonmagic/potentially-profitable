@@ -80,7 +80,6 @@
   ]
 }
 </script>
-
 <!-- glossary-faq-schema:start -->
 <script type="application/ld+json">
 {
@@ -113,6 +112,14 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "The Cost Index follows a stated revision-and-correction policy. When an upstream series is revised, the next refresh re-vendors the new value with a fresh vintage date and the prior value stays recoverable in version control — the change is logged in an append-only revisions audit trail, never silently overwritten. A discovered error is corrected at the source and noted in the change log, and a discontinued series turns the ingredient absent with the reason rather than being frozen at a stale last value."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a data vintage?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A vintage is which version of a number you are looking at — the release it came from and the date it carried. Last month's preliminary figure and this month's revised figure for the same period are two vintages of one number. Recording it lets you reconstruct what was known at the time instead of quietly overwriting the old value with the new one."
           }
         }
       ]
@@ -280,6 +287,10 @@
         <div class="term-faq__item">
           <h3 class="term-faq__q">How does the Muntin Cost Index handle revisions?</h3>
           <p class="term-faq__a">The Cost Index follows a stated revision-and-correction policy. When an upstream series is revised, the next refresh re-vendors the new value with a fresh vintage date and the prior value stays recoverable in version control — the change is logged in an append-only revisions audit trail, never silently overwritten. A discovered error is corrected at the source and noted in the change log, and a discontinued series turns the ingredient absent with the reason rather than being frozen at a stale last value.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">What is a data vintage?</h3>
+          <p class="term-faq__a">A vintage is which version of a number you are looking at — the release it came from and the date it carried. Last month's preliminary figure and this month's revised figure for the same period are two vintages of one number. Recording it lets you reconstruct what was known at the time instead of quietly overwriting the old value with the new one.</p>
         </div>
       </section>
       <!-- glossary-faq:end -->

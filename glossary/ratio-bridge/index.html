@@ -80,7 +80,6 @@
   ]
 }
 </script>
-
 <!-- glossary-faq-schema:start -->
 <script type="application/ld+json">
 {
@@ -113,6 +112,14 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "It's how the index builds a derived reading. When no direct public wholesale series exists for an item, the index bridges from a related public series using a historical ratio that has held steady, and tags the result derived — drawn with a dashed line, a confidence band sized to the relationship's own error, and an estimate badge. A bridge never overrides a directly measured level, and it's re-fit as more overlapping history accumulates."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is cointegration in forecasting?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Cointegration is when two series move together in a relationship that stays stable over time — the gap between them keeps returning to its average rather than wandering off. The Cost Index uses it as the test for a historical-ratio bridge: it only estimates a missing price from a related series when the two are genuinely cointegrated, not just drifting the same way by coincidence."
           }
         }
       ]
@@ -280,6 +287,10 @@
         <div class="term-faq__item">
           <h3 class="term-faq__q">How does the Muntin Cost Index use a historical-ratio bridge?</h3>
           <p class="term-faq__a">It's how the index builds a derived reading. When no direct public wholesale series exists for an item, the index bridges from a related public series using a historical ratio that has held steady, and tags the result derived — drawn with a dashed line, a confidence band sized to the relationship's own error, and an estimate badge. A bridge never overrides a directly measured level, and it's re-fit as more overlapping history accumulates.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">What is cointegration in forecasting?</h3>
+          <p class="term-faq__a">Cointegration is when two series move together in a relationship that stays stable over time — the gap between them keeps returning to its average rather than wandering off. The Cost Index uses it as the test for a historical-ratio bridge: it only estimates a missing price from a related series when the two are genuinely cointegrated, not just drifting the same way by coincidence.</p>
         </div>
       </section>
       <!-- glossary-faq:end -->

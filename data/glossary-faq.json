@@ -3386,6 +3386,10 @@
         {
           "q": "How does the Muntin Cost Index use the measured/derived/absent spine?",
           "a": "Every ingredient in the Cost Index is tagged as exactly one of the three states, and an untagged ingredient fails the build. A measured reading shows a solid line with a source link and report date; a derived reading shows a dashed line, a confidence band, and an estimate badge; an absent reading shows a greyed card that names the structural reason — for example, a confidentiality suppression — rather than a fabricated price. So you can always see which state any reading sits in before you trust it."
+        },
+        {
+          "q": "Is derived data less reliable than measured?",
+          "a": "Yes, and the Cost Index says so. A derived reading is an estimate built from public inputs when no direct series exists — honest, but a step below a measured series shown as-is. That is why it ships with a dashed line, a confidence band, and an estimate badge: useful, clearly labeled, and never mistaken for a measurement."
         }
       ],
       "es": [
@@ -3400,6 +3404,10 @@
         {
           "q": "¿Cómo usa el Índice de costos Muntin la columna medido/derivado/ausente?",
           "a": "Cada ingrediente del Índice de costos se etiqueta como exactamente uno de los tres estados, y un ingrediente sin etiquetar reprueba la compilación. Una lectura medida muestra una línea sólida con enlace a la fuente y fecha del reporte; una lectura derivada muestra una línea punteada, una banda de confianza y una insignia de estimación; una lectura ausente muestra una tarjeta en gris que nombra la razón estructural — por ejemplo, una supresión por confidencialidad — en vez de un precio inventado. Así siempre puedes ver en qué estado está cada lectura antes de confiar en ella."
+        },
+        {
+          "q": "¿Los datos derivados son menos confiables que los medidos?",
+          "a": "Sí, y el Índice de costos lo dice. Una lectura derivada es una estimación construida con insumos públicos cuando no existe una serie directa — honesta, pero un escalón por debajo de una serie medida mostrada tal cual. Por eso se publica con línea punteada, banda de confianza e insignia de estimación: útil, claramente etiquetada, y nunca confundida con una medición."
         }
       ]
     },
@@ -3416,6 +3424,10 @@
         {
           "q": "What do the confidence labels mean on the Cost Index?",
           "a": "Level confidence runs high, medium, or no-dollar depending on how many independent dollar sources agree. Trend confidence runs high, medium, low, or directional depending on how cleanly the sources agree on direction. A jagged, noisy path is capped at low no matter how its endpoints line up, and a published label can never exceed what the source data supports."
+        },
+        {
+          "q": "Can you be confident in a trend but not the price?",
+          "a": "Yes — that is exactly why the Cost Index scores them apart. You can be sure an ingredient is rising (high trend confidence) while the exact dollar stays fuzzy (medium or low level confidence), or know today's dollar without knowing the next move. The headline takes the lower of the two, so it never claims more certainty than the weaker half supports."
         }
       ],
       "es": [
@@ -3430,6 +3442,10 @@
         {
           "q": "¿Qué significan las etiquetas de confianza en el Índice de costos?",
           "a": "La confianza de nivel va de alta a media o sin-dólar según cuántas fuentes de dólar independientes concuerden. La confianza de tendencia va de alta a media, baja o direccional según qué tan limpiamente concuerden las fuentes en la dirección. Un camino dentado y ruidoso se topa en baja sin importar cómo se alineen sus extremos, y una etiqueta publicada nunca puede exceder lo que sostienen los datos de origen."
+        },
+        {
+          "q": "¿Puedes confiar en la tendencia pero no en el precio?",
+          "a": "Sí — por eso justamente el Índice de costos las califica por separado. Puedes estar seguro de que un ingrediente sube (alta confianza de tendencia) mientras el dólar exacto queda borroso (confianza de nivel media o baja), o saber el dólar de hoy sin saber el próximo movimiento. El titular toma la menor de las dos, así que nunca reclama más certeza de la que sostiene la mitad más débil."
         }
       ]
     },
@@ -3446,6 +3462,10 @@
         {
           "q": "What happens to an ingredient that does not clear the bar?",
           "a": "It is shown as absent, not shipped. The dashboard carries no apologetic 'no published figure' prices. A below-bar ingredient lives only as an honest, expanding-coverage page — present, named, and explained with the structural reason it has no reading — never frozen at a stale value pretending to be current. Ship complete, or not at all."
+        },
+        {
+          "q": "What's the difference between the shippable bar and a confidence threshold?",
+          "a": "A confidence threshold scores how trustworthy a number is; the shippable bar decides whether it gets published at all. They work together: a reading clears the bar only when the data supports an honest number — a measured cross-market range, or one corroborated source — and below the bar it is shown as absent rather than shipped with a low-confidence label."
         }
       ],
       "es": [
@@ -3460,6 +3480,10 @@
         {
           "q": "¿Qué pasa con un ingrediente que no pasa el umbral?",
           "a": "Se muestra como ausente, no se publica. El tablero no lleva precios con disculpas del tipo 'sin cifra publicada'. Un ingrediente por debajo del umbral vive solo como una página honesta de cobertura en expansión — presente, nombrado y explicado con la razón estructural por la que no tiene lectura — nunca congelado en un valor viejo que finge estar al día. Publica completo, o nada."
+        },
+        {
+          "q": "¿Cuál es la diferencia entre el umbral de publicación y un umbral de confianza?",
+          "a": "Un umbral de confianza califica qué tan confiable es un número; el umbral de publicación decide si se publica siquiera. Trabajan juntos: una lectura pasa el umbral solo cuando los datos sostienen un número honesto — un rango medido entre mercados, o una fuente corroborada — y por debajo del umbral se muestra como ausente en vez de publicarse con una etiqueta de baja confianza."
         }
       ]
     },
@@ -3476,6 +3500,10 @@
         {
           "q": "How does the Muntin Cost Index use a prediction band?",
           "a": "The Cost Index publishes its derived forecasts as a band targeting 80% coverage, built with a split/EnbPI conformal method that is widened by adaptive conformal inference until it holds. Walked forward across 84 ingredients and 5,929 scored steps, the band actually contained the next print about 84% of the time — slightly more than the 80% target. Covering a touch more often than promised is the honest direction to err: the index would rather be caught being a little too cautious than caught being overconfident."
+        },
+        {
+          "q": "Prediction band vs confidence interval — what's the difference?",
+          "a": "They answer the same question — how much could this be off? — but build the range differently. A classic confidence interval assumes a distribution; a conformal prediction band, the kind the Cost Index uses, sets its width from the method's own past misses instead. That is why it can promise a coverage rate (80%) and then verify it walking forward (about 84%)."
         }
       ],
       "es": [
@@ -3490,6 +3518,10 @@
         {
           "q": "¿Cómo usa el Índice de costos Muntin una banda de predicción?",
           "a": "El Índice de costos publica sus pronósticos derivados como una banda con meta de 80% de cobertura, hecha con un método conformal split/EnbPI que se ensancha mediante inferencia conformal adaptativa hasta que aguanta. Caminando hacia adelante a través de 84 ingredientes y 5,929 pasos evaluados, la banda de hecho contuvo el siguiente dato cerca del 84% de las veces — un poco más que la meta de 80%. Cubrir un poco más seguido de lo prometido es el lado honesto del error: el índice prefiere que lo agarren siendo un poco cauteloso de más que siendo demasiado confiado."
+        },
+        {
+          "q": "Banda de predicción vs. intervalo de confianza — ¿cuál es la diferencia?",
+          "a": "Responden la misma pregunta — ¿por cuánto podría errar esto? — pero arman el rango de distinta forma. Un intervalo de confianza clásico asume una distribución; una banda de predicción conformal, la que usa el Índice de costos, fija su ancho a partir de los propios errores pasados del método. Por eso puede prometer una tasa de cobertura (80%) y luego verificarla hacia adelante (cerca del 84%)."
         }
       ]
     },
@@ -3506,6 +3538,10 @@
         {
           "q": "How well calibrated is the Muntin Cost Index?",
           "a": "The index grades its own direction calls and publishes the record. Across 1,877 scored calls, the ones it labeled weak came true about 48% of the time, medium about 51%, and strong about 58% — each tier above the last, and all measured against a coin-flip baseline near 50%. So \"strong\" genuinely beats chance and \"weak\" honestly barely does. The labels are earned, not decorative, and the full record is published at /cost-index/calibration.json."
+        },
+        {
+          "q": "What is a well-calibrated forecast?",
+          "a": "One whose confidence matches its hit-rate: if it says it is 70% sure, calls like it come true about 70% of the time. Being right isn't enough — being right as often as you claimed is. The Cost Index checks its own across 1,877 scored calls: weak, medium, and strong direction calls came true about 48%, 51%, and 58% of the time, each tier earning its label against a roughly 50% baseline."
         }
       ],
       "es": [
@@ -3520,6 +3556,10 @@
         {
           "q": "¿Qué tan bien calibrado está el Índice de costos Muntin?",
           "a": "El índice evalúa sus propias llamadas de dirección y publica el registro. En 1,877 llamadas evaluadas, las que etiquetó débiles acertaron cerca del 48% de las veces, las medias cerca del 51% y las fuertes cerca del 58% — cada nivel por encima del anterior, y todas medidas contra una base de azar cercana al 50%. Así que «fuerte» de verdad le gana al azar y «débil» honestamente apenas lo hace. Las etiquetas se ganan, no son decorativas, y el registro completo se publica en /cost-index/calibration.json."
+        },
+        {
+          "q": "¿Qué es un pronóstico bien calibrado?",
+          "a": "Uno cuya confianza coincide con sus aciertos: si dice estar 70% seguro, llamadas como esa aciertan cerca del 70% de las veces. Acertar no basta — acertar tan seguido como dijiste, sí. El Índice de costos revisa el suyo en 1,877 llamadas evaluadas: las llamadas de dirección débil, media y fuerte acertaron cerca del 48%, 51% y 58% de las veces, cada nivel ganándose su etiqueta frente a una base de cerca del 50%."
         }
       ]
     },
@@ -3536,6 +3576,10 @@
         {
           "q": "How does the Muntin Cost Index use a historical-ratio bridge?",
           "a": "It's how the index builds a derived reading. When no direct public wholesale series exists for an item, the index bridges from a related public series using a historical ratio that has held steady, and tags the result derived — drawn with a dashed line, a confidence band sized to the relationship's own error, and an estimate badge. A bridge never overrides a directly measured level, and it's re-fit as more overlapping history accumulates."
+        },
+        {
+          "q": "What is cointegration in forecasting?",
+          "a": "Cointegration is when two series move together in a relationship that stays stable over time — the gap between them keeps returning to its average rather than wandering off. The Cost Index uses it as the test for a historical-ratio bridge: it only estimates a missing price from a related series when the two are genuinely cointegrated, not just drifting the same way by coincidence."
         }
       ],
       "es": [
@@ -3550,6 +3594,10 @@
         {
           "q": "¿Cómo usa el Índice de costos Muntin un puente de razón histórica?",
           "a": "Así es como el índice construye una lectura derivada. Cuando no existe una serie mayorista pública directa para un artículo, el índice cruza el puente desde una serie pública relacionada usando una razón histórica que se ha mantenido estable, y marca el resultado como derivado — dibujado con línea punteada, una banda de confianza del tamaño del propio error de la relación, y una insignia de estimación. Un puente nunca anula un nivel medido directamente, y se vuelve a ajustar a medida que se acumula más historia traslapada."
+        },
+        {
+          "q": "¿Qué es la cointegración en los pronósticos?",
+          "a": "La cointegración es cuando dos series se mueven juntas en una relación que se mantiene estable con el tiempo — la brecha entre ellas vuelve a su promedio en vez de alejarse. El Índice de costos la usa como la prueba para un puente de razón histórica: solo estima un precio faltante desde una serie relacionada cuando las dos están genuinamente cointegradas, no solo derivando igual por coincidencia."
         }
       ]
     },
@@ -3566,6 +3614,10 @@
         {
           "q": "How does the Muntin Cost Index handle freshness and series rot?",
           "a": "Every value stores its vintage — the date of the reading behind it. A freshness heartbeat reports the oldest reading and turns a persistent stall red on the weekly refresh, and each value is weighed against its source's own cadence, so a print that falls overdue for the rhythm its source normally keeps is marked down in confidence until it refreshes. If a series is discontinued or goes silent, the ingredient becomes absent with the reason — never a silent zero, and never a frozen last value pretending to be current."
+        },
+        {
+          "q": "How do you know if data is out of date?",
+          "a": "Check its vintage — the date of the reading, not just the value — against how often the source normally publishes. A monthly series a month old is fine; one that skipped its release is overdue. The Cost Index stores every value's vintage, weighs it against the source's own cadence, and flags or drops a series that quietly stalls instead of showing a stale number as current."
         }
       ],
       "es": [
@@ -3580,6 +3632,10 @@
         {
           "q": "¿Cómo maneja el Índice de costos Muntin la frescura y la pudrición de series?",
           "a": "Cada valor guarda su añada — la fecha de la lectura detrás de él. Un latido de frescura reporta la lectura más vieja y pone en rojo un estancamiento persistente en el refresco semanal, y cada valor se sopesa contra la propia cadencia de su fuente, así que una lectura que se vence para el ritmo que su fuente suele mantener baja de confianza hasta que se refresca. Si una serie se discontinúa o se queda muda, el ingrediente pasa a ausente con el motivo — nunca un cero silencioso, y nunca un último valor congelado fingiendo ser actual."
+        },
+        {
+          "q": "¿Cómo sabes si un dato está desactualizado?",
+          "a": "Revisa su versión — la fecha de la lectura, no solo el valor — contra qué tan seguido publica la fuente normalmente. Una serie mensual con un mes de antigüedad está bien; una que se saltó su publicación está vencida. El Índice de costos guarda la versión de cada valor, la sopesa contra la cadencia de la fuente, y marca o descarta una serie que se estanca en silencio en vez de mostrar un número viejo como actual."
         }
       ]
     },
@@ -3596,6 +3652,10 @@
         {
           "q": "How does a signal earn a place in the overlay?",
           "a": "It has to prove itself first. A signal only joins the overlay once its own live track record clears a hold-until-proven bar — a minimum number of calls, a minimum hit rate, and enough non-steady calls to be meaningful — and the recomputed direction has to match what is shown. A rule that has not earned its record yet does not get to speak, so the overlay is forward-looking without being a guess."
+        },
+        {
+          "q": "What is a leading indicator example?",
+          "a": "Diesel is the clearest one for restaurant cost. It moves before freight, and freight is part of your delivered cost, so a sustained climb in diesel tends to show up on invoices weeks later. The Cost Index reads it as a direction of pressure — a heads-up that delivered cost is leaning up — never as a price, and only after the signal proves out."
         }
       ],
       "es": [
@@ -3610,6 +3670,10 @@
         {
           "q": "¿Cómo gana una señal su lugar en la capa?",
           "a": "Primero tiene que comprobarse. Una señal solo se suma a la capa cuando su propio historial real supera un umbral de comprobación — un mínimo de llamadas, una tasa mínima de aciertos y suficientes llamadas no estables para ser significativas — y la dirección recalculada tiene que coincidir con lo que se muestra. Una regla que aún no se ha ganado su historial no puede hablar, así que la capa mira hacia adelante sin ser una suposición."
+        },
+        {
+          "q": "¿Cuál es un ejemplo de indicador adelantado?",
+          "a": "El diésel es el más claro para el costo de un restaurante. Se mueve antes que el flete, y el flete es parte de tu costo entregado, así que una subida sostenida del diésel suele aparecer en las facturas semanas después. El Índice de costos lo lee como una dirección de presión — un aviso de que el costo entregado se inclina hacia arriba — nunca como un precio, y solo después de que la señal se comprueba."
         }
       ]
     },
@@ -3626,6 +3690,10 @@
         {
           "q": "How does the Muntin Cost Index handle revisions?",
           "a": "The Cost Index follows a stated revision-and-correction policy. When an upstream series is revised, the next refresh re-vendors the new value with a fresh vintage date and the prior value stays recoverable in version control — the change is logged in an append-only revisions audit trail, never silently overwritten. A discovered error is corrected at the source and noted in the change log, and a discontinued series turns the ingredient absent with the reason rather than being frozen at a stale last value."
+        },
+        {
+          "q": "What is a data vintage?",
+          "a": "A vintage is which version of a number you are looking at — the release it came from and the date it carried. Last month's preliminary figure and this month's revised figure for the same period are two vintages of one number. Recording it lets you reconstruct what was known at the time instead of quietly overwriting the old value with the new one."
         }
       ],
       "es": [
@@ -3640,6 +3708,10 @@
         {
           "q": "¿Cómo maneja las revisiones el Índice de costos Muntin?",
           "a": "El Índice de costos sigue una política declarada de revisión y corrección. Cuando una serie de origen se revisa, el siguiente refresco vuelve a cargar el nuevo valor con una fecha de versión fresca y el valor anterior queda recuperable en el control de versiones — el cambio se registra en un historial de auditoría de revisiones de solo anexado, nunca se sobrescribe en silencio. Un error descubierto se corrige en la fuente y se anota en el registro de cambios, y una serie discontinuada vuelve al ingrediente ausente con la razón en vez de congelarlo en un último valor obsoleto."
+        },
+        {
+          "q": "¿Qué es la versión (vintage) de un dato?",
+          "a": "Una versión es cuál edición de un número estás viendo — la publicación de la que vino y la fecha que cargaba. La cifra preliminar del mes pasado y la cifra revisada de este mes para el mismo periodo son dos versiones de un mismo número. Registrarla permite reconstruir qué se sabía en su momento en vez de sobrescribir en silencio el valor viejo con el nuevo."
         }
       ]
     },
@@ -3656,6 +3728,10 @@
         {
           "q": "Is the Muntin Cost Index an assessed benchmark?",
           "a": "No, and that is on purpose. The Cost Index is built only from public, free, transaction-based government data — USDA and BLS — so anyone can re-pull the same inputs and reach the same reading. It does not interview the market or publish a judged figure. It is not trying to out-quote an assessed benchmark on daily granularity; it is offering a number you can check rather than one you have to trust."
+        },
+        {
+          "q": "Assessed price vs transaction price — what is the difference?",
+          "a": "A transaction price is what actually changed hands in a reported deal; an assessed price is one number an editor judges from many such deals and conversations. Government series like USDA Market News publish transaction-based prices anyone can re-check; an assessed benchmark adds editorial judgment, usually behind a paywall. The Cost Index is built only from the transaction-based public kind."
         }
       ],
       "es": [
@@ -3670,6 +3746,10 @@
         {
           "q": "¿El Índice de costos Muntin es un referente evaluado?",
           "a": "No, y es a propósito. El Índice de costos se construye solo con datos públicos, gratuitos y basados en transacciones del gobierno — USDA y BLS — así que cualquiera puede volver a descargar las mismas entradas y llegar a la misma lectura. No entrevista al mercado ni publica una cifra a criterio. No intenta superar a un referente evaluado en detalle diario; ofrece un número que puedes verificar en vez de uno en el que tienes que confiar."
+        },
+        {
+          "q": "Precio evaluado vs. precio de transacción — ¿cuál es la diferencia?",
+          "a": "Un precio de transacción es lo que de verdad cambió de manos en una operación reportada; un precio evaluado es un número que un editor fija a criterio a partir de muchas operaciones y conversaciones. Series del gobierno como USDA Market News publican precios basados en transacciones que cualquiera puede verificar; un referente evaluado añade juicio editorial, normalmente tras un muro de pago. El Índice de costos se construye solo con el tipo público basado en transacciones."
         }
       ]
     }

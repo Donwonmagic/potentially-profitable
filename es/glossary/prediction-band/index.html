@@ -80,7 +80,6 @@
   ]
 }
 </script>
-
 <!-- glossary-faq-schema:start -->
 <script type="application/ld+json">
 {
@@ -113,6 +112,14 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "El Índice de costos publica sus pronósticos derivados como una banda con meta de 80% de cobertura, hecha con un método conformal split/EnbPI que se ensancha mediante inferencia conformal adaptativa hasta que aguanta. Caminando hacia adelante a través de 84 ingredientes y 5,929 pasos evaluados, la banda de hecho contuvo el siguiente dato cerca del 84% de las veces — un poco más que la meta de 80%. Cubrir un poco más seguido de lo prometido es el lado honesto del error: el índice prefiere que lo agarren siendo un poco cauteloso de más que siendo demasiado confiado."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Banda de predicción vs. intervalo de confianza — ¿cuál es la diferencia?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Responden la misma pregunta — ¿por cuánto podría errar esto? — pero arman el rango de distinta forma. Un intervalo de confianza clásico asume una distribución; una banda de predicción conformal, la que usa el Índice de costos, fija su ancho a partir de los propios errores pasados del método. Por eso puede prometer una tasa de cobertura (80%) y luego verificarla hacia adelante (cerca del 84%)."
           }
         }
       ]
@@ -284,6 +291,10 @@
         <div class="term-faq__item">
           <h3 class="term-faq__q">¿Cómo usa el Índice de costos Muntin una banda de predicción?</h3>
           <p class="term-faq__a">El Índice de costos publica sus pronósticos derivados como una banda con meta de 80% de cobertura, hecha con un método conformal split/EnbPI que se ensancha mediante inferencia conformal adaptativa hasta que aguanta. Caminando hacia adelante a través de 84 ingredientes y 5,929 pasos evaluados, la banda de hecho contuvo el siguiente dato cerca del 84% de las veces — un poco más que la meta de 80%. Cubrir un poco más seguido de lo prometido es el lado honesto del error: el índice prefiere que lo agarren siendo un poco cauteloso de más que siendo demasiado confiado.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">Banda de predicción vs. intervalo de confianza — ¿cuál es la diferencia?</h3>
+          <p class="term-faq__a">Responden la misma pregunta — ¿por cuánto podría errar esto? — pero arman el rango de distinta forma. Un intervalo de confianza clásico asume una distribución; una banda de predicción conformal, la que usa el Índice de costos, fija su ancho a partir de los propios errores pasados del método. Por eso puede prometer una tasa de cobertura (80%) y luego verificarla hacia adelante (cerca del 84%).</p>
         </div>
       </section>
       <!-- glossary-faq:end -->

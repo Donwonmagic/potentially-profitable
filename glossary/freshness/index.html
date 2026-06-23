@@ -80,7 +80,6 @@
   ]
 }
 </script>
-
 <!-- glossary-faq-schema:start -->
 <script type="application/ld+json">
 {
@@ -113,6 +112,14 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "Every value stores its vintage — the date of the reading behind it. A freshness heartbeat reports the oldest reading and turns a persistent stall red on the weekly refresh, and each value is weighed against its source's own cadence, so a print that falls overdue for the rhythm its source normally keeps is marked down in confidence until it refreshes. If a series is discontinued or goes silent, the ingredient becomes absent with the reason — never a silent zero, and never a frozen last value pretending to be current."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do you know if data is out of date?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Check its vintage — the date of the reading, not just the value — against how often the source normally publishes. A monthly series a month old is fine; one that skipped its release is overdue. The Cost Index stores every value's vintage, weighs it against the source's own cadence, and flags or drops a series that quietly stalls instead of showing a stale number as current."
           }
         }
       ]
@@ -280,6 +287,10 @@
         <div class="term-faq__item">
           <h3 class="term-faq__q">How does the Muntin Cost Index handle freshness and series rot?</h3>
           <p class="term-faq__a">Every value stores its vintage — the date of the reading behind it. A freshness heartbeat reports the oldest reading and turns a persistent stall red on the weekly refresh, and each value is weighed against its source's own cadence, so a print that falls overdue for the rhythm its source normally keeps is marked down in confidence until it refreshes. If a series is discontinued or goes silent, the ingredient becomes absent with the reason — never a silent zero, and never a frozen last value pretending to be current.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">How do you know if data is out of date?</h3>
+          <p class="term-faq__a">Check its vintage — the date of the reading, not just the value — against how often the source normally publishes. A monthly series a month old is fine; one that skipped its release is overdue. The Cost Index stores every value's vintage, weighs it against the source's own cadence, and flags or drops a series that quietly stalls instead of showing a stale number as current.</p>
         </div>
       </section>
       <!-- glossary-faq:end -->

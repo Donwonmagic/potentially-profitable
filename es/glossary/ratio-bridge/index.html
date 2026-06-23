@@ -80,7 +80,6 @@
   ]
 }
 </script>
-
 <!-- glossary-faq-schema:start -->
 <script type="application/ld+json">
 {
@@ -113,6 +112,14 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "Así es como el índice construye una lectura derivada. Cuando no existe una serie mayorista pública directa para un artículo, el índice cruza el puente desde una serie pública relacionada usando una razón histórica que se ha mantenido estable, y marca el resultado como derivado — dibujado con línea punteada, una banda de confianza del tamaño del propio error de la relación, y una insignia de estimación. Un puente nunca anula un nivel medido directamente, y se vuelve a ajustar a medida que se acumula más historia traslapada."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué es la cointegración en los pronósticos?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "La cointegración es cuando dos series se mueven juntas en una relación que se mantiene estable con el tiempo — la brecha entre ellas vuelve a su promedio en vez de alejarse. El Índice de costos la usa como la prueba para un puente de razón histórica: solo estima un precio faltante desde una serie relacionada cuando las dos están genuinamente cointegradas, no solo derivando igual por coincidencia."
           }
         }
       ]
@@ -280,6 +287,10 @@
         <div class="term-faq__item">
           <h3 class="term-faq__q">¿Cómo usa el Índice de costos Muntin un puente de razón histórica?</h3>
           <p class="term-faq__a">Así es como el índice construye una lectura derivada. Cuando no existe una serie mayorista pública directa para un artículo, el índice cruza el puente desde una serie pública relacionada usando una razón histórica que se ha mantenido estable, y marca el resultado como derivado — dibujado con línea punteada, una banda de confianza del tamaño del propio error de la relación, y una insignia de estimación. Un puente nunca anula un nivel medido directamente, y se vuelve a ajustar a medida que se acumula más historia traslapada.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">¿Qué es la cointegración en los pronósticos?</h3>
+          <p class="term-faq__a">La cointegración es cuando dos series se mueven juntas en una relación que se mantiene estable con el tiempo — la brecha entre ellas vuelve a su promedio en vez de alejarse. El Índice de costos la usa como la prueba para un puente de razón histórica: solo estima un precio faltante desde una serie relacionada cuando las dos están genuinamente cointegradas, no solo derivando igual por coincidencia.</p>
         </div>
       </section>
       <!-- glossary-faq:end -->

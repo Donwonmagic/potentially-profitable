@@ -80,7 +80,6 @@
   ]
 }
 </script>
-
 <!-- glossary-faq-schema:start -->
 <script type="application/ld+json">
 {
@@ -113,6 +112,14 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "The Cost Index publishes its derived forecasts as a band targeting 80% coverage, built with a split/EnbPI conformal method that is widened by adaptive conformal inference until it holds. Walked forward across 84 ingredients and 5,929 scored steps, the band actually contained the next print about 84% of the time — slightly more than the 80% target. Covering a touch more often than promised is the honest direction to err: the index would rather be caught being a little too cautious than caught being overconfident."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Prediction band vs confidence interval — what's the difference?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "They answer the same question — how much could this be off? — but build the range differently. A classic confidence interval assumes a distribution; a conformal prediction band, the kind the Cost Index uses, sets its width from the method's own past misses instead. That is why it can promise a coverage rate (80%) and then verify it walking forward (about 84%)."
           }
         }
       ]
@@ -284,6 +291,10 @@
         <div class="term-faq__item">
           <h3 class="term-faq__q">How does the Muntin Cost Index use a prediction band?</h3>
           <p class="term-faq__a">The Cost Index publishes its derived forecasts as a band targeting 80% coverage, built with a split/EnbPI conformal method that is widened by adaptive conformal inference until it holds. Walked forward across 84 ingredients and 5,929 scored steps, the band actually contained the next print about 84% of the time — slightly more than the 80% target. Covering a touch more often than promised is the honest direction to err: the index would rather be caught being a little too cautious than caught being overconfident.</p>
+        </div>
+        <div class="term-faq__item">
+          <h3 class="term-faq__q">Prediction band vs confidence interval — what's the difference?</h3>
+          <p class="term-faq__a">They answer the same question — how much could this be off? — but build the range differently. A classic confidence interval assumes a distribution; a conformal prediction band, the kind the Cost Index uses, sets its width from the method's own past misses instead. That is why it can promise a coverage rate (80%) and then verify it walking forward (about 84%).</p>
         </div>
       </section>
       <!-- glossary-faq:end -->
