@@ -46,7 +46,7 @@
       "url": "https://muntin.digital/library/service-charge-vs-tipping-model/",
       "inLanguage": "en-US",
       "datePublished": "2026-05-11T09:00:00-04:00",
-      "dateModified": "2026-06-10",
+      "dateModified": "2026-06-20",
       "author": {
         "@id": "https://muntin.digital/#muntin-desk",
         "@type": "Organization",
@@ -613,27 +613,36 @@ main{padding-top:64px}
       <p><strong>&ldquo;Is the 20% service charge a tip?&rdquo;</strong> No. A tip is a voluntary gratuity that flows directly to the server under federal and DC tip-credit rules. A service charge is restaurant revenue, distributed by the operator to FOH and BOH under a posted policy, subject to ordinary income tax and payroll treatment. The DC Office of Wage-Hour and the IRS both treat the two differently &mdash; that distinction is the entire compliance argument for the service charge.</p>
     </div>
 
-    <p>Setting perception aside, the question every server asks me is the one operators don&rsquo;t want to answer directly: what do I walk out with at the end of a five-hour service on a check like this? Here is the take-home, the same $200 dinner check, three models, dollars on the bar.</p>
+    <p>Setting perception aside, the question every server asks me is the one operators don&rsquo;t want to answer directly: what do I walk out with at the end of a five-hour service on a check like this? Here is the take-home, the same $200 dinner check, three models, dollars in a table.</p>
 
-    <figure class="viz-figure article-figure" data-audio-alt="Front-of-house take-home per server on the same two-hundred-dollar dinner check, three models. Model one, traditional tipping: thirty-two dollars, all variable, all tip. Model two, twenty percent service charge: twenty-six dollars, a sixty-five percent FOH share of a forty-dollar service charge. Model three, hybrid with five percent menu lift: thirty-five dollars, twenty-five from the higher posted hourly and ten from voluntary tips at a five percent average. The hybrid pays the server most on a single check; the service charge pays the server most consistently across slow nights.">
-      <div class="viz-bars">
-        <p class="viz-bars__title">Front-of-house take-home per server, same $200 check</p>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">Traditional tipping (tip-pool 20%)</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.914"></span></div>
-          <p class="viz-bars__num">$32 server take-home</p>
-        </div>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">20% service charge (65% FOH share)</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.743"></span></div>
-          <p class="viz-bars__num">$26 server take-home</p>
-        </div>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">Hybrid (5% menu lift + ~5% voluntary tip)</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:1.0"></span></div>
-          <p class="viz-bars__num">$35 server take-home</p>
-        </div>
-      </div>
+    <figure class="viz-figure" data-figure-kind="table" data-tone="rust" data-audio-alt="Front-of-house take-home per server on the same two-hundred-dollar dinner check, shown as a table, three models. Traditional tipping: thirty-two dollars, all variable, all tip. Twenty percent service charge: twenty-six dollars, a sixty-five percent FOH share of a forty-dollar service charge. Hybrid with a five percent menu lift: thirty-five dollars, twenty-five from the higher posted hourly plus ten from voluntary tips at a five percent average. The hybrid pays the server most on a single check; the service charge pays the server most consistently across slow nights. These figures are illustrative on the one check.">
+      <table class="viz-table">
+        <caption>Front-of-house take-home per server, same $200 check (illustrative)</caption>
+        <thead>
+          <tr>
+            <th scope="col">Model</th>
+            <th scope="col" class="num">Server take-home</th>
+            <th scope="col">How it&rsquo;s built</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Traditional tipping (tip-pool 20%)</th>
+            <td class="num">$32</td>
+            <td>All variable, all tip</td>
+          </tr>
+          <tr>
+            <th scope="row">20% service charge (65% FOH share)</th>
+            <td class="num">$26</td>
+            <td>65% FOH share of a $40 service charge</td>
+          </tr>
+          <tr data-tone="rust">
+            <th scope="row">Hybrid (5% menu lift + ~5% voluntary tip)</th>
+            <td class="num">$35</td>
+            <td>$25 higher posted hourly + $10 voluntary tips</td>
+          </tr>
+        </tbody>
+      </table>
       <figcaption>The hybrid pays most on a busy night. The service charge pays most consistently across a slow Tuesday. Traditional tipping is the middle, with the widest variance.</figcaption>
     </figure>
 

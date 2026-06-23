@@ -166,6 +166,11 @@ const CHECKS = [
   // (the ref still resolves) and og-coverage (not a generic fallback).
   // Asserts each ES card is locale:"es" and mirrors its EN sibling's focus.
   ['OG locale parity',    'check-og-locale-parity.mjs',    '--check'],
+  // OG accent whitelist — every card's `accent` must be a PALETTE key
+  // the builder can resolve (derived from build-og-cards.mjs, so the
+  // whitelist can't drift). An unknown accent resolves to undefined and
+  // ships a wrong-colored share image with no error; this fails-CI on it.
+  ['OG accents',          'check-og-accents.mjs'],
   // SEO hygiene — meta-description length. Google truncates the SERP
   // snippet ~155 chars; over-length descriptions leak their tail (CTA +
   // long-tail keyword) and cost CTR. Now fail-CI: the over-length

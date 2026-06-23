@@ -44,7 +44,7 @@
       "url": "https://muntin.digital/es/library/cargos-por-servicio-vs-propina-cuentas-para-operador-restaurante-2026/",
       "inLanguage": "es-ES",
       "datePublished": "2026-05-11T09:00:00-04:00",
-      "dateModified": "2026-05-28",
+      "dateModified": "2026-06-20",
       "author": {
         "@id": "https://muntin.digital/#muntin-desk",
         "@type": "Organization",
@@ -462,27 +462,36 @@ main{padding-top:64px}
       <p><strong>&ldquo;¿El cargo por servicio del 20% es una propina?&rdquo;</strong> No. Una propina es una gratificación voluntaria que fluye directo al mesero bajo las reglas federales y de DC de crédito de propina. Un cargo por servicio es ingreso del restaurante, distribuido por el operador al frente de casa y a la cocina bajo una política posteada, sujeto a impuesto sobre la renta ordinario y tratamiento de nómina. La Oficina de Salarios y Horas de DC y el IRS tratan los dos distinto &mdash; esa distinción es el argumento completo de cumplimiento para el cargo por servicio.</p>
     </div>
 
-    <p>Dejando la percepción de lado, la pregunta que todo mesero me hace es la que los operadores no quieren contestar directo: ¿qué me llevo al final de un servicio de cinco horas con una cuenta así? Aquí está lo que se lleva el servidor, la misma cuenta de cena de $200, tres modelos, dólares sobre la barra.</p>
+    <p>Dejando la percepción de lado, la pregunta que todo mesero me hace es la que los operadores no quieren contestar directo: ¿qué me llevo al final de un servicio de cinco horas con una cuenta así? Aquí está lo que se lleva el servidor, la misma cuenta de cena de $200, tres modelos, dólares en una tabla.</p>
 
-    <figure class="viz-figure article-figure" data-audio-alt="Lo que se lleva el servidor del frente de casa por mesero en la misma cuenta de doscientos dólares, tres modelos. Modelo uno, propina tradicional: treinta y dos dólares, todo variable, todo propina. Modelo dos, cargo por servicio del veinte por ciento: veintiséis dólares, una participación del sesenta y cinco por ciento del frente de casa sobre un cargo de cuarenta dólares. Modelo tres, híbrido con alza de menú del cinco por ciento: treinta y cinco dólares, veinticinco de la hora publicada más alta y diez de propinas voluntarias a un cinco por ciento promedio. El híbrido le paga al mesero más en una sola cuenta; el cargo por servicio le paga al mesero más consistentemente entre noches lentas.">
-      <div class="viz-bars">
-        <p class="viz-bars__title">Lo que se lleva el servidor del frente de casa por mesero, misma cuenta de $200</p>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">Propina tradicional (pool de propina al 20%)</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.914"></span></div>
-          <p class="viz-bars__num">$32 lo que se lleva el mesero</p>
-        </div>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">Cargo por servicio del 20% (participación FOH del 65%)</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.743"></span></div>
-          <p class="viz-bars__num">$26 lo que se lleva el mesero</p>
-        </div>
-        <div class="viz-bars__row">
-          <p class="viz-bars__label">Híbrido (5% alza menú + ~5% propina voluntaria)</p>
-          <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:1.0"></span></div>
-          <p class="viz-bars__num">$35 lo que se lleva el mesero</p>
-        </div>
-      </div>
+    <figure class="viz-figure" data-figure-kind="table" data-tone="rust" data-audio-alt="Lo que se lleva el servidor del frente de casa por mesero en la misma cuenta de doscientos dólares, presentado como una tabla, tres modelos. Propina tradicional: treinta y dos dólares, todo variable, todo propina. Cargo por servicio del veinte por ciento: veintiséis dólares, una participación del sesenta y cinco por ciento del frente de casa sobre un cargo de cuarenta dólares. Híbrido con alza de menú del cinco por ciento: treinta y cinco dólares, veinticinco de la hora publicada más alta más diez de propinas voluntarias a un cinco por ciento promedio. El híbrido le paga al mesero más en una sola cuenta; el cargo por servicio le paga al mesero más consistentemente entre noches lentas. Estas cifras son ilustrativas sobre la misma cuenta.">
+      <table class="viz-table">
+        <caption>Lo que se lleva el mesero del frente de casa, misma cuenta de $200 (ilustrativo)</caption>
+        <thead>
+          <tr>
+            <th scope="col">Modelo</th>
+            <th scope="col" class="num">Lo que se lleva el mesero</th>
+            <th scope="col">De dónde sale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Propina tradicional (pool de propina al 20%)</th>
+            <td class="num">$32</td>
+            <td>Todo variable, todo propina</td>
+          </tr>
+          <tr>
+            <th scope="row">Cargo por servicio del 20% (participación FOH del 65%)</th>
+            <td class="num">$26</td>
+            <td>65% del frente de casa sobre un cargo de $40</td>
+          </tr>
+          <tr data-tone="rust">
+            <th scope="row">Híbrido (5% alza menú + ~5% propina voluntaria)</th>
+            <td class="num">$35</td>
+            <td>$25 de hora publicada más alta + $10 de propinas voluntarias</td>
+          </tr>
+        </tbody>
+      </table>
       <figcaption>El híbrido paga más en una noche ocupada. El cargo por servicio paga más consistentemente en un martes lento. La propina tradicional es el medio, con la variancia más amplia.</figcaption>
     </figure>
 

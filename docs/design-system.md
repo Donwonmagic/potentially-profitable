@@ -351,89 +351,11 @@ the `<!-- LIBRARY:tool-deep-links -->` block at the page bottom:
   schema-check, speed-test, tech-stack) once the pattern is
   reviewed.
 
-## OG cards (Sprint 8 — locked)
+## OG cards
 
-> **⚠ Superseded (2026-06-07).** The palette in this section is **stale** — it
-> describes the retired warm scheme (`#FAF7F2` cream, `#1F4E5B` teal, gold accent).
-> The OG system migrated to the **cool slate/blue spine + the Golden Hour editorial
-> accent** in Wave 8b; the live truth is `scripts/build-og-cards.mjs` and the current
-> guideline **`docs/brand/visual-system.md`**. The structural rules below (kinds,
-> coverage, manifest schema, build sequence) remain accurate. The rest of this doc's
-> core token table is current.
-
-Every shared link should look like it came from one publication.
-The OG card system is spec-driven: `brand/og/cards.json` is the
-manifest, `scripts/build-og-cards.mjs` renders SVGs from four
-kind-templates, `scripts/render-og-pngs.py` rasterises them at 2×.
-
-**The four kinds** — every card belongs to exactly one:
-
-| `kind` | Used for | Background | Accent rule |
-|---|---|---|---|
-| `page`     | Catalog / hub pages (homepage, /tools/, /learn/, /system/, /about/, /work/, glossary index, topic pages) | Cream `#FAF7F2` | Per-page choice (teal/rust/gold/ink) |
-| `article`  | Blog posts (`/blog/*`) | Cream `#FAF7F2` | Topic accent (typically teal or rust) |
-| `research` | Research notes (`/learn/research/*`) | Cream `#FAF7F2` | Rust |
-| `tool`     | Tool pages (`/tools/*`) | Teal `#1F4E5B` (dark) | Gold |
-
-**Shared chrome on every kind**:
-
-- 1200×630 viewBox, rendered at 2× (2400×1260 PNG)
-- Subtle muntin-pattern background field (3–5% opacity)
-- 12px-wide left accent rule (full-height, with a fade past the
-  midpoint)
-- Subject-cue glyph in the upper-left (single SVG, brand-styled)
-- Eyebrow line in tracked Inter 700 (uppercase, 13px, accent color)
-- Three-line headline in Fraunces — typically `title_1` / italic
-  `title_italic` / `title_2`
-- Inter 20px dek (1–2 lines)
-- "muntin.digital" wordmark in the lower-right corner
-
-**One-card-per-X coverage rule**:
-
-- Every blog post: its own per-post card (no fallback to blog.png)
-- Every tool page: its own per-tool card (no fallback to tool.png)
-- Every research note: its own card
-- Every topic page: a topic-`{slug}`.png card
-- Catalog / hub pages: their own card
-- **Glossary terms** (Sprint 17): every term page has its own
-  `glossary-<slug>(-es).png` card auto-generated from the term's
-  HTML (name + AKA + first sentence of definition + topic accent).
-  Built via `scripts/seed-glossary-og.mjs` (manifest seed) +
-  `scripts/build-og-cards.mjs` (SVG + PNG render) +
-  `scripts/inject-glossary-og.mjs` (HTML meta update). Adding a
-  new term: write the page, run the three scripts in sequence.
-  The category index pages (`/glossary/basics/`, `/glossary/mobile/`,
-  etc.) still share `glossary.png` — they're catalog views, not
-  term entries.
-- All EN cards have an ES counterpart with the `-es` slug suffix.
-
-**Adding a new card**:
-
-1. Add an entry to `brand/og/cards.json` following the schema in
-   the file header (`slug` + `kind` + `locale` + `accent` + `glyph` +
-   `eyebrow` + `title_1` + `title_italic` + `title_2` + `dek` +
-   optional `focus` module).
-2. Pick the `kind` from the table above. Don't invent a new one —
-   if no kind fits, the page probably belongs in `page`.
-3. Pick the `accent` from the per-accent rule documented in the
-   manifest's `_comment` (speed/mobile=teal, conversions=rust,
-   margin/operations=gold, etc.).
-4. Run `node scripts/build-og-cards.mjs <slug>` to render one card
-   for review, or `node scripts/build-og-cards.mjs` to rebuild all.
-5. The HTML page's `og:image` and `twitter:image` meta tags must
-   point at `/brand/og/<slug>.png` (PNG, not SVG). The card's
-   1200×630 dimensions are declared in the meta tags — never
-   override them.
-
-**Two CI guards keep this honest**:
-
-- `scripts/check-og-images.mjs` — fails if any `og:image` /
-  `twitter:image` reference points at a file that doesn't exist
-  in `brand/og/`. Catches retired slugs and forgotten manifest
-  entries before they ship.
-- `scripts/check-og-coverage.mjs` (Sprint 8) — fails if a blog
-  post / tool / research note / topic falls back to a generic
-  card instead of having its own. Glossary terms are exempt.
+See **`docs/brand/visual-system.md`** for the current 2026 visual + OG system.
+The live source of truth for OG cards is `scripts/build-og-cards.mjs` (templates,
+PALETTE, accent whitelist) + `brand/og/cards.json` (the manifest).
 
 ## Drift guard
 
