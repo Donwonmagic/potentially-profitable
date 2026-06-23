@@ -584,6 +584,38 @@
     "bls": {
       "en": "Example: a vendor blames a beef-price hike on “the market,” but the BLS Producer Price Index for that category held flat last month — a public, citable sign the increase may be the vendor’s, not the market’s.",
       "es": "Ejemplo: un proveedor culpa “al mercado” por una subida en el precio de la carne, pero el Índice de Precios al Productor del BLS para esa categoría se mantuvo estable el mes pasado — una señal pública y citable de que el aumento podría ser del proveedor, no del mercado."
+    },
+    "usda-market-news": {
+      "en": "Example: a distributor says romaine is up 30% “because of the market.” You open that day’s USDA terminal-market report for romaine across cities like Atlanta, Boston, Chicago, and Los Angeles. If the reported wholesale prices actually rose, the market did move. If they held flat, the increase is your vendor’s — not the market’s — and you have a dated public report to point to.",
+      "es": "Ejemplo: una distribuidora dice que la lechuga romana subió 30% “por el mercado.” Abres el reporte del mercado terminal del USDA de ese día para la romana en ciudades como Atlanta, Boston, Chicago y Los Ángeles. Si los precios mayoristas reportados de verdad subieron, el mercado sí se movió. Si se mantuvieron parejos, el aumento es de tu proveedor — no del mercado — y tienes un reporte público con fecha para respaldarte."
+    },
+    "usda-lmr": {
+      "en": "Example: a distributor pushes a beef price increase and blames \"the packers,\" but USDA LMR shows the boxed-beef cutout packers actually charged held flat that week — a public, citable read that the move may be the distributor's, not the market's.",
+      "es": "Ejemplo: una distribuidora impulsa una subida en el precio de la carne y culpa \"a los empacadores,\" pero el USDA LMR muestra que el valor de corte de la res que los empacadores de verdad cobraron se mantuvo estable esa semana — una lectura pública y citable de que el movimiento podría ser de la distribuidora, no del mercado."
+    },
+    "usda-dairy": {
+      "en": "Example: A pizzeria watching its mozzarella and butter costs climb checks the weekly NDPSR; cheddar and butter prices there are flat, which tells the owner the increase is coming from the distributor's markup or freight, not the underlying commodity.",
+      "es": "Ejemplo: Una pizzería que ve subir su costo de mozzarella y mantequilla revisa el NDPSR semanal; allí los precios del cheddar y la mantequilla están estables, lo que le dice al dueño que el aumento viene del margen o el flete de la distribuidora, no de la materia prima."
+    },
+    "fred": {
+      "en": "Example: To pull the USDA and BLS food-price series into the Cost Index build automatically, the pipeline reads them through FRED's single open API — one front door — instead of scraping each agency's own download page, while still crediting the agency that actually measured each number.",
+      "es": "Ejemplo: Para incorporar las series de precios de alimentos del USDA y del BLS al Índice de costos de forma automática, el pipeline las lee a través de la única API abierta de FRED — una sola puerta de entrada — en vez de raspar la página de descargas de cada agencia, sin dejar de acreditar a la agencia que de verdad midió cada número."
+    },
+    "eia": {
+      "en": "Example: Your produce vendor adds a 4% fuel surcharge to this week's invoice. You check the EIA weekly diesel price: it has been climbing for a month. The surcharge isn't your vendor inventing a fee — it's freight pressure showing up on the bill, exactly the leading edge the Cost Index reads diesel for. The diesel number explains the surcharge; it doesn't tell you what tomatoes themselves now cost.",
+      "es": "Ejemplo: Tu proveedor de verduras agrega un recargo por combustible del 4% a la factura de esta semana. Revisas el precio semanal del diésel de la EIA: lleva un mes subiendo. El recargo no es una tarifa inventada por tu proveedor — es la presión del flete apareciendo en la cuenta, justo el filo adelantado por el que el Índice de costos lee el diésel. El número del diésel explica el recargo; no te dice cuánto cuestan ahora los tomates en sí."
+    },
+    "noaa-fisheries": {
+      "en": "Example: Your fish supplier says cod is up because \"the catch was light.\" NOAA Fisheries landings can show whether U.S. cod landings actually thinned — but because most restaurant cod is imported and landings reporting lags, treat it as a directional read, not the last word on your delivered price.",
+      "es": "Ejemplo: Tu proveedor de pescado dice que el bacalao subió porque \"la captura fue baja.\" Los desembarques de NOAA Fisheries pueden mostrar si los desembarques de bacalao en el país de verdad bajaron — pero como la mayor parte del bacalao de restaurante es importado y el reporte se retrasa, tómalo como una lectura de tendencia, no como la última palabra sobre tu precio entregado."
+    },
+    "fda": {
+      "en": "Example: A spinach supplier issues an FDA recall mid-service. You pull every affected case from the walk-in, log it, and 86 the dishes that use it — exactly the FDA's job. What you do NOT do is open the Cost Index to learn the recall \"raised the price of spinach.\" The Cost Index never sourced a spinach price from the FDA; that wholesale number comes from USDA, corroborated by BLS. Safety came from the FDA; cost came from somewhere else entirely.",
+      "es": "Ejemplo: Un proveedor de espinaca emite un retiro de la FDA a media operación. Sacas de la cámara fría cada caja afectada, la registras y das de baja los platos que la usan — justo el trabajo de la FDA. Lo que NO haces es abrir el Índice de costos para enterarte de que el retiro \"subió el precio de la espinaca.\" El Índice de costos nunca tomó un precio de espinaca de la FDA; ese número mayorista viene del USDA, corroborado por el BLS. La seguridad vino de la FDA; el costo vino de otra parte por completo."
+    },
+    "cme": {
+      "en": "Example: Your beef vendor points at \"the CME limit-up on cattle\" to justify a mid-week price hike. That's a futures move — a bet on prices months out. The Cost Index ignores the screen and reads the cash side: USDA's wholesale beef reports for what cattle and cutout actually traded at this week, so you can tell a real market move from a vendor's framing.",
+      "es": "Ejemplo: Tu proveedor de carne señala \"el límite al alza de la CME en el ganado\" para justificar un aumento a media semana. Eso es un movimiento de futuros — una apuesta sobre precios dentro de meses. El Índice de costos ignora la pantalla y lee el lado al contado: los reportes mayoristas de res del USDA sobre lo que el ganado y el corte de verdad se negociaron esta semana, para que distingas un movimiento real del mercado del argumento de un proveedor."
     }
   }
 }

@@ -3132,6 +3132,246 @@
           "a": "El Índice de costos usa las series PPI y CPI del BLS como una entrada corroborante — una segunda lectura pública que ayuda a confirmar hacia dónde se mueve el precio de un ingrediente. No es el nivel mayorista principal del índice; ese viene del USDA. Los índices de precios del BLS son mensuales y amplios, así que confirman la dirección de una categoría en vez de fijar el precio de un corte específico en un día específico."
         }
       ]
+    },
+    "usda-market-news": {
+      "en": [
+        {
+          "q": "What is USDA Market News?",
+          "a": "It is a price-reporting service inside the U.S. Department of Agriculture, run by its Agricultural Marketing Service (AMS). USDA reporters gather actual transaction prices from wholesale food markets — terminal markets in big cities and shipping points near the farm — and publish them for produce, poultry, eggs, dairy, grain, and livestock. The reports are public, free, and released on a fixed schedule, usually daily or weekly."
+        },
+        {
+          "q": "Are USDA Market News prices wholesale or retail?",
+          "a": "Wholesale. The reports cover what changes hands between sellers and buyers in the supply chain — at terminal markets and shipping points — not the shelf price a shopper pays. That is exactly why they are useful for checking what a distributor charges a restaurant, which sits much closer to the wholesale level than to retail."
+        },
+        {
+          "q": "How does the Cost Index use USDA Market News?",
+          "a": "It is the Cost Index's primary wholesale level for produce and poultry. For those ingredients the index reads the day's terminal-market reports first, then uses BLS and FRED behind them to confirm which way the price is moving. Every published reading traces back to a specific dated USDA report identifier."
+        }
+      ],
+      "es": [
+        {
+          "q": "¿Qué es USDA Market News?",
+          "a": "Es un servicio de reporte de precios dentro del Departamento de Agricultura de Estados Unidos, a cargo de su Servicio de Mercadeo Agrícola (AMS). Reporteros del USDA reúnen precios reales de transacciones en los mercados mayoristas de alimentos — mercados terminales en las ciudades grandes y puntos de embarque cerca de la finca — y los publican para verduras, pollo, huevo, lácteos, grano y ganado. Los reportes son públicos, gratuitos y salen en un calendario fijo, casi siempre a diario o cada semana."
+        },
+        {
+          "q": "¿Los precios de USDA Market News son mayoristas o de menudeo?",
+          "a": "Mayoristas. Los reportes cubren lo que se negocia entre vendedores y compradores en la cadena de suministro — en mercados terminales y puntos de embarque — no el precio de estante que paga un comprador en la tienda. Por eso sirven para verificar lo que una distribuidora le cobra a un restaurante, que está mucho más cerca del nivel mayorista que del de menudeo."
+        },
+        {
+          "q": "¿Cómo usa el Índice de costos a USDA Market News?",
+          "a": "Es el nivel mayorista principal del Índice de costos para verduras y pollo. Para esos ingredientes el índice lee primero los reportes del mercado terminal del día, y luego usa el BLS y FRED detrás para confirmar hacia dónde se mueve el precio. Cada lectura publicada se rastrea hasta un reporte del USDA con su fecha e identificador."
+        }
+      ]
+    },
+    "usda-lmr": {
+      "en": [
+        {
+          "q": "What is USDA Livestock Mandatory Reporting (LMR)?",
+          "a": "LMR is a USDA program under which meat packers are legally required to report their cattle, hog, and sheep purchase prices — and their boxed-beef and boxed-pork cutout values — to the government. Because nearly every large packer must report, the data is close to a census of the market rather than a survey of a sample, which is what makes it hard to spin. Everything it publishes is public, free, and released on a fixed schedule."
+        },
+        {
+          "q": "Why is mandatory reporting harder to spin than a survey?",
+          "a": "The price comes from a legal filing, not a phone call. The packers buying the cattle and selling the beef are the ones required to report, so no single participant along the chain gets to shade the number to their advantage. A survey samples whoever answers; a mandatory program is close to the whole market by law."
+        },
+        {
+          "q": "How does the Muntin Cost Index use USDA LMR?",
+          "a": "The Cost Index uses USDA LMR as its primary wholesale source for proteins — beef and pork. When a vendor says meat is up, LMR is the public read of what packers actually paid for livestock and charged for the cutout, so the index can show the real wholesale level rather than taking the vendor's word for it."
+        }
+      ],
+      "es": [
+        {
+          "q": "¿Qué es el Reporte Obligatorio de Ganado del USDA (LMR)?",
+          "a": "El LMR es un programa del USDA que obliga por ley a los empacadores de carne a reportar lo que pagan por ganado, cerdos y ovejas — y los valores de corte de la res y del cerdo en caja — al gobierno. Como casi todo empacador grande tiene que reportar, los datos quedan cerca de un censo del mercado y no de una encuesta a una muestra, que es lo que los hace difíciles de manipular. Todo lo que publica es público, gratuito y sale en un calendario fijo."
+        },
+        {
+          "q": "¿Por qué un reporte obligatorio es más difícil de manipular que una encuesta?",
+          "a": "El precio sale de un reporte legal, no de una llamada. Los empacadores que compran el ganado y venden la carne son los que están obligados a reportar, así que ningún participante de la cadena puede inclinar el número a su favor. Una encuesta toma a quien responde; un programa obligatorio cubre casi todo el mercado por ley."
+        },
+        {
+          "q": "¿Cómo usa el Índice de costos Muntin el USDA LMR?",
+          "a": "El Índice de costos usa el USDA LMR como su fuente mayorista principal para proteínas — res y cerdo. Cuando un proveedor dice que la carne subió, el LMR es la lectura pública de lo que los empacadores de verdad pagaron por el ganado y cobraron por el corte, así que el índice puede mostrar el nivel mayorista real en vez de creerle al proveedor."
+        }
+      ]
+    },
+    "usda-dairy": {
+      "en": [
+        {
+          "q": "What is the USDA Dairy Product Sales Report?",
+          "a": "It's a weekly U.S. federal survey, run by USDA's Agricultural Marketing Service, that collects actual sales prices and volumes for a handful of benchmark commodity dairy products: butter, cheddar cheese, dry whey, and nonfat dry milk. It's public, free, and published on a fixed weekly schedule. The Cost Index uses it as the wholesale source for dairy."
+        },
+        {
+          "q": "Which products does NDPSR cover?",
+          "a": "A deliberately small set of benchmark commodity dairy products — butter, cheddar cheese, dry whey, and nonfat dry milk. It isn't a price for every cheese or every cut of dairy; it's the commodity layer underneath them, which is exactly why it works as a clean wholesale reference."
+        },
+        {
+          "q": "Why does NDPSR matter for a restaurant's costs?",
+          "a": "It's the closest thing to a public, transaction-based price for commodity dairy — what was actually bought and sold that week, not an opinion or a phoned-in quote. When your butter or cheese cost moves, NDPSR shows whether the commodity behind it moved too, or whether the change is happening between the plant and your invoice. Its prices also underpin the federal milk pricing system, so they shape dairy costs broadly."
+        }
+      ],
+      "es": [
+        {
+          "q": "¿Qué es el Reporte de Ventas de Productos Lácteos del USDA?",
+          "a": "Es una encuesta federal semanal de Estados Unidos, a cargo del Servicio de Comercialización Agrícola (AMS) del USDA, que recopila precios y volúmenes reales de venta de un puñado de lácteos básicos de referencia: mantequilla, queso cheddar, suero seco y leche descremada en polvo. Es pública, gratuita y se publica en un calendario semanal fijo. El Índice de costos la usa como su fuente mayorista para lácteos."
+        },
+        {
+          "q": "¿Qué productos cubre el NDPSR?",
+          "a": "Un conjunto deliberadamente pequeño de lácteos básicos de referencia — mantequilla, queso cheddar, suero seco y leche descremada en polvo. No es un precio para cada queso ni para cada presentación láctea; es la capa de materia prima que está debajo de ellos, y por eso funciona como una referencia mayorista limpia."
+        },
+        {
+          "q": "¿Por qué le importa el NDPSR al costo de un restaurante?",
+          "a": "Es lo más cercano a un precio público y basado en transacciones para los lácteos básicos — lo que de verdad se compró y se vendió esa semana, no una opinión ni una cotización dada por teléfono. Cuando tu costo de mantequilla o queso se mueve, el NDPSR muestra si la materia prima detrás también se movió, o si el cambio ocurre entre la planta y tu factura. Sus precios además sostienen el sistema federal de fijación de precios de la leche, así que moldean el costo de los lácteos en general."
+        }
+      ]
+    },
+    "fred": {
+      "en": [
+        {
+          "q": "What is FRED?",
+          "a": "FRED (Federal Reserve Economic Data) is a free public database run by the Federal Reserve Bank of St. Louis. It gathers hundreds of thousands of economic time series from many original producers — the BLS, the Census Bureau, the USDA, and others — into one searchable interface and a single open API. FRED distributes the data; it does not measure prices itself."
+        },
+        {
+          "q": "Does FRED produce its own price data?",
+          "a": "No. FRED is a distributor, not a producer. The price and cost series you find there are measured by other agencies — a food price index is the BLS's work, a wholesale figure may trace to the USDA — and FRED simply re-serves them behind one clean interface. When you cite a number from FRED, the original measuring agency is who actually produced it."
+        },
+        {
+          "q": "How does the Cost Index use FRED?",
+          "a": "The Cost Index uses FRED to pull certain public series programmatically — one open API instead of chasing each agency's own download page — which keeps the build reproducible. FRED is used as a convenient delivery channel for public data; the authoritative wholesale level still comes from USDA reports, with BLS series as a directional check."
+        }
+      ],
+      "es": [
+        {
+          "q": "¿Qué es FRED?",
+          "a": "FRED (Datos Económicos de la Reserva Federal) es una base de datos pública y gratuita del Banco de la Reserva Federal de St. Louis. Reúne cientos de miles de series económicas de muchos productores originales — el BLS, la Oficina del Censo, el USDA y otros — en una sola interfaz con buscador y una única API abierta. FRED distribuye los datos; no mide precios por sí mismo."
+        },
+        {
+          "q": "¿FRED produce sus propios datos de precios?",
+          "a": "No. FRED es un distribuidor, no un productor. Las series de precios y costos que encuentras ahí las miden otras agencias — un índice de precios de alimentos es trabajo del BLS, una cifra mayorista puede venir del USDA — y FRED simplemente las re-sirve tras una sola interfaz. Cuando citas un número de FRED, quien lo produjo es la agencia que lo mide de origen."
+        },
+        {
+          "q": "¿Cómo usa FRED el Índice de costos?",
+          "a": "El Índice de costos usa FRED para extraer ciertas series públicas de forma programática — una sola API abierta en vez de rastrear la página de descargas de cada agencia — lo que mantiene reproducible la construcción. FRED se usa como un canal de entrega cómodo para datos públicos; el nivel mayorista de referencia sigue viniendo de los reportes del USDA, con las series del BLS como verificación de dirección."
+        }
+      ]
+    },
+    "eia": {
+      "en": [
+        {
+          "q": "Is the EIA diesel price a food price?",
+          "a": "No. EIA publishes energy prices, not food prices. The Cost Index reads its weekly retail diesel series as a freight-cost pressure signal — when diesel climbs, delivery surcharges and freight-in costs tend to follow. It points to which way delivered cost is leaning; it is never the price of the food itself."
+        },
+        {
+          "q": "How does the Cost Index use EIA diesel?",
+          "a": "Only in its leading-indicator pressure overlay. Diesel feeds an inferred direction on delivered cost — published with a direction but no dollar figure, and only once that rule's live track record clears a hold-until-proven bar. It corroborates freight pressure; it is not a wholesale price the index quotes."
+        },
+        {
+          "q": "Is EIA data free and how often does it come out?",
+          "a": "Yes — the EIA is a U.S. federal agency and its data is public and free. The retail diesel and gasoline price series most relevant to restaurants is released weekly on a fixed schedule, so a vendor's fuel surcharge can be checked against a number nobody at your distributor sets."
+        }
+      ],
+      "es": [
+        {
+          "q": "¿El precio del diésel de la EIA es un precio del alimento?",
+          "a": "No. La EIA publica precios de energía, no de alimentos. El Índice de costos lee su serie semanal del diésel al menudeo como una señal de presión sobre el costo de flete: cuando el diésel sube, los recargos de entrega y los costos de flete tienden a seguir. Indica hacia dónde se inclina el costo entregado; nunca es el precio del alimento en sí."
+        },
+        {
+          "q": "¿Cómo usa el Índice de costos el diésel de la EIA?",
+          "a": "Solo en su capa de presión, como indicador adelantado. El diésel alimenta una dirección inferida sobre el costo entregado — publicada con una dirección pero sin cifra en dólares, y solo cuando el historial real de esa regla supera un umbral de comprobación. Corrobora la presión del flete; no es un precio mayorista que el índice cotice."
+        },
+        {
+          "q": "¿Los datos de la EIA son gratuitos y cada cuánto salen?",
+          "a": "Sí — la EIA es una agencia federal de Estados Unidos y sus datos son públicos y gratuitos. La serie de precios al menudeo del diésel y la gasolina, la más relevante para los restaurantes, se publica cada semana en un calendario fijo, de modo que el recargo por combustible de un proveedor puede contrastarse con un número que nadie en tu distribuidora fija."
+        }
+      ]
+    },
+    "noaa-fisheries": {
+      "en": [
+        {
+          "q": "What is NOAA Fisheries?",
+          "a": "NOAA Fisheries is the U.S. agency that manages the nation's ocean fisheries and publishes commercial landings data — the volume and ex-vessel (dock) value of seafood landed at U.S. ports. It is part of NOAA and also goes by the National Marine Fisheries Service. The data is public and free."
+        },
+        {
+          "q": "How does the Cost Index use NOAA Fisheries?",
+          "a": "The index uses NOAA Fisheries landings data for seafood reference where it can — the public read on what U.S.-landed seafood fetches at the dock. It is one input among the index's public government sources, not a delivered or retail price."
+        },
+        {
+          "q": "Why is seafood a lower-confidence category in the index?",
+          "a": "Because a large share of restaurant seafood is imported, and domestic landings reporting lags and is thin. So seafood is one of the index's harder-to-cover, lower-confidence categories. The index names that gap rather than papering over it with an invented number."
+        }
+      ],
+      "es": [
+        {
+          "q": "¿Qué es NOAA Fisheries?",
+          "a": "NOAA Fisheries es la agencia de Estados Unidos que administra las pesquerías oceánicas del país y publica los desembarques comerciales — el volumen y el valor en muelle (ex-vessel) del marisco desembarcado en puertos estadounidenses. Es parte de la NOAA y también se conoce como el Servicio Nacional de Pesca Marina. Los datos son públicos y gratuitos."
+        },
+        {
+          "q": "¿Cómo usa el Índice de costos a NOAA Fisheries?",
+          "a": "El índice usa los datos de desembarques de NOAA Fisheries como referencia de marisco donde puede — la lectura pública de lo que rinde en el muelle el marisco desembarcado en el país. Es uno de los insumos públicos del gobierno, no un precio entregado ni de menudeo."
+        },
+        {
+          "q": "¿Por qué el marisco es una categoría de menor confianza en el índice?",
+          "a": "Porque una gran parte del marisco de restaurante es importado, y el reporte de desembarques nacionales se retrasa y es escaso. Por eso el marisco es una de las categorías más difíciles de cubrir y de menor confianza del índice. El índice nombra ese vacío en lugar de taparlo con un número inventado."
+        }
+      ]
+    },
+    "fda": {
+      "en": [
+        {
+          "q": "Does the Cost Index use FDA data?",
+          "a": "No. The Cost Index draws zero prices from the FDA, because the FDA does not publish what ingredients cost — it regulates whether food is safe and labeled correctly. Wholesale price levels come from USDA, corroborated by BLS; the FDA isn't a price source at all."
+        },
+        {
+          "q": "What does the FDA actually do for a restaurant?",
+          "a": "It sets and enforces food-safety rules: it issues recalls, writes labeling requirements, inspects food facilities, approves additives, and administers the prevention rules under FSMA (the Food Safety Modernization Act). It decides whether food is safe to sell and labeled honestly — not what that food costs."
+        },
+        {
+          "q": "If the FDA doesn't price anything, why should an operator care about it?",
+          "a": "Because safety events hit your inventory and your menu directly. A recall can empty your walk-in overnight, and a labeling rule can change what you're allowed to print on a package or takeout box. You watch the FDA for what's safe and sellable — just never for what an ingredient costs."
+        }
+      ],
+      "es": [
+        {
+          "q": "¿El Índice de costos usa datos de la FDA?",
+          "a": "No. El Índice de costos no toma ningún precio de la FDA, porque la FDA no publica lo que cuestan los ingredientes — regula si un alimento es seguro y si está bien etiquetado. Los niveles de precio mayorista vienen del USDA, corroborados por el BLS; la FDA no es fuente de precios en absoluto."
+        },
+        {
+          "q": "¿Qué hace en realidad la FDA por un restaurante?",
+          "a": "Establece y hace cumplir las reglas de seguridad alimentaria: emite retiros del mercado, redacta requisitos de etiquetado, inspecciona instalaciones, aprueba aditivos y administra las reglas de prevención de la FSMA (la Ley de Modernización de la Seguridad Alimentaria). Decide si un alimento es seguro para vender y si está etiquetado con honestidad — no lo que ese alimento cuesta."
+        },
+        {
+          "q": "Si la FDA no le pone precio a nada, ¿por qué debería importarle a un operador?",
+          "a": "Porque los eventos de seguridad golpean directo tu inventario y tu menú. Un retiro del mercado puede vaciar tu cámara fría de un día para otro, y una regla de etiquetado puede cambiar lo que tienes permitido imprimir en un empaque o caja para llevar. Vigilas la FDA por lo que es seguro y vendible — pero nunca por lo que cuesta un ingrediente."
+        }
+      ]
+    },
+    "cme": {
+      "en": [
+        {
+          "q": "Does the Cost Index use futures prices?",
+          "a": "No. The Cost Index reads physical wholesale prices — the cash market, what a distributor actually charges this week, from public USDA reports — not CME futures. A futures price is a bet on where a commodity is headed months out; it is not what lands on your invoice, and it can swing on speculation detached from the cash price. Futures serve hedgers and traders, not an operator trying to read this week's cost, so the index leaves them out."
+        },
+        {
+          "q": "What actually is the CME?",
+          "a": "The Chicago Mercantile Exchange — part of CME Group — is the U.S. commodity futures market. Traders buy and sell standardized contracts on the future price of things like cattle, hogs, milk and dairy, and grains. It is a financial market for betting on and hedging price direction, not a record of what physical goods sold for this week."
+        },
+        {
+          "q": "If the CME isn't used, where do the numbers come from?",
+          "a": "Public USDA wholesale and mandatory reports for the cash market — what goods actually changed hands at — with BLS, FRED, EIA, and NOAA used to corroborate direction. Every reading traces to a dated public report you can look up, never a futures screen."
+        }
+      ],
+      "es": [
+        {
+          "q": "¿El Índice de costos usa precios de futuros?",
+          "a": "No. El Índice de costos lee precios mayoristas físicos — el mercado al contado, lo que una distribuidora de verdad cobra esta semana, según reportes públicos del USDA — no futuros de la CME. Un precio de futuros es una apuesta sobre hacia dónde va una materia prima dentro de meses; no es lo que aparece en tu factura, y puede moverse por especulación alejada del precio al contado. Los futuros sirven a coberturistas y operadores, no a quien intenta leer el costo de esta semana, así que el índice los deja fuera."
+        },
+        {
+          "q": "¿Qué es exactamente la CME?",
+          "a": "La Bolsa Mercantil de Chicago — parte de CME Group — es el mercado de futuros de materias primas de Estados Unidos. Los operadores compran y venden contratos estandarizados sobre el precio futuro de cosas como res, cerdo, leche y lácteos, y granos. Es un mercado financiero para apostar y cubrirse ante la dirección del precio, no un registro de lo que la mercancía física se vendió esta semana."
+        },
+        {
+          "q": "Si no se usa la CME, ¿de dónde salen los números?",
+          "a": "De reportes públicos mayoristas y obligatorios del USDA sobre el mercado al contado — el precio al que la mercancía de verdad cambió de manos — con BLS, FRED, EIA y NOAA para corroborar la dirección. Cada lectura se remonta a un reporte público con fecha que puedes consultar, nunca a una pantalla de futuros."
+        }
+      ]
     }
   }
 }

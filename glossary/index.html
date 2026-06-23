@@ -1022,7 +1022,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
 <section class="container gloss-hero">
   <span class="eyebrow">Glossary</span>
-  <h1>Restaurant Website Glossary.<br><span class="serif-italic"><!-- count:glossary.terms -->153<!-- /count --> terms in plain English.</span></h1>
+  <h1>Restaurant Website Glossary.<br><span class="serif-italic"><!-- count:glossary.terms -->161<!-- /count --> terms in plain English.</span></h1>
   <p>Your website audit flags things in the language Google and Lighthouse use — "LCP", "CLS", "schema", "tap targets". Here's what each of those actually means for your business, and why it's worth fixing.</p>
   <p class="gloss-hero-invite">No test at the end. You don't need to memorize any of this — just know where to find it when your audit (or your developer) throws one of these at you. Every definition lands first, then tells you plainly why you should care.</p>
 </section>
@@ -2919,6 +2919,102 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <!-- LIBRARY:gloss-perma:end -->
       </article>
 
+
+      <article class="gloss-term" id="usda-market-news" data-industries="restaurants all" data-topics="cost-data">
+        <div class="gloss-term-head">
+          <h3>USDA Market News<span class="gloss-aka">USDA’s public market-price reports</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Data source</span></div>
+        </div>
+        <p class="gloss-term-def">The U.S. Department of Agriculture’s reporting service for wholesale food prices, run by its Agricultural Marketing Service (AMS). USDA reporters collect and publish actual transaction prices from terminal and shipping-point markets — produce, poultry, eggs, dairy, grain, and livestock — free to anyone, on a fixed daily or weekly schedule. The Cost Index uses these reports as its primary wholesale level for produce and poultry.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>It’s the closest thing to a public price check on the wholesale food market — built from real deals, not estimates, and not controlled by anyone selling to you. When a distributor says lettuce or chicken is up, the day’s terminal-market report shows what the actual market did. The Cost Index reads USDA Market News first for produce and poultry; BLS and FRED come in behind it to confirm the direction.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/glossary/usda-market-news/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="usda-lmr" data-industries="restaurants all" data-topics="cost-data">
+        <div class="gloss-term-head">
+          <h3>USDA Livestock Mandatory Reporting (LMR)<span class="gloss-aka">mandatory packer price reporting to USDA</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Data source</span></div>
+        </div>
+        <p class="gloss-term-def">A USDA program under which meat packers are legally required to report their cattle, hog, and sheep purchase prices &mdash; and their boxed-beef and boxed-pork cutout values &mdash; to the government. Because nearly every large packer must report, the data is close to a census of the market rather than a survey of a sample, which is exactly what makes it hard to spin. It is public, free, and published on a fixed schedule.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>The price comes from a legal filing, not a phone call &mdash; the packers buying the cattle and selling the beef are the ones required to report, so no one along the chain gets to shade the number to their advantage. That is why the Cost Index uses USDA LMR as its primary wholesale source for proteins (beef and pork): when a vendor says meat is up, this is the public read of what packers actually paid and charged.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/glossary/usda-lmr/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="usda-dairy" data-industries="restaurants all" data-topics="cost-data">
+        <div class="gloss-term-head">
+          <h3>USDA Dairy Product Sales Report (NDPSR)<span class="gloss-aka">the weekly U.S. dairy price benchmark</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Data source</span></div>
+        </div>
+        <p class="gloss-term-def">A weekly U.S. federal survey that collects actual sales prices and volumes for a handful of benchmark commodity dairy products &mdash; butter, cheddar cheese, dry whey, and nonfat dry milk. Those prices underpin the federal milk pricing system, and they&rsquo;re public, free, and published on a fixed weekly schedule. The Cost Index uses NDPSR as its wholesale source for dairy.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>It&rsquo;s the closest thing to a public, transaction-based price for commodity dairy &mdash; not an opinion or a phoned-in quote, but what was actually bought and sold that week. When your cheese or butter cost moves, NDPSR shows whether the commodity behind it moved too, or whether the change is happening somewhere between the plant and your invoice.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/glossary/usda-dairy/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="fred" data-industries="restaurants all" data-topics="cost-data">
+        <div class="gloss-term-head">
+          <h3>FRED (Federal Reserve Economic Data)<span class="gloss-aka">the public front door to U.S. economic data</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Data source</span></div>
+        </div>
+        <p class="gloss-term-def">A free public database run by the Federal Reserve Bank of St. Louis. It gathers hundreds of thousands of economic series from many original producers — the BLS, the Census Bureau, the USDA, and others — into one searchable interface and a single open API. FRED distributes the data; it does not measure prices itself.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>It&rsquo;s the convenient front door to numbers other agencies produce — one place to find a series and one open API to pull it, instead of chasing each agency&rsquo;s own download page. The Cost Index uses FRED to pull certain public series programmatically, which keeps the build reproducible. Just keep the original measurer in mind: a price series on FRED is the BLS&rsquo;s or the USDA&rsquo;s work, re-served — FRED is the shelf, not the producer.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/glossary/fred/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="eia" data-industries="restaurants all" data-topics="cost-data">
+        <div class="gloss-term-head">
+          <h3>EIA (U.S. Energy Information Administration)<span class="gloss-aka">the U.S. federal energy-statistics agency</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Data source</span></div>
+        </div>
+        <p class="gloss-term-def">The U.S. federal agency for energy statistics. Its most restaurant-relevant series is the weekly retail price of diesel and gasoline &mdash; public, free, and on a fixed schedule.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>The Cost Index reads EIA diesel as a freight-cost pressure signal: when diesel climbs, delivery surcharges and freight-in costs tend to follow. It's a leading indicator on delivered cost &mdash; not a wholesale food price.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/glossary/eia/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="noaa-fisheries" data-industries="restaurants all" data-topics="cost-data">
+        <div class="gloss-term-head">
+          <h3>NOAA Fisheries<span class="gloss-aka">the U.S. ocean-fisheries & landings agency</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Data source</span></div>
+        </div>
+        <p class="gloss-term-def">The U.S. agency that manages the nation&rsquo;s ocean fisheries and publishes commercial landings data — the volume and ex-vessel (dock) value of seafood landed at U.S. ports. It&rsquo;s part of NOAA, also called the National Marine Fisheries Service. Public and free.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>It&rsquo;s the public read on what U.S.-landed seafood fetches at the dock, so the Cost Index uses it for seafood reference where it can. Be honest about the limit: most restaurant seafood is imported, and domestic landings reporting lags and is thin &mdash; so seafood is one of the index&rsquo;s lower-confidence, harder-to-cover categories. We name the gap rather than paper over it.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/glossary/noaa-fisheries/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="fda" data-industries="restaurants all" data-topics="cost-data">
+        <div class="gloss-term-head">
+          <h3>FDA (U.S. Food and Drug Administration)<span class="gloss-aka">the U.S. food-safety & labeling regulator</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Not a price source</span></div>
+        </div>
+        <p class="gloss-term-def">The federal agency that regulates food safety: recalls, labeling rules, facility inspections, additive approvals, and the prevention rules under FSMA. It decides whether food is safe to sell and labeled correctly &mdash; not what it costs. The Cost Index draws zero prices from it; it&rsquo;s a safety regulator, not a price source.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>An operator should absolutely watch the FDA &mdash; a recall can empty your walk-in overnight. Just not for pricing: the FDA publishes whether food is safe and labeled right, never what an ingredient sells for. The wholesale level comes from USDA, corroborated by BLS. Safety and cost are two different questions.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/glossary/fda/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
+
+      <article class="gloss-term" id="cme" data-industries="restaurants all" data-topics="cost-data">
+        <div class="gloss-term-head">
+          <h3>CME (Chicago Mercantile Exchange)<span class="gloss-aka">the U.S. commodity futures market</span></h3>
+          <div class="gloss-tags"><span class="gloss-tag">Not a price source</span></div>
+        </div>
+        <p class="gloss-term-def">The U.S. commodity futures market, run by CME Group, where traders buy and sell standardized contracts on the future price of cattle, hogs, milk and dairy, and grains. The Cost Index deliberately does not use it: it tracks physical wholesale prices — the cash market, what a distributor charges this week — not financial futures.</p>
+        <p class="gloss-term-why"><strong>Why it matters</strong>A futures price is a bet on where a commodity is headed months out — not what shows up on your invoice, and it can swing on speculation detached from the cash market. Futures are for hedgers and traders; to tell a restaurant what it will pay, the Cost Index reads the cash side (USDA wholesale reports), not the futures screen.</p>
+        <!-- LIBRARY:gloss-perma:start -->
+        <p class="gloss-term-permalink"><a href="/glossary/cme/">Open the term page <span aria-hidden="true">&rarr;</span></a></p>
+        <!-- LIBRARY:gloss-perma:end -->
+      </article>
     </div>
   </section>
 
@@ -2971,7 +3067,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->153<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->161<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav

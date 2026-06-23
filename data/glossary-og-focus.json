@@ -315,5 +315,165 @@
         "Mensual, en calendario fijo"
       ]
     }
+  },
+  "usda-market-news": {
+    "en": {
+      "type": "list",
+      "label": "USDA Market News · public + free",
+      "items": [
+        "Terminal-market prices",
+        "Produce + poultry",
+        "Daily, free"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "USDA Market News · público + gratis",
+      "items": [
+        "Precios de mercado terminal",
+        "Verduras + pollo",
+        "Diario, gratis"
+      ]
+    }
+  },
+  "usda-lmr": {
+    "en": {
+      "type": "list",
+      "label": "USDA LMR · public + free",
+      "items": [
+        "Mandatory by law",
+        "Beef + pork cutout",
+        "A census, not a sample"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "USDA LMR · público + gratis",
+      "items": [
+        "Obligatorio por ley",
+        "Corte de res y cerdo",
+        "Un censo, no una muestra"
+      ]
+    }
+  },
+  "usda-dairy": {
+    "en": {
+      "type": "list",
+      "label": "USDA NDPSR · weekly + free",
+      "items": [
+        "Butter, cheddar, whey, milk",
+        "Weekly survey of real sales",
+        "Sets federal milk prices"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "USDA NDPSR · semanal + gratis",
+      "items": [
+        "Mantequilla, cheddar, suero",
+        "Encuesta semanal de ventas",
+        "Fija el precio de la leche"
+      ]
+    }
+  },
+  "fred": {
+    "en": {
+      "type": "list",
+      "label": "FRED · St. Louis Fed · free",
+      "items": [
+        "Aggregates public data series",
+        "One free, open API",
+        "The shelf, not the producer"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "FRED · Reserva Federal · gratis",
+      "items": [
+        "Reúne series públicas",
+        "Una sola API abierta",
+        "El estante, no el productor"
+      ]
+    }
+  },
+  "eia": {
+    "en": {
+      "type": "list",
+      "label": "EIA · weekly + free",
+      "items": [
+        "Weekly retail diesel price",
+        "A freight pressure signal",
+        "Not a food price"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "EIA · semanal + gratis",
+      "items": [
+        "Precio semanal del diésel",
+        "Señal de presión de flete",
+        "No es precio del alimento"
+      ]
+    }
+  },
+  "noaa-fisheries": {
+    "en": {
+      "type": "list",
+      "label": "NOAA Fisheries · public + free",
+      "items": [
+        "U.S. seafood landings",
+        "Ex-vessel (dock) value",
+        "Honest-limited coverage"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "NOAA Fisheries · público + gratis",
+      "items": [
+        "Desembarques de marisco",
+        "Valor en muelle",
+        "Cobertura limitada, honesta"
+      ]
+    }
+  },
+  "fda": {
+    "en": {
+      "type": "list",
+      "label": "FDA · safety, not price",
+      "items": [
+        "Recalls + labeling rules",
+        "Inspections + FSMA",
+        "Not a price source"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "FDA · seguridad, no precio",
+      "items": [
+        "Retiros + etiquetado",
+        "Inspecciones + FSMA",
+        "No es fuente de precios"
+      ]
+    }
+  },
+  "cme": {
+    "en": {
+      "type": "list",
+      "label": "futures, not your invoice",
+      "items": [
+        "A bet on the future price",
+        "Cattle, hogs + dairy",
+        "Index uses the cash price"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "futuros, no tu factura",
+      "items": [
+        "Apuesta sobre el precio futuro",
+        "Res, cerdo + lácteos",
+        "El índice usa el contado"
+      ]
+    }
   }
 }

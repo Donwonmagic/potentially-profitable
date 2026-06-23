@@ -5686,6 +5686,27 @@
       "dek": "A score that measures how much your page jumps around as it loads — when a banner slides in, an image arrives late, or a late-loading font nudges text down."
     },
     {
+      "slug": "glossary-cme",
+      "kind": "glossary",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSSARY · COST DATA & SOURCES",
+      "title_1": "CME (Chicago Mercantile Exchange)",
+      "title_italic": "the U.S. commodity futures market",
+      "title_2": "",
+      "dek": "The U.S. commodity futures market, run by CME Group, where traders buy and sell standardized contracts on the future price of cattle, hogs, milk and dairy, and grains. The Muntin…",
+      "focus": {
+        "type": "list",
+        "label": "futures, not your invoice",
+        "items": [
+          "A bet on the future price",
+          "Cattle, hogs + dairy",
+          "Index uses the cash price"
+        ]
+      }
+    },
+    {
       "slug": "glossary-color-blindness",
       "kind": "glossary",
       "locale": "en",
@@ -5965,6 +5986,27 @@
       }
     },
     {
+      "slug": "glossary-eia",
+      "kind": "glossary",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSSARY · COST DATA & SOURCES",
+      "title_1": "EIA (U.S. Energy Information Administration)",
+      "title_italic": "the U.S. federal energy-statistics agency",
+      "title_2": "",
+      "dek": "The U.S. federal agency for energy statistics. Its most restaurant-relevant series is the weekly retail price of diesel and gasoline — public, free, and on a fixed schedule. The…",
+      "focus": {
+        "type": "list",
+        "label": "EIA · weekly + free",
+        "items": [
+          "Weekly retail diesel price",
+          "A freight pressure signal",
+          "Not a food price"
+        ]
+      }
+    },
+    {
       "slug": "glossary-elasticity",
       "kind": "glossary",
       "locale": "en",
@@ -6005,6 +6047,27 @@
       "title_italic": "FCP",
       "title_2": "",
       "dek": "The moment the browser paints the first piece of your page — usually a headline, a logo, or a patch of background color."
+    },
+    {
+      "slug": "glossary-fda",
+      "kind": "glossary",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSSARY · COST DATA & SOURCES",
+      "title_1": "FDA (U.S. Food and Drug Administration)",
+      "title_italic": "the U.S. food-safety & labeling regulator",
+      "title_2": "",
+      "dek": "The federal agency that regulates food safety: recalls, labeling rules, facility inspections, additive approvals, and the prevention rules under FSMA (the Food Safety…",
+      "focus": {
+        "type": "list",
+        "label": "FDA · safety, not price",
+        "items": [
+          "Recalls + labeling rules",
+          "Inspections + FSMA",
+          "Not a price source"
+        ]
+      }
     },
     {
       "slug": "glossary-fetch-request",
@@ -6059,6 +6122,27 @@
       "title_italic": "",
       "title_2": "",
       "dek": "When a visitor starts filling out a form — reservation, contact, inquiry — and leaves before submitting."
+    },
+    {
+      "slug": "glossary-fred",
+      "kind": "glossary",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSSARY · COST DATA & SOURCES",
+      "title_1": "FRED (Federal Reserve Economic Data)",
+      "title_italic": "the public front door to U.S. economic data",
+      "title_2": "",
+      "dek": "A free public database run by the Federal Reserve Bank of St.",
+      "focus": {
+        "type": "list",
+        "label": "FRED · St. Louis Fed · free",
+        "items": [
+          "Aggregates public data series",
+          "One free, open API",
+          "The shelf, not the producer"
+        ]
+      }
     },
     {
       "slug": "glossary-funnel",
@@ -6509,6 +6593,27 @@
       "title_italic": "email signup, list-building",
       "title_2": "",
       "dek": "A simple form on your site that collects an email address in exchange for an actual reason to give it — \"first to know about the spring menu,\" \"event invites,\" a small perk on…"
+    },
+    {
+      "slug": "glossary-noaa-fisheries",
+      "kind": "glossary",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSSARY · COST DATA & SOURCES",
+      "title_1": "NOAA Fisheries",
+      "title_italic": "the U.S. ocean-fisheries & landings agency",
+      "title_2": "",
+      "dek": "The U.S. agency that manages the nation’s ocean fisheries and publishes commercial landings data — the volume and ex-vessel (dock) value of seafood landed at U.S. ports. It’s part…",
+      "focus": {
+        "type": "list",
+        "label": "NOAA Fisheries · public + free",
+        "items": [
+          "U.S. seafood landings",
+          "Ex-vessel (dock) value",
+          "Honest-limited coverage"
+        ]
+      }
     },
     {
       "slug": "glossary-og-share-preview",
@@ -7111,6 +7216,69 @@
       "dek": "In a URL, the part after ?"
     },
     {
+      "slug": "glossary-usda-dairy",
+      "kind": "glossary",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSSARY · COST DATA & SOURCES",
+      "title_1": "USDA Dairy Product Sales Report (NDPSR)",
+      "title_italic": "the weekly U.S. dairy price benchmark",
+      "title_2": "",
+      "dek": "A weekly U.S. federal survey that collects actual sales prices and volumes for a handful of benchmark commodity dairy products — butter, cheddar cheese, dry whey, and nonfat dry…",
+      "focus": {
+        "type": "list",
+        "label": "USDA NDPSR · weekly + free",
+        "items": [
+          "Butter, cheddar, whey, milk",
+          "Weekly survey of real sales",
+          "Sets federal milk prices"
+        ]
+      }
+    },
+    {
+      "slug": "glossary-usda-lmr",
+      "kind": "glossary",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSSARY · COST DATA & SOURCES",
+      "title_1": "USDA Livestock Mandatory Reporting (LMR)",
+      "title_italic": "mandatory packer price reporting to USDA",
+      "title_2": "",
+      "dek": "A USDA program under which meat packers are legally required to report their cattle, hog, and sheep purchase prices — and their boxed-beef and boxed-pork cutout values — to the…",
+      "focus": {
+        "type": "list",
+        "label": "USDA LMR · public + free",
+        "items": [
+          "Mandatory by law",
+          "Beef + pork cutout",
+          "A census, not a sample"
+        ]
+      }
+    },
+    {
+      "slug": "glossary-usda-market-news",
+      "kind": "glossary",
+      "locale": "en",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSSARY · COST DATA & SOURCES",
+      "title_1": "USDA Market News",
+      "title_italic": "USDA’s public market-price reports",
+      "title_2": "",
+      "dek": "The U.S. Department of Agriculture’s reporting service for wholesale food prices, run by its Agricultural Marketing Service (AMS). USDA reporters collect and publish actual…",
+      "focus": {
+        "type": "list",
+        "label": "USDA Market News · public + free",
+        "items": [
+          "Terminal-market prices",
+          "Produce + poultry",
+          "Daily, free"
+        ]
+      }
+    },
+    {
       "slug": "glossary-variable-costs",
       "kind": "glossary",
       "locale": "en",
@@ -7529,6 +7697,27 @@
       "dek": "Una calificación que mide cuánto salta tu página mientras carga — cuando entra un banner, llega tarde una imagen, o una fuente que carga tarde empuja el texto hacia abajo."
     },
     {
+      "slug": "glossary-cme-es",
+      "kind": "glossary",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSARIO · DATOS Y FUENTES DE COSTOS",
+      "title_1": "CME (Bolsa Mercantil de Chicago)",
+      "title_italic": "el mercado de futuros de materias primas",
+      "title_2": "",
+      "dek": "El mercado de futuros de materias primas de Estados Unidos, operado por CME Group, donde se compran y venden contratos estandarizados sobre el precio futuro de res, cerdo, leche y…",
+      "focus": {
+        "type": "list",
+        "label": "futuros, no tu factura",
+        "items": [
+          "Apuesta sobre el precio futuro",
+          "Res, cerdo + lácteos",
+          "El índice usa el contado"
+        ]
+      }
+    },
+    {
       "slug": "glossary-color-blindness-es",
       "kind": "glossary",
       "locale": "es",
@@ -7808,6 +7997,27 @@
       }
     },
     {
+      "slug": "glossary-eia-es",
+      "kind": "glossary",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSARIO · DATOS Y FUENTES DE COSTOS",
+      "title_1": "EIA (Administración de Información Energética)",
+      "title_italic": "la agencia de estadísticas de energía",
+      "title_2": "",
+      "dek": "La agencia federal de estadísticas de energía de Estados Unidos.",
+      "focus": {
+        "type": "list",
+        "label": "EIA · semanal + gratis",
+        "items": [
+          "Precio semanal del diésel",
+          "Señal de presión de flete",
+          "No es precio del alimento"
+        ]
+      }
+    },
+    {
       "slug": "glossary-elasticity-es",
       "kind": "glossary",
       "locale": "es",
@@ -7848,6 +8058,27 @@
       "title_italic": "FCP",
       "title_2": "",
       "dek": "El momento en que el navegador pinta el primer pedazo de tu página — normalmente un titular, un logo, o una zona de color de fondo."
+    },
+    {
+      "slug": "glossary-fda-es",
+      "kind": "glossary",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSARIO · DATOS Y FUENTES DE COSTOS",
+      "title_1": "FDA (Administración de Alimentos y Medicamentos de EE. UU.)",
+      "title_italic": "el regulador de seguridad y etiquetado",
+      "title_2": "",
+      "dek": "La agencia federal de Estados Unidos que regula la seguridad alimentaria: retiros del mercado, reglas de etiquetado, inspecciones de instalaciones, aprobación de aditivos y las…",
+      "focus": {
+        "type": "list",
+        "label": "FDA · seguridad, no precio",
+        "items": [
+          "Retiros + etiquetado",
+          "Inspecciones + FSMA",
+          "No es fuente de precios"
+        ]
+      }
     },
     {
       "slug": "glossary-fetch-request-es",
@@ -7902,6 +8133,27 @@
       "title_italic": "",
       "title_2": "",
       "dek": "Cuando un visitante empieza a llenar un formulario — reserva, contacto, consulta — y se va antes de enviarlo."
+    },
+    {
+      "slug": "glossary-fred-es",
+      "kind": "glossary",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSARIO · DATOS Y FUENTES DE COSTOS",
+      "title_1": "FRED (Datos Económicos de la Reserva Federal)",
+      "title_italic": "el portal gratuito a datos económicos públicos",
+      "title_2": "",
+      "dek": "Una base de datos pública y gratuita del Banco de la Reserva Federal de St.",
+      "focus": {
+        "type": "list",
+        "label": "FRED · Reserva Federal · gratis",
+        "items": [
+          "Reúne series públicas",
+          "Una sola API abierta",
+          "El estante, no el productor"
+        ]
+      }
     },
     {
       "slug": "glossary-funnel-es",
@@ -8352,6 +8604,27 @@
       "title_italic": "suscripción por correo, armar la lista",
       "title_2": "",
       "dek": "Un formulario simple en tu sitio que recibe una dirección de correo a cambio de una razón concreta para darla — \"sé el primero en enterarte del menú de primavera\", \"invitaciones a…"
+    },
+    {
+      "slug": "glossary-noaa-fisheries-es",
+      "kind": "glossary",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSARIO · DATOS Y FUENTES DE COSTOS",
+      "title_1": "NOAA Fisheries",
+      "title_italic": "la agencia de pesquerías oceánicas y desembarques de EE. UU.",
+      "title_2": "",
+      "dek": "La agencia de Estados Unidos que administra las pesquerías oceánicas del país y publica los desembarques comerciales — el volumen y el valor en muelle (ex-vessel) del marisco…",
+      "focus": {
+        "type": "list",
+        "label": "NOAA Fisheries · público + gratis",
+        "items": [
+          "Desembarques de marisco",
+          "Valor en muelle",
+          "Cobertura limitada, honesta"
+        ]
+      }
     },
     {
       "slug": "glossary-og-share-preview-es",
@@ -8952,6 +9225,69 @@
       "title_italic": "el #-vs-?",
       "title_2": "",
       "dek": "En una URL, la parte después del ?"
+    },
+    {
+      "slug": "glossary-usda-dairy-es",
+      "kind": "glossary",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSARIO · DATOS Y FUENTES DE COSTOS",
+      "title_1": "Reporte de Ventas de Productos Lácteos del USDA (NDPSR)",
+      "title_italic": "el referente semanal de precios lácteos",
+      "title_2": "",
+      "dek": "Una encuesta federal semanal de Estados Unidos que recopila precios y volúmenes reales de venta de un puñado de lácteos básicos de referencia — mantequilla, queso cheddar, suero…",
+      "focus": {
+        "type": "list",
+        "label": "USDA NDPSR · semanal + gratis",
+        "items": [
+          "Mantequilla, cheddar, suero",
+          "Encuesta semanal de ventas",
+          "Fija el precio de la leche"
+        ]
+      }
+    },
+    {
+      "slug": "glossary-usda-lmr-es",
+      "kind": "glossary",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSARIO · DATOS Y FUENTES DE COSTOS",
+      "title_1": "Reporte Obligatorio de Ganado del USDA (LMR)",
+      "title_italic": "reporte obligatorio de precios al USDA",
+      "title_2": "",
+      "dek": "Un programa del USDA, la agencia de agricultura del gobierno federal de Estados Unidos, que obliga por ley a los empacadores de carne a reportar lo que pagan por ganado, cerdos y…",
+      "focus": {
+        "type": "list",
+        "label": "USDA LMR · público + gratis",
+        "items": [
+          "Obligatorio por ley",
+          "Corte de res y cerdo",
+          "Un censo, no una muestra"
+        ]
+      }
+    },
+    {
+      "slug": "glossary-usda-market-news-es",
+      "kind": "glossary",
+      "locale": "es",
+      "accent": "gold",
+      "glyph": "source",
+      "eyebrow": "GLOSARIO · DATOS Y FUENTES DE COSTOS",
+      "title_1": "USDA Market News",
+      "title_italic": "los reportes públicos de precios del USDA",
+      "title_2": "",
+      "dek": "El servicio del Departamento de Agricultura de Estados Unidos (USDA) que reporta los precios mayoristas de los alimentos, a cargo de su Servicio de Mercadeo Agrícola (AMS).",
+      "focus": {
+        "type": "list",
+        "label": "USDA Market News · público + gratis",
+        "items": [
+          "Precios de mercado terminal",
+          "Verduras + pollo",
+          "Diario, gratis"
+        ]
+      }
     },
     {
       "slug": "glossary-variable-costs-es",
