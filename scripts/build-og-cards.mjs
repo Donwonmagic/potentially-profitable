@@ -250,6 +250,10 @@ const GLYPHS = {
              <line x1="12" y1="4" x2="12" y2="20"/>
              <line x1="4" y1="12" x2="20" y2="12"/>
              <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/>`,
+  // Cost Data & Sources — a public-data cylinder (stacked records).
+  source: `<ellipse cx="12" cy="5.5" rx="7.5" ry="2.5"/>
+           <path d="M4.5 5.5 V18.5 c0 1.4 3.4 2.5 7.5 2.5 s7.5 -1.1 7.5 -2.5 V5.5"/>
+           <path d="M4.5 12 c0 1.4 3.4 2.5 7.5 2.5 s7.5 -1.1 7.5 -2.5"/>`,
 };
 
 /**
@@ -1030,7 +1034,7 @@ function renderGlossary(card) {
 
   ${aka ? `<text x="${EDGE}" y="${yAka}"
         font-family="Fraunces, Georgia, serif" font-style="italic"
-        font-size="26" font-weight="400" letter-spacing="-0.5"
+        font-size="${focus ? fitTitle(card.title_italic ?? "", { font: "Fraunces", maxSize: 26, minSize: 15, maxWidth: leftW - 16, step: 2 }).size : 26}" font-weight="400" letter-spacing="-0.5"
         fill="${PALETTE.muted}">${aka}</text>` : ""}
 
   <text x="${EDGE}" y="${yDek}"

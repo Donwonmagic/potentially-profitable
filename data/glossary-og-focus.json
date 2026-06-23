@@ -1,90 +1,319 @@
 {
   "_comment": "Per-term OG-card focus modules, merged into the glossary cards by scripts/seed-glossary-og.mjs. A focus added straight to brand/og/cards.json would be stripped on the next re-seed (the generator rewrites every glossary-* entry), so curated focuses live here. Keyed by glossary slug; value is { en: {focus}, es: {focus} }. type keys into focusModules in scripts/build-og-cards.mjs (stat | bars | list | quote | checks | funnel | score-ring). Every number MUST already appear on the term's own /glossary/<slug>/ page — the fact gate applies to cards too. Figures kept here are cited, standard target ranges, or honestly framed as rules-of-thumb; one-off uncited generalizations and illustrative-example numbers are deliberately left off.",
-
   "commission": {
-    "en": { "type": "stat", "value": "15–30%", "caption": "kept per order by aggregators", "source": "Typical range" },
-    "es": { "type": "stat", "value": "15–30%", "caption": "que retiene un agregador por pedido", "source": "Rango típico" }
+    "en": {
+      "type": "stat",
+      "value": "15–30%",
+      "caption": "kept per order by aggregators",
+      "source": "Typical range"
+    },
+    "es": {
+      "type": "stat",
+      "value": "15–30%",
+      "caption": "que retiene un agregador por pedido",
+      "source": "Rango típico"
+    }
   },
   "prime-cost": {
-    "en": { "type": "stat", "value": "55–65%", "caption": "food + labor, healthy band", "source": "Independent target" },
-    "es": { "type": "stat", "value": "55–65%", "caption": "comida + mano de obra, banda sana", "source": "Meta de independientes" }
+    "en": {
+      "type": "stat",
+      "value": "55–65%",
+      "caption": "food + labor, healthy band",
+      "source": "Independent target"
+    },
+    "es": {
+      "type": "stat",
+      "value": "55–65%",
+      "caption": "comida + mano de obra, banda sana",
+      "source": "Meta de independientes"
+    }
   },
   "food-cost": {
-    "en": { "type": "stat", "value": "28–32%", "caption": "of sales, most formats", "source": "Target band" },
-    "es": { "type": "stat", "value": "28–32%", "caption": "de ventas, la mayoría de formatos", "source": "Banda meta" }
+    "en": {
+      "type": "stat",
+      "value": "28–32%",
+      "caption": "of sales, most formats",
+      "source": "Target band"
+    },
+    "es": {
+      "type": "stat",
+      "value": "28–32%",
+      "caption": "de ventas, la mayoría de formatos",
+      "source": "Banda meta"
+    }
   },
   "labor-cost": {
-    "en": { "type": "stat", "value": "28–32%", "caption": "of sales, most formats", "source": "Target range" },
-    "es": { "type": "stat", "value": "28–32%", "caption": "de ventas, casi todo formato", "source": "Rango objetivo" }
+    "en": {
+      "type": "stat",
+      "value": "28–32%",
+      "caption": "of sales, most formats",
+      "source": "Target range"
+    },
+    "es": {
+      "type": "stat",
+      "value": "28–32%",
+      "caption": "de ventas, casi todo formato",
+      "source": "Rango objetivo"
+    }
   },
   "aggregator": {
-    "en": { "type": "stat", "value": "15–30%", "caption": "cut on every delivery order", "source": "Typical commission" },
-    "es": { "type": "stat", "value": "15–30%", "caption": "tajada de cada pedido", "source": "Comisión típica" }
+    "en": {
+      "type": "stat",
+      "value": "15–30%",
+      "caption": "cut on every delivery order",
+      "source": "Typical commission"
+    },
+    "es": {
+      "type": "stat",
+      "value": "15–30%",
+      "caption": "tajada de cada pedido",
+      "source": "Comisión típica"
+    }
   },
   "service-charge": {
-    "en": { "type": "stat", "value": "18–22%", "caption": "added to the check", "source": "Common range" },
-    "es": { "type": "stat", "value": "18–22%", "caption": "agregado a la cuenta", "source": "Rango común" }
+    "en": {
+      "type": "stat",
+      "value": "18–22%",
+      "caption": "added to the check",
+      "source": "Common range"
+    },
+    "es": {
+      "type": "stat",
+      "value": "18–22%",
+      "caption": "agregado a la cuenta",
+      "source": "Rango común"
+    }
   },
   "edible-portion": {
-    "en": { "type": "stat", "value": "20–30%", "caption": "under-priced if you use AP cost", "source": "Produce-heavy menus" },
-    "es": { "type": "stat", "value": "20–30%", "caption": "subvalúa si usas costo AP", "source": "Menús de producto" }
+    "en": {
+      "type": "stat",
+      "value": "20–30%",
+      "caption": "under-priced if you use AP cost",
+      "source": "Produce-heavy menus"
+    },
+    "es": {
+      "type": "stat",
+      "value": "20–30%",
+      "caption": "subvalúa si usas costo AP",
+      "source": "Menús de producto"
+    }
   },
   "charm-pricing": {
-    "en": { "type": "stat", "value": "~8%", "caption": "lift from dropping the $ sign", "source": "Cornell study" },
-    "es": { "type": "stat", "value": "~8%", "caption": "alza al quitar el signo $", "source": "Estudio Cornell" }
+    "en": {
+      "type": "stat",
+      "value": "~8%",
+      "caption": "lift from dropping the $ sign",
+      "source": "Cornell study"
+    },
+    "es": {
+      "type": "stat",
+      "value": "~8%",
+      "caption": "alza al quitar el signo $",
+      "source": "Estudio Cornell"
+    }
   },
   "elasticity": {
-    "en": { "type": "stat", "value": "6%", "caption": "raise loses 2–3% of covers", "source": "Working rule" },
-    "es": { "type": "stat", "value": "6%", "caption": "alza pierde 2–3% de cubiertos", "source": "Regla práctica" }
+    "en": {
+      "type": "stat",
+      "value": "6%",
+      "caption": "raise loses 2–3% of covers",
+      "source": "Working rule"
+    },
+    "es": {
+      "type": "stat",
+      "value": "6%",
+      "caption": "alza pierde 2–3% de cubiertos",
+      "source": "Regla práctica"
+    }
   },
   "menu-copy": {
-    "en": { "type": "stat", "value": "27%", "caption": "more orders, just from words", "source": "Wansink, 2005" },
-    "es": { "type": "stat", "value": "27%", "caption": "más pedidos, solo con palabras", "source": "Wansink, 2005" }
+    "en": {
+      "type": "stat",
+      "value": "27%",
+      "caption": "more orders, just from words",
+      "source": "Wansink, 2005"
+    },
+    "es": {
+      "type": "stat",
+      "value": "27%",
+      "caption": "más pedidos, solo con palabras",
+      "source": "Wansink, 2005"
+    }
   },
   "sensory-adjective": {
-    "en": { "type": "stat", "value": "+27%", "caption": "lift from sensory words", "source": "Wansink research" },
-    "es": { "type": "stat", "value": "+27%", "caption": "alza por palabras sensoriales", "source": "Investig. Wansink" }
+    "en": {
+      "type": "stat",
+      "value": "+27%",
+      "caption": "lift from sensory words",
+      "source": "Wansink research"
+    },
+    "es": {
+      "type": "stat",
+      "value": "+27%",
+      "caption": "alza por palabras sensoriales",
+      "source": "Investig. Wansink"
+    }
   },
   "plate-cost": {
-    "en": { "type": "stat", "value": "3–5 pts", "caption": "food cost found dish-by-dish", "source": "Typical reveal" },
-    "es": { "type": "stat", "value": "3–5 pts", "caption": "costo hallado plato por plato", "source": "Hallazgo típico" }
+    "en": {
+      "type": "stat",
+      "value": "3–5 pts",
+      "caption": "food cost found dish-by-dish",
+      "source": "Typical reveal"
+    },
+    "es": {
+      "type": "stat",
+      "value": "3–5 pts",
+      "caption": "costo hallado plato por plato",
+      "source": "Hallazgo típico"
+    }
   },
   "yield-percent": {
-    "en": { "type": "bars", "label": "Yield after trim", "suffix": "%", "items": [
-      { "label": "Romaine", "value": 75 },
-      { "label": "Whole chicken", "value": 60 },
-      { "label": "Whole halibut", "value": 50 }
-    ] },
-    "es": { "type": "bars", "label": "Rendimiento útil", "suffix": "%", "items": [
-      { "label": "Lechuga romana", "value": 75 },
-      { "label": "Pollo entero", "value": 60 },
-      { "label": "Fletán entero", "value": 50 }
-    ] }
+    "en": {
+      "type": "bars",
+      "label": "Yield after trim",
+      "suffix": "%",
+      "items": [
+        {
+          "label": "Romaine",
+          "value": 75
+        },
+        {
+          "label": "Whole chicken",
+          "value": 60
+        },
+        {
+          "label": "Whole halibut",
+          "value": 50
+        }
+      ]
+    },
+    "es": {
+      "type": "bars",
+      "label": "Rendimiento útil",
+      "suffix": "%",
+      "items": [
+        {
+          "label": "Lechuga romana",
+          "value": 75
+        },
+        {
+          "label": "Pollo entero",
+          "value": 60
+        },
+        {
+          "label": "Fletán entero",
+          "value": 50
+        }
+      ]
+    }
   },
   "conversion-rate": {
-    "en": { "type": "bars", "label": "Restaurant site benchmark", "suffix": "%", "items": [
-      { "label": "Reservation (solid)", "value": 3 },
-      { "label": "Online order (great)", "value": 10 }
-    ] },
-    "es": { "type": "bars", "label": "Referencia de sitio", "suffix": "%", "items": [
-      { "label": "Reserva (sólida)", "value": 3 },
-      { "label": "Pedido (excelente)", "value": 10 }
-    ] }
+    "en": {
+      "type": "bars",
+      "label": "Restaurant site benchmark",
+      "suffix": "%",
+      "items": [
+        {
+          "label": "Reservation (solid)",
+          "value": 3
+        },
+        {
+          "label": "Online order (great)",
+          "value": 10
+        }
+      ]
+    },
+    "es": {
+      "type": "bars",
+      "label": "Referencia de sitio",
+      "suffix": "%",
+      "items": [
+        {
+          "label": "Reserva (sólida)",
+          "value": 3
+        },
+        {
+          "label": "Pedido (excelente)",
+          "value": 10
+        }
+      ]
+    }
   },
   "bounce-rate": {
-    "en": { "type": "stat", "value": "70%+", "caption": "homepage bounce = a problem", "source": "Rule of thumb" },
-    "es": { "type": "stat", "value": "70%+", "caption": "rebote en portada = problema", "source": "Regla general" }
+    "en": {
+      "type": "stat",
+      "value": "70%+",
+      "caption": "homepage bounce = a problem",
+      "source": "Rule of thumb"
+    },
+    "es": {
+      "type": "stat",
+      "value": "70%+",
+      "caption": "rebote en portada = problema",
+      "source": "Regla general"
+    }
   },
   "gbp-photo-count": {
-    "en": { "type": "stat", "value": "15–20", "caption": "strong photos to add", "source": "Recommended" },
-    "es": { "type": "stat", "value": "15–20", "caption": "fotos buenas que agregar", "source": "Recomendado" }
+    "en": {
+      "type": "stat",
+      "value": "15–20",
+      "caption": "strong photos to add",
+      "source": "Recommended"
+    },
+    "es": {
+      "type": "stat",
+      "value": "15–20",
+      "caption": "fotos buenas que agregar",
+      "source": "Recomendado"
+    }
   },
   "gift-card-checkout": {
-    "en": { "type": "stat", "value": "~25%", "caption": "of gift cards never redeemed", "source": "Typical" },
-    "es": { "type": "stat", "value": "~25%", "caption": "de tarjetas nunca se canjean", "source": "Típico" }
+    "en": {
+      "type": "stat",
+      "value": "~25%",
+      "caption": "of gift cards never redeemed",
+      "source": "Typical"
+    },
+    "es": {
+      "type": "stat",
+      "value": "~25%",
+      "caption": "de tarjetas nunca se canjean",
+      "source": "Típico"
+    }
   },
   "hosting": {
-    "en": { "type": "stat", "value": "$5–$30", "caption": "small-business hosting / month", "source": "Typical range" },
-    "es": { "type": "stat", "value": "$5–$30", "caption": "hosting de negocio / mes", "source": "Rango típico" }
+    "en": {
+      "type": "stat",
+      "value": "$5–$30",
+      "caption": "small-business hosting / month",
+      "source": "Typical range"
+    },
+    "es": {
+      "type": "stat",
+      "value": "$5–$30",
+      "caption": "hosting de negocio / mes",
+      "source": "Rango típico"
+    }
+  },
+  "bls": {
+    "en": {
+      "type": "list",
+      "label": "U.S. BLS · public + free",
+      "items": [
+        "CPI — what households pay",
+        "PPI — what businesses charge",
+        "Monthly, on a fixed schedule"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "BLS EE. UU. · público y gratis",
+      "items": [
+        "CPI — lo que pagan los hogares",
+        "PPI — lo que cobran las empresas",
+        "Mensual, en calendario fijo"
+      ]
+    }
   }
 }

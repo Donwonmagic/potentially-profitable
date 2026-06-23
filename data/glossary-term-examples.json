@@ -1,585 +1,589 @@
 {
- "_doc": "Phase G.4 (Growth) — per-glossary-term concrete-example sentences. Each entry is one short sentence that grounds the abstract definition in a real restaurant scenario. inject-glossary-term-examples.mjs reads this file and stamps a sentinel-bracketed <p class='term-example'> block on each term page (EN + ES). Slug must match a directory under glossary/.",
- "examples": {
-  "cdn": {
-   "en": "Example: A Brooklyn pizzeria's images load in under 200ms in San Diego because Cloudflare cached them at a Los Angeles edge — without a CDN, every byte travels the full 2,800 miles each time.",
-   "es": "Ejemplo: Las imágenes de una pizzería de Brooklyn cargan en menos de 200ms en San Diego porque Cloudflare las guardó en un edge en Los Ángeles — sin CDN, cada byte viaja los 2,800 km cada vez."
-  },
-  "core-web-vitals": {
-   "en": "Example: A bistro's LCP at 4.2s and CLS at 0.18 — both 'poor' — costs the page about 30% of its mobile bookings before any other factor matters.",
-   "es": "Ejemplo: Un LCP de 4.2s y un CLS de 0.18 en un bistró — ambos en 'poor' — le cuesta a la página cerca del 30% de las reservas móviles antes de que cualquier otro factor importe."
-  },
-  "schema-markup": {
-   "en": "Example: A pizzeria with `priceRange: $$` and `acceptsReservations: true` in its Restaurant schema gets the booking-eligible badge in Google's Find a Table card.",
-   "es": "Ejemplo: Una pizzería con `priceRange: $$` y `acceptsReservations: true` en su schema de Restaurant obtiene la insignia de booking-eligible en la tarjeta de Find a Table de Google."
-  },
-  "menu-schema": {
-   "en": "Example: A taqueria using <code>Menu</code> + <code>MenuSection</code> + <code>MenuItem</code> can rank for 'tacos al pastor near me' on the dish itself, not just the restaurant.",
-   "es": "Ejemplo: Una taquería usando <code>Menu</code> + <code>MenuSection</code> + <code>MenuItem</code> puede posicionar para 'tacos al pastor cerca de mí' por el plato mismo, no solo por el restaurante."
-  },
-  "opening-hours-specification": {
-   "en": "Example: A diner with valid OpeningHoursSpecification + holiday overrides shows the correct 'Closed Christmas Day' notice in Google's panel — without it, hungry holiday-eve searches see stale hours.",
-   "es": "Ejemplo: Un diner con OpeningHoursSpecification válido + overrides de feriado muestra el aviso correcto 'Cerrado el Día de Navidad' en el panel de Google — sin él, las búsquedas de víspera ven horarios desactualizados."
-  },
-  "google-business-profile": {
-   "en": "Example: A pizzeria that adds 30 photos and replies to every review within 48 hours during its first 90 days typically lands 2-3 positions higher in the local-pack than identical competitors who don't.",
-   "es": "Ejemplo: Una pizzería que añade 30 fotos y responde a cada reseña en menos de 48 horas durante sus primeros 90 días suele aterrizar 2-3 posiciones más alto en el local-pack que competidores idénticos que no lo hacen."
-  },
-  "find-a-table": {
-   "en": "Example: A trattoria on Resy gets the 'Reserve a table' button directly inside Google's panel — competitors on a non-integrated booking system get 'Book on [their site]' as a less-prominent secondary link.",
-   "es": "Ejemplo: Una trattoria en Resy obtiene el botón 'Reservar mesa' directamente dentro del panel de Google — competidores en un sistema no-integrado obtienen 'Reservar en [su sitio]' como un link secundario menos prominente."
-  },
-  "prime-cost": {
-   "en": "Example: A 65% prime-cost ratio (food + labor combined) is the watershed — above 65% almost no independent restaurant survives a 12-month dip in covers.",
-   "es": "Ejemplo: Un costo primario del 65% (comida + mano de obra) es la línea divisoria — sobre 65% casi ningún restaurante independiente sobrevive una bajada de 12 meses en cubiertos."
-  },
-  "menu-engineering": {
-   "en": "Example: A bistro that re-staged its 4 'puzzle' items (high margin, low sales) with better photos and descriptions saw a 22% lift in their sales mix within 6 weeks — no price changes.",
-   "es": "Ejemplo: Un bistró que re-presentó sus 4 platos 'acertijo' (margen alto, ventas bajas) con mejores fotos y descripciones vio un aumento del 22% en su mix de ventas en 6 semanas — sin cambios de precio."
-  },
-  "lcp": {
-   "en": "Example: An LCP above 2.5s loses an estimated 12% of mobile reservation conversions; above 4.0s the loss compounds to roughly 30%.",
-   "es": "Ejemplo: Un LCP sobre 2.5s pierde un estimado 12% de conversiones móviles de reserva; sobre 4.0s la pérdida compone hasta cerca del 30%."
-  },
-  "cls": {
-   "en": "Example: A CLS of 0.25 (your hero image jumps the menu down 200px on load) makes 1-in-7 mobile visitors mis-tap the wrong CTA — usually the wrong reservation slot.",
-   "es": "Ejemplo: Un CLS de 0.25 (tu imagen hero empuja el menú 200px hacia abajo al cargar) hace que 1 de cada 7 visitantes móviles toque el CTA equivocado — normalmente el slot de reserva equivocado."
-  },
-  "alt-text": {
-   "en": "Example: 'Plate of carnitas with cilantro and lime' beats 'IMG_4521.jpg' for SEO + accessibility + AI search citations — costs 5 seconds per photo to write.",
-   "es": "Ejemplo: 'Plato de carnitas con cilantro y limón' le gana a 'IMG_4521.jpg' en SEO + accesibilidad + citas en búsqueda con IA — cuesta 5 segundos por foto escribirlo."
-  },
-  "canonical-url": {
-   "en": "Example: A bistro running both `/menu/` and `/menu/index.html` without a canonical link splits its ranking signal across two URLs — Google picks the lower-ranked one half the time.",
-   "es": "Ejemplo: Un bistró que sirve tanto `/menu/` como `/menu/index.html` sin canonical link divide su señal de ranking en dos URLs — Google elige la peor mitad del tiempo."
-  },
-  "html-menu": {
-   "en": "Example: A diner switching from PDF menu to HTML saw 4× the click-through from Google search results within 60 days — the PDF was invisible to the dish-level query.",
-   "es": "Ejemplo: Un diner que cambió de PDF a HTML vio 4× el click-through desde resultados de búsqueda en 60 días — el PDF era invisible para la búsqueda a nivel de plato."
-  },
-  "search-console": {
-   "en": "Example: A pizzeria's Search Console shows 12,400 impressions/month for 'pizza near me' but a 0.4% CTR — the meta description is the leverage, not the rank.",
-   "es": "Ejemplo: La Search Console de una pizzería muestra 12,400 impresiones/mes para 'pizza cerca de mí' pero un CTR de 0.4% — la meta description es la palanca, no el ranking."
-  },
-  "above-the-fold": {
-   "en": "Example: A Silver Spring taqueria put its name, neighborhood, and a Reserve button in the top 600 pixels, so a visitor who never scrolls still knows it's a sit-down spot in Silver Spring and can book in one tap.",
-   "es": "Ejemplo: Una taquería de Silver Spring colocó su nombre, su barrio y un botón de Reservar en los primeros 600 píxeles, así que quien no hace scroll igual sabe que es un local con mesas en Silver Spring y puede reservar con un toque."
-  },
-  "accessible-pair": {
-   "en": "Example: A neighborhood cafe loves its brand teal in the logo, but for 14px menu text on a cream background it switches to the darker accessible pair, which keeps the same hue while clearing the 4.5:1 contrast threshold.",
-   "es": "Ejemplo: Un cafe de barrio adora su verde azulado de marca en el logo, pero para el texto del menu de 14px sobre fondo crema usa el par accesible mas oscuro, que conserva el mismo tono y supera el umbral de contraste de 4.5:1."
-  },
-  "aggregator": {
-   "en": "Example: A Brooklyn pizzeria lists on a delivery aggregator that takes a commission on every order, so before signing it checks whether those orders are new customers or just regulars who would have called the shop directly.",
-   "es": "Ejemplo: Una pizzeria de Brooklyn se registra en un agregador de reparto que cobra una comision por cada pedido, asi que antes de firmar revisa si esos pedidos son clientes nuevos o solo habituales que habrian llamado directo al local."
-  },
-  "ai-overview": {
-   "en": "Example: When someone searches whether a neighborhood cafe is open on Sundays, Google's AI Overview answers right at the top of the page, and the cafe earns a citation chip only because its hours sit in clean, schema-anchored text.",
-   "es": "Ejemplo: Cuando alguien busca si un cafe de barrio abre los domingos, el AI Overview de Google responde justo arriba de la pagina, y el cafe gana un chip de cita solo porque su horario esta en texto limpio anclado con schema."
-  },
-  "analogous-colors": {
-   "en": "Example: A natural-wine bar builds its palette from analogous colors — terracotta, rust, and ochre sitting close on the wheel — so the site feels warm and coherent, and it leans on a strong neutral to make up for the low internal contrast.",
-   "es": "Ejemplo: Un bar de vinos naturales arma su paleta con colores analogos (terracota, oxido y ocre, juntos en la rueda) para que el sitio se sienta calido y coherente, y se apoya en un neutro fuerte para compensar el bajo contraste interno."
-  },
-  "apple-bing-maps": {
-   "en": "Example: A Silver Spring taqueria fixed its hours on Google but forgot Apple Maps, so every iPhone owner asking Siri for directions kept getting sent to the address it occupied two years ago until the owner claimed the Apple Maps listing.",
-   "es": "Ejemplo: Una taqueria de Silver Spring corrigio su horario en Google pero olvido Apple Maps, asi que cada dueno de iPhone que le pedia indicaciones a Siri terminaba en la direccion de hace dos anos hasta que reclamo la ficha en Apple Maps."
-  },
-  "aspect-ratio": {
-   "en": "Example: A neighborhood cafe shoots each pastry at 3:2, knowing the web hero will crop to 16:9 and the Instagram grid to 1:1, so one photo of a croissant yields eight clean platform-ready images instead of seven awkward crops.",
-   "es": "Ejemplo: Un cafe de barrio fotografia cada bolleria en proporcion 3:2, sabiendo que el hero web recortara a 16:9 y la cuadricula de Instagram a 1:1, asi que una foto de un croissant rinde ocho imagenes limpias en lugar de siete recortes torpes."
-  },
-  "average-check": {
-   "en": "Example: A Brooklyn pizzeria served 180 covers for $4,500 one Friday, putting its average check at $25, so the owner tests adding a dessert prompt to nudge that number up without needing a single extra guest through the door.",
-   "es": "Ejemplo: Una pizzeria de Brooklyn atendio 180 comensales por $4,500 un viernes, lo que deja el ticket promedio en $25, asi que el dueno prueba sugerir postre para subir esa cifra sin necesitar ni un comensal extra en la puerta."
-  },
-  "body-text-size": {
-   "en": "Example: A Silver Spring taqueria set its menu descriptions to 17px after noticing that 14px text made iOS Safari zoom in every time a guest tapped the reservation field, breaking the layout on their phone.",
-   "es": "Ejemplo: Una taqueria de Silver Spring puso las descripciones de su menu en 17px tras notar que el texto de 14px hacia que iOS Safari ampliara cada vez que un comensal tocaba el campo de reserva, rompiendo el diseno en el telefono."
-  },
-  "bounce-rate": {
-   "en": "Example: A neighborhood cafe saw its homepage bounce rate sitting above 70%, a sign that visitors couldn't tell what kind of place it was fast enough, so it rewrote the hero to say plainly that it's an all-day brunch spot.",
-   "es": "Ejemplo: Un cafe de barrio vio su tasa de rebote en la pagina principal por encima del 70%, senal de que los visitantes no entendian rapido que clase de lugar era, asi que reescribio el hero para decir claramente que es un local de brunch todo el dia."
-  },
-  "breadcrumb": {
-   "en": "Example: A Brooklyn pizzeria adds a breadcrumb trail like Home › Menu › Pizzas at the top of each page, so Google shows a short muntin.digital › Menu › Pizzas trail in results instead of a long URL, and phone visitors get an easy tap back up a level.",
-   "es": "Ejemplo: Una pizzeria de Brooklyn agrega un breadcrumb como Inicio › Menu › Pizzas en la parte superior de cada pagina, asi Google muestra una ruta corta en los resultados en vez de una URL larga, y los visitantes en el telefono pueden subir un nivel con un toque."
-  },
-  "break-even": {
-   "en": "Example: A Silver Spring taqueria works backward from its fixed costs and finds it needs 95 covers a day to break even, so any Tuesday under that count isn't just slow, it's a day where every plate served still lost money.",
-   "es": "Ejemplo: Una taqueria de Silver Spring calcula hacia atras desde sus costos fijos y descubre que necesita 95 comensales al dia para alcanzar el punto de equilibrio, asi que un martes por debajo de esa cifra no solo es flojo: es un dia en que cada plato perdio dinero."
-  },
-  "catering-page": {
-   "en": "Example: A neighborhood cafe builds a catering page listing its 20-person minimum, a sample box-lunch menu, and a 48-hour lead time, so a corporate planner can judge fit in under a minute and the inquiry form lands straight in the events inbox.",
-   "es": "Ejemplo: Un cafe de barrio crea una pagina de catering con su minimo de 20 personas, un menu de cajas de almuerzo de muestra y un aviso previo de 48 horas, para que un organizador corporativo evalue si encaja en menos de un minuto y el formulario llegue directo al buzon de eventos."
-  },
-  "clearspace": {
-   "en": "Example: A Brooklyn pizzeria's style guide sets clearspace at one cap-height of the wordmark around the logo, so when a printer wants to cram a phone number right against the mark on a flyer, the rule says to keep that zone empty.",
-   "es": "Ejemplo: La guia de estilo de una pizzeria de Brooklyn fija el espacio de resguardo en una altura de mayuscula del logotipo alrededor del logo, asi que cuando una imprenta quiere meter un telefono pegado a la marca en un folleto, la regla obliga a dejar esa zona vacia."
-  },
-  "click-to-call": {
-   "en": "Example: A Silver Spring taqueria wraps its phone number in a tel: link, so a hungry commuter on the sidewalk taps it once and the dialer opens pre-filled, instead of having to copy the digits and switch over to the phone app.",
-   "es": "Ejemplo: Una taqueria de Silver Spring envuelve su numero en un enlace tel:, asi un comensal apurado en la acera lo toca una vez y se abre el marcador ya rellenado, en lugar de tener que copiar los digitos y cambiar a la aplicacion de telefono."
-  },
-  "click-to-directions": {
-   "en": "Example: A neighborhood cafe links its address to a Google Maps URL, so a customer already walking over taps it and the map app opens with the cafe set as the destination, instead of retyping the street address by hand.",
-   "es": "Ejemplo: Un cafe de barrio enlaza su direccion a una URL de Google Maps, asi un cliente que ya viene caminando la toca y la aplicacion de mapas se abre con el cafe puesto como destino, en lugar de teclear la direccion a mano."
-  },
-  "client-side": {
-   "en": "Example: A Brooklyn pizzeria owner types last month's food costs into a margin calculator and opens DevTools to confirm no request fires, proving the math runs client-side in the browser tab and the numbers never leave the laptop.",
-   "es": "Ejemplo: El dueno de una pizzeria de Brooklyn escribe los costos de comida del mes pasado en una calculadora de margen y abre DevTools para confirmar que no se dispara ninguna peticion, comprobando que el calculo corre del lado del cliente y las cifras nunca salen del portatil."
-  },
-  "client-side-tool": {
-   "en": "Example: Before entering its labor numbers, a Silver Spring taqueria checks the DevTools Network tab and sees nothing fire on each keystroke, confirming it's using a client-side tool whose math stays on the laptop rather than POSTing inputs to a server.",
-   "es": "Ejemplo: Antes de ingresar sus cifras de nomina, una taqueria de Silver Spring revisa la pestana de Red en DevTools y no ve dispararse nada con cada tecla, confirmando que usa una herramienta client-side cuyo calculo se queda en el portatil en vez de enviar los datos a un servidor."
-  },
-  "color-blindness": {
-   "en": "Example: A neighborhood cafe used green for available tables and red for booked ones, until a contrast simulator showed that to a guest with deuteranopia the two merged into one color, so it added text labels alongside the colors.",
-   "es": "Ejemplo: Un cafe de barrio usaba verde para las mesas libres y rojo para las ocupadas, hasta que un simulador de contraste mostro que para un comensal con deuteranopia ambos se fundian en un solo color, asi que agrego etiquetas de texto junto a los colores."
-  },
-  "color-harmony": {
-   "en": "Example: A Silver Spring ramen bar's first palette felt muddy until its designer rebuilt it as an analogous set — three hues sitting within 40° of each other — so the deep broth-brown, burnt-orange, and gold now read as one deliberate family.",
-   "es": "Ejemplo: la primera paleta de un bar de ramen en Silver Spring se veía turbia hasta que su diseñadora la rehízo como un conjunto análogo —tres matices a menos de 40° entre sí—, así que el marrón caldo, el naranja quemado y el dorado ahora se leen como una familia intencionada."
-  },
-  "color-palette": {
-   "en": "Example: A Brooklyn pizzeria documents its palette as one tomato-red primary, a charcoal secondary, a mustard accent, and two warm neutrals, so its menu, website, and takeout bag all print the exact same red instead of three guesses.",
-   "es": "Ejemplo: una pizzería de Brooklyn documenta su paleta como un rojo tomate primario, un gris carbón secundario, un acento mostaza y dos neutros cálidos, de modo que su menú, su sitio web y su bolsa para llevar imprimen exactamente el mismo rojo en lugar de tres versiones distintas."
-  },
-  "commission": {
-   "en": "Example: When a neighborhood taqueria fills a $25 burrito order through an aggregator, a roughly 25% commission plus 2% processing leaves about $18 before food cost, while the same order taken direct at 3% processing leaves closer to $24.",
-   "es": "Ejemplo: cuando una taquería de barrio completa un pedido de burritos de $25 a través de un agregador, una comisión de cerca del 25% más un 2% de procesamiento deja unos $18 antes del costo de comida, mientras que ese mismo pedido tomado de forma directa al 3% deja cerca de $24."
-  },
-  "complementary-colors": {
-   "en": "Example: A daytime taproom wanting an energetic feel pairs a terracotta header against a teal CTA button — hues sitting nearly opposite on the wheel — but keeps the rest of the page neutral so the two bold colors don't fight across every screen.",
-   "es": "Ejemplo: una cervecería diurna que busca un aire enérgico combina un encabezado terracota con un botón de acción turquesa —matices casi opuestos en el círculo cromático—, pero mantiene neutro el resto de la página para que los dos colores intensos no compitan en cada pantalla."
-  },
-  "contribution-margin": {
-   "en": "Example: A bistro notices its $10 appetizer at 30% food cost contributes $7 a plate, while its $30 entree at 40% food cost contributes $18, so even with the 'worse' cost percentage the entree pays far more rent per sale.",
-   "es": "Ejemplo: un bistró nota que su entrante de $10 con un 30% de costo de comida aporta $7 por plato, mientras que su plato fuerte de $30 con un 40% de costo aporta $18, así que, pese al peor porcentaje, el plato fuerte paga mucho más renta por venta."
-  },
-  "conversion-rate": {
-   "en": "Example: A neighborhood cafe's site draws 4,000 visitors a month and about 120 of them book a table, a 3% reservation conversion rate the owner treats as solid before spending another dollar trying to grow raw traffic.",
-   "es": "Ejemplo: el sitio de un café de barrio atrae unos 4.000 visitantes al mes y cerca de 120 reservan una mesa, una tasa de conversión de reservas del 3% que la dueña considera sólida antes de gastar un peso más en aumentar el tráfico bruto."
-  },
-  "cookie-banner": {
-   "en": "Example: A small ramen shop drops its intrusive cookie banner entirely after switching to privacy-friendly analytics that set no tracking cookies, so the homepage greets visitors with its hero photo instead of a consent prompt to dismiss.",
-   "es": "Ejemplo: una pequeña tienda de ramen elimina por completo su molesto banner de cookies tras cambiar a una analítica respetuosa con la privacidad que no instala cookies de rastreo, así que la portada recibe a los visitantes con su foto principal en lugar de un aviso de consentimiento que cerrar."
-  },
-  "copyable-address": {
-   "en": "Example: A Brooklyn pizzeria writes its street address as real selectable text wrapped in a Maps link, so a customer can long-press, copy it into a rideshare app, and head over instead of squinting at an address buried inside a flyer image.",
-   "es": "Ejemplo: una pizzería de Brooklyn escribe su dirección como texto real seleccionable dentro de un enlace a Maps, de modo que un cliente puede mantener pulsado, copiarla en una app de transporte y salir hacia allá en vez de forzar la vista con una dirección incrustada en una imagen."
-  },
-  "cover": {
-   "en": "Example: A neighborhood trattoria says it did 180 covers on Saturday, meaning 180 guests were seated and served, and the owner multiplies that by the average check to estimate the night's revenue.",
-   "es": "Ejemplo: una trattoria de barrio dice que hizo 180 cubiertos el sábado, lo que significa que 180 comensales fueron sentados y atendidos, y el dueño multiplica esa cifra por el cheque promedio para estimar los ingresos de la noche."
-  },
-  "cta": {
-   "en": "Example: A Silver Spring taqueria puts one bright 'Order Online' button on its first screen and repeats it after the menu, so a hungry visitor never has to scroll hunting for the one action the page most wants them to take.",
-   "es": "Ejemplo: una taquería de Silver Spring coloca un botón brillante de 'Pedir en línea' en la primera pantalla y lo repite después del menú, para que un visitante con hambre nunca tenga que desplazarse buscando la acción que la página más quiere que realice."
-  },
-  "cuisine-pitch": {
-   "en": "Example: A new spot opens its homepage with the line 'Wood-fired Neapolitan pizza in downtown Silver Spring, open late,' so a first-time visitor knows the cuisine, the neighborhood, and the vibe before deciding whether to read on.",
-   "es": "Ejemplo: un local nuevo abre su portada con la frase 'Pizza napolitana al horno de leña en el centro de Silver Spring, abierto hasta tarde', para que un visitante que llega por primera vez conozca la cocina, el barrio y el ambiente antes de decidir si sigue leyendo."
-  },
-  "data-tiering": {
-   "en": "Example: A small restaurant group sorts its information into tiers, keeping the public menu open but holding the supplier list and tax ID at higher levels, so a new marketing freelancer gets the hours and photos without ever touching regulated records.",
-   "es": "Ejemplo: un pequeño grupo de restaurantes ordena su información en niveles, dejando abierto el menú público pero reservando la lista de proveedores y el RFC en niveles más altos, de modo que un nuevo freelance de marketing recibe los horarios y las fotos sin tocar nunca los datos regulados."
-  },
-  "delivery-presence": {
-   "en": "Example: A fast-casual taqueria links its homepage straight to a major delivery aggregator, so a customer hungry at 9pm finds the order button on the site instead of opening an app and ordering from whichever competitor happens to be listed.",
-   "es": "Ejemplo: una taquería de comida rápida enlaza su portada directamente a un gran agregador de delivery, así que un cliente con hambre a las 9 de la noche encuentra el botón de pedido en el sitio en lugar de abrir una app y pedir al competidor que aparezca listado."
-  },
-  "design-token": {
-   "en": "Example: A neighborhood cafe names its main color once as --brand-primary and references it everywhere, so switching the brand from rust to olive becomes a single one-line edit instead of a search-and-replace across dozens of stylesheet files.",
-   "es": "Ejemplo: un café de barrio nombra su color principal una sola vez como --brand-primary y lo referencia en todas partes, de modo que cambiar la marca de óxido a oliva se vuelve una edición de una línea en lugar de un buscar-y-reemplazar en decenas de hojas de estilo."
-  },
-  "dietary-markers": {
-   "en": "Example: A neighborhood bistro tags each dish with clear text markers for gluten-free, vegan, and nut-containing prep plus a short legend, so a party including one coeliac diner can self-select on a phone instead of quizzing the server about every plate.",
-   "es": "Ejemplo: un bistró de barrio etiqueta cada plato con señales de texto claras para sin gluten, vegano y con frutos secos, más una breve leyenda, así que un grupo con un comensal celíaco puede elegir por su cuenta en el teléfono en lugar de interrogar al mesero sobre cada plato."
-  },
-  "direct-ordering": {
-   "en": "Example: A Brooklyn pizzeria nudges guests toward ordering on its own site with a QR code on every table and free loyalty for direct orders, keeping the platform commission it would otherwise hand an aggregator on each pie.",
-   "es": "Ejemplo: una pizzería de Brooklyn anima a sus comensales a pedir desde su propio sitio con un código QR en cada mesa y lealtad gratuita para los pedidos directos, conservando la comisión de plataforma que de otro modo entregaría a un agregador en cada pizza."
-  },
-  "domain-name": {
-   "en": "Example: A neighborhood cafe buys a short domain it can say out loud without spelling, owns it outright through a registrar on auto-renew, and points it at its host, so the same address sits on its menu, signage, and Instagram bio.",
-   "es": "Ejemplo: un café de barrio compra un dominio corto que puede decir en voz alta sin deletrear, lo posee en propiedad a través de un registrador con renovación automática y lo apunta a su hosting, de modo que la misma dirección aparece en su menú, su letrero y su perfil de Instagram."
-  },
-  "elasticity": {
-   "en": "Example: A neighborhood trattoria raises its menu about 6% and, in line with a rough rule of thumb, loses roughly 2 to 3% of covers, so the owner uses a slider to test what happens if that elasticity guess is off by a point.",
-   "es": "Ejemplo: una trattoria de barrio sube su menú alrededor de un 6% y, en línea con una regla aproximada, pierde cerca de un 2 a 3% de cubiertos, así que el dueño usa un control deslizante para probar qué pasa si esa estimación de elasticidad se desvía un punto."
-  },
-  "favicon": {
-   "en": "Example: A neighborhood cafe ships a simplified version of its mark as a favicon at 16, 32, 192, and 512 pixels, so the tab, the bookmark, and the home-screen icon each look crisp rather than showing a default gray square.",
-   "es": "Ejemplo: un café de barrio publica una versión simplificada de su símbolo como favicon en 16, 32, 192 y 512 píxeles, de modo que la pestaña, el marcador y el ícono de la pantalla de inicio se ven nítidos en lugar de mostrar un cuadrado gris por defecto."
-  },
-  "fcp": {
-   "en": "Example: A Silver Spring taqueria swaps its slow background video for a single optimized photo, dropping First Contentful Paint from 3.4 to 1.5 seconds, so the menu headline appears almost instantly instead of behind a blank white screen.",
-   "es": "Ejemplo: una taquería en Silver Spring reemplaza su lento video de fondo por una sola foto optimizada y baja su First Contentful Paint de 3.4 a 1.5 segundos, mostrando el titular del menú casi al instante en lugar de una pantalla en blanco."
-  },
-  "fetch-request": {
-   "en": "Example: A neighborhood cafe owner opens DevTools, switches to the Network tab, and types a food cost into a free margin tool — when a fetch request fires on every single keystroke, it confirms each number is being sent off to someone else's server.",
-   "es": "Ejemplo: el dueño de un café de barrio abre DevTools, va a la pestaña Network y escribe un costo en una herramienta gratuita de márgenes; cuando una solicitud fetch se dispara con cada tecla, confirma que cada cifra se está enviando al servidor de otra persona."
-  },
-  "fixed-costs": {
-   "en": "Example: A Brooklyn pizzeria adds up rent, insurance, the loan payment, and its POS and reservation subscriptions and finds it owes roughly $22,000 in fixed costs every month before a single slice is sold.",
-   "es": "Ejemplo: una pizzería en Brooklyn suma renta, seguro, el pago del préstamo y sus suscripciones de POS y reservas, y descubre que debe unos $22,000 en costos fijos cada mes antes de vender una sola rebanada."
-  },
-  "food-cost": {
-   "en": "Example: A neighborhood bistro tracks its food cost at 36% for the quarter, four points over its 32% target, and traces most of the gap to oversized steak portions and unlogged prep waste.",
-   "es": "Ejemplo: un bistró de barrio registra un food cost del 36% en el trimestre, cuatro puntos sobre su meta del 32%, y rastrea casi toda la diferencia hasta porciones de carne demasiado grandes y merma de cocina sin registrar."
-  },
-  "form-abandonment": {
-   "en": "Example: A coastal seafood restaurant sees heavy form abandonment after adding a required \"how did you hear about us?\" field to its reservation form, and bookings recover once the team trims it back to name, party size, and time.",
-   "es": "Ejemplo: un restaurante de mariscos en la costa nota un fuerte abandono de formulario tras agregar un campo obligatorio de \"¿cómo nos conociste?\" en sus reservas, y las reservaciones se recuperan cuando el equipo lo reduce a nombre, número de personas y hora."
-  },
-  "funnel": {
-   "en": "Example: A downtown ramen shop maps its funnel and discovers that plenty of visitors reach the reservation form but most drop off right there, so the team focuses its fixes on that one step instead of redesigning the whole site.",
-   "es": "Ejemplo: un local de ramen en el centro traza su embudo y descubre que muchos visitantes llegan al formulario de reserva pero la mayoría lo abandona justo ahí, así que el equipo concentra los arreglos en ese paso en vez de rediseñar todo el sitio."
-  },
-  "gbp": {
-   "en": "Example: A Silver Spring taqueria spends one hour on its Google Business Profile fixing its categories, adding current hours, and linking the real menu, and starts showing up in \"tacos near me\" searches it was invisible for before.",
-   "es": "Ejemplo: una taquería en Silver Spring dedica una hora a su Ficha de Google Business para corregir categorías, agregar el horario actual y enlazar el menú real, y empieza a aparecer en búsquedas de \"tacos cerca de mí\" en las que antes era invisible."
-  },
-  "gbp-hours-mismatch": {
-   "en": "Example: A neighborhood cafe's website still lists a 9pm close while its Google Business Profile says 5pm, so a party of six searching \"open now\" trusts Google, assumes the kitchen is shut, and books somewhere else entirely.",
-   "es": "Ejemplo: el sitio de un café de barrio aún indica cierre a las 9pm mientras su Ficha de Google Business dice 5pm, así que un grupo de seis que busca \"abierto ahora\" confía en Google, supone que la cocina ya cerró y reserva en otro lugar."
-  },
-  "gbp-photo-count": {
-   "en": "Example: A new wine bar has only four images in its Google Business Profile, so a diner swiping the carousel runs out before seeing a plate or the room and moves on to a competitor whose dozens of photos show the food up close.",
-   "es": "Ejemplo: un nuevo bar de vinos tiene solo cuatro imágenes en su Perfil de Google, así que un comensal que desliza el carrusel se queda sin fotos antes de ver un plato o el salón y se pasa a un competidor cuyas decenas de fotos muestran la comida de cerca."
-  },
-  "gift-card-checkout": {
-   "en": "Example: A family-run trattoria drops a gift-card checkout widget into its site header before the holidays, and the December orders it brings in — many redeemed months later by full tables — comfortably carry the slow stretch in January.",
-   "es": "Ejemplo: una trattoría familiar coloca un widget de compra de tarjeta de regalo en el encabezado de su sitio antes de las fiestas, y los pedidos de diciembre que genera —muchos canjeados meses después por mesas completas— cubren con holgura la temporada baja de enero."
-  },
-  "hero": {
-   "en": "Example: A neighborhood cafe rewrites its hero section so the first screen states it's a coffee-and-brunch spot in Capitol Hill with a \"Book a table\" button, answering what, where, and what-now before anyone has to scroll.",
-   "es": "Ejemplo: un café de barrio reescribe su sección hero para que la primera pantalla diga que es un lugar de café y brunch en Capitol Hill con un botón de \"Reservar mesa\", respondiendo qué, dónde y qué-hacer antes de que alguien tenga que desplazarse."
-  },
-  "honest-pricing": {
-   "en": "Example: A farm-to-table spot replaces \"contact us for pricing\" on its tasting menu with a clearly stated $95-per-person total, and first-time diners scanning on their phones stop assuming it's out of reach and start booking.",
-   "es": "Ejemplo: un restaurante de la granja a la mesa reemplaza el \"consulta los precios\" de su menú de degustación por un total claro de $95 por persona, y los comensales primerizos que lo revisan en el celular dejan de suponer que es inalcanzable y empiezan a reservar."
-  },
-  "hosting": {
-   "en": "Example: A Brooklyn pizzeria moves off a cramped shared server to hosting that includes free HTTPS and global caching for about $15 a month, and its already-optimized pages finally load fast for customers across the country.",
-   "es": "Ejemplo: una pizzería en Brooklyn se cambia de un servidor compartido saturado a un hosting que incluye HTTPS gratis y caché global por unos $15 al mes, y sus páginas ya optimizadas por fin cargan rápido para clientes de todo el país."
-  },
-  "hours-of-operation": {
-   "en": "Example: A Silver Spring taqueria updates its hours of operation in one sitting across Google, Yelp, Apple, and its website's schema, so a diner checking any of them before leaving home sees the same Saturday lunch times everywhere.",
-   "es": "Ejemplo: una taquería en Silver Spring actualiza su horario de operación de una sola vez en Google, Yelp, Apple y el schema de su sitio, para que un comensal que lo revise en cualquiera de ellos antes de salir de casa vea los mismos horarios del sábado."
-  },
-  "hours-visibility": {
-   "en": "Example: A neighborhood cafe moves today's hours into a small banner at the top of its homepage, so a visitor wondering \"are they open right now?\" gets the answer in a few seconds instead of digging three clicks into a contact page.",
-   "es": "Ejemplo: un café de barrio coloca el horario de hoy en una pequeña franja en la parte superior de su página principal, para que un visitante que se pregunta \"¿están abiertos ahora?\" obtenga la respuesta en segundos en lugar de buscarla a tres clics en la página de contacto."
-  },
-  "https": {
-   "en": "Example: A downtown burger joint notices its site shows a \"Not Secure\" warning in the address bar, switches on free HTTPS through its host, and the padlock appears, so visitors no longer hesitate before tapping the order button.",
-   "es": "Ejemplo: una hamburguesería del centro nota que su sitio muestra una advertencia de \"No seguro\" en la barra de direcciones, activa HTTPS gratis con su proveedor de hosting y aparece el candado, así que los visitantes ya no dudan antes de tocar el botón de pedir."
-  },
-  "incident-response": {
-   "en": "Example: After a card-skimming scare, a neighborhood bistro is glad it wrote a one-page incident-response plan in advance, so the manager calls the lawyer, POS vendor, and bank in order instead of losing the first day deciding who to phone.",
-   "es": "Ejemplo: tras un susto por clonación de tarjetas, un bistró de barrio agradece haber escrito de antemano un plan de respuesta a incidentes de una página, para que el gerente llame al abogado, al proveedor del POS y al banco en orden en vez de perder el primer día decidiendo a quién marcar."
-  },
-  "inp": {
-   "en": "Example: A busy brunch spot's homepage feels sluggish to tap until the team removes a heavy third-party chat widget, cutting Interaction to Next Paint from 600ms to under 200ms so the \"Reserve\" button responds the instant a guest presses it.",
-   "es": "Ejemplo: la página de un concurrido lugar de brunch se siente lenta al tocar hasta que el equipo elimina un pesado widget de chat de terceros, bajando el Interaction to Next Paint de 600ms a menos de 200ms para que el botón de \"Reservar\" responda en cuanto el cliente lo presiona."
-  },
-  "labor-cost": {
-   "en": "Example: A neighborhood diner sees its labor cost climb to 35% of sales during a slow month and adjusts next week's schedule to trim an overstaffed Tuesday lunch, a faster fix than anything it could do about ingredient prices.",
-   "es": "Ejemplo: un comedor de barrio ve su labor cost subir al 35% de las ventas en un mes flojo y ajusta el horario de la próxima semana para recortar un martes con exceso de personal al mediodía, un arreglo más rápido que cualquier cosa que pudiera hacer con los precios de los ingredientes."
-  },
-  "last-updated-signal": {
-   "en": "Example: A neighborhood cafe adds a \"This Week's Specials\" block and a dated \"Spring Menu — now pouring\" badge, so a visitor checking at 6pm sees fresh content and trusts the place is open rather than guessing it closed months ago.",
-   "es": "Ejemplo: Una cafetería de barrio añade un bloque de \"Especiales de la semana\" y una insignia fechada de \"Menú de primavera — ya disponible\", de modo que quien lo revisa a las 6 de la tarde ve contenido reciente y confía en que el lugar sigue abierto en vez de suponer que cerró hace meses."
-  },
-  "lazy-loading": {
-   "en": "Example: A Brooklyn pizzeria's homepage carries twelve menu photos, but with loading=\"lazy\" only the hero shot downloads up front; the other eleven wait until a visitor scrolls toward them, so the top of the page is usable in under a second.",
-   "es": "Ejemplo: La página de inicio de una pizzería de Brooklyn lleva doce fotos del menú, pero con loading=\"lazy\" solo la imagen principal se descarga de entrada; las otras once esperan hasta que alguien se desplaza hacia ellas, así la parte superior queda lista en menos de un segundo."
-  },
-  "lighthouse": {
-   "en": "Example: A Silver Spring taqueria runs its URL through Lighthouse and sees a mobile performance score of 38, with the audit pointing at unsized hero images and render-blocking scripts as the two fixes that would move the number most.",
-   "es": "Ejemplo: Una taquería de Silver Spring pasa su URL por Lighthouse y obtiene una puntuación de rendimiento móvil de 38, donde la auditoría señala las imágenes principales sin dimensionar y los scripts que bloquean el renderizado como los dos arreglos que más subirían la cifra."
-  },
-  "logo-lockup": {
-   "en": "Example: When a sign shop emails a neighborhood bistro asking them to \"send your logo,\" the owner sends the locked-up mark-plus-wordmark file instead of a cropped menu screenshot, so the storefront sign keeps the same spacing and proportions the designer intended.",
-   "es": "Ejemplo: Cuando un taller de rótulos le escribe a un bistró de barrio pidiéndole que \"mande su logo\", el dueño envía el archivo con la composición de marca y logotipo en vez de una captura recortada del menú, así el rótulo de la fachada conserva el mismo espaciado y las proporciones que el diseñador pensó."
-  },
-  "map-pack": {
-   "en": "Example: Someone searching \"best ramen near me\" sees three pinned restaurants on a small map above the blue links, and a neighborhood noodle bar lands there by keeping its Google Business Profile claimed and correctly categorized, not by tuning its website's SEO.",
-   "es": "Ejemplo: Quien busca \"mejor ramen cerca de mí\" ve tres restaurantes marcados en un mapa pequeño sobre los enlaces azules, y un bar de fideos de barrio aparece ahí por mantener su Perfil de Empresa de Google reclamado y bien categorizado, no por ajustar el SEO de su web."
-  },
-  "margin": {
-   "en": "Example: When a lender tells a neighborhood diner its \"margin looks thin,\" the owner asks which one, because gross margin after food cost can read healthy while operating margin after rent and payroll on the same plate tells a much tighter story.",
-   "es": "Ejemplo: Cuando un prestamista le dice a un comedor de barrio que su \"margen se ve ajustado\", el dueño pregunta cuál, porque el margen bruto tras el costo de los alimentos puede parecer sano mientras el margen operativo tras la renta y la nómina del mismo plato cuenta una historia mucho más apretada."
-  },
-  "menu-mix": {
-   "en": "Example: A taqueria's al pastor taco sold 80 plates last week, but its menu mix only makes sense against the total: 80 out of 200 marks it a Star, while 80 out of 5,000 would flag it as a slow Dog the chef should rethink.",
-   "es": "Ejemplo: El taco al pastor de una taquería vendió 80 platos la semana pasada, pero su cuota del menú solo cobra sentido frente al total: 80 de 200 lo marca como una Estrella, mientras que 80 de 5.000 lo señalaría como un Perro lento que el chef debería replantear."
-  },
-  "meta-description": {
-   "en": "Example: A neighborhood wine bar rewrites its meta description to \"Natural wines and small plates in Logan Circle, open till midnight Thursday through Saturday,\" fitting roughly 150 characters so Google shows the hours and neighborhood instead of cutting them off.",
-   "es": "Ejemplo: Un bar de vinos de barrio reescribe su meta descripción a \"Vinos naturales y platos pequeños en Logan Circle, abierto hasta medianoche de jueves a sábado\", ajustándola a unos 150 caracteres para que Google muestre el horario y la zona en vez de recortarlos."
-  },
-  "mobile-first-indexing": {
-   "en": "Example: A bistro's desktop site looks polished, but because Google only ranks the mobile version, a hamburger menu that hides the hours and a reservation button that overflows the screen on a phone are what actually drag its position down.",
-   "es": "Ejemplo: El sitio de escritorio de un bistró se ve pulido, pero como Google solo clasifica la versión móvil, un menú desplegable que esconde el horario y un botón de reservas que se desborda de la pantalla en el teléfono son lo que de verdad baja su posición."
-  },
-  "monochromatic-palette": {
-   "en": "Example: A seafood spot whose logo is one strong navy builds a monochromatic palette from that single hue — a deep navy for headers, a mid-blue for buttons, and a pale ice tint for backgrounds — so the site reads disciplined without ever looking cheap.",
-   "es": "Ejemplo: Un restaurante de mariscos cuyo logo es un azul marino fuerte construye una paleta monocromática a partir de ese único tono — un azul profundo para los títulos, uno medio para los botones y un tinte hielo pálido para los fondos — así el sitio se ve disciplinado sin parecer barato."
-  },
-  "monochrome-variant": {
-   "en": "Example: A taqueria orders staff polos with its logo embroidered in a single thread color, and because the designer supplied a clean black-and-white monochrome variant, the stitched mark stays crisp instead of turning into a muddy blur on the fabric.",
-   "es": "Ejemplo: Una taquería pide playeras para el personal con su logo bordado en un solo color de hilo, y como el diseñador entregó una variante monocromática limpia en blanco y negro, la marca cosida queda nítida en lugar de convertirse en una mancha borrosa sobre la tela."
-  },
-  "nap-consistency": {
-   "en": "Example: A cafe lists \"Suite 200\" on its website but \"Ste. 200\" on Yelp and different Sunday hours on Facebook, and fixing every listing to match — name, address, phone, and hours — recovers local rank that the mismatches had quietly cost it.",
-   "es": "Ejemplo: Una cafetería pone \"Suite 200\" en su web pero \"Ste. 200\" en Yelp y un horario de domingo distinto en Facebook, y corregir cada ficha para que coincida — nombre, dirección, teléfono y horario — recupera el posicionamiento local que esas discrepancias le habían quitado en silencio."
-  },
-  "newsletter-capture": {
-   "en": "Example: A neighborhood bistro adds a newsletter capture form offering \"first to know about the spring menu,\" wires it to Mailchimp, and later uses the thousand addresses it collected to fill a quiet Tuesday and sell out a ticketed dinner in one afternoon.",
-   "es": "Ejemplo: Un bistró de barrio añade un formulario de captura de newsletter que ofrece \"entérate primero del menú de primavera\", lo conecta a Mailchimp y luego usa las mil direcciones reunidas para llenar un martes flojo y agotar una cena con boletos en una sola tarde."
-  },
-  "og-share-preview": {
-   "en": "Example: When a diner texts a taqueria's URL to four friends to plan dinner, a set og:image and title turn the link into a card showing tacos and the name, instead of a blank grey box that half the group never bothers to tap.",
-   "es": "Ejemplo: Cuando alguien envía por mensaje la URL de una taquería a cuatro amigos para organizar la cena, una og:image y un título definidos convierten el enlace en una tarjeta con tacos y el nombre, en lugar de una caja gris vacía que la mitad del grupo nunca toca."
-  },
-  "oklab": {
-   "en": "Example: A bistro's palette tool warns that its proposed gold and mustard chips \"feel identical\" because it measures the gap in OKLab, where perceived difference is honest, instead of in RGB, where two close numbers can still look worlds apart to the eye.",
-   "es": "Ejemplo: La herramienta de paleta de un bistró advierte que sus muestras de dorado y mostaza \"se sienten idénticas\" porque mide la distancia en OKLab, donde la diferencia percibida es fiel, en vez de en RGB, donde dos números cercanos pueden verse muy distintos para el ojo."
-  },
-  "online-ordering": {
-   "en": "Example: A pizzeria puts an online ordering link on its menu page that drops a hungry visitor straight onto its Toast pickup checkout, skipping any landing page, so fewer people abandon mid-order and the shop keeps more margin than a marketplace app would leave it.",
-   "es": "Ejemplo: Una pizzería coloca en su página de menú un enlace de pedidos en línea que lleva a quien tiene hambre directo al checkout de recogida de Toast, sin páginas intermedias, así menos gente abandona a medio pedido y el local conserva más margen del que le dejaría una app de marketplace."
-  },
-  "open-graph": {
-   "en": "Example: A neighborhood ramen bar adds Open Graph tags so that when a regular pastes the link into a group chat, it appears with a steaming bowl photo and a sharp headline instead of the grey domain-only box everyone scrolls past.",
-   "es": "Ejemplo: Un bar de ramen de barrio agrega etiquetas Open Graph para que, cuando un cliente habitual pega el enlace en un chat de grupo, aparezca con la foto de un tazón humeante y un título nítido en lugar de la caja gris con solo el dominio que todos ignoran."
-  },
-  "pagespeed-insights": {
-   "en": "Example: A taqueria pastes its URL into pagespeed.web.dev once a month, watches its Core Web Vitals, and after compressing its hero image sees the prioritized fixes list shrink and its mobile score climb out of the red.",
-   "es": "Ejemplo: Una taquería pega su URL en pagespeed.web.dev una vez al mes, observa sus Core Web Vitals y, tras comprimir su imagen principal, ve cómo la lista priorizada de arreglos se acorta y su puntuación móvil sale del rojo."
-  },
-  "pii": {
-   "en": "Example: A neighborhood bistro realizes its PII isn't just the email list — the saved card numbers fall under PCI-DSS, and the employee SSNs and I-9 records on file carry their own legal protections, so each set needs to be stored and handled differently.",
-   "es": "Ejemplo: Un bistró de barrio se da cuenta de que su PII no es solo la lista de correos — los números de tarjeta guardados caen bajo PCI-DSS, y los números de seguro social y registros I-9 del personal tienen sus propias protecciones legales, así que cada conjunto debe guardarse y manejarse de forma distinta."
-  },
-  "privacy-policy": {
-   "en": "Example: A Silver Spring taqueria adds a one-page /privacy stating it only collects names and emails from its contact form, never sells them, and deletes inquiries after a year — enough to satisfy GDPR and CCPA without a lawyer.",
-   "es": "Ejemplo: Una taquería de Silver Spring agrega una página /privacy de un solo párrafo donde aclara que solo recoge nombres y correos de su formulario de contacto, nunca los vende y borra las consultas tras un año, suficiente para cumplir con el GDPR y la CCPA sin un abogado."
-  },
-  "professional-email": {
-   "en": "Example: A neighborhood bistro replies to a catering request from hello@elmstreetbistro.com instead of a Gmail address, so the message clears the customer's spam filter and reads like a real business that owns its name.",
-   "es": "Ejemplo: Un bistró de barrio responde a una solicitud de catering desde hola@bistroelmstreet.com en lugar de una cuenta de Gmail, de modo que el mensaje pasa el filtro de spam del cliente y se lee como un negocio real que es dueño de su nombre."
-  },
-  "real-photos": {
-   "en": "Example: A Brooklyn pizzeria swaps the generic stock slice on its homepage for a two-hour shoot of its own blistered pies, brick oven, and Tuesday-night crew, and first-time visitors stop wondering what the place actually looks like.",
-   "es": "Ejemplo: Una pizzería de Brooklyn reemplaza la porción genérica de banco de imágenes de su página principal por una sesión de dos horas con sus propias pizzas tostadas, su horno de ladrillo y su equipo de un martes, y los visitantes nuevos dejan de preguntarse cómo es el lugar de verdad."
-  },
-  "reservation-link": {
-   "en": "Example: A neighborhood trattoria puts a Reserve button in the nav, the hero, and the sticky mobile footer, all wired to the Resy account the hostess stand already watches, so a diner books a Friday table in one tap instead of emailing.",
-   "es": "Ejemplo: Una trattoria de barrio coloca un botón de Reservar en el menú, en el encabezado y en el pie móvil fijo, todos conectados a la cuenta de Resy que el atril de recepción ya revisa, para que un comensal reserve una mesa del viernes con un solo toque en vez de escribir un correo."
-  },
-  "responsive-design": {
-   "en": "Example: A Silver Spring taqueria's single page reflows its menu into one tappable column on a phone, two on a tablet, and a wide grid on a desktop, so the two-thirds of visitors arriving by phone never pinch and zoom.",
-   "es": "Ejemplo: La página única de una taquería de Silver Spring reorganiza su menú en una sola columna táctil en el teléfono, dos en la tableta y una cuadrícula amplia en el escritorio, de modo que los dos tercios de visitantes que llegan por celular nunca tengan que ampliar con los dedos."
-  },
-  "review-responsiveness": {
-   "en": "Example: A neighborhood cafe owner replies to every recent Google review — a quick \"thanks for coming in\" on the five-stars and \"I'm sorry, please email me\" on the one-stars — so a diner reading the latest three sees an operator who is clearly present.",
-   "es": "Ejemplo: La dueña de un café de barrio responde a cada reseña reciente de Google, con un breve \"gracias por venir\" en las de cinco estrellas y un \"lo siento, escríbeme por favor\" en las de una, para que quien lea las últimas tres vea a una operadora claramente presente."
-  },
-  "rich-results": {
-   "en": "Example: A Brooklyn pizzeria's schema markup lets its Google listing show a four-and-a-half-star rating, a \"$$\" price, and today's hours right in the result, so it gets clicked more than the plain text link sitting just above it.",
-   "es": "Ejemplo: El marcado schema de una pizzería de Brooklyn hace que su ficha de Google muestre una calificación de cuatro estrellas y media, un precio \"$$\" y el horario de hoy dentro del propio resultado, así que recibe más clics que el enlace de solo texto que está justo encima."
-  },
-  "robots-txt": {
-   "en": "Example: A neighborhood bakery discovers its new menu page is invisible on Google because a leftover \"Disallow: /\" line in robots.txt was telling every crawler to skip the whole site, and deleting that one line brings the pages back within days.",
-   "es": "Ejemplo: Una panadería de barrio descubre que su nueva página de menú es invisible en Google porque una línea olvidada \"Disallow: /\" en robots.txt le decía a cada rastreador que ignorara todo el sitio, y borrar esa única línea hace que las páginas vuelvan en pocos días."
-  },
-  "schema": {
-   "en": "Example: A Silver Spring taqueria adds a JSON-LD script to its page head declaring it's a Restaurant, its cuisine is Mexican, plus its address, hours, and menu URL, so Google stops guessing and shows those details directly in search.",
-   "es": "Ejemplo: Una taquería de Silver Spring agrega un script JSON-LD en el encabezado de su página que declara que es un Restaurant, que su cocina es mexicana, junto con su dirección, horario y la URL del menú, para que Google deje de adivinar y muestre esos datos directamente en la búsqueda."
-  },
-  "service-charge": {
-   "en": "Example: A neighborhood gastropub replaces tipping with a posted 20% service charge that the menu and the website both explain, splitting the pooled dollars between servers and line cooks so the kitchen finally shares in service-side revenue.",
-   "es": "Ejemplo: Un gastropub de barrio reemplaza las propinas con un cargo de servicio del 20% que explican tanto el menú como el sitio web, repartiendo el dinero acumulado entre meseros y cocineros para que la cocina por fin participe de los ingresos del servicio."
-  },
-  "sitemap": {
-   "en": "Example: A neighborhood cafe submits its /sitemap.xml once to Google Search Console, so when it adds a new seasonal-specials page the listing gets indexed within a few days instead of waiting weeks for Google to stumble onto it.",
-   "es": "Ejemplo: Un café de barrio envía su /sitemap.xml una sola vez a Google Search Console, de modo que cuando agrega una nueva página de especiales de temporada esta se indexa en pocos días en lugar de esperar semanas a que Google la encuentre por casualidad."
-  },
-  "social-proof": {
-   "en": "Example: A neighborhood trattoria pulls one real line from a recent review — \"the best carbonara in the neighborhood\" — and places it right under its hero image, so a first-time visitor sees that other diners already approve before scrolling.",
-   "es": "Ejemplo: Una trattoria de barrio toma una frase real de una reseña reciente, \"la mejor carbonara del barrio\", y la coloca justo debajo de su imagen principal, para que un visitante primerizo vea que otros comensales ya la aprueban antes de seguir bajando."
-  },
-  "special-hours": {
-   "en": "Example: A neighborhood cafe sets a special-hours override for Christmas Eve so its listing shows an early 3 p.m. close instead of the usual 9 p.m., and Google never flags the profile for conflicting with a known holiday.",
-   "es": "Ejemplo: Un café de barrio configura un horario especial para la Nochebuena para que su ficha muestre un cierre temprano a las 3 p. m. en vez del habitual de las 9 p. m., y Google nunca marca el perfil por contradecir un feriado conocido."
-  },
-  "ssl-certificate": {
-   "en": "Example: A Brooklyn pizzeria's expired certificate makes browsers throw a red warning over its menu, and instead of paying anyone to fix it, the owner moves to a host that issues and renews a free Let's Encrypt certificate automatically.",
-   "es": "Ejemplo: El certificado vencido de una pizzería de Brooklyn hace que los navegadores muestren una advertencia roja sobre su menú, y en lugar de pagarle a alguien para arreglarlo, el dueño se cambia a un hosting que emite y renueva un certificado gratuito de Let's Encrypt automáticamente."
-  },
-  "stale-copyright": {
-   "en": "Example: A neighborhood bistro's footer still reads \"© 2019,\" quietly making an out-of-town diner wonder whether it survived the pandemic, until the owner sets the year to render automatically so it always shows the current one.",
-   "es": "Ejemplo: El pie de página de un bistró de barrio aún dice \"© 2019\", lo que hace que un comensal de fuera se pregunte en silencio si sobrevivió a la pandemia, hasta que el dueño configura el año para que se genere automáticamente y siempre muestre el actual."
-  },
-  "sticky-footer": {
-   "en": "Example: A Silver Spring taqueria pins a thin bar with Call and Order buttons to the bottom of every mobile screen, so a visitor sold halfway down the taco list can act with one thumb-tap instead of scrolling back to the top.",
-   "es": "Ejemplo: Una taquería de Silver Spring fija una barra delgada con botones de Llamar y Pedir al fondo de cada pantalla móvil, para que un visitante convencido a mitad de la lista de tacos pueda actuar con un toque del pulgar en vez de volver al inicio."
-  },
-  "subtype-bakery": {
-   "en": "Example: A neighborhood bakery's site leads with a custom-cake order form and a clear cross-contamination note, so a parent ordering a wedding cake for a nut-allergic child can trust the allergen policy before booking the wholesale-sized order.",
-   "es": "Ejemplo: El sitio de una panadería de barrio destaca un formulario de pedidos de pasteles personalizados y una nota clara sobre contaminación cruzada, para que un padre que encarga un pastel de boda para un niño alérgico a los frutos secos pueda confiar en la política de alérgenos antes de hacer el pedido mayorista."
-  },
-  "subtype-bar-pub": {
-   "en": "Example: A neighborhood taproom puts an age gate on entry, a prominent private-events page for booking the back room, and an HTML happy-hour and draft list it can edit the moment a keg blows, instead of a stale PDF.",
-   "es": "Ejemplo: Una cervecería de barrio coloca una verificación de edad al entrar, una página destacada de eventos privados para reservar el salón trasero y una lista de happy hour y barriles en HTML que puede editar en cuanto se acaba un barril, en lugar de un PDF desactualizado."
-  },
-  "subtype-cafe": {
-   "en": "Example: A neighborhood coffee shop puts its hours and address at the very top, a tappable phone number beside them, and a legible espresso-and-pastry menu just below, skipping reservations since the morning rush is most of its revenue.",
-   "es": "Ejemplo: Una cafetería de barrio coloca su horario y dirección en la parte más alta, un número de teléfono táctil al lado y un menú legible de espresso y repostería justo debajo, sin reservas, ya que el ajetreo de la mañana es la mayor parte de sus ingresos."
-  },
-  "subtype-casual-dining": {
-   "en": "Example: A neighborhood Italian bistro takes Friday dinner reservations through OpenTable while routing weekday lunch orders through its own Toast page, so the takeout crowd and the date-night crowd each get the flow they came for.",
-   "es": "Ejemplo: Un bistró italiano de barrio acepta reservas para las cenas del viernes mediante OpenTable y, al mismo tiempo, gestiona los pedidos de almuerzo entre semana desde su propia página de Toast, de modo que el público de comida para llevar y el de cena reciben cada uno el flujo que buscaba."
-  },
-  "subtype-catering-only": {
-   "en": "Example: A wedding caterer in Silver Spring puts per-head pricing, a two-week minimum lead time, and a structured quote form right on the landing page, so an event planner searching \"catering Silver Spring\" can request a bid in under a minute.",
-   "es": "Ejemplo: Un servicio de catering de bodas en Silver Spring coloca el precio por persona, un plazo mínimo de dos semanas y un formulario de cotización estructurado en la página de inicio, de modo que un organizador de eventos que busca \"catering Silver Spring\" puede pedir un presupuesto en menos de un minuto."
-  },
-  "subtype-fast-casual": {
-   "en": "Example: A fast-casual burrito counter puts item names, prices, and a one-tap Order button on the same screen through its own ChowNow page, keeping the full margin instead of handing 25% to an aggregator on every bowl.",
-   "es": "Ejemplo: Un mostrador de burritos fast-casual coloca los nombres de los platos, los precios y un botón de Pedir de un toque en la misma pantalla a través de su propia página de ChowNow, conservando todo el margen en lugar de ceder el 25% a un agregador en cada bol."
-  },
-  "subtype-fine-dining": {
-   "en": "Example: A tasting-menu restaurant treats its Resy widget as the main conversion and keeps a private-dining page ready, because one corporate holiday buyout in December can cover the revenue of an otherwise slow midweek night.",
-   "es": "Ejemplo: Un restaurante de menú degustación trata su widget de Resy como la conversión principal y mantiene lista una página de comedor privado, porque la reserva completa de una empresa en diciembre puede cubrir los ingresos de una noche floja entre semana."
-  },
-  "subtype-food-truck": {
-   "en": "Example: A taco truck replaces the pinned home address with a \"where are we today\" block and a live Instagram feed, so a hungry office worker at noon sees the truck is three blocks away rather than parked at some empty commissary.",
-   "es": "Ejemplo: Un food truck de tacos reemplaza la dirección fija de su sede por un bloque de \"dónde estamos hoy\" y un feed de Instagram en vivo, de modo que un oficinista hambriento al mediodía ve que el camión está a tres cuadras y no estacionado en algún comisariato vacío."
-  },
-  "subtype-ghost-kitchen": {
-   "en": "Example: A delivery-only wing brand runs a clear \"virtual kitchen, no dine-in\" banner above its Uber Eats and DoorDash links, so nobody drives across town expecting a dining room and then leaves a one-star review at an empty door.",
-   "es": "Ejemplo: Una marca de alitas solo para entrega muestra un aviso claro de \"cocina virtual, sin comedor\" encima de sus enlaces de Uber Eats y DoorDash, para que nadie cruce la ciudad esperando un salón y termine dejando una reseña de una estrella frente a una puerta vacía."
-  },
-  "subtype-pizzeria": {
-   "en": "Example: A Brooklyn pizzeria adds a Slice Direct order button and a delivery-radius checker, so a customer six blocks away orders a wood-fired pie straight from the shop and the kitchen keeps roughly 78% margin instead of 55%.",
-   "es": "Ejemplo: Una pizzería de Brooklyn añade un botón de pedido con Slice Direct y un verificador de radio de entrega, de modo que un cliente a seis cuadras pide una pizza al horno de leña directamente al local y la cocina conserva cerca del 78% de margen en vez del 55%."
-  },
-  "tap-targets": {
-   "en": "Example: A neighborhood cafe rebuilds its mobile menu so each \"Add to order\" button is a comfortable 48 pixels tall with real spacing between rows, ending the fat-finger taps that kept sending lunch customers to the wrong item.",
-   "es": "Ejemplo: Una cafetería de barrio rediseña su menú móvil para que cada botón de \"Añadir al pedido\" mida unos cómodos 48 píxeles de alto con espacio real entre filas, eliminando los toques con el dedo equivocado que enviaban a los clientes del almuerzo al plato incorrecto."
-  },
-  "terms-of-service": {
-   "en": "Example: A bistro that takes large-party deposits posts a Terms of Service page spelling out its 48-hour cancellation window and gift-card rules, which settles most chargeback disputes before they reach the card processor.",
-   "es": "Ejemplo: Un bistró que cobra depósitos para grupos grandes publica una página de Términos del servicio que detalla su plazo de cancelación de 48 horas y las reglas de las tarjetas de regalo, lo que resuelve la mayoría de las disputas de contracargos antes de que lleguen al procesador de pagos."
-  },
-  "title-tag": {
-   "en": "Example: A taqueria in Silver Spring sets its title tag to \"Casa Verde — Tacos & Mezcal in Silver Spring, MD\" so the Google result reads as the restaurant name, cuisine, and city all under the 60-character limit.",
-   "es": "Ejemplo: Una taquería en Silver Spring define su etiqueta de título como \"Casa Verde — Tacos y Mezcal en Silver Spring, MD\" para que el resultado de Google muestre el nombre del restaurante, la cocina y la ciudad, todo dentro del límite de 60 caracteres."
-  },
-  "transport-security": {
-   "en": "Example: A bistro flips on the HTTPS-always setting in its Cloudflare dashboard, and the \"Not secure\" warning that had been scaring off party-of-twelve holiday bookers disappears, lifting its Mozilla Observatory grade from an F toward an A.",
-   "es": "Ejemplo: Un bistró activa la opción de HTTPS siempre en su panel de Cloudflare, y la advertencia de \"No seguro\" que ahuyentaba a quienes reservaban mesas para doce en las fiestas desaparece, subiendo su calificación de Mozilla Observatory de una F hacia una A."
-  },
-  "ttfb": {
-   "en": "Example: A neighborhood cafe's pages take 900 milliseconds just to send their first byte on cheap shared hosting, so the owner moves to a faster host and the whole site feels quicker before a single image is even touched.",
-   "es": "Ejemplo: Las páginas de una cafetería de barrio tardan 900 milisegundos solo en enviar su primer byte en un alojamiento compartido barato, así que el dueño cambia a un host más rápido y todo el sitio se siente más ágil antes de tocar siquiera una sola imagen."
-  },
-  "typography-pairing": {
-   "en": "Example: A new trattoria pairs a warm serif for its headings with a clean geometric sans for the menu body, and the room reads as handmade and old-world instead of like a chain template from 2008.",
-   "es": "Ejemplo: Una nueva trattoria combina una serif cálida en sus títulos con una sans geométrica y limpia para el cuerpo del menú, y el lugar se percibe artesanal y de viejo mundo en vez de parecer una plantilla de cadena de 2008."
-  },
-  "url-fragment": {
-   "en": "Example: A margin calculator on a restaurant-tools site packs the chef's cost inputs into the part of the link after the # symbol, so the owner can bookmark the scenario and the server never receives any of those private numbers.",
-   "es": "Ejemplo: Una calculadora de márgenes en un sitio de herramientas para restaurantes guarda los datos de costos del chef en la parte del enlace que va después del símbolo #, de modo que el dueño puede guardar el escenario y el servidor nunca recibe ninguna de esas cifras privadas."
-  },
-  "url-fragment-vs-query": {
-   "en": "Example: Before trusting a pricing tool's \"your numbers stay in the URL\" promise, a cafe owner checks whether the food costs sit after the ? where the server logs them, or after the # where the server never sees them at all.",
-   "es": "Ejemplo: Antes de confiar en la promesa de una herramienta de precios de que \"tus números se quedan en la URL\", el dueño de una cafetería verifica si los costos de los alimentos van después del ? donde el servidor los registra, o después del # donde el servidor nunca los ve."
-  },
-  "variable-costs": {
-   "en": "Example: A taqueria adds up the tortillas, carne, hourly cooks, card fees, and takeout packaging on a single order and finds its late-night delivery daypart barely covers its own marginal cost, so the owner trims those hours.",
-   "es": "Ejemplo: Una taquería suma las tortillas, la carne, los cocineros por hora, las comisiones de tarjeta y el empaque para llevar de un solo pedido y descubre que su franja de entregas nocturnas apenas cubre su propio costo marginal, así que el dueño recorta esas horas."
-  },
-  "viewport-meta": {
-   "en": "Example: A pizzeria adds the one-line viewport meta tag its old theme was missing, and the menu that used to load shrunken and tiny on phones suddenly renders at full phone width, readable without any pinching or zooming.",
-   "es": "Ejemplo: Una pizzería añade la línea de la etiqueta meta viewport que le faltaba a su plantilla antigua, y el menú que antes se cargaba diminuto y encogido en los teléfonos ahora se muestra al ancho completo del móvil, legible sin tener que pellizcar ni hacer zoom."
-  },
-  "working-contact-form": {
-   "en": "Example: A bistro owner sends a test message through her own contact form each quarter, and when nothing lands in the inbox within five minutes she swaps in a new form rather than keep losing private-event inquiries in silence.",
-   "es": "Ejemplo: La dueña de un bistró envía un mensaje de prueba a través de su propio formulario de contacto cada trimestre, y cuando no llega nada a la bandeja de entrada en cinco minutos, instala un formulario nuevo en lugar de seguir perdiendo en silencio las consultas de eventos privados."
-  },
-  "yield-percent": {
-   "en": "Example: A bistro buys whole halibut that yields only about 50% after trimming bone and skin, so the chef prices the dish off the true cost of a usable ounce instead of the raw invoice weight, which would have under-priced it by a third.",
-   "es": "Ejemplo: Un bistró compra halibut entero que rinde solo alrededor del 50% tras retirar espina y piel, así que el chef fija el precio del plato según el costo real de una onza aprovechable y no según el peso bruto de la factura, que lo habría dejado un tercio por debajo."
-  },
-  "charm-pricing": {
-   "en": "Example: A neighborhood taqueria prices its burrito at $11.95 instead of $12, because the cents ending makes the menu read as carefully priced rather than rounded up, even though the real difference is a nickel.",
-   "es": "Ejemplo: Una taquería de barrio fija su burrito en $11.95 en lugar de $12, porque la terminación en centavos hace que el menú se lea como cuidadosamente fijado en vez de redondeado hacia arriba, aunque la diferencia real sea de cinco centavos."
-  },
-  "edible-portion": {
-   "en": "Example: A coastal bistro buys whole halibut at $12 a pound, but after trimming bone and skin only half is usable, so its edible-portion cost is really $24 a pound — the number the chef must price the dish from.",
-   "es": "Ejemplo: Un bistró costero compra halibut entero a $12 la libra, pero tras retirar espina y piel solo la mitad es aprovechable, así que su costo de porción comestible es en realidad $24 la libra — la cifra desde la que el chef debe fijar el precio del plato."
-  },
-  "hreflang": {
-   "en": "Example: A bilingual taqueria adds an hreflang tag pairing its English menu page with its Spanish one, so a Spanish-speaking diner searching in Spanish lands on the Spanish version instead of the English page with a translate banner.",
-   "es": "Ejemplo: Una taquería bilingüe agrega una etiqueta hreflang que vincula su página de menú en inglés con la versión en español, de modo que un comensal hispanohablante que busca en español llega a la versión en español en lugar de la página en inglés con un aviso de traducir."
-  },
-  "menu-copy": {
-   "en": "Example: A neighborhood bistro rewrites \"Chicken sandwich\" as \"Buttermilk-brined chicken thigh, pickles, chili mayo on a potato bun,\" and the same dish at the same price suddenly reads as worth ordering — that gap is menu copy.",
-   "es": "Ejemplo: Un bistró de barrio reescribe \"Sándwich de pollo\" como \"Muslo de pollo en salmuera de suero, pepinillos y mayonesa de chile en pan de papa\", y el mismo plato al mismo precio de pronto se lee como digno de pedir — esa diferencia es el copy de menú."
-  },
-  "photo-brief": {
-   "en": "Example: Before a shoot, a neighborhood cafe hands its photographer a one-page photo brief listing the eight hero dishes, the three needed crops for web and Instagram, and the natural-light window, so the session yields exactly what the site needs.",
-   "es": "Ejemplo: Antes de una sesión, un café de barrio entrega a su fotógrafo un brief de una página que enumera los ocho platos principales, los tres recortes necesarios para web e Instagram y la franja de luz natural, para que la sesión rinda justo lo que el sitio necesita."
-  },
-  "plate-cost": {
-   "en": "Example: A taqueria adds up the tortilla, carne, salsa, and garnish on one al pastor plate and finds it costs $2.80 to send to the pass, so it knows a $9 menu price leaves room for rent, labor, and margin.",
-   "es": "Ejemplo: Una taquería suma la tortilla, la carne, la salsa y la guarnición de un plato al pastor y descubre que cuesta $2.80 enviarlo al pase, así que sabe que un precio de menú de $9 deja espacio para renta, mano de obra y margen."
-  },
-  "sensory-adjective": {
-   "en": "Example: A ramen bar swaps \"pork broth\" for \"silky, slow-simmered pork broth\" on its menu, and the sensory adjectives do the selling a flat noun never could, helping a scanning diner picture the bowl before ordering.",
-   "es": "Ejemplo: Un bar de ramen cambia \"caldo de cerdo\" por \"caldo de cerdo sedoso, cocido a fuego lento\" en su menú, y los adjetivos sensoriales venden lo que un sustantivo plano nunca podría, ayudando a un comensal que hojea a imaginar el tazón antes de pedir."
-  },
-  "wcag-contrast": {
-   "en": "Example: A neighborhood cafe sets its menu text in light gray on a cream background until a contrast checker flags it at 2.8:1, below the WCAG AA 4.5:1 minimum, so it darkens the text and the menu becomes readable in bright daylight.",
-   "es": "Ejemplo: Una cafetería de barrio pone el texto de su menú en gris claro sobre fondo crema hasta que un verificador de contraste lo marca en 2.8:1, por debajo del mínimo WCAG AA de 4.5:1, así que oscurece el texto y el menú se vuelve legible bajo la luz del día."
-  },
-  "brand-identity": {
-   "en": "Example: A neighborhood taqueria writes down its identity — a single rust-red, one serif headline font, and a \"warm but never cutesy\" voice — so its menu, its Instagram grid, and its storefront sign all read as the same restaurant six months later.",
-   "es": "Ejemplo: Una taquería de barrio escribe su identidad — un único rojo óxido, una fuente serif para titulares y una voz \"cálida pero nunca cursi\" — para que su menú, su feed de Instagram y el rótulo de su fachada se lean como el mismo restaurante seis meses después."
-  },
-  "hero-shot": {
-   "en": "Example: A neighborhood bistro picks one backlit shot of its signature pasta as the hero, and that single photo carries the web homepage, the Yelp featured slot, and the Instagram profile grid, so a returning diner recognizes the place before reading a word.",
-   "es": "Ejemplo: Un bistró de barrio elige una sola toma a contraluz de su pasta insignia como hero, y esa única foto encabeza la página web, el espacio destacado de Yelp y la cuadrícula de Instagram, así un comensal que vuelve reconoce el lugar antes de leer una palabra."
-  },
-  "holiday-hours": {
-   "en": "Example: A neighborhood cafe sets a holiday-hours rule closing early at 3pm every Christmas Eve, so a customer searching \"open today?\" on December 24th gets the right answer from Google instead of showing up to a locked door at 8pm.",
-   "es": "Ejemplo: Una cafetería de barrio configura una regla de horario festivo que cierra temprano a las 3pm cada Nochebuena, para que un cliente que busca \"¿abierto hoy?\" el 24 de diciembre reciba la respuesta correcta de Google en vez de llegar a una puerta cerrada a las 8pm."
-  },
-  "margin-math": {
-   "en": "Example: A Brooklyn pizzeria owner runs the Prime Cost Check and Break-Even Covers calculators on the first of each month, prints the one-page report, and drops it beside the P&L before handing it to the bookkeeper — every input staying in the browser.",
-   "es": "Ejemplo: El dueño de una pizzería de Brooklyn corre las calculadoras de Costo Primo y Comensales de Equilibrio el primero de cada mes, imprime el reporte de una página y lo deja junto al estado de resultados antes de pasárselo al contador — cada dato quedándose en el navegador."
-  },
-  "owned-channel": {
-   "en": "Example: A taqueria that takes a Friday order through its own website keeps the guest's phone number and email plus the full margin, while the same order through a delivery app hands both the contact and a 25% cut to a platform it does not control.",
-   "es": "Ejemplo: Una taquería que toma un pedido del viernes por su propio sitio web conserva el teléfono y el correo del comensal más todo el margen, mientras que ese mismo pedido por una app de delivery entrega tanto el contacto como un 25% de comisión a una plataforma que no controla."
-  },
-  "structured-data": {
-   "en": "Example: A neighborhood bistro adds a JSON block to its page head listing its hours, address, and price range, so when someone searches its name Google shows today’s hours right in the result instead of making the diner click through and hunt.",
-   "es": "Ejemplo: Un bistró de barrio agrega un bloque JSON al encabezado de su página con su horario, dirección y rango de precios, así cuando alguien busca su nombre Google muestra el horario de hoy directo en el resultado en vez de obligar al comensal a entrar y buscarlo."
-  },
-  "third-party-marketplace": {
-   "en": "Example: A Brooklyn pizzeria gets half its orders through a delivery marketplace that takes 25% and owns the customer list, so it prints a QR code on every box nudging those diners to reorder direct next time and slowly win the relationship back.",
-   "es": "Ejemplo: Una pizzería de Brooklyn recibe la mitad de sus pedidos por un marketplace de delivery que cobra 25% y es dueño de la lista de clientes, así que imprime un código QR en cada caja invitando a esos comensales a pedir directo la próxima vez y recuperar poco a poco la relación."
-  },
-  "wholesale": {
-   "en": "Example: the Cost Index shows a typical wholesale range for an ingredient this week, while your invoice lists a higher per-unit figure. The gap is delivery and your vendor&rsquo;s margin &mdash; the wholesale range is the market baseline to measure your price against.",
-   "es": "Ejemplo: el &Iacute;ndice de costos muestra un rango mayorista t&iacute;pico para un ingrediente esta semana, mientras tu factura indica una cifra m&aacute;s alta por unidad. La diferencia es la entrega y el margen de tu proveedor &mdash; el rango mayorista es la base de mercado contra la que medir tu precio."
+  "_doc": "Phase G.4 (Growth) — per-glossary-term concrete-example sentences. Each entry is one short sentence that grounds the abstract definition in a real restaurant scenario. inject-glossary-term-examples.mjs reads this file and stamps a sentinel-bracketed <p class='term-example'> block on each term page (EN + ES). Slug must match a directory under glossary/.",
+  "examples": {
+    "cdn": {
+      "en": "Example: A Brooklyn pizzeria's images load in under 200ms in San Diego because Cloudflare cached them at a Los Angeles edge — without a CDN, every byte travels the full 2,800 miles each time.",
+      "es": "Ejemplo: Las imágenes de una pizzería de Brooklyn cargan en menos de 200ms en San Diego porque Cloudflare las guardó en un edge en Los Ángeles — sin CDN, cada byte viaja los 2,800 km cada vez."
+    },
+    "core-web-vitals": {
+      "en": "Example: A bistro's LCP at 4.2s and CLS at 0.18 — both 'poor' — costs the page about 30% of its mobile bookings before any other factor matters.",
+      "es": "Ejemplo: Un LCP de 4.2s y un CLS de 0.18 en un bistró — ambos en 'poor' — le cuesta a la página cerca del 30% de las reservas móviles antes de que cualquier otro factor importe."
+    },
+    "schema-markup": {
+      "en": "Example: A pizzeria with `priceRange: $$` and `acceptsReservations: true` in its Restaurant schema gets the booking-eligible badge in Google's Find a Table card.",
+      "es": "Ejemplo: Una pizzería con `priceRange: $$` y `acceptsReservations: true` en su schema de Restaurant obtiene la insignia de booking-eligible en la tarjeta de Find a Table de Google."
+    },
+    "menu-schema": {
+      "en": "Example: A taqueria using <code>Menu</code> + <code>MenuSection</code> + <code>MenuItem</code> can rank for 'tacos al pastor near me' on the dish itself, not just the restaurant.",
+      "es": "Ejemplo: Una taquería usando <code>Menu</code> + <code>MenuSection</code> + <code>MenuItem</code> puede posicionar para 'tacos al pastor cerca de mí' por el plato mismo, no solo por el restaurante."
+    },
+    "opening-hours-specification": {
+      "en": "Example: A diner with valid OpeningHoursSpecification + holiday overrides shows the correct 'Closed Christmas Day' notice in Google's panel — without it, hungry holiday-eve searches see stale hours.",
+      "es": "Ejemplo: Un diner con OpeningHoursSpecification válido + overrides de feriado muestra el aviso correcto 'Cerrado el Día de Navidad' en el panel de Google — sin él, las búsquedas de víspera ven horarios desactualizados."
+    },
+    "google-business-profile": {
+      "en": "Example: A pizzeria that adds 30 photos and replies to every review within 48 hours during its first 90 days typically lands 2-3 positions higher in the local-pack than identical competitors who don't.",
+      "es": "Ejemplo: Una pizzería que añade 30 fotos y responde a cada reseña en menos de 48 horas durante sus primeros 90 días suele aterrizar 2-3 posiciones más alto en el local-pack que competidores idénticos que no lo hacen."
+    },
+    "find-a-table": {
+      "en": "Example: A trattoria on Resy gets the 'Reserve a table' button directly inside Google's panel — competitors on a non-integrated booking system get 'Book on [their site]' as a less-prominent secondary link.",
+      "es": "Ejemplo: Una trattoria en Resy obtiene el botón 'Reservar mesa' directamente dentro del panel de Google — competidores en un sistema no-integrado obtienen 'Reservar en [su sitio]' como un link secundario menos prominente."
+    },
+    "prime-cost": {
+      "en": "Example: A 65% prime-cost ratio (food + labor combined) is the watershed — above 65% almost no independent restaurant survives a 12-month dip in covers.",
+      "es": "Ejemplo: Un costo primario del 65% (comida + mano de obra) es la línea divisoria — sobre 65% casi ningún restaurante independiente sobrevive una bajada de 12 meses en cubiertos."
+    },
+    "menu-engineering": {
+      "en": "Example: A bistro that re-staged its 4 'puzzle' items (high margin, low sales) with better photos and descriptions saw a 22% lift in their sales mix within 6 weeks — no price changes.",
+      "es": "Ejemplo: Un bistró que re-presentó sus 4 platos 'acertijo' (margen alto, ventas bajas) con mejores fotos y descripciones vio un aumento del 22% en su mix de ventas en 6 semanas — sin cambios de precio."
+    },
+    "lcp": {
+      "en": "Example: An LCP above 2.5s loses an estimated 12% of mobile reservation conversions; above 4.0s the loss compounds to roughly 30%.",
+      "es": "Ejemplo: Un LCP sobre 2.5s pierde un estimado 12% de conversiones móviles de reserva; sobre 4.0s la pérdida compone hasta cerca del 30%."
+    },
+    "cls": {
+      "en": "Example: A CLS of 0.25 (your hero image jumps the menu down 200px on load) makes 1-in-7 mobile visitors mis-tap the wrong CTA — usually the wrong reservation slot.",
+      "es": "Ejemplo: Un CLS de 0.25 (tu imagen hero empuja el menú 200px hacia abajo al cargar) hace que 1 de cada 7 visitantes móviles toque el CTA equivocado — normalmente el slot de reserva equivocado."
+    },
+    "alt-text": {
+      "en": "Example: 'Plate of carnitas with cilantro and lime' beats 'IMG_4521.jpg' for SEO + accessibility + AI search citations — costs 5 seconds per photo to write.",
+      "es": "Ejemplo: 'Plato de carnitas con cilantro y limón' le gana a 'IMG_4521.jpg' en SEO + accesibilidad + citas en búsqueda con IA — cuesta 5 segundos por foto escribirlo."
+    },
+    "canonical-url": {
+      "en": "Example: A bistro running both `/menu/` and `/menu/index.html` without a canonical link splits its ranking signal across two URLs — Google picks the lower-ranked one half the time.",
+      "es": "Ejemplo: Un bistró que sirve tanto `/menu/` como `/menu/index.html` sin canonical link divide su señal de ranking en dos URLs — Google elige la peor mitad del tiempo."
+    },
+    "html-menu": {
+      "en": "Example: A diner switching from PDF menu to HTML saw 4× the click-through from Google search results within 60 days — the PDF was invisible to the dish-level query.",
+      "es": "Ejemplo: Un diner que cambió de PDF a HTML vio 4× el click-through desde resultados de búsqueda en 60 días — el PDF era invisible para la búsqueda a nivel de plato."
+    },
+    "search-console": {
+      "en": "Example: A pizzeria's Search Console shows 12,400 impressions/month for 'pizza near me' but a 0.4% CTR — the meta description is the leverage, not the rank.",
+      "es": "Ejemplo: La Search Console de una pizzería muestra 12,400 impresiones/mes para 'pizza cerca de mí' pero un CTR de 0.4% — la meta description es la palanca, no el ranking."
+    },
+    "above-the-fold": {
+      "en": "Example: A Silver Spring taqueria put its name, neighborhood, and a Reserve button in the top 600 pixels, so a visitor who never scrolls still knows it's a sit-down spot in Silver Spring and can book in one tap.",
+      "es": "Ejemplo: Una taquería de Silver Spring colocó su nombre, su barrio y un botón de Reservar en los primeros 600 píxeles, así que quien no hace scroll igual sabe que es un local con mesas en Silver Spring y puede reservar con un toque."
+    },
+    "accessible-pair": {
+      "en": "Example: A neighborhood cafe loves its brand teal in the logo, but for 14px menu text on a cream background it switches to the darker accessible pair, which keeps the same hue while clearing the 4.5:1 contrast threshold.",
+      "es": "Ejemplo: Un cafe de barrio adora su verde azulado de marca en el logo, pero para el texto del menu de 14px sobre fondo crema usa el par accesible mas oscuro, que conserva el mismo tono y supera el umbral de contraste de 4.5:1."
+    },
+    "aggregator": {
+      "en": "Example: A Brooklyn pizzeria lists on a delivery aggregator that takes a commission on every order, so before signing it checks whether those orders are new customers or just regulars who would have called the shop directly.",
+      "es": "Ejemplo: Una pizzeria de Brooklyn se registra en un agregador de reparto que cobra una comision por cada pedido, asi que antes de firmar revisa si esos pedidos son clientes nuevos o solo habituales que habrian llamado directo al local."
+    },
+    "ai-overview": {
+      "en": "Example: When someone searches whether a neighborhood cafe is open on Sundays, Google's AI Overview answers right at the top of the page, and the cafe earns a citation chip only because its hours sit in clean, schema-anchored text.",
+      "es": "Ejemplo: Cuando alguien busca si un cafe de barrio abre los domingos, el AI Overview de Google responde justo arriba de la pagina, y el cafe gana un chip de cita solo porque su horario esta en texto limpio anclado con schema."
+    },
+    "analogous-colors": {
+      "en": "Example: A natural-wine bar builds its palette from analogous colors — terracotta, rust, and ochre sitting close on the wheel — so the site feels warm and coherent, and it leans on a strong neutral to make up for the low internal contrast.",
+      "es": "Ejemplo: Un bar de vinos naturales arma su paleta con colores analogos (terracota, oxido y ocre, juntos en la rueda) para que el sitio se sienta calido y coherente, y se apoya en un neutro fuerte para compensar el bajo contraste interno."
+    },
+    "apple-bing-maps": {
+      "en": "Example: A Silver Spring taqueria fixed its hours on Google but forgot Apple Maps, so every iPhone owner asking Siri for directions kept getting sent to the address it occupied two years ago until the owner claimed the Apple Maps listing.",
+      "es": "Ejemplo: Una taqueria de Silver Spring corrigio su horario en Google pero olvido Apple Maps, asi que cada dueno de iPhone que le pedia indicaciones a Siri terminaba en la direccion de hace dos anos hasta que reclamo la ficha en Apple Maps."
+    },
+    "aspect-ratio": {
+      "en": "Example: A neighborhood cafe shoots each pastry at 3:2, knowing the web hero will crop to 16:9 and the Instagram grid to 1:1, so one photo of a croissant yields eight clean platform-ready images instead of seven awkward crops.",
+      "es": "Ejemplo: Un cafe de barrio fotografia cada bolleria en proporcion 3:2, sabiendo que el hero web recortara a 16:9 y la cuadricula de Instagram a 1:1, asi que una foto de un croissant rinde ocho imagenes limpias en lugar de siete recortes torpes."
+    },
+    "average-check": {
+      "en": "Example: A Brooklyn pizzeria served 180 covers for $4,500 one Friday, putting its average check at $25, so the owner tests adding a dessert prompt to nudge that number up without needing a single extra guest through the door.",
+      "es": "Ejemplo: Una pizzeria de Brooklyn atendio 180 comensales por $4,500 un viernes, lo que deja el ticket promedio en $25, asi que el dueno prueba sugerir postre para subir esa cifra sin necesitar ni un comensal extra en la puerta."
+    },
+    "body-text-size": {
+      "en": "Example: A Silver Spring taqueria set its menu descriptions to 17px after noticing that 14px text made iOS Safari zoom in every time a guest tapped the reservation field, breaking the layout on their phone.",
+      "es": "Ejemplo: Una taqueria de Silver Spring puso las descripciones de su menu en 17px tras notar que el texto de 14px hacia que iOS Safari ampliara cada vez que un comensal tocaba el campo de reserva, rompiendo el diseno en el telefono."
+    },
+    "bounce-rate": {
+      "en": "Example: A neighborhood cafe saw its homepage bounce rate sitting above 70%, a sign that visitors couldn't tell what kind of place it was fast enough, so it rewrote the hero to say plainly that it's an all-day brunch spot.",
+      "es": "Ejemplo: Un cafe de barrio vio su tasa de rebote en la pagina principal por encima del 70%, senal de que los visitantes no entendian rapido que clase de lugar era, asi que reescribio el hero para decir claramente que es un local de brunch todo el dia."
+    },
+    "breadcrumb": {
+      "en": "Example: A Brooklyn pizzeria adds a breadcrumb trail like Home › Menu › Pizzas at the top of each page, so Google shows a short muntin.digital › Menu › Pizzas trail in results instead of a long URL, and phone visitors get an easy tap back up a level.",
+      "es": "Ejemplo: Una pizzeria de Brooklyn agrega un breadcrumb como Inicio › Menu › Pizzas en la parte superior de cada pagina, asi Google muestra una ruta corta en los resultados en vez de una URL larga, y los visitantes en el telefono pueden subir un nivel con un toque."
+    },
+    "break-even": {
+      "en": "Example: A Silver Spring taqueria works backward from its fixed costs and finds it needs 95 covers a day to break even, so any Tuesday under that count isn't just slow, it's a day where every plate served still lost money.",
+      "es": "Ejemplo: Una taqueria de Silver Spring calcula hacia atras desde sus costos fijos y descubre que necesita 95 comensales al dia para alcanzar el punto de equilibrio, asi que un martes por debajo de esa cifra no solo es flojo: es un dia en que cada plato perdio dinero."
+    },
+    "catering-page": {
+      "en": "Example: A neighborhood cafe builds a catering page listing its 20-person minimum, a sample box-lunch menu, and a 48-hour lead time, so a corporate planner can judge fit in under a minute and the inquiry form lands straight in the events inbox.",
+      "es": "Ejemplo: Un cafe de barrio crea una pagina de catering con su minimo de 20 personas, un menu de cajas de almuerzo de muestra y un aviso previo de 48 horas, para que un organizador corporativo evalue si encaja en menos de un minuto y el formulario llegue directo al buzon de eventos."
+    },
+    "clearspace": {
+      "en": "Example: A Brooklyn pizzeria's style guide sets clearspace at one cap-height of the wordmark around the logo, so when a printer wants to cram a phone number right against the mark on a flyer, the rule says to keep that zone empty.",
+      "es": "Ejemplo: La guia de estilo de una pizzeria de Brooklyn fija el espacio de resguardo en una altura de mayuscula del logotipo alrededor del logo, asi que cuando una imprenta quiere meter un telefono pegado a la marca en un folleto, la regla obliga a dejar esa zona vacia."
+    },
+    "click-to-call": {
+      "en": "Example: A Silver Spring taqueria wraps its phone number in a tel: link, so a hungry commuter on the sidewalk taps it once and the dialer opens pre-filled, instead of having to copy the digits and switch over to the phone app.",
+      "es": "Ejemplo: Una taqueria de Silver Spring envuelve su numero en un enlace tel:, asi un comensal apurado en la acera lo toca una vez y se abre el marcador ya rellenado, en lugar de tener que copiar los digitos y cambiar a la aplicacion de telefono."
+    },
+    "click-to-directions": {
+      "en": "Example: A neighborhood cafe links its address to a Google Maps URL, so a customer already walking over taps it and the map app opens with the cafe set as the destination, instead of retyping the street address by hand.",
+      "es": "Ejemplo: Un cafe de barrio enlaza su direccion a una URL de Google Maps, asi un cliente que ya viene caminando la toca y la aplicacion de mapas se abre con el cafe puesto como destino, en lugar de teclear la direccion a mano."
+    },
+    "client-side": {
+      "en": "Example: A Brooklyn pizzeria owner types last month's food costs into a margin calculator and opens DevTools to confirm no request fires, proving the math runs client-side in the browser tab and the numbers never leave the laptop.",
+      "es": "Ejemplo: El dueno de una pizzeria de Brooklyn escribe los costos de comida del mes pasado en una calculadora de margen y abre DevTools para confirmar que no se dispara ninguna peticion, comprobando que el calculo corre del lado del cliente y las cifras nunca salen del portatil."
+    },
+    "client-side-tool": {
+      "en": "Example: Before entering its labor numbers, a Silver Spring taqueria checks the DevTools Network tab and sees nothing fire on each keystroke, confirming it's using a client-side tool whose math stays on the laptop rather than POSTing inputs to a server.",
+      "es": "Ejemplo: Antes de ingresar sus cifras de nomina, una taqueria de Silver Spring revisa la pestana de Red en DevTools y no ve dispararse nada con cada tecla, confirmando que usa una herramienta client-side cuyo calculo se queda en el portatil en vez de enviar los datos a un servidor."
+    },
+    "color-blindness": {
+      "en": "Example: A neighborhood cafe used green for available tables and red for booked ones, until a contrast simulator showed that to a guest with deuteranopia the two merged into one color, so it added text labels alongside the colors.",
+      "es": "Ejemplo: Un cafe de barrio usaba verde para las mesas libres y rojo para las ocupadas, hasta que un simulador de contraste mostro que para un comensal con deuteranopia ambos se fundian en un solo color, asi que agrego etiquetas de texto junto a los colores."
+    },
+    "color-harmony": {
+      "en": "Example: A Silver Spring ramen bar's first palette felt muddy until its designer rebuilt it as an analogous set — three hues sitting within 40° of each other — so the deep broth-brown, burnt-orange, and gold now read as one deliberate family.",
+      "es": "Ejemplo: la primera paleta de un bar de ramen en Silver Spring se veía turbia hasta que su diseñadora la rehízo como un conjunto análogo —tres matices a menos de 40° entre sí—, así que el marrón caldo, el naranja quemado y el dorado ahora se leen como una familia intencionada."
+    },
+    "color-palette": {
+      "en": "Example: A Brooklyn pizzeria documents its palette as one tomato-red primary, a charcoal secondary, a mustard accent, and two warm neutrals, so its menu, website, and takeout bag all print the exact same red instead of three guesses.",
+      "es": "Ejemplo: una pizzería de Brooklyn documenta su paleta como un rojo tomate primario, un gris carbón secundario, un acento mostaza y dos neutros cálidos, de modo que su menú, su sitio web y su bolsa para llevar imprimen exactamente el mismo rojo en lugar de tres versiones distintas."
+    },
+    "commission": {
+      "en": "Example: When a neighborhood taqueria fills a $25 burrito order through an aggregator, a roughly 25% commission plus 2% processing leaves about $18 before food cost, while the same order taken direct at 3% processing leaves closer to $24.",
+      "es": "Ejemplo: cuando una taquería de barrio completa un pedido de burritos de $25 a través de un agregador, una comisión de cerca del 25% más un 2% de procesamiento deja unos $18 antes del costo de comida, mientras que ese mismo pedido tomado de forma directa al 3% deja cerca de $24."
+    },
+    "complementary-colors": {
+      "en": "Example: A daytime taproom wanting an energetic feel pairs a terracotta header against a teal CTA button — hues sitting nearly opposite on the wheel — but keeps the rest of the page neutral so the two bold colors don't fight across every screen.",
+      "es": "Ejemplo: una cervecería diurna que busca un aire enérgico combina un encabezado terracota con un botón de acción turquesa —matices casi opuestos en el círculo cromático—, pero mantiene neutro el resto de la página para que los dos colores intensos no compitan en cada pantalla."
+    },
+    "contribution-margin": {
+      "en": "Example: A bistro notices its $10 appetizer at 30% food cost contributes $7 a plate, while its $30 entree at 40% food cost contributes $18, so even with the 'worse' cost percentage the entree pays far more rent per sale.",
+      "es": "Ejemplo: un bistró nota que su entrante de $10 con un 30% de costo de comida aporta $7 por plato, mientras que su plato fuerte de $30 con un 40% de costo aporta $18, así que, pese al peor porcentaje, el plato fuerte paga mucho más renta por venta."
+    },
+    "conversion-rate": {
+      "en": "Example: A neighborhood cafe's site draws 4,000 visitors a month and about 120 of them book a table, a 3% reservation conversion rate the owner treats as solid before spending another dollar trying to grow raw traffic.",
+      "es": "Ejemplo: el sitio de un café de barrio atrae unos 4.000 visitantes al mes y cerca de 120 reservan una mesa, una tasa de conversión de reservas del 3% que la dueña considera sólida antes de gastar un peso más en aumentar el tráfico bruto."
+    },
+    "cookie-banner": {
+      "en": "Example: A small ramen shop drops its intrusive cookie banner entirely after switching to privacy-friendly analytics that set no tracking cookies, so the homepage greets visitors with its hero photo instead of a consent prompt to dismiss.",
+      "es": "Ejemplo: una pequeña tienda de ramen elimina por completo su molesto banner de cookies tras cambiar a una analítica respetuosa con la privacidad que no instala cookies de rastreo, así que la portada recibe a los visitantes con su foto principal en lugar de un aviso de consentimiento que cerrar."
+    },
+    "copyable-address": {
+      "en": "Example: A Brooklyn pizzeria writes its street address as real selectable text wrapped in a Maps link, so a customer can long-press, copy it into a rideshare app, and head over instead of squinting at an address buried inside a flyer image.",
+      "es": "Ejemplo: una pizzería de Brooklyn escribe su dirección como texto real seleccionable dentro de un enlace a Maps, de modo que un cliente puede mantener pulsado, copiarla en una app de transporte y salir hacia allá en vez de forzar la vista con una dirección incrustada en una imagen."
+    },
+    "cover": {
+      "en": "Example: A neighborhood trattoria says it did 180 covers on Saturday, meaning 180 guests were seated and served, and the owner multiplies that by the average check to estimate the night's revenue.",
+      "es": "Ejemplo: una trattoria de barrio dice que hizo 180 cubiertos el sábado, lo que significa que 180 comensales fueron sentados y atendidos, y el dueño multiplica esa cifra por el cheque promedio para estimar los ingresos de la noche."
+    },
+    "cta": {
+      "en": "Example: A Silver Spring taqueria puts one bright 'Order Online' button on its first screen and repeats it after the menu, so a hungry visitor never has to scroll hunting for the one action the page most wants them to take.",
+      "es": "Ejemplo: una taquería de Silver Spring coloca un botón brillante de 'Pedir en línea' en la primera pantalla y lo repite después del menú, para que un visitante con hambre nunca tenga que desplazarse buscando la acción que la página más quiere que realice."
+    },
+    "cuisine-pitch": {
+      "en": "Example: A new spot opens its homepage with the line 'Wood-fired Neapolitan pizza in downtown Silver Spring, open late,' so a first-time visitor knows the cuisine, the neighborhood, and the vibe before deciding whether to read on.",
+      "es": "Ejemplo: un local nuevo abre su portada con la frase 'Pizza napolitana al horno de leña en el centro de Silver Spring, abierto hasta tarde', para que un visitante que llega por primera vez conozca la cocina, el barrio y el ambiente antes de decidir si sigue leyendo."
+    },
+    "data-tiering": {
+      "en": "Example: A small restaurant group sorts its information into tiers, keeping the public menu open but holding the supplier list and tax ID at higher levels, so a new marketing freelancer gets the hours and photos without ever touching regulated records.",
+      "es": "Ejemplo: un pequeño grupo de restaurantes ordena su información en niveles, dejando abierto el menú público pero reservando la lista de proveedores y el RFC en niveles más altos, de modo que un nuevo freelance de marketing recibe los horarios y las fotos sin tocar nunca los datos regulados."
+    },
+    "delivery-presence": {
+      "en": "Example: A fast-casual taqueria links its homepage straight to a major delivery aggregator, so a customer hungry at 9pm finds the order button on the site instead of opening an app and ordering from whichever competitor happens to be listed.",
+      "es": "Ejemplo: una taquería de comida rápida enlaza su portada directamente a un gran agregador de delivery, así que un cliente con hambre a las 9 de la noche encuentra el botón de pedido en el sitio en lugar de abrir una app y pedir al competidor que aparezca listado."
+    },
+    "design-token": {
+      "en": "Example: A neighborhood cafe names its main color once as --brand-primary and references it everywhere, so switching the brand from rust to olive becomes a single one-line edit instead of a search-and-replace across dozens of stylesheet files.",
+      "es": "Ejemplo: un café de barrio nombra su color principal una sola vez como --brand-primary y lo referencia en todas partes, de modo que cambiar la marca de óxido a oliva se vuelve una edición de una línea en lugar de un buscar-y-reemplazar en decenas de hojas de estilo."
+    },
+    "dietary-markers": {
+      "en": "Example: A neighborhood bistro tags each dish with clear text markers for gluten-free, vegan, and nut-containing prep plus a short legend, so a party including one coeliac diner can self-select on a phone instead of quizzing the server about every plate.",
+      "es": "Ejemplo: un bistró de barrio etiqueta cada plato con señales de texto claras para sin gluten, vegano y con frutos secos, más una breve leyenda, así que un grupo con un comensal celíaco puede elegir por su cuenta en el teléfono en lugar de interrogar al mesero sobre cada plato."
+    },
+    "direct-ordering": {
+      "en": "Example: A Brooklyn pizzeria nudges guests toward ordering on its own site with a QR code on every table and free loyalty for direct orders, keeping the platform commission it would otherwise hand an aggregator on each pie.",
+      "es": "Ejemplo: una pizzería de Brooklyn anima a sus comensales a pedir desde su propio sitio con un código QR en cada mesa y lealtad gratuita para los pedidos directos, conservando la comisión de plataforma que de otro modo entregaría a un agregador en cada pizza."
+    },
+    "domain-name": {
+      "en": "Example: A neighborhood cafe buys a short domain it can say out loud without spelling, owns it outright through a registrar on auto-renew, and points it at its host, so the same address sits on its menu, signage, and Instagram bio.",
+      "es": "Ejemplo: un café de barrio compra un dominio corto que puede decir en voz alta sin deletrear, lo posee en propiedad a través de un registrador con renovación automática y lo apunta a su hosting, de modo que la misma dirección aparece en su menú, su letrero y su perfil de Instagram."
+    },
+    "elasticity": {
+      "en": "Example: A neighborhood trattoria raises its menu about 6% and, in line with a rough rule of thumb, loses roughly 2 to 3% of covers, so the owner uses a slider to test what happens if that elasticity guess is off by a point.",
+      "es": "Ejemplo: una trattoria de barrio sube su menú alrededor de un 6% y, en línea con una regla aproximada, pierde cerca de un 2 a 3% de cubiertos, así que el dueño usa un control deslizante para probar qué pasa si esa estimación de elasticidad se desvía un punto."
+    },
+    "favicon": {
+      "en": "Example: A neighborhood cafe ships a simplified version of its mark as a favicon at 16, 32, 192, and 512 pixels, so the tab, the bookmark, and the home-screen icon each look crisp rather than showing a default gray square.",
+      "es": "Ejemplo: un café de barrio publica una versión simplificada de su símbolo como favicon en 16, 32, 192 y 512 píxeles, de modo que la pestaña, el marcador y el ícono de la pantalla de inicio se ven nítidos en lugar de mostrar un cuadrado gris por defecto."
+    },
+    "fcp": {
+      "en": "Example: A Silver Spring taqueria swaps its slow background video for a single optimized photo, dropping First Contentful Paint from 3.4 to 1.5 seconds, so the menu headline appears almost instantly instead of behind a blank white screen.",
+      "es": "Ejemplo: una taquería en Silver Spring reemplaza su lento video de fondo por una sola foto optimizada y baja su First Contentful Paint de 3.4 a 1.5 segundos, mostrando el titular del menú casi al instante en lugar de una pantalla en blanco."
+    },
+    "fetch-request": {
+      "en": "Example: A neighborhood cafe owner opens DevTools, switches to the Network tab, and types a food cost into a free margin tool — when a fetch request fires on every single keystroke, it confirms each number is being sent off to someone else's server.",
+      "es": "Ejemplo: el dueño de un café de barrio abre DevTools, va a la pestaña Network y escribe un costo en una herramienta gratuita de márgenes; cuando una solicitud fetch se dispara con cada tecla, confirma que cada cifra se está enviando al servidor de otra persona."
+    },
+    "fixed-costs": {
+      "en": "Example: A Brooklyn pizzeria adds up rent, insurance, the loan payment, and its POS and reservation subscriptions and finds it owes roughly $22,000 in fixed costs every month before a single slice is sold.",
+      "es": "Ejemplo: una pizzería en Brooklyn suma renta, seguro, el pago del préstamo y sus suscripciones de POS y reservas, y descubre que debe unos $22,000 en costos fijos cada mes antes de vender una sola rebanada."
+    },
+    "food-cost": {
+      "en": "Example: A neighborhood bistro tracks its food cost at 36% for the quarter, four points over its 32% target, and traces most of the gap to oversized steak portions and unlogged prep waste.",
+      "es": "Ejemplo: un bistró de barrio registra un food cost del 36% en el trimestre, cuatro puntos sobre su meta del 32%, y rastrea casi toda la diferencia hasta porciones de carne demasiado grandes y merma de cocina sin registrar."
+    },
+    "form-abandonment": {
+      "en": "Example: A coastal seafood restaurant sees heavy form abandonment after adding a required \"how did you hear about us?\" field to its reservation form, and bookings recover once the team trims it back to name, party size, and time.",
+      "es": "Ejemplo: un restaurante de mariscos en la costa nota un fuerte abandono de formulario tras agregar un campo obligatorio de \"¿cómo nos conociste?\" en sus reservas, y las reservaciones se recuperan cuando el equipo lo reduce a nombre, número de personas y hora."
+    },
+    "funnel": {
+      "en": "Example: A downtown ramen shop maps its funnel and discovers that plenty of visitors reach the reservation form but most drop off right there, so the team focuses its fixes on that one step instead of redesigning the whole site.",
+      "es": "Ejemplo: un local de ramen en el centro traza su embudo y descubre que muchos visitantes llegan al formulario de reserva pero la mayoría lo abandona justo ahí, así que el equipo concentra los arreglos en ese paso en vez de rediseñar todo el sitio."
+    },
+    "gbp": {
+      "en": "Example: A Silver Spring taqueria spends one hour on its Google Business Profile fixing its categories, adding current hours, and linking the real menu, and starts showing up in \"tacos near me\" searches it was invisible for before.",
+      "es": "Ejemplo: una taquería en Silver Spring dedica una hora a su Ficha de Google Business para corregir categorías, agregar el horario actual y enlazar el menú real, y empieza a aparecer en búsquedas de \"tacos cerca de mí\" en las que antes era invisible."
+    },
+    "gbp-hours-mismatch": {
+      "en": "Example: A neighborhood cafe's website still lists a 9pm close while its Google Business Profile says 5pm, so a party of six searching \"open now\" trusts Google, assumes the kitchen is shut, and books somewhere else entirely.",
+      "es": "Ejemplo: el sitio de un café de barrio aún indica cierre a las 9pm mientras su Ficha de Google Business dice 5pm, así que un grupo de seis que busca \"abierto ahora\" confía en Google, supone que la cocina ya cerró y reserva en otro lugar."
+    },
+    "gbp-photo-count": {
+      "en": "Example: A new wine bar has only four images in its Google Business Profile, so a diner swiping the carousel runs out before seeing a plate or the room and moves on to a competitor whose dozens of photos show the food up close.",
+      "es": "Ejemplo: un nuevo bar de vinos tiene solo cuatro imágenes en su Perfil de Google, así que un comensal que desliza el carrusel se queda sin fotos antes de ver un plato o el salón y se pasa a un competidor cuyas decenas de fotos muestran la comida de cerca."
+    },
+    "gift-card-checkout": {
+      "en": "Example: A family-run trattoria drops a gift-card checkout widget into its site header before the holidays, and the December orders it brings in — many redeemed months later by full tables — comfortably carry the slow stretch in January.",
+      "es": "Ejemplo: una trattoría familiar coloca un widget de compra de tarjeta de regalo en el encabezado de su sitio antes de las fiestas, y los pedidos de diciembre que genera —muchos canjeados meses después por mesas completas— cubren con holgura la temporada baja de enero."
+    },
+    "hero": {
+      "en": "Example: A neighborhood cafe rewrites its hero section so the first screen states it's a coffee-and-brunch spot in Capitol Hill with a \"Book a table\" button, answering what, where, and what-now before anyone has to scroll.",
+      "es": "Ejemplo: un café de barrio reescribe su sección hero para que la primera pantalla diga que es un lugar de café y brunch en Capitol Hill con un botón de \"Reservar mesa\", respondiendo qué, dónde y qué-hacer antes de que alguien tenga que desplazarse."
+    },
+    "honest-pricing": {
+      "en": "Example: A farm-to-table spot replaces \"contact us for pricing\" on its tasting menu with a clearly stated $95-per-person total, and first-time diners scanning on their phones stop assuming it's out of reach and start booking.",
+      "es": "Ejemplo: un restaurante de la granja a la mesa reemplaza el \"consulta los precios\" de su menú de degustación por un total claro de $95 por persona, y los comensales primerizos que lo revisan en el celular dejan de suponer que es inalcanzable y empiezan a reservar."
+    },
+    "hosting": {
+      "en": "Example: A Brooklyn pizzeria moves off a cramped shared server to hosting that includes free HTTPS and global caching for about $15 a month, and its already-optimized pages finally load fast for customers across the country.",
+      "es": "Ejemplo: una pizzería en Brooklyn se cambia de un servidor compartido saturado a un hosting que incluye HTTPS gratis y caché global por unos $15 al mes, y sus páginas ya optimizadas por fin cargan rápido para clientes de todo el país."
+    },
+    "hours-of-operation": {
+      "en": "Example: A Silver Spring taqueria updates its hours of operation in one sitting across Google, Yelp, Apple, and its website's schema, so a diner checking any of them before leaving home sees the same Saturday lunch times everywhere.",
+      "es": "Ejemplo: una taquería en Silver Spring actualiza su horario de operación de una sola vez en Google, Yelp, Apple y el schema de su sitio, para que un comensal que lo revise en cualquiera de ellos antes de salir de casa vea los mismos horarios del sábado."
+    },
+    "hours-visibility": {
+      "en": "Example: A neighborhood cafe moves today's hours into a small banner at the top of its homepage, so a visitor wondering \"are they open right now?\" gets the answer in a few seconds instead of digging three clicks into a contact page.",
+      "es": "Ejemplo: un café de barrio coloca el horario de hoy en una pequeña franja en la parte superior de su página principal, para que un visitante que se pregunta \"¿están abiertos ahora?\" obtenga la respuesta en segundos en lugar de buscarla a tres clics en la página de contacto."
+    },
+    "https": {
+      "en": "Example: A downtown burger joint notices its site shows a \"Not Secure\" warning in the address bar, switches on free HTTPS through its host, and the padlock appears, so visitors no longer hesitate before tapping the order button.",
+      "es": "Ejemplo: una hamburguesería del centro nota que su sitio muestra una advertencia de \"No seguro\" en la barra de direcciones, activa HTTPS gratis con su proveedor de hosting y aparece el candado, así que los visitantes ya no dudan antes de tocar el botón de pedir."
+    },
+    "incident-response": {
+      "en": "Example: After a card-skimming scare, a neighborhood bistro is glad it wrote a one-page incident-response plan in advance, so the manager calls the lawyer, POS vendor, and bank in order instead of losing the first day deciding who to phone.",
+      "es": "Ejemplo: tras un susto por clonación de tarjetas, un bistró de barrio agradece haber escrito de antemano un plan de respuesta a incidentes de una página, para que el gerente llame al abogado, al proveedor del POS y al banco en orden en vez de perder el primer día decidiendo a quién marcar."
+    },
+    "inp": {
+      "en": "Example: A busy brunch spot's homepage feels sluggish to tap until the team removes a heavy third-party chat widget, cutting Interaction to Next Paint from 600ms to under 200ms so the \"Reserve\" button responds the instant a guest presses it.",
+      "es": "Ejemplo: la página de un concurrido lugar de brunch se siente lenta al tocar hasta que el equipo elimina un pesado widget de chat de terceros, bajando el Interaction to Next Paint de 600ms a menos de 200ms para que el botón de \"Reservar\" responda en cuanto el cliente lo presiona."
+    },
+    "labor-cost": {
+      "en": "Example: A neighborhood diner sees its labor cost climb to 35% of sales during a slow month and adjusts next week's schedule to trim an overstaffed Tuesday lunch, a faster fix than anything it could do about ingredient prices.",
+      "es": "Ejemplo: un comedor de barrio ve su labor cost subir al 35% de las ventas en un mes flojo y ajusta el horario de la próxima semana para recortar un martes con exceso de personal al mediodía, un arreglo más rápido que cualquier cosa que pudiera hacer con los precios de los ingredientes."
+    },
+    "last-updated-signal": {
+      "en": "Example: A neighborhood cafe adds a \"This Week's Specials\" block and a dated \"Spring Menu — now pouring\" badge, so a visitor checking at 6pm sees fresh content and trusts the place is open rather than guessing it closed months ago.",
+      "es": "Ejemplo: Una cafetería de barrio añade un bloque de \"Especiales de la semana\" y una insignia fechada de \"Menú de primavera — ya disponible\", de modo que quien lo revisa a las 6 de la tarde ve contenido reciente y confía en que el lugar sigue abierto en vez de suponer que cerró hace meses."
+    },
+    "lazy-loading": {
+      "en": "Example: A Brooklyn pizzeria's homepage carries twelve menu photos, but with loading=\"lazy\" only the hero shot downloads up front; the other eleven wait until a visitor scrolls toward them, so the top of the page is usable in under a second.",
+      "es": "Ejemplo: La página de inicio de una pizzería de Brooklyn lleva doce fotos del menú, pero con loading=\"lazy\" solo la imagen principal se descarga de entrada; las otras once esperan hasta que alguien se desplaza hacia ellas, así la parte superior queda lista en menos de un segundo."
+    },
+    "lighthouse": {
+      "en": "Example: A Silver Spring taqueria runs its URL through Lighthouse and sees a mobile performance score of 38, with the audit pointing at unsized hero images and render-blocking scripts as the two fixes that would move the number most.",
+      "es": "Ejemplo: Una taquería de Silver Spring pasa su URL por Lighthouse y obtiene una puntuación de rendimiento móvil de 38, donde la auditoría señala las imágenes principales sin dimensionar y los scripts que bloquean el renderizado como los dos arreglos que más subirían la cifra."
+    },
+    "logo-lockup": {
+      "en": "Example: When a sign shop emails a neighborhood bistro asking them to \"send your logo,\" the owner sends the locked-up mark-plus-wordmark file instead of a cropped menu screenshot, so the storefront sign keeps the same spacing and proportions the designer intended.",
+      "es": "Ejemplo: Cuando un taller de rótulos le escribe a un bistró de barrio pidiéndole que \"mande su logo\", el dueño envía el archivo con la composición de marca y logotipo en vez de una captura recortada del menú, así el rótulo de la fachada conserva el mismo espaciado y las proporciones que el diseñador pensó."
+    },
+    "map-pack": {
+      "en": "Example: Someone searching \"best ramen near me\" sees three pinned restaurants on a small map above the blue links, and a neighborhood noodle bar lands there by keeping its Google Business Profile claimed and correctly categorized, not by tuning its website's SEO.",
+      "es": "Ejemplo: Quien busca \"mejor ramen cerca de mí\" ve tres restaurantes marcados en un mapa pequeño sobre los enlaces azules, y un bar de fideos de barrio aparece ahí por mantener su Perfil de Empresa de Google reclamado y bien categorizado, no por ajustar el SEO de su web."
+    },
+    "margin": {
+      "en": "Example: When a lender tells a neighborhood diner its \"margin looks thin,\" the owner asks which one, because gross margin after food cost can read healthy while operating margin after rent and payroll on the same plate tells a much tighter story.",
+      "es": "Ejemplo: Cuando un prestamista le dice a un comedor de barrio que su \"margen se ve ajustado\", el dueño pregunta cuál, porque el margen bruto tras el costo de los alimentos puede parecer sano mientras el margen operativo tras la renta y la nómina del mismo plato cuenta una historia mucho más apretada."
+    },
+    "menu-mix": {
+      "en": "Example: A taqueria's al pastor taco sold 80 plates last week, but its menu mix only makes sense against the total: 80 out of 200 marks it a Star, while 80 out of 5,000 would flag it as a slow Dog the chef should rethink.",
+      "es": "Ejemplo: El taco al pastor de una taquería vendió 80 platos la semana pasada, pero su cuota del menú solo cobra sentido frente al total: 80 de 200 lo marca como una Estrella, mientras que 80 de 5.000 lo señalaría como un Perro lento que el chef debería replantear."
+    },
+    "meta-description": {
+      "en": "Example: A neighborhood wine bar rewrites its meta description to \"Natural wines and small plates in Logan Circle, open till midnight Thursday through Saturday,\" fitting roughly 150 characters so Google shows the hours and neighborhood instead of cutting them off.",
+      "es": "Ejemplo: Un bar de vinos de barrio reescribe su meta descripción a \"Vinos naturales y platos pequeños en Logan Circle, abierto hasta medianoche de jueves a sábado\", ajustándola a unos 150 caracteres para que Google muestre el horario y la zona en vez de recortarlos."
+    },
+    "mobile-first-indexing": {
+      "en": "Example: A bistro's desktop site looks polished, but because Google only ranks the mobile version, a hamburger menu that hides the hours and a reservation button that overflows the screen on a phone are what actually drag its position down.",
+      "es": "Ejemplo: El sitio de escritorio de un bistró se ve pulido, pero como Google solo clasifica la versión móvil, un menú desplegable que esconde el horario y un botón de reservas que se desborda de la pantalla en el teléfono son lo que de verdad baja su posición."
+    },
+    "monochromatic-palette": {
+      "en": "Example: A seafood spot whose logo is one strong navy builds a monochromatic palette from that single hue — a deep navy for headers, a mid-blue for buttons, and a pale ice tint for backgrounds — so the site reads disciplined without ever looking cheap.",
+      "es": "Ejemplo: Un restaurante de mariscos cuyo logo es un azul marino fuerte construye una paleta monocromática a partir de ese único tono — un azul profundo para los títulos, uno medio para los botones y un tinte hielo pálido para los fondos — así el sitio se ve disciplinado sin parecer barato."
+    },
+    "monochrome-variant": {
+      "en": "Example: A taqueria orders staff polos with its logo embroidered in a single thread color, and because the designer supplied a clean black-and-white monochrome variant, the stitched mark stays crisp instead of turning into a muddy blur on the fabric.",
+      "es": "Ejemplo: Una taquería pide playeras para el personal con su logo bordado en un solo color de hilo, y como el diseñador entregó una variante monocromática limpia en blanco y negro, la marca cosida queda nítida en lugar de convertirse en una mancha borrosa sobre la tela."
+    },
+    "nap-consistency": {
+      "en": "Example: A cafe lists \"Suite 200\" on its website but \"Ste. 200\" on Yelp and different Sunday hours on Facebook, and fixing every listing to match — name, address, phone, and hours — recovers local rank that the mismatches had quietly cost it.",
+      "es": "Ejemplo: Una cafetería pone \"Suite 200\" en su web pero \"Ste. 200\" en Yelp y un horario de domingo distinto en Facebook, y corregir cada ficha para que coincida — nombre, dirección, teléfono y horario — recupera el posicionamiento local que esas discrepancias le habían quitado en silencio."
+    },
+    "newsletter-capture": {
+      "en": "Example: A neighborhood bistro adds a newsletter capture form offering \"first to know about the spring menu,\" wires it to Mailchimp, and later uses the thousand addresses it collected to fill a quiet Tuesday and sell out a ticketed dinner in one afternoon.",
+      "es": "Ejemplo: Un bistró de barrio añade un formulario de captura de newsletter que ofrece \"entérate primero del menú de primavera\", lo conecta a Mailchimp y luego usa las mil direcciones reunidas para llenar un martes flojo y agotar una cena con boletos en una sola tarde."
+    },
+    "og-share-preview": {
+      "en": "Example: When a diner texts a taqueria's URL to four friends to plan dinner, a set og:image and title turn the link into a card showing tacos and the name, instead of a blank grey box that half the group never bothers to tap.",
+      "es": "Ejemplo: Cuando alguien envía por mensaje la URL de una taquería a cuatro amigos para organizar la cena, una og:image y un título definidos convierten el enlace en una tarjeta con tacos y el nombre, en lugar de una caja gris vacía que la mitad del grupo nunca toca."
+    },
+    "oklab": {
+      "en": "Example: A bistro's palette tool warns that its proposed gold and mustard chips \"feel identical\" because it measures the gap in OKLab, where perceived difference is honest, instead of in RGB, where two close numbers can still look worlds apart to the eye.",
+      "es": "Ejemplo: La herramienta de paleta de un bistró advierte que sus muestras de dorado y mostaza \"se sienten idénticas\" porque mide la distancia en OKLab, donde la diferencia percibida es fiel, en vez de en RGB, donde dos números cercanos pueden verse muy distintos para el ojo."
+    },
+    "online-ordering": {
+      "en": "Example: A pizzeria puts an online ordering link on its menu page that drops a hungry visitor straight onto its Toast pickup checkout, skipping any landing page, so fewer people abandon mid-order and the shop keeps more margin than a marketplace app would leave it.",
+      "es": "Ejemplo: Una pizzería coloca en su página de menú un enlace de pedidos en línea que lleva a quien tiene hambre directo al checkout de recogida de Toast, sin páginas intermedias, así menos gente abandona a medio pedido y el local conserva más margen del que le dejaría una app de marketplace."
+    },
+    "open-graph": {
+      "en": "Example: A neighborhood ramen bar adds Open Graph tags so that when a regular pastes the link into a group chat, it appears with a steaming bowl photo and a sharp headline instead of the grey domain-only box everyone scrolls past.",
+      "es": "Ejemplo: Un bar de ramen de barrio agrega etiquetas Open Graph para que, cuando un cliente habitual pega el enlace en un chat de grupo, aparezca con la foto de un tazón humeante y un título nítido en lugar de la caja gris con solo el dominio que todos ignoran."
+    },
+    "pagespeed-insights": {
+      "en": "Example: A taqueria pastes its URL into pagespeed.web.dev once a month, watches its Core Web Vitals, and after compressing its hero image sees the prioritized fixes list shrink and its mobile score climb out of the red.",
+      "es": "Ejemplo: Una taquería pega su URL en pagespeed.web.dev una vez al mes, observa sus Core Web Vitals y, tras comprimir su imagen principal, ve cómo la lista priorizada de arreglos se acorta y su puntuación móvil sale del rojo."
+    },
+    "pii": {
+      "en": "Example: A neighborhood bistro realizes its PII isn't just the email list — the saved card numbers fall under PCI-DSS, and the employee SSNs and I-9 records on file carry their own legal protections, so each set needs to be stored and handled differently.",
+      "es": "Ejemplo: Un bistró de barrio se da cuenta de que su PII no es solo la lista de correos — los números de tarjeta guardados caen bajo PCI-DSS, y los números de seguro social y registros I-9 del personal tienen sus propias protecciones legales, así que cada conjunto debe guardarse y manejarse de forma distinta."
+    },
+    "privacy-policy": {
+      "en": "Example: A Silver Spring taqueria adds a one-page /privacy stating it only collects names and emails from its contact form, never sells them, and deletes inquiries after a year — enough to satisfy GDPR and CCPA without a lawyer.",
+      "es": "Ejemplo: Una taquería de Silver Spring agrega una página /privacy de un solo párrafo donde aclara que solo recoge nombres y correos de su formulario de contacto, nunca los vende y borra las consultas tras un año, suficiente para cumplir con el GDPR y la CCPA sin un abogado."
+    },
+    "professional-email": {
+      "en": "Example: A neighborhood bistro replies to a catering request from hello@elmstreetbistro.com instead of a Gmail address, so the message clears the customer's spam filter and reads like a real business that owns its name.",
+      "es": "Ejemplo: Un bistró de barrio responde a una solicitud de catering desde hola@bistroelmstreet.com en lugar de una cuenta de Gmail, de modo que el mensaje pasa el filtro de spam del cliente y se lee como un negocio real que es dueño de su nombre."
+    },
+    "real-photos": {
+      "en": "Example: A Brooklyn pizzeria swaps the generic stock slice on its homepage for a two-hour shoot of its own blistered pies, brick oven, and Tuesday-night crew, and first-time visitors stop wondering what the place actually looks like.",
+      "es": "Ejemplo: Una pizzería de Brooklyn reemplaza la porción genérica de banco de imágenes de su página principal por una sesión de dos horas con sus propias pizzas tostadas, su horno de ladrillo y su equipo de un martes, y los visitantes nuevos dejan de preguntarse cómo es el lugar de verdad."
+    },
+    "reservation-link": {
+      "en": "Example: A neighborhood trattoria puts a Reserve button in the nav, the hero, and the sticky mobile footer, all wired to the Resy account the hostess stand already watches, so a diner books a Friday table in one tap instead of emailing.",
+      "es": "Ejemplo: Una trattoria de barrio coloca un botón de Reservar en el menú, en el encabezado y en el pie móvil fijo, todos conectados a la cuenta de Resy que el atril de recepción ya revisa, para que un comensal reserve una mesa del viernes con un solo toque en vez de escribir un correo."
+    },
+    "responsive-design": {
+      "en": "Example: A Silver Spring taqueria's single page reflows its menu into one tappable column on a phone, two on a tablet, and a wide grid on a desktop, so the two-thirds of visitors arriving by phone never pinch and zoom.",
+      "es": "Ejemplo: La página única de una taquería de Silver Spring reorganiza su menú en una sola columna táctil en el teléfono, dos en la tableta y una cuadrícula amplia en el escritorio, de modo que los dos tercios de visitantes que llegan por celular nunca tengan que ampliar con los dedos."
+    },
+    "review-responsiveness": {
+      "en": "Example: A neighborhood cafe owner replies to every recent Google review — a quick \"thanks for coming in\" on the five-stars and \"I'm sorry, please email me\" on the one-stars — so a diner reading the latest three sees an operator who is clearly present.",
+      "es": "Ejemplo: La dueña de un café de barrio responde a cada reseña reciente de Google, con un breve \"gracias por venir\" en las de cinco estrellas y un \"lo siento, escríbeme por favor\" en las de una, para que quien lea las últimas tres vea a una operadora claramente presente."
+    },
+    "rich-results": {
+      "en": "Example: A Brooklyn pizzeria's schema markup lets its Google listing show a four-and-a-half-star rating, a \"$$\" price, and today's hours right in the result, so it gets clicked more than the plain text link sitting just above it.",
+      "es": "Ejemplo: El marcado schema de una pizzería de Brooklyn hace que su ficha de Google muestre una calificación de cuatro estrellas y media, un precio \"$$\" y el horario de hoy dentro del propio resultado, así que recibe más clics que el enlace de solo texto que está justo encima."
+    },
+    "robots-txt": {
+      "en": "Example: A neighborhood bakery discovers its new menu page is invisible on Google because a leftover \"Disallow: /\" line in robots.txt was telling every crawler to skip the whole site, and deleting that one line brings the pages back within days.",
+      "es": "Ejemplo: Una panadería de barrio descubre que su nueva página de menú es invisible en Google porque una línea olvidada \"Disallow: /\" en robots.txt le decía a cada rastreador que ignorara todo el sitio, y borrar esa única línea hace que las páginas vuelvan en pocos días."
+    },
+    "schema": {
+      "en": "Example: A Silver Spring taqueria adds a JSON-LD script to its page head declaring it's a Restaurant, its cuisine is Mexican, plus its address, hours, and menu URL, so Google stops guessing and shows those details directly in search.",
+      "es": "Ejemplo: Una taquería de Silver Spring agrega un script JSON-LD en el encabezado de su página que declara que es un Restaurant, que su cocina es mexicana, junto con su dirección, horario y la URL del menú, para que Google deje de adivinar y muestre esos datos directamente en la búsqueda."
+    },
+    "service-charge": {
+      "en": "Example: A neighborhood gastropub replaces tipping with a posted 20% service charge that the menu and the website both explain, splitting the pooled dollars between servers and line cooks so the kitchen finally shares in service-side revenue.",
+      "es": "Ejemplo: Un gastropub de barrio reemplaza las propinas con un cargo de servicio del 20% que explican tanto el menú como el sitio web, repartiendo el dinero acumulado entre meseros y cocineros para que la cocina por fin participe de los ingresos del servicio."
+    },
+    "sitemap": {
+      "en": "Example: A neighborhood cafe submits its /sitemap.xml once to Google Search Console, so when it adds a new seasonal-specials page the listing gets indexed within a few days instead of waiting weeks for Google to stumble onto it.",
+      "es": "Ejemplo: Un café de barrio envía su /sitemap.xml una sola vez a Google Search Console, de modo que cuando agrega una nueva página de especiales de temporada esta se indexa en pocos días en lugar de esperar semanas a que Google la encuentre por casualidad."
+    },
+    "social-proof": {
+      "en": "Example: A neighborhood trattoria pulls one real line from a recent review — \"the best carbonara in the neighborhood\" — and places it right under its hero image, so a first-time visitor sees that other diners already approve before scrolling.",
+      "es": "Ejemplo: Una trattoria de barrio toma una frase real de una reseña reciente, \"la mejor carbonara del barrio\", y la coloca justo debajo de su imagen principal, para que un visitante primerizo vea que otros comensales ya la aprueban antes de seguir bajando."
+    },
+    "special-hours": {
+      "en": "Example: A neighborhood cafe sets a special-hours override for Christmas Eve so its listing shows an early 3 p.m. close instead of the usual 9 p.m., and Google never flags the profile for conflicting with a known holiday.",
+      "es": "Ejemplo: Un café de barrio configura un horario especial para la Nochebuena para que su ficha muestre un cierre temprano a las 3 p. m. en vez del habitual de las 9 p. m., y Google nunca marca el perfil por contradecir un feriado conocido."
+    },
+    "ssl-certificate": {
+      "en": "Example: A Brooklyn pizzeria's expired certificate makes browsers throw a red warning over its menu, and instead of paying anyone to fix it, the owner moves to a host that issues and renews a free Let's Encrypt certificate automatically.",
+      "es": "Ejemplo: El certificado vencido de una pizzería de Brooklyn hace que los navegadores muestren una advertencia roja sobre su menú, y en lugar de pagarle a alguien para arreglarlo, el dueño se cambia a un hosting que emite y renueva un certificado gratuito de Let's Encrypt automáticamente."
+    },
+    "stale-copyright": {
+      "en": "Example: A neighborhood bistro's footer still reads \"© 2019,\" quietly making an out-of-town diner wonder whether it survived the pandemic, until the owner sets the year to render automatically so it always shows the current one.",
+      "es": "Ejemplo: El pie de página de un bistró de barrio aún dice \"© 2019\", lo que hace que un comensal de fuera se pregunte en silencio si sobrevivió a la pandemia, hasta que el dueño configura el año para que se genere automáticamente y siempre muestre el actual."
+    },
+    "sticky-footer": {
+      "en": "Example: A Silver Spring taqueria pins a thin bar with Call and Order buttons to the bottom of every mobile screen, so a visitor sold halfway down the taco list can act with one thumb-tap instead of scrolling back to the top.",
+      "es": "Ejemplo: Una taquería de Silver Spring fija una barra delgada con botones de Llamar y Pedir al fondo de cada pantalla móvil, para que un visitante convencido a mitad de la lista de tacos pueda actuar con un toque del pulgar en vez de volver al inicio."
+    },
+    "subtype-bakery": {
+      "en": "Example: A neighborhood bakery's site leads with a custom-cake order form and a clear cross-contamination note, so a parent ordering a wedding cake for a nut-allergic child can trust the allergen policy before booking the wholesale-sized order.",
+      "es": "Ejemplo: El sitio de una panadería de barrio destaca un formulario de pedidos de pasteles personalizados y una nota clara sobre contaminación cruzada, para que un padre que encarga un pastel de boda para un niño alérgico a los frutos secos pueda confiar en la política de alérgenos antes de hacer el pedido mayorista."
+    },
+    "subtype-bar-pub": {
+      "en": "Example: A neighborhood taproom puts an age gate on entry, a prominent private-events page for booking the back room, and an HTML happy-hour and draft list it can edit the moment a keg blows, instead of a stale PDF.",
+      "es": "Ejemplo: Una cervecería de barrio coloca una verificación de edad al entrar, una página destacada de eventos privados para reservar el salón trasero y una lista de happy hour y barriles en HTML que puede editar en cuanto se acaba un barril, en lugar de un PDF desactualizado."
+    },
+    "subtype-cafe": {
+      "en": "Example: A neighborhood coffee shop puts its hours and address at the very top, a tappable phone number beside them, and a legible espresso-and-pastry menu just below, skipping reservations since the morning rush is most of its revenue.",
+      "es": "Ejemplo: Una cafetería de barrio coloca su horario y dirección en la parte más alta, un número de teléfono táctil al lado y un menú legible de espresso y repostería justo debajo, sin reservas, ya que el ajetreo de la mañana es la mayor parte de sus ingresos."
+    },
+    "subtype-casual-dining": {
+      "en": "Example: A neighborhood Italian bistro takes Friday dinner reservations through OpenTable while routing weekday lunch orders through its own Toast page, so the takeout crowd and the date-night crowd each get the flow they came for.",
+      "es": "Ejemplo: Un bistró italiano de barrio acepta reservas para las cenas del viernes mediante OpenTable y, al mismo tiempo, gestiona los pedidos de almuerzo entre semana desde su propia página de Toast, de modo que el público de comida para llevar y el de cena reciben cada uno el flujo que buscaba."
+    },
+    "subtype-catering-only": {
+      "en": "Example: A wedding caterer in Silver Spring puts per-head pricing, a two-week minimum lead time, and a structured quote form right on the landing page, so an event planner searching \"catering Silver Spring\" can request a bid in under a minute.",
+      "es": "Ejemplo: Un servicio de catering de bodas en Silver Spring coloca el precio por persona, un plazo mínimo de dos semanas y un formulario de cotización estructurado en la página de inicio, de modo que un organizador de eventos que busca \"catering Silver Spring\" puede pedir un presupuesto en menos de un minuto."
+    },
+    "subtype-fast-casual": {
+      "en": "Example: A fast-casual burrito counter puts item names, prices, and a one-tap Order button on the same screen through its own ChowNow page, keeping the full margin instead of handing 25% to an aggregator on every bowl.",
+      "es": "Ejemplo: Un mostrador de burritos fast-casual coloca los nombres de los platos, los precios y un botón de Pedir de un toque en la misma pantalla a través de su propia página de ChowNow, conservando todo el margen en lugar de ceder el 25% a un agregador en cada bol."
+    },
+    "subtype-fine-dining": {
+      "en": "Example: A tasting-menu restaurant treats its Resy widget as the main conversion and keeps a private-dining page ready, because one corporate holiday buyout in December can cover the revenue of an otherwise slow midweek night.",
+      "es": "Ejemplo: Un restaurante de menú degustación trata su widget de Resy como la conversión principal y mantiene lista una página de comedor privado, porque la reserva completa de una empresa en diciembre puede cubrir los ingresos de una noche floja entre semana."
+    },
+    "subtype-food-truck": {
+      "en": "Example: A taco truck replaces the pinned home address with a \"where are we today\" block and a live Instagram feed, so a hungry office worker at noon sees the truck is three blocks away rather than parked at some empty commissary.",
+      "es": "Ejemplo: Un food truck de tacos reemplaza la dirección fija de su sede por un bloque de \"dónde estamos hoy\" y un feed de Instagram en vivo, de modo que un oficinista hambriento al mediodía ve que el camión está a tres cuadras y no estacionado en algún comisariato vacío."
+    },
+    "subtype-ghost-kitchen": {
+      "en": "Example: A delivery-only wing brand runs a clear \"virtual kitchen, no dine-in\" banner above its Uber Eats and DoorDash links, so nobody drives across town expecting a dining room and then leaves a one-star review at an empty door.",
+      "es": "Ejemplo: Una marca de alitas solo para entrega muestra un aviso claro de \"cocina virtual, sin comedor\" encima de sus enlaces de Uber Eats y DoorDash, para que nadie cruce la ciudad esperando un salón y termine dejando una reseña de una estrella frente a una puerta vacía."
+    },
+    "subtype-pizzeria": {
+      "en": "Example: A Brooklyn pizzeria adds a Slice Direct order button and a delivery-radius checker, so a customer six blocks away orders a wood-fired pie straight from the shop and the kitchen keeps roughly 78% margin instead of 55%.",
+      "es": "Ejemplo: Una pizzería de Brooklyn añade un botón de pedido con Slice Direct y un verificador de radio de entrega, de modo que un cliente a seis cuadras pide una pizza al horno de leña directamente al local y la cocina conserva cerca del 78% de margen en vez del 55%."
+    },
+    "tap-targets": {
+      "en": "Example: A neighborhood cafe rebuilds its mobile menu so each \"Add to order\" button is a comfortable 48 pixels tall with real spacing between rows, ending the fat-finger taps that kept sending lunch customers to the wrong item.",
+      "es": "Ejemplo: Una cafetería de barrio rediseña su menú móvil para que cada botón de \"Añadir al pedido\" mida unos cómodos 48 píxeles de alto con espacio real entre filas, eliminando los toques con el dedo equivocado que enviaban a los clientes del almuerzo al plato incorrecto."
+    },
+    "terms-of-service": {
+      "en": "Example: A bistro that takes large-party deposits posts a Terms of Service page spelling out its 48-hour cancellation window and gift-card rules, which settles most chargeback disputes before they reach the card processor.",
+      "es": "Ejemplo: Un bistró que cobra depósitos para grupos grandes publica una página de Términos del servicio que detalla su plazo de cancelación de 48 horas y las reglas de las tarjetas de regalo, lo que resuelve la mayoría de las disputas de contracargos antes de que lleguen al procesador de pagos."
+    },
+    "title-tag": {
+      "en": "Example: A taqueria in Silver Spring sets its title tag to \"Casa Verde — Tacos & Mezcal in Silver Spring, MD\" so the Google result reads as the restaurant name, cuisine, and city all under the 60-character limit.",
+      "es": "Ejemplo: Una taquería en Silver Spring define su etiqueta de título como \"Casa Verde — Tacos y Mezcal en Silver Spring, MD\" para que el resultado de Google muestre el nombre del restaurante, la cocina y la ciudad, todo dentro del límite de 60 caracteres."
+    },
+    "transport-security": {
+      "en": "Example: A bistro flips on the HTTPS-always setting in its Cloudflare dashboard, and the \"Not secure\" warning that had been scaring off party-of-twelve holiday bookers disappears, lifting its Mozilla Observatory grade from an F toward an A.",
+      "es": "Ejemplo: Un bistró activa la opción de HTTPS siempre en su panel de Cloudflare, y la advertencia de \"No seguro\" que ahuyentaba a quienes reservaban mesas para doce en las fiestas desaparece, subiendo su calificación de Mozilla Observatory de una F hacia una A."
+    },
+    "ttfb": {
+      "en": "Example: A neighborhood cafe's pages take 900 milliseconds just to send their first byte on cheap shared hosting, so the owner moves to a faster host and the whole site feels quicker before a single image is even touched.",
+      "es": "Ejemplo: Las páginas de una cafetería de barrio tardan 900 milisegundos solo en enviar su primer byte en un alojamiento compartido barato, así que el dueño cambia a un host más rápido y todo el sitio se siente más ágil antes de tocar siquiera una sola imagen."
+    },
+    "typography-pairing": {
+      "en": "Example: A new trattoria pairs a warm serif for its headings with a clean geometric sans for the menu body, and the room reads as handmade and old-world instead of like a chain template from 2008.",
+      "es": "Ejemplo: Una nueva trattoria combina una serif cálida en sus títulos con una sans geométrica y limpia para el cuerpo del menú, y el lugar se percibe artesanal y de viejo mundo en vez de parecer una plantilla de cadena de 2008."
+    },
+    "url-fragment": {
+      "en": "Example: A margin calculator on a restaurant-tools site packs the chef's cost inputs into the part of the link after the # symbol, so the owner can bookmark the scenario and the server never receives any of those private numbers.",
+      "es": "Ejemplo: Una calculadora de márgenes en un sitio de herramientas para restaurantes guarda los datos de costos del chef en la parte del enlace que va después del símbolo #, de modo que el dueño puede guardar el escenario y el servidor nunca recibe ninguna de esas cifras privadas."
+    },
+    "url-fragment-vs-query": {
+      "en": "Example: Before trusting a pricing tool's \"your numbers stay in the URL\" promise, a cafe owner checks whether the food costs sit after the ? where the server logs them, or after the # where the server never sees them at all.",
+      "es": "Ejemplo: Antes de confiar en la promesa de una herramienta de precios de que \"tus números se quedan en la URL\", el dueño de una cafetería verifica si los costos de los alimentos van después del ? donde el servidor los registra, o después del # donde el servidor nunca los ve."
+    },
+    "variable-costs": {
+      "en": "Example: A taqueria adds up the tortillas, carne, hourly cooks, card fees, and takeout packaging on a single order and finds its late-night delivery daypart barely covers its own marginal cost, so the owner trims those hours.",
+      "es": "Ejemplo: Una taquería suma las tortillas, la carne, los cocineros por hora, las comisiones de tarjeta y el empaque para llevar de un solo pedido y descubre que su franja de entregas nocturnas apenas cubre su propio costo marginal, así que el dueño recorta esas horas."
+    },
+    "viewport-meta": {
+      "en": "Example: A pizzeria adds the one-line viewport meta tag its old theme was missing, and the menu that used to load shrunken and tiny on phones suddenly renders at full phone width, readable without any pinching or zooming.",
+      "es": "Ejemplo: Una pizzería añade la línea de la etiqueta meta viewport que le faltaba a su plantilla antigua, y el menú que antes se cargaba diminuto y encogido en los teléfonos ahora se muestra al ancho completo del móvil, legible sin tener que pellizcar ni hacer zoom."
+    },
+    "working-contact-form": {
+      "en": "Example: A bistro owner sends a test message through her own contact form each quarter, and when nothing lands in the inbox within five minutes she swaps in a new form rather than keep losing private-event inquiries in silence.",
+      "es": "Ejemplo: La dueña de un bistró envía un mensaje de prueba a través de su propio formulario de contacto cada trimestre, y cuando no llega nada a la bandeja de entrada en cinco minutos, instala un formulario nuevo en lugar de seguir perdiendo en silencio las consultas de eventos privados."
+    },
+    "yield-percent": {
+      "en": "Example: A bistro buys whole halibut that yields only about 50% after trimming bone and skin, so the chef prices the dish off the true cost of a usable ounce instead of the raw invoice weight, which would have under-priced it by a third.",
+      "es": "Ejemplo: Un bistró compra halibut entero que rinde solo alrededor del 50% tras retirar espina y piel, así que el chef fija el precio del plato según el costo real de una onza aprovechable y no según el peso bruto de la factura, que lo habría dejado un tercio por debajo."
+    },
+    "charm-pricing": {
+      "en": "Example: A neighborhood taqueria prices its burrito at $11.95 instead of $12, because the cents ending makes the menu read as carefully priced rather than rounded up, even though the real difference is a nickel.",
+      "es": "Ejemplo: Una taquería de barrio fija su burrito en $11.95 en lugar de $12, porque la terminación en centavos hace que el menú se lea como cuidadosamente fijado en vez de redondeado hacia arriba, aunque la diferencia real sea de cinco centavos."
+    },
+    "edible-portion": {
+      "en": "Example: A coastal bistro buys whole halibut at $12 a pound, but after trimming bone and skin only half is usable, so its edible-portion cost is really $24 a pound — the number the chef must price the dish from.",
+      "es": "Ejemplo: Un bistró costero compra halibut entero a $12 la libra, pero tras retirar espina y piel solo la mitad es aprovechable, así que su costo de porción comestible es en realidad $24 la libra — la cifra desde la que el chef debe fijar el precio del plato."
+    },
+    "hreflang": {
+      "en": "Example: A bilingual taqueria adds an hreflang tag pairing its English menu page with its Spanish one, so a Spanish-speaking diner searching in Spanish lands on the Spanish version instead of the English page with a translate banner.",
+      "es": "Ejemplo: Una taquería bilingüe agrega una etiqueta hreflang que vincula su página de menú en inglés con la versión en español, de modo que un comensal hispanohablante que busca en español llega a la versión en español en lugar de la página en inglés con un aviso de traducir."
+    },
+    "menu-copy": {
+      "en": "Example: A neighborhood bistro rewrites \"Chicken sandwich\" as \"Buttermilk-brined chicken thigh, pickles, chili mayo on a potato bun,\" and the same dish at the same price suddenly reads as worth ordering — that gap is menu copy.",
+      "es": "Ejemplo: Un bistró de barrio reescribe \"Sándwich de pollo\" como \"Muslo de pollo en salmuera de suero, pepinillos y mayonesa de chile en pan de papa\", y el mismo plato al mismo precio de pronto se lee como digno de pedir — esa diferencia es el copy de menú."
+    },
+    "photo-brief": {
+      "en": "Example: Before a shoot, a neighborhood cafe hands its photographer a one-page photo brief listing the eight hero dishes, the three needed crops for web and Instagram, and the natural-light window, so the session yields exactly what the site needs.",
+      "es": "Ejemplo: Antes de una sesión, un café de barrio entrega a su fotógrafo un brief de una página que enumera los ocho platos principales, los tres recortes necesarios para web e Instagram y la franja de luz natural, para que la sesión rinda justo lo que el sitio necesita."
+    },
+    "plate-cost": {
+      "en": "Example: A taqueria adds up the tortilla, carne, salsa, and garnish on one al pastor plate and finds it costs $2.80 to send to the pass, so it knows a $9 menu price leaves room for rent, labor, and margin.",
+      "es": "Ejemplo: Una taquería suma la tortilla, la carne, la salsa y la guarnición de un plato al pastor y descubre que cuesta $2.80 enviarlo al pase, así que sabe que un precio de menú de $9 deja espacio para renta, mano de obra y margen."
+    },
+    "sensory-adjective": {
+      "en": "Example: A ramen bar swaps \"pork broth\" for \"silky, slow-simmered pork broth\" on its menu, and the sensory adjectives do the selling a flat noun never could, helping a scanning diner picture the bowl before ordering.",
+      "es": "Ejemplo: Un bar de ramen cambia \"caldo de cerdo\" por \"caldo de cerdo sedoso, cocido a fuego lento\" en su menú, y los adjetivos sensoriales venden lo que un sustantivo plano nunca podría, ayudando a un comensal que hojea a imaginar el tazón antes de pedir."
+    },
+    "wcag-contrast": {
+      "en": "Example: A neighborhood cafe sets its menu text in light gray on a cream background until a contrast checker flags it at 2.8:1, below the WCAG AA 4.5:1 minimum, so it darkens the text and the menu becomes readable in bright daylight.",
+      "es": "Ejemplo: Una cafetería de barrio pone el texto de su menú en gris claro sobre fondo crema hasta que un verificador de contraste lo marca en 2.8:1, por debajo del mínimo WCAG AA de 4.5:1, así que oscurece el texto y el menú se vuelve legible bajo la luz del día."
+    },
+    "brand-identity": {
+      "en": "Example: A neighborhood taqueria writes down its identity — a single rust-red, one serif headline font, and a \"warm but never cutesy\" voice — so its menu, its Instagram grid, and its storefront sign all read as the same restaurant six months later.",
+      "es": "Ejemplo: Una taquería de barrio escribe su identidad — un único rojo óxido, una fuente serif para titulares y una voz \"cálida pero nunca cursi\" — para que su menú, su feed de Instagram y el rótulo de su fachada se lean como el mismo restaurante seis meses después."
+    },
+    "hero-shot": {
+      "en": "Example: A neighborhood bistro picks one backlit shot of its signature pasta as the hero, and that single photo carries the web homepage, the Yelp featured slot, and the Instagram profile grid, so a returning diner recognizes the place before reading a word.",
+      "es": "Ejemplo: Un bistró de barrio elige una sola toma a contraluz de su pasta insignia como hero, y esa única foto encabeza la página web, el espacio destacado de Yelp y la cuadrícula de Instagram, así un comensal que vuelve reconoce el lugar antes de leer una palabra."
+    },
+    "holiday-hours": {
+      "en": "Example: A neighborhood cafe sets a holiday-hours rule closing early at 3pm every Christmas Eve, so a customer searching \"open today?\" on December 24th gets the right answer from Google instead of showing up to a locked door at 8pm.",
+      "es": "Ejemplo: Una cafetería de barrio configura una regla de horario festivo que cierra temprano a las 3pm cada Nochebuena, para que un cliente que busca \"¿abierto hoy?\" el 24 de diciembre reciba la respuesta correcta de Google en vez de llegar a una puerta cerrada a las 8pm."
+    },
+    "margin-math": {
+      "en": "Example: A Brooklyn pizzeria owner runs the Prime Cost Check and Break-Even Covers calculators on the first of each month, prints the one-page report, and drops it beside the P&L before handing it to the bookkeeper — every input staying in the browser.",
+      "es": "Ejemplo: El dueño de una pizzería de Brooklyn corre las calculadoras de Costo Primo y Comensales de Equilibrio el primero de cada mes, imprime el reporte de una página y lo deja junto al estado de resultados antes de pasárselo al contador — cada dato quedándose en el navegador."
+    },
+    "owned-channel": {
+      "en": "Example: A taqueria that takes a Friday order through its own website keeps the guest's phone number and email plus the full margin, while the same order through a delivery app hands both the contact and a 25% cut to a platform it does not control.",
+      "es": "Ejemplo: Una taquería que toma un pedido del viernes por su propio sitio web conserva el teléfono y el correo del comensal más todo el margen, mientras que ese mismo pedido por una app de delivery entrega tanto el contacto como un 25% de comisión a una plataforma que no controla."
+    },
+    "structured-data": {
+      "en": "Example: A neighborhood bistro adds a JSON block to its page head listing its hours, address, and price range, so when someone searches its name Google shows today’s hours right in the result instead of making the diner click through and hunt.",
+      "es": "Ejemplo: Un bistró de barrio agrega un bloque JSON al encabezado de su página con su horario, dirección y rango de precios, así cuando alguien busca su nombre Google muestra el horario de hoy directo en el resultado en vez de obligar al comensal a entrar y buscarlo."
+    },
+    "third-party-marketplace": {
+      "en": "Example: A Brooklyn pizzeria gets half its orders through a delivery marketplace that takes 25% and owns the customer list, so it prints a QR code on every box nudging those diners to reorder direct next time and slowly win the relationship back.",
+      "es": "Ejemplo: Una pizzería de Brooklyn recibe la mitad de sus pedidos por un marketplace de delivery que cobra 25% y es dueño de la lista de clientes, así que imprime un código QR en cada caja invitando a esos comensales a pedir directo la próxima vez y recuperar poco a poco la relación."
+    },
+    "wholesale": {
+      "en": "Example: the Cost Index shows a typical wholesale range for an ingredient this week, while your invoice lists a higher per-unit figure. The gap is delivery and your vendor&rsquo;s margin &mdash; the wholesale range is the market baseline to measure your price against.",
+      "es": "Ejemplo: el &Iacute;ndice de costos muestra un rango mayorista t&iacute;pico para un ingrediente esta semana, mientras tu factura indica una cifra m&aacute;s alta por unidad. La diferencia es la entrega y el margen de tu proveedor &mdash; el rango mayorista es la base de mercado contra la que medir tu precio."
+    },
+    "bls": {
+      "en": "Example: a vendor blames a beef-price hike on “the market,” but the BLS Producer Price Index for that category held flat last month — a public, citable sign the increase may be the vendor’s, not the market’s.",
+      "es": "Ejemplo: un proveedor culpa “al mercado” por una subida en el precio de la carne, pero el Índice de Precios al Productor del BLS para esa categoría se mantuvo estable el mes pasado — una señal pública y citable de que el aumento podría ser del proveedor, no del mercado."
+    }
   }
- }
 }

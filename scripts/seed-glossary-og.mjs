@@ -39,6 +39,7 @@ const TOPIC_ACCENT = {
   'operations-margin': 'gold',
   'brand-design':      'teal',
   'trust-reviews':     'rust',
+  'cost-data':         'gold',
 };
 
 // Topic URL → glyph cue. Every per-term card used to ship the generic
@@ -53,6 +54,7 @@ const TOPIC_GLYPH = {
   'brand-design':      'brand',
   'trust-reviews':     'trust',
   'ai-search':         'research',
+  'cost-data':         'source',
 };
 
 // Eyebrow text per topic per locale. Shorter than the topic
@@ -65,6 +67,7 @@ const TOPIC_EYEBROW = {
     'operations-margin': 'GLOSSARY · OPERATIONS & MARGIN',
     'brand-design':      'GLOSSARY · BRAND & DESIGN',
     'trust-reviews':     'GLOSSARY · TRUST & REVIEWS',
+    'cost-data':         'GLOSSARY · COST DATA & SOURCES',
   },
   es: {
     'speed-mobile':      'GLOSARIO · VELOCIDAD Y MÓVIL',
@@ -73,6 +76,7 @@ const TOPIC_EYEBROW = {
     'operations-margin': 'GLOSARIO · OPERACIONES Y MARGEN',
     'brand-design':      'GLOSARIO · MARCA Y DISEÑO',
     'trust-reviews':     'GLOSARIO · CONFIANZA Y RESEÑAS',
+    'cost-data':         'GLOSARIO · DATOS Y FUENTES DE COSTOS',
   },
 };
 
