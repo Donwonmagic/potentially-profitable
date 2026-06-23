@@ -265,7 +265,11 @@
       <p class="term-why">A confidence label is only worth reading if it’s earned. Calibration is how you check: grade a long run of past calls and see whether each tier comes true as often as it claims. The Cost Index does this in the open — “strong” calls land near 58%, “weak” ones near 48%, against a coin-flip near 50% — so “strong” genuinely beats chance and “weak” honestly barely does. The labels are earned, not decorative.</p>
       
       <!-- glossary-explainer-cue:start -->
-      <!-- glossary-explainer-cue:end -->
+<p style="margin-top:18px"><a class="term-explainer-cue" href="#calibration-explainer">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+  Watch the 90-second explainer
+</a></p>
+<!-- glossary-explainer-cue:end -->
       <!-- glossary-faq:start -->
       <section class="term-faq" aria-labelledby="term-faq-h">
         <h2 class="term-faq__h" id="term-faq-h">Frequently asked</h2>
@@ -288,6 +292,171 @@
 </section>
 
 <!-- glossary-explainer:start -->
+<aside id="calibration-explainer" class="term-explainer" data-term-slug="calibration" tabindex="0" aria-label="The 90-second explainer">
+  <header class="term-explainer__head">
+    <span class="eyebrow">The 90-second explainer</span>
+    <h2>Calibration, in 90 seconds.</h2>
+    <p class="term-explainer__sub"><strong>Does the confidence label earn its name?</strong> <span aria-hidden="true">·</span> 74s</p>
+  </header>
+  <div class="term-explainer__stage">
+    <svg width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of calibration — testing whether the Cost Index confidence labels match their real hit-rates against a coin-flip baseline">
+  <defs>
+    <linearGradient id="cal-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>
+      <stop offset="100%" stop-color="var(--cream,#FAF7F2)"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#cal-bg)"/>
+
+  <!-- ============ LABEL: a label is only worth reading if earned ============ -->
+  <g class="explainer-scene is-active" data-scene-id="label">
+    <text class="scene-label text-stone" x="40" y="46" data-anim="fade">A label has to earn its name</text>
+    <!-- the word "strong" as a badge -->
+    <g data-anim="pop" style="--delay:200ms">
+      <rect x="270" y="150" width="260" height="92" rx="14" fill="var(--teal,#1F4E5B)"/>
+      <text class="scene-label" x="400" y="190" text-anchor="middle" font-size="13" fill="var(--cream,#FAF7F2)">CONFIDENCE LABEL</text>
+      <text x="400" y="224" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="34" fill="var(--cream,#FAF7F2)">"strong"</text>
+    </g>
+    <!-- the two readings of the same word -->
+    <g data-anim="rise" style="--delay:800ms">
+      <text class="text-rust" x="240" y="320" text-anchor="middle" font-size="15" font-style="italic">a hunch?</text>
+      <text class="text-stone" x="400" y="320" text-anchor="middle" font-size="20">vs</text>
+      <text class="text-teal" x="560" y="320" text-anchor="middle" font-size="15" font-style="italic">a checked claim?</text>
+    </g>
+    <text class="text-stone" x="400" y="418" text-anchor="middle" font-size="14" font-style="italic" data-anim="fade" style="--delay:1300ms">If the word is not earned, it is decoration.</text>
+  </g>
+
+  <!-- ============ TEST: grade many calls, read the rate per tier ============ -->
+  <g class="explainer-scene" data-scene-id="test">
+    <text class="scene-label text-stone" x="40" y="46" data-anim="fade">Grade a long run · read the rate</text>
+    <!-- one call proves nothing -->
+    <g data-anim="rise" style="--delay:160ms">
+      <circle cx="120" cy="150" r="20" fill="var(--cream,#FAF7F2)" stroke="var(--ink-soft,#3A3A36)" stroke-width="2"/>
+      <path d="M111 150 l6 7 l12 -14" fill="none" stroke="var(--teal,#1F4E5B)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <text class="text-stone" x="156" y="146" font-size="13">one right call</text>
+      <text class="text-stone" x="156" y="166" font-size="13" font-style="italic">proves nothing — a coin does that too</text>
+    </g>
+    <!-- the long run: a grid of graded calls -->
+    <g data-anim="fade" style="--delay:560ms">
+      <text class="scene-label text-stone" x="80" y="222" font-size="11">A LONG RUN OF PAST CALLS, GRADED</text>
+    </g>
+    <g data-anim="fade" style="--delay:760ms">
+      <rect x="80" y="236" width="640" height="64" rx="8" fill="rgba(31,78,91,0.05)" stroke="var(--line,#E8E2D6)"/>
+      <g fill="var(--teal,#1F4E5B)">
+        <circle cx="108" cy="258" r="6"/><circle cx="138" cy="258" r="6"/><circle cx="198" cy="258" r="6"/><circle cx="258" cy="258" r="6"/><circle cx="318" cy="258" r="6"/><circle cx="408" cy="258" r="6"/><circle cx="468" cy="258" r="6"/><circle cx="528" cy="258" r="6"/><circle cx="588" cy="258" r="6"/><circle cx="648" cy="258" r="6"/><circle cx="678" cy="258" r="6"/>
+        <circle cx="108" cy="280" r="6"/><circle cx="168" cy="280" r="6"/><circle cx="228" cy="280" r="6"/><circle cx="288" cy="280" r="6"/><circle cx="378" cy="280" r="6"/><circle cx="438" cy="280" r="6"/><circle cx="498" cy="280" r="6"/><circle cx="558" cy="280" r="6"/><circle cx="618" cy="280" r="6"/><circle cx="678" cy="280" r="6"/>
+      </g>
+      <g fill="var(--rust,#B8541A)">
+        <circle cx="168" cy="258" r="6"/><circle cx="228" cy="258" r="6"/><circle cx="288" cy="258" r="6"/><circle cx="348" cy="258" r="6"/><circle cx="438" cy="258" r="6"/><circle cx="498" cy="258" r="6"/><circle cx="558" cy="258" r="6"/><circle cx="618" cy="258" r="6"/>
+        <circle cx="138" cy="280" r="6"/><circle cx="198" cy="280" r="6"/><circle cx="258" cy="280" r="6"/><circle cx="318" cy="280" r="6"/><circle cx="348" cy="280" r="6"/><circle cx="408" cy="280" r="6"/><circle cx="468" cy="280" r="6"/><circle cx="528" cy="280" r="6"/><circle cx="588" cy="280" r="6"/><circle cx="648" cy="280" r="6"/>
+      </g>
+    </g>
+    <g data-anim="rise" style="--delay:1200ms">
+      <text class="text-soft" x="400" y="362" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="22">For each tier, how often did it come true?</text>
+    </g>
+    <text class="text-stone" x="400" y="418" text-anchor="middle" font-size="14" font-style="italic" data-anim="fade" style="--delay:1700ms">The rate across many calls is the point — not any one call.</text>
+  </g>
+
+  <!-- ============ BARS: weak ~48, medium ~51, strong ~58 ============ -->
+  <!-- axis at y=400; 100% spans 290px up to y=110. height = rate * 290. -->
+  <g class="explainer-scene" data-scene-id="bars">
+    <text class="scene-label text-stone" x="40" y="46" data-anim="fade">Calls that came true, by tier</text>
+    <!-- axis -->
+    <line x1="120" y1="400" x2="700" y2="400" stroke="var(--line-dark,#D4CCBC)" stroke-width="2" data-anim="fade" style="--delay:120ms"/>
+    <!-- WEAK: 48% -> 139px, gold (the highlighted bar, like the OG card) -->
+    <g data-anim="grow-y" style="--delay:360ms">
+      <rect x="180" y="261" width="120" height="139" rx="4" fill="var(--gold,#C8862A)"/>
+    </g>
+    <g data-anim="fade" style="--delay:760ms">
+      <text x="240" y="248" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="30" fill="var(--gold,#C8862A)">48%</text>
+      <text class="text-stone" x="240" y="424" text-anchor="middle" font-size="14">weak</text>
+    </g>
+    <!-- MEDIUM: 51% -> 148px, dark -->
+    <g data-anim="grow-y" style="--delay:560ms">
+      <rect x="350" y="252" width="120" height="148" rx="4" fill="var(--teal,#1F4E5B)"/>
+    </g>
+    <g data-anim="fade" style="--delay:960ms">
+      <text x="410" y="239" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="30" fill="var(--teal,#1F4E5B)">51%</text>
+      <text class="text-stone" x="410" y="424" text-anchor="middle" font-size="14">medium</text>
+    </g>
+    <!-- STRONG: 58% -> 168px, dark -->
+    <g data-anim="grow-y" style="--delay:760ms">
+      <rect x="520" y="232" width="120" height="168" rx="4" fill="var(--teal,#1F4E5B)"/>
+    </g>
+    <g data-anim="fade" style="--delay:1160ms">
+      <text x="580" y="219" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="30" fill="var(--teal,#1F4E5B)">58%</text>
+      <text class="text-stone" x="580" y="424" text-anchor="middle" font-size="14">strong</text>
+    </g>
+    <text class="text-stone" x="400" y="462" text-anchor="middle" font-size="14" font-style="italic" data-anim="fade" style="--delay:1600ms">Each tier comes true more often than the one below it.</text>
+  </g>
+
+  <!-- ============ BASELINE: the 50% coin-flip line across the bars ============ -->
+  <!-- same axis/scale as BARS; 50% baseline sits at y = 400 - 0.50*290 = 255. -->
+  <g class="explainer-scene" data-scene-id="baseline">
+    <text class="scene-label text-stone" x="40" y="46" data-anim="fade">Against a coin flip</text>
+    <line x1="120" y1="400" x2="700" y2="400" stroke="var(--line-dark,#D4CCBC)" stroke-width="2" data-anim="fade" style="--delay:120ms"/>
+    <!-- the three bars, muted, so the baseline reads -->
+    <g data-anim="fade" style="--delay:200ms">
+      <rect x="180" y="261" width="120" height="139" rx="4" fill="var(--gold,#C8862A)"/>
+      <rect x="350" y="252" width="120" height="148" rx="4" fill="var(--teal,#1F4E5B)"/>
+      <rect x="520" y="232" width="120" height="168" rx="4" fill="var(--teal,#1F4E5B)"/>
+      <text class="text-stone" x="240" y="424" text-anchor="middle" font-size="13">weak</text>
+      <text class="text-stone" x="410" y="424" text-anchor="middle" font-size="13">medium</text>
+      <text class="text-stone" x="580" y="424" text-anchor="middle" font-size="13">strong</text>
+    </g>
+    <!-- the 50% coin-flip baseline drawn across all three -->
+    <line x1="120" y1="255" x2="700" y2="255" stroke="var(--rust,#B8541A)" stroke-width="2.5" stroke-dasharray="7 5" data-anim="grow-x" style="--delay:560ms"/>
+    <g data-anim="fade" style="--delay:1100ms">
+      <rect x="120" y="166" width="178" height="42" rx="8" fill="var(--cream,#FAF7F2)" stroke="var(--rust,#B8541A)"/>
+      <text class="text-rust" x="209" y="184" text-anchor="middle" font-size="12" letter-spacing="0.08em">COIN FLIP</text>
+      <text x="209" y="202" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="16" fill="var(--rust,#B8541A)">about 50%</text>
+    </g>
+    <!-- verdicts: strong beats it, weak barely does -->
+    <text class="text-teal" x="580" y="222" text-anchor="middle" font-size="13" font-style="italic" data-anim="fade" style="--delay:1500ms">beats it</text>
+    <text class="text-stone" x="240" y="248" text-anchor="middle" font-size="13" font-style="italic" data-anim="fade" style="--delay:1500ms">barely does</text>
+    <text class="text-stone" x="400" y="462" text-anchor="middle" font-size="14" font-style="italic" data-anim="fade" style="--delay:1900ms">"Strong" genuinely beats chance. "Weak" honestly barely does.</text>
+  </g>
+
+  <!-- ============ LAND: earned, not decorative ============ -->
+  <g class="explainer-scene" data-scene-id="land">
+    <rect x="0" y="0" width="800" height="500" fill="var(--cream,#FAF7F2)" data-anim="fade"/>
+    <text data-anim="rise" style="--delay:200ms" class="scene-label text-teal" x="400" y="170" text-anchor="middle">Earned, not decorative</text>
+    <text data-anim="rise" style="--delay:380ms" x="400" y="252" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="42" font-style="italic" fill="var(--ink,#14161A)">The label has a record.</text>
+    <text data-anim="fade" style="--delay:820ms" class="text-stone" x="400" y="312" text-anchor="middle" font-size="15">The full record is public:</text>
+    <text data-anim="fade" style="--delay:1000ms" class="text-teal" x="400" y="340" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="18">/cost-index/calibration.json</text>
+    <line data-anim="grow-x" style="--delay:1240ms; transform-origin:center" x1="340" y1="372" x2="460" y2="372" stroke="var(--teal,#1F4E5B)" stroke-width="2"/>
+  </g>
+</svg>
+  </div>
+  <div class="term-explainer__chrome">
+    <button type="button" class="term-explainer__playpause" aria-label="Play">
+      <svg class="icon-play"  width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+      <svg class="icon-pause" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+    </button>
+    <div class="term-explainer__scrub" role="presentation">
+      <div class="term-explainer__scrub-fill"></div>
+      <div class="term-explainer__scrub-dots">
+        <button type="button" class="term-explainer__scrub-dot" aria-label="Scene 1 of 5"></button>
+        <button type="button" class="term-explainer__scrub-dot" aria-label="Scene 2 of 5"></button>
+        <button type="button" class="term-explainer__scrub-dot" aria-label="Scene 3 of 5"></button>
+        <button type="button" class="term-explainer__scrub-dot" aria-label="Scene 4 of 5"></button>
+        <button type="button" class="term-explainer__scrub-dot" aria-label="Scene 5 of 5"></button>
+      </div>
+    </div>
+    <span class="term-explainer__time">0:00 / 1:14</span>
+    <button type="button" class="term-explainer__restart">Restart</button>
+  </div>
+  <div class="term-explainer__captions">
+    <h3 class="sr-only">Transcript</h3>
+    <ol>
+        <li data-scene-id="label" data-duration-ms="14000" class="is-active">A confidence label is only worth reading if it is earned. "Strong" should mean more than a hunch — it should mean that calls labeled strong actually come true more often. If it does not, the word is decoration.</li>
+        <li data-scene-id="test" data-duration-ms="16000">Here is the test. You grade a long run of past calls, and for each level you check how often calls at that level actually came true. Being right once proves nothing — even a coin lands heads half the time. What matters is the rate across many calls.</li>
+        <li data-scene-id="bars" data-duration-ms="15000">Here is what the Cost Index showed. Weak calls came true about forty-eight percent of the time, medium about fifty-one, and strong about fifty-eight. Each tier above the last — a climbing bar chart, the same look as the term card itself.</li>
+        <li data-scene-id="baseline" data-duration-ms="15000">Compare that to a coin flip — about fifty percent. Draw that line across the bars. "Strong," near fifty-eight, genuinely beats it. "Weak," near forty-eight, honestly barely does. That is how you know the labels carry real information, not just confidence.</li>
+        <li data-scene-id="land" data-duration-ms="14000">The labels are earned, not decorative. When the Cost Index says strong, that word has a track record behind it. The full record is public at slash cost dash index slash calibration dot json.</li>
+    </ol>
+  </div>
+</aside>
 <!-- glossary-explainer:end -->
 
 <section class="term-siblings">
