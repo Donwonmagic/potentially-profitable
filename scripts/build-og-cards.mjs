@@ -250,6 +250,10 @@ const GLYPHS = {
              <line x1="12" y1="4" x2="12" y2="20"/>
              <line x1="4" y1="12" x2="20" y2="12"/>
              <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/>`,
+  // Cost Data & Sources — a public-data cylinder (stacked records).
+  source: `<ellipse cx="12" cy="5.5" rx="7.5" ry="2.5"/>
+           <path d="M4.5 5.5 V18.5 c0 1.4 3.4 2.5 7.5 2.5 s7.5 -1.1 7.5 -2.5 V5.5"/>
+           <path d="M4.5 12 c0 1.4 3.4 2.5 7.5 2.5 s7.5 -1.1 7.5 -2.5"/>`,
 };
 
 /**
@@ -682,20 +686,76 @@ const focusModules = {
    * focus.caption = line under value, focus.source = attribution line.
    */
   stat: ({ card, fg, accentHex }) => {
-    const value = xmlEscape(card.focus?.value ?? "");
+    const rawValue = String(card.focus?.value ?? "");
+    const value = xmlEscape(rawValue);
     const caption = xmlEscape(card.focus?.caption ?? "");
     const source = xmlEscape((card.focus?.source ?? "").toUpperCase());
     const x = 780;
+    // Auto-fit the value so a wide string (a range like "15–30%")
+    // can't run past the right edge; single figures keep full 128px.
+    const valueSize = fitTitle(rawValue, {
+      font: "Fraunces", maxSize: 128, minSize: 72,
+      maxWidth: CANVAS_W - EDGE - x, step: 8,
+    }).size;
     return `
       <text x="${x}" y="${snap(200)}"
             font-family="Inter, Arial, sans-serif" font-size="12"
             font-weight="700" letter-spacing="3" fill="${fg}" opacity="0.5">${source}</text>
       <text x="${x}" y="${snap(320)}"
-            font-family="Fraunces, Georgia, serif" font-size="128"
+            font-family="Fraunces, Georgia, serif" font-size="${valueSize}"
             font-weight="500" letter-spacing="-4" fill="${accentHex}">${value}</text>
       <text x="${x}" y="${snap(376)}"
             font-family="Inter, Arial, sans-serif" font-size="18"
             font-weight="500" fill="${fg}" opacity="0.78">${caption}</text>
+    `;
+  },
+
+  /**
+   * Horizontal comparison bars — ranked labeled magnitudes. For
+   * audit findings shaped as "share that misses X" or "prevalence
+   * of Y" — the cases where funnel (monotonic dropoff) and stat
+   * (one number) both under-tell the story. focus.items =
+   * [{ label, value }] (numeric value), up to 4; focus.label =
+   * column header; focus.suffix = unit appended to the value
+   * (default "%"). Bars scale to the largest value; the top bar
+   * takes the accent so the eye lands on the worst offender first.
+   */
+  bars: ({ card, fg, accentHex, onLight = false }) => {
+    const items = (card.focus?.items ?? []).slice(0, 4);
+    if (!items.length) return "";
+    const label = xmlEscape((card.focus?.label ?? "").toUpperCase());
+    const suffix = card.focus?.suffix ?? "%";
+    const x = 700;
+    const maxW = 320;
+    const top = Math.max(...items.map((it) => Number(it.value) || 0)) || 1;
+    const yStart = snap(160);
+    const rowGap = 96;     // label + bar + breathing room, snap-friendly
+    const barH = 22;
+    const trackColor = onLight ? "rgba(22,24,29,0.10)" : "rgba(246,247,248,0.16)";
+    const restColor = onLight ? PALETTE.muted : PALETTE.dim;
+    const labelColor = onLight ? PALETTE.ink : fg;
+    const rows = items.map((it, i) => {
+      const v = Number(it.value) || 0;
+      const w = Math.max(4, Math.round((v / top) * maxW));
+      const yLabel = yStart + 28 + i * rowGap;
+      const yBar = yLabel + 14;
+      const color = i === 0 ? accentHex : restColor;
+      return `
+        <text x="${x}" y="${yLabel}"
+              font-family="Inter, Arial, sans-serif" font-size="17"
+              font-weight="500" fill="${labelColor}" opacity="0.9">${xmlEscape(it.label)}</text>
+        <rect x="${x}" y="${yBar}" width="${maxW}" height="${barH}" rx="4" fill="${trackColor}"/>
+        <rect x="${x}" y="${yBar}" width="${w}" height="${barH}" rx="4" fill="${color}"/>
+        <text x="${x + maxW + 16}" y="${yBar + barH - 3}"
+              font-family="Fraunces, Georgia, serif" font-size="26"
+              font-weight="500" fill="${color}">${xmlEscape(String(v) + suffix)}</text>
+      `;
+    }).join("");
+    return `
+      <text x="${x}" y="${yStart}"
+            font-family="Inter, Arial, sans-serif" font-size="12"
+            font-weight="700" letter-spacing="3" fill="${labelColor}" opacity="0.5">${label}</text>
+      ${rows}
     `;
   },
 };
@@ -828,7 +888,7 @@ function renderResearch(card) {
 
   <text x="${EDGE}" y="${yDek}"
         font-family="Inter, Arial, sans-serif" font-size="20"
-        font-weight="400" fill="${PALETTE.muted}">${dekTspans(card.dek ?? "", EDGE, { fontSize: 20, lineHeight: 28 })}</text>
+        font-weight="400" fill="${PALETTE.muted}">${dekTspans(card.dek ?? "", EDGE, { fontSize: 20, lineHeight: 28, maxWidth: focus ? 600 : (CANVAS_W - 2 * EDGE) })}</text>
 
   ${focus}
 
@@ -893,7 +953,7 @@ function renderArticle(card) {
 
   <text x="${EDGE}" y="${yDek}"
         font-family="Inter, Arial, sans-serif" font-size="20"
-        font-weight="400" fill="${PALETTE.muted}">${dekTspans(card.dek ?? "", EDGE, { fontSize: 20, lineHeight: 28 })}</text>
+        font-weight="400" fill="${PALETTE.muted}">${dekTspans(card.dek ?? "", EDGE, { fontSize: 20, lineHeight: 28, maxWidth: focus ? 600 : (CANVAS_W - 2 * EDGE) })}</text>
 
   ${focus}
 
@@ -927,6 +987,15 @@ function renderGlossary(card) {
   const aka  = xmlEscape(card.title_italic ?? "");
   const dek  = xmlEscape(card.dek ?? "");
 
+  // Optional right-column focus module (stat / bars / list) — the same
+  // system the research and article cards use. When present, the term
+  // and definition stay inside the left ~600px so they never collide
+  // with it. Glossary focus is curated in data/glossary-og-focus.json
+  // and merged by seed-glossary-og.mjs (so a re-seed can't strip it).
+  const focusFn = focusModules[card.focus?.type];
+  const focus = focusFn ? focusFn({ card, fg, accentHex, onLight: true }) : "";
+  const leftW = focus ? 600 : (CANVAS_W - 2 * EDGE);
+
   // Phase D — engage real shrinking + lift dek when AKA is empty.
   // fitTitle: 64→56→52→48px steps for terms that overflow at 64px.
   // gridRow: when there's no AKA, dek lifts to 'dek-tight' so a
@@ -939,7 +1008,7 @@ function renderGlossary(card) {
     font: "Fraunces",
     maxSize: 64,
     minSize: 48,
-    maxWidth: CANVAS_W - 2 * EDGE,
+    maxWidth: leftW,
     step: 4,
   });
 
@@ -965,12 +1034,14 @@ function renderGlossary(card) {
 
   ${aka ? `<text x="${EDGE}" y="${yAka}"
         font-family="Fraunces, Georgia, serif" font-style="italic"
-        font-size="26" font-weight="400" letter-spacing="-0.5"
+        font-size="${focus ? fitTitle(card.title_italic ?? "", { font: "Fraunces", maxSize: 26, minSize: 15, maxWidth: leftW - 16, step: 2 }).size : 26}" font-weight="400" letter-spacing="-0.5"
         fill="${PALETTE.muted}">${aka}</text>` : ""}
 
   <text x="${EDGE}" y="${yDek}"
         font-family="Inter, Arial, sans-serif" font-size="22"
-        font-weight="400" fill="${PALETTE.muted}">${dekTspans(card.dek ?? "", EDGE, { fontSize: 22, lineHeight: 30 })}</text>
+        font-weight="400" fill="${PALETTE.muted}">${dekTspans(card.dek ?? "", EDGE, { fontSize: 22, lineHeight: 30, maxWidth: leftW })}</text>
+
+  ${focus}
 
   ${ornament({ color: PALETTE.muted })}
   ${footer({ color: PALETTE.muted, ruleColor: PALETTE.rule })}

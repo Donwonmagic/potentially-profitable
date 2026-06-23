@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#F6F7F8"/>
+  
+    <defs>
+      <pattern id="muntinField" x="0" y="0" width="140" height="140"
+               patternUnits="userSpaceOnUse">
+        <g transform="translate(18, 18)"
+           fill="none" stroke="#16181D" stroke-width="1.5"
+           stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="0" y="0" width="104" height="104"/>
+          <line x1="52" y1="0" x2="52" y2="104"/>
+          <line x1="0" y1="36" x2="104" y2="36"/>
+        </g>
+      </pattern>
+    </defs>
+    <rect width="1200" height="630"
+          fill="url(#muntinField)" opacity="0.045"/>
+  
+  
+  <defs>
+    <radialGradient id="ghWarmSoft" cx="92%" cy="6%" r="64%">
+      <stop offset="0%"  stop-color="#FFB020"  stop-opacity="0.13"/>
+      <stop offset="52%" stop-color="#FF6B5C" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#FFB020" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#ghWarmSoft)"/>
+  
+    <rect x="0" y="0" width="12" height="252" fill="#FFB020"/>
+    <rect x="0" y="252" width="12" height="378" fill="#FFB020" opacity="0.4"/>
+  
+
+  
+    <g transform="translate(80, 70) scale(1.5)"
+       fill="none" stroke="#FFB020" stroke-width="1.167"
+       stroke-linecap="round" stroke-linejoin="round"
+       color="#FFB020" opacity="0.85">
+      <ellipse cx="12" cy="5.5" rx="7.5" ry="2.5"/>
+           <path d="M4.5 5.5 V18.5 c0 1.4 3.4 2.5 7.5 2.5 s7.5 -1.1 7.5 -2.5 V5.5"/>
+           <path d="M4.5 12 c0 1.4 3.4 2.5 7.5 2.5 s7.5 -1.1 7.5 -2.5"/>
+    </g>
+  
+  <text x="136" y="96"
+        font-family="Inter, Arial, sans-serif" font-size="13"
+        font-weight="700" letter-spacing="4" fill="#FFB020">GLOSARIO · DATOS Y FUENTES DE COSTOS</text>
+
+  <text x="80" y="232"
+        font-family="Fraunces, Georgia, serif" font-size="52"
+        font-weight="500" letter-spacing="-2" fill="#16181D">El umbral de publicación</text>
+
+  <text x="80" y="296"
+        font-family="Fraunces, Georgia, serif" font-style="italic"
+        font-size="26" font-weight="400" letter-spacing="-0.5"
+        fill="#4A4F59">publica solo cuando pasa el umbral</text>
+
+  <text x="80" y="456"
+        font-family="Inter, Arial, sans-serif" font-size="22"
+        font-weight="400" fill="#4A4F59"><tspan x="80" dy="0">La regla de publicar o retener detrás del Índice de</tspan><tspan x="80" dy="30">costos.</tspan></text>
+
+  
+      <text x="760" y="150"
+            font-family="Inter, Arial, sans-serif" font-size="12"
+            font-weight="700" letter-spacing="3" fill="#16181D" opacity="0.5">PUBLICA COMPLETO, O NADA</text>
+      
+        <circle cx="760" cy="176" r="18" fill="none"
+                stroke="#FFB020" stroke-width="1.5" opacity="0.75"/>
+        <text x="760" y="181" text-anchor="middle"
+              font-family="Fraunces, Georgia, serif" font-style="italic"
+              font-size="18" font-weight="500" fill="#FFB020">1</text>
+        <text x="796" y="182"
+              font-family="Inter, Arial, sans-serif" font-size="18"
+              font-weight="500" fill="#16181D" opacity="0.88">Un rango medido entre mercados</text>
+      
+        <circle cx="760" cy="240" r="18" fill="none"
+                stroke="#FFB020" stroke-width="1.5" opacity="0.75"/>
+        <text x="760" y="245" text-anchor="middle"
+              font-family="Fraunces, Georgia, serif" font-style="italic"
+              font-size="18" font-weight="500" fill="#FFB020">2</text>
+        <text x="796" y="246"
+              font-family="Inter, Arial, sans-serif" font-size="18"
+              font-weight="500" fill="#16181D" opacity="0.88">o una fuente corroborada</text>
+      
+        <circle cx="760" cy="304" r="18" fill="none"
+                stroke="#FFB020" stroke-width="1.5" opacity="0.75"/>
+        <text x="760" y="309" text-anchor="middle"
+              font-family="Fraunces, Georgia, serif" font-style="italic"
+              font-size="18" font-weight="500" fill="#FFB020">3</text>
+        <text x="796" y="310"
+              font-family="Inter, Arial, sans-serif" font-size="18"
+              font-weight="500" fill="#16181D" opacity="0.88">si no: retenido, no publicado</text>
+      
+    
+
+  
+    <g transform="translate(80, 552)" fill="#4A4F59" opacity="0.6">
+      <circle cx="8" cy="8" r="8" fill="none" stroke="#4A4F59" stroke-width="1"/>
+      <text x="8" y="12" text-anchor="middle"
+            font-family="Fraunces, Georgia, serif" font-style="italic"
+            font-size="11" font-weight="500" fill="#4A4F59">d</text>
+    </g>
+  
+  
+    <line x1="80" y1="584" x2="1120" y2="584"
+          stroke="#E3E5E9" stroke-width="1"/>
+    <text x="80" y="614"
+          font-family="Inter, Arial, sans-serif" font-size="14"
+          font-weight="600" letter-spacing="2" fill="#4A4F59">MUNTIN DIGITAL</text>
+    <text x="1120" y="614" text-anchor="end"
+          font-family="Inter, Arial, sans-serif" font-size="14"
+          font-weight="600" letter-spacing="1" fill="#4A4F59">muntin.digital</text>
+  
+</svg>

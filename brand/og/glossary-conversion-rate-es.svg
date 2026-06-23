@@ -35,10 +35,10 @@
        fill="none" stroke="#C42E2E" stroke-width="1.167"
        stroke-linecap="round" stroke-linejoin="round"
        color="#C42E2E" opacity="0.85">
-      <path d="M3 6 L12 5 L21 6 L21 19 L12 18 L3 19 Z"/>
-             <line x1="12" y1="5" x2="12" y2="18"/>
-             <line x1="6" y1="9" x2="9" y2="9"/>
-             <line x1="15" y1="9" x2="18" y2="9"/>
+      <line x1="4" y1="6" x2="20" y2="6"/>
+                <line x1="6" y1="11" x2="18" y2="11"/>
+                <line x1="9" y1="16" x2="15" y2="16"/>
+                <polyline points="10 19 12 21 14 19"/>
     </g>
   
   <text x="136" y="96"
@@ -53,7 +53,32 @@
 
   <text x="80" y="400"
         font-family="Inter, Arial, sans-serif" font-size="22"
-        font-weight="400" fill="#4A4F59"><tspan x="80" dy="0">El porcentaje de visitantes que hacen la cosa específica que querías que hicieran —</tspan><tspan x="80" dy="30">reservar, hacer un pedido, llenar un formulario de contacto.</tspan></text>
+        font-weight="400" fill="#4A4F59"><tspan x="80" dy="0">El porcentaje de visitantes que hacen la cosa</tspan><tspan x="80" dy="30">específica que querías que hicieran — reservar,</tspan><tspan x="80" dy="30">hacer un pedido, llenar un formulario de contacto.</tspan></text>
+
+  
+      <text x="700" y="160"
+            font-family="Inter, Arial, sans-serif" font-size="12"
+            font-weight="700" letter-spacing="3" fill="#16181D" opacity="0.5">REFERENCIA DE SITIO</text>
+      
+        <text x="700" y="188"
+              font-family="Inter, Arial, sans-serif" font-size="17"
+              font-weight="500" fill="#16181D" opacity="0.9">Reserva (sólida)</text>
+        <rect x="700" y="202" width="320" height="22" rx="4" fill="rgba(22,24,29,0.10)"/>
+        <rect x="700" y="202" width="96" height="22" rx="4" fill="#C42E2E"/>
+        <text x="1036" y="221"
+              font-family="Fraunces, Georgia, serif" font-size="26"
+              font-weight="500" fill="#C42E2E">3%</text>
+      
+        <text x="700" y="284"
+              font-family="Inter, Arial, sans-serif" font-size="17"
+              font-weight="500" fill="#16181D" opacity="0.9">Pedido (excelente)</text>
+        <rect x="700" y="298" width="320" height="22" rx="4" fill="rgba(22,24,29,0.10)"/>
+        <rect x="700" y="298" width="320" height="22" rx="4" fill="#4A4F59"/>
+        <text x="1036" y="317"
+              font-family="Fraunces, Georgia, serif" font-size="26"
+              font-weight="500" fill="#4A4F59">10%</text>
+      
+    
 
   
     <g transform="translate(80, 552)" fill="#4A4F59" opacity="0.6">

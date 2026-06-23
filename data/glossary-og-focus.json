@@ -1,0 +1,693 @@
+{
+  "_comment": "Per-term OG-card focus modules, merged into the glossary cards by scripts/seed-glossary-og.mjs. A focus added straight to brand/og/cards.json would be stripped on the next re-seed (the generator rewrites every glossary-* entry), so curated focuses live here. Keyed by glossary slug; value is { en: {focus}, es: {focus} }. type keys into focusModules in scripts/build-og-cards.mjs (stat | bars | list | quote | checks | funnel | score-ring). Every number MUST already appear on the term's own /glossary/<slug>/ page — the fact gate applies to cards too. Figures kept here are cited, standard target ranges, or honestly framed as rules-of-thumb; one-off uncited generalizations and illustrative-example numbers are deliberately left off.",
+  "commission": {
+    "en": {
+      "type": "stat",
+      "value": "15–30%",
+      "caption": "kept per order by aggregators",
+      "source": "Typical range"
+    },
+    "es": {
+      "type": "stat",
+      "value": "15–30%",
+      "caption": "que retiene un agregador por pedido",
+      "source": "Rango típico"
+    }
+  },
+  "prime-cost": {
+    "en": {
+      "type": "stat",
+      "value": "55–65%",
+      "caption": "food + labor, healthy band",
+      "source": "Independent target"
+    },
+    "es": {
+      "type": "stat",
+      "value": "55–65%",
+      "caption": "comida + mano de obra, banda sana",
+      "source": "Meta de independientes"
+    }
+  },
+  "food-cost": {
+    "en": {
+      "type": "stat",
+      "value": "28–32%",
+      "caption": "of sales, most formats",
+      "source": "Target band"
+    },
+    "es": {
+      "type": "stat",
+      "value": "28–32%",
+      "caption": "de ventas, la mayoría de formatos",
+      "source": "Banda meta"
+    }
+  },
+  "labor-cost": {
+    "en": {
+      "type": "stat",
+      "value": "28–32%",
+      "caption": "of sales, most formats",
+      "source": "Target range"
+    },
+    "es": {
+      "type": "stat",
+      "value": "28–32%",
+      "caption": "de ventas, casi todo formato",
+      "source": "Rango objetivo"
+    }
+  },
+  "aggregator": {
+    "en": {
+      "type": "stat",
+      "value": "15–30%",
+      "caption": "cut on every delivery order",
+      "source": "Typical commission"
+    },
+    "es": {
+      "type": "stat",
+      "value": "15–30%",
+      "caption": "tajada de cada pedido",
+      "source": "Comisión típica"
+    }
+  },
+  "service-charge": {
+    "en": {
+      "type": "stat",
+      "value": "18–22%",
+      "caption": "added to the check",
+      "source": "Common range"
+    },
+    "es": {
+      "type": "stat",
+      "value": "18–22%",
+      "caption": "agregado a la cuenta",
+      "source": "Rango común"
+    }
+  },
+  "edible-portion": {
+    "en": {
+      "type": "stat",
+      "value": "20–30%",
+      "caption": "under-priced if you use AP cost",
+      "source": "Produce-heavy menus"
+    },
+    "es": {
+      "type": "stat",
+      "value": "20–30%",
+      "caption": "subvalúa si usas costo AP",
+      "source": "Menús de producto"
+    }
+  },
+  "charm-pricing": {
+    "en": {
+      "type": "stat",
+      "value": "~8%",
+      "caption": "lift from dropping the $ sign",
+      "source": "Cornell study"
+    },
+    "es": {
+      "type": "stat",
+      "value": "~8%",
+      "caption": "alza al quitar el signo $",
+      "source": "Estudio Cornell"
+    }
+  },
+  "elasticity": {
+    "en": {
+      "type": "stat",
+      "value": "6%",
+      "caption": "raise loses 2–3% of covers",
+      "source": "Working rule"
+    },
+    "es": {
+      "type": "stat",
+      "value": "6%",
+      "caption": "alza pierde 2–3% de cubiertos",
+      "source": "Regla práctica"
+    }
+  },
+  "menu-copy": {
+    "en": {
+      "type": "stat",
+      "value": "27%",
+      "caption": "more orders, just from words",
+      "source": "Wansink, 2005"
+    },
+    "es": {
+      "type": "stat",
+      "value": "27%",
+      "caption": "más pedidos, solo con palabras",
+      "source": "Wansink, 2005"
+    }
+  },
+  "sensory-adjective": {
+    "en": {
+      "type": "stat",
+      "value": "+27%",
+      "caption": "lift from sensory words",
+      "source": "Wansink research"
+    },
+    "es": {
+      "type": "stat",
+      "value": "+27%",
+      "caption": "alza por palabras sensoriales",
+      "source": "Investig. Wansink"
+    }
+  },
+  "plate-cost": {
+    "en": {
+      "type": "stat",
+      "value": "3–5 pts",
+      "caption": "food cost found dish-by-dish",
+      "source": "Typical reveal"
+    },
+    "es": {
+      "type": "stat",
+      "value": "3–5 pts",
+      "caption": "costo hallado plato por plato",
+      "source": "Hallazgo típico"
+    }
+  },
+  "yield-percent": {
+    "en": {
+      "type": "bars",
+      "label": "Yield after trim",
+      "suffix": "%",
+      "items": [
+        {
+          "label": "Romaine",
+          "value": 75
+        },
+        {
+          "label": "Whole chicken",
+          "value": 60
+        },
+        {
+          "label": "Whole halibut",
+          "value": 50
+        }
+      ]
+    },
+    "es": {
+      "type": "bars",
+      "label": "Rendimiento útil",
+      "suffix": "%",
+      "items": [
+        {
+          "label": "Lechuga romana",
+          "value": 75
+        },
+        {
+          "label": "Pollo entero",
+          "value": 60
+        },
+        {
+          "label": "Fletán entero",
+          "value": 50
+        }
+      ]
+    }
+  },
+  "conversion-rate": {
+    "en": {
+      "type": "bars",
+      "label": "Restaurant site benchmark",
+      "suffix": "%",
+      "items": [
+        {
+          "label": "Reservation (solid)",
+          "value": 3
+        },
+        {
+          "label": "Online order (great)",
+          "value": 10
+        }
+      ]
+    },
+    "es": {
+      "type": "bars",
+      "label": "Referencia de sitio",
+      "suffix": "%",
+      "items": [
+        {
+          "label": "Reserva (sólida)",
+          "value": 3
+        },
+        {
+          "label": "Pedido (excelente)",
+          "value": 10
+        }
+      ]
+    }
+  },
+  "bounce-rate": {
+    "en": {
+      "type": "stat",
+      "value": "70%+",
+      "caption": "homepage bounce = a problem",
+      "source": "Rule of thumb"
+    },
+    "es": {
+      "type": "stat",
+      "value": "70%+",
+      "caption": "rebote en portada = problema",
+      "source": "Regla general"
+    }
+  },
+  "gbp-photo-count": {
+    "en": {
+      "type": "stat",
+      "value": "15–20",
+      "caption": "strong photos to add",
+      "source": "Recommended"
+    },
+    "es": {
+      "type": "stat",
+      "value": "15–20",
+      "caption": "fotos buenas que agregar",
+      "source": "Recomendado"
+    }
+  },
+  "gift-card-checkout": {
+    "en": {
+      "type": "stat",
+      "value": "~25%",
+      "caption": "of gift cards never redeemed",
+      "source": "Typical"
+    },
+    "es": {
+      "type": "stat",
+      "value": "~25%",
+      "caption": "de tarjetas nunca se canjean",
+      "source": "Típico"
+    }
+  },
+  "hosting": {
+    "en": {
+      "type": "stat",
+      "value": "$5–$30",
+      "caption": "small-business hosting / month",
+      "source": "Typical range"
+    },
+    "es": {
+      "type": "stat",
+      "value": "$5–$30",
+      "caption": "hosting de negocio / mes",
+      "source": "Rango típico"
+    }
+  },
+  "bls": {
+    "en": {
+      "type": "list",
+      "label": "U.S. BLS · public + free",
+      "items": [
+        "CPI — what households pay",
+        "PPI — what businesses charge",
+        "Monthly, on a fixed schedule"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "BLS EE. UU. · público y gratis",
+      "items": [
+        "CPI — lo que pagan los hogares",
+        "PPI — lo que cobran las empresas",
+        "Mensual, en calendario fijo"
+      ]
+    }
+  },
+  "usda-market-news": {
+    "en": {
+      "type": "list",
+      "label": "USDA Market News · public + free",
+      "items": [
+        "Terminal-market prices",
+        "Produce + poultry",
+        "Daily, free"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "USDA Market News · público + gratis",
+      "items": [
+        "Precios de mercado terminal",
+        "Verduras + pollo",
+        "Diario, gratis"
+      ]
+    }
+  },
+  "usda-lmr": {
+    "en": {
+      "type": "list",
+      "label": "USDA LMR · public + free",
+      "items": [
+        "Mandatory by law",
+        "Beef + pork cutout",
+        "A census, not a sample"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "USDA LMR · público + gratis",
+      "items": [
+        "Obligatorio por ley",
+        "Corte de res y cerdo",
+        "Un censo, no una muestra"
+      ]
+    }
+  },
+  "usda-dairy": {
+    "en": {
+      "type": "list",
+      "label": "USDA NDPSR · weekly + free",
+      "items": [
+        "Butter, cheddar, whey, milk",
+        "Weekly survey of real sales",
+        "Sets federal milk prices"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "USDA NDPSR · semanal + gratis",
+      "items": [
+        "Mantequilla, cheddar, suero",
+        "Encuesta semanal de ventas",
+        "Fija el precio de la leche"
+      ]
+    }
+  },
+  "fred": {
+    "en": {
+      "type": "list",
+      "label": "FRED · St. Louis Fed · free",
+      "items": [
+        "Aggregates public data series",
+        "One free, open API",
+        "The shelf, not the producer"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "FRED · Reserva Federal · gratis",
+      "items": [
+        "Reúne series públicas",
+        "Una sola API abierta",
+        "El estante, no el productor"
+      ]
+    }
+  },
+  "eia": {
+    "en": {
+      "type": "list",
+      "label": "EIA · weekly + free",
+      "items": [
+        "Weekly retail diesel price",
+        "A freight pressure signal",
+        "Not a food price"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "EIA · semanal + gratis",
+      "items": [
+        "Precio semanal del diésel",
+        "Señal de presión de flete",
+        "No es precio del alimento"
+      ]
+    }
+  },
+  "noaa-fisheries": {
+    "en": {
+      "type": "list",
+      "label": "NOAA Fisheries · public + free",
+      "items": [
+        "U.S. seafood landings",
+        "Ex-vessel (dock) value",
+        "Honest-limited coverage"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "NOAA Fisheries · público + gratis",
+      "items": [
+        "Desembarques de marisco",
+        "Valor en muelle",
+        "Cobertura limitada, honesta"
+      ]
+    }
+  },
+  "fda": {
+    "en": {
+      "type": "list",
+      "label": "FDA · safety, not price",
+      "items": [
+        "Recalls + labeling rules",
+        "Inspections + FSMA",
+        "Not a price source"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "FDA · seguridad, no precio",
+      "items": [
+        "Retiros + etiquetado",
+        "Inspecciones + FSMA",
+        "No es fuente de precios"
+      ]
+    }
+  },
+  "cme": {
+    "en": {
+      "type": "list",
+      "label": "futures, not your invoice",
+      "items": [
+        "A bet on the future price",
+        "Cattle, hogs + dairy",
+        "Index uses the cash price"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "futuros, no tu factura",
+      "items": [
+        "Apuesta sobre el precio futuro",
+        "Res, cerdo + lácteos",
+        "El índice usa el contado"
+      ]
+    }
+  },
+  "measured-derived-absent": {
+    "en": {
+      "type": "list",
+      "label": "The honesty spine",
+      "items": [
+        "Measured: shown as-is",
+        "Derived: a labeled estimate",
+        "Absent: said plainly"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "La columna de honestidad",
+      "items": [
+        "Medido: mostrado tal cual",
+        "Derivado: estimación etiquetada",
+        "Ausente: dicho claramente"
+      ]
+    }
+  },
+  "price-confidence": {
+    "en": {
+      "type": "list",
+      "label": "Confidence · scored in two",
+      "items": [
+        "Level: the dollar",
+        "Trend: the direction",
+        "Headline = the lower one"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "Confianza · en dos partes",
+      "items": [
+        "Nivel: el dólar",
+        "Tendencia: la dirección",
+        "Titular = la menor"
+      ]
+    }
+  },
+  "shippable-bar": {
+    "en": {
+      "type": "list",
+      "label": "Ship complete, or not at all",
+      "items": [
+        "A measured cross-market range",
+        "or one corroborated source",
+        "else: held back, not shipped"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "Publica completo, o nada",
+      "items": [
+        "Un rango medido entre mercados",
+        "o una fuente corroborada",
+        "si no: retenido, no publicado"
+      ]
+    }
+  },
+  "prediction-band": {
+    "en": {
+      "type": "stat",
+      "value": "~84%",
+      "caption": "of the time the band held (80% target)",
+      "source": "Verified · 84 items"
+    },
+    "es": {
+      "type": "stat",
+      "value": "~84%",
+      "caption": "de las veces la banda acertó (meta 80%)",
+      "source": "Verificado · 84 ítems"
+    }
+  },
+  "calibration": {
+    "en": {
+      "type": "bars",
+      "label": "Trend calls that came true",
+      "suffix": "%",
+      "items": [
+        {
+          "label": "Weak",
+          "value": 48
+        },
+        {
+          "label": "Medium",
+          "value": 51
+        },
+        {
+          "label": "Strong",
+          "value": 58
+        }
+      ]
+    },
+    "es": {
+      "type": "bars",
+      "label": "Aciertos de tendencia",
+      "suffix": "%",
+      "items": [
+        {
+          "label": "Débil",
+          "value": 48
+        },
+        {
+          "label": "Media",
+          "value": 51
+        },
+        {
+          "label": "Fuerte",
+          "value": 58
+        }
+      ]
+    }
+  },
+  "ratio-bridge": {
+    "en": {
+      "type": "list",
+      "label": "A labeled estimate, never faked",
+      "items": [
+        "No direct series for an item?",
+        "Bridge from a stable ratio",
+        "Labeled an estimate, not a fact"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "Estimación marcada, nunca inventada",
+      "items": [
+        "¿Sin serie directa?",
+        "Cruza desde una razón estable",
+        "Marcado estimación, no un hecho"
+      ]
+    }
+  },
+  "freshness": {
+    "en": {
+      "type": "list",
+      "label": "A number's age matters",
+      "items": [
+        "Series publish on a schedule",
+        "A number ages between releases",
+        "Series rot gets flagged"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "La edad del número importa",
+      "items": [
+        "Las series salen en calendario",
+        "Un número envejece entre datos",
+        "La pudrición se marca"
+      ]
+    }
+  },
+  "pressure-overlay": {
+    "en": {
+      "type": "list",
+      "label": "Looks forward, stays a direction",
+      "items": [
+        "Leading signals (diesel → freight)",
+        "A direction, never a price",
+        "Only after it proves out"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "Mira adelante, es una dirección",
+      "items": [
+        "Señales adelantadas (diésel → flete)",
+        "Una dirección, nunca un precio",
+        "Solo después de comprobarse"
+      ]
+    }
+  },
+  "revisions": {
+    "en": {
+      "type": "list",
+      "label": "Logged, not overwritten",
+      "items": [
+        "Sources revise: prelim → final",
+        "The index revises with them",
+        "Logged, not silently overwritten"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "Registrado, no sobrescrito",
+      "items": [
+        "Las fuentes revisan: prelim → final",
+        "El índice se revisa con ellas",
+        "Registrado, no en silencio"
+      ]
+    }
+  },
+  "assessed-benchmark": {
+    "en": {
+      "type": "list",
+      "label": "A number you can check",
+      "items": [
+        "Assessed: editors judge a price",
+        "Proprietary + usually paywalled",
+        "This index: public data only"
+      ]
+    },
+    "es": {
+      "type": "list",
+      "label": "Un número que puedes verificar",
+      "items": [
+        "Evaluado: editores fijan a criterio",
+        "Propietario + tras muro de pago",
+        "Este índice: solo datos públicos"
+      ]
+    }
+  }
+}

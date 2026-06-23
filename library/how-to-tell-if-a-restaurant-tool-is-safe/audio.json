@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "generatedAt": "2026-06-12T01:30:57.365Z",
+  "generatedAt": "2026-06-23T02:23:44.453Z",
   "engine": "f5",
   "model": "don-reference.m4a",
   "voice": "f5:don-reference.m4a",
   "language": "en",
-  "total": 633.05,
+  "total": 717.94,
   "chunks": [
     {
       "id": 0,
@@ -59,513 +59,553 @@
       "id": 6,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(3)",
-      "text": "Most &ldquo;free margin audit&rdquo; tools have a price tag. It is just paid in data. The pattern is well-worn: you type your real ticket, your real food cost , your real labor, and the tool returns a number. It also tends to return sales reps in your inbox by morning, each with a proposal built on numbers that were never supposed to leave your office. The tool was the funnel . Your numbers were the qualifier.",
+      "text": "The screen asks for your P O S login. Or it asks you to drop in your sales export, &ldquo;just paste your last month so we can show you what you&rsquo;re leaving on the table.&rdquo; The cursor is blinking in the box. This is the moment the whole question lives in: not after you&rsquo;ve typed, after the report has already scrolled past and the damage is done, but right here, before the first real number leaves your hand. Before you type a real number into any free restaurant tool, you can find out in under a minute whether that number ever leaves your browser. That is the entire job of this page.",
       "start": 30.16,
-      "end": 50.23
+      "end": 59.42
     },
     {
       "id": 7,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "The pattern hides because nobody asks the obvious question: where do my inputs go the moment I type them? In a working browser, you can answer that question in under a minute. This article is the framework, five tests, four data tiers, one worked example, and at the end, a checklist you can run on any tool you encounter.",
-      "start": 51.03,
-      "end": 66.62
+      "text": "Because most &ldquo;free margin audit&rdquo; tools have a price tag, it&rsquo;s just paid in data. The pattern is well-worn: you type your real ticket, your real food cost , your real labor, and the tool returns a number. It also tends to return sales reps in your inbox by morning, each with a proposal built on numbers that were never supposed to leave your office. The tool was the funnel . Your numbers were the qualifier.",
+      "start": 60.22,
+      "end": 80.93
     },
     {
       "id": 8,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
-      "text": "The tools that pass these tests will tell you so, plainly. The tools that fail are about to explain why the tests do not apply to them. That is the tell.",
-      "start": 67.42,
-      "end": 74.93
+      "text": "The pattern hides because nobody asks the obvious question at the cursor: where do my inputs go the moment I type them? So treat what follows as a walkthrough you run with the sign-up screen still open in front of you, five tests, four data tiers, one worked example, and a verdict tree that ends in a plain keep-or-walk-away call on the exact tool you&rsquo;re looking at. The tools that pass will tell you so, plainly. The tools that fail are about to explain why the tests don&rsquo;t apply to them. That&rsquo;s the tell.",
+      "start": 81.73,
+      "end": 107.09
     },
     {
       "id": 9,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "1. The five tests, run before you type.",
-      "start": 76.43,
-      "end": 78.33
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(1)",
+      "text": "The screen wants your real numbers before it gives you anything. The one minute before you type is the only leverage you&rsquo;ll ever have over that tool, spend it.",
+      "start": 108.09,
+      "end": 116.19
     },
     {
       "id": 10,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "Open DevTools ↗ on whatever tool you are evaluating ( Cmd+Opt+I on Mac, Ctrl+Shift+I on Windows). Five questions:",
-      "start": 79.28,
-      "end": 84.92
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "1. The five tests, run before you type.",
+      "start": 117.69,
+      "end": 119.59
     },
     {
       "id": 11,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Does typing a number trigger a network request? Open the Network tab. Type. If the request list grows on every keystroke, the tool is silently sending your inputs to a server. Walk away.",
-      "start": 85.47,
-      "end": 94.6
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Open DevTools ↗ on whatever tool you are evaluating ( Cmd+Opt+I on Mac, Ctrl+Shift+I on Windows). Five questions:",
+      "start": 120.54,
+      "end": 126.18
     },
     {
       "id": 12,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Is the privacy claim at the point of input? A trustworthy tool tells you what it does with your data where you are typing, not in a footer link three clicks deep.",
-      "start": 95.1,
-      "end": 103.05
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Does typing a number trigger a network request? Open the Network tab. Type. If the request list grows on every keystroke, the tool is silently sending your inputs to a server. Walk away.",
+      "start": 126.73,
+      "end": 135.86
     },
     {
       "id": 13,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Is there an account / newsletter / cookie gate? &ldquo;Enter your email to see your results&rdquo; means your numbers are the price of admission. The tool is not free.",
-      "start": 103.55,
-      "end": 111.74
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Is the privacy claim at the point of input? A trustworthy tool tells you what it does with your data where you are typing, not in a footer link three clicks deep.",
+      "start": 136.36,
+      "end": 144.31
     },
     {
       "id": 14,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "Are there third-party analytics, session replay, or marketing scripts? Filter the Network tab by JS. If you see Google Analytics, Meta Pixel, HubSpot, FullStory, Hotjar, your inputs are being recorded by surveillance vendors who were not even part of the deal you thought you were making.",
-      "start": 112.24,
-      "end": 126.16
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Is there an account / newsletter / cookie gate? &ldquo;Enter your email to see your results&rdquo; means your numbers are the price of admission. The tool is not free.",
+      "start": 144.81,
+      "end": 153
     },
     {
       "id": 15,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "Is the source code readable? Right-click → View Source. A small, readable, unminified script is a tool you can audit. A 4-megabyte minified bundle from a SaaS framework is a tool you cannot.",
-      "start": 126.66,
-      "end": 136.09
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Are there third-party analytics, session replay, or marketing scripts? Filter the Network tab by JS. If you see Google Analytics, Meta Pixel, HubSpot, FullStory, Hotjar, your inputs are being recorded by surveillance vendors who were not even part of the deal you thought you were making.",
+      "start": 153.5,
+      "end": 167.42
     },
     {
       "id": 16,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "Pass all five and the tool is at least honest about its data flow. Fail any of them and the tool either does not know or does not want you to know, both are reasons to leave.",
-      "start": 136.89,
-      "end": 145.43
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "Is the source code readable? Right-click → View Source. A small, readable, unminified script is a tool you can audit. A 4-megabyte minified bundle from a SaaS framework is a tool you cannot.",
+      "start": 167.92,
+      "end": 177.35
     },
     {
       "id": 17,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "The five-test browser audit, in the order you run them. Test one: open the Network tab and type a number. If a request fires on every keystroke, the tool is shipping your inputs to a server before you submit, walk away. Test two: look for the privacy claim at the point of input, not three clicks deep in a footer. Test three: check for an account, newsletter, or cookie gate, \"enter your email to see your results\" means your numbers are the price of admission. Test four: filter Network by JS and look for Google Analytics, Meta Pixel, HubSpot, FullStory, Hotjar, third-party surveillance vendors recording inputs you did not agree to share. Test five: right-click and View Source. A small, readable, unminified script is auditable; a four-megabyte minified bundle is not. Any single failure ends the audit.",
-      "start": 146.53,
-      "end": 185.43
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Pass all five and the tool is at least honest about its data flow. Fail any of them and the tool either does not know or does not want you to know, both are reasons to leave.",
+      "start": 178.15,
+      "end": 186.69
     },
     {
       "id": 18,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "2. The four-tier model, what to share, where.",
-      "start": 186.93,
-      "end": 189.13
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Each test has a tell you can read at a glance. Here is what a safe signal looks like beside the red flag it&rsquo;s standing in for, same five tests, sorted into the two columns you&rsquo;re actually deciding between.",
+      "start": 187.49,
+      "end": 198.15
     },
     {
       "id": 19,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "Most small-business owners carry all their data in the same mental bucket, which means the supplier list and the tax ID get the same protection (often the same low level of it). Four tiers, each with a different audience and a different level of caution:",
-      "start": 190.08,
-      "end": 202.35
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "The five-test browser audit, in the order you run them. Test one: open the Network tab and type a number. If a request fires on every keystroke, the tool is shipping your inputs to a server before you submit, walk away. Test two: look for the privacy claim at the point of input, not three clicks deep in a footer. Test three: check for an account, newsletter, or cookie gate, \"enter your email to see your results\" means your numbers are the price of admission. Test four: filter Network by JS and look for Google Analytics, Meta Pixel, HubSpot, FullStory, Hotjar, third-party surveillance vendors recording inputs you did not agree to share. Test five: right-click and View Source. A small, readable, unminified script is auditable; a four-megabyte minified bundle is not. Any single failure ends the audit.",
+      "start": 199.25,
+      "end": 238.15
     },
     {
       "id": 20,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Tier 1, Public. Menu, hours, photos, address, phone, schema.org markup. Optimize aggressively; this is how customers find you.",
-      "start": 202.9,
-      "end": 209.08
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "2. The four-tier model, what to share, where.",
+      "start": 239.65,
+      "end": 241.85
     },
     {
       "id": 21,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Tier 2, Competitive-sensitive. Cost of goods, supplier list, your actual commission tier (not the public rate), labor schedule template. Share with bookkeeper / consultant / broker, under Nda. Not with platforms, competitors, or &ldquo;free audit&rdquo; tools that keep your input.",
-      "start": 209.58,
-      "end": 223.17
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Most small-business owners carry all their data in the same mental bucket, which means the supplier list and the tax ID get the same protection (often the same low level of it). Four tiers, each with a different audience and a different level of caution:",
+      "start": 242.8,
+      "end": 255.07
     },
     {
       "id": 22,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Tier 3, Operational-confidential. Monthly P&L, actual food cost %, customer pipeline, employee schedules. Inside the business only. P O S vendor, payroll, accountant, and only under written contract.",
-      "start": 223.67,
-      "end": 233.44
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Tier 1, Public. Menu, hours, photos, address, phone, schema.org markup. Optimize aggressively; this is how customers find you.",
+      "start": 255.62,
+      "end": 261.8
     },
     {
       "id": 23,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "Tier 4, Regulated. Ssn, Ein, customer card data, bank details, food-safety logs, I-9s. Encrypted storage, access logging, contracts with cybersecurity terms. Never email. Never in a shared spreadsheet.",
-      "start": 233.94,
-      "end": 243.81
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Tier 2, Competitive-sensitive. Cost of goods, supplier list, your actual commission tier (not the public rate), labor schedule template. Share with bookkeeper / consultant / broker, under Nda. Not with platforms, competitors, or &ldquo;free audit&rdquo; tools that keep your input.",
+      "start": 262.3,
+      "end": 275.89
     },
     {
       "id": 24,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "The principle: data never flows up a tier. A Tier 3 vendor does not get Tier 4 access just because they asked. A Tier 1 audience (a platform, a listing site) does not get Tier 2. The easiest way to reduce your attack surface is to stop volunteering data that was not actually required.",
-      "start": 244.61,
-      "end": 258.39
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Tier 3, Operational-confidential. Monthly P&L, actual food cost %, customer pipeline, employee schedules. Inside the business only. P O S vendor, payroll, accountant, and only under written contract.",
+      "start": 276.39,
+      "end": 286.16
     },
     {
       "id": 25,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(2)",
-      "text": "The four-tier data model, drawn as four rings sized by how widely each tier is allowed to travel. Tier one, public data like menu, hours, photos, and address, is fully open: optimize aggressively because this is how customers find you. Tier two, competitive-sensitive data like supplier list, real cost of goods, and the actual commission tier, flows only under Nda, shown as roughly three-quarters of the open circle. Tier three, operational-confidential data like the monthly P and L, food cost percentage, and customer pipeline, sits at about half: inside the business, only under written contract. Tier four, regulated data like Ssn, Ein, card data, and I-9s, is the smallest ring, encrypted-only, never email, never shared spreadsheets. The principle: data never flows up a tier.",
-      "start": 259.49,
-      "end": 297.38
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Tier 4, Regulated. Ssn, Ein, customer card data, bank details, food-safety logs, I-9s. Encrypted storage, access logging, contracts with cybersecurity terms. Never email. Never in a shared spreadsheet.",
+      "start": 286.66,
+      "end": 296.53
     },
     {
       "id": 26,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "3. What &ldquo;safe&rdquo; looks like, the worked example.",
-      "start": 298.88,
-      "end": 301.72
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "The principle: data never flows up a tier. A Tier 3 vendor does not get Tier 4 access just because they asked. A Tier 1 audience (a platform, a listing site) does not get Tier 2. The easiest way to reduce your attack surface is to stop volunteering data that was not actually required.",
+      "start": 297.33,
+      "end": 311.11
     },
     {
       "id": 27,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "Here is the standard every tool on this site is held to. Nine claims about how every Muntin tool handles your inputs, each one verifiable in your own browser. Tap any claim to see the DevTools step that confirms it.",
-      "start": 302.67,
-      "end": 313.27
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "The four-tier data model, drawn as four rings sized by how widely each tier is allowed to travel. Tier one, public data like menu, hours, photos, and address, is fully open: optimize aggressively because this is how customers find you. Tier two, competitive-sensitive data like supplier list, real cost of goods, and the actual commission tier, flows only under Nda, shown as roughly three-quarters of the open circle. Tier three, operational-confidential data like the monthly P and L, food cost percentage, and customer pipeline, sits at about half: inside the business, only under written contract. Tier four, regulated data like Ssn, Ein, card data, and I-9s, is the smallest ring, encrypted-only, never email, never shared spreadsheets. The principle: data never flows up a tier.",
+      "start": 312.21,
+      "end": 350.1
     },
     {
       "id": 28,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "The 9 claims · expand for the proof",
-      "start": 314.07,
-      "end": 315.82
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "3. What &ldquo;safe&rdquo; looks like, the worked example.",
+      "start": 351.6,
+      "end": 354.44
     },
     {
       "id": 29,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "No fetch() , no XMLHttpRequest , no form submission fires when you type a financial number. Verify: open Network tab, type, watch for new entries. Should be zero.",
-      "start": 316.37,
-      "end": 324.32
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Here is the standard every tool on this site is held to. Nine claims about how every Muntin tool handles your inputs, each one verifiable in your own browser. Tap any claim to see the DevTools step that confirms it.",
+      "start": 355.39,
+      "end": 365.99
     },
     {
       "id": 30,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "The only endpoint a tool page uses is (code), the page itself. Verify: filter Network → Xhr/Fetch. Empty.",
-      "start": 325.12,
-      "end": 330.37
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "The 9 claims · expand for the proof",
+      "start": 366.79,
+      "end": 368.54
     },
     {
       "id": 31,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "A 25 dollars ticket becomes 25-39 ; raw values are never event properties. Verify: filter Network → \"plausible\". Inspect the request body. No raw inputs.",
-      "start": 331.17,
-      "end": 338.78
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "No fetch() , no XMLHttpRequest , no form submission fires when you type a financial number. Verify: open Network tab, type, watch for new entries. Should be zero.",
+      "start": 369.09,
+      "end": 377.04
     },
     {
       "id": 32,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "Open Application → Storage. Tool inputs never persist there. Verify: type, then refresh. Inputs are gone, by design.",
-      "start": 339.58,
-      "end": 345.36
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "The only endpoint a tool page uses is (code), the page itself. Verify: filter Network → Xhr/Fetch. Empty.",
+      "start": 377.84,
+      "end": 383.09
     },
     {
       "id": 33,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(16)",
-      "text": "The only third-party script on a tool page is Plausible analytics, which only sees bucketed event names. Verify: filter Network → JS, look for unfamiliar origins. Should be empty.",
-      "start": 346.16,
-      "end": 355.19
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "A 25 dollars ticket becomes 25-39 ; raw values are never event properties. Verify: filter Network → \"plausible\". Inspect the request body. No raw inputs.",
+      "start": 383.89,
+      "end": 391.5
     },
     {
       "id": 34,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(17)",
-      "text": "The part after #, browsers never send fragments to servers, only the page before # . Verify: share a scenario link. Compare what is after the hash to what is in the request U R L Network shows.",
-      "start": 355.99,
-      "end": 365.46
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Open Application → Storage. Tool inputs never persist there. Verify: type, then refresh. Inputs are gone, by design.",
+      "start": 392.3,
+      "end": 398.08
     },
     {
       "id": 35,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(18)",
-      "text": "No build step, no minification, every math function named. Verify: right-click → View Source. Read the script. If you cannot audit it, that is the failure mode.",
-      "start": 366.26,
-      "end": 374.21
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "The only third-party script on a tool page is Plausible analytics, which only sees bucketed event names. Verify: filter Network → JS, look for unfamiliar origins. Should be empty.",
+      "start": 398.88,
+      "end": 407.91
     },
     {
       "id": 36,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(19)",
-      "text": "Close the tab, reopen the tool. Empty form. No history, no recall. Verify: exactly that.",
-      "start": 375.01,
-      "end": 379.32
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "The part after #, browsers never send fragments to servers, only the page before # . Verify: share a scenario link. Compare what is after the hash to what is in the request U R L Network shows.",
+      "start": 408.71,
+      "end": 418.18
     },
     {
       "id": 37,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(20)",
-      "text": "Print to P D F, no upload. Add to calendar, generates an .ics file locally, no A P I call. Verify: Network tab during the export action. Empty.",
-      "start": 380.12,
-      "end": 387.14
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "No build step, no minification, every math function named. Verify: right-click → View Source. Read the script. If you cannot audit it, that is the failure mode.",
+      "start": 418.98,
+      "end": 426.93
     },
     {
       "id": 38,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(21)",
-      "text": "The full version with each claim's specific DevTools verification step lives at /security/ . Four of them (1, 2, 4, 5) are build invariants, the cohesion-check pass that runs on every deploy fails CI if a future tool ships a forbidden pattern. So &ldquo;verifiable&rdquo; is not marketing copy; it is a contract enforced by the build, with a public hash of the production bundle published at /security/integrity.txt .",
-      "start": 387.94,
-      "end": 407.99
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "Close the tab, reopen the tool. Empty form. No history, no recall. Verify: exactly that.",
+      "start": 427.73,
+      "end": 432.04
     },
     {
       "id": 39,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(3)",
-      "text": "A verdict tree for reading your DevTools results, where the failures are ordered by how serious they are. Start at the top. Did a network request fire on a keystroke, before you submitted anything? If yes, stop here and walk away, the tool is shipping your raw inputs to a server in real time, which is the most serious failure and overrides everything below it. If no, ask the next question: is there an account, email, or cookie gate between you and the result? If yes, the tool is not free; your numbers are the price of admission, so decline unless you would happily hand those numbers to the vendor's sales team. If no, ask whether third-party surveillance scripts like Meta Pixel, FullStory, or Hotjar are recording the page. If yes, treat it as a soft fail: the inputs may stay client-side, but the vendor invited watchers you never agreed to. If no third-party watchers, the last check is whether the source is readable and the privacy claim sits at the point of input. If both hold, the tool passes, it is at least honest about its data flow, the standard every Muntin tool is held to and enforces as a build invariant. The verdict pills read walk away in rust, not free and watched in amber, and safe to use in green.",
-      "start": 409.09,
-      "end": 468.37
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "Print to P D F, no upload. Add to calendar, generates an .ics file locally, no A P I call. Verify: Network tab during the export action. Empty.",
+      "start": 432.84,
+      "end": 439.86
     },
     {
       "id": 40,
-      "kind": "quote",
-      "selector": "#post-body > blockquote:nth-of-type(1)",
-      "text": "\"Verifiable\" should be a build flag, not a marketing claim. If the only proof is the brochure, treat it as the brochure.",
-      "start": 469.37,
-      "end": 475.26
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "The full version with each claim's specific DevTools verification step lives at /security/ . Four of them (1, 2, 4, 5) are build invariants, the cohesion-check pass that runs on every deploy fails CI if a future tool ships a forbidden pattern. So &ldquo;verifiable&rdquo; is not marketing copy; it is a contract enforced by the build, with a public hash of the production bundle published at /security/integrity.txt .",
+      "start": 440.66,
+      "end": 460.71
     },
     {
       "id": 41,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "4. Run the audit.",
-      "start": 476.76,
-      "end": 477.58
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "From the floor",
+      "start": 461.51,
+      "end": 462.18
     },
     {
       "id": 42,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(22)",
-      "text": "The 5-test framework is also an interactive checklist at /learn/checklists/audit-any-tool/, walk through it with DevTools open on any tool you are evaluating. Save the result to your Workshop as a baseline; re-run it whenever a vendor pushes a &ldquo;new feature.&rdquo;",
-      "start": 478.53,
-      "end": 491.57
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "When a vendor demos a tool to me, I don&rsquo;t argue the privacy claim, I open the Network tab while they&rsquo;re still talking and type a fake 40 dollars ticket. The conversation tells you nothing; the request list tells you everything. The honest tools never flinch at this, because there&rsquo;s nothing in the tab to find. The ones that flinch are the ones that learned, mid-sentence, that I was going to look.",
+      "start": 462.73,
+      "end": 482.95
     },
     {
       "id": 43,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(23)",
-      "text": "And if you find a tool that fails the audit but you cannot tell whether it is malicious or just sloppy, write through The Window and tell me about it. I read every one. The pattern of free tools that quietly turn operators into the product is worth naming, out loud, with the tool's name attached.",
-      "start": 492.12,
-      "end": 506.5
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "So stop reading the five tests as a checklist and read them as a verdict. Walk the spine top to bottom; the first branch that fires hands you a keep-or-walk-away call on the exact tool in front of you, and you&rsquo;re done.",
+      "start": 483.75,
+      "end": 494.75
     },
     {
       "id": 44,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(24)",
-      "text": "Key takeaways",
-      "start": 507.3,
-      "end": 507.92
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "A verdict tree for reading your DevTools results, where the failures are ordered by how serious they are. Start at the top. Did a network request fire on a keystroke, before you submitted anything? If yes, stop here and walk away, the tool is shipping your raw inputs to a server in real time, which is the most serious failure and overrides everything below it. If no, ask the next question: is there an account, email, or cookie gate between you and the result? If yes, the tool is not free; your numbers are the price of admission, so decline unless you would happily hand those numbers to the vendor's sales team. If no, ask whether third-party surveillance scripts like Meta Pixel, FullStory, or Hotjar are recording the page. If yes, treat it as a soft fail: the inputs may stay client-side, but the vendor invited watchers you never agreed to. If no third-party watchers, the last check is whether the source is readable and the privacy claim sits at the point of input. If both hold, the tool passes, it is at least honest about its data flow, the standard every Muntin tool is held to and enforces as a build invariant. The verdict pills read walk away in rust, not free and watched in amber, and safe to use in green.",
+      "start": 495.85,
+      "end": 555.13
     },
     {
       "id": 45,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
-      "text": "Open DevTools, type, watch the Network tab. If a request fires per keystroke, walk away.",
-      "start": 508.47,
-      "end": 512.78
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(2)",
+      "text": "\"Verifiable\" should be a build flag, not a marketing claim. If the only proof is the brochure, treat it as the brochure.",
+      "start": 556.13,
+      "end": 562.02
     },
     {
       "id": 46,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
-      "text": "Privacy claims belong at the point of input, not three clicks deep in a footer.",
-      "start": 513.28,
-      "end": 517.15
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "4. Run the audit.",
+      "start": 563.52,
+      "end": 564.34
     },
     {
       "id": 47,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
-      "text": "Account / email / cookie gates mean the tool is not free. Your inputs are the price.",
-      "start": 517.65,
-      "end": 521.77
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "The 5-test framework is also an interactive checklist at /learn/checklists/audit-any-tool/, walk through it with DevTools open on any tool you are evaluating. Save the result to your Workshop as a baseline; re-run it whenever a vendor pushes a &ldquo;new feature.&rdquo;",
+      "start": 565.29,
+      "end": 578.33
     },
     {
       "id": 48,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
-      "text": "Data never flows up a tier. Tier 1 audiences never get Tier 2 data without a contract.",
-      "start": 522.27,
-      "end": 526.48
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "And if you find a tool that fails the audit but you cannot tell whether it is malicious or just sloppy, write through The Window and tell me about it. I read every one. The pattern of free tools that quietly turn operators into the product is worth naming, out loud, with the tool's name attached.",
+      "start": 578.88,
+      "end": 593.26
     },
     {
       "id": 49,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
-      "text": "\"Verifiable\" should be a build flag, not a marketing claim.",
-      "start": 526.98,
-      "end": 529.86
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "Key takeaways",
+      "start": 594.06,
+      "end": 594.68
     },
     {
       "id": 50,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(25)",
-      "text": "Run the audit on a tool you are evaluating right now.",
-      "start": 530.66,
-      "end": 533.25
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Open DevTools, type, watch the Network tab. If a request fires per keystroke, walk away.",
+      "start": 595.23,
+      "end": 599.54
     },
     {
       "id": 51,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(26)",
-      "text": "Open the tool you are thinking about using. Open DevTools. Walk through the five tests with the interactive checklist. Save the result to your Workshop as a baseline you can re-run when the vendor pushes a \"new feature.\"",
-      "start": 534.05,
-      "end": 544.86
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Privacy claims belong at the point of input, not three clicks deep in a footer.",
+      "start": 600.04,
+      "end": 603.91
     },
     {
       "id": 52,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(27)",
-      "text": "What to do next",
-      "start": 545.41,
-      "end": 546.14
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Account / email / cookie gates mean the tool is not free. Your inputs are the price.",
+      "start": 604.41,
+      "end": 608.53
     },
     {
       "id": 53,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Read: the related glossary term →",
-      "start": 546.69,
-      "end": 548.4
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Data never flows up a tier. Tier 1 audiences never get Tier 2 data without a contract.",
+      "start": 609.03,
+      "end": 613.24
     },
     {
       "id": 54,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Try: the tool that pairs with this article →",
-      "start": 548.9,
-      "end": 551.15
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "\"Verifiable\" should be a build flag, not a marketing claim.",
+      "start": 613.74,
+      "end": 616.62
     },
     {
       "id": 55,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Or send Don a note: The Window →",
-      "start": 551.65,
-      "end": 553.3
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(29)",
+      "text": "Run the audit on a tool you are evaluating right now.",
+      "start": 617.42,
+      "end": 620.01
     },
     {
       "id": 56,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(28)",
-      "text": "A ledger built around this audit.",
-      "start": 553.85,
-      "end": 555.46
+      "selector": "#post-body > p:nth-of-type(30)",
+      "text": "Open the tool you are thinking about using. Open DevTools. Walk through the five tests with the interactive checklist. Save the result to your Workshop as a baseline you can re-run when the vendor pushes a \"new feature.\"",
+      "start": 620.81,
+      "end": 631.62
     },
     {
       "id": 57,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(29)",
-      "text": "Muntin Ledger reads vendor invoices with templates and rules, files them in a searchable ledger, and lets you export a clean Csv whenever you ask, the privacy posture this article describes, shipped as a product.",
-      "start": 556.26,
-      "end": 566.71
+      "selector": "#post-body > p:nth-of-type(31)",
+      "text": "What to do next",
+      "start": 632.17,
+      "end": 632.9
     },
     {
       "id": 58,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(30)",
-      "text": "More from the library.",
-      "start": 567.51,
-      "end": 568.58
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Read: the related glossary term →",
+      "start": 633.45,
+      "end": 635.16
     },
     {
       "id": 59,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(31)",
-      "text": "See also",
-      "start": 569.38,
-      "end": 570.35
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Try: the tool that pairs with this article →",
+      "start": 635.66,
+      "end": 637.91
     },
     {
       "id": 60,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
-      "text": "Article 5 min read Uber Eats vs DoorDash vs Grubhub: The Honest Math The headline 30% commission looks identical across all three platforms. The second-layer fee stack, sponsored listings, Pro membership, communication fee, opens a 2.5-point spread. Side-by-side margin walks on the same 42 dollars ticket, plus which platform to drop first.",
-      "start": 570.9,
-      "end": 587.64
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Or send Don a note: The Window →",
+      "start": 638.41,
+      "end": 640.06
     },
     {
       "id": 61,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
-      "text": "Tool Cost Pulse Drift alerts, category sparklines, and rolling medians across the invoices you have saved. Your data only, no pooled benchmarks.",
-      "start": 588.14,
-      "end": 595.2
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(32)",
+      "text": "A ledger built around this audit.",
+      "start": 640.61,
+      "end": 642.22
     },
     {
       "id": 62,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
-      "text": "Article 6 min read 30 Days After Leaving DoorDash: A Restaurant Operator’s Case Study I delisted the restaurant on April 7, twenty twenty-six. Week-by-week breakdown of revenue, recovered margin, customer complaints, and the cost line that broke. Kept margin climbed 56% by week four. What I got wrong, what I got right.",
-      "start": 595.7,
-      "end": 611.35
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(33)",
+      "text": "Muntin Ledger reads vendor invoices with templates and rules, files them in a searchable ledger, and lets you export a clean Csv whenever you ask, the privacy posture this article describes, shipped as a product.",
+      "start": 643.02,
+      "end": 653.47
     },
     {
       "id": 63,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(32)",
-      "text": "Tell us",
-      "start": 612.15,
-      "end": 612.99
+      "selector": "#post-body > p:nth-of-type(34)",
+      "text": "More from the library.",
+      "start": 654.27,
+      "end": 655.34
     },
     {
       "id": 64,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "Be the first field note on this piece.",
-      "start": 614.49,
-      "end": 616.35
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(35)",
+      "text": "See also",
+      "start": 656.14,
+      "end": 657.11
     },
     {
       "id": 65,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(33)",
-      "text": "Tried this in your own restaurant? 100, 400 words, your name on it. Don reads every one. Your note shows up here once approved.",
-      "start": 617.3,
-      "end": 623.53
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "Article 5 min read Uber Eats vs DoorDash vs Grubhub: The Honest Math The headline 30% commission looks identical across all three platforms. The second-layer fee stack, sponsored listings, Pro membership, communication fee, opens a 2.5-point spread. Side-by-side margin walks on the same 42 dollars ticket, plus which platform to drop first.",
+      "start": 657.66,
+      "end": 674.4
     },
     {
       "id": 66,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(34)",
-      "text": "Sign in to share your experience →",
-      "start": 624.33,
-      "end": 626.08
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "Tool Cost Pulse Drift alerts, category sparklines, and rolling medians across the invoices you have saved. Your data only, no pooled benchmarks.",
+      "start": 674.9,
+      "end": 681.96
     },
     {
       "id": 67,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(36)",
-      "text": "Keep reading",
-      "start": 626.63,
-      "end": 627.21
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "Article 6 min read 30 Days After Leaving DoorDash: A Restaurant Operator’s Case Study I delisted the restaurant on April 7, twenty twenty-six. Week-by-week breakdown of revenue, recovered margin, customer complaints, and the cost line that broke. What I got wrong, what I got right.",
+      "start": 682.46,
+      "end": 696.24
     },
     {
       "id": 68,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(37)",
-      "text": "When the tool itself is the question.",
-      "start": 627.76,
-      "end": 629.56
+      "selector": "#post-body > p:nth-of-type(36)",
+      "text": "Tell us",
+      "start": 697.04,
+      "end": 697.88
     },
     {
       "id": 69,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Be the first field note on this piece.",
+      "start": 699.38,
+      "end": 701.24
+    },
+    {
+      "id": 70,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(37)",
+      "text": "Tried this in your own restaurant? 100, 400 words, your name on it. Don reads every one. Your note shows up here once approved.",
+      "start": 702.19,
+      "end": 708.42
+    },
+    {
+      "id": 71,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(38)",
+      "text": "Sign in to share your experience →",
+      "start": 709.22,
+      "end": 710.97
+    },
+    {
+      "id": 72,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(40)",
+      "text": "Keep reading",
+      "start": 711.52,
+      "end": 712.1
+    },
+    {
+      "id": 73,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(41)",
+      "text": "When the tool itself is the question.",
+      "start": 712.65,
+      "end": 714.45
+    },
+    {
+      "id": 74,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(42)",
       "text": "The same audit, but pointed inward at your own systems.",
-      "start": 630.36,
-      "end": 633.05
+      "start": 715.25,
+      "end": 717.94
     }
   ]
 }
