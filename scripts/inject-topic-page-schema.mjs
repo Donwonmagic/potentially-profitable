@@ -36,7 +36,15 @@ function listTopicArticles(slug, locale) {
   // the topic page itself, dedupe, and use those as ItemList.
   const file = path.join(repoRoot, locale === 'es' ? 'es' : '', 'learn/topics', slug, 'index.html');
   if (!fs.existsSync(file)) return [];
-  const src = fs.readFileSync(file, 'utf8');
+  let src = fs.readFileSync(file, 'utf8');
+  // Drop the batch-banner marquee before scraping. It links to whichever timely
+  // dispatch is currently promoted, and inject-batch-banner.mjs hides it once the
+  // campaign window passes — which runs AFTER this injector in the build chain.
+  // Counting that transient link would seed the permanent ItemList with a promo
+  // and break idempotency the day the banner retires (the end-of-build --check
+  // then sees one fewer link than the writer baked in). The ItemList is the
+  // topic's article cluster, never the rotating banner.
+  src = src.replace(/<!-- batch-banner:start -->[\s\S]*?<!-- batch-banner:end -->/g, '');
   const re = locale === 'es' ? /href="\/es\/blog\/([a-z0-9-]+)\//g : /href="\/blog\/([a-z0-9-]+)\//g;
   const seen = new Set();
   const out = [];
