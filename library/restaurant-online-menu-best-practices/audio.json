@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "generatedAt": "2026-06-15T07:23:20.765Z",
+  "generatedAt": "2026-06-23T22:23:27.906Z",
   "engine": "f5",
   "model": "don-reference.m4a",
   "voice": "f5:don-reference.m4a",
   "language": "en",
-  "total": 1111.04,
+  "total": 1240.07,
   "chunks": [
     {
       "id": 0,
@@ -75,577 +75,665 @@
       "id": 8,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "Open the analytics on any restaurant site that has been live for a year, and the menu page sits at the top of the list, usually two to three times the homepage traffic. It is the page a diner taps after the Google panel, after the Instagram bio, after the friend&rsquo;s text. It is also, for most independents, the page that has had the least thought put into it. What follows is the plain version: the surfaces, the one technical truth most operators miss, and the eight pieces that turn a printed menu into a menu page that wins both search and the booking.",
+      "text": "Stand at the host stand on a Friday and watch the next walk-in pull out a phone. They tapped &ldquo;menu&rdquo; on your site in the cab, and now they are pinching and dragging a P D F that was built for an 11-by-17 print sheet, hunting for the price of one entr&eacute;e on a four-inch screen with one bar of signal. That guest is the whole problem in one gesture. The fix is the rest of this page: the best way to put a restaurant menu online is real H T M L, sectioned by service, with descriptions that sell, prices in plain digits, dietary markers inline, and MenuItem schema underneath, not a P D F link. Open the analytics on any restaurant site that has been live for a year and the menu page sits at the top of the list, usually two to three times the homepage traffic; it is the page a diner taps after the Google panel, after the Instagram bio, after the friend&rsquo;s text, and for most independents it is the page that has had the least thought put into it. This is a field guide. The surfaces, the one technical truth most operators miss, the order to build it in, and the eight pieces that turn a printed menu into a page that wins both search and the booking.",
       "start": 71.33,
-      "end": 98.42
+      "end": 128.01
     },
     {
       "id": 9,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(1)",
       "text": "Why your menu page is the most important page on your site.",
-      "start": 99.92,
-      "end": 102.8
+      "start": 129.51,
+      "end": 132.39
     },
     {
       "id": 10,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
       "text": "The menu page is the page a diner reads before deciding to book, walk in, or scroll past. It carries more conversion weight than the homepage and more search weight than every other interior page combined.",
-      "start": 103.75,
-      "end": 113.81
+      "start": 133.34,
+      "end": 143.4
     },
     {
       "id": 11,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(6)",
       "text": "That is true across cuisines, across price points, and across cities. The homepage tells a diner who you are; the menu page tells them whether to come. Treat the menu page as the storefront window, the one that decides whether the door opens at all.",
-      "start": 114.61,
-      "end": 126.63
+      "start": 144.2,
+      "end": 156.22
     },
     {
       "id": 12,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(7)",
       "text": "Two reads are happening on that page at once. A human diner is scanning for a price band, for two or three dishes that sound like a meal, and for whatever marker fits a partner with a gluten allergy or a vegetarian kid. A search engine or an AI assistant is reading the same page for structured facts, dish names, descriptions, prices, sections, that it can quote back when someone two miles away types &ldquo;Italian near me with vegetarian options.&rdquo; A menu page that wins both reads is the page that wins the booking, and the two reads reward the same shape: structured H T M L with prices and dietary markers in the body text.",
-      "start": 127.43,
-      "end": 158.19
+      "start": 157.02,
+      "end": 187.78
     },
     {
       "id": 13,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(8)",
       "text": "The wider context for this page sits in what should be on a restaurant website ; the menu page is one chapter inside that bigger setup. If you are still deciding whether the site is worth building at all, does my restaurant need a website is the prior question; almost every operator finishes that piece deciding the answer is yes, and the menu page is the largest reason why.",
-      "start": 158.99,
-      "end": 177.25
+      "start": 188.58,
+      "end": 206.84
     },
     {
       "id": 14,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "P D F vs real web menu: the mistake that hides you from search.",
-      "start": 178.75,
-      "end": 181.83
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(1)",
+      "text": "The menu is the one page a diner is guaranteed to open and the one page Google is guaranteed to read. Build it for both in the same gesture, and you stop choosing between the booking and the ranking.",
+      "start": 207.84,
+      "end": 217.61
     },
     {
       "id": 15,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "A P D F link is not a web menu. Google indexes PDFs differently from H T M L body text, AI assistants quote H T M L, and a phone on slow Lte often will not open a P D F at all before the diner taps back to the search results.",
-      "start": 182.78,
-      "end": 193.81
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "P D F vs real web menu: the mistake that hides you from search.",
+      "start": 219.11,
+      "end": 222.19
     },
     {
       "id": 16,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "Operators love PDFs because the print designer already made one and it ships in five minutes. The cost is invisible, it shows up as the menu queries you never rank for, the AI answers that never name you, and the mobile diner who never sees the dishes at all.",
-      "start": 194.61,
-      "end": 207.3
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "A P D F link is not a web menu. Google indexes PDFs differently from H T M L body text, AI assistants quote H T M L, and a phone on slow Lte often will not open a P D F at all before the diner taps back to the search results.",
+      "start": 223.14,
+      "end": 234.17
     },
     {
       "id": 17,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "Google&rsquo;s own documentation confirms that H T M L body text is the primary signal the index reads for ranking and snippet extraction. PDFs are crawlable in a different lane, they appear in results, but the text inside them is harder for the index to associate with the host page, and AI Overviews and assistants overwhelmingly quote H T M L. A linked &ldquo;Menu.pdf&rdquo; tells the index that the menu lives elsewhere, in a format the index treats as a downloadable document rather than a page of your site. The dish names, the descriptions, the prices, none of it is part of what Google can quote back when a diner types &ldquo;tacos al pastor in Bethesda.&rdquo;",
-      "start": 208.1,
-      "end": 240.82
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Operators love PDFs because the print designer already made one and it ships in five minutes. The cost is invisible, it shows up as the menu queries you never rank for, the AI answers that never name you, and the mobile diner who never sees the dishes at all.",
+      "start": 234.97,
+      "end": 247.66
     },
     {
       "id": 18,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "A before-and-after contrast of the same restaurant menu surface, rewritten from a P D F link to structured H T M L. The before version is a single line on the page that reads simply: see our menu, with a link to menu dot p d f. There are no dish names, no prices, no descriptions, no dietary markers, no section headings on the web page itself. Everything a diner or a search engine could extract lives inside a downloadable document that Google indexes in a different lane and that AI assistants overwhelmingly do not quote. The after version is a structured H T M L section that uses a real section element with a heading reading tacos, then an itemized list. Each item is a heading with the dish name, a one-sentence description naming the marinade and the cooking method, a price shown in plain digits, and inline dietary markers reading G F for gluten-free. The cost difference: the after version is what Google ranks for dish-level queries and what an AI assistant quotes when a diner asks what the restaurant serves. The before version reads to the index as a download link with no menu content on the page.",
-      "start": 241.92,
-      "end": 295.78
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Google&rsquo;s own documentation confirms that H T M L body text is the primary signal the index reads for ranking and snippet extraction. PDFs are crawlable in a different lane, they appear in results, but the text inside them is harder for the index to associate with the host page, and AI Overviews and assistants overwhelmingly quote H T M L. A linked &ldquo;Menu.pdf&rdquo; tells the index that the menu lives elsewhere, in a format the index treats as a downloadable document rather than a page of your site. The dish names, the descriptions, the prices, none of it is part of what Google can quote back when a diner types &ldquo;tacos al pastor in Bethesda.&rdquo;",
+      "start": 248.46,
+      "end": 281.18
     },
     {
       "id": 19,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "There is one acceptable use of a P D F on the menu page, offering it as a printable, downloadable supplement alongside the H T M L menu, for the small share of diners who want a paper copy in advance of a private event. The P D F lives next to the H T M L, never instead of it. If the only way a diner can read your menu is to download a file, your menu is hiding from the diner&rsquo;s phone and from the index that decides who gets named.",
-      "start": 296.78,
-      "end": 318.19
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "A before-and-after contrast of the same restaurant menu surface, rewritten from a P D F link to structured H T M L. The before version is a single line on the page that reads simply: see our menu, with a link to menu dot p d f. There are no dish names, no prices, no descriptions, no dietary markers, no section headings on the web page itself. Everything a diner or a search engine could extract lives inside a downloadable document that Google indexes in a different lane and that AI assistants overwhelmingly do not quote. The after version is a structured H T M L section that uses a real section element with a heading reading tacos, then an itemized list. Each item is a heading with the dish name, a one-sentence description naming the marinade and the cooking method, a price shown in plain digits, and inline dietary markers reading G F for gluten-free. The cost difference: the after version is what Google ranks for dish-level queries and what an AI assistant quotes when a diner asks what the restaurant serves. The before version reads to the index as a download link with no menu content on the page.",
+      "start": 282.28,
+      "end": 336.14
     },
     {
       "id": 20,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "The same trap wears a second costume worth naming, because AI assistants actively recommend it: the Canva menu . Ask an AI which platform to use and it will often suggest designing the menu in Canva and embedding it on the site, and a Canva-designed menu, embedded, is an image . An image is exactly as invisible to Google&rsquo;s body-text index and to the assistants that quote H T M L as a P D F is, for the same reason: the dish names, the descriptions, and the prices are pixels, not text. The menu looks beautiful and ranks for nothing. A Canva graphic is fine as a downloadable supplement next to the H T M L menu, the same way a P D F is, never as the menu itself. If the only menu on the page is a Canva image, the page has no menu as far as search and AI are concerned.",
-      "start": 318.99,
-      "end": 357
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "There is one acceptable use of a P D F on the menu page, offering it as a printable, downloadable supplement alongside the H T M L menu, for the small share of diners who want a paper copy in advance of a private event. The P D F lives next to the H T M L, never instead of it. If the only way a diner can read your menu is to download a file, your menu is hiding from the diner&rsquo;s phone and from the index that decides who gets named.",
+      "start": 337.14,
+      "end": 358.55
     },
     {
       "id": 21,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "How to structure a menu page that converts.",
-      "start": 358.5,
-      "end": 360.6
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "The same trap wears a second costume worth naming, because AI assistants actively recommend it: the Canva menu . Ask an AI which platform to use and it will often suggest designing the menu in Canva and embedding it on the site, and a Canva-designed menu, embedded, is an image . An image is exactly as invisible to Google&rsquo;s body-text index and to the assistants that quote H T M L as a P D F is, for the same reason: the dish names, the descriptions, and the prices are pixels, not text. The menu looks beautiful and ranks for nothing. A Canva graphic is fine as a downloadable supplement next to the H T M L menu, the same way a P D F is, never as the menu itself. If the only menu on the page is a Canva image, the page has no menu as far as search and AI are concerned.",
+      "start": 359.35,
+      "end": 397.36
     },
     {
       "id": 22,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "A menu page that converts walks a diner from section, to dish, to price, to a reservation or order button, in that order. Six moves do the work, and they map to the structured-data steps a search index reads.",
-      "start": 361.55,
-      "end": 371.76
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "How to structure a menu page that converts.",
+      "start": 398.86,
+      "end": 400.96
     },
     {
       "id": 23,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "The order matters. Each step is a precondition for the next; skipping one breaks the rest. Read them top to bottom.",
-      "start": 372.56,
-      "end": 378.2
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "A menu page that converts walks a diner from section, to dish, to price, to a reservation or order button, in that order. Six moves do the work, and they map to the structured-data steps a search index reads.",
+      "start": 401.91,
+      "end": 412.12
     },
     {
       "id": 24,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(16)",
-      "text": "1. Pick a content source. Choose one place where the menu lives in a structured form, the P O S catalog (Toast, Square, Clover all expose menu items as data), a content store like a C M S or a Json file in your repo, or in the smallest case a Google Sheet the kitchen edits. The web page renders from that source, never from a re-typed copy on the page itself. The discipline up-front saves the drift problem in &sect;5.",
-      "start": 379,
-      "end": 399.51
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "The order matters. Each step is a precondition for the next; skipping one breaks the rest. Read them top to bottom.",
+      "start": 412.92,
+      "end": 418.56
     },
     {
       "id": 25,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(17)",
-      "text": "2. Organize by service. Diners scan by service first, dish second. A page that mixes brunch, lunch, dinner, and the bar list into one long scroll asks the diner to do triage. Break the page into service-shaped sections, each its own H2 or H3, each with a clear heading the diner can jump to. Three short, scannable sections beat one cathedral menu on every measure.",
-      "start": 400.31,
-      "end": 418.03
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Build it in this order. Each line is a step you finish before you start the next; the runbook below is the short version, and the six moves that follow are the same steps with the reasoning attached.",
+      "start": 419.36,
+      "end": 429.13
     },
     {
       "id": 26,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(18)",
-      "text": "3. Write extractable descriptions. The description field is the field AI Overviews quote back when someone asks &ldquo;what are the tacos at this place like.&rdquo; Write one sentence per dish that names the main ingredient, the preparation, and one detail a diner would otherwise ask the server. &ldquo;Marinated pork, pineapple, white onion, cilantro on house corn tortillas&rdquo; beats &ldquo;our famous tacos&rdquo; on every reader, human and machine. Adjective-only descriptions tell the diner nothing they did not already assume.",
-      "start": 418.83,
-      "end": 444.93
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Pick one content source the kitchen will edit, the P O S catalog, a content store, or a single sheet, and render the page from it, never from re-typed copy.",
+      "start": 429.93,
+      "end": 437.59
     },
     {
       "id": 27,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(19)",
-      "text": "4. Set price display. Show every price as plain digits next to the dish. Skip the currency-stripped trick (printing &ldquo;14&rdquo; with no dollar sign and no decimals to soften the bill), skip the hide-on-mobile rule that some templates default to, and skip the worst version, leaving prices off the page entirely. The data is the same one diners get on Google&rsquo;s panel anyway; hiding it makes the page less useful, not more aspirational.",
-      "start": 445.73,
-      "end": 467.17
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Break the page into service-shaped sections, brunch, lunch, dinner, bar, each its own heading a diner can jump to.",
+      "start": 438.09,
+      "end": 443.68
     },
     {
       "id": 28,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(20)",
-      "text": "5. Add dietary markers. Mark vegetarian, vegan, gluten-free, and dairy-free items inline next to the dish, a small V, VG, GF, DF chip, icon, or styled span. Add a one-line allergen note at the top of each section that points diners with anaphylactic allergies to ask the staff directly. Inline markers do four things at once: they help the diner scan, they signal to a search engine that the page covers dietary filters, they reduce the host-stand call volume on dietary questions, and they make the page accessible without forcing every reader through a footnote.",
-      "start": 467.97,
-      "end": 495.26
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Write one extractable sentence per dish: main ingredient, preparation, and one detail a diner would otherwise ask the server.",
+      "start": 444.18,
+      "end": 450.31
     },
     {
       "id": 29,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(21)",
-      "text": "6. Add MenuItem schema. Underneath the H T M L, ship a Menu block in Json-LD with hasMenuSection wrapping hasMenuItem entries, each with name , description , and an Offer block with price and priceCurrency . This is what Google quotes in rich results and what AI assistants extract when they answer dish-level queries. The full payload pattern, with copy-paste Json-LD, is in the restaurant schema markup guide .",
-      "start": 496.06,
-      "end": 516.28
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Set every price in plain digits next to the dish, no currency-stripping, no hide-on-mobile, no blank prices.",
+      "start": 450.81,
+      "end": 456.1
     },
     {
       "id": 30,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(22)",
-      "text": "One adjacent piece worth naming: photographs of dishes. Real photos on the menu page lift bookings on every measure, but only when shot to the spec the platforms expect, aspect ratio, resolution, and weight all matter. The full reference lives in the restaurant photo spec sheet ; the short version is &ldquo;real photos of your real dishes, never stock, sized for the surface they appear on, lazy-loaded so they do not slow the first paint.&rdquo;",
-      "start": 517.08,
-      "end": 538.66
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "Add dietary markers inline next to each dish, plus a one-line allergen note at the top of each section.",
+      "start": 456.6,
+      "end": 461.65
     },
     {
       "id": 31,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(2)",
-      "text": "The six moves that build a menu page, drawn as a sequence where each step is a precondition for the next. Step one, pick a content source: choose one structured place where the menu lives, the P O S catalog, a content store, or in the smallest case a Google Sheet the kitchen edits, and render the page from it, never from a re-typed copy. Step two, organize by service: break the page into service-shaped sections, brunch, lunch, dinner, and bar, each its own heading a diner can jump to. Step three, write extractable descriptions: one sentence per dish naming the main ingredient, the preparation, and one detail a diner would ask the server. Step four, set price display: every price in plain digits next to the dish, no currency-stripping and no hide-on-mobile. Step five, add dietary markers: V, V G, G F, D F chips inline next to each dish plus a one-line allergen note at the top of each section. Step six, add MenuItem schema: a Json-LD Menu block reading the H T M L you just built, with hasMenuSection wrapping hasMenuItem entries that each carry name, description, and an Offer with price and priceCurrency. The arrow runs one way: the source feeds the H T M L, the H T M L feeds the schema, and skipping a step breaks every step after it.",
-      "start": 539.76,
-      "end": 600.17
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
+      "text": "Shoot real photos to the spec sheet, lazy-loaded so they do not slow the first paint.",
+      "start": 462.15,
+      "end": 466.31
     },
     {
       "id": 32,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "Make it findable: menu schema + AI.",
-      "start": 601.67,
-      "end": 603.57
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(7)",
+      "text": "Stamp MenuItem schema underneath last, after the H T M L exists for it to read, and validate it once before you ship.",
+      "start": 466.81,
+      "end": 472.55
     },
     {
       "id": 33,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(23)",
-      "text": "Real H T M L wins the index; menu schema wins the rich result and the AI citation. The two run together, schema without H T M L body text has nothing to anchor to, and H T M L without schema asks Google to guess at structure it could have been told.",
-      "start": 604.52,
-      "end": 616.72
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "1. Pick a content source. Choose one place where the menu lives in a structured form, the P O S catalog (Toast, Square, Clover all expose menu items as data), a content store like a C M S or a Json file in your repo, or in the smallest case a Google Sheet the kitchen edits. The web page renders from that source, never from a re-typed copy on the page itself. The discipline up-front saves the drift problem in &sect;5.",
+      "start": 473.35,
+      "end": 493.86
     },
     {
       "id": 34,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(24)",
-      "text": "Think of schema as the labelled version of the page the index already has. The H T M L tells Google what the page says; the schema tells Google which strings are dish names, which are descriptions, and which are prices. With both, Google can quote individual items in a rich result, and an AI assistant can answer &ldquo;does this restaurant have a vegetarian entr&eacute;e under twenty dollars&rdquo; from the page itself rather than from a third-party aggregator.",
-      "start": 617.52,
-      "end": 640.13
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "2. Organize by service. Diners scan by service first, dish second. A page that mixes brunch, lunch, dinner, and the bar list into one long scroll asks the diner to do triage. Break the page into service-shaped sections, each its own H2 or H3, each with a clear heading the diner can jump to. Three short, scannable sections beat one cathedral menu on every measure.",
+      "start": 494.66,
+      "end": 512.38
     },
     {
       "id": 35,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(25)",
-      "text": "The minimum payload is small. A Menu node, one or more MenuSection entries, and a MenuItem per dish with name , description , and an Offer block. The patterns are the same six on the restaurant schema markup guide , and validation is free, Google&rsquo;s Rich Results Test tells you whether the page parses before you ship it.",
-      "start": 640.93,
-      "end": 656.74
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "3. Write extractable descriptions. The description field is the field AI Overviews quote back when someone asks &ldquo;what are the tacos at this place like.&rdquo; Write one sentence per dish that names the main ingredient, the preparation, and one detail a diner would otherwise ask the server. &ldquo;Marinated pork, pineapple, white onion, cilantro on house corn tortillas&rdquo; beats &ldquo;our famous tacos&rdquo; on every reader, human and machine. Adjective-only descriptions tell the diner nothing they did not already assume.",
+      "start": 513.18,
+      "end": 539.28
     },
     {
       "id": 36,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(26)",
-      "text": "The AI side rewards the same shape. ChatGPT, Perplexity, and Google&rsquo;s AI Overviews all answer dish-level questions from the structured fields they can read on the page; an empty description field is an answer the assistant cannot give. The practical read is that the description is doing more work than the dish name, the name appears in the menu P D F on the wall, but the description is the part only the web page carries.",
-      "start": 657.54,
-      "end": 678.78
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "4. Set price display. Show every price as plain digits next to the dish. Skip the currency-stripped trick (printing &ldquo;14&rdquo; with no dollar sign and no decimals to soften the bill), skip the hide-on-mobile rule that some templates default to, and skip the worst version, leaving prices off the page entirely. The data is the same one diners get on Google&rsquo;s panel anyway; hiding it makes the page less useful, not more aspirational.",
+      "start": 540.08,
+      "end": 561.52
     },
     {
       "id": 37,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "Keep it current without a developer.",
-      "start": 680.28,
-      "end": 682.03
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "5. Add dietary markers. Mark vegetarian, vegan, gluten-free, and dairy-free items inline next to the dish, a small V, VG, GF, DF chip, icon, or styled span. Add a one-line allergen note at the top of each section that points diners with anaphylactic allergies to ask the staff directly. Inline markers do four things at once: they help the diner scan, they signal to a search engine that the page covers dietary filters, they reduce the host-stand call volume on dietary questions, and they make the page accessible without forcing every reader through a footnote.",
+      "start": 562.32,
+      "end": 589.61
     },
     {
       "id": 38,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(27)",
-      "text": "The maintenance trap on every menu page is two menus drifting apart, the one the kitchen prints, and the one the web page shows. The fix is structural, not heroic.",
-      "start": 682.98,
-      "end": 690.98
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "6. Add MenuItem schema. Underneath the H T M L, ship a Menu block in Json-LD with hasMenuSection wrapping hasMenuItem entries, each with name , description , and an Offer block with price and priceCurrency . This is what Google quotes in rich results and what AI assistants extract when they answer dish-level queries. The full payload pattern, with copy-paste Json-LD, is in the restaurant schema markup guide .",
+      "start": 590.41,
+      "end": 610.63
     },
     {
       "id": 39,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(28)",
-      "text": "Within a season, the prices are off by a dollar, the new pasta is missing, and the discontinued summer cocktail is still on the bar list. None of that is a content problem; it is an architecture problem, and it ends when the page renders from one source.",
-      "start": 691.78,
-      "end": 704.04
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "One adjacent piece worth naming: photographs of dishes. Real photos on the menu page lift bookings on every measure, but only when shot to the spec the platforms expect, aspect ratio, resolution, and weight all matter. The full reference lives in the restaurant photo spec sheet ; the short version is &ldquo;real photos of your real dishes, never stock, sized for the surface they appear on, lazy-loaded so they do not slow the first paint.&rdquo;",
+      "start": 611.43,
+      "end": 633.01
     },
     {
       "id": 40,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(29)",
-      "text": "Pick a single source of truth for menu data, write the web page so it renders from that source, and the drift problem stops being a recurring chore. Three reasonable sources, in order of how often they pay back:",
-      "start": 704.84,
-      "end": 715.2
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "The six moves that build a menu page, drawn as a sequence where each step is a precondition for the next. Step one, pick a content source: choose one structured place where the menu lives, the P O S catalog, a content store, or in the smallest case a Google Sheet the kitchen edits, and render the page from it, never from a re-typed copy. Step two, organize by service: break the page into service-shaped sections, brunch, lunch, dinner, and bar, each its own heading a diner can jump to. Step three, write extractable descriptions: one sentence per dish naming the main ingredient, the preparation, and one detail a diner would ask the server. Step four, set price display: every price in plain digits next to the dish, no currency-stripping and no hide-on-mobile. Step five, add dietary markers: V, V G, G F, D F chips inline next to each dish plus a one-line allergen note at the top of each section. Step six, add MenuItem schema: a Json-LD Menu block reading the H T M L you just built, with hasMenuSection wrapping hasMenuItem entries that each carry name, description, and an Offer with price and priceCurrency. The arrow runs one way: the source feeds the H T M L, the H T M L feeds the schema, and skipping a step breaks every step after it.",
+      "start": 634.11,
+      "end": 694.52
     },
     {
       "id": 41,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(30)",
-      "text": "The P O S catalog. Toast, Square, and Clover all expose menu items, modifiers, and prices through an A P I. A sync that pulls from the P O S overnight and rebuilds the menu page from the result keeps the printed menu, the order screen, and the web page on one schedule. The kitchen edits the dish once, in the P O S, where they were going to edit it anyway, and every downstream surface follows.",
-      "start": 715.75,
-      "end": 735.03
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Make it findable: menu schema + AI.",
+      "start": 696.02,
+      "end": 697.92
     },
     {
       "id": 42,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(31)",
-      "text": "A content store the kitchen owns. If the P O S is too rigid for descriptive language, a C M S surface or a structured file (a Json or Yaml file in the site repo, edited through a friendly admin) does the same job at a smaller scale. The discipline is the same: one place to edit, one place to render from. The studio ships this pattern in roughly half of client builds; the other half pull from the P O S.",
-      "start": 735.83,
-      "end": 755.31
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "Real H T M L wins the index; menu schema wins the rich result and the AI citation. The two run together, schema without H T M L body text has nothing to anchor to, and H T M L without schema asks Google to guess at structure it could have been told.",
+      "start": 698.87,
+      "end": 711.07
     },
     {
       "id": 43,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(32)",
-      "text": "A spreadsheet, in the smallest case. A Google Sheet with one row per dish, name, description, price, section, dietary markers, that the kitchen edits and the site renders from on a nightly build is the no-budget version. It is less polished than the P O S sync; it is dramatically better than the manual page edit it replaces.",
-      "start": 756.11,
-      "end": 771.91
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "Think of schema as the labelled version of the page the index already has. The H T M L tells Google what the page says; the schema tells Google which strings are dish names, which are descriptions, and which are prices. With both, Google can quote individual items in a rich result, and an AI assistant can answer &ldquo;does this restaurant have a vegetarian entr&eacute;e under twenty dollars&rdquo; from the page itself rather than from a third-party aggregator.",
+      "start": 711.87,
+      "end": 734.48
     },
     {
       "id": 44,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(33)",
-      "text": "None of these need a developer for the weekly edit. The one-time build does, setting up the sync, the schema generator, the rebuild trigger, but after that the menu page becomes a kitchen edit, not an IT ticket. That is the difference between a menu page that stays current and one that quietly drifts until the host stand starts fielding &ldquo;is the chicken parm still on the menu&rdquo; calls.",
-      "start": 772.71,
-      "end": 791.99
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "The minimum payload is small. A Menu node, one or more MenuSection entries, and a MenuItem per dish with name , description , and an Offer block. The patterns are the same six on the restaurant schema markup guide , and validation is free, Google&rsquo;s Rich Results Test tells you whether the page parses before you ship it.",
+      "start": 735.28,
+      "end": 751.09
     },
     {
       "id": 45,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(6)",
-      "text": "The 8-point menu-page checklist (close).",
-      "start": 793.49,
-      "end": 795.44
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "The AI side rewards the same shape. ChatGPT, Perplexity, and Google&rsquo;s AI Overviews all answer dish-level questions from the structured fields they can read on the page; an empty description field is an answer the assistant cannot give. The practical read is that the description is doing more work than the dish name, the name appears in the menu P D F on the wall, but the description is the part only the web page carries.",
+      "start": 751.89,
+      "end": 773.13
     },
     {
       "id": 46,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(34)",
-      "text": "Eight items, walked top to bottom, decide whether a menu page reads as a working surface or as a placeholder. Run them against your own page; the first failure is where to start.",
-      "start": 796.39,
-      "end": 805.13
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Keep it current without a developer.",
+      "start": 774.63,
+      "end": 776.38
     },
     {
       "id": 47,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(35)",
-      "text": "Each branch below names what passes, what warns, and what fails, with the discipline that earns the pass. None of the eight are optional; the page works when all eight are clean.",
-      "start": 805.93,
-      "end": 814.67
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "The maintenance trap on every menu page is two menus drifting apart, the one the kitchen prints, and the one the web page shows. The fix is structural, not heroic.",
+      "start": 777.33,
+      "end": 785.33
     },
     {
       "id": 48,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(3)",
-      "text": "An eight-branch checklist for a restaurant menu page, walked top to bottom as a decision tree. Branch one: real H T M L body text, not a P D F link, the page that ranks and the page an AI assistant can quote is the one whose menu lives in H T M L on the page itself. Branch two: sectioned by service, brunch, lunch, dinner, and bar each as their own MenuSection, so diners scan by service before dish. Branch three: item descriptions that sell, one sentence per dish naming the main ingredient, the preparation, and one detail a diner would ask the server. Branch four: explicit prices, every dish shows its price in plain digits next to the name, no currency-stripping and no hiding on mobile. Branch five: allergen and dietary markers inline, V, V G, G F, D F chips next to each dish plus a one-line allergen note at the top of each section. Branch six: real photos shot to spec, lazy-loaded photographs of the dishes themselves, never stock, sized for the surface they appear on. Branch seven: MenuItem schema underneath, the Json-LD Menu block with hasMenuSection wrapping hasMenuItem entries, each carrying name, description, and an Offer block with price and priceCurrency. Branch eight: a single source of truth from kitchen to web, the P O S catalog or a content store the kitchen edits, with a sync that rebuilds the page on every change, so the printed menu and the web page do not drift apart.",
-      "start": 815.77,
-      "end": 883.68
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(29)",
+      "text": "Within a season, the prices are off by a dollar, the new pasta is missing, and the discontinued summer cocktail is still on the bar list. None of that is a content problem; it is an architecture problem, and it ends when the page renders from one source.",
+      "start": 786.13,
+      "end": 798.39
     },
     {
       "id": 49,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(7)",
-      "text": "Frequently asked questions.",
-      "start": 885.18,
-      "end": 886.49
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(30)",
+      "text": "Pick a single source of truth for menu data, write the web page so it renders from that source, and the drift problem stops being a recurring chore. Three reasonable sources, in order of how often they pay back:",
+      "start": 799.19,
+      "end": 809.55
     },
     {
       "id": 50,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(36)",
-      "text": "Should my restaurant menu be a P D F or a web page? A web page. PDFs are not crawled and quoted the way H T M L body text is, so a P D F link makes the menu invisible to discovery surfaces. Ship structured H T M L.",
-      "start": 887.44,
-      "end": 897.95
+      "selector": "#post-body > p:nth-of-type(31)",
+      "text": "The P O S catalog. Toast, Square, and Clover all expose menu items, modifiers, and prices through an A P I. A sync that pulls from the P O S overnight and rebuilds the menu page from the result keeps the printed menu, the order screen, and the web page on one schedule. The kitchen edits the dish once, in the P O S, where they were going to edit it anyway, and every downstream surface follows.",
+      "start": 810.1,
+      "end": 829.38
     },
     {
       "id": 51,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(37)",
-      "text": "Can I use a Canva menu on my website? Not as your only menu. An embedded Canva menu is an image, the dish names and prices are pixels, not text, so it is invisible to Google and AI the same way a P D F is. Fine as a downloadable supplement next to a real H T M L menu; never instead of one.",
-      "start": 898.75,
-      "end": 912.98
+      "selector": "#post-body > p:nth-of-type(32)",
+      "text": "A content store the kitchen owns. If the P O S is too rigid for descriptive language, a C M S surface or a structured file (a Json or Yaml file in the site repo, edited through a friendly admin) does the same job at a smaller scale. The discipline is the same: one place to edit, one place to render from. Roughly half of menu pages do well rendering from a content store; the other half pull from the P O S.",
+      "start": 830.18,
+      "end": 849.79
     },
     {
       "id": 52,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(38)",
-      "text": "Should I put prices on my online menu? Yes. The no-prices trick costs more bookings than it saves, diners filter unknown-price restaurants out before they ever click. The only fair exception is a tasting-menu-only restaurant or a daily-changing prix fixe, where one price replaces the line items.",
-      "start": 913.78,
-      "end": 928.1
+      "selector": "#post-body > p:nth-of-type(33)",
+      "text": "A spreadsheet, in the smallest case. A Google Sheet with one row per dish, name, description, price, section, dietary markers, that the kitchen edits and the site renders from on a nightly build is the no-budget version. It is less polished than the P O S sync; it is dramatically better than the manual page edit it replaces.",
+      "start": 850.59,
+      "end": 866.39
     },
     {
       "id": 53,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(39)",
-      "text": "How do I add allergen and dietary info to an online menu? Add concise dietary markers inline next to each item, V, VG, GF, DF chips or icons, plus a one-line allergen note at the top of each section pointing guests to the staff for anaphylactic allergies. Do not make guests dig through a footnote.",
-      "start": 928.9,
-      "end": 943.32
+      "selector": "#post-body > p:nth-of-type(34)",
+      "text": "None of these need a developer for the weekly edit. The one-time build does, setting up the sync, the schema generator, the rebuild trigger, but after that the menu page becomes a kitchen edit, not an IT ticket. That is the difference between a menu page that stays current and one that quietly drifts until the host stand starts fielding &ldquo;is the chicken parm still on the menu&rdquo; calls.",
+      "start": 867.19,
+      "end": 886.47
     },
     {
       "id": 54,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(40)",
-      "text": "Does menu schema help my restaurant show up in Google and AI search? Yes. Menu and MenuItem schema let Google quote items directly in rich results and help AI assistants extract structured answers about your dishes. Real H T M L body text plus valid schema is the citation pattern that wins both surfaces.",
-      "start": 944.12,
-      "end": 959.28
+      "selector": "#post-body > p:nth-of-type(35)",
+      "text": "From the floor",
+      "start": 887.27,
+      "end": 887.94
     },
     {
       "id": 55,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(41)",
-      "text": "How do I keep my online menu in sync with the kitchen? Pick a single source of truth, the P O S catalog or a content store the kitchen edits, and write a sync that runs on every kitchen change, or at least nightly. Manual updates drift; the menu on the wall ends up different from the one on the web.",
-      "start": 960.08,
-      "end": 974.6
+      "selector": "#post-body > p:nth-of-type(36)",
+      "text": "The drift I have watched bite hardest is never the price that moved a dollar, it is the 86&rsquo;d item the web page never heard about. The kitchen runs out of the branzino at seven, the host stand has no idea it left the page, and a four-top books the table for it. The cheapest fix I know is to make &ldquo;is it on the website&rdquo; one line on the same daily 86 board the line already keeps, so the person who pulls a dish off the pass is the person who pulls it off the page. When the source of truth is one click from the prep station instead of one email to a developer, the page stops drifting on its own. The architecture is what makes the habit cheap enough to actually keep.",
+      "start": 888.49,
+      "end": 922.34
     },
     {
       "id": 56,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(42)",
-      "text": "Key takeaways",
-      "start": 975.4,
-      "end": 976.02
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "The 8-point menu-page checklist (close).",
+      "start": 923.84,
+      "end": 925.79
     },
     {
       "id": 57,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "The menu page is the most-visited page on a restaurant site, design for it as the storefront window, not as a download link.",
-      "start": 976.57,
-      "end": 982.65
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(37)",
+      "text": "Eight items, walked top to bottom, decide whether a menu page reads as a working surface or as a placeholder. Run them against your own page; the first failure is where to start.",
+      "start": 926.74,
+      "end": 935.48
     },
     {
       "id": 58,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "A P D F menu hides you from Google&rsquo;s body-text index and from AI assistants that quote H T M L; ship real, sectioned H T M L instead.",
-      "start": 983.15,
-      "end": 990.17
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(38)",
+      "text": "Each branch below names what passes, what warns, and what fails, with the discipline that earns the pass. None of the eight are optional; the page works when all eight are clean.",
+      "start": 936.28,
+      "end": 945.02
     },
     {
       "id": 59,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Six moves do the work: a single content source, service-shaped sections, extractable one-sentence descriptions, explicit prices, inline dietary markers, and MenuItem schema underneath.",
-      "start": 990.67,
-      "end": 999.7
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "An eight-branch checklist for a restaurant menu page, walked top to bottom as a decision tree. Branch one: real H T M L body text, not a P D F link, the page that ranks and the page an AI assistant can quote is the one whose menu lives in H T M L on the page itself. Branch two: sectioned by service, brunch, lunch, dinner, and bar each as their own MenuSection, so diners scan by service before dish. Branch three: item descriptions that sell, one sentence per dish naming the main ingredient, the preparation, and one detail a diner would ask the server. Branch four: explicit prices, every dish shows its price in plain digits next to the name, no currency-stripping and no hiding on mobile. Branch five: allergen and dietary markers inline, V, V G, G F, D F chips next to each dish plus a one-line allergen note at the top of each section. Branch six: real photos shot to spec, lazy-loaded photographs of the dishes themselves, never stock, sized for the surface they appear on. Branch seven: MenuItem schema underneath, the Json-LD Menu block with hasMenuSection wrapping hasMenuItem entries, each carrying name, description, and an Offer block with price and priceCurrency. Branch eight: a single source of truth from kitchen to web, the P O S catalog or a content store the kitchen edits, with a sync that rebuilds the page on every change, so the printed menu and the web page do not drift apart.",
+      "start": 946.12,
+      "end": 1014.03
     },
     {
       "id": 60,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "Menu and MenuItem schema let Google quote items in rich results; an empty description field earns no AI citation.",
-      "start": 1000.2,
-      "end": 1005.94
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "Frequently asked questions.",
+      "start": 1015.53,
+      "end": 1016.84
     },
     {
       "id": 61,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
-      "text": "Pick a single source of truth, P O S catalog or a content store the kitchen edits, and the menu page stops being a developer chore.",
-      "start": 1006.44,
-      "end": 1012.86
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(39)",
+      "text": "Should my restaurant menu be a P D F or a web page? A web page. PDFs are not crawled and quoted the way H T M L body text is, so a P D F link makes the menu invisible to discovery surfaces. Ship structured H T M L.",
+      "start": 1017.79,
+      "end": 1028.3
     },
     {
       "id": 62,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(6)",
-      "text": "The eight-point checklist works as a self-audit: the first fail is where to start.",
-      "start": 1013.36,
-      "end": 1017.37
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(40)",
+      "text": "Can I use a Canva menu on my website? Not as your only menu. An embedded Canva menu is an image, the dish names and prices are pixels, not text, so it is invisible to Google and AI the same way a P D F is. Fine as a downloadable supplement next to a real H T M L menu; never instead of one.",
+      "start": 1029.1,
+      "end": 1043.33
     },
     {
       "id": 63,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(43)",
-      "text": "Audit your menu page against the eight-point checklist.",
-      "start": 1018.17,
-      "end": 1020.86
+      "selector": "#post-body > p:nth-of-type(41)",
+      "text": "Should I put prices on my online menu? Yes. The no-prices trick costs more bookings than it saves, diners filter unknown-price restaurants out before they ever click. The only fair exception is a tasting-menu-only restaurant or a daily-changing prix fixe, where one price replaces the line items.",
+      "start": 1044.13,
+      "end": 1058.45
     },
     {
       "id": 64,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(44)",
-      "text": "Open the restaurant audit, pull in your menu U R L, and walk the eight branches. The audit names which ones pass, which warn, and which fail before you change anything.",
-      "start": 1021.66,
-      "end": 1029.91
+      "selector": "#post-body > p:nth-of-type(42)",
+      "text": "How do I add allergen and dietary info to an online menu? Add concise dietary markers inline next to each item, V, VG, GF, DF chips or icons, plus a one-line allergen note at the top of each section pointing guests to the staff for anaphylactic allergies. Do not make guests dig through a footnote.",
+      "start": 1059.25,
+      "end": 1073.67
     },
     {
       "id": 65,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(45)",
-      "text": "What to do next",
-      "start": 1030.71,
-      "end": 1031.44
+      "selector": "#post-body > p:nth-of-type(43)",
+      "text": "Does menu schema help my restaurant show up in Google and AI search? Yes. Menu and MenuItem schema let Google quote items directly in rich results and help AI assistants extract structured answers about your dishes. Real H T M L body text plus valid schema is the citation pattern that wins both surfaces.",
+      "start": 1074.47,
+      "end": 1089.63
     },
     {
       "id": 66,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Read: the related glossary term →",
-      "start": 1031.99,
-      "end": 1033.7
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(44)",
+      "text": "How do I keep my online menu in sync with the kitchen? Pick a single source of truth, the P O S catalog or a content store the kitchen edits, and write a sync that runs on every kitchen change, or at least nightly. Manual updates drift; the menu on the wall ends up different from the one on the web.",
+      "start": 1090.43,
+      "end": 1104.95
     },
     {
       "id": 67,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Try: the tool that pairs with this article →",
-      "start": 1034.2,
-      "end": 1036.45
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(45)",
+      "text": "Key takeaways",
+      "start": 1105.75,
+      "end": 1106.37
     },
     {
       "id": 68,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Or send Don a note: The Window →",
-      "start": 1036.95,
-      "end": 1038.6
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "The menu page is the most-visited page on a restaurant site, design for it as the storefront window, not as a download link.",
+      "start": 1106.92,
+      "end": 1113
     },
     {
       "id": 69,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(46)",
-      "text": "More from the library.",
-      "start": 1039.15,
-      "end": 1040.22
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "A P D F menu hides you from Google&rsquo;s body-text index and from AI assistants that quote H T M L; ship real, sectioned H T M L instead.",
+      "start": 1113.5,
+      "end": 1120.52
     },
     {
       "id": 70,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(47)",
-      "text": "See also",
-      "start": 1041.02,
-      "end": 1041.99
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Six moves do the work: a single content source, service-shaped sections, extractable one-sentence descriptions, explicit prices, inline dietary markers, and MenuItem schema underneath.",
+      "start": 1121.02,
+      "end": 1130.05
     },
     {
       "id": 71,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
-      "text": "Article 12 min read Restaurant schema markup guide The six schema types that move restaurant search, Restaurant, Menu, OpeningHours, AggregateRating, Reservation, F A Q, with copy-paste Json-LD.",
-      "start": 1042.54,
-      "end": 1052.07
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Menu and MenuItem schema let Google quote items in rich results; an empty description field earns no AI citation.",
+      "start": 1130.55,
+      "end": 1136.29
     },
     {
       "id": 72,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
-      "text": "Article The restaurant photo spec sheet Every image size, aspect ratio, and resolution your menu surface needs, one spec sheet for a shoot or a phone.",
-      "start": 1052.57,
-      "end": 1059.93
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "Pick a single source of truth, P O S catalog or a content store the kitchen edits, and the menu page stops being a developer chore.",
+      "start": 1136.79,
+      "end": 1143.21
     },
     {
       "id": 73,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
-      "text": "Article What should be on a restaurant website The full set of pages a restaurant site actually needs, and the ones it does not, with the menu page as the load-bearing chapter.",
-      "start": 1060.43,
-      "end": 1069.07
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(6)",
+      "text": "The eight-point checklist works as a self-audit: the first fail is where to start.",
+      "start": 1143.71,
+      "end": 1147.72
     },
     {
       "id": 74,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(48)",
-      "text": "Tell us",
-      "start": 1069.87,
-      "end": 1070.71
+      "selector": "#post-body > p:nth-of-type(46)",
+      "text": "Audit your menu page against the eight-point checklist.",
+      "start": 1148.52,
+      "end": 1151.21
     },
     {
       "id": 75,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(8)",
-      "text": "Be the first field note on this piece.",
-      "start": 1072.21,
-      "end": 1074.07
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(47)",
+      "text": "Open the restaurant audit, pull in your menu U R L, and walk the eight branches. The audit names which ones pass, which warn, and which fail before you change anything.",
+      "start": 1152.01,
+      "end": 1160.26
     },
     {
       "id": 76,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(49)",
-      "text": "Tried this in your own restaurant? 100, 400 words, your name on it. Don reads every one. Your note shows up here once approved.",
-      "start": 1075.02,
-      "end": 1081.25
+      "selector": "#post-body > p:nth-of-type(48)",
+      "text": "What to do next",
+      "start": 1161.06,
+      "end": 1161.79
     },
     {
       "id": 77,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(50)",
-      "text": "Sign in to share your experience →",
-      "start": 1082.05,
-      "end": 1083.8
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Read: the related glossary term →",
+      "start": 1162.34,
+      "end": 1164.05
     },
     {
       "id": 78,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(52)",
-      "text": "Sourcing",
-      "start": 1084.35,
-      "end": 1085.32
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Try: the tool that pairs with this article →",
+      "start": 1164.55,
+      "end": 1166.8
     },
     {
       "id": 79,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Or send Don a note: The Window →",
+      "start": 1167.3,
+      "end": 1168.95
+    },
+    {
+      "id": 80,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(49)",
+      "text": "More from the library.",
+      "start": 1169.5,
+      "end": 1170.57
+    },
+    {
+      "id": 81,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(50)",
+      "text": "See also",
+      "start": 1171.37,
+      "end": 1172.34
+    },
+    {
+      "id": 82,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Article 12 min read Restaurant schema markup guide The six schema types that move restaurant search, Restaurant, Menu, OpeningHours, AggregateRating, Reservation, F A Q, with copy-paste Json-LD.",
+      "start": 1172.89,
+      "end": 1182.42
+    },
+    {
+      "id": 83,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Article The restaurant photo spec sheet Every image size, aspect ratio, and resolution your menu surface needs, one spec sheet for a shoot or a phone.",
+      "start": 1182.92,
+      "end": 1190.28
+    },
+    {
+      "id": 84,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Article What should be on a restaurant website The full set of pages a restaurant site actually needs, and the ones it does not, with the menu page as the load-bearing chapter.",
+      "start": 1190.78,
+      "end": 1199.42
+    },
+    {
+      "id": 85,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(51)",
+      "text": "Tell us",
+      "start": 1200.22,
+      "end": 1201.06
+    },
+    {
+      "id": 86,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "Be the first field note on this piece.",
+      "start": 1202.56,
+      "end": 1204.42
+    },
+    {
+      "id": 87,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(52)",
+      "text": "Tried this in your own restaurant? 100, 400 words, your name on it. Don reads every one. Your note shows up here once approved.",
+      "start": 1205.37,
+      "end": 1211.6
+    },
+    {
+      "id": 88,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(53)",
-      "text": "The P D F-vs-H T M L framing draws on Google Search Central&rsquo;s documentation on indexing behaviour and structured-data requirements; the MenuItem schema pattern follows the studio&rsquo;s own schema markup guide ; photo specifications follow the restaurant photo spec sheet . The eight-point checklist is the diagnostic the studio runs against client menu pages before and after a build. Every quantitative claim is either sourced in a (code) drawer inline or framed as illustrative practice rather than measurement.",
-      "start": 1085.87,
-      "end": 1111.04
+      "text": "Sign in to share your experience →",
+      "start": 1212.4,
+      "end": 1214.15
+    },
+    {
+      "id": 89,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(55)",
+      "text": "Sourcing",
+      "start": 1214.7,
+      "end": 1215.67
+    },
+    {
+      "id": 90,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(56)",
+      "text": "The P D F-vs-H T M L framing draws on Google Search Central&rsquo;s documentation on indexing behaviour and structured-data requirements; the MenuItem schema pattern follows the Muntin schema markup guide ; photo specifications follow the restaurant photo spec sheet . The eight-point checklist is the diagnostic the free restaurant audit runs against a menu page. Every quantitative claim is either sourced in a (code) drawer inline or framed as illustrative practice rather than measurement.",
+      "start": 1216.22,
+      "end": 1240.07
     }
   ]
 }
