@@ -258,6 +258,14 @@ function shortSource(srcId) {
   for (const k of Object.keys(CI_SOURCE_SHORT)) if (srcId.startsWith(k)) return CI_SOURCE_SHORT[k];
   return srcId;
 }
+// Source-id prefix → glossary term slug, so the inline "Sources" disclosure
+// can teach what each agency is (the Cost Data & Sources class). Plain label
+// when a source has no term page yet.
+const CI_SOURCE_GLOSS = { 'usda-ams': 'usda-market-news', 'usda-lmr': 'usda-lmr', bls: 'bls', fred: 'fred', eia: 'eia', noaa: 'noaa-fisheries' };
+function glossSourceLink(srcId, label, es) {
+  for (const k of Object.keys(CI_SOURCE_GLOSS)) if (srcId.startsWith(k)) return `<a href="${es ? '/es' : ''}/glossary/${CI_SOURCE_GLOSS[k]}/">${label}</a>`;
+  return label;
+}
 // Distinct agencies that contributed to a point's level + the history series.
 function citedAgencies(entry, point) {
   const ids = new Set();
@@ -636,10 +644,11 @@ function marketReadBlock(slug, locale) {
   const badge = `${es ? 'confianza' : 'confidence'} ${confWord} · ${es ? 'al' : 'as of'} ${asOf}`;
   const agencies = citedAgencies(r.entry, r.point);
   const shortList = [...new Set((r.point.provenance || []).map((p) => shortSource(p.source)))];
+  const shortListLinked = (() => { const seen = new Set(), out = []; for (const p of (r.point.provenance || [])) { const lab = shortSource(p.source); if (seen.has(lab)) continue; seen.add(lab); out.push(glossSourceLink(p.source, lab, es)); } return out; })();
   const disclaimer = r.basis === 'retail'
     ? (es ? 'Referencia minorista, no el precio mayorista ni el entregado que pagas.' : 'Retail reference, not the wholesale or delivered price you pay.')
     : (es ? 'Referencia mayorista (aproximadamente lo que pagan los distribuidores), no el precio entregado que pagas.' : 'Wholesale reference (roughly what distributors pay), not the delivered price you pay.');
-  const srcBody = `${(shortList.length ? shortList.join(' · ') : agencies.map((a) => a.name).join(' · '))} — ${es ? 'datos públicos' : 'public data'}, ${es ? 'al' : 'as of'} ${asOf}. ${disclaimer}`;
+  const srcBody = `${(shortListLinked.length ? shortListLinked.join(' · ') : agencies.map((a) => a.name).join(' · '))} — ${es ? 'datos públicos' : 'public data'}, ${es ? 'al' : 'as of'} ${asOf}. ${disclaimer}`;
   const liveLabel = es ? `Ver ${(lab.es || lab.en || slug).toLowerCase()} en vivo en Cost Pulse` : `See ${(lab.en || slug).toLowerCase()} live in Cost Pulse`;
   return `
   <aside class="ci-read" data-layer="measured" aria-label="${es ? 'Lectura de mercado' : 'Market read'}">
