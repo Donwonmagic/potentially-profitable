@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "generatedAt": "2026-06-15T07:51:46.747Z",
+  "generatedAt": "2026-06-24T00:01:40.266Z",
   "engine": "f5",
   "model": "don-reference.m4a",
   "voice": "f5:don-reference.m4a",
   "language": "en",
-  "total": 1301.75,
+  "total": 1405.06,
   "chunks": [
     {
       "id": 0,
@@ -19,569 +19,601 @@
       "id": 1,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
-      "text": "Most technical S E O guides are written for software companies with twenty-page funnels. A restaurant site is six pages, a menu, and a reservation button, and the audit shaped to that reality is the one an operator can run on their own site in an afternoon, no agency, no ad budget, no rebuild. What follows is the same checklist the Muntin Desk walks a client through before quoting a redesign.",
+      "text": "Most technical S E O guides are written for software companies with twenty-page funnels. A restaurant site is six pages, a menu, and a reservation button, and the audit shaped to that reality is the one an operator can run on their own site in an afternoon, no agency, no ad budget, no rebuild. What follows is that runbook: open the site, run each pass on a real phone, write down a verdict, and walk away knowing which fixes are a single line of code and which are the only ones that need a developer.",
       "start": 4.52,
-      "end": 23.54
+      "end": 28.81
     },
     {
       "id": 2,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(3)",
       "text": "In short",
-      "start": 24.34,
-      "end": 25.31
+      "start": 29.61,
+      "end": 30.58
     },
     {
       "id": 3,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
       "text": "Technical S E O is the work that decides whether Google and the AI assistants can read your site at all, page speed, mobile rendering, crawl access, structured data, the (code) .",
-      "start": 25.86,
-      "end": 34.79
+      "start": 31.13,
+      "end": 40.06
     },
     {
       "id": 4,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
       "text": "A restaurant site has a small surface area, menu, hours, reservation widget, a few photos, a footer, which is what makes the audit short enough to run yourself in an afternoon.",
-      "start": 35.29,
-      "end": 43.93
+      "start": 40.56,
+      "end": 49.2
     },
     {
       "id": 5,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
       "text": "Core Web Vitals (Lcp, Cls, Inp) are Google&rsquo;s public page-experience metrics; restaurant sites fail most often on the hero image (Lcp) and the third-party reservation widget (Cls, Inp).",
-      "start": 44.43,
-      "end": 53.75
+      "start": 49.7,
+      "end": 59.02
     },
     {
       "id": 6,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
       "text": "Mobile-first indexing has been Google&rsquo;s rule since twenty nineteen; about two-thirds of restaurant traffic arrives by phone, so the mobile view is the canonical view in every sense that matters.",
-      "start": 54.25,
-      "end": 64.06
+      "start": 59.52,
+      "end": 69.33
     },
     {
       "id": 7,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
       "text": "The twelve-point self-audit at the close runs in about an hour and produces a written verdict per check, pass, warn, fail, which is the artifact a follow-up rebuild quote will price against.",
-      "start": 64.56,
-      "end": 73.88
+      "start": 69.83,
+      "end": 79.15
     },
     {
       "id": 8,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "Type &ldquo;restaurant technical S E O&rdquo; into any search engine and the first ten results are written by S E O agencies, SaaS-platform marketing teams, or affiliate sites that need you to buy a tool. The advice is generic by design, it has to fit a law firm, a SaaS dashboard, and a dental clinic at the same time. A restaurant website is none of those things. The pages are few, the menu carries the weight, the visitor is on a phone deciding where to eat in twenty minutes. The technical S E O audit shaped to that operating reality is what follows: eight passes through the site, each with a yes-or-no verdict, and a twelve-point self-audit at the end that an operator can run, write down, and walk into a rebuild conversation with.",
-      "start": 74.68,
-      "end": 110.4
+      "text": "Picture a restaurant site that does everything the design brief asked for. It loads fast, the photos are gorgeous, the menu reads clean on a phone, and it is invisible in search for the restaurant&rsquo;s own name. The culprit is one line in a file the owner has never opened: a leftover Disallow: / in robots.txt from the day the site was staged, telling every crawler to skip the whole thing. Nobody saw it, because it does not show up anywhere a human looks. That is what restaurant technical S E O is, the layer of the site that decides whether Google and the AI assistants can read it at all, and it fails silently, shaped like a content problem when it is nothing of the kind. This guide is the field runbook for auditing that layer yourself: eight passes through the site, each ending in a yes-or-no verdict, then a twelve-point self-audit you can run on your own U R L in an afternoon, no agency, no ad budget, no rebuild. The advice everywhere else is generic by design, written to fit a law firm, a SaaS dashboard, and a dental clinic at once; a restaurant website is none of those, so this is shaped only to the restaurant.",
+      "start": 79.95,
+      "end": 134.82
     },
     {
       "id": 9,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(1)",
       "text": "What &ldquo;technical S E O&rdquo; actually is (and why a restaurant needs it).",
-      "start": 111.9,
-      "end": 115.77
+      "start": 136.32,
+      "end": 140.19
     },
     {
       "id": 10,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
       "text": "Technical S E O is the layer that decides whether Google can read your site at all. It sits below the words, the menu, the photos, the on-page work, and asks a simpler question: can the crawler reach the page, render it, and understand what it is.",
-      "start": 116.72,
-      "end": 128.63
+      "start": 141.14,
+      "end": 153.05
     },
     {
       "id": 11,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(6)",
       "text": "For a restaurant the distinction matters because the on-page work and the technical work tend to be in different people&rsquo;s hands. The chef-owner writes the menu copy, the GM picks the photos, the website is whatever the builder shipped. The technical layer is invisible until it isn&rsquo;t, until the menu page does not show up for the restaurant&rsquo;s own name, until the new lunch hours never make it into the AI Overview, until the reservation page loads slow enough that the diner closes the tab. None of those failures are content failures. They are technical failures shaped like content failures, which is what makes them hard to diagnose without a checklist.",
-      "start": 129.43,
-      "end": 162.11
+      "start": 153.85,
+      "end": 186.53
     },
     {
       "id": 12,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(7)",
-      "text": "The eight passes below are how the studio walks a site before a rebuild conversation. Each one is shaped to a specific question Google&rsquo;s own crawler asks. If the audit clears all eight, the site does not need a rebuild, it needs content work, which is a separate library piece. If the audit fails three or more, the rebuild quote will be cheaper than the lost-orders bill. For the broader local-S E O frame this sits inside, read restaurant local S E O ; for the schema-specific drill-down, restaurant schema markup is the companion piece.",
-      "start": 162.91,
-      "end": 189.27
+      "text": "The eight passes below are the order I walk a site in when I want to know whether it is being read, mine, or one I am sizing up across the street. Each one is shaped to a specific question Google&rsquo;s own crawler asks. If the audit clears all eight, the site does not need rebuilding, it needs content work, which is a separate library piece. If it fails three or more, the foundation is the problem, and the cost of leaving it broken is measured in the bookings that never find you. For the broader local-S E O frame this sits inside, read restaurant local S E O ; for the schema-specific drill-down, restaurant schema markup is the companion piece.",
+      "start": 187.33,
+      "end": 218.77
     },
     {
       "id": 13,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(2)",
       "text": "The page speed audit: Core Web Vitals on a real phone.",
-      "start": 190.77,
-      "end": 193.4
+      "start": 220.27,
+      "end": 222.9
     },
     {
       "id": 14,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(8)",
       "text": "Core Web Vitals are Google&rsquo;s three public page-experience metrics: Lcp (how fast the main image draws), Cls (how much the page jumps as it loads), and Inp (how fast the page responds to a tap). All three are measured on the mobile audit.",
-      "start": 194.35,
-      "end": 206.07
+      "start": 223.85,
+      "end": 235.57
     },
     {
       "id": 15,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(9)",
       "text": "The numbers Google publishes as &ldquo;good&rdquo; thresholds: Lcp under 2.5 seconds, Cls under 0.1, Inp under 200 milliseconds. A restaurant site that clears all three on a mid-range Android phone is in the green band; one that clears none of the three is the median, not the exception. The two upstream metrics worth knowing, because they are the ones the audit fixes drive, are Time to First Byte (the host&rsquo;s response speed; over 600 milliseconds points at a slow host) and First Contentful Paint (when something first appears; under 1.8 seconds is good).",
-      "start": 206.87,
-      "end": 234.15
+      "start": 236.37,
+      "end": 263.65
     },
     {
       "id": 16,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "A horizontal bar chart estimating where restaurant websites tend to land on Google's three Core Web Vitals metrics. The first bar, in teal, shows roughly twenty to twenty-five percent of restaurant sites passing all three Core Web Vitals on a mid-range Android phone, drawn at the green end of the chart. The middle bar, in a muted warning tone, shows the largest band, roughly forty-five to fifty-five percent of sites failing one or two of the three metrics, drawn at the mid range. The third bar, in rust, shows roughly twenty-five to thirty percent of sites failing all three metrics on the mobile audit, drawn at the failure end. The visual takeaway: the largest single band is not the failing band, it is the partial-pass band, most restaurant sites are close, not catastrophic. The figures are directionally accurate, anchored to Google's public Core Web Vitals documentation as discussed in the citation drawer below. They are not a specific study and should not be quoted as a percentage.",
-      "start": 235.25,
-      "end": 283.17
+      "text": "A single horizontal bar, segmented left to right, estimating where restaurant websites tend to land on Google's three Core Web Vitals metrics, the three bands read as parts of one whole that sum to the full field of restaurant sites. The first segment, in teal at the left, is roughly twenty to twenty-five percent of restaurant sites passing all three Core Web Vitals on a mid-range Android phone. The middle segment, the widest one, in gold, is roughly forty-five to fifty-five percent of sites failing one or two of the three metrics, the partial-pass band. The right segment, in rust, is roughly twenty-five to thirty percent of sites failing all three metrics on the mobile audit. The visual takeaway: the widest single band is not the failing band, it is the partial-pass band in the middle, most restaurant sites are close, not catastrophic, which is why the fix is usually one metric and not a rebuild. The figures are directionally accurate, anchored to Google's public Core Web Vitals documentation as discussed in the citation drawer below. They are not a specific study and should not be quoted as a percentage.",
+      "start": 264.75,
+      "end": 318.64
     },
     {
       "id": 17,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(2)",
       "text": "Three Lighthouse-style needle gauges, one per Core Web Vital, showing an illustrative single mobile audit of a typical restaurant homepage. The gauges are colored to Google's three bands: poor in rust, needs-improvement in gold, good in green. The first gauge is Largest Contentful Paint, reading three point one seconds against a good threshold of two point five seconds, so the needle sits in the gold needs-improvement band, usually an oversized hero image. The second gauge is Cumulative Layout Shift, reading zero point zero four against a good threshold of zero point one, so the needle sits in the green good band, the page holds still as it loads. The third gauge is Interaction to Next Paint, reading two hundred forty milliseconds against a good threshold of two hundred milliseconds, so the needle sits in the gold needs-improvement band, usually a third-party script blocking the first tap. The teaching point: a real audit is almost never all-green or all-red, it is mixed, which is why you fix the one metric in the worst band first rather than rebuilding the whole site. These are illustrative example readings, not a measurement of any specific restaurant; run your own U R L in PageSpeed Insights to read your own three needles.",
-      "start": 284.27,
-      "end": 344.22
+      "start": 319.74,
+      "end": 379.69
     },
     {
       "id": 18,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(10)",
       "text": "The way to run the audit is at PageSpeed Insights : paste the U R L, run the mobile audit (not the desktop one, mobile is what Google ranks against), and read the three metrics at the top of the page. The tool also lists the specific fixes ranked by impact, which is the part most operators skip. The top three fixes on a typical restaurant audit are the same week after week: the hero image is too large and the wrong format, a layout shift comes from the reservation widget or the social-proof carousel loading after the page renders, and a third-party script, usually the analytics or a chat widget, is blocking interaction. Each fix is a single change, not a rebuild. For the verification dashboard that confirms the audit moved the metrics in the field, see how to read restaurant Google Search Console .",
-      "start": 345.22,
-      "end": 384.33
+      "start": 380.69,
+      "end": 419.8
     },
     {
       "id": 19,
       "kind": "heading",
       "selector": "#post-body > h2:nth-of-type(3)",
       "text": "Is your site mobile-first ready? The five checks Google runs.",
-      "start": 385.83,
-      "end": 388.82
+      "start": 421.3,
+      "end": 424.29
     },
     {
       "id": 20,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(11)",
       "text": "Mobile-first indexing has been Google&rsquo;s default rule since twenty nineteen: the crawler reads the mobile version of your site and ranks based on that. Whatever the desktop view does well no longer counts if the mobile view does not match.",
-      "start": 389.77,
-      "end": 401.55
+      "start": 425.24,
+      "end": 437.02
     },
     {
       "id": 21,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(12)",
       "text": "The five checks Google&rsquo;s own crawler runs, in plain terms, not the documentation&rsquo;s language, are the ones that decide whether the mobile audit passes. First, the of every page ( ) that tells phones \"render this page at phone\">viewport meta tag is in the (code) : the single line (code) tells phones to render the page at phone width instead of zooming a desktop layout. Second, responsive design is the rule, not a separate mobile site, same U R L, same content, the layout reflows based on screen width. Third, the body text size is at least 16 pixels, smaller than that and iOS Safari zooms in every time a guest taps the reservation field, breaking the layout on the way back out. Fourth, the tap targets, every button, every link in a list, are at least 44 by 44 pixels with space between neighbors; smaller than that and the fat-finger taps send lunch to the wrong order. Fifth, the content is the same as desktop. A separate mobile site that shows less than the desktop site fails mobile-first indexing on principle, because Google cannot rank what the mobile crawler cannot see.",
-      "start": 402.35,
-      "end": 455.35
+      "start": 437.82,
+      "end": 490.82
     },
     {
       "id": 22,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(13)",
       "text": "The check that catches the most restaurants is the second one. Sites built on a builder template often look polished on desktop and disastrous on phones because the template was designed at desktop width and reflowed badly, a hamburger menu hides the hours, the reservation button overflows the screen, the menu P D F that opens fine on desktop becomes an unreadable zoomed-out image on mobile. None of those failures show up on the desktop preview the operator built the site on. All of them show up in Google&rsquo;s mobile crawler, and what the crawler sees is what gets ranked. The fix is not always a rebuild; sometimes it is a single C S S adjustment. The audit is what tells you which.",
-      "start": 456.15,
-      "end": 489.5
+      "start": 491.62,
+      "end": 524.97
     },
     {
       "id": 23,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "Crawlability: what robots, sitemaps, and canonical tags do for you.",
-      "start": 491,
-      "end": 494.27
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "From the floor",
+      "start": 525.77,
+      "end": 526.44
     },
     {
       "id": 24,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "Three small files decide whether Google&rsquo;s crawler can read your site at all: robots.txt , the Xml sitemap, and the canonical tag on each page. Each one is one line of code most operators have never opened.",
-      "start": 495.22,
-      "end": 505.58
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "I stopped trusting the desktop preview years ago. The test I actually run is dumber and better: pull up the site on the oldest, cheapest phone in the building, the back-of-house Android someone uses for delivery tablets, not the new iPhone in my pocket, and try to book a table standing in the dining room on the house Wi-Fi, which is always slower than I want it to be. If I can&rsquo;t get from the homepage to a confirmed reservation in under a minute with my thumb, a guest on a worse connection won&rsquo;t either. That one-minute, real-phone walk has caught more booking-killers for me than any score in a dashboard.",
+      "start": 526.99,
+      "end": 556.96
     },
     {
       "id": 25,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "A robots.txt file at yourdomain.com/robots.txt tells crawlers which parts of the site they can read. Most restaurant sites need exactly five lines: User-agent: * , Allow: / , a blank line, Sitemap: https://yourdomain.com/sitemap.xml . The most common mistake is a leftover Disallow: / line from a staging environment, which tells every crawler to skip the whole site, and which makes the entire technical-S E O audit moot until that one line is deleted. Open the file in a browser; if it reads &ldquo;Disallow: /&rdquo; on its own line, the page is invisible to Google by your own instruction, and the fix is a one-line edit.",
-      "start": 506.38,
-      "end": 536.45
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Crawlability: what robots, sitemaps, and canonical tags do for you.",
+      "start": 558.46,
+      "end": 561.73
     },
     {
       "id": 26,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(16)",
-      "text": "The Xml sitemap at /sitemap.xml lists every page you want indexed plus the date each one last changed. Submit it once in Google Search Console (verify the property first, paste the sitemap U R L in the Sitemaps tab) and Google reads it on every crawl after. A restaurant site with seven pages still benefits, new pages, menu updates, and a refreshed events page get discovered the same day instead of waiting for the organic crawl to find them. The canonical tag is the third file, embedded in the (code) of every page: (code) . It tells Google the canonical U R L for the page even if a tracking parameter or a campaign link sent the visitor to a duplicate. On a restaurant site where the reservation widget appends ?source=facebook to the U R L, the canonical tag is what keeps the page from competing with itself in the index.",
-      "start": 537.25,
-      "end": 577.13
+      "text": "Three small files decide whether Google&rsquo;s crawler can read your site at all: robots.txt , the Xml sitemap, and the canonical tag on each page. Each one is one line of code most operators have never opened.",
+      "start": 562.68,
+      "end": 573.04
     },
     {
       "id": 27,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(17)",
-      "text": "The three files together are the crawl-and-index contract. Get any one of them wrong and the rest of the audit does not matter, because Google is not reading the pages the audit is testing. The good news is that all three are auditable in five minutes, open the URLs, read the files, fix the obvious problems, and the broken ones are usually broken in the same way: the staging-environment Disallow line, the missing sitemap, the absent canonical. None of those is a rebuild; all three are a one-line fix.",
-      "start": 577.93,
-      "end": 602.31
+      "text": "A robots.txt file at yourdomain.com/robots.txt tells crawlers which parts of the site they can read. Most restaurant sites need exactly five lines: User-agent: * , Allow: / , a blank line, Sitemap: https://yourdomain.com/sitemap.xml . The most common mistake is a leftover Disallow: / line from a staging environment, which tells every crawler to skip the whole site, and which makes the entire technical-S E O audit moot until that one line is deleted. Open the file in a browser; if it reads &ldquo;Disallow: /&rdquo; on its own line, the page is invisible to Google by your own instruction, and the fix is a one-line edit.",
+      "start": 573.84,
+      "end": 603.91
     },
     {
       "id": 28,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "The H T M L head: title, description, Open Graph, schema, what&rsquo;s mandatory versus nice-to-have.",
-      "start": 603.81,
-      "end": 608.76
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "The Xml sitemap at /sitemap.xml lists every page you want indexed plus the date each one last changed. Submit it once in Google Search Console (verify the property first, paste the sitemap U R L in the Sitemaps tab) and Google reads it on every crawl after. A restaurant site with seven pages still benefits, new pages, menu updates, and a refreshed events page get discovered the same day instead of waiting for the organic crawl to find them. The canonical tag is the third file, embedded in the (code) of every page: (code) . It tells Google the canonical U R L for the page even if a tracking parameter or a campaign link sent the visitor to a duplicate. On a restaurant site where the reservation widget appends ?source=facebook to the U R L, the canonical tag is what keeps the page from competing with itself in the index.",
+      "start": 604.71,
+      "end": 644.59
     },
     {
       "id": 29,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(18)",
-      "text": "The (code) of each page is where Google and the AI assistants pick up the metadata. Four blocks are mandatory; four more are nice-to-have. The audit is whether the mandatory four are present and the optional four are filled where they make sense.",
-      "start": 609.71,
-      "end": 621.77
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "The three files together are the crawl-and-index contract. Get any one of them wrong and the rest of the audit does not matter, because Google is not reading the pages the audit is testing. The good news is that all three are auditable in five minutes, open the URLs, read the files, fix the obvious problems, and the broken ones are usually broken in the same way: the staging-environment Disallow line, the missing sitemap, the absent canonical. None of those is a rebuild; all three are a one-line fix.",
+      "start": 645.39,
+      "end": 669.77
     },
     {
       "id": 30,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(19)",
-      "text": "The four mandatory blocks on every page: a title tag under 60 characters that names the page and the location (&ldquo;Dinner Menu, Tacombi Bethesda&rdquo; not &ldquo;Menu&rdquo;); a meta description under 155 characters written for the click, not for the algorithm; the canonical link from the section above; and the viewport meta tag from the mobile-first section. Miss any of the four and the page either does not show up in search at all or shows up with a Google-generated snippet that probably is not what you would have written.",
-      "start": 622.57,
-      "end": 648.82
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(1)",
+      "text": "A restaurant site can fail technical S E O without a single thing on the screen looking broken. The page nobody sees is the one Google reads first.",
+      "start": 670.77,
+      "end": 677.98
     },
     {
       "id": 31,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(20)",
-      "text": "The four nice-to-have blocks come next. Open Graph tags ( og:image , og:title , og:description ) are what iMessage, WhatsApp, Slack, Facebook, and the rest read when a regular shares your U R L, without them the link previews as a plain grey box, which is the difference between a friend-of-friend booking the table and ignoring the message. Restaurant Json-LD schema, specifically the Restaurant type with address , openingHours , menu , and servesCuisine properties, is what feeds the structured data Google uses for the sidebar panel and the AI Overview citation. A favicon at four common sizes (16, 32, 192, 512 pixels) is the small icon that appears in the browser tab, the bookmark, and the Google search result, a missing favicon reads as an unfinished site at a glance. And breadcrumb structured data ( BreadcrumbList in Json-LD) lets Google replace the long U R L in the search result with a clean trail.",
-      "start": 649.62,
-      "end": 694.13
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "The H T M L head: title, description, Open Graph, schema, what&rsquo;s mandatory versus nice-to-have.",
+      "start": 679.48,
+      "end": 684.43
     },
     {
       "id": 32,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(21)",
-      "text": "The schema is the lever that compounds. Plain H T M L tells Google what the page looks like; the Json-LD schema tells Google what the page is . The restaurant whose homepage is marked up as a Restaurant with the right cuisine, address, opening hours, and menu U R L is the one that gets cited in the AI Overview answering &ldquo;Italian restaurant in Silver Spring open late&rdquo;, because the model can read the schema and answer the question literally. The restaurant whose homepage is plain H T M L has to compete on the prose alone, which is a harder fight. For the full schema walk, which properties belong on which page, which ones to skip, and the Rich Results Test workflow, see restaurant schema markup .",
-      "start": 694.93,
-      "end": 729.56
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "The (code) of each page is where Google and the AI assistants pick up the metadata. Four blocks are mandatory; four more are nice-to-have. The audit is whether the mandatory four are present and the optional four are filled where they make sense.",
+      "start": 685.38,
+      "end": 697.44
     },
     {
       "id": 33,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(6)",
-      "text": "Internationalization: when (and how) hreflang matters for a single-location restaurant.",
-      "start": 731.06,
-      "end": 735.33
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "The four mandatory blocks on every page: a title tag under 60 characters that names the page and the location (&ldquo;Dinner Menu, Tacombi Bethesda&rdquo; not &ldquo;Menu&rdquo;); a meta description under 155 characters written for the click, not for the algorithm; the canonical link from the section above; and the viewport meta tag from the mobile-first section. Miss any of the four and the page either does not show up in search at all or shows up with a Google-generated snippet that probably is not what you would have written.",
+      "start": 698.24,
+      "end": 724.49
     },
     {
       "id": 34,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(22)",
-      "text": ") that tells Google which language and region a page is targeted at, and whe\">hreflang is the H T M L attribute that tells Google which language a page serves and which version to show a search visitor whose browser is set to a different language. It is necessary only when the same restaurant publishes pages in more than one language.",
-      "start": 736.28,
-      "end": 752.35
+      "text": "The four nice-to-have blocks come next. Open Graph tags ( og:image , og:title , og:description ) are what iMessage, WhatsApp, Slack, Facebook, and the rest read when a regular shares your U R L, without them the link previews as a plain grey box, which is the difference between a friend-of-friend booking the table and ignoring the message. Restaurant Json-LD schema, specifically the Restaurant type with address , openingHours , menu , and servesCuisine properties, is what feeds the structured data Google uses for the sidebar panel and the AI Overview citation. A favicon at four common sizes (16, 32, 192, 512 pixels) is the small icon that appears in the browser tab, the bookmark, and the Google search result, a missing favicon reads as an unfinished site at a glance. And breadcrumb structured data ( BreadcrumbList in Json-LD) lets Google replace the long U R L in the search result with a clean trail.",
+      "start": 725.29,
+      "end": 769.8
     },
     {
       "id": 35,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(23)",
-      "text": "For a single-location restaurant in English alone, the hreflang section is the easy one: skip it. The tag is meant to pair language variants, not invent them. For a bilingual restaurant, an English/Spanish site in DC, an English/French site in Montreal, an English/Korean site in Annandale, the tag is what tells Google to send the Spanish-speaking searcher to the Spanish version of the menu page instead of the English version. The shape of the tag goes in the (code) of both pages, pointing at each other, plus an x-default for searchers whose language Google cannot identify: (code) , (code) , and (code) . The most common mistake is a one-sided tag, the English page points to Spanish but the Spanish page does not point back. Google reads that as a broken pair and serves the wrong page to roughly half the searchers it would otherwise route correctly.",
-      "start": 753.15,
-      "end": 794.67
+      "text": "The schema is the lever that compounds. Plain H T M L tells Google what the page looks like; the Json-LD schema tells Google what the page is . The restaurant whose homepage is marked up as a Restaurant with the right cuisine, address, opening hours, and menu U R L is the one that gets cited in the AI Overview answering &ldquo;Italian restaurant in Silver Spring open late&rdquo;, because the model can read the schema and answer the question literally. The restaurant whose homepage is plain H T M L has to compete on the prose alone, which is a harder fight. For the full schema walk, which properties belong on which page, which ones to skip, and the Rich Results Test workflow, see restaurant schema markup .",
+      "start": 770.6,
+      "end": 805.23
     },
     {
       "id": 36,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(24)",
-      "text": "The pattern to remember for the audit: hreflang is the right call only when the same content exists in two languages on two URLs. A restaurant that translates its homepage and not its menu page should not stamp hreflang on the homepage, the unpaired hreflang sends Google looking for a menu translation that does not exist, and Google penalizes the broken pair by showing neither version reliably. The audit answer is yes only when both pages are real, both pages point at each other, and both pages serve the same restaurant identity. For most single-location English-speaking restaurants the section is a clean skip, which is itself worth knowing, the audit clears with a no, not with an absence.",
-      "start": 795.47,
-      "end": 829.12
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Internationalization: when (and how) hreflang matters for a single-location restaurant.",
+      "start": 806.73,
+      "end": 811
     },
     {
       "id": 37,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(7)",
-      "text": "Footer hygiene: the year, the Ssl, the tap targets, the legal links.",
-      "start": 830.62,
-      "end": 833.95
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": ") that tells Google which language and region a page is targeted at, and whe\">hreflang is the H T M L attribute that tells Google which language a page serves and which version to show a search visitor whose browser is set to a different language. It is necessary only when the same restaurant publishes pages in more than one language.",
+      "start": 811.95,
+      "end": 828.02
     },
     {
       "id": 38,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(25)",
-      "text": "The footer is where four of the smallest signals live, and where most restaurant sites lose trust in the last visible pixel. The audit covers four things: the copyright year, the Ssl certificate, the contact-link tap targets, and the legal-page links.",
-      "start": 834.9,
-      "end": 847.02
+      "text": "For a single-location restaurant in English alone, the hreflang section is the easy one: skip it. The tag is meant to pair language variants, not invent them. For a bilingual restaurant, an English/Spanish site in DC, an English/French site in Montreal, an English/Korean site in Annandale, the tag is what tells Google to send the Spanish-speaking searcher to the Spanish version of the menu page instead of the English version. The shape of the tag goes in the (code) of both pages, pointing at each other, plus an x-default for searchers whose language Google cannot identify: (code) , (code) , and (code) . The most common mistake is a one-sided tag, the English page points to Spanish but the Spanish page does not point back. Google reads that as a broken pair and serves the wrong page to roughly half the searchers it would otherwise route correctly.",
+      "start": 828.82,
+      "end": 870.34
     },
     {
       "id": 39,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(26)",
-      "text": "A stale copyright year, &ldquo;&copy; twenty twenty-two Joe&rsquo;s Pizza&rdquo; in a twenty twenty-six footer, reads to an out-of-town diner as a business that may have closed during the pandemic and never reopened. The fix is a one-line JavaScript snippet that renders the current year automatically: document.getElementById(&apos;year&apos;).textContent = new Date().getFullYear(); . Pair that with a last-updated signal on the menu page, a small &ldquo;Spring twenty twenty-six menu&rdquo; badge, a dated specials block, and the freshness reads in seconds. The audit verdict: pass if the year renders dynamically and the menu has at least one dated freshness marker; fail otherwise.",
-      "start": 847.82,
-      "end": 880.88
+      "text": "The pattern to remember for the audit: hreflang is the right call only when the same content exists in two languages on two URLs. A restaurant that translates its homepage and not its menu page should not stamp hreflang on the homepage, the unpaired hreflang sends Google looking for a menu translation that does not exist, and Google penalizes the broken pair by showing neither version reliably. The audit answer is yes only when both pages are real, both pages point at each other, and both pages serve the same restaurant identity. For most single-location English-speaking restaurants the section is a clean skip, which is itself worth knowing, the audit clears with a no, not with an absence.",
+      "start": 871.14,
+      "end": 904.79
     },
     {
       "id": 40,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(27)",
-      "text": "The Ssl certificate is the lock icon next to the U R L. A site that loads at http:// instead of https:// shows a &ldquo;Not secure&rdquo; warning in every modern browser, which is enough to bounce a reservation that was about to convert. Every host worth using ships free Ssl via Let&rsquo;s Encrypt; if the site is not on H T T P S, the fix is a free certificate and a redirect rule. The third footer check is the tap targets on the contact links, phone number, email address, the map link, which should be at least 44 by 44 pixels on a phone with space between them. A phone number that is rendered as small grey text without a tel: link is a tap target that does not work; the fix is to wrap it in (code) . The fourth is the legal-link block, privacy policy, terms, accessibility statement, which Google and the AI assistants read as a trust signal that the site is being maintained. A footer with no legal block reads as a site that was set up once and never touched.",
-      "start": 881.68,
-      "end": 928.74
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "Footer hygiene: the year, the Ssl, the tap targets, the legal links.",
+      "start": 906.29,
+      "end": 909.62
     },
     {
       "id": 41,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(28)",
-      "text": "A sticky mobile footer, a thin bar pinned to the bottom of every mobile page with one or two key actions (Call, Reserve, Order), is the optional fifth check that earns its keep on a restaurant site. The diner scrolling halfway down the menu wants to act with one thumb tap, not scroll to the top to find the reservation button. None of these five footer checks is a rebuild. All five are an afternoon&rsquo;s edits in whichever platform the site runs on. The last small piece worth naming alongside them is a professional email address on the contact link, hello@yourdomain.com reads as a real business; a Gmail address in the footer of an otherwise polished site reads as a side project, which is enough to lose a catering inquiry to the next result. For the menu-page treatment that makes all of this matter, see restaurant online menu best practices .",
-      "start": 929.54,
-      "end": 970.65
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "The footer is where four of the smallest signals live, and where most restaurant sites lose trust in the last visible pixel. The audit covers four things: the copyright year, the Ssl certificate, the contact-link tap targets, and the legal-page links.",
+      "start": 910.57,
+      "end": 922.69
     },
     {
       "id": 42,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(8)",
-      "text": "The 12-point self-audit (close).",
-      "start": 972.15,
-      "end": 973.71
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "A stale copyright year, &ldquo;&copy; twenty twenty-two Joe&rsquo;s Pizza&rdquo; in a twenty twenty-six footer, reads to an out-of-town diner as a business that may have closed during the pandemic and never reopened. The fix is a one-line JavaScript snippet that renders the current year automatically: document.getElementById(&apos;year&apos;).textContent = new Date().getFullYear(); . Pair that with a last-updated signal on the menu page, a small &ldquo;Spring twenty twenty-six menu&rdquo; badge, a dated specials block, and the freshness reads in seconds. The audit verdict: pass if the year renders dynamically and the menu has at least one dated freshness marker; fail otherwise.",
+      "start": 923.49,
+      "end": 956.55
     },
     {
       "id": 43,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(29)",
-      "text": "Walk the twelve checks in order. Each one has a yes-or-no verdict, color-coded to the same teal-warn-rust palette Google uses on its own Core Web Vitals dashboard. Write down a verdict per check; the artifact is what a follow-up rebuild quote will price against.",
-      "start": 974.66,
-      "end": 987.31
+      "text": "The Ssl certificate is the lock icon next to the U R L. A site that loads at http:// instead of https:// shows a &ldquo;Not secure&rdquo; warning in every modern browser, which is enough to bounce a reservation that was about to convert. Every host worth using ships free Ssl via Let&rsquo;s Encrypt; if the site is not on H T T P S, the fix is a free certificate and a redirect rule. The third footer check is the tap targets on the contact links, phone number, email address, the map link, which should be at least 44 by 44 pixels on a phone with space between them. A phone number that is rendered as small grey text without a tel: link is a tap target that does not work; the fix is to wrap it in (code) . The fourth is the legal-link block, privacy policy, terms, accessibility statement, which Google and the AI assistants read as a trust signal that the site is being maintained. A footer with no legal block reads as a site that was set up once and never touched.",
+      "start": 957.35,
+      "end": 1004.41
     },
     {
       "id": 44,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(30)",
-      "text": "The audit takes about an hour the first time and about fifteen minutes on a re-audit once the obvious failures are fixed. The order is deliberate, foundational checks first (Tls, viewport, robots), structural checks second (titles, descriptions, hierarchy), measurable checks last (Core Web Vitals). A failure in the first four blocks the audit at the foundation; a failure in the last three is fixable with a focused performance pass.",
-      "start": 988.11,
-      "end": 1009.1
+      "text": "A sticky mobile footer, a thin bar pinned to the bottom of every mobile page with one or two key actions (Call, Reserve, Order), is the optional fifth check that earns its keep on a restaurant site. The diner scrolling halfway down the menu wants to act with one thumb tap, not scroll to the top to find the reservation button. None of these five footer checks is a rebuild. All five are an afternoon&rsquo;s edits in whichever platform the site runs on. The last small piece worth naming alongside them is a professional email address on the contact link, hello@yourdomain.com reads as a real business; a Gmail address in the footer of an otherwise polished site reads as a side project, which is enough to lose a catering inquiry to the next result. For the menu-page treatment that makes all of this matter, see restaurant online menu best practices .",
+      "start": 1005.21,
+      "end": 1046.32
     },
     {
       "id": 45,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(3)",
-      "text": "A twelve-point operator self-audit walking the technical S E O checklist in order, color-coded to the teal-warn-rust palette Google uses on its own Core Web Vitals dashboard. Step one, Tls certificate valid: open the U R L in any modern browser and check for the padlock icon next to the address bar, pass if it shows, fail if a not-secure warning appears. Step two, favicon present at multiple sizes: view source on the homepage and confirm icon links for 16, 32, 192, and 512 pixel variants. Step three, viewport meta tag present: confirm the line meta name viewport content equals width device-width comma initial scale equals one is in the head. Step four, title tag under 60 characters: read each page's title in the browser tab and count. Step five, meta description under 155 characters: view source and count the description. Step six, headings hierarchical: confirm one h1 per page, h2s under it, h3s under those, no skipping levels. Step seven, robots dot txt allows crawling: open yourdomain dot com slash robots dot txt and check for any disallow slash line that should not be there. Step eight, sitemap submitted in Google Search Console: log in, open the sitemaps tab, confirm the sitemap dot xml U R L is listed and last read recently. Step nine, structured data validates: paste the homepage U R L into Google's Rich Results Test and read the verdict. Step ten, Lcp under 2.5 seconds: open PageSpeed Insights, paste the U R L, run the mobile audit. Step eleven, Cls under 0.1: read the same audit's cumulative layout shift metric. Step twelve, Inp under 200 milliseconds: read the same audit's interaction to next paint metric. Twelve checks, one hour, a written verdict per check. The artifact is what a rebuild quote will price against.",
-      "start": 1010.2,
-      "end": 1094.95
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "The 12-point self-audit (close).",
+      "start": 1047.82,
+      "end": 1049.38
     },
     {
       "id": 46,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(31)",
-      "text": "Read the verdicts as a group, not as twelve isolated grades. A site that passes the first nine and fails the last three is a fast-C S S-and-image-pass problem, not a rebuild. A site that fails the first three is a rebuild because the foundation is the part the rest stacks on. A site whose audit is mostly warns is the most common pattern, small fixes everywhere, no single catastrophe, and the right move there is to schedule an afternoon to walk down the warns one at a time. None of the twelve checks needs an agency. All twelve need a written verdict, in your own handwriting, before any rebuild conversation starts.",
-      "start": 1095.95,
-      "end": 1125.77
+      "text": "Walk the twelve checks in order. Each one has a yes-or-no verdict, color-coded to the same teal-warn-rust palette Google uses on its own Core Web Vitals dashboard. Write down a verdict per check; the written page is the punch list you work from, and the artifact you hand whoever does the fixing, whether that is you on a quiet Tuesday or a developer you bring in for the two checks that actually need one.",
+      "start": 1050.33,
+      "end": 1070.05
     },
     {
       "id": 47,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(32)",
-      "text": "Key takeaways",
-      "start": 1126.57,
-      "end": 1127.19
+      "text": "The audit takes about an hour the first time and about fifteen minutes on a re-audit once the obvious failures are fixed. The order is deliberate, foundational checks first (Tls, viewport, robots), structural checks second (titles, descriptions, hierarchy), measurable checks last (Core Web Vitals). A failure in the first four blocks the audit at the foundation; a failure in the last three is fixable with a focused performance pass.",
+      "start": 1070.85,
+      "end": 1091.84
     },
     {
       "id": 48,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Technical S E O is the layer that decides whether Google can read your site at all, below the words, the menu, the photos.",
-      "start": 1127.74,
-      "end": 1133.72
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(33)",
+      "text": "Before you walk the list, learn to read the verdicts by which hand fixes them. Most of what an audit turns up is a one-line correction an operator can make the same afternoon. A short list of failures genuinely needs a developer, and the value of the written audit is that it tells the two apart, so you never pay rebuild prices for a sticky-note fix.",
+      "start": 1092.64,
+      "end": 1109.66
     },
     {
       "id": 49,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Core Web Vitals (Lcp, Cls, Inp) are Google&rsquo;s three public page-experience metrics; aim for under 2.5s, under 0.1, and under 200ms on the mobile audit.",
-      "start": 1134.22,
-      "end": 1141.88
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "A twelve-point operator self-audit walking the technical S E O checklist in order, color-coded to the teal-warn-rust palette Google uses on its own Core Web Vitals dashboard. Step one, Tls certificate valid: open the U R L in any modern browser and check for the padlock icon next to the address bar, pass if it shows, fail if a not-secure warning appears. Step two, favicon present at multiple sizes: view source on the homepage and confirm icon links for 16, 32, 192, and 512 pixel variants. Step three, viewport meta tag present: confirm the line meta name viewport content equals width device-width comma initial scale equals one is in the head. Step four, title tag under 60 characters: read each page's title in the browser tab and count. Step five, meta description under 155 characters: view source and count the description. Step six, headings hierarchical: confirm one h1 per page, h2s under it, h3s under those, no skipping levels. Step seven, robots dot txt allows crawling: open yourdomain dot com slash robots dot txt and check for any disallow slash line that should not be there. Step eight, sitemap submitted in Google Search Console: log in, open the sitemaps tab, confirm the sitemap dot xml U R L is listed and last read recently. Step nine, structured data validates: paste the homepage U R L into Google's Rich Results Test and read the verdict. Step ten, Lcp under 2.5 seconds: open PageSpeed Insights, paste the U R L, run the mobile audit. Step eleven, Cls under 0.1: read the same audit's cumulative layout shift metric. Step twelve, Inp under 200 milliseconds: read the same audit's interaction to next paint metric. Twelve checks, one hour, a written verdict per check. The written page is the punch list you act from, and the artifact you hand whoever does the fixing.",
+      "start": 1110.76,
+      "end": 1197.62
     },
     {
       "id": 50,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Mobile-first indexing has been the rule since twenty nineteen, the mobile view is what Google ranks, and a separate mobile site that shows less than desktop fails on principle.",
-      "start": 1142.38,
-      "end": 1151.02
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(34)",
+      "text": "Read the verdicts as a group, not as twelve isolated grades. A site that passes the first nine and fails the last three is a fast-C S S-and-image-pass problem, not a rebuild. A site that fails the first three is a rebuild because the foundation is the part the rest stacks on. A site whose audit is mostly warns is the most common pattern, small fixes everywhere, no single catastrophe, and the right move there is to schedule an afternoon to walk down the warns one at a time. None of the twelve checks needs an agency. All twelve need a written verdict, in your own handwriting, before anyone touches a line of code, including you.",
+      "start": 1198.62,
+      "end": 1229.08
     },
     {
       "id": 51,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "Three small files run the crawl-and-index contract: robots.txt, sitemap.xml, and the canonical tag. Each one is a one-line fix when broken.",
-      "start": 1151.52,
-      "end": 1158.34
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(35)",
+      "text": "Key takeaways",
+      "start": 1229.88,
+      "end": 1230.5
     },
     {
       "id": 52,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
-      "text": "The four mandatory (code) blocks are title, description, canonical, and viewport; Open Graph, restaurant Json-LD schema, favicon, and breadcrumb structured data are the next four worth shipping.",
-      "start": 1158.84,
-      "end": 1168.56
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Technical S E O is the layer that decides whether Google can read your site at all, below the words, the menu, the photos.",
+      "start": 1231.05,
+      "end": 1237.03
     },
     {
       "id": 53,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(6)",
-      "text": "hreflang is necessary only when the same content exists in two languages on two URLs, single-language sites skip the section entirely.",
-      "start": 1169.06,
-      "end": 1175.63
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Core Web Vitals (Lcp, Cls, Inp) are Google&rsquo;s three public page-experience metrics; aim for under 2.5s, under 0.1, and under 200ms on the mobile audit.",
+      "start": 1237.53,
+      "end": 1245.19
     },
     {
       "id": 54,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(7)",
-      "text": "The twelve-point self-audit runs in about an hour and produces a written verdict per check, the artifact a rebuild quote will price against.",
-      "start": 1176.13,
-      "end": 1183
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Mobile-first indexing has been the rule since twenty nineteen, the mobile view is what Google ranks, and a separate mobile site that shows less than desktop fails on principle.",
+      "start": 1245.69,
+      "end": 1254.33
     },
     {
       "id": 55,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(33)",
-      "text": "Audit your site against the 12-point checklist.",
-      "start": 1183.8,
-      "end": 1186.09
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Three small files run the crawl-and-index contract: robots.txt, sitemap.xml, and the canonical tag. Each one is a one-line fix when broken.",
+      "start": 1254.83,
+      "end": 1261.65
     },
     {
       "id": 56,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(34)",
-      "text": "Open the restaurant audit and walk your site against the same twelve checks the Muntin Desk runs on a client site. The audit produces a written verdict per check, ready to price a rebuild quote against, or to confirm the rebuild is not what you need.",
-      "start": 1186.89,
-      "end": 1199
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "The four mandatory (code) blocks are title, description, canonical, and viewport; Open Graph, restaurant Json-LD schema, favicon, and breadcrumb structured data are the next four worth shipping.",
+      "start": 1262.15,
+      "end": 1271.87
     },
     {
       "id": 57,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(35)",
-      "text": "What to do next",
-      "start": 1199.8,
-      "end": 1200.53
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(6)",
+      "text": "hreflang is necessary only when the same content exists in two languages on two URLs, single-language sites skip the section entirely.",
+      "start": 1272.37,
+      "end": 1278.94
     },
     {
       "id": 58,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Read: the related glossary term →",
-      "start": 1201.08,
-      "end": 1202.79
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(7)",
+      "text": "The twelve-point self-audit runs in about an hour and produces a written verdict per check, the artifact a rebuild quote will price against.",
+      "start": 1279.44,
+      "end": 1286.31
     },
     {
       "id": 59,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Try: the tool that pairs with this article →",
-      "start": 1203.29,
-      "end": 1205.54
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(36)",
+      "text": "Audit your site against the 12-point checklist.",
+      "start": 1287.11,
+      "end": 1289.4
     },
     {
       "id": 60,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Or send Don a note: The Window →",
-      "start": 1206.04,
-      "end": 1207.69
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(37)",
+      "text": "Open the restaurant audit and walk your site against the same twelve checks the Muntin Desk runs on a client site. The audit produces a written verdict per check, ready to price a rebuild quote against, or to confirm the rebuild is not what you need.",
+      "start": 1290.2,
+      "end": 1302.31
     },
     {
       "id": 61,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(36)",
-      "text": "More from the library.",
-      "start": 1208.24,
-      "end": 1209.31
+      "selector": "#post-body > p:nth-of-type(38)",
+      "text": "What to do next",
+      "start": 1303.11,
+      "end": 1303.84
     },
     {
       "id": 62,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(37)",
-      "text": "See also",
-      "start": 1210.11,
-      "end": 1211.08
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Read: the related glossary term →",
+      "start": 1304.39,
+      "end": 1306.1
     },
     {
       "id": 63,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
-      "text": "Article Restaurant local S E O The pillar above the technical layer, how Google ranks restaurants for &ldquo;[cuisine] near me,&rdquo; the Map Pack, reviews, and the AI Overview pattern that sits on top of all of it.",
-      "start": 1211.63,
-      "end": 1222.44
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Try: the tool that pairs with this article →",
+      "start": 1306.6,
+      "end": 1308.85
     },
     {
       "id": 64,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
-      "text": "Article Restaurant schema markup guide The schema-specific drill-down: which Json-LD types Google reads for restaurants, which properties matter, and the Rich Results Test workflow the audit above uses for check nine.",
-      "start": 1222.94,
-      "end": 1233.6
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Or send Don a note: The Window →",
+      "start": 1309.35,
+      "end": 1311
     },
     {
       "id": 65,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
-      "text": "Article How to read restaurant Google Search Console The verification dashboard that confirms the audit moved the metrics in the field, Performance, Pages, Coverage, and the four reports that do the work.",
-      "start": 1234.1,
-      "end": 1244.12
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(39)",
+      "text": "More from the library.",
+      "start": 1311.55,
+      "end": 1312.62
     },
     {
       "id": 66,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(38)",
-      "text": "Tell us",
-      "start": 1244.92,
-      "end": 1245.76
+      "selector": "#post-body > p:nth-of-type(40)",
+      "text": "See also",
+      "start": 1313.42,
+      "end": 1314.39
     },
     {
       "id": 67,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(9)",
-      "text": "Be the first field note on this piece.",
-      "start": 1247.26,
-      "end": 1249.12
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Article Restaurant local S E O The pillar above the technical layer, how Google ranks restaurants for &ldquo;[cuisine] near me,&rdquo; the Map Pack, reviews, and the AI Overview pattern that sits on top of all of it.",
+      "start": 1314.94,
+      "end": 1325.75
     },
     {
       "id": 68,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(39)",
-      "text": "Tried this in your own restaurant? 100, 400 words, your name on it. Don reads every one. Your note shows up here once approved.",
-      "start": 1250.07,
-      "end": 1256.3
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Article Restaurant schema markup guide The schema-specific drill-down: which Json-LD types Google reads for restaurants, which properties matter, and the Rich Results Test workflow the audit above uses for check nine.",
+      "start": 1326.25,
+      "end": 1336.91
     },
     {
       "id": 69,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(40)",
-      "text": "Sign in to share your experience →",
-      "start": 1257.1,
-      "end": 1258.85
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Article How to read restaurant Google Search Console The verification dashboard that confirms the audit moved the metrics in the field, Performance, Pages, Coverage, and the four reports that do the work.",
+      "start": 1337.41,
+      "end": 1347.43
     },
     {
       "id": 70,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(42)",
-      "text": "Sourcing",
-      "start": 1259.4,
-      "end": 1260.37
+      "selector": "#post-body > p:nth-of-type(41)",
+      "text": "Tell us",
+      "start": 1348.23,
+      "end": 1349.07
     },
     {
       "id": 71,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(9)",
+      "text": "Be the first field note on this piece.",
+      "start": 1350.57,
+      "end": 1352.43
+    },
+    {
+      "id": 72,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(42)",
+      "text": "Tried this in your own restaurant? 100, 400 words, your name on it. Don reads every one. Your note shows up here once approved.",
+      "start": 1353.38,
+      "end": 1359.61
+    },
+    {
+      "id": 73,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(43)",
+      "text": "Sign in to share your experience →",
+      "start": 1360.41,
+      "end": 1362.16
+    },
+    {
+      "id": 74,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(45)",
+      "text": "Sourcing",
+      "start": 1362.71,
+      "end": 1363.68
+    },
+    {
+      "id": 75,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(46)",
       "text": "The Core Web Vitals thresholds (Lcp under 2.5 seconds, Cls under 0.1, Inp under 200 milliseconds) and the mobile-first indexing rules are read from Google&rsquo;s public Search Central documentation at developers.google.com and from the web.dev reference at web.dev. The audit tool is Google&rsquo;s PageSpeed Insights at pagespeed.web.dev, which runs the Lighthouse engine against any U R L and surfaces the same metrics Search Console reports in the field. The Rich Results Test at search.google.com/test/rich-results is the structured-data validator named in check nine. Distribution figures in the Core Web Vitals viz-bars are directionally accurate, illustrative ranges anchored to Google&rsquo;s public Core Web Vitals documentation, not a specific third-party study. Verify each metric against your own U R L before changing a line of code.",
-      "start": 1260.92,
-      "end": 1301.75
+      "start": 1364.23,
+      "end": 1405.06
     }
   ]
 }
