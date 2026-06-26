@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="robots" content="noindex, nofollow" />
 <meta name="referrer" content="no-referrer" />
 <title>Tu lista corta de menú — Hojas | Muntin Digital</title>
 <meta name="description" content="Una lista corta de menú imprimible — los 8 a 12 platos que demuestran el rango de la cocina. Nombres, precios, notas de alérgenos, costo del plato listo…" />
@@ -82,6 +82,16 @@ header.nav{min-height:64px}
 </aside>
 <script>(function(){var d=document.documentElement;function s(){var b=document.querySelector('.batch-marquee');if(b){d.style.setProperty('--banner-h',b.offsetHeight+'px');}}s();addEventListener('resize',s,{passive:true});addEventListener('orientationchange',s);if(document.fonts&&document.fonts.ready){document.fonts.ready.then(s);}})();</script>
 <!-- batch-banner:end -->
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
              Placed inside <header> so sync-includes replaces it atomically
@@ -416,7 +426,7 @@ header.nav{min-height:64px}
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->36<!-- /count --> art&iacute;culos, <!-- count:tools.live -->13<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->151<!-- /count --> t&eacute;rminos &mdash; de Muntin Digital, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->24<!-- /count --> art&iacute;culos, <!-- count:tools.live -->12<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->149<!-- /count --> t&eacute;rminos &mdash; de Muntin Digital, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
       </div>
 
       <!-- El orden de columnas refleja la navegación principal de 5

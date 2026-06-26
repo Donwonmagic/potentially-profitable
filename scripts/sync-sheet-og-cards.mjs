@@ -169,6 +169,6 @@ if (prevJson === nextJson) {
   process.exit(0);
 }
 if (!checkOnly) fs.writeFileSync(CARDS_PATH, nextJson + '\n');
-const removedCount = (cards.cards || []).length - preserved.length;
+const removedCount = (cards.cards || []).length - filtered.length;
 console.log(`${checkOnly ? 'would update' : 'updated'}: brand/og/cards.json (replaced ${removedCount} stale sheet card(s); wrote ${desired.length} fresh entries).`);
 if (checkOnly) process.exit(1);
