@@ -14,7 +14,13 @@
  *     OG card in restaurant-specific result types.
  *   - Excludes paths that are noindex (drafts/, /admin/, /sign-in/,
  *     /workbench/, /account/, /sub/) automatically.
- *   - lastmod sourced from `git log -1 --format=%cI` per file.
+ *   - lastmod sourced from each page's own dateModified (JSON-LD /
+ *     article:modified_time); falls back to `git log -1 --format=%cI`
+ *     only for pages that carry no modified date. This keeps <lastmod>
+ *     content-truthful — a URL advances only when its content actually
+ *     changed, not every time a repo-wide build/inject pass rewrites the
+ *     file's git mtime (which previously bulk-stamped ~1,170 URLs to one
+ *     date and taught crawlers to discount the freshness signal).
  *
  *   node scripts/build-sitemap.mjs           # rewrite sitemap.xml
  *   node scripts/build-sitemap.mjs --check   # exit 1 on diff
@@ -112,7 +118,16 @@ function readMeta(file) {
   const src = fs.readFileSync(file, 'utf8');
   if (/<meta\s+name="robots"[^>]*noindex/i.test(src)) return { noindex: true };
   const ogM = src.match(/<meta\s+property="og:image"\s+content="([^"]+)"/);
-  return { noindex: false, ogImage: ogM ? ogM[1] : null };
+  // Content-truthful lastmod: prefer the page's own dateModified so a URL's
+  // <lastmod> advances only when the content changed. A page may carry several
+  // schema nodes; take the most recent YYYY-MM-DD. Also honor an OG
+  // article:modified_time if present. Null when the page declares no date.
+  const dates = [...src.matchAll(/"dateModified"\s*:\s*"(\d{4}-\d{2}-\d{2})/g)].map((m) => m[1]);
+  const amt = src.match(/<meta\s+property="article:modified_time"\s+content="(\d{4}-\d{2}-\d{2})/);
+  if (amt) dates.push(amt[1]);
+  dates.sort();
+  const dateModified = dates.length ? dates[dates.length - 1] : null;
+  return { noindex: false, ogImage: ogM ? ogM[1] : null, dateModified };
 }
 
 function escXml(s) {
@@ -131,14 +146,14 @@ const es = new Map();
   if (fs.existsSync(rootIdx)) {
     const meta = readMeta(rootIdx);
     if (!meta.noindex) {
-      en.set('/', { loc: `${SITE}/`, lastmod: gitMtime(rootIdx), ogImage: meta.ogImage, slug: '' });
+      en.set('/', { loc: `${SITE}/`, lastmod: meta.dateModified || gitMtime(rootIdx), ogImage: meta.ogImage, slug: '' });
     }
   }
   const esRootIdx = path.join(repoRoot, 'es', 'index.html');
   if (fs.existsSync(esRootIdx)) {
     const meta = readMeta(esRootIdx);
     if (!meta.noindex) {
-      es.set('/', { loc: `${SITE}/es/`, lastmod: gitMtime(esRootIdx), ogImage: meta.ogImage, slug: '' });
+      es.set('/', { loc: `${SITE}/es/`, lastmod: meta.dateModified || gitMtime(esRootIdx), ogImage: meta.ogImage, slug: '' });
     }
   }
 }
@@ -150,7 +165,7 @@ for (const { full, rel } of walk(repoRoot)) {
   const meta = readMeta(full);
   if (meta.noindex) continue;
   const loc = isEs ? `${SITE}/es/${slug}/` : `${SITE}/${slug}/`;
-  const entry = { loc, lastmod: gitMtime(full), ogImage: meta.ogImage, slug };
+  const entry = { loc, lastmod: meta.dateModified || gitMtime(full), ogImage: meta.ogImage, slug };
   (isEs ? es : en).set('/' + slug + '/', entry);
 }
 
