@@ -14,13 +14,15 @@
  *     OG card in restaurant-specific result types.
  *   - Excludes paths that are noindex (drafts/, /admin/, /sign-in/,
  *     /workbench/, /account/, /sub/) automatically.
- *   - lastmod sourced from each page's own dateModified (JSON-LD /
- *     article:modified_time); falls back to `git log -1 --format=%cI`
- *     only for pages that carry no modified date. This keeps <lastmod>
- *     content-truthful — a URL advances only when its content actually
- *     changed, not every time a repo-wide build/inject pass rewrites the
- *     file's git mtime (which previously bulk-stamped ~1,170 URLs to one
- *     date and taught crawlers to discount the freshness signal).
+ *   - <lastmod> is sourced ONLY from each page's own dateModified
+ *     (JSON-LD / article:modified_time). Pages with no modified date emit
+ *     NO <lastmod> at all — an honest absence, not a guess. We deliberately
+ *     do NOT fall back to git mtime: any repo-wide build/inject pass rewrites
+ *     every file's git mtime to the build date, which bulk-flattened ~1,030
+ *     URLs to one day and taught crawlers to discount the freshness signal
+ *     (Google ignores lastmod sitewide when it sees it lie). A truthful date
+ *     where we have one, and silence where we don't, is the trustworthy
+ *     signal — and it's immune to mechanical commits by construction.
  *
  *   node scripts/build-sitemap.mjs           # rewrite sitemap.xml
  *   node scripts/build-sitemap.mjs --check   # exit 1 on diff
@@ -29,7 +31,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { execSync } from 'node:child_process';
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
@@ -106,14 +107,6 @@ function* walk(dir, rel = '') {
   }
 }
 
-function gitMtime(file) {
-  try {
-    const out = execSync(`git log -1 --format=%cI -- "${file}"`, { cwd: repoRoot, encoding: 'utf8' }).trim();
-    if (out) return out.slice(0, 10);
-  } catch (_) { /* fall through */ }
-  return new Date().toISOString().slice(0, 10);
-}
-
 function readMeta(file) {
   const src = fs.readFileSync(file, 'utf8');
   if (/<meta\s+name="robots"[^>]*noindex/i.test(src)) return { noindex: true };
@@ -146,14 +139,14 @@ const es = new Map();
   if (fs.existsSync(rootIdx)) {
     const meta = readMeta(rootIdx);
     if (!meta.noindex) {
-      en.set('/', { loc: `${SITE}/`, lastmod: meta.dateModified || gitMtime(rootIdx), ogImage: meta.ogImage, slug: '' });
+      en.set('/', { loc: `${SITE}/`, lastmod: meta.dateModified, ogImage: meta.ogImage, slug: '' });
     }
   }
   const esRootIdx = path.join(repoRoot, 'es', 'index.html');
   if (fs.existsSync(esRootIdx)) {
     const meta = readMeta(esRootIdx);
     if (!meta.noindex) {
-      es.set('/', { loc: `${SITE}/es/`, lastmod: meta.dateModified || gitMtime(esRootIdx), ogImage: meta.ogImage, slug: '' });
+      es.set('/', { loc: `${SITE}/es/`, lastmod: meta.dateModified, ogImage: meta.ogImage, slug: '' });
     }
   }
 }
@@ -165,7 +158,7 @@ for (const { full, rel } of walk(repoRoot)) {
   const meta = readMeta(full);
   if (meta.noindex) continue;
   const loc = isEs ? `${SITE}/es/${slug}/` : `${SITE}/${slug}/`;
-  const entry = { loc, lastmod: meta.dateModified || gitMtime(full), ogImage: meta.ogImage, slug };
+  const entry = { loc, lastmod: meta.dateModified, ogImage: meta.ogImage, slug };
   (isEs ? es : en).set('/' + slug + '/', entry);
 }
 
@@ -185,7 +178,7 @@ function emit(entry, locale) {
   const hreflangPair = otherMap.get(lookupKey) || otherMap.get('/');
   lines.push('  <url>');
   lines.push(`    <loc>${escXml(entry.loc)}</loc>`);
-  lines.push(`    <lastmod>${entry.lastmod}</lastmod>`);
+  if (entry.lastmod) lines.push(`    <lastmod>${entry.lastmod}</lastmod>`);
   lines.push(`    <xhtml:link rel="alternate" hreflang="${locale}" href="${escXml(entry.loc)}" />`);
   if (hreflangPair) {
     lines.push(`    <xhtml:link rel="alternate" hreflang="${otherLocale}" href="${escXml(hreflangPair.loc)}" />`);
