@@ -20,10 +20,11 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
 
-const TARGETS = [
-  'tools/audits/restaurant/index.html',
-  'es/tools/audits/restaurant/index.html',
-];
+// 2026-06-26 tools migration: the restaurant-audit page (which lived at
+// tools/audits/restaurant) was retired, so there are no audit pages left
+// to scan. The gate stays wired (empty TARGETS → passes) so it re-arms
+// automatically if a fetch-bearing audit page is ever reintroduced.
+const TARGETS = [];
 
 // Endpoints that are part of the shared nav-bar auth-state lookup, NOT the
 // audit pipeline. They live in _includes/nav.html (canonical) and get

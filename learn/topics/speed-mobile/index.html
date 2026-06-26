@@ -540,7 +540,7 @@
         <li><strong>INP &le; 200ms.</strong> Interaction to next paint (replaced FID in March 2024) &mdash; how long the page takes to respond to a tap. INP is the killer for tools and reservation widgets; if your &ldquo;Book a table&rdquo; button takes 400ms to react, the visitor double-taps and starts a duplicate reservation flow. The fix: defer non-critical JS, code-split, and avoid main-thread blocking from third-party widgets.</li>
       </ul>
 
-      <p>You can read your CWV in three places: <a href="https://pagespeed.web.dev/" target="_blank" rel="noopener">PageSpeed Insights</a> (synthetic + 28-day field data from real Chrome users), Search Console&rsquo;s &ldquo;Core Web Vitals&rdquo; report (field data only, but reported by URL group), and Plausible if you&rsquo;ve hooked up <a href="https://github.com/GoogleChrome/web-vitals" target="_blank" rel="noopener">web-vitals</a> client-side. The free <a href="/tools/audits/restaurant/">Speed Test</a> tool runs the synthetic version on any URL.</p>
+      <p>You can read your CWV in three places: <a href="https://pagespeed.web.dev/" target="_blank" rel="noopener">PageSpeed Insights</a> (synthetic + 28-day field data from real Chrome users), Search Console&rsquo;s &ldquo;Core Web Vitals&rdquo; report (field data only, but reported by URL group), and Plausible if you&rsquo;ve hooked up <a href="https://github.com/GoogleChrome/web-vitals" target="_blank" rel="noopener">web-vitals</a> client-side. The free <a href="/tools/">Speed Test</a> tool runs the synthetic version on any URL.</p>
 
       <h3>Why mobile is different</h3>
 
@@ -564,7 +564,7 @@
         <li><strong>Lazy-load below-the-fold images (15 minutes).</strong> <code>loading="lazy"</code> attribute on every img below the hero. Saves 40&ndash;60% of total bytes on a typical menu page where the visitor never scrolls past the third dish.</li>
       </ol>
 
-      <p>Run <a href="/tools/audits/restaurant/">the free Speed Test</a> on your URL before and after each fix. The score moves immediately; the field-data signal in Search Console takes 28 days to roll over.</p>
+      <p>Run <a href="/tools/">the free Speed Test</a> on your URL before and after each fix. The score moves immediately; the field-data signal in Search Console takes 28 days to roll over.</p>
 
       <h3>What slows down a restaurant site that nothing else does</h3>
 
@@ -572,7 +572,7 @@
 
       <ul>
         <li><strong>Reservation widgets.</strong> OpenTable, Resy, Tock, and the lesser platforms all ship hefty third-party JS bundles that load before the visitor can book. The newer &ldquo;direct&rdquo; or &ldquo;widgets v2&rdquo; APIs from each platform are smaller and faster than the legacy iframe embed; switching from iframe to direct typically saves 200&ndash;500ms of LCP. <a href="/library/reservation-conversion-guide/">How to recover reservations</a> covers the tradeoffs.</li>
-        <li><strong>Menu PDFs.</strong> Linking a 4MB PDF as the menu &ldquo;page&rdquo; means every visitor who clicks waits for the whole PDF to download before seeing anything. The fix is real HTML &mdash; use <a href="/tools/menu-converter/">Menu Converter</a> to turn pasted menu text into semantic HTML in two seconds.</li>
+        <li><strong>Menu PDFs.</strong> Linking a 4MB PDF as the menu &ldquo;page&rdquo; means every visitor who clicks waits for the whole PDF to download before seeing anything. The fix is real HTML &mdash; use <a href="/tools/menu-engineering/">Menu Engineering</a> to turn pasted menu text into semantic HTML in two seconds.</li>
         <li><strong>Background videos.</strong> The autoplaying hero-video pattern that became fashionable circa 2018 carries 8&ndash;15MB of JS-decoded video. On mobile, that&rsquo;s a multi-second LCP killer for a piece of decoration the visitor never asked for. Replace with a single AVIF still and call it done.</li>
       </ul>
 
@@ -582,7 +582,7 @@
 
       <ol>
         <li><strong>Run <a href="https://pagespeed.web.dev/" target="_blank" rel="noopener">PageSpeed Insights</a> on your homepage and your menu page.</strong> Read the &ldquo;Core Web Vitals&rdquo; section. If LCP is over 3 seconds or CLS is over 0.1, you have an actionable problem. Save the result.</li>
-        <li><strong>Run the free <a href="/tools/audits/restaurant/">Speed Test</a> on the same two URLs.</strong> The two reports cross-validate; if they disagree by more than 0.5s on LCP, that&rsquo;s usually because your hero image is being served from a cache that one tool hits and the other doesn&rsquo;t. Treat the worse number as truth.</li>
+        <li><strong>Run the free <a href="/tools/">Speed Test</a> on the same two URLs.</strong> The two reports cross-validate; if they disagree by more than 0.5s on LCP, that&rsquo;s usually because your hero image is being served from a cache that one tool hits and the other doesn&rsquo;t. Treat the worse number as truth.</li>
         <li><strong>Pick the heaviest hero image you have. Re-encode it as AVIF.</strong> Drop the file size under 200KB. Replace the &lt;img&gt; src. Re-run both tools. The score moves; the visitor experience changes immediately.</li>
       </ol>
 
@@ -646,7 +646,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->5<!-- /count --> tools, <!-- count:glossary.terms -->171<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav

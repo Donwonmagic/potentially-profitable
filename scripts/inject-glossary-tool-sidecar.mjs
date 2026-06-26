@@ -18,18 +18,20 @@ const checkOnly  = process.argv.includes('--check');
 
 const SENTINEL_RE = /<!-- glossary-tool-sidecar:start -->[\s\S]*?<!-- glossary-tool-sidecar:end -->/;
 
+// 2026-06-26 tools migration: the audit/storefront-health/gbp-grader
+// entries were removed when those pages were retired. Kept the cost
+// tools plus the live sub-tools (speed-test, schema-check).
 const TOOLS = [
-  { slug: 'audits/restaurant', en: 'Restaurant Audit',     es: 'Auditoría de Restaurante',  desc_en: 'Composite scorecard across speed, SEO, schema, GBP, and 9 restaurant-specific checks.', desc_es: 'Tarjeta compuesta de velocidad, SEO, schema, GBP y 9 chequeos específicos de restaurante.' },
-  { slug: 'storefront-health', en: 'Storefront Health',    es: 'Salud del Escaparate',       desc_en: 'The 6-tool composite score for your full storefront.', desc_es: 'El puntaje compuesto de 6 herramientas para tu escaparate.' },
-  { slug: 'gbp-grader',        en: 'GBP Grader',           es: 'Calificador de GBP',         desc_en: 'Grade your Google Business Profile against the categories that drive rank.', desc_es: 'Califica tu perfil de Google contra las categorías que mueven el ranking.' },
+  { slug: 'margin-math',       en: 'Margin Math',          es: 'Margin Math',                desc_en: 'Prime cost calculator + price-raise simulator.', desc_es: 'Calculadora de costo primario + simulador de aumento de precios.' },
+  { slug: 'menu-engineering',  en: 'Menu Engineering',     es: 'Ingeniería de Menú',         desc_en: 'Sort every dish into Stars, Plowhorses, Puzzles, and Dogs with one action each.', desc_es: 'Ordena cada plato en Estrellas, Caballos, Acertijos y Perros con una acción cada uno.' },
+  { slug: 'plate-cost',        en: 'Plate Cost',           es: 'Costo del Plato',            desc_en: 'What each dish makes the house per year on your real volume and invoice prices.', desc_es: 'Cuánto le deja cada plato al año sobre tu volumen real y tus precios de factura.' },
   { slug: 'speed-test',        en: 'Speed Test',           es: 'Prueba de Velocidad',        desc_en: 'Lighthouse-backed score with the slowest assets called out.', desc_es: 'Puntaje respaldado por Lighthouse con los archivos más lentos.' },
   { slug: 'schema-check',      en: 'Schema Check',         es: 'Revisor de Schema',          desc_en: 'Validate every restaurant-specific structured data type.', desc_es: 'Valida cada tipo de structured data específico de restaurantes.' },
-  { slug: 'margin-math',       en: 'Margin Math',          es: 'Margin Math',                desc_en: 'Prime cost calculator + price-raise simulator.', desc_es: 'Calculadora de costo primario + simulador de aumento de precios.' },
 ];
 
 function buildBlock(locale) {
   const heading = locale === 'es' ? 'Herramientas que usan estos términos' : 'Tools that use these terms';
-  const lead    = locale === 'es' ? 'Cada término del glosario apunta a la herramienta donde se mide. Empieza por la auditoría compuesta y profundiza desde ahí.' : 'Each glossary term links to the tool where it gets measured. Start with the composite audit and drill down.';
+  const lead    = locale === 'es' ? 'Cada término del glosario apunta a la herramienta donde se mide. Empieza por las cuentas de margen y profundiza desde ahí.' : 'Each glossary term links to the tool where it gets measured. Start with the margin math and drill down.';
   const items = TOOLS.map((t) => {
     const url = locale === 'es' ? `/es/tools/${t.slug}/` : `/tools/${t.slug}/`;
     const name = locale === 'es' ? t.es : t.en;

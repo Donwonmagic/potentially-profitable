@@ -352,8 +352,6 @@ const CHECKS = [
   ['Audit fetch-signal',  'check-audit-fetch-timeouts.mjs', '--check'],
   ['Lifecycle locale parity','check-lifecycle-locale-parity.mjs','--check'],
   ['Share snapshot kinds','check-share-snapshot-kinds.mjs', '--check'],
-  ['Storefront rail (idem)','inject-tool-storefront-rail.mjs','--check'],
-  ['Storefront-health graph (idem)','inject-storefront-health-graph.mjs','--check'],
   ['Security page schema (idem)','inject-security-page-schema.mjs','--check'],
   ['Tool data-promise (idem)','inject-tool-data-promise.mjs','--check'],
   ['Tool no-fetch invariant','check-tool-no-fetch.mjs'],

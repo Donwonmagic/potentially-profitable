@@ -477,7 +477,7 @@
         <li><strong>INP &le; 200ms.</strong> Interaction to next paint (reemplaz&oacute; al FID en marzo de 2024) &mdash; cu&aacute;nto tarda la p&aacute;gina en responder a un tap. INP es el asesino para herramientas y widgets de reserva; si tu bot&oacute;n &laquo;Reservar&raquo; tarda 400ms en reaccionar, el visitante hace doble tap y arranca un flujo de reserva duplicado. Arreglo: defer en JS no cr&iacute;tico, code-splitting y evitar el bloqueo del main thread por widgets de terceros.</li>
       </ul>
 
-      <p>Puedes leer tus CWV en tres lugares: <a href="https://pagespeed.web.dev/" target="_blank" rel="noopener">PageSpeed Insights</a> (sint&eacute;tico m&aacute;s 28 d&iacute;as de field data de Chrome real), el reporte &laquo;Core Web Vitals&raquo; de Search Console (solo field data, pero reportada por grupo de URL) y Plausible si conectaste <a href="https://github.com/GoogleChrome/web-vitals" target="_blank" rel="noopener">web-vitals</a> del lado del cliente. La herramienta gratis <a href="/es/tools/audits/restaurant/">Speed Test</a> corre la versi&oacute;n sint&eacute;tica sobre cualquier URL.</p>
+      <p>Puedes leer tus CWV en tres lugares: <a href="https://pagespeed.web.dev/" target="_blank" rel="noopener">PageSpeed Insights</a> (sint&eacute;tico m&aacute;s 28 d&iacute;as de field data de Chrome real), el reporte &laquo;Core Web Vitals&raquo; de Search Console (solo field data, pero reportada por grupo de URL) y Plausible si conectaste <a href="https://github.com/GoogleChrome/web-vitals" target="_blank" rel="noopener">web-vitals</a> del lado del cliente. La herramienta gratis <a href="/es/tools/">Speed Test</a> corre la versi&oacute;n sint&eacute;tica sobre cualquier URL.</p>
 
       <h3>Por qu&eacute; el m&oacute;vil es distinto</h3>
 
@@ -501,7 +501,7 @@
         <li><strong>Lazy-load a las im&aacute;genes debajo del fold (15 minutos).</strong> Atributo <code>loading="lazy"</code> en cada img debajo del hero. Ahorra entre 40 y 60% del total de bytes en una p&aacute;gina de men&uacute; t&iacute;pica donde el visitante nunca scrollea m&aacute;s all&aacute; del tercer plato.</li>
       </ol>
 
-      <p>Corre <a href="/es/tools/audits/restaurant/">la Speed Test gratis</a> en tu URL antes y despu&eacute;s de cada arreglo. El puntaje se mueve de inmediato; la se&ntilde;al de field data en Search Console tarda 28 d&iacute;as en rolar.</p>
+      <p>Corre <a href="/es/tools/">la Speed Test gratis</a> en tu URL antes y despu&eacute;s de cada arreglo. El puntaje se mueve de inmediato; la se&ntilde;al de field data en Search Console tarda 28 d&iacute;as en rolar.</p>
 
       <h3>Lo que ralentiza un sitio de restaurante y nada m&aacute;s</h3>
 
@@ -509,7 +509,7 @@
 
       <ul>
         <li><strong>Widgets de reserva.</strong> OpenTable, Resy, Tock y las plataformas menores env&iacute;an bundles de JS de terceros pesados que cargan antes de que el visitante pueda reservar. Las APIs &laquo;direct&raquo; o &laquo;widgets v2&raquo; m&aacute;s nuevas de cada plataforma son m&aacute;s peque&ntilde;as y r&aacute;pidas que el embed iframe legacy; cambiar de iframe a direct t&iacute;picamente ahorra entre 200 y 500ms de LCP. <a href="/library/reservation-conversion-guide/">C&oacute;mo recuperar reservas</a> cubre los tradeoffs.</li>
-        <li><strong>PDFs de men&uacute;.</strong> Enlazar un PDF de 4MB como la &laquo;p&aacute;gina&raquo; del men&uacute; significa que cada visitante que clickea espera a que se descargue todo el PDF antes de ver nada. El arreglo es HTML real &mdash; usa <a href="/es/tools/menu-converter/">Menu Converter</a> para convertir texto pegado del men&uacute; en HTML sem&aacute;ntico en dos segundos.</li>
+        <li><strong>PDFs de men&uacute;.</strong> Enlazar un PDF de 4MB como la &laquo;p&aacute;gina&raquo; del men&uacute; significa que cada visitante que clickea espera a que se descargue todo el PDF antes de ver nada. El arreglo es HTML real &mdash; usa <a href="/es/tools/menu-engineering/">Ingenier&iacute;a de Men&uacute;</a> para convertir texto pegado del men&uacute; en HTML sem&aacute;ntico en dos segundos.</li>
         <li><strong>Videos de fondo.</strong> El patr&oacute;n del hero-video con autoplay que se puso de moda hacia 2018 carga entre 8 y 15MB de video decodificado por JS. En m&oacute;vil, eso es un asesino de LCP de varios segundos por una pieza de decoraci&oacute;n que el visitante nunca pidi&oacute;. Reempl&aacute;zalo con un solo AVIF est&aacute;tico y dalo por hecho.</li>
       </ul>
 
@@ -519,7 +519,7 @@
 
       <ol>
         <li><strong>Corre <a href="https://pagespeed.web.dev/" target="_blank" rel="noopener">PageSpeed Insights</a> en tu home y en tu p&aacute;gina de men&uacute;.</strong> Lee la secci&oacute;n &laquo;Core Web Vitals&raquo;. Si LCP est&aacute; sobre 3 segundos o CLS sobre 0.1, tienes un problema accionable. Guarda el resultado.</li>
-        <li><strong>Corre la <a href="/es/tools/audits/restaurant/">Speed Test</a> gratis sobre las mismas dos URLs.</strong> Los dos reportes se cross-validan; si difieren por m&aacute;s de 0.5s en LCP, suele ser porque tu hero image se est&aacute; sirviendo desde un cache que una herramienta golpea y la otra no. Trata el peor n&uacute;mero como verdad.</li>
+        <li><strong>Corre la <a href="/es/tools/">Speed Test</a> gratis sobre las mismas dos URLs.</strong> Los dos reportes se cross-validan; si difieren por m&aacute;s de 0.5s en LCP, suele ser porque tu hero image se est&aacute; sirviendo desde un cache que una herramienta golpea y la otra no. Trata el peor n&uacute;mero como verdad.</li>
         <li><strong>Elige la hero image m&aacute;s pesada que tengas. Reencod&iacute;ficala como AVIF.</strong> Baja el archivo bajo 200KB. Reemplaza el src del &lt;img&gt;. Vuelve a correr ambas herramientas. El puntaje se mueve; la experiencia del visitante cambia de inmediato.</li>
       </ol>
 
@@ -586,7 +586,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->24<!-- /count --> art&iacute;culos, <!-- count:tools.live -->12<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->149<!-- /count --> t&eacute;rminos &mdash; de Muntin Digital, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->36<!-- /count --> art&iacute;culos, <!-- count:tools.live -->5<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->171<!-- /count --> t&eacute;rminos &mdash; de Muntin Digital, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
       </div>
 
       <!-- El orden de columnas refleja la navegación principal de 5

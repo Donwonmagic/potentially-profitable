@@ -430,8 +430,8 @@
         <p>Three implications for the operator:</p>
 
         <ul>
-          <li><strong>Holiday hours in JSON-LD, not just on GBP.</strong> Use <a href="/tools/store-hours/#holidays">Holiday Hours Generator</a> to emit the <code>specialOpeningHoursSpecification</code> override; paste into your site&rsquo;s schema block.</li>
-          <li><strong>Menu in HTML + JSON-LD, not as a PDF.</strong> Use <a href="/tools/menu-converter/">Menu Converter</a> to turn pasted menu text into both. AI search can&rsquo;t parse a PDF; it can parse a Menu schema block in two seconds.</li>
+          <li><strong>Holiday hours in JSON-LD, not just on GBP.</strong> Use the <a href="/tools/">free tools</a> to emit the <code>specialOpeningHoursSpecification</code> override; paste into your site&rsquo;s schema block.</li>
+          <li><strong>Menu in HTML + JSON-LD, not as a PDF.</strong> Use <a href="/tools/menu-engineering/">Menu Engineering</a> to turn pasted menu text into both. AI search can&rsquo;t parse a PDF; it can parse a Menu schema block in two seconds.</li>
           <li><strong>Reservation deeplink in schema.</strong> The <code>Reservation</code> type with a <code>potentialAction</code> pointing at your venue&rsquo;s OpenTable / Resy page lets AI search engines answer &ldquo;book me a table at &lt;name&gt;&rdquo; with the right URL on the first try. <a href="/library/restaurant-schema-markup-guide/">The 6 schema types Google actually uses</a> walks through the JSON-LD.</li>
         </ul>
 
@@ -443,7 +443,7 @@
           <li><strong>Marketing fluff.</strong> A page whose first paragraph is &ldquo;Welcome to a culinary journey of authentic flavors&rdquo; gets indexed but not cited. AI search models have learned to discount this register because it&rsquo;s rarely true and never specific. The voice contract on this site (<a href="/methods/#voice-contract">/methods/#voice-contract</a>) is the citable register: short declaratives, named sources, no abstractions.</li>
           <li><strong>Undated claims.</strong> &ldquo;Restaurants typically run on 4&ndash;7% net margin&rdquo; without a date or a source gets cited rarely. The same claim with &ldquo;per RAMW&rsquo;s 2025 industry report&rdquo; gets cited often. Date everything; cite everything.</li>
           <li><strong>Pages that lie via SEO.</strong> A page titled &ldquo;Best pizza in Bethesda 2026&rdquo; that&rsquo;s a thinly-disguised affiliate roundup loses citation weight every quarter. AI search engines are explicitly trained to discount these patterns.</li>
-          <li><strong>JS-only content.</strong> If your menu only renders after JavaScript runs, AI search crawlers (which often don&rsquo;t execute JS) see an empty page. The fallback: server-render the menu, or ship the data in JSON-LD too. The free <a href="/tools/menu-converter/">Menu Converter</a> emits both.</li>
+          <li><strong>JS-only content.</strong> If your menu only renders after JavaScript runs, AI search crawlers (which often don&rsquo;t execute JS) see an empty page. The fallback: server-render the menu, or ship the data in JSON-LD too. The free <a href="/tools/menu-engineering/">Menu Engineering</a> tool emits both.</li>
           <li><strong>Sites with hostile robots.txt.</strong> Blocking GPTBot, ClaudeBot, Google-Extended, and PerplexityBot guarantees you won&rsquo;t be cited. The site&rsquo;s posture is the opposite: explicit per-agent allows for retrieval-time citation crawlers, with named denies only for training-only scrapers (CCBot, Omgilibot, ImagesiftBot).</li>
         </ol>
 
@@ -515,7 +515,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->13<!-- /count --> tools, <!-- count:glossary.terms -->150<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->5<!-- /count --> tools, <!-- count:glossary.terms -->171<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav

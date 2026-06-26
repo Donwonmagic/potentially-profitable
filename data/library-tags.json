@@ -676,30 +676,6 @@
     }
   },
   "tools": {
-    "audits/restaurant": {
-      "topics": [
-        "conversions",
-        "speed-mobile",
-        "local-seo",
-        "trust-reviews"
-      ],
-      "title": "Restaurant Website Audit",
-      "dek": "Full-stack mobile audit: performance, SEO, accessibility, and 9 restaurant-specific checks. Side-by-side competitor mode.",
-      "glossary_terms": [
-        "core-web-vitals",
-        "lighthouse",
-        "lcp",
-        "cls",
-        "cdn",
-        "alt-text",
-        "canonical-url",
-        "search-console"
-      ],
-      "articles": [
-        "why-your-restaurant-loses-reservations-every-night",
-        "how-to-tell-if-a-restaurant-tool-is-safe"
-      ]
-    },
     "seo-grader": {
       "topics": [
         "local-seo"
@@ -773,40 +749,6 @@
         "when-to-rebuild-your-restaurant-website"
       ]
     },
-    "storefront-health": {
-      "topics": [
-        "speed-mobile",
-        "local-seo"
-      ],
-      "title": "Storefront Health",
-      "dek": "One URL, six checks, one score — the unified scorecard for your restaurant's full storefront.",
-      "glossary_terms": [
-        "lighthouse",
-        "gbp",
-        "core-web-vitals"
-      ],
-      "articles": [
-        "what-should-be-on-a-restaurant-website",
-        "when-to-rebuild-your-restaurant-website"
-      ]
-    },
-    "gbp-grader": {
-      "topics": [
-        "local-seo",
-        "trust-reviews"
-      ],
-      "title": "Google Business Profile Grader",
-      "dek": "How your Google listing scores across rating, reviews, photos, categories, hours — with the exact fixes that move it up.",
-      "glossary_terms": [
-        "gbp",
-        "nap-consistency",
-        "hours-visibility"
-      ],
-      "articles": [
-        "how-to-get-more-google-reviews-for-your-restaurant",
-        "how-to-set-up-google-business-profile-for-your-restaurant"
-      ]
-    },
     "margin-math": {
       "topics": [
         "operations-margin"
@@ -819,28 +761,6 @@
         "contribution-margin"
       ],
       "article": "is-doordash-worth-it-for-restaurants-in-2026"
-    },
-    "brand-suite": {
-      "topics": [
-        "brand-design"
-      ],
-      "title": "Brand Suite",
-      "dek": "Drop a logo. Get a usable color palette, accessible pairs, and the CSS tokens to ship them.",
-      "glossary_terms": [
-        "brand-identity",
-        "color-palette",
-        "accessible-pair",
-        "design-token",
-        "color-harmony",
-        "complementary-colors",
-        "analogous-colors",
-        "monochromatic-palette",
-        "oklab",
-        "wcag-contrast"
-      ],
-      "articles": [
-        "how-much-does-a-custom-restaurant-website-cost-in-2026"
-      ]
     },
     "menu-engineering": {
       "topics": [
@@ -859,23 +779,6 @@
         "is-doordash-worth-it-for-restaurants-in-2026"
       ]
     },
-    "menu-copy": {
-      "topics": [
-        "operations-margin",
-        "conversions"
-      ],
-      "title": "Menu Copy Inspector",
-      "dek": "Paste a menu description. See what's missing, what's working, what's dragging — and why.",
-      "glossary_terms": [
-        "menu-copy",
-        "sensory-adjective",
-        "charm-pricing",
-        "html-menu"
-      ],
-      "articles": [
-        "how-to-raise-restaurant-menu-prices-without-losing-reservations"
-      ]
-    },
     "plate-cost": {
       "topics": [
         "operations-margin"
@@ -891,25 +794,6 @@
       ],
       "articles": [
         "how-to-raise-restaurant-menu-prices-without-losing-reservations"
-      ]
-    },
-    "photo-brief": {
-      "topics": [
-        "brand-design",
-        "conversions",
-        "trust-reviews"
-      ],
-      "title": "Photo Brief Builder",
-      "dek": "Walk into your photographer's session with a one-page brief that gets you the right photos in one shoot. About 10 minutes.",
-      "glossary_terms": [
-        "photo-brief",
-        "aspect-ratio",
-        "hero-shot",
-        "real-photos"
-      ],
-      "articles": [
-        "restaurant-photo-spec-sheet",
-        "how-to-set-up-google-business-profile-for-your-restaurant"
       ]
     },
     "cost-pulse": {
@@ -944,41 +828,6 @@
       ],
       "articles": [
         "five-restaurant-website-changes-recover-one-percent-margin"
-      ]
-    },
-    "menu-converter": {
-      "topics": [
-        "conversions",
-        "speed-mobile"
-      ],
-      "title": "Menu Converter",
-      "dek": "Paste menu text, get semantic HTML + JSON-LD Menu schema in two seconds. Replaces a PDF that nobody on a phone can read.",
-      "glossary_terms": [
-        "html-menu",
-        "menu-engineering",
-        "average-check"
-      ],
-      "articles": [
-        "what-should-be-on-a-restaurant-website",
-        "how-to-raise-restaurant-menu-prices-without-losing-reservations"
-      ]
-    },
-    "store-hours": {
-      "topics": [
-        "local-seo",
-        "trust-reviews"
-      ],
-      "title": "Open Hours",
-      "dek": "Get your hours right everywhere — Google, Yelp, Apple, your website, your door. About 15 minutes.",
-      "glossary_terms": [
-        "hours-of-operation",
-        "special-hours",
-        "nap-consistency",
-        "opening-hours-specification"
-      ],
-      "articles": [
-        "how-to-set-up-google-business-profile-for-your-restaurant",
-        "how-to-recover-reservations-from-googles-find-a-table"
       ]
     },
     "page-health": {

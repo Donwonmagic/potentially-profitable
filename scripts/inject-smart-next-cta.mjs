@@ -7,7 +7,7 @@
  * Sources:
  *   - Read   → first glossary term cited inside #post-body
  *   - Try    → tool-knit's per-article tool entry (data/tool-knit.json
- *              articles[<url>].tool, falls back to /tools/audits/restaurant/)
+ *              articles[<url>].tool, falls back to /tools/margin-math/)
  *   - Or send Don a note → /window/?topic=<article-slug>
  *
  *   node scripts/inject-smart-next-cta.mjs           # rewrite
@@ -91,7 +91,7 @@ function buildBlock({ slug, locale, glossaryUrl, toolUrl }) {
   const readLink = locale === 'es' ? 'el término del glosario relacionado →' : 'the related glossary term →';
   const tryLink  = locale === 'es' ? 'la herramienta que acompaña este artículo →' : 'the tool that pairs with this article →';
   const noteLink = locale === 'es' ? 'La Ventana →' : 'The Window →';
-  const fallbackTool = locale === 'es' ? '/es/tools/audits/restaurant/' : '/tools/audits/restaurant/';
+  const fallbackTool = locale === 'es' ? '/es/tools/margin-math/' : '/tools/margin-math/';
   const tool = toolUrl || fallbackTool;
   const fallbackGlossary = locale === 'es' ? '/es/glossary/' : '/glossary/';
   const gloss = glossaryUrl || fallbackGlossary;
