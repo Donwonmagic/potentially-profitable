@@ -62,8 +62,10 @@ Don't loosen gates. Fact gate is absolute (it's spoken aloud in EN+ES).
 ### D. Website refresh — heartbeat + prune  *(audit done → awaiting founder go)*
 - **Plan:** `docs/plans/website-heartbeat-and-prune.md` (synthesis of a 4-specialist read-only audit).
 - **Core finding:** cost-intelligence core is clean; over-extension = studio/course-era survivors (`method/workshop/` 19 widgets, off-funnel `/tools/` clusters, `course-*`/`brand-design`/`local-seo`/`conversions` sheet packs, `start/`, frozen-course nav plumbing). Freshness engine already half-built but a **P0 sitemap `lastmod` bug** (bulk-stamped → crawlers distrust it) is the literal cause of the post-refresh trail-off.
-- **Phase 0 (no fork):** fix sitemap lastmod (stamp from real `dateModified`) + add `<head>` feed-discovery tags + regen sitemap/RSS/llms on deploy.
-- **Forks open:** prune posture (retire+301 vs legacy-shelf vs hold); start point; course de-wire.
+- **Phase 0 — SHIPPED + pushed** (`claude/muntin-strategic-council-rqdehe`, commits `098f3de1`→`83023f46`→`f6e1791a`): `<head>` feed-discovery `<link>` tags sitewide (1328 pages, anchored ABOVE the i18n:hreflang region); sitemap `lastmod` now derives ONLY from real `dateModified` (git-mtime fallback DELETED — adversarial review caught that it would re-flatten ~1030 URLs on every sitewide pass; honest-absent is the fix). 298 URLs truthful-dated, 1030 omit lastmod (spec-valid). Phase 0c regen-on-deploy already covered by the weekly dispatch workflow. 0 new check-all failures vs main (baseline = 20–21 deploy-regenerated drifts on main itself, not ours). Adversarially reviewed twice → SHIP.
+- **Posture LOCKED (founder):** prune = retire+301 Tier 1, legacy-shelf Tier 2, de-wire course nav dot. Start point = Phase 0 (done).
+- **Phase 1 (heartbeat harvest) — NEXT.** First task: add a real `dateModified` to ~6 high-value hub pages that now emit no lastmod (homepage EN/ES, blog/tools/glossary indexes) — derive truthfully from newest child. Then: automate weekly dispatch end-to-end, "biggest movers this week" strip on `/cost-index/`, resuscitate `/changelog/` (its prose says 2026-06-26 but JSON-LD `dateModified`=2026-05-02 → understates freshness).
+- **Phase 2 (the prune):** execute locked posture via 301s, gated through locale-parity + hreflang-orphans.
 
 ### (Note) Cost Index convergence — *coordinate, don't duplicate*
 `main` is building the convergence plan's "Fair-Price Audit" (market-prior invoice auto-audit, lighting up `verdict_compute.py`). Stay clear of that lane.
