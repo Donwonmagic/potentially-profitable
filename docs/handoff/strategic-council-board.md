@@ -59,6 +59,12 @@ Don't loosen gates. Fact gate is absolute (it's spoken aloud in EN+ES).
 - Prompt already delivered. **Founder decision needed:** Instagram revive-vs-fresh-start; Bluesky activation.
 - Tie to the new brand line + the content engine (weekly Cost Index dispatch, rebranded cards). Next concrete: the IG decision, then the pre-launch anticipation arc + first posts.
 
+### D. Website refresh — heartbeat + prune  *(audit done → awaiting founder go)*
+- **Plan:** `docs/plans/website-heartbeat-and-prune.md` (synthesis of a 4-specialist read-only audit).
+- **Core finding:** cost-intelligence core is clean; over-extension = studio/course-era survivors (`method/workshop/` 19 widgets, off-funnel `/tools/` clusters, `course-*`/`brand-design`/`local-seo`/`conversions` sheet packs, `start/`, frozen-course nav plumbing). Freshness engine already half-built but a **P0 sitemap `lastmod` bug** (bulk-stamped → crawlers distrust it) is the literal cause of the post-refresh trail-off.
+- **Phase 0 (no fork):** fix sitemap lastmod (stamp from real `dateModified`) + add `<head>` feed-discovery tags + regen sitemap/RSS/llms on deploy.
+- **Forks open:** prune posture (retire+301 vs legacy-shelf vs hold); start point; course de-wire.
+
 ### (Note) Cost Index convergence — *coordinate, don't duplicate*
 `main` is building the convergence plan's "Fair-Price Audit" (market-prior invoice auto-audit, lighting up `verdict_compute.py`). Stay clear of that lane.
 
