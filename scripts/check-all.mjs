@@ -161,6 +161,11 @@ const CHECKS = [
   ['Hidden attribute',    'check-hidden-attribute.mjs',    '--check'],
   ['OG image refs',       'check-og-images.mjs'],
   ['OG coverage',         'check-og-coverage.mjs',         '--check'],
+  // Native-Spanish parity guard for social cards. Catches an ES article
+  // page serving the EN card (or a wrong card) — invisible to og-images
+  // (the ref still resolves) and og-coverage (not a generic fallback).
+  // Asserts each ES card is locale:"es" and mirrors its EN sibling's focus.
+  ['OG locale parity',    'check-og-locale-parity.mjs',    '--check'],
   // OG accent whitelist — every card's `accent` must be a PALETTE key
   // the builder can resolve (derived from build-og-cards.mjs, so the
   // whitelist can't drift). An unknown accent resolves to undefined and

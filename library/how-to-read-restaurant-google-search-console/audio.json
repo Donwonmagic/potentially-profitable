@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "generatedAt": "2026-06-12T00:49:40.625Z",
+  "generatedAt": "2026-06-23T01:51:56.576Z",
   "engine": "f5",
   "model": "don-reference.m4a",
   "voice": "f5:don-reference.m4a",
   "language": "en",
-  "total": 676.93,
+  "total": 867.85,
   "chunks": [
     {
       "id": 0,
@@ -51,601 +51,697 @@
       "id": 5,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
-      "text": "Google Search Console is free, official, and tells you exactly which queries Google shows your restaurant for, how often visitors click through, and which pages are working. The interface is the problem. It is built for S E O professionals; the labels assume terminology a restaurant operator does not have.",
+      "text": "Sit down in front of it once. The Performance tab is open, the query table is glowing, and four big numbers run across the top. Clicks down 11% this month. Average position 6.2. The operator's eye goes straight to position, reads \"6.2\" as the verdict, and concludes the restaurant is losing the ranking war. That reading is wrong, and it is the most expensive misread in the dashboard, it sends a Tuesday afternoon chasing a number that moves over months, while the number that moves this week sits two rows up, untouched.",
       "start": 28.3,
-      "end": 43.16
+      "end": 53.51
     },
     {
       "id": 6,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(3)",
-      "text": "You are thinking: I already have Google Analytics. Yes. And it tells you what they did once they got there. Search Console is what they typed before they got there. Different question.",
-      "start": 43.96,
-      "end": 52.99
+      "text": "So let us not read it that way. Let us tear the report down row by row, what each metric actually is, the misreading an operator reaches for first, and the one move each row should trigger.",
+      "start": 54.31,
+      "end": 63.59
     },
     {
       "id": 7,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "This is the plain-English version. Four reports do the work. Skip the rest.",
-      "start": 53.79,
-      "end": 57.46
+      "text": "Google Search Console is free, official, and tells you exactly which queries Google shows your restaurant for, how often visitors click through, and which pages are working. The interface is the problem. It is built for S E O professionals; the labels assume terminology a restaurant operator does not have. So we will supply the terminology, and read the artifact in front of us instead of the marketing tour of it.",
+      "start": 64.39,
+      "end": 84.61
     },
     {
       "id": 8,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "Set it up first (10 minutes, one time).",
-      "start": 58.96,
-      "end": 60.86
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "You are thinking: I already have Google Analytics. Yes. And it tells you what they did once they got there. Search Console is what they typed before they got there. Different question.",
+      "start": 85.41,
+      "end": 94.44
     },
     {
       "id": 9,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Go to search.google.com/search-console , sign in, add your domain. Verify ownership via D N S or via a meta tag your developer can drop in (most modern hosts have a one-click verification). Wait 24-48 hours for the data to populate.",
-      "start": 61.81,
-      "end": 72.99
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "This is the plain-English version. Four reports do the work. Skip the rest.",
+      "start": 95.24,
+      "end": 98.91
     },
     {
       "id": 10,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "If you have already been verified for a year and never logged back in, your account already has months of data, it is been collecting in the background.",
-      "start": 73.79,
-      "end": 81.25
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Set it up first (10 minutes, one time).",
+      "start": 100.41,
+      "end": 102.31
     },
     {
       "id": 11,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "The 4 reports that move bookings · your weekly sweep. Performance: Headline numbers: clicks, impressions, Ctr, position. (weekly). Queries: What people typed to find you. The gold report. (monthly). Pages: Which pages do the work. Menu page should be 15, 25% of clicks. (quarterly). Coverage / Pages indexed: How many pages Google actually has. Below 50% = foundational issue. (on alert). The 4 reports that move bookings · your weekly sweep.",
-      "start": 82.35,
-      "end": 103.72
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Go to search.google.com/search-console , sign in, add your domain. Verify ownership via D N S or via a meta tag your developer can drop in (most modern hosts have a one-click verification). Wait 24-48 hours for the data to populate.",
+      "start": 103.26,
+      "end": 114.44
     },
     {
       "id": 12,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "Report 1: Performance, the headline numbers.",
-      "start": 105.22,
-      "end": 107.36
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "If you have already been verified for a year and never logged back in, your account already has months of data, it is been collecting in the background.",
+      "start": 115.24,
+      "end": 122.7
     },
     {
       "id": 13,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "This is the only screen most operators ever need. Four numbers across the top:",
-      "start": 108.31,
-      "end": 112.13
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "The 4 reports that move bookings · your weekly sweep. Performance: Headline numbers: clicks, impressions, Ctr, position. (weekly). Queries: What people typed to find you. The gold report. (monthly). Pages: Which pages do the work. Menu page should be 15, 25% of clicks. (quarterly). Coverage / Pages indexed: How many pages Google actually has. Below 50% = foundational issue. (on alert). The 4 reports that move bookings · your weekly sweep.",
+      "start": 123.8,
+      "end": 145.17
     },
     {
       "id": 14,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Total clicks, how many people actually clicked through to your site from Google search.",
-      "start": 112.68,
-      "end": 116.95
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Report 1: Performance, the headline numbers.",
+      "start": 146.67,
+      "end": 148.81
     },
     {
       "id": 15,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Total impressions, how many times your site appeared in any search result, whether anyone clicked or not.",
-      "start": 117.45,
-      "end": 122.59
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "This is the only screen most operators ever need. Four numbers across the top:",
+      "start": 149.76,
+      "end": 153.58
     },
     {
       "id": 16,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Average Ctr, clicks ÷ impressions. The percentage of times your snippet won the click.",
-      "start": 123.09,
-      "end": 127.36
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Total clicks, how many people actually clicked through to your site from Google search.",
+      "start": 154.13,
+      "end": 158.4
     },
     {
       "id": 17,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "Average position, your average rank across all queries that showed your site.",
-      "start": 127.86,
-      "end": 131.63
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Total impressions, how many times your site appeared in any search result, whether anyone clicked or not.",
+      "start": 158.9,
+      "end": 164.04
     },
     {
       "id": 18,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(2)",
-      "text": "The four Performance numbers rearranged into the order the math actually runs, which is not the order Google displays them. Step one: average position, where you rank decides how often Google shows you at all. Step two: total impressions, every appearance position earned, whether anyone clicked or not. Step three: average Ctr, the share of those appearances where your snippet won the click. This is the step marked as the lever, because it is the only one of the four you can rewrite on a Tuesday afternoon, and a branded Ctr below forty percent means the snippet is broken. Step four: total clicks, the output, impressions multiplied by Ctr. The reason this order matters: when clicks drop, walk the chain backwards. If impressions held and clicks fell, the leak is at step three and the fix is a snippet rewrite, not a ranking campaign.",
-      "start": 132.73,
-      "end": 173.41
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Average Ctr, clicks ÷ impressions. The percentage of times your snippet won the click.",
+      "start": 164.54,
+      "end": 168.81
     },
     {
       "id": 19,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "The leverage is almost always in Ctr, not in position. A restaurant ranked number 4 with a strong title + meta description outperforms a restaurant ranked number 2 with a generic one. If your Ctr for branded queries (your restaurant name) is below 40%, the snippet is broken, almost always the meta description. The pattern shows up sharpest when branded-query Ctr is healthy (a customer searching for you by name finds you and clicks) but the cuisine-query Ctr is in the low single digits. Same site. Same domain authority. Two different snippets, one written by a human who knows the room, one autogenerated from the page title .",
-      "start": 174.41,
-      "end": 204.78
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Average position, your average rank across all queries that showed your site.",
+      "start": 169.31,
+      "end": 173.08
     },
     {
       "id": 20,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "Report 2: Queries, what people typed to find you.",
-      "start": 206.28,
-      "end": 208.67
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Now read them in the order the math runs, not the order the screen lists them. Walk the four rows top to bottom the way you would walk a line check, one station at a time, asking what each one is telling you and what it is not:",
+      "start": 173.88,
+      "end": 185.03
     },
     {
       "id": 21,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Below the headline numbers, click \"Queries.\" This is the gold. Sort by impressions descending. The first 20-30 rows tell you exactly what Google thinks your restaurant is for.",
-      "start": 209.62,
-      "end": 218.21
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Total clicks (the row your eye lands on first). Misread: \"clicks are down, the site is broken.\" Correct read: clicks are an output , never a cause. This row tells you a result, not a reason. Do not act on it, use it to decide whether to walk the other three rows at all. A flat clicks row means close the tab.",
+      "start": 185.58,
+      "end": 200.53
     },
     {
       "id": 22,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "What to look for:",
-      "start": 219.01,
-      "end": 219.83
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Total impressions. Misread: skipped entirely, because it has no obvious action attached. Correct read: this is the row that tells you whether a clicks drop is a demand problem or a snippet problem. If impressions held steady while clicks fell, Google still showed you just as often, people just stopped clicking. That points the finger one row down.",
+      "start": 201.03,
+      "end": 217.97
     },
     {
       "id": 23,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
-      "text": "High-impression / low-Ctr queries. These are queries Google thinks you should rank for but visitors are not clicking. Almost always a snippet problem, the title or meta does not match what they expected.",
-      "start": 220.38,
-      "end": 230.34
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Average Ctr, the only row you can move this week. Misread: treated as a fixed property of the site, like square footage. Correct read: Ctr is the share of appearances your snippet converts, and it is written by the title and meta description, text you can rewrite this afternoon. A branded-query Ctr (your own name) below 40% is the loudest single signal in the report: the snippet is broken.",
+      "start": 218.47,
+      "end": 237.52
     },
     {
       "id": 24,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
-      "text": "Surprise queries. Phrases like \"best happy hour brookline\" that you did not deliberately target, those are clues for content you should add.",
-      "start": 230.84,
-      "end": 237.71
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Average position (the row your eye lands on second , and over-weights). Misread: \"6.2 is bad, we are losing.\" Correct read: position is the slowest number on the screen, it moves over months, and a number 4 with a sharp snippet out-earns a number 2 with a generic one. It sets a ceiling on impressions; it does not set your clicks. It is the row to note and the last row to act on.",
+      "start": 238.02,
+      "end": 256.53
     },
     {
       "id": 25,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
-      "text": "Missing queries. If \"tacos al pastor near me\" does not appear at all, your menu schema is missing or broken.",
-      "start": 238.21,
-      "end": 243.5
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "The figure below is the centerpiece of the whole teardown. It is the same four numbers, re-stacked into causal order, the order the report would print them in if it cared whether you understood it. Read it once and the misread above stops being available to you:",
+      "start": 257.33,
+      "end": 269.99
     },
     {
       "id": 26,
       "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(3)",
-      "text": "Three patterns to scan for in the Queries report, in the order you will find them. One: high-impression, low-Ctr queries, Google thinks you should rank for them, but visitors are not clicking. Almost always a snippet problem; rewrite the title and meta. Two: surprise queries, phrases you did not deliberately target but Google has decided you might be relevant for. Add a small section to the page to meet them halfway. Three: missing queries, searches you would expect to appear that do not. Usually a menu-schema gap; check that your dish names live in real text, not in PDFs.",
-      "start": 244.6,
-      "end": 272.62
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "The four Performance numbers rearranged into the order the math actually runs, which is not the order Google displays them. Step one: average position, where you rank decides how often Google shows you at all. Step two: total impressions, every appearance position earned, whether anyone clicked or not. Step three: average Ctr, the share of those appearances where your snippet won the click. This is the step marked as the lever, because it is the only one of the four you can rewrite on a Tuesday afternoon, and a branded Ctr below forty percent means the snippet is broken. Step four: total clicks, the output, impressions multiplied by Ctr. The reason this order matters: when clicks drop, walk the chain backwards. If impressions held and clicks fell, the leak is at step three and the fix is a snippet rewrite, not a ranking campaign.",
+      "start": 271.09,
+      "end": 311.77
     },
     {
       "id": 27,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "The category of surprise queries worth watching closely: phrases Google has decided you might be relevant for, where you are already at page two without having tried. Adding a small section to the page, not a full pivot, just enough to acknowledge the query's intent, frequently moves position into clickable territory within a few weeks. Most of the time the gold is not the queries you are trying to rank for; it is the queries Google has decided you might be for and you have not met halfway.",
-      "start": 273.62,
-      "end": 297.51
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(1)",
+      "text": "The dashboard lists the four numbers in the order that panics you. The math runs them in the order that fixes you. The teardown is just learning to read the second order off a screen printed in the first.",
+      "start": 312.77,
+      "end": 322.79
     },
     {
       "id": 28,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(12)",
-      "text": "Run the S E O Grader on the page that is getting the impressions but no clicks, it will surface the title + meta issues directly.",
-      "start": 298.31,
-      "end": 304.64
+      "text": "The leverage is almost always in Ctr, not in position. A restaurant ranked number 4 with a strong title + meta description outperforms a restaurant ranked number 2 with a generic one. If your Ctr for branded queries (your restaurant name) is below 40%, the snippet is broken, almost always the meta description. The pattern shows up sharpest when branded-query Ctr is healthy (a customer searching for you by name finds you and clicks) but the cuisine-query Ctr is in the low single digits. Same site. Same domain authority. Two different snippets, one written by a human who knows the room, one autogenerated from the page title .",
+      "start": 323.79,
+      "end": 354.16
     },
     {
       "id": 29,
-      "kind": "quote",
-      "selector": "#post-body > blockquote:nth-of-type(1)",
-      "text": "The Queries report is the only place a customer's actual words land in your dashboard. Read it like a server reads a comment card.",
-      "start": 305.64,
-      "end": 312.02
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Put the two readings side by side. Same screen, same four numbers, the only thing that changes is which column you are reading from:",
+      "start": 354.96,
+      "end": 361.43
     },
     {
       "id": 30,
       "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "Report 3: Pages, which pages are doing the work.",
-      "start": 313.52,
-      "end": 315.87
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Report 2: Queries, what people typed to find you.",
+      "start": 362.93,
+      "end": 365.32
     },
     {
       "id": 31,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "Switch the tab from \"Queries\" to \"Pages.\" Sort by clicks descending. The pattern most restaurants see:",
-      "start": 316.82,
-      "end": 321.82
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Below the headline numbers, click \"Queries.\" This is the gold. Sort by impressions descending. The first 20-30 rows tell you exactly what Google thinks your restaurant is for.",
+      "start": 366.27,
+      "end": 374.86
     },
     {
       "id": 32,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
-      "text": "The homepage gets 60-70% of clicks.",
-      "start": 322.37,
-      "end": 324.08
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "What to look for:",
+      "start": 375.66,
+      "end": 376.48
     },
     {
       "id": 33,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
-      "text": "The menu page should get 15-25%.",
-      "start": 324.58,
-      "end": 326.14
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "High-impression / low-Ctr queries. These are queries Google thinks you should rank for but visitors are not clicking. Almost always a snippet problem, the title or meta does not match what they expected.",
+      "start": 377.03,
+      "end": 386.99
     },
     {
       "id": 34,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
-      "text": "The reservation page typically gets 3-8%.",
-      "start": 326.64,
-      "end": 328.63
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Surprise queries. Phrases like \"best happy hour brookline\" that you did not deliberately target, those are clues for content you should add.",
+      "start": 387.49,
+      "end": 394.36
     },
     {
       "id": 35,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
-      "text": "Everything else is rounding error.",
-      "start": 329.13,
-      "end": 330.78
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Missing queries. If \"tacos al pastor near me\" does not appear at all, your menu schema is missing or broken.",
+      "start": 394.86,
+      "end": 400.15
     },
     {
       "id": 36,
       "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(4)",
-      "text": "The healthy page-click distribution for a typical restaurant in the Pages report. The homepage carries the biggest share at sixty to seventy percent of all clicks, with sixty-five percent shown as the midpoint. The menu page should pull fifteen to twenty-five percent, with twenty percent as the midpoint. The reservation page typically draws three to eight percent, with about five and a half percent at the midpoint. Everything else is rounding error. If your menu page reads below ten percent, the menu page itself is the issue.",
-      "start": 331.88,
-      "end": 357.54
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "Three patterns to scan for in the Queries report, in the order you will find them. One: high-impression, low-Ctr queries, Google thinks you should rank for them, but visitors are not clicking. Almost always a snippet problem; rewrite the title and meta. Two: surprise queries, phrases you did not deliberately target but Google has decided you might be relevant for. Add a small section to the page to meet them halfway. Three: missing queries, searches you would expect to appear that do not. Usually a menu-schema gap; check that your dish names live in real text, not in PDFs.",
+      "start": 401.25,
+      "end": 429.27
     },
     {
       "id": 37,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "If your menu page is below 10% of total clicks, you have a menu-page problem, usually it is P D F (invisible to Google) or hidden behind a subdirectory that ranks badly. The fix is converting to a real H T M L menu .",
-      "start": 358.54,
-      "end": 369.14
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "The category of surprise queries worth watching closely: phrases Google has decided you might be relevant for, where you are already at page two without having tried. Adding a small section to the page, not a full pivot, just enough to acknowledge the query's intent, frequently moves position into clickable territory within a few weeks. Most of the time the gold is not the queries you are trying to rank for; it is the queries Google has decided you might be for and you have not met halfway.",
+      "start": 430.27,
+      "end": 454.16
     },
     {
       "id": 38,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "Report 4: Coverage / Pages indexed, the silent killer.",
-      "start": 370.64,
-      "end": 373.27
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Run the S E O Grader on the page that is getting the impressions but no clicks, it will surface the title + meta issues directly.",
+      "start": 454.96,
+      "end": 461.29
     },
     {
       "id": 39,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "In the left sidebar, under \"Indexing,\" click \"Pages.\" This tells you how many of your pages Google has actually added to its index. If 50% of your pages are \"Excluded\" or \"Discovered, not indexed,\" you have a foundational problem, usually slow load, broken canonical tags , or thin content.",
-      "start": 374.22,
-      "end": 388.25
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(2)",
+      "text": "The Queries report is the only place a customer's actual words land in your dashboard. Read it like a server reads a comment card.",
+      "start": 462.29,
+      "end": 468.67
     },
     {
       "id": 40,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(16)",
-      "text": "Run Restaurant Audit if this number looks bad. The audit's technical-S E O section diagnoses the most common indexing blockers.",
-      "start": 389.05,
-      "end": 395.28
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "From the floor",
+      "start": 469.67,
+      "end": 470.34
     },
     {
       "id": 41,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(5)",
-      "text": "Three Coverage red flags in Google Search Console, in priority order. Status A, Discovered, not indexed: Google found the U R L and decided not to index it. Almost always thin content or a duplicate template. The fix is to rewrite the page. Status B, Crawled, currently not indexed: Google looked, then waited. Speed or trust signal too low. Fix L C P and fix the canonical. Status C, Excluded by &lsquo;noindex&rsquo;: a meta tag or Http header is telling Google to skip the page. If it&rsquo;s unintentional, it&rsquo;s the cheapest fix on this list, grep your codebase for &lsquo;noindex&rsquo; and you&rsquo;ll find it.",
-      "start": 396.38,
-      "end": 426.55
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "When I read the Queries report, I read it the way I read the back of a stack of comment cards at the end of a shift, top to bottom, looking for the phrase that shows up twice. Not the rank, not the impression count first. The words. Half the time the row that matters is not a query I would have thought to chase; it is one I would never have written down, sitting at page two, where the guest already half-decided I might be the answer. The dashboard hands me the customer's exact language, and the only skill the report rewards is the one a floor manager already practices nightly: reading what people actually asked for instead of what I assumed they wanted.",
+      "start": 470.89,
+      "end": 502.94
     },
     {
       "id": 42,
       "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(6)",
-      "text": "The three weekly habits.",
-      "start": 428.05,
-      "end": 429.21
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Report 3: Pages, which pages are doing the work.",
+      "start": 504.44,
+      "end": 506.79
     },
     {
       "id": 43,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(17)",
-      "text": "Which report should you open today?",
-      "start": 430.16,
-      "end": 431.87
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "Switch the tab from \"Queries\" to \"Pages.\" Sort by clicks descending. The pattern most restaurants see:",
+      "start": 507.74,
+      "end": 512.74
     },
     {
       "id": 44,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(18)",
-      "text": "Open Performance first to see the month's clicks/impressions trend, then Coverage to confirm Google can still see your pages. If either looks off, the rest follows from there.",
-      "start": 432.67,
-      "end": 441.26
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "The homepage gets 60-70% of clicks.",
+      "start": 513.29,
+      "end": 515
     },
     {
       "id": 45,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(19)",
-      "text": "Open Queries . Sort by impressions descending. Look at rows 11, 30 for queries you did not deliberately target, those are the ones that surface earliest when something's shifting.",
-      "start": 442.06,
-      "end": 450.85
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "The menu page should get 15-25%.",
+      "start": 515.5,
+      "end": 517.06
     },
     {
       "id": 46,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(20)",
-      "text": "Open Pages , sort by clicks descending, and check whether your menu page and reservation page are still pulling 15, 25% and 3, 8% of total clicks respectively. If those proportions broke, the diagnosis is on those pages, not on Search Console.",
-      "start": 451.65,
-      "end": 463.37
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "The reservation page typically gets 3-8%.",
+      "start": 517.56,
+      "end": 519.55
     },
     {
       "id": 47,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(6)",
-      "text": "Search Console cadence, under twenty minutes a month total. Weekly, a two-minute Performance check on week-over-week clicks: a twenty percent drop earns investigation, otherwise close the tab. Monthly, a five-minute Queries scan for new queries appearing in your top thirty; decide whether to add content for them. Quarterly, a ten-minute Pages review to confirm click distribution still matches the visitor path you expect; investigate gaps. The whole month's discipline fits in under twenty minutes.",
-      "start": 464.47,
-      "end": 488.66
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
+      "text": "Everything else is rounding error.",
+      "start": 520.05,
+      "end": 521.7
     },
     {
       "id": 48,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Mondays, open Performance, look at week-over-week. Two minutes. If clicks dropped 20%+ week-over-week, something broke (Google update, site change, holiday weirdness). Investigate. Otherwise, close the tab.",
-      "start": 489.66,
-      "end": 499.77
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(4)",
+      "text": "The healthy page-click distribution for a typical restaurant in the Pages report. The homepage carries the biggest share at sixty to seventy percent of all clicks, with sixty-five percent shown as the midpoint. The menu page should pull fifteen to twenty-five percent, with twenty percent as the midpoint. The reservation page typically draws three to eight percent, with about five and a half percent at the midpoint. Everything else is rounding error. If your menu page reads below ten percent, the menu page itself is the issue.",
+      "start": 522.8,
+      "end": 548.46
     },
     {
       "id": 49,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "First-of-month, sort Queries by impressions. Five minutes. Note any new queries appearing in the top 30. Decide whether to add content for them.",
-      "start": 500.27,
-      "end": 507.33
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "If your menu page is below 10% of total clicks, you have a menu-page problem, usually it is P D F (invisible to Google) or hidden behind a subdirectory that ranks badly. The fix is converting to a real H T M L menu .",
+      "start": 549.46,
+      "end": 560.06
     },
     {
       "id": 50,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Quarterly, Pages report, sort by clicks. Ten minutes. The page distribution should match your business's actual conversion path. If it does not, you have content-architecture work to do.",
-      "start": 507.83,
-      "end": 516.96
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Report 4: Coverage / Pages indexed, the silent killer.",
+      "start": 561.56,
+      "end": 564.19
     },
     {
       "id": 51,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(21)",
-      "text": "Total weekly burden: under 20 minutes per month. Result: actionable signal you cannot get anywhere else, including from any agency that \"manages your S E O.\"",
-      "start": 517.76,
-      "end": 525.46
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "In the left sidebar, under \"Indexing,\" click \"Pages.\" This tells you how many of your pages Google has actually added to its index. If 50% of your pages are \"Excluded\" or \"Discovered, not indexed,\" you have a foundational problem, usually slow load, broken canonical tags , or thin content.",
+      "start": 565.14,
+      "end": 579.17
     },
     {
       "id": 52,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(7)",
-      "text": "What Search Console does not tell you.",
-      "start": 526.96,
-      "end": 528.82
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "Run Restaurant Audit if this number looks bad. The audit's technical-S E O section diagnoses the most common indexing blockers.",
+      "start": 579.97,
+      "end": 586.2
     },
     {
       "id": 53,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(22)",
-      "text": "Search Console only covers Google search clicks. It does not tell you about Google Maps clicks, Find a Table bookings, or AI-search citations from ChatGPT and Perplexity (those do not pass referrer headers). For the AI-search side, set up the F A Q schema mentioned in the AI article and watch your first-touch attribution in Plausible, that is where AI-driven visits show up.",
-      "start": 529.77,
-      "end": 549.11
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(5)",
+      "text": "Three Coverage red flags in Google Search Console, in priority order. Status A, Discovered, not indexed: Google found the U R L and decided not to index it. Almost always thin content or a duplicate template. The fix is to rewrite the page. Status B, Crawled, currently not indexed: Google looked, then waited. Speed or trust signal too low. Fix L C P and fix the canonical. Status C, Excluded by &lsquo;noindex&rsquo;: a meta tag or Http header is telling Google to skip the page. If it&rsquo;s unintentional, it&rsquo;s the cheapest fix on this list, grep your codebase for &lsquo;noindex&rsquo; and you&rsquo;ll find it.",
+      "start": 587.3,
+      "end": 617.47
     },
     {
       "id": 54,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(23)",
-      "text": "Save the four-number screenshot to your Workshop monthly. The trend over six months tells the story; the single weekly check tells you when to investigate.",
-      "start": 549.91,
-      "end": 557.52
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "The three weekly habits.",
+      "start": 618.97,
+      "end": 620.13
     },
     {
       "id": 55,
-      "kind": "quote",
-      "selector": "#post-body > blockquote:nth-of-type(2)",
-      "text": "Position is what you cannot easily move. Ctr is what you can move on a Tuesday afternoon.",
-      "start": 558.52,
-      "end": 562.88
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "Which report should you open today?",
+      "start": 621.08,
+      "end": 622.79
     },
     {
       "id": 56,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(24)",
-      "text": "Key takeaways",
-      "start": 563.88,
-      "end": 564.5
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "Open Performance first to see the month's clicks/impressions trend, then Coverage to confirm Google can still see your pages. If either looks off, the rest follows from there.",
+      "start": 623.59,
+      "end": 632.18
     },
     {
       "id": 57,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(1)",
-      "text": "Branded-query Ctr below 40% means your meta description is broken.",
-      "start": 565.05,
-      "end": 568.28
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "Open Queries . Sort by impressions descending. Look at rows 11, 30 for queries you did not deliberately target, those are the ones that surface earliest when something's shifting.",
+      "start": 632.98,
+      "end": 641.77
     },
     {
       "id": 58,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(2)",
-      "text": "High-impression / low-Ctr queries are snippet problems, not ranking problems.",
-      "start": 568.78,
-      "end": 572.55
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "Open Pages , sort by clicks descending, and check whether your menu page and reservation page are still pulling 15, 25% and 3, 8% of total clicks respectively. If those proportions broke, the diagnosis is on those pages, not on Search Console.",
+      "start": 642.57,
+      "end": 654.29
     },
     {
       "id": 59,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(3)",
-      "text": "Surprise queries in your top 30, phrases you never targeted, are content opportunities Google is handing you.",
-      "start": 573.05,
-      "end": 578.39
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(6)",
+      "text": "Search Console cadence, under twenty minutes a month total. Weekly, a two-minute Performance check on week-over-week clicks: a twenty percent drop earns investigation, otherwise close the tab. Monthly, a five-minute Queries scan for new queries appearing in your top thirty; decide whether to add content for them. Quarterly, a ten-minute Pages review to confirm click distribution still matches the visitor path you expect; investigate gaps. The whole month's discipline fits in under twenty minutes.",
+      "start": 655.39,
+      "end": 679.58
     },
     {
       "id": 60,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(4)",
-      "text": "If menu page is not 15, 25% of total clicks, the menu page itself is the issue (P D F, widget, or buried).",
-      "start": 578.89,
-      "end": 584.08
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Mondays, open Performance, look at week-over-week. Two minutes. If clicks dropped 20%+ week-over-week, something broke (Google update, site change, holiday weirdness). Investigate. Otherwise, close the tab.",
+      "start": 680.58,
+      "end": 690.69
     },
     {
       "id": 61,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(5)",
-      "text": "Weekly: 2-min Performance check. Monthly: 5-min Queries scan. Quarterly: 10-min Pages review.",
-      "start": 584.58,
-      "end": 589.13
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "First-of-month, sort Queries by impressions. Five minutes. Note any new queries appearing in the top 30. Decide whether to add content for them.",
+      "start": 691.19,
+      "end": 698.25
     },
     {
       "id": 62,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(25)",
-      "text": "Map what Search Console shows you.",
-      "start": 589.93,
-      "end": 591.58
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Quarterly, Pages report, sort by clicks. Ten minutes. The page distribution should match your business's actual conversion path. If it does not, you have content-architecture work to do.",
+      "start": 698.75,
+      "end": 707.88
     },
     {
       "id": 63,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(26)",
-      "text": "The Local Keyword × Page Map sheet pulls Search Console queries into rows, keyword, neighborhood modifier, target U R L, current rank, schema type. Print it, save it as Csv, or save it to your Workshop. Catches cannibalization and coverage gaps before they cost a booking.",
-      "start": 592.38,
-      "end": 605.57
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "Total weekly burden: under 20 minutes per month. Result: actionable signal you cannot get anywhere else, including from any agency that \"manages your S E O.\"",
+      "start": 708.68,
+      "end": 716.38
     },
     {
       "id": 64,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(27)",
-      "text": "What to do next",
-      "start": 606.37,
-      "end": 607.1
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "What Search Console does not tell you.",
+      "start": 717.88,
+      "end": 719.74
     },
     {
       "id": 65,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Read: the related glossary term →",
-      "start": 607.65,
-      "end": 609.36
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(29)",
+      "text": "Search Console only covers Google search clicks. It does not tell you about Google Maps clicks, Find a Table bookings, or AI-search citations from ChatGPT and Perplexity (those do not pass referrer headers). For the AI-search side, set up the F A Q schema mentioned in the AI article and watch your first-touch attribution in Plausible, that is where AI-driven visits show up.",
+      "start": 720.69,
+      "end": 740.03
     },
     {
       "id": 66,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Try: the tool that pairs with this article →",
-      "start": 609.86,
-      "end": 612.11
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(30)",
+      "text": "Save the four-number screenshot to your Workshop monthly. The trend over six months tells the story; the single weekly check tells you when to investigate.",
+      "start": 740.83,
+      "end": 748.44
     },
     {
       "id": 67,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Or send Don a note: The Window →",
-      "start": 612.61,
-      "end": 614.26
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(3)",
+      "text": "Position is what you cannot easily move. Ctr is what you can move on a Tuesday afternoon.",
+      "start": 749.44,
+      "end": 753.8
     },
     {
       "id": 68,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(28)",
-      "text": "More from the library.",
-      "start": 614.81,
-      "end": 615.88
+      "selector": "#post-body > p:nth-of-type(31)",
+      "text": "Key takeaways",
+      "start": 754.8,
+      "end": 755.42
     },
     {
       "id": 69,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(29)",
-      "text": "See also",
-      "start": 616.68,
-      "end": 617.65
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(1)",
+      "text": "Branded-query Ctr below 40% means your meta description is broken.",
+      "start": 755.97,
+      "end": 759.2
     },
     {
       "id": 70,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(1)",
-      "text": "Tool Google Business Profile Grader How your Google listing scores across rating, reviews, photos, categories, hours, with the exact fixes that move it up.",
-      "start": 618.2,
-      "end": 625.81
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(2)",
+      "text": "High-impression / low-Ctr queries are snippet problems, not ranking problems.",
+      "start": 759.7,
+      "end": 763.47
     },
     {
       "id": 71,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(2)",
-      "text": "Article 6 min read Instagram Is a Search Engine Now. Post Like It. Google has indexed Instagram captions since twenty twenty-four and the in-app search bar handles 40% of restaurant discovery for under-35 guests. Five caption-level moves that make a restaurant post indexable, with the 4.3x save lift from running the discipline on a real account.",
-      "start": 626.31,
-      "end": 643.14
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(3)",
+      "text": "Surprise queries in your top 30, phrases you never targeted, are content opportunities Google is handing you.",
+      "start": 763.97,
+      "end": 769.31
     },
     {
       "id": 72,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(3)",
-      "text": "Research 2 min read What visitors look for on a local business website The most-searched-for information on a local business website is hours and location, and both are the most commonly hidden.",
-      "start": 643.64,
-      "end": 653.17
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(4)",
+      "text": "If menu page is not 15, 25% of total clicks, the menu page itself is the issue (P D F, widget, or buried).",
+      "start": 769.81,
+      "end": 775
     },
     {
       "id": 73,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(30)",
-      "text": "Tell us",
-      "start": 653.97,
-      "end": 654.81
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(5)",
+      "text": "Weekly: 2-min Performance check. Monthly: 5-min Queries scan. Quarterly: 10-min Pages review.",
+      "start": 775.5,
+      "end": 780.05
     },
     {
       "id": 74,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(8)",
-      "text": "Be the first field note on this piece.",
-      "start": 656.31,
-      "end": 658.17
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(32)",
+      "text": "Map what Search Console shows you.",
+      "start": 780.85,
+      "end": 782.5
     },
     {
       "id": 75,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(31)",
-      "text": "Tried this in your own restaurant? 100, 400 words, your name on it. Don reads every one. Your note shows up here once approved.",
-      "start": 659.12,
-      "end": 665.35
+      "selector": "#post-body > p:nth-of-type(33)",
+      "text": "The Local Keyword × Page Map sheet pulls Search Console queries into rows, keyword, neighborhood modifier, target U R L, current rank, schema type. Print it, save it as Csv, or save it to your Workshop. Catches cannibalization and coverage gaps before they cost a booking.",
+      "start": 783.3,
+      "end": 796.49
     },
     {
       "id": 76,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(32)",
-      "text": "Sign in to share your experience →",
-      "start": 666.15,
-      "end": 667.9
+      "selector": "#post-body > p:nth-of-type(34)",
+      "text": "What to do next",
+      "start": 797.29,
+      "end": 798.02
     },
     {
       "id": 77,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(34)",
-      "text": "Keep reading",
-      "start": 668.45,
-      "end": 669.03
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Read: the related glossary term →",
+      "start": 798.57,
+      "end": 800.28
     },
     {
       "id": 78,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(35)",
-      "text": "The schema layer that controls which Search Console queries you appear for.",
-      "start": 669.58,
-      "end": 673.25
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Try: the tool that pairs with this article →",
+      "start": 800.78,
+      "end": 803.03
     },
     {
       "id": 79,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Or send Don a note: The Window →",
+      "start": 803.53,
+      "end": 805.18
+    },
+    {
+      "id": 80,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(35)",
+      "text": "More from the library.",
+      "start": 805.73,
+      "end": 806.8
+    },
+    {
+      "id": 81,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(36)",
+      "text": "See also",
+      "start": 807.6,
+      "end": 808.57
+    },
+    {
+      "id": 82,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(1)",
+      "text": "Tool Google Business Profile Grader How your Google listing scores across rating, reviews, photos, categories, hours, with the exact fixes that move it up.",
+      "start": 809.12,
+      "end": 816.73
+    },
+    {
+      "id": 83,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(2)",
+      "text": "Article 6 min read Instagram Is a Search Engine Now. Post Like It. Google has indexed Instagram captions since twenty twenty-four and the in-app search bar handles 40% of restaurant discovery for under-35 guests. Five caption-level moves that make a restaurant post indexable, with the 4.3x save lift from running the discipline on a real account.",
+      "start": 817.23,
+      "end": 834.06
+    },
+    {
+      "id": 84,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(3)",
+      "text": "Research 2 min read What visitors look for on a local business website The most-searched-for information on a local business website is hours and location, and both are the most commonly hidden.",
+      "start": 834.56,
+      "end": 844.09
+    },
+    {
+      "id": 85,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(37)",
+      "text": "Tell us",
+      "start": 844.89,
+      "end": 845.73
+    },
+    {
+      "id": 86,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "Be the first field note on this piece.",
+      "start": 847.23,
+      "end": 849.09
+    },
+    {
+      "id": 87,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(38)",
+      "text": "Tried this in your own restaurant? 100, 400 words, your name on it. Don reads every one. Your note shows up here once approved.",
+      "start": 850.04,
+      "end": 856.27
+    },
+    {
+      "id": 88,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(39)",
+      "text": "Sign in to share your experience →",
+      "start": 857.07,
+      "end": 858.82
+    },
+    {
+      "id": 89,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(41)",
+      "text": "Keep reading",
+      "start": 859.37,
+      "end": 859.95
+    },
+    {
+      "id": 90,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(42)",
+      "text": "The schema layer that controls which Search Console queries you appear for.",
+      "start": 860.5,
+      "end": 864.17
+    },
+    {
+      "id": 91,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(43)",
       "text": "The blind spot in Search Console, what to set up alongside.",
-      "start": 674.05,
-      "end": 676.93
+      "start": 864.97,
+      "end": 867.85
     }
   ]
 }

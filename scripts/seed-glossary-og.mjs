@@ -39,6 +39,22 @@ const TOPIC_ACCENT = {
   'operations-margin': 'gold',
   'brand-design':      'teal',
   'trust-reviews':     'rust',
+  'cost-data':         'gold',
+};
+
+// Topic URL → glyph cue. Every per-term card used to ship the generic
+// 'glossary' glyph; mapping the topic to a subject glyph (from the
+// GLYPHS registry in build-og-cards.mjs) de-uniforms the set so a
+// scanned card signals its category at a glance.
+const TOPIC_GLYPH = {
+  'speed-mobile':      'speed',
+  'local-seo':         'local-seo',
+  'conversions':       'conversions',
+  'operations-margin': 'margin',
+  'brand-design':      'brand',
+  'trust-reviews':     'trust',
+  'ai-search':         'research',
+  'cost-data':         'source',
 };
 
 // Eyebrow text per topic per locale. Shorter than the topic
@@ -51,6 +67,7 @@ const TOPIC_EYEBROW = {
     'operations-margin': 'GLOSSARY · OPERATIONS & MARGIN',
     'brand-design':      'GLOSSARY · BRAND & DESIGN',
     'trust-reviews':     'GLOSSARY · TRUST & REVIEWS',
+    'cost-data':         'GLOSSARY · COST DATA & SOURCES',
   },
   es: {
     'speed-mobile':      'GLOSARIO · VELOCIDAD Y MÓVIL',
@@ -59,10 +76,33 @@ const TOPIC_EYEBROW = {
     'operations-margin': 'GLOSARIO · OPERACIONES Y MARGEN',
     'brand-design':      'GLOSARIO · MARCA Y DISEÑO',
     'trust-reviews':     'GLOSARIO · CONFIANZA Y RESEÑAS',
+    'cost-data':         'GLOSARIO · DATOS Y FUENTES DE COSTOS',
   },
 };
 
 const FALLBACK_EYEBROW = { en: 'GLOSSARY', es: 'GLOSARIO' };
+
+// Optional curated per-term focus modules. Kept in a side-file rather
+// than brand/og/cards.json because this generator fully rewrites every
+// glossary-* entry on each run — a focus added straight to the manifest
+// would be stripped on the next re-seed (and fail seed --check). Keyed
+// by glossary slug; value is { en: {focus}, es: {focus} } (or a single
+// focus object reused for both locales). Every number must already
+// appear on the term's own page (the fact gate).
+let FOCUS = {};
+{
+  const focusPath = path.join(repoRoot, 'data', 'glossary-og-focus.json');
+  if (fs.existsSync(focusPath)) {
+    try { FOCUS = JSON.parse(fs.readFileSync(focusPath, 'utf8')); }
+    catch { FOCUS = {}; }
+  }
+}
+function focusFor(slug, locale) {
+  const f = FOCUS[slug];
+  if (!f || typeof f !== 'object') return null;
+  const picked = f[locale] || (f.type ? f : null);
+  return picked && picked.type ? picked : null;
+}
 
 function decodeEntities(s) {
   return String(s == null ? '' : s)
@@ -140,20 +180,24 @@ function buildEntry({ slug, file, locale }) {
   const data = extractFromPage(file);
   if (!data.term) return null;
   const accent  = (data.topic && TOPIC_ACCENT[data.topic]) || 'teal';
+  const glyph   = (data.topic && TOPIC_GLYPH[data.topic]) || 'glossary';
   const eyebrow = (data.topic && TOPIC_EYEBROW[locale][data.topic]) || FALLBACK_EYEBROW[locale];
   const dek     = firstSentence(data.def, 180);
-  return {
+  const entry = {
     slug:   `glossary-${slug}${locale === 'es' ? '-es' : ''}`,
     kind:   'glossary',
     locale,
     accent,
-    glyph:  'glossary',
+    glyph,
     eyebrow,
     title_1:      data.term,
     title_italic: data.aka,
     title_2:      '',
     dek,
   };
+  const focus = focusFor(slug, locale);
+  if (focus) entry.focus = focus;
+  return entry;
 }
 
 const enTerms = collectTerms(path.join(repoRoot, 'glossary'));

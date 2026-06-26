@@ -35,10 +35,8 @@
        fill="none" stroke="#C42E2E" stroke-width="1.167"
        stroke-linecap="round" stroke-linejoin="round"
        color="#C42E2E" opacity="0.85">
-      <path d="M3 6 L12 5 L21 6 L21 19 L12 18 L3 19 Z"/>
-             <line x1="12" y1="5" x2="12" y2="18"/>
-             <line x1="6" y1="9" x2="9" y2="9"/>
-             <line x1="15" y1="9" x2="18" y2="9"/>
+      <path d="M12 3 L20 6 V12 C20 16.5 16.5 19.5 12 21 C7.5 19.5 4 16.5 4 12 V6 Z"/>
+          <polyline points="9 12 11.5 14.5 15.5 10"/>
     </g>
   
   <text x="136" y="96"
@@ -57,6 +55,8 @@
   <text x="80" y="456"
         font-family="Inter, Arial, sans-serif" font-size="22"
         font-weight="400" fill="#4A4F59"><tspan x="80" dy="0">The ratio of an image's width to its height, expressed as w:h.</tspan></text>
+
+  
 
   
     <g transform="translate(80, 552)" fill="#4A4F59" opacity="0.6">

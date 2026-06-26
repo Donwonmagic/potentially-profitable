@@ -27,7 +27,7 @@ export default {
     { id: 'rent',       ms: 17000, caption: 'Here’s why it matters. Rent isn’t paid in percentages — it’s paid in dollars. The "worse" column covers fixed costs first. The "better" column comes up short.' },
     { id: 'land',       ms: 14000, caption: 'Optimize on dollars. Percentages are a hunch. Dollars are a decision.' },
   ],
-  svg: `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of contribution margin">
+  svg: `<svg width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated diagram of contribution margin">
   <defs>
     <linearGradient id="cm-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"  stop-color="var(--cream-2,#F3EEE3)"/>

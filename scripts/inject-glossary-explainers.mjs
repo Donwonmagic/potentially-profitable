@@ -94,8 +94,8 @@ function renderPanel(locale, mod) {
   </div>
   <div class="term-explainer__chrome">
     <button type="button" class="term-explainer__playpause" aria-label="${escAttr(strings.play)}">
-      <svg class="icon-play"  viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-      <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+      <svg class="icon-play"  width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+      <svg class="icon-pause" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
     </button>
     <div class="term-explainer__scrub" role="presentation">
       <div class="term-explainer__scrub-fill"></div>
@@ -130,7 +130,7 @@ function renderCue(locale, mod) {
   // anchor by id.
   return `${CUE_OPEN}
 <p style="margin-top:18px"><a class="term-explainer-cue" href="#${escAttr(mod.term_slug)}-explainer">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg>
   ${escText(strings.cue)}
 </a></p>
 ${CUE_CLOSE}`;
