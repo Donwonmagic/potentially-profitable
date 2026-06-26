@@ -8,9 +8,6 @@
 <meta name="description" content="Dónde se cotiza mantequilla (aa, a granel) al mayoreo según fuentes públicas (USDA, BLS, FRED) — un rango típico y la tendencia — para distinguir un…" />
 <meta name="theme-color" content="#2A50C8" />
 <link rel="canonical" href="https://muntin.digital/es/cost-index/butter/" />
-    <!-- feed-discovery:start (injected by inject-feed-discovery.mjs) -->
-    <link rel="alternate" type="application/rss+xml" title="Muntin Digital — RSS (ES)" href="/es/feed.xml">
-    <!-- /feed-discovery:end -->
 <link rel="alternate" hreflang="en" href="https://muntin.digital/cost-index/butter/" />
 <link rel="alternate" hreflang="es" href="https://muntin.digital/es/cost-index/butter/" />
 <link rel="alternate" hreflang="x-default" href="https://muntin.digital/cost-index/butter/" />
@@ -129,6 +126,19 @@ main{padding-top:64px}
 .ci-moving-calm{margin:0;font-size:15.5px;color:var(--ink)}
 .ci-vkey{margin:2px 0 12px;font-size:12.5px;color:var(--ink-soft);line-height:1.6}
 .ci-vkey strong{color:var(--ink)}
+.ci-moving-insight{margin:3px 0 2px}
+.ci-moving-read{margin:2px 0;font-size:14.5px;line-height:1.5;color:var(--ink)}
+.ci-assoc-tag{color:var(--ink-soft);font-style:italic;font-size:12.5px}
+.ci-moving-cite{margin:3px 0 4px;font-size:12.5px}
+.ci-moving-cite summary{color:var(--teal);cursor:pointer}
+.ci-moving-cite p{margin:4px 0 0;color:var(--ink-soft)}
+.ci-moving-act{margin:2px 0 0;font-size:13.5px;color:var(--ink-soft)}
+.ci-moving-act strong{color:var(--ink)}
+.ci-moving-more{font-size:12.5px}
+.ci-index--mini{display:inline-block;vertical-align:middle;margin:4px 0 2px;opacity:.9}
+.ci-index{margin:10px 0 4px}
+.ci-index__cap{margin:0 0 4px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+.ci-index .mtn-spark{max-width:100%;height:auto}
 .ci-card--pending{opacity:.72;background:var(--cream-2)}
 .ci-card--pending a{color:var(--ink-soft)}
 .ci-pending-note{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
@@ -178,24 +188,13 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
 }
 </style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=2830bb0a913c" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=158a407ca00a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=2830bb0a913c"><link rel="stylesheet" href="/assets/site-article.css?v=158a407ca00a"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=bf6474c0bef7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=704f9150369c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=bf6474c0bef7"><link rel="stylesheet" href="/assets/site-article.css?v=704f9150369c"></noscript>
 </head>
 <body>
 <a class="skip-link" href="#main">Saltar al contenido</a>
-<!-- batch-banner:start -->
-<aside class="batch-marquee" data-batch="fathers-day-2026" role="complementary" aria-label="Nuevo informe · Que te encuentren para el Día del Padre" style="background:#16181D;color:#F6F7F8;font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(246,247,248,0.16);box-shadow:inset 0 1px 0 rgba(255,255,255,0.05)">
-  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;flex:1 1 auto">
-      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:#2A50C8;color:#F6F7F8;padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">Nuevo informe</span>
-      <span style="font-family:'Fraunces',Georgia,'Times New Roman',serif;font-size:14px;font-style:italic;line-height:1.35;min-width:0;color:#F6F7F8">Es el fin de semana del Día del Padre. ¿Una familia que busca puede encontrarte?</span>
-    </div>
-    <a href="/es/blog/dia-del-padre-que-te-encuentren-2026/" style="display:inline-flex;align-items:center;gap:6px;color:#16181D;background:#F6F7F8;text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:13px;padding:6px 14px;border-radius:999px;white-space:nowrap;flex-shrink:0;box-shadow:0 1px 2px rgba(0,0,0,0.18);transition:transform .15s ease,box-shadow .15s ease">Leer el informe <span aria-hidden="true">&rarr;</span></a>
-  </div>
-</aside>
-<script>(function(){var d=document.documentElement;function s(){var b=document.querySelector('.batch-marquee');if(b){d.style.setProperty('--banner-h',b.offsetHeight+'px');}}s();addEventListener('resize',s,{passive:true});addEventListener('orientationchange',s);if(document.fonts&&document.fonts.ready){document.fonts.ready.then(s);}})();</script>
-<!-- batch-banner:end -->
+<!-- batch-banner:start --><!-- batch-banner:end -->
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially
@@ -364,7 +363,7 @@ main{padding-top:64px}
     <p class="ci-read__head">Lectura de mercado<span class="ci-read__badge">confianza media · al 2026-06-13</span></p>
     <p class="ci-read__line">Alrededor de $1.54–$1.68/libra (referencia mayorista, un mercado USDA), al 2026-06-13.</p><p class="ci-read__trend">Tendencia: a la baja -13.4% en la ventana reciente.</p>
     <p class="ci-read__verdict"><span class="ci-read__verb" data-bias="hold">Mantener</span>Bajando — puede ser oportunidad de renegociar, no razón para reajustar.</p>
-    <div class="ci-read__spark"><svg class="mtn-spark" width="248" height="46" viewBox="0 0 248 46" role="img" aria-label="Precio bajó a lo largo de la ventana. Normalmente $1.68–$1.86, ahora $1.61 — por debajo de su rango habitual — buena compra. Más bajo que cada una de sus últimas 12 lecturas."><path d="M3.0,7.3L23.2,3.0L43.3,3.0L63.5,3.0L83.7,14.4L103.8,20.1L124.0,23.0L144.2,23.0L164.3,28.7L184.5,33.0L204.7,41.6L224.8,43.0L245.0,43.0 L245.0,43.0 L3.0,43.0 Z" fill="rgba(31,111,106,0.12)" stroke="none" /><line x1="3" x2="245" y1="23.0" y2="23.0" stroke="#2A50C8" stroke-width="1" stroke-dasharray="2,3" opacity="0.45" /><path d="M3.0,7.3L23.2,3.0L43.3,3.0L63.5,3.0L83.7,14.4L103.8,20.1L124.0,23.0L144.2,23.0L164.3,28.7L184.5,33.0L204.7,41.6L224.8,43.0L245.0,43.0" fill="none" stroke="#2A50C8" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" /><circle cx="245.0" cy="43.0" r="2.5" fill="#2A50C8" /></svg><p class="ci-read__capsule">Normalmente $1.68–$1.86, ahora $1.61 — por debajo de su rango habitual — buena compra. <span class="ci-read__rank">Más bajo que cada una de sus últimas 12 lecturas.</span> <span class="ci-read__capsule-note">(en la ventana seguida)</span></p></div>
+    <div class="ci-read__spark"><svg class="mtn-spark" width="248" height="46" viewBox="0 0 248 46" role="img" aria-label="Precio bajó a lo largo de la ventana. Normalmente $1.68–$1.86, ahora $1.61 — por debajo de su rango habitual — buena compra. Más bajo que cada una de sus últimas 12 lecturas."><path d="M3.0,7.3L23.2,3.0L43.3,3.0L63.5,3.0L83.7,14.4L103.8,20.1L124.0,23.0L144.2,23.0L164.3,28.7L184.5,33.0L204.7,41.6L224.8,43.0L245.0,43.0 L245.0,43.0 L3.0,43.0 Z" fill="rgba(31,111,106,0.12)" stroke="none" /><line x1="3" x2="245" y1="23.0" y2="23.0" stroke="#2A50C8" stroke-width="1" stroke-dasharray="2,3" opacity="0.45" /><path d="M3.0,7.3L23.2,3.0L43.3,3.0L63.5,3.0L83.7,14.4L103.8,20.1L124.0,23.0L144.2,23.0L164.3,28.7L184.5,33.0L204.7,41.6L224.8,43.0L245.0,43.0" fill="none" stroke="#2A50C8" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" /><circle cx="245.0" cy="43.0" r="2.5" fill="#2A50C8" /></svg><p class="ci-read__capsule">Normalmente $1.68–$1.86, ahora $1.61 — por debajo de su rango habitual — buena compra. <span class="ci-read__rank">Más bajo que cada una de sus últimas 12 lecturas.</span> <span class="ci-read__capsule-note">(en la ventana seguida)</span></p></div><figure class="ci-index"><figcaption class="ci-index__cap">Indexado a 100 el 2026-03-21 · ~87 el 2026-06-13 — bajó en la ventana seguida. Movimiento relativo, sin precio.</figcaption><svg class="mtn-spark" width="460" height="128" viewBox="0 0 460 128" role="img" aria-label="Indexado a 100 el 2026-03-21 · ~87 el 2026-06-13 — bajó en la ventana seguida. Movimiento relativo, sin precio."><path d="M3.0,16.0L40.8,3.0L78.7,3.0L116.5,3.0L154.3,38.0L192.2,55.1L230.0,64.0L267.8,64.0L305.7,81.9L343.5,94.9L381.3,120.9L419.2,125.0L457.0,125.0 L457.0,125.0 L3.0,125.0 Z" fill="rgba(42,80,200,0.10)" stroke="none" /><line x1="3" x2="457" y1="16.0" y2="16.0" stroke="#2A50C8" stroke-width="1" stroke-dasharray="2,3" opacity="0.45" /><path d="M3.0,16.0L40.8,3.0L78.7,3.0L116.5,3.0L154.3,38.0L192.2,55.1L230.0,64.0L267.8,64.0L305.7,81.9L343.5,94.9L381.3,120.9L419.2,125.0L457.0,125.0" fill="none" stroke="#2A50C8" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" /><circle cx="457.0" cy="125.0" r="2.5" fill="#2A50C8" /></svg></figure>
     <details class="ci-read__src"><summary>Fuentes · 3</summary><div><a href="/es/glossary/usda-lmr/">USDA LMR</a> · <a href="/es/glossary/bls/">BLS</a> · <a href="/es/glossary/fred/">FRED</a> — datos públicos, al 2026-06-13. Referencia mayorista (aproximadamente lo que pagan los distribuidores), no el precio entregado que pagas.</div></details>
     <p class="ci-read__verified"><strong>Verificado:</strong> nuestro rango de precio del 80% ha acertado el 81% de las veces (148 semanas de historial) · al día para la cadencia de su fuente.</p>
     <p class="ci-read__method"><a href="/es/cost-index/methodology/#track-record">Cómo verificamos este número <span aria-hidden="true">→</span></a></p>

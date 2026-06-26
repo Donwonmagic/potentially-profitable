@@ -543,7 +543,7 @@ function movingNowSection(slugs, locale) {
     const more = es ? 'lectura completa' : 'full read';
     const read = `${persistLead ? `${persistLead}. ` : ''}${note ? escHtml(note) : ''}${di.assoc}`;
     return `<li class="ci-moving-item">${verdictChip(v, locale)}<a href="${base}/cost-index/${s}/">${escHtml(nm)}</a>`
-      + `<div class="ci-moving-insight"><p class="ci-moving-read">— ${read}</p>${di.cite}`
+      + `<div class="ci-moving-insight"><p class="ci-moving-read">— ${read}</p>${indexedMovement(r && r.entry, locale, {})}${di.cite}`
       + `<p class="ci-moving-act">→ <strong>${escHtml(action)}.</strong> <a class="ci-moving-more" href="${base}/cost-index/${s}/">${more} →</a></p></div></li>`;
   }).join('');
   const key = es
@@ -629,6 +629,54 @@ function answerBanner(slug, locale) {
   return `<p class="ci-answer">${dw ? `<strong>${dw}</strong> · ` : ''}~${range}${unitSfx} · ${es ? 'al' : 'as of'} ${asOf} ${chip}</p>`;
 }
 
+// ---- Price-free INDEXED movement chart ----------------------------
+// Normalizes the gated history series to 100 at the window's first read and
+// plots the relative path true-to-scale: it shows HOW MUCH and which way an
+// item moved WITHOUT ever stating a price (cents live only in the per-ingredient
+// cited Market-read block). Honest by construction — it's the shape of the
+// already-gated series. Gated on >=8 same-basis real reads; the caption labels
+// the REAL date window (it never claims a span we don't have — e.g. "6 months"
+// when only weeks exist). The window lengthens as history accumulates.
+function indexedMovement(entry, locale, opts) {
+  opts = opts || {};
+  const es = locale === 'es';
+  if (!entry || !Array.isArray(entry.history)) return '';
+  const point = Array.isArray(entry.points) ? entry.points[0] : null;
+  const basis = (point && point.level && point.level.basis) || 'wholesale';
+  const pts = entry.history
+    .filter((h) => h && h.basis === basis && typeof h.valueCents === 'number'
+                && isFinite(h.valueCents) && h.valueCents > 0 && h.date)
+    .sort((a, b) => String(a.date).localeCompare(String(b.date)));
+  if (pts.length < 8) return '';
+  const base = pts[0].valueCents;
+  if (!(base > 0)) return '';
+  const idx = pts.map((p) => 100 * p.valueCents / base);
+  const firstDate = pts[0].date, lastDate = pts[pts.length - 1].date;
+  const idxNow = Math.round(idx[idx.length - 1]);
+  // The direction word derives from the SAME headline index (endpoint vs the 100
+  // baseline) so it can NEVER contradict the number or the curve it labels. A
+  // half-window median (which an earlier version used) measures a different thing
+  // and could say "rose" while the line ends below 100 — caught by fact-gate review.
+  const shape = idxNow > 103 ? (es ? 'subió' : 'rose')
+              : idxNow < 97 ? (es ? 'bajó' : 'eased')
+              : (es ? 'se mantuvo estable' : 'held steady');
+  const big = opts.size === 'large';
+  // Index value IS relative movement (100 = the window's start); it is never a
+  // price, carries its dates, and traces to the same gated series as everything
+  // else — so it is build-stamped + dated, like the direction word.
+  const cap = es
+    ? `Indexado a 100 el ${firstDate} · ~${idxNow} el ${lastDate} — ${shape} en la ventana seguida. Movimiento relativo, sin precio.`
+    : `Indexed to 100 on ${firstDate} · ~${idxNow} on ${lastDate} — ${shape} over the tracked window. Relative movement, no price.`;
+  const svg = MuntinSparkline.render(idx.map((v) => Math.round(v * 10) / 10), {
+    width: big ? 460 : 132, height: big ? 128 : 34, stroke: '#2A50C8',
+    baseline: 100, fill: big ? 'rgba(42,80,200,0.10)' : false, dotLast: true,
+    ariaLabel: cap,
+  });
+  return big
+    ? `<figure class="ci-index"><figcaption class="ci-index__cap">${escHtml(cap)}</figcaption>${svg}</figure>`
+    : `<span class="ci-index ci-index--mini">${svg}</span>`;
+}
+
 function marketReadBlock(slug, locale) {
   const r = readingOf(slug);
   if (!r) return '';
@@ -637,6 +685,7 @@ function marketReadBlock(slug, locale) {
   const verified = verifiedNote(slug, r.entry, point, locale);
   const verdict = verdictLine(r.entry.flag, r.conf, locale);
   const spark = sparkBlock(r, locale);
+  const idxChart = indexedMovement(r.entry, locale, { size: 'large' });
   const lab = LABELS[slug] || {};
   const unit = es ? (lab.unit_es || lab.unit_en) : lab.unit_en;
   const unitSfx = unit ? '/' + unit : '';
@@ -701,7 +750,7 @@ function marketReadBlock(slug, locale) {
   return `
   <aside class="ci-read" data-layer="measured" aria-label="${es ? 'Lectura de mercado' : 'Market read'}">
     <p class="ci-read__head">${head}<span class="ci-read__badge">${badge}</span></p>
-    <p class="ci-read__line">${line}</p>${trendLine}${verdict}${spark}
+    <p class="ci-read__line">${line}</p>${trendLine}${verdict}${spark}${idxChart}
     <details class="ci-read__src"><summary>${es ? 'Fuentes' : 'Sources'} · ${(shortList.length || agencies.length)}</summary><div>${srcBody}</div></details>
     ${verified}
     <p class="ci-read__method"><a href="${es ? '/es' : ''}/cost-index/methodology/#track-record">${es ? 'Cómo verificamos este número' : 'How we verify this number'} <span aria-hidden="true">→</span></a></p>
@@ -1052,6 +1101,10 @@ main{padding-top:64px}
 .ci-moving-act{margin:2px 0 0;font-size:13.5px;color:var(--ink-soft)}
 .ci-moving-act strong{color:var(--ink)}
 .ci-moving-more{font-size:12.5px}
+.ci-index--mini{display:inline-block;vertical-align:middle;margin:4px 0 2px;opacity:.9}
+.ci-index{margin:10px 0 4px}
+.ci-index__cap{margin:0 0 4px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+.ci-index .mtn-spark{max-width:100%;height:auto}
 .ci-card--pending{opacity:.72;background:var(--cream-2)}
 .ci-card--pending a{color:var(--ink-soft)}
 .ci-pending-note{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
