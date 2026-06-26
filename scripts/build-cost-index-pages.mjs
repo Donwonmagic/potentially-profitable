@@ -155,6 +155,14 @@ const CI = (() => {
 })();
 const COST_INDEX = CI.ingredients || {};
 const DRIVERS = CI.drivers || {};
+// Sourced driver-association catalog (association, never causation). Each entry
+// carries a labelled mechanism + a source/sourceUrl/retrievedAt for the hub
+// "what's moving" insight evidence drawer. Spoken only on an up read, per the
+// catalog's own honesty note.
+const DRIVER_CAT = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-index-drivers.json'), 'utf8')).drivers || []; }
+  catch { return []; }
+})();
 const LABELS_DOC  = (() => {
   try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-index-labels.json'), 'utf8')); }
   catch { return { labels: {}, drivers: {} }; }
@@ -479,10 +487,29 @@ function reasonFor(slug, v, locale) {
   const r = MOVING_REASON[key] || MOVING_REASON.insufficient;
   return locale === 'es' ? r.es : r.en;
 }
+// Driver association for the hub mover insight. Association, NEVER cause, and it
+// honors the catalog's own rule: a driver is spoken ONLY when the measured read
+// is up (a supply-risk backdrop never explains an easing print). It surfaces the
+// sourced mechanism + a cite drawer, so the "why" travels with its evidence.
+// EN-only for now: the catalog carries no ES prose, and dropping English
+// mechanism text into an ES page would breach the es-MX voice gate. ES movers
+// still get magnitude + persistence + the verdict's own note_es + action.
+function hubDriverInsight(slug, r, locale) {
+  if (locale === 'es') return { assoc: '', cite: '' };
+  const up = !!(r && r.trend && r.trend.dir === 'up');
+  if (!up) return { assoc: '', cite: '' };
+  const d = DRIVER_CAT.find((x) => Array.isArray(x.affects) && x.affects.includes(slug) && x.directionExpected === 'up');
+  if (!d) return { assoc: '', cite: '' };
+  const assoc = ` Often tracks <strong>${escHtml(d.label)}</strong> — ${escHtml(d.mechanism)} <span class="ci-assoc-tag">(association, not cause)</span>.`;
+  const cite = d.source
+    ? `<details class="cite ci-moving-cite"><summary>Evidence</summary><p>${escHtml(d.source)}${d.retrievedAt ? ` · retrieved ${escHtml(d.retrievedAt)}` : ''}${d.sourceUrl ? ` · <a href="${escHtml(d.sourceUrl)}" rel="nofollow noopener" target="_blank">source</a>` : ''}</p></details>`
+    : '';
+  return { assoc, cite };
+}
 function movingNowSection(slugs, locale) {
   const es = locale === 'es';
   const rows = slugs
-    .map((s) => ({ s, v: ingVerdict(s) }))
+    .map((s) => ({ s, v: ingVerdict(s), r: readingOf(s) }))
     .filter((x) => x.v && x.v.tone !== 'hold')   // surface watch + reprice
     .sort((a, b) => (TONE_RANK[a.v.tone] - TONE_RANK[b.v.tone]) || a.s.localeCompare(b.s));
   const head = es ? 'Qué se está moviendo ahora' : "What's moving now";
@@ -493,10 +520,36 @@ function movingNowSection(slugs, locale) {
     return `<section class="ci-moving"><h2 class="ci-cat-h" id="moving">${head}</h2><p class="ci-moving-calm">${calm}</p></section>`;
   }
   const lis = rows.map((x) => {
-    const l = LABELS[x.s] || {};
-    const nm = (es ? (l.es || l.en) : l.en) || x.s;
+    const { s, v, r } = x;
+    const l = LABELS[s] || {};
+    const nm = (es ? (l.es || l.en) : l.en) || s;
     const base = es ? '/es' : '';
-    return `<li class="ci-moving-item">${verdictChip(x.v, locale)}<a href="${base}/cost-index/${x.s}/">${escHtml(nm)}</a> <span class="ci-moving-reason">— ${escHtml(reasonFor(x.s, x.v, locale))}</span></li>`;
+    const unit = (es ? (l.unit_es || l.unit_en) : l.unit_en) || '';
+    const unitSfx = unit ? `/${unit}` : '';
+    // Magnitude: ONLY the gated wholesale level range — never the trend %, which
+    // gates on its own (weaker) trend confidence and would overstate the read.
+    let mag = '';
+    if (r && r.emitRange && Array.isArray(r.rc)) {
+      mag = r.rc[0] !== r.rc[1] ? ` ~${money(r.rc[0])}–${money(r.rc[1])}${unitSfx}` : ` ~${money(r.rc[0])}${unitSfx}`;
+    }
+    const dw = r && r.trend && r.trend.dir ? dirWord(r.trend, locale) : '';
+    const asOf = (r && r.asOf) || '';
+    const asOfTxt = asOf ? ` (${es ? 'al' : 'as of'} ${escHtml(asOf)})` : '';
+    // The verdict engine's own authoritative, gated reasoning.
+    const note = es ? (v.note_es || '') : (v.note_en || '');
+    // Persistence: the measured sustained-elevation counter — the honest forward
+    // signal (how long it has held), never a forecast. Skipped when the verdict
+    // note already speaks the duration, so the week count isn't repeated.
+    const wk = (hubFlag(s) || {}).elevatedWeeks;
+    const persist = (typeof wk === 'number' && wk >= 2 && !/weeks?|semanas?/i.test(note))
+      ? (es ? `, elevado ${wk} semanas` : `, elevated ${wk} weeks`) : '';
+    const di = hubDriverInsight(s, r, locale);
+    const action = es ? (v.verb_es || 'Observa') : (v.verb_en || 'Watch');
+    const more = es ? 'lectura completa' : 'full read';
+    const read = `${dw ? `<strong>${escHtml(dw)}</strong>` : ''}${mag}${(dw || mag) ? asOfTxt : ''}${persist}.${note ? ` ${escHtml(note)}` : ''}${di.assoc}`;
+    return `<li class="ci-moving-item">${verdictChip(v, locale)}<a href="${base}/cost-index/${s}/">${escHtml(nm)}</a>`
+      + `<div class="ci-moving-insight"><p class="ci-moving-read">— ${read}</p>${di.cite}`
+      + `<p class="ci-moving-act">→ <strong>${escHtml(action)}.</strong> <a class="ci-moving-more" href="${base}/cost-index/${s}/">${more} →</a></p></div></li>`;
   }).join('');
   const key = es
     ? `<strong>Re-precificar</strong> = una subida que parece durar · <strong>Vigilar</strong> = un movimiento real, aún sin confirmar · <strong>Mantener</strong> = dentro de su rango normal`
@@ -995,6 +1048,15 @@ main{padding-top:64px}
 .ci-moving-calm{margin:0;font-size:15.5px;color:var(--ink)}
 .ci-vkey{margin:2px 0 12px;font-size:12.5px;color:var(--ink-soft);line-height:1.6}
 .ci-vkey strong{color:var(--ink)}
+.ci-moving-insight{margin:3px 0 2px}
+.ci-moving-read{margin:2px 0;font-size:14.5px;line-height:1.5;color:var(--ink)}
+.ci-assoc-tag{color:var(--ink-soft);font-style:italic;font-size:12.5px}
+.ci-moving-cite{margin:3px 0 4px;font-size:12.5px}
+.ci-moving-cite summary{color:var(--teal);cursor:pointer}
+.ci-moving-cite p{margin:4px 0 0;color:var(--ink-soft)}
+.ci-moving-act{margin:2px 0 0;font-size:13.5px;color:var(--ink-soft)}
+.ci-moving-act strong{color:var(--ink)}
+.ci-moving-more{font-size:12.5px}
 .ci-card--pending{opacity:.72;background:var(--cream-2)}
 .ci-card--pending a{color:var(--ink-soft)}
 .ci-pending-note{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
