@@ -30,10 +30,13 @@ So the grammar must deliver expectation *without* forecasting.
 
 Every Cost Index insight is composed **only** from gated materials, in this order:
 
-1. **Magnitude with a reference frame** — the gated wholesale level range
-   (`readingOf(slug).rc`, emitted only when `emitRange` is true; the per-page and
-   hub can never disagree). The weaker-confidence trend **%** is deliberately
-   *omitted* — it would overstate the read.
+1. **No live cents on the index/hub.** Per the honesty contract, a *price* appears
+   ONLY in the per-ingredient **"Market read" cited-data block** (asOf badge +
+   provenance drawer + basis disclaimer) — that is the single sanctioned exception
+   to "no live cents in evergreen prose." The hub/index stays **price-free**; the
+   exact (cited) figure lives one click away via the full read. The weaker-
+   confidence trend **%** is likewise never shown. Empowerment on the hub comes
+   from the items below, not from raw numbers.
 2. **Observed persistence** — `flag.elevatedWeeks`, a *measured* counter ("elevated
    8 weeks"). This is the honest forward signal: how long it has held, never a
    prediction of how long it will. Skipped when the verdict note already says it.

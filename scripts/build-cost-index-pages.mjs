@@ -524,35 +524,24 @@ function movingNowSection(slugs, locale) {
     const l = LABELS[s] || {};
     const nm = (es ? (l.es || l.en) : l.en) || s;
     const base = es ? '/es' : '';
-    const unit = (es ? (l.unit_es || l.unit_en) : l.unit_en) || '';
-    const unitSfx = unit ? `/${unit}` : '';
-    // The verdict engine's own authoritative, gated reasoning. It carries the
-    // (sustained) directional story — see the note on the direction word below.
+    // The verdict engine's own authoritative, gated reasoning carries the
+    // (sustained) directional story.
     const note = es ? (v.note_es || '') : (v.note_en || '');
-    // Magnitude: ONLY the gated wholesale level range — never the trend %, which
-    // gates on its own (weaker) trend confidence and would overstate the read.
-    let magRange = '';
-    if (r && r.emitRange && Array.isArray(r.rc)) {
-      magRange = r.rc[0] !== r.rc[1] ? `~${money(r.rc[0])}–${money(r.rc[1])}${unitSfx}` : `~${money(r.rc[0])}${unitSfx}`;
-    }
-    const asOf = (r && r.asOf) || '';
-    const magClause = magRange ? `${magRange}${asOf ? ` (${es ? 'al' : 'as of'} ${escHtml(asOf)})` : ''}` : '';
-    // Persistence: the measured sustained-elevation counter — the honest forward
-    // signal (how long it HAS held), never a forecast. Skipped when the verdict
-    // note already speaks the duration, so the week count isn't repeated.
+    // NO live cents on the hub. Per the honesty contract, a price appears ONLY in
+    // the per-ingredient "Market read" cited-data block (asOf badge + provenance
+    // drawer); the index/hub stays cents-free, and the exact figure lives one
+    // click away via the full read. We also omit the current-week direction word
+    // (a live down-tick on a still-elevated "structural" flag would read
+    // "down … up and holding"). The hub insight is therefore: measured
+    // persistence + the verdict's own reasoning + a sourced driver association
+    // + a single action — empowering, evidence-led, and price-free.
     const wk = (hubFlag(s) || {}).elevatedWeeks;
-    const persistWord = (typeof wk === 'number' && wk >= 2 && !/weeks?|semanas?/i.test(note))
-      ? (es ? `elevado ${wk} semanas` : `elevated ${wk} weeks`) : '';
-    // We deliberately do NOT prepend the current-week trend direction word: a
-    // live down-tick on a still-elevated ("structural") flag would render
-    // "down … up and holding" — a self-contradiction the adversarial fact-gate
-    // review caught. The verdict note carries direction; the per-ingredient page
-    // shows the current-week trend in its own context.
-    const lead = (magClause && persistWord) ? `${magClause}, ${persistWord}` : (magClause || persistWord);
+    const persistLead = (typeof wk === 'number' && wk >= 2 && !/weeks?|semanas?/i.test(note))
+      ? (es ? `Elevado ${wk} semanas` : `Elevated ${wk} weeks`) : '';
     const di = hubDriverInsight(s, r, locale);
     const action = es ? (v.verb_es || 'Observa') : (v.verb_en || 'Watch');
     const more = es ? 'lectura completa' : 'full read';
-    const read = `${lead ? `${lead}. ` : ''}${note ? escHtml(note) : ''}${di.assoc}`;
+    const read = `${persistLead ? `${persistLead}. ` : ''}${note ? escHtml(note) : ''}${di.assoc}`;
     return `<li class="ci-moving-item">${verdictChip(v, locale)}<a href="${base}/cost-index/${s}/">${escHtml(nm)}</a>`
       + `<div class="ci-moving-insight"><p class="ci-moving-read">— ${read}</p>${di.cite}`
       + `<p class="ci-moving-act">→ <strong>${escHtml(action)}.</strong> <a class="ci-moving-more" href="${base}/cost-index/${s}/">${more} →</a></p></div></li>`;
