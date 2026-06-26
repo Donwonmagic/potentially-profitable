@@ -68,19 +68,17 @@ for (const full of walk(repoRoot)) {
   const desired = block(isEs);
 
   let next;
-  const existing = new RegExp(`\\s*${escapeRe(START)}[\\s\\S]*?${escapeRe(END)}`);
+  const existing = new RegExp(`[ \\t]*${escapeRe(START)}[\\s\\S]*?${escapeRe(END)}\\n?`);
   if (existing.test(src)) {
-    next = src.replace(existing, '\n' + desired);
+    // Idempotent re-run: replace the block where it already lives.
+    next = src.replace(existing, desired + '\n');
   } else {
-    // Anchor before the first hreflang alternate link if present (keeps the
-    // discovery links beside the other <link rel="alternate"> tags), else
-    // immediately before </head>.
-    const anchor = src.match(/[ \t]*<link rel="alternate" hreflang=/i);
-    if (anchor) {
-      next = src.slice(0, anchor.index) + desired + '\n' + src.slice(anchor.index);
-    } else {
-      next = src.replace(/([ \t]*)<\/head>/i, `${desired}\n$1</head>`);
-    }
+    // Anchor ABOVE the i18n:hreflang sentinel region (stamp-hreflang.mjs owns
+    // everything between its START/END markers and would clobber a block placed
+    // inside it). Fall back to before the first hreflang link, then </head>.
+    next = insertAtLineStart(src, /<!--\s*i18n:hreflang START/i, desired)
+        ?? insertAtLineStart(src, /<link rel="alternate" hreflang=/i, desired)
+        ?? src.replace(/([ \t]*)<\/head>/i, `${desired}\n$1</head>`);
   }
 
   if (next !== src) {
@@ -91,6 +89,15 @@ for (const full of walk(repoRoot)) {
 }
 
 function escapeRe(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+// Insert `block` on its own line(s) immediately before the line containing the
+// first match of `re`. Returns null if no match (so callers can fall through).
+function insertAtLineStart(src, re, blockText) {
+  const m = src.match(re);
+  if (!m) return null;
+  const lineStart = src.lastIndexOf('\n', m.index) + 1;
+  return src.slice(0, lineStart) + blockText + '\n' + src.slice(lineStart);
+}
 
 if (checkOnly && stale.length) {
   console.error(`feed-discovery: ${stale.length} page(s) missing/stale discovery links, e.g. ${stale.slice(0, 5).join(', ')}`);
