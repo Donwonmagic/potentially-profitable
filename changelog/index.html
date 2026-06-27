@@ -46,7 +46,7 @@
       "inLanguage": "en-US",
       "isPartOf": { "@id": "https://muntin.digital/#website" },
       "publisher": { "@id": "https://muntin.digital/#business" },
-      "dateModified": "2026-05-02"
+      "dateModified": "2026-06-27"
     },
     {
       "@type": "BreadcrumbList",
@@ -409,6 +409,18 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         Every meaningful change to the live site, grouped by month and surface. Quiet refactors and dependency bumps live in the git history; this page lists what an operator or returning reader might actually notice.
       </p>
     </header>
+
+    <section style="margin-bottom:56px">
+      <h2 style="font-size:14px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 18px;padding-top:18px;border-top:1px solid var(--line)">June 2026 &middot; Trust</h2>
+
+      <div class="changelog-entry" style="margin-bottom:32px">
+        <p style="font-size:13.5px;color:var(--stone);margin:0 0 6px">2026-06-27</p>
+        <h3 style="font-size:20px;font-weight:600;color:var(--ink);margin:0 0 8px">The no-language-model data promise, stated where it belongs</h3>
+        <p style="font-size:15.5px;line-height:1.65;color:var(--ink);margin:0">
+          <a href="/ai/">/ai/</a>, <a href="/never/">/never/</a>, and <a href="/security/">/security/</a> now carry Muntin Ledger&rsquo;s actual data-path commitment in plain English (EN + ES): <strong>no language model ever reads the invoices you hand the product.</strong> Extraction runs on Muntin&rsquo;s own infrastructure, your invoice text is never sent to an outside AI provider, the model that reads an invoice is fixed so your corrections never train it, and a build gate blocks any release that would so much as add a language-model library. The commitment is the code &mdash; the enforcing scripts are published and readable at <a href="https://ledger.muntin.digital/promises">ledger.muntin.digital/promises</a>. This retires the older studio-era &ldquo;engagement letter&rdquo; framing for the product-only truth; no competitor is named &mdash; the point is what we can prove about ourselves.
+        </p>
+      </div>
+    </section>
 
     <section style="margin-bottom:56px">
       <h2 style="font-size:14px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 18px;padding-top:18px;border-top:1px solid var(--line)">May 2026 &middot; Refresh push</h2>
