@@ -13,6 +13,24 @@ repo survives. Update this file as threads move.
 dev branch `claude/muntin-digital-strategy-07sowb` is merged to main (storefront
 PR #482, product PR #227) and closed — start fresh from `main`.
 
+## ⮕ CURRENT STATE — read this first (updated 2026-06-26)
+
+Branch `claude/muntin-strategic-council-rqdehe`: **22 commits ahead of main, all pushed, working tree clean.** No PR (none requested). Product repo untouched.
+
+**Shipped this session (all independently audited + pushed):**
+- **Phase 0 — freshness foundation:** sitewide `<head>` feed-discovery links; sitemap `lastmod` derives ONLY from real `dateModified` (git-mtime removed — it was re-flattening the signal); 6 collection hubs gained truthful `lastmod` (`inject-hub-modified-time.mjs`).
+- **Phase 1 — the Cost Index made genuinely useful (ADR-010):** hub "What's moving now" is now empowering + evidence-backed (sourced driver association + Evidence drawer) + **price-free** (cents stay in the per-ingredient cited Market-read block) + a **price-free indexed movement chart** (`indexedMovement()`, hub mini + per-ingredient large). Fact-gate-reviewed 3× (caught + fixed a down/"up-and-holding" contradiction and an eggplant "rose"-while-falling).
+- **Phase 2 — prune COMPLETE:** `method/` + 19 widgets noindex-shelved; 31 off-funnel sheets legacy-shelved; course nav-dot de-wired; **8 tools + `start/` retired+301** (full migration — Worker map `src/lib/tool-redirects.js`, regression-tested `scripts/test-tool-redirects.mjs`).
+- **Strategy:** Factura competitive audit → `docs/strategy-anti-factura-positioning.md` (honesty-labelled, NOT publish-ready).
+
+**Gate baseline (CRITICAL for counting regressions):** `check-all` = **~22 failing**, ALL deploy-regenerated idempotency drifts (CSS shells/cache-bust, glossary knit/OG/script/stamp/schema/sidecar, sheet/topic/tool rails, sheet OG cards, themes/theme-story/cuisine builders, warm-palette, RSS, llms.txt, hub schema, H2-anchors, lazy-loader, cost-index sync). These are NOT failures — the deploy regenerates them. **Only count NEW ones.** The hard gates are GREEN: locale-parity, hreflang-orphans, **check-fabrications**, check-intent-param-targets, check-audit-fetch-timeouts.
+
+**NEXT QUEUE (recommended order):**
+1. **Act on Factura** — strengthen `/never` `/security` `/ai` with the no-training / deterministic / "your data is yours" commitments (state OUR commitments; do NOT name Factura; ToS wording needs egress-verified before any public reference). Fact-gated prose.
+2. **Prune leftovers** — `tools/start/` (survivor "pick a tool" page), tools/glossary hub `dateModified` source (need a real one — don't invent), ES driver-mechanism translation for the hub insight, a real `/changelog` entry (its 2026-05-02 date is HONEST — don't bump without new content).
+
+Full detail + the tools-migration replacement map + gotchas are in the sections below. Cross-refs: `ADR-010` (insight grammar), `docs/plans/website-heartbeat-and-prune.md` (audit synthesis), `docs/strategy-anti-factura-positioning.md`.
+
 ## The singular vision (the thing everything ladders to)
 
 muntin is the honest, privacy-first, operator-built, **modular** restaurant
