@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "generatedAt": "2026-06-10T22:55:47.263Z",
+  "generatedAt": "2026-06-26T22:22:06.462Z",
   "engine": "f5",
   "model": "don-reference.m4a",
   "voice": "f5:don-reference.m4a",
   "language": "en",
-  "total": 569.22,
+  "total": 668.08,
   "chunks": [
     {
       "id": 0,
@@ -75,265 +75,305 @@
       "id": 8,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(4)",
-      "text": "Most weeks, the way diners find you changes a little. The week of May 19, twenty twenty-six was not most weeks. Inside four days, Google rebuilt AI Mode on stage at its I/O conference, started rolling out its second core search update of the year on May 21, and, per a BrightEdge readout that landed May 20, Gemini was confirmed as the number 2 AI referral source, up from 4.3% of AI referral traffic at the start of Q1 to 13.2% by April. Three announcements, one direction: the surface that sends people to your door is being rewritten to answer and act before the diner ever reaches you.",
+      "text": "Picture the week the way it actually landed on a host stand. Monday, May 19, twenty twenty-six, the lunch rush thins out and the phone in your apron buzzes with the headline that Google has rebuilt AI Mode on stage at its I/O conference. You barely file it before Wednesday the 21st brings the second core search update of the year, and the day before that a BrightEdge readout confirms Gemini as the number 2 AI referral source, up from 4.3% of AI referral traffic at the start of Q1 to 13.2% by April. Three announcements inside four days, and not one of them asks your permission. In a single week, Google rebuilt AI Mode, ran a core update, and watched Gemini reach 13.2% of AI referral traffic, three shifts that all rewrite the same surface, the one that sends a diner to your door, to answer and act before the diner ever reaches you. The rest of this read is that story told in order: what changed, why it matters, and the move it leaves you.",
       "start": 60.28,
-      "end": 89.57
+      "end": 107.27
     },
     {
       "id": 9,
       "kind": "figure",
       "selector": "#post-body > figure:nth-of-type(1)",
       "text": "The convergence in one chart: Gemini climbing while ChatGPT slips, over the first four months of twenty twenty-six. Gemini's share of AI referral traffic was four point three percent in January, eleven point six percent by the end of the first quarter, and thirteen point two percent by April, roughly tripled in one quarter. The bottom two rows show ChatGPT moving the other way over the same window: a tick marks where ChatGPT started at eighty-nine point two percent, and its April bar has pulled back to eighty-one point four percent. One assistant rising, one easing, both reading the same Google profile, that is the convergence this overview is about.",
-      "start": 90.67,
-      "end": 123.39
+      "start": 108.37,
+      "end": 141.09
     },
     {
       "id": 10,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Three shifts, none of them small, all of them rewarding the same two things: being legible to a machine, and bookable without a phone call. The I/O rebuild made the local result a composed answer that can act. The core update re-weights ranking under a surface that increasingly summarizes instead of lists. And Gemini&rsquo;s climb means the same Google profile that wins the map pack is now also the ranking surface for the fastest-growing AI assistant. The three converge on one asset. The rest of this overview is what that means in practice, and the five pieces walk it end to end.",
-      "start": 124.39,
-      "end": 152.94
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(1)",
+      "text": "Three announcements, one direction. The surface that used to hand a diner a list now composes an answer, and the answer is built from a file you already own.",
+      "start": 142.09,
+      "end": 149.79
     },
     {
       "id": 11,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "What &ldquo;legibility&rdquo; and &ldquo;bookability&rdquo; actually mean (operationally).",
-      "start": 154.44,
-      "end": 158.85
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Three shifts, none of them small, all of them rewarding the same two things: being legible to a machine, and bookable without a phone call. The I/O rebuild made the local result a composed answer that can act. The core update re-weights ranking under a surface that increasingly summarizes instead of lists. And Gemini&rsquo;s climb means the same Google profile that wins the map pack is now also the ranking surface for the fastest-growing AI assistant. The three converge on one asset. The rest of this overview is what that means in practice, and the five pieces walk it end to end.",
+      "start": 150.79,
+      "end": 179.34
     },
     {
       "id": 12,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "Legibility is not a brand idea. It is the literal question of whether a model can lift the answer to &ldquo;what do they serve, when are they open, are they any good, do they fit my ask&rdquo; out of plain text and structured fields. If the answer lives only inside a photographed menu, a P D F, or a hand-coded image, the model cannot read it and quotes a competitor who wrote it down. Legibility is the four-number check on the Google Business Profile , the schema markup on your own pages, the hours-by-day and the cuisine fields filled in like a permit application, no blanks.",
-      "start": 159.8,
-      "end": 187.87
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "What &ldquo;legibility&rdquo; and &ldquo;bookability&rdquo; actually mean (operationally).",
+      "start": 180.84,
+      "end": 185.25
     },
     {
       "id": 13,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "Bookability is the same idea applied to action. The new AI answer does not just describe; it can complete a reservation through OpenTable, Resy, or Tock without sending the diner to your site. If your inventory is in a paper book by the host stand or behind a &ldquo;call us&rdquo; line, the agent cannot see it, it books a restaurant whose tables it can. Bookability is your reservation link , a connected provider, and a mobile checkout that does not break under the agent&rsquo;s handoff.",
-      "start": 188.67,
-      "end": 212.71
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Legibility is not a brand idea. It is the literal question of whether a model can lift the answer to &ldquo;what do they serve, when are they open, are they any good, do they fit my ask&rdquo; out of plain text and structured fields. If the answer lives only inside a photographed menu, a P D F, or a hand-coded image, the model cannot read it and quotes a competitor who wrote it down. Legibility is the four-number check on the Google Business Profile , the schema markup on your own pages, the hours-by-day and the cuisine fields filled in like a permit application, no blanks.",
+      "start": 186.2,
+      "end": 214.27
     },
     {
       "id": 14,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "Neither concept is new. Operators have heard both for years. What changed in one week is that they became newly load-bearing : the same two requirements now decide whether you are named by the model, picked by the agent, and visible in three of the four surfaces a diner uses to find you. You did not have to win on legibility and bookability before; the map pack&rsquo;s proximity-plus-rating math forgave a lot. The new surface forgives almost nothing.",
-      "start": 213.51,
-      "end": 235.4
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Bookability is the same idea applied to action. The new AI answer does not just describe; it can complete a reservation through OpenTable, Resy, or Tock without sending the diner to your site. If your inventory is in a paper book by the host stand or behind a &ldquo;call us&rdquo; line, the agent cannot see it, it books a restaurant whose tables it can. Bookability is your reservation link , a connected provider, and a mobile checkout that does not break under the agent&rsquo;s handoff.",
+      "start": 215.07,
+      "end": 239.11
     },
     {
       "id": 15,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "The one asset that feeds all four surfaces.",
-      "start": 236.9,
-      "end": 239
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Neither concept is new. Operators have heard both for years. What changed in one week is that they became newly load-bearing : the same two requirements now decide whether you are named by the model, picked by the agent, and visible in three of the four surfaces a diner uses to find you. You did not have to win on legibility and bookability before; the map pack&rsquo;s proximity-plus-rating math forgave a lot. The new surface forgives almost nothing.",
+      "start": 239.91,
+      "end": 261.8
     },
     {
       "id": 16,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Pull the three shifts apart and they all reach for the same file: your Google Business Profile . It feeds the map pack the same as it always did. It feeds Google&rsquo;s AI Overview, where a generated answer is assembled from whatever the model can read and trust about you, the rebuild we covered in the new surface . It feeds Gemini, which leans on Google&rsquo;s own ecosystem (your profile, Maps, and reviews) far more than ChatGPT or Perplexity do, the dynamic in the new traffic source . And it feeds the booking agent, which builds its shortlist of tables it can book from the profiles it can see, the gate in capture the booking .",
-      "start": 239.95,
-      "end": 271.2
+      "text": "From the floor",
+      "start": 262.6,
+      "end": 263.27
     },
     {
       "id": 17,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(2)",
-      "text": "One asset feeding four discovery surfaces. The Google Business Profile sits in the center as the hub. From it run four spokes: to the classic map pack, to Google's AI Overview, to Gemini's restaurant answers, and to the agentic booking flow that completes a reservation through OpenTable, Resy, or Tock. Keep one profile complete and current and you are working all four surfaces with one afternoon's effort.",
-      "start": 272.3,
-      "end": 292.67
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "I read these two words the way I&rsquo;d read a line check. Legibility is whether the kitchen wrote it down, can a machine find your hours, your cuisine, your &ldquo;yes, we seat a party of eight&rdquo; in plain text, or is it locked inside a photographed menu only a human can squint at. Bookability is whether the pass is open, can the table be claimed without someone picking up the phone. For years a thin profile cost you nothing you could feel; proximity carried you anyway. The week the surface started composing the answer, that slack quietly ran out, and the restaurants that had already written it down were the ones the model could still see.",
+      "start": 263.82,
+      "end": 295.27
     },
     {
       "id": 18,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "This is the convergence. One file, four exits. A complete profile working all four surfaces was a nice-to-have eighteen months ago, when the map pack was carrying most of the traffic. Today it is the lowest-cost discovery move you can make, because every hour you spend on the profile gets paid out four times.",
-      "start": 293.67,
-      "end": 308.68
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "The one asset that feeds all four surfaces.",
+      "start": 296.77,
+      "end": 298.87
     },
     {
       "id": 19,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "Why these five pieces are ordered the way they are.",
-      "start": 310.18,
-      "end": 312.68
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Pull the three shifts apart and they all reach for the same file: your Google Business Profile . It feeds the map pack the same as it always did. It feeds Google&rsquo;s AI Overview, where a generated answer is assembled from whatever the model can read and trust about you, the rebuild we covered in the new surface . It feeds Gemini, which leans on Google&rsquo;s own ecosystem (your profile, Maps, and reviews) far more than ChatGPT or Perplexity do, the dynamic in the new traffic source . And it feeds the booking agent, which builds its shortlist of tables it can book from the profiles it can see, the gate in capture the booking .",
+      "start": 299.82,
+      "end": 331.07
     },
     {
       "id": 20,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "The wave is not five loose articles. It is a dependency chain. You cannot decide what to do about the new surface until you have seen it. You cannot tell if it is hurting you until you know whether you are in it. You cannot judge the size of the leak until you know the cost. And you cannot capture the booking until you have read the three pieces about how the diner reaches you in the first place. Each piece earns the next.",
-      "start": 313.63,
-      "end": 334.34
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "One asset feeding four discovery surfaces. The Google Business Profile sits in the center as the hub. From it run four spokes: to the classic map pack, to Google's AI Overview, to Gemini's restaurant answers, and to the agentic booking flow that completes a reservation through OpenTable, Resy, or Tock. Keep one profile complete and current and you are working all four surfaces with one afternoon's effort.",
+      "start": 332.17,
+      "end": 352.54
     },
     {
       "id": 21,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(3)",
-      "text": "A symptom-router for the five pieces: start from the problem you can feel and it points you at the chapter that diagnoses it. If you do not even know what the new Google answer looks like, start with the new surface, which walks through the I/O rebuild. If you suspect you are missing from AI answers, go to the four-number check, where 83 percent of restaurants are invisible and the rating floors run 4.3 for ChatGPT, 4.1 for Perplexity, and 3.9 for Gemini. If your phone has gone quiet even though you still rank, read what it is costing, where Maps views are down 40.1 percent and food orders down 25.7 percent over two years while rankings held. If you want to know where the lost traffic went, open the new traffic source on Gemini, which climbed from 4.3 to 13.2 percent of AI referrals in a quarter. And if diners cannot finish a booking with you, finish on capturing the booking, where 65 percent of diners prefer to book on the restaurant's own site and the agent only shortlists OpenTable, Resy, or Tock. The verdict pill on each branch names which chapter is your entry point. Read in order they tell one story; read by symptom, any door gets you in.",
-      "start": 335.44,
-      "end": 392.35
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "This is the convergence. One file, four exits. A complete profile working all four surfaces was a nice-to-have eighteen months ago, when the map pack was carrying most of the traffic. Today it is the lowest-cost discovery move you can make, because every hour you spend on the profile gets paid out four times.",
+      "start": 353.54,
+      "end": 368.55
     },
     {
       "id": 22,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "Read out of order, the pieces still hold. Read in order, they tell one story: the surface composed the answer, the answer skipped you, the call stopped ringing, the traffic moved, the booking happened, without you. Each piece is a chapter in that sequence, not a standalone post.",
-      "start": 393.35,
-      "end": 406.84
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Why these five pieces are ordered the way they are.",
+      "start": 370.05,
+      "end": 372.55
     },
     {
       "id": 23,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "The work that wins is the work you already know.",
-      "start": 408.34,
-      "end": 410.69
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "The wave is not five loose articles. It is a dependency chain. You cannot decide what to do about the new surface until you have seen it. You cannot tell if it is hurting you until you know whether you are in it. You cannot judge the size of the leak until you know the cost. And you cannot capture the booking until you have read the three pieces about how the diner reaches you in the first place. Each piece earns the next.",
+      "start": 373.5,
+      "end": 394.21
     },
     {
       "id": 24,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "Nothing in this wave asks you to learn a new platform, hire a consultant, or buy ads. The four moves that win the new surface are the same four moves that won the old one, they are just newly visible to machines that route traffic now. Complete the Google Business Profile, every field, no blanks. Keep reviews recent by responding to the ones you have; the date on the reply is the freshness signal the model reads. Put the answers a diner actually asks, group of eight, vegan entr&eacute;e, patio, in plain text on your own pages, backed by restaurant schema. And connect a real booking provider so the agent has a table it can hand the diner.",
-      "start": 411.64,
-      "end": 442.7
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "A symptom-router for the five pieces: start from the problem you can feel and it points you at the chapter that diagnoses it. If you do not even know what the new Google answer looks like, start with the new surface, which walks through the I/O rebuild. If you suspect you are missing from AI answers, go to the four-number check, where 83 percent of restaurants are invisible and the rating floors run 4.3 for ChatGPT, 4.1 for Perplexity, and 3.9 for Gemini. If your phone has gone quiet even though you still rank, read what it is costing, where Maps views are down 40.1 percent and food orders down 25.7 percent over two years while rankings held. If you want to know where the lost traffic went, open the new traffic source on Gemini, which climbed from 4.3 to 13.2 percent of AI referrals in a quarter. And if diners cannot finish a booking with you, finish on capturing the booking, where 65 percent of diners prefer to book on the restaurant's own site and the agent only shortlists OpenTable, Resy, or Tock. The verdict pill on each branch names which chapter is your entry point. Read in order they tell one story; read by symptom, any door gets you in.",
+      "start": 395.31,
+      "end": 452.22
     },
     {
       "id": 25,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(14)",
-      "text": "None of that is new. The 4.3-4.1-3.9 rating floors only matter because the AI assistants surfaced them. The Maps engagement decline only matters because the diner can now resolve the question without the tap. The Gemini climb only matters because the same profile work pays twice. Read together, the five pieces argue that the operator who keeps the profile current, the reviews fresh, the answers in text, and the booking provider live has already done most of the work the new surface asks for, without naming it that way.",
-      "start": 443.5,
-      "end": 469.22
+      "text": "Read out of order, the pieces still hold. Read in order, they tell one story: the surface composed the answer, the answer skipped you, the call stopped ringing, the traffic moved, the booking happened, without you. Each piece is a chapter in that sequence, not a standalone post.",
+      "start": 453.22,
+      "end": 466.71
     },
     {
       "id": 26,
       "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(6)",
-      "text": "Five pieces, one thesis, read them in order.",
-      "start": 470.72,
-      "end": 472.86
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "The work that wins is the work you already know.",
+      "start": 468.21,
+      "end": 470.56
     },
     {
       "id": 27,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(15)",
-      "text": "Treat the wave as a single book in five chapters, not five posts that happen to share a publish date. The thesis is one sentence: in one week, Google unified its discovery surfaces around a single asset, profile legibility, and the five pieces are how an independent restaurant moves through that convergence without losing the diner.",
-      "start": 473.81,
-      "end": 490
+      "text": "Nothing in this wave asks you to learn a new platform, hire a consultant, or buy ads. The four moves that win the new surface are the same four moves that won the old one, they are just newly visible to machines that route traffic now. Complete the Google Business Profile, every field, no blanks. Keep reviews recent by responding to the ones you have; the date on the reply is the freshness signal the model reads. Put the answers a diner actually asks, group of eight, vegan entr&eacute;e, patio, in plain text on your own pages, backed by restaurant schema. And connect a real booking provider so the agent has a table it can hand the diner.",
+      "start": 471.51,
+      "end": 502.57
     },
     {
       "id": 28,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(16)",
-      "text": "Start with the new surface . The other four make sense once the first one lands.",
-      "start": 490.8,
-      "end": 494.71
+      "text": "The work didn&rsquo;t change. What changed is who is reading it. Hold the same checklist against the two surfaces and the shift is the whole point:",
+      "start": 503.37,
+      "end": 510.58
     },
     {
       "id": 29,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(7)",
-      "text": "What to do this week.",
-      "start": 496.21,
-      "end": 497.22
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "None of that is new. The 4.3-4.1-3.9 rating floors only matter because the AI assistants surfaced them. The Maps engagement decline only matters because the diner can now resolve the question without the tap. The Gemini climb only matters because the same profile work pays twice. Read together, the five pieces argue that the operator who keeps the profile current, the reviews fresh, the answers in text, and the booking provider live has already done most of the work the new surface asks for, without naming it that way.",
+      "start": 511.13,
+      "end": 536.85
     },
     {
       "id": 30,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Run the G B P grader and close the blank fields it flags, hours by day, cuisine, attributes, menu link, booking link.",
-      "start": 498.17,
-      "end": 503.91
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Five pieces, one thesis, read them in order.",
+      "start": 538.35,
+      "end": 540.49
     },
     {
       "id": 31,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Pull your star rating and your newest review date. Note the gap to the nearest assistant floor (4.3, 4.1, 3.9) and whether anything is older than this month.",
-      "start": 504.41,
-      "end": 512.11
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "Treat the wave as a single book in five chapters, not five posts that happen to share a publish date. The thesis is one sentence: in one week, Google unified its discovery surfaces around a single asset, profile legibility, and the five pieces are how an independent restaurant moves through that convergence without losing the diner.",
+      "start": 541.44,
+      "end": 557.63
     },
     {
       "id": 32,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Pick three questions a diner would actually ask. Confirm the answer exists, in plain text, on your own site, not behind a P D F or photographed menu.",
-      "start": 512.61,
-      "end": 519.92
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Here is what I keep coming back to, standing at a pass while a screen somewhere rewrites how a stranger finds the room. The week sounded like an emergency, three announcements, four days, none of them asking. It wasn&rsquo;t one. It was a deadline arriving on work most operators had been quietly putting off, and the bill came due all at once. The restaurants that get hurt aren&rsquo;t the ones who missed the I/O keynote; they&rsquo;re the ones who left the profile half-finished because nothing punished it yet. Now something does. That&rsquo;s the entire story, and it&rsquo;s a kinder one than the headlines made it sound.",
+      "start": 558.43,
+      "end": 588.86
     },
     {
       "id": 33,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "Confirm your reservations are live on OpenTable, Resy, or Tock, then open your own site on a phone and book a table yourself. Time it.",
-      "start": 520.42,
-      "end": 527.14
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "Start with the new surface . The other four make sense once the first one lands.",
+      "start": 589.66,
+      "end": 593.57
     },
     {
       "id": 34,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
-      "text": "Run the storefront health check to make sure the path from the AI answer to your door still works without a phone call.",
-      "start": 527.64,
-      "end": 533.67
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "What to do this week.",
+      "start": 595.07,
+      "end": 596.08
     },
     {
       "id": 35,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(17)",
-      "text": "Key takeaways",
-      "start": 534.47,
-      "end": 535.09
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Run the G B P grader and close the blank fields it flags, hours by day, cuisine, attributes, menu link, booking link.",
+      "start": 597.03,
+      "end": 602.77
     },
     {
       "id": 36,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
-      "text": "The three May twenty twenty-six shifts converge on one bottleneck, legibility plus bookability through the Google Business Profile.",
-      "start": 535.64,
-      "end": 542.06
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Pull your star rating and your newest review date. Note the gap to the nearest assistant floor (4.3, 4.1, 3.9) and whether anything is older than this month.",
+      "start": 603.27,
+      "end": 610.97
     },
     {
       "id": 37,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
-      "text": "One profile feeds four surfaces: the map pack, the AI Overview, Gemini (13.2% of AI referrals), and the agentic booking flow.",
-      "start": 542.56,
-      "end": 549.28
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Pick three questions a diner would actually ask. Confirm the answer exists, in plain text, on your own site, not behind a P D F or photographed menu.",
+      "start": 611.47,
+      "end": 618.78
     },
     {
       "id": 38,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
-      "text": "Legibility and bookability are not new concepts, they are newly load-bearing, because every surface now reads the same file.",
-      "start": 549.78,
-      "end": 555.86
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Confirm your reservations are live on OpenTable, Resy, or Tock, then open your own site on a phone and book a table yourself. Time it.",
+      "start": 619.28,
+      "end": 626
     },
     {
       "id": 39,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
-      "text": "The five pieces form a dependency chain: see the surface, check visibility, count the cost, pivot to the new traffic source, capture the booking.",
-      "start": 556.36,
-      "end": 563.47
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "Run the storefront health check to make sure the path from the AI answer to your door still works without a phone call.",
+      "start": 626.5,
+      "end": 632.53
     },
     {
       "id": 40,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "Key takeaways",
+      "start": 633.33,
+      "end": 633.95
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "The three May twenty twenty-six shifts converge on one bottleneck, legibility plus bookability through the Google Business Profile.",
+      "start": 634.5,
+      "end": 640.92
+    },
+    {
+      "id": 42,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "One profile feeds four surfaces: the map pack, the AI Overview, Gemini (13.2% of AI referrals), and the agentic booking flow.",
+      "start": 641.42,
+      "end": 648.14
+    },
+    {
+      "id": 43,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Legibility and bookability are not new concepts, they are newly load-bearing, because every surface now reads the same file.",
+      "start": 648.64,
+      "end": 654.72
+    },
+    {
+      "id": 44,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "The five pieces form a dependency chain: see the surface, check visibility, count the cost, pivot to the new traffic source, capture the booking.",
+      "start": 655.22,
+      "end": 662.33
+    },
+    {
+      "id": 45,
       "kind": "list",
       "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
       "text": "The work that wins is profile-and-site work you already know, newly visible to machines that route traffic.",
-      "start": 563.97,
-      "end": 569.22
+      "start": 662.83,
+      "end": 668.08
     }
   ]
 }
