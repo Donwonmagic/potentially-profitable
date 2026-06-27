@@ -1338,6 +1338,7 @@ main{padding-top:64px}
 .ci-orient__cell{background:var(--cream-2);border-radius:6px;padding:14px 16px}
 .ci-orient__h{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
 .ci-orient__b{font-size:14px;line-height:1.5;color:var(--ink);margin:0}
+.ci-signup--compact{margin:18px 0}
 .ci-signup-alt{margin:12px 0 0;font-size:13.5px;color:var(--ink-soft);line-height:1.6}
 .ci-signup-alt a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
 .ci-signup-sep{color:var(--stone,#9aa0aa);margin:0 4px}
@@ -1809,6 +1810,41 @@ function emitExpandingPage(slug, locale) {
   ${body}` + pageTail;
 }
 
+// ---- Weekly-email capture (reused on the hub + every ingredient page) ----
+// Persona audit #2: the email signup — the one conversion a tired operator was
+// ready for — sat below the hub's longest scroll. Most visitors land on an
+// INGREDIENT page (from search), which had no capture at all. Same wired form
+// (.foot-newsletter-form → pageTail script), so it posts via fetch and shows
+// the inline confirmation; data-surface tags the conversion source.
+function weeklySignup(locale, opts) {
+  opts = opts || {};
+  const es = locale === 'es';
+  const lang = es ? 'es' : 'en';
+  const base = es ? '/es' : '';
+  const id = opts.id || 'ci-news-email';
+  const source = opts.source || 'cost-index';
+  const pitch = opts.pitch || (es
+    ? 'Recibe el índice cada semana por correo — una lectura corta de lo que se mueve y qué hacer al respecto. Cuatro líneas, sin relleno.'
+    : 'Get the index in your inbox every week — a short read on what’s moving and what to do about it. A few lines, no funnels.');
+  const alt = opts.compact ? '' : `
+      <p class="ci-signup-alt">${es ? '¿Prefieres explorar a tu ritmo?' : 'Rather check back yourself?'} <a href="${base}/cost-index/weekly/">${es ? 'Ediciones semanales anteriores' : 'Past weekly reads'} <span aria-hidden="true">→</span></a> <span class="ci-signup-sep">·</span> <a href="${base}/feed.xml">RSS</a></p>`;
+  return `<div class="ci-signup${opts.compact ? ' ci-signup--compact' : ''}"${opts.anchor ? ' id="weekly-email"' : ''}>
+      <div class="foot-newsletter">
+        <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="${lang}" data-surface="${source}">
+          <p class="foot-newsletter-pitch">${pitch}</p>
+          <label class="foot-newsletter-label" for="${id}">${es ? 'Tu correo' : 'Your email'}</label>
+          <input id="${id}" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="you@yourrestaurant.com" />
+          <input type="hidden" name="locale" value="${lang}" />
+          <input type="hidden" name="source" value="${source}" />
+          <input type="hidden" name="ts" value="" />
+          <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="newsletter" data-size="flexible"></div>
+          <button type="submit">${es ? 'Enviarme el índice semanal' : 'Email me the weekly index'}</button>
+        </form>
+      </div>${alt}
+    </div>`;
+}
+
 function emitIngredientPage(slug, locale) {
   if (!shippable(slug)) return emitExpandingPage(slug, locale);
   const es = locale === 'es';
@@ -1872,6 +1908,9 @@ function emitIngredientPage(slug, locale) {
     ${whyMovingBlock(slug, locale)}
     ${whyItMatters(slug, locale)}
     ${howToUse(slug, locale)}
+    ${weeklySignup(locale, { id: 'ci-news-email-ing', source: 'cost-index-ingredient', compact: true, pitch: (locale === 'es'
+      ? '¿No quieres revisar a mano cada semana? Recibe el índice por correo — una lectura corta de lo que se mueve y qué hacer. Unas líneas, sin relleno.'
+      : 'Don’t want to check this by hand every week? Get the index by email — a short read on what’s moving and what to do. A few lines, no funnels.') })}
     ${faqHtml}
     ${siblings(slug, locale)}
     <div class="ci-cta-row">
@@ -2016,22 +2055,7 @@ function emitHubPage(locale, slugs) {
     ${sections}
     ${pendingSection}
     ${driverNote}
-    <div class="ci-signup" id="weekly-email">
-      <div class="foot-newsletter">
-        <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="${lang}">
-          <p class="foot-newsletter-pitch">${es ? 'Recibe el índice cada semana por correo — una lectura corta de lo que se mueve y qué hacer al respecto. Cuatro líneas, sin relleno.' : 'Get the index in your inbox every week — a short read on what’s moving and what to do about it. A few lines, no funnels.'}</p>
-          <label class="foot-newsletter-label" for="ci-news-email">${es ? 'Tu correo' : 'Your email'}</label>
-          <input id="ci-news-email" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="you@yourrestaurant.com" />
-          <input type="hidden" name="locale" value="${lang}" />
-          <input type="hidden" name="source" value="cost-index" />
-          <input type="hidden" name="ts" value="" />
-          <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
-          <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="newsletter" data-size="flexible"></div>
-          <button type="submit">${es ? 'Enviarme el índice semanal' : 'Email me the weekly index'}</button>
-        </form>
-      </div>
-      <p class="ci-signup-alt">${es ? '¿Prefieres explorar a tu ritmo?' : 'Rather check back yourself?'} <a href="${base}/cost-index/weekly/">${es ? 'Ediciones semanales anteriores' : 'Past weekly reads'} <span aria-hidden="true">→</span></a> <span class="ci-signup-sep">·</span> <a href="${base}/feed.xml">RSS</a></p>
-    </div>
+    ${weeklySignup(locale, { anchor: true })}
     <p class="ci-source"><strong>${es ? 'Fuente' : 'Sourced'}:</strong> ${es ? 'datos públicos de mercado (USDA AMS/LMR, BLS, FRED, EIA, NOAA), vía' : 'public market data (USDA AMS/LMR, BLS, FRED, EIA, NOAA), via'} <a href="${base}/tools/cost-pulse/">Cost Pulse</a>.</p>
   </div>` + pageTail;
 }
