@@ -556,6 +556,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <p class="cp-lede">A free market read of where common restaurant ingredients are priced — a typical range, the trend, and how fresh each number is, drawn from public sources (<a href="/glossary/usda-market-news/">USDA</a>, <a href="/glossary/bls/">BLS</a>, <a href="/glossary/fred/">FRED</a>). Use it to tell a real market move from a vendor markup — these are public wholesale reference levels, never your delivered price. Every number traces to a dated public report and a named method: <a href="/cost-index/methodology/">read the full methodology &rarr;</a> <span class="cp-lede-legacy">Saved invoices from the retired decoder? Your historical dashboard is further down.</span></p>
   </div>
 
+  <noscript>
+    <div class="cp-card" style="border-left:4px solid var(--teal);">
+      <p style="margin:0 0 8px;font-weight:600;">Cost Pulse runs in your browser, so it needs JavaScript on.</p>
+      <p style="margin:0;">With JavaScript off, see the same readings as a plain page on the <a href="/cost-index/">Restaurant Cost Index</a> — every ingredient's typical range, trend, and as-of date, no scripts required.</p>
+    </div>
+  </noscript>
+
   <div id="cpStatus"></div>
 
   <!-- Market context (Cost Index). Public market signal — renders for everyone,
@@ -566,7 +573,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <div class="cp-card cp-market" id="cpMarketCard" hidden>
     <h2 id="cpMarketHeading"></h2>
     <p class="cp-market-dek" id="cpMarketDek"></p>
-    <p class="cp-market-preview" id="cpMarketPreview" role="note" hidden></p>
+    <p class="cp-market-preview" id="cpMarketPreview" role="status" aria-live="polite" hidden></p>
     <div id="cpMarketList"></div>
     <p class="cp-market-cta" id="cpMarketCta"></p>
   </div>
