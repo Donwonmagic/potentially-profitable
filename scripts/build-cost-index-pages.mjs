@@ -491,18 +491,29 @@ function reasonFor(slug, v, locale) {
 // honors the catalog's own rule: a driver is spoken ONLY when the measured read
 // is up (a supply-risk backdrop never explains an easing print). It surfaces the
 // sourced mechanism + a cite drawer, so the "why" travels with its evidence.
-// EN-only for now: the catalog carries no ES prose, and dropping English
-// mechanism text into an ES page would breach the es-MX voice gate. ES movers
-// still get magnitude + persistence + the verdict's own note_es + action.
+// Bilingual: ES reads the catalog's own label_es/mechanism_es (the registered
+// Spanish translation). A driver that lacks ES prose is omitted on the ES page
+// rather than leaking English text — so a half-translated catalog can never
+// breach the ES voice contract; those ES movers still get magnitude +
+// persistence + the verdict's own note_es + action.
 function hubDriverInsight(slug, r, locale) {
-  if (locale === 'es') return { assoc: '', cite: '' };
+  const es = locale === 'es';
   const up = !!(r && r.trend && r.trend.dir === 'up');
   if (!up) return { assoc: '', cite: '' };
   const d = DRIVER_CAT.find((x) => Array.isArray(x.affects) && x.affects.includes(slug) && x.directionExpected === 'up');
   if (!d) return { assoc: '', cite: '' };
-  const assoc = ` Often tracks <strong>${escHtml(d.label)}</strong> — ${escHtml(d.mechanism)} <span class="ci-assoc-tag">(association, not cause)</span>.`;
+  // ES needs the translated prose; without it, omit (never drop English on /es/).
+  if (es && (!d.label_es || !d.mechanism_es)) return { assoc: '', cite: '' };
+  const label = es ? d.label_es : d.label;
+  const mechanism = es ? d.mechanism_es : d.mechanism;
+  const tracks = es ? 'A menudo sigue a' : 'Often tracks';
+  const tag = es ? 'asociación, no causa' : 'association, not cause';
+  const assoc = ` ${tracks} <strong>${escHtml(label)}</strong> — ${escHtml(mechanism)} <span class="ci-assoc-tag">(${tag})</span>.`;
+  const evid = es ? 'Evidencia' : 'Evidence';
+  const retrieved = es ? 'recuperado' : 'retrieved';
+  const srcLabel = es ? 'fuente' : 'source';
   const cite = d.source
-    ? `<details class="cite ci-moving-cite"><summary>Evidence</summary><p>${escHtml(d.source)}${d.retrievedAt ? ` · retrieved ${escHtml(d.retrievedAt)}` : ''}${d.sourceUrl ? ` · <a href="${escHtml(d.sourceUrl)}" rel="nofollow noopener" target="_blank">source</a>` : ''}</p></details>`
+    ? `<details class="cite ci-moving-cite"><summary>${evid}</summary><p>${escHtml(d.source)}${d.retrievedAt ? ` · ${retrieved} ${escHtml(d.retrievedAt)}` : ''}${d.sourceUrl ? ` · <a href="${escHtml(d.sourceUrl)}" rel="nofollow noopener" target="_blank">${srcLabel}</a>` : ''}</p></details>`
     : '';
   return { assoc, cite };
 }
