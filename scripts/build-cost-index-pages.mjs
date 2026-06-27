@@ -1326,6 +1326,9 @@ main{padding-top:64px}
 .ci-orient__cell{background:var(--cream-2);border-radius:6px;padding:14px 16px}
 .ci-orient__h{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
 .ci-orient__b{font-size:14px;line-height:1.5;color:var(--ink);margin:0}
+.ci-signup-alt{margin:12px 0 0;font-size:13.5px;color:var(--ink-soft);line-height:1.6}
+.ci-signup-alt a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-signup-sep{color:var(--stone,#9aa0aa);margin:0 4px}
 .ci-source{font-size:12.5px;color:var(--ink-soft);margin:24px 0 40px}
 .ci-source a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));margin:14px 0 0}
@@ -1972,6 +1975,7 @@ function emitHubPage(locale, slugs) {
           <button type="submit">${es ? 'Enviarme el índice semanal' : 'Email me the weekly index'}</button>
         </form>
       </div>
+      <p class="ci-signup-alt">${es ? '¿Prefieres explorar a tu ritmo?' : 'Rather check back yourself?'} <a href="${base}/cost-index/weekly/">${es ? 'Ediciones semanales anteriores' : 'Past weekly reads'} <span aria-hidden="true">→</span></a> <span class="ci-signup-sep">·</span> <a href="${base}/feed.xml">RSS</a></p>
     </div>
     <p class="ci-source"><strong>${es ? 'Fuente' : 'Sourced'}:</strong> ${es ? 'datos públicos de mercado (USDA AMS/LMR, BLS, FRED, EIA, NOAA), vía' : 'public market data (USDA AMS/LMR, BLS, FRED, EIA, NOAA), via'} <a href="${base}/tools/cost-pulse/">Cost Pulse</a>.</p>
   </div>` + pageTail;
