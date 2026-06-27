@@ -38,7 +38,7 @@
     "readyForLandingB": false,
     "note": "readyForLandingB=false means keep current labels live and revisit when more vendored history accrues; the shadow report itself is the deliverable."
   },
-  "changedCount": 81,
+  "changedCount": 80,
   "ingredients": [
     {
       "key": "acorn-squash",
@@ -863,20 +863,6 @@
         "agreement": 0.5,
         "freshness": 1,
         "ownCoverage": 0.941
-      },
-      "ceiling": "low"
-    },
-    {
-      "key": "poblano-pepper",
-      "currentLabel": "low",
-      "proposedLabel": "directional",
-      "changed": true,
-      "S": 0.499,
-      "parts": {
-        "indep": 0,
-        "agreement": 0.75,
-        "freshness": 1,
-        "ownCoverage": 0.824
       },
       "ceiling": "low"
     },
