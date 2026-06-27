@@ -1559,6 +1559,9 @@ function emitIngredientPage(slug, locale) {
       <a class="btn btn-primary" href="${base}/tools/cost-pulse/#ci-${slug}">${es ? 'Abrir Cost Pulse' : 'Open Cost Pulse'}</a>
       <a class="btn btn-ghost" href="${base}/cost-index/">${es ? 'Ver todas las lecturas' : 'Browse all readings'}</a>
     </div>
+    <p class="ci-ledger-bridge" style="margin:16px 0 0;font-size:14.5px;line-height:1.6;color:var(--ink-soft)">${es
+      ? `Esta es la referencia del mercado. Para ver si <em>tus</em> facturas la siguen, l&iacute;nea por l&iacute;nea, eso es <a href="${base}/ledger/" style="color:var(--teal);font-weight:600">Muntin Ledger</a> &mdash; tus datos, sin modelo de lenguaje.`
+      : `This is the market reference. To see whether <em>your</em> invoices track it, line by line, that's <a href="${base}/ledger/" style="color:var(--teal);font-weight:600">Muntin Ledger</a> &mdash; your data, no language model.`}</p>
     ${srcLine}
   </div>` + pageTail;
 }
