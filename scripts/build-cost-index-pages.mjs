@@ -675,7 +675,9 @@ function allReadingsTable(slugs, locale) {
     const dir = (r.trend && r.trend.dir) || 'flat';
     const dw = (r.trend && r.trend.dir) ? dirWord(r.trend, locale) : (es ? 'casi estable' : 'about flat');
     const spark = indexedMovement(r.entry, locale, {});
-    return `<tr>`
+    // data-name (display name + slug) is the filter key for the search box below.
+    const key = `${nm} ${s}`.toLowerCase();
+    return `<tr data-name="${escHtml(key)}">`
       + `<td><a href="${base}/cost-index/${s}/">${escHtml(nm)}</a></td>`
       + `<td class="ci-t-dir" data-dir="${dir}">${escHtml(dw)}</td>`
       + `<td>${verdictChip(v, locale)}</td>`
@@ -683,9 +685,19 @@ function allReadingsTable(slugs, locale) {
       + `<td>${escHtml(r.asOf || '—')}</td>`
       + `</tr>`;
   }).join('');
+  // The find-an-ingredient box (the #1 experiential miss — two operators bounced
+  // looking for their ingredient in an 82-row list). Hidden until JS so no-JS
+  // users never see a dead control; the full table is the no-JS baseline. The
+  // filter script lives in pageTail, guarded on this input's id.
+  const emptyRow = `<tr class="ci-table-empty" data-empty hidden><td colspan="${cols.length}">${es ? 'Sin coincidencias.' : 'No matches.'}</td></tr>`;
+  const tools = `<div class="ci-table-tools" hidden>`
+    + `<label class="ci-table-search__label" for="ci-ingredient-search">${es ? 'Buscar ingrediente' : 'Find an ingredient'}</label>`
+    + `<input id="ci-ingredient-search" class="ci-table-search" type="search" autocomplete="off" spellcheck="false" placeholder="${es ? 'Escribe un ingrediente…' : 'Type an ingredient…'}" aria-controls="ci-readings-table" />`
+    + `<span class="ci-table-count" role="status" aria-live="polite"></span></div>`;
   return `<section class="ci-readings"><h2 class="ci-cat-h" id="all-readings">${escHtml(head)}</h2>`
     + `<p class="ci-pending-note">${note}</p>`
-    + `<div class="table-scroll"><table class="ci-table"><thead><tr>${cols.map((c) => `<th>${escHtml(c)}</th>`).join('')}</tr></thead><tbody>${body}</tbody></table></div></section>`;
+    + tools
+    + `<div class="table-scroll"><table class="ci-table" id="ci-readings-table"><thead><tr>${cols.map((c) => `<th>${escHtml(c)}</th>`).join('')}</tr></thead><tbody>${body}${emptyRow}</tbody></table></div></section>`;
 }
 
 // ---- History sparkline + "normally X–Y, right now Z" capsule -------
@@ -1365,6 +1377,12 @@ main{padding-top:64px}
 .ci-card--pending a{color:var(--ink-soft)}
 .ci-pending-note{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
 .ci-readings{margin:20px 0 8px}
+.ci-table-tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:12px 0 0}
+.ci-table-search__label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+.ci-table-search{flex:1 1 220px;max-width:340px;font:inherit;font-size:14px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--white);color:var(--ink)}
+.ci-table-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.ci-table-count{font-size:13px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.ci-table-empty td{color:var(--ink-soft);font-style:italic;padding:14px 10px}
 .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0}
 .ci-table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
 .ci-table th,.ci-table td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap;vertical-align:middle}
@@ -1488,6 +1506,43 @@ const pageTail = `</div>
   function init() {
     var forms = document.querySelectorAll('.foot-newsletter-form, .js-signup-form');
     Array.prototype.forEach.call(forms, wire);
+  }
+  init();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+<!-- Find-an-ingredient filter for the Cost Index hub table. Progressive
+     enhancement: reveals the (hidden) search box, filters rows by name/slug,
+     shows a no-match row, and announces the count. No-ops on pages without
+     the table (every other cost-index page). -->
+<script>
+(function () {
+  'use strict';
+  if (typeof document === 'undefined') return;
+  function init() {
+    var box = document.getElementById('ci-ingredient-search');
+    if (!box || box.dataset.wired === '1') return;
+    var table = document.getElementById('ci-readings-table');
+    if (!table || !table.tBodies.length) return;
+    box.dataset.wired = '1';
+    var tools = box.closest('.ci-table-tools');
+    if (tools) tools.hidden = false;
+    var all = Array.prototype.slice.call(table.tBodies[0].rows);
+    var rows = all.filter(function (r) { return !r.hasAttribute('data-empty'); });
+    var empty = table.querySelector('tr[data-empty]');
+    var count = document.querySelector('.ci-table-count');
+    function apply() {
+      var q = box.value.trim().toLowerCase();
+      var shown = 0;
+      for (var i = 0; i < rows.length; i++) {
+        var hit = !q || (rows[i].getAttribute('data-name') || '').indexOf(q) !== -1;
+        rows[i].hidden = !hit;
+        if (hit) shown++;
+      }
+      if (empty) empty.hidden = !(q && shown === 0);
+      if (count) count.textContent = q ? (shown + ' / ' + rows.length) : '';
+    }
+    box.addEventListener('input', apply);
   }
   init();
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
