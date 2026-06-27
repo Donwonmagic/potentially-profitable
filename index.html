@@ -406,12 +406,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      The library is the proof, not the lede; the lede is the
      cost-intelligence work: the Cost Index, the free tools, and
      Muntin Ledger.
-     Three CTAs in priority order: Run my free audit (primary, the
-     audit is the highest-intent door) → Join the founding list
-     (secondary, the operator who wants first access to Muntin Ledger,
-     anchors the #founding band below) → Or take the 60-minute tour
-     (tertiary text link, for the researcher). The library count strip
-     survives below as the proof line. -->
+     Three CTAs in priority order: See the Cost Index (primary, the
+     flagship — the live market read nothing else has) → Browse the
+     free tools → Join the founding list (the operator who wants first
+     access to Muntin Ledger, anchors the #founding band below). The
+     60-minute tour is the tertiary text link for the researcher; the
+     library count strip survives below as the proof line. -->
 <section class="hero">
   <div class="container hero-grid">
     <div>
@@ -423,7 +423,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         Muntin Digital is the restaurant numbers company that doesn&rsquo;t rent your guests back to you &mdash; a primary-source Cost Index, free private tools, and Muntin Ledger, the invoice ledger. I run front-of-house at a DMV restaurant; these are the numbers I check on my own shifts. The library below is free, no signup.
       </p>
       <div class="hero-ctas">
-        <a class="btn btn-primary" href="/tools/audits/restaurant/">Run my free audit
+        <a class="btn btn-primary" href="/cost-index/">See the Cost Index
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
         <a class="btn btn-ghost" href="/tools/">Browse the free tools</a>
@@ -506,20 +506,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   </div>
 </section>
 
-<!-- ============ PRIMARY TOOL CTA ============ -->
-<!-- Replaces the old "Built for" proof strip with a full-width
-     push into the restaurant audit tool. The inline form posts
-     ?url= to /tools/audits/restaurant/, which auto-runs the
-     audit on page load so the flow is one submit → result page.
-     The score-ring mock on the right is a static SVG so there's
-     no runtime cost. -->
-<!-- Phase 7 W1-4: flagship hero — two new tools (Menu Design Suite
-     + Advanced Invoice Decoder) replace the single Restaurant
-     Audit CTA. The differentiator chip is the centerpiece move:
-     "vs Canva templates" / "vs Restaurant365 · MarginEdge ·
-     Plate IQ" — owners see immediately what these tools beat.
-     Audit demotes to a muted text link beneath the flagships;
-     it's still in /tools/ at full visibility. -->
+<!-- ============ FREE FLAGSHIP TOOLS ============ -->
+<!-- A full-width push into two live, on-device tools: Muntin Bench
+     (is your price moving wrong?) and Plate Cost (what your menu
+     makes). The retired Restaurant Website Audit was removed in the
+     2026-06 product-only refresh; these are the cost-intelligence
+     tools that replace it on the front door. -->
 <section class="tool-cta tool-cta-flagships" aria-labelledby="tool-cta-heading">
   <div class="container">
     <div class="tool-cta-flagships__head">
@@ -527,11 +519,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <h2 id="tool-cta-heading" class="tool-cta-flagships__heading">Find the leak before you fix it.</h2>
     </div>
     <div class="tool-cta-flagships__grid tool-cta-flagships__grid--single">
-      <a class="tool-card-flagship" href="/tools/audits/restaurant/">
-        <span class="tool-card-flagship__chip">About 30 seconds &middot; no signup</span>
-        <h3 class="tool-card-flagship__title">Restaurant Website Audit</h3>
-        <p class="tool-card-flagship__headline">A real mobile Lighthouse audit plus ten restaurant-specific checks, in plain English. Drop your URL.</p>
-        <span class="tool-card-flagship__cta">Run the audit
+      <a class="tool-card-flagship" href="/tools/vendor-benchmark/">
+        <span class="tool-card-flagship__chip">Free &middot; on your device &middot; no signup</span>
+        <h3 class="tool-card-flagship__title">Is your price moving wrong?</h3>
+        <p class="tool-card-flagship__headline">Paste what you&rsquo;ve paid and when. Muntin Bench reads the trend and tells you whether a price is moving in line &mdash; or drifting out of line and worth a call to your vendor.</p>
+        <span class="tool-card-flagship__cta">Check a price
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </span>
       </a>
@@ -1081,9 +1073,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
        <footer> so sync-includes captures it as part of the canonical
        footer block and stays idempotent across re-syncs. -->
   <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Quick actions">
-    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/tools/audits/restaurant/" data-event="sticky-cta-audit">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
-      Run free audit
+    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/tools/cost-pulse/" data-event="sticky-cta-cost-pulse">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 18 L9 12 L13 15 L20 6"/><polyline points="15 6 20 6 20 11"/></svg>
+      Check prices
     </a>
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/window/" data-event="sticky-cta-window">
       <span class="mobile-cta-bar__pulse" id="mobileCtaBarPulse" hidden aria-hidden="true" title="Don is around"></span>
