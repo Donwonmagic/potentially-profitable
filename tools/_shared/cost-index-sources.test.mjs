@@ -75,6 +75,35 @@ test('end-to-end: three sources → composite with wholesale level + blended up-
   assert.ok(r.provenance.length >= 4);
 });
 
+test('buildCompositeInput: a levelEligible:false source feeds the trend but never anchors the level', () => {
+  // Two terminal markets, both non-index. The stale one (levelEligible:false)
+  // must stay in sourceSeries (trend) but be excluded from levelObs (level), so
+  // its aged date can't land in level.provenance and re-trip the stale-level gate.
+  const fresh = {
+    source: 'usda-ams-atlanta', basis: 'wholesale', family: 'usda-ams-atlanta', type: 'usda-ams',
+    points: [{ date: '2026-06-01', value: 50 }, { date: '2026-06-20', value: 53 }],
+    levelEligible: true,
+  };
+  const stale = {
+    source: 'usda-ams-los-angeles', basis: 'wholesale', family: 'usda-ams-los-angeles', type: 'usda-ams',
+    points: [{ date: '2026-02-10', value: 48 }, { date: '2026-02-25', value: 49 }],
+    levelEligible: false,
+  };
+  const input = S.buildCompositeInput([fresh, stale], { asOf: '2026-06-20' });
+  // Level sees only the fresh terminal; the stale read never enters levelObs.
+  assert.equal(input.levelObs.length, 1);
+  assert.equal(input.levelObs[0].source, 'usda-ams-atlanta');
+  // But both terminals remain in the trend series.
+  assert.ok(input.sourceSeries['usda-ams-atlanta']);
+  assert.ok(input.sourceSeries['usda-ams-los-angeles']);
+
+  const r = C.assess(input);
+  // The composed level — and crucially its provenance dates — derive only from
+  // the fresh terminal, so nothing >120d can re-trip the stale-level gate.
+  assert.equal(r.level.nSources, 1);
+  assert.ok(r.level.provenance.every((p) => p.date >= '2026-06-01'));
+});
+
 test('AMS reducer: mostlyMid averages the mostly band, falls back to low/high', () => {
   assert.equal(S.reduceAmsRow({ mostly_low: '13.00', mostly_high: '15.00' }, 'mostlyMid'), 14);
   assert.equal(S.reduceAmsRow({ low_price: '$12.00', high_price: '$16.00' }, 'mostlyMid'), 14);

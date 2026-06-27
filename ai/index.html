@@ -46,7 +46,7 @@
       "inLanguage": "en-US",
       "isPartOf": { "@id": "https://muntin.digital/#website" },
       "publisher": { "@id": "https://muntin.digital/#business" },
-      "dateModified": "2026-05-02"
+      "dateModified": "2026-06-27"
     },
     {
       "@type": "BreadcrumbList",
@@ -226,7 +226,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          via _redirects so old backlinks land softly. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
-      <a href="/start/">Start</a>
+      <a href="/cost-index/">Cost Index</a>
       <a href="/tools/">Tools</a>
       <a href="/studio/">Company</a>
       <!-- Ledger — sister product (the privacy-forward invoice ledger)
@@ -288,7 +288,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
        toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
-    <a href="/start/">Start</a>
+    <a href="/cost-index/">Cost Index</a>
     <a href="/tools/">Tools</a>
     <a href="/studio/">Company</a>
     <a href="https://ledger.muntin.digital/">Ledger</a>
@@ -425,7 +425,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <section style="margin-bottom:48px;padding:24px 28px;background:var(--cream-2);border-radius:12px;border:1px solid var(--line)">
       <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 14px">What AI never does here</h2>
       <ul style="font-size:16px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
-        <li style="margin-bottom:12px"><strong>Train on your data.</strong> Tools run in your browser; the inputs never reach a server, let alone a training corpus. Studio engagements use API providers with the &ldquo;no training&rdquo; setting on; the policy is in the engagement letter, not the marketing copy.</li>
+        <li style="margin-bottom:12px"><strong>Train on your data.</strong> The free tools run in your browser; the inputs never reach a server, let alone a training corpus. And in Muntin Ledger &mdash; where you <em>do</em> hand over invoices &mdash; no language model reads them at all: extraction runs on Muntin&rsquo;s own infrastructure, your invoice text is never sent to an outside AI provider, and a build gate blocks any release that would add a language-model library. The model that reads an invoice is fixed, so your corrections never train it. The commitment is the code, published at <a href="https://ledger.muntin.digital/promises" style="color:var(--teal)">ledger.muntin.digital/promises</a> with the enforcing scripts open to read.</li>
         <li style="margin-bottom:12px"><strong>Sell prompts, embeddings, or transcripts.</strong> Nothing produced inside the studio &mdash; your invoices, your menu drafts, your meeting notes &mdash; gets resold, syndicated, or aggregated.</li>
         <li style="margin-bottom:12px"><strong>Generate restaurant photos as real client work.</strong> The dishes in case studies are dishes a real photographer shot in a real kitchen. Hero shots are commissioned, not synthesized. Where AI imagery appears (illustrated diagrams, op-ed flat graphics), it&rsquo;s labeled as illustration in the alt text.</li>
         <li style="margin-bottom:12px"><strong>Write reviews, fake testimonials, or backdated &ldquo;case studies.&rdquo;</strong> Every review you read on this site has a person&rsquo;s name and a verified context. Aggregate ratings only appear once five real ones exist.</li>
@@ -443,7 +443,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li style="margin-bottom:10px"><strong>Drafting and editing.</strong> Claude (Anthropic), GPT-class models (OpenAI). API mode with training opt-out enabled; consumer-mode chats are used only for non-confidential generic drafts.</li>
         <li style="margin-bottom:10px"><strong>Code assistance.</strong> Claude Code. Same training-opt-out posture. No client repository contents are pasted into a consumer-grade UI.</li>
         <li style="margin-bottom:10px"><strong>Embeddings.</strong> OpenAI embeddings power glossary cross-links and search ranking. Embeddings are computed on public site content only.</li>
-        <li style="margin-bottom:10px"><strong>What&rsquo;s never here.</strong> No autonomous &ldquo;agent&rdquo; runs over client data. No model-generated emails sent without my review. No generative-fill on photographs of real food.</li>
+        <li style="margin-bottom:10px"><strong>What&rsquo;s never here.</strong> No autonomous &ldquo;agent&rdquo; runs over client data. No model-generated emails sent without my review. No generative-fill on photographs of real food. And no language model anywhere in Muntin Ledger&rsquo;s invoice-reading path &mdash; the providers above draft this website; they never see a customer&rsquo;s invoice, and a CI gate keeps it that way.</li>
       </ul>
     </section>
 

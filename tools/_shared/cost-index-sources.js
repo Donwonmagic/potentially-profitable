@@ -273,7 +273,18 @@
     (outputs || []).forEach(function (o) {
       if (!o || !Array.isArray(o.points) || !o.points.length) return;
       sourceSeries[o.source] = { basis: o.basis, values: o.points.map(function (p) { return p.value; }), weight: o.weight, family: o.family, type: o.type };
-      if (o.basis !== 'index') {
+      // A source anchors the LEVEL only if it's non-index AND the caller hasn't
+      // flagged it stale (levelEligible === false). A dead terminal-market feed —
+      // a terminal whose latest read has aged past the freshness bar while its
+      // peers stay current — still feeds the TREND (sourceSeries, above) but must
+      // not anchor, nor date-stamp, the current level: a stale read left in
+      // levelObs would skew the p25–p75 range and leave a >120d date in
+      // level.provenance, re-tripping the stale-level gate on the next live
+      // refresh (the durable cure for the 2026-06-26 poblano carry-forward, which
+      // only dropped the affected points by hand). The flag is opt-in: when it's
+      // absent every non-index source still contributes, so existing callers are
+      // unchanged.
+      if (o.basis !== 'index' && o.levelEligible !== false) {
         var latest = o.points[o.points.length - 1];
         var obsRow = { source: o.source, basis: o.basis, valueCents: Math.round(latest.value * 100), date: latest.date, family: o.family, type: o.type, recent: weeklyTail(o.points, 8) };
         // Carry the latest day's measured low–high band (cents) so compositeLevel

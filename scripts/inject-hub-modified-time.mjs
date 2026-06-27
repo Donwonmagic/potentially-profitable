@@ -10,7 +10,9 @@
  * when a new child lands). Honest by construction: never a hand-typed or "today"
  * date, only the real newest-child date.
  *
- * Hubs whose children carry no dateModified (tools/, glossary/) are SKIPPED — we
+ * Hubs whose children carry no dateModified are SKIPPED unless a real date
+ * source exists: the glossary hub is dated from data/glossary-added.json (newest
+ * term-added date); tools/ is still SKIPPED (no dated source yet) — we
  * do not invent a date. They stay lastmod-less until a real date source is wired.
  *
  * Idempotent + sentinel-wrapped.  node scripts/inject-hub-modified-time.mjs [--check]
@@ -45,6 +47,20 @@ const nb = maxDateModified('blog'), nbEs = maxDateModified('es/blog');
 const nl = maxDateModified('library'), nlEs = maxDateModified('es/library');
 const mx = (...d) => d.filter(Boolean).sort().pop() || '';
 
+// The glossary's term pages carry no per-page dateModified, but
+// data/glossary-added.json records the date each term was added — its newest
+// entry is the date the glossary hub last genuinely gained a term (a truthful
+// freshness signal, not a build-time stamp). One shared source feeds EN + ES,
+// since the term set mirrors across locales.
+function newestGlossaryAdded() {
+  try {
+    const j = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/glossary-added.json'), 'utf8'));
+    const dates = (j.added || []).map((e) => e && e.date).filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d || ''));
+    return dates.sort().pop() || '';
+  } catch { return ''; }
+}
+const ng = newestGlossaryAdded();
+
 // hub file -> truthful date (newest child it surfaces). Skip when no source.
 const HUBS = {
   'index.html': mx(nb, nl),
@@ -53,6 +69,8 @@ const HUBS = {
   'es/blog/index.html': nbEs,
   'library/index.html': nl,
   'es/library/index.html': nlEs,
+  'glossary/index.html': ng,
+  'es/glossary/index.html': ng,
 };
 
 let changed = 0; const stale = [];
@@ -78,4 +96,4 @@ if (checkOnly && stale.length) {
   console.error(`hub-modified: ${stale.length} hub(s) stale: ${stale.join(', ')}`);
   process.exit(1);
 }
-console.log(`hub-modified: ${checkOnly ? 'all current' : `${changed} hub(s) stamped`} (blog ${nb||'—'}, library ${nl||'—'}).`);
+console.log(`hub-modified: ${checkOnly ? 'all current' : `${changed} hub(s) stamped`} (blog ${nb||'—'}, library ${nl||'—'}, glossary ${ng||'—'}).`);
