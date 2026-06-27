@@ -418,6 +418,13 @@ const CHECKS = [
   // USDA-sourced posture: every entry carries a citation + EN/ES + a real key.
   ['Cost-index seasonality education','check-seasonality-education.mjs'],
   ['Cost-index seasonality education self-test','check-seasonality-education.mjs','--self-test'],
+  // Seasonal band enforcement (P1d) — the rendered "typical for this month"
+  // bands on the ingredient pages state a multi-year norm (median + p25–p75).
+  // The fabrication regex can't catch a wrong statistic, so this re-derives
+  // every rendered band from seasonality.json and fails on drift or on any
+  // band that should not exist (not ready, or a month with <2 distinct years).
+  ['Cost-index seasonal band','check-cost-index-seasonal.mjs'],
+  ['Cost-index seasonal band self-test','check-cost-index-seasonal.mjs','--self-test'],
   // Shippable bar — below-bar ingredients must stay out of the browser seed
   // (no thin / no-level read on the dashboard; they live as expanding-coverage).
   ['Cost-index shippable bar','check-shippable-bar.mjs'],

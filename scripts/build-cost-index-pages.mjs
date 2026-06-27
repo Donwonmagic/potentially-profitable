@@ -182,6 +182,25 @@ const PRESSURE_RULES = (() => {
 })();
 const PRESSURE_SOURCES = PRESSURE_RULES.sources || {};
 
+// ---- Seasonality (multi-year monthly norms) ------------------------
+// data/seasonality.json carries, per ingredient, a per-month median + p25/p75
+// earned ACROSS distinct calendar years, with a `ready` flag and a `years`
+// count per month. Built by scripts/build-seasonality.mjs from the deep public
+// history. Used to render the "typical for this month" band — gated so a month
+// only earns a "typical" figure once observed across >=2 distinct years (the
+// methodology's stated bar). Shape is an array of entries keyed by `.key`.
+const SEASON = (() => {
+  try {
+    const raw = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/seasonality.json'), 'utf8'));
+    const arr = Array.isArray(raw) ? raw : (raw.ingredients || []);
+    const map = {};
+    for (const e of arr) { if (e && e.key) map[e.key] = e; }
+    return map;
+  } catch { return {}; }
+})();
+const MONTHS_EN = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const MONTHS_ES = ['', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+
 // HOLD-UNTIL-PROVEN. The 2026-Q2 calibration (scripts/calibrate-pressure.mjs) found
 // the hand-set pressure weights have weak out-of-sample support against the best
 // free long-history price proxy. So the inferred Outlook overlay is PUBLISHED for an
@@ -654,9 +673,12 @@ function sparkBlock(r, locale) {
     : ch < -0.03 ? (es ? 'bajó a lo largo de la ventana' : 'eased over the tracked window')
     : (es ? 'se mantuvo estable en la ventana' : 'held steady over the tracked window');
   const windowNote = es ? 'en la ventana seguida' : 'over the tracked window';
+  // "Recent range" — NOT "Normally": this band is the trailing tracked window
+  // (≤26 weeks), which for a seasonal item can be dominated by one season. The
+  // word "normal" belongs only to the multi-year seasonal band (seasonalBand).
   const capsule = es
-    ? `Normalmente ${money(lo)}–${money(hi)}, ahora ${money(now)} — ${pos}.`
-    : `Normally ${money(lo)}–${money(hi)}, right now ${money(now)} — ${pos}.`;
+    ? `Rango reciente ${money(lo)}–${money(hi)}, ahora ${money(now)} — ${pos}.`
+    : `Recent range ${money(lo)}–${money(hi)}, right now ${money(now)} — ${pos}.`;
   // Percentile-of-history as a COUNT (never a smoothed "85th percentile"):
   // the figure operators repeat. Last ≤12 prior reads, honesty-gated like
   // the rest of the block.
@@ -677,6 +699,59 @@ function sparkBlock(r, locale) {
   });
   return `
     <div class="ci-read__spark">${svg}<p class="ci-read__capsule">${capsule}${rank ? ` <span class="ci-read__rank">${rank}</span>` : ''} <span class="ci-read__capsule-note">(${windowNote})</span></p></div>`;
+}
+
+// ---- Seasonal "typical for this month" band ------------------------
+// The trailing-window capsule above answers "is this above its RECENT range?"
+// — it cannot answer the question an operator on a seasonal item actually asks:
+// "is this expensive *for this month*, or just a normal seasonal level?" This
+// band answers it from data/seasonality.json — the median + p25–p75 a month has
+// earned across >=2 DISTINCT calendar years (below that bar nothing renders, per
+// the methodology). Every figure is a deterministic re-derivation of the deep
+// public history; the data-season-* attributes let check-cost-index-seasonal.mjs
+// recompute and diff. Cents are allowed here (per-ingredient page, not the hub).
+function seasonalBand(slug, r, locale) {
+  const es = locale === 'es';
+  const e = SEASON[slug];
+  if (!e || !e.ready || !r || !r.emitPoint || !r.asOf) return '';
+  const mo = parseInt(String(r.asOf).slice(5, 7), 10);
+  if (!(mo >= 1 && mo <= 12)) return '';
+  const md = e.months && e.months[String(mo).padStart(2, '0')];
+  // The hard honesty gate: a month earns a "typical" figure only with >=2
+  // distinct years observed (and a real median). Otherwise: render nothing.
+  if (!md || !(md.years >= 2) || !(md.medianCents > 0)) return '';
+  const lo = md.p25Cents, hi = md.p75Cents, med = md.medianCents;
+  // current price drawn from the SAME basis/series the sparkline uses, so the
+  // two never disagree.
+  const basis = r.basis;
+  const vals = (r.entry.history || [])
+    .filter((h) => h && h.basis === basis && typeof h.valueCents === 'number' && isFinite(h.valueCents) && h.valueCents > 0)
+    .map((h) => h.valueCents);
+  const now = vals.length ? vals[vals.length - 1] : null;
+  const monName = es ? MONTHS_ES[mo] : MONTHS_EN[mo];
+  let posTxt = '';
+  if (now != null && lo > 0 && hi > 0) {
+    posTxt = now > hi
+      ? (es ? ` La lectura actual (${money(now)}) está por encima de lo típico de ${monName}.` : ` The current read (${money(now)}) is running above its typical ${monName}.`)
+      : now < lo
+      ? (es ? ` La lectura actual (${money(now)}) está por debajo de lo típico de ${monName} — barato para la temporada.` : ` The current read (${money(now)}) is below its typical ${monName} — seasonally cheap.`)
+      : (es ? ` La lectura actual (${money(now)}) está dentro de lo típico de ${monName}.` : ` The current read (${money(now)}) sits inside its typical ${monName}.`);
+  }
+  const rangeTxt = lo !== hi ? `${money(lo)}–${money(hi)}` : money(lo);
+  const headTxt = es ? `Típico de ${monName}` : `Typical for ${monName}`;
+  const body = es
+    ? `Normalmente ${rangeTxt} (mediana ${money(med)}) en ${monName}, según ${md.n} lecturas en ${md.years} años distintos.${posTxt}`
+    : `Usually ${rangeTxt} (median ${money(med)}) in ${monName}, across ${md.n} reads over ${md.years} distinct years.${posTxt}`;
+  const srcTxt = es
+    ? `Norma estacional de varios años, calculada a partir del historial público profundo (USDA, BLS, FRED). Un mes solo gana una cifra “típica” una vez observado en 2 o más años distintos; por debajo de esa barra no se muestra ninguna.`
+    : `Multi-year seasonal norm, computed from the deep public history (USDA, BLS, FRED). A month earns a “typical” figure only once observed across 2 or more distinct years; below that bar, none is shown.`;
+  const summ = es ? 'Cómo se calcula lo típico' : 'How “typical” is figured';
+  return `
+    <div class="ci-season" data-season-month="${mo}" data-season-med="${med}" data-season-lo="${lo}" data-season-hi="${hi}" data-season-years="${md.years}" data-season-n="${md.n}">
+      <p class="ci-season__head">${headTxt}</p>
+      <p class="ci-season__body">${body}</p>
+      <details class="ci-season__src"><summary>${summ}</summary><div>${srcTxt}</div></details>
+    </div>`;
 }
 
 // ---- The visible "Market read" data block --------------------------
@@ -752,6 +827,7 @@ function marketReadBlock(slug, locale) {
   const verified = verifiedNote(slug, r.entry, point, locale);
   const verdict = verdictLine(r.entry.flag, r.conf, locale);
   const spark = sparkBlock(r, locale);
+  const season = seasonalBand(slug, r, locale);
   const idxChart = indexedMovement(r.entry, locale, { size: 'large' });
   const lab = LABELS[slug] || {};
   const unit = es ? (lab.unit_es || lab.unit_en) : lab.unit_en;
@@ -817,7 +893,7 @@ function marketReadBlock(slug, locale) {
   return `
   <aside class="ci-read" data-layer="measured" aria-label="${es ? 'Lectura de mercado' : 'Market read'}">
     <p class="ci-read__head">${head}<span class="ci-read__badge">${badge}</span></p>
-    <p class="ci-read__line">${line}</p>${trendLine}${verdict}${spark}${idxChart}
+    <p class="ci-read__line">${line}</p>${trendLine}${verdict}${spark}${season}${idxChart}
     <details class="ci-read__src"><summary>${es ? 'Fuentes' : 'Sources'} · ${(shortList.length || agencies.length)}</summary><div>${srcBody}</div></details>
     ${verified}
     <p class="ci-read__method"><a href="${es ? '/es' : ''}/cost-index/methodology/#track-record">${es ? 'Cómo verificamos este número' : 'How we verify this number'} <span aria-hidden="true">→</span></a></p>
@@ -1128,6 +1204,13 @@ main{padding-top:64px}
 .ci-read__live a,.ci-read__method a,.ci-read__data a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
 .ci-read__method{margin-top:6px;font-size:13px}
 .ci-read__data{margin:4px 0 0;font-size:13px;color:var(--ink-soft)}
+.ci-season{margin:12px 0 4px;padding:12px 16px;background:var(--white);border:1px solid var(--line);border-left:3px solid #6b4fa1;border-radius:10px;font-variant-numeric:tabular-nums}
+.ci-season__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6b4fa1;margin:0 0 4px}
+.ci-season__body{font-size:14.5px;line-height:1.5;color:var(--ink);margin:0}
+.ci-season__src{margin:6px 0 0;font-size:12.5px}
+.ci-season__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
+.ci-season__src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
+.ci-season__src a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-faq{margin:34px 0 0}
 .ci-faq__item{margin:0 0 18px}
 .ci-faq__q{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink);margin:0 0 6px}
