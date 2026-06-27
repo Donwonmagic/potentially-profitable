@@ -13,7 +13,18 @@ repo survives. Update this file as threads move.
 dev branch `claude/muntin-digital-strategy-07sowb` is merged to main (storefront
 PR #482, product PR #227) and closed — start fresh from `main`.
 
-## ⮕ CURRENT STATE — read this first (updated 2026-06-26)
+## ⮕ CURRENT STATE — read this first (updated 2026-06-27)
+
+**Session on branch `claude/muntin-strategic-council-fzdd1j`** (PR #489 — the prior `-rqdehe` heartbeat/prune/anti-Factura work + the Worker-build fix — is **merged to main**, commit `3b3bb6cb0`). Caught up with main; `check-all` re-verified green (215/236 = the documented deploy-regenerated idempotency baseline; all hard gates + every cost-index gate GREEN even after calendar aging).
+
+**Shipped this session:**
+- **Durable cost-index fix (standing-queue #1) — DONE.** The 2026-06-26 poblano fix (commit `9239e0fe5`) only *dropped* the stale points by hand; the dead `usda-ams-los-angeles` terminal would re-poison the level on the next live refresh. Root cause: `composeIngredient` computed `levelEligible` per source (`fetch-cost-index-sources.mjs:270`) but `buildCompositeInput` (`tools/_shared/cost-index-sources.js`) ignored it — every non-index source's latest read was pushed into `levelObs`, so a stale terminal anchored the level AND left a >120d date in `level.provenance`, which is exactly what the `stale-level` gate (`check-cost-index-sync.mjs` `pointIssues`) checks. **Cure:** one guard in `buildCompositeInput` — a source contributes to the level only if `o.levelEligible !== false`; a stale terminal still feeds the **trend** (`sourceSeries`, per the line-265 design comment) but never anchors/date-stamps the level. Opt-in flag → existing callers unchanged. Pinned by a new self-test in `cost-index-sources.test.mjs` + verified end-to-end through the real engine against a poblano-style multi-terminal input (dead terminal aged out of level, gate no longer trips, both terminals still in trend). 0 new check-all failures.
+
+**Remaining standing queue:** (2) anti-Factura execution on `/never` `/security` `/ai` (state OUR commitments, no named competitor, egress-verify any ToS wording); (3) prune leftovers — `tools/start` + glossary-hub `dateModified` source, ES driver-mechanism translation, a real `/changelog` entry. Detail below.
+
+---
+
+### Prior state (branch `claude/muntin-strategic-council-rqdehe`, now merged via #489)
 
 Branch `claude/muntin-strategic-council-rqdehe`: **22 commits ahead of main, all pushed, working tree clean.** No PR (none requested). Product repo untouched.
 
