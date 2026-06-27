@@ -23,6 +23,28 @@ const checkOnly  = process.argv.includes('--check');
 const tools = JSON.parse(fs.readFileSync(path.join(REPO, 'data', 'tools.json'),        'utf8'));
 const tags  = JSON.parse(fs.readFileSync(path.join(REPO, 'data', 'library-tags.json'), 'utf8'));
 const knit  = JSON.parse(fs.readFileSync(path.join(REPO, 'data', 'tool-knit.json'),    'utf8'));
+const slugMap = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(REPO, 'data', 'i18n-slug-map.json'), 'utf8')); }
+  catch { return {}; }
+})();
+// EN slug -> native ES slug, per namespace (ES posts live at translated slugs).
+function esSlugFor(ns, enSlug) {
+  const m = (ns === 'library' ? slugMap.library : slugMap.blog) || {};
+  return m[enSlug] || null;
+}
+// The real ES page title (so the ES rail never shows an English headline). The
+// rail wants a short label: prefer tool-knit label_es, else the ES page <title>
+// (suffix stripped). Returns null if the ES page is absent — caller drops the
+// item from the ES list rather than leak English.
+function esTitleFrom(ns, esSlug) {
+  if (!esSlug) return null;
+  try {
+    const h = fs.readFileSync(path.join(REPO, 'es', ns, esSlug, 'index.html'), 'utf8');
+    const m = h.match(/<title>([^<]+)<\/title>/i);
+    if (m) return m[1].replace(/\s*\|\s*Muntin Digital\b.*$/i, '').replace(/&amp;/g, '&').trim();
+  } catch { /* no ES page */ }
+  return null;
+}
 
 const SENTINEL_OPEN  = '<!-- recently-added -->';
 const SENTINEL_CLOSE = '<!-- /recently-added -->';
@@ -46,6 +68,7 @@ for (const [slug, t] of Object.entries(tools.tools || {})) {
     title_es: t.title_es,
     url_en: t.url_en,
     url_es: t.url_es,
+    es_ok: !!(t.title_es && t.url_es),
     eyebrow_en: 'New tool',
     eyebrow_es: 'Nueva herramienta',
   });
@@ -60,18 +83,27 @@ for (const [slug, post] of Object.entries(tags.blog_posts || {})) {
   // (or whatever single piece is the canonical entry point) to
   // represent the batch on the homepage strip.
   if (post.hide_from_recents) continue;
-  const url = `/blog/${slug}/`;
-  // Prefer the friendly label from tool-knit.json.articles{} so the
-  // Recently Added card uses the same short text as the rest of the
-  // ecosystem; fall back to the long blog title if no label is set.
+  // Namespace governs the real path: library posts live at /library/<slug>/,
+  // not /blog/ — the old hardcoded /blog/ produced 404s for library entries on
+  // both the home + learn rails (EN and ES).
+  const ns  = post.namespace || 'blog';
+  const url = `/${ns}/${slug}/`;
+  // Prefer the friendly label from tool-knit.json.articles{} (keyed by the real
+  // namespaced URL) so the card uses the same short text as the rest of the
+  // ecosystem; fall back to the long title if no label is set.
   const labels = knit.articles && knit.articles[url];
+  // ES: resolve the native slug + a real ES title; drop from the ES rail if the
+  // post has no Spanish mirror (never show an English headline on /es/).
+  const esSlug  = esSlugFor(ns, slug);
+  const esTitle = (labels && labels.label_es) || esTitleFrom(ns, esSlug);
   candidates.push({
     kind: 'article',
     date: post.date,
     title_en: labels ? labels.label_en : post.title,
-    title_es: labels ? labels.label_es : post.title,
+    title_es: esTitle || (labels ? labels.label_es : post.title),
     url_en: url,
-    url_es: `/es${url}`,
+    url_es: esSlug ? `/es/${ns}/${esSlug}/` : null,
+    es_ok: !!(esSlug && esTitle),
     eyebrow_en: 'New article',
     eyebrow_es: 'Nuevo artículo',
   });
@@ -79,6 +111,9 @@ for (const [slug, post] of Object.entries(tags.blog_posts || {})) {
 
 candidates.sort((a, b) => b.date.localeCompare(a.date));
 const top = candidates.slice(0, 8);
+// The ES rail lists only entries with a Spanish mirror, so it never shows an
+// English headline or a link into an untranslated page.
+const topEs = candidates.filter((c) => c.es_ok).slice(0, 8);
 
 if (top.length < 3) {
   console.error(`build-library-recent: only ${top.length} dated items found; expected at least 3.`);
@@ -140,15 +175,16 @@ function renderRow(item, locale) {
 function renderBody(locale) {
   const eyebrow = locale === 'en' ? 'Library index' : 'Índice de la biblioteca';
   const heading = locale === 'en' ? 'Recently added.' : 'Añadido recientemente.';
+  const list        = locale === 'en' ? top : topEs;
   const subhead = locale === 'en'
-    ? 'The eight most recent entries across the library — articles, research, tools, and checklists. Older entries live in the topic shelves below.'
-    : 'Las ocho entradas más recientes de la biblioteca — artículos, investigación, herramientas y listas. Las entradas antiguas viven en las secciones por tema más abajo.';
+    ? `The ${list.length} most recent entries across the library — articles, research, tools, and checklists. Older entries live in the topic shelves below.`
+    : `Las ${list.length} entradas más recientes de la biblioteca — artículos, investigación, herramientas y listas. Las entradas antiguas viven en las secciones por tema más abajo.`;
   const colTitle    = locale === 'en' ? 'Title'        : 'Título';
   const colSection  = locale === 'en' ? 'Section'      : 'Sección';
   const colDate     = locale === 'en' ? 'Last updated' : 'Última actualización';
   const colContrib  = locale === 'en' ? 'Contributor'  : 'Autor';
   const captionText = locale === 'en' ? 'Recently added across the library' : 'Añadidos recientes en toda la biblioteca';
-  const rows        = top.map((c) => renderRow(c, locale)).join('\n');
+  const rows        = list.map((c) => renderRow(c, locale)).join('\n');
   return `${SENTINEL_OPEN}
 <section class="block recently-added" aria-labelledby="recently-added-heading">
   <div class="container">
