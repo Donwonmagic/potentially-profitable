@@ -66,6 +66,24 @@ A 7-auditor panel canvassed every touchpoint; synthesis = "world-class house, we
   - **REMAINING P2 — all are substantial standalones, NOT quick polish** (the cheap wins are now harvested): window/muntin motif on interior pages + mobile (port `muntinField()` SVG; needs visual verification); earn the golden-hour warm layer in 2-3 live moments (design/subjective); `#C5A059`→token tokenization (cosmetic only — the gold is intentional & the one real bug is fixed; low value, sits in the entangled CSS-shell zone); dark-mode hero gradient parity (CSS-shell zone); OG AVIF/WebP + flip format gate (binary asset generation + new gate); ES audio backfill (warn-only; audio pipeline). Each warrants its own focused pass.
 - **Caveat**: sitewide sweeps (nav/footer) re-stamp via `sync-includes` + `inject-site-counts` (run BOTH, in that order) and dump full files into context — heavy; do them deliberately. The Cost-Index data-product build is calendar-sensitive (commit SOURCE; the refresh workflow regenerates pages).
 
+### ⮕ EXPERIENTIAL AUDIT (founder-commissioned, 2026-06-27) — 6 target-user personas walked the live site
+Ran 6 personas (first-impression, owner-operator, mobile chef, Spanish operator, skeptical CFO, accessibility) end-to-end; each fix grounded then adversarially re-reviewed (the skeptic overturned 3 of my initial reads + caught a regression I'd introduced).
+**SHIPPED (all gate-green, fact gate 0):**
+- Find-an-ingredient **search** on the hub table (`50da9a431`) — two personas bounced for lack of it.
+- **Weekly-email capture on every ingredient page** (`358fd29a7`) — top conversion leak (was buried below the hub's longest scroll).
+- **Father's Day blog CTA** repaired — orphaned "free audit" stamp re-added to post-end-cta.json with honest Margin Math copy (`265698cfb`).
+- **Stale retired-audit tool meta** + "Halucinated" typo (`afec631f2`); **JSON-LD + body audit sweep** finished (`ca17a1359`).
+- **ES `from=` attribution** fixed across all 27 ES posts — `inject-post-end-cta.mjs` dropped localSlug (`65cc8605d`).
+- **ES "recently added" rail** — real ES titles/slugs, no English; also fixed `/blog/`→`/library/` 404s on the EN homepage (`f5af87d25`); latent edge-cases hardened (`0ca1a196e`).
+- **Cost Pulse a11y** — real `<noscript>` fallback + `role=status` (`1908fa600`). (Live SR a11y was already JS-handled via `cost-index-ui.js:348`; the `<noscript>` is the real JS-off win.)
+**VERIFIED NON-ISSUES (stale committed output, self-heals on regen — NOT bugs):** ES cost-index `inLanguage` (generator already emits es-US); footer counts (built pages correct, only the un-injected partial shows old numbers); the 5 library "free audit" hits (legacy body prose, not CTAs — those idem-pass).
+**REMAINING EXPERIENTIAL (all in entangled/sitewide zones — deliberate scoped passes, not tail-of-session):**
+  - **#10 ES see-also locale leak** — `relatedItemsFor` (build-library.mjs) emits EN slugs on ES pages (links resolve to EN posts; not 404). Same fix pattern as the rail, BUT a full build-library run also re-stamps glossary-autolink etc. (baseline idem churn) — scope the regen.
+  - **#11b ES field-notes English empty-state/submission form** on ES *library* pages (`data-locale="en"`). The field-notes *injector* IS localized; this English block comes from a different (untraced) generator — find its source first.
+  - **#13 calibration disclosure (CFO)** — methodology page leads with the flattering signal-strength tiers; the published-LABEL calibration (`confidence-calibration.json`) shows the "low" tier with negative lift + "high" empty. Surface the honest label table. Content/credibility-sensitive.
+  - **#15 footer-newsletter `aria-live`** — submit-into-silence (no announced confirmation; the founding form does it right). Fix is in `_includes/footer.html` → needs the heavy sitewide `sync-includes` + `inject-site-counts` propagation.
+  - **Product-name soup (#5, founder call)** — Cost Index vs Cost Pulse vs Muntin Bench (URL /vendor-benchmark/) vs "Check prices"; the Ledger price+proofs living off-site at ledger.muntin.digital (deliberate split). Both need founder direction before sitewide renames.
+
 **Standing queue is now CLEAR (A–D all addressed).** Next-thread candidates: A — Muntin Plate emergent-insight catalog (design doc); B — vertical-generality build (product, separate repo); C — social pre-launch (needs founder IG decision); the D follow-up above (library hero CTA). Recommend confirming direction before the next build.
 
 ---
