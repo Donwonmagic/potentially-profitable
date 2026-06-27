@@ -7053,7 +7053,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .viz-waterfall__seg{display:flex;align-items:center;justify-content:center;flex-grow:0;flex-shrink:0;flex-basis:calc(var(--w,0)*100%);min-width:0;font-size:11px;font-weight:700;letter-spacing:0.04em;color:var(--cream);text-transform:uppercase;white-space:nowrap;overflow:hidden;background:var(--stone)}
 .viz-waterfall__seg[data-tone="rust"]{background:var(--rust)}
 .viz-waterfall__seg[data-tone="ink"]{background:var(--ink)}
-.viz-waterfall__seg[data-tone="gold"]{background:#C5A059;color:var(--ink)}
+.viz-waterfall__seg[data-tone="gold"]{background:#C5A059;color:#16181D}
 .viz-waterfall__seg[data-tone="teal"],.viz-waterfall__seg--keep{background:var(--teal);color:var(--cream)}
 .viz-waterfall__legend{display:grid;grid-template-columns:1fr;gap:0;font-size:14.5px;border-top:1px solid var(--line);border-radius:6px;overflow:hidden}
 .viz-waterfall__row{display:grid;grid-template-columns:14px 1fr auto auto;gap:12px;align-items:baseline;padding:10px 4px;border-bottom:1px solid var(--line);color:var(--ink)}
