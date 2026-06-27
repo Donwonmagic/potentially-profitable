@@ -268,11 +268,11 @@
       <a href="/cost-index/">Cost Index</a>
       <a href="/tools/">Tools</a>
       <a href="/studio/">Company</a>
-      <!-- Ledger — sister product (the privacy-forward invoice ledger)
-           on its own subdomain. Plain external link so it passes link
-           equity to ledger.muntin.digital; Plausible's automatic
-           outbound-link tracking measures the nav click. -->
-      <a href="https://ledger.muntin.digital/">Ledger</a>
+      <!-- Ledger — the paid product. Nav points at the on-site /ledger/
+           explainer (what it is, why a platform can't copy it, the founding
+           offer) rather than dumping cold nav traffic straight onto the
+           subdomain; /ledger/ owns the outbound "See Muntin Ledger" CTA. -->
+      <a href="/ledger/">Ledger</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
            /api/auth/me and reveals exactly one. No-JS visitors see
@@ -330,7 +330,7 @@
     <a href="/cost-index/">Cost Index</a>
     <a href="/tools/">Tools</a>
     <a href="/studio/">Company</a>
-    <a href="https://ledger.muntin.digital/">Ledger</a>
+    <a href="/ledger/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
     <button type="button" class="mobile-search js-open-search">
