@@ -2,13 +2,13 @@
   "_doc": "Coverage/health matrix for the Cost Index, derived purely from data/cost-index.json by scripts/build-cost-index-health.mjs (CI runs --check). confidence is the published read; withinAuditCeiling proves it is not overstated; toHigh names the single binding blocker to a higher tier. Regenerate after every vendor.",
   "generatedFrom": null,
   "summary": {
-    "total": 101,
+    "total": 100,
     "byConfidence": {
       "medium": 20,
-      "low": 61,
+      "low": 60,
       "directional": 20
     },
-    "withDollarLevel": 93,
+    "withDollarLevel": 92,
     "highEligible": 0,
     "overstated": 0
   },
@@ -1083,23 +1083,6 @@
       "weeks": 7,
       "asOf": "2026-06-18",
       "toHigh": "add a 2nd independent trend source"
-    },
-    {
-      "key": "poblano-pepper",
-      "confidence": "low",
-      "withinAuditCeiling": true,
-      "hasDollarLevel": true,
-      "basis": "wholesale",
-      "rangeBasis": "markets",
-      "levelFamilies": 8,
-      "levelTypes": 1,
-      "trendTypes": 1,
-      "trendAgreement": 0.75,
-      "trendNoise": 0.2027,
-      "typeDispersion": 0,
-      "weeks": 7,
-      "asOf": "2026-06-18",
-      "toHigh": "trend is too noisy (jagged) to trust as a move"
     },
     {
       "key": "raspberry",

@@ -155,6 +155,14 @@ const CI = (() => {
 })();
 const COST_INDEX = CI.ingredients || {};
 const DRIVERS = CI.drivers || {};
+// Sourced driver-association catalog (association, never causation). Each entry
+// carries a labelled mechanism + a source/sourceUrl/retrievedAt for the hub
+// "what's moving" insight evidence drawer. Spoken only on an up read, per the
+// catalog's own honesty note.
+const DRIVER_CAT = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-index-drivers.json'), 'utf8')).drivers || []; }
+  catch { return []; }
+})();
 const LABELS_DOC  = (() => {
   try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-index-labels.json'), 'utf8')); }
   catch { return { labels: {}, drivers: {} }; }
@@ -479,10 +487,29 @@ function reasonFor(slug, v, locale) {
   const r = MOVING_REASON[key] || MOVING_REASON.insufficient;
   return locale === 'es' ? r.es : r.en;
 }
+// Driver association for the hub mover insight. Association, NEVER cause, and it
+// honors the catalog's own rule: a driver is spoken ONLY when the measured read
+// is up (a supply-risk backdrop never explains an easing print). It surfaces the
+// sourced mechanism + a cite drawer, so the "why" travels with its evidence.
+// EN-only for now: the catalog carries no ES prose, and dropping English
+// mechanism text into an ES page would breach the es-MX voice gate. ES movers
+// still get magnitude + persistence + the verdict's own note_es + action.
+function hubDriverInsight(slug, r, locale) {
+  if (locale === 'es') return { assoc: '', cite: '' };
+  const up = !!(r && r.trend && r.trend.dir === 'up');
+  if (!up) return { assoc: '', cite: '' };
+  const d = DRIVER_CAT.find((x) => Array.isArray(x.affects) && x.affects.includes(slug) && x.directionExpected === 'up');
+  if (!d) return { assoc: '', cite: '' };
+  const assoc = ` Often tracks <strong>${escHtml(d.label)}</strong> — ${escHtml(d.mechanism)} <span class="ci-assoc-tag">(association, not cause)</span>.`;
+  const cite = d.source
+    ? `<details class="cite ci-moving-cite"><summary>Evidence</summary><p>${escHtml(d.source)}${d.retrievedAt ? ` · retrieved ${escHtml(d.retrievedAt)}` : ''}${d.sourceUrl ? ` · <a href="${escHtml(d.sourceUrl)}" rel="nofollow noopener" target="_blank">source</a>` : ''}</p></details>`
+    : '';
+  return { assoc, cite };
+}
 function movingNowSection(slugs, locale) {
   const es = locale === 'es';
   const rows = slugs
-    .map((s) => ({ s, v: ingVerdict(s) }))
+    .map((s) => ({ s, v: ingVerdict(s), r: readingOf(s) }))
     .filter((x) => x.v && x.v.tone !== 'hold')   // surface watch + reprice
     .sort((a, b) => (TONE_RANK[a.v.tone] - TONE_RANK[b.v.tone]) || a.s.localeCompare(b.s));
   const head = es ? 'Qué se está moviendo ahora' : "What's moving now";
@@ -493,10 +520,31 @@ function movingNowSection(slugs, locale) {
     return `<section class="ci-moving"><h2 class="ci-cat-h" id="moving">${head}</h2><p class="ci-moving-calm">${calm}</p></section>`;
   }
   const lis = rows.map((x) => {
-    const l = LABELS[x.s] || {};
-    const nm = (es ? (l.es || l.en) : l.en) || x.s;
+    const { s, v, r } = x;
+    const l = LABELS[s] || {};
+    const nm = (es ? (l.es || l.en) : l.en) || s;
     const base = es ? '/es' : '';
-    return `<li class="ci-moving-item">${verdictChip(x.v, locale)}<a href="${base}/cost-index/${x.s}/">${escHtml(nm)}</a> <span class="ci-moving-reason">— ${escHtml(reasonFor(x.s, x.v, locale))}</span></li>`;
+    // The verdict engine's own authoritative, gated reasoning carries the
+    // (sustained) directional story.
+    const note = es ? (v.note_es || '') : (v.note_en || '');
+    // NO live cents on the hub. Per the honesty contract, a price appears ONLY in
+    // the per-ingredient "Market read" cited-data block (asOf badge + provenance
+    // drawer); the index/hub stays cents-free, and the exact figure lives one
+    // click away via the full read. We also omit the current-week direction word
+    // (a live down-tick on a still-elevated "structural" flag would read
+    // "down … up and holding"). The hub insight is therefore: measured
+    // persistence + the verdict's own reasoning + a sourced driver association
+    // + a single action — empowering, evidence-led, and price-free.
+    const wk = (hubFlag(s) || {}).elevatedWeeks;
+    const persistLead = (typeof wk === 'number' && wk >= 2 && !/weeks?|semanas?/i.test(note))
+      ? (es ? `Elevado ${wk} semanas` : `Elevated ${wk} weeks`) : '';
+    const di = hubDriverInsight(s, r, locale);
+    const action = es ? (v.verb_es || 'Observa') : (v.verb_en || 'Watch');
+    const more = es ? 'lectura completa' : 'full read';
+    const read = `${persistLead ? `${persistLead}. ` : ''}${note ? escHtml(note) : ''}${di.assoc}`;
+    return `<li class="ci-moving-item">${verdictChip(v, locale)}<a href="${base}/cost-index/${s}/">${escHtml(nm)}</a>`
+      + `<div class="ci-moving-insight"><p class="ci-moving-read">— ${read}</p>${indexedMovement(r && r.entry, locale, {})}${di.cite}`
+      + `<p class="ci-moving-act">→ <strong>${escHtml(action)}.</strong> <a class="ci-moving-more" href="${base}/cost-index/${s}/">${more} →</a></p></div></li>`;
   }).join('');
   const key = es
     ? `<strong>Re-precificar</strong> = una subida que parece durar · <strong>Vigilar</strong> = un movimiento real, aún sin confirmar · <strong>Mantener</strong> = dentro de su rango normal`
@@ -581,6 +629,54 @@ function answerBanner(slug, locale) {
   return `<p class="ci-answer">${dw ? `<strong>${dw}</strong> · ` : ''}~${range}${unitSfx} · ${es ? 'al' : 'as of'} ${asOf} ${chip}</p>`;
 }
 
+// ---- Price-free INDEXED movement chart ----------------------------
+// Normalizes the gated history series to 100 at the window's first read and
+// plots the relative path true-to-scale: it shows HOW MUCH and which way an
+// item moved WITHOUT ever stating a price (cents live only in the per-ingredient
+// cited Market-read block). Honest by construction — it's the shape of the
+// already-gated series. Gated on >=8 same-basis real reads; the caption labels
+// the REAL date window (it never claims a span we don't have — e.g. "6 months"
+// when only weeks exist). The window lengthens as history accumulates.
+function indexedMovement(entry, locale, opts) {
+  opts = opts || {};
+  const es = locale === 'es';
+  if (!entry || !Array.isArray(entry.history)) return '';
+  const point = Array.isArray(entry.points) ? entry.points[0] : null;
+  const basis = (point && point.level && point.level.basis) || 'wholesale';
+  const pts = entry.history
+    .filter((h) => h && h.basis === basis && typeof h.valueCents === 'number'
+                && isFinite(h.valueCents) && h.valueCents > 0 && h.date)
+    .sort((a, b) => String(a.date).localeCompare(String(b.date)));
+  if (pts.length < 8) return '';
+  const base = pts[0].valueCents;
+  if (!(base > 0)) return '';
+  const idx = pts.map((p) => 100 * p.valueCents / base);
+  const firstDate = pts[0].date, lastDate = pts[pts.length - 1].date;
+  const idxNow = Math.round(idx[idx.length - 1]);
+  // The direction word derives from the SAME headline index (endpoint vs the 100
+  // baseline) so it can NEVER contradict the number or the curve it labels. A
+  // half-window median (which an earlier version used) measures a different thing
+  // and could say "rose" while the line ends below 100 — caught by fact-gate review.
+  const shape = idxNow > 103 ? (es ? 'subió' : 'rose')
+              : idxNow < 97 ? (es ? 'bajó' : 'eased')
+              : (es ? 'se mantuvo estable' : 'held steady');
+  const big = opts.size === 'large';
+  // Index value IS relative movement (100 = the window's start); it is never a
+  // price, carries its dates, and traces to the same gated series as everything
+  // else — so it is build-stamped + dated, like the direction word.
+  const cap = es
+    ? `Indexado a 100 el ${firstDate} · ~${idxNow} el ${lastDate} — ${shape} en la ventana seguida. Movimiento relativo, sin precio.`
+    : `Indexed to 100 on ${firstDate} · ~${idxNow} on ${lastDate} — ${shape} over the tracked window. Relative movement, no price.`;
+  const svg = MuntinSparkline.render(idx.map((v) => Math.round(v * 10) / 10), {
+    width: big ? 460 : 132, height: big ? 128 : 34, stroke: '#2A50C8',
+    baseline: 100, fill: big ? 'rgba(42,80,200,0.10)' : false, dotLast: true,
+    ariaLabel: cap,
+  });
+  return big
+    ? `<figure class="ci-index"><figcaption class="ci-index__cap">${escHtml(cap)}</figcaption>${svg}</figure>`
+    : `<span class="ci-index ci-index--mini">${svg}</span>`;
+}
+
 function marketReadBlock(slug, locale) {
   const r = readingOf(slug);
   if (!r) return '';
@@ -589,6 +685,7 @@ function marketReadBlock(slug, locale) {
   const verified = verifiedNote(slug, r.entry, point, locale);
   const verdict = verdictLine(r.entry.flag, r.conf, locale);
   const spark = sparkBlock(r, locale);
+  const idxChart = indexedMovement(r.entry, locale, { size: 'large' });
   const lab = LABELS[slug] || {};
   const unit = es ? (lab.unit_es || lab.unit_en) : lab.unit_en;
   const unitSfx = unit ? '/' + unit : '';
@@ -653,7 +750,7 @@ function marketReadBlock(slug, locale) {
   return `
   <aside class="ci-read" data-layer="measured" aria-label="${es ? 'Lectura de mercado' : 'Market read'}">
     <p class="ci-read__head">${head}<span class="ci-read__badge">${badge}</span></p>
-    <p class="ci-read__line">${line}</p>${trendLine}${verdict}${spark}
+    <p class="ci-read__line">${line}</p>${trendLine}${verdict}${spark}${idxChart}
     <details class="ci-read__src"><summary>${es ? 'Fuentes' : 'Sources'} · ${(shortList.length || agencies.length)}</summary><div>${srcBody}</div></details>
     ${verified}
     <p class="ci-read__method"><a href="${es ? '/es' : ''}/cost-index/methodology/#track-record">${es ? 'Cómo verificamos este número' : 'How we verify this number'} <span aria-hidden="true">→</span></a></p>
@@ -995,6 +1092,19 @@ main{padding-top:64px}
 .ci-moving-calm{margin:0;font-size:15.5px;color:var(--ink)}
 .ci-vkey{margin:2px 0 12px;font-size:12.5px;color:var(--ink-soft);line-height:1.6}
 .ci-vkey strong{color:var(--ink)}
+.ci-moving-insight{margin:3px 0 2px}
+.ci-moving-read{margin:2px 0;font-size:14.5px;line-height:1.5;color:var(--ink)}
+.ci-assoc-tag{color:var(--ink-soft);font-style:italic;font-size:12.5px}
+.ci-moving-cite{margin:3px 0 4px;font-size:12.5px}
+.ci-moving-cite summary{color:var(--teal);cursor:pointer}
+.ci-moving-cite p{margin:4px 0 0;color:var(--ink-soft)}
+.ci-moving-act{margin:2px 0 0;font-size:13.5px;color:var(--ink-soft)}
+.ci-moving-act strong{color:var(--ink)}
+.ci-moving-more{font-size:12.5px}
+.ci-index--mini{display:inline-block;vertical-align:middle;margin:4px 0 2px;opacity:.9}
+.ci-index{margin:10px 0 4px}
+.ci-index__cap{margin:0 0 4px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+.ci-index .mtn-spark{max-width:100%;height:auto}
 .ci-card--pending{opacity:.72;background:var(--cream-2)}
 .ci-card--pending a{color:var(--ink-soft)}
 .ci-pending-note{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}

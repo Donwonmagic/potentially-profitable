@@ -54,6 +54,7 @@ const SHELL_HASH = { core: shellHash('site-core.css'), article: shellHash('site-
 function normalizeBatchBanner(html) {
   return html
     .replace(/<!-- batch-banner:start -->[\s\S]*?<!-- batch-banner:end -->/, '<!-- batch-banner:start --><!-- batch-banner:end -->')
+    .replace(/[ \t]*<!-- feed-discovery:start \(injected by inject-feed-discovery\.mjs\) -->[\s\S]*?<!-- \/feed-discovery:end -->\n?/g, '')
     .replace(/\/\* perf-critical \*\/[\s\S]*?(?=<\/style>)/, '')
     .replace(/<!-- lazy-load:p -->[\s\S]*?<!-- \/lazy-load:p -->/g, '<!--script:p-->')
     .replace(/<script\s+src="\/assets\/p\.js(?:\?v=[^"]*)?"\s+defer><\/script>/g, '<!--script:p-->')

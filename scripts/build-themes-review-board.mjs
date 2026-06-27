@@ -46,6 +46,9 @@ const SHELL_HASH = { core: shellHash('site-core.css'), article: shellHash('site-
 function normalizeBatchBanner(html) {
   return html
     .replace(/<!-- batch-banner:start -->[\s\S]*?<!-- batch-banner:end -->/, '<!-- batch-banner:start --><!-- batch-banner:end -->')
+    // Strip the feed-discovery block (added by inject-feed-discovery.mjs). The
+    // generator template emits none, so drop it from both sides before compare.
+    .replace(/[ \t]*<!-- feed-discovery:start \(injected by inject-feed-discovery\.mjs\) -->[\s\S]*?<!-- \/feed-discovery:end -->\n?/g, '')
     // Strip the perf-critical block (added by inject-critical-fonts.mjs).
     // Anchor on the sentinel and consume through the closing </style>.
     .replace(/\/\* perf-critical \*\/[\s\S]*?(?=<\/style>)/, '')

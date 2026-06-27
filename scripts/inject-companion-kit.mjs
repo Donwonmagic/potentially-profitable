@@ -48,11 +48,11 @@ const onlySlug   = (argv.find((a) => a.startsWith('--only=')) || '').slice('--on
 // Paths and overrides
 // ============================================================
 
-// One tool lives at a non-canonical path. Maintain an override map
-// so the slug `restaurant-audit` resolves to its real location.
-const TOOL_PATHS = {
-  'restaurant-audit': 'tools/audits/restaurant',
-};
+// Override map for tools that live at a non-canonical path. Empty
+// after the 2026-06-26 tools migration retired the restaurant-audit
+// page (it lived at tools/audits/restaurant); kept tools are all at
+// the canonical tools/<slug> path.
+const TOOL_PATHS = {};
 
 function toolDir(slug, locale) {
   const sub = TOOL_PATHS[slug] || `tools/${slug}`;

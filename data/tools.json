@@ -14,41 +14,6 @@
         "menu-engineering",
         "plate-cost"
       ]
-    },
-    {
-      "id": "local-seo",
-      "label_en": "Local SEO & Presence",
-      "label_es": "SEO local y Presencia",
-      "blurb_en": "How Google decides which restaurant to show — your listing, your hours, your site, the on-page signals that matter.",
-      "blurb_es": "Cómo Google decide qué restaurante mostrar — tu ficha, tus horarios, tu sitio, las señales en página que importan.",
-      "tools": [
-        "restaurant-audit",
-        "gbp-grader",
-        "store-hours"
-      ]
-    },
-    {
-      "id": "conversions",
-      "label_en": "Conversions & Content",
-      "label_es": "Conversiones y Contenido",
-      "blurb_en": "The patterns that turn a passing visitor into a booked table — menu copy, photos, and the small frictions that quietly cost you bookings.",
-      "blurb_es": "Los patrones que convierten a un visitante en una mesa reservada — copy del menú, fotos, y las pequeñas fricciones que te cuestan reservas.",
-      "tools": [
-        "storefront-health",
-        "menu-copy",
-        "photo-brief",
-        "menu-converter"
-      ]
-    },
-    {
-      "id": "brand-design",
-      "label_en": "Brand & Design",
-      "label_es": "Marca y Diseño",
-      "blurb_en": "The system around your mark — palette, accessible color pairs, tokens you can hand to any builder or developer.",
-      "blurb_es": "El sistema alrededor de tu marca — paleta, pares de color accesibles, tokens que puedes pasar a cualquier herramienta o desarrollador.",
-      "tools": [
-        "brand-suite"
-      ]
     }
   ],
   "goals": [
@@ -63,27 +28,6 @@
       ]
     },
     {
-      "id": "fixing-google",
-      "label_en": "Fixing your Google listing",
-      "label_es": "Arreglar tu ficha de Google",
-      "tools": [
-        "gbp-grader",
-        "restaurant-audit",
-        "store-hours"
-      ]
-    },
-    {
-      "id": "refreshing-brand",
-      "label_en": "Refreshing your brand",
-      "label_es": "Refrescar tu marca",
-      "tools": [
-        "brand-suite",
-        "photo-brief",
-        "menu-copy",
-        "menu-converter"
-      ]
-    },
-    {
       "id": "tracking-costs",
       "label_en": "Track your costs without a spreadsheet",
       "label_es": "Lleva tus costos sin hoja de cálculo",
@@ -95,54 +39,6 @@
     }
   ],
   "tools": {
-    "restaurant-audit": {
-      "title_en": "Restaurant Website Audit",
-      "title_es": "Diagnóstico de sitio de restaurante",
-      "summary_en": "Drop your URL. Get a real mobile audit in about thirty seconds — performance, SEO, accessibility, and ten restaurant-specific checks in plain English.",
-      "summary_es": "Pega la URL de tu restaurante y recibe un diagnóstico móvil real en unos treinta segundos — desempeño, SEO, accesibilidad, y diez chequeos específicos en español claro.",
-      "walkaway_en": "A punch list of what's broken on your restaurant's website.",
-      "walkaway_es": "Una lista accionable de lo que está roto en tu sitio.",
-      "cta_en": "Open Restaurant Audit",
-      "cta_es": "Abrir Diagnóstico de Sitio",
-      "url_en": "/tools/audits/restaurant/",
-      "url_es": "/es/tools/audits/restaurant/",
-      "cluster": "local-seo",
-      "status": "live",
-      "added": "2026-04-19",
-      "tier": "deep"
-    },
-    "gbp-grader": {
-      "title_en": "Google Business Profile Grader",
-      "title_es": "Calificador de Google Business Profile",
-      "summary_en": "Search your business name. See how your Google listing scores — rating, reviews, photos, categories, hours — with the specific fixes for what's missing.",
-      "summary_es": "Busca el nombre de tu negocio. Mira cómo se compara tu ficha de Google — calificación, reseñas, fotos, categorías, horarios — con arreglos específicos.",
-      "walkaway_en": "Specific fixes for the gaps in your Google listing.",
-      "walkaway_es": "Arreglos específicos para los huecos en tu ficha de Google.",
-      "cta_en": "Open GBP Grader",
-      "cta_es": "Abrir Calificador de GBP",
-      "url_en": "/tools/gbp-grader/",
-      "url_es": "/es/tools/gbp-grader/",
-      "cluster": "local-seo",
-      "status": "live",
-      "added": "2026-04-19",
-      "tier": "deep"
-    },
-    "menu-converter": {
-      "title_en": "Menu Converter",
-      "title_es": "Conversor de menú",
-      "summary_en": "Paste your menu text. Walk away with a live preview, semantic HTML for your website, and a JSON-LD Menu schema block Google can index. Sections, items, prices, descriptions — parsed in your browser.",
-      "summary_es": "Pega tu menú en texto. Lleva tres resultados: vista previa, HTML semántico para tu sitio y un bloque JSON-LD de Menu schema indexable por Google. Secciones, ítems, precios y descripciones, todo parseado en tu navegador.",
-      "walkaway_en": "Clean HTML and Menu schema from your pasted menu, in two seconds.",
-      "walkaway_es": "HTML limpio y Menu schema desde el menú pegado, en dos segundos.",
-      "cta_en": "Open Menu Converter",
-      "cta_es": "Abrir Conversor de Menú",
-      "url_en": "/tools/menu-converter/",
-      "url_es": "/es/tools/menu-converter/",
-      "cluster": "conversions",
-      "status": "live",
-      "added": "2026-05-02",
-      "tier": "quick"
-    },
     "margin-math": {
       "title_en": "Margin Math",
       "title_es": "Cálculo de Margen",
@@ -191,70 +87,6 @@
       "added": "2026-04-26",
       "tier": "deep"
     },
-    "menu-copy": {
-      "title_en": "Menu Copy Inspector",
-      "title_es": "Inspector de Copy de Menú",
-      "summary_en": "Paste a dish description. See six diagnostics — sensory words, provenance, technique, length, hedges, pricing — with the research behind each.",
-      "summary_es": "Pega la descripción de un plato. Seis diagnósticos — palabras sensoriales, procedencia, técnica, extensión, relleno, precio — con la investigación detrás.",
-      "walkaway_en": "A trained eye for reading your own menu critically.",
-      "walkaway_es": "Un ojo entrenado para leer tu propio menú con criterio.",
-      "cta_en": "Open Menu Copy",
-      "cta_es": "Abrir Inspector de Copy",
-      "url_en": "/tools/menu-copy/",
-      "url_es": "/es/tools/menu-copy/",
-      "cluster": "conversions",
-      "status": "live",
-      "added": "2026-04-25",
-      "tier": "standard"
-    },
-    "photo-brief": {
-      "title_en": "Photo Brief Builder",
-      "title_es": "Constructor de Brief de Fotos",
-      "summary_en": "List your dishes, tick where the photos go (Yelp, Google, Instagram, your menu). Walk away with a one-page brief that gets you the right photos in one shoot.",
-      "summary_es": "Lista tus platos, marca a dónde van las fotos (Yelp, Google, Instagram, tu menú). Llévate un brief de una página y las fotos correctas en una sesión.",
-      "walkaway_en": "A one-page brief your photographer can shoot in one visit.",
-      "walkaway_es": "Un brief de una página que tu fotógrafo puede cumplir en una visita.",
-      "cta_en": "Open Photo Brief",
-      "cta_es": "Abrir Brief de Fotos",
-      "url_en": "/tools/photo-brief/",
-      "url_es": "/es/tools/photo-brief/",
-      "cluster": "conversions",
-      "status": "live",
-      "added": "2026-04-26",
-      "tier": "standard"
-    },
-    "brand-suite": {
-      "title_en": "Brand Suite",
-      "title_es": "Suite de Marca",
-      "summary_en": "Drop in your logo. Walk away with a palette, accessible color pairs, and CSS tokens — a starter kit for the system around your mark.",
-      "summary_es": "Suelta tu logo. Llévate una paleta, pares de color accesibles y tokens CSS — un punto de partida para el sistema alrededor de tu marca.",
-      "walkaway_en": "Tokens you can paste into any builder or hand to a developer.",
-      "walkaway_es": "Tokens que puedes pegar en cualquier herramienta o pasar a un desarrollador.",
-      "cta_en": "Open Brand Suite",
-      "cta_es": "Abrir Suite de Marca",
-      "url_en": "/tools/brand-suite/",
-      "url_es": "/es/tools/brand-suite/",
-      "cluster": "brand-design",
-      "status": "live",
-      "added": "2026-04-19",
-      "tier": "deep"
-    },
-    "storefront-health": {
-      "title_en": "Storefront Health",
-      "title_es": "Salud del Storefront",
-      "summary_en": "One URL, six checks, one score. The unified scorecard for your restaurant's full storefront — with the next fix linked to the tool that runs it.",
-      "summary_es": "Una URL, seis chequeos, una calificación. Boleta unificada del storefront completo — con el siguiente arreglo enlazado a la herramienta que lo corre.",
-      "walkaway_en": "One number for your storefront, plus the next fix in plain English.",
-      "walkaway_es": "Un número para tu storefront, más el siguiente arreglo en lenguaje claro.",
-      "cta_en": "Open Storefront Health",
-      "cta_es": "Abrir Salud del Storefront",
-      "url_en": "/tools/storefront-health/",
-      "url_es": "/es/tools/storefront-health/",
-      "cluster": "conversions",
-      "status": "live",
-      "added": "2026-04-29",
-      "tier": "standard"
-    },
     "cost-pulse": {
       "title_en": "Cost Pulse",
       "title_es": "Pulso de Costos",
@@ -285,22 +117,6 @@
       "cluster": "operations-margin",
       "status": "live",
       "added": "2026-06-02",
-      "tier": "standard"
-    },
-    "store-hours": {
-      "title_en": "Store Hours",
-      "title_es": "Horario de Tienda",
-      "summary_en": "Set your weekly hours once. Walk away with text for Google, JSON-LD for your site, and a code block your developer can paste. Holiday hours live on a sister page.",
-      "summary_es": "Define tus horarios una vez. Llévate el texto exacto para Google, JSON-LD para tu sitio y un bloque de código. Los horarios festivos viven en una página hermana.",
-      "walkaway_en": "The exact hours text Google and your website both want, plus a holidays page for the eight US restaurant holidays.",
-      "walkaway_es": "El texto exacto que Google y tu sitio quieren, más una página de festivos para las ocho fiestas de restaurantes en EE.UU.",
-      "cta_en": "Open Store Hours",
-      "cta_es": "Abrir Horario de Tienda",
-      "url_en": "/tools/store-hours/",
-      "url_es": "/es/tools/store-hours/",
-      "cluster": "local-seo",
-      "status": "live",
-      "added": "2026-04-25",
       "tier": "standard"
     }
   },

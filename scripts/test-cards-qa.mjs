@@ -53,15 +53,9 @@ function assert(label, cond, detail) {
 // must be present; "footerKeys" names every (left, right) pair
 // the source contains for footer treatment.
 // ------------------------------------------------------------
+// 2026-06-26 tools migration: the brand-suite, menu-copy, and
+// photo-brief render entries were removed with their retired pages.
 const RENDERERS = [
-  {
-    label:        'Brand Suite — Muntin Pane',
-    modulePath:   'tools/brand-suite/pane-render.js',
-    moduleApi:    'BSPane',
-    renderEntries: ['renderMuntinPane'],
-    enToolName:   'Brand Suite',
-    esToolName:   'Suite de Marca'
-  },
   {
     label:        'Menu Engineering — Menu Card',
     modulePath:   'tools/menu-engineering/card-render.js',
@@ -69,14 +63,6 @@ const RENDERERS = [
     renderEntries: ['renderMenuCard'],
     enToolName:   'Menu Engineering Matrix',
     esToolName:   'Matriz de Ingeniería de Menú'
-  },
-  {
-    label:        'Menu Copy — Copy Card',
-    modulePath:   'tools/menu-copy/card-render.js',
-    moduleApi:    'MCCard',
-    renderEntries: ['renderCopyCards'],
-    enToolName:   'Menu Copy Inspector',
-    esToolName:   'Inspector de Copy de Menú'
   },
   {
     label:        'Open Hours — Sign + Card',
@@ -93,22 +79,6 @@ const RENDERERS = [
     renderEntries: ['renderPlateCard'],
     enToolName:   'Plate Cost Calculator',
     esToolName:   'Calculadora de Costo del Plato'
-  },
-  {
-    label:        'Photo Brief — Photo Brief + Brand Photo Card',
-    modulePath:   'tools/photo-brief/card-render.js',
-    moduleApi:    'PBCard',
-    renderEntries: ['renderPhotoBrief', 'renderBrandPhotoCard'],
-    enToolName:   'Photo Brief Builder',
-    esToolName:   'Constructor de Brief de Fotos'
-  },
-  {
-    label:        'Brand Suite — Palette Sheet',
-    modulePath:   'tools/brand-suite/palette-sheet-render.js',
-    moduleApi:    'BSPaletteSheet',
-    renderEntries: ['renderPaletteSheet'],
-    enToolName:   'Brand Suite',
-    esToolName:   'Suite de Marca'
   }
 ];
 

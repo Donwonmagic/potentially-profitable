@@ -50,11 +50,12 @@ const TOOLS_CATALOG = (() => {
 })();
 
 function catalogEntryFor(slug) {
-  // Audit lives at slug "audits/restaurant" in the howto registry but
-  // "restaurant-audit" in tools.json (back-compat from the first
-  // restructure). Fall back to undefined; the SoftwareApplication node
-  // still validates without name/description if absent.
-  return TOOLS_CATALOG[slug] || TOOLS_CATALOG[slug.replace('audits/', '').replace('audits-', '')] || TOOLS_CATALOG['restaurant-audit'];
+  // Some howto entries are sub-tools (seo-grader, speed-test, …) with
+  // no tools.json catalog entry. Fall back to undefined; the
+  // SoftwareApplication node still validates without name/description
+  // if absent. (The old restaurant-audit fallback was dropped in the
+  // 2026-06-26 tools migration when that page was retired.)
+  return TOOLS_CATALOG[slug] || TOOLS_CATALOG[slug.replace('audits/', '').replace('audits-', '')];
 }
 
 function ogCardFor(slug) {

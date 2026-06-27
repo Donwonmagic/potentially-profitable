@@ -15,14 +15,15 @@
 # Cloudflare Pages matches the exact rule first.
 
 # Second restructure: /tools/restaurant-audit/ -> /tools/audits/restaurant/
-/tools/restaurant-audit/     /tools/audits/restaurant/    301
-/tools/restaurant-audit/*    /tools/audits/restaurant/:splat   301
+# 2026-06-26 tools migration: restaurant-audit was retired; its old
+# aliases now land on the tools catalog (its 301 destination).
+/tools/restaurant-audit/     /tools/    301
+/tools/restaurant-audit/*    /tools/    301
 
 # First restructure: /audit/* -> /tools/*
-# Point the old /audit/restaurants/ path directly at the current
-# /tools/audits/restaurant/ location so chained redirects don't
-# waste a hop.
-/audit/restaurants/          /tools/audits/restaurant/    301
+# /audit/restaurants/ pointed at the retired restaurant-audit page;
+# now lands on the tools catalog.
+/audit/restaurants/          /tools/                      301
 /audit/                      /tools/                      301
 /audit/*                     /tools/:splat                301
 
@@ -98,8 +99,9 @@
 # action for anyone who was looking at the retired ones. Pointed
 # directly at the post-Phase-5.5 /learn/checklists/ location so
 # chained redirects don't waste a hop.
-/tools/audits/wellness/             /tools/audits/restaurant/    301
-/tools/audits/wellness/*            /tools/audits/restaurant/    301
+# 2026-06-26 tools migration: restaurant-audit retired → tools catalog.
+/tools/audits/wellness/             /tools/                      301
+/tools/audits/wellness/*            /tools/                      301
 
 # Phase 6 hard tool-merge — holiday-hours + open-hours → store-hours.
 # Two old URLs redirect into the merged tool family:
@@ -109,18 +111,23 @@
 # a hash-routed tab on the parent, so the legacy /holidays/ URL itself
 # now redirects too. Wildcards catch sub-asset deep-links (PNGs, ICS
 # exports linked from old emails).
-/tools/open-hours/                  /tools/store-hours/          301
-/tools/open-hours/*                 /tools/store-hours/:splat    301
-/tools/holiday-hours/               /tools/store-hours/#holidays 301
-/tools/holiday-hours/*              /tools/store-hours/#holidays 301
-/tools/store-hours/holidays/        /tools/store-hours/#holidays 301
-/tools/store-hours/holidays/*       /tools/store-hours/#holidays 301
-/es/tools/open-hours/               /es/tools/store-hours/       301
-/es/tools/open-hours/*              /es/tools/store-hours/:splat 301
-/es/tools/holiday-hours/            /es/tools/store-hours/#holidays 301
-/es/tools/holiday-hours/*           /es/tools/store-hours/#holidays 301
-/es/tools/store-hours/holidays/     /es/tools/store-hours/#holidays 301
-/es/tools/store-hours/holidays/*    /es/tools/store-hours/#holidays 301
+# 2026-06-26 tools migration: store-hours retired. The merged-tool
+# aliases (open-hours/holiday-hours) and store-hours itself now land on
+# the tools catalog. store-hours' own /* rule lives in the Worker
+# tool-retirement map (src/lib/tool-redirects.js) to stay under the
+# Cloudflare 100-rule _redirects cap.
+/tools/open-hours/                  /tools/                      301
+/tools/open-hours/*                 /tools/                      301
+/tools/holiday-hours/               /tools/                      301
+/tools/holiday-hours/*              /tools/                      301
+/tools/store-hours/holidays/        /tools/                      301
+/tools/store-hours/holidays/*       /tools/                      301
+/es/tools/open-hours/               /es/tools/                   301
+/es/tools/open-hours/*              /es/tools/                   301
+/es/tools/holiday-hours/            /es/tools/                   301
+/es/tools/holiday-hours/*           /es/tools/                   301
+/es/tools/store-hours/holidays/     /es/tools/                   301
+/es/tools/store-hours/holidays/*    /es/tools/                   301
 
 # Phase 6 hard tool-merge — speed-test + mobile-check → page-health.
 # /tools/speed-test/      → /tools/page-health/           (speed tab)
@@ -240,3 +247,13 @@
 /es/tools/seo-grader/*	/es/tools/	301
 /tools/tech-stack/*	/tools/	301
 /es/tools/tech-stack/*	/es/tools/	301
+
+# Tools migration (2026-06-26, product-only funnel): 8 off-funnel tools
+# retired — gbp-grader, store-hours, storefront-health, menu-copy,
+# photo-brief, menu-converter, brand-suite, and the restaurant audit
+# (tools/audits/restaurant) — PLUS the retired /start/ 30-second triage
+# (→ /cost-index/). The exact + sub-path 301s for all of these live in
+# the Worker tool-retirement map (src/lib/tool-redirects.js) so we stay
+# under Cloudflare's 100-rule _redirects cap (this file is already at the
+# cap). Map targets: menu-copy + menu-converter → /tools/menu-engineering/;
+# the other tools → /tools/ (EN) / /es/tools/ (ES); /start/ → /cost-index/.
