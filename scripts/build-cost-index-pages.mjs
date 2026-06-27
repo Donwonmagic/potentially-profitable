@@ -912,11 +912,42 @@ function marketReadBlock(slug, locale) {
 }
 
 // ---- Series distribution files (JSON + CSV from history) ------------
+// ---- The full downloadable series (deep backfill + live) -----------
+// The methodology cites a multi-year track record, but the public download long
+// shipped only the ~5-week capped window from cost-index.json. The deep monthly
+// backfill (data/cost-index-history.json, 53 ingredients back to 2023) was used
+// only internally for the conformal backtest. Stitch them so the download is as
+// long as the record we claim. The early monthly points are RECONSTRUCTED from
+// public sources after the fact — not "published live" in 2023 — and are flagged
+// reconstructed:true so the artifact never overclaims its own history. Live and
+// reconstructed share one valueCents scale (the backfill's own contract). Live
+// points win on any shared date; the backfill is cut at the first live date so a
+// monthly series never interleaves with the daily live window.
+function mergedSeries(slug, entry) {
+  const point = entry && entry.points && entry.points[0];
+  const basis = (point && point.level && point.level.basis) || 'wholesale';
+  const live = (entry && Array.isArray(entry.history)) ? entry.history : [];
+  const deep = Array.isArray(DEEP_HIST[slug]) ? DEEP_HIST[slug] : [];
+  const okPt = (p) => p && p.date && typeof p.valueCents === 'number' && isFinite(p.valueCents) && p.valueCents > 0;
+  const firstLive = live.filter(okPt).map((p) => p.date).sort()[0] || null;
+  const byDate = new Map();
+  for (const p of deep) {
+    if (!okPt(p)) continue;
+    if (firstLive && p.date >= firstLive) continue;   // live takes over from here
+    byDate.set(p.date, { date: p.date, valueCents: p.valueCents, source: null, basis, reconstructed: true });
+  }
+  for (const p of live) {
+    if (!okPt(p)) continue;
+    byDate.set(p.date, { date: p.date, valueCents: p.valueCents, source: p.source || null, basis: p.basis || basis, reconstructed: false });
+  }
+  return Array.from(byDate.values()).sort((a, b) => String(a.date).localeCompare(String(b.date)));
+}
 function seriesJson(slug) {
   const entry = COST_INDEX[slug];
-  const hist = (entry && Array.isArray(entry.history)) ? entry.history : [];
   const lab = LABELS[slug] || {};
   const point = entry && entry.points && entry.points[0];
+  const obs = mergedSeries(slug, entry);
+  const nRecon = obs.filter((o) => o.reconstructed).length;
   const obj = {
     ingredient: slug,
     name: lab.en || slug,
@@ -924,20 +955,20 @@ function seriesJson(slug) {
     basis: (point && point.level && point.level.basis) || 'wholesale',
     currency: 'USD',
     note: 'Wholesale reference prices compiled from public U.S. market sources (USDA AMS/LMR, BLS, FRED, EIA, NOAA). Values are in US dollars per unit. Not a delivered or retail price. Source: muntin.digital/cost-index/' + slug + '/',
+    reconstructedNote: nRecon ? 'Observations marked reconstructed:true are a monthly backfill reconstructed from public sources after the fact — not figures published live on that date. Live points (reconstructed:false) were captured at publication.' : undefined,
+    coverage: obs.length ? { start: obs[0].date, end: obs[obs.length - 1].date, points: obs.length, reconstructed: nRecon } : undefined,
     asOf: (point && point.asOf) || null,
-    observations: hist.map((h) => ({ date: h.date, priceUsd: +(h.valueCents / 100).toFixed(2), source: h.source || null }))
+    observations: obs.map((h) => ({ date: h.date, priceUsd: +(h.valueCents / 100).toFixed(2), source: h.source || null, reconstructed: h.reconstructed }))
   };
   return JSON.stringify(obj, null, 2) + '\n';
 }
 function seriesCsv(slug) {
   const entry = COST_INDEX[slug];
-  const hist = (entry && Array.isArray(entry.history)) ? entry.history : [];
-  const rows = ['date,price_usd,unit,basis,source'];
+  const obs = mergedSeries(slug, entry);
+  const rows = ['date,price_usd,unit,basis,source,reconstructed'];
   const lab = LABELS[slug] || {};
   const unit = lab.unit_en || '';
-  const point = entry && entry.points && entry.points[0];
-  const basis = (point && point.level && point.level.basis) || 'wholesale';
-  for (const h of hist) rows.push(`${h.date},${(h.valueCents / 100).toFixed(2)},${unit},${basis},${h.source || ''}`);
+  for (const h of obs) rows.push(`${h.date},${(h.valueCents / 100).toFixed(2)},${unit},${h.basis || ''},${h.source || ''},${h.reconstructed ? 'true' : 'false'}`);
   return rows.join('\n') + '\n';
 }
 
@@ -1006,8 +1037,13 @@ function emitIngredientJsonLd(slug, locale) {
   const esName = lab.es || enName;
   const name = es ? esName : enName;
   const unitText = `USD per ${unitLong(lab.unit_en || 'unit')}`;
-  const hist = r ? r.hist : [];
-  const temporal = hist.length ? `${hist[0].date}/${hist[hist.length - 1].date}` : undefined;
+  // temporalCoverage + datePublished span the FULL downloadable series (deep
+  // backfill + live), not the capped on-page window — so the schema's claimed
+  // span matches what /series.json actually contains, and datePublished stops
+  // collapsing onto the latest read (which had erased the dataset's real history).
+  const merged = r ? mergedSeries(slug, r.entry) : [];
+  const temporal = merged.length ? `${merged[0].date}/${merged[merged.length - 1].date}` : undefined;
+  const seriesStart = merged.length ? merged[0].date : null;
   const agencies = r ? citedAgencies(r.entry, r.point) : [];
 
   // variableMeasured PropertyValue, degraded by confidence.
@@ -1059,7 +1095,7 @@ function emitIngredientJsonLd(slug, locale) {
       { '@type': 'DataDownload', 'name': `${enName} price history (CSV)`, 'encodingFormat': 'text/csv', 'contentUrl': `https://muntin.digital/cost-index/${slug}/series.csv` }
     ]
   };
-  if (r && r.asOf) { dataset.dateModified = r.asOf; dataset.datePublished = r.asOf; }
+  if (r && r.asOf) { dataset.dateModified = r.asOf; dataset.datePublished = seriesStart || r.asOf; }
   if (temporal) dataset.temporalCoverage = temporal;
   if (agencies.length) {
     dataset.citation = agencies.map((a) => a.url);
