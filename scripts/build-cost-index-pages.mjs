@@ -563,6 +563,62 @@ function movingNowSection(slugs, locale) {
   return `<section class="ci-moving"><h2 class="ci-cat-h" id="moving">${head}</h2><p class="ci-vkey">${key}</p><ul class="ci-moving-list">${lis}</ul></section>`;
 }
 
+// ---- Composite band — the whole basket as one honest reading ----------
+// The weighted basket is computed in data/cost-index.json (build-cost-index.mjs)
+// and, until now, rendered nowhere on the hub. It is a READING AGAINST BASELINE
+// — the same semantics the weekly dispatch publishes via its viz-ring — never a
+// "move this window." We surface it as the hub's headline data-product KPI: the
+// basket's standing read, the breadth of the staples behind it (its credibility
+// lever), its confidence tier and as-of date, with a provenance drawer. Every
+// number derives from the basket object — zero invention. NO live cents: an
+// index reading is a percentage against baseline, not a price.
+function compositeBand(locale) {
+  const es = locale === 'es';
+  const b = CI.basket;
+  if (!b || typeof b.pct !== 'number' || !Array.isArray(b.contributors) || !b.contributors.length) return '';
+  const contribs = b.contributors.filter((c) => typeof c.pct === 'number');
+  if (!contribs.length) return '';
+  const n = b.nContributing || contribs.length;
+  // Spread from the basket's OWN contributors (a small deadband keeps a hair-line
+  // reading from being called a direction), so the parts reconcile to the whole.
+  const DEAD = 0.005;
+  let up = 0, down = 0, flat = 0;
+  for (const c of contribs) { if (c.pct > DEAD) up++; else if (c.pct < -DEAD) down++; else flat++; }
+  const band = b.pct > DEAD ? 'up' : b.pct < -DEAD ? 'down' : 'flat';
+  const pctStr = `${b.pct >= 0 ? '+' : '−'}${Math.abs(b.pct * 100).toFixed(1)}%`;
+  const confMap = es
+    ? { high: 'confianza alta', medium: 'confianza media', moderate: 'confianza media', low: 'confianza baja' }
+    : { high: 'high confidence', medium: 'medium confidence', moderate: 'moderate confidence', low: 'low confidence' };
+  const confChip = confMap[b.confidence] || (es ? 'confianza sin declarar' : 'confidence unstated');
+  const asOf = b.asOf || '—';
+  const asOfChip = es ? `al ${asOf}` : `as of ${asOf}`;
+  const head = es ? 'Dónde está la canasta' : 'Where the basket sits';
+  const say = es
+    ? `la canasta ponderada de ${n} insumos de restaurante, frente a su ventana base`
+    : `the weighted basket of ${n} restaurant staples, against its baseline window`;
+  const spread = es
+    ? `<strong>${up}</strong> de ${n} por encima de su línea base · <strong>${down}</strong> por debajo · <strong>${flat}</strong> sin cambio. Es una lectura de estado, no un movimiento respecto a la semana pasada.`
+    : `<strong>${up}</strong> of ${n} reading above their baseline · <strong>${down}</strong> below · <strong>${flat}</strong> flat. A state-of-play reading, not a week-over-week move.`;
+  const base = es ? '/es' : '';
+  const srcSummary = es ? 'Cómo se construye esta cifra' : 'How this figure is built';
+  const srcBody = es
+    ? `Compuesto ponderado de ${n} insumos seguidos, cada uno leído frente a su propia ventana base con datos públicos de mercado de EE. UU. (USDA, BLS, FRED, EIA, NOAA). Una lectura frente a la base — no un precio, ni un cambio desde la semana pasada. Ver <a href="${base}/cost-index/methodology/">cómo se construye el índice</a>.`
+    : `Weighted composite of ${n} tracked staples, each read against its own baseline window from public U.S. market data (USDA, BLS, FRED, EIA, NOAA). A reading against baseline — not a price, and not a change since last week. See <a href="${base}/cost-index/methodology/">how the index is built</a>.`;
+  return `<section class="ci-composite" data-band="${band}" aria-label="${es ? 'Lectura de la canasta' : 'Basket reading'}">
+    <p class="ci-composite__head">${head}</p>
+    <div class="ci-composite__read">
+      <span class="ci-composite__num">${pctStr}</span>
+      <span class="ci-composite__say">${say}</span>
+    </div>
+    <div class="ci-composite__meta">
+      <span class="ci-composite__chip">${confChip}</span>
+      <span class="ci-composite__chip">${asOfChip}</span>
+    </div>
+    <p class="ci-composite__spread">${spread}</p>
+    <details class="ci-composite__src"><summary>${srcSummary}</summary><div>${srcBody}</div></details>
+  </section>`;
+}
+
 // ---- History sparkline + "normally X–Y, right now Z" capsule -------
 // Charts the gated history series the page already ships as series.json,
 // so the trend the verdict asserts is visible, not just claimed. Numbers
@@ -1080,6 +1136,23 @@ main{padding-top:64px}
 .ci-sibs-label{display:inline-block;font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:11px;margin-right:8px}
 .ci-sibs a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 8px}
+.ci-composite{margin:22px 0 6px;padding:20px 22px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--ink-soft);border-radius:12px;font-variant-numeric:tabular-nums}
+.ci-composite[data-band="up"]{border-left-color:#A23B2D}
+.ci-composite[data-band="down"]{border-left-color:var(--teal)}
+.ci-composite__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px}
+.ci-composite__read{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;margin:0}
+.ci-composite__num{font-family:var(--font-display);font-size:clamp(30px,6vw,44px);font-weight:500;line-height:1;color:var(--ink)}
+.ci-composite[data-band="up"] .ci-composite__num{color:#A23B2D}
+.ci-composite[data-band="down"] .ci-composite__num{color:var(--teal)}
+.ci-composite__say{font-size:15px;line-height:1.4;color:var(--ink);font-weight:600;max-width:46ch}
+.ci-composite__meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin:10px 0 0}
+.ci-composite__chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--white);border:1px solid var(--line);color:var(--ink-soft)}
+.ci-composite__spread{font-size:14px;line-height:1.5;color:var(--ink-soft);margin:10px 0 0}
+.ci-composite__spread strong{color:var(--ink)}
+.ci-composite__src{margin:8px 0 0;font-size:12.5px}
+.ci-composite__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
+.ci-composite__src div{margin-top:6px;color:var(--ink-soft);line-height:1.55}
+.ci-composite__src a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-orient{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));margin:18px 0 8px}
 .ci-orient__cell{background:var(--cream-2);border-radius:6px;padding:14px 16px}
 .ci-orient__h{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
@@ -1158,11 +1231,15 @@ main{padding-top:64px}
 :root[data-theme="dark"] .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
 :root[data-theme="dark"] .ci-read__verb[data-bias="watch"]{color:#d8bd6a;border-color:#8a7530}
 :root[data-theme="dark"] .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
+:root[data-theme="dark"] .ci-composite[data-band="up"]{border-left-color:#ed9a8e}
+:root[data-theme="dark"] .ci-composite[data-band="up"] .ci-composite__num{color:#ed9a8e}
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12)}
   :root:not([data-theme="light"]) .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
   :root:not([data-theme="light"]) .ci-read__verb[data-bias="watch"]{color:#d8bd6a;border-color:#8a7530}
   :root:not([data-theme="light"]) .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
+  :root:not([data-theme="light"]) .ci-composite[data-band="up"]{border-left-color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-composite[data-band="up"] .ci-composite__num{color:#ed9a8e}
 }
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=${SHELL_HASH.core}" onload="this.onload=null;this.rel='stylesheet'">
@@ -1670,8 +1747,8 @@ function emitHubPage(locale, slugs) {
 
   const fresh = CI._lastReviewed || null;
   const freshTxt = fresh
-    ? (es ? `Datos públicos, actualizados a diario. Última lectura: ${fresh}.` : `Public data, refreshed daily. Last refreshed ${fresh}.`)
-    : (es ? 'Datos públicos, actualizados a diario.' : 'Public data, refreshed daily.');
+    ? (es ? `Datos públicos, actualizados cuando las fuentes publican. Última revisión: ${fresh}.` : `Public data, refreshed as the sources publish. Last reviewed ${fresh}.`)
+    : (es ? 'Datos públicos, actualizados cuando las fuentes publican.' : 'Public data, refreshed as the sources publish.');
   const bcHome = es ? 'Inicio' : 'Home';
   return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld }) + `
   <nav class="breadcrumb" aria-label="Breadcrumb">
@@ -1689,6 +1766,7 @@ function emitHubPage(locale, slugs) {
       ${anyPressureProven() ? `<a class="btn btn-ghost" href="${base}/cost-index/lab/">${es ? 'Laboratorio de Presión' : 'Pressure Lab'}</a>` : ''}
       <a class="btn btn-ghost" href="${base}/glossary/cost-index/">${es ? '¿Qué es un índice de costos?' : 'What is a cost index?'}</a>
     </div>
+    ${compositeBand(locale)}
     <p class="ci-hub-data" style="margin:14px 0 4px;font-size:13.5px;line-height:1.5;color:var(--ink-soft)">${freshTxt} ${es ? 'Descarga todo el índice' : 'Download the whole index'}: <a href="/cost-index/index.csv" download style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">CSV</a> · <a href="/cost-index/index.json" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">JSON</a> <span style="color:var(--stone)">${es ? '· dominio público (CC0)' : '· public domain (CC0)'}</span></p>
     ${hubOrientation(locale)}
     ${movingNowSection(shipSlugs, locale)}
