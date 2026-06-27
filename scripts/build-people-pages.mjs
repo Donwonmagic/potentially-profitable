@@ -196,7 +196,7 @@ ${AUTO_MARKER}
 <meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <title>${escText(title)}</title>
 <meta name="description" content="${escAttr(desc)}" />
-<meta name="theme-color" content="#1F4E5B" />
+<meta name="theme-color" content="#2A50C8" />
 <link rel="canonical" href="https://muntin.digital${peopleBase}${slug}/" />
 <link rel="alternate" hreflang="${locale}" href="https://muntin.digital${peopleBase}${slug}/" />
 <link rel="alternate" hreflang="${altLocale}" href="https://muntin.digital${altPath}" />
