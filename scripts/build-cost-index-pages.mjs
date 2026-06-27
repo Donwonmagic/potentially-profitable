@@ -615,14 +615,23 @@ function compositeBand(locale) {
   const say = es
     ? `la canasta ponderada de ${n} insumos de restaurante, frente a su ventana base`
     : `the weighted basket of ${n} restaurant staples, against its baseline window`;
+  // Agreement (weight-share moving the dominant way) near 0.5 means the staples
+  // are nearly split — the composite % is then a soft signal, not a precise read.
+  // Say so, using the real number, so one decimal never implies false precision.
+  const agree = typeof b.agreement === 'number' ? b.agreement : null;
+  const splitNote = (agree != null && agree < 0.6)
+    ? (es
+      ? ` Las fuentes están casi divididas en partes iguales (acuerdo ${Math.round(agree * 100)}%), así que léelo como una señal suave, no una cifra precisa.`
+      : ` The staples are nearly evenly split (agreement ${Math.round(agree * 100)}%), so read it as a soft signal, not a precise figure.`)
+    : '';
   const spread = es
-    ? `<strong>${up}</strong> de ${n} por encima de su línea base · <strong>${down}</strong> por debajo · <strong>${flat}</strong> sin cambio. Es una lectura de estado, no un movimiento respecto a la semana pasada.`
-    : `<strong>${up}</strong> of ${n} reading above their baseline · <strong>${down}</strong> below · <strong>${flat}</strong> flat. A state-of-play reading, not a week-over-week move.`;
+    ? `<strong>${up}</strong> de ${n} por encima de su línea base · <strong>${down}</strong> por debajo · <strong>${flat}</strong> sin cambio. Es una lectura de estado, no un movimiento respecto a la semana pasada.${splitNote}`
+    : `<strong>${up}</strong> of ${n} reading above their baseline · <strong>${down}</strong> below · <strong>${flat}</strong> flat. A state-of-play reading, not a week-over-week move.${splitNote}`;
   const base = es ? '/es' : '';
   const srcSummary = es ? 'Cómo se construye esta cifra' : 'How this figure is built';
   const srcBody = es
-    ? `Compuesto ponderado de ${n} insumos seguidos, cada uno leído frente a su propia ventana base con datos públicos de mercado de EE. UU. (USDA, BLS, FRED, EIA, NOAA). Una lectura frente a la base — no un precio, ni un cambio desde la semana pasada. Ver <a href="${base}/cost-index/methodology/">cómo se construye el índice</a>.`
-    : `Weighted composite of ${n} tracked staples, each read against its own baseline window from public U.S. market data (USDA, BLS, FRED, EIA, NOAA). A reading against baseline — not a price, and not a change since last week. See <a href="${base}/cost-index/methodology/">how the index is built</a>.`;
+    ? `Compuesto ponderado de ${n} insumos seguidos, cada uno leído frente a su propia ventana base con datos públicos de mercado de EE. UU. (USDA, BLS, FRED, EIA, NOAA). Una lectura frente a la base — no un precio, ni un cambio desde la semana pasada. Ver los ${n} pesos y cómo se arma el compuesto en <a href="${base}/cost-index/basket/">La Cesta de Restaurante Muntin</a>, o <a href="${base}/cost-index/methodology/">cómo se construye el índice</a>.`
+    : `Weighted composite of ${n} tracked staples, each read against its own baseline window from public U.S. market data (USDA, BLS, FRED, EIA, NOAA). A reading against baseline — not a price, and not a change since last week. See all ${n} weights and how the composite is assembled in <a href="${base}/cost-index/basket/">The Muntin Restaurant Basket</a>, or <a href="${base}/cost-index/methodology/">how the index is built</a>.`;
   return `<section class="ci-composite" data-band="${band}" aria-label="${es ? 'Lectura de la canasta' : 'Basket reading'}">
     <p class="ci-composite__head">${head}</p>
     <div class="ci-composite__read">
