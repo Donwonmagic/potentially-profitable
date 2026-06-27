@@ -647,6 +647,47 @@ function compositeBand(locale) {
   </section>`;
 }
 
+// ---- The "all readings" table — the terminal scan view -------------
+// Every shippable reading in one scannable grid: direction, verdict, as-of, and
+// the price-free indexed-movement spark. NO live cents (the hub honesty contract)
+// — the dollar range lives one click away on each ingredient page. Pure surfacing
+// of values already rendered per page (no new statistic), ordered by verdict
+// urgency then name so the movers sit on top. The <table> is wrapped in the
+// known .table-scroll wrapper (check-table-scroll-wrap).
+function allReadingsTable(slugs, locale) {
+  const es = locale === 'es';
+  const base = es ? '/es' : '';
+  const rows = slugs.filter(shippable)
+    .map((s) => ({ s, r: readingOf(s), v: ingVerdict(s) }))
+    .filter((x) => x.r && x.v)
+    .sort((a, b) => (TONE_RANK[a.v.tone] - TONE_RANK[b.v.tone]) || a.s.localeCompare(b.s));
+  if (rows.length < 4) return '';
+  const head = es ? 'Todas las lecturas' : 'All readings';
+  const note = es
+    ? `Las ${rows.length} lecturas que pasan la barra de publicación, los movimientos primero. Sin precios aquí — abre un ingrediente para su rango en dólares.`
+    : `All ${rows.length} readings that clear the publish bar — movers first. No prices here; open an ingredient for its dollar range.`;
+  const cols = es
+    ? ['Ingrediente', 'Dirección', 'Señal', 'Movimiento', 'Al']
+    : ['Ingredient', 'Direction', 'Signal', 'Movement', 'As of'];
+  const body = rows.map(({ s, r, v }) => {
+    const l = LABELS[s] || {};
+    const nm = (es ? (l.es || l.en) : l.en) || s;
+    const dir = (r.trend && r.trend.dir) || 'flat';
+    const dw = (r.trend && r.trend.dir) ? dirWord(r.trend, locale) : (es ? 'casi estable' : 'about flat');
+    const spark = indexedMovement(r.entry, locale, {});
+    return `<tr>`
+      + `<td><a href="${base}/cost-index/${s}/">${escHtml(nm)}</a></td>`
+      + `<td class="ci-t-dir" data-dir="${dir}">${escHtml(dw)}</td>`
+      + `<td>${verdictChip(v, locale)}</td>`
+      + `<td>${spark || '<span class="ci-t-na">—</span>'}</td>`
+      + `<td>${escHtml(r.asOf || '—')}</td>`
+      + `</tr>`;
+  }).join('');
+  return `<section class="ci-readings"><h2 class="ci-cat-h" id="all-readings">${escHtml(head)}</h2>`
+    + `<p class="ci-pending-note">${note}</p>`
+    + `<div class="table-scroll"><table class="ci-table"><thead><tr>${cols.map((c) => `<th>${escHtml(c)}</th>`).join('')}</tr></thead><tbody>${body}</tbody></table></div></section>`;
+}
+
 // ---- History sparkline + "normally X–Y, right now Z" capsule -------
 // Charts the gated history series the page already ships as series.json,
 // so the trend the verdict asserts is visible, not just claimed. Numbers
@@ -1320,6 +1361,20 @@ main{padding-top:64px}
 .ci-card--pending{opacity:.72;background:var(--cream-2)}
 .ci-card--pending a{color:var(--ink-soft)}
 .ci-pending-note{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
+.ci-readings{margin:20px 0 8px}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0}
+.ci-table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+.ci-table th,.ci-table td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap;vertical-align:middle}
+.ci-table th{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft)}
+.ci-table tbody tr:hover{background:var(--cream-2)}
+.ci-table td a{color:var(--ink);text-decoration:none;font-weight:600;border-bottom:1px dashed var(--line)}
+.ci-table td a:hover{color:var(--teal)}
+.ci-table .ci-t-dir{font-weight:600}
+.ci-table .ci-t-dir[data-dir="up"]{color:#A23B2D}
+.ci-table .ci-t-dir[data-dir="down"]{color:var(--teal)}
+.ci-table .ci-t-na{color:var(--stone,#9aa0aa)}
+.ci-table .ci-index--mini{margin:0}
+:root[data-theme="dark"] .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
 .ci-read--pending{border-left-color:#cdb368;background:var(--cream-2)}
 .ci-read--pending .ci-read__head{color:#8a6d1f}
 .ci-outlook{margin:14px 0 8px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-left:4px solid #6b4fa1;border-radius:12px}
@@ -1368,6 +1423,7 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
   :root:not([data-theme="light"]) .ci-composite[data-band="up"]{border-left-color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-composite[data-band="up"] .ci-composite__num{color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
 }
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=${SHELL_HASH.core}" onload="this.onload=null;this.rel='stylesheet'">
@@ -1898,6 +1954,7 @@ function emitHubPage(locale, slugs) {
     <p class="ci-hub-data" style="margin:14px 0 4px;font-size:13.5px;line-height:1.5;color:var(--ink-soft)">${freshTxt} ${es ? 'Descarga todo el índice' : 'Download the whole index'}: <a href="/cost-index/index.csv" download style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">CSV</a> · <a href="/cost-index/index.json" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">JSON</a> <span style="color:var(--stone)">${es ? '· dominio público (CC0)' : '· public domain (CC0)'}</span></p>
     ${hubOrientation(locale)}
     ${movingNowSection(shipSlugs, locale)}
+    ${allReadingsTable(shipSlugs, locale)}
     ${sections}
     ${pendingSection}
     ${driverNote}
