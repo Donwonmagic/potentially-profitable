@@ -126,6 +126,19 @@ main{padding-top:64px}
 .ci-moving-calm{margin:0;font-size:15.5px;color:var(--ink)}
 .ci-vkey{margin:2px 0 12px;font-size:12.5px;color:var(--ink-soft);line-height:1.6}
 .ci-vkey strong{color:var(--ink)}
+.ci-moving-insight{margin:3px 0 2px}
+.ci-moving-read{margin:2px 0;font-size:14.5px;line-height:1.5;color:var(--ink)}
+.ci-assoc-tag{color:var(--ink-soft);font-style:italic;font-size:12.5px}
+.ci-moving-cite{margin:3px 0 4px;font-size:12.5px}
+.ci-moving-cite summary{color:var(--teal);cursor:pointer}
+.ci-moving-cite p{margin:4px 0 0;color:var(--ink-soft)}
+.ci-moving-act{margin:2px 0 0;font-size:13.5px;color:var(--ink-soft)}
+.ci-moving-act strong{color:var(--ink)}
+.ci-moving-more{font-size:12.5px}
+.ci-index--mini{display:inline-block;vertical-align:middle;margin:4px 0 2px;opacity:.9}
+.ci-index{margin:10px 0 4px}
+.ci-index__cap{margin:0 0 4px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+.ci-index .mtn-spark{max-width:100%;height:auto}
 .ci-card--pending{opacity:.72;background:var(--cream-2)}
 .ci-card--pending a{color:var(--ink-soft)}
 .ci-pending-note{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
@@ -175,24 +188,13 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
 }
 </style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=2830bb0a913c" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=158a407ca00a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=2830bb0a913c"><link rel="stylesheet" href="/assets/site-article.css?v=158a407ca00a"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=bf6474c0bef7" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=704f9150369c" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=bf6474c0bef7"><link rel="stylesheet" href="/assets/site-article.css?v=704f9150369c"></noscript>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
-<!-- batch-banner:start -->
-<aside class="batch-marquee" data-batch="fathers-day-2026" role="complementary" aria-label="New dispatch · Get found for Father’s Day weekend" style="background:#16181D;color:#F6F7F8;font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(246,247,248,0.16);box-shadow:inset 0 1px 0 rgba(255,255,255,0.05)">
-  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;flex:1 1 auto">
-      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:#2A50C8;color:#F6F7F8;padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">New dispatch</span>
-      <span style="font-family:'Fraunces',Georgia,'Times New Roman',serif;font-size:14px;font-style:italic;line-height:1.35;min-width:0;color:#F6F7F8">It’s Father’s Day weekend. Can a searching family find you?</span>
-    </div>
-    <a href="/blog/get-found-fathers-day-weekend-2026/" style="display:inline-flex;align-items:center;gap:6px;color:#16181D;background:#F6F7F8;text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:13px;padding:6px 14px;border-radius:999px;white-space:nowrap;flex-shrink:0;box-shadow:0 1px 2px rgba(0,0,0,0.18);transition:transform .15s ease,box-shadow .15s ease">Read the dispatch <span aria-hidden="true">&rarr;</span></a>
-  </div>
-</aside>
-<script>(function(){var d=document.documentElement;function s(){var b=document.querySelector('.batch-marquee');if(b){d.style.setProperty('--banner-h',b.offsetHeight+'px');}}s();addEventListener('resize',s,{passive:true});addEventListener('orientationchange',s);if(document.fonts&&document.fonts.ready){document.fonts.ready.then(s);}})();</script>
-<!-- batch-banner:end -->
+<!-- batch-banner:start --><!-- batch-banner:end -->
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially
@@ -386,27 +388,6 @@ main{padding-top:64px}
                 });
               })
               .catch(function () { /* silent */ });
-            // Course progress dot — appended after the workshop link
-            // when the operator is mid-bootcamp (> 0 but < 16 lessons
-            // done). Decorative + aria-hidden; the operator can still
-            // click the workshop link to see the canonical count.
-            fetch('/api/course/progress', { credentials: 'same-origin' })
-              .then(function (r3) { return r3.ok ? r3.json() : null; })
-              .then(function (j) {
-                if (!j || !j.progress || !Array.isArray(j.progress.completed)) return;
-                var n = j.progress.completed.length;
-                if (n <= 0 || n >= 16) return;
-                workshop.forEach(function (w) {
-                  if (w.querySelector('.nav-course-dot')) return;
-                  var dot = document.createElement('span');
-                  dot.className = 'nav-course-dot';
-                  dot.setAttribute('aria-hidden', 'true');
-                  dot.title = 'Open the Doors — lesson ' + n + ' / 16';
-                  dot.style.cssText = 'display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--teal);margin-left:6px;vertical-align:middle';
-                  w.appendChild(dot);
-                });
-              })
-              .catch(function () { /* silent — course endpoint optional */ });
             return;
           }
           show(signin);
@@ -437,7 +418,7 @@ main{padding-top:64px}
     <p class="ci-read__head">Market read<span class="ci-read__badge">confidence medium · as of 2026-06-15</span></p>
     <p class="ci-read__line">About $0.75–$2.29/lb (wholesale reference, single USDA market), as of 2026-06-15.</p><p class="ci-read__trend">Trend: up +31.5% over the recent window.</p>
     <p class="ci-read__verdict"><span class="ci-read__verb" data-bias="re-price">Re-price</span>Up and holding for 5 weeks — this looks like a real reset, not a blip. Many operators would re-price the dishes that use it.</p>
-    <div class="ci-read__spark"><svg class="mtn-spark" width="248" height="46" viewBox="0 0 248 46" role="img" aria-label="Price rose over the tracked window. Normally $1.27–$1.38, right now $1.42 — top of its usual range. Higher than 10 of its last 12 reads."><path d="M3.0,43.0L18.1,39.6L33.3,32.7L48.4,25.9L63.5,21.3L78.6,19.0L93.8,19.0L108.9,19.0L124.0,16.7L139.1,14.4L154.3,9.9L169.4,8.7L184.5,9.9L199.6,6.4L214.8,3.0L229.9,4.1L245.0,4.1 L245.0,43.0 L3.0,43.0 Z" fill="rgba(31,111,106,0.12)" stroke="none" /><line x1="3" x2="245" y1="16.7" y2="16.7" stroke="#2A50C8" stroke-width="1" stroke-dasharray="2,3" opacity="0.45" /><path d="M3.0,43.0L18.1,39.6L33.3,32.7L48.4,25.9L63.5,21.3L78.6,19.0L93.8,19.0L108.9,19.0L124.0,16.7L139.1,14.4L154.3,9.9L169.4,8.7L184.5,9.9L199.6,6.4L214.8,3.0L229.9,4.1L245.0,4.1" fill="none" stroke="#2A50C8" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" /><circle cx="245.0" cy="4.1" r="2.5" fill="#2A50C8" /></svg><p class="ci-read__capsule">Normally $1.27–$1.38, right now $1.42 — top of its usual range. <span class="ci-read__rank">Higher than 10 of its last 12 reads.</span> <span class="ci-read__capsule-note">(over the tracked window)</span></p></div>
+    <div class="ci-read__spark"><svg class="mtn-spark" width="248" height="46" viewBox="0 0 248 46" role="img" aria-label="Price rose over the tracked window. Normally $1.27–$1.38, right now $1.42 — top of its usual range. Higher than 10 of its last 12 reads."><path d="M3.0,43.0L18.1,39.6L33.3,32.7L48.4,25.9L63.5,21.3L78.6,19.0L93.8,19.0L108.9,19.0L124.0,16.7L139.1,14.4L154.3,9.9L169.4,8.7L184.5,9.9L199.6,6.4L214.8,3.0L229.9,4.1L245.0,4.1 L245.0,43.0 L3.0,43.0 Z" fill="rgba(31,111,106,0.12)" stroke="none" /><line x1="3" x2="245" y1="16.7" y2="16.7" stroke="#2A50C8" stroke-width="1" stroke-dasharray="2,3" opacity="0.45" /><path d="M3.0,43.0L18.1,39.6L33.3,32.7L48.4,25.9L63.5,21.3L78.6,19.0L93.8,19.0L108.9,19.0L124.0,16.7L139.1,14.4L154.3,9.9L169.4,8.7L184.5,9.9L199.6,6.4L214.8,3.0L229.9,4.1L245.0,4.1" fill="none" stroke="#2A50C8" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" /><circle cx="245.0" cy="4.1" r="2.5" fill="#2A50C8" /></svg><p class="ci-read__capsule">Normally $1.27–$1.38, right now $1.42 — top of its usual range. <span class="ci-read__rank">Higher than 10 of its last 12 reads.</span> <span class="ci-read__capsule-note">(over the tracked window)</span></p></div><figure class="ci-index"><figcaption class="ci-index__cap">Indexed to 100 on 2026-02-23 · ~131 on 2026-06-15 — rose over the tracked window. Relative movement, no price.</figcaption><svg class="mtn-spark" width="460" height="128" viewBox="0 0 460 128" role="img" aria-label="Indexed to 100 on 2026-02-23 · ~131 on 2026-06-15 — rose over the tracked window. Relative movement, no price."><path d="M3.0,125.0L31.4,114.5L59.8,93.7L88.1,72.7L116.5,58.7L144.9,52.0L173.3,52.0L201.6,52.0L230.0,44.8L258.4,38.0L286.8,23.7L315.1,20.3L343.5,23.7L371.9,13.5L400.3,3.0L428.6,6.4L457.0,6.4 L457.0,125.0 L3.0,125.0 Z" fill="rgba(42,80,200,0.10)" stroke="none" /><line x1="3" x2="457" y1="125.0" y2="125.0" stroke="#2A50C8" stroke-width="1" stroke-dasharray="2,3" opacity="0.45" /><path d="M3.0,125.0L31.4,114.5L59.8,93.7L88.1,72.7L116.5,58.7L144.9,52.0L173.3,52.0L201.6,52.0L230.0,44.8L258.4,38.0L286.8,23.7L315.1,20.3L343.5,23.7L371.9,13.5L400.3,3.0L428.6,6.4L457.0,6.4" fill="none" stroke="#2A50C8" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" /><circle cx="457.0" cy="6.4" r="2.5" fill="#2A50C8" /></svg></figure>
     <details class="ci-read__src"><summary>Sources · 2</summary><div><a href="/glossary/usda-market-news/">USDA AMS</a> · <a href="/glossary/bls/">BLS</a> — public data, as of 2026-06-15. Wholesale reference (roughly what distributors pay), not the delivered price you pay.</div></details>
     <p class="ci-read__verified"><strong>Verified:</strong> current for its source’s cadence.</p>
     <p class="ci-read__method"><a href="/cost-index/methodology/#track-record">How we verify this number <span aria-hidden="true">→</span></a></p>

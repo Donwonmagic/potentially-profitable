@@ -9,7 +9,7 @@
   "revisions": "https://muntin.digital/cost-index/revisions.json",
   "disclaimer": "Wholesale reference prices compiled from public U.S. market sources (USDA AMS/LMR, BLS, FRED, EIA, NOAA). US dollars per listed unit. Not a delivered or retail price. Measured levels only — never a forecast.",
   "freshestAsOf": "2026-06-18",
-  "count": 81,
+  "count": 82,
   "ingredients": [
     {
       "slug": "acorn-squash",
@@ -1073,6 +1073,25 @@
         "page": "https://muntin.digital/cost-index/pineapple/",
         "series": "https://muntin.digital/cost-index/pineapple/series.json",
         "seriesCsv": "https://muntin.digital/cost-index/pineapple/series.csv"
+      }
+    },
+    {
+      "slug": "poblano-pepper",
+      "name": "Poblano pepper",
+      "unit": "carton",
+      "basis": "wholesale",
+      "currency": "USD",
+      "asOf": "2026-06-18",
+      "reference": {
+        "date": "2026-06-18",
+        "priceUsd": 33,
+        "source": "usda-ams-atlanta"
+      },
+      "observations": 26,
+      "urls": {
+        "page": "https://muntin.digital/cost-index/poblano-pepper/",
+        "series": "https://muntin.digital/cost-index/poblano-pepper/series.json",
+        "seriesCsv": "https://muntin.digital/cost-index/poblano-pepper/series.csv"
       }
     },
     {

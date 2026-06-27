@@ -331,6 +331,7 @@ import { MAX_VOICE_DURATION_HARD_MS } from './lib/window.js';
 import { sanitizePlaintext as sanitizeWindowBody } from './lib/submissions.js';
 import { sendCrisisSms } from './lib/sms.js';
 import { lookupBlogLibraryRedirect } from './lib/blog-library-redirects.js';
+import { lookupToolRedirect } from './lib/tool-redirects.js';
 
 
 // ------------------------------------------------------------
@@ -510,6 +511,32 @@ export default {
       if (target) {
         const location = target + url.search;
         return new Response(null, { status: 301, headers: { location } });
+      }
+    }
+
+    // 2026-06-26 tools migration — retired-tool 301s. Lives in code
+    // (src/lib/tool-redirects.js) rather than /_redirects because that
+    // file is at Cloudflare's 100-rule cap. Prefix match covers the tool
+    // root and every sub-path/asset, so no per-asset wildcard rules are
+    // needed. Fires only for GET against the /tools/ namespaces.
+    if (request.method === 'GET' && (pathname.startsWith('/tools/') || pathname.startsWith('/es/tools/'))) {
+      const target = lookupToolRedirect(pathname);
+      if (target) {
+        const location = target + url.search;
+        return new Response(null, { status: 301, headers: { location } });
+      }
+    }
+
+    // 2026-06-26 tools migration — the retired /start/ 30-second triage
+    // (and its ES twin) now lead into the Cost Index, the funnel's front
+    // door. Prefix match covers any sub-path. In code for the same
+    // _redirects-cap reason as the tool redirects above.
+    if (request.method === 'GET') {
+      if (pathname === '/start' || pathname === '/start/' || pathname.startsWith('/start/')) {
+        return new Response(null, { status: 301, headers: { location: '/cost-index/' + url.search } });
+      }
+      if (pathname === '/es/start' || pathname === '/es/start/' || pathname.startsWith('/es/start/')) {
+        return new Response(null, { status: 301, headers: { location: '/es/cost-index/' + url.search } });
       }
     }
 

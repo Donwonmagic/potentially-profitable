@@ -12,7 +12,7 @@
   'use strict';
   var DATA = {
   "status": "live",
-  "generatedAt": "2026-06-27",
+  "generatedAt": "2026-06-19",
   "ingredients": [
     {
       "key": "ribeye",
