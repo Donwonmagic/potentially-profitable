@@ -40,8 +40,17 @@ function esTitleFrom(ns, esSlug) {
   if (!esSlug) return null;
   try {
     const h = fs.readFileSync(path.join(REPO, 'es', ns, esSlug, 'index.html'), 'utf8');
-    const m = h.match(/<title>([^<]+)<\/title>/i);
-    if (m) return m[1].replace(/\s*\|\s*Muntin Digital\b.*$/i, '').replace(/&amp;/g, '&').trim();
+    const m = h.match(/<title>([\s\S]*?)<\/title>/i);
+    if (m) {
+      // Decode the common entities a title may carry, &amp; LAST so we never
+      // double-decode (escText re-encodes &/</> for safe output downstream).
+      const decoded = m[1]
+        .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+        .replace(/&rsquo;/g, '’').replace(/&mdash;/g, '—').replace(/&ndash;/g, '–')
+        .replace(/&amp;/g, '&');
+      return decoded.replace(/\s*\|\s*Muntin Digital\b[\s\S]*$/i, '').trim();
+    }
   } catch { /* no ES page */ }
   return null;
 }
@@ -119,6 +128,12 @@ if (top.length < 3) {
   console.error(`build-library-recent: only ${top.length} dated items found; expected at least 3.`);
   process.exit(2);
 }
+// The ES rail draws from the Spanish-mirror subset; if translations ever lag
+// below 3 it would render a stunted strip. Warn (don't fail — EN is primary)
+// so the gap surfaces in the build log rather than silently shipping.
+if (topEs.length < 3) {
+  console.warn(`build-library-recent: only ${topEs.length} ES-mirrored item(s) for the Spanish rail (expected >=3); the /es/ strip will be short until more posts are translated.`);
+}
 
 // --- render -----------------------------------------------------------
 //
@@ -176,9 +191,10 @@ function renderBody(locale) {
   const eyebrow = locale === 'en' ? 'Library index' : 'Índice de la biblioteca';
   const heading = locale === 'en' ? 'Recently added.' : 'Añadido recientemente.';
   const list        = locale === 'en' ? top : topEs;
+  const n = list.length;
   const subhead = locale === 'en'
-    ? `The ${list.length} most recent entries across the library — articles, research, tools, and checklists. Older entries live in the topic shelves below.`
-    : `Las ${list.length} entradas más recientes de la biblioteca — artículos, investigación, herramientas y listas. Las entradas antiguas viven en las secciones por tema más abajo.`;
+    ? `The ${n} most recent ${n === 1 ? 'entry' : 'entries'} across the library — articles, research, tools, and checklists. Older entries live in the topic shelves below.`
+    : `${n === 1 ? 'La entrada más reciente' : `Las ${n} entradas más recientes`} de la biblioteca — artículos, investigación, herramientas y listas. Las entradas antiguas viven en las secciones por tema más abajo.`;
   const colTitle    = locale === 'en' ? 'Title'        : 'Título';
   const colSection  = locale === 'en' ? 'Section'      : 'Sección';
   const colDate     = locale === 'en' ? 'Last updated' : 'Última actualización';
