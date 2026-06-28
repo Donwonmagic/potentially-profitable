@@ -75,15 +75,22 @@ function resolveEnabled() {
 const ENABLED = resolveEnabled();
 
 function articleSlugFromPath(file) {
-  // file = .../blog/<slug>/index.html or .../es/blog/<slug>/index.html
+  // The slug is always the directory holding index.html — works for blog/<slug>/
+  // AND library/<slug>/ (and their /es/ mirrors). The old lastIndexOf('blog')
+  // returned '' for library paths, producing a broken /blog// sign-in return.
   const parts = file.split(path.sep);
-  const idx = parts.lastIndexOf('blog');
-  if (idx < 0) return '';
-  return parts[idx + 1] || '';
+  const i = parts.lastIndexOf('index.html');
+  return (i > 0 ? parts[i - 1] : '') || '';
 }
 
 function localeFromPath(file) {
-  return file.includes(`${path.sep}es${path.sep}blog${path.sep}`) ? 'es' : 'en';
+  // Any /es/ path is Spanish — es/blog AND es/library (the old check only
+  // matched es/blog, so ES library pages were stamped with the English form).
+  return file.includes(`${path.sep}es${path.sep}`) ? 'es' : 'en';
+}
+
+function namespaceFromPath(file) {
+  return file.includes(`${path.sep}library${path.sep}`) ? 'library' : 'blog';
 }
 
 function renderPaused(locale) {
@@ -97,7 +104,7 @@ function renderPaused(locale) {
   ].join('\n      ');
 }
 
-function renderEnabled(locale, articleSlug) {
+function renderEnabled(locale, articleSlug, namespace) {
   const c = COPY[locale];
   // The form ships server-rendered with both states present; client
   // JS reads /api/auth/me and unhides the right one. This means
@@ -105,8 +112,8 @@ function renderEnabled(locale, articleSlug) {
   // signed-in-with-JS-disabled visitors see the form (it posts
   // standard form-encoded body to /api/submission/create).
   const signinHref = locale === 'es'
-    ? `/es/sign-in/?return=%2Fes%2Fblog%2F${encodeURIComponent(articleSlug)}%2F%23field-note-form`
-    : `/sign-in/?return=%2Fblog%2F${encodeURIComponent(articleSlug)}%2F%23field-note-form`;
+    ? `/es/sign-in/?return=%2Fes%2F${namespace}%2F${encodeURIComponent(articleSlug)}%2F%23field-note-form`
+    : `/sign-in/?return=%2F${namespace}%2F${encodeURIComponent(articleSlug)}%2F%23field-note-form`;
   return [
     '<!-- field-notes-submit:start -->',
     '      <section class="field-notes-submit" id="field-note-form" aria-labelledby="field-note-heading"',
@@ -162,7 +169,8 @@ for (const file of files) {
   const src = fs.readFileSync(file, 'utf8');
   const locale = localeFromPath(file);
   const slug = articleSlugFromPath(file);
-  const block = ENABLED ? renderEnabled(locale, slug) : renderPaused(locale);
+  const namespace = namespaceFromPath(file);
+  const block = ENABLED ? renderEnabled(locale, slug, namespace) : renderPaused(locale);
   const next = src.replace(SENTINEL_RE, block);
   if (next === src) continue;
   if (!checkOnly) fs.writeFileSync(file, next);
