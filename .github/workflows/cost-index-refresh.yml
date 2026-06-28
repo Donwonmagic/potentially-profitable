@@ -1,22 +1,16 @@
-# Cost Index refresh — the freshness heartbeat (business days).
+# Cost Index daily refresh — the freshness heartbeat.
 #
-# Every business day 13:00 UTC: fetch the live public sources (USDA AMS/LMR,
-# BLS, FRED, EIA) for verified ingredients, compose the honest artifact, vendor
-# it through the build's own fact gate, reconcile each shown trend to its curve,
-# rebuild the browser seed + cost-index + ingredient-yield pages, gate, commit.
+# Every day 13:00 UTC: fetch the live public sources (USDA AMS/LMR, BLS, FRED,
+# EIA) for verified ingredients, compose the honest artifact, vendor it through
+# the build's own fact gate, reconcile each shown trend to its curve, rebuild
+# the browser seed + cost-index + ingredient-yield pages, gate, and commit.
 #
-# Why BUSINESS DAYS (Mon–Fri): the dollar LEVEL for produce (USDA AMS terminals)
-# and beef/pork (LMR cutout) updates business-daily — a weekly cron sampled it
-# once a week, so a card could read a ~6-day-old price. But those markets are
-# CLOSED on weekends: a Saturday/Sunday run only re-fetches Friday's numbers and
-# commits an identical artifact — pure wasted Actions minutes. Skipping the two
-# weekend runs keeps the level <=1 business-day old (the same Friday level the
-# site already shows all weekend) while cutting ~104 runs/year. The monthly/
-# weekly legs (BLS PPI, EIA, FRED diesel) just contribute their latest whenever
-# a weekday run lands — no loss. The sparkline is a per-fetch windowed source
-# curve, so cadence doesn't change it; the weekly EMAIL stays weekly (separate
-# dispatch workflow, which runs Tuesday — still a weekday, so it still sees a
-# fresh same-morning refresh).
+# Why DAILY: the dollar LEVEL for produce (USDA AMS terminals) and beef/pork
+# (LMR cutout) updates business-daily — a weekly cron sampled it once a week, so
+# a card could read a ~6-day-old price. Daily keeps the level <=1 day old. The
+# monthly/weekly legs (BLS PPI, EIA, FRED diesel) just contribute their latest
+# each run. The sparkline is a per-fetch windowed source curve, so cadence
+# doesn't change it; the weekly EMAIL stays weekly (separate dispatch workflow).
 #
 # Honest-failure posture (matches the engine):
 #   - No API keys configured  -> log + exit 0 (never a red X before the
@@ -32,11 +26,11 @@
 #   FRED_KEY, BLS_KEY, AMS_KEY  (required for --live)
 #   LMR_KEY, EIA_KEY            (optional)
 
-name: Cost Index refresh
+name: Cost Index daily refresh
 
 on:
   schedule:
-    - cron: "0 13 * * 1-5" # business days (Mon–Fri) 13:00 UTC — markets are closed weekends
+    - cron: "0 13 * * *" # daily 13:00 UTC
   workflow_dispatch:
 
 permissions:

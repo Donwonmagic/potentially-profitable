@@ -3,8 +3,8 @@
 // JSON-LD `dateModified` on the methodology pages (EN + ES) and — if it
 // carries the catalog — the hub.
 //
-// Why: freshness is a top AI-citation factor. The index IS refreshed every
-// business day (data/cost-index.js#generatedAt), but the structured-data `dateModified`
+// Why: freshness is a top AI-citation factor. The index IS refreshed daily
+// (data/cost-index.js#generatedAt), but the structured-data `dateModified`
 // machines read did not move with it. This wires the one to the other so the
 // machine-readable freshness signal always matches the live read.
 //
