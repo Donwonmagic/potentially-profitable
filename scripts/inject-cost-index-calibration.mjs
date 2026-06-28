@@ -16,6 +16,11 @@ import { fileURLToPath } from 'node:url';
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const checkOnly = process.argv.includes('--check');
 const report = JSON.parse(fs.readFileSync(path.join(REPO, 'data/cost-index-calibration-report.json'), 'utf8'));
+// The published-LABEL calibration (does the label a reader sees track realized
+// accuracy?). Surfaced so the track record discloses the honest, thinner
+// label-level trend picture, not only the flattering signal-strength cut.
+const labelReport = JSON.parse(fs.readFileSync(path.join(REPO, 'data/cost-confidence-calibration.json'), 'utf8'));
+const labelTier = (name) => (labelReport.byPublishedConfidence || []).find((t) => t.tier === name) || {};
 
 const pct = (x) => Math.round(x * 100) + '%';
 // Locale-formatted values: EN uses a thousands comma, ES (and the page I wrote)
@@ -33,6 +38,10 @@ function values(es) {
     'band.nominal': pct(report.band.nominal),
     'band.widened': int(report.band.widened),
     'chart.reliability': reliabilityChart(es),
+    // Published-label trend record (the honest, thinner cut).
+    'label.low': pct((labelTier('low').trend || {}).hitRate || 0),
+    'label.medium': pct((labelTier('medium').trend || {}).hitRate || 0),
+    'label.high.items': int(labelTier('high').items || 0),
   };
 }
 
