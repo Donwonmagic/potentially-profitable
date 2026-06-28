@@ -542,6 +542,15 @@ function movingNowSection(slugs, locale) {
     .map((s) => ({ s, v: ingVerdict(s), r: readingOf(s) }))
     .filter((x) => x.v && x.v.tone !== 'hold')   // surface watch + reprice
     .sort((a, b) => (TONE_RANK[a.v.tone] - TONE_RANK[b.v.tone]) || a.s.localeCompare(b.s));
+  // Curate, don't dump (persona audit #4): "what's moving" is the highlight reel
+  // — the handful that need action — not the whole list. Dumping all ~20 movers
+  // here repeats the same "elevated N weeks" note over and over AND re-lists the
+  // same ingredients already in the searchable readings table below. Show every
+  // act-now re-price; fill to a cap with watches; point to the table for the rest.
+  const CAP = 8;
+  const repriceCount = rows.filter((x) => x.v.tone === 'reprice').length;
+  const shown = rows.slice(0, Math.max(repriceCount, CAP));
+  const moreCount = rows.length - shown.length;
   const head = es ? 'Qué se está moviendo ahora' : "What's moving now";
   if (!rows.length) {
     const calm = es
@@ -549,7 +558,7 @@ function movingNowSection(slugs, locale) {
       : `Nothing needs action this week — most ingredients are sitting in their usual range.`;
     return `<section class="ci-moving"><h2 class="ci-cat-h" id="moving">${head}</h2><p class="ci-moving-calm">${calm}</p></section>`;
   }
-  const lis = rows.map((x) => {
+  const lis = shown.map((x) => {
     const { s, v, r } = x;
     const l = LABELS[s] || {};
     const nm = (es ? (l.es || l.en) : l.en) || s;
@@ -579,7 +588,12 @@ function movingNowSection(slugs, locale) {
   const key = es
     ? `<strong>Re-precificar</strong> = una subida que parece durar · <strong>Vigilar</strong> = un movimiento real, aún sin confirmar · <strong>Mantener</strong> = dentro de su rango normal`
     : `<strong>Re-price</strong> = a rise that looks durable · <strong>Watch</strong> = a real move, not yet confirmed · <strong>Hold</strong> = within its normal range`;
-  return `<section class="ci-moving"><h2 class="ci-cat-h" id="moving">${head}</h2><p class="ci-vkey">${key}</p><ul class="ci-moving-list">${lis}</ul></section>`;
+  const moreLine = moreCount > 0
+    ? `<p class="ci-moving-more-all">${es
+        ? `+${moreCount} más en movimiento — míralos todos en <a href="#all-readings">la tabla de lecturas</a> de abajo.`
+        : `+${moreCount} more moving — see them all in <a href="#all-readings">the readings table</a> below.`}</p>`
+    : '';
+  return `<section class="ci-moving"><h2 class="ci-cat-h" id="moving">${head}</h2><p class="ci-vkey">${key}</p><ul class="ci-moving-list">${lis}</ul>${moreLine}</section>`;
 }
 
 // ---- Composite band — the whole basket as one honest reading ----------
@@ -1370,6 +1384,8 @@ main{padding-top:64px}
 .ci-moving-act{margin:2px 0 0;font-size:13.5px;color:var(--ink-soft)}
 .ci-moving-act strong{color:var(--ink)}
 .ci-moving-more{font-size:12.5px}
+.ci-moving-more-all{margin:10px 0 0;font-size:13.5px;color:var(--ink-soft)}
+.ci-moving-more-all a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
 .ci-index--mini{display:inline-block;vertical-align:middle;margin:4px 0 2px;opacity:.9}
 .ci-index{margin:10px 0 4px}
 .ci-index__cap{margin:0 0 4px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
