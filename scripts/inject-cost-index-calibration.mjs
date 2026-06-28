@@ -38,9 +38,13 @@ function values(es) {
     'band.nominal': pct(report.band.nominal),
     'band.widened': int(report.band.widened),
     'chart.reliability': reliabilityChart(es),
-    // Published-label trend record (the honest, thinner cut).
+    // Published-label trend record (the honest, thinner cut). Each tier's OWN
+    // baseline is surfaced too, so a hit-rate below baseline (no edge) reads as
+    // such instead of as a near-coin-flip.
     'label.low': pct((labelTier('low').trend || {}).hitRate || 0),
+    'label.low.baseline': pct((labelTier('low').trend || {}).baseline || 0),
     'label.medium': pct((labelTier('medium').trend || {}).hitRate || 0),
+    'label.medium.baseline': pct((labelTier('medium').trend || {}).baseline || 0),
     'label.high.items': int(labelTier('high').items || 0),
   };
 }
