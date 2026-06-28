@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <title>Status &amp; reliability &mdash; how this site stays correct | Muntin Digital</title>
-<meta name="description" content="How muntin.digital stays correct: a gate on every change, a Cost Index backtested against its claims, daily refresh, and no data leaving your browser." />
+<meta name="description" content="How muntin.digital stays correct: a gate on every change, a Cost Index backtested against its claims, a business-day refresh, and no data leaving your browser." />
 <meta name="theme-color" content="#2A50C8" />
 <link rel="canonical" href="https://muntin.digital/status/" />
     <!-- feed-discovery:start (injected by inject-feed-discovery.mjs) -->
@@ -22,7 +22,7 @@
 
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Status &amp; reliability &mdash; Muntin Digital" />
-<meta property="og:description" content="The mechanisms that keep this site correct — the verification gate, the backtested Cost Index, daily refresh, client-side tools — and where to watch them." />
+<meta property="og:description" content="The mechanisms that keep this site correct — the verification gate, the backtested Cost Index, a business-day refresh, client-side tools — and where to watch them." />
 <meta property="og:url" content="https://muntin.digital/status/" />
 <meta property="og:site_name" content="Muntin Digital" />
 
@@ -41,7 +41,7 @@
       "@type": "WebPage",
       "@id": "https://muntin.digital/status/#webpage",
       "name": "Status & reliability — Muntin Digital",
-      "description": "How the site is kept correct — the automated verification gate, the backtested Cost Index, the daily refresh, and the client-side privacy invariant.",
+      "description": "How the site is kept correct — the automated verification gate, the backtested Cost Index, the business-day refresh, and the client-side privacy invariant.",
       "url": "https://muntin.digital/status/",
       "inLanguage": "en-US",
       "isPartOf": { "@id": "https://muntin.digital/#website" },
@@ -421,8 +421,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </section>
 
     <section style="margin-bottom:48px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 14px">Refreshed every day</h2>
-      <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0">The Cost Index pulls public U.S. market data (USDA, BLS, FRED, EIA) on a daily schedule, and a reading only publishes when the sources support it &mdash; never a stale number wearing a fresh date. The live last-refreshed date sits on the index itself. <a href="/cost-index/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">The live index &rarr;</a></p>
+      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 14px">Refreshed every business day</h2>
+      <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0">The Cost Index pulls public U.S. market data (USDA, BLS, FRED, EIA) every business day &mdash; the days those markets actually print &mdash; and a reading only publishes when the sources support it &mdash; never a stale number wearing a fresh date. The live last-refreshed date sits on the index itself. <a href="/cost-index/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">The live index &rarr;</a></p>
     </section>
 
     <section style="margin-bottom:48px">
