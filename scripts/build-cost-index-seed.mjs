@@ -4,7 +4,7 @@
  * the fact-gated data layer (data/cost-index.json) + bilingual labels
  * (data/cost-index-labels.json).
  *
- * Why a separate file: the storefront is no-fetch, so the Cost Pulse surface
+ * Why a separate file: the storefront is no-fetch, so the Cost Index surface
  * loads the index as a same-origin <script> that sets window.MUNTIN_COST_INDEX
  * — it cannot fetch the .json. This script is the bridge: it joins display
  * labels onto the newest gated point per ingredient and writes the seed that
@@ -27,7 +27,7 @@ import { createRequire } from 'node:module';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const require = createRequire(import.meta.url);
-// The shippable bar — keep below-bar ingredients out of the Cost Pulse seed too,
+// The shippable bar — keep below-bar ingredients out of the Cost Index seed too,
 // so the dashboard never shows a thin/no-level read the pages won't.
 const MuntinCostConfidence = require(path.join(repoRoot, 'tools/_shared/cost-confidence.js'));
 const DRY = process.argv.includes('--dry-run');

@@ -8,7 +8,7 @@
  * answers a real operator question — "what does <ingredient> cost
  * wholesale right now, and am I overpaying?" — with the typical range,
  * the trend, the confidence, an "as of" date, and a deep link into the
- * live Cost Pulse tool for the always-fresh reading.
+ * live Cost Index tool for the always-fresh reading.
  *
  * THE FACT GATE / HONESTY CONTRACT:
  *   - Every number rendered here is read at build time from the gated
@@ -60,9 +60,9 @@ const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
 const require    = createRequire(import.meta.url);
 // Reuse the shared, no-DOM inline-SVG sparkline primitive (the same one
-// Cost Pulse + the audits tool ship) rather than forking a renderer.
+// Cost Index + the audits tool ship) rather than forking a renderer.
 const MuntinSparkline = require(path.join(repoRoot, 'tools/_shared/sparkline.js'));
-// ONE shared verdict voice — the same module the Cost Pulse dashboard uses, so
+// ONE shared verdict voice — the same module the Cost Index dashboard uses, so
 // the static pages, the hub, and the live tool can never disagree (a thin-data
 // "structural" reads "Watch", not "Re-price", on every surface).
 const MuntinCostVerdict = require(path.join(repoRoot, 'tools/_shared/cost-verdict.js'));
@@ -463,7 +463,7 @@ function dirWord(trend, locale) {
 
 // ---- The spike-vs-structural verdict, as a calibrated SUGGESTION ----
 // Delegates to the shared, confidence-aware MuntinCostVerdict so the static
-// pages, the hub, and the Cost Pulse dashboard speak identically — a thin-data
+// pages, the hub, and the Cost Index dashboard speak identically — a thin-data
 // "structural" reads "Watch", not "Re-price", on every surface. The chip is
 // the terse action; the note is the calibrated reason. The flag is a build-
 // time, fact-gated qualitative read — no sourced numbers live here.
@@ -965,7 +965,7 @@ function marketReadBlock(slug, locale) {
     ? (es ? 'Referencia minorista, no el precio mayorista ni el entregado que pagas.' : 'Retail reference, not the wholesale or delivered price you pay.')
     : (es ? 'Referencia mayorista (aproximadamente lo que pagan los distribuidores), no el precio entregado que pagas.' : 'Wholesale reference (roughly what distributors pay), not the delivered price you pay.');
   const srcBody = `${(shortListLinked.length ? shortListLinked.join(' · ') : agencies.map((a) => a.name).join(' · '))} — ${es ? 'datos públicos' : 'public data'}, ${es ? 'al' : 'as of'} ${asOf}. ${disclaimer}`;
-  const liveLabel = es ? `Ver ${(lab.es || lab.en || slug).toLowerCase()} en vivo en Cost Pulse` : `See ${(lab.en || slug).toLowerCase()} live in Cost Pulse`;
+  const liveLabel = es ? `Ver ${(lab.es || lab.en || slug).toLowerCase()} en vivo en el Índice de Costos` : `See ${(lab.en || slug).toLowerCase()} live in the Cost Index`;
   return `
   <aside class="ci-read" data-layer="measured" aria-label="${es ? 'Lectura de mercado' : 'Market read'}">
     <p class="ci-read__head">${head}<span class="ci-read__badge">${badge}</span></p>
@@ -1793,7 +1793,7 @@ function emitExpandingPage(slug, locale) {
     <h2>Por qué aún no hay número</h2>
     <p>La regla es simple: un precio se publica solo cuando podemos obtenerlo de datos públicos (USDA, BLS, FRED) con una calidad sobre la que actuaríamos nosotros mismos. Para ${lc}, la serie mayorista gratuita que necesitamos aún no está conectada. Una estimación de una sola fuente sería peor que nada.</p>
     <h2>Qué puedes hacer ahora</h2>
-    <p>Compara tu última factura de ${lc} con tus facturas recientes, o abre <a href="${base}/tools/cost-pulse/">Cost Pulse</a> para los ingredientes que sí cubrimos. Esta página se completará cuando lo hagan los datos.</p>
+    <p>Compara tu última factura de ${lc} con tus facturas recientes, o abre <a href="${base}/tools/cost-pulse/">la herramienta en vivo</a> para los ingredientes que sí cubrimos. Esta página se completará cuando lo hagan los datos.</p>
     <div class="ci-cta-row">
       <a class="btn btn-ghost" href="${base}/cost-index/">Ver todas las lecturas</a>
       <a class="btn btn-ghost" href="${base}/glossary/cost-index/">Qué es un índice de costos</a>
@@ -1807,7 +1807,7 @@ function emitExpandingPage(slug, locale) {
     <h2>Why there's no number yet</h2>
     <p>The rule is simple: a price ships only when we can source it from public USDA, BLS or FRED data at a quality we'd act on ourselves. For ${lc}, the free wholesale series we need isn't wired up yet — and a thin, single-source guess would be worse than nothing.</p>
     <h2>What you can do now</h2>
-    <p>Check your last ${lc} invoice against your own recent ones, or open <a href="${base}/tools/cost-pulse/">Cost Pulse</a> for the ingredients we do cover. This page fills in when the data does.</p>
+    <p>Check your last ${lc} invoice against your own recent ones, or open <a href="${base}/tools/cost-pulse/">the live tool</a> for the ingredients we do cover. This page fills in when the data does.</p>
     <div class="ci-cta-row">
       <a class="btn btn-ghost" href="${base}/cost-index/">Browse all readings</a>
       <a class="btn btn-ghost" href="${base}/glossary/cost-index/">What is a cost index?</a>
@@ -1900,8 +1900,8 @@ function emitIngredientPage(slug, locale) {
 
   const agencies = (() => { const r = readingOf(slug); return r ? citedAgencies(r.entry, r.point) : []; })();
   const srcLine = agencies.length
-    ? `<p class="ci-source"><strong>${es ? 'Fuente' : 'Sourced'}:</strong> ${agencies.map((a) => `<a href="${a.url}" rel="noopener">${escHtml(a.name)}</a>`).join(' · ')} — ${es ? 'datos públicos, vía' : 'public data, via'} <a href="${base}/tools/cost-pulse/">Cost Pulse</a> · <a href="${base}/glossary/cost-index/">${es ? 'qué es un índice de costos' : 'what a cost index is'}</a></p>`
-    : `<p class="ci-source"><strong>${es ? 'Fuente' : 'Sourced'}:</strong> ${es ? 'datos públicos de mercado, vía' : 'public market data, via'} <a href="${base}/tools/cost-pulse/">Cost Pulse</a> · <a href="${base}/glossary/cost-index/">${es ? 'qué es un índice de costos' : 'what a cost index is'}</a></p>`;
+    ? `<p class="ci-source"><strong>${es ? 'Fuente' : 'Sourced'}:</strong> ${agencies.map((a) => `<a href="${a.url}" rel="noopener">${escHtml(a.name)}</a>`).join(' · ')} — ${es ? 'datos públicos, vía' : 'public data, via'} <a href="${base}/tools/cost-pulse/">${es ? 'la herramienta en vivo' : 'the live tool'}</a> · <a href="${base}/glossary/cost-index/">${es ? 'qué es un índice de costos' : 'what a cost index is'}</a></p>`
+    : `<p class="ci-source"><strong>${es ? 'Fuente' : 'Sourced'}:</strong> ${es ? 'datos públicos de mercado, vía' : 'public market data, via'} <a href="${base}/tools/cost-pulse/">the live tool</a> · <a href="${base}/glossary/cost-index/">${es ? 'qué es un índice de costos' : 'what a cost index is'}</a></p>`;
 
   const bcHome = es ? 'Inicio' : 'Home';
   const bcHub  = es ? 'Índice de costos' : 'Cost index';
@@ -1930,7 +1930,7 @@ function emitIngredientPage(slug, locale) {
     ${faqHtml}
     ${siblings(slug, locale)}
     <div class="ci-cta-row">
-      <a class="btn btn-primary" href="${base}/tools/cost-pulse/#ci-${slug}">${es ? 'Abrir Cost Pulse' : 'Open Cost Pulse'}</a>
+      <a class="btn btn-primary" href="${base}/tools/cost-pulse/#ci-${slug}">${es ? 'Abrir la herramienta en vivo' : 'Open the live tool'}</a>
       <a class="btn btn-ghost" href="${base}/cost-index/">${es ? 'Ver todas las lecturas' : 'Browse all readings'}</a>
     </div>
     <p class="ci-ledger-bridge" style="margin:16px 0 0;font-size:14.5px;line-height:1.6;color:var(--ink-soft)">${es
@@ -1980,8 +1980,8 @@ function emitHubPage(locale, slugs) {
     : 'Where common restaurant ingredients are priced wholesale — a typical range and a trend, from public sources (USDA, BLS, FRED) — so you can tell a market move from a vendor markup.';
   const heroH1 = es ? 'Índice de costos de ingredientes' : 'Restaurant ingredient cost index';
   const heroLede = es
-    ? `Dónde se cotizan al mayoreo ${shipSlugs.length} ingredientes comunes de restaurante — un rango típico y una tendencia, de datos públicos de USDA, BLS y FRED — para distinguir un movimiento real de mercado de un sobreprecio de proveedor. Elige un ingrediente para su lectura, o abre Cost Pulse para verlos todos a la vez.`
-    : `Where ${shipSlugs.length} common restaurant ingredients are priced wholesale — a typical range and a trend, drawn from public USDA, BLS and FRED data — so you can tell a real market move from a vendor markup. Pick an ingredient for its reading, or open Cost Pulse to see them all at once.`;
+    ? `Dónde se cotizan al mayoreo ${shipSlugs.length} ingredientes comunes de restaurante — un rango típico y una tendencia, de datos públicos de USDA, BLS y FRED — para distinguir un movimiento real de mercado de un sobreprecio de proveedor. Elige un ingrediente para su lectura, o abre la herramienta en vivo para verlos todos a la vez.`
+    : `Where ${shipSlugs.length} common restaurant ingredients are priced wholesale — a typical range and a trend, drawn from public USDA, BLS and FRED data — so you can tell a real market move from a vendor markup. Pick an ingredient for its reading, or open the live tool to see them all at once.`;
 
   // Grouped cards by category — shippable readings only.
   const byCat = {};
@@ -1998,8 +1998,8 @@ function emitHubPage(locale, slugs) {
   }).join('\n');
 
   const driverNote = es
-    ? `<p>Río arriba, los precios se mueven con un puñado de materias primas que el tablero rastrea bajo “por qué se mueve”: maíz y soya (forraje), diésel y electricidad. Para lo que se está moviendo ahora mismo, <a href="${base}/tools/cost-pulse/">abre Cost Pulse</a>.</p>`
-    : `<p>Upstream, prices move with a handful of commodities the dashboard tracks under “why it's moving”: corn and soybeans (feed), diesel, and electricity. For what's moving right now, <a href="${base}/tools/cost-pulse/">open Cost Pulse</a>.</p>`;
+    ? `<p>Río arriba, los precios se mueven con un puñado de materias primas que se rastrean bajo “por qué se mueve”: maíz y soya (forraje), diésel y electricidad. Para lo que se está moviendo ahora mismo, <a href="${base}/tools/cost-pulse/">abre la herramienta en vivo</a>.</p>`
+    : `<p>Upstream, prices move with a handful of commodities tracked under “why it's moving”: corn and soybeans (feed), diesel, and electricity. For what's moving right now, <a href="${base}/tools/cost-pulse/">open the live tool</a>.</p>`;
 
   // Schema: DataCatalog + CollectionPage + ItemList + Breadcrumb.
   const baseUrl = es ? canonEs : canonEn;
@@ -2058,7 +2058,7 @@ function emitHubPage(locale, slugs) {
   </section>
   <div class="ci-body">
     <div class="ci-cta-row">
-      <a class="btn btn-primary" href="${base}/tools/cost-pulse/">${es ? 'Abrir Cost Pulse' : 'Open Cost Pulse'}</a>
+      <a class="btn btn-primary" href="${base}/tools/cost-pulse/">${es ? 'Abrir la herramienta en vivo' : 'Open the live tool'}</a>
       <a class="btn btn-ghost" href="${base}/cost-index/methodology/">${es ? 'Cómo funciona' : 'How this index works'}</a>
       ${anyPressureProven() ? `<a class="btn btn-ghost" href="${base}/cost-index/lab/">${es ? 'Laboratorio de Presión' : 'Pressure Lab'}</a>` : ''}
       <a class="btn btn-ghost" href="${base}/glossary/cost-index/">${es ? '¿Qué es un índice de costos?' : 'What is a cost index?'}</a>
@@ -2072,7 +2072,7 @@ function emitHubPage(locale, slugs) {
     ${pendingSection}
     ${driverNote}
     ${weeklySignup(locale, { anchor: true })}
-    <p class="ci-source"><strong>${es ? 'Fuente' : 'Sourced'}:</strong> ${es ? 'datos públicos de mercado (USDA AMS/LMR, BLS, FRED, EIA, NOAA), vía' : 'public market data (USDA AMS/LMR, BLS, FRED, EIA, NOAA), via'} <a href="${base}/tools/cost-pulse/">Cost Pulse</a>.</p>
+    <p class="ci-source"><strong>${es ? 'Fuente' : 'Sourced'}:</strong> ${es ? 'datos públicos de mercado (USDA AMS/LMR, BLS, FRED, EIA, NOAA), vía' : 'public market data (USDA AMS/LMR, BLS, FRED, EIA, NOAA), via'} <a href="${base}/tools/cost-pulse/">${es ? 'la herramienta en vivo' : 'the live tool'}</a>.</p>
   </div>` + pageTail;
 }
 
@@ -2161,7 +2161,7 @@ function emitLabPage(locale) {
     <details class="ci-read__src" style="margin-top:18px"><summary>${methodHead}</summary><div>${escHtml(methodBody)}</div></details>
     <div class="ci-cta-row">
       <a class="btn btn-ghost" href="${base}/cost-index/">${es ? 'Ver el índice' : 'Browse the index'}</a>
-      <a class="btn btn-ghost" href="${base}/tools/cost-pulse/">${es ? 'Abrir Cost Pulse' : 'Open Cost Pulse'}</a>
+      <a class="btn btn-ghost" href="${base}/tools/cost-pulse/">${es ? 'Abrir la herramienta en vivo' : 'Open the live tool'}</a>
     </div>
   </div>
   <script src="/tools/_shared/cost-pressure.js?${v}"></script>

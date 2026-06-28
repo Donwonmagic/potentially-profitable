@@ -6,7 +6,7 @@
  * (tools/_shared/cost-confidence.js isShippable): a credible wholesale dollar
  * level — a measured multi-market range, or a single authoritative source whose
  * direction is corroborated. Below-bar ingredients must be ABSENT from the
- * browser seed (data/cost-index.js → Cost Pulse) and live only as honest
+ * browser seed (data/cost-index.js → Cost Index) and live only as honest
  * "expanding coverage" pages. This gate pins the seed to the bar so a thin or
  * no-level read can never leak onto the dashboard.
  *
@@ -48,7 +48,7 @@ const leaked = seedKeys.filter((k) => !shipSet.has(k));   // below-bar but on th
 const missing = ship.filter((k) => !seedSet.has(k));      // shippable but absent from the seed
 
 let fail = false;
-if (leaked.length) { console.error('✗ below-bar ingredient(s) leaked into the Cost Pulse seed:', leaked.join(', ')); fail = true; }
+if (leaked.length) { console.error('✗ below-bar ingredient(s) leaked into the Cost Index seed:', leaked.join(', ')); fail = true; }
 if (missing.length) { console.error('✗ shippable ingredient(s) missing from the seed (re-run build-cost-index-seed):', missing.join(', ')); fail = true; }
 
 console.log(`Shippable bar: ${ship.length} shipping a reading, ${pending.length} expanding-coverage${pending.length ? ' (' + pending.join(', ') + ')' : ''}.`);
