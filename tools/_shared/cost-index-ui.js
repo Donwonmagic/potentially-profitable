@@ -28,6 +28,21 @@
     if (!isFinite(t)) return null;
     return Math.floor((Date.now() - t) / 86400000);
   }
+  // Build a Plate Cost deep link that prefills ONE row with this ingredient name
+  // (price left empty on purpose — cost-index-hint.js then offers the wholesale
+  // read as a labeled, confidence-gated estimate on arrival, instead of us
+  // asserting a delivered price). Mirrors PC.encodeRecipe's fragment format
+  // (v=1; row = ingredient|apPrice|apQty|apUnit|yield|usedQty|usedUnit). If
+  // Plate Cost ever bumps its fragment version, decodeRecipe returns null and the
+  // link degrades gracefully to an empty calculator — no hard break.
+  function plateCostHref(name) {
+    function enc(s) {
+      return encodeURIComponent(String(s == null ? '' : s))
+        .replace(/\|/g, '%7C').replace(/;/g, '%3B').replace(/&/g, '%26').replace(/=/g, '%3D');
+    }
+    var row = [name, '', '', '', '', '', ''].map(enc).join('|');
+    return (es ? '/es' : '') + '/tools/plate-cost/#v=1&p=1&i=' + row;
+  }
   // Privacy-respecting analytics: only ingredient keys + categorical labels
   // (verdict, action) ever leave — never the operator's typed price. Best-effort
   // and guarded, so a missing/blocked Plausible never breaks the tool.
@@ -819,6 +834,18 @@
       ya.appendChild(document.createTextNode(' →'));
       yl.appendChild(ya);
       fig.appendChild(yl);
+    }
+
+    // Dashboard → Plate Cost deep link: land in the calculator with this ingredient
+    // prefilled (one tap from a market move to "what this does to my dish"). Only
+    // for dollar-priced reads, where costing into a plate is meaningful.
+    if (lvl && name) {
+      var pcl = el('p', 'cp-market-platecost');
+      var pca = el('a', null, L('Cost this into a dish', 'Cuesta esto en un platillo'));
+      pca.href = plateCostHref(name);
+      pca.appendChild(document.createTextNode(' →'));
+      pcl.appendChild(pca);
+      fig.appendChild(pcl);
     }
 
     // Provenance drawer — which sources fed this read.
