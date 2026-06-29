@@ -210,6 +210,21 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .cp-you-verdict[data-pos="above"]{color:var(--rust)}
 .cp-you-verdict[data-pos="below"]{color:var(--teal)}
 .cp-you-verdict[data-pos="in"]{color:var(--ink-soft)}
+.cp-cmp{margin:12px 0 0;padding-top:10px;border-top:1px dashed var(--line)}
+.cp-cmp-lead{font-size:12.5px;line-height:1.45;color:var(--ink-soft);margin:0 0 8px}
+.cp-cmp-label{display:block;font-size:12px;color:var(--ink-soft);margin:6px 0 4px}
+.cp-cmp-price{width:7.5em;border:1px solid var(--line);border-radius:6px;padding:6px 9px;font:inherit;font-size:16px;color:var(--ink);background:var(--surface-1,#fff)}
+.cp-cmp-month{width:100%;max-width:12em;border:1px solid var(--line);border-radius:6px;padding:6px 9px;font:inherit;font-size:16px;color:var(--ink);background:var(--surface-1,#fff)}
+.cp-cmp-price:focus,.cp-cmp-month:focus{outline:2px solid var(--teal);outline-offset:1px}
+.cp-cmp-out{margin-top:10px;padding:9px 11px;border-radius:0 6px 6px 0;border-left:3px solid var(--stone);background:rgba(107,114,128,.07)}
+.cp-cmp-out[data-tone="over"]{border-left-color:var(--rust);background:var(--status-bad-tint,#F7E7DC)}
+.cp-cmp-out[data-tone="under"],.cp-cmp-out[data-tone="match"]{border-left-color:var(--teal);background:rgba(42,80,200,.06)}
+.cp-cmp-slope{display:block;margin:0 0 6px}
+.cp-cmp-headline{font-size:13px;font-weight:600;margin:0;line-height:1.4;color:var(--ink);font-variant-numeric:tabular-nums}
+.cp-cmp-out[data-tone="over"] .cp-cmp-headline{color:var(--rust)}
+.cp-cmp-out[data-tone="under"] .cp-cmp-headline,.cp-cmp-out[data-tone="match"] .cp-cmp-headline{color:var(--teal)}
+.cp-cmp-detail{font-size:12px;line-height:1.5;color:var(--ink-soft);margin:5px 0 0;font-variant-numeric:tabular-nums}
+.cp-cmp-note{font-size:11.5px;line-height:1.45;color:var(--stone);margin:5px 0 0}
 .cp-note{margin:8px 0 0}
 .cp-note-toggle{border:1px solid var(--rust);border-radius:6px;background:var(--surface-1,#fff);color:var(--rust);font:inherit;font-size:12.5px;font-weight:600;padding:4px 11px;cursor:pointer}
 .cp-note-toggle:hover{background:var(--status-bad-tint,#F7E7DC)}
@@ -806,12 +821,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/tools/_shared/composite-price.js?v=20260606-w15-1"></script>
 <script src="/tools/_shared/cost-verdict.js?v=20260608-w16-1"></script>
 <script src="/data/cost-index.js?v=20260607-live4"></script>
+<script src="/data/cost-index-history.js?v=20260629-hist1"></script>
 <script src="/tools/_shared/stem.js?v=20260504-w10-0a"></script>
 <script src="/tools/_shared/portion-bridge.js?v=20260504-w10-2"></script>
 <script src="/tools/_shared/dish-drift.js?v=20260504-w10-11"></script>
 <script src="/tools/_shared/whats-new.js?v=20260504-w14-8" defer></script>
-<script src="/tools/_shared/cost-index-format.js?v=20260608-fmt1"></script>
-<script src="/tools/_shared/cost-index-ui.js?v=20260613-tier2"></script>
+<script src="/tools/_shared/cost-index-format.js?v=20260629-fmt2"></script>
+<script src="/tools/_shared/cost-index-ui.js?v=20260629-tvn1"></script>
 <script>
 (function () {
   'use strict';

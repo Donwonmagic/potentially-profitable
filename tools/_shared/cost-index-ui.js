@@ -240,6 +240,83 @@
   // { text, srText } or null. `dates` must be 1:1 with `values`.
   function weekOverWeek(values, dates, unit) { return FMT.weekOverWeek(values, dates, unit); }
   function vsLastYear(values, dates, unit) { return FMT.vsLastYear(values, dates, unit); }
+
+  // Market series for the then-vs-now comparison. Prefers the deep history seed
+  // (window.MUNTIN_COST_INDEX_HISTORY — ~3yr of wholesale reads, loaded as a second
+  // same-origin <script>), so an operator can compare to a delivery months back;
+  // falls back to the ingredient's short weekly spark when the seed is absent or
+  // lacks the key. Returns { values, dates } (parallel arrays) or null.
+  function marketSeriesFor(ing) {
+    var H = (typeof window !== 'undefined' && window.MUNTIN_COST_INDEX_HISTORY) ||
+            (typeof self !== 'undefined' && self.MUNTIN_COST_INDEX_HISTORY) || null;
+    var deep = H && ing && ing.key ? H[ing.key] : null;
+    if (Array.isArray(deep) && deep.length >= 2) {
+      return { values: deep.map(function (p) { return p[1]; }), dates: deep.map(function (p) { return p[0]; }) };
+    }
+    if (Array.isArray(ing.spark) && Array.isArray(ing.spark_dates) && ing.spark.length === ing.spark_dates.length && ing.spark.length >= 2) {
+      return { values: ing.spark, dates: ing.spark_dates };
+    }
+    return null;
+  }
+
+  // Today, as a UTC ISO day — the operator's implicit "now". Read once so the whole
+  // panel shares one clock (the comparison's staleness check compares it to the live
+  // read's generatedAt). Date() is fine in the browser; the pure math stays in FMT.
+  var TODAY_ISO = (function () { try { return new Date().toISOString().slice(0, 10); } catch (_) { return DATA.generatedAt || ''; } })();
+  var MONTH_NAMES = es
+    ? ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic']
+    : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  // Month options for the "roughly when" picker, drawn from the market series so an
+  // out-of-range pick is rarely even reachable. Newest first, the latest month
+  // dropped (a window needs daylight between then and now). Value is mid-month
+  // (deterministic), label human ("Mar 2026").
+  function monthOptionsFrom(series) {
+    if (!series || !series.dates) return [];
+    var seen = {}, months = [];
+    series.dates.forEach(function (d) {
+      var m = String(d).match(/^(\d{4})-(\d{2})/); if (!m) return;
+      var ym = m[1] + '-' + m[2];
+      if (!seen[ym]) { seen[ym] = 1; months.push(ym); }
+    });
+    months.sort();                                   // ascending
+    months.pop();                                    // drop the latest month (no window)
+    return months.reverse().map(function (ym) {       // newest first
+      var p = ym.split('-');
+      return { value: ym + '-15', label: MONTH_NAMES[+p[1] - 1] + ' ' + p[0] };
+    });
+  }
+
+  // Two-slope sketch for the comparison: your line vs the market's, both from 0% at
+  // left to their change at right, on a shared axis. The divergence at the right IS
+  // the gap. aria-hidden — the verdict prose already carries the facts for SR users.
+  function slopeSvg(ownerPct, marketPct, tone) {
+    var NS = 'http://www.w3.org/2000/svg';
+    var W = 132, H = 44, padX = 6, padY = 7, x0 = padX, x1 = W - padX;
+    var span = Math.max(0.05, Math.abs(ownerPct), Math.abs(marketPct));
+    var mid = H / 2;
+    function y(p) { return mid - (p / span) * (mid - padY); }
+    var svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('class', 'cp-cmp-slope'); svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    svg.setAttribute('width', W); svg.setAttribute('height', H); svg.setAttribute('aria-hidden', 'true');
+    function line(p, color, w, dash) {
+      var ln = document.createElementNS(NS, 'line');
+      ln.setAttribute('x1', x0); ln.setAttribute('y1', y(0)); ln.setAttribute('x2', x1); ln.setAttribute('y2', y(p));
+      ln.setAttribute('stroke', color); ln.setAttribute('stroke-width', w); ln.setAttribute('stroke-linecap', 'round');
+      if (dash) ln.setAttribute('stroke-dasharray', dash);
+      svg.appendChild(ln);
+      var dot = document.createElementNS(NS, 'circle');
+      dot.setAttribute('cx', x1); dot.setAttribute('cy', y(p)); dot.setAttribute('r', 2.2); dot.setAttribute('fill', color);
+      svg.appendChild(dot);
+    }
+    var base = document.createElementNS(NS, 'line');
+    base.setAttribute('x1', x0); base.setAttribute('y1', y(0)); base.setAttribute('x2', x1); base.setAttribute('y2', y(0));
+    base.setAttribute('stroke', 'var(--line)'); base.setAttribute('stroke-width', 1);
+    svg.appendChild(base);
+    line(marketPct, 'var(--stone)', 1.6, '3 2');          // market = neutral, dashed
+    var youColor = tone === 'over' ? 'var(--rust)' : tone === 'under' ? 'var(--teal)' : 'var(--ink)';
+    line(ownerPct, youColor, 2.4, null);                  // yours = solid, tone-colored
+    return svg;
+  }
   function parseMoney(v) {
     var n = parseFloat(String(v == null ? '' : v).replace(/[^0-9.]/g, ''));
     return isFinite(n) && n >= 0 ? Math.round(n * 100) : null;
@@ -919,7 +996,77 @@
           debounce = setTimeout(update, 350);
         });
       })(youOut, lvl, note);
-      you.appendChild(lab); you.appendChild(inp); you.appendChild(youOut); you.appendChild(note.root);
+
+      // ── then-vs-now ────────────────────────────────────────────────────────
+      // "Was that jump the market, or my vendor?" The operator adds an earlier
+      // delivered price + roughly when; we compare THEIR change to wholesale's
+      // change over the same window. Reuses the price typed above as "now". Built
+      // only when there's a market series with a usable window of months.
+      var youCmp = null;
+      var series = marketSeriesFor(ing);
+      var monthOpts = monthOptionsFrom(series);
+      if (series && monthOpts.length) {
+        var cmp = el('div', 'cp-cmp');
+        cmp.appendChild(el('p', 'cp-cmp-lead',
+          L('Was a price jump the market — or your vendor? Add an earlier delivery to compare.',
+            '¿Un alza fue del mercado — o de tu proveedor? Agrega una entrega anterior para comparar.')));
+        var pLab = el('label', 'cp-cmp-label');
+        pLab.setAttribute('for', 'cpThen-' + ing.key);
+        pLab.appendChild(document.createTextNode(L('What did you pay back then? ($ a ' + unit + ')', '¿Cuánto pagabas antes? ($ por ' + unit + ')')));
+        var thenInp = el('input', 'cp-cmp-price');
+        thenInp.type = 'text'; thenInp.id = 'cpThen-' + ing.key; thenInp.inputMode = 'decimal';
+        thenInp.setAttribute('autocomplete', 'off'); thenInp.placeholder = '$';
+        var mLab = el('label', 'cp-cmp-label');
+        mLab.setAttribute('for', 'cpWhen-' + ing.key);
+        mLab.appendChild(document.createTextNode(L('Roughly when?', '¿Más o menos cuándo?')));
+        var monthSel = el('select', 'cp-cmp-month');
+        monthSel.id = 'cpWhen-' + ing.key;
+        var blank = el('option', null, L('Select a month…', 'Elige un mes…')); blank.value = '';
+        monthSel.appendChild(blank);
+        monthOpts.forEach(function (o2) { var op = el('option', null, o2.label); op.value = o2.value; monthSel.appendChild(op); });
+        var cmpOut = el('div', 'cp-cmp-out');                 // SEPARATE live region from the band pin
+        cmpOut.setAttribute('role', 'status'); cmpOut.setAttribute('aria-live', 'polite');
+        (function () {
+          var cmpFired = false, cmpDeb = null;
+          function render() {
+            while (cmpOut.firstChild) cmpOut.removeChild(cmpOut.firstChild);
+            var nowCents = parseMoney(inp.value);
+            var thenCents = parseMoney(thenInp.value);
+            var thenDate = monthSel.value;
+            cmpOut.removeAttribute('data-tone');
+            if (nowCents == null || thenCents == null || !thenDate) { cmpOut.hidden = true; return; }
+            var res = FMT.thenVsNow(series.values, series.dates, {
+              thenCents: thenCents, nowCents: nowCents, thenDateStr: thenDate,
+              marketNowCents: lvl.medianCents, marketNowDate: DATA.generatedAt,
+              nowDateStr: TODAY_ISO, confidence: r.confidence
+            });
+            var say = FMT.thenVsNowSay(res, unit);
+            if (!say) { cmpOut.hidden = true; return; }
+            cmpOut.hidden = false;
+            cmpOut.setAttribute('data-tone', say.tone || (say.ok ? 'match' : 'info'));
+            if (say.ok && res && res.ok && typeof res.ownerPct === 'number') {
+              cmpOut.appendChild(slopeSvg(res.ownerPct, res.marketPct, say.tone));
+            }
+            cmpOut.appendChild(el('p', 'cp-cmp-headline', say.headline));
+            if (say.detail) cmpOut.appendChild(el('p', 'cp-cmp-detail', say.detail));
+            if (say.note) cmpOut.appendChild(el('p', 'cp-cmp-note', say.note));
+            if (say.ok && !cmpFired) { cmpFired = true; track('Cost Index Then Vs Now', { ingredient: ing.key || '', verdict: say.tone || '' }); }
+          }
+          function schedule() { if (cmpDeb) clearTimeout(cmpDeb); cmpDeb = setTimeout(render, 350); }
+          thenInp.addEventListener('input', schedule);
+          monthSel.addEventListener('change', schedule);
+          inp.addEventListener('input', schedule);          // re-run when the "now" price changes
+        })();
+        cmp.appendChild(pLab); cmp.appendChild(thenInp);
+        cmp.appendChild(mLab); cmp.appendChild(monthSel);
+        cmp.appendChild(cmpOut);
+        cmpOut.hidden = true;
+        youCmp = cmp;
+      }
+
+      you.appendChild(lab); you.appendChild(inp); you.appendChild(youOut);
+      if (youCmp) you.appendChild(youCmp);
+      you.appendChild(note.root);
       fig.appendChild(you);
     }
 
@@ -945,7 +1092,7 @@
       var KEEP = { 'cp-market-head': 1, 'cp-market-range': 1, 'cp-market-verdict': 1, 'cp-market-platecost': 1 };
       var det = el('details', 'cp-more');
       det.appendChild(el('summary', 'cp-more-summary',
-        L('Details — chart, history, sources', 'Detalle — gráfica, historial, fuentes')));
+        L('Details — chart, history, check your price', 'Detalle — gráfica, historial, revisa tu precio')));
       var moved = false;
       Array.prototype.slice.call(figEl.childNodes).forEach(function (ch) {
         if (ch.nodeType !== 1 || ch.tagName === 'FIGCAPTION') return; // figcaption must stay a figure child
