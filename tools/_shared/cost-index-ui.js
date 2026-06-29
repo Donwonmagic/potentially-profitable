@@ -662,6 +662,10 @@
     if (lvl && !single && ing.tier === 'measured') {
       var loTxt = money(lvl.rangeCents[0]);
       var hiTxt = money(lvl.rangeCents[1]);
+      // Verdict firmness follows confidence: a thin (low/directional) read can't
+      // carry a hard "over market" call, so it softens to "above the public range"
+      // (Trust review #4 — the most quotable sentence must not overclaim on rough data).
+      var firmConf = (r.confidence === 'high' || r.confidence === 'medium');
       var basisEl = el('p', 'cp-market-basis');
       basisEl.appendChild(el('strong', null, L('Public wholesale: ', 'Mayoreo público: ')
         + loTxt + '–' + hiTxt + L(' a ', ' por ') + unit + '. '));
@@ -669,10 +673,26 @@
       var aboveTest = el('span', 'cp-basis-test',
         L('above ' + hiTxt, 'arriba de ' + hiTxt));
       basisEl.appendChild(aboveTest);
-      basisEl.appendChild(document.createTextNode(L(", you're paying over market.", ', estás pagando por encima del mercado.')));
+      basisEl.appendChild(document.createTextNode(firmConf
+        ? L(", you're paying over market.", ', estás pagando por encima del mercado.')
+        : L(", it's above the public range — worth a look.", ', está por encima del rango público — vale revisar.')));
+      // Wholesale is NOT a delivered price: a delivered price legitimately runs a
+      // little above bare wholesale (freight, markup, pack), so a SMALL gap is
+      // normal — the signal is a large or widening one (Trust review #5, the one
+      // place the tool risked blurring the wholesale/delivered line it elsewhere guards).
+      basisEl.appendChild(el('span', 'cp-basis-note', L(
+        ' Delivered prices normally run a little above wholesale; a big gap is the flag.',
+        ' Los precios entregados suelen estar un poco arriba del mayoreo; la señal es una brecha grande.')));
       fig.appendChild(basisEl);
-      var basisAlt = L('Public wholesale runs ' + loTxt + ' to ' + hiTxt + ' a ' + unit + '. If your invoice is above ' + hiTxt + ', you are paying over market.',
-                       'El mayoreo público va de ' + loTxt + ' a ' + hiTxt + ' por ' + unit + '. Si tu factura está arriba de ' + hiTxt + ', estás pagando por encima del mercado.');
+      var verdictAlt = firmConf
+        ? L('If your invoice is above ' + hiTxt + ', you are paying over market.',
+            'Si tu factura está arriba de ' + hiTxt + ', estás pagando por encima del mercado.')
+        : L('If your invoice is above ' + hiTxt + ', it is above the public range and worth a look.',
+            'Si tu factura está arriba de ' + hiTxt + ', está por encima del rango público y vale revisar.');
+      var basisAlt = L('Public wholesale runs ' + loTxt + ' to ' + hiTxt + ' a ' + unit + '. ',
+                       'El mayoreo público va de ' + loTxt + ' a ' + hiTxt + ' por ' + unit + '. ') + verdictAlt
+                   + L(' Delivered prices normally run a little above wholesale; a big gap is the flag.',
+                       ' Los precios entregados suelen estar un poco arriba del mayoreo; la señal es una brecha grande.');
       fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + basisAlt);
     }
 
