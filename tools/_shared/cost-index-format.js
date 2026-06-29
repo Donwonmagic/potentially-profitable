@@ -162,6 +162,120 @@
       };
     }
 
+    // then-vs-now — the comparison an operator actually needs: their OWN delivered
+    // price change vs the market's change over the SAME stretch. A carton going up
+    // tells you nothing alone — this separates "the market moved" from "my vendor
+    // padded the margin." Percent-based, so it is unit- AND basis-robust: cartons,
+    // pounds, even a pure index series all reduce to a movement that cancels the
+    // unit. Honest by construction — it names the real market dates it used, refuses
+    // when the operator's date falls outside the series (the UI then points them at
+    // a longer history), and demands a >=14-day window so a too-tight pair cannot
+    // manufacture a verdict. Pure numeric + reason code → pinned by the test;
+    // thenVsNowSay() turns it into locale prose. `dates` must be 1:1 with `values`.
+    function thenVsNow(values, dates, thenCents, nowCents, thenDateStr) {
+      if (!Array.isArray(values) || !Array.isArray(dates) || dates.length !== values.length) return { ok: false, reason: 'nodata' };
+      if (!(thenCents > 0) || !(nowCents > 0)) return { ok: false, reason: 'price' };
+      var thenMs = Date.parse(thenDateStr);
+      if (!isFinite(thenMs)) return { ok: false, reason: 'date' };
+      var li = -1;
+      for (var i = values.length - 1; i >= 0; i--) { if (typeof values[i] === 'number' && isFinite(values[i])) { li = i; break; } }
+      if (li < 1) return { ok: false, reason: 'nodata' };
+      var mNowV = values[li], mNowMs = Date.parse(dates[li]);
+      if (!isFinite(mNowMs)) return { ok: false, reason: 'nodata' };
+      if (thenMs > mNowMs + 86400000) return { ok: false, reason: 'future' };   // "then" after the latest read
+      // market read nearest the operator's earlier date
+      var best = -1, bestDiff = Infinity;
+      for (var j = 0; j <= li; j++) {
+        if (!(typeof values[j] === 'number' && isFinite(values[j]))) continue;
+        var dj = Date.parse(dates[j]); if (!isFinite(dj)) continue;
+        var diff = Math.abs(dj - thenMs);
+        if (diff < bestDiff) { bestDiff = diff; best = j; }
+      }
+      if (best < 0) return { ok: false, reason: 'nodata' };
+      var matchMs = Date.parse(dates[best]);
+      var matchGapDays = Math.round(Math.abs(matchMs - thenMs) / 86400000);
+      // Too far from any read we hold → comparing a different window. Refuse, and
+      // hand back the window we DO cover so the UI can point them at it.
+      if (matchGapDays > 45) return { ok: false, reason: 'outofrange', earliest: dates[0], latest: dates[li] };
+      if (best >= li) return { ok: false, reason: 'tooclose' };   // matched the latest read — no window
+      var winDays = Math.round((mNowMs - matchMs) / 86400000);
+      if (winDays < 14) return { ok: false, reason: 'tooshort' };
+      var mThenV = values[best];
+      if (!(mThenV > 0)) return { ok: false, reason: 'nodata' };
+      var marketPct = (mNowV - mThenV) / mThenV;
+      var ownerPct = (nowCents - thenCents) / thenCents;
+      return {
+        ok: true,
+        ownerPct: ownerPct, marketPct: marketPct, gapPts: (ownerPct - marketPct) * 100,
+        thenDate: thenDateStr, marketThenDate: dates[best], marketNowDate: dates[li],
+        matchGapDays: matchGapDays, winDays: winDays
+      };
+    }
+
+    // Locale prose for thenVsNow(). Returns { ok, tone, headline, detail, note,
+    // srText } on a real comparison, a soft { ok:false, tone:'info', headline } when
+    // the input is usable but the window is not (out of range / too close / future),
+    // or null when the input is simply incomplete (so the UI stays silent).
+    function pctWord(pct) {
+      var a = Math.abs(pct * 100);
+      var str = a.toFixed(a < 10 ? 1 : 0).replace(/\.0$/, '') + '%';
+      var word = pct > 0.005 ? L('up', 'arriba') : pct < -0.005 ? L('down', 'abajo') : L('flat', 'sin cambio');
+      return { word: word, str: str };
+    }
+    function thenVsNowSay(res) {
+      if (!res || !res.ok) {
+        switch (res && res.reason) {
+          case 'outofrange':
+            return { ok: false, tone: 'info',
+              headline: L('That date is before the market history I have (' + (res.earliest || '') + ' to ' + (res.latest || '') + ').',
+                          'Esa fecha es anterior al historial de mercado que tengo (' + (res.earliest || '') + ' a ' + (res.latest || '') + ').'),
+              detail: L('Pick a date inside that range — or keep your own longer price history in Muntin Ledger.',
+                        'Elige una fecha dentro de ese rango — o guarda tu propio historial de precios en Muntin Ledger.') };
+          case 'tooshort':
+          case 'tooclose':
+            return { ok: false, tone: 'info',
+              headline: L('Those dates are too close to compare — use an earlier delivery.',
+                          'Esas fechas están muy cerca para comparar — usa una entrega anterior.'), detail: '' };
+          case 'future':
+            return { ok: false, tone: 'info',
+              headline: L('That date is in the future — use the date on an earlier invoice.',
+                          'Esa fecha es futura — usa la fecha de una factura anterior.'), detail: '' };
+          default:
+            return null;   // price/date/nodata → incomplete input, say nothing
+        }
+      }
+      var o = pctWord(res.ownerPct), m = pctWord(res.marketPct);
+      var gap = Math.round(Math.abs(res.gapPts));
+      var window = res.marketThenDate + ' ' + L('to', 'a') + ' ' + res.marketNowDate;
+      var youLine = L('Your price is ' + o.word + ' ' + o.str + ' since ' + res.thenDate + '; wholesale is ' + m.word + ' ' + m.str + ' over the same stretch (' + window + ').',
+                      'Tu precio está ' + o.word + ' ' + o.str + ' desde el ' + res.thenDate + '; el mayoreo está ' + m.word + ' ' + m.str + ' en el mismo tramo (' + window + ').');
+      var tone, headline, detail;
+      if (res.gapPts >= 3) {
+        tone = 'over';
+        headline = L('Your price outpaced the market by about ' + gap + ' points.',
+                     'Tu precio superó al mercado por unos ' + gap + ' puntos.');
+        detail = youLine + ' ' + L('That gap is the part the market does not explain — the place a vendor conversation can actually move.',
+                                   'Esa brecha es la parte que el mercado no explica — donde una conversación con el proveedor sí puede mover algo.');
+      } else if (res.gapPts <= -3) {
+        tone = 'under';
+        headline = L('Your price held about ' + gap + ' points better than the market.',
+                     'Tu precio aguantó unos ' + gap + ' puntos mejor que el mercado.');
+        detail = youLine + ' ' + L('You — or your vendor — absorbed part of the move. A good spot; nothing to chase here.',
+                                   'Tú — o tu proveedor — absorbieron parte del movimiento. Buen lugar; nada que perseguir aquí.');
+      } else {
+        tone = 'match';
+        headline = L('This tracked the market.', 'Esto siguió al mercado.');
+        detail = youLine + ' ' + L('The move was the market, not your vendor — little to renegotiate on price alone.',
+                                   'El movimiento fue del mercado, no de tu proveedor — poco que renegociar solo por precio.');
+      }
+      var note = res.matchGapDays > 10
+        ? L('Nearest market read to your date is ' + res.marketThenDate + ', about ' + res.matchGapDays + ' days off.',
+            'La lectura de mercado más cercana a tu fecha es ' + res.marketThenDate + ', a unos ' + res.matchGapDays + ' días.')
+        : '';
+      return { ok: true, tone: tone, headline: headline, detail: detail, note: note,
+        srText: headline + ' ' + detail + (note ? ' ' + note : '') };
+    }
+
     // Weekly heartbeat — a calm "you last checked {when}" marker for a returning
     // operator, computed from a LOCAL last-visit timestamp (no server, no account).
     // Deliberately no streaks, badges, counts, or urgency: it only orients in time.
@@ -183,7 +297,7 @@
       return L('You last checked these prices ' + rel + '.', 'Revisaste estos precios por última vez ' + rel + '.');
     }
 
-    return { L: L, money: money, sparkShape: sparkShape, percentileLine: percentileLine, weekOverWeek: weekOverWeek, vsLastYear: vsLastYear, heartbeat: heartbeat, flagVerb: flagVerb };
+    return { L: L, money: money, sparkShape: sparkShape, percentileLine: percentileLine, weekOverWeek: weekOverWeek, vsLastYear: vsLastYear, thenVsNow: thenVsNow, thenVsNowSay: thenVsNowSay, heartbeat: heartbeat, flagVerb: flagVerb };
   }
 
   var api = make;          // MuntinCostFormat(es) → bound, locale-aware helpers

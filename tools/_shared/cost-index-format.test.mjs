@@ -88,3 +88,64 @@ test('flagVerb: thin data never says re-price; verdicts map to buy/hold/watch', 
   assert.equal(EN.flagVerb(null, 'medium'), null);
   assert.equal(ES.flagVerb(struct, 'medium').verb, 'Considera ajustar el precio');
 });
+
+// then-vs-now — the owner-Δ% vs market-Δ% comparison. Monthly market series so an
+// operator's "earlier invoice" date lands on a real read.
+const MKT = [1000, 1020, 1040, 1100, 1120, 1150];                       // cents, rising ~15%
+const MKT_DATES = ['2026-01-01', '2026-02-01', '2026-03-01', '2026-04-01', '2026-05-01', '2026-06-01'];
+
+test('thenVsNow: owner outpaced the market → positive gap, names the real window', () => {
+  // owner went 1000→1300 (+30%); market 2026-01 → 2026-06 went +15%
+  const r = EN.thenVsNow(MKT, MKT_DATES, 1000, 1300, '2026-01-01');
+  assert.equal(r.ok, true);
+  assert.ok(Math.abs(r.ownerPct - 0.30) < 1e-9);
+  assert.ok(Math.abs(r.marketPct - 0.15) < 1e-9);
+  assert.ok(r.gapPts > 10);                                             // ~15 points over
+  assert.equal(r.marketThenDate, '2026-01-01');
+  assert.equal(r.marketNowDate, '2026-06-01');
+  const say = EN.thenVsNowSay(r);
+  assert.equal(say.tone, 'over');
+  assert.match(say.headline, /outpaced the market/);
+});
+
+test('thenVsNow: owner tracked the market → match tone, no false alarm', () => {
+  const r = EN.thenVsNow(MKT, MKT_DATES, 1000, 1150, '2026-01-01');     // +15% vs +15%
+  assert.equal(EN.thenVsNowSay(r).tone, 'match');
+});
+
+test('thenVsNow: owner beat the market → under tone', () => {
+  const r = EN.thenVsNow(MKT, MKT_DATES, 1000, 1000, '2026-01-01');     // flat vs +15%
+  assert.equal(EN.thenVsNowSay(r).tone, 'under');
+});
+
+test('thenVsNow: percent comparison is unit/basis robust (index series gives same verdict)', () => {
+  const idx = [100, 102, 104, 110, 112, 115];                          // same shape, index scale
+  const r = EN.thenVsNow(idx, MKT_DATES, 1000, 1300, '2026-01-01');
+  assert.ok(Math.abs(r.marketPct - 0.15) < 1e-9);                      // index movement == price movement
+  assert.equal(EN.thenVsNowSay(r).tone, 'over');
+});
+
+test('thenVsNow: refuses a date before the series, hands back the covered window', () => {
+  const r = EN.thenVsNow(MKT, MKT_DATES, 1000, 1300, '2024-01-01');
+  assert.equal(r.ok, false);
+  assert.equal(r.reason, 'outofrange');
+  const say = EN.thenVsNowSay(r);
+  assert.equal(say.ok, false);
+  assert.match(say.headline, /2026-01-01 to 2026-06-01/);
+});
+
+test('thenVsNow: refuses a future date and a too-close window', () => {
+  assert.equal(EN.thenVsNow(MKT, MKT_DATES, 1000, 1300, '2027-01-01').reason, 'future');
+  // a date matching the latest read leaves no window
+  assert.equal(EN.thenVsNow(MKT, MKT_DATES, 1000, 1300, '2026-06-01').reason, 'tooclose');
+});
+
+test('thenVsNow: incomplete input is silent (null), bad numbers rejected', () => {
+  assert.equal(EN.thenVsNowSay(EN.thenVsNow(MKT, MKT_DATES, 0, 1300, '2026-01-01')), null);
+  assert.equal(EN.thenVsNow(MKT, MKT_DATES, 1000, 1300, 'not-a-date').reason, 'date');
+});
+
+test('thenVsNow: ES localizes the verdict', () => {
+  const r = ES.thenVsNow(MKT, MKT_DATES, 1000, 1300, '2026-01-01');
+  assert.match(ES.thenVsNowSay(r).headline, /superó al mercado/);
+});
