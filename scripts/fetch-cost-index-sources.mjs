@@ -306,6 +306,39 @@ async function main() {
   const artifact = { generatedAt: new Date().toISOString(), points: {} };
   const deepHistory = {};   // --history-out: per-ingredient FULL weekly series (vendor-scale)
   let composed = 0, skipped = 0;
+  // Crash-safety for the deep backfill (--history-out). The loop used to hold every
+  // ingredient's series in memory and flush ONCE at the very end, so a Ctrl-C lost
+  // the whole run. Now: start ADDITIVE from any existing store, checkpoint to disk
+  // every few ingredients AND on SIGINT, so an interrupt loses at most the handful
+  // in flight. --resume additionally SKIPS ingredients already present, to continue
+  // an interrupted run without re-fetching what's done.
+  const resumeMode = process.argv.includes('--resume');
+  const HIST_DOC = 'Deep backfill history for the Cost Index seasonal engine (scripts/build-seasonality.mjs). Per ingredient, the FULL weekly wholesale series on the SAME valueCents scale as data/cost-index.json (so seasonal normals are comparable to the live level). Written by fetch-cost-index-sources.mjs --history-out with a deep window (set COST_INDEX_SERIES_DAYS, e.g. 4500 ≈ 12y). Re-run to extend; build-seasonality uses the deep series wherever it is longer than the capped live history.';
+  let _fs = null;
+  if (historyOutFile) {
+    _fs = await import('node:fs');
+    try {
+      if (_fs.existsSync(historyOutFile)) {
+        const prev = JSON.parse(_fs.readFileSync(historyOutFile, 'utf8'));
+        if (prev && prev.ingredients) Object.assign(deepHistory, prev.ingredients);
+      }
+    } catch (_) { /* corrupt/absent → start clean */ }
+  }
+  function writeHistoryStore() {
+    if (!historyOutFile || !_fs) return null;
+    const keys = Object.keys(deepHistory);
+    if (!keys.length) return null;
+    _fs.writeFileSync(historyOutFile, JSON.stringify({ _doc: HIST_DOC, generatedAt: artifact.generatedAt, ingredients: deepHistory }, null, 2) + '\n');
+    return { keys: keys.length, pts: keys.reduce((n, k) => n + (deepHistory[k] ? deepHistory[k].length : 0), 0) };
+  }
+  if (historyOutFile) {
+    process.on('SIGINT', () => {
+      const r = writeHistoryStore();
+      process.stderr.write(`\n[interrupted] checkpoint saved${r ? ` → ${historyOutFile}: ${r.keys} ingredient(s), ${r.pts} pt(s)` : ' (nothing new yet)'}. Re-run with --resume to continue.\n`);
+      process.exit(130);
+    });
+  }
+  let ckpt = 0;
   // Deep backfill (--history-out) is otherwise silent (jsonMode) and can run many
   // minutes across the windowed AMS stitch — emit a per-ingredient tick to stderr
   // (never stdout, so the --json / --out artifact contract stays untouched) so the
@@ -314,22 +347,35 @@ async function main() {
   const tick = historyOutFile ? (s) => process.stderr.write(s) : () => {};
   const total = ingredients.length;
   let idx = 0;
-  for (const ing of ingredients) {
+  // Ingredient-level concurrency. The per-ingredient source fan-out already runs
+  // through F.mapLimit (AMS_CONCURRENCY, polite to the single MARS host); the OUTER
+  // loop was strictly sequential, so 100+ ingredients ran one-after-another — the
+  // long pole, especially in --history-out mode where each ingredient stitches
+  // years of 150-day AMS windows. Run a small pool of ingredients at once: most hit
+  // DIFFERENT hosts (LMR beef / BLS grains / FRED diesel / AMS produce), so they
+  // overlap cleanly, and F.fetchJson already retries 429/5xx with jittered backoff
+  // honoring Retry-After — so a brief overshoot backs off instead of dropping data.
+  // Conservative default (4) keeps total in-flight to any one host reasonable;
+  // tune with --concurrency N or COST_INDEX_CONCURRENCY. The per-ingredient writes
+  // are keyed by name (order-independent), so parallelizing is safe.
+  const CONCURRENCY = Math.max(1, Number(arg('--concurrency')) || Number(process.env.COST_INDEX_CONCURRENCY) || 4);
+  await F.mapLimit(ingredients, CONCURRENCY, async (ing) => {
     const m = sourceMap[ing] || {};
-    idx++;
-    if (LIVE && !m.verified) { skipped++; continue; }   // cardinal rule: unverified contributes nothing
-    tick(`  [${idx}/${total}] ${ing}\n`);
+    if (resumeMode && Array.isArray(deepHistory[ing]) && deepHistory[ing].length) return;   // --resume: already fetched
+    const myIdx = ++idx;
+    if (LIVE && !m.verified) { skipped++; return; }   // cardinal rule: unverified contributes nothing
+    tick(`  [${myIdx}/${total}] ${ing}\n`);
     let raw;
     try {
       raw = LIVE ? await liveFetch(ing, m) : (FIXTURES[ing] || {});
     } catch (e) {
       log(`\n■ ${ing}  ·  fetch error: ${e.message} (contributes nothing)`);
-      continue;
+      return;
     }
     const outputs = toOutputs(ing, raw, m);
-    if (!outputs.length) { log(`\n■ ${ing}  ·  no source data`); continue; }
+    if (!outputs.length) { log(`\n■ ${ing}  ·  no source data`); return; }
     const point = composeIngredient(ing, outputs);
-    if (!point) { log(`\n■ ${ing}  ·  all sources failed the quality gate`); continue; }
+    if (!point) { log(`\n■ ${ing}  ·  all sources failed the quality gate`); return; }
     if (!jsonMode) fmt(point, ing);
     // The artifact point is exactly a MuntinComposite.assess result — the shape
     // build-cost-index.mjs vendors (it adds asOf already; ensure it's present).
@@ -340,10 +386,13 @@ async function main() {
     // exact vendor scale — so build-seasonality's normals are comparable to the live level.
     if (historyOutFile) {
       const deep = weeklyDedup(buildHistory(point.kept, Number.MAX_SAFE_INTEGER));
-      if (deep.length) deepHistory[ing] = deep;
+      if (deep.length) {
+        deepHistory[ing] = deep;
+        if ((++ckpt) % 8 === 0) { try { writeHistoryStore(); } catch (_) {} }   // checkpoint so a Ctrl-C keeps progress
+      }
     }
     composed++;
-  }
+  });
 
   // Drivers (corn/soybeans/diesel/electricity) — the "why" layer: index/trend +
   // citeable index history + the ingredients each tends to lead. LIVE only. Each
@@ -399,22 +448,17 @@ async function main() {
     if (!LIVE) log('  Run with --live + FRED_KEY/BLS_KEY/AMS_KEY once source ids are verified to fetch real data.');
   }
 
-  // --history-out: write the deep backfill store for the seasonal engine.
+  // --history-out: final write of the deep backfill store (checkpoints already
+  // wrote partials during the run). Additive load means deepHistory is non-empty
+  // even on a 0-compose run (the last-good store), so we only refuse when there is
+  // genuinely nothing to write — never clobbering last-good down to empty.
   if (historyOutFile) {
-    if (LIVE && composed === 0) {
-      console.error(`Refusing to write ${historyOutFile}: 0 points composed (all sources failed?). Last-good store left intact.`);
+    if (LIVE && Object.keys(deepHistory).length === 0) {
+      console.error(`Refusing to write ${historyOutFile}: nothing composed and no existing store. Last-good (if any) left intact.`);
       process.exit(1);
     }
-    const fs = await import('node:fs');
-    const keys = Object.keys(deepHistory);
-    const totalPts = keys.reduce((n, k) => n + deepHistory[k].length, 0);
-    const store = {
-      _doc: 'Deep backfill history for the Cost Index seasonal engine (scripts/build-seasonality.mjs). Per ingredient, the FULL weekly wholesale series on the SAME valueCents scale as data/cost-index.json (so seasonal normals are comparable to the live level). Written by fetch-cost-index-sources.mjs --history-out with a deep window (set COST_INDEX_SERIES_DAYS, e.g. 4500 ≈ 12y). Re-run to extend; build-seasonality uses the deep series wherever it is longer than the capped live history.',
-      generatedAt: artifact.generatedAt,
-      ingredients: deepHistory,
-    };
-    fs.writeFileSync(historyOutFile, JSON.stringify(store, null, 2) + '\n');
-    console.log(`Wrote deep history → ${historyOutFile}: ${keys.length} ingredient(s), ${totalPts} weekly point(s). Next: node scripts/build-seasonality.mjs && node scripts/check-all.mjs`);
+    const r = writeHistoryStore();
+    if (r) console.log(`Wrote deep history → ${historyOutFile}: ${r.keys} ingredient(s), ${r.pts} weekly point(s). Next: node scripts/build-seasonality.mjs && node scripts/check-all.mjs`);
   }
 }
 
