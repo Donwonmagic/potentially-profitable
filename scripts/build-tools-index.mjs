@@ -287,8 +287,8 @@ function renderSheetsBand(locale) {
   return `<aside class="tool-sheets-band" aria-labelledby="tool-sheets-band-h" style="margin:32px 0 0;padding:22px 24px;border:1px solid var(--line,#E5DFD2);border-left:4px solid var(--teal,#2A50C8);border-radius:var(--r-md,12px);background:var(--white,#FFFFFF);display:flex;flex-wrap:wrap;align-items:center;gap:18px;">
       <div style="flex:1;min-width:240px;">
         <span class="eyebrow" style="display:block;margin-bottom:4px;">${escText(eyebrow)}</span>
-        <h2 id="tool-sheets-band-h" style="font-family:var(--font-display,'Fraunces',Georgia,serif);font-size:22px;font-weight:500;margin:0 0 6px;color:var(--ink,#14161A);">${escText(headline)}</h2>
-        <p style="font-size:14.5px;line-height:1.5;color:var(--ink-soft,#2A2D33);margin:0;max-width:640px;">${escText(sub)}</p>
+        <h2 id="tool-sheets-band-h" style="font-family:var(--font-display,'Fraunces',Georgia,serif);font-size:22px;font-weight:500;margin:0 0 6px;color:var(--ink,#16181D);">${escText(headline)}</h2>
+        <p style="font-size:14.5px;line-height:1.5;color:var(--ink-soft,#4A4F59);margin:0;max-width:640px;">${escText(sub)}</p>
       </div>
       <a class="btn btn-primary" href="${escAttr(url)}" style="white-space:nowrap;">${escText(cta)} ${ARROW}</a>
     </aside>`;

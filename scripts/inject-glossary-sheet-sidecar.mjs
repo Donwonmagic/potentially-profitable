@@ -94,14 +94,14 @@ ${items}
 // re-runs detect the marker and skip the style block.
 const STYLE_MARKER = '<!-- term-sheet-sidecar:style -->';
 const STYLE_BLOCK  = `${STYLE_MARKER}<style>
-.term-sheet-sidecar{margin:18px 0 0;padding:14px 18px;border:1px solid var(--line,#E5DFD2);border-left:3px solid var(--teal,#1F4E5B);border-radius:var(--r-sm,6px);background:var(--cream-2,#F3EEE3)}
-.term-sheet-sidecar__eyebrow{margin:0;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal,#1F4E5B)}
-.term-sheet-sidecar__intro{margin:4px 0 10px;font-size:14px;line-height:1.5;color:var(--ink-soft,#2A2D33)}
+.term-sheet-sidecar{margin:18px 0 0;padding:14px 18px;border:1px solid var(--line,#E3E5E9);border-left:3px solid var(--teal,#2A50C8);border-radius:var(--r-sm,6px);background:var(--cream-2,#EDEEF1)}
+.term-sheet-sidecar__eyebrow{margin:0;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal,#2A50C8)}
+.term-sheet-sidecar__intro{margin:4px 0 10px;font-size:14px;line-height:1.5;color:var(--ink-soft,#4A4F59)}
 .term-sheet-sidecar__list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
-.term-sheet-sidecar__link{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border:1px solid var(--line,#E5DFD2);border-radius:var(--r-sm,6px);background:var(--white,#FFFFFF);text-decoration:none;color:var(--ink,#14161A);transition:border-color 140ms ease}
-.term-sheet-sidecar__link:hover{border-color:var(--teal,#1F4E5B)}
-.term-sheet-sidecar__title{font-family:var(--font-display,"Fraunces",Georgia,serif);font-size:16px;font-weight:500;color:var(--teal,#1F4E5B)}
-.term-sheet-sidecar__walkaway{font-size:13px;line-height:1.45;color:var(--ink-soft,#2A2D33)}
+.term-sheet-sidecar__link{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border:1px solid var(--line,#E3E5E9);border-radius:var(--r-sm,6px);background:var(--white,#FFFFFF);text-decoration:none;color:var(--ink,#16181D);transition:border-color 140ms ease}
+.term-sheet-sidecar__link:hover{border-color:var(--teal,#2A50C8)}
+.term-sheet-sidecar__title{font-family:var(--font-display,"Fraunces",Georgia,serif);font-size:16px;font-weight:500;color:var(--teal,#2A50C8)}
+.term-sheet-sidecar__walkaway{font-size:13px;line-height:1.45;color:var(--ink-soft,#4A4F59)}
 @media print{.term-sheet-sidecar{display:none !important}}
 </style>`;
 
