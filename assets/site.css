@@ -1377,6 +1377,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .foot-cta-text{color:var(--cream);font-family:var(--font-display);font-size:clamp(22px,2.6vw,30px);line-height:1.2;letter-spacing:-0.01em;max-width:460px}
 .foot-cta .btn-primary{flex:0 0 auto;background:var(--teal);color:var(--cream)}
 .foot-cta .btn-primary:hover{background:var(--teal-dark);transform:translateY(-1px);box-shadow:0 16px 36px -12px rgba(42,80,200,0.55)}
+.foot-cta .btn-ghost{color:var(--cream);border-color:rgba(250,247,242,0.3)}
+.foot-cta .btn-ghost:hover{background:rgba(250,247,242,0.08);border-color:var(--cream)}
 @media (max-width:640px){.foot-cta{flex-direction:column;align-items:flex-start;gap:20px}}
 /* Suppress the generic footer CTA strip on any page that already has
    its own designed closing CTA section (.block.final) — otherwise the
