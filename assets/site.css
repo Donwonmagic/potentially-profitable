@@ -1388,7 +1388,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
    ignore the rule and render the foot-cta on every page — duplicates
    the final block but doesn't break layout. Acceptable degradation
    (B3.3). */
-body:has(.block.final a[href="/ledger/"]) .foot-cta{display:none}
+body:has(.block.final a[href$="/ledger/"]) .foot-cta,body:has(.block.final a[href^="https://ledger.muntin.digital"]) .foot-cta{display:none}
 
 /* Mobile sticky bottom action bar. Renders only on phone-sized
    viewports with a coarse pointer (so a tablet with a Bluetooth mouse
