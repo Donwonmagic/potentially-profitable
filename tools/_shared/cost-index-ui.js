@@ -707,8 +707,8 @@
     // number no public index shows: what the trim actually costs you.
     if (ing.epCents && ing.yield && lvl) {
       var yPct = Math.round(ing.yield * 100);
-      var plateTxt = L('True cost ≈ ' + money(ing.epCents) + ' per usable ' + unit + ' (' + yPct + '% trim yield)',
-                       'Costo real ≈ ' + money(ing.epCents) + ' por ' + unit + ' utilizable (rendimiento ' + yPct + '%)');
+      var plateTxt = L('After trim waste, a usable ' + unit + ' really costs about ' + money(ing.epCents) + ' (' + yPct + '% yield) — the wholesale price buys un-trimmed product.',
+                       'Tras la merma, ' + unit + ' utilizable cuesta en realidad cerca de ' + money(ing.epCents) + ' (rendimiento ' + yPct + '%) — el precio mayorista es por producto sin limpiar.');
       var plateEl = el('p', 'cp-market-plate', plateTxt);
       plateEl.setAttribute('title', L('Wholesale price ÷ typical trim yield = true cost per usable unit. Your own yield governs.',
                                       'Precio mayorista ÷ rendimiento típico = costo real por unidad utilizable. Tu propio rendimiento manda.'));
@@ -886,8 +886,8 @@
     fig.appendChild(prov);
 
     fig.appendChild(el('figcaption', null,
-      L('Read the range first, then the direction — and check whether your invoice agrees.',
-        'Lee primero el rango, luego la dirección — y revisa si tu factura coincide.')));
+      L('A public wholesale range and a plain read on whether to act. Details has the chart, trend, and a check against your own price.',
+        'Un rango mayorista público y una lectura clara de si conviene actuar. En Detalle están la gráfica, la tendencia y la comparación con tu propio precio.')));
 
     // "Where do you sit?" — operator types their price, sees it pinned on the
     // band. A free taste of vendor-vs-market; only when there's a real level.
@@ -948,6 +948,28 @@
       + (sm ? ' ' + L('Price history from ', 'Historial de precio de ') + sm.source + ', ' + sm.from + ' ' + L('to', 'a') + ' ' + sm.to + (sm.basis === 'index' ? L(' (index, not a dollar price)', ' (índice, no un precio en dólares)') : '') + '.' : '');
     srt.appendChild(el('p', null, caption));
     fig.appendChild(srt);
+
+    // ── Progressive disclosure ──────────────────────────────────────────────
+    // The default card is the glanceable answer: name · price · what-to-do · cost
+    // it into a dish. Everything that supports that call — the chart, the trimmed
+    // true cost, the trend math, week-over-week, seasonal, sources, and the
+    // your-price check — collapses under ONE "Details" expander so the card stops
+    // being a wall of text. The full narration already lives on data-audio-alt, so
+    // a screen-reader user loses nothing; only the sighted default view is trimmed.
+    (function (figEl) {
+      var KEEP = { 'cp-market-head': 1, 'cp-market-range': 1, 'cp-market-verdict': 1, 'cp-market-platecost': 1 };
+      var det = el('details', 'cp-more');
+      det.appendChild(el('summary', 'cp-more-summary',
+        L('Details — chart, history, sources', 'Detalle — gráfica, historial, fuentes')));
+      var moved = false;
+      Array.prototype.slice.call(figEl.childNodes).forEach(function (ch) {
+        if (ch.nodeType !== 1 || ch.tagName === 'FIGCAPTION') return; // figcaption must stay a figure child
+        var cls = (ch.getAttribute('class') || '').split(' ')[0];
+        if (KEEP[cls]) return;
+        det.appendChild(ch); moved = true;                 // appendChild MOVES it out of the figure
+      });
+      if (moved) figEl.appendChild(det);
+    })(fig);
 
     listEl.appendChild(fig);
   });

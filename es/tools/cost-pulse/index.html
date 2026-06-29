@@ -154,7 +154,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .cp-conf[data-level="high"]{background:var(--status-good-tint,rgba(31,157,85,.14));color:var(--status-good,#1F9D55)}
 .cp-conf[data-level="medium"]{background:rgba(198,138,44,.12);color:var(--status-warn-deep,#8A3E16)}
 .cp-conf[data-level="low"],.cp-conf[data-level="directional"]{background:var(--status-bad-tint,#F7E7DC);color:var(--rust)}
-.cp-market-range{font-size:16px;color:var(--ink);margin:6px 0 2px;font-variant-numeric:tabular-nums}
+.cp-market-range{font-size:19px;font-weight:600;color:var(--ink);margin:6px 0 6px;font-variant-numeric:tabular-nums}
+.cp-more{margin-top:10px;border-top:1px dashed var(--line);padding-top:6px}
+.cp-more>.cp-more-summary{cursor:pointer;font-size:12.5px;font-weight:600;color:var(--teal);list-style:none;padding:2px 0}
+.cp-more>.cp-more-summary::-webkit-details-marker{display:none}
+.cp-more>.cp-more-summary::before{content:"\25B8";font-size:10px;margin-right:6px;display:inline-block}
+.cp-more[open]>.cp-more-summary::before{content:"\25BE"}
+.cp-more>.cp-market-basis{margin-top:10px}
 .cp-market-basis{font-size:13px;line-height:1.5;color:var(--ink);margin:4px 0 6px;padding:8px 10px;border-left:3px solid var(--teal,#2A7A76);background:rgba(42,122,118,.06);border-radius:0 6px 6px 0;font-variant-numeric:tabular-nums}
 .cp-market-basis strong{color:var(--ink)}
 .cp-market-basis .cp-basis-test{color:var(--rust);font-weight:600}
