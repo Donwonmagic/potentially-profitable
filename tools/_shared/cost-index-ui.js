@@ -58,15 +58,32 @@
     try { history.replaceState(null, '', location.pathname + location.search + hash); }
     catch (e) { /* history may be unavailable */ }
   }
+  var findCountEl = null;
   function applyFilters() {
     var keys = basketKeys();
+    var shown = 0, total = 0;
     Array.prototype.forEach.call(listEl.querySelectorAll('.cp-market-item'), function (c) {
       var k = c.getAttribute('data-key') || '';
       var nm = c.getAttribute('data-name') || '';
       var hideByQuery = query !== '' && nm.indexOf(query) === -1;
       var hideByBasket = basketOnly && keys.length > 0 && !basket[k];
       c.hidden = hideByQuery || hideByBasket;
+      total++;
+      if (!c.hidden) shown++;
     });
+    // Live result count — visible affordance AND the screen-reader status for the
+    // otherwise-silent filter (filtering toggled card.hidden with no announcement).
+    if (findCountEl) {
+      if (query === '' && !basketOnly) {
+        findCountEl.textContent = '';
+      } else if (shown === 0) {
+        findCountEl.textContent = query
+          ? L('No matches for “' + query + '”', 'Sin resultados para “' + query + '”')
+          : L('Nothing tracked yet', 'Nada seguido aún');
+      } else {
+        findCountEl.textContent = L(shown + ' of ' + total + ' shown', shown + ' de ' + total + ' visibles');
+      }
+    }
   }
   function trackButton(key, name) {
     var on = !!basket[key];
@@ -921,17 +938,32 @@
   sum.textContent = sumText;
   if (movers.length) listEl.insertBefore(sum, listEl.firstChild);
 
-  // Filter — appears once the list is long enough to need it (i.e. live data).
+  // Find-your-ingredient — the operator's real question is "where's MY tomato?",
+  // not "filter a list". A labeled, prominent box at the top of the list, with a
+  // live result count that doubles as the filter's screen-reader status.
+  // Appears once the list is long enough to need it (i.e. live data).
+  var findWrap = null;
   if (movers.length >= 8) {
+    findWrap = el('div', 'cp-market-find');
+    var srchId = 'cpMarketFind';
+    var findLabel = el('label', 'cp-find-label', L('Find your ingredient', 'Encuentra tu ingrediente'));
+    findLabel.setAttribute('for', srchId);
     var srch = el('input', 'cp-market-search');
     srch.type = 'search';
-    srch.setAttribute('aria-label', L('Filter ingredients', 'Filtrar ingredientes'));
-    srch.placeholder = L('Filter ingredients…', 'Filtrar ingredientes…');
+    srch.id = srchId;
+    srch.setAttribute('aria-label', L('Find your ingredient', 'Encuentra tu ingrediente'));
+    srch.placeholder = L('e.g. tomato, chicken, butter', 'p. ej. tomate, pollo, mantequilla');
+    findCountEl = el('span', 'cp-find-count');
+    findCountEl.setAttribute('role', 'status');
+    findCountEl.setAttribute('aria-live', 'polite');
     srch.addEventListener('input', function () {
       query = srch.value.toLowerCase().trim();
       applyFilters();
     });
-    listEl.insertBefore(srch, listEl.firstChild);
+    findWrap.appendChild(findLabel);
+    findWrap.appendChild(srch);
+    findWrap.appendChild(findCountEl);
+    listEl.insertBefore(findWrap, listEl.firstChild);
   }
 
   // "Your basket" bar — sits above the list, shows how many ingredients you're
@@ -993,6 +1025,9 @@
   // so force it above the basket bar / search controls (each of those prepended
   // at firstChild above). A tired reader gets the "what moved" sentence first.
   if (movers.length && sum.parentNode === listEl) listEl.insertBefore(sum, listEl.firstChild);
+  // Then the find box, right under the gestalt — it's the primary way in ("where's
+  // MY tomato?"), so it sits above the basket bar rather than below it.
+  if (findWrap && findWrap.parentNode === listEl) listEl.insertBefore(findWrap, sum.nextSibling);
 
   // Deep anchor: a URL like /…/#ci-romaine should bring that card into view +
   // flag it. The browser's initial hash scroll fired before these JS-built
