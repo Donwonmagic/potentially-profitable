@@ -20,6 +20,14 @@
     if (txt != null) e.textContent = txt;
     return e;
   }
+  // Whole days between an ISO/seed date string and now, or null if unparseable.
+  // Used to age the freshness line honestly (a stale artifact must not read fresh).
+  function ageInDays(isoStr) {
+    if (!isoStr) return null;
+    var t = Date.parse(isoStr);
+    if (!isFinite(t)) return null;
+    return Math.floor((Date.now() - t) / 86400000);
+  }
   // Privacy-respecting analytics: only ingredient keys + categorical labels
   // (verdict, action) ever leave — never the operator's typed price. Best-effort
   // and guarded, so a missing/blocked Plausible never breaks the tool.
@@ -60,12 +68,16 @@
       c.hidden = hideByQuery || hideByBasket;
     });
   }
-  function trackButton(key) {
+  function trackButton(key, name) {
     var on = !!basket[key];
     var b = el('button', 'cp-track', on ? L('★ Tracking', '★ Siguiendo') : L('☆ Track', '☆ Seguir'));
     b.type = 'button';
     b.setAttribute('aria-pressed', on ? 'true' : 'false');
-    b.setAttribute('aria-label', L('Track this ingredient', 'Seguir este ingrediente'));
+    // Name the target so a screen-reader user tabbing a list of 8+ stars can tell
+    // romaine from butter, instead of hearing "Track this ingredient" repeatedly.
+    b.setAttribute('aria-label', name
+      ? L('Track ' + name, 'Seguir ' + name)
+      : L('Track this ingredient', 'Seguir este ingrediente'));
     b.addEventListener('click', function () {
       if (basket[key]) delete basket[key]; else basket[key] = 1;
       var now = !!basket[key];
@@ -414,6 +426,20 @@
     var freshEl = el('p', 'cp-market-asof');
     freshEl.appendChild(el('strong', null, L('Market data as of ', 'Datos de mercado al ')));
     freshEl.appendChild(document.createTextNode(DATA.generatedAt));
+    // Age the whole-read freshness line honestly: the build runs every business
+    // day, so a build older than a week means the pipeline has fallen behind —
+    // surface that as a visible warn chip rather than let a stale artifact read
+    // as current. Keyed off the build date, not any one ingredient's last point,
+    // so mixed-cadence series (daily produce vs monthly indices) aren't false-flagged.
+    var buildAge = ageInDays(DATA.generatedAt);
+    if (buildAge != null && buildAge > 7) {
+      freshEl.appendChild(document.createTextNode(' '));
+      var staleChip = el('span', 'cp-stale-chip', L(buildAge + ' days old', 'hace ' + buildAge + ' días'));
+      staleChip.setAttribute('title', L(
+        'This whole read has not refreshed in over a week — treat it as a guide, not a current quote.',
+        'Toda esta lectura no se actualiza hace más de una semana — tómala como guía, no como cotización actual.'));
+      freshEl.appendChild(staleChip);
+    }
     dekEl.parentNode.insertBefore(freshEl, dekEl.nextSibling);
   }
   if (DATA.status === 'preview') {
@@ -588,7 +614,7 @@
       headRight.appendChild(tierBadge);
     }
     headRight.appendChild(chip);
-    if (ing.key) headRight.appendChild(trackButton(ing.key));
+    if (ing.key) headRight.appendChild(trackButton(ing.key, name));
     head.appendChild(headRight);
     fig.appendChild(head);
 
@@ -631,7 +657,13 @@
       fig.appendChild(plateEl);
       fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + plateTxt + '.');
     }
-    var tEl = el('p', 'cp-market-trend', (r.trend.dir === 'up' ? '▲ ' : r.trend.dir === 'down' ? '▼ ' : '● ') + trendText);
+    // The ▲/▼/● glyph is decorative — the word ("up"/"down"/"flat") is already in
+    // trendText, so aria-hide the glyph or a screen reader reads "black up-pointing triangle".
+    var tEl = el('p', 'cp-market-trend');
+    var tGlyph = el('span', null, r.trend.dir === 'up' ? '▲' : r.trend.dir === 'down' ? '▼' : '●');
+    tGlyph.setAttribute('aria-hidden', 'true');
+    tEl.appendChild(tGlyph);
+    tEl.appendChild(document.createTextNode(' ' + trendText));
     tEl.setAttribute('data-dir', r.trend.dir);
     fig.appendChild(tEl);
 
@@ -1035,7 +1067,11 @@
       var row = el('div', 'cp-driver');
       var dhead = el('div', 'cp-driver-head');
       dhead.appendChild(el('span', 'cp-driver-name', L(d.label_en, d.label_es)));
-      var dt = el('span', 'cp-driver-trend', (dir === 'up' ? '▲ ' : dir === 'down' ? '▼ ' : '● ') + dWord + dPctTxt);
+      var dt = el('span', 'cp-driver-trend');
+      var dGlyph = el('span', null, dir === 'up' ? '▲' : dir === 'down' ? '▼' : '●');
+      dGlyph.setAttribute('aria-hidden', 'true');
+      dt.appendChild(dGlyph);
+      dt.appendChild(document.createTextNode(' ' + dWord + dPctTxt));
       dt.setAttribute('data-dir', dir);
       dhead.appendChild(dt);
       row.appendChild(dhead);
