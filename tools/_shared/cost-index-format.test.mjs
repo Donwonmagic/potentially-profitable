@@ -107,16 +107,18 @@ test('thenVsNow: owner outpaced the market → dollar-led "over" verdict over th
   assert.ok(Math.abs(r.excessCents - 150) < 1e-6);
   const say = EN.thenVsNowSay(r, 'case');
   assert.equal(say.tone, 'over');
-  assert.match(say.headline, /\$1\.50 a case beyond the market/);      // the repeatable number
-  assert.doesNotMatch(say.headline, /percentage points|points/);       // jargon dropped
-  assert.match(say.detail, /from 2026-01-01 to 2026-06-01/);           // names BOTH operator dates
+  assert.match(say.headline, /Above the market/);
+  assert.match(say.headline, /up 30%, the market up 15%/);             // percentage-led, both directions
+  assert.doesNotMatch(say.headline, /\$|points/);                      // no dollar, no jargon in the verdict
+  assert.match(say.detail, /From 2026-01-01 to 2026-06-01/);           // names BOTH operator dates
 });
 
 test('thenVsNow: owner tracked the market → "match" reframed as confirmation, no false alarm', () => {
   const r = EN.thenVsNow(MKT, MKT_DATES, O({ aCents: 1000, bCents: 1150, aDateStr: '2026-01-01', bDateStr: '2026-06-01' }));
   const say = EN.thenVsNowSay(r, 'case');
   assert.equal(say.tone, 'match');
-  assert.match(say.headline, /Confirmed/);
+  assert.match(say.headline, /In line with the market/);
+  assert.match(say.headline, /up 15%, the market up 15%/);            // percentage-led
 });
 
 test('thenVsNow: owner beat the market → "under" tone', () => {
@@ -186,5 +188,5 @@ test('thenVsNow: incomplete input is silent (null)', () => {
 
 test('thenVsNow: ES localizes the verdict', () => {
   const r = ES.thenVsNow(MKT, MKT_DATES, O({ aCents: 1000, bCents: 1300, aDateStr: '2026-01-01', bDateStr: '2026-06-01' }));
-  assert.match(ES.thenVsNowSay(r, 'caja').headline, /más allá del movimiento del mercado/);
+  assert.match(ES.thenVsNowSay(r, 'caja').headline, /Por encima del movimiento del mercado/);
 });

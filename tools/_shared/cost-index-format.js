@@ -293,40 +293,44 @@
         }
       }
       var o = pctWord(res.ownerPct), m = pctWord(res.marketPct);
-      // EN reads "is up 12%"; ES reads "subió 12%" (no copula) — drop the redundant
-      // "0%" on a flat move in each language's own grammar.
+      // Lead with the PERCENTAGE move — the unit-robust, level-free core of the
+      // comparison (wholesale is movement, not a dollar level). EN reads "up 12%";
+      // ES reads "subió 12%". "flat" drops the redundant 0%. The pair preserves each
+      // side's direction so a both-fell case still reads right.
       var youAmt = o.flat ? L('flat', 'no cambió') : o.word + ' ' + o.str;
       var mktAmt = m.flat ? L('flat', 'no cambió') : m.word + ' ' + m.str;
+      var pair = L(youAmt + ', the market ' + mktAmt, 'tu precio ' + youAmt + ', el mercado ' + mktAmt);
       var mktWindow = res.marketADate + ' ' + L('to', 'a') + ' ' + res.marketBDate;
-      var youLine = L('Your price is ' + youAmt + ' from ' + res.aDate + ' to ' + res.bDate + '; wholesale is ' + mktAmt + ' over the same window (' + mktWindow + ').',
-                      'Tu precio ' + youAmt + ' del ' + res.aDate + ' al ' + res.bDate + '; el mayoreo ' + mktAmt + ' en la misma ventana (' + mktWindow + ').');
+      var windowLine = L('From ' + res.aDate + ' to ' + res.bDate + ', against the market’s ' + mktWindow + ' reads.',
+                         'Del ' + res.aDate + ' al ' + res.bDate + ', frente a las lecturas de mercado de ' + mktWindow + '.');
       var tone, headline, detail;
       if (res.thin) {
         // Audit BLOCKER 2: a hard "your vendor padded" verdict from a thin/short
-        // series is not defensible. Show the comparison, withhold the accusation.
+        // series is not defensible. Withhold the percentages too — we don't trust
+        // them enough to feature them.
         tone = 'watch';
         headline = L('Too little market history here to call it yet.',
                      'Aún hay poco historial de mercado para concluir.');
-        detail = youLine + ' ' + L('Treat this as a watch, not a verdict — the reads behind it are thin.',
-                                   'Tómalo como algo para vigilar, no una conclusión — hay pocas lecturas detrás.');
+        detail = windowLine + ' ' + L('Treat this as a watch, not a verdict — the reads behind it are thin.',
+                                      'Tómalo como algo para vigilar, no una conclusión — hay pocas lecturas detrás.');
       } else if (res.gapPts >= GAP_PTS) {
         tone = 'over';
-        headline = L('About ' + money(res.excessCents) + ' a ' + per + ' beyond the market’s move.',
-                     'Unos ' + money(res.excessCents) + ' por ' + per + ' más allá del movimiento del mercado.');
-        detail = youLine + ' ' + L('Could be a new freight or pack cost — or room to renegotiate. Worth one question to your rep.',
-                                   'Puede ser un nuevo costo de flete o empaque — o margen para renegociar. Vale una pregunta a tu proveedor.');
+        headline = L('Above the market’s move — your price ' + pair + '.',
+                     'Por encima del movimiento del mercado — ' + pair + '.');
+        detail = windowLine + ' ' + L('Could be a new freight or pack cost — or room to renegotiate; worth one question to your rep.',
+                                      'Puede ser un nuevo costo de flete o empaque — o margen para renegociar; vale una pregunta a tu proveedor.');
       } else if (res.gapPts <= -GAP_PTS) {
         tone = 'under';
-        headline = L('About ' + money(-res.excessCents) + ' a ' + per + ' under the market’s move — a good spot.',
-                     'Unos ' + money(-res.excessCents) + ' por ' + per + ' por debajo del movimiento del mercado — buen lugar.');
-        detail = youLine + ' ' + L('You — or your vendor — absorbed part of the rise. Nothing to chase here.',
-                                   'Tú — o tu proveedor — absorbieron parte del alza. Nada que perseguir aquí.');
+        headline = L('Below the market’s move — your price ' + pair + ' — a good spot.',
+                     'Por debajo del movimiento del mercado — ' + pair + ' — buen lugar.');
+        detail = windowLine + ' ' + L('You — or your vendor — absorbed part of the move. Nothing to chase here.',
+                                      'Tú — o tu proveedor — absorbieron parte del movimiento. Nada que perseguir aquí.');
       } else {
         tone = 'match';
-        headline = L('Confirmed — this move was the market, not your vendor.',
-                     'Confirmado — este movimiento fue del mercado, no de tu proveedor.');
-        detail = youLine + ' ' + L('You are not being padded here; little to renegotiate on price alone.',
-                                   'No te están inflando aquí; poco que renegociar solo por precio.');
+        headline = L('In line with the market — your price ' + pair + '.',
+                     'En línea con el mercado — ' + pair + '.');
+        detail = windowLine + ' ' + L('You are not being padded here; little to renegotiate on price alone.',
+                                      'No te están inflando aquí; poco que renegociar solo por precio.');
       }
       var notes = [];
       if (res.aGapDays > 10) notes.push(L('Nearest market read to ' + res.aDate + ' is ' + res.marketADate + ', about ' + res.aGapDays + ' days off.',
