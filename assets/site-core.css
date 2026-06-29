@@ -1400,15 +1400,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .foot-cta .btn-ghost{color:var(--cream);border-color:rgba(250,247,242,0.3)}
 .foot-cta .btn-ghost:hover{background:rgba(250,247,242,0.08);border-color:var(--cream)}
 @media (max-width:640px){.foot-cta{flex-direction:column;align-items:flex-start;gap:20px}}
-/* Suppress the generic footer CTA strip on any page that already has
-   its own designed closing CTA section (.block.final) — otherwise the
-   "Book a 20-min call" button stacks right under the page's own
-   closing CTA, which duplicates the ask. Legal and tool pages that
-   don't have a .block.final keep the strip as a fallback. Browsers
-   without :has() support (Safari < 15.4 / Firefox < 121) ignore the
-   rule and render the foot-cta on every page — duplicates the final
-   block but doesn't break layout. Acceptable degradation (B3.3). */
-body:has(.block.final) .foot-cta{display:none}
+/* Suppress the Ledger footer CTA strip only when the page's designed
+   closing CTA section (.block.final) already links to Ledger. Other
+   final sections still need the footer strip as their Ledger placement.
+   This preserves the footer Ledger CTA on final sections with other asks.
+   Browsers without :has() support (Safari < 15.4 / Firefox < 121)
+   ignore the rule and render the foot-cta on every page — duplicates
+   the final block but doesn't break layout. Acceptable degradation
+   (B3.3). */
+body:has(.block.final a[href="/ledger/"]) .foot-cta{display:none}
 
 /* Mobile sticky bottom action bar. Renders only on phone-sized
    viewports with a coarse pointer (so a tablet with a Bluetooth mouse
