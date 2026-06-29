@@ -2850,7 +2850,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   }
 }
 
-/* ===== [article] Article viz components (.viz-* family) (lines 6977-7363) ===== */
+/* ===== [article] Article viz components (.viz-* family) (lines 6977-7390) ===== */
 /* ============ ARTICLE VIZ COMPONENTS ============
    Namespaced .viz-* family for inline article graphics. Tokens-only
    (--cream, --ink, --teal, --rust, --stone, --status-*, --t-*),
@@ -2916,6 +2916,33 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .viz-bars{font-size:13px;gap:4px 10px;grid-template-columns:minmax(0,1fr) auto}
   .viz-bars__label{grid-column:1/-1;margin-top:6px}
   .viz-bars__track{height:16px}
+}
+
+/* .viz-table — an honest data table as a content figure (ADR-006,
+   2026-06-20). For comparisons where real rows of dollars/percentages
+   read better than an abstract bar. Brand-consistent: hairline --line
+   rules, a bold --ink header row, --stone numeric cells in tabular
+   figures, right-aligned numbers. Sized to sit inside the 720px article
+   column without horizontal scroll for a 2–3 column table on a phone.
+   The figure declares data-figure-kind="table"; the gate counts the
+   <table> as a distinct enrichment kind. */
+.viz-table{width:100%;border-collapse:collapse;margin:8px 0 4px;font-family:var(--font-body);font-size:14.5px;color:var(--ink);line-height:1.4}
+.viz-table caption{font-family:var(--font-display);font-size:14.5px;font-weight:500;color:var(--ink);text-align:left;letter-spacing:-0.005em;margin:0 0 12px;line-height:1.4}
+.viz-table thead th{font-family:var(--font-body);font-size:11.5px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink);text-align:left;padding:0 14px 10px;border-bottom:2px solid var(--ink);vertical-align:bottom}
+.viz-table tbody th{font-weight:600;color:var(--ink);text-align:left}
+.viz-table tbody td,.viz-table tbody th{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+.viz-table tbody tr:last-child td,.viz-table tbody tr:last-child th{border-bottom:0}
+/* Numeric cells: tabular figures, right-aligned so dollar columns line
+   up on the decimal. Header cells over numeric columns align right too. */
+.viz-table .num,.viz-table thead th.num{text-align:right;font-variant-numeric:tabular-nums;color:var(--stone)}
+.viz-table tbody th.num{color:var(--ink)}
+/* Optional row emphasis — the pick/headline row reads in brand teal. */
+.viz-table tbody tr[data-tone="teal"] th,.viz-table tbody tr[data-tone="teal"] td{color:var(--teal)}
+.viz-table tbody tr[data-tone="rust"] th,.viz-table tbody tr[data-tone="rust"] td{color:var(--rust)}
+@media (max-width:520px){
+  .viz-table{font-size:13.5px}
+  .viz-table thead th{padding:0 9px 8px}
+  .viz-table tbody td,.viz-table tbody th{padding:10px 9px}
 }
 
 /* .viz-waterfall — single horizontal bar segmented by where each
