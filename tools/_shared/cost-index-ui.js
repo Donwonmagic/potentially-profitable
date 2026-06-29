@@ -151,8 +151,11 @@
     var min = Math.min.apply(null, finite), max = Math.max.apply(null, finite), span = (max - min) || 1;
     var n = values.length;
     var step = n > 1 ? (w - 2 * pad) / (n - 1) : 0;
-    var color = dir === 'up' ? 'var(--rust)' : dir === 'down' ? 'var(--teal)' : 'var(--stone)';
     var thin = confidence === 'low' || confidence === 'directional';   // dashed = provisional read
+    // A thin read must not paint a CONFIDENT directional line — neutralize it to
+    // stone so the dashed shape reads as "rough" and stops fighting the calmer
+    // verdict beside it (Viz review #6). A firm read keeps rust(up)/teal(down).
+    var color = thin ? 'var(--stone)' : (dir === 'up' ? 'var(--rust)' : dir === 'down' ? 'var(--teal)' : 'var(--stone)');
     function X(i) { return pad + i * step; }
     function Y(v) { return h - pad - ((v - min) / span) * (h - 2 * pad); }
     // Today-in-its-own-range: a faint band at this ingredient's OWN p25–p75 over
@@ -169,7 +172,10 @@
       bandRect.setAttribute('width', (w - 2 * pad).toFixed(1));
       bandRect.setAttribute('y', Math.min(yTop, yBot).toFixed(1));
       bandRect.setAttribute('height', Math.max(0.5, Math.abs(yBot - yTop)).toFixed(1));
-      bandRect.setAttribute('fill', 'var(--stone)'); bandRect.setAttribute('fill-opacity', '0.16');
+      // Bumped from 0.16 — at 30px tall on a phone the old band was invisible.
+      // Hairline edges give the spread perceptible top/bottom bounds (Viz review #8).
+      bandRect.setAttribute('fill', 'var(--stone)'); bandRect.setAttribute('fill-opacity', '0.22');
+      bandRect.setAttribute('stroke', 'var(--stone)'); bandRect.setAttribute('stroke-opacity', '0.38'); bandRect.setAttribute('stroke-width', '0.5');
       bandRect.setAttribute('class', 'cp-spark-band');
       svg.appendChild(bandRect);
     }
