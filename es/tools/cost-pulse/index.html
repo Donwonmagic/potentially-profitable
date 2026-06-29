@@ -484,7 +484,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   </div>
 
   <div class="cp-card cp-empty" id="cpEmpty" hidden>
-    <p><strong>¿Buscas el panel de facturas guardadas?</strong> Esta herramienta leía facturas guardadas con el Decodificador de Facturas antes de su retiro el 2026-05-08. Si guardaste algunas entonces, aparecen aquí — la lectura de mercado de arriba funciona para todos, con o sin facturas.</p>
+    <p><strong>Estás listo — la lectura de mercado de arriba no necesita nada de ti.</strong> Un panel de facturas guardadas solo se llena aquí si guardaste facturas con el Decodificador de Facturas antes de su retiro el 2026-05-08.</p>
     <p><a class="cp-cta" href="/es/learn/topics/operations-margin/read-restaurant-invoice-no-ocr/">Leer una factura sin OCR &rarr;</a></p>
   </div>
 
@@ -505,7 +505,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <p class="cp-last-invoice" id="cpLastLine"></p>
   </div>
 
-  <div class="cp-card">
+  <div class="cp-card" id="cpDashboardCaveat" hidden>
     <h2>Lo que este panel no es.</h2>
     <p><strong>No es tu contabilidad.</strong> La vista de facturas guardadas solo lee facturas que se guardaron con el Decodificador de Facturas antes de su retiro el 2026-05-08. No detecta una factura olvidada, no se sincroniza con QuickBooks o Restaurant365, y no concilia con tu banco.</p>
     <p><strong>Sin benchmark.</strong> Las tendencias que ves son <em>tus</em> datos. No agrupamos datos entre operadores, no vendemos benchmarks de costos, y no rellenamos retroactivamente facturas históricas si más adelante hay un opt-in.</p>
@@ -678,6 +678,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     var driftFlagged = false;
 
     if (!trend.length) { emptyEl.hidden = false; return; }
+
+    // Tiene facturas guardadas — muestra la tarjeta de aclaración del panel. Queda
+    // oculta para la mayoría sin facturas, que no tiene panel que aclarar.
+    var caveatEl = document.getElementById('cpDashboardCaveat');
+    if (caveatEl) caveatEl.hidden = false;
 
     var latest = trend[0];
     var lastLine = document.getElementById('cpLastLine');

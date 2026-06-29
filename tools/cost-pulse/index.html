@@ -584,7 +584,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   </div>
 
   <div class="cp-card cp-empty" id="cpEmpty" hidden>
-    <p><strong>Looking for the saved-invoice dashboard?</strong> This tool read invoices saved through the Invoice Decoder before it was retired on 2026-05-08. If you saved some then, they show here — the market read above works for everyone, with or without invoices.</p>
+    <p><strong>You&rsquo;re all set — the market read above needs nothing from you.</strong> A saved-invoice dashboard only fills in here if you saved invoices through the Invoice Decoder before it was retired on 2026-05-08.</p>
     <p><a class="cp-cta" href="/learn/topics/operations-margin/read-restaurant-invoice-no-ocr/">Read a restaurant invoice without OCR &rarr;</a></p>
   </div>
 
@@ -625,7 +625,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <p class="cp-last-invoice" id="cpLastLine"></p>
   </div>
 
-  <div class="cp-card">
+  <div class="cp-card" id="cpDashboardCaveat" hidden>
     <h2>What this dashboard isn't.</h2>
     <p><strong>Not your books.</strong> The saved-invoice view only reads invoices that were saved through the Invoice Decoder before its 2026-05-08 retirement. It won't catch a forgotten invoice, won't sync to QuickBooks or Restaurant365, and won't reconcile against your bank.</p>
     <p><strong>Not benchmarked.</strong> The trends you see here are <em>your</em> data only. We don't pool data across operators, don't sell aggregated cost benchmarks, and don't backfill historical invoices into a future opt-in even if one ships.</p>
@@ -863,6 +863,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       emptyEl.hidden = false;
       return;
     }
+
+    // Has saved invoices — reveal the dashboard's honest disclaimer card. It stays
+    // hidden for the no-invoice majority, who have no saved-invoice dashboard to disclaim.
+    var caveatEl = document.getElementById('cpDashboardCaveat');
+    if (caveatEl) caveatEl.hidden = false;
 
     // Last invoice card — always shows when at least one save exists.
     var latest = trend[0];
