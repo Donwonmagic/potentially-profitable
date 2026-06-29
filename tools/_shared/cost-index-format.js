@@ -175,86 +175,86 @@
       return isFinite(ms) ? ms : null;
     }
 
-    // then-vs-now — the comparison an operator actually needs: their OWN delivered
-    // price change vs the market's change over the SAME stretch. A carton going up
-    // tells you nothing alone — this separates "the market moved" from "my vendor
-    // padded the margin." Percent-based, so it is unit- AND basis-robust: cartons,
-    // pounds, even a pure index series all reduce to a movement that cancels the
-    // unit.
+    // then-vs-now — the operator's particular case: TWO exact invoice dates + the
+    // price on each, against the market's change over that SAME date span. A carton
+    // going up tells you nothing alone — this separates "the market moved" from "my
+    // vendor padded the margin." Percent-based, so it is unit- AND basis-robust:
+    // cartons, pounds, even a pure index series all reduce to a movement that
+    // cancels the unit.
     //
     // Honest by construction (hardened after an adversarial audit):
-    //   - The market "now" endpoint is the LIVE published level + its generatedAt
-    //     date (passed in), NOT the historical series tail — so the window END is a
-    //     fresh read, never a stale archive point that would inflate the gap.
-    //   - The series is used ONLY to find the market read nearest the operator's
-    //     earlier date (the "then" endpoint). Refuses dates outside it (the UI then
-    //     points to a longer history), and demands a >=14-day window.
-    //   - Strict UTC date parsing; future dates rejected (strict, no slack).
+    //   - BOTH market endpoints are read from the series at the dates the operator
+    //     gave — the gap is measured over their exact window, not against a moving
+    //     "today." (The UI augments the series with the fresh live level so a recent
+    //     invoice still matches a real read.)
+    //   - Refuses dates outside the series (>45 days from any read → the UI points
+    //     to a longer history), out-of-order dates, and any span under 14 days.
+    //   - Strict UTC date parsing (locale formats rejected, no clock drift).
     //   - Flags THIN evidence (a directional/low-confidence read, or fewer than 6
     //     market reads) so the caller can hedge instead of accusing a vendor on
     //     noise — mirroring percentileLine (>=8) and flagVerb's thin-data posture.
     //   - Rejects absurd price ratios (a fat-fingered cent value) rather than
     //     printing a runaway percentage as fact.
     //
-    // opts = { thenCents, nowCents, thenDateStr, marketNowCents, marketNowDate,
-    //          nowDateStr, confidence }. Pure → pinned by the test; thenVsNowSay()
-    // turns it into locale prose. `dates` must be 1:1 with `values`.
+    // opts = { aCents, bCents, aDateStr, bDateStr, confidence } — A is the earlier
+    // invoice, B the later. Pure → pinned by the test; thenVsNowSay() turns it into
+    // locale prose. `dates` must be 1:1 with `values` and sorted ascending.
     var SANE_PCT = 5;                 // |Δ| > 500% is a data-entry error, not a verdict
     var GAP_PTS = 3;                  // verdict band: <3pts divergence reads as "tracked the market".
                                       // Operational, not sourced — an illustrative threshold; the THIN
                                       // hedge below stops a noisy short window from tripping it.
     function thenVsNow(values, dates, opts) {
       opts = opts || {};
-      var thenCents = opts.thenCents, nowCents = opts.nowCents;
+      var aCents = opts.aCents, bCents = opts.bCents;
       if (!Array.isArray(values) || !Array.isArray(dates) || dates.length !== values.length) return { ok: false, reason: 'nodata' };
-      if (!(thenCents > 0) || !(nowCents > 0)) return { ok: false, reason: 'price' };
-      var ownerPct = (nowCents - thenCents) / thenCents;
+      if (!(aCents > 0) || !(bCents > 0)) return { ok: false, reason: 'price' };
+      var ownerPct = (bCents - aCents) / aCents;
       if (Math.abs(ownerPct) > SANE_PCT) return { ok: false, reason: 'price' };   // runaway → check figures
-      var thenMs = parseISODay(opts.thenDateStr);
-      if (thenMs == null) return { ok: false, reason: 'date' };
-      // Market "now" = the live level, dated by generatedAt — fresh by construction.
-      var mNowV = opts.marketNowCents, mNowMs = parseISODay(opts.marketNowDate);
-      if (!(mNowV > 0) || mNowMs == null) return { ok: false, reason: 'nodata' };
-      if (thenMs >= mNowMs) return { ok: false, reason: 'future' };               // "then" must precede "now"
-      // Market read nearest the operator's earlier date; count valid reads for the
-      // thin-evidence flag.
-      var best = -1, bestDiff = Infinity, reads = 0;
-      for (var j = 0; j < values.length; j++) {
-        if (!(typeof values[j] === 'number' && isFinite(values[j]))) continue;
-        var dj = parseISODay(dates[j]); if (dj == null) continue;
-        reads++;
-        var diff = Math.abs(dj - thenMs);
-        if (diff < bestDiff) { bestDiff = diff; best = j; }                       // ties keep the EARLIER read
+      var aMs = parseISODay(opts.aDateStr), bMs = parseISODay(opts.bDateStr);
+      if (aMs == null || bMs == null) return { ok: false, reason: 'date' };
+      if (aMs >= bMs) return { ok: false, reason: 'order' };                      // earlier date must come first
+      if ((bMs - aMs) < 14 * 86400000) return { ok: false, reason: 'tooclose' };  // need a real span between invoices
+      // Nearest valid market read to a target ms; also tallies reads + series span.
+      var reads = 0, earliest = null, latest = null;
+      for (var k = 0; k < values.length; k++) {
+        if (!(typeof values[k] === 'number' && isFinite(values[k]) && values[k] > 0)) continue;
+        var dk = parseISODay(dates[k]); if (dk == null) continue;
+        reads++; if (earliest == null) earliest = dates[k]; latest = dates[k];
       }
-      if (best < 0) return { ok: false, reason: 'nodata' };
-      var matchMs = parseISODay(dates[best]);
-      var matchGapDays = Math.round(Math.abs(matchMs - thenMs) / 86400000);
-      // Too far from any read we hold → comparing a different window. Refuse, and
-      // hand back the window we DO cover so the UI can point them at it.
-      if (matchGapDays > 45) return { ok: false, reason: 'outofrange', earliest: dates[0], latest: dates[dates.length - 1] };
-      var winDays = Math.round((mNowMs - matchMs) / 86400000);
-      if (winDays < 14) return { ok: false, reason: 'tooclose' };                 // no real window to measure
-      var mThenV = values[best];
-      if (!(mThenV > 0)) return { ok: false, reason: 'nodata' };
-      var marketRatio = mNowV / mThenV, marketPct = marketRatio - 1;
+      if (reads < 1) return { ok: false, reason: 'nodata' };
+      function nearest(t) {
+        var bi = -1, bd = Infinity;
+        for (var j = 0; j < values.length; j++) {
+          if (!(typeof values[j] === 'number' && isFinite(values[j]) && values[j] > 0)) continue;
+          var dj = parseISODay(dates[j]); if (dj == null) continue;
+          var diff = Math.abs(dj - t);
+          if (diff < bd) { bd = diff; bi = j; }                                   // ties keep the EARLIER read
+        }
+        return bi < 0 ? null : { idx: bi, val: values[bi], date: dates[bi], gapDays: Math.round(bd / 86400000) };
+      }
+      var A = nearest(aMs), B = nearest(bMs);
+      if (!A || !B) return { ok: false, reason: 'nodata' };
+      // Either endpoint too far from any read we hold → comparing a window the data
+      // doesn't cover. Refuse, and hand back the window we DO cover.
+      if (A.gapDays > 45 || B.gapDays > 45) return { ok: false, reason: 'outofrange', earliest: earliest, latest: latest };
+      if (A.idx === B.idx) return { ok: false, reason: 'tooclose' };              // both snap to one read → no market window
+      var winDays = Math.round(Math.abs(parseISODay(B.date) - parseISODay(A.date)) / 86400000);
+      if (winDays < 14) return { ok: false, reason: 'tooclose' };
+      var marketRatio = B.val / A.val, marketPct = marketRatio - 1;
       if (Math.abs(marketPct) > SANE_PCT) return { ok: false, reason: 'nodata' };  // archive glitch guard
-      // "$ beyond the market's move": owner's then-price grown by the market's RATIO
-      // (dimensionless) gives what they'd pay had they only tracked the market; the
+      // "$ beyond the market's move": price A grown by the market's RATIO
+      // (dimensionless) gives what B would be had it only tracked the market; the
       // shortfall is in the operator's own unit, so it is honest to state per unit.
-      var impliedNowCents = thenCents * marketRatio;
-      var excessCents = nowCents - impliedNowCents;
-      // Staleness of the live read vs the operator's "now" (today). Normally ~0 (the
-      // level refreshes daily); surfaced so a stale page self-caveats.
-      var nowMs = parseISODay(opts.nowDateStr);
-      var nowGapDays = (nowMs != null) ? Math.round(Math.abs(nowMs - mNowMs) / 86400000) : 0;
+      var impliedBCents = aCents * marketRatio;
+      var excessCents = bCents - impliedBCents;
       var conf = opts.confidence;
       var thin = (conf === 'directional' || conf === 'low' || reads < 6);
       return {
         ok: true,
         ownerPct: ownerPct, marketPct: marketPct, gapPts: (ownerPct - marketPct) * 100,
-        excessCents: excessCents, thenDate: opts.thenDateStr, marketThenDate: dates[best],
-        marketNowDate: opts.marketNowDate, matchGapDays: matchGapDays, winDays: winDays,
-        reads: reads, thin: thin, nowGapDays: nowGapDays
+        excessCents: excessCents,
+        aDate: opts.aDateStr, bDate: opts.bDateStr, marketADate: A.date, marketBDate: B.date,
+        aGapDays: A.gapDays, bGapDays: B.gapDays, winDays: winDays, reads: reads, thin: thin
       };
     }
 
@@ -282,23 +282,24 @@
                         'Elige una fecha dentro de ese rango — o guarda tu propio historial de precios en Muntin Ledger.') };
           case 'tooclose':
             return { ok: false, tone: 'info',
-              headline: L('Those dates are too close to compare — use an earlier delivery.',
-                          'Esas fechas están muy cerca para comparar — usa una entrega anterior.'), detail: '' };
-          case 'future':
+              headline: L('Those two invoices are too close to compare — use dates further apart.',
+                          'Esas dos facturas están muy cerca para comparar — usa fechas más separadas.'), detail: '' };
+          case 'order':
             return { ok: false, tone: 'info',
-              headline: L('That date is in the future — use the date on an earlier invoice.',
-                          'Esa fecha es futura — usa la fecha de una factura anterior.'), detail: '' };
+              headline: L('Put the earlier invoice first — the second date should be later.',
+                          'Pon primero la factura anterior — la segunda fecha debe ser posterior.'), detail: '' };
           default:
             return null;   // price/date/nodata → incomplete or implausible input, say nothing
         }
       }
       var o = pctWord(res.ownerPct), m = pctWord(res.marketPct);
-      // "up 12%" / "down 4%" / "flat" — drop the redundant "0%" on a flat market.
-      var youAmt = o.flat ? L('flat', 'sin cambio') : o.word + ' ' + o.str;
-      var mktAmt = m.flat ? L('flat', 'sin cambio') : m.word + ' ' + m.str;
-      var window = res.marketThenDate + ' ' + L('to', 'a') + ' ' + res.marketNowDate;
-      var youLine = L('Your price is ' + youAmt + ' since ' + res.thenDate + '; wholesale is ' + mktAmt + ' over the same stretch (' + window + ').',
-                      'Tu precio está ' + youAmt + ' desde el ' + res.thenDate + '; el mayoreo está ' + mktAmt + ' en el mismo tramo (' + window + ').');
+      // EN reads "is up 12%"; ES reads "subió 12%" (no copula) — drop the redundant
+      // "0%" on a flat move in each language's own grammar.
+      var youAmt = o.flat ? L('flat', 'no cambió') : o.word + ' ' + o.str;
+      var mktAmt = m.flat ? L('flat', 'no cambió') : m.word + ' ' + m.str;
+      var mktWindow = res.marketADate + ' ' + L('to', 'a') + ' ' + res.marketBDate;
+      var youLine = L('Your price is ' + youAmt + ' from ' + res.aDate + ' to ' + res.bDate + '; wholesale is ' + mktAmt + ' over the same window (' + mktWindow + ').',
+                      'Tu precio ' + youAmt + ' del ' + res.aDate + ' al ' + res.bDate + '; el mayoreo ' + mktAmt + ' en la misma ventana (' + mktWindow + ').');
       var tone, headline, detail;
       if (res.thin) {
         // Audit BLOCKER 2: a hard "your vendor padded" verdict from a thin/short
@@ -328,10 +329,10 @@
                                    'No te están inflando aquí; poco que renegociar solo por precio.');
       }
       var notes = [];
-      if (res.matchGapDays > 10) notes.push(L('Nearest market read to your date is ' + res.marketThenDate + ', about ' + res.matchGapDays + ' days off.',
-                                              'La lectura de mercado más cercana a tu fecha es ' + res.marketThenDate + ', a unos ' + res.matchGapDays + ' días.'));
-      if (res.nowGapDays > 14) notes.push(L('The latest market read is ' + res.marketNowDate + ', about ' + res.nowGapDays + ' days old — the market may have moved since.',
-                                            'La lectura de mercado más reciente es ' + res.marketNowDate + ', de hace unos ' + res.nowGapDays + ' días — el mercado pudo moverse desde entonces.'));
+      if (res.aGapDays > 10) notes.push(L('Nearest market read to ' + res.aDate + ' is ' + res.marketADate + ', about ' + res.aGapDays + ' days off.',
+                                          'La lectura de mercado más cercana al ' + res.aDate + ' es ' + res.marketADate + ', a unos ' + res.aGapDays + ' días.'));
+      if (res.bGapDays > 10) notes.push(L('Nearest market read to ' + res.bDate + ' is ' + res.marketBDate + ', about ' + res.bGapDays + ' days off.',
+                                          'La lectura de mercado más cercana al ' + res.bDate + ' es ' + res.marketBDate + ', a unos ' + res.bGapDays + ' días.'));
       var note = notes.join(' ');
       return { ok: true, tone: tone, headline: headline, detail: detail, note: note,
         srText: headline + ' ' + detail + (note ? ' ' + note : '') };

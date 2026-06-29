@@ -263,28 +263,6 @@
   // panel shares one clock (the comparison's staleness check compares it to the live
   // read's generatedAt). Date() is fine in the browser; the pure math stays in FMT.
   var TODAY_ISO = (function () { try { return new Date().toISOString().slice(0, 10); } catch (_) { return DATA.generatedAt || ''; } })();
-  var MONTH_NAMES = es
-    ? ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic']
-    : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  // Month options for the "roughly when" picker, drawn from the market series so an
-  // out-of-range pick is rarely even reachable. Newest first, the latest month
-  // dropped (a window needs daylight between then and now). Value is mid-month
-  // (deterministic), label human ("Mar 2026").
-  function monthOptionsFrom(series) {
-    if (!series || !series.dates) return [];
-    var seen = {}, months = [];
-    series.dates.forEach(function (d) {
-      var m = String(d).match(/^(\d{4})-(\d{2})/); if (!m) return;
-      var ym = m[1] + '-' + m[2];
-      if (!seen[ym]) { seen[ym] = 1; months.push(ym); }
-    });
-    months.sort();                                   // ascending
-    months.pop();                                    // drop the latest month (no window)
-    return months.reverse().map(function (ym) {       // newest first
-      var p = ym.split('-');
-      return { value: ym + '-15', label: MONTH_NAMES[+p[1] - 1] + ' ' + p[0] };
-    });
-  }
 
   // Two-slope sketch for the comparison: your line vs the market's, both from 0% at
   // left to their change at right, on a shared axis. The divergence at the right IS
@@ -998,47 +976,61 @@
       })(youOut, lvl, note);
 
       // ── then-vs-now ────────────────────────────────────────────────────────
-      // "Was that jump the market, or my vendor?" The operator adds an earlier
-      // delivered price + roughly when; we compare THEIR change to wholesale's
-      // change over the same window. Reuses the price typed above as "now". Built
-      // only when there's a market series with a usable window of months.
+      // The operator's particular case: TWO exact invoice dates + the price on each.
+      // We compare THEIR change to wholesale's change over that same date span. The
+      // market series is augmented with the fresh live level so a recent invoice
+      // still lands on a real read. Built only when there's market history.
       var youCmp = null;
       var series = marketSeriesFor(ing);
-      var monthOpts = monthOptionsFrom(series);
-      if (series && monthOpts.length) {
+      if (series && series.values.length >= 2) {
+        // Augment with the live level @ generatedAt (a fresh endpoint for a recent
+        // invoice), if it post-dates the series tail. Same valueCents scale.
+        var augV = series.values.slice(), augD = series.dates.slice();
+        var genDay = (DATA.generatedAt || '').slice(0, 10);
+        var genMs = Date.parse(genDay), lastMs = Date.parse(augD[augD.length - 1]);
+        if (lvl && typeof lvl.medianCents === 'number' && lvl.medianCents > 0 && isFinite(genMs) && (!isFinite(lastMs) || genMs > lastMs)) {
+          augV.push(lvl.medianCents); augD.push(genDay);
+        }
+        var minDay = augD[0], maxDay = (isFinite(genMs) && genDay > TODAY_ISO) ? genDay : TODAY_ISO;
+
         var cmp = el('div', 'cp-cmp');
         cmp.appendChild(el('p', 'cp-cmp-lead',
-          L('Was a price jump the market — or your vendor? Add an earlier delivery to compare.',
-            '¿Un alza fue del mercado — o de tu proveedor? Agrega una entrega anterior para comparar.')));
-        var pLab = el('label', 'cp-cmp-label');
-        pLab.setAttribute('for', 'cpThen-' + ing.key);
-        pLab.appendChild(document.createTextNode(L('What did you pay back then? ($ a ' + unit + ')', '¿Cuánto pagabas antes? ($ por ' + unit + ')')));
-        var thenInp = el('input', 'cp-cmp-price');
-        thenInp.type = 'text'; thenInp.id = 'cpThen-' + ing.key; thenInp.inputMode = 'decimal';
-        thenInp.setAttribute('autocomplete', 'off'); thenInp.placeholder = '$';
-        var mLab = el('label', 'cp-cmp-label');
-        mLab.setAttribute('for', 'cpWhen-' + ing.key);
-        mLab.appendChild(document.createTextNode(L('Roughly when?', '¿Más o menos cuándo?')));
-        var monthSel = el('select', 'cp-cmp-month');
-        monthSel.id = 'cpWhen-' + ing.key;
-        var blank = el('option', null, L('Select a month…', 'Elige un mes…')); blank.value = '';
-        monthSel.appendChild(blank);
-        monthOpts.forEach(function (o2) { var op = el('option', null, o2.label); op.value = o2.value; monthSel.appendChild(op); });
+          L('Compare two invoices: did a price jump track the market, or your vendor? Enter the price and date on each.',
+            'Compara dos facturas: ¿un alza siguió al mercado o a tu proveedor? Escribe el precio y la fecha de cada una.')));
+
+        // One labelled row = a date + a price. Returns the two inputs.
+        function cmpRow(key, rowLabel, dateAria, priceAria) {
+          var row = el('div', 'cp-cmp-row');
+          row.appendChild(el('span', 'cp-cmp-rowlab', rowLabel));
+          var d = el('input', 'cp-cmp-date');
+          d.type = 'date'; d.id = 'cp' + key + 'date-' + ing.key;
+          d.setAttribute('aria-label', dateAria); d.setAttribute('autocomplete', 'off');
+          if (minDay) d.min = minDay; if (maxDay) d.max = maxDay;
+          var p = el('input', 'cp-cmp-price');
+          p.type = 'text'; p.id = 'cp' + key + 'price-' + ing.key; p.inputMode = 'decimal';
+          p.setAttribute('autocomplete', 'off'); p.setAttribute('aria-label', priceAria);
+          p.placeholder = L('$ a ' + unit, '$ por ' + unit);
+          row.appendChild(d); row.appendChild(p);
+          cmp.appendChild(row);
+          return { date: d, price: p };
+        }
+        var rowA = cmpRow('A', L('Earlier invoice', 'Factura anterior'),
+          L('Earlier invoice date', 'Fecha de la factura anterior'), L('Earlier invoice price', 'Precio de la factura anterior'));
+        var rowB = cmpRow('B', L('Later invoice', 'Factura posterior'),
+          L('Later invoice date', 'Fecha de la factura posterior'), L('Later invoice price', 'Precio de la factura posterior'));
+
         var cmpOut = el('div', 'cp-cmp-out');                 // SEPARATE live region from the band pin
         cmpOut.setAttribute('role', 'status'); cmpOut.setAttribute('aria-live', 'polite');
         (function () {
           var cmpFired = false, cmpDeb = null;
           function render() {
             while (cmpOut.firstChild) cmpOut.removeChild(cmpOut.firstChild);
-            var nowCents = parseMoney(inp.value);
-            var thenCents = parseMoney(thenInp.value);
-            var thenDate = monthSel.value;
             cmpOut.removeAttribute('data-tone');
-            if (nowCents == null || thenCents == null || !thenDate) { cmpOut.hidden = true; return; }
-            var res = FMT.thenVsNow(series.values, series.dates, {
-              thenCents: thenCents, nowCents: nowCents, thenDateStr: thenDate,
-              marketNowCents: lvl.medianCents, marketNowDate: DATA.generatedAt,
-              nowDateStr: TODAY_ISO, confidence: r.confidence
+            var aCents = parseMoney(rowA.price.value), bCents = parseMoney(rowB.price.value);
+            var aDate = rowA.date.value, bDate = rowB.date.value;
+            if (aCents == null || bCents == null || !aDate || !bDate) { cmpOut.hidden = true; return; }
+            var res = FMT.thenVsNow(augV, augD, {
+              aCents: aCents, bCents: bCents, aDateStr: aDate, bDateStr: bDate, confidence: r.confidence
             });
             var say = FMT.thenVsNowSay(res, unit);
             if (!say) { cmpOut.hidden = true; return; }
@@ -1053,12 +1045,9 @@
             if (say.ok && !cmpFired) { cmpFired = true; track('Cost Index Then Vs Now', { ingredient: ing.key || '', verdict: say.tone || '' }); }
           }
           function schedule() { if (cmpDeb) clearTimeout(cmpDeb); cmpDeb = setTimeout(render, 350); }
-          thenInp.addEventListener('input', schedule);
-          monthSel.addEventListener('change', schedule);
-          inp.addEventListener('input', schedule);          // re-run when the "now" price changes
+          [rowA.price, rowB.price].forEach(function (n) { n.addEventListener('input', schedule); });
+          [rowA.date, rowB.date].forEach(function (n) { n.addEventListener('change', schedule); });
         })();
-        cmp.appendChild(pLab); cmp.appendChild(thenInp);
-        cmp.appendChild(mLab); cmp.appendChild(monthSel);
         cmp.appendChild(cmpOut);
         cmpOut.hidden = true;
         youCmp = cmp;
