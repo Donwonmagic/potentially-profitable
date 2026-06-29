@@ -283,15 +283,18 @@
     var pos = cents < p25 ? 'below' : cents > p75 ? 'above' : 'in';
     out.appendChild(bandSvg(p25, p75, median, cents));
     var band = money(p25) + '–' + money(p75);
+    // Honest framing: a delivered price legitimately sits ABOVE the wholesale band,
+    // so we DON'T call "above" overpaying or "below" a good deal. We show the markup
+    // over wholesale and what to actually watch — the gap growing while wholesale is flat.
     var verdict = el('p', 'cp-you-verdict',
       pos === 'above'
-        ? L('You pay ' + money(cents) + ' — above the typical ' + band + '. Worth a vendor conversation.',
-            'Pagas ' + money(cents) + ' — arriba del rango típico ' + band + '. Vale una conversación con tu proveedor.')
+        ? L('You pay ' + money(cents) + ' — about ' + money(cents - p75) + ' over the top of wholesale (' + band + '). A delivered price runs above wholesale, so some markup is normal; the lever is a gap that is large or growing while wholesale stays flat.',
+            'Pagas ' + money(cents) + ' — cerca de ' + money(cents - p75) + ' arriba del tope del mayoreo (' + band + '). Un precio entregado va arriba del mayoreo, así que algo de margen es normal; la palanca es una brecha grande o que crece mientras el mayoreo no se mueve.')
         : pos === 'below'
-          ? L('You pay ' + money(cents) + ' — below the typical ' + band + '. Good deal.',
-              'Pagas ' + money(cents) + ' — abajo del rango típico ' + band + '. Buen precio.')
-          : L('You pay ' + money(cents) + ' — right in the typical ' + band + '.',
-              'Pagas ' + money(cents) + ' — dentro del rango típico ' + band + '.'));
+          ? L('You pay ' + money(cents) + ' — below the wholesale range itself (' + band + '). That is unusual for a delivered price; double-check the unit, or it is a genuinely strong deal.',
+              'Pagas ' + money(cents) + ' — por debajo del propio rango mayorista (' + band + '). Es inusual para un precio entregado; verifica la unidad, o es un trato realmente bueno.')
+          : L('You pay ' + money(cents) + ' — inside the wholesale range itself (' + band + '). That is a tight markup; your delivered cost is close to wholesale.',
+              'Pagas ' + money(cents) + ' — dentro del propio rango mayorista (' + band + '). Es un margen ajustado; tu costo entregado está cerca del mayoreo.'));
     verdict.setAttribute('data-pos', pos);
     out.appendChild(verdict);
     return pos;
@@ -327,12 +330,15 @@
     }
     youSummaryEl.hidden = false;
     var n = aboves.length, top = aboves[0];
+    // Descriptive, not an alarm: a markup over wholesale is normal, so this just
+    // ranks where YOUR gap to wholesale is widest — a place to compare vendors,
+    // not a verdict that you're overpaying.
     var lead = L(
-      'Above the typical range on ' + n + (n === 1 ? ' ingredient' : ' ingredients') + '. ',
-      'Arriba del rango típico en ' + n + (n === 1 ? ' ingrediente' : ' ingredientes') + '. ');
+      'Your widest gaps over wholesale, across the ' + n + (n === 1 ? ' price' : ' prices') + ' you entered. ',
+      'Tus mayores brechas sobre el mayoreo, en ' + n + (n === 1 ? ' precio' : ' precios') + ' que escribiste. ');
     var biggest = L(
-      'Biggest gap: ' + top.name + ' (' + money(top.gap) + ' over per ' + top.unit + ').',
-      'Mayor diferencia: ' + top.name + ' (' + money(top.gap) + ' de más por ' + top.unit + ').');
+      'Widest: ' + top.name + ' (' + money(top.gap) + ' over wholesale per ' + top.unit + '). A gap is normal — worth comparing across vendors, and watching the ones that grow.',
+      'Mayor: ' + top.name + ' (' + money(top.gap) + ' sobre el mayoreo por ' + top.unit + '). Una brecha es normal — vale compararla entre proveedores y vigilar las que crecen.');
     var txt = lead + biggest;
     if (txt !== youSummaryLast) { youSummaryEl.textContent = txt; youSummaryLast = txt; }
   }
@@ -345,7 +351,7 @@
       'I currently pay ' + money(cents) + ' per ' + unit + '. ' +
       'Public market data shows a typical range of ' + band + ' per ' + unit + ' right now, ' +
       'so I wanted to ask if we can look at it together.\n\n' +
-      'I order this regularly and plan to keep doing so. Is there room to bring my price closer to that range, ' +
+      'I order this regularly and plan to keep doing so. Could we revisit my price together, ' +
       'or a different pack or standing order that would help?\n\n' +
       'Could you let me know before my next order?\n\n' +
       'Thanks again,\n[your name]\n[restaurant name]',
@@ -356,7 +362,7 @@
       'Actualmente pago ' + money(cents) + ' por ' + unit + '. ' +
       'Los datos públicos del mercado muestran un rango típico de ' + band + ' por ' + unit + ' en este momento, ' +
       'así que quería pedirle que lo revisemos juntos.\n\n' +
-      'Compro este producto con regularidad y pienso seguir haciéndolo. ¿Habría posibilidad de acercar mi precio a ese rango, ' +
+      'Compro este producto con regularidad y pienso seguir haciéndolo. ¿Podríamos revisar mi precio juntos, ' +
       'o algún tamaño de presentación o pedido fijo que ayude?\n\n' +
       '¿Me podría avisar antes de mi próximo pedido?\n\n' +
       'Gracias de nuevo,\n[su nombre]\n[su restaurante]');
@@ -658,47 +664,26 @@
 
     fig.appendChild(el('p', 'cp-market-range', rangeText));
 
-    // The liftable verdict — the single most quotable line the index emits, and
-    // the wedge no incumbent fills: a plain "are you overpaying?" test stated
-    // against the PUBLIC band, before the operator types anything. Promotes the
-    // per-card basis machinery (renderYou/updateYouSummary) from buried-input to
-    // a headline. Only minted when a real MEASURED dollar range exists (a true
-    // p25–p75, not a one-source point, not an index) — every number is read from
-    // lvl.rangeCents, so it stays inside the fact gate (no invented figures).
+    // Wholesale reference, framed HONESTLY. A delivered invoice price is NOT
+    // comparable to a bare wholesale band — freight, pack and the distributor's
+    // margin mean a normal delivered price sits ABOVE the band, so "above the band
+    // = overpaying" was a false test (and contradicted the delivered-vs-wholesale
+    // caveat right beside it). The defensible value is DIRECTION: wholesale tells
+    // you which way the market is moving, so you can tell a real market move from a
+    // vendor padding the markup. Only minted on a real MEASURED p25–p75 range; every
+    // number is read from lvl.rangeCents, so it stays inside the fact gate.
     if (lvl && !single && ing.tier === 'measured') {
       var loTxt = money(lvl.rangeCents[0]);
       var hiTxt = money(lvl.rangeCents[1]);
-      // Verdict firmness follows confidence: a thin (low/directional) read can't
-      // carry a hard "over market" call, so it softens to "above the public range"
-      // (Trust review #4 — the most quotable sentence must not overclaim on rough data).
-      var firmConf = (r.confidence === 'high' || r.confidence === 'medium');
       var basisEl = el('p', 'cp-market-basis');
       basisEl.appendChild(el('strong', null, L('Public wholesale: ', 'Mayoreo público: ')
         + loTxt + '–' + hiTxt + L(' a ', ' por ') + unit + '. '));
-      basisEl.appendChild(document.createTextNode(L('If your invoice is ', 'Si tu factura está ')));
-      var aboveTest = el('span', 'cp-basis-test',
-        L('above ' + hiTxt, 'arriba de ' + hiTxt));
-      basisEl.appendChild(aboveTest);
-      basisEl.appendChild(document.createTextNode(firmConf
-        ? L(", you're paying over market.", ', estás pagando por encima del mercado.')
-        : L(", it's above the public range — worth a look.", ', está por encima del rango público — vale revisar.')));
-      // Wholesale is NOT a delivered price: a delivered price legitimately runs a
-      // little above bare wholesale (freight, markup, pack), so a SMALL gap is
-      // normal — the signal is a large or widening one (Trust review #5, the one
-      // place the tool risked blurring the wholesale/delivered line it elsewhere guards).
-      basisEl.appendChild(el('span', 'cp-basis-note', L(
-        ' Delivered prices normally run a little above wholesale; a big gap is the flag.',
-        ' Los precios entregados suelen estar un poco arriba del mayoreo; la señal es una brecha grande.')));
+      basisEl.appendChild(document.createTextNode(L(
+        'Your delivered price runs above this — freight, pack and the distributor’s margin are baked in, so sitting over the band is not overpaying by itself. Wholesale’s real use is direction: if it climbs and your price climbs about the same, that’s the market; if your price climbs more, that’s the markup worth a call.',
+        'Tu precio entregado va por encima de esto — flete, empaque y el margen del distribuidor están incluidos, así que estar arriba del rango no es pagar de más por sí solo. El uso real del mayoreo es la dirección: si sube y tu precio sube casi igual, es el mercado; si tu precio sube más, ese es el margen que vale una llamada.')));
       fig.appendChild(basisEl);
-      var verdictAlt = firmConf
-        ? L('If your invoice is above ' + hiTxt + ', you are paying over market.',
-            'Si tu factura está arriba de ' + hiTxt + ', estás pagando por encima del mercado.')
-        : L('If your invoice is above ' + hiTxt + ', it is above the public range and worth a look.',
-            'Si tu factura está arriba de ' + hiTxt + ', está por encima del rango público y vale revisar.');
-      var basisAlt = L('Public wholesale runs ' + loTxt + ' to ' + hiTxt + ' a ' + unit + '. ',
-                       'El mayoreo público va de ' + loTxt + ' a ' + hiTxt + ' por ' + unit + '. ') + verdictAlt
-                   + L(' Delivered prices normally run a little above wholesale; a big gap is the flag.',
-                       ' Los precios entregados suelen estar un poco arriba del mayoreo; la señal es una brecha grande.');
+      var basisAlt = L('Public wholesale runs ' + loTxt + ' to ' + hiTxt + ' a ' + unit + '. A delivered price runs above wholesale, so being over the band is not overpaying by itself. Use wholesale for direction: if your price rises more than wholesale did, that is the markup to question.',
+                       'El mayoreo público va de ' + loTxt + ' a ' + hiTxt + ' por ' + unit + '. Un precio entregado va por encima del mayoreo, así que estar arriba del rango no es pagar de más. Usa el mayoreo para la dirección: si tu precio sube más que el mayoreo, ese es el margen a cuestionar.');
       fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + basisAlt);
     }
 
@@ -886,8 +871,8 @@
     fig.appendChild(prov);
 
     fig.appendChild(el('figcaption', null,
-      L('A public wholesale range and a plain read on whether to act. Details has the chart, trend, and a check against your own price.',
-        'Un rango mayorista público y una lectura clara de si conviene actuar. En Detalle están la gráfica, la tendencia y la comparación con tu propio precio.')));
+      L('Wholesale shows where the market’s heading; your delivered price sits above it. The move is the signal — not the gap.',
+        'El mayoreo muestra hacia dónde va el mercado; tu precio entregado queda por encima. La señal es el movimiento, no la diferencia.')));
 
     // "Where do you sit?" — operator types their price, sees it pinned on the
     // band. A free taste of vendor-vs-market; only when there's a real level.
