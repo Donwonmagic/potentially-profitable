@@ -168,8 +168,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .cp-more{margin-top:10px;border-top:1px dashed var(--line);padding-top:6px}
 .cp-more>.cp-more-summary{cursor:pointer;font-size:12.5px;font-weight:600;color:var(--teal);list-style:none;padding:2px 0}
 .cp-more>.cp-more-summary::-webkit-details-marker{display:none}
-.cp-more>.cp-more-summary::before{content:"\25B8";font-size:10px;margin-right:6px;display:inline-block}
-.cp-more[open]>.cp-more-summary::before{content:"\25BE"}
+.cp-more>.cp-more-summary::before{content:"\25B8";font-size:10px;margin-right:6px;display:inline-block;transition:transform .2s ease}
+.cp-more[open]>.cp-more-summary::before{transform:rotate(90deg)}
+/* Card entrance reveal + Details marker — one-time, compositor-only motion. */
+.cp-reveal{opacity:0;transform:translateY(8px)}
+.cp-reveal.cp-in{opacity:1;transform:none;transition:opacity .26s ease,transform .26s cubic-bezier(.2,.9,.25,1.2)}
+@media (prefers-reduced-motion:reduce){
+.cp-reveal,.cp-reveal.cp-in{opacity:1;transform:none;transition:none}
+.cp-more>.cp-more-summary::before{transition:none}
+}
 .cp-more>.cp-market-basis{margin-top:10px}
 .cp-market-basis{font-size:13px;line-height:1.5;color:var(--ink);margin:4px 0 6px;padding:8px 10px;border-left:3px solid var(--teal,#2A50C8);background:rgba(42,80,200,.06);border-radius:0 6px 6px 0;font-variant-numeric:tabular-nums}
 .cp-market-basis strong{color:var(--ink)}
@@ -836,7 +843,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/tools/_shared/dish-drift.js?v=20260504-w10-11"></script>
 <script src="/tools/_shared/whats-new.js?v=20260504-w14-8" defer></script>
 <script src="/tools/_shared/cost-index-format.js?v=20260629-fmt4"></script>
-<script src="/tools/_shared/cost-index-ui.js?v=20260630-design1"></script>
+<script src="/tools/_shared/cost-index-ui.js?v=20260630-design2"></script>
 <script>
 (function () {
   'use strict';

@@ -264,6 +264,27 @@
   // read's generatedAt). Date() is fine in the browser; the pure math stays in FMT.
   var TODAY_ISO = (function () { try { return new Date().toISOString().slice(0, 10); } catch (_) { return DATA.generatedAt || ''; } })();
 
+  // Motion gate: honor prefers-reduced-motion globally. When motion is reduced (or
+  // matchMedia/IntersectionObserver are absent), reveals are no-ops and content is
+  // simply present — never hidden behind an animation that won't run.
+  var ALLOW_MOTION = !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  // Staggered entrance: a card fades + rises as it scrolls into view, once. Only
+  // opacity/transform animate (compositor-only, no layout shift); the box is already
+  // reserved, so there's no CLS. Decorative — adds nothing a screen reader needs.
+  function revealOnAppend(fig, i) {
+    if (!ALLOW_MOTION || typeof IntersectionObserver === 'undefined') return;
+    fig.classList.add('cp-reveal');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.style.transitionDelay = (Math.min(i, 7) * 45) + 'ms';
+        e.target.classList.add('cp-in');
+        io.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    io.observe(fig);
+  }
+
   // Two-slope sketch for the comparison: your line vs the market's, both from 0% at
   // left to their change at right, on a shared axis. The divergence at the right IS
   // the gap. aria-hidden — the verdict prose already carries the facts for SR users.
@@ -286,12 +307,20 @@
       dot.setAttribute('cx', x1); dot.setAttribute('cy', y(p)); dot.setAttribute('r', 2.2); dot.setAttribute('fill', color);
       svg.appendChild(dot);
     }
+    var youColor = tone === 'over' ? 'var(--rust)' : tone === 'under' ? 'var(--teal)' : 'var(--ink)';
+    // Divergence wedge: the area between your line and the market's IS the story.
+    // A faint tone-keyed fill makes the gap legible at a glance — the more the lines
+    // spread, the bigger the shaded wedge. Honest: it's just the area the two real
+    // slopes enclose, no invented precision.
+    var wedge = document.createElementNS(NS, 'polygon');
+    wedge.setAttribute('points', x0 + ',' + y(0) + ' ' + x1 + ',' + y(marketPct) + ' ' + x1 + ',' + y(ownerPct));
+    wedge.setAttribute('fill', youColor); wedge.setAttribute('opacity', '0.13');
+    svg.appendChild(wedge);
     var base = document.createElementNS(NS, 'line');
     base.setAttribute('x1', x0); base.setAttribute('y1', y(0)); base.setAttribute('x2', x1); base.setAttribute('y2', y(0));
     base.setAttribute('stroke', 'var(--line)'); base.setAttribute('stroke-width', 1);
     svg.appendChild(base);
     line(marketPct, 'var(--stone)', 1.6, '3 2');          // market = neutral, dashed
-    var youColor = tone === 'over' ? 'var(--rust)' : tone === 'under' ? 'var(--teal)' : 'var(--ink)';
     line(ownerPct, youColor, 2.4, null);                  // yours = solid, tone-colored
     return svg;
   }
@@ -681,7 +710,7 @@
   }
 
   var movers = [];
-  (DATA.ingredients || []).forEach(function (ing) {
+  (DATA.ingredients || []).forEach(function (ing, ingIdx) {
     // Live seed carries the baked, fact-gated assessment (already an assess()
     // shape); preview seed carries raw input we run the engine on in-browser.
     var r = ing.assessment || MuntinCompositePrice.assess(ing.input || {});
@@ -1165,6 +1194,7 @@
     })(fig);
 
     listEl.appendChild(fig);
+    revealOnAppend(fig, ingIdx);
   });
 
   // Coverage honesty — the `absent` gaps, explained. Making "no public data, and
