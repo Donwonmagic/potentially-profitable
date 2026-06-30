@@ -727,6 +727,10 @@
     if (ing.key) fig.id = 'ci-' + ing.key;          // deep anchor: /…/#ci-romaine
     if (ing.key) fig.setAttribute('data-key', ing.key); // for the basket
     fig.setAttribute('data-name', name.toLowerCase()); // for the filter
+    // Confidence as a card-wide material: a neutral left rule whose presence tracks
+    // how sure the read is (high=firm, directional=faint). Honesty made visible —
+    // never painted in teal/rust, which stay reserved for direction signal.
+    fig.setAttribute('data-conf', r.confidence || 'directional');
     var confPhrase = confPhraseMap[r.confidence] || (conf + ' ' + L('confidence', 'confianza'));
     fig.setAttribute('data-audio-alt',
       name + '. ' + rangeText + '. ' + L('The market is ', 'El mercado va ') + trendText + '. ' +
@@ -758,7 +762,21 @@
     head.appendChild(headRight);
     fig.appendChild(head);
 
-    fig.appendChild(el('p', 'cp-market-range', rangeText));
+    // Hero figure: the dollar level in Fraunces (the brand's display face), with the
+    // connective words muted — a "printed financial figure," not a sentence. The
+    // plain rangeText still feeds the SR caption below, so nothing is lost to a11y.
+    var rangeEl = el('p', 'cp-market-range');
+    if (!lvl) {
+      rangeEl.textContent = rangeText;
+    } else {
+      var heroStr = single ? money(lvl.rangeCents[0]) : money(lvl.rangeCents[0]) + '–' + money(lvl.rangeCents[1]);
+      rangeEl.appendChild(el('span', 'cp-range-pre', L('About ', 'Cerca de ')));
+      rangeEl.appendChild(el('span', 'cp-range-hero', heroStr));
+      rangeEl.appendChild(el('span', 'cp-range-suf',
+        L(' a ' + unit + (single ? ' · one source, range not measurable yet' : ''),
+          ' por ' + unit + (single ? ' · una fuente, rango aún no medible' : ''))));
+    }
+    fig.appendChild(rangeEl);
 
     // Wholesale reference, framed HONESTLY. A delivered invoice price is NOT
     // comparable to a bare wholesale band — freight, pack and the distributor's
