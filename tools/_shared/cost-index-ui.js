@@ -398,29 +398,67 @@
     if (txt !== youSummaryLast) { youSummaryEl.textContent = txt; youSummaryLast = txt; }
   }
 
-  function vendorDraft(name, unit, cents, band) {
+  // The operator's own outgoing letter to their vendor — first-person "I" = the
+  // operator (never the Muntin Desk), usted register in ES. Two modes, both built
+  // from merge fields only (no invented numbers): 'compare' cites the then-vs-now
+  // PERCENTAGE move (the operator's own invoices vs public wholesale movement, the
+  // honest framing — never a dollar "you owe me"); 'range' is the single-price
+  // fallback, citing a "typical range from public market data." Reuses pctWord's
+  // wording so the letter's percentages are byte-identical to the on-screen verdict.
+  function apct(p) { var a = Math.abs(p * 100); return a.toFixed(a < 10 ? 1 : 0).replace(/\.0$/, '') + '%'; }
+  function vendorDraft(name, unit, opts) {
+    opts = opts || {};
+    if (opts.mode === 'compare') {
+      var ownerEN = (opts.ownerPct >= 0 ? 'up ' : 'down ') + apct(opts.ownerPct);
+      var marketEN = (opts.marketPct >= 0 ? 'up about ' : 'down about ') + apct(opts.marketPct);
+      var ownerES = (opts.ownerPct >= 0 ? 'subió ' : 'bajó ') + apct(opts.ownerPct);
+      var marketES = (opts.marketPct >= 0 ? 'subió alrededor de ' : 'bajó alrededor de ') + apct(opts.marketPct);
+      return L(
+        'Hi [vendor rep],\n\n' +
+        'Thanks for handling my orders — I plan to keep buying here. This is a pricing question, not a complaint.\n\n' +
+        'I have been tracking ' + name + ' (' + unit + ') across my own invoices. Between ' + opts.aDate + ' and ' + opts.bDate + ', my delivered price moved ' + ownerEN + '. Over the same window, public market data shows wholesale on this line moved ' + marketEN + '. So my cost has outrun the broader market, and I wanted to bring it to you directly.\n\n' +
+        'There may be a straightforward reason — a freight change, a pack or case-size change, a fuel surcharge — and if so, I would like to understand it. If part of it is open to a look, I would rather solve it with you than shop it around.\n\n' +
+        'A few ways that could work, whichever is easiest on your end:\n' +
+        '- a second look at my per-' + unit + ' price;\n' +
+        '- a different pack or case size that lands cheaper per ' + unit + ';\n' +
+        '- a standing-order price, since I reorder this every week;\n' +
+        '- or a quarterly rebate if a list-price change is not possible.\n\n' +
+        'Could you let me know before my next order? Happy to do a quick call if that is easier.\n\n' +
+        'Thanks,\n[your name]\n[restaurant name]',
+
+        'Hola [proveedor]:\n\n' +
+        'Gracias por atender mis pedidos — pienso seguir comprando aquí. Esto es una pregunta sobre precios, no una queja.\n\n' +
+        'He estado siguiendo ' + name + ' (' + unit + ') en mis propias facturas. Entre ' + opts.aDate + ' y ' + opts.bDate + ', mi precio entregado ' + ownerES + '. En esa misma ventana, los datos públicos del mercado muestran que el mayoreo de esta línea ' + marketES + '. Así que mi costo se adelantó al mercado, y quería comentárselo directamente.\n\n' +
+        'Puede haber una razón sencilla — un cambio de flete, de presentación o de tamaño de caja, un recargo de combustible — y si es así, me gustaría entenderla. Si parte de esto se puede revisar, prefiero resolverlo con usted que buscar en otro lado.\n\n' +
+        'Algunas formas que podrían servir, la que le sea más fácil:\n' +
+        '- una segunda mirada a mi precio por ' + unit + ';\n' +
+        '- otra presentación o tamaño de caja que salga más barato por ' + unit + ';\n' +
+        '- un precio de pedido fijo, ya que lo vuelvo a pedir cada semana;\n' +
+        '- o un reembolso trimestral si no se puede cambiar el precio de lista.\n\n' +
+        '¿Me podría avisar antes de mi próximo pedido? Con gusto hacemos una llamada rápida si es más fácil.\n\n' +
+        'Gracias,\n[su nombre]\n[su restaurante]');
+    }
+    // 'range' — single-price fallback (no two-invoice comparison in scope).
     return L(
       'Hi [vendor rep],\n\n' +
-      'Thank you for taking care of my orders — I value working with you and want to keep my business here.\n\n' +
-      'I am reviewing my food costs and had a question about ' + name + ' (' + unit + '). ' +
-      'I currently pay ' + money(cents) + ' per ' + unit + '. ' +
-      'Public market data shows a typical range of ' + band + ' per ' + unit + ' right now, ' +
-      'so I wanted to ask if we can look at it together.\n\n' +
-      'I order this regularly and plan to keep doing so. Could we revisit my price together, ' +
-      'or a different pack or standing order that would help?\n\n' +
+      'Thanks for handling my orders — I plan to keep buying here.\n\n' +
+      'I am reviewing my food costs and want to ask about ' + name + ' (' + unit + '). ' +
+      'I currently pay ' + money(opts.cents) + ' per ' + unit + '. ' +
+      'Public market data shows a typical range of ' + opts.band + ' per ' + unit + ' right now, ' +
+      'so I would like to compare notes on this line.\n\n' +
+      'I order this regularly. Can we look at the price, a different pack size, or a standing order?\n\n' +
       'Could you let me know before my next order?\n\n' +
-      'Thanks again,\n[your name]\n[restaurant name]',
+      'Thanks,\n[your name]\n[restaurant name]',
 
       'Hola [proveedor]:\n\n' +
-      'Gracias por atender mis pedidos. Valoro trabajar con usted y quiero seguir comprando aquí.\n\n' +
-      'Estoy revisando mis costos y tengo una pregunta sobre ' + name + ' (' + unit + '). ' +
-      'Actualmente pago ' + money(cents) + ' por ' + unit + '. ' +
-      'Los datos públicos del mercado muestran un rango típico de ' + band + ' por ' + unit + ' en este momento, ' +
-      'así que quería pedirle que lo revisemos juntos.\n\n' +
-      'Compro este producto con regularidad y pienso seguir haciéndolo. ¿Podríamos revisar mi precio juntos, ' +
-      'o algún tamaño de presentación o pedido fijo que ayude?\n\n' +
+      'Gracias por atender mis pedidos — pienso seguir comprando aquí.\n\n' +
+      'Estoy revisando mis costos y quiero preguntar sobre ' + name + ' (' + unit + '). ' +
+      'Actualmente pago ' + money(opts.cents) + ' por ' + unit + '. ' +
+      'Los datos públicos del mercado muestran un rango típico de ' + opts.band + ' por ' + unit + ' en este momento, ' +
+      'así que me gustaría revisarlo con usted.\n\n' +
+      'Compro este producto con regularidad. ¿Podemos ver el precio, otro tamaño de presentación o un pedido fijo?\n\n' +
       '¿Me podría avisar antes de mi próximo pedido?\n\n' +
-      'Gracias de nuevo,\n[su nombre]\n[su restaurante]');
+      'Gracias,\n[su nombre]\n[su restaurante]');
   }
   function buildVendorNote(ing, unit) {
     var key = ing.key || ('x' + Math.random().toString(36).slice(2));
@@ -435,11 +473,14 @@
     var region = el('div', 'cp-note-region');
     region.id = regionId;
     region.hidden = true;
-    if (preview) {
-      region.appendChild(el('p', 'cp-note-caution',
-        L('Sample range — confirm the live number before you send this.',
-          'Rango de muestra — confirma el número real antes de enviar esto.')));
-    }
+    // Always-on caution: the figures are public market data, not a quote for THIS
+    // vendor — confirm before sending. Sharper wording in preview (sample numbers).
+    region.appendChild(el('p', 'cp-note-caution',
+      preview
+        ? L('Sample range — confirm the live number before you send this.',
+            'Rango de muestra — confirma el número real antes de enviar esto.')
+        : L('These figures come from public market data, not a quote for your vendor — confirm them before you send.',
+            'Estas cifras vienen de datos públicos del mercado, no de una cotización de tu proveedor — confírmalas antes de enviar.')));
     var taId = 'cpNoteText-' + key;
     var lab = el('label', 'cp-note-label', L('Edit before you send', 'Edítalo antes de enviar'));
     lab.setAttribute('for', taId);
@@ -498,8 +539,8 @@
       if (open) { track('Cost Index Vendor Note', { action: 'opened', ingredient: ing.key || '' }); if (ta.focus) ta.focus(); }
     });
 
-    function fill(cents, band) {
-      if (!dirty) ta.value = vendorDraft(nm, unit, cents, band);
+    function fill(opts) {
+      if (!dirty) ta.value = vendorDraft(nm, unit, opts);
       mail.href = mailtoHref(ta.value);
     }
     function collapse() {
@@ -944,6 +985,16 @@
       youOut.setAttribute('role', 'status'); youOut.setAttribute('aria-live', 'polite');
       var note = buildVendorNote(ing, unit);
       note.root.hidden = true;
+      // One vendor note per card, fed by whichever interaction has the richer claim:
+      // a non-thin then-vs-now "over" result (percentage letter) takes priority over
+      // the single-price band pin (range letter). syncNote arbitrates so the two
+      // handlers never fight over the note's visibility or contents.
+      var noteState = { band: null, cmp: null };
+      function syncNote() {
+        if (noteState.cmp) { note.fill(noteState.cmp); note.root.hidden = false; }
+        else if (noteState.band) { note.fill({ mode: 'range', cents: noteState.band.cents, band: noteState.band.band }); note.root.hidden = false; }
+        else { note.root.hidden = true; note.collapse(); }
+      }
       (function (o, level, h) {
         var priceFired = false, debounce = null;
         function update() {
@@ -958,14 +1009,10 @@
             gap: (pos === 'above' && cents != null) ? (cents - level.rangeCents[1]) : 0
           };
           updateYouSummary();
-          if (pos === 'above') {
-            var band = money(level.rangeCents[0]) + '–' + money(level.rangeCents[1]);
-            h.fill(cents, band);
-            h.root.hidden = false;
-          } else {
-            h.root.hidden = true;
-            h.collapse();
-          }
+          noteState.band = (pos === 'above')
+            ? { cents: cents, band: money(level.rangeCents[0]) + '–' + money(level.rangeCents[1]) }
+            : null;
+          syncNote();
         }
         // Debounce: the verdict lives in an aria-live region, so updating on every
         // keystroke machine-guns a screen reader mid-typing. Settle ~350ms first.
@@ -1028,12 +1075,12 @@
             cmpOut.removeAttribute('data-tone');
             var aCents = parseMoney(rowA.price.value), bCents = parseMoney(rowB.price.value);
             var aDate = rowA.date.value, bDate = rowB.date.value;
-            if (aCents == null || bCents == null || !aDate || !bDate) { cmpOut.hidden = true; return; }
+            if (aCents == null || bCents == null || !aDate || !bDate) { noteState.cmp = null; syncNote(); cmpOut.hidden = true; return; }
             var res = FMT.thenVsNow(augV, augD, {
               aCents: aCents, bCents: bCents, aDateStr: aDate, bDateStr: bDate, confidence: r.confidence
             });
             var say = FMT.thenVsNowSay(res, unit);
-            if (!say) { cmpOut.hidden = true; return; }
+            if (!say) { noteState.cmp = null; syncNote(); cmpOut.hidden = true; return; }
             cmpOut.hidden = false;
             cmpOut.setAttribute('data-tone', say.tone || (say.ok ? 'match' : 'info'));
             if (say.ok && res && res.ok && typeof res.ownerPct === 'number') {
@@ -1042,6 +1089,13 @@
             cmpOut.appendChild(el('p', 'cp-cmp-headline', say.headline));
             if (say.detail) cmpOut.appendChild(el('p', 'cp-cmp-detail', say.detail));
             if (say.note) cmpOut.appendChild(el('p', 'cp-cmp-note', say.note));
+            // Feed the vendor note the PERCENTAGE letter only on a confident "over"
+            // result — the one case worth a renegotiation. Other tones clear it so
+            // the band-pin's range letter (or nothing) takes over.
+            noteState.cmp = (say.ok && say.tone === 'over' && res.ok && !res.thin)
+              ? { mode: 'compare', ownerPct: res.ownerPct, marketPct: res.marketPct, aDate: res.aDate, bDate: res.bDate }
+              : null;
+            syncNote();
             if (say.ok && !cmpFired) { cmpFired = true; track('Cost Index Then Vs Now', { ingredient: ing.key || '', verdict: say.tone || '' }); }
           }
           function schedule() { if (cmpDeb) clearTimeout(cmpDeb); cmpDeb = setTimeout(render, 350); }
