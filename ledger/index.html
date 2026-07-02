@@ -145,8 +145,11 @@
 .lg-price-cur{font-size:.5em;vertical-align:.55em;font-weight:500;margin-right:2px}
 .lg-price-per{font-family:var(--font-body);font-size:15px;font-weight:500;letter-spacing:0;color:rgba(246,247,248,.62);margin-left:8px}
 .lg-price-terms{font-size:15px;line-height:1.5;color:rgba(246,247,248,.78);margin:12px 0 0;max-width:36ch}
-.lg-price-ga{display:inline-flex;gap:6px;margin:20px 0 0;padding:6px 14px;border:1px solid rgba(246,247,248,.2);border-radius:999px;font-size:13px;color:rgba(246,247,248,.72)}
+.lg-price-ga{display:block;margin:18px 0 0;font-size:13px;line-height:1.6;color:rgba(246,247,248,.72)}
 .lg-price-date{font-family:var(--font-display);font-variant-numeric:tabular-nums lining-nums;font-weight:560;color:#F6F7F8}
+.lg-founding .founding-form-label{color:rgba(246,247,248,.72)}
+.lg-founding .founding-form-confirm{color:#7AA7FF}
+.lg-founding .founding-form button{background:#F6F7F8;color:#16181D}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .lg-pricing{background:#1B1E24;border:1px solid #2C3038}}
 :root[data-theme="dark"] .lg-pricing{background:#1B1E24;border:1px solid #2C3038}
 
@@ -497,8 +500,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             I run front-of-house at a DMV restaurant. The sales side is wired tight &mdash; every cover, every check. The cost side arrives as a stack of vendor invoices nobody reads until the month is already closed. Muntin Ledger reads them the day they land, files them where you can find them, and tells you when a price moved.
           </p>
           <div class="lg-hero-ctas">
-            <a class="btn btn-primary" href="https://ledger.muntin.digital/">See Muntin Ledger</a>
-            <a class="btn btn-ghost" href="#pricing">See pricing</a>
+            <a class="btn btn-primary" href="#pricing">Join the founding list</a>
+            <a class="btn btn-ghost" href="https://ledger.muntin.digital/">See Muntin Ledger</a>
           </div>
           <ul class="studio-toc" aria-label="On this page">
             <li><a href="#what">What it does</a></li>
@@ -591,7 +594,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <div class="lg-pricing">
         <div>
           <h2 id="pricing-h">Pricing and the founding list.</h2>
-          <p class="lead">Muntin Ledger is free while in private beta; general availability is November 13, 2026. Pricing is posted in writing at <a href="https://ledger.muntin.digital/">ledger.muntin.digital</a>, with the per-invoice cost math published next to it. Operators who join the founding list before launch get the founding rate: <strong>three months free, then $19 a month for as long as they stay</strong>. The list and the numbers live on the product site.</p>
+          <p class="lead">Muntin Ledger is free while in private beta; general availability is November 13, 2026. Pricing is posted in writing at <a href="https://ledger.muntin.digital/">ledger.muntin.digital</a>, with the per-invoice cost math published next to it. Operators who join the founding list before launch get the founding rate: <strong>three months free, then $19 a month for as long as they stay</strong>. You can join the list right here; the numbers are posted on the product site too.</p>
           <div class="studio-cta-row">
             <a class="btn lg-btn-light" href="https://ledger.muntin.digital/">See Muntin Ledger</a>
           </div>
@@ -599,9 +602,33 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <div class="lg-price-lockup">
           <p class="lg-price-figure"><span class="lg-price-cur">$</span>19<span class="lg-price-per">a month</span></p>
           <p class="lg-price-terms">The founding rate: three months free, then $19 a month &mdash; for as long as you stay.</p>
-          <p class="lg-price-ga">General availability &mdash; <span class="lg-price-date">November 13, 2026</span></p>
+          <p class="lg-price-ga">General availability &mdash; <span class="lg-price-date">November 13, 2026</span> &middot; <!-- count:ledger.ga_weeks_out -->19<!-- /count --> weeks out</p>
         </div>
-      </div>
+          <div class="lg-founding" style="grid-column:1/-1;border-top:1px solid rgba(246,247,248,.14);padding-top:26px;margin-top:6px">
+            <!-- founding-capture:start (ledger) -->
+            <form action="/api/waitlist" method="post" class="js-signup-form founding-form" data-locale="en" data-event="Waitlist Signup" data-surface="ledger-pricing" style="margin:0;max-width:640px">
+              <div class="founding-form-fields">
+                <div class="founding-field">
+                  <label class="founding-form-label" for="founding-email">Your email</label>
+                  <input id="founding-email" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="you@yourrestaurant.com" />
+                </div>
+                <div class="founding-field">
+                  <label class="founding-form-label" for="founding-name">Your name <span class="founding-optional">(optional)</span></label>
+                  <input id="founding-name" name="name" type="text" autocomplete="name" autocapitalize="words" placeholder="First name" />
+                </div>
+              </div>
+              <input type="hidden" name="source" value="ledger-pricing" />
+              <input type="hidden" name="founding_member" value="true" />
+              <input type="hidden" name="locale" value="en" />
+              <input type="hidden" name="ts" value="" />
+              <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+              <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="waitlist" data-size="flexible"></div>
+              <p class="founding-form-confirm" aria-live="polite">Thanks &mdash; check your inbox to confirm your spot.</p>
+              <button type="submit">Join the founding list</button>
+            </form>
+            <!-- founding-capture:end -->
+          </div>
+        </div>
     </section>
 
     <section class="studio-section" id="about" aria-labelledby="about-h">

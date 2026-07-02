@@ -142,8 +142,11 @@
 .lg-price-cur{font-size:.5em;vertical-align:.55em;font-weight:500;margin-right:2px}
 .lg-price-per{font-family:var(--font-body);font-size:15px;font-weight:500;letter-spacing:0;color:rgba(246,247,248,.62);margin-left:8px}
 .lg-price-terms{font-size:15px;line-height:1.5;color:rgba(246,247,248,.78);margin:12px 0 0;max-width:36ch}
-.lg-price-ga{display:inline-flex;gap:6px;margin:20px 0 0;padding:6px 14px;border:1px solid rgba(246,247,248,.2);border-radius:999px;font-size:13px;color:rgba(246,247,248,.72)}
+.lg-price-ga{display:block;margin:18px 0 0;font-size:13px;line-height:1.6;color:rgba(246,247,248,.72)}
 .lg-price-date{font-family:var(--font-display);font-variant-numeric:tabular-nums lining-nums;font-weight:560;color:#F6F7F8}
+.lg-founding .founding-form-label{color:rgba(246,247,248,.72)}
+.lg-founding .founding-form-confirm{color:#7AA7FF}
+.lg-founding .founding-form button{background:#F6F7F8;color:#16181D}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .lg-pricing{background:#1B1E24;border:1px solid #2C3038}}
 :root[data-theme="dark"] .lg-pricing{background:#1B1E24;border:1px solid #2C3038}
 
@@ -439,8 +442,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             Soy gerente de salón en un restaurante del área de DC. El lado de las ventas está bien cableado &mdash; cada cubierto, cada cuenta. El lado de los costos llega como una pila de facturas de proveedores que nadie lee hasta que el mes ya cerró. Muntin Ledger las lee el día que llegan, las archiva donde puedes encontrarlas, y te avisa cuando un precio se movió.
           </p>
           <div class="lg-hero-ctas">
-            <a class="btn btn-primary" href="https://ledger.muntin.digital/">Ver Muntin Ledger</a>
-            <a class="btn btn-ghost" href="#pricing">Ver precios</a>
+            <a class="btn btn-primary" href="#pricing">Unirme a la lista fundadora</a>
+            <a class="btn btn-ghost" href="https://ledger.muntin.digital/">Ver Muntin Ledger</a>
           </div>
           <ul class="studio-toc" aria-label="En esta página">
             <li><a href="#what">Qué hace</a></li>
@@ -541,9 +544,33 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <div class="lg-price-lockup">
           <p class="lg-price-figure"><span class="lg-price-cur">$</span>19<span class="lg-price-per">al mes</span></p>
           <p class="lg-price-terms">La tarifa fundadora: tres meses gratis, luego $19 al mes &mdash; mientras te quedes.</p>
-          <p class="lg-price-ga">Disponibilidad general &mdash; <span class="lg-price-date">13 de noviembre de 2026</span></p>
+          <p class="lg-price-ga">Disponibilidad general &mdash; <span class="lg-price-date">13 de noviembre de 2026</span> &middot; a <!-- count:ledger.ga_weeks_out -->19<!-- /count --> semanas</p>
         </div>
-      </div>
+          <div class="lg-founding" style="grid-column:1/-1;border-top:1px solid rgba(246,247,248,.14);padding-top:26px;margin-top:6px">
+            <!-- founding-capture:start (ledger) -->
+            <form action="/api/waitlist" method="post" class="js-signup-form founding-form" data-locale="es" data-event="Waitlist Signup" data-surface="ledger-pricing" style="margin:0;max-width:640px">
+              <div class="founding-form-fields">
+                <div class="founding-field">
+                  <label class="founding-form-label" for="founding-email">Tu correo</label>
+                  <input id="founding-email" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="tu@turestaurante.com" />
+                </div>
+                <div class="founding-field">
+                  <label class="founding-form-label" for="founding-name">Tu nombre <span class="founding-optional">(opcional)</span></label>
+                  <input id="founding-name" name="name" type="text" autocomplete="name" autocapitalize="words" placeholder="Nombre" />
+                </div>
+              </div>
+              <input type="hidden" name="source" value="ledger-pricing" />
+              <input type="hidden" name="founding_member" value="true" />
+              <input type="hidden" name="locale" value="es" />
+              <input type="hidden" name="ts" value="" />
+              <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+              <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="waitlist" data-size="flexible"></div>
+              <p class="founding-form-confirm" aria-live="polite">Gracias &mdash; revisa tu correo para confirmar tu lugar.</p>
+              <button type="submit">Unirme a la lista fundadora</button>
+            </form>
+            <!-- founding-capture:end -->
+          </div>
+        </div>
     </section>
 
     <section class="studio-section" id="about" aria-labelledby="about-h">
