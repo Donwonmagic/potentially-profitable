@@ -52,7 +52,7 @@ for (const [item, rec] of Object.entries(items)) {
   }
 }
 
-// Seed purity — the Cost Pulse seed's pressure summary must carry no price.
+// Seed purity — the Cost Index seed's pressure summary must carry no price.
 try {
   const code = readFileSync(path.join(repoRoot, 'data/cost-index.js'), 'utf8');
   const self = {};

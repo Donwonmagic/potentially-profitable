@@ -229,11 +229,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/cost-index/">Cost Index</a>
       <a href="/tools/">Tools</a>
       <a href="/studio/">Company</a>
-      <!-- Ledger — sister product (the privacy-forward invoice ledger)
-           on its own subdomain. Plain external link so it passes link
-           equity to ledger.muntin.digital; Plausible's automatic
-           outbound-link tracking measures the nav click. -->
-      <a href="https://ledger.muntin.digital/">Ledger</a>
+      <!-- Ledger — the paid product. Nav points at the on-site /ledger/
+           explainer (what it is, why a platform can't copy it, the founding
+           offer) rather than dumping cold nav traffic straight onto the
+           subdomain; /ledger/ owns the outbound "See Muntin Ledger" CTA. -->
+      <a href="/ledger/">Ledger</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
            /api/auth/me and reveals exactly one. No-JS visitors see
@@ -291,7 +291,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <a href="/cost-index/">Cost Index</a>
     <a href="/tools/">Tools</a>
     <a href="/studio/">Company</a>
-    <a href="https://ledger.muntin.digital/">Ledger</a>
+    <a href="/ledger/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
     <button type="button" class="mobile-search js-open-search">
@@ -430,7 +430,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li style="margin-bottom:12px"><strong>Generate restaurant photos as real client work.</strong> The dishes in case studies are dishes a real photographer shot in a real kitchen. Hero shots are commissioned, not synthesized. Where AI imagery appears (illustrated diagrams, op-ed flat graphics), it&rsquo;s labeled as illustration in the alt text.</li>
         <li style="margin-bottom:12px"><strong>Write reviews, fake testimonials, or backdated &ldquo;case studies.&rdquo;</strong> Every review you read on this site has a person&rsquo;s name and a verified context. Aggregate ratings only appear once five real ones exist.</li>
         <li style="margin-bottom:12px"><strong>Make the call on a customer&rsquo;s behalf.</strong> A model never sends a quote, signs off on a deliverable, or replies to your message as if it were me. The Window goes to my inbox; the answer is from me.</li>
-        <li><strong>Bypass the methods page.</strong> Any claim a draft surfaces gets a citation or it doesn&rsquo;t ship. Halucinated statistics are how a library loses operators &mdash; it&rsquo;s the failure mode I most try to avoid.</li>
+        <li><strong>Bypass the methods page.</strong> Any claim a draft surfaces gets a citation or it doesn&rsquo;t ship. Hallucinated statistics are how a library loses operators &mdash; it&rsquo;s the failure mode I most try to avoid.</li>
       </ul>
     </section>
 

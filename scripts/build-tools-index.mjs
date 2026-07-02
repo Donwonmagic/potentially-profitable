@@ -129,9 +129,13 @@ function renderChipNav(locale) {
     const label = pickI18n(c, 'label', locale);
     return `      <a href="#${c.id}">${escText(label)}</a>`;
   }).join('\n');
+  // Only link the roadmap when there is one. The roadmap was emptied
+  // 2026-06-17 (CLAUDE.md); a chip to an empty section reads as broken.
+  const roadmapChip = data.roadmap.length
+    ? `\n      <a href="#roadmap" class="tool-chipnav__roadmap">${escText(roadmapLabel)}</a>`
+    : '';
   return `<nav class="tool-chipnav" aria-label="${escAttr(aria)}">
-${chips}
-      <a href="#roadmap" class="tool-chipnav__roadmap">${escText(roadmapLabel)}</a>
+${chips}${roadmapChip}
     </nav>`;
 }
 
@@ -144,17 +148,29 @@ ${chips}
 function renderTierFilter(locale) {
   const aria = locale === 'en' ? 'Filter tools by depth' : 'Filtrar herramientas por profundidad';
   const allLabel  = locale === 'en' ? 'All tools' : 'Todas';
-  const quickLbl  = locale === 'en' ? 'Quick'    : 'Rápido';
-  const stdLbl    = locale === 'en' ? 'Standard' : 'Estándar';
-  const deepLbl   = locale === 'en' ? 'Deep'     : 'Profundo';
-  const help      = locale === 'en'
-    ? 'Quick: under 5 minutes. Standard: 5–15 minutes. Deep: 20+ minutes, deeper inputs.'
-    : 'Rápido: menos de 5 minutos. Estándar: 5–15 minutos. Profundo: 20+ minutos, con más insumos.';
+  const labels = {
+    quick:    locale === 'en' ? 'Quick'    : 'Rápido',
+    standard: locale === 'en' ? 'Standard' : 'Estándar',
+    deep:     locale === 'en' ? 'Deep'     : 'Profundo',
+  };
+  const helpParts = {
+    quick:    locale === 'en' ? 'Quick: under 5 minutes.'           : 'Rápido: menos de 5 minutos.',
+    standard: locale === 'en' ? 'Standard: 5–15 minutes.'           : 'Estándar: 5–15 minutos.',
+    deep:     locale === 'en' ? 'Deep: 20+ minutes, deeper inputs.' : 'Profundo: 20+ minutos, con más insumos.',
+  };
+  // Only offer a tier button for tiers an actual tool carries — a filter
+  // that matches zero cards reads as broken (the catalog has no Quick-tier
+  // tool today). With fewer than two tiers present the filter is pointless.
+  const present = new Set();
+  for (const c of data.clusters) for (const slug of (c.tools || [])) { const t = data.tools[slug]; if (t) present.add(t.tier || 'standard'); }
+  const tiers = ['quick', 'standard', 'deep'].filter((x) => present.has(x));
+  if (tiers.length < 2) return '';
+  const btns = tiers.map((x) =>
+    `      <button type="button" class="tool-tier-filter__btn" data-tier-filter-btn="${x}" aria-pressed="false">${escText(labels[x])}</button>`).join('\n');
+  const help = tiers.map((x) => helpParts[x]).join(' ');
   return `<div class="tool-tier-filter" data-tier-filter role="group" aria-label="${escAttr(aria)}">
       <button type="button" class="tool-tier-filter__btn is-active" data-tier-filter-btn="all" aria-pressed="true">${escText(allLabel)}</button>
-      <button type="button" class="tool-tier-filter__btn" data-tier-filter-btn="quick" aria-pressed="false">${escText(quickLbl)}</button>
-      <button type="button" class="tool-tier-filter__btn" data-tier-filter-btn="standard" aria-pressed="false">${escText(stdLbl)}</button>
-      <button type="button" class="tool-tier-filter__btn" data-tier-filter-btn="deep" aria-pressed="false">${escText(deepLbl)}</button>
+${btns}
       <small class="tool-tier-filter__help">${escText(help)}</small>
     </div>`;
 }
@@ -207,6 +223,9 @@ ${cards}
 }
 
 function renderRoadmap(locale) {
+  // Roadmap emptied 2026-06-17 (CLAUDE.md). Emit nothing rather than an
+  // empty "Coming soon" shell over blank space.
+  if (!data.roadmap.length) return '';
   const eyebrow = locale === 'en' ? 'On the roadmap' : 'En el roadmap';
   const heading = locale === 'en' ? 'Coming soon — and why each one is on the list.' : 'Próximamente — y por qué cada una está en la lista.';
   const sub = locale === 'en'
@@ -268,8 +287,8 @@ function renderSheetsBand(locale) {
   return `<aside class="tool-sheets-band" aria-labelledby="tool-sheets-band-h" style="margin:32px 0 0;padding:22px 24px;border:1px solid var(--line,#E5DFD2);border-left:4px solid var(--teal,#2A50C8);border-radius:var(--r-md,12px);background:var(--white,#FFFFFF);display:flex;flex-wrap:wrap;align-items:center;gap:18px;">
       <div style="flex:1;min-width:240px;">
         <span class="eyebrow" style="display:block;margin-bottom:4px;">${escText(eyebrow)}</span>
-        <h2 id="tool-sheets-band-h" style="font-family:var(--font-display,'Fraunces',Georgia,serif);font-size:22px;font-weight:500;margin:0 0 6px;color:var(--ink,#14161A);">${escText(headline)}</h2>
-        <p style="font-size:14.5px;line-height:1.5;color:var(--ink-soft,#2A2D33);margin:0;max-width:640px;">${escText(sub)}</p>
+        <h2 id="tool-sheets-band-h" style="font-family:var(--font-display,'Fraunces',Georgia,serif);font-size:22px;font-weight:500;margin:0 0 6px;color:var(--ink,#16181D);">${escText(headline)}</h2>
+        <p style="font-size:14.5px;line-height:1.5;color:var(--ink-soft,#4A4F59);margin:0;max-width:640px;">${escText(sub)}</p>
       </div>
       <a class="btn btn-primary" href="${escAttr(url)}" style="white-space:nowrap;">${escText(cta)} ${ARROW}</a>
     </aside>`;
@@ -277,8 +296,8 @@ function renderSheetsBand(locale) {
 
 function renderBody(locale) {
   const closingNote = locale === 'en'
-    ? 'Free tools, no signup, no email required. More coming.'
-    : 'Herramientas gratis, sin registro, sin correo. Más en camino.';
+    ? (data.roadmap.length ? 'Free tools, no signup, no email required. More coming.' : 'Free tools, no signup, no email required.')
+    : (data.roadmap.length ? 'Herramientas gratis, sin registro, sin correo. Más en camino.' : 'Herramientas gratis, sin registro, sin correo.');
   const clusters = data.clusters.map((c) => '  ' + renderCluster(c, locale)).join('\n\n  ');
   return `${SENTINEL_OPEN}
 <section class="block">

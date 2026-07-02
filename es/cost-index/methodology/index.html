@@ -166,7 +166,7 @@ main{padding-top:64px}
       <a href="/es/cost-index/">Índice de costos</a>
       <a href="/es/tools/">Herramientas</a>
       <a href="/es/studio/">Empresa</a>
-      <a href="https://ledger.muntin.digital/">Ledger</a>
+      <a href="/es/ledger/">Ledger</a>
       <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
       <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
     </nav>
@@ -196,7 +196,7 @@ main{padding-top:64px}
     <a href="/es/cost-index/">Índice de costos</a>
     <a href="/es/tools/">Herramientas</a>
     <a href="/es/studio/">Empresa</a>
-    <a href="https://ledger.muntin.digital/">Ledger</a>
+    <a href="/es/ledger/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
     <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
     <button type="button" class="mobile-search js-open-search">
@@ -295,7 +295,7 @@ main{padding-top:64px}
     </div>
 
     <div class="ci-cta-row">
-      <a class="btn btn-primary" href="/es/tools/cost-pulse/">Abrir Cost Pulse</a>
+      <a class="btn btn-primary" href="/es/tools/cost-pulse/">Abrir la herramienta en vivo</a>
       <a class="btn btn-ghost" href="/es/glossary/cost-index/">¿Qué es un índice de costos?</a>
     </div>
 
@@ -366,7 +366,7 @@ main{padding-top:64px}
       <li><strong>La confianza de tendencia</strong> califica la dirección. Alta requiere al menos dos tipos de tendencia independientes que concuerden en dirección la mayor parte del tiempo; un camino dentado y ruidoso se topa en baja sin importar cómo se alineen los extremos — una serie ruidosa es ruido disfrazado de tendencia.</li>
       <li><strong>El techo de calibración.</strong> La confianza publicada nunca puede exceder lo que sostienen los datos, y la matriz de salud demuestra en cada compilación que nada está sobrestimado.</li>
     </ul>
-    <p id="track-record"><strong>Un historial publicado.</strong> Las etiquetas no se autocalifican. Recorrido hacia adelante sobre el historial profundo de precios, la banda — un intervalo conformal split/EnbPI cuyo objetivo <em>nominal</em> es del <!-- cal:band.nominal -->80%<!-- /cal --> — ha contenido el precio de la semana siguiente el <!-- cal:band.coverage -->84%<!-- /cal --> de las veces (su cobertura <em>realizada</em>), en <!-- cal:band.steps -->5929<!-- /cal --> semanas evaluadas y <!-- cal:band.items -->84<!-- /cal --> ingredientes con suficiente historial para evaluar; <!-- cal:band.widened -->41<!-- /cal --> de esas bandas se ensancharon (inferencia conformal adaptativa) hasta sostenerse. La flecha de tendencia se calibra igual y gana su etiqueta por nivel: sus señales más débiles aciertan el <!-- cal:trend.low -->48%<!-- /cal -->, las intermedias el <!-- cal:trend.medium -->51%<!-- /cal -->, las más fuertes el <!-- cal:trend.high -->58%<!-- /cal --> — cada paso por encima del anterior, y por encima de la línea base sin habilidad del <!-- cal:trend.baseline -->50%<!-- /cal -->. Que una flecha más fuerte acierte más a menudo es la propiedad que gana la etiqueta. Cada cifra se recalcula desde el historial de precios y se vuelve a verificar en cada compilación, así la afirmación publicada nunca puede desviarse de lo que sostienen los datos — <a href="/cost-index/calibration.json">abre el registro de calibración completo</a>.</p>
+    <p id="track-record"><strong>Un historial publicado.</strong> Las etiquetas no se autocalifican. Recorrido hacia adelante sobre el historial profundo de precios, la banda — un intervalo conformal split/EnbPI cuyo objetivo <em>nominal</em> es del <!-- cal:band.nominal -->80%<!-- /cal --> — ha contenido el precio de la semana siguiente el <!-- cal:band.coverage -->84%<!-- /cal --> de las veces (su cobertura <em>realizada</em>), en <!-- cal:band.steps -->5929<!-- /cal --> semanas evaluadas y <!-- cal:band.items -->84<!-- /cal --> ingredientes con suficiente historial para evaluar; <!-- cal:band.widened -->41<!-- /cal --> de esas bandas se ensancharon (inferencia conformal adaptativa) hasta sostenerse. La flecha de tendencia se calibra igual y gana su etiqueta por nivel: sus señales más débiles aciertan el <!-- cal:trend.low -->48%<!-- /cal -->, las intermedias el <!-- cal:trend.medium -->51%<!-- /cal -->, las más fuertes el <!-- cal:trend.high -->58%<!-- /cal --> — cada paso por encima del anterior, y por encima de la línea base sin habilidad del <!-- cal:trend.baseline -->50%<!-- /cal -->. Que una flecha más fuerte acierte más a menudo es la propiedad que gana la etiqueta. Esos niveles ordenan la flecha por su propia <em>fuerza de señal</em>; leída en cambio por la <em>etiqueta</em> de confianza que cada ingrediente lleva, el historial de tendencia es más delgado y aún se está afirmando — una flecha de baja confianza acierta hoy el <!-- cal:label.low -->49%<!-- /cal -->, <em>por debajo</em> de su propia línea base del <!-- cal:label.low.baseline -->52%<!-- /cal --> (todavía sin ventaja en este corte), mientras que una de confianza media llega al <!-- cal:label.medium -->60%<!-- /cal --> frente a una línea base del <!-- cal:label.medium.baseline -->53%<!-- /cal -->; la etiqueta de tendencia más fuerte por ahora cubre <!-- cal:label.high.items -->0<!-- /cal --> ingredientes. Publicamos ese registro etiqueta por etiqueta completo (<a href="/cost-index/confidence-calibration.json">la calibración por etiqueta de confianza</a>), no solo el corte favorable, y la cobertura realizada de la banda se sostiene en cada etiqueta con suficiente historial para calificar. Cada cifra se recalcula desde el historial de precios y se vuelve a verificar en cada compilación, así la afirmación publicada nunca puede desviarse de lo que sostienen los datos — <a href="/cost-index/calibration.json">abre el registro de calibración completo</a>.</p>
     <!-- cal:chart.reliability --><figure class="ci-rel" role="img" aria-label="Confiabilidad de la flecha por fuerza de señal: débiles 48%, intermedias 51%, fuertes 58%, todas por encima de la línea base del 50%."><div class="ci-rel__row"><span class="ci-rel__lab">Señales débiles</span><span class="ci-rel__track"><span class="ci-rel__bar" style="width:48%"></span></span><span class="ci-rel__val">48%</span></div><div class="ci-rel__row"><span class="ci-rel__lab">Señales intermedias</span><span class="ci-rel__track"><span class="ci-rel__bar" style="width:51%"></span></span><span class="ci-rel__val">51%</span></div><div class="ci-rel__row"><span class="ci-rel__lab">Señales fuertes</span><span class="ci-rel__track"><span class="ci-rel__bar" style="width:58%"></span></span><span class="ci-rel__val">58%</span></div><figcaption>Cada nivel más fuerte acierta más a menudo — y todos superan la línea base sin habilidad del 50%.</figcaption></figure><!-- /cal -->
 
     <h2 id="shippable-bar">El listón de publicación — publicar completo, o no publicar</h2>
@@ -475,11 +475,11 @@ main{padding-top:64px}
     </section>
 
     <div class="ci-cta-row">
-      <a class="btn btn-primary" href="/es/tools/cost-pulse/">Abrir Cost Pulse</a>
+      <a class="btn btn-primary" href="/es/tools/cost-pulse/">Abrir la herramienta en vivo</a>
       <a class="btn btn-ghost" href="/es/cost-index/">Explorar el índice</a>
     </div>
 
-    <p class="ci-source"><strong>Fuente:</strong> datos públicos de mercado de EE. UU. — USDA AMS y el Reporte Obligatorio de Ganado, el reporte de ventas de productos lácteos, BLS, FRED, EIA y NOAA Fisheries — surtidos en vivo a través de <a href="/es/tools/cost-pulse/">Cost Pulse</a>. Método revisado por última vez el 2026-06-14.</p>
+    <p class="ci-source"><strong>Fuente:</strong> datos públicos de mercado de EE. UU. — USDA AMS y el Reporte Obligatorio de Ganado, el reporte de ventas de productos lácteos, BLS, FRED, EIA y NOAA Fisheries — surtidos en vivo a través de <a href="/es/tools/cost-pulse/">la herramienta en vivo</a>. Método revisado por última vez el 2026-06-14.</p>
   </div>
 </main>
 <footer class="site-footer" id="footer"></footer>

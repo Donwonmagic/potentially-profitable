@@ -239,11 +239,11 @@ main{padding-top:64px}
       <a href="/cost-index/">Cost Index</a>
       <a href="/tools/">Tools</a>
       <a href="/studio/">Company</a>
-      <!-- Ledger — sister product (the privacy-forward invoice ledger)
-           on its own subdomain. Plain external link so it passes link
-           equity to ledger.muntin.digital; Plausible's automatic
-           outbound-link tracking measures the nav click. -->
-      <a href="https://ledger.muntin.digital/">Ledger</a>
+      <!-- Ledger — the paid product. Nav points at the on-site /ledger/
+           explainer (what it is, why a platform can't copy it, the founding
+           offer) rather than dumping cold nav traffic straight onto the
+           subdomain; /ledger/ owns the outbound "See Muntin Ledger" CTA. -->
+      <a href="/ledger/">Ledger</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
            /api/auth/me and reveals exactly one. No-JS visitors see
@@ -301,7 +301,7 @@ main{padding-top:64px}
     <a href="/cost-index/">Cost Index</a>
     <a href="/tools/">Tools</a>
     <a href="/studio/">Company</a>
-    <a href="https://ledger.muntin.digital/">Ledger</a>
+    <a href="/ledger/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
     <button type="button" class="mobile-search js-open-search">
@@ -418,7 +418,7 @@ main{padding-top:64px}
     <h2>Why there's no number yet</h2>
     <p>The rule is simple: a price ships only when we can source it from public USDA, BLS or FRED data at a quality we'd act on ourselves. For octopus, the free wholesale series we need isn't wired up yet — and a thin, single-source guess would be worse than nothing.</p>
     <h2>What you can do now</h2>
-    <p>Check your last octopus invoice against your own recent ones, or open <a href="/tools/cost-pulse/">Cost Pulse</a> for the ingredients we do cover. This page fills in when the data does.</p>
+    <p>Check your last octopus invoice against your own recent ones, or open <a href="/tools/cost-pulse/">the live tool</a> for the ingredients we do cover. This page fills in when the data does.</p>
     <div class="ci-cta-row">
       <a class="btn btn-ghost" href="/cost-index/">Browse all readings</a>
       <a class="btn btn-ghost" href="/glossary/cost-index/">What is a cost index?</a>

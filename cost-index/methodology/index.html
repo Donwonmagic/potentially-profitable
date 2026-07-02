@@ -165,11 +165,11 @@ main{padding-top:64px}
       <a href="/cost-index/">Cost Index</a>
       <a href="/tools/">Tools</a>
       <a href="/studio/">Company</a>
-      <!-- Ledger — sister product (the privacy-forward invoice ledger)
-           on its own subdomain. Plain external link so it passes link
-           equity to ledger.muntin.digital; Plausible's automatic
-           outbound-link tracking measures the nav click. -->
-      <a href="https://ledger.muntin.digital/">Ledger</a>
+      <!-- Ledger — the paid product. Nav points at the on-site /ledger/
+           explainer (what it is, why a platform can't copy it, the founding
+           offer) rather than dumping cold nav traffic straight onto the
+           subdomain; /ledger/ owns the outbound "See Muntin Ledger" CTA. -->
+      <a href="/ledger/">Ledger</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
            /api/auth/me and reveals exactly one. No-JS visitors see
@@ -227,7 +227,7 @@ main{padding-top:64px}
     <a href="/cost-index/">Cost Index</a>
     <a href="/tools/">Tools</a>
     <a href="/studio/">Company</a>
-    <a href="https://ledger.muntin.digital/">Ledger</a>
+    <a href="/ledger/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
     <button type="button" class="mobile-search js-open-search">
@@ -351,7 +351,7 @@ main{padding-top:64px}
     </div>
 
     <div class="ci-cta-row">
-      <a class="btn btn-primary" href="/tools/cost-pulse/">Open Cost Pulse</a>
+      <a class="btn btn-primary" href="/tools/cost-pulse/">Open the live tool</a>
       <a class="btn btn-ghost" href="/glossary/cost-index/">What is a cost index?</a>
     </div>
 
@@ -422,7 +422,7 @@ main{padding-top:64px}
       <li><strong>Trend confidence</strong> rates the direction. High requires at least two independent trend types agreeing on direction most of the time; a jagged, noisy path is capped at low no matter how the endpoints line up — a noisy series is noise dressed as a trend.</li>
       <li><strong>The calibration ceiling.</strong> The published confidence may never exceed what the data supports, and the health matrix proves on every build that nothing is overstated.</li>
     </ul>
-    <p id="track-record"><strong>A published track record.</strong> The labels are not self-graded. Walked forward across the deep price history, the band — a split/EnbPI conformal interval whose <em>nominal</em> target is <!-- cal:band.nominal -->80%<!-- /cal --> — has contained the next week's print <!-- cal:band.coverage -->84%<!-- /cal --> of the time (its <em>realized</em> coverage), across <!-- cal:band.steps -->5,929<!-- /cal --> scored weeks and <!-- cal:band.items -->84<!-- /cal --> ingredients with enough history to backtest; <!-- cal:band.widened -->41<!-- /cal --> of those bands were widened (adaptive conformal inference) until they held. The trend arrow is calibrated the same way, and earns its label by tier: its weakest calls land at <!-- cal:trend.low -->48%<!-- /cal -->, its middling calls at <!-- cal:trend.medium -->51%<!-- /cal -->, its strongest at <!-- cal:trend.high -->58%<!-- /cal --> — each step above the last, and above the <!-- cal:trend.baseline -->50%<!-- /cal --> no-skill baseline. A stronger arrow being right more often is the property that earns the label. Every figure here is recomputed from the price history and re-checked on each build, so the published claim can never drift from what the data supports — <a href="/cost-index/calibration.json">open the full calibration record</a>.</p>
+    <p id="track-record"><strong>A published track record.</strong> The labels are not self-graded. Walked forward across the deep price history, the band — a split/EnbPI conformal interval whose <em>nominal</em> target is <!-- cal:band.nominal -->80%<!-- /cal --> — has contained the next week's print <!-- cal:band.coverage -->84%<!-- /cal --> of the time (its <em>realized</em> coverage), across <!-- cal:band.steps -->5,929<!-- /cal --> scored weeks and <!-- cal:band.items -->84<!-- /cal --> ingredients with enough history to backtest; <!-- cal:band.widened -->41<!-- /cal --> of those bands were widened (adaptive conformal inference) until they held. The trend arrow is calibrated the same way, and earns its label by tier: its weakest calls land at <!-- cal:trend.low -->48%<!-- /cal -->, its middling calls at <!-- cal:trend.medium -->51%<!-- /cal -->, its strongest at <!-- cal:trend.high -->58%<!-- /cal --> — each step above the last, and above the <!-- cal:trend.baseline -->50%<!-- /cal --> no-skill baseline. A stronger arrow being right more often is the property that earns the label. Those tiers rank the arrow by its own <em>signal strength</em>; read instead by the confidence <em>label</em> each ingredient ships, the trend record is thinner and still firming up — a low-confidence arrow currently lands at <!-- cal:label.low -->49%<!-- /cal -->, <em>under</em> its own <!-- cal:label.low.baseline -->52%<!-- /cal --> baseline (no edge yet on this cut), while a medium-confidence one reaches <!-- cal:label.medium -->60%<!-- /cal --> against a <!-- cal:label.medium.baseline -->53%<!-- /cal --> baseline; the strongest trend label so far covers <!-- cal:label.high.items -->0<!-- /cal --> ingredients. We publish that label-by-label record in full (<a href="/cost-index/confidence-calibration.json">the confidence-label calibration</a>), not only the flattering cut, and the band's realized coverage holds on every label with enough history to score. Every figure here is recomputed from the price history and re-checked on each build, so the published claim can never drift from what the data supports — <a href="/cost-index/calibration.json">open the full calibration record</a>.</p>
     <!-- cal:chart.reliability --><figure class="ci-rel" role="img" aria-label="Trend-arrow reliability by signal strength: weak 48%, middling 51%, strong 58%, all above the 50% baseline."><div class="ci-rel__row"><span class="ci-rel__lab">Weak calls</span><span class="ci-rel__track"><span class="ci-rel__bar" style="width:48%"></span></span><span class="ci-rel__val">48%</span></div><div class="ci-rel__row"><span class="ci-rel__lab">Middling calls</span><span class="ci-rel__track"><span class="ci-rel__bar" style="width:51%"></span></span><span class="ci-rel__val">51%</span></div><div class="ci-rel__row"><span class="ci-rel__lab">Strong calls</span><span class="ci-rel__track"><span class="ci-rel__bar" style="width:58%"></span></span><span class="ci-rel__val">58%</span></div><figcaption>Each stronger tier verifies more often — and all clear the 50% no-skill baseline.</figcaption></figure><!-- /cal -->
 
     <h2 id="shippable-bar">The shippable bar — ship complete, or not at all</h2>
@@ -531,11 +531,11 @@ main{padding-top:64px}
     </section>
 
     <div class="ci-cta-row">
-      <a class="btn btn-primary" href="/tools/cost-pulse/">Open Cost Pulse</a>
+      <a class="btn btn-primary" href="/tools/cost-pulse/">Open the live tool</a>
       <a class="btn btn-ghost" href="/cost-index/">Browse the index</a>
     </div>
 
-    <p class="ci-source"><strong>Sourced:</strong> public U.S. market data — USDA AMS and Livestock Mandatory Reporting, the National Dairy Product Sales Report, BLS, FRED, EIA, and NOAA Fisheries — surfaced live through <a href="/tools/cost-pulse/">Cost Pulse</a>. Method last reviewed 2026-06-14.</p>
+    <p class="ci-source"><strong>Sourced:</strong> public U.S. market data — USDA AMS and Livestock Mandatory Reporting, the National Dairy Product Sales Report, BLS, FRED, EIA, and NOAA Fisheries — surfaced live through <a href="/tools/cost-pulse/">the live tool</a>. Method last reviewed 2026-06-14.</p>
   </div>
 </main>
 <footer class="site-footer" id="footer"></footer>

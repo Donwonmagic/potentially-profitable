@@ -60,12 +60,12 @@ function buildBlock(callout, locale) {
   if (!lead || !sheetTitle || !sheetUrl) return null;
 
   return `<!-- article-sheet-callout:start -->
-    <aside class="article-sheet-callout" aria-label="${escAttr(c.eyebrow)}" style="margin:24px 0;padding:16px 18px;border:1px solid var(--line,#E5DFD2);border-left:3px solid var(--teal,#1F4E5B);border-radius:6px;background:var(--cream-2,#F3EEE3);">
-      <p style="margin:0 0 6px;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal,#1F4E5B);">${escText(c.eyebrow)}</p>
-      <p style="margin:0 0 8px;font-size:14.5px;line-height:1.55;color:var(--ink,#14161A);">${escText(lead)}</p>
+    <aside class="article-sheet-callout" aria-label="${escAttr(c.eyebrow)}" style="margin:24px 0;padding:16px 18px;border:1px solid var(--line,#E3E5E9);border-left:3px solid var(--teal,#2A50C8);border-radius:6px;background:var(--cream-2,#EDEEF1);">
+      <p style="margin:0 0 6px;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal,#2A50C8);">${escText(c.eyebrow)}</p>
+      <p style="margin:0 0 8px;font-size:14.5px;line-height:1.55;color:var(--ink,#16181D);">${escText(lead)}</p>
       <p style="margin:0;font-size:13.5px;line-height:1.4;">
-        <a href="${escAttr(sheetUrl)}" style="color:var(--teal,#1F4E5B);font-weight:600;text-decoration:none;border-bottom:1px solid currentColor;">${escText(sheetTitle)}</a>
-        <span style="color:var(--stone,#6B6B6B);"> &nbsp;·&nbsp; ${escText(sheetWalkaway)}</span>
+        <a href="${escAttr(sheetUrl)}" style="color:var(--teal,#2A50C8);font-weight:600;text-decoration:none;border-bottom:1px solid currentColor;">${escText(sheetTitle)}</a>
+        <span style="color:var(--stone,#6B7280);"> &nbsp;·&nbsp; ${escText(sheetWalkaway)}</span>
       </p>
     </aside>
     <!-- article-sheet-callout:end -->`;

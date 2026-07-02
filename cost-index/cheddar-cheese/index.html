@@ -239,11 +239,11 @@ main{padding-top:64px}
       <a href="/cost-index/">Cost Index</a>
       <a href="/tools/">Tools</a>
       <a href="/studio/">Company</a>
-      <!-- Ledger — sister product (the privacy-forward invoice ledger)
-           on its own subdomain. Plain external link so it passes link
-           equity to ledger.muntin.digital; Plausible's automatic
-           outbound-link tracking measures the nav click. -->
-      <a href="https://ledger.muntin.digital/">Ledger</a>
+      <!-- Ledger — the paid product. Nav points at the on-site /ledger/
+           explainer (what it is, why a platform can't copy it, the founding
+           offer) rather than dumping cold nav traffic straight onto the
+           subdomain; /ledger/ owns the outbound "See Muntin Ledger" CTA. -->
+      <a href="/ledger/">Ledger</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
            /api/auth/me and reveals exactly one. No-JS visitors see
@@ -301,7 +301,7 @@ main{padding-top:64px}
     <a href="/cost-index/">Cost Index</a>
     <a href="/tools/">Tools</a>
     <a href="/studio/">Company</a>
-    <a href="https://ledger.muntin.digital/">Ledger</a>
+    <a href="/ledger/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
     <button type="button" class="mobile-search js-open-search">
@@ -423,7 +423,7 @@ main{padding-top:64px}
     <p class="ci-read__verified"><strong>Verified:</strong> our 80% price range has been right 82% of the time (148 weeks of history) · current for its source’s cadence.</p>
     <p class="ci-read__method"><a href="/cost-index/methodology/#track-record">How we verify this number <span aria-hidden="true">→</span></a></p>
     <p class="ci-read__data">Download this series: <a href="/cost-index/cheddar-cheese/series.csv" download>CSV</a> · <a href="/cost-index/cheddar-cheese/series.json">JSON</a></p>
-    <p class="ci-read__live"><a href="/tools/cost-pulse/#ci-cheddar-cheese">See cheddar cheese live in Cost Pulse <span aria-hidden="true">→</span></a></p>
+    <p class="ci-read__live"><a href="/tools/cost-pulse/#ci-cheddar-cheese">See cheddar cheese live in the Cost Index <span aria-hidden="true">→</span></a></p>
   </aside>
     
     
@@ -448,10 +448,10 @@ main{padding-top:64px}
 </section>
     <p class="ci-sibs"><span class="ci-sibs-label">More dairy &amp; eggs</span><a href="/cost-index/butter/">Butter (AA, bulk)</a> · <a href="/cost-index/eggs/">Eggs</a></p>
     <div class="ci-cta-row">
-      <a class="btn btn-primary" href="/tools/cost-pulse/#ci-cheddar-cheese">Open Cost Pulse</a>
+      <a class="btn btn-primary" href="/tools/cost-pulse/#ci-cheddar-cheese">Open the live tool</a>
       <a class="btn btn-ghost" href="/cost-index/">Browse all readings</a>
     </div>
-    <p class="ci-source"><strong>Sourced:</strong> <a href="https://www.ams.usda.gov/market-news/livestock-poultry-grain" rel="noopener">USDA Livestock, Poultry &amp; Grain Market News</a> · <a href="https://www.bls.gov/ppi/" rel="noopener">U.S. Bureau of Labor Statistics</a> · <a href="https://fred.stlouisfed.org/" rel="noopener">FRED, Federal Reserve Bank of St. Louis</a> — public data, via <a href="/tools/cost-pulse/">Cost Pulse</a> · <a href="/glossary/cost-index/">what a cost index is</a></p>
+    <p class="ci-source"><strong>Sourced:</strong> <a href="https://www.ams.usda.gov/market-news/livestock-poultry-grain" rel="noopener">USDA Livestock, Poultry &amp; Grain Market News</a> · <a href="https://www.bls.gov/ppi/" rel="noopener">U.S. Bureau of Labor Statistics</a> · <a href="https://fred.stlouisfed.org/" rel="noopener">FRED, Federal Reserve Bank of St. Louis</a> — public data, via <a href="/tools/cost-pulse/">the live tool</a> · <a href="/glossary/cost-index/">what a cost index is</a></p>
   </div></div>
 </main>
 <footer class="site-footer" id="footer"></footer>

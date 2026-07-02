@@ -8,7 +8,7 @@
  * answers a real operator question — "what does <ingredient> cost
  * wholesale right now, and am I overpaying?" — with the typical range,
  * the trend, the confidence, an "as of" date, and a deep link into the
- * live Cost Pulse tool for the always-fresh reading.
+ * live Cost Index tool for the always-fresh reading.
  *
  * THE FACT GATE / HONESTY CONTRACT:
  *   - Every number rendered here is read at build time from the gated
@@ -60,9 +60,9 @@ const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
 const require    = createRequire(import.meta.url);
 // Reuse the shared, no-DOM inline-SVG sparkline primitive (the same one
-// Cost Pulse + the audits tool ship) rather than forking a renderer.
+// Cost Index + the audits tool ship) rather than forking a renderer.
 const MuntinSparkline = require(path.join(repoRoot, 'tools/_shared/sparkline.js'));
-// ONE shared verdict voice — the same module the Cost Pulse dashboard uses, so
+// ONE shared verdict voice — the same module the Cost Index dashboard uses, so
 // the static pages, the hub, and the live tool can never disagree (a thin-data
 // "structural" reads "Watch", not "Re-price", on every surface).
 const MuntinCostVerdict = require(path.join(repoRoot, 'tools/_shared/cost-verdict.js'));
@@ -181,6 +181,25 @@ const PRESSURE_RULES = (() => {
   catch { return { sources: {} }; }
 })();
 const PRESSURE_SOURCES = PRESSURE_RULES.sources || {};
+
+// ---- Seasonality (multi-year monthly norms) ------------------------
+// data/seasonality.json carries, per ingredient, a per-month median + p25/p75
+// earned ACROSS distinct calendar years, with a `ready` flag and a `years`
+// count per month. Built by scripts/build-seasonality.mjs from the deep public
+// history. Used to render the "typical for this month" band — gated so a month
+// only earns a "typical" figure once observed across >=2 distinct years (the
+// methodology's stated bar). Shape is an array of entries keyed by `.key`.
+const SEASON = (() => {
+  try {
+    const raw = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/seasonality.json'), 'utf8'));
+    const arr = Array.isArray(raw) ? raw : (raw.ingredients || []);
+    const map = {};
+    for (const e of arr) { if (e && e.key) map[e.key] = e; }
+    return map;
+  } catch { return {}; }
+})();
+const MONTHS_EN = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const MONTHS_ES = ['', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
 
 // HOLD-UNTIL-PROVEN. The 2026-Q2 calibration (scripts/calibrate-pressure.mjs) found
 // the hand-set pressure weights have weak out-of-sample support against the best
@@ -444,7 +463,7 @@ function dirWord(trend, locale) {
 
 // ---- The spike-vs-structural verdict, as a calibrated SUGGESTION ----
 // Delegates to the shared, confidence-aware MuntinCostVerdict so the static
-// pages, the hub, and the Cost Pulse dashboard speak identically — a thin-data
+// pages, the hub, and the Cost Index dashboard speak identically — a thin-data
 // "structural" reads "Watch", not "Re-price", on every surface. The chip is
 // the terse action; the note is the calibrated reason. The flag is a build-
 // time, fact-gated qualitative read — no sourced numbers live here.
@@ -523,6 +542,15 @@ function movingNowSection(slugs, locale) {
     .map((s) => ({ s, v: ingVerdict(s), r: readingOf(s) }))
     .filter((x) => x.v && x.v.tone !== 'hold')   // surface watch + reprice
     .sort((a, b) => (TONE_RANK[a.v.tone] - TONE_RANK[b.v.tone]) || a.s.localeCompare(b.s));
+  // Curate, don't dump (persona audit #4): "what's moving" is the highlight reel
+  // — the handful that need action — not the whole list. Dumping all ~20 movers
+  // here repeats the same "elevated N weeks" note over and over AND re-lists the
+  // same ingredients already in the searchable readings table below. Show every
+  // act-now re-price; fill to a cap with watches; point to the table for the rest.
+  const CAP = 8;
+  const repriceCount = rows.filter((x) => x.v.tone === 'reprice').length;
+  const shown = rows.slice(0, Math.max(repriceCount, CAP));
+  const moreCount = rows.length - shown.length;
   const head = es ? 'Qué se está moviendo ahora' : "What's moving now";
   if (!rows.length) {
     const calm = es
@@ -530,7 +558,7 @@ function movingNowSection(slugs, locale) {
       : `Nothing needs action this week — most ingredients are sitting in their usual range.`;
     return `<section class="ci-moving"><h2 class="ci-cat-h" id="moving">${head}</h2><p class="ci-moving-calm">${calm}</p></section>`;
   }
-  const lis = rows.map((x) => {
+  const lis = shown.map((x) => {
     const { s, v, r } = x;
     const l = LABELS[s] || {};
     const nm = (es ? (l.es || l.en) : l.en) || s;
@@ -560,7 +588,130 @@ function movingNowSection(slugs, locale) {
   const key = es
     ? `<strong>Re-precificar</strong> = una subida que parece durar · <strong>Vigilar</strong> = un movimiento real, aún sin confirmar · <strong>Mantener</strong> = dentro de su rango normal`
     : `<strong>Re-price</strong> = a rise that looks durable · <strong>Watch</strong> = a real move, not yet confirmed · <strong>Hold</strong> = within its normal range`;
-  return `<section class="ci-moving"><h2 class="ci-cat-h" id="moving">${head}</h2><p class="ci-vkey">${key}</p><ul class="ci-moving-list">${lis}</ul></section>`;
+  const moreLine = moreCount > 0
+    ? `<p class="ci-moving-more-all">${es
+        ? `+${moreCount} más en movimiento — míralos todos en <a href="#all-readings">la tabla de lecturas</a> de abajo.`
+        : `+${moreCount} more moving — see them all in <a href="#all-readings">the readings table</a> below.`}</p>`
+    : '';
+  return `<section class="ci-moving"><h2 class="ci-cat-h" id="moving">${head}</h2><p class="ci-vkey">${key}</p><ul class="ci-moving-list">${lis}</ul>${moreLine}</section>`;
+}
+
+// ---- Composite band — the whole basket as one honest reading ----------
+// The weighted basket is computed in data/cost-index.json (build-cost-index.mjs)
+// and, until now, rendered nowhere on the hub. It is a READING AGAINST BASELINE
+// — the same semantics the weekly dispatch publishes via its viz-ring — never a
+// "move this window." We surface it as the hub's headline data-product KPI: the
+// basket's standing read, the breadth of the staples behind it (its credibility
+// lever), its confidence tier and as-of date, with a provenance drawer. Every
+// number derives from the basket object — zero invention. NO live cents: an
+// index reading is a percentage against baseline, not a price.
+function compositeBand(locale) {
+  const es = locale === 'es';
+  const b = CI.basket;
+  if (!b || typeof b.pct !== 'number' || !Array.isArray(b.contributors) || !b.contributors.length) return '';
+  const contribs = b.contributors.filter((c) => typeof c.pct === 'number');
+  if (!contribs.length) return '';
+  const n = b.nContributing || contribs.length;
+  // Spread from the basket's OWN contributors (a small deadband keeps a hair-line
+  // reading from being called a direction), so the parts reconcile to the whole.
+  const DEAD = 0.005;
+  let up = 0, down = 0, flat = 0;
+  for (const c of contribs) { if (c.pct > DEAD) up++; else if (c.pct < -DEAD) down++; else flat++; }
+  const band = b.pct > DEAD ? 'up' : b.pct < -DEAD ? 'down' : 'flat';
+  const pctStr = `${b.pct >= 0 ? '+' : '−'}${Math.abs(b.pct * 100).toFixed(1)}%`;
+  const confMap = es
+    ? { high: 'confianza alta', medium: 'confianza media', moderate: 'confianza media', low: 'confianza baja' }
+    : { high: 'high confidence', medium: 'medium confidence', moderate: 'moderate confidence', low: 'low confidence' };
+  const confChip = confMap[b.confidence] || (es ? 'confianza sin declarar' : 'confidence unstated');
+  const asOf = b.asOf || '—';
+  const asOfChip = es ? `al ${asOf}` : `as of ${asOf}`;
+  const head = es ? 'Dónde está la canasta' : 'Where the basket sits';
+  const say = es
+    ? `la canasta ponderada de ${n} insumos de restaurante, frente a su ventana base`
+    : `the weighted basket of ${n} restaurant staples, against its baseline window`;
+  // Agreement (weight-share moving the dominant way) near 0.5 means the staples
+  // are nearly split — the composite % is then a soft signal, not a precise read.
+  // Say so, using the real number, so one decimal never implies false precision.
+  const agree = typeof b.agreement === 'number' ? b.agreement : null;
+  const splitNote = (agree != null && agree < 0.6)
+    ? (es
+      ? ` Las fuentes están casi divididas en partes iguales (acuerdo ${Math.round(agree * 100)}%), así que léelo como una señal suave, no una cifra precisa.`
+      : ` The staples are nearly evenly split (agreement ${Math.round(agree * 100)}%), so read it as a soft signal, not a precise figure.`)
+    : '';
+  const spread = es
+    ? `<strong>${up}</strong> de ${n} por encima de su línea base · <strong>${down}</strong> por debajo · <strong>${flat}</strong> sin cambio. Es una lectura de estado, no un movimiento respecto a la semana pasada.${splitNote}`
+    : `<strong>${up}</strong> of ${n} reading above their baseline · <strong>${down}</strong> below · <strong>${flat}</strong> flat. A state-of-play reading, not a week-over-week move.${splitNote}`;
+  const base = es ? '/es' : '';
+  const srcSummary = es ? 'Cómo se construye esta cifra' : 'How this figure is built';
+  const srcBody = es
+    ? `Compuesto ponderado de ${n} insumos seguidos, cada uno leído frente a su propia ventana base con datos públicos de mercado de EE. UU. (USDA, BLS, FRED, EIA, NOAA). Una lectura frente a la base — no un precio, ni un cambio desde la semana pasada. Ver los ${n} pesos y cómo se arma el compuesto en <a href="${base}/cost-index/basket/">La Cesta de Restaurante Muntin</a>, o <a href="${base}/cost-index/methodology/">cómo se construye el índice</a>.`
+    : `Weighted composite of ${n} tracked staples, each read against its own baseline window from public U.S. market data (USDA, BLS, FRED, EIA, NOAA). A reading against baseline — not a price, and not a change since last week. See all ${n} weights and how the composite is assembled in <a href="${base}/cost-index/basket/">The Muntin Restaurant Basket</a>, or <a href="${base}/cost-index/methodology/">how the index is built</a>.`;
+  return `<section class="ci-composite" data-band="${band}" aria-label="${es ? 'Lectura de la canasta' : 'Basket reading'}">
+    <p class="ci-composite__head">${head}</p>
+    <div class="ci-composite__read">
+      <span class="ci-composite__num">${pctStr}</span>
+      <span class="ci-composite__say">${say}</span>
+    </div>
+    <div class="ci-composite__meta">
+      <span class="ci-composite__chip">${confChip}</span>
+      <span class="ci-composite__chip">${asOfChip}</span>
+    </div>
+    <p class="ci-composite__spread">${spread}</p>
+    <details class="ci-composite__src"><summary>${srcSummary}</summary><div>${srcBody}</div></details>
+  </section>`;
+}
+
+// ---- The "all readings" table — the terminal scan view -------------
+// Every shippable reading in one scannable grid: direction, verdict, as-of, and
+// the price-free indexed-movement spark. NO live cents (the hub honesty contract)
+// — the dollar range lives one click away on each ingredient page. Pure surfacing
+// of values already rendered per page (no new statistic), ordered by verdict
+// urgency then name so the movers sit on top. The <table> is wrapped in the
+// known .table-scroll wrapper (check-table-scroll-wrap).
+function allReadingsTable(slugs, locale) {
+  const es = locale === 'es';
+  const base = es ? '/es' : '';
+  const rows = slugs.filter(shippable)
+    .map((s) => ({ s, r: readingOf(s), v: ingVerdict(s) }))
+    .filter((x) => x.r && x.v)
+    .sort((a, b) => (TONE_RANK[a.v.tone] - TONE_RANK[b.v.tone]) || a.s.localeCompare(b.s));
+  if (rows.length < 4) return '';
+  const head = es ? 'Todas las lecturas' : 'All readings';
+  const note = es
+    ? `Las ${rows.length} lecturas que pasan la barra de publicación, los movimientos primero. Sin precios aquí — abre un ingrediente para su rango en dólares.`
+    : `All ${rows.length} readings that clear the publish bar — movers first. No prices here; open an ingredient for its dollar range.`;
+  const cols = es
+    ? ['Ingrediente', 'Dirección', 'Señal', 'Movimiento', 'Al']
+    : ['Ingredient', 'Direction', 'Signal', 'Movement', 'As of'];
+  const body = rows.map(({ s, r, v }) => {
+    const l = LABELS[s] || {};
+    const nm = (es ? (l.es || l.en) : l.en) || s;
+    const dir = (r.trend && r.trend.dir) || 'flat';
+    const dw = (r.trend && r.trend.dir) ? dirWord(r.trend, locale) : (es ? 'casi estable' : 'about flat');
+    const spark = indexedMovement(r.entry, locale, {});
+    // data-name (display name + slug) is the filter key for the search box below.
+    const key = `${nm} ${s}`.toLowerCase();
+    return `<tr data-name="${escHtml(key)}">`
+      + `<td><a href="${base}/cost-index/${s}/">${escHtml(nm)}</a></td>`
+      + `<td class="ci-t-dir" data-dir="${dir}">${escHtml(dw)}</td>`
+      + `<td>${verdictChip(v, locale)}</td>`
+      + `<td>${spark || '<span class="ci-t-na">—</span>'}</td>`
+      + `<td>${escHtml(r.asOf || '—')}</td>`
+      + `</tr>`;
+  }).join('');
+  // The find-an-ingredient box (the #1 experiential miss — two operators bounced
+  // looking for their ingredient in an 82-row list). Hidden until JS so no-JS
+  // users never see a dead control; the full table is the no-JS baseline. The
+  // filter script lives in pageTail, guarded on this input's id.
+  const emptyRow = `<tr class="ci-table-empty" data-empty hidden><td colspan="${cols.length}">${es ? 'Sin coincidencias.' : 'No matches.'}</td></tr>`;
+  const tools = `<div class="ci-table-tools" hidden>`
+    + `<label class="ci-table-search__label" for="ci-ingredient-search">${es ? 'Buscar ingrediente' : 'Find an ingredient'}</label>`
+    + `<input id="ci-ingredient-search" class="ci-table-search" type="search" autocomplete="off" spellcheck="false" placeholder="${es ? 'Escribe un ingrediente…' : 'Type an ingredient…'}" aria-controls="ci-readings-table" />`
+    + `<span class="ci-table-count" role="status" aria-live="polite"></span></div>`;
+  return `<section class="ci-readings"><h2 class="ci-cat-h" id="all-readings">${escHtml(head)}</h2>`
+    + `<p class="ci-pending-note">${note}</p>`
+    + tools
+    + `<div class="table-scroll"><table class="ci-table" id="ci-readings-table"><thead><tr>${cols.map((c) => `<th>${escHtml(c)}</th>`).join('')}</tr></thead><tbody>${body}${emptyRow}</tbody></table></div></section>`;
 }
 
 // ---- History sparkline + "normally X–Y, right now Z" capsule -------
@@ -598,9 +749,12 @@ function sparkBlock(r, locale) {
     : ch < -0.03 ? (es ? 'bajó a lo largo de la ventana' : 'eased over the tracked window')
     : (es ? 'se mantuvo estable en la ventana' : 'held steady over the tracked window');
   const windowNote = es ? 'en la ventana seguida' : 'over the tracked window';
+  // "Recent range" — NOT "Normally": this band is the trailing tracked window
+  // (≤26 weeks), which for a seasonal item can be dominated by one season. The
+  // word "normal" belongs only to the multi-year seasonal band (seasonalBand).
   const capsule = es
-    ? `Normalmente ${money(lo)}–${money(hi)}, ahora ${money(now)} — ${pos}.`
-    : `Normally ${money(lo)}–${money(hi)}, right now ${money(now)} — ${pos}.`;
+    ? `Rango reciente ${money(lo)}–${money(hi)}, ahora ${money(now)} — ${pos}.`
+    : `Recent range ${money(lo)}–${money(hi)}, right now ${money(now)} — ${pos}.`;
   // Percentile-of-history as a COUNT (never a smoothed "85th percentile"):
   // the figure operators repeat. Last ≤12 prior reads, honesty-gated like
   // the rest of the block.
@@ -621,6 +775,59 @@ function sparkBlock(r, locale) {
   });
   return `
     <div class="ci-read__spark">${svg}<p class="ci-read__capsule">${capsule}${rank ? ` <span class="ci-read__rank">${rank}</span>` : ''} <span class="ci-read__capsule-note">(${windowNote})</span></p></div>`;
+}
+
+// ---- Seasonal "typical for this month" band ------------------------
+// The trailing-window capsule above answers "is this above its RECENT range?"
+// — it cannot answer the question an operator on a seasonal item actually asks:
+// "is this expensive *for this month*, or just a normal seasonal level?" This
+// band answers it from data/seasonality.json — the median + p25–p75 a month has
+// earned across >=2 DISTINCT calendar years (below that bar nothing renders, per
+// the methodology). Every figure is a deterministic re-derivation of the deep
+// public history; the data-season-* attributes let check-cost-index-seasonal.mjs
+// recompute and diff. Cents are allowed here (per-ingredient page, not the hub).
+function seasonalBand(slug, r, locale) {
+  const es = locale === 'es';
+  const e = SEASON[slug];
+  if (!e || !e.ready || !r || !r.emitPoint || !r.asOf) return '';
+  const mo = parseInt(String(r.asOf).slice(5, 7), 10);
+  if (!(mo >= 1 && mo <= 12)) return '';
+  const md = e.months && e.months[String(mo).padStart(2, '0')];
+  // The hard honesty gate: a month earns a "typical" figure only with >=2
+  // distinct years observed (and a real median). Otherwise: render nothing.
+  if (!md || !(md.years >= 2) || !(md.medianCents > 0)) return '';
+  const lo = md.p25Cents, hi = md.p75Cents, med = md.medianCents;
+  // current price drawn from the SAME basis/series the sparkline uses, so the
+  // two never disagree.
+  const basis = r.basis;
+  const vals = (r.entry.history || [])
+    .filter((h) => h && h.basis === basis && typeof h.valueCents === 'number' && isFinite(h.valueCents) && h.valueCents > 0)
+    .map((h) => h.valueCents);
+  const now = vals.length ? vals[vals.length - 1] : null;
+  const monName = es ? MONTHS_ES[mo] : MONTHS_EN[mo];
+  let posTxt = '';
+  if (now != null && lo > 0 && hi > 0) {
+    posTxt = now > hi
+      ? (es ? ` La lectura actual (${money(now)}) está por encima de lo típico de ${monName}.` : ` The current read (${money(now)}) is running above its typical ${monName}.`)
+      : now < lo
+      ? (es ? ` La lectura actual (${money(now)}) está por debajo de lo típico de ${monName} — barato para la temporada.` : ` The current read (${money(now)}) is below its typical ${monName} — seasonally cheap.`)
+      : (es ? ` La lectura actual (${money(now)}) está dentro de lo típico de ${monName}.` : ` The current read (${money(now)}) sits inside its typical ${monName}.`);
+  }
+  const rangeTxt = lo !== hi ? `${money(lo)}–${money(hi)}` : money(lo);
+  const headTxt = es ? `Típico de ${monName}` : `Typical for ${monName}`;
+  const body = es
+    ? `Normalmente ${rangeTxt} (mediana ${money(med)}) en ${monName}, según ${md.n} lecturas en ${md.years} años distintos.${posTxt}`
+    : `Usually ${rangeTxt} (median ${money(med)}) in ${monName}, across ${md.n} reads over ${md.years} distinct years.${posTxt}`;
+  const srcTxt = es
+    ? `Norma estacional de varios años, calculada a partir del historial público profundo (USDA, BLS, FRED). Un mes solo gana una cifra “típica” una vez observado en 2 o más años distintos; por debajo de esa barra no se muestra ninguna.`
+    : `Multi-year seasonal norm, computed from the deep public history (USDA, BLS, FRED). A month earns a “typical” figure only once observed across 2 or more distinct years; below that bar, none is shown.`;
+  const summ = es ? 'Cómo se calcula lo típico' : 'How “typical” is figured';
+  return `
+    <div class="ci-season" data-season-month="${mo}" data-season-med="${med}" data-season-lo="${lo}" data-season-hi="${hi}" data-season-years="${md.years}" data-season-n="${md.n}">
+      <p class="ci-season__head">${headTxt}</p>
+      <p class="ci-season__body">${body}</p>
+      <details class="ci-season__src"><summary>${summ}</summary><div>${srcTxt}</div></details>
+    </div>`;
 }
 
 // ---- The visible "Market read" data block --------------------------
@@ -696,6 +903,7 @@ function marketReadBlock(slug, locale) {
   const verified = verifiedNote(slug, r.entry, point, locale);
   const verdict = verdictLine(r.entry.flag, r.conf, locale);
   const spark = sparkBlock(r, locale);
+  const season = seasonalBand(slug, r, locale);
   const idxChart = indexedMovement(r.entry, locale, { size: 'large' });
   const lab = LABELS[slug] || {};
   const unit = es ? (lab.unit_es || lab.unit_en) : lab.unit_en;
@@ -757,11 +965,11 @@ function marketReadBlock(slug, locale) {
     ? (es ? 'Referencia minorista, no el precio mayorista ni el entregado que pagas.' : 'Retail reference, not the wholesale or delivered price you pay.')
     : (es ? 'Referencia mayorista (aproximadamente lo que pagan los distribuidores), no el precio entregado que pagas.' : 'Wholesale reference (roughly what distributors pay), not the delivered price you pay.');
   const srcBody = `${(shortListLinked.length ? shortListLinked.join(' · ') : agencies.map((a) => a.name).join(' · '))} — ${es ? 'datos públicos' : 'public data'}, ${es ? 'al' : 'as of'} ${asOf}. ${disclaimer}`;
-  const liveLabel = es ? `Ver ${(lab.es || lab.en || slug).toLowerCase()} en vivo en Cost Pulse` : `See ${(lab.en || slug).toLowerCase()} live in Cost Pulse`;
+  const liveLabel = es ? `Ver ${(lab.es || lab.en || slug).toLowerCase()} en vivo en el Índice de Costos` : `See ${(lab.en || slug).toLowerCase()} live in the Cost Index`;
   return `
   <aside class="ci-read" data-layer="measured" aria-label="${es ? 'Lectura de mercado' : 'Market read'}">
     <p class="ci-read__head">${head}<span class="ci-read__badge">${badge}</span></p>
-    <p class="ci-read__line">${line}</p>${trendLine}${verdict}${spark}${idxChart}
+    <p class="ci-read__line">${line}</p>${trendLine}${verdict}${spark}${season}${idxChart}
     <details class="ci-read__src"><summary>${es ? 'Fuentes' : 'Sources'} · ${(shortList.length || agencies.length)}</summary><div>${srcBody}</div></details>
     ${verified}
     <p class="ci-read__method"><a href="${es ? '/es' : ''}/cost-index/methodology/#track-record">${es ? 'Cómo verificamos este número' : 'How we verify this number'} <span aria-hidden="true">→</span></a></p>
@@ -771,11 +979,42 @@ function marketReadBlock(slug, locale) {
 }
 
 // ---- Series distribution files (JSON + CSV from history) ------------
+// ---- The full downloadable series (deep backfill + live) -----------
+// The methodology cites a multi-year track record, but the public download long
+// shipped only the ~5-week capped window from cost-index.json. The deep monthly
+// backfill (data/cost-index-history.json, 53 ingredients back to 2023) was used
+// only internally for the conformal backtest. Stitch them so the download is as
+// long as the record we claim. The early monthly points are RECONSTRUCTED from
+// public sources after the fact — not "published live" in 2023 — and are flagged
+// reconstructed:true so the artifact never overclaims its own history. Live and
+// reconstructed share one valueCents scale (the backfill's own contract). Live
+// points win on any shared date; the backfill is cut at the first live date so a
+// monthly series never interleaves with the daily live window.
+function mergedSeries(slug, entry) {
+  const point = entry && entry.points && entry.points[0];
+  const basis = (point && point.level && point.level.basis) || 'wholesale';
+  const live = (entry && Array.isArray(entry.history)) ? entry.history : [];
+  const deep = Array.isArray(DEEP_HIST[slug]) ? DEEP_HIST[slug] : [];
+  const okPt = (p) => p && p.date && typeof p.valueCents === 'number' && isFinite(p.valueCents) && p.valueCents > 0;
+  const firstLive = live.filter(okPt).map((p) => p.date).sort()[0] || null;
+  const byDate = new Map();
+  for (const p of deep) {
+    if (!okPt(p)) continue;
+    if (firstLive && p.date >= firstLive) continue;   // live takes over from here
+    byDate.set(p.date, { date: p.date, valueCents: p.valueCents, source: null, basis, reconstructed: true });
+  }
+  for (const p of live) {
+    if (!okPt(p)) continue;
+    byDate.set(p.date, { date: p.date, valueCents: p.valueCents, source: p.source || null, basis: p.basis || basis, reconstructed: false });
+  }
+  return Array.from(byDate.values()).sort((a, b) => String(a.date).localeCompare(String(b.date)));
+}
 function seriesJson(slug) {
   const entry = COST_INDEX[slug];
-  const hist = (entry && Array.isArray(entry.history)) ? entry.history : [];
   const lab = LABELS[slug] || {};
   const point = entry && entry.points && entry.points[0];
+  const obs = mergedSeries(slug, entry);
+  const nRecon = obs.filter((o) => o.reconstructed).length;
   const obj = {
     ingredient: slug,
     name: lab.en || slug,
@@ -783,20 +1022,20 @@ function seriesJson(slug) {
     basis: (point && point.level && point.level.basis) || 'wholesale',
     currency: 'USD',
     note: 'Wholesale reference prices compiled from public U.S. market sources (USDA AMS/LMR, BLS, FRED, EIA, NOAA). Values are in US dollars per unit. Not a delivered or retail price. Source: muntin.digital/cost-index/' + slug + '/',
+    reconstructedNote: nRecon ? 'Observations marked reconstructed:true are a monthly backfill reconstructed from public sources after the fact — not figures published live on that date. Live points (reconstructed:false) were captured at publication.' : undefined,
+    coverage: obs.length ? { start: obs[0].date, end: obs[obs.length - 1].date, points: obs.length, reconstructed: nRecon } : undefined,
     asOf: (point && point.asOf) || null,
-    observations: hist.map((h) => ({ date: h.date, priceUsd: +(h.valueCents / 100).toFixed(2), source: h.source || null }))
+    observations: obs.map((h) => ({ date: h.date, priceUsd: +(h.valueCents / 100).toFixed(2), source: h.source || null, reconstructed: h.reconstructed }))
   };
   return JSON.stringify(obj, null, 2) + '\n';
 }
 function seriesCsv(slug) {
   const entry = COST_INDEX[slug];
-  const hist = (entry && Array.isArray(entry.history)) ? entry.history : [];
-  const rows = ['date,price_usd,unit,basis,source'];
+  const obs = mergedSeries(slug, entry);
+  const rows = ['date,price_usd,unit,basis,source,reconstructed'];
   const lab = LABELS[slug] || {};
   const unit = lab.unit_en || '';
-  const point = entry && entry.points && entry.points[0];
-  const basis = (point && point.level && point.level.basis) || 'wholesale';
-  for (const h of hist) rows.push(`${h.date},${(h.valueCents / 100).toFixed(2)},${unit},${basis},${h.source || ''}`);
+  for (const h of obs) rows.push(`${h.date},${(h.valueCents / 100).toFixed(2)},${unit},${h.basis || ''},${h.source || ''},${h.reconstructed ? 'true' : 'false'}`);
   return rows.join('\n') + '\n';
 }
 
@@ -865,8 +1104,13 @@ function emitIngredientJsonLd(slug, locale) {
   const esName = lab.es || enName;
   const name = es ? esName : enName;
   const unitText = `USD per ${unitLong(lab.unit_en || 'unit')}`;
-  const hist = r ? r.hist : [];
-  const temporal = hist.length ? `${hist[0].date}/${hist[hist.length - 1].date}` : undefined;
+  // temporalCoverage + datePublished span the FULL downloadable series (deep
+  // backfill + live), not the capped on-page window — so the schema's claimed
+  // span matches what /series.json actually contains, and datePublished stops
+  // collapsing onto the latest read (which had erased the dataset's real history).
+  const merged = r ? mergedSeries(slug, r.entry) : [];
+  const temporal = merged.length ? `${merged[0].date}/${merged[merged.length - 1].date}` : undefined;
+  const seriesStart = merged.length ? merged[0].date : null;
   const agencies = r ? citedAgencies(r.entry, r.point) : [];
 
   // variableMeasured PropertyValue, degraded by confidence.
@@ -918,7 +1162,7 @@ function emitIngredientJsonLd(slug, locale) {
       { '@type': 'DataDownload', 'name': `${enName} price history (CSV)`, 'encodingFormat': 'text/csv', 'contentUrl': `https://muntin.digital/cost-index/${slug}/series.csv` }
     ]
   };
-  if (r && r.asOf) { dataset.dateModified = r.asOf; dataset.datePublished = r.asOf; }
+  if (r && r.asOf) { dataset.dateModified = r.asOf; dataset.datePublished = seriesStart || r.asOf; }
   if (temporal) dataset.temporalCoverage = temporal;
   if (agencies.length) {
     dataset.citation = agencies.map((a) => a.url);
@@ -1072,6 +1316,13 @@ main{padding-top:64px}
 .ci-read__live a,.ci-read__method a,.ci-read__data a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
 .ci-read__method{margin-top:6px;font-size:13px}
 .ci-read__data{margin:4px 0 0;font-size:13px;color:var(--ink-soft)}
+.ci-season{margin:12px 0 4px;padding:12px 16px;background:var(--white);border:1px solid var(--line);border-left:3px solid #6b4fa1;border-radius:10px;font-variant-numeric:tabular-nums}
+.ci-season__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6b4fa1;margin:0 0 4px}
+.ci-season__body{font-size:14.5px;line-height:1.5;color:var(--ink);margin:0}
+.ci-season__src{margin:6px 0 0;font-size:12.5px}
+.ci-season__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
+.ci-season__src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
+.ci-season__src a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-faq{margin:34px 0 0}
 .ci-faq__item{margin:0 0 18px}
 .ci-faq__q{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink);margin:0 0 6px}
@@ -1080,10 +1331,31 @@ main{padding-top:64px}
 .ci-sibs-label{display:inline-block;font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:11px;margin-right:8px}
 .ci-sibs a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 8px}
+.ci-composite{margin:22px 0 6px;padding:20px 22px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--ink-soft);border-radius:12px;font-variant-numeric:tabular-nums}
+.ci-composite[data-band="up"]{border-left-color:#A23B2D}
+.ci-composite[data-band="down"]{border-left-color:var(--teal)}
+.ci-composite__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px}
+.ci-composite__read{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;margin:0}
+.ci-composite__num{font-family:var(--font-display);font-size:clamp(30px,6vw,44px);font-weight:500;line-height:1;color:var(--ink)}
+.ci-composite[data-band="up"] .ci-composite__num{color:#A23B2D}
+.ci-composite[data-band="down"] .ci-composite__num{color:var(--teal)}
+.ci-composite__say{font-size:15px;line-height:1.4;color:var(--ink);font-weight:600;max-width:46ch}
+.ci-composite__meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin:10px 0 0}
+.ci-composite__chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--white);border:1px solid var(--line);color:var(--ink-soft)}
+.ci-composite__spread{font-size:14px;line-height:1.5;color:var(--ink-soft);margin:10px 0 0}
+.ci-composite__spread strong{color:var(--ink)}
+.ci-composite__src{margin:8px 0 0;font-size:12.5px}
+.ci-composite__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
+.ci-composite__src div{margin-top:6px;color:var(--ink-soft);line-height:1.55}
+.ci-composite__src a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-orient{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));margin:18px 0 8px}
 .ci-orient__cell{background:var(--cream-2);border-radius:6px;padding:14px 16px}
 .ci-orient__h{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
 .ci-orient__b{font-size:14px;line-height:1.5;color:var(--ink);margin:0}
+.ci-signup--compact{margin:18px 0}
+.ci-signup-alt{margin:12px 0 0;font-size:13.5px;color:var(--ink-soft);line-height:1.6}
+.ci-signup-alt a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-signup-sep{color:var(--stone,#9aa0aa);margin:0 4px}
 .ci-source{font-size:12.5px;color:var(--ink-soft);margin:24px 0 40px}
 .ci-source a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));margin:14px 0 0}
@@ -1112,6 +1384,8 @@ main{padding-top:64px}
 .ci-moving-act{margin:2px 0 0;font-size:13.5px;color:var(--ink-soft)}
 .ci-moving-act strong{color:var(--ink)}
 .ci-moving-more{font-size:12.5px}
+.ci-moving-more-all{margin:10px 0 0;font-size:13.5px;color:var(--ink-soft)}
+.ci-moving-more-all a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
 .ci-index--mini{display:inline-block;vertical-align:middle;margin:4px 0 2px;opacity:.9}
 .ci-index{margin:10px 0 4px}
 .ci-index__cap{margin:0 0 4px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
@@ -1119,6 +1393,26 @@ main{padding-top:64px}
 .ci-card--pending{opacity:.72;background:var(--cream-2)}
 .ci-card--pending a{color:var(--ink-soft)}
 .ci-pending-note{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
+.ci-readings{margin:20px 0 8px}
+.ci-table-tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:12px 0 0}
+.ci-table-search__label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+.ci-table-search{flex:1 1 220px;max-width:340px;font:inherit;font-size:14px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--white);color:var(--ink)}
+.ci-table-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.ci-table-count{font-size:13px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.ci-table-empty td{color:var(--ink-soft);font-style:italic;padding:14px 10px}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0}
+.ci-table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+.ci-table th,.ci-table td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap;vertical-align:middle}
+.ci-table th{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft)}
+.ci-table tbody tr:hover{background:var(--cream-2)}
+.ci-table td a{color:var(--ink);text-decoration:none;font-weight:600;border-bottom:1px dashed var(--line)}
+.ci-table td a:hover{color:var(--teal)}
+.ci-table .ci-t-dir{font-weight:600}
+.ci-table .ci-t-dir[data-dir="up"]{color:#A23B2D}
+.ci-table .ci-t-dir[data-dir="down"]{color:var(--teal)}
+.ci-table .ci-t-na{color:var(--stone,#9aa0aa)}
+.ci-table .ci-index--mini{margin:0}
+:root[data-theme="dark"] .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
 .ci-read--pending{border-left-color:#cdb368;background:var(--cream-2)}
 .ci-read--pending .ci-read__head{color:#8a6d1f}
 .ci-outlook{margin:14px 0 8px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-left:4px solid #6b4fa1;border-radius:12px}
@@ -1158,11 +1452,16 @@ main{padding-top:64px}
 :root[data-theme="dark"] .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
 :root[data-theme="dark"] .ci-read__verb[data-bias="watch"]{color:#d8bd6a;border-color:#8a7530}
 :root[data-theme="dark"] .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
+:root[data-theme="dark"] .ci-composite[data-band="up"]{border-left-color:#ed9a8e}
+:root[data-theme="dark"] .ci-composite[data-band="up"] .ci-composite__num{color:#ed9a8e}
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12)}
   :root:not([data-theme="light"]) .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
   :root:not([data-theme="light"]) .ci-read__verb[data-bias="watch"]{color:#d8bd6a;border-color:#8a7530}
   :root:not([data-theme="light"]) .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
+  :root:not([data-theme="light"]) .ci-composite[data-band="up"]{border-left-color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-composite[data-band="up"] .ci-composite__num{color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
 }
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=${SHELL_HASH.core}" onload="this.onload=null;this.rel='stylesheet'">
@@ -1224,6 +1523,43 @@ const pageTail = `</div>
   function init() {
     var forms = document.querySelectorAll('.foot-newsletter-form, .js-signup-form');
     Array.prototype.forEach.call(forms, wire);
+  }
+  init();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+<!-- Find-an-ingredient filter for the Cost Index hub table. Progressive
+     enhancement: reveals the (hidden) search box, filters rows by name/slug,
+     shows a no-match row, and announces the count. No-ops on pages without
+     the table (every other cost-index page). -->
+<script>
+(function () {
+  'use strict';
+  if (typeof document === 'undefined') return;
+  function init() {
+    var box = document.getElementById('ci-ingredient-search');
+    if (!box || box.dataset.wired === '1') return;
+    var table = document.getElementById('ci-readings-table');
+    if (!table || !table.tBodies.length) return;
+    box.dataset.wired = '1';
+    var tools = box.closest('.ci-table-tools');
+    if (tools) tools.hidden = false;
+    var all = Array.prototype.slice.call(table.tBodies[0].rows);
+    var rows = all.filter(function (r) { return !r.hasAttribute('data-empty'); });
+    var empty = table.querySelector('tr[data-empty]');
+    var count = document.querySelector('.ci-table-count');
+    function apply() {
+      var q = box.value.trim().toLowerCase();
+      var shown = 0;
+      for (var i = 0; i < rows.length; i++) {
+        var hit = !q || (rows[i].getAttribute('data-name') || '').indexOf(q) !== -1;
+        rows[i].hidden = !hit;
+        if (hit) shown++;
+      }
+      if (empty) empty.hidden = !(q && shown === 0);
+      if (count) count.textContent = q ? (shown + ' / ' + rows.length) : '';
+    }
+    box.addEventListener('input', apply);
   }
   init();
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
@@ -1457,7 +1793,7 @@ function emitExpandingPage(slug, locale) {
     <h2>Por qué aún no hay número</h2>
     <p>La regla es simple: un precio se publica solo cuando podemos obtenerlo de datos públicos (USDA, BLS, FRED) con una calidad sobre la que actuaríamos nosotros mismos. Para ${lc}, la serie mayorista gratuita que necesitamos aún no está conectada. Una estimación de una sola fuente sería peor que nada.</p>
     <h2>Qué puedes hacer ahora</h2>
-    <p>Compara tu última factura de ${lc} con tus facturas recientes, o abre <a href="${base}/tools/cost-pulse/">Cost Pulse</a> para los ingredientes que sí cubrimos. Esta página se completará cuando lo hagan los datos.</p>
+    <p>Compara tu última factura de ${lc} con tus facturas recientes, o abre <a href="${base}/tools/cost-pulse/">la herramienta en vivo</a> para los ingredientes que sí cubrimos. Esta página se completará cuando lo hagan los datos.</p>
     <div class="ci-cta-row">
       <a class="btn btn-ghost" href="${base}/cost-index/">Ver todas las lecturas</a>
       <a class="btn btn-ghost" href="${base}/glossary/cost-index/">Qué es un índice de costos</a>
@@ -1471,7 +1807,7 @@ function emitExpandingPage(slug, locale) {
     <h2>Why there's no number yet</h2>
     <p>The rule is simple: a price ships only when we can source it from public USDA, BLS or FRED data at a quality we'd act on ourselves. For ${lc}, the free wholesale series we need isn't wired up yet — and a thin, single-source guess would be worse than nothing.</p>
     <h2>What you can do now</h2>
-    <p>Check your last ${lc} invoice against your own recent ones, or open <a href="${base}/tools/cost-pulse/">Cost Pulse</a> for the ingredients we do cover. This page fills in when the data does.</p>
+    <p>Check your last ${lc} invoice against your own recent ones, or open <a href="${base}/tools/cost-pulse/">the live tool</a> for the ingredients we do cover. This page fills in when the data does.</p>
     <div class="ci-cta-row">
       <a class="btn btn-ghost" href="${base}/cost-index/">Browse all readings</a>
       <a class="btn btn-ghost" href="${base}/glossary/cost-index/">What is a cost index?</a>
@@ -1488,6 +1824,41 @@ function emitExpandingPage(slug, locale) {
     <h1>${escHtml(name)}</h1>
   </section>
   ${body}` + pageTail;
+}
+
+// ---- Weekly-email capture (reused on the hub + every ingredient page) ----
+// Persona audit #2: the email signup — the one conversion a tired operator was
+// ready for — sat below the hub's longest scroll. Most visitors land on an
+// INGREDIENT page (from search), which had no capture at all. Same wired form
+// (.foot-newsletter-form → pageTail script), so it posts via fetch and shows
+// the inline confirmation; data-surface tags the conversion source.
+function weeklySignup(locale, opts) {
+  opts = opts || {};
+  const es = locale === 'es';
+  const lang = es ? 'es' : 'en';
+  const base = es ? '/es' : '';
+  const id = opts.id || 'ci-news-email';
+  const source = opts.source || 'cost-index';
+  const pitch = opts.pitch || (es
+    ? 'Recibe el índice cada semana por correo — una lectura corta de lo que se mueve y qué hacer al respecto. Cuatro líneas, sin relleno.'
+    : 'Get the index in your inbox every week — a short read on what’s moving and what to do about it. A few lines, no funnels.');
+  const alt = opts.compact ? '' : `
+      <p class="ci-signup-alt">${es ? '¿Prefieres explorar a tu ritmo?' : 'Rather check back yourself?'} <a href="${base}/cost-index/weekly/">${es ? 'Ediciones semanales anteriores' : 'Past weekly reads'} <span aria-hidden="true">→</span></a> <span class="ci-signup-sep">·</span> <a href="${base}/feed.xml">RSS</a></p>`;
+  return `<div class="ci-signup${opts.compact ? ' ci-signup--compact' : ''}"${opts.anchor ? ' id="weekly-email"' : ''}>
+      <div class="foot-newsletter">
+        <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="${lang}" data-surface="${source}">
+          <p class="foot-newsletter-pitch">${pitch}</p>
+          <label class="foot-newsletter-label" for="${id}">${es ? 'Tu correo' : 'Your email'}</label>
+          <input id="${id}" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="you@yourrestaurant.com" />
+          <input type="hidden" name="locale" value="${lang}" />
+          <input type="hidden" name="source" value="${source}" />
+          <input type="hidden" name="ts" value="" />
+          <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="newsletter" data-size="flexible"></div>
+          <button type="submit">${es ? 'Enviarme el índice semanal' : 'Email me the weekly index'}</button>
+        </form>
+      </div>${alt}
+    </div>`;
 }
 
 function emitIngredientPage(slug, locale) {
@@ -1529,8 +1900,8 @@ function emitIngredientPage(slug, locale) {
 
   const agencies = (() => { const r = readingOf(slug); return r ? citedAgencies(r.entry, r.point) : []; })();
   const srcLine = agencies.length
-    ? `<p class="ci-source"><strong>${es ? 'Fuente' : 'Sourced'}:</strong> ${agencies.map((a) => `<a href="${a.url}" rel="noopener">${escHtml(a.name)}</a>`).join(' · ')} — ${es ? 'datos públicos, vía' : 'public data, via'} <a href="${base}/tools/cost-pulse/">Cost Pulse</a> · <a href="${base}/glossary/cost-index/">${es ? 'qué es un índice de costos' : 'what a cost index is'}</a></p>`
-    : `<p class="ci-source"><strong>${es ? 'Fuente' : 'Sourced'}:</strong> ${es ? 'datos públicos de mercado, vía' : 'public market data, via'} <a href="${base}/tools/cost-pulse/">Cost Pulse</a> · <a href="${base}/glossary/cost-index/">${es ? 'qué es un índice de costos' : 'what a cost index is'}</a></p>`;
+    ? `<p class="ci-source"><strong>${es ? 'Fuente' : 'Sourced'}:</strong> ${agencies.map((a) => `<a href="${a.url}" rel="noopener">${escHtml(a.name)}</a>`).join(' · ')} — ${es ? 'datos públicos, vía' : 'public data, via'} <a href="${base}/tools/cost-pulse/">${es ? 'la herramienta en vivo' : 'the live tool'}</a> · <a href="${base}/glossary/cost-index/">${es ? 'qué es un índice de costos' : 'what a cost index is'}</a></p>`
+    : `<p class="ci-source"><strong>${es ? 'Fuente' : 'Sourced'}:</strong> ${es ? 'datos públicos de mercado, vía' : 'public market data, via'} <a href="${base}/tools/cost-pulse/">the live tool</a> · <a href="${base}/glossary/cost-index/">${es ? 'qué es un índice de costos' : 'what a cost index is'}</a></p>`;
 
   const bcHome = es ? 'Inicio' : 'Home';
   const bcHub  = es ? 'Índice de costos' : 'Cost index';
@@ -1553,12 +1924,18 @@ function emitIngredientPage(slug, locale) {
     ${whyMovingBlock(slug, locale)}
     ${whyItMatters(slug, locale)}
     ${howToUse(slug, locale)}
+    ${weeklySignup(locale, { id: 'ci-news-email-ing', source: 'cost-index-ingredient', compact: true, pitch: (locale === 'es'
+      ? '¿No quieres revisar a mano cada semana? Recibe el índice por correo — una lectura corta de lo que se mueve y qué hacer. Unas líneas, sin relleno.'
+      : 'Don’t want to check this by hand every week? Get the index by email — a short read on what’s moving and what to do. A few lines, no funnels.') })}
     ${faqHtml}
     ${siblings(slug, locale)}
     <div class="ci-cta-row">
-      <a class="btn btn-primary" href="${base}/tools/cost-pulse/#ci-${slug}">${es ? 'Abrir Cost Pulse' : 'Open Cost Pulse'}</a>
+      <a class="btn btn-primary" href="${base}/tools/cost-pulse/#ci-${slug}">${es ? 'Abrir la herramienta en vivo' : 'Open the live tool'}</a>
       <a class="btn btn-ghost" href="${base}/cost-index/">${es ? 'Ver todas las lecturas' : 'Browse all readings'}</a>
     </div>
+    <p class="ci-ledger-bridge" style="margin:16px 0 0;font-size:14.5px;line-height:1.6;color:var(--ink-soft)">${es
+      ? `Esta es la referencia del mercado. Para ver si <em>tus</em> facturas la siguen, l&iacute;nea por l&iacute;nea, eso es <a href="${base}/ledger/" style="color:var(--teal);font-weight:600">Muntin Ledger</a> &mdash; tus datos, sin modelo de lenguaje.`
+      : `This is the market reference. To see whether <em>your</em> invoices track it, line by line, that's <a href="${base}/ledger/" style="color:var(--teal);font-weight:600">Muntin Ledger</a> &mdash; your data, no language model.`}</p>
     ${srcLine}
   </div>` + pageTail;
 }
@@ -1603,8 +1980,8 @@ function emitHubPage(locale, slugs) {
     : 'Where common restaurant ingredients are priced wholesale — a typical range and a trend, from public sources (USDA, BLS, FRED) — so you can tell a market move from a vendor markup.';
   const heroH1 = es ? 'Índice de costos de ingredientes' : 'Restaurant ingredient cost index';
   const heroLede = es
-    ? `Dónde se cotizan al mayoreo ${shipSlugs.length} ingredientes comunes de restaurante — un rango típico y una tendencia, de datos públicos de USDA, BLS y FRED — para distinguir un movimiento real de mercado de un sobreprecio de proveedor. Elige un ingrediente para su lectura, o abre Cost Pulse para verlos todos a la vez.`
-    : `Where ${shipSlugs.length} common restaurant ingredients are priced wholesale — a typical range and a trend, drawn from public USDA, BLS and FRED data — so you can tell a real market move from a vendor markup. Pick an ingredient for its reading, or open Cost Pulse to see them all at once.`;
+    ? `Dónde se cotizan al mayoreo ${shipSlugs.length} ingredientes comunes de restaurante — un rango típico y una tendencia, de datos públicos de USDA, BLS y FRED — para distinguir un movimiento real de mercado de un sobreprecio de proveedor. Elige un ingrediente para su lectura, o abre la herramienta en vivo para verlos todos a la vez.`
+    : `Where ${shipSlugs.length} common restaurant ingredients are priced wholesale — a typical range and a trend, drawn from public USDA, BLS and FRED data — so you can tell a real market move from a vendor markup. Pick an ingredient for its reading, or open the live tool to see them all at once.`;
 
   // Grouped cards by category — shippable readings only.
   const byCat = {};
@@ -1621,8 +1998,8 @@ function emitHubPage(locale, slugs) {
   }).join('\n');
 
   const driverNote = es
-    ? `<p>Río arriba, los precios se mueven con un puñado de materias primas que el tablero rastrea bajo “por qué se mueve”: maíz y soya (forraje), diésel y electricidad. Para lo que se está moviendo ahora mismo, <a href="${base}/tools/cost-pulse/">abre Cost Pulse</a>.</p>`
-    : `<p>Upstream, prices move with a handful of commodities the dashboard tracks under “why it's moving”: corn and soybeans (feed), diesel, and electricity. For what's moving right now, <a href="${base}/tools/cost-pulse/">open Cost Pulse</a>.</p>`;
+    ? `<p>Río arriba, los precios se mueven con un puñado de materias primas que se rastrean bajo “por qué se mueve”: maíz y soya (forraje), diésel y electricidad. Para lo que se está moviendo ahora mismo, <a href="${base}/tools/cost-pulse/">abre la herramienta en vivo</a>.</p>`
+    : `<p>Upstream, prices move with a handful of commodities tracked under “why it's moving”: corn and soybeans (feed), diesel, and electricity. For what's moving right now, <a href="${base}/tools/cost-pulse/">open the live tool</a>.</p>`;
 
   // Schema: DataCatalog + CollectionPage + ItemList + Breadcrumb.
   const baseUrl = es ? canonEs : canonEn;
@@ -1667,8 +2044,8 @@ function emitHubPage(locale, slugs) {
 
   const fresh = CI._lastReviewed || null;
   const freshTxt = fresh
-    ? (es ? `Datos públicos, actualizados a diario. Última lectura: ${fresh}.` : `Public data, refreshed daily. Last refreshed ${fresh}.`)
-    : (es ? 'Datos públicos, actualizados a diario.' : 'Public data, refreshed daily.');
+    ? (es ? `Datos públicos, actualizados cuando las fuentes publican. Última revisión: ${fresh}.` : `Public data, refreshed as the sources publish. Last reviewed ${fresh}.`)
+    : (es ? 'Datos públicos, actualizados cuando las fuentes publican.' : 'Public data, refreshed as the sources publish.');
   const bcHome = es ? 'Inicio' : 'Home';
   return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld }) + `
   <nav class="breadcrumb" aria-label="Breadcrumb">
@@ -1681,33 +2058,21 @@ function emitHubPage(locale, slugs) {
   </section>
   <div class="ci-body">
     <div class="ci-cta-row">
-      <a class="btn btn-primary" href="${base}/tools/cost-pulse/">${es ? 'Abrir Cost Pulse' : 'Open Cost Pulse'}</a>
+      <a class="btn btn-primary" href="${base}/tools/cost-pulse/">${es ? 'Abrir la herramienta en vivo' : 'Open the live tool'}</a>
       <a class="btn btn-ghost" href="${base}/cost-index/methodology/">${es ? 'Cómo funciona' : 'How this index works'}</a>
       ${anyPressureProven() ? `<a class="btn btn-ghost" href="${base}/cost-index/lab/">${es ? 'Laboratorio de Presión' : 'Pressure Lab'}</a>` : ''}
       <a class="btn btn-ghost" href="${base}/glossary/cost-index/">${es ? '¿Qué es un índice de costos?' : 'What is a cost index?'}</a>
     </div>
+    ${compositeBand(locale)}
     <p class="ci-hub-data" style="margin:14px 0 4px;font-size:13.5px;line-height:1.5;color:var(--ink-soft)">${freshTxt} ${es ? 'Descarga todo el índice' : 'Download the whole index'}: <a href="/cost-index/index.csv" download style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">CSV</a> · <a href="/cost-index/index.json" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">JSON</a> <span style="color:var(--stone)">${es ? '· dominio público (CC0)' : '· public domain (CC0)'}</span></p>
     ${hubOrientation(locale)}
     ${movingNowSection(shipSlugs, locale)}
+    ${allReadingsTable(shipSlugs, locale)}
     ${sections}
     ${pendingSection}
     ${driverNote}
-    <div class="ci-signup" id="weekly-email">
-      <div class="foot-newsletter">
-        <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="${lang}">
-          <p class="foot-newsletter-pitch">${es ? 'Recibe el índice cada semana por correo — una lectura corta de lo que se mueve y qué hacer al respecto. Cuatro líneas, sin relleno.' : 'Get the index in your inbox every week — a short read on what’s moving and what to do about it. A few lines, no funnels.'}</p>
-          <label class="foot-newsletter-label" for="ci-news-email">${es ? 'Tu correo' : 'Your email'}</label>
-          <input id="ci-news-email" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="you@yourrestaurant.com" />
-          <input type="hidden" name="locale" value="${lang}" />
-          <input type="hidden" name="source" value="cost-index" />
-          <input type="hidden" name="ts" value="" />
-          <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
-          <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="newsletter" data-size="flexible"></div>
-          <button type="submit">${es ? 'Enviarme el índice semanal' : 'Email me the weekly index'}</button>
-        </form>
-      </div>
-    </div>
-    <p class="ci-source"><strong>${es ? 'Fuente' : 'Sourced'}:</strong> ${es ? 'datos públicos de mercado (USDA AMS/LMR, BLS, FRED, EIA, NOAA), vía' : 'public market data (USDA AMS/LMR, BLS, FRED, EIA, NOAA), via'} <a href="${base}/tools/cost-pulse/">Cost Pulse</a>.</p>
+    ${weeklySignup(locale, { anchor: true })}
+    <p class="ci-source"><strong>${es ? 'Fuente' : 'Sourced'}:</strong> ${es ? 'datos públicos de mercado (USDA AMS/LMR, BLS, FRED, EIA, NOAA), vía' : 'public market data (USDA AMS/LMR, BLS, FRED, EIA, NOAA), via'} <a href="${base}/tools/cost-pulse/">${es ? 'la herramienta en vivo' : 'the live tool'}</a>.</p>
   </div>` + pageTail;
 }
 
@@ -1796,7 +2161,7 @@ function emitLabPage(locale) {
     <details class="ci-read__src" style="margin-top:18px"><summary>${methodHead}</summary><div>${escHtml(methodBody)}</div></details>
     <div class="ci-cta-row">
       <a class="btn btn-ghost" href="${base}/cost-index/">${es ? 'Ver el índice' : 'Browse the index'}</a>
-      <a class="btn btn-ghost" href="${base}/tools/cost-pulse/">${es ? 'Abrir Cost Pulse' : 'Open Cost Pulse'}</a>
+      <a class="btn btn-ghost" href="${base}/tools/cost-pulse/">${es ? 'Abrir la herramienta en vivo' : 'Open the live tool'}</a>
     </div>
   </div>
   <script src="/tools/_shared/cost-pressure.js?${v}"></script>

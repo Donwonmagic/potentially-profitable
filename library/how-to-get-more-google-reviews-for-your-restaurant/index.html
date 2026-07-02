@@ -465,11 +465,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/cost-index/">Cost Index</a>
       <a href="/tools/">Tools</a>
       <a href="/studio/">Company</a>
-      <!-- Ledger — sister product (the privacy-forward invoice ledger)
-           on its own subdomain. Plain external link so it passes link
-           equity to ledger.muntin.digital; Plausible's automatic
-           outbound-link tracking measures the nav click. -->
-      <a href="https://ledger.muntin.digital/">Ledger</a>
+      <!-- Ledger — the paid product. Nav points at the on-site /ledger/
+           explainer (what it is, why a platform can't copy it, the founding
+           offer) rather than dumping cold nav traffic straight onto the
+           subdomain; /ledger/ owns the outbound "See Muntin Ledger" CTA. -->
+      <a href="/ledger/">Ledger</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
            /api/auth/me and reveals exactly one. No-JS visitors see
@@ -527,7 +527,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <a href="/cost-index/">Cost Index</a>
     <a href="/tools/">Tools</a>
     <a href="/studio/">Company</a>
-    <a href="https://ledger.muntin.digital/">Ledger</a>
+    <a href="/ledger/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
     <button type="button" class="mobile-search js-open-search">
@@ -1027,7 +1027,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <h3>Run on your own site</h3>
         <a class="companion-kit__single see-also-card" href="/tools/cost-pulse/">
           <span class="see-also-kind">Tool</span>
-          <h4>Cost Pulse — what restaurant ingredients cost right now</h4>
+          <h4>The Cost Index, live — what restaurant ingredients cost right now</h4>
           <p>A free market read of where common restaurant ingredients are priced — a typical range, the trend, and how fresh each number is, from public data.</p>
         </a>
         </div>
@@ -1112,12 +1112,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <!-- LIBRARY:see-also:end -->
       <!-- field-notes-submit:start -->
             <section class="field-notes-submit" id="field-note-form" aria-labelledby="field-note-heading"
-                    data-article-slug="" data-locale="en" data-fnenabled="true">
+                    data-article-slug="how-to-get-more-google-reviews-for-your-restaurant" data-locale="en" data-fnenabled="true">
               <p class="field-notes-submit__eyebrow">Tell us</p>
               <h2 class="field-notes-submit__headline" id="field-note-heading">Be the first field note on this piece.</h2>
               <p class="field-notes-submit__subhead">Tried this in your own restaurant? 100–400 words, your name on it. Don reads every one. Your note shows up here once approved.</p>
               <p class="field-notes-submit__signin js-field-notes-signin" hidden>
-                <a href="/sign-in/?return=%2Fblog%2F%2F%23field-note-form">Sign in to share your experience →</a>
+                <a href="/sign-in/?return=%2Flibrary%2Fhow-to-get-more-google-reviews-for-your-restaurant%2F%23field-note-form">Sign in to share your experience →</a>
               </p>
               <form class="field-notes-form js-field-notes-form" hidden method="post" action="/api/submission/create">
                 <label class="field-notes-form__label">
@@ -1129,7 +1129,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
                   <textarea name="body" class="field-notes-form__body" rows="6" placeholder="What you tried, what happened, what you learned. Plain text — no links." required></textarea>
                   <span class="field-notes-form__counter js-field-notes-counter" aria-live="polite"></span>
                 </label>
-                <input type="hidden" name="articleSlug" value="">
+                <input type="hidden" name="articleSlug" value="how-to-get-more-google-reviews-for-your-restaurant">
                 <input type="hidden" name="locale" value="en">
                 <button type="submit" class="field-notes-form__submit btn btn-primary">Send the note</button>
                 <p class="field-notes-form__msg js-field-notes-msg" role="status" hidden></p>
@@ -1166,12 +1166,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <div class="container">
     <div class="foot-cta">
       <div class="foot-cta-text">
-        <span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don is around"></span>
-        Got a question? The Window is open.
+        Know what every plate costs &mdash; before the week eats the margin.
       </div>
-      <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-      </a>
+      <div class="foot-cta-actions" style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
+        <a class="btn btn-primary" href="/ledger/">See Muntin Ledger
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </a>
+        <a class="btn btn-ghost js-window" href="/window/" title="A direct line to Don. I read every one."><span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don is around"></span>Reach Don</a>
+      </div>
     </div>
 
     <div class="foot-grid">
@@ -1336,9 +1338,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
        <footer> so sync-includes captures it as part of the canonical
        footer block and stays idempotent across re-syncs. -->
   <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Quick actions">
-    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/tools/audits/restaurant/" data-event="sticky-cta-audit">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
-      Run free audit
+    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/tools/cost-pulse/" data-event="sticky-cta-cost-pulse">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 18 L9 12 L13 15 L20 6"/><polyline points="15 6 20 6 20 11"/></svg>
+      Check prices
     </a>
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/window/" data-event="sticky-cta-window">
       <span class="mobile-cta-bar__pulse" id="mobileCtaBarPulse" hidden aria-hidden="true" title="Don is around"></span>

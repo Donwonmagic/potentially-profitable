@@ -20,6 +20,29 @@
     if (txt != null) e.textContent = txt;
     return e;
   }
+  // Whole days between an ISO/seed date string and now, or null if unparseable.
+  // Used to age the freshness line honestly (a stale artifact must not read fresh).
+  function ageInDays(isoStr) {
+    if (!isoStr) return null;
+    var t = Date.parse(isoStr);
+    if (!isFinite(t)) return null;
+    return Math.floor((Date.now() - t) / 86400000);
+  }
+  // Build a Plate Cost deep link that prefills ONE row with this ingredient name
+  // (price left empty on purpose — cost-index-hint.js then offers the wholesale
+  // read as a labeled, confidence-gated estimate on arrival, instead of us
+  // asserting a delivered price). Mirrors PC.encodeRecipe's fragment format
+  // (v=1; row = ingredient|apPrice|apQty|apUnit|yield|usedQty|usedUnit). If
+  // Plate Cost ever bumps its fragment version, decodeRecipe returns null and the
+  // link degrades gracefully to an empty calculator — no hard break.
+  function plateCostHref(name) {
+    function enc(s) {
+      return encodeURIComponent(String(s == null ? '' : s))
+        .replace(/\|/g, '%7C').replace(/;/g, '%3B').replace(/&/g, '%26').replace(/=/g, '%3D');
+    }
+    var row = [name, '', '', '', '', '', ''].map(enc).join('|');
+    return (es ? '/es' : '') + '/tools/plate-cost/#v=1&p=1&i=' + row;
+  }
   // Privacy-respecting analytics: only ingredient keys + categorical labels
   // (verdict, action) ever leave — never the operator's typed price. Best-effort
   // and guarded, so a missing/blocked Plausible never breaks the tool.
@@ -50,22 +73,43 @@
     try { history.replaceState(null, '', location.pathname + location.search + hash); }
     catch (e) { /* history may be unavailable */ }
   }
+  var findCountEl = null;
   function applyFilters() {
     var keys = basketKeys();
+    var shown = 0, total = 0;
     Array.prototype.forEach.call(listEl.querySelectorAll('.cp-market-item'), function (c) {
       var k = c.getAttribute('data-key') || '';
       var nm = c.getAttribute('data-name') || '';
       var hideByQuery = query !== '' && nm.indexOf(query) === -1;
       var hideByBasket = basketOnly && keys.length > 0 && !basket[k];
       c.hidden = hideByQuery || hideByBasket;
+      total++;
+      if (!c.hidden) shown++;
     });
+    // Live result count — visible affordance AND the screen-reader status for the
+    // otherwise-silent filter (filtering toggled card.hidden with no announcement).
+    if (findCountEl) {
+      if (query === '' && !basketOnly) {
+        findCountEl.textContent = '';
+      } else if (shown === 0) {
+        findCountEl.textContent = query
+          ? L('No matches for “' + query + '”', 'Sin resultados para “' + query + '”')
+          : L('Nothing tracked yet', 'Nada seguido aún');
+      } else {
+        findCountEl.textContent = L(shown + ' of ' + total + ' shown', shown + ' de ' + total + ' visibles');
+      }
+    }
   }
-  function trackButton(key) {
+  function trackButton(key, name) {
     var on = !!basket[key];
     var b = el('button', 'cp-track', on ? L('★ Tracking', '★ Siguiendo') : L('☆ Track', '☆ Seguir'));
     b.type = 'button';
     b.setAttribute('aria-pressed', on ? 'true' : 'false');
-    b.setAttribute('aria-label', L('Track this ingredient', 'Seguir este ingrediente'));
+    // Name the target so a screen-reader user tabbing a list of 8+ stars can tell
+    // romaine from butter, instead of hearing "Track this ingredient" repeatedly.
+    b.setAttribute('aria-label', name
+      ? L('Track ' + name, 'Seguir ' + name)
+      : L('Track this ingredient', 'Seguir este ingrediente'));
     b.addEventListener('click', function () {
       if (basket[key]) delete basket[key]; else basket[key] = 1;
       var now = !!basket[key];
@@ -107,8 +151,11 @@
     var min = Math.min.apply(null, finite), max = Math.max.apply(null, finite), span = (max - min) || 1;
     var n = values.length;
     var step = n > 1 ? (w - 2 * pad) / (n - 1) : 0;
-    var color = dir === 'up' ? 'var(--rust)' : dir === 'down' ? 'var(--teal)' : 'var(--stone)';
     var thin = confidence === 'low' || confidence === 'directional';   // dashed = provisional read
+    // A thin read must not paint a CONFIDENT directional line — neutralize it to
+    // stone so the dashed shape reads as "rough" and stops fighting the calmer
+    // verdict beside it (Viz review #6). A firm read keeps rust(up)/teal(down).
+    var color = thin ? 'var(--stone)' : (dir === 'up' ? 'var(--rust)' : dir === 'down' ? 'var(--teal)' : 'var(--stone)');
     function X(i) { return pad + i * step; }
     function Y(v) { return h - pad - ((v - min) / span) * (h - 2 * pad); }
     // Today-in-its-own-range: a faint band at this ingredient's OWN p25–p75 over
@@ -125,7 +172,10 @@
       bandRect.setAttribute('width', (w - 2 * pad).toFixed(1));
       bandRect.setAttribute('y', Math.min(yTop, yBot).toFixed(1));
       bandRect.setAttribute('height', Math.max(0.5, Math.abs(yBot - yTop)).toFixed(1));
-      bandRect.setAttribute('fill', 'var(--stone)'); bandRect.setAttribute('fill-opacity', '0.16');
+      // Bumped from 0.16 — at 30px tall on a phone the old band was invisible.
+      // Hairline edges give the spread perceptible top/bottom bounds (Viz review #8).
+      bandRect.setAttribute('fill', 'var(--stone)'); bandRect.setAttribute('fill-opacity', '0.22');
+      bandRect.setAttribute('stroke', 'var(--stone)'); bandRect.setAttribute('stroke-opacity', '0.38'); bandRect.setAttribute('stroke-width', '0.5');
       bandRect.setAttribute('class', 'cp-spark-band');
       svg.appendChild(bandRect);
     }
@@ -190,6 +240,90 @@
   // { text, srText } or null. `dates` must be 1:1 with `values`.
   function weekOverWeek(values, dates, unit) { return FMT.weekOverWeek(values, dates, unit); }
   function vsLastYear(values, dates, unit) { return FMT.vsLastYear(values, dates, unit); }
+
+  // Market series for the then-vs-now comparison. Prefers the deep history seed
+  // (window.MUNTIN_COST_INDEX_HISTORY — ~3yr of wholesale reads, loaded as a second
+  // same-origin <script>), so an operator can compare to a delivery months back;
+  // falls back to the ingredient's short weekly spark when the seed is absent or
+  // lacks the key. Returns { values, dates } (parallel arrays) or null.
+  function marketSeriesFor(ing) {
+    var H = (typeof window !== 'undefined' && window.MUNTIN_COST_INDEX_HISTORY) ||
+            (typeof self !== 'undefined' && self.MUNTIN_COST_INDEX_HISTORY) || null;
+    var deep = H && ing && ing.key ? H[ing.key] : null;
+    if (Array.isArray(deep) && deep.length >= 2) {
+      return { values: deep.map(function (p) { return p[1]; }), dates: deep.map(function (p) { return p[0]; }) };
+    }
+    if (Array.isArray(ing.spark) && Array.isArray(ing.spark_dates) && ing.spark.length === ing.spark_dates.length && ing.spark.length >= 2) {
+      return { values: ing.spark, dates: ing.spark_dates };
+    }
+    return null;
+  }
+
+  // Today, as a UTC ISO day — the operator's implicit "now". Read once so the whole
+  // panel shares one clock (the comparison's staleness check compares it to the live
+  // read's generatedAt). Date() is fine in the browser; the pure math stays in FMT.
+  var TODAY_ISO = (function () { try { return new Date().toISOString().slice(0, 10); } catch (_) { return DATA.generatedAt || ''; } })();
+
+  // Motion gate: honor prefers-reduced-motion globally. When motion is reduced (or
+  // matchMedia/IntersectionObserver are absent), reveals are no-ops and content is
+  // simply present — never hidden behind an animation that won't run.
+  var ALLOW_MOTION = !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  // Staggered entrance: a card fades + rises as it scrolls into view, once. Only
+  // opacity/transform animate (compositor-only, no layout shift); the box is already
+  // reserved, so there's no CLS. Decorative — adds nothing a screen reader needs.
+  function revealOnAppend(fig, i) {
+    if (!ALLOW_MOTION || typeof IntersectionObserver === 'undefined') return;
+    fig.classList.add('cp-reveal');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.style.transitionDelay = (Math.min(i, 7) * 45) + 'ms';
+        e.target.classList.add('cp-in');
+        io.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    io.observe(fig);
+  }
+
+  // Two-slope sketch for the comparison: your line vs the market's, both from 0% at
+  // left to their change at right, on a shared axis. The divergence at the right IS
+  // the gap. aria-hidden — the verdict prose already carries the facts for SR users.
+  function slopeSvg(ownerPct, marketPct, tone) {
+    var NS = 'http://www.w3.org/2000/svg';
+    var W = 132, H = 44, padX = 6, padY = 7, x0 = padX, x1 = W - padX;
+    var span = Math.max(0.05, Math.abs(ownerPct), Math.abs(marketPct));
+    var mid = H / 2;
+    function y(p) { return mid - (p / span) * (mid - padY); }
+    var svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('class', 'cp-cmp-slope'); svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    svg.setAttribute('width', W); svg.setAttribute('height', H); svg.setAttribute('aria-hidden', 'true');
+    function line(p, color, w, dash) {
+      var ln = document.createElementNS(NS, 'line');
+      ln.setAttribute('x1', x0); ln.setAttribute('y1', y(0)); ln.setAttribute('x2', x1); ln.setAttribute('y2', y(p));
+      ln.setAttribute('stroke', color); ln.setAttribute('stroke-width', w); ln.setAttribute('stroke-linecap', 'round');
+      if (dash) ln.setAttribute('stroke-dasharray', dash);
+      svg.appendChild(ln);
+      var dot = document.createElementNS(NS, 'circle');
+      dot.setAttribute('cx', x1); dot.setAttribute('cy', y(p)); dot.setAttribute('r', 2.2); dot.setAttribute('fill', color);
+      svg.appendChild(dot);
+    }
+    var youColor = tone === 'over' ? 'var(--rust)' : tone === 'under' ? 'var(--teal)' : 'var(--ink)';
+    // Divergence wedge: the area between your line and the market's IS the story.
+    // A faint tone-keyed fill makes the gap legible at a glance — the more the lines
+    // spread, the bigger the shaded wedge. Honest: it's just the area the two real
+    // slopes enclose, no invented precision.
+    var wedge = document.createElementNS(NS, 'polygon');
+    wedge.setAttribute('points', x0 + ',' + y(0) + ' ' + x1 + ',' + y(marketPct) + ' ' + x1 + ',' + y(ownerPct));
+    wedge.setAttribute('fill', youColor); wedge.setAttribute('opacity', '0.13');
+    svg.appendChild(wedge);
+    var base = document.createElementNS(NS, 'line');
+    base.setAttribute('x1', x0); base.setAttribute('y1', y(0)); base.setAttribute('x2', x1); base.setAttribute('y2', y(0));
+    base.setAttribute('stroke', 'var(--line)'); base.setAttribute('stroke-width', 1);
+    svg.appendChild(base);
+    line(marketPct, 'var(--stone)', 1.6, '3 2');          // market = neutral, dashed
+    line(ownerPct, youColor, 2.4, null);                  // yours = solid, tone-colored
+    return svg;
+  }
   function parseMoney(v) {
     var n = parseFloat(String(v == null ? '' : v).replace(/[^0-9.]/g, ''));
     return isFinite(n) && n >= 0 ? Math.round(n * 100) : null;
@@ -233,15 +367,18 @@
     var pos = cents < p25 ? 'below' : cents > p75 ? 'above' : 'in';
     out.appendChild(bandSvg(p25, p75, median, cents));
     var band = money(p25) + '–' + money(p75);
+    // Honest framing: a delivered price legitimately sits ABOVE the wholesale band,
+    // so we DON'T call "above" overpaying or "below" a good deal. We show the markup
+    // over wholesale and what to actually watch — the gap growing while wholesale is flat.
     var verdict = el('p', 'cp-you-verdict',
       pos === 'above'
-        ? L('You pay ' + money(cents) + ' — above the typical ' + band + '. Worth a vendor conversation.',
-            'Pagas ' + money(cents) + ' — arriba del rango típico ' + band + '. Vale una conversación con tu proveedor.')
+        ? L('You pay ' + money(cents) + ' — about ' + money(cents - p75) + ' over the top of wholesale (' + band + '). A delivered price runs above wholesale, so some markup is normal; the lever is a gap that is large or growing while wholesale stays flat.',
+            'Pagas ' + money(cents) + ' — cerca de ' + money(cents - p75) + ' arriba del tope del mayoreo (' + band + '). Un precio entregado va arriba del mayoreo, así que algo de margen es normal; la palanca es una brecha grande o que crece mientras el mayoreo no se mueve.')
         : pos === 'below'
-          ? L('You pay ' + money(cents) + ' — below the typical ' + band + '. Good deal.',
-              'Pagas ' + money(cents) + ' — abajo del rango típico ' + band + '. Buen precio.')
-          : L('You pay ' + money(cents) + ' — right in the typical ' + band + '.',
-              'Pagas ' + money(cents) + ' — dentro del rango típico ' + band + '.'));
+          ? L('You pay ' + money(cents) + ' — below the wholesale range itself (' + band + '). That is unusual for a delivered price; double-check the unit, or it is a genuinely strong deal.',
+              'Pagas ' + money(cents) + ' — por debajo del propio rango mayorista (' + band + '). Es inusual para un precio entregado; verifica la unidad, o es un trato realmente bueno.')
+          : L('You pay ' + money(cents) + ' — inside the wholesale range itself (' + band + '). That is a tight markup; your delivered cost is close to wholesale.',
+              'Pagas ' + money(cents) + ' — dentro del propio rango mayorista (' + band + '). Es un margen ajustado; tu costo entregado está cerca del mayoreo.'));
     verdict.setAttribute('data-pos', pos);
     out.appendChild(verdict);
     return pos;
@@ -277,39 +414,80 @@
     }
     youSummaryEl.hidden = false;
     var n = aboves.length, top = aboves[0];
+    // Descriptive, not an alarm: a markup over wholesale is normal, so this just
+    // ranks where YOUR gap to wholesale is widest — a place to compare vendors,
+    // not a verdict that you're overpaying.
     var lead = L(
-      'Above the typical range on ' + n + (n === 1 ? ' ingredient' : ' ingredients') + '. ',
-      'Arriba del rango típico en ' + n + (n === 1 ? ' ingrediente' : ' ingredientes') + '. ');
+      'Your widest gaps over wholesale, across the ' + n + (n === 1 ? ' price' : ' prices') + ' you entered. ',
+      'Tus mayores brechas sobre el mayoreo, en ' + n + (n === 1 ? ' precio' : ' precios') + ' que escribiste. ');
     var biggest = L(
-      'Biggest gap: ' + top.name + ' (' + money(top.gap) + ' over per ' + top.unit + ').',
-      'Mayor diferencia: ' + top.name + ' (' + money(top.gap) + ' de más por ' + top.unit + ').');
+      'Widest: ' + top.name + ' (' + money(top.gap) + ' over wholesale per ' + top.unit + '). A gap is normal — worth comparing across vendors, and watching the ones that grow.',
+      'Mayor: ' + top.name + ' (' + money(top.gap) + ' sobre el mayoreo por ' + top.unit + '). Una brecha es normal — vale compararla entre proveedores y vigilar las que crecen.');
     var txt = lead + biggest;
     if (txt !== youSummaryLast) { youSummaryEl.textContent = txt; youSummaryLast = txt; }
   }
 
-  function vendorDraft(name, unit, cents, band) {
+  // The operator's own outgoing letter to their vendor — first-person "I" = the
+  // operator (never the Muntin Desk), usted register in ES. Two modes, both built
+  // from merge fields only (no invented numbers): 'compare' cites the then-vs-now
+  // PERCENTAGE move (the operator's own invoices vs public wholesale movement, the
+  // honest framing — never a dollar "you owe me"); 'range' is the single-price
+  // fallback, citing a "typical range from public market data." Reuses pctWord's
+  // wording so the letter's percentages are byte-identical to the on-screen verdict.
+  function apct(p) { var a = Math.abs(p * 100); return a.toFixed(a < 10 ? 1 : 0).replace(/\.0$/, '') + '%'; }
+  function vendorDraft(name, unit, opts) {
+    opts = opts || {};
+    if (opts.mode === 'compare') {
+      var ownerEN = (opts.ownerPct >= 0 ? 'up ' : 'down ') + apct(opts.ownerPct);
+      var marketEN = (opts.marketPct >= 0 ? 'up about ' : 'down about ') + apct(opts.marketPct);
+      var ownerES = (opts.ownerPct >= 0 ? 'subió ' : 'bajó ') + apct(opts.ownerPct);
+      var marketES = (opts.marketPct >= 0 ? 'subió alrededor de ' : 'bajó alrededor de ') + apct(opts.marketPct);
+      return L(
+        'Hi [vendor rep],\n\n' +
+        'Thanks for handling my orders — I plan to keep buying here. This is a pricing question, not a complaint.\n\n' +
+        'I have been tracking ' + name + ' (' + unit + ') across my own invoices. Between ' + opts.aDate + ' and ' + opts.bDate + ', my delivered price moved ' + ownerEN + '. Over the same window, public market data shows wholesale on this line moved ' + marketEN + '. So my cost has outrun the broader market, and I wanted to bring it to you directly.\n\n' +
+        'There may be a straightforward reason — a freight change, a pack or case-size change, a fuel surcharge — and if so, I would like to understand it. If part of it is open to a look, I would rather solve it with you than shop it around.\n\n' +
+        'A few ways that could work, whichever is easiest on your end:\n' +
+        '- a second look at my per-' + unit + ' price;\n' +
+        '- a different pack or case size that lands cheaper per ' + unit + ';\n' +
+        '- a standing-order price, since I reorder this every week;\n' +
+        '- or a quarterly rebate if a list-price change is not possible.\n\n' +
+        'Could you let me know before my next order? Happy to do a quick call if that is easier.\n\n' +
+        'Thanks,\n[your name]\n[restaurant name]',
+
+        'Hola [proveedor]:\n\n' +
+        'Gracias por atender mis pedidos — pienso seguir comprando aquí. Esto es una pregunta sobre precios, no una queja.\n\n' +
+        'He estado siguiendo ' + name + ' (' + unit + ') en mis propias facturas. Entre ' + opts.aDate + ' y ' + opts.bDate + ', mi precio entregado ' + ownerES + '. En esa misma ventana, los datos públicos del mercado muestran que el mayoreo de esta línea ' + marketES + '. Así que mi costo se adelantó al mercado, y quería comentárselo directamente.\n\n' +
+        'Puede haber una razón sencilla — un cambio de flete, de presentación o de tamaño de caja, un recargo de combustible — y si es así, me gustaría entenderla. Si parte de esto se puede revisar, prefiero resolverlo con usted que buscar en otro lado.\n\n' +
+        'Algunas formas que podrían servir, la que le sea más fácil:\n' +
+        '- una segunda mirada a mi precio por ' + unit + ';\n' +
+        '- otra presentación o tamaño de caja que salga más barato por ' + unit + ';\n' +
+        '- un precio de pedido fijo, ya que lo vuelvo a pedir cada semana;\n' +
+        '- o un reembolso trimestral si no se puede cambiar el precio de lista.\n\n' +
+        '¿Me podría avisar antes de mi próximo pedido? Con gusto hacemos una llamada rápida si es más fácil.\n\n' +
+        'Gracias,\n[su nombre]\n[su restaurante]');
+    }
+    // 'range' — single-price fallback (no two-invoice comparison in scope).
     return L(
       'Hi [vendor rep],\n\n' +
-      'Thank you for taking care of my orders — I value working with you and want to keep my business here.\n\n' +
-      'I am reviewing my food costs and had a question about ' + name + ' (' + unit + '). ' +
-      'I currently pay ' + money(cents) + ' per ' + unit + '. ' +
-      'Public market data shows a typical range of ' + band + ' per ' + unit + ' right now, ' +
-      'so I wanted to ask if we can look at it together.\n\n' +
-      'I order this regularly and plan to keep doing so. Is there room to bring my price closer to that range, ' +
-      'or a different pack or standing order that would help?\n\n' +
+      'Thanks for handling my orders — I plan to keep buying here.\n\n' +
+      'I am reviewing my food costs and want to ask about ' + name + ' (' + unit + '). ' +
+      'I currently pay ' + money(opts.cents) + ' per ' + unit + '. ' +
+      'Public market data shows a typical range of ' + opts.band + ' per ' + unit + ' right now, ' +
+      'so I would like to compare notes on this line.\n\n' +
+      'I order this regularly. Can we look at the price, a different pack size, or a standing order?\n\n' +
       'Could you let me know before my next order?\n\n' +
-      'Thanks again,\n[your name]\n[restaurant name]',
+      'Thanks,\n[your name]\n[restaurant name]',
 
       'Hola [proveedor]:\n\n' +
-      'Gracias por atender mis pedidos. Valoro trabajar con usted y quiero seguir comprando aquí.\n\n' +
-      'Estoy revisando mis costos y tengo una pregunta sobre ' + name + ' (' + unit + '). ' +
-      'Actualmente pago ' + money(cents) + ' por ' + unit + '. ' +
-      'Los datos públicos del mercado muestran un rango típico de ' + band + ' por ' + unit + ' en este momento, ' +
-      'así que quería pedirle que lo revisemos juntos.\n\n' +
-      'Compro este producto con regularidad y pienso seguir haciéndolo. ¿Habría posibilidad de acercar mi precio a ese rango, ' +
-      'o algún tamaño de presentación o pedido fijo que ayude?\n\n' +
+      'Gracias por atender mis pedidos — pienso seguir comprando aquí.\n\n' +
+      'Estoy revisando mis costos y quiero preguntar sobre ' + name + ' (' + unit + '). ' +
+      'Actualmente pago ' + money(opts.cents) + ' por ' + unit + '. ' +
+      'Los datos públicos del mercado muestran un rango típico de ' + opts.band + ' por ' + unit + ' en este momento, ' +
+      'así que me gustaría revisarlo con usted.\n\n' +
+      'Compro este producto con regularidad. ¿Podemos ver el precio, otro tamaño de presentación o un pedido fijo?\n\n' +
       '¿Me podría avisar antes de mi próximo pedido?\n\n' +
-      'Gracias de nuevo,\n[su nombre]\n[su restaurante]');
+      'Gracias,\n[su nombre]\n[su restaurante]');
   }
   function buildVendorNote(ing, unit) {
     var key = ing.key || ('x' + Math.random().toString(36).slice(2));
@@ -324,11 +502,14 @@
     var region = el('div', 'cp-note-region');
     region.id = regionId;
     region.hidden = true;
-    if (preview) {
-      region.appendChild(el('p', 'cp-note-caution',
-        L('Sample range — confirm the live number before you send this.',
-          'Rango de muestra — confirma el número real antes de enviar esto.')));
-    }
+    // Always-on caution: the figures are public market data, not a quote for THIS
+    // vendor — confirm before sending. Sharper wording in preview (sample numbers).
+    region.appendChild(el('p', 'cp-note-caution',
+      preview
+        ? L('Sample range — confirm the live number before you send this.',
+            'Rango de muestra — confirma el número real antes de enviar esto.')
+        : L('These figures come from public market data, not a quote for your vendor — confirm them before you send.',
+            'Estas cifras vienen de datos públicos del mercado, no de una cotización de tu proveedor — confírmalas antes de enviar.')));
     var taId = 'cpNoteText-' + key;
     var lab = el('label', 'cp-note-label', L('Edit before you send', 'Edítalo antes de enviar'));
     lab.setAttribute('for', taId);
@@ -387,8 +568,8 @@
       if (open) { track('Cost Index Vendor Note', { action: 'opened', ingredient: ing.key || '' }); if (ta.focus) ta.focus(); }
     });
 
-    function fill(cents, band) {
-      if (!dirty) ta.value = vendorDraft(nm, unit, cents, band);
+    function fill(opts) {
+      if (!dirty) ta.value = vendorDraft(nm, unit, opts);
       mail.href = mailtoHref(ta.value);
     }
     function collapse() {
@@ -414,6 +595,20 @@
     var freshEl = el('p', 'cp-market-asof');
     freshEl.appendChild(el('strong', null, L('Market data as of ', 'Datos de mercado al ')));
     freshEl.appendChild(document.createTextNode(DATA.generatedAt));
+    // Age the whole-read freshness line honestly: the build runs every business
+    // day, so a build older than a week means the pipeline has fallen behind —
+    // surface that as a visible warn chip rather than let a stale artifact read
+    // as current. Keyed off the build date, not any one ingredient's last point,
+    // so mixed-cadence series (daily produce vs monthly indices) aren't false-flagged.
+    var buildAge = ageInDays(DATA.generatedAt);
+    if (buildAge != null && buildAge > 7) {
+      freshEl.appendChild(document.createTextNode(' '));
+      var staleChip = el('span', 'cp-stale-chip', L(buildAge + ' days old', 'hace ' + buildAge + ' días'));
+      staleChip.setAttribute('title', L(
+        'This whole read has not refreshed in over a week — treat it as a guide, not a current quote.',
+        'Toda esta lectura no se actualiza hace más de una semana — tómala como guía, no como cotización actual.'));
+      freshEl.appendChild(staleChip);
+    }
     dekEl.parentNode.insertBefore(freshEl, dekEl.nextSibling);
   }
   if (DATA.status === 'preview') {
@@ -515,7 +710,7 @@
   }
 
   var movers = [];
-  (DATA.ingredients || []).forEach(function (ing) {
+  (DATA.ingredients || []).forEach(function (ing, ingIdx) {
     // Live seed carries the baked, fact-gated assessment (already an assess()
     // shape); preview seed carries raw input we run the engine on in-browser.
     var r = ing.assessment || MuntinCompositePrice.assess(ing.input || {});
@@ -561,6 +756,10 @@
     if (ing.key) fig.id = 'ci-' + ing.key;          // deep anchor: /…/#ci-romaine
     if (ing.key) fig.setAttribute('data-key', ing.key); // for the basket
     fig.setAttribute('data-name', name.toLowerCase()); // for the filter
+    // Confidence as a card-wide material: a neutral left rule whose presence tracks
+    // how sure the read is (high=firm, directional=faint). Honesty made visible —
+    // never painted in teal/rust, which stay reserved for direction signal.
+    fig.setAttribute('data-conf', r.confidence || 'directional');
     var confPhrase = confPhraseMap[r.confidence] || (conf + ' ' + L('confidence', 'confianza'));
     fig.setAttribute('data-audio-alt',
       name + '. ' + rangeText + '. ' + L('The market is ', 'El mercado va ') + trendText + '. ' +
@@ -588,33 +787,46 @@
       headRight.appendChild(tierBadge);
     }
     headRight.appendChild(chip);
-    if (ing.key) headRight.appendChild(trackButton(ing.key));
+    if (ing.key) headRight.appendChild(trackButton(ing.key, name));
     head.appendChild(headRight);
     fig.appendChild(head);
 
-    fig.appendChild(el('p', 'cp-market-range', rangeText));
+    // Hero figure: the dollar level in Fraunces (the brand's display face), with the
+    // connective words muted — a "printed financial figure," not a sentence. The
+    // plain rangeText still feeds the SR caption below, so nothing is lost to a11y.
+    var rangeEl = el('p', 'cp-market-range');
+    if (!lvl) {
+      rangeEl.textContent = rangeText;
+    } else {
+      var heroStr = single ? money(lvl.rangeCents[0]) : money(lvl.rangeCents[0]) + '–' + money(lvl.rangeCents[1]);
+      rangeEl.appendChild(el('span', 'cp-range-pre', L('About ', 'Cerca de ')));
+      rangeEl.appendChild(el('span', 'cp-range-hero', heroStr));
+      rangeEl.appendChild(el('span', 'cp-range-suf',
+        L(' a ' + unit + (single ? ' · one source, range not measurable yet' : ''),
+          ' por ' + unit + (single ? ' · una fuente, rango aún no medible' : ''))));
+    }
+    fig.appendChild(rangeEl);
 
-    // The liftable verdict — the single most quotable line the index emits, and
-    // the wedge no incumbent fills: a plain "are you overpaying?" test stated
-    // against the PUBLIC band, before the operator types anything. Promotes the
-    // per-card basis machinery (renderYou/updateYouSummary) from buried-input to
-    // a headline. Only minted when a real MEASURED dollar range exists (a true
-    // p25–p75, not a one-source point, not an index) — every number is read from
-    // lvl.rangeCents, so it stays inside the fact gate (no invented figures).
+    // Wholesale reference, framed HONESTLY. A delivered invoice price is NOT
+    // comparable to a bare wholesale band — freight, pack and the distributor's
+    // margin mean a normal delivered price sits ABOVE the band, so "above the band
+    // = overpaying" was a false test (and contradicted the delivered-vs-wholesale
+    // caveat right beside it). The defensible value is DIRECTION: wholesale tells
+    // you which way the market is moving, so you can tell a real market move from a
+    // vendor padding the markup. Only minted on a real MEASURED p25–p75 range; every
+    // number is read from lvl.rangeCents, so it stays inside the fact gate.
     if (lvl && !single && ing.tier === 'measured') {
       var loTxt = money(lvl.rangeCents[0]);
       var hiTxt = money(lvl.rangeCents[1]);
       var basisEl = el('p', 'cp-market-basis');
       basisEl.appendChild(el('strong', null, L('Public wholesale: ', 'Mayoreo público: ')
         + loTxt + '–' + hiTxt + L(' a ', ' por ') + unit + '. '));
-      basisEl.appendChild(document.createTextNode(L('If your invoice is ', 'Si tu factura está ')));
-      var aboveTest = el('span', 'cp-basis-test',
-        L('above ' + hiTxt, 'arriba de ' + hiTxt));
-      basisEl.appendChild(aboveTest);
-      basisEl.appendChild(document.createTextNode(L(", you're paying over market.", ', estás pagando por encima del mercado.')));
+      basisEl.appendChild(document.createTextNode(L(
+        'Your delivered price runs above this — freight, pack and the distributor’s margin are baked in, so sitting over the band is not overpaying by itself. Wholesale’s real use is direction: if it climbs and your price climbs about the same, that’s the market; if your price climbs more, that’s the markup worth a call.',
+        'Tu precio entregado va por encima de esto — flete, empaque y el margen del distribuidor están incluidos, así que estar arriba del rango no es pagar de más por sí solo. El uso real del mayoreo es la dirección: si sube y tu precio sube casi igual, es el mercado; si tu precio sube más, ese es el margen que vale una llamada.')));
       fig.appendChild(basisEl);
-      var basisAlt = L('Public wholesale runs ' + loTxt + ' to ' + hiTxt + ' a ' + unit + '. If your invoice is above ' + hiTxt + ', you are paying over market.',
-                       'El mayoreo público va de ' + loTxt + ' a ' + hiTxt + ' por ' + unit + '. Si tu factura está arriba de ' + hiTxt + ', estás pagando por encima del mercado.');
+      var basisAlt = L('Public wholesale runs ' + loTxt + ' to ' + hiTxt + ' a ' + unit + '. A delivered price runs above wholesale, so being over the band is not overpaying by itself. Use wholesale for direction: if your price rises more than wholesale did, that is the markup to question.',
+                       'El mayoreo público va de ' + loTxt + ' a ' + hiTxt + ' por ' + unit + '. Un precio entregado va por encima del mayoreo, así que estar arriba del rango no es pagar de más. Usa el mayoreo para la dirección: si tu precio sube más que el mayoreo, ese es el margen a cuestionar.');
       fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + basisAlt);
     }
 
@@ -623,15 +835,21 @@
     // number no public index shows: what the trim actually costs you.
     if (ing.epCents && ing.yield && lvl) {
       var yPct = Math.round(ing.yield * 100);
-      var plateTxt = L('True cost ≈ ' + money(ing.epCents) + ' per usable ' + unit + ' (' + yPct + '% trim yield)',
-                       'Costo real ≈ ' + money(ing.epCents) + ' por ' + unit + ' utilizable (rendimiento ' + yPct + '%)');
+      var plateTxt = L('After trim waste, a usable ' + unit + ' really costs about ' + money(ing.epCents) + ' (' + yPct + '% yield) — the wholesale price buys un-trimmed product.',
+                       'Tras la merma, ' + unit + ' utilizable cuesta en realidad cerca de ' + money(ing.epCents) + ' (rendimiento ' + yPct + '%) — el precio mayorista es por producto sin limpiar.');
       var plateEl = el('p', 'cp-market-plate', plateTxt);
       plateEl.setAttribute('title', L('Wholesale price ÷ typical trim yield = true cost per usable unit. Your own yield governs.',
                                       'Precio mayorista ÷ rendimiento típico = costo real por unidad utilizable. Tu propio rendimiento manda.'));
       fig.appendChild(plateEl);
       fig.setAttribute('data-audio-alt', (fig.getAttribute('data-audio-alt') || '') + ' ' + plateTxt + '.');
     }
-    var tEl = el('p', 'cp-market-trend', (r.trend.dir === 'up' ? '▲ ' : r.trend.dir === 'down' ? '▼ ' : '● ') + trendText);
+    // The ▲/▼/● glyph is decorative — the word ("up"/"down"/"flat") is already in
+    // trendText, so aria-hide the glyph or a screen reader reads "black up-pointing triangle".
+    var tEl = el('p', 'cp-market-trend');
+    var tGlyph = el('span', null, r.trend.dir === 'up' ? '▲' : r.trend.dir === 'down' ? '▼' : '●');
+    tGlyph.setAttribute('aria-hidden', 'true');
+    tEl.appendChild(tGlyph);
+    tEl.appendChild(document.createTextNode(' ' + trendText));
     tEl.setAttribute('data-dir', r.trend.dir);
     fig.appendChild(tEl);
 
@@ -772,6 +990,18 @@
       fig.appendChild(yl);
     }
 
+    // Dashboard → Plate Cost deep link: land in the calculator with this ingredient
+    // prefilled (one tap from a market move to "what this does to my dish"). Only
+    // for dollar-priced reads, where costing into a plate is meaningful.
+    if (lvl && name) {
+      var pcl = el('p', 'cp-market-platecost');
+      var pca = el('a', null, L('Cost this into a dish', 'Cuesta esto en un platillo'));
+      pca.href = plateCostHref(name);
+      pca.appendChild(document.createTextNode(' →'));
+      pcl.appendChild(pca);
+      fig.appendChild(pcl);
+    }
+
     // Provenance drawer — which sources fed this read.
     var prov = el('details', 'cp-market-prov');
     prov.appendChild(el('summary', null, L('Where this comes from', 'De dónde viene')));
@@ -784,8 +1014,8 @@
     fig.appendChild(prov);
 
     fig.appendChild(el('figcaption', null,
-      L('Read the range first, then the direction — and check whether your invoice agrees.',
-        'Lee primero el rango, luego la dirección — y revisa si tu factura coincide.')));
+      L('Wholesale shows where the market’s heading; your delivered price sits above it. The move is the signal — not the gap.',
+        'El mayoreo muestra hacia dónde va el mercado; tu precio entregado queda por encima. La señal es el movimiento, no la diferencia.')));
 
     // "Where do you sit?" — operator types their price, sees it pinned on the
     // band. A free taste of vendor-vs-market; only when there's a real level.
@@ -802,6 +1032,16 @@
       youOut.setAttribute('role', 'status'); youOut.setAttribute('aria-live', 'polite');
       var note = buildVendorNote(ing, unit);
       note.root.hidden = true;
+      // One vendor note per card, fed by whichever interaction has the richer claim:
+      // a non-thin then-vs-now "over" result (percentage letter) takes priority over
+      // the single-price band pin (range letter). syncNote arbitrates so the two
+      // handlers never fight over the note's visibility or contents.
+      var noteState = { band: null, cmp: null };
+      function syncNote() {
+        if (noteState.cmp) { note.fill(noteState.cmp); note.root.hidden = false; }
+        else if (noteState.band) { note.fill({ mode: 'range', cents: noteState.band.cents, band: noteState.band.band }); note.root.hidden = false; }
+        else { note.root.hidden = true; note.collapse(); }
+      }
       (function (o, level, h) {
         var priceFired = false, debounce = null;
         function update() {
@@ -816,14 +1056,10 @@
             gap: (pos === 'above' && cents != null) ? (cents - level.rangeCents[1]) : 0
           };
           updateYouSummary();
-          if (pos === 'above') {
-            var band = money(level.rangeCents[0]) + '–' + money(level.rangeCents[1]);
-            h.fill(cents, band);
-            h.root.hidden = false;
-          } else {
-            h.root.hidden = true;
-            h.collapse();
-          }
+          noteState.band = (pos === 'above')
+            ? { cents: cents, band: money(level.rangeCents[0]) + '–' + money(level.rangeCents[1]) }
+            : null;
+          syncNote();
         }
         // Debounce: the verdict lives in an aria-live region, so updating on every
         // keystroke machine-guns a screen reader mid-typing. Settle ~350ms first.
@@ -832,7 +1068,95 @@
           debounce = setTimeout(update, 350);
         });
       })(youOut, lvl, note);
-      you.appendChild(lab); you.appendChild(inp); you.appendChild(youOut); you.appendChild(note.root);
+
+      // ── then-vs-now ────────────────────────────────────────────────────────
+      // The operator's particular case: TWO exact invoice dates + the price on each.
+      // We compare THEIR change to wholesale's change over that same date span. The
+      // market series is augmented with the fresh live level so a recent invoice
+      // still lands on a real read. Built only when there's market history.
+      var youCmp = null;
+      var series = marketSeriesFor(ing);
+      if (series && series.values.length >= 2) {
+        // Augment with the live level @ generatedAt (a fresh endpoint for a recent
+        // invoice), if it post-dates the series tail. Same valueCents scale.
+        var augV = series.values.slice(), augD = series.dates.slice();
+        var genDay = (DATA.generatedAt || '').slice(0, 10);
+        var genMs = Date.parse(genDay), lastMs = Date.parse(augD[augD.length - 1]);
+        if (lvl && typeof lvl.medianCents === 'number' && lvl.medianCents > 0 && isFinite(genMs) && (!isFinite(lastMs) || genMs > lastMs)) {
+          augV.push(lvl.medianCents); augD.push(genDay);
+        }
+        var minDay = augD[0], maxDay = (isFinite(genMs) && genDay > TODAY_ISO) ? genDay : TODAY_ISO;
+
+        var cmp = el('div', 'cp-cmp');
+        cmp.appendChild(el('p', 'cp-cmp-lead',
+          L('Compare two invoices: did a price jump track the market, or your vendor? Enter the price and date on each.',
+            'Compara dos facturas: ¿un alza siguió al mercado o a tu proveedor? Escribe el precio y la fecha de cada una.')));
+
+        // One labelled row = a date + a price. Returns the two inputs.
+        function cmpRow(key, rowLabel, dateAria, priceAria) {
+          var row = el('div', 'cp-cmp-row');
+          row.appendChild(el('span', 'cp-cmp-rowlab', rowLabel));
+          var d = el('input', 'cp-cmp-date');
+          d.type = 'date'; d.id = 'cp' + key + 'date-' + ing.key;
+          d.setAttribute('aria-label', dateAria); d.setAttribute('autocomplete', 'off');
+          if (minDay) d.min = minDay; if (maxDay) d.max = maxDay;
+          var p = el('input', 'cp-cmp-price');
+          p.type = 'text'; p.id = 'cp' + key + 'price-' + ing.key; p.inputMode = 'decimal';
+          p.setAttribute('autocomplete', 'off'); p.setAttribute('aria-label', priceAria);
+          p.placeholder = L('$ a ' + unit, '$ por ' + unit);
+          row.appendChild(d); row.appendChild(p);
+          cmp.appendChild(row);
+          return { date: d, price: p };
+        }
+        var rowA = cmpRow('A', L('Earlier invoice', 'Factura anterior'),
+          L('Earlier invoice date', 'Fecha de la factura anterior'), L('Earlier invoice price', 'Precio de la factura anterior'));
+        var rowB = cmpRow('B', L('Later invoice', 'Factura posterior'),
+          L('Later invoice date', 'Fecha de la factura posterior'), L('Later invoice price', 'Precio de la factura posterior'));
+
+        var cmpOut = el('div', 'cp-cmp-out');                 // SEPARATE live region from the band pin
+        cmpOut.setAttribute('role', 'status'); cmpOut.setAttribute('aria-live', 'polite');
+        (function () {
+          var cmpFired = false, cmpDeb = null;
+          function render() {
+            while (cmpOut.firstChild) cmpOut.removeChild(cmpOut.firstChild);
+            cmpOut.removeAttribute('data-tone');
+            var aCents = parseMoney(rowA.price.value), bCents = parseMoney(rowB.price.value);
+            var aDate = rowA.date.value, bDate = rowB.date.value;
+            if (aCents == null || bCents == null || !aDate || !bDate) { noteState.cmp = null; syncNote(); cmpOut.hidden = true; return; }
+            var res = FMT.thenVsNow(augV, augD, {
+              aCents: aCents, bCents: bCents, aDateStr: aDate, bDateStr: bDate, confidence: r.confidence
+            });
+            var say = FMT.thenVsNowSay(res, unit);
+            if (!say) { noteState.cmp = null; syncNote(); cmpOut.hidden = true; return; }
+            cmpOut.hidden = false;
+            cmpOut.setAttribute('data-tone', say.tone || (say.ok ? 'match' : 'info'));
+            if (say.ok && res && res.ok && typeof res.ownerPct === 'number') {
+              cmpOut.appendChild(slopeSvg(res.ownerPct, res.marketPct, say.tone));
+            }
+            cmpOut.appendChild(el('p', 'cp-cmp-headline', say.headline));
+            if (say.detail) cmpOut.appendChild(el('p', 'cp-cmp-detail', say.detail));
+            if (say.note) cmpOut.appendChild(el('p', 'cp-cmp-note', say.note));
+            // Feed the vendor note the PERCENTAGE letter only on a confident "over"
+            // result — the one case worth a renegotiation. Other tones clear it so
+            // the band-pin's range letter (or nothing) takes over.
+            noteState.cmp = (say.ok && say.tone === 'over' && res.ok && !res.thin)
+              ? { mode: 'compare', ownerPct: res.ownerPct, marketPct: res.marketPct, aDate: res.aDate, bDate: res.bDate }
+              : null;
+            syncNote();
+            if (say.ok && !cmpFired) { cmpFired = true; track('Cost Index Then Vs Now', { ingredient: ing.key || '', verdict: say.tone || '' }); }
+          }
+          function schedule() { if (cmpDeb) clearTimeout(cmpDeb); cmpDeb = setTimeout(render, 350); }
+          [rowA.price, rowB.price].forEach(function (n) { n.addEventListener('input', schedule); });
+          [rowA.date, rowB.date].forEach(function (n) { n.addEventListener('change', schedule); });
+        })();
+        cmp.appendChild(cmpOut);
+        cmpOut.hidden = true;
+        youCmp = cmp;
+      }
+
+      you.appendChild(lab); you.appendChild(inp); you.appendChild(youOut);
+      if (youCmp) you.appendChild(youCmp);
+      you.appendChild(note.root);
       fig.appendChild(you);
     }
 
@@ -847,7 +1171,30 @@
     srt.appendChild(el('p', null, caption));
     fig.appendChild(srt);
 
+    // ── Progressive disclosure ──────────────────────────────────────────────
+    // The default card is the glanceable answer: name · price · what-to-do · cost
+    // it into a dish. Everything that supports that call — the chart, the trimmed
+    // true cost, the trend math, week-over-week, seasonal, sources, and the
+    // your-price check — collapses under ONE "Details" expander so the card stops
+    // being a wall of text. The full narration already lives on data-audio-alt, so
+    // a screen-reader user loses nothing; only the sighted default view is trimmed.
+    (function (figEl) {
+      var KEEP = { 'cp-market-head': 1, 'cp-market-range': 1, 'cp-market-verdict': 1, 'cp-market-platecost': 1 };
+      var det = el('details', 'cp-more');
+      det.appendChild(el('summary', 'cp-more-summary',
+        L('Details — chart, history, check your price', 'Detalle — gráfica, historial, revisa tu precio')));
+      var moved = false;
+      Array.prototype.slice.call(figEl.childNodes).forEach(function (ch) {
+        if (ch.nodeType !== 1 || ch.tagName === 'FIGCAPTION') return; // figcaption must stay a figure child
+        var cls = (ch.getAttribute('class') || '').split(' ')[0];
+        if (KEEP[cls]) return;
+        det.appendChild(ch); moved = true;                 // appendChild MOVES it out of the figure
+      });
+      if (moved) figEl.appendChild(det);
+    })(fig);
+
     listEl.appendChild(fig);
+    revealOnAppend(fig, ingIdx);
   });
 
   // Coverage honesty — the `absent` gaps, explained. Making "no public data, and
@@ -889,17 +1236,32 @@
   sum.textContent = sumText;
   if (movers.length) listEl.insertBefore(sum, listEl.firstChild);
 
-  // Filter — appears once the list is long enough to need it (i.e. live data).
+  // Find-your-ingredient — the operator's real question is "where's MY tomato?",
+  // not "filter a list". A labeled, prominent box at the top of the list, with a
+  // live result count that doubles as the filter's screen-reader status.
+  // Appears once the list is long enough to need it (i.e. live data).
+  var findWrap = null;
   if (movers.length >= 8) {
+    findWrap = el('div', 'cp-market-find');
+    var srchId = 'cpMarketFind';
+    var findLabel = el('label', 'cp-find-label', L('Find your ingredient', 'Encuentra tu ingrediente'));
+    findLabel.setAttribute('for', srchId);
     var srch = el('input', 'cp-market-search');
     srch.type = 'search';
-    srch.setAttribute('aria-label', L('Filter ingredients', 'Filtrar ingredientes'));
-    srch.placeholder = L('Filter ingredients…', 'Filtrar ingredientes…');
+    srch.id = srchId;
+    srch.setAttribute('aria-label', L('Find your ingredient', 'Encuentra tu ingrediente'));
+    srch.placeholder = L('e.g. tomato, chicken, butter', 'p. ej. tomate, pollo, mantequilla');
+    findCountEl = el('span', 'cp-find-count');
+    findCountEl.setAttribute('role', 'status');
+    findCountEl.setAttribute('aria-live', 'polite');
     srch.addEventListener('input', function () {
       query = srch.value.toLowerCase().trim();
       applyFilters();
     });
-    listEl.insertBefore(srch, listEl.firstChild);
+    findWrap.appendChild(findLabel);
+    findWrap.appendChild(srch);
+    findWrap.appendChild(findCountEl);
+    listEl.insertBefore(findWrap, listEl.firstChild);
   }
 
   // "Your basket" bar — sits above the list, shows how many ingredients you're
@@ -961,6 +1323,9 @@
   // so force it above the basket bar / search controls (each of those prepended
   // at firstChild above). A tired reader gets the "what moved" sentence first.
   if (movers.length && sum.parentNode === listEl) listEl.insertBefore(sum, listEl.firstChild);
+  // Then the find box, right under the gestalt — it's the primary way in ("where's
+  // MY tomato?"), so it sits above the basket bar rather than below it.
+  if (findWrap && findWrap.parentNode === listEl) listEl.insertBefore(findWrap, sum.nextSibling);
 
   // Deep anchor: a URL like /…/#ci-romaine should bring that card into view +
   // flag it. The browser's initial hash scroll fired before these JS-built
@@ -1035,7 +1400,11 @@
       var row = el('div', 'cp-driver');
       var dhead = el('div', 'cp-driver-head');
       dhead.appendChild(el('span', 'cp-driver-name', L(d.label_en, d.label_es)));
-      var dt = el('span', 'cp-driver-trend', (dir === 'up' ? '▲ ' : dir === 'down' ? '▼ ' : '● ') + dWord + dPctTxt);
+      var dt = el('span', 'cp-driver-trend');
+      var dGlyph = el('span', null, dir === 'up' ? '▲' : dir === 'down' ? '▼' : '●');
+      dGlyph.setAttribute('aria-hidden', 'true');
+      dt.appendChild(dGlyph);
+      dt.appendChild(document.createTextNode(' ' + dWord + dPctTxt));
       dt.setAttribute('data-dir', dir);
       dhead.appendChild(dt);
       row.appendChild(dhead);

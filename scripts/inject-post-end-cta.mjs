@@ -113,12 +113,14 @@ for (const [slug, entry] of Object.entries(entries)) {
     // back to blog). Track which namespace so the from= param is right.
     let file = null;
     let foundIn = null;
+    let localSlug = slug;
     for (const dir of dirs) {
-      const localSlug = code === 'es' ? esSlugFor(dir, slug) : slug;
-      const candidate = path.join(repoRoot, dir, localSlug, 'index.html');
+      const candSlug = code === 'es' ? esSlugFor(dir, slug) : slug;
+      const candidate = path.join(repoRoot, dir, candSlug, 'index.html');
       if (fs.existsSync(candidate)) {
         file = candidate;
         foundIn = dir;
+        localSlug = candSlug;
         break;
       }
     }
@@ -126,7 +128,11 @@ for (const [slug, entry] of Object.entries(entries)) {
       missing.push(`${dirs[0]}/${slug}/index.html`);
       continue;
     }
-    const block = buildBlock(slug, entry, code, foundIn);
+    // from= must carry the LOCALE's own slug (ES pages → ES slug), so tool
+    // rehydration + analytics attribute to the page the reader is actually on.
+    // localSlug was previously computed then dropped — every ES from= carried
+    // the EN slug (caught in adversarial review 2026-06-27).
+    const block = buildBlock(localSlug, entry, code, foundIn);
     if (!block) continue; // entry has no copy for this locale
     const src = fs.readFileSync(file, 'utf8');
 

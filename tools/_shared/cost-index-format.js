@@ -162,6 +162,186 @@
       };
     }
 
+    // Strict ISO-date → UTC ms. Accepts only a YYYY-MM-DD prefix (so a full
+    // timestamp like generatedAt also parses to its UTC day) and forces UTC, so an
+    // operator's typed date and the series dates are NEVER on different clocks (a
+    // local vs UTC mix shifts the matched read by a day near month boundaries).
+    // Rejects locale formats (MM/DD/YYYY) that Date.parse would silently accept.
+    function parseISODay(s) {
+      if (typeof s !== 'string') return null;
+      var m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+      if (!m) return null;
+      var ms = Date.UTC(+m[1], +m[2] - 1, +m[3]);
+      return isFinite(ms) ? ms : null;
+    }
+
+    // then-vs-now — the operator's particular case: TWO exact invoice dates + the
+    // price on each, against the market's change over that SAME date span. A carton
+    // going up tells you nothing alone — this separates "the market moved" from "my
+    // vendor padded the margin." Percent-based, so it is unit- AND basis-robust:
+    // cartons, pounds, even a pure index series all reduce to a movement that
+    // cancels the unit.
+    //
+    // Honest by construction (hardened after an adversarial audit):
+    //   - BOTH market endpoints are read from the series at the dates the operator
+    //     gave — the gap is measured over their exact window, not against a moving
+    //     "today." (The UI augments the series with the fresh live level so a recent
+    //     invoice still matches a real read.)
+    //   - Refuses dates outside the series (>45 days from any read → the UI points
+    //     to a longer history), out-of-order dates, and any span under 14 days.
+    //   - Strict UTC date parsing (locale formats rejected, no clock drift).
+    //   - Flags THIN evidence (a directional/low-confidence read, or fewer than 6
+    //     market reads) so the caller can hedge instead of accusing a vendor on
+    //     noise — mirroring percentileLine (>=8) and flagVerb's thin-data posture.
+    //   - Rejects absurd price ratios (a fat-fingered cent value) rather than
+    //     printing a runaway percentage as fact.
+    //
+    // opts = { aCents, bCents, aDateStr, bDateStr, confidence } — A is the earlier
+    // invoice, B the later. Pure → pinned by the test; thenVsNowSay() turns it into
+    // locale prose. `dates` must be 1:1 with `values` and sorted ascending.
+    var SANE_PCT = 5;                 // |Δ| > 500% is a data-entry error, not a verdict
+    var GAP_PTS = 3;                  // verdict band: <3pts divergence reads as "tracked the market".
+                                      // Operational, not sourced — an illustrative threshold; the THIN
+                                      // hedge below stops a noisy short window from tripping it.
+    function thenVsNow(values, dates, opts) {
+      opts = opts || {};
+      var aCents = opts.aCents, bCents = opts.bCents;
+      if (!Array.isArray(values) || !Array.isArray(dates) || dates.length !== values.length) return { ok: false, reason: 'nodata' };
+      if (!(aCents > 0) || !(bCents > 0)) return { ok: false, reason: 'price' };
+      var ownerPct = (bCents - aCents) / aCents;
+      if (Math.abs(ownerPct) > SANE_PCT) return { ok: false, reason: 'price' };   // runaway → check figures
+      var aMs = parseISODay(opts.aDateStr), bMs = parseISODay(opts.bDateStr);
+      if (aMs == null || bMs == null) return { ok: false, reason: 'date' };
+      if (aMs >= bMs) return { ok: false, reason: 'order' };                      // earlier date must come first
+      if ((bMs - aMs) < 14 * 86400000) return { ok: false, reason: 'tooclose' };  // need a real span between invoices
+      // Nearest valid market read to a target ms; also tallies reads + series span.
+      var reads = 0, earliest = null, latest = null;
+      for (var k = 0; k < values.length; k++) {
+        if (!(typeof values[k] === 'number' && isFinite(values[k]) && values[k] > 0)) continue;
+        var dk = parseISODay(dates[k]); if (dk == null) continue;
+        reads++; if (earliest == null) earliest = dates[k]; latest = dates[k];
+      }
+      if (reads < 1) return { ok: false, reason: 'nodata' };
+      function nearest(t) {
+        var bi = -1, bd = Infinity;
+        for (var j = 0; j < values.length; j++) {
+          if (!(typeof values[j] === 'number' && isFinite(values[j]) && values[j] > 0)) continue;
+          var dj = parseISODay(dates[j]); if (dj == null) continue;
+          var diff = Math.abs(dj - t);
+          if (diff < bd) { bd = diff; bi = j; }                                   // ties keep the EARLIER read
+        }
+        return bi < 0 ? null : { idx: bi, val: values[bi], date: dates[bi], gapDays: Math.round(bd / 86400000) };
+      }
+      var A = nearest(aMs), B = nearest(bMs);
+      if (!A || !B) return { ok: false, reason: 'nodata' };
+      // Either endpoint too far from any read we hold → comparing a window the data
+      // doesn't cover. Refuse, and hand back the window we DO cover.
+      if (A.gapDays > 45 || B.gapDays > 45) return { ok: false, reason: 'outofrange', earliest: earliest, latest: latest };
+      if (A.idx === B.idx) return { ok: false, reason: 'tooclose' };              // both snap to one read → no market window
+      var winDays = Math.round(Math.abs(parseISODay(B.date) - parseISODay(A.date)) / 86400000);
+      if (winDays < 14) return { ok: false, reason: 'tooclose' };
+      var marketRatio = B.val / A.val, marketPct = marketRatio - 1;
+      if (Math.abs(marketPct) > SANE_PCT) return { ok: false, reason: 'nodata' };  // archive glitch guard
+      // "$ beyond the market's move": price A grown by the market's RATIO
+      // (dimensionless) gives what B would be had it only tracked the market; the
+      // shortfall is in the operator's own unit, so it is honest to state per unit.
+      var impliedBCents = aCents * marketRatio;
+      var excessCents = bCents - impliedBCents;
+      var conf = opts.confidence;
+      var thin = (conf === 'directional' || conf === 'low' || reads < 6);
+      return {
+        ok: true,
+        ownerPct: ownerPct, marketPct: marketPct, gapPts: (ownerPct - marketPct) * 100,
+        excessCents: excessCents,
+        aDate: opts.aDateStr, bDate: opts.bDateStr, marketADate: A.date, marketBDate: B.date,
+        aGapDays: A.gapDays, bGapDays: B.gapDays, winDays: winDays, reads: reads, thin: thin
+      };
+    }
+
+    // Locale prose for thenVsNow(). Returns { ok, tone, headline, detail, note,
+    // srText } on a real comparison, a soft { ok:false, tone:'info', headline } when
+    // the input is usable but the window is not (out of range / too close / future),
+    // or null when the input is simply incomplete (so the UI stays silent). Leads
+    // with plain language + a dollar-per-unit figure — never "percentage points",
+    // the one number an operator can repeat to a vendor.
+    function pctWord(pct) {
+      var a = Math.abs(pct * 100);
+      var str = a.toFixed(a < 10 ? 1 : 0).replace(/\.0$/, '') + '%';
+      var word = pct > 0.005 ? L('up', 'subió') : pct < -0.005 ? L('down', 'bajó') : L('flat', 'sin cambio');
+      return { word: word, str: str, flat: Math.abs(pct) <= 0.005 };
+    }
+    function thenVsNowSay(res, unit) {
+      var per = unit || L('unit', 'unidad');
+      if (!res || !res.ok) {
+        switch (res && res.reason) {
+          case 'outofrange':
+            return { ok: false, tone: 'info',
+              headline: L('That date is before the market history I have (' + (res.earliest || '') + ' to ' + (res.latest || '') + ').',
+                          'Esa fecha es anterior al historial de mercado que tengo (' + (res.earliest || '') + ' a ' + (res.latest || '') + ').'),
+              detail: L('Pick a date inside that range — or keep your own longer price history in Muntin Ledger.',
+                        'Elige una fecha dentro de ese rango — o guarda tu propio historial de precios en Muntin Ledger.') };
+          case 'tooclose':
+            return { ok: false, tone: 'info',
+              headline: L('Those two invoices are too close to compare — use dates further apart.',
+                          'Esas dos facturas están muy cerca para comparar — usa fechas más separadas.'), detail: '' };
+          case 'order':
+            return { ok: false, tone: 'info',
+              headline: L('Put the earlier invoice first — the second date should be later.',
+                          'Pon primero la factura anterior — la segunda fecha debe ser posterior.'), detail: '' };
+          default:
+            return null;   // price/date/nodata → incomplete or implausible input, say nothing
+        }
+      }
+      var o = pctWord(res.ownerPct), m = pctWord(res.marketPct);
+      // Lead with the PERCENTAGE move — the unit-robust, level-free core of the
+      // comparison (wholesale is movement, not a dollar level). EN reads "up 12%";
+      // ES reads "subió 12%". "flat" drops the redundant 0%. The pair preserves each
+      // side's direction so a both-fell case still reads right.
+      var youAmt = o.flat ? L('flat', 'no cambió') : o.word + ' ' + o.str;
+      var mktAmt = m.flat ? L('flat', 'no cambió') : m.word + ' ' + m.str;
+      var pair = L(youAmt + ', the market ' + mktAmt, 'tu precio ' + youAmt + ', el mercado ' + mktAmt);
+      var mktWindow = res.marketADate + ' ' + L('to', 'a') + ' ' + res.marketBDate;
+      var windowLine = L('From ' + res.aDate + ' to ' + res.bDate + ', against the market’s ' + mktWindow + ' reads.',
+                         'Del ' + res.aDate + ' al ' + res.bDate + ', frente a las lecturas de mercado de ' + mktWindow + '.');
+      var tone, headline, detail;
+      if (res.thin) {
+        // Audit BLOCKER 2: a hard "your vendor padded" verdict from a thin/short
+        // series is not defensible. Withhold the percentages too — we don't trust
+        // them enough to feature them.
+        tone = 'watch';
+        headline = L('Too little market history here to call it yet.',
+                     'Aún hay poco historial de mercado para concluir.');
+        detail = windowLine + ' ' + L('Treat this as a watch, not a verdict — the reads behind it are thin.',
+                                      'Tómalo como algo para vigilar, no una conclusión — hay pocas lecturas detrás.');
+      } else if (res.gapPts >= GAP_PTS) {
+        tone = 'over';
+        headline = L('Above the market’s move — your price ' + pair + '.',
+                     'Por encima del movimiento del mercado — ' + pair + '.');
+        detail = windowLine + ' ' + L('Could be a new freight or pack cost — or room to renegotiate; worth one question to your rep.',
+                                      'Puede ser un nuevo costo de flete o empaque — o margen para renegociar; vale una pregunta a tu proveedor.');
+      } else if (res.gapPts <= -GAP_PTS) {
+        tone = 'under';
+        headline = L('Below the market’s move — your price ' + pair + ' — a good spot.',
+                     'Por debajo del movimiento del mercado — ' + pair + ' — buen lugar.');
+        detail = windowLine + ' ' + L('You — or your vendor — absorbed part of the move. Nothing to chase here.',
+                                      'Tú — o tu proveedor — absorbieron parte del movimiento. Nada que perseguir aquí.');
+      } else {
+        tone = 'match';
+        headline = L('In line with the market — your price ' + pair + '.',
+                     'En línea con el mercado — ' + pair + '.');
+        detail = windowLine + ' ' + L('You are not being padded here; little to renegotiate on price alone.',
+                                      'No te están inflando aquí; poco que renegociar solo por precio.');
+      }
+      var notes = [];
+      if (res.aGapDays > 10) notes.push(L('Nearest market read to ' + res.aDate + ' is ' + res.marketADate + ', about ' + res.aGapDays + ' days off.',
+                                          'La lectura de mercado más cercana al ' + res.aDate + ' es ' + res.marketADate + ', a unos ' + res.aGapDays + ' días.'));
+      if (res.bGapDays > 10) notes.push(L('Nearest market read to ' + res.bDate + ' is ' + res.marketBDate + ', about ' + res.bGapDays + ' days off.',
+                                          'La lectura de mercado más cercana al ' + res.bDate + ' es ' + res.marketBDate + ', a unos ' + res.bGapDays + ' días.'));
+      var note = notes.join(' ');
+      return { ok: true, tone: tone, headline: headline, detail: detail, note: note,
+        srText: headline + ' ' + detail + (note ? ' ' + note : '') };
+    }
+
     // Weekly heartbeat — a calm "you last checked {when}" marker for a returning
     // operator, computed from a LOCAL last-visit timestamp (no server, no account).
     // Deliberately no streaks, badges, counts, or urgency: it only orients in time.
@@ -183,7 +363,7 @@
       return L('You last checked these prices ' + rel + '.', 'Revisaste estos precios por última vez ' + rel + '.');
     }
 
-    return { L: L, money: money, sparkShape: sparkShape, percentileLine: percentileLine, weekOverWeek: weekOverWeek, vsLastYear: vsLastYear, heartbeat: heartbeat, flagVerb: flagVerb };
+    return { L: L, money: money, sparkShape: sparkShape, percentileLine: percentileLine, weekOverWeek: weekOverWeek, vsLastYear: vsLastYear, thenVsNow: thenVsNow, thenVsNowSay: thenVsNowSay, heartbeat: heartbeat, flagVerb: flagVerb };
   }
 
   var api = make;          // MuntinCostFormat(es) → bound, locale-aware helpers

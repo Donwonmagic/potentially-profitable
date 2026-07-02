@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <title>Receipts &mdash; Muntin Digital</title>
-<meta name="description" content="What we publish, how we measure ourselves, what we don't track. The public counterpart to the studio's Monday-morning dashboard." />
+<meta name="description" content="What we publish, how we measure ourselves, and what we don't track — recomputed from the data, not a marketing dashboard." />
 <meta name="theme-color" content="#2A50C8" />
 <link rel="canonical" href="https://muntin.digital/receipts/" />
     <!-- feed-discovery:start (injected by inject-feed-discovery.mjs) -->
@@ -22,7 +22,7 @@
 
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Receipts &mdash; Muntin Digital" />
-<meta property="og:description" content="What the studio publishes and what it doesn't track. Honest small numbers from a small studio." />
+<meta property="og:description" content="What Muntin publishes and what it doesn't track. Honest numbers, recomputed from the data." />
 <meta property="og:url" content="https://muntin.digital/receipts/" />
 <meta property="og:site_name" content="Muntin Digital" />
 
@@ -46,7 +46,7 @@
       "inLanguage": "en-US",
       "isPartOf": { "@id": "https://muntin.digital/#website" },
       "publisher": { "@id": "https://muntin.digital/#business" },
-      "dateModified": "2026-05-01"
+      "dateModified": "2026-06-27"
     },
     {
       "@type": "BreadcrumbList",
@@ -229,11 +229,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/cost-index/">Cost Index</a>
       <a href="/tools/">Tools</a>
       <a href="/studio/">Company</a>
-      <!-- Ledger — sister product (the privacy-forward invoice ledger)
-           on its own subdomain. Plain external link so it passes link
-           equity to ledger.muntin.digital; Plausible's automatic
-           outbound-link tracking measures the nav click. -->
-      <a href="https://ledger.muntin.digital/">Ledger</a>
+      <!-- Ledger — the paid product. Nav points at the on-site /ledger/
+           explainer (what it is, why a platform can't copy it, the founding
+           offer) rather than dumping cold nav traffic straight onto the
+           subdomain; /ledger/ owns the outbound "See Muntin Ledger" CTA. -->
+      <a href="/ledger/">Ledger</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
            /api/auth/me and reveals exactly one. No-JS visitors see
@@ -291,7 +291,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <a href="/cost-index/">Cost Index</a>
     <a href="/tools/">Tools</a>
     <a href="/studio/">Company</a>
-    <a href="https://ledger.muntin.digital/">Ledger</a>
+    <a href="/ledger/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
     <button type="button" class="mobile-search js-open-search">
@@ -406,7 +406,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         What we publish. <span class="serif-italic">What we don&rsquo;t track.</span>
       </h1>
       <p style="font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0">
-        The audience for muntin.digital has been told &ldquo;trust us&rdquo; by every SaaS in the restaurant space and been burned. This page is the structural counter: a public diary of a small studio. Updated weekly. Last updated 2026&#8209;05&#8209;01.
+        The audience for muntin.digital has been told &ldquo;trust us&rdquo; by every SaaS in the restaurant space and been burned. This page is the structural counter: a public diary of a one-person company &mdash; the numbers I hold myself to, recomputed from the data, not a marketing dashboard. Last updated 2026&#8209;06&#8209;27.
       </p>
     </header>
 
@@ -416,7 +416,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li><strong style="color:var(--teal);font-size:24px;display:block"><!-- count:glossary.terms -->171<!-- /count --></strong>glossary terms</li>
         <li><strong style="color:var(--teal);font-size:24px;display:block"><!-- count:tools.live -->5<!-- /count --></strong>free tools live</li>
         <li><strong style="color:var(--teal);font-size:24px;display:block"><!-- count:articles.total -->50<!-- /count --></strong>articles published</li>
-        <li><strong style="color:var(--teal);font-size:24px;display:block">3</strong>case studies</li>
         <li><strong style="color:var(--teal);font-size:24px;display:block">2</strong>locales (EN, ES)</li>
         <li><strong style="color:var(--teal);font-size:24px;display:block">7</strong>library topics</li>
       </ul>
@@ -476,7 +475,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <section style="margin-bottom:56px;padding-top:18px;border-top:1px solid var(--line)">
       <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 16px">Public commitments, in writing</h2>
-      <p style="font-size:15.5px;line-height:1.65;color:var(--ink);margin:0 0 14px">The launch-plan refresh added a set of named commitments that are now part of the studio&rsquo;s spec. Each one is a number or an absence operators can hold the studio to:</p>
+      <p style="font-size:15.5px;line-height:1.65;color:var(--ink);margin:0 0 14px">A set of named commitments that are part of the company&rsquo;s spec. Each one is a number or an absence operators can hold the company to:</p>
       <ul style="font-size:15px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
         <li><strong>No per-order rake.</strong> Muntin sells software and publishes data; it never takes a cut of your sales. <a href="/never/" style="color:var(--teal)">/never/ #5</a>.</li>
         <li><strong>Reply within 4 hours, Mon&ndash;Fri.</strong> Posted on every page, measured in Plausible.</li>
@@ -491,18 +490,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </section>
 
     <section style="margin-bottom:56px;padding-top:18px;border-top:1px solid var(--line)">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 16px">What shipped, in numbers</h2>
-      <p style="font-size:15.5px;line-height:1.65;color:var(--ink);margin:0 0 14px">The May 2026 launch-plan refresh shipped across ten phases. The visible-side totals:</p>
+      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 16px">What&rsquo;s here now</h2>
+      <p style="font-size:15.5px;line-height:1.65;color:var(--ink);margin:0 0 14px">The running record of every change lives in the <a href="/changelog/" style="color:var(--teal)">changelog</a>. The current totals, recomputed from <code>data/site-counts.json</code>:</p>
       <ul style="font-size:15px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
-        <li><strong><!-- count:tools.live -->5<!-- /count --> free tools live</strong> (was 13 at the start of May 2026; rose to 15 mid-month with Holiday Hours Generator + Menu Converter; settled at 13 after retiring Invoice Decoder and Menu Design Suite on 2026-05-08).</li>
-        <li><strong>18 articles</strong> (was 17). New op-ed: <a href="/library/third-party-delivery-economics/" style="color:var(--teal)">An honest DoorDash math, 2026</a>.</li>
-        <li><strong>4 quarterly research notes</strong> (was 2). New: <a href="/learn/research/dmv-restaurant-gbp-audit-2026/" style="color:var(--teal)">DMV GBP audit, 2026</a> and <a href="/learn/research/the-1-percent-margin-audit-50-restaurant-websites-2026/" style="color:var(--teal)">The 1% margin audit, 50 sites</a>.</li>
-        <li><strong>3 new productized offer pages</strong> at <code>services/audit</code>, <code>services/menu-drop-in</code>, <code>services/care-plan-light</code>.</li>
-        <li><strong>5 DMV city subpages</strong> at <code>studio/silver-spring</code>, <code>/bethesda/</code>, <code>/takoma-park/</code>, <code>/dc/</code>, <code>/arlington/</code>.</li>
-        <li><strong>4 new trust pages</strong>: <a href="/never/" style="color:var(--teal)">/never/</a>, <a href="/ai/" style="color:var(--teal)">/ai/</a>, <a href="/library/" style="color:var(--teal)">/library/</a>, <a href="/studio/" style="color:var(--teal)">/studio/</a> (plus <code>studio/compare</code>). Every one has an ES mirror.</li>
-        <li><strong>2 build scripts and 1 CI guard</strong>: <code>build-llms-full.mjs</code>, <code>check-cta-canon.mjs</code>, plus the existing <code>sync-includes.mjs</code> idempotency fix.</li>
-        <li><strong>454 URLs in the sitemap</strong> (was 430). 232 EN + 222 ES.</li>
-        <li><strong>10 entries in <code>sameAs</code></strong> (was 1). LinkedIn, Facebook, GitHub, Bluesky, Threads, Yelp, Google Maps, Bing Places, Apple Maps, plus Instagram.</li>
+        <li><strong><!-- count:tools.live -->5<!-- /count --> free tools</strong>, each running on your device with no signup &mdash; verifiable in DevTools &rarr; Network.</li>
+        <li><strong><!-- count:articles.total -->50<!-- /count --> articles</strong> across the library and the weekly dispatch, in English and Spanish.</li>
+        <li><strong><!-- count:glossary.terms -->171<!-- /count --> glossary terms</strong>, cross-linked to the tools and articles that use them.</li>
+        <li><strong>The Cost Index</strong> &mdash; wholesale ingredient prices from USDA, BLS, and FRED on a weekly read, published as a CC0 CSV + JSON download.</li>
+        <li><strong>The trust surfaces</strong>: <a href="/trust/" style="color:var(--teal)">/trust/</a>, <a href="/security/" style="color:var(--teal)">/security/</a>, <a href="/never/" style="color:var(--teal)">/never/</a>, <a href="/ai/" style="color:var(--teal)">/ai/</a>, and <a href="/methods/" style="color:var(--teal)">/methods/</a> &mdash; each with an ES mirror.</li>
       </ul>
     </section>
 

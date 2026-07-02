@@ -43,6 +43,11 @@ const CHECKS = [
   // hits are fail-CI; known-stale pre-cleanup renders are waived (dated) in
   // the script and re-render is tracked in docs/editorial/ground-truth-pack.md.
   ['Audio fabrication blocklist','check-audio-fabrications.mjs','--check'],
+  // Retired-link guard — fail-CI if a chrome/funnel surface (front door, nav +
+  // footer partials, hub + trust pages) hard-links a path that only resolves via
+  // the Worker 301 map. Catches the class of bug where a loud CTA keeps pointing
+  // at a retired product (the homepage mobile CTA did this until 2026-06).
+  ['Retired-link guard',  'check-retired-links.mjs',        '--check'],
   // Phase-2 cohesion guards. Sentinel-escape is fail-CI from day 1
   // (the regression cost was 247 frozen pages); banned-words is
   // warn-only at first so existing usage can be flagged + fixed
@@ -413,6 +418,13 @@ const CHECKS = [
   // USDA-sourced posture: every entry carries a citation + EN/ES + a real key.
   ['Cost-index seasonality education','check-seasonality-education.mjs'],
   ['Cost-index seasonality education self-test','check-seasonality-education.mjs','--self-test'],
+  // Seasonal band enforcement (P1d) — the rendered "typical for this month"
+  // bands on the ingredient pages state a multi-year norm (median + p25–p75).
+  // The fabrication regex can't catch a wrong statistic, so this re-derives
+  // every rendered band from seasonality.json and fails on drift or on any
+  // band that should not exist (not ready, or a month with <2 distinct years).
+  ['Cost-index seasonal band','check-cost-index-seasonal.mjs'],
+  ['Cost-index seasonal band self-test','check-cost-index-seasonal.mjs','--self-test'],
   // Shippable bar — below-bar ingredients must stay out of the browser seed
   // (no thin / no-level read on the dashboard; they live as expanding-coverage).
   ['Cost-index shippable bar','check-shippable-bar.mjs'],

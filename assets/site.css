@@ -1377,16 +1377,18 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .foot-cta-text{color:var(--cream);font-family:var(--font-display);font-size:clamp(22px,2.6vw,30px);line-height:1.2;letter-spacing:-0.01em;max-width:460px}
 .foot-cta .btn-primary{flex:0 0 auto;background:var(--teal);color:var(--cream)}
 .foot-cta .btn-primary:hover{background:var(--teal-dark);transform:translateY(-1px);box-shadow:0 16px 36px -12px rgba(42,80,200,0.55)}
+.foot-cta .btn-ghost{color:var(--cream);border-color:rgba(250,247,242,0.3)}
+.foot-cta .btn-ghost:hover{background:rgba(250,247,242,0.08);border-color:var(--cream)}
 @media (max-width:640px){.foot-cta{flex-direction:column;align-items:flex-start;gap:20px}}
-/* Suppress the generic footer CTA strip on any page that already has
-   its own designed closing CTA section (.block.final) — otherwise the
-   "Book a 20-min call" button stacks right under the page's own
-   closing CTA, which duplicates the ask. Legal and tool pages that
-   don't have a .block.final keep the strip as a fallback. Browsers
-   without :has() support (Safari < 15.4 / Firefox < 121) ignore the
-   rule and render the foot-cta on every page — duplicates the final
-   block but doesn't break layout. Acceptable degradation (B3.3). */
-body:has(.block.final) .foot-cta{display:none}
+/* Suppress the Ledger footer CTA strip only when the page's designed
+   closing CTA section (.block.final) already links to Ledger. Other
+   final sections still need the footer strip as their Ledger placement.
+   This preserves the footer Ledger CTA on final sections with other asks.
+   Browsers without :has() support (Safari < 15.4 / Firefox < 121)
+   ignore the rule and render the foot-cta on every page — duplicates
+   the final block but doesn't break layout. Acceptable degradation
+   (B3.3). */
+body:has(.block.final a[href$="/ledger/"]) .foot-cta,body:has(.block.final a[href^="https://ledger.muntin.digital"]) .foot-cta{display:none}
 
 /* Mobile sticky bottom action bar. Renders only on phone-sized
    viewports with a coarse pointer (so a tablet with a Bluetooth mouse
@@ -7040,6 +7042,33 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   .viz-bars__track{height:16px}
 }
 
+/* .viz-table — an honest data table as a content figure (ADR-006,
+   2026-06-20). For comparisons where real rows of dollars/percentages
+   read better than an abstract bar. Brand-consistent: hairline --line
+   rules, a bold --ink header row, --stone numeric cells in tabular
+   figures, right-aligned numbers. Sized to sit inside the 720px article
+   column without horizontal scroll for a 2–3 column table on a phone.
+   The figure declares data-figure-kind="table"; the gate counts the
+   <table> as a distinct enrichment kind. */
+.viz-table{width:100%;border-collapse:collapse;margin:8px 0 4px;font-family:var(--font-body);font-size:14.5px;color:var(--ink);line-height:1.4}
+.viz-table caption{font-family:var(--font-display);font-size:14.5px;font-weight:500;color:var(--ink);text-align:left;letter-spacing:-0.005em;margin:0 0 12px;line-height:1.4}
+.viz-table thead th{font-family:var(--font-body);font-size:11.5px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink);text-align:left;padding:0 14px 10px;border-bottom:2px solid var(--ink);vertical-align:bottom}
+.viz-table tbody th{font-weight:600;color:var(--ink);text-align:left}
+.viz-table tbody td,.viz-table tbody th{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+.viz-table tbody tr:last-child td,.viz-table tbody tr:last-child th{border-bottom:0}
+/* Numeric cells: tabular figures, right-aligned so dollar columns line
+   up on the decimal. Header cells over numeric columns align right too. */
+.viz-table .num,.viz-table thead th.num{text-align:right;font-variant-numeric:tabular-nums;color:var(--stone)}
+.viz-table tbody th.num{color:var(--ink)}
+/* Optional row emphasis — the pick/headline row reads in brand teal. */
+.viz-table tbody tr[data-tone="teal"] th,.viz-table tbody tr[data-tone="teal"] td{color:var(--teal)}
+.viz-table tbody tr[data-tone="rust"] th,.viz-table tbody tr[data-tone="rust"] td{color:var(--rust)}
+@media (max-width:520px){
+  .viz-table{font-size:13.5px}
+  .viz-table thead th{padding:0 9px 8px}
+  .viz-table tbody td,.viz-table tbody th{padding:10px 9px}
+}
+
 /* .viz-waterfall — single horizontal bar segmented by where each
    dollar of a fixed-amount transaction goes (commission, processing,
    packaging, food cost, labor, keep). Each segment grows along the
@@ -7053,7 +7082,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .viz-waterfall__seg{display:flex;align-items:center;justify-content:center;flex-grow:0;flex-shrink:0;flex-basis:calc(var(--w,0)*100%);min-width:0;font-size:11px;font-weight:700;letter-spacing:0.04em;color:var(--cream);text-transform:uppercase;white-space:nowrap;overflow:hidden;background:var(--stone)}
 .viz-waterfall__seg[data-tone="rust"]{background:var(--rust)}
 .viz-waterfall__seg[data-tone="ink"]{background:var(--ink)}
-.viz-waterfall__seg[data-tone="gold"]{background:#C5A059;color:var(--ink)}
+.viz-waterfall__seg[data-tone="gold"]{background:#C5A059;color:#16181D}
 .viz-waterfall__seg[data-tone="teal"],.viz-waterfall__seg--keep{background:var(--teal);color:var(--cream)}
 .viz-waterfall__legend{display:grid;grid-template-columns:1fr;gap:0;font-size:14.5px;border-top:1px solid var(--line);border-radius:6px;overflow:hidden}
 .viz-waterfall__row{display:grid;grid-template-columns:14px 1fr auto auto;gap:12px;align-items:baseline;padding:10px 4px;border-bottom:1px solid var(--line);color:var(--ink)}

@@ -238,11 +238,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/cost-index/">Cost Index</a>
       <a href="/tools/">Tools</a>
       <a href="/studio/">Company</a>
-      <!-- Ledger — sister product (the privacy-forward invoice ledger)
-           on its own subdomain. Plain external link so it passes link
-           equity to ledger.muntin.digital; Plausible's automatic
-           outbound-link tracking measures the nav click. -->
-      <a href="https://ledger.muntin.digital/">Ledger</a>
+      <!-- Ledger — the paid product. Nav points at the on-site /ledger/
+           explainer (what it is, why a platform can't copy it, the founding
+           offer) rather than dumping cold nav traffic straight onto the
+           subdomain; /ledger/ owns the outbound "See Muntin Ledger" CTA. -->
+      <a href="/ledger/">Ledger</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
            /api/auth/me and reveals exactly one. No-JS visitors see
@@ -300,7 +300,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <a href="/cost-index/">Cost Index</a>
     <a href="/tools/">Tools</a>
     <a href="/studio/">Company</a>
-    <a href="https://ledger.muntin.digital/">Ledger</a>
+    <a href="/ledger/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
     <button type="button" class="mobile-search js-open-search">
@@ -406,12 +406,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      The library is the proof, not the lede; the lede is the
      cost-intelligence work: the Cost Index, the free tools, and
      Muntin Ledger.
-     Three CTAs in priority order: Run my free audit (primary, the
-     audit is the highest-intent door) → Join the founding list
-     (secondary, the operator who wants first access to Muntin Ledger,
-     anchors the #founding band below) → Or take the 60-minute tour
-     (tertiary text link, for the researcher). The library count strip
-     survives below as the proof line. -->
+     Three CTAs in priority order: See the Cost Index (primary, the
+     flagship — the live market read nothing else has) → Browse the
+     free tools → Join the founding list (the operator who wants first
+     access to Muntin Ledger, anchors the #founding band below). The
+     60-minute tour is the tertiary text link for the researcher; the
+     library count strip survives below as the proof line. -->
 <section class="hero">
   <div class="container hero-grid">
     <div>
@@ -423,7 +423,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         Muntin Digital is the restaurant numbers company that doesn&rsquo;t rent your guests back to you &mdash; a primary-source Cost Index, free private tools, and Muntin Ledger, the invoice ledger. I run front-of-house at a DMV restaurant; these are the numbers I check on my own shifts. The library below is free, no signup.
       </p>
       <div class="hero-ctas">
-        <a class="btn btn-primary" href="/tools/audits/restaurant/">Run my free audit
+        <a class="btn btn-primary" href="/cost-index/">See the Cost Index
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
         <a class="btn btn-ghost" href="/tools/">Browse the free tools</a>
@@ -506,20 +506,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   </div>
 </section>
 
-<!-- ============ PRIMARY TOOL CTA ============ -->
-<!-- Replaces the old "Built for" proof strip with a full-width
-     push into the restaurant audit tool. The inline form posts
-     ?url= to /tools/audits/restaurant/, which auto-runs the
-     audit on page load so the flow is one submit → result page.
-     The score-ring mock on the right is a static SVG so there's
-     no runtime cost. -->
-<!-- Phase 7 W1-4: flagship hero — two new tools (Menu Design Suite
-     + Advanced Invoice Decoder) replace the single Restaurant
-     Audit CTA. The differentiator chip is the centerpiece move:
-     "vs Canva templates" / "vs Restaurant365 · MarginEdge ·
-     Plate IQ" — owners see immediately what these tools beat.
-     Audit demotes to a muted text link beneath the flagships;
-     it's still in /tools/ at full visibility. -->
+<!-- ============ FREE FLAGSHIP TOOLS ============ -->
+<!-- A full-width push into two live, on-device tools: Vendor Benchmark
+     (is your price moving wrong?) and Plate Cost (what your menu
+     makes). The retired Restaurant Website Audit was removed in the
+     2026-06 product-only refresh; these are the cost-intelligence
+     tools that replace it on the front door. -->
 <section class="tool-cta tool-cta-flagships" aria-labelledby="tool-cta-heading">
   <div class="container">
     <div class="tool-cta-flagships__head">
@@ -527,11 +519,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <h2 id="tool-cta-heading" class="tool-cta-flagships__heading">Find the leak before you fix it.</h2>
     </div>
     <div class="tool-cta-flagships__grid tool-cta-flagships__grid--single">
-      <a class="tool-card-flagship" href="/tools/audits/restaurant/">
-        <span class="tool-card-flagship__chip">About 30 seconds &middot; no signup</span>
-        <h3 class="tool-card-flagship__title">Restaurant Website Audit</h3>
-        <p class="tool-card-flagship__headline">A real mobile Lighthouse audit plus ten restaurant-specific checks, in plain English. Drop your URL.</p>
-        <span class="tool-card-flagship__cta">Run the audit
+      <a class="tool-card-flagship" href="/tools/vendor-benchmark/">
+        <span class="tool-card-flagship__chip">Free &middot; on your device &middot; no signup</span>
+        <h3 class="tool-card-flagship__title">Vendor Benchmark</h3>
+        <p class="tool-card-flagship__headline">Is your price moving wrong? Paste what you&rsquo;ve paid and when, and Vendor Benchmark reads the trend &mdash; telling you whether a price is moving in line, or drifting out of line and worth a call to your vendor.</p>
+        <span class="tool-card-flagship__cta">Check a price
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </span>
       </a>
@@ -561,7 +553,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <ul class="trust-strip__list">
       <li><strong>Reply within 4 hrs</strong>, Mon&ndash;Fri</li>
       <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
-      <li>Every number sourced</li>
+      <li><a href="/trust/" style="color:inherit;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px">Every number sourced &mdash; USDA &middot; BLS &middot; FRED</a></li>
       <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
       <li>Cost Index on a weekly read</li>
       <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
@@ -641,7 +633,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <header class="recently-added__head">
       <span class="eyebrow">Library index</span>
       <h2 id="recently-added-heading">Recently added.</h2>
-      <p class="recently-added__sub">The eight most recent entries across the library — articles, research, tools, and checklists. Older entries live in the topic shelves below.</p>
+      <p class="recently-added__sub">The 8 most recent entries across the library — articles, research, tools, and checklists. Older entries live in the topic shelves below.</p>
     </header>
     <div class="table-scroll">
     <table class="lib-idx" role="table">
@@ -668,37 +660,37 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <td class="lib-idx-contributor">Don Goldstein</td>
       </tr>
       <tr>
-        <td class="lib-idx-title"><a href="/blog/restaurant-website-technical-seo-checklist/">Restaurant Website Technical SEO Checklist (2026): The Operator's Audit</a></td>
+        <td class="lib-idx-title"><a href="/library/restaurant-website-technical-seo-checklist/">Restaurant Website Technical SEO Checklist (2026): The Operator's Audit</a></td>
         <td class="lib-idx-section">Articles</td>
         <td class="lib-idx-date" aria-label="2026-06-03"><time datetime="2026-06-03">2026-06-03</time></td>
         <td class="lib-idx-contributor">Don Goldstein</td>
       </tr>
       <tr>
-        <td class="lib-idx-title"><a href="/blog/restaurant-brand-system-colors-type-logo/">Restaurant Brand System (2026): Colors, Typography &amp; the Logo That Travels</a></td>
+        <td class="lib-idx-title"><a href="/library/restaurant-brand-system-colors-type-logo/">Restaurant Brand System (2026): Colors, Typography &amp; the Logo That Travels</a></td>
         <td class="lib-idx-section">Articles</td>
         <td class="lib-idx-date" aria-label="2026-06-03"><time datetime="2026-06-03">2026-06-03</time></td>
         <td class="lib-idx-contributor">Don Goldstein</td>
       </tr>
       <tr>
-        <td class="lib-idx-title"><a href="/blog/restaurant-menu-engineering/">Restaurant Menu Engineering (2026): The Math Behind Which Dishes Make Money</a></td>
+        <td class="lib-idx-title"><a href="/library/restaurant-menu-engineering/">Restaurant Menu Engineering (2026): The Math Behind Which Dishes Make Money</a></td>
         <td class="lib-idx-section">Articles</td>
         <td class="lib-idx-date" aria-label="2026-06-03"><time datetime="2026-06-03">2026-06-03</time></td>
         <td class="lib-idx-contributor">Don Goldstein</td>
       </tr>
       <tr>
-        <td class="lib-idx-title"><a href="/blog/restaurant-website-legal-essentials/">Restaurant Website Legal &amp; Trust Essentials (2026): ToS, Privacy, Cookies, SSL</a></td>
+        <td class="lib-idx-title"><a href="/library/restaurant-website-legal-essentials/">Restaurant Website Legal &amp; Trust Essentials (2026): ToS, Privacy, Cookies, SSL</a></td>
         <td class="lib-idx-section">Articles</td>
         <td class="lib-idx-date" aria-label="2026-06-03"><time datetime="2026-06-03">2026-06-03</time></td>
         <td class="lib-idx-contributor">Don Goldstein</td>
       </tr>
       <tr>
-        <td class="lib-idx-title"><a href="/blog/keep-plate-cost-honest-when-prices-change/">Keep Your Plate Cost Honest When Prices Change</a></td>
+        <td class="lib-idx-title"><a href="/library/keep-plate-cost-honest-when-prices-change/">Keep your plate cost honest</a></td>
         <td class="lib-idx-section">Articles</td>
         <td class="lib-idx-date" aria-label="2026-06-03"><time datetime="2026-06-03">2026-06-03</time></td>
         <td class="lib-idx-contributor">Don Goldstein</td>
       </tr>
       <tr>
-        <td class="lib-idx-title"><a href="/tools/vendor-benchmark/">Muntin Bench</a></td>
+        <td class="lib-idx-title"><a href="/tools/vendor-benchmark/">Vendor Benchmark</a></td>
         <td class="lib-idx-section">Tools</td>
         <td class="lib-idx-date" aria-label="2026-06-02"><time datetime="2026-06-02">2026-06-02</time></td>
         <td class="lib-idx-contributor">Don Goldstein</td>
@@ -717,19 +709,19 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <!-- field-notes-rail:start --><!-- field-notes-rail:end -->
 
 <!-- ============ FOUNDING MEMBERS (Muntin Ledger pre-launch) ============ -->
-<!-- Soft pre-launch capture. No price, no date — the Stripe price isn't
-     final and the launch can slip, so framing stays "first access when
-     Muntin Ledger opens this fall" and defers specifics to
-     ledger.muntin.digital. The form posts to the first-party
-     /api/waitlist proxy, which forwards to the product API; the product
-     owns storage + the confirmation email. The .js-signup-form class
-     gets ts-stamping + async submit + inline success from first-touch.js. -->
+<!-- Pre-launch capture. Founder-confirmed specifics (2026-06-27): GA
+     November 13, 2026; founding offer = three months free, then $19/mo for
+     as long as they stay. Consistent with /ledger/ + the product. The form
+     posts to the first-party /api/waitlist proxy, which forwards to the
+     product API; the product owns storage + the confirmation email. The
+     .js-signup-form class gets ts-stamping + async submit + inline success
+     from first-touch.js. -->
 <section class="block founding-band" id="founding" aria-labelledby="founding-heading">
   <div class="container">
     <div class="section-header" style="max-width:760px;margin-inline:auto;text-align:center;">
       <span class="eyebrow">Founding members</span>
-      <h2 id="founding-heading">Be first when <span class="serif-italic">Muntin Ledger</span> opens this fall.</h2>
-      <p>A deterministic engine reads your vendor invoices into a searchable ledger &mdash; no AI reads your numbers, no ads, no tracking. It shows what it measured and labels what it estimated. When a line can't be read, it holds the number back rather than print a guess. Founding members get first access when it opens. Your numbers stay yours.</p>
+      <h2 id="founding-heading">Be first when <span class="serif-italic">Muntin Ledger</span> opens &mdash; November 13, 2026.</h2>
+      <p>A deterministic engine reads your vendor invoices into a searchable ledger &mdash; no language model reads your numbers, no ads, no tracking. It shows what it measured and labels what it estimated. When a line can't be read, it holds the number back rather than print a guess. Founding members get <strong>three months free, then $19 a month</strong> for as long as they stay. Your numbers stay yours.</p>
     </div>
 
     <!-- founding-capture:start -->
@@ -911,12 +903,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <div class="container">
     <div class="foot-cta">
       <div class="foot-cta-text">
-        <span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don is around"></span>
-        Got a question? The Window is open.
+        Know what every plate costs &mdash; before the week eats the margin.
       </div>
-      <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-      </a>
+      <div class="foot-cta-actions" style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
+        <a class="btn btn-primary" href="/ledger/">See Muntin Ledger
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </a>
+        <a class="btn btn-ghost js-window" href="/window/" title="A direct line to Don. I read every one."><span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don is around"></span>Reach Don</a>
+      </div>
     </div>
 
     <div class="foot-grid">
@@ -1081,9 +1075,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
        <footer> so sync-includes captures it as part of the canonical
        footer block and stays idempotent across re-syncs. -->
   <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Quick actions">
-    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/tools/audits/restaurant/" data-event="sticky-cta-audit">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
-      Run free audit
+    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/tools/cost-pulse/" data-event="sticky-cta-cost-pulse">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 18 L9 12 L13 15 L20 6"/><polyline points="15 6 20 6 20 11"/></svg>
+      Check prices
     </a>
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/window/" data-event="sticky-cta-window">
       <span class="mobile-cta-bar__pulse" id="mobileCtaBarPulse" hidden aria-hidden="true" title="Don is around"></span>

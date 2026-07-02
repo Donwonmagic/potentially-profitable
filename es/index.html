@@ -356,7 +356,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/es/cost-index/">Índice de costos</a>
       <a href="/es/tools/">Herramientas</a>
       <a href="/es/studio/">Empresa</a>
-      <a href="https://ledger.muntin.digital/">Ledger</a>
+      <a href="/es/ledger/">Ledger</a>
       <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
       <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
     </nav>
@@ -386,7 +386,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <a href="/es/cost-index/">Índice de costos</a>
     <a href="/es/tools/">Herramientas</a>
     <a href="/es/studio/">Empresa</a>
-    <a href="https://ledger.muntin.digital/">Ledger</a>
+    <a href="/es/ledger/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
     <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
     <button type="button" class="mobile-search js-open-search">
@@ -471,12 +471,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         Conoce lo que cuesta cada plato <span class="serif-italic">antes de que la semana se coma el margen.</span>
       </h1>
       <p class="hero-sub">
-        Muntin Digital construye el &Iacute;ndice de Costos, las herramientas gratuitas del operador y Muntin Ledger &mdash; el libro de facturas. Llevo el sal&oacute;n de un restaurante del DMV; estos son los n&uacute;meros que reviso en mis propios turnos. La biblioteca de abajo es gratis, sin registro.
+        Muntin Digital es la empresa de n&uacute;meros para restaurantes que no te alquila de vuelta a tus propios clientes &mdash; un &Iacute;ndice de Costos de fuente primaria, herramientas privadas gratuitas, y Muntin Ledger, el libro de facturas. Llevo el sal&oacute;n de un restaurante del DMV; estos son los n&uacute;meros que reviso en mis propios turnos. La biblioteca de abajo es gratis, sin registro.
       </p>
       <div class="hero-ctas">
-        <a class="btn btn-primary" href="/es/tools/audits/restaurant/">Hacer el diagn&oacute;stico gratis
+        <a class="btn btn-primary" href="/es/cost-index/">Ver el &Iacute;ndice de costos
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
+        <a class="btn btn-ghost" href="/es/tools/">Explora las herramientas gratis</a>
         <a class="btn btn-ghost" href="#founding">Unirme a la lista fundadora</a>
         <!-- Fase 4 (Taller) — Reveal "Continúa tu trabajo". -->
         <a class="btn btn-ghost js-nav-workshop" href="/es/workbench/" hidden>Continúa tu trabajo
@@ -487,7 +488,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         &iquest;S&oacute;lo investigando? <a href="/es/learn/start-here/">Haz el recorrido guiado de 60 minutos &rarr;</a>
       </p>
       <p class="hero-meta-note">
-        <em>Don Goldstein &mdash; gerente de sal&oacute;n en Tacombi en Bethesda. Certificado ServSafe.</em>
+        <em>Don Goldstein &mdash; gerente de sal&oacute;n en Tacombi en Bethesda.</em>
         <span class="hero-meta-sub">Respuesta: de lunes a viernes, en menos de 4 horas &middot; cada n&uacute;mero del sitio tiene fuente &middot; ES + EN.</span>
       </p>
       <ul class="hero-counts" aria-label="La biblioteca en cifras">
@@ -526,20 +527,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <span class="eyebrow">Herramientas insignia gratis &middot; en tu dispositivo &middot; sin registro</span>
       <h2 id="tool-cta-heading" class="tool-cta-flagships__heading">Encuentra la fuga antes de arreglarla.</h2>
     </div>
-    <div class="tool-cta-flagships__grid">
-      <a class="tool-card-flagship" href="/es/tools/storefront-health/">
-        <span class="tool-card-flagship__chip">Una URL &middot; seis chequeos</span>
-        <h3 class="tool-card-flagship__title">Salud del Storefront</h3>
-        <p class="tool-card-flagship__headline">El tablero unificado para el storefront completo de tu restaurante &mdash; velocidad, m&oacute;vil, schema, GBP, copy, fotos. La siguiente correcci&oacute;n te lleva a la herramienta que la corre.</p>
-        <span class="tool-card-flagship__cta">Corre el chequeo
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
-        </span>
-      </a>
-      <a class="tool-card-flagship" href="/es/tools/audits/restaurant/">
-        <span class="tool-card-flagship__chip">Unos 30 segundos &middot; sin registro</span>
-        <h3 class="tool-card-flagship__title">Diagn&oacute;stico de sitio de restaurante</h3>
-        <p class="tool-card-flagship__headline">Un diagn&oacute;stico m&oacute;vil real de Lighthouse m&aacute;s diez chequeos espec&iacute;ficos para restaurante, en espa&ntilde;ol claro. Pega tu URL.</p>
-        <span class="tool-card-flagship__cta">Corre el diagn&oacute;stico
+    <div class="tool-cta-flagships__grid tool-cta-flagships__grid--single">
+      <a class="tool-card-flagship" href="/es/tools/vendor-benchmark/">
+        <span class="tool-card-flagship__chip">Gratis &middot; en tu dispositivo &middot; sin registro</span>
+        <h3 class="tool-card-flagship__title">Vendor Benchmark</h3>
+        <p class="tool-card-flagship__headline">&iquest;Tu precio se mueve mal? Pega lo que has pagado y cu&aacute;ndo, y Vendor Benchmark lee la tendencia y te dice si un precio se mueve en l&iacute;nea &mdash; o si se est&aacute; desviando y conviene una llamada a tu proveedor.</p>
+        <span class="tool-card-flagship__cta">Revisa un precio
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </span>
       </a>
@@ -564,7 +557,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <ul class="trust-strip__list">
       <li><strong>Respuesta en menos de 4 hrs</strong>, lun&ndash;vie</li>
       <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
-      <li>Cada n&uacute;mero con fuente</li>
+      <li><a href="/es/trust/" style="color:inherit;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px">Cada n&uacute;mero con fuente &mdash; USDA &middot; BLS &middot; FRED</a></li>
       <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
       <li>&Iacute;ndice de Costos con lectura semanal</li>
       <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
@@ -642,7 +635,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <header class="recently-added__head">
       <span class="eyebrow">Índice de la biblioteca</span>
       <h2 id="recently-added-heading">Añadido recientemente.</h2>
-      <p class="recently-added__sub">Las ocho entradas más recientes de la biblioteca — artículos, investigación, herramientas y listas. Las entradas antiguas viven en las secciones por tema más abajo.</p>
+      <p class="recently-added__sub">Las 8 entradas más recientes de la biblioteca — artículos, investigación, herramientas y listas. Las entradas antiguas viven en las secciones por tema más abajo.</p>
     </header>
     <div class="table-scroll">
     <table class="lib-idx" role="table">
@@ -657,49 +650,49 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </thead>
       <tbody>
       <tr>
-        <td class="lib-idx-title"><a href="/es/blog/get-found-fathers-day-weekend-2026/">It's Thursday. A daughter is deciding where to take her dad on Sunday.</a></td>
+        <td class="lib-idx-title"><a href="/es/blog/dia-del-padre-que-te-encuentren-2026/">Restaurantes en el Día del Padre 2026: que te encuentren antes de la reserva</a></td>
         <td class="lib-idx-section">Artículos</td>
         <td class="lib-idx-date" aria-label="2026-06-18"><time datetime="2026-06-18">2026-06-18</time></td>
         <td class="lib-idx-contributor">Don Goldstein</td>
       </tr>
       <tr>
-        <td class="lib-idx-title"><a href="/es/blog/restaurant-menu-inflation-2026/">Restaurant prices are now rising faster than groceries — what May 2026's numbers mean for your menu</a></td>
+        <td class="lib-idx-title"><a href="/es/blog/inflacion-de-menu-de-restaurante-2026/">Inflación de menú 2026: +3.5% vs súper +2.7%</a></td>
         <td class="lib-idx-section">Artículos</td>
         <td class="lib-idx-date" aria-label="2026-06-14"><time datetime="2026-06-14">2026-06-14</time></td>
         <td class="lib-idx-contributor">Don Goldstein</td>
       </tr>
       <tr>
-        <td class="lib-idx-title"><a href="/es/blog/restaurant-website-technical-seo-checklist/">Restaurant Website Technical SEO Checklist (2026): The Operator's Audit</a></td>
+        <td class="lib-idx-title"><a href="/es/library/checklist-de-seo-tecnico-para-sitios-de-restaurantes/">Checklist de SEO técnico para sitios de restaurantes (2026): la auditoría del operador</a></td>
         <td class="lib-idx-section">Artículos</td>
         <td class="lib-idx-date" aria-label="2026-06-03"><time datetime="2026-06-03">2026-06-03</time></td>
         <td class="lib-idx-contributor">Don Goldstein</td>
       </tr>
       <tr>
-        <td class="lib-idx-title"><a href="/es/blog/restaurant-brand-system-colors-type-logo/">Restaurant Brand System (2026): Colors, Typography &amp; the Logo That Travels</a></td>
+        <td class="lib-idx-title"><a href="/es/library/sistema-de-marca-para-restaurantes-color-tipografia-logo/">Sistema de marca para restaurantes (2026): color, tipografía y el logo que viaja</a></td>
         <td class="lib-idx-section">Artículos</td>
         <td class="lib-idx-date" aria-label="2026-06-03"><time datetime="2026-06-03">2026-06-03</time></td>
         <td class="lib-idx-contributor">Don Goldstein</td>
       </tr>
       <tr>
-        <td class="lib-idx-title"><a href="/es/blog/restaurant-menu-engineering/">Restaurant Menu Engineering (2026): The Math Behind Which Dishes Make Money</a></td>
+        <td class="lib-idx-title"><a href="/es/library/ingenieria-de-menu-para-restaurantes/">Ingeniería de menú para restaurantes (2026): las cuentas detrás de qué platillos dan dinero</a></td>
         <td class="lib-idx-section">Artículos</td>
         <td class="lib-idx-date" aria-label="2026-06-03"><time datetime="2026-06-03">2026-06-03</time></td>
         <td class="lib-idx-contributor">Don Goldstein</td>
       </tr>
       <tr>
-        <td class="lib-idx-title"><a href="/es/blog/restaurant-website-legal-essentials/">Restaurant Website Legal &amp; Trust Essentials (2026): ToS, Privacy, Cookies, SSL</a></td>
+        <td class="lib-idx-title"><a href="/es/library/requisitos-legales-del-sitio-web-de-tu-restaurante/">Requisitos legales y de confianza del sitio web de tu restaurante (2026): términos, privacidad, cookies, SSL</a></td>
         <td class="lib-idx-section">Artículos</td>
         <td class="lib-idx-date" aria-label="2026-06-03"><time datetime="2026-06-03">2026-06-03</time></td>
         <td class="lib-idx-contributor">Don Goldstein</td>
       </tr>
       <tr>
-        <td class="lib-idx-title"><a href="/es/blog/keep-plate-cost-honest-when-prices-change/">Keep Your Plate Cost Honest When Prices Change</a></td>
+        <td class="lib-idx-title"><a href="/es/library/costo-del-plato-cuando-cambian-los-precios/">Mantén honesto el costo del plato</a></td>
         <td class="lib-idx-section">Artículos</td>
         <td class="lib-idx-date" aria-label="2026-06-03"><time datetime="2026-06-03">2026-06-03</time></td>
         <td class="lib-idx-contributor">Don Goldstein</td>
       </tr>
       <tr>
-        <td class="lib-idx-title"><a href="/es/tools/vendor-benchmark/">Muntin Bench</a></td>
+        <td class="lib-idx-title"><a href="/es/tools/vendor-benchmark/">Vendor Benchmark</a></td>
         <td class="lib-idx-section">Herramientas</td>
         <td class="lib-idx-date" aria-label="2026-06-02"><time datetime="2026-06-02">2026-06-02</time></td>
         <td class="lib-idx-contributor">Don Goldstein</td>
@@ -717,20 +710,20 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <!-- field-notes-rail:start --><!-- field-notes-rail:end -->
 
 <!-- ============ MIEMBROS FUNDADORES (Muntin Ledger pre-lanzamiento) ============ -->
-<!-- Captura suave de pre-lanzamiento. Sin precio, sin fecha — el precio
-     de Stripe no es final y el lanzamiento puede moverse, así que el
-     marco se queda en "primer acceso cuando abra Muntin Ledger este
-     otoño" y deja los detalles a ledger.muntin.digital. El formulario
-     publica al proxy de primera parte /api/waitlist, que reenvía a la
-     API del producto; el producto guarda el dato y manda el correo de
-     confirmación. La clase .js-signup-form recibe el sello de ts + el
-     envío asíncrono + el éxito en línea desde first-touch.js. -->
+<!-- Captura de pre-lanzamiento. Detalles confirmados por el fundador
+     (2026-06-27): disponibilidad general el 13 de noviembre de 2026; oferta
+     fundadora = tres meses gratis, luego $19/mes mientras se quede.
+     Consistente con /ledger/ + el producto. El formulario publica al proxy
+     de primera parte /api/waitlist, que reenvía a la API del producto; el
+     producto guarda el dato y manda el correo de confirmación. La clase
+     .js-signup-form recibe el sello de ts + el envío asíncrono + el éxito en
+     línea desde first-touch.js. -->
 <section class="block founding-band" id="founding" aria-labelledby="founding-heading">
   <div class="container">
     <div class="section-header reveal" style="max-width:760px;margin-inline:auto;text-align:center;">
       <span class="eyebrow">Miembros fundadores</span>
-      <h2 id="founding-heading">S&eacute; de los primeros cuando abra <span class="serif-italic">Muntin Ledger</span> este oto&ntilde;o.</h2>
-      <p>Un motor determinista lee tus facturas de proveedores y las archiva en un libro consultable &mdash; ning&uacute;n modelo lee tus n&uacute;meros, sin anuncios, sin rastreo. Muestra lo que midi&oacute; y se&ntilde;ala lo que estim&oacute;. Cuando no se puede leer una l&iacute;nea, retiene el dato en lugar de inventar una cifra. Los miembros fundadores tienen el primer acceso cuando abra. Tus n&uacute;meros siguen siendo tuyos.</p>
+      <h2 id="founding-heading">S&eacute; de los primeros cuando abra <span class="serif-italic">Muntin Ledger</span> &mdash; 13 de noviembre de 2026.</h2>
+      <p>Un motor determinista lee tus facturas de proveedores y las archiva en un libro consultable &mdash; ning&uacute;n modelo de lenguaje lee tus n&uacute;meros, sin anuncios, sin rastreo. Muestra lo que midi&oacute; y se&ntilde;ala lo que estim&oacute;. Cuando no se puede leer una l&iacute;nea, retiene el dato en lugar de inventar una cifra. Los miembros fundadores tienen <strong>tres meses gratis, luego $19 al mes</strong> mientras se queden. Tus n&uacute;meros siguen siendo tuyos.</p>
     </div>
 
     <!-- founding-capture:start -->
@@ -915,12 +908,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
          Don has been seen recently. -->
     <div class="foot-cta">
       <div class="foot-cta-text">
-        <span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don está cerca"></span>
-        ¿Tienes una pregunta? La Ventana está abierta.
+        Conoce lo que cuesta cada plato &mdash; antes de que la semana se coma el margen.
       </div>
-      <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Contacta a Don
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-      </a>
+      <div class="foot-cta-actions" style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
+        <a class="btn btn-primary" href="/es/ledger/">Ver Muntin Ledger
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </a>
+        <a class="btn btn-ghost js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje."><span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don está cerca"></span>Contacta a Don</a>
+      </div>
     </div>
 
     <div class="foot-grid">
@@ -1072,9 +1067,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </div>
   </div>
   <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Acciones r&aacute;pidas">
-    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/es/tools/audits/restaurant/" data-event="sticky-cta-audit">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
-      Auditor&iacute;a gratis
+    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/es/tools/cost-pulse/" data-event="sticky-cta-cost-pulse">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 18 L9 12 L13 15 L20 6"/><polyline points="15 6 20 6 20 11"/></svg>
+      Revisa precios
     </a>
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/es/window/" data-event="sticky-cta-window">
       <span class="mobile-cta-bar__pulse" id="mobileCtaBarPulse" hidden aria-hidden="true" title="Don está cerca"></span>

@@ -572,11 +572,11 @@ body[data-pc-mode="recost"] .pc-prev-cell{display:block}
       <a href="/cost-index/">Cost Index</a>
       <a href="/tools/">Tools</a>
       <a href="/studio/">Company</a>
-      <!-- Ledger — sister product (the privacy-forward invoice ledger)
-           on its own subdomain. Plain external link so it passes link
-           equity to ledger.muntin.digital; Plausible's automatic
-           outbound-link tracking measures the nav click. -->
-      <a href="https://ledger.muntin.digital/">Ledger</a>
+      <!-- Ledger — the paid product. Nav points at the on-site /ledger/
+           explainer (what it is, why a platform can't copy it, the founding
+           offer) rather than dumping cold nav traffic straight onto the
+           subdomain; /ledger/ owns the outbound "See Muntin Ledger" CTA. -->
+      <a href="/ledger/">Ledger</a>
       <!-- Both sign-in / workshop ship hidden by default; the
            auth-state JS at the bottom of this file calls
            /api/auth/me and reveals exactly one. No-JS visitors see
@@ -634,7 +634,7 @@ body[data-pc-mode="recost"] .pc-prev-cell{display:block}
     <a href="/cost-index/">Cost Index</a>
     <a href="/tools/">Tools</a>
     <a href="/studio/">Company</a>
-    <a href="https://ledger.muntin.digital/">Ledger</a>
+    <a href="/ledger/">Ledger</a>
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
     <button type="button" class="mobile-search js-open-search">
@@ -2749,7 +2749,7 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
       rerenderRows(rows);
       renderResults();
       // Wave 10.8 cascade — push per-dish cost-history entries so
-      // Menu Engineering / Margin Math / Cost Pulse pick up the
+      // Menu Engineering / Margin Math / the live Cost Index pick up the
       // delta. Uses the latestSummary that renderResults computed
       // for the current recipe; for any other dish in the change
       // set we recompute from MuntinContext.dishes if available.
