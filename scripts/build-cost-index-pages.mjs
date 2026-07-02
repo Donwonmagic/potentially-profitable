@@ -1950,7 +1950,42 @@ function hubCardNote(slug, locale) {
 
 // Front-door orientation: a first-timer learns what this is, who it's for, and the one
 // thing that makes it defensible (citable public data, not a paywalled assessed quote).
+// Bolder pass 2026-07 — the public scorecard, promoted from the depths of
+// the methodology page onto the hub. Values read from the calibration
+// report at build time so the band recomputes with every refresh; the
+// prose track record stays canonical on the methodology page.
+function scorecardBand(locale) {
+  const es = locale === 'es';
+  let rep;
+  try { rep = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-index-calibration-report.json'), 'utf8')); }
+  catch { return ''; }
+  const pct = (x) => Math.round(x * 100) + '%';
+  const nominal = pct(rep.band.nominal), coverage = pct(rep.band.pooledCoverage);
+  const steps = es ? String(rep.band.scoredSteps) : rep.band.scoredSteps.toLocaleString('en-US');
+  const base = es ? '/es' : '';
+  const figStyle = 'font-family:var(--font-display);font-size:clamp(24px,2.6vw,32px);font-weight:560;letter-spacing:-.015em;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums lining-nums';
+  const labStyle = 'font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--stone);font-weight:600;margin-top:6px';
+  const cell = (fig, lab) => `<div style="min-width:120px"><div style="${figStyle}">${fig}</div><div style="${labStyle}">${lab}</div></div>`;
+  const heading = es ? 'Calificado en p\u00fablico, fallos incluidos.' : 'Graded in public, misses included.';
+  const line = es
+    ? `La banda nominal del ${nominal} se cumpli\u00f3 el ${coverage} de las veces en ${steps} semanas evaluadas \u2014 y lo que no tiene precio se reporta ausente, nunca se adivina.`
+    : `The nominal ${nominal} band held ${coverage} of the time across ${steps} scored weeks \u2014 and anything without a price print reports absent, never guessed.`;
+  const linkTxt = es ? 'Ver la boleta completa' : 'See the full track record';
+  return `<section class="ci-scorecard" aria-label="${es ? 'Boleta de calibraci\u00f3n' : 'Calibration scorecard'}" style="margin:22px 0 8px;padding:20px 24px;background:var(--surface-1,#fff);border:1px solid var(--line);border-top:3px solid var(--ink);border-radius:12px;box-shadow:var(--elev-1)">
+      <div style="display:flex;flex-wrap:wrap;gap:18px 36px;align-items:flex-start">
+        ${cell(nominal, es ? 'banda nominal' : 'nominal band')}
+        ${cell(coverage, es ? 'cobertura realizada' : 'realized coverage')}
+        ${cell(steps, es ? 'semanas evaluadas' : 'scored weeks')}
+        <div style="flex:1 1 260px;min-width:240px">
+          <p style="margin:0;font-family:var(--font-display);font-size:16px;font-weight:600;color:var(--ink)">${heading}</p>
+          <p style="margin:6px 0 0;font-size:13.5px;line-height:1.55;color:var(--ink-soft)">${line} <a href="${base}/cost-index/methodology/#track-record" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">${linkTxt} \u2192</a></p>
+        </div>
+      </div>
+    </section>`;
+}
+
 function hubOrientation(locale) {
+
   const es = locale === 'es';
   const cells = es ? [
     ['Qué es', 'Rangos mayoristas típicos de ingredientes comunes de restaurante, tomados de reportes públicos del USDA, BLS y FRED.'],
@@ -2064,7 +2099,8 @@ function emitHubPage(locale, slugs) {
       <a class="btn btn-ghost" href="${base}/glossary/cost-index/">${es ? '¿Qué es un índice de costos?' : 'What is a cost index?'}</a>
     </div>
     ${compositeBand(locale)}
-    <p class="ci-hub-data" style="margin:14px 0 4px;font-size:13.5px;line-height:1.5;color:var(--ink-soft)">${freshTxt} ${es ? 'Descarga todo el índice' : 'Download the whole index'}: <a href="/cost-index/index.csv" download style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">CSV</a> · <a href="/cost-index/index.json" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">JSON</a> <span style="color:var(--stone)">${es ? '· dominio público (CC0)' : '· public domain (CC0)'}</span></p>
+    ${scorecardBand(locale)}
+    <p class="ci-hub-data" style="margin:14px 0 4px;font-size:13.5px;line-height:1.5;color:var(--ink-soft)">${freshTxt} ${es ? 'Llévate los datos: todo el índice' : 'Take the data with you — the whole index'}: <a href="/cost-index/index.csv" download style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">CSV</a> · <a href="/cost-index/index.json" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">JSON</a> <span style="color:var(--stone)">${es ? '· dominio público (CC0)' : '· public domain (CC0)'}</span></p>
     ${hubOrientation(locale)}
     ${movingNowSection(shipSlugs, locale)}
     ${allReadingsTable(shipSlugs, locale)}
