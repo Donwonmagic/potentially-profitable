@@ -280,6 +280,31 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      applies; before that the critical CSS above carries the page. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=2830bb0a913c" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=158a407ca00a" onload="this.onload=null;this.rel='stylesheet'">
+<style>
+/* Bolder pass 2026-07 — mid-page material: stance panes on the elevation
+   scale, instrument glyphs in the flagship cards, Fraunces number chips,
+   the muntin window glyph on the definition section, and the dark closer
+   de-drifted from the blue radial glow to ink + faint muntin frame lines.
+   Placed after the async stylesheet links so equal-specificity overrides
+   win by document order. */
+.stance-pane{padding:24px 28px;background:var(--surface-1,#fff);border:1px solid var(--line);border-top:3px solid var(--ink);border-radius:10px;box-shadow:var(--elev-1);position:relative}
+.stance-pane .stance-kicker{font-family:var(--font-display);font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);margin:0 0 10px;display:flex;align-items:baseline;gap:10px}
+.stance-pane .stance-num{font-family:var(--font-display);font-size:24px;font-weight:560;letter-spacing:-.01em;color:var(--stone);font-variant-numeric:tabular-nums lining-nums;text-transform:none}
+.stance-pane .stance-claim{font-family:var(--font-display);font-size:clamp(20px,2.2vw,26px);font-weight:500;line-height:1.3;color:var(--ink);margin:0 0 12px}
+.stance-pane .stance-proof{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0}
+.stance-pane .stance-proof a{color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none}
+.hero-counts__chip strong{font-family:var(--font-display);font-size:15px;font-weight:560;font-variant-numeric:tabular-nums lining-nums}
+.fg-glyph{display:block;width:100%;height:auto;max-width:300px;margin:0}
+.fg-glyph .gbase{stroke:var(--stone);stroke-width:1.6;fill:none;stroke-dasharray:4 4}
+.fg-glyph .gmove{stroke:var(--rust);stroke-width:2.2;fill:none}
+.fg-glyph .gwedge{fill:var(--rust);opacity:.13}
+.fg-glyph .gdot{fill:var(--rust)}
+.fg-glyph .gbar{fill:var(--teal);opacity:.75}
+.fg-glyph .gbar--thin{fill:var(--rust);opacity:.85}
+.fg-glyph-note{font-size:12.5px;color:var(--stone);margin:4px 0 0}
+.muntin-title::before{content:"";display:block;width:34px;height:40px;margin:0 0 18px;border:3px solid var(--ink);border-radius:5px;background:linear-gradient(var(--ink),var(--ink)) 50% 0/3px 100% no-repeat,linear-gradient(var(--ink),var(--ink)) 0 38%/100% 3px no-repeat}
+.final::before{background:linear-gradient(rgba(246,247,248,.055),rgba(246,247,248,.055)) 33% 0/3px 100% no-repeat,linear-gradient(rgba(246,247,248,.055),rgba(246,247,248,.055)) 66% 0/3px 100% no-repeat,linear-gradient(rgba(246,247,248,.055),rgba(246,247,248,.055)) 0 58%/100% 3px no-repeat}
+</style>
 <noscript><link rel="stylesheet" href="/assets/site-core.css?v=2830bb0a913c"><link rel="stylesheet" href="/assets/site-article.css?v=158a407ca00a"></noscript>
 <!-- hub-modified:start (scripts/inject-hub-modified-time.mjs) -->
 <meta property="article:modified_time" content="2026-06-20" />
@@ -532,6 +557,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <span class="tool-card-flagship__chip">Gratis &middot; en tu dispositivo &middot; sin registro</span>
         <h3 class="tool-card-flagship__title">Vendor Benchmark</h3>
         <p class="tool-card-flagship__headline">&iquest;Tu precio se mueve mal? Pega lo que has pagado y cu&aacute;ndo, y Vendor Benchmark lee la tendencia y te dice si un precio se mueve en l&iacute;nea &mdash; o si se est&aacute; desviando y conviene una llamada a tu proveedor.</p>
+        <svg class="fg-glyph" viewBox="0 0 132 34" width="132" height="34" aria-hidden="true" focusable="false">
+          <polyline class="gbase" points="6,20 126,17"></polyline>
+          <polygon class="gwedge" points="70,19 126,17 126,7"></polygon>
+          <polyline class="gmove" points="6,21 70,19 126,7"></polyline>
+          <circle class="gdot" cx="126" cy="7" r="2.6"></circle>
+        </svg>
+        <p class="fg-glyph-note">Tu l&iacute;nea desvi&aacute;ndose de la del mercado &mdash; ilustrativo</p>
+
         <span class="tool-card-flagship__cta">Revisa un precio
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </span>
@@ -540,6 +573,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <span class="tool-card-flagship__chip">Gratis &middot; en tu dispositivo &middot; sin registro</span>
         <h3 class="tool-card-flagship__title">Sabe cu&aacute;nto te deja tu men&uacute;</h3>
         <p class="tool-card-flagship__headline">Sube el reporte de ventas de tu POS y mira cu&aacute;nto le deja a la casa cada plato por a&ntilde;o &mdash; sobre tu volumen real. Y una decisi&oacute;n clara cuando un precio se mueve: sube, recorta la porci&oacute;n o mant&eacute;n.</p>
+        <svg class="fg-glyph" viewBox="0 0 132 34" width="132" height="34" aria-hidden="true" focusable="false">
+          <rect class="gbar" x="6" y="4" width="104" height="6" rx="2"></rect>
+          <rect class="gbar" x="6" y="14" width="74" height="6" rx="2"></rect>
+          <rect class="gbar gbar--thin" x="6" y="24" width="34" height="6" rx="2"></rect>
+        </svg>
+        <p class="fg-glyph-note">M&aacute;rgenes por plato, ordenados &mdash; ilustrativo</p>
+
         <span class="tool-card-flagship__cta">Costea tu men&uacute;
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </span>
