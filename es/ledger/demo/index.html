@@ -4,23 +4,23 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-<title>Muntin Ledger &mdash; el libro de facturas para restaurantes</title>
-<meta name="description" content="Muntin Ledger lee tus facturas con reglas, no con un modelo de lenguaje — las archiva consultables y marca subas contra tu propio historial." />
+<title>Demo de Muntin Ledger &mdash; una factura de muestra: leída, archivada, marcada</title>
+<meta name="description" content="Una factura de muestra en Muntin Ledger: leída con reglas, archivada y marcada contra su historial. Datos de muestra; sin subir nada." />
 <meta name="theme-color" content="#2A50C8" />
-<link rel="canonical" href="https://muntin.digital/es/ledger/" />
+<link rel="canonical" href="https://muntin.digital/es/ledger/demo/" />
     <!-- feed-discovery:start (injected by inject-feed-discovery.mjs) -->
     <link rel="alternate" type="application/rss+xml" title="Muntin Digital — RSS (ES)" href="/es/feed.xml">
     <!-- /feed-discovery:end -->
-<link rel="alternate" hreflang="en" href="https://muntin.digital/ledger/" />
-<link rel="alternate" hreflang="es" href="https://muntin.digital/es/ledger/" />
-<link rel="alternate" hreflang="x-default" href="https://muntin.digital/ledger/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/ledger/demo/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/ledger/demo/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/ledger/demo/" />
 <meta property="og:locale" content="es_US" />
 <meta property="og:locale:alternate" content="en_US" />
 
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Muntin Ledger &mdash; el libro de facturas para restaurantes" />
-<meta property="og:description" content="Lectura determinista de facturas, un libro consultable, exportación limpia — y sin comisión por pedido. La trastienda del restaurante, por fin legible. De Muntin Digital." />
-<meta property="og:url" content="https://muntin.digital/es/ledger/" />
+<meta property="og:title" content="Demo de Muntin Ledger &mdash; una factura de muestra: leída, archivada, marcada" />
+<meta property="og:description" content="La mecánica real sobre datos de muestra: las reglas leen las líneas, el libro las archiva consultables y una subida de precio se marca contra su propio historial." />
+<meta property="og:url" content="https://muntin.digital/es/ledger/demo/" />
 <meta property="og:site_name" content="Muntin Digital" />
 
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
@@ -28,31 +28,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebPage",
-      "@id": "https://muntin.digital/es/ledger/#webpage",
-      "name": "Muntin Ledger — el libro de facturas para restaurantes",
-      "description": "Muntin Ledger lee las facturas de proveedores con plantillas y reglas — sin modelo de lenguaje en el camino — las archiva en un libro consultable, y marca subas de precio contra tu propio historial de seis meses.",
-      "url": "https://muntin.digital/es/ledger/",
-      "inLanguage": "es-US",
-      "isPartOf": { "@id": "https://muntin.digital/#website" },
-      "publisher": { "@id": "https://muntin.digital/#business" },
-      "dateModified": "2026-06-17"
-    },
-    {
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/es/" },
-        { "@type": "ListItem", "position": 2, "name": "Muntin Ledger", "item": "https://muntin.digital/es/ledger/" }
-      ]
-    }
-  ]
-}
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://muntin.digital/es/ledger/demo/#page","url":"https://muntin.digital/es/ledger/demo/","inLanguage":"es-US","name":"Demo de Muntin Ledger — una factura de muestra: leída, archivada, marcada","description":"Un recorrido guiado de Muntin Ledger con datos de muestra — sin subir nada, sin guardar nada.","dateModified":"2026-07-02","isPartOf":{"@id":"https://muntin.digital/#website"}},{"@type":"BreadcrumbList","@id":"https://muntin.digital/es/ledger/demo/#breadcrumbs","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://muntin.digital/es/"},{"@type":"ListItem","position":2,"name":"Muntin Ledger","item":"https://muntin.digital/es/ledger/"},{"@type":"ListItem","position":3,"name":"Demo","item":"https://muntin.digital/es/ledger/demo/"}]}]}</script>
 
 <style>
 /* Bolder pass 2026-07 — the storefront gets the futures-edge grammar:
@@ -151,6 +127,47 @@
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .lg-pricing{background:#1B1E24;border:1px solid #2C3038}}
 :root[data-theme="dark"] .lg-pricing{background:#1B1E24;border:1px solid #2C3038}
 
+
+/* Demo walkthrough (.ld-*) — progressive enhancement: all panels ship
+   visible and stacked; JS collapses them into a stepper. No uploads,
+   no inputs, no network — the page is a guided reading of canned data. */
+.ld-wrap{max-width:880px;margin:0 auto}
+.ld-rail{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 28px;padding:0;list-style:none;font-size:13px;counter-reset:ld}
+.ld-rail li{counter-increment:ld}
+.ld-rail a{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;background:var(--surface-1,#fff);border:1px solid var(--line);border-radius:999px;color:var(--ink);text-decoration:none}
+.ld-rail a::before{content:counter(ld,decimal-leading-zero);font-family:var(--font-display);font-weight:560;font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums lining-nums}
+.ld-rail li[aria-current="step"] a{border-color:var(--ink);box-shadow:var(--elev-1)}
+.ld-panel{margin:0 0 26px}
+.ld-js .ld-panel:not(.ld-current){display:none}
+.ld-panel .lg-pane{box-shadow:var(--elev-1)}
+.ld-js .ld-panel.ld-current .lg-pane{box-shadow:var(--elev-3)}
+.ld-panel h2{font-family:var(--font-display);font-size:clamp(24px,3vw,32px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 8px}
+.ld-panel .ld-body{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 16px;max-width:640px}
+.ld-invoice-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:6px}
+.ld-invoice-title{font-family:var(--font-display);font-weight:600;font-size:15px;color:var(--ink)}
+.ld-invoice-date{font-size:12.5px;color:var(--stone);font-variant-numeric:tabular-nums}
+.ld-line{display:grid;grid-template-columns:1fr max-content max-content;gap:10px;align-items:baseline;padding:8px 2px;border-top:1px dashed var(--line);font-size:13.5px}
+.ld-line:first-of-type{border-top:0}
+.ld-line .q{color:var(--stone)}
+.ld-total{display:grid;grid-template-columns:1fr max-content;gap:10px;padding:10px 2px 2px;border-top:2px solid var(--ink);font-size:14px;font-weight:600;color:var(--ink)}
+.ld-total .lg-n{font-size:17px}
+.ld-note{font-size:13px;line-height:1.55;color:var(--ink);margin:14px 0 0;padding:8px 12px;border-left:3px solid var(--teal);background:rgba(42,80,200,.06);border-radius:0 6px 6px 0}
+.ld-search{display:flex;align-items:center;gap:8px;margin:0 0 12px;padding:10px 14px;border:1px solid var(--line-dark,#D7DAE0);border-radius:10px;background:var(--cream-2);color:var(--ink-soft);font-size:14px}
+.ld-search svg{flex:0 0 16px}
+.ld-search .ld-q{font-weight:600;color:var(--ink)}
+.ld-count{font-size:12.5px;color:var(--stone);margin:0 0 10px}
+.ld-controls{display:flex;gap:12px;align-items:center;margin:4px 0 0}
+.ld-controls .btn[disabled]{opacity:.45;cursor:default;pointer-events:none}
+.ld-progress{font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums}
+.ld-cta{background:#16181D;color:rgba(246,247,248,.78);border-radius:18px;padding:clamp(26px,4vw,48px)}
+.ld-cta h2{color:#F6F7F8}
+.ld-cta .ld-body{color:rgba(246,247,248,.75)}
+.ld-cta .lg-cap{color:rgba(246,247,248,.55)}
+.ld-reveal{opacity:1}
+.ld-js .ld-armed .ld-reveal{opacity:0;transform:translateY(6px)}
+.ld-js .ld-armed .ld-reveal.ld-in{opacity:1;transform:none;transition:opacity .24s var(--ease-out),transform .24s var(--ease-out)}
+@media (prefers-reduced-motion:reduce){.ld-reveal,.ld-js .ld-armed .ld-reveal{opacity:1!important;transform:none!important;transition:none!important}}
+.visually-hidden-ld{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 </style>
 <style>
 /* Critical CSS — prevents flash of unstyled content while the main
@@ -424,166 +441,198 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 </header>
 
 <main id="main">
-  <section class="hero lg-hero">
-    <div class="container">
-      <nav class="breadcrumb" aria-label="Ruta">
-        <ol style="list-style:none;padding:0;margin:0;display:flex;gap:8px;font-size:13px;color:var(--stone)">
-          <li><a href="/es/" style="color:var(--teal)">Inicio</a></li>
-          <li aria-hidden="true">›</li>
-          <li aria-current="page">Muntin Ledger</li>
-        </ol>
-      </nav>
-      <div class="hero-grid">
-        <div>
-          <p class="eyebrow">El producto &middot; Disponibilidad general el 13 de noviembre de 2026</p>
-          <h1>
-            Tu POS cuenta las ventas. <span class="serif-italic">Muntin Ledger lee las facturas.</span>
-          </h1>
-          <p class="lg-lede">
-            Soy gerente de salón en un restaurante del área de DC. El lado de las ventas está bien cableado &mdash; cada cubierto, cada cuenta. El lado de los costos llega como una pila de facturas de proveedores que nadie lee hasta que el mes ya cerró. Muntin Ledger las lee el día que llegan, las archiva donde puedes encontrarlas, y te avisa cuando un precio se movió.
-          </p>
-          <div class="lg-hero-ctas">
-            <a class="btn btn-primary" href="#pricing">Unirme a la lista fundadora</a>
-            <a class="btn btn-ghost" href="https://ledger.muntin.digital/">Ver Muntin Ledger</a>
+  <div class="container ld-wrap">
+    <nav class="breadcrumb" aria-label="Ruta" style="padding:28px 0 22px">
+      <ol style="list-style:none;padding:0;margin:0;display:flex;gap:8px;font-size:13px;color:var(--stone)">
+        <li><a href="/es/" style="color:var(--teal)">Inicio</a></li>
+        <li aria-hidden="true">›</li>
+        <li><a href="/es/ledger/" style="color:var(--teal)">Muntin Ledger</a></li>
+        <li aria-hidden="true">›</li>
+        <li aria-current="page">Demo</li>
+      </ol>
+    </nav>
+
+    <header class="studio-section" style="margin:8px 0 4px">
+      <p class="eyebrow">El demo de maqueta &middot; datos de muestra, sin subir nada</p>
+      <h1 style="font-family:var(--font-display);font-size:clamp(36px,4.6vw,54px);font-weight:560;line-height:1.06;letter-spacing:-0.5px;margin:0 0 14px;text-wrap:balance">Una factura de muestra, <span class="serif-italic">de principio a fin.</span></h1>
+      <p class="lg-lede">Es un recorrido guiado con datos de muestra &mdash; el producto real, mostrado sobre una factura ficticia. No sube nada y no env&iacute;a nada; tus n&uacute;meros se quedan donde est&aacute;n.</p>
+      <ol class="ld-rail" id="ldRail">
+        <li><a href="#ld-step0">La factura</a></li>
+        <li><a href="#ld-step1">Leer</a></li>
+        <li><a href="#ld-step2">Archivar</a></li>
+        <li><a href="#ld-step3">Marcar</a></li>
+        <li><a href="#ld-step4">La lista</a></li>
+      </ol>
+    </header>
+
+    <div id="ldPanels">
+
+    <section class="ld-panel" id="ld-step0" aria-labelledby="ld-h0">
+      <h2 id="ld-h0" tabindex="-1">Llega la factura.</h2>
+      <p class="ld-body">Una factura de verduras llega como siempre: cinco l&iacute;neas, un total. Esta muestra es la que recorre todo el demo.</p>
+      <figure class="lg-vignette" style="margin:0">
+        <div class="lg-pane">
+          <div class="lg-pane-head">
+            <span class="lg-pane-title">Proveedor de verduras &mdash; factura</span>
+            <span class="lg-chip">Factura de muestra &middot; ilustrativa</span>
           </div>
-          <p style="margin:12px 0 0;font-size:13.5px"><a href="/es/ledger/demo/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Recorre el demo de maqueta primero &rarr;</a></p>
-          <ul class="studio-toc" aria-label="En esta página">
-            <li><a href="#what">Qué hace</a></li>
-            <li><a href="#why">Por qué una plataforma no puede copiarlo</a></li>
-            <li><a href="#proof">Prueba las cuentas gratis</a></li>
-            <li><a href="#pricing">Precios y lista fundadora</a></li>
-            <li><a href="#about">Quién está detrás</a></li>
-            <li><a href="#contact">Contacto</a></li>
-          </ul>
+          <div class="ld-invoice-head"><span class="ld-invoice-title">Factura &mdash; 26 jun</span><span class="ld-invoice-date">Neto 15 &middot; 5 l&iacute;neas</span></div>
+          <div class="ld-line"><span>Lechuga romana, 24&nbsp;uds <span class="q">&times;1</span></span><span></span><span class="lg-n">$27.90</span></div>
+          <div class="ld-line"><span>Tomates Roma, 25&nbsp;lb <span class="q">&times;1</span></span><span></span><span class="lg-n">$31.50</span></div>
+          <div class="ld-line"><span>Cebollas amarillas, 50&nbsp;lb <span class="q">&times;1</span></span><span></span><span class="lg-n">$22.00</span></div>
+          <div class="ld-line"><span>Limones verdes, 40&nbsp;uds <span class="q">&times;1</span></span><span></span><span class="lg-n">$14.25</span></div>
+          <div class="ld-line"><span>Cilantro, 30&nbsp;uds <span class="q">&times;1</span></span><span></span><span class="lg-n">$18.60</span></div>
+          <div class="ld-total"><span>Total</span><span class="lg-n">$114.25</span></div>
         </div>
-        <figure class="lg-vignette">
-          <div class="lg-sheet" aria-hidden="true"></div>
-          <div class="lg-pane">
-            <div class="lg-pane-head">
-              <span class="lg-pane-title">Líneas de factura &mdash; archivadas</span>
-              <span class="lg-chip">Libro de muestra &middot; ilustrativo</span>
-            </div>
-            <div class="lg-rows">
-              <div class="lg-row"><span class="lg-d">12 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$24.10</span><span class="lg-s">archivada</span></div>
-              <div class="lg-row"><span class="lg-d">19 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$24.35</span><span class="lg-s">archivada</span></div>
-              <div class="lg-row lg-row--flag"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$27.90</span><span class="lg-flag"><span aria-hidden="true">&#9650;</span> el precio se movió</span></div>
-            </div>
-            <svg class="lg-step" viewBox="0 0 280 44" width="280" height="44" aria-hidden="true" focusable="false">
-              <rect class="band" x="8" y="14" width="264" height="16" rx="2"></rect>
-              <polyline class="base" points="8,23 186,22"></polyline>
-              <polyline class="move" points="186,22 204,9 272,8"></polyline>
-              <circle class="dot" cx="272" cy="8" r="3"></circle>
-            </svg>
-            <p class="lg-stepnote">La línea se sale de su banda de seis meses &mdash; esa es la alerta.</p>
+        <figcaption class="lg-cap"><strong>Muestra ilustrativa</strong> &mdash; el demo corre por completo sobre esta factura ficticia; no sube nada y no env&iacute;a nada. No son datos en vivo ni de clientes.</figcaption>
+      </figure>
+    </section>
+
+    <section class="ld-panel" id="ld-step1" aria-labelledby="ld-h1">
+      <h2 id="ld-h1" tabindex="-1">Leer.</h2>
+      <p class="ld-body">Plantillas y reglas extraen las l&iacute;neas: proveedor, art&iacute;culo, cantidad, precio. Ning&uacute;n modelo de lenguaje lee el documento; una compuerta de build impide agregarlo.</p>
+      <figure class="lg-vignette ld-armed-target" style="margin:0">
+        <div class="lg-pane">
+          <div class="lg-pane-head">
+            <span class="lg-pane-title">L&iacute;neas &mdash; extra&iacute;das por reglas</span>
+            <span class="lg-chip">Libro de muestra &middot; ilustrativo</span>
           </div>
-          <figcaption class="lg-cap"><strong>Muestra ilustrativa</strong> &mdash; así se marca una línea de factura archivada contra tu propio historial de precios. No son datos en vivo ni de clientes.</figcaption>
-        </figure>
-        <script>
-        (function(){try{
-          if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-          var v=document.querySelector('.lg-vignette');if(!v)return;
-          v.classList.add('lg-armed');
-          requestAnimationFrame(function(){setTimeout(function(){v.classList.add('lg-landed')},480)});
-        }catch(e){}})();
-        </script>
+          <div class="lg-rows">
+            <div class="lg-row ld-reveal"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$27.90</span><span class="lg-s">le&iacute;da</span></div>
+            <div class="lg-row ld-reveal"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Tomates Roma, 25&nbsp;lb</span><span class="lg-n">$31.50</span><span class="lg-s">le&iacute;da</span></div>
+            <div class="lg-row ld-reveal"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Cebollas amarillas, 50&nbsp;lb</span><span class="lg-n">$22.00</span><span class="lg-s">le&iacute;da</span></div>
+            <div class="lg-row ld-reveal"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Limones verdes, 40&nbsp;uds</span><span class="lg-n">$14.25</span><span class="lg-s">le&iacute;da</span></div>
+            <div class="lg-row ld-reveal"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Cilantro, 30&nbsp;uds</span><span class="lg-n">$18.60</span><span class="lg-s">le&iacute;da</span></div>
+          </div>
+          <p class="ld-note">Reglas, no un modelo de lenguaje &mdash; la misma factura siempre da los mismos n&uacute;meros, y tus documentos nunca se vuelven datos de entrenamiento.</p>
+        </div>
+        <figcaption class="lg-cap"><strong>Muestra ilustrativa</strong> &mdash; cinco l&iacute;neas convertidas en campos por plantillas y reglas. No son datos en vivo ni de clientes.</figcaption>
+      </figure>
+    </section>
+
+    <section class="ld-panel" id="ld-step2" aria-labelledby="ld-h2">
+      <h2 id="ld-h2" tabindex="-1">Archivar.</h2>
+      <p class="ld-body">Cada l&iacute;nea queda archivada y consultable: por proveedor, art&iacute;culo o fecha. Todo el registro se exporta a un CSV limpio cuando lo pidas.</p>
+      <figure class="lg-vignette" style="margin:0">
+        <div class="lg-pane">
+          <div class="lg-pane-head">
+            <span class="lg-pane-title">El libro &mdash; consultable</span>
+            <span class="lg-chip">Libro de muestra &middot; ilustrativo</span>
+          </div>
+          <div class="ld-search" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+            <span>Buscar: <span class="ld-q">romana</span></span>
+          </div>
+          <p class="ld-count">3 de 6 l&iacute;neas coinciden</p>
+          <div class="lg-rows">
+            <div class="lg-row"><span class="lg-d">12 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$24.10</span><span class="lg-s">archivada</span></div>
+            <div class="lg-row"><span class="lg-d">19 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$24.35</span><span class="lg-s">archivada</span></div>
+            <div class="lg-row"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$27.90</span><span class="lg-s">archivada</span></div>
+          </div>
+        </div>
+        <figcaption class="lg-cap"><strong>Muestra ilustrativa</strong> &mdash; el buscador es parte de la maqueta, no un campo real; las filas son ficticias. No son datos en vivo ni de clientes.</figcaption>
+      </figure>
+    </section>
+
+    <section class="ld-panel" id="ld-step3" aria-labelledby="ld-h3">
+      <h2 id="ld-h3" tabindex="-1">Marcar.</h2>
+      <p class="ld-body">La l&iacute;nea de lechuga romana se sale de su banda de seis meses &mdash; $3.55 m&aacute;s por caja &mdash; y recibe la marca. La comparaci&oacute;n es contra tu propio historial, nada m&aacute;s.</p>
+      <figure class="lg-vignette" style="margin:0">
+        <div class="lg-pane">
+          <div class="lg-pane-head">
+            <span class="lg-pane-title">Revisi&oacute;n de precio &mdash; contra tu propio historial</span>
+            <span class="lg-chip">Libro de muestra &middot; ilustrativo</span>
+          </div>
+          <div class="lg-rows">
+            <div class="lg-row"><span class="lg-d">12 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$24.10</span><span class="lg-s">en banda</span></div>
+            <div class="lg-row"><span class="lg-d">19 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$24.35</span><span class="lg-s">en banda</span></div>
+            <div class="lg-row lg-row--flag"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$27.90</span><span class="lg-flag"><span aria-hidden="true">&#9650;</span> el precio se movi&oacute;</span></div>
+          </div>
+          <svg class="lg-step" viewBox="0 0 280 44" width="280" height="44" aria-hidden="true" focusable="false">
+            <rect class="band" x="8" y="14" width="264" height="16" rx="2"></rect>
+            <polyline class="base" points="8,23 186,22"></polyline>
+            <polyline class="move" points="186,22 204,9 272,8"></polyline>
+            <circle class="dot" cx="272" cy="8" r="3"></circle>
+          </svg>
+          <p class="lg-stepnote">La l&iacute;nea se sale de su banda de seis meses &mdash; esa es la alerta.</p>
+        </div>
+        <figcaption class="lg-cap"><strong>Muestra ilustrativa</strong> &mdash; la marca se dispara solo contra la banda de seis meses del propio art&iacute;culo. No son datos en vivo ni de clientes.</figcaption>
+      </figure>
+    </section>
+
+    <section class="ld-panel ld-cta" id="ld-step4" aria-labelledby="ld-h4">
+      <h2 id="ld-h4" tabindex="-1">El libro, con tus facturas.</h2>
+      <p class="ld-body">Muntin Ledger abre el 13 de noviembre de 2026. Los operadores en la lista fundadora obtienen la tarifa fundadora: <strong style="color:#F6F7F8">tres meses gratis, luego $19 al mes mientras se queden</strong>.</p>
+      <div class="studio-cta-row" style="margin-top:20px">
+        <a class="btn lg-btn-light" href="/es/ledger/#pricing">Unirme a la lista fundadora</a>
+        <a class="btn btn-ghost" href="/es/ledger/#pricing" style="color:#F6F7F8;border-color:rgba(246,247,248,.4)">Ver precios</a>
       </div>
+      <p class="lg-cap" style="margin-top:18px">El formulario fundador est&aacute; en la p&aacute;gina del Ledger &mdash; este demo no pide nada, ni siquiera un correo.</p>
+    </section>
+
     </div>
-  </section>
 
-  <article class="container" style="max-width:980px;margin:8px auto 80px;padding:0 var(--pad-x)">
+    <div class="ld-controls" id="ldControls" hidden>
+      <button type="button" class="btn btn-ghost" id="ldBack">Atr&aacute;s</button>
+      <button type="button" class="btn btn-primary" id="ldNext">Siguiente</button>
+      <span class="ld-progress" id="ldProgress"></span>
+    </div>
+    <p class="visually-hidden-ld" aria-live="polite" id="ldLive"></p>
 
-    <section class="studio-section" id="what" aria-labelledby="what-h">
-      <h2 id="what-h">Leída, archivada, marcada.</h2>
-      <p class="lead">Tres tareas, ninguna de las cuales debería costarte la noche. Muntin Ledger hace la parte del trabajo de margen que un punto de venta nunca toca: el papel que llega de tus proveedores.</p>
-      <div class="studio-grid">
-        <div class="studio-card">
-          <p class="studio-card__label">Leer</p>
-          <h3>Plantillas y reglas, no un modelo.</h3>
-          <p>Toma una foto o sube una factura de proveedor. Plantillas y reglas extraen las líneas &mdash; proveedor, artículo, cantidad, precio, impuesto. Ningún modelo de lenguaje lee tus documentos; un gate de CI impide que alguien agregue uno.</p>
-        </div>
-        <div class="studio-card">
-          <p class="studio-card__label">Archivar</p>
-          <h3>Un libro que puedes buscar.</h3>
-          <p>Cada factura queda archivada y consultable &mdash; por proveedor, por artículo, por fecha. Exporta el registro completo a un CSV limpio, o publícalo en QuickBooks Online, cuando lo pidas.</p>
-        </div>
-        <div class="studio-card">
-          <p class="studio-card__label">Marcar</p>
-          <h3>Subas de precio, contra tu propio historial.</h3>
-          <p>Un proveedor sube un precio y Ledger lo marca contra tu propio historial de seis meses. Los platos que ese ingrediente toca se recalculan el mismo día &mdash; el costo de plato se mantiene al día sin una hoja de cálculo.</p>
-        </div>
-      </div>
-    </section>
+  </div>
 
-    <section class="studio-section" id="why" aria-labelledby="why-h">
-      <h2 id="why-h">Por qué una plataforma no puede copiar esto.</h2>
-      <p class="lead">Cada promesa de abajo es adversa a cómo ganan dinero los proveedores más grandes. Ese es el punto &mdash; una empresa que vive de una comisión por pedido o de revender tus datos no puede escribir estas frases sin acusar a su propio negocio.</p>
-      <ul class="ledger-asym">
-        <li><strong>Sin comisión por pedido.</strong> Muntin no toma nada de tus tickets. El incentivo de empujarte a vender o pedir más no está en el modelo, porque el modelo no es un corte de tus ventas.</li>
-        <li><strong>Sin modelo de lenguaje en el camino de la factura.</strong> Tus números nunca se vuelven datos de entrenamiento. La prohibición no es un párrafo de privacidad &mdash; es un gate del build que tumba el lanzamiento si alguien intenta agregar uno.</li>
-        <li><strong>Tus datos siguen siendo tuyos.</strong> Exporta el libro completo cuando quieras, en un formato que puedes abrir sin nosotros. Bórralo y desaparece.</li>
-        <li><strong>Precios publicados por escrito.</strong> El número está en la página, con la cuenta del costo por factura al lado. Sin llamada, sin cotización, sin &laquo;contactar a ventas&raquo;.</li>
-      </ul>
-    </section>
-
-    <section class="studio-section" id="proof" aria-labelledby="proof-h">
-      <h2 id="proof-h">Prueba las cuentas antes de confiar en el producto.</h2>
-      <p class="lead">No tienes que creerme con las cuentas de costos &mdash; están corriendo gratis, ahora mismo. Las herramientas de costo de plato y de margen calculan los mismos números que Ledger mantiene al día, en tu navegador, sin registro y sin que nada salga de la página. El Índice de Costos publica las lecturas de precios mayoristas detrás de ellas, con fecha y con fuente.</p>
-      <div class="studio-cta-row">
-        <a class="btn btn-ghost" href="/es/tools/">Explorar las herramientas</a>
-        <a class="btn btn-ghost" href="/es/cost-index/">Leer el índice</a>
-      </div>
-    </section>
-
-    <section class="studio-section lg-pricing-section" id="pricing" aria-labelledby="pricing-h">
-      <div class="lg-pricing">
-        <div>
-          <h2 id="pricing-h">Precios y la lista fundadora.</h2>
-          <p class="lead">Muntin Ledger es gratis durante la beta privada; la disponibilidad general es el 13 de noviembre de 2026. Los precios están publicados por escrito en <a href="https://ledger.muntin.digital/">ledger.muntin.digital</a>, con la cuenta del costo por factura al lado. Los operadores que se unan a la lista fundadora antes del lanzamiento obtienen la tarifa fundadora: <strong>tres meses gratis, luego $19 al mes mientras se queden</strong>. La lista y los números viven en el sitio del producto.</p>
-        </div>
-        <div class="lg-price-lockup">
-          <p class="lg-price-figure"><span class="lg-price-cur">$</span>19<span class="lg-price-per">al mes</span></p>
-          <p class="lg-price-terms">La tarifa fundadora: tres meses gratis, luego $19 al mes &mdash; mientras te quedes.</p>
-          <p class="lg-price-ga">Disponibilidad general &mdash; <span class="lg-price-date">13 de noviembre de 2026</span> &middot; a <!-- count:ledger.ga_weeks_out -->19<!-- /count --> semanas</p>
-        </div>
-          <div class="lg-founding" style="grid-column:1/-1;border-top:1px solid rgba(246,247,248,.14);padding-top:26px;margin-top:6px">
-            <div class="studio-cta-row" style="margin:0 0 20px"><a class="btn lg-btn-light" href="https://ledger.muntin.digital/">Ver Muntin Ledger</a></div>
-            <!-- founding-capture:start (ledger) -->
-            <form action="/api/waitlist" method="post" class="js-signup-form founding-form" data-locale="es" data-event="Waitlist Signup" data-surface="ledger-pricing" style="margin:0;max-width:640px">
-              <div class="founding-form-fields">
-                <div class="founding-field">
-                  <label class="founding-form-label" for="founding-email">Tu correo</label>
-                  <input id="founding-email" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="tu@turestaurante.com" />
-                </div>
-                <div class="founding-field">
-                  <label class="founding-form-label" for="founding-name">Tu nombre <span class="founding-optional">(opcional)</span></label>
-                  <input id="founding-name" name="name" type="text" autocomplete="name" autocapitalize="words" placeholder="Nombre" />
-                </div>
-              </div>
-              <input type="hidden" name="source" value="ledger-pricing" />
-              <input type="hidden" name="founding_member" value="true" />
-              <input type="hidden" name="locale" value="es" />
-              <input type="hidden" name="ts" value="" />
-              <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
-              <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="waitlist" data-size="flexible"></div>
-              <p class="founding-form-confirm" aria-live="polite">Gracias &mdash; revisa tu correo para confirmar tu lugar.</p>
-              <button type="submit">Unirme a la lista fundadora</button>
-            </form>
-            <!-- founding-capture:end -->
-          </div>
-        </div>
-    </section>
-
-    <section class="studio-section" id="about" aria-labelledby="about-h">
-      <h2 id="about-h">Quién está detrás.</h2>
-      <p class="lead">Muntin Digital es una sola persona: Don Goldstein, gerente de salón de tiempo completo en Tacombi en Bethesda, con una década en pisos de hospitalidad antes de eso. Ledger existe porque corro cada semana los mismos números que calcula. La línea de tiempo completa está en la <a href="/es/about/" style="color:var(--teal)">página sobre Don</a>.</p>
-    </section>
-
-    <section class="studio-section" id="contact" aria-labelledby="contact-h">
-      <h2 id="contact-h">Un siguiente paso.</h2>
-      <p class="lead">Preguntas, una cifra que se ve mal, o un formato de proveedor que Ledger debería aprender a leer &mdash; la Ventana llega directo a mí, y cada nota se lee.</p>
-      <p><a class="btn btn-primary js-window" href="/es/window/">Escribirle a Don</a></p>
-    </section>
-  </article>
+  <script>
+  (function () {
+    'use strict';
+    try {
+      var wrap = document.querySelector('.ld-wrap');
+      var panels = Array.prototype.slice.call(document.querySelectorAll('.ld-panel'));
+      var rail = document.getElementById('ldRail');
+      var controls = document.getElementById('ldControls');
+      var back = document.getElementById('ldBack'), next = document.getElementById('ldNext');
+      var progress = document.getElementById('ldProgress'), live = document.getElementById('ldLive');
+      if (!wrap || panels.length < 5 || !rail || !controls) return;
+      var titles = ['Llega la factura', 'Leer', 'Archivar', 'Marcar', 'La lista fundadora'];
+      var i = 0;
+      var prm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+      wrap.classList.add('ld-js');
+      controls.hidden = false;
+      function show(n, focus) {
+        i = Math.max(0, Math.min(panels.length - 1, n));
+        panels.forEach(function (p, k) { p.classList.toggle('ld-current', k === i); });
+        Array.prototype.forEach.call(rail.children, function (li, k) {
+          if (k === i) li.setAttribute('aria-current', 'step');
+          else li.removeAttribute('aria-current');
+        });
+        back.disabled = i === 0;
+        next.textContent = i === panels.length - 1 ? 'Volver a empezar' : 'Siguiente';
+        progress.textContent = 'Paso ' + (i + 1) + ' de ' + panels.length;
+        live.textContent = 'Paso ' + (i + 1) + ' de ' + panels.length + ' — ' + titles[i];
+        if (focus) { var h = panels[i].querySelector('h2'); if (h) h.focus({ preventScroll: false }); }
+        if (i === 1 && !prm && !panels[1].dataset.played) {
+          panels[1].dataset.played = '1';
+          var fig = panels[1].querySelector('.ld-armed-target');
+          if (fig) {
+            fig.classList.add('ld-armed');
+            var rows = fig.querySelectorAll('.ld-reveal');
+            Array.prototype.forEach.call(rows, function (r, k) {
+              setTimeout(function () { r.classList.add('ld-in'); }, 120 + k * 90);
+            });
+            setTimeout(function () {
+              Array.prototype.forEach.call(rows, function (r) { r.classList.add('ld-in'); });
+            }, 1500);
+          }
+        }
+      }
+      back.addEventListener('click', function () { show(i - 1, true); });
+      next.addEventListener('click', function () { show(i === panels.length - 1 ? 0 : i + 1, true); });
+      Array.prototype.forEach.call(rail.querySelectorAll('a'), function (a, k) {
+        a.addEventListener('click', function (e) { e.preventDefault(); show(k, true); });
+      });
+      show(0, false);
+    } catch (e) { /* static fallback stays complete */ }
+  })();
+  </script>
 </main>
 
 <footer>

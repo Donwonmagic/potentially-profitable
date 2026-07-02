@@ -338,45 +338,83 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
 <footer>
   <div class="container">
+    <!-- Phase 2.3: pulse propagation — same footer pulse as the EN
+         partial. Stays hidden until assets/js/window-state.js confirms
+         Don has been seen recently. -->
     <div class="foot-cta">
-      <div class="foot-cta-text">¿Tienes una pregunta? La Ventana está abierta.</div>
-      <a class="btn btn-primary js-window" href="/es/window/">Escríbele a Don
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
-      </a>
+      <div class="foot-cta-text">
+        Conoce lo que cuesta cada plato &mdash; antes de que la semana se coma el margen.
+      </div>
+      <div class="foot-cta-actions" style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
+        <a class="btn btn-primary" href="/es/ledger/">Ver Muntin Ledger
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </a>
+        <a class="btn btn-ghost js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje."><span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don está cerca"></span>Contacta a Don</a>
+      </div>
     </div>
 
     <div class="foot-grid">
       <div class="foot-col foot-brand">
         <a href="/es/" class="foot-lockup-wrap" aria-label="Muntin Digital — inicio">
-          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <!-- alt="" porque el <a> que envuelve ya está etiquetado.
+               Sin esto, los lectores de pantalla anuncian dos veces
+               "Muntin Digital" en el enlace del logotipo. -->
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="" width="240" height="53" loading="lazy" decoding="async">
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->171<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->36<!-- /count --> art&iacute;culos, <!-- count:tools.live -->5<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->171<!-- /count --> t&eacute;rminos &mdash; de Muntin Digital, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
       </div>
 
-      <nav class="foot-col" aria-labelledby="foot-explore">
-        <p class="foot-heading" id="foot-explore">Explorar</p>
-        <ul class="foot-links">
-          <li><a href="/es/studio/">Estudio</a></li>
-          <li><a href="/es/for/restaurants/">Para restaurantes</a></li>
-          
-          <li><a href="/es/about/">Sobre Don</a></li>
-          <li><a href="/es/system/">El sistema</a></li>
-        </ul>
-      </nav>
-
+      <!-- El orden de columnas refleja la navegación principal de 5
+           ítems (Biblioteca, Estudio, Confianza, Contacto). La
+           Biblioteca apunta primero al hub /es/library/ (las tres
+           puertas: Lee, Busca, Haz); el antiguo /es/learn/ sigue
+           resolviendo pero ya no necesita su propio enlace de pie.
+           id="foot-learn" es el marcador canónico que usa
+           scripts/sync-includes.mjs (FOOTER_MAIN_FUNNEL_MARKER), así
+           que el id se mantiene aunque la etiqueta visible sea
+           "Biblioteca". -->
       <nav class="foot-col" aria-labelledby="foot-learn">
         <p class="foot-heading" id="foot-learn">Biblioteca</p>
         <ul class="foot-links">
-          <li><a href="/es/learn/">Inicio de la biblioteca</a></li>
-          <li><a href="/es/learn/start-here/">Empieza aquí</a></li>
-          <li><a href="/es/learn/topics/">Temas</a></li>
-          <li><a href="/es/blog/">Artículos</a></li>
-          <li><a href="/es/tools/">Herramientas gratis</a></li>
+          <li><a href="/es/library/">Explora la biblioteca</a></li>
           <li><a href="/es/glossary/">Glosario</a></li>
-          <li><a href="/es/learn/research/">Investigación</a></li>
-          <li><a href="/es/learn/checklists/">Listas y recursos</a></li>
+          <li><a href="/es/tools/">Herramientas gratis</a></li>
+          <li><a href="/es/sheets/">Hojas del operador</a></li>
+          <li><a href="/es/blog/">Comentarios</a></li>
+        </ul>
+      </nav>
+
+      <!-- Fase 8 (portfolio sunset): la fila "Proyectos" enlazaba a
+           /es/work/, el portafolio personal. Ese hub se retiró cuando
+           la empresa pasó a ser el currículum; la fila ya no está y
+           /es/work/* hace 301 a /es/studio/. -->
+      <!-- Fase 9 (cierre de servicios, 2026-06-11): las filas de
+           Precios / Comparar / Proceso vendían los servicios retirados.
+           La columna ahora es Empresa — el producto, los datos
+           públicos, la página de la empresa, el fundador. -->
+      <nav class="foot-col" aria-labelledby="foot-studio">
+        <p class="foot-heading" id="foot-studio">Empresa</p>
+        <ul class="foot-links">
+          <li><a href="/es/ledger/">Muntin Ledger</a></li>
+          <li><a href="/es/cost-index/">&Iacute;ndice de costos</a></li>
+          <li><a href="/es/studio/">La empresa</a></li>
+          <li><a href="/es/about/">Sobre Don</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-trust">
+        <p class="foot-heading" id="foot-trust">Confianza</p>
+        <ul class="foot-links">
+          <li><a href="/es/trust/">Centro de confianza</a></li>
+          <li><a href="/es/claims/">El registro de afirmaciones</a></li>
+          <li><a href="/es/status/">Estado y fiabilidad</a></li>
+          <li><a href="/es/never/">Lo que nunca hacemos</a></li>
+          <li><a href="/es/ai/">Pol&iacute;tica de IA</a></li>
+          <li><a href="/es/methods/">M&eacute;todos y fuentes</a></li>
+          <li><a href="/es/changelog/">Registro de cambios</a></li>
+          <li><a href="/es/receipts/">Recibos</a></li>
         </ul>
       </nav>
 
@@ -384,22 +422,118 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <p class="foot-heading" id="foot-contact">Contacto</p>
         <ul class="foot-links">
           <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
-          <li><a href="/es/window/">Escríbele a Don</a></li>
-          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
+          <li><a href="/es/window/">Contacta a Don</a></li>
+          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (se abre en una pestaña nueva)</span></a></li>
         </ul>
-        <p class="foot-trust"><strong>Respuesta:</strong> de lunes a viernes, en menos de 4 horas. Los fines de semana, el lunes en la ma&ntilde;ana.</p>
+        <p class="foot-trust"><strong>Respuesta:</strong> en menos de 4 horas de lunes a viernes; fines de semana, el lunes.</p>
       </nav>
     </div>
+
+    <!-- newsletter-capture:start -->
+    <div class="foot-newsletter">
+      <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="es">
+        <p class="foot-newsletter-pitch">Te aviso cuando publique algo &mdash; cuatro notas por trimestre, sin secuencias automatizadas.</p>
+        <label class="foot-newsletter-label" for="foot-news-email">Tu correo</label>
+        <input id="foot-news-email" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="tu@turestaurante.com" />
+        <input type="hidden" name="locale" value="es" />
+        <input type="hidden" name="source" value="footer" />
+        <input type="hidden" name="ts" value="" />
+        <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+        <!-- Turnstile (Phase 3B). Auto-injects cf-turnstile-response on pass. -->
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="newsletter" data-language="es" data-size="flexible"></div>
+        <button type="submit">Suscribirme</button>
+      </form>
+    </div>
+    <!-- newsletter-capture:end -->
+
+    <!-- Alta al boletín — mejora progresiva temprana. El resto del JS
+         del sitio carga en requestIdleCallback; este controlador se
+         engancha al renderizar el pie, para que un envío rápido no haga
+         un POST nativo que muestre el {"ok":true} crudo de la API.
+         Sella ts para el filtro antispam, envía por fetch y cambia
+         data-state="ok" para la confirmación en línea. Protegido por
+         data-enhanced para que la copia diferida en first-touch.js no
+         se enganche dos veces. -->
+    <script>
+      (function () {
+        'use strict';
+        if (typeof document === 'undefined') return;
+        function wire(form) {
+          if (!form || form.dataset.enhanced === '1') return;
+          form.dataset.enhanced = '1';
+          var ts = form.querySelector('input[name="ts"]');
+          if (ts) ts.value = String(Date.now());
+          form.addEventListener('submit', function (ev) {
+            ev.preventDefault();
+            var params = new URLSearchParams();
+            new FormData(form).forEach(function (v, k) { params.append(k, v); });
+            fetch(form.action, {
+              method: 'POST',
+              headers: { 'content-type': 'application/x-www-form-urlencoded' },
+              body: params.toString(),
+              credentials: 'same-origin',
+            }).then(function () {
+              form.dataset.state = 'ok';
+              if (typeof window.plausible === 'function') {
+                var evName = form.dataset.event || 'Newsletter Signup';
+                var surface = form.dataset.surface || (form.dataset.locale === 'es' ? 'footer-es' : 'footer-en');
+                try { window.plausible(evName, { props: { surface: surface } }); } catch (_) {}
+              }
+            }).catch(function () { /* fire-and-forget; sin UI de error por diseño */ });
+          });
+        }
+        function init() {
+          var forms = document.querySelectorAll('.foot-newsletter-form, .js-signup-form');
+          Array.prototype.forEach.call(forms, wire);
+        }
+        init();
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+      })();
+    </script>
 
     <div class="foot-bottom">
       <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; LLC de Maryland &middot; Silver Spring, MD</p>
       <nav class="foot-legal" aria-label="Legal">
         <a href="/es/terms.html">Términos</a>
         <a href="/es/privacy.html">Privacidad</a>
+        <a href="/es/security/">Datos y seguridad</a>
         <a href="/es/accessibility.html">Accesibilidad</a>
         <a href="/es/cookies.html">Cookies</a>
+        <a href="/es/feed.xml" type="application/rss+xml" title="Muntin Digital RSS">RSS</a>
       </nav>
     </div>
+  </div>
+  <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Acciones r&aacute;pidas">
+    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/es/tools/cost-pulse/" data-event="sticky-cta-cost-pulse">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 18 L9 12 L13 15 L20 6"/><polyline points="15 6 20 6 20 11"/></svg>
+      Revisa precios
+    </a>
+    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/es/window/" data-event="sticky-cta-window">
+      <span class="mobile-cta-bar__pulse" id="mobileCtaBarPulse" hidden aria-hidden="true" title="Don está cerca"></span>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      Contacta a Don
+    </a>
+  </aside>
+  <script>
+    (function () {
+      var bar = document.getElementById('mobileCtaBar');
+      if (!bar) return;
+      var hide = document.body.dataset && document.body.dataset.hideStickyBar !== undefined;
+      var path = location.pathname;
+      if (hide || /^\/(window|sign-in|account|workbench|admin|es\/(window|sign-in|account|workbench|admin))/.test(path)) {
+        bar.hidden = true;
+      }
+    })();
+  </script>
+</footer>
+<script src="/assets/js/first-touch.js" defer></script>
+<script src="/assets/js/save-next-time.js" defer></script>
+<script src="/assets/js/share-hydrate.js" defer></script>
+<script src="/assets/js/window-state.js" defer></script>
+<!-- Cloudflare Turnstile (Phase 3B). Carga global porque el formulario
+     de newsletter vive en este pie de página y aparece en cada vista. -->
+<!-- Skip Turnstile on localhost / 127.0.0.1 / dev hosts (ver footer EN para detalle). -->
+<script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
 <script>
   // Phase F.4 (Field Notes / ES admin) — cola de revisión.
   (function () {
