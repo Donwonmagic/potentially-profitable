@@ -94,6 +94,11 @@ const counts = {
     library: libraryArticles,
     blog:    blogArticles,
   },
+  claims: {
+    // Registered entries in the public claim ledger. Counted from the
+    // registry so homepage/trust-strip copy can never drift from /claims/.
+    sourced: Object.keys(JSON.parse(fs.readFileSync(path.join(REPO, 'data', 'sourced-claims.json'), 'utf8')).claims).length,
+  },
   updated:  new Date().toISOString().slice(0, 10),
 };
 

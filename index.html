@@ -178,6 +178,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .stance-pane .stance-claim{font-family:var(--font-display);font-size:clamp(20px,2.2vw,26px);font-weight:500;line-height:1.3;color:var(--ink);margin:0 0 12px}
 .stance-pane .stance-proof{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0}
 .stance-pane .stance-proof a{color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none}
+.stances .section-header h2 .serif-italic,.stance-claim .serif-italic{font-style:italic;font-weight:400;color:var(--teal)}
 .hero-counts__chip strong{font-family:var(--font-display);font-size:15px;font-weight:560;font-variant-numeric:tabular-nums lining-nums}
 .fg-glyph{display:block;width:100%;height:auto;max-width:300px;margin:0}
 .fg-glyph .gbase{stroke:var(--stone);stroke-width:1.6;fill:none;stroke-dasharray:4 4}
@@ -508,24 +509,24 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <section class="block stances" aria-labelledby="stances-heading" style="background:var(--cream);padding:64px 0 56px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
   <div class="container">
     <div class="section-header section-center" style="margin-bottom:36px">
-      <span class="eyebrow">What this studio actually thinks</span>
-      <h2 id="stances-heading" style="font-family:var(--font-display);font-size:clamp(28px,3.6vw,42px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;margin:0 auto;max-width:760px">Three things <span class="serif-italic">most studios won&rsquo;t say.</span></h2>
+      <span class="eyebrow">Receipts, not promises</span>
+      <h2 id="stances-heading" style="font-family:var(--font-display);font-size:clamp(28px,3.6vw,42px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;margin:0 auto;max-width:760px">Every claim on this site <span class="serif-italic">carries its own receipt.</span></h2>
     </div>
     <ol class="stances-list" style="list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr;gap:18px;max-width:880px;margin:0 auto">
       <li class="stance-pane">
-        <p class="stance-kicker"><span class="stance-num" aria-hidden="true">01</span> Stance one</p>
-        <p class="stance-claim">Most restaurants don&rsquo;t need a rebuild. <span class="serif-italic">They need their hours visible.</span></p>
-        <p class="stance-proof"><a href="/library/when-to-rebuild-your-restaurant-website/">When to rebuild your restaurant website</a> &mdash; the seven questions that decide it. Most owners can fix the leak themselves; the article shows you which one yours is.</p>
+        <p class="stance-kicker"><span class="stance-num" aria-hidden="true">01</span> The fact gate</p>
+        <p class="stance-claim">An invented number here isn&rsquo;t edited out. <span class="serif-italic">It fails the build.</span></p>
+        <p class="stance-proof">Every figure on this site is registered in a public claim ledger &mdash; <a href="/claims/"><!-- count:claims.sourced -->43<!-- /count --> sourced claims</a>, each traced to its document. Sixty-plus check scripts run before every deploy, and the prose is read aloud in English and Spanish, so a fabrication would be spoken, not buried.</p>
       </li>
       <li class="stance-pane">
-        <p class="stance-kicker"><span class="stance-num" aria-hidden="true">02</span> Stance two</p>
-        <p class="stance-claim">DoorDash is a margin tax. <span class="serif-italic">Your website is the cheapest way to stop paying it.</span></p>
-        <p class="stance-proof"><a href="/tools/margin-math/">Margin Math</a> &mdash; type your covers and your aggregator mix; see the dollar figure of a 30% take versus a $0 own-channel order. The number is usually larger than a website.</p>
+        <p class="stance-kicker"><span class="stance-num" aria-hidden="true">02</span> The network tab</p>
+        <p class="stance-claim">Free tools compute in your browser. <span class="serif-italic">The proof is the network tab.</span></p>
+        <p class="stance-proof">Open DevTools and type &mdash; the request list does not grow. A named CI gate, check-tool-no-fetch, fails the build if any tool contacts any URL. <a href="/security/">Nine verifiable claims</a>, each with an &ldquo;inspect this&rdquo; drawer.</p>
       </li>
       <li class="stance-pane">
-        <p class="stance-kicker"><span class="stance-num" aria-hidden="true">03</span> Stance three</p>
-        <p class="stance-claim">Your costs move every week. <span class="serif-italic">You should be able to see it.</span></p>
-        <p class="stance-proof"><a href="/cost-index/">The Cost Index</a> &mdash; wholesale ingredient prices from USDA, BLS, and FRED, dated and sourced, on a weekly read. Free, no signup. Each number traces back to the agency that published it.</p>
+        <p class="stance-kicker"><span class="stance-num" aria-hidden="true">03</span> The public scorecard</p>
+        <p class="stance-claim">The Cost Index grades its own forecasts <span class="serif-italic">in public.</span></p>
+        <p class="stance-proof">Its nominal <!-- cal:band.nominal -->80%<!-- /cal --> band held <!-- cal:band.coverage -->84%<!-- /cal --> of the time across <!-- cal:band.steps -->5,929<!-- /cal --> scored weeks and <!-- cal:band.items -->84<!-- /cal --> ingredients &mdash; misses included, published in <a href="/cost-index/methodology/">the methodology</a>. Unpriced items report absent, with the reason, before the Index reports a guess. The data is public domain (CC0), every number dated to USDA, BLS, or FRED.</p>
       </li>
     </ol>
   </div>
@@ -589,15 +590,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <section class="trust-strip" aria-label="Quick facts about Muntin Digital">
   <div class="container">
     <ul class="trust-strip__list">
-      <li><strong>Reply within 4 hrs</strong>, Mon&ndash;Fri</li>
+      <li><a href="/claims/" style="color:inherit;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px"><strong><!-- count:claims.sourced -->43<!-- /count --></strong> sourced claims, each traced</a></li>
       <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
-      <li><a href="/trust/" style="color:inherit;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px">Every number sourced &mdash; USDA &middot; BLS &middot; FRED</a></li>
+      <li>Free tools compute on your device &mdash; no account</li>
       <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
-      <li>Cost Index on a weekly read</li>
+      <li>No language model reads a Ledger invoice</li>
       <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
-      <li>Free tools, no signup</li>
+      <li><a href="/security/integrity.txt" style="color:inherit;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px">Every deploy hashed &mdash; integrity.txt</a></li>
       <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
-      <li>Maryland LLC &middot; Silver Spring, MD</li>
+      <li><a href="/never/" style="color:inherit;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px">Five refusals, in writing</a></li>
+      <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
+      <li>Built by a working front-of-house manager &mdash; Tacombi</li>
     </ul>
   </div>
 </section>
@@ -636,7 +639,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </a>
       <a class="learn-tool" href="/blog/">
         <span class="learn-tool-kicker">Articles · honest essays</span>
-        <h3>Notes from the studio.</h3>
+        <h3>Notes from the floor.</h3>
         <p>Real numbers, real tradeoffs. DoorDash math, menu pricing, platform comparisons — for an independent operator making a decision this week.</p>
         <span class="learn-tool-cta">Browse articles →</span>
       </a>
