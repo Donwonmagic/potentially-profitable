@@ -165,6 +165,35 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      applies; before that the critical CSS above carries the page. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=2830bb0a913c" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=158a407ca00a" onload="this.onload=null;this.rel='stylesheet'">
+<style>
+/* Bolder pass 2026-07 — mid-page material: stance panes on the elevation
+   scale, instrument glyphs in the flagship cards, Fraunces number chips,
+   the muntin window glyph on the definition section, and the dark closer
+   de-drifted from the blue radial glow to ink + faint muntin frame lines.
+   Placed after the async stylesheet links so equal-specificity overrides
+   win by document order. */
+.stance-pane{padding:24px 28px 24px 92px;background:var(--surface-1,#fff);border:1px solid var(--line);border-top:3px solid var(--ink);border-radius:10px;box-shadow:var(--elev-1);position:relative}
+.stance-pane .stance-num{position:absolute;left:26px;top:26px;font-size:44px;line-height:1;color:var(--stone);opacity:.9}
+@media (max-width:640px){.stance-pane{padding-left:70px}.stance-pane .stance-num{left:20px;top:28px;font-size:30px}}
+.stance-pane .stance-kicker{font-family:var(--font-display);font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);margin:0 0 10px;display:flex;align-items:baseline;gap:10px}
+.stance-pane .stance-num{font-family:var(--font-display);font-size:24px;font-weight:560;letter-spacing:-.01em;color:var(--stone);font-variant-numeric:tabular-nums lining-nums;text-transform:none}
+.stance-pane .stance-claim{font-family:var(--font-display);font-size:clamp(20px,2.2vw,26px);font-weight:500;line-height:1.3;color:var(--ink);margin:0 0 12px}
+.stance-pane .stance-proof{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0}
+.stance-pane .stance-proof a{color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none}
+.stances .section-header h2 .serif-italic,.stance-claim .serif-italic{font-style:italic;font-weight:400;color:var(--teal)}
+.hero-counts__chip strong{font-family:var(--font-display);font-size:15px;font-weight:560;font-variant-numeric:tabular-nums lining-nums}
+.fg-glyph{display:block;width:100%;height:auto;max-width:420px;margin:0}
+.fg-glyph .gbase{stroke:var(--stone);stroke-width:1.6;fill:none;stroke-dasharray:4 4}
+.fg-glyph .gmove{stroke:var(--rust);stroke-width:2.2;fill:none}
+.fg-glyph .gwedge{fill:var(--rust);opacity:.13}
+.fg-glyph .gdot{fill:var(--rust)}
+.fg-glyph .gbar{fill:var(--teal);opacity:.75}
+.fg-glyph .gbar--thin{fill:var(--rust);opacity:.85}
+.fg-glyph-note{font-size:12.5px;color:var(--stone);margin:4px 0 0}
+@media (max-width:960px){body .hero::after{background:var(--gradient-goldenhour)}}
+.muntin-title::before{content:"";display:block;width:34px;height:40px;margin:0 0 18px;border:3px solid var(--ink);border-radius:5px;background:linear-gradient(var(--ink),var(--ink)) 50% 0/3px 100% no-repeat,linear-gradient(var(--ink),var(--ink)) 0 38%/100% 3px no-repeat}
+.final::before{background:linear-gradient(rgba(246,247,248,.055),rgba(246,247,248,.055)) 33% 0/3px 100% no-repeat,linear-gradient(rgba(246,247,248,.055),rgba(246,247,248,.055)) 66% 0/3px 100% no-repeat,linear-gradient(rgba(246,247,248,.055),rgba(246,247,248,.055)) 0 58%/100% 3px no-repeat}
+</style>
 <noscript><link rel="stylesheet" href="/assets/site-core.css?v=2830bb0a913c"><link rel="stylesheet" href="/assets/site-article.css?v=158a407ca00a"></noscript>
 <!-- hub-modified:start (scripts/inject-hub-modified-time.mjs) -->
 <meta property="article:modified_time" content="2026-06-22" />
@@ -483,24 +512,24 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <section class="block stances" aria-labelledby="stances-heading" style="background:var(--cream);padding:64px 0 56px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
   <div class="container">
     <div class="section-header section-center" style="margin-bottom:36px">
-      <span class="eyebrow">What this studio actually thinks</span>
-      <h2 id="stances-heading" style="font-family:var(--font-display);font-size:clamp(28px,3.6vw,42px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;margin:0 auto;max-width:760px">Three things <span class="serif-italic">most studios won&rsquo;t say.</span></h2>
+      <span class="eyebrow">Receipts, not promises</span>
+      <h2 id="stances-heading" style="font-family:var(--font-display);font-size:clamp(28px,3.6vw,42px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;margin:0 auto;max-width:760px">Every claim on this site <span class="serif-italic">carries its own receipt.</span></h2>
     </div>
     <ol class="stances-list" style="list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr;gap:18px;max-width:880px;margin:0 auto">
-      <li style="padding:24px 28px;background:var(--cream-2);border-left:3px solid var(--teal);border-radius:8px">
-        <p style="font-family:var(--font-display);font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);margin:0 0 10px">Stance one</p>
-        <p style="font-family:var(--font-display);font-size:clamp(20px,2.2vw,26px);font-weight:500;line-height:1.3;color:var(--ink);margin:0 0 12px">Most restaurants don&rsquo;t need a rebuild. <span class="serif-italic">They need their hours visible.</span></p>
-        <p style="font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0"><a href="/library/when-to-rebuild-your-restaurant-website/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">When to rebuild your restaurant website</a> &mdash; the seven questions that decide it. Most owners can fix the leak themselves; the article shows you which one yours is.</p>
+      <li class="stance-pane">
+        <p class="stance-kicker"><span class="stance-num" aria-hidden="true">01</span> The fact gate</p>
+        <p class="stance-claim">An invented number here isn&rsquo;t edited out. <span class="serif-italic">It fails the build.</span></p>
+        <p class="stance-proof">Every figure on this site is registered in a public claim ledger &mdash; <a href="/claims/"><!-- count:claims.sourced -->43<!-- /count --> sourced claims</a>, each traced to its document. Sixty-plus check scripts run before every deploy, and the prose is read aloud in English and Spanish, so a fabrication would be spoken, not buried.</p>
       </li>
-      <li style="padding:24px 28px;background:var(--cream-2);border-left:3px solid var(--teal);border-radius:8px">
-        <p style="font-family:var(--font-display);font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);margin:0 0 10px">Stance two</p>
-        <p style="font-family:var(--font-display);font-size:clamp(20px,2.2vw,26px);font-weight:500;line-height:1.3;color:var(--ink);margin:0 0 12px">DoorDash is a margin tax. <span class="serif-italic">Your website is the cheapest way to stop paying it.</span></p>
-        <p style="font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0"><a href="/tools/margin-math/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Margin Math</a> &mdash; type your covers and your aggregator mix; see the dollar figure of a 30% take versus a $0 own-channel order. The number is usually larger than a website.</p>
+      <li class="stance-pane">
+        <p class="stance-kicker"><span class="stance-num" aria-hidden="true">02</span> The network tab</p>
+        <p class="stance-claim">Free tools compute in your browser. <span class="serif-italic">The proof is the network tab.</span></p>
+        <p class="stance-proof">Open DevTools and type &mdash; the request list does not grow. A named CI gate, check-tool-no-fetch, fails the build if any tool contacts any URL. <a href="/security/">Ten verifiable claims</a>, each with an &ldquo;inspect this&rdquo; drawer.</p>
       </li>
-      <li style="padding:24px 28px;background:var(--cream-2);border-left:3px solid var(--teal);border-radius:8px">
-        <p style="font-family:var(--font-display);font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);margin:0 0 10px">Stance three</p>
-        <p style="font-family:var(--font-display);font-size:clamp(20px,2.2vw,26px);font-weight:500;line-height:1.3;color:var(--ink);margin:0 0 12px">Your costs move every week. <span class="serif-italic">You should be able to see it.</span></p>
-        <p style="font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0"><a href="/cost-index/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">The Cost Index</a> &mdash; wholesale ingredient prices from USDA, BLS, and FRED, dated and sourced, on a weekly read. Free, no signup. Each number traces back to the agency that published it.</p>
+      <li class="stance-pane">
+        <p class="stance-kicker"><span class="stance-num" aria-hidden="true">03</span> The public scorecard</p>
+        <p class="stance-claim">The Cost Index grades its own forecasts <span class="serif-italic">in public.</span></p>
+        <p class="stance-proof">Its nominal <!-- cal:band.nominal -->80%<!-- /cal --> band held <!-- cal:band.coverage -->84%<!-- /cal --> of the time across <!-- cal:band.steps -->5,929<!-- /cal --> scored weeks and <!-- cal:band.items -->84<!-- /cal --> ingredients &mdash; misses included, published in <a href="/cost-index/methodology/">the methodology</a>. Unpriced items report absent, with the reason, before the Index reports a guess. The data is public domain (CC0), every number dated to USDA, BLS, or FRED.</p>
       </li>
     </ol>
   </div>
@@ -523,6 +552,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <span class="tool-card-flagship__chip">Free &middot; on your device &middot; no signup</span>
         <h3 class="tool-card-flagship__title">Vendor Benchmark</h3>
         <p class="tool-card-flagship__headline">Is your price moving wrong? Paste what you&rsquo;ve paid and when, and Vendor Benchmark reads the trend &mdash; telling you whether a price is moving in line, or drifting out of line and worth a call to your vendor.</p>
+        <svg class="fg-glyph" viewBox="0 0 132 34" width="132" height="34" aria-hidden="true" focusable="false">
+          <polyline class="gbase" points="6,20 126,17"></polyline>
+          <polygon class="gwedge" points="70,19 126,17 126,7"></polygon>
+          <polyline class="gmove" points="6,21 70,19 126,7"></polyline>
+          <circle class="gdot" cx="126" cy="7" r="2.6"></circle>
+        </svg>
+        <p class="fg-glyph-note">Your line drifting off the market&rsquo;s &mdash; illustrative</p>
         <span class="tool-card-flagship__cta">Check a price
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </span>
@@ -531,6 +567,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <span class="tool-card-flagship__chip">Free &middot; on your device &middot; no signup</span>
         <h3 class="tool-card-flagship__title">Know what your menu makes you</h3>
         <p class="tool-card-flagship__headline">Upload your POS sales mix and see what each dish actually makes the house per year &mdash; on your real volume. Then a plain call when a price moves: raise, re-portion, or hold.</p>
+        <svg class="fg-glyph" viewBox="0 0 132 34" width="132" height="34" aria-hidden="true" focusable="false">
+          <rect class="gbar" x="6" y="4" width="104" height="6" rx="2"></rect>
+          <rect class="gbar" x="6" y="14" width="74" height="6" rx="2"></rect>
+          <rect class="gbar gbar--thin" x="6" y="24" width="34" height="6" rx="2"></rect>
+        </svg>
+        <p class="fg-glyph-note">Dish margins, ranked &mdash; illustrative</p>
         <span class="tool-card-flagship__cta">Cost your menu
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </span>
@@ -551,15 +593,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <section class="trust-strip" aria-label="Quick facts about Muntin Digital">
   <div class="container">
     <ul class="trust-strip__list">
-      <li><strong>Reply within 4 hrs</strong>, Mon&ndash;Fri</li>
+      <li><a href="/claims/" style="color:inherit;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px"><strong><!-- count:claims.sourced -->43<!-- /count --></strong> sourced claims, each traced</a></li>
       <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
-      <li><a href="/trust/" style="color:inherit;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px">Every number sourced &mdash; USDA &middot; BLS &middot; FRED</a></li>
+      <li>Free tools compute on your device &mdash; no account</li>
       <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
-      <li>Cost Index on a weekly read</li>
+      <li>No language model reads a Ledger invoice</li>
       <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
-      <li>Free tools, no signup</li>
+      <li><a href="/security/integrity.txt" style="color:inherit;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px">Every deploy hashed &mdash; integrity.txt</a></li>
       <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
-      <li>Maryland LLC &middot; Silver Spring, MD</li>
+      <li><a href="/never/" style="color:inherit;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px">Five refusals, in writing</a></li>
+      <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
+      <li>Built by a working front-of-house manager &mdash; Tacombi</li>
     </ul>
   </div>
 </section>
@@ -598,7 +642,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </a>
       <a class="learn-tool" href="/blog/">
         <span class="learn-tool-kicker">Articles · honest essays</span>
-        <h3>Notes from the studio.</h3>
+        <h3>Notes from the floor.</h3>
         <p>Real numbers, real tradeoffs. DoorDash math, menu pricing, platform comparisons — for an independent operator making a decision this week.</p>
         <span class="learn-tool-cta">Browse articles →</span>
       </a>
@@ -721,11 +765,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <div class="section-header" style="max-width:760px;margin-inline:auto;text-align:center;">
       <span class="eyebrow">Founding members</span>
       <h2 id="founding-heading">Be first when <span class="serif-italic">Muntin Ledger</span> opens &mdash; November 13, 2026.</h2>
-      <p>A deterministic engine reads your vendor invoices into a searchable ledger &mdash; no language model reads your numbers, no ads, no tracking. It shows what it measured and labels what it estimated. When a line can't be read, it holds the number back rather than print a guess. Founding members get <strong>three months free, then $19 a month</strong> for as long as they stay. Your numbers stay yours.</p>
+      <p>A deterministic engine reads your vendor invoices into a searchable ledger &mdash; no language model reads your numbers, no ads, no tracking. It shows what it measured and labels what it estimated. When a line can't be read, it holds the number back rather than print a guess. Founding members get <strong>three months free, then $19 a month</strong> for as long as they stay &mdash; the founding rate is for operators who join before launch, now <!-- count:ledger.ga_weeks_out -->19<!-- /count --> weeks out. Your numbers stay yours.</p>
     </div>
 
     <!-- founding-capture:start -->
-    <form action="/api/waitlist" method="post" class="js-signup-form founding-form" data-locale="en" data-event="Waitlist Signup" data-surface="studio-hero">
+    <form action="/api/waitlist" method="post" class="js-signup-form founding-form" data-locale="en" data-event="Waitlist Signup" data-surface="home-founding">
       <div class="founding-form-fields">
         <div class="founding-field">
           <label class="founding-form-label" for="founding-email">Your email</label>
@@ -736,7 +780,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <input id="founding-name" name="name" type="text" autocomplete="name" autocapitalize="words" placeholder="First name" />
         </div>
       </div>
-      <input type="hidden" name="source" value="studio-hero" />
+      <input type="hidden" name="source" value="home-founding" />
       <input type="hidden" name="founding_member" value="true" />
       <input type="hidden" name="locale" value="en" />
       <input type="hidden" name="ts" value="" />
@@ -749,8 +793,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <button type="submit">Join the founding list</button>
     </form>
     <!-- founding-capture:end -->
+    <p class="founding-demo-note">Want to see it first? <a href="/ledger/demo/">Walk the mockup demo &rarr;</a></p>
 
-    <p class="founding-demo-note">Want to see it first? <a href="https://ledger.muntin.digital/demo">Watch the guided demo &rarr;</a></p>
   </div>
 </section>
 <!-- /founding -->
@@ -776,7 +820,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/cost-index/" class="service service-card-link">
         <div class="label">Public data</div>
         <h3>The Cost Index</h3>
-        <p class="desc">Wholesale ingredient prices from USDA, BLS, and FRED &mdash; dated, sourced, and refreshed on a weekly read. Free, no signup.</p>
+        <p class="desc">Wholesale ingredient prices from USDA, BLS, and FRED &mdash; dated, sourced, and refreshed on a weekly read. Free, no signup &mdash; download the whole index, CC0, yours to keep.</p>
         <span class="service-card-cta">Read the index &rarr;</span>
       </a>
       <a href="/tools/" class="service service-card-link">
@@ -909,7 +953,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <a class="btn btn-primary" href="/ledger/">See Muntin Ledger
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
-        <a class="btn btn-ghost js-window" href="/window/" title="A direct line to Don. I read every one."><span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don is around"></span>Reach Don</a>
+        <a class="btn btn-ghost js-window" href="/window/" title="A direct line to Don. I read every one." style="color:var(--cream)"><span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don is around"></span>Reach Don</a>
       </div>
     </div>
 
@@ -970,6 +1014,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <p class="foot-heading" id="foot-trust">Trust</p>
         <ul class="foot-links">
           <li><a href="/trust/">Trust center</a></li>
+          <li><a href="/claims/">The claim ledger</a></li>
+          <li><a href="/status/">Status &amp; reliability</a></li>
           <li><a href="/never/">What we never do</a></li>
           <li><a href="/ai/">AI policy</a></li>
           <li><a href="/methods/">Methods &amp; sources</a></li>

@@ -94,6 +94,16 @@ const counts = {
     library: libraryArticles,
     blog:    blogArticles,
   },
+  ledger: {
+    // Whole weeks until Muntin Ledger GA (2026-11-13). Recomputed every
+    // build; rounds down so the number is never optimistic.
+    ga_weeks_out: Math.max(0, Math.floor((Date.UTC(2026, 10, 13) - Date.now()) / (7 * 86400000))),
+  },
+  claims: {
+    // Registered entries in the public claim ledger. Counted from the
+    // registry so homepage/trust-strip copy can never drift from /claims/.
+    sourced: Object.keys(JSON.parse(fs.readFileSync(path.join(REPO, 'data', 'sourced-claims.json'), 'utf8')).claims).length,
+  },
   updated:  new Date().toISOString().slice(0, 10),
 };
 

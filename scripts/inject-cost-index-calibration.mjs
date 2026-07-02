@@ -75,19 +75,26 @@ function reliabilityChart(es) {
 const TARGETS = [
   ['cost-index/methodology/index.html', false],
   ['es/cost-index/methodology/index.html', true],
+  // Homepage stances pane 03 quotes the scorecard; sentinels keep those
+  // figures pinned to the recomputed calibration report (added 2026-07).
+  ['index.html', false, true],
 ];
 
 function esc(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 
 let stale = false, changed = 0;
-for (const [rel, es] of TARGETS) {
+for (const [rel, es, subset] of TARGETS) {
   const file = path.join(REPO, rel);
   let html = fs.readFileSync(file, 'utf8');
   const vals = values(es);
   let next = html;
   for (const [key, val] of Object.entries(vals)) {
     const re = new RegExp('(<!-- cal:' + esc(key) + ' -->)([\\s\\S]*?)(<!-- /cal -->)');
-    if (!re.test(next)) { console.error(`inject-cost-index-calibration: sentinel cal:${key} not found in ${rel}`); process.exit(2); }
+    if (!re.test(next)) {
+      // subset targets (e.g. the homepage) carry only the band figures.
+      if (subset) continue;
+      console.error(`inject-cost-index-calibration: sentinel cal:${key} not found in ${rel}`); process.exit(2);
+    }
     next = next.replace(re, (_m, a, _cur, b) => a + val + b);
   }
   if (next !== html) {

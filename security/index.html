@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <title>Data &amp; security — How we handle the numbers you type | Muntin Digital</title>
-<meta name="description" content="How every Muntin tool handles your data: nine verifiable claims, a 5-test framework you can run on any free tool, and the 4-tier model for what to share." />
+<meta name="description" content="How every Muntin tool handles your data: ten verifiable claims, a 5-test framework you can run on any free tool, and the 4-tier model for what to share." />
 <meta name="theme-color" content="#2A50C8" />
 <link rel="canonical" href="https://muntin.digital/security/" />
     <!-- feed-discovery:start (injected by inject-feed-discovery.mjs) -->
@@ -22,7 +22,7 @@
 
 <meta property="og:type" content="article" />
 <meta property="og:title" content="Data &amp; security — Muntin Digital" />
-<meta property="og:description" content="Nine verifiable claims about how every Muntin tool handles your data. Verify the promise, don't just trust it." />
+<meta property="og:description" content="Ten verifiable claims about how every Muntin tool handles your data. Verify the promise, don't just trust it." />
 <meta property="og:url" content="https://muntin.digital/security/" />
 <meta property="og:site_name" content="Muntin Digital" />
 <meta property="og:image" content="https://muntin.digital/brand/og/security.png" />
@@ -372,7 +372,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <div class="post-hero">
         <span class="eyebrow">The data promise</span>
         <h1>Your numbers stay on your laptop. Here&rsquo;s how we prove it.</h1>
-        <p class="post-dek">No accounts, no fetches, no tracking. Every Muntin tool is built so you can verify the promise — not just trust it. Nine claims, five tests you can run on any tool, four tiers of business data, one principle: data never flows up a tier. These claims cover the free tools, which run in your browser. Muntin Ledger — which <em>does</em> read the invoices you give it — keeps its own published promise: no language model reads them, nothing is trained on your numbers, with the enforcing code at <a href="https://ledger.muntin.digital/promises" style="color:var(--teal)">ledger.muntin.digital/promises</a>.</p>
+        <p class="post-dek">No accounts, no fetches, no tracking. Every Muntin tool is built so you can verify the promise — not just trust it. Ten claims, five tests you can run on any tool, four tiers of business data, one principle: data never flows up a tier. These claims cover the free tools, which run in your browser. Muntin Ledger — which <em>does</em> read the invoices you give it — keeps its own published promise: no language model reads them, nothing is trained on your numbers, with the enforcing code at <a href="https://ledger.muntin.digital/promises" style="color:var(--teal)">ledger.muntin.digital/promises</a>.</p>
       </div>
     </div>
   </section>
@@ -536,7 +536,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
   <section class="block" id="how-we-handle-data">
     <div class="container" style="max-width:760px">
-      <h2>How we handle your data — nine verifiable claims</h2>
+      <h2>How we handle your data — ten verifiable claims</h2>
       <p>Each claim is verifiable in your own browser in under a minute. If any of them turn out to be wrong, we want you to find out first — open every &ldquo;Inspect this&rdquo; and check us. The build chain enforces the load-bearing claims (1, 2, 4, 5) — so a future tool that ships a forbidden pattern fails CI before it can deploy.</p>
       <!-- security-claims:start (rendered by scripts/inject-security-page-schema.mjs) -->
       <div class="security-claims-list">
@@ -765,7 +765,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <a class="btn btn-primary" href="/ledger/">See Muntin Ledger
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
-        <a class="btn btn-ghost js-window" href="/window/" title="A direct line to Don. I read every one."><span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don is around"></span>Reach Don</a>
+        <a class="btn btn-ghost js-window" href="/window/" title="A direct line to Don. I read every one." style="color:var(--cream)"><span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don is around"></span>Reach Don</a>
       </div>
     </div>
 
@@ -826,6 +826,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <p class="foot-heading" id="foot-trust">Trust</p>
         <ul class="foot-links">
           <li><a href="/trust/">Trust center</a></li>
+          <li><a href="/claims/">The claim ledger</a></li>
+          <li><a href="/status/">Status &amp; reliability</a></li>
           <li><a href="/never/">What we never do</a></li>
           <li><a href="/ai/">AI policy</a></li>
           <li><a href="/methods/">Methods &amp; sources</a></li>
