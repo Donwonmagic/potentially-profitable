@@ -519,7 +519,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li><a href="#ld-step1">Read</a></li>
         <li><a href="#ld-step2">File</a></li>
         <li><a href="#ld-step3">Flag</a></li>
-        <li><a href="#ld-step4">The list</a></li>
+        <li><a href="#ld-step4">Your line</a></li>
       </ol>
     </header>
 
@@ -619,11 +619,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </section>
 
     <section class="ld-panel ld-cta" id="ld-step4" aria-labelledby="ld-h4">
-      <h2 id="ld-h4" tabindex="-1">The ledger, on your invoices.</h2>
-      <p class="ld-body">Muntin Ledger opens November 13, 2026. Operators on the founding list get the founding rate: <strong style="color:#F6F7F8">three months free, then $19 a month for as long as they stay</strong>.</p>
+      <h2 id="ld-h4" tabindex="-1">Now run your own line.</h2>
+      <p class="ld-body">That was one sample. Take a price you&rsquo;ve actually paid &mdash; two dates, two numbers &mdash; and <strong style="color:#F6F7F8">Vendor Benchmark</strong> runs the same read: whether the move is in line with the market or drifting out, against the public Cost Index. Free, in your browser, no signup, nothing to upload.</p>
       <div class="studio-cta-row" style="margin-top:20px">
-        <a class="btn lg-btn-light" href="/ledger/#pricing">Join the founding list</a>
-        <a class="btn btn-ghost" href="/ledger/#pricing" style="color:#F6F7F8;border-color:rgba(246,247,248,.4)">See pricing</a>
+        <a class="btn lg-btn-light" href="/tools/vendor-benchmark/">Run your own line &rarr;</a>
+      </div>
+      <hr style="border:none;border-top:1px solid rgba(246,247,248,.14);margin:28px 0 24px" aria-hidden="true">
+      <p class="ld-body">When you want this on your whole invoices &mdash; read, filed, flagged, every vendor &mdash; Muntin Ledger opens November 13, 2026. The founding list gets <strong style="color:#F6F7F8">three months free, then $19 a month for as long as they stay</strong>.</p>
+      <div class="studio-cta-row" style="margin-top:20px">
+        <a class="btn btn-ghost" href="/ledger/#pricing" style="color:#F6F7F8;border-color:rgba(246,247,248,.4)">Join the founding list</a>
       </div>
       <p class="lg-cap" style="margin-top:18px">The founding form is on the Ledger page &mdash; this demo takes nothing, not even an email.</p>
     </section>
@@ -650,7 +654,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       var back = document.getElementById('ldBack'), next = document.getElementById('ldNext');
       var progress = document.getElementById('ldProgress'), live = document.getElementById('ldLive');
       if (!wrap || panels.length < 5 || !rail || !controls) return;
-      var titles = ['The invoice arrives', 'Read', 'File', 'Flag', 'The founding list'];
+      var titles = ['The invoice arrives', 'Read', 'File', 'Flag', 'Run your own line'];
       var i = 0;
       var prm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
       wrap.classList.add('ld-js');
