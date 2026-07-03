@@ -2,11 +2,11 @@
   "_doc": "Coverage/health matrix for the Cost Index, derived purely from data/cost-index.json by scripts/build-cost-index-health.mjs (CI runs --check). confidence is the published read; withinAuditCeiling proves it is not overstated; toHigh names the single binding blocker to a higher tier. Regenerate after every vendor.",
   "generatedFrom": null,
   "summary": {
-    "total": 100,
+    "total": 99,
     "byConfidence": {
       "medium": 20,
       "low": 60,
-      "directional": 20
+      "directional": 19
     },
     "withDollarLevel": 92,
     "highEligible": 0,
@@ -1456,23 +1456,6 @@
       "typeDispersion": 0,
       "weeks": 5,
       "asOf": "2026-05-01",
-      "toHigh": "no dollar level exists (directional) — needs a comparable wholesale $ source on a measurable basis"
-    },
-    {
-      "key": "pumpkin",
-      "confidence": "directional",
-      "withinAuditCeiling": true,
-      "hasDollarLevel": false,
-      "basis": null,
-      "rangeBasis": null,
-      "levelFamilies": 0,
-      "levelTypes": 0,
-      "trendTypes": 1,
-      "trendAgreement": 1,
-      "trendNoise": null,
-      "typeDispersion": 0,
-      "weeks": 3,
-      "asOf": "2026-03-01",
       "toHigh": "no dollar level exists (directional) — needs a comparable wholesale $ source on a measurable basis"
     },
     {

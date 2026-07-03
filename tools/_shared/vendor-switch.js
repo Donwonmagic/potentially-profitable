@@ -61,7 +61,12 @@
     for (var i = 0; i < rows.length; i++) { if (rows[i].vendor === current) { mine = rows[i]; break; } }
     if (!mine) return none('current-vendor-not-found');
 
-    var gap = Math.round(mine.gapPctVsCheapest || 0);
+    // The EXACT one-decimal gap cross-vendor already computed — gate + display on it,
+    // never a rounded-up integer. Rounding before the material gate let a 2.5% gap
+    // round to 3 and fire below the binding >=3% rail; rounding the display up
+    // overstated the gap ("about 3% more" on a 2.5% gap) and contradicted the receipt's
+    // own medians. Showing the true value fixes all three; integer gaps read as before.
+    var gap = mine.gapPctVsCheapest || 0;
 
     // Already on the cheapest vendor, or the gap is immaterial → calm, no CTA.
     if (mine.vendor === cheapest.vendor || gap < MATERIAL_GAP_PCT) {
@@ -76,7 +81,10 @@
     }
 
     var unit = cheapest.comparableUnit || tt(locale, 'pack', 'paquete');
-    var weekly = (input.saving && typeof input.saving.savingPerWeek === 'number' && input.saving.savingPerWeek > 0)
+    // Guard on the ROUNDED dollars: a sub-$0.50 weekly saving would round to $0 and
+    // splice "saves about $0/week" into a live switch card — a degenerate number, not the
+    // mandated "would trim that" fallback. Below $0.50 → no number.
+    var weekly = (input.saving && typeof input.saving.savingPerWeek === 'number' && Math.round(input.saving.savingPerWeek) > 0)
       ? Math.round(input.saving.savingPerWeek) : null;
     var saveClause = weekly != null
       ? tt(locale, ' Switching this one item saves about ' + money(weekly) + '/week.',
