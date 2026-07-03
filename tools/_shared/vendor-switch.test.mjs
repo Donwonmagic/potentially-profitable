@@ -56,6 +56,36 @@ test('immaterial gap (< 3%): not worth a switch → calm, show:false', () => {
   assert.equal(c.reason, 'gap-immaterial');
 });
 
+test('boundary gap 2.5% (would round UP to 3): below the >=3% rail → stays calm, does NOT fire', () => {
+  const rows = [
+    { vendor: 'US Foods', medianComparable: 2.00, comparableUnit: 'lb', observations: 5, gapPctVsCheapest: 0 },
+    { vendor: 'Sysco',    medianComparable: 2.05, comparableUnit: 'lb', observations: 5, gapPctVsCheapest: 2.5 },
+  ];
+  const c = W.build({ compareRows: rows, currentVendor: 'Sysco', ingredient: 'mozzarella', locale: 'en' });
+  assert.equal(c.show, false);
+  assert.equal(c.reason, 'gap-immaterial');
+});
+
+test('gap is shown EXACTLY, never rounded up: an 8.6% gap reads "8.6%", not an overstated "9%"', () => {
+  const rows = [
+    { vendor: 'US Foods', medianComparable: 5.00, comparableUnit: 'lb', observations: 6, gapPctVsCheapest: 0 },
+    { vendor: 'Sysco',    medianComparable: 5.43, comparableUnit: 'lb', observations: 6, gapPctVsCheapest: 8.6 },
+  ];
+  const c = W.build({ compareRows: rows, currentVendor: 'Sysco', ingredient: 'mozzarella', locale: 'en' });
+  assert.equal(c.tier, 'switch');
+  assert.equal(c.gapPct, 8.6);
+  assert.match(c.headline, /8\.6%/);
+  assert.doesNotMatch(c.headline, /9%/);
+});
+
+test('sub-$0.50 weekly saving → no fabricated "$0/week"; falls back to "would trim that"', () => {
+  const c = W.build({ compareRows: ROWS, currentVendor: 'Sysco', ingredient: 'mozzarella', saving: { targetVendor: 'US Foods', savingPerWeek: 0.30 }, locale: 'en' });
+  assert.equal(c.tier, 'switch');
+  assert.equal(c.savingPerWeek, null);
+  assert.doesNotMatch(c.headline, /\$/);          // no "$0"
+  assert.match(c.headline, /would trim that/);    // the honest no-number fallback
+});
+
 test('fewer than 2 vendors → nothing to compare', () => {
   assert.equal(W.build({ compareRows: null, currentVendor: 'Sysco', ingredient: 'x' }).reason, 'insufficient-vendors');
   assert.equal(W.build({ compareRows: [ROWS[0]], currentVendor: 'US Foods', ingredient: 'x' }).reason, 'insufficient-vendors');

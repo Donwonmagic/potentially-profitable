@@ -409,6 +409,13 @@ const CHECKS = [
   ['Cost-index health (idem)','build-cost-index-health.mjs','--check'],
   ['Cost-index provenance (idem)','build-cost-index-provenance.mjs','--check'],
   ['Cost-index health self-test','build-cost-index-health.mjs','--self-test'],
+  // Basis-honesty leak gate — the Cost Index renders a $ level ONLY on a real dollar
+  // basis (delivered/wholesale/retail); index/farm-gate/customs are shape/direction only.
+  // Cross-references every rendered $ (seed, index.json, feed.json, index.csv, per-
+  // ingredient series, weekly digest) against the SOURCE newest level, so a surface that
+  // MISLABELS a non-$ basis as "wholesale" (the salmon-fillet class) is caught.
+  ['Cost-index basis-leak','check-cost-index-basis-leak.mjs'],
+  ['Cost-index basis-leak self-test','check-cost-index-basis-leak.mjs','--self-test'],
   // Seasonal baseline (D3) — a month earns a "typical" normal only once observed
   // across 2+ years; until then every ingredient sits in a transparent `building`
   // state. Pure function of the vendored history, so --check pins it in sync.
