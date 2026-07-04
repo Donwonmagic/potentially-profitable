@@ -114,6 +114,8 @@
       'Brand Suite Workshop Pick',
       'Bench Assessed',
       'Bench Loaded',
+      'Bench Multi-Date Computed',
+      'Bench Example Loaded',
       'Cost Pulse Loaded',
       'Invoice Decoder Accountant Export',
       'Invoice Decoder Adaptive Reread',
