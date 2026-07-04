@@ -23,6 +23,7 @@
   var Bench = window.MuntinBench;
   var MW = window.MuntinMarketWindow;
   var CTX = window.MuntinContext;
+  var PARSE = window.MuntinParse;
   if (!SH || !MW) return;
 
   var ES = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().slice(0, 2) === 'es';
@@ -58,6 +59,13 @@
     noMatchBody: 'Vendor Benchmark todavía compara tu precio contra tu propio historial (arriba). Revisa el Índice de costos para ver qué artículos sí seguimos.',
     levelAt: 'Tu nivel está dentro de un margen de entrega normal frente a la referencia mayorista.',
     levelAbove: 'Tu nivel también corre por encima de la referencia mayorista',
+    levelCalib: 'El flete y la distribución normalmente suman margen, así que tómalo como tu nivel — no como prueba de una factura inflada. La tasa de cambio de arriba es la señal más fuerte.',
+    receiptSummary: 'Cómo se midió esta diferencia',
+    receiptDepthDeep: 'De 3 años de lecturas mayoristas semanales del USDA.',
+    receiptDepthShort: 'De un historial de mercado reciente y corto.',
+    rcReads: 'Lecturas', rcWindow: 'Ventana de mercado cubierta', rcOff: 'días de tu fecha',
+    rcNearest: 'Lectura mayorista más cercana a tu',
+    badPrice: 'No pudimos leer este precio.',
     ondevice: 'Guardado solo en este dispositivo — nunca se envía a ningún lado.',
     clearSaved: 'Borrar lo guardado',
     // ledger funnel
@@ -100,6 +108,13 @@
     noMatchBody: 'Vendor Benchmark still checks your price against your own history (above). See the Cost Index for the items we track.',
     levelAt: 'Your level sits within a normal delivered markup over the wholesale reference.',
     levelAbove: 'Your level also runs above the wholesale reference',
+    levelCalib: 'Freight and distribution normally add markup, so read this as your level — not proof of a padded bill. The rate-of-change above is the stronger signal.',
+    receiptSummary: 'How this gap was measured',
+    receiptDepthDeep: 'Drawn from 3 years of weekly USDA wholesale reads.',
+    receiptDepthShort: 'Drawn from recent, short market history.',
+    rcReads: 'Reads', rcWindow: 'Covered market window', rcOff: 'days off your date',
+    rcNearest: 'Nearest wholesale read to your',
+    badPrice: 'Couldn’t read this price.',
     ondevice: 'Saved on this device only — never sent anywhere.',
     clearSaved: 'Clear saved',
     ledgerSoft: 'Want this watched for you? Muntin Ledger flags the next hike the moment you file the invoice.',
@@ -178,13 +193,19 @@
     var pLab = document.createElement('label');
     pLab.textContent = T.priceLabel;
     var pInput = document.createElement('input');
-    pInput.type = 'number'; pInput.className = 'vb-input'; pInput.setAttribute('data-field', 'price');
-    pInput.setAttribute('inputmode', 'decimal'); pInput.setAttribute('min', '0'); pInput.setAttribute('step', '0.01');
+    // type=text (not number): a number input silently rejects a comma-decimal
+    // (ES "12,20") and hands back an empty value, which would drop the row and
+    // move the window endpoints. We accept any format and parse it ourselves.
+    pInput.type = 'text'; pInput.className = 'vb-input'; pInput.setAttribute('data-field', 'price');
+    pInput.setAttribute('inputmode', 'decimal'); pInput.setAttribute('autocomplete', 'off');
     pInput.setAttribute('placeholder', '0.00'); pInput.setAttribute('aria-label', T.priceLabel);
     if (data.price != null && data.price !== '') pInput.value = data.price;
     var pId = 'vbp' + Math.round(performance.now() * 1000) + Math.floor(performance.now() % 89);
     pLab.setAttribute('for', pId); pInput.id = pId;
-    pWrap.appendChild(pLab); pWrap.appendChild(pInput);
+    var pHint = document.createElement('span');
+    pHint.className = 'vb-prow-hint'; pHint.setAttribute('data-role', 'badprice'); pHint.hidden = true;
+    pHint.textContent = T.badPrice;
+    pWrap.appendChild(pLab); pWrap.appendChild(pInput); pWrap.appendChild(pHint);
 
     var rm = document.createElement('button');
     rm.type = 'button'; rm.className = 'vb-remove';
@@ -221,12 +242,42 @@
   var debounceT = null;
   function schedule() { clearTimeout(debounceT); debounceT = setTimeout(run, 260); }
 
+  // Locale-aware price parse. Under ES a comma is the decimal ("12,20"); the
+  // shared MuntinParse handles currency symbols, thousands separators and both
+  // decimal conventions. Falls back to a comma-swap parseFloat if the module
+  // is absent so the tool degrades rather than dropping every row.
+  function parsePrice(raw) {
+    if (raw == null || String(raw).trim() === '') return null;
+    if (PARSE && typeof PARSE.parseLooseNumber === 'function') {
+      var r = PARSE.parseLooseNumber(raw, { defaultLocale: ES ? 'eu' : 'us', nonNegative: true });
+      return (typeof r.value === 'number' && isFinite(r.value)) ? r.value : null;
+    }
+    var n = parseFloat(String(raw).replace(',', '.'));
+    return isFinite(n) && n >= 0 ? n : null;
+  }
+
   function currentPurchases() {
     var unit = unitEl.value;
     return readRows().map(function (r) {
-      var price = parseFloat(r.price);
-      return { date: r.date, cents: isFinite(price) ? Math.round(price * 100) : NaN, unit: unit, priceRaw: r.price };
+      var price = parsePrice(r.price);
+      return { date: r.date, cents: price != null && price > 0 ? Math.round(price * 100) : NaN, unit: unit, priceRaw: r.price };
     });
+  }
+
+  // Flag rows whose price is present but unreadable, so a bad entry is shown —
+  // never silently dropped (which would falsify the window).
+  function flagBadPrices() {
+    var rows = rowsEl.querySelectorAll('.vb-prow');
+    for (var i = 0; i < rows.length; i++) {
+      var pEl = rows[i].querySelector('[data-field="price"]');
+      var hint = rows[i].querySelector('[data-role="badprice"]');
+      if (!pEl || !hint) continue;
+      var raw = (pEl.value || '').trim();
+      var bad = raw !== '' && parsePrice(raw) == null;
+      hint.hidden = !bad;
+      if (bad) pEl.setAttribute('aria-invalid', 'true'); else pEl.removeAttribute('aria-invalid');
+      rows[i].classList.toggle('vb-prow--bad', bad);
+    }
   }
 
   function persist(item, unit, rows) {
@@ -236,12 +287,37 @@
     } catch (_) {}
   }
 
+  // Screen-reader announcer. The result container is re-injected on every
+  // keystroke, so it must NOT be an aria-live region (a SR would hear half-typed
+  // fragments). Instead we push the settled, purpose-built srText sentence into a
+  // dedicated polite live region on a delay longer than the compute debounce.
+  var announceEl = null, announceT = null;
+  function ensureAnnouncer() {
+    if (announceEl || !resultEl.parentNode) return;
+    resultEl.removeAttribute('aria-live');
+    announceEl = document.createElement('p');
+    announceEl.className = 'sr-only'; announceEl.setAttribute('role', 'status'); announceEl.setAttribute('aria-live', 'polite');
+    resultEl.parentNode.insertBefore(announceEl, resultEl);
+  }
+  function scheduleAnnounce(res) {
+    if (!announceEl) return;
+    clearTimeout(announceT);
+    announceT = setTimeout(function () {
+      var m = res.market || {};
+      var text = (m.say && m.say.srText) ? m.say.srText
+        : (m.say && m.say.headline) ? (m.say.headline + (m.say.detail ? ' ' + m.say.detail : ''))
+        : (res.talkingPoint || '');
+      announceEl.textContent = text;
+    }, 950);
+  }
+
   function run() {
     if (errEl) errEl.hidden = true;
     var item = (itemEl.value || '').trim();
     var unit = unitEl.value;
     var rows = readRows();
     persist(item, unit, rows);
+    flagBadPrices();
 
     var purchases = currentPurchases().filter(function (p) {
       return p.cents > 0 && MW.parseISODay(p.date) != null;
@@ -253,11 +329,13 @@
     if (!item || purchases.length < 2) {
       while (resultEl.firstChild) resultEl.removeChild(resultEl.firstChild);
       resultEl.removeAttribute('data-has-result');
+      if (announceEl) { clearTimeout(announceT); announceEl.textContent = ''; }
       return;
     }
 
     var res = MW.compute({ item: item, purchases: purchases, locale: ES ? 'es' : 'en' });
     render(res);
+    scheduleAnnounce(res);
     resultEl.setAttribute('data-has-result', '1');
 
     track('Bench Multi-Date Computed', {
@@ -445,6 +523,31 @@
     return h`<div class="vb-subcard"><span class="vb-eyebrow">${T.timelineEyebrow}</span><div class="vb-timeline-wrap"><table class="vb-timeline"><thead><tr><th scope="col">${T.thDate}</th><th scope="col" class="vb-num">${T.thYou}</th><th scope="col" class="vb-num">${T.thYouCum}</th><th scope="col" class="vb-num">${T.thMarketCum}</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
   }
 
+  // The wholesale market value at a specific series date (the reads the verdict
+  // snapped to are always exact series dates), for the receipt.
+  function marketValueAt(m, dateStr) {
+    if (!m.series || !m.series.dates) return null;
+    for (var i = 0; i < m.series.dates.length; i++) {
+      if (m.series.dates[i] === dateStr) return m.series.values[i];
+    }
+    return null;
+  }
+
+  // The receipt: a default-collapsed disclosure of the exact two dated wholesale
+  // reads the gap was measured between, how far each sat from the invoice date,
+  // and how deep the series is. Pure disclosure of numbers the math already used.
+  function receiptBits(res) {
+    var m = res.market;
+    if (!(m.res && m.res.ok)) return '';
+    var valA = marketValueAt(m, m.res.marketADate);
+    var valB = marketValueAt(m, m.res.marketBDate);
+    var depth = m.seriesKind === 'deep' ? T.receiptDepthDeep : T.receiptDepthShort;
+    var reads = (m.series && m.series.values) ? m.series.values.length : 0;
+    var lineA = h`<li>${T.rcNearest} ${fmtDate(res.firstDate)}: <strong>${fmtDate(m.res.marketADate)}</strong>${valA != null ? h`, ${money(valA)}` : ''} <span class="vb-rc-off">(~${String(m.res.aGapDays)} ${T.rcOff})</span></li>`;
+    var lineB = h`<li>${T.rcNearest} ${fmtDate(res.lastDate)}: <strong>${fmtDate(m.res.marketBDate)}</strong>${valB != null ? h`, ${money(valB)}` : ''} <span class="vb-rc-off">(~${String(m.res.bGapDays)} ${T.rcOff})</span></li>`;
+    return h`<details class="vb-receipt"><summary>${T.receiptSummary}</summary><ul class="vb-rc-list">${lineA}${lineB}</ul><p class="vb-rc-meta">${T.rcWindow}: ${fmtDate(m.res.marketADate)} – ${fmtDate(m.res.marketBDate)} · ${T.rcReads}: ${String(reads)}. ${depth}</p></details>`;
+  }
+
   function attributionBlock(res) {
     var m = res.market;
     var sources = (m.sources && m.sources.length) ? m.sources.map(labelForSource).join(', ') : 'USDA';
@@ -454,12 +557,14 @@
     var levelNote = '';
     if (m.level && m.level.comparable) {
       if (m.level.verdict === 'far-above-reference' || m.level.verdict === 'above-reference') {
-        levelNote = h`<p class="vb-attr-level">${T.levelAbove} (${(m.level.gapPct > 0 ? '+' : '') + m.level.gapPct}%).</p>`;
+        // State the fact and defuse it in the same breath — a delivered price
+        // above the wholesale reference is normal, never proof of overpaying.
+        levelNote = h`<p class="vb-attr-level">${T.levelAbove} (${(m.level.gapPct > 0 ? '+' : '') + m.level.gapPct}%). ${T.levelCalib}</p>`;
       } else if (m.level.verdict === 'at-reference') {
         levelNote = h`<p class="vb-attr-level">${T.levelAt}</p>`;
       }
     }
-    return h`<div class="vb-attr"><p class="vb-attr-wholesale">${T.attributionWholesale}</p><dl class="vb-attr-dl"><div><dt>${T.attributionSources}</dt><dd>${sources}</dd></div><div><dt>${T.attributionAsOf}</dt><dd>${window} · ${String(reads)}</dd></div>${conf ? h`<div><dt>${T.attributionConf}</dt><dd>${conf}</dd></div>` : ''}</dl>${levelNote}<p><a class="vb-inlink" href="${BASE}/cost-index/${m.key}/">${T.seeReading} <span aria-hidden="true">→</span></a></p></div>`;
+    return h`<div class="vb-attr"><p class="vb-attr-wholesale">${T.attributionWholesale}</p><dl class="vb-attr-dl"><div><dt>${T.attributionSources}</dt><dd>${sources}</dd></div><div><dt>${T.attributionAsOf}</dt><dd>${window} · ${String(reads)}</dd></div>${conf ? h`<div><dt>${T.attributionConf}</dt><dd>${conf}</dd></div>` : ''}</dl>${levelNote}${receiptBits(res)}<p><a class="vb-inlink" href="${BASE}/cost-index/${m.key}/">${T.seeReading} <span aria-hidden="true">→</span></a></p></div>`;
   }
 
   function funnelBlock(res) {
@@ -547,6 +652,7 @@
   if (exampleBtn) { exampleBtn.textContent = T.example; exampleBtn.addEventListener('click', loadExample); }
   if (clearBtn) { clearBtn.textContent = T.clear; clearBtn.addEventListener('click', clearAll); }
 
+  ensureAnnouncer();
   restore();
   track('Bench Loaded');
 })();
