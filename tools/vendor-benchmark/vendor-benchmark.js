@@ -24,6 +24,8 @@
   var MW = window.MuntinMarketWindow;
   var CTX = window.MuntinContext;
   var PARSE = window.MuntinParse;
+  var SPIKE = window.MuntinSpike;
+  var ASK = window.MuntinVendorAsk;
   if (!SH || !MW) return;
 
   var ES = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().slice(0, 2) === 'es';
@@ -79,6 +81,20 @@
     seeLedger: 'Conoce Muntin Ledger', seePlate: 'Abrir Costo del Plato',
     plateHook: '¿Y qué le hace esto al margen de tus platillos? Costo del Plato lo recuesta ingrediente por ingrediente.',
     marketOrVendor: '¿Esa subida es el mercado, o tu proveedor?',
+    anchorLead: 'Al ritmo del mercado, estarías cerca de', anchorTail: '— estás en',
+    spikeStructural: 'Ese movimiento del mercado se ha sostenido — parece un reajuste real, no un pico.',
+    spikeSpike: 'El mercado subió y luego retrocedió — puede que no se sostenga.',
+    spikeEasing: 'El mercado ha ido bajando últimamente.',
+    spikeEmerging: 'El movimiento del mercado es reciente y aún no se asienta — observa la próxima lectura.',
+    ledgerCleanHead: 'Esta vez, tu proveedor siguió al mercado.',
+    ledgerCleanBody: 'La única forma de saber que sigue así es vigilar cada factura — que es lo que hace Muntin Ledger.',
+    ledgerThinHead: 'Aquí retuvimos la conclusión de mercado.',
+    ledgerThinBody: 'Ledger igual lo archiva y marca una subida contra tu propio historial de precios.',
+    askEyebrow: 'Llévaselo a tu proveedor', askCopy: 'Copiar', askCopied: 'Copiado',
+    vendorNameLabel: 'Nombre del proveedor', vendorNamePlaceholder: 'tu proveedor',
+    volumeLabel: '¿Cuánto compras por semana?', volumeUnitSuffix: 'por semana', volumeHint: 'opcional — para ver el impacto en dólares',
+    volumeLead: 'A ese ritmo, esta diferencia corre cerca de', volumePerWeek: 'por semana', volumePerYear: 'al año si se mantiene',
+    briefBtn: 'Preparar la hoja para tu proveedor', briefPrint: 'Imprimir', briefCopy: 'Copiar el resumen', briefCopied: 'Resumen copiado',
     errItem: 'Escribe el nombre del artículo.',
     errRows: 'Agrega al menos dos compras con fecha y precio.'
   } : {
@@ -127,12 +143,30 @@
     seeLedger: 'See Muntin Ledger', seePlate: 'Open Plate Cost',
     plateHook: 'And what does this do to your dish margins? Plate Cost re-costs it ingredient by ingredient.',
     marketOrVendor: 'Is that increase the market, or your vendor?',
+    anchorLead: 'At the market’s rate, you’d be near', anchorTail: '— you’re at',
+    spikeStructural: 'That market move has held — this looks like a real reset, not a blip.',
+    spikeSpike: 'The market ran up then pulled back — it may not hold.',
+    spikeEasing: 'The market has been easing lately.',
+    spikeEmerging: 'The market move is recent and hasn’t settled yet — watch the next read.',
+    ledgerCleanHead: 'This time, your vendor tracked the market.',
+    ledgerCleanBody: 'The only way to know it stays that way is to watch every invoice — which is what Muntin Ledger does.',
+    ledgerThinHead: 'We held the market call here.',
+    ledgerThinBody: 'Ledger still files this and flags a hike against your own price history.',
+    askEyebrow: 'Take this to your vendor', askCopy: 'Copy', askCopied: 'Copied',
+    vendorNameLabel: 'Vendor name', vendorNamePlaceholder: 'your vendor',
+    volumeLabel: 'About how much do you buy a week?', volumeUnitSuffix: 'a week', volumeHint: 'optional — to see the dollar impact',
+    volumeLead: 'At that pace, this gap runs about', volumePerWeek: 'a week', volumePerYear: 'a year if it holds',
+    briefBtn: 'Make a one-page brief for your rep', briefPrint: 'Print', briefCopy: 'Copy the summary', briefCopied: 'Summary copied',
     errItem: 'Enter the item name.',
     errRows: 'Add at least two purchases with a date and price.'
   };
 
   // ---- small formatters ------------------------------------------------------
   function money(cents) { return '$' + (Math.round(cents) / 100).toFixed(2); }
+  function moneyRound(cents) { return '$' + String(Math.round(cents / 100)).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+  // Whole dollars (with thousands separators) once past $100 — "$1,218" beats
+  // "$1217.53" for the materiality figures; cents below that.
+  function moneyAuto(cents) { return Math.abs(cents) >= 10000 ? moneyRound(cents) : money(cents); }
   function pctStr(p) {
     var a = Math.abs(p * 100);
     var s = a.toFixed(a < 10 ? 1 : 0).replace(/\.0$/, '');
@@ -433,19 +467,67 @@
     return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
+  // Spike-vs-structural read of the MARKET move — "will it stick?". Judged over a
+  // recent window (not the full 3-yr series, which over-calls "structural" against
+  // the long-run floor). Withholds below the classifier's minimum history.
+  function classifyMarketSpike(res) {
+    var m = res.market;
+    if (!SPIKE || !m || !m.available || !(m.res && m.res.ok) || !m.series || !m.series.values) return null;
+    // Only characterize "will it stick?" when the market actually moved in the
+    // operator's window — otherwise a recent-regime read (e.g. "structural")
+    // pinned under a "+0.5%" headline reads as a contradiction.
+    if (Math.abs(m.res.marketPct) < 0.05) return null;
+    var vals = m.series.values, dates = m.series.dates, N = vals.length, start = Math.max(0, N - 26);
+    var pts = [];
+    for (var i = N - 1; i >= start; i--) {          // newest first
+      if (typeof vals[i] === 'number' && vals[i] > 0) pts.push({ level: { medianCents: vals[i] }, asOf: dates[i] });
+    }
+    if (pts.length < 8) return null;
+    try { return SPIKE.classify(pts); } catch (_) { return null; }
+  }
+  function spikeSay(spike) {
+    if (!spike) return null;
+    if (spike.verdict === 'structural') return { tone: 'over', text: T.spikeStructural };
+    if (spike.verdict === 'spike') return { tone: 'watch', text: T.spikeSpike };
+    if (spike.verdict === 'easing') return { tone: 'under', text: T.spikeEasing };
+    if (spike.verdict === 'emerging') return { tone: 'watch', text: T.spikeEmerging };
+    return null; // flat / insufficient → withhold
+  }
+
+  // "At the market's rate, you'd be near $Y" — the honest counter-number. Rides on
+  // the operator's OWN first-window price moved only by the sourced market %-change
+  // (excessCents = lastCents − impliedBCents), never "the market supports $Y".
+  function anchorCentsOf(res) {
+    var m = res.market;
+    if (!(m && m.res && m.res.ok) || typeof m.res.excessCents !== 'number') return null;
+    var c = res.lastCents - m.res.excessCents;
+    return c > 0 ? c : null;
+  }
+
   // ---- the result -----------------------------------------------------------
   function render(res) {
     var m = res.market;
+    var spike = classifyMarketSpike(res);
     var blocks = [];
 
     // 1) THE HEADLINE — the gap (only a full verdict when the market data supports it)
     blocks.push(headlineBlock(res));
+
+    // 1b) "Will it stick?" — spike-vs-structural read of the market move.
+    var sSay = spikeSay(spike);
+    if (sSay) {
+      blocks.push(h`<p class="vb-spike" data-tone="${sSay.tone}">${sSay.text}</p>`);
+    }
 
     // 2) THE CHART
     var svg = chartSvg(res);
     if (svg) {
       blocks.push(h`<figure class="vb-chartwrap">${sh(svg)}<figcaption class="vb-chart-legend"><span class="vb-legend-you">${T.chartYou}</span><span class="vb-legend-mkt">${T.chartMarket}</span></figcaption></figure>`);
     }
+
+    // 2b) THE ACTION — the exact line to read to the rep + the brief (only on a real vendor gap)
+    var action = actionBlock(res, spike);
+    if (action) blocks.push(action);
 
     // 3) YOUR OWN HISTORY verdict (secondary — the trailing-median call)
     if (res.talkingPoint) {
@@ -463,14 +545,32 @@
     }
 
     // 6) THE FUNNEL
-    blocks.push(funnelBlock(res));
+    blocks.push(funnelBlock(res, spike));
 
     // 7) on-device + clear
     blocks.push(h`<p class="vb-ondevice">${T.ondevice} <button type="button" class="vb-linkbtn" id="vbClearSaved">${T.clearSaved}</button></p>`);
 
     setHTML(resultEl, h`<div class="vb-result-inner">${blocks}</div>`);
-    var cs = document.getElementById('vbClearSaved');
-    if (cs) cs.addEventListener('click', clearAll);
+  }
+
+  // One delegated handler for everything inside the re-rendered result.
+  function onResultClick(e) {
+    var t = e.target;
+    if (!t || !t.closest) return;
+    if (t.closest('#vbClearSaved')) { clearAll(); return; }
+    var copyBtn = t.closest('.vb-copy');
+    if (copyBtn) {
+      var action = copyBtn.closest('.vb-action');
+      var isBrief = copyBtn.hasAttribute('data-copy-brief');
+      var text;
+      if (isBrief) { var b = action && action.querySelector('[data-brief]'); text = b ? b.getAttribute('data-brief-text') : ''; }
+      else { var a = action && action.querySelector('.vb-ask'); text = a ? a.textContent : ''; }
+      copyText(text, copyBtn, isBrief ? T.briefCopied : T.askCopied);
+      track(isBrief ? 'Bench Brief Copied' : 'Bench Ask Copied');
+      return;
+    }
+    var printBtn = t.closest('.vb-print-btn');
+    if (printBtn) { doPrint(printBtn.closest('.vb-action')); track('Bench Brief Printed'); }
   }
 
   function tierLabel(tier) {
@@ -503,10 +603,15 @@
       // The star line: the gap, tone-colored.
       var gapPts = Math.abs(m.res.gapPts);
       var dirWord = m.res.gapPts >= 3 ? T.aboveMarket : m.res.gapPts <= -3 ? T.belowMarket : T.inlineMarket;
+      var uSuf = res.unit ? '/' + res.unit : '';
       var excess = (m.res.gapPts >= 3 && m.res.excessCents > 0)
-        ? h`<p class="vb-headline-excess">${money(m.res.excessCents)}${res.unit ? '/' + res.unit : ''} ${T.beyond} ${fmtDate(res.firstDate)}–${fmtDate(res.lastDate)}.</p>`
+        ? h`<p class="vb-headline-excess">${money(m.res.excessCents)}${uSuf} ${T.beyond} ${fmtDate(res.firstDate)}–${fmtDate(res.lastDate)}.</p>`
         : '';
-      verdict = h`<div class="vb-gap" data-tone="${tone}"><span class="vb-gap-num">${gapPts.toFixed(gapPts < 10 ? 1 : 0)}</span><span class="vb-gap-word">${T.pointsWord} ${dirWord}</span></div><p class="vb-headline-say">${m.say.headline}</p>${excess}`;
+      var anchorCents = anchorCentsOf(res);
+      var anchor = (m.res.gapPts >= 3 && m.res.excessCents > 0 && anchorCents != null)
+        ? h`<p class="vb-anchor"><strong>${T.anchorLead}</strong> ${money(anchorCents)}${uSuf} ${T.anchorTail} ${money(res.lastCents)}${uSuf}.</p>`
+        : '';
+      verdict = h`<div class="vb-gap" data-tone="${tone}"><span class="vb-gap-num">${gapPts.toFixed(gapPts < 10 ? 1 : 0)}</span><span class="vb-gap-word">${T.pointsWord} ${dirWord}</span></div><p class="vb-headline-say">${m.say.headline}</p>${excess}${anchor}`;
     } else if (m.say && m.say.headline) {
       // honest hedge / soft refusal (thin, too-close, out-of-range)
       verdict = h`<div class="vb-hedge" data-tone="${tone}"><p class="vb-headline-say">${m.say.headline}</p>${m.say.detail ? h`<p class="vb-headline-detail">${m.say.detail}</p>` : ''}</div>`;
@@ -567,15 +672,32 @@
     return h`<div class="vb-attr"><p class="vb-attr-wholesale">${T.attributionWholesale}</p><dl class="vb-attr-dl"><div><dt>${T.attributionSources}</dt><dd>${sources}</dd></div><div><dt>${T.attributionAsOf}</dt><dd>${window} · ${String(reads)}</dd></div>${conf ? h`<div><dt>${T.attributionConf}</dt><dd>${conf}</dd></div>` : ''}</dl>${levelNote}${receiptBits(res)}<p><a class="vb-inlink" href="${BASE}/cost-index/${m.key}/">${T.seeReading} <span aria-hidden="true">→</span></a></p></div>`;
   }
 
-  function funnelBlock(res) {
+  function softBridge(head, body) {
+    return h`<div class="vb-softbridge"><p>${head ? h`<strong>${head}</strong> ` : ''}${body} <a class="vb-inlink plausible-event-name=Ledger+Route+Click plausible-event-source=vendor-benchmark" href="https://ledger.muntin.digital/">${T.seeLedger} <span aria-hidden="true">→</span></a></p></div>`;
+  }
+  function funnelBlock(res, spike) {
     var m = res.market;
-    var strong = (m.available && m.res && m.res.ok && !m.res.thin && m.say && m.say.tone === 'over') || res.tier === 'hike';
+    var okMarket = m.available && m.res && m.res.ok;
+    var isOver = okMarket && !m.res.thin && m.say && m.say.tone === 'over';
+    // A reverting spike softens the vendor framing — never send an operator to
+    // fight a vendor over a market move that may not hold.
+    var spikeReverting = spike && spike.verdict === 'spike';
+    var strong = (isOver && !spikeReverting) || res.tier === 'hike';
     var plate = h`<p class="vb-crosslink">${T.plateHook} <a class="vb-inlink" href="${BASE}/tools/plate-cost/">${T.seePlate} <span aria-hidden="true">→</span></a></p>`;
 
     if (strong) {
       return h`<aside class="vb-ledger" aria-labelledby="vbLedgerH"><span class="vb-ledger-eyebrow">${T.ledgerStrongEyebrow}</span><h2 class="vb-ledger-h" id="vbLedgerH">${T.ledgerStrongHead}</h2><p class="vb-ledger-lede">${T.marketOrVendor}</p><p class="vb-ledger-body"><strong>${T.ledgerStrongBody1}</strong> ${T.ledgerStrongBody2}</p><p class="vb-ledger-fine">${T.ledgerStrongBody3} ${T.earlyAccess}</p><a class="vb-ledger-cta plausible-event-name=Ledger+Route+Click plausible-event-source=vendor-benchmark" href="https://ledger.muntin.digital/">${T.seeLedger} <span aria-hidden="true">→</span></a></aside>${plate}`;
     }
-    return h`<div class="vb-softbridge"><p>${T.ledgerSoft} <a class="vb-inlink plausible-event-name=Ledger+Route+Click plausible-event-source=vendor-benchmark" href="https://ledger.muntin.digital/">${T.seeLedger} <span aria-hidden="true">→</span></a></p></div>${plate}`;
+    // Clean vendor — this time they tracked the market. Don't sell a false alarm.
+    if (okMarket && !m.res.thin && m.say && (m.say.tone === 'match' || m.say.tone === 'under') && !isOver) {
+      return h`${softBridge(T.ledgerCleanHead, T.ledgerCleanBody)}${plate}`;
+    }
+    // Withheld / thin market call — the honest-hedge trust moment.
+    if (m.available && m.res && (m.res.thin || !m.res.ok)) {
+      return h`${softBridge(T.ledgerThinHead, T.ledgerThinBody)}${plate}`;
+    }
+    // No market reference, or an over-but-reverting spike → the plain soft bridge.
+    return h`${softBridge(null, T.ledgerSoft)}${plate}`;
   }
 
   var SOURCE_LABEL = {
@@ -587,6 +709,128 @@
   };
   function labelForSource(s) {
     return SOURCE_LABEL[s] || String(s).replace(/-/g, ' ').replace(/\busda\b/i, 'USDA');
+  }
+
+  // ---- optional form extras: vendor name + weekly volume ---------------------
+  // Injected into the form (not the re-rendered result) so they keep focus and
+  // value across recomputes. Collapsed by default so the default form stays clean.
+  var vendorEl = null, volumeEl = null;
+  function injectExtras() {
+    var panel = document.querySelector('.vb-panel');
+    if (!panel || document.getElementById('vbVendor')) return;
+    var det = document.createElement('details'); det.className = 'vb-more';
+    var sum = document.createElement('summary');
+    sum.textContent = ES ? 'Nombre del proveedor y volumen semanal (opcional)' : 'Vendor name & weekly volume (optional)';
+    det.appendChild(sum);
+    var grid = document.createElement('div'); grid.className = 'vb-more-grid';
+
+    var vf = document.createElement('div'); vf.className = 'vb-field';
+    var vl = document.createElement('label'); vl.setAttribute('for', 'vbVendor'); vl.textContent = T.vendorNameLabel;
+    vendorEl = document.createElement('input');
+    vendorEl.type = 'text'; vendorEl.id = 'vbVendor'; vendorEl.className = 'vb-input';
+    vendorEl.setAttribute('autocomplete', 'off'); vendorEl.setAttribute('placeholder', T.vendorNamePlaceholder);
+    vf.appendChild(vl); vf.appendChild(vendorEl);
+
+    var qf = document.createElement('div'); qf.className = 'vb-field';
+    var ql = document.createElement('label'); ql.setAttribute('for', 'vbVolume');
+    ql.appendChild(document.createTextNode(T.volumeLabel + ' '));
+    var qh = document.createElement('span'); qh.className = 'vb-hint'; qh.textContent = '— ' + T.volumeHint;
+    ql.appendChild(qh);
+    volumeEl = document.createElement('input');
+    volumeEl.type = 'text'; volumeEl.id = 'vbVolume'; volumeEl.className = 'vb-input';
+    volumeEl.setAttribute('inputmode', 'decimal'); volumeEl.setAttribute('autocomplete', 'off'); volumeEl.setAttribute('placeholder', '0');
+    qf.appendChild(ql); qf.appendChild(volumeEl);
+
+    grid.appendChild(vf); grid.appendChild(qf); det.appendChild(grid); panel.appendChild(det);
+    vendorEl.addEventListener('input', schedule);
+    volumeEl.addEventListener('input', schedule);
+  }
+  function currentVendor() { return (vendorEl && vendorEl.value.trim()) || null; }
+  function currentVolume() { return volumeEl ? parsePrice(volumeEl.value) : null; }
+
+  // ---- the action: take this to your rep ------------------------------------
+  function composeBrief(res, askText) {
+    var m = res.market;
+    var uSuf = res.unit ? '/' + res.unit : '';
+    var L = [];
+    L.push((ES ? 'Artículo: ' : 'Item: ') + res.item + ' (' + fmtDate(res.firstDate) + ' – ' + fmtDate(res.lastDate) + ')');
+    L.push((ES ? 'Tu precio: ' : 'Your price: ') + money(res.firstCents) + ' → ' + money(res.lastCents) + uSuf + ' (' + pctStr(res.yourChangePct) + ')');
+    if (m.res && m.res.ok) L.push((ES ? 'Mercado mayorista, misma ventana: ' : 'Wholesale market, same window: ') + pctStr(m.res.marketPct));
+    if (m.res && m.res.ok) L.push((ES ? 'Diferencia del proveedor: ' : 'Vendor gap: ') + Math.abs(m.res.gapPts).toFixed(m.res.gapPts < 10 ? 1 : 0) + ' ' + T.pointsWord + (m.res.excessCents > 0 ? ' (' + money(m.res.excessCents) + uSuf + ')' : ''));
+    var anchorCents = anchorCentsOf(res);
+    if (anchorCents != null) L.push(T.anchorLead + ' ' + money(anchorCents) + uSuf + ' ' + T.anchorTail + ' ' + money(res.lastCents) + uSuf + '.');
+    var vol = currentVolume();
+    if (vol != null && vol > 0 && vol < 100000 && m.res && m.res.excessCents > 0) {
+      var perYear = (m.res.excessCents / 100) * vol * 52;
+      L.push(T.volumeLead + ' ' + moneyAuto(Math.round(perYear * 100 / 52)) + ' ' + T.volumePerWeek + ' — ' + moneyAuto(Math.round(perYear * 100)) + ' ' + T.volumePerYear + '.');
+    }
+    if (askText) { L.push(''); L.push(askText); }
+    L.push('');
+    L.push((ES ? 'Fuente: Muntin Cost Index (mayorista USDA). ' : 'Source: Muntin Cost Index (USDA wholesale). ') + T.attributionWholesale);
+    return L.join('\n');
+  }
+
+  function actionBlock(res, spike) {
+    var m = res.market;
+    if (!(m.available && m.res && m.res.ok && !m.res.thin && m.say && m.say.tone === 'over' && m.res.gapPts >= 3)) return '';
+    if (spike && spike.verdict === 'spike') return ''; // don't script a fight over a reverting spike
+
+    var askText = '';
+    if (ASK && typeof ASK.build === 'function') {
+      try {
+        // Explicit attribution — only 'vendor' when the gate above passed, so the
+        // module never fabricates a one-sided read. It discloses both numbers.
+        var card = ASK.build({
+          decomposition: { attribution: 'vendor', gated: false },
+          ingredient: m.label, vendor: currentVendor() || T.vendorNamePlaceholder,
+          ownDeltaPct: m.res.ownerPct, marketDeltaPct: m.res.marketPct,
+          unitPriceText: money(res.lastCents) + (res.unit ? '/' + res.unit : ''),
+          locale: ES ? 'es' : 'en'
+        });
+        if (card && card.ask) askText = card.ask;
+      } catch (_) {}
+    }
+
+    var vol = currentVolume(), volLine = '';
+    if (vol != null && vol > 0 && vol < 100000 && m.res.excessCents > 0) {
+      var perWeek = (m.res.excessCents / 100) * vol, perYear = perWeek * 52;
+      volLine = h`<p class="vb-vol"><strong>${T.volumeLead} ${moneyAuto(Math.round(perWeek * 100))} ${T.volumePerWeek}</strong> — ${moneyAuto(Math.round(perYear * 100))} ${T.volumePerYear}.</p>`;
+    }
+
+    var briefText = composeBrief(res, askText);
+    var briefLines = briefText.split('\n').map(function (l) { return l ? h`<p>${l}</p>` : h`<p> </p>`; });
+    var askP = askText ? h`<p class="vb-ask">${askText}</p>` : '';
+    return h`<div class="vb-action"><span class="vb-eyebrow">${T.askEyebrow}</span>${askP}${volLine}<div class="vb-action-btns">${askText ? h`<button type="button" class="vb-btn vb-copy" data-copy-ask>${T.askCopy}</button>` : ''}<button type="button" class="vb-btn vb-copy" data-copy-brief>${T.briefCopy}</button><button type="button" class="vb-btn vb-print-btn">${T.briefPrint}</button></div><div class="vb-brief" data-brief data-brief-text="${briefText}" hidden>${briefLines}</div></div>`;
+  }
+
+  // Copy / print plumbing (delegated on resultEl; clipboard is on-device, no network).
+  function execCopy(text) {
+    try {
+      var ta = document.createElement('textarea'); ta.value = text; ta.setAttribute('readonly', '');
+      ta.style.position = 'absolute'; ta.style.left = '-9999px'; document.body.appendChild(ta);
+      ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    } catch (_) {}
+  }
+  function copyText(text, btn, doneLabel) {
+    if (!text) return;
+    var restore = btn.textContent;
+    var done = function () { btn.textContent = doneLabel; setTimeout(function () { btn.textContent = restore; }, 1600); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () { execCopy(text); done(); });
+    } else { execCopy(text); done(); }
+  }
+  function doPrint(action) {
+    var brief = action ? action.querySelector('[data-brief]') : null;
+    if (!brief) { try { window.print(); } catch (_) {} return; }
+    document.documentElement.classList.add('vb-printing');
+    brief.hidden = false;
+    var after = function () {
+      document.documentElement.classList.remove('vb-printing');
+      brief.hidden = true; window.removeEventListener('afterprint', after);
+    };
+    window.addEventListener('afterprint', after);
+    try { window.print(); } catch (_) {}
+    setTimeout(after, 2000);
   }
 
   // ---- actions ---------------------------------------------------------------
@@ -652,7 +896,9 @@
   if (exampleBtn) { exampleBtn.textContent = T.example; exampleBtn.addEventListener('click', loadExample); }
   if (clearBtn) { clearBtn.textContent = T.clear; clearBtn.addEventListener('click', clearAll); }
 
+  resultEl.addEventListener('click', onResultClick);
   ensureAnnouncer();
+  injectExtras();
   restore();
   track('Bench Loaded');
 })();
