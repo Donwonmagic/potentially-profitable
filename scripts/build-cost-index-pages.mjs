@@ -87,18 +87,41 @@ function bandSeries(slug, entry) {
   const h = entry && Array.isArray(entry.history) ? entry.history : [];
   return h.map((p) => p.valueCents).filter((x) => typeof x === 'number');
 }
+// Cadence of the series a coverage claim is computed on: the deep backfill is
+// MONTHLY for a few items (beef) and WEEKLY for the rest. A blanket "weeks" mislabels
+// the monthly items (audit HIGH-1), so derive it from the actual date spacing.
+function seriesCadence(slug, entry) {
+  const d = DEEP_HIST[slug];
+  const rows = (Array.isArray(d) && d.length >= 20) ? d : (entry && Array.isArray(entry.history) ? entry.history : []);
+  const dates = rows.map((p) => p.date).filter(Boolean).sort();
+  if (dates.length < 3) return 'weekly';
+  const gaps = [];
+  for (let i = 1; i < dates.length; i++) {
+    const a = Date.parse(dates[i - 1]), b = Date.parse(dates[i]);
+    if (isFinite(a) && isFinite(b)) gaps.push((b - a) / 86400000);
+  }
+  gaps.sort((a, b) => a - b);
+  const med = gaps.length ? gaps[Math.floor(gaps.length / 2)] : 7;
+  return med >= 20 ? 'monthly' : 'weekly';
+}
 // The per-item verified line: backtested coverage (only when it genuinely holds — an
 // honest per-item record, not the pooled claim) + the freshness read. '' when neither
 // is verifiable, so the generic method link stands alone.
 function verifiedNote(slug, entry, point, locale) {
   const es = locale === 'es';
   const bits = [];
-  const r = MuntinConformal.conformalNext(bandSeries(slug, entry), { alpha: 0.20, window: 52, calibrate: true });
-  if (r && r.coverage != null && r.nTested >= 12 && r.coverage >= 0.75) {
+  // RAW walk-forward coverage (leakage-free) with its Wilson range; published only
+  // when the un-tuned band genuinely holds (audit CRIT-2 / HIGH-6 — no widening, a
+  // range not a point, and the horizon stated per the series' real cadence).
+  const r = MuntinConformal.conformalNext(bandSeries(slug, entry), { alpha: 0.20, window: 52 });
+  if (r && r.coverage != null && !r.degenerate && r.coverage >= 0.75) {
     const pct = Math.round(r.coverage * 100);
+    const lo = Math.round((r.coverageLo != null ? r.coverageLo : r.coverage) * 100);
+    const hi = Math.round((r.coverageHi != null ? r.coverageHi : r.coverage) * 100);
+    const monthly = seriesCadence(slug, entry) === 'monthly';
     bits.push(es
-      ? `nuestro rango de precio del 80% ha acertado el ${pct}% de las veces (${r.nTested} semanas de historial)`
-      : `our 80% price range has been right ${pct}% of the time (${r.nTested} weeks of history)`);
+      ? `nuestro rango del 80% capturó la próxima lectura ${monthly ? 'mensual' : 'semanal'} cerca del ${pct}% de las veces (${lo}–${hi}%, ${r.nTested} lecturas)`
+      : `our 80% range caught the next ${monthly ? 'monthly' : 'weekly'} print about ${pct}% of the time (${lo}–${hi}%, ${r.nTested} reads)`);
   }
   const st = point ? MuntinStaleness.stalenessOf(point, {}) : null;
   if (st) bits.push(st.overdue
@@ -1968,14 +1991,14 @@ function scorecardBand(locale) {
   const cell = (fig, lab) => `<div style="min-width:120px"><div style="${figStyle}">${fig}</div><div style="${labStyle}">${lab}</div></div>`;
   const heading = es ? 'Calificado en p\u00fablico, fallos incluidos.' : 'Graded in public, misses included.';
   const line = es
-    ? `La banda nominal del ${nominal} se cumpli\u00f3 el ${coverage} de las veces en ${steps} semanas evaluadas \u2014 y lo que no tiene precio se reporta ausente, nunca se adivina.`
-    : `The nominal ${nominal} band held ${coverage} of the time across ${steps} scored weeks \u2014 and anything without a price print reports absent, never guessed.`;
+    ? `La banda con objetivo del ${nominal} captur\u00f3 la pr\u00f3xima lectura cerca del ${coverage} de las veces en ${steps} lecturas evaluadas \u2014 su tasa cruda sin ajustar; lo que no tiene precio se reporta ausente, nunca se adivina.`
+    : `The ${nominal}-target band caught the next print about ${coverage} of the time across ${steps} scored reads \u2014 its raw, un-tuned rate; anything without a price print reports absent, never guessed.`;
   const linkTxt = es ? 'Ver la boleta completa' : 'See the full track record';
   return `<section class="ci-scorecard" aria-label="${es ? 'Boleta de calibraci\u00f3n' : 'Calibration scorecard'}" style="margin:22px 0 8px;padding:20px 24px;background:var(--surface-1,#fff);border:1px solid var(--line);border-top:3px solid var(--ink);border-radius:12px;box-shadow:var(--elev-1)">
       <div style="display:flex;flex-wrap:wrap;gap:18px 36px;align-items:flex-start">
         ${cell(nominal, es ? 'banda nominal' : 'nominal band')}
         ${cell(coverage, es ? 'cobertura realizada' : 'realized coverage')}
-        ${cell(steps, es ? 'semanas evaluadas' : 'scored weeks')}
+        ${cell(steps, es ? 'lecturas evaluadas' : 'scored reads')}
         <div style="flex:1 1 260px;min-width:240px">
           <p style="margin:0;font-family:var(--font-display);font-size:16px;font-weight:600;color:var(--ink)">${heading}</p>
           <p style="margin:6px 0 0;font-size:13.5px;line-height:1.55;color:var(--ink-soft)">${line} <a href="${base}/cost-index/methodology/#track-record" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">${linkTxt} \u2192</a></p>

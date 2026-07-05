@@ -70,20 +70,48 @@ test('coverage is null (provisional) when too few steps to verify', () => {
   assert.equal(r.coverage, null, 'but refuses to claim a coverage rate');
 });
 
-test('CALIBRATE: widens an under-covering band toward nominal (ACI-style)', () => {
+test('CALIBRATE widens the DISPLAYED band but never inflates the reported coverage', () => {
+  // Honesty contract (audit C1/CRIT-2): calibration may widen the shown band, but
+  // the reported `coverage` stays the leakage-free RAW walk-forward rate — it is
+  // NOT re-reported as the fit's stopping condition (that was the resubstitution bug).
   const v = walk(400, 7, (r) => (r - 0.5) * 80);   // this walk's raw 80% band under-covers (~0.765)
   const raw = conformalNext(v, { alpha: 0.20, window: 52 });
   const cal = conformalNext(v, { alpha: 0.20, window: 52, calibrate: true });
   assert.ok(raw.coverage < raw.nominal, 'raw under-covers');
-  assert.ok(cal.scale > 1, 'calibration widened the band');
-  assert.ok(cal.coverage >= raw.coverage, 'calibrated coverage is no worse');
-  assert.ok(cal.coverage >= raw.nominal - 0.02, 'calibrated coverage reaches ~nominal');
-  assert.ok(cal.interval[1] - cal.interval[0] > raw.interval[1] - raw.interval[0], 'wider band');
+  assert.ok(cal.scale > 1, 'calibration widened the displayed band');
+  assert.ok(cal.interval[1] - cal.interval[0] > raw.interval[1] - raw.interval[0], 'displayed band is wider');
+  assert.equal(cal.coverage, raw.coverage, 'reported coverage stays the raw walk-forward rate');
+  assert.ok(cal.coverage < cal.nominal, 'and is NOT silently lifted to nominal by the fit');
+  assert.deepEqual(cal.rawInterval, raw.rawInterval, 'rawInterval (the band coverage describes) is scale-invariant');
+});
+
+test('coverage ships with a Wilson interval on an autocorrelation-adjusted effective n', () => {
+  const v = walk(400, 7, (r) => (r - 0.5) * 80);
+  const r = conformalNext(v, { alpha: 0.20, window: 52 });
+  assert.ok(r.coverage != null && r.coverageLo != null && r.coverageHi != null);
+  assert.ok(r.coverageLo <= r.coverage && r.coverage <= r.coverageHi, 'point rate sits inside its CI');
+  assert.ok(r.nEff > 0 && r.nEff <= r.nTested, 'effective n never exceeds the raw count');
+});
+
+test('degenerate flat/stale window → no ±0%/100% claim (coverage withheld)', () => {
+  const flat = new Array(120).fill(2200);         // a pinned-constant (carried-forward) series
+  const r = conformalNext(flat, { alpha: 0.20, window: 52 });
+  assert.ok(r, 'still returns a shape');
+  assert.equal(r.degenerate, true, 'flagged degenerate');
+  assert.equal(r.coverage, null, 'refuses to publish "±0%, right 100% of the time"');
+});
+
+test('band asymmetry is exposed, never collapsed to ±max', () => {
+  const v = walk(300, 21, (r) => (r < 0.5 ? r * 120 : -(r - 0.5) * 20));   // rockets-and-feathers
+  const r = conformalNext(v, { alpha: 0.20, window: 60 });
+  assert.ok(r.upPct != null && r.downPct != null);
+  assert.ok(r.upPct > r.downPct, 'up tail wider than down tail is reported as such');
 });
 
 test('CALIBRATE: leaves an already-covering band alone (scale=1)', () => {
-  // Fat-tailed steps → wide residual band that already over-covers (~0.81).
-  const v = walk(500, 123, (r) => (r < 0.9 ? (r - 0.45) * 16 : (r - 0.5) * 500));
+  // Occasional-jump steps → a band that already over-covers (~0.82); level stays
+  // well above the floor so the band is a healthy % of level (not degenerate).
+  const v = walk(600, 7, (r) => (r < 0.85 ? (r - 0.5) * 6 : (r - 0.5) * 60));
   const raw = conformalNext(v, { alpha: 0.20, window: 60 });
   const cal = conformalNext(v, { alpha: 0.20, window: 60, calibrate: true });
   assert.ok(raw.coverage >= raw.nominal, 'raw already covers');

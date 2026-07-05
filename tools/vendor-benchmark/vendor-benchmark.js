@@ -106,8 +106,6 @@
     bookWorst: 'Mayor diferencia del proveedor:', bookCall: 'La línea que vale la pena llamar primero.',
     bookOver: 'de tus líneas corren por encima del mercado — Ledger las vigila todas.',
     forecastEyebrow: 'La próxima lectura del mercado',
-    forecastA: 'El mayorista de este artículo suele moverse dentro de', forecastB: 'entre lecturas — una banda que ha cubierto',
-    forecastC: 'de las últimas', forecastD: 'lecturas.',
     errItem: 'Escribe el nombre del artículo.',
     errRows: 'Agrega al menos dos compras con fecha y precio.'
   } : {
@@ -179,8 +177,6 @@
     bookWorst: 'Widest vendor gap:', bookCall: 'The line worth a call first.',
     bookOver: 'of your lines run above the market — Ledger watches every one.',
     forecastEyebrow: 'The market’s next print',
-    forecastA: 'Wholesale for this item usually moves within', forecastB: 'between reads — a band that has held for',
-    forecastC: 'of the last', forecastD: 'reads.',
     errItem: 'Enter the item name.',
     errRows: 'Add at least two purchases with a date and price.'
   };
@@ -863,21 +859,62 @@
   function regimeBreakBlock() { return ''; }
 
   // MS1 — the honest next-print band: a coverage-VALIDATED conformal interval on the
-  // deep wholesale series, expressed as a ±% (never a $ level to avoid a "should-pay"
-  // misread) with its walk-forward hit-rate. Withheld on thin/short history or when
-  // coverage can't be published.
+  // deep wholesale series, expressed as an ASYMMETRIC ±% (never a $ level, to avoid a
+  // "should-pay" misread) with its RAW, un-tuned walk-forward hit-rate and a Wilson
+  // range around it. Post-audit honesty (2026-07, C1/CRIT-2, HIGH-1/HIGH-6):
+  //  · the coverage is the leakage-free RAW rate (no calibrate) with its CI, framed as
+  //    "target 80%, held X%" — never a band silently widened to report its own target;
+  //  · degenerate (flat/stale → "±0%, right 100%") and uninformative (half-width > 30%
+  //    of level) bands are WITHHELD, as is any series without a publishable rate;
+  //  · the horizon is stated per the series' real cadence (next week vs next month);
+  //  · the interval's up/down asymmetry is shown, never collapsed to a symmetric ±.
   function forecastBlock(res) {
     var m = res.market;
     if (!CONF || !m || !m.available || m.seriesKind !== 'deep' || !m.series || m.series.values.length < 24) return '';
     if (m.confidence === 'low' || m.confidence === 'directional') return '';
     var out;
-    try { out = CONF.conformalNext(m.series.values, { calibrate: true }); } catch (_) { return ''; }
-    if (!out || !out.interval || out.coverage == null || !(out.point > 0)) return '';
-    var point = out.point, lo = out.interval[0], hi = out.interval[1];
-    var band = Math.round(Math.max((hi - point) / point, (point - lo) / point) * 100);
-    if (!(band > 0) || band > 60) return '';
-    var cov = Math.round(out.coverage * 100), reads = out.nTested;
-    return h`<div class="vb-forecast"><span class="vb-eyebrow">${T.forecastEyebrow}</span><p>${T.forecastA} ±${String(band)}% ${T.forecastB} ${String(cov)}% ${T.forecastC} ${String(reads)} ${T.forecastD}</p><p class="vb-forecast-fine">${T.attributionWholesale}</p></div>`;
+    try { out = CONF.conformalNext(m.series.values); } catch (_) { return ''; }
+    if (!out || out.coverage == null || out.degenerate || !(out.point > 0)) return '';
+    if (out.upPct == null || out.downPct == null) return '';
+    var up = Math.round(out.upPct * 100), down = Math.round(out.downPct * 100);
+    if (out.halfWidthPct > 0.30) return '';                 // too wide to be a useful bound
+    if (!(up > 0) && !(down > 0)) return '';
+    var cov = Math.round(out.coverage * 100);
+    var lo = Math.round((out.coverageLo != null ? out.coverageLo : out.coverage) * 100);
+    var hi = Math.round((out.coverageHi != null ? out.coverageHi : out.coverage) * 100);
+    var reads = out.nTested;
+    var monthly = seriesCadenceMonthly(m.series.dates);
+    var per = monthly ? (ES ? 'mensual' : 'monthly') : (ES ? 'semanal' : 'weekly');
+    // Asymmetric band; note the skew only when up/down clearly differ.
+    var ratio = down > 0 ? up / down : (up > 0 ? Infinity : 1);
+    var skew = '';
+    if (ratio >= 1.6) skew = ES ? ' — el riesgo se inclina al alza' : ' — the risk is skewed upward';
+    else if (ratio > 0 && ratio <= 0.625) skew = ES ? ' — el riesgo se inclina a la baja' : ' — the risk is skewed downward';
+    var bandStr = '−' + String(down) + '% / +' + String(up) + '%';
+    var headline = ES
+      ? ('Una banda con objetivo del 80% de este ancho ha capturado la próxima lectura ' + per + ' cerca del ' + cov + '% de las veces (' + lo + '–' + hi + '% en ' + reads + ' lecturas).')
+      : ('An 80%-target band this wide has caught the next ' + per + ' print about ' + cov + '% of the time (' + lo + '–' + hi + '% across ' + reads + ' reads).');
+    var bandLine = ES
+      ? ('Ahora mismo va de ' + bandStr + skew + '.')
+      : ('Right now it runs ' + bandStr + skew + '.');
+    var fine = ES
+      ? ('El movimiento del mercado mayorista, no tu precio entregado; el flete y el margen pueden moverlo distinto.')
+      : ('Wholesale market movement, not your delivered price — freight and margin can move yours differently.');
+    return h`<div class="vb-forecast"><span class="vb-eyebrow">${T.forecastEyebrow}</span><p>${headline}</p><p class="vb-forecast-band">${bandLine}</p><p class="vb-forecast-fine">${fine}</p></div>`;
+  }
+
+  // Cadence of a dated series (median gap ≥ 20d → monthly), so the forecast horizon
+  // is stated truthfully ("next month" for beef, "next week" for produce).
+  function seriesCadenceMonthly(dates) {
+    if (!dates || dates.length < 3) return false;
+    var gaps = [];
+    for (var i = 1; i < dates.length; i++) {
+      var a = MW.parseISODay(dates[i - 1]), b = MW.parseISODay(dates[i]);
+      if (a != null && b != null) gaps.push((b - a) / 86400000);
+    }
+    if (!gaps.length) return false;
+    gaps.sort(function (x, y) { return x - y; });
+    return gaps[Math.floor(gaps.length / 2)] >= 20;
   }
 
   function journalTrendBlock(res) {

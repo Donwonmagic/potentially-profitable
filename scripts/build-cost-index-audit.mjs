@@ -62,11 +62,17 @@ const KNOWN_UNEXPLAINED_CLONES = {};
 const KNOWN_IMPLAUSIBLE_LEVELS = {
   'vegetable-oil': '2026-06-19 — PPI index value carried as a cents level (~$350/"lb"); registry basis=index. Fix: publish vegetable-oil directional-only (no $-level).'
 };
-// ARCHIVE-ONLY (warn): the deep history is cloned but the live level is distinct &
-// fine — re-vendor the archive; not user-facing. plate-cost-drift already collapses these.
-const KNOWN_ARCHIVE_STALE_CLONES = {
-  'beef-tenderloin|ribeye|short-rib': '2026-06-19 — deep archive cloned to ribeye, but live levels are distinct (tenderloin ~$15.04, short-rib ~$5.75, ribeye ~$12.77). Fix: re-vendor the deep history for tenderloin & short-rib.'
-};
+// ARCHIVE clones (deep history byte-identical across keys) are now a HARD FAIL,
+// not a warning (statistical-rigor audit, 2026-07, CRIT-1): even when the live
+// level is distinct, the cloned deep series feeds a WRONG 3-year trajectory,
+// percentile, regime, spike and next-move band to every cut but the original
+// (short-rib was told "near a 3-year low / easing" purely as a borrowed-series
+// artifact). The uniqueness gate: no two ingredient keys may ship an identical
+// deep series. The 2026-06-19 beef trio (ribeye ≡ beef-tenderloin ≡ short-rib)
+// was resolved by WITHHOLDING the borrowed deep series for beef-tenderloin &
+// short-rib (removed from data/cost-index-history.json) until each is vendored
+// its own. Baseline is empty; any reintroduced clone fails CI.
+const KNOWN_ARCHIVE_STALE_CLONES = {};
 
 function unitOf(labels, k) {
   const e = labels[k];
@@ -219,12 +225,10 @@ function main() {
     const newImpl = report.implausibleLevels.filter((x) => !KNOWN_IMPLAUSIBLE_LEVELS[x.slug]);
     const newStale = stale.filter((c) => !KNOWN_ARCHIVE_STALE_CLONES[cloneKey(c)]);
 
-    // Warn (don't fail) on archive-only clones and on baseline entries that no
-    // longer appear (fixed upstream — prune them).
+    // Warn on baseline entries that no longer appear (fixed upstream — prune them).
     const presentBugs = new Set(bugs.map(cloneKey));
     const presentImpl = new Set(report.implausibleLevels.map((x) => x.slug));
     const presentStale = new Set(stale.map(cloneKey));
-    newStale.forEach((c) => console.log('  ⚠ NEW archive-stale clone (live level OK; re-vendor archive): [' + c.members.join(', ') + ']'));
     Object.keys(KNOWN_UNEXPLAINED_CLONES).filter((k) => !presentBugs.has(k))
       .forEach((k) => console.log('  ⚠ baseline clone resolved — prune KNOWN_UNEXPLAINED_CLONES: ' + k));
     Object.keys(KNOWN_ARCHIVE_STALE_CLONES).filter((k) => !presentStale.has(k))
@@ -232,13 +236,16 @@ function main() {
     Object.keys(KNOWN_IMPLAUSIBLE_LEVELS).filter((k) => !presentImpl.has(k))
       .forEach((k) => console.log('  ⚠ baseline level resolved — prune KNOWN_IMPLAUSIBLE_LEVELS: ' + k));
 
-    if (newBugs.length || newImpl.length) {
+    // Uniqueness gate (CRIT-1): a cloned deep series is a hard fail regardless of
+    // whether the live level is distinct — the archive drives forward claims.
+    if (newBugs.length || newImpl.length || newStale.length) {
       newBugs.forEach((c) => console.error('  ✗ NEW live-facing clone (current level also cloned): [' + c.members.join(', ') + ']'));
+      newStale.forEach((c) => console.error('  ✗ NEW cloned deep series (identical archive across keys — withhold or re-vendor): [' + c.members.join(', ') + ']'));
       newImpl.forEach((x) => console.error('  ✗ NEW implausible per-lb level: ' + x.slug + ' $' + x.lastUsd));
-      console.error('✗ cost-index quality gate: FAIL — live-facing data defect(s) beyond the documented baseline.');
+      console.error('✗ cost-index quality gate: FAIL — data defect(s) beyond the documented baseline.');
       process.exit(1);
     }
-    console.log(`✓ cost-index quality gate: OK — ${presentBugs.size} live-facing clone bug(s), ${presentStale.size} archive-stale (baselined), ${presentImpl.size} known implausible level(s).`);
+    console.log(`✓ cost-index quality gate: OK — ${presentBugs.size} live-facing clone bug(s), ${presentStale.size} archive-stale, ${presentImpl.size} known implausible level(s).`);
     return;
   }
 

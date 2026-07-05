@@ -36,7 +36,6 @@ function values(es) {
     'trend.low': pct(report.trend.tiers.low.hitRate),
     'trend.baseline': pct(report.trend.baseline),
     'band.nominal': pct(report.band.nominal),
-    'band.widened': int(report.band.widened),
     'chart.reliability': reliabilityChart(es),
     // Published-label trend record (the honest, thinner cut). Each tier's OWN
     // baseline is surfaced too, so a hit-rate below baseline (no edge) reads as
@@ -63,12 +62,22 @@ function reliabilityChart(es) {
   ];
   const bars = rows.map(([lab, v]) =>
     `<div class="ci-rel__row"><span class="ci-rel__lab">${lab}</span><span class="ci-rel__track"><span class="ci-rel__bar" style="width:${p(v)}%"></span></span><span class="ci-rel__val">${p(v)}%</span></div>`).join('');
+  // Honest caption (audit HIGH-5): only the tiers that actually clear the no-skill
+  // baseline are described as beating it — a tier at or below baseline is stated as
+  // such, never rounded up to "beats chance".
+  const base = report.trend.baseline;
+  const clears = [['low', t.low.hitRate], ['medium', t.medium.hitRate], ['high', t.high.hitRate]].filter(([, v]) => v > base).length;
+  const allClear = clears === 3;
   const cap = es
-    ? `Cada nivel más fuerte acierta más a menudo — y todos superan la línea base sin habilidad del ${p(report.trend.baseline)}%.`
-    : `Each stronger tier verifies more often — and all clear the ${p(report.trend.baseline)}% no-skill baseline.`;
+    ? (allClear
+        ? `Cada nivel más fuerte acierta más a menudo — y todos superan la línea base sin habilidad del ${p(base)}%.`
+        : `Cada nivel más fuerte acierta más a menudo; solo las señales más fuertes superan la línea base sin habilidad del ${p(base)}% — las débiles no.`)
+    : (allClear
+        ? `Each stronger tier verifies more often — and all clear the ${p(base)}% no-skill baseline.`
+        : `Each stronger tier verifies more often; only the strongest calls clear the ${p(base)}% no-skill baseline — the weak ones don't.`);
   const alt = es
-    ? `Confiabilidad de la flecha por fuerza de señal: débiles ${p(t.low.hitRate)}%, intermedias ${p(t.medium.hitRate)}%, fuertes ${p(t.high.hitRate)}%, todas por encima de la línea base del ${p(report.trend.baseline)}%.`
-    : `Trend-arrow reliability by signal strength: weak ${p(t.low.hitRate)}%, middling ${p(t.medium.hitRate)}%, strong ${p(t.high.hitRate)}%, all above the ${p(report.trend.baseline)}% baseline.`;
+    ? `Confiabilidad de la flecha por fuerza de señal: débiles ${p(t.low.hitRate)}%, intermedias ${p(t.medium.hitRate)}%, fuertes ${p(t.high.hitRate)}%, contra una línea base del ${p(base)}%.`
+    : `Trend-arrow reliability by signal strength: weak ${p(t.low.hitRate)}%, middling ${p(t.medium.hitRate)}%, strong ${p(t.high.hitRate)}%, against a ${p(base)}% no-skill baseline.`;
   return `<figure class="ci-rel" role="img" aria-label="${alt}">${bars}<figcaption>${cap}</figcaption></figure>`;
 }
 
