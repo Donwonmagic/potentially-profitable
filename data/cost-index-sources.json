@@ -5961,7 +5961,7 @@
         {
           "reportId": "2279",
           "market": "Atlanta",
-          "commodity": "ROUND YELLOW",
+          "commodity": "YELLOW",
           "reducer": "mostlyMid",
           "unit": "sack",
           "_status": "STAGED verified:false (scaffold 2026-07, market structure cloned from red-potato) — confirm the commodity term \"ROUND YELLOW\" via: node scripts/verify-cost-index-sources.mjs --sample 2279 --match \"ROUND YELLOW\". Tighten bounds, --flip after --verify."
@@ -5969,49 +5969,49 @@
         {
           "reportId": "2283",
           "market": "Baltimore",
-          "commodity": "ROUND YELLOW",
+          "commodity": "YELLOW",
           "reducer": "mostlyMid",
           "unit": "sack"
         },
         {
           "reportId": "2287",
           "market": "Boston",
-          "commodity": "ROUND YELLOW",
+          "commodity": "YELLOW",
           "reducer": "mostlyMid",
           "unit": "sack"
         },
         {
           "reportId": "2292",
           "market": "Chicago",
-          "commodity": "ROUND YELLOW",
+          "commodity": "YELLOW",
           "reducer": "mostlyMid",
           "unit": "sack"
         },
         {
           "reportId": "2304",
           "market": "Detroit",
-          "commodity": "ROUND YELLOW",
+          "commodity": "YELLOW",
           "reducer": "mostlyMid",
           "unit": "sack"
         },
         {
           "reportId": "2308",
           "market": "Los Angeles",
-          "commodity": "ROUND YELLOW",
+          "commodity": "YELLOW",
           "reducer": "mostlyMid",
           "unit": "sack"
         },
         {
           "reportId": "2312",
           "market": "Miami",
-          "commodity": "ROUND YELLOW",
+          "commodity": "YELLOW",
           "reducer": "mostlyMid",
           "unit": "sack"
         },
         {
           "reportId": "2316",
           "market": "New York",
-          "commodity": "ROUND YELLOW",
+          "commodity": "YELLOW",
           "reducer": "mostlyMid",
           "unit": "sack"
         }
@@ -6403,6 +6403,971 @@
         "years": 2,
         "commodity": "mussels",
         "_status": "STAGED verified:false (scaffold 2026-07, cloned from clams) — confirm NOAA HTS 0307.31/0307.32 + nameMatch \"MUSSEL\" via --sample; likely a directional import index (no dollar level), no corroborator yet. --flip after --verify."
+      }
+    },
+    "grape": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2277",
+          "market": "Atlanta",
+          "commodity": "Grapes",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false (scaffold 2026-07, cloned from apple) — confirm commodity \"Grapes\" resolves priced rows; --flip after --verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Grapes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Grapes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Grapes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Grapes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Grapes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Grapes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Grapes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "kiwi": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2277",
+          "market": "Atlanta",
+          "commodity": "Kiwifruit",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false (scaffold 2026-07, cloned from apple) — confirm commodity \"Kiwifruit\" resolves priced rows; --flip after --verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Kiwifruit",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Kiwifruit",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Kiwifruit",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Kiwifruit",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Kiwifruit",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Kiwifruit",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Kiwifruit",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "persimmon": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2277",
+          "market": "Atlanta",
+          "commodity": "Persimmons",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false (scaffold 2026-07, cloned from apple) — confirm commodity \"Persimmons\" resolves priced rows; --flip after --verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Persimmons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Persimmons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Persimmons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Persimmons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Persimmons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Persimmons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Persimmons",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "date": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2277",
+          "market": "Atlanta",
+          "commodity": "Dates",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false (scaffold 2026-07, cloned from apple) — confirm commodity \"Dates\" resolves priced rows; --flip after --verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Dates",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Dates",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Dates",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Dates",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Dates",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Dates",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Dates",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "fig": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2277",
+          "market": "Atlanta",
+          "commodity": "Figs",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false (scaffold 2026-07, cloned from apple) — confirm commodity \"Figs\" resolves priced rows; --flip after --verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Figs",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Figs",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Figs",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Figs",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Figs",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Figs",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Figs",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "papaya": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2277",
+          "market": "Atlanta",
+          "commodity": "Papayas",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false (scaffold 2026-07, cloned from apple) — confirm commodity \"Papayas\" resolves priced rows; --flip after --verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Papayas",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Papayas",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Papayas",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Papayas",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Papayas",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Papayas",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Papayas",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "plum": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2277",
+          "market": "Atlanta",
+          "commodity": "Plums",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false (scaffold 2026-07, cloned from apple) — confirm commodity \"Plums\" resolves priced rows; --flip after --verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Plums",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Plums",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Plums",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Plums",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Plums",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Plums",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Plums",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "tangerine": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2277",
+          "market": "Atlanta",
+          "commodity": "Tangerines",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false (scaffold 2026-07, cloned from apple) — confirm commodity \"Tangerines\" resolves priced rows; --flip after --verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Tangerines",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Tangerines",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Tangerines",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Tangerines",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Tangerines",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Tangerines",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Tangerines",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "fingerling-potato": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2279",
+          "market": "Atlanta",
+          "commodity": "FINGERLING",
+          "reducer": "mostlyMid",
+          "unit": "sack",
+          "_status": "STAGED verified:false (scaffold 2026-07, cloned from red-potato) — confirm commodity \"FINGERLING\" resolves priced rows; --flip after --verify."
+        },
+        {
+          "reportId": "2283",
+          "market": "Baltimore",
+          "commodity": "FINGERLING",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2287",
+          "market": "Boston",
+          "commodity": "FINGERLING",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2292",
+          "market": "Chicago",
+          "commodity": "FINGERLING",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2304",
+          "market": "Detroit",
+          "commodity": "FINGERLING",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2308",
+          "market": "Los Angeles",
+          "commodity": "FINGERLING",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2312",
+          "market": "Miami",
+          "commodity": "FINGERLING",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2316",
+          "market": "New York",
+          "commodity": "FINGERLING",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        }
+      ],
+      "coverage": "Staged: AMS commodity term resolved (\"ROUND RED\"), pending live verification.",
+      "bls": {
+        "seriesId": "WPU01130604",
+        "_report": "BLS PPI Round Red Potatoes (confirmed live)."
+      }
+    },
+    "purple-potato": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2279",
+          "market": "Atlanta",
+          "commodity": "PURPLE TYPE",
+          "reducer": "mostlyMid",
+          "unit": "sack",
+          "_status": "STAGED verified:false (scaffold 2026-07, cloned from red-potato) — confirm commodity \"PURPLE TYPE\" resolves priced rows; --flip after --verify."
+        },
+        {
+          "reportId": "2283",
+          "market": "Baltimore",
+          "commodity": "PURPLE TYPE",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2287",
+          "market": "Boston",
+          "commodity": "PURPLE TYPE",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2292",
+          "market": "Chicago",
+          "commodity": "PURPLE TYPE",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2304",
+          "market": "Detroit",
+          "commodity": "PURPLE TYPE",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2308",
+          "market": "Los Angeles",
+          "commodity": "PURPLE TYPE",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2312",
+          "market": "Miami",
+          "commodity": "PURPLE TYPE",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2316",
+          "market": "New York",
+          "commodity": "PURPLE TYPE",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        }
+      ],
+      "coverage": "Staged: AMS commodity term resolved (\"ROUND RED\"), pending live verification.",
+      "bls": {
+        "seriesId": "WPU01130604",
+        "_report": "BLS PPI Round Red Potatoes (confirmed live)."
+      }
+    },
+    "brisket": {
+      "verified": false,
+      "lmr": {
+        "reportId": "2453",
+        "commodity": "Brisket",
+        "reducer": "wtdAvg",
+        "unit": "lb",
+        "_report": "LMR Datamart 2453 (LM_XB403, PM), section Choice Cuts. Match \"Ribeye\" (IMPS 109E/112A). Price column Weighted_Average (confirmed label; exact JSON key inferred → array of candidates). $/cwt → /100 for $/lb. Daily report → report_date (default).",
+        "section": "Choice Cuts",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "Weighted_Average",
+            "weighted_average",
+            "wtd_avg_price",
+            "avg_price"
+          ]
+        },
+        "_status": "STAGED verified:false (scaffold 2026-07, cloned from ribeye) — confirm commodity \"Brisket\" resolves priced rows; --flip after --verify."
+      },
+      "bls": {
+        "seriesId": "WPU022101"
+      }
+    },
+    "chuck-roll": {
+      "verified": false,
+      "lmr": {
+        "reportId": "2453",
+        "commodity": "Chuck Roll",
+        "reducer": "wtdAvg",
+        "unit": "lb",
+        "_report": "LMR Datamart 2453 (LM_XB403, PM), section Choice Cuts. Match \"Ribeye\" (IMPS 109E/112A). Price column Weighted_Average (confirmed label; exact JSON key inferred → array of candidates). $/cwt → /100 for $/lb. Daily report → report_date (default).",
+        "section": "Choice Cuts",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "Weighted_Average",
+            "weighted_average",
+            "wtd_avg_price",
+            "avg_price"
+          ]
+        },
+        "_status": "STAGED verified:false (scaffold 2026-07, cloned from ribeye) — confirm commodity \"Chuck Roll\" resolves priced rows; --flip after --verify."
+      },
+      "bls": {
+        "seriesId": "WPU022101"
+      }
+    },
+    "top-sirloin": {
+      "verified": false,
+      "lmr": {
+        "reportId": "2453",
+        "commodity": "Top Sirloin",
+        "reducer": "wtdAvg",
+        "unit": "lb",
+        "_report": "LMR Datamart 2453 (LM_XB403, PM), section Choice Cuts. Match \"Ribeye\" (IMPS 109E/112A). Price column Weighted_Average (confirmed label; exact JSON key inferred → array of candidates). $/cwt → /100 for $/lb. Daily report → report_date (default).",
+        "section": "Choice Cuts",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "Weighted_Average",
+            "weighted_average",
+            "wtd_avg_price",
+            "avg_price"
+          ]
+        },
+        "_status": "STAGED verified:false (scaffold 2026-07, cloned from ribeye) — confirm commodity \"Top Sirloin\" resolves priced rows; --flip after --verify."
+      },
+      "bls": {
+        "seriesId": "WPU022101"
+      }
+    },
+    "flank-steak": {
+      "verified": false,
+      "lmr": {
+        "reportId": "2453",
+        "commodity": "Flank",
+        "reducer": "wtdAvg",
+        "unit": "lb",
+        "_report": "LMR Datamart 2453 (LM_XB403, PM), section Choice Cuts. Match \"Ribeye\" (IMPS 109E/112A). Price column Weighted_Average (confirmed label; exact JSON key inferred → array of candidates). $/cwt → /100 for $/lb. Daily report → report_date (default).",
+        "section": "Choice Cuts",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "Weighted_Average",
+            "weighted_average",
+            "wtd_avg_price",
+            "avg_price"
+          ]
+        },
+        "_status": "STAGED verified:false (scaffold 2026-07, cloned from ribeye) — confirm commodity \"Flank\" resolves priced rows; --flip after --verify."
+      },
+      "bls": {
+        "seriesId": "WPU022101"
+      }
+    },
+    "skirt-steak": {
+      "verified": false,
+      "lmr": {
+        "reportId": "2453",
+        "commodity": "Skirt",
+        "reducer": "wtdAvg",
+        "unit": "lb",
+        "_report": "LMR Datamart 2453 (LM_XB403, PM), section Choice Cuts. Match \"Ribeye\" (IMPS 109E/112A). Price column Weighted_Average (confirmed label; exact JSON key inferred → array of candidates). $/cwt → /100 for $/lb. Daily report → report_date (default).",
+        "section": "Choice Cuts",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "Weighted_Average",
+            "weighted_average",
+            "wtd_avg_price",
+            "avg_price"
+          ]
+        },
+        "_status": "STAGED verified:false (scaffold 2026-07, cloned from ribeye) — confirm commodity \"Skirt\" resolves priced rows; --flip after --verify."
+      },
+      "bls": {
+        "seriesId": "WPU022101"
+      }
+    },
+    "tri-tip": {
+      "verified": false,
+      "lmr": {
+        "reportId": "2453",
+        "commodity": "Tri-Tip",
+        "reducer": "wtdAvg",
+        "unit": "lb",
+        "_report": "LMR Datamart 2453 (LM_XB403, PM), section Choice Cuts. Match \"Ribeye\" (IMPS 109E/112A). Price column Weighted_Average (confirmed label; exact JSON key inferred → array of candidates). $/cwt → /100 for $/lb. Daily report → report_date (default).",
+        "section": "Choice Cuts",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "Weighted_Average",
+            "weighted_average",
+            "wtd_avg_price",
+            "avg_price"
+          ]
+        },
+        "_status": "STAGED verified:false (scaffold 2026-07, cloned from ribeye) — confirm commodity \"Tri-Tip\" resolves priced rows; --flip after --verify."
+      },
+      "bls": {
+        "seriesId": "WPU022101"
+      }
+    },
+    "flat-iron": {
+      "verified": false,
+      "lmr": {
+        "reportId": "2453",
+        "commodity": "Flat Iron",
+        "reducer": "wtdAvg",
+        "unit": "lb",
+        "_report": "LMR Datamart 2453 (LM_XB403, PM), section Choice Cuts. Match \"Ribeye\" (IMPS 109E/112A). Price column Weighted_Average (confirmed label; exact JSON key inferred → array of candidates). $/cwt → /100 for $/lb. Daily report → report_date (default).",
+        "section": "Choice Cuts",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "Weighted_Average",
+            "weighted_average",
+            "wtd_avg_price",
+            "avg_price"
+          ]
+        },
+        "_status": "STAGED verified:false (scaffold 2026-07, cloned from ribeye) — confirm commodity \"Flat Iron\" resolves priced rows; --flip after --verify."
+      },
+      "bls": {
+        "seriesId": "WPU022101"
+      }
+    },
+    "top-round": {
+      "verified": false,
+      "lmr": {
+        "reportId": "2453",
+        "commodity": "Top Round",
+        "reducer": "wtdAvg",
+        "unit": "lb",
+        "_report": "LMR Datamart 2453 (LM_XB403, PM), section Choice Cuts. Match \"Ribeye\" (IMPS 109E/112A). Price column Weighted_Average (confirmed label; exact JSON key inferred → array of candidates). $/cwt → /100 for $/lb. Daily report → report_date (default).",
+        "section": "Choice Cuts",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "Weighted_Average",
+            "weighted_average",
+            "wtd_avg_price",
+            "avg_price"
+          ]
+        },
+        "_status": "STAGED verified:false (scaffold 2026-07, cloned from ribeye) — confirm commodity \"Top Round\" resolves priced rows; --flip after --verify."
+      },
+      "bls": {
+        "seriesId": "WPU022101"
+      }
+    },
+    "bottom-round": {
+      "verified": false,
+      "lmr": {
+        "reportId": "2453",
+        "commodity": "Bottom Round",
+        "reducer": "wtdAvg",
+        "unit": "lb",
+        "_report": "LMR Datamart 2453 (LM_XB403, PM), section Choice Cuts. Match \"Ribeye\" (IMPS 109E/112A). Price column Weighted_Average (confirmed label; exact JSON key inferred → array of candidates). $/cwt → /100 for $/lb. Daily report → report_date (default).",
+        "section": "Choice Cuts",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "Weighted_Average",
+            "weighted_average",
+            "wtd_avg_price",
+            "avg_price"
+          ]
+        },
+        "_status": "STAGED verified:false (scaffold 2026-07, cloned from ribeye) — confirm commodity \"Bottom Round\" resolves priced rows; --flip after --verify."
+      },
+      "bls": {
+        "seriesId": "WPU022101"
+      }
+    },
+    "pork-butt": {
+      "verified": false,
+      "lmr": {
+        "reportId": "2498",
+        "reducer": "single",
+        "unit": "lb",
+        "_report": "LMR 2498 (LM_PK602), section \"Cutout and Primal Values\", column pork_loin (CONFIRMED key). Primal cutout value $/cwt → /100 for $/lb. report_date (default).",
+        "section": "Cutout and Primal Values",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "pork_loin"
+          ]
+        },
+        "commodity": "Butt",
+        "_status": "STAGED verified:false (scaffold 2026-07, cloned from pork-loin) — confirm commodity \"Butt\" resolves priced rows; --flip after --verify."
+      },
+      "bls": {
+        "seriesId": "WPS022104"
+      }
+    },
+    "spare-ribs": {
+      "verified": false,
+      "lmr": {
+        "reportId": "2498",
+        "reducer": "single",
+        "unit": "lb",
+        "_report": "LMR 2498 (LM_PK602), section \"Cutout and Primal Values\", column pork_loin (CONFIRMED key). Primal cutout value $/cwt → /100 for $/lb. report_date (default).",
+        "section": "Cutout and Primal Values",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "pork_loin"
+          ]
+        },
+        "commodity": "Spareribs",
+        "_status": "STAGED verified:false (scaffold 2026-07, cloned from pork-loin) — confirm commodity \"Spareribs\" resolves priced rows; --flip after --verify."
+      },
+      "bls": {
+        "seriesId": "WPS022104"
+      }
+    },
+    "baby-back-ribs": {
+      "verified": false,
+      "lmr": {
+        "reportId": "2498",
+        "reducer": "single",
+        "unit": "lb",
+        "_report": "LMR 2498 (LM_PK602), section \"Cutout and Primal Values\", column pork_loin (CONFIRMED key). Primal cutout value $/cwt → /100 for $/lb. report_date (default).",
+        "section": "Cutout and Primal Values",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "pork_loin"
+          ]
+        },
+        "commodity": "Back Ribs",
+        "_status": "STAGED verified:false (scaffold 2026-07, cloned from pork-loin) — confirm commodity \"Back Ribs\" resolves priced rows; --flip after --verify."
+      },
+      "bls": {
+        "seriesId": "WPS022104"
+      }
+    },
+    "pork-tenderloin": {
+      "verified": false,
+      "lmr": {
+        "reportId": "2498",
+        "reducer": "single",
+        "unit": "lb",
+        "_report": "LMR 2498 (LM_PK602), section \"Cutout and Primal Values\", column pork_loin (CONFIRMED key). Primal cutout value $/cwt → /100 for $/lb. report_date (default).",
+        "section": "Cutout and Primal Values",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "pork_loin"
+          ]
+        },
+        "commodity": "Tenderloin",
+        "_status": "STAGED verified:false (scaffold 2026-07, cloned from pork-loin) — confirm commodity \"Tenderloin\" resolves priced rows; --flip after --verify."
+      },
+      "bls": {
+        "seriesId": "WPS022104"
+      }
+    },
+    "ham": {
+      "verified": false,
+      "lmr": {
+        "reportId": "2498",
+        "reducer": "single",
+        "unit": "lb",
+        "_report": "LMR 2498 (LM_PK602), section \"Cutout and Primal Values\", column pork_loin (CONFIRMED key). Primal cutout value $/cwt → /100 for $/lb. report_date (default).",
+        "section": "Cutout and Primal Values",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "pork_loin"
+          ]
+        },
+        "commodity": "Ham",
+        "_status": "STAGED verified:false (scaffold 2026-07, cloned from pork-loin) — confirm commodity \"Ham\" resolves priced rows; --flip after --verify."
+      },
+      "bls": {
+        "seriesId": "WPS022104"
       }
     }
   },
