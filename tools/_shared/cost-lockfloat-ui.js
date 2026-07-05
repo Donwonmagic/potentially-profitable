@@ -381,12 +381,31 @@
         w.appendChild(document.createTextNode(L(wr.en, wr.es) + '.'));
         c.appendChild(w);
       } else {
+        // Menu cushion — a decision job, on the buckets where holding a fixed menu
+        // price is realistic (lock/cushion). Reframes the certified UP-side reach as
+        // margin headroom: size for the +up% top and the backtested band held it. It
+        // is a MAGNITUDE read (how much to absorb), never a forecast that prices rise,
+        // and the two-sided coverage attributed to the one edge is deliberately
+        // conservative. Float gets NO cushion line — its absence is the honest message.
+        if ((bk === 'lock' || bk === 'cushion') && it.upPct != null && it.upPct > 0 && it.coverage != null) {
+          c.appendChild(menuCushion(it));
+        }
         // horizon stamp + lock≠cheap discipline
         var stamp = el('p', 'lf-stamp', L('Next-week reach — ' + HORIZONS[horizon].stamp_en + '.', 'Alcance de la próxima semana — ' + HORIZONS[horizon].stamp_es + '.'));
         c.appendChild(stamp);
         if (bk === 'lock') c.appendChild(el('p', 'lf-caveat', L('Steady, not necessarily a level you want to marry.', 'Estable, no necesariamente un nivel al que quieras casarte.')));
       }
       return c;
+    }
+
+    function menuCushion(it) {
+      var up = Math.round(it.upPct * 100), cov = Math.round(it.coverage * 100);
+      var p = el('p', 'lf-cushion');
+      p.appendChild(el('strong', null, L('Menu cushion: ', 'Margen de menú: ')));
+      p.appendChild(document.createTextNode(L(
+        'setting a price to hold? Build ' + up + '% of headroom into your margin — the top of the band we backtested at ' + cov + '%. It sizes next-week reach, so a price you hold for months wants more.',
+        '¿fijas un precio para sostener? Construye ' + up + '% de holgura en tu margen — el tope de la banda con backtest de ' + cov + '%. Dimensiona el alcance de la próxima semana, así que un precio que sostienes meses pide más.')));
+      return p;
     }
 
     function board(items, horizon) {
