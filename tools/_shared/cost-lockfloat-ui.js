@@ -49,10 +49,169 @@
   function svgEl(tag, attrs) { var e = document.createElementNS(NS, tag); if (attrs) for (var k in attrs) e.setAttribute(k, attrs[k]); return e; }
   function xreach(p) { return ((p + MAXREACH) / (2 * MAXREACH)) * 100; }
 
+  // Cuisine starter books — a one-click way to seed "Your Lock Book" from the kitchen
+  // you run, instead of hunting 101 rows. Slugs are filtered to the live catalog at
+  // apply time, so a retired ingredient just drops out. These are seed sets, not
+  // recommendations — the operator prunes to what they actually buy.
+  var STARTERS = [
+    { id: 'taqueria',   en: 'Taquería',      es: 'Taquería',      slugs: ['avocado', 'lime', 'cilantro', 'jalapeno', 'tomato', 'onion', 'poblano-pepper', 'chicken-thigh', 'ground-beef'] },
+    { id: 'pizzeria',   en: 'Pizzeria',      es: 'Pizzería',      slugs: ['tomato', 'basil', 'button-mushroom', 'bell-pepper', 'garlic', 'onion', 'eggplant', 'zucchini'] },
+    { id: 'steakhouse', en: 'Steakhouse',    es: 'Parrilla',      slugs: ['ribeye', 'striploin', 'short-rib', 'beef-tenderloin', 'russet-potato', 'button-mushroom', 'asparagus', 'butter'] },
+    { id: 'seafood',    en: 'Seafood house', es: 'Marisquería',   slugs: ['salmon-fillet', 'shrimp', 'scallops', 'clams', 'whole-halibut', 'tuna-loin', 'lemon', 'whole-crab'] },
+    { id: 'cafe',       en: 'Café / brunch', es: 'Café / brunch', slugs: ['eggs', 'butter', 'spinach', 'tomato', 'avocado', 'cheddar-cheese', 'apple', 'blueberry'] },
+    { id: 'sushi',      en: 'Sushi bar',     es: 'Sushi',         slugs: ['salmon-fillet', 'tuna-loin', 'shrimp', 'scallops', 'cucumber', 'ginger', 'green-onion', 'octopus'] },
+  ];
+
+  // Persistence — the Lock Book lives ONLY in the operator's own browser: the
+  // MuntinContext bus (localStorage, device-local, never fetched, never in analytics)
+  // under the 'costPulse' key, plus a shareable URL hash (#book=slug,slug). Both are
+  // best-effort; if the bus is absent the book still works in-session via the hash.
+  var BOOK_KEY = 'costPulse';
+  function ctxRead() { try { return (typeof MuntinContext !== 'undefined' && MuntinContext.get) ? (MuntinContext.get(BOOK_KEY) || {}) : {}; } catch (e) { return {}; } }
+  function ctxWrite(patch) { try { if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) { var cur = ctxRead(), next = {}, k; for (k in cur) next[k] = cur[k]; for (k in patch) next[k] = patch[k]; var p = {}; p[BOOK_KEY] = next; MuntinContext.merge(p); } } catch (e) {} }
+  function hashParts() { try { return ((typeof location !== 'undefined' && location.hash) || '').replace(/^#/, '').split('&').filter(Boolean); } catch (e) { return []; } }
+  function hashBook() { var ps = hashParts(); for (var i = 0; i < ps.length; i++) { var kv = ps[i].split('='); if (kv[0] === 'book' && kv[1]) { try { return decodeURIComponent(kv[1]).split(',').filter(Boolean); } catch (e) { return null; } } } return null; }
+  function writeHashBook(slugs) {
+    try {
+      if (typeof location === 'undefined' || typeof history === 'undefined' || !history.replaceState) return;
+      var parts = hashParts().filter(function (p) { return p.indexOf('book=') !== 0; });
+      if (slugs && slugs.length) parts.push('book=' + encodeURIComponent(slugs.join(',')));
+      history.replaceState(null, '', parts.length ? '#' + parts.join('&') : location.pathname + location.search);
+    } catch (e) {}
+  }
+
   function api(es) {
     function L(en, esT) { return es ? esT : en; }
     function money(c, u) { if (!(c > 0)) return null; var d = c / 100; var s = d >= 100 ? '$' + Math.round(d).toLocaleString() : '$' + d.toFixed(2); return u ? s : s; }
     function pctTxt(p) { return (p > 0 ? '+' : p < 0 ? '−' : '') + Math.abs(Math.round(p * 100)) + '%'; }
+
+    // Lock Book state, set by render() (it needs DATA). Held at api scope so the card
+    // and refusal-wall renderers can drop a star without threading it through every call.
+    var STATE = null;   // { book:Set, changed:{slug:{from,to}}, seenAsOf, toggle, applyStarter, clear }
+
+    function starBtn(slug) {
+      var on = STATE && STATE.book.has(slug);
+      var b = el('button', 'lf-star' + (on ? ' is-on' : ''));
+      b.type = 'button';
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.setAttribute('aria-label', on ? L('In your Lock Book — tap to remove', 'En tu Libro — toca para quitar') : L('Add to your Lock Book', 'Añadir a tu Libro'));
+      b.setAttribute('title', on ? L('In your Lock Book', 'En tu Libro') : L('Add to your Lock Book', 'Añadir a tu Libro'));
+      b.appendChild(el('span', 'lf-star-ic', on ? '★' : '☆'));
+      b.addEventListener('click', function (ev) { if (ev && ev.stopPropagation) ev.stopPropagation(); if (STATE) STATE.toggle(slug); });
+      return b;
+    }
+
+    function starterRow() {
+      var wrap = el('div', 'lf-starters');
+      wrap.appendChild(el('span', 'lf-starters-lab', L('Start from your kitchen:', 'Empieza desde tu cocina:')));
+      var btns = el('div', 'lf-starter-btns'); btns.setAttribute('role', 'group');
+      STARTERS.forEach(function (s) {
+        var avail = s.slugs.filter(function (sl) { return STATE && STATE.has(sl); });
+        if (!avail.length) return;
+        var b = el('button', 'lf-starter', L(s.en, s.es)); b.type = 'button';
+        b.setAttribute('aria-label', L('Add the ' + s.en + ' starter set', 'Añadir el set ' + s.es));
+        b.addEventListener('click', function () { if (STATE) STATE.applyStarter(avail); });
+        btns.appendChild(b);
+      });
+      wrap.appendChild(btns);
+      return wrap;
+    }
+
+    function uncertaintyLine(mine) {
+      // "Uncertainty you're carrying" — a ranked MAGNITUDE read across the operator's
+      // own items: widest vs steadiest next-week reach. Never a direction, never a $
+      // figure, never an overpayment read — just how much the prices you track wobble.
+      var fenced = mine.filter(function (it) { return it.bucket !== 'withhold' && it.halfWidthPct != null; });
+      var held = mine.length - fenced.length;
+      var p = el('p', 'lf-book-uncert');
+      if (!fenced.length) {
+        p.appendChild(document.createTextNode(L(
+          'None of your ' + mine.length + ' tracked items carry a band we’ll publish yet — ' + held + ' are held back.',
+          'Ninguno de tus ' + mine.length + ' artículos tiene una banda publicable aún — ' + held + ' están retenidos.')));
+        return p;
+      }
+      var sorted = fenced.slice().sort(function (a, b) { return b.halfWidthPct - a.halfWidthPct; });
+      var widest = sorted[0], steadiest = sorted[sorted.length - 1];
+      p.appendChild(el('strong', null, L('Uncertainty you’re carrying: ', 'Incertidumbre que llevas: ')));
+      p.appendChild(document.createTextNode(L(
+        'the widest next-week reach in your book is ' + shortName(widest.name) + ' at ±' + Math.round(widest.halfWidthPct * 100) + '%, the steadiest ' + shortName(steadiest.name) + ' at ±' + Math.round(steadiest.halfWidthPct * 100) + '%' + (held ? '; ' + held + ' more we won’t fence.' : '.'),
+        'el mayor alcance de la próxima semana en tu libro es ' + shortName(widest.name) + ' con ±' + Math.round(widest.halfWidthPct * 100) + '%, el más estable ' + shortName(steadiest.name) + ' con ±' + Math.round(steadiest.halfWidthPct * 100) + '%' + (held ? '; ' + held + ' más que no acotamos.' : '.'))));
+      return p;
+    }
+
+    function bookRow(it, horizon) {
+      var bk = reclassify(it, horizon);
+      var changed = STATE && STATE.changed[it.slug];
+      var row = el('div', 'lf-brow' + (changed ? ' is-changed' : ''));
+      row.appendChild(starBtn(it.slug));
+      row.appendChild(el('span', 'lf-bname', shortName(it.name)));
+      row.appendChild(el('span', 'lf-pill lf-pill--' + BK[bk].cls, bk === 'withhold' ? L('held back', 'retenido') : L(BK[bk].en, BK[bk].es)));
+      var reach = el('span', 'lf-breach');
+      if (bk !== 'withhold' && it.halfWidthPct != null) { reach.textContent = '±' + Math.round(it.halfWidthPct * 100) + '%'; reach.setAttribute('title', L('worst-side next-week reach', 'alcance de la próxima semana, lado más amplio')); }
+      else reach.textContent = L('can’t fence', 'sin acotar');
+      row.appendChild(reach);
+      return row;
+    }
+
+    function lockBook(items, horizon) {
+      var mine = items.filter(function (it) { return STATE && STATE.book.has(it.slug); });
+      var sec = el('section', 'lf-book');
+      var head = el('div', 'lf-book-h');
+      head.appendChild(el('h2', 'lf-book-title', L('Your Lock Book', 'Tu Libro de Fijación')));
+      if (mine.length) {
+        var badge = el('span', 'lf-book-count', mine.length + L(' tracked', ' seguidos'));
+        head.appendChild(badge);
+        var clr = el('button', 'lf-book-clear', L('Clear', 'Vaciar')); clr.type = 'button';
+        clr.setAttribute('aria-label', L('Clear your Lock Book', 'Vaciar tu Libro'));
+        clr.addEventListener('click', function () { if (STATE) STATE.clear(); });
+        head.appendChild(clr);
+      }
+      sec.appendChild(head);
+      if (!mine.length) {
+        sec.appendChild(el('p', 'lf-book-empty', L(
+          'Star the ingredients you actually buy — they gather here with their read, and we flag any that crossed a line since your last visit. It stays in your browser; a shareable link travels with it.',
+          'Marca los ingredientes que de verdad compras — se juntan aquí con su lectura, y señalamos los que cruzaron una línea desde tu última visita. Se queda en tu navegador; un enlace para compartir lo acompaña.')));
+        sec.appendChild(starterRow());
+        return sec;
+      }
+      // Change-led lead: what crossed a Lock/Cushion/Float line since the operator's
+      // own last visit (the underlying weekly data moved it — not the horizon control).
+      var changes = mine.filter(function (it) { return STATE.changed[it.slug]; });
+      if (STATE.seenAsOf && changes.length) {
+        var lead = el('div', 'lf-book-changes');
+        lead.appendChild(el('p', 'lf-book-changes-h', L(
+          changes.length + (changes.length === 1 ? ' item crossed a line' : ' items crossed a line') + ' since you last looked (' + STATE.seenAsOf + '):',
+          changes.length + (changes.length === 1 ? ' artículo cruzó una línea' : ' artículos cruzaron una línea') + ' desde tu última visita (' + STATE.seenAsOf + '):')));
+        var ul = el('ul', 'lf-book-changelist');
+        changes.forEach(function (it) {
+          var ch = STATE.changed[it.slug];
+          var li = el('li', 'lf-book-change');
+          li.appendChild(el('span', 'lf-book-cn', shortName(it.name)));
+          li.appendChild(el('span', 'lf-chip lf-chip--' + BK[ch.from].cls, L(BK[ch.from].en, BK[ch.from].es)));
+          li.appendChild(el('span', 'lf-book-arrow', '→'));
+          li.appendChild(el('span', 'lf-chip lf-chip--' + BK[ch.to].cls, L(BK[ch.to].en, BK[ch.to].es)));
+          ul.appendChild(li);
+        });
+        lead.appendChild(ul);
+        sec.appendChild(lead);
+      } else if (STATE.seenAsOf) {
+        sec.appendChild(el('p', 'lf-book-nochange', L(
+          'Nothing in your book crossed a line since you last looked (' + STATE.seenAsOf + ').',
+          'Nada en tu libro cruzó una línea desde tu última visita (' + STATE.seenAsOf + ').')));
+      }
+      sec.appendChild(uncertaintyLine(mine));
+      var list = el('div', 'lf-book-rows');
+      var order = { lock: 0, cushion: 1, float: 2, withhold: 3 };
+      mine.slice().sort(function (a, b) {
+        var ca = STATE.changed[a.slug] ? 0 : 1, cb = STATE.changed[b.slug] ? 0 : 1;
+        if (ca !== cb) return ca - cb;
+        var ba = reclassify(a, horizon), bb = reclassify(b, horizon);
+        return (order[ba] - order[bb]) || ((a.halfWidthPct == null ? 9 : a.halfWidthPct) - (b.halfWidthPct == null ? 9 : b.halfWidthPct));
+      }).forEach(function (it) { list.appendChild(bookRow(it, horizon)); });
+      sec.appendChild(list);
+      sec.appendChild(starterRow());
+      return sec;
+    }
     function reclassify(it, horizon) {
       // Re-bucket from the SAME allowlisted fields (halfWidthPct, coverageLo) under
       // the chosen revisit horizon; withheld stays withheld (never re-opened).
@@ -195,7 +354,10 @@
       var mv = money(it.level, it.unit);
       if (mv && bk !== 'withhold') { var lv = el('div', 'lf-card-lvl'); lv.appendChild(el('span', 'lf-card-lvln', mv)); lv.appendChild(document.createTextNode(it.unit ? ' /' + it.unit : '')); left.appendChild(lv); }
       var pill = el('span', 'lf-pill lf-pill--' + BK[bk].cls, bk === 'withhold' ? L('held back', 'retenido') : L(BK[bk].en, BK[bk].es));
-      top.appendChild(left); top.appendChild(pill); c.appendChild(top);
+      var right = el('div', 'lf-card-tr');
+      right.appendChild(pill);
+      if (STATE && it.slug) right.appendChild(starBtn(it.slug));
+      top.appendChild(left); top.appendChild(right); c.appendChild(top);
 
       if (it.upPct != null && it.downPct != null && !(it.upPct === 0 && it.downPct === 0)) {
         var bandWrap = el('div', 'lf-card-band');
@@ -261,6 +423,7 @@
       withheld.sort(function (a, b) { return (a.level && b.level) ? (b.level - a.level) : 0; });
       withheld.slice(0, 24).forEach(function (it) {
         var li = el('li', 'lf-refusal-item');
+        if (STATE && it.slug) li.appendChild(starBtn(it.slug));
         li.appendChild(el('span', 'lf-refusal-name', it.name));
         var wr = REASON[it.reason] || REASON.thin;
         li.appendChild(el('span', 'lf-refusal-reason', L(wr.en, wr.es)));
@@ -294,6 +457,36 @@
       var horizon = opts.horizon || 'monthly';
       if (!DATA || !DATA.items) return;
       var track = opts.track || function () {};
+
+      // --- Lock Book state (device-local; no fetch) ---
+      // Native (data-driven, horizon-independent) bucket per slug — the baseline the
+      // "crossed a line" change detector compares against, so a change reflects new
+      // vendor data, never the operator toggling the horizon control.
+      var nativeBucket = {};
+      Object.keys(DATA.items).forEach(function (k) { nativeBucket[k] = DATA.items[k].bucket; });
+      var persisted = ctxRead();
+      var fromHash = hashBook();
+      var seed = (fromHash && fromHash.length) ? fromHash : (Array.isArray(persisted.starred) ? persisted.starred : []);
+      var bookSet = new Set(seed.filter(function (s) { return DATA.items[s]; }));
+      // Change detection vs the operator's OWN last snapshot — computed once per load.
+      var changed = {};
+      var prevSeen = persisted.lastSeen && persisted.lastSeen.buckets;
+      var seenAsOf = (persisted.lastSeen && persisted.lastSeen.asOf) || null;
+      if (prevSeen) Object.keys(nativeBucket).forEach(function (s) { if (prevSeen[s] && prevSeen[s] !== nativeBucket[s]) changed[s] = { from: prevSeen[s], to: nativeBucket[s] }; });
+
+      function persistBook() { var arr = Array.from(bookSet); ctxWrite({ starred: arr }); writeHashBook(arr); }
+      STATE = {
+        book: bookSet,
+        changed: changed,
+        seenAsOf: seenAsOf,
+        has: function (slug) { return !!DATA.items[slug]; },
+        toggle: function (slug) { if (bookSet.has(slug)) bookSet.delete(slug); else { bookSet.add(slug); track('Cost Pulse Item Starred'); } persistBook(); draw(); },
+        applyStarter: function (slugs) { slugs.forEach(function (s) { if (DATA.items[s]) bookSet.add(s); }); track('Cost Pulse Starter Book Applied'); persistBook(); draw(); },
+        clear: function () { bookSet.clear(); persistBook(); track('Cost Pulse Book Cleared'); draw(); },
+      };
+      // A shared link's book is adopted as the operator's own on first load.
+      if (fromHash && fromHash.length) persistBook();
+
       function draw() {
         while (mount.firstChild) mount.removeChild(mount.firstChild);
         var hero = heroStrip(DATA, horizon);
@@ -302,6 +495,7 @@
           'No te decimos hacia dónde va un precio — nadie puede honestamente con solo el historial. Te decimos cuánto tiende a moverse su próxima lectura, y si un precio fijo lo resiste.'));
         mount.appendChild(hero.strip);
         mount.appendChild(promise);
+        mount.appendChild(lockBook(hero.items, horizon));
         mount.appendChild(horizonControl(horizon, function (h) { horizon = h; track('Cost Pulse Horizon Picked'); draw(); }));
         mount.appendChild(ladder(hero.items, horizon));
         mount.appendChild(board(hero.items, horizon));
@@ -310,6 +504,9 @@
         if (DATA.asOf) mount.appendChild(el('p', 'lf-asof', L('As of ' + DATA.asOf + ' · wholesale reference, delivered price runs higher.', 'Al ' + DATA.asOf + ' · referencia mayorista, el precio entregado es más alto.')));
       }
       draw();
+      // Record this visit's snapshot as the new baseline — ONCE, after the change-led
+      // view has already been drawn against the prior one.
+      ctxWrite({ lastSeen: { asOf: DATA.asOf || null, buckets: nativeBucket } });
     }
 
     return { render: render, reclassify: reclassify, HORIZONS: HORIZONS };

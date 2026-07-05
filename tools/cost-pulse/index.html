@@ -418,6 +418,39 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .lf-replay{margin:8px 0 0}
 .lf-replay-svg{display:block;width:100%;height:22px;border-radius:3px}
 .lf-replay-cap{font-size:10.5px;color:var(--stone);margin:4px 0 0;line-height:1.4}
+/* Your Lock Book — device-local personalization */
+.lf-star{appearance:none;-webkit-appearance:none;background:none;border:0;cursor:pointer;padding:2px 4px;line-height:1;color:var(--stone);font-size:16px;border-radius:6px}
+.lf-star:hover,.lf-star.is-on{color:var(--accent)}
+.lf-star:focus-visible,.lf-starter:focus-visible,.lf-book-clear:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.lf-star-ic{display:inline-block}
+.lf-card-tr{display:flex;align-items:center;gap:6px}
+.lf-book{background:var(--surface-inset);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:14px 0 6px}
+.lf-book-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.lf-book-title{font-size:20px;margin:0;color:var(--ink)}
+.lf-book-count{font-size:12px;color:var(--stone);font-weight:600}
+.lf-book-clear{margin-left:auto;appearance:none;-webkit-appearance:none;background:none;border:1px solid var(--line);border-radius:7px;color:var(--ink-soft);font-size:12px;padding:3px 10px;cursor:pointer}
+.lf-book-clear:hover{border-color:var(--accent);color:var(--accent)}
+.lf-book-empty{font-size:13.5px;color:var(--ink-soft);line-height:1.5;margin:8px 0 12px;max-width:64ch}
+.lf-book-changes{margin:10px 0 4px}
+.lf-book-changes-h{font-size:13px;font-weight:700;color:var(--ink);margin:0 0 7px}
+.lf-book-changelist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:5px}
+.lf-book-change{display:flex;align-items:center;gap:7px;font-size:13px}
+.lf-book-cn{color:var(--ink);font-weight:600}
+.lf-book-arrow{color:var(--stone)}
+.lf-chip{font-size:10.5px;font-weight:700;letter-spacing:.02em;border-radius:5px;padding:2px 6px;white-space:nowrap}
+.lf-chip--lock{color:var(--lf-lock-ink);background:var(--lf-lock-soft)}.lf-chip--cushion{color:var(--lf-cushion-ink);background:var(--lf-cushion-soft)}.lf-chip--float{color:var(--lf-float-ink);background:var(--lf-float-soft)}.lf-chip--hold{color:var(--lf-hold-ink);background:var(--lf-hold-soft)}
+.lf-book-nochange{font-size:12.5px;color:var(--stone);margin:8px 0 0}
+.lf-book-uncert{font-size:13px;color:var(--ink-soft);line-height:1.5;margin:10px 0 0}.lf-book-uncert strong{color:var(--ink)}
+.lf-book-rows{display:flex;flex-direction:column;gap:6px;margin:12px 0 4px}
+.lf-brow{display:flex;align-items:center;gap:9px;padding:6px 8px;border:1px solid var(--line);border-radius:9px;background:var(--surface-1)}
+.lf-brow.is-changed{border-left:3px solid var(--accent)}
+.lf-bname{flex:1 1 auto;font-size:13.5px;color:var(--ink);font-weight:600}
+.lf-breach{font-size:12px;color:var(--ink-soft);font-variant-numeric:tabular-nums;text-align:right}
+.lf-starters{margin:12px 0 2px}
+.lf-starters-lab{display:block;font-size:11.5px;color:var(--stone);margin:0 0 6px;text-transform:uppercase;letter-spacing:.04em;font-weight:700}
+.lf-starter-btns{display:flex;flex-wrap:wrap;gap:7px}
+.lf-starter{appearance:none;-webkit-appearance:none;background:var(--surface-1);border:1px solid var(--line);border-radius:20px;color:var(--ink-soft);font-size:12.5px;padding:5px 12px;cursor:pointer}
+.lf-starter:hover{border-color:var(--accent);color:var(--accent)}
 .lf-stamp{font-size:11.5px;color:var(--stone);margin:9px 0 0;line-height:1.4;border-top:1px solid var(--line);padding-top:8px}
 .lf-caveat{font-size:11.5px;color:var(--ink-soft);font-style:italic;margin:5px 0 0}
 .lf-why{font-size:12.5px;color:var(--ink-soft);margin:10px 0 0;line-height:1.45}.lf-why strong{color:var(--ink)}
@@ -924,7 +957,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/tools/_shared/cost-index-format.js?v=20260629-fmt4"></script>
 <script src="/tools/_shared/cost-index-ui.js?v=20260630-design2"></script>
 <script src="/data/cost-lockfloat.js?v=20260705-lf2"></script>
-<script src="/tools/_shared/cost-lockfloat-ui.js?v=20260705-lf3"></script>
+<script src="/tools/_shared/cost-lockfloat-ui.js?v=20260705-lf4"></script>
 <script>
 // The Lock Sheet — isolated so it can never break the level-detail dashboard below.
 (function () {
