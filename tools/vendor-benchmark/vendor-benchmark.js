@@ -98,6 +98,8 @@
     volumeLabel: '¿Cuánto compras por semana?', volumeUnitSuffix: 'por semana', volumeHint: 'opcional — para ver el impacto en dólares',
     volumeLead: 'A ese ritmo, esta diferencia corre cerca de', volumePerWeek: 'por semana', volumePerYear: 'al año si se mantiene',
     briefBtn: 'Preparar la hoja para tu proveedor', briefPrint: 'Imprimir', briefCopy: 'Copiar el resumen', briefCopied: 'Resumen copiado',
+    jTitle: 'Tus artículos guardados', jClear: 'Borrar guardados', jThin: 'vigilar',
+    jSince: 'Desde tu última revisión', jWiden: 'la diferencia creció', jNarrow: 'la diferencia se redujo',
     errItem: 'Escribe el nombre del artículo.',
     errRows: 'Agrega al menos dos compras con fecha y precio.'
   } : {
@@ -163,6 +165,8 @@
     volumeLabel: 'About how much do you buy a week?', volumeUnitSuffix: 'a week', volumeHint: 'optional — to see the dollar impact',
     volumeLead: 'At that pace, this gap runs about', volumePerWeek: 'a week', volumePerYear: 'a year if it holds',
     briefBtn: 'Make a one-page brief for your rep', briefPrint: 'Print', briefCopy: 'Copy the summary', briefCopied: 'Summary copied',
+    jTitle: 'Your saved items', jClear: 'Clear saved items', jThin: 'watch',
+    jSince: 'Since your last check', jWiden: 'the gap widened', jNarrow: 'the gap narrowed',
     errItem: 'Enter the item name.',
     errRows: 'Add at least two purchases with a date and price.'
   };
@@ -353,6 +357,90 @@
     } catch (_) {}
   }
 
+  // ---- the Price Journal: a private, on-device log of every check ------------
+  // A one-shot calculator becomes a compounding cost record the operator owns.
+  // Keyed by market key (or item name); each entry is the full state to reopen
+  // plus the last honest gap. LRU-capped. All via MuntinContext — never leaves
+  // the device. This is the accumulation moat and the honest Ledger on-ramp.
+  var JOURNAL_KEY = 'vbJournal', JOURNAL_CAP = 40;
+  var reopenBaseline = null; // {gapPts, at} stashed on reopen, for the trend note
+  function readJournal() { try { var j = CTX && CTX.get(JOURNAL_KEY); return (j && typeof j === 'object') ? j : {}; } catch (_) { return {}; } }
+  function writeJournal(map) { if (CTX && typeof CTX.merge === 'function') { var p = {}; p[JOURNAL_KEY] = map; try { CTX.merge(p); } catch (_) {} } }
+  function journalKeyFor(res) { return (res.market && res.market.key) || ('item:' + (res.item || '').toLowerCase().replace(/\s+/g, ' ').trim()); }
+  function saveToJournal(res, rows) {
+    if (!CTX || !res.item) return;
+    var clean = rows.filter(function (r) { return r.date && String(r.price).trim() !== ''; });
+    if (clean.length < 2) return;
+    var map = readJournal();
+    var k = journalKeyFor(res);
+    var m = res.market;
+    map[k] = {
+      item: res.item, unit: res.unit, purchases: clean, at: Date.now(),
+      gapPts: (m && m.res && m.res.ok && !m.res.thin) ? m.res.gapPts : null,
+      yourPct: res.yourChangePct,
+      marketPct: (m && m.res && m.res.ok) ? m.res.marketPct : null,
+      tier: res.tier, thin: !!(m && m.res && m.res.thin)
+    };
+    var keys = Object.keys(map);
+    if (keys.length > JOURNAL_CAP) {
+      keys.map(function (kk) { return { kk: kk, at: (map[kk] && map[kk].at) || 0 }; })
+        .sort(function (a, b) { return a.at - b.at; })
+        .slice(0, keys.length - JOURNAL_CAP)
+        .forEach(function (e) { delete map[e.kk]; });
+    }
+    writeJournal(map);
+  }
+  function relTime(ts) {
+    var days = Math.floor((Date.now() - ts) / 86400000);
+    if (days < 1) return ES ? 'hoy' : 'today';
+    if (days === 1) return ES ? 'ayer' : 'yesterday';
+    if (days < 14) return ES ? ('hace ' + days + ' días') : (days + ' days ago');
+    var wk = Math.round(days / 7);
+    return ES ? ('hace ' + wk + ' semanas') : (wk + ' weeks ago');
+  }
+  var railEl = null;
+  function injectJournalRail() {
+    if (railEl || document.getElementById('vbJournalRail')) return;
+    var panel = document.querySelector('.vb-panel');
+    if (!panel || !panel.parentNode) return;
+    railEl = document.createElement('div');
+    railEl.id = 'vbJournalRail'; railEl.className = 'vb-journal'; railEl.hidden = true;
+    railEl.addEventListener('click', onRailClick);
+    panel.parentNode.insertBefore(railEl, panel.nextSibling);
+  }
+  function renderJournalRail() {
+    if (!railEl) return;
+    var map = readJournal();
+    var items = Object.keys(map).map(function (k) { return { k: k, e: map[k] }; })
+      .filter(function (x) { return x.e && x.e.item; })
+      .sort(function (a, b) { return (Math.abs(b.e.gapPts || 0) - Math.abs(a.e.gapPts || 0)); });
+    if (!items.length) { railEl.hidden = true; setHTML(railEl, ''); return; }
+    var chips = items.map(function (x) {
+      var e = x.e;
+      var gapTxt = (typeof e.gapPts === 'number')
+        ? h`<span class="vb-jchip-gap" data-tone="${e.gapPts >= 3 ? 'over' : e.gapPts <= -3 ? 'under' : 'match'}">${Math.abs(e.gapPts).toFixed(e.gapPts < 10 ? 1 : 0)} ${T.pointsWord}</span>`
+        : h`<span class="vb-jchip-gap" data-tone="watch">${T.jThin}</span>`;
+      return h`<button type="button" class="vb-jchip" data-jkey="${x.k}"><span class="vb-jchip-name">${e.item}</span>${gapTxt}<span class="vb-jchip-when">${relTime(e.at)}</span></button>`;
+    });
+    setHTML(railEl, h`<div class="vb-journal-head"><span class="vb-eyebrow">${T.jTitle}</span><button type="button" class="vb-linkbtn" data-jclear>${T.jClear}</button></div><div class="vb-journal-grid">${chips}</div>`);
+    railEl.hidden = false;
+  }
+  function onRailClick(e) {
+    var t = e.target; if (!t || !t.closest) return;
+    if (t.closest('[data-jclear]')) { writeJournal({}); renderJournalRail(); return; }
+    var chip = t.closest('.vb-jchip');
+    if (chip) {
+      var map = readJournal(); var entry = map[chip.getAttribute('data-jkey')];
+      if (entry && entry.item) {
+        itemEl.value = entry.item; if (entry.unit) unitEl.value = entry.unit;
+        renderRows(entry.purchases);
+        reopenBaseline = (typeof entry.gapPts === 'number') ? { gapPts: entry.gapPts, at: entry.at, key: chip.getAttribute('data-jkey') } : null;
+        run();
+        resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+  }
+
   // Screen-reader announcer. The result container is re-injected on every
   // keystroke, so it must NOT be an aria-live region (a SR would hear half-typed
   // fragments). Instead we push the settled, purpose-built srText sentence into a
@@ -402,6 +490,8 @@
     var res = MW.compute({ item: item, purchases: purchases, locale: ES ? 'es' : 'en' });
     render(res);
     scheduleAnnounce(res);
+    saveToJournal(res, rows);
+    renderJournalRail();
     resultEl.setAttribute('data-has-result', '1');
 
     track('Bench Multi-Date Computed', {
@@ -646,6 +736,10 @@
       blocks.push(h`<p class="vb-spike" data-tone="${sSay.tone}">${sSay.text}</p>`);
     }
 
+    // 1c) "Since your last check" — only when this item was reopened from the journal.
+    var jt = journalTrendBlock(res);
+    if (jt) blocks.push(jt);
+
     // 2) THE CHART + its accessible table twin (the numbers are never chart-only)
     var tableId = 'vbChartTable';
     var svg = chartSvg(res, tableId);
@@ -695,6 +789,16 @@
     }
     var printBtn = t.closest('.vb-print-btn');
     if (printBtn) { doPrint(printBtn.closest('.vb-action')); track('Bench Brief Printed'); }
+  }
+
+  function journalTrendBlock(res) {
+    if (!reopenBaseline || reopenBaseline.key !== journalKeyFor(res)) return '';
+    var m = res.market;
+    if (!(m && m.res && m.res.ok && !m.res.thin)) return '';
+    var now = m.res.gapPts, was = reopenBaseline.gapPts;
+    if (Math.abs(now - was) < 1) return '';
+    var widened = Math.abs(now) > Math.abs(was);
+    return h`<p class="vb-jtrend" data-tone="${widened ? 'over' : 'under'}">${T.jSince} ${relTime(reopenBaseline.at)}, ${widened ? T.jWiden : T.jNarrow} ${Math.abs(was).toFixed(was < 10 ? 1 : 0)} → ${Math.abs(now).toFixed(now < 10 ? 1 : 0)} ${T.pointsWord}.</p>`;
   }
 
   function tierLabel(tier) {
@@ -979,6 +1083,7 @@
     while (resultEl.firstChild) resultEl.removeChild(resultEl.firstChild);
     resultEl.removeAttribute('data-has-result');
     if (matchChip) matchChip.hidden = true;
+    reopenBaseline = null;
     if (CTX && typeof CTX.merge === 'function') { try { CTX.merge({ vbSession: null }); } catch (_) {} }
     itemEl.focus();
   }
@@ -1029,6 +1134,8 @@
   resultEl.addEventListener('click', onResultClick);
   ensureAnnouncer();
   injectExtras();
+  injectJournalRail();
+  renderJournalRail();
   loadSeeds();
   restore();
   track('Bench Loaded');
