@@ -121,6 +121,8 @@
       'Bench Brief Printed',
       'Bench Contract Saved',
       'Cost Pulse Loaded',
+      'Cost Pulse Horizon Picked',
+      'Cost Pulse Lock Sheet Printed',
       'Invoice Decoder Accountant Export',
       'Invoice Decoder Adaptive Reread',
       'Invoice Decoder Briefing Action',
