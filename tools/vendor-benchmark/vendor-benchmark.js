@@ -50,7 +50,7 @@
     beyond: 'más allá de lo que explica el movimiento del mercado, por',
     ownHistoryEyebrow: 'Frente a tu propio historial',
     chartYou: 'Tú', chartMarket: 'Mercado', chartAria: 'Tu precio frente al precio mayorista del mercado, ambos indexados a 100 al inicio de tu ventana.',
-    chartUncertain: 'Lecturas de mercado escasas — línea aproximada', showNumbers: 'Ver los números',
+    chartUncertain: 'Lecturas de mercado escasas — línea aproximada', showNumbers: 'Ver los números', tipGap: 'Diferencia:',
     timelineEyebrow: 'Tu ventana, fecha por fecha',
     thDate: 'Fecha', thYou: 'Tu precio', thYouCum: 'Tú (acum.)', thMarketCum: 'Mercado (acum.)',
     attributionWholesale: 'Referencia mayorista — tu precio entregado normalmente es mayor.',
@@ -114,7 +114,7 @@
     beyond: 'beyond what the market’s move explains, at',
     ownHistoryEyebrow: 'Against your own history',
     chartYou: 'You', chartMarket: 'Market', chartAria: 'Your price versus the wholesale market price, both indexed to 100 at the start of your window.',
-    chartUncertain: 'Thin market reads — line is approximate', showNumbers: 'Show the numbers',
+    chartUncertain: 'Thin market reads — line is approximate', showNumbers: 'Show the numbers', tipGap: 'Gap:',
     timelineEyebrow: 'Your window, date by date',
     thDate: 'Date', thYou: 'Your price', thYouCum: 'You (cum.)', thMarketCum: 'Market (cum.)',
     attributionWholesale: 'Wholesale reference — your delivered price normally runs higher.',
@@ -276,6 +276,7 @@
 
   // ---- compute + persist -----------------------------------------------------
   var debounceT = null;
+  var chartModel = null; // populated by chartSvg; read by the hover crosshair
   function schedule() { clearTimeout(debounceT); debounceT = setTimeout(run, 260); }
 
   // Locale-aware price parse. Under ES a comma is the decimal ("12,20"); the
@@ -410,7 +411,7 @@
     if (t0 == null || t1 == null || t1 <= t0) return '';
 
     var yourPts = res.purchases.map(function (p) {
-      return { t: MW.parseISODay(p.date), v: 100 * p.cents / res.firstCents };
+      return { t: MW.parseISODay(p.date), v: 100 * p.cents / res.firstCents, date: p.date, cents: p.cents };
     });
     var mkNear0 = null, best0 = Infinity;
     for (var i = 0; i < m.series.values.length; i++) {
@@ -447,6 +448,10 @@
     function pathOf(pts) {
       return pts.map(function (p, i) { return (i ? 'L' : 'M') + X(p.t).toFixed(1) + ',' + Y(p.v).toFixed(1); }).join('');
     }
+    yourPts.forEach(function (p) { p.x = X(p.t); p.y = Y(p.v); });
+    mkPts.forEach(function (p) { p.x = X(p.t); p.y = Y(p.v); });
+    // Model the hover crosshair reads (populated as a side effect of render).
+    chartModel = { W: W, H: H, padL: padL, padR: padR, padT: padT, padB: padB, t0: t0, t1: t1, yourPts: yourPts, mkPts: mkPts, uncertain: uncertain };
     var tone = (m.say && m.say.tone) || 'info';
     var y100 = Y(100).toFixed(1);
 
@@ -542,9 +547,65 @@
   }
 
   // ---- the result -----------------------------------------------------------
+  // Hover crosshair — turns the static chart into an instrument you interrogate.
+  // Enhances, never gates: every value is also in the table twin and on keyboard.
+  function nearestByT(pts, t) {
+    var best = null, bd = Infinity;
+    for (var i = 0; i < pts.length; i++) { var d = Math.abs(pts[i].t - t); if (d < bd) { bd = d; best = pts[i]; } }
+    return best;
+  }
+  function wireChartHover() {
+    if (!chartModel) return;
+    var wrap = resultEl.querySelector('.vb-chartwrap');
+    var svg = wrap && wrap.querySelector('.vb-chart');
+    if (!wrap || !svg) return;
+    var model = chartModel, NS = 'http://www.w3.org/2000/svg';
+    var cross = document.createElementNS(NS, 'line');
+    cross.setAttribute('class', 'vb-chart-cross'); cross.setAttribute('y1', model.padT); cross.setAttribute('y2', model.H - model.padB);
+    cross.style.display = 'none'; svg.appendChild(cross);
+    var dot = document.createElementNS(NS, 'circle');
+    dot.setAttribute('class', 'vb-chart-cross-dot'); dot.setAttribute('r', 4); dot.style.display = 'none'; svg.appendChild(dot);
+    var tip = document.createElement('div'); tip.className = 'vb-chart-tip'; tip.hidden = true; wrap.appendChild(tip);
+
+    function show(clientX) {
+      var rect = svg.getBoundingClientRect();
+      if (!rect.width) return;
+      var frac = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+      var plotX = Math.max(model.padL, Math.min(model.W - model.padR, frac * model.W));
+      var t = model.t0 + (plotX - model.padL) / (model.W - model.padL - model.padR) * (model.t1 - model.t0);
+      var yn = nearestByT(model.yourPts, t);
+      if (!yn) return;
+      var mn = nearestByT(model.mkPts, yn.t);
+      cross.setAttribute('x1', yn.x); cross.setAttribute('x2', yn.x); cross.style.display = '';
+      dot.setAttribute('cx', yn.x); dot.setAttribute('cy', yn.y); dot.style.display = '';
+      tip.textContent = '';
+      var dl = document.createElement('div'); dl.className = 'vb-tip-date'; dl.textContent = fmtDate(yn.date); tip.appendChild(dl);
+      var r1 = document.createElement('div'); r1.className = 'vb-tip-row';
+      var v1 = document.createElement('strong'); v1.textContent = money(yn.cents); r1.appendChild(v1);
+      r1.appendChild(document.createTextNode(' · ' + T.chartYou + ' ' + Math.round(yn.v))); tip.appendChild(r1);
+      if (mn) {
+        var r2 = document.createElement('div'); r2.className = 'vb-tip-row';
+        var v2 = document.createElement('strong'); v2.textContent = String(Math.round(mn.v)); r2.appendChild(v2);
+        r2.appendChild(document.createTextNode(' · ' + T.chartMarket)); tip.appendChild(r2);
+        var gap = Math.round(yn.v) - Math.round(mn.v);
+        var r3 = document.createElement('div'); r3.className = 'vb-tip-gap';
+        r3.textContent = T.tipGap + ' ' + (gap > 0 ? '+' : '') + gap; tip.appendChild(r3);
+      }
+      tip.hidden = false;
+      var wrapRect = wrap.getBoundingClientRect();
+      var px = (yn.x / model.W) * rect.width + (rect.left - wrapRect.left);
+      tip.style.left = Math.max(4, Math.min(wrapRect.width - tip.offsetWidth - 4, px - tip.offsetWidth / 2)) + 'px';
+    }
+    function hide() { cross.style.display = 'none'; dot.style.display = 'none'; tip.hidden = true; }
+    svg.addEventListener('pointermove', function (e) { show(e.clientX); });
+    svg.addEventListener('pointerdown', function (e) { show(e.clientX); }); // tap-to-inspect on touch
+    svg.addEventListener('pointerleave', hide);
+  }
+
   function render(res) {
     var m = res.market;
     var spike = classifyMarketSpike(res);
+    chartModel = null;
     var blocks = [];
 
     // 1) THE HEADLINE — the gap (only a full verdict when the market data supports it)
@@ -584,6 +645,7 @@
     blocks.push(h`<p class="vb-ondevice">${T.ondevice} <button type="button" class="vb-linkbtn" id="vbClearSaved">${T.clearSaved}</button></p>`);
 
     setHTML(resultEl, h`<div class="vb-result-inner">${blocks}</div>`);
+    wireChartHover();
   }
 
   // One delegated handler for everything inside the re-rendered result.
