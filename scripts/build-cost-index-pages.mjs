@@ -1680,9 +1680,12 @@ function whyMovingBlock(slug, locale) {
   const clauses = [];
   // Post-audit (2026-07, HIGH-4): the feed clause states the measured driver
   // DIRECTION only. The old "which has tended to move before protein prices" +
-  // "as of {date}" badge implied an on-device measurement that does not exist (the
-  // feed-grain series are not in the shipped history). The feed→protein lag is now
-  // carried as a CITED USDA-ERS external fact in the drawer below, not asserted here.
+  // "as of {date}" badge implied an on-device lag measurement we don't publish.
+  // The feed-grain series (corn, soybeans) ARE now in the shipped deep history
+  // (.drivers), so the lag is computable — but only honestly behind the Engle-
+  // Granger cointegration gate on first-differences (cost-leadlag is dormant until
+  // then). Until it's wired, the feed→protein lag stays a CITED USDA-ERS external
+  // fact in the drawer below, not asserted on-device here.
   if (feed.length) clauses.push(
     (es ? 'forraje — ' : 'feed-grain — ') + feed.map(part).join(', '));
   if (energy.length) clauses.push(

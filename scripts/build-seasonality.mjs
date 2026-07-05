@@ -23,9 +23,10 @@
  * "valueCents":N}, … oldest→newest ] } }`, can carry the full multi-year series a
  * connected fetch backfills. When present, build-seasonality uses the deep series
  * for any key whose deep series is LONGER than the capped cost-index.json history,
- * letting the seasonal band activate without touching the live seed. The file does
- * not exist yet; while absent the engine is fully INERT (output byte-identical to
- * the capped-history path), so data/seasonality.json and --check do not move.
+ * letting the seasonal band activate without touching the live seed. The file now
+ * exists (a 12.7 MB, 102-ingredient, 2001-2026 deep backfill), so seasonal normals
+ * build from the deep series wherever it is longer; were it ever absent the engine
+ * falls back fully INERT (output byte-identical to the capped-history path).
  *
  *   node scripts/build-seasonality.mjs            # write data/seasonality.json
  *   node scripts/build-seasonality.mjs --check    # CI: fail if the committed file is stale
