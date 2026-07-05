@@ -254,11 +254,18 @@
     function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
 
     function ladder(items, horizon) {
-      var order = { lock: 0, cushion: 1, float: 2, withhold: 3 };
-      var rows = items.slice().sort(function (a, b) {
-        var ba = reclassify(a, horizon), bb = reclassify(b, horizon);
-        return (order[ba] - order[bb]) || ((a.halfWidthPct == null ? 9 : a.halfWidthPct) - (b.halfWidthPct == null ? 9 : b.halfWidthPct));
-      });
+      // The ladder RANKS items by how far their price reaches — so it plots only the
+      // ones that HAVE a band (lock/cushion/float). Listing the ~74 withheld items as
+      // empty rows made the tool look barren and buried the real read below a screen of
+      // "withheld"; they're already counted in the hero lane and itemized, with reasons,
+      // in the "What we won't call" wall. A one-line note keeps the omission honest.
+      var order = { lock: 0, cushion: 1, float: 2 };
+      var rows = items.filter(function (it) { var b = reclassify(it, horizon); return b === 'lock' || b === 'cushion' || b === 'float'; })
+        .sort(function (a, b) {
+          var ba = reclassify(a, horizon), bb = reclassify(b, horizon);
+          return (order[ba] - order[bb]) || ((a.halfWidthPct == null ? 9 : a.halfWidthPct) - (b.halfWidthPct == null ? 9 : b.halfWidthPct));
+        });
+      var withheldN = items.length - rows.length;
       var box = el('div', 'lf-ladder');
       var scaleWrap = el('div', 'lf-scale');
       [-60, -30, 0, 30, 60].forEach(function (t) { var s = el('span', 'lf-tick', (t > 0 ? '+' : '') + t + '%'); s.style.left = xreach(t) + '%'; scaleWrap.appendChild(s); });
@@ -271,18 +278,15 @@
         var track = el('div', 'lf-ltrack');
         [-60, -30, 30, 60].forEach(function (g) { var gl = el('span', 'lf-grid'); gl.style.left = xreach(g) + '%'; track.appendChild(gl); });
         var z = el('span', 'lf-grid lf-grid--zero'); z.style.left = xreach(0) + '%'; track.appendChild(z);
-        if (it.upPct != null && it.downPct != null && !(it.upPct === 0 && it.downPct === 0)) {
-          var lft = xreach(-it.downPct * 100), rgt = xreach(it.upPct * 100);
-          var band = el('div', 'lf-band lf-band--' + BK[bk].cls);
-          band.style.left = lft + '%'; band.style.width = Math.max(1.2, rgt - lft) + '%';
-          if (bk === 'withhold') band.style.opacity = '.4';
-          track.appendChild(band);
-        } else {
-          var cap2 = el('span', 'lf-lcap', it.reason === 'flat' ? L('flat — no range', 'plano — sin rango') : L('withheld', 'retenido'));
-          cap2.style.left = xreach(0) + '%'; track.appendChild(cap2);
-        }
+        var lft = xreach(-it.downPct * 100), rgt = xreach(it.upPct * 100);
+        var band = el('div', 'lf-band lf-band--' + BK[bk].cls);
+        band.style.left = lft + '%'; band.style.width = Math.max(1.2, rgt - lft) + '%';
+        track.appendChild(band);
         row.appendChild(nm); row.appendChild(track); box.appendChild(row);
       });
+      if (withheldN > 0) box.appendChild(el('p', 'lf-ladder-note', L(
+        '+' + withheldN + ' more we won’t fence — no band to plot. They’re listed with reasons under “What we won’t call,” below.',
+        '+' + withheldN + ' más que no acotamos — sin banda que trazar. Están listados con motivos en “Lo que no llamamos”, más abajo.')));
       return box;
     }
 
