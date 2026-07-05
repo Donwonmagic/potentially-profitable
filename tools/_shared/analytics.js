@@ -119,6 +119,7 @@
       'Bench Ask Copied',
       'Bench Brief Copied',
       'Bench Brief Printed',
+      'Bench Contract Saved',
       'Cost Pulse Loaded',
       'Invoice Decoder Accountant Export',
       'Invoice Decoder Adaptive Reread',

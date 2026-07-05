@@ -74,7 +74,7 @@
     rcNearest: 'Lectura mayorista más cercana a tu',
     badPrice: 'No pudimos leer este precio.',
     ondevice: 'Guardado solo en este dispositivo — nunca se envía a ningún lado.',
-    clearSaved: 'Borrar lo guardado',
+    clearSaved: 'Borrar lo guardado', saveContract: 'Guardar este precio en tu perfil de costos', contractSaved: 'Guardado en tu perfil de costos',
     // ledger funnel
     ledgerSoft: '¿Quieres esto vigilado por ti? Muntin Ledger marca la próxima subida en cuanto archivas la factura.',
     ledgerStrongEyebrow: 'Deja de revisar proveedores a mano',
@@ -148,7 +148,7 @@
     rcNearest: 'Nearest wholesale read to your',
     badPrice: 'Couldn’t read this price.',
     ondevice: 'Saved on this device only — never sent anywhere.',
-    clearSaved: 'Clear saved',
+    clearSaved: 'Clear saved', saveContract: 'Save this price to your cost profile', contractSaved: 'Saved to your cost profile',
     ledgerSoft: 'Want this watched for you? Muntin Ledger flags the next hike the moment you file the invoice.',
     ledgerStrongEyebrow: 'Stop checking vendors by hand',
     ledgerStrongHead: 'You typed this in by hand. Ledger reads it for you.',
@@ -735,8 +735,24 @@
     svg.addEventListener('pointerleave', hide);
   }
 
+  // MS4 — consent-gated cost-spine writer. VB captures a real, dated, unit-tagged
+  // DELIVERED price; on an explicit click we seed it into the shared cost profile
+  // (MuntinContext.contractPrices) that the rest of the suite reads for drift. It
+  // is the operator's OWN price, never a "fair"/"should-pay" price. Never silent.
+  function saveContractPrice(res) {
+    if (!CTX || typeof CTX.merge !== 'function' || !res.item || !(res.lastCents > 0)) return false;
+    var stem = (window.MuntinStem && window.MuntinStem.extractStem) ? window.MuntinStem.extractStem(res.item) : res.item.toLowerCase().trim();
+    if (!stem) return false;
+    var all = {};
+    try { all = CTX.get('contractPrices') || {}; } catch (_) { all = {}; }
+    all[stem] = { item: res.item, unit: res.unit || null, perUnitCents: res.lastCents, at: Date.now(), date: res.lastDate || null, source: 'vendor-benchmark' };
+    try { CTX.merge({ contractPrices: all }); return true; } catch (_) { return false; }
+  }
+
+  var lastRes = null;
   function render(res) {
     var m = res.market;
+    lastRes = res;
     var spike = classifyMarketSpike(res);
     chartModel = null;
     var blocks = [];
@@ -783,8 +799,11 @@
     // 6) THE FUNNEL
     blocks.push(funnelBlock(res, spike));
 
-    // 7) on-device + clear
-    blocks.push(h`<p class="vb-ondevice">${T.ondevice} <button type="button" class="vb-linkbtn" id="vbClearSaved">${T.clearSaved}</button></p>`);
+    // 7) on-device + clear + (consent) seed the cost profile
+    var saveContract = (res.lastCents > 0)
+      ? h` · <button type="button" class="vb-linkbtn" data-save-contract>${T.saveContract}</button>`
+      : '';
+    blocks.push(h`<p class="vb-ondevice">${T.ondevice} <button type="button" class="vb-linkbtn" id="vbClearSaved">${T.clearSaved}</button>${saveContract}</p>`);
 
     setHTML(resultEl, h`<div class="vb-result-inner">${blocks}</div>`);
     wireChartHover();
@@ -795,6 +814,12 @@
     var t = e.target;
     if (!t || !t.closest) return;
     if (t.closest('#vbClearSaved')) { clearAll(); return; }
+    var saveBtn = t.closest('[data-save-contract]');
+    if (saveBtn) {
+      if (lastRes && saveContractPrice(lastRes)) { saveBtn.textContent = T.contractSaved; saveBtn.disabled = true; }
+      track('Bench Contract Saved');
+      return;
+    }
     var copyBtn = t.closest('.vb-copy');
     if (copyBtn) {
       var action = copyBtn.closest('.vb-action');
