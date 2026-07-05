@@ -107,6 +107,13 @@ main{padding-top:64px}
 .ci-season-curve__cap{font-size:12.5px;color:var(--ink-soft);line-height:1.5;margin:7px 0 0}
 .ci-season-curve__cap strong{color:var(--ink)}
 .ci-season-curve__note{color:var(--stone);font-size:11.5px;white-space:nowrap}
+.ci-yield{margin:18px 0;padding:14px 16px;background:var(--white);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:10px}
+.ci-yield__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 5px}
+.ci-yield__body{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0}
+.ci-yield__body strong{font-weight:700}
+.ci-yield__link{margin:9px 0 0;font-size:13.5px}
+.ci-yield__link a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-yield__src{margin:7px 0 0;font-size:12px;color:var(--stone)}
 .ci-faq{margin:34px 0 0}
 .ci-faq__item{margin:0 0 18px}
 .ci-faq__q{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink);margin:0 0 6px}
@@ -282,6 +289,13 @@ main{padding-top:64px}
     </aside>
     <h2>Why there's no number yet</h2>
     <p>The rule is simple: a price ships only when we can source it from public USDA, BLS or FRED data at a quality we'd act on ourselves. For octopus, the free wholesale series we need isn't wired up yet — and a thin, single-source guess would be worse than nothing.</p>
+    
+    <aside class="ci-yield" aria-label="Edible-portion yield">
+      <p class="ci-yield__head">What we do know</p>
+      <p class="ci-yield__body">Even without a live price for <strong>octopus</strong> yet, we do know its <strong>edible-portion yield: ~45%</strong>. About 45% of what you buy reaches the plate after trim and waste (~55% loss), so your true cost per usable pound runs higher than the purchase price.</p>
+      <p class="ci-yield__link"><a href="/library/ingredient-yields/octopus/">See the full yield &amp; edible-cost analysis <span aria-hidden="true">→</span></a></p>
+      <p class="ci-yield__src">Standard industry reference yield.</p>
+    </aside>
     <h2>What you can do now</h2>
     <p>Check your last octopus invoice against your own recent ones, or open <a href="/tools/cost-pulse/">the live tool</a> for the ingredients we do cover. This page fills in when the data does.</p>
     <div class="ci-cta-row">

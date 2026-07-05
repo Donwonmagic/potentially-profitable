@@ -107,6 +107,13 @@ main{padding-top:64px}
 .ci-season-curve__cap{font-size:12.5px;color:var(--ink-soft);line-height:1.5;margin:7px 0 0}
 .ci-season-curve__cap strong{color:var(--ink)}
 .ci-season-curve__note{color:var(--stone);font-size:11.5px;white-space:nowrap}
+.ci-yield{margin:18px 0;padding:14px 16px;background:var(--white);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:10px}
+.ci-yield__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 5px}
+.ci-yield__body{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0}
+.ci-yield__body strong{font-weight:700}
+.ci-yield__link{margin:9px 0 0;font-size:13.5px}
+.ci-yield__link a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-yield__src{margin:7px 0 0;font-size:12px;color:var(--stone)}
 .ci-faq{margin:34px 0 0}
 .ci-faq__item{margin:0 0 18px}
 .ci-faq__q{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink);margin:0 0 6px}
@@ -282,6 +289,13 @@ main{padding-top:64px}
     </aside>
     <h2>Por qué aún no hay número</h2>
     <p>La regla es simple: un precio se publica solo cuando podemos obtenerlo de datos públicos (USDA, BLS, FRED) con una calidad sobre la que actuaríamos nosotros mismos. Para trucha (entera), la serie mayorista gratuita que necesitamos aún no está conectada. Una estimación de una sola fuente sería peor que nada.</p>
+    
+    <aside class="ci-yield" aria-label="Rendimiento de porción comestible">
+      <p class="ci-yield__head">Lo que sí sabemos</p>
+      <p class="ci-yield__body">Aunque todavía no publicamos un precio de <strong>trucha entera</strong>, sí conocemos su <strong>rendimiento de porción comestible: ~55%</strong>. Cerca del 55% de lo que compras llega al plato tras la limpieza y el desperdicio (~45% de merma), así que tu costo real por libra utilizable es más alto que el precio de compra.</p>
+      <p class="ci-yield__link"><a href="/es/library/ingredient-yields/whole-trout/">Ver el análisis completo de rendimiento y costo comestible <span aria-hidden="true">→</span></a></p>
+      <p class="ci-yield__src">Rendimiento estándar de referencia de la industria.</p>
+    </aside>
     <h2>Qué puedes hacer ahora</h2>
     <p>Compara tu última factura de trucha (entera) con tus facturas recientes, o abre <a href="/es/tools/cost-pulse/">la herramienta en vivo</a> para los ingredientes que sí cubrimos. Esta página se completará cuando lo hagan los datos.</p>
     <div class="ci-cta-row">

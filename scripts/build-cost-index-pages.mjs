@@ -84,6 +84,14 @@ const DEEP_HIST = (() => {
   try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-index-history.json'), 'utf8')).ingredients || {}; }
   catch { return {}; }
 })();
+// Edible-portion yields (slug -> { yield, en, es, unit_en, unit_es, cat }). Lets a
+// coverage-in-progress page still give the operator ONE honest fact — the usable
+// share after trim/waste — even when no live wholesale price has earned publication.
+const YIELDS = (() => {
+  try { const a = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/ingredient-yields.json'), 'utf8'));
+    const m = {}; for (const y of a) if (y && y.slug) m[y.slug] = y; return m; }
+  catch { return {}; }
+})();
 // Prefer the deep backfill (enough points to backtest coverage); fall back to the
 // vendored capped history.
 function bandSeries(slug, entry) {
@@ -1470,6 +1478,13 @@ main{padding-top:64px}
 .ci-season-curve__cap{font-size:12.5px;color:var(--ink-soft);line-height:1.5;margin:7px 0 0}
 .ci-season-curve__cap strong{color:var(--ink)}
 .ci-season-curve__note{color:var(--stone);font-size:11.5px;white-space:nowrap}
+.ci-yield{margin:18px 0;padding:14px 16px;background:var(--white);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:10px}
+.ci-yield__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 5px}
+.ci-yield__body{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0}
+.ci-yield__body strong{font-weight:700}
+.ci-yield__link{margin:9px 0 0;font-size:13.5px}
+.ci-yield__link a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-yield__src{margin:7px 0 0;font-size:12px;color:var(--stone)}
 .ci-faq{margin:34px 0 0}
 .ci-faq__item{margin:0 0 18px}
 .ci-faq__q{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink);margin:0 0 6px}
@@ -1922,6 +1937,34 @@ function shippable(slug) {
 }
 
 // Expanding-coverage page: honest absence, not an apology. No price, no Dataset.
+// One honest fact for a coverage-in-progress page: the edible-portion yield.
+// Even with no published wholesale price, an operator gets the usable share
+// after trim/waste + a link to the full yield-and-cost analysis. Sourced to the
+// standard reference yield tables; no dollar figure asserted here.
+function yieldBlock(slug, locale) {
+  const y = YIELDS[slug];
+  if (!y || !(y.yield > 0 && y.yield <= 1)) return '';
+  const es = locale === 'es';
+  const base = es ? '/es' : '';
+  const pct = Math.round(y.yield * 100), waste = 100 - pct;
+  const nm = (es ? (y.es || y.en) : y.en || slug).toLowerCase();
+  const head = es ? 'Lo que sí sabemos' : 'What we do know';
+  const body = es
+    ? `Aunque todavía no publicamos un precio de <strong>${nm}</strong>, sí conocemos su <strong>rendimiento de porción comestible: ~${pct}%</strong>. Cerca del ${pct}% de lo que compras llega al plato tras la limpieza y el desperdicio (~${waste}% de merma), así que tu costo real por libra utilizable es más alto que el precio de compra.`
+    : `Even without a live price for <strong>${nm}</strong> yet, we do know its <strong>edible-portion yield: ~${pct}%</strong>. About ${pct}% of what you buy reaches the plate after trim and waste (~${waste}% loss), so your true cost per usable pound runs higher than the purchase price.`;
+  const link = es
+    ? `<a href="${base}/library/ingredient-yields/${slug}/">Ver el análisis completo de rendimiento y costo comestible <span aria-hidden="true">→</span></a>`
+    : `<a href="${base}/library/ingredient-yields/${slug}/">See the full yield &amp; edible-cost analysis <span aria-hidden="true">→</span></a>`;
+  const src = es ? 'Rendimiento estándar de referencia de la industria.' : 'Standard industry reference yield.';
+  return `
+    <aside class="ci-yield" aria-label="${es ? 'Rendimiento de porción comestible' : 'Edible-portion yield'}">
+      <p class="ci-yield__head">${head}</p>
+      <p class="ci-yield__body">${body}</p>
+      <p class="ci-yield__link">${link}</p>
+      <p class="ci-yield__src">${src}</p>
+    </aside>`;
+}
+
 function emitExpandingPage(slug, locale) {
   const es = locale === 'es';
   const lang = es ? 'es' : 'en';
@@ -1959,6 +2002,7 @@ function emitExpandingPage(slug, locale) {
     </aside>
     <h2>Por qué aún no hay número</h2>
     <p>La regla es simple: un precio se publica solo cuando podemos obtenerlo de datos públicos (USDA, BLS, FRED) con una calidad sobre la que actuaríamos nosotros mismos. Para ${lc}, la serie mayorista gratuita que necesitamos aún no está conectada. Una estimación de una sola fuente sería peor que nada.</p>
+    ${yieldBlock(slug, locale)}
     <h2>Qué puedes hacer ahora</h2>
     <p>Compara tu última factura de ${lc} con tus facturas recientes, o abre <a href="${base}/tools/cost-pulse/">la herramienta en vivo</a> para los ingredientes que sí cubrimos. Esta página se completará cuando lo hagan los datos.</p>
     <div class="ci-cta-row">
@@ -1973,6 +2017,7 @@ function emitExpandingPage(slug, locale) {
     </aside>
     <h2>Why there's no number yet</h2>
     <p>The rule is simple: a price ships only when we can source it from public USDA, BLS or FRED data at a quality we'd act on ourselves. For ${lc}, the free wholesale series we need isn't wired up yet — and a thin, single-source guess would be worse than nothing.</p>
+    ${yieldBlock(slug, locale)}
     <h2>What you can do now</h2>
     <p>Check your last ${lc} invoice against your own recent ones, or open <a href="${base}/tools/cost-pulse/">the live tool</a> for the ingredients we do cover. This page fills in when the data does.</p>
     <div class="ci-cta-row">
