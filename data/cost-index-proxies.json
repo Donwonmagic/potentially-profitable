@@ -6,9 +6,9 @@
   },
   "asOf": null,
   "summary": {
-    "count": 185,
+    "count": 192,
     "withWholesaleLevel": 38,
-    "indexOnly": 147,
+    "indexOnly": 154,
     "sharedSourceGroups": 2,
     "ingredientsSharingSource": 4
   },
@@ -38,6 +38,12 @@
       "sharedWith": []
     },
     "alfalfa-sprouts": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "american-cheese": {
       "levelBasis": "index",
       "sourceKey": null,
       "independentLevel": false,
@@ -83,6 +89,12 @@
       "levelBasis": "wholesale",
       "sourceKey": "lmr:2498:Back Ribs",
       "independentLevel": true,
+      "sharedWith": []
+    },
+    "bacon": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
       "sharedWith": []
     },
     "banana": {
@@ -137,6 +149,12 @@
       "levelBasis": "wholesale",
       "sourceKey": "lmr:2453:Bottom Round",
       "independentLevel": true,
+      "sharedWith": []
+    },
+    "bread": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
       "sharedWith": []
     },
     "brisket": {
@@ -242,6 +260,12 @@
       "sharedWith": []
     },
     "chicken-breast": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "chicken-legs": {
       "levelBasis": "index",
       "sourceKey": null,
       "independentLevel": false,
@@ -513,6 +537,12 @@
       "independentLevel": false,
       "sharedWith": []
     },
+    "ice-cream": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
     "iceberg-lettuce": {
       "levelBasis": "index",
       "sourceKey": null,
@@ -733,6 +763,12 @@
       "levelBasis": "wholesale",
       "sourceKey": "lmr:2498:Butt",
       "independentLevel": true,
+      "sharedWith": []
+    },
+    "pork-chops": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
       "sharedWith": []
     },
     "pork-loin": {
@@ -1099,6 +1135,12 @@
       "levelBasis": "wholesale",
       "sourceKey": "noaa:030612+030632",
       "independentLevel": true,
+      "sharedWith": []
+    },
+    "whole-milk": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
       "sharedWith": []
     },
     "whole-salmon": {
