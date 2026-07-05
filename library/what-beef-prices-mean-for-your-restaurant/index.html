@@ -104,7 +104,7 @@
       ],
       "speakable": {
         "@type": "SpeakableSpecification",
-        "cssSelector": [ "article#post-body", "h1", ".post-dek" ]
+        "cssSelector": [ ".post-dek", ".tldr__list", ".pull-quote" ]
       },
       "audio": {
         "@id": "https://muntin.digital/library/what-beef-prices-mean-for-your-restaurant/#audio"
@@ -117,6 +117,44 @@
         { "@type": "ListItem", "position": 2, "name": "Learn", "item": "https://muntin.digital/learn/" },
         { "@type": "ListItem", "position": 3, "name": "Articles", "item": "https://muntin.digital/blog/" },
         { "@type": "ListItem", "position": 4, "name": "What Beef Prices Actually Mean for Your Restaurant", "item": "https://muntin.digital/library/what-beef-prices-mean-for-your-restaurant/" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://muntin.digital/library/what-beef-prices-mean-for-your-restaurant/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the difference between wholesale and retail beef prices?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A retail beef price is the per-pound tag on a grocery package; a wholesale price is what a distributor bills a restaurant for a case, and your true per-pound cost is the case price divided by the weight that actually plates after trim. The two track over a season but diverge week to week, so the beef price in a consumer headline is rarely the one on your invoice."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is beef so expensive in 2026?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The U.S. cattle herd has been shrinking since 2019 against steady demand, which puts durable upward pressure on beef. USDA's Economic Research Service forecasts 2026 retail beef and veal up about 12% on the year, the largest increase of any food category. That is a category average, though: individual cuts each move on their own path underneath it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How should a restaurant handle rising beef costs?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Read your own cuts rather than 'beef.' Feature the cut that is soft this month, hold or re-portion the one in a genuine run, and re-price only when a move is wholesale, recent, cut-specific, and backed by a settled trend rather than one noisy reading. Track what you actually paid, cut by cut, so the decision runs on your invoice, not a national average."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I find my real per-pound beef cost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Divide the wholesale case price by the edible weight that survives trim, not the as-purchased weight. A case that loses weight to trim and bone costs more per usable pound than the invoice line suggests, and that edible-portion cost is the number that belongs in your plate cost."
+          }
+        }
       ]
     }
   ]
@@ -333,6 +371,18 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     {
       "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/margin/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/wholesale/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/edible-portion/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/yield-percent/"
     }
   ]
 }
@@ -698,21 +748,25 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption>Four questions that separate a headline beef price from the one on your invoice.</figcaption>
       </figure>
 
-      <h2 id="basis">Basis &mdash; the shelf price and the case price are not the same number</h2>
+      <h2 id="basis">Basis &mdash; is this a retail or a wholesale beef price?</h2>
 
       <p>The first thing to establish about any beef price is what market it comes from. A grocery &ldquo;ground beef up X percent&rdquo; is a <em>retail</em> price: the per-pound tag on a package, tracked by the same surveys that build the consumer price index. You do not buy there. You buy <em>wholesale</em> &mdash; a case, a subprimal, a bulk pack &mdash; and your true per-pound cost is the case price divided by the weight that actually plates, after you trim what you have to trim.</p>
 
       <p>These two prices are relatives, not twins. Over a season they move in the same direction, because the same cattle sit upstream of both. Week to week they wander: retail tags are sticky and change on the store&rsquo;s schedule, while wholesale moves with the cutout and the truck. The public wholesale references &mdash; USDA&rsquo;s Agricultural Marketing Service boxed-beef and cut reports &mdash; are the right yardstick for what you pay, and they read differently from the shelf. Lean ground beef, for instance, references in the low four dollars a pound at wholesale, well under the grocery tag on the same meat. When a headline quotes the shelf and you run a kitchen, you are reading someone else&rsquo;s price.</p>
 
-      <h2 id="window">Window &mdash; a year-over-year number is not a this-week number</h2>
+      <h2 id="window">Window &mdash; is this year-over-year, or since your last invoice?</h2>
 
       <p>The second question is which stretch of time the number covers. The cookout-cost stories measure against the same weekend a year ago &mdash; a twelve-month window, chosen because it makes a clean annual comparison. Your profit and loss does not care about last July. It cares about the delivery that arrived since your menu was last priced.</p>
 
       <p>Those two windows can point in opposite directions at the same moment, and that is not a contradiction &mdash; it is the whole reason to name the window before you act. A cut can be up double digits against last year and still tick <em>down</em> in the week you happen to be reading, because a short recent stretch of wholesale prints is a different measurement than an annual average. Re-price a burger because a cut is down two percent over four days and you will re-price it back next month; hold your menu because the annual figure is up twelve percent and you may sit on an easing you could have banked. The window tells you which move is real for <em>your</em> decision. A single week, in either direction, is rarely enough to move a menu.</p>
 
-      <h2 id="cut">Cut &mdash; &ldquo;beef&rdquo; is not one price</h2>
+      <h2 id="cut">Cut &mdash; is this &ldquo;beef,&rdquo; or the cut you actually buy?</h2>
 
-      <p>The third question is the one that saves the most money: which beef? &ldquo;Beef&rdquo; in a headline is an average across cuts that do not travel together. The structural story behind the current run &mdash; a national cattle herd that has been shrinking since 2019 against steady demand &mdash; is real, and it puts durable upward pressure on the category. The USDA&rsquo;s Economic Research Service forecasts 2026 retail beef and veal up about twelve percent on the year, the largest increase of any food category. But that average hides as much as it tells: within it, ribeye, ground, tenderloin, and short rib each answer to their own demand, their own trim, their own moment.</p>
+      <p>The third question is the one that saves the most money: which beef? &ldquo;Beef&rdquo; in a headline is an average across cuts that do not travel together.</p>
+
+      <h3 id="why-beef-expensive">Why beef is expensive in 2026</h3>
+
+      <p>The structural story behind the current run is real: a national cattle herd that has been shrinking since 2019 against steady demand, which puts durable upward pressure on the whole category. The USDA&rsquo;s Economic Research Service forecasts 2026 retail beef and veal up about 12% on the year &mdash; the largest increase of any food category. But that average hides as much as it tells: within it, ribeye, ground, tenderloin, and short rib each answer to their own demand, their own trim, their own moment.</p>
 
       <figure class="viz-figure article-figure" data-audio-alt="A ranked bar chart making one point: in a single week, the beef cuts on your line can move in different directions and by different amounts, so an average for all beef tells you very little about the cut you actually buy. One cut is shown rising sharply in rust, tagged as a real move to act on. Another is shown roughly flat. A third is shown easing slightly in teal, tagged as noise you should not chase. A fourth sits in the middle. The exact percentages here are illustrative, drawn to show that cuts diverge; the current figures for your own cuts live on the live Cost Index, dated and sourced.">
         <div class="viz-bars">
@@ -741,9 +795,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <figcaption>The same week can move four beef cuts four different directions &mdash; which is why you re-price cuts, not &ldquo;beef.&rdquo;</figcaption>
       </figure>
 
-      <p>The practical move is to stop reading &ldquo;beef&rdquo; and start reading your beef. If your menu leans on ribeye, the ribeye line is your story and the ground-beef headline is noise; if you sell burgers, the reverse. Feature the cut that is soft this month, hold or re-portion the one in a genuine run, and let the category average belong to the newspaper.</p>
+      <p>The practical move is to stop reading &ldquo;beef&rdquo; and start reading your beef. If your menu leans on ribeye, the ribeye line is your story and the ground-beef headline is noise; if you sell burgers, the reverse. Feature the cut that is soft this month, hold or re-portion the one in a genuine run, and let the category average belong to the newspaper. <a href="/cost-index/">See where your own cuts sit on the live Cost Index &rarr;</a></p>
 
-      <h2 id="confidence">Confidence &mdash; one reading is not a trend</h2>
+      <h2 id="confidence">Confidence &mdash; is this one reading, or a real trend?</h2>
 
       <p>The last question is how much to trust the reading at all. A price is a measurement, and measurements carry noise. A single print &mdash; one source, one day, disagreeing with its own neighbors &mdash; is a direction-of-travel hint at best, not a signal to act on. A settled trend &mdash; several weeks, several sources, pointing the same way &mdash; is something you can move a menu on. Good price data tells you which it is looking at, usually with a confidence label; a lone figure with a decimal point and no context is the easiest number in the world to over-trust.</p>
 
@@ -753,7 +807,21 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>None of this argues for ignoring beef prices. It argues for reading them as an operator instead of as a shopper. Run any quoted beef number through the four lenses: is it wholesale or retail, this-week or year-over-year, my cut or the category, a trend or a blip? What survives all four is worth acting on. What doesn&rsquo;t is worth noting and watching.</p>
 
-      <p>Two tools do the reading for you. The <a href="/cost-index/">Cost Index</a> carries the wholesale reference, the trend, and the confidence for the proteins on your line &mdash; your cuts, dated and sourced, not the category average. <a href="https://ledger.muntin.digital/">Muntin Ledger</a> files your vendor invoices and tracks what you <em>actually</em> paid, cut by cut, delivery by delivery &mdash; the one price no national survey will ever have. And when a move clears all four lenses and turns out to be real and structural, that is the moment to <a href="/library/keep-plate-cost-honest-when-prices-change/">keep your plate cost honest</a> &mdash; the companion piece on what to do once a price has genuinely moved under you.</p>
+      <p>Two tools do the reading for you. The <a href="/cost-index/">Cost Index</a> carries the wholesale reference, the trend, and the confidence for the proteins on your line &mdash; your cuts, dated and sourced, not the category average. <a href="/ledger/">Muntin Ledger</a> files your vendor invoices and tracks what you <em>actually</em> paid, cut by cut, delivery by delivery &mdash; the one price no national survey will ever have. And when a move clears all four lenses and turns out to be real and structural, that is the moment to <a href="/library/keep-plate-cost-honest-when-prices-change/">keep your plate cost honest</a> &mdash; the companion piece on what to do once a price has genuinely moved under you.</p>
+
+      <h2 id="faq">Beef prices, answered</h2>
+
+      <h3>What is the difference between wholesale and retail beef prices?</h3>
+      <p>A retail beef price is the per-pound tag on a grocery package; a wholesale price is what a distributor bills a restaurant for a case, and your true per-pound cost is the case price divided by the weight that actually plates after trim. The two track over a season but diverge week to week &mdash; so the beef price in a consumer headline is rarely the one on your invoice.</p>
+
+      <h3>Why is beef so expensive in 2026?</h3>
+      <p>The U.S. cattle herd has been shrinking since 2019 against steady demand, which puts durable upward pressure on beef. USDA&rsquo;s Economic Research Service forecasts 2026 retail beef and veal up about 12% on the year &mdash; the largest increase of any food category. That is a category average, though: individual cuts each move on their own path underneath it.</p>
+
+      <h3>How should a restaurant handle rising beef costs?</h3>
+      <p>Read your own cuts rather than &ldquo;beef.&rdquo; Feature the cut that is soft this month, hold or re-portion the one in a genuine run, and re-price only when a move is wholesale, recent, cut-specific, and backed by a settled trend rather than one noisy reading. Track what you actually paid, cut by cut, so the decision runs on your invoice, not a national average.</p>
+
+      <h3>How do I find my real per-pound beef cost?</h3>
+      <p>Divide the wholesale case price by the edible weight that survives trim, not the as-purchased weight. A case that loses weight to trim and bone costs more per usable pound than the invoice line suggests, and that edible-portion cost is the number that belongs in your plate cost.</p>
 
     <!-- article-author-card:start -->
 <aside class="article-author-card" aria-labelledby="article-author-h" style="margin:48px 0 0;padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--cream-2);display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
