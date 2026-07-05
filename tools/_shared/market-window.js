@@ -73,6 +73,18 @@
     var mid = Math.floor(n / 2);
     return n % 2 === 1 ? s[mid] : (s[mid - 1] + s[mid]) / 2;
   }
+  // Median absolute one-step change over the last ~n points — the series' own
+  // "normal" step, used by the seam guard to decide whether a live-level splice
+  // is a real move or a basis discontinuity.
+  function rollingStep(values, n) {
+    var k = Math.min(n || 12, values.length - 1);
+    if (k < 1) return 0;
+    var diffs = [];
+    for (var i = values.length - k; i < values.length; i++) {
+      if (i >= 1) diffs.push(Math.abs(values[i] - values[i - 1]));
+    }
+    return diffs.length ? median(diffs) : 0;
+  }
 
   /**
    * The market wholesale series for an ingredient key, newest LAST.
@@ -260,8 +272,24 @@
 
     var series = seriesForKey(ref.key, { seed: seed, deep: deep });
 
+    // The NEVER-augmented series — the forward math (conformal band, spike
+    // classifier, regime test) must read this, not a spliced endpoint.
+    var rawSeries = series
+      ? { values: series.values.slice(), dates: series.dates.slice(), kind: series.kind, sources: series.sources }
+      : null;
+    var livePoint = null;
+
     // Recent-invoice augmentation: append the live level at generatedAt so a
     // just-received invoice still snaps to a real endpoint (mirrors the UI).
+    // SEAM GUARD (stats-audit 2026-07, HIGH-2): the live level is a national
+    // LMR/AMS COMPOSITE; the deep/spark backfill is a different (regional) basis,
+    // so splicing the live endpoint onto it manufactures a basis-mismatch
+    // discontinuity (measured jumps up to +60% / 12× the series' own step) that a
+    // residual/spike/change-point model reads as a real one-step move. Only splice
+    // when the series shares the live level's basis (kind 'short', built from the
+    // same assessment.history accumulation) AND the seam is small vs the series'
+    // own recent step. Otherwise keep the series RAW and carry the live level as a
+    // separate "where the price is now" pin (livePoint).
     var ing = null;
     if (Array.isArray(seed.ingredients)) {
       for (var i = 0; i < seed.ingredients.length; i++) {
@@ -270,15 +298,26 @@
     }
     if (series && ing && ing.assessment && ing.assessment.level &&
         ing.assessment.level.medianCents > 0 && seed.generatedAt) {
+      var liveCents = ing.assessment.level.medianCents;
       var tail = series.dates[series.dates.length - 1];
+      var tailVal = series.values[series.values.length - 1];
       if (parseISODay(seed.generatedAt) != null && parseISODay(tail) != null &&
           parseISODay(seed.generatedAt) > parseISODay(tail)) {
-        series = {
-          values: series.values.concat([ing.assessment.level.medianCents]),
-          dates: series.dates.concat([seed.generatedAt]),
-          kind: series.kind,
-          sources: series.sources
-        };
+        var sourceMatches = series.kind === 'short';
+        var step = rollingStep(series.values, 12);
+        var seam = Math.abs(liveCents - tailVal);
+        var augmentOK = sourceMatches && step > 0 &&
+                        seam <= 2 * step && seam <= 0.03 * Math.abs(tailVal);
+        if (augmentOK) {
+          series = {
+            values: series.values.concat([liveCents]),
+            dates: series.dates.concat([seed.generatedAt]),
+            kind: series.kind,
+            sources: series.sources
+          };
+        } else {
+          livePoint = { cents: liveCents, date: seed.generatedAt };
+        }
       }
     }
 
@@ -299,6 +338,8 @@
     base.sources = series.sources;
     base.seriesStart = series.dates[0];
     base.seriesEnd = series.dates[series.dates.length - 1];
+    base.seriesRaw = rawSeries || { values: series.values.slice(), dates: series.dates.slice(), kind: series.kind, sources: series.sources };
+    base.livePoint = livePoint;   // set only when the live level was NOT spliced (seam/basis guard)
 
     var fmt = Format(locale === 'es');
     var res = fmt.thenVsNow(series.values, series.dates, {

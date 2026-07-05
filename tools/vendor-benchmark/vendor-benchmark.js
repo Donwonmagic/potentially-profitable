@@ -68,8 +68,9 @@
     levelAbove: 'Tu nivel también corre por encima de la referencia mayorista',
     levelCalib: 'El flete y la distribución normalmente suman margen, así que tómalo como tu nivel — no como prueba de una factura inflada. La tasa de cambio de arriba es la señal más fuerte.',
     receiptSummary: 'Cómo se midió esta diferencia',
-    receiptDepthDeep: 'De 3 años de lecturas mayoristas semanales del USDA.',
+    receiptDepthDeep: function (n, cadence, from, to) { return 'De ' + n + ' lecturas mayoristas ' + cadence + ' del USDA, ' + from + '–' + to + '.'; },
     receiptDepthShort: 'De un historial de mercado reciente y corto.',
+    rcWeekly: 'semanales', rcMonthly: 'mensuales',
     rcReads: 'Lecturas', rcWindow: 'Ventana de mercado cubierta', rcOff: 'días de tu fecha',
     rcNearest: 'Lectura mayorista más cercana a tu',
     badPrice: 'No pudimos leer este precio.',
@@ -140,8 +141,12 @@
     levelAbove: 'Your level also runs above the wholesale reference',
     levelCalib: 'Freight and distribution normally add markup, so read this as your level — not proof of a padded bill. The rate-of-change above is the stronger signal.',
     receiptSummary: 'How this gap was measured',
-    receiptDepthDeep: 'Drawn from 3 years of weekly USDA wholesale reads.',
+    // Post-audit (2026-07, HIGH-1): derive cadence + span per item — the deep series
+    // are heterogeneous (beef is monthly, eggs spans ~1.4 years), so a blanket
+    // "3 years of weekly reads" was false for several items.
+    receiptDepthDeep: function (n, cadence, from, to) { return 'Drawn from ' + n + ' ' + cadence + ' USDA wholesale reads, ' + from + '–' + to + '.'; },
     receiptDepthShort: 'Drawn from recent, short market history.',
+    rcWeekly: 'weekly', rcMonthly: 'monthly',
     rcReads: 'Reads', rcWindow: 'Covered market window', rcOff: 'days off your date',
     rcNearest: 'Nearest wholesale read to your',
     badPrice: 'Couldn’t read this price.',
@@ -660,7 +665,10 @@
     // operator's window — otherwise a recent-regime read (e.g. "structural")
     // pinned under a "+0.5%" headline reads as a contradiction.
     if (Math.abs(m.res.marketPct) < 0.05) return null;
-    var vals = m.series.values, dates = m.series.dates, N = vals.length, start = Math.max(0, N - 26);
+    // Read the UN-augmented series (HIGH-2): the spliced live-level endpoint is a
+    // basis discontinuity, not a price move, and would fabricate a spike/easing read.
+    var s = m.seriesRaw || m.series;
+    var vals = s.values, dates = s.dates, N = vals.length, start = Math.max(0, N - 26);
     var pts = [];
     for (var i = N - 1; i >= start; i--) {          // newest first
       if (typeof vals[i] === 'number' && vals[i] > 0) pts.push({ level: { medianCents: vals[i] }, asOf: dates[i] });
@@ -870,10 +878,13 @@
   //  · the interval's up/down asymmetry is shown, never collapsed to a symmetric ±.
   function forecastBlock(res) {
     var m = res.market;
-    if (!CONF || !m || !m.available || m.seriesKind !== 'deep' || !m.series || m.series.values.length < 24) return '';
+    // Forward math reads the UN-augmented series (HIGH-2) so a spliced live-level
+    // endpoint (a national-vs-regional basis seam) is never scored as a one-step move.
+    var s = m && m.seriesRaw ? m.seriesRaw : (m && m.series);
+    if (!CONF || !m || !m.available || m.seriesKind !== 'deep' || !s || s.values.length < 24) return '';
     if (m.confidence === 'low' || m.confidence === 'directional') return '';
     var out;
-    try { out = CONF.conformalNext(m.series.values); } catch (_) { return ''; }
+    try { out = CONF.conformalNext(s.values); } catch (_) { return ''; }
     if (!out || out.coverage == null || out.degenerate || !(out.point > 0)) return '';
     if (out.upPct == null || out.downPct == null) return '';
     var up = Math.round(out.upPct * 100), down = Math.round(out.downPct * 100);
@@ -883,7 +894,7 @@
     var lo = Math.round((out.coverageLo != null ? out.coverageLo : out.coverage) * 100);
     var hi = Math.round((out.coverageHi != null ? out.coverageHi : out.coverage) * 100);
     var reads = out.nTested;
-    var monthly = seriesCadenceMonthly(m.series.dates);
+    var monthly = seriesCadenceMonthly(s.dates);
     var per = monthly ? (ES ? 'mensual' : 'monthly') : (ES ? 'semanal' : 'weekly');
     // Asymmetric band; note the skew only when up/down clearly differ.
     var ratio = down > 0 ? up / down : (up > 0 ? Infinity : 1);
@@ -1006,8 +1017,16 @@
     if (!(m.res && m.res.ok)) return '';
     var valA = marketValueAt(m, m.res.marketADate);
     var valB = marketValueAt(m, m.res.marketBDate);
-    var depth = m.seriesKind === 'deep' ? T.receiptDepthDeep : T.receiptDepthShort;
     var reads = (m.series && m.series.values) ? m.series.values.length : 0;
+    var depth;
+    if (m.seriesKind === 'deep' && m.series && m.series.dates && m.series.dates.length >= 2) {
+      var cadWord = seriesCadenceMonthly(m.series.dates) ? T.rcMonthly : T.rcWeekly;
+      var from = fmtDate(m.seriesStart || m.series.dates[0]);
+      var to = fmtDate(m.seriesEnd || m.series.dates[m.series.dates.length - 1]);
+      depth = T.receiptDepthDeep(reads, cadWord, from, to);
+    } else {
+      depth = T.receiptDepthShort;
+    }
     var lineA = h`<li>${T.rcNearest} ${fmtDate(res.firstDate)}: <strong>${fmtDate(m.res.marketADate)}</strong>${valA != null ? h`, ${money(valA)}` : ''} <span class="vb-rc-off">(~${String(m.res.aGapDays)} ${T.rcOff})</span></li>`;
     var lineB = h`<li>${T.rcNearest} ${fmtDate(res.lastDate)}: <strong>${fmtDate(m.res.marketBDate)}</strong>${valB != null ? h`, ${money(valB)}` : ''} <span class="vb-rc-off">(~${String(m.res.bGapDays)} ${T.rcOff})</span></li>`;
     return h`<details class="vb-receipt"><summary>${T.receiptSummary}</summary><ul class="vb-rc-list">${lineA}${lineB}</ul><p class="vb-rc-meta">${T.rcWindow}: ${fmtDate(m.res.marketADate)} – ${fmtDate(m.res.marketBDate)} · ${T.rcReads}: ${String(reads)}. ${depth}</p></details>`;

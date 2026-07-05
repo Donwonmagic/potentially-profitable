@@ -197,3 +197,56 @@ test('degrades to a stable shape on empty input, never throws', () => {
   assert.equal(MW.compute({}).market.available, false);
   assert.equal(MW.compute({ purchases: [] }).observationCount, 0);
 });
+
+// ── Seam guard (HIGH-2): don't splice a basis-mismatched live level onto the
+// series the forward math reads. ────────────────────────────────────────────
+const NOW = '2026-06-20';
+const SEAM_SEED_A = {
+  status: 'live', generatedAt: NOW,
+  ingredients: [{
+    key: 'beefcut', label_en: 'Beefcut', label_es: 'Beefcut', unit_en: 'lb', unit_es: 'lb',
+    assessment: { asOf: '2026-06-18', confidence: 'medium', level: { basis: 'wholesale', medianCents: 590 }, history: [] }
+  }]
+};
+// Monthly DEEP series (kind 'deep' = regional basis, mismatched vs the national
+// live level), tail ~2026-01, i.e. BEFORE generatedAt so the splice condition fires.
+const SEAM_DEEP_A = { beefcut: (function () { const rows = []; let d = Date.UTC(2023, 4, 1); for (let i = 0; i < 36; i++) { rows.push([new Date(d).toISOString().slice(0, 10), 1080 + i * 3]); d += 31 * 86400000; } return rows; })() };
+
+test('seam guard: a source-mismatched deep live level is NOT spliced; livePoint carries it', () => {
+  const m = MW.compute({
+    item: 'beefcut',
+    purchases: [{ cents: 600, date: '2024-01-01', unit: 'lb' }, { cents: 620, date: '2026-01-01', unit: 'lb' }],
+    seed: SEAM_SEED_A, deep: SEAM_DEEP_A
+  }).market;
+  assert.equal(m.seriesRaw.values.length, 36, 'raw series is the un-augmented deep series');
+  assert.ok(!m.seriesRaw.values.includes(590), 'the live level never enters the forward-math series');
+  assert.ok(m.livePoint && m.livePoint.cents === 590, 'live level is carried as a where-it-is-now pin');
+});
+
+const SEAM_SEED_B = {
+  status: 'live', generatedAt: NOW,
+  ingredients: [{
+    key: 'produce', label_en: 'Produce', label_es: 'Produce', unit_en: 'lb', unit_es: 'lb',
+    assessment: {
+      asOf: '2026-06-18', confidence: 'medium', level: { basis: 'wholesale', medianCents: 1010 },
+      history: [
+        { date: '2026-05-01', valueCents: 1000, source: 'usda-ams', basis: 'wholesale' },
+        { date: '2026-05-08', valueCents: 1015, source: 'usda-ams', basis: 'wholesale' },
+        { date: '2026-05-15', valueCents: 1005, source: 'usda-ams', basis: 'wholesale' },
+        { date: '2026-06-01', valueCents: 1000, source: 'usda-ams', basis: 'wholesale' }
+      ]
+    }
+  }]
+};
+
+test('seam guard: a same-basis short series with a small seam IS spliced (raw stays clean)', () => {
+  const m = MW.compute({
+    item: 'produce',
+    purchases: [{ cents: 1000, date: '2026-05-01', unit: 'lb' }, { cents: 1000, date: '2026-06-01', unit: 'lb' }],
+    seed: SEAM_SEED_B, deep: {}
+  }).market;
+  assert.equal(m.seriesKind, 'short');
+  assert.equal(m.seriesRaw.values.length, 4, 'raw stays un-augmented');
+  assert.equal(m.series.values.length, 5, 'display series is spliced with the live level');
+  assert.equal(m.livePoint, null, 'no separate pin when the splice is safe');
+});
