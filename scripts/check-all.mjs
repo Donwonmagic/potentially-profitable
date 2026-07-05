@@ -448,6 +448,11 @@ const CHECKS = [
   // cost-null-gate.test.mjs vectors are picked up by the Unit tests step.
   ['Cost-index lock-or-float self-test','build-cost-lockfloat.mjs','--self-test'],
   ['Cost-index lock-or-float sync','build-cost-lockfloat.mjs','--check'],
+  // Forbidden-claim lint for the lock-or-float surface — a named red-if-reintroduced
+  // case per audit-banned read (direction, opportunity-timing, overpayment, X-leads-Y)
+  // so an A/B copy tweak can never quietly bring one back in EN or ES.
+  ['Cost-index lock-or-float copy','check-lockfloat-copy.mjs'],
+  ['Cost-index lock-or-float copy self-test','check-lockfloat-copy.mjs','--self-test'],
   // Trend skill — the reliability-diagram half: a price-only direction call is
   // replayed over deep history and bucketed by strength; the gate fails unless a
   // stronger arrow verifies more often AND beats the no-skill baseline ("high"
