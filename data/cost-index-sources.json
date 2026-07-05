@@ -9856,6 +9856,18 @@
         }
       ],
       "coverage": "Staged: mapped to USDA AMS terminal-market report 2278 (commodity \"Malanga/ Yautia\", Atlanta); withheld from live reads until a wholesale level verifies in bounds."
+    },
+    "flour": {
+      "verified": false,
+      "bls": {
+        "seriesId": "WPU02120301"
+      },
+      "fred": {
+        "seriesId": "APU0000701111",
+        "basis": "retail",
+        "unit": "lb"
+      },
+      "coverage": "Staged: retail price level (BLS/FRED APU all-purpose flour, $/lb) corroborated by the wheat-flour PPI — no free wholesale flour report exists, so it would ship as a retail reference if it verifies in bounds."
     }
   },
   "drivers": {

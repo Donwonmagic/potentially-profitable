@@ -6,9 +6,9 @@
   },
   "asOf": null,
   "summary": {
-    "count": 181,
+    "count": 182,
     "withWholesaleLevel": 38,
-    "indexOnly": 143,
+    "indexOnly": 144,
     "sharedSourceGroups": 2,
     "ingredientsSharingSource": 4
   },
@@ -395,6 +395,12 @@
       "levelBasis": "wholesale",
       "sourceKey": "lmr:2453:Flat Iron",
       "independentLevel": true,
+      "sharedWith": []
+    },
+    "flour": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
       "sharedWith": []
     },
     "garbanzo-beans": {
