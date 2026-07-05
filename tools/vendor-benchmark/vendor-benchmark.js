@@ -26,6 +26,8 @@
   var PARSE = window.MuntinParse;
   var SPIKE = window.MuntinSpike;
   var ASK = window.MuntinVendorAsk;
+  var CONF = window.MuntinConformal;
+  var ANOM = window.MuntinAnomaly;
   if (!SH || !MW) return;
 
   var ES = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().slice(0, 2) === 'es';
@@ -100,6 +102,12 @@
     briefBtn: 'Preparar la hoja para tu proveedor', briefPrint: 'Imprimir', briefCopy: 'Copiar el resumen', briefCopied: 'Resumen copiado',
     jTitle: 'Tus artículos guardados', jClear: 'Borrar guardados', jThin: 'vigilar',
     jSince: 'Desde tu última revisión', jWiden: 'la diferencia creció', jNarrow: 'la diferencia se redujo',
+    regimeLead: 'Todo el mercado cambió de nivel cerca del',
+    regimeUp: 'un alza de todo el mercado, no solo tu proveedor — si se mantiene, prepárate para reajustar.',
+    regimeDown: 'una baja de todo el mercado — un momento para renegociar.',
+    forecastEyebrow: 'La próxima lectura del mercado',
+    forecastA: 'El mayorista de este artículo suele moverse dentro de', forecastB: 'entre lecturas — una banda que ha cubierto',
+    forecastC: 'de las últimas', forecastD: 'lecturas.',
     errItem: 'Escribe el nombre del artículo.',
     errRows: 'Agrega al menos dos compras con fecha y precio.'
   } : {
@@ -167,6 +175,12 @@
     briefBtn: 'Make a one-page brief for your rep', briefPrint: 'Print', briefCopy: 'Copy the summary', briefCopied: 'Summary copied',
     jTitle: 'Your saved items', jClear: 'Clear saved items', jThin: 'watch',
     jSince: 'Since your last check', jWiden: 'the gap widened', jNarrow: 'the gap narrowed',
+    regimeLead: 'The whole market shifted level around',
+    regimeUp: 'a market-wide step up, not just your vendor — if it holds, expect to re-price.',
+    regimeDown: 'a market-wide step down — a moment to renegotiate.',
+    forecastEyebrow: 'The market’s next print',
+    forecastA: 'Wholesale for this item usually moves within', forecastB: 'between reads — a band that has held for',
+    forecastC: 'of the last', forecastD: 'reads.',
     errItem: 'Enter the item name.',
     errRows: 'Add at least two purchases with a date and price.'
   };
@@ -756,6 +770,11 @@
       blocks.push(h`<div class="vb-subcard"><span class="vb-eyebrow">${T.ownHistoryEyebrow}</span><span class="vb-badge" data-tier="${res.tier}">${tierLabel(res.tier)}</span><p class="vb-verdict">${res.talkingPoint}</p></div>`);
     }
 
+    // 4) MARKET OUTLOOK — regime-break (did the whole market step?) + the honest
+    //    coverage-validated next-print forecast. Both self-withhold on thin data.
+    var rb = regimeBreakBlock(res); if (rb) blocks.push(rb);
+    var fc = forecastBlock(res); if (fc) blocks.push(fc);
+
     // 5) ATTRIBUTION (only when a market read exists)
     if (m.available) {
       blocks.push(attributionBlock(res));
@@ -789,6 +808,48 @@
     }
     var printBtn = t.closest('.vb-print-btn');
     if (printBtn) { doPrint(printBtn.closest('.vb-action')); track('Bench Brief Printed'); }
+  }
+
+  // MS2 — regime-break: did the WHOLE market step to a new level (Pettitt), or is
+  // this one vendor? Only asserted when the break is significant AND lands inside/
+  // adjacent to the operator's window (an old break isn't why their invoice moved).
+  function regimeBreakBlock(res) {
+    var m = res.market;
+    if (!ANOM || !m || !m.available || !m.series || !m.series.values || m.series.values.length < 16) return '';
+    // Judge a RECENT window — Pettitt on the full 3-yr series surfaces a 2-year-old
+    // structural shift, not why this invoice moved. A break in the recent window
+    // near the operator's dates is the coherent, relevant one.
+    var vals = m.series.values, dates = m.series.dates, N = vals.length, start = Math.max(0, N - 30);
+    var rv = vals.slice(start), rd = dates.slice(start), cp;
+    if (rv.length < 12) return '';
+    try { cp = ANOM.pettitt(rv); } catch (_) { return ''; }
+    if (!cp || !cp.significant || cp.index == null) return '';
+    var bd = rd[cp.index]; if (!bd) return '';
+    var bt = MW.parseISODay(bd), f = MW.parseISODay(res.firstDate), l = MW.parseISODay(res.lastDate);
+    if (bt == null || f == null || l == null) return '';
+    if (bt < f - 45 * 86400000 || bt > l + 21 * 86400000) return ''; // not near the operator's window
+    var before = rv.slice(0, cp.index + 1), after = rv.slice(cp.index + 1);
+    if (!after.length) return '';
+    var up = ANOM.median(after) > ANOM.median(before);
+    return h`<p class="vb-outlook" data-tone="${up ? 'over' : 'under'}"><strong>${T.regimeLead} ${fmtDate(bd)}</strong> — ${up ? T.regimeUp : T.regimeDown}</p>`;
+  }
+
+  // MS1 — the honest next-print band: a coverage-VALIDATED conformal interval on the
+  // deep wholesale series, expressed as a ±% (never a $ level to avoid a "should-pay"
+  // misread) with its walk-forward hit-rate. Withheld on thin/short history or when
+  // coverage can't be published.
+  function forecastBlock(res) {
+    var m = res.market;
+    if (!CONF || !m || !m.available || m.seriesKind !== 'deep' || !m.series || m.series.values.length < 24) return '';
+    if (m.confidence === 'low' || m.confidence === 'directional') return '';
+    var out;
+    try { out = CONF.conformalNext(m.series.values, { calibrate: true }); } catch (_) { return ''; }
+    if (!out || !out.interval || out.coverage == null || !(out.point > 0)) return '';
+    var point = out.point, lo = out.interval[0], hi = out.interval[1];
+    var band = Math.round(Math.max((hi - point) / point, (point - lo) / point) * 100);
+    if (!(band > 0) || band > 60) return '';
+    var cov = Math.round(out.coverage * 100), reads = out.nTested;
+    return h`<div class="vb-forecast"><span class="vb-eyebrow">${T.forecastEyebrow}</span><p>${T.forecastA} ±${String(band)}% ${T.forecastB} ${String(cov)}% ${T.forecastC} ${String(reads)} ${T.forecastD}</p><p class="vb-forecast-fine">${T.attributionWholesale}</p></div>`;
   }
 
   function journalTrendBlock(res) {
