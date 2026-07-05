@@ -841,6 +841,59 @@ function sparkBlock(r, locale) {
     <div class="ci-read__spark">${svg}<p class="ci-read__capsule">${capsule}${rank ? ` <span class="ci-read__rank">${rank}</span>` : ''} <span class="ci-read__capsule-note">(${windowNote})</span></p></div>`;
 }
 
+// ---- Full 12-month seasonal curve ----------------------------------
+// The band below states only THIS month's typical figure. This curve renders
+// the WHOLE annual shape from the same seasonality.json — each month's median
+// with its p25-p75 band — and names the cheapest/priciest month (the seasonal
+// buying window). Same >=2-distinct-years honesty gate per month: months that
+// haven't earned it are drawn as gaps, never guessed. Price-free by construction
+// (a normalized shape + month names, no dollar figures asserted here), so it
+// carries no data-season-* attributes and the seasonal checker ignores it.
+function seasonalCurve(e, curMo, locale) {
+  const es = locale === 'es';
+  const order = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+  const gated = order.map((k, i) => ({ i, mo: i + 1, m: e.months && e.months[k] }))
+    .filter((x) => x.m && x.m.years >= 2 && x.m.medianCents > 0);
+  if (gated.length < 4) return '';   // too few established months to show a shape
+  let cheap = gated[0], dear = gated[0];
+  for (const g of gated) { if (g.m.medianCents < cheap.m.medianCents) cheap = g; if (g.m.medianCents > dear.m.medianCents) dear = g; }
+  let yMin = Math.min(...gated.map((g) => g.m.p25Cents));
+  let yMax = Math.max(...gated.map((g) => g.m.p75Cents));
+  if (yMax <= yMin) yMax = yMin + 1;
+  const W = 288, H = 92, padL = 8, padR = 8, padT = 8, padB = 18;
+  const pw = W - padL - padR, ph = H - padT - padB, bw = pw / 12 * 0.42;
+  const xOf = (i) => padL + (i + 0.5) / 12 * pw;
+  const yOf = (v) => padT + ph - (v - yMin) / (yMax - yMin) * ph;
+  const PUR = '#6b4fa1';
+  let bands = '', dots = '', labels = '', d = '', prev = -2;
+  gated.forEach((g) => {
+    const x = xOf(g.i), yhi = yOf(g.m.p75Cents), ylo = yOf(g.m.p25Cents), ym = yOf(g.m.medianCents);
+    bands += `<rect x="${(x - bw / 2).toFixed(1)}" y="${yhi.toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(1, ylo - yhi).toFixed(1)}" rx="2" fill="${PUR}" fill-opacity="0.15"/>`;
+    d += (g.i === prev + 1 ? ' L ' : ' M ') + x.toFixed(1) + ' ' + ym.toFixed(1); prev = g.i;
+    const isCheap = g.mo === cheap.mo, isCur = g.mo === curMo;
+    dots += `<circle cx="${x.toFixed(1)}" cy="${ym.toFixed(1)}" r="${isCur ? 3.4 : 2.4}" fill="${isCheap ? 'var(--gold,#B7791F)' : PUR}"/>`;
+    if (isCur) dots += `<circle cx="${x.toFixed(1)}" cy="${ym.toFixed(1)}" r="5.5" fill="none" stroke="${PUR}" stroke-width="1.3"/>`;
+  });
+  const line = `<path d="${d.trim()}" fill="none" stroke="${PUR}" stroke-width="1.4" stroke-opacity="0.7"/>`;
+  const INI = ['J','F','M','A','M','J','J','A','S','O','N','D'];
+  for (let i = 0; i < 12; i++) {
+    const cur = i + 1 === curMo;
+    labels += `<text x="${xOf(i).toFixed(1)}" y="${H - 5}" text-anchor="middle" font-size="8" fill="${cur ? 'var(--ink,#16181D)' : 'var(--stone,#6B7280)'}"${cur ? ' font-weight="700"' : ''}>${INI[i]}</text>`;
+  }
+  const mc = es ? MONTHS_ES[cheap.mo] : MONTHS_EN[cheap.mo];
+  const mdr = es ? MONTHS_ES[dear.mo] : MONTHS_EN[dear.mo];
+  const cap = es
+    ? `Curva estacional de 12 meses: mediana y banda p25-p75 por mes. Normalmente más barato en ${mc}, más caro en ${mdr}. Forma normalizada, sin precio.`
+    : `12-month seasonal curve: each month's median and p25-p75 band. Usually cheapest in ${mc}, priciest in ${mdr}. Normalized shape, no price.`;
+  const call = es
+    ? `Ventana estacional: normalmente más barato en <strong>${mc}</strong>, más caro en <strong>${mdr}</strong>.`
+    : `Seasonal window: usually cheapest in <strong>${mc}</strong>, priciest in <strong>${mdr}</strong>.`;
+  return `<figure class="ci-season-curve">
+      <svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" role="img" aria-label="${cap}" preserveAspectRatio="xMidYMid meet">${bands}${line}${dots}${labels}</svg>
+      <figcaption class="ci-season-curve__cap">${call} <span class="ci-season-curve__note">${gated.length}/12 ${es ? 'meses con ≥2 años' : 'months with ≥2 yrs'}</span></figcaption>
+    </figure>`;
+}
+
 // ---- Seasonal "typical for this month" band ------------------------
 // The trailing-window capsule above answers "is this above its RECENT range?"
 // — it cannot answer the question an operator on a seasonal item actually asks:
@@ -886,10 +939,12 @@ function seasonalBand(slug, r, locale) {
     ? `Norma estacional de varios años, calculada a partir del historial público profundo (USDA, BLS, FRED). Un mes solo gana una cifra “típica” una vez observado en 2 o más años distintos; por debajo de esa barra no se muestra ninguna.`
     : `Multi-year seasonal norm, computed from the deep public history (USDA, BLS, FRED). A month earns a “typical” figure only once observed across 2 or more distinct years; below that bar, none is shown.`;
   const summ = es ? 'Cómo se calcula lo típico' : 'How “typical” is figured';
+  const curve = seasonalCurve(e, mo, locale);
   return `
     <div class="ci-season" data-season-month="${mo}" data-season-med="${med}" data-season-lo="${lo}" data-season-hi="${hi}" data-season-years="${md.years}" data-season-n="${md.n}">
       <p class="ci-season__head">${headTxt}</p>
       <p class="ci-season__body">${body}</p>
+      ${curve}
       <details class="ci-season__src"><summary>${summ}</summary><div>${srcTxt}</div></details>
     </div>`;
 }
@@ -1410,6 +1465,11 @@ main{padding-top:64px}
 .ci-season__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
 .ci-season__src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
 .ci-season__src a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-season-curve{margin:12px 0 2px}
+.ci-season-curve svg{display:block;width:100%;height:auto;overflow:visible}
+.ci-season-curve__cap{font-size:12.5px;color:var(--ink-soft);line-height:1.5;margin:7px 0 0}
+.ci-season-curve__cap strong{color:var(--ink)}
+.ci-season-curve__note{color:var(--stone);font-size:11.5px;white-space:nowrap}
 .ci-faq{margin:34px 0 0}
 .ci-faq__item{margin:0 0 18px}
 .ci-faq__q{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink);margin:0 0 6px}
