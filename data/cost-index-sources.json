@@ -9868,6 +9868,42 @@
         "unit": "lb"
       },
       "coverage": "Staged: retail price level (BLS/FRED APU all-purpose flour, $/lb) corroborated by the wheat-flour PPI — no free wholesale flour report exists, so it would ship as a retail reference if it verifies in bounds."
+    },
+    "rice": {
+      "verified": false,
+      "bls": {
+        "seriesId": "WPU02130201"
+      },
+      "fred": {
+        "seriesId": "APU0000701312",
+        "basis": "retail",
+        "unit": "lb"
+      },
+      "coverage": "Staged: retail price level (BLS/FRED APU rice, $/lb) corroborated by its commodity PPI — no free wholesale rice report exists, so it would ship as a retail reference if it verifies in bounds."
+    },
+    "sugar": {
+      "verified": false,
+      "bls": {
+        "seriesId": "WPU0253"
+      },
+      "fred": {
+        "seriesId": "APU0000715211",
+        "basis": "retail",
+        "unit": "lb"
+      },
+      "coverage": "Staged: retail price level (BLS/FRED APU sugar, $/lb) corroborated by its commodity PPI — no free wholesale sugar report exists, so it would ship as a retail reference if it verifies in bounds."
+    },
+    "coffee": {
+      "verified": false,
+      "bls": {
+        "seriesId": "WPU026301"
+      },
+      "fred": {
+        "seriesId": "APU0000717311",
+        "basis": "retail",
+        "unit": "lb"
+      },
+      "coverage": "Staged: retail price level (BLS/FRED APU coffee, $/lb) corroborated by its commodity PPI — no free wholesale coffee report exists, so it would ship as a retail reference if it verifies in bounds."
     }
   },
   "drivers": {

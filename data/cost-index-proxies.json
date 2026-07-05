@@ -6,9 +6,9 @@
   },
   "asOf": null,
   "summary": {
-    "count": 182,
+    "count": 185,
     "withWholesaleLevel": 38,
-    "indexOnly": 144,
+    "indexOnly": 147,
     "sharedSourceGroups": 2,
     "ingredientsSharingSource": 4
   },
@@ -284,6 +284,12 @@
       "sharedWith": []
     },
     "clams": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
+    "coffee": {
       "levelBasis": "index",
       "sourceKey": null,
       "independentLevel": false,
@@ -809,6 +815,12 @@
       "independentLevel": true,
       "sharedWith": []
     },
+    "rice": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
+      "sharedWith": []
+    },
     "romaine-lettuce": {
       "levelBasis": "index",
       "sourceKey": null,
@@ -949,6 +961,12 @@
       "levelBasis": "wholesale",
       "sourceKey": "lmr:2453:strip, bnls, 0x1",
       "independentLevel": true,
+      "sharedWith": []
+    },
+    "sugar": {
+      "levelBasis": "index",
+      "sourceKey": null,
+      "independentLevel": false,
       "sharedWith": []
     },
     "sugar-snap-peas": {
