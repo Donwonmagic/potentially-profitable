@@ -2829,7 +2829,7 @@ function emitSeasonalityHub(locale) {
   const nameOf = (slug) => { const l = LABELS[slug] || {}; return (es ? (l.es || l.en) : l.en) || slug; };
   const rankHtml = strong.map((x) => {
     const w = Math.max(4, Math.round(x.amp / maxAmp * 100));
-    return `<div class="sea-row"><div class="sea-row__lab"><a href="${base}/cost-index/${x.slug}/#cheapest">${escHtml(nameOf(x.slug))}</a><span class="sea-row__mo">${es ? 'barato' : 'cheap'} ${MO[x.cheap]} · ${es ? 'caro' : 'dear'} ${MO[x.dear]}</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:${w}%"></span></div><span class="sea-row__amp" title="${es ? 'cuánto más caro en su mes pico que en su mínimo' : 'how much dearer at its peak month than at its low'}">+${x.amp}%</span></div>`;
+    return `<div class="sea-row"><div class="sea-row__lab"><a href="${base}/cost-index/${x.slug}/#cheapest">${escHtml(nameOf(x.slug))}</a><span class="sea-row__mo">${es ? 'más barato' : 'cheapest'} ${MO[x.cheap]} · ${es ? 'más caro' : 'priciest'} ${MO[x.dear]}</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:${w}%"></span></div><span class="sea-row__amp" title="${es ? 'cuánto más cuesta en su mes más caro que en el más barato' : 'how much more it costs at its priciest month than at its cheapest'}">+${x.amp}%</span></div>`;
   }).join('');
   const artifacts = dg.items.filter((x) => x.amp > SEA_ARTIFACT_CAP).map((x) => nameOf(x.slug));
   // Interactive explorer: month -> [slug, name, amp] for ingredients at their
@@ -2840,8 +2840,8 @@ function emitSeasonalityHub(locale) {
   for (const m in monthData) monthData[m].sort((a, b) => b[2] - a[2]);
   let defMonth = 1, defBest = -1;
   for (let m = 1; m <= 12; m++) { const c = (monthData[m] || []).length; if (c > defBest) { defBest = c; defMonth = m; } }
-  const renderLi = (rows) => (rows || []).map((r) => `<li><a href="${base}/cost-index/${r[0]}/#cheapest">${escHtml(r[1])}</a><span class="sea-explore__meta"><span class="sea-explore__peak">${es ? 'pico' : 'peak'} ${MO[r[3]]}</span><b class="sea-explore__amp" title="${es ? 'cuánto más caro en su mes pico que ahora' : 'how much dearer at its peak month than now'}">+${r[2]}%</b></span></li>`).join('');
-  const seaCfg = { months: MO.slice(1), data: monthData, base, t: { peak: es ? 'pico' : 'peak', empty: es ? 'Nada en su mínimo estacional este mes — la mayor parte de la despensa se mantiene plana.' : 'Nothing at its seasonal low this month — most of the pantry holds flat.', cnt: es ? 'en su punto bajo' : 'at their low' } };
+  const renderLi = (rows) => (rows || []).map((r) => `<li><a href="${base}/cost-index/${r[0]}/#cheapest">${escHtml(r[1])}</a><span class="sea-explore__meta"><span class="sea-explore__peak">${es ? 'más caro' : 'priciest'} ${MO[r[3]]}</span><b class="sea-explore__amp" title="${es ? 'cuánto más cuesta en su mes más caro que ahora' : 'how much more it costs at its priciest month than now'}">+${r[2]}%</b></span></li>`).join('');
+  const seaCfg = { months: MO.slice(1), data: monthData, base, t: { peak: es ? 'más caro' : 'priciest', empty: es ? 'Nada en su mínimo estacional este mes — la mayor parte de la despensa se mantiene plana.' : 'Nothing at its seasonal low this month — most of the pantry holds flat.', cnt: es ? 'en su punto bajo' : 'at their low' } };
   const mechs = [
     { h: es ? 'Ventana de cosecha' : 'Harvest window', p: es ? 'Cuando la región principal de un cultivo corta a pleno volumen, la oferta inunda el mercado y el precio toca fondo.' : "When a crop's main growing region is cutting at full volume, supply floods the market and price bottoms." },
     { h: es ? 'Almacenamiento' : 'Storage', p: es ? 'Los cultivos que se guardan en frío se cosechan en una ventana estrecha y se dosifican todo el año, lo que aplana la curva.' : 'Cold- or controlled-atmosphere crops are harvested in a tight window and metered out all year, which flattens the curve.' },
@@ -2892,7 +2892,7 @@ function emitSeasonalityHub(locale) {
     ${seasonalClockSvg(locale)}
     <div class="sea-explore">
       <h2 class="od-h2" id="sea-clock-h" style="margin-bottom:4px">${es ? 'Qué está en su punto más bajo' : 'What is at its seasonal low'}</h2>
-      <p class="sea-explore__hint">${es ? 'Elige un mes en el reloj — o déjalo abrir en el mes actual. Estos ingredientes suelen tocar su precio más bajo entonces. El <strong>+%</strong> es cuánto más caro se pone cada uno en su mes pico frente a este mínimo — un número mayor = más razón para comprar ahora.' : 'Pick a month on the clock — or let it open on the current month. These ingredients usually hit their lowest price then. The <strong>+%</strong> is how much dearer each gets at its peak month versus this low — a bigger number means more reason to buy now.'}</p>
+      <p class="sea-explore__hint">${es ? 'Elige un mes en el reloj — o déjalo abrir en el mes actual. Estos ingredientes suelen tocar su precio más bajo entonces. El <strong>+%</strong> es cuánto más cuesta cada uno en su mes más caro que en este mínimo — un número mayor = más razón para comprar ahora.' : 'Pick a month on the clock — or let it open on the current month. These ingredients usually hit their lowest price then. The <strong>+%</strong> is how much more each one costs at its priciest month than at this low — a bigger number means more reason to buy now.'}</p>
       <div class="sea-explore__bar"><strong class="sea-explore__mo" id="seaMo">${MO[defMonth]}</strong> <span class="sea-explore__cnt" id="seaCnt">${(monthData[defMonth] || []).length} ${seaCfg.t.cnt}</span></div>
       <ul class="sea-explore__list" id="seaList">${renderLi(monthData[defMonth])}</ul>
     </div>
