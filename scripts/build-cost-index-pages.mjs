@@ -950,6 +950,9 @@ function seasonalHeadline(slug, locale) {
   const cheapM = es ? MONTHS_ES[sc.cheap.mo] : MONTHS_EN[sc.cheap.mo];
   const dearM = es ? MONTHS_ES[sc.dear.mo] : MONTHS_EN[sc.dear.mo];
   const swing = Math.round(sc.spreadPct);
+  // Savings framing (how much cheaper at the low than the high) — plainer than
+  // the raw premium and consistent with the /open/ seasonality explorer.
+  const save = Math.round(sc.spreadPct / (100 + sc.spreadPct) * 100);
   const q = es ? `¿Cuál es el mes más barato para comprar ${lc}?` : `What is the cheapest month to buy ${lc}?`;
   let a;
   if (sc.cls === 'flat') {
@@ -961,8 +964,8 @@ function seasonalHeadline(slug, locale) {
       ? (es ? 'una ventana estacional clara' : 'a clear seasonal window')
       : (es ? 'una variación estacional moderada' : 'a moderate seasonal swing');
     a = es
-      ? `El mes más barato para ${lc} suele ser ${cheapM}, y el más caro ${dearM} — ${strength}, con cerca de ${swing}% entre el mes bajo y el mes alto a lo largo del historial público de varios años (USDA, BLS, FRED). Es co-ocurrencia del calendario, no un pronóstico; compáralo con tu propia factura.`
-      : `The cheapest month for ${lc} is usually ${cheapM}, and the priciest is ${dearM} — ${strength}, running about ${swing}% between the low and high months across the multi-year public history (USDA, BLS, FRED). That is calendar co-occurrence, not a forecast; read it against your own invoice.`;
+      ? `El mes más barato para ${lc} suele ser ${cheapM}, y el más caro ${dearM} — ${strength}: alrededor de ${save}% más barato en su mínimo de ${cheapM} que en su pico de ${dearM}, según el historial público de varios años (USDA, BLS, FRED). Es co-ocurrencia del calendario, no un pronóstico; compáralo con tu propia factura.`
+      : `The cheapest month for ${lc} is usually ${cheapM}, and the priciest is ${dearM} — ${strength}: about ${save}% cheaper at its ${cheapM} low than at its ${dearM} peak, across the multi-year public history (USDA, BLS, FRED). That is calendar co-occurrence, not a forecast; read it against your own invoice.`;
   }
   return `
   <section class="ci-seasonal" aria-labelledby="cheapest">
@@ -2639,17 +2642,17 @@ const OPEN_CSS = `<style>
 .sea-explore__list a:hover{border-bottom-color:var(--season)}
 .sea-explore__meta{display:flex;align-items:baseline;gap:10px;flex:none}
 .sea-explore__peak{font-size:11.5px;color:var(--stone)}
-.sea-explore__amp{font-variant-numeric:tabular-nums;font-weight:700;color:var(--season);font-size:13px;flex:none;min-width:44px;text-align:right}
+.sea-explore__amp{font-variant-numeric:tabular-nums;font-weight:700;color:var(--season);font-size:13px;flex:none;white-space:nowrap}
 .sea-explore__empty{color:var(--ink-soft);font-size:14px;line-height:1.5;border-bottom:0!important;display:block!important}
 /* amplitude ranking */
 .sea-rank{margin:6px 0 0}
-.sea-row{display:grid;grid-template-columns:minmax(128px,168px) 1fr 46px;align-items:center;gap:14px;padding:7px 0}
+.sea-row{display:grid;grid-template-columns:minmax(120px,150px) 1fr 92px;align-items:center;gap:14px;padding:7px 0}
 .sea-row__lab{display:flex;flex-direction:column;gap:1px;min-width:0}
 .sea-row__lab a{color:var(--ink);text-decoration:none;font-weight:600;font-size:14.5px;border-bottom:1px solid transparent}
 .sea-row__lab a:hover{border-bottom-color:var(--season)}
 .sea-row__track{height:9px;background:var(--cream-2);border-radius:5px;overflow:hidden}
 .sea-row__bar{display:block;height:100%;background:var(--season);border-radius:5px;min-width:3px}
-.sea-row__amp{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;color:var(--season);font-size:13px}
+.sea-row__amp{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;color:var(--season);font-size:13px;white-space:nowrap}
 .sea-row__mo{font-size:11px;color:var(--stone)}
 .sea-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--ink-soft);margin-right:6px}
 .sea-play{counter-reset:play;list-style:none;padding:0;margin:8px 0 0}
@@ -2829,19 +2832,23 @@ function emitSeasonalityHub(locale) {
   const nameOf = (slug) => { const l = LABELS[slug] || {}; return (es ? (l.es || l.en) : l.en) || slug; };
   const rankHtml = strong.map((x) => {
     const w = Math.max(4, Math.round(x.amp / maxAmp * 100));
-    return `<div class="sea-row"><div class="sea-row__lab"><a href="${base}/cost-index/${x.slug}/#cheapest">${escHtml(nameOf(x.slug))}</a><span class="sea-row__mo">${es ? 'más barato' : 'cheapest'} ${MO[x.cheap]} · ${es ? 'más caro' : 'priciest'} ${MO[x.dear]}</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:${w}%"></span></div><span class="sea-row__amp" title="${es ? 'cuánto más cuesta en su mes más caro que en el más barato' : 'how much more it costs at its priciest month than at its cheapest'}">+${x.amp}%</span></div>`;
+    const save = Math.round(x.amp / (100 + x.amp) * 100);
+    return `<div class="sea-row"><div class="sea-row__lab"><a href="${base}/cost-index/${x.slug}/#cheapest">${escHtml(nameOf(x.slug))}</a><span class="sea-row__mo">${es ? 'más barato' : 'cheapest'} ${MO[x.cheap]} · ${es ? 'más caro' : 'priciest'} ${MO[x.dear]}</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:${save}%"></span></div><span class="sea-row__amp" title="${es ? 'qué tan barato en su mes más barato frente al más caro' : 'how much cheaper at its low month than at its high'}">${save}% ${es ? 'más barato' : 'cheaper'}</span></div>`;
   }).join('');
   const artifacts = dg.items.filter((x) => x.amp > SEA_ARTIFACT_CAP).map((x) => nameOf(x.slug));
   // Interactive explorer: month -> [slug, name, amp] for ingredients at their
   // seasonal low that month, amplitude-sorted. No-JS renders the busiest month;
   // the script re-renders to the viewer's actual current month on load.
   const monthData = {};
-  for (const x of dg.items) (monthData[x.cheap] = monthData[x.cheap] || []).push([x.slug, nameOf(x.slug), x.amp, x.dear]);
+  // Show the SAVINGS (how much cheaper at its low than its high), not the raw
+  // premium — a "% cheaper" reads like a sale and never exceeds 100%.
+  const saveOf = (amp) => Math.round(amp / (100 + amp) * 100);
+  for (const x of dg.items) (monthData[x.cheap] = monthData[x.cheap] || []).push([x.slug, nameOf(x.slug), saveOf(x.amp), x.dear]);
   for (const m in monthData) monthData[m].sort((a, b) => b[2] - a[2]);
   let defMonth = 1, defBest = -1;
   for (let m = 1; m <= 12; m++) { const c = (monthData[m] || []).length; if (c > defBest) { defBest = c; defMonth = m; } }
-  const renderLi = (rows) => (rows || []).map((r) => `<li><a href="${base}/cost-index/${r[0]}/#cheapest">${escHtml(r[1])}</a><span class="sea-explore__meta"><span class="sea-explore__peak">${es ? 'más caro' : 'priciest'} ${MO[r[3]]}</span><b class="sea-explore__amp" title="${es ? 'cuánto más cuesta en su mes más caro que ahora' : 'how much more it costs at its priciest month than now'}">+${r[2]}%</b></span></li>`).join('');
-  const seaCfg = { months: MO.slice(1), data: monthData, base, t: { peak: es ? 'más caro' : 'priciest', empty: es ? 'Nada en su mínimo estacional este mes — la mayor parte de la despensa se mantiene plana.' : 'Nothing at its seasonal low this month — most of the pantry holds flat.', cnt: es ? 'en su punto bajo' : 'at their low' } };
+  const renderLi = (rows) => (rows || []).map((r) => `<li><a href="${base}/cost-index/${r[0]}/#cheapest">${escHtml(r[1])}</a><span class="sea-explore__meta"><b class="sea-explore__amp" title="${es ? 'qué tan barato está ahora frente a su mes más caro' : 'how much cheaper it is now than at its most expensive month'}">${r[2]}% ${es ? 'más barato' : 'cheaper'}</b><span class="sea-explore__peak">${es ? 'que en' : 'than'} ${MO[r[3]]}</span></span></li>`).join('');
+  const seaCfg = { months: MO.slice(1), data: monthData, base, t: { than: es ? 'que en' : 'than', cheaper: es ? 'más barato' : 'cheaper', empty: es ? 'Nada en su mínimo estacional este mes — la mayor parte de la despensa se mantiene plana.' : 'Nothing at its seasonal low this month — most of the pantry holds flat.', cnt: es ? 'en su punto bajo' : 'at their low' } };
   const mechs = [
     { h: es ? 'Ventana de cosecha' : 'Harvest window', p: es ? 'Cuando la región principal de un cultivo corta a pleno volumen, la oferta inunda el mercado y el precio toca fondo.' : "When a crop's main growing region is cutting at full volume, supply floods the market and price bottoms." },
     { h: es ? 'Almacenamiento' : 'Storage', p: es ? 'Los cultivos que se guardan en frío se cosechan en una ventana estrecha y se dosifican todo el año, lo que aplana la curva.' : 'Cold- or controlled-atmosphere crops are harvested in a tight window and metered out all year, which flattens the curve.' },
@@ -2892,7 +2899,7 @@ function emitSeasonalityHub(locale) {
     ${seasonalClockSvg(locale)}
     <div class="sea-explore">
       <h2 class="od-h2" id="sea-clock-h" style="margin-bottom:4px">${es ? 'Qué está en su punto más bajo' : 'What is at its seasonal low'}</h2>
-      <p class="sea-explore__hint">${es ? 'Elige un mes en el reloj — o déjalo abrir en el mes actual. Estos ingredientes suelen tocar su precio más bajo entonces. El <strong>+%</strong> es cuánto más cuesta cada uno en su mes más caro que en este mínimo — un número mayor = más razón para comprar ahora.' : 'Pick a month on the clock — or let it open on the current month. These ingredients usually hit their lowest price then. The <strong>+%</strong> is how much more each one costs at its priciest month than at this low — a bigger number means more reason to buy now.'}</p>
+      <p class="sea-explore__hint">${es ? 'Elige un mes en el reloj — o déjalo abrir en el mes actual. Estos ingredientes suelen estar en su punto más barato del año entonces. El <strong>“% más barato”</strong> es cuánto menos cuestan ahora que en su mes más caro — como un descuento. Más alto = mejor momento para comprar.' : 'Pick a month on the clock — or let it open on the current month. These ingredients are usually at their cheapest point of the year then. The <strong>“% cheaper”</strong> is how much less they cost now than in their most expensive month — like a discount. Higher means a better time to buy.'}</p>
       <div class="sea-explore__bar"><strong class="sea-explore__mo" id="seaMo">${MO[defMonth]}</strong> <span class="sea-explore__cnt" id="seaCnt">${(monthData[defMonth] || []).length} ${seaCfg.t.cnt}</span></div>
       <ul class="sea-explore__list" id="seaList">${renderLi(monthData[defMonth])}</ul>
     </div>
@@ -2910,7 +2917,7 @@ function emitSeasonalityHub(locale) {
       var rows=cfg.data[m]||[];
       moEl.textContent=cfg.months[m-1];
       cntEl.textContent=rows.length+' '+cfg.t.cnt;
-      listEl.innerHTML=rows.length?rows.map(function(r){return '<li><a href="'+cfg.base+'/cost-index/'+encodeURIComponent(r[0])+'/#cheapest">'+esc(r[1])+'</a><span class="sea-explore__meta"><span class="sea-explore__peak">'+cfg.t.peak+' '+esc(cfg.months[r[3]-1])+'</span><b class="sea-explore__amp">+'+r[2]+'%</b></span></li>'}).join(''):'<li class="sea-explore__empty">'+esc(cfg.t.empty)+'</li>';
+      listEl.innerHTML=rows.length?rows.map(function(r){return '<li><a href="'+cfg.base+'/cost-index/'+encodeURIComponent(r[0])+'/#cheapest">'+esc(r[1])+'</a><span class="sea-explore__meta"><b class="sea-explore__amp">'+r[2]+'% '+cfg.t.cheaper+'</b><span class="sea-explore__peak">'+cfg.t.than+' '+esc(cfg.months[r[3]-1])+'</span></span></li>'}).join(''):'<li class="sea-explore__empty">'+esc(cfg.t.empty)+'</li>';
       for(var i=0;i<secs.length;i++){var on=secs[i].getAttribute('data-month')===String(m);secs[i].classList.toggle('is-active',on);secs[i].setAttribute('aria-pressed',on?'true':'false')}
     }
     for(var i=0;i<secs.length;i++){(function(s){var m=parseInt(s.getAttribute('data-month'),10);
@@ -2930,7 +2937,7 @@ function emitSeasonalityHub(locale) {
   <hr class="od-rule">
   <section aria-labelledby="sea-timing">
     <h2 class="od-h2" id="sea-timing">${es ? 'Dónde el momento realmente paga' : 'Where timing actually pays'}</h2>
-    <p class="od-sub">${es ? `Los ingredientes con la ventana estacional más marcada — la brecha entre su mes más barato y el más caro, derivada del historial de varios años. Toca cualquiera para su curva completa.` : `The ingredients with the sharpest seasonal window — the gap between their cheapest and priciest month, derived from the multi-year history. Tap any for its full curve.`}</p>
+    <p class="od-sub">${es ? `Los ingredientes que más recompensan el momento — “% más barato” es cuánto menos cuestan en su mes más barato que en el más caro, según el historial de varios años. Toca cualquiera para su curva completa.` : `The ingredients that most reward good timing — "% cheaper" is how much less each costs in its cheapest month than in its priciest, from the multi-year history. Tap any for its full curve.`}</p>
     <div class="sea-rank">${rankHtml}</div>
     ${artifacts.length ? `<div class="od-note" style="margin-top:16px"><p>${es ? `Excluidos a propósito: ${artifacts.join(', ')} muestran oscilaciones aún mayores que casi con certeza son un cambio de empaque o unidad entre la fruta de verano y la de invierno, no un movimiento de precio real. La dirección es confiable; el múltiplo exacto no.` : `Deliberately excluded: ${artifacts.join(', ')} show even larger raw swings that are almost certainly a pack or unit change between summer and winter fruit, not a real price move. The direction is reliable; the exact multiple is not.`}</p></div>` : ''}
   </section>
