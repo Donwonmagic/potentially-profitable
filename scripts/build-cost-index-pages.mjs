@@ -872,21 +872,23 @@ function seasonalCurve(e, curMo, locale) {
   const pw = W - padL - padR, ph = H - padT - padB, bw = pw / 12 * 0.42;
   const xOf = (i) => padL + (i + 0.5) / 12 * pw;
   const yOf = (v) => padT + ph - (v - yMin) / (yMax - yMin) * ph;
-  const PUR = '#6b4fa1';
+  // Paint rides on CSS classes (see the .ci-season-curve rules), not inline
+  // attributes: var() is invalid inside an SVG presentation attribute, so the
+  // themed --season/--gold/--stone tokens can only reach these marks via a class.
   let bands = '', dots = '', labels = '', d = '', prev = -2;
   gated.forEach((g) => {
     const x = xOf(g.i), yhi = yOf(g.m.p75Cents), ylo = yOf(g.m.p25Cents), ym = yOf(g.m.medianCents);
-    bands += `<rect x="${(x - bw / 2).toFixed(1)}" y="${yhi.toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(1, ylo - yhi).toFixed(1)}" rx="2" fill="${PUR}" fill-opacity="0.15"/>`;
+    bands += `<rect class="sc-band" x="${(x - bw / 2).toFixed(1)}" y="${yhi.toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(1, ylo - yhi).toFixed(1)}" rx="2"/>`;
     d += (g.i === prev + 1 ? ' L ' : ' M ') + x.toFixed(1) + ' ' + ym.toFixed(1); prev = g.i;
     const isCheap = g.mo === cheap.mo, isCur = g.mo === curMo;
-    dots += `<circle cx="${x.toFixed(1)}" cy="${ym.toFixed(1)}" r="${isCur ? 3.4 : 2.4}" fill="${isCheap ? 'var(--gold,#B7791F)' : PUR}"/>`;
-    if (isCur) dots += `<circle cx="${x.toFixed(1)}" cy="${ym.toFixed(1)}" r="5.5" fill="none" stroke="${PUR}" stroke-width="1.3"/>`;
+    dots += `<circle class="sc-dot${isCheap ? ' sc-dot--cheap' : ''}" cx="${x.toFixed(1)}" cy="${ym.toFixed(1)}" r="${isCur ? 3.4 : 2.4}"/>`;
+    if (isCur) dots += `<circle class="sc-ring" cx="${x.toFixed(1)}" cy="${ym.toFixed(1)}" r="5.5"/>`;
   });
-  const line = `<path d="${d.trim()}" fill="none" stroke="${PUR}" stroke-width="1.4" stroke-opacity="0.7"/>`;
+  const line = `<path class="sc-line" d="${d.trim()}"/>`;
   const INI = ['J','F','M','A','M','J','J','A','S','O','N','D'];
   for (let i = 0; i < 12; i++) {
     const cur = i + 1 === curMo;
-    labels += `<text x="${xOf(i).toFixed(1)}" y="${H - 5}" text-anchor="middle" font-size="8" fill="${cur ? 'var(--ink,#16181D)' : 'var(--stone,#6B7280)'}"${cur ? ' font-weight="700"' : ''}>${INI[i]}</text>`;
+    labels += `<text class="sc-lab${cur ? ' sc-lab--cur' : ''}" x="${xOf(i).toFixed(1)}" y="${H - 5}" text-anchor="middle" font-size="8">${INI[i]}</text>`;
   }
   const mc = es ? MONTHS_ES[cheap.mo] : MONTHS_EN[cheap.mo];
   const mdr = es ? MONTHS_ES[dear.mo] : MONTHS_EN[dear.mo];
@@ -900,6 +902,73 @@ function seasonalCurve(e, curMo, locale) {
       <svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" role="img" aria-label="${cap}" preserveAspectRatio="xMidYMid meet">${bands}${line}${dots}${labels}</svg>
       <figcaption class="ci-season-curve__cap">${call} <span class="ci-season-curve__note">${gated.length}/12 ${es ? 'meses con ≥2 años' : 'months with ≥2 yrs'}</span></figcaption>
     </figure>`;
+}
+
+// ---- Honest seasonal-shape classifier -----------------------------
+// Reads the SAME gated monthly medians the curve draws (>=2 distinct years, a
+// real median) and decides whether the page may name a cheapest/priciest month
+// at all. The bar for a public, liftable "cheapest in X" claim is higher than
+// the curve's: half the year must be established AND the two named months must
+// each carry >=3 distinct years — below that the shape is "building" and no
+// claim is made. The swing % is a deterministic re-derivation (how far the low
+// and high calendar months have run apart), never a direction or forecast.
+function seasonalClass(e) {
+  if (!e || !e.ready || !e.months) return null;
+  const gated = [];
+  for (let m = 1; m <= 12; m++) {
+    const md = e.months[String(m).padStart(2, '0')];
+    if (md && md.years >= 2 && md.medianCents > 0) gated.push({ mo: m, md });
+  }
+  if (gated.length < 6) return { cls: 'building', nMonths: gated.length };
+  let cheap = gated[0], dear = gated[0];
+  for (const g of gated) {
+    if (g.md.medianCents < cheap.md.medianCents) cheap = g;
+    if (g.md.medianCents > dear.md.medianCents) dear = g;
+  }
+  if (cheap.mo === dear.mo || !(cheap.md.years >= 3) || !(dear.md.years >= 3)) {
+    return { cls: 'building', nMonths: gated.length };
+  }
+  const spreadPct = (dear.md.medianCents - cheap.md.medianCents) / cheap.md.medianCents * 100;
+  const cls = spreadPct >= 20 ? 'window' : spreadPct >= 8 ? 'moderate' : 'flat';
+  return { cls, cheap, dear, spreadPct, nMonths: gated.length, years: Math.min(cheap.md.years, dear.md.years) };
+}
+
+// ---- Liftable "When is X cheapest?" answer (AEO surface) -----------
+// A standalone Q→A section whose <h2> is the exact question answer engines
+// match and whose <p class="ci-season-answer"> is a subject-bearing sentence
+// (it names the ingredient, so it stands alone when lifted into an AI Overview).
+// Renders only when seasonalClass earns a non-"building" verdict; the answer is
+// pure calendar co-occurrence — every figure a re-derivation of the public
+// history, explicitly framed as association, never a forecast.
+function seasonalHeadline(slug, locale) {
+  const es = locale === 'es';
+  const sc = seasonalClass(SEASON[slug]);
+  if (!sc || sc.cls === 'building') return '';
+  const lab = LABELS[slug] || {};
+  const name = (es ? (lab.es || lab.en) : lab.en) || slug;
+  const lc = name.toLowerCase();
+  const cheapM = es ? MONTHS_ES[sc.cheap.mo] : MONTHS_EN[sc.cheap.mo];
+  const dearM = es ? MONTHS_ES[sc.dear.mo] : MONTHS_EN[sc.dear.mo];
+  const swing = Math.round(sc.spreadPct);
+  const q = es ? `¿Cuál es el mes más barato para comprar ${lc}?` : `What is the cheapest month to buy ${lc}?`;
+  let a;
+  if (sc.cls === 'flat') {
+    a = es
+      ? `Los meses más barato y más caro para ${lc} (${cheapM} y ${dearM}) difieren solo alrededor de ${swing}%, así que no hay un mes barato confiable y jugar con el calendario ahorra poco — se mueve semana a semana según el mercado. Basado en el historial público de varios años (USDA, BLS, FRED); asociación, no pronóstico.`
+      : `The cheapest and priciest months for ${lc} (${cheapM} and ${dearM}) run only about ${swing}% apart, so there is no reliably cheap month and timing the calendar saves little — it moves week to week on market conditions instead. Based on the multi-year public history (USDA, BLS, FRED); association, not a forecast.`;
+  } else {
+    const strength = sc.cls === 'window'
+      ? (es ? 'una ventana estacional clara' : 'a clear seasonal window')
+      : (es ? 'una variación estacional moderada' : 'a moderate seasonal swing');
+    a = es
+      ? `El mes más barato para ${lc} suele ser ${cheapM}, y el más caro ${dearM} — ${strength}, con cerca de ${swing}% entre el mes bajo y el mes alto a lo largo del historial público de varios años (USDA, BLS, FRED). Es co-ocurrencia del calendario, no un pronóstico; compáralo con tu propia factura.`
+      : `The cheapest month for ${lc} is usually ${cheapM}, and the priciest is ${dearM} — ${strength}, running about ${swing}% between the low and high months across the multi-year public history (USDA, BLS, FRED). That is calendar co-occurrence, not a forecast; read it against your own invoice.`;
+  }
+  return `
+  <section class="ci-seasonal" aria-labelledby="cheapest">
+    <h2 id="cheapest" class="ci-season-q">${escHtml(q)}</h2>
+    <p class="ci-season-answer">${escHtml(a)}</p>
+  </section>`;
 }
 
 // ---- Seasonal "typical for this month" band ------------------------
@@ -1317,12 +1386,17 @@ function emitIngredientJsonLd(slug, locale) {
   // WebPage node carries the speakable selectors (the range-first .ci-answer line,
   // now direction-free) and the page's dateModified — so answer engines can lift the
   // honest sentence and Google sees a per-page freshness signal.
+  // Add the "When is X cheapest?" answer to the speakable set only on pages that
+  // actually render it (seasonalClass earned a non-building verdict) — an honest
+  // selector list that never points at a sentence the page does not show.
+  const sc = seasonalClass(SEASON[slug]);
+  const speakSel = (sc && sc.cls !== 'building') ? ['h1', '.ci-answer', '.ci-season-answer'] : ['h1', '.ci-answer'];
   const webpage = {
     '@type': 'WebPage', '@id': url + '#page', 'url': url, 'name': name,
     'inLanguage': es ? 'es-US' : 'en-US',
     'isPartOf': { '@id': 'https://muntin.digital/#website' },
     'mainEntity': { '@id': url + '#dataset' },
-    'speakable': { '@type': 'SpeakableSpecification', 'cssSelector': ['h1', '.ci-answer'] }
+    'speakable': { '@type': 'SpeakableSpecification', 'cssSelector': speakSel }
   };
   if (r && r.asOf) webpage.dateModified = r.asOf;
 
@@ -1349,9 +1423,14 @@ function faqItems(slug, locale) {
   const driverPhrase = driverNames.length
     ? (es ? driverNames.join(', ') : driverNames.join(', '))
     : (es ? 'el combustible' : 'fuel');
+  // Seasonal Q/A — number-free (months only), inserted only when the classifier
+  // earns a named cheapest month. Complements the visible "When is X cheapest?"
+  // headline with a query-variant phrasing so both are lift-eligible.
+  const sea = seasonalFaqItem(slug, lc, es);
   if (es) {
     return [
       { q: `¿Cuánto cuesta ${lc} al mayoreo ahora mismo?`, a: `Cambia semana a semana. La lectura de mercado de arriba muestra el rango típico actual y la fecha detrás del dato; compárala con tu propia factura.` },
+      ...(sea ? [sea] : []),
       { q: `¿Por qué subió el precio de ${lc}?`, a: `Puede ser todo el mercado o un solo proveedor. El rango te dice cuál: si tu precio queda dentro del rango, el mercado se movió; si queda muy por encima, es conversación de proveedor. Suele moverse junto con ${driverPhrase} — asociación, no causa directa.` },
       { q: `¿En qué unidad se cotiza ${lc}?`, a: `Se cotiza por ${unit} como referencia mayorista — no es el precio entregado que pagas, así que compara con tu factura en la misma unidad.` },
       { q: `¿Estoy pagando de más por ${lc}?`, a: `Pon tu precio sobre el rango típico de arriba. Debajo del rango es buen trato; dentro es normal; por encima del rango vale una conversación con el proveedor.` }
@@ -1359,10 +1438,33 @@ function faqItems(slug, locale) {
   }
   return [
     { q: `What does ${lc} cost wholesale right now?`, a: `It moves week to week. The market read above shows the current typical range and the date behind it; read it against your own invoice.` },
+    ...(sea ? [sea] : []),
     { q: `Why did my ${lc} price jump?`, a: `It can be the whole market or a single vendor. The range tells you which: if your price lands inside the range, the market moved; well above the range is a vendor conversation. It tends to move with ${driverPhrase} — association, not direct cause.` },
     { q: `What unit is ${lc} priced in?`, a: `It trades per ${unit} as a wholesale reference — not the delivered price you pay, so compare against your invoice in the same unit.` },
     { q: `Am I overpaying for ${lc}?`, a: `Place your own price on the typical range above. Below the range is a good deal; inside is normal; above the range is worth a vendor conversation.` }
   ];
+}
+
+// Seasonal FAQ Q/A — number-free, months only; null unless the classifier names
+// a cheapest month. Kept apostrophe-free so the visible text byte-matches the
+// JSON-LD acceptedAnswer.
+function seasonalFaqItem(slug, lc, es) {
+  const scf = seasonalClass(SEASON[slug]);
+  if (!scf || scf.cls === 'building') return null;
+  const cheapM = es ? MONTHS_ES[scf.cheap.mo] : MONTHS_EN[scf.cheap.mo];
+  const dearM = es ? MONTHS_ES[scf.dear.mo] : MONTHS_EN[scf.dear.mo];
+  const q = es ? `¿Cuál es la mejor época del año para comprar ${lc}?` : `What is the best time of year to buy ${lc}?`;
+  let a;
+  if (scf.cls === 'flat') {
+    a = es
+      ? `No hay un mes barato confiable para ${lc}: se mueve semana a semana según el mercado. Es una co-ocurrencia del calendario, no un pronóstico.`
+      : `There is no reliably cheap month for ${lc}: it moves week to week on market conditions instead. That is a calendar co-occurrence, not a forecast.`;
+  } else {
+    a = es
+      ? `La época más barata para ${lc} suele ser alrededor de ${cheapM}, y la más cara alrededor de ${dearM}, según su historial público de varios años. Es un patrón del calendario, no un pronóstico; compáralo con tu factura.`
+      : `The cheapest stretch for ${lc} is usually around ${cheapM}, and the priciest around ${dearM}, based on its multi-year public price history. That is a calendar pattern, not a forecast; read it against your invoice.`;
+  }
+  return { q, a };
 }
 
 // ---- Page head (skeleton chrome; sync-includes expands the nav) -----
@@ -1405,7 +1507,7 @@ function pageHead(opts) {
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
 <style>
-:root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--white:#fff;--line:#E3E5E9;--teal-wash:rgba(42,80,200,.06);--font-display:'Fraunces',Georgia,serif;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+:root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--white:#fff;--line:#E3E5E9;--teal-wash:rgba(42,80,200,.06);--stone:#6B7280;--gold:#B7791F;--season:#6b4fa1;--font-display:'Fraunces',Georgia,serif;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
 html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
 .container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
@@ -1466,8 +1568,8 @@ main{padding-top:64px}
 .ci-read__live a,.ci-read__method a,.ci-read__data a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
 .ci-read__method{margin-top:6px;font-size:13px}
 .ci-read__data{margin:4px 0 0;font-size:13px;color:var(--ink-soft)}
-.ci-season{margin:12px 0 4px;padding:12px 16px;background:var(--white);border:1px solid var(--line);border-left:3px solid #6b4fa1;border-radius:10px;font-variant-numeric:tabular-nums}
-.ci-season__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6b4fa1;margin:0 0 4px}
+.ci-season{margin:12px 0 4px;padding:12px 16px;background:var(--white);border:1px solid var(--line);border-left:3px solid var(--season);border-radius:10px;font-variant-numeric:tabular-nums}
+.ci-season__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--season);margin:0 0 4px}
 .ci-season__body{font-size:14.5px;line-height:1.5;color:var(--ink);margin:0}
 .ci-season__src{margin:6px 0 0;font-size:12.5px}
 .ci-season__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
@@ -1475,9 +1577,19 @@ main{padding-top:64px}
 .ci-season__src a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-season-curve{margin:12px 0 2px}
 .ci-season-curve svg{display:block;width:100%;height:auto;overflow:visible}
+.ci-season-curve .sc-band{fill:var(--season);fill-opacity:.15}
+.ci-season-curve .sc-line{fill:none;stroke:var(--season);stroke-width:1.4;stroke-opacity:.7}
+.ci-season-curve .sc-dot{fill:var(--season)}
+.ci-season-curve .sc-dot--cheap{fill:var(--gold)}
+.ci-season-curve .sc-ring{fill:none;stroke:var(--season);stroke-width:1.3}
+.ci-season-curve .sc-lab{fill:var(--stone)}
+.ci-season-curve .sc-lab--cur{fill:var(--ink);font-weight:700}
 .ci-season-curve__cap{font-size:12.5px;color:var(--ink-soft);line-height:1.5;margin:7px 0 0}
 .ci-season-curve__cap strong{color:var(--ink)}
 .ci-season-curve__note{color:var(--stone);font-size:11.5px;white-space:nowrap}
+.ci-seasonal{margin:26px 0 8px}
+.ci-season-q{font-family:var(--font-display);font-size:clamp(20px,3.4vw,26px);font-weight:600;line-height:1.2;color:var(--ink);margin:0 0 10px;text-wrap:balance}
+.ci-season-answer{font-size:clamp(16px,2.4vw,18px);line-height:1.6;color:var(--ink-soft);margin:0;max-width:62ch;border-left:3px solid var(--season);padding-left:14px}
 .ci-yield{margin:18px 0;padding:14px 16px;background:var(--white);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:10px}
 .ci-yield__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 5px}
 .ci-yield__body{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0}
@@ -1578,8 +1690,8 @@ main{padding-top:64px}
 :root[data-theme="dark"] .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
 .ci-read--pending{border-left-color:#cdb368;background:var(--cream-2)}
 .ci-read--pending .ci-read__head{color:#8a6d1f}
-.ci-outlook{margin:14px 0 8px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-left:4px solid #6b4fa1;border-radius:12px}
-.ci-outlook__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6b4fa1;margin:0 0 6px}
+.ci-outlook{margin:14px 0 8px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--season);border-radius:12px}
+.ci-outlook__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--season);margin:0 0 6px}
 .ci-outlook__line{font-size:15.5px;line-height:1.5;color:var(--ink);margin:0}
 .ci-outlook__record{margin:6px 0 0;font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
 .ci-outlook__how{margin-top:8px;font-size:12.5px}
@@ -1588,7 +1700,7 @@ main{padding-top:64px}
 .ci-outlook__panel{margin:0 0 8px;padding-left:18px}
 .ci-outlook__panel li{margin:0 0 4px}
 .ci-outlook__lab{margin:10px 0 0;font-size:13.5px}
-.ci-outlook__lab a{color:#6b4fa1;text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-outlook__lab a{color:var(--season);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
 /* a11y: a keyboard/switch user must always see focus (only the skip-link had one). */
 .ci-card a:focus-visible,.ci-read a:focus-visible,.ci-sibs a:focus-visible,.breadcrumb a:focus-visible,.ci-source a:focus-visible,summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:2px}
 /* touch: lift the drawer summaries to a real tap target (WCAG 2.5.8). */
@@ -1611,14 +1723,14 @@ main{padding-top:64px}
    Redefine the cost-index tokens (light text on dark = high-contrast by construction) and
    lighten the three verdict accents so they stay legible. Honors OS preference AND the
    site theme toggle ([data-theme]); a forced-light toggle wins over OS dark. */
-:root[data-theme="dark"]{--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12)}
+:root[data-theme="dark"]{--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12);--stone:#9aa0aa;--gold:#d8bd6a;--season:#a992d6}
 :root[data-theme="dark"] .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
 :root[data-theme="dark"] .ci-read__verb[data-bias="watch"]{color:#d8bd6a;border-color:#8a7530}
 :root[data-theme="dark"] .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
 :root[data-theme="dark"] .ci-composite[data-band="up"]{border-left-color:#ed9a8e}
 :root[data-theme="dark"] .ci-composite[data-band="up"] .ci-composite__num{color:#ed9a8e}
 @media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12)}
+  :root:not([data-theme="light"]){--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12);--stone:#9aa0aa;--gold:#d8bd6a;--season:#a992d6}
   :root:not([data-theme="light"]) .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
   :root:not([data-theme="light"]) .ci-read__verb[data-bias="watch"]{color:#d8bd6a;border-color:#8a7530}
   :root:not([data-theme="light"]) .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
@@ -2132,6 +2244,7 @@ function emitIngredientPage(slug, locale) {
   </section>
   <div class="ci-body">
     ${marketReadBlock(slug, locale)}
+    ${seasonalHeadline(slug, locale)}
     ${pressureBlock(slug, locale)}
     ${whyMovingBlock(slug, locale)}
     ${whyItMatters(slug, locale)}
@@ -2330,7 +2443,7 @@ const LAB_CSS = `<style>
 .plab-pick{display:flex;align-items:center;gap:8px;margin:0 0 14px;flex-wrap:wrap}
 .plab-pick__label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
 .plab-pick__select{font:inherit;font-size:14px;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--white);color:var(--ink)}
-.plab-verdict{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid #6b4fa1;border-radius:12px}
+.plab-verdict{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--season);border-radius:12px}
 .plab-arrow{font-size:22px;line-height:1}
 .plab-arrow[data-dir="building"]{color:#A23B2D}.plab-arrow[data-dir="easing"]{color:#2A50C8}.plab-arrow[data-dir="steady"]{color:#8a6d1f}
 .plab-verdict__line{font-size:16px;margin:0;font-weight:600;flex:1 1 60%}
@@ -2348,17 +2461,17 @@ const LAB_CSS = `<style>
 .plab-sum__label{color:var(--ink-soft)}
 .plab-meter{position:relative;height:18px;background:var(--cream-2);border-radius:9px}
 .plab-meter__line{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink-soft);opacity:.5}
-.plab-meter__needle{position:absolute;top:-4px;width:4px;height:26px;border-radius:2px;background:#6b4fa1;transform:translateX(-50%)}
+.plab-meter__needle{position:absolute;top:-4px;width:4px;height:26px;border-radius:2px;background:var(--season);transform:translateX(-50%)}
 .plab-meter__needle[data-dir="building"]{background:#A23B2D}.plab-meter__needle[data-dir="easing"]{background:#2A50C8}
 .plab-sum__num{font-variant-numeric:tabular-nums;color:var(--ink-soft);text-align:right}
 .plab-controls{margin:16px 0;padding:14px 18px;background:var(--white);border:1px solid var(--line);border-radius:12px}
 .plab-controls__head{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);margin:0 0 10px}
 .plab-ctrl{margin:0 0 10px}
 .plab-ctrl__label{display:flex;justify-content:space-between;font-size:13.5px;margin:0 0 2px}
-.plab-ctrl__val{font-variant-numeric:tabular-nums;color:#6b4fa1;font-weight:600}
-.plab-ctrl input[type=range]{width:100%;accent-color:#6b4fa1}
+.plab-ctrl__val{font-variant-numeric:tabular-nums;color:var(--season);font-weight:600}
+.plab-ctrl input[type=range]{width:100%;accent-color:var(--season)}
 .plab-reset,.plab-share{font:inherit;font-size:13px;cursor:pointer;border:1px solid var(--line);background:var(--cream);border-radius:999px;padding:6px 14px;margin:4px 6px 0 0}
-.plab-reset:hover,.plab-share:hover{border-color:#6b4fa1;color:#6b4fa1}
+.plab-reset:hover,.plab-share:hover{border-color:var(--season);color:var(--season)}
 .plab-foot{font-size:12.5px;color:var(--ink-soft);margin:8px 0 0}
 @media (max-width:560px){.plab-bar,.plab-sum{grid-template-columns:90px 1fr 56px}}
 </style>`;
