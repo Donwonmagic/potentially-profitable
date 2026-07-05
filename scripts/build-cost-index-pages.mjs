@@ -75,6 +75,11 @@ const MuntinCostConfidence = require(path.join(repoRoot, 'tools/_shared/cost-con
 // deterministic functions of the frozen vendored data, so the page never churns.
 const MuntinConformal = require(path.join(repoRoot, 'tools/_shared/cost-conformal.js'));
 const MuntinStaleness = require(path.join(repoRoot, 'tools/_shared/cost-staleness.js'));
+// CRIT-5 multiplicity gate — per-item null (moving-block bootstrap) + Benjamini-
+// Yekutieli across the panel, so a non-neutral read only surfaces where it beats
+// the item's OWN week-to-week noise after correcting for scanning every ingredient.
+const MuntinSpike = require(path.join(repoRoot, 'tools/_shared/cost-spike.js'));
+const MuntinNullGate = require(path.join(repoRoot, 'tools/_shared/cost-null-gate.js'));
 const DEEP_HIST = (() => {
   try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-index-history.json'), 'utf8')).ingredients || {}; }
   catch { return {}; }
@@ -87,18 +92,41 @@ function bandSeries(slug, entry) {
   const h = entry && Array.isArray(entry.history) ? entry.history : [];
   return h.map((p) => p.valueCents).filter((x) => typeof x === 'number');
 }
+// Cadence of the series a coverage claim is computed on: the deep backfill is
+// MONTHLY for a few items (beef) and WEEKLY for the rest. A blanket "weeks" mislabels
+// the monthly items (audit HIGH-1), so derive it from the actual date spacing.
+function seriesCadence(slug, entry) {
+  const d = DEEP_HIST[slug];
+  const rows = (Array.isArray(d) && d.length >= 20) ? d : (entry && Array.isArray(entry.history) ? entry.history : []);
+  const dates = rows.map((p) => p.date).filter(Boolean).sort();
+  if (dates.length < 3) return 'weekly';
+  const gaps = [];
+  for (let i = 1; i < dates.length; i++) {
+    const a = Date.parse(dates[i - 1]), b = Date.parse(dates[i]);
+    if (isFinite(a) && isFinite(b)) gaps.push((b - a) / 86400000);
+  }
+  gaps.sort((a, b) => a - b);
+  const med = gaps.length ? gaps[Math.floor(gaps.length / 2)] : 7;
+  return med >= 20 ? 'monthly' : 'weekly';
+}
 // The per-item verified line: backtested coverage (only when it genuinely holds — an
 // honest per-item record, not the pooled claim) + the freshness read. '' when neither
 // is verifiable, so the generic method link stands alone.
 function verifiedNote(slug, entry, point, locale) {
   const es = locale === 'es';
   const bits = [];
-  const r = MuntinConformal.conformalNext(bandSeries(slug, entry), { alpha: 0.20, window: 52, calibrate: true });
-  if (r && r.coverage != null && r.nTested >= 12 && r.coverage >= 0.75) {
+  // RAW walk-forward coverage (leakage-free) with its Wilson range; published only
+  // when the un-tuned band genuinely holds (audit CRIT-2 / HIGH-6 — no widening, a
+  // range not a point, and the horizon stated per the series' real cadence).
+  const r = MuntinConformal.conformalNext(bandSeries(slug, entry), { alpha: 0.20, window: 52 });
+  if (r && r.coverage != null && !r.degenerate && r.coverage >= 0.75) {
     const pct = Math.round(r.coverage * 100);
+    const lo = Math.round((r.coverageLo != null ? r.coverageLo : r.coverage) * 100);
+    const hi = Math.round((r.coverageHi != null ? r.coverageHi : r.coverage) * 100);
+    const monthly = seriesCadence(slug, entry) === 'monthly';
     bits.push(es
-      ? `nuestro rango de precio del 80% ha acertado el ${pct}% de las veces (${r.nTested} semanas de historial)`
-      : `our 80% price range has been right ${pct}% of the time (${r.nTested} weeks of history)`);
+      ? `nuestro rango del 80% capturó la próxima lectura ${monthly ? 'mensual' : 'semanal'} cerca del ${pct}% de las veces (${lo}–${hi}%, ${r.nTested} lecturas)`
+      : `our 80% range caught the next ${monthly ? 'monthly' : 'weekly'} print about ${pct}% of the time (${lo}–${hi}%, ${r.nTested} reads)`);
   }
   const st = point ? MuntinStaleness.stalenessOf(point, {}) : null;
   if (st) bits.push(st.overdue
@@ -155,6 +183,23 @@ const CI = (() => {
 })();
 const COST_INDEX = CI.ingredients || {};
 const DRIVERS = CI.drivers || {};
+
+// CRIT-5: stamp flag.gated on every ingredient whose spike read is a non-neutral
+// "call". gated=false → the shared verdict voice (cost-verdict.js) withholds it to
+// the neutral "not distinguishable from its own noise" note. An item surfaces only
+// if its own-null p survives Benjamini-Yekutieli at q=0.10 across the panel; items
+// too short to bootstrap are withheld. Deterministic (slug-seeded). The client seed
+// receives the same field from build-cost-index.mjs on the next vendor run.
+(() => {
+  const items = [];
+  for (const slug of Object.keys(COST_INDEX)) {
+    const flag = COST_INDEX[slug] && COST_INDEX[slug].flag;
+    if (!flag || !flag.verdict || MuntinNullGate.actionRank(flag.verdict) <= 0) continue;
+    items.push({ key: slug, levels: bandSeries(slug, COST_INDEX[slug]), verdict: flag.verdict });
+  }
+  const { surfaced } = MuntinNullGate.gatePanel(items, MuntinSpike.classify, { q: 0.10 });
+  for (const it of items) COST_INDEX[it.key].flag.gated = !!surfaced[it.key];
+})();
 // Sourced driver-association catalog (association, never causation). Each entry
 // carries a labelled mechanism + a source/sourceUrl/retrievedAt for the hub
 // "what's moving" insight evidence drawer. Spoken only on an up read, per the
@@ -471,7 +516,9 @@ const TONE_BIAS = { hold: 'hold', watch: 'watch', reprice: 're-price' };
 const TONE_LABEL = {
   'hold':     { en: 'Hold',     es: 'Mantener' },
   'watch':    { en: 'Watch',    es: 'Vigilar' },
-  're-price': { en: 'Re-price', es: 'Re-precificar' }
+  // Post-audit (2026-07, C3/C6): the firm-structural chip is a DESCRIPTION of state
+  // ("up and holding"), not an imperative to re-price — the forward call was unearned.
+  're-price': { en: 'Elevated', es: 'Elevado' }
 };
 function verdictChip(v, locale) {
   const bias = TONE_BIAS[v.tone] || 'watch';
@@ -538,9 +585,22 @@ function hubDriverInsight(slug, r, locale) {
 }
 function movingNowSection(slugs, locale) {
   const es = locale === 'es';
+  // CRIT-5: a read that the null gate withheld (flag.gated===false) is NOT "moving"
+  // in any statistically-distinguished sense — it reverts to the neutral voice — so
+  // it is excluded from the triage reel. The honest count below makes the
+  // withholding legible instead of silently emptying the section.
+  const gatedOut = (s) => { const f = hubFlag(s); return !!(f && f.gated === false); };
+  const candSlugs = slugs.filter((s) => { const f = hubFlag(s); return f && MuntinNullGate.actionRank(f.verdict) > 0; });
+  const M = candSlugs.length;
+  const K = candSlugs.filter((s) => { const f = hubFlag(s); return f.gated !== false; }).length;
+  const barNote = M > 0
+    ? (es ? `${K} de ${M} movimientos rastreados superaron nuestro filtro de ruido y comparación múltiple esta semana; el resto se lee como contexto, no como una señal.`
+          : `${K} of ${M} tracked moves cleared our noise + multiple-comparison bar this week; the rest read as context, not a call.`)
+    : '';
+  const bar = barNote ? `<p class="ci-moving-bar">${barNote}</p>` : '';
   const rows = slugs
     .map((s) => ({ s, v: ingVerdict(s), r: readingOf(s) }))
-    .filter((x) => x.v && x.v.tone !== 'hold')   // surface watch + reprice
+    .filter((x) => x.v && x.v.tone !== 'hold' && !gatedOut(x.s))   // surface distinguished watch + reprice
     .sort((a, b) => (TONE_RANK[a.v.tone] - TONE_RANK[b.v.tone]) || a.s.localeCompare(b.s));
   // Curate, don't dump (persona audit #4): "what's moving" is the highlight reel
   // — the handful that need action — not the whole list. Dumping all ~20 movers
@@ -556,7 +616,7 @@ function movingNowSection(slugs, locale) {
     const calm = es
       ? `Nada exige acción esta semana — la mayoría de los ingredientes están en su rango habitual.`
       : `Nothing needs action this week — most ingredients are sitting in their usual range.`;
-    return `<section class="ci-moving"><h2 class="ci-cat-h" id="moving">${head}</h2><p class="ci-moving-calm">${calm}</p></section>`;
+    return `<section class="ci-moving"><h2 class="ci-cat-h" id="moving">${head}</h2>${bar}<p class="ci-moving-calm">${calm}</p></section>`;
   }
   const lis = shown.map((x) => {
     const { s, v, r } = x;
@@ -586,14 +646,14 @@ function movingNowSection(slugs, locale) {
       + `<p class="ci-moving-act">→ <strong>${escHtml(action)}.</strong> <a class="ci-moving-more" href="${base}/cost-index/${s}/">${more} →</a></p></div></li>`;
   }).join('');
   const key = es
-    ? `<strong>Re-precificar</strong> = una subida que parece durar · <strong>Vigilar</strong> = un movimiento real, aún sin confirmar · <strong>Mantener</strong> = dentro de su rango normal`
-    : `<strong>Re-price</strong> = a rise that looks durable · <strong>Watch</strong> = a real move, not yet confirmed · <strong>Hold</strong> = within its normal range`;
+    ? `<strong>Elevado</strong> = sube y se mantiene (contexto, no una decisión) · <strong>Vigilar</strong> = un movimiento real, aún sin confirmar · <strong>Mantener</strong> = dentro de su rango normal`
+    : `<strong>Elevated</strong> = up and holding (context, not a call) · <strong>Watch</strong> = a real move, not yet confirmed · <strong>Hold</strong> = within its normal range`;
   const moreLine = moreCount > 0
     ? `<p class="ci-moving-more-all">${es
         ? `+${moreCount} más en movimiento — míralos todos en <a href="#all-readings">la tabla de lecturas</a> de abajo.`
         : `+${moreCount} more moving — see them all in <a href="#all-readings">the readings table</a> below.`}</p>`
     : '';
-  return `<section class="ci-moving"><h2 class="ci-cat-h" id="moving">${head}</h2><p class="ci-vkey">${key}</p><ul class="ci-moving-list">${lis}</ul>${moreLine}</section>`;
+  return `<section class="ci-moving"><h2 class="ci-cat-h" id="moving">${head}</h2>${bar}<p class="ci-vkey">${key}</p><ul class="ci-moving-list">${lis}</ul>${moreLine}</section>`;
 }
 
 // ---- Composite band — the whole basket as one honest reading ----------
@@ -740,9 +800,13 @@ function sparkBlock(r, locale) {
   const sorted = vals.slice().sort((a, b) => a - b);
   const lo = Math.round(pctile(sorted, 0.25)), hi = Math.round(pctile(sorted, 0.75));
   const now = vals[vals.length - 1];
-  const pos = now < lo ? (es ? 'por debajo de su rango habitual — buena compra' : 'below its usual range — a good buy')
-    : now > hi ? (es ? 'en la parte alta de su rango habitual' : 'top of its usual range')
-    : (es ? 'dentro de su rango habitual' : 'inside its usual range');
+  // Post-audit (2026-07, C2): a pure POSITION phrase — no coupled buy/lock verb
+  // (range position is near coin-flip for the next move), and "recent range" not
+  // "usual range" so a ~6-month window is never read as an all-time judgment. The
+  // gated seasonalBand block below carries any "seasonally cheap" cue where earned.
+  const pos = now < lo ? (es ? 'cerca del fondo de su rango reciente' : 'near the bottom of its recent range')
+    : now > hi ? (es ? 'cerca del tope de su rango reciente' : 'near the top of its recent range')
+    : (es ? 'cerca de la mitad de su rango reciente' : 'around the middle of its recent range');
   const half = Math.floor(vals.length / 2);
   const ch = (() => { const a = medOf(vals.slice(0, half)); const b = medOf(vals.slice(half)); return a > 0 ? (b - a) / a : 0; })();
   const shape = ch > 0.03 ? (es ? 'subió a lo largo de la ventana' : 'rose over the tracked window')
@@ -1373,6 +1437,7 @@ main{padding-top:64px}
 .ci-moving-item a:hover{color:var(--teal)}
 .ci-moving-reason{color:var(--ink-soft);font-size:14px}
 .ci-moving-calm{margin:0;font-size:15.5px;color:var(--ink)}
+.ci-moving-bar{margin:0 0 12px;font-size:13px;line-height:1.5;color:var(--ink-soft);padding:8px 12px;background:var(--surface-1,#faf9f7);border:1px solid var(--line);border-radius:8px}
 .ci-vkey{margin:2px 0 12px;font-size:12.5px;color:var(--ink-soft);line-height:1.6}
 .ci-vkey strong{color:var(--ink)}
 .ci-moving-insight{margin:3px 0 2px}
@@ -1590,21 +1655,37 @@ function whyMovingBlock(slug, locale) {
   const feed = rel.filter((x) => x.dr.kind === 'feed-grain');
   const energy = rel.filter((x) => x.dr.kind !== 'feed-grain');
   const clauses = [];
+  // Post-audit (2026-07, HIGH-4): the feed clause states the measured driver
+  // DIRECTION only. The old "which has tended to move before protein prices" +
+  // "as of {date}" badge implied an on-device measurement that does not exist (the
+  // feed-grain series are not in the shipped history). The feed→protein lag is now
+  // carried as a CITED USDA-ERS external fact in the drawer below, not asserted here.
   if (feed.length) clauses.push(
-    (es ? 'forraje — ' : 'feed-grain — ') + feed.map(part).join(', ') +
-    (es ? ' — que ha tendido a moverse antes que los precios de proteína' : ' — which has tended to move before protein prices'));
+    (es ? 'forraje — ' : 'feed-grain — ') + feed.map(part).join(', '));
   if (energy.length) clauses.push(
     energy.map(part).join(', ') + (es ? ', que se mueve junto al costo de los alimentos' : ', which moves alongside food costs'));
   const lead = es ? 'Insumos río arriba ahora: ' : 'Upstream inputs right now: ';
   const tail = es ? ' Asociación, no causa.' : ' Association, not cause.';
-  let asOf = null;
-  rel.forEach((x) => (x.dr.history || []).forEach((h) => { if (h.date && (!asOf || h.date > asOf)) asOf = h.date; }));
   const head = es ? 'Por qué se mueve' : "Why it's moving";
-  const badge = asOf ? `<span class="ci-read__badge">${es ? 'al' : 'as of'} ${asOf}</span>` : '';
+  // Cited external mechanism for the feed→protein biological lag (USDA ERS) when a
+  // feed-grain driver is present. Gated on ES prose like hubDriverInsight so a
+  // half-translated catalog never leaks English onto /es/.
+  let cite = '';
+  if (feed.length) {
+    const fc = DRIVER_CAT.find((x) => x.class === 'feed' && Array.isArray(x.affects) && x.affects.includes(slug));
+    if (fc && !(es && (!fc.label_es || !fc.mechanism_es))) {
+      const flabel = es ? fc.label_es : fc.label;
+      const fmech = es ? fc.mechanism_es : fc.mechanism;
+      const summ = es ? 'Por qué importa el forraje aquí' : 'Why feed matters here';
+      const retrieved = es ? 'recuperado' : 'retrieved';
+      const srcLabel = es ? 'fuente' : 'source';
+      cite = `<details class="cite ci-why__cite"><summary>${summ}</summary><p>${escHtml(flabel)}: ${escHtml(fmech)}.${fc.retrievedAt ? ` · ${retrieved} ${escHtml(fc.retrievedAt)}` : ''}${fc.sourceUrl ? ` · <a href="${escHtml(fc.sourceUrl)}" rel="nofollow noopener" target="_blank">${srcLabel}</a>` : ''}</p></details>`;
+    }
+  }
   return `
   <aside class="ci-why" aria-label="${head}">
-    <p class="ci-why__head">${head}${badge}</p>
-    <p class="ci-why__line">${lead}${clauses.join('; ')}.${tail}</p>
+    <p class="ci-why__head">${head}</p>
+    <p class="ci-why__line">${lead}${clauses.join('; ')}.${tail}</p>${cite}
   </aside>`;
 }
 
@@ -1968,14 +2049,14 @@ function scorecardBand(locale) {
   const cell = (fig, lab) => `<div style="min-width:120px"><div style="${figStyle}">${fig}</div><div style="${labStyle}">${lab}</div></div>`;
   const heading = es ? 'Calificado en p\u00fablico, fallos incluidos.' : 'Graded in public, misses included.';
   const line = es
-    ? `La banda nominal del ${nominal} se cumpli\u00f3 el ${coverage} de las veces en ${steps} semanas evaluadas \u2014 y lo que no tiene precio se reporta ausente, nunca se adivina.`
-    : `The nominal ${nominal} band held ${coverage} of the time across ${steps} scored weeks \u2014 and anything without a price print reports absent, never guessed.`;
+    ? `La banda con objetivo del ${nominal} captur\u00f3 la pr\u00f3xima lectura cerca del ${coverage} de las veces en ${steps} lecturas evaluadas \u2014 su tasa cruda sin ajustar; lo que no tiene precio se reporta ausente, nunca se adivina.`
+    : `The ${nominal}-target band caught the next print about ${coverage} of the time across ${steps} scored reads \u2014 its raw, un-tuned rate; anything without a price print reports absent, never guessed.`;
   const linkTxt = es ? 'Ver la boleta completa' : 'See the full track record';
   return `<section class="ci-scorecard" aria-label="${es ? 'Boleta de calibraci\u00f3n' : 'Calibration scorecard'}" style="margin:22px 0 8px;padding:20px 24px;background:var(--surface-1,#fff);border:1px solid var(--line);border-top:3px solid var(--ink);border-radius:12px;box-shadow:var(--elev-1)">
       <div style="display:flex;flex-wrap:wrap;gap:18px 36px;align-items:flex-start">
         ${cell(nominal, es ? 'banda nominal' : 'nominal band')}
         ${cell(coverage, es ? 'cobertura realizada' : 'realized coverage')}
-        ${cell(steps, es ? 'semanas evaluadas' : 'scored weeks')}
+        ${cell(steps, es ? 'lecturas evaluadas' : 'scored reads')}
         <div style="flex:1 1 260px;min-width:240px">
           <p style="margin:0;font-family:var(--font-display);font-size:16px;font-weight:600;color:var(--ink)">${heading}</p>
           <p style="margin:6px 0 0;font-size:13.5px;line-height:1.55;color:var(--ink-soft)">${line} <a href="${base}/cost-index/methodology/#track-record" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">${linkTxt} \u2192</a></p>

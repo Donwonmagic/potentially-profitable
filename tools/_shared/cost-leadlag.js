@@ -11,6 +11,22 @@
  * THE HARD RULE: this reports ASSOCIATION WITH A LAG, never causation. The copy
  * always says "has tended to move before" / "moves alongside", never "causes".
  *
+ * DORMANT — NO CONSUMER TODAY (stats-audit 2026-07, C5). Nothing wires this up: no
+ * HTML <script src>, no build/check .mjs requires it; the only importer is its own
+ * manual node --test file. bestLag()/framing() therefore render to no user. Do NOT
+ * enable it as-is: bestLag() (below) feeds pearson() RAW LEVEL arrays, which
+ * correlates spuriously between two trending/near-unit-root price series (the
+ * Engle-Granger / random-walk trap documented in cost-cointegration.js; on an
+ * independent-random-walk null this pipeline flags ~31% of pairs "strongly", vs ~3%
+ * on real de-trended data), and it takes a max over 7 lags across ~740 pairs with no
+ * multiple-comparison control. WIRE-UP PRECONDITION before any user-facing "has
+ * tended to move before" verb: (a) operate on first differences / log-returns OR
+ * route the pair through cost-cointegration.engleGranger, (b) apply BH/BY correction
+ * across the pairs AND the lags searched, (c) publish through the same WITHHOLD gate
+ * as check-bridge-cointegration.mjs ("no clear lead in the data yet" rather than a
+ * lag number when the relationship is not established). The live cross-ingredient
+ * claim on the pages is a CITED USDA-ERS fact, not this module's output.
+ *
  * Pure, deterministic, no network, no LLM. Browser: window.MuntinLeadLag.
  * Node: module.exports.
  */

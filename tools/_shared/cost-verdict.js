@@ -27,6 +27,18 @@
 
   function verdict(flag, confidence) {
     if (!flag || !flag.verdict) return null;
+    // CRIT-5 null gate: when the panel-level significance gate (cost-null-gate.js)
+    // has explicitly marked this read as NOT distinguishable from the item's own
+    // week-to-week noise after multiplicity correction, withhold the call to the
+    // neutral voice regardless of the raw verdict. `gated === false` is explicit;
+    // undefined means "not gated / no gate ran" so the read renders as-is.
+    if (flag.gated === false) {
+      return {
+        tone: 'watch', verb_en: 'Watch', verb_es: 'Observa',
+        note_en: 'Up on paper, but for this item the move is not yet distinguishable from its own week-to-week noise once we account for every ingredient we check at once — we are holding this read as context until the next print.',
+        note_es: 'Sube sobre el papel, pero en este producto el movimiento aún no se distingue de su propio ruido de semana a semana una vez que tomamos en cuenta todos los ingredientes que revisamos a la vez — mantenemos esta lectura como contexto hasta la próxima lectura.'
+      };
+    }
     var thin = confidence === 'low' || confidence === 'directional';
     var wk = flag.elevatedWeeks;
     switch (flag.verdict) {
@@ -36,22 +48,28 @@
           note_en: 'Up and holding, but the data is thin — wait for more before a big call.',
           note_es: 'Sube y se mantiene, pero hay pocos datos — espera más antes de una decisión grande.'
         };
+        // Post-audit (2026-07, C3/C6): DESCRIPTION, not an imperative. A walk-forward
+        // backtest on the shipped data shows "structural" mean-reverts, so "re-price"
+        // was an unearned forward call. We state only what the price has done, tagged
+        // "context, not advice"; "reads" not "weeks" (the count is periods, and the
+        // beef series are monthly). The 'reprice' tone key is retained internally for
+        // ranking/colour but now denotes the "elevated / up-and-holding" state.
         return {
-          tone: 'reprice', verb_en: 'Consider re-pricing', verb_es: 'Considera ajustar el precio',
-          note_en: 'Up and holding' + (wk ? ' for ' + wk + ' weeks' : '') + ' — this looks like a real reset, not a blip. Many operators would re-price the dishes that use it.',
-          note_es: 'Sube y se mantiene' + (wk ? ' por ' + wk + ' semanas' : '') + ' — parece un cambio real, no un repunte. Muchos operadores ajustarían el precio de los platillos que lo usan.'
+          tone: 'reprice', verb_en: 'Up and holding', verb_es: 'Sube y se mantiene',
+          note_en: 'Up and holding' + (wk ? ' across the last ' + wk + ' reads' : '') + ' — that describes what the price has done, not a prediction of the next move. Context, not advice.',
+          note_es: 'Sube y se mantiene' + (wk ? ' en las últimas ' + wk + ' lecturas' : '') + ' — describe lo que el precio ha hecho, no una predicción del próximo movimiento. Contexto, no consejo.'
         };
       case 'spike':
         return {
           tone: 'hold', verb_en: 'Hold', verb_es: 'Espera',
-          note_en: 'Jumped, then pulled back — this often reverts. Re-pricing now risks chasing a number that is already falling.',
-          note_es: 'Subió y luego bajó — suele revertir. Ajustar ahora arriesga perseguir un número que ya está cayendo.'
+          note_en: 'Jumped, then partly pulled back — that is the recent path, not a forecast of where it goes next.',
+          note_es: 'Subió y luego retrocedió en parte — ese es el recorrido reciente, no un pronóstico de lo que sigue.'
         };
       case 'easing':
         return {
           tone: 'hold', verb_en: 'Hold', verb_es: 'Espera',
-          note_en: 'Easing — this can be a chance to renegotiate, not a reason to re-price.',
-          note_es: 'Bajando — puede ser oportunidad de renegociar, no razón para reajustar.'
+          note_en: 'Currently below its recent baseline — a description of the recent path, not a call on where it goes next.',
+          note_es: 'Actualmente por debajo de su base reciente — una descripción del recorrido reciente, no una decisión sobre lo que sigue.'
         };
       case 'emerging':
         return {

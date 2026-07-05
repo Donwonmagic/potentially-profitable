@@ -79,14 +79,15 @@ test('heartbeat: calm local "you last checked {when}"; silent on first/same-day;
 test('flagVerb: thin data never says re-price; verdicts map to buy/hold/watch', () => {
   const struct = { verdict: 'structural', elevatedWeeks: 3 };
   assert.equal(EN.flagVerb(struct, 'medium').tone, 'reprice');
-  assert.match(EN.flagVerb(struct, 'medium').verb, /Consider re-pricing/);
+  assert.match(EN.flagVerb(struct, 'medium').verb, /Up and holding/);     // description, not "Consider re-pricing"
+  assert.doesNotMatch(EN.flagVerb(struct, 'medium').note, /re-?price|real reset|not a blip/i);
   assert.equal(EN.flagVerb(struct, 'low').tone, 'watch');                // thin → hedge, never reprice
   assert.equal(EN.flagVerb(struct, 'directional').tone, 'watch');
   assert.equal(EN.flagVerb({ verdict: 'spike' }, 'medium').tone, 'hold');
   assert.equal(EN.flagVerb({ verdict: 'easing' }, 'medium').tone, 'hold');
   assert.equal(EN.flagVerb({ verdict: 'emerging' }, 'medium').tone, 'watch');
   assert.equal(EN.flagVerb(null, 'medium'), null);
-  assert.equal(ES.flagVerb(struct, 'medium').verb, 'Considera ajustar el precio');
+  assert.equal(ES.flagVerb(struct, 'medium').verb, 'Sube y se mantiene');
 });
 
 // then-vs-now — the two-exact-invoice-dates comparison: owner Δ% (A→B) vs market

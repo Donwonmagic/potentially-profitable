@@ -43,13 +43,18 @@ function build() {
   const ci = rd('data/cost-index.json'), deep = rd('data/cost-index-history.json');
   const keys = ci && ci.ingredients ? Object.keys(ci.ingredients) : [];
 
-  // --- band coverage (calibrated conformal) ---
-  let bItems = 0, bSteps = 0, bHits = 0, widened = 0;
+  // --- band coverage (RAW walk-forward conformal, leakage-free) ---
+  // Honesty contract (audit CRIT-2): we report the un-tuned coverage, NOT the
+  // adaptive-widened rate (which reported its own fitting target). Under-covering
+  // items are counted and hedged/withheld at render time, never widened away.
+  let bItems = 0, bSteps = 0, bHits = 0, underCovering = 0, minCov = 1, maxCov = 0;
   for (const k of keys) {
-    const r = conformalNext(seriesFor(k, deep, ci), { alpha: ALPHA, window: WINDOW, calibrate: true });
+    const r = conformalNext(seriesFor(k, deep, ci), { alpha: ALPHA, window: WINDOW });
     if (!r || r.coverage == null) continue;
     bItems++; bSteps += r.nTested; bHits += Math.round(r.coverage * r.nTested);
-    if (r.scale > 1) widened++;
+    if (r.coverage < 0.70) underCovering++;
+    if (r.coverage < minCov) minCov = r.coverage;
+    if (r.coverage > maxCov) maxCov = r.coverage;
   }
 
   // --- trend reliability (skill by strength) ---
@@ -70,10 +75,13 @@ function build() {
     _doc: 'Verified calibration record for the Cost Index. Built by scripts/build-cost-index-calibration-report.mjs from the vendored price data + deep history; CI re-checks it (--check). Hand-edit nothing.',
     _version: 1,
     band: {
-      method: 'split/EnbPI conformal, ACI-widened',
+      method: 'split/EnbPI conformal, raw walk-forward coverage (un-tuned)',
       nominal: 1 - ALPHA,
       pooledCoverage: bSteps ? r3(bHits / bSteps) : null,
-      items: bItems, scoredSteps: bSteps, widened,
+      items: bItems, scoredSteps: bSteps,
+      minItemCoverage: bItems ? r3(minCov) : null,
+      maxItemCoverage: bItems ? r3(maxCov) : null,
+      underCovering,
     },
     trend: {
       method: 'price-only direction call, reliability by signal strength',
@@ -90,7 +98,9 @@ function main() {
   if (process.argv.includes('--self-test')) {
     const b = report.band, t = report.trend;
     const checks = [
-      ['band coverage within [nominal-.05, 1]', b.pooledCoverage >= b.nominal - 0.05 && b.pooledCoverage <= 1],
+      // Raw coverage may sit BELOW nominal (that is the honest reading we now publish);
+      // the honest window is nominal-0.15 .. 1.
+      ['band raw coverage within honest window [nominal-.15, 1]', b.pooledCoverage >= b.nominal - 0.15 && b.pooledCoverage <= 1],
       ['trend tiers monotonic non-decreasing', t.tiers.low.hitRate <= t.tiers.medium.hitRate + 0.02 && t.tiers.medium.hitRate <= t.tiers.high.hitRate + 0.02],
       ['high tier beats baseline', t.tiers.high.hitRate >= t.baseline],
       ['deterministic (rebuild equal)', JSON.stringify(build()) === JSON.stringify(report)],

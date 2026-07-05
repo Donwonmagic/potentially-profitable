@@ -141599,6 +141599,39 @@
       "tier": "measured",
       "yield": 0.7,
       "epCents": 5590
+    },
+    "pumpkin": {
+      "points": [],
+      "history": [
+        {
+          "date": "2025-11-01",
+          "valueCents": 28490,
+          "source": "bls",
+          "basis": "index"
+        },
+        {
+          "date": "2025-12-01",
+          "valueCents": 30135,
+          "source": "bls",
+          "basis": "index"
+        },
+        {
+          "date": "2026-03-01",
+          "valueCents": 54977,
+          "source": "bls",
+          "basis": "index"
+        }
+      ],
+      "flag": {
+        "verdict": "insufficient",
+        "actionBias": "watch",
+        "reason": "not enough history to tell a spike from a real trend — treat as real",
+        "move": null,
+        "retrace": null,
+        "elevatedWeeks": null,
+        "nHistory": 3
+      },
+      "tier": "measured"
     }
   },
   "basket": {

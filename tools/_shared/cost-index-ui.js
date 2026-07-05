@@ -227,10 +227,12 @@
   // and low-numeracy readers. Notes gaps honestly.
   function sparkShape(values) { return FMT.sparkShape(values); }
   // Percentile-of-history, stated as an honest COUNT (never a smoothed "85th
-  // percentile" — that implies a fitted distribution we don't have). Separates
-  // "expensive" from "rising": today can sit inside the typical band yet at the
-  // top of its OWN recent range. Needs >=8 valid weekly reads; the window is all
-  // the history that exists, so we say "of its last N" — never "all-time".
+  // percentile" — that implies a fitted distribution we don't have). It reports
+  // where today's LEVEL sits within its OWN recent range — a static rank, NOT a
+  // direction and NOT a buy/lock cue (post-audit 2026-07, C2: the old "separates
+  // expensive from rising" was backwards). A high recent-range percentile IS
+  // "rising"; it does not separate that from "expensive". Needs >=8 valid reads;
+  // the window is ~26 recent reads, so we say "of its last N" — never "all-time".
   function percentileLine(values) { return FMT.percentileLine(values); }
   // Week-over-week — the single most recent step, the number operators repeat
   // ("eggs up a dime a dozen since last week"). Honest across cadences: finds
@@ -690,16 +692,20 @@
       var sv = V.verdict(flag, confidence);
       return sv ? { tone: sv.tone, verb: L(sv.verb_en, sv.verb_es), note: L(sv.note_en, sv.note_es) } : null;
     }
+    // CRIT-5 null gate (see cost-verdict.js): withhold to the neutral voice when the
+    // panel gate marked this read as not distinguishable from the item's own noise.
+    if (flag.gated === false) return { tone: 'watch', verb: L('Watch', 'Observa'), note: L('Up on paper, but for this item the move is not yet distinguishable from its own week-to-week noise once we account for every ingredient we check at once — we are holding this read as context until the next print.', 'Sube sobre el papel, pero en este producto el movimiento aún no se distingue de su propio ruido de semana a semana una vez que tomamos en cuenta todos los ingredientes que revisamos a la vez — mantenemos esta lectura como contexto hasta la próxima lectura.') };
     var thin = confidence === 'low' || confidence === 'directional';
     var wk = flag.elevatedWeeks;
     switch (flag.verdict) {
       case 'structural':
         if (thin) return { tone: 'watch', verb: L('Watch', 'Observa'), note: L('Up and holding, but the data is thin — wait for more before a big call.', 'Sube y se mantiene, pero hay pocos datos — espera más antes de una decisión grande.') };
-        return { tone: 'reprice', verb: L('Consider re-pricing', 'Considera ajustar el precio'), note: L('Up and holding' + (wk ? ' for ' + wk + ' weeks' : '') + ' — this looks like a real reset, not a blip. Many operators would re-price the dishes that use it.', 'Sube y se mantiene' + (wk ? ' por ' + wk + ' semanas' : '') + ' — parece un cambio real, no un repunte. Muchos operadores ajustarían el precio de los platillos que lo usan.') };
+        // Post-audit (2026-07, C3/C6): description, not an imperative — see cost-verdict.js.
+        return { tone: 'reprice', verb: L('Up and holding', 'Sube y se mantiene'), note: L('Up and holding' + (wk ? ' across the last ' + wk + ' reads' : '') + ' — that describes what the price has done, not a prediction of the next move. Context, not advice.', 'Sube y se mantiene' + (wk ? ' en las últimas ' + wk + ' lecturas' : '') + ' — describe lo que el precio ha hecho, no una predicción del próximo movimiento. Contexto, no consejo.') };
       case 'spike':
-        return { tone: 'hold', verb: L('Hold', 'Espera'), note: L('Jumped, then pulled back — this often reverts. Re-pricing now risks chasing a number that is already falling.', 'Subió y luego bajó — suele revertir. Ajustar ahora arriesga perseguir un número que ya está cayendo.') };
+        return { tone: 'hold', verb: L('Hold', 'Espera'), note: L('Jumped, then partly pulled back — that is the recent path, not a forecast of where it goes next.', 'Subió y luego retrocedió en parte — ese es el recorrido reciente, no un pronóstico de lo que sigue.') };
       case 'easing':
-        return { tone: 'hold', verb: L('Hold', 'Espera'), note: L('Easing — this can be a chance to renegotiate, not a reason to re-price.', 'Bajando — puede ser oportunidad de renegociar, no razón para reajustar.') };
+        return { tone: 'hold', verb: L('Hold', 'Espera'), note: L('Currently below its recent baseline — a description of the recent path, not a call on where it goes next.', 'Actualmente por debajo de su base reciente — una descripción del recorrido reciente, no una decisión sobre lo que sigue.') };
       case 'emerging':
         return { tone: 'watch', verb: L('Watch', 'Observa'), note: L('A real move, but it has not held yet. Give it a couple of weeks.', 'Un movimiento real, pero aún no se sostiene. Dale un par de semanas.') };
       case 'flat':
@@ -1389,9 +1395,12 @@
     var dWrap = el('details', 'cp-drivers');
     dWrap.appendChild(el('summary', null, L("Why it's moving", 'Por qué se mueve')));
     var dBody = el('div', 'cp-drivers-body');
+    // Post-audit (2026-07, HIGH-4): direction is measured; the feed→meat LEAD is a
+    // documented USDA-ERS fact, not an on-device measurement (the driver series are
+    // not in the shipped history). State it as such — no "moves before" claim.
     dBody.appendChild(el('p', 'cp-drivers-lead', L(
-      'These public commodities tend to move before the ingredients above — an association, not a proven cause.',
-      'Estas materias primas públicas suelen moverse antes que los ingredientes de arriba — una asociación, no una causa comprobada.')));
+      'These public commodities are upstream inputs for the ingredients above — grain feeds livestock, diesel moves freight. The directions shown are measured; the feed-to-meat lag is a relationship documented by USDA ERS, not measured here.',
+      'Estas materias primas públicas son insumos río arriba de los ingredientes de arriba — el grano alimenta al ganado, el diésel mueve el flete. Las direcciones mostradas están medidas; el rezago del forraje al precio de la carne es una relación documentada por USDA ERS, no medida aquí.')));
     DATA.drivers.forEach(function (d) {
       var dir = (d.trend && d.trend.dir) || 'flat';
       var dpct = d.trend && d.trend.pct;
@@ -1409,11 +1418,9 @@
       dhead.appendChild(dt);
       row.appendChild(dhead);
       if (Array.isArray(d.spark) && d.spark.length >= 2) row.appendChild(sparkSvg(d.spark, dir));
-      var leads = (d.leads || []).filter(function (k) { return nameByKey[k]; }).slice(0, 2).map(function (k) { return nameByKey[k]; });
-      if (leads.length) {
-        row.appendChild(el('p', 'cp-driver-leads',
-          L('Tends to move before ' + leads.join(', ') + '.', 'Suele moverse antes que ' + leads.join(', ') + '.')));
-      }
+      // Per-row "tends to move before {X}" WITHHELD (audit HIGH-4): the tool cannot
+      // cite a per-pair lead, and it would restate a spurious level correlation. The
+      // documented feed→meat lag lives in the group lead above (cited to USDA ERS).
       dBody.appendChild(row);
     });
     dWrap.appendChild(dBody);
