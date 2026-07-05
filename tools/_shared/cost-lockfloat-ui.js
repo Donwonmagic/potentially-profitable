@@ -238,6 +238,23 @@
       return sec;
     }
 
+    function ledgerBridge(DATA) {
+      // Pillar 6: the free tool and Ledger are the SAME band on different series —
+      // public wholesale here, the operator's own invoices there. Honest handoff, no
+      // manufactured urgency, no forbidden claim. Framed off the live lockable count.
+      var sec = el('section', 'lf-ledger');
+      sec.appendChild(el('h2', 'lf-ledger-h', L('Same read, on your own invoices', 'La misma lectura, en tus propias facturas')));
+      var p = el('p', 'lf-ledger-p');
+      p.appendChild(document.createTextNode(L(
+        'This is the market’s band. Whether YOUR vendor actually passed it through — line by line — is the one thing a public read can’t see. Muntin Ledger runs the same band on your own invoice history and flags a price that steps off it. For the ' + DATA.counts.withhold + ' we won’t call, your own record is the only edge there is.',
+        'Esta es la banda del mercado. Si TU proveedor de verdad la trasladó — línea por línea — es lo único que una lectura pública no puede ver. Muntin Ledger corre la misma banda sobre tu historial de facturas y marca un precio que se sale de ella. Para los ' + DATA.counts.withhold + ' que no llamamos, tu propio registro es la única ventaja.')));
+      sec.appendChild(p);
+      var a = el('a', 'lf-ledger-cta', L('See Muntin Ledger →', 'Ver Muntin Ledger →'));
+      a.href = 'https://ledger.muntin.digital/';
+      sec.appendChild(a);
+      return sec;
+    }
+
     function shortName(n) { return n.replace(/\s*\([^)]*\)/, ''); }
 
     function render(mount, DATA, opts) {
@@ -257,6 +274,7 @@
         mount.appendChild(ladder(hero.items, horizon));
         mount.appendChild(board(hero.items, horizon));
         mount.appendChild(refusalWall(hero.items, DATA));
+        mount.appendChild(ledgerBridge(DATA));
         if (DATA.asOf) mount.appendChild(el('p', 'lf-asof', L('As of ' + DATA.asOf + ' · wholesale reference, delivered price runs higher.', 'Al ' + DATA.asOf + ' · referencia mayorista, el precio entregado es más alto.')));
       }
       draw();

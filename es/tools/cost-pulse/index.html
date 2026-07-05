@@ -388,6 +388,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .lf-refusal-name{color:var(--ink);font-weight:500}
 .lf-refusal-reason{color:var(--stone);font-size:12px;text-align:right}
 .lf-asof{font-size:12px;color:var(--stone);margin:14px 0 0}
+.lf-ledger{background:var(--surface-1);border:1px solid var(--line);border-left:4px solid var(--ink);border-radius:14px;padding:22px;margin:20px 0 6px}
+.lf-ledger-h{font-size:19px;margin:0 0 8px;color:var(--ink)}
+.lf-ledger-p{font-size:14.5px;color:var(--ink-soft);line-height:1.55;margin:0 0 16px;max-width:64ch}
+.lf-ledger-cta{display:inline-flex;align-items:center;gap:6px;background:var(--ink);color:var(--surface-1);font-weight:600;font-size:14.5px;padding:11px 18px;border-radius:9px;text-decoration:none}
+.lf-ledger-cta:focus-visible{outline:2px solid var(--rust);outline-offset:2px}
 @media (max-width:560px){.lf-lanes{grid-template-columns:repeat(2,1fr)}.lf-scale{margin-left:104px}.lf-lrow{grid-template-columns:104px 1fr}}
 @media (prefers-reduced-motion:reduce){.lf-hbtn{transition:none}}
 </style>
@@ -743,7 +748,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/tools/_shared/cost-index-format.js?v=20260629-fmt4"></script>
 <script src="/tools/_shared/cost-index-ui.js?v=20260630-design2"></script>
 <script src="/data/cost-lockfloat.js?v=20260705-lf1"></script>
-<script src="/tools/_shared/cost-lockfloat-ui.js?v=20260705-lf1"></script>
+<script src="/tools/_shared/cost-lockfloat-ui.js?v=20260705-lf2"></script>
 <script>
 // La Hoja de Fijación — aislada para que nunca rompa el panel de detalle de abajo.
 (function () {
