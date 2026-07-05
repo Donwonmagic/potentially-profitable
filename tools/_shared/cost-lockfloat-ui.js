@@ -147,6 +147,35 @@
       return svg;
     }
 
+    // Backtest Replay — the signature proof figure. Renders the RAW walk-forward
+    // hit/miss strip (it.replay, a '1'/'0' string oldest→newest from cost-conformal's
+    // hitSeq) so the reader SEES the band scoring itself, not just a stated rate. Two
+    // paths keep it cheap (not one rect per week); a catch sits low in the steady hue,
+    // a miss runs full-height in the volatile hue — so it reads without color alone,
+    // and the figcaption decodes it. Fully static: no motion to gate on reduced-motion.
+    function replayStrip(it) {
+      var seq = it.replay || '';
+      var n = seq.length; if (!n) return null;
+      var W = 240, H = 22, pad = 1;
+      var fig = el('figure', 'lf-replay');
+      var svg = svgEl('svg', { width: W, height: H, viewBox: '0 0 ' + W + ' ' + H, class: 'lf-replay-svg', preserveAspectRatio: 'none', 'aria-hidden': 'true' });
+      svg.appendChild(svgEl('rect', { x: 0, y: 0, width: W, height: H, rx: 3, fill: 'var(--lf-surface-2)' }));
+      var hitD = '', missD = '', hits = 0, i;
+      for (i = 0; i < n; i++) {
+        var x = (pad + (n === 1 ? 0 : (i / (n - 1)) * (W - 2 * pad))).toFixed(2);
+        if (seq.charAt(i) === '1') { hits++; hitD += 'M' + x + ' 12L' + x + ' 20'; }
+        else { missD += 'M' + x + ' 2L' + x + ' 20'; }
+      }
+      if (hitD) svg.appendChild(svgEl('path', { d: hitD, stroke: 'var(--lf-lock)', 'stroke-width': '1', 'stroke-opacity': '.5', 'vector-effect': 'non-scaling-stroke' }));
+      if (missD) svg.appendChild(svgEl('path', { d: missD, stroke: 'var(--lf-float)', 'stroke-width': '1.3', 'vector-effect': 'non-scaling-stroke' }));
+      fig.appendChild(svg);
+      var miss = n - hits;
+      fig.appendChild(el('figcaption', 'lf-replay-cap', L(
+        'Backtest replay — each mark is one ' + (it.monthly ? 'month' : 'week') + ' the band was scored on real history: ' + hits + ' caught the next print, ' + miss + ' slipped past. The ' + Math.round(it.coverage * 100) + '% is that count, replayed — not a forecast.',
+        'Repetición del backtest — cada marca es un ' + (it.monthly ? 'mes' : 'semana') + ' en que se evaluó la banda sobre historial real: ' + hits + ' capturaron la próxima lectura, ' + miss + ' se escaparon. El ' + Math.round(it.coverage * 100) + '% es ese conteo, repetido — no un pronóstico.')));
+      return fig;
+    }
+
     function receiptLine(it) {
       var per = it.monthly ? L('monthly', 'mensual') : L('weekly', 'semanal');
       var p = el('p', 'lf-receipt');
@@ -177,7 +206,10 @@
         bandWrap.appendChild(row);
         bandWrap.appendChild(bandSvg(it, bk === 'withhold' ? 'hold' : BK[bk].cls));
         c.appendChild(bandWrap);
-        if (bk !== 'withhold' && it.coverage != null) c.appendChild(receiptLine(it));
+        if (bk !== 'withhold' && it.coverage != null) {
+          c.appendChild(receiptLine(it));
+          if (it.replay) { var rp = replayStrip(it); if (rp) c.appendChild(rp); }
+        }
       }
       if (it.spark) c.appendChild(sparkSvg(it.spark, BK[bk].cls));
 

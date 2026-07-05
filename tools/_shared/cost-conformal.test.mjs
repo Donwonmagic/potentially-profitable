@@ -125,3 +125,26 @@ test('asymmetric residuals → asymmetric band (captures rockets-and-feathers)',
   const upWidth = r.interval[1] - r.point, downWidth = r.point - r.interval[0];
   assert.ok(upWidth > downWidth, `asymmetric: up ${upWidth} > down ${downWidth}`);
 });
+
+test('hitSeq is the exact 0/1 walk-forward sequence behind coverage (proof, not a claim)', () => {
+  // The Backtest Replay strip renders hitSeq directly, so it must never disagree with
+  // the reported rate: it is scale=1 (leakage-free), one entry per scored step, all 0/1,
+  // and its mean rounds to `coverage`. This is the contract the replay UI depends on.
+  const v = walk(400, 7, (r) => (r - 0.5) * 80);
+  const r = conformalNext(v, { alpha: 0.20, window: 52 });
+  assert.ok(Array.isArray(r.hitSeq), 'hitSeq is exposed');
+  assert.equal(r.hitSeq.length, r.nTested, 'one hit/miss per scored step');
+  assert.ok(r.hitSeq.every((h) => h === 0 || h === 1), 'strictly 0/1 outcomes');
+  const mean = r.hitSeq.reduce((a, b) => a + b, 0) / r.hitSeq.length;
+  assert.equal(+mean.toFixed(3), r.coverage, 'hitSeq mean IS the reported coverage — can never disagree');
+});
+
+test('hitSeq is scale-invariant (the DISPLAYED band may widen; the SCORED band does not)', () => {
+  // Calibration widens `interval` but `coverage`/`hitSeq` describe the raw band, so the
+  // replay strip a card shows must be identical whether or not the display was widened.
+  const v = walk(400, 7, (r) => (r - 0.5) * 80);
+  const raw = conformalNext(v, { alpha: 0.20, window: 52 });
+  const cal = conformalNext(v, { alpha: 0.20, window: 52, calibrate: true });
+  assert.ok(cal.scale > 1, 'calibration widened the displayed band');
+  assert.deepEqual(cal.hitSeq, raw.hitSeq, 'scored hit/miss strip is the raw band, unaffected by display widening');
+});

@@ -92,6 +92,13 @@ function build() {
     }
     const v = LF.classify(conf, { monthly, hasDeep });
     counts[v.bucket]++;
+    // Backtest Replay strip (non-withheld only): the RAW walk-forward hit/miss
+    // sequence the band scored on its OWN history — packed as a '1'/'0' string,
+    // oldest→newest. Its mean is `coverage` by construction (cost-conformal keeps
+    // both from the same object), so the card shows proof, not a claim. Withheld
+    // items publish no rate, so they carry no strip.
+    const replay = (v.bucket !== 'withhold' && conf && Array.isArray(conf.hitSeq) && conf.hitSeq.length)
+      ? conf.hitSeq.join('') : null;
     items[slug] = {
       name: nameOf(slug), unit: unitOf(slug), level: levelOf(slug), monthly: monthly,
       bucket: v.bucket, reason: v.reason,
@@ -99,7 +106,7 @@ function build() {
       upPct: v.upPct == null ? null : Math.round(v.upPct * 1000) / 1000,
       downPct: v.downPct == null ? null : Math.round(v.downPct * 1000) / 1000,
       nTested: v.nTested, halfWidthPct: v.halfWidthPct == null ? null : Math.round(v.halfWidthPct * 1000) / 1000,
-      pos: pos, spark: spark,
+      pos: pos, spark: spark, replay: replay,
     };
   }
 
@@ -140,6 +147,9 @@ function main() {
       ['every lockable item has coverageLo >= 0.60 (proven)', Object.values(report.items).filter((i) => i.bucket === 'lock').every((i) => i.coverageLo != null && i.coverageLo >= LF.LOCK_MIN_COVERLO)],
       ['no lockable item wider than the lock ceiling', Object.values(report.items).filter((i) => i.bucket === 'lock').every((i) => i.halfWidthPct != null && i.halfWidthPct <= LF.LOCK_MAX_HW)],
       ['every withheld item carries a machine reason', Object.values(report.items).filter((i) => i.bucket === 'withhold').every((i) => LF.REASONS.includes(i.reason))],
+      ['withheld items carry NO replay strip (no published rate → no proof theatre)', Object.values(report.items).filter((i) => i.bucket === 'withhold').every((i) => i.replay == null)],
+      ['every non-withheld item has a replay strip of exactly nTested 0/1 marks', Object.values(report.items).filter((i) => i.bucket !== 'withhold').every((i) => typeof i.replay === 'string' && i.replay.length === i.nTested && /^[01]+$/.test(i.replay))],
+      ['each replay strip mean equals its coverage to display precision (proof can never disagree with the rate)', Object.values(report.items).filter((i) => i.bucket !== 'withhold').every((i) => { const h = i.replay.split('').reduce((a, c) => a + (c === '1' ? 1 : 0), 0); return Math.abs(h / i.replay.length - i.coverage) <= 0.0011; })],
       ['deterministic (rebuild equal)', serialize(build()) === json],
     ];
     const failed = checks.filter((c) => !c[1]);

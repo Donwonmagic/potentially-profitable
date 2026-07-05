@@ -198,6 +198,11 @@
       downPct: last > 0 ? +((last - rawInterval[0]) / last).toFixed(4) : null,
       halfWidthPct: +halfWidthPct.toFixed(4),
       degenerate: degenerate,
+      // The RAW (scale=1) walk-forward hit/miss sequence, oldest→newest — the exact
+      // catches (1) and misses (0) behind `coverage`. Lets a caller replay the band
+      // scoring ITSELF over real history (proof, not a claim). Same object the nEff
+      // autocorrelation is measured on, so it can never disagree with the rate.
+      hitSeq: raw.seq,
     };
   }
 
