@@ -50,6 +50,7 @@
     beyond: 'más allá de lo que explica el movimiento del mercado, por',
     ownHistoryEyebrow: 'Frente a tu propio historial',
     chartYou: 'Tú', chartMarket: 'Mercado', chartAria: 'Tu precio frente al precio mayorista del mercado, ambos indexados a 100 al inicio de tu ventana.',
+    chartUncertain: 'Lecturas de mercado escasas — línea aproximada', showNumbers: 'Ver los números',
     timelineEyebrow: 'Tu ventana, fecha por fecha',
     thDate: 'Fecha', thYou: 'Tu precio', thYouCum: 'Tú (acum.)', thMarketCum: 'Mercado (acum.)',
     attributionWholesale: 'Referencia mayorista — tu precio entregado normalmente es mayor.',
@@ -113,6 +114,7 @@
     beyond: 'beyond what the market’s move explains, at',
     ownHistoryEyebrow: 'Against your own history',
     chartYou: 'You', chartMarket: 'Market', chartAria: 'Your price versus the wholesale market price, both indexed to 100 at the start of your window.',
+    chartUncertain: 'Thin market reads — line is approximate', showNumbers: 'Show the numbers',
     timelineEyebrow: 'Your window, date by date',
     thDate: 'Date', thYou: 'Your price', thYouCum: 'You (cum.)', thMarketCum: 'Market (cum.)',
     attributionWholesale: 'Wholesale reference — your delivered price normally runs higher.',
@@ -396,19 +398,20 @@
   }
 
   // ---- two-line chart: your price vs market, indexed to 100 at window start --
-  function chartSvg(res) {
+  // Shades the divergence wedge (the gap IS the story), direct-labels the two
+  // endpoints, and honours the withhold rule IN the chart: an uncertain market
+  // (thin data or too few in-window reads) draws faint-dotted with no wedge, so
+  // the picture never asserts more than the data supports.
+  function chartSvg(res, tableId) {
     var m = res.market;
     if (!m.available || !m.series || m.series.values.length < 2) return '';
-    var W = 640, H = 240, padL = 44, padR = 16, padT = 22, padB = 34;
+    var W = 640, H = 240, padL = 44, padR = 40, padT = 22, padB = 34;
     var t0 = MW.parseISODay(res.firstDate), t1 = MW.parseISODay(res.lastDate);
     if (t0 == null || t1 == null || t1 <= t0) return '';
 
-    // Your points (rebased to 100 at first).
     var yourPts = res.purchases.map(function (p) {
       return { t: MW.parseISODay(p.date), v: 100 * p.cents / res.firstCents };
     });
-    // Market series clipped to the window, rebased to 100 at the market value
-    // nearest the first date.
     var mkNear0 = null, best0 = Infinity;
     for (var i = 0; i < m.series.values.length; i++) {
       var dt = MW.parseISODay(m.series.dates[i]);
@@ -423,11 +426,16 @@
       if (dtj == null || dtj < t0 - 4 * 86400000 || dtj > t1 + 4 * 86400000) continue;
       mkPts.push({ t: Math.max(t0, Math.min(t1, dtj)), v: 100 * m.series.values[j] / mkNear0 });
     }
+    // Synthetic = we had to fabricate the market endpoints (no real in-window
+    // reads). Uncertain = synthetic OR the verdict itself was thin.
+    var synthetic = false;
     if (mkPts.length < 2) {
-      // Not enough in-window market points to draw a line; show endpoints.
+      synthetic = true;
       mkPts = [{ t: t0, v: 100 }];
       if (m.res && m.res.ok) mkPts.push({ t: t1, v: 100 * (1 + m.res.marketPct) });
     }
+    var uncertain = synthetic || (m.res && m.res.thin);
+    if (mkPts.length < 2) return '';
 
     var allV = yourPts.map(function (p) { return p.v; }).concat(mkPts.map(function (p) { return p.v; }));
     var minV = Math.min.apply(null, allV), maxV = Math.max.apply(null, allV);
@@ -436,32 +444,61 @@
     var range = (maxV - minV) || 1;
     function X(t) { return padL + (W - padL - padR) * (t - t0) / (t1 - t0); }
     function Y(v) { return padT + (H - padT - padB) * (1 - (v - minV) / range); }
-
     function pathOf(pts) {
       return pts.map(function (p, i) { return (i ? 'L' : 'M') + X(p.t).toFixed(1) + ',' + Y(p.v).toFixed(1); }).join('');
     }
     var tone = (m.say && m.say.tone) || 'info';
-
-    // gridline at 100 (the shared start baseline)
     var y100 = Y(100).toFixed(1);
+
     var svg =
-      '<svg class="vb-chart" data-tone="' + escAttr(tone) + '" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H +
-      '" role="img" aria-label="' + escAttr(T.chartAria) + '" preserveAspectRatio="xMidYMid meet">' +
-      '<line x1="' + padL + '" y1="' + y100 + '" x2="' + (W - padR) + '" y2="' + y100 + '" class="vb-chart-base" stroke-dasharray="2 4"/>' +
-      // market line (neutral, dashed)
-      '<path d="' + pathOf(mkPts) + '" fill="none" class="vb-chart-market" stroke-width="2" stroke-dasharray="5 4" stroke-linejoin="round" stroke-linecap="round"/>' +
-      // your line (tone-colored via CSS, solid)
+      '<svg class="vb-chart" data-tone="' + escAttr(tone) + '"' + (uncertain ? ' data-uncertain="1"' : '') +
+      ' width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H +
+      '" role="img" aria-label="' + escAttr(T.chartAria) + '"' + (tableId ? ' aria-describedby="' + tableId + '"' : '') + ' preserveAspectRatio="xMidYMid meet">' +
+      '<line x1="' + padL + '" y1="' + y100 + '" x2="' + (W - padR) + '" y2="' + y100 + '" class="vb-chart-base"/>';
+
+    // Divergence wedge — only when the market line is real (never over a
+    // fabricated or thin market). Redundant to the solid-vs-dashed channel, so CVD-safe.
+    if (!uncertain && yourPts.length >= 2 && mkPts.length >= 2) {
+      var poly = yourPts.map(function (p) { return X(p.t).toFixed(1) + ',' + Y(p.v).toFixed(1); })
+        .concat(mkPts.slice().reverse().map(function (p) { return X(p.t).toFixed(1) + ',' + Y(p.v).toFixed(1); }));
+      svg += '<polygon class="vb-chart-wedge" points="' + poly.join(' ') + '"/>';
+    }
+
+    svg += '<path d="' + pathOf(mkPts) + '" fill="none" class="vb-chart-market" stroke-width="2" stroke-dasharray="' + (uncertain ? '2 5' : '5 4') + '" stroke-linejoin="round" stroke-linecap="round"/>' +
       '<path d="' + pathOf(yourPts) + '" fill="none" class="vb-chart-you" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>';
-    // your dots
     yourPts.forEach(function (p) {
       svg += '<circle class="vb-chart-dot" cx="' + X(p.t).toFixed(1) + '" cy="' + Y(p.v).toFixed(1) + '" r="3.4"/>';
     });
-    // axis labels: start & end dates, and the two endpoint index values
+
+    // Direct endpoint labels (index values) — the reader sees where each line
+    // ended without hunting the axis. Nudged apart if they'd collide.
+    var yEnd = yourPts[yourPts.length - 1], mEnd = mkPts[mkPts.length - 1];
+    var yY = Y(yEnd.v), mY = Y(mEnd.v);
+    if (Math.abs(yY - mY) < 12) { if (yEnd.v >= mEnd.v) { yY -= 6; mY += 6; } else { yY += 6; mY -= 6; } }
+    svg += '<text x="' + (W - padR + 4) + '" y="' + (yY + 3.5).toFixed(1) + '" class="vb-chart-endlabel vb-chart-endlabel--you" text-anchor="start">' + Math.round(yEnd.v) + '</text>';
+    svg += '<text x="' + (W - padR + 4) + '" y="' + (mY + 3.5).toFixed(1) + '" class="vb-chart-endlabel vb-chart-endlabel--mkt" text-anchor="start">' + Math.round(mEnd.v) + '</text>';
+
+    // Axis labels + the "100" baseline tick + an uncertain-market micro-note.
     svg += '<text x="' + padL + '" y="' + (H - 10) + '" class="vb-chart-axis" text-anchor="start">' + escAttr(fmtDate(res.firstDate)) + '</text>';
     svg += '<text x="' + (W - padR) + '" y="' + (H - 10) + '" class="vb-chart-axis" text-anchor="end">' + escAttr(fmtDate(res.lastDate)) + '</text>';
     svg += '<text x="' + (padL - 6) + '" y="' + (Y(100) + 4).toFixed(1) + '" class="vb-chart-axis" text-anchor="end">100</text>';
+    if (uncertain) {
+      svg += '<text x="' + ((padL + W - padR) / 2).toFixed(1) + '" y="' + (padT - 8) + '" class="vb-chart-note" text-anchor="middle">' + escAttr(T.chartUncertain) + '</text>';
+    }
     svg += '</svg>';
     return svg;
+  }
+
+  // The chart's accessible twin — a keyboard-reachable table of the same numbers,
+  // rendered in EVERY case (not only when a timeline shows), so the chart is
+  // never the only way to the values.
+  function chartTable(res, tableId) {
+    var m = res.market;
+    if (!m.available || !m.legs || !m.legs.length) return '';
+    var rows = m.legs.map(function (leg) {
+      return h`<tr><td>${fmtDate(leg.date)}</td><td class="vb-num">${money(leg.cents)}</td><td class="vb-num" data-dir="${leg.yourCumPct > 0 ? 'up' : leg.yourCumPct < 0 ? 'down' : 'flat'}">${leg.yourCumPct === 0 ? '—' : pctStr(leg.yourCumPct)}</td><td class="vb-num vb-num--mkt" data-dir="${leg.marketCumPct == null ? 'flat' : leg.marketCumPct > 0 ? 'up' : leg.marketCumPct < 0 ? 'down' : 'flat'}">${leg.marketCumPct == null ? '—' : (leg.marketCumPct === 0 ? '—' : pctStr(leg.marketCumPct))}</td></tr>`;
+    });
+    return h`<details class="vb-chart-table" id="${tableId}"><summary>${T.showNumbers}</summary><div class="vb-timeline-wrap"><table class="vb-timeline"><thead><tr><th scope="col">${T.thDate}</th><th scope="col" class="vb-num">${T.thYou}</th><th scope="col" class="vb-num">${T.thYouCum}</th><th scope="col" class="vb-num">${T.thMarketCum}</th></tr></thead><tbody>${rows}</tbody></table></div></details>`;
   }
   function escAttr(s) {
     return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -519,10 +556,11 @@
       blocks.push(h`<p class="vb-spike" data-tone="${sSay.tone}">${sSay.text}</p>`);
     }
 
-    // 2) THE CHART
-    var svg = chartSvg(res);
+    // 2) THE CHART + its accessible table twin (the numbers are never chart-only)
+    var tableId = 'vbChartTable';
+    var svg = chartSvg(res, tableId);
     if (svg) {
-      blocks.push(h`<figure class="vb-chartwrap">${sh(svg)}<figcaption class="vb-chart-legend"><span class="vb-legend-you">${T.chartYou}</span><span class="vb-legend-mkt">${T.chartMarket}</span></figcaption></figure>`);
+      blocks.push(h`<figure class="vb-chartwrap">${sh(svg)}<figcaption class="vb-chart-legend"><span class="vb-legend-you">${T.chartYou}</span><span class="vb-legend-mkt">${T.chartMarket}</span></figcaption>${chartTable(res, tableId)}</figure>`);
     }
 
     // 2b) THE ACTION — the exact line to read to the rep + the brief (only on a real vendor gap)
@@ -532,11 +570,6 @@
     // 3) YOUR OWN HISTORY verdict (secondary — the trailing-median call)
     if (res.talkingPoint) {
       blocks.push(h`<div class="vb-subcard"><span class="vb-eyebrow">${T.ownHistoryEyebrow}</span><span class="vb-badge" data-tier="${res.tier}">${tierLabel(res.tier)}</span><p class="vb-verdict">${res.talkingPoint}</p></div>`);
-    }
-
-    // 4) TIMELINE (>=3 dated purchases)
-    if (m.available && m.legs && m.legs.length >= 3) {
-      blocks.push(timelineBlock(res));
     }
 
     // 5) ATTRIBUTION (only when a market read exists)
