@@ -36,10 +36,14 @@
     }
 
     // Percentile-of-history, stated as an honest COUNT (never a smoothed "85th
-    // percentile" — that implies a fitted distribution we don't have). Separates
-    // "expensive" from "rising": today can sit inside the typical band yet at the
-    // top of its OWN recent range. Needs >=8 valid weekly reads; the window is all
-    // the history that exists, so we say "of its last N" — never "all-time".
+    // percentile" — that implies a fitted distribution we don't have). It reports
+    // where today's LEVEL sits within its OWN recent range — a static rank, NOT a
+    // direction and NOT a buy/lock cue (post-audit 2026-07, C2: the old "separates
+    // expensive from rising" was backwards). A read near the top of its recent range
+    // can coincide with an easing price (weekOverWeek + flagVerb carry direction),
+    // and "near the top of its recent range" is not "expensive" in absolute or
+    // seasonal terms — the seasonal read carries that. Needs >=8 valid reads; the
+    // window is ~26 recent reads, so we say "of its last N" — never "all-time".
     function percentileLine(values) {
       var v = values.filter(function (x) { return typeof x === 'number' && isFinite(x); });
       if (v.length < 8) return '';
@@ -104,11 +108,12 @@
       switch (flag.verdict) {
         case 'structural':
           if (thin) return { tone: 'watch', verb: L('Watch', 'Observa'), note: L('Up and holding, but the data is thin — wait for more before a big call.', 'Sube y se mantiene, pero hay pocos datos — espera más antes de una decisión grande.') };
-          return { tone: 'reprice', verb: L('Consider re-pricing', 'Considera ajustar el precio'), note: L('Up and holding' + (wk ? ' for ' + wk + ' weeks' : '') + ' — this looks like a real reset, not a blip. Many operators would re-price the dishes that use it.', 'Sube y se mantiene' + (wk ? ' por ' + wk + ' semanas' : '') + ' — parece un cambio real, no un repunte. Muchos operadores ajustarían el precio de los platillos que lo usan.') };
+          // Post-audit (2026-07, C3/C6): description, not an imperative — see cost-verdict.js.
+          return { tone: 'reprice', verb: L('Up and holding', 'Sube y se mantiene'), note: L('Up and holding' + (wk ? ' across the last ' + wk + ' reads' : '') + ' — that describes what the price has done, not a prediction of the next move. Context, not advice.', 'Sube y se mantiene' + (wk ? ' en las últimas ' + wk + ' lecturas' : '') + ' — describe lo que el precio ha hecho, no una predicción del próximo movimiento. Contexto, no consejo.') };
         case 'spike':
-          return { tone: 'hold', verb: L('Hold', 'Espera'), note: L('Jumped, then pulled back — this often reverts. Re-pricing now risks chasing a number that is already falling.', 'Subió y luego bajó — suele revertir. Ajustar ahora arriesga perseguir un número que ya está cayendo.') };
+          return { tone: 'hold', verb: L('Hold', 'Espera'), note: L('Jumped, then partly pulled back — that is the recent path, not a forecast of where it goes next.', 'Subió y luego retrocedió en parte — ese es el recorrido reciente, no un pronóstico de lo que sigue.') };
         case 'easing':
-          return { tone: 'hold', verb: L('Hold', 'Espera'), note: L('Easing — this can be a chance to renegotiate, not a reason to re-price.', 'Bajando — puede ser oportunidad de renegociar, no razón para reajustar.') };
+          return { tone: 'hold', verb: L('Hold', 'Espera'), note: L('Currently below its recent baseline — a description of the recent path, not a call on where it goes next.', 'Actualmente por debajo de su base reciente — una descripción del recorrido reciente, no una decisión sobre lo que sigue.') };
         case 'emerging':
           return { tone: 'watch', verb: L('Watch', 'Observa'), note: L('A real move, but it has not held yet. Give it a couple of weeks.', 'Un movimiento real, pero aún no se sostiene. Dale un par de semanas.') };
         case 'flat':

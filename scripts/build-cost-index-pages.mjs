@@ -494,7 +494,9 @@ const TONE_BIAS = { hold: 'hold', watch: 'watch', reprice: 're-price' };
 const TONE_LABEL = {
   'hold':     { en: 'Hold',     es: 'Mantener' },
   'watch':    { en: 'Watch',    es: 'Vigilar' },
-  're-price': { en: 'Re-price', es: 'Re-precificar' }
+  // Post-audit (2026-07, C3/C6): the firm-structural chip is a DESCRIPTION of state
+  // ("up and holding"), not an imperative to re-price — the forward call was unearned.
+  're-price': { en: 'Elevated', es: 'Elevado' }
 };
 function verdictChip(v, locale) {
   const bias = TONE_BIAS[v.tone] || 'watch';
@@ -609,8 +611,8 @@ function movingNowSection(slugs, locale) {
       + `<p class="ci-moving-act">→ <strong>${escHtml(action)}.</strong> <a class="ci-moving-more" href="${base}/cost-index/${s}/">${more} →</a></p></div></li>`;
   }).join('');
   const key = es
-    ? `<strong>Re-precificar</strong> = una subida que parece durar · <strong>Vigilar</strong> = un movimiento real, aún sin confirmar · <strong>Mantener</strong> = dentro de su rango normal`
-    : `<strong>Re-price</strong> = a rise that looks durable · <strong>Watch</strong> = a real move, not yet confirmed · <strong>Hold</strong> = within its normal range`;
+    ? `<strong>Elevado</strong> = sube y se mantiene (contexto, no una decisión) · <strong>Vigilar</strong> = un movimiento real, aún sin confirmar · <strong>Mantener</strong> = dentro de su rango normal`
+    : `<strong>Elevated</strong> = up and holding (context, not a call) · <strong>Watch</strong> = a real move, not yet confirmed · <strong>Hold</strong> = within its normal range`;
   const moreLine = moreCount > 0
     ? `<p class="ci-moving-more-all">${es
         ? `+${moreCount} más en movimiento — míralos todos en <a href="#all-readings">la tabla de lecturas</a> de abajo.`
@@ -763,9 +765,13 @@ function sparkBlock(r, locale) {
   const sorted = vals.slice().sort((a, b) => a - b);
   const lo = Math.round(pctile(sorted, 0.25)), hi = Math.round(pctile(sorted, 0.75));
   const now = vals[vals.length - 1];
-  const pos = now < lo ? (es ? 'por debajo de su rango habitual — buena compra' : 'below its usual range — a good buy')
-    : now > hi ? (es ? 'en la parte alta de su rango habitual' : 'top of its usual range')
-    : (es ? 'dentro de su rango habitual' : 'inside its usual range');
+  // Post-audit (2026-07, C2): a pure POSITION phrase — no coupled buy/lock verb
+  // (range position is near coin-flip for the next move), and "recent range" not
+  // "usual range" so a ~6-month window is never read as an all-time judgment. The
+  // gated seasonalBand block below carries any "seasonally cheap" cue where earned.
+  const pos = now < lo ? (es ? 'cerca del fondo de su rango reciente' : 'near the bottom of its recent range')
+    : now > hi ? (es ? 'cerca del tope de su rango reciente' : 'near the top of its recent range')
+    : (es ? 'cerca de la mitad de su rango reciente' : 'around the middle of its recent range');
   const half = Math.floor(vals.length / 2);
   const ch = (() => { const a = medOf(vals.slice(0, half)); const b = medOf(vals.slice(half)); return a > 0 ? (b - a) / a : 0; })();
   const shape = ch > 0.03 ? (es ? 'subió a lo largo de la ventana' : 'rose over the tracked window')

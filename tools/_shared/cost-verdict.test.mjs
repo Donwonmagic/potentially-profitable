@@ -9,10 +9,11 @@ test('no flag → null', () => {
   assert.equal(verdict({}, 'high'), null);
 });
 
-test('structural on FIRM data → reprice', () => {
+test('structural on FIRM data → elevated (descriptive, "reads" not "weeks")', () => {
   const v = verdict({ verdict: 'structural', elevatedWeeks: 5 }, 'medium');
-  assert.equal(v.tone, 'reprice');
-  assert.match(v.note_en, /5 weeks/);
+  assert.equal(v.tone, 'reprice');                 // internal tone key = the "elevated" state
+  assert.match(v.note_en, /5 reads/);              // period-count, frequency-agnostic
+  assert.doesNotMatch(v.note_en, /re-?price|real reset|not a blip/i);  // no forward imperative
 });
 
 test('structural on THIN data → downgraded to watch (the honesty fix)', () => {
