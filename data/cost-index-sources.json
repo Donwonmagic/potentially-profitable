@@ -10464,6 +10464,107 @@
         "seriesId": "WPU02230504",
         "_report": "BLS PPI Clams (own species index; confirmed live — replaces lost corroboration)."
       }
+    },
+    "almonds": {
+      "verified": false,
+      "bls": {
+        "seriesId": "WPU01190102",
+        "family": "ppi-almonds",
+        "type": "ppi-almonds"
+      },
+      "coverage": "Trend-only: no free public wholesale price level exists for almonds; direction tracked via the BLS ppi-almonds PPI. It ships no dollar figure — only movement — until a real wholesale level appears."
+    },
+    "walnuts": {
+      "verified": false,
+      "bls": {
+        "seriesId": "WPU01190104",
+        "family": "ppi-walnuts",
+        "type": "ppi-walnuts"
+      },
+      "coverage": "Trend-only: no free public wholesale price level exists for walnuts; direction tracked via the BLS ppi-walnuts PPI. It ships no dollar figure — only movement — until a real wholesale level appears."
+    },
+    "pecans": {
+      "verified": false,
+      "bls": {
+        "seriesId": "WPU01190101",
+        "family": "ppi-pecans",
+        "type": "ppi-pecans"
+      },
+      "coverage": "Trend-only: no free public wholesale price level exists for pecans; direction tracked via the BLS ppi-pecans PPI. It ships no dollar figure — only movement — until a real wholesale level appears."
+    },
+    "pistachios": {
+      "verified": false,
+      "bls": {
+        "seriesId": "WPU01190106",
+        "family": "ppi-pistachios",
+        "type": "ppi-pistachios"
+      },
+      "coverage": "Trend-only: no free public wholesale price level exists for pistachios; direction tracked via the BLS ppi-pistachios PPI. It ships no dollar figure — only movement — until a real wholesale level appears."
+    },
+    "hazelnuts": {
+      "verified": false,
+      "bls": {
+        "seriesId": "WPU01190103",
+        "family": "ppi-hazelnuts",
+        "type": "ppi-hazelnuts"
+      },
+      "coverage": "Trend-only: no free public wholesale price level exists for hazelnuts; direction tracked via the BLS ppi-hazelnuts PPI. It ships no dollar figure — only movement — until a real wholesale level appears."
+    },
+    "macadamia": {
+      "verified": false,
+      "bls": {
+        "seriesId": "WPU01190105",
+        "family": "ppi-macadamia",
+        "type": "ppi-macadamia"
+      },
+      "coverage": "Trend-only: no free public wholesale price level exists for macadamia nuts; direction tracked via the BLS ppi-macadamia PPI. It ships no dollar figure — only movement — until a real wholesale level appears."
+    },
+    "peanuts": {
+      "verified": false,
+      "bls": {
+        "seriesId": "WPU01830111",
+        "family": "ppi-peanuts",
+        "type": "ppi-peanuts"
+      },
+      "coverage": "Trend-only: no free public wholesale price level exists for peanuts; direction tracked via the BLS ppi-peanuts PPI. It ships no dollar figure — only movement — until a real wholesale level appears."
+    },
+    "canola-oil": {
+      "verified": false,
+      "bls": {
+        "seriesId": "WPU01830171",
+        "family": "ppi-canola",
+        "type": "ppi-canola"
+      },
+      "coverage": "Trend-only: no free public wholesale price level exists for canola oil; direction tracked via the BLS ppi-canola PPI. It ships no dollar figure — only movement — until a real wholesale level appears."
+    },
+    "cocoa": {
+      "verified": false,
+      "bls": {
+        "seriesId": "WPU02540109",
+        "family": "ppi-cocoa",
+        "type": "ppi-cocoa"
+      },
+      "coverage": "Trend-only: no free public wholesale price level exists for cocoa; direction tracked via the BLS ppi-cocoa PPI. It ships no dollar figure — only movement — until a real wholesale level appears."
+    },
+    "ketchup": {
+      "verified": false,
+      "fred": {
+        "seriesId": "PCU311421311421D",
+        "basis": "index",
+        "family": "ppi-ketchup",
+        "type": "ppi-ketchup"
+      },
+      "coverage": "Trend-only: no free public wholesale price level exists for ketchup; direction tracked via the BLS ppi-ketchup PPI. It ships no dollar figure — only movement — until a real wholesale level appears."
+    },
+    "mayonnaise": {
+      "verified": false,
+      "fred": {
+        "seriesId": "PCU3119413119414",
+        "basis": "index",
+        "family": "ppi-mayonnaise",
+        "type": "ppi-mayonnaise"
+      },
+      "coverage": "Trend-only: no free public wholesale price level exists for mayonnaise; direction tracked via the BLS ppi-mayonnaise PPI. It ships no dollar figure — only movement — until a real wholesale level appears."
     }
   },
   "drivers": {
