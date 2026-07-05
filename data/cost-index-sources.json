@@ -10080,6 +10080,390 @@
         "_status": "STAGED verified:false (scaffold 2026-07, cloned from ribeye) — 2453 Choice Cuts item_description \"knuckle\"; --flip after --verify."
       },
       "coverage": "Staged: mapped to the USDA LMR boxed-beef cutout report (cut \"knuckle\"); withheld from live reads until a per-cut wholesale level verifies in bounds."
+    },
+    "cod": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030251",
+          "030471"
+        ],
+        "nameMatch": "COD",
+        "basis": "index",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false (scaffold 2026-07 NOAA, cloned from clams) — confirm HTS 030251/030471 + nameMatch \"COD\" via --sample; import unit value, no dollar-level corroborator. --flip after --verify.",
+        "commodity": "cod"
+      },
+      "coverage": "Staged: mapped to NOAA FOSS seafood import trade data (HTS 030251…, name \"COD\") — an import unit value, not a US wholesale price; tracked for direction, withheld from live reads until a free wholesale seafood dollar source exists.",
+      "bls": {
+        "seriesId": "WPU02230504",
+        "_report": "BLS PPI Clams (own species index; confirmed live — replaces lost corroboration)."
+      }
+    },
+    "haddock": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030252",
+          "030472"
+        ],
+        "nameMatch": "HADDOCK",
+        "basis": "index",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false (scaffold 2026-07 NOAA, cloned from clams) — confirm HTS 030252/030472 + nameMatch \"HADDOCK\" via --sample; import unit value, no dollar-level corroborator. --flip after --verify.",
+        "commodity": "haddock"
+      },
+      "coverage": "Staged: mapped to NOAA FOSS seafood import trade data (HTS 030252…, name \"HADDOCK\") — an import unit value, not a US wholesale price; tracked for direction, withheld from live reads until a free wholesale seafood dollar source exists.",
+      "bls": {
+        "seriesId": "WPU02230504",
+        "_report": "BLS PPI Clams (own species index; confirmed live — replaces lost corroboration)."
+      }
+    },
+    "pollock": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030367",
+          "030475"
+        ],
+        "nameMatch": "POLLOCK|POLLACK",
+        "basis": "index",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false (scaffold 2026-07 NOAA, cloned from clams) — confirm HTS 030367/030475 + nameMatch \"POLLOCK|POLLACK\" via --sample; import unit value, no dollar-level corroborator. --flip after --verify.",
+        "commodity": "pollock"
+      },
+      "coverage": "Staged: mapped to NOAA FOSS seafood import trade data (HTS 030367…, name \"POLLOCK|POLLACK\") — an import unit value, not a US wholesale price; tracked for direction, withheld from live reads until a free wholesale seafood dollar source exists.",
+      "bls": {
+        "seriesId": "WPU02230504",
+        "_report": "BLS PPI Clams (own species index; confirmed live — replaces lost corroboration)."
+      }
+    },
+    "tilapia": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030423",
+          "030461",
+          "030431"
+        ],
+        "nameMatch": "TILAPIA",
+        "basis": "index",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false (scaffold 2026-07 NOAA, cloned from clams) — confirm HTS 030423/030461/030431 + nameMatch \"TILAPIA\" via --sample; import unit value, no dollar-level corroborator. --flip after --verify.",
+        "commodity": "tilapia"
+      },
+      "coverage": "Staged: mapped to NOAA FOSS seafood import trade data (HTS 030423…, name \"TILAPIA\") — an import unit value, not a US wholesale price; tracked for direction, withheld from live reads until a free wholesale seafood dollar source exists.",
+      "bls": {
+        "seriesId": "WPU02230504",
+        "_report": "BLS PPI Clams (own species index; confirmed live — replaces lost corroboration)."
+      }
+    },
+    "catfish": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030324",
+          "030462",
+          "030432"
+        ],
+        "nameMatch": "CATFISH",
+        "basis": "index",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false (scaffold 2026-07 NOAA, cloned from clams) — confirm HTS 030324/030462/030432 + nameMatch \"CATFISH\" via --sample; import unit value, no dollar-level corroborator. --flip after --verify.",
+        "commodity": "catfish"
+      },
+      "coverage": "Staged: mapped to NOAA FOSS seafood import trade data (HTS 030324…, name \"CATFISH\") — an import unit value, not a US wholesale price; tracked for direction, withheld from live reads until a free wholesale seafood dollar source exists.",
+      "bls": {
+        "seriesId": "WPU02230504",
+        "_report": "BLS PPI Clams (own species index; confirmed live — replaces lost corroboration)."
+      }
+    },
+    "flounder": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030229",
+          "030483"
+        ],
+        "nameMatch": "FLOUNDER|SOLE|FLATFISH",
+        "basis": "index",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false (scaffold 2026-07 NOAA, cloned from clams) — confirm HTS 030229/030483 + nameMatch \"FLOUNDER|SOLE|FLATFISH\" via --sample; import unit value, no dollar-level corroborator. --flip after --verify.",
+        "commodity": "flounder"
+      },
+      "coverage": "Staged: mapped to NOAA FOSS seafood import trade data (HTS 030229…, name \"FLOUNDER|SOLE|FLATFISH\") — an import unit value, not a US wholesale price; tracked for direction, withheld from live reads until a free wholesale seafood dollar source exists.",
+      "bls": {
+        "seriesId": "WPU02230504",
+        "_report": "BLS PPI Clams (own species index; confirmed live — replaces lost corroboration)."
+      }
+    },
+    "swordfish": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030247",
+          "030345",
+          "030487"
+        ],
+        "nameMatch": "SWORDFISH",
+        "basis": "index",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false (scaffold 2026-07 NOAA, cloned from clams) — confirm HTS 030247/030345/030487 + nameMatch \"SWORDFISH\" via --sample; import unit value, no dollar-level corroborator. --flip after --verify.",
+        "commodity": "swordfish"
+      },
+      "coverage": "Staged: mapped to NOAA FOSS seafood import trade data (HTS 030247…, name \"SWORDFISH\") — an import unit value, not a US wholesale price; tracked for direction, withheld from live reads until a free wholesale seafood dollar source exists.",
+      "bls": {
+        "seriesId": "WPU02230504",
+        "_report": "BLS PPI Clams (own species index; confirmed live — replaces lost corroboration)."
+      }
+    },
+    "mahi-mahi": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030289",
+          "030489"
+        ],
+        "nameMatch": "DOLPHINFISH|MAHI|DORADO",
+        "basis": "index",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false (scaffold 2026-07 NOAA, cloned from clams) — confirm HTS 030289/030489 + nameMatch \"DOLPHINFISH|MAHI|DORADO\" via --sample; import unit value, no dollar-level corroborator. --flip after --verify.",
+        "commodity": "mahi-mahi"
+      },
+      "coverage": "Staged: mapped to NOAA FOSS seafood import trade data (HTS 030289…, name \"DOLPHINFISH|MAHI|DORADO\") — an import unit value, not a US wholesale price; tracked for direction, withheld from live reads until a free wholesale seafood dollar source exists.",
+      "bls": {
+        "seriesId": "WPU02230504",
+        "_report": "BLS PPI Clams (own species index; confirmed live — replaces lost corroboration)."
+      }
+    },
+    "snapper": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030285",
+          "030489"
+        ],
+        "nameMatch": "SNAPPER",
+        "basis": "index",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false (scaffold 2026-07 NOAA, cloned from clams) — confirm HTS 030285/030489 + nameMatch \"SNAPPER\" via --sample; import unit value, no dollar-level corroborator. --flip after --verify.",
+        "commodity": "snapper"
+      },
+      "coverage": "Staged: mapped to NOAA FOSS seafood import trade data (HTS 030285…, name \"SNAPPER\") — an import unit value, not a US wholesale price; tracked for direction, withheld from live reads until a free wholesale seafood dollar source exists.",
+      "bls": {
+        "seriesId": "WPU02230504",
+        "_report": "BLS PPI Clams (own species index; confirmed live — replaces lost corroboration)."
+      }
+    },
+    "grouper": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030285",
+          "030489"
+        ],
+        "nameMatch": "GROUPER",
+        "basis": "index",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false (scaffold 2026-07 NOAA, cloned from clams) — confirm HTS 030285/030489 + nameMatch \"GROUPER\" via --sample; import unit value, no dollar-level corroborator. --flip after --verify.",
+        "commodity": "grouper"
+      },
+      "coverage": "Staged: mapped to NOAA FOSS seafood import trade data (HTS 030285…, name \"GROUPER\") — an import unit value, not a US wholesale price; tracked for direction, withheld from live reads until a free wholesale seafood dollar source exists.",
+      "bls": {
+        "seriesId": "WPU02230504",
+        "_report": "BLS PPI Clams (own species index; confirmed live — replaces lost corroboration)."
+      }
+    },
+    "monkfish": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030289",
+          "030489"
+        ],
+        "nameMatch": "MONKFISH|ANGLERFISH|GOOSEFISH",
+        "basis": "index",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false (scaffold 2026-07 NOAA, cloned from clams) — confirm HTS 030289/030489 + nameMatch \"MONKFISH|ANGLERFISH|GOOSEFISH\" via --sample; import unit value, no dollar-level corroborator. --flip after --verify.",
+        "commodity": "monkfish"
+      },
+      "coverage": "Staged: mapped to NOAA FOSS seafood import trade data (HTS 030289…, name \"MONKFISH|ANGLERFISH|GOOSEFISH\") — an import unit value, not a US wholesale price; tracked for direction, withheld from live reads until a free wholesale seafood dollar source exists.",
+      "bls": {
+        "seriesId": "WPU02230504",
+        "_report": "BLS PPI Clams (own species index; confirmed live — replaces lost corroboration)."
+      }
+    },
+    "mackerel": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030244",
+          "030354",
+          "030485"
+        ],
+        "nameMatch": "MACKEREL",
+        "basis": "index",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false (scaffold 2026-07 NOAA, cloned from clams) — confirm HTS 030244/030354/030485 + nameMatch \"MACKEREL\" via --sample; import unit value, no dollar-level corroborator. --flip after --verify.",
+        "commodity": "mackerel"
+      },
+      "coverage": "Staged: mapped to NOAA FOSS seafood import trade data (HTS 030244…, name \"MACKEREL\") — an import unit value, not a US wholesale price; tracked for direction, withheld from live reads until a free wholesale seafood dollar source exists.",
+      "bls": {
+        "seriesId": "WPU02230504",
+        "_report": "BLS PPI Clams (own species index; confirmed live — replaces lost corroboration)."
+      }
+    },
+    "sardine": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030243",
+          "030353"
+        ],
+        "nameMatch": "SARDINE",
+        "basis": "index",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false (scaffold 2026-07 NOAA, cloned from clams) — confirm HTS 030243/030353 + nameMatch \"SARDINE\" via --sample; import unit value, no dollar-level corroborator. --flip after --verify.",
+        "commodity": "sardine"
+      },
+      "coverage": "Staged: mapped to NOAA FOSS seafood import trade data (HTS 030243…, name \"SARDINE\") — an import unit value, not a US wholesale price; tracked for direction, withheld from live reads until a free wholesale seafood dollar source exists.",
+      "bls": {
+        "seriesId": "WPU02230504",
+        "_report": "BLS PPI Clams (own species index; confirmed live — replaces lost corroboration)."
+      }
+    },
+    "anchovy": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030241",
+          "030351"
+        ],
+        "nameMatch": "ANCHOV",
+        "basis": "index",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false (scaffold 2026-07 NOAA, cloned from clams) — confirm HTS 030241/030351 + nameMatch \"ANCHOV\" via --sample; import unit value, no dollar-level corroborator. --flip after --verify.",
+        "commodity": "anchovy"
+      },
+      "coverage": "Staged: mapped to NOAA FOSS seafood import trade data (HTS 030241…, name \"ANCHOV\") — an import unit value, not a US wholesale price; tracked for direction, withheld from live reads until a free wholesale seafood dollar source exists.",
+      "bls": {
+        "seriesId": "WPU02230504",
+        "_report": "BLS PPI Clams (own species index; confirmed live — replaces lost corroboration)."
+      }
+    },
+    "sablefish": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030289",
+          "030489"
+        ],
+        "nameMatch": "SABLEFISH|BLACK COD",
+        "basis": "index",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false (scaffold 2026-07 NOAA, cloned from clams) — confirm HTS 030289/030489 + nameMatch \"SABLEFISH|BLACK COD\" via --sample; import unit value, no dollar-level corroborator. --flip after --verify.",
+        "commodity": "sablefish"
+      },
+      "coverage": "Staged: mapped to NOAA FOSS seafood import trade data (HTS 030289…, name \"SABLEFISH|BLACK COD\") — an import unit value, not a US wholesale price; tracked for direction, withheld from live reads until a free wholesale seafood dollar source exists.",
+      "bls": {
+        "seriesId": "WPU02230504",
+        "_report": "BLS PPI Clams (own species index; confirmed live — replaces lost corroboration)."
+      }
+    },
+    "oysters": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030711",
+          "030712",
+          "030719"
+        ],
+        "nameMatch": "OYSTER",
+        "basis": "index",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false (scaffold 2026-07 NOAA, cloned from clams) — confirm HTS 030711/030712/030719 + nameMatch \"OYSTER\" via --sample; import unit value, no dollar-level corroborator. --flip after --verify.",
+        "commodity": "oysters"
+      },
+      "coverage": "Staged: mapped to NOAA FOSS seafood import trade data (HTS 030711…, name \"OYSTER\") — an import unit value, not a US wholesale price; tracked for direction, withheld from live reads until a free wholesale seafood dollar source exists.",
+      "bls": {
+        "seriesId": "WPU02230504",
+        "_report": "BLS PPI Clams (own species index; confirmed live — replaces lost corroboration)."
+      }
+    },
+    "crawfish": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030631",
+          "030639"
+        ],
+        "nameMatch": "CRAWFISH|CRAYFISH",
+        "basis": "index",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false (scaffold 2026-07 NOAA, cloned from clams) — confirm HTS 030631/030639 + nameMatch \"CRAWFISH|CRAYFISH\" via --sample; import unit value, no dollar-level corroborator. --flip after --verify.",
+        "commodity": "crawfish"
+      },
+      "coverage": "Staged: mapped to NOAA FOSS seafood import trade data (HTS 030631…, name \"CRAWFISH|CRAYFISH\") — an import unit value, not a US wholesale price; tracked for direction, withheld from live reads until a free wholesale seafood dollar source exists.",
+      "bls": {
+        "seriesId": "WPU02230504",
+        "_report": "BLS PPI Clams (own species index; confirmed live — replaces lost corroboration)."
+      }
+    },
+    "sea-urchin": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030821",
+          "030822",
+          "030829"
+        ],
+        "nameMatch": "URCHIN",
+        "basis": "index",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "_status": "STAGED verified:false (scaffold 2026-07 NOAA, cloned from clams) — confirm HTS 030821/030822/030829 + nameMatch \"URCHIN\" via --sample; import unit value, no dollar-level corroborator. --flip after --verify.",
+        "commodity": "sea urchin"
+      },
+      "coverage": "Staged: mapped to NOAA FOSS seafood import trade data (HTS 030821…, name \"URCHIN\") — an import unit value, not a US wholesale price; tracked for direction, withheld from live reads until a free wholesale seafood dollar source exists.",
+      "bls": {
+        "seriesId": "WPU02230504",
+        "_report": "BLS PPI Clams (own species index; confirmed live — replaces lost corroboration)."
+      }
     }
   },
   "drivers": {
