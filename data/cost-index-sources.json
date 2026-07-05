@@ -5520,6 +5520,890 @@
         "type": "imf",
         "_report": "FRED/IMF Global price of Shrimp (index, monthly). Species-coherent trend (replaces WPU0223)."
       }
+    },
+    "arugula": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Arugula",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false (scaffold 2026-07, market structure cloned from kale) — confirm the commodity term \"Arugula\" via: node scripts/verify-cost-index-sources.mjs --sample 2278 --match \"Arugula\". Tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Arugula",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Arugula",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Arugula",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Arugula",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Arugula",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Arugula",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Arugula",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "swiss-chard": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Chard",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false (scaffold 2026-07, market structure cloned from kale) — confirm the commodity term \"Chard\" via: node scripts/verify-cost-index-sources.mjs --sample 2278 --match \"Chard\". Tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Chard",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Chard",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Chard",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Chard",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Chard",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Chard",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Chard",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "fennel": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Fennel",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false (scaffold 2026-07, market structure cloned from garlic) — confirm the commodity term \"Fennel\" via: node scripts/verify-cost-index-sources.mjs --sample 2278 --match \"Fennel\". Tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Fennel",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Fennel",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Fennel",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Fennel",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Fennel",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Fennel",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Fennel",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "shallot": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Shallots",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false (scaffold 2026-07, market structure cloned from garlic) — confirm the commodity term \"Shallots\" via: node scripts/verify-cost-index-sources.mjs --sample 2278 --match \"Shallots\". Tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Shallots",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Shallots",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Shallots",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Shallots",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Shallots",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Shallots",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Shallots",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "parsnip": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Parsnips",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false (scaffold 2026-07, market structure cloned from carrot) — confirm the commodity term \"Parsnips\" via: node scripts/verify-cost-index-sources.mjs --sample 2278 --match \"Parsnips\". Tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Parsnips",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Parsnips",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Parsnips",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Parsnips",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Parsnips",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Parsnips",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Parsnips",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "radish": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Radishes",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false (scaffold 2026-07, market structure cloned from carrot) — confirm the commodity term \"Radishes\" via: node scripts/verify-cost-index-sources.mjs --sample 2278 --match \"Radishes\". Tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Radishes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Radishes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Radishes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Radishes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Radishes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Radishes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Radishes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "turnip": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Turnips",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false (scaffold 2026-07, market structure cloned from carrot) — confirm the commodity term \"Turnips\" via: node scripts/verify-cost-index-sources.mjs --sample 2278 --match \"Turnips\". Tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Turnips",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Turnips",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Turnips",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Turnips",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Turnips",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Turnips",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Turnips",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "yukon-potato": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2279",
+          "market": "Atlanta",
+          "commodity": "ROUND YELLOW",
+          "reducer": "mostlyMid",
+          "unit": "sack",
+          "_status": "STAGED verified:false (scaffold 2026-07, market structure cloned from red-potato) — confirm the commodity term \"ROUND YELLOW\" via: node scripts/verify-cost-index-sources.mjs --sample 2279 --match \"ROUND YELLOW\". Tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2283",
+          "market": "Baltimore",
+          "commodity": "ROUND YELLOW",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2287",
+          "market": "Boston",
+          "commodity": "ROUND YELLOW",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2292",
+          "market": "Chicago",
+          "commodity": "ROUND YELLOW",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2304",
+          "market": "Detroit",
+          "commodity": "ROUND YELLOW",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2308",
+          "market": "Los Angeles",
+          "commodity": "ROUND YELLOW",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2312",
+          "market": "Miami",
+          "commodity": "ROUND YELLOW",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        },
+        {
+          "reportId": "2316",
+          "market": "New York",
+          "commodity": "ROUND YELLOW",
+          "reducer": "mostlyMid",
+          "unit": "sack"
+        }
+      ]
+    },
+    "cremini-mushroom": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Mushrooms, Crimini",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false (scaffold 2026-07, market structure cloned from button-mushroom) — confirm the commodity term \"Mushrooms, Crimini\" via: node scripts/verify-cost-index-sources.mjs --sample 2278 --match \"Mushrooms\". Tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Mushrooms, Crimini",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Mushrooms, Crimini",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Mushrooms, Crimini",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Mushrooms, Crimini",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Mushrooms, Crimini",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Mushrooms, Crimini",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Mushrooms, Crimini",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "portobello-mushroom": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Mushrooms, Portabella",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false (scaffold 2026-07, market structure cloned from button-mushroom) — confirm the commodity term \"Mushrooms, Portabella\" via: node scripts/verify-cost-index-sources.mjs --sample 2278 --match \"Mushrooms\". Tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Mushrooms, Portabella",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Mushrooms, Portabella",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Mushrooms, Portabella",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Mushrooms, Portabella",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Mushrooms, Portabella",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Mushrooms, Portabella",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Mushrooms, Portabella",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "shiitake-mushroom": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2278",
+          "market": "Atlanta",
+          "commodity": "Mushrooms, Shiitake",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false (scaffold 2026-07, market structure cloned from button-mushroom) — confirm the commodity term \"Mushrooms, Shiitake\" via: node scripts/verify-cost-index-sources.mjs --sample 2278 --match \"Mushrooms\". Tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2282",
+          "market": "Baltimore",
+          "commodity": "Mushrooms, Shiitake",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2286",
+          "market": "Boston",
+          "commodity": "Mushrooms, Shiitake",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2291",
+          "market": "Chicago",
+          "commodity": "Mushrooms, Shiitake",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2303",
+          "market": "Detroit",
+          "commodity": "Mushrooms, Shiitake",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2307",
+          "market": "Los Angeles",
+          "commodity": "Mushrooms, Shiitake",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2311",
+          "market": "Miami",
+          "commodity": "Mushrooms, Shiitake",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2315",
+          "market": "New York",
+          "commodity": "Mushrooms, Shiitake",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "mango": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2277",
+          "market": "Atlanta",
+          "commodity": "Mangoes",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false (scaffold 2026-07, market structure cloned from apple) — confirm the commodity term \"Mangoes\" via: node scripts/verify-cost-index-sources.mjs --sample 2277 --match \"Mangoes\". Tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Mangoes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Mangoes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Mangoes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Mangoes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Mangoes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Mangoes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Mangoes",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "strawberry": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2277",
+          "market": "Atlanta",
+          "commodity": "Strawberries",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false (scaffold 2026-07, market structure cloned from apple) — confirm the commodity term \"Strawberries\" via: node scripts/verify-cost-index-sources.mjs --sample 2277 --match \"Strawberries\". Tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Strawberries",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Strawberries",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Strawberries",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Strawberries",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Strawberries",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Strawberries",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Strawberries",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "orange": {
+      "verified": false,
+      "ams": [
+        {
+          "reportId": "2277",
+          "market": "Atlanta",
+          "commodity": "Oranges",
+          "reducer": "mostlyMid",
+          "unit": "carton",
+          "_status": "STAGED verified:false (scaffold 2026-07, market structure cloned from apple) — confirm the commodity term \"Oranges\" via: node scripts/verify-cost-index-sources.mjs --sample 2277 --match \"Oranges\". Tighten bounds, --flip after --verify."
+        },
+        {
+          "reportId": "2281",
+          "market": "Baltimore",
+          "commodity": "Oranges",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2285",
+          "market": "Boston",
+          "commodity": "Oranges",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2290",
+          "market": "Chicago",
+          "commodity": "Oranges",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2302",
+          "market": "Detroit",
+          "commodity": "Oranges",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2306",
+          "market": "Los Angeles",
+          "commodity": "Oranges",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2310",
+          "market": "Miami",
+          "commodity": "Oranges",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        },
+        {
+          "reportId": "2314",
+          "market": "New York",
+          "commodity": "Oranges",
+          "reducer": "mostlyMid",
+          "unit": "carton"
+        }
+      ]
+    },
+    "mussels": {
+      "verified": false,
+      "noaa": {
+        "hts": [
+          "030731",
+          "030732"
+        ],
+        "nameMatch": "MUSSEL",
+        "basis": "index",
+        "edibleOnly": true,
+        "unit": "lb",
+        "years": 2,
+        "commodity": "mussels",
+        "_status": "STAGED verified:false (scaffold 2026-07, cloned from clams) — confirm NOAA HTS 0307.31/0307.32 + nameMatch \"MUSSEL\" via --sample; likely a directional import index (no dollar level), no corroborator yet. --flip after --verify."
+      }
     }
   },
   "drivers": {
