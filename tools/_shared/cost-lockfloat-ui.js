@@ -38,7 +38,7 @@
     withhold: { cls: 'hold',     en: "Won't call it", es: 'No lo llamamos', verb_en: 'Withheld',       verb_es: 'Retenido' },
   };
   var REASON = {
-    'no-series':    { en: 'no public history to band yet', es: 'aún sin historial público para acotar' },
+    'no-series':    { en: 'public source mapped — its price history isn’t pulled in yet', es: 'fuente pública mapeada — su historial de precios aún no está cargado' },
     'monthly-thin': { en: 'prints too thin to band — only a monthly read', es: 'muy pocas lecturas para acotar — solo lectura mensual' },
     'thin':         { en: 'not enough history to back a band', es: 'historial insuficiente para respaldar una banda' },
     'flat':         { en: 'flat and stale — nothing to call', es: 'plano y sin cambios — nada que llamar' },
@@ -563,8 +563,8 @@
       var sec = el('section', 'lf-refusal');
       sec.appendChild(el('h2', 'lf-refusal-h', L("What we won't call", 'Lo que no llamamos')));
       sec.appendChild(el('p', 'lf-refusal-lead', L(
-        'The majority of the catalog — ' + DATA.counts.withhold + ' of ' + DATA.catalog + ' ingredients — we refuse to fence. Here they are, grouped by why. A tool that sells alerts would have shown you a number for every one.',
-        'La mayoría del catálogo — ' + DATA.counts.withhold + ' de ' + DATA.catalog + ' ingredientes — nos negamos a acotar. Aquí están, agrupados por el motivo. Una herramienta que vende alertas te habría mostrado un número para cada uno.')));
+        'The catalog outruns what we’ll put a band on — ' + DATA.counts.withhold + ' of ' + DATA.catalog + ' ingredients. A handful genuinely swing too wide, print too thin, or sit flat to call; the rest just have a public source mapped that we haven’t pulled in yet. Grouped by why, below. A tool that sells alerts would have shown you a number for every one.',
+        'El catálogo supera lo que acotamos con una banda — ' + DATA.counts.withhold + ' de ' + DATA.catalog + ' ingredientes. Unos pocos de verdad oscilan demasiado, dan lecturas muy escasas o están planos para llamarlos; el resto solo tiene una fuente pública mapeada que aún no hemos cargado. Agrupados por el motivo, abajo. Una herramienta que vende alertas te habría mostrado un número para cada uno.')));
       // Group by machine reason; state the reason once, then chip the items. Order the
       // groups biggest-first, and recognizable staples first within each.
       var groups = {};
