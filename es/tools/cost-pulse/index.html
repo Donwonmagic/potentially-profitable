@@ -372,7 +372,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .lf-card-lvln{color:var(--ink);font-weight:600;font-size:14.5px}
 .lf-pill{font-size:10.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;border-radius:6px;padding:3px 7px;white-space:nowrap}
 .lf-pill--lock{color:var(--lf-lock-ink);background:var(--lf-lock-soft)}.lf-pill--cushion{color:var(--lf-cushion-ink);background:var(--lf-cushion-soft)}.lf-pill--float{color:var(--lf-float-ink);background:var(--lf-float-soft)}.lf-pill--hold{color:var(--lf-hold-ink);background:var(--lf-hold-soft)}
+.lf-plain{font-size:13.5px;color:var(--ink);line-height:1.5;margin:11px 0 0;font-weight:500}
 .lf-card-band{margin:12px 0 7px}
+.lf-drawer{margin-top:11px;border-top:1px solid var(--line)}
+.lf-drawer-sum{cursor:pointer;font-size:12px;color:var(--accent);font-weight:600;padding:8px 0 2px;list-style:none;user-select:none}
+.lf-drawer-sum::-webkit-details-marker{display:none}
+.lf-drawer-sum::before{content:"▸";font-size:9px;margin-right:5px}
+.lf-drawer[open] .lf-drawer-sum::before{content:"▾"}
+.lf-drawer[open] .lf-drawer-sum{margin-bottom:4px}
+.lf-drawer-sum:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .lf-cb-row{display:flex;justify-content:space-between;font-size:11px;color:var(--stone);margin-bottom:3px}
 .lf-cbsvg,.lf-spark{display:block;width:100%}
 .lf-cbsvg{height:26px}.lf-spark{height:30px;margin-top:9px}
@@ -809,7 +817,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/tools/_shared/cost-index-format.js?v=20260629-fmt4"></script>
 <script src="/tools/_shared/cost-index-ui.js?v=20260630-design2"></script>
 <script src="/data/cost-lockfloat.js?v=20260705-lf2"></script>
-<script src="/tools/_shared/cost-lockfloat-ui.js?v=20260705-lf9"></script>
+<script src="/tools/_shared/cost-lockfloat-ui.js?v=20260705-lf10"></script>
 <script>
 // La Hoja de Fijación — aislada para que nunca rompa el panel de detalle de abajo.
 (function () {

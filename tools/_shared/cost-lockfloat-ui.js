@@ -349,6 +349,17 @@
       return p;
     }
 
+    // The one plain-language sentence a busy operator reads: the answer + the single
+    // number that matters (worst-side weekly reach). No stats, no jargon — the proof
+    // for those numbers lives one tap down in the drawer.
+    function plainRead(it, bk) {
+      var reach = it.halfWidthPct != null ? ('±' + Math.round(it.halfWidthPct * 100) + '%') : '';
+      if (bk === 'lock') return L('Steady enough to lock a price — it usually moves less than ' + reach + ' week to week.', 'Bastante estable para fijar un precio — suele moverse menos de ' + reach + ' de semana a semana.');
+      if (bk === 'cushion') return L('Workable if you leave headroom — it can move about ' + reach + ' in a week.', 'Manejable si dejas holgura — puede moverse alrededor de ' + reach + ' en una semana.');
+      if (bk === 'float') return L('Too jumpy to pin a fixed price on — it can swing about ' + reach + ' in a week.', 'Demasiado inestable para fijar un precio — puede oscilar alrededor de ' + reach + ' en una semana.');
+      return '';
+    }
+
     function card(it, horizon) {
       var bk = reclassify(it, horizon);
       var c = el('div', 'lf-card');
@@ -363,41 +374,44 @@
       if (STATE && it.slug) right.appendChild(starBtn(it.slug));
       top.appendChild(left); top.appendChild(right); c.appendChild(top);
 
-      if (it.upPct != null && it.downPct != null && !(it.upPct === 0 && it.downPct === 0)) {
+      if (bk === 'withhold') {
+        var w = el('p', 'lf-why'); var wr = REASON[it.reason] || REASON.thin;
+        w.appendChild(el('strong', null, L('Held back: ', 'Retenido: ')));
+        w.appendChild(document.createTextNode(L(wr.en, wr.es) + '.'));
+        c.appendChild(w);
+        return c;
+      }
+
+      // --- PRIMARY: the answer in one plain sentence + the band picture ---
+      c.appendChild(el('p', 'lf-plain', plainRead(it, bk)));
+      var hasBand = it.upPct != null && it.downPct != null && !(it.upPct === 0 && it.downPct === 0);
+      if (hasBand) {
         var bandWrap = el('div', 'lf-card-band');
         var row = el('div', 'lf-cb-row');
         row.appendChild(el('span', null, pctTxt(-it.downPct)));
         row.appendChild(el('span', 'lf-cb-now', L('today', 'hoy')));
         row.appendChild(el('span', null, pctTxt(it.upPct)));
         bandWrap.appendChild(row);
-        bandWrap.appendChild(bandSvg(it, bk === 'withhold' ? 'hold' : BK[bk].cls));
+        bandWrap.appendChild(bandSvg(it, BK[bk].cls));
         c.appendChild(bandWrap);
-        if (bk !== 'withhold' && it.coverage != null) {
-          c.appendChild(receiptLine(it));
-          if (it.replay) { var rp = replayStrip(it); if (rp) c.appendChild(rp); }
-        }
       }
-      if (it.spark) c.appendChild(sparkSvg(it.spark, BK[bk].cls));
 
-      if (bk === 'withhold') {
-        var w = el('p', 'lf-why'); var wr = REASON[it.reason] || REASON.thin;
-        w.appendChild(el('strong', null, L('Held back: ', 'Retenido: ')));
-        w.appendChild(document.createTextNode(L(wr.en, wr.es) + '.'));
-        c.appendChild(w);
-      } else {
-        // Menu cushion — a decision job, on the buckets where holding a fixed menu
-        // price is realistic (lock/cushion). Reframes the certified UP-side reach as
-        // margin headroom: size for the +up% top and the backtested band held it. It
-        // is a MAGNITUDE read (how much to absorb), never a forecast that prices rise,
-        // and the two-sided coverage attributed to the one edge is deliberately
-        // conservative. Float gets NO cushion line — its absence is the honest message.
-        if ((bk === 'lock' || bk === 'cushion') && it.upPct != null && it.upPct > 0 && it.coverage != null) {
-          c.appendChild(menuCushion(it));
-        }
-        // horizon stamp + lock≠cheap discipline
-        var stamp = el('p', 'lf-stamp', L('Next-week reach — ' + HORIZONS[horizon].stamp_en + '.', 'Alcance de la próxima semana — ' + HORIZONS[horizon].stamp_es + '.'));
-        c.appendChild(stamp);
-        if (bk === 'lock') c.appendChild(el('p', 'lf-caveat', L('Steady, not necessarily a level you want to marry.', 'Estable, no necesariamente un nivel al que quieras casarte.')));
+      // --- SECONDARY: the proof + the pricing action, collapsed by default ---
+      // Progressive disclosure keeps the card scannable for the average operator while
+      // the evidence (the backtest that makes this defensible) stays one tap away.
+      if (it.coverage != null) {
+        var d = el('details', 'lf-drawer');
+        var sum = el('summary', 'lf-drawer-sum', L('Show the proof it holds', 'Ver la prueba de que se sostiene'));
+        d.appendChild(sum);
+        if ((bk === 'lock' || bk === 'cushion') && it.upPct != null && it.upPct > 0) d.appendChild(menuCushion(it));
+        d.appendChild(receiptLine(it));
+        if (it.replay) { var rp = replayStrip(it); if (rp) d.appendChild(rp); }
+        if (it.spark) d.appendChild(sparkSvg(it.spark, BK[bk].cls));
+        d.appendChild(el('p', 'lf-stamp', L('Next-week reach — ' + HORIZONS[horizon].stamp_en + '.', 'Alcance de la próxima semana — ' + HORIZONS[horizon].stamp_es + '.')));
+        if (bk === 'lock') d.appendChild(el('p', 'lf-caveat', L('Steady, not necessarily a level you want to marry.', 'Estable, no necesariamente un nivel al que quieras casarte.')));
+        c.appendChild(d);
+      } else if (it.spark) {
+        c.appendChild(sparkSvg(it.spark, BK[bk].cls));
       }
       return c;
     }
