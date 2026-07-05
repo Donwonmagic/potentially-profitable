@@ -273,13 +273,211 @@ main{padding-top:64px}
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <!-- batch-banner:start --><!-- batch-banner:end -->
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <div class="container nav-inner">
-    <a href="/" class="logo" aria-label="Muntin Digital">
-      <img class="logo-mark" src="/brand/mark/mark-square-ink.svg" alt="" width="36" height="36" />
-      <span class="logo-text">Muntin Digital</span>
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g fill="currentColor">
+          <path d="M32 8 H58 V46 H8 V32 A24 24 0 0 1 32 8 Z"/>
+          <path d="M70 8 H96 A24 24 0 0 1 120 32 V46 H70 V8 Z"/>
+          <path d="M8 58 H58 V120 H32 A24 24 0 0 1 8 96 V58 Z"/>
+          <path d="M70 58 H120 V96 A24 24 0 0 1 96 120 H70 V58 Z"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
+    <!-- Phase 7: 5-item nav, per launch plan Part II.
+         Library / Tools / Studio / Sign in.
+         Library points at the canonical /library/ hub (the
+         three-doors page). Tools is promoted from the old Library
+         mega-menu to a top-level item. Studio replaces Services +
+         Restaurants + About — they all live under /studio/ now,
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
+         retired (the hub IS the menu now); the controller script
+         is gone too.
+
+         /work/ was retired with the Phase 8 portfolio-sunset pass:
+         the company-as-resume framing made the personal-portfolio
+         showcase redundant. Legacy /work/* URLs 301 to /studio/
+         via _redirects so old backlinks land softly. -->
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/library/">Library</a>
+      <a href="/cost-index/">Cost Index</a>
+      <a href="/open/">Open data</a>
+      <a href="/tools/">Tools</a>
+      <a href="/studio/">Company</a>
+      <!-- Ledger — the paid product. Nav points at the on-site /ledger/
+           explainer (what it is, why a platform can't copy it, the founding
+           offer) rather than dumping cold nav traffic straight onto the
+           subdomain; /ledger/ owns the outbound "See Muntin Ledger" CTA. -->
+      <a href="/ledger/">Ledger</a>
+      <!-- Both sign-in / workshop ship hidden by default; the
+           auth-state JS at the bottom of this file calls
+           /api/auth/me and reveals exactly one. No-JS visitors see
+           neither, which is acceptable: the library and tools work
+           fully without sign-in (Workshop is the only auth surface). -->
+      <a class="js-nav-signin nav-link-auth" href="/sign-in/" hidden>Sign in</a>
+      <a class="js-nav-workshop nav-link-auth" href="/workbench/" hidden>Workshop</a>
+    </nav>
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+      <span class="nav-search-label">Search</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
+    </button>
+    <nav class="lang-switch" aria-label="Language">
+      <a href="/es/cost-index/cherry-tomato/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
+      <span class="lang-switch-current" aria-current="true">EN</span>
+    </nav>
+    <!-- Phase 7 — dark-mode toggle. The icon SVG flips between sun
+         and moon via CSS based on the [data-theme] state set by
+         theme-toggle.js. With JS off the button stays in its
+         default state (sun) and clicks do nothing; the OS
+         preference still drives dark-mode tokens via media query. -->
+    <button type="button" class="theme-toggle js-theme-toggle" aria-label="Toggle dark mode" aria-pressed="false" hidden>
+      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+        <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+        <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
+        <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
+      </svg>
+      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">
+      <!-- Phase 5+ — site-wide pulse propagation. Hidden by default;
+           window-state.js reveals when lastSeen <4h. Decorative; the
+           label "Reach Don" remains the accessible affordance. -->
+      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don is around"></span>
+      Reach Don
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </div>
+  <!-- Mobile menu mirrors the 5-item desktop nav, plus search, lang
+       switcher, and the Reach Don CTA. The auth-state JS below
+       toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+    <a href="/library/">Library</a>
+    <a href="/cost-index/">Cost Index</a>
+    <a href="/open/">Open data</a>
+    <a href="/tools/">Tools</a>
+    <a href="/studio/">Company</a>
+    <a href="/ledger/">Ledger</a>
+    <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
+    <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
+    <button type="button" class="mobile-search js-open-search">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Search the library</span>
+    </button>
+    <!-- Mobile dark-mode toggle. The desktop .theme-toggle is hidden on
+         phones (≤640px), so this surfaces the same control inside the
+         menu. Same .js-theme-toggle hook — theme-toggle.js wires every
+         instance and keeps them in sync. Shows a text label (the desktop
+         one is icon-only). Un-hidden by the script so no-JS users don't
+         see a dead control. -->
+    <button type="button" class="theme-toggle mobile-theme js-theme-toggle" aria-pressed="false" aria-label="Toggle dark mode" data-label-dark="Dark mode" data-label-light="Light mode" hidden>
+      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+        <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+        <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
+        <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
+      </svg>
+      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <span class="theme-toggle__label js-theme-label">Light mode</span>
+    </button>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don</a>
+    <a href="/es/cost-index/cherry-tomato/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
+  </nav>
+
+  <!-- Opt-in Spanish banner. Rendered hidden by default; site.js
+       removes the hidden attribute only when (a) the reader's browser
+       lists Spanish in navigator.languages, (b) no md_locale cookie
+       has been set yet, and (c) the banner hasn't been dismissed.
+       Speaks directly in Spanish because its audience, by definition,
+       is a Spanish-speaking visitor. Link target is the page's own
+       hreflang="es" alternate from <head>, read at runtime. -->
+  <aside class="lang-hint" id="langHint" role="complementary" aria-label="Sugerencia de idioma" lang="es" hidden>
+    <div class="container lang-hint-inner">
+      <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
+      <a href="/es/cost-index/cherry-tomato/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
+      <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Mega-menu controller retired in Phase 7: Library is a single
+       link to /library/ now (the canonical three-doors hub IS the
+       menu). The CSS rules in site.css for .nav-library-* remain in
+       place defensively so any future mega-menu reuses the pattern. -->
+
+  <!-- Phase 2 (Workshop) — auth-state toggle for the nav.
+       Calls /api/auth/me and reveals either the "Sign in" or
+       "Workshop" link based on the response. Both links ship hidden
+       so anonymous visitors with JS disabled see neither (the
+       library + tools work fully without sign-in, so the missing
+       affordance is acceptable). The script runs once, fire-and-
+       forget; no observable side effects on a 401. -->
+  <script>
+    /* Phase 3C-perf — deferred via requestIdleCallback so the
+       /api/auth/me round-trip stays off the critical path. Both
+       .js-nav-signin / .js-nav-workshop ship hidden, so a one-frame
+       delay before the correct affordance reveals is invisible. */
+    (window.requestIdleCallback || function (cb) { return setTimeout(cb, 200); })(function () {
+      var signin   = document.querySelectorAll('.js-nav-signin');
+      var workshop = document.querySelectorAll('.js-nav-workshop');
+      if (!signin.length && !workshop.length) return;
+      var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 200) {
+            show(workshop);
+            // Phase G.10 — append (N) badge with the user's save count.
+            fetch('/api/workbench/count', { credentials: 'same-origin' })
+              .then(function (r2) { return r2.ok ? r2.json() : null; })
+              .then(function (j) {
+                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
+                workshop.forEach(function (n) {
+                  if (n.querySelector('.nav-workshop-count')) return;
+                  var b = document.createElement('span');
+                  b.className = 'nav-workshop-count';
+                  b.textContent = ' (' + j.count + ')';
+                  n.appendChild(b);
+                });
+              })
+              .catch(function () { /* silent */ });
+            return;
+          }
+          show(signin);
+        })
+        .catch(function () { show(signin); });
+    });
+  </script>
+  <!-- Phase 7 — dark-mode toggle handler. Loaded after the nav
+       partial so the .js-theme-toggle button is in the DOM. -->
+  <script src="/assets/theme-toggle.js?v=phase8"></script>
 </header>
 <main id="main" role="main">
 <div class="container">

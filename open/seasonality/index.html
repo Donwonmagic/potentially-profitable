@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<title>Seasonality: what actually moves produce prices | Muntin Open Data</title>
+<meta name="description" content="Why seasonal price curves exist, how to read the 12-month curve, and where timing the calendar actually pays — from public data." />
+<meta name="theme-color" content="#2A50C8" />
+<link rel="canonical" href="https://muntin.digital/open/seasonality/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/open/seasonality/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/open/seasonality/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/open/seasonality/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="es_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Seasonality: what actually moves produce prices | Muntin Open Data" />
+<meta property="og:description" content="Why seasonal price curves exist, how to read the 12-month curve, and where timing the calendar actually pays — from public data." />
+<meta property="og:url" content="https://muntin.digital/open/seasonality/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Seasonality: what actually moves produce prices | Muntin Open Data" />
+<meta name="twitter:description" content="Why seasonal price curves exist, how to read the 12-month curve, and where timing the calendar actually pays — from public data." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":["WebPage","LearningResource"],"@id":"https://muntin.digital/open/seasonality/#page","url":"https://muntin.digital/open/seasonality/","name":"What actually moves produce prices?","inLanguage":"en-US","isPartOf":{"@id":"https://muntin.digital/#website"},"description":"Why seasonal price curves exist, how to read the 12-month curve, and where timing the calendar actually pays — from public data.","learningResourceType":"explainer","speakable":{"@type":"SpeakableSpecification","cssSelector":["h1",".od-hero__lede"]}},{"@type":"BreadcrumbList","@id":"https://muntin.digital/open/seasonality/#breadcrumbs","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Open data","item":"https://muntin.digital/open/"},{"@type":"ListItem","position":3,"name":"Seasonality","item":"https://muntin.digital/open/seasonality/"}]},{"@type":"FAQPage","@id":"https://muntin.digital/open/seasonality/#faq","inLanguage":"en-US","mainEntity":[{"@type":"Question","name":"When are fruits and vegetables cheapest?","acceptedAnswer":{"@type":"Answer","text":"It depends on the crop: each bottoms out when its main region is harvesting at full volume. In this dataset most of the 54 ingredients with a clear seasonal window are cheapest in summer or early fall, while storage crops and year-round imports stay close to flat all year."}},{"@type":"Question","name":"Which ingredients are worth buying in season?","acceptedAnswer":{"@type":"Answer","text":"Fresh field crops with no place to store them — summer squash, sweet corn, scallions, melons — swing hard and reward timing. Crops that store well (onions, potatoes, apples) or ship from imports every month price close to flat."}}]}]}</script>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<style>
+:root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--white:#fff;--line:#E3E5E9;--teal-wash:rgba(42,80,200,.06);--stone:#6B7280;--gold:#B7791F;--season:#6b4fa1;--font-display:'Fraunces',Georgia,serif;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#16181D;color:#F6F7F8;padding:12px 16px;z-index:100}
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D7DAE0}
+header.nav{min-height:64px}
+.nav{position:fixed;top:0;left:0;right:0;background:var(--cream);z-index:50;border-bottom:1px solid #E3E5E9}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:64px;padding:12px 0}
+.logo{display:flex;align-items:center;gap:10px;font-family:Georgia,serif;font-size:22px;font-weight:600;letter-spacing:-0.02em;flex-shrink:0;white-space:nowrap;color:inherit;text-decoration:none}
+.logo-mark{width:28px;height:28px;flex:0 0 28px}
+.nav-links{display:flex;gap:36px;font-size:15px}
+.nav-toggle{display:none}
+.nav-search-btn,.lang-switch{display:none}
+@media (max-width:1100px){.nav-links{display:none}}
+main{padding-top:64px}
+.breadcrumb{font-size:13px;color:var(--ink-soft);margin:24px 0 0}
+.breadcrumb a{color:var(--ink-soft);text-decoration:none;border-bottom:1px dashed currentColor}
+.breadcrumb a:hover{color:var(--teal)}
+.ci-hero{padding:40px 0 8px}
+.ci-eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
+.ci-eyebrow a{color:var(--teal);text-decoration:none}
+.ci-hero h1{font-family:var(--font-display);font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.12;color:var(--ink);margin:0 0 14px}
+.ci-answer{font-size:clamp(18px,3vw,22px);font-weight:600;color:var(--ink);margin:0 0 14px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
+.ci-lede{font-size:18px;line-height:1.6;color:var(--ink);margin:0;max-width:720px}
+.ci-body{margin:8px auto 0;max-width:760px}
+.ci-body h2{font-family:var(--font-display);font-size:clamp(20px,3vw,26px);font-weight:500;color:var(--ink);margin:34px 0 10px;line-height:1.2}
+.ci-body p{margin:0 0 16px;font-size:16px;line-height:1.7}
+.ci-body ol,.ci-body ul{margin:0 0 16px;padding-left:22px;font-size:16px;line-height:1.7}
+.ci-body li{margin:0 0 8px}
+.ci-read{margin:22px 0 8px;padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px;font-variant-numeric:tabular-nums}
+.ci-read__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+.ci-read__badge{font-weight:600;text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink-soft);margin-left:8px}
+.ci-read__line{font-size:16px;line-height:1.55;color:var(--ink);margin:0}
+.ci-read__trend{margin:6px 0 0;font-size:14.5px;line-height:1.5;color:var(--ink-soft)}
+.ci-read__verdict{margin:10px 0 0;font-size:15px;line-height:1.5;color:var(--ink)}
+.ci-read__verb{display:inline-block;font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-right:8px;vertical-align:1px;background:var(--cream);border:1px solid var(--line);color:var(--ink-soft)}
+.ci-read__verb[data-bias="hold"]{color:#2A50C8;border-color:#2A50C8}
+.ci-read__verb[data-bias="watch"]{color:#6b540f;border-color:#9a7d2e}
+.ci-read__verb[data-bias="re-price"]{color:#A23B2D;border-color:#A23B2D}
+.ci-read__spark{margin:12px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.ci-read__spark .mtn-spark{flex:0 0 auto;overflow:visible}
+.ci-read__capsule{margin:0;font-size:14.5px;line-height:1.45;color:var(--ink)}
+.ci-read__capsule-note{color:var(--ink-soft);font-size:12.5px}
+.ci-read__rank{color:var(--ink-soft)}
+.ci-why{margin:14px 0 8px;padding:14px 18px;background:var(--white);border:1px solid var(--line);border-radius:12px}
+.ci-why__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px}
+.ci-why__line{font-size:15px;line-height:1.55;color:var(--ink);margin:0}
+.ci-read__src{margin-top:8px;font-size:12.5px}
+.ci-read__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
+.ci-read__src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
+.ci-read__verified{margin:10px 0 0;font-size:13px;color:var(--ink);background:var(--teal-wash);border-left:3px solid var(--teal);padding:6px 10px;border-radius:3px}
+.ci-read__verified strong{color:var(--teal)}
+.ci-read__live,.ci-read__method{margin:10px 0 0;font-size:14px}
+.ci-read__live a,.ci-read__method a,.ci-read__data a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-read__method{margin-top:6px;font-size:13px}
+.ci-read__data{margin:4px 0 0;font-size:13px;color:var(--ink-soft)}
+.ci-season{margin:12px 0 4px;padding:12px 16px;background:var(--white);border:1px solid var(--line);border-left:3px solid var(--season);border-radius:10px;font-variant-numeric:tabular-nums}
+.ci-season__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--season);margin:0 0 4px}
+.ci-season__body{font-size:14.5px;line-height:1.5;color:var(--ink);margin:0}
+.ci-season__src{margin:6px 0 0;font-size:12.5px}
+.ci-season__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
+.ci-season__src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
+.ci-season__src a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-season-curve{margin:12px 0 2px}
+.ci-season-curve svg{display:block;width:100%;height:auto;overflow:visible}
+.ci-season-curve .sc-band{fill:var(--season);fill-opacity:.15}
+.ci-season-curve .sc-line{fill:none;stroke:var(--season);stroke-width:1.4;stroke-opacity:.7}
+.ci-season-curve .sc-dot{fill:var(--season)}
+.ci-season-curve .sc-dot--cheap{fill:var(--gold)}
+.ci-season-curve .sc-ring{fill:none;stroke:var(--season);stroke-width:1.3}
+.ci-season-curve .sc-lab{fill:var(--stone)}
+.ci-season-curve .sc-lab--cur{fill:var(--ink);font-weight:700}
+.ci-season-curve__cap{font-size:12.5px;color:var(--ink-soft);line-height:1.5;margin:7px 0 0}
+.ci-season-curve__cap strong{color:var(--ink)}
+.ci-season-curve__note{color:var(--stone);font-size:11.5px;white-space:nowrap}
+.ci-seasonal{margin:26px 0 8px}
+.ci-season-q{font-family:var(--font-display);font-size:clamp(20px,3.4vw,26px);font-weight:600;line-height:1.2;color:var(--ink);margin:0 0 10px;text-wrap:balance}
+.ci-season-answer{font-size:clamp(16px,2.4vw,18px);line-height:1.6;color:var(--ink-soft);margin:0;max-width:62ch;border-left:3px solid var(--season);padding-left:14px}
+.ci-yield{margin:18px 0;padding:14px 16px;background:var(--white);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:10px}
+.ci-yield__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 5px}
+.ci-yield__body{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0}
+.ci-yield__body strong{font-weight:700}
+.ci-yield__link{margin:9px 0 0;font-size:13.5px}
+.ci-yield__link a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-yield__src{margin:7px 0 0;font-size:12px;color:var(--stone)}
+.ci-faq{margin:34px 0 0}
+.ci-faq__item{margin:0 0 18px}
+.ci-faq__q{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink);margin:0 0 6px}
+.ci-faq__a{font-size:15.5px;line-height:1.65;color:var(--ink-soft);margin:0}
+.ci-sibs{margin:30px 0 0;font-size:14px;color:var(--ink-soft)}
+.ci-sibs-label{display:inline-block;font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:11px;margin-right:8px}
+.ci-sibs a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 8px}
+.ci-composite{margin:22px 0 6px;padding:20px 22px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--ink-soft);border-radius:12px;font-variant-numeric:tabular-nums}
+.ci-composite[data-band="up"]{border-left-color:#A23B2D}
+.ci-composite[data-band="down"]{border-left-color:var(--teal)}
+.ci-composite__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px}
+.ci-composite__read{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;margin:0}
+.ci-composite__num{font-family:var(--font-display);font-size:clamp(30px,6vw,44px);font-weight:500;line-height:1;color:var(--ink)}
+.ci-composite[data-band="up"] .ci-composite__num{color:#A23B2D}
+.ci-composite[data-band="down"] .ci-composite__num{color:var(--teal)}
+.ci-composite__say{font-size:15px;line-height:1.4;color:var(--ink);font-weight:600;max-width:46ch}
+.ci-composite__meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin:10px 0 0}
+.ci-composite__chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--white);border:1px solid var(--line);color:var(--ink-soft)}
+.ci-composite__spread{font-size:14px;line-height:1.5;color:var(--ink-soft);margin:10px 0 0}
+.ci-composite__spread strong{color:var(--ink)}
+.ci-composite__src{margin:8px 0 0;font-size:12.5px}
+.ci-composite__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
+.ci-composite__src div{margin-top:6px;color:var(--ink-soft);line-height:1.55}
+.ci-composite__src a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-orient{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));margin:18px 0 8px}
+.ci-orient__cell{background:var(--cream-2);border-radius:6px;padding:14px 16px}
+.ci-orient__h{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+.ci-orient__b{font-size:14px;line-height:1.5;color:var(--ink);margin:0}
+.ci-signup--compact{margin:18px 0}
+.ci-signup-alt{margin:12px 0 0;font-size:13.5px;color:var(--ink-soft);line-height:1.6}
+.ci-signup-alt a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-signup-sep{color:var(--stone,#9aa0aa);margin:0 4px}
+.ci-source{font-size:12.5px;color:var(--ink-soft);margin:24px 0 40px}
+.ci-source a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));margin:14px 0 0}
+.ci-card{padding:16px 18px;background:var(--white);border:1px solid var(--line);border-radius:10px}
+.ci-card a{font-family:var(--font-display);font-size:17px;color:var(--ink);text-decoration:none}
+.ci-card a:hover{color:var(--teal)}
+.ci-card-note{display:block;font-size:13px;color:var(--ink-soft);margin-top:4px}
+.ci-cat-h{font-family:var(--font-display);font-size:16px;color:var(--ink-soft);margin:30px 0 0;text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+.ci-card-action{margin-top:10px}
+.ci-moving{margin:20px 0 8px;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px}
+.ci-moving .ci-cat-h{margin:0 0 10px}
+.ci-moving-list{list-style:none;margin:0;padding:0}
+.ci-moving-item{margin:0 0 8px;font-size:15.5px;line-height:1.5}
+.ci-moving-item a{color:var(--ink);text-decoration:none;font-weight:600;border-bottom:1px dashed var(--line)}
+.ci-moving-item a:hover{color:var(--teal)}
+.ci-moving-reason{color:var(--ink-soft);font-size:14px}
+.ci-moving-calm{margin:0;font-size:15.5px;color:var(--ink)}
+.ci-moving-bar{margin:0 0 12px;font-size:13px;line-height:1.5;color:var(--ink-soft);padding:8px 12px;background:var(--surface-1,#faf9f7);border:1px solid var(--line);border-radius:8px}
+.ci-vkey{margin:2px 0 12px;font-size:12.5px;color:var(--ink-soft);line-height:1.6}
+.ci-vkey strong{color:var(--ink)}
+.ci-moving-insight{margin:3px 0 2px}
+.ci-moving-read{margin:2px 0;font-size:14.5px;line-height:1.5;color:var(--ink)}
+.ci-assoc-tag{color:var(--ink-soft);font-style:italic;font-size:12.5px}
+.ci-moving-cite{margin:3px 0 4px;font-size:12.5px}
+.ci-moving-cite summary{color:var(--teal);cursor:pointer}
+.ci-moving-cite p{margin:4px 0 0;color:var(--ink-soft)}
+.ci-moving-act{margin:2px 0 0;font-size:13.5px;color:var(--ink-soft)}
+.ci-moving-act strong{color:var(--ink)}
+.ci-moving-more{font-size:12.5px}
+.ci-moving-more-all{margin:10px 0 0;font-size:13.5px;color:var(--ink-soft)}
+.ci-moving-more-all a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-index--mini{display:inline-block;vertical-align:middle;margin:4px 0 2px;opacity:.9}
+.ci-index{margin:10px 0 4px}
+.ci-index__cap{margin:0 0 4px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+.ci-index .mtn-spark{max-width:100%;height:auto}
+.ci-card--pending{opacity:.72;background:var(--cream-2)}
+.ci-card--pending a{color:var(--ink-soft)}
+.ci-pending-note{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
+.ci-readings{margin:20px 0 8px}
+.ci-table-tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:12px 0 0}
+.ci-table-search__label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+.ci-table-search{flex:1 1 220px;max-width:340px;font:inherit;font-size:14px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--white);color:var(--ink)}
+.ci-table-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.ci-table-count{font-size:13px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.ci-table-empty td{color:var(--ink-soft);font-style:italic;padding:14px 10px}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0}
+.ci-table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+.ci-table th,.ci-table td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap;vertical-align:middle}
+.ci-table th{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft)}
+.ci-table tbody tr:hover{background:var(--cream-2)}
+.ci-table td a{color:var(--ink);text-decoration:none;font-weight:600;border-bottom:1px dashed var(--line)}
+.ci-table td a:hover{color:var(--teal)}
+.ci-table .ci-t-dir{font-weight:600}
+.ci-table .ci-t-dir[data-dir="up"]{color:#A23B2D}
+.ci-table .ci-t-dir[data-dir="down"]{color:var(--teal)}
+.ci-table .ci-t-na{color:var(--stone,#9aa0aa)}
+.ci-table .ci-index--mini{margin:0}
+:root[data-theme="dark"] .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
+.ci-read--pending{border-left-color:#cdb368;background:var(--cream-2)}
+.ci-read--pending .ci-read__head{color:#8a6d1f}
+.ci-outlook{margin:14px 0 8px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--season);border-radius:12px}
+.ci-outlook__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--season);margin:0 0 6px}
+.ci-outlook__line{font-size:15.5px;line-height:1.5;color:var(--ink);margin:0}
+.ci-outlook__record{margin:6px 0 0;font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.ci-outlook__how{margin-top:8px;font-size:12.5px}
+.ci-outlook__how summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
+.ci-outlook__how div{margin-top:6px;color:var(--ink-soft);line-height:1.55}
+.ci-outlook__panel{margin:0 0 8px;padding-left:18px}
+.ci-outlook__panel li{margin:0 0 4px}
+.ci-outlook__lab{margin:10px 0 0;font-size:13.5px}
+.ci-outlook__lab a{color:var(--season);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+/* a11y: a keyboard/switch user must always see focus (only the skip-link had one). */
+.ci-card a:focus-visible,.ci-read a:focus-visible,.ci-sibs a:focus-visible,.breadcrumb a:focus-visible,.ci-source a:focus-visible,summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:2px}
+/* touch: lift the drawer summaries to a real tap target (WCAG 2.5.8). */
+.ci-read__src summary,.ci-outlook__how summary{display:inline-block;padding:6px 0;min-height:24px}
+/* the pre-rendered sparkline must never clip in a narrower container. */
+.mtn-spark{max-width:100%;height:auto}
+/* print: the controller-PDFs-a-reading-for-a-vendor workflow. Drop the chrome, force the
+   provenance drawers open, and print the verdict with a border + its word (never color-only). */
+@media print{
+  .nav,.ci-cta-row,.ci-sibs,.ci-read__live,.ci-read__method,.skip-link,form,footer{display:none!important}
+  main{padding-top:0!important}
+  body{background:#fff!important;color:#000!important}
+  .ci-read{break-inside:avoid;border-color:#000}
+  details>*:not(summary){display:block!important}
+  details summary{font-weight:700}
+  .ci-read__verb{border:1px solid #000!important;color:#000!important;background:#fff!important}
+  a[href]::after{content:""!important}
+}
+/* dark mode: the inline tokens hardcoded light, so the reading area stayed cream in dark.
+   Redefine the cost-index tokens (light text on dark = high-contrast by construction) and
+   lighten the three verdict accents so they stay legible. Honors OS preference AND the
+   site theme toggle ([data-theme]); a forced-light toggle wins over OS dark. */
+:root[data-theme="dark"]{--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12);--stone:#9aa0aa;--gold:#d8bd6a;--season:#a992d6}
+:root[data-theme="dark"] .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
+:root[data-theme="dark"] .ci-read__verb[data-bias="watch"]{color:#d8bd6a;border-color:#8a7530}
+:root[data-theme="dark"] .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
+:root[data-theme="dark"] .ci-composite[data-band="up"]{border-left-color:#ed9a8e}
+:root[data-theme="dark"] .ci-composite[data-band="up"] .ci-composite__num{color:#ed9a8e}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12);--stone:#9aa0aa;--gold:#d8bd6a;--season:#a992d6}
+  :root:not([data-theme="light"]) .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
+  :root:not([data-theme="light"]) .ci-read__verb[data-bias="watch"]{color:#d8bd6a;border-color:#8a7530}
+  :root:not([data-theme="light"]) .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
+  :root:not([data-theme="light"]) .ci-composite[data-band="up"]{border-left-color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-composite[data-band="up"] .ci-composite__num{color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
+}
+</style>
+<link rel="preload" as="style" href="/assets/site-core.css?v=dc72c6990f4c" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=88d44041634a" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=dc72c6990f4c"><link rel="stylesheet" href="/assets/site-article.css?v=88d44041634a"></noscript>
+<style>
+.od-wrap{max-width:min(1080px,92vw);margin:0 auto}
+.od-eyebrow{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin:0 0 12px}
+.od-eyebrow a{color:var(--teal);text-decoration:none}
+.od-hero{padding:16px 0 6px}
+.od-hero h1{font-family:var(--font-display);font-weight:600;line-height:1.04;letter-spacing:-.01em;font-size:clamp(34px,6vw,60px);margin:0 0 16px;text-wrap:balance}
+.od-hero__lede{font-size:clamp(17px,2.4vw,20px);line-height:1.55;color:var(--ink-soft);max-width:64ch;margin:0 0 20px}
+.od-cta{display:flex;flex-wrap:wrap;gap:12px;margin:20px 0 6px}
+.od-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:10px;font-weight:600;font-size:15px;text-decoration:none;border:1px solid transparent}
+.od-btn--primary{background:var(--teal);color:#fff}
+.od-btn--ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.od-btn--ghost:hover{border-color:var(--teal);color:var(--teal)}
+.od-rule{height:1px;background:var(--line);border:0;margin:34px 0}
+.od-h2{font-family:var(--font-display);font-weight:600;font-size:clamp(22px,3.4vw,30px);line-height:1.15;margin:0 0 8px;text-wrap:balance}
+.od-sub{font-size:15.5px;line-height:1.6;color:var(--ink-soft);max-width:64ch;margin:0 0 20px}
+.od-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(248px,1fr));gap:16px;margin:8px 0}
+.od-card{display:flex;flex-direction:column;background:var(--white);border:1px solid var(--line);border-radius:14px;padding:20px 20px 18px;border-top:3px solid var(--accent,var(--teal))}
+.od-card h3{font-family:var(--font-display);font-weight:600;font-size:19px;margin:0 0 6px;color:var(--ink)}
+.od-card__stat{font-variant-numeric:tabular-nums;font-size:14px;font-weight:700;color:var(--accent,var(--teal));margin:0 0 8px;letter-spacing:.01em}
+.od-card__desc{font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0 0 14px;flex:1}
+.od-card__links{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;font-size:13.5px}
+.od-card__links a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.od-lic{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--stone);border:1px solid var(--line);border-radius:999px;padding:3px 9px}
+.od-prose p{font-size:15.5px;line-height:1.68;color:var(--ink-soft);max-width:66ch;margin:0 0 14px}
+.od-prose strong{color:var(--ink)}
+.od-mech{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin:14px 0 4px}
+.od-mech__i{background:var(--white);border:1px solid var(--line);border-left:3px solid var(--season);border-radius:12px;padding:14px 16px}
+.od-mech__i h4{font-size:13px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--season);margin:0 0 5px}
+.od-mech__i p{font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0}
+/* radial seasonal clock */
+.sea-clock{display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:26px;align-items:center;margin:10px 0}
+.sea-clock svg{width:100%;height:auto;overflow:visible}
+.sea-clock__cap{font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0}
+.sea-clock__cap strong{color:var(--ink)}
+.scl-sector{stroke:var(--white);stroke-width:1.5}
+.scl-mo{font-size:9px;fill:var(--stone);font-weight:600}
+.scl-n{font-size:8.5px;fill:var(--ink-soft);font-variant-numeric:tabular-nums}
+.scl-hub{fill:var(--white)}
+.scl-hubn{font-size:15px;font-weight:700;fill:var(--season);font-variant-numeric:tabular-nums;text-anchor:middle}
+.scl-hubl{font-size:7.5px;fill:var(--stone);text-anchor:middle;letter-spacing:.05em;text-transform:uppercase}
+/* amplitude ranking */
+.sea-rank{margin:6px 0 0}
+.sea-row{display:grid;grid-template-columns:minmax(128px,168px) 1fr 46px;align-items:center;gap:14px;padding:7px 0}
+.sea-row__lab{display:flex;flex-direction:column;gap:1px;min-width:0}
+.sea-row__lab a{color:var(--ink);text-decoration:none;font-weight:600;font-size:14.5px;border-bottom:1px solid transparent}
+.sea-row__lab a:hover{border-bottom-color:var(--season)}
+.sea-row__track{height:9px;background:var(--cream-2);border-radius:5px;overflow:hidden}
+.sea-row__bar{display:block;height:100%;background:var(--season);border-radius:5px;min-width:3px}
+.sea-row__amp{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;color:var(--season);font-size:13px}
+.sea-row__mo{font-size:11px;color:var(--stone)}
+.sea-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--ink-soft);margin-right:6px}
+.sea-play{counter-reset:play;list-style:none;padding:0;margin:8px 0 0}
+.sea-play li{position:relative;padding:0 0 14px 40px;font-size:15px;line-height:1.6;color:var(--ink-soft)}
+.sea-play li:before{counter-increment:play;content:counter(play);position:absolute;left:0;top:-2px;width:26px;height:26px;border-radius:8px;background:var(--season);color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.sea-play strong{color:var(--ink)}
+.od-note{background:var(--cream-2);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:8px 0}
+.od-note p{font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px}
+.od-note p:last-child{margin:0}
+@media (max-width:640px){.sea-clock{grid-template-columns:1fr}.sea-row{grid-template-columns:104px 1fr 46px}}
+</style></head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<!-- batch-banner:start --><!-- batch-banner:end -->
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g fill="currentColor">
+          <path d="M32 8 H58 V46 H8 V32 A24 24 0 0 1 32 8 Z"/>
+          <path d="M70 8 H96 A24 24 0 0 1 120 32 V46 H70 V8 Z"/>
+          <path d="M8 58 H58 V120 H32 A24 24 0 0 1 8 96 V58 Z"/>
+          <path d="M70 58 H120 V96 A24 24 0 0 1 96 120 H70 V58 Z"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
+    </a>
+    <!-- Phase 7: 5-item nav, per launch plan Part II.
+         Library / Tools / Studio / Sign in.
+         Library points at the canonical /library/ hub (the
+         three-doors page). Tools is promoted from the old Library
+         mega-menu to a top-level item. Studio replaces Services +
+         Restaurants + About — they all live under /studio/ now,
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
+         retired (the hub IS the menu now); the controller script
+         is gone too.
+
+         /work/ was retired with the Phase 8 portfolio-sunset pass:
+         the company-as-resume framing made the personal-portfolio
+         showcase redundant. Legacy /work/* URLs 301 to /studio/
+         via _redirects so old backlinks land softly. -->
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/library/">Library</a>
+      <a href="/cost-index/">Cost Index</a>
+      <a href="/open/">Open data</a>
+      <a href="/tools/">Tools</a>
+      <a href="/studio/">Company</a>
+      <!-- Ledger — the paid product. Nav points at the on-site /ledger/
+           explainer (what it is, why a platform can't copy it, the founding
+           offer) rather than dumping cold nav traffic straight onto the
+           subdomain; /ledger/ owns the outbound "See Muntin Ledger" CTA. -->
+      <a href="/ledger/">Ledger</a>
+      <!-- Both sign-in / workshop ship hidden by default; the
+           auth-state JS at the bottom of this file calls
+           /api/auth/me and reveals exactly one. No-JS visitors see
+           neither, which is acceptable: the library and tools work
+           fully without sign-in (Workshop is the only auth surface). -->
+      <a class="js-nav-signin nav-link-auth" href="/sign-in/" hidden>Sign in</a>
+      <a class="js-nav-workshop nav-link-auth" href="/workbench/" hidden>Workshop</a>
+    </nav>
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+      <span class="nav-search-label">Search</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
+    </button>
+    <nav class="lang-switch" aria-label="Language">
+      <a href="/es/open/seasonality/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
+      <span class="lang-switch-current" aria-current="true">EN</span>
+    </nav>
+    <!-- Phase 7 — dark-mode toggle. The icon SVG flips between sun
+         and moon via CSS based on the [data-theme] state set by
+         theme-toggle.js. With JS off the button stays in its
+         default state (sun) and clicks do nothing; the OS
+         preference still drives dark-mode tokens via media query. -->
+    <button type="button" class="theme-toggle js-theme-toggle" aria-label="Toggle dark mode" aria-pressed="false" hidden>
+      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+        <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+        <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
+        <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
+      </svg>
+      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">
+      <!-- Phase 5+ — site-wide pulse propagation. Hidden by default;
+           window-state.js reveals when lastSeen <4h. Decorative; the
+           label "Reach Don" remains the accessible affordance. -->
+      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don is around"></span>
+      Reach Don
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <!-- Mobile menu mirrors the 5-item desktop nav, plus search, lang
+       switcher, and the Reach Don CTA. The auth-state JS below
+       toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+    <a href="/library/">Library</a>
+    <a href="/cost-index/">Cost Index</a>
+    <a href="/open/">Open data</a>
+    <a href="/tools/">Tools</a>
+    <a href="/studio/">Company</a>
+    <a href="/ledger/">Ledger</a>
+    <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
+    <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
+    <button type="button" class="mobile-search js-open-search">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Search the library</span>
+    </button>
+    <!-- Mobile dark-mode toggle. The desktop .theme-toggle is hidden on
+         phones (≤640px), so this surfaces the same control inside the
+         menu. Same .js-theme-toggle hook — theme-toggle.js wires every
+         instance and keeps them in sync. Shows a text label (the desktop
+         one is icon-only). Un-hidden by the script so no-JS users don't
+         see a dead control. -->
+    <button type="button" class="theme-toggle mobile-theme js-theme-toggle" aria-pressed="false" aria-label="Toggle dark mode" data-label-dark="Dark mode" data-label-light="Light mode" hidden>
+      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+        <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+        <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
+        <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
+      </svg>
+      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <span class="theme-toggle__label js-theme-label">Light mode</span>
+    </button>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don</a>
+    <a href="/es/open/seasonality/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
+  </nav>
+
+  <!-- Opt-in Spanish banner. Rendered hidden by default; site.js
+       removes the hidden attribute only when (a) the reader's browser
+       lists Spanish in navigator.languages, (b) no md_locale cookie
+       has been set yet, and (c) the banner hasn't been dismissed.
+       Speaks directly in Spanish because its audience, by definition,
+       is a Spanish-speaking visitor. Link target is the page's own
+       hreflang="es" alternate from <head>, read at runtime. -->
+  <aside class="lang-hint" id="langHint" role="complementary" aria-label="Sugerencia de idioma" lang="es" hidden>
+    <div class="container lang-hint-inner">
+      <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
+      <a href="/es/open/seasonality/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
+      <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Mega-menu controller retired in Phase 7: Library is a single
+       link to /library/ now (the canonical three-doors hub IS the
+       menu). The CSS rules in site.css for .nav-library-* remain in
+       place defensively so any future mega-menu reuses the pattern. -->
+
+  <!-- Phase 2 (Workshop) — auth-state toggle for the nav.
+       Calls /api/auth/me and reveals either the "Sign in" or
+       "Workshop" link based on the response. Both links ship hidden
+       so anonymous visitors with JS disabled see neither (the
+       library + tools work fully without sign-in, so the missing
+       affordance is acceptable). The script runs once, fire-and-
+       forget; no observable side effects on a 401. -->
+  <script>
+    /* Phase 3C-perf — deferred via requestIdleCallback so the
+       /api/auth/me round-trip stays off the critical path. Both
+       .js-nav-signin / .js-nav-workshop ship hidden, so a one-frame
+       delay before the correct affordance reveals is invisible. */
+    (window.requestIdleCallback || function (cb) { return setTimeout(cb, 200); })(function () {
+      var signin   = document.querySelectorAll('.js-nav-signin');
+      var workshop = document.querySelectorAll('.js-nav-workshop');
+      if (!signin.length && !workshop.length) return;
+      var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 200) {
+            show(workshop);
+            // Phase G.10 — append (N) badge with the user's save count.
+            fetch('/api/workbench/count', { credentials: 'same-origin' })
+              .then(function (r2) { return r2.ok ? r2.json() : null; })
+              .then(function (j) {
+                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
+                workshop.forEach(function (n) {
+                  if (n.querySelector('.nav-workshop-count')) return;
+                  var b = document.createElement('span');
+                  b.className = 'nav-workshop-count';
+                  b.textContent = ' (' + j.count + ')';
+                  n.appendChild(b);
+                });
+              })
+              .catch(function () { /* silent */ });
+            return;
+          }
+          show(signin);
+        })
+        .catch(function () { show(signin); });
+    });
+  </script>
+  <!-- Phase 7 — dark-mode toggle handler. Loaded after the nav
+       partial so the .js-theme-toggle button is in the DOM. -->
+  <script src="/assets/theme-toggle.js?v=phase8"></script>
+</header>
+<main id="main" role="main">
+<div class="container">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> › <a href="/open/">Open data</a> › Seasonality</nav>
+  <div class="od-wrap">
+  <section class="od-hero">
+    <p class="od-eyebrow"><a href="/open/">Muntin Open Data</a> → Seasonality</p>
+    <h1>What actually moves produce prices?</h1>
+    <p class="od-hero__lede">Seasonality is the yearly rhythm in what an ingredient costs — set by harvest, storage, imports and weather. The honest headline: a handful of fresh field crops reward timing, and most storage crops, year-round imports, and proteins do not.</p>
+  </section>
+  <section class="sea-clock" aria-labelledby="sea-clock-h">
+    <svg viewBox="0 0 300 300" role="img" aria-label="Seasonal clock: how many of 75 ingredients hit their lowest price in each month." preserveAspectRatio="xMidYMid meet">
+    <path class="scl-sector" fill="var(--season)" fill-opacity="0.624" d="M151.1 98.0 L151.9 59.2 A90.8 90.8 0 0 1 193.8 70.4 L175.1 104.4 A52 52 0 0 0 151.1 98.0 Z"/><path class="scl-sector" fill="var(--season)" fill-opacity="0.900" d="M176.9 105.5 L213.2 45.7 A121.9 121.9 0 0 1 254.3 86.8 L194.5 123.1 A52 52 0 0 0 176.9 105.5 Z"/><path class="scl-sector" fill="var(--season)" fill-opacity="0.624" d="M195.6 124.9 L229.6 106.2 A90.8 90.8 0 0 1 240.8 148.1 L202.0 148.9 A52 52 0 0 0 195.6 124.9 Z"/><path class="scl-sector" fill="var(--season)" fill-opacity="0.349" d="M202.0 151.1 L209.8 151.3 A59.8 59.8 0 0 1 202.4 178.8 L195.6 175.1 A52 52 0 0 0 202.0 151.1 Z"/><path class="scl-sector" fill="var(--season)" fill-opacity="0.556" d="M194.5 176.9 L221.1 193.0 A83.1 83.1 0 0 1 193.0 221.1 L176.9 194.5 A52 52 0 0 0 194.5 176.9 Z"/><path class="scl-sector" fill="var(--season)" fill-opacity="0.900" d="M175.1 195.6 L208.7 256.8 A121.9 121.9 0 0 1 152.6 271.9 L151.1 202.0 A52 52 0 0 0 175.1 195.6 Z"/><path class="scl-sector" fill="var(--season)" fill-opacity="0.900" d="M148.9 202.0 L147.4 271.9 A121.9 121.9 0 0 1 91.3 256.8 L124.9 195.6 A52 52 0 0 0 148.9 202.0 Z"/><path class="scl-sector" fill="var(--season)" fill-opacity="0.831" d="M123.1 194.5 L90.9 247.6 A114.2 114.2 0 0 1 52.4 209.1 L105.5 176.9 A52 52 0 0 0 123.1 194.5 Z"/><path class="scl-sector" fill="var(--season)" fill-opacity="0.900" d="M104.4 175.1 L43.2 208.7 A121.9 121.9 0 0 1 28.1 152.6 L98.0 151.1 A52 52 0 0 0 104.4 175.1 Z"/><path class="scl-sector" fill="var(--season)" fill-opacity="0.762" d="M98.0 148.9 L43.6 147.8 A106.4 106.4 0 0 1 56.8 98.7 L104.4 124.9 A52 52 0 0 0 98.0 148.9 Z"/><path class="scl-sector" fill="var(--season)" fill-opacity="0.624" d="M105.5 123.1 L72.3 102.9 A90.8 90.8 0 0 1 102.9 72.3 L123.1 105.5 A52 52 0 0 0 105.5 123.1 Z"/><path class="scl-sector" fill="var(--season)" fill-opacity="0.556" d="M124.9 104.4 L110.0 77.2 A83.1 83.1 0 0 1 148.3 66.9 L148.9 98.0 A52 52 0 0 0 124.9 104.4 Z"/><text class="scl-mo" x="186.2" y="17.8" text-anchor="middle">J</text><text class="scl-n" x="175.8" y="56.6" text-anchor="middle">5</text><text class="scl-mo" x="249.0" y="54.0" text-anchor="middle">F</text><text class="scl-n" x="242.6" y="60.4" text-anchor="middle">9</text><text class="scl-mo" x="285.2" y="116.8" text-anchor="middle">M</text><text class="scl-n" x="246.4" y="127.2" text-anchor="middle">5</text><text class="scl-mo" x="285.2" y="189.2" text-anchor="middle">A</text><text class="scl-n" x="216.4" y="170.8" text-anchor="middle">1</text><text class="scl-mo" x="249.0" y="252.0" text-anchor="middle">M</text><text class="scl-n" x="215.1" y="218.1" text-anchor="middle">4</text><text class="scl-mo" x="186.2" y="288.2" text-anchor="middle">J</text><text class="scl-n" x="183.9" y="279.5" text-anchor="middle">9</text><text class="scl-mo" x="113.8" y="288.2" text-anchor="middle">J</text><text class="scl-n" x="116.1" y="279.5" text-anchor="middle">9</text><text class="scl-mo" x="51.0" y="252.0" text-anchor="middle">A</text><text class="scl-n" x="62.9" y="240.1" text-anchor="middle">8</text><text class="scl-mo" x="14.8" y="189.2" text-anchor="middle">S</text><text class="scl-n" x="23.5" y="186.9" text-anchor="middle">9</text><text class="scl-mo" x="14.8" y="116.8" text-anchor="middle">O</text><text class="scl-n" x="38.5" y="123.1" text-anchor="middle">7</text><text class="scl-mo" x="51.0" y="54.0" text-anchor="middle">N</text><text class="scl-n" x="79.4" y="82.4" text-anchor="middle">5</text><text class="scl-mo" x="113.8" y="17.8" text-anchor="middle">D</text><text class="scl-n" x="126.2" y="64.1" text-anchor="middle">4</text>
+    <circle class="scl-hub" cx="150" cy="150" r="48"/>
+    <text class="scl-hubn" x="150" y="148">75</text>
+    <text class="scl-hubl" x="150" y="162">ingredients</text>
+  </svg>
+    <div>
+      <h2 class="od-h2" id="sea-clock-h" style="margin-bottom:6px">When prices bottom out</h2>
+      <p class="sea-clock__cap">Of <strong>75</strong> ingredients with a clear enough shape to name a cheapest month, this is how that low spreads across the year. There is no single "in-season" month — each crop's calendar is its own, which is why the index carries a per-ingredient curve rather than one calendar.</p>
+    </div>
+  </section>
+  <hr class="od-rule">
+  <section class="od-prose" aria-labelledby="sea-what">
+    <h2 class="od-h2" id="sea-what">What seasonality is</h2>
+    <p>Seasonality exists because fresh food is grown, not manufactured. Supply arrives on nature’s schedule while a kitchen’s demand stays roughly steady, so price moves to close the gap. Four mechanisms do most of the work.</p>
+    <div class="od-mech"><div class="od-mech__i"><h4>Harvest window</h4><p>When a crop&#39;s main growing region is cutting at full volume, supply floods the market and price bottoms.</p></div><div class="od-mech__i"><h4>Storage</h4><p>Cold- or controlled-atmosphere crops are harvested in a tight window and metered out all year, which flattens the curve.</p></div><div class="od-mech__i"><h4>Imports</h4><p>Year-round supply from Mexico, Chile and Peru fills the off-season — or imposes its own foreign harvest cycle.</p></div><div class="od-mech__i"><h4>Weather</h4><p>A frost, a heat spell, or heavy rain in a growing district passes straight to price for perishables with no storage buffer.</p></div></div>
+    <p style="margin-top:16px">Which mechanism dominates is the whole story for an operator. A crop with a defined domestic harvest and no place to hold it swings hard; one that stores well or ships from imports every month prices close to flat. Often several forces stack — a domestic harvest low, an import shoulder, and a holiday demand spike layered on top.</p>
+  </section>
+  <hr class="od-rule">
+  <section aria-labelledby="sea-timing">
+    <h2 class="od-h2" id="sea-timing">Where timing actually pays</h2>
+    <p class="od-sub">The ingredients with the sharpest seasonal window — the gap between their cheapest and priciest month, derived from the multi-year history. Tap any for its full curve.</p>
+    <div class="sea-rank"><div class="sea-row"><div class="sea-row__lab"><a href="/cost-index/lime/#cheapest">Lime</a><span class="sea-row__mo">cheap July · dear March</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:100%"></span></div><span class="sea-row__amp">159%</span></div><div class="sea-row"><div class="sea-row__lab"><a href="/cost-index/green-onion/#cheapest">Green onion</a><span class="sea-row__mo">cheap June · dear January</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:72%"></span></div><span class="sea-row__amp">114%</span></div><div class="sea-row"><div class="sea-row__lab"><a href="/cost-index/whole-chicken/#cheapest">Whole chicken</a><span class="sea-row__mo">cheap May · dear August</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:57%"></span></div><span class="sea-row__amp">90%</span></div><div class="sea-row"><div class="sea-row__lab"><a href="/cost-index/snow-peas/#cheapest">Snow peas</a><span class="sea-row__mo">cheap March · dear November</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:52%"></span></div><span class="sea-row__amp">82%</span></div><div class="sea-row"><div class="sea-row__lab"><a href="/cost-index/chicken-breast/#cheapest">Chicken breast (boneless)</a><span class="sea-row__mo">cheap November · dear August</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:47%"></span></div><span class="sea-row__amp">74%</span></div><div class="sea-row"><div class="sea-row__lab"><a href="/cost-index/raspberry/#cheapest">Raspberries</a><span class="sea-row__mo">cheap June · dear April</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:45%"></span></div><span class="sea-row__amp">71%</span></div><div class="sea-row"><div class="sea-row__lab"><a href="/cost-index/yellow-squash/#cheapest">Yellow squash</a><span class="sea-row__mo">cheap July · dear February</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:45%"></span></div><span class="sea-row__amp">71%</span></div><div class="sea-row"><div class="sea-row__lab"><a href="/cost-index/zucchini/#cheapest">Zucchini</a><span class="sea-row__mo">cheap July · dear January</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:43%"></span></div><span class="sea-row__amp">68%</span></div><div class="sea-row"><div class="sea-row__lab"><a href="/cost-index/chicken-thigh/#cheapest">Chicken thigh</a><span class="sea-row__mo">cheap January · dear July</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:42%"></span></div><span class="sea-row__amp">67%</span></div><div class="sea-row"><div class="sea-row__lab"><a href="/cost-index/avocado/#cheapest">Avocado</a><span class="sea-row__mo">cheap December · dear May</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:42%"></span></div><span class="sea-row__amp">66%</span></div><div class="sea-row"><div class="sea-row__lab"><a href="/cost-index/okra/#cheapest">Okra</a><span class="sea-row__mo">cheap June · dear January</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:41%"></span></div><span class="sea-row__amp">65%</span></div><div class="sea-row"><div class="sea-row__lab"><a href="/cost-index/blueberry/#cheapest">Blueberries</a><span class="sea-row__mo">cheap January · dear October</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:40%"></span></div><span class="sea-row__amp">63%</span></div></div>
+    <div class="od-note" style="margin-top:16px"><p>Deliberately excluded: Watermelon, pumpkin show even larger raw swings that are almost certainly a pack or unit change between summer and winter fruit, not a real price move. The direction is reliable; the exact multiple is not.</p></div>
+  </section>
+  <hr class="od-rule">
+  <section class="od-prose" aria-labelledby="sea-read">
+    <h2 class="od-h2" id="sea-read">How to read the 12-month curve</h2>
+    <p>Every ingredient page carries a 12-month curve built from multi-year medians. The <strong>line</strong> is each month’s median (typical) price — the middle of the historical range, so one freak year doesn’t distort the shape. The shaded <strong>band</strong> is the spread: how much that month has varied year to year. A tight band means dependable; a wide band means volatile.</p>
+    <p>We flag the cheapest month, the priciest, and the <strong>amplitude</strong> — the percent gap between them — which is the single best gauge of whether an item is worth timing at all. Two cautions: check the band before you commit spec, and remember the line is a median, not a forecast.</p>
+  </section>
+  <hr class="od-rule">
+  <section aria-labelledby="sea-play-h">
+    <h2 class="od-h2" id="sea-play-h">The operator’s playbook</h2>
+    <ol class="sea-play"><li>Read the <strong>cheapest month</strong> as your feature-and-buy window and the <strong>priciest month</strong> as your trim-or-substitute window.</li><li>When the amplitude is large, the calendar is worth building the menu around: feature the item at its low, substitute or pre-buy ahead of its high.</li><li>When the amplitude is small — under about 15-20% — the curve is mostly noise: buy to need and shop the current spot deal instead.</li><li>Check the spread band before you commit spec: a cheap month with a wide band can still spike.</li><li>Remember the line is a median, not a forecast. It tells you the usual rhythm, not what next week’s truck will cost.</li></ol>
+  </section>
+  <hr class="od-rule">
+  <section aria-labelledby="sea-honest">
+    <h2 class="od-h2" id="sea-honest">Where the calendar barely matters</h2>
+    <p class="od-sub">Most of the index is closer to flat than seasonal, and pretending otherwise would waste an operator’s time. Of 75 classified ingredients, only <strong>54</strong> carry a clear seasonal window; <strong>16</strong> are moderate and <strong>5</strong> are effectively flat.</p>
+    <div class="od-note">
+      <p>Storage bulbs (onion, garlic), roots (potato, carrot, beet), pome fruit (apple, pear), year-round imports (banana, pepper) and hard herbs move in single-digit to ~20% bands — that’s normal noise, not a signal. Proteins are commodity markets on feed and fuel cycles, not a harvest calendar.</p>
+      <p>Storage is the great flattener: a crop can be intensely seasonal in the field and still price flat because controlled-atmosphere storage meters it out all year. And these curves are multi-year medians — a single-year frost, disease event, or freight shock can override the calendar in any given month.</p>
+    </div>
+    <p class="od-sub" style="margin-top:18px">Derived from the deep public history (USDA, BLS, FRED). The numbers are public domain (CC0). <a href="/open/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Back to Open data</a></p>
+  </section>
+  </div></div>
+</main>
+<footer class="site-footer" id="footer"></footer>
+<!-- Newsletter signup — eager progressive enhancement. This page ships
+     an empty footer (no footer assets, so first-touch.js never loads
+     here); wire the in-page #weekly-email form at parse time so a quick
+     submit can't fall back to a native POST that paints the API's raw
+     {"ok":true}. Stamps ts for the anti-spam gate, posts via fetch, and
+     flips data-state="ok" for the inline confirmation. -->
+<script>
+(function () {
+  'use strict';
+  if (typeof document === 'undefined') return;
+  function wire(form) {
+    if (!form || form.dataset.enhanced === '1') return;
+    form.dataset.enhanced = '1';
+    var ts = form.querySelector('input[name="ts"]');
+    if (ts) ts.value = String(Date.now());
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var params = new URLSearchParams();
+      new FormData(form).forEach(function (v, k) { params.append(k, v); });
+      fetch(form.action, {
+        method: 'POST',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        body: params.toString(),
+        credentials: 'same-origin',
+      }).then(function () {
+        form.dataset.state = 'ok';
+        if (typeof window.plausible === 'function') {
+          var evName = form.dataset.event || 'Newsletter Signup';
+          var surface = form.dataset.surface || (form.dataset.locale === 'es' ? 'cost-index-es' : 'cost-index-en');
+          try { window.plausible(evName, { props: { surface: surface } }); } catch (_) {}
+        }
+      }).catch(function () { /* fire-and-forget; no error UI by design */ });
+    });
+  }
+  function init() {
+    var forms = document.querySelectorAll('.foot-newsletter-form, .js-signup-form');
+    Array.prototype.forEach.call(forms, wire);
+  }
+  init();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+<!-- Find-an-ingredient filter for the Cost Index hub table. Progressive
+     enhancement: reveals the (hidden) search box, filters rows by name/slug,
+     shows a no-match row, and announces the count. No-ops on pages without
+     the table (every other cost-index page). -->
+<script>
+(function () {
+  'use strict';
+  if (typeof document === 'undefined') return;
+  function init() {
+    var box = document.getElementById('ci-ingredient-search');
+    if (!box || box.dataset.wired === '1') return;
+    var table = document.getElementById('ci-readings-table');
+    if (!table || !table.tBodies.length) return;
+    box.dataset.wired = '1';
+    var tools = box.closest('.ci-table-tools');
+    if (tools) tools.hidden = false;
+    var all = Array.prototype.slice.call(table.tBodies[0].rows);
+    var rows = all.filter(function (r) { return !r.hasAttribute('data-empty'); });
+    var empty = table.querySelector('tr[data-empty]');
+    var count = document.querySelector('.ci-table-count');
+    function apply() {
+      var q = box.value.trim().toLowerCase();
+      var shown = 0;
+      for (var i = 0; i < rows.length; i++) {
+        var hit = !q || (rows[i].getAttribute('data-name') || '').indexOf(q) !== -1;
+        rows[i].hidden = !hit;
+        if (hit) shown++;
+      }
+      if (empty) empty.hidden = !(q && shown === 0);
+      if (count) count.textContent = q ? (shown + ' / ' + rows.length) : '';
+    }
+    box.addEventListener('input', apply);
+  }
+  init();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260430-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+</body>
+</html>

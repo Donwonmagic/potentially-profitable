@@ -2532,6 +2532,379 @@ function emitLabPage(locale) {
   <script src="/tools/_shared/pressure-lab-ui.js?${v}"></script>` + pageTail;
 }
 
+// ====================================================================
+// /open/ — the open-data hub + /open/seasonality/ learning surface.
+// Emitted here (not a separate builder) so it inherits the proven page
+// chrome AND the seasonality honesty logic (SEASON, seasonalClass) in one
+// place. Every number is DERIVED from the gated seasonality.json at build
+// time — never hand-entered — so the surface can't drift from the data.
+// ====================================================================
+
+// Memoized derived digest over every ready ingredient: its honest seasonal
+// class + the cheapest/priciest month + amplitude, plus category rollups.
+let _seaDigest = null;
+function seasonalDigest() {
+  if (_seaDigest) return _seaDigest;
+  const items = [];
+  const byCheap = {};       // month(1-12) -> count of ingredients cheapest then
+  let readyN = 0;
+  const clsN = { window: 0, moderate: 0, flat: 0, building: 0 };
+  for (const slug of Object.keys(SEASON)) {
+    const e = SEASON[slug];
+    if (e && e.ready) readyN++;
+    const sc = seasonalClass(e);
+    if (!sc) continue;
+    clsN[sc.cls] = (clsN[sc.cls] || 0) + 1;
+    if (sc.cls === 'building') continue;
+    byCheap[sc.cheap.mo] = (byCheap[sc.cheap.mo] || 0) + 1;
+    const meta = ING_META[slug] || {};
+    items.push({
+      slug, cls: sc.cls, cheap: sc.cheap.mo, dear: sc.dear.mo,
+      amp: Math.round(sc.spreadPct), cat: meta.cat || 'other',
+    });
+  }
+  items.sort((a, b) => b.amp - a.amp);
+  _seaDigest = { items, byCheap, readyN, clsN, total: Object.keys(SEASON).length };
+  return _seaDigest;
+}
+
+// A raw amplitude above this is almost always a pack/unit change between
+// seasons, not a real price swing (watermelon, pumpkin) — the honesty notes
+// name them. We keep them OUT of the "timing pays" showcase and flag them.
+const SEA_ARTIFACT_CAP = 175;
+
+function dataCounts() {
+  const rd = (p) => { try { return JSON.parse(fs.readFileSync(path.join(repoRoot, p), 'utf8')); } catch { return null; } };
+  const ev = rd('cost-index/events.json');
+  const yl = rd('cost-index/yields.json');
+  const src = rd('data/cost-index-sources.json');
+  const nEvents = Array.isArray(ev) ? ev.length : (ev && Array.isArray(ev.events) ? ev.events.length : 0);
+  const nYields = Array.isArray(yl) ? yl.length : (yl && Array.isArray(yl.ingredients) ? yl.ingredients.length : (yl && Array.isArray(yl.yields) ? yl.yields.length : 0));
+  const nTracked = src && src.ingredients ? Object.keys(src.ingredients).length : 0;
+  const nLive = gatedSlugs().filter(shippable).length;
+  return { nEvents, nYields, nTracked, nLive };
+}
+
+// ---- Shared open-surface CSS (page-scoped; injected via extraCss) ----
+const OPEN_CSS = `<style>
+.od-wrap{max-width:min(1080px,92vw);margin:0 auto}
+.od-eyebrow{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin:0 0 12px}
+.od-eyebrow a{color:var(--teal);text-decoration:none}
+.od-hero{padding:16px 0 6px}
+.od-hero h1{font-family:var(--font-display);font-weight:600;line-height:1.04;letter-spacing:-.01em;font-size:clamp(34px,6vw,60px);margin:0 0 16px;text-wrap:balance}
+.od-hero__lede{font-size:clamp(17px,2.4vw,20px);line-height:1.55;color:var(--ink-soft);max-width:64ch;margin:0 0 20px}
+.od-cta{display:flex;flex-wrap:wrap;gap:12px;margin:20px 0 6px}
+.od-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:10px;font-weight:600;font-size:15px;text-decoration:none;border:1px solid transparent}
+.od-btn--primary{background:var(--teal);color:#fff}
+.od-btn--ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.od-btn--ghost:hover{border-color:var(--teal);color:var(--teal)}
+.od-rule{height:1px;background:var(--line);border:0;margin:34px 0}
+.od-h2{font-family:var(--font-display);font-weight:600;font-size:clamp(22px,3.4vw,30px);line-height:1.15;margin:0 0 8px;text-wrap:balance}
+.od-sub{font-size:15.5px;line-height:1.6;color:var(--ink-soft);max-width:64ch;margin:0 0 20px}
+.od-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(248px,1fr));gap:16px;margin:8px 0}
+.od-card{display:flex;flex-direction:column;background:var(--white);border:1px solid var(--line);border-radius:14px;padding:20px 20px 18px;border-top:3px solid var(--accent,var(--teal))}
+.od-card h3{font-family:var(--font-display);font-weight:600;font-size:19px;margin:0 0 6px;color:var(--ink)}
+.od-card__stat{font-variant-numeric:tabular-nums;font-size:14px;font-weight:700;color:var(--accent,var(--teal));margin:0 0 8px;letter-spacing:.01em}
+.od-card__desc{font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0 0 14px;flex:1}
+.od-card__links{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;font-size:13.5px}
+.od-card__links a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.od-lic{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--stone);border:1px solid var(--line);border-radius:999px;padding:3px 9px}
+.od-prose p{font-size:15.5px;line-height:1.68;color:var(--ink-soft);max-width:66ch;margin:0 0 14px}
+.od-prose strong{color:var(--ink)}
+.od-mech{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin:14px 0 4px}
+.od-mech__i{background:var(--white);border:1px solid var(--line);border-left:3px solid var(--season);border-radius:12px;padding:14px 16px}
+.od-mech__i h4{font-size:13px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--season);margin:0 0 5px}
+.od-mech__i p{font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0}
+/* radial seasonal clock */
+.sea-clock{display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:26px;align-items:center;margin:10px 0}
+.sea-clock svg{width:100%;height:auto;overflow:visible}
+.sea-clock__cap{font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0}
+.sea-clock__cap strong{color:var(--ink)}
+.scl-sector{stroke:var(--white);stroke-width:1.5}
+.scl-mo{font-size:9px;fill:var(--stone);font-weight:600}
+.scl-n{font-size:8.5px;fill:var(--ink-soft);font-variant-numeric:tabular-nums}
+.scl-hub{fill:var(--white)}
+.scl-hubn{font-size:15px;font-weight:700;fill:var(--season);font-variant-numeric:tabular-nums;text-anchor:middle}
+.scl-hubl{font-size:7.5px;fill:var(--stone);text-anchor:middle;letter-spacing:.05em;text-transform:uppercase}
+/* amplitude ranking */
+.sea-rank{margin:6px 0 0}
+.sea-row{display:grid;grid-template-columns:minmax(128px,168px) 1fr 46px;align-items:center;gap:14px;padding:7px 0}
+.sea-row__lab{display:flex;flex-direction:column;gap:1px;min-width:0}
+.sea-row__lab a{color:var(--ink);text-decoration:none;font-weight:600;font-size:14.5px;border-bottom:1px solid transparent}
+.sea-row__lab a:hover{border-bottom-color:var(--season)}
+.sea-row__track{height:9px;background:var(--cream-2);border-radius:5px;overflow:hidden}
+.sea-row__bar{display:block;height:100%;background:var(--season);border-radius:5px;min-width:3px}
+.sea-row__amp{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;color:var(--season);font-size:13px}
+.sea-row__mo{font-size:11px;color:var(--stone)}
+.sea-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--ink-soft);margin-right:6px}
+.sea-play{counter-reset:play;list-style:none;padding:0;margin:8px 0 0}
+.sea-play li{position:relative;padding:0 0 14px 40px;font-size:15px;line-height:1.6;color:var(--ink-soft)}
+.sea-play li:before{counter-increment:play;content:counter(play);position:absolute;left:0;top:-2px;width:26px;height:26px;border-radius:8px;background:var(--season);color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.sea-play strong{color:var(--ink)}
+.od-note{background:var(--cream-2);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:8px 0}
+.od-note p{font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px}
+.od-note p:last-child{margin:0}
+@media (max-width:640px){.sea-clock{grid-template-columns:1fr}.sea-row{grid-template-columns:104px 1fr 46px}}
+</style>`;
+
+// ---- Radial "seasonal clock": how many ingredients bottom out each month ----
+function seasonalClockSvg(locale) {
+  const es = locale === 'es';
+  const { byCheap } = seasonalDigest();
+  const counts = [];
+  for (let m = 1; m <= 12; m++) counts.push(byCheap[m] || 0);
+  const max = Math.max(1, ...counts);
+  const total = counts.reduce((a, b) => a + b, 0);
+  const cx = 150, cy = 150, rOut = 128, rIn = 52;
+  const INI = es
+    ? ['E', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D']
+    : ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+  const pol = (r, deg) => {
+    const a = (deg - 90) * Math.PI / 180;
+    return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
+  };
+  let sectors = '', labels = '';
+  for (let i = 0; i < 12; i++) {
+    const a0 = i * 30 + 1.2, a1 = (i + 1) * 30 - 1.2, mid = i * 30 + 15;
+    const n = counts[i];
+    // magnitude → radius (sequential); a month with 0 still shows a thin ring.
+    const rr = rIn + (rOut - rIn) * (n / max) * 0.92 + (n ? 0 : 0);
+    const r = n ? rr : rIn + 3;
+    const [x0o, y0o] = pol(r, a0), [x1o, y1o] = pol(r, a1);
+    const [x0i, y0i] = pol(rIn, a0), [x1i, y1i] = pol(rIn, a1);
+    const op = (0.28 + 0.62 * (n / max)).toFixed(3);
+    sectors += `<path class="scl-sector" fill="var(--season)" fill-opacity="${n ? op : 0.1}" d="M${x0i.toFixed(1)} ${y0i.toFixed(1)} L${x0o.toFixed(1)} ${y0o.toFixed(1)} A${r.toFixed(1)} ${r.toFixed(1)} 0 0 1 ${x1o.toFixed(1)} ${y1o.toFixed(1)} L${x1i.toFixed(1)} ${y1i.toFixed(1)} A${rIn} ${rIn} 0 0 0 ${x0i.toFixed(1)} ${y0i.toFixed(1)} Z"/>`;
+    const [lx, ly] = pol(rOut + 12, mid);
+    labels += `<text class="scl-mo" x="${lx.toFixed(1)}" y="${(ly + 3).toFixed(1)}" text-anchor="middle">${INI[i]}</text>`;
+    if (n) { const [nx, ny] = pol(r + 9, mid); labels += `<text class="scl-n" x="${nx.toFixed(1)}" y="${(ny + 3).toFixed(1)}" text-anchor="middle">${n}</text>`; }
+  }
+  const aria = es
+    ? `Reloj estacional: cuántos de ${total} ingredientes con datos tocan su precio más bajo en cada mes.`
+    : `Seasonal clock: how many of ${total} ingredients hit their lowest price in each month.`;
+  return `<svg viewBox="0 0 300 300" role="img" aria-label="${aria}" preserveAspectRatio="xMidYMid meet">
+    ${sectors}${labels}
+    <circle class="scl-hub" cx="${cx}" cy="${cy}" r="${rIn - 4}"/>
+    <text class="scl-hubn" x="${cx}" y="${cy - 2}">${total}</text>
+    <text class="scl-hubl" x="${cx}" y="${cy + 12}">${es ? 'ingredientes' : 'ingredients'}</text>
+  </svg>`;
+}
+
+// ---- /open/ — the open-data front door -----------------------------
+function emitOpenHub(locale) {
+  const es = locale === 'es';
+  const lang = es ? 'es' : 'en';
+  const base = es ? '/es' : '';
+  const canonEn = 'https://muntin.digital/open/';
+  const canonEs = 'https://muntin.digital/es/open/';
+  const url = es ? canonEs : canonEn;
+  const { nEvents, nYields, nTracked, nLive } = dataCounts();
+  const { readyN } = seasonalDigest();
+  const title = es
+    ? 'Datos abiertos — el conjunto de datos de costos de restaurante | Muntin'
+    : 'Open data — the restaurant cost dataset | Muntin Digital';
+  const desc = es
+    ? `Precios mayoristas de referencia, normales estacionales, eventos de mercado y rendimientos — gratis y descargables, de datos públicos (USDA, BLS, FRED).`
+    : `Wholesale price references, seasonal normals, market events and yields — free, downloadable, and sourced from public USDA, BLS and FRED data.`;
+  const h1 = es ? 'Datos abiertos' : 'Open data';
+  const lede = es
+    ? `Cada precio mayorista de referencia que publicamos, las normales estacionales detrás de ellos, los eventos de mercado que los movieron y los rendimientos que los convierten en costo por plato — gratis, descargables y con fuentes honestas de datos públicos de USDA, BLS y FRED. Sin registro. Sin adivinanzas de un modelo. Solo los números y cómo los obtuvimos.`
+    : `Every wholesale price reference we publish, the seasonal normals behind them, the market events that moved them, and the yields that turn them into plate cost — free, downloadable, and honestly sourced from public USDA, BLS and FRED data. No login. No model guessing. Just the numbers and how we got them.`;
+  const cards = [
+    {
+      accent: 'var(--teal)', h: es ? 'Índice de costos' : 'Cost Index',
+      stat: es ? `${nLive} ingredientes en vivo · ${nTracked} rastreados` : `${nLive} ingredients live · ${nTracked} tracked`,
+      d: es ? 'Dónde se cotizan al mayoreo ingredientes comunes de restaurante — un rango típico y una tendencia, de fuentes públicas.' : 'Where common restaurant ingredients are priced wholesale — a typical range and a trend, from public sources.',
+      links: [[es ? 'Ver el índice' : 'Browse the index', `${base}/cost-index/`], ['CSV', '/cost-index/index.csv'], ['JSON', '/cost-index/index.json']], lic: 'CC0',
+    },
+    {
+      accent: 'var(--season)', h: es ? 'Estacionalidad' : 'Seasonality',
+      stat: es ? `Normales de 12 meses · ${readyN} ingredientes` : `12-month normals · ${readyN} ingredients`,
+      d: es ? 'Cuándo está más barato cada ingrediente — y dónde el calendario apenas importa. Derivado del historial público profundo.' : 'When each ingredient is cheapest — and where the calendar barely matters. Derived from the deep public history.',
+      links: [[es ? 'Aprender y explorar' : 'Learn & explore', `${base}/open/seasonality/`]], lic: 'CC0',
+    },
+    {
+      accent: 'var(--gold)', h: es ? 'Eventos de mercado' : 'Market events',
+      stat: es ? `${nEvents} eventos documentados` : `${nEvents} documented events`,
+      d: es ? 'Choques de oferta y su co-ocurrencia con el precio — enmarcados como asociación, nunca como causa.' : 'Supply shocks and their price co-occurrence — framed as association, never as cause.',
+      links: [['JSON', '/cost-index/events.json']], lic: 'CC-BY',
+    },
+    {
+      accent: 'var(--teal)', h: es ? 'Rendimientos' : 'Ingredient yields',
+      stat: es ? `${nYields} rendimientos comestibles` : `${nYields} edible yields`,
+      d: es ? 'Convierte una libra al mayoreo en costo por plato — el porcentaje comestible de cada ingrediente.' : 'Turn a wholesale pound into plate cost — the edible portion of each ingredient.',
+      links: [['JSON', '/cost-index/yields.json']], lic: 'CC-BY',
+    },
+  ];
+  const cardHtml = cards.map((c) => `
+      <div class="od-card" style="--accent:${c.accent}">
+        <h3>${escHtml(c.h)}</h3>
+        <p class="od-card__stat">${escHtml(c.stat)}</p>
+        <p class="od-card__desc">${escHtml(c.d)}</p>
+        <div class="od-card__links">${c.links.map(([t, u]) => `<a href="${u}"${u.endsWith('.json') || u.endsWith('.csv') ? ' download' : ''}>${escHtml(t)}</a>`).join('')}<span class="od-lic">${c.lic}</span></div>
+      </div>`).join('');
+  const crumb = es
+    ? [['Inicio', 'https://muntin.digital/es/'], ['Datos abiertos', canonEs]]
+    : [['Home', 'https://muntin.digital/'], ['Open data', canonEn]];
+  const jsonld = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': ['CollectionPage', 'DataCatalog'], '@id': url + '#page', 'url': url, 'name': h1, 'inLanguage': es ? 'es-US' : 'en-US',
+        'isPartOf': { '@id': 'https://muntin.digital/#website' }, 'description': desc,
+        'dataset': [
+          { '@type': 'Dataset', 'name': es ? 'Índice de costos de ingredientes' : 'Restaurant ingredient cost index', 'url': 'https://muntin.digital' + base + '/cost-index/', 'license': 'https://creativecommons.org/publicdomain/zero/1.0/', 'creator': { '@id': 'https://muntin.digital/#business' } },
+          { '@type': 'Dataset', 'name': es ? 'Eventos de mercado del índice de costos' : 'Cost index market events', 'url': 'https://muntin.digital/cost-index/events.json', 'license': 'https://creativecommons.org/licenses/by/4.0/', 'creator': { '@id': 'https://muntin.digital/#business' } },
+          { '@type': 'Dataset', 'name': es ? 'Rendimientos comestibles de ingredientes' : 'Ingredient edible yields', 'url': 'https://muntin.digital/cost-index/yields.json', 'license': 'https://creativecommons.org/licenses/by/4.0/', 'creator': { '@id': 'https://muntin.digital/#business' } },
+        ] },
+      { '@type': 'BreadcrumbList', '@id': url + '#breadcrumbs', 'itemListElement': crumb.map((c, i) => ({ '@type': 'ListItem', 'position': i + 1, 'name': c[0], 'item': c[1] })) },
+    ],
+  });
+  const body = `
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="${base}/">${es ? 'Inicio' : 'Home'}</a> › ${escHtml(h1)}</nav>
+  <div class="od-wrap">
+  <section class="od-hero">
+    <p class="od-eyebrow">Muntin Open Data</p>
+    <h1>${escHtml(h1)}${es ? '' : ''}</h1>
+    <p class="od-hero__lede">${escHtml(lede)}</p>
+    <div class="od-cta">
+      <a class="od-btn od-btn--primary" href="${base}/cost-index/">${es ? 'Ver el índice de costos' : 'Browse the Cost Index'} <span aria-hidden="true">→</span></a>
+      <a class="od-btn od-btn--ghost" href="/cost-index/index.csv" download>${es ? 'Descargar todo (CSV)' : 'Download all (CSV)'}</a>
+    </div>
+  </section>
+  <hr class="od-rule">
+  <section aria-labelledby="od-sets">
+    <h2 class="od-h2" id="od-sets">${es ? 'Los conjuntos de datos' : 'The datasets'}</h2>
+    <p class="od-sub">${es ? 'Cuatro superficies, una postura: cada cifra es rastreable a datos públicos y descargable en formatos abiertos.' : 'Four surfaces, one posture: every figure traces to public data and downloads in open formats.'}</p>
+    <div class="od-grid">${cardHtml}</div>
+  </section>
+  <hr class="od-rule">
+  <section class="od-prose" aria-labelledby="od-honest">
+    <h2 class="od-h2" id="od-honest">${es ? 'Cómo se mantiene honesto' : 'How this stays honest'}</h2>
+    <p>${es ? 'Un número se publica solo cuando lo respalda un <strong>nivel mayorista real en dólares</strong> de una fuente pública, corroborado por una segunda — nunca un índice sin nivel ni una sola cotización sin verificar. Si no supera esa barra, la página lo dice en lugar de inventar una cifra.' : 'A number publishes only when a <strong>real wholesale dollar level</strong> from a public source clears the bar, corroborated by a second — never an index with no level, never a single unverified quote. If it does not clear the bar, the page says so instead of inventing a figure.'}</p>
+    <p>${es ? 'El movimiento se enmarca como <strong>co-ocurrencia, no causa</strong>: mostramos que un precio se movió junto a un factor, no que el factor lo causó. Y cada figura es una <strong>re-derivación determinista</strong> del historial público — puedes reconstruirla desde la misma fuente.' : 'Movement is framed as <strong>co-occurrence, not cause</strong>: we show a price moved alongside a driver, not that the driver caused it. And every figure is a <strong>deterministic re-derivation</strong> of the public record — you can rebuild it from the same source.'}</p>
+    <p>${es ? 'Fuentes: USDA Market News, USDA NDPSR, BLS (IPP/PPI) y FRED. Licencia: los números del índice son de dominio público (CC0); los conjuntos compilados (eventos, rendimientos) son CC-BY — úsalos, cítanos como “Muntin Digital”.' : 'Sources: USDA Market News, USDA NDPSR, BLS (PPI/APU) and FRED. License: the index numbers are public domain (CC0); the compiled datasets (events, yields) are CC-BY — use them, credit “Muntin Digital.”'}</p>
+  </section>
+  </div>`;
+  return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld, extraCss: OPEN_CSS }) + body + pageTail;
+}
+
+// ---- /open/seasonality/ — the learning surface ---------------------
+function emitSeasonalityHub(locale) {
+  const es = locale === 'es';
+  const lang = es ? 'es' : 'en';
+  const base = es ? '/es' : '';
+  const canonEn = 'https://muntin.digital/open/seasonality/';
+  const canonEs = 'https://muntin.digital/es/open/seasonality/';
+  const url = es ? canonEs : canonEn;
+  const dg = seasonalDigest();
+  const MO = es ? MONTHS_ES : MONTHS_EN;
+  const title = es
+    ? 'Estacionalidad: qué mueve de verdad los precios | Muntin Open Data'
+    : 'Seasonality: what actually moves produce prices | Muntin Open Data';
+  const desc = es
+    ? 'Por qué existen las curvas de precio estacionales, cómo leer la curva de 12 meses y dónde el momento del calendario realmente paga — de datos públicos.'
+    : 'Why seasonal price curves exist, how to read the 12-month curve, and where timing the calendar actually pays — from public data.';
+  const h1 = es ? '¿Qué mueve de verdad los precios estacionales?' : 'What actually moves produce prices?';
+  // Timing-pays ranking: strong seasonal window items, artifacts excluded.
+  const strong = dg.items.filter((x) => x.cls === 'window' && x.amp <= SEA_ARTIFACT_CAP).slice(0, 12);
+  const maxAmp = Math.max(1, ...strong.map((x) => x.amp));
+  const nameOf = (slug) => { const l = LABELS[slug] || {}; return (es ? (l.es || l.en) : l.en) || slug; };
+  const rankHtml = strong.map((x) => {
+    const w = Math.max(4, Math.round(x.amp / maxAmp * 100));
+    return `<div class="sea-row"><div class="sea-row__lab"><a href="${base}/cost-index/${x.slug}/#cheapest">${escHtml(nameOf(x.slug))}</a><span class="sea-row__mo">${es ? 'barato' : 'cheap'} ${MO[x.cheap]} · ${es ? 'caro' : 'dear'} ${MO[x.dear]}</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:${w}%"></span></div><span class="sea-row__amp">${x.amp}%</span></div>`;
+  }).join('');
+  const artifacts = dg.items.filter((x) => x.amp > SEA_ARTIFACT_CAP).map((x) => nameOf(x.slug));
+  const mechs = [
+    { h: es ? 'Ventana de cosecha' : 'Harvest window', p: es ? 'Cuando la región principal de un cultivo corta a pleno volumen, la oferta inunda el mercado y el precio toca fondo.' : "When a crop's main growing region is cutting at full volume, supply floods the market and price bottoms." },
+    { h: es ? 'Almacenamiento' : 'Storage', p: es ? 'Los cultivos que se guardan en frío se cosechan en una ventana estrecha y se dosifican todo el año, lo que aplana la curva.' : 'Cold- or controlled-atmosphere crops are harvested in a tight window and metered out all year, which flattens the curve.' },
+    { h: es ? 'Importaciones' : 'Imports', p: es ? 'La oferta durante todo el año de México, Chile y Perú llena la temporada baja — o impone su propio ciclo de cosecha extranjero.' : 'Year-round supply from Mexico, Chile and Peru fills the off-season — or imposes its own foreign harvest cycle.' },
+    { h: es ? 'Clima' : 'Weather', p: es ? 'Una helada, una ola de calor o lluvia fuerte en un distrito agrícola pasa directo al precio de los cultivos perecederos sin colchón de almacenamiento.' : 'A frost, a heat spell, or heavy rain in a growing district passes straight to price for perishables with no storage buffer.' },
+  ];
+  const play = es ? [
+    'Trata el <strong>mes más barato</strong> como tu ventana de destacar-y-comprar, y el <strong>mes más caro</strong> como tu ventana de recortar-o-sustituir.',
+    'Cuando la amplitud es grande, vale la pena construir el menú alrededor del calendario: destaca el artículo en su mínimo y sustituye o precompra antes de su máximo.',
+    'Cuando la amplitud es pequeña — bajo ~15-20% — la curva es casi ruido: compra según necesidad y aprovecha la oferta puntual del momento.',
+    'Revisa la banda antes de comprometer la ficha técnica: un mes barato con banda ancha aún puede dispararse.',
+    'Recuerda que la línea es una mediana, no un pronóstico. Te dice el ritmo habitual, no lo que costará el camión de la próxima semana.',
+  ] : [
+    'Read the <strong>cheapest month</strong> as your feature-and-buy window and the <strong>priciest month</strong> as your trim-or-substitute window.',
+    'When the amplitude is large, the calendar is worth building the menu around: feature the item at its low, substitute or pre-buy ahead of its high.',
+    'When the amplitude is small — under about 15-20% — the curve is mostly noise: buy to need and shop the current spot deal instead.',
+    'Check the spread band before you commit spec: a cheap month with a wide band can still spike.',
+    'Remember the line is a median, not a forecast. It tells you the usual rhythm, not what next week’s truck will cost.',
+  ];
+  const crumb = es
+    ? [['Inicio', 'https://muntin.digital/es/'], ['Datos abiertos', 'https://muntin.digital/es/open/'], ['Estacionalidad', canonEs]]
+    : [['Home', 'https://muntin.digital/'], ['Open data', 'https://muntin.digital/open/'], ['Seasonality', canonEn]];
+  const faq = [
+    { q: es ? '¿Cuándo son más baratas las frutas y verduras?' : 'When are fruits and vegetables cheapest?',
+      a: es ? `Depende del cultivo: cada uno toca su mínimo cuando su región principal cosecha a pleno volumen. En este conjunto de datos, la mayoría de los ${dg.clsN.window} ingredientes con una ventana estacional clara son más baratos en verano o a inicios de otoño, pero los cultivos de almacenamiento e importados se mantienen casi planos todo el año.` : `It depends on the crop: each bottoms out when its main region is harvesting at full volume. In this dataset most of the ${dg.clsN.window} ingredients with a clear seasonal window are cheapest in summer or early fall, while storage crops and year-round imports stay close to flat all year.` },
+    { q: es ? '¿Qué ingredientes vale la pena comprar por temporada?' : 'Which ingredients are worth buying in season?',
+      a: es ? 'Los cultivos de campo frescos sin lugar para almacenarse — calabacita de verano, elote, cebollín, melones — oscilan fuerte y premian el momento. Los que se almacenan bien (cebollas, papas, manzanas) o llegan de importación todo el año se cotizan casi planos.' : 'Fresh field crops with no place to store them — summer squash, sweet corn, scallions, melons — swing hard and reward timing. Crops that store well (onions, potatoes, apples) or ship from imports every month price close to flat.' },
+  ];
+  const jsonld = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': ['WebPage', 'LearningResource'], '@id': url + '#page', 'url': url, 'name': h1, 'inLanguage': es ? 'es-US' : 'en-US',
+        'isPartOf': { '@id': 'https://muntin.digital/#website' }, 'description': desc, 'learningResourceType': 'explainer',
+        'speakable': { '@type': 'SpeakableSpecification', 'cssSelector': ['h1', '.od-hero__lede'] } },
+      { '@type': 'BreadcrumbList', '@id': url + '#breadcrumbs', 'itemListElement': crumb.map((c, i) => ({ '@type': 'ListItem', 'position': i + 1, 'name': c[0], 'item': c[1] })) },
+      { '@type': 'FAQPage', '@id': url + '#faq', 'inLanguage': es ? 'es-US' : 'en-US', 'mainEntity': faq.map((f) => ({ '@type': 'Question', 'name': f.q, 'acceptedAnswer': { '@type': 'Answer', 'text': f.a } })) },
+    ],
+  });
+  const body = `
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="${base}/">${es ? 'Inicio' : 'Home'}</a> › <a href="${base}/open/">${es ? 'Datos abiertos' : 'Open data'}</a> › ${es ? 'Estacionalidad' : 'Seasonality'}</nav>
+  <div class="od-wrap">
+  <section class="od-hero">
+    <p class="od-eyebrow"><a href="${base}/open/">Muntin Open Data</a> → ${es ? 'Estacionalidad' : 'Seasonality'}</p>
+    <h1>${escHtml(h1)}</h1>
+    <p class="od-hero__lede">${es ? 'La estacionalidad es el ritmo anual de lo que cuesta un ingrediente — fijado por cosechas, almacenamiento, importaciones y clima. El titular honesto: un puñado de cultivos de campo frescos premian el momento, y la mayoría de los cultivos de almacén, importaciones y proteínas no.' : 'Seasonality is the yearly rhythm in what an ingredient costs — set by harvest, storage, imports and weather. The honest headline: a handful of fresh field crops reward timing, and most storage crops, year-round imports, and proteins do not.'}</p>
+  </section>
+  <section class="sea-clock" aria-labelledby="sea-clock-h">
+    ${seasonalClockSvg(locale)}
+    <div>
+      <h2 class="od-h2" id="sea-clock-h" style="margin-bottom:6px">${es ? 'Cuándo tocan fondo los precios' : 'When prices bottom out'}</h2>
+      <p class="sea-clock__cap">${es ? `De <strong>${dg.items.length}</strong> ingredientes con forma suficiente para nombrar un mes más barato, así se reparte por mes ese punto. No hay un solo “mes de temporada” — el calendario de cada cultivo es propio, y por eso el índice trae una curva por ingrediente en lugar de un calendario único.` : `Of <strong>${dg.items.length}</strong> ingredients with a clear enough shape to name a cheapest month, this is how that low spreads across the year. There is no single "in-season" month — each crop's calendar is its own, which is why the index carries a per-ingredient curve rather than one calendar.`}</p>
+    </div>
+  </section>
+  <hr class="od-rule">
+  <section class="od-prose" aria-labelledby="sea-what">
+    <h2 class="od-h2" id="sea-what">${es ? 'Qué es la estacionalidad' : 'What seasonality is'}</h2>
+    <p>${es ? 'La estacionalidad existe porque la comida fresca se cultiva, no se fabrica. La oferta llega según el calendario de la naturaleza mientras la demanda de una cocina se mantiene pareja, así que el precio se mueve para cerrar la brecha. Cuatro mecanismos hacen casi todo el trabajo.' : 'Seasonality exists because fresh food is grown, not manufactured. Supply arrives on nature’s schedule while a kitchen’s demand stays roughly steady, so price moves to close the gap. Four mechanisms do most of the work.'}</p>
+    <div class="od-mech">${mechs.map((m) => `<div class="od-mech__i"><h4>${escHtml(m.h)}</h4><p>${escHtml(m.p)}</p></div>`).join('')}</div>
+    <p style="margin-top:16px">${es ? 'Cuál mecanismo domina es toda la historia para un operador. Un cultivo con cosecha nacional definida y sin dónde guardarse oscila fuerte; uno que se almacena bien o llega de importación todo el año se cotiza casi plano. A menudo varias fuerzas se apilan — un mínimo de cosecha, una temporada de importación y un pico de demanda festiva encima.' : 'Which mechanism dominates is the whole story for an operator. A crop with a defined domestic harvest and no place to hold it swings hard; one that stores well or ships from imports every month prices close to flat. Often several forces stack — a domestic harvest low, an import shoulder, and a holiday demand spike layered on top.'}</p>
+  </section>
+  <hr class="od-rule">
+  <section aria-labelledby="sea-timing">
+    <h2 class="od-h2" id="sea-timing">${es ? 'Dónde el momento realmente paga' : 'Where timing actually pays'}</h2>
+    <p class="od-sub">${es ? `Los ingredientes con la ventana estacional más marcada — la brecha entre su mes más barato y el más caro, derivada del historial de varios años. Toca cualquiera para su curva completa.` : `The ingredients with the sharpest seasonal window — the gap between their cheapest and priciest month, derived from the multi-year history. Tap any for its full curve.`}</p>
+    <div class="sea-rank">${rankHtml}</div>
+    ${artifacts.length ? `<div class="od-note" style="margin-top:16px"><p>${es ? `Excluidos a propósito: ${artifacts.join(', ')} muestran oscilaciones aún mayores que casi con certeza son un cambio de empaque o unidad entre la fruta de verano y la de invierno, no un movimiento de precio real. La dirección es confiable; el múltiplo exacto no.` : `Deliberately excluded: ${artifacts.join(', ')} show even larger raw swings that are almost certainly a pack or unit change between summer and winter fruit, not a real price move. The direction is reliable; the exact multiple is not.`}</p></div>` : ''}
+  </section>
+  <hr class="od-rule">
+  <section class="od-prose" aria-labelledby="sea-read">
+    <h2 class="od-h2" id="sea-read">${es ? 'Cómo leer la curva de 12 meses' : 'How to read the 12-month curve'}</h2>
+    <p>${es ? 'Cada página de ingrediente trae una curva de 12 meses construida con medianas de varios años. La <strong>línea</strong> es la mediana (lo típico) de cada mes — el centro del rango histórico, para que un año raro no distorsione la forma. La <strong>banda</strong> sombreada es la dispersión: cuánto ha variado ese mes de un año a otro. Banda estrecha = precio confiable; banda ancha = mes volátil.' : 'Every ingredient page carries a 12-month curve built from multi-year medians. The <strong>line</strong> is each month’s median (typical) price — the middle of the historical range, so one freak year doesn’t distort the shape. The shaded <strong>band</strong> is the spread: how much that month has varied year to year. A tight band means dependable; a wide band means volatile.'}</p>
+    <p>${es ? 'Marcamos el mes más barato, el más caro y la <strong>amplitud</strong> — el porcentaje entre ellos — que es el mejor indicador de si vale la pena cronometrar un artículo. Dos precauciones: revisa la banda antes de fijar la ficha, y recuerda que la línea es una mediana, no un pronóstico.' : 'We flag the cheapest month, the priciest, and the <strong>amplitude</strong> — the percent gap between them — which is the single best gauge of whether an item is worth timing at all. Two cautions: check the band before you commit spec, and remember the line is a median, not a forecast.'}</p>
+  </section>
+  <hr class="od-rule">
+  <section aria-labelledby="sea-play-h">
+    <h2 class="od-h2" id="sea-play-h">${es ? 'El manual del operador' : 'The operator’s playbook'}</h2>
+    <ol class="sea-play">${play.map((p) => `<li>${p}</li>`).join('')}</ol>
+  </section>
+  <hr class="od-rule">
+  <section aria-labelledby="sea-honest">
+    <h2 class="od-h2" id="sea-honest">${es ? 'Dónde el calendario apenas importa' : 'Where the calendar barely matters'}</h2>
+    <p class="od-sub">${es ? `La mayor parte del índice está más cerca de plano que de estacional, y fingir lo contrario haría perder el tiempo a un operador. De ${dg.clsN.window + dg.clsN.moderate + dg.clsN.flat} ingredientes clasificados, solo <strong>${dg.clsN.window}</strong> tienen una ventana estacional clara; <strong>${dg.clsN.moderate}</strong> son moderados y <strong>${dg.clsN.flat}</strong> son prácticamente planos.` : `Most of the index is closer to flat than seasonal, and pretending otherwise would waste an operator’s time. Of ${dg.clsN.window + dg.clsN.moderate + dg.clsN.flat} classified ingredients, only <strong>${dg.clsN.window}</strong> carry a clear seasonal window; <strong>${dg.clsN.moderate}</strong> are moderate and <strong>${dg.clsN.flat}</strong> are effectively flat.`}</p>
+    <div class="od-note">
+      <p>${es ? 'Los bulbos de almacén (cebolla, ajo), las raíces (papa, zanahoria, betabel), la fruta de pepita (manzana, pera), las importaciones de todo el año (plátano, pimiento) y las hierbas duras se mueven en bandas de un solo dígito hasta ~20% — eso es ruido normal, no una señal. Las proteínas son mercados de materias primas sobre ciclos de alimento y combustible, no un calendario de cosecha.' : 'Storage bulbs (onion, garlic), roots (potato, carrot, beet), pome fruit (apple, pear), year-round imports (banana, pepper) and hard herbs move in single-digit to ~20% bands — that’s normal noise, not a signal. Proteins are commodity markets on feed and fuel cycles, not a harvest calendar.'}</p>
+      <p>${es ? 'El almacenamiento es el gran aplanador: un cultivo puede ser intensamente estacional en el campo y aún cotizarse plano porque el almacenamiento en atmósfera controlada lo dosifica todo el año. Y estas curvas son medianas de varios años — una helada, una enfermedad o un choque de flete puede anular el calendario en cualquier mes dado.' : 'Storage is the great flattener: a crop can be intensely seasonal in the field and still price flat because controlled-atmosphere storage meters it out all year. And these curves are multi-year medians — a single-year frost, disease event, or freight shock can override the calendar in any given month.'}</p>
+    </div>
+    <p class="od-sub" style="margin-top:18px">${es ? 'Derivado del historial público profundo (USDA, BLS, FRED). Los números son de dominio público (CC0).' : 'Derived from the deep public history (USDA, BLS, FRED). The numbers are public domain (CC0).'} <a href="${base}/open/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">${es ? 'Volver a Datos abiertos' : 'Back to Open data'}</a></p>
+  </section>
+  </div>`;
+  return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld, extraCss: OPEN_CSS }) + body + pageTail;
+}
+
 // ---- Write or check ------------------------------------------------
 const allGated = gatedSlugs();
 const buildSlugs = ONLY ? allGated.filter((s) => ONLY.has(s)) : allGated;
@@ -2568,6 +2941,10 @@ targets.push({ path: 'cost-index/index.csv',  content: aggregateCsv(allGated),  
 targets.push({ path: 'cost-index/lab/index.html',    content: emitLabPage('en') });
 targets.push({ path: 'es/cost-index/lab/index.html', content: emitLabPage('es') });
 
+targets.push({ path: 'open/index.html',                content: emitOpenHub('en') });
+targets.push({ path: 'es/open/index.html',             content: emitOpenHub('es') });
+targets.push({ path: 'open/seasonality/index.html',    content: emitSeasonalityHub('en') });
+targets.push({ path: 'es/open/seasonality/index.html', content: emitSeasonalityHub('es') });
 let drift = 0;
 for (const tgt of targets) {
   const fullPath = path.join(repoRoot, tgt.path);
