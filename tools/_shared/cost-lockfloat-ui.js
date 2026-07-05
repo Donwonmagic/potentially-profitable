@@ -446,6 +446,78 @@
       return p;
     }
 
+    function termWord(t) { return t === 'weekly' ? L('a week', 'una semana') : t === 'monthly' ? L('a month', 'un mes') : L('a season', 'una temporada'); }
+
+    // Before-you-sign contract checker — a decision job for the moment an operator is
+    // about to COMMIT (standing order / fixed contract). It never calls direction; it
+    // answers "is a fixed price a fair bet at this length, and what does it cost you
+    // either way?" — with the two caveats a weekly band owes a term commitment: it
+    // can't see term-length drift, and a fixed price locks you out of down-moves too.
+    // Withheld ingredients are refused as blind commitments. cstate persists the
+    // selection across full redraws (star/horizon), so it isn't reset out from under.
+    function contractChecker(items, DATA, cstate) {
+      var sec = el('section', 'lf-contract');
+      sec.appendChild(el('h2', 'lf-contract-h', L('Before you sign a fixed price', 'Antes de fijar un precio')));
+      sec.appendChild(el('p', 'lf-contract-lead', L(
+        'About to commit a standing order or a fixed contract? Pick the ingredient and how long you would lock it. We won’t tell you which way it goes — we’ll tell you whether a fixed price is a fair bet at that length, and what it costs you either way.',
+        '¿A punto de comprometer un pedido fijo o un contrato? Elige el ingrediente y cuánto lo fijarías. No te diremos hacia dónde va — te diremos si un precio fijo es una apuesta razonable a ese plazo, y qué te cuesta en cualquier caso.')));
+      var body = el('div', 'lf-contract-body');
+      sec.appendChild(body);
+      var sorted = items.slice().sort(function (a, b) { var an = shortName(a.name), bn = shortName(b.name); return an < bn ? -1 : an > bn ? 1 : 0; });
+
+      function redraw() {
+        while (body.firstChild) body.removeChild(body.firstChild);
+        var ctrls = el('div', 'lf-contract-ctrls');
+        var select = el('select', 'lf-contract-sel'); select.setAttribute('aria-label', L('Ingredient to check', 'Ingrediente a revisar'));
+        var ph = el('option', null, L('Choose an ingredient…', 'Elige un ingrediente…')); ph.value = ''; select.appendChild(ph);
+        sorted.forEach(function (it) { var o = el('option', null, shortName(it.name)); o.value = it.slug; select.appendChild(o); });
+        select.value = cstate.sel || '';
+        select.addEventListener('change', function () { cstate.sel = select.value; redraw(); });
+        ctrls.appendChild(select);
+        var terms = el('div', 'lf-contract-terms'); terms.setAttribute('role', 'group'); terms.setAttribute('aria-label', L('Commitment length', 'Duración del compromiso'));
+        [['weekly', L('For a week', 'Por una semana')], ['monthly', L('For a month', 'Por un mes')], ['seasonal', L('For a season', 'Por una temporada')]].forEach(function (t) {
+          var b = el('button', 'lf-cterm' + (t[0] === cstate.term ? ' is-on' : ''), t[1]); b.type = 'button'; b.setAttribute('aria-pressed', t[0] === cstate.term ? 'true' : 'false');
+          b.addEventListener('click', function () { cstate.term = t[0]; redraw(); });
+          terms.appendChild(b);
+        });
+        ctrls.appendChild(terms);
+        body.appendChild(ctrls);
+        if (cstate.sel && DATA.items[cstate.sel]) body.appendChild(verdictBlock(Object.assign({ slug: cstate.sel }, DATA.items[cstate.sel]), cstate.term));
+      }
+      redraw();
+      return sec;
+    }
+
+    function verdictBlock(it, term) {
+      var wrap = el('div', 'lf-verdict');
+      if (it.bucket === 'withhold' || it.upPct == null || it.downPct == null || it.coverage == null) {
+        var wr = REASON[it.reason] || REASON.thin;
+        wrap.className = 'lf-verdict lf-verdict--hold';
+        wrap.appendChild(el('p', 'lf-verdict-head', L('We can’t fence ' + shortName(it.name) + '.', 'No podemos acotar ' + shortName(it.name) + '.')));
+        wrap.appendChild(el('p', 'lf-verdict-body', L(
+          'Reason: ' + (it.bucket === 'withhold' ? wr.en : 'no publishable band') + '. A fixed price here is a blind commitment — with no band, nothing can say a locked number is fair. Keep it flexible, or bring your own invoice history to Muntin Ledger, where your record is the only read there is.',
+          'Motivo: ' + (it.bucket === 'withhold' ? wr.es : 'sin banda publicable') + '. Un precio fijo aquí es un compromiso a ciegas — sin banda, nada puede decir si un número fijo es justo. Déjalo flexible, o lleva tu historial de facturas a Muntin Ledger, donde tu registro es la única lectura que hay.')));
+        return wrap;
+      }
+      var bk = reclassify(it, term);
+      var fair = (bk === 'lock' || bk === 'cushion');
+      var up = Math.round(it.upPct * 100), down = Math.round(it.downPct * 100), cov = Math.round(it.coverage * 100);
+      wrap.className = 'lf-verdict lf-verdict--' + (fair ? BK[bk].cls : 'float');
+      wrap.appendChild(el('p', 'lf-verdict-head', fair
+        ? L('A fixed price for ' + shortName(it.name) + ' is a fair bet for ' + termWord(term) + '.', 'Un precio fijo de ' + shortName(it.name) + ' es una apuesta razonable por ' + termWord(term) + '.')
+        : L('Think twice before fixing ' + shortName(it.name) + ' for ' + termWord(term) + '.', 'Piénsalo antes de fijar ' + shortName(it.name) + ' por ' + termWord(term) + '.')));
+      wrap.appendChild(el('p', 'lf-verdict-band', L(
+        'Its next-week band reaches +' + up + '% / −' + down + '%, and that band caught the next print ' + cov + '% of the time.',
+        'Su banda semanal alcanza +' + up + '% / −' + down + '%, y esa banda capturó la próxima lectura el ' + cov + '% de las veces.')));
+      wrap.appendChild(el('p', 'lf-verdict-caveat', L(
+        'That band measures ONE week. Over ' + termWord(term) + ' a price can drift past it — a weekly read can’t see ' + termWord(term) + ' of drift, so treat it as a floor on the risk, not a ceiling.',
+        'Esa banda mide UNA semana. En ' + termWord(term) + ' un precio puede desviarse más allá — una lectura semanal no ve ' + termWord(term) + ' de deriva, así que tómalo como un piso del riesgo, no un techo.')));
+      wrap.appendChild(el('p', 'lf-verdict-caveat', L(
+        'A fixed price also locks you OUT of any down-move — you’re buying certainty, not the lowest number. And this is the wholesale reference; your delivered price runs higher and moves on its own.',
+        'Un precio fijo también te deja FUERA de cualquier baja — compras certeza, no el número más bajo. Y esta es la referencia mayorista; tu precio entregado es más alto y se mueve por su cuenta.')));
+      return wrap;
+    }
+
     function refusalWall(items, DATA) {
       var withheld = items.filter(function (it) { return it.bucket === 'withhold'; });
       var sec = el('section', 'lf-refusal');
@@ -524,6 +596,9 @@
       // A shared link's book is adopted as the operator's own on first load.
       if (fromHash && fromHash.length) persistBook();
 
+      // Contract-checker selection persists across full redraws (star/horizon).
+      var cstate = { sel: '', term: 'monthly' };
+
       function draw() {
         while (mount.firstChild) mount.removeChild(mount.firstChild);
         var hero = heroStrip(DATA, horizon);
@@ -536,6 +611,7 @@
         mount.appendChild(horizonControl(horizon, function (h) { horizon = h; track('Cost Pulse Horizon Picked'); draw(); }));
         mount.appendChild(ladder(hero.items, horizon));
         mount.appendChild(board(hero.items, horizon));
+        mount.appendChild(contractChecker(hero.items, DATA, cstate));
         mount.appendChild(refusalWall(hero.items, DATA));
         mount.appendChild(ledgerBridge(DATA));
         if (DATA.asOf) mount.appendChild(el('p', 'lf-asof', L('As of ' + DATA.asOf + ' · wholesale reference, delivered price runs higher.', 'Al ' + DATA.asOf + ' · referencia mayorista, el precio entregado es más alto.')));

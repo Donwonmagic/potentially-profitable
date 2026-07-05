@@ -418,6 +418,22 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .lf-cushion{font-size:11.5px;color:var(--ink-soft);line-height:1.45;margin:9px 0 0;background:var(--surface-inset);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;padding:7px 10px}.lf-cushion strong{color:var(--ink)}
 .lf-bucket-cta{font-size:12px;color:var(--ink-soft);line-height:1.5;margin:12px 0 2px;padding:9px 12px;border-radius:9px;background:var(--surface-1);border:1px solid var(--line)}
 .lf-bucket-cta--lock{border-left:3px solid var(--lf-lock)}.lf-bucket-cta--cushion{border-left:3px solid var(--lf-cushion)}.lf-bucket-cta--float{border-left:3px solid var(--lf-float)}
+/* Before-you-sign contract checker */
+.lf-contract{background:var(--surface-inset);border:1px solid var(--line);border-radius:14px;padding:20px;margin:6px 0 8px}
+.lf-contract-h{font-size:20px;margin:0 0 8px;color:var(--ink)}
+.lf-contract-lead{font-size:14px;color:var(--ink-soft);margin:0 0 14px;max-width:66ch;line-height:1.5}
+.lf-contract-ctrls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.lf-contract-sel{font-size:13.5px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface-1);color:var(--ink);max-width:100%}
+.lf-contract-terms{display:flex;gap:6px;flex-wrap:wrap}
+.lf-cterm{appearance:none;-webkit-appearance:none;background:var(--surface-1);border:1px solid var(--line);border-radius:20px;color:var(--ink-soft);font-size:12.5px;padding:6px 13px;cursor:pointer}
+.lf-cterm.is-on{background:var(--ink);border-color:var(--ink);color:var(--surface-1);font-weight:600}
+.lf-cterm:focus-visible,.lf-contract-sel:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.lf-verdict{margin:16px 0 0;padding:14px 16px;border:1px solid var(--line);border-radius:11px;background:var(--surface-1);border-left:4px solid var(--stone)}
+.lf-verdict--lock{border-left-color:var(--lf-lock)}.lf-verdict--cushion{border-left-color:var(--lf-cushion)}.lf-verdict--float{border-left-color:var(--lf-float)}.lf-verdict--hold{border-left-color:var(--lf-hold)}
+.lf-verdict-head{font-size:15px;font-weight:700;color:var(--ink);margin:0 0 8px;line-height:1.4}
+.lf-verdict-band{font-size:13px;color:var(--ink-soft);margin:0 0 8px;line-height:1.5;font-variant-numeric:tabular-nums}
+.lf-verdict-caveat{font-size:12.5px;color:var(--ink-soft);margin:6px 0 0;line-height:1.5}
+.lf-verdict-body{font-size:13px;color:var(--ink-soft);margin:0;line-height:1.5}
 .lf-why{font-size:12.5px;color:var(--ink-soft);margin:10px 0 0;line-height:1.45}.lf-why strong{color:var(--ink)}
 .lf-refusal{background:var(--surface-inset);border:1px solid var(--line);border-radius:14px;padding:20px;margin:6px 0 8px}
 .lf-refusal-h{font-size:20px;margin:0 0 8px;color:var(--ink)}
@@ -787,7 +803,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/tools/_shared/cost-index-format.js?v=20260629-fmt4"></script>
 <script src="/tools/_shared/cost-index-ui.js?v=20260630-design2"></script>
 <script src="/data/cost-lockfloat.js?v=20260705-lf2"></script>
-<script src="/tools/_shared/cost-lockfloat-ui.js?v=20260705-lf6"></script>
+<script src="/tools/_shared/cost-lockfloat-ui.js?v=20260705-lf7"></script>
 <script>
 // La Hoja de Fijación — aislada para que nunca rompa el panel de detalle de abajo.
 (function () {
