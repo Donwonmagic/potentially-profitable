@@ -540,27 +540,50 @@
       return wrap;
     }
 
+    function capFirst(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
+
+    // A withheld item as a compact star-toggle chip — grouping by reason means the
+    // reason is stated ONCE per cluster instead of repeated on every row, so the wall
+    // reads as a structured "here's why" instead of the same phrase 60 times. The star
+    // keeps the "track it until it can be called" hook (pairs with the Lock Book).
+    function refusalChip(it) {
+      var on = STATE && STATE.book.has(it.slug);
+      var b = el('button', 'lf-rchip' + (on ? ' is-on' : ''));
+      b.type = 'button';
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.setAttribute('aria-label', (on ? L('In your Lock Book: ', 'En tu Libro: ') : L('Track ', 'Seguir ')) + shortName(it.name));
+      b.appendChild(el('span', 'lf-rchip-star', on ? '★' : '☆'));
+      b.appendChild(document.createTextNode(shortName(it.name)));
+      if (STATE && it.slug) b.addEventListener('click', function () { STATE.toggle(it.slug); });
+      return b;
+    }
+
     function refusalWall(items, DATA) {
       var withheld = items.filter(function (it) { return it.bucket === 'withhold'; });
       var sec = el('section', 'lf-refusal');
-      var h = el('h2', 'lf-refusal-h', L("What we won't call", 'Lo que no llamamos'));
-      sec.appendChild(h);
-      var lead = el('p', 'lf-refusal-lead', L(
-        'The majority of the catalog — ' + DATA.counts.withhold + ' of ' + DATA.catalog + ' ingredients — we refuse to fence, and we say why. A tool that sells alerts would have shown you something here.',
-        'La mayoría del catálogo — ' + DATA.counts.withhold + ' de ' + DATA.catalog + ' ingredientes — nos negamos a acotar, y decimos por qué. Una herramienta que vende alertas te habría mostrado algo aquí.'));
-      sec.appendChild(lead);
-      var list = el('ul', 'lf-refusal-list');
-      // Feature the recognizable staples first (a wild center-of-plate line is the headline).
-      withheld.sort(function (a, b) { return (a.level && b.level) ? (b.level - a.level) : 0; });
-      withheld.slice(0, 24).forEach(function (it) {
-        var li = el('li', 'lf-refusal-item');
-        if (STATE && it.slug) li.appendChild(starBtn(it.slug));
-        li.appendChild(el('span', 'lf-refusal-name', it.name));
-        var wr = REASON[it.reason] || REASON.thin;
-        li.appendChild(el('span', 'lf-refusal-reason', L(wr.en, wr.es)));
-        list.appendChild(li);
+      sec.appendChild(el('h2', 'lf-refusal-h', L("What we won't call", 'Lo que no llamamos')));
+      sec.appendChild(el('p', 'lf-refusal-lead', L(
+        'The majority of the catalog — ' + DATA.counts.withhold + ' of ' + DATA.catalog + ' ingredients — we refuse to fence. Here they are, grouped by why. A tool that sells alerts would have shown you a number for every one.',
+        'La mayoría del catálogo — ' + DATA.counts.withhold + ' de ' + DATA.catalog + ' ingredientes — nos negamos a acotar. Aquí están, agrupados por el motivo. Una herramienta que vende alertas te habría mostrado un número para cada uno.')));
+      // Group by machine reason; state the reason once, then chip the items. Order the
+      // groups biggest-first, and recognizable staples first within each.
+      var groups = {};
+      withheld.forEach(function (it) { (groups[it.reason] = groups[it.reason] || []).push(it); });
+      var CAP = 20;
+      Object.keys(groups).sort(function (a, b) { return groups[b].length - groups[a].length; }).forEach(function (reason) {
+        var g = groups[reason].slice().sort(function (a, b) { return (a.level && b.level) ? (b.level - a.level) : 0; });
+        var wr = REASON[reason] || REASON.thin;
+        var block = el('div', 'lf-refusal-group');
+        var head = el('div', 'lf-refusal-ghead');
+        head.appendChild(el('span', 'lf-refusal-glabel', capFirst(L(wr.en, wr.es))));
+        head.appendChild(el('span', 'lf-refusal-gcount', '· ' + g.length));
+        block.appendChild(head);
+        var chips = el('div', 'lf-refusal-chips');
+        g.slice(0, CAP).forEach(function (it) { chips.appendChild(refusalChip(it)); });
+        if (g.length > CAP) chips.appendChild(el('span', 'lf-refusal-more', L('+' + (g.length - CAP) + ' more', '+' + (g.length - CAP) + ' más')));
+        block.appendChild(chips);
+        sec.appendChild(block);
       });
-      sec.appendChild(list);
       return sec;
     }
 
