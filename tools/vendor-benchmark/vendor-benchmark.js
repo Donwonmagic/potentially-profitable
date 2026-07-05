@@ -102,6 +102,9 @@
     briefBtn: 'Preparar la hoja para tu proveedor', briefPrint: 'Imprimir', briefCopy: 'Copiar el resumen', briefCopied: 'Resumen copiado',
     jTitle: 'Tus artículos guardados', jClear: 'Borrar guardados', jThin: 'vigilar',
     jSince: 'Desde tu última revisión', jWiden: 'la diferencia creció', jNarrow: 'la diferencia se redujo',
+    bookLead: 'Tu libro —', bookItems: 'artículos en seguimiento.',
+    bookWorst: 'Mayor diferencia del proveedor:', bookCall: 'La línea que vale la pena llamar primero.',
+    bookOver: 'de tus líneas corren por encima del mercado — Ledger las vigila todas.',
     regimeLead: 'Todo el mercado cambió de nivel cerca del',
     regimeUp: 'un alza de todo el mercado, no solo tu proveedor — si se mantiene, prepárate para reajustar.',
     regimeDown: 'una baja de todo el mercado — un momento para renegociar.',
@@ -175,6 +178,9 @@
     briefBtn: 'Make a one-page brief for your rep', briefPrint: 'Print', briefCopy: 'Copy the summary', briefCopied: 'Summary copied',
     jTitle: 'Your saved items', jClear: 'Clear saved items', jThin: 'watch',
     jSince: 'Since your last check', jWiden: 'the gap widened', jNarrow: 'the gap narrowed',
+    bookLead: 'Your book —', bookItems: 'items tracked.',
+    bookWorst: 'Widest vendor gap:', bookCall: 'The line worth a call first.',
+    bookOver: 'of your lines run above the market — Ledger watches every one.',
     regimeLead: 'The whole market shifted level around',
     regimeUp: 'a market-wide step up, not just your vendor — if it holds, expect to re-price.',
     regimeDown: 'a market-wide step down — a moment to renegotiate.',
@@ -436,7 +442,19 @@
         : h`<span class="vb-jchip-gap" data-tone="watch">${T.jThin}</span>`;
       return h`<button type="button" class="vb-jchip" data-jkey="${x.k}"><span class="vb-jchip-name">${e.item}</span>${gapTxt}<span class="vb-jchip-when">${relTime(e.at)}</span></button>`;
     });
-    setHTML(railEl, h`<div class="vb-journal-head"><span class="vb-eyebrow">${T.jTitle}</span><button type="button" class="vb-linkbtn" data-jclear>${T.jClear}</button></div><div class="vb-journal-grid">${chips}</div>`);
+    // MS3 — the whole-book worklist: rank the operator's tracked items and name the
+    // one line worth a call first. The prioritized-negotiation view across the book,
+    // built on the journal the operator already filled — honest, on-device, no
+    // per-item spend claim (weighting is what Ledger does across the whole invoice).
+    var rollup = '';
+    var withGap = items.filter(function (x) { return typeof x.e.gapPts === 'number'; });
+    if (withGap.length >= 2) {
+      var worst = withGap[0]; // already sorted by |gap| desc
+      var overCount = withGap.filter(function (x) { return x.e.gapPts >= 3; }).length;
+      var g = Math.abs(worst.e.gapPts).toFixed(worst.e.gapPts < 10 ? 1 : 0);
+      rollup = h`<div class="vb-book"><p class="vb-book-lead">${T.bookLead} ${String(withGap.length)} ${T.bookItems}</p><p class="vb-book-worst" data-tone="over"><strong>${T.bookWorst}</strong> ${worst.e.item} — ${g} ${T.pointsWord}. ${T.bookCall}</p>${overCount > 1 ? h`<p class="vb-book-count">${String(overCount)} ${T.bookOver} <a class="vb-inlink plausible-event-name=Ledger+Route+Click plausible-event-source=vendor-benchmark" href="https://ledger.muntin.digital/">${T.seeLedger} <span aria-hidden="true">→</span></a></p>` : ''}</div>`;
+    }
+    setHTML(railEl, h`<div class="vb-journal-head"><span class="vb-eyebrow">${T.jTitle}</span><button type="button" class="vb-linkbtn" data-jclear>${T.jClear}</button></div>${rollup}<div class="vb-journal-grid">${chips}</div>`);
     railEl.hidden = false;
   }
   function onRailClick(e) {
