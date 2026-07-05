@@ -73,19 +73,23 @@ test('REAL DATA: staples with tight PROVEN bands are lockable', () => {
     if (HIST[s]) assert.equal(bucketOf(s), 'lock', `${s} should be lock`);
 });
 test('REAL DATA: the proven-band gate holds — a tight band with coverageLo<0.60 is cushion, not lock', () => {
-  // whole-chicken's band is tight (~6%) but its Wilson floor is ~0.598, just under the
-  // proven bar — so the honest gate demotes it to cushion rather than calling it lockable.
-  if (HIST['whole-chicken']) assert.equal(bucketOf('whole-chicken'), 'cushion');
+  // chicken-breast's band is tight (~5%) but its Wilson coverage floor is ~0.595, just
+  // under the 0.60 proven bar — so the honest gate demotes it to cushion, never lock.
+  if (HIST['chicken-breast']) assert.equal(bucketOf('chicken-breast'), 'cushion');
 });
 test('REAL DATA: wild produce floats or is withheld, never lockable', () => {
-  for (const s of ['tomato', 'russet-potato', 'broccoli'])
+  // Genuinely volatile produce — deliberately NOT storage crops like russet potato, which
+  // on 25 years of data is a legitimately tight (~4.5%), proven (covLo ~0.72) lock.
+  for (const s of ['tomato', 'broccoli', 'cauliflower'])
     if (HIST[s]) assert.ok(['float', 'withhold'].includes(bucketOf(s)), `${s} must not be lock`);
 });
-test('REAL DATA: monthly beef is withheld (looks tight, too few reads)', () => {
-  if (HIST['ribeye']) assert.equal(bucketOf('ribeye', true), 'withhold');
+test('REAL DATA: a genuinely volatile staple (eggs) is withheld, never lockable', () => {
+  // Eggs swing far too wide (half-width ~57%) to fence — the honest call is withhold.
+  // (The thin/monthly-thin withhold paths are covered by the synthetic gate tests above.)
+  if (HIST['eggs']) assert.equal(bucketOf('eggs'), 'withhold');
 });
-test('REAL DATA: flat/stale spinach is withheld, never a ±0%/100% lock', () => {
-  if (HIST['spinach']) assert.equal(bucketOf('spinach'), 'withhold');
+test('REAL DATA: a flat/degenerate series (carrot) is withheld, never a ±0%/100% lock', () => {
+  if (HIST['carrot']) assert.equal(bucketOf('carrot'), 'withhold');
 });
 
 function pick(r) { return [r.bucket, r.reason]; }
