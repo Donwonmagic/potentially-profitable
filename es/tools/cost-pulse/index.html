@@ -4,8 +4,8 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-<title>El Índice de Costos, en vivo — cuánto cuestan los ingredientes ahora | Muntin Digital</title>
-<meta name="description" content="Lectura de mercado gratis del precio típico de ingredientes comunes de restaurante — un rango, la tendencia y qué tan fresco es cada dato." />
+<title>Qué precios de ingredientes puedes fijar — Cost Pulse | Muntin Digital</title>
+<meta name="description" content="Qué precios mayoristas son bastante estables para fijar un pedido, y cuáles oscilan demasiado para comprometerte — con backtest, de datos públicos." />
 <meta name="theme-color" content="#2A50C8" />
 <link rel="canonical" href="https://muntin.digital/es/tools/cost-pulse/" />
     <!-- feed-discovery:start (injected by inject-feed-discovery.mjs) -->
@@ -17,8 +17,8 @@
 <meta property="og:locale" content="es_US" />
 <meta property="og:locale:alternate" content="en_US" />
 <meta property="og:type" content="website" />
-<meta property="og:title" content="El Índice de Costos, en vivo — cuánto cuestan los ingredientes ahora" />
-<meta property="og:description" content="Lectura de mercado gratis de precios de ingredientes comunes — rango típico, tendencia y frescura, de fuentes públicas (USDA, BLS, FRED)." />
+<meta property="og:title" content="Qué precios puedes fijar. Cuáles tienes que dejar variables." />
+<meta property="og:description" content="Qué precios mayoristas de ingredientes son bastante estables para fijar, y cuáles oscilan demasiado para comprometerte — con backtest, y claros sobre lo que no llamamos." />
 <meta property="og:url" content="https://muntin.digital/es/tools/cost-pulse/" />
 <meta property="og:site_name" content="Muntin Digital" />
 <meta property="og:image" content="https://muntin.digital/brand/og/tool-cost-pulse-es.png" />
@@ -26,8 +26,8 @@
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="El Índice de Costos, en vivo — cuánto cuestan los ingredientes ahora" />
-<meta name="twitter:description" content="Lectura de mercado gratis de precios de ingredientes comunes — rango típico, tendencia y frescura, de fuentes públicas." />
+<meta name="twitter:title" content="Qué precios puedes fijar. Cuáles tienes que dejar variables." />
+<meta name="twitter:description" content="Qué precios mayoristas de ingredientes son bastante estables para fijar, y cuáles oscilan demasiado para comprometerte — con backtest." />
 <meta name="twitter:image" content="https://muntin.digital/brand/og/tool-cost-pulse-es.png" />
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <script type="application/ld+json">
@@ -326,6 +326,70 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .cp-drift-cat,.cp-drift-delta{min-width:0}
   .cp-drift-delta{text-align:left}
 }
+/* ---- Lock Sheet (lock-or-float) ---- */
+.cp-lockfloat{--lf-lock:#1e874b;--lf-cushion:#b7791f;--lf-float:var(--rust);--lf-hold:var(--stone);--lf-ink:var(--ink);--lf-surface-2:var(--surface-inset);
+  --lf-lock-soft:#e4f4ea;--lf-lock-ink:#176b3c;--lf-cushion-soft:#fbf0dc;--lf-cushion-ink:#92600f;--lf-float-soft:#fbe6e6;--lf-float-ink:#b22a2a;--lf-hold-soft:var(--surface-inset);--lf-hold-ink:var(--ink-soft);
+  margin:0 0 8px}
+[data-theme="dark"] .cp-lockfloat,html.theme-dark .cp-lockfloat{--lf-lock:#3cc07a;--lf-cushion:#e0a13e;--lf-lock-soft:#14301f;--lf-lock-ink:#7ad6a3;--lf-cushion-soft:#33270f;--lf-cushion-ink:#f0c680;--lf-float-soft:#361417;--lf-float-ink:#f5988f}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .cp-lockfloat{--lf-lock:#3cc07a;--lf-cushion:#e0a13e;--lf-lock-soft:#14301f;--lf-lock-ink:#7ad6a3;--lf-cushion-soft:#33270f;--lf-cushion-ink:#f0c680;--lf-float-soft:#361417;--lf-float-ink:#f5988f}}
+.lf-lanes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 14px}
+.lf-lane{border:1px solid var(--line);border-radius:12px;padding:12px 10px;text-align:center;background:var(--surface-1)}
+.lf-lane-n{display:block;font-size:26px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.lf-lane-lab{display:block;font-size:12px;color:var(--ink-soft);margin-top:5px;letter-spacing:.01em}
+.lf-lane--lock .lf-lane-n{color:var(--lf-lock)}.lf-lane--cushion .lf-lane-n{color:var(--lf-cushion)}.lf-lane--float .lf-lane-n{color:var(--lf-float)}.lf-lane--hold .lf-lane-n{color:var(--lf-hold)}
+.lf-promise{font-size:15px;color:var(--ink-soft);line-height:1.55;margin:0 0 18px;max-width:64ch}
+.lf-horizon{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:0 0 16px}
+.lf-horizon-q{font-size:14px;color:var(--ink);font-weight:600}
+.lf-horizon-btns{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.lf-hbtn{appearance:none;border:0;background:var(--surface-1);color:var(--ink-soft);font:inherit;font-size:13.5px;padding:8px 14px;cursor:pointer;border-right:1px solid var(--line)}
+.lf-hbtn:last-child{border-right:0}
+.lf-hbtn.is-on{background:var(--ink);color:var(--surface-1);font-weight:600}
+.lf-hbtn:focus-visible{outline:2px solid var(--rust);outline-offset:-2px}
+.lf-ladder{background:var(--surface-1);border:1px solid var(--line);border-radius:14px;padding:16px 16px 10px;overflow-x:auto;margin:0 0 24px}
+.lf-scale{position:relative;height:18px;margin:0 0 4px 130px}
+.lf-tick{position:absolute;top:0;transform:translateX(-50%);font-size:10.5px;color:var(--stone)}
+.lf-lrow{display:grid;grid-template-columns:130px 1fr;align-items:center;padding:2.5px 0}
+.lf-lname{font-size:13px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:10px}
+.lf-lunit{color:var(--stone);font-size:11px}
+.lf-ltrack{position:relative;height:20px}
+.lf-grid{position:absolute;top:-2px;bottom:-2px;width:1px;background:var(--line)}
+.lf-grid--zero{width:1.5px;background:var(--line-dark,var(--line))}
+.lf-band{position:absolute;top:4px;height:12px;border-radius:3px;opacity:.9}
+.lf-band--lock{background:var(--lf-lock)}.lf-band--cushion{background:var(--lf-cushion)}.lf-band--float{background:var(--lf-float)}.lf-band--hold{background:var(--lf-hold)}
+.lf-lcap{position:absolute;top:2px;transform:translateX(6px);font-size:10px;color:var(--stone);white-space:nowrap}
+.lf-board{display:block}
+.lf-bucket{margin:0 0 26px}
+.lf-bucket-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;border-left:4px solid var(--bkc);padding-left:11px;margin:0 0 12px}
+.lf-bucket--lock{--bkc:var(--lf-lock)}.lf-bucket--cushion{--bkc:var(--lf-cushion)}.lf-bucket--float{--bkc:var(--lf-float)}
+.lf-bucket-h h3{font-size:19px;margin:0;color:var(--ink)}
+.lf-bucket-verb{font-size:12.5px;font-weight:600;color:var(--ink-soft)}
+.lf-bucket-cnt{font-size:12.5px;color:var(--stone);margin-left:auto}
+.lf-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:12px}
+.lf-card{background:var(--surface-1);border:1px solid var(--line);border-radius:12px;padding:14px 14px 12px}
+.lf-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.lf-card-name{font-weight:600;font-size:15px;color:var(--ink);line-height:1.25}
+.lf-card-lvl{font-size:12.5px;color:var(--ink-soft);margin-top:2px}
+.lf-card-lvln{color:var(--ink);font-weight:600;font-size:14.5px}
+.lf-pill{font-size:10.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;border-radius:6px;padding:3px 7px;white-space:nowrap}
+.lf-pill--lock{color:var(--lf-lock-ink);background:var(--lf-lock-soft)}.lf-pill--cushion{color:var(--lf-cushion-ink);background:var(--lf-cushion-soft)}.lf-pill--float{color:var(--lf-float-ink);background:var(--lf-float-soft)}.lf-pill--hold{color:var(--lf-hold-ink);background:var(--lf-hold-soft)}
+.lf-card-band{margin:12px 0 7px}
+.lf-cb-row{display:flex;justify-content:space-between;font-size:11px;color:var(--stone);margin-bottom:3px}
+.lf-cbsvg,.lf-spark{display:block;width:100%}
+.lf-cbsvg{height:26px}.lf-spark{height:30px;margin-top:9px}
+.lf-receipt{font-size:12px;color:var(--ink-soft);margin:3px 0 0;line-height:1.45}.lf-receipt strong{color:var(--ink)}
+.lf-stamp{font-size:11.5px;color:var(--stone);margin:9px 0 0;line-height:1.4;border-top:1px solid var(--line);padding-top:8px}
+.lf-caveat{font-size:11.5px;color:var(--ink-soft);font-style:italic;margin:5px 0 0}
+.lf-why{font-size:12.5px;color:var(--ink-soft);margin:10px 0 0;line-height:1.45}.lf-why strong{color:var(--ink)}
+.lf-refusal{background:var(--surface-inset);border:1px solid var(--line);border-radius:14px;padding:20px;margin:6px 0 8px}
+.lf-refusal-h{font-size:20px;margin:0 0 8px;color:var(--ink)}
+.lf-refusal-lead{font-size:14px;color:var(--ink-soft);margin:0 0 14px;max-width:66ch;line-height:1.5}
+.lf-refusal-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:6px 16px}
+.lf-refusal-item{display:flex;justify-content:space-between;gap:10px;font-size:13px;border-bottom:1px solid var(--line);padding:5px 0}
+.lf-refusal-name{color:var(--ink);font-weight:500}
+.lf-refusal-reason{color:var(--stone);font-size:12px;text-align:right}
+.lf-asof{font-size:12px;color:var(--stone);margin:14px 0 0}
+@media (max-width:560px){.lf-lanes{grid-template-columns:repeat(2,1fr)}.lf-scale{margin-left:104px}.lf-lrow{grid-template-columns:104px 1fr}}
+@media (prefers-reduced-motion:reduce){.lf-hbtn{transition:none}}
 </style>
 </head>
 <body>
@@ -494,8 +558,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <main>
 <section class="cp-shell">
   <div class="cp-hero">
-    <span class="eyebrow">Herramienta gratis · Una lectura de mercado de precios</span>
-    <h1>Cuánto cuestan los ingredientes ahora.</h1>
+    <span class="eyebrow">Herramienta gratis · Qué precios puedes fijar</span>
+    <h1>Qué precios puedes fijar. Cuáles tienes que dejar variables.</h1>
       <!-- tool-verified:start -->
             <p class="tool-verified">Última revisión: <time datetime="2026-06-18">18 de junio de 2026</time></p>
             <!-- tool-verified:end -->
@@ -506,10 +570,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <p class="tool-data-promise__links"><a href="/es/security/">Lee la promesa completa &rarr;</a> &middot; <a href="/es/learn/checklists/audit-any-tool/">Audita cualquier herramienta &rarr;</a></p>
             </aside>
             <!-- data-promise:end -->
-    <p class="cp-lede">Una lectura de mercado gratis de dónde se ubican los precios de ingredientes comunes de restaurante — un rango típico, la tendencia y qué tan fresco es cada dato, de fuentes públicas (<a href="/es/glossary/usda-market-news/">USDA</a>, <a href="/es/glossary/bls/">BLS</a>, <a href="/es/glossary/fred/">FRED</a>). Úsala para distinguir un movimiento real del mercado de un sobreprecio del proveedor — son niveles públicos de referencia al mayoreo, nunca tu precio entregado. Cada número se rastrea a un informe público fechado y a un método con nombre: <a href="/es/cost-index/methodology/">lee la metodología completa &rarr;</a> <span class="cp-lede-legacy">¿Facturas guardadas del decodificador retirado? Tu panel histórico está más abajo.</span></p>
+    <p class="cp-lede">Algunos precios mayoristas apenas se mueven de una semana a otra — bastante estables para fijar un pedido o un precio de menú y olvidarlo. Otros oscilan tanto que comprometerse es una apuesta. Nunca te decimos <em>hacia dónde</em> va un precio — nadie puede honestamente con solo el historial. Medimos <em>cuánto</em> tiende a moverse su próxima lectura, con backtest semana a semana, de fuentes públicas (<a href="/es/glossary/usda-market-news/">USDA</a>, <a href="/es/glossary/bls/">BLS</a>, <a href="/es/glossary/fred/">FRED</a>) — y somos claros sobre la mayoría del catálogo que no llamamos. Son niveles de referencia al mayoreo, nunca tu precio entregado: <a href="/es/cost-index/methodology/">lee la metodología completa &rarr;</a> <span class="cp-lede-legacy">¿Facturas guardadas del decodificador retirado? Tu panel histórico está más abajo.</span></p>
   </div>
 
   <div id="cpStatus"></div>
+
+  <!-- La Hoja de Fijación — reads the same-origin data/cost-lockfloat.js seed
+       (no fetch) and renders the predictability instrument via
+       tools/_shared/cost-lockfloat-ui.js. Locale-aware. -->
+  <div id="lfSheet" class="cp-lockfloat" aria-label="Fijar o dejar variable — la lectura de previsibilidad de precios"></div>
 
   <!-- Contexto de mercado (Cost Index). Señal pública — se muestra para todos,
        sin depender de facturas guardadas. Lee el artefacto semilla del mismo
@@ -673,6 +742,23 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/data/cost-index-history.js?v=20260629-hist1"></script>
 <script src="/tools/_shared/cost-index-format.js?v=20260629-fmt4"></script>
 <script src="/tools/_shared/cost-index-ui.js?v=20260630-design2"></script>
+<script src="/data/cost-lockfloat.js?v=20260705-lf1"></script>
+<script src="/tools/_shared/cost-lockfloat-ui.js?v=20260705-lf1"></script>
+<script>
+// La Hoja de Fijación — aislada para que nunca rompa el panel de detalle de abajo.
+(function () {
+  'use strict';
+  try {
+    var mount = document.getElementById('lfSheet');
+    var DATA = (typeof window !== 'undefined') && window.MUNTIN_COST_LOCKFLOAT;
+    if (!mount || !DATA || !window.MuntinLockFloatUI) return;
+    var es = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().slice(0, 2) === 'es';
+    var track = function (name) { try { if (window.MuntinAnalytics && window.MuntinAnalytics.track) window.MuntinAnalytics.track(name); } catch (_) {} };
+    window.MuntinLockFloatUI.create(es).render(mount, DATA, { horizon: 'monthly', track: track });
+    track('Cost Pulse Loaded');
+  } catch (_) {}
+})();
+</script>
 <script>
 (function () {
   'use strict';
