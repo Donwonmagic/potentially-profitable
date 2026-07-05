@@ -75,6 +75,11 @@ const MuntinCostConfidence = require(path.join(repoRoot, 'tools/_shared/cost-con
 // deterministic functions of the frozen vendored data, so the page never churns.
 const MuntinConformal = require(path.join(repoRoot, 'tools/_shared/cost-conformal.js'));
 const MuntinStaleness = require(path.join(repoRoot, 'tools/_shared/cost-staleness.js'));
+// CRIT-5 multiplicity gate — per-item null (moving-block bootstrap) + Benjamini-
+// Yekutieli across the panel, so a non-neutral read only surfaces where it beats
+// the item's OWN week-to-week noise after correcting for scanning every ingredient.
+const MuntinSpike = require(path.join(repoRoot, 'tools/_shared/cost-spike.js'));
+const MuntinNullGate = require(path.join(repoRoot, 'tools/_shared/cost-null-gate.js'));
 const DEEP_HIST = (() => {
   try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-index-history.json'), 'utf8')).ingredients || {}; }
   catch { return {}; }
@@ -178,6 +183,23 @@ const CI = (() => {
 })();
 const COST_INDEX = CI.ingredients || {};
 const DRIVERS = CI.drivers || {};
+
+// CRIT-5: stamp flag.gated on every ingredient whose spike read is a non-neutral
+// "call". gated=false → the shared verdict voice (cost-verdict.js) withholds it to
+// the neutral "not distinguishable from its own noise" note. An item surfaces only
+// if its own-null p survives Benjamini-Yekutieli at q=0.10 across the panel; items
+// too short to bootstrap are withheld. Deterministic (slug-seeded). The client seed
+// receives the same field from build-cost-index.mjs on the next vendor run.
+(() => {
+  const items = [];
+  for (const slug of Object.keys(COST_INDEX)) {
+    const flag = COST_INDEX[slug] && COST_INDEX[slug].flag;
+    if (!flag || !flag.verdict || MuntinNullGate.actionRank(flag.verdict) <= 0) continue;
+    items.push({ key: slug, levels: bandSeries(slug, COST_INDEX[slug]), verdict: flag.verdict });
+  }
+  const { surfaced } = MuntinNullGate.gatePanel(items, MuntinSpike.classify, { q: 0.10 });
+  for (const it of items) COST_INDEX[it.key].flag.gated = !!surfaced[it.key];
+})();
 // Sourced driver-association catalog (association, never causation). Each entry
 // carries a labelled mechanism + a source/sourceUrl/retrievedAt for the hub
 // "what's moving" insight evidence drawer. Spoken only on an up read, per the
@@ -563,9 +585,22 @@ function hubDriverInsight(slug, r, locale) {
 }
 function movingNowSection(slugs, locale) {
   const es = locale === 'es';
+  // CRIT-5: a read that the null gate withheld (flag.gated===false) is NOT "moving"
+  // in any statistically-distinguished sense — it reverts to the neutral voice — so
+  // it is excluded from the triage reel. The honest count below makes the
+  // withholding legible instead of silently emptying the section.
+  const gatedOut = (s) => { const f = hubFlag(s); return !!(f && f.gated === false); };
+  const candSlugs = slugs.filter((s) => { const f = hubFlag(s); return f && MuntinNullGate.actionRank(f.verdict) > 0; });
+  const M = candSlugs.length;
+  const K = candSlugs.filter((s) => { const f = hubFlag(s); return f.gated !== false; }).length;
+  const barNote = M > 0
+    ? (es ? `${K} de ${M} movimientos rastreados superaron nuestro filtro de ruido y comparación múltiple esta semana; el resto se lee como contexto, no como una señal.`
+          : `${K} of ${M} tracked moves cleared our noise + multiple-comparison bar this week; the rest read as context, not a call.`)
+    : '';
+  const bar = barNote ? `<p class="ci-moving-bar">${barNote}</p>` : '';
   const rows = slugs
     .map((s) => ({ s, v: ingVerdict(s), r: readingOf(s) }))
-    .filter((x) => x.v && x.v.tone !== 'hold')   // surface watch + reprice
+    .filter((x) => x.v && x.v.tone !== 'hold' && !gatedOut(x.s))   // surface distinguished watch + reprice
     .sort((a, b) => (TONE_RANK[a.v.tone] - TONE_RANK[b.v.tone]) || a.s.localeCompare(b.s));
   // Curate, don't dump (persona audit #4): "what's moving" is the highlight reel
   // — the handful that need action — not the whole list. Dumping all ~20 movers
@@ -581,7 +616,7 @@ function movingNowSection(slugs, locale) {
     const calm = es
       ? `Nada exige acción esta semana — la mayoría de los ingredientes están en su rango habitual.`
       : `Nothing needs action this week — most ingredients are sitting in their usual range.`;
-    return `<section class="ci-moving"><h2 class="ci-cat-h" id="moving">${head}</h2><p class="ci-moving-calm">${calm}</p></section>`;
+    return `<section class="ci-moving"><h2 class="ci-cat-h" id="moving">${head}</h2>${bar}<p class="ci-moving-calm">${calm}</p></section>`;
   }
   const lis = shown.map((x) => {
     const { s, v, r } = x;
@@ -618,7 +653,7 @@ function movingNowSection(slugs, locale) {
         ? `+${moreCount} más en movimiento — míralos todos en <a href="#all-readings">la tabla de lecturas</a> de abajo.`
         : `+${moreCount} more moving — see them all in <a href="#all-readings">the readings table</a> below.`}</p>`
     : '';
-  return `<section class="ci-moving"><h2 class="ci-cat-h" id="moving">${head}</h2><p class="ci-vkey">${key}</p><ul class="ci-moving-list">${lis}</ul>${moreLine}</section>`;
+  return `<section class="ci-moving"><h2 class="ci-cat-h" id="moving">${head}</h2>${bar}<p class="ci-vkey">${key}</p><ul class="ci-moving-list">${lis}</ul>${moreLine}</section>`;
 }
 
 // ---- Composite band — the whole basket as one honest reading ----------
@@ -1402,6 +1437,7 @@ main{padding-top:64px}
 .ci-moving-item a:hover{color:var(--teal)}
 .ci-moving-reason{color:var(--ink-soft);font-size:14px}
 .ci-moving-calm{margin:0;font-size:15.5px;color:var(--ink)}
+.ci-moving-bar{margin:0 0 12px;font-size:13px;line-height:1.5;color:var(--ink-soft);padding:8px 12px;background:var(--surface-1,#faf9f7);border:1px solid var(--line);border-radius:8px}
 .ci-vkey{margin:2px 0 12px;font-size:12.5px;color:var(--ink-soft);line-height:1.6}
 .ci-vkey strong{color:var(--ink)}
 .ci-moving-insight{margin:3px 0 2px}

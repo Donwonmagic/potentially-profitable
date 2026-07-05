@@ -30,6 +30,7 @@ import { calibrationCeiling, RANK, NAME } from './check-cost-index-calibration.m
 const require = createRequire(import.meta.url);
 const B = require('../tools/_shared/cost-basket.js');
 const Spike = require('../tools/_shared/cost-spike.js');
+const NullGate = require('../tools/_shared/cost-null-gate.js');
 const Stale = require('../tools/_shared/cost-staleness.js');
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const arg = (k) => { const i = process.argv.indexOf(k); return i >= 0 ? process.argv[i + 1] : null; };
@@ -158,6 +159,25 @@ function main() {
       ? hist.slice().reverse().map((h) => ({ level: { medianCents: h.valueCents }, asOf: h.date }))
       : pts;
     out.ingredients[k].flag = Spike.classify(fromHistory);
+  }
+
+  // CRIT-5 multiplicity gate — mark each non-neutral spike read as `gated` only if
+  // it beats the item's OWN week-to-week noise (moving-block bootstrap null) after a
+  // Benjamini-Yekutieli correction across the whole panel of candidates. The shared
+  // verdict voice (cost-verdict.js) withholds gated===false to a neutral note, so the
+  // dashboard never surfaces a "call" that ~any random walk would have produced.
+  // Deterministic (slug-seeded); items too short to bootstrap are withheld.
+  {
+    const gateItems = [];
+    for (const k of Object.keys(out.ingredients)) {
+      const flag = out.ingredients[k].flag;
+      if (!flag || !flag.verdict || NullGate.actionRank(flag.verdict) <= 0) continue;
+      const hist = Array.isArray(out.ingredients[k].history) ? out.ingredients[k].history : [];
+      const levels = hist.map((h) => h.valueCents).filter((x) => typeof x === 'number' && isFinite(x));
+      gateItems.push({ key: k, levels, verdict: flag.verdict });
+    }
+    const { surfaced } = NullGate.gatePanel(gateItems, Spike.classify, { q: 0.10 });
+    for (const it of gateItems) out.ingredients[it.key].flag.gated = !!surfaced[it.key];
   }
 
   // Confidence honesty — cap every vendored point's confidence at the calibration

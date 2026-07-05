@@ -27,6 +27,18 @@
 
   function verdict(flag, confidence) {
     if (!flag || !flag.verdict) return null;
+    // CRIT-5 null gate: when the panel-level significance gate (cost-null-gate.js)
+    // has explicitly marked this read as NOT distinguishable from the item's own
+    // week-to-week noise after multiplicity correction, withhold the call to the
+    // neutral voice regardless of the raw verdict. `gated === false` is explicit;
+    // undefined means "not gated / no gate ran" so the read renders as-is.
+    if (flag.gated === false) {
+      return {
+        tone: 'watch', verb_en: 'Watch', verb_es: 'Observa',
+        note_en: 'Up on paper, but for this item the move is not yet distinguishable from its own week-to-week noise once we account for every ingredient we check at once — we are holding this read as context until the next print.',
+        note_es: 'Sube sobre el papel, pero en este producto el movimiento aún no se distingue de su propio ruido de semana a semana una vez que tomamos en cuenta todos los ingredientes que revisamos a la vez — mantenemos esta lectura como contexto hasta la próxima lectura.'
+      };
+    }
     var thin = confidence === 'low' || confidence === 'directional';
     var wk = flag.elevatedWeeks;
     switch (flag.verdict) {

@@ -103,6 +103,9 @@
     // thin data never says "re-price". Returns { tone, verb, note } or null.
     function flagVerb(flag, confidence) {
       if (!flag || !flag.verdict) return null;
+      // CRIT-5 null gate (see cost-verdict.js): withhold to the neutral voice when
+      // the panel gate marked this read as not distinguishable from the item's noise.
+      if (flag.gated === false) return { tone: 'watch', verb: L('Watch', 'Observa'), note: L('Up on paper, but for this item the move is not yet distinguishable from its own week-to-week noise once we account for every ingredient we check at once — we are holding this read as context until the next print.', 'Sube sobre el papel, pero en este producto el movimiento aún no se distingue de su propio ruido de semana a semana una vez que tomamos en cuenta todos los ingredientes que revisamos a la vez — mantenemos esta lectura como contexto hasta la próxima lectura.') };
       var thin = confidence === 'low' || confidence === 'directional';
       var wk = flag.elevatedWeeks;
       switch (flag.verdict) {

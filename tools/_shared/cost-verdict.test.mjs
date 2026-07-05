@@ -43,3 +43,13 @@ test('every result carries bilingual verb + note', () => {
     }
   }
 });
+
+test('CRIT-5 null gate: flag.gated===false withholds any call to the neutral voice', () => {
+  const v = verdict({ verdict: 'structural', elevatedWeeks: 6, gated: false }, 'medium');
+  assert.equal(v.tone, 'watch', 'a gated-out structural is not surfaced as a call');
+  assert.match(v.note_en, /noise|not yet distinguishable/i);
+  assert.doesNotMatch(v.note_en, /re-?price/i);
+  // gated===true or undefined leaves the read as-is (backward compatible).
+  assert.equal(verdict({ verdict: 'structural', elevatedWeeks: 6, gated: true }, 'medium').tone, 'reprice');
+  assert.equal(verdict({ verdict: 'structural', elevatedWeeks: 6 }, 'medium').tone, 'reprice');
+});
