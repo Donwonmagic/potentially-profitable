@@ -322,11 +322,15 @@
       var hitD = '', missD = '', hits = 0, i;
       for (i = 0; i < n; i++) {
         var x = (pad + (n === 1 ? 0 : (i / (n - 1)) * (W - 2 * pad))).toFixed(2);
-        if (seq.charAt(i) === '1') { hits++; hitD += 'M' + x + ' 12L' + x + ' 20'; }
+        // Catches fill most of the strip (they're the ~coverage% majority), so they
+        // must READ as present — a faint catch makes an 80%-caught strip look mostly
+        // red and understates the very coverage it proves. Catches: tall, steady hue,
+        // solid-enough. Misses: tallest + rust, so the minority still pops by colour.
+        if (seq.charAt(i) === '1') { hits++; hitD += 'M' + x + ' 6L' + x + ' 20'; }
         else { missD += 'M' + x + ' 2L' + x + ' 20'; }
       }
-      if (hitD) svg.appendChild(svgEl('path', { d: hitD, stroke: 'var(--lf-lock)', 'stroke-width': '1', 'stroke-opacity': '.5', 'vector-effect': 'non-scaling-stroke' }));
-      if (missD) svg.appendChild(svgEl('path', { d: missD, stroke: 'var(--lf-float)', 'stroke-width': '1.3', 'vector-effect': 'non-scaling-stroke' }));
+      if (hitD) svg.appendChild(svgEl('path', { d: hitD, stroke: 'var(--lf-lock)', 'stroke-width': '1', 'stroke-opacity': '.62', 'vector-effect': 'non-scaling-stroke' }));
+      if (missD) svg.appendChild(svgEl('path', { d: missD, stroke: 'var(--lf-float)', 'stroke-width': '1.4', 'vector-effect': 'non-scaling-stroke' }));
       fig.appendChild(svg);
       var miss = n - hits;
       fig.appendChild(el('figcaption', 'lf-replay-cap', L(
