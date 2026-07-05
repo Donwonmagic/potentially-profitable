@@ -423,9 +423,27 @@
         var cards = el('div', 'lf-cards');
         group.sort(function (a, b) { return (a.halfWidthPct == null ? 9 : a.halfWidthPct) - (b.halfWidthPct == null ? 9 : b.halfWidthPct); });
         group.forEach(function (it) { cards.appendChild(card(it, horizon)); });
-        sec.appendChild(cards); box.appendChild(sec);
+        sec.appendChild(cards);
+        sec.appendChild(bucketCta(key));
+        box.appendChild(sec);
       });
       return box;
+    }
+
+    // Per-bucket honest next-step. Each bucket's action is concrete and true to what
+    // the read supports — commit vs. build headroom vs. don't commit — and hands off
+    // to Ledger as "check it against YOUR invoices", never as manufactured urgency and
+    // never as a buy/sell/direction call.
+    var BUCKET_CTA = {
+      lock:    { en: 'Worth committing: a standing order, a fixed contract, or a menu price you set and leave. Then watch, in Muntin Ledger, whether your own invoices actually hold this steady.', es: 'Vale comprometerse: un pedido fijo, un contrato o un precio de menú que fijas y dejas. Luego observa, en Muntin Ledger, si tus propias facturas de verdad lo mantienen estable.' },
+      cushion: { en: 'Commit if you build the headroom in — a fixed price works here only with margin to absorb the swing. Muntin Ledger tracks whether your delivered price stays inside it.', es: 'Comprométete solo si dejas la holgura — un precio fijo aquí funciona con margen para absorber el vaivén. Muntin Ledger vigila si tu precio entregado se mantiene dentro.' },
+      float:   { en: 'Keep this one on flexible terms — the swing is too wide to fence a fixed price around, and that is the finding, not a call on where it goes. Ledger flags when your invoice leaves the band.', es: 'Déjalo en términos flexibles — el vaivén es muy amplio para acotar un precio fijo, y ese es el hallazgo, no un pronóstico. Ledger avisa cuando tu factura sale de la banda.' },
+    };
+    function bucketCta(key) {
+      var c = BUCKET_CTA[key];
+      var p = el('p', 'lf-bucket-cta lf-bucket-cta--' + BK[key].cls);
+      p.appendChild(document.createTextNode(L(c.en, c.es)));
+      return p;
     }
 
     function refusalWall(items, DATA) {
