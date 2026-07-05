@@ -2616,16 +2616,29 @@ const OPEN_CSS = `<style>
 .od-mech__i h4{font-size:13px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--season);margin:0 0 5px}
 .od-mech__i p{font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0}
 /* radial seasonal clock */
-.sea-clock{display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:26px;align-items:center;margin:10px 0}
+.sea-clock{display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:26px;align-items:start;margin:10px 0}
 .sea-clock svg{width:100%;height:auto;overflow:visible}
-.sea-clock__cap{font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0}
-.sea-clock__cap strong{color:var(--ink)}
-.scl-sector{stroke:var(--white);stroke-width:1.5}
-.scl-mo{font-size:9px;fill:var(--stone);font-weight:600}
-.scl-n{font-size:8.5px;fill:var(--ink-soft);font-variant-numeric:tabular-nums}
-.scl-hub{fill:var(--white)}
-.scl-hubn{font-size:15px;font-weight:700;fill:var(--season);font-variant-numeric:tabular-nums;text-anchor:middle}
-.scl-hubl{font-size:7.5px;fill:var(--stone);text-anchor:middle;letter-spacing:.05em;text-transform:uppercase}
+.scl-sector{stroke:var(--white);stroke-width:1.5;cursor:pointer;transition:stroke-width .1s ease}
+.scl-sector:hover{stroke:var(--season);stroke-width:2.5}
+.scl-sector.is-active{stroke:var(--ink);stroke-width:2.5}
+.scl-sector:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.scl-mo{font-size:9px;fill:var(--stone);font-weight:600;pointer-events:none}
+.scl-n{font-size:8.5px;fill:var(--ink-soft);font-variant-numeric:tabular-nums;pointer-events:none}
+.scl-hub{fill:var(--white);pointer-events:none}
+.scl-hubn{font-size:15px;font-weight:700;fill:var(--season);font-variant-numeric:tabular-nums;text-anchor:middle;pointer-events:none}
+.scl-hubl{font-size:7.5px;fill:var(--stone);text-anchor:middle;letter-spacing:.05em;text-transform:uppercase;pointer-events:none}
+/* interactive explorer panel */
+.sea-explore__hint{font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0 0 14px;max-width:52ch}
+.sea-explore__hint strong{color:var(--ink)}
+.sea-explore__bar{display:flex;align-items:baseline;gap:10px;margin:0 0 4px;padding-bottom:8px;border-bottom:2px solid var(--season)}
+.sea-explore__mo{font-family:var(--font-display);font-size:23px;font-weight:600;color:var(--season)}
+.sea-explore__cnt{font-size:11.5px;color:var(--stone);text-transform:uppercase;letter-spacing:.04em;font-weight:700}
+.sea-explore__list{list-style:none;padding:0;margin:0;max-height:264px;overflow-y:auto}
+.sea-explore__list li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:7px 2px;border-bottom:1px solid var(--line);font-size:14.5px}
+.sea-explore__list a{color:var(--ink);text-decoration:none;font-weight:600;border-bottom:1px solid transparent}
+.sea-explore__list a:hover{border-bottom-color:var(--season)}
+.sea-explore__amp{font-variant-numeric:tabular-nums;font-weight:700;color:var(--season);font-size:13px;flex:none}
+.sea-explore__empty{color:var(--ink-soft);font-size:14px;line-height:1.5;border-bottom:0!important;display:block!important}
 /* amplitude ranking */
 .sea-rank{margin:6px 0 0}
 .sea-row{display:grid;grid-template-columns:minmax(128px,168px) 1fr 46px;align-items:center;gap:14px;padding:7px 0}
@@ -2663,6 +2676,7 @@ function seasonalClockSvg(locale) {
     const a = (deg - 90) * Math.PI / 180;
     return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
   };
+  const MOF = es ? MONTHS_ES : MONTHS_EN;
   let sectors = '', labels = '';
   for (let i = 0; i < 12; i++) {
     const a0 = i * 30 + 1.2, a1 = (i + 1) * 30 - 1.2, mid = i * 30 + 15;
@@ -2673,15 +2687,18 @@ function seasonalClockSvg(locale) {
     const [x0o, y0o] = pol(r, a0), [x1o, y1o] = pol(r, a1);
     const [x0i, y0i] = pol(rIn, a0), [x1i, y1i] = pol(rIn, a1);
     const op = (0.28 + 0.62 * (n / max)).toFixed(3);
-    sectors += `<path class="scl-sector" fill="var(--season)" fill-opacity="${n ? op : 0.1}" d="M${x0i.toFixed(1)} ${y0i.toFixed(1)} L${x0o.toFixed(1)} ${y0o.toFixed(1)} A${r.toFixed(1)} ${r.toFixed(1)} 0 0 1 ${x1o.toFixed(1)} ${y1o.toFixed(1)} L${x1i.toFixed(1)} ${y1i.toFixed(1)} A${rIn} ${rIn} 0 0 0 ${x0i.toFixed(1)} ${y0i.toFixed(1)} Z"/>`;
+    const t = es ? `${MOF[i + 1]}: ${n} ingrediente${n === 1 ? '' : 's'} en su punto más bajo` : `${MOF[i + 1]}: ${n} ingredient${n === 1 ? '' : 's'} at their low`;
+    // Interactive: each sector is a keyboard-focusable button the explorer JS
+    // wires to update the panel. Degrades to a static wedge with no JS.
+    sectors += `<path class="scl-sector" data-month="${i + 1}" role="button" tabindex="0" aria-label="${t}" fill="var(--season)" fill-opacity="${n ? op : 0.1}" d="M${x0i.toFixed(1)} ${y0i.toFixed(1)} L${x0o.toFixed(1)} ${y0o.toFixed(1)} A${r.toFixed(1)} ${r.toFixed(1)} 0 0 1 ${x1o.toFixed(1)} ${y1o.toFixed(1)} L${x1i.toFixed(1)} ${y1i.toFixed(1)} A${rIn} ${rIn} 0 0 0 ${x0i.toFixed(1)} ${y0i.toFixed(1)} Z"><title>${t}</title></path>`;
     const [lx, ly] = pol(rOut + 12, mid);
     labels += `<text class="scl-mo" x="${lx.toFixed(1)}" y="${(ly + 3).toFixed(1)}" text-anchor="middle">${INI[i]}</text>`;
     if (n) { const [nx, ny] = pol(r + 9, mid); labels += `<text class="scl-n" x="${nx.toFixed(1)}" y="${(ny + 3).toFixed(1)}" text-anchor="middle">${n}</text>`; }
   }
   const aria = es
-    ? `Reloj estacional: cuántos de ${total} ingredientes con datos tocan su precio más bajo en cada mes.`
-    : `Seasonal clock: how many of ${total} ingredients hit their lowest price in each month.`;
-  return `<svg viewBox="0 0 300 300" role="img" aria-label="${aria}" preserveAspectRatio="xMidYMid meet">
+    ? `Reloj estacional interactivo: cuántos de ${total} ingredientes con datos tocan su precio más bajo en cada mes. Elige un mes para ver cuáles.`
+    : `Interactive seasonal clock: how many of ${total} ingredients hit their lowest price in each month. Choose a month to see which.`;
+  return `<svg viewBox="0 0 300 300" width="300" height="300" role="group" aria-label="${aria}" preserveAspectRatio="xMidYMid meet">
     ${sectors}${labels}
     <circle class="scl-hub" cx="${cx}" cy="${cy}" r="${rIn - 4}"/>
     <text class="scl-hubn" x="${cx}" y="${cy - 2}">${total}</text>
@@ -2813,6 +2830,16 @@ function emitSeasonalityHub(locale) {
     return `<div class="sea-row"><div class="sea-row__lab"><a href="${base}/cost-index/${x.slug}/#cheapest">${escHtml(nameOf(x.slug))}</a><span class="sea-row__mo">${es ? 'barato' : 'cheap'} ${MO[x.cheap]} · ${es ? 'caro' : 'dear'} ${MO[x.dear]}</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:${w}%"></span></div><span class="sea-row__amp">${x.amp}%</span></div>`;
   }).join('');
   const artifacts = dg.items.filter((x) => x.amp > SEA_ARTIFACT_CAP).map((x) => nameOf(x.slug));
+  // Interactive explorer: month -> [slug, name, amp] for ingredients at their
+  // seasonal low that month, amplitude-sorted. No-JS renders the busiest month;
+  // the script re-renders to the viewer's actual current month on load.
+  const monthData = {};
+  for (const x of dg.items) (monthData[x.cheap] = monthData[x.cheap] || []).push([x.slug, nameOf(x.slug), x.amp]);
+  for (const m in monthData) monthData[m].sort((a, b) => b[2] - a[2]);
+  let defMonth = 1, defBest = -1;
+  for (let m = 1; m <= 12; m++) { const c = (monthData[m] || []).length; if (c > defBest) { defBest = c; defMonth = m; } }
+  const renderLi = (rows) => (rows || []).map((r) => `<li><a href="${base}/cost-index/${r[0]}/#cheapest">${escHtml(r[1])}</a><span class="sea-explore__amp" title="${es ? 'variación entre su mínimo y su máximo' : 'swing between its low and high'}">${r[2]}%</span></li>`).join('');
+  const seaCfg = { months: MO.slice(1), data: monthData, base, t: { cnt: es ? 'en su punto bajo' : 'at their low', empty: es ? 'Nada en su mínimo estacional este mes — la mayor parte de la despensa se mantiene plana.' : 'Nothing at its seasonal low this month — most of the pantry holds flat.' } };
   const mechs = [
     { h: es ? 'Ventana de cosecha' : 'Harvest window', p: es ? 'Cuando la región principal de un cultivo corta a pleno volumen, la oferta inunda el mercado y el precio toca fondo.' : "When a crop's main growing region is cutting at full volume, supply floods the market and price bottoms." },
     { h: es ? 'Almacenamiento' : 'Storage', p: es ? 'Los cultivos que se guardan en frío se cosechan en una ventana estrecha y se dosifican todo el año, lo que aplana la curva.' : 'Cold- or controlled-atmosphere crops are harvested in a tight window and metered out all year, which flattens the curve.' },
@@ -2861,11 +2888,36 @@ function emitSeasonalityHub(locale) {
   </section>
   <section class="sea-clock" aria-labelledby="sea-clock-h">
     ${seasonalClockSvg(locale)}
-    <div>
-      <h2 class="od-h2" id="sea-clock-h" style="margin-bottom:6px">${es ? 'Cuándo tocan fondo los precios' : 'When prices bottom out'}</h2>
-      <p class="sea-clock__cap">${es ? `De <strong>${dg.items.length}</strong> ingredientes con forma suficiente para nombrar un mes más barato, así se reparte por mes ese punto. No hay un solo “mes de temporada” — el calendario de cada cultivo es propio, y por eso el índice trae una curva por ingrediente en lugar de un calendario único.` : `Of <strong>${dg.items.length}</strong> ingredients with a clear enough shape to name a cheapest month, this is how that low spreads across the year. There is no single "in-season" month — each crop's calendar is its own, which is why the index carries a per-ingredient curve rather than one calendar.`}</p>
+    <div class="sea-explore">
+      <h2 class="od-h2" id="sea-clock-h" style="margin-bottom:4px">${es ? 'Qué está en su punto más bajo' : 'What is at its seasonal low'}</h2>
+      <p class="sea-explore__hint">${es ? 'Elige un mes en el reloj — o deja que abra en el mes actual. De <strong>' + dg.items.length + '</strong> ingredientes con un mes más barato claro, estos suelen tocar su mínimo entonces.' : 'Pick a month on the clock — or let it open on the current month. Of <strong>' + dg.items.length + '</strong> ingredients with a clear cheapest month, these usually hit their low then.'}</p>
+      <div class="sea-explore__bar"><strong class="sea-explore__mo" id="seaMo">${MO[defMonth]}</strong> <span class="sea-explore__cnt" id="seaCnt">${(monthData[defMonth] || []).length} ${seaCfg.t.cnt}</span></div>
+      <ul class="sea-explore__list" id="seaList">${renderLi(monthData[defMonth])}</ul>
     </div>
   </section>
+  <script type="application/json" id="seaMonthData">${JSON.stringify(seaCfg).replace(/</g, '\\u003c')}</script>
+  <script>
+  (function(){
+    var el=document.getElementById('seaMonthData');if(!el)return;
+    var cfg;try{cfg=JSON.parse(el.textContent)}catch(e){return}
+    var moEl=document.getElementById('seaMo'),cntEl=document.getElementById('seaCnt'),listEl=document.getElementById('seaList');
+    if(!moEl||!cntEl||!listEl)return;
+    var secs=document.querySelectorAll('.scl-sector');
+    function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+    function render(m){
+      var rows=cfg.data[m]||[];
+      moEl.textContent=cfg.months[m-1];
+      cntEl.textContent=rows.length+' '+cfg.t.cnt;
+      listEl.innerHTML=rows.length?rows.map(function(r){return '<li><a href="'+cfg.base+'/cost-index/'+encodeURIComponent(r[0])+'/#cheapest">'+esc(r[1])+'</a><span class="sea-explore__amp">'+r[2]+'%</span></li>'}).join(''):'<li class="sea-explore__empty">'+esc(cfg.t.empty)+'</li>';
+      for(var i=0;i<secs.length;i++){var on=secs[i].getAttribute('data-month')===String(m);secs[i].classList.toggle('is-active',on);secs[i].setAttribute('aria-pressed',on?'true':'false')}
+    }
+    for(var i=0;i<secs.length;i++){(function(s){var m=parseInt(s.getAttribute('data-month'),10);
+      s.addEventListener('click',function(){render(m)});
+      s.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();render(m)}});
+    })(secs[i])}
+    render((new Date()).getMonth()+1);
+  })();
+  </script>
   <hr class="od-rule">
   <section class="od-prose" aria-labelledby="sea-what">
     <h2 class="od-h2" id="sea-what">${es ? 'Qué es la estacionalidad' : 'What seasonality is'}</h2>
