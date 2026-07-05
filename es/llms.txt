@@ -26,6 +26,7 @@ El Muntin Cost Index publica semanalmente precios mayoristas de referencia para 
 - /cost-index/feed.json — un catálogo de la referencia mayorista actual de cada ingrediente, con enlaces a su serie completa y su tarjeta incrustable.
 - /cost-index/index.json — el índice completo: el rango mayorista actual de cada ingrediente publicado, su amplitud y la posición de la mediana dentro de ese rango, el nivel de confianza y la fecha de lectura.
 - /cost-index/sources.json — procedencia por ingrediente: cada lectura publicada mapeada a la serie pública del gobierno de EE. UU. que la respalda (USDA, BLS, FRED, EIA, NOAA), por identificador de reporte.
+- /cost-index/events.json — un registro con verificación de hechos de eventos documentados del mercado de alimentos 2001–2026 (gripe aviar, heladas, sequías, enfermedades, medidas comerciales), cada uno mapeado a los ingredientes afectados con citas primarias. El marco es de coincidencia temporal, no de causalidad — contexto junto a una ventana de precios, nunca su causa afirmada.
 - /cost-index/<ingrediente>/series.json — historial completo de precios por ingrediente (también /series.csv).
 - /cost-index/calibration.json — el historial verificado del índice (cobertura de banda conforme + el resultado de dirección, publicado con honestidad a nivel de azar: 50.5% vs una base de 50.2%).
 - /cost-index/confidence-calibration.json — precisión realizada agrupada por la etiqueta de confianza publicada (¿una etiqueta más alta acierta más a menudo?).
