@@ -1619,21 +1619,37 @@ function whyMovingBlock(slug, locale) {
   const feed = rel.filter((x) => x.dr.kind === 'feed-grain');
   const energy = rel.filter((x) => x.dr.kind !== 'feed-grain');
   const clauses = [];
+  // Post-audit (2026-07, HIGH-4): the feed clause states the measured driver
+  // DIRECTION only. The old "which has tended to move before protein prices" +
+  // "as of {date}" badge implied an on-device measurement that does not exist (the
+  // feed-grain series are not in the shipped history). The feed→protein lag is now
+  // carried as a CITED USDA-ERS external fact in the drawer below, not asserted here.
   if (feed.length) clauses.push(
-    (es ? 'forraje — ' : 'feed-grain — ') + feed.map(part).join(', ') +
-    (es ? ' — que ha tendido a moverse antes que los precios de proteína' : ' — which has tended to move before protein prices'));
+    (es ? 'forraje — ' : 'feed-grain — ') + feed.map(part).join(', '));
   if (energy.length) clauses.push(
     energy.map(part).join(', ') + (es ? ', que se mueve junto al costo de los alimentos' : ', which moves alongside food costs'));
   const lead = es ? 'Insumos río arriba ahora: ' : 'Upstream inputs right now: ';
   const tail = es ? ' Asociación, no causa.' : ' Association, not cause.';
-  let asOf = null;
-  rel.forEach((x) => (x.dr.history || []).forEach((h) => { if (h.date && (!asOf || h.date > asOf)) asOf = h.date; }));
   const head = es ? 'Por qué se mueve' : "Why it's moving";
-  const badge = asOf ? `<span class="ci-read__badge">${es ? 'al' : 'as of'} ${asOf}</span>` : '';
+  // Cited external mechanism for the feed→protein biological lag (USDA ERS) when a
+  // feed-grain driver is present. Gated on ES prose like hubDriverInsight so a
+  // half-translated catalog never leaks English onto /es/.
+  let cite = '';
+  if (feed.length) {
+    const fc = DRIVER_CAT.find((x) => x.class === 'feed' && Array.isArray(x.affects) && x.affects.includes(slug));
+    if (fc && !(es && (!fc.label_es || !fc.mechanism_es))) {
+      const flabel = es ? fc.label_es : fc.label;
+      const fmech = es ? fc.mechanism_es : fc.mechanism;
+      const summ = es ? 'Por qué importa el forraje aquí' : 'Why feed matters here';
+      const retrieved = es ? 'recuperado' : 'retrieved';
+      const srcLabel = es ? 'fuente' : 'source';
+      cite = `<details class="cite ci-why__cite"><summary>${summ}</summary><p>${escHtml(flabel)}: ${escHtml(fmech)}.${fc.retrievedAt ? ` · ${retrieved} ${escHtml(fc.retrievedAt)}` : ''}${fc.sourceUrl ? ` · <a href="${escHtml(fc.sourceUrl)}" rel="nofollow noopener" target="_blank">${srcLabel}</a>` : ''}</p></details>`;
+    }
+  }
   return `
   <aside class="ci-why" aria-label="${head}">
-    <p class="ci-why__head">${head}${badge}</p>
-    <p class="ci-why__line">${lead}${clauses.join('; ')}.${tail}</p>
+    <p class="ci-why__head">${head}</p>
+    <p class="ci-why__line">${lead}${clauses.join('; ')}.${tail}</p>${cite}
   </aside>`;
 }
 

@@ -1392,9 +1392,12 @@
     var dWrap = el('details', 'cp-drivers');
     dWrap.appendChild(el('summary', null, L("Why it's moving", 'Por qué se mueve')));
     var dBody = el('div', 'cp-drivers-body');
+    // Post-audit (2026-07, HIGH-4): direction is measured; the feed→meat LEAD is a
+    // documented USDA-ERS fact, not an on-device measurement (the driver series are
+    // not in the shipped history). State it as such — no "moves before" claim.
     dBody.appendChild(el('p', 'cp-drivers-lead', L(
-      'These public commodities tend to move before the ingredients above — an association, not a proven cause.',
-      'Estas materias primas públicas suelen moverse antes que los ingredientes de arriba — una asociación, no una causa comprobada.')));
+      'These public commodities are upstream inputs for the ingredients above — grain feeds livestock, diesel moves freight. The directions shown are measured; the feed-to-meat lag is a relationship documented by USDA ERS, not measured here.',
+      'Estas materias primas públicas son insumos río arriba de los ingredientes de arriba — el grano alimenta al ganado, el diésel mueve el flete. Las direcciones mostradas están medidas; el rezago del forraje al precio de la carne es una relación documentada por USDA ERS, no medida aquí.')));
     DATA.drivers.forEach(function (d) {
       var dir = (d.trend && d.trend.dir) || 'flat';
       var dpct = d.trend && d.trend.pct;
@@ -1412,11 +1415,9 @@
       dhead.appendChild(dt);
       row.appendChild(dhead);
       if (Array.isArray(d.spark) && d.spark.length >= 2) row.appendChild(sparkSvg(d.spark, dir));
-      var leads = (d.leads || []).filter(function (k) { return nameByKey[k]; }).slice(0, 2).map(function (k) { return nameByKey[k]; });
-      if (leads.length) {
-        row.appendChild(el('p', 'cp-driver-leads',
-          L('Tends to move before ' + leads.join(', ') + '.', 'Suele moverse antes que ' + leads.join(', ') + '.')));
-      }
+      // Per-row "tends to move before {X}" WITHHELD (audit HIGH-4): the tool cannot
+      // cite a per-pair lead, and it would restate a spurious level correlation. The
+      // documented feed→meat lag lives in the group lead above (cited to USDA ERS).
       dBody.appendChild(row);
     });
     dWrap.appendChild(dBody);

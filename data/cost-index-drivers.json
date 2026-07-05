@@ -81,6 +81,21 @@
       "sourceUrl": "https://fred.stlouisfed.org/",
       "retrievedAt": "2026-06-20",
       "note": "Edible-oil channel, distinct from the produce and protein chains."
+    },
+    {
+      "id": "feed-grain-livestock",
+      "class": "feed",
+      "label": "Feed-grain costs",
+      "label_es": "Costos de forraje",
+      "affects": ["ribeye", "beef-tenderloin", "short-rib", "ground-beef", "chicken-breast", "whole-chicken", "chicken-thigh", "pork-loin", "pork-shoulder", "butter", "cheddar-cheese", "eggs"],
+      "directionExpected": "up",
+      "strength": "mechanism-established",
+      "mechanism": "Feed is the single largest cost in raising cattle, hogs, and poultry, so grain-cost swings reach meat, poultry and dairy prices only after the animal's grow-out cycle — a biological feed-to-price lag documented by USDA ERS, not measured in our own price series",
+      "mechanism_es": "El forraje es el mayor costo en la cría de res, cerdo y aves, así que los cambios en el precio del grano llegan a los precios de carne, aves y lácteos solo después del ciclo de engorde del animal — un rezago biológico documentado por USDA ERS, no medido en nuestra propia serie",
+      "source": "USDA Economic Research Service — Animal Products, Sector at a Glance",
+      "sourceUrl": "https://www.ers.usda.gov/topics/animal-products/",
+      "retrievedAt": "2026-07-05",
+      "note": "Cited external fact (the biological feed-to-meat lag), NOT an on-device measurement — the feed-grain driver series are not in the shipped history. Spoken only on an up read."
     }
   ]
 }
