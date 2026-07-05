@@ -553,10 +553,45 @@
         'This is the market’s band. Whether YOUR vendor actually passed it through — line by line — is the one thing a public read can’t see. Muntin Ledger runs the same band on your own invoice history and flags a price that steps off it. For the ' + DATA.counts.withhold + ' we won’t call, your own record is the only edge there is.',
         'Esta es la banda del mercado. Si TU proveedor de verdad la trasladó — línea por línea — es lo único que una lectura pública no puede ver. Muntin Ledger corre la misma banda sobre tu historial de facturas y marca un precio que se sale de ella. Para los ' + DATA.counts.withhold + ' que no llamamos, tu propio registro es la única ventaja.')));
       sec.appendChild(p);
+      sec.appendChild(bandProofFigure());
       var a = el('a', 'lf-ledger-cta', L('See Muntin Ledger →', 'Ver Muntin Ledger →'));
       a.href = 'https://ledger.muntin.digital/';
       sec.appendChild(a);
       return sec;
+    }
+
+    // Two-panel proof: the SAME band, two series. Left = the market (this public
+    // read); right = your own invoices (in Ledger), with the one print that leaves
+    // the band flagged. Deliberately SCHEMATIC — fixed illustrative shapes, no $ and
+    // no ingredient, so it makes no factual claim (it's a diagram of the handoff, not
+    // data). Honest framing: "the print that leaves the band is the one worth a
+    // question" — never "your vendor overcharged / is above market".
+    function bandPanel(pts, flagIdx, hue) {
+      var W = 150, H = 66, bandTop = 20, bandBot = 46;
+      var svg = svgEl('svg', { width: W, height: H, viewBox: '0 0 ' + W + ' ' + H, class: 'lf-proof-svg', preserveAspectRatio: 'none', 'aria-hidden': 'true' });
+      svg.appendChild(svgEl('rect', { x: 0, y: bandTop, width: W, height: bandBot - bandTop, rx: 4, fill: 'var(--lf-lock)', 'fill-opacity': '.14' }));
+      svg.appendChild(svgEl('line', { x1: 0, y1: (bandTop + bandBot) / 2, x2: W, y2: (bandTop + bandBot) / 2, stroke: 'var(--lf-ink)', 'stroke-opacity': '.22', 'stroke-dasharray': '3 3' }));
+      var d = 'M', i, xs = [];
+      for (i = 0; i < pts.length; i++) { var x = 8 + (i / (pts.length - 1)) * (W - 16); xs.push(x); d += (i ? ' L ' : '') + x.toFixed(1) + ' ' + pts[i]; }
+      svg.appendChild(svgEl('path', { d: d, fill: 'none', stroke: 'var(--lf-' + hue + ')', 'stroke-width': '1.8', 'vector-effect': 'non-scaling-stroke' }));
+      if (flagIdx != null) svg.appendChild(svgEl('circle', { cx: xs[flagIdx].toFixed(1), cy: pts[flagIdx], r: 3.4, fill: 'var(--lf-float)', stroke: 'var(--lf-surface-2)', 'stroke-width': '1' }));
+      return svg;
+    }
+    function bandProofFigure() {
+      var fig = el('figure', 'lf-proof');
+      var panels = el('div', 'lf-proof-panels');
+      [[L('The market — here', 'El mercado — aquí'), [34, 40, 30, 42, 33, 39, 31], null, 'lock'],
+       [L('Your invoices — in Ledger', 'Tus facturas — en Ledger'), [38, 34, 40, 36, 8, 35, 33], 4, 'cushion']].forEach(function (panel) {
+        var col = el('div', 'lf-proof-col');
+        col.appendChild(el('div', 'lf-proof-lab', panel[0]));
+        col.appendChild(bandPanel(panel[1], panel[2], panel[3]));
+        panels.appendChild(col);
+      });
+      fig.appendChild(panels);
+      fig.appendChild(el('figcaption', 'lf-proof-cap', L(
+        'Illustration: the same band, two series. The public read is the market’s move; your own line is the only thing that shows whether your delivered price held to it — and the one print that leaves the band is the one worth a question.',
+        'Ilustración: la misma banda, dos series. La lectura pública es el movimiento del mercado; tu propia línea es lo único que muestra si tu precio entregado se mantuvo en ella — y la lectura que sale de la banda es la que merece una pregunta.')));
+      return fig;
     }
 
     function shortName(n) { return n.replace(/\s*\([^)]*\)/, ''); }
