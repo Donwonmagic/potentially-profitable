@@ -87,10 +87,10 @@
     plateHook: '¿Y qué le hace esto al margen de tus platillos? Costo del Plato lo recuesta ingrediente por ingrediente.',
     marketOrVendor: '¿Esa subida es el mercado, o tu proveedor?',
     anchorLead: 'Al ritmo del mercado, estarías cerca de', anchorTail: '— estás en',
-    spikeStructural: 'Ese movimiento del mercado se ha sostenido — parece un reajuste real, no un pico.',
-    spikeSpike: 'El mercado subió y luego retrocedió — puede que no se sostenga.',
-    spikeEasing: 'El mercado ha ido bajando últimamente.',
-    spikeEmerging: 'El movimiento del mercado es reciente y aún no se asienta — observa la próxima lectura.',
+    spikeStructural: 'Ese movimiento del mercado se ha sostenido en las lecturas recientes.',
+    spikeSpike: 'El mercado subió y luego retrocedió en parte.',
+    spikeEasing: 'El mercado ha estado por debajo de su base reciente.',
+    spikeEmerging: 'El movimiento del mercado es reciente — observa la próxima lectura antes de actuar.',
     ledgerCleanHead: 'Esta vez, tu proveedor siguió al mercado.',
     ledgerCleanBody: 'La única forma de saber que sigue así es vigilar cada factura — que es lo que hace Muntin Ledger.',
     ledgerThinHead: 'Aquí retuvimos la conclusión de mercado.',
@@ -105,9 +105,6 @@
     bookLead: 'Tu libro —', bookItems: 'artículos en seguimiento.',
     bookWorst: 'Mayor diferencia del proveedor:', bookCall: 'La línea que vale la pena llamar primero.',
     bookOver: 'de tus líneas corren por encima del mercado — Ledger las vigila todas.',
-    regimeLead: 'Todo el mercado cambió de nivel cerca del',
-    regimeUp: 'un alza de todo el mercado, no solo tu proveedor — si se mantiene, prepárate para reajustar.',
-    regimeDown: 'una baja de todo el mercado — un momento para renegociar.',
     forecastEyebrow: 'La próxima lectura del mercado',
     forecastA: 'El mayorista de este artículo suele moverse dentro de', forecastB: 'entre lecturas — una banda que ha cubierto',
     forecastC: 'de las últimas', forecastD: 'lecturas.',
@@ -163,10 +160,10 @@
     plateHook: 'And what does this do to your dish margins? Plate Cost re-costs it ingredient by ingredient.',
     marketOrVendor: 'Is that increase the market, or your vendor?',
     anchorLead: 'At the market’s rate, you’d be near', anchorTail: '— you’re at',
-    spikeStructural: 'That market move has held — this looks like a real reset, not a blip.',
-    spikeSpike: 'The market ran up then pulled back — it may not hold.',
-    spikeEasing: 'The market has been easing lately.',
-    spikeEmerging: 'The market move is recent and hasn’t settled yet — watch the next read.',
+    spikeStructural: 'That market move has held across the recent reads.',
+    spikeSpike: 'The market ran up, then partly pulled back.',
+    spikeEasing: 'The market has been running below its recent baseline.',
+    spikeEmerging: 'The market move is recent — watch the next read before you act on it.',
     ledgerCleanHead: 'This time, your vendor tracked the market.',
     ledgerCleanBody: 'The only way to know it stays that way is to watch every invoice — which is what Muntin Ledger does.',
     ledgerThinHead: 'We held the market call here.',
@@ -181,9 +178,6 @@
     bookLead: 'Your book —', bookItems: 'items tracked.',
     bookWorst: 'Widest vendor gap:', bookCall: 'The line worth a call first.',
     bookOver: 'of your lines run above the market — Ledger watches every one.',
-    regimeLead: 'The whole market shifted level around',
-    regimeUp: 'a market-wide step up, not just your vendor — if it holds, expect to re-price.',
-    regimeDown: 'a market-wide step down — a moment to renegotiate.',
     forecastEyebrow: 'The market’s next print',
     forecastA: 'Wholesale for this item usually moves within', forecastB: 'between reads — a band that has held for',
     forecastC: 'of the last', forecastD: 'reads.',
@@ -853,29 +847,20 @@
     if (printBtn) { doPrint(printBtn.closest('.vb-action')); track('Bench Brief Printed'); }
   }
 
-  // MS2 — regime-break: did the WHOLE market step to a new level (Pettitt), or is
-  // this one vendor? Only asserted when the break is significant AND lands inside/
-  // adjacent to the operator's window (an old break isn't why their invoice moved).
-  function regimeBreakBlock(res) {
-    var m = res.market;
-    if (!ANOM || !m || !m.available || !m.series || !m.series.values || m.series.values.length < 16) return '';
-    // Judge a RECENT window — Pettitt on the full 3-yr series surfaces a 2-year-old
-    // structural shift, not why this invoice moved. A break in the recent window
-    // near the operator's dates is the coherent, relevant one.
-    var vals = m.series.values, dates = m.series.dates, N = vals.length, start = Math.max(0, N - 30);
-    var rv = vals.slice(start), rd = dates.slice(start), cp;
-    if (rv.length < 12) return '';
-    try { cp = ANOM.pettitt(rv); } catch (_) { return ''; }
-    if (!cp || !cp.significant || cp.index == null) return '';
-    var bd = rd[cp.index]; if (!bd) return '';
-    var bt = MW.parseISODay(bd), f = MW.parseISODay(res.firstDate), l = MW.parseISODay(res.lastDate);
-    if (bt == null || f == null || l == null) return '';
-    if (bt < f - 45 * 86400000 || bt > l + 21 * 86400000) return ''; // not near the operator's window
-    var before = rv.slice(0, cp.index + 1), after = rv.slice(cp.index + 1);
-    if (!after.length) return '';
-    var up = ANOM.median(after) > ANOM.median(before);
-    return h`<p class="vb-outlook" data-tone="${up ? 'over' : 'under'}"><strong>${T.regimeLead} ${fmtDate(bd)}</strong> — ${up ? T.regimeUp : T.regimeDown}</p>`;
-  }
+  // MS2 — regime-break: GATED OFF (statistical-rigor audit, 2026-07, finding C4/
+  // CRIT-3). Pettitt's null hypothesis is an i.i.d. series with no change; a
+  // wholesale price LEVEL series is near-unit-root (trending, autocorrelated),
+  // which violates that null. Under it the test fires on 83–100% of driftless
+  // random walks and pure trends that contain NO real step — and on the shipped
+  // series it flags a "significant break" on ~64–98% of items, announcing a smooth
+  // drift as "the whole market stepped up around {date}." There is also no
+  // effect-size floor and no multiplicity control across ingredients. The date and
+  // arithmetic are only meaningful once a real step is established, which this gate
+  // never did. Re-enable ONLY after the change-point test runs on first differences
+  // with a step-vs-trend model check (BIC), a volatility-scaled magnitude floor,
+  // a block-bootstrap null, and BH/BY correction (charter P0-3). Until then we do
+  // not assert a market-wide "step" from this tool.
+  function regimeBreakBlock() { return ''; }
 
   // MS1 — the honest next-print band: a coverage-VALIDATED conformal interval on the
   // deep wholesale series, expressed as a ±% (never a $ level to avoid a "should-pay"
