@@ -461,7 +461,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li><a href="#ld-step1">Leer</a></li>
         <li><a href="#ld-step2">Archivar</a></li>
         <li><a href="#ld-step3">Marcar</a></li>
-        <li><a href="#ld-step4">La lista</a></li>
+        <li><a href="#ld-step4">Tu línea</a></li>
       </ol>
     </header>
 
@@ -561,11 +561,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </section>
 
     <section class="ld-panel ld-cta" id="ld-step4" aria-labelledby="ld-h4">
-      <h2 id="ld-h4" tabindex="-1">El libro, con tus facturas.</h2>
-      <p class="ld-body">Muntin Ledger abre el 13 de noviembre de 2026. Los operadores en la lista fundadora obtienen la tarifa fundadora: <strong style="color:#F6F7F8">tres meses gratis, luego $19 al mes mientras se queden</strong>.</p>
+      <h2 id="ld-h4" tabindex="-1">Ahora corre tu propia línea.</h2>
+      <p class="ld-body">Eso fue una muestra. Toma un precio que ya pagaste &mdash; dos fechas, dos números &mdash; y <strong style="color:#F6F7F8">Vendor Benchmark</strong> hace la misma lectura: si el movimiento va en línea con el mercado o se está saliendo, contra el &Iacute;ndice de Costos p&uacute;blico. Gratis, en tu navegador, sin registro, sin subir nada.</p>
       <div class="studio-cta-row" style="margin-top:20px">
-        <a class="btn lg-btn-light" href="/es/ledger/#pricing">Unirme a la lista fundadora</a>
-        <a class="btn btn-ghost" href="/es/ledger/#pricing" style="color:#F6F7F8;border-color:rgba(246,247,248,.4)">Ver precios</a>
+        <a class="btn lg-btn-light" href="/es/tools/vendor-benchmark/">Corre tu propia línea &rarr;</a>
+      </div>
+      <hr style="border:none;border-top:1px solid rgba(246,247,248,.14);margin:28px 0 24px" aria-hidden="true">
+      <p class="ld-body">Cuando lo quieras sobre tus facturas completas &mdash; leídas, archivadas, marcadas, cada proveedor &mdash; Muntin Ledger abre el 13 de noviembre de 2026. La lista fundadora obtiene <strong style="color:#F6F7F8">tres meses gratis, luego $19 al mes mientras se queden</strong>.</p>
+      <div class="studio-cta-row" style="margin-top:20px">
+        <a class="btn btn-ghost" href="/es/ledger/#pricing" style="color:#F6F7F8;border-color:rgba(246,247,248,.4)">Unirme a la lista fundadora</a>
       </div>
       <p class="lg-cap" style="margin-top:18px">El formulario fundador est&aacute; en la p&aacute;gina del Ledger &mdash; este demo no pide nada, ni siquiera un correo.</p>
     </section>
@@ -592,7 +596,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       var back = document.getElementById('ldBack'), next = document.getElementById('ldNext');
       var progress = document.getElementById('ldProgress'), live = document.getElementById('ldLive');
       if (!wrap || panels.length < 5 || !rail || !controls) return;
-      var titles = ['Llega la factura', 'Leer', 'Archivar', 'Marcar', 'La lista fundadora'];
+      var titles = ['Llega la factura', 'Leer', 'Archivar', 'Marcar', 'Corre tu propia línea'];
       var i = 0;
       var prm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
       wrap.classList.add('ld-js');
