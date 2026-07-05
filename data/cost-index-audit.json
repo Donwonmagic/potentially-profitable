@@ -14,36 +14,19 @@
     60
   ],
   "summary": {
-    "ingredientsScanned": 53,
-    "cloneClusters": 4,
-    "clonedIngredients": 9,
+    "ingredientsScanned": 51,
+    "cloneClusters": 3,
+    "clonedIngredients": 6,
     "clonesByClass": {
-      "history-archive-stale": 1,
       "documented-proxy": 2,
       "index-no-level": 1
     },
     "unexplainedBugs": 0,
-    "archiveStale": 1,
+    "archiveStale": 0,
     "implausibleLevels": 1,
     "referenceDeviations": 1
   },
   "clones": [
-    {
-      "members": [
-        "beef-tenderloin",
-        "ribeye",
-        "short-rib"
-      ],
-      "classification": "history-archive-stale",
-      "lastCents": 1280,
-      "liveLevels": {
-        "beef-tenderloin": 1497,
-        "ribeye": 1314,
-        "short-rib": 590
-      },
-      "points": 36,
-      "note": "the deep ARCHIVE is a clone of another series, but the CURRENT published level is distinct and fine — only the deep history needs re-vendoring (affects backtest/drift/seasonality; plate-cost-drift already collapses it). Not live-facing."
-    },
     {
       "members": [
         "ground-pork",

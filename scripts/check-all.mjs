@@ -440,6 +440,26 @@ const CHECKS = [
   // 80% band doesn't actually cover ~80% of next prints (verified, not asserted).
   ['Cost-index band coverage','check-band-coverage.mjs'],
   ['Cost-index band coverage self-test','check-band-coverage.mjs','--self-test'],
+  // Conformal GOLDEN VECTORS — the exact-output parity lock. The behaviour suites
+  // check coverage with tolerance bands; this fixture pins full conformalNext outputs
+  // to the last digit and is byte-shared with the Muntin Ledger TS port, so a numeric
+  // drift between the two implementations is a failure, not a coincidence. --check
+  // re-derives and (when the sibling repo is present) asserts both copies identical.
+  // The cost-conformal.vectors.test.mjs assertions run under the Unit tests step.
+  ['Cost-index conformal golden vectors','build-conformal-vectors.mjs','--check'],
+  // Lock-or-float predictability artifact — the reframed Cost Pulse spine. Buckets
+  // every ingredient Lock/Cushion/Float/Won't-call from the certified conformal band
+  // (raw scale=1) via the honest classifier; --check re-derives the whole artifact
+  // and fails on any coverage/bucket drift, so a published count can never diverge
+  // from the data. Deterministic (no build clock). The cost-lockfloat.test.mjs +
+  // cost-null-gate.test.mjs vectors are picked up by the Unit tests step.
+  ['Cost-index lock-or-float self-test','build-cost-lockfloat.mjs','--self-test'],
+  ['Cost-index lock-or-float sync','build-cost-lockfloat.mjs','--check'],
+  // Forbidden-claim lint for the lock-or-float surface — a named red-if-reintroduced
+  // case per audit-banned read (direction, opportunity-timing, overpayment, X-leads-Y)
+  // so an A/B copy tweak can never quietly bring one back in EN or ES.
+  ['Cost-index lock-or-float copy','check-lockfloat-copy.mjs'],
+  ['Cost-index lock-or-float copy self-test','check-lockfloat-copy.mjs','--self-test'],
   // Trend skill — the reliability-diagram half: a price-only direction call is
   // replayed over deep history and bucketed by strength; the gate fails unless a
   // stronger arrow verifies more often AND beats the no-skill baseline ("high"

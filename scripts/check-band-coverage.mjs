@@ -2,9 +2,18 @@
  * check-band-coverage.mjs — proves the Cost Index's prediction bands are HONEST:
  * a conformal interval is only trustworthy if, walked forward over real history, it
  * covers the next print at (about) the rate it claims. This gate computes the
- * backtested coverage of the 80% conformal band for every ingredient with enough
- * deep history and FAILS if the aggregate realized coverage drifts away from
- * nominal — i.e. it stops us ever publishing "80% band" unless 80% is true.
+ * RAW (leakage-free, scale=1) backtested coverage of the 80% conformal band for
+ * every ingredient with enough deep history and FAILS if the aggregate realized
+ * coverage drifts too far from nominal in EITHER direction.
+ *
+ * HONESTY NOTE (statistical-rigor audit, 2026-07, CRIT-2): the earlier version of
+ * this gate reported the CALIBRATED coverage — the band was widened per item until
+ * its own backtest reached 0.80, then that same backtest's hit-rate was asserted
+ * "earned." That is a resubstitution estimate (the reported number was the fit's
+ * stopping condition), so it could never be below nominal by construction. We now
+ * report the RAW walk-forward coverage (what the un-tuned band actually caught) and
+ * assert only that it sits in an honest band around nominal — under-coverage is a
+ * real, reportable fact, not something to widen away.
  *
  * Run:  node scripts/check-band-coverage.mjs            # report + gate
  *       node scripts/check-band-coverage.mjs --self-test
@@ -18,7 +27,9 @@ const { conformalNext } = require(path.join(repo, 'tools/_shared/cost-conformal.
 
 const ALPHA = 0.20, NOMINAL = 1 - ALPHA;     // 80% band
 const WINDOW = 52;                            // ~1yr of weekly residuals
-const TOL = 0.10;                             // aggregate realized must be within ±10pp of nominal
+const TOL = 0.10;                             // self-test: RW band must land within ±10pp of nominal
+const LO_TOL = 0.12, HI_TOL = 0.10;          // gate: pooled raw coverage must sit in [0.68, 0.90]
+const WEAK = 0.70;                            // per-item: below this the band under-covers (flagged)
 const MIN_ITEMS = 8;                          // need a few verifiable items before asserting
 
 function rd(p) { try { return JSON.parse(fs.readFileSync(path.join(repo, p), 'utf8')); } catch { return null; } }
@@ -39,8 +50,9 @@ function evaluate() {
   const rows = [];
   for (const k of keys) {
     const s = seriesFor(k, deep, ci);
-    const r = conformalNext(s, { alpha: ALPHA, window: WINDOW, calibrate: true });
-    if (r && r.coverage != null) rows.push({ k, coverage: r.coverage, scale: r.scale, nTested: r.nTested });
+    // RAW coverage — no calibration. The reported number is what the un-tuned band caught.
+    const r = conformalNext(s, { alpha: ALPHA, window: WINDOW });
+    if (r && r.coverage != null) rows.push({ k, coverage: r.coverage, nTested: r.nTested, lo: r.coverageLo, hi: r.coverageHi });
   }
   // Pooled coverage = total hits / total scored steps (weights longer series more).
   const totTested = rows.reduce((a, r) => a + r.nTested, 0);
@@ -72,15 +84,15 @@ if (rows.length < MIN_ITEMS) {
   console.log(`Band coverage: only ${rows.length} ingredient(s) have enough deep history to verify (need ${MIN_ITEMS}). Run the deep backfill (COST_INDEX_SERIES_DAYS) — gate is informational until then.`);
   process.exit(0);
 }
-// Calibrated bands must each reach ~nominal; pooled is asserted at/above nominal
-// (minus a small slack for items that hit the widening cap on pathological series).
-const floor = NOMINAL - 0.03;
-const ok = pooled >= floor;
-const widened = rows.filter((r) => r.scale > 1).length;
-const scales = rows.map((r) => r.scale).sort((a, b) => a - b);
-const medScale = scales[Math.floor(scales.length / 2)];
-const stillLow = rows.filter((r) => r.coverage < floor).map((r) => `${r.k} ${(r.coverage * 100).toFixed(0)}%`);
-console.log(`Band coverage: ${rows.length} ingredient(s), ${totTested} scored steps · pooled realized coverage of the calibrated ${NOMINAL * 100}% band = ${(pooled * 100).toFixed(1)}% (floor ${floor * 100}%).`);
-console.log(`  ${widened} item(s) auto-widened to hold coverage (median scale ${medScale}×)${stillLow.length ? '; still below floor: ' + stillLow.join(', ') : ''}.`);
-if (!ok) { console.error(`✗ pooled calibrated coverage ${(pooled * 100).toFixed(1)}% is below ${floor * 100}% — bands do not hold even after widening; investigate the series.`); process.exit(1); }
-console.log(`✓ every published band is widened until its realized coverage holds — the ${NOMINAL * 100}% claim is earned per item, not just pooled.`);
+// Honest gate: pooled RAW coverage must sit in an interval around nominal — both
+// under- and over-coverage are drift worth failing on. Under-covering items are
+// reported (not widened away); the tool WITHHOLDS or hedges them at render time.
+const lo = NOMINAL - LO_TOL, hi = NOMINAL + HI_TOL;   // [0.68, 0.90]
+const ok = pooled >= lo && pooled <= hi;
+const covs = rows.map((r) => r.coverage).sort((a, b) => a - b);
+const minCov = covs[0], maxCov = covs[covs.length - 1];
+const weak = rows.filter((r) => r.coverage < WEAK).map((r) => `${r.k} ${(r.coverage * 100).toFixed(0)}%`);
+console.log(`Band coverage: ${rows.length} ingredient(s), ${totTested} scored steps · pooled RAW realized coverage of the ${NOMINAL * 100}% band = ${(pooled * 100).toFixed(1)}% (target ${NOMINAL * 100}%, honest window ${(lo * 100).toFixed(0)}–${(hi * 100).toFixed(0)}%).`);
+console.log(`  per-item coverage ranges ${(minCov * 100).toFixed(0)}–${(maxCov * 100).toFixed(0)}%${weak.length ? `; ${weak.length} under-covering (<${WEAK * 100}%, hedged/withheld at render): ` + weak.join(', ') : ''}.`);
+if (!ok) { console.error(`✗ pooled raw coverage ${(pooled * 100).toFixed(1)}% is outside the honest window ${(lo * 100).toFixed(0)}–${(hi * 100).toFixed(0)}% — the bands systematically mis-cover; investigate the series or the interval width.`); process.exit(1); }
+console.log(`✓ pooled raw coverage sits within the honest window around ${NOMINAL * 100}% — the published rate is the un-tuned walk-forward number, per-item CIs shown, weak items withheld.`);

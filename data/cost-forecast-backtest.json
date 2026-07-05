@@ -11,57 +11,57 @@
     "horizons": [
       {
         "h": 1,
-        "items": 42,
-        "scoredSteps": 5305,
-        "bandCoverage": 0.801,
+        "items": 40,
+        "scoredSteps": 5253,
+        "bandCoverage": 0.803,
         "direction": {
-          "items": 39,
-          "scored": 1942,
-          "hitRate": 0.535,
-          "baseline": 0.503,
+          "items": 37,
+          "scored": 1910,
+          "hitRate": 0.533,
+          "baseline": 0.501,
           "lift": 0.032,
           "beatsBaseline": true
         }
       },
       {
         "h": 2,
-        "items": 42,
-        "scoredSteps": 5221,
-        "bandCoverage": 0.794,
+        "items": 40,
+        "scoredSteps": 5173,
+        "bandCoverage": 0.795,
         "direction": {
-          "items": 39,
-          "scored": 2043,
-          "hitRate": 0.515,
-          "baseline": 0.517,
+          "items": 37,
+          "scored": 2015,
+          "hitRate": 0.51,
+          "baseline": 0.511,
           "lift": -0.001,
           "beatsBaseline": false
         }
       },
       {
         "h": 3,
-        "items": 42,
-        "scoredSteps": 5137,
-        "bandCoverage": 0.782,
+        "items": 40,
+        "scoredSteps": 5093,
+        "bandCoverage": 0.783,
         "direction": {
-          "items": 39,
-          "scored": 2081,
-          "hitRate": 0.495,
-          "baseline": 0.516,
+          "items": 37,
+          "scored": 2057,
+          "hitRate": 0.49,
+          "baseline": 0.511,
           "lift": -0.021,
           "beatsBaseline": false
         }
       },
       {
         "h": 4,
-        "items": 42,
-        "scoredSteps": 5053,
-        "bandCoverage": 0.765,
+        "items": 40,
+        "scoredSteps": 5013,
+        "bandCoverage": 0.767,
         "direction": {
-          "items": 39,
-          "scored": 2071,
-          "hitRate": 0.472,
-          "baseline": 0.521,
-          "lift": -0.049,
+          "items": 37,
+          "scored": 2051,
+          "hitRate": 0.468,
+          "baseline": 0.518,
+          "lift": -0.05,
           "beatsBaseline": false
         }
       }
@@ -69,20 +69,20 @@
   },
   "seasonalTermStructure": {
     "method": "seasonal monthly-median direction vs realized next-step sign, calendar-month aware; compared to persistence and majority baseline",
-    "items": 40,
+    "items": 38,
     "seasonal": {
-      "hitRate": 0.669,
-      "scored": 969
+      "hitRate": 0.666,
+      "scored": 907
     },
     "persistence": {
-      "hitRate": 0.653,
-      "scored": 3307
+      "hitRate": 0.657,
+      "scored": 3243
     },
-    "majorityBaseline": 0.511,
+    "majorityBaseline": 0.502,
     "headToHead": {
-      "bothCalled": 873,
-      "disagreements": 346,
-      "seasonalWinOnDisagree": 0.566,
+      "bothCalled": 813,
+      "disagreements": 316,
+      "seasonalWinOnDisagree": 0.544,
       "addsSignalOverMomentum": true
     },
     "seasonalBeatsPersistence": true,

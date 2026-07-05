@@ -4,8 +4,8 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-<title>The Cost Index, live — what restaurant ingredients cost right now | Muntin Digital</title>
-<meta name="description" content="A free market read of where common restaurant ingredients are priced — a typical range, the trend, and how fresh each number is, from public data." />
+<title>Which ingredient prices you can lock — Cost Pulse | Muntin Digital</title>
+<meta name="description" content="Which wholesale ingredient prices are steady enough to lock a standing order, and which swing too hard to commit — backtested, from public data." />
 <meta name="theme-color" content="#2A50C8" />
 <link rel="canonical" href="https://muntin.digital/tools/cost-pulse/" />
     <!-- feed-discovery:start (injected by inject-feed-discovery.mjs) -->
@@ -20,8 +20,8 @@
 <meta property="og:locale:alternate" content="es_US" />
 <!-- i18n:hreflang END -->
 <meta property="og:type" content="website" />
-<meta property="og:title" content="The Cost Index, live — what restaurant ingredients cost right now" />
-<meta property="og:description" content="A free market read of common restaurant ingredient prices — typical range, trend, and freshness, from public USDA, BLS and FRED data." />
+<meta property="og:title" content="Which prices you can lock. Which you have to float." />
+<meta property="og:description" content="Which wholesale ingredient prices are steady enough to lock, and which swing too hard to commit — backtested week by week, and loud about the ones we won't call." />
 <meta property="og:url" content="https://muntin.digital/tools/cost-pulse/" />
 <meta property="og:site_name" content="Muntin Digital" />
 <meta property="og:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
@@ -29,8 +29,8 @@
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="The Cost Index, live — what restaurant ingredients cost right now" />
-<meta name="twitter:description" content="A free market read of common restaurant ingredient prices — typical range, trend, and freshness, from public data." />
+<meta name="twitter:title" content="Which prices you can lock. Which you have to float." />
+<meta name="twitter:description" content="Which wholesale ingredient prices are steady enough to lock, and which swing too hard to commit — backtested week by week, from public data." />
 <meta name="twitter:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <script type="application/ld+json">
@@ -364,6 +364,136 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .cp-drift-cat,.cp-drift-delta{min-width:0}
   .cp-drift-delta{text-align:left}
 }
+/* ---- Lock Sheet (lock-or-float) ---- */
+.cp-lockfloat{--lf-lock:#1e874b;--lf-cushion:#b7791f;--lf-float:var(--rust);--lf-hold:var(--stone);--lf-ink:var(--ink);--lf-surface-2:var(--surface-inset);
+  --lf-lock-soft:#e4f4ea;--lf-lock-ink:#176b3c;--lf-cushion-soft:#fbf0dc;--lf-cushion-ink:#92600f;--lf-float-soft:#fbe6e6;--lf-float-ink:#b22a2a;--lf-hold-soft:var(--surface-inset);--lf-hold-ink:var(--ink-soft);
+  margin:0 0 8px}
+[data-theme="dark"] .cp-lockfloat,html.theme-dark .cp-lockfloat{--lf-lock:#3cc07a;--lf-cushion:#e0a13e;--lf-lock-soft:#14301f;--lf-lock-ink:#7ad6a3;--lf-cushion-soft:#33270f;--lf-cushion-ink:#f0c680;--lf-float-soft:#361417;--lf-float-ink:#f5988f}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .cp-lockfloat{--lf-lock:#3cc07a;--lf-cushion:#e0a13e;--lf-lock-soft:#14301f;--lf-lock-ink:#7ad6a3;--lf-cushion-soft:#33270f;--lf-cushion-ink:#f0c680;--lf-float-soft:#361417;--lf-float-ink:#f5988f}}
+.lf-lanes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 14px}
+.lf-lane{border:1px solid var(--line);border-radius:12px;padding:12px 10px;text-align:center;background:var(--surface-1)}
+.lf-lane-n{display:block;font-size:26px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.lf-lane-lab{display:block;font-size:12px;color:var(--ink-soft);margin-top:5px;letter-spacing:.01em}
+.lf-lane--lock .lf-lane-n{color:var(--lf-lock)}.lf-lane--cushion .lf-lane-n{color:var(--lf-cushion)}.lf-lane--float .lf-lane-n{color:var(--lf-float)}.lf-lane--hold .lf-lane-n{color:var(--lf-hold)}
+.lf-promise{font-size:15px;color:var(--ink-soft);line-height:1.55;margin:0 0 18px;max-width:64ch}
+.lf-horizon{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:0 0 16px}
+.lf-horizon-q{font-size:14px;color:var(--ink);font-weight:600}
+.lf-horizon-btns{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.lf-hbtn{appearance:none;border:0;background:var(--surface-1);color:var(--ink-soft);font:inherit;font-size:13.5px;padding:8px 14px;cursor:pointer;border-right:1px solid var(--line)}
+.lf-hbtn:last-child{border-right:0}
+.lf-hbtn.is-on{background:var(--ink);color:var(--surface-1);font-weight:600}
+.lf-hbtn:focus-visible{outline:2px solid var(--rust);outline-offset:-2px}
+.lf-ladder{background:var(--surface-1);border:1px solid var(--line);border-radius:14px;padding:16px 16px 10px;overflow-x:auto;margin:0 0 24px}
+.lf-scale{position:relative;height:18px;margin:0 0 4px 130px}
+.lf-tick{position:absolute;top:0;transform:translateX(-50%);font-size:10.5px;color:var(--stone)}
+.lf-lrow{display:grid;grid-template-columns:130px 1fr;align-items:center;padding:2.5px 0}
+.lf-lname{font-size:13px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:10px}
+.lf-lunit{color:var(--stone);font-size:11px}
+.lf-ltrack{position:relative;height:20px}
+.lf-grid{position:absolute;top:-2px;bottom:-2px;width:1px;background:var(--line)}
+.lf-grid--zero{width:1.5px;background:var(--line-dark,var(--line))}
+.lf-band{position:absolute;top:4px;height:12px;border-radius:3px;opacity:.9}
+.lf-band--lock{background:var(--lf-lock)}.lf-band--cushion{background:var(--lf-cushion)}.lf-band--float{background:var(--lf-float)}.lf-band--hold{background:var(--lf-hold)}
+.lf-lcap{position:absolute;top:2px;transform:translateX(6px);font-size:10px;color:var(--stone);white-space:nowrap}
+.lf-board{display:block}
+.lf-bucket{margin:0 0 26px}
+.lf-bucket-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;border-left:4px solid var(--bkc);padding-left:11px;margin:0 0 12px}
+.lf-bucket--lock{--bkc:var(--lf-lock)}.lf-bucket--cushion{--bkc:var(--lf-cushion)}.lf-bucket--float{--bkc:var(--lf-float)}
+.lf-bucket-h h3{font-size:19px;margin:0;color:var(--ink)}
+.lf-bucket-verb{font-size:12.5px;font-weight:600;color:var(--ink-soft)}
+.lf-bucket-cnt{font-size:12.5px;color:var(--stone);margin-left:auto}
+.lf-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:12px}
+.lf-card{background:var(--surface-1);border:1px solid var(--line);border-radius:12px;padding:14px 14px 12px}
+.lf-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.lf-card-name{font-weight:600;font-size:15px;color:var(--ink);line-height:1.25}
+.lf-card-lvl{font-size:12.5px;color:var(--ink-soft);margin-top:2px}
+.lf-card-lvln{color:var(--ink);font-weight:600;font-size:14.5px}
+.lf-pill{font-size:10.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;border-radius:6px;padding:3px 7px;white-space:nowrap}
+.lf-pill--lock{color:var(--lf-lock-ink);background:var(--lf-lock-soft)}.lf-pill--cushion{color:var(--lf-cushion-ink);background:var(--lf-cushion-soft)}.lf-pill--float{color:var(--lf-float-ink);background:var(--lf-float-soft)}.lf-pill--hold{color:var(--lf-hold-ink);background:var(--lf-hold-soft)}
+.lf-card-band{margin:12px 0 7px}
+.lf-cb-row{display:flex;justify-content:space-between;font-size:11px;color:var(--stone);margin-bottom:3px}
+.lf-cbsvg,.lf-spark{display:block;width:100%}
+.lf-cbsvg{height:26px}.lf-spark{height:30px;margin-top:9px}
+.lf-receipt{font-size:12px;color:var(--ink-soft);margin:3px 0 0;line-height:1.45}.lf-receipt strong{color:var(--ink)}
+.lf-replay{margin:8px 0 0}
+.lf-replay-svg{display:block;width:100%;height:22px;border-radius:3px}
+.lf-replay-cap{font-size:10.5px;color:var(--stone);margin:4px 0 0;line-height:1.4}
+/* Your Lock Book — device-local personalization */
+.lf-star{appearance:none;-webkit-appearance:none;background:none;border:0;cursor:pointer;padding:2px 4px;line-height:1;color:var(--stone);font-size:16px;border-radius:6px}
+.lf-star:hover,.lf-star.is-on{color:var(--accent)}
+.lf-star:focus-visible,.lf-starter:focus-visible,.lf-book-clear:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.lf-star-ic{display:inline-block}
+.lf-card-tr{display:flex;align-items:center;gap:6px}
+.lf-book{background:var(--surface-inset);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:14px 0 6px}
+.lf-book-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.lf-book-title{font-size:20px;margin:0;color:var(--ink)}
+.lf-book-count{font-size:12px;color:var(--stone);font-weight:600}
+.lf-book-clear{margin-left:auto;appearance:none;-webkit-appearance:none;background:none;border:1px solid var(--line);border-radius:7px;color:var(--ink-soft);font-size:12px;padding:3px 10px;cursor:pointer}
+.lf-book-clear:hover{border-color:var(--accent);color:var(--accent)}
+.lf-book-empty{font-size:13.5px;color:var(--ink-soft);line-height:1.5;margin:8px 0 12px;max-width:64ch}
+.lf-book-changes{margin:10px 0 4px}
+.lf-book-changes-h{font-size:13px;font-weight:700;color:var(--ink);margin:0 0 7px}
+.lf-book-changelist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:5px}
+.lf-book-change{display:flex;align-items:center;gap:7px;font-size:13px}
+.lf-book-cn{color:var(--ink);font-weight:600}
+.lf-book-arrow{color:var(--stone)}
+.lf-chip{font-size:10.5px;font-weight:700;letter-spacing:.02em;border-radius:5px;padding:2px 6px;white-space:nowrap}
+.lf-chip--lock{color:var(--lf-lock-ink);background:var(--lf-lock-soft)}.lf-chip--cushion{color:var(--lf-cushion-ink);background:var(--lf-cushion-soft)}.lf-chip--float{color:var(--lf-float-ink);background:var(--lf-float-soft)}.lf-chip--hold{color:var(--lf-hold-ink);background:var(--lf-hold-soft)}
+.lf-book-nochange{font-size:12.5px;color:var(--stone);margin:8px 0 0}
+.lf-book-uncert{font-size:13px;color:var(--ink-soft);line-height:1.5;margin:10px 0 0}.lf-book-uncert strong{color:var(--ink)}
+.lf-book-rows{display:flex;flex-direction:column;gap:6px;margin:12px 0 4px}
+.lf-brow{display:flex;align-items:center;gap:9px;padding:6px 8px;border:1px solid var(--line);border-radius:9px;background:var(--surface-1)}
+.lf-brow.is-changed{border-left:3px solid var(--accent)}
+.lf-bname{flex:1 1 auto;font-size:13.5px;color:var(--ink);font-weight:600}
+.lf-breach{font-size:12px;color:var(--ink-soft);font-variant-numeric:tabular-nums;text-align:right}
+.lf-starters{margin:12px 0 2px}
+.lf-starters-lab{display:block;font-size:11.5px;color:var(--stone);margin:0 0 6px;text-transform:uppercase;letter-spacing:.04em;font-weight:700}
+.lf-starter-btns{display:flex;flex-wrap:wrap;gap:7px}
+.lf-starter{appearance:none;-webkit-appearance:none;background:var(--surface-1);border:1px solid var(--line);border-radius:20px;color:var(--ink-soft);font-size:12.5px;padding:5px 12px;cursor:pointer}
+.lf-starter:hover{border-color:var(--accent);color:var(--accent)}
+.lf-stamp{font-size:11.5px;color:var(--stone);margin:9px 0 0;line-height:1.4;border-top:1px solid var(--line);padding-top:8px}
+.lf-caveat{font-size:11.5px;color:var(--ink-soft);font-style:italic;margin:5px 0 0}
+.lf-cushion{font-size:11.5px;color:var(--ink-soft);line-height:1.45;margin:9px 0 0;background:var(--surface-inset);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;padding:7px 10px}.lf-cushion strong{color:var(--ink)}
+.lf-bucket-cta{font-size:12px;color:var(--ink-soft);line-height:1.5;margin:12px 0 2px;padding:9px 12px;border-radius:9px;background:var(--surface-1);border:1px solid var(--line)}
+.lf-bucket-cta--lock{border-left:3px solid var(--lf-lock)}.lf-bucket-cta--cushion{border-left:3px solid var(--lf-cushion)}.lf-bucket-cta--float{border-left:3px solid var(--lf-float)}
+/* Before-you-sign contract checker */
+.lf-contract{background:var(--surface-inset);border:1px solid var(--line);border-radius:14px;padding:20px;margin:6px 0 8px}
+.lf-contract-h{font-size:20px;margin:0 0 8px;color:var(--ink)}
+.lf-contract-lead{font-size:14px;color:var(--ink-soft);margin:0 0 14px;max-width:66ch;line-height:1.5}
+.lf-contract-ctrls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.lf-contract-sel{font-size:13.5px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface-1);color:var(--ink);max-width:100%}
+.lf-contract-terms{display:flex;gap:6px;flex-wrap:wrap}
+.lf-cterm{appearance:none;-webkit-appearance:none;background:var(--surface-1);border:1px solid var(--line);border-radius:20px;color:var(--ink-soft);font-size:12.5px;padding:6px 13px;cursor:pointer}
+.lf-cterm.is-on{background:var(--ink);border-color:var(--ink);color:var(--surface-1);font-weight:600}
+.lf-cterm:focus-visible,.lf-contract-sel:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.lf-verdict{margin:16px 0 0;padding:14px 16px;border:1px solid var(--line);border-radius:11px;background:var(--surface-1);border-left:4px solid var(--stone)}
+.lf-verdict--lock{border-left-color:var(--lf-lock)}.lf-verdict--cushion{border-left-color:var(--lf-cushion)}.lf-verdict--float{border-left-color:var(--lf-float)}.lf-verdict--hold{border-left-color:var(--lf-hold)}
+.lf-verdict-head{font-size:15px;font-weight:700;color:var(--ink);margin:0 0 8px;line-height:1.4}
+.lf-verdict-band{font-size:13px;color:var(--ink-soft);margin:0 0 8px;line-height:1.5;font-variant-numeric:tabular-nums}
+.lf-verdict-caveat{font-size:12.5px;color:var(--ink-soft);margin:6px 0 0;line-height:1.5}
+.lf-verdict-body{font-size:13px;color:var(--ink-soft);margin:0;line-height:1.5}
+.lf-why{font-size:12.5px;color:var(--ink-soft);margin:10px 0 0;line-height:1.45}.lf-why strong{color:var(--ink)}
+.lf-refusal{background:var(--surface-inset);border:1px solid var(--line);border-radius:14px;padding:20px;margin:6px 0 8px}
+.lf-refusal-h{font-size:20px;margin:0 0 8px;color:var(--ink)}
+.lf-refusal-lead{font-size:14px;color:var(--ink-soft);margin:0 0 14px;max-width:66ch;line-height:1.5}
+.lf-refusal-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:6px 16px}
+.lf-refusal-item{display:flex;justify-content:space-between;gap:10px;font-size:13px;border-bottom:1px solid var(--line);padding:5px 0}
+.lf-refusal-name{color:var(--ink);font-weight:500}
+.lf-refusal-reason{color:var(--stone);font-size:12px;text-align:right}
+.lf-asof{font-size:12px;color:var(--stone);margin:14px 0 0}
+.lf-ledger{background:var(--surface-1);border:1px solid var(--line);border-left:4px solid var(--ink);border-radius:14px;padding:22px;margin:20px 0 6px}
+.lf-ledger-h{font-size:19px;margin:0 0 8px;color:var(--ink)}
+.lf-ledger-p{font-size:14.5px;color:var(--ink-soft);line-height:1.55;margin:0 0 16px;max-width:64ch}
+.lf-proof{margin:0 0 16px}
+.lf-proof-panels{display:flex;gap:14px;flex-wrap:wrap}
+.lf-proof-col{flex:1 1 150px;min-width:0}
+.lf-proof-lab{font-size:11px;color:var(--stone);font-weight:700;text-transform:uppercase;letter-spacing:.03em;margin:0 0 4px}
+.lf-proof-svg{display:block;width:100%;height:66px;border:1px solid var(--line);border-radius:8px;background:var(--surface-inset)}
+.lf-proof-cap{font-size:11.5px;color:var(--stone);line-height:1.45;margin:8px 0 0;max-width:64ch}
+.lf-ledger-cta{display:inline-flex;align-items:center;gap:6px;background:var(--ink);color:var(--surface-1);font-weight:600;font-size:14.5px;padding:11px 18px;border-radius:9px;text-decoration:none}
+.lf-ledger-cta:focus-visible{outline:2px solid var(--rust);outline-offset:2px}
+@media (max-width:560px){.lf-lanes{grid-template-columns:repeat(2,1fr)}.lf-scale{margin-left:104px}.lf-lrow{grid-template-columns:104px 1fr}}
+@media (prefers-reduced-motion:reduce){.lf-hbtn{transition:none}}
 </style>
 </head>
 <body>
@@ -587,10 +717,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <main>
 <section class="cp-shell">
   <div class="cp-hero">
-    <span class="eyebrow">Free tool · A market read of ingredient prices</span>
-    <h1>What ingredients cost right now.</h1>
+    <span class="eyebrow">Free tool · Which prices you can lock</span>
+    <h1>Which prices you can lock. Which you have to float.</h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Last verified: <time datetime="2026-06-18">June 18, 2026</time></p>
+            <p class="tool-verified">Last verified: <time datetime="2026-07-05">July 5, 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Data promise">
@@ -599,7 +729,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <p class="tool-data-promise__links"><a href="/security/">Read the full data promise &rarr;</a> &middot; <a href="/learn/checklists/audit-any-tool/">Audit any tool &rarr;</a></p>
             </aside>
             <!-- data-promise:end -->
-    <p class="cp-lede">A free market read of where common restaurant ingredients are priced — a typical range, the trend, and how fresh each number is, drawn from public sources (<a href="/glossary/usda-market-news/">USDA</a>, <a href="/glossary/bls/">BLS</a>, <a href="/glossary/fred/">FRED</a>). Use it to tell a real market move from a vendor markup — these are public wholesale reference levels, never your delivered price. Every number traces to a dated public report and a named method: <a href="/cost-index/methodology/">read the full methodology &rarr;</a> <span class="cp-lede-legacy">Saved invoices from the retired decoder? Your historical dashboard is further down.</span></p>
+    <p class="cp-lede">Some wholesale prices barely move week to week — steady enough to lock a standing order or a menu price and forget it. Others swing so hard that committing is a gamble. We never tell you <em>which way</em> a price is headed — no one honestly can from price history. We measure <em>how far</em> its next print tends to move, backtested week by week, from public sources (<a href="/glossary/usda-market-news/">USDA</a>, <a href="/glossary/bls/">BLS</a>, <a href="/glossary/fred/">FRED</a>) — and we're loud about the majority of the catalog we won't call. These are wholesale reference levels, never your delivered price: <a href="/cost-index/methodology/">read the full methodology &rarr;</a> <span class="cp-lede-legacy">Saved invoices from the retired decoder? Your historical dashboard is further down.</span></p>
   </div>
 
   <noscript>
@@ -610,6 +740,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   </noscript>
 
   <div id="cpStatus"></div>
+
+  <!-- The Lock Sheet — the reframed Cost Pulse. Reads the same-origin
+       data/cost-lockfloat.js seed (no fetch) and renders the predictability
+       instrument (lanes, horizon control, ladder, cards, refusal wall) via
+       tools/_shared/cost-lockfloat-ui.js. Locale-aware; the level detail below
+       is the drill-down. -->
+  <div id="lfSheet" class="cp-lockfloat" aria-label="Lock or float — the price predictability read"></div>
 
   <!-- Market context (Cost Index). Public market signal — renders for everyone,
        independent of saved invoices. Reads the same-origin seed artifact
@@ -844,6 +981,23 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/tools/_shared/whats-new.js?v=20260504-w14-8" defer></script>
 <script src="/tools/_shared/cost-index-format.js?v=20260629-fmt4"></script>
 <script src="/tools/_shared/cost-index-ui.js?v=20260630-design2"></script>
+<script src="/data/cost-lockfloat.js?v=20260705-lf2"></script>
+<script src="/tools/_shared/cost-lockfloat-ui.js?v=20260705-lf8"></script>
+<script>
+// The Lock Sheet — isolated so it can never break the level-detail dashboard below.
+(function () {
+  'use strict';
+  try {
+    var mount = document.getElementById('lfSheet');
+    var DATA = (typeof window !== 'undefined') && window.MUNTIN_COST_LOCKFLOAT;
+    if (!mount || !DATA || !window.MuntinLockFloatUI) return;
+    var es = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().slice(0, 2) === 'es';
+    var track = function (name) { try { if (window.MuntinAnalytics && window.MuntinAnalytics.track) window.MuntinAnalytics.track(name); } catch (_) {} };
+    window.MuntinLockFloatUI.create(es).render(mount, DATA, { horizon: 'monthly', track: track });
+    track('Cost Pulse Loaded');
+  } catch (_) {}
+})();
+</script>
 <script>
 (function () {
   'use strict';

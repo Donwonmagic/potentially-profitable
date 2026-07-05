@@ -68,8 +68,9 @@
     levelAbove: 'Tu nivel también corre por encima de la referencia mayorista',
     levelCalib: 'El flete y la distribución normalmente suman margen, así que tómalo como tu nivel — no como prueba de una factura inflada. La tasa de cambio de arriba es la señal más fuerte.',
     receiptSummary: 'Cómo se midió esta diferencia',
-    receiptDepthDeep: 'De 3 años de lecturas mayoristas semanales del USDA.',
+    receiptDepthDeep: function (n, cadence, from, to) { return 'De ' + n + ' lecturas mayoristas ' + cadence + ' del USDA, ' + from + '–' + to + '.'; },
     receiptDepthShort: 'De un historial de mercado reciente y corto.',
+    rcWeekly: 'semanales', rcMonthly: 'mensuales',
     rcReads: 'Lecturas', rcWindow: 'Ventana de mercado cubierta', rcOff: 'días de tu fecha',
     rcNearest: 'Lectura mayorista más cercana a tu',
     badPrice: 'No pudimos leer este precio.',
@@ -87,10 +88,10 @@
     plateHook: '¿Y qué le hace esto al margen de tus platillos? Costo del Plato lo recuesta ingrediente por ingrediente.',
     marketOrVendor: '¿Esa subida es el mercado, o tu proveedor?',
     anchorLead: 'Al ritmo del mercado, estarías cerca de', anchorTail: '— estás en',
-    spikeStructural: 'Ese movimiento del mercado se ha sostenido — parece un reajuste real, no un pico.',
-    spikeSpike: 'El mercado subió y luego retrocedió — puede que no se sostenga.',
-    spikeEasing: 'El mercado ha ido bajando últimamente.',
-    spikeEmerging: 'El movimiento del mercado es reciente y aún no se asienta — observa la próxima lectura.',
+    spikeStructural: 'Ese movimiento del mercado se ha sostenido en las lecturas recientes.',
+    spikeSpike: 'El mercado subió y luego retrocedió en parte.',
+    spikeEasing: 'El mercado ha estado por debajo de su base reciente.',
+    spikeEmerging: 'El movimiento del mercado es reciente — observa la próxima lectura antes de actuar.',
     ledgerCleanHead: 'Esta vez, tu proveedor siguió al mercado.',
     ledgerCleanBody: 'La única forma de saber que sigue así es vigilar cada factura — que es lo que hace Muntin Ledger.',
     ledgerThinHead: 'Aquí retuvimos la conclusión de mercado.',
@@ -105,12 +106,7 @@
     bookLead: 'Tu libro —', bookItems: 'artículos en seguimiento.',
     bookWorst: 'Mayor diferencia del proveedor:', bookCall: 'La línea que vale la pena llamar primero.',
     bookOver: 'de tus líneas corren por encima del mercado — Ledger las vigila todas.',
-    regimeLead: 'Todo el mercado cambió de nivel cerca del',
-    regimeUp: 'un alza de todo el mercado, no solo tu proveedor — si se mantiene, prepárate para reajustar.',
-    regimeDown: 'una baja de todo el mercado — un momento para renegociar.',
     forecastEyebrow: 'La próxima lectura del mercado',
-    forecastA: 'El mayorista de este artículo suele moverse dentro de', forecastB: 'entre lecturas — una banda que ha cubierto',
-    forecastC: 'de las últimas', forecastD: 'lecturas.',
     errItem: 'Escribe el nombre del artículo.',
     errRows: 'Agrega al menos dos compras con fecha y precio.'
   } : {
@@ -145,8 +141,12 @@
     levelAbove: 'Your level also runs above the wholesale reference',
     levelCalib: 'Freight and distribution normally add markup, so read this as your level — not proof of a padded bill. The rate-of-change above is the stronger signal.',
     receiptSummary: 'How this gap was measured',
-    receiptDepthDeep: 'Drawn from 3 years of weekly USDA wholesale reads.',
+    // Post-audit (2026-07, HIGH-1): derive cadence + span per item — the deep series
+    // are heterogeneous (beef is monthly, eggs spans ~1.4 years), so a blanket
+    // "3 years of weekly reads" was false for several items.
+    receiptDepthDeep: function (n, cadence, from, to) { return 'Drawn from ' + n + ' ' + cadence + ' USDA wholesale reads, ' + from + '–' + to + '.'; },
     receiptDepthShort: 'Drawn from recent, short market history.',
+    rcWeekly: 'weekly', rcMonthly: 'monthly',
     rcReads: 'Reads', rcWindow: 'Covered market window', rcOff: 'days off your date',
     rcNearest: 'Nearest wholesale read to your',
     badPrice: 'Couldn’t read this price.',
@@ -163,10 +163,10 @@
     plateHook: 'And what does this do to your dish margins? Plate Cost re-costs it ingredient by ingredient.',
     marketOrVendor: 'Is that increase the market, or your vendor?',
     anchorLead: 'At the market’s rate, you’d be near', anchorTail: '— you’re at',
-    spikeStructural: 'That market move has held — this looks like a real reset, not a blip.',
-    spikeSpike: 'The market ran up then pulled back — it may not hold.',
-    spikeEasing: 'The market has been easing lately.',
-    spikeEmerging: 'The market move is recent and hasn’t settled yet — watch the next read.',
+    spikeStructural: 'That market move has held across the recent reads.',
+    spikeSpike: 'The market ran up, then partly pulled back.',
+    spikeEasing: 'The market has been running below its recent baseline.',
+    spikeEmerging: 'The market move is recent — watch the next read before you act on it.',
     ledgerCleanHead: 'This time, your vendor tracked the market.',
     ledgerCleanBody: 'The only way to know it stays that way is to watch every invoice — which is what Muntin Ledger does.',
     ledgerThinHead: 'We held the market call here.',
@@ -181,12 +181,7 @@
     bookLead: 'Your book —', bookItems: 'items tracked.',
     bookWorst: 'Widest vendor gap:', bookCall: 'The line worth a call first.',
     bookOver: 'of your lines run above the market — Ledger watches every one.',
-    regimeLead: 'The whole market shifted level around',
-    regimeUp: 'a market-wide step up, not just your vendor — if it holds, expect to re-price.',
-    regimeDown: 'a market-wide step down — a moment to renegotiate.',
     forecastEyebrow: 'The market’s next print',
-    forecastA: 'Wholesale for this item usually moves within', forecastB: 'between reads — a band that has held for',
-    forecastC: 'of the last', forecastD: 'reads.',
     errItem: 'Enter the item name.',
     errRows: 'Add at least two purchases with a date and price.'
   };
@@ -670,7 +665,10 @@
     // operator's window — otherwise a recent-regime read (e.g. "structural")
     // pinned under a "+0.5%" headline reads as a contradiction.
     if (Math.abs(m.res.marketPct) < 0.05) return null;
-    var vals = m.series.values, dates = m.series.dates, N = vals.length, start = Math.max(0, N - 26);
+    // Read the UN-augmented series (HIGH-2): the spliced live-level endpoint is a
+    // basis discontinuity, not a price move, and would fabricate a spike/easing read.
+    var s = m.seriesRaw || m.series;
+    var vals = s.values, dates = s.dates, N = vals.length, start = Math.max(0, N - 26);
     var pts = [];
     for (var i = N - 1; i >= start; i--) {          // newest first
       if (typeof vals[i] === 'number' && vals[i] > 0) pts.push({ level: { medianCents: vals[i] }, asOf: dates[i] });
@@ -853,46 +851,81 @@
     if (printBtn) { doPrint(printBtn.closest('.vb-action')); track('Bench Brief Printed'); }
   }
 
-  // MS2 — regime-break: did the WHOLE market step to a new level (Pettitt), or is
-  // this one vendor? Only asserted when the break is significant AND lands inside/
-  // adjacent to the operator's window (an old break isn't why their invoice moved).
-  function regimeBreakBlock(res) {
-    var m = res.market;
-    if (!ANOM || !m || !m.available || !m.series || !m.series.values || m.series.values.length < 16) return '';
-    // Judge a RECENT window — Pettitt on the full 3-yr series surfaces a 2-year-old
-    // structural shift, not why this invoice moved. A break in the recent window
-    // near the operator's dates is the coherent, relevant one.
-    var vals = m.series.values, dates = m.series.dates, N = vals.length, start = Math.max(0, N - 30);
-    var rv = vals.slice(start), rd = dates.slice(start), cp;
-    if (rv.length < 12) return '';
-    try { cp = ANOM.pettitt(rv); } catch (_) { return ''; }
-    if (!cp || !cp.significant || cp.index == null) return '';
-    var bd = rd[cp.index]; if (!bd) return '';
-    var bt = MW.parseISODay(bd), f = MW.parseISODay(res.firstDate), l = MW.parseISODay(res.lastDate);
-    if (bt == null || f == null || l == null) return '';
-    if (bt < f - 45 * 86400000 || bt > l + 21 * 86400000) return ''; // not near the operator's window
-    var before = rv.slice(0, cp.index + 1), after = rv.slice(cp.index + 1);
-    if (!after.length) return '';
-    var up = ANOM.median(after) > ANOM.median(before);
-    return h`<p class="vb-outlook" data-tone="${up ? 'over' : 'under'}"><strong>${T.regimeLead} ${fmtDate(bd)}</strong> — ${up ? T.regimeUp : T.regimeDown}</p>`;
-  }
+  // MS2 — regime-break: GATED OFF (statistical-rigor audit, 2026-07, finding C4/
+  // CRIT-3). Pettitt's null hypothesis is an i.i.d. series with no change; a
+  // wholesale price LEVEL series is near-unit-root (trending, autocorrelated),
+  // which violates that null. Under it the test fires on 83–100% of driftless
+  // random walks and pure trends that contain NO real step — and on the shipped
+  // series it flags a "significant break" on ~64–98% of items, announcing a smooth
+  // drift as "the whole market stepped up around {date}." There is also no
+  // effect-size floor and no multiplicity control across ingredients. The date and
+  // arithmetic are only meaningful once a real step is established, which this gate
+  // never did. Re-enable ONLY after the change-point test runs on first differences
+  // with a step-vs-trend model check (BIC), a volatility-scaled magnitude floor,
+  // a block-bootstrap null, and BH/BY correction (charter P0-3). Until then we do
+  // not assert a market-wide "step" from this tool.
+  function regimeBreakBlock() { return ''; }
 
   // MS1 — the honest next-print band: a coverage-VALIDATED conformal interval on the
-  // deep wholesale series, expressed as a ±% (never a $ level to avoid a "should-pay"
-  // misread) with its walk-forward hit-rate. Withheld on thin/short history or when
-  // coverage can't be published.
+  // deep wholesale series, expressed as an ASYMMETRIC ±% (never a $ level, to avoid a
+  // "should-pay" misread) with its RAW, un-tuned walk-forward hit-rate and a Wilson
+  // range around it. Post-audit honesty (2026-07, C1/CRIT-2, HIGH-1/HIGH-6):
+  //  · the coverage is the leakage-free RAW rate (no calibrate) with its CI, framed as
+  //    "target 80%, held X%" — never a band silently widened to report its own target;
+  //  · degenerate (flat/stale → "±0%, right 100%") and uninformative (half-width > 30%
+  //    of level) bands are WITHHELD, as is any series without a publishable rate;
+  //  · the horizon is stated per the series' real cadence (next week vs next month);
+  //  · the interval's up/down asymmetry is shown, never collapsed to a symmetric ±.
   function forecastBlock(res) {
     var m = res.market;
-    if (!CONF || !m || !m.available || m.seriesKind !== 'deep' || !m.series || m.series.values.length < 24) return '';
+    // Forward math reads the UN-augmented series (HIGH-2) so a spliced live-level
+    // endpoint (a national-vs-regional basis seam) is never scored as a one-step move.
+    var s = m && m.seriesRaw ? m.seriesRaw : (m && m.series);
+    if (!CONF || !m || !m.available || m.seriesKind !== 'deep' || !s || s.values.length < 24) return '';
     if (m.confidence === 'low' || m.confidence === 'directional') return '';
     var out;
-    try { out = CONF.conformalNext(m.series.values, { calibrate: true }); } catch (_) { return ''; }
-    if (!out || !out.interval || out.coverage == null || !(out.point > 0)) return '';
-    var point = out.point, lo = out.interval[0], hi = out.interval[1];
-    var band = Math.round(Math.max((hi - point) / point, (point - lo) / point) * 100);
-    if (!(band > 0) || band > 60) return '';
-    var cov = Math.round(out.coverage * 100), reads = out.nTested;
-    return h`<div class="vb-forecast"><span class="vb-eyebrow">${T.forecastEyebrow}</span><p>${T.forecastA} ±${String(band)}% ${T.forecastB} ${String(cov)}% ${T.forecastC} ${String(reads)} ${T.forecastD}</p><p class="vb-forecast-fine">${T.attributionWholesale}</p></div>`;
+    try { out = CONF.conformalNext(s.values); } catch (_) { return ''; }
+    if (!out || out.coverage == null || out.degenerate || !(out.point > 0)) return '';
+    if (out.upPct == null || out.downPct == null) return '';
+    var up = Math.round(out.upPct * 100), down = Math.round(out.downPct * 100);
+    if (out.halfWidthPct > 0.30) return '';                 // too wide to be a useful bound
+    if (!(up > 0) && !(down > 0)) return '';
+    var cov = Math.round(out.coverage * 100);
+    var lo = Math.round((out.coverageLo != null ? out.coverageLo : out.coverage) * 100);
+    var hi = Math.round((out.coverageHi != null ? out.coverageHi : out.coverage) * 100);
+    var reads = out.nTested;
+    var monthly = seriesCadenceMonthly(s.dates);
+    var per = monthly ? (ES ? 'mensual' : 'monthly') : (ES ? 'semanal' : 'weekly');
+    // Asymmetric band; note the skew only when up/down clearly differ.
+    var ratio = down > 0 ? up / down : (up > 0 ? Infinity : 1);
+    var skew = '';
+    if (ratio >= 1.6) skew = ES ? ' — el riesgo se inclina al alza' : ' — the risk is skewed upward';
+    else if (ratio > 0 && ratio <= 0.625) skew = ES ? ' — el riesgo se inclina a la baja' : ' — the risk is skewed downward';
+    var bandStr = '−' + String(down) + '% / +' + String(up) + '%';
+    var headline = ES
+      ? ('Una banda con objetivo del 80% de este ancho ha capturado la próxima lectura ' + per + ' cerca del ' + cov + '% de las veces (' + lo + '–' + hi + '% en ' + reads + ' lecturas).')
+      : ('An 80%-target band this wide has caught the next ' + per + ' print about ' + cov + '% of the time (' + lo + '–' + hi + '% across ' + reads + ' reads).');
+    var bandLine = ES
+      ? ('Ahora mismo va de ' + bandStr + skew + '.')
+      : ('Right now it runs ' + bandStr + skew + '.');
+    var fine = ES
+      ? ('El movimiento del mercado mayorista, no tu precio entregado; el flete y el margen pueden moverlo distinto.')
+      : ('Wholesale market movement, not your delivered price — freight and margin can move yours differently.');
+    return h`<div class="vb-forecast"><span class="vb-eyebrow">${T.forecastEyebrow}</span><p>${headline}</p><p class="vb-forecast-band">${bandLine}</p><p class="vb-forecast-fine">${fine}</p></div>`;
+  }
+
+  // Cadence of a dated series (median gap ≥ 20d → monthly), so the forecast horizon
+  // is stated truthfully ("next month" for beef, "next week" for produce).
+  function seriesCadenceMonthly(dates) {
+    if (!dates || dates.length < 3) return false;
+    var gaps = [];
+    for (var i = 1; i < dates.length; i++) {
+      var a = MW.parseISODay(dates[i - 1]), b = MW.parseISODay(dates[i]);
+      if (a != null && b != null) gaps.push((b - a) / 86400000);
+    }
+    if (!gaps.length) return false;
+    gaps.sort(function (x, y) { return x - y; });
+    return gaps[Math.floor(gaps.length / 2)] >= 20;
   }
 
   function journalTrendBlock(res) {
@@ -984,8 +1017,16 @@
     if (!(m.res && m.res.ok)) return '';
     var valA = marketValueAt(m, m.res.marketADate);
     var valB = marketValueAt(m, m.res.marketBDate);
-    var depth = m.seriesKind === 'deep' ? T.receiptDepthDeep : T.receiptDepthShort;
     var reads = (m.series && m.series.values) ? m.series.values.length : 0;
+    var depth;
+    if (m.seriesKind === 'deep' && m.series && m.series.dates && m.series.dates.length >= 2) {
+      var cadWord = seriesCadenceMonthly(m.series.dates) ? T.rcMonthly : T.rcWeekly;
+      var from = fmtDate(m.seriesStart || m.series.dates[0]);
+      var to = fmtDate(m.seriesEnd || m.series.dates[m.series.dates.length - 1]);
+      depth = T.receiptDepthDeep(reads, cadWord, from, to);
+    } else {
+      depth = T.receiptDepthShort;
+    }
     var lineA = h`<li>${T.rcNearest} ${fmtDate(res.firstDate)}: <strong>${fmtDate(m.res.marketADate)}</strong>${valA != null ? h`, ${money(valA)}` : ''} <span class="vb-rc-off">(~${String(m.res.aGapDays)} ${T.rcOff})</span></li>`;
     var lineB = h`<li>${T.rcNearest} ${fmtDate(res.lastDate)}: <strong>${fmtDate(m.res.marketBDate)}</strong>${valB != null ? h`, ${money(valB)}` : ''} <span class="vb-rc-off">(~${String(m.res.bGapDays)} ${T.rcOff})</span></li>`;
     return h`<details class="vb-receipt"><summary>${T.receiptSummary}</summary><ul class="vb-rc-list">${lineA}${lineB}</ul><p class="vb-rc-meta">${T.rcWindow}: ${fmtDate(m.res.marketADate)} – ${fmtDate(m.res.marketBDate)} · ${T.rcReads}: ${String(reads)}. ${depth}</p></details>`;
