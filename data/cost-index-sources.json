@@ -10565,6 +10565,102 @@
         "type": "ppi-mayonnaise"
       },
       "coverage": "Trend-only: no free public wholesale price level exists for mayonnaise; direction tracked via the BLS ppi-mayonnaise PPI. It ships no dollar figure — only movement — until a real wholesale level appears."
+    },
+    "olive-oil": {
+      "verified": false,
+      "census": {
+        "hs": [
+          "150910"
+        ],
+        "hts": [
+          "150910"
+        ],
+        "basis": "index",
+        "unit": "lb",
+        "years": 3,
+        "_status": "STAGED verified:false (scaffold 2026-07, US Census import HS 150910) — confirm UNIT_QY1 is a mass unit (kg) via a sample; landed value runs below delivered wholesale. --flip after --verify."
+      },
+      "coverage": "Import-only: no free US terminal or retail price exists for olive oil; tracked via US Census import unit value (landed $/lb, HS 150910) — a customs value below delivered wholesale, so directional. Public-domain trade data, redistributable (unlike the IMF global-price feed). Withheld from live reads until bounds are confirmed."
+    },
+    "vanilla": {
+      "verified": false,
+      "census": {
+        "hs": [
+          "090500"
+        ],
+        "hts": [
+          "090500"
+        ],
+        "basis": "index",
+        "unit": "lb",
+        "years": 3,
+        "_status": "STAGED verified:false (scaffold 2026-07, US Census import HS 090500) — confirm UNIT_QY1 is a mass unit (kg) via a sample; landed value runs below delivered wholesale. --flip after --verify."
+      },
+      "coverage": "Import-only: no free US terminal or retail price exists for vanilla beans; tracked via US Census import unit value (landed $/lb, HS 090500) — a customs value below delivered wholesale, so directional. Public-domain trade data, redistributable (unlike the IMF global-price feed). Withheld from live reads until bounds are confirmed."
+    },
+    "coffee-beans": {
+      "verified": false,
+      "census": {
+        "hs": [
+          "090111"
+        ],
+        "hts": [
+          "090111"
+        ],
+        "basis": "index",
+        "unit": "lb",
+        "years": 3,
+        "_status": "STAGED verified:false (scaffold 2026-07, US Census import HS 090111) — confirm UNIT_QY1 is a mass unit (kg) via a sample; landed value runs below delivered wholesale. --flip after --verify."
+      },
+      "coverage": "Import-only: no free US terminal or retail price exists for coffee beans (green); tracked via US Census import unit value (landed $/lb, HS 090111) — a customs value below delivered wholesale, so directional. Public-domain trade data, redistributable (unlike the IMF global-price feed). Withheld from live reads until bounds are confirmed."
+    },
+    "cocoa-beans": {
+      "verified": false,
+      "census": {
+        "hs": [
+          "180100"
+        ],
+        "hts": [
+          "180100"
+        ],
+        "basis": "index",
+        "unit": "lb",
+        "years": 3,
+        "_status": "STAGED verified:false (scaffold 2026-07, US Census import HS 180100) — confirm UNIT_QY1 is a mass unit (kg) via a sample; landed value runs below delivered wholesale. --flip after --verify."
+      },
+      "coverage": "Import-only: no free US terminal or retail price exists for cocoa beans; tracked via US Census import unit value (landed $/lb, HS 180100) — a customs value below delivered wholesale, so directional. Public-domain trade data, redistributable (unlike the IMF global-price feed). Withheld from live reads until bounds are confirmed."
+    },
+    "saffron": {
+      "verified": false,
+      "census": {
+        "hs": [
+          "091020"
+        ],
+        "hts": [
+          "091020"
+        ],
+        "basis": "index",
+        "unit": "lb",
+        "years": 3,
+        "_status": "STAGED verified:false (scaffold 2026-07, US Census import HS 091020) — confirm UNIT_QY1 is a mass unit (kg) via a sample; landed value runs below delivered wholesale. --flip after --verify."
+      },
+      "coverage": "Import-only: no free US terminal or retail price exists for saffron; tracked via US Census import unit value (landed $/lb, HS 091020) — a customs value below delivered wholesale, so directional. Public-domain trade data, redistributable (unlike the IMF global-price feed). Withheld from live reads until bounds are confirmed."
+    },
+    "pine-nuts": {
+      "verified": false,
+      "census": {
+        "hs": [
+          "080250"
+        ],
+        "hts": [
+          "080250"
+        ],
+        "basis": "index",
+        "unit": "lb",
+        "years": 3,
+        "_status": "STAGED verified:false (scaffold 2026-07, US Census import HS 080250) — confirm UNIT_QY1 is a mass unit (kg) via a sample; landed value runs below delivered wholesale. --flip after --verify."
+      },
+      "coverage": "Import-only: no free US terminal or retail price exists for pine nuts; tracked via US Census import unit value (landed $/lb, HS 080250) — a customs value below delivered wholesale, so directional. Public-domain trade data, redistributable (unlike the IMF global-price feed). Withheld from live reads until bounds are confirmed."
     }
   },
   "drivers": {

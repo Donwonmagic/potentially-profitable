@@ -270,3 +270,21 @@ test('EIA electricity driver composes an energy TREND (index only, never a level
   assert.equal(r.trend.dir, 'up');        // 12.10 → 12.85 over the window
   assert.ok(r.trend.pct > 0);
 });
+
+test('normalizeCensusTrade → landed $/lb, month-aggregated, skips non-mass units', () => {
+  // Two months of olive-oil imports (HS 150910). Jan has two rows that must sum;
+  // Feb has a stray count-unit ("no") row that can't become $/lb and is dropped.
+  const mock = { items: [
+    { hs: '150910', val: '1000000', qty: '200000', unit: 'kg', time: '2026-01' },
+    { hs: '150910', val: '500000',  qty: '100000', unit: 'kg', time: '2026-01' },
+    { hs: '150910', val: '1200000', qty: '200000', unit: 'kg', time: '2026-02' },
+    { hs: '150910', val: '9',       qty: '3',      unit: 'no', time: '2026-02' },
+  ] };
+  const o = S.normalizeCensusTrade(mock, { source: 'census', basis: 'index', hts: ['150910'], unit: 'lb' });
+  assert.equal(o.basis, 'index');
+  assert.equal(o.points.length, 2);
+  // Jan: $1.5M / 300,000 kg = $5.00/kg → /2.20462 = $/lb
+  assert.ok(Math.abs(o.points[0].value - 5 / 2.20462) < 1e-9);
+  // Feb: the "no" row is skipped → $1.2M / 200,000 kg = $6.00/kg → $/lb
+  assert.ok(Math.abs(o.points[1].value - 6 / 2.20462) < 1e-9);
+});

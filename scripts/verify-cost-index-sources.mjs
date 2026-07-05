@@ -70,6 +70,15 @@ async function probe(src, m) {
       return latest ? { ok: true, n: o.points.length, latest: latest.value, date: latest.date, basis: 'wholesale', level: true }
         : { ok: false, err: `fetched OK, 0 import rows matched${m.commodity ? ` "${m.commodity}"` : ''} (confirm NOAA trade_data fields / commodity / hts via a sample)` };
     }
+    if (src === 'census') {
+      // US Census import unit value (keyless) → landed $/lb, any HS code.
+      const j = await F.fetchCensusTrade({ hs: m.hs, years: m.years });
+      const o = S.normalizeCensusTrade(j, { source: 'census', basis: m.basis || 'index', hts: m.hts, unit: m.unit || 'lb' });
+      const latest = o.points[o.points.length - 1];
+      const isLevel = (m.basis || 'index') !== 'index';
+      return latest ? { ok: true, n: o.points.length, latest: latest.value, date: latest.date, basis: m.basis || 'index', level: isLevel }
+        : { ok: false, err: `fetched OK, 0 usable import rows for HS ${(m.hs || []).join('/')} (confirm HS code + that UNIT_QY1 is a mass unit via a sample)` };
+    }
     if (src === 'eia') {
       if (!process.env.EIA_KEY) return { ok: false, err: 'no EIA_KEY' };
       const j = await F.fetchEia(m);
@@ -335,6 +344,7 @@ async function main() {
     if (entry.lmr) (Array.isArray(entry.lmr) ? entry.lmr : [entry.lmr]).forEach((s) =>
       targets.push({ kind: 'lmr', label: 'lmr' + (s.market ? `:${s.market}` : ''), spec: s }));
     if (entry.noaa) targets.push({ kind: 'noaa', label: 'noaa', spec: entry.noaa });
+    if (entry.census) targets.push({ kind: 'census', label: 'census', spec: entry.census });
     if (entry.bls) targets.push({ kind: 'bls', label: 'bls', spec: entry.bls });
     if (entry.fred) (Array.isArray(entry.fred) ? entry.fred : [entry.fred]).forEach((s) =>
       targets.push({ kind: 'fred', label: 'fred' + (s.seriesId ? `:${s.seriesId}` : ''), spec: s }));

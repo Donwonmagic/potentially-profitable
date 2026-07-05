@@ -279,6 +279,40 @@
     return { source: meta.source || 'noaa', basis: meta.basis || 'wholesale', unit: meta.unit || 'lb', points: points };
   }
 
+  // US Census International Trade import unit value → $/lb, month by month.
+  // Generalizes normalizeNoaaTrade (which is Census fisheries data) to ANY
+  // imported HS code, so import-only goods (olive oil, vanilla, cocoa beans)
+  // get a landed dollar figure. Public-domain US-gov data (redistributable —
+  // unlike the IMF/World Bank global-price feeds we deliberately avoid).
+  // Input rows: { hs, val (import $), qty (quantity), unit (UNIT_QY1), time (YYYY-MM) }.
+  // A customs/landed value runs BELOW delivered wholesale, so callers default
+  // basis:index (directional) unless they've confirmed it tracks a real level.
+  function normalizeCensusTrade(json, meta) {
+    meta = meta || {};
+    var items = (json && (json.items || json.results || json.data)) || [];
+    var htsPrefixes = Array.isArray(meta.hts) ? meta.hts.map(String) : (meta.hts ? [String(meta.hts)] : null);
+    // pounds per one quantity unit; non-mass units (count "NO"/"X", volume "L")
+    // can't become an honest $/lb, so they're skipped, not guessed.
+    var TO_LB = { KG: 2.20462, KILOGRAMS: 2.20462, KILOGRAM: 2.20462, T: 2204.62, MT: 2204.62, TON: 2204.62, TONNE: 2204.62, G: 0.00220462, GRAMS: 0.00220462, LB: 1, LBS: 1, POUNDS: 1, POUND: 1 };
+    var acc = {};
+    items.forEach(function (r) {
+      if (!r || r.time == null) return;
+      var hs = String(r.hs || '');
+      if (htsPrefixes && !htsPrefixes.some(function (p) { return hs.indexOf(p) === 0; })) return;
+      var val = num(r.val), qty = num(r.qty);
+      if (val == null || qty == null || qty <= 0) return;
+      var lbPer = TO_LB[String(r.unit || '').toUpperCase().trim()];
+      if (!lbPer) return;   // count / volume quantity → no honest $/lb
+      var key = String(r.time).slice(0, 7);   // YYYY-MM
+      var a = acc[key] || (acc[key] = { val: 0, lbs: 0 });
+      a.val += val; a.lbs += qty * lbPer;
+    });
+    var points = Object.keys(acc).filter(function (k) { return acc[k].lbs > 0; }).map(function (key) {
+      return { date: key + '-01', value: acc[key].val / acc[key].lbs };   // $/lb landed
+    }).sort(byDate);
+    return { source: meta.source || 'census', basis: meta.basis || 'index', unit: meta.unit || 'lb', points: points };
+  }
+
   function latestDate(outputs) {
     var d = null;
     (outputs || []).forEach(function (o) {
@@ -342,6 +376,7 @@
     normalizeAms: normalizeAms,
     normalizeEia: normalizeEia,
     normalizeNoaaTrade: normalizeNoaaTrade,
+    normalizeCensusTrade: normalizeCensusTrade,
     buildCompositeInput: buildCompositeInput
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

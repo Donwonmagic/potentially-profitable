@@ -170,6 +170,10 @@ async function liveFetch(ingredient, m) {
     // across species; normalizeNoaaTrade filters by commodity.
     try { out.noaa = await F.fetchNoaaTrade({ years: DEEP_DAYS ? Math.max(m.noaa.years || 2, Math.ceil(DEEP_DAYS / 365)) : m.noaa.years }); } catch (e) { /* skip; others contribute */ }
   }
+  if (m.census && typeof S.normalizeCensusTrade === 'function') {
+    // US Census import unit value (keyless) → landed $/lb for any HS code.
+    try { out.census = await F.fetchCensusTrade({ hs: m.census.hs, years: DEEP_DAYS ? Math.max(m.census.years || 3, Math.ceil(DEEP_DAYS / 365)) : (m.census.years || 3) }); } catch (e) { /* skip; others contribute */ }
+  }
   if (m.eia && process.env.EIA_KEY) {
     // EIA v2 (electricity etc.) — needs EIA_KEY; an energy-direction index signal.
     try { out.eia = await F.fetchEia(m.eia); } catch (e) { /* skip; transient/missing */ }
@@ -226,6 +230,7 @@ function toOutputs(ingredient, raw, m) {
     if (o.points.length) outs.push(o);
   });
   if (raw.noaa && typeof S.normalizeNoaaTrade === 'function') { const o = S.normalizeNoaaTrade(raw.noaa, { source: 'noaa', basis: (m.noaa && m.noaa.basis) || 'wholesale', commodity: m.noaa && m.noaa.commodity, hts: m.noaa && m.noaa.hts, nameMatch: m.noaa && m.noaa.nameMatch, edibleOnly: m.noaa && m.noaa.edibleOnly, unit: (m.noaa && m.noaa.unit) || 'lb' }); o.family = 'noaa'; o.type = 'noaa-trade'; if (o.points.length) outs.push(o); }
+  if (raw.census && typeof S.normalizeCensusTrade === 'function') { const o = S.normalizeCensusTrade(raw.census, { source: 'census', basis: (m.census && m.census.basis) || 'index', hts: m.census && m.census.hts, unit: (m.census && m.census.unit) || 'lb' }); o.family = 'census'; o.type = 'census-trade'; if (o.points.length) outs.push(o); }
   if (raw.bls) { const o = S.normalizeBls(raw.bls, { source: 'bls', basis: 'index' }); o.family = (m.bls && m.bls.family) || 'bls'; o.type = (m.bls && m.bls.type) || 'bls'; if (o.points.length) outs.push(o); }
   // FRED fan-out: an array of {json, spec} (multi-series) or a single json (demo).
   // Distinct `source` per series so sourceSeries keys don't collide; default stays

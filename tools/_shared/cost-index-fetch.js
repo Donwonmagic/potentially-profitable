@@ -183,6 +183,50 @@ async function fetchNoaaTrade(opts) {
   return pr;
 }
 
+// US Census International Trade — monthly imports by HS code. Public-domain
+// US-gov data (redistributable, unlike IMF/World Bank/UN Comtrade). Keyless for
+// light use; CENSUS_KEY raises the limit. Response is array-of-arrays with a
+// header row; we parse it into {hs,val,qty,unit,time} objects for the normalizer.
+// NOTE: field names + the quantity unit (UNIT_QY1) must be confirmed on the first
+// live run — the endpoint returns kg for most foods but "no"/"l" for some.
+var CENSUS_IMPORTS_BASE = 'https://api.census.gov/data/timeseries/intltrade/imports/hs';
+async function fetchCensusTrade(opts) {
+  opts = opts || {};
+  var years = opts.years || 3;
+  var hsList = (Array.isArray(opts.hs) ? opts.hs : (opts.hs ? [opts.hs] : [])).map(String);
+  if (!hsList.length) throw new Error('census: no hs codes');
+  var thisYear = new Date().getFullYear();
+  var startYM = (thisYear - years + 1) + '-01', endYM = thisYear + '-12';
+  var key = opts.key || process.env.CENSUS_KEY;
+  var cacheKey = 'census|' + hsList.join(',') + '|' + startYM + '|' + endYM;
+  if (_reportCache.has(cacheKey)) return _reportCache.get(cacheKey);
+  var pr = (async function () {
+    var items = [];
+    for (var i = 0; i < hsList.length; i++) {
+      var hs = hsList[i], lvl = 'HS' + hs.length;
+      var url = CENSUS_IMPORTS_BASE
+        + '?get=' + encodeURIComponent('I_COMMODITY,GEN_VAL_MO,GEN_QY1_MO,UNIT_QY1')
+        + '&COMM_LVL=' + lvl
+        + '&I_COMMODITY=' + encodeURIComponent(hs)
+        + '&time=' + encodeURIComponent('from ' + startYM + ' to ' + endYM)
+        + (key ? '&key=' + encodeURIComponent(key) : '');
+      var j;
+      try { j = await fetchJson(url, { headers: { Accept: 'application/json' } }); }
+      catch (e) { continue; }   // one bad HS code shouldn't kill the batch
+      if (!Array.isArray(j) || j.length < 2) continue;
+      var head = j[0], ix = {};
+      head.forEach(function (h, k) { ix[h] = k; });
+      for (var r = 1; r < j.length; r++) {
+        var row = j[r];
+        items.push({ hs: row[ix.I_COMMODITY], val: row[ix.GEN_VAL_MO], qty: row[ix.GEN_QY1_MO], unit: row[ix.UNIT_QY1], time: row[ix.time] });
+      }
+    }
+    return { items: items };
+  })().catch(function (e) { _reportCache.delete(cacheKey); throw e; });
+  _reportCache.set(cacheKey, pr);
+  return pr;
+}
+
 var EIA_BASE = 'https://api.eia.gov/v2/';   // EIA Open Data API v2 — needs EIA_KEY
 
 // EIA v2 time series. spec: { route, facets:{sectorid,stateid,...}, frequency, value }.
@@ -281,6 +325,7 @@ module.exports = {
   fetchAmsReportDeep: fetchAmsReportDeep,
   fetchLmrReport: fetchLmrReport,
   fetchNoaaTrade: fetchNoaaTrade,
+  fetchCensusTrade: fetchCensusTrade,
   fetchEia: fetchEia,
   LMR_BASE: LMR_BASE,
   NOAA_TRADE_BASE: NOAA_TRADE_BASE,
