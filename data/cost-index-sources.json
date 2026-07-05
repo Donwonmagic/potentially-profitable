@@ -7088,7 +7088,7 @@
       "verified": false,
       "lmr": {
         "reportId": "2453",
-        "commodity": "Chuck Roll",
+        "commodity": "Chuck, roll",
         "reducer": "wtdAvg",
         "unit": "lb",
         "_report": "LMR Datamart 2453 (LM_XB403, PM), section Choice Cuts. Match \"Ribeye\" (IMPS 109E/112A). Price column Weighted_Average (confirmed label; exact JSON key inferred → array of candidates). $/cwt → /100 for $/lb. Daily report → report_date (default).",
@@ -7114,7 +7114,7 @@
       "verified": false,
       "lmr": {
         "reportId": "2453",
-        "commodity": "Top Sirloin",
+        "commodity": "top butt",
         "reducer": "wtdAvg",
         "unit": "lb",
         "_report": "LMR Datamart 2453 (LM_XB403, PM), section Choice Cuts. Match \"Ribeye\" (IMPS 109E/112A). Price column Weighted_Average (confirmed label; exact JSON key inferred → array of candidates). $/cwt → /100 for $/lb. Daily report → report_date (default).",
@@ -7140,7 +7140,7 @@
       "verified": false,
       "lmr": {
         "reportId": "2453",
-        "commodity": "Flank",
+        "commodity": "flank steak",
         "reducer": "wtdAvg",
         "unit": "lb",
         "_report": "LMR Datamart 2453 (LM_XB403, PM), section Choice Cuts. Match \"Ribeye\" (IMPS 109E/112A). Price column Weighted_Average (confirmed label; exact JSON key inferred → array of candidates). $/cwt → /100 for $/lb. Daily report → report_date (default).",
@@ -7192,7 +7192,7 @@
       "verified": false,
       "lmr": {
         "reportId": "2453",
-        "commodity": "Tri-Tip",
+        "commodity": "tri-tip",
         "reducer": "wtdAvg",
         "unit": "lb",
         "_report": "LMR Datamart 2453 (LM_XB403, PM), section Choice Cuts. Match \"Ribeye\" (IMPS 109E/112A). Price column Weighted_Average (confirmed label; exact JSON key inferred → array of candidates). $/cwt → /100 for $/lb. Daily report → report_date (default).",
@@ -7218,7 +7218,7 @@
       "verified": false,
       "lmr": {
         "reportId": "2453",
-        "commodity": "Flat Iron",
+        "commodity": "top blade",
         "reducer": "wtdAvg",
         "unit": "lb",
         "_report": "LMR Datamart 2453 (LM_XB403, PM), section Choice Cuts. Match \"Ribeye\" (IMPS 109E/112A). Price column Weighted_Average (confirmed label; exact JSON key inferred → array of candidates). $/cwt → /100 for $/lb. Daily report → report_date (default).",
@@ -7244,7 +7244,7 @@
       "verified": false,
       "lmr": {
         "reportId": "2453",
-        "commodity": "Top Round",
+        "commodity": "top inside round",
         "reducer": "wtdAvg",
         "unit": "lb",
         "_report": "LMR Datamart 2453 (LM_XB403, PM), section Choice Cuts. Match \"Ribeye\" (IMPS 109E/112A). Price column Weighted_Average (confirmed label; exact JSON key inferred → array of candidates). $/cwt → /100 for $/lb. Daily report → report_date (default).",
@@ -7270,7 +7270,7 @@
       "verified": false,
       "lmr": {
         "reportId": "2453",
-        "commodity": "Bottom Round",
+        "commodity": "outside round",
         "reducer": "wtdAvg",
         "unit": "lb",
         "_report": "LMR Datamart 2453 (LM_XB403, PM), section Choice Cuts. Match \"Ribeye\" (IMPS 109E/112A). Price column Weighted_Average (confirmed label; exact JSON key inferred → array of candidates). $/cwt → /100 for $/lb. Daily report → report_date (default).",
@@ -9988,6 +9988,98 @@
         "unit": "lb"
       },
       "coverage": "Staged: retail price level (BLS/FRED APU chicken legs (bone-in), per lb) corroborated by its commodity PPI — no free wholesale chicken legs report exists, so it would ship as a retail reference if it verifies in bounds."
+    },
+    "eye-of-round": {
+      "verified": false,
+      "lmr": {
+        "reportId": "2453",
+        "commodity": "eye of round",
+        "reducer": "wtdAvg",
+        "unit": "lb",
+        "_report": "LMR Datamart 2453 (LM_XB403, PM), section Choice Cuts. Match \"Ribeye\" (IMPS 109E/112A). Price column Weighted_Average (confirmed label; exact JSON key inferred → array of candidates). $/cwt → /100 for $/lb. Daily report → report_date (default).",
+        "section": "Choice Cuts",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "Weighted_Average",
+            "weighted_average",
+            "wtd_avg_price",
+            "avg_price"
+          ]
+        },
+        "_status": "STAGED verified:false (scaffold 2026-07, cloned from ribeye) — 2453 Choice Cuts item_description \"eye of round\"; --flip after --verify."
+      },
+      "coverage": "Staged: mapped to the USDA LMR boxed-beef cutout report (cut \"eye of round\"); withheld from live reads until a per-cut wholesale level verifies in bounds."
+    },
+    "chuck-tender": {
+      "verified": false,
+      "lmr": {
+        "reportId": "2453",
+        "commodity": "chuck tender",
+        "reducer": "wtdAvg",
+        "unit": "lb",
+        "_report": "LMR Datamart 2453 (LM_XB403, PM), section Choice Cuts. Match \"Ribeye\" (IMPS 109E/112A). Price column Weighted_Average (confirmed label; exact JSON key inferred → array of candidates). $/cwt → /100 for $/lb. Daily report → report_date (default).",
+        "section": "Choice Cuts",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "Weighted_Average",
+            "weighted_average",
+            "wtd_avg_price",
+            "avg_price"
+          ]
+        },
+        "_status": "STAGED verified:false (scaffold 2026-07, cloned from ribeye) — 2453 Choice Cuts item_description \"chuck tender\"; --flip after --verify."
+      },
+      "coverage": "Staged: mapped to the USDA LMR boxed-beef cutout report (cut \"chuck tender\"); withheld from live reads until a per-cut wholesale level verifies in bounds."
+    },
+    "shoulder-clod": {
+      "verified": false,
+      "lmr": {
+        "reportId": "2453",
+        "commodity": "shoulder clod",
+        "reducer": "wtdAvg",
+        "unit": "lb",
+        "_report": "LMR Datamart 2453 (LM_XB403, PM), section Choice Cuts. Match \"Ribeye\" (IMPS 109E/112A). Price column Weighted_Average (confirmed label; exact JSON key inferred → array of candidates). $/cwt → /100 for $/lb. Daily report → report_date (default).",
+        "section": "Choice Cuts",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "Weighted_Average",
+            "weighted_average",
+            "wtd_avg_price",
+            "avg_price"
+          ]
+        },
+        "_status": "STAGED verified:false (scaffold 2026-07, cloned from ribeye) — 2453 Choice Cuts item_description \"shoulder clod\"; --flip after --verify."
+      },
+      "coverage": "Staged: mapped to the USDA LMR boxed-beef cutout report (cut \"shoulder clod\"); withheld from live reads until a per-cut wholesale level verifies in bounds."
+    },
+    "sirloin-tip": {
+      "verified": false,
+      "lmr": {
+        "reportId": "2453",
+        "commodity": "knuckle",
+        "reducer": "wtdAvg",
+        "unit": "lb",
+        "_report": "LMR Datamart 2453 (LM_XB403, PM), section Choice Cuts. Match \"Ribeye\" (IMPS 109E/112A). Price column Weighted_Average (confirmed label; exact JSON key inferred → array of candidates). $/cwt → /100 for $/lb. Daily report → report_date (default).",
+        "section": "Choice Cuts",
+        "priceUnit": "Dollars Per Cwt",
+        "windowDays": 45,
+        "fields": {
+          "price": [
+            "Weighted_Average",
+            "weighted_average",
+            "wtd_avg_price",
+            "avg_price"
+          ]
+        },
+        "_status": "STAGED verified:false (scaffold 2026-07, cloned from ribeye) — 2453 Choice Cuts item_description \"knuckle\"; --flip after --verify."
+      },
+      "coverage": "Staged: mapped to the USDA LMR boxed-beef cutout report (cut \"knuckle\"); withheld from live reads until a per-cut wholesale level verifies in bounds."
     }
   },
   "drivers": {
