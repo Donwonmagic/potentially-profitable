@@ -905,10 +905,12 @@ function answerBanner(slug, locale) {
   const unit = (es ? (lab.unit_es || lab.unit_en) : lab.unit_en) || '';
   const unitSfx = unit ? `/${unit}` : '';
   const range = r.rc[0] !== r.rc[1] ? `${money(r.rc[0])}–${money(r.rc[1])}` : money(r.rc[0]);
-  const dw = r.trend && r.trend.dir ? dirWord(r.trend, locale) : '';
+  // Lead with the RANGE, not a direction word: this is the exact line answer
+  // engines lift, and the 25-year backtest shows direction is at chance. The
+  // committability verdict chip (Hold/Watch) is volatility, not a price call.
   const asOf = r.asOf || '—';
   const chip = verdictChip(ingVerdict(slug), locale);
-  return `<p class="ci-answer">${dw ? `<strong>${dw}</strong> · ` : ''}~${range}${unitSfx} · ${es ? 'al' : 'as of'} ${asOf} ${chip}</p>`;
+  return `<p class="ci-answer">~${range}${unitSfx} · ${es ? 'al' : 'as of'} ${asOf} ${chip}</p>`;
 }
 
 // ---- Price-free INDEXED movement chart ----------------------------
@@ -1124,7 +1126,10 @@ function aggregateRows(slugs) {
       priceLowUsd: r.rc ? +(r.rc[0] / 100).toFixed(2) : null,
       priceMedianUsd: (r.lvl && r.lvl.medianCents != null) ? +(r.lvl.medianCents / 100).toFixed(2) : null,
       priceHighUsd: r.rc ? +(r.rc[1] / 100).toFixed(2) : null,
-      trendDir: (r.trend && r.trend.dir) || null,
+      // Honest magnitude fields, not a forecast: how wide the current range is
+      // (spread) and where the median sits inside it (0 = low, 100 = high).
+      spreadPct: (r.rc && r.lvl && r.lvl.medianCents) ? +(((r.rc[1] - r.rc[0]) / r.lvl.medianCents) * 100).toFixed(1) : null,
+      pctInWindow: (r.rc && r.lvl && r.lvl.medianCents != null && r.rc[1] > r.rc[0]) ? Math.max(0, Math.min(100, Math.round(((r.lvl.medianCents - r.rc[0]) / (r.rc[1] - r.rc[0])) * 100))) : null,
       confidence: r.conf,
       asOf: r.asOf,
       sources: (r.lvl && r.lvl.nSources) || null,
@@ -1137,7 +1142,7 @@ function aggregateJson(slugs) {
   const rows = aggregateRows(slugs);
   return JSON.stringify({
     name: 'Muntin Restaurant Cost Index',
-    description: 'A public read of where common restaurant ingredients are priced wholesale across U.S. government market sources — a typical range, a measured direction, and a confidence tier per ingredient. Built only from citable public data (USDA, BLS, FRED, EIA, NOAA). Values are US dollars per unit, a wholesale reference — not a delivered or retail price.',
+    description: 'A public read of where common restaurant ingredients are priced wholesale across U.S. government market sources — a typical range, its spread and where the median sits within that range, and a confidence tier per ingredient. Built only from citable public data (USDA, BLS, FRED, EIA, NOAA). Values are US dollars per unit, a wholesale reference — not a delivered or retail price, and not a price forecast.',
     license: 'https://creativecommons.org/publicdomain/zero/1.0/',
     source: 'https://muntin.digital/cost-index/',
     methodology: 'https://muntin.digital/cost-index/methodology/',
@@ -1150,9 +1155,9 @@ function aggregateJson(slugs) {
 function aggregateCsv(slugs) {
   const rows = aggregateRows(slugs);
   const esc = (v) => { const s = v == null ? '' : String(v); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
-  const out = ['slug,name,unit,basis,price_low_usd,price_median_usd,price_high_usd,trend_dir,confidence,as_of,sources,url'];
+  const out = ['slug,name,unit,basis,price_low_usd,price_median_usd,price_high_usd,spread_pct,pct_in_window,confidence,as_of,sources,url'];
   for (const r of rows) {
-    out.push([r.slug, r.name, r.unit, r.basis, r.priceLowUsd, r.priceMedianUsd, r.priceHighUsd, r.trendDir, r.confidence, r.asOf, r.sources, r.url].map(esc).join(','));
+    out.push([r.slug, r.name, r.unit, r.basis, r.priceLowUsd, r.priceMedianUsd, r.priceHighUsd, r.spreadPct, r.pctInWindow, r.confidence, r.asOf, r.sources, r.url].map(esc).join(','));
   }
   return out.join('\n') + '\n';
 }
@@ -1192,10 +1197,15 @@ function emitIngredientJsonLd(slug, locale) {
   } else {
     pv.description = 'Directional read only — insufficient source agreement to publish a point estimate.';
   }
-  if (r && r.trend && r.trend.dir) {
+  // A magnitude, never a forecast: where today's median sits within today's
+  // low–high wholesale range (0 = low, 100 = high). Deliberately NOT a trend
+  // direction — the 25-year backtest shows direction calls are at chance
+  // (50.5% vs a 50.2% baseline), so no direction is published as a liftable field.
+  if (r && r.emitPoint && r.distinctRange && r.lvl && r.lvl.medianCents != null && r.rc && r.rc[1] > r.rc[0]) {
+    const posPct = Math.max(0, Math.min(100, Math.round(((r.lvl.medianCents - r.rc[0]) / (r.rc[1] - r.rc[0])) * 100)));
     pv.valueReference = {
-      '@type': 'PropertyValue', 'name': 'trend', 'value': r.trend.dir,
-      'description': `Direction over the tracked window; confidence: ${r.conf}.`
+      '@type': 'PropertyValue', 'name': 'position-in-range', 'value': posPct, 'unitText': 'percent',
+      'description': `Where the current median sits within today's low–high wholesale range (0 = low, 100 = high). A magnitude, not a forecast.`
     };
   }
 
@@ -1205,8 +1215,8 @@ function emitIngredientJsonLd(slug, locale) {
     'name': es ? `${esName} — precio mayorista de referencia` : `${enName} wholesale price index`,
     'alternateName': es ? `${enName} wholesale price index` : `${esName} — precio mayorista`,
     'description': es
-      ? `Precio mayorista de referencia para ${esName.toLowerCase()} (por ${lab.unit_es || lab.unit_en}), combinado de fuentes públicas de mercado de EE. UU. y mostrado como un rango típico con su tendencia. Para que un restaurante distinga un movimiento de mercado de un sobreprecio de proveedor.`
-      : `Wholesale reference price for ${enName.toLowerCase()} (per ${lab.unit_en}), blended from public U.S. market sources and shown as a typical range with a trend. Built for restaurant operators to tell a market move from a vendor markup.`,
+      ? `Precio mayorista de referencia para ${esName.toLowerCase()} (por ${lab.unit_es || lab.unit_en}), combinado de fuentes públicas de mercado de EE. UU. y mostrado como un rango típico con fecha. Para que un restaurante distinga un movimiento de mercado de un sobreprecio de proveedor. No es un pronóstico de precio.`
+      : `Wholesale reference price for ${enName.toLowerCase()} (per ${lab.unit_en}), blended from public U.S. market sources and shown as a dated typical range. Built for restaurant operators to tell a market move from a vendor markup — not a price forecast.`,
     'url': url,
     'mainEntityOfPage': url,
     'inLanguage': es ? 'es-US' : 'en-US',
@@ -1241,9 +1251,22 @@ function emitIngredientJsonLd(slug, locale) {
     '@type': 'Question', 'name': f.q, 'acceptedAnswer': { '@type': 'Answer', 'text': f.a }
   }));
 
+  // WebPage node carries the speakable selectors (the range-first .ci-answer line,
+  // now direction-free) and the page's dateModified — so answer engines can lift the
+  // honest sentence and Google sees a per-page freshness signal.
+  const webpage = {
+    '@type': 'WebPage', '@id': url + '#page', 'url': url, 'name': name,
+    'inLanguage': es ? 'es-US' : 'en-US',
+    'isPartOf': { '@id': 'https://muntin.digital/#website' },
+    'mainEntity': { '@id': url + '#dataset' },
+    'speakable': { '@type': 'SpeakableSpecification', 'cssSelector': ['h1', '.ci-answer'] }
+  };
+  if (r && r.asOf) webpage.dateModified = r.asOf;
+
   return JSON.stringify({
     '@context': 'https://schema.org',
     '@graph': [
+      webpage,
       dataset,
       { '@type': 'BreadcrumbList', '@id': url + '#breadcrumbs', 'itemListElement': crumb.map((c, i) => ({ '@type': 'ListItem', 'position': i + 1, 'name': c[0], 'item': c[1] })) },
       { '@type': 'FAQPage', '@id': url + '#faq', 'inLanguage': es ? 'es-US' : 'en-US', 'mainEntity': faq }

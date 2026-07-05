@@ -5,17 +5,44 @@
   "basis": "wholesale",
   "currency": "USD",
   "note": "Wholesale reference prices compiled from public U.S. market sources (USDA AMS/LMR, BLS, FRED, EIA, NOAA). Values are in US dollars per unit. Not a delivered or retail price. Source: muntin.digital/cost-index/ground-beef/",
+  "reconstructedNote": "Observations marked reconstructed:true are a monthly backfill reconstructed from public sources after the fact — not figures published live on that date. Live points (reconstructed:false) were captured at publication.",
+  "coverage": {
+    "start": "2023-11-16",
+    "end": "2026-06-10",
+    "points": 5,
+    "reconstructed": 3
+  },
   "asOf": "2026-06-10",
   "observations": [
     {
+      "date": "2023-11-16",
+      "priceUsd": 4.19,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-01-05",
+      "priceUsd": 3.86,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2026-03-18",
+      "priceUsd": 5.49,
+      "source": null,
+      "reconstructed": true
+    },
+    {
       "date": "2026-06-08",
       "priceUsd": 5.64,
-      "source": "usda-lmr"
+      "source": "usda-lmr",
+      "reconstructed": false
     },
     {
       "date": "2026-06-10",
       "priceUsd": 5.51,
-      "source": "usda-lmr"
+      "source": "usda-lmr",
+      "reconstructed": false
     }
   ]
 }
