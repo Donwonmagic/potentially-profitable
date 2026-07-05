@@ -58,6 +58,8 @@
     attributionConf: 'Confianza',
     conf: { high: 'alta', medium: 'media', low: 'baja', directional: 'direccional' },
     seeReading: 'Ver la lectura completa en el Índice de costos',
+    marketLoading: 'Leyendo el mercado…',
+    marketFailed: 'No se pudo cargar la referencia de mercado — tu comparación con tu propio historial sigue válida.',
     noMatchHead: 'Aún no tenemos una referencia de mercado para esto.',
     noMatchBody: 'Vendor Benchmark todavía compara tu precio contra tu propio historial (arriba). Revisa el Índice de costos para ver qué artículos sí seguimos.',
     levelAt: 'Tu nivel está dentro de un margen de entrega normal frente a la referencia mayorista.',
@@ -122,6 +124,8 @@
     attributionConf: 'Confidence',
     conf: { high: 'high', medium: 'medium', low: 'low', directional: 'directional' },
     seeReading: 'See the full reading in the Cost Index',
+    marketLoading: 'Reading the market…',
+    marketFailed: 'Couldn’t load the market reference — your own-history check below still stands.',
     noMatchHead: 'No market reference for this yet.',
     noMatchBody: 'Vendor Benchmark still checks your price against your own history (above). See the Cost Index for the items we track.',
     levelAt: 'Your level sits within a normal delivered markup over the wholesale reference.',
@@ -204,6 +208,31 @@
   var clearBtn = document.getElementById('vbClear');
   var matchChip = document.getElementById('vbMatchChip');
   if (!itemEl || !unitEl || !rowsEl || !resultEl) return;
+
+  // ---- lazy market seeds -----------------------------------------------------
+  // The two Cost Index seeds are ~1MB; loading them render-blocking delays first
+  // paint on a cheap kitchen phone. They ship as inert <script type=
+  // "text/muntin-lazy-seed" data-src>; we promote them on idle. The own-history
+  // verdict needs no seed and renders immediately; the market half fills in when
+  // the seeds land. No fetch — a same-origin <script>, exactly like site.js.
+  function seedsPresent() { return !!window.MUNTIN_COST_INDEX; }
+  var seedsFailed = false, seedsRequested = false;
+  function loadSeeds() {
+    if (seedsPresent() || seedsRequested) return;
+    var tags = document.querySelectorAll('script[type="text/muntin-lazy-seed"]');
+    if (!tags.length) return; // seeds were shipped eager (no-JS/legacy) — nothing to do
+    seedsRequested = true;
+    var idle = window.requestIdleCallback || function (cb) { return setTimeout(cb, 200); };
+    idle(function () {
+      Array.prototype.forEach.call(tags, function (tag) {
+        var src = tag.getAttribute('data-src'); if (!src) return;
+        var sc = document.createElement('script'); sc.src = src; sc.async = true;
+        sc.onload = function () { run(); };                 // recompute the market half
+        sc.onerror = function () { seedsFailed = true; run(); };
+        document.head.appendChild(sc);
+      });
+    });
+  }
 
   // ---- repeatable dated-purchase rows (DOM-built; the DOM is the state) ------
   function buildRow(data) {
@@ -681,6 +710,12 @@
 
     // no market reference at all
     if (!m.available) {
+      // Distinguish "seeds still loading / failed" from "no reference for this
+      // item" — saying "not tracked" while the market is mid-load is a misstatement.
+      if (!seedsPresent()) {
+        var msg = seedsFailed ? T.marketFailed : T.marketLoading;
+        return h`<div class="vb-headline">${yourLine}<div class="vb-headline-note"><p class="vb-loading${seedsFailed ? '' : ' vb-loading--pulse'}" role="status">${msg}</p></div></div>`;
+      }
       if (m.reason === 'no-match' || m.reason === 'no-series' || m.reason === 'no-index') {
         return h`<div class="vb-headline vb-headline--info">${yourLine}<div class="vb-headline-note"><h2 class="vb-h2">${T.noMatchHead}</h2><p>${T.noMatchBody}</p><p><a class="vb-inlink" href="${BASE}/cost-index/">${T.seeReading} <span aria-hidden="true">→</span></a></p></div></div>`;
       }
@@ -994,6 +1029,7 @@
   resultEl.addEventListener('click', onResultClick);
   ensureAnnouncer();
   injectExtras();
+  loadSeeds();
   restore();
   track('Bench Loaded');
 })();
