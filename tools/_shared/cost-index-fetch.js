@@ -283,7 +283,7 @@ async function mapLimit(items, limit, fn) {
 // SAME normalize path (no scale drift). Returns the report-JSON shape
 // ({ results, reportSection }) so normalizeAms consumes it unchanged. Per-window
 // failures are tolerated (one gap can't sink the series); fetchJson already retries 5xx.
-async function fetchAmsReportDeep(reportId, sectionRaw, auth, days, winField) {
+async function fetchAmsReportDeep(reportId, sectionRaw, auth, days, winField, rowFilter) {
   winField = winField || 'report_begin_date';
   var h = auth ? { Authorization: auth } : {};
   var base = MARS_BASE + reportId;
@@ -317,18 +317,29 @@ async function fetchAmsReportDeep(reportId, sectionRaw, auth, days, winField) {
   // AMS_DEEP_NO_EARLYSTOP=1 to scan every window regardless.
   var noEarly = process.env.AMS_DEEP_NO_EARLYSTOP === '1';
   var EARLYSTOP_EMPTY = Math.max(1, Number(process.env.AMS_DEEP_EMPTY_RUN) || 4);
+  // rowFilter (optional): keep only rows matching THIS ingredient's commodity, applied
+  // per window BEFORE merging. A deep produce stitch pulls ~15 windows × up to 8 markets
+  // of EVERY commodity's rows; holding them all before normalizeAms filters is what OOMs a
+  // single heavy item (arugula et al. — 8 markets). Filtering here bounds `merged` to the
+  // target commodity's own rows. The filter is a strict SUPERSET of normalizeAms's match
+  // (substring, across all fields), so it can never drop a row normalizeAms would keep.
+  // Early-stop keys on the RAW window row count (MARS retention), NOT the filtered count,
+  // so a commodity merely absent from a live window can't trigger a false stop.
   var merged = [], consecutiveEmpty = 0, stoppedAt = null;
   for (var i = 0; i < ranges.length; i += AMS_CONCURRENCY) {
     var slice = ranges.slice(i, i + AMS_CONCURRENCY);
     var batch = slice.map(function (r) {
       return fetchJson(rangeUrl(section, r[0], r[1]), { headers: h })
-        .then(function (j) { return (j && j.results) || []; }, function () { return []; });   // tolerate a dead window
+        .then(function (j) {
+          var rows = (j && j.results) || [];
+          return { raw: rows.length, keep: rowFilter ? rows.filter(rowFilter) : rows };
+        }, function () { return { raw: 0, keep: [] }; });   // tolerate a dead window
     });
     var results = await Promise.all(batch);
     for (var bi = 0; bi < results.length; bi++) {
-      var rows = results[bi];
-      for (var k = 0; k < rows.length; k++) merged.push(rows[k]);
-      if (rows.length === 0) consecutiveEmpty++; else consecutiveEmpty = 0;   // windows are time-ordered within a slice
+      var rr = results[bi];
+      for (var k = 0; k < rr.keep.length; k++) merged.push(rr.keep[k]);
+      if (rr.raw === 0) consecutiveEmpty++; else consecutiveEmpty = 0;   // MARS retention keys on RAW rows, not filtered
     }
     if (!noEarly && consecutiveEmpty >= EARLYSTOP_EMPTY) { stoppedAt = slice[slice.length - 1][0]; break; }
   }

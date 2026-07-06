@@ -150,10 +150,20 @@ async function liveFetch(ingredient, m) {
     // so one market missing the commodity or one slow report drops only itself —
     // the others still contribute (the cardinal rule), without 8 sequential waits.
     const settled = await F.mapLimit(amsSpecs(m), F.AMS_CONCURRENCY,
-      (spec) => (DEEP_DAYS > (spec.windowDays || 0)
-        ? F.fetchAmsReportDeep(spec.reportId, spec.section, auth, DEEP_DAYS)   // backfill: stitch 150-day windows (MARS caps a single window)
-        : F.fetchAmsReport(spec.reportId, spec.section, auth, spec.windowDays)
-      ).then((json) => ({ json, spec })));
+      (spec) => {
+        // Deep stitch only: pre-filter each window down to THIS commodity's rows so a
+        // multi-market produce backfill doesn't hold every commodity's rows in RAM (the
+        // single-ingredient OOM — arugula's 8 markets). needle mirrors normalizeAms's
+        // lowercased substring match; scanning all fields makes it a safe superset.
+        const needle = spec.commodity ? String(spec.commodity).toLowerCase() : null;
+        const rowFilter = needle
+          ? (row) => { for (const k in row) { const v = row[k]; if (v != null && String(v).toLowerCase().indexOf(needle) !== -1) return true; } return false; }
+          : null;
+        return (DEEP_DAYS > (spec.windowDays || 0)
+          ? F.fetchAmsReportDeep(spec.reportId, spec.section, auth, DEEP_DAYS, undefined, rowFilter)   // backfill: stitch 150-day windows (MARS caps a single window)
+          : F.fetchAmsReport(spec.reportId, spec.section, auth, spec.windowDays)
+        ).then((json) => ({ json, spec }));
+      });
     settled.forEach((r) => { if (r.ok) out.ams.push(r.value); });
   }
   if (m.lmr) {
