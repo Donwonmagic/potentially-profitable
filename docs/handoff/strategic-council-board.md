@@ -49,12 +49,31 @@ limit.** Evidence:
      vitest/golden suites ran only inside dev sessions. The "enforced in CI"
      trust claim on /ai + /never has not actually executed since 06-19.
 
-**Recovery runbook once billing is unblocked (council executes):** manually
-`workflow_dispatch` cost-index-refresh → verify a fresh data commit + green
-Workers deploy → dispatch product `ci.yml` on main and confirm the phantom
-"BuildFailed" runs stop → watch the next scheduled daily + weekly runs → then
-consider whether the 17-day gap warrants a dated freshness note on /status/
-(honesty call — founder's if publicly visible).
+**Recovery status (2026-07-06 ~17:05 UTC): billing UNBLOCKED** — founder paid;
+runners returned instantly (probe: product CI run #1969 executed, first real CI
+since 06-19). Founder's first refresh dispatch was cancelled cleanly (nothing
+committed) pending ingredient-coverage confirmation. Grounded answer: the
+roster (`data/cost-index-sources.json`) is unchanged since 06-16 — the batch-1
+12 high-traffic ingredients are in it, the fetch iterates the roster on the
+run's own ref, and below-bar newcomers graduate to the seed/pages automatically
+via the shippable-bar gate. **But the pause caught a real wiring gap:** PR #490/
+#500 added five committed live-data-derived artifacts + sync gates while the
+heartbeat was dead (`cost-lockfloat.json/.js`, `cost-index-audit.json`,
+`cost-index-calibration-report.json` + methodology sentinels,
+`cost-forecast-backtest.json`, provenance `cost-index/sources.json`) — none
+rebuilt/staged by the refresh workflow, so the FIRST post-freeze refresh would
+have left every one drifted → red `--check` gates on all subsequent sessions.
+**Patched on this branch** (cost-index-refresh.yml): rebuild steps in dependency
+order, pre-commit `--check` re-derivation, the new honesty gates (basis-leak,
+shippable-bar, seasonal-band, band-coverage, trend-skill) run before commit, and
+the artifacts added to the scoped `git add`. Validated on frozen data: all six
+write-mode runs byte-identical, all 11 gates pass. **The patch must reach main
+before the next 13:00 UTC cron fires unpatched** — either merge first, or run
+the catch-up via workflow_dispatch "Use workflow from: claude/muntin-strategic-
+council-exsghc" (commits the read to this branch, reviewable, merges together).
+Remaining: confirm phantom "BuildFailed" runs stopped on the product repo's
+next main push; watch the weekly dispatch cron (~07-07); then the /status/
+freshness-note honesty call (founder's if publicly visible).
 
 ### Delta 2026-06-28 → 07-06 (merged to main; board was stale for this window)
 

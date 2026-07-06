@@ -96,6 +96,18 @@ jobs:
           # trips the stale gate.
           node scripts/build-cost-index-health.mjs
           node scripts/build-seasonality.mjs
+          # Rebuild the OTHER committed artifacts that are pure functions of the
+          # fresh data — each is --check-gated in check-all, so any one left out
+          # drifts stale the moment the read above commits (the 2026-07-06 gap:
+          # these gates landed while the refresh was down, so no run ever
+          # exercised them). Order matters: provenance before the audit that
+          # reconciles against it; the calibration report before its page
+          # injection (below); the forecast backtest after build-seasonality.
+          node scripts/build-cost-index-provenance.mjs
+          node scripts/build-cost-index-audit.mjs
+          node scripts/build-cost-lockfloat.mjs
+          node scripts/build-cost-index-calibration-report.mjs
+          node scripts/backtest-cost-forecast.mjs
           # Re-render hub / per-ingredient / lab pages.
           node scripts/build-cost-index-pages.mjs
           # Re-render the ingredient-yield library pages — their market-read block
@@ -114,6 +126,10 @@ jobs:
           # dateModified (methodology EN+ES + hub) so the machine-readable
           # freshness signal tracks each daily read. In place, idempotent.
           node scripts/inject-cost-index-dataset-date.mjs
+          # Re-stamp the published-label calibration sentinels on the methodology
+          # pages (EN+ES) from the freshly rebuilt calibration report — sentinel
+          # injection must run AFTER page generation, like the dataset-date stamp.
+          node scripts/inject-cost-index-calibration.mjs
 
       - name: Fact + calibration gates
         if: steps.keys.outputs.configured == 'true'
@@ -123,6 +139,25 @@ jobs:
           # A fresh fetch must never publish a trend % that contradicts its own
           # sparkline (the unwindowed-index-source bug). Fail the run before commit.
           node scripts/reconcile-cost-index-trends.mjs --check
+          # Every derived artifact rebuilt above must re-derive byte-identical —
+          # a drift here means the build order broke, not the data. Fail pre-commit.
+          node scripts/build-cost-index-provenance.mjs --check
+          node scripts/build-cost-index-audit.mjs --check
+          node scripts/build-cost-lockfloat.mjs --check
+          node scripts/build-cost-index-calibration-report.mjs --check
+          node scripts/backtest-cost-forecast.mjs --check
+          node scripts/inject-cost-index-calibration.mjs --check
+          # The honesty gates that ship with the fresh surfaces: no non-dollar
+          # basis mislabeled as a $ level, no below-bar ingredient in the seed,
+          # every rendered seasonal band re-derived, and the published 80% band
+          # + trend-skill claims re-verified against realized history. If the
+          # fresh read breaks an earned claim, the run fails red and nothing
+          # commits — a stale-but-true index beats a fresh-but-wrong one.
+          node scripts/check-cost-index-basis-leak.mjs
+          node scripts/check-shippable-bar.mjs
+          node scripts/check-cost-index-seasonal.mjs
+          node scripts/check-band-coverage.mjs
+          node scripts/check-trend-skill.mjs
 
       - name: Commit the daily read
         if: steps.keys.outputs.configured == 'true'
@@ -139,6 +174,9 @@ jobs:
           # re-stamp from sync-includes, so the commit is always exactly the read.
           git add data/cost-index.json data/cost-index.js \
             data/cost-index-health.json data/seasonality.json \
+            data/cost-lockfloat.json data/cost-lockfloat.js \
+            data/cost-index-audit.json data/cost-index-calibration-report.json \
+            data/cost-forecast-backtest.json \
             cost-index/ es/cost-index/ \
             library/ingredient-yields/ es/library/ingredient-yields/ sitemap.xml
           git checkout -- . 2>/dev/null || true
