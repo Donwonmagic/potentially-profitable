@@ -1907,7 +1907,10 @@ function emitExpandingPage(slug, locale) {
   ${body}` + pageTail;
 }
 
-// ---- Weekly-email capture (reused on the hub + every ingredient page) ----
+// ---- Monthly-email capture (reused on the hub + every ingredient page) ----
+// (Weekly until the 2026-07-06 cadence pivot: the dispatch email is now monthly,
+// first Tuesday, and the data refresh is Mon/Wed/Fri — the pitch must promise
+// exactly that, no more.)
 // Persona audit #2: the email signup — the one conversion a tired operator was
 // ready for — sat below the hub's longest scroll. Most visitors land on an
 // INGREDIENT page (from search), which had no capture at all. Same wired form
@@ -1921,10 +1924,10 @@ function weeklySignup(locale, opts) {
   const id = opts.id || 'ci-news-email';
   const source = opts.source || 'cost-index';
   const pitch = opts.pitch || (es
-    ? 'Recibe el índice cada semana por correo — una lectura corta de lo que se mueve y qué hacer al respecto. Cuatro líneas, sin relleno.'
-    : 'Get the index in your inbox every week — a short read on what’s moving and what to do about it. A few lines, no funnels.');
+    ? 'Recibe la lectura mensual del índice — el primer martes de cada mes, una lectura corta de lo que se movió y qué hacer al respecto. Sin relleno.'
+    : 'Get the monthly index read — the first Tuesday of each month, a short read on what moved and what to do about it. No filler, no funnels.');
   const alt = opts.compact ? '' : `
-      <p class="ci-signup-alt">${es ? '¿Prefieres explorar a tu ritmo?' : 'Rather check back yourself?'} <a href="${base}/cost-index/weekly/">${es ? 'Ediciones semanales anteriores' : 'Past weekly reads'} <span aria-hidden="true">→</span></a> <span class="ci-signup-sep">·</span> <a href="${base}/feed.xml">RSS</a></p>`;
+      <p class="ci-signup-alt">${es ? '¿Prefieres explorar a tu ritmo?' : 'Rather check back yourself?'} <a href="${base}/cost-index/weekly/">${es ? 'Ediciones anteriores' : 'Past editions'} <span aria-hidden="true">→</span></a> <span class="ci-signup-sep">·</span> <a href="${base}/feed.xml">RSS</a></p>`;
   return `<div class="ci-signup${opts.compact ? ' ci-signup--compact' : ''}"${opts.anchor ? ' id="weekly-email"' : ''}>
       <div class="foot-newsletter">
         <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="${lang}" data-surface="${source}">
@@ -1936,7 +1939,7 @@ function weeklySignup(locale, opts) {
           <input type="hidden" name="ts" value="" />
           <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
           <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="newsletter" data-size="flexible"></div>
-          <button type="submit">${es ? 'Enviarme el índice semanal' : 'Email me the weekly index'}</button>
+          <button type="submit">${es ? 'Enviarme la lectura mensual' : 'Email me the monthly read'}</button>
         </form>
       </div>${alt}
     </div>`;
@@ -2006,8 +2009,8 @@ function emitIngredientPage(slug, locale) {
     ${whyItMatters(slug, locale)}
     ${howToUse(slug, locale)}
     ${weeklySignup(locale, { id: 'ci-news-email-ing', source: 'cost-index-ingredient', compact: true, pitch: (locale === 'es'
-      ? '¿No quieres revisar a mano cada semana? Recibe el índice por correo — una lectura corta de lo que se mueve y qué hacer. Unas líneas, sin relleno.'
-      : 'Don’t want to check this by hand every week? Get the index by email — a short read on what’s moving and what to do. A few lines, no funnels.') })}
+      ? '¿No quieres revisar esto a mano? Recibe la lectura mensual — el primer martes de cada mes, lo que se movió y qué hacer. Sin relleno.'
+      : 'Don’t want to check this by hand? Get the monthly read — the first Tuesday of each month, what moved and what to do. No filler, no funnels.') })}
     ${faqHtml}
     ${siblings(slug, locale)}
     <div class="ci-cta-row">

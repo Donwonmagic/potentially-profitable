@@ -50,12 +50,12 @@ const titleEN = esc(String(post.title || 'Restaurant Cost Index').replace(/[,:]?
 
 function card(locale) {
   const href = locale === 'es' ? '/es/cost-index/' : `/blog/${slug}/`;
-  const eyebrow = locale === 'es' ? `Índice de Costos de esta semana · ${humanES}` : `This week’s Cost Index · ${humanEN}`;
-  const title = locale === 'es' ? 'El Índice de Costos: cómo está la canasta esta semana' : titleEN;
+  const eyebrow = locale === 'es' ? `La lectura más reciente del Índice de Costos · ${humanES}` : `The latest Cost Index read · ${humanEN}`;
+  const title = locale === 'es' ? 'El Índice de Costos: cómo está la canasta' : titleEN;
   const dek = locale === 'es'
-    ? 'La lectura semanal de los costos mayoristas de ingredientes &mdash; niveles públicos, con fecha y fuente, nunca tu precio de entrega.'
+    ? 'La lectura de los costos mayoristas de ingredientes &mdash; niveles públicos, con fecha y fuente, nunca tu precio de entrega.'
     : esc(firstSentence(post.dek));
-  const cta = locale === 'es' ? 'Leer el índice de esta semana &rarr;' : 'Read this week’s read &rarr;';
+  const cta = locale === 'es' ? 'Leer la lectura más reciente &rarr;' : 'Read the latest read &rarr;';
   return [
     '<!-- cost-index-hero:start -->',
     `<a class="ci-hero" href="${href}" style="display:block;margin:0 0 40px;padding:28px 32px;border-radius:16px;background:radial-gradient(140% 180% at 92% 50%,rgba(42,80,200,0.18) 0%,rgba(22,24,29,0) 62%),#16181D;color:#F6F7F8;text-decoration:none;border:1px solid rgba(246,247,248,0.12);box-shadow:0 18px 40px -28px rgba(0,0,0,0.5)">`,

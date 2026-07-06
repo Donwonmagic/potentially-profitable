@@ -1117,15 +1117,16 @@ export function lifecycleCourseCompletedEmail(body) {
 // el cap explícito de 4 notas por trimestre.
 export function subscriberConfirmEmail(body) {
   const confirmUrl = String(body.confirmUrl || '').trim();
-  // Promesa fiel a la cadencia (2026-07-06): quien se suscribe al índice entra a
-  // una lista SEMANAL (cron '0 14 * * 2', cada martes). El "cuatro notas por
-  // trimestre" es solo para las notas de pie de página. Espejo EN en templates.js.
-  const weekly = body.source === 'cost-index';
-  const promiseHtml = weekly
-    ? '<p style="margin:24px 0 0;font-size:14px;color:#6B6B6B;line-height:1.55;">Un correo cada martes: la lectura semanal del Índice de costos. Sin secuencias automatizadas. Cancela cuando quieras.</p>'
+  // Promesa fiel a la cadencia (2026-07-06, pivote de cadencia del mismo día):
+  // quien se suscribe al índice entra a la lista MENSUAL — el primer martes de
+  // cada mes. El "cuatro notas por trimestre" es solo para las notas de pie de
+  // página. Espejo EN en templates.js.
+  const monthly = body.source === 'cost-index';
+  const promiseHtml = monthly
+    ? '<p style="margin:24px 0 0;font-size:14px;color:#6B6B6B;line-height:1.55;">Un correo al mes — el primer martes: la lectura mensual del Índice de costos. Sin secuencias automatizadas. Cancela cuando quieras.</p>'
     : '<p style="margin:24px 0 0;font-size:14px;color:#6B6B6B;line-height:1.55;">Tope estricto: cuatro notas por trimestre, siempre. Sin secuencias automatizadas. Cancela cuando quieras.</p>';
-  const promiseText = weekly
-    ? 'Un correo cada martes: la lectura semanal del Índice de costos. Cancela cuando quieras.'
+  const promiseText = monthly
+    ? 'Un correo al mes — el primer martes: la lectura mensual del Índice de costos. Cancela cuando quieras.'
     : 'Tope estricto: cuatro notas por trimestre, siempre. Cancela cuando quieras.';
   const subject = 'Confirma tu correo — Don';
   const html = htmlShell(
@@ -1195,7 +1196,7 @@ export function costIndexWeeklyEmail(body) {
       `<p style="margin:20px 0 0;"><a href="${postUrl}" style="color:#1F4E5B;text-decoration:none;border-bottom:1px solid rgba(31,78,91,0.4);font-size:15px;">Leer la semana completa &rarr;</a></p>`,
       '<p style="margin:18px 0 0;font-size:13px;color:#6B6B6B;font-style:italic;">Una lectura, no un consejo — niveles públicos de mayoreo, nunca tu precio entregado. &mdash; Don</p>',
     ].filter(Boolean).join('\n'),
-    `Índice de costos semanal de Don Goldstein. Cancelar suscripción: ${unsubUrl}`
+    `El Índice de costos de Don Goldstein. Cancelar suscripción: ${unsubUrl}`
   );
 
   const text = [

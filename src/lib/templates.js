@@ -215,7 +215,7 @@ export function costIndexWeeklyEmail(body) {
       `<p style="margin:20px 0 0;"><a href="${postUrl}" style="color:#1F4E5B;text-decoration:none;border-bottom:1px solid rgba(31,78,91,0.4);font-size:15px;">Read the full week &rarr;</a></p>`,
       '<p style="margin:18px 0 0;font-size:13px;color:#6B6B6B;font-style:italic;">A read, not advice — public wholesale levels, never your delivered price. &mdash; Don</p>',
     ].filter(Boolean).join('\n'),
-    `Weekly Cost Index from Don Goldstein. Unsubscribe: ${unsubUrl}`
+    `The Cost Index from Don Goldstein. Unsubscribe: ${unsubUrl}`
   );
 
   const text = [
@@ -1426,16 +1426,16 @@ export function subscriberConfirmEmail(body) {
     return ES.subscriberConfirmEmail(body);
   }
   const confirmUrl = String(body.confirmUrl || '').trim();
-  // Cadence-true promise (2026-07-06): cost-index signups joined a WEEKLY list —
-  // the dispatch cron is '0 14 * * 2' (every Tuesday). Promising them "four notes
-  // a quarter, ever" was cadence-false the moment the weekly began. The Tuesday
-  // line is the contract: if the cron ever changes, the template fixture fails.
-  const weekly = body.source === 'cost-index';
-  const promiseHtml = weekly
-    ? '<p style="margin:24px 0 0;font-size:14px;color:#6B6B6B;line-height:1.55;">One email every Tuesday: the week\'s Cost Index read. No drip campaigns, no automated funnels. Unsubscribe anytime.</p>'
+  // Cadence-true promise (2026-07-06, same-day cadence pivot): cost-index
+  // signups joined the MONTHLY dispatch list — the workflow fires the first
+  // Tuesday of each month. This line is the contract: if the cadence ever
+  // changes again, the template fixture fails.
+  const monthly = body.source === 'cost-index';
+  const promiseHtml = monthly
+    ? '<p style="margin:24px 0 0;font-size:14px;color:#6B6B6B;line-height:1.55;">One email a month — the first Tuesday: the month\'s Cost Index read. No drip campaigns, no automated funnels. Unsubscribe anytime.</p>'
     : '<p style="margin:24px 0 0;font-size:14px;color:#6B6B6B;line-height:1.55;">Hard cap: four notes a quarter, ever. No drip campaigns, no automated funnels. Unsubscribe anytime.</p>';
-  const promiseText = weekly
-    ? 'One email every Tuesday: the week\'s Cost Index read. No drip campaigns. Unsubscribe anytime.'
+  const promiseText = monthly
+    ? 'One email a month — the first Tuesday: the month\'s Cost Index read. No drip campaigns. Unsubscribe anytime.'
     : 'Hard cap: four notes a quarter, ever. No drip campaigns. Unsubscribe anytime.';
   const subject = 'Confirm your email — Don';
   const html = htmlShell(

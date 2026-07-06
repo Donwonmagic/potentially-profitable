@@ -394,11 +394,13 @@ function assertShellInvariants(label, html) {
 }
 
 {
-  // Cadence-true confirm copy: the Tuesday line is the contract for the weekly
-  // list; the four-notes hard cap survives for footer-source notes. If the
-  // dispatch cron ('0 14 * * 2') ever changes cadence, these fixtures must too.
+  // Cadence-true confirm copy: the first-Tuesday monthly line is the contract
+  // for the dispatch list (2026-07-06 cadence pivot); the four-notes hard cap
+  // survives for footer-source notes. If the cadence changes again, these
+  // fixtures must too.
   const enWeekly = subscriberConfirmEmail({ confirmUrl: 'https://muntin.digital/sub/confirm?t=x', source: 'cost-index' });
-  assert('confirm EN cost-index: Tuesday promise', (enWeekly.html + enWeekly.text).indexOf('every Tuesday') !== -1);
+  assert('confirm EN cost-index: monthly first-Tuesday promise', (enWeekly.html + enWeekly.text).indexOf('a month — the first Tuesday') !== -1);
+  assert('confirm EN cost-index: no weekly promise', (enWeekly.html + enWeekly.text).indexOf('every Tuesday') === -1);
   assert('confirm EN cost-index: no four-notes cap', (enWeekly.html + enWeekly.text).indexOf('four notes') === -1);
   const enFooter = subscriberConfirmEmail({ confirmUrl: 'https://muntin.digital/sub/confirm?t=x', source: 'footer' });
   assert('confirm EN footer: four-notes cap kept', (enFooter.html + enFooter.text).indexOf('four notes a quarter') !== -1);
@@ -406,7 +408,7 @@ function assertShellInvariants(label, html) {
   assert('confirm EN no-source: four-notes cap kept (back-compat)', (enLegacy.html + enLegacy.text).indexOf('four notes a quarter') !== -1);
 
   const esWeekly = subscriberConfirmEmail({ confirmUrl: 'https://muntin.digital/sub/confirm?t=x', source: 'cost-index', locale: 'es' });
-  assert('confirm ES cost-index: martes promise', (esWeekly.html + esWeekly.text).indexOf('cada martes') !== -1);
+  assert('confirm ES cost-index: primer-martes mensual promise', (esWeekly.html + esWeekly.text).indexOf('el primer martes') !== -1);
   assert('confirm ES cost-index: no cuatro-notas cap', (esWeekly.html + esWeekly.text).indexOf('cuatro notas') === -1);
   const esFooter = subscriberConfirmEmail({ confirmUrl: 'https://muntin.digital/sub/confirm?t=x', source: 'footer', locale: 'es' });
   assert('confirm ES footer: cuatro-notas cap kept', (esFooter.html + esFooter.text).indexOf('cuatro notas por trimestre') !== -1);
