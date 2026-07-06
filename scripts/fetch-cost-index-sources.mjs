@@ -352,6 +352,13 @@ async function main() {
     });
   }
   let ckpt = 0;
+  // Checkpoint throttle: re-serializing the WHOLE store after every ingredient is
+  // O(store-size) per fetch, which dwarfs a fast single-request BLS/NOAA fetch once
+  // the store is large (e.g. a resumed run). Write at most once per COST_INDEX_CHECKPOINT_MS
+  // instead; a hard crash loses at most that window (SIGINT + the final write stay
+  // unconditional, so nothing completed is lost), and --resume continues from it.
+  let lastCkptAt = 0;
+  const CHECKPOINT_MS = Math.max(0, Number(process.env.COST_INDEX_CHECKPOINT_MS) || 10000);
   // Deep backfill (--history-out) is otherwise silent (jsonMode) and can run many
   // minutes across the windowed AMS stitch — emit a per-ingredient tick to stderr
   // (never stdout, so the --json / --out artifact contract stays untouched) so the
@@ -410,9 +417,11 @@ async function main() {
       const deep = weeklyDedup(buildHistory(point.kept, Number.MAX_SAFE_INTEGER));
       if (deep.length) {
         deepHistory[ing] = deep;
-        // Checkpoint after EVERY ingredient (atomic) so a hard OOM/kill loses at most
-        // the handful in flight, never the whole run — re-run with --resume to continue.
-        try { writeHistoryStore(); } catch (_) {}
+        // Checkpoint atomically, throttled (see CHECKPOINT_MS) so the growing store
+        // isn't rewritten on every fast fetch — a hard OOM/kill loses at most that
+        // window, never the whole run; re-run with --resume to continue.
+        const nowMs = Date.now();
+        if (nowMs - lastCkptAt >= CHECKPOINT_MS) { try { writeHistoryStore(); lastCkptAt = nowMs; } catch (_) {} }
         // Bound heap on a deep backfill: periodically drop the report cache (12–50y of
         // windows for every report otherwise accumulates for the whole process). Every
         // 16 keeps most cross-ingredient dedup while capping worst-case growth.
