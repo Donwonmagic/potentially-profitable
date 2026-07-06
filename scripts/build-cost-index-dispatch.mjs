@@ -204,7 +204,80 @@ function computeInsight() {
     .filter(Boolean)
     .sort((a, b) => (a.dir === b.dir ? 0 : a.dir === 'building' ? -1 : 1));
 
-  return { asOf, count: items.length, up, down, flat, reprice, watch, risers, fallers, drivers, basket, contributors, heaviest, topPush, topEase, pressure, pressureAsOf, items, basketWeightsVersion, methodologyVersion };
+  // ---- The edition spine in the PAYLOAD (2026-07-06, monthly pivot) -------
+  // The emailed payload used to carry none of this — wow lived only in emit(),
+  // so the email could never make an honest since-last-edition claim. Attach:
+  //   wow      — the guarded edition-over-edition story (same computeWoW the
+  //              post uses; commensurability withholds carry through verbatim).
+  //   stories  — the ranked LEAD-STORY set, eligibility = survived the panel's
+  //              false-discovery gate (flag.gated). Ranking is deterministic:
+  //              |pct| × basket weight (fixed 0.02 panel weight for
+  //              non-contributors) × persistence, ties by elevatedWeeks then
+  //              key — same data in, same leads out, never editorial whim.
+  //   arc      — each mover/story's cycle trajectory (start → peak/trough →
+  //              end, all dated) from the committed per-source history, single
+  //              source + basis only (never mixes series — the basis-leak rule
+  //              applied to shapes). This is what "change over a month" looks
+  //              like without inventing a number: every point is a dated read.
+  const archive = loadEditions();
+  const prev = priorEdition(archive, asOf);
+  const sinceDate = prev ? prev.asOf
+    : new Date(Date.parse(asOf) - 31 * 86400000).toISOString().slice(0, 10);
+  const arcFor = (key) => cycleArc(ci, key, sinceDate, asOf);
+  for (const i of risers) i.arc = arcFor(i.key);
+  for (const i of fallers) i.arc = arcFor(i.key);
+  const wow = computeWoW({ reprice, watch, basket, basketWeightsVersion }, prev);
+  const contribWeight = {};
+  for (const c of contributors) contribWeight[c.key] = c.weight;
+  const wowDelta = {};
+  for (const m of (wow.ingredient || [])) wowDelta[m.key] = m.deltaPts;
+  const stories = items
+    .filter((i) => i.gated === true)
+    .map((i) => {
+      const weight = contribWeight[i.key] || 0.02;
+      const persistence = 1 + Math.min(typeof i.elevatedWeeks === 'number' ? i.elevatedWeeks : 0, 8) / 8;
+      return { ...i, weight, score: Math.abs(i.pct) * weight * persistence,
+               arc: arcFor(i.key),
+               deltaPts: typeof wowDelta[i.key] === 'number' ? wowDelta[i.key] : null };
+    })
+    .sort((a, b) => (b.score - a.score)
+      || ((b.elevatedWeeks || 0) - (a.elevatedWeeks || 0))
+      || (a.key < b.key ? -1 : 1))
+    .slice(0, 4);
+
+  return { asOf, count: items.length, up, down, flat, reprice, watch, risers, fallers, drivers, basket, contributors, heaviest, topPush, topEase, pressure, pressureAsOf, items, basketWeightsVersion, methodologyVersion, wow, stories, sinceDate };
+}
+
+// The single-series cycle trajectory for one ingredient: dated reads since the
+// prior edition, from the committed history array. Sources are never mixed —
+// the arc is computed inside the dominant (most reads, ties to the one with
+// the latest read) source+basis series in the window, and names that series.
+// Returns null when the window holds fewer than 2 reads of any single series.
+function cycleArc(ci, key, sinceDate, asOf) {
+  const point = (((ci.ingredients || {})[key] || {}).points || [])[0] || {};
+  const hist = point.history;
+  if (!Array.isArray(hist)) return null;
+  const win = hist.filter((h) => h && h.date && h.date > sinceDate && h.date <= asOf && typeof h.valueCents === 'number');
+  if (win.length < 2) return null;
+  const groups = {};
+  for (const h of win) {
+    const k = `${h.source || '?'}|${h.basis || '?'}`;
+    (groups[k] = groups[k] || []).push(h);
+  }
+  const series = Object.values(groups).sort((a, b) => (b.length - a.length)
+    || (b[b.length - 1].date < a[a.length - 1].date ? -1 : 1))[0];
+  if (series.length < 2) return null;
+  series.sort((a, b) => (a.date < b.date ? -1 : 1));
+  const start = series[0], end = series[series.length - 1];
+  let peak = series[0], trough = series[0];
+  for (const h of series) { if (h.valueCents > peak.valueCents) peak = h; if (h.valueCents < trough.valueCents) trough = h; }
+  return {
+    source: series[0].source || null, basis: series[0].basis || null, reads: series.length,
+    start: { date: start.date, cents: start.valueCents },
+    end: { date: end.date, cents: end.valueCents },
+    peak: { date: peak.date, cents: peak.valueCents },
+    trough: { date: trough.date, cents: trough.valueCents },
+  };
 }
 
 // ---- longitudinal spine: the append-only edition archive -------------------

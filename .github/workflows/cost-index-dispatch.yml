@@ -127,6 +127,10 @@ jobs:
           node scripts/build-rss.mjs                       || true
           node scripts/build-sitemap.mjs                   || true
           node scripts/build-llms-txt.mjs                  || true
+          # Re-render the golden email preview: the edition just published, so
+          # the preview's postUrl (latest edition) changes with it. Keeps the
+          # committed render equal to what the broadcast step actually sends.
+          node scripts/build-cost-index-email-preview.mjs
           # Gate the generated post — fail the run before committing if it's malformed.
           node scripts/check-article-graphics.mjs
           # Fact-gate the driver catalog + the optional "from the floor" note, so a
@@ -150,7 +154,7 @@ jobs:
                    blog/index.html es/blog/index.html \
                    feed.xml es/feed.xml sitemap.xml \
                    llms.txt es/llms.txt data/library-tags.json \
-                   glossary/ es/glossary/; do
+                   glossary/ es/glossary/ data/email-preview/; do
             git add "$p" 2>/dev/null || echo "dispatch stage: no match for $p (skipped)"
           done
           git checkout -- . 2>/dev/null || true

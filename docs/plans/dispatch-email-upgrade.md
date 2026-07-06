@@ -300,6 +300,21 @@ this plan — all favorable:
   (existing slugs are final-forever; the dated family still parses in every consumer, so
   this is copy + new-slug-pattern work, not a migration).
 
+### 12b. Two artifacts, two registers (founder design direction, 2026-07-06)
+
+One edition, two renders of the same measured payload:
+
+- **The site dispatch is the essay — go bolder.** Full room for Don's voice, the site's
+  complete viz families (rings, waterfalls, the month-arc charts), the sourced mechanism
+  stories at paragraph length, the basket decomposition, the pressure digest. This is the
+  written piece that does the name proud — a monthly market letter an operator would cite.
+- **The email is the instrument panel — sleek, modern, consumable.** 90 seconds on a
+  phone: 2–4 story cards with the licensed action, the compact scan, one link out to the
+  essay. Restraint is the design; anything that needs a paragraph belongs on the site.
+
+Both render deterministically from the identical payload, so they can never disagree on a
+number — the email gate (§8) and the post gates enforce the same parity from both sides.
+
 ## 13. Claude story research — LLM in the authoring loop, never in the render path
 
 Founder ask (2026-07-06): a Claude dispatch that searches for relevant stories to include
