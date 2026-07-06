@@ -394,7 +394,16 @@ async function main() {
     // build-cost-index.mjs vendors (it adds asOf already; ensure it's present).
     // history = the citeable curve behind it (gaps verbatim), if any.
     const history = buildHistory(point.kept);
-    artifact.points[ing] = { asOf: point.result.asOf, ...point.result, ...(history.length ? { history } : {}) };
+    // Retain the FULL composite result ONLY when something consumes it: the --out
+    // artifact serializes it, and a normal (non-deep) run prints/needs the basket.
+    // In pure --history-out mode the artifact is never written or printed (jsonMode
+    // suppresses the summary; only --out serializes points), so holding every
+    // ingredient's fat result for the whole run is dead weight that OOMs a deep
+    // backfill around ingredient ~110. Dropping it lets each result GC immediately —
+    // the lean deepHistory series below is all the deep run actually keeps.
+    if (outFile || !historyOutFile) {
+      artifact.points[ing] = { asOf: point.result.asOf, ...point.result, ...(history.length ? { history } : {}) };
+    }
     // Deep backfill store: the FULL (uncapped) primary series, weekly-deduped, on the
     // exact vendor scale — so build-seasonality's normals are comparable to the live level.
     if (historyOutFile) {
@@ -439,9 +448,11 @@ async function main() {
 
   // Headline: compose the per-ingredient trends into the Muntin Restaurant Basket
   // (a weighted basis-agnostic % move for the declared basket — never a level).
-  const basket = B.basketTrend(artifact.points, basketWeights);
-  artifact.basket = basket;
-  if (!jsonMode) {
+  // artifact.points is intentionally empty in pure --history-out mode (see the loop),
+  // so skip the basket there — it's neither written nor printed on a deep backfill.
+  const basket = Object.keys(artifact.points).length ? B.basketTrend(artifact.points, basketWeights) : null;
+  if (basket) artifact.basket = basket;
+  if (!jsonMode && basket) {
     log('\n══ Muntin Restaurant Basket ══');
     log('  ' + B.basketPhrase(basket));
   }
