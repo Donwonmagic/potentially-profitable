@@ -15,6 +15,9 @@
 // alongside the D9 refactor. D10 will mirror to ES with its own
 // suite.
 
+import { execFileSync } from 'node:child_process';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import {
   intakeNotification,
   intakeAutoResponder,
@@ -27,7 +30,11 @@ import {
   reauditReminder,
   primaryCta,
   secondaryCta,
+  costIndexWeeklyEmail,
+  subscriberConfirmEmail,
 } from '../src/lib/templates.js';
+
+const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 let failures = 0;
 function assert(label, cond, detail) {
@@ -344,6 +351,81 @@ function assertShellInvariants(label, html) {
     out.html.indexOf('Tu enlace permanente para compartir') !== -1);
   assert('ES auditDeepReportAutoResponder: ES received-because footer',
     out.html.indexOf('Solicitaste el PDF completo') !== -1);
+}
+
+// ─────────────────────────────────────────────────────────────────
+// 2026-07-06 dispatch P0 fixes (docs/plans/dispatch-email-upgrade.md §3).
+// These fixtures ARE the contract: sign-corrected payload reasons, gated-only
+// action lists, no uncalibrated "high confidence", cadence-true confirm copy.
+
+{
+  // Quiet-week weekly email: empty action lists render the hold read, and the
+  // subject falls back to the dated form (no item name, no urgency theater).
+  const quiet = {
+    asOf: '2026-07-06', up: 24, down: 36, count: 81,
+    basket: { pct: -0.0496, dir: 'down', confidence: null },
+    reprice: [], watch: [],
+    risers: [{ name: 'Green beans', nameEs: 'Ejote', pct: 1.2535 }],
+    fallers: [{ name: 'Bell pepper', nameEs: 'Pimiento', pct: -0.1714 }],
+    drivers: [],
+    unsubUrl: 'https://muntin.digital/sub/unsubscribe?t=x',
+    postUrl: 'https://muntin.digital/blog/cost-index-week-2026-07-06/',
+  };
+  const en = costIndexWeeklyEmail(quiet);
+  assertShape('costIndexWeeklyEmail quiet week (EN)', en);
+  assertEq('quiet week EN: fallback subject', en.subject, 'Cost Index — week of 2026-07-06');
+  assert('quiet week EN: hold line present', en.html.indexOf('the panel reads hold across the board') !== -1);
+  assert('quiet week EN: movers still render', en.html.indexOf('Green beans +125.4%') !== -1);
+  // Uncalibrated-label guard: confidence null → no empty parenthetical, and the
+  // string "high confidence" appears nowhere (highEligible: 0, zero calibration rows).
+  assert('quiet week EN: no empty confidence parenthetical', en.html.indexOf('( confidence)') === -1 && en.text.indexOf('( confidence)') === -1);
+  assert('quiet week EN: never "high confidence"', (en.html + en.text).indexOf('high confidence') === -1);
+
+  const es = costIndexWeeklyEmail(Object.assign({}, quiet, { locale: 'es' }));
+  assertShape('costIndexWeeklyEmail quiet week (ES)', es);
+  assertEq('quiet week ES: fallback subject', es.subject, 'Índice de costos — semana del 2026-07-06');
+  assert('quiet week ES: hold line present', es.html.indexOf('el panel lee estable en todo') !== -1);
+  assert('quiet week ES: no empty confianza parenthetical', es.html.indexOf('(confianza )') === -1 && es.text.indexOf('(confianza )') === -1);
+  assert('quiet week ES: never "confianza high"', (es.html + es.text).indexOf('confianza high') === -1);
+
+  // A stated tier still renders when present.
+  const medium = costIndexWeeklyEmail(Object.assign({}, quiet, { basket: { pct: -0.0496, dir: 'down', confidence: 'medium' } }));
+  assert('stated tier renders (EN)', medium.html.indexOf('(medium confidence)') !== -1);
+}
+
+{
+  // Cadence-true confirm copy: the Tuesday line is the contract for the weekly
+  // list; the four-notes hard cap survives for footer-source notes. If the
+  // dispatch cron ('0 14 * * 2') ever changes cadence, these fixtures must too.
+  const enWeekly = subscriberConfirmEmail({ confirmUrl: 'https://muntin.digital/sub/confirm?t=x', source: 'cost-index' });
+  assert('confirm EN cost-index: Tuesday promise', (enWeekly.html + enWeekly.text).indexOf('every Tuesday') !== -1);
+  assert('confirm EN cost-index: no four-notes cap', (enWeekly.html + enWeekly.text).indexOf('four notes') === -1);
+  const enFooter = subscriberConfirmEmail({ confirmUrl: 'https://muntin.digital/sub/confirm?t=x', source: 'footer' });
+  assert('confirm EN footer: four-notes cap kept', (enFooter.html + enFooter.text).indexOf('four notes a quarter') !== -1);
+  const enLegacy = subscriberConfirmEmail({ confirmUrl: 'https://muntin.digital/sub/confirm?t=x' });
+  assert('confirm EN no-source: four-notes cap kept (back-compat)', (enLegacy.html + enLegacy.text).indexOf('four notes a quarter') !== -1);
+
+  const esWeekly = subscriberConfirmEmail({ confirmUrl: 'https://muntin.digital/sub/confirm?t=x', source: 'cost-index', locale: 'es' });
+  assert('confirm ES cost-index: martes promise', (esWeekly.html + esWeekly.text).indexOf('cada martes') !== -1);
+  assert('confirm ES cost-index: no cuatro-notas cap', (esWeekly.html + esWeekly.text).indexOf('cuatro notas') === -1);
+  const esFooter = subscriberConfirmEmail({ confirmUrl: 'https://muntin.digital/sub/confirm?t=x', source: 'footer', locale: 'es' });
+  assert('confirm ES footer: cuatro-notas cap kept', (esFooter.html + esFooter.text).indexOf('cuatro notas por trimestre') !== -1);
+}
+
+{
+  // Payload contract, pinned against the LIVE committed data: the emailed insight
+  // (--json) may carry action items only when they survived the false-discovery
+  // gate; no reason string may pair increase-vocabulary with a negative read; and
+  // the basket never wears the uncalibrated "high" label.
+  const raw = execFileSync(process.execPath, ['scripts/build-cost-index-dispatch.mjs', '--json'], { cwd: repoRoot, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 });
+  const ins = JSON.parse(raw);
+  const actionItems = [...(ins.reprice || []), ...(ins.watch || [])];
+  assert('payload: every action item is gated', actionItems.every((i) => i.gated === true),
+    'ungated: ' + actionItems.filter((i) => i.gated !== true).map((i) => i.key).join(','));
+  const signContradiction = (ins.items || []).filter((i) => typeof i.pct === 'number' && i.pct < 0 && i.reason && /increase|rise|climb/i.test(i.reason));
+  assert('payload: no increase-vocabulary on negative reads', signContradiction.length === 0,
+    signContradiction.map((i) => i.key + ': ' + i.reason).join(' | '));
+  assert('payload: basket never labeled high', !(ins.basket && ins.basket.confidence === 'high'));
 }
 
 if (failures > 0) {
