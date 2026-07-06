@@ -1772,14 +1772,17 @@
       "noaa": {
         "commodity": "seabass",
         "hts": [
-          "DISCOVER"
+          "030285",
+          "030289",
+          "030389",
+          "030489"
         ],
-        "nameMatch": "BASS",
+        "nameMatch": "SEA BASS|SEABASS|BRANZINO",
         "basis": "wholesale",
         "edibleOnly": true,
         "unit": "lb",
         "years": 2,
-        "_status": "branzino (European seabass) is thin/absent in NOAA FOSS at volume — likely NO free wholesale source. --discover the HTS or accept no coverage (leave verified:false)."
+        "_status": "branzino (European seabass) — HTS placeholder replaced with real other-fish codes + multi-word nameMatch; may still be thin in NOAA FOSS. --verify to confirm; stays verified:false if 0 rows."
       },
       "coverage": "No free public wholesale source: European seabass is thin/absent in NOAA FOSS; a daily quote needs a paid reporter network (Urner Barry tier)."
     },
