@@ -88,6 +88,10 @@ jobs:
           # them keeps git in sync and the gate green.
           node scripts/sync-includes.mjs
           node scripts/build-library-recent.mjs           || true
+          # Card the post on /blog/ — the comment above always promised "blog
+          # index" but the call was missing until 2026-07-06; every workflow-
+          # published week needed a manual rerun to appear on the blog index.
+          node scripts/build-blog-index.mjs               || true
           node scripts/wire-glossary-knit.mjs             || true
           node scripts/inject-glossary-article-backlinks.mjs || true
           node scripts/build-rss.mjs                       || true
@@ -103,13 +107,22 @@ jobs:
           # incidental site-wide sync-includes sweep so the commit is exactly the post.
           git config user.name  "muntin-cost-index-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add "blog/cost-index-week-${ASOF}/" "es/blog/cost-index-week-${ASOF}/" \
-                  data/cost-index-editions.json \
-                  cost-index/week-*.json cost-index/week-*.csv \
-                  cost-index/weekly/ es/cost-index/weekly/ \
-                  library/index.html es/library/index.html \
-                  blog/index.html feed.xml sitemap.xml llms.txt data/library-tags.json \
-                  glossary 2>/dev/null || true
+          # Stage per-pathspec: a single `git add` with one unmatched pathspec stages
+          # NOTHING (git aborts the whole add), and `|| true` then swallows the error —
+          # the generator writes the EN post only, so "es/blog/cost-index-week-*/"
+          # never matches and silently voided the entire publish (refresh run #33,
+          # 2026-07-06). Looping makes each path independent.
+          for p in "blog/cost-index-week-${ASOF}/" "es/blog/cost-index-week-${ASOF}/" \
+                   data/cost-index-editions.json data/cost-index-readings.prev.json \
+                   cost-index/week-*.json cost-index/week-*.csv \
+                   cost-index/weekly/ es/cost-index/weekly/ \
+                   library/index.html es/library/index.html \
+                   blog/index.html es/blog/index.html \
+                   feed.xml es/feed.xml sitemap.xml \
+                   llms.txt es/llms.txt data/library-tags.json \
+                   glossary/ es/glossary/; do
+            git add "$p" 2>/dev/null || echo "dispatch stage: no match for $p (skipped)"
+          done
           git checkout -- . 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No dispatch change this week — nothing to commit."
