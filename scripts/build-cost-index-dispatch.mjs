@@ -109,9 +109,13 @@ function computeInsight() {
     // The measured dollar LEVEL behind the percentage — so the write-up can ground
     // every "+4.1%" in a real wholesale price ("about $12.14/lb"), not an abstraction.
     const lvl = p.level || {};
-    items.push({
+    const item = {
       key, name: name(key), nameEs: nameEs(key), pct: t.pct, dir: t.dir || (t.pct > 0 ? 'up' : t.pct < 0 ? 'down' : 'flat'),
       verdict: f.verdict || null, bias: f.actionBias || null, reason: f.reason || null,
+      // CRIT-5 multiplicity verdict (build-cost-index.mjs wires cost-null-gate.js):
+      // true only when this read survived the moving-block-bootstrap null with
+      // BY FDR across the panel. The action lists below filter on it.
+      gated: f.gated === true,
       confidence: p.confidence || null, seasonal: !!(labels[key] && labels[key].seasonal),
       // Per-ingredient sustained-elevation counter (already measured in cost-index.json).
       // Surfacing it is the first honest longitudinal claim — needs no snapshot archive.
@@ -121,7 +125,15 @@ function computeInsight() {
       unit: (labels[key] && labels[key].unit_en) || null,
       unitEs: (labels[key] && labels[key].unit_es) || null,
       pressure: pressureRead(pressureItems, key),
-    });
+    };
+    // Sign-correct the reason AT THE SOURCE (2026-07-06). flagReason() (hoisted,
+    // below) was applied only in emit() for the blog post, so the POSTed payload
+    // shipped the raw verdict-keyed string — the live 07-06 data pairs bell-pepper
+    // -17.1% with "the increase looks real". The email template renders the payload
+    // verbatim; correct it here so every downstream twin (EN/ES html/text) agrees
+    // with the sign. Idempotent: the corrected strings contain no increase-vocabulary.
+    if (item.reason) item.reason = flagReason(item);
+    items.push(item);
   }
 
   const up = items.filter((i) => i.dir === 'up').length;
@@ -129,8 +141,15 @@ function computeInsight() {
   const flat = items.length - up - down;
 
   // Actionable signals first (the calibrated suggestion, low-regret order): re-price > watch.
-  const reprice = items.filter((i) => i.bias === 're-price').sort((a, b) => b.pct - a.pct);
-  const watch = items.filter((i) => i.bias === 'watch').sort((a, b) => b.pct - a.pct);
+  // GATED ONLY (2026-07-06): an action verb may ride only on a read that survived
+  // the panel's own false-discovery gate (flag.gated, from cost-null-gate.js —
+  // built because ~99.5% of items earn a non-HOLD read under a vol-matched random
+  // walk). The hub's verdict voice already withholds gated:false to a neutral note;
+  // the dispatch surfaced all 15 raw re-price biases as commands. When nothing
+  // clears the gate, the quiet-week fallback IS the read: hold, and know why.
+  // Ungated flagged items still appear in risers/fallers as measured gaps.
+  const reprice = items.filter((i) => i.bias === 're-price' && i.gated).sort((a, b) => b.pct - a.pct);
+  const watch = items.filter((i) => i.bias === 'watch' && i.gated).sort((a, b) => b.pct - a.pct);
 
   // Biggest gaps from baseline, both directions (the "movers").
   const risers = items.filter((i) => i.dir === 'up').sort((a, b) => b.pct - a.pct).slice(0, 4);
@@ -148,7 +167,16 @@ function computeInsight() {
   const asOfs = [];
   for (const r of Object.values(ci.ingredients || {})) { const a = ((r.points || [])[0] || {}).asOf; if (a) asOfs.push(a); }
   const asOf = asOfs.sort().slice(-1)[0] || ci._lastReviewed || ci.generatedAt || new Date().toISOString().slice(0, 10);
-  const basket = ci.basket || null;
+  let basket = ci.basket || null;
+  // Never ship an uncalibrated "high" label (2026-07-06): the methodology page
+  // itself explains why nothing is rated high (needs two independent dollar
+  // sources), data/cost-index-health.json says highEligible: 0, and
+  // data/cost-confidence-calibration.json has zero high-tier rows — the label has
+  // no realized track record anywhere. Until the tier earns calibration rows, the
+  // dispatch declines to state it (templates skip the parenthetical when null).
+  // The P1 confidence-language gate (docs/plans/dispatch-email-upgrade.md §8)
+  // makes this structural.
+  if (basket && basket.confidence === 'high') basket = { ...basket, confidence: null };
 
   // Decompose the basket so the headline number is a story, not a figure to take on
   // faith: each staple's CONTRIBUTION is its weight × its own read (points = weight*pct,

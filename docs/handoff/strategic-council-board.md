@@ -15,7 +15,7 @@ council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 
 ## ⮕ CURRENT STATE — read this first (updated 2026-07-06)
 
-### 🔴 P0 OUTAGE — GitHub Actions dead ACCOUNT-WIDE since 2026-06-20 (founder-only fix)
+### ✅ P0 OUTAGE RESOLVED 2026-07-06 — was: GitHub Actions dead ACCOUNT-WIDE since 2026-06-20
 
 **Finding (session 2026-07-06, fully verified via the Actions API):** every GitHub
 Actions job across BOTH repos has been refused a runner since 2026-06-20. Jobs
@@ -67,13 +67,43 @@ have left every one drifted → red `--check` gates on all subsequent sessions.
 order, pre-commit `--check` re-derivation, the new honesty gates (basis-leak,
 shippable-bar, seasonal-band, band-coverage, trend-skill) run before commit, and
 the artifacts added to the scoped `git add`. Validated on frozen data: all six
-write-mode runs byte-identical, all 11 gates pass. **The patch must reach main
-before the next 13:00 UTC cron fires unpatched** — either merge first, or run
-the catch-up via workflow_dispatch "Use workflow from: claude/muntin-strategic-
-council-exsghc" (commits the read to this branch, reviewable, merges together).
-Remaining: confirm phantom "BuildFailed" runs stopped on the product repo's
-next main push; watch the weekly dispatch cron (~07-07); then the /status/
-freshness-note honesty call (founder's if publicly visible).
+write-mode runs byte-identical, all 11 gates pass.
+
+**MERGED 2026-07-06 ~18:35 UTC as PR #504 (`c0e8e417d`) — Workers deploy green
+(check-all 246/246).** The evening's additional findings, all fixed in the PR:
+  - **Second artifact family** was also un-wired (embeds, `cost-index/feed.json`,
+    revisions log, reproduce stamp, both confidence reports, speakable stamps) —
+    now rebuilt + `--check`-gated + staged by the refresh workflow.
+  - **Run #33's silent catch-up skip root-caused:** one unmatched pathspec
+    (`es/blog/cost-index-week-*/`, generator writes EN only) voids the entire
+    `git add`; `2>/dev/null || true` swallowed it. Both refresh + dispatch
+    workflows now stage per-pathspec. Catch-up week 2026-07-06 published
+    (basket −5.0%, 24/81 above baseline; dispatch lag 0d).
+  - **`build-blog-index.mjs` ran in NO workflow** (dispatch's comment claimed it
+    did) — weekly posts were invisible on /blog/ without a manual rerun. Added
+    to both workflows.
+  - **Footer-count landmine:** `_includes/footer.html` still said 13 tools/150
+    terms (truth 5/171); the injector skipped `_includes`, so every
+    sync-includes re-smeared stale counts sitewide. Injector now stamps the
+    partials too (gate tightened); partial healed same commit.
+  - **lhci had NEVER actually run since `44d64cc74`** (three deleted retired-
+    tool scripts still in its build chain killed it at step 3; then its URL
+    list gated retired pages → 404 crash). Dead calls removed, URLs swapped to
+    living funnel equivalents (/tools/margin-math/, /cost-index/ + ES). It now
+    measures real surfaces — first honest numbers may be red (advisory-only,
+    `continue-on-error`).
+  - **Rebase-staleness lesson:** artifacts stamped pre-rebase (calibration
+    sentinels on the methodology pages) went stale when the bot's daily-read
+    commit moved the report JSON — reproduced 245/246 locally via the deploy
+    chain, restamped. The deploy chain does NOT re-run
+    `inject-cost-index-calibration.mjs`, so this class can't self-heal.
+
+Branch restarted from main post-merge (same name, merged-PR rule). Remaining
+watch items: **07-07 13:00 UTC refresh cron** (first cron on the patched
+workflow) and **07-07 ~16:20 UTC dispatch cron** (first subscriber email since
+06-16 — post already current, so it should just send); confirm phantom
+"BuildFailed" runs stopped on the product repo's next main push; then the
+/status/ freshness-note honesty call (founder's if publicly visible).
 
 ### Delta 2026-06-28 → 07-06 (merged to main; board was stale for this window)
 

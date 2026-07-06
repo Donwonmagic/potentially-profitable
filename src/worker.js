@@ -8750,8 +8750,23 @@ async function handleCostIndexBroadcast(request, env, ctx) {
     catch (e) { res = { ok: false, error: e && e.message }; }
     if (res && res.ok) sent++; else failed++;
   }
-  await env.AUTH_SESSIONS.put(stampKey, JSON.stringify({ sent, failed, skipped, at: Date.now() }), { expirationTtl: 120 * 24 * 3600 });
-  return jsonResponse({ ok: true, asOf, sent, failed, skipped });
+  // Stamp-on-success only (2026-07-06): stamping unconditionally meant a Resend
+  // outage on send day recorded sent=0 as "done" — idempotency then blocked every
+  // retry and the week silently went unmailed. Three outcomes now:
+  //   sent>0            → stamp + 200 (the week is genuinely done);
+  //   sent=0, failed>0  → NO stamp + 502 (delivery broke; the workflow's curl
+  //                       treats non-2xx as failure, so the run goes red and a
+  //                       re-fire retries the whole week);
+  //   sent=0, failed=0  → NO stamp + 200 'empty-audience' (an empty list is not
+  //                       a delivery failure — don't redden the cron — but don't
+  //                       stamp either, so late confirms can still be reached by
+  //                       a manual re-fire the same week).
+  if (sent > 0) {
+    await env.AUTH_SESSIONS.put(stampKey, JSON.stringify({ sent, failed, skipped, at: Date.now() }), { expirationTtl: 120 * 24 * 3600 });
+    return jsonResponse({ ok: true, asOf, sent, failed, skipped });
+  }
+  if (failed > 0) return jsonResponse({ ok: false, error: 'zero-sent', asOf, sent, failed, skipped }, 502);
+  return jsonResponse({ ok: true, status: 'empty-audience', asOf, sent, failed, skipped });
 }
 
 async function handleSubscribe(request, env, ctx) {
@@ -8830,8 +8845,15 @@ async function handleSubscribe(request, env, ctx) {
 
   const baseUrl = String(env.MAGIC_LINK_BASE_URL || 'https://muntin.digital').replace(/\/$/, '');
   const confirmUrl = `${baseUrl}/sub/confirm?t=${token}`;
-  const tmpl = subscriberConfirmEmail({ confirmUrl, locale });
-  ctx.waitUntil(sendEmail({ env, to: email, subject: tmpl.subject, html: tmpl.html, text: tmpl.text }));
+  // source threaded so the confirm promise matches the list's real cadence
+  // (cost-index = weekly Tuesday read; footer = four notes a quarter).
+  const tmpl = subscriberConfirmEmail({ confirmUrl, locale, source });
+  // 2026-07-06 fix: sendEmail's signature is (opts, apiKey) with an explicit
+  // `from` — this call passed `{ env, ... }` and no apiKey, so every double-
+  // opt-in confirmation failed silently inside waitUntil and new signups sat
+  // 'pending' forever. Mirrors the broadcast loop's working call above.
+  const confirmFrom = (env.FROM_EMAIL && String(env.FROM_EMAIL)) || 'Don Goldstein <don@muntin.digital>';
+  ctx.waitUntil(sendEmail({ to: email, from: confirmFrom, replyTo: 'don@muntin.digital', subject: tmpl.subject, html: tmpl.html, text: tmpl.text }, env.RESEND_API_KEY));
   return SILENT_OK;
 }
 

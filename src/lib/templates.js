@@ -206,7 +206,7 @@ export function costIndexWeeklyEmail(body) {
     `Cost Index — week of ${asOf}`,
     [
       body.basket && typeof body.basket.pct === 'number'
-        ? `<p style="margin:0 0 8px;font-size:16px;line-height:1.55;color:#2A2D33;">The basket reads <strong>${pc(body.basket.pct)} ${escapeHtml(body.basket.dir || '')}</strong> (${escapeHtml(String(body.basket.confidence || ''))} confidence). <strong>${body.up}</strong> of ${body.count} ingredients are above their tracked baseline, ${body.down} below.</p>`
+        ? `<p style="margin:0 0 8px;font-size:16px;line-height:1.55;color:#2A2D33;">The basket reads <strong>${pc(body.basket.pct)} ${escapeHtml(body.basket.dir || '')}</strong>${body.basket.confidence ? ` (${escapeHtml(String(body.basket.confidence))} confidence)` : ''}. <strong>${body.up}</strong> of ${body.count} ingredients are above their tracked baseline, ${body.down} below.</p>`
         : `<p style="margin:0 0 8px;font-size:16px;line-height:1.55;color:#2A2D33;"><strong>${body.up}</strong> of ${body.count} ingredients are above their tracked baseline, ${body.down} below.</p>`,
       '<p style="margin:18px 0 8px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#7A7A7A;">What\'s flashing</p>',
       flashing,
@@ -215,12 +215,12 @@ export function costIndexWeeklyEmail(body) {
       `<p style="margin:20px 0 0;"><a href="${postUrl}" style="color:#1F4E5B;text-decoration:none;border-bottom:1px solid rgba(31,78,91,0.4);font-size:15px;">Read the full week &rarr;</a></p>`,
       '<p style="margin:18px 0 0;font-size:13px;color:#6B6B6B;font-style:italic;">A read, not advice — public wholesale levels, never your delivered price. &mdash; Don</p>',
     ].filter(Boolean).join('\n'),
-    `Weekly Cost Index from Don Goldstein. Unsubscribe: ${unsubUrl}`
+    `The Cost Index from Don Goldstein. Unsubscribe: ${unsubUrl}`
   );
 
   const text = [
     `MUNTIN RESTAURANT COST INDEX — week of ${asOf}`, '',
-    body.basket && typeof body.basket.pct === 'number' ? `Basket: ${pc(body.basket.pct)} ${body.basket.dir || ''} (${body.basket.confidence || ''} confidence).` : '',
+    body.basket && typeof body.basket.pct === 'number' ? `Basket: ${pc(body.basket.pct)} ${body.basket.dir || ''}${body.basket.confidence ? ` (${body.basket.confidence} confidence)` : ''}.` : '',
     `${body.up} of ${body.count} above baseline, ${body.down} below.`, '',
     'WHAT\'S FLASHING:',
     ...reprice.map((i) => `  RE-PRICE  ${i.name} ${pc(i.pct)}${i.reason ? ' — ' + i.reason : ''}`),
@@ -1426,13 +1426,24 @@ export function subscriberConfirmEmail(body) {
     return ES.subscriberConfirmEmail(body);
   }
   const confirmUrl = String(body.confirmUrl || '').trim();
+  // Cadence-true promise (2026-07-06, same-day cadence pivot): cost-index
+  // signups joined the MONTHLY dispatch list — the workflow fires the first
+  // Tuesday of each month. This line is the contract: if the cadence ever
+  // changes again, the template fixture fails.
+  const monthly = body.source === 'cost-index';
+  const promiseHtml = monthly
+    ? '<p style="margin:24px 0 0;font-size:14px;color:#6B6B6B;line-height:1.55;">One email a month — the first Tuesday: the month\'s Cost Index read. No drip campaigns, no automated funnels. Unsubscribe anytime.</p>'
+    : '<p style="margin:24px 0 0;font-size:14px;color:#6B6B6B;line-height:1.55;">Hard cap: four notes a quarter, ever. No drip campaigns, no automated funnels. Unsubscribe anytime.</p>';
+  const promiseText = monthly
+    ? 'One email a month — the first Tuesday: the month\'s Cost Index read. No drip campaigns. Unsubscribe anytime.'
+    : 'Hard cap: four notes a quarter, ever. No drip campaigns. Unsubscribe anytime.';
   const subject = 'Confirm your email — Don';
   const html = htmlShell(
     'One click and you\'re on the list',
     [
       '<p style="margin:0 0 16px;font-size:16px;line-height:1.55;color:#2A2D33;">Got your address. Click once and I\'ll only write when there\'s something worth writing about.</p>',
       '<p style="margin:24px 0 0;">' + primaryCta(confirmUrl, 'Confirm my email') + '</p>',
-      '<p style="margin:24px 0 0;font-size:14px;color:#6B6B6B;line-height:1.55;">Hard cap: four notes a quarter, ever. No drip campaigns, no automated funnels. Unsubscribe anytime.</p>',
+      promiseHtml,
       '<p style="margin:32px 0 0;font-size:13px;color:#6B6B6B;font-style:italic;">— Don</p>',
     ].join('\n')
   );
@@ -1443,7 +1454,7 @@ export function subscriberConfirmEmail(body) {
     '',
     'Confirm: ' + confirmUrl,
     '',
-    'Hard cap: four notes a quarter, ever. No drip campaigns. Unsubscribe anytime.',
+    promiseText,
     '',
     '— Don',
   ].join('\n');

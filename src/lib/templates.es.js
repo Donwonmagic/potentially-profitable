@@ -1117,13 +1117,24 @@ export function lifecycleCourseCompletedEmail(body) {
 // el cap explícito de 4 notas por trimestre.
 export function subscriberConfirmEmail(body) {
   const confirmUrl = String(body.confirmUrl || '').trim();
+  // Promesa fiel a la cadencia (2026-07-06, pivote de cadencia del mismo día):
+  // quien se suscribe al índice entra a la lista MENSUAL — el primer martes de
+  // cada mes. El "cuatro notas por trimestre" es solo para las notas de pie de
+  // página. Espejo EN en templates.js.
+  const monthly = body.source === 'cost-index';
+  const promiseHtml = monthly
+    ? '<p style="margin:24px 0 0;font-size:14px;color:#6B6B6B;line-height:1.55;">Un correo al mes — el primer martes: la lectura mensual del Índice de costos. Sin secuencias automatizadas. Cancela cuando quieras.</p>'
+    : '<p style="margin:24px 0 0;font-size:14px;color:#6B6B6B;line-height:1.55;">Tope estricto: cuatro notas por trimestre, siempre. Sin secuencias automatizadas. Cancela cuando quieras.</p>';
+  const promiseText = monthly
+    ? 'Un correo al mes — el primer martes: la lectura mensual del Índice de costos. Cancela cuando quieras.'
+    : 'Tope estricto: cuatro notas por trimestre, siempre. Cancela cuando quieras.';
   const subject = 'Confirma tu correo — Don';
   const html = htmlShell(
     'Un clic y entras a la lista',
     [
       '<p style="margin:0 0 16px;font-size:16px;line-height:1.55;color:#2A2D33;">Tengo tu correo. Haz clic una vez y solo escribiré cuando haya algo que valga la pena escribir.</p>',
       '<p style="margin:24px 0 0;">' + primaryCta(confirmUrl, 'Confirmar mi correo') + '</p>',
-      '<p style="margin:24px 0 0;font-size:14px;color:#6B6B6B;line-height:1.55;">Tope estricto: cuatro notas por trimestre, siempre. Sin secuencias automatizadas. Cancela cuando quieras.</p>',
+      promiseHtml,
       '<p style="margin:32px 0 0;font-size:13px;color:#6B6B6B;font-style:italic;">— Don</p>',
     ].join('\n')
   );
@@ -1134,7 +1145,7 @@ export function subscriberConfirmEmail(body) {
     '',
     'Confirmar: ' + confirmUrl,
     '',
-    'Tope estricto: cuatro notas por trimestre, siempre. Cancela cuando quieras.',
+    promiseText,
     '',
     '— Don',
   ].join('\n');
@@ -1176,7 +1187,7 @@ export function costIndexWeeklyEmail(body) {
     `Índice de costos — semana del ${asOf}`,
     [
       body.basket && typeof body.basket.pct === 'number'
-        ? `<p style="margin:0 0 8px;font-size:16px;line-height:1.55;color:#2A2D33;">La canasta lee <strong>${pc(body.basket.pct)} ${escapeHtml(body.basket.dir || '')}</strong> (confianza ${escapeHtml(String(body.basket.confidence || ''))}). <strong>${body.up}</strong> de ${body.count} ingredientes están por encima de su línea base, ${body.down} por debajo.</p>`
+        ? `<p style="margin:0 0 8px;font-size:16px;line-height:1.55;color:#2A2D33;">La canasta lee <strong>${pc(body.basket.pct)} ${escapeHtml(body.basket.dir || '')}</strong>${body.basket.confidence ? ` (confianza ${escapeHtml(String(body.basket.confidence))})` : ''}. <strong>${body.up}</strong> de ${body.count} ingredientes están por encima de su línea base, ${body.down} por debajo.</p>`
         : `<p style="margin:0 0 8px;font-size:16px;line-height:1.55;color:#2A2D33;"><strong>${body.up}</strong> de ${body.count} ingredientes están por encima de su línea base, ${body.down} por debajo.</p>`,
       '<p style="margin:18px 0 8px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#7A7A7A;">Qué está marcando</p>',
       flashing,
@@ -1185,12 +1196,12 @@ export function costIndexWeeklyEmail(body) {
       `<p style="margin:20px 0 0;"><a href="${postUrl}" style="color:#1F4E5B;text-decoration:none;border-bottom:1px solid rgba(31,78,91,0.4);font-size:15px;">Leer la semana completa &rarr;</a></p>`,
       '<p style="margin:18px 0 0;font-size:13px;color:#6B6B6B;font-style:italic;">Una lectura, no un consejo — niveles públicos de mayoreo, nunca tu precio entregado. &mdash; Don</p>',
     ].filter(Boolean).join('\n'),
-    `Índice de costos semanal de Don Goldstein. Cancelar suscripción: ${unsubUrl}`
+    `El Índice de costos de Don Goldstein. Cancelar suscripción: ${unsubUrl}`
   );
 
   const text = [
     `ÍNDICE DE COSTOS DE RESTAURANTE MUNTIN — semana del ${asOf}`, '',
-    body.basket && typeof body.basket.pct === 'number' ? `Canasta: ${pc(body.basket.pct)} ${body.basket.dir || ''} (confianza ${body.basket.confidence || ''}).` : '',
+    body.basket && typeof body.basket.pct === 'number' ? `Canasta: ${pc(body.basket.pct)} ${body.basket.dir || ''}${body.basket.confidence ? ` (confianza ${body.basket.confidence})` : ''}.` : '',
     `${body.up} de ${body.count} por encima de la línea base, ${body.down} por debajo.`, '',
     'QUÉ ESTÁ MARCANDO:',
     ...reprice.map((i) => `  REPRECIO  ${nm(i)} ${pc(i.pct)}${i.reason ? ' — ' + i.reason : ''}`),
