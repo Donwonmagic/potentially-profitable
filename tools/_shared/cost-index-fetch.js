@@ -306,21 +306,49 @@ async function fetchAmsReportDeep(reportId, sectionRaw, auth, days, winField) {
   } catch (e) { /* probe failed → proceed; each window still tries the default section */ }
   var ranges = [];
   for (var end = now; end > now - days * 864e5; end -= STEP) ranges.push([new Date(end - STEP), new Date(end)]);
-  var merged = [];
+  // Early-stop: a MARS terminal report retains a rolling window (often ~1–3y), far
+  // short of a deep backfill's 12–50y — so the older windows return empty. `ranges`
+  // runs newest→oldest, so once a RUN of consecutive fully-empty windows appears we
+  // have walked off the end of MARS's retention; fetching further only burns minutes
+  // and heap (this is the produce-deep OOM). We stop after AMS_DEEP_EMPTY_RUN (4)
+  // consecutive empties — a real, continuously-reported commodity has no ~600-day
+  // hole inside its own retention, and by construction we only ever drop windows that
+  // returned ZERO rows, never a window that had data. Escape hatch: set
+  // AMS_DEEP_NO_EARLYSTOP=1 to scan every window regardless.
+  var noEarly = process.env.AMS_DEEP_NO_EARLYSTOP === '1';
+  var EARLYSTOP_EMPTY = Math.max(1, Number(process.env.AMS_DEEP_EMPTY_RUN) || 4);
+  var merged = [], consecutiveEmpty = 0, stoppedAt = null;
   for (var i = 0; i < ranges.length; i += AMS_CONCURRENCY) {
-    var batch = ranges.slice(i, i + AMS_CONCURRENCY).map(function (r) {
+    var slice = ranges.slice(i, i + AMS_CONCURRENCY);
+    var batch = slice.map(function (r) {
       return fetchJson(rangeUrl(section, r[0], r[1]), { headers: h })
         .then(function (j) { return (j && j.results) || []; }, function () { return []; });   // tolerate a dead window
     });
-    (await Promise.all(batch)).forEach(function (rows) { for (var k = 0; k < rows.length; k++) merged.push(rows[k]); });
+    var results = await Promise.all(batch);
+    for (var bi = 0; bi < results.length; bi++) {
+      var rows = results[bi];
+      for (var k = 0; k < rows.length; k++) merged.push(rows[k]);
+      if (rows.length === 0) consecutiveEmpty++; else consecutiveEmpty = 0;   // windows are time-ordered within a slice
+    }
+    if (!noEarly && consecutiveEmpty >= EARLYSTOP_EMPTY) { stoppedAt = slice[slice.length - 1][0]; break; }
   }
+  if (stoppedAt) process.stderr.write('  · ams-deep ' + reportId + ': no rows past ~' + f(stoppedAt) + ' (stopped after ' + consecutiveEmpty + ' empty windows — MARS retention limit; AMS_DEEP_NO_EARLYSTOP=1 forces a full scan)\n');
   return { results: merged, reportSection: section };
 }
+
+// Drop every cached report+window response. The in-run cache (`_reportCache`) is a
+// dedup for a NORMAL fetch (a report+section+window fetched once, reused across the
+// few ingredients that share it). In a DEEP backfill it becomes a memory hog — 12–50y
+// of windows for every report held for the whole process — so the deep loop calls
+// this periodically to bound heap. Cheap: it only clears a Map; anything still needed
+// is simply re-fetched on the next miss.
+function clearReportCache() { _reportCache.clear(); }
 
 module.exports = {
   fetchJson: fetchJson,
   isTransient: isTransient,
   amsWindow: amsWindow,
+  clearReportCache: clearReportCache,
   fetchAmsReport: fetchAmsReport,
   fetchAmsReportDeep: fetchAmsReportDeep,
   fetchLmrReport: fetchLmrReport,

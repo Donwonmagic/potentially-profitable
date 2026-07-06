@@ -333,7 +333,15 @@ async function main() {
     if (!historyOutFile || !_fs) return null;
     const keys = Object.keys(deepHistory);
     if (!keys.length) return null;
-    _fs.writeFileSync(historyOutFile, JSON.stringify({ _doc: HIST_DOC, generatedAt: artifact.generatedAt, ingredients: deepHistory }, null, 2) + '\n');
+    // ATOMIC write: serialize to a sibling .tmp then rename over the target. A hard
+    // crash (OOM/kill) MID-WRITE can otherwise leave a truncated JSON that the next
+    // --resume fails to parse and discards ("start clean") — losing the whole run.
+    // writeFileSync + renameSync are synchronous with no await between, so concurrent
+    // ingredient checkpoints never interleave, and the target is always a complete store.
+    const body = JSON.stringify({ _doc: HIST_DOC, generatedAt: artifact.generatedAt, ingredients: deepHistory }, null, 2) + '\n';
+    const tmp = historyOutFile + '.tmp';
+    _fs.writeFileSync(tmp, body);
+    _fs.renameSync(tmp, historyOutFile);
     return { keys: keys.length, pts: keys.reduce((n, k) => n + (deepHistory[k] ? deepHistory[k].length : 0), 0) };
   }
   if (historyOutFile) {
@@ -393,7 +401,13 @@ async function main() {
       const deep = weeklyDedup(buildHistory(point.kept, Number.MAX_SAFE_INTEGER));
       if (deep.length) {
         deepHistory[ing] = deep;
-        if ((++ckpt) % 8 === 0) { try { writeHistoryStore(); } catch (_) {} }   // checkpoint so a Ctrl-C keeps progress
+        // Checkpoint after EVERY ingredient (atomic) so a hard OOM/kill loses at most
+        // the handful in flight, never the whole run — re-run with --resume to continue.
+        try { writeHistoryStore(); } catch (_) {}
+        // Bound heap on a deep backfill: periodically drop the report cache (12–50y of
+        // windows for every report otherwise accumulates for the whole process). Every
+        // 16 keeps most cross-ingredient dedup while capping worst-case growth.
+        if ((++ckpt) % 16 === 0 && typeof F.clearReportCache === 'function') F.clearReportCache();
       }
     }
     composed++;
