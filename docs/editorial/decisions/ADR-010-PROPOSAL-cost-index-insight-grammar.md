@@ -1,6 +1,12 @@
 # ADR-010 — Cost Index insight grammar (empowering, evidence-backed, never a forecast)
 
-- **Status:** PROPOSAL (implemented for the hub "What's moving now"; pending ratification + extension)
+- **Status:** PROPOSAL (implemented for the hub "What's moving now"; pending full ratification)
+  - **2026-07-06 — EXTENSION RATIFIED (founder):** the monthly dispatch site edition may
+    carry the h=1 one-print outlook (`data/cost-outlook.json` weighted tilt + movers) in
+    present-tense measured-edge phrasing ("the backtest's proven edge reaches one print
+    ahead; at that reach the panel's weighted tilt reads <dir>; beyond it we don't look"),
+    policed by `check-cost-index-forward-grammar.mjs`. The tilt stays OUT of the
+    subscriber email. Grammar boundaries otherwise unchanged.
 - **Date:** 2026-06-26
 - **Owner:** Strategic council
 - **Review by:** 2026-09-26

@@ -139,14 +139,14 @@ read, and labelled sourced associations — no future tense, no predicted timeli
 3. **Lock or float** — the certified postures from `cost-lockfloat.json` (lock 15 /
    cushion 8 / float 4 / withhold 73, per-item coverage CIs): forward DECISIONS without
    predictions, carrying the file's own "risk read, never a direction call" qualifier.
-4. **[GATED ON RATIFICATION] The one-print reach** — `cost-outlook.json`'s h=1 weighted
+4. **[RATIFIED 2026-07-06] The one-print reach** — `cost-outlook.json`'s h=1 weighted
    tilt + movers ("the backtest's proven edge reaches one print ahead; at that reach the
    panel's weighted tilt reads easing; beyond it we don't look"). This is the maximal
    honest forward claim; the email plan's auditor red-lined it for INBOX copy under
    ADR-010's ceiling. Shipping it on the SITE edition requires the founder to ratify the
-   ADR-010 extension. The section is designed to ship 1–3 without it; 4 slots in cleanly
-   if ratified. Either way `cost-outlook.json` must be rebuilt into the refresh workflow
-   (it is stale at 2026-06-08) with `--check` + staging before anything renders it.
+   ADR-010 extension — **ratified by the founder 2026-07-06** (recorded in the ADR).
+   `cost-outlook.json` must be rebuilt into the refresh workflow (it is stale at
+   2026-06-08) with `--check` + staging before anything renders it.
 
 **New gate `check-cost-index-forward-grammar.mjs`:** scans the Looking-ahead section (and
 the FAQ) for future-tense/forecast constructions (will/going to/expect(ed) to/predicted/
@@ -194,5 +194,5 @@ its backtest citation. `--self-test` fixtures both directions.
    llms.txt line; stories pipeline live (Claude research routine armed ~Jul 30); email P1
    body (per companion plan) so the August email matches the August page.
 
-**Founder's three touchpoints:** §2 naming sign-off (now), ADR-010 §6.4 ratification
-(any time before it renders), the July draft read (Wed/Thu).
+**Founder's touchpoints:** §2 naming — SIGNED 2026-07-06 (`cost-index-YYYY-MM`);
+ADR-010 §6.4 — RATIFIED 2026-07-06; remaining: the July draft read (Wed/Thu).

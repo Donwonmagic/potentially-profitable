@@ -15,6 +15,34 @@ council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 
 ## ⮕ CURRENT STATE — read this first (updated 2026-07-06)
 
+### 🟢 ACTIVE BUILD — the Monthly Dispatch (July edition ships this week)
+
+**Evening of 2026-07-06 (all decisions signed):** dispatch cadence pivoted to MONTHLY
+(first Tuesday 14:00 UTC, first cron edition 2026-08-04; refresh now Mon/Wed/Fri 13:00 —
+both merged to main via PR #505, live). Email P0 honesty fixes merged (gated action lists,
+sign-corrected reasons, no uncalibrated "high confidence", confirm-send fixed,
+stamp-on-success). Email trust rails built on the dev branch (payload spine with gated
+stories[] + dated cycle arcs + wow; golden render committed at data/email-preview/;
+check-cost-index-email.mjs content gate — all in check-all).
+
+**Founder-signed decisions:** monthly edition slug family `blog/cost-index-YYYY-MM/`
+(2026-07-06); ADR-010 extension RATIFIED — the h=1 one-print tilt ships on the SITE
+edition (never the email), recorded in the ADR file.
+
+**Master plans (read both before building):**
+  - `docs/plans/monthly-dispatch-site-edition.md` — the ten-section architecture,
+    viz-spark family, AEO layer, Looking-ahead (forwards within ADR-010), gates, and the
+    build sequence. THE current work queue.
+  - `docs/plans/dispatch-email-upgrade.md` — the email side (P1 golden-render body due
+    before 08-04) + the Claude story-research pipeline (§13; routine to arm ~07-30).
+
+**Next actions (in order):** July edition build per site-edition plan §8 items 1–6;
+publishes on the 2026-07-08 Wed refresh data (Wed eve/Thu) — founder reads the rendered
+draft first; the comeback email rides it via manual workflow_dispatch (guards bypass on
+manual). Note cost-outlook.json is STALE (2026-06-08) and must be wired into the refresh
+workflow (build + --check + staging) before the Looking-ahead section renders it.
+
+
 ### ✅ P0 OUTAGE RESOLVED 2026-07-06 — was: GitHub Actions dead ACCOUNT-WIDE since 2026-06-20
 
 **Finding (session 2026-07-06, fully verified via the Actions API):** every GitHub
