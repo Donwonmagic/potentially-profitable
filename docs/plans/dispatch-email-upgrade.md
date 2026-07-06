@@ -266,10 +266,92 @@ final strings:
 - D10 (median headline vs mean decomposition) needs a statistic-or-story fix in the *post*
   generator too, not just the email.
 
-## 12. Effort + sequencing summary
+## 12. Cadence pivot (2026-07-06, founder call) — monthly changes the design for the better
 
-P0 is one focused PR (S+M items, all in `build-cost-index-dispatch.mjs`, `src/worker.js`,
-`src/lib/templates*.js` + fixtures) and must merge before Tuesday 14:00 UTC to affect the
-comeback send. P1 is roughly a week of sessions, gate-first. P2 follows list health. Nothing
-in any phase adds a manual per-send step, an external service in the send path, or an LLM
-anywhere near subscriber data.
+The dispatch is now **monthly, first Tuesday 14:00 UTC** (first send 2026-08-04); the data
+refresh is **Mon/Wed/Fri 13:00 UTC**. All promise surfaces were aligned the same night
+(signup capture, confirm email, homepage, archive, hero, freshness gates). Consequences for
+this plan — all favorable:
+
+- **The story engine gets stronger, not weaker.** A month of movement clears the noise
+  floor far more often than a week: month-over-month deltas via the editions spine are
+  larger relative to per-item noise, seasonal-band months are the native unit, and
+  `elevatedWeeks` counters accumulate real persistence between editions. The quiet-week
+  lead should become the exception, which is exactly when a "hold" lead carries the most
+  signal.
+- **Month-shape statistics become available and honest.** The MWF refresh gives ~12–13
+  dated reads per cycle sitting in each item's committed `history` array — the edition can
+  deterministically state each lead story's month arc (start → peak → end read, all dated)
+  instead of a single point delta. Add to E1's `stories[]`: `monthArc {startCents,
+  peakCents, endCents, dates}` derived only from committed history. The trajectory
+  step-strip (viz #5) is now the natural visual: 12 cells = 12 reads.
+- **"Since last issue" (§6.7) becomes month-over-month** via the same `computeWoW`
+  edition-pair mechanics — no change needed; the commensurability guards carry over.
+- **Richer-than-percentages requirement (founder, same night):** every % in the email is
+  paired with its dollar level + range (`medianCents`/`rangeCents` are already in the
+  payload; the movers scan currently prints name+pct only), plus percentile placement
+  (`pos` from cost-lockfloat) and seasonal-band position where `ready`. This folds into
+  E2/E3 — the movers glyph rows gain a dollar column; story cards were already
+  dollar-grounded.
+- **P1 deadline moves to 2026-08-04** (was "before next Tuesday"): the golden-render gate,
+  the decision-brief body, and the subject system should land before the first monthly
+  send — a month of runway instead of a week. The post generator's "week of" naming and
+  the `blog/cost-index-week-<asOf>/` slug family for NEW editions should be renamed in P1
+  (existing slugs are final-forever; the dated family still parses in every consumer, so
+  this is copy + new-slug-pattern work, not a migration).
+
+## 13. Claude story research — LLM in the authoring loop, never in the render path
+
+Founder ask (2026-07-06): a Claude dispatch that searches for relevant stories to include
+in each monthly edition. The covenant constraint is absolute — no LLM in the customer-data
+path, every number sourced — and the repo already contains the exact pattern that
+reconciles the two: the **driver catalog** (`check-cost-index-drivers.mjs`: every named
+driver must trace to a catalog entry with source URL + retrieval date) and the **editors
+note** (`data/cost-index-editors-notes.json` + its fact gate). Claude researches and
+drafts; a human approves; a deterministic renderer includes only approved, gated entries.
+
+**Design:**
+
+1. **Trigger:** a monthly Claude routine fires ~5 days before each first Tuesday (e.g.
+   the preceding Thursday). It reads the current committed data (biggest gated movers,
+   band-crossers, lock/float changes — the same story-eligibility set as §5) so the
+   research is anchored to what the edition will actually lead with.
+2. **Research:** for each candidate story, Claude searches public sources (USDA reports,
+   NOAA/weather events, trade-press coverage, FRED/EIA context) for the *mechanism story*
+   behind the measured move — why green beans widened, what the cold-storage report said.
+   Output: `data/cost-index-stories.json` draft entries, each `{edition, ingredient,
+   headline, mechanism (2-3 sentences), sourceUrl, sourceName, retrievedAt, status:
+   "draft"}`.
+3. **Human gate:** the founder flips `status: "draft"` → `"approved"` (or edits/deletes).
+   Nothing renders while draft. This is the same posture as the editors note — the human
+   signature is the publish decision.
+4. **CI gate:** new `check-cost-index-stories.mjs` (auto-picked-up by check-all):
+   every approved entry must have a reachable-format sourceUrl + retrievedAt within the
+   edition cycle; mechanism text passes the fabrication blocklist and the association-only
+   language rule (no "because of", "will rise" — same vocabulary as the drivers gate);
+   every NUMBER in a mechanism must appear in the cited source's own registered claim in
+   `data/sourced-claims.json` or be absent (prefer number-free mechanism prose — the
+   measured numbers live in the payload, not the story text).
+5. **Render:** `build-cost-index-dispatch.mjs` includes approved stories for the edition
+   as the "why" line under their matching story card — deterministic string assembly,
+   byte-identical on re-run. No approved story, no why-line; the email never blocks on
+   research (the driver catalog remains the fallback context).
+6. **What Claude never does here:** write numbers into prose, touch the templates at send
+   time, or publish without the founder's approval flip. The email remains a pure function
+   of committed, human-approved data.
+
+Build items: the stories JSON schema + gate (S), the dispatch include (S), the monthly
+routine prompt (S — lives with the founder's Claude session; the repo side is just the
+reviewed file). Sequencing: P1, alongside the golden-render gate, so the first monthly
+edition (2026-08-04) can ship with 1–3 sourced stories.
+
+## 14. Effort + sequencing summary
+
+P0 (defect fixes + gated action frame) and the cadence pivot are one PR (#505) and must
+merge before Tuesday 2026-07-07 14:00 UTC — not to send, but to STOP the weekly cron from
+firing (the founder's call: no send until the first monthly edition, 2026-08-04). P1 —
+golden-render gate, decision-brief body, dollar-grounded scan rows, subject system, the
+statistical gates, the stories pipeline (§13), and the "week of" → edition naming — has a
+month of runway and should be green before 2026-08-04. P2 follows list health (derive the
+real active-subscriber count first — see §11). Nothing in any phase adds a manual per-send
+step, an external service in the send path, or an LLM anywhere near subscriber data.
