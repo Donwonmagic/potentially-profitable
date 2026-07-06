@@ -60,7 +60,22 @@ let changed = 0;
 let touched = 0;
 const unknownKeys = new Set();
 
-for (const file of collectHtml(REPO)) {
+// The nav/footer partials are the SOURCE sync-includes copies onto every
+// page. If a count changes while the partial keeps the old number, every
+// later sync-includes run re-smears the stale value sitewide until this
+// injector happens to run again — the 2026-07-06 footer drift (the partial
+// said 13 tools / 150 terms; data/site-counts.json said 5 / 171). Stamp the
+// partials too so the source can never disagree with the JSON; --check now
+// covers them as well.
+const files = collectHtml(REPO);
+const includesDir = path.join(REPO, '_includes');
+if (fs.existsSync(includesDir)) {
+  for (const name of fs.readdirSync(includesDir)) {
+    if (name.endsWith('.html')) files.push(path.join(includesDir, name));
+  }
+}
+
+for (const file of files) {
   const src = fs.readFileSync(file, 'utf8');
   if (!SENTINEL.test(src)) continue;
   SENTINEL.lastIndex = 0;

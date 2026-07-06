@@ -5,137 +5,962 @@
   "basis": "wholesale",
   "currency": "USD",
   "note": "Wholesale reference prices compiled from public U.S. market sources (USDA AMS/LMR, BLS, FRED, EIA, NOAA). Values are in US dollars per unit. Not a delivered or retail price. Source: muntin.digital/cost-index/raspberry/",
-  "asOf": "2026-06-18",
+  "reconstructedNote": "Observations marked reconstructed:true are a monthly backfill reconstructed from public sources after the fact — not figures published live on that date. Live points (reconstructed:false) were captured at publication.",
+  "coverage": {
+    "start": "2023-06-14",
+    "end": "2026-06-12",
+    "points": 158,
+    "reconstructed": 158
+  },
+  "asOf": "2026-07-06",
   "observations": [
     {
+      "date": "2023-06-14",
+      "priceUsd": 28.6,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-06-21",
+      "priceUsd": 16.88,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-06-28",
+      "priceUsd": 18.2,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-07-05",
+      "priceUsd": 27.63,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-07-12",
+      "priceUsd": 28.2,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-07-19",
+      "priceUsd": 26.5,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-07-26",
+      "priceUsd": 30.4,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-08-02",
+      "priceUsd": 38.7,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-08-09",
+      "priceUsd": 38.75,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-08-16",
+      "priceUsd": 33.2,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-08-23",
+      "priceUsd": 24.5,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-08-30",
+      "priceUsd": 16.1,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-09-06",
+      "priceUsd": 15.75,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-09-13",
+      "priceUsd": 23.65,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-09-20",
+      "priceUsd": 27.1,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-09-27",
+      "priceUsd": 14.65,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-10-04",
+      "priceUsd": 20.15,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-10-11",
+      "priceUsd": 21.69,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-10-18",
+      "priceUsd": 17.1,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-10-25",
+      "priceUsd": 15.5,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-11-01",
+      "priceUsd": 12.5,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-11-08",
+      "priceUsd": 10.25,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-11-15",
+      "priceUsd": 9.69,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-11-22",
+      "priceUsd": 8.8,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-11-29",
+      "priceUsd": 6.25,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-12-06",
+      "priceUsd": 9.5,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-12-13",
+      "priceUsd": 14.7,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-12-20",
+      "priceUsd": 17.65,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2023-12-27",
+      "priceUsd": 24.63,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-01-03",
+      "priceUsd": 29.63,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-01-10",
+      "priceUsd": 27.4,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-01-17",
+      "priceUsd": 26.63,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-01-24",
+      "priceUsd": 23.45,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-01-31",
+      "priceUsd": 23.9,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-02-07",
+      "priceUsd": 24.4,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-02-14",
+      "priceUsd": 28.2,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-02-21",
+      "priceUsd": 34.88,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-02-28",
+      "priceUsd": 34.65,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-03-06",
+      "priceUsd": 36.85,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-03-13",
+      "priceUsd": 32.5,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-03-20",
+      "priceUsd": 24.1,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-03-27",
+      "priceUsd": 25.1,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-04-03",
+      "priceUsd": 30.2,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-04-10",
+      "priceUsd": 28.5,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-04-17",
+      "priceUsd": 32.4,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-04-24",
+      "priceUsd": 34.8,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-05-01",
+      "priceUsd": 37.8,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-05-08",
+      "priceUsd": 38.4,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-05-15",
+      "priceUsd": 35.5,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-05-22",
+      "priceUsd": 23.75,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-05-29",
+      "priceUsd": 16.13,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-06-05",
+      "priceUsd": 12.5,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-06-12",
+      "priceUsd": 13.2,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-06-18",
+      "priceUsd": 12.88,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-06-26",
+      "priceUsd": 13.65,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-07-03",
+      "priceUsd": 8.4,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-07-10",
+      "priceUsd": 13.88,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-07-17",
+      "priceUsd": 9,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-07-24",
+      "priceUsd": 16.9,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-07-31",
+      "priceUsd": 22.4,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-08-07",
+      "priceUsd": 23.4,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-08-14",
+      "priceUsd": 16.4,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-08-21",
+      "priceUsd": 12.2,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-08-28",
+      "priceUsd": 19.7,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-09-04",
+      "priceUsd": 25.5,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-09-11",
+      "priceUsd": 31.3,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-09-18",
+      "priceUsd": 33,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-09-25",
+      "priceUsd": 28.85,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-10-02",
+      "priceUsd": 14.95,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-10-09",
+      "priceUsd": 9.5,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-10-16",
+      "priceUsd": 11,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-10-23",
+      "priceUsd": 9.65,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-10-30",
+      "priceUsd": 14.7,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-11-06",
+      "priceUsd": 20.7,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-11-13",
+      "priceUsd": 21.75,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-11-20",
+      "priceUsd": 25.5,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-11-27",
+      "priceUsd": 24.9,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-12-04",
+      "priceUsd": 25.13,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-12-11",
+      "priceUsd": 13.3,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-12-18",
+      "priceUsd": 16.95,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-12-23",
+      "priceUsd": 16,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-12-31",
+      "priceUsd": 19.75,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-01-08",
+      "priceUsd": 17.6,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-01-15",
+      "priceUsd": 23.25,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-01-22",
+      "priceUsd": 22.94,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-01-29",
+      "priceUsd": 27.7,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-02-05",
+      "priceUsd": 35.8,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-02-12",
+      "priceUsd": 37.85,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-02-19",
+      "priceUsd": 25,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-02-26",
+      "priceUsd": 22.1,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-03-05",
+      "priceUsd": 25.05,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-03-12",
+      "priceUsd": 24.31,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-03-19",
+      "priceUsd": 25.6,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-03-26",
+      "priceUsd": 19.8,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-04-02",
+      "priceUsd": 18.5,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-04-09",
+      "priceUsd": 17.2,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-04-16",
+      "priceUsd": 20.6,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-04-23",
+      "priceUsd": 25.1,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-04-30",
+      "priceUsd": 31.69,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-05-07",
+      "priceUsd": 37.5,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-05-14",
+      "priceUsd": 32.1,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-05-21",
+      "priceUsd": 21.9,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-05-28",
+      "priceUsd": 17.25,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-06-04",
+      "priceUsd": 12,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-06-11",
+      "priceUsd": 7.1,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-06-18",
+      "priceUsd": 11.3,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-06-25",
+      "priceUsd": 11.25,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-07-02",
+      "priceUsd": 8.6,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-07-09",
+      "priceUsd": 6.75,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-07-16",
+      "priceUsd": 9.6,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-07-23",
+      "priceUsd": 11.45,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-07-30",
+      "priceUsd": 11.1,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-08-06",
+      "priceUsd": 11.1,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-08-13",
+      "priceUsd": 16.4,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-08-20",
+      "priceUsd": 17.2,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-08-27",
+      "priceUsd": 20.7,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-09-03",
+      "priceUsd": 20.63,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-09-10",
+      "priceUsd": 18.6,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-09-17",
+      "priceUsd": 16.2,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-09-24",
+      "priceUsd": 9.95,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-10-01",
+      "priceUsd": 6.6,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-10-08",
+      "priceUsd": 15.55,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-10-15",
+      "priceUsd": 12,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-10-22",
+      "priceUsd": 14.5,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-10-29",
+      "priceUsd": 18.75,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-11-05",
+      "priceUsd": 18.9,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-11-12",
+      "priceUsd": 21.38,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-11-19",
+      "priceUsd": 9.88,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-11-26",
+      "priceUsd": 16,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-12-03",
+      "priceUsd": 17.06,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-12-10",
+      "priceUsd": 23.68,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-12-17",
+      "priceUsd": 29.85,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-12-23",
+      "priceUsd": 37.25,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-12-31",
+      "priceUsd": 35.08,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2026-01-07",
+      "priceUsd": 23.69,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2026-01-14",
+      "priceUsd": 19.8,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2026-01-21",
+      "priceUsd": 15.63,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2026-01-28",
+      "priceUsd": 19.5,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2026-02-04",
+      "priceUsd": 24.35,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2026-02-11",
+      "priceUsd": 18.65,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2026-02-18",
+      "priceUsd": 16.63,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2026-02-25",
+      "priceUsd": 16.75,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2026-03-04",
+      "priceUsd": 22.2,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2026-03-11",
+      "priceUsd": 26.3,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2026-03-18",
+      "priceUsd": 27,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2026-03-25",
+      "priceUsd": 26.2,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2026-04-01",
+      "priceUsd": 16.85,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2026-04-08",
+      "priceUsd": 22.4,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2026-04-15",
+      "priceUsd": 23.7,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2026-04-22",
+      "priceUsd": 25.45,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2026-04-29",
+      "priceUsd": 27.1,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2026-05-06",
+      "priceUsd": 27.5,
+      "source": null,
+      "reconstructed": true
+    },
+    {
       "date": "2026-05-13",
-      "priceUsd": 30.25,
-      "source": "usda-ams-atlanta"
-    },
-    {
-      "date": "2026-05-14",
-      "priceUsd": 30.25,
-      "source": "usda-ams-atlanta"
-    },
-    {
-      "date": "2026-05-15",
-      "priceUsd": 28.75,
-      "source": "usda-ams-atlanta"
-    },
-    {
-      "date": "2026-05-18",
-      "priceUsd": 30.5,
-      "source": "usda-ams-atlanta"
-    },
-    {
-      "date": "2026-05-19",
-      "priceUsd": 30.5,
-      "source": "usda-ams-atlanta"
+      "priceUsd": 24.65,
+      "source": null,
+      "reconstructed": true
     },
     {
       "date": "2026-05-20",
-      "priceUsd": 30.5,
-      "source": "usda-ams-atlanta"
-    },
-    {
-      "date": "2026-05-21",
-      "priceUsd": 30.5,
-      "source": "usda-ams-atlanta"
-    },
-    {
-      "date": "2026-05-22",
-      "priceUsd": 29,
-      "source": "usda-ams-atlanta"
-    },
-    {
-      "date": "2026-05-26",
-      "priceUsd": 30.25,
-      "source": "usda-ams-atlanta"
+      "priceUsd": 18.5,
+      "source": null,
+      "reconstructed": true
     },
     {
       "date": "2026-05-27",
-      "priceUsd": 30.25,
-      "source": "usda-ams-atlanta"
-    },
-    {
-      "date": "2026-05-28",
-      "priceUsd": 30.25,
-      "source": "usda-ams-atlanta"
-    },
-    {
-      "date": "2026-05-29",
-      "priceUsd": 30.25,
-      "source": "usda-ams-atlanta"
-    },
-    {
-      "date": "2026-06-01",
-      "priceUsd": 27.75,
-      "source": "usda-ams-atlanta"
-    },
-    {
-      "date": "2026-06-02",
-      "priceUsd": 28,
-      "source": "usda-ams-atlanta"
+      "priceUsd": 17,
+      "source": null,
+      "reconstructed": true
     },
     {
       "date": "2026-06-03",
-      "priceUsd": 28,
-      "source": "usda-ams-atlanta"
-    },
-    {
-      "date": "2026-06-04",
-      "priceUsd": 30.5,
-      "source": "usda-ams-atlanta"
-    },
-    {
-      "date": "2026-06-05",
-      "priceUsd": 30.5,
-      "source": "usda-ams-atlanta"
-    },
-    {
-      "date": "2026-06-08",
-      "priceUsd": 30.5,
-      "source": "usda-ams-atlanta"
-    },
-    {
-      "date": "2026-06-09",
-      "priceUsd": 30.5,
-      "source": "usda-ams-atlanta"
+      "priceUsd": 12.25,
+      "source": null,
+      "reconstructed": true
     },
     {
       "date": "2026-06-10",
-      "priceUsd": 22.5,
-      "source": "usda-ams-atlanta"
-    },
-    {
-      "date": "2026-06-11",
-      "priceUsd": 22.5,
-      "source": "usda-ams-atlanta"
+      "priceUsd": 12.05,
+      "source": null,
+      "reconstructed": true
     },
     {
       "date": "2026-06-12",
-      "priceUsd": 29.5,
-      "source": "usda-ams-atlanta"
-    },
-    {
-      "date": "2026-06-15",
-      "priceUsd": 29.5,
-      "source": "usda-ams-atlanta"
-    },
-    {
-      "date": "2026-06-16",
-      "priceUsd": 29.5,
-      "source": "usda-ams-atlanta"
-    },
-    {
-      "date": "2026-06-17",
-      "priceUsd": 29.5,
-      "source": "usda-ams-atlanta"
-    },
-    {
-      "date": "2026-06-18",
-      "priceUsd": 29.5,
-      "source": "usda-ams-atlanta"
+      "priceUsd": 13,
+      "source": null,
+      "reconstructed": true
     }
   ]
 }

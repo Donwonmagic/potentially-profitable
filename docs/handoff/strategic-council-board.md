@@ -8,12 +8,145 @@ externalized so a fresh session can resume in one read. The environment is
 ephemeral and a new session does not remember the prior chat — only what's in the
 repo survives. Update this file as threads move.
 
-**Branches:** both repos develop on `claude/muntin-strategic-council-rqdehe`
-(storefront `potentially-profitable`, product `Muntin-Invoice-Decoder`). The prior
-dev branch `claude/muntin-digital-strategy-07sowb` is merged to main (storefront
-PR #482, product PR #227) and closed — start fresh from `main`.
+**Branches:** both repos develop on `claude/muntin-strategic-council-exsghc`
+(storefront `potentially-profitable`, product `Muntin-Invoice-Decoder`). Prior
+council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
+#234–#239 product) are merged to main and closed.
 
-## ⮕ CURRENT STATE — read this first (updated 2026-06-27)
+## ⮕ CURRENT STATE — read this first (updated 2026-07-06)
+
+### 🔴 P0 OUTAGE — GitHub Actions dead ACCOUNT-WIDE since 2026-06-20 (founder-only fix)
+
+**Finding (session 2026-07-06, fully verified via the Actions API):** every GitHub
+Actions job across BOTH repos has been refused a runner since 2026-06-20. Jobs
+die in 2–4 s with `runner_id: 0`, no logs (404), no annotations — the signature
+of a **billing lock** ("recent account payments have failed or your spending
+limit needs to be increased"), NOT a code problem. All workflow YAML in both
+repos validated clean (incl. duplicate-key check). Only the founder can fix it:
+**GitHub → Settings → Billing and plans → check payment method / spending
+limit.** Evidence:
+
+  - `cost-index-refresh.yml`: last success run #13 **2026-06-19**; runs #14–#30
+    (06-20 → 07-06) ALL failed pre-execution. Cost Pressure refresh: same.
+  - `cost-index-dispatch.yml` (weekly subscriber email): run #1 (06-16) is the
+    ONLY email ever delivered; #2 (06-23) and #3 (06-30) refused runners.
+  - Storefront PR checks (Playwright / Lighthouse / axe) also get no runner —
+    job-level failure in ~3 s even where the run-level rollup shows "success".
+  - Product repo (private): `ci.yml` last executed **2026-06-19**. Every
+    push/schedule run since 06-20 is a `startup_failure` attributed to a phantom
+    deleted workflow (id 299264922, path "BuildFailed", created 06-20 04:37 ET).
+
+**Impact (compounds daily):**
+  1. **Live Cost Index data is frozen at the 2026-06-19 read** (last data commit
+     `d2b598e88`). The daily-heartbeat promise ("level ≤1 day old") has been
+     broken for 17 days. The 06-27 poblano and 07-03 pumpkin commits were HAND
+     -fixes aging out points that the frozen data pushed past the stale gates —
+     each passing calendar day risks another ingredient aging out and blocking
+     Workers deploys of ANY merge.
+  2. Weekly dispatch subscribers have received exactly one email, three weeks ago.
+  3. Product PRs #234–#239 (fraud detectors, PII scrub, community pool, /try)
+     merged with ZERO GitHub CI executed — the no-llm gate, privacy gates,
+     vitest/golden suites ran only inside dev sessions. The "enforced in CI"
+     trust claim on /ai + /never has not actually executed since 06-19.
+
+**Recovery status (2026-07-06 ~17:05 UTC): billing UNBLOCKED** — founder paid;
+runners returned instantly (probe: product CI run #1969 executed, first real CI
+since 06-19). Founder's first refresh dispatch was cancelled cleanly (nothing
+committed) pending ingredient-coverage confirmation. Grounded answer: the
+roster (`data/cost-index-sources.json`) is unchanged since 06-16 — the batch-1
+12 high-traffic ingredients are in it, the fetch iterates the roster on the
+run's own ref, and below-bar newcomers graduate to the seed/pages automatically
+via the shippable-bar gate. **But the pause caught a real wiring gap:** PR #490/
+#500 added five committed live-data-derived artifacts + sync gates while the
+heartbeat was dead (`cost-lockfloat.json/.js`, `cost-index-audit.json`,
+`cost-index-calibration-report.json` + methodology sentinels,
+`cost-forecast-backtest.json`, provenance `cost-index/sources.json`) — none
+rebuilt/staged by the refresh workflow, so the FIRST post-freeze refresh would
+have left every one drifted → red `--check` gates on all subsequent sessions.
+**Patched on this branch** (cost-index-refresh.yml): rebuild steps in dependency
+order, pre-commit `--check` re-derivation, the new honesty gates (basis-leak,
+shippable-bar, seasonal-band, band-coverage, trend-skill) run before commit, and
+the artifacts added to the scoped `git add`. Validated on frozen data: all six
+write-mode runs byte-identical, all 11 gates pass. **The patch must reach main
+before the next 13:00 UTC cron fires unpatched** — either merge first, or run
+the catch-up via workflow_dispatch "Use workflow from: claude/muntin-strategic-
+council-exsghc" (commits the read to this branch, reviewable, merges together).
+Remaining: confirm phantom "BuildFailed" runs stopped on the product repo's
+next main push; watch the weekly dispatch cron (~07-07); then the /status/
+freshness-note honesty call (founder's if publicly visible).
+
+### Delta 2026-06-28 → 07-06 (merged to main; board was stale for this window)
+
+Storefront (PRs #490, #493–#500, #502–#503):
+  - **Naming fork #5 partially RESOLVED:** "Cost Pulse" folded into the **Cost
+    Index** brand (`78c8654a1`); "Muntin Bench" renamed **Vendor Benchmark**
+    (`51d1e2edb`); OG cards re-arted. (Ledger split still off-site by design.)
+  - **Ingredient card redesigned answer-first** + then-vs-now two-invoice-dates
+    comparator on a new multi-year deep-history seed (PR #493).
+  - **Bolder/premium design pass** sitewide EN+ES (PR #495; brief in
+    `docs/handoff-bolder-pass.md`): /ledger/ goldenhour hero + ink pricing band,
+    homepage "Receipts, not promises" stances, tools-hub "instruments at rest",
+    footer trust column, founding-capture band.
+  - **Own-invoice demo route CLOSED sitewide** → `/ledger/demo/` guided mockup
+    walkthrough (EN+ES) ending in "run your own line" → live Vendor Benchmark.
+  - **Vendor Benchmark rebuilt ground-up** Phases 1–2 (PRs #497/#498): market-
+    window engine + honest chart layer; Price Journal (device-local compounding
+    log), forecast + regime-break layer, whole-book worklist.
+  - **Honesty-remediation wave** (PR #490 + #500): new fail-CI gates
+    `check-cost-index-basis-leak.mjs` + `check-lockfloat-copy.mjs`; conformal
+    coverage de-circularized; per-item null gate w/ Benjamini–Yekutieli; per-item
+    provenance receipts; cross-repo conformal golden-vector parity lock.
+  - **Lock-or-float reframe** on the live tool (PR #500): Lock Sheet (committed
+    artifact + drift gate), Lock Book, Menu Cushion, contract checker, Backtest
+    Replay, Ledger bridge.
+  - **New library article** end-to-end in a day: beef-prices EN + native ES +
+    EN audio (PRs #499/#502/#503). Ledger SoftwareApplication+Offer ($19/mo)
+    JSON-LD EN+ES — first structured-data claim of the paid product.
+
+Product (PRs #234–#239):
+  - **cost-alerts comparability gate** — never accuse a vendor on a category
+    error; proxy-quality registry (PR #234).
+  - **PII-scrub donation disclosure** (5 adversarial rounds) + anonymous-demo
+    no-persistence covenant promoted to a CI gate (PR #235).
+  - **5 fraud/integrity detectors** wired into extract() w/ EN+es-MX reason
+    copy + reason→safety-chip CI exhaustiveness gate (PR #235).
+  - **Read Receipt trust rail** Phase 3 (cost + "safe to pay?" segments; binding
+    cognitive-load canon) (PR #235).
+  - **Community column-rule pool Slices 1–6 complete** (held-out lift gate,
+    supersession + distinct-org demote-back, migrations 0056/0057). OCR-noise
+    corpus isolated the one remaining un-park gate for /try: header glyph-variant
+    seeding + real top-~10 broadliner layouts, then re-measure first-try F1.
+  - **/try anonymous demo BUILT + hardened, PARKED behind `DEMO_ANONYMOUS_EXTRACT`**
+    (founder: "not until it's the very best we can"). Plans:
+    `docs/plans/try-anonymous-demo-plan.md`, `first-try-reliability-roadmap.md`.
+  - Vendor-benchmark math parity-ported into the Ledger (golden vectors);
+    `ledger-spec/cost-index/IS-IT-YOU-OR-THE-MARKET.md` specs the own-series
+    overlay. **POS-SPEC.md** (07-05) carries its own tiered insight catalog §6 —
+    reconcile with `docs/plans/muntin-plate-insight-catalog.md` before building
+    Plate entries.
+
+**Gate baseline re-verified 2026-07-06:** check-all = 226/246, 20 failures, ALL
+"(idem)" deploy-regenerated drifts (warm-palette + cost-index sync now GREEN —
+baseline improved from ~21). Hard gates all green; fabrications 0 hits.
+
+**Open-PR triage (2026-07-06):** storefront #501 (residual diff on the merged
+vendor-benchmark branch — CI failures are outage artifacts, but its Workers
+Build failure needs real triage), #448 (stale audio PR), #374 (stale cursor
+draft); product #237 (stale). None block main.
+
+**Queue state:** A — Plate insight catalog **EXISTS**
+(`docs/plans/muntin-plate-insight-catalog.md`, E1–E15 ranked, flagship = E1+E2
+pair; ADR-010 + E14 already shipped) → thread A is now "pick the next entry to
+BUILD", not "write the catalog". B — vertical generality **NOT STARTED**, and
+the claim is already live in marketing (`/vs/marginedge` "vertical-agnostic";
+homepage "for small business") while every code path is restaurant-hardcoded
+(`seedDefaultsForOrg` → `RESTAURANT_DEFAULTS`, NRA-chart GL seed, all-restaurant
+golden suite) — an honesty gap to either EARN (fixtures + vertical selector) or
+SOFTEN (copy). C — social pre-launch still blocked on the founder IG decision.
+
+---
+
+### Prior state (updated 2026-06-27, superseded by the section above)
 
 **Session on branch `claude/muntin-strategic-council-fzdd1j`** (PR #489 — the prior `-rqdehe` heartbeat/prune/anti-Factura work + the Worker-build fix — is **merged to main**, commit `3b3bb6cb0`). Caught up with main; `check-all` re-verified green (215/236 = the documented deploy-regenerated idempotency baseline; all hard gates + every cost-index gate GREEN even after calendar aging).
 

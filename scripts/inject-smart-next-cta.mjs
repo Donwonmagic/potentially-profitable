@@ -35,12 +35,16 @@ function articleFiles() {
     const root = path.join(repoRoot, dir);
     if (!fs.existsSync(root)) continue;
     const locale = dir.startsWith('es') ? 'es' : 'en';
+    // Namespace of the article's real home ('blog' | 'library') — the
+    // from= attribution must name it; a hardcoded 'blog' mislabelled all
+    // 72 library-article Try links (caught 2026-07-06 via the beef post).
+    const ns = dir.replace(/^es\//, '');
     for (const slug of fs.readdirSync(root)) {
       if (slug === 'drafts') continue;
       // Phase 7: /library/menu-design-*/ are collection landings, not articles.
       if ((dir === 'library' || dir === 'es/library') && NON_ARTICLE_LIBRARY_SLUGS.has(slug)) continue;
       const file = path.join(root, slug, 'index.html');
-      if (fs.existsSync(file)) out.push({ file, slug, locale });
+      if (fs.existsSync(file)) out.push({ file, slug, locale, ns });
     }
   }
   return out;
@@ -80,7 +84,7 @@ const READ_OVERRIDE = {
   'schema-markup-para-restaurante-ejemplo':                  { es: '/es/glossary/schema/' },
 };
 
-function buildBlock({ slug, locale, glossaryUrl, toolUrl }) {
+function buildBlock({ slug, locale, ns, glossaryUrl, toolUrl }) {
   const windowHref = locale === 'es' ? `/es/window/?topic=${encodeURIComponent(slug)}` : `/window/?topic=${encodeURIComponent(slug)}`;
   const eyebrow = locale === 'es' ? 'Qué hacer ahora' : 'What to do next';
   const readLabel  = locale === 'es' ? 'Lee' : 'Read';
@@ -97,7 +101,7 @@ function buildBlock({ slug, locale, glossaryUrl, toolUrl }) {
   const gloss = glossaryUrl || fallbackGlossary;
   const items = [
     `        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">${readLabel}:</span> <a href="${escAttr(gloss)}">${readLink}</a></li>`,
-    `        <li class="smart-next__item smart-next__try"><span class="smart-next__verb">${tryLabel}:</span> <a href="${escAttr(tool)}?from=blog/${slug}&intent=watch">${tryLink}</a></li>`,
+    `        <li class="smart-next__item smart-next__try"><span class="smart-next__verb">${tryLabel}:</span> <a href="${escAttr(tool)}?from=${ns}/${slug}&intent=watch">${tryLink}</a></li>`,
     `        <li class="smart-next__item smart-next__note"><span class="smart-next__verb">${noteLabel}:</span> <a href="${escAttr(windowHref)}">${noteLink}</a></li>`,
   ].join('\n');
   return [
@@ -119,7 +123,7 @@ function buildBlock({ slug, locale, glossaryUrl, toolUrl }) {
 const KNIT_RAIL_POPULATED_RE = /<!-- knit-rail:start -->\s*<aside class="knit-rail"/;
 
 let changed = 0;
-for (const { file, slug, locale } of articleFiles()) {
+for (const { file, slug, locale, ns } of articleFiles()) {
   const src = fs.readFileSync(file, 'utf8');
 
   // Skip articles where KnitRail has populated the unified rail.
@@ -131,7 +135,7 @@ for (const { file, slug, locale } of articleFiles()) {
   const override = (READ_OVERRIDE[slug] || {})[locale];
   const glossaryUrl = override || firstGlossaryHrefIn(src);
   const toolUrl = loadPostEndCtaTool(slug, locale);
-  const block = buildBlock({ slug, locale, glossaryUrl, toolUrl });
+  const block = buildBlock({ slug, locale, ns, glossaryUrl, toolUrl });
 
   let next;
   if (SENTINEL_RE.test(src)) {

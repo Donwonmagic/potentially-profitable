@@ -59,7 +59,10 @@ jobs:
           set -e
           node scripts/seed-glossary-og.mjs
           node scripts/build-og-cards.mjs
-          node scripts/stamp-es-restaurant-audit.mjs
+          # stamp-es-restaurant-audit / inject-tool-storefront-rail /
+          # inject-storefront-health-graph were deleted with their tools in
+          # 44d64cc74 (retire 8 off-funnel tools); this chain kept calling
+          # them, so lhci died at the first one on every run since.
           node scripts/sync-includes.mjs
           node scripts/build-tools-index.mjs
           node scripts/build-library-recent.mjs
@@ -84,9 +87,7 @@ jobs:
           node scripts/inject-smart-next-cta.mjs
           node scripts/stamp-hreflang.mjs
           node scripts/inject-tool-howto.mjs
-          node scripts/inject-tool-storefront-rail.mjs
           node scripts/inject-tool-data-promise.mjs
-          node scripts/inject-storefront-health-graph.mjs
           node scripts/inject-security-page-schema.mjs
           node scripts/inject-article-tldr.mjs
           node scripts/inject-article-tldr.mjs --es

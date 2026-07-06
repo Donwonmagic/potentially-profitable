@@ -96,6 +96,18 @@ jobs:
           # trips the stale gate.
           node scripts/build-cost-index-health.mjs
           node scripts/build-seasonality.mjs
+          # Rebuild the pure-data/ committed artifacts whose inputs are all
+          # final at this point (cost-index.json + seed + deep history +
+          # seasonality) — each is --check-gated in check-all, so any one left
+          # out drifts stale the moment the read above commits (the 2026-07-06
+          # gap: these gates landed while the refresh was down, so no run ever
+          # exercised them). The provenance/audit/calibration-report rebuilds
+          # run AFTER page generation below — provenance reads the regenerated
+          # cost-index/index.json aggregate (the 2026-07-06 first-recovery-run
+          # ordering failure: built here, it derives from the stale aggregate
+          # and its own gate correctly refuses the commit).
+          node scripts/build-cost-lockfloat.mjs
+          node scripts/backtest-cost-forecast.mjs
           # Re-render hub / per-ingredient / lab pages.
           node scripts/build-cost-index-pages.mjs
           # Re-render the ingredient-yield library pages — their market-read block
@@ -114,6 +126,30 @@ jobs:
           # dateModified (methodology EN+ES + hub) so the machine-readable
           # freshness signal tracks each daily read. In place, idempotent.
           node scripts/inject-cost-index-dataset-date.mjs
+          # Post-page derived artifacts, in dependency order. Provenance reads
+          # the freshly regenerated cost-index/index.json aggregate and stamps
+          # the source-registry table into the sources pages (sentinel region,
+          # so the include/loader re-stamps above don't disturb it); the audit
+          # reconciles against it; the calibration report is rebuilt before its
+          # methodology-page sentinel injection, which — like the dataset-date
+          # stamp — must run after page generation.
+          node scripts/build-cost-index-provenance.mjs
+          node scripts/build-cost-index-audit.mjs
+          node scripts/build-cost-index-calibration-report.mjs
+          node scripts/inject-cost-index-calibration.mjs
+          # Second artifact family the 2026-07-06 recovery surfaced (the deploy
+          # build regenerates the idem class itself but NOT these; committed
+          # copies must stay in sync or the Workers deploy check goes red):
+          # per-ingredient embeds, the public feed, the revisions log, the
+          # methodology reproduce stamp, both confidence reports, and the
+          # speakable stamps on the regenerated pages.
+          node scripts/build-cost-index-embed.mjs
+          node scripts/build-cost-index-feed.mjs
+          node scripts/build-cost-revisions.mjs
+          node scripts/build-cost-index-reproduce.mjs
+          node scripts/build-cost-confidence-calibration.mjs
+          node scripts/build-cost-confidence-shadow.mjs
+          node scripts/inject-cost-index-speakable.mjs
 
       - name: Fact + calibration gates
         if: steps.keys.outputs.configured == 'true'
@@ -123,6 +159,32 @@ jobs:
           # A fresh fetch must never publish a trend % that contradicts its own
           # sparkline (the unwindowed-index-source bug). Fail the run before commit.
           node scripts/reconcile-cost-index-trends.mjs --check
+          # Every derived artifact rebuilt above must re-derive byte-identical —
+          # a drift here means the build order broke, not the data. Fail pre-commit.
+          node scripts/build-cost-index-provenance.mjs --check
+          node scripts/build-cost-index-audit.mjs --check
+          node scripts/build-cost-lockfloat.mjs --check
+          node scripts/build-cost-index-calibration-report.mjs --check
+          node scripts/backtest-cost-forecast.mjs --check
+          node scripts/inject-cost-index-calibration.mjs --check
+          node scripts/build-cost-index-embed.mjs --check
+          node scripts/build-cost-index-feed.mjs --check
+          node scripts/build-cost-revisions.mjs --check
+          node scripts/build-cost-index-reproduce.mjs --check
+          node scripts/build-cost-confidence-calibration.mjs --check
+          node scripts/build-cost-confidence-shadow.mjs --check
+          node scripts/inject-cost-index-speakable.mjs --check
+          # The honesty gates that ship with the fresh surfaces: no non-dollar
+          # basis mislabeled as a $ level, no below-bar ingredient in the seed,
+          # every rendered seasonal band re-derived, and the published 80% band
+          # + trend-skill claims re-verified against realized history. If the
+          # fresh read breaks an earned claim, the run fails red and nothing
+          # commits — a stale-but-true index beats a fresh-but-wrong one.
+          node scripts/check-cost-index-basis-leak.mjs
+          node scripts/check-shippable-bar.mjs
+          node scripts/check-cost-index-seasonal.mjs
+          node scripts/check-band-coverage.mjs
+          node scripts/check-trend-skill.mjs
 
       - name: Commit the daily read
         if: steps.keys.outputs.configured == 'true'
@@ -139,6 +201,11 @@ jobs:
           # re-stamp from sync-includes, so the commit is always exactly the read.
           git add data/cost-index.json data/cost-index.js \
             data/cost-index-health.json data/seasonality.json \
+            data/cost-lockfloat.json data/cost-lockfloat.js \
+            data/cost-index-audit.json data/cost-index-calibration-report.json \
+            data/cost-forecast-backtest.json \
+            data/cost-revisions.json data/cost-confidence-calibration.json \
+            data/cost-confidence-shadow.json \
             cost-index/ es/cost-index/ \
             library/ingredient-yields/ es/library/ingredient-yields/ sitemap.xml
           git checkout -- . 2>/dev/null || true
@@ -180,6 +247,11 @@ jobs:
           node scripts/inject-library-cost-index-hero.mjs
           node scripts/sync-includes.mjs
           node scripts/build-library-recent.mjs              || true
+          # Card the post on /blog/ — no workflow ran this before 2026-07-06, so
+          # every workflow-published week was invisible on the blog index until
+          # someone reran it by hand. Same non-fatal posture as the other
+          # registration surfaces (deploy regenerates it either way).
+          node scripts/build-blog-index.mjs                  || true
           node scripts/wire-glossary-knit.mjs                || true
           node scripts/inject-glossary-article-backlinks.mjs || true
           node scripts/build-rss.mjs                          || true
@@ -193,13 +265,22 @@ jobs:
           ASOF=$(node -e 'console.log((require("fs").readFileSync("data/cost-index.js","utf8").match(/"generatedAt"\s*:\s*"(\d{4}-\d{2}-\d{2})"/)||[])[1]||"")')
           # Scoped commit: only the post + its registration surfaces (git identity is
           # already configured by the daily-read commit step earlier in this job).
-          git add "blog/cost-index-week-${ASOF}/" "es/blog/cost-index-week-${ASOF}/" \
-                  data/cost-index-editions.json \
-                  cost-index/week-*.json cost-index/week-*.csv \
-                  cost-index/weekly/ es/cost-index/weekly/ \
-                  library/index.html es/library/index.html \
-                  blog/index.html feed.xml sitemap.xml llms.txt data/library-tags.json \
-                  glossary 2>/dev/null || true
+          # Stage per-pathspec: a single `git add` with one unmatched pathspec stages
+          # NOTHING (git aborts the whole add), and `|| true` then swallows the error —
+          # exactly how run #33 silently skipped this publish (the generator writes the
+          # EN post only, so "es/blog/cost-index-week-*/" never matches). Looping makes
+          # each path independent: a missing optional surface can't void the publish.
+          for p in "blog/cost-index-week-${ASOF}/" "es/blog/cost-index-week-${ASOF}/" \
+                   data/cost-index-editions.json data/cost-index-readings.prev.json \
+                   cost-index/week-*.json cost-index/week-*.csv \
+                   cost-index/weekly/ es/cost-index/weekly/ \
+                   library/index.html es/library/index.html \
+                   blog/index.html es/blog/index.html \
+                   feed.xml es/feed.xml sitemap.xml \
+                   llms.txt es/llms.txt data/library-tags.json \
+                   glossary/ es/glossary/; do
+            git add "$p" 2>/dev/null || echo "catch-up stage: no match for $p (skipped)"
+          done
           git checkout -- . 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "Nothing to commit for the catch-up post."
