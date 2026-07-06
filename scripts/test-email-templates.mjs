@@ -428,6 +428,25 @@ function assertShellInvariants(label, html) {
   assert('payload: no increase-vocabulary on negative reads', signContradiction.length === 0,
     signContradiction.map((i) => i.key + ': ' + i.reason).join(' | '));
   assert('payload: basket never labeled high', !(ins.basket && ins.basket.confidence === 'high'));
+
+  // The edition spine (2026-07-06 monthly pivot): wow rides the payload with a
+  // guarded state; stories are gated-only and deterministically ranked; every
+  // arc is a single-series shape (one source, one basis — never mixed).
+  assert('payload: wow present with a known state',
+    ins.wow && ['first', 'reweighted', 'available'].includes(ins.wow.state), JSON.stringify(ins.wow || null).slice(0, 120));
+  assert('payload: every story cleared the gate', (ins.stories || []).every((s) => s.gated === true));
+  assert('payload: stories ranked by score descending',
+    (ins.stories || []).every((s, i, a) => i === 0 || a[i - 1].score >= s.score));
+  const arcs = [...(ins.risers || []), ...(ins.fallers || []), ...(ins.stories || [])].map((i) => i.arc).filter(Boolean);
+  assert('payload: arcs exist on movers', arcs.length > 0);
+  assert('payload: every arc is single-series with dated endpoints',
+    arcs.every((a) => a.source && a.basis && a.reads >= 2
+      && a.start && a.start.date && typeof a.start.cents === 'number'
+      && a.end && a.end.date && typeof a.end.cents === 'number'
+      && a.peak.cents >= a.start.cents && a.peak.cents >= a.end.cents
+      && a.trough.cents <= a.start.cents && a.trough.cents <= a.end.cents
+      && a.start.date <= a.end.date));
+  assert('payload: sinceDate present', typeof ins.sinceDate === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(ins.sinceDate));
 }
 
 if (failures > 0) {

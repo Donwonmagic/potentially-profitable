@@ -564,6 +564,14 @@ const CHECKS = [
   ['Cost-index speakable (idem)','inject-cost-index-speakable.mjs','--check'],
   ['Cost-index dispatch freshness','check-cost-index-dispatch-fresh.mjs'],
   ['Cost-index dispatch freshness self-test','check-cost-index-dispatch-fresh.mjs','--self-test'],
+  // The dispatch EMAIL's trust rails (2026-07-06): the golden render committed
+  // under data/email-preview/ must match a recompute byte-for-byte, and the
+  // recomputed render must pass the content rules (banned techniques, numeric
+  // parity, confidence language, sign/verb agreement, quiet-lead determinism,
+  // first-print coupling). The templates sat outside every CI net before this.
+  ['Cost-index email preview (idem)','build-cost-index-email-preview.mjs','--check'],
+  ['Cost-index email content gate','check-cost-index-email.mjs'],
+  ['Cost-index email content gate self-test','check-cost-index-email.mjs','--self-test'],
   // Pressure honesty — the inferred outlook can't carry a price, can't use a
   // banned verb, and its rendered direction must equal what the rules recompute.
   ['Cost-pressure honesty','check-pressure-honesty.mjs'],

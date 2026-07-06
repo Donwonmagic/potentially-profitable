@@ -152,6 +152,10 @@ jobs:
           node scripts/build-cost-confidence-calibration.mjs
           node scripts/build-cost-confidence-shadow.mjs
           node scripts/inject-cost-index-speakable.mjs
+          # Golden render of the dispatch email (data/email-preview/) — the
+          # committed, human-readable copy of exactly what subscribers would
+          # get from this data. Sync-gated below; content-gated in check-all.
+          node scripts/build-cost-index-email-preview.mjs
 
       - name: Fact + calibration gates
         if: steps.keys.outputs.configured == 'true'
@@ -176,6 +180,11 @@ jobs:
           node scripts/build-cost-confidence-calibration.mjs --check
           node scripts/build-cost-confidence-shadow.mjs --check
           node scripts/inject-cost-index-speakable.mjs --check
+          node scripts/build-cost-index-email-preview.mjs --check
+          # The emailed render itself must pass its content rules (banned
+          # techniques, numeric parity, confidence language, sign agreement,
+          # quiet-lead determinism) BEFORE the data that produces it commits.
+          node scripts/check-cost-index-email.mjs
           # The honesty gates that ship with the fresh surfaces: no non-dollar
           # basis mislabeled as a $ level, no below-bar ingredient in the seed,
           # every rendered seasonal band re-derived, and the published 80% band
@@ -207,7 +216,7 @@ jobs:
             data/cost-index-audit.json data/cost-index-calibration-report.json \
             data/cost-forecast-backtest.json \
             data/cost-revisions.json data/cost-confidence-calibration.json \
-            data/cost-confidence-shadow.json \
+            data/cost-confidence-shadow.json data/email-preview/ \
             cost-index/ es/cost-index/ \
             library/ingredient-yields/ es/library/ingredient-yields/ sitemap.xml
           git checkout -- . 2>/dev/null || true
@@ -260,6 +269,9 @@ jobs:
           node scripts/build-rss.mjs                          || true
           node scripts/build-sitemap.mjs                      || true
           node scripts/build-llms-txt.mjs                     || true
+          # Re-render the golden email preview — the catch-up just published a
+          # new edition, so the preview's postUrl moves with it.
+          node scripts/build-cost-index-email-preview.mjs
           # Gate the generated post — fail the run before committing if it's malformed.
           node scripts/check-article-graphics.mjs
           # Fact-gate the driver catalog + the optional note before any catch-up publish.
@@ -281,7 +293,7 @@ jobs:
                    blog/index.html es/blog/index.html \
                    feed.xml es/feed.xml sitemap.xml \
                    llms.txt es/llms.txt data/library-tags.json \
-                   glossary/ es/glossary/; do
+                   glossary/ es/glossary/ data/email-preview/; do
             git add "$p" 2>/dev/null || echo "catch-up stage: no match for $p (skipped)"
           done
           git checkout -- . 2>/dev/null || true
