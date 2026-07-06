@@ -96,17 +96,17 @@ jobs:
           # trips the stale gate.
           node scripts/build-cost-index-health.mjs
           node scripts/build-seasonality.mjs
-          # Rebuild the OTHER committed artifacts that are pure functions of the
-          # fresh data — each is --check-gated in check-all, so any one left out
-          # drifts stale the moment the read above commits (the 2026-07-06 gap:
-          # these gates landed while the refresh was down, so no run ever
-          # exercised them). Order matters: provenance before the audit that
-          # reconciles against it; the calibration report before its page
-          # injection (below); the forecast backtest after build-seasonality.
-          node scripts/build-cost-index-provenance.mjs
-          node scripts/build-cost-index-audit.mjs
+          # Rebuild the pure-data/ committed artifacts whose inputs are all
+          # final at this point (cost-index.json + seed + deep history +
+          # seasonality) — each is --check-gated in check-all, so any one left
+          # out drifts stale the moment the read above commits (the 2026-07-06
+          # gap: these gates landed while the refresh was down, so no run ever
+          # exercised them). The provenance/audit/calibration-report rebuilds
+          # run AFTER page generation below — provenance reads the regenerated
+          # cost-index/index.json aggregate (the 2026-07-06 first-recovery-run
+          # ordering failure: built here, it derives from the stale aggregate
+          # and its own gate correctly refuses the commit).
           node scripts/build-cost-lockfloat.mjs
-          node scripts/build-cost-index-calibration-report.mjs
           node scripts/backtest-cost-forecast.mjs
           # Re-render hub / per-ingredient / lab pages.
           node scripts/build-cost-index-pages.mjs
@@ -126,9 +126,16 @@ jobs:
           # dateModified (methodology EN+ES + hub) so the machine-readable
           # freshness signal tracks each daily read. In place, idempotent.
           node scripts/inject-cost-index-dataset-date.mjs
-          # Re-stamp the published-label calibration sentinels on the methodology
-          # pages (EN+ES) from the freshly rebuilt calibration report — sentinel
-          # injection must run AFTER page generation, like the dataset-date stamp.
+          # Post-page derived artifacts, in dependency order. Provenance reads
+          # the freshly regenerated cost-index/index.json aggregate and stamps
+          # the source-registry table into the sources pages (sentinel region,
+          # so the include/loader re-stamps above don't disturb it); the audit
+          # reconciles against it; the calibration report is rebuilt before its
+          # methodology-page sentinel injection, which — like the dataset-date
+          # stamp — must run after page generation.
+          node scripts/build-cost-index-provenance.mjs
+          node scripts/build-cost-index-audit.mjs
+          node scripts/build-cost-index-calibration-report.mjs
           node scripts/inject-cost-index-calibration.mjs
 
       - name: Fact + calibration gates
