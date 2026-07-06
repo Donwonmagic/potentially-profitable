@@ -35,9 +35,14 @@ const PATHS = [
   '/',
   '/window/',
   '/tools/',
-  '/tools/seo-grader/',
-  '/tools/storefront-health/',
-  '/es/tools/storefront-health/',
+  // 2026-07-06: seo-grader and storefront-health were retired with the
+  // off-funnel tool cut (44d64cc74); auditing them 404-crashed the whole
+  // lhci run. Swapped for living funnel equivalents at the same gate
+  // positions — a fetch-light tool page, and the flagship largest live
+  // surface (the Cost Index hub) with its ES parity twin.
+  '/tools/margin-math/',
+  '/cost-index/',
+  '/es/cost-index/',
   '/learn/',
   // Phase 7: the long-form article gate previously pointed at the EN
   // /blog/why-your-restaurant-loses-reservations-every-night/ slug.
