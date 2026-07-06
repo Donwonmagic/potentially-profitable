@@ -65,11 +65,20 @@ Three reader jobs in strict order: decide fast (≤90s) → understand (≤6 min
    qualifier). Deterministic ids `#story-<key>` — the deep-link targets AI citations land
    on. Quiet month ⇒ the quiet section (7) promotes to this slot as the lead.
 5. **The full board.** All ~81 shippable items, category-grouped in the `viz-tree`
-   details/summary idiom (zero JS, fine at 360px): glyph, name linked to
-   `/cost-index/<key>/`, pct, $median (range), percentile (`pos`), elevated tag, gated
-   chip. PLUS a compact flags table in the `.ci-table` idiom mirroring the CSV row-for-row
-   (tables are the most-lifted structure). Full panel stays in the CC0 CSV — never inline
-   81 prose rows.
+   details/summary idiom (zero JS, fine at 360px) — and (founder directive 2026-07-06)
+   **every ingredient row is itself expandable**: the summary row is the scan (glyph,
+   name, pct, $median), and opening it reveals the month detail inline — the dollar
+   band with percentile placement (a compact pure-HTML band strip), the month endpoints
+   with dates (opened $X on <date>, closed $Y on <date>, peak/trough), elevated-weeks +
+   gated status, the seasonal-band position where `ready`, the pressure read where one
+   exists, and the "full read →" link to `/cost-index/<key>/`. Native nested
+   `<details>` — no JS; expanded content is real DOM (crawlable, deepens the page for
+   per-ingredient event queries); anchor `id="board-<key>"` per row so expansions are
+   deep-linkable. Budget rule: full spark SVGs render only in the story cards and the
+   flagship board — board expansions are text+strip only (~0.3KB/row, ~25KB total),
+   keeping the page under budget while every ingredient still expands. PLUS a compact
+   flags table in the `.ci-table` idiom mirroring the CSV row-for-row (tables are the
+   most-lifted structure). Full panel stays in the CC0 CSV — never inline 81 prose rows.
 6. **What stayed quiet — the trust move.** The loudest raw gaps that did NOT clear the
    gate, with the its-own-history framing and the explicit hold license.
 7. **Looking ahead (§6 — the forward section).**
