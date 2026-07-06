@@ -5,137 +5,386 @@
   "basis": "wholesale",
   "currency": "USD",
   "note": "Wholesale reference prices compiled from public U.S. market sources (USDA AMS/LMR, BLS, FRED, EIA, NOAA). Values are in US dollars per unit. Not a delivered or retail price. Source: muntin.digital/cost-index/ribeye/",
-  "asOf": "2026-06-18",
+  "reconstructedNote": "Observations marked reconstructed:true are a monthly backfill reconstructed from public sources after the fact — not figures published live on that date. Live points (reconstructed:false) were captured at publication.",
+  "coverage": {
+    "start": "2023-05-01",
+    "end": "2026-07-02",
+    "points": 62,
+    "reconstructed": 36
+  },
+  "asOf": "2026-07-02",
   "observations": [
     {
-      "date": "2026-05-13",
-      "priceUsd": 11.64,
-      "source": "usda-lmr"
+      "date": "2023-05-01",
+      "priceUsd": 10.22,
+      "source": null,
+      "reconstructed": true
     },
     {
-      "date": "2026-05-14",
-      "priceUsd": 11.39,
-      "source": "usda-lmr"
+      "date": "2023-06-01",
+      "priceUsd": 10.36,
+      "source": null,
+      "reconstructed": true
     },
     {
-      "date": "2026-05-15",
-      "priceUsd": 11.78,
-      "source": "usda-lmr"
+      "date": "2023-07-01",
+      "priceUsd": 10.63,
+      "source": null,
+      "reconstructed": true
     },
     {
-      "date": "2026-05-18",
-      "priceUsd": 9.86,
-      "source": "usda-lmr"
+      "date": "2023-08-01",
+      "priceUsd": 10.75,
+      "source": null,
+      "reconstructed": true
     },
     {
-      "date": "2026-05-19",
-      "priceUsd": 11.88,
-      "source": "usda-lmr"
+      "date": "2023-09-01",
+      "priceUsd": 10.77,
+      "source": null,
+      "reconstructed": true
     },
     {
-      "date": "2026-05-20",
-      "priceUsd": 11.7,
-      "source": "usda-lmr"
-    },
-    {
-      "date": "2026-05-21",
-      "priceUsd": 11.43,
-      "source": "usda-lmr"
-    },
-    {
-      "date": "2026-05-22",
+      "date": "2023-10-01",
       "priceUsd": 10.83,
-      "source": "usda-lmr"
+      "source": null,
+      "reconstructed": true
     },
     {
-      "date": "2026-05-26",
-      "priceUsd": 12.14,
-      "source": "usda-lmr"
+      "date": "2023-11-01",
+      "priceUsd": 10.48,
+      "source": null,
+      "reconstructed": true
     },
     {
-      "date": "2026-05-27",
-      "priceUsd": 12.12,
-      "source": "usda-lmr"
+      "date": "2023-12-01",
+      "priceUsd": 10.65,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-01-01",
+      "priceUsd": 10.69,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-02-01",
+      "priceUsd": 10.53,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-03-01",
+      "priceUsd": 10.59,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-04-01",
+      "priceUsd": 10.75,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-05-01",
+      "priceUsd": 10.73,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-06-01",
+      "priceUsd": 10.64,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-07-01",
+      "priceUsd": 10.86,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-08-01",
+      "priceUsd": 10.88,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-09-01",
+      "priceUsd": 10.88,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-10-01",
+      "priceUsd": 10.57,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-11-01",
+      "priceUsd": 10.67,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2024-12-01",
+      "priceUsd": 10.63,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-01-01",
+      "priceUsd": 10.91,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-02-01",
+      "priceUsd": 10.87,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-03-01",
+      "priceUsd": 10.98,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-04-01",
+      "priceUsd": 11.12,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-05-01",
+      "priceUsd": 11.03,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-06-01",
+      "priceUsd": 11.49,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-07-01",
+      "priceUsd": 11.88,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-08-01",
+      "priceUsd": 12.22,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-09-01",
+      "priceUsd": 12.26,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-11-01",
+      "priceUsd": 12.29,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2025-12-01",
+      "priceUsd": 12.51,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2026-01-01",
+      "priceUsd": 12.3,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2026-02-01",
+      "priceUsd": 12.74,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2026-03-01",
+      "priceUsd": 12.73,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2026-04-01",
+      "priceUsd": 13.02,
+      "source": null,
+      "reconstructed": true
+    },
+    {
+      "date": "2026-05-01",
+      "priceUsd": 12.8,
+      "source": null,
+      "reconstructed": true
     },
     {
       "date": "2026-05-28",
       "priceUsd": 11.89,
-      "source": "usda-lmr"
+      "source": "usda-lmr",
+      "reconstructed": false
     },
     {
       "date": "2026-05-29",
       "priceUsd": 10.93,
-      "source": "usda-lmr"
+      "source": "usda-lmr",
+      "reconstructed": false
     },
     {
       "date": "2026-06-01",
       "priceUsd": 11.07,
-      "source": "usda-lmr"
+      "source": "usda-lmr",
+      "reconstructed": false
     },
     {
       "date": "2026-06-02",
       "priceUsd": 12.26,
-      "source": "usda-lmr"
+      "source": "usda-lmr",
+      "reconstructed": false
     },
     {
       "date": "2026-06-03",
       "priceUsd": 12.27,
-      "source": "usda-lmr"
+      "source": "usda-lmr",
+      "reconstructed": false
     },
     {
       "date": "2026-06-04",
       "priceUsd": 11.21,
-      "source": "usda-lmr"
+      "source": "usda-lmr",
+      "reconstructed": false
     },
     {
       "date": "2026-06-05",
       "priceUsd": 11.59,
-      "source": "usda-lmr"
+      "source": "usda-lmr",
+      "reconstructed": false
     },
     {
       "date": "2026-06-08",
       "priceUsd": 12.41,
-      "source": "usda-lmr"
+      "source": "usda-lmr",
+      "reconstructed": false
     },
     {
       "date": "2026-06-09",
       "priceUsd": 12.3,
-      "source": "usda-lmr"
+      "source": "usda-lmr",
+      "reconstructed": false
     },
     {
       "date": "2026-06-10",
       "priceUsd": 12.54,
-      "source": "usda-lmr"
+      "source": "usda-lmr",
+      "reconstructed": false
     },
     {
       "date": "2026-06-11",
       "priceUsd": 12.49,
-      "source": "usda-lmr"
+      "source": "usda-lmr",
+      "reconstructed": false
     },
     {
       "date": "2026-06-12",
       "priceUsd": 12.74,
-      "source": "usda-lmr"
+      "source": "usda-lmr",
+      "reconstructed": false
     },
     {
       "date": "2026-06-15",
       "priceUsd": 12.14,
-      "source": "usda-lmr"
+      "source": "usda-lmr",
+      "reconstructed": false
     },
     {
       "date": "2026-06-16",
       "priceUsd": 12.8,
-      "source": "usda-lmr"
+      "source": "usda-lmr",
+      "reconstructed": false
     },
     {
       "date": "2026-06-17",
       "priceUsd": 12.77,
-      "source": "usda-lmr"
+      "source": "usda-lmr",
+      "reconstructed": false
     },
     {
       "date": "2026-06-18",
       "priceUsd": 13.14,
-      "source": "usda-lmr"
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-06-19",
+      "priceUsd": 13.16,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-06-22",
+      "priceUsd": 11.53,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-06-23",
+      "priceUsd": 13.25,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-06-24",
+      "priceUsd": 12.78,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-06-25",
+      "priceUsd": 12.46,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-06-26",
+      "priceUsd": 10.49,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-06-29",
+      "priceUsd": 12.69,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-06-30",
+      "priceUsd": 12.93,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-01",
+      "priceUsd": 11.87,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-02",
+      "priceUsd": 11.52,
+      "source": "usda-lmr",
+      "reconstructed": false
     }
   ]
 }

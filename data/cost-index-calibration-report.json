@@ -14,21 +14,21 @@
   "trend": {
     "method": "price-only direction call, reliability by signal strength",
     "baseline": 0.502,
-    "overallHitRate": 0.533,
-    "scoredCalls": 1860,
-    "items": 47,
+    "overallHitRate": 0.536,
+    "scoredCalls": 1859,
+    "items": 41,
     "tiers": {
       "low": {
-        "n": 325,
-        "hitRate": 0.474
+        "n": 320,
+        "hitRate": 0.478
       },
       "medium": {
-        "n": 658,
-        "hitRate": 0.498
+        "n": 666,
+        "hitRate": 0.503
       },
       "high": {
-        "n": 877,
-        "hitRate": 0.582
+        "n": 873,
+        "hitRate": 0.583
       }
     }
   }
