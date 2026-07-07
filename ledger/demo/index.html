@@ -223,7 +223,12 @@
 .ld-rail a::before{content:counter(ld,decimal-leading-zero);font-family:var(--font-display);font-weight:560;font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums lining-nums}
 .ld-rail li[aria-current="step"] a{border-color:var(--ink);box-shadow:var(--elev-1)}
 .ld-panel{margin:0 0 26px}
-.ld-js #ldPanels{display:grid;transition:height 200ms var(--ease-out,ease-out)}
+.ld-js #ldPanels{display:grid;align-items:start;grid-template-columns:minmax(0,1fr);transition:height 200ms var(--ease-out,ease-out)}
+/* align-items:start: with default stretch, every grid-area:1/1 panel measures the
+   TALLEST panel (sizePanels read the same height on all five steps in round-3
+   headless verification), so per-step height never changed. minmax(0,1fr): the
+   auto track otherwise inherits the CSV pre min-content width and forces
+   page-level horizontal scroll at 360px. Verified live in Chromium, 2026-07-07. */
 .ld-js #ldPanels>.ld-panel{grid-area:1/1}
 /* Per-step height (review round 2, 2026-07-07). The grid-stack +
    visibility (not display:none) still keeps every panel laid out at
@@ -275,7 +280,7 @@
    ≤640px order flip is gone). The mobile sticky CTA bar is suppressed
    on this page (data-hide-sticky-bar), so the bottom slot is free.
    Background rides --cream so the bar flips with dark mode. */
-.ld-js .ld-controls{display:flex;gap:12px;align-items:center;position:sticky;bottom:0;z-index:5;margin:0;padding:10px 2px calc(10px + env(safe-area-inset-bottom,0px));background:var(--cream,#F6F7F8);border-top:1px solid var(--line,#E3E5E9)}
+.ld-js .ld-controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;position:sticky;bottom:0;z-index:5;margin:0;padding:10px 2px calc(10px + env(safe-area-inset-bottom,0px));background:var(--cream,#F6F7F8);border-top:1px solid var(--line,#E3E5E9)}
 .ld-controls .btn[disabled]{opacity:.45;cursor:default;pointer-events:none}
 .ld-progress{font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums}
 .ld-cta{background:#16181D;color:rgba(246,247,248,.78);border-radius:18px;padding:clamp(26px,4vw,48px)}
@@ -318,7 +323,12 @@
 </style>
 <style>
 /* Critical CSS — prevents flash of unstyled content while the main
-   stylesheet (assets/site.css) loads non-render-blocking via the
+
+[hidden]{display:none!important}
+/* ^ duplicated from site-core.css on purpose: that sheet loads async, but the
+   stepper script runs at parse and relies on [hidden] to keep all four controls
+   unpainted until JS chooses — without this inline guard a slow first load
+   briefly paints Back/Next/Start-over/Join simultaneously (round-3 catch). */   stylesheet (assets/site.css) loads non-render-blocking via the
    <link> below. Carries: token vars used in inline styles elsewhere,
    body baseline (cream + ink + body-size + line-height), container
    width, skip-link affordance, and a min-height reservation for the
