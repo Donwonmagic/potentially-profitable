@@ -34,34 +34,19 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://muntin.digital/ledger/demo/#page","url":"https://muntin.digital/ledger/demo/","inLanguage":"en-US","name":"Muntin Ledger demo — one sample invoice, read, filed, flagged","description":"A guided walkthrough of Muntin Ledger on canned sample data — no uploads, nothing stored.","dateModified":"2026-07-07","isPartOf":{"@id":"https://muntin.digital/#website"}},{"@type":"BreadcrumbList","@id":"https://muntin.digital/ledger/demo/#breadcrumbs","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Muntin Ledger","item":"https://muntin.digital/ledger/"},{"@type":"ListItem","position":3,"name":"Demo","item":"https://muntin.digital/ledger/demo/"}]}]}</script>
 
 <style>
-/* Bolder pass 2026-07 — the storefront gets the futures-edge grammar:
-   goldenhour hero + illustrative ledger vignette, elevation from the
-   --elev-* scale, Fraunces number material, one ink band at the
-   pricing moment. Ink hexes in .lg-pricing are intentional (the band
-   stays dark in dark mode; tokens would double-flip it). */
-.lg-hero.hero{padding:44px 0 64px}
-@media (max-width:960px){section.hero.lg-hero::after{background:var(--gradient-goldenhour)}}
-.lg-hero .breadcrumb{padding:0 0 26px}
-.lg-hero .hero-grid{grid-template-columns:1.05fr 0.95fr;gap:clamp(32px,4vw,64px);align-items:center}
-@media (max-width:960px){.lg-hero .hero-grid{grid-template-columns:1fr;gap:44px}}
-.lg-hero h1{font-family:var(--font-display);font-size:clamp(40px,4.6vw,58px);font-weight:560;line-height:1.06;letter-spacing:-0.5px;margin:0 0 18px;text-wrap:balance}
+/* Bolder pass 2026-07 — illustrative ledger vignettes, elevation from
+   the --elev-* scale, Fraunces number material, one ink band at the
+   ask. Ink hexes in the .ld-cta band are intentional (it stays dark
+   in dark mode; tokens would double-flip it). P1-5 hygiene
+   (2026-07-07): the dead services-era rules this page stopped
+   consuming (.lg-hero, .studio-toc, .studio-grid/card, .ledger-asym —
+   plus .lg-sheet, dead since the value audit demoted the P1-1 paper
+   dressing to P2) are removed; .lg-price-figure is now consumed by
+   the step-4 lockup. */
 .lg-lede{font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0;max-width:640px}
-.lg-hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 4px}
-/* The shared hero mobile reorder (site.css "Hero mobile reorder") flexes
-   this column and orders .eyebrow/h1 explicitly; give our elements
-   explicit orders too — CTAs right after the headline on phones. */
-@media (max-width:640px){
-  .lg-hero .hero-grid>div:first-child>.lg-hero-ctas{order:3;margin-top:6px}
-  .lg-hero .hero-grid>div:first-child>.lg-lede{order:4;margin-top:18px}
-  .lg-hero .hero-grid>div:first-child>.studio-toc{order:5}
-}
-.studio-toc{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 0;padding:0;list-style:none;font-size:13px}
-.studio-toc a{display:inline-block;padding:6px 14px;background:var(--surface-1,#fff);border:1px solid var(--line);border-radius:999px;color:var(--ink);text-decoration:none;transition:background var(--t-fast) var(--ease)}
-.studio-toc a:hover,.studio-toc a:focus-visible{background:var(--teal-tint);border-color:var(--teal)}
 /* The vignette — a printed ledger sheet, not app UI. Every number in it
    is illustrative and labeled so in the chip AND the figcaption. */
 .lg-vignette{margin:0;position:relative}
-.lg-sheet{position:absolute;inset:20px -12px 2px 16px;background:var(--surface-1,#fff);border:1px solid var(--line);border-radius:10px;box-shadow:var(--elev-1);transform:rotate(.6deg)}
 .lg-pane{position:relative;background:var(--surface-1,#fff);border:1px solid var(--line);border-top:3px solid var(--ink);border-radius:10px;padding:18px 20px 16px;box-shadow:var(--elev-3)}
 .lg-pane-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
 .lg-pane-title{font-family:var(--font-display);font-size:15px;font-weight:600;color:var(--ink)}
@@ -89,6 +74,32 @@
   .lg-s{grid-area:s;font-size:10.5px}
   .lg-flag{grid-area:s;white-space:normal;text-align:right;line-height:1.3}
 }
+/* Step-1 qty column (P1-2/G2, 2026-07-07) — restored via a modifier
+   scoped to step 1's container only: the rows in steps 2-3 carry five
+   cells, and a page-wide six-track template would let grid auto-
+   placement silently shift their price and status cells. */
+.lg-q{color:var(--stone,#6B7280);font-size:12.5px;text-align:right;font-variant-numeric:tabular-nums}
+@media (min-width:561px){.lg-rows--qty .lg-row{grid-template-columns:52px 104px 1fr 34px max-content max-content}}
+@media (max-width:560px){.lg-rows--qty .lg-row{grid-template-columns:1fr max-content max-content;grid-template-areas:"i q n" "d v s"}.lg-q{grid-area:q;font-size:11.5px}}
+/* Step-1 extraction anatomy (P1-2/G2) — one invoice line in the
+   vendor's printed register, dissected: teal capture washes under
+   item / qty / price, floating field tags above, vendor + date on a
+   miniature header line. Proximity does the work — no connector SVG. */
+.ld-anat{margin:2px 0 14px;padding:12px 14px 13px;border:1px dashed var(--line-dark,#D7DAE0);border-radius:8px;background:var(--cream-2,#EDEEF1)}
+.ld-anat-meta{display:flex;gap:20px;margin:0 0 10px}
+.ld-anat-line{display:flex;align-items:flex-end;gap:14px;font-size:13.5px;letter-spacing:.02em;color:var(--ink,#16181D);font-variant-numeric:tabular-nums lining-nums}
+.ld-anat-field{position:relative;display:inline-block;padding-top:15px}
+.ld-tag{position:absolute;top:0;left:0;font-family:var(--font-body,Inter,sans-serif);font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--teal,#2A50C8);white-space:nowrap}
+.ld-anat-cap{background:var(--teal-tint,#EAF0FE);box-shadow:inset 0 -2px var(--teal,#2A50C8);padding:1px 3px;border-radius:2px;white-space:nowrap}
+.ld-anat-src{font-size:12px;letter-spacing:.04em;color:var(--ink-soft,#4A4F59);white-space:nowrap}
+.ld-anat-dots{flex:1 1 24px;border-bottom:1px dotted var(--line-dark,#D7DAE0);transform:translateY(-4px)}
+@media (max-width:560px){.ld-anat-line{flex-wrap:wrap;gap:10px 14px}.ld-anat-dots{display:none}}
+/* Step-2 search-match highlight + CSV affordance (P1-3, 2026-07-07).
+   The facet-chip row the spec drafted was cut by the value audit
+   (inoperable fake UI — the same problem as the rejected ghost Export
+   button); <mark> + the literal CSV <pre> are the honest artifacts. */
+.lg-rows mark{background:var(--teal-tint,#EAF0FE);color:inherit;padding:0 1px;border-radius:2px}
+.ld-csv{margin:12px 0 0;padding:10px 12px;border:1px solid var(--line,#E3E5E9);border-radius:8px;background:var(--cream-2,#EDEEF1);font-size:12px;line-height:1.6;color:var(--ink-soft,#4A4F59);overflow-x:auto;font-variant-numeric:tabular-nums}
 /* Step-2 ghost rows — the non-matching Jun 26 lines, dimmed so the
    "3 of the 7 lines shown match" count is countable on screen. They
    duplicate step-0 invoice lines, so no information lives only here. */
@@ -168,18 +179,6 @@
 .studio-section:first-of-type{margin-top:44px}
 .studio-section h2{font-family:var(--font-display);font-size:clamp(28px,3.6vw,42px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 12px}
 .studio-section .lead{font-size:17px;line-height:1.55;color:var(--ink-soft);margin:0 0 24px;max-width:640px}
-.studio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-@media (max-width:780px){.studio-grid{grid-template-columns:1fr}}
-.studio-card{padding:22px 24px;background:var(--surface-1,#fff);border:1px solid var(--line);border-top:3px solid var(--ink);border-radius:12px;box-shadow:var(--elev-1)}
-.studio-card__label{font-family:var(--font-display);font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
-.studio-card h3{font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 8px}
-.studio-card p{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:0}
-/* The "why" list reads as ruled ledger lines with hanging numerals. */
-.ledger-asym{list-style:none;padding:0;margin:0;max-width:760px;counter-reset:lgasym}
-.ledger-asym li{position:relative;padding:18px 0 18px 64px;border-bottom:1px solid var(--line);font-size:15.5px;line-height:1.6;color:var(--ink);counter-increment:lgasym}
-.ledger-asym li:first-child{border-top:1px solid var(--line)}
-.ledger-asym li::before{content:counter(lgasym,decimal-leading-zero);position:absolute;left:0;top:16px;font-family:var(--font-display);font-size:26px;font-weight:560;letter-spacing:-.01em;color:var(--stone);font-variant-numeric:tabular-nums lining-nums}
-.ledger-asym li strong{font-family:var(--font-display);font-weight:600;color:var(--ink)}
 .studio-cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
 /* The pricing moment — the page's single ink band. */
 .lg-pricing-section::before{display:none}
@@ -238,17 +237,54 @@
 .ld-search svg{flex:0 0 16px}
 .ld-search .ld-q{font-weight:600;color:var(--ink)}
 .ld-count{font-size:12.5px;color:var(--stone);margin:0 0 10px}
-.ld-controls{display:flex;gap:12px;align-items:center;margin:4px 0 0}
+/* Scoped under .ld-js (2026-07-07): an unscoped author display:flex
+   defeats the UA [hidden]{display:none} rule, so the no-JS page would
+   paint dead Back/Next buttons. With JS, .ld-js and hidden=false land
+   together; without JS the hidden attribute keeps them out of layout. */
+.ld-js .ld-controls{display:flex;gap:12px;align-items:center;margin:4px 0 0}
 .ld-controls .btn[disabled]{opacity:.45;cursor:default;pointer-events:none}
 .ld-progress{font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums}
 .ld-cta{background:#16181D;color:rgba(246,247,248,.78);border-radius:18px;padding:clamp(26px,4vw,48px)}
 .ld-cta h2{color:#F6F7F8}
 .ld-cta .ld-body{color:rgba(246,247,248,.75)}
 .ld-cta .lg-cap{color:rgba(246,247,248,.55)}
+/* Step-1 scan (P1-2/M2, 2026-07-07) — row appears, then its "read"
+   stamp commits. All sequencing lives in CSS transition-delays under
+   .ld-go (the JS shrank to two class adds): rows 200ms with a 60ms
+   :nth-child stagger, stamps 180ms at +120ms per row — the whole pass
+   ends under 550ms. Base CSS is the finished state; no-JS and
+   reduced-motion see the completed rows instantly. */
 .ld-reveal{opacity:1}
 .ld-js .ld-armed .ld-reveal{opacity:0;transform:translateY(6px)}
-.ld-js .ld-armed .ld-reveal.ld-in{opacity:1;transform:none;transition:opacity .24s var(--ease-out),transform .24s var(--ease-out)}
-@media (prefers-reduced-motion:reduce){.ld-reveal,.ld-js .ld-armed .ld-reveal{opacity:1!important;transform:none!important;transition:none!important}}
+.ld-js .ld-armed .ld-reveal .lg-s{opacity:0;transform:scale(.85)}
+.ld-js .ld-armed.ld-go .ld-reveal{opacity:1;transform:none;transition:opacity 200ms var(--ease-out,ease-out),transform 200ms var(--ease-out,ease-out)}
+.ld-js .ld-armed.ld-go .ld-reveal .lg-s{opacity:1;transform:none;transition:opacity 180ms var(--ease-spring,ease-out),transform 180ms var(--ease-spring,ease-out)}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(2){transition-delay:60ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(3){transition-delay:120ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(4){transition-delay:180ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(5){transition-delay:240ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(1) .lg-s{transition-delay:120ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(2) .lg-s{transition-delay:180ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(3) .lg-s{transition-delay:240ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(4) .lg-s{transition-delay:300ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(5) .lg-s{transition-delay:360ms}
+@media (prefers-reduced-motion:reduce){.ld-reveal,.ld-js .ld-armed .ld-reveal,.ld-reveal .lg-s,.ld-js .ld-armed .ld-reveal .lg-s{opacity:1!important;transform:none!important;transition:none!important}}
+/* G5 price lockup at demo scale (P1-5, 2026-07-07) — the number never
+   ships without the full registered founding terms beside it. */
+.ld-cta .lg-price-figure{font-size:clamp(48px,6vw,72px);margin:20px 0 0}
+.ld-cta .lg-price-ga{margin:10px 0 0}
+/* M5 (P1-9, 2026-07-07) — phones: Back/Next sit above the reserved-
+   height panel region, so the controls never fall below the tallest
+   panel's void. Visual order diverges from DOM order here on purpose
+   (the controls render after the panels so the no-JS page reads
+   panels-first); keyboard/AT focus is unaffected because Back/Next
+   move focus programmatically to the incoming panel's h2. */
+@media (max-width:640px){
+  .ld-wrap.ld-js{display:flex;flex-direction:column}
+  .ld-wrap.ld-js #ldControls{order:1;margin:4px 0 20px}
+  .ld-wrap.ld-js #ldPanels{order:2}
+  .ld-wrap.ld-js #ldLive{order:3}
+}
 .visually-hidden-ld{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 </style>
 <style>
@@ -607,7 +643,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <section class="ld-panel" id="ld-step0" aria-labelledby="ld-h0">
       <h2 id="ld-h0" tabindex="-1">The invoice arrives.</h2>
       <p class="ld-body">A produce invoice lands the way they always do &mdash; five lines, one total. One of these five lines is hiding a raise, and the $115.80 total won&rsquo;t tell you which. <a class="js-ld-jump" href="#ld-step3">Skip to the flag &rarr;</a></p>
-      <figure class="lg-vignette" style="margin:0">
+      <figure class="lg-vignette" style="margin:0" data-audio-alt="A sample produce invoice dated June twenty-sixth: five lines. Romaine at twenty-nine forty-five, Roma tomatoes at thirty-one fifty, yellow onions at twenty-two dollars, limes at fourteen twenty-five, cilantro at eighteen sixty, totaling one hundred fifteen dollars and eighty cents. One of the five lines is hiding a raise; the total alone will not say which.">
         <div class="lg-pane">
           <div class="lg-pane-head">
             <span class="lg-pane-title">Produce vendor &mdash; invoice</span>
@@ -621,36 +657,48 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <div class="ld-line"><span>Cilantro, 30&nbsp;ct <span class="q">&times;1</span></span><span></span><span class="lg-n">$18.60</span></div>
           <div class="ld-total"><span>Total</span><span class="lg-n">$115.80</span></div>
         </div>
-        <figcaption class="lg-cap"><strong>Canned sample, on purpose</strong> &mdash; no uploads; nothing you do in this demo leaves your browser. Verify it: watch the Network tab while you click through &mdash; the stepper is plain HTML and fires no requests of its own. The page&rsquo;s only analytics is our self-hosted, cookieless counter. Not live or customer data.</figcaption>
+        <figcaption class="lg-cap"><strong>Canned sample, on purpose</strong> &mdash; no uploads; nothing you do in this demo leaves your browser. Verify it: watch the Network tab while you click through &mdash; the stepper is plain HTML and fires no requests of its own. The page&rsquo;s only analytics is our self-hosted, cookieless counter.</figcaption>
       </figure>
     </section>
 
     <section class="ld-panel" id="ld-step1" aria-labelledby="ld-h1">
       <h2 id="ld-h1" tabindex="-1">Read.</h2>
       <p class="ld-body">Snap or upload the invoice; templates and rules pull the lines &mdash; vendor, item, quantity, price. No AI reads your invoices &mdash; and we&rsquo;ve made it impossible for us to quietly change that: a build gate blocks anyone from adding a language model.</p>
-      <figure class="lg-vignette ld-armed-target" style="margin:0">
+      <figure class="lg-vignette ld-armed-target" style="margin:0" data-audio-alt="One printed invoice line, romaine hearts, twenty-four count, times one, twenty-nine forty-five, dissected into tagged fields: vendor, date, item, quantity, price. Below it, the five extracted ledger rows, each stamped read. Templates and rules do the reading; no language model touches the document.">
         <div class="lg-pane">
           <div class="lg-pane-head">
             <span class="lg-pane-title">Lines &mdash; extracted by rules</span>
-            <span class="lg-chip">Sample ledger &middot; illustrative</span>
+            <span class="lg-chip">Sample extraction &middot; illustrative</span>
           </div>
-          <div class="lg-rows">
-            <div class="lg-row ld-reveal"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Romaine, 24&nbsp;ct</span><span class="lg-n">$29.45</span><span class="lg-s">read</span></div>
-            <div class="lg-row ld-reveal"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Roma tomatoes, 25&nbsp;lb</span><span class="lg-n">$31.50</span><span class="lg-s">read</span></div>
-            <div class="lg-row ld-reveal"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Yellow onions, 50&nbsp;lb</span><span class="lg-n">$22.00</span><span class="lg-s">read</span></div>
-            <div class="lg-row ld-reveal"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Limes, 40&nbsp;ct</span><span class="lg-n">$14.25</span><span class="lg-s">read</span></div>
-            <div class="lg-row ld-reveal"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Cilantro, 30&nbsp;ct</span><span class="lg-n">$18.60</span><span class="lg-s">read</span></div>
+          <div class="ld-anat">
+            <div class="ld-anat-meta">
+              <span class="ld-anat-field"><span class="ld-tag">vendor</span><span class="ld-anat-src">PRODUCE VENDOR</span></span>
+              <span class="ld-anat-field"><span class="ld-tag">date</span><span class="ld-anat-src">JUN 26</span></span>
+            </div>
+            <div class="ld-anat-line">
+              <span class="ld-anat-field"><span class="ld-tag">item</span><span class="ld-anat-cap">ROMAINE HRTS 24CT</span></span>
+              <span class="ld-anat-field"><span class="ld-tag">qty</span><span class="ld-anat-cap">&times;1</span></span>
+              <span class="ld-anat-dots" aria-hidden="true"></span>
+              <span class="ld-anat-field"><span class="ld-tag">price</span><span class="ld-anat-cap">$29.45</span></span>
+            </div>
+          </div>
+          <div class="lg-rows lg-rows--qty">
+            <div class="lg-row ld-reveal"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Romaine, 24&nbsp;ct</span><span class="lg-q">&times;1</span><span class="lg-n">$29.45</span><span class="lg-s">read</span></div>
+            <div class="lg-row ld-reveal"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Roma tomatoes, 25&nbsp;lb</span><span class="lg-q">&times;1</span><span class="lg-n">$31.50</span><span class="lg-s">read</span></div>
+            <div class="lg-row ld-reveal"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Yellow onions, 50&nbsp;lb</span><span class="lg-q">&times;1</span><span class="lg-n">$22.00</span><span class="lg-s">read</span></div>
+            <div class="lg-row ld-reveal"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Limes, 40&nbsp;ct</span><span class="lg-q">&times;1</span><span class="lg-n">$14.25</span><span class="lg-s">read</span></div>
+            <div class="lg-row ld-reveal"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Cilantro, 30&nbsp;ct</span><span class="lg-q">&times;1</span><span class="lg-n">$18.60</span><span class="lg-s">read</span></div>
           </div>
           <p class="ld-note">Rules, not a language model &mdash; the same invoice in always gives the same numbers out, and your documents never become training data.</p>
         </div>
-        <figcaption class="lg-cap"><strong>Illustrative sample</strong> &mdash; five lines pulled into fields by templates and rules. Not live or customer data.</figcaption>
+        <figcaption class="lg-cap"><strong>One printed line, five fields</strong> &mdash; the raw invoice text at the top lands as the typed rows below it: vendor, date, item, quantity, price, no retyping. Sample data.</figcaption>
       </figure>
     </section>
 
     <section class="ld-panel" id="ld-step2" aria-labelledby="ld-h2">
       <h2 id="ld-h2" tabindex="-1">File.</h2>
       <p class="ld-body">Every line lands filed and searchable &mdash; by vendor, by item, by date &mdash; and the whole record exports to a clean CSV whenever you ask. This is the price spreadsheet you never had to build; it filed itself.</p>
-      <figure class="lg-vignette" style="margin:0">
+      <figure class="lg-vignette" style="margin:0" data-audio-alt="The ledger searched for romaine: three matching rows, June twelfth at twenty-four ten, June nineteenth at twenty-four thirty-five, and June twenty-sixth at twenty-nine forty-five, with the four other June twenty-sixth lines dimmed. Beneath the rows, a two-line sample of the CSV export showing date, vendor, item, quantity, and price.">
         <div class="lg-pane">
           <div class="lg-pane-head">
             <span class="lg-pane-title">The ledger &mdash; searchable</span>
@@ -662,16 +710,18 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           </div>
           <p class="ld-count">3 of the 7 lines shown match</p>
           <div class="lg-rows">
-            <div class="lg-row"><span class="lg-d">Jun 12</span><span class="lg-v">Produce vendor</span><span class="lg-i">Romaine, 24&nbsp;ct</span><span class="lg-n">$24.10</span><span class="lg-s">filed</span></div>
-            <div class="lg-row"><span class="lg-d">Jun 19</span><span class="lg-v">Produce vendor</span><span class="lg-i">Romaine, 24&nbsp;ct</span><span class="lg-n">$24.35</span><span class="lg-s">filed</span></div>
-            <div class="lg-row"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Romaine, 24&nbsp;ct</span><span class="lg-n">$29.45</span><span class="lg-s">filed</span></div>
+            <div class="lg-row"><span class="lg-d">Jun 12</span><span class="lg-v">Produce vendor</span><span class="lg-i"><mark>Romaine</mark>, 24&nbsp;ct</span><span class="lg-n">$24.10</span><span class="lg-s">filed</span></div>
+            <div class="lg-row"><span class="lg-d">Jun 19</span><span class="lg-v">Produce vendor</span><span class="lg-i"><mark>Romaine</mark>, 24&nbsp;ct</span><span class="lg-n">$24.35</span><span class="lg-s">filed</span></div>
+            <div class="lg-row"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i"><mark>Romaine</mark>, 24&nbsp;ct</span><span class="lg-n">$29.45</span><span class="lg-s">filed</span></div>
             <div class="lg-row lg-row--ghost"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Roma tomatoes, 25&nbsp;lb</span><span class="lg-n">$31.50</span><span class="lg-s">filed</span></div>
             <div class="lg-row lg-row--ghost"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Yellow onions, 50&nbsp;lb</span><span class="lg-n">$22.00</span><span class="lg-s">filed</span></div>
             <div class="lg-row lg-row--ghost"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Limes, 40&nbsp;ct</span><span class="lg-n">$14.25</span><span class="lg-s">filed</span></div>
             <div class="lg-row lg-row--ghost"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Cilantro, 30&nbsp;ct</span><span class="lg-n">$18.60</span><span class="lg-s">filed</span></div>
           </div>
+          <pre class="ld-csv">date,vendor,item,qty,price
+Jun 19,Produce vendor,"Romaine, 24 ct",1,24.35</pre>
         </div>
-        <figcaption class="lg-cap"><strong>Illustrative sample</strong> &mdash; the search narrows the ledger to the item: three romaine reads across three invoices, the other June 26 lines dimmed. The search shown is part of the mockup, not a live input. Not live or customer data.</figcaption>
+        <figcaption class="lg-cap"><strong>The ledger, narrowed to one item</strong> &mdash; three romaine reads across three invoices, the other June 26 lines dimmed; the CSV beneath shows how the whole record leaves with you, in a format you can open without us. Search and export are part of the mockup, not live controls. Canned rows.</figcaption>
       </figure>
     </section>
 
@@ -682,7 +732,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <div class="lg-pane">
           <div class="lg-pane-head">
             <span class="lg-pane-title">Price check &mdash; against your own history</span>
-            <span class="lg-chip">Sample ledger &middot; illustrative</span>
+            <span class="lg-chip">Sample history &middot; illustrative</span>
           </div>
           <div class="lg-rows">
             <div class="lg-row"><span class="lg-d">Jun 12</span><span class="lg-v">Produce vendor</span><span class="lg-i">Romaine, 24&nbsp;ct</span><span class="lg-n">$24.10</span><span class="lg-s">in band</span></div>
@@ -767,24 +817,26 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           </div>
           <p class="lg-stepnote">The $115.80 invoice total never blinked &mdash; the line did. Caught the day it lands, not at month-close.</p>
         </div>
-        <figcaption class="lg-cap"><strong>Illustrative sample</strong> &mdash; the flag fires only when a line clears both thresholds against its own history: at least 8% and at least $5.00 over the trailing median. Not live or customer data.</figcaption>
+        <figcaption class="lg-cap"><strong>One flag, two thresholds</strong> &mdash; it fires only when a line clears both against its own history: at least 8% and at least $5.00 over the trailing median. Illustrative figures.</figcaption>
       </figure>
       <p class="ld-body" style="margin-top:16px">$5.23 &divide; 24 heads is about 22&cent; a head &mdash; every dish romaine touches re-costs the same day. And because romaine is in the public Cost Index basket, the flag arrives with market context: my guy, or the market? Outside the basket &mdash; spirits, wine, graded cuts &mdash; a raise still files and re-costs, but isn&rsquo;t market-checked. On thin history the flag withholds rather than guesses.</p>
-      <p class="lg-cap">Ledger runs this check on every line, the day the invoice lands &mdash; $19 a month is less than four of these caught cases. Opens November 13, 2026 &mdash; <!-- count:ledger.ga_weeks_out -->19<!-- /count --> weeks out. <a href="/ledger/#pricing" style="color:var(--teal)">The founding terms &rarr;</a></p>
+      <p class="lg-cap">Ledger runs this check on every line, the day the invoice lands &mdash; $19 a month is less than four of these caught cases. Opens November 13, 2026 &mdash; <!-- count:ledger.ga_weeks_out -->19<!-- /count --> weeks out. <a href="/ledger/#pricing" class="plausible-event-name=Demo+Exit plausible-event-door=peak-founding" style="color:var(--teal)">The founding terms &rarr;</a></p>
     </section>
 
     <section class="ld-panel ld-cta" id="ld-step4" aria-labelledby="ld-h4">
       <h2 id="ld-h4" tabindex="-1">Put this flag on every line.</h2>
-      <p class="ld-body">That flag, on every line of every invoice, the day it lands &mdash; <strong style="color:#F6F7F8">Muntin Ledger</strong> opens November 13, 2026. The founding list gets <strong style="color:#F6F7F8">three months free, then $19 a month for as long as they stay</strong>.</p>
+      <p class="ld-body">That flag, on every line of every invoice, the day it lands &mdash; <strong style="color:#F6F7F8">Muntin Ledger</strong> opens November 13, 2026.</p>
+      <p class="lg-price-figure"><span class="lg-price-cur">$</span>19<span class="lg-price-per">/month</span></p>
+      <p class="lg-price-ga">Three months free for the founding list, then $19 a month for as long as you stay &middot; opens <span class="lg-price-date">November 13, 2026</span>.</p>
       <div class="studio-cta-row" style="margin-top:20px">
-        <a class="btn lg-btn-light" href="/ledger/#pricing">Join the founding list &rarr;</a>
+        <a class="btn lg-btn-light plausible-event-name=Demo+Exit plausible-event-door=founding" href="/ledger/#pricing">Join the founding list &rarr;</a>
       </div>
       <hr style="border:none;border-top:1px solid rgba(246,247,248,.14);margin:28px 0 24px" aria-hidden="true">
       <p class="ld-body">Don&rsquo;t take a canned demo&rsquo;s word for it. Take a price you&rsquo;ve actually paid &mdash; two dates, two numbers &mdash; and <strong style="color:#F6F7F8">Vendor Benchmark</strong> runs the same own-history flag rule Ledger uses, mirrored to the cent, and sets a market read from the public Cost Index beside it, over your exact dates. Free, in your browser, no signup, nothing to upload.</p>
       <div class="studio-cta-row" style="margin-top:20px">
-        <a class="btn btn-ghost" href="/tools/vendor-benchmark/" style="color:#F6F7F8;border-color:rgba(246,247,248,.4)">Run your own line &rarr;</a>
+        <a class="btn btn-ghost plausible-event-name=Demo+Exit plausible-event-door=benchmark" href="/tools/vendor-benchmark/" style="color:#F6F7F8;border-color:rgba(246,247,248,.4)">Run your own line &rarr;</a>
       </div>
-      <p class="ld-body" style="margin-top:24px;margin-bottom:0;font-size:14px">Check what we claim: <a href="/trust/" style="color:#7AA7FF">the trust center</a> &middot; <a href="/never/" style="color:#7AA7FF">what we never do</a> &middot; <a href="/cost-index/" style="color:#7AA7FF">the Cost Index data (CC0)</a>.</p>
+      <p class="ld-body" style="margin-top:24px;margin-bottom:0;font-size:14px">Check what we claim: <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/trust/" style="color:#7AA7FF">the trust center</a> &middot; <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/never/" style="color:#7AA7FF">what we never do</a> &middot; <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/cost-index/" style="color:#7AA7FF">the Cost Index data (CC0)</a>.</p>
       <ul class="lg-stances">
         <li>No cut of sales, ever</li>
         <li>No language model reads your invoices &mdash; build-gated, never training data</li>
@@ -833,22 +885,20 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         next.textContent = i === panels.length - 1 ? 'Start over' : 'Next';
         progress.textContent = 'Step ' + (i + 1) + ' of ' + panels.length;
         live.textContent = 'Step ' + (i + 1) + ' of ' + panels.length + ' — ' + titles[i];
+        // M7 — non-visual parity: the step-3 announcement carries the payoff.
+        if (i === 3) live.textContent += '. The June 26 romaine line steps out of its six-month band — up $5.23, past both thresholds. That is the flag.';
         if (focus) { var h = panels[i].querySelector('h2'); if (h) h.focus({ preventScroll: false }); }
         // P0-6 — user navigation keeps the address bar honest without
         // growing history; boot below never writes a hash of its own.
         if (focus && window.history && history.replaceState) { history.replaceState(null, '', '#ld-step' + i); }
+        // P1-2/M2 — the read scan, once: two class adds; every delay
+        // lives in CSS transition-delays (:nth-child), total < 550ms.
         if (i === 1 && !prm && !panels[1].dataset.played) {
           panels[1].dataset.played = '1';
           var fig = panels[1].querySelector('.ld-armed-target');
           if (fig) {
             fig.classList.add('ld-armed');
-            var rows = fig.querySelectorAll('.ld-reveal');
-            Array.prototype.forEach.call(rows, function (r, k) {
-              setTimeout(function () { r.classList.add('ld-in'); }, 120 + k * 90);
-            });
-            setTimeout(function () {
-              Array.prototype.forEach.call(rows, function (r) { r.classList.add('ld-in'); });
-            }, 1500);
+            requestAnimationFrame(function () { requestAnimationFrame(function () { fig.classList.add('ld-go'); }); });
           }
         }
         // P0-3 — the flag landing, once, on first arrival at step 3.
@@ -873,6 +923,27 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           if (!m) return;
           e.preventDefault(); show(+m[1], true);
         });
+      });
+      // P1-6/M4d — ArrowLeft/ArrowRight step the walkthrough. Bound to
+      // the wrap only (no page-wide listener), so arrows act solely
+      // while focus is inside the stepper; clamped at the ends (no
+      // loop — looping stays on the Start-over button). Guards:
+      // modified keys pass through, and nothing fires from a text-
+      // entry context (input/textarea/select/contenteditable) so a
+      // caret is never hijacked; plain links and buttons don't consume
+      // horizontal arrows, so stepping from them is safe. Focus
+      // behavior: an arrow step moves focus to the incoming panel's
+      // h2, exactly like Back/Next, so repeated arrows keep working
+      // and AT announces each step.
+      wrap.addEventListener('keydown', function (e) {
+        if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+        if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey || e.defaultPrevented) return;
+        var t = e.target;
+        if (t && (/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName || '') || t.isContentEditable)) return;
+        var n = e.key === 'ArrowRight' ? i + 1 : i - 1;
+        if (n < 0 || n >= panels.length) return;
+        e.preventDefault();
+        show(n, true);
       });
       var boot = /^#ld-step([0-4])$/.exec(location.hash || '');
       show(boot ? +boot[1] : 0, false);
