@@ -482,6 +482,18 @@ const CHECKS = [
   // up automatically by the Unit tests step.
   ['Cost-index anomaly log self-test','build-cost-anomaly-log.mjs','--self-test'],
   ['Cost-index anomaly log sync','build-cost-anomaly-log.mjs','--check'],
+  // Notable price events — the "events that moved the market" surface. DETECTION
+  // (build-cost-index-events.mjs) is pure math over the deep history: the biggest
+  // sustained moves off local normal + honest context (duration, own-season,
+  // same-category co-movement). Its self-test pins the arithmetic; --check pins the
+  // vendored data. The HONESTY gate (check-cost-index-events.mjs) guards the curated
+  // WHY notes (data/cost-index-event-notes.json): a note must line up with a real
+  // detected event, "verified" must mean a live source + a date, no forecast/regime-step
+  // phrasing, and — the core promise — NO unverified cause text may reach any built page.
+  ['Cost-index events self-test','build-cost-index-events.mjs','--self-test'],
+  ['Cost-index events sync','build-cost-index-events.mjs','--check'],
+  ['Cost-index events honesty self-test','check-cost-index-events.mjs','--self-test'],
+  ['Cost-index events honesty','check-cost-index-events.mjs'],
   // Plate-cost drift (truth-discovery for Live Plate Margin) — quantifies how much
   // a protein-forward plate's indexed component drifts over the latest fully-covered
   // quarter, derived-with-stated-method from the deep history; ships to no page.

@@ -1,0 +1,96 @@
+{
+  "_doc": "The WHY behind notable Cost Index price events — the editorial half of the events surface (the numbers half is data/cost-index-events.json, pure math). Each note is hand-curated, keyed to a detected event by {ingredient, period YYYY-MM}, and matched to the nearest detected peak within the engine's merge window. A note carries what happened and how it moved the market, plus the public sources that back it. HONESTY GATE: verified:false ⇒ the narrative DOES NOT render — the page still shows the honest price magnitude, just no cause. Nothing unverified reaches the public HTML (enforced by scripts/check-cost-index-events.mjs). No forecast, no precise number the source doesn't carry (the % move is the data layer's job); qualitative cause only.",
+  "_provenance": "Drafted offline by Claude from well-documented public events. The source URLs are CANDIDATES from knowledge, flagged url_status:'pending-live-verify' — they are NOT confirmed-live and MUST be checked before publishing. This is the project's standard build-offline / verify-connected split: Claude drafts, the operator verifies on a networked machine.",
+  "_verify_runbook": "To publish one note: (1) open the ingredient's cost-index page and confirm the price move is real and the period lines up; (2) open each source URL, confirm it loads and actually supports the 'what' and 'impact' text — reword or drop anything it doesn't; (3) set each source url_status:'live', then verified:true and date_verified:'YYYY-MM-DD'; (4) rebuild pages. The WHY then renders on the EN page. To publish on /es/, add title_es / what_es / impact_es. Prefer US-government public-domain sources (USDA APHIS/ERS/NASS, NOAA, BLS) — never redistribute a paid or non-US global price series.",
+  "notes": [
+    {
+      "ingredient": "eggs",
+      "period": "2025-02",
+      "title": "Avian influenza drove record wholesale egg prices",
+      "what": "A severe wave of highly pathogenic avian influenza (H5N1) forced the culling of a large share of the nation's egg-laying hens across major producing states, cutting the laying flock faster than it could be rebuilt.",
+      "impact": "Wholesale shell-egg prices roughly doubled off their normal range and held there for weeks; they only eased as flocks were repopulated and lay resumed through 2025.",
+      "sources": [
+        { "name": "USDA APHIS — HPAI detections in commercial and backyard flocks", "url": "https://www.aphis.usda.gov/livestock-poultry-disease/avian/avian-influenza/hpai-detections/commercial-backyard-flocks", "url_status": "pending-live-verify" },
+        { "name": "USDA AMS — Egg Market News Report", "url": "https://www.ams.usda.gov/market-news/eggs", "url_status": "pending-live-verify" }
+      ],
+      "confidence": "high",
+      "drafted": "2026-07-07",
+      "verified": false,
+      "date_verified": null
+    },
+    {
+      "ingredient": "chicken-breast",
+      "period": "2022-08",
+      "title": "Bird flu, feed costs, and beef-substitution demand pushed breast meat to records",
+      "what": "The 2022 avian-influenza outbreak tightened poultry supply while historically high feed-grain costs and strong demand — diners trading down from pricier beef — pulled hard on boneless, skinless breast, the highest-demand cut.",
+      "impact": "Wholesale breast prices ran to record highs well above their normal range before supply recovered and demand cooled later in the year.",
+      "sources": [
+        { "name": "USDA APHIS — HPAI detections in commercial and backyard flocks", "url": "https://www.aphis.usda.gov/livestock-poultry-disease/avian/avian-influenza/hpai-detections/commercial-backyard-flocks", "url_status": "pending-live-verify" },
+        { "name": "USDA AMS — National Weekly Broiler/Fryer Report", "url": "https://www.ams.usda.gov/market-news/poultry", "url_status": "pending-live-verify" }
+      ],
+      "confidence": "medium",
+      "drafted": "2026-07-07",
+      "verified": false,
+      "date_verified": null
+    },
+    {
+      "ingredient": "butter",
+      "period": "2014-10",
+      "title": "Tight cream supplies and low cold-storage stocks spiked butter",
+      "what": "Strong domestic demand met unusually low cold-storage butter stocks and tight cream supplies through 2014, leaving little cushion; wholesale butter climbed to then-record levels on the CME through the fall.",
+      "impact": "The reference price ran well above its normal range and stayed elevated for months before stocks and prices normalized in 2015.",
+      "sources": [
+        { "name": "USDA AMS — Dairy Market News", "url": "https://www.ams.usda.gov/market-news/dairy", "url_status": "pending-live-verify" },
+        { "name": "USDA ERS — Dairy Data (butter stocks and prices)", "url": "https://www.ers.usda.gov/data-products/dairy-data/", "url_status": "pending-live-verify" }
+      ],
+      "confidence": "medium",
+      "drafted": "2026-07-07",
+      "verified": false,
+      "date_verified": null
+    },
+    {
+      "ingredient": "tomato",
+      "period": "2011-04",
+      "title": "A hard freeze in northern Mexico cut winter tomato supply",
+      "what": "An unusually hard freeze in the winter growing regions of northern Mexico in early 2011 damaged tomato and vegetable crops that supply the U.S. market in that season, sharply reducing available volume.",
+      "impact": "Wholesale tomato prices spiked well above their normal range in the following weeks until Mexican and domestic supply recovered.",
+      "sources": [
+        { "name": "NOAA National Centers for Environmental Information — U.S. climate & extremes records", "url": "https://www.ncei.noaa.gov/access/monitoring/monthly-report/", "url_status": "pending-live-verify" },
+        { "name": "USDA AMS — Specialty Crops / terminal market movement", "url": "https://www.ams.usda.gov/market-news/fruit-and-vegetable", "url_status": "pending-live-verify" }
+      ],
+      "confidence": "medium",
+      "drafted": "2026-07-07",
+      "verified": false,
+      "date_verified": null
+    },
+    {
+      "ingredient": "tomato",
+      "period": "2022-11",
+      "title": "Florida storm damage and a tight fall market lifted tomato prices",
+      "what": "Hurricane damage to Florida growing areas in the fall of 2022, on top of an already-tight national supply, cut the volume of fresh tomatoes reaching the market late in the year.",
+      "impact": "Wholesale tomato prices ran well above their normal range through the late-fall and winter window before spring supply eased them back.",
+      "sources": [
+        { "name": "NOAA National Hurricane Center — 2022 season", "url": "https://www.nhc.noaa.gov/data/tcr/", "url_status": "pending-live-verify" },
+        { "name": "USDA AMS — Specialty Crops / terminal market movement", "url": "https://www.ams.usda.gov/market-news/fruit-and-vegetable", "url_status": "pending-live-verify" }
+      ],
+      "confidence": "low",
+      "drafted": "2026-07-07",
+      "verified": false,
+      "date_verified": null
+    },
+    {
+      "ingredient": "avocado",
+      "period": "2019-06",
+      "title": "A smaller Mexican crop and trade uncertainty spiked avocados",
+      "what": "A reduced Mexican Hass harvest tightened supply into the summer of 2019 just as trade and border-closure uncertainty raised the risk of a supply interruption from the U.S.'s dominant source.",
+      "impact": "Wholesale avocado prices spiked well above their normal range before the next harvest and calmer trade conditions relieved the pressure.",
+      "sources": [
+        { "name": "USDA AMS — National Retail Report / Specialty Crops (avocado movement & price)", "url": "https://www.ams.usda.gov/market-news/fruit-and-vegetable", "url_status": "pending-live-verify" }
+      ],
+      "confidence": "low",
+      "drafted": "2026-07-07",
+      "verified": false,
+      "date_verified": null
+    }
+  ]
+}

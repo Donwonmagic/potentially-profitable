@@ -96,6 +96,11 @@ jobs:
           # trips the stale gate.
           node scripts/build-cost-index-health.mjs
           node scripts/build-seasonality.mjs
+          # Re-detect notable price events (biggest sustained moves off local normal
+          # + duration / own-season / co-movement) from the deep history. Pure math,
+          # --check-gated in CI; the per-ingredient pages read it at BUILD time, so it
+          # must be rewritten here before the pages render.
+          node scripts/build-cost-index-events.mjs
           # Re-render hub / per-ingredient / lab pages.
           node scripts/build-cost-index-pages.mjs
           # Re-render the ingredient-yield library pages — their market-read block

@@ -228,8 +228,32 @@ main{padding-top:64px}
 .ci-outlook__panel li{margin:0 0 4px}
 .ci-outlook__lab{margin:10px 0 0;font-size:13.5px}
 .ci-outlook__lab a{color:var(--season);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-events{margin:30px 0 8px}
+.ci-events__intro{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 14px;max-width:66ch}
+.ci-events__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.ci-events__ev{padding:14px 16px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px;font-variant-numeric:tabular-nums}
+.ci-events__ev[data-dir="up"]{border-left-color:#A23B2D}
+.ci-events__ev[data-dir="down"]{border-left-color:var(--teal)}
+.ci-events__hd{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
+.ci-events__date{font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--ink);min-width:76px}
+.ci-events__mag{font-size:14px;font-weight:700;letter-spacing:.01em;white-space:nowrap}
+.ci-events__mag[data-dir="up"]{color:#A23B2D}
+.ci-events__mag[data-dir="down"]{color:var(--teal)}
+.ci-events__meta{margin:6px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
+.ci-events__meta a{color:var(--ink-soft);text-decoration:none;border-bottom:1px dashed var(--line)}
+.ci-events__meta a:hover{color:var(--teal)}
+.ci-events__note{margin:10px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
+.ci-events__note-t{margin:0 0 4px;font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.4}
+.ci-events__note-b{margin:0;font-size:14px;line-height:1.6;color:var(--ink)}
+.ci-events__cite{margin:8px 0 0;font-size:12.5px}
+.ci-events__cite summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
+.ci-events__cite p{margin:6px 0 0;color:var(--ink-soft);line-height:1.55}
+.ci-events__cite a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-events__foot{margin:12px 0 0;font-size:12.5px;color:var(--stone);line-height:1.5}
+.ci-events__foot a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-events--stable .ci-events__intro{margin-bottom:0}
 /* a11y: a keyboard/switch user must always see focus (only the skip-link had one). */
-.ci-card a:focus-visible,.ci-read a:focus-visible,.ci-sibs a:focus-visible,.breadcrumb a:focus-visible,.ci-source a:focus-visible,summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:2px}
+.ci-card a:focus-visible,.ci-read a:focus-visible,.ci-sibs a:focus-visible,.breadcrumb a:focus-visible,.ci-source a:focus-visible,.ci-events a:focus-visible,summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:2px}
 /* touch: lift the drawer summaries to a real tap target (WCAG 2.5.8). */
 .ci-read__src summary,.ci-outlook__how summary{display:inline-block;padding:6px 0;min-height:24px}
 /* the pre-rendered sparkline must never clip in a narrower container. */
@@ -256,6 +280,8 @@ main{padding-top:64px}
 :root[data-theme="dark"] .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
 :root[data-theme="dark"] .ci-composite[data-band="up"]{border-left-color:#ed9a8e}
 :root[data-theme="dark"] .ci-composite[data-band="up"] .ci-composite__num{color:#ed9a8e}
+:root[data-theme="dark"] .ci-events__ev[data-dir="up"]{border-left-color:#ed9a8e}
+:root[data-theme="dark"] .ci-events__mag[data-dir="up"]{color:#ed9a8e}
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12);--stone:#9aa0aa;--gold:#d8bd6a;--season:#a992d6}
   :root:not([data-theme="light"]) .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
@@ -264,6 +290,8 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-composite[data-band="up"]{border-left-color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-composite[data-band="up"] .ci-composite__num{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-events__ev[data-dir="up"]{border-left-color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
 }
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=dc72c6990f4c" onload="this.onload=null;this.rel='stylesheet'">
@@ -471,6 +499,56 @@ main{padding-top:64px}
     <p class="ci-why__line">Insumos río arriba ahora: Diésel (al alza), que se mueve junto al costo de los alimentos. Asociación, no causa.</p>
   </aside>
     <h2 id="why-it-matters">Por qué importa</h2><p>Papa roja se cotiza por <strong>saco</strong> como referencia mayorista. Esa es la cifra del mercado, no el precio entregado en tu puerta — tu factura suma flete, margen del proveedor y tu volumen. Compara siempre en la misma unidad.</p><p>El precio se mueve con factores que están río arriba de tu cocina: sobre todo diésel. Es una asociación, no una causa directa — pero cuando esos suben, papa roja tiende a seguirlos. Por eso una factura más alta no siempre es culpa del proveedor: a veces todo el mercado se movió.</p><p>Como contexto de categoría: las frutas y verduras frescas <em>en conjunto</em> se han movido <strong>+93%</strong> en el periodo (índice PPI de BLS, frutas y verduras frescas). Es la dirección general del mercado de productos frescos — no la lectura propia de papa roja, que está arriba.</p>
+    
+  <section class="ci-events" aria-labelledby="ci-events-h-red-potato">
+    <h2 id="ci-events-h-red-potato">Eventos de precio notables</h2>
+    <p class="ci-events__intro">En los ~25.2 años de datos públicos que seguimos, la referencia mayorista de papa roja se alejó más de su rango normal en estas fechas. Cada cifra es el pico frente a la mediana local (~1 año) del propio producto — un movimiento de mercado, no un sobreprecio de proveedor.</p>
+    <ol class="ci-events__list">
+      <li class="ci-events__ev" data-dir="up">
+      <div class="ci-events__hd">
+        <span class="ci-events__date">jun 2020</span>
+        <span class="ci-events__mag" data-dir="up">▲&nbsp;48% por encima de lo normal</span>
+      </div>
+      <p class="ci-events__meta">$46.00/saco frente a ~$31.00 típico · se mantuvo ~3 meses</p>
+      </li>
+      <li class="ci-events__ev" data-dir="up">
+      <div class="ci-events__hd">
+        <span class="ci-events__date">ago 2013</span>
+        <span class="ci-events__mag" data-dir="up">▲&nbsp;45% por encima de lo normal</span>
+      </div>
+      <p class="ci-events__meta">$33.30/saco frente a ~$23.00 típico · se mantuvo ~5 meses</p>
+      </li>
+      <li class="ci-events__ev" data-dir="up">
+      <div class="ci-events__hd">
+        <span class="ci-events__date">may 2007</span>
+        <span class="ci-events__mag" data-dir="up">▲&nbsp;44% por encima de lo normal</span>
+      </div>
+      <p class="ci-events__meta">$25.90/saco frente a ~$18.00 típico · se mantuvo ~7 semanas</p>
+      </li>
+      <li class="ci-events__ev" data-dir="up">
+      <div class="ci-events__hd">
+        <span class="ci-events__date">jul 2019</span>
+        <span class="ci-events__mag" data-dir="up">▲&nbsp;38% por encima de lo normal</span>
+      </div>
+      <p class="ci-events__meta">$34.45/saco frente a ~$25.00 típico · se mantuvo ~9 semanas</p>
+      </li>
+      <li class="ci-events__ev" data-dir="down">
+      <div class="ci-events__hd">
+        <span class="ci-events__date">jun 2003</span>
+        <span class="ci-events__mag" data-dir="down">▼&nbsp;37% por debajo de lo normal</span>
+      </div>
+      <p class="ci-events__meta">$10.00/saco frente a ~$16.00 típico · se mantuvo ~3 meses</p>
+      </li>
+      <li class="ci-events__ev" data-dir="up">
+      <div class="ci-events__hd">
+        <span class="ci-events__date">mar 2002</span>
+        <span class="ci-events__mag" data-dir="up">▲&nbsp;35% por encima de lo normal</span>
+      </div>
+      <p class="ci-events__meta">$21.75/saco frente a ~$16.06 típico · se mantuvo ~3 meses</p>
+      </li>
+    </ol>
+    <p class="ci-events__foot">Detectado automáticamente del historial de precios públicos (USDA/BLS/FRED); las notas de causa son editoriales y cada una se verifica contra la fuente pública citada. <a href="/es/glossary/cost-index/">Cómo se eligen los eventos</a>.</p>
+  </section>
     <h2 id="how-to-use">Cómo usar esta lectura</h2><ol>
   <li>Abre la lectura de arriba y anota el rango típico y la fecha.</li>
   <li>Saca tu última factura de papa roja, en la misma unidad.</li>

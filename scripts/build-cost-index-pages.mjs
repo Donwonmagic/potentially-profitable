@@ -92,6 +92,24 @@ const YIELDS = (() => {
     const m = {}; for (const y of a) if (y && y.slug) m[y.slug] = y; return m; }
   catch { return {}; }
 })();
+// Notable price events — the DETECTION half (pure math over the deep history). Per
+// ingredient: the biggest sustained moves off local normal + honest context (duration,
+// own-season, co-movement). Built by scripts/build-cost-index-events.mjs.
+const EVENTS = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-index-events.json'), 'utf8')).items || {}; }
+  catch { return {}; }
+})();
+// The WHY half — hand-curated, source-gated narratives. Only VERIFIED notes are loaded,
+// so an unverified draft can NEVER render (honesty gate; scripts/check-cost-index-events.mjs
+// enforces the same rule against the built HTML). Keyed ingredient -> [note].
+const EVENT_NOTES = (() => {
+  try {
+    const raw = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-index-event-notes.json'), 'utf8')).notes || [];
+    const m = {};
+    for (const nt of raw) { if (!nt || nt.verified !== true) continue; (m[nt.ingredient] || (m[nt.ingredient] = [])).push(nt); }
+    return m;
+  } catch { return {}; }
+})();
 // Prefer the deep backfill (enough points to backtest coverage); fall back to the
 // vendored capped history.
 function bandSeries(slug, entry) {
@@ -1704,8 +1722,32 @@ main{padding-top:64px}
 .ci-outlook__panel li{margin:0 0 4px}
 .ci-outlook__lab{margin:10px 0 0;font-size:13.5px}
 .ci-outlook__lab a{color:var(--season);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-events{margin:30px 0 8px}
+.ci-events__intro{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 14px;max-width:66ch}
+.ci-events__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.ci-events__ev{padding:14px 16px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px;font-variant-numeric:tabular-nums}
+.ci-events__ev[data-dir="up"]{border-left-color:#A23B2D}
+.ci-events__ev[data-dir="down"]{border-left-color:var(--teal)}
+.ci-events__hd{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
+.ci-events__date{font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--ink);min-width:76px}
+.ci-events__mag{font-size:14px;font-weight:700;letter-spacing:.01em;white-space:nowrap}
+.ci-events__mag[data-dir="up"]{color:#A23B2D}
+.ci-events__mag[data-dir="down"]{color:var(--teal)}
+.ci-events__meta{margin:6px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
+.ci-events__meta a{color:var(--ink-soft);text-decoration:none;border-bottom:1px dashed var(--line)}
+.ci-events__meta a:hover{color:var(--teal)}
+.ci-events__note{margin:10px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
+.ci-events__note-t{margin:0 0 4px;font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.4}
+.ci-events__note-b{margin:0;font-size:14px;line-height:1.6;color:var(--ink)}
+.ci-events__cite{margin:8px 0 0;font-size:12.5px}
+.ci-events__cite summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
+.ci-events__cite p{margin:6px 0 0;color:var(--ink-soft);line-height:1.55}
+.ci-events__cite a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-events__foot{margin:12px 0 0;font-size:12.5px;color:var(--stone);line-height:1.5}
+.ci-events__foot a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-events--stable .ci-events__intro{margin-bottom:0}
 /* a11y: a keyboard/switch user must always see focus (only the skip-link had one). */
-.ci-card a:focus-visible,.ci-read a:focus-visible,.ci-sibs a:focus-visible,.breadcrumb a:focus-visible,.ci-source a:focus-visible,summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:2px}
+.ci-card a:focus-visible,.ci-read a:focus-visible,.ci-sibs a:focus-visible,.breadcrumb a:focus-visible,.ci-source a:focus-visible,.ci-events a:focus-visible,summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:2px}
 /* touch: lift the drawer summaries to a real tap target (WCAG 2.5.8). */
 .ci-read__src summary,.ci-outlook__how summary{display:inline-block;padding:6px 0;min-height:24px}
 /* the pre-rendered sparkline must never clip in a narrower container. */
@@ -1732,6 +1774,8 @@ main{padding-top:64px}
 :root[data-theme="dark"] .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
 :root[data-theme="dark"] .ci-composite[data-band="up"]{border-left-color:#ed9a8e}
 :root[data-theme="dark"] .ci-composite[data-band="up"] .ci-composite__num{color:#ed9a8e}
+:root[data-theme="dark"] .ci-events__ev[data-dir="up"]{border-left-color:#ed9a8e}
+:root[data-theme="dark"] .ci-events__mag[data-dir="up"]{color:#ed9a8e}
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12);--stone:#9aa0aa;--gold:#d8bd6a;--season:#a992d6}
   :root:not([data-theme="light"]) .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
@@ -1740,6 +1784,8 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-composite[data-band="up"]{border-left-color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-composite[data-band="up"] .ci-composite__num{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-events__ev[data-dir="up"]{border-left-color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
 }
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=${SHELL_HASH.core}" onload="this.onload=null;this.rel='stylesheet'">
@@ -1941,6 +1987,141 @@ function whyItMatters(slug, locale) {
     })()
     : '';
   return `<h2 id="why-it-matters">${h}</h2>${unitLine}${moveLine}${seasonalLine}${categoryLine}`;
+}
+
+// ---- Notable price events ------------------------------------------
+// The historical "events that moved the market" surface: the deterministic detection
+// (data/cost-index-events.json) rendered as a timeline, joined to the source-gated WHY
+// notes (only verified ones ever reach here — EVENT_NOTES filters to verified). Honest by
+// construction: the % move, price, duration, season and co-movement are all computed; the
+// cause text renders only when a human has checked it against the cited public source.
+const EV_MONTHS_EN = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const EV_MONTHS_ES = ['', 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+function evDate(dateStr, es) {
+  const y = dateStr.slice(0, 4), m = +dateStr.slice(5, 7);
+  return `${(es ? EV_MONTHS_ES : EV_MONTHS_EN)[m] || ''} ${y}`;
+}
+function evDuration(days, es) {
+  if (days < 11) return es ? 'un pico breve' : 'a brief spike';
+  if (days < 75) { const w = Math.max(2, Math.round(days / 7)); return es ? `se mantuvo ~${w} semanas` : `held about ${w} weeks`; }
+  const mo = Math.round(days / 30.4); return es ? `se mantuvo ~${mo} meses` : `held about ${mo} months`;
+}
+// Drop a name's parenthetical qualifier for running prose: "Tomatoes (round)" -> "Tomatoes".
+function evProse(name) { return String(name).replace(/\s*\([^)]*\)\s*/g, ' ').replace(/\s+/g, ' ').trim(); }
+// Refine the engine's raw co-movement to what's HONESTLY meaningful. Naming a peer is only
+// trustworthy in a TIGHT category (beef/poultry/pork/dairy-eggs/seafood), where a same-window
+// co-move is a real complex move (butter↔cheddar, breast↔thigh, ribeye↔short-rib). "Produce"
+// is 69 items in one bucket, so its co-movement is seasonal coincidence — naming "tomato moved
+// with dill" would mislead; there we only report BREADTH (a broad produce move) when it's wide.
+const EV_NAME_CATS = new Set(['beef', 'poultry', 'pork', 'dairy-eggs', 'seafood']);
+function evCohortLine(slug, ev, es) {
+  const cat = (ING_META[slug] || {}).cat;
+  const cohort = Array.isArray(ev.cohort) ? ev.cohort : [];
+  const peers = cohort.filter((p) => ING_META[p] && ING_META[p].cat === cat && LABELS[p]);
+  if (EV_NAME_CATS.has(cat) && peers.length) {
+    const base = es ? '/es' : '';
+    const label = (p) => evProse(es ? (LABELS[p].es || LABELS[p].en) : LABELS[p].en).toLowerCase();
+    const link = (p) => shippable(p) ? `<a href="${base}/cost-index/${p}/">${escHtml(label(p))}</a>` : escHtml(label(p));
+    const names = peers.slice(0, 3).map(link);
+    const list = names.join(', ').replace(/, ([^,]*)$/, es ? ' y $1' : ', and $1');
+    return es ? `se movió junto con ${list}` : `moved with ${list}`;
+  }
+  if (peers.length >= 10) return es ? 'parte de un movimiento amplio del mercado' : 'part of a broad market move';
+  return '';
+}
+function evNoteFor(slug, ev) {
+  const notes = EVENT_NOTES[slug];
+  if (!notes) return null;
+  const et = Date.parse(ev.date);
+  let best = null, bd = Infinity;
+  for (const nt of notes) {
+    if (!nt.period) continue;
+    const pt = Date.parse(nt.period.length === 7 ? `${nt.period}-15` : nt.period);
+    const d = Math.abs(pt - et);
+    if (d < bd) { bd = d; best = nt; }
+  }
+  return (best && bd <= 84 * 864e5) ? best : null;   // within the engine's 12-week merge window
+}
+function notableEventsBlock(slug, locale) {
+  const es = locale === 'es';
+  const base = es ? '/es' : '';
+  const rec = EVENTS[slug];
+  if (!rec || !Array.isArray(rec.events)) return '';
+  const lab = LABELS[slug] || {};
+  const name = (es ? (lab.es || lab.en) : lab.en) || slug;
+  const nmLc = escHtml(evProse(name).toLowerCase());
+  const unit = (es ? (lab.unit_es || lab.unit_en) : lab.unit_en) || '';
+  const years = rec.span && rec.span.years ? rec.span.years : null;
+  const h = es ? 'Eventos de precio notables' : 'Notable price events';
+
+  // Stable line: enough history, no sharp sustained move. "Stable" is a true answer.
+  if (!rec.events.length) {
+    if (!years || years < 2) return '';
+    const line = es
+      ? `En los ~${years} años de datos públicos que seguimos, ${nmLc} no registró un salto marcado y sostenido fuera de su rango normal. Es una línea estable — el precio se mueve semana a semana, pero sin choques dramáticos.`
+      : `Across the ~${years} years of public data we track, ${nmLc} has had no sharp, sustained jump outside its normal range. It's a stable line — the price moves week to week, but without dramatic shocks.`;
+    return `
+  <section class="ci-events ci-events--stable" aria-labelledby="ci-events-h-${slug}">
+    <h2 id="ci-events-h-${slug}">${h}</h2>
+    <p class="ci-events__intro">${line}</p>
+  </section>`;
+  }
+
+  const intro = es
+    ? `En los ~${years} años de datos públicos que seguimos, la referencia mayorista de ${nmLc} se alejó más de su rango normal en estas fechas. Cada cifra es el pico frente a la mediana local (~1 año) del propio producto — un movimiento de mercado, no un sobreprecio de proveedor.`
+    : `Across the ~${years} years of public data we track, the wholesale reference for ${nmLc} moved farthest from its normal range on these dates. Each figure is the peak versus its own ~1-year local median — a market move, not a vendor markup.`;
+
+  const rows = rec.events.map((ev) => {
+    const up = ev.direction === 'up';
+    const arrow = up ? '▲' : '▼';
+    const magWord = up ? (es ? 'por encima de lo normal' : 'above normal') : (es ? 'por debajo de lo normal' : 'below normal');
+    const bits = [];
+    bits.push(`${money(ev.valueCents)}${unit ? '/' + escHtml(unit) : ''} ${es ? 'frente a ~' : 'vs ~'}${money(ev.normalCents)} ${es ? 'típico' : 'typical'}`);
+    bits.push(evDuration(ev.durationDays, es));
+    if (up && ev.inHighSeason === true) bits.push(es ? `en la temporada alta habitual de ${nmLc}` : `in the usual high season for ${nmLc}`);
+    const coh = evCohortLine(slug, ev, es); if (coh) bits.push(coh);
+
+    const nt = evNoteFor(slug, ev);
+    let note = '';
+    if (nt) {
+      const title = es ? (nt.title_es || '') : (nt.title || '');
+      const what = es ? (nt.what_es || '') : (nt.what || '');
+      const impact = es ? (nt.impact_es || '') : (nt.impact || '');
+      if (title && what) {   // ES renders only when translated; EN uses the base fields
+        const srcs = (nt.sources || [])
+          .filter((s) => s && s.url && s.url_status === 'live')
+          .map((s) => `<a href="${escHtml(s.url)}" rel="nofollow noopener" target="_blank">${escHtml(s.name || s.url)}</a>`)
+          .join(' · ');
+        note = `<div class="ci-events__note">
+        <p class="ci-events__note-t">${escHtml(title)}</p>
+        <p class="ci-events__note-b">${escHtml(what)}${impact ? ' ' + escHtml(impact) : ''}</p>
+        ${srcs ? `<details class="ci-events__cite"><summary>${es ? 'Fuentes' : 'Sources'}</summary><p>${srcs}</p></details>` : ''}
+      </div>`;
+      }
+    }
+
+    return `<li class="ci-events__ev" data-dir="${ev.direction}">
+      <div class="ci-events__hd">
+        <span class="ci-events__date">${evDate(ev.date, es)}</span>
+        <span class="ci-events__mag" data-dir="${ev.direction}">${arrow}&nbsp;${Math.abs(ev.pctFromNormal)}% ${magWord}</span>
+      </div>
+      <p class="ci-events__meta">${bits.join(' · ')}</p>
+      ${note}</li>`;
+  }).join('\n      ');
+
+  const foot = es
+    ? `Detectado automáticamente del historial de precios públicos (USDA/BLS/FRED); las notas de causa son editoriales y cada una se verifica contra la fuente pública citada. <a href="${base}/glossary/cost-index/">Cómo se eligen los eventos</a>.`
+    : `Detected automatically from public price history (USDA/BLS/FRED); the cause notes are editorial, each checked against the cited public source. <a href="${base}/glossary/cost-index/">How events are picked</a>.`;
+
+  return `
+  <section class="ci-events" aria-labelledby="ci-events-h-${slug}">
+    <h2 id="ci-events-h-${slug}">${h}</h2>
+    <p class="ci-events__intro">${intro}</p>
+    <ol class="ci-events__list">
+      ${rows}
+    </ol>
+    <p class="ci-events__foot">${foot}</p>
+  </section>`;
 }
 
 function howToUse(slug, locale) {
@@ -2251,6 +2432,7 @@ function emitIngredientPage(slug, locale) {
     ${pressureBlock(slug, locale)}
     ${whyMovingBlock(slug, locale)}
     ${whyItMatters(slug, locale)}
+    ${notableEventsBlock(slug, locale)}
     ${howToUse(slug, locale)}
     ${weeklySignup(locale, { id: 'ci-news-email-ing', source: 'cost-index-ingredient', compact: true, pitch: (locale === 'es'
       ? '¿No quieres revisar a mano cada semana? Recibe el índice por correo — una lectura corta de lo que se mueve y qué hacer. Unas líneas, sin relleno.'

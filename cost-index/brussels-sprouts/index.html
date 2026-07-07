@@ -228,8 +228,32 @@ main{padding-top:64px}
 .ci-outlook__panel li{margin:0 0 4px}
 .ci-outlook__lab{margin:10px 0 0;font-size:13.5px}
 .ci-outlook__lab a{color:var(--season);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-events{margin:30px 0 8px}
+.ci-events__intro{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 14px;max-width:66ch}
+.ci-events__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.ci-events__ev{padding:14px 16px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px;font-variant-numeric:tabular-nums}
+.ci-events__ev[data-dir="up"]{border-left-color:#A23B2D}
+.ci-events__ev[data-dir="down"]{border-left-color:var(--teal)}
+.ci-events__hd{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
+.ci-events__date{font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--ink);min-width:76px}
+.ci-events__mag{font-size:14px;font-weight:700;letter-spacing:.01em;white-space:nowrap}
+.ci-events__mag[data-dir="up"]{color:#A23B2D}
+.ci-events__mag[data-dir="down"]{color:var(--teal)}
+.ci-events__meta{margin:6px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
+.ci-events__meta a{color:var(--ink-soft);text-decoration:none;border-bottom:1px dashed var(--line)}
+.ci-events__meta a:hover{color:var(--teal)}
+.ci-events__note{margin:10px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
+.ci-events__note-t{margin:0 0 4px;font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.4}
+.ci-events__note-b{margin:0;font-size:14px;line-height:1.6;color:var(--ink)}
+.ci-events__cite{margin:8px 0 0;font-size:12.5px}
+.ci-events__cite summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
+.ci-events__cite p{margin:6px 0 0;color:var(--ink-soft);line-height:1.55}
+.ci-events__cite a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-events__foot{margin:12px 0 0;font-size:12.5px;color:var(--stone);line-height:1.5}
+.ci-events__foot a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-events--stable .ci-events__intro{margin-bottom:0}
 /* a11y: a keyboard/switch user must always see focus (only the skip-link had one). */
-.ci-card a:focus-visible,.ci-read a:focus-visible,.ci-sibs a:focus-visible,.breadcrumb a:focus-visible,.ci-source a:focus-visible,summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:2px}
+.ci-card a:focus-visible,.ci-read a:focus-visible,.ci-sibs a:focus-visible,.breadcrumb a:focus-visible,.ci-source a:focus-visible,.ci-events a:focus-visible,summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:2px}
 /* touch: lift the drawer summaries to a real tap target (WCAG 2.5.8). */
 .ci-read__src summary,.ci-outlook__how summary{display:inline-block;padding:6px 0;min-height:24px}
 /* the pre-rendered sparkline must never clip in a narrower container. */
@@ -256,6 +280,8 @@ main{padding-top:64px}
 :root[data-theme="dark"] .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
 :root[data-theme="dark"] .ci-composite[data-band="up"]{border-left-color:#ed9a8e}
 :root[data-theme="dark"] .ci-composite[data-band="up"] .ci-composite__num{color:#ed9a8e}
+:root[data-theme="dark"] .ci-events__ev[data-dir="up"]{border-left-color:#ed9a8e}
+:root[data-theme="dark"] .ci-events__mag[data-dir="up"]{color:#ed9a8e}
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12);--stone:#9aa0aa;--gold:#d8bd6a;--season:#a992d6}
   :root:not([data-theme="light"]) .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
@@ -264,6 +290,8 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-composite[data-band="up"]{border-left-color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-composite[data-band="up"] .ci-composite__num{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-events__ev[data-dir="up"]{border-left-color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
 }
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=dc72c6990f4c" onload="this.onload=null;this.rel='stylesheet'">
@@ -526,6 +554,56 @@ main{padding-top:64px}
     <p class="ci-why__line">Upstream inputs right now: Diesel (up), which moves alongside food costs. Association, not cause.</p>
   </aside>
     <h2 id="why-it-matters">Why it matters</h2><p>Brussels sprouts trades per <strong>carton</strong> as a wholesale reference. That is the market's figure, not the delivered price at your door — your invoice adds freight, the vendor's margin, and your volume. Always compare in the same unit.</p><p>The price moves with forces upstream of your kitchen — chiefly diesel. That is an association, not a direct cause, but when those climb, brussels sprouts tends to follow. So a higher invoice is not always the vendor's doing: sometimes the whole market moved.</p><p>For category context: fresh fruits &amp; vegetables <em>as a whole</em> moved <strong>+93%</strong> over the window (BLS PPI, fresh fruits &amp; vegetables). That's the broad produce market's direction — not brussels sprouts's own read, which is above.</p>
+    
+  <section class="ci-events" aria-labelledby="ci-events-h-brussels-sprouts">
+    <h2 id="ci-events-h-brussels-sprouts">Notable price events</h2>
+    <p class="ci-events__intro">Across the ~25.2 years of public data we track, the wholesale reference for brussels sprouts moved farthest from its normal range on these dates. Each figure is the peak versus its own ~1-year local median — a market move, not a vendor markup.</p>
+    <ol class="ci-events__list">
+      <li class="ci-events__ev" data-dir="up">
+      <div class="ci-events__hd">
+        <span class="ci-events__date">Dec 2025</span>
+        <span class="ci-events__mag" data-dir="up">▲&nbsp;119% above normal</span>
+      </div>
+      <p class="ci-events__meta">$82.00/carton vs ~$37.50 typical · held about 10 months · in the usual high season for brussels sprouts</p>
+      </li>
+      <li class="ci-events__ev" data-dir="up">
+      <div class="ci-events__hd">
+        <span class="ci-events__date">May 2005</span>
+        <span class="ci-events__mag" data-dir="up">▲&nbsp;109% above normal</span>
+      </div>
+      <p class="ci-events__meta">$53.00/carton vs ~$25.30 typical · held about 10 weeks</p>
+      </li>
+      <li class="ci-events__ev" data-dir="up">
+      <div class="ci-events__hd">
+        <span class="ci-events__date">Apr 2010</span>
+        <span class="ci-events__mag" data-dir="up">▲&nbsp;91% above normal</span>
+      </div>
+      <p class="ci-events__meta">$41.48/carton vs ~$21.75 typical · held about 10 weeks</p>
+      </li>
+      <li class="ci-events__ev" data-dir="up">
+      <div class="ci-events__hd">
+        <span class="ci-events__date">Jul 2002</span>
+        <span class="ci-events__mag" data-dir="up">▲&nbsp;89% above normal</span>
+      </div>
+      <p class="ci-events__meta">$33.50/carton vs ~$17.75 typical · held about 3 months · in the usual high season for brussels sprouts</p>
+      </li>
+      <li class="ci-events__ev" data-dir="up">
+      <div class="ci-events__hd">
+        <span class="ci-events__date">May 2019</span>
+        <span class="ci-events__mag" data-dir="up">▲&nbsp;62% above normal</span>
+      </div>
+      <p class="ci-events__meta">$62.25/carton vs ~$38.50 typical · held about 10 weeks</p>
+      </li>
+      <li class="ci-events__ev" data-dir="up">
+      <div class="ci-events__hd">
+        <span class="ci-events__date">Jul 2018</span>
+        <span class="ci-events__mag" data-dir="up">▲&nbsp;61% above normal</span>
+      </div>
+      <p class="ci-events__meta">$52.00/carton vs ~$32.23 typical · held about 5 weeks · in the usual high season for brussels sprouts</p>
+      </li>
+    </ol>
+    <p class="ci-events__foot">Detected automatically from public price history (USDA/BLS/FRED); the cause notes are editorial, each checked against the cited public source. <a href="/glossary/cost-index/">How events are picked</a>.</p>
+  </section>
     <h2 id="how-to-use">How to use this reading</h2><ol>
   <li>Open the reading above and note the typical range and the date.</li>
   <li>Pull your last brussels sprouts invoice, in the same unit.</li>
