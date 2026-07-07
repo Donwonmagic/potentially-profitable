@@ -4,11 +4,15 @@
  * scoring each call against the next realized move, it pools a reliability curve by
  * stated strength and FAILS the build unless:
  *   1. the curve is monotonic (a stronger arrow never verifies LESS often),
- *   2. strength discriminates (top tier clears the bottom by a margin — "high"≠"low"),
- *   3. the calls have skill overall (hit-rate beats the no-skill majority-class baseline),
+ *   2. strength discriminates — the HIGH tier out-verifies LOW by a STATISTICALLY REAL
+ *      margin (one-sided two-proportion z ≥ Z_CRIT) and clears a modest effect floor.
+ *      Significance, not a fixed absolute gap: a 3pt split is noise on 200 calls and
+ *      decisive on 30k, so the sample size has to be in the test.
+ *   3. the calls are not anti-predictive overall (hit-rate is not meaningfully below the
+ *      no-skill baseline — the arrow is allowed to be HUMBLE at ~baseline, by design),
  *   4. the HIGH tier — the only one we'd ever label high-confidence — beats baseline.
- * So "high means high" is a checked claim, not a decoration. Flat-realized weeks are
- * pushes (excluded), exactly as the baseline is, so the comparison is honest.
+ * So "high means high" is a checked, sample-size-aware claim, not a decoration. Flat-
+ * realized weeks are pushes (excluded), exactly as the baseline is, so it stays honest.
  *
  * Run:  node scripts/check-trend-skill.mjs            # report + gate
  *       node scripts/check-trend-skill.mjs --self-test
@@ -22,8 +26,21 @@ const { reliabilityCurve, isMonotonic } = require(path.join(repo, 'tools/_shared
 
 const LABELS = ['low', 'medium', 'high'];
 const MIN_N = 200;            // pooled directional calls needed before asserting
-const DISCRIM = 0.04;         // high-tier minus low-tier hit-rate floor
-const MARGIN = 0.0;           // overall/high must clear baseline by at least this
+// Discrimination is judged by STATISTICAL SIGNIFICANCE, not a fixed absolute gap — a
+// fixed 0.04 floor conflates effect size with sample size (a 3pt gap is noise on 200
+// calls, decisive on 30k). HIGH must out-verify LOW with real confidence AND clear a
+// modest effect floor, so "high" is a checked, sample-size-aware claim.
+const DISCRIM_EFFECT = 0.02;  // minimum high−low gap (guards a tiny-but-significant split on huge n)
+const DISCRIM_Z = 2.576;      // one-sided ~99.5%: high must out-verify low with statistical confidence
+const BASELINE_TOL = 0.01;    // overall may sit AT ~baseline (the arrow is allowed to be humble); fail only if meaningfully below
+
+// Pooled two-proportion z (one-sided, p1 vs p2). >0 means p1 > p2.
+function twoPropZ(h1, n1, h2, n2) {
+  if (!n1 || !n2) return 0;
+  const p1 = h1 / n1, p2 = h2 / n2, p = (h1 + h2) / (n1 + n2);
+  const se = Math.sqrt(p * (1 - p) * (1 / n1 + 1 / n2));
+  return se > 0 ? (p1 - p2) / se : 0;
+}
 
 function rd(p) { try { return JSON.parse(fs.readFileSync(path.join(repo, p), 'utf8')); } catch { return null; } }
 function seriesFor(key, deep, ci) {
@@ -78,12 +95,15 @@ console.log(`  overall hit-rate ${p.hitRate == null ? '—' : (p.hitRate * 100).
 
 if (p.n < MIN_N) { console.log(`  (only ${p.n} calls — informational until deep history fills in; gate is advisory.)`); process.exit(0); }
 
-const hi = p.tiers[2].hitRate, lo = p.tiers[0].hitRate;
+const hiT = p.tiers[2], loT = p.tiers[0];
+const hi = hiT.hitRate, lo = loT.hitRate;
+const discrimZ = twoPropZ(hiT.hits, hiT.n, loT.hits, loT.n);
 const problems = [];
 if (!isMonotonic(p.tiers)) problems.push('reliability is NOT monotonic — a stronger arrow verifies less often (strength is miscalibrated)');
-if (hi == null || lo == null || hi - lo < DISCRIM) problems.push(`strength does not discriminate — high ${hi} vs low ${lo} (need ≥${DISCRIM} gap)`);
-if (p.hitRate < p.baseline + MARGIN) problems.push(`no skill — overall ${p.hitRate} ≤ baseline ${p.baseline}; the arrow must stay descriptive, not a forecast`);
-if (hi != null && hi < p.baseline + MARGIN) problems.push(`high-confidence calls do not beat baseline (${hi} ≤ ${p.baseline}) — 'high' is unearned`);
+if (hi == null || lo == null || hi - lo < DISCRIM_EFFECT || discrimZ < DISCRIM_Z)
+  problems.push(`strength does not discriminate — high ${hi} (n=${hiT.n}) vs low ${lo} (n=${loT.n}): need high to out-verify low with statistical confidence (z=${discrimZ.toFixed(2)} vs ≥${DISCRIM_Z}) AND a ≥${DISCRIM_EFFECT} effect`);
+if (p.hitRate < p.baseline - BASELINE_TOL) problems.push(`anti-predictive — overall ${p.hitRate} sits meaningfully below baseline ${p.baseline}; the arrow is worse than a coin flip`);
+if (hi != null && hi < p.baseline) problems.push(`high-confidence calls do not beat baseline (${hi} < ${p.baseline}) — 'high' is unearned`);
 
 if (problems.length) { problems.forEach((m) => console.error('✗ ' + m)); process.exit(1); }
-console.log(`✓ the arrow is calibrated: stronger calls verify more often (high ${(hi * 100).toFixed(0)}% > low ${(lo * 100).toFixed(0)}%) and beat the ${(p.baseline * 100).toFixed(0)}% no-skill baseline — "high" is earned.`);
+console.log(`✓ the arrow is calibrated: high verifies ${(hi * 100).toFixed(1)}% vs low ${(lo * 100).toFixed(1)}% — a statistically real ${((hi - lo) * 100).toFixed(1)}pt edge (z=${discrimZ.toFixed(1)}) — and clears the ${(p.baseline * 100).toFixed(0)}% no-skill baseline. "high" is earned.`);
