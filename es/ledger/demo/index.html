@@ -22,6 +22,14 @@
 <meta property="og:description" content="La mecánica real sobre datos de muestra: las reglas leen las líneas, el libro las archiva consultables y una subida de precio se marca contra su propio historial." />
 <meta property="og:url" content="https://muntin.digital/es/ledger/demo/" />
 <meta property="og:site_name" content="Muntin Digital" />
+<!-- Tarjeta social (2026-07-07): la tarjeta de marca del sitio, para
+     que un enlace pegado muestre una imagen con marca en lugar de una
+     tarjeta sin texto. Cambiar por una tarjeta propia del demo cuando
+     build-og-cards la genere. -->
+<meta property="og:image" content="https://muntin.digital/brand/og/home-es.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
 
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
@@ -34,7 +42,10 @@
 /* Bolder pass 2026-07 — illustrative ledger vignettes, elevation from
    the --elev-* scale, Fraunces number material, one ink band at the
    ask. Ink hexes in the .ld-cta band are intentional (it stays dark
-   in dark mode; tokens would double-flip it). P1-5 hygiene
+   in dark mode; tokens would double-flip it) — but in dark mode the
+   band lifts to #1B1E24 + a #2C3038 border (same override .lg-pricing
+   uses) so it stays a distinct object against the #16181D page
+   instead of melting into it (panel fix 2026-07-07). P1-5 hygiene
    (2026-07-07): the dead services-era rules this page stopped
    consuming (.lg-hero, .studio-toc, .studio-grid/card, .ledger-asym —
    plus .lg-sheet, dead since the value audit demoted the P1-1 paper
@@ -239,14 +250,27 @@
    acotar vence la regla [hidden]{display:none} del UA, y la página
    sin JS pintaría botones Atrás/Siguiente muertos. Con JS, .ld-js y
    hidden=false llegan juntos; sin JS el atributo hidden los mantiene
-   fuera del layout. */
-.ld-js .ld-controls{display:flex;gap:12px;align-items:center;margin:4px 0 0}
+   fuera del layout.
+   Pegajosos al borde inferior del viewport en TODOS los anchos
+   (corrección de revisión 2026-07-07): la pila de grid reserva la
+   altura del panel más alto, así que en los pasos cortos
+   Atrás/Siguiente quedaban debajo de un vacío de cientos de píxeles —
+   bajo el pliegue en el paso 0. position:sticky los fija al borde
+   inferior mientras el recorrido está a la vista y los deja asentarse
+   en su posición natural al final, con orden del DOM = orden visual =
+   orden de foco (el volteo de orden en ≤640px desapareció). La barra
+   CTA móvil está suprimida en esta página (data-hide-sticky-bar), así
+   que el espacio inferior está libre. El fondo usa --cream para que
+   la barra cambie con el modo oscuro. */
+.ld-js .ld-controls{display:flex;gap:12px;align-items:center;position:sticky;bottom:0;z-index:5;margin:0;padding:10px 2px calc(10px + env(safe-area-inset-bottom,0px));background:var(--cream,#F6F7F8);border-top:1px solid var(--line,#E3E5E9)}
 .ld-controls .btn[disabled]{opacity:.45;cursor:default;pointer-events:none}
 .ld-progress{font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums}
 .ld-cta{background:#16181D;color:rgba(246,247,248,.78);border-radius:18px;padding:clamp(26px,4vw,48px)}
 .ld-cta h2{color:#F6F7F8}
 .ld-cta .ld-body{color:rgba(246,247,248,.75)}
 .ld-cta .lg-cap{color:rgba(246,247,248,.55)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ld-cta{background:#1B1E24;border:1px solid #2C3038}}
+:root[data-theme="dark"] .ld-cta{background:#1B1E24;border:1px solid #2C3038}
 /* Escaneo del paso 1 (P1-2/M2, 2026-07-07) — la fila aparece y luego
    su sello de "leída" se asienta. Toda la secuencia vive en los
    transition-delay de CSS bajo .ld-go (el JS quedó en dos clases):
@@ -273,19 +297,12 @@
    nunca viaja sin los términos fundadores registrados completos. */
 .ld-cta .lg-price-figure{font-size:clamp(48px,6vw,72px);margin:20px 0 0}
 .ld-cta .lg-price-ga{margin:10px 0 0}
-/* M5 (P1-9, 2026-07-07) — teléfonos: Atrás/Siguiente quedan encima de
-   la región de paneles con altura reservada, nunca debajo del vacío
-   del panel más alto. El orden visual diverge del orden del DOM a
-   propósito (los controles van después de los paneles para que la
-   página sin JS se lea paneles-primero); el foco de teclado/AT no se
-   afecta porque Atrás/Siguiente mueven el foco programáticamente al
-   h2 del panel entrante. */
-@media (max-width:640px){
-  .ld-wrap.ld-js{display:flex;flex-direction:column}
-  .ld-wrap.ld-js #ldControls{order:1;margin:4px 0 20px}
-  .ld-wrap.ld-js #ldPanels{order:2}
-  .ld-wrap.ld-js #ldLive{order:3}
-}
+/* M5 (P1-9) reemplazado 2026-07-07: el volteo de orden en ≤640px
+   (controles arriba de la región de paneles) cambiaba el vacío de
+   escritorio por uno móvil — tras leer un panel largo había que
+   volver a subir para tocar Siguiente — y hacía divergir el orden
+   visual del orden del DOM/tab. La regla pegajosa de .ld-controls de
+   arriba lo sustituye en todos los anchos. */
 .visually-hidden-ld{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 </style>
 <style>
@@ -303,10 +320,6 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
 .container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
 .skip-link{position:absolute;left:-9999px;top:0}
 .skip-link:focus{position:static;display:inline-block;background:#16181D;color:#F6F7F8;padding:12px 16px;z-index:100}
-/* injected by inject-critical-link-color.mjs */
-.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
-.btn-primary{background:var(--ink);color:var(--cream)}
-.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D7DAE0}
 /* injected by inject-critical-link-color.mjs */
 a{color:inherit}
 .btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
@@ -596,20 +609,30 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             <span class="lg-chip">Factura de muestra &middot; ilustrativa</span>
           </div>
           <div class="ld-invoice-head"><span class="ld-invoice-title">Factura &mdash; 26 jun</span><span class="ld-invoice-date">Neto 15 &middot; 5 l&iacute;neas</span></div>
-          <div class="ld-line"><span>Lechuga romana, 24&nbsp;uds <span class="q">&times;1</span></span><span></span><span class="lg-n">$29.45</span></div>
-          <div class="ld-line"><span>Tomates Roma, 25&nbsp;lb <span class="q">&times;1</span></span><span></span><span class="lg-n">$31.50</span></div>
-          <div class="ld-line"><span>Cebollas amarillas, 50&nbsp;lb <span class="q">&times;1</span></span><span></span><span class="lg-n">$22.00</span></div>
-          <div class="ld-line"><span>Limones verdes, 40&nbsp;uds <span class="q">&times;1</span></span><span></span><span class="lg-n">$14.25</span></div>
-          <div class="ld-line"><span>Cilantro, 30&nbsp;uds <span class="q">&times;1</span></span><span></span><span class="lg-n">$18.60</span></div>
+          <!-- Semántica de tabla ARIA (WCAG 1.3.1, 2026-07-07): la
+               cuadrícula de divs se queda para el layout; role=
+               table/row/cell más una fila de encabezados oculta dan a
+               la tecnología de asistencia la asociación de columnas
+               que la cuadrícula visual implica. -->
+          <div role="table" aria-label="L&iacute;neas de la factura">
+            <div class="visually-hidden-ld" role="rowgroup"><div role="row"><span role="columnheader">Art&iacute;culo</span><span role="columnheader">Precio</span></div></div>
+            <div role="rowgroup">
+              <div class="ld-line" role="row"><span role="cell">Lechuga romana, 24&nbsp;uds <span class="q">&times;1</span></span><span aria-hidden="true"></span><span class="lg-n" role="cell">$29.45</span></div>
+              <div class="ld-line" role="row"><span role="cell">Tomates Roma, 25&nbsp;lb <span class="q">&times;1</span></span><span aria-hidden="true"></span><span class="lg-n" role="cell">$31.50</span></div>
+              <div class="ld-line" role="row"><span role="cell">Cebollas amarillas, 50&nbsp;lb <span class="q">&times;1</span></span><span aria-hidden="true"></span><span class="lg-n" role="cell">$22.00</span></div>
+              <div class="ld-line" role="row"><span role="cell">Limones verdes, 40&nbsp;uds <span class="q">&times;1</span></span><span aria-hidden="true"></span><span class="lg-n" role="cell">$14.25</span></div>
+              <div class="ld-line" role="row"><span role="cell">Cilantro, 30&nbsp;uds <span class="q">&times;1</span></span><span aria-hidden="true"></span><span class="lg-n" role="cell">$18.60</span></div>
+            </div>
+          </div>
           <div class="ld-total"><span>Total</span><span class="lg-n">$115.80</span></div>
         </div>
-        <figcaption class="lg-cap"><strong>Muestra ficticia, a prop&oacute;sito</strong> &mdash; sin subir nada; nada de lo que hagas en este demo sale de tu navegador. Compru&eacute;balo: mira la pesta&ntilde;a Red mientras avanzas &mdash; el recorrido es HTML simple y no dispara peticiones propias. La &uacute;nica anal&iacute;tica de la p&aacute;gina es nuestro contador propio, sin cookies.</figcaption>
+        <figcaption class="lg-cap"><strong>Muestra ficticia, a prop&oacute;sito</strong> &mdash; sin subir nada; nada de lo que hagas en este demo sale de tu navegador. Compru&eacute;balo: mira la pesta&ntilde;a Red mientras avanzas &mdash; el recorrido es HTML simple y no dispara peticiones propias. Lo que s&iacute; ver&aacute;s es la maquinaria del propio sitio: una consulta de sesi&oacute;n, nuestro contador propio sin cookies y &mdash; si bajas hasta el formulario del pie &mdash; su escudo antispam, el &uacute;nico script de terceros en la p&aacute;gina.</figcaption>
       </figure>
     </section>
 
     <section class="ld-panel" id="ld-step1" aria-labelledby="ld-h1">
       <h2 id="ld-h1" tabindex="-1">Leer.</h2>
-      <p class="ld-body">Toma una foto o sube la factura; plantillas y reglas extraen las l&iacute;neas: proveedor, art&iacute;culo, cantidad, precio. Ninguna IA lee tus facturas &mdash; y lo construimos para que nadie pueda cambiar eso en silencio: una compuerta de build impide agregar un modelo de lenguaje.</p>
+      <p class="ld-body">Toma una foto o sube la factura; plantillas y reglas extraen las l&iacute;neas: proveedor, art&iacute;culo, cantidad, precio. Ninguna IA lee tus facturas &mdash; y no tienes que creernos: una puerta de build publicada hace fallar cualquier versi&oacute;n que agregue una biblioteca de modelos de lenguaje. <a href="/es/ai/" style="color:var(--teal)">La pol&iacute;tica de IA &rarr;</a></p>
       <figure class="lg-vignette ld-armed-target" style="margin:0" data-audio-alt="Una línea impresa de la factura, lechuga romana, veinticuatro unidades, por uno, veintinueve cuarenta y cinco, diseccionada en campos etiquetados: proveedor, fecha, artículo, cantidad y precio. Debajo, las cinco filas extraídas del libro, cada una con su sello de leída. Plantillas y reglas hacen la lectura; ningún modelo de lenguaje toca el documento.">
         <div class="lg-pane">
           <div class="lg-pane-head">
@@ -628,12 +651,19 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <span class="ld-anat-field"><span class="ld-tag">precio</span><span class="ld-anat-cap">$29.45</span></span>
             </div>
           </div>
-          <div class="lg-rows lg-rows--qty">
-            <div class="lg-row ld-reveal"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-q">&times;1</span><span class="lg-n">$29.45</span><span class="lg-s">le&iacute;da</span></div>
-            <div class="lg-row ld-reveal"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Tomates Roma, 25&nbsp;lb</span><span class="lg-q">&times;1</span><span class="lg-n">$31.50</span><span class="lg-s">le&iacute;da</span></div>
-            <div class="lg-row ld-reveal"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Cebollas amarillas, 50&nbsp;lb</span><span class="lg-q">&times;1</span><span class="lg-n">$22.00</span><span class="lg-s">le&iacute;da</span></div>
-            <div class="lg-row ld-reveal"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Limones verdes, 40&nbsp;uds</span><span class="lg-q">&times;1</span><span class="lg-n">$14.25</span><span class="lg-s">le&iacute;da</span></div>
-            <div class="lg-row ld-reveal"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Cilantro, 30&nbsp;uds</span><span class="lg-q">&times;1</span><span class="lg-n">$18.60</span><span class="lg-s">le&iacute;da</span></div>
+          <!-- Tabla ARIA (WCAG 1.3.1, 2026-07-07). La fila de
+               encabezados oculta va FUERA de .lg-rows para no tocar
+               los delays :nth-child del escaneo ni el borde de
+               .lg-row:first-child. -->
+          <div role="table" aria-label="Filas extra&iacute;das del libro">
+            <div class="visually-hidden-ld" role="rowgroup"><div role="row"><span role="columnheader">Fecha</span><span role="columnheader">Proveedor</span><span role="columnheader">Art&iacute;culo</span><span role="columnheader">Cantidad</span><span role="columnheader">Precio</span><span role="columnheader">Estado</span></div></div>
+            <div class="lg-rows lg-rows--qty" role="rowgroup">
+              <div class="lg-row ld-reveal" role="row"><span class="lg-d" role="cell">26 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Lechuga romana, 24&nbsp;uds</span><span class="lg-q" role="cell">&times;1</span><span class="lg-n" role="cell">$29.45</span><span class="lg-s" role="cell">le&iacute;da</span></div>
+              <div class="lg-row ld-reveal" role="row"><span class="lg-d" role="cell">26 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Tomates Roma, 25&nbsp;lb</span><span class="lg-q" role="cell">&times;1</span><span class="lg-n" role="cell">$31.50</span><span class="lg-s" role="cell">le&iacute;da</span></div>
+              <div class="lg-row ld-reveal" role="row"><span class="lg-d" role="cell">26 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Cebollas amarillas, 50&nbsp;lb</span><span class="lg-q" role="cell">&times;1</span><span class="lg-n" role="cell">$22.00</span><span class="lg-s" role="cell">le&iacute;da</span></div>
+              <div class="lg-row ld-reveal" role="row"><span class="lg-d" role="cell">26 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Limones verdes, 40&nbsp;uds</span><span class="lg-q" role="cell">&times;1</span><span class="lg-n" role="cell">$14.25</span><span class="lg-s" role="cell">le&iacute;da</span></div>
+              <div class="lg-row ld-reveal" role="row"><span class="lg-d" role="cell">26 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Cilantro, 30&nbsp;uds</span><span class="lg-q" role="cell">&times;1</span><span class="lg-n" role="cell">$18.60</span><span class="lg-s" role="cell">le&iacute;da</span></div>
+            </div>
           </div>
           <p class="ld-note">Reglas, no un modelo de lenguaje &mdash; la misma factura siempre da los mismos n&uacute;meros, y tus documentos nunca se vuelven datos de entrenamiento.</p>
         </div>
@@ -655,17 +685,20 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             <span>Buscar: <span class="ld-q">romana</span></span>
           </div>
           <p class="ld-count">3 de las 7 l&iacute;neas en pantalla coinciden</p>
-          <div class="lg-rows">
-            <div class="lg-row"><span class="lg-d">12 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga <mark>romana</mark>, 24&nbsp;uds</span><span class="lg-n">$24.10</span><span class="lg-s">archivada</span></div>
-            <div class="lg-row"><span class="lg-d">19 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga <mark>romana</mark>, 24&nbsp;uds</span><span class="lg-n">$24.35</span><span class="lg-s">archivada</span></div>
-            <div class="lg-row"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga <mark>romana</mark>, 24&nbsp;uds</span><span class="lg-n">$29.45</span><span class="lg-s">archivada</span></div>
-            <div class="lg-row lg-row--ghost"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Tomates Roma, 25&nbsp;lb</span><span class="lg-n">$31.50</span><span class="lg-s">archivada</span></div>
-            <div class="lg-row lg-row--ghost"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Cebollas amarillas, 50&nbsp;lb</span><span class="lg-n">$22.00</span><span class="lg-s">archivada</span></div>
-            <div class="lg-row lg-row--ghost"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Limones verdes, 40&nbsp;uds</span><span class="lg-n">$14.25</span><span class="lg-s">archivada</span></div>
-            <div class="lg-row lg-row--ghost"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Cilantro, 30&nbsp;uds</span><span class="lg-n">$18.60</span><span class="lg-s">archivada</span></div>
+          <div role="table" aria-label="Filas del libro que coinciden con la b&uacute;squeda">
+            <div class="visually-hidden-ld" role="rowgroup"><div role="row"><span role="columnheader">Fecha</span><span role="columnheader">Proveedor</span><span role="columnheader">Art&iacute;culo</span><span role="columnheader">Precio</span><span role="columnheader">Estado</span></div></div>
+            <div class="lg-rows" role="rowgroup">
+              <div class="lg-row" role="row"><span class="lg-d" role="cell">12 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Lechuga <mark>romana</mark>, 24&nbsp;uds</span><span class="lg-n" role="cell">$24.10</span><span class="lg-s" role="cell">archivada</span></div>
+              <div class="lg-row" role="row"><span class="lg-d" role="cell">19 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Lechuga <mark>romana</mark>, 24&nbsp;uds</span><span class="lg-n" role="cell">$24.35</span><span class="lg-s" role="cell">archivada</span></div>
+              <div class="lg-row" role="row"><span class="lg-d" role="cell">26 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Lechuga <mark>romana</mark>, 24&nbsp;uds</span><span class="lg-n" role="cell">$29.45</span><span class="lg-s" role="cell">archivada</span></div>
+              <div class="lg-row lg-row--ghost" role="row"><span class="lg-d" role="cell">26 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Tomates Roma, 25&nbsp;lb</span><span class="lg-n" role="cell">$31.50</span><span class="lg-s" role="cell">archivada</span></div>
+              <div class="lg-row lg-row--ghost" role="row"><span class="lg-d" role="cell">26 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Cebollas amarillas, 50&nbsp;lb</span><span class="lg-n" role="cell">$22.00</span><span class="lg-s" role="cell">archivada</span></div>
+              <div class="lg-row lg-row--ghost" role="row"><span class="lg-d" role="cell">26 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Limones verdes, 40&nbsp;uds</span><span class="lg-n" role="cell">$14.25</span><span class="lg-s" role="cell">archivada</span></div>
+              <div class="lg-row lg-row--ghost" role="row"><span class="lg-d" role="cell">26 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Cilantro, 30&nbsp;uds</span><span class="lg-n" role="cell">$18.60</span><span class="lg-s" role="cell">archivada</span></div>
+            </div>
           </div>
           <pre class="ld-csv">fecha,proveedor,art&iacute;culo,cant,precio
-19 jun,Proveedor de verduras,"Lechuga romana, 24 uds",1,24.35</pre>
+2026-06-19,Proveedor de verduras,"Lechuga romana, 24 uds",1,24.35</pre>
         </div>
         <figcaption class="lg-cap"><strong>El libro, reducido a un art&iacute;culo</strong> &mdash; tres lecturas de romana en tres facturas, con las dem&aacute;s l&iacute;neas del 26 de junio atenuadas; el CSV de abajo muestra c&oacute;mo el registro completo se va contigo, en un formato que abres sin nosotros. El buscador y la exportaci&oacute;n son parte de la maqueta, no controles reales. Filas ficticias.</figcaption>
       </figure>
@@ -673,17 +706,20 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <section class="ld-panel" id="ld-step3" aria-labelledby="ld-h3">
       <h2 id="ld-h3" tabindex="-1">Marcar.</h2>
-      <p class="ld-body">La l&iacute;nea de lechuga romana del 26 de junio llega a $29.45 &mdash; $5.23 m&aacute;s por caja contra tu mediana de seis meses (+21.6%) &mdash; y recibe la marca. La revisi&oacute;n corre contra tu propio historial, nada m&aacute;s, y solo se dispara cuando el movimiento cruza los dos umbrales de Ledger: al menos 8% <em>y</em> al menos $5.00 sobre tu mediana m&oacute;vil.</p>
-      <figure class="lg-vignette" style="margin:0" data-audio-alt="Gráfica de revisión de precio para lechuga romana de veinticuatro unidades. El doce de junio marca veinticuatro dólares con diez centavos y el diecinueve de junio veinticuatro treinta y cinco, ambos dentro de la banda de seis meses. El veintiséis de junio salta a veintinueve cuarenta y cinco: cinco dólares con veintitrés centavos, o veintiuno punto seis por ciento, sobre la mediana móvil de veinticuatro veintidós. Eso cruza los dos umbrales de Ledger, al menos ocho por ciento y al menos cinco dólares, así que la línea queda marcada.">
+      <p class="ld-body">La l&iacute;nea de lechuga romana del 26 de junio llega a $29.45 &mdash; $5.23 m&aacute;s por caja contra la mediana m&oacute;vil de tus lecturas previas (+21.6%) &mdash; y recibe la marca. La revisi&oacute;n corre contra tu propio historial, nada m&aacute;s, y solo se dispara cuando el movimiento cruza los dos umbrales de Ledger: al menos 8% <em>y</em> al menos $5.00 sobre tu mediana m&oacute;vil.</p>
+      <figure class="lg-vignette" style="margin:0" data-audio-alt="Gráfica de revisión de precio para lechuga romana de veinticuatro unidades. El doce de junio marca veinticuatro dólares con diez centavos y el diecinueve de junio veinticuatro treinta y cinco, ambos dentro de la banda de tus lecturas previas. El veintiséis de junio salta a veintinueve cuarenta y cinco: cinco dólares con veintitrés centavos, o veintiuno punto seis por ciento, sobre la mediana móvil de veinticuatro veintidós. Eso cruza los dos umbrales de Ledger, al menos ocho por ciento y al menos cinco dólares, así que la línea queda marcada.">
         <div class="lg-pane">
           <div class="lg-pane-head">
             <span class="lg-pane-title">Revisi&oacute;n de precio &mdash; contra tu propio historial</span>
             <span class="lg-chip">Historial de muestra &middot; ilustrativo</span>
           </div>
-          <div class="lg-rows">
-            <div class="lg-row"><span class="lg-d">12 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$24.10</span><span class="lg-s">en banda</span></div>
-            <div class="lg-row"><span class="lg-d">19 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$24.35</span><span class="lg-s">en banda</span></div>
-            <div class="lg-row lg-row--flag"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$29.45</span><span class="lg-flag"><span aria-hidden="true">&#9650;</span> el precio se movi&oacute;</span></div>
+          <div role="table" aria-label="Historial de precios de la lechuga romana">
+            <div class="visually-hidden-ld" role="rowgroup"><div role="row"><span role="columnheader">Fecha</span><span role="columnheader">Proveedor</span><span role="columnheader">Art&iacute;culo</span><span role="columnheader">Precio</span><span role="columnheader">Estado</span></div></div>
+            <div class="lg-rows" role="rowgroup">
+              <div class="lg-row" role="row"><span class="lg-d" role="cell">12 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Lechuga romana, 24&nbsp;uds</span><span class="lg-n" role="cell">$24.10</span><span class="lg-s" role="cell">en banda</span></div>
+              <div class="lg-row" role="row"><span class="lg-d" role="cell">19 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Lechuga romana, 24&nbsp;uds</span><span class="lg-n" role="cell">$24.35</span><span class="lg-s" role="cell">en banda</span></div>
+              <div class="lg-row lg-row--flag" role="row"><span class="lg-d" role="cell">26 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Lechuga romana, 24&nbsp;uds</span><span class="lg-n" role="cell">$29.45</span><span class="lg-flag" role="cell"><span aria-hidden="true">&#9650;</span> el precio se movi&oacute;</span></div>
+            </div>
           </div>
           <!-- Datos y mapeo de la gráfica (clave de renumeración): puntos
                12 jun $24.10, 19 jun $24.35, 26 jun $29.45; mediana de los
@@ -691,7 +727,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
                252 − (v−23.50)×32; móvil y(v) = 200 − (v−23.50)×24. -->
           <div class="lg-chart lg-chart--wide">
             <svg viewBox="0 0 640 300" width="640" height="300" role="img" aria-labelledby="ldc-w-t ldc-w-d" focusable="false">
-              <title id="ldc-w-t">Lechuga romana, 24 uds &mdash; el precio del 26 de junio se sale de su banda de seis meses</title>
+              <title id="ldc-w-t">Lechuga romana, 24 uds &mdash; el precio del 26 de junio se sale de la banda de sus lecturas previas</title>
               <desc id="ldc-w-d">Gr&aacute;fica de l&iacute;nea con tres precios por caja de lechuga romana: 12 de junio $24.10 y 19 de junio $24.35, dentro de la banda; el 26 de junio salta a $29.45 &mdash; $5.23 y 21.6% por encima de la mediana m&oacute;vil de $24.22. La l&iacute;nea queda marcada porque el movimiento cruza los dos umbrales de Ledger: al menos 8% y al menos $5.00 sobre la mediana m&oacute;vil.</desc>
               <line class="lgc-grid" x1="64" y1="236" x2="508" y2="236"/>
               <line class="lgc-grid" x1="64" y1="172" x2="508" y2="172"/>
@@ -704,7 +740,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <rect class="lgc-band" x="64" y="224.8" width="444" height="8"/>
               <line class="lgc-bandedge" x1="64" y1="224.8" x2="508" y2="224.8"/>
               <line class="lgc-bandedge" x1="64" y1="232.8" x2="508" y2="232.8"/>
-              <text class="lgc-lab lgc-lab--band" x="504" y="216" text-anchor="end">TU BANDA DE SEIS MESES</text>
+              <text class="lgc-lab lgc-lab--band" x="504" y="216" text-anchor="end">BANDA DE LECTURAS PREVIAS</text>
               <polyline class="lgc-hist" points="140,232.8 300,224.8"/>
               <circle class="lgc-dot" cx="140" cy="232.8" r="4"/>
               <circle class="lgc-dot" cx="300" cy="224.8" r="4"/>
@@ -715,10 +751,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <g class="lgf-lbl">
                 <text class="lgc-num" x="442" y="68" text-anchor="end">$29.45</text>
                 <polyline class="lgc-bracket" points="514,61.6 520,61.6 520,229 514,229"/>
-                <text class="lgc-delta" x="528" y="128">&#9650; $5.23 por caja</text>
-                <text class="lgc-lab lgc-lab--sub" x="528" y="148">+21.6% sobre tu</text>
-                <text class="lgc-lab lgc-lab--sub" x="528" y="163">mediana de $24.22</text>
-                <text class="lgc-lab lgc-lab--sub" x="528" y="178">&mdash; marcada</text>
+                <text class="lgc-delta" x="528" y="128">&#9650; $5.23</text>
+                <text class="lgc-lab lgc-lab--sub" x="528" y="146">por caja</text>
+                <text class="lgc-lab lgc-lab--sub" x="528" y="164">+21.6% sobre tu</text>
+                <text class="lgc-lab lgc-lab--sub" x="528" y="179">mediana de $24.22</text>
+                <text class="lgc-lab lgc-lab--sub" x="528" y="194">&mdash; marcada</text>
               </g>
               <line class="lgc-axis" x1="64" y1="252" x2="508" y2="252"/>
               <text class="lgc-lab lgc-lab--tick" x="140" y="272" text-anchor="middle">12 jun</text>
@@ -728,7 +765,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           </div>
           <div class="lg-chart lg-chart--narrow">
             <svg viewBox="0 0 320 240" width="320" height="240" role="img" aria-labelledby="ldc-m-t ldc-m-d" focusable="false">
-              <title id="ldc-m-t">Lechuga romana, 24 uds &mdash; el precio del 26 de junio se sale de su banda de seis meses</title>
+              <title id="ldc-m-t">Lechuga romana, 24 uds &mdash; el precio del 26 de junio se sale de la banda de sus lecturas previas</title>
               <desc id="ldc-m-d">Gr&aacute;fica de l&iacute;nea con tres precios por caja de lechuga romana: 12 de junio $24.10 y 19 de junio $24.35, dentro de la banda; el 26 de junio salta a $29.45 &mdash; $5.23 y 21.6% por encima de la mediana m&oacute;vil de $24.22. La l&iacute;nea queda marcada porque el movimiento cruza los dos umbrales de Ledger: al menos 8% y al menos $5.00 sobre la mediana m&oacute;vil.</desc>
               <line class="lgc-grid" x1="40" y1="188" x2="252" y2="188"/>
               <line class="lgc-grid" x1="40" y1="140" x2="252" y2="140"/>
@@ -741,7 +778,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <rect class="lgc-band" x="40" y="179.6" width="212" height="6"/>
               <line class="lgc-bandedge" x1="40" y1="179.6" x2="252" y2="179.6"/>
               <line class="lgc-bandedge" x1="40" y1="185.6" x2="252" y2="185.6"/>
-              <text class="lgc-lab lgc-lab--sm lgc-lab--band" x="248" y="170" text-anchor="end">BANDA 6 M</text>
+              <text class="lgc-lab lgc-lab--sm lgc-lab--band" x="248" y="170" text-anchor="end">TU BANDA</text>
               <polyline class="lgc-hist" points="64,185.6 146,179.6"/>
               <circle class="lgc-dot" cx="64" cy="185.6" r="3.5"/>
               <circle class="lgc-dot" cx="146" cy="179.6" r="3.5"/>
@@ -765,7 +802,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </div>
         <figcaption class="lg-cap"><strong>Una marca, dos umbrales</strong> &mdash; se dispara solo cuando una l&iacute;nea cruza ambos contra su propio historial: al menos 8% y al menos $5.00 sobre la mediana m&oacute;vil. Cifras ilustrativas.</figcaption>
       </figure>
-      <p class="ld-body" style="margin-top:16px">$5.23 &divide; 24 piezas es cerca de 22&cent; por pieza &mdash; cada plato que la lechuga romana toca se recalcula el mismo d&iacute;a. Y como la lechuga romana est&aacute; en la canasta p&uacute;blica del &Iacute;ndice de Costos, la marca llega con contexto de mercado: &iquest;mi proveedor, o el mercado? Fuera de la canasta &mdash; licores, vino, cortes con grado &mdash; una subida igual se archiva y se recalcula, pero no se compara con el mercado. Con poco historial, la marca se abstiene en lugar de adivinar.</p>
+      <p class="ld-body" style="margin-top:16px">$5.23 &divide; 24 piezas es cerca de 22&cent; por pieza &mdash; cada plato que la lechuga romana toca se recalcula el mismo d&iacute;a. Y como la lechuga romana est&aacute; en la canasta p&uacute;blica del &Iacute;ndice de Costos, la marca llega con contexto de mercado: &iquest;mi proveedor, o el mercado? Fuera de la canasta &mdash; licores, vino, cortes con grado &mdash; una subida igual se archiva y se recalcula, pero no se compara con el mercado. Y un art&iacute;culo sin lecturas previas no recibe marca alguna: sin nada tuyo contra qu&eacute; comparar, Ledger se abstiene en lugar de adivinar.</p>
       <p class="lg-cap">Ledger corre esta revisi&oacute;n en cada l&iacute;nea, el d&iacute;a que llega la factura &mdash; $19 al mes es menos que cuatro de estas cajas detectadas. Abre el 13 de noviembre de 2026 &mdash; a <!-- count:ledger.ga_weeks_out -->19<!-- /count --> semanas. <a href="/es/ledger/#pricing" class="plausible-event-name=Demo+Exit plausible-event-door=peak-founding" style="color:var(--teal)">Los t&eacute;rminos fundadores &rarr;</a></p>
     </section>
 
@@ -786,6 +823,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <ul class="lg-stances">
         <li>Sin comisi&oacute;n sobre tus ventas, nunca</li>
         <li>Ning&uacute;n modelo de lenguaje lee tus facturas &mdash; bloqueado en el build, nunca datos de entrenamiento</li>
+        <li>Tus datos no se venden nunca &mdash; ni a un corredor de datos ni a nadie m&aacute;s</li>
         <li>Exporta el libro completo cuando quieras, en un formato que abres sin nosotros; b&oacute;rralo y desaparece</li>
       </ul>
       <p class="lg-cap" style="margin-top:18px">El formulario fundador est&aacute; en la p&aacute;gina del Ledger &mdash; este demo no pide nada, ni siquiera un correo.</p>
@@ -830,7 +868,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         progress.textContent = 'Paso ' + (i + 1) + ' de ' + panels.length;
         live.textContent = 'Paso ' + (i + 1) + ' de ' + panels.length + ' — ' + titles[i];
         // M7 — paridad no visual: el anuncio del paso 3 lleva el desenlace.
-        if (i === 3) live.textContent += '. La línea de lechuga romana del 26 de junio se sale de su banda de seis meses — $5.23 más, cruza ambos umbrales. Esa es la marca.';
+        if (i === 3) live.textContent += '. La línea de lechuga romana del 26 de junio se sale de la banda de sus lecturas previas — $5.23 más, cruza ambos umbrales. Esa es la marca.';
         if (focus) { var h = panels[i].querySelector('h2'); if (h) h.focus({ preventScroll: false }); }
         // P0-6 — la navegación del usuario mantiene el hash honesto sin
         // hacer crecer el historial; el arranque de abajo nunca escribe uno.
