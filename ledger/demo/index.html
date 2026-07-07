@@ -223,13 +223,28 @@
 .ld-rail a::before{content:counter(ld,decimal-leading-zero);font-family:var(--font-display);font-weight:560;font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums lining-nums}
 .ld-rail li[aria-current="step"] a{border-color:var(--ink);box-shadow:var(--elev-1)}
 .ld-panel{margin:0 0 26px}
-.ld-js #ldPanels{display:grid}
+.ld-js #ldPanels{display:grid;transition:height 200ms var(--ease-out,ease-out)}
 .ld-js #ldPanels>.ld-panel{grid-area:1/1}
-/* visibility (not display:none) keeps every panel in layout, so the stepper
-   region holds the TALLEST panel's height — clicking through never reflows
-   the page (the founder-reported bounce, fixed 2026-07-06). Hidden panels
-   drop out of paint, pointer, and the accessibility tree alike. */
+/* Per-step height (review round 2, 2026-07-07). The grid-stack +
+   visibility (not display:none) still keeps every panel laid out at
+   full width, so content never reflows mid-transition — but the
+   region no longer sits at the TALLEST panel's height: that fix for
+   the founder-reported bounce (2026-07-06) traded it for a several-
+   hundred-pixel void under short steps. The stepper JS now sets
+   #ldPanels' inline height to the ACTIVE panel's offsetHeight on
+   every step change (recomputed on resize via one debounced
+   listener), and the 200ms height transition above turns each
+   difference into a calm animated frame — not the jarring instant
+   reflow the founder banned. Reduced motion: transition off, the
+   height still snaps straight to the right value. No-JS: .ld-js is
+   never added and no inline height is set, so the stacked read
+   keeps its natural flow. No overflow clipping: hidden panels don't
+   paint, and the footer below always covers their residual layout
+   overflow — clipping would cut the pane's --elev-3 shadow instead.
+   Hidden panels drop out of paint, pointer, and the accessibility
+   tree alike. */
 .ld-js .ld-panel:not(.ld-current){visibility:hidden}
+@media (prefers-reduced-motion:reduce){.ld-js #ldPanels{transition:none}}
 .ld-panel .lg-pane{box-shadow:var(--elev-1)}
 .ld-js .ld-panel.ld-current .lg-pane{box-shadow:var(--elev-3)}
 .ld-panel h2{font-family:var(--font-display);font-size:clamp(24px,3vw,32px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 8px;scroll-margin-top:calc(84px + var(--banner-h,0px))}
@@ -676,7 +691,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           </div>
           <div class="ld-total"><span>Total</span><span class="lg-n">$115.80</span></div>
         </div>
-        <figcaption class="lg-cap"><strong>Canned sample, on purpose</strong> &mdash; no uploads; nothing you do in this demo leaves your browser. Verify it: watch the Network tab while you click through &mdash; the stepper is plain HTML and fires no requests of its own. What you will see is the site&rsquo;s own chrome: a sign-in check, our self-hosted cookieless counter, and &mdash; if you scroll down to the footer form &mdash; its anti-spam widget, the one third-party script on the page.</figcaption>
+        <figcaption class="lg-cap"><strong>Canned sample, on purpose</strong> &mdash; no uploads; nothing you do in this demo leaves your browser. The stepper is plain HTML and fires no requests of its own.
+          <!-- Step-0 forensics moved into the house cite drawer (review
+               round 2, 2026-07-07): the caption keeps the one-sentence
+               takeaway; the skeptic expands the Network-tab enumeration. -->
+          <details class="cite">
+            <summary>Verify it: what the Network tab shows</summary>
+            <div class="cite-body">
+              <p>Watch the Network tab while you click through &mdash; the stepper fires no requests of its own. What you will see is the site&rsquo;s own chrome: a sign-in check, our self-hosted cookieless counter, and &mdash; if you scroll down to the footer form &mdash; its anti-spam widget, the one third-party script on the page.</p>
+            </div>
+          </details>
+        </figcaption>
       </figure>
     </section>
 
@@ -716,7 +741,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           </div>
           <p class="ld-note">Rules, not a language model &mdash; the same invoice in always gives the same numbers out, and your documents never become training data.</p>
         </div>
-        <figcaption class="lg-cap"><strong>One printed line, five fields</strong> &mdash; the raw invoice text at the top lands as the typed rows below it: vendor, date, item, quantity, price, no retyping. Sample data.</figcaption>
+        <figcaption class="lg-cap"><strong>One printed line, five fields</strong> &mdash; the raw invoice text at the top lands as the typed rows below it: vendor, date, item, quantity, price, no retyping. Sample data &mdash; a clean produce invoice is the easy case; the demo shows the mechanism, not a benchmark.</figcaption>
       </figure>
     </section>
 
@@ -851,7 +876,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </div>
         <figcaption class="lg-cap"><strong>One flag, two thresholds</strong> &mdash; it fires only when a line clears both against its own history: at least 8% and at least $5.00 over the trailing median. Illustrative figures.</figcaption>
       </figure>
-      <p class="ld-body" style="margin-top:16px">$5.23 &divide; 24 heads is about 22&cent; a head &mdash; every dish romaine touches re-costs the same day. And because romaine is in the public Cost Index basket, the flag arrives with market context: my guy, or the market? Outside the basket &mdash; spirits, wine, graded cuts &mdash; a raise still files and re-costs, but isn&rsquo;t market-checked. And an item with no earlier reads yet gets no flag at all: with nothing of yours to compare against, Ledger withholds rather than guesses.</p>
+      <p class="ld-body" style="margin-top:16px">$5.23 &divide; 24 heads is about 22&cent; a head &mdash; every dish romaine touches re-costs the same day. And because romaine is in the public Cost Index basket, the flag arrives with market context: my guy, or the market? Outside the basket &mdash; spirits, wine, graded cuts &mdash; a raise still files and re-costs, but isn&rsquo;t market-checked. And an item with no earlier reads yet gets no flag at all: with nothing of yours to compare against, Ledger withholds rather than guesses &mdash; so the first weeks look like this: invoices file and the history builds, and the flags start arriving once your own reads can back them.</p>
       <p class="lg-cap">Ledger runs this check on every line, the day the invoice lands &mdash; $19 a month is less than four of these caught cases. Opens November 13, 2026 &mdash; <!-- count:ledger.ga_weeks_out -->19<!-- /count --> weeks out. <a href="/ledger/#pricing" class="plausible-event-name=Demo+Exit plausible-event-door=peak-founding" style="color:var(--teal)">The founding terms &rarr;</a></p>
     </section>
 
@@ -880,8 +905,20 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     </div>
 
+    <!-- Final-step controls (review round 2, 2026-07-07): relabeling the
+         sticky primary to "Start over" at step 4 buried the page's one
+         ask behind a loop control. At the final step the JS swaps the
+         Back/Next pair for Start over (ghost) + the founding-list link
+         as the primary. The link reuses the registered Demo+Exit /
+         door=founding combo from the in-panel CTA — no new analytics
+         vocabulary. All four ship in HTML so no-JS never sees a dead
+         control (the whole bar stays hidden without JS); the
+         [hidden]{display:none!important} defensive rule in site-core.css
+         keeps the hidden pair out of layout despite .btn's display. -->
     <div class="ld-controls" id="ldControls" hidden>
       <button type="button" class="btn btn-ghost" id="ldBack">Back</button>
+      <button type="button" class="btn btn-ghost" id="ldRestart" hidden>Start over</button>
+      <a class="btn btn-primary plausible-event-name=Demo+Exit plausible-event-door=founding" id="ldCta" href="/ledger/#pricing" hidden>Join the founding list &rarr;</a>
       <button type="button" class="btn btn-primary" id="ldNext">Next</button>
       <span class="ld-progress" id="ldProgress"></span>
     </div>
@@ -898,24 +935,55 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       var rail = document.getElementById('ldRail');
       var controls = document.getElementById('ldControls');
       var back = document.getElementById('ldBack'), next = document.getElementById('ldNext');
+      var restart = document.getElementById('ldRestart'), cta = document.getElementById('ldCta');
       var progress = document.getElementById('ldProgress'), live = document.getElementById('ldLive');
-      if (!wrap || panels.length < 5 || !rail || !controls) return;
+      var panelsBox = document.getElementById('ldPanels');
+      if (!wrap || panels.length < 5 || !rail || !controls || !restart || !cta || !panelsBox) return;
       var titles = ['The invoice arrives', 'Read', 'File', 'Flag', 'Put this flag on every line'];
       var i = 0;
       var prm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
       wrap.classList.add('ld-js');
       controls.hidden = false;
+      // Per-step height (review round 2, 2026-07-07): the grid-stack
+      // reserved the TALLEST panel's height, leaving a dead void under
+      // short steps. Instead of instant reflow (banned as jarring), the
+      // container's inline height tracks the ACTIVE panel's offsetHeight
+      // and the CSS transition (200ms --ease-out; none under reduced
+      // motion) animates between readings. Recomputed on step change, on
+      // resize (one debounced listener), when a details drawer toggles,
+      // and once webfonts land (their metrics shift row heights). No-JS
+      // never reaches this code, so the stacked read has no inline height.
+      function sizePanels() {
+        panelsBox.style.height = panels[i].offsetHeight + 'px';
+      }
+      var rszT;
+      window.addEventListener('resize', function () {
+        clearTimeout(rszT);
+        rszT = setTimeout(sizePanels, 150);
+      }, { passive: true });
+      Array.prototype.forEach.call(panelsBox.querySelectorAll('details'), function (d) {
+        d.addEventListener('toggle', sizePanels);
+      });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizePanels);
       function show(n, focus) {
         i = Math.max(0, Math.min(panels.length - 1, n));
         panels.forEach(function (p, k) {
           p.classList.toggle('ld-current', k === i);
         });
+        sizePanels();
         Array.prototype.forEach.call(rail.children, function (li, k) {
           if (k === i) li.setAttribute('aria-current', 'step');
           else li.removeAttribute('aria-current');
         });
+        // Final step (review round 2, 2026-07-07): the sticky primary
+        // becomes the founding-list link — the page's one ask — and
+        // Start over takes the ghost slot. Back/Next serve steps 0-3.
+        var last = i === panels.length - 1;
+        back.hidden = last;
+        next.hidden = last;
+        restart.hidden = !last;
+        cta.hidden = !last;
         back.disabled = i === 0;
-        next.textContent = i === panels.length - 1 ? 'Start over' : 'Next';
         progress.textContent = 'Step ' + (i + 1) + ' of ' + panels.length;
         live.textContent = 'Step ' + (i + 1) + ' of ' + panels.length + ' — ' + titles[i];
         // M7 — non-visual parity: the step-3 announcement carries the payoff.
@@ -946,7 +1014,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         }
       }
       back.addEventListener('click', function () { show(i - 1, true); });
-      next.addEventListener('click', function () { show(i === panels.length - 1 ? 0 : i + 1, true); });
+      next.addEventListener('click', function () { show(i + 1, true); });
+      restart.addEventListener('click', function () { show(0, true); });
       // Rail pills + in-page jump links share one handler: modified
       // clicks (cmd/ctrl/shift/alt/middle) fall through to the browser.
       Array.prototype.forEach.call(document.querySelectorAll('#ldRail a, .js-ld-jump'), function (a) {

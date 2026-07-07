@@ -492,10 +492,18 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <span class="lg-pane-title">Líneas de factura &mdash; archivadas</span>
               <span class="lg-chip">Libro de muestra &middot; ilustrativo</span>
             </div>
+            <!-- Trío de la viñeta (renumerado 2026-07-07, fiel a la regla):
+                 previos $24.10 / $24.35, marcada $29.45 — +$5.23 sobre la
+                 mediana móvil de $24.22 (+21.6%), que cruza el doble umbral
+                 de computePriceHike (>=8% Y >=$5.00). Verificado contra
+                 tools/_shared/bench-lookup.js; coincide con /es/ledger/demo/.
+                 (La lectura marcada previa a la renumeraci&oacute;n quedaba
+                 bajo el piso de cinco d&oacute;lares, as&iacute; que la regla
+                 nunca habr&iacute;a disparado.) -->
             <div class="lg-rows">
               <div class="lg-row"><span class="lg-d">12 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$24.10</span><span class="lg-s">archivada</span></div>
               <div class="lg-row"><span class="lg-d">19 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$24.35</span><span class="lg-s">archivada</span></div>
-              <div class="lg-row lg-row--flag"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$27.90</span><span class="lg-flag"><span aria-hidden="true">&#9650;</span> el precio se movió</span></div>
+              <div class="lg-row lg-row--flag"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$29.45</span><span class="lg-flag"><span aria-hidden="true">&#9650;</span> el precio se movió</span></div>
             </div>
             <svg class="lg-step" viewBox="0 0 280 44" width="280" height="44" aria-hidden="true" focusable="false">
               <rect class="band" x="8" y="14" width="264" height="16" rx="2"></rect>
@@ -503,7 +511,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <polyline class="move" points="186,22 204,9 272,8"></polyline>
               <circle class="dot" cx="272" cy="8" r="3"></circle>
             </svg>
-            <p class="lg-stepnote">La línea se sale de su banda de seis meses &mdash; esa es la alerta.</p>
+            <p class="lg-stepnote">La línea se sale de la banda de sus lecturas previas &mdash; esa es la marca.</p>
           </div>
           <figcaption class="lg-cap"><strong>Muestra ilustrativa</strong> &mdash; así se marca una línea de factura archivada contra tu propio historial de precios. No son datos en vivo ni de clientes.</figcaption>
         </figure>

@@ -550,10 +550,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <span class="lg-pane-title">Invoice lines &mdash; filed</span>
               <span class="lg-chip">Sample ledger &middot; illustrative</span>
             </div>
+            <!-- Vignette trio (renumbered 2026-07-07, rule-true): $24.10 /
+                 $24.35 priors, $29.45 flagged — +$5.23 over the $24.22
+                 trailing median (+21.6%), which clears computePriceHike's
+                 co-gate (>=8% AND >=$5.00). Verified against
+                 tools/_shared/bench-lookup.js; matches /ledger/demo/.
+                 (The pre-renumber flagged read sat under the five-dollar
+                 floor, so the rule would never actually have fired.) -->
             <div class="lg-rows">
               <div class="lg-row"><span class="lg-d">Jun 12</span><span class="lg-v">Produce vendor</span><span class="lg-i">Romaine, 24&nbsp;ct</span><span class="lg-n">$24.10</span><span class="lg-s">filed</span></div>
               <div class="lg-row"><span class="lg-d">Jun 19</span><span class="lg-v">Produce vendor</span><span class="lg-i">Romaine, 24&nbsp;ct</span><span class="lg-n">$24.35</span><span class="lg-s">filed</span></div>
-              <div class="lg-row lg-row--flag"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Romaine, 24&nbsp;ct</span><span class="lg-n">$27.90</span><span class="lg-flag"><span aria-hidden="true">&#9650;</span> price moved</span></div>
+              <div class="lg-row lg-row--flag"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Romaine, 24&nbsp;ct</span><span class="lg-n">$29.45</span><span class="lg-flag"><span aria-hidden="true">&#9650;</span> price moved</span></div>
             </div>
             <svg class="lg-step" viewBox="0 0 280 44" width="280" height="44" aria-hidden="true" focusable="false">
               <rect class="band" x="8" y="14" width="264" height="16" rx="2"></rect>
@@ -561,7 +568,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <polyline class="move" points="186,22 204,9 272,8"></polyline>
               <circle class="dot" cx="272" cy="8" r="3"></circle>
             </svg>
-            <p class="lg-stepnote">The line steps out of its six-month band &mdash; that&rsquo;s the flag.</p>
+            <p class="lg-stepnote">The line steps out of the band of its prior reads &mdash; that&rsquo;s the flag.</p>
           </div>
           <figcaption class="lg-cap"><strong>Illustrative sample</strong> &mdash; how a filed invoice line gets flagged against your own price history. Not live or customer data.</figcaption>
         </figure>

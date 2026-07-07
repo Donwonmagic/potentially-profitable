@@ -222,13 +222,28 @@
 .ld-rail a::before{content:counter(ld,decimal-leading-zero);font-family:var(--font-display);font-weight:560;font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums lining-nums}
 .ld-rail li[aria-current="step"] a{border-color:var(--ink);box-shadow:var(--elev-1)}
 .ld-panel{margin:0 0 26px}
-.ld-js #ldPanels{display:grid}
+.ld-js #ldPanels{display:grid;transition:height 200ms var(--ease-out,ease-out)}
 .ld-js #ldPanels>.ld-panel{grid-area:1/1}
-/* visibility (not display:none) keeps every panel in layout, so the stepper
-   region holds the TALLEST panel's height — clicking through never reflows
-   the page (the founder-reported bounce, fixed 2026-07-06). Hidden panels
-   drop out of paint, pointer, and the accessibility tree alike. */
+/* Per-step height (review round 2, 2026-07-07). The grid-stack +
+   visibility (not display:none) still keeps every panel laid out at
+   full width, so content never reflows mid-transition — but the
+   region no longer sits at the TALLEST panel's height: that fix for
+   the founder-reported bounce (2026-07-06) traded it for a several-
+   hundred-pixel void under short steps. The stepper JS now sets
+   #ldPanels' inline height to the ACTIVE panel's offsetHeight on
+   every step change (recomputed on resize via one debounced
+   listener), and the 200ms height transition above turns each
+   difference into a calm animated frame — not the jarring instant
+   reflow the founder banned. Reduced motion: transition off, the
+   height still snaps straight to the right value. No-JS: .ld-js is
+   never added and no inline height is set, so the stacked read
+   keeps its natural flow. No overflow clipping: hidden panels don't
+   paint, and the footer below always covers their residual layout
+   overflow — clipping would cut the pane's --elev-3 shadow instead.
+   Hidden panels drop out of paint, pointer, and the accessibility
+   tree alike. */
 .ld-js .ld-panel:not(.ld-current){visibility:hidden}
+@media (prefers-reduced-motion:reduce){.ld-js #ldPanels{transition:none}}
 .ld-panel .lg-pane{box-shadow:var(--elev-1)}
 .ld-js .ld-panel.ld-current .lg-pane{box-shadow:var(--elev-3)}
 .ld-panel h2{font-family:var(--font-display);font-size:clamp(24px,3vw,32px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 8px;scroll-margin-top:calc(84px + var(--banner-h,0px))}
@@ -626,7 +641,18 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           </div>
           <div class="ld-total"><span>Total</span><span class="lg-n">$115.80</span></div>
         </div>
-        <figcaption class="lg-cap"><strong>Muestra ficticia, a prop&oacute;sito</strong> &mdash; sin subir nada; nada de lo que hagas en este demo sale de tu navegador. Compru&eacute;balo: mira la pesta&ntilde;a Red mientras avanzas &mdash; el recorrido es HTML simple y no dispara peticiones propias. Lo que s&iacute; ver&aacute;s es la maquinaria del propio sitio: una consulta de sesi&oacute;n, nuestro contador propio sin cookies y &mdash; si bajas hasta el formulario del pie &mdash; su escudo antispam, el &uacute;nico script de terceros en la p&aacute;gina.</figcaption>
+        <figcaption class="lg-cap"><strong>Muestra ficticia, a prop&oacute;sito</strong> &mdash; sin subir nada; nada de lo que hagas en este demo sale de tu navegador. El recorrido es HTML simple y no dispara peticiones propias.
+          <!-- El forense del paso 0 pasa al caj&oacute;n cite de la casa
+               (revisi&oacute;n ronda 2, 2026-07-07): la leyenda guarda la
+               conclusi&oacute;n de una frase; el esc&eacute;ptico expande
+               el detalle de la pesta&ntilde;a Red. -->
+          <details class="cite">
+            <summary>Compru&eacute;balo: lo que muestra la pesta&ntilde;a Red</summary>
+            <div class="cite-body">
+              <p>Mira la pesta&ntilde;a Red mientras avanzas &mdash; el recorrido no dispara peticiones propias. Lo que s&iacute; ver&aacute;s es la maquinaria del propio sitio: una consulta de sesi&oacute;n, nuestro contador propio sin cookies y &mdash; si bajas hasta el formulario del pie &mdash; su escudo antispam, el &uacute;nico script de terceros en la p&aacute;gina.</p>
+            </div>
+          </details>
+        </figcaption>
       </figure>
     </section>
 
@@ -667,7 +693,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           </div>
           <p class="ld-note">Reglas, no un modelo de lenguaje &mdash; la misma factura siempre da los mismos n&uacute;meros, y tus documentos nunca se vuelven datos de entrenamiento.</p>
         </div>
-        <figcaption class="lg-cap"><strong>Una l&iacute;nea impresa, cinco campos</strong> &mdash; el texto crudo de la factura, arriba, aterriza como las filas tecleadas de abajo: proveedor, fecha, art&iacute;culo, cantidad, precio, sin volver a teclear. Datos de muestra.</figcaption>
+        <figcaption class="lg-cap"><strong>Una l&iacute;nea impresa, cinco campos</strong> &mdash; el texto crudo de la factura, arriba, aterriza como las filas tecleadas de abajo: proveedor, fecha, art&iacute;culo, cantidad, precio, sin volver a teclear. Datos de muestra &mdash; una factura de verduras limpia es el caso f&aacute;cil; el demo muestra el mecanismo, no una cifra de precisi&oacute;n.</figcaption>
       </figure>
     </section>
 
@@ -802,7 +828,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         </div>
         <figcaption class="lg-cap"><strong>Una marca, dos umbrales</strong> &mdash; se dispara solo cuando una l&iacute;nea cruza ambos contra su propio historial: al menos 8% y al menos $5.00 sobre la mediana m&oacute;vil. Cifras ilustrativas.</figcaption>
       </figure>
-      <p class="ld-body" style="margin-top:16px">$5.23 &divide; 24 piezas es cerca de 22&cent; por pieza &mdash; cada plato que la lechuga romana toca se recalcula el mismo d&iacute;a. Y como la lechuga romana est&aacute; en la canasta p&uacute;blica del &Iacute;ndice de Costos, la marca llega con contexto de mercado: &iquest;mi proveedor, o el mercado? Fuera de la canasta &mdash; licores, vino, cortes con grado &mdash; una subida igual se archiva y se recalcula, pero no se compara con el mercado. Y un art&iacute;culo sin lecturas previas no recibe marca alguna: sin nada tuyo contra qu&eacute; comparar, Ledger se abstiene en lugar de adivinar.</p>
+      <p class="ld-body" style="margin-top:16px">$5.23 &divide; 24 piezas es cerca de 22&cent; por pieza &mdash; cada plato que la lechuga romana toca se recalcula el mismo d&iacute;a. Y como la lechuga romana est&aacute; en la canasta p&uacute;blica del &Iacute;ndice de Costos, la marca llega con contexto de mercado: &iquest;mi proveedor, o el mercado? Fuera de la canasta &mdash; licores, vino, cortes con grado &mdash; una subida igual se archiva y se recalcula, pero no se compara con el mercado. Y un art&iacute;culo sin lecturas previas no recibe marca alguna: sin nada tuyo contra qu&eacute; comparar, Ledger se abstiene en lugar de adivinar &mdash; as&iacute; que las primeras semanas se ven as&iacute;: las facturas se archivan y el historial crece, y las marcas empiezan a llegar cuando tus propias lecturas pueden respaldarlas.</p>
       <p class="lg-cap">Ledger corre esta revisi&oacute;n en cada l&iacute;nea, el d&iacute;a que llega la factura &mdash; $19 al mes es menos que cuatro de estas cajas detectadas. Abre el 13 de noviembre de 2026 &mdash; a <!-- count:ledger.ga_weeks_out -->19<!-- /count --> semanas. <a href="/es/ledger/#pricing" class="plausible-event-name=Demo+Exit plausible-event-door=peak-founding" style="color:var(--teal)">Los t&eacute;rminos fundadores &rarr;</a></p>
     </section>
 
@@ -831,8 +857,22 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     </div>
 
+    <!-- Controles del paso final (revisi&oacute;n ronda 2, 2026-07-07):
+         reetiquetar el primario fijo como "Volver a empezar" en el paso 4
+         enterraba la &uacute;nica petici&oacute;n de la p&aacute;gina tras un
+         control de bucle. En el paso final el JS cambia el par
+         Atr&aacute;s/Siguiente por Volver a empezar (fantasma) + el enlace
+         a la lista fundadora como primario. El enlace reutiliza la combinaci&oacute;n
+         registrada Demo+Exit / door=founding del CTA del panel — sin
+         vocabulario anal&iacute;tico nuevo. Los cuatro viven en el HTML para
+         que sin JS nunca haya un control muerto (la barra entera queda
+         oculta sin JS); la regla defensiva [hidden]{display:none!important}
+         de site-core.css saca del layout al par oculto pese al display
+         de .btn. -->
     <div class="ld-controls" id="ldControls" hidden>
       <button type="button" class="btn btn-ghost" id="ldBack">Atr&aacute;s</button>
+      <button type="button" class="btn btn-ghost" id="ldRestart" hidden>Volver a empezar</button>
+      <a class="btn btn-primary plausible-event-name=Demo+Exit plausible-event-door=founding" id="ldCta" href="/es/ledger/#pricing" hidden>Unirme a la lista fundadora &rarr;</a>
       <button type="button" class="btn btn-primary" id="ldNext">Siguiente</button>
       <span class="ld-progress" id="ldProgress"></span>
     </div>
@@ -849,22 +889,55 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       var rail = document.getElementById('ldRail');
       var controls = document.getElementById('ldControls');
       var back = document.getElementById('ldBack'), next = document.getElementById('ldNext');
+      var restart = document.getElementById('ldRestart'), cta = document.getElementById('ldCta');
       var progress = document.getElementById('ldProgress'), live = document.getElementById('ldLive');
-      if (!wrap || panels.length < 5 || !rail || !controls) return;
+      var panelsBox = document.getElementById('ldPanels');
+      if (!wrap || panels.length < 5 || !rail || !controls || !restart || !cta || !panelsBox) return;
       var titles = ['Llega la factura', 'Leer', 'Archivar', 'Marcar', 'Pon esta marca en cada línea'];
       var i = 0;
       var prm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
       wrap.classList.add('ld-js');
       controls.hidden = false;
+      // Altura por paso (revisión ronda 2, 2026-07-07): la pila de grid
+      // reservaba la altura del panel MÁS ALTO, dejando un vacío muerto
+      // bajo los pasos cortos. En vez del reflujo instantáneo (vetado por
+      // brusco), la altura en línea del contenedor sigue el offsetHeight
+      // del panel ACTIVO y la transición CSS (200ms --ease-out; ninguna
+      // con movimiento reducido) anima entre lecturas. Se recalcula al
+      // cambiar de paso, al redimensionar (un solo listener con rebote),
+      // al abrir/cerrar un cajón details y cuando cargan las webfonts
+      // (sus métricas mueven la altura de las filas). Sin JS este código
+      // nunca corre, así que la lectura apilada no lleva altura en línea.
+      function sizePanels() {
+        panelsBox.style.height = panels[i].offsetHeight + 'px';
+      }
+      var rszT;
+      window.addEventListener('resize', function () {
+        clearTimeout(rszT);
+        rszT = setTimeout(sizePanels, 150);
+      }, { passive: true });
+      Array.prototype.forEach.call(panelsBox.querySelectorAll('details'), function (d) {
+        d.addEventListener('toggle', sizePanels);
+      });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizePanels);
       function show(n, focus) {
         i = Math.max(0, Math.min(panels.length - 1, n));
         panels.forEach(function (p, k) { p.classList.toggle('ld-current', k === i); });
+        sizePanels();
         Array.prototype.forEach.call(rail.children, function (li, k) {
           if (k === i) li.setAttribute('aria-current', 'step');
           else li.removeAttribute('aria-current');
         });
+        // Paso final (revisión ronda 2, 2026-07-07): el primario fijo se
+        // vuelve el enlace a la lista fundadora — la única petición de la
+        // página — y Volver a empezar toma el lugar fantasma. Atrás y
+        // Siguiente sirven a los pasos 0-3.
+        var last = i === panels.length - 1;
+        back.hidden = last;
+        next.hidden = last;
+        restart.hidden = !last;
+        cta.hidden = !last;
         back.disabled = i === 0;
-        next.textContent = i === panels.length - 1 ? 'Volver a empezar' : 'Siguiente';
         progress.textContent = 'Paso ' + (i + 1) + ' de ' + panels.length;
         live.textContent = 'Paso ' + (i + 1) + ' de ' + panels.length + ' — ' + titles[i];
         // M7 — paridad no visual: el anuncio del paso 3 lleva el desenlace.
@@ -896,7 +969,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         }
       }
       back.addEventListener('click', function () { show(i - 1, true); });
-      next.addEventListener('click', function () { show(i === panels.length - 1 ? 0 : i + 1, true); });
+      next.addEventListener('click', function () { show(i + 1, true); });
+      restart.addEventListener('click', function () { show(0, true); });
       // Las píldoras del riel y los saltos internos comparten un handler:
       // los clics modificados (cmd/ctrl/shift/alt/central) pasan al navegador.
       Array.prototype.forEach.call(document.querySelectorAll('#ldRail a, .js-ld-jump'), function (a) {
