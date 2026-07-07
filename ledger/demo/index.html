@@ -31,7 +31,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://muntin.digital/ledger/demo/#page","url":"https://muntin.digital/ledger/demo/","inLanguage":"en-US","name":"Muntin Ledger demo — one sample invoice, read, filed, flagged","description":"A guided walkthrough of Muntin Ledger on canned sample data — no uploads, nothing stored.","dateModified":"2026-07-02","isPartOf":{"@id":"https://muntin.digital/#website"}},{"@type":"BreadcrumbList","@id":"https://muntin.digital/ledger/demo/#breadcrumbs","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Muntin Ledger","item":"https://muntin.digital/ledger/"},{"@type":"ListItem","position":3,"name":"Demo","item":"https://muntin.digital/ledger/demo/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://muntin.digital/ledger/demo/#page","url":"https://muntin.digital/ledger/demo/","inLanguage":"en-US","name":"Muntin Ledger demo — one sample invoice, read, filed, flagged","description":"A guided walkthrough of Muntin Ledger on canned sample data — no uploads, nothing stored.","dateModified":"2026-07-07","isPartOf":{"@id":"https://muntin.digital/#website"}},{"@type":"BreadcrumbList","@id":"https://muntin.digital/ledger/demo/#breadcrumbs","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Muntin Ledger","item":"https://muntin.digital/ledger/"},{"@type":"ListItem","position":3,"name":"Demo","item":"https://muntin.digital/ledger/demo/"}]}]}</script>
 
 <style>
 /* Bolder pass 2026-07 — the storefront gets the futures-edge grammar:
@@ -76,19 +76,92 @@
 .lg-s{font-size:11px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--stone);text-align:right}
 .lg-row--flag .lg-n{font-size:16px}
 .lg-flag{display:inline-flex;align-items:center;gap:2px;justify-self:end;padding:1px 6px;font-size:10px;font-weight:700;letter-spacing:.02em;border-radius:999px;background:var(--status-bad-tint,#F7E7DC);color:var(--rust,#C42E2E);white-space:nowrap}
-@media (max-width:560px){.lg-row{grid-template-columns:1fr auto auto;gap:8px}.lg-d,.lg-v{display:none}}
-.lg-step{display:block;width:100%;height:auto;margin:14px 0 4px}
-.lg-step .band{fill:var(--cream-2);opacity:.6}
-.lg-step .base{stroke:var(--stone);stroke-width:1.6;fill:none}
-.lg-step .move{stroke:var(--rust,#C42E2E);stroke-width:2.2;fill:none}
-.lg-step .dot{fill:var(--rust,#C42E2E)}
-.lg-stepnote{font-size:12.5px;color:var(--stone);margin:0;font-style:italic}
+/* Mobile row stack (P0-5, 2026-07-07) — two lines instead of hidden
+   columns: item + price on top, date · vendor · status beneath. The
+   Jun 12→19→26 progression stays visible on phones and the ES pill
+   text wraps instead of overflowing. */
+@media (max-width:560px){
+  .lg-row{grid-template-columns:max-content 1fr max-content;grid-template-areas:"i i n" "d v s";gap:2px 8px}
+  .lg-i{grid-area:i}
+  .lg-n{grid-area:n}
+  .lg-d{grid-area:d;font-size:11.5px}
+  .lg-v{grid-area:v;font-size:11.5px;color:var(--stone);white-space:normal}
+  .lg-s{grid-area:s;font-size:10.5px}
+  .lg-flag{grid-area:s;white-space:normal;text-align:right;line-height:1.3}
+}
+/* Step-2 ghost rows — the non-matching Jun 26 lines, dimmed so the
+   "3 of the 7 lines shown match" count is countable on screen. They
+   duplicate step-0 invoice lines, so no information lives only here. */
+.lg-row--ghost{opacity:.45;padding:6px 2px}
+.lg-row--ghost .lg-n{font-size:14px}
+.lg-stepnote{font-size:12.5px;color:var(--stone);margin:10px 0 0;font-style:italic}
 .lg-cap{position:relative;z-index:1;margin:22px 4px 0;font-size:13px;line-height:1.5;color:var(--ink-soft)}
-/* One-time flag landing — armed by the inline script only when motion
-   is allowed; without JS or with reduced motion the flag simply shows. */
+/* Step-3 band chart (P0-2, 2026-07-07). Two hand-drawn variants in
+   aspect-ratio boxes (no CLS); the hidden one is display:none so AT
+   sees exactly one. Geometry key — desktop: $1.00 = 32px, y(v) =
+   252 − (v − 23.50) × 32; mobile: $1.00 = 24px, y(v) = 200 −
+   (v − 23.50) × 24. Data: $24.10 / $24.35 / $29.45; trailing median
+   of the priors = $24.22; delta $5.23 = +21.6% — verified against
+   tools/_shared/bench-lookup.js computePriceHike (fires: ≥8% AND ≥$5). */
+.lg-chart{margin:16px 0 6px}
+.lg-chart--wide{max-width:640px;aspect-ratio:640/300}
+.lg-chart--narrow{display:none;max-width:320px;aspect-ratio:320/240}
+@media (max-width:560px){.lg-chart--wide{display:none}.lg-chart--narrow{display:block}}
+.lg-chart svg{display:block;width:100%;height:auto}
+.lgc-grid{stroke:var(--line,#E3E5E9);stroke-width:1}
+.lgc-axis{stroke:var(--line-dark,#D7DAE0);stroke-width:1}
+.lgc-band{fill:var(--teal-tint,#EAF0FE);opacity:.55}
+.lgc-bandedge{stroke:var(--line-dark,#D7DAE0);stroke-width:1;stroke-dasharray:4 3}
+.lgc-hist{stroke:var(--stone,#6B7280);stroke-width:2;fill:none}
+.lgc-dot{fill:var(--stone,#6B7280);stroke:var(--surface-1,#fff);stroke-width:2}
+.lgc-move{stroke:var(--rust,#C42E2E);stroke-width:2.5;fill:none}
+.lgc-halo{fill:var(--rust,#C42E2E);opacity:.12}
+.lgc-fdot{fill:var(--rust,#C42E2E);stroke:var(--surface-1,#fff);stroke-width:2}
+.lgc-bracket{stroke:var(--rust,#C42E2E);stroke-width:1.5;fill:none}
+.lgc-lab{font-family:var(--font-body,Inter,sans-serif);font-size:11px;fill:var(--stone,#6B7280)}
+.lgc-lab--tick{font-size:11.5px}
+.lgc-lab--sm{font-size:9.5px}
+.lgc-lab--band{font-size:10.5px;letter-spacing:.08em;fill:var(--ink-soft,#4A4F59)}
+.lgc-lab--sub{fill:var(--ink-soft,#4A4F59)}
+.lgc-num{font-family:var(--font-display,Georgia,serif);font-weight:600;font-variant-numeric:tabular-nums lining-nums;font-size:20px;fill:var(--ink,#16181D)}
+.lgc-num--sm{font-size:13px}
+.lgc-delta{font-family:var(--font-display,Georgia,serif);font-weight:600;font-size:16px;fill:var(--rust,#C42E2E)}
+.lgc-delta--sm{font-size:12.5px}
+/* One-time flag landing (P0-3, M1 — 2026-07-07). Base CSS is the
+   finished chart; the inline script arms .lg-armed only when motion is
+   allowed, then double-rAFs .lg-landed. All sequencing lives in
+   transition-delay: rust segment 120ms → dot pop 360ms → bracket +
+   labels 480ms → row pill + tint 600ms. Opacity/transform only, no
+   keyframes; no-JS and reduced-motion see the finished figure. */
+.lg-row--flag{position:relative;isolation:isolate}
+.lg-row--flag::before{content:"";position:absolute;inset:0 -6px;background:var(--status-bad-tint,#F7E7DC);opacity:1;z-index:-1;border-radius:4px}
+.lgf-dot{transform-box:fill-box;transform-origin:center}
 .lg-vignette.lg-armed .lg-flag{opacity:0;transform:translateY(-4px)}
-.lg-vignette.lg-armed.lg-landed .lg-flag{opacity:1;transform:none;transition:opacity 240ms var(--ease-out),transform 240ms var(--ease-out)}
-@media (prefers-reduced-motion:reduce){.lg-vignette .lg-flag,.lg-vignette.lg-armed .lg-flag{opacity:1;transform:none;transition:none}}
+.lg-vignette.lg-armed.lg-landed .lg-flag{opacity:1;transform:none;transition:opacity 240ms var(--ease-out,ease-out) 600ms,transform 240ms var(--ease-out,ease-out) 600ms}
+.lg-vignette.lg-armed .lg-row--flag::before{opacity:0}
+.lg-vignette.lg-armed.lg-landed .lg-row--flag::before{opacity:1;transition:opacity 360ms var(--ease-out,ease-out) 600ms}
+.lg-vignette.lg-armed .lgf-seg{opacity:0;transform:translateY(-4px)}
+.lg-vignette.lg-armed.lg-landed .lgf-seg{opacity:1;transform:none;transition:opacity 240ms var(--ease-out,ease-out) 120ms,transform 240ms var(--ease-out,ease-out) 120ms}
+.lg-vignette.lg-armed .lgf-dot{opacity:0;transform:scale(.4)}
+.lg-vignette.lg-armed.lg-landed .lgf-dot{opacity:1;transform:scale(1);transition:opacity 240ms var(--ease-spring,ease-out) 360ms,transform 240ms var(--ease-spring,ease-out) 360ms}
+.lg-vignette.lg-armed .lgf-lbl{opacity:0}
+.lg-vignette.lg-armed.lg-landed .lgf-lbl{opacity:1;transition:opacity 240ms var(--ease-out,ease-out) 480ms}
+@media (prefers-reduced-motion:reduce){
+  .lg-vignette .lg-flag,.lg-vignette.lg-armed .lg-flag,
+  .lg-vignette .lgf-seg,.lg-vignette.lg-armed .lgf-seg,
+  .lg-vignette .lgf-dot,.lg-vignette.lg-armed .lgf-dot,
+  .lg-vignette .lgf-lbl,.lg-vignette.lg-armed .lgf-lbl{opacity:1;transform:none;transition:none}
+  .lg-vignette .lg-row--flag::before,.lg-vignette.lg-armed .lg-row--flag::before{opacity:1;transition:none}
+}
+/* One page, one ask (P1-8 pulled into P0 by the verdict amendments,
+   2026-07-07): the injected promo banner is suppressed via CSS so the
+   batch-banner sentinel block stays intact and inject-batch-banner.mjs
+   stays idempotent (--banner-h measures 0, harmless). The mobile
+   sticky CTA bar is suppressed via <body data-hide-sticky-bar>. */
+.batch-marquee{display:none}
+/* Step-4 three-stance strip — literal rgba like the rest of the
+   .ld-cta ink band (tokens would double-flip in dark mode). */
+.lg-stances{display:flex;flex-wrap:wrap;gap:6px 18px;list-style:none;padding:14px 0 0;margin:22px 0 0;border-top:1px solid rgba(246,247,248,.14);font-size:12.5px;line-height:1.5;color:rgba(246,247,248,.66)}
 /* Section rhythm — the muntin waypoint replaces the plain rule. */
 .studio-section{margin:72px 0;padding-top:0;border-top:0;scroll-margin-top:90px}
 .studio-section::before{content:"";display:block;width:72px;height:11px;margin:0 0 26px;opacity:.85;background:linear-gradient(var(--ink),var(--ink)) 0 100%/100% 3px no-repeat,linear-gradient(var(--ink),var(--ink)) 24px 0/3px 8px no-repeat,linear-gradient(var(--ink),var(--ink)) 48px 0/3px 8px no-repeat}
@@ -150,7 +223,7 @@
 .ld-js .ld-panel:not(.ld-current){visibility:hidden}
 .ld-panel .lg-pane{box-shadow:var(--elev-1)}
 .ld-js .ld-panel.ld-current .lg-pane{box-shadow:var(--elev-3)}
-.ld-panel h2{font-family:var(--font-display);font-size:clamp(24px,3vw,32px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 8px}
+.ld-panel h2{font-family:var(--font-display);font-size:clamp(24px,3vw,32px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 8px;scroll-margin-top:calc(84px + var(--banner-h,0px))}
 .ld-panel .ld-body{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 16px;max-width:640px}
 .ld-invoice-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:6px}
 .ld-invoice-title{font-family:var(--font-display);font-weight:600;font-size:15px;color:var(--ink)}
@@ -283,7 +356,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
 </head>
-<body>
+<body data-hide-sticky-bar>
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
@@ -525,7 +598,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li><a href="#ld-step1">Read</a></li>
         <li><a href="#ld-step2">File</a></li>
         <li><a href="#ld-step3">Flag</a></li>
-        <li><a href="#ld-step4">Your line</a></li>
+        <li><a href="#ld-step4">Every line</a></li>
       </ol>
     </header>
 
@@ -533,7 +606,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <section class="ld-panel" id="ld-step0" aria-labelledby="ld-h0">
       <h2 id="ld-h0" tabindex="-1">The invoice arrives.</h2>
-      <p class="ld-body">A produce invoice lands the way they always do &mdash; five lines, one total. This one is the sample the whole demo walks.</p>
+      <p class="ld-body">A produce invoice lands the way they always do &mdash; five lines, one total. One of these five lines is hiding a raise, and the $115.80 total won&rsquo;t tell you which. <a class="js-ld-jump" href="#ld-step3">Skip to the flag &rarr;</a></p>
       <figure class="lg-vignette" style="margin:0">
         <div class="lg-pane">
           <div class="lg-pane-head">
@@ -541,20 +614,20 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             <span class="lg-chip">Sample invoice &middot; illustrative</span>
           </div>
           <div class="ld-invoice-head"><span class="ld-invoice-title">Invoice &mdash; Jun 26</span><span class="ld-invoice-date">Net 15 &middot; 5 lines</span></div>
-          <div class="ld-line"><span>Romaine, 24&nbsp;ct <span class="q">&times;1</span></span><span></span><span class="lg-n">$27.90</span></div>
+          <div class="ld-line"><span>Romaine, 24&nbsp;ct <span class="q">&times;1</span></span><span></span><span class="lg-n">$29.45</span></div>
           <div class="ld-line"><span>Roma tomatoes, 25&nbsp;lb <span class="q">&times;1</span></span><span></span><span class="lg-n">$31.50</span></div>
           <div class="ld-line"><span>Yellow onions, 50&nbsp;lb <span class="q">&times;1</span></span><span></span><span class="lg-n">$22.00</span></div>
           <div class="ld-line"><span>Limes, 40&nbsp;ct <span class="q">&times;1</span></span><span></span><span class="lg-n">$14.25</span></div>
           <div class="ld-line"><span>Cilantro, 30&nbsp;ct <span class="q">&times;1</span></span><span></span><span class="lg-n">$18.60</span></div>
-          <div class="ld-total"><span>Total</span><span class="lg-n">$114.25</span></div>
+          <div class="ld-total"><span>Total</span><span class="lg-n">$115.80</span></div>
         </div>
-        <figcaption class="lg-cap"><strong>Illustrative sample</strong> &mdash; the demo runs entirely on this canned invoice; it takes no uploads and sends nothing anywhere. Not live or customer data.</figcaption>
+        <figcaption class="lg-cap"><strong>Canned sample, on purpose</strong> &mdash; no uploads; nothing you do in this demo leaves your browser. Verify it: watch the Network tab while you click through &mdash; the stepper is plain HTML and fires no requests of its own. The page&rsquo;s only analytics is our self-hosted, cookieless counter. Not live or customer data.</figcaption>
       </figure>
     </section>
 
     <section class="ld-panel" id="ld-step1" aria-labelledby="ld-h1">
       <h2 id="ld-h1" tabindex="-1">Read.</h2>
-      <p class="ld-body">Templates and rules pull the lines &mdash; vendor, item, quantity, price. No language model reads the document; a build gate blocks anyone from adding one.</p>
+      <p class="ld-body">Snap or upload the invoice; templates and rules pull the lines &mdash; vendor, item, quantity, price. No AI reads your invoices &mdash; and we&rsquo;ve made it impossible for us to quietly change that: a build gate blocks anyone from adding a language model.</p>
       <figure class="lg-vignette ld-armed-target" style="margin:0">
         <div class="lg-pane">
           <div class="lg-pane-head">
@@ -562,7 +635,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             <span class="lg-chip">Sample ledger &middot; illustrative</span>
           </div>
           <div class="lg-rows">
-            <div class="lg-row ld-reveal"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Romaine, 24&nbsp;ct</span><span class="lg-n">$27.90</span><span class="lg-s">read</span></div>
+            <div class="lg-row ld-reveal"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Romaine, 24&nbsp;ct</span><span class="lg-n">$29.45</span><span class="lg-s">read</span></div>
             <div class="lg-row ld-reveal"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Roma tomatoes, 25&nbsp;lb</span><span class="lg-n">$31.50</span><span class="lg-s">read</span></div>
             <div class="lg-row ld-reveal"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Yellow onions, 50&nbsp;lb</span><span class="lg-n">$22.00</span><span class="lg-s">read</span></div>
             <div class="lg-row ld-reveal"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Limes, 40&nbsp;ct</span><span class="lg-n">$14.25</span><span class="lg-s">read</span></div>
@@ -576,32 +649,36 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <section class="ld-panel" id="ld-step2" aria-labelledby="ld-h2">
       <h2 id="ld-h2" tabindex="-1">File.</h2>
-      <p class="ld-body">Every line lands filed and searchable &mdash; by vendor, by item, by date. The whole record exports to a clean CSV whenever you ask.</p>
+      <p class="ld-body">Every line lands filed and searchable &mdash; by vendor, by item, by date &mdash; and the whole record exports to a clean CSV whenever you ask. This is the price spreadsheet you never had to build; it filed itself.</p>
       <figure class="lg-vignette" style="margin:0">
         <div class="lg-pane">
           <div class="lg-pane-head">
             <span class="lg-pane-title">The ledger &mdash; searchable</span>
             <span class="lg-chip">Sample ledger &middot; illustrative</span>
           </div>
-          <div class="ld-search" aria-hidden="true">
+          <div class="ld-search">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
             <span>Search: <span class="ld-q">romaine</span></span>
           </div>
-          <p class="ld-count">3 of 6 lines match</p>
+          <p class="ld-count">3 of the 7 lines shown match</p>
           <div class="lg-rows">
             <div class="lg-row"><span class="lg-d">Jun 12</span><span class="lg-v">Produce vendor</span><span class="lg-i">Romaine, 24&nbsp;ct</span><span class="lg-n">$24.10</span><span class="lg-s">filed</span></div>
             <div class="lg-row"><span class="lg-d">Jun 19</span><span class="lg-v">Produce vendor</span><span class="lg-i">Romaine, 24&nbsp;ct</span><span class="lg-n">$24.35</span><span class="lg-s">filed</span></div>
-            <div class="lg-row"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Romaine, 24&nbsp;ct</span><span class="lg-n">$27.90</span><span class="lg-s">filed</span></div>
+            <div class="lg-row"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Romaine, 24&nbsp;ct</span><span class="lg-n">$29.45</span><span class="lg-s">filed</span></div>
+            <div class="lg-row lg-row--ghost"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Roma tomatoes, 25&nbsp;lb</span><span class="lg-n">$31.50</span><span class="lg-s">filed</span></div>
+            <div class="lg-row lg-row--ghost"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Yellow onions, 50&nbsp;lb</span><span class="lg-n">$22.00</span><span class="lg-s">filed</span></div>
+            <div class="lg-row lg-row--ghost"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Limes, 40&nbsp;ct</span><span class="lg-n">$14.25</span><span class="lg-s">filed</span></div>
+            <div class="lg-row lg-row--ghost"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Cilantro, 30&nbsp;ct</span><span class="lg-n">$18.60</span><span class="lg-s">filed</span></div>
           </div>
         </div>
-        <figcaption class="lg-cap"><strong>Illustrative sample</strong> &mdash; the search shown is part of the mockup, not a live input; the rows are canned. Not live or customer data.</figcaption>
+        <figcaption class="lg-cap"><strong>Illustrative sample</strong> &mdash; the search narrows the ledger to the item: three romaine reads across three invoices, the other June 26 lines dimmed. The search shown is part of the mockup, not a live input. Not live or customer data.</figcaption>
       </figure>
     </section>
 
     <section class="ld-panel" id="ld-step3" aria-labelledby="ld-h3">
       <h2 id="ld-h3" tabindex="-1">Flag.</h2>
-      <p class="ld-body">The romaine line steps out of its six-month band &mdash; up $3.55 a case &mdash; and gets the flag. The comparison is against your own history, nothing else.</p>
-      <figure class="lg-vignette" style="margin:0">
+      <p class="ld-body">The June 26 romaine line lands at $29.45 &mdash; up $5.23 a case against your six-month median (+21.6%) &mdash; and gets the flag. The check runs against your own history, nothing else, and it fires only when a move clears both of Ledger&rsquo;s thresholds: at least 8% <em>and</em> at least $5.00 over your trailing median.</p>
+      <figure class="lg-vignette" style="margin:0" data-audio-alt="Price-check chart for romaine, twenty-four count. June twelfth reads twenty-four dollars ten and June nineteenth twenty-four thirty-five, both inside the six-month band. June twenty-sixth jumps to twenty-nine forty-five: five dollars and twenty-three cents, or twenty-one point six percent, above the twenty-four twenty-two trailing median. That clears Ledger's two thresholds, at least eight percent and at least five dollars, so the line is flagged.">
         <div class="lg-pane">
           <div class="lg-pane-head">
             <span class="lg-pane-title">Price check &mdash; against your own history</span>
@@ -610,31 +687,109 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <div class="lg-rows">
             <div class="lg-row"><span class="lg-d">Jun 12</span><span class="lg-v">Produce vendor</span><span class="lg-i">Romaine, 24&nbsp;ct</span><span class="lg-n">$24.10</span><span class="lg-s">in band</span></div>
             <div class="lg-row"><span class="lg-d">Jun 19</span><span class="lg-v">Produce vendor</span><span class="lg-i">Romaine, 24&nbsp;ct</span><span class="lg-n">$24.35</span><span class="lg-s">in band</span></div>
-            <div class="lg-row lg-row--flag"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Romaine, 24&nbsp;ct</span><span class="lg-n">$27.90</span><span class="lg-flag"><span aria-hidden="true">&#9650;</span> price moved</span></div>
+            <div class="lg-row lg-row--flag"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Romaine, 24&nbsp;ct</span><span class="lg-n">$29.45</span><span class="lg-flag"><span aria-hidden="true">&#9650;</span> price moved</span></div>
           </div>
-          <svg class="lg-step" viewBox="0 0 280 44" width="280" height="44" aria-hidden="true" focusable="false">
-            <rect class="band" x="8" y="14" width="264" height="16" rx="2"></rect>
-            <polyline class="base" points="8,23 186,22"></polyline>
-            <polyline class="move" points="186,22 204,9 272,8"></polyline>
-            <circle class="dot" cx="272" cy="8" r="3"></circle>
-          </svg>
-          <p class="lg-stepnote">The line steps out of its six-month band &mdash; that&rsquo;s the flag.</p>
+          <!-- Chart data + mapping (renumber key): points Jun 12 $24.10,
+               Jun 19 $24.35, Jun 26 $29.45; median of priors $24.22;
+               delta $5.23 = +21.6%. Desktop y(v) = 252 − (v−23.50)×32;
+               mobile y(v) = 200 − (v−23.50)×24. -->
+          <div class="lg-chart lg-chart--wide">
+            <svg viewBox="0 0 640 300" width="640" height="300" role="img" aria-labelledby="ldc-w-t ldc-w-d" focusable="false">
+              <title id="ldc-w-t">Romaine, 24 ct &mdash; the June 26 price steps out of its six-month band</title>
+              <desc id="ldc-w-d">Line chart of three case prices for romaine: June 12 at $24.10 and June 19 at $24.35 sit inside the band; June 26 jumps to $29.45 &mdash; $5.23 and 21.6% above the $24.22 trailing median. The line is flagged because the move clears both of Ledger&rsquo;s thresholds: at least 8% and at least $5.00 over the trailing median.</desc>
+              <line class="lgc-grid" x1="64" y1="236" x2="508" y2="236"/>
+              <line class="lgc-grid" x1="64" y1="172" x2="508" y2="172"/>
+              <line class="lgc-grid" x1="64" y1="108" x2="508" y2="108"/>
+              <line class="lgc-grid" x1="64" y1="44" x2="508" y2="44"/>
+              <text class="lgc-lab" x="56" y="240" text-anchor="end">$24</text>
+              <text class="lgc-lab" x="56" y="176" text-anchor="end">$26</text>
+              <text class="lgc-lab" x="56" y="112" text-anchor="end">$28</text>
+              <text class="lgc-lab" x="56" y="48" text-anchor="end">$30</text>
+              <rect class="lgc-band" x="64" y="224.8" width="444" height="8"/>
+              <line class="lgc-bandedge" x1="64" y1="224.8" x2="508" y2="224.8"/>
+              <line class="lgc-bandedge" x1="64" y1="232.8" x2="508" y2="232.8"/>
+              <text class="lgc-lab lgc-lab--band" x="504" y="216" text-anchor="end">YOUR SIX-MONTH BAND</text>
+              <polyline class="lgc-hist" points="140,232.8 300,224.8"/>
+              <circle class="lgc-dot" cx="140" cy="232.8" r="4"/>
+              <circle class="lgc-dot" cx="300" cy="224.8" r="4"/>
+              <text class="lgc-num" x="140" y="212" text-anchor="middle">$24.10</text>
+              <text class="lgc-num" x="300" y="204" text-anchor="middle">$24.35</text>
+              <g class="lgf-seg"><line class="lgc-move" x1="300" y1="224.8" x2="460" y2="61.6"/></g>
+              <g class="lgf-dot"><circle class="lgc-halo" cx="460" cy="61.6" r="11"/><circle class="lgc-fdot" cx="460" cy="61.6" r="5.5"/></g>
+              <g class="lgf-lbl">
+                <text class="lgc-num" x="442" y="68" text-anchor="end">$29.45</text>
+                <polyline class="lgc-bracket" points="514,61.6 520,61.6 520,229 514,229"/>
+                <text class="lgc-delta" x="528" y="128">&#9650; $5.23 a case</text>
+                <text class="lgc-lab lgc-lab--sub" x="528" y="148">+21.6% over your</text>
+                <text class="lgc-lab lgc-lab--sub" x="528" y="163">median of $24.22</text>
+                <text class="lgc-lab lgc-lab--sub" x="528" y="178">&mdash; flagged</text>
+              </g>
+              <line class="lgc-axis" x1="64" y1="252" x2="508" y2="252"/>
+              <text class="lgc-lab lgc-lab--tick" x="140" y="272" text-anchor="middle">Jun 12</text>
+              <text class="lgc-lab lgc-lab--tick" x="300" y="272" text-anchor="middle">Jun 19</text>
+              <text class="lgc-lab lgc-lab--tick" x="460" y="272" text-anchor="middle">Jun 26</text>
+            </svg>
+          </div>
+          <div class="lg-chart lg-chart--narrow">
+            <svg viewBox="0 0 320 240" width="320" height="240" role="img" aria-labelledby="ldc-m-t ldc-m-d" focusable="false">
+              <title id="ldc-m-t">Romaine, 24 ct &mdash; the June 26 price steps out of its six-month band</title>
+              <desc id="ldc-m-d">Line chart of three case prices for romaine: June 12 at $24.10 and June 19 at $24.35 sit inside the band; June 26 jumps to $29.45 &mdash; $5.23 and 21.6% above the $24.22 trailing median. The line is flagged because the move clears both of Ledger&rsquo;s thresholds: at least 8% and at least $5.00 over the trailing median.</desc>
+              <line class="lgc-grid" x1="40" y1="188" x2="252" y2="188"/>
+              <line class="lgc-grid" x1="40" y1="140" x2="252" y2="140"/>
+              <line class="lgc-grid" x1="40" y1="92" x2="252" y2="92"/>
+              <line class="lgc-grid" x1="40" y1="44" x2="252" y2="44"/>
+              <text class="lgc-lab lgc-lab--sm" x="34" y="191" text-anchor="end">$24</text>
+              <text class="lgc-lab lgc-lab--sm" x="34" y="143" text-anchor="end">$26</text>
+              <text class="lgc-lab lgc-lab--sm" x="34" y="95" text-anchor="end">$28</text>
+              <text class="lgc-lab lgc-lab--sm" x="34" y="47" text-anchor="end">$30</text>
+              <rect class="lgc-band" x="40" y="179.6" width="212" height="6"/>
+              <line class="lgc-bandedge" x1="40" y1="179.6" x2="252" y2="179.6"/>
+              <line class="lgc-bandedge" x1="40" y1="185.6" x2="252" y2="185.6"/>
+              <text class="lgc-lab lgc-lab--sm lgc-lab--band" x="248" y="170" text-anchor="end">6-MO BAND</text>
+              <polyline class="lgc-hist" points="64,185.6 146,179.6"/>
+              <circle class="lgc-dot" cx="64" cy="185.6" r="3.5"/>
+              <circle class="lgc-dot" cx="146" cy="179.6" r="3.5"/>
+              <text class="lgc-num lgc-num--sm" x="64" y="170" text-anchor="middle">$24.10</text>
+              <text class="lgc-num lgc-num--sm" x="146" y="164" text-anchor="middle">$24.35</text>
+              <g class="lgf-seg"><line class="lgc-move" x1="146" y1="179.6" x2="228" y2="57.2"/></g>
+              <g class="lgf-dot"><circle class="lgc-halo" cx="228" cy="57.2" r="9"/><circle class="lgc-fdot" cx="228" cy="57.2" r="5"/></g>
+              <g class="lgf-lbl">
+                <text class="lgc-num lgc-num--sm" x="214" y="62" text-anchor="end">$29.45</text>
+                <polyline class="lgc-bracket" points="256,57.2 262,57.2 262,182.7 256,182.7"/>
+                <text class="lgc-delta lgc-delta--sm" x="268" y="110">&#9650; $5.23</text>
+                <text class="lgc-lab lgc-lab--sm lgc-lab--sub" x="268" y="126">a case</text>
+                <text class="lgc-lab lgc-lab--sm lgc-lab--sub" x="268" y="142">+21.6%</text>
+              </g>
+              <line class="lgc-axis" x1="40" y1="200" x2="252" y2="200"/>
+              <text class="lgc-lab lgc-lab--sm" x="64" y="220" text-anchor="middle">Jun 12</text>
+              <text class="lgc-lab lgc-lab--sm" x="228" y="220" text-anchor="middle">Jun 26</text>
+            </svg>
+          </div>
+          <p class="lg-stepnote">The $115.80 invoice total never blinked &mdash; the line did. Caught the day it lands, not at month-close.</p>
         </div>
-        <figcaption class="lg-cap"><strong>Illustrative sample</strong> &mdash; the flag fires only against this item&rsquo;s own six-month band. Not live or customer data.</figcaption>
+        <figcaption class="lg-cap"><strong>Illustrative sample</strong> &mdash; the flag fires only when a line clears both thresholds against its own history: at least 8% and at least $5.00 over the trailing median. Not live or customer data.</figcaption>
       </figure>
+      <p class="ld-body" style="margin-top:16px">$5.23 &divide; 24 heads is about 22&cent; a head &mdash; every dish romaine touches re-costs the same day. And because romaine is in the public Cost Index basket, the flag arrives with market context: my guy, or the market? Outside the basket &mdash; spirits, wine, graded cuts &mdash; a raise still files and re-costs, but isn&rsquo;t market-checked. On thin history the flag withholds rather than guesses.</p>
+      <p class="lg-cap">Ledger runs this check on every line, the day the invoice lands &mdash; $19 a month is less than four of these caught cases. Opens November 13, 2026 &mdash; <!-- count:ledger.ga_weeks_out -->19<!-- /count --> weeks out. <a href="/ledger/#pricing" style="color:var(--teal)">The founding terms &rarr;</a></p>
     </section>
 
     <section class="ld-panel ld-cta" id="ld-step4" aria-labelledby="ld-h4">
-      <h2 id="ld-h4" tabindex="-1">Now run your own line.</h2>
-      <p class="ld-body">That was one sample. Take a price you&rsquo;ve actually paid &mdash; two dates, two numbers &mdash; and <strong style="color:#F6F7F8">Vendor Benchmark</strong> runs the same read: whether the move is in line with the market or drifting out, against the public Cost Index. Free, in your browser, no signup, nothing to upload.</p>
+      <h2 id="ld-h4" tabindex="-1">Put this flag on every line.</h2>
+      <p class="ld-body">That flag, on every line of every invoice, the day it lands &mdash; <strong style="color:#F6F7F8">Muntin Ledger</strong> opens November 13, 2026. The founding list gets <strong style="color:#F6F7F8">three months free, then $19 a month for as long as they stay</strong>.</p>
       <div class="studio-cta-row" style="margin-top:20px">
-        <a class="btn lg-btn-light" href="/tools/vendor-benchmark/">Run your own line &rarr;</a>
+        <a class="btn lg-btn-light" href="/ledger/#pricing">Join the founding list &rarr;</a>
       </div>
       <hr style="border:none;border-top:1px solid rgba(246,247,248,.14);margin:28px 0 24px" aria-hidden="true">
-      <p class="ld-body">When you want this on your whole invoices &mdash; read, filed, flagged, every vendor &mdash; Muntin Ledger opens November 13, 2026. The founding list gets <strong style="color:#F6F7F8">three months free, then $19 a month for as long as they stay</strong>.</p>
+      <p class="ld-body">Don&rsquo;t take a canned demo&rsquo;s word for it. Take a price you&rsquo;ve actually paid &mdash; two dates, two numbers &mdash; and <strong style="color:#F6F7F8">Vendor Benchmark</strong> runs the same own-history flag rule Ledger uses, mirrored to the cent, and sets a market read from the public Cost Index beside it, over your exact dates. Free, in your browser, no signup, nothing to upload.</p>
       <div class="studio-cta-row" style="margin-top:20px">
-        <a class="btn btn-ghost" href="/ledger/#pricing" style="color:#F6F7F8;border-color:rgba(246,247,248,.4)">Join the founding list</a>
+        <a class="btn btn-ghost" href="/tools/vendor-benchmark/" style="color:#F6F7F8;border-color:rgba(246,247,248,.4)">Run your own line &rarr;</a>
       </div>
+      <p class="ld-body" style="margin-top:24px;margin-bottom:0;font-size:14px">Check what we claim: <a href="/trust/" style="color:#7AA7FF">the trust center</a> &middot; <a href="/never/" style="color:#7AA7FF">what we never do</a> &middot; <a href="/cost-index/" style="color:#7AA7FF">the Cost Index data (CC0)</a>.</p>
+      <ul class="lg-stances">
+        <li>No cut of sales, ever</li>
+        <li>No language model reads your invoices &mdash; build-gated, never training data</li>
+        <li>Export the whole ledger anytime in a format you can open without us; delete it and it&rsquo;s gone</li>
+      </ul>
       <p class="lg-cap" style="margin-top:18px">The founding form is on the Ledger page &mdash; this demo takes nothing, not even an email.</p>
     </section>
 
@@ -660,7 +815,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       var back = document.getElementById('ldBack'), next = document.getElementById('ldNext');
       var progress = document.getElementById('ldProgress'), live = document.getElementById('ldLive');
       if (!wrap || panels.length < 5 || !rail || !controls) return;
-      var titles = ['The invoice arrives', 'Read', 'File', 'Flag', 'Run your own line'];
+      var titles = ['The invoice arrives', 'Read', 'File', 'Flag', 'Put this flag on every line'];
       var i = 0;
       var prm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
       wrap.classList.add('ld-js');
@@ -679,6 +834,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         progress.textContent = 'Step ' + (i + 1) + ' of ' + panels.length;
         live.textContent = 'Step ' + (i + 1) + ' of ' + panels.length + ' — ' + titles[i];
         if (focus) { var h = panels[i].querySelector('h2'); if (h) h.focus({ preventScroll: false }); }
+        // P0-6 — user navigation keeps the address bar honest without
+        // growing history; boot below never writes a hash of its own.
+        if (focus && window.history && history.replaceState) { history.replaceState(null, '', '#ld-step' + i); }
         if (i === 1 && !prm && !panels[1].dataset.played) {
           panels[1].dataset.played = '1';
           var fig = panels[1].querySelector('.ld-armed-target');
@@ -693,13 +851,31 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             }, 1500);
           }
         }
+        // P0-3 — the flag landing, once, on first arrival at step 3.
+        // Sequencing lives in CSS transition-delays on .lg-armed/.lg-landed.
+        if (i === 3 && !prm && !panels[3].dataset.played) {
+          panels[3].dataset.played = '1';
+          var flagFig = panels[3].querySelector('.lg-vignette');
+          if (flagFig) {
+            flagFig.classList.add('lg-armed');
+            requestAnimationFrame(function () { requestAnimationFrame(function () { flagFig.classList.add('lg-landed'); }); });
+          }
+        }
       }
       back.addEventListener('click', function () { show(i - 1, true); });
       next.addEventListener('click', function () { show(i === panels.length - 1 ? 0 : i + 1, true); });
-      Array.prototype.forEach.call(rail.querySelectorAll('a'), function (a, k) {
-        a.addEventListener('click', function (e) { e.preventDefault(); show(k, true); });
+      // Rail pills + in-page jump links share one handler: modified
+      // clicks (cmd/ctrl/shift/alt/middle) fall through to the browser.
+      Array.prototype.forEach.call(document.querySelectorAll('#ldRail a, .js-ld-jump'), function (a) {
+        a.addEventListener('click', function (e) {
+          if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+          var m = /^#ld-step([0-4])$/.exec(a.getAttribute('href') || '');
+          if (!m) return;
+          e.preventDefault(); show(+m[1], true);
+        });
       });
-      show(0, false);
+      var boot = /^#ld-step([0-4])$/.exec(location.hash || '');
+      show(boot ? +boot[1] : 0, false);
     } catch (e) { /* static fallback stays complete */ }
   })();
   </script>
