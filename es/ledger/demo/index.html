@@ -327,18 +327,19 @@
 </style>
 <style>
 /* Critical CSS — prevents flash of unstyled content while the main
-
-[hidden]{display:none!important}
-/* ^ duplicated from site-core.css on purpose: that sheet loads async, but the
-   stepper script runs at parse and relies on [hidden] to keep all four controls
-   unpainted until JS chooses — without this inline guard a slow first load
-   briefly paints Back/Next/Start-over/Join simultaneously (round-3 catch). */   stylesheet (assets/site.css) loads non-render-blocking via the
+   stylesheet (assets/site.css) loads non-render-blocking via the
    <link> below. Carries: token vars used in inline styles elsewhere,
    body baseline (cream + ink + body-size + line-height), container
    width, skip-link affordance, and a min-height reservation for the
    fixed nav so layout doesn't shift when site.css applies. ~600
    bytes. Documented in Phase 3B perf cutover; the full token set
    reapplies once site.css arrives. */
+[hidden]{display:none!important}
+/* ^ [hidden] guard duplicated from site-core.css on purpose: that sheet loads
+   async, but the stepper script runs at parse and relies on [hidden] to keep
+   all four controls unpainted until JS chooses — without this inline rule a
+   slow first load briefly paints Back/Next/Start-over/Join simultaneously
+   (round-3 catch; splice repaired after certification round). */
 :root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
 html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
