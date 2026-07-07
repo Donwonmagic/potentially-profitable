@@ -141,7 +141,13 @@
 .ld-rail a::before{content:counter(ld,decimal-leading-zero);font-family:var(--font-display);font-weight:560;font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums lining-nums}
 .ld-rail li[aria-current="step"] a{border-color:var(--ink);box-shadow:var(--elev-1)}
 .ld-panel{margin:0 0 26px}
-.ld-js .ld-panel:not(.ld-current){display:none}
+.ld-js #ldPanels{display:grid}
+.ld-js #ldPanels>.ld-panel{grid-area:1/1}
+/* visibility (not display:none) keeps every panel in layout, so the stepper
+   region holds the TALLEST panel's height — clicking through never reflows
+   the page (the founder-reported bounce, fixed 2026-07-06). Hidden panels
+   drop out of paint, pointer, and the accessibility tree alike. */
+.ld-js .ld-panel:not(.ld-current){visibility:hidden}
 .ld-panel .lg-pane{box-shadow:var(--elev-1)}
 .ld-js .ld-panel.ld-current .lg-pane{box-shadow:var(--elev-3)}
 .ld-panel h2{font-family:var(--font-display);font-size:clamp(24px,3vw,32px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 8px}
