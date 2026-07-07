@@ -22,43 +22,39 @@
 <meta property="og:description" content="La mecánica real sobre datos de muestra: las reglas leen las líneas, el libro las archiva consultables y una subida de precio se marca contra su propio historial." />
 <meta property="og:url" content="https://muntin.digital/es/ledger/demo/" />
 <meta property="og:site_name" content="Muntin Digital" />
+<!-- Tarjeta social (2026-07-07): la tarjeta de marca del sitio, para
+     que un enlace pegado muestre una imagen con marca en lugar de una
+     tarjeta sin texto. Cambiar por una tarjeta propia del demo cuando
+     build-og-cards la genere. -->
+<meta property="og:image" content="https://muntin.digital/brand/og/home-es.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
 
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://muntin.digital/es/ledger/demo/#page","url":"https://muntin.digital/es/ledger/demo/","inLanguage":"es-US","name":"Demo de Muntin Ledger — una factura de muestra: leída, archivada, marcada","description":"Un recorrido guiado de Muntin Ledger con datos de muestra — sin subir nada, sin guardar nada.","dateModified":"2026-07-02","isPartOf":{"@id":"https://muntin.digital/#website"}},{"@type":"BreadcrumbList","@id":"https://muntin.digital/es/ledger/demo/#breadcrumbs","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://muntin.digital/es/"},{"@type":"ListItem","position":2,"name":"Muntin Ledger","item":"https://muntin.digital/es/ledger/"},{"@type":"ListItem","position":3,"name":"Demo","item":"https://muntin.digital/es/ledger/demo/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://muntin.digital/es/ledger/demo/#page","url":"https://muntin.digital/es/ledger/demo/","inLanguage":"es-US","name":"Demo de Muntin Ledger — una factura de muestra: leída, archivada, marcada","description":"Un recorrido guiado de Muntin Ledger con datos de muestra — sin subir nada, sin guardar nada.","dateModified":"2026-07-07","isPartOf":{"@id":"https://muntin.digital/#website"}},{"@type":"BreadcrumbList","@id":"https://muntin.digital/es/ledger/demo/#breadcrumbs","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://muntin.digital/es/"},{"@type":"ListItem","position":2,"name":"Muntin Ledger","item":"https://muntin.digital/es/ledger/"},{"@type":"ListItem","position":3,"name":"Demo","item":"https://muntin.digital/es/ledger/demo/"}]}]}</script>
 
 <style>
-/* Bolder pass 2026-07 — the storefront gets the futures-edge grammar:
-   goldenhour hero + illustrative ledger vignette, elevation from the
-   --elev-* scale, Fraunces number material, one ink band at the
-   pricing moment. Ink hexes in .lg-pricing are intentional (the band
-   stays dark in dark mode; tokens would double-flip it). */
-.lg-hero.hero{padding:44px 0 64px}
-@media (max-width:960px){section.hero.lg-hero::after{background:var(--gradient-goldenhour)}}
-.lg-hero .breadcrumb{padding:0 0 26px}
-.lg-hero .hero-grid{grid-template-columns:1.05fr 0.95fr;gap:clamp(32px,4vw,64px);align-items:center}
-@media (max-width:960px){.lg-hero .hero-grid{grid-template-columns:1fr;gap:44px}}
-.lg-hero h1{font-family:var(--font-display);font-size:clamp(40px,4.6vw,58px);font-weight:560;line-height:1.06;letter-spacing:-0.5px;margin:0 0 18px;text-wrap:balance}
+/* Bolder pass 2026-07 — illustrative ledger vignettes, elevation from
+   the --elev-* scale, Fraunces number material, one ink band at the
+   ask. Ink hexes in the .ld-cta band are intentional (it stays dark
+   in dark mode; tokens would double-flip it) — but in dark mode the
+   band lifts to #1B1E24 + a #2C3038 border (same override .lg-pricing
+   uses) so it stays a distinct object against the #16181D page
+   instead of melting into it (panel fix 2026-07-07). P1-5 hygiene
+   (2026-07-07): the dead services-era rules this page stopped
+   consuming (.lg-hero, .studio-toc, .studio-grid/card, .ledger-asym —
+   plus .lg-sheet, dead since the value audit demoted the P1-1 paper
+   dressing to P2) are removed; .lg-price-figure is now consumed by
+   the step-4 lockup. */
 .lg-lede{font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0;max-width:640px}
-.lg-hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 4px}
-/* The shared hero mobile reorder (site.css "Hero mobile reorder") flexes
-   this column and orders .eyebrow/h1 explicitly; give our elements
-   explicit orders too — CTAs right after the headline on phones. */
-@media (max-width:640px){
-  .lg-hero .hero-grid>div:first-child>.lg-hero-ctas{order:3;margin-top:6px}
-  .lg-hero .hero-grid>div:first-child>.lg-lede{order:4;margin-top:18px}
-  .lg-hero .hero-grid>div:first-child>.studio-toc{order:5}
-}
-.studio-toc{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 0;padding:0;list-style:none;font-size:13px}
-.studio-toc a{display:inline-block;padding:6px 14px;background:var(--surface-1,#fff);border:1px solid var(--line);border-radius:999px;color:var(--ink);text-decoration:none;transition:background var(--t-fast) var(--ease)}
-.studio-toc a:hover,.studio-toc a:focus-visible{background:var(--teal-tint);border-color:var(--teal)}
 /* The vignette — a printed ledger sheet, not app UI. Every number in it
    is illustrative and labeled so in the chip AND the figcaption. */
 .lg-vignette{margin:0;position:relative}
-.lg-sheet{position:absolute;inset:20px -12px 2px 16px;background:var(--surface-1,#fff);border:1px solid var(--line);border-radius:10px;box-shadow:var(--elev-1);transform:rotate(.6deg)}
 .lg-pane{position:relative;background:var(--surface-1,#fff);border:1px solid var(--line);border-top:3px solid var(--ink);border-radius:10px;padding:18px 20px 16px;box-shadow:var(--elev-3)}
 .lg-pane-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
 .lg-pane-title{font-family:var(--font-display);font-size:15px;font-weight:600;color:var(--ink)}
@@ -73,37 +69,125 @@
 .lg-s{font-size:11px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--stone);text-align:right}
 .lg-row--flag .lg-n{font-size:16px}
 .lg-flag{display:inline-flex;align-items:center;gap:2px;justify-self:end;padding:1px 6px;font-size:10px;font-weight:700;letter-spacing:.02em;border-radius:999px;background:var(--status-bad-tint,#F7E7DC);color:var(--rust,#C42E2E);white-space:nowrap}
-@media (max-width:560px){.lg-row{grid-template-columns:1fr auto auto;gap:8px}.lg-d,.lg-v{display:none}}
-.lg-step{display:block;width:100%;height:auto;margin:14px 0 4px}
-.lg-step .band{fill:var(--cream-2);opacity:.6}
-.lg-step .base{stroke:var(--stone);stroke-width:1.6;fill:none}
-.lg-step .move{stroke:var(--rust,#C42E2E);stroke-width:2.2;fill:none}
-.lg-step .dot{fill:var(--rust,#C42E2E)}
-.lg-stepnote{font-size:12.5px;color:var(--stone);margin:0;font-style:italic}
+/* Mobile row stack (P0-5, 2026-07-07) — two lines instead of hidden
+   columns: item + price on top, date · vendor · status beneath. The
+   Jun 12→19→26 progression stays visible on phones and the ES pill
+   text wraps instead of overflowing. */
+@media (max-width:560px){
+  .lg-row{grid-template-columns:max-content 1fr max-content;grid-template-areas:"i i n" "d v s";gap:2px 8px}
+  .lg-i{grid-area:i}
+  .lg-n{grid-area:n}
+  .lg-d{grid-area:d;font-size:11.5px}
+  .lg-v{grid-area:v;font-size:11.5px;color:var(--stone);white-space:normal}
+  .lg-s{grid-area:s;font-size:10.5px}
+  .lg-flag{grid-area:s;white-space:normal;text-align:right;line-height:1.3}
+}
+/* Step-1 qty column (P1-2/G2, 2026-07-07) — restored via a modifier
+   scoped to step 1's container only: the rows in steps 2-3 carry five
+   cells, and a page-wide six-track template would let grid auto-
+   placement silently shift their price and status cells. */
+.lg-q{color:var(--stone,#6B7280);font-size:12.5px;text-align:right;font-variant-numeric:tabular-nums}
+@media (min-width:561px){.lg-rows--qty .lg-row{grid-template-columns:52px 104px 1fr 34px max-content max-content}}
+@media (max-width:560px){.lg-rows--qty .lg-row{grid-template-columns:1fr max-content max-content;grid-template-areas:"i q n" "d v s"}.lg-q{grid-area:q;font-size:11.5px}}
+/* Step-1 extraction anatomy (P1-2/G2) — one invoice line in the
+   vendor's printed register, dissected: teal capture washes under
+   item / qty / price, floating field tags above, vendor + date on a
+   miniature header line. Proximity does the work — no connector SVG. */
+.ld-anat{margin:2px 0 14px;padding:12px 14px 13px;border:1px dashed var(--line-dark,#D7DAE0);border-radius:8px;background:var(--cream-2,#EDEEF1)}
+.ld-anat-meta{display:flex;gap:20px;margin:0 0 10px}
+.ld-anat-line{display:flex;align-items:flex-end;gap:14px;font-size:13.5px;letter-spacing:.02em;color:var(--ink,#16181D);font-variant-numeric:tabular-nums lining-nums}
+.ld-anat-field{position:relative;display:inline-block;padding-top:15px}
+.ld-tag{position:absolute;top:0;left:0;font-family:var(--font-body,Inter,sans-serif);font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--teal,#2A50C8);white-space:nowrap}
+.ld-anat-cap{background:var(--teal-tint,#EAF0FE);box-shadow:inset 0 -2px var(--teal,#2A50C8);padding:1px 3px;border-radius:2px;white-space:nowrap}
+.ld-anat-src{font-size:12px;letter-spacing:.04em;color:var(--ink-soft,#4A4F59);white-space:nowrap}
+.ld-anat-dots{flex:1 1 24px;border-bottom:1px dotted var(--line-dark,#D7DAE0);transform:translateY(-4px)}
+@media (max-width:560px){.ld-anat-line{flex-wrap:wrap;gap:10px 14px}.ld-anat-dots{display:none}}
+/* Step-2 search-match highlight + CSV affordance (P1-3, 2026-07-07).
+   The facet-chip row the spec drafted was cut by the value audit
+   (inoperable fake UI — the same problem as the rejected ghost Export
+   button); <mark> + the literal CSV <pre> are the honest artifacts. */
+.lg-rows mark{background:var(--teal-tint,#EAF0FE);color:inherit;padding:0 1px;border-radius:2px}
+.ld-csv{margin:12px 0 0;padding:10px 12px;border:1px solid var(--line,#E3E5E9);border-radius:8px;background:var(--cream-2,#EDEEF1);font-size:12px;line-height:1.6;color:var(--ink-soft,#4A4F59);overflow-x:auto;font-variant-numeric:tabular-nums}
+/* Step-2 ghost rows — the non-matching Jun 26 lines, dimmed so the
+   "3 de las 7 líneas en pantalla coinciden" count is countable on
+   screen. They duplicate step-0 invoice lines, so no information
+   lives only here. */
+.lg-row--ghost{opacity:.45;padding:6px 2px}
+.lg-row--ghost .lg-n{font-size:14px}
+.lg-stepnote{font-size:12.5px;color:var(--stone);margin:10px 0 0;font-style:italic}
 .lg-cap{position:relative;z-index:1;margin:22px 4px 0;font-size:13px;line-height:1.5;color:var(--ink-soft)}
-/* One-time flag landing — armed by the inline script only when motion
-   is allowed; without JS or with reduced motion the flag simply shows. */
+/* Step-3 band chart (P0-2, 2026-07-07). Two hand-drawn variants in
+   aspect-ratio boxes (no CLS); the hidden one is display:none so AT
+   sees exactly one. Geometry key — desktop: $1.00 = 32px, y(v) =
+   252 − (v − 23.50) × 32; mobile: $1.00 = 24px, y(v) = 200 −
+   (v − 23.50) × 24. Data: $24.10 / $24.35 / $29.45; trailing median
+   of the priors = $24.22; delta $5.23 = +21.6% — verified against
+   tools/_shared/bench-lookup.js computePriceHike (fires: ≥8% AND ≥$5). */
+.lg-chart{margin:16px 0 6px}
+.lg-chart--wide{max-width:640px;aspect-ratio:640/300}
+.lg-chart--narrow{display:none;max-width:320px;aspect-ratio:320/240}
+@media (max-width:560px){.lg-chart--wide{display:none}.lg-chart--narrow{display:block}}
+.lg-chart svg{display:block;width:100%;height:auto}
+.lgc-grid{stroke:var(--line,#E3E5E9);stroke-width:1}
+.lgc-axis{stroke:var(--line-dark,#D7DAE0);stroke-width:1}
+.lgc-band{fill:var(--teal-tint,#EAF0FE);opacity:.55}
+.lgc-bandedge{stroke:var(--line-dark,#D7DAE0);stroke-width:1;stroke-dasharray:4 3}
+.lgc-hist{stroke:var(--stone,#6B7280);stroke-width:2;fill:none}
+.lgc-dot{fill:var(--stone,#6B7280);stroke:var(--surface-1,#fff);stroke-width:2}
+.lgc-move{stroke:var(--rust,#C42E2E);stroke-width:2.5;fill:none}
+.lgc-halo{fill:var(--rust,#C42E2E);opacity:.12}
+.lgc-fdot{fill:var(--rust,#C42E2E);stroke:var(--surface-1,#fff);stroke-width:2}
+.lgc-bracket{stroke:var(--rust,#C42E2E);stroke-width:1.5;fill:none}
+.lgc-lab{font-family:var(--font-body,Inter,sans-serif);font-size:11px;fill:var(--stone,#6B7280)}
+.lgc-lab--tick{font-size:11.5px}
+.lgc-lab--sm{font-size:9.5px}
+.lgc-lab--band{font-size:10.5px;letter-spacing:.08em;fill:var(--ink-soft,#4A4F59)}
+.lgc-lab--sub{fill:var(--ink-soft,#4A4F59)}
+.lgc-num{font-family:var(--font-display,Georgia,serif);font-weight:600;font-variant-numeric:tabular-nums lining-nums;font-size:20px;fill:var(--ink,#16181D)}
+.lgc-num--sm{font-size:13px}
+.lgc-delta{font-family:var(--font-display,Georgia,serif);font-weight:600;font-size:16px;fill:var(--rust,#C42E2E)}
+.lgc-delta--sm{font-size:12.5px}
+/* One-time flag landing (P0-3, M1 — 2026-07-07). Base CSS is the
+   finished chart; the inline script arms .lg-armed only when motion is
+   allowed, then double-rAFs .lg-landed. All sequencing lives in
+   transition-delay: rust segment 120ms → dot pop 360ms → bracket +
+   labels 480ms → row pill + tint 600ms. Opacity/transform only, no
+   keyframes; no-JS and reduced-motion see the finished figure. */
+.lg-row--flag{position:relative;isolation:isolate}
+.lg-row--flag::before{content:"";position:absolute;inset:0 -6px;background:var(--status-bad-tint,#F7E7DC);opacity:1;z-index:-1;border-radius:4px}
+.lgf-dot{transform-box:fill-box;transform-origin:center}
 .lg-vignette.lg-armed .lg-flag{opacity:0;transform:translateY(-4px)}
-.lg-vignette.lg-armed.lg-landed .lg-flag{opacity:1;transform:none;transition:opacity 240ms var(--ease-out),transform 240ms var(--ease-out)}
-@media (prefers-reduced-motion:reduce){.lg-vignette .lg-flag,.lg-vignette.lg-armed .lg-flag{opacity:1;transform:none;transition:none}}
+.lg-vignette.lg-armed.lg-landed .lg-flag{opacity:1;transform:none;transition:opacity 240ms var(--ease-out,ease-out) 600ms,transform 240ms var(--ease-out,ease-out) 600ms}
+.lg-vignette.lg-armed .lg-row--flag::before{opacity:0}
+.lg-vignette.lg-armed.lg-landed .lg-row--flag::before{opacity:1;transition:opacity 360ms var(--ease-out,ease-out) 600ms}
+.lg-vignette.lg-armed .lgf-seg{opacity:0;transform:translateY(-4px)}
+.lg-vignette.lg-armed.lg-landed .lgf-seg{opacity:1;transform:none;transition:opacity 240ms var(--ease-out,ease-out) 120ms,transform 240ms var(--ease-out,ease-out) 120ms}
+.lg-vignette.lg-armed .lgf-dot{opacity:0;transform:scale(.4)}
+.lg-vignette.lg-armed.lg-landed .lgf-dot{opacity:1;transform:scale(1);transition:opacity 240ms var(--ease-spring,ease-out) 360ms,transform 240ms var(--ease-spring,ease-out) 360ms}
+.lg-vignette.lg-armed .lgf-lbl{opacity:0}
+.lg-vignette.lg-armed.lg-landed .lgf-lbl{opacity:1;transition:opacity 240ms var(--ease-out,ease-out) 480ms}
+@media (prefers-reduced-motion:reduce){
+  .lg-vignette .lg-flag,.lg-vignette.lg-armed .lg-flag,
+  .lg-vignette .lgf-seg,.lg-vignette.lg-armed .lgf-seg,
+  .lg-vignette .lgf-dot,.lg-vignette.lg-armed .lgf-dot,
+  .lg-vignette .lgf-lbl,.lg-vignette.lg-armed .lgf-lbl{opacity:1;transform:none;transition:none}
+  .lg-vignette .lg-row--flag::before,.lg-vignette.lg-armed .lg-row--flag::before{opacity:1;transition:none}
+}
+/* One page, one ask (P1-8 pulled into P0 by the verdict amendments,
+   2026-07-07): the injected promo banner is suppressed via CSS so the
+   batch-banner sentinel block stays intact and inject-batch-banner.mjs
+   stays idempotent (--banner-h measures 0, harmless). The mobile
+   sticky CTA bar is suppressed via <body data-hide-sticky-bar>. */
+.batch-marquee{display:none}
+/* Step-4 three-stance strip — literal rgba like the rest of the
+   .ld-cta ink band (tokens would double-flip in dark mode). */
+.lg-stances{display:flex;flex-wrap:wrap;gap:6px 18px;list-style:none;padding:14px 0 0;margin:22px 0 0;border-top:1px solid rgba(246,247,248,.14);font-size:12.5px;line-height:1.5;color:rgba(246,247,248,.66)}
 /* Section rhythm — the muntin waypoint replaces the plain rule. */
 .studio-section{margin:72px 0;padding-top:0;border-top:0;scroll-margin-top:90px}
 .studio-section::before{content:"";display:block;width:72px;height:11px;margin:0 0 26px;opacity:.85;background:linear-gradient(var(--ink),var(--ink)) 0 100%/100% 3px no-repeat,linear-gradient(var(--ink),var(--ink)) 24px 0/3px 8px no-repeat,linear-gradient(var(--ink),var(--ink)) 48px 0/3px 8px no-repeat}
 .studio-section:first-of-type{margin-top:44px}
 .studio-section h2{font-family:var(--font-display);font-size:clamp(28px,3.6vw,42px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 12px}
 .studio-section .lead{font-size:17px;line-height:1.55;color:var(--ink-soft);margin:0 0 24px;max-width:640px}
-.studio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-@media (max-width:780px){.studio-grid{grid-template-columns:1fr}}
-.studio-card{padding:22px 24px;background:var(--surface-1,#fff);border:1px solid var(--line);border-top:3px solid var(--ink);border-radius:12px;box-shadow:var(--elev-1)}
-.studio-card__label{font-family:var(--font-display);font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
-.studio-card h3{font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 8px}
-.studio-card p{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:0}
-/* The "why" list reads as ruled ledger lines with hanging numerals. */
-.ledger-asym{list-style:none;padding:0;margin:0;max-width:760px;counter-reset:lgasym}
-.ledger-asym li{position:relative;padding:18px 0 18px 64px;border-bottom:1px solid var(--line);font-size:15.5px;line-height:1.6;color:var(--ink);counter-increment:lgasym}
-.ledger-asym li:first-child{border-top:1px solid var(--line)}
-.ledger-asym li::before{content:counter(lgasym,decimal-leading-zero);position:absolute;left:0;top:16px;font-family:var(--font-display);font-size:26px;font-weight:560;letter-spacing:-.01em;color:var(--stone);font-variant-numeric:tabular-nums lining-nums}
-.ledger-asym li strong{font-family:var(--font-display);font-weight:600;color:var(--ink)}
 .studio-cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
 /* The pricing moment — the page's single ink band. */
 .lg-pricing-section::before{display:none}
@@ -138,10 +222,36 @@
 .ld-rail a::before{content:counter(ld,decimal-leading-zero);font-family:var(--font-display);font-weight:560;font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums lining-nums}
 .ld-rail li[aria-current="step"] a{border-color:var(--ink);box-shadow:var(--elev-1)}
 .ld-panel{margin:0 0 26px}
-.ld-js .ld-panel:not(.ld-current){display:none}
+.ld-js #ldPanels{display:grid;align-items:start;grid-template-columns:minmax(0,1fr);transition:height 200ms var(--ease-out,ease-out)}
+/* align-items:start: with default stretch, every grid-area:1/1 panel measures the
+   TALLEST panel (sizePanels read the same height on all five steps in round-3
+   headless verification), so per-step height never changed. minmax(0,1fr): the
+   auto track otherwise inherits the CSV pre min-content width and forces
+   page-level horizontal scroll at 360px. Verified live in Chromium, 2026-07-07. */
+.ld-js #ldPanels>.ld-panel{grid-area:1/1}
+/* Per-step height (review round 2, 2026-07-07). The grid-stack +
+   visibility (not display:none) still keeps every panel laid out at
+   full width, so content never reflows mid-transition — but the
+   region no longer sits at the TALLEST panel's height: that fix for
+   the founder-reported bounce (2026-07-06) traded it for a several-
+   hundred-pixel void under short steps. The stepper JS now sets
+   #ldPanels' inline height to the ACTIVE panel's offsetHeight on
+   every step change (recomputed on resize via one debounced
+   listener), and the 200ms height transition above turns each
+   difference into a calm animated frame — not the jarring instant
+   reflow the founder banned. Reduced motion: transition off, the
+   height still snaps straight to the right value. No-JS: .ld-js is
+   never added and no inline height is set, so the stacked read
+   keeps its natural flow. No overflow clipping: hidden panels don't
+   paint, and the footer below always covers their residual layout
+   overflow — clipping would cut the pane's --elev-3 shadow instead.
+   Hidden panels drop out of paint, pointer, and the accessibility
+   tree alike. */
+.ld-js .ld-panel:not(.ld-current){visibility:hidden}
+@media (prefers-reduced-motion:reduce){.ld-js #ldPanels{transition:none}}
 .ld-panel .lg-pane{box-shadow:var(--elev-1)}
 .ld-js .ld-panel.ld-current .lg-pane{box-shadow:var(--elev-3)}
-.ld-panel h2{font-family:var(--font-display);font-size:clamp(24px,3vw,32px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 8px}
+.ld-panel h2{font-family:var(--font-display);font-size:clamp(24px,3vw,32px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 8px;scroll-margin-top:calc(84px + var(--banner-h,0px))}
 .ld-panel .ld-body{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 16px;max-width:640px}
 .ld-invoice-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:6px}
 .ld-invoice-title{font-family:var(--font-display);font-weight:600;font-size:15px;color:var(--ink)}
@@ -156,17 +266,63 @@
 .ld-search svg{flex:0 0 16px}
 .ld-search .ld-q{font-weight:600;color:var(--ink)}
 .ld-count{font-size:12.5px;color:var(--stone);margin:0 0 10px}
-.ld-controls{display:flex;gap:12px;align-items:center;margin:4px 0 0}
+/* Acotado bajo .ld-js (2026-07-07): un display:flex de autor sin
+   acotar vence la regla [hidden]{display:none} del UA, y la página
+   sin JS pintaría botones Atrás/Siguiente muertos. Con JS, .ld-js y
+   hidden=false llegan juntos; sin JS el atributo hidden los mantiene
+   fuera del layout.
+   Pegajosos al borde inferior del viewport en TODOS los anchos
+   (corrección de revisión 2026-07-07): la pila de grid reserva la
+   altura del panel más alto, así que en los pasos cortos
+   Atrás/Siguiente quedaban debajo de un vacío de cientos de píxeles —
+   bajo el pliegue en el paso 0. position:sticky los fija al borde
+   inferior mientras el recorrido está a la vista y los deja asentarse
+   en su posición natural al final, con orden del DOM = orden visual =
+   orden de foco (el volteo de orden en ≤640px desapareció). La barra
+   CTA móvil está suprimida en esta página (data-hide-sticky-bar), así
+   que el espacio inferior está libre. El fondo usa --cream para que
+   la barra cambie con el modo oscuro. */
+.ld-js .ld-controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;position:sticky;bottom:0;z-index:5;margin:0;padding:10px 2px calc(10px + env(safe-area-inset-bottom,0px));background:var(--cream,#F6F7F8);border-top:1px solid var(--line,#E3E5E9)}
 .ld-controls .btn[disabled]{opacity:.45;cursor:default;pointer-events:none}
 .ld-progress{font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums}
 .ld-cta{background:#16181D;color:rgba(246,247,248,.78);border-radius:18px;padding:clamp(26px,4vw,48px)}
 .ld-cta h2{color:#F6F7F8}
 .ld-cta .ld-body{color:rgba(246,247,248,.75)}
 .ld-cta .lg-cap{color:rgba(246,247,248,.55)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ld-cta{background:#1B1E24;border:1px solid #2C3038}}
+:root[data-theme="dark"] .ld-cta{background:#1B1E24;border:1px solid #2C3038}
+/* Escaneo del paso 1 (P1-2/M2, 2026-07-07) — la fila aparece y luego
+   su sello de "leída" se asienta. Toda la secuencia vive en los
+   transition-delay de CSS bajo .ld-go (el JS quedó en dos clases):
+   filas de 200ms con escalón de 60ms por :nth-child, sellos de 180ms
+   a +120ms por fila — todo termina en menos de 550ms. El CSS base es
+   el estado final; sin JS y con movimiento reducido se ve completo
+   al instante. */
 .ld-reveal{opacity:1}
 .ld-js .ld-armed .ld-reveal{opacity:0;transform:translateY(6px)}
-.ld-js .ld-armed .ld-reveal.ld-in{opacity:1;transform:none;transition:opacity .24s var(--ease-out),transform .24s var(--ease-out)}
-@media (prefers-reduced-motion:reduce){.ld-reveal,.ld-js .ld-armed .ld-reveal{opacity:1!important;transform:none!important;transition:none!important}}
+.ld-js .ld-armed .ld-reveal .lg-s{opacity:0;transform:scale(.85)}
+.ld-js .ld-armed.ld-go .ld-reveal{opacity:1;transform:none;transition:opacity 200ms var(--ease-out,ease-out),transform 200ms var(--ease-out,ease-out)}
+.ld-js .ld-armed.ld-go .ld-reveal .lg-s{opacity:1;transform:none;transition:opacity 180ms var(--ease-spring,ease-out),transform 180ms var(--ease-spring,ease-out)}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(2){transition-delay:60ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(3){transition-delay:120ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(4){transition-delay:180ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(5){transition-delay:240ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(1) .lg-s{transition-delay:120ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(2) .lg-s{transition-delay:180ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(3) .lg-s{transition-delay:240ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(4) .lg-s{transition-delay:300ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(5) .lg-s{transition-delay:360ms}
+@media (prefers-reduced-motion:reduce){.ld-reveal,.ld-js .ld-armed .ld-reveal,.ld-reveal .lg-s,.ld-js .ld-armed .ld-reveal .lg-s{opacity:1!important;transform:none!important;transition:none!important}}
+/* Lockup de precio G5 a escala del demo (P1-5, 2026-07-07) — la cifra
+   nunca viaja sin los términos fundadores registrados completos. */
+.ld-cta .lg-price-figure{font-size:clamp(48px,6vw,72px);margin:20px 0 0}
+.ld-cta .lg-price-ga{margin:10px 0 0}
+/* M5 (P1-9) reemplazado 2026-07-07: el volteo de orden en ≤640px
+   (controles arriba de la región de paneles) cambiaba el vacío de
+   escritorio por uno móvil — tras leer un panel largo había que
+   volver a subir para tocar Siguiente — y hacía divergir el orden
+   visual del orden del DOM/tab. La regla pegajosa de .ld-controls de
+   arriba lo sustituye en todos los anchos. */
 .visually-hidden-ld{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 </style>
 <style>
@@ -178,16 +334,18 @@
    fixed nav so layout doesn't shift when site.css applies. ~600
    bytes. Documented in Phase 3B perf cutover; the full token set
    reapplies once site.css arrives. */
+[hidden]{display:none!important}
+/* ^ [hidden] guard duplicated from site-core.css on purpose: that sheet loads
+   async, but the stepper script runs at parse and relies on [hidden] to keep
+   all four controls unpainted until JS chooses — without this inline rule a
+   slow first load briefly paints Back/Next/Start-over/Join simultaneously
+   (round-3 catch; splice repaired after certification round). */
 :root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
 html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
 .container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
 .skip-link{position:absolute;left:-9999px;top:0}
 .skip-link:focus{position:static;display:inline-block;background:#16181D;color:#F6F7F8;padding:12px 16px;z-index:100}
-/* injected by inject-critical-link-color.mjs */
-.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
-.btn-primary{background:var(--ink);color:var(--cream)}
-.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D7DAE0}
 /* injected by inject-critical-link-color.mjs */
 a{color:inherit}
 .btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
@@ -274,7 +432,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
 </head>
-<body>
+<body data-hide-sticky-bar>
 
 <a class="skip-link" href="#main">Saltar al contenido</a>
 
@@ -461,7 +619,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li><a href="#ld-step1">Leer</a></li>
         <li><a href="#ld-step2">Archivar</a></li>
         <li><a href="#ld-step3">Marcar</a></li>
-        <li><a href="#ld-step4">Tu línea</a></li>
+        <li><a href="#ld-step4">Cada línea</a></li>
       </ol>
     </header>
 
@@ -469,115 +627,263 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <section class="ld-panel" id="ld-step0" aria-labelledby="ld-h0">
       <h2 id="ld-h0" tabindex="-1">Llega la factura.</h2>
-      <p class="ld-body">Una factura de verduras llega como siempre: cinco l&iacute;neas, un total. Esta muestra es la que recorre todo el demo.</p>
-      <figure class="lg-vignette" style="margin:0">
+      <p class="ld-body">Una factura de verduras llega como siempre: cinco l&iacute;neas, un total. Una de esas cinco l&iacute;neas esconde una subida &mdash; y el total de $115.80 no te dir&aacute; cu&aacute;l. <a class="js-ld-jump" href="#ld-step3">Salta a la marca &rarr;</a></p>
+      <figure class="lg-vignette" style="margin:0" data-audio-alt="Una factura de verduras de muestra con fecha veintiséis de junio: cinco líneas. Lechuga romana a veintinueve cuarenta y cinco, tomates Roma a treinta y uno cincuenta, cebollas amarillas a veintidós dólares, limones verdes a catorce veinticinco y cilantro a dieciocho sesenta, con un total de ciento quince dólares con ochenta centavos. Una de las cinco líneas esconde una subida; el total por sí solo no dirá cuál.">
         <div class="lg-pane">
           <div class="lg-pane-head">
             <span class="lg-pane-title">Proveedor de verduras &mdash; factura</span>
             <span class="lg-chip">Factura de muestra &middot; ilustrativa</span>
           </div>
           <div class="ld-invoice-head"><span class="ld-invoice-title">Factura &mdash; 26 jun</span><span class="ld-invoice-date">Neto 15 &middot; 5 l&iacute;neas</span></div>
-          <div class="ld-line"><span>Lechuga romana, 24&nbsp;uds <span class="q">&times;1</span></span><span></span><span class="lg-n">$27.90</span></div>
-          <div class="ld-line"><span>Tomates Roma, 25&nbsp;lb <span class="q">&times;1</span></span><span></span><span class="lg-n">$31.50</span></div>
-          <div class="ld-line"><span>Cebollas amarillas, 50&nbsp;lb <span class="q">&times;1</span></span><span></span><span class="lg-n">$22.00</span></div>
-          <div class="ld-line"><span>Limones verdes, 40&nbsp;uds <span class="q">&times;1</span></span><span></span><span class="lg-n">$14.25</span></div>
-          <div class="ld-line"><span>Cilantro, 30&nbsp;uds <span class="q">&times;1</span></span><span></span><span class="lg-n">$18.60</span></div>
-          <div class="ld-total"><span>Total</span><span class="lg-n">$114.25</span></div>
+          <!-- Semántica de tabla ARIA (WCAG 1.3.1, 2026-07-07): la
+               cuadrícula de divs se queda para el layout; role=
+               table/row/cell más una fila de encabezados oculta dan a
+               la tecnología de asistencia la asociación de columnas
+               que la cuadrícula visual implica. -->
+          <div role="table" aria-label="L&iacute;neas de la factura">
+            <div class="visually-hidden-ld" role="rowgroup"><div role="row"><span role="columnheader">Art&iacute;culo</span><span role="columnheader">Precio</span></div></div>
+            <div role="rowgroup">
+              <div class="ld-line" role="row"><span role="cell">Lechuga romana, 24&nbsp;uds <span class="q">&times;1</span></span><span aria-hidden="true"></span><span class="lg-n" role="cell">$29.45</span></div>
+              <div class="ld-line" role="row"><span role="cell">Tomates Roma, 25&nbsp;lb <span class="q">&times;1</span></span><span aria-hidden="true"></span><span class="lg-n" role="cell">$31.50</span></div>
+              <div class="ld-line" role="row"><span role="cell">Cebollas amarillas, 50&nbsp;lb <span class="q">&times;1</span></span><span aria-hidden="true"></span><span class="lg-n" role="cell">$22.00</span></div>
+              <div class="ld-line" role="row"><span role="cell">Limones verdes, 40&nbsp;uds <span class="q">&times;1</span></span><span aria-hidden="true"></span><span class="lg-n" role="cell">$14.25</span></div>
+              <div class="ld-line" role="row"><span role="cell">Cilantro, 30&nbsp;uds <span class="q">&times;1</span></span><span aria-hidden="true"></span><span class="lg-n" role="cell">$18.60</span></div>
+            </div>
+          </div>
+          <div class="ld-total"><span>Total</span><span class="lg-n">$115.80</span></div>
         </div>
-        <figcaption class="lg-cap"><strong>Muestra ilustrativa</strong> &mdash; el demo corre por completo sobre esta factura ficticia; no sube nada y no env&iacute;a nada. No son datos en vivo ni de clientes.</figcaption>
+        <figcaption class="lg-cap"><strong>Muestra ficticia, a prop&oacute;sito</strong> &mdash; sin subir nada; nada de lo que hagas en este demo sale de tu navegador. El recorrido es HTML simple y no dispara peticiones propias.
+          <!-- El forense del paso 0 pasa al caj&oacute;n cite de la casa
+               (revisi&oacute;n ronda 2, 2026-07-07): la leyenda guarda la
+               conclusi&oacute;n de una frase; el esc&eacute;ptico expande
+               el detalle de la pesta&ntilde;a Red. -->
+          <details class="cite">
+            <summary>Compru&eacute;balo: lo que muestra la pesta&ntilde;a Red</summary>
+            <div class="cite-body">
+              <p>Mira la pesta&ntilde;a Red mientras avanzas &mdash; el recorrido no dispara peticiones propias. Lo que s&iacute; ver&aacute;s es la maquinaria del propio sitio: una consulta de sesi&oacute;n, nuestro contador propio sin cookies y &mdash; si bajas hasta el formulario del pie &mdash; su escudo antispam, el &uacute;nico script de terceros en la p&aacute;gina.</p>
+            </div>
+          </details>
+        </figcaption>
       </figure>
     </section>
 
     <section class="ld-panel" id="ld-step1" aria-labelledby="ld-h1">
       <h2 id="ld-h1" tabindex="-1">Leer.</h2>
-      <p class="ld-body">Plantillas y reglas extraen las l&iacute;neas: proveedor, art&iacute;culo, cantidad, precio. Ning&uacute;n modelo de lenguaje lee el documento; una compuerta de build impide agregarlo.</p>
-      <figure class="lg-vignette ld-armed-target" style="margin:0">
+      <p class="ld-body">Toma una foto o sube la factura; plantillas y reglas extraen las l&iacute;neas: proveedor, art&iacute;culo, cantidad, precio. Ninguna IA lee tus facturas &mdash; y no tienes que creernos: una puerta de build publicada hace fallar cualquier versi&oacute;n que agregue una biblioteca de modelos de lenguaje. <a href="/es/ai/" style="color:var(--teal)">La pol&iacute;tica de IA &rarr;</a></p>
+      <figure class="lg-vignette ld-armed-target" style="margin:0" data-audio-alt="Una línea impresa de la factura, lechuga romana, veinticuatro unidades, por uno, veintinueve cuarenta y cinco, diseccionada en campos etiquetados: proveedor, fecha, artículo, cantidad y precio. Debajo, las cinco filas extraídas del libro, cada una con su sello de leída. Plantillas y reglas hacen la lectura; ningún modelo de lenguaje toca el documento.">
         <div class="lg-pane">
           <div class="lg-pane-head">
             <span class="lg-pane-title">L&iacute;neas &mdash; extra&iacute;das por reglas</span>
-            <span class="lg-chip">Libro de muestra &middot; ilustrativo</span>
+            <span class="lg-chip">Extracci&oacute;n de muestra &middot; ilustrativa</span>
           </div>
-          <div class="lg-rows">
-            <div class="lg-row ld-reveal"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$27.90</span><span class="lg-s">le&iacute;da</span></div>
-            <div class="lg-row ld-reveal"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Tomates Roma, 25&nbsp;lb</span><span class="lg-n">$31.50</span><span class="lg-s">le&iacute;da</span></div>
-            <div class="lg-row ld-reveal"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Cebollas amarillas, 50&nbsp;lb</span><span class="lg-n">$22.00</span><span class="lg-s">le&iacute;da</span></div>
-            <div class="lg-row ld-reveal"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Limones verdes, 40&nbsp;uds</span><span class="lg-n">$14.25</span><span class="lg-s">le&iacute;da</span></div>
-            <div class="lg-row ld-reveal"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Cilantro, 30&nbsp;uds</span><span class="lg-n">$18.60</span><span class="lg-s">le&iacute;da</span></div>
+          <div class="ld-anat">
+            <div class="ld-anat-meta">
+              <span class="ld-anat-field"><span class="ld-tag">proveedor</span><span class="ld-anat-src">PROVEEDOR DE VERDURAS</span></span>
+              <span class="ld-anat-field"><span class="ld-tag">fecha</span><span class="ld-anat-src">26 JUN</span></span>
+            </div>
+            <div class="ld-anat-line">
+              <span class="ld-anat-field"><span class="ld-tag">art&iacute;culo</span><span class="ld-anat-cap">LECHUGA ROMANA 24 UDS</span></span>
+              <span class="ld-anat-field"><span class="ld-tag">cant.</span><span class="ld-anat-cap">&times;1</span></span>
+              <span class="ld-anat-dots" aria-hidden="true"></span>
+              <span class="ld-anat-field"><span class="ld-tag">precio</span><span class="ld-anat-cap">$29.45</span></span>
+            </div>
+          </div>
+          <!-- Tabla ARIA (WCAG 1.3.1, 2026-07-07). La fila de
+               encabezados oculta va FUERA de .lg-rows para no tocar
+               los delays :nth-child del escaneo ni el borde de
+               .lg-row:first-child. -->
+          <div role="table" aria-label="Filas extra&iacute;das del libro">
+            <div class="visually-hidden-ld" role="rowgroup"><div role="row"><span role="columnheader">Fecha</span><span role="columnheader">Proveedor</span><span role="columnheader">Art&iacute;culo</span><span role="columnheader">Cantidad</span><span role="columnheader">Precio</span><span role="columnheader">Estado</span></div></div>
+            <div class="lg-rows lg-rows--qty" role="rowgroup">
+              <div class="lg-row ld-reveal" role="row"><span class="lg-d" role="cell">26 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Lechuga romana, 24&nbsp;uds</span><span class="lg-q" role="cell">&times;1</span><span class="lg-n" role="cell">$29.45</span><span class="lg-s" role="cell">le&iacute;da</span></div>
+              <div class="lg-row ld-reveal" role="row"><span class="lg-d" role="cell">26 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Tomates Roma, 25&nbsp;lb</span><span class="lg-q" role="cell">&times;1</span><span class="lg-n" role="cell">$31.50</span><span class="lg-s" role="cell">le&iacute;da</span></div>
+              <div class="lg-row ld-reveal" role="row"><span class="lg-d" role="cell">26 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Cebollas amarillas, 50&nbsp;lb</span><span class="lg-q" role="cell">&times;1</span><span class="lg-n" role="cell">$22.00</span><span class="lg-s" role="cell">le&iacute;da</span></div>
+              <div class="lg-row ld-reveal" role="row"><span class="lg-d" role="cell">26 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Limones verdes, 40&nbsp;uds</span><span class="lg-q" role="cell">&times;1</span><span class="lg-n" role="cell">$14.25</span><span class="lg-s" role="cell">le&iacute;da</span></div>
+              <div class="lg-row ld-reveal" role="row"><span class="lg-d" role="cell">26 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Cilantro, 30&nbsp;uds</span><span class="lg-q" role="cell">&times;1</span><span class="lg-n" role="cell">$18.60</span><span class="lg-s" role="cell">le&iacute;da</span></div>
+            </div>
           </div>
           <p class="ld-note">Reglas, no un modelo de lenguaje &mdash; la misma factura siempre da los mismos n&uacute;meros, y tus documentos nunca se vuelven datos de entrenamiento.</p>
         </div>
-        <figcaption class="lg-cap"><strong>Muestra ilustrativa</strong> &mdash; cinco l&iacute;neas convertidas en campos por plantillas y reglas. No son datos en vivo ni de clientes.</figcaption>
+        <figcaption class="lg-cap"><strong>Una l&iacute;nea impresa, cinco campos</strong> &mdash; el texto crudo de la factura, arriba, aterriza como las filas tecleadas de abajo: proveedor, fecha, art&iacute;culo, cantidad, precio, sin volver a teclear. Datos de muestra &mdash; una factura de verduras limpia es el caso f&aacute;cil; el demo muestra el mecanismo, no una cifra de precisi&oacute;n.</figcaption>
       </figure>
     </section>
 
     <section class="ld-panel" id="ld-step2" aria-labelledby="ld-h2">
       <h2 id="ld-h2" tabindex="-1">Archivar.</h2>
-      <p class="ld-body">Cada l&iacute;nea queda archivada y consultable: por proveedor, art&iacute;culo o fecha. Todo el registro se exporta a un CSV limpio cuando lo pidas.</p>
-      <figure class="lg-vignette" style="margin:0">
+      <p class="ld-body">Cada l&iacute;nea queda archivada y consultable &mdash; por proveedor, art&iacute;culo o fecha &mdash; y todo el registro se exporta a un CSV limpio cuando lo pidas. Es la hoja de c&aacute;lculo de precios que nunca tuviste que armar; se archiv&oacute; sola.</p>
+      <figure class="lg-vignette" style="margin:0" data-audio-alt="El libro filtrado por romana: tres filas coinciden, doce de junio a veinticuatro diez, diecinueve de junio a veinticuatro treinta y cinco y veintiséis de junio a veintinueve cuarenta y cinco, con las otras cuatro líneas del veintiséis de junio atenuadas. Debajo de las filas, una muestra de dos líneas de la exportación CSV con fecha, proveedor, artículo, cantidad y precio.">
         <div class="lg-pane">
           <div class="lg-pane-head">
             <span class="lg-pane-title">El libro &mdash; consultable</span>
             <span class="lg-chip">Libro de muestra &middot; ilustrativo</span>
           </div>
-          <div class="ld-search" aria-hidden="true">
+          <div class="ld-search">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
             <span>Buscar: <span class="ld-q">romana</span></span>
           </div>
-          <p class="ld-count">3 de 6 l&iacute;neas coinciden</p>
-          <div class="lg-rows">
-            <div class="lg-row"><span class="lg-d">12 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$24.10</span><span class="lg-s">archivada</span></div>
-            <div class="lg-row"><span class="lg-d">19 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$24.35</span><span class="lg-s">archivada</span></div>
-            <div class="lg-row"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$27.90</span><span class="lg-s">archivada</span></div>
+          <p class="ld-count">3 de las 7 l&iacute;neas en pantalla coinciden</p>
+          <div role="table" aria-label="Filas del libro que coinciden con la b&uacute;squeda">
+            <div class="visually-hidden-ld" role="rowgroup"><div role="row"><span role="columnheader">Fecha</span><span role="columnheader">Proveedor</span><span role="columnheader">Art&iacute;culo</span><span role="columnheader">Precio</span><span role="columnheader">Estado</span></div></div>
+            <div class="lg-rows" role="rowgroup">
+              <div class="lg-row" role="row"><span class="lg-d" role="cell">12 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Lechuga <mark>romana</mark>, 24&nbsp;uds</span><span class="lg-n" role="cell">$24.10</span><span class="lg-s" role="cell">archivada</span></div>
+              <div class="lg-row" role="row"><span class="lg-d" role="cell">19 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Lechuga <mark>romana</mark>, 24&nbsp;uds</span><span class="lg-n" role="cell">$24.35</span><span class="lg-s" role="cell">archivada</span></div>
+              <div class="lg-row" role="row"><span class="lg-d" role="cell">26 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Lechuga <mark>romana</mark>, 24&nbsp;uds</span><span class="lg-n" role="cell">$29.45</span><span class="lg-s" role="cell">archivada</span></div>
+              <div class="lg-row lg-row--ghost" role="row"><span class="lg-d" role="cell">26 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Tomates Roma, 25&nbsp;lb</span><span class="lg-n" role="cell">$31.50</span><span class="lg-s" role="cell">archivada</span></div>
+              <div class="lg-row lg-row--ghost" role="row"><span class="lg-d" role="cell">26 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Cebollas amarillas, 50&nbsp;lb</span><span class="lg-n" role="cell">$22.00</span><span class="lg-s" role="cell">archivada</span></div>
+              <div class="lg-row lg-row--ghost" role="row"><span class="lg-d" role="cell">26 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Limones verdes, 40&nbsp;uds</span><span class="lg-n" role="cell">$14.25</span><span class="lg-s" role="cell">archivada</span></div>
+              <div class="lg-row lg-row--ghost" role="row"><span class="lg-d" role="cell">26 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Cilantro, 30&nbsp;uds</span><span class="lg-n" role="cell">$18.60</span><span class="lg-s" role="cell">archivada</span></div>
+            </div>
           </div>
+          <pre class="ld-csv">fecha,proveedor,art&iacute;culo,cant,precio
+2026-06-19,Proveedor de verduras,"Lechuga romana, 24 uds",1,24.35</pre>
         </div>
-        <figcaption class="lg-cap"><strong>Muestra ilustrativa</strong> &mdash; el buscador es parte de la maqueta, no un campo real; las filas son ficticias. No son datos en vivo ni de clientes.</figcaption>
+        <figcaption class="lg-cap"><strong>El libro, reducido a un art&iacute;culo</strong> &mdash; tres lecturas de romana en tres facturas, con las dem&aacute;s l&iacute;neas del 26 de junio atenuadas; el CSV de abajo muestra c&oacute;mo el registro completo se va contigo, en un formato que abres sin nosotros. El buscador y la exportaci&oacute;n son parte de la maqueta, no controles reales. Filas ficticias.</figcaption>
       </figure>
     </section>
 
     <section class="ld-panel" id="ld-step3" aria-labelledby="ld-h3">
       <h2 id="ld-h3" tabindex="-1">Marcar.</h2>
-      <p class="ld-body">La l&iacute;nea de lechuga romana se sale de su banda de seis meses &mdash; $3.55 m&aacute;s por caja &mdash; y recibe la marca. La comparaci&oacute;n es contra tu propio historial, nada m&aacute;s.</p>
-      <figure class="lg-vignette" style="margin:0">
+      <p class="ld-body">La l&iacute;nea de lechuga romana del 26 de junio llega a $29.45 &mdash; $5.23 m&aacute;s por caja contra la mediana m&oacute;vil de tus lecturas previas (+21.6%) &mdash; y recibe la marca. La revisi&oacute;n corre contra tu propio historial, nada m&aacute;s, y solo se dispara cuando el movimiento cruza los dos umbrales de Ledger: al menos 8% <em>y</em> al menos $5.00 sobre tu mediana m&oacute;vil.</p>
+      <figure class="lg-vignette" style="margin:0" data-audio-alt="Gráfica de revisión de precio para lechuga romana de veinticuatro unidades. El doce de junio marca veinticuatro dólares con diez centavos y el diecinueve de junio veinticuatro treinta y cinco, ambos dentro de la banda de tus lecturas previas. El veintiséis de junio salta a veintinueve cuarenta y cinco: cinco dólares con veintitrés centavos, o veintiuno punto seis por ciento, sobre la mediana móvil de veinticuatro veintidós. Eso cruza los dos umbrales de Ledger, al menos ocho por ciento y al menos cinco dólares, así que la línea queda marcada.">
         <div class="lg-pane">
           <div class="lg-pane-head">
             <span class="lg-pane-title">Revisi&oacute;n de precio &mdash; contra tu propio historial</span>
-            <span class="lg-chip">Libro de muestra &middot; ilustrativo</span>
+            <span class="lg-chip">Historial de muestra &middot; ilustrativo</span>
           </div>
-          <div class="lg-rows">
-            <div class="lg-row"><span class="lg-d">12 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$24.10</span><span class="lg-s">en banda</span></div>
-            <div class="lg-row"><span class="lg-d">19 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$24.35</span><span class="lg-s">en banda</span></div>
-            <div class="lg-row lg-row--flag"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$27.90</span><span class="lg-flag"><span aria-hidden="true">&#9650;</span> el precio se movi&oacute;</span></div>
+          <div role="table" aria-label="Historial de precios de la lechuga romana">
+            <div class="visually-hidden-ld" role="rowgroup"><div role="row"><span role="columnheader">Fecha</span><span role="columnheader">Proveedor</span><span role="columnheader">Art&iacute;culo</span><span role="columnheader">Precio</span><span role="columnheader">Estado</span></div></div>
+            <div class="lg-rows" role="rowgroup">
+              <div class="lg-row" role="row"><span class="lg-d" role="cell">12 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Lechuga romana, 24&nbsp;uds</span><span class="lg-n" role="cell">$24.10</span><span class="lg-s" role="cell">en banda</span></div>
+              <div class="lg-row" role="row"><span class="lg-d" role="cell">19 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Lechuga romana, 24&nbsp;uds</span><span class="lg-n" role="cell">$24.35</span><span class="lg-s" role="cell">en banda</span></div>
+              <div class="lg-row lg-row--flag" role="row"><span class="lg-d" role="cell">26 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Lechuga romana, 24&nbsp;uds</span><span class="lg-n" role="cell">$29.45</span><span class="lg-flag" role="cell"><span aria-hidden="true">&#9650;</span> el precio se movi&oacute;</span></div>
+            </div>
           </div>
-          <svg class="lg-step" viewBox="0 0 280 44" width="280" height="44" aria-hidden="true" focusable="false">
-            <rect class="band" x="8" y="14" width="264" height="16" rx="2"></rect>
-            <polyline class="base" points="8,23 186,22"></polyline>
-            <polyline class="move" points="186,22 204,9 272,8"></polyline>
-            <circle class="dot" cx="272" cy="8" r="3"></circle>
-          </svg>
-          <p class="lg-stepnote">La l&iacute;nea se sale de su banda de seis meses &mdash; esa es la alerta.</p>
+          <!-- Datos y mapeo de la gráfica (clave de renumeración): puntos
+               12 jun $24.10, 19 jun $24.35, 26 jun $29.45; mediana de los
+               previos $24.22; delta $5.23 = +21.6%. Escritorio y(v) =
+               252 − (v−23.50)×32; móvil y(v) = 200 − (v−23.50)×24. -->
+          <div class="lg-chart lg-chart--wide">
+            <svg viewBox="0 0 640 300" width="640" height="300" role="img" aria-labelledby="ldc-w-t ldc-w-d" focusable="false">
+              <title id="ldc-w-t">Lechuga romana, 24 uds &mdash; el precio del 26 de junio se sale de la banda de sus lecturas previas</title>
+              <desc id="ldc-w-d">Gr&aacute;fica de l&iacute;nea con tres precios por caja de lechuga romana: 12 de junio $24.10 y 19 de junio $24.35, dentro de la banda; el 26 de junio salta a $29.45 &mdash; $5.23 y 21.6% por encima de la mediana m&oacute;vil de $24.22. La l&iacute;nea queda marcada porque el movimiento cruza los dos umbrales de Ledger: al menos 8% y al menos $5.00 sobre la mediana m&oacute;vil.</desc>
+              <line class="lgc-grid" x1="64" y1="236" x2="508" y2="236"/>
+              <line class="lgc-grid" x1="64" y1="172" x2="508" y2="172"/>
+              <line class="lgc-grid" x1="64" y1="108" x2="508" y2="108"/>
+              <line class="lgc-grid" x1="64" y1="44" x2="508" y2="44"/>
+              <text class="lgc-lab" x="56" y="240" text-anchor="end">$24</text>
+              <text class="lgc-lab" x="56" y="176" text-anchor="end">$26</text>
+              <text class="lgc-lab" x="56" y="112" text-anchor="end">$28</text>
+              <text class="lgc-lab" x="56" y="48" text-anchor="end">$30</text>
+              <rect class="lgc-band" x="64" y="224.8" width="444" height="8"/>
+              <line class="lgc-bandedge" x1="64" y1="224.8" x2="508" y2="224.8"/>
+              <line class="lgc-bandedge" x1="64" y1="232.8" x2="508" y2="232.8"/>
+              <text class="lgc-lab lgc-lab--band" x="504" y="216" text-anchor="end">BANDA DE LECTURAS PREVIAS</text>
+              <polyline class="lgc-hist" points="140,232.8 300,224.8"/>
+              <circle class="lgc-dot" cx="140" cy="232.8" r="4"/>
+              <circle class="lgc-dot" cx="300" cy="224.8" r="4"/>
+              <text class="lgc-num" x="140" y="212" text-anchor="middle">$24.10</text>
+              <text class="lgc-num" x="300" y="204" text-anchor="middle">$24.35</text>
+              <g class="lgf-seg"><line class="lgc-move" x1="300" y1="224.8" x2="460" y2="61.6"/></g>
+              <g class="lgf-dot"><circle class="lgc-halo" cx="460" cy="61.6" r="11"/><circle class="lgc-fdot" cx="460" cy="61.6" r="5.5"/></g>
+              <g class="lgf-lbl">
+                <text class="lgc-num" x="442" y="68" text-anchor="end">$29.45</text>
+                <polyline class="lgc-bracket" points="514,61.6 520,61.6 520,229 514,229"/>
+                <text class="lgc-delta" x="528" y="128">&#9650; $5.23</text>
+                <text class="lgc-lab lgc-lab--sub" x="528" y="146">por caja</text>
+                <text class="lgc-lab lgc-lab--sub" x="528" y="164">+21.6% sobre tu</text>
+                <text class="lgc-lab lgc-lab--sub" x="528" y="179">mediana de $24.22</text>
+                <text class="lgc-lab lgc-lab--sub" x="528" y="194">&mdash; marcada</text>
+              </g>
+              <line class="lgc-axis" x1="64" y1="252" x2="508" y2="252"/>
+              <text class="lgc-lab lgc-lab--tick" x="140" y="272" text-anchor="middle">12 jun</text>
+              <text class="lgc-lab lgc-lab--tick" x="300" y="272" text-anchor="middle">19 jun</text>
+              <text class="lgc-lab lgc-lab--tick" x="460" y="272" text-anchor="middle">26 jun</text>
+            </svg>
+          </div>
+          <div class="lg-chart lg-chart--narrow">
+            <svg viewBox="0 0 320 240" width="320" height="240" role="img" aria-labelledby="ldc-m-t ldc-m-d" focusable="false">
+              <title id="ldc-m-t">Lechuga romana, 24 uds &mdash; el precio del 26 de junio se sale de la banda de sus lecturas previas</title>
+              <desc id="ldc-m-d">Gr&aacute;fica de l&iacute;nea con tres precios por caja de lechuga romana: 12 de junio $24.10 y 19 de junio $24.35, dentro de la banda; el 26 de junio salta a $29.45 &mdash; $5.23 y 21.6% por encima de la mediana m&oacute;vil de $24.22. La l&iacute;nea queda marcada porque el movimiento cruza los dos umbrales de Ledger: al menos 8% y al menos $5.00 sobre la mediana m&oacute;vil.</desc>
+              <line class="lgc-grid" x1="40" y1="188" x2="252" y2="188"/>
+              <line class="lgc-grid" x1="40" y1="140" x2="252" y2="140"/>
+              <line class="lgc-grid" x1="40" y1="92" x2="252" y2="92"/>
+              <line class="lgc-grid" x1="40" y1="44" x2="252" y2="44"/>
+              <text class="lgc-lab lgc-lab--sm" x="34" y="191" text-anchor="end">$24</text>
+              <text class="lgc-lab lgc-lab--sm" x="34" y="143" text-anchor="end">$26</text>
+              <text class="lgc-lab lgc-lab--sm" x="34" y="95" text-anchor="end">$28</text>
+              <text class="lgc-lab lgc-lab--sm" x="34" y="47" text-anchor="end">$30</text>
+              <rect class="lgc-band" x="40" y="179.6" width="212" height="6"/>
+              <line class="lgc-bandedge" x1="40" y1="179.6" x2="252" y2="179.6"/>
+              <line class="lgc-bandedge" x1="40" y1="185.6" x2="252" y2="185.6"/>
+              <text class="lgc-lab lgc-lab--sm lgc-lab--band" x="248" y="170" text-anchor="end">TU BANDA</text>
+              <polyline class="lgc-hist" points="64,185.6 146,179.6"/>
+              <circle class="lgc-dot" cx="64" cy="185.6" r="3.5"/>
+              <circle class="lgc-dot" cx="146" cy="179.6" r="3.5"/>
+              <text class="lgc-num lgc-num--sm" x="64" y="170" text-anchor="middle">$24.10</text>
+              <text class="lgc-num lgc-num--sm" x="146" y="164" text-anchor="middle">$24.35</text>
+              <g class="lgf-seg"><line class="lgc-move" x1="146" y1="179.6" x2="228" y2="57.2"/></g>
+              <g class="lgf-dot"><circle class="lgc-halo" cx="228" cy="57.2" r="9"/><circle class="lgc-fdot" cx="228" cy="57.2" r="5"/></g>
+              <g class="lgf-lbl">
+                <text class="lgc-num lgc-num--sm" x="214" y="62" text-anchor="end">$29.45</text>
+                <polyline class="lgc-bracket" points="256,57.2 262,57.2 262,182.7 256,182.7"/>
+                <text class="lgc-delta lgc-delta--sm" x="268" y="110">&#9650; $5.23</text>
+                <text class="lgc-lab lgc-lab--sm lgc-lab--sub" x="268" y="126">por caja</text>
+                <text class="lgc-lab lgc-lab--sm lgc-lab--sub" x="268" y="142">+21.6%</text>
+              </g>
+              <line class="lgc-axis" x1="40" y1="200" x2="252" y2="200"/>
+              <text class="lgc-lab lgc-lab--sm" x="64" y="220" text-anchor="middle">12 jun</text>
+              <text class="lgc-lab lgc-lab--sm" x="228" y="220" text-anchor="middle">26 jun</text>
+            </svg>
+          </div>
+          <p class="lg-stepnote">El total de la factura, $115.80, nunca parpade&oacute; &mdash; la l&iacute;nea s&iacute;. Se detecta el d&iacute;a que llega, no al cierre del mes.</p>
         </div>
-        <figcaption class="lg-cap"><strong>Muestra ilustrativa</strong> &mdash; la marca se dispara solo contra la banda de seis meses del propio art&iacute;culo. No son datos en vivo ni de clientes.</figcaption>
+        <figcaption class="lg-cap"><strong>Una marca, dos umbrales</strong> &mdash; se dispara solo cuando una l&iacute;nea cruza ambos contra su propio historial: al menos 8% y al menos $5.00 sobre la mediana m&oacute;vil. Cifras ilustrativas.</figcaption>
       </figure>
+      <p class="ld-body" style="margin-top:16px">$5.23 &divide; 24 piezas es cerca de 22&cent; por pieza &mdash; cada plato que la lechuga romana toca se recalcula el mismo d&iacute;a. Y como la lechuga romana est&aacute; en la canasta p&uacute;blica del &Iacute;ndice de Costos, la marca llega con contexto de mercado: &iquest;mi proveedor, o el mercado? Fuera de la canasta &mdash; licores, vino, cortes con grado &mdash; una subida igual se archiva y se recalcula, pero no se compara con el mercado. Y un art&iacute;culo sin lecturas previas no recibe marca alguna: sin nada tuyo contra qu&eacute; comparar, Ledger se abstiene en lugar de adivinar &mdash; as&iacute; que las primeras semanas se ven as&iacute;: las facturas se archivan y el historial crece, y las marcas empiezan a llegar cuando tus propias lecturas pueden respaldarlas.</p>
+      <p class="lg-cap">Ledger corre esta revisi&oacute;n en cada l&iacute;nea, el d&iacute;a que llega la factura &mdash; $19 al mes es menos que cuatro de estas cajas detectadas. Abre el 13 de noviembre de 2026 &mdash; a <!-- count:ledger.ga_weeks_out -->19<!-- /count --> semanas. <a href="/es/ledger/#pricing" class="plausible-event-name=Demo+Exit plausible-event-door=peak-founding" style="color:var(--teal)">Los t&eacute;rminos fundadores &rarr;</a></p>
     </section>
 
     <section class="ld-panel ld-cta" id="ld-step4" aria-labelledby="ld-h4">
-      <h2 id="ld-h4" tabindex="-1">Ahora corre tu propia línea.</h2>
-      <p class="ld-body">Eso fue una muestra. Toma un precio que ya pagaste &mdash; dos fechas, dos números &mdash; y <strong style="color:#F6F7F8">Vendor Benchmark</strong> hace la misma lectura: si el movimiento va en línea con el mercado o se está saliendo, contra el &Iacute;ndice de Costos p&uacute;blico. Gratis, en tu navegador, sin registro, sin subir nada.</p>
+      <h2 id="ld-h4" tabindex="-1">Pon esta marca en cada línea.</h2>
+      <p class="ld-body">Esa marca, en cada l&iacute;nea de cada factura, el d&iacute;a que llega &mdash; <strong style="color:#F6F7F8">Muntin Ledger</strong> abre el 13 de noviembre de 2026.</p>
+      <p class="lg-price-figure"><span class="lg-price-cur">$</span>19<span class="lg-price-per">/mes</span></p>
+      <p class="lg-price-ga">Tres meses gratis para la lista fundadora, luego $19 al mes mientras te quedes &middot; abre el <span class="lg-price-date">13 de noviembre de 2026</span>.</p>
       <div class="studio-cta-row" style="margin-top:20px">
-        <a class="btn lg-btn-light" href="/es/tools/vendor-benchmark/">Corre tu propia línea &rarr;</a>
+        <a class="btn lg-btn-light plausible-event-name=Demo+Exit plausible-event-door=founding" href="/es/ledger/#pricing">Unirme a la lista fundadora &rarr;</a>
       </div>
       <hr style="border:none;border-top:1px solid rgba(246,247,248,.14);margin:28px 0 24px" aria-hidden="true">
-      <p class="ld-body">Cuando lo quieras sobre tus facturas completas &mdash; leídas, archivadas, marcadas, cada proveedor &mdash; Muntin Ledger abre el 13 de noviembre de 2026. La lista fundadora obtiene <strong style="color:#F6F7F8">tres meses gratis, luego $19 al mes mientras se queden</strong>.</p>
+      <p class="ld-body">No le creas a un demo con datos ficticios. Toma un precio que ya pagaste &mdash; dos fechas, dos n&uacute;meros &mdash; y <strong style="color:#F6F7F8">Vendor Benchmark</strong> corre la misma regla de marca sobre tu propio historial que usa Ledger, calcada al centavo, y pone al lado una lectura del mercado con el &Iacute;ndice de Costos p&uacute;blico, sobre tus fechas exactas. Gratis, en tu navegador, sin registro, sin subir nada.</p>
       <div class="studio-cta-row" style="margin-top:20px">
-        <a class="btn btn-ghost" href="/es/ledger/#pricing" style="color:#F6F7F8;border-color:rgba(246,247,248,.4)">Unirme a la lista fundadora</a>
+        <a class="btn btn-ghost plausible-event-name=Demo+Exit plausible-event-door=benchmark" href="/es/tools/vendor-benchmark/" style="color:#F6F7F8;border-color:rgba(246,247,248,.4)">Corre tu propia línea &rarr;</a>
       </div>
+      <p class="ld-body" style="margin-top:24px;margin-bottom:0;font-size:14px">Comprueba lo que afirmamos: <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/es/trust/" style="color:#7AA7FF">el centro de confianza</a> &middot; <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/es/never/" style="color:#7AA7FF">lo que nunca hacemos</a> &middot; <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/es/cost-index/" style="color:#7AA7FF">los datos del &Iacute;ndice de Costos (CC0)</a>.</p>
+      <ul class="lg-stances">
+        <li>Sin comisi&oacute;n sobre tus ventas, nunca</li>
+        <li>Ning&uacute;n modelo de lenguaje lee tus facturas &mdash; bloqueado en el build, nunca datos de entrenamiento</li>
+        <li>Tus datos no se venden nunca &mdash; ni a un corredor de datos ni a nadie m&aacute;s</li>
+        <li>Exporta el libro completo cuando quieras, en un formato que abres sin nosotros; b&oacute;rralo y desaparece</li>
+      </ul>
       <p class="lg-cap" style="margin-top:18px">El formulario fundador est&aacute; en la p&aacute;gina del Ledger &mdash; este demo no pide nada, ni siquiera un correo.</p>
     </section>
 
     </div>
 
+    <!-- Controles del paso final (revisi&oacute;n ronda 2, 2026-07-07):
+         reetiquetar el primario fijo como "Volver a empezar" en el paso 4
+         enterraba la &uacute;nica petici&oacute;n de la p&aacute;gina tras un
+         control de bucle. En el paso final el JS cambia el par
+         Atr&aacute;s/Siguiente por Volver a empezar (fantasma) + el enlace
+         a la lista fundadora como primario. El enlace reutiliza la combinaci&oacute;n
+         registrada Demo+Exit / door=founding del CTA del panel — sin
+         vocabulario anal&iacute;tico nuevo. Los cuatro viven en el HTML para
+         que sin JS nunca haya un control muerto (la barra entera queda
+         oculta sin JS); la regla defensiva [hidden]{display:none!important}
+         de site-core.css saca del layout al par oculto pese al display
+         de .btn. -->
     <div class="ld-controls" id="ldControls" hidden>
       <button type="button" class="btn btn-ghost" id="ldBack">Atr&aacute;s</button>
+      <button type="button" class="btn btn-ghost" id="ldRestart" hidden>Volver a empezar</button>
+      <a class="btn btn-primary plausible-event-name=Demo+Exit plausible-event-door=founding" id="ldCta" href="/es/ledger/#pricing" hidden>Unirme a la lista fundadora &rarr;</a>
       <button type="button" class="btn btn-primary" id="ldNext">Siguiente</button>
       <span class="ld-progress" id="ldProgress"></span>
     </div>
@@ -594,46 +900,123 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       var rail = document.getElementById('ldRail');
       var controls = document.getElementById('ldControls');
       var back = document.getElementById('ldBack'), next = document.getElementById('ldNext');
+      var restart = document.getElementById('ldRestart'), cta = document.getElementById('ldCta');
       var progress = document.getElementById('ldProgress'), live = document.getElementById('ldLive');
-      if (!wrap || panels.length < 5 || !rail || !controls) return;
-      var titles = ['Llega la factura', 'Leer', 'Archivar', 'Marcar', 'Corre tu propia línea'];
+      var panelsBox = document.getElementById('ldPanels');
+      if (!wrap || panels.length < 5 || !rail || !controls || !restart || !cta || !panelsBox) return;
+      var titles = ['Llega la factura', 'Leer', 'Archivar', 'Marcar', 'Pon esta marca en cada línea'];
       var i = 0;
       var prm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
       wrap.classList.add('ld-js');
       controls.hidden = false;
+      // Altura por paso (revisión ronda 2, 2026-07-07): la pila de grid
+      // reservaba la altura del panel MÁS ALTO, dejando un vacío muerto
+      // bajo los pasos cortos. En vez del reflujo instantáneo (vetado por
+      // brusco), la altura en línea del contenedor sigue el offsetHeight
+      // del panel ACTIVO y la transición CSS (200ms --ease-out; ninguna
+      // con movimiento reducido) anima entre lecturas. Se recalcula al
+      // cambiar de paso, al redimensionar (un solo listener con rebote),
+      // al abrir/cerrar un cajón details y cuando cargan las webfonts
+      // (sus métricas mueven la altura de las filas). Sin JS este código
+      // nunca corre, así que la lectura apilada no lleva altura en línea.
+      function sizePanels() {
+        panelsBox.style.height = panels[i].offsetHeight + 'px';
+      }
+      var rszT;
+      window.addEventListener('resize', function () {
+        clearTimeout(rszT);
+        rszT = setTimeout(sizePanels, 150);
+      }, { passive: true });
+      Array.prototype.forEach.call(panelsBox.querySelectorAll('details'), function (d) {
+        d.addEventListener('toggle', sizePanels);
+      });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizePanels);
       function show(n, focus) {
         i = Math.max(0, Math.min(panels.length - 1, n));
         panels.forEach(function (p, k) { p.classList.toggle('ld-current', k === i); });
+        sizePanels();
         Array.prototype.forEach.call(rail.children, function (li, k) {
           if (k === i) li.setAttribute('aria-current', 'step');
           else li.removeAttribute('aria-current');
         });
+        // Paso final (revisión ronda 2, 2026-07-07): el primario fijo se
+        // vuelve el enlace a la lista fundadora — la única petición de la
+        // página — y Volver a empezar toma el lugar fantasma. Atrás y
+        // Siguiente sirven a los pasos 0-3.
+        var last = i === panels.length - 1;
+        back.hidden = last;
+        next.hidden = last;
+        restart.hidden = !last;
+        cta.hidden = !last;
         back.disabled = i === 0;
-        next.textContent = i === panels.length - 1 ? 'Volver a empezar' : 'Siguiente';
         progress.textContent = 'Paso ' + (i + 1) + ' de ' + panels.length;
         live.textContent = 'Paso ' + (i + 1) + ' de ' + panels.length + ' — ' + titles[i];
+        // M7 — paridad no visual: el anuncio del paso 3 lleva el desenlace.
+        if (i === 3) live.textContent += '. La línea de lechuga romana del 26 de junio se sale de la banda de sus lecturas previas — $5.23 más, cruza ambos umbrales. Esa es la marca.';
         if (focus) { var h = panels[i].querySelector('h2'); if (h) h.focus({ preventScroll: false }); }
+        // P0-6 — la navegación del usuario mantiene el hash honesto sin
+        // hacer crecer el historial; el arranque de abajo nunca escribe uno.
+        if (focus && window.history && history.replaceState) { history.replaceState(null, '', '#ld-step' + i); }
+        // P1-2/M2 — el escaneo de lectura, una vez: dos clases; cada
+        // retraso vive en los transition-delay de CSS (:nth-child),
+        // total < 550ms.
         if (i === 1 && !prm && !panels[1].dataset.played) {
           panels[1].dataset.played = '1';
           var fig = panels[1].querySelector('.ld-armed-target');
           if (fig) {
             fig.classList.add('ld-armed');
-            var rows = fig.querySelectorAll('.ld-reveal');
-            Array.prototype.forEach.call(rows, function (r, k) {
-              setTimeout(function () { r.classList.add('ld-in'); }, 120 + k * 90);
-            });
-            setTimeout(function () {
-              Array.prototype.forEach.call(rows, function (r) { r.classList.add('ld-in'); });
-            }, 1500);
+            requestAnimationFrame(function () { requestAnimationFrame(function () { fig.classList.add('ld-go'); }); });
+          }
+        }
+        // P0-3 — el aterrizaje de la marca, una vez, al llegar al paso 3.
+        // La secuencia vive en los transition-delay de .lg-armed/.lg-landed.
+        if (i === 3 && !prm && !panels[3].dataset.played) {
+          panels[3].dataset.played = '1';
+          var flagFig = panels[3].querySelector('.lg-vignette');
+          if (flagFig) {
+            flagFig.classList.add('lg-armed');
+            requestAnimationFrame(function () { requestAnimationFrame(function () { flagFig.classList.add('lg-landed'); }); });
           }
         }
       }
       back.addEventListener('click', function () { show(i - 1, true); });
-      next.addEventListener('click', function () { show(i === panels.length - 1 ? 0 : i + 1, true); });
-      Array.prototype.forEach.call(rail.querySelectorAll('a'), function (a, k) {
-        a.addEventListener('click', function (e) { e.preventDefault(); show(k, true); });
+      next.addEventListener('click', function () { show(i + 1, true); });
+      restart.addEventListener('click', function () { show(0, true); });
+      // Las píldoras del riel y los saltos internos comparten un handler:
+      // los clics modificados (cmd/ctrl/shift/alt/central) pasan al navegador.
+      Array.prototype.forEach.call(document.querySelectorAll('#ldRail a, .js-ld-jump'), function (a) {
+        a.addEventListener('click', function (e) {
+          if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+          var m = /^#ld-step([0-4])$/.exec(a.getAttribute('href') || '');
+          if (!m) return;
+          e.preventDefault(); show(+m[1], true);
+        });
       });
-      show(0, false);
+      // P1-6/M4d — las flechas izquierda/derecha avanzan el recorrido.
+      // Escuchan solo en el contenedor (nada a nivel de página), así
+      // que actúan únicamente con el foco dentro del recorrido; con
+      // tope en los extremos (sin bucle — reiniciar queda en el botón
+      // "Volver a empezar"). Guardas: las teclas con modificador pasan
+      // de largo, y nada se dispara desde un contexto de escritura
+      // (input/textarea/select/contenteditable), así que nunca se
+      // secuestra un cursor de texto; los enlaces y botones simples no
+      // consumen flechas horizontales, así que avanzar desde ellos es
+      // seguro. Comportamiento del foco: cada flecha mueve el foco al
+      // h2 del panel entrante, igual que Atrás/Siguiente, de modo que
+      // las flechas repetidas siguen funcionando y el lector de
+      // pantalla anuncia cada paso.
+      wrap.addEventListener('keydown', function (e) {
+        if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+        if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey || e.defaultPrevented) return;
+        var t = e.target;
+        if (t && (/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName || '') || t.isContentEditable)) return;
+        var n = e.key === 'ArrowRight' ? i + 1 : i - 1;
+        if (n < 0 || n >= panels.length) return;
+        e.preventDefault();
+        show(n, true);
+      });
+      var boot = /^#ld-step([0-4])$/.exec(location.hash || '');
+      show(boot ? +boot[1] : 0, false);
     } catch (e) { /* static fallback stays complete */ }
   })();
   </script>
