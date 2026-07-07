@@ -36,6 +36,17 @@ edition (never the email), recorded in the ADR file.
   - `docs/plans/dispatch-email-upgrade.md` — the email side (P1 golden-render body due
     before 08-04) + the Claude story-research pipeline (§13; routine to arm ~07-30).
 
+**Ledger demo transformed (overnight 2026-07-06→07):** founder-commissioned 11-agent
+workflow (plan: `docs/plans/ledger-demo-transform.md`) + P0/P1 builds + three review
+rounds (3 operators + 3 design pros) + certification. Headline product-integrity find:
+BOTH the demo and the /ledger/ hero showed a flag the real rule (computePriceHike)
+would never fire — all surfaces renumbered to the rule-derived trio ($24.10/$24.35/
+$29.45 = +$5.23/+21.6% over the $24.22 trailing median) and byte-verified. Demo now:
+rule-true story, annotated band chart, per-step animated frame (certified live),
+honest disclosure architecture, founding-list ask primary at the final step, full ES
+parity. PARKED for founder: the $19/mo pricing basis (per location vs per account —
+ops-reviewer blocker, one clause once decided); demo OG card; analytics registry entry.
+
 **Next actions (in order):** July edition build per site-edition plan §8 items 1–6;
 publishes on the 2026-07-08 Wed refresh data (Wed eve/Thu) — founder reads the rendered
 draft first; the comeback email rides it via manual workflow_dispatch (guards bypass on
