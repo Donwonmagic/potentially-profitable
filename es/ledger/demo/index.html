@@ -222,35 +222,93 @@
 .ld-rail a::before{content:counter(ld,decimal-leading-zero);font-family:var(--font-display);font-weight:560;font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums lining-nums}
 .ld-rail li[aria-current="step"] a{border-color:var(--ink);box-shadow:var(--elev-1)}
 .ld-panel{margin:0 0 26px}
-.ld-js #ldPanels{display:grid;align-items:start;grid-template-columns:minmax(0,1fr);transition:height 200ms var(--ease-out,ease-out)}
-/* align-items:start: with default stretch, every grid-area:1/1 panel measures the
-   TALLEST panel (sizePanels read the same height on all five steps in round-3
-   headless verification), so per-step height never changed. minmax(0,1fr): the
-   auto track otherwise inherits the CSV pre min-content width and forces
-   page-level horizontal scroll at 360px. Verified live in Chromium, 2026-07-07. */
-.ld-js #ldPanels>.ld-panel{grid-area:1/1}
-/* Per-step height (review round 2, 2026-07-07). The grid-stack +
-   visibility (not display:none) still keeps every panel laid out at
-   full width, so content never reflows mid-transition — but the
-   region no longer sits at the TALLEST panel's height: that fix for
-   the founder-reported bounce (2026-07-06) traded it for a several-
-   hundred-pixel void under short steps. The stepper JS now sets
-   #ldPanels' inline height to the ACTIVE panel's offsetHeight on
-   every step change (recomputed on resize via one debounced
-   listener), and the 200ms height transition above turns each
-   difference into a calm animated frame — not the jarring instant
-   reflow the founder banned. Reduced motion: transition off, the
-   height still snaps straight to the right value. No-JS: .ld-js is
-   never added and no inline height is set, so the stacked read
-   keeps its natural flow. No overflow clipping: hidden panels don't
-   paint, and the footer below always covers their residual layout
-   overflow — clipping would cut the pane's --elev-3 shadow instead.
-   Hidden panels drop out of paint, pointer, and the accessibility
-   tree alike. */
-.ld-js .ld-panel:not(.ld-current){visibility:hidden}
-@media (prefers-reduced-motion:reduce){.ld-js #ldPanels{transition:none}}
+/* ===== El marco de app (rediseño del fundador, 2026-07-09) =====
+   Un escenario contenido de altura fija DENTRO del cual está el lector:
+   una franja de chrome (nombre del producto + nombre del paso + "2 de
+   5") arriba, el escenario en medio, Atrás/Siguiente anclados en la
+   barra inferior propia del marco. La altura de la página NUNCA cambia
+   entre pasos — la altura animada por paso (el sizePanels de la ronda 2
+   + su transición de height de 200ms) seguía moviendo la página y el
+   fundador vetó cualquier movimiento vertical, así que ambos
+   desaparecen. Los pasos ahora se funden DENTRO del escenario: opacidad
+   de 180ms más una subida de 8px solo del panel ENTRANTE —
+   transform+opacity, solo compositor; con movimiento reducido el cambio
+   es instantáneo. Un panel más alto que el escenario se desplaza DENTRO
+   del cuerpo del marco (barra de scroll fina siempre visible como
+   señal; scroll con inercia en táctil), nunca la página. Sin JS: .ld-js
+   nunca llega, .ld-frame queda como un div sin estilo, el chrome y los
+   controles conservan su atributo [hidden], y la lectura apilada
+   completa mantiene su flujo natural — la invariante sin-JS-completo se
+   cumple. */
+.ld-js .ld-frame{background:var(--surface-1,#fff);border:1px solid var(--line,#E3E5E9);border-radius:16px;box-shadow:var(--elev-3);overflow:hidden;margin:0 0 26px}
+.ld-js .ld-chrome{display:flex;align-items:center;gap:12px;padding:9px 18px;background:var(--cream-2,#EDEEF1);border-bottom:1px solid var(--line,#E3E5E9);font-size:12.5px;line-height:1.4}
+.ld-chrome-app{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display);font-weight:600;font-size:13px;color:var(--ink);white-space:nowrap}
+.ld-chrome-app::before{content:"";width:9px;height:9px;border-radius:3px;background:var(--teal,#2A50C8)}
+.ld-chrome-chip{display:inline-flex;padding:1px 9px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-radius:999px;border:1px solid var(--line-dark,#D7DAE0);color:var(--ink-soft);white-space:nowrap}
+.ld-chrome-step{margin-left:auto;color:var(--ink-soft);white-space:nowrap;font-variant-numeric:tabular-nums lining-nums}
+.ld-chrome-step strong{font-weight:600;color:var(--ink)}
+@media (max-width:560px){.ld-chrome-chip{display:none}}
+/* El escenario. Altura fija por breakpoint — fijada en la mediana de
+   los cinco paneles recompuestos (medida headless a 1280/390,
+   2026-07-09) y limitada con svh para que marco + chrome + barra quepan
+   en un viewport corto (svh, no dvh: dvh sigue a la barra de URL móvil
+   y volvería a rebotar la página). La mecánica de pila de grid +
+   visibility se conserva: cada panel se maqueta a ancho completo en la
+   celda 1/1, así que el contenido nunca refluye a mitad de transición.
+   minmax(0,1fr) en AMBOS ejes: la columna hereda si no el ancho
+   min-content del pre del CSV (scroll de página a 360px), y la fila
+   debe ceñirse al escenario en vez de crecer con el panel más alto. */
+.ld-js #ldPanels{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr);height:700px;overflow:hidden}
+@supports (height:1svh){.ld-js #ldPanels{height:clamp(480px,calc(100svh - 208px),700px)}}
+@media (max-width:767px){.ld-js #ldPanels{height:640px}@supports (height:1svh){.ld-js #ldPanels{height:clamp(430px,calc(100svh - 184px),640px)}}}
+/* Paneles dentro del escenario: cada uno llena el escenario y desplaza
+   su propio desbordamiento; los cortos se centran (safe center vuelve a
+   alinearse arriba en cuanto el contenido desborda, y a flex-start
+   donde `safe` no tiene soporte). Estados del fundido: visibility
+   mantiene a los paneles ocultos fuera de la pintura, del puntero y del
+   árbol de accesibilidad, igual que antes; los retrasos 0s/180ms hacen
+   que el panel SALIENTE se desvanezca en su sitio y solo el ENTRANTE
+   suba 8px. */
+.ld-js #ldPanels>.ld-panel{grid-area:1/1;margin:0;min-height:0;padding:18px clamp(16px,3vw,28px) 22px;display:flex;flex-direction:column;justify-content:flex-start;justify-content:safe center;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--line-dark,#D7DAE0) transparent;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity 180ms var(--ease-out,ease-out),visibility 0s 180ms,transform 0s 180ms}
+.ld-js #ldPanels>.ld-panel.ld-current{opacity:1;visibility:visible;transform:none;z-index:1;transition:opacity 180ms var(--ease-out,ease-out),transform 180ms var(--ease-out,ease-out)}
+.ld-js #ldPanels>.ld-panel::-webkit-scrollbar{width:10px}
+.ld-js #ldPanels>.ld-panel::-webkit-scrollbar-track{background:transparent}
+.ld-js #ldPanels>.ld-panel::-webkit-scrollbar-thumb{background:var(--line-dark,#D7DAE0);border-radius:999px;border:3px solid transparent;background-clip:padding-box}
+@media (prefers-reduced-motion:reduce){.ld-js #ldPanels>.ld-panel{transition:none;transform:none}}
+/* Escala dentro del marco: el chrome del marco lleva la jerarquía, así
+   que los encabezados de panel bajan un punto, las leyendas se acercan
+   y el interior de las viñetas se compacta un grado (densidad de app,
+   no de imprenta) para que cada paso quepa en el escenario compartido
+   en escritorio. Todo acotado bajo .ld-js — la lectura apilada sin JS
+   conserva el ritmo de página impresa. */
+.ld-js .ld-panel h2{font-size:clamp(22px,2.4vw,27px);margin:0 0 6px}
+.ld-js .ld-panel .ld-body{margin:0 0 12px}
+.ld-js .ld-panel .lg-cap{margin-top:14px}
+.ld-js .ld-panel .lg-pane{padding:14px 18px 12px}
+.ld-js .ld-panel .lg-rows .lg-row{padding:8px 2px}
+.ld-js .ld-panel .lg-row--ghost{padding:4px 2px}
+.ld-js .ld-panel .ld-anat{margin:2px 0 12px;padding:10px 14px 11px}
+.ld-js .ld-panel .ld-note{margin:12px 0 0;padding:7px 12px}
+.ld-js .ld-panel .ld-search{margin:0 0 10px;padding:7px 14px}
+.ld-js .ld-panel .ld-count{margin:0 0 6px}
+.ld-js .ld-panel .ld-csv{margin:10px 0 0;padding:8px 12px;font-size:11.5px;line-height:1.5}
+.ld-js .ld-panel .lg-stepnote{margin:8px 0 0}
+.ld-js .ld-panel .ld-more{margin:12px 0 0}
+.ld-js .ld-panel .ld-more>summary{padding:8px 14px}
+/* Solo ES, dentro del marco: la columna de proveedor pasa de 104px a
+   150px para que "Proveedor de verduras" quepa en UNA línea (la base
+   ES deja envolver .lg-v a propósito — P0-5 — y esas filas de dos
+   líneas empujaban los pasos 1-2 fuera del escenario compartido).
+   Acotado a ≥561px para no tocar la pila móvil de dos líneas. */
+@media (min-width:561px){
+  .ld-js .ld-panel .lg-row{grid-template-columns:52px 150px 1fr max-content max-content}
+  .ld-js .ld-panel .lg-rows--qty .lg-row{grid-template-columns:52px 150px 1fr 34px max-content max-content}
+}
 .ld-panel .lg-pane{box-shadow:var(--elev-1)}
-.ld-js .ld-panel.ld-current .lg-pane{box-shadow:var(--elev-3)}
+/* Dentro del marco el panel de papel se aplana — el MARCO es el único
+   objeto elevado de la página; una sombra de tarjeta dentro de otra
+   tarjeta se lee como ruido. */
+.ld-js .ld-panel .lg-pane{box-shadow:none}
 .ld-panel h2{font-family:var(--font-display);font-size:clamp(24px,3vw,32px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 8px;scroll-margin-top:calc(84px + var(--banner-h,0px))}
 .ld-panel .ld-body{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 16px;max-width:640px}
 .ld-invoice-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:6px}
@@ -266,23 +324,31 @@
 .ld-search svg{flex:0 0 16px}
 .ld-search .ld-q{font-weight:600;color:var(--ink)}
 .ld-count{font-size:12.5px;color:var(--stone);margin:0 0 10px}
-/* Acotado bajo .ld-js (2026-07-07): un display:flex de autor sin
-   acotar vence la regla [hidden]{display:none} del UA, y la página
-   sin JS pintaría botones Atrás/Siguiente muertos. Con JS, .ld-js y
-   hidden=false llegan juntos; sin JS el atributo hidden los mantiene
-   fuera del layout.
-   Pegajosos al borde inferior del viewport en TODOS los anchos
-   (corrección de revisión 2026-07-07): la pila de grid reserva la
-   altura del panel más alto, así que en los pasos cortos
-   Atrás/Siguiente quedaban debajo de un vacío de cientos de píxeles —
-   bajo el pliegue en el paso 0. position:sticky los fija al borde
-   inferior mientras el recorrido está a la vista y los deja asentarse
-   en su posición natural al final, con orden del DOM = orden visual =
-   orden de foco (el volteo de orden en ≤640px desapareció). La barra
-   CTA móvil está suprimida en esta página (data-hide-sticky-bar), así
-   que el espacio inferior está libre. El fondo usa --cream para que
-   la barra cambie con el modo oscuro. */
-.ld-js .ld-controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;position:sticky;bottom:0;z-index:5;margin:0;padding:10px 2px calc(10px + env(safe-area-inset-bottom,0px));background:var(--cream,#F6F7F8);border-top:1px solid var(--line,#E3E5E9)}
+/* Controles — la barra inferior del marco (rediseño 2026-07-09).
+   Siguen acotados bajo .ld-js: un display:flex de autor sin acotar
+   vence la regla [hidden]{display:none} del UA y la página sin JS
+   pintaría botones Atrás/Siguiente muertos; con JS, .ld-js y
+   hidden=false llegan juntos. La barra ahora es parte del chrome de la
+   app — anclada dentro del marco, siempre visible con él, nunca
+   huérfana bajo un vacío (la regla pegajosa al borde del viewport se
+   fue con el vacío que compensaba). Orden del DOM = orden visual =
+   orden de foco: el contador de paso es un span no enfocable llevado
+   al borde izquierdo; Atrás y luego Siguiente (o, en el paso final,
+   Volver a empezar y el primario de la lista fundadora) quedan a la
+   derecha. En ≤640px los dos botones visibles se reparten la barra a
+   la mitad con altura fija de control de 52px, de modo que la barra no
+   puede cambiar de altura entre pasos ni cuando la etiqueta fundadora
+   se parte en dos líneas; el deber de contador pasa al "2 de 5" de la
+   franja de chrome. Los tokens usan --cream-2/--line para que la barra
+   cambie con el modo oscuro. */
+.ld-js .ld-controls{display:flex;flex-wrap:nowrap;gap:10px;align-items:center;margin:0;padding:12px 18px;background:var(--cream-2,#EDEEF1);border-top:1px solid var(--line,#E3E5E9)}
+.ld-js .ld-controls .btn{padding:10px 20px;font-size:14px}
+.ld-js .ld-progress{order:-1;margin-right:auto}
+@media (max-width:640px){
+  .ld-js .ld-progress{display:none}
+  .ld-js .ld-controls{gap:8px;padding:10px 12px}
+  .ld-js .ld-controls .btn{flex:1 1 0;min-width:0;justify-content:center;white-space:normal;text-align:center;line-height:1.25;padding:8px 10px;font-size:13.5px;min-height:52px}
+}
 .ld-controls .btn[disabled]{opacity:.45;cursor:default;pointer-events:none}
 .ld-progress{font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums}
 .ld-cta{background:#16181D;color:rgba(246,247,248,.78);border-radius:18px;padding:clamp(26px,4vw,48px)}
@@ -291,6 +357,53 @@
 .ld-cta .lg-cap{color:rgba(246,247,248,.55)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ld-cta{background:#1B1E24;border:1px solid #2C3038}}
 :root[data-theme="dark"] .ld-cta{background:#1B1E24;border:1px solid #2C3038}
+/* Interior del paso 4 dentro del marco (rediseño 2026-07-09): la banda
+   de tinta llena el escenario de borde a borde (la franja de chrome y
+   la barra de controles siguen en crema) — el propio marco se oscurece
+   para la petición, todavía el único momento de tinta de la página. La
+   banda base .ld-cta de arriba conserva su radio para la lectura
+   apilada sin JS. */
+.ld-js #ldPanels>.ld-cta{border-radius:0;padding:clamp(22px,3vw,36px) clamp(18px,3.2vw,36px);scrollbar-color:rgba(246,247,248,.4) transparent}
+.ld-js #ldPanels>.ld-cta::-webkit-scrollbar-thumb{background:rgba(246,247,248,.4)}
+.ld-js .ld-cta .lg-price-figure{font-size:clamp(40px,4.6vw,56px);margin:14px 0 0}
+/* Composición a dos columnas del paso 4 (≥768px): la petición (precio
+   + lista fundadora) a la izquierda, el carril de compruébalo-tú-mismo
+   (Vendor Benchmark + enlaces de prueba) a la derecha; las posturas se
+   pliegan en la franja compacta de ancho completo de abajo. El <hr>
+   que separa las mitades en la lectura apilada se vuelve la regla
+   entre columnas. */
+@media (min-width:768px){
+  .ld-js .ld-cta-cols{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);column-gap:clamp(24px,3.5vw,40px);align-items:start}
+  .ld-js .ld-cta-cols>hr{display:none}
+  .ld-js .ld-cta-side{border-left:1px solid rgba(246,247,248,.14);padding-left:clamp(24px,3.5vw,40px);margin-top:4px}
+  .ld-js .ld-cta .lg-stances{margin-top:20px;padding-top:12px}
+  .ld-js .ld-cta .lg-stances li{font-size:12px}
+}
+/* Recomposición del paso 3 (≥768px, rediseño 2026-07-09): filas a la
+   izquierda, gráfica a la derecha, para que el paso más alto quepa en
+   la altura compartida del escenario en vez de dictar una mayor. Las
+   filas reutilizan la pila de dos líneas ya probada en ≤560px; la
+   columna de la gráfica muestra la variante compacta ampliada (la
+   variante ancha a medio ancho encogería sus etiquetas hasta perder
+   legibilidad). La tecnología de asistencia sigue viendo exactamente
+   una gráfica: la otra queda en display:none. */
+@media (min-width:768px){
+  .ld-js .ld-flagcols{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);column-gap:clamp(18px,2.6vw,30px);align-items:center}
+  .ld-js .ld-flagcols .lg-chart--wide{display:none}
+  .ld-js .ld-flagcols .lg-chart--narrow{display:block;max-width:430px;margin:0 auto}
+  .ld-js .ld-flagcols .lg-chart{margin:0}
+  .ld-js .ld-flagcols .lg-stepnote{margin:8px 0 0}
+  .ld-js .ld-flagcols .lg-row{grid-template-columns:max-content 1fr max-content;grid-template-areas:"i i n" "d v s";gap:2px 8px}
+  .ld-js .ld-flagcols .lg-i{grid-area:i}
+  .ld-js .ld-flagcols .lg-n{grid-area:n}
+  .ld-js .ld-flagcols .lg-d{grid-area:d;font-size:11.5px}
+  .ld-js .ld-flagcols .lg-v{grid-area:v;font-size:11.5px;color:var(--stone);white-space:normal}
+  .ld-js .ld-flagcols .lg-s{grid-area:s;font-size:10.5px}
+  .ld-js .ld-flagcols .lg-flag{grid-area:s;white-space:normal;text-align:right;line-height:1.3}
+}
+/* El cajón leer-más del paso 3 vive dentro del marco; abrirlo desplaza
+   el PANEL, nunca la página (la altura del escenario es fija). */
+.ld-more{margin:14px 0 0}
 /* Escaneo del paso 1 (P1-2/M2, 2026-07-07) — la fila aparece y luego
    su sello de "leída" se asienta. Toda la secuencia vive en los
    transition-delay de CSS bajo .ld-go (el JS quedó en dos clases):
@@ -321,8 +434,9 @@
    (controles arriba de la región de paneles) cambiaba el vacío de
    escritorio por uno móvil — tras leer un panel largo había que
    volver a subir para tocar Siguiente — y hacía divergir el orden
-   visual del orden del DOM/tab. La regla pegajosa de .ld-controls de
-   arriba lo sustituye en todos los anchos. */
+   visual del orden del DOM/tab. Su sucesora, la barra pegajosa, fue a
+   su vez reemplazada el 2026-07-09 por la barra inferior propia del
+   marco de app (ver las reglas .ld-controls de arriba). */
 .visually-hidden-ld{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 </style>
 <style>
@@ -337,8 +451,9 @@
 [hidden]{display:none!important}
 /* ^ [hidden] guard duplicated from site-core.css on purpose: that sheet loads
    async, but the stepper script runs at parse and relies on [hidden] to keep
-   all four controls unpainted until JS chooses — without this inline rule a
-   slow first load briefly paints Back/Next/Start-over/Join simultaneously
+   the frame's chrome strip and all four controls unpainted until JS chooses —
+   without this inline rule a slow first load briefly paints
+   Back/Next/Start-over/Join (and the step chrome) simultaneously
    (round-3 catch; splice repaired after certification round). */
 :root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
 html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
@@ -623,6 +738,20 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </ol>
     </header>
 
+    <!-- El marco de app (rediseño del fundador 2026-07-09): franja de
+         chrome + escenario de altura fija + barra de controles, un solo
+         objeto elevado. El chrome viaja [hidden] (el JS lo revela junto
+         con .ld-js) y aria-hidden — su nombre de paso + contador son
+         ecos visuales de #ldProgress / #ldLive, así que la tecnología de
+         asistencia oye cada paso exactamente una vez. Sin JS: este
+         contenedor es un div sin estilo y los paneles de abajo se leen
+         apilados, de arriba abajo, completos. -->
+    <div class="ld-frame" id="ldFrame">
+    <div class="ld-chrome" id="ldChrome" hidden aria-hidden="true">
+      <span class="ld-chrome-app">Muntin Ledger</span>
+      <span class="ld-chrome-chip">Demo &middot; datos de muestra</span>
+      <span class="ld-chrome-step"><strong id="ldChromeTitle"></strong> &middot; <span id="ldChromeCount"></span></span>
+    </div>
     <div id="ldPanels">
 
     <section class="ld-panel" id="ld-step0" aria-labelledby="ld-h0">
@@ -743,13 +872,25 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <section class="ld-panel" id="ld-step3" aria-labelledby="ld-h3">
       <h2 id="ld-h3" tabindex="-1">Marcar.</h2>
-      <p class="ld-body">La l&iacute;nea de lechuga romana del 26 de junio llega a $29.45 &mdash; $5.23 m&aacute;s por caja contra la mediana m&oacute;vil de tus lecturas previas (+21.6%) &mdash; y recibe la marca. La revisi&oacute;n corre contra tu propio historial, nada m&aacute;s, y solo se dispara cuando el movimiento cruza los dos umbrales de Ledger: al menos 8% <em>y</em> al menos $5.00 sobre tu mediana m&oacute;vil.</p>
+      <!-- Recomposición para el marco (2026-07-09): la introducción
+           conserva la frase del desenlace; la frase de los umbrales pasó
+           TEXTUAL al cajón leer-más bajo la figura (la leyenda sigue
+           llevando ambos umbrales en el panel, así que la revelación
+           queda a la vista). -->
+      <p class="ld-body">La l&iacute;nea de lechuga romana del 26 de junio llega a $29.45 &mdash; $5.23 m&aacute;s por caja contra la mediana m&oacute;vil de tus lecturas previas (+21.6%) &mdash; y recibe la marca.</p>
       <figure class="lg-vignette" style="margin:0" data-audio-alt="Gráfica de revisión de precio para lechuga romana de veinticuatro unidades. El doce de junio marca veinticuatro dólares con diez centavos y el diecinueve de junio veinticuatro treinta y cinco, ambos dentro de la banda de tus lecturas previas. El veintiséis de junio salta a veintinueve cuarenta y cinco: cinco dólares con veintitrés centavos, o veintiuno punto seis por ciento, sobre la mediana móvil de veinticuatro veintidós. Eso cruza los dos umbrales de Ledger, al menos ocho por ciento y al menos cinco dólares, así que la línea queda marcada.">
         <div class="lg-pane">
           <div class="lg-pane-head">
             <span class="lg-pane-title">Revisi&oacute;n de precio &mdash; contra tu propio historial</span>
             <span class="lg-chip">Historial de muestra &middot; ilustrativo</span>
           </div>
+          <!-- .ld-flagcols (2026-07-09): en ≥768px las filas quedan a la
+               izquierda y la gráfica a la derecha para que el paso quepa
+               en la altura compartida del escenario; el orden del DOM
+               (filas → gráfica → remate) no cambia, así que la lectura
+               apilada sin JS / móvil es idéntica a la de antes. -->
+          <div class="ld-flagcols">
+          <div class="ld-flagcols-rows">
           <div role="table" aria-label="Historial de precios de la lechuga romana">
             <div class="visually-hidden-ld" role="rowgroup"><div role="row"><span role="columnheader">Fecha</span><span role="columnheader">Proveedor</span><span role="columnheader">Art&iacute;culo</span><span role="columnheader">Precio</span><span role="columnheader">Estado</span></div></div>
             <div class="lg-rows" role="rowgroup">
@@ -758,6 +899,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <div class="lg-row lg-row--flag" role="row"><span class="lg-d" role="cell">26 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Lechuga romana, 24&nbsp;uds</span><span class="lg-n" role="cell">$29.45</span><span class="lg-flag" role="cell"><span aria-hidden="true">&#9650;</span> el precio se movi&oacute;</span></div>
             </div>
           </div>
+          </div>
+          <div class="ld-flagcols-viz">
           <!-- Datos y mapeo de la gráfica (clave de renumeración): puntos
                12 jun $24.10, 19 jun $24.35, 26 jun $29.45; mediana de los
                previos $24.22; delta $5.23 = +21.6%. Escritorio y(v) =
@@ -836,27 +979,53 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             </svg>
           </div>
           <p class="lg-stepnote">El total de la factura, $115.80, nunca parpade&oacute; &mdash; la l&iacute;nea s&iacute;. Se detecta el d&iacute;a que llega, no al cierre del mes.</p>
+          </div>
+          </div><!-- /ld-flagcols -->
         </div>
         <figcaption class="lg-cap"><strong>Una marca, dos umbrales</strong> &mdash; se dispara solo cuando una l&iacute;nea cruza ambos contra su propio historial: al menos 8% y al menos $5.00 sobre la mediana m&oacute;vil. Cifras ilustrativas.</figcaption>
       </figure>
-      <p class="ld-body" style="margin-top:16px">$5.23 &divide; 24 piezas es cerca de 22&cent; por pieza &mdash; cada plato que la lechuga romana toca se recalcula el mismo d&iacute;a. Y como la lechuga romana est&aacute; en la canasta p&uacute;blica del &Iacute;ndice de Costos, la marca llega con contexto de mercado: &iquest;mi proveedor, o el mercado? Fuera de la canasta &mdash; licores, vino, cortes con grado &mdash; una subida igual se archiva y se recalcula, pero no se compara con el mercado. Y un art&iacute;culo sin lecturas previas no recibe marca alguna: sin nada tuyo contra qu&eacute; comparar, Ledger se abstiene en lugar de adivinar &mdash; as&iacute; que las primeras semanas se ven as&iacute;: las facturas se archivan y el historial crece, y las marcas empiezan a llegar cuando tus propias lecturas pueden respaldarlas.</p>
-      <p class="lg-cap">Ledger corre esta revisi&oacute;n en cada l&iacute;nea, el d&iacute;a que llega la factura &mdash; $19 al mes es menos que cuatro de estas cajas detectadas. Abre el 13 de noviembre de 2026 &mdash; a <!-- count:ledger.ga_weeks_out -->19<!-- /count --> semanas. <a href="/es/ledger/#pricing" class="plausible-event-name=Demo+Exit plausible-event-door=peak-founding" style="color:var(--teal)">Los t&eacute;rminos fundadores &rarr;</a></p>
+      <!-- Recomposición para el marco (2026-07-09): la frase de los
+           umbrales y el párrafo de la cuenta del mismo día pasaron aquí
+           TEXTUALES desde la prosa del panel para que el paso quepa en
+           el escenario fijo; el cajón se abre dentro del marco (el panel
+           se desplaza, la página no). -->
+      <details class="cite ld-more">
+        <summary>C&oacute;mo decide la marca &mdash; umbrales, contexto de mercado y las primeras semanas</summary>
+        <div class="cite-body">
+          <p>La revisi&oacute;n corre contra tu propio historial, nada m&aacute;s, y solo se dispara cuando el movimiento cruza los dos umbrales de Ledger: al menos 8% <em>y</em> al menos $5.00 sobre tu mediana m&oacute;vil.</p>
+          <p>$5.23 &divide; 24 piezas es cerca de 22&cent; por pieza &mdash; cada plato que la lechuga romana toca se recalcula el mismo d&iacute;a. Y como la lechuga romana est&aacute; en la canasta p&uacute;blica del &Iacute;ndice de Costos, la marca llega con contexto de mercado: &iquest;mi proveedor, o el mercado? Fuera de la canasta &mdash; licores, vino, cortes con grado &mdash; una subida igual se archiva y se recalcula, pero no se compara con el mercado. Y un art&iacute;culo sin lecturas previas no recibe marca alguna: sin nada tuyo contra qu&eacute; comparar, Ledger se abstiene en lugar de adivinar &mdash; as&iacute; que las primeras semanas se ven as&iacute;: las facturas se archivan y el historial crece, y las marcas empiezan a llegar cuando tus propias lecturas pueden respaldarlas.</p>
+        </div>
+      </details>
+      <p class="lg-cap">Ledger corre esta revisi&oacute;n en cada l&iacute;nea, el d&iacute;a que llega la factura &mdash; $19 al mes por local es menos que cuatro de estas cajas detectadas. Abre el 13 de noviembre de 2026 &mdash; a <!-- count:ledger.ga_weeks_out -->19<!-- /count --> semanas. <a href="/es/ledger/#pricing" class="plausible-event-name=Demo+Exit plausible-event-door=peak-founding" style="color:var(--teal)">Los t&eacute;rminos fundadores &rarr;</a></p>
     </section>
 
     <section class="ld-panel ld-cta" id="ld-step4" aria-labelledby="ld-h4">
+      <!-- Recomposición para el marco (2026-07-09): en ≥768px la
+           petición (precio + lista fundadora) queda a la izquierda y el
+           carril de compruébalo-tú-mismo (Vendor Benchmark + enlaces de
+           prueba) a la derecha; las lecturas apilada y sin JS no
+           cambian, con el <hr> de vuelta entre las mitades. Cláusula
+           por-local añadida 2026-07-09 (confirmada por el fundador;
+           sourced-claims ledger_founding_offer_2026). -->
+      <div class="ld-cta-cols">
+      <div class="ld-cta-main">
       <h2 id="ld-h4" tabindex="-1">Pon esta marca en cada línea.</h2>
       <p class="ld-body">Esa marca, en cada l&iacute;nea de cada factura, el d&iacute;a que llega &mdash; <strong style="color:#F6F7F8">Muntin Ledger</strong> abre el 13 de noviembre de 2026.</p>
-      <p class="lg-price-figure"><span class="lg-price-cur">$</span>19<span class="lg-price-per">/mes</span></p>
-      <p class="lg-price-ga">Tres meses gratis para la lista fundadora, luego $19 al mes mientras te quedes &middot; abre el <span class="lg-price-date">13 de noviembre de 2026</span>.</p>
+      <p class="lg-price-figure"><span class="lg-price-cur">$</span>19<span class="lg-price-per">/mes por local</span></p>
+      <p class="lg-price-ga">Tres meses gratis para la lista fundadora, luego $19 al mes por local mientras te quedes &middot; abre el <span class="lg-price-date">13 de noviembre de 2026</span>.</p>
       <div class="studio-cta-row" style="margin-top:20px">
         <a class="btn lg-btn-light plausible-event-name=Demo+Exit plausible-event-door=founding" href="/es/ledger/#pricing">Unirme a la lista fundadora &rarr;</a>
       </div>
+      </div>
       <hr style="border:none;border-top:1px solid rgba(246,247,248,.14);margin:28px 0 24px" aria-hidden="true">
+      <div class="ld-cta-side">
       <p class="ld-body">No le creas a un demo con datos ficticios. Toma un precio que ya pagaste &mdash; dos fechas, dos n&uacute;meros &mdash; y <strong style="color:#F6F7F8">Vendor Benchmark</strong> corre la misma regla de marca sobre tu propio historial que usa Ledger, calcada al centavo, y pone al lado una lectura del mercado con el &Iacute;ndice de Costos p&uacute;blico, sobre tus fechas exactas. Gratis, en tu navegador, sin registro, sin subir nada.</p>
       <div class="studio-cta-row" style="margin-top:20px">
         <a class="btn btn-ghost plausible-event-name=Demo+Exit plausible-event-door=benchmark" href="/es/tools/vendor-benchmark/" style="color:#F6F7F8;border-color:rgba(246,247,248,.4)">Corre tu propia línea &rarr;</a>
       </div>
       <p class="ld-body" style="margin-top:24px;margin-bottom:0;font-size:14px">Comprueba lo que afirmamos: <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/es/trust/" style="color:#7AA7FF">el centro de confianza</a> &middot; <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/es/never/" style="color:#7AA7FF">lo que nunca hacemos</a> &middot; <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/es/cost-index/" style="color:#7AA7FF">los datos del &Iacute;ndice de Costos (CC0)</a>.</p>
+      </div>
+      </div><!-- /ld-cta-cols -->
       <ul class="lg-stances">
         <li>Sin comisi&oacute;n sobre tus ventas, nunca</li>
         <li>Ning&uacute;n modelo de lenguaje lee tus facturas &mdash; bloqueado en el build, nunca datos de entrenamiento</li>
@@ -887,6 +1056,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <button type="button" class="btn btn-primary" id="ldNext">Siguiente</button>
       <span class="ld-progress" id="ldProgress"></span>
     </div>
+    </div><!-- /ldFrame -->
     <p class="visually-hidden-ld" aria-live="polite" id="ldLive"></p>
 
   </div>
@@ -902,39 +1072,36 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       var back = document.getElementById('ldBack'), next = document.getElementById('ldNext');
       var restart = document.getElementById('ldRestart'), cta = document.getElementById('ldCta');
       var progress = document.getElementById('ldProgress'), live = document.getElementById('ldLive');
-      var panelsBox = document.getElementById('ldPanels');
-      if (!wrap || panels.length < 5 || !rail || !controls || !restart || !cta || !panelsBox) return;
+      var chromeBar = document.getElementById('ldChrome');
+      var chromeTitle = document.getElementById('ldChromeTitle');
+      var chromeCount = document.getElementById('ldChromeCount');
+      if (!wrap || panels.length < 5 || !rail || !controls || !restart || !cta || !chromeBar || !chromeTitle || !chromeCount) return;
       var titles = ['Llega la factura', 'Leer', 'Archivar', 'Marcar', 'Pon esta marca en cada línea'];
       var i = 0;
       var prm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
       wrap.classList.add('ld-js');
       controls.hidden = false;
-      // Altura por paso (revisión ronda 2, 2026-07-07): la pila de grid
-      // reservaba la altura del panel MÁS ALTO, dejando un vacío muerto
-      // bajo los pasos cortos. En vez del reflujo instantáneo (vetado por
-      // brusco), la altura en línea del contenedor sigue el offsetHeight
-      // del panel ACTIVO y la transición CSS (200ms --ease-out; ninguna
-      // con movimiento reducido) anima entre lecturas. Se recalcula al
-      // cambiar de paso, al redimensionar (un solo listener con rebote),
-      // al abrir/cerrar un cajón details y cuando cargan las webfonts
-      // (sus métricas mueven la altura de las filas). Sin JS este código
-      // nunca corre, así que la lectura apilada no lleva altura en línea.
-      function sizePanels() {
-        panelsBox.style.height = panels[i].offsetHeight + 'px';
-      }
-      var rszT;
-      window.addEventListener('resize', function () {
-        clearTimeout(rszT);
-        rszT = setTimeout(sizePanels, 150);
-      }, { passive: true });
-      Array.prototype.forEach.call(panelsBox.querySelectorAll('details'), function (d) {
-        d.addEventListener('toggle', sizePanels);
-      });
-      if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizePanels);
+      chromeBar.hidden = false;
+      // Ley de altura del marco de app (rediseño del fundador,
+      // 2026-07-09): el escenario es un marco CSS de altura fija por
+      // breakpoint, así que el JS de altura por paso (sizePanels), su
+      // transición de height de 200ms y las re-mediciones por resize /
+      // cajón details / webfonts quedan ELIMINADOS. Cualquier diferencia
+      // de altura entre paneles vive ahora DENTRO del marco — los cortos
+      // se centran en el escenario, los altos se desplazan dentro de él —
+      // y la altura propia de la página es idéntica en cada paso. Aquí
+      // nada mide; nada puede mover la página.
       function show(n, focus) {
         i = Math.max(0, Math.min(panels.length - 1, n));
         panels.forEach(function (p, k) { p.classList.toggle('ld-current', k === i); });
-        sizePanels();
+        // Chrome del marco: nombre del paso + "2 de 5" (aria-hidden — la
+        // tecnología de asistencia oye lo mismo por #ldProgress /
+        // #ldLive exactamente una vez).
+        chromeTitle.textContent = titles[i];
+        chromeCount.textContent = (i + 1) + ' de ' + panels.length;
+        // Un paso siempre re-entra por su inicio: se reinicia el scroll
+        // del PANEL dentro del escenario fijo; la página nunca se mueve.
+        panels[i].scrollTop = 0;
         Array.prototype.forEach.call(rail.children, function (li, k) {
           if (k === i) li.setAttribute('aria-current', 'step');
           else li.removeAttribute('aria-current');
