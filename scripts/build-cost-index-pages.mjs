@@ -2923,7 +2923,7 @@ function emitEventsHubPage(locale) {
       <h3 class="evh-card__label" data-quoted-source>${escHtml(e.ev.label)}</h3>
       <p class="evh-card__what" data-quoted-source>${escHtml(e.ev.whatHappened || '')}</p>
       <p class="evh-card__items"><strong>${es ? 'Afecta' : 'Affected'}</strong>${items}</p>
-      <details class="evh-card__src"><summary>${(e.ev.sources || []).length} ${es ? 'fuentes' : 'sources'}</summary><ul>${srcs}</ul></details>
+      <details class="evh-card__src"><summary>${(e.ev.sources || []).length} ${(e.ev.sources || []).length === 1 ? (es ? 'fuente' : 'source') : (es ? 'fuentes' : 'sources')}</summary><ul>${srcs}</ul></details>
     </li>`;
   }).join('\n    ');
 
