@@ -164,3 +164,12 @@ test('nassMonthly keeps period keys, sorts (y,m), dedupes', () => {
   assert.deepEqual(m.map((p) => p.m), [3, 5]);
   assert.equal(m[0].v, 99); // dedup (2026,3) keeps last
 });
+
+test('coldStorageAnomaly boundary: 2 prior same-month years → null; 3 prior → non-null (pins minYears)', () => {
+  const mk = (years) => { const rows = []; for (const y of years) [3, 4, 5].forEach((m, i) => rows.push({ y, m, v: [300, 310, 320][i] + (y - 2023) })); return rows; };
+  // 3 total years (2024-2026): each recent month has only 2 prior same-month years → null
+  assert.equal(S.coldStorageAnomaly(csRows(mk([2024, 2025, 2026]))), null);
+  // 4 total years (2023-2026): 3 prior same-month years → qualifies → a number
+  const d = S.coldStorageAnomaly(csRows(mk([2023, 2024, 2025, 2026])));
+  assert.ok(d !== null && typeof d === 'number', `4 years should qualify, got ${d}`);
+});
