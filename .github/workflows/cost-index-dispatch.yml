@@ -1,16 +1,10 @@
-# Cost Index MONTHLY dispatch — publishes the dated write-up, then emails it.
-# (Weekly until the 2026-07-06 cadence pivot; first monthly send 2026-08-04.)
-#
-# Runs the first Tuesday of each month, an hour after the Mon/Wed/Fri measured
-# refresh (cost-index-refresh.yml, 13:00 UTC) so Monday's fresh
-# data/cost-index.json is committed and checked out before the post is built —
-# never a race that writes the post off stale numbers.
-#
-# Note the refresh SELF-HEALS the post: if this monthly run is ever missed, the
-# next refresh republishes the dated post (post only, no email) the moment the
-# data is more than a month ahead of it (check-cost-index-dispatch-fresh.mjs).
-# This first-Tuesday run remains the canonical cadence and is the one that sends
-# the monthly broadcast email.
+# Cost Index dispatch — MANUAL-ONLY (founder call 2026-07-09): the monthly
+# dispatch is HAND-WRITTEN and hand-published each month; no cron generates
+# or publishes posts. This workflow remains as the one-click EMAIL button:
+# run it with dry-run=false AFTER the hand-written edition is live to send
+# the monthly broadcast to subscribers (idempotent per asOf). The freshness
+# gate (check-cost-index-dispatch-fresh.mjs, 38d) reds CI as the reminder
+# if a month ever slips — the machine reminds, humans write.
 #
 # Each edition it: (1) generates the dated dispatch at blog/cost-index-week-<asOf>/
 # (the slug family is dated, so it carries across the cadence change; existing
@@ -38,14 +32,6 @@ on:
         description: 'dry-run = print the insight, publish nothing, send nothing'
         type: boolean
         default: true
-  schedule:
-    # MONTHLY (2026-07-06 cadence pivot, founder call): first Tuesday of the
-    # month, 14:00 UTC — an hour after the 13:00 UTC measured refresh (now
-    # Mon/Wed/Fri), so Monday's data is committed and settled before the post
-    # publishes and the email goes out. GitHub cron can't express "first
-    # Tuesday" (DOM+DOW are OR'd), so the cron still fires every Tuesday and
-    # the first gate step below exits cleanly on all but the first.
-    - cron: '0 14 * * 2'
 
 permissions:
   contents: write   # publishes the dated dispatch post
@@ -59,37 +45,15 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
-      - name: Monthly gate — first Tuesday only (manual dispatches always pass)
-        # Cron fires every Tuesday (see above); this keeps only the first Tuesday
-        # of each month. The start guard skips July 2026 entirely: the cadence
-        # pivot merged the night before 2026-07-07 (a first Tuesday), and the
-        # founder's call was that the weekly does NOT fire — the first monthly
-        # dispatch is 2026-08-04. workflow_dispatch bypasses both guards so a
-        # manual send stays possible any day.
-        if: github.event_name == 'schedule'
-        run: |
-          dom=$(date -u +%-d)
-          if [ "$dom" -gt 7 ]; then
-            echo "Not the first Tuesday (day $dom) — monthly dispatch skips this week."
-            echo "SKIP_DISPATCH=1" >> "$GITHUB_ENV"
-          fi
-          if [ "$(date -u +%Y-%m-%d)" \< "2026-08-01" ]; then
-            echo "Before the 2026-08-04 monthly start — skipping (cadence pivot 2026-07-06)."
-            echo "SKIP_DISPATCH=1" >> "$GITHUB_ENV"
-          fi
-
       - name: Check out
-        if: env.SKIP_DISPATCH != '1'
         uses: actions/checkout@v5
 
       - name: Set up Node 20
-        if: env.SKIP_DISPATCH != '1'
         uses: actions/setup-node@v5
         with:
           node-version: 20
 
       - name: Compute the month's insight
-        if: env.SKIP_DISPATCH != '1'
         run: |
           set -e
           node scripts/build-cost-index-dispatch.mjs --dry-run
@@ -100,7 +64,7 @@ jobs:
 
       # Scheduled runs publish + send; manual dispatch only does so when dry-run=false.
       - name: Publish the dated dispatch
-        if: ${{ env.SKIP_DISPATCH != '1' && (github.event_name == 'schedule' || github.event.inputs.dry-run == 'false') }}
+        if: ${{ github.event.inputs.dry-run == 'false' }}
         run: |
           set -e
           # Emit blog/cost-index-week-<asOf>/index.html from the measured index.
@@ -171,7 +135,7 @@ jobs:
           fi
 
       - name: Broadcast the monthly email
-        if: ${{ env.SKIP_DISPATCH != '1' && (github.event_name == 'schedule' || github.event.inputs.dry-run == 'false') }}
+        if: ${{ github.event.inputs.dry-run == 'false' }}
         env:
           BROADCAST_SECRET: ${{ secrets.COST_INDEX_BROADCAST_SECRET }}
         run: |
