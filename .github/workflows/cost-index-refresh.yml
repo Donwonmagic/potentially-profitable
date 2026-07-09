@@ -152,6 +152,12 @@ jobs:
           node scripts/build-cost-confidence-calibration.mjs
           node scripts/build-cost-confidence-shadow.mjs
           node scripts/inject-cost-index-speakable.mjs
+          # Re-stamp the calibration sentinels LAST (2026-07-09): the first MWF
+          # cron (07-08) proved that on a fresh-data run a later rebuild in this
+          # chain can leave the stamp stale relative to the final page state —
+          # the gates step then correctly refuses the commit and the heartbeat
+          # stalls. Idempotent; the --check in the gates step stays the verifier.
+          node scripts/inject-cost-index-calibration.mjs
           # Golden render of the dispatch email (data/email-preview/) — the
           # committed, human-readable copy of exactly what subscribers would
           # get from this data. Sync-gated below; content-gated in check-all.
