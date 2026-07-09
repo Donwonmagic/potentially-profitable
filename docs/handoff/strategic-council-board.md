@@ -13,6 +13,31 @@ repo survives. Update this file as threads move.
 dev branch `claude/muntin-digital-strategy-07sowb` is merged to main (storefront
 PR #482, product PR #227) and closed — start fresh from `main`.
 
+## ⮕ CURRENT STATE — Cost Index data-company expansion (updated 2026-07-09)
+
+**Session on branch `claude/vendor-benchmark-redesign-yn273q`** (storefront `potentially-profitable`). Thread: turn the Cost Index into a genuine **data company + open library** — surface the deep price history, add the "events that moved the market" layer, and wire the HONEST use of new public data (NASS/Census/EIA). Cadence: plan → build → audit → iterate, with **expert panels at the forks**. `check-all` baseline unchanged (232–233/252; the ~19 failures are the deploy-regenerated site-wide idempotency drift, NOT ours — see Gotchas). Every cost-index/events/context gate GREEN.
+
+**SHIPPED this session (all committed + pushed, each gate-green):**
+- **Notable price events surface — ADR-011.** Deterministic detection (`scripts/build-cost-index-events.mjs` → `data/cost-index-events.json`: biggest SUSTAINED moves off a centered ±26-wk local median + duration / own-season / co-movement; 432 events / 80 ingredients) rendered on every cost-index ingredient page, JOINED to the site's existing curated, CITED registry (`cost-index/events.json`, 39 documented events, USDA/CDC/NOAA) as CO-OCCURRENCE context (never cause). Retired the interim hand-drafted notes. Honesty gate `scripts/check-cost-index-events.mjs` (self-test + live, now also scans the hub).
+- **Operator takeaway** on each events section — computed volatility verdict (fix vs float the menu price), median recovery-time, the market-vs-vendor read. Operator-grounded; no forecast/sourced-claim needed.
+- **Vendor Benchmark market-context — ADR-012.** The tool reads the REFERENCE's own state (elevated/depressed vs its trailing-year normal + most-recent documented event), NEVER the operator's price, so the fair-price-gap wholesale contract holds. Seed `scripts/build-cost-index-context.mjs` → `data/cost-index-context.js`.
+- **/cost-index/events/ hub** — the 39-event registry as a browsable, category-filterable, cited history joined to detection magnitudes; Dataset JSON-LD + CC-BY open-data link. EN full accounts; ES Spanish UI with the English source behind an "(en inglés)" disclosure. `check-banned-words` scrub extended to exempt quoted registry text (`data-quoted-source` / `.ci-events__ctx`).
+- **NASS cold-storage deseasonalization — ADR-014.** `coldStorageAnomaly` (same-month 5-yr median deviation) + `transform:"anomaly"` on the 5 cold-storage specs + 16/16 tests. Pure code; activates on the operator's live NASS fetch. **The blocking prerequisite from the data panel — DONE.**
+
+**Gov data-sources plan (NASS / Census / EIA) — 13-expert + 3-adversary panel synthesis, recorded in ADR-013.** All three were built-but-DORMANT (never pulled; shipped price history is 100% USDA-AMS/LMR/FRED/BLS/NOAA). Verdict: light up only the honest subset — nothing touches the measured tier or the Vendor Benchmark reference. Sequenced runbook + guardrails + open questions all in ADR-013.
+
+**RUNBOOKS for the operator's Mac (keys + network — the container has neither):**
+- Zero-code wins: `NASS_KEY=… EIA_KEY=… node scripts/fetch-pressure-observations.mjs --live` (cattle-on-feed placements = the one calibration-proven NASS lead; diesel driver labels).
+- Census/EIA exotics: `EIA_KEY=… node scripts/fetch-cost-index-sources.mjs --live` (Census keyless), then `verify-cost-index-sources.mjs --flip` for coffee HS 090111 / cocoa HS 180100 (derived tier only).
+
+**IN FLIGHT:** (a) **glyph design system** — a mono-line ingredient-card pictogram set, refined through a render→agent-reviews-the-pixels→redraw visual loop (harness `scratchpad/glyph-sheet.mjs` + headless Chromium proven). (b) ADR-013 build sequence (deseasonalization DONE; next: per-commodity cold-storage gating + Census coffee/cocoa derived-tier).
+
+**OPEN QUESTIONS carried (founder call — in ADR-013/014):** re-validate `cold-storage-pork` calibration after the deseasonalization patch (was computed on the raw path); build a NASS price-fetcher for feed drivers or keep FRED/BLS; vanilla publish-threshold; freight double-count (pressure `eia-diesel` vs the shipped FRED GASDESW).
+
+**ADRs added this thread (all in `docs/editorial/decisions/`):** ADR-011 (events surface), ADR-012 (Vendor Benchmark market-context), ADR-013 (gov data-sources policy), ADR-014 (cold-storage deseasonalization).
+
+---
+
 ## ⮕ CURRENT STATE — read this first (updated 2026-06-27)
 
 **Session on branch `claude/muntin-strategic-council-fzdd1j`** (PR #489 — the prior `-rqdehe` heartbeat/prune/anti-Factura work + the Worker-build fix — is **merged to main**, commit `3b3bb6cb0`). Caught up with main; `check-all` re-verified green (215/236 = the documented deploy-regenerated idempotency baseline; all hard gates + every cost-index gate GREEN even after calendar aging).
