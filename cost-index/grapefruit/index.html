@@ -242,13 +242,18 @@ main{padding-top:64px}
 .ci-events__meta{margin:6px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
 .ci-events__meta a{color:var(--ink-soft);text-decoration:none;border-bottom:1px dashed var(--line)}
 .ci-events__meta a:hover{color:var(--teal)}
-.ci-events__note{margin:10px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
-.ci-events__note-t{margin:0 0 4px;font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.4}
-.ci-events__note-b{margin:0;font-size:14px;line-height:1.6;color:var(--ink)}
+.ci-events__ctx{margin:10px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
+.ci-events__ctx-t{margin:0;font-size:14px;font-weight:600;color:var(--ink);line-height:1.5}
+.ci-events__ctx-tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--stone);margin-right:6px;vertical-align:1px}
 .ci-events__cite{margin:8px 0 0;font-size:12.5px}
 .ci-events__cite summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
 .ci-events__cite p{margin:6px 0 0;color:var(--ink-soft);line-height:1.55}
 .ci-events__cite a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-events__srcs{font-size:12px}
+.ci-events__also{margin:14px 0 0;padding:12px 14px;background:var(--white);border:1px solid var(--line);border-radius:10px}
+.ci-events__also-h{margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.ci-events__also .ci-events__ctx{background:transparent;padding:6px 0;border-top:1px solid var(--line);border-radius:0}
+.ci-events__also .ci-events__ctx:first-of-type{border-top:0}
 .ci-events__foot{margin:12px 0 0;font-size:12.5px;color:var(--stone);line-height:1.5}
 .ci-events__foot a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-events--stable .ci-events__intro{margin-bottom:0}
@@ -565,7 +570,10 @@ main{padding-top:64px}
         <span class="ci-events__mag" data-dir="up">▲&nbsp;54% above normal</span>
       </div>
       <p class="ci-events__meta">$37.38/carton vs ~$24.35 typical · held about 3 months · in the usual high season for grapefruit</p>
-      </li>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Documented around this time</span> Florida citrus greening (Huanglongbing/HLB), first detected 2005 - ongoing</p>
+        <details class="ci-events__cite"><summary>What happened · sources</summary><p>Citrus greening (Huanglongbing/HLB), a bacterial disease spread by the Asian citrus psyllid that causes premature fruit drop, misshapen unripe fruit and eventual tree death, was first detected in Florida&#39;s commercial groves in 2005. USDA data show Florida orange production fell from about 242 million boxes in 2003/04 to roughly 41 million boxes by 2022 — an estimated ~92% decline that USDA attributes to citrus greening compounded by hurricanes. Florida grapefruit and other citrus were similarly affected, and the disease remains present and unresolved through the present.</p><p class="ci-events__srcs"><a href="https://www.ers.usda.gov/data-products/charts-of-note/chart-detail?chartId=109051" rel="nofollow noopener" target="_blank">USDA Economic Research Service</a></p></details>
+      </div></li>
       <li class="ci-events__ev" data-dir="up">
       <div class="ci-events__hd">
         <span class="ci-events__date">Jul 2003</span>
@@ -602,7 +610,30 @@ main{padding-top:64px}
       <p class="ci-events__meta">$27.10/carton vs ~$20.35 typical · held about 5 months · in the usual high season for grapefruit</p>
       </li>
     </ol>
-    <p class="ci-events__foot">Detected automatically from public price history (USDA/BLS/FRED); the cause notes are editorial, each checked against the cited public source. <a href="/glossary/cost-index/">How events are picked</a>.</p>
+    <div class="ci-events__also">
+      <p class="ci-events__also-h">Other documented events for grapefruit</p>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Documented around this time</span> Hurricane Ian - Florida citrus (September 2022)</p>
+        <details class="ci-events__cite"><summary>What happened · sources</summary><p>Hurricane Ian made landfall as a Category 4 storm on Florida&#39;s southwest coast on Sept 28, 2022 and crossed major citrus-producing counties, damaging trees and knocking down fruit. USDA&#39;s December 9, 2022 forecast lowered the all-grapefruit forecast to 1.80 million boxes and put 2022/23 Florida orange production about 36% below its October estimate — reflecting damage from Ian and Hurricane Nicole (November 2022) — making it one of the lowest Florida orange crops since World War II.</p><p class="ci-events__srcs"><a href="https://www.nass.usda.gov/Statistics_by_State/Florida/Publications/Citrus/Citrus_Forecast/2022-23/cit1222a.pdf" rel="nofollow noopener" target="_blank">USDA National Agricultural Statistics Service</a> · <a href="https://www.tampabay.com/news/business/2022/12/12/usda-florida-orange-crop-down-36-after-twin-hurricanes/" rel="nofollow noopener" target="_blank">Tampa Bay Times (Associated Press)</a></p></details>
+      </div>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Documented around this time</span> Winter Storm Uri - Texas citrus freeze (February 2021)</p>
+        <details class="ci-events__cite"><summary>What happened · sources</summary><p>Winter Storm Uri brought a prolonged hard freeze to Texas in mid-February 2021 (Rio Grande Valley coldest around Feb 15, lows near 22 F for hours), including the Rio Grande Valley citrus region. Growers reported loss of most of the remaining Valencia orange crop and more than 60% of grapefruit, plus extensive tree damage (about 10% of trees damaged or killed) that curtailed the following season&#39;s production. Texas A&amp;M AgriLife estimated roughly $230 million in citrus-industry damage, part of more than $600 million in total Texas agricultural losses.</p><p class="ci-events__srcs"><a href="https://agrilifetoday.tamu.edu/2021/02/23/future-uncertain-for-texas-citrus-other-fruit-vegetable-production/" rel="nofollow noopener" target="_blank">Texas A&amp;M AgriLife (AgriLife Today)</a> · <a href="https://agrilifetoday.tamu.edu/2021/03/02/initial-ag-losses-from-uri-exceed-600-million/" rel="nofollow noopener" target="_blank">Texas A&amp;M AgriLife (AgriLife Today)</a> · <a href="https://www.texastribune.org/2021/02/24/texas-agriculture-citrus-dairy-winter-storm/" rel="nofollow noopener" target="_blank">The Texas Tribune</a></p></details>
+      </div>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Documented around this time</span> Hurricane Irma - Florida citrus (September 2017)</p>
+        <details class="ci-events__cite"><summary>What happened · sources</summary><p>Hurricane Irma made US landfall in the Florida Keys on Sept 10, 2017 and tracked up the peninsula through citrus-growing counties, knocking ripening fruit from trees, uprooting trees and flooding groves. In its Oct 12, 2017 Crop Production report, USDA NASS forecast the 2017/18 Florida orange crop at 54.0 million boxes and noted increased fruit drop attributable largely to Irma&#39;s high winds; Florida grapefruit was forecast at 4.90 million boxes, 37% below the prior season, with the drop percentage including Irma&#39;s effects.</p><p class="ci-events__srcs"><a href="https://www.nass.usda.gov/Newsroom/Notices/2017/10_13_2017.php" rel="nofollow noopener" target="_blank">USDA National Agricultural Statistics Service</a> · <a href="https://www.ers.usda.gov/data-products/charts-of-note/chart-detail?chartId=87332" rel="nofollow noopener" target="_blank">USDA Economic Research Service</a></p></details>
+      </div>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Documented around this time</span> Florida winter freeze (January 2010)</p>
+        <details class="ci-events__cite"><summary>What happened · sources</summary><p>A prolonged early-January 2010 cold spell (Jan 2-13, 2010, one of the coldest 12-day periods on record for South Florida) brought several nights of sub-freezing temperatures across Florida, with lows in the mid-teens to low-20s F in growing regions. USDA NASS crop reports documented extensive damage to winter vegetable crops (including tomatoes and peppers), with some fields reported as total losses, and cold damage to the citrus crop; harvest was largely at a standstill during the event.</p><p class="ci-events__srcs"><a href="https://www.nass.usda.gov/Statistics_by_State/Florida/Publications/Crop_Progress_&amp;_Condition/2010/wc011110.pdf" rel="nofollow noopener" target="_blank">USDA National Agricultural Statistics Service</a> · <a href="https://www.weather.gov/media/mfl/news/ColdEpisodeJan2010.pdf" rel="nofollow noopener" target="_blank">NOAA National Weather Service (Miami, FL)</a> · <a href="https://climatecenter.fsu.edu/products-services/summaries/climate-summary-for-florida-january-2010" rel="nofollow noopener" target="_blank">Florida Climate Center, Florida State University</a></p></details>
+      </div>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Documented around this time</span> Florida hurricanes Charley, Frances, Ivan &amp; Jeanne (2004)</p>
+        <details class="ci-events__cite"><summary>What happened · sources</summary><p>Four hurricanes struck Florida within roughly six weeks in 2004 — Charley (landfall Aug 13), Frances (Sept 5), Ivan (Sept 16, flooding the Indian River district), and Jeanne (Sept 25-26), three of them direct hits on citrus-producing regions. High winds and flooding uprooted and defoliated citrus trees, knocked ripening fruit to the ground, and USDA/industry reports noted the storms further spread citrus canker. USDA reported the 2004/05 Florida orange crop was roughly 27-31% smaller than 2003/04, and the grapefruit crop fell about 63-68% to its smallest size since the 1930s.</p><p class="ci-events__srcs"><a href="https://crec.ifas.ufl.edu/media/crecifasufledu/faculty/rogers/27Albrigoetal2006.pdf" rel="nofollow noopener" target="_blank">University of Florida IFAS Citrus Research and Education Center</a> · <a href="https://www2.ljworld.com/news/2004/oct/13/hurricanes_squeeze_floridas/" rel="nofollow noopener" target="_blank">Lawrence Journal-World (Associated Press)</a> · <a href="https://www.nass.usda.gov/Statistics_by_State/Florida/Publications/Citrus/Citrus_Forecast/2004-05/cit1204.pdf" rel="nofollow noopener" target="_blank">USDA National Agricultural Statistics Service</a></p></details>
+      </div>
+    </div>
+    <p class="ci-events__foot">Price moves are detected from public history (USDA/BLS/FRED). Documented events come from our <a href="/cost-index/events.json">open, cited registry</a> — shown as co-occurring context, never asserted as the cause. <a href="/glossary/cost-index/">How events are picked</a>.</p>
   </section>
     <h2 id="how-to-use">How to use this reading</h2><ol>
   <li>Open the reading above and note the typical range and the date.</li>

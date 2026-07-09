@@ -242,13 +242,18 @@ main{padding-top:64px}
 .ci-events__meta{margin:6px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
 .ci-events__meta a{color:var(--ink-soft);text-decoration:none;border-bottom:1px dashed var(--line)}
 .ci-events__meta a:hover{color:var(--teal)}
-.ci-events__note{margin:10px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
-.ci-events__note-t{margin:0 0 4px;font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.4}
-.ci-events__note-b{margin:0;font-size:14px;line-height:1.6;color:var(--ink)}
+.ci-events__ctx{margin:10px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
+.ci-events__ctx-t{margin:0;font-size:14px;font-weight:600;color:var(--ink);line-height:1.5}
+.ci-events__ctx-tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--stone);margin-right:6px;vertical-align:1px}
 .ci-events__cite{margin:8px 0 0;font-size:12.5px}
 .ci-events__cite summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
 .ci-events__cite p{margin:6px 0 0;color:var(--ink-soft);line-height:1.55}
 .ci-events__cite a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-events__srcs{font-size:12px}
+.ci-events__also{margin:14px 0 0;padding:12px 14px;background:var(--white);border:1px solid var(--line);border-radius:10px}
+.ci-events__also-h{margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.ci-events__also .ci-events__ctx{background:transparent;padding:6px 0;border-top:1px solid var(--line);border-radius:0}
+.ci-events__also .ci-events__ctx:first-of-type{border-top:0}
 .ci-events__foot{margin:12px 0 0;font-size:12.5px;color:var(--stone);line-height:1.5}
 .ci-events__foot a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-events--stable .ci-events__intro{margin-bottom:0}
@@ -565,7 +570,10 @@ main{padding-top:64px}
         <span class="ci-events__mag" data-dir="up">▲&nbsp;73% above normal</span>
       </div>
       <p class="ci-events__meta">$1.30/lb vs ~$0.75 typical · held about 8 weeks · in the usual high season for chicken thigh · moved with <a href="/cost-index/chicken-breast/">chicken breast</a></p>
-      </li>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Documented around this time</span> 2022 avian influenza outbreak onset (H5N1 clade 2.3.4.4b)</p>
+        <details class="ci-events__cite"><summary>What happened · sources</summary><p>USDA APHIS confirmed highly pathogenic avian influenza (Eurasian H5N1 clade 2.3.4.4b) in a US commercial flock on February 8, 2022 — a commercial turkey operation in DuBois County, Indiana — marking the start of what would become the largest HPAI outbreak in US history. During 2022, APHIS reported the outbreak affected more than 57 million birds nationwide across commercial and backyard flocks in dozens of states, including more than 43 million commercial table-egg laying hens depopulated that year, with the single largest monthly loss in March 2022. Affected commercial flocks included egg layers (~75% of losses), turkeys (~11%), and broilers (~8%).</p><p class="ci-events__srcs"><a href="https://www.congress.gov/crs-product/R48518" rel="nofollow noopener" target="_blank">Congressional Research Service (Library of Congress)</a> · <a href="https://www.aphis.usda.gov/livestock-poultry-disease/avian/avian-influenza/hpai-detections/commercial-backyard-flocks" rel="nofollow noopener" target="_blank">USDA Animal and Plant Health Inspection Service (APHIS)</a></p></details>
+      </div></li>
       <li class="ci-events__ev" data-dir="up">
       <div class="ci-events__hd">
         <span class="ci-events__date">May 2025</span>
@@ -595,7 +603,18 @@ main{padding-top:64px}
       <p class="ci-events__meta">$1.37/lb vs ~$1.14 typical · held about 3 months · in the usual high season for chicken thigh · moved with <a href="/cost-index/chicken-breast/">chicken breast</a></p>
       </li>
     </ol>
-    <p class="ci-events__foot">Detected automatically from public price history (USDA/BLS/FRED); the cause notes are editorial, each checked against the cited public source. <a href="/glossary/cost-index/">How events are picked</a>.</p>
+    <div class="ci-events__also">
+      <p class="ci-events__also-h">Other documented events for chicken thigh</p>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Documented around this time</span> 2024-2025 winter avian influenza surge</p>
+        <details class="ci-events__cite"><summary>What happened · sources</summary><p>The ongoing H5N1 clade 2.3.4.4b HPAI outbreak intensified over the winter of 2024-2025. USDA APHIS reported roughly 18.25 million birds affected in December 2024 and about 23.3 million in January 2025, with commercial egg-layer depopulations concentrated in Ohio, Indiana, and Missouri; the national table-egg layer flock fell to about 291 million at the end of February 2025 from a typical level near 320-325 million. Cumulatively, USDA reported the 2022-present outbreak had affected more than 166 million birds through late February 2025, including more than 130 million commercial egg layers and over 18 million turkeys.</p><p class="ci-events__srcs"><a href="https://www.fca.gov/template-fca/about/2025MarchUpdateonHPAI.pdf" rel="nofollow noopener" target="_blank">U.S. Farm Credit Administration (FCA)</a> · <a href="https://www.wattagnet.com/egg/article/15738148/hpai-roundup-2025-off-to-bad-start-for-us-layer-industry" rel="nofollow noopener" target="_blank">WATT Global Media (WATTPoultry)</a> · <a href="https://www.congress.gov/crs-product/R48518" rel="nofollow noopener" target="_blank">Congressional Research Service (Congress.gov)</a></p></details>
+      </div>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Documented around this time</span> US Midwest / Corn Belt drought (2012)</p>
+        <details class="ci-events__cite"><summary>What happened · sources</summary><p>A historic drought and heat across much of the US Midwest and Corn Belt in summer 2012 sharply reduced feed-grain and oilseed output; drought conditions peaked in late July 2012. USDA NASS reported the 2012 US corn crop at 10.8 billion bushels, about 13% below 2011, with the national corn yield falling to 123.4 bushels per acre (from 147.2 in 2011); soybean yield came in at 39.6 bushels per acre with production of 3.01 billion bushels, down about 3% from 2011. Soybeans are the dominant US vegetable-oil oilseed, and feed grain represents a large share of poultry production costs. Elevated feed costs persisted into the 2012/13 marketing year.</p><p class="ci-events__srcs"><a href="https://www.nass.usda.gov/Newsroom/archive/2013/01_11_2013.php" rel="nofollow noopener" target="_blank">USDA National Agricultural Statistics Service (NASS)</a> · <a href="https://www.ers.usda.gov/data-products/charts-of-note/chart-detail?chartId=76883" rel="nofollow noopener" target="_blank">USDA Economic Research Service</a></p></details>
+      </div>
+    </div>
+    <p class="ci-events__foot">Price moves are detected from public history (USDA/BLS/FRED). Documented events come from our <a href="/cost-index/events.json">open, cited registry</a> — shown as co-occurring context, never asserted as the cause. <a href="/glossary/cost-index/">How events are picked</a>.</p>
   </section>
     <h2 id="how-to-use">How to use this reading</h2><ol>
   <li>Open the reading above and note the typical range and the date.</li>

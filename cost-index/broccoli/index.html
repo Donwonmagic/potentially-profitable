@@ -242,13 +242,18 @@ main{padding-top:64px}
 .ci-events__meta{margin:6px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
 .ci-events__meta a{color:var(--ink-soft);text-decoration:none;border-bottom:1px dashed var(--line)}
 .ci-events__meta a:hover{color:var(--teal)}
-.ci-events__note{margin:10px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
-.ci-events__note-t{margin:0 0 4px;font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.4}
-.ci-events__note-b{margin:0;font-size:14px;line-height:1.6;color:var(--ink)}
+.ci-events__ctx{margin:10px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
+.ci-events__ctx-t{margin:0;font-size:14px;font-weight:600;color:var(--ink);line-height:1.5}
+.ci-events__ctx-tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--stone);margin-right:6px;vertical-align:1px}
 .ci-events__cite{margin:8px 0 0;font-size:12.5px}
 .ci-events__cite summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
 .ci-events__cite p{margin:6px 0 0;color:var(--ink-soft);line-height:1.55}
 .ci-events__cite a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-events__srcs{font-size:12px}
+.ci-events__also{margin:14px 0 0;padding:12px 14px;background:var(--white);border:1px solid var(--line);border-radius:10px}
+.ci-events__also-h{margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.ci-events__also .ci-events__ctx{background:transparent;padding:6px 0;border-top:1px solid var(--line);border-radius:0}
+.ci-events__also .ci-events__ctx:first-of-type{border-top:0}
 .ci-events__foot{margin:12px 0 0;font-size:12.5px;color:var(--stone);line-height:1.5}
 .ci-events__foot a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-events--stable .ci-events__intro{margin-bottom:0}
@@ -602,7 +607,14 @@ main{padding-top:64px}
       <p class="ci-events__meta">$30.75/carton vs ~$17.25 typical · held about 8 weeks</p>
       </li>
     </ol>
-    <p class="ci-events__foot">Detected automatically from public price history (USDA/BLS/FRED); the cause notes are editorial, each checked against the cited public source. <a href="/glossary/cost-index/">How events are picked</a>.</p>
+    <div class="ci-events__also">
+      <p class="ci-events__also-h">Other documented events for broccoli</p>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Documented around this time</span> 2023 Salinas Valley / Pajaro River flooding</p>
+        <details class="ci-events__cite"><summary>What happened · sources</summary><p>A series of atmospheric-river storms in January and March 2023 caused widespread flooding in Monterey County&#39;s Salinas Valley and the Pajaro River area, including a Pajaro River levee breach in March 2023. The Monterey County Agricultural Commissioner&#39;s Office documented roughly 15,507 acres flooded in January and 8,736 acres in March (over 20,000 acres of farmland impacted for the year), with weather-related agricultural damage estimates ranging from about $330 million in initial surveys to roughly $600 million in later county tallies. Romaine lettuce, celery and broccoli were among the crops reported most affected; leafy-greens food-safety rules require destroying crops exposed to floodwater and testing soil before replanting, and total county lettuce acreage for the year was reported down roughly 3,000 acres from the prior year.</p><p class="ci-events__srcs"><a href="https://www.countyofmonterey.gov/Home/Components/News/News/9723/1336" rel="nofollow noopener" target="_blank">County of Monterey Agricultural Commissioner&#39;s Office</a> · <a href="https://www.farmprogress.com/crops/weather-dampens-23-monterey-county-crop-value" rel="nofollow noopener" target="_blank">Farm Progress</a> · <a href="https://localnewsmatters.org/2023/05/18/growing-losses-monterey-county-agriculture-may-suffer-600m-impact-from-winter-storms/" rel="nofollow noopener" target="_blank">Local News Matters (Bay City News Foundation)</a></p></details>
+      </div>
+    </div>
+    <p class="ci-events__foot">Price moves are detected from public history (USDA/BLS/FRED). Documented events come from our <a href="/cost-index/events.json">open, cited registry</a> — shown as co-occurring context, never asserted as the cause. <a href="/glossary/cost-index/">How events are picked</a>.</p>
   </section>
     <h2 id="how-to-use">How to use this reading</h2><ol>
   <li>Open the reading above and note the typical range and the date.</li>

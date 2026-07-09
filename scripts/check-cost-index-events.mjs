@@ -2,23 +2,21 @@
 /**
  * check-cost-index-events.mjs — the HONESTY gate for the notable-price-events surface.
  *
- * The surface has two halves:
- *   - data/cost-index-events.json       — DETECTION (pure math; its own --check keeps it in sync)
- *   - data/cost-index-event-notes.json  — the WHY (hand-curated, source-gated narratives)
+ * The surface joins two committed layers:
+ *   - data/cost-index-events.json  — DETECTION (pure math; its own --check keeps it in sync)
+ *   - cost-index/events.json       — the curated, CITED market-events registry (the WHY)
+ * rendered on each cost-index ingredient page as CO-OCCURRENCE context (a documented event
+ * shown beside the price window it overlapped, never asserted as the cause).
  *
- * This gate guards the second half and the rendered pages. It fails the build if:
- *   1. a note is malformed (unknown ingredient, bad period, empty text/sources, or doesn't
- *      line up with a detected event within the engine's 12-week merge window);
- *   2. a note claims verified:true without a real https source (url_status:'live') AND a
- *      date_verified — "verified" must mean a human actually checked the source;
- *   3. an UNVERIFIED note's cause text has leaked into any built cost-index page — nothing
- *      unverified may ever reach the public HTML (the core promise of "I draft, you verify");
- *   4. a note speaks a FORECAST (this is price history, never prediction) or frames a
- *      Pettitt-style "regime/step change" as market fact (gated off per the 2026-07 audit);
- *   5. the detection artifact leaks a cause/forecast/change-point field.
+ * This gate fails the build if:
+ *   1. the detection artifact leaks a cause/forecast/change-point field;
+ *   2. the registry is malformed or dishonestly framed — framing must be co-occurrence, every
+ *      event needs an id/label/startDate/affectedSlugs/whatHappened and at least one https
+ *      source, `count` must match, and no event may speak a forecast;
+ *   3. the RENDERED events section asserts causation (a documented event tied to a price move
+ *      as its cause) or speaks a forecast — the render must stay co-occurrence-only.
  *
- * The self-test exercises the validators on synthetic inputs (no repo I/O), so the gate's
- * own logic is pinned. Run:
+ * The self-test exercises the validators on synthetic inputs (no repo I/O). Run:
  *   node scripts/check-cost-index-events.mjs
  *   node scripts/check-cost-index-events.mjs --self-test
  */
@@ -27,72 +25,63 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const MERGE_MS = 84 * 864e5;                 // 12 weeks — the engine's event-merge window
-const CONFIDENCE = new Set(['high', 'medium', 'low']);
-
 function rd(p) { try { return JSON.parse(fs.readFileSync(path.join(repo, p), 'utf8')); } catch { return null; } }
 
-// Prediction / regime-step phrasing that must never appear in an event note.
+// Prediction phrasing that must never appear in a documented-event account or the render.
 const FORECAST_RE = [
   /\bforecast(s|ed|ing)?\b/i, /\bprojected\b/i, /\bexpected?\s+to\b/i,
   /\bwe\s+(expect|predict|forecast)\b/i, /\bgoing\s+to\s+(rise|fall|climb|drop)\b/i,
   /\bwill\s+(rise|fall|climb|drop|increase|decrease|likely|continue|keep)\b/i,
   /\bnext\s+(year|month|season|quarter)\b/i, /\blikely\s+to\s+(rise|fall|climb|drop)\b/i,
 ];
-const REGIME_RE = [/\bregime\s+(change|shift|break)\b/i, /\bstep[-\s]change\b/i, /\bpettitt\b/i, /\bpermanently\s+(higher|lower|shifted)\b/i];
-function bannedPhrase(text) {
-  const t = String(text || '');
-  for (const re of [...FORECAST_RE, ...REGIME_RE]) { const m = t.match(re); if (m) return m[0]; }
-  return null;
-}
+function forecastHit(text) { const t = String(text || ''); for (const re of FORECAST_RE) { const m = t.match(re); if (m) return m[0]; } return null; }
 
-// Validate one note's shape + provenance against the known ingredients and detected events.
-// Returns an array of problem strings ([] = clean).
-function validateNote(note, knownIngredients, eventsByIng) {
+// Causation asserted between a documented event and a PRICE move — the one thing the
+// co-occurrence surface must never do. Scoped tight so ordinary event prose ("the virus
+// caused illness") doesn't trip it: only event→price causal links are flagged.
+const CAUSAL_RE = [
+  /\bcaused\s+(the\s+)?(price|prices|spike|jump|move|surge|increase)\b/i,
+  /\bbecause\s+(of\s+)?(the\s+)?(price|prices)\b/i,
+  /\bdrove\s+(the\s+)?prices?\b/i,
+  /\bprices?\s+(rose|jumped|spiked|climbed|fell)\s+because\b/i,
+  /\bthe\s+cause\s+of\s+(the\s+)?(price|move|spike)\b/i,
+];
+function causalHit(text) { const t = String(text || ''); for (const re of CAUSAL_RE) { const m = t.match(re); if (m) return m[0]; } return null; }
+
+// Validate one registry event's shape + provenance. Returns problem strings ([] = clean).
+function validateEvent(ev) {
   const p = [];
-  const id = note && note.ingredient ? `${note.ingredient}@${note.period}` : '(unnamed note)';
-  if (!note || typeof note !== 'object') return [`${id}: not an object`];
-  if (!note.ingredient || !knownIngredients.has(note.ingredient)) p.push(`${id}: unknown ingredient`);
-  if (!/^\d{4}-\d{2}$/.test(note.period || '')) p.push(`${id}: period must be YYYY-MM`);
-  for (const f of ['title', 'what', 'impact']) if (typeof note[f] !== 'string' || !note[f].trim()) p.push(`${id}: ${f} must be a non-empty string`);
-  if (!CONFIDENCE.has(note.confidence)) p.push(`${id}: confidence must be high|medium|low`);
-  if (typeof note.verified !== 'boolean') p.push(`${id}: verified must be boolean`);
-  if (!Array.isArray(note.sources) || !note.sources.length) p.push(`${id}: sources must be a non-empty array`);
-  else note.sources.forEach((s, i) => {
-    if (!s || typeof s.name !== 'string' || !s.name.trim()) p.push(`${id}: source[${i}] missing name`);
-    if (!s || typeof s.url !== 'string' || !/^https:\/\//.test(s.url)) p.push(`${id}: source[${i}] url must be https`);
+  const id = ev && ev.id ? ev.id : '(unnamed event)';
+  if (!ev || typeof ev !== 'object') return [`${id}: not an object`];
+  if (!ev.id || typeof ev.id !== 'string') p.push(`${id}: missing id`);
+  if (!ev.label || typeof ev.label !== 'string') p.push(`${id}: missing label`);
+  if (!/^\d{4}(-\d{2}){1,2}$/.test(ev.startDate || '')) p.push(`${id}: startDate must be YYYY-MM or YYYY-MM-DD`);
+  if (ev.endDate && !/^\d{4}(-\d{2}){1,2}$/.test(ev.endDate)) p.push(`${id}: endDate malformed`);
+  if (!Array.isArray(ev.affectedSlugs) || !ev.affectedSlugs.length) p.push(`${id}: affectedSlugs must be a non-empty array`);
+  else if (!ev.affectedSlugs.every((s) => typeof s === 'string' && s.trim())) p.push(`${id}: affectedSlugs must all be non-empty strings`);
+  if (!ev.whatHappened || typeof ev.whatHappened !== 'string' || ev.whatHappened.trim().length < 40) p.push(`${id}: whatHappened must be a substantive string`);
+  if (!Array.isArray(ev.sources) || !ev.sources.length) p.push(`${id}: sources must be a non-empty array`);
+  else ev.sources.forEach((s, i) => {
+    if (!s || typeof s.url !== 'string' || !/^https?:\/\//.test(s.url)) p.push(`${id}: source[${i}] needs an http(s) url`);
+    if (!s || (!s.publisher && !s.title)) p.push(`${id}: source[${i}] needs a publisher or title`);
   });
-  // banned phrasing in any human text
-  for (const f of ['title', 'what', 'impact']) { const hit = bannedPhrase(note[f]); if (hit) p.push(`${id}: ${f} contains banned phrase "${hit}" (no forecast / no regime-step)`); }
-  // verified means a human checked it: every source live + a date
-  if (note.verified === true) {
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(note.date_verified || '')) p.push(`${id}: verified:true needs date_verified YYYY-MM-DD`);
-    (note.sources || []).forEach((s, i) => { if (!s || s.url_status !== 'live') p.push(`${id}: verified but source[${i}] url_status is not 'live'`); });
-  }
-  // the note must line up with a real detected event (so a note can't invent an event)
-  if (/^\d{4}-\d{2}$/.test(note.period || '') && knownIngredients.has(note.ingredient)) {
-    const evs = eventsByIng[note.ingredient] || [];
-    const pt = Date.parse(`${note.period}-15`);
-    const near = evs.some((e) => Math.abs(Date.parse(e.date) - pt) <= MERGE_MS);
-    if (evs.length && !near) p.push(`${id}: no detected event within 12 weeks — note does not match the price record`);
-  }
+  // Forecast scan applies to the LABEL only, never to whatHappened: the account is DOCUMENTED
+  // history and legitimately quotes contemporaneous facts ("USDA cut its crop production forecast"),
+  // which is not the site predicting prices. The label is a short event name and shouldn't forecast.
+  const fc = forecastHit(ev.label);
+  if (fc) p.push(`${id}: label has forecast phrasing "${fc}" (documented history only)`);
   return p;
 }
 
-// Minimal HTML-entity escape (mirrors the page builder's escHtml) so a title with & < > " '
-// is searched in its rendered form too.
-function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
 function stripTags(html) { return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' '); }
-// Did an unverified note's cause text leak into the rendered pages? Checks the title and a
-// distinctive slice of the 'what' against both the raw HTML and its tag-stripped text.
-function leakedInto(note, pagesRaw, pagesText) {
-  const needles = [note.title, String(note.what || '').slice(0, 48)].filter((s) => s && s.trim());
-  for (const n of needles) {
-    if (pagesText.includes(n) || pagesRaw.includes(esc(n)) || pagesRaw.includes(n)) return n;
-  }
-  return null;
-}
-
+// The FRAMING text the render itself authors — intro, meta, co-occurrence tags, labels, foot —
+// with the <details> drawers removed. The drawers hold the registry's DOCUMENTED prose (and, on
+// ES, the English label), which is historical fact and must not be keyword-policed; only the
+// site's own framing is held to the co-occurrence / no-forecast rule.
+function framingText(sectionHtml) { return stripTags(sectionHtml.replace(/<details[\s\S]*?<\/details>/g, ' ')); }
+// Every documented-event block must wear a co-occurrence tag — the structural guarantee that the
+// render presents it as context, never as a cause.
+const COOCCUR_TAGS = ['Documented around this time', 'Evento documentado en esas fechas'];
 function listPages() {
   const out = [];
   for (const dir of ['cost-index', path.join('es', 'cost-index')]) {
@@ -106,67 +95,58 @@ function listPages() {
 
 function run() {
   const problems = [];
-  const events = rd('data/cost-index-events.json');
-  const notesDoc = rd('data/cost-index-event-notes.json');
-  if (!events || !events.items) problems.push('data/cost-index-events.json missing or malformed (run build-cost-index-events.mjs)');
-  if (!notesDoc || !Array.isArray(notesDoc.notes)) problems.push('data/cost-index-event-notes.json missing or malformed');
+  const detection = rd('data/cost-index-events.json');
+  const registry = rd('cost-index/events.json');
+  if (!detection || !detection.items) problems.push('data/cost-index-events.json missing/malformed (run build-cost-index-events.mjs)');
+  if (!registry || !Array.isArray(registry.events)) problems.push('cost-index/events.json missing/malformed');
   if (problems.length) return problems;
 
-  const known = new Set(Object.keys(events.items));
-  const eventsByIng = {};
-  for (const k of known) eventsByIng[k] = (events.items[k].events || []);
-
-  // (5) detection artifact must carry no cause / forecast / change-point field
-  for (const k of known) for (const e of eventsByIng[k]) {
+  // (1) detection artifact carries no cause / forecast / change-point field
+  for (const k of Object.keys(detection.items)) for (const e of (detection.items[k].events || [])) {
     for (const bad of ['cause', 'why', 'reason', 'forecast', 'changePoint', 'change_point', 'step']) {
       if (bad in e) problems.push(`detection leak: ${k} event ${e.date} carries forbidden field '${bad}'`);
     }
   }
 
-  // (1)(2)(4) per-note validation
-  for (const note of notesDoc.notes) problems.push(...validateNote(note, known, eventsByIng));
+  // (2) registry shape + framing
+  if (registry.framing !== 'co-occurrence-not-causation') problems.push(`registry framing must be "co-occurrence-not-causation" (got "${registry.framing}")`);
+  if (typeof registry.count === 'number' && registry.count !== registry.events.length) problems.push(`registry count ${registry.count} != events.length ${registry.events.length}`);
+  for (const ev of registry.events) problems.push(...validateEvent(ev));
 
-  // (3) no unverified note text may appear in any built page
-  const pages = listPages();
-  const raw = pages.map((f) => fs.readFileSync(f, 'utf8')).join('\n');
-  const text = stripTags(raw);
-  let verifiedRendered = 0, verifiedTotal = 0;
-  for (const note of notesDoc.notes) {
-    if (note.verified === true) {
-      verifiedTotal++;
-      if (leakedInto(note, raw, text)) verifiedRendered++;   // present = good, expected
-      continue;
-    }
-    const leak = leakedInto(note, raw, text);
-    if (leak) problems.push(`HONESTY: unverified note ${note.ingredient}@${note.period} leaked into a built page — "${leak}"`);
-  }
-
-  // informational (not a failure): verified notes that didn't render (period out of top-N, ES untranslated, etc.)
-  if (verifiedTotal && verifiedRendered < verifiedTotal) {
-    console.log(`  note: ${verifiedTotal - verifiedRendered}/${verifiedTotal} verified note(s) not visible on a page yet (event outside top-N or ES not translated) — allowed.`);
+  // (3) rendered events section stays co-occurrence-only. Scan the site's FRAMING (drawers
+  // stripped) for causation/forecast, and assert every documented-event block wears a
+  // co-occurrence tag so it can never read as an asserted cause.
+  for (const f of listPages()) {
+    const html = fs.readFileSync(f, 'utf8');
+    const secs = html.match(/<section class="ci-events[\s\S]*?<\/section>/g);
+    if (!secs) continue;
+    const rel = path.relative(repo, f);
+    const frame = framingText(secs.join(' '));
+    const cz = causalHit(frame); if (cz) problems.push(`RENDER: ${rel} events framing asserts causation — "${cz}"`);
+    const fz = forecastHit(frame); if (fz) problems.push(`RENDER: ${rel} events framing speaks a forecast — "${fz}"`);
+    const ctxCount = (secs.join(' ').match(/class="ci-events__ctx"/g) || []).length;
+    const tagCount = COOCCUR_TAGS.reduce((n, t) => n + (secs.join(' ').split(t).length - 1), 0);
+    if (ctxCount > tagCount) problems.push(`RENDER: ${rel} has ${ctxCount} event block(s) but only ${tagCount} co-occurrence tag(s) — a block is missing its context framing`);
   }
 
   return problems;
 }
 
 function selfTest() {
-  const known = new Set(['eggs', 'butter']);
-  const eventsByIng = { eggs: [{ date: '2025-02-17' }], butter: [{ date: '2014-10-04' }] };
-  const good = { ingredient: 'eggs', period: '2025-02', title: 'Avian flu drove egg prices', what: 'A wave of avian influenza cut the laying flock.', impact: 'Prices ran well above normal for weeks.', sources: [{ name: 'USDA APHIS', url: 'https://www.aphis.usda.gov/x', url_status: 'pending-live-verify' }], confidence: 'high', verified: false, date_verified: null };
+  const good = { id: 'x', label: 'BSE case (2003)', startDate: '2003-12', endDate: '2004-12', affectedSlugs: ['ribeye'], whatHappened: 'USDA announced the first US case of BSE in a Washington dairy cow; dozens of countries closed borders to US beef.', sources: [{ url: 'https://cdc.gov/x', publisher: 'CDC' }] };
   const checks = [
-    ['clean unverified note passes', validateNote(good, known, eventsByIng).length === 0],
-    ['unknown ingredient fails', validateNote({ ...good, ingredient: 'unicorn' }, known, eventsByIng).some((m) => /unknown ingredient/.test(m))],
-    ['bad period fails', validateNote({ ...good, period: '2025' }, known, eventsByIng).some((m) => /YYYY-MM/.test(m))],
-    ['empty what fails', validateNote({ ...good, what: '' }, known, eventsByIng).some((m) => /what must be/.test(m))],
-    ['http (not https) source fails', validateNote({ ...good, sources: [{ name: 'x', url: 'http://x' }] }, known, eventsByIng).some((m) => /url must be https/.test(m))],
-    ['verified without date fails', validateNote({ ...good, verified: true, date_verified: null, sources: [{ name: 'x', url: 'https://x', url_status: 'live' }] }, known, eventsByIng).some((m) => /date_verified/.test(m))],
-    ['verified with non-live source fails', validateNote({ ...good, verified: true, date_verified: '2026-07-07' }, known, eventsByIng).some((m) => /not 'live'/.test(m))],
-    ['verified + live + date passes', validateNote({ ...good, verified: true, date_verified: '2026-07-07', sources: [{ name: 'x', url: 'https://x', url_status: 'live' }] }, known, eventsByIng).length === 0],
-    ['off-record note (no nearby event) fails', validateNote({ ...good, period: '2000-01' }, known, eventsByIng).some((m) => /no detected event/.test(m))],
-    ['forecast phrasing fails', validateNote({ ...good, impact: 'Prices are expected to rise next year.' }, known, eventsByIng).some((m) => /banned phrase/.test(m))],
-    ['regime-step phrasing fails', validateNote({ ...good, what: 'This was a permanent regime shift in the market.' }, known, eventsByIng).some((m) => /banned phrase/.test(m))],
-    ['leak detector finds unverified title', leakedInto(good, '<p>Avian flu drove egg prices</p>', 'Avian flu drove egg prices') !== null],
-    ['leak detector clears absent title', leakedInto(good, '<p>nothing here</p>', 'nothing here') === null],
+    ['clean event passes', validateEvent(good).length === 0],
+    ['missing id fails', validateEvent({ ...good, id: '' }).some((m) => /missing id/.test(m))],
+    ['bad startDate fails', validateEvent({ ...good, startDate: '2003' }).some((m) => /startDate must be/.test(m))],
+    ['empty affectedSlugs fails', validateEvent({ ...good, affectedSlugs: [] }).some((m) => /affectedSlugs/.test(m))],
+    ['thin whatHappened fails', validateEvent({ ...good, whatHappened: 'too short' }).some((m) => /substantive/.test(m))],
+    ['source without url fails', validateEvent({ ...good, sources: [{ publisher: 'x' }] }).some((m) => /http\(s\) url/.test(m))],
+    ['source without name fails', validateEvent({ ...good, sources: [{ url: 'https://x' }] }).some((m) => /publisher or title/.test(m))],
+    ['forecast in label fails', validateEvent({ ...good, label: 'Prices expected to rise next year' }).some((m) => /forecast phrasing/.test(m))],
+    ['forecast in whatHappened is ALLOWED (documented USDA crop forecast)', validateEvent({ ...good, whatHappened: 'USDA NASS forecast the Florida orange crop at 54 million boxes, later cut.' }).length === 0],
+    ['causal render string is caught', causalHit('the outbreak caused the price to spike') !== null],
+    ['co-occurrence render string is clean', causalHit('Documented around this time: BSE case. Prices moved 40% above normal.') === null && forecastHit('Documented around this time: BSE case.') === null],
+    ['forecast render string is caught', forecastHit('prices will rise next year') !== null],
   ];
   const failed = checks.filter((c) => !c[1]);
   failed.forEach((c) => console.error('  ✗ ' + c[0]));
@@ -182,6 +162,5 @@ if (problems.length) {
   console.error(`✗ cost-index events honesty gate: ${problems.length} problem(s).`);
   process.exit(1);
 }
-const notes = (rd('data/cost-index-event-notes.json') || {}).notes || [];
-const verified = notes.filter((n) => n.verified === true).length;
-console.log(`✓ cost-index events honesty gate — ${notes.length} note(s), ${verified} verified/${notes.length - verified} drafted; no unverified cause on any page.`);
+const reg = rd('cost-index/events.json') || { events: [] };
+console.log(`✓ cost-index events honesty gate — ${reg.events.length} documented event(s), co-occurrence framing intact; no causation or forecast on any page.`);

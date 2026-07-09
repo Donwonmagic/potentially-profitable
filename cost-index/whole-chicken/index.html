@@ -242,13 +242,18 @@ main{padding-top:64px}
 .ci-events__meta{margin:6px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
 .ci-events__meta a{color:var(--ink-soft);text-decoration:none;border-bottom:1px dashed var(--line)}
 .ci-events__meta a:hover{color:var(--teal)}
-.ci-events__note{margin:10px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
-.ci-events__note-t{margin:0 0 4px;font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.4}
-.ci-events__note-b{margin:0;font-size:14px;line-height:1.6;color:var(--ink)}
+.ci-events__ctx{margin:10px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
+.ci-events__ctx-t{margin:0;font-size:14px;font-weight:600;color:var(--ink);line-height:1.5}
+.ci-events__ctx-tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--stone);margin-right:6px;vertical-align:1px}
 .ci-events__cite{margin:8px 0 0;font-size:12.5px}
 .ci-events__cite summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
 .ci-events__cite p{margin:6px 0 0;color:var(--ink-soft);line-height:1.55}
 .ci-events__cite a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-events__srcs{font-size:12px}
+.ci-events__also{margin:14px 0 0;padding:12px 14px;background:var(--white);border:1px solid var(--line);border-radius:10px}
+.ci-events__also-h{margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.ci-events__also .ci-events__ctx{background:transparent;padding:6px 0;border-top:1px solid var(--line);border-radius:0}
+.ci-events__also .ci-events__ctx:first-of-type{border-top:0}
 .ci-events__foot{margin:12px 0 0;font-size:12.5px;color:var(--stone);line-height:1.5}
 .ci-events__foot a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-events--stable .ci-events__intro{margin-bottom:0}
@@ -572,7 +577,10 @@ main{padding-top:64px}
         <span class="ci-events__mag" data-dir="down">▼&nbsp;27% below normal</span>
       </div>
       <p class="ci-events__meta">$1.17/lb vs ~$1.60 typical · held about 3 months</p>
-      </li>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Documented around this time</span> 2024-2025 winter avian influenza surge</p>
+        <details class="ci-events__cite"><summary>What happened · sources</summary><p>The ongoing H5N1 clade 2.3.4.4b HPAI outbreak intensified over the winter of 2024-2025. USDA APHIS reported roughly 18.25 million birds affected in December 2024 and about 23.3 million in January 2025, with commercial egg-layer depopulations concentrated in Ohio, Indiana, and Missouri; the national table-egg layer flock fell to about 291 million at the end of February 2025 from a typical level near 320-325 million. Cumulatively, USDA reported the 2022-present outbreak had affected more than 166 million birds through late February 2025, including more than 130 million commercial egg layers and over 18 million turkeys.</p><p class="ci-events__srcs"><a href="https://www.fca.gov/template-fca/about/2025MarchUpdateonHPAI.pdf" rel="nofollow noopener" target="_blank">U.S. Farm Credit Administration (FCA)</a> · <a href="https://www.wattagnet.com/egg/article/15738148/hpai-roundup-2025-off-to-bad-start-for-us-layer-industry" rel="nofollow noopener" target="_blank">WATT Global Media (WATTPoultry)</a> · <a href="https://www.congress.gov/crs-product/R48518" rel="nofollow noopener" target="_blank">Congressional Research Service (Congress.gov)</a></p></details>
+      </div></li>
       <li class="ci-events__ev" data-dir="up">
       <div class="ci-events__hd">
         <span class="ci-events__date">Feb 2026</span>
@@ -581,7 +589,26 @@ main{padding-top:64px}
       <p class="ci-events__meta">$1.21/lb vs ~$1.00 typical · held about 4 weeks · in the usual high season for whole chicken</p>
       </li>
     </ol>
-    <p class="ci-events__foot">Detected automatically from public price history (USDA/BLS/FRED); the cause notes are editorial, each checked against the cited public source. <a href="/glossary/cost-index/">How events are picked</a>.</p>
+    <div class="ci-events__also">
+      <p class="ci-events__also-h">Other documented events for whole chicken</p>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Documented around this time</span> 2022 avian influenza outbreak onset (H5N1 clade 2.3.4.4b)</p>
+        <details class="ci-events__cite"><summary>What happened · sources</summary><p>USDA APHIS confirmed highly pathogenic avian influenza (Eurasian H5N1 clade 2.3.4.4b) in a US commercial flock on February 8, 2022 — a commercial turkey operation in DuBois County, Indiana — marking the start of what would become the largest HPAI outbreak in US history. During 2022, APHIS reported the outbreak affected more than 57 million birds nationwide across commercial and backyard flocks in dozens of states, including more than 43 million commercial table-egg laying hens depopulated that year, with the single largest monthly loss in March 2022. Affected commercial flocks included egg layers (~75% of losses), turkeys (~11%), and broilers (~8%).</p><p class="ci-events__srcs"><a href="https://www.congress.gov/crs-product/R48518" rel="nofollow noopener" target="_blank">Congressional Research Service (Library of Congress)</a> · <a href="https://www.aphis.usda.gov/livestock-poultry-disease/avian/avian-influenza/hpai-detections/commercial-backyard-flocks" rel="nofollow noopener" target="_blank">USDA Animal and Plant Health Inspection Service (APHIS)</a></p></details>
+      </div>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Documented around this time</span> Virulent Newcastle disease outbreak, California (2018-2020)</p>
+        <details class="ci-events__cite"><summary>What happened · sources</summary><p>USDA APHIS and CDFA confirmed virulent Newcastle disease (vND) in poultry in Southern California beginning May 17, 2018, predominantly in backyard exhibition chickens. Between May 2018 and May 2020, 476 premises tested positive across six California counties (concentrated in Riverside, San Bernardino, and Los Angeles counties), including four commercial premises (table-egg layer facilities). The state-federal response quarantined more than 8,700 premises and depopulated approximately 1.2 million birds across roughly 2,400 premises. USDA-APHIS certified the United States as having met the World Organisation for Animal Health criteria for vND eradication on June 1, 2020.</p><p class="ci-events__srcs"><a href="https://www.aphis.usda.gov/sites/default/files/epi-analy-vnd-poultry-calif.pdf" rel="nofollow noopener" target="_blank">USDA Animal and Plant Health Inspection Service (APHIS)</a> · <a href="https://www.cdfa.ca.gov/ahfss/Animal_Health/Newcastle_Disease_Info.html" rel="nofollow noopener" target="_blank">California Department of Food and Agriculture (CDFA)</a></p></details>
+      </div>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Documented around this time</span> US Midwest / Corn Belt drought (2012)</p>
+        <details class="ci-events__cite"><summary>What happened · sources</summary><p>A historic drought and heat across much of the US Midwest and Corn Belt in summer 2012 sharply reduced feed-grain and oilseed output; drought conditions peaked in late July 2012. USDA NASS reported the 2012 US corn crop at 10.8 billion bushels, about 13% below 2011, with the national corn yield falling to 123.4 bushels per acre (from 147.2 in 2011); soybean yield came in at 39.6 bushels per acre with production of 3.01 billion bushels, down about 3% from 2011. Soybeans are the dominant US vegetable-oil oilseed, and feed grain represents a large share of poultry production costs. Elevated feed costs persisted into the 2012/13 marketing year.</p><p class="ci-events__srcs"><a href="https://www.nass.usda.gov/Newsroom/archive/2013/01_11_2013.php" rel="nofollow noopener" target="_blank">USDA National Agricultural Statistics Service (NASS)</a> · <a href="https://www.ers.usda.gov/data-products/charts-of-note/chart-detail?chartId=76883" rel="nofollow noopener" target="_blank">USDA Economic Research Service</a></p></details>
+      </div>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Documented around this time</span> Exotic Newcastle disease outbreak, California (2002-2003)</p>
+        <details class="ci-events__cite"><summary>What happened · sources</summary><p>The California Department of Food and Agriculture and USDA confirmed exotic (virulent) Newcastle disease (END) in a Los Angeles County backyard flock on October 1, 2002. The virus subsequently spread to several commercial egg-laying operations in Southern California; more than half of the state&#39;s roughly 12 million commercial egg-producing hens were located inside the quarantine zone. The state-federal eradication response depopulated approximately 3.16 million birds across quarantined premises at a reported cost of about $161 million. The last infected commercial flock was detected March 26, 2003 (San Diego County) and the last infected backyard flock on May 31, 2003 (Los Angeles County); USDA lifted the nationwide quarantine after declaring the disease eradicated later in 2003.</p><p class="ci-events__srcs"><a href="https://www.cidrap.umn.edu/newcastle-disease-infiltrates-southern-california-poultry-flocks" rel="nofollow noopener" target="_blank">CIDRAP, University of Minnesota</a> · <a href="https://www.cdfa.ca.gov/ahfss/Animal_Health/pdfs/END/ENDVetletter20303.pdf" rel="nofollow noopener" target="_blank">California Department of Food and Agriculture (CDFA)</a> · <a href="https://www.avma.org/javma-news/2003-02-15/emergency-declared-exotic-newcastle-disease-found-commercial-poultry-farms" rel="nofollow noopener" target="_blank">American Veterinary Medical Association (JAVMA News)</a></p></details>
+      </div>
+    </div>
+    <p class="ci-events__foot">Price moves are detected from public history (USDA/BLS/FRED). Documented events come from our <a href="/cost-index/events.json">open, cited registry</a> — shown as co-occurring context, never asserted as the cause. <a href="/glossary/cost-index/">How events are picked</a>.</p>
   </section>
     <h2 id="how-to-use">How to use this reading</h2><ol>
   <li>Open the reading above and note the typical range and the date.</li>

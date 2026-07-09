@@ -242,13 +242,18 @@ main{padding-top:64px}
 .ci-events__meta{margin:6px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
 .ci-events__meta a{color:var(--ink-soft);text-decoration:none;border-bottom:1px dashed var(--line)}
 .ci-events__meta a:hover{color:var(--teal)}
-.ci-events__note{margin:10px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
-.ci-events__note-t{margin:0 0 4px;font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.4}
-.ci-events__note-b{margin:0;font-size:14px;line-height:1.6;color:var(--ink)}
+.ci-events__ctx{margin:10px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
+.ci-events__ctx-t{margin:0;font-size:14px;font-weight:600;color:var(--ink);line-height:1.5}
+.ci-events__ctx-tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--stone);margin-right:6px;vertical-align:1px}
 .ci-events__cite{margin:8px 0 0;font-size:12.5px}
 .ci-events__cite summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
 .ci-events__cite p{margin:6px 0 0;color:var(--ink-soft);line-height:1.55}
 .ci-events__cite a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-events__srcs{font-size:12px}
+.ci-events__also{margin:14px 0 0;padding:12px 14px;background:var(--white);border:1px solid var(--line);border-radius:10px}
+.ci-events__also-h{margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.ci-events__also .ci-events__ctx{background:transparent;padding:6px 0;border-top:1px solid var(--line);border-radius:0}
+.ci-events__also .ci-events__ctx:first-of-type{border-top:0}
 .ci-events__foot{margin:12px 0 0;font-size:12.5px;color:var(--stone);line-height:1.5}
 .ci-events__foot a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-events--stable .ci-events__intro{margin-bottom:0}
@@ -602,7 +607,18 @@ main{padding-top:64px}
       <p class="ci-events__meta">$30.50/carton vs ~$18.63 typical · held about 5 weeks · in the usual high season for bell pepper</p>
       </li>
     </ol>
-    <p class="ci-events__foot">Detected automatically from public price history (USDA/BLS/FRED); the cause notes are editorial, each checked against the cited public source. <a href="/glossary/cost-index/">How events are picked</a>.</p>
+    <div class="ci-events__also">
+      <p class="ci-events__also-h">Other documented events for bell pepper</p>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Documented around this time</span> Northwestern Mexico hard freeze (February 2011)</p>
+        <details class="ci-events__cite"><summary>What happened · sources</summary><p>An unusually severe freeze on the night of Feb 3-4, 2011 reached deep into northwestern Mexico&#39;s winter-vegetable region (Sinaloa, around Culiacan and Los Mochis) — reported as the area&#39;s worst cold since 1957 — coinciding with freezes in Florida and Texas. Industry notices described crop losses in the range of 80-100% on affected fields of tomatoes, bell and chili peppers, cucumbers, squash and eggplant, with reduced shipments to the US and Canada expected into early April. Mexico is a major winter supplier of these crops to the US.</p><p class="ci-events__srcs"><a href="https://newsfeed.time.com/2011/02/15/no-tomatoes-at-sweet-tomatoes-restaurants-mexico-freeze-causes-u-s-veggie-shortage/" rel="nofollow noopener" target="_blank">TIME</a> · <a href="https://earthobservatory.nasa.gov/images/49652/cold-weather-damages-crops-in-sinaloa-mexico" rel="nofollow noopener" target="_blank">NASA Earth Observatory</a></p></details>
+      </div>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Documented around this time</span> Florida winter freeze (January 2010)</p>
+        <details class="ci-events__cite"><summary>What happened · sources</summary><p>A prolonged early-January 2010 cold spell (Jan 2-13, 2010, one of the coldest 12-day periods on record for South Florida) brought several nights of sub-freezing temperatures across Florida, with lows in the mid-teens to low-20s F in growing regions. USDA NASS crop reports documented extensive damage to winter vegetable crops (including tomatoes and peppers), with some fields reported as total losses, and cold damage to the citrus crop; harvest was largely at a standstill during the event.</p><p class="ci-events__srcs"><a href="https://www.nass.usda.gov/Statistics_by_State/Florida/Publications/Crop_Progress_&amp;_Condition/2010/wc011110.pdf" rel="nofollow noopener" target="_blank">USDA National Agricultural Statistics Service</a> · <a href="https://www.weather.gov/media/mfl/news/ColdEpisodeJan2010.pdf" rel="nofollow noopener" target="_blank">NOAA National Weather Service (Miami, FL)</a> · <a href="https://climatecenter.fsu.edu/products-services/summaries/climate-summary-for-florida-january-2010" rel="nofollow noopener" target="_blank">Florida Climate Center, Florida State University</a></p></details>
+      </div>
+    </div>
+    <p class="ci-events__foot">Price moves are detected from public history (USDA/BLS/FRED). Documented events come from our <a href="/cost-index/events.json">open, cited registry</a> — shown as co-occurring context, never asserted as the cause. <a href="/glossary/cost-index/">How events are picked</a>.</p>
   </section>
     <h2 id="how-to-use">How to use this reading</h2><ol>
   <li>Open the reading above and note the typical range and the date.</li>

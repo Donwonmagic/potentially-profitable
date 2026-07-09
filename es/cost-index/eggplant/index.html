@@ -242,13 +242,18 @@ main{padding-top:64px}
 .ci-events__meta{margin:6px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
 .ci-events__meta a{color:var(--ink-soft);text-decoration:none;border-bottom:1px dashed var(--line)}
 .ci-events__meta a:hover{color:var(--teal)}
-.ci-events__note{margin:10px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
-.ci-events__note-t{margin:0 0 4px;font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.4}
-.ci-events__note-b{margin:0;font-size:14px;line-height:1.6;color:var(--ink)}
+.ci-events__ctx{margin:10px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
+.ci-events__ctx-t{margin:0;font-size:14px;font-weight:600;color:var(--ink);line-height:1.5}
+.ci-events__ctx-tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--stone);margin-right:6px;vertical-align:1px}
 .ci-events__cite{margin:8px 0 0;font-size:12.5px}
 .ci-events__cite summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
 .ci-events__cite p{margin:6px 0 0;color:var(--ink-soft);line-height:1.55}
 .ci-events__cite a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-events__srcs{font-size:12px}
+.ci-events__also{margin:14px 0 0;padding:12px 14px;background:var(--white);border:1px solid var(--line);border-radius:10px}
+.ci-events__also-h{margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.ci-events__also .ci-events__ctx{background:transparent;padding:6px 0;border-top:1px solid var(--line);border-radius:0}
+.ci-events__also .ci-events__ctx:first-of-type{border-top:0}
 .ci-events__foot{margin:12px 0 0;font-size:12.5px;color:var(--stone);line-height:1.5}
 .ci-events__foot a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-events--stable .ci-events__intro{margin-bottom:0}
@@ -538,7 +543,10 @@ main{padding-top:64px}
         <span class="ci-events__mag" data-dir="up">▲&nbsp;227% por encima de lo normal</span>
       </div>
       <p class="ci-events__meta">$55.00/caja frente a ~$16.80 típico · se mantuvo ~3 meses · parte de un movimiento amplio del mercado</p>
-      </li>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Evento documentado en esas fechas</span></p>
+        <details class="ci-events__cite"><summary>Ver el evento y las fuentes (en inglés)</summary><p>Northwestern Mexico hard freeze (February 2011)</p><p class="ci-events__srcs"><a href="https://newsfeed.time.com/2011/02/15/no-tomatoes-at-sweet-tomatoes-restaurants-mexico-freeze-causes-u-s-veggie-shortage/" rel="nofollow noopener" target="_blank">TIME</a> · <a href="https://earthobservatory.nasa.gov/images/49652/cold-weather-damages-crops-in-sinaloa-mexico" rel="nofollow noopener" target="_blank">NASA Earth Observatory</a></p></details>
+      </div></li>
       <li class="ci-events__ev" data-dir="up">
       <div class="ci-events__hd">
         <span class="ci-events__date">jun 2005</span>
@@ -547,7 +555,8 @@ main{padding-top:64px}
       <p class="ci-events__meta">$28.55/caja frente a ~$14.05 típico · se mantuvo ~3 meses · en la temporada alta habitual de berenjena</p>
       </li>
     </ol>
-    <p class="ci-events__foot">Detectado automáticamente del historial de precios públicos (USDA/BLS/FRED); las notas de causa son editoriales y cada una se verifica contra la fuente pública citada. <a href="/es/glossary/cost-index/">Cómo se eligen los eventos</a>.</p>
+    
+    <p class="ci-events__foot">Los movimientos de precio se detectan del historial público (USDA/BLS/FRED). Los eventos documentados vienen de nuestro <a href="/cost-index/events.json">registro abierto y citado</a> — se muestran como contexto que coincide en el tiempo, nunca como la causa. <a href="/es/glossary/cost-index/">Cómo se eligen los eventos</a>.</p>
   </section>
     <h2 id="how-to-use">Cómo usar esta lectura</h2><ol>
   <li>Abre la lectura de arriba y anota el rango típico y la fecha.</li>

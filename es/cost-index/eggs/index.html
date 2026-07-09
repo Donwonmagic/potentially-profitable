@@ -242,13 +242,18 @@ main{padding-top:64px}
 .ci-events__meta{margin:6px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
 .ci-events__meta a{color:var(--ink-soft);text-decoration:none;border-bottom:1px dashed var(--line)}
 .ci-events__meta a:hover{color:var(--teal)}
-.ci-events__note{margin:10px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
-.ci-events__note-t{margin:0 0 4px;font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.4}
-.ci-events__note-b{margin:0;font-size:14px;line-height:1.6;color:var(--ink)}
+.ci-events__ctx{margin:10px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
+.ci-events__ctx-t{margin:0;font-size:14px;font-weight:600;color:var(--ink);line-height:1.5}
+.ci-events__ctx-tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--stone);margin-right:6px;vertical-align:1px}
 .ci-events__cite{margin:8px 0 0;font-size:12.5px}
 .ci-events__cite summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
 .ci-events__cite p{margin:6px 0 0;color:var(--ink-soft);line-height:1.55}
 .ci-events__cite a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-events__srcs{font-size:12px}
+.ci-events__also{margin:14px 0 0;padding:12px 14px;background:var(--white);border:1px solid var(--line);border-radius:10px}
+.ci-events__also-h{margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.ci-events__also .ci-events__ctx{background:transparent;padding:6px 0;border-top:1px solid var(--line);border-radius:0}
+.ci-events__also .ci-events__ctx:first-of-type{border-top:0}
 .ci-events__foot{margin:12px 0 0;font-size:12.5px;color:var(--stone);line-height:1.5}
 .ci-events__foot a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-events--stable .ci-events__intro{margin-bottom:0}
@@ -506,7 +511,10 @@ main{padding-top:64px}
         <span class="ci-events__mag" data-dir="up">▲&nbsp;127% por encima de lo normal</span>
       </div>
       <p class="ci-events__meta">$8.39/docena frente a ~$3.70 típico · se mantuvo ~6 semanas</p>
-      </li>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Evento documentado en esas fechas</span></p>
+        <details class="ci-events__cite"><summary>Ver el evento y las fuentes (en inglés)</summary><p>2024-2025 winter avian influenza surge</p><p class="ci-events__srcs"><a href="https://www.fca.gov/template-fca/about/2025MarchUpdateonHPAI.pdf" rel="nofollow noopener" target="_blank">U.S. Farm Credit Administration (FCA)</a> · <a href="https://www.wattagnet.com/egg/article/15738148/hpai-roundup-2025-off-to-bad-start-for-us-layer-industry" rel="nofollow noopener" target="_blank">WATT Global Media (WATTPoultry)</a> · <a href="https://www.congress.gov/crs-product/R48518" rel="nofollow noopener" target="_blank">Congressional Research Service (Congress.gov)</a></p></details>
+      </div></li>
       <li class="ci-events__ev" data-dir="down">
       <div class="ci-events__hd">
         <span class="ci-events__date">ene 2026</span>
@@ -529,7 +537,26 @@ main{padding-top:64px}
       <p class="ci-events__meta">$1.52/docena frente a ~$2.39 típico · se mantuvo ~4 semanas</p>
       </li>
     </ol>
-    <p class="ci-events__foot">Detectado automáticamente del historial de precios públicos (USDA/BLS/FRED); las notas de causa son editoriales y cada una se verifica contra la fuente pública citada. <a href="/es/glossary/cost-index/">Cómo se eligen los eventos</a>.</p>
+    <div class="ci-events__also">
+      <p class="ci-events__also-h">Otros eventos documentados para huevo</p>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Evento documentado en esas fechas</span></p>
+        <details class="ci-events__cite"><summary>Ver el evento y las fuentes (en inglés)</summary><p>2022 avian influenza outbreak onset (H5N1 clade 2.3.4.4b)</p><p class="ci-events__srcs"><a href="https://www.congress.gov/crs-product/R48518" rel="nofollow noopener" target="_blank">Congressional Research Service (Library of Congress)</a> · <a href="https://www.aphis.usda.gov/livestock-poultry-disease/avian/avian-influenza/hpai-detections/commercial-backyard-flocks" rel="nofollow noopener" target="_blank">USDA Animal and Plant Health Inspection Service (APHIS)</a></p></details>
+      </div>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Evento documentado en esas fechas</span></p>
+        <details class="ci-events__cite"><summary>Ver el evento y las fuentes (en inglés)</summary><p>Virulent Newcastle disease outbreak, California (2018-2020)</p><p class="ci-events__srcs"><a href="https://www.aphis.usda.gov/sites/default/files/epi-analy-vnd-poultry-calif.pdf" rel="nofollow noopener" target="_blank">USDA Animal and Plant Health Inspection Service (APHIS)</a> · <a href="https://www.cdfa.ca.gov/ahfss/Animal_Health/Newcastle_Disease_Info.html" rel="nofollow noopener" target="_blank">California Department of Food and Agriculture (CDFA)</a></p></details>
+      </div>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Evento documentado en esas fechas</span></p>
+        <details class="ci-events__cite"><summary>Ver el evento y las fuentes (en inglés)</summary><p>2014-2015 highly pathogenic avian influenza outbreak</p><p class="ci-events__srcs"><a href="https://www.aphis.usda.gov/sites/default/files/finalreport14-15_shortppt.pdf" rel="nofollow noopener" target="_blank">USDA Animal and Plant Health Inspection Service (APHIS)</a> · <a href="https://www.gao.gov/products/gao-17-360" rel="nofollow noopener" target="_blank">U.S. Government Accountability Office (GAO)</a> · <a href="https://www.ers.usda.gov/amber-waves/2018/april/egg-price-impacts-of-the-2014-15-highly-pathogenic-avian-influenza-outbreak" rel="nofollow noopener" target="_blank">USDA Economic Research Service (ERS)</a></p></details>
+      </div>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Evento documentado en esas fechas</span></p>
+        <details class="ci-events__cite"><summary>Ver el evento y las fuentes (en inglés)</summary><p>Exotic Newcastle disease outbreak, California (2002-2003)</p><p class="ci-events__srcs"><a href="https://www.cidrap.umn.edu/newcastle-disease-infiltrates-southern-california-poultry-flocks" rel="nofollow noopener" target="_blank">CIDRAP, University of Minnesota</a> · <a href="https://www.cdfa.ca.gov/ahfss/Animal_Health/pdfs/END/ENDVetletter20303.pdf" rel="nofollow noopener" target="_blank">California Department of Food and Agriculture (CDFA)</a> · <a href="https://www.avma.org/javma-news/2003-02-15/emergency-declared-exotic-newcastle-disease-found-commercial-poultry-farms" rel="nofollow noopener" target="_blank">American Veterinary Medical Association (JAVMA News)</a></p></details>
+      </div>
+    </div>
+    <p class="ci-events__foot">Los movimientos de precio se detectan del historial público (USDA/BLS/FRED). Los eventos documentados vienen de nuestro <a href="/cost-index/events.json">registro abierto y citado</a> — se muestran como contexto que coincide en el tiempo, nunca como la causa. <a href="/es/glossary/cost-index/">Cómo se eligen los eventos</a>.</p>
   </section>
     <h2 id="how-to-use">Cómo usar esta lectura</h2><ol>
   <li>Abre la lectura de arriba y anota el rango típico y la fecha.</li>

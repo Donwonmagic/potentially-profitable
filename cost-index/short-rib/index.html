@@ -242,13 +242,18 @@ main{padding-top:64px}
 .ci-events__meta{margin:6px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
 .ci-events__meta a{color:var(--ink-soft);text-decoration:none;border-bottom:1px dashed var(--line)}
 .ci-events__meta a:hover{color:var(--teal)}
-.ci-events__note{margin:10px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
-.ci-events__note-t{margin:0 0 4px;font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.4}
-.ci-events__note-b{margin:0;font-size:14px;line-height:1.6;color:var(--ink)}
+.ci-events__ctx{margin:10px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
+.ci-events__ctx-t{margin:0;font-size:14px;font-weight:600;color:var(--ink);line-height:1.5}
+.ci-events__ctx-tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--stone);margin-right:6px;vertical-align:1px}
 .ci-events__cite{margin:8px 0 0;font-size:12.5px}
 .ci-events__cite summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
 .ci-events__cite p{margin:6px 0 0;color:var(--ink-soft);line-height:1.55}
 .ci-events__cite a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-events__srcs{font-size:12px}
+.ci-events__also{margin:14px 0 0;padding:12px 14px;background:var(--white);border:1px solid var(--line);border-radius:10px}
+.ci-events__also-h{margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.ci-events__also .ci-events__ctx{background:transparent;padding:6px 0;border-top:1px solid var(--line);border-radius:0}
+.ci-events__also .ci-events__ctx:first-of-type{border-top:0}
 .ci-events__foot{margin:12px 0 0;font-size:12.5px;color:var(--stone);line-height:1.5}
 .ci-events__foot a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-events--stable .ci-events__intro{margin-bottom:0}
@@ -602,7 +607,26 @@ main{padding-top:64px}
       <p class="ci-events__meta">$1.41/lb vs ~$1.10 typical · held about 6 weeks</p>
       </li>
     </ol>
-    <p class="ci-events__foot">Detected automatically from public price history (USDA/BLS/FRED); the cause notes are editorial, each checked against the cited public source. <a href="/glossary/cost-index/">How events are picked</a>.</p>
+    <div class="ci-events__also">
+      <p class="ci-events__also-h">Other documented events for short rib</p>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Documented around this time</span> US cattle herd contraction to a 1951 low (2022-2026)</p>
+        <details class="ci-events__cite"><summary>What happened · sources</summary><p>USDA/NASS documented a renewed multi-year contraction of the US cattle herd. Total cattle and calves fell to 87.2 million head on January 1, 2024 (then the lowest January 1 inventory since 1951) and to 86.2 million head on January 1, 2026, the smallest US cattle inventory since 1951; the 2025 calf crop fell to about 32.9 million head, the smallest since 1941. USDA and American Farm Bureau analyses attributed the liquidation to drought (including the 2021-2022 Southern Plains drought), elevated input costs, industry consolidation, and higher cow slaughter and heifer marketing that slowed herd rebuilding.</p><p class="ci-events__srcs"><a href="https://www.nass.usda.gov/Newsroom/2026/01-30-2026.php" rel="nofollow noopener" target="_blank">USDA National Agricultural Statistics Service</a> · <a href="https://www.fb.org/market-intel/u-s-cattle-inventory-smallest-in-73-years" rel="nofollow noopener" target="_blank">American Farm Bureau Federation</a> · <a href="https://www.ers.usda.gov/topics/animal-products/cattle-beef/sector-at-a-glance" rel="nofollow noopener" target="_blank">USDA Economic Research Service</a></p></details>
+      </div>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Documented around this time</span> COVID-19 meatpacking plant closures (spring 2020)</p>
+        <details class="ci-events__cite"><summary>What happened · sources</summary><p>Amid COVID-19 outbreaks among plant workers, major US meatpacking plants idled or curtailed operations in spring 2020. Smithfield Foods indefinitely closed its Sioux Falls, SD pork plant (about 4-5% of US pork production) on April 12, 2020, and JBS closed its Greeley, CO beef plant on April 13, 2020; by late April at least 15 plants were reported closed. USDA and the Congressional Research Service documented that daily cattle and hog slaughter capacity fell substantially, that weekly federally inspected cattle slaughter for the week ending April 25, 2020 (469,000 head) was down about 27% year-over-year, and that pork processing capacity utilization bottomed near 54% (53.9% on April 29, 2020) before recovering over the summer.</p><p class="ci-events__srcs"><a href="https://www.everycrsreport.com/reports/IN11366.html" rel="nofollow noopener" target="_blank">Congressional Research Service</a> · <a href="https://www.usda.gov/sites/default/files/documents/covid-impact-livestock-markets.pdf" rel="nofollow noopener" target="_blank">USDA</a> · <a href="https://ers.usda.gov/data-products/charts-of-note/chart-detail?chartId=98682" rel="nofollow noopener" target="_blank">USDA Economic Research Service</a></p></details>
+      </div>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Documented around this time</span> Drought-driven cattle herd contraction, record-low 2014 inventory</p>
+        <details class="ci-events__cite"><summary>What happened · sources</summary><p>USDA documented that persistent drought across major US cattle-raising regions of the Southern Plains and Southwest, including the widespread 2011-2012 drought, degraded pasture and forage supplies and prompted cow-calf operators to cull cows and limit heifer retention. A multi-year liquidation of the national cattle herd culminated on January 1, 2014, when USDA/NASS counted 88.2 million cattle and calves, the smallest US cattle inventory since 1952. Herd rebuilding progressed slowly in 2014 as some producers continued to market female cattle rather than retain them for breeding.</p><p class="ci-events__srcs"><a href="https://www.ers.usda.gov/topics/animal-products/cattle-beef/sector-at-a-glance" rel="nofollow noopener" target="_blank">USDA Economic Research Service</a> · <a href="https://www.ers.usda.gov/data-products/charts-of-note/chart-detail?chartId=77663" rel="nofollow noopener" target="_blank">USDA Economic Research Service</a> · <a href="https://www.nass.usda.gov/Charts_and_Maps/Cattle/inv.php" rel="nofollow noopener" target="_blank">USDA National Agricultural Statistics Service</a></p></details>
+      </div>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Documented around this time</span> First US BSE (mad cow) case &amp; export bans (2003-04)</p>
+        <details class="ci-events__cite"><summary>What happened · sources</summary><p>On December 23, 2003, USDA announced the first US case of bovine spongiform encephalopathy (BSE, &#39;mad cow disease&#39;), confirmed in a dairy cow slaughtered in Washington State (Mabton). Following the announcement, USDA/APHIS documented that dozens of countries closed their borders to US beef, with major export markets including Japan and South Korea banning US beef; some restrictions lasted years. On December 30, 2003, USDA barred nonambulatory (&#39;downer&#39;) cattle and specified risk materials (e.g., brain and spinal cord tissue from older cattle) from the human food supply.</p><p class="ci-events__srcs"><a href="https://www.cdc.gov/mmwr/preview/mmwrhtml/mm5253a2.htm" rel="nofollow noopener" target="_blank">CDC MMWR</a> · <a href="https://www.aphis.usda.gov/aphis/newsroom/stakeholder-info/sa_by_date/sa-2022/aphis50-bse" rel="nofollow noopener" target="_blank">USDA APHIS</a> · <a href="https://www.everycrsreport.com/reports/RS21709.html" rel="nofollow noopener" target="_blank">Congressional Research Service</a> · <a href="https://www.cidrap.umn.edu/bse/usda-bans-all-downer-cattle-food-supply" rel="nofollow noopener" target="_blank">CIDRAP (University of Minnesota)</a> · <a href="https://www.historylink.org/File/5650" rel="nofollow noopener" target="_blank">HistoryLink.org</a></p></details>
+      </div>
+    </div>
+    <p class="ci-events__foot">Price moves are detected from public history (USDA/BLS/FRED). Documented events come from our <a href="/cost-index/events.json">open, cited registry</a> — shown as co-occurring context, never asserted as the cause. <a href="/glossary/cost-index/">How events are picked</a>.</p>
   </section>
     <h2 id="how-to-use">How to use this reading</h2><ol>
   <li>Open the reading above and note the typical range and the date.</li>

@@ -99,14 +99,25 @@ const EVENTS = (() => {
   try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-index-events.json'), 'utf8')).items || {}; }
   catch { return {}; }
 })();
-// The WHY half — hand-curated, source-gated narratives. Only VERIFIED notes are loaded,
-// so an unverified draft can NEVER render (honesty gate; scripts/check-cost-index-events.mjs
-// enforces the same rule against the built HTML). Keyed ingredient -> [note].
-const EVENT_NOTES = (() => {
+// The WHY half — the curated, fact-gated, CITED market-events registry (cost-index/events.json:
+// 39 documented U.S. food-commodity events, 2001-2026, each mapped to affected ingredient slugs
+// and backed by primary sources). Framing is ALWAYS co-occurrence, never causation — a documented
+// event is shown BESIDE the price window it overlapped, never asserted as the cause. Indexed here
+// slug -> [{event, start, end}] so the render can join it to the detected price moves.
+const EVENT_REGISTRY = (() => {
+  const parse = (s) => { const a = String(s).split('-').map(Number); return { y: a[0], m: a[1] || 1, d: a[2] || 1, dayGiven: String(s).length > 7 }; };
+  const spanMs = (ev) => {
+    const s = parse(ev.startDate), e = parse(ev.endDate || ev.startDate);
+    return [Date.UTC(s.y, s.m - 1, s.d), Date.UTC(e.y, e.m - 1, e.dayGiven ? e.d : 28)];
+  };
   try {
-    const raw = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-index-event-notes.json'), 'utf8')).notes || [];
+    const evs = JSON.parse(fs.readFileSync(path.join(repoRoot, 'cost-index/events.json'), 'utf8')).events || [];
     const m = {};
-    for (const nt of raw) { if (!nt || nt.verified !== true) continue; (m[nt.ingredient] || (m[nt.ingredient] = [])).push(nt); }
+    for (const ev of evs) {
+      if (!ev || !Array.isArray(ev.affectedSlugs)) continue;
+      const [start, end] = spanMs(ev);
+      for (const s of ev.affectedSlugs) (m[s] || (m[s] = [])).push({ ev, start, end });
+    }
     return m;
   } catch { return {}; }
 })();
@@ -1736,13 +1747,18 @@ main{padding-top:64px}
 .ci-events__meta{margin:6px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
 .ci-events__meta a{color:var(--ink-soft);text-decoration:none;border-bottom:1px dashed var(--line)}
 .ci-events__meta a:hover{color:var(--teal)}
-.ci-events__note{margin:10px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
-.ci-events__note-t{margin:0 0 4px;font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.4}
-.ci-events__note-b{margin:0;font-size:14px;line-height:1.6;color:var(--ink)}
+.ci-events__ctx{margin:10px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
+.ci-events__ctx-t{margin:0;font-size:14px;font-weight:600;color:var(--ink);line-height:1.5}
+.ci-events__ctx-tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--stone);margin-right:6px;vertical-align:1px}
 .ci-events__cite{margin:8px 0 0;font-size:12.5px}
 .ci-events__cite summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
 .ci-events__cite p{margin:6px 0 0;color:var(--ink-soft);line-height:1.55}
 .ci-events__cite a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-events__srcs{font-size:12px}
+.ci-events__also{margin:14px 0 0;padding:12px 14px;background:var(--white);border:1px solid var(--line);border-radius:10px}
+.ci-events__also-h{margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.ci-events__also .ci-events__ctx{background:transparent;padding:6px 0;border-top:1px solid var(--line);border-radius:0}
+.ci-events__also .ci-events__ctx:first-of-type{border-top:0}
 .ci-events__foot{margin:12px 0 0;font-size:12.5px;color:var(--stone);line-height:1.5}
 .ci-events__foot a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-events--stable .ci-events__intro{margin-bottom:0}
@@ -1991,10 +2007,10 @@ function whyItMatters(slug, locale) {
 
 // ---- Notable price events ------------------------------------------
 // The historical "events that moved the market" surface: the deterministic detection
-// (data/cost-index-events.json) rendered as a timeline, joined to the source-gated WHY
-// notes (only verified ones ever reach here — EVENT_NOTES filters to verified). Honest by
-// construction: the % move, price, duration, season and co-movement are all computed; the
-// cause text renders only when a human has checked it against the cited public source.
+// (data/cost-index-events.json) rendered as a timeline — % move, price, duration, own-season,
+// co-movement, all computed — JOINED to the curated, cited market-events registry
+// (cost-index/events.json) as CO-OCCURRENCE context: a documented event is shown beside the
+// price window it overlapped, with its primary sources, never asserted as the cause.
 const EV_MONTHS_EN = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const EV_MONTHS_ES = ['', 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 function evDate(dateStr, es) {
@@ -2029,18 +2045,31 @@ function evCohortLine(slug, ev, es) {
   if (peers.length >= 10) return es ? 'parte de un movimiento amplio del mercado' : 'part of a broad market move';
   return '';
 }
-function evNoteFor(slug, ev) {
-  const notes = EVENT_NOTES[slug];
-  if (!notes) return null;
-  const et = Date.parse(ev.date);
-  let best = null, bd = Infinity;
-  for (const nt of notes) {
-    if (!nt.period) continue;
-    const pt = Date.parse(nt.period.length === 7 ? `${nt.period}-15` : nt.period);
-    const d = Math.abs(pt - et);
-    if (d < bd) { bd = d; best = nt; }
+// Documented, CITED registry events whose window overlaps this detected move (co-occurrence).
+function evRegistryFor(slug, ev, marginDays) {
+  const list = EVENT_REGISTRY[slug];
+  if (!list) return [];
+  const t = Date.parse(ev.date), m = (marginDays || 45) * 864e5;
+  return list.filter((r) => t >= r.start - m && t <= r.end + m).map((r) => r.ev);
+}
+// Render ONE documented registry event as co-occurrence context — NEVER as the asserted cause.
+// EN shows the full sourced account; ES keeps the visible prose Spanish and tucks the English
+// event + citations behind a labeled disclosure (the registry is EN-only, like our cite drawers).
+function evCtx(ev, es) {
+  const srcs = (ev.sources || [])
+    .filter((s) => s && s.url)
+    .map((s) => `<a href="${escHtml(s.url)}" rel="nofollow noopener" target="_blank">${escHtml(s.publisher || s.title || s.url)}</a>`)
+    .join(' · ');
+  if (es) {
+    return `<div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Evento documentado en esas fechas</span></p>
+        <details class="ci-events__cite"><summary>Ver el evento y las fuentes (en inglés)</summary><p>${escHtml(ev.label)}</p>${srcs ? `<p class="ci-events__srcs">${srcs}</p>` : ''}</details>
+      </div>`;
   }
-  return (best && bd <= 84 * 864e5) ? best : null;   // within the engine's 12-week merge window
+  return `<div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Documented around this time</span> ${escHtml(ev.label)}</p>
+        <details class="ci-events__cite"><summary>What happened · sources</summary><p>${escHtml(ev.whatHappened)}</p>${srcs ? `<p class="ci-events__srcs">${srcs}</p>` : ''}</details>
+      </div>`;
 }
 function notableEventsBlock(slug, locale) {
   const es = locale === 'es';
@@ -2071,6 +2100,7 @@ function notableEventsBlock(slug, locale) {
     ? `En los ~${years} años de datos públicos que seguimos, la referencia mayorista de ${nmLc} se alejó más de su rango normal en estas fechas. Cada cifra es el pico frente a la mediana local (~1 año) del propio producto — un movimiento de mercado, no un sobreprecio de proveedor.`
     : `Across the ~${years} years of public data we track, the wholesale reference for ${nmLc} moved farthest from its normal range on these dates. Each figure is the peak versus its own ~1-year local median — a market move, not a vendor markup.`;
 
+  const seen = new Set();   // registry event ids already shown, so one event isn't repeated down the page
   const rows = rec.events.map((ev) => {
     const up = ev.direction === 'up';
     const arrow = up ? '▲' : '▼';
@@ -2081,24 +2111,10 @@ function notableEventsBlock(slug, locale) {
     if (up && ev.inHighSeason === true) bits.push(es ? `en la temporada alta habitual de ${nmLc}` : `in the usual high season for ${nmLc}`);
     const coh = evCohortLine(slug, ev, es); if (coh) bits.push(coh);
 
-    const nt = evNoteFor(slug, ev);
-    let note = '';
-    if (nt) {
-      const title = es ? (nt.title_es || '') : (nt.title || '');
-      const what = es ? (nt.what_es || '') : (nt.what || '');
-      const impact = es ? (nt.impact_es || '') : (nt.impact || '');
-      if (title && what) {   // ES renders only when translated; EN uses the base fields
-        const srcs = (nt.sources || [])
-          .filter((s) => s && s.url && s.url_status === 'live')
-          .map((s) => `<a href="${escHtml(s.url)}" rel="nofollow noopener" target="_blank">${escHtml(s.name || s.url)}</a>`)
-          .join(' · ');
-        note = `<div class="ci-events__note">
-        <p class="ci-events__note-t">${escHtml(title)}</p>
-        <p class="ci-events__note-b">${escHtml(what)}${impact ? ' ' + escHtml(impact) : ''}</p>
-        ${srcs ? `<details class="ci-events__cite"><summary>${es ? 'Fuentes' : 'Sources'}</summary><p>${srcs}</p></details>` : ''}
-      </div>`;
-      }
-    }
+    // Co-occurring documented event from the cited registry (first unseen one).
+    let ctx = '';
+    const co = evRegistryFor(slug, ev).filter((e) => !seen.has(e.id));
+    if (co.length) { seen.add(co[0].id); ctx = evCtx(co[0], es); }
 
     return `<li class="ci-events__ev" data-dir="${ev.direction}">
       <div class="ci-events__hd">
@@ -2106,12 +2122,28 @@ function notableEventsBlock(slug, locale) {
         <span class="ci-events__mag" data-dir="${ev.direction}">${arrow}&nbsp;${Math.abs(ev.pctFromNormal)}% ${magWord}</span>
       </div>
       <p class="ci-events__meta">${bits.join(' · ')}</p>
-      ${note}</li>`;
+      ${ctx}</li>`;
   }).join('\n      ');
 
+  // Any other documented events for this ingredient that didn't line up with a top move —
+  // still honest co-occurrence context (a documented event beside the price record).
+  const remaining = [];
+  const remSeen = new Set();
+  for (const r of (EVENT_REGISTRY[slug] || [])) {
+    if (seen.has(r.ev.id) || remSeen.has(r.ev.id)) continue;
+    remSeen.add(r.ev.id); remaining.push(r);
+  }
+  remaining.sort((a, b) => b.start - a.start);
+  const alsoHtml = remaining.length
+    ? `<div class="ci-events__also">
+      <p class="ci-events__also-h">${es ? `Otros eventos documentados para ${nmLc}` : `Other documented events for ${nmLc}`}</p>
+      ${remaining.slice(0, 6).map((r) => evCtx(r.ev, es)).join('\n      ')}
+    </div>`
+    : '';
+
   const foot = es
-    ? `Detectado automáticamente del historial de precios públicos (USDA/BLS/FRED); las notas de causa son editoriales y cada una se verifica contra la fuente pública citada. <a href="${base}/glossary/cost-index/">Cómo se eligen los eventos</a>.`
-    : `Detected automatically from public price history (USDA/BLS/FRED); the cause notes are editorial, each checked against the cited public source. <a href="${base}/glossary/cost-index/">How events are picked</a>.`;
+    ? `Los movimientos de precio se detectan del historial público (USDA/BLS/FRED). Los eventos documentados vienen de nuestro <a href="/cost-index/events.json">registro abierto y citado</a> — se muestran como contexto que coincide en el tiempo, nunca como la causa. <a href="${base}/glossary/cost-index/">Cómo se eligen los eventos</a>.`
+    : `Price moves are detected from public history (USDA/BLS/FRED). Documented events come from our <a href="/cost-index/events.json">open, cited registry</a> — shown as co-occurring context, never asserted as the cause. <a href="${base}/glossary/cost-index/">How events are picked</a>.`;
 
   return `
   <section class="ci-events" aria-labelledby="ci-events-h-${slug}">
@@ -2120,6 +2152,7 @@ function notableEventsBlock(slug, locale) {
     <ol class="ci-events__list">
       ${rows}
     </ol>
+    ${alsoHtml}
     <p class="ci-events__foot">${foot}</p>
   </section>`;
 }

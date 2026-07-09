@@ -242,13 +242,18 @@ main{padding-top:64px}
 .ci-events__meta{margin:6px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
 .ci-events__meta a{color:var(--ink-soft);text-decoration:none;border-bottom:1px dashed var(--line)}
 .ci-events__meta a:hover{color:var(--teal)}
-.ci-events__note{margin:10px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
-.ci-events__note-t{margin:0 0 4px;font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.4}
-.ci-events__note-b{margin:0;font-size:14px;line-height:1.6;color:var(--ink)}
+.ci-events__ctx{margin:10px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
+.ci-events__ctx-t{margin:0;font-size:14px;font-weight:600;color:var(--ink);line-height:1.5}
+.ci-events__ctx-tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--stone);margin-right:6px;vertical-align:1px}
 .ci-events__cite{margin:8px 0 0;font-size:12.5px}
 .ci-events__cite summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
 .ci-events__cite p{margin:6px 0 0;color:var(--ink-soft);line-height:1.55}
 .ci-events__cite a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-events__srcs{font-size:12px}
+.ci-events__also{margin:14px 0 0;padding:12px 14px;background:var(--white);border:1px solid var(--line);border-radius:10px}
+.ci-events__also-h{margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.ci-events__also .ci-events__ctx{background:transparent;padding:6px 0;border-top:1px solid var(--line);border-radius:0}
+.ci-events__also .ci-events__ctx:first-of-type{border-top:0}
 .ci-events__foot{margin:12px 0 0;font-size:12.5px;color:var(--stone);line-height:1.5}
 .ci-events__foot a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-events--stable .ci-events__intro{margin-bottom:0}
@@ -579,7 +584,10 @@ main{padding-top:64px}
         <span class="ci-events__mag" data-dir="up">▲&nbsp;307% above normal</span>
       </div>
       <p class="ci-events__meta">$77.10/carton vs ~$18.95 typical · held about 4 months · in the usual high season for green leaf lettuce</p>
-      </li>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Documented around this time</span> INSV outbreak and fall lettuce supply shortfall, Salinas Valley (2022)</p>
+        <details class="ci-events__cite"><summary>What happened · sources</summary><p>Published research and industry reporting documented that INSV outbreaks, combined with the soil-borne pathogen Pythium wilt, affected Salinas Valley lettuce production in 2022, with an estimated $150 million in losses to the region&#39;s lettuce industry reported for the year. Survey work in Monterey County (2021 season) detected the virus at incidence above 1% in more than 750 fields, with incidence above 50% not uncommon and severe fields reaching up to 100% loss. In fall 2022, Salinas Valley lettuce supplies were documented as short, with record wholesale per-box prices reported for iceberg, romaine, green leaf and red leaf lettuce; the December transition to desert growing regions was separately affected by unusually cool weather.</p><p class="ci-events__srcs"><a href="https://apsjournals.apsnet.org/doi/10.1094/PDIS-05-22-1248-RE" rel="nofollow noopener" target="_blank">Plant Disease (American Phytopathological Society)</a> · <a href="https://www.thepacker.com/news/produce-crops/lettuce-markets-soar-records-prices-should-cool-december" rel="nofollow noopener" target="_blank">The Packer</a> · <a href="https://www.farmprogress.com/crop-disease/viruses-devastate-salinas-valley-lettuce" rel="nofollow noopener" target="_blank">Farm Progress</a></p></details>
+      </div></li>
       <li class="ci-events__ev" data-dir="up">
       <div class="ci-events__hd">
         <span class="ci-events__date">Dec 2018</span>
@@ -602,7 +610,18 @@ main{padding-top:64px}
       <p class="ci-events__meta">$31.40/carton vs ~$8.80 typical · held about 7 weeks · in the usual high season for green leaf lettuce</p>
       </li>
     </ol>
-    <p class="ci-events__foot">Detected automatically from public price history (USDA/BLS/FRED); the cause notes are editorial, each checked against the cited public source. <a href="/glossary/cost-index/">How events are picked</a>.</p>
+    <div class="ci-events__also">
+      <p class="ci-events__also-h">Other documented events for green leaf lettuce</p>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Documented around this time</span> INSV outbreak in Salinas Valley lettuce (2020)</p>
+        <details class="ci-events__cite"><summary>What happened · sources</summary><p>Peer-reviewed research and regional reporting documented a severe outbreak of impatiens necrotic spot virus (INSV), a thrips-transmitted orthotospovirus, in lettuce across California&#39;s Salinas Valley (Monterey County) during the 2020 growing season. A survey of roughly 1,350 fields reported an average crop loss of about 33%, with some fields reaching 100% loss, and an estimated $100 million in lost gross revenue for Salinas Valley lettuce growers that year. All lettuce types (iceberg, butterhead, romaine, and leaf) are documented as susceptible. Western flower thrips (Frankliniella occidentalis) populations and hot weather were identified as drivers of the outbreak&#39;s spread.</p><p class="ci-events__srcs"><a href="https://apsjournals.apsnet.org/doi/10.1094/PDIS-05-22-1248-RE" rel="nofollow noopener" target="_blank">Plant Disease (American Phytopathological Society)</a> · <a href="https://pubmed.ncbi.nlm.nih.gov/36018552/" rel="nofollow noopener" target="_blank">PubMed (U.S. National Library of Medicine)</a></p></details>
+      </div>
+      <div class="ci-events__ctx">
+        <p class="ci-events__ctx-t"><span class="ci-events__ctx-tag">Documented around this time</span> January 2013 desert Southwest freeze (Yuma / Imperial Valley)</p>
+        <details class="ci-events__cite"><summary>What happened · sources</summary><p>A multi-day cold snap in mid-January 2013 brought freezing temperatures to the desert winter-vegetable regions of southwestern Arizona (Yuma County) and California&#39;s Imperial Valley, which together supply the majority of US leafy greens during winter. Growers and news reporting documented freeze damage to iceberg and romaine lettuce over the weekend of January 12-13, 2013 — including head blistering, epidermal peeling and internal leaf burn — with head lettuce within roughly three weeks of harvest hardest hit and some harvests delayed.</p><p class="ci-events__srcs"><a href="https://www.npr.org/2013/01/14/169343378/arizona-southern-california-fight-off-frost-and-frozen-vegetables" rel="nofollow noopener" target="_blank">NPR</a> · <a href="https://www.seattletimes.com/nation-world/cold-snap-threatens-california-oranges-arizona-lettuce/" rel="nofollow noopener" target="_blank">The Seattle Times (Associated Press)</a> · <a href="https://www.farmprogress.com/vegetables/photos-freezing-temperatures-damage-lettuce-in-yuma-county-ariz-" rel="nofollow noopener" target="_blank">Farm Progress</a></p></details>
+      </div>
+    </div>
+    <p class="ci-events__foot">Price moves are detected from public history (USDA/BLS/FRED). Documented events come from our <a href="/cost-index/events.json">open, cited registry</a> — shown as co-occurring context, never asserted as the cause. <a href="/glossary/cost-index/">How events are picked</a>.</p>
   </section>
     <h2 id="how-to-use">How to use this reading</h2><ol>
   <li>Open the reading above and note the typical range and the date.</li>
