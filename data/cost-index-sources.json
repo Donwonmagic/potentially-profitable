@@ -10573,33 +10573,35 @@
       "verified": false,
       "census": {
         "hs": [
-          "150910"
+          "150920",
+          "150930"
         ],
         "hts": [
-          "150910"
+          "150920",
+          "150930"
         ],
         "basis": "index",
         "unit": "lb",
         "years": 3,
-        "_status": "STAGED verified:false (scaffold 2026-07, US Census import HS 150910) — confirm UNIT_QY1 is a mass unit (kg) via a sample; landed value runs below delivered wholesale. --flip after --verify."
+        "_status": "STAGED verified:false (US Census import HS 150920+150930, extra-virgin+virgin). FIXED 2026-07-09 (ADR-013): the scaffold’s 150910 was vacated by HS-2022 and silently returns zero rows (looked like no-data, was a mapping bug). Heading 1509 mixes tanker BULK and retail BOTTLED oil, so a pack-mix shift moves the unit-value — DERIVED/directional only, never measured. Confirm UNIT_QY1=kg on a sample, then --flip."
       },
-      "coverage": "Import-only: no free US terminal or retail price exists for olive oil; tracked via US Census import unit value (landed $/lb, HS 150910) — a customs value below delivered wholesale, so directional. Public-domain trade data, redistributable (unlike the IMF global-price feed). Withheld from live reads until bounds are confirmed."
+      "coverage": "Import-only: no free US terminal or retail price exists for olive oil; tracked via US Census import unit value (landed $/lb, HS 150920/150930) — a customs value below delivered wholesale, so directional. Public-domain trade data, redistributable (unlike the IMF global-price feed). Withheld from live reads until bounds are confirmed."
     },
     "vanilla": {
       "verified": false,
       "census": {
         "hs": [
-          "090500"
+          "090510"
         ],
         "hts": [
-          "090500"
+          "090510"
         ],
         "basis": "index",
         "unit": "lb",
         "years": 3,
-        "_status": "STAGED verified:false (scaffold 2026-07, US Census import HS 090500) — confirm UNIT_QY1 is a mass unit (kg) via a sample; landed value runs below delivered wholesale. --flip after --verify."
+        "_status": "STAGED verified:false (US Census import HS 090510, whole beans). FIXED 2026-07-09 (ADR-013): the scaffold’s 090500 was vacated by HS-2017 (split 090510 whole / 090520 crushed) and silently returns zero rows. Grades span ~10x and volume is thin, so a swing is often a mix shift — ship DERIVED only if the sample is kg and not mix-noise-dominated, else hold absent. Confirm UNIT_QY1=kg, then --flip."
       },
-      "coverage": "Import-only: no free US terminal or retail price exists for vanilla beans; tracked via US Census import unit value (landed $/lb, HS 090500) — a customs value below delivered wholesale, so directional. Public-domain trade data, redistributable (unlike the IMF global-price feed). Withheld from live reads until bounds are confirmed."
+      "coverage": "Import-only: no free US terminal or retail price exists for vanilla beans; tracked via US Census import unit value (landed $/lb, HS 090510) — a customs value below delivered wholesale, so directional. Public-domain trade data, redistributable (unlike the IMF global-price feed). Withheld from live reads until bounds are confirmed."
     },
     "coffee-beans": {
       "verified": false,
@@ -10645,7 +10647,7 @@
         "basis": "index",
         "unit": "lb",
         "years": 3,
-        "_status": "STAGED verified:false (scaffold 2026-07, US Census import HS 091020) — confirm UNIT_QY1 is a mass unit (kg) via a sample; landed value runs below delivered wholesale. --flip after --verify."
+        "_status": "REJECTED 2026-07-09 (ADR-013): HS 091020 is correct, but tiny/lumpy volumes + extreme grade mix (sargol/coupe/powder/adulterated) make the import unit-value swing like a fabricated spike. Leave absent — do NOT --flip. (Raw import value/quantity may still be published descriptively on /open/.)"
       },
       "coverage": "Import-only: no free US terminal or retail price exists for saffron; tracked via US Census import unit value (landed $/lb, HS 091020) — a customs value below delivered wholesale, so directional. Public-domain trade data, redistributable (unlike the IMF global-price feed). Withheld from live reads until bounds are confirmed."
     },
@@ -10661,7 +10663,7 @@
         "basis": "index",
         "unit": "lb",
         "years": 3,
-        "_status": "STAGED verified:false (scaffold 2026-07, US Census import HS 080250) — confirm UNIT_QY1 is a mass unit (kg) via a sample; landed value runs below delivered wholesale. --flip after --verify."
+        "_status": "REJECTED 2026-07-09 (ADR-013): the scaffold HS 080250 is WRONG — that is pistachios post-HS-2017; shelled pine nuts are 080292. Even corrected, volumes are too thin/mixed to publish. Leave absent — do NOT --flip."
       },
       "coverage": "Import-only: no free US terminal or retail price exists for pine nuts; tracked via US Census import unit value (landed $/lb, HS 080250) — a customs value below delivered wholesale, so directional. Public-domain trade data, redistributable (unlike the IMF global-price feed). Withheld from live reads until bounds are confirmed."
     }
