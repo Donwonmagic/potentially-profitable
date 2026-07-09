@@ -333,6 +333,11 @@
    so every step fits the shared stage at desktop widths. All scoped
    under .ld-js — the no-JS stacked read keeps the print-page rhythm. */
 .ld-js .ld-panel h2{font-size:clamp(22px,2.4vw,27px);margin:0 0 6px}
+/* Drawer opens must GROW the panel scroll, not flex-squash (round-2 catch:
+   .cite{overflow:hidden} zeroes min-height, so flex-shrink clipped the
+   how-the-flag-decides drawer to 87px of 253px at stage 720). */
+.ld-js .ld-panel>.ld-more{flex-shrink:0;min-height:max-content}
+
 .ld-js .ld-panel .ld-body{margin:0 0 12px}
 .ld-js .ld-panel .lg-cap{margin-top:10px}
 .ld-js .ld-panel .lg-pane{padding:14px 18px 12px}
