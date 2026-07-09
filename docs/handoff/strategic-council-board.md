@@ -15,6 +15,47 @@ council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 
 ## ⮕ CURRENT STATE — read this first (updated 2026-07-09)
 
+### 🔴 TWO LIVE REDS ON MAIN (found 2026-07-09 storefront catch-up — fix before any feature work)
+
+A fresh storefront session (branch `-rqdehe`, reset onto main) reconstructed state and
+verified two independent reds on main. **Both are real, NOT the self-healing "(idem)"
+deploy-regeneration class.** They block the storefront ACTIVE BUILD below (the July edition
+needs fresh ≥07-08 data, which red #1 is withholding). (This is separate from the 🟣 product
+`/try` session recorded directly below — both ran 07-09; nothing conflicts.)
+
+**RED #1 — the MWF Cost Index heartbeat is FROZEN at the 2026-07-06 read.**
+The 07-08 Wed refresh (`cost-index-refresh.yml` run #34, 2026-07-08T15:08Z, `schedule`)
+**failed and committed nothing** — last data commit is still `9239d1ac` (07-06). Cause (from
+run #34's job logs): the fresh read moved the calibration numbers, and
+`inject-cost-index-calibration.mjs --check` found the methodology-page sentinels stale
+(`✗ cost-index/methodology/index.html calibration sentinels are stale`, EN+ES → exit 1). The
+workflow runs that injector in write mode (`cost-index-refresh.yml:141`) before the `--check`
+(`:175`), so this is an **ordering bug** — a step between L141 and L175 re-emits the methodology
+pages and drops the fresh sentinels. RECURRENCE of the #504 "calibration sentinels can't
+self-heal" class. **Fix:** move/duplicate the calibration inject to run AFTER the final
+methodology page-gen and before the `--check`, and stage `cost-index/methodology/index.html` +
+`es/…`. Verify by reproducing the refresh's rebuild order locally. Until fixed, every MWF run
+re-freezes.
+
+**RED #2 — the next Workers deploy will fail on `check-content-guardrails`.**
+`blog/cost-index-week-2026-07-06/index.html` has exactly **1** `/tools/<slug>/` link
+(`/tools/cost-pulse/`); the gate (`check-content-guardrails.mjs:87`) requires **≥2**. Every
+other link is `/cost-index/*`, which the matcher doesn't count. **Verified non-self-healing:**
+the deploy build's CTA injectors (post-end-cta, smart-next, ledger-cta) leave it at 1. On main's
+frozen tree this is the ONLY non-idem red, so a `wrangler` build of the next merge fails here
+(same failure mode as #489). **Fix:** durably in the dispatch generator (so the first Aug monthly
+edition can't reproduce it) AND a direct 2nd honest `/tools/` link on the frozen 07-06 weekly
+(historical — cadence is monthly now — so a direct edit won't be clobbered). **RISK TO CONFIRM:**
+if #2 has been red since ~07-06, Cloudflare Workers deploys may have been failing that whole time
+→ the ledger-demo work (#505–508) may NOT be live. Cloudflare deploy status isn't visible from
+the session; confirm.
+
+**Recommended order:** fix #1 (unfreeze the heartbeat) → fix #2 (unblock the deploy) → resume the
+July Monthly Dispatch edition build. Open PR **#501** (yn273q, Open-data `/open/`) still needs
+triage. The 07-09 storefront catch-up itself was read-only (this board note is its only commit,
+via PR #511 → superseded by this integrated version); develop on `-rqdehe`, author config
+`Claude <noreply@anthropic.com>`.
+
 ### 🟣 SESSION 2026-07-09 (product repo, branch `claude/muntin-strategic-council-fzdd1j`) — `/try` demo finished + reliability roadmap closed
 
 **⚠ Branch note:** this session was pinned to `-fzdd1j` (per its task config); its
