@@ -10583,7 +10583,7 @@
         "basis": "index",
         "unit": "lb",
         "years": 3,
-        "_status": "STAGED verified:false (US Census import HS 150920+150930, extra-virgin+virgin). FIXED 2026-07-09 (ADR-013): the scaffold’s 150910 was vacated by HS-2022 and silently returns zero rows (looked like no-data, was a mapping bug). Heading 1509 mixes tanker BULK and retail BOTTLED oil, so a pack-mix shift moves the unit-value — DERIVED/directional only, never measured. Confirm UNIT_QY1=kg on a sample, then --flip."
+        "_status": "STAGED verified:false (US Census import HS 150920+150930, extra-virgin+virgin). FIXED 2026-07-09 (ADR-013): the scaffold’s 150910 was vacated by HS-2022 and silently returns zero rows (looked like no-data, was a mapping bug). Heading 1509 mixes tanker BULK and retail BOTTLED oil, so a pack-mix shift moves the unit-value — DERIVED/directional only, never measured. NOTE (HS-verify): the HS6 unit-value conflates cheap tanker BULK with retail bottles and understates a retail price — for a true bottled unit-value query the HS10 small-container lines under 150920/150930. Confirm UNIT_QY1=kg on a sample, then --flip."
       },
       "coverage": "Import-only: no free US terminal or retail price exists for olive oil; tracked via US Census import unit value (landed $/lb, HS 150920/150930) — a customs value below delivered wholesale, so directional. Public-domain trade data, redistributable (unlike the IMF global-price feed). Withheld from live reads until bounds are confirmed."
     },
@@ -10663,7 +10663,7 @@
         "basis": "index",
         "unit": "lb",
         "years": 3,
-        "_status": "REJECTED 2026-07-09 (ADR-013): the scaffold HS 080250 is WRONG — that is pistachios post-HS-2017; shelled pine nuts are 080292. Even corrected, volumes are too thin/mixed to publish. Leave absent — do NOT --flip."
+        "_status": "REJECTED 2026-07-09 (ADR-013): the scaffold HS 080250 is WRONG — that is a vacated code (0802.50 was pistachios PRE-HS-2017; HS-2017 moved pistachios to 080251/080252, so 080250 now classifies nothing and returns zero rows); shelled pine nuts are 080292. Even corrected, volumes are too thin/mixed to publish. Leave absent — do NOT --flip."
       },
       "coverage": "Import-only: no free US terminal or retail price exists for pine nuts; tracked via US Census import unit value (landed $/lb, HS 080250) — a customs value below delivered wholesale, so directional. Public-domain trade data, redistributable (unlike the IMF global-price feed). Withheld from live reads until bounds are confirmed."
     }
