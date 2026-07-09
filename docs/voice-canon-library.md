@@ -303,6 +303,7 @@ Each viz family carries a defined job:
 - **`viz-flow`** — mechanism sequences, the order a process walks. The library leans here.
 - **`viz-ring`** — composition or share-of-whole at a single point.
 - **`viz-waterfall`** — margin walks, cost stacks, cumulative-then-net.
+- **`viz-spark`** — the dated shape of ONE single-source series over one cycle. 8–13 dated reads as an inline-SVG step-line, time-scaled on x so a missing read renders as a visible gap (never interpolated); endpoints, peak, and trough annotated with date + dollar; rust when the cycle closes above its open, teal when below, stone when flat; tabular figures throughout. The line ends at the last committed read — no projection tail, ever. Sources are never mixed inside one spark: one series, one basis, named in the figure. (The monthly Cost Index edition's flagship family; exempt from the viz-bars `--w` width rule by construction.)
 
 Every figure carries:
 

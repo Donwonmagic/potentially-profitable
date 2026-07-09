@@ -152,6 +152,16 @@ jobs:
           node scripts/build-cost-confidence-calibration.mjs
           node scripts/build-cost-confidence-shadow.mjs
           node scripts/inject-cost-index-speakable.mjs
+          # The published one-print outlook (2026-07-09): data/cost-outlook.json
+          # is a pure function of cost-pressure + the forecast backtest +
+          # seasonality + the basket weights. The backtest and seasonality were
+          # just rebuilt above, so the outlook must re-derive here or it drifts
+          # stale the moment this read commits (it sat at 2026-06-08 for a
+          # month because no run rebuilt it). The monthly edition's
+          # Looking-ahead block renders its h=1 weighted tilt (ADR-010 §6.4
+          # extension, ratified 2026-07-06) — --check-gated below like the
+          # rest of this family.
+          node scripts/build-cost-outlook.mjs
           # Re-stamp the calibration sentinels LAST (2026-07-09): the first MWF
           # cron (07-08) proved that on a fresh-data run a later rebuild in this
           # chain can leave the stamp stale relative to the final page state —
@@ -185,6 +195,7 @@ jobs:
           node scripts/build-cost-index-reproduce.mjs --check
           node scripts/build-cost-confidence-calibration.mjs --check
           node scripts/build-cost-confidence-shadow.mjs --check
+          node scripts/build-cost-outlook.mjs --check
           node scripts/inject-cost-index-speakable.mjs --check
           node scripts/build-cost-index-email-preview.mjs --check
           # The emailed render itself must pass its content rules (banned
@@ -220,7 +231,7 @@ jobs:
             data/cost-index-health.json data/seasonality.json \
             data/cost-lockfloat.json data/cost-lockfloat.js \
             data/cost-index-audit.json data/cost-index-calibration-report.json \
-            data/cost-forecast-backtest.json \
+            data/cost-forecast-backtest.json data/cost-outlook.json \
             data/cost-revisions.json data/cost-confidence-calibration.json \
             data/cost-confidence-shadow.json data/email-preview/ \
             cost-index/ es/cost-index/ \
@@ -291,7 +302,12 @@ jobs:
           # exactly how run #33 silently skipped this publish (the generator writes the
           # EN post only, so "es/blog/cost-index-week-*/" never matches). Looping makes
           # each path independent: a missing optional surface can't void the publish.
-          for p in "blog/cost-index-week-${ASOF}/" "es/blog/cost-index-week-${ASOF}/" \
+          # The default emit is MONTHLY since the 2026-07-09 naming pivot:
+          # blog/cost-index-<YYYY-MM>/ keyed on the edition date (here the data
+          # asOf, since a catch-up publishes the day it runs). The weekly
+          # pathspecs stay for the final-forever dated family.
+          EDMONTH="${ASOF%-*}"
+          for p in "blog/cost-index-${EDMONTH}/" "blog/cost-index-week-${ASOF}/" "es/blog/cost-index-week-${ASOF}/" \
                    data/cost-index-editions.json data/cost-index-readings.prev.json \
                    cost-index/week-*.json cost-index/week-*.csv \
                    cost-index/weekly/ es/cost-index/weekly/ \

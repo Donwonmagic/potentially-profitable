@@ -146,7 +146,12 @@ jobs:
           # the generator writes the EN post only, so "es/blog/cost-index-week-*/"
           # never matches and silently voided the entire publish (refresh run #33,
           # 2026-07-06). Looping makes each path independent.
-          for p in "blog/cost-index-week-${ASOF}/" "es/blog/cost-index-week-${ASOF}/" \
+          # The default emit is MONTHLY since the 2026-07-09 naming pivot:
+          # blog/cost-index-<YYYY-MM>/ keyed on the edition date (EDITION_DATE
+          # env, default = data asOf). The weekly pathspecs stay for the
+          # final-forever dated family (--weekly emits).
+          EDMONTH="${ASOF%-*}"
+          for p in "blog/cost-index-${EDMONTH}/" "blog/cost-index-week-${ASOF}/" "es/blog/cost-index-week-${ASOF}/" \
                    data/cost-index-editions.json data/cost-index-readings.prev.json \
                    cost-index/week-*.json cost-index/week-*.csv \
                    cost-index/weekly/ es/cost-index/weekly/ \
@@ -175,8 +180,10 @@ jobs:
             echo "COST_INDEX_BROADCAST_SECRET not set — skipping send (nothing emailed)."
             exit 0
           fi
-          # postUrl points subscribers at the dated dispatch just published above.
-          node -e 'const i=require("/tmp/insight.json"); i.postUrl="https://muntin.digital/blog/cost-index-week-"+i.asOf+"/"; require("fs").writeFileSync("/tmp/payload.json", JSON.stringify(i));'
+          # postUrl points subscribers at the dated dispatch just published above —
+          # the MONTHLY slug family since the 2026-07-09 naming pivot (the publish
+          # step above runs the default monthly emit, editionDate = data asOf).
+          node -e 'const i=require("/tmp/insight.json"); i.postUrl="https://muntin.digital/blog/cost-index-"+i.asOf.slice(0,7)+"/"; require("fs").writeFileSync("/tmp/payload.json", JSON.stringify(i));'
           code=$(curl -sS -o /tmp/resp.json -w '%{http_code}' \
             -X POST 'https://muntin.digital/api/admin/cost-index-broadcast' \
             -H "Authorization: Bearer $BROADCAST_SECRET" \
