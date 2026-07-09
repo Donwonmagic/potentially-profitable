@@ -115,3 +115,52 @@ test('amsSeries pulls a dated numeric field in order', () => {
   ];
   assert.deepEqual(S.amsSeries(rows, { field: 'price' }), [70.10, 74.50]);
 });
+
+// ---- ADR-014: cold-storage deseasonalization (same-month 5-yr median anomaly) ----
+// Rows: { Value, year, begin_code(month#) }. Fixtures pinned in the ADR.
+function csRows(monthVals) {
+  // monthVals: [{ y, m, v }] flat list
+  return monthVals.map((r) => ({ Value: String(r.v), year: String(r.y), begin_code: r.m }));
+}
+
+test('coldStorageAnomaly (a): butter spring flush reads ≈neutral, not the raw +30%', () => {
+  const rows = [];
+  const spring = { 2021: [250, 300, 330], 2022: [255, 305, 335], 2023: [260, 310, 340], 2024: [265, 315, 345], 2025: [270, 320, 350], 2026: [262, 312, 341] };
+  for (const y of Object.keys(spring)) [3, 4, 5].forEach((m, i) => rows.push({ y: +y, m, v: spring[y][i] }));
+  const dev = S.coldStorageAnomaly(csRows(rows));
+  assert.ok(dev !== null && Math.abs(dev) < 0.02, `expected ≈neutral, got ${dev}`);
+  // the bug it fixes: the raw within-spring build (Mar→May 2026) is a large false signal
+  // (+30%) that the deseasonalized read correctly neutralizes.
+  const rawSpring = S.windowChange([262, 312, 341]);
+  assert.ok(rawSpring > 0.25, `raw within-spring windowChange should show the seasonal spike, got ${rawSpring}`);
+});
+
+test('coldStorageAnomaly (b): a genuine same-month shortfall reads as a real tightening', () => {
+  const rows = [];
+  const cheese = { 2021: [1360, 1380, 1400], 2022: [1380, 1400, 1420], 2023: [1400, 1420, 1440], 2024: [1420, 1440, 1460], 2025: [1440, 1460, 1480], 2026: [1190, 1210, 1220] };
+  for (const y of Object.keys(cheese)) [3, 4, 5].forEach((m, i) => rows.push({ y: +y, m, v: cheese[y][i] }));
+  const dev = S.coldStorageAnomaly(csRows(rows));
+  assert.ok(dev !== null && dev < -0.10, `expected a real negative anomaly, got ${dev}`);
+});
+
+test('coldStorageAnomaly (c): <3 prior same-month years → null (emit nothing, never invent)', () => {
+  const rows = [];
+  const two = { 2025: [270, 320, 350], 2026: [262, 312, 341] };
+  for (const y of Object.keys(two)) [3, 4, 5].forEach((m, i) => rows.push({ y: +y, m, v: two[y][i] }));
+  assert.equal(S.coldStorageAnomaly(csRows(rows)), null);
+});
+
+test('coldStorageAnomaly (d): one anomalous prior year is absorbed by the median', () => {
+  // May only, 2021-2026; 2025 is an anomalous low (150). Recent window = just May 2026.
+  const rows = [{ y: 2021, m: 5, v: 335 }, { y: 2022, m: 5, v: 340 }, { y: 2023, m: 5, v: 345 }, { y: 2024, m: 5, v: 340 }, { y: 2025, m: 5, v: 150 }, { y: 2026, m: 5, v: 345 }];
+  const dev = S.coldStorageAnomaly(csRows(rows));
+  assert.ok(dev !== null && Math.abs(dev) < 0.03, `median should absorb the anomaly → ≈neutral, got ${dev}`);
+});
+
+test('nassMonthly keeps period keys, sorts (y,m), dedupes', () => {
+  const rows = [{ Value: '5', year: '2026', begin_code: 5 }, { Value: '3', year: '2026', begin_code: 3 }, { Value: '99', year: '2026', begin_code: 3 }];
+  const m = S.nassMonthly(rows);
+  assert.equal(m.length, 2);
+  assert.deepEqual(m.map((p) => p.m), [3, 5]);
+  assert.equal(m[0].v, 99); // dedup (2026,3) keeps last
+});
