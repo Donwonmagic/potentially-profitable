@@ -107,44 +107,54 @@ launch: author 2–3 real Tier-1 A/B pairs first (Sysco + US Foods cover the lar
 first-upload slice) → re-measure F1 → flip the flag for those layouts → THEN promote.
 Everything else (design, honesty architecture, capture, hardening) is done.
 
-### 🟢 ACTIVE BUILD — the Monthly Dispatch (July edition ships this week)
+### 🟢 ACTIVE BUILD — updated 2026-07-09 (read ADRs 011/012/013 — all founder-signed)
 
-**Evening of 2026-07-06 (all decisions signed):** dispatch cadence pivoted to MONTHLY
-(first Tuesday 14:00 UTC, first cron edition 2026-08-04; refresh now Mon/Wed/Fri 13:00 —
-both merged to main via PR #505, live). Email P0 honesty fixes merged (gated action lists,
-sign-corrected reasons, no uncalibrated "high confidence", confirm-send fixed,
-stamp-on-success). Email trust rails built on the dev branch (payload spine with gated
-stories[] + dated cycle arcs + wow; golden render committed at data/email-preview/;
-check-cost-index-email.mjs content gate — all in check-all).
+**Governing decisions now in `docs/editorial/decisions/`:** ADR-011 (monthly first-Tuesday
+dispatch + Mon/Wed/Fri refresh, edition slug `cost-index-YYYY-MM`), ADR-012 (**manual
+authorship** — no cron, no generated posts; hand-written editions; dispatch workflow is
+the manual EMAIL button only; refresh catch-up = red reminder at 38d; full publish
+runbook inside), ADR-013 ($19/mo **per location**; **enterprise parked** post-GA, gated
+on founding-list demand). ADR-010 carries the ratified one-print extension (site only).
 
-**Founder-signed decisions:** monthly edition slug family `blog/cost-index-YYYY-MM/`
-(2026-07-06); ADR-010 extension RATIFIED — the h=1 one-print tilt ships on the SITE
-edition (never the email), recorded in the ADR file.
+**Merged to main (PRs #505/#507/#508):** cadence pivot + promise sweep; email P0 honesty
+fixes + trust rails (golden render `data/email-preview/` + `check-cost-index-email.mjs`);
+the ledger demo transformation (rule-true numbers ON BOTH the demo AND the /ledger/ hero
+— the old $3.55 flag never fired `computePriceHike`; now $24.10/$24.35/$29.45 = +$5.23/
++21.6% over the $24.22 median everywhere, byte-verified); 3 review rounds + certification.
 
-**Master plans (read both before building):**
-  - `docs/plans/monthly-dispatch-site-edition.md` — the ten-section architecture,
-    viz-spark family, AEO layer, Looking-ahead (forwards within ADR-010), gates, and the
-    build sequence. THE current work queue.
-  - `docs/plans/dispatch-email-upgrade.md` — the email side (P1 golden-render body due
-    before 08-04) + the Claude story-research pipeline (§13; routine to arm ~07-30).
+**On the dev branch, pushed, UNMERGED (founder: merge to resume the heartbeat):**
+  - **Refresh fix (URGENT):** first MWF cron (07-08) vendored fresh data then failed the
+    gates on stale calibration sentinels (fresh-data-only ordering; frozen-data testing
+    can't reproduce). Fix = re-stamp `inject-cost-index-calibration` as the build's last
+    action. **Heartbeat is stalled at the 2026-07-06 read until merged** — next cron
+    Fri 07-10 13:00 UTC, or founder runs the workflow manually post-merge.
+  - Per-location pricing on all surfaces + registered claim (ADR-013).
+  - Monthly edition machinery (generator monthly-default, `.viz-spark` family + canon
+    §8 + test fixtures, dispatch-fresh recognizes both slug families) — kept as dormant
+    tooling per ADR-012; the generated July draft itself was deleted.
+  - Manual-authorship pivot (both workflows per ADR-012).
+  - **Demo app frame** (founder design direction: fixed stage, in-frame cross-fade,
+    page height headless-verified constant): chrome strip + stage + control bar; step 3
+    two-column; step 4 full-ink ask; per-location terms; EN+ES.
 
-**Ledger demo transformed (overnight 2026-07-06→07):** founder-commissioned 11-agent
-workflow (plan: `docs/plans/ledger-demo-transform.md`) + P0/P1 builds + three review
-rounds (3 operators + 3 design pros) + certification. Headline product-integrity find:
-BOTH the demo and the /ledger/ hero showed a flag the real rule (computePriceHike)
-would never fire — all surfaces renumbered to the rule-derived trio ($24.10/$24.35/
-$29.45 = +$5.23/+21.6% over the $24.22 trailing median) and byte-verified. Demo now:
-rule-true story, annotated band chart, per-step animated frame (certified live),
-honest disclosure architecture, founding-list ask primary at the final step, full ES
-parity. PARKED for founder: the $19/mo pricing basis (per location vs per account —
-ops-reviewer blocker, one clause once decided); demo OG card; analytics registry entry.
+**In-flight workflows (check task outputs on resume):**
+  - `july-edition-product` (run wf_56eb545c-4ca): ground → writer/visual/interaction →
+    assemble `blog/cost-index-2026-07/index.html` → fact/empowerment/craft audits → fix.
+    Output = the hand-crafted July edition for the FOUNDER'S READ (then publish per the
+    ADR-012 runbook: registrations by hand, email via the manual button).
+  - `demo-world-class-pass` (run wf_a2da5e7b-bcc): reference study → 5 caliber seats →
+    fix → certification on the app-framed demo. Numbers immutable under it.
 
-**Next actions (in order):** July edition build per site-edition plan §8 items 1–6;
-publishes on the 2026-07-08 Wed refresh data (Wed eve/Thu) — founder reads the rendered
-draft first; the comeback email rides it via manual workflow_dispatch (guards bypass on
-manual). Note cost-outlook.json is STALE (2026-06-08) and must be wired into the refresh
-workflow (build + --check + staging) before the Looking-ahead section renders it.
+**Parked / follow-ups:** demo OG card; `Demo Exit` analytics registry entry (product
+repo `tools/_shared/analytics.js`); `.ld-wrap` 880px cap overridden by `.container`
+(pre-existing, founder call); /ledger/ meta "six-month history" mentions; product repo:
+3 failing nightlies (real failures, untriaged) + the 4 CI fixes still unmerged on its
+dev branch (no PR without ask); ES edition decision for monthly dispatches.
 
+**Cadence truths a fresh session must know:** refresh = Mon/Wed/Fri 13:00 UTC from
+main; dispatch cron REMOVED (ADR-012); the 38d dispatch-fresh gate is the publication
+reminder; subscriber promise = "one email a month — the first Tuesday" (the editorial
+deadline for hand-publishing).
 
 ### ✅ P0 OUTAGE RESOLVED 2026-07-06 — was: GitHub Actions dead ACCOUNT-WIDE since 2026-06-20
 
