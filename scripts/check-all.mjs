@@ -494,6 +494,12 @@ const CHECKS = [
   ['Cost-index events sync','build-cost-index-events.mjs','--check'],
   ['Cost-index events honesty self-test','check-cost-index-events.mjs','--self-test'],
   ['Cost-index events honesty','check-cost-index-events.mjs'],
+  // Market-context seed for Vendor Benchmark — per ingredient: volatility class, whether the
+  // reference is itself unusual right now vs its own normal, and the most recent DOCUMENTED
+  // event. Lets the tool add co-occurrence context about the REFERENCE's state (never the
+  // operator's price, so the fair-price-gap contract holds). Deterministic; --check pins the seed.
+  ['Cost-index context self-test','build-cost-index-context.mjs','--self-test'],
+  ['Cost-index context sync','build-cost-index-context.mjs','--check'],
   // Plate-cost drift (truth-discovery for Live Plate Margin) — quantifies how much
   // a protein-forward plate's indexed component drifts over the latest fully-covered
   // quarter, derived-with-stated-method from the deep history; ships to no page.

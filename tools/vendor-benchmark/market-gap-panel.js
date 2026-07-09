@@ -38,6 +38,7 @@
         '#vbMarketGap h3{font-size:13px;margin:0 0 4px;color:#1A1C20;text-transform:uppercase;letter-spacing:.04em}' +
         '#vbMarketGap .vbmg-num{font-weight:600}' +
         '#vbMarketGap .vbmg-ask{margin-top:8px;padding:8px 10px;border-radius:8px;background:#F6E7E2;color:#8E3A24}' +
+        '#vbMarketGap .vbmg-ctx{margin-top:8px;padding:8px 10px;border-radius:8px;background:#EEF1F6;color:#2B2F36}' +
         '#vbMarketGap .vbmg-tail{font-size:11.5px;color:#6B7079;margin-top:6px}' +
         '#vbMarketGap a{color:#2A50C8;text-decoration:none;border-bottom:1px dashed currentColor}';
       document.head.appendChild(style);
@@ -88,6 +89,28 @@
         } else if (r.verdict === 'below-reference') {
           panel.appendChild(el('p', null, es ? 'Por debajo de la referencia — verifica la especificación o el paquete.' : 'Below the reference — double-check the spec or pack size.'));
         }
+
+        // Market context — ONE honest line about the REFERENCE's own state (never the operator's
+        // price, which keeps the fair-price-gap contract intact). Reads the precomputed context
+        // seed; fail-silent if absent. textContent only.
+        (function () {
+          var CTX = (typeof window !== 'undefined' && window.MUNTIN_COST_CONTEXT) || null;
+          var cx = CTX && r.costIndexKey ? CTX[r.costIndexKey] : null;
+          if (!cx) return;
+          var bits = [];
+          if (cx.now && cx.now.state === 'elevated') bits.push(es
+            ? 'La referencia misma corre ~' + cx.now.pct + '% por encima de su propio normal ahora — un mercado inusualmente alto, así que parte de cualquier brecha es el mercado, no necesariamente tu proveedor.'
+            : 'The reference itself is running ~' + cx.now.pct + '% above its own normal right now — an unusually high market, so part of any gap is the market moving, not necessarily your vendor.');
+          else if (cx.now && cx.now.state === 'depressed') bits.push(es
+            ? 'La referencia misma está ~' + Math.abs(cx.now.pct) + '% por debajo de su propio normal ahora — un mercado inusualmente barato, así que un precio que parece justo puede merecer una segunda mirada.'
+            : 'The reference itself is ~' + Math.abs(cx.now.pct) + '% below its own normal right now — an unusually cheap market, so a fair-looking price may still be worth a second look.');
+          // Only a RECENT documented event (within a few years of the latest reading) is current
+          // context; a decade-old freeze beside a normal reference would just be noise.
+          if (cx.recentEvent && cx.recentEvent.recent) bits.push((es ? 'Evento de mercado documentado reciente: ' : 'Recent documented market event: ') + cx.recentEvent.label + ' (' + cx.recentEvent.year + ').');
+          if (!bits.length && cx.vol === 'wild') bits.push(es ? 'Históricamente, una línea muy volátil.' : 'Historically a highly volatile line.');
+          if (!bits.length) return;
+          panel.appendChild(el('p', 'vbmg-ctx', bits.join(' ')));
+        })();
 
         var tail = el('p', 'vbmg-tail');
         tail.appendChild(document.createTextNode(es ? 'Referencia mayorista — tu precio entregado suele ser mayor. ' : 'Wholesale reference — your delivered price normally runs higher. '));

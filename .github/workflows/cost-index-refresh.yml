@@ -101,6 +101,10 @@ jobs:
           # --check-gated in CI; the per-ingredient pages read it at BUILD time, so it
           # must be rewritten here before the pages render.
           node scripts/build-cost-index-events.mjs
+          # Rebuild the Vendor Benchmark market-context seed (volatility, current-vs-normal
+          # state, most recent documented event per ingredient). Reads the fresh index/history/
+          # events/registry; --check-gated in CI.
+          node scripts/build-cost-index-context.mjs
           # Re-render hub / per-ingredient / lab pages.
           node scripts/build-cost-index-pages.mjs
           # Re-render the ingredient-yield library pages — their market-read block
