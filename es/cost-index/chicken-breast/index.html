@@ -230,6 +230,14 @@ main{padding-top:64px}
 .ci-outlook__lab a{color:var(--season);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
 .ci-events{margin:30px 0 8px}
 .ci-events__intro{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 14px;max-width:66ch}
+.ci-events__take{margin:0 0 16px;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px}
+.ci-events__take[data-vol="wild"]{border-left-color:#A23B2D}
+.ci-events__take[data-vol="swingy"]{border-left-color:var(--gold)}
+.ci-events__take[data-vol="steady"]{border-left-color:var(--teal)}
+.ci-events__take-h{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px}
+.ci-events__take-b{font-size:15px;line-height:1.6;color:var(--ink);margin:0 0 8px;max-width:68ch}
+.ci-events__take-b strong{color:var(--ink)}
+.ci-events__take-mv{font-size:13.5px;line-height:1.55;color:var(--ink-soft);margin:0;max-width:68ch}
 .ci-events__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
 .ci-events__ev{padding:14px 16px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px;font-variant-numeric:tabular-nums}
 .ci-events__ev[data-dir="up"]{border-left-color:#A23B2D}
@@ -287,6 +295,7 @@ main{padding-top:64px}
 :root[data-theme="dark"] .ci-composite[data-band="up"] .ci-composite__num{color:#ed9a8e}
 :root[data-theme="dark"] .ci-events__ev[data-dir="up"]{border-left-color:#ed9a8e}
 :root[data-theme="dark"] .ci-events__mag[data-dir="up"]{color:#ed9a8e}
+:root[data-theme="dark"] .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12);--stone:#9aa0aa;--gold:#d8bd6a;--season:#a992d6}
   :root:not([data-theme="light"]) .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
@@ -297,6 +306,7 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__ev[data-dir="up"]{border-left-color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=dc72c6990f4c" onload="this.onload=null;this.rel='stylesheet'">
@@ -508,6 +518,11 @@ main{padding-top:64px}
   <section class="ci-events" aria-labelledby="ci-events-h-chicken-breast">
     <h2 id="ci-events-h-chicken-breast">Eventos de precio notables</h2>
     <p class="ci-events__intro">En los ~3.8 años de datos públicos que seguimos, la referencia mayorista de pechuga de pollo se alejó más de su rango normal en estas fechas. Cada cifra es el pico frente a la mediana local (~1 año) del propio producto — un movimiento de mercado, no un sobreprecio de proveedor.</p>
+    <div class="ci-events__take" data-vol="wild">
+    <p class="ci-events__take-h">Lo que significa para tu cocina</p>
+    <p class="ci-events__take-b"><strong>Pechuga de pollo: una línea muy volátil.</strong> No la ancles a un precio fijo de menú que no puedas revisar en meses: deja margen, y cuando la lectura esté caliente conviene lucirla menos o achicar la porción antes que comerte el margen. Sus movimientos grandes solían durar ~8 semanas antes de ceder — cuenta con eso, no con un rebote la semana que viene.</p>
+    <p class="ci-events__take-mv">Y la lectura que más vale: cuando un salto aquí coincide con un evento de mercado documentado (abajo), la factura alta es del mercado — aguanta el precio o rediseña el plato, no quemes la relación con el proveedor. Cuando la referencia está tranquila pero tu precio no, esa es la conversación que vale la pena tener.</p>
+  </div>
     <ol class="ci-events__list">
       <li class="ci-events__ev" data-dir="up">
       <div class="ci-events__hd">

@@ -95,12 +95,21 @@ function isAllowlisted(relPath) {
 // Quick scrub: drop <code>, <pre>, and JSON-LD <script> blocks
 // before scanning. Marketing-speak warnings on a JSON file or a
 // quoted code sample are noise.
+//
+// Also drop `.ci-events__ctx` blocks: those are QUOTED, cited documented-event
+// content from the market-events registry (cost-index/events.json) rendered on the
+// cost-index pages — e.g. "COVID-19 US dairy supply-chain disruption". A word like
+// "disruption" or "elevated" is the accurate term in a sourced event account, not the
+// site's own marketing voice, so it isn't held to the retired-word list (the same
+// reasoning the header states for attributed quotes). The site's OWN framing on those
+// pages — intro, the operator takeaway, foot — is NOT inside .ci-events__ctx and stays scanned.
 function scrub(html) {
   return html
     .replace(/<script[\s\S]*?<\/script>/g, '')
     .replace(/<pre[\s\S]*?<\/pre>/g, '')
     .replace(/<code[\s\S]*?<\/code>/g, '')
-    .replace(/<style[\s\S]*?<\/style>/g, '');
+    .replace(/<style[\s\S]*?<\/style>/g, '')
+    .replace(/<div class="ci-events__ctx">[\s\S]*?<\/div>/g, '');
 }
 
 const violations = [];

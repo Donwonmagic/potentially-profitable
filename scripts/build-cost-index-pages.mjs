@@ -1735,6 +1735,14 @@ main{padding-top:64px}
 .ci-outlook__lab a{color:var(--season);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
 .ci-events{margin:30px 0 8px}
 .ci-events__intro{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 14px;max-width:66ch}
+.ci-events__take{margin:0 0 16px;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px}
+.ci-events__take[data-vol="wild"]{border-left-color:#A23B2D}
+.ci-events__take[data-vol="swingy"]{border-left-color:var(--gold)}
+.ci-events__take[data-vol="steady"]{border-left-color:var(--teal)}
+.ci-events__take-h{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px}
+.ci-events__take-b{font-size:15px;line-height:1.6;color:var(--ink);margin:0 0 8px;max-width:68ch}
+.ci-events__take-b strong{color:var(--ink)}
+.ci-events__take-mv{font-size:13.5px;line-height:1.55;color:var(--ink-soft);margin:0;max-width:68ch}
 .ci-events__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
 .ci-events__ev{padding:14px 16px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px;font-variant-numeric:tabular-nums}
 .ci-events__ev[data-dir="up"]{border-left-color:#A23B2D}
@@ -1792,6 +1800,7 @@ main{padding-top:64px}
 :root[data-theme="dark"] .ci-composite[data-band="up"] .ci-composite__num{color:#ed9a8e}
 :root[data-theme="dark"] .ci-events__ev[data-dir="up"]{border-left-color:#ed9a8e}
 :root[data-theme="dark"] .ci-events__mag[data-dir="up"]{color:#ed9a8e}
+:root[data-theme="dark"] .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12);--stone:#9aa0aa;--gold:#d8bd6a;--season:#a992d6}
   :root:not([data-theme="light"]) .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
@@ -1802,6 +1811,7 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__ev[data-dir="up"]{border-left-color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=${SHELL_HASH.core}" onload="this.onload=null;this.rel='stylesheet'">
@@ -2071,6 +2081,45 @@ function evCtx(ev, es) {
         <details class="ci-events__cite"><summary>What happened · sources</summary><p>${escHtml(ev.whatHappened)}</p>${srcs ? `<p class="ci-events__srcs">${srcs}</p>` : ''}</details>
       </div>`;
 }
+// Operator takeaway — the "so what do I do?" layer that turns the move history into a kitchen
+// decision. All COMPUTED from the detection: how volatile the line is (fix vs float the menu
+// price) and the typical time a big move held. Plus the market-vs-vendor read — the Cost Index's
+// whole point. General operating guidance, not a forecast and not a sourced claim.
+function eventsTakeaway(rec, nmLc, es) {
+  const evs = rec.events || [];
+  const biggest = evs.reduce((m, e) => Math.max(m, Math.abs(e.pctFromNormal)), 0);
+  const perDecade = rec.span && rec.span.years ? evs.length / (rec.span.years / 10) : 0;
+  let cls = 'steady';
+  if (biggest >= 80 || (biggest >= 50 && perDecade >= 2)) cls = 'wild';
+  else if (biggest >= 40 || perDecade >= 1.8) cls = 'swingy';
+  const ups = evs.filter((e) => e.direction === 'up').map((e) => e.durationDays).filter((d) => d > 0).sort((a, b) => a - b);
+  const medDur = ups.length ? ups[Math.floor(ups.length / 2)] : 0;
+  const durPhrase = medDur >= 75 ? `${Math.round(medDur / 30.4)} ${es ? 'meses' : 'months'}` : `${Math.max(2, Math.round(medDur / 7))} ${es ? 'semanas' : 'weeks'}`;
+  const Cap = nmLc.charAt(0).toUpperCase() + nmLc.slice(1);
+  // Colon form (not "{name} is …") so plural names — Eggs, Tomatoes — stay grammatical.
+  const verdict = {
+    wild: es ? 'una línea muy volátil' : 'a highly volatile line',
+    swingy: es ? 'una línea con vaivenes reales' : 'a genuinely swingy line',
+    steady: es ? 'una línea relativamente estable' : 'a relatively steady line',
+  }[cls];
+  const move = {
+    wild: es ? 'No la ancles a un precio fijo de menú que no puedas revisar en meses: deja margen, y cuando la lectura esté caliente conviene lucirla menos o achicar la porción antes que comerte el margen.'
+             : 'Don\'t anchor it to a printed menu price you can\'t revisit for months: keep headroom, and when the reading runs hot, feature it less or trim the portion before you eat the margin.',
+    swingy: es ? 'Deja un colchón en el precio del menú y revisa la lectura antes de comprometer una promoción o un menú de precio fijo.'
+               : 'Leave a cushion in the menu price, and check the reading before you commit a promo or a prix-fixe.',
+    steady: es ? 'Se puede fijar un precio y dejarlo: solo mantén el chequeo estacional de siempre.'
+               : 'Safe to set a price and leave it — just keep the usual seasonal check.',
+  }[cls];
+  const held = medDur ? (es ? ` Sus movimientos grandes solían durar ~${durPhrase} antes de ceder — cuenta con eso, no con un rebote la semana que viene.` : ` Its big moves have typically held ~${durPhrase} before easing — plan for that, not for a bounce next week.`) : '';
+  const mv = es
+    ? 'Y la lectura que más vale: cuando un salto aquí coincide con un evento de mercado documentado (abajo), la factura alta es del mercado — aguanta el precio o rediseña el plato, no quemes la relación con el proveedor. Cuando la referencia está tranquila pero tu precio no, esa es la conversación que vale la pena tener.'
+    : 'And the read that matters most: when a spike here lines up with a documented market event (below), a high invoice is the market — hold your price or re-engineer the plate, don\'t burn the vendor relationship. When the reference is calm but your price isn\'t, that\'s the conversation worth having.';
+  return `<div class="ci-events__take" data-vol="${cls}">
+    <p class="ci-events__take-h">${es ? 'Lo que significa para tu cocina' : 'What this means for your kitchen'}</p>
+    <p class="ci-events__take-b"><strong>${Cap}: ${verdict}.</strong> ${move}${held}</p>
+    <p class="ci-events__take-mv">${mv}</p>
+  </div>`;
+}
 function notableEventsBlock(slug, locale) {
   const es = locale === 'es';
   const base = es ? '/es' : '';
@@ -2093,6 +2142,7 @@ function notableEventsBlock(slug, locale) {
   <section class="ci-events ci-events--stable" aria-labelledby="ci-events-h-${slug}">
     <h2 id="ci-events-h-${slug}">${h}</h2>
     <p class="ci-events__intro">${line}</p>
+    ${eventsTakeaway(rec, nmLc, es)}
   </section>`;
   }
 
@@ -2149,6 +2199,7 @@ function notableEventsBlock(slug, locale) {
   <section class="ci-events" aria-labelledby="ci-events-h-${slug}">
     <h2 id="ci-events-h-${slug}">${h}</h2>
     <p class="ci-events__intro">${intro}</p>
+    ${eventsTakeaway(rec, nmLc, es)}
     <ol class="ci-events__list">
       ${rows}
     </ol>

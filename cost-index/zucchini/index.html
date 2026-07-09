@@ -230,6 +230,14 @@ main{padding-top:64px}
 .ci-outlook__lab a{color:var(--season);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
 .ci-events{margin:30px 0 8px}
 .ci-events__intro{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 14px;max-width:66ch}
+.ci-events__take{margin:0 0 16px;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px}
+.ci-events__take[data-vol="wild"]{border-left-color:#A23B2D}
+.ci-events__take[data-vol="swingy"]{border-left-color:var(--gold)}
+.ci-events__take[data-vol="steady"]{border-left-color:var(--teal)}
+.ci-events__take-h{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px}
+.ci-events__take-b{font-size:15px;line-height:1.6;color:var(--ink);margin:0 0 8px;max-width:68ch}
+.ci-events__take-b strong{color:var(--ink)}
+.ci-events__take-mv{font-size:13.5px;line-height:1.55;color:var(--ink-soft);margin:0;max-width:68ch}
 .ci-events__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
 .ci-events__ev{padding:14px 16px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px;font-variant-numeric:tabular-nums}
 .ci-events__ev[data-dir="up"]{border-left-color:#A23B2D}
@@ -287,6 +295,7 @@ main{padding-top:64px}
 :root[data-theme="dark"] .ci-composite[data-band="up"] .ci-composite__num{color:#ed9a8e}
 :root[data-theme="dark"] .ci-events__ev[data-dir="up"]{border-left-color:#ed9a8e}
 :root[data-theme="dark"] .ci-events__mag[data-dir="up"]{color:#ed9a8e}
+:root[data-theme="dark"] .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12);--stone:#9aa0aa;--gold:#d8bd6a;--season:#a992d6}
   :root:not([data-theme="light"]) .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
@@ -297,6 +306,7 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__ev[data-dir="up"]{border-left-color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=dc72c6990f4c" onload="this.onload=null;this.rel='stylesheet'">
@@ -563,6 +573,11 @@ main{padding-top:64px}
   <section class="ci-events" aria-labelledby="ci-events-h-zucchini">
     <h2 id="ci-events-h-zucchini">Notable price events</h2>
     <p class="ci-events__intro">Across the ~25.2 years of public data we track, the wholesale reference for zucchini moved farthest from its normal range on these dates. Each figure is the peak versus its own ~1-year local median — a market move, not a vendor markup.</p>
+    <div class="ci-events__take" data-vol="wild">
+    <p class="ci-events__take-h">What this means for your kitchen</p>
+    <p class="ci-events__take-b"><strong>Zucchini: a highly volatile line.</strong> Don't anchor it to a printed menu price you can't revisit for months: keep headroom, and when the reading runs hot, feature it less or trim the portion before you eat the margin. Its big moves have typically held ~3 months before easing — plan for that, not for a bounce next week.</p>
+    <p class="ci-events__take-mv">And the read that matters most: when a spike here lines up with a documented market event (below), a high invoice is the market — hold your price or re-engineer the plate, don't burn the vendor relationship. When the reference is calm but your price isn't, that's the conversation worth having.</p>
+  </div>
     <ol class="ci-events__list">
       <li class="ci-events__ev" data-dir="up">
       <div class="ci-events__hd">
