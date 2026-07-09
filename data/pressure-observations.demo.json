@@ -3,17 +3,17 @@
   "_status": "preview",
   "asOf": "2026-06-08",
   "observations": {
-    "chicken-breast":  { "feed-grain": -0.09, "broiler-placements": 0.04, "cold-storage-poultry": 0.01, "diesel": 0.01 },
-    "whole-chicken":   { "feed-grain": -0.07, "broiler-placements": 0.03, "cold-storage-poultry": 0.01, "diesel": 0.01 },
-    "ribeye":          { "cattle-on-feed-placements": -0.05, "cold-storage-beef": -0.03, "feed-grain": 0.01, "diesel": 0.05 },
-    "beef-tenderloin": { "cattle-on-feed-placements": -0.04, "cold-storage-beef": -0.02, "feed-grain": 0.01, "diesel": 0.05 },
+    "chicken-breast":  { "feed-grain": -0.09, "broiler-placements": 0.04, "diesel": 0.01 },
+    "whole-chicken":   { "feed-grain": -0.07, "broiler-placements": 0.03, "diesel": 0.01 },
+    "ribeye":          { "cattle-on-feed-placements": -0.05, "feed-grain": 0.01, "diesel": 0.05 },
+    "beef-tenderloin": { "cattle-on-feed-placements": -0.04, "feed-grain": 0.01, "diesel": 0.05 },
     "pork-loin":       { "hogs-market-supply": 0.05, "feed-grain": -0.04, "cold-storage-pork": 0.01, "diesel": 0.01 },
     "pork-shoulder":   { "hogs-market-supply": 0.04, "feed-grain": -0.05, "cold-storage-pork": 0.01, "diesel": 0.01 },
     "romaine-lettuce": { "lettuce-shipments": -0.08, "lettuce-imports": 0.03, "lettuce-pace": -0.05, "freeze-alert": 0, "drought-ca-az": 0.06, "diesel": 0.03, "lettuce-transition": 1 },
     "tomato":          { "tomato-shipments": 0.04, "tomato-imports": -0.02, "tomato-pace": 0.06, "freeze-alert": 0, "drought-fl-ca": 0.05, "diesel": 0.01, "tomato-transition": 0 },
     "onion":           { "onion-shipments": -0.10, "onion-imports": 0.04, "onion-pace": -0.06, "drought-ca-az": 0.03, "diesel": 0.04, "onion-transition": 0 },
     "russet-potato":   { "crop-condition": 0.04, "potato-shipments": 0.05, "potato-imports": 0.01, "potato-pace": 0.03, "drought-id": 0.0, "diesel": 0.01, "potato-transition": 0 },
-    "butter":          { "milk-production": 0.03, "cold-storage-butter": 0.04, "feed-grain": -0.02, "diesel": 0.01 },
-    "cheddar-cheese":  { "milk-production": -0.04, "cold-storage-cheese": -0.03, "feed-grain": 0.01, "diesel": 0.05 }
+    "butter":          { "cold-storage-butter": 0.04, "feed-grain": -0.02, "diesel": 0.01 },
+    "cheddar-cheese":  { "eu-cheddar": 0.04, "nzd-fx": 0.03, "feed-grain": 0.01 }
   }
 }

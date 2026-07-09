@@ -8,41 +8,37 @@
   "status": "preview",
   "asOf": "2026-06-08",
   "anchor": {
-    "chicken-breast": "2026-06-08",
-    "whole-chicken": "2026-06-08",
-    "ribeye": "2026-06-12",
-    "beef-tenderloin": "2026-06-12",
-    "pork-loin": "2026-06-12",
-    "pork-shoulder": "2026-06-12",
-    "romaine-lettuce": "2026-06-12",
-    "tomato": "2026-06-12",
-    "onion": "2026-06-12",
-    "russet-potato": "2026-06-12",
-    "butter": "2026-06-06",
-    "cheddar-cheese": "2026-06-06"
+    "chicken-breast": "2026-06-15",
+    "whole-chicken": "2026-06-15",
+    "ribeye": "2026-06-18",
+    "beef-tenderloin": "2026-06-18",
+    "pork-loin": "2026-06-18",
+    "pork-shoulder": "2026-06-18",
+    "romaine-lettuce": "2026-06-18",
+    "tomato": "2026-06-18",
+    "onion": "2026-06-18",
+    "russet-potato": "2026-06-18",
+    "butter": "2026-06-13",
+    "cheddar-cheese": "2026-06-13"
   },
   "observations": {
     "chicken-breast": {
       "feed-grain": -0.09,
       "broiler-placements": 0.04,
-      "cold-storage-poultry": 0.01,
       "diesel": 0.01
     },
     "whole-chicken": {
       "feed-grain": -0.07,
       "broiler-placements": 0.03,
-      "cold-storage-poultry": 0.01,
       "diesel": 0.01
     },
     "ribeye": {
       "cattle-on-feed-placements": -0.05,
-      "cold-storage-beef": -0.03,
       "feed-grain": 0.01,
       "diesel": 0.05
     },
     "beef-tenderloin": {
       "cattle-on-feed-placements": -0.04,
-      "cold-storage-beef": -0.02,
       "feed-grain": 0.01,
       "diesel": 0.05
     },
@@ -94,16 +90,14 @@
       "potato-transition": 0
     },
     "butter": {
-      "milk-production": 0.03,
       "cold-storage-butter": 0.04,
       "feed-grain": -0.02,
       "diesel": 0.01
     },
     "cheddar-cheese": {
-      "milk-production": -0.04,
-      "cold-storage-cheese": -0.03,
-      "feed-grain": 0.01,
-      "diesel": 0.05
+      "eu-cheddar": 0.04,
+      "nzd-fx": 0.03,
+      "feed-grain": 0.01
     }
   }
 };

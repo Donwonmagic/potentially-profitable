@@ -211,20 +211,6 @@
           "note": "more chicks placed → more meat ~6-10 wk out → cost down"
         },
         {
-          "id": "cold-storage-poultry",
-          "source": "nass-cold-storage",
-          "sign": -1,
-          "weight": 1,
-          "tier": "C",
-          "window": "1m",
-          "lead": {
-            "min": 4,
-            "max": 8,
-            "unit": "week"
-          },
-          "cite": "nass-cold-storage"
-        },
-        {
           "id": "diesel",
           "source": "eia-diesel",
           "sign": 1,
@@ -322,20 +308,6 @@
             "unit": "week"
           },
           "cite": "nass-broiler"
-        },
-        {
-          "id": "cold-storage-poultry",
-          "source": "nass-cold-storage",
-          "sign": -1,
-          "weight": 1,
-          "tier": "C",
-          "window": "1m",
-          "lead": {
-            "min": 4,
-            "max": 8,
-            "unit": "week"
-          },
-          "cite": "nass-cold-storage"
         },
         {
           "id": "diesel",
@@ -527,7 +499,7 @@
             "suggestWeight": 0.1,
             "nnlsWeight": -0.905,
             "nnlsLeadMo": 0,
-            "note": "PROVEN — one of the 4 edges that survived the full 12y BH+OOS+N bar (data/pressure-calibration.json, 2026-06-14). 12y LMR-2498 cutout anchor backtest confirms the -1 sign and holds OOS. Empirical relationship is ~coincident (|r|-best lag ~0w; NNLS ~-0.905 @ 0mo), so cold storage reads as a concurrent supply confirm more than a 4-8w leader; lead range retained pending more evidence. OOS-shrunk standalone weight 0.1; prior operating weight 1 retained."
+            "note": "PROVEN — one of the 4 edges that survived the full 12y BH+OOS+N bar (data/pressure-calibration.json, 2026-06-14). 12y LMR-2498 cutout anchor backtest confirms the -1 sign and holds OOS. Empirical relationship is ~coincident (|r|-best lag ~0w; NNLS ~-0.905 @ 0mo), so cold storage reads as a concurrent supply confirm more than a 4-8w leader; lead range retained pending more evidence. OOS-shrunk standalone weight 0.1; prior operating weight 1 retained. CAVEAT (ADR-014): this calibration ran on the RAW windowChange path; re-validate on the deseasonalized (5-yr same-month median anomaly) series before treating the empirical lag/weight as final — the sign + coincident read are expected to hold."
           }
         },
         {
@@ -592,7 +564,8 @@
             "max": 8,
             "unit": "week"
           },
-          "cite": "nass-cold-storage"
+          "cite": "nass-cold-storage",
+          "note": "Cold-storage pork stocks vs the same-month 5-year norm (deseasonalized, ADR-014) — a concurrent supply-context read, not a leading arrow; sign shared with the calibrated pork-loin/cold-storage-pork edge (coincident, N=102, p=0.008). Heavy stocks lean cost-down."
         },
         {
           "id": "diesel",
@@ -1005,8 +978,8 @@
           "id": "cold-storage-butter",
           "source": "nass-cold-storage",
           "sign": -1,
-          "weight": 2,
-          "tier": "B",
+          "weight": 1,
+          "tier": "C",
           "window": "1m",
           "lead": {
             "min": 4,
@@ -1014,7 +987,7 @@
             "unit": "week"
           },
           "cite": "nass-cold-storage",
-          "note": "Cold Storage tracks butter stocks; high stocks → downward pressure"
+          "note": "Cold-storage butter stocks vs the same-month 5-year norm (deseasonalized, ADR-014), not a raw spring build — a weak, uncalibrated supply-context read: heavy stocks lean cost-down, but a build can be strong production or soft demand. Confidence capped moderate; demoted from tier B/weight 2 (ADR-014 per-commodity gating)."
         },
         {
           "id": "feed-grain",
@@ -1080,21 +1053,6 @@
           },
           "cite": "fred-nzd-fx",
           "note": "intl-test: NZ global dairy price-setter; USD-per-NZD, NZD stronger → US cheese import cost up"
-        },
-        {
-          "id": "cold-storage-cheese",
-          "source": "nass-cold-storage",
-          "sign": -1,
-          "weight": 2,
-          "tier": "B",
-          "window": "1m",
-          "lead": {
-            "min": 4,
-            "max": 8,
-            "unit": "week"
-          },
-          "cite": "nass-cold-storage",
-          "note": "Cold Storage tracks natural-cheese stocks"
         },
         {
           "id": "feed-grain",
@@ -3596,20 +3554,6 @@
           "note": "more chicks placed → more meat ~6-10 wk out → cost down"
         },
         {
-          "id": "cold-storage-poultry",
-          "source": "nass-cold-storage",
-          "sign": -1,
-          "weight": 1,
-          "tier": "C",
-          "window": "1m",
-          "lead": {
-            "min": 4,
-            "max": 8,
-            "unit": "week"
-          },
-          "cite": "nass-cold-storage"
-        },
-        {
           "id": "diesel",
           "source": "eia-diesel",
           "sign": 1,
@@ -3863,20 +3807,6 @@
           "note": "placements forecast marketings 4-6 mo out (NASS)"
         },
         {
-          "id": "cold-storage-beef",
-          "source": "nass-cold-storage",
-          "sign": -1,
-          "weight": 1,
-          "tier": "C",
-          "window": "1m",
-          "lead": {
-            "min": 4,
-            "max": 8,
-            "unit": "week"
-          },
-          "cite": "nass-cold-storage"
-        },
-        {
           "id": "feed-grain",
           "source": "fred-feed",
           "sign": 1,
@@ -3925,20 +3855,6 @@
           },
           "cite": "nass-cattle-on-feed",
           "note": "placements forecast marketings 4-6 mo out (NASS)"
-        },
-        {
-          "id": "cold-storage-beef",
-          "source": "nass-cold-storage",
-          "sign": -1,
-          "weight": 1,
-          "tier": "C",
-          "window": "1m",
-          "lead": {
-            "min": 4,
-            "max": 8,
-            "unit": "week"
-          },
-          "cite": "nass-cold-storage"
         },
         {
           "id": "feed-grain",
@@ -4045,7 +3961,8 @@
             "max": 8,
             "unit": "week"
           },
-          "cite": "nass-cold-storage"
+          "cite": "nass-cold-storage",
+          "note": "Cold-storage pork stocks vs the same-month 5-year norm (deseasonalized, ADR-014) — a concurrent supply-context read, not a leading arrow; belly/bacon is the cut most directly tied to frozen pork stocks (weight 2). Sign shared with the calibrated pork-loin/cold-storage-pork edge (coincident, N=102, p=0.008); heavy stocks lean cost-down."
         },
         {
           "id": "diesel",
