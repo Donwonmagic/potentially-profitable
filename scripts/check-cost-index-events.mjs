@@ -74,11 +74,15 @@ function validateEvent(ev) {
 }
 
 function stripTags(html) { return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' '); }
-// The FRAMING text the render itself authors — intro, meta, co-occurrence tags, labels, foot —
-// with the <details> drawers removed. The drawers hold the registry's DOCUMENTED prose (and, on
-// ES, the English label), which is historical fact and must not be keyword-policed; only the
-// site's own framing is held to the co-occurrence / no-forecast rule.
-function framingText(sectionHtml) { return stripTags(sectionHtml.replace(/<details[\s\S]*?<\/details>/g, ' ')); }
+// The FRAMING text the render itself authors — intro, meta, co-occurrence tags, foot — with the
+// <details> drawers AND any [data-quoted-source] elements removed. Those hold the registry's
+// DOCUMENTED prose (event accounts, labels, source titles), which is historical fact and must not
+// be keyword-policed; only the site's own framing is held to the co-occurrence / no-forecast rule.
+function framingText(sectionHtml) {
+  return stripTags(sectionHtml
+    .replace(/<details[\s\S]*?<\/details>/g, ' ')
+    .replace(/<(h3|p|span|li)[^>]*\bdata-quoted-source\b[^>]*>[\s\S]*?<\/\1>/gi, ' '));
+}
 // Every documented-event block must wear a co-occurrence tag — the structural guarantee that the
 // render presents it as context, never as a cause.
 const COOCCUR_TAGS = ['Documented around this time', 'Evento documentado en esas fechas'];
@@ -113,20 +117,27 @@ function run() {
   if (typeof registry.count === 'number' && registry.count !== registry.events.length) problems.push(`registry count ${registry.count} != events.length ${registry.events.length}`);
   for (const ev of registry.events) problems.push(...validateEvent(ev));
 
-  // (3) rendered events section stays co-occurrence-only. Scan the site's FRAMING (drawers
-  // stripped) for causation/forecast, and assert every documented-event block wears a
-  // co-occurrence tag so it can never read as an asserted cause.
+  // (3) rendered events surfaces stay co-occurrence-only. Scan the site's FRAMING (drawers +
+  // quoted-source stripped) for causation/forecast on BOTH the per-ingredient "Notable price
+  // events" sections AND the /cost-index/events/ hub, and assert every ci-events__ctx block
+  // wears a co-occurrence tag so it can never read as an asserted cause.
   for (const f of listPages()) {
     const html = fs.readFileSync(f, 'utf8');
-    const secs = html.match(/<section class="ci-events[\s\S]*?<\/section>/g);
-    if (!secs) continue;
     const rel = path.relative(repo, f);
-    const frame = framingText(secs.join(' '));
+    const isHub = /(^|\/)cost-index\/events\/index\.html$/.test(rel.replace(/\\/g, '/'));
+    const secs = html.match(/<section class="ci-events[\s\S]*?<\/section>/g);
+    if (!secs && !isHub) continue;
+    // Per-ingredient sections, or the whole hub body (it is entirely an events surface).
+    const scanHtml = isHub ? html.replace(/<head[\s\S]*?<\/head>/, ' ') : secs.join(' ');
+    const frame = framingText(scanHtml);
     const cz = causalHit(frame); if (cz) problems.push(`RENDER: ${rel} events framing asserts causation — "${cz}"`);
     const fz = forecastHit(frame); if (fz) problems.push(`RENDER: ${rel} events framing speaks a forecast — "${fz}"`);
-    const ctxCount = (secs.join(' ').match(/class="ci-events__ctx"/g) || []).length;
-    const tagCount = COOCCUR_TAGS.reduce((n, t) => n + (secs.join(' ').split(t).length - 1), 0);
-    if (ctxCount > tagCount) problems.push(`RENDER: ${rel} has ${ctxCount} event block(s) but only ${tagCount} co-occurrence tag(s) — a block is missing its context framing`);
+    if (secs) {
+      const joined = secs.join(' ');
+      const ctxCount = (joined.match(/class="ci-events__ctx"/g) || []).length;
+      const tagCount = COOCCUR_TAGS.reduce((n, t) => n + (joined.split(t).length - 1), 0);
+      if (ctxCount > tagCount) problems.push(`RENDER: ${rel} has ${ctxCount} event block(s) but only ${tagCount} co-occurrence tag(s) — a block is missing its context framing`);
+    }
   }
 
   return problems;

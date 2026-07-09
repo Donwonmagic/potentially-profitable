@@ -109,7 +109,11 @@ function scrub(html) {
     .replace(/<pre[\s\S]*?<\/pre>/g, '')
     .replace(/<code[\s\S]*?<\/code>/g, '')
     .replace(/<style[\s\S]*?<\/style>/g, '')
-    .replace(/<div class="ci-events__ctx">[\s\S]*?<\/div>/g, '');
+    .replace(/<div class="ci-events__ctx">[\s\S]*?<\/div>/g, '')
+    // Verbatim cited registry text on the events hub (the event label + account) is marked
+    // data-quoted-source — same reasoning: it's quoted documented source material, not the
+    // site's own voice. Only simple non-nested elements carry the marker.
+    .replace(/<(h3|p|span|li)[^>]*\bdata-quoted-source\b[^>]*>[\s\S]*?<\/\1>/gi, ' ');
 }
 
 const violations = [];

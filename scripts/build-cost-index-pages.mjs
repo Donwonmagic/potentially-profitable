@@ -2802,6 +2802,179 @@ function emitLabPage(locale) {
 }
 
 // ====================================================================
+// /cost-index/events/ — the documented market-events hub.
+// The site's cited market-events registry (cost-index/events.json) as a browsable,
+// category-filterable history, JOINED to the detected price magnitudes. Co-occurrence
+// framing throughout: a documented event sits beside the price windows it overlapped,
+// with its primary sources, and is NEVER asserted as the cause of any specific move.
+// ====================================================================
+function hubEventEntries() {
+  const DAY = 864e5;
+  const toMs = (s, end) => { const a = String(s).split('-').map(Number); return Date.UTC(a[0], (a[1] || 1) - 1, a[2] || (end ? 28 : 1)); };
+  let evs = [];
+  try { evs = JSON.parse(fs.readFileSync(path.join(repoRoot, 'cost-index/events.json'), 'utf8')).events || []; } catch { evs = []; }
+  return evs.map((ev) => {
+    const startMs = toMs(ev.startDate, false), endMs = toMs(ev.endDate || ev.startDate, true);
+    const cats = new Set();
+    const affected = (ev.affectedSlugs || []).map((slug) => {
+      const cat = (ING_META[slug] || {}).cat; if (cat) cats.add(cat);
+      return { slug, cat, ship: shippable(slug) };
+    });
+    let magPct = 0, magSlug = null;
+    for (const a of affected) {
+      const rec = EVENTS[a.slug]; if (!rec || !rec.events) continue;
+      for (const mv of rec.events) { const t = Date.parse(mv.date); if (t >= startMs - 45 * DAY && t <= endMs + 45 * DAY && Math.abs(mv.pctFromNormal) > Math.abs(magPct)) { magPct = mv.pctFromNormal; magSlug = a.slug; } }
+    }
+    return { ev, startMs, endMs, sy: String(ev.startDate).slice(0, 4), ey: String(ev.endDate || ev.startDate).slice(0, 4), cats: Array.from(cats).sort(), affected, magPct, magSlug };
+  }).sort((a, b) => b.endMs - a.endMs);
+}
+
+const EVENTS_HUB_CSS = `<style>
+.evh-stats{display:flex;flex-wrap:wrap;gap:10px 22px;margin:20px 0 8px;padding:16px 18px;background:var(--cream-2);border:1px solid var(--line);border-radius:12px;font-variant-numeric:tabular-nums}
+.evh-stat__n{font-family:var(--font-display);font-size:clamp(22px,3vw,30px);font-weight:560;line-height:1;color:var(--ink);letter-spacing:-.01em}
+.evh-stat__l{font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--stone);font-weight:600;margin-top:5px}
+.evh-note{font-size:13px;color:var(--ink-soft);line-height:1.55;margin:12px 0 0;max-width:70ch}
+.evh-note a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.evh-tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:24px 0 4px}
+.evh-chip{font:inherit;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:999px;border:1px solid var(--line);background:var(--white);color:var(--ink-soft);cursor:pointer}
+.evh-chip[aria-pressed="true"]{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.evh-chip:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.evh-count{font-size:13px;color:var(--ink-soft);margin-left:auto;font-variant-numeric:tabular-nums}
+.evh-list{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-direction:column;gap:14px}
+.evh-card{padding:16px 18px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px}
+.evh-card[data-move="up"]{border-left-color:#A23B2D}
+.evh-card[data-move="down"]{border-left-color:var(--teal)}
+.evh-card__head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin:0 0 4px}
+.evh-card__when{font-family:var(--font-display);font-size:15px;font-weight:600;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.evh-card__mag{font-size:12.5px;font-weight:700;letter-spacing:.01em;padding:2px 9px;border-radius:999px;background:var(--cream-2);color:var(--ink-soft)}
+.evh-card__mag[data-move="up"]{color:#A23B2D}
+.evh-card__mag[data-move="down"]{color:var(--teal)}
+.evh-card__label{font-family:var(--font-display);font-size:clamp(17px,2.4vw,20px);font-weight:600;line-height:1.25;color:var(--ink);margin:0 0 8px;text-wrap:balance}
+.evh-card__what{font-size:14.5px;line-height:1.6;color:var(--ink);margin:0 0 10px;max-width:74ch}
+.evh-card__items{font-size:13px;color:var(--ink-soft);line-height:1.7;margin:0 0 8px}
+.evh-card__items strong{color:var(--ink-soft);font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:11px;margin-right:6px}
+.evh-card__items a{color:var(--ink);text-decoration:none;border-bottom:1px dashed var(--line)}
+.evh-card__items a:hover{color:var(--teal)}
+.evh-card__src{font-size:12.5px}
+.evh-card__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
+.evh-card__src ul{margin:6px 0 0;padding-left:18px;color:var(--ink-soft);line-height:1.6}
+.evh-card__src a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.evh-empty{margin:16px 0;font-size:14.5px;color:var(--ink-soft);font-style:italic}
+:root[data-theme="dark"] .evh-card[data-move="up"]{border-left-color:#ed9a8e}
+:root[data-theme="dark"] .evh-card__mag[data-move="up"]{color:#ed9a8e}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .evh-card[data-move="up"]{border-left-color:#ed9a8e}:root:not([data-theme="light"]) .evh-card__mag[data-move="up"]{color:#ed9a8e}}
+</style>`;
+
+// Client filter — category chips toggle card visibility; count updates. No innerHTML.
+const EVENTS_HUB_JS = "(function(){var chips=document.querySelectorAll('.evh-chip');var cards=document.querySelectorAll('.evh-card');var count=document.getElementById('evhCount');if(!chips.length||!cards.length)return;var tmpl=count?count.getAttribute('data-tmpl')||'{n} shown':'';function apply(cat){var n=0;cards.forEach(function(c){var ok=cat==='all'||(' '+c.getAttribute('data-cats')+' ').indexOf(' '+cat+' ')!==-1;c.hidden=!ok;if(ok)n++;});chips.forEach(function(ch){ch.setAttribute('aria-pressed',ch.getAttribute('data-cat')===cat?'true':'false');});if(count)count.textContent=tmpl.replace('{n}',n);}chips.forEach(function(ch){ch.addEventListener('click',function(){apply(ch.getAttribute('data-cat'));});});})();";
+
+function emitEventsHubPage(locale) {
+  const es = locale === 'es';
+  const lang = es ? 'es' : 'en';
+  const base = es ? '/es' : '';
+  const canonEn = 'https://muntin.digital/cost-index/events/';
+  const canonEs = 'https://muntin.digital/es/cost-index/events/';
+  const entries = hubEventEntries();
+  const nEv = entries.length;
+  const nMeasured = entries.filter((e) => e.magPct).length;
+  const affectedSet = new Set(); entries.forEach((e) => e.affected.forEach((a) => affectedSet.add(a.slug)));
+  const years = entries.flatMap((e) => [+e.sy, +e.ey]).filter((y) => y);
+  const yMin = years.length ? Math.min(...years) : 2001, yMax = years.length ? Math.max(...years) : 2026;
+
+  const h1 = es ? 'Eventos que movieron el mercado de insumos' : 'Events that moved the food-cost market';
+  const title = es ? `${h1} — historia documentada | Muntin Digital` : `${h1} — a documented history | Muntin Digital`;
+  const desc = es
+    ? `Historia citada de ${nEv} eventos (${yMin}–${yMax}) que coincidieron con movimientos de precios mayoristas en EE. UU. — gripe aviar, heladas, brotes — con fuentes primarias.`
+    : `A cited history of ${nEv} events (${yMin}–${yMax}) that coincided with U.S. wholesale price moves — avian flu, freezes, disease — each with primary sources.`;
+  const lede = es
+    ? `Cuando una factura salta, la pregunta es si se movió el mercado o solo tu proveedor. Este es el registro: ${nEv} eventos documentados entre ${yMin} y ${yMax} — brotes, heladas, retiros de importación — cada uno junto a las fechas de precios que abarcó, con fuentes primarias. Coincidencia en el tiempo, nunca una causa afirmada.`
+    : `When an invoice jumps, the question is whether the market moved or just your vendor. This is the record: ${nEv} documented events from ${yMin} to ${yMax} — disease outbreaks, freezes, import bans — each set beside the price windows it overlapped, with primary sources. Co-occurrence in time, never an asserted cause.`;
+
+  const cats = {}; entries.forEach((e) => e.cats.forEach((c) => { cats[c] = (cats[c] || 0) + 1; }));
+  const catOrder = ['beef', 'poultry', 'pork', 'seafood', 'produce', 'dairy-eggs', 'pantry'].filter((c) => cats[c]);
+  const chipLabel = (c) => (CATEGORIES[c] ? (es ? CATEGORIES[c].es : CATEGORIES[c].en) : c);
+  const chips = [`<button class="evh-chip" data-cat="all" aria-pressed="true">${es ? 'Todos' : 'All'}</button>`]
+    .concat(catOrder.map((c) => `<button class="evh-chip" data-cat="${c}" aria-pressed="false">${escHtml(chipLabel(c))}</button>`))
+    .join('');
+
+  const monthName = (mo) => (es ? EV_MONTHS_ES : EV_MONTHS_EN)[mo] || '';
+  const whenLabel = (e) => {
+    const sMo = +String(e.ev.startDate).slice(5, 7) || 0;
+    const sy = e.sy, ey = e.ey;
+    if (sy === ey) return sMo ? `${monthName(sMo)} ${sy}` : sy;
+    return `${sy}–${ey}`;
+  };
+
+  const cards = entries.map((e) => {
+    const up = e.magPct > 0, down = e.magPct < 0;
+    const move = up ? 'up' : down ? 'down' : 'flat';
+    const magName = e.magSlug ? evProse((LABELS[e.magSlug] && LABELS[e.magSlug].en) || e.magSlug).toLowerCase() : '';
+    const magBadge = e.magPct
+      ? `<span class="evh-card__mag" data-move="${move}">${es ? 'ref. ' : 'ref. '}${e.magPct > 0 ? '+' : '−'}${Math.abs(e.magPct)}% · ${escHtml(magName)}</span>`
+      : '';
+    const items = e.affected.map((a) => {
+      const nm = evProse((LABELS[a.slug] && (es ? (LABELS[a.slug].es || LABELS[a.slug].en) : LABELS[a.slug].en)) || a.slug);
+      return a.ship ? `<a href="${base}/cost-index/${a.slug}/">${escHtml(nm)}</a>` : escHtml(nm);
+    }).join(', ');
+    const srcs = (e.ev.sources || []).filter((s) => s && s.url)
+      .map((s) => `<li data-quoted-source><a href="${escHtml(s.url)}" rel="nofollow noopener" target="_blank">${escHtml(s.publisher || s.title || s.url)}</a>${s.publisher && s.title ? ' — ' + escHtml(s.title) : ''}</li>`).join('');
+    return `<li class="evh-card" data-cats="${escHtml(e.cats.join(' '))}" data-move="${move}">
+      <div class="evh-card__head"><span class="evh-card__when">${escHtml(whenLabel(e))}</span>${magBadge}</div>
+      <h3 class="evh-card__label" data-quoted-source>${escHtml(e.ev.label)}</h3>
+      <p class="evh-card__what" data-quoted-source>${escHtml(e.ev.whatHappened || '')}</p>
+      <p class="evh-card__items"><strong>${es ? 'Afecta' : 'Affected'}</strong>${items}</p>
+      <details class="evh-card__src"><summary>${(e.ev.sources || []).length} ${es ? 'fuentes' : 'sources'}</summary><ul>${srcs}</ul></details>
+    </li>`;
+  }).join('\n    ');
+
+  const countTmpl = es ? '{n} de ' + nEv + ' mostrados' : '{n} of ' + nEv + ' shown';
+  const jsonld = JSON.stringify({ '@context': 'https://schema.org', '@graph': [
+    { '@type': 'Dataset', '@id': (es ? canonEs : canonEn) + '#dataset', 'name': h1, 'url': es ? canonEs : canonEn, 'description': desc, 'temporalCoverage': `${yMin}/${yMax}`, 'license': 'https://creativecommons.org/licenses/by/4.0/', 'creator': { '@id': 'https://muntin.digital/#business' }, 'isAccessibleForFree': true, 'distribution': { '@type': 'DataDownload', 'encodingFormat': 'application/json', 'contentUrl': 'https://muntin.digital/cost-index/events.json' } },
+    { '@type': 'BreadcrumbList', 'itemListElement': [
+      { '@type': 'ListItem', 'position': 1, 'name': es ? 'Inicio' : 'Home', 'item': es ? 'https://muntin.digital/es/' : 'https://muntin.digital/' },
+      { '@type': 'ListItem', 'position': 2, 'name': es ? 'Índice de costos' : 'Cost index', 'item': (es ? 'https://muntin.digital/es' : 'https://muntin.digital') + '/cost-index/' },
+      { '@type': 'ListItem', 'position': 3, 'name': h1, 'item': es ? canonEs : canonEn } ] }
+  ] });
+
+  const stat = (n, l) => `<div><div class="evh-stat__n">${n}</div><div class="evh-stat__l">${escHtml(l)}</div></div>`;
+  return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld, extraCss: EVENTS_HUB_CSS }) + `
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="${base}/">${es ? 'Inicio' : 'Home'}</a> ›
+    <a href="${base}/cost-index/">${es ? 'Índice de costos' : 'Cost index'}</a> ›
+    ${escHtml(h1)}
+  </nav>
+  <section class="ci-hero">
+    <p class="ci-eyebrow"><a href="${base}/cost-index/">${es ? 'Índice de costos' : 'Cost index'}</a></p>
+    <h1>${escHtml(h1)}</h1>
+    <p class="ci-lede">${lede}</p>
+  </section>
+  <div class="ci-body" style="max-width:860px">
+    <div class="evh-stats">
+      ${stat(nEv, es ? 'eventos documentados' : 'documented events')}
+      ${stat(`${yMin}–${yMax}`, es ? 'de historia' : 'of history')}
+      ${stat(affectedSet.size, es ? 'ingredientes afectados' : 'ingredients touched')}
+      ${stat(nMeasured, es ? 'con un movimiento medido' : 'with a measured move')}
+    </div>
+    <p class="evh-note">${es
+      ? `Cada evento viene de nuestro <a href="/cost-index/events.json">registro abierto y citado</a> (CC‑BY), con fuentes primarias (USDA, CDC, NOAA, CRS). El “movimiento medido” es cuánto se alejó de su normal la referencia mayorista de un ingrediente afectado en esa ventana — coincidencia en el tiempo, no una causa.`
+      : `Every event is from our <a href="/cost-index/events.json">open, cited registry</a> (CC‑BY), with primary sources (USDA, CDC, NOAA, CRS). The “measured move” is how far an affected ingredient's wholesale reference ran from its normal in that window — co-occurrence in time, not a cause.`}</p>
+    <div class="evh-tools">
+      ${chips}
+      <span class="evh-count" id="evhCount" data-tmpl="${escHtml(countTmpl)}">${countTmpl.replace('{n}', String(nEv))}</span>
+    </div>
+    <ul class="evh-list">
+    ${cards}
+    </ul>
+    <p class="evh-empty" hidden>${es ? 'Ningún evento en esa categoría.' : 'No events in that category.'}</p>
+    <div class="ci-cta-row">
+      <a class="btn btn-ghost" href="${base}/cost-index/">${es ? 'Ver el índice' : 'Browse the index'}</a>
+      <a class="btn btn-ghost" href="${base}/open/">${es ? 'Datos abiertos' : 'Open data'}</a>
+    </div>
+  </div>
+  <script>${EVENTS_HUB_JS}</script>` + pageTail;
+}
+
+// ====================================================================
 // /open/ — the open-data hub + /open/seasonality/ learning surface.
 // Emitted here (not a separate builder) so it inherits the proven page
 // chrome AND the seasonality honesty logic (SEASON, seasonalClass) in one
@@ -3267,6 +3440,8 @@ targets.push({ path: 'cost-index/index.csv',  content: aggregateCsv(allGated),  
 // of --only so EN/ES stay in parity.
 targets.push({ path: 'cost-index/lab/index.html',    content: emitLabPage('en') });
 targets.push({ path: 'es/cost-index/lab/index.html', content: emitLabPage('es') });
+targets.push({ path: 'cost-index/events/index.html',    content: emitEventsHubPage('en') });
+targets.push({ path: 'es/cost-index/events/index.html', content: emitEventsHubPage('es') });
 
 targets.push({ path: 'open/index.html',                content: emitOpenHub('en') });
 targets.push({ path: 'es/open/index.html',             content: emitOpenHub('es') });
