@@ -13,7 +13,58 @@ repo survives. Update this file as threads move.
 council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 #234–#239 product) are merged to main and closed.
 
-## ⮕ CURRENT STATE — read this first (updated 2026-07-06)
+## ⮕ CURRENT STATE — read this first (updated 2026-07-09)
+
+### 🟣 SESSION 2026-07-09 (product repo, branch `claude/muntin-strategic-council-fzdd1j`) — `/try` demo finished + reliability roadmap closed
+
+**⚠ Branch note:** this session was pinned to `-fzdd1j` (per its task config); its
+product work merged to main via **PR #239** (Ledger) and the branch now sits at
+latest main. The board's "active branch is `-exsghc`" line above predates this —
+these two council branches ran concurrently. Nothing is lost; `-fzdd1j`'s work is
+on main. Reconcile the branch name next session if the founder wants one lane.
+
+**The arc (all on main via #239):** completed the first-try reliability roadmap AND
+built + hardened + visually elevated the anonymous `/try` demo. Recorded as
+**product ADR-007** (`docs/ux/decisions/ADR-007-try-anonymous-demo-and-gating.md`).
+
+  - **Reliability roadmap COMPLETE** (`docs/plans/first-try-reliability-roadmap.md`):
+    community column-rule pool Slices 1–6 (row-invariant `column_v2`, community
+    confidence band, column-fan apply, held-out lift gate, pool-aware drift +
+    supersession + distinct-org demote-back trigger), the first-try lift corpus, and
+    the **OCR-noise measurement layer**. All adversarially verified.
+  - **`/try` BUILT + hardened + ELEVATED:** deterministic live read (no LLM, no
+    persistence — both CI-gated), animated read pipeline, ReadReceiptRail, "$X off"
+    catch-as-hero, honest cause inference (`catch-cause.ts`), founding-list capture on
+    every branch, phone-photo downscale, reactive Turnstile. Then a 9-agent design
+    workflow re-skinned it to the **precision-instrument** language (mono tabular
+    numerics, hairline grid, one blue accent, triple-encoded confidence, count-up
+    total) — verified via Playwright across idle/reading/clean/catch in light+dark.
+    Gate-green: tsc, next build, 111 vitest, focus-discipline, demo-no-persistence,
+    locale-parity.
+
+**⮕ WHAT'S LEFT before the demo can take a real invoice and reliably produce results
+(i.e. flip `DEMO_ANONYMOUS_EXTRACT` on):** exactly ONE accuracy gate, plus ops.
+  - **Gate (a) — real-invoice coverage.** The pool match is robust to value /
+    positional / header case+whitespace noise but **breaks on header GLYPH
+    corruption**. So un-gating requires (i) the actual top-~10 broadliner layouts
+    (Sysco, US Foods, PFG, GFS…) as real reference-A + held-out-B pairs run through
+    production docling, and (ii) **seeding header glyph-variants per column** (not one
+    spelling), then a re-measured blended first-try F1 (Tier-1 PDF ≥ 0.90 held-out).
+    The synthetic corpus proves the mechanism + names this requirement; it does not
+    supply real invoices. **This is the single blocker.** Until it clears, `/try`
+    degrades safely to the guided `/demo` sample (503 `fallback:"static"`), so the
+    surface is already shippable at full craft.
+  - **Ops (independent of gate a):** provision Turnstile keys
+    (`NEXT_PUBLIC_TURNSTILE_SITE_KEY` + server secret); NCMEC enrolment before public
+    promotion of an anonymous upload endpoint; decide the demo↔pool fork (roadmap
+    §5.10 / Q7 — recommended: read-only pool exception for `demo:anon`).
+
+**Bold-launch opener (founder asked "get people excited in a unique, bold way"):** the
+precision-instrument surface is the vehicle; the missing spark is the LIVE own-invoice
+read, which is exactly what gate (a) unlocks. Recommended sequence to a confident public
+launch: author 2–3 real Tier-1 A/B pairs first (Sysco + US Foods cover the largest
+first-upload slice) → re-measure F1 → flip the flag for those layouts → THEN promote.
+Everything else (design, honesty architecture, capture, hardening) is done.
 
 ### 🟢 ACTIVE BUILD — the Monthly Dispatch (July edition ships this week)
 
