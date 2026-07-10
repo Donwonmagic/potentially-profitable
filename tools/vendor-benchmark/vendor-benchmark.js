@@ -1889,6 +1889,37 @@
     return true;
   }
 
+  // ---- power-user fast entry: paste a table -------------------------------
+  // Paste rows of "date price" (from a spreadsheet / invoice export) into any field and
+  // the tool parses them into dated rows — ISO or M/D/Y dates, $ / comma-tolerant prices.
+  function parseLooseDate(s) {
+    s = String(s || '').trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+    var m = s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
+    if (m) {
+      var mo = +m[1], da = +m[2], yr = +m[3]; if (yr < 100) yr += 2000;
+      if (mo >= 1 && mo <= 12 && da >= 1 && da <= 31) {
+        return yr + '-' + String(mo).padStart(2, '0') + '-' + String(da).padStart(2, '0');
+      }
+    }
+    return null;
+  }
+  function parsePastedRows(text) {
+    var lines = String(text || '').split(/[\r\n]+/).map(function (l) { return l.trim(); }).filter(Boolean);
+    var out = [];
+    lines.forEach(function (line) {
+      var parts = line.split(/[\t,;]|\s{2,}/).map(function (s) { return s.trim(); }).filter(Boolean);
+      if (parts.length === 1) parts = line.split(/\s+/); // single-space "date price"
+      var date = null, price = null;
+      parts.forEach(function (p) {
+        if (!date) { var d = parseLooseDate(p); if (d) { date = d; return; } }
+        if (!price && /^\$?\s*[\d,]+\.?\d*\s*$/.test(p) && /\d/.test(p)) price = p.replace(/[^\d.]/g, '');
+      });
+      if (date && price) out.push({ date: date, price: price });
+    });
+    return out;
+  }
+
   // ---- restore / init --------------------------------------------------------
   function restore() {
     if (hydrateFromHash()) return; // a shared link wins over the saved session / scaffold
@@ -1908,6 +1939,25 @@
 
   rowsEl.addEventListener('input', schedule);
   rowsEl.addEventListener('change', schedule);
+  // Paste a table of dated prices into any row field → populate all rows at once.
+  rowsEl.addEventListener('paste', function (e) {
+    var t = e.target; if (!t || !t.matches || !t.matches('.vb-input')) return;
+    var cd = e.clipboardData || window.clipboardData;
+    var text = cd && cd.getData ? cd.getData('text') : '';
+    var pairs = parsePastedRows(text);
+    if (pairs.length >= 2) { e.preventDefault(); renderRows(pairs); run(); revealResult(false); }
+  });
+  // Enter in a row field advances to the next row (adding one if you're on the last).
+  rowsEl.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter') return;
+    var t = e.target; if (!t || !t.matches || !t.matches('.vb-input')) return;
+    e.preventDefault();
+    var rowsNow = Array.prototype.slice.call(rowsEl.querySelectorAll('.vb-prow'));
+    var idx = rowsNow.indexOf(t.closest('.vb-prow'));
+    if (idx === rowsNow.length - 1) addRow();
+    var after = rowsEl.querySelectorAll('.vb-prow')[idx + 1];
+    if (after) { var d = after.querySelector('[data-field="date"]'); if (d && d.focus) d.focus(); }
+  });
   rowsEl.addEventListener('click', function (e) {
     var btn = e.target.closest ? e.target.closest('.vb-remove') : null;
     if (btn) {
