@@ -324,7 +324,7 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
    page scroll), and the row must clamp to the stage instead of growing
    with the tallest panel. */
 .ld-js #ldPanels{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr);height:720px;overflow:hidden}
-@supports (height:1svh){.ld-js #ldPanels{height:clamp(480px,calc(100svh - 208px),720px)}}
+@supports (height:1svh){.ld-js #ldPanels{height:clamp(430px,calc(100svh - 208px),720px)}}
 @media (max-width:767px){.ld-js #ldPanels{height:640px}@supports (height:1svh){.ld-js #ldPanels{height:clamp(430px,calc(100svh - 213px),640px)}}}
 /* Panels inside the stage: each fills the stage and scrolls its own
    overflow; short panels center (safe center falls back to top-aligned
@@ -446,8 +446,8 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
 .ld-cta h2{color:#F6F7F8}
 .ld-cta .ld-body{color:rgba(246,247,248,.75)}
 .ld-cta .lg-cap{color:rgba(246,247,248,.55)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ld-cta{background:#1B1E24;border:1px solid #2C3038}}
-:root[data-theme="dark"] .ld-cta{background:#1B1E24;border:1px solid #2C3038}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ld-cta{background:#0F1116;border:1px solid #2C3038}}
+:root[data-theme="dark"] .ld-cta{background:#0F1116;border:1px solid #2C3038}
 /* Step-4 interior in-frame (redesign 2026-07-09): the ink band fills
    the stage edge-to-edge (chrome strip and control bar stay cream) —
    the frame itself goes dark for the ask, still the page's single ink
@@ -459,9 +459,9 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
 /* The in-frame ink band restates its bg at the panel rule's own
    specificity (the opaque cross-fade surface above would otherwise
    out-cascade .ld-cta), and lifts in dark mode like the base band. */
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ld-js #ldPanels>.ld-cta{background:#1B1E24}:root:not([data-theme="light"]) .ld-js #ldPanels>.ld-cta::after{background:linear-gradient(to bottom,transparent,#1B1E24)}}
-:root[data-theme="dark"] .ld-js #ldPanels>.ld-cta{background:#1B1E24}
-:root[data-theme="dark"] .ld-js #ldPanels>.ld-cta::after{background:linear-gradient(to bottom,transparent,#1B1E24)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ld-js #ldPanels>.ld-cta{background:#0F1116}:root:not([data-theme="light"]) .ld-js #ldPanels>.ld-cta::after{background:linear-gradient(to bottom,transparent,#0F1116)}}
+:root[data-theme="dark"] .ld-js #ldPanels>.ld-cta{background:#0F1116}
+:root[data-theme="dark"] .ld-js #ldPanels>.ld-cta::after{background:linear-gradient(to bottom,transparent,#0F1116)}
 /* One ask in the frame (2026-07-09): while the stepper runs, the
    control bar's primary owns the founding CTA; the identical in-panel
    button hides so the ask never appears twice on one screen. The no-JS
@@ -988,7 +988,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           </div>
           <p class="ld-note">Rules, not a language model &mdash; the same invoice in always gives the same numbers out, and your documents never become training data.</p>
         </div>
-        <figcaption class="lg-cap"><strong>One printed line, five fields</strong> &mdash; the raw invoice text at the top lands as the typed rows below it: vendor, date, item, quantity, price, no retyping. Sample data &mdash; a clean produce invoice is the easy case; the demo shows the mechanism, not a benchmark.</figcaption>
+        <figcaption class="lg-cap"><strong>One printed line, five fields</strong> &mdash; the raw invoice text at the top lands as the typed rows below it: vendor, date, item, quantity, price, no retyping. Sample data &mdash; a clean produce invoice is the best case; the demo shows the mechanism, not a benchmark.</figcaption>
       </figure>
     </section>
 
@@ -1021,7 +1021,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <pre class="ld-csv">date,vendor,item,qty,price
 2026-06-19,Produce vendor,"Romaine, 24 ct",1,24.35</pre>
         </div>
-        <figcaption class="lg-cap"><strong>The ledger, narrowed to one item</strong> &mdash; three romaine reads across three invoices, the other June 26 lines dimmed; the CSV beneath shows how the whole record leaves with you, in a format you can open without us. Search and export are part of the mockup, not live controls.</figcaption>
+        <figcaption class="lg-cap"><strong>The ledger, narrowed to one item</strong> &mdash; three romaine reads across three invoices, the other June 26 lines dimmed; the CSV beneath shows how the whole record leaves with you, in a format you can open without Muntin. Search and export are part of the mockup, not live controls.</figcaption>
       </figure>
     </section>
 
@@ -1224,14 +1224,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <div class="studio-cta-row" style="margin-top:20px">
         <a class="btn btn-ghost plausible-event-name=Demo+Exit plausible-event-door=benchmark" href="/tools/vendor-benchmark/" style="color:#F6F7F8;border-color:rgba(246,247,248,.4)">Run your own line&nbsp;&rarr;</a>
       </div>
-      <p class="ld-body" style="margin-top:24px;margin-bottom:0;font-size:14px">Check the claims: <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/trust/" style="color:#7AA7FF">the trust center</a> &middot; <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/never/" style="color:#7AA7FF">what we never do</a> &middot; <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/cost-index/" style="color:#7AA7FF">the Cost Index data (CC0)</a>.</p>
+      <p class="ld-body" style="margin-top:24px;margin-bottom:0;font-size:14px">Check the claims: <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/trust/" style="color:#7AA7FF">the trust center</a> &middot; <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/never/" style="color:#7AA7FF">what Muntin never does</a> &middot; <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/cost-index/" style="color:#7AA7FF">the Cost Index data (CC0)</a>.</p>
       </div>
       </div><!-- /ld-cta-cols -->
       <ul class="lg-stances">
         <li>No cut of sales, ever</li>
         <li>No language model reads your invoices &mdash; build-gated, never training data</li>
         <li>Your data is never resold &mdash; not to a data broker, not to anyone</li>
-        <li>Export the whole ledger anytime in a format you can open without us; delete it and it&rsquo;s gone</li>
+        <li>Export the whole ledger anytime in a format you can open without Muntin; delete it and it&rsquo;s gone</li>
       </ul>
       <p class="lg-cap" style="margin-top:18px">The founding form is on the Ledger page &mdash; this demo takes nothing, not even an email.</p>
     </section>

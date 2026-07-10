@@ -333,7 +333,7 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
    min-content del pre del CSV (scroll de página a 360px), y la fila
    debe ceñirse al escenario en vez de crecer con el panel más alto. */
 .ld-js #ldPanels{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr);height:720px;overflow:hidden}
-@supports (height:1svh){.ld-js #ldPanels{height:clamp(480px,calc(100svh - 208px),720px)}}
+@supports (height:1svh){.ld-js #ldPanels{height:clamp(430px,calc(100svh - 208px),720px)}}
 @media (max-width:767px){.ld-js #ldPanels{height:640px}@supports (height:1svh){.ld-js #ldPanels{height:clamp(430px,calc(100svh - 213px),640px)}}}
 /* Paneles dentro del escenario: cada uno llena el escenario y desplaza
    su propio desbordamiento; los cortos se centran (safe center vuelve a
@@ -472,8 +472,8 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
 .ld-cta h2{color:#F6F7F8}
 .ld-cta .ld-body{color:rgba(246,247,248,.75)}
 .ld-cta .lg-cap{color:rgba(246,247,248,.55)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ld-cta{background:#1B1E24;border:1px solid #2C3038}}
-:root[data-theme="dark"] .ld-cta{background:#1B1E24;border:1px solid #2C3038}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ld-cta{background:#0F1116;border:1px solid #2C3038}}
+:root[data-theme="dark"] .ld-cta{background:#0F1116;border:1px solid #2C3038}
 /* Interior del paso 4 dentro del marco (rediseño 2026-07-09): la banda
    de tinta llena el escenario de borde a borde (la franja de chrome y
    la barra de controles siguen en crema) — el propio marco se oscurece
@@ -486,9 +486,9 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
 /* La banda de tinta dentro del marco reafirma su fondo con la misma
    especificidad de la regla de panel (la superficie opaca del fundido
    la taparía en la cascada) y se aclara en modo oscuro como la base. */
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ld-js #ldPanels>.ld-cta{background:#1B1E24}:root:not([data-theme="light"]) .ld-js #ldPanels>.ld-cta::after{background:linear-gradient(to bottom,transparent,#1B1E24)}}
-:root[data-theme="dark"] .ld-js #ldPanels>.ld-cta{background:#1B1E24}
-:root[data-theme="dark"] .ld-js #ldPanels>.ld-cta::after{background:linear-gradient(to bottom,transparent,#1B1E24)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ld-js #ldPanels>.ld-cta{background:#0F1116}:root:not([data-theme="light"]) .ld-js #ldPanels>.ld-cta::after{background:linear-gradient(to bottom,transparent,#0F1116)}}
+:root[data-theme="dark"] .ld-js #ldPanels>.ld-cta{background:#0F1116}
+:root[data-theme="dark"] .ld-js #ldPanels>.ld-cta::after{background:linear-gradient(to bottom,transparent,#0F1116)}
 /* Una sola petición en el marco (2026-07-09): mientras corre el
    recorrido, el primario de la barra de controles es dueño del CTA
    fundador; el botón idéntico del panel se oculta para que la petición
@@ -971,7 +971,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           </div>
           <p class="ld-note">Reglas, no un modelo de lenguaje &mdash; la misma factura siempre da los mismos n&uacute;meros, y tus documentos nunca se vuelven datos de entrenamiento.</p>
         </div>
-        <figcaption class="lg-cap"><strong>Una l&iacute;nea impresa, cinco campos</strong> &mdash; el texto crudo de la factura, arriba, aterriza como las filas tecleadas de abajo: proveedor, fecha, art&iacute;culo, cantidad, precio, sin volver a teclear. Datos de muestra &mdash; una factura de verduras limpia es el caso f&aacute;cil; el demo muestra el mecanismo, no una cifra de precisi&oacute;n.</figcaption>
+        <figcaption class="lg-cap"><strong>Una l&iacute;nea impresa, cinco campos</strong> &mdash; el texto crudo de la factura, arriba, aterriza como las filas tecleadas de abajo: proveedor, fecha, art&iacute;culo, cantidad, precio, sin volver a teclear. Datos de muestra &mdash; una factura de verduras limpia es el mejor caso; el demo muestra el mecanismo, no una cifra de precisi&oacute;n.</figcaption>
       </figure>
     </section>
 
@@ -1004,7 +1004,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <pre class="ld-csv">fecha,proveedor,art&iacute;culo,cant,precio
 2026-06-19,Proveedor de verduras,"Lechuga romana, 24 uds",1,24.35</pre>
         </div>
-        <figcaption class="lg-cap"><strong>El libro, reducido a un art&iacute;culo</strong> &mdash; tres lecturas de romana en tres facturas, con las dem&aacute;s l&iacute;neas del 26 de junio atenuadas; el CSV de abajo muestra c&oacute;mo el registro completo se va contigo, en un formato que abres sin nosotros. El buscador y la exportaci&oacute;n son parte de la maqueta, no controles reales.</figcaption>
+        <figcaption class="lg-cap"><strong>El libro, reducido a un art&iacute;culo</strong> &mdash; tres lecturas de romana en tres facturas, con las dem&aacute;s l&iacute;neas del 26 de junio atenuadas; el CSV de abajo muestra c&oacute;mo el registro completo se va contigo, en un formato que abres sin Muntin. El buscador y la exportaci&oacute;n son parte de la maqueta, no controles reales.</figcaption>
       </figure>
     </section>
 
@@ -1212,14 +1212,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <div class="studio-cta-row" style="margin-top:20px">
         <a class="btn btn-ghost plausible-event-name=Demo+Exit plausible-event-door=benchmark" href="/es/tools/vendor-benchmark/" style="color:#F6F7F8;border-color:rgba(246,247,248,.4)">Corre tu propia línea&nbsp;&rarr;</a>
       </div>
-      <p class="ld-body" style="margin-top:24px;margin-bottom:0;font-size:14px">Comprueba las afirmaciones: <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/es/trust/" style="color:#7AA7FF">el centro de confianza</a> &middot; <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/es/never/" style="color:#7AA7FF">lo que nunca hacemos</a> &middot; <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/es/cost-index/" style="color:#7AA7FF">los datos del &Iacute;ndice de Costos (CC0)</a>.</p>
+      <p class="ld-body" style="margin-top:24px;margin-bottom:0;font-size:14px">Comprueba las afirmaciones: <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/es/trust/" style="color:#7AA7FF">el centro de confianza</a> &middot; <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/es/never/" style="color:#7AA7FF">lo que Muntin nunca hace</a> &middot; <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/es/cost-index/" style="color:#7AA7FF">los datos del &Iacute;ndice de Costos (CC0)</a>.</p>
       </div>
       </div><!-- /ld-cta-cols -->
       <ul class="lg-stances">
         <li>Sin comisi&oacute;n sobre tus ventas, nunca</li>
         <li>Ning&uacute;n modelo de lenguaje lee tus facturas &mdash; bloqueado en el build, nunca datos de entrenamiento</li>
         <li>Tus datos no se venden nunca &mdash; ni a un corredor de datos ni a nadie m&aacute;s</li>
-        <li>Exporta el libro completo cuando quieras, en un formato que abres sin nosotros; b&oacute;rralo y desaparece</li>
+        <li>Exporta el libro completo cuando quieras, en un formato que abres sin Muntin; b&oacute;rralo y desaparece</li>
       </ul>
       <p class="lg-cap" style="margin-top:18px">El formulario fundador est&aacute; en la p&aacute;gina del Ledger &mdash; este demo no pide nada, ni siquiera un correo.</p>
     </section>
