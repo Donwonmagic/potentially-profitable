@@ -484,6 +484,21 @@ html{-webkit-text-size-adjust:100%}
   .vb-result-inner[data-animate]{animation:vb-result-in var(--vb-t-2,320ms) var(--vb-ease,ease) both}
   .vb-result-inner[data-animate] .vb-chartwrap{animation:vb-result-in var(--vb-t-3,600ms) var(--vb-ease,ease) both;animation-delay:60ms}
 }
+/* ── First-run onboarding — one primary CTA + a ghost readout that reserves the result
+   region (shape only, em-dash placeholders — never a fabricated value). Gated by
+   data-first-run on the shell; retired the instant a real answer renders. ────────── */
+.vb-ghost{display:none}
+.vb-shell[data-first-run] .vb-ghost{display:block;opacity:.5;margin:18px 0 0;padding:18px 20px;border:1px dashed var(--line-dark);border-radius:var(--r-md,14px)}
+.vb-ghost-metrics{display:flex;align-items:center;gap:14px}
+.vb-ghost-m{font-size:30px;font-weight:700;line-height:1;color:var(--stone-2,#9AA0AB)}
+.vb-ghost-vs{font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--stone)}
+.vb-ghost-chart{position:relative;height:60px;margin:14px 0 0;border-radius:8px;background:var(--surface-inset)}
+.vb-ghost-base{position:absolute;left:10px;right:10px;top:50%;border-top:1px dashed var(--line-dark)}
+.vb-ghost-hint{font-size:12.5px;line-height:1.5;color:var(--ink-soft);margin:12px 0 0}
+.vb-shell[data-first-run] .vb-example{background:var(--teal);color:#fff;border-color:var(--teal)}
+.vb-shell[data-first-run] .vb-example:hover{background:var(--teal-dark,#1F3A93)}
+.vb-shell[data-first-run] .vb-add{opacity:.6}
+.vb-shell[data-first-run] .vb-clear{display:none}
 </style>
 </head>
 <body>
@@ -767,6 +782,12 @@ html{-webkit-text-size-adjust:100%}
   </div>
 
   <div id="vbResult" class="vb-result" aria-live="polite"></div>
+
+  <div class="vb-ghost" aria-hidden="true">
+    <div class="vb-ghost-metrics"><span class="vb-ghost-m">&mdash;</span><span class="vb-ghost-vs">vs</span><span class="vb-ghost-m">&mdash;</span></div>
+    <div class="vb-ghost-chart"><span class="vb-ghost-base"></span></div>
+    <p class="vb-ghost-hint">Your read lands here &mdash; add two dated prices, or load the example to see it work.</p>
+  </div>
 
   <div class="vb-card">
     <h2>How Vendor Benchmark reads it.</h2>

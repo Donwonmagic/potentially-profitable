@@ -129,7 +129,8 @@
     ctxVolTag: ' También es una serie históricamente volátil.',
     ctxEvent: function (label) { return 'Coincide en el trasfondo (no es una causa): ' + label + '.'; },
     chartAriaDyn: function (yourR, mkR, gapAbs, gapSign) { return 'Tu precio terminó cerca de ' + yourR + ', el mercado cerca de ' + mkR + ', ambos indexados a 100 al inicio de tu ventana — ' + (gapAbs < 1 ? 'en línea con el mercado' : ('unos ' + gapAbs + ' puntos ' + (gapSign > 0 ? 'por encima' : 'por debajo') + ' del mercado')) + '.'; },
-    chartAriaThin: ' Las lecturas del mercado son escasas, así que esta línea es aproximada.'
+    chartAriaThin: ' Las lecturas del mercado son escasas, así que esta línea es aproximada.',
+    exampleFirstRun: 'Ver cómo funciona →'
   } : {
     itemLabel: 'Item', itemHint: '— as it reads on your invoice',
     itemPlaceholder: 'e.g. ribeye, chicken breast, tomato',
@@ -225,7 +226,8 @@
     ctxVolTag: ' It is also a historically volatile series.',
     ctxEvent: function (label) { return 'Co-occurring in the backdrop (not a cause): ' + label + '.'; },
     chartAriaDyn: function (yourR, mkR, gapAbs, gapSign) { return 'Your price ended near ' + yourR + ', the market near ' + mkR + ', both indexed to 100 at your window start — ' + (gapAbs < 1 ? 'in line with the market' : ('about ' + gapAbs + ' points ' + (gapSign > 0 ? 'above' : 'below') + ' the market')) + '.'; },
-    chartAriaThin: ' Market reads are thin, so this line is approximate.'
+    chartAriaThin: ' Market reads are thin, so this line is approximate.',
+    exampleFirstRun: 'See it work →'
   };
 
   // ---- small formatters ------------------------------------------------------
@@ -915,6 +917,21 @@
     if (resultEl && resultEl.scrollIntoView) resultEl.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'nearest' });
   }
 
+  // First-run onboarding — a single primary CTA + a ghost readout that reserves the
+  // result region, both gated by data-first-run on the shell. Cleared the moment a real
+  // result renders, so the promotion never competes with the operator's own answer.
+  function setFirstRun() {
+    var shell = document.querySelector('.vb-shell');
+    if (shell) shell.setAttribute('data-first-run', '1');
+    if (exampleBtn && T.exampleFirstRun) exampleBtn.textContent = T.exampleFirstRun;
+  }
+  function clearFirstRun() {
+    var shell = document.querySelector('.vb-shell[data-first-run]');
+    if (!shell) return;
+    shell.removeAttribute('data-first-run');
+    if (exampleBtn) exampleBtn.textContent = T.example;
+  }
+
   // Provenance strip — fill the live scope count (eager picker manifest) and the as-of
   // date (the reference set's generation date, once the lazy seed lands). Never a fake
   // date: the cell stays "—" until the real value is available.
@@ -1053,6 +1070,7 @@
   function render(res) {
     var m = res.market;
     lastRes = res;
+    clearFirstRun(); // a real answer is rendering — retire the onboarding promotion
     // Render-epoch gate: an identity signature (item · tone · thin · sign(gap) · state).
     // Motion fires ONLY when it changes — a new item, a flipped verdict, loading→resolved —
     // never on a keystroke that just nudges the same answer. This is what lets signature
@@ -1828,8 +1846,9 @@
       run();
       return;
     }
-    // Fresh: a two-row scaffold with a sensible 6-week window.
+    // Fresh: a two-row scaffold with a sensible 6-week window + the first-run onboarding.
     renderRows([{ date: isoMinusDays(todayISO(), 42) }, { date: todayISO() }]);
+    setFirstRun();
   }
 
   rowsEl.addEventListener('input', schedule);
