@@ -3,17 +3,29 @@
  *
  * Written by scripts/build-cost-index-picker.mjs from data/cost-index.js (the browser
  * seed) joined with scripts/lib/cost-index-categories.mjs (the shared category taxonomy).
- * Sets window.MUNTIN_CI_PICKER to an array of the pickable ingredients — one entry per
- * seed ingredient: { key, label_en, label_es, unit_en, unit_es, group, dollarRef }.
- * `group` is the ingredient's Cost Index category; `dollarRef` is true only when the
- * reference carries a firm dollar level (see tools/_shared/cost-index-lookup.js). Loaded
- * eagerly (first paint) so a picker can render before the ~1MB compute seed lazy-loads.
- * Guarded by scripts/check-cost-index-picker.mjs (length/keys/labels/group/dollarRef).
+ * Sets window.MUNTIN_CI_PICKER to an object:
+ *   { _doc, count, dollarRefCount,
+ *     groups: [{ key, label_en, label_es }]   // display order, populated groups only
+ *     items:  [{ key, label_en, label_es, unit_en, unit_es, group, dollarRef }] }
+ * `group` is the ingredient's Cost Index category; group LABELS come from the shared
+ * taxonomy (1:1 with the category pages); `dollarRef` is true only when the reference
+ * carries a firm dollar level (see tools/_shared/cost-index-lookup.js). Loaded eagerly
+ * (first paint) so the ingredient picker can render before the ~1MB compute seed lazy-loads.
+ * Guarded by scripts/check-cost-index-picker.mjs (length/keys/labels/group/dollarRef/groups).
  */
 (function (root) {
   'use strict';
   var DATA = {
   "_doc": "Vendor Benchmark ingredient picker: the honest list of what the tool can benchmark, derived from the browser seed + the shared category taxonomy. 81 ingredient(s); 20 carry a firm dollar reference.",
+  "count": 81,
+  "dollarRefCount": 20,
+  "groups": [
+    {"key":"beef","label_en":"Beef","label_es":"Res"},
+    {"key":"poultry","label_en":"Poultry","label_es":"Aves"},
+    {"key":"pork","label_en":"Pork","label_es":"Cerdo"},
+    {"key":"produce","label_en":"Produce","label_es":"Frutas y verduras"},
+    {"key":"dairy-eggs","label_en":"Dairy & eggs","label_es":"Lácteos y huevo"}
+  ],
   "items": [
     {"key":"beef-tenderloin","label_en":"Beef tenderloin","label_es":"Lomo fino de res","unit_en":"lb","unit_es":"libra","group":"beef","dollarRef":true},
     {"key":"ground-beef","label_en":"Ground beef","label_es":"Carne molida de res","unit_en":"lb","unit_es":"libra","group":"beef","dollarRef":false},
@@ -98,8 +110,7 @@
     {"key":"eggs","label_en":"Eggs","label_es":"Huevo","unit_en":"dozen","unit_es":"docena","group":"dairy-eggs","dollarRef":true}
   ]
   };
-  var ITEMS = DATA.items;
-  if (typeof module !== 'undefined' && module.exports) module.exports = ITEMS;
-  if (typeof self !== 'undefined') self.MUNTIN_CI_PICKER = ITEMS;
-  if (root) root.MUNTIN_CI_PICKER = ITEMS;
+  if (typeof module !== 'undefined' && module.exports) module.exports = DATA;
+  if (typeof self !== 'undefined') self.MUNTIN_CI_PICKER = DATA;
+  if (root) root.MUNTIN_CI_PICKER = DATA;
 })(typeof window !== 'undefined' ? window : (typeof self !== 'undefined' ? self : null));

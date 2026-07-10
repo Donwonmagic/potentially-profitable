@@ -114,6 +114,42 @@ export function validateManifest(items, seedIngs, categories, catOf) {
   return errors;
 }
 
+/**
+ * Pure validator for the manifest's `groups` block (the picker's category headers).
+ * Groups must be the taxonomy's own labels — display order via categoryOrder,
+ * restricted to groups that actually have ≥1 item, labels equal to CATEGORIES —
+ * so the tool's headers can never drift from the public Cost Index category pages.
+ *
+ * @param {Array} groups   [{ key, label_en, label_es }] from the manifest
+ * @param {Array} items    the manifest items (each with a .group)
+ * @param {Object} categories the taxonomy label map ({ key: { en, es } })
+ * @param {Array} categoryOrder the taxonomy display order
+ */
+export function validateGroups(groups, items, categories, categoryOrder) {
+  const errors = [];
+  if (!Array.isArray(groups)) { errors.push('manifest.groups is not an array'); return errors; }
+  if (!Array.isArray(items)) { errors.push('manifest.items is not an array (groups check)'); return errors; }
+
+  // The set of groups that SHOULD appear = distinct item.group values, in taxonomy order.
+  const present = new Set(items.map((it) => it && it.group).filter(Boolean));
+  const expectKeys = categoryOrder.filter((k) => present.has(k));
+
+  const gotKeys = groups.map((g) => g && g.key);
+  if (gotKeys.join('|') !== expectKeys.join('|')) {
+    errors.push(`groups order/set '${gotKeys.join(',')}' != expected '${expectKeys.join(',')}' (taxonomy order, populated only)`);
+  }
+
+  for (const g of groups) {
+    const k = g && g.key;
+    if (!isNonEmptyStr(k)) { errors.push(`group entry with missing/blank key: ${JSON.stringify(g)}`); continue; }
+    const cat = categories[k];
+    if (!cat) { errors.push(`group '${k}' is not a taxonomy category`); continue; }
+    if (g.label_en !== cat.en) errors.push(`group '${k}': label_en '${g.label_en}' != taxonomy '${cat.en}'`);
+    if (g.label_es !== cat.es) errors.push(`group '${k}': label_es '${g.label_es}' != taxonomy '${cat.es}'`);
+  }
+  return errors;
+}
+
 // ---- Parse the inline taxonomy literals still in build-cost-index-pages.mjs --
 // so the shared module can be asserted equal to them (single-source drift guard).
 function parseInlineTaxonomy(src) {
@@ -189,14 +225,20 @@ function crossCheckTaxonomy(shared, inline) {
 function runCheck() {
   const errors = [];
 
-  let seed, manifest;
+  let seed, manifestDoc;
   try { seed = require(path.join(repoRoot, 'data/cost-index.js')); }
   catch (e) { console.error('cost-index picker: cannot read data/cost-index.js —', e.message); process.exit(1); }
-  try { manifest = require(path.join(repoRoot, 'data/cost-index-picker.js')); }
+  try { manifestDoc = require(path.join(repoRoot, 'data/cost-index-picker.js')); }
   catch (e) { console.error('cost-index picker: cannot read data/cost-index-picker.js (run scripts/build-cost-index-picker.mjs) —', e.message); process.exit(1); }
 
+  if (!manifestDoc || !Array.isArray(manifestDoc.items)) {
+    console.error('cost-index picker: manifest is not { items: [...] } — run scripts/build-cost-index-picker.mjs.');
+    process.exit(1);
+  }
+  const manifest = manifestDoc.items;
   const seedIngs = (seed && seed.ingredients) || [];
   errors.push(...validateManifest(manifest, seedIngs, CATEGORIES, categoryOf));
+  errors.push(...validateGroups(manifestDoc.groups, manifest, CATEGORIES, CATEGORY_ORDER));
 
   // Single-source drift guard against the page generator's inline literals.
   let inline = null;
@@ -219,7 +261,8 @@ function runCheck() {
     process.exit(1);
   }
   const dr = manifest.filter((x) => x.dollarRef).length;
-  console.log(`Cost-index picker: OK — ${manifest.length} ingredient(s), ${dr} with a firm dollar reference; taxonomy in lockstep with build-cost-index-pages.mjs.`);
+  const ng = Array.isArray(manifestDoc.groups) ? manifestDoc.groups.length : 0;
+  console.log(`Cost-index picker: OK — ${manifest.length} ingredient(s), ${dr} with a firm dollar reference, ${ng} group(s); taxonomy in lockstep with build-cost-index-pages.mjs.`);
   process.exit(0);
 }
 
@@ -265,6 +308,21 @@ function selfTest() {
   const inlineDrift = { categories: cats, categoryOrder: ['alpha', 'beta'], ingredientCategory: { ...cat, b1: 'alpha' } };
   cases.push({ name: 'taxonomy match passes', ok: crossCheckTaxonomy(sharedT, inlineSame).length === 0, expectFail: false, errs: [] });
   cases.push({ name: 'taxonomy drift fails', ok: crossCheckTaxonomy(sharedT, inlineDrift).length > 0, expectFail: true, errs: [] });
+
+  // validateGroups: correct group block passes; order/label/set drift fails.
+  const goodGroups = [
+    { key: 'alpha', label_en: 'Alpha', label_es: 'Alfa' },
+    { key: 'beta', label_en: 'Beta', label_es: 'Beta' },
+  ];
+  const gcase = (name, expectFail, groups) => {
+    const errs = validateGroups(groups, good, cats, ['alpha', 'beta']);
+    cases.push({ name, ok: (errs.length > 0) === expectFail, expectFail, errs });
+  };
+  gcase('groups valid passes', false, goodGroups.map((g) => ({ ...g })));
+  gcase('groups wrong order fails', true, [goodGroups[1], goodGroups[0]]);
+  gcase('groups missing populated fails', true, [goodGroups[0]]);
+  gcase('groups drifted label fails', true, [{ key: 'alpha', label_en: 'Alfa!', label_es: 'Alfa' }, goodGroups[1]]);
+  gcase('groups extra unpopulated fails', true, [...goodGroups, { key: 'gamma', label_en: 'G', label_es: 'G' }]);
 
   const failed = cases.filter((c) => !c.ok);
   for (const c of failed) console.error(`  ✗ self-test case FAILED: ${c.name} (errs: ${JSON.stringify(c.errs)})`);

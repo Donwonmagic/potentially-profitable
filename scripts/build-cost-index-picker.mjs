@@ -84,37 +84,55 @@ function main() {
 
   const dollarRefCount = rows.filter((r) => r.dollarRef).length;
 
+  // The picker's group headers (beef / poultry / … / dairy-eggs) come from the
+  // SAME shared taxonomy the Cost Index category pages use — display order via
+  // CATEGORY_ORDER, restricted to groups that actually have ≥1 pickable item,
+  // labels copied verbatim from CATEGORIES so the tool's headers stay 1:1 with
+  // the public category pages. No hand-typed labels in the browser JS.
+  const presentGroups = new Set(rows.map((r) => r.group));
+  const groups = CATEGORY_ORDER.filter((k) => presentGroups.has(k)).map((k) => ({
+    key: k,
+    label_en: CATEGORIES[k].en,
+    label_es: CATEGORIES[k].es,
+  }));
+
   const banner = `/**
  * Cost Index — Vendor Benchmark ingredient-picker manifest. GENERATED — do not edit by hand.
  *
  * Written by scripts/build-cost-index-picker.mjs from data/cost-index.js (the browser
  * seed) joined with scripts/lib/cost-index-categories.mjs (the shared category taxonomy).
- * Sets window.MUNTIN_CI_PICKER to an array of the pickable ingredients — one entry per
- * seed ingredient: { key, label_en, label_es, unit_en, unit_es, group, dollarRef }.
- * \`group\` is the ingredient's Cost Index category; \`dollarRef\` is true only when the
- * reference carries a firm dollar level (see tools/_shared/cost-index-lookup.js). Loaded
- * eagerly (first paint) so a picker can render before the ~1MB compute seed lazy-loads.
- * Guarded by scripts/check-cost-index-picker.mjs (length/keys/labels/group/dollarRef).
+ * Sets window.MUNTIN_CI_PICKER to an object:
+ *   { _doc, count, dollarRefCount,
+ *     groups: [{ key, label_en, label_es }]   // display order, populated groups only
+ *     items:  [{ key, label_en, label_es, unit_en, unit_es, group, dollarRef }] }
+ * \`group\` is the ingredient's Cost Index category; group LABELS come from the shared
+ * taxonomy (1:1 with the category pages); \`dollarRef\` is true only when the reference
+ * carries a firm dollar level (see tools/_shared/cost-index-lookup.js). Loaded eagerly
+ * (first paint) so the ingredient picker can render before the ~1MB compute seed lazy-loads.
+ * Guarded by scripts/check-cost-index-picker.mjs (length/keys/labels/group/dollarRef/groups).
  */
 `;
   const _doc = `Vendor Benchmark ingredient picker: the honest list of what the tool can benchmark, derived from the browser seed + the shared category taxonomy. ${rows.length} ingredient(s); ${dollarRefCount} carry a firm dollar reference.`;
   // Compact, one-object-per-line: small enough for an eager first-paint load,
   // still a clean line-per-ingredient diff when the seed changes.
   const itemsJs = '[\n' + rows.map((r) => '    ' + JSON.stringify(r)).join(',\n') + '\n  ]';
+  const groupsJs = '[\n' + groups.map((g) => '    ' + JSON.stringify(g)).join(',\n') + '\n  ]';
   const body = `(function (root) {
   'use strict';
   var DATA = {
   "_doc": ${JSON.stringify(_doc)},
+  "count": ${rows.length},
+  "dollarRefCount": ${dollarRefCount},
+  "groups": ${groupsJs},
   "items": ${itemsJs}
   };
-  var ITEMS = DATA.items;
-  if (typeof module !== 'undefined' && module.exports) module.exports = ITEMS;
-  if (typeof self !== 'undefined') self.MUNTIN_CI_PICKER = ITEMS;
-  if (root) root.MUNTIN_CI_PICKER = ITEMS;
+  if (typeof module !== 'undefined' && module.exports) module.exports = DATA;
+  if (typeof self !== 'undefined') self.MUNTIN_CI_PICKER = DATA;
+  if (root) root.MUNTIN_CI_PICKER = DATA;
 })(typeof window !== 'undefined' ? window : (typeof self !== 'undefined' ? self : null));
 `;
   if (!DRY) writeFileSync(OUT, banner + body);
-  console.log(`build-cost-index-picker: ${DRY ? 'would write' : 'wrote'} data/cost-index-picker.js (${rows.length} ingredient(s), ${dollarRefCount} with a firm dollar reference).${DRY ? ' (dry-run)' : ''}`);
+  console.log(`build-cost-index-picker: ${DRY ? 'would write' : 'wrote'} data/cost-index-picker.js (${rows.length} ingredient(s), ${dollarRefCount} with a firm dollar reference, ${groups.length} group(s)).${DRY ? ' (dry-run)' : ''}`);
 }
 
 main();

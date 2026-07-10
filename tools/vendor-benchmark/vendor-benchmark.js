@@ -37,7 +37,7 @@
   // ---- localized page chrome (verdicts come from the shared modules) --------
   var T = ES ? {
     itemLabel: 'Artículo', itemHint: '— como aparece en tu factura',
-    itemPlaceholder: 'ej. ribeye, lomo de res, aceite de oliva 3L',
+    itemPlaceholder: 'ej. ribeye, pechuga de pollo, tomate',
     unitLabel: 'Precio por',
     dateLabel: 'Fecha', priceLabel: 'Precio ($)',
     add: 'Agregar una compra', example: 'Cargar el ejemplo', clear: 'Borrar',
@@ -108,10 +108,22 @@
     bookOver: 'de tus líneas corren por encima del mercado — Ledger las vigila todas.',
     forecastEyebrow: 'La próxima lectura del mercado',
     errItem: 'Escribe el nombre del artículo.',
-    errRows: 'Agrega al menos dos compras con fecha y precio.'
+    errRows: 'Agrega al menos dos compras con fecha y precio.',
+    // ingredient picker (combobox)
+    pickToggle: 'Mostrar ingredientes que podemos comparar',
+    pickListAria: 'Artículos que Vendor Benchmark puede leer frente al mercado',
+    pickScopeTitle: function (n) { return 'Los ' + n + ' artículos que podemos leer frente al mercado mayorista'; },
+    pickScopeNote: 'Todos comparan el movimiento del mercado. Más a medida que crece el Índice de costos.',
+    pickDescribe: function (n) { return 'Los ' + n + ' artículos que podemos comparar; escribe lo que sea — tu propio texto también funciona.'; },
+    pickRefSr: ' — referencia firme de dólar mayorista',
+    pickRefLegend: '$ señala un nivel firme de dólar mayorista — una cifra de mercado, no un precio a pagar. Tu precio entregado es mayor.',
+    pickEmptyHead: 'No está en nuestra lista de comparación.',
+    pickEmptyBody: 'Déjalo como lo escribiste — Vendor Benchmark igual lo compara contra tu propio historial de precios. Revisa el Índice de costos para ver qué leemos frente al mercado.',
+    pickCount: function (n) { return n + (n === 1 ? ' coincidencia' : ' coincidencias'); },
+    pickCountZero: 'Sin coincidencias — tu texto se comparará igual.'
   } : {
     itemLabel: 'Item', itemHint: '— as it reads on your invoice',
-    itemPlaceholder: 'e.g. ribeye, beef tenderloin, olive oil 3L',
+    itemPlaceholder: 'e.g. ribeye, chicken breast, tomato',
     unitLabel: 'Priced per',
     dateLabel: 'Date', priceLabel: 'Price ($)',
     add: 'Add a purchase', example: 'Load the example', clear: 'Clear',
@@ -183,7 +195,19 @@
     bookOver: 'of your lines run above the market — Ledger watches every one.',
     forecastEyebrow: 'The market’s next print',
     errItem: 'Enter the item name.',
-    errRows: 'Add at least two purchases with a date and price.'
+    errRows: 'Add at least two purchases with a date and price.',
+    // ingredient picker (combobox)
+    pickToggle: 'Show benchmarkable ingredients',
+    pickListAria: 'Items Vendor Benchmark can read against the market',
+    pickScopeTitle: function (n) { return 'The ' + n + ' items we can read against the wholesale market'; },
+    pickScopeNote: 'Every one benchmarks the market’s move. More as the Cost Index grows.',
+    pickDescribe: function (n) { return 'The ' + n + ' items we can benchmark; type anything — your own text still works.'; },
+    pickRefSr: ' — firm wholesale dollar reference',
+    pickRefLegend: '$ marks a firm wholesale dollar level — a market figure, not a price to pay. Your delivered price runs higher.',
+    pickEmptyHead: 'Not on our benchmark list.',
+    pickEmptyBody: 'Keep it as you typed it — Vendor Benchmark still checks it against your own price history. See the Cost Index for what we read against the market.',
+    pickCount: function (n) { return n + (n === 1 ? ' match' : ' matches'); },
+    pickCountZero: 'No matches — your typed text will still be benchmarked.'
   };
 
   // ---- small formatters ------------------------------------------------------
@@ -1246,6 +1270,271 @@
     resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
+  // ---- ingredient picker (combobox) — progressive enhancement over #vbItem ---
+  // The picker manifest (window.MUNTIN_CI_PICKER, eager first-paint) lists the
+  // items the tool can honestly benchmark. This enhances the free-text item field
+  // into an ARIA-1.2 editable combobox with a grouped, filterable listbox. No-JS
+  // or manifest-missing => the plain #vbItem input, unchanged. On select we write
+  // the resolvable label and dispatch 'input' (the existing pipeline re-matches it);
+  // we NEVER touch #vbUnit (the manifest carries carton/sack units that are not
+  // <select> options, and the unit is "as it reads on your invoice"). All picker
+  // chrome uses --vb-signal / neutral ink — never a verdict tone.
+  function initItemCombo() {
+    var PICK = window.MUNTIN_CI_PICKER;
+    if (!PICK || !Array.isArray(PICK.items) || !PICK.items.length || !itemEl) return;
+    var field = itemEl.closest ? itemEl.closest('.vb-field') : null;
+    if (!field || field.getAttribute('data-vb-combo') === '1') return; // idempotent
+    field.setAttribute('data-vb-combo', '1');
+    field.classList.add('vb-combo', 'is-live');
+
+    var items = PICK.items;
+    var groupsMeta = Array.isArray(PICK.groups) ? PICK.groups : [];
+    var n = items.length;
+    var LB_ID = 'vbPickList';
+
+    function norm(s) {
+      return (s == null ? '' : String(s)).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    }
+
+    // ARIA on the input (applied at runtime so the no-JS field stays clean)
+    itemEl.setAttribute('role', 'combobox');
+    itemEl.setAttribute('aria-expanded', 'false');
+    itemEl.setAttribute('aria-controls', LB_ID);
+    itemEl.setAttribute('aria-autocomplete', 'list');
+    itemEl.setAttribute('aria-haspopup', 'listbox');
+    itemEl.setAttribute('spellcheck', 'false');
+    itemEl.classList.add('vb-input--combo');
+
+    // sr-only scope note, referenced via aria-describedby (heard on focus)
+    var note = document.createElement('p');
+    note.id = 'vbItemComboNote'; note.className = 'sr-only'; note.textContent = T.pickDescribe(n);
+    var priorDesc = itemEl.getAttribute('aria-describedby');
+    itemEl.setAttribute('aria-describedby', (priorDesc ? priorDesc + ' ' : '') + 'vbItemComboNote');
+
+    // caret / toggle button (pointer affordance; out of the tab order)
+    var caret = document.createElement('button');
+    caret.type = 'button'; caret.className = 'vb-combo-caret'; caret.tabIndex = -1;
+    caret.setAttribute('aria-label', T.pickToggle);
+    caret.setAttribute('aria-controls', LB_ID);
+    caret.setAttribute('aria-expanded', 'false');
+    caret.textContent = '▾'; // ▾
+    itemEl.insertAdjacentElement('afterend', caret);
+
+    // listbox
+    var listbox = document.createElement('div');
+    listbox.id = LB_ID; listbox.className = 'vb-pick-list'; listbox.hidden = true;
+    listbox.setAttribute('role', 'listbox');
+    listbox.setAttribute('aria-label', T.pickListAria);
+
+    // sticky scope header (presentational, always visible while filtering)
+    var scope = document.createElement('div');
+    scope.className = 'vb-pick-scope'; scope.setAttribute('role', 'presentation');
+    var scTitle = document.createElement('div'); scTitle.className = 'vb-pick-scope__title'; scTitle.textContent = T.pickScopeTitle(n);
+    var scNote = document.createElement('div'); scNote.className = 'vb-pick-scope__note'; scNote.textContent = T.pickScopeNote;
+    scope.appendChild(scTitle); scope.appendChild(scNote);
+    listbox.appendChild(scope);
+
+    var groupLabel = {};
+    groupsMeta.forEach(function (g) { groupLabel[g.key] = ES ? g.label_es : g.label_en; });
+
+    // options, grouped in manifest order (already sorted group→label by the builder)
+    var optionRefs = [];   // { el, item, group, labelText, norm }
+    var groupEls = {};      // groupKey -> { el, headCount }
+    var curKey = null, curGroupEl = null;
+    items.forEach(function (it) {
+      if (it.group !== curKey) {
+        curKey = it.group;
+        var gEl = document.createElement('div');
+        gEl.setAttribute('role', 'group');
+        var gLabel = groupLabel[it.group] || it.group;
+        gEl.setAttribute('aria-label', gLabel);
+        var head = document.createElement('div');
+        head.className = 'vb-pick-grouphead'; head.setAttribute('role', 'presentation');
+        var hName = document.createElement('span'); hName.className = 'vb-pick-grouphead__name'; hName.textContent = gLabel;
+        var hCount = document.createElement('span'); hCount.className = 'vb-pick-grouphead__count'; hCount.setAttribute('aria-hidden', 'true');
+        head.appendChild(hName); head.appendChild(hCount);
+        gEl.appendChild(head);
+        listbox.appendChild(gEl);
+        groupEls[it.group] = { el: gEl, headCount: hCount };
+        curGroupEl = gEl;
+      }
+      var lbl = ES ? it.label_es : it.label_en;
+      var opt = document.createElement('div');
+      opt.id = 'vb-opt-' + it.key; opt.className = 'vb-pick-opt';
+      opt.setAttribute('role', 'option'); opt.setAttribute('aria-selected', 'false');
+      var labelEl = document.createElement('span'); labelEl.className = 'vb-pick-opt__label'; labelEl.textContent = lbl;
+      opt.appendChild(labelEl);
+      if (it.dollarRef) {
+        var ref = document.createElement('span'); ref.className = 'vb-pick-opt__ref'; ref.setAttribute('aria-hidden', 'true');
+        ref.textContent = '$'; ref.title = T.pickRefLegend;
+        opt.appendChild(ref);
+        var sr = document.createElement('span'); sr.className = 'sr-only'; sr.textContent = T.pickRefSr;
+        labelEl.appendChild(sr); // fold into the option's accessible name
+      }
+      var unit = document.createElement('span'); unit.className = 'vb-pick-opt__unit';
+      unit.textContent = '/' + (ES ? it.unit_es : it.unit_en);
+      opt.appendChild(unit);
+      curGroupEl.appendChild(opt);
+      optionRefs.push({ el: opt, item: it, group: it.group, labelText: lbl, norm: norm(lbl + ' ' + it.key) });
+    });
+
+    // empty (no-match) state — presentational, invites free-text
+    var empty = document.createElement('div');
+    empty.className = 'vb-pick-empty'; empty.setAttribute('role', 'presentation'); empty.hidden = true;
+    var eHead = document.createElement('div'); eHead.className = 'vb-pick-empty__head'; eHead.textContent = T.pickEmptyHead;
+    var eBody = document.createElement('p'); eBody.className = 'vb-pick-empty__body'; eBody.textContent = T.pickEmptyBody;
+    empty.appendChild(eHead); empty.appendChild(eBody);
+    listbox.appendChild(empty);
+
+    // sticky footer legend for the $ marker (presentational)
+    var legend = document.createElement('div');
+    legend.className = 'vb-pick-legend'; legend.setAttribute('role', 'presentation'); legend.textContent = T.pickRefLegend;
+    listbox.appendChild(legend);
+
+    field.appendChild(listbox);
+
+    // sr-only status region for filter counts (polite; self-clears)
+    var status = document.createElement('div');
+    status.className = 'vb-pick-status sr-only'; status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
+    field.appendChild(status);
+
+    // ---- state + behavior ----
+    var open = false, activeIdx = -1, results = optionRefs.slice(), statusT = null;
+
+    function setActive(idx) {
+      if (activeIdx >= 0 && results[activeIdx]) {
+        results[activeIdx].el.classList.remove('is-active');
+        results[activeIdx].el.setAttribute('aria-selected', 'false');
+      }
+      activeIdx = idx;
+      if (idx >= 0 && results[idx]) {
+        var el = results[idx].el;
+        el.classList.add('is-active'); el.setAttribute('aria-selected', 'true');
+        itemEl.setAttribute('aria-activedescendant', el.id);
+        if (el.scrollIntoView) el.scrollIntoView({ block: 'nearest' });
+      } else {
+        itemEl.removeAttribute('aria-activedescendant');
+      }
+    }
+    function openList() {
+      if (open) return;
+      open = true; listbox.hidden = false; field.classList.add('is-open');
+      itemEl.setAttribute('aria-expanded', 'true'); caret.setAttribute('aria-expanded', 'true');
+    }
+    function closeList() {
+      setActive(-1);
+      if (!open) return;
+      open = false; listbox.hidden = true; field.classList.remove('is-open');
+      itemEl.setAttribute('aria-expanded', 'false'); caret.setAttribute('aria-expanded', 'false');
+      if (statusT) { clearTimeout(statusT); statusT = null; }
+      status.textContent = '';
+    }
+    function announceCount(nRes) {
+      if (statusT) clearTimeout(statusT);
+      statusT = setTimeout(function () {
+        status.textContent = nRes > 0 ? T.pickCount(nRes) : T.pickCountZero;
+      }, 350);
+    }
+    function filter(q) {
+      var nq = norm(q); results = [];
+      var perGroup = {};
+      optionRefs.forEach(function (o) {
+        var show = nq === '' || o.norm.indexOf(nq) !== -1;
+        o.el.hidden = !show;
+        if (show) { results.push(o); perGroup[o.group] = (perGroup[o.group] || 0) + 1; }
+      });
+      Object.keys(groupEls).forEach(function (gk) {
+        var c = perGroup[gk] || 0;
+        groupEls[gk].el.hidden = c === 0;
+        groupEls[gk].headCount.textContent = c ? String(c) : '';
+      });
+      empty.hidden = results.length !== 0;
+      setActive(-1);
+      announceCount(results.length);
+    }
+    function applySelection(o) {
+      itemEl.value = o.labelText;
+      closeList();
+      itemEl.dispatchEvent(new Event('input', { bubbles: true })); // drives the existing pipeline
+      try { track('Bench Picker Select', { group: o.group }); } catch (_) {}
+    }
+    function selectAndStay(o) { // Enter / pointer path — keep focus in the field
+      applySelection(o);
+      try { var L = itemEl.value.length; itemEl.setSelectionRange(L, L); } catch (_) {}
+      itemEl.focus();
+    }
+    function optFromEl(el) {
+      for (var i = 0; i < optionRefs.length; i++) { if (optionRefs[i].el === el) return optionRefs[i]; }
+      return null;
+    }
+
+    // filter as the user types (real keystrokes only — the synthetic 'input' from
+    // applySelection must not reopen/refilter; the separate 'schedule' listener,
+    // which does the compute, does not gate on isTrusted so it still recomputes)
+    itemEl.addEventListener('input', function (e) {
+      if (!e.isTrusted) return;
+      filter(itemEl.value);
+      if (itemEl.value.trim() !== '') openList();
+    });
+
+    itemEl.addEventListener('keydown', function (e) {
+      switch (e.key) {
+        case 'ArrowDown':
+          e.preventDefault();
+          if (!open) { filter(itemEl.value); openList(); }
+          if (results.length) setActive(activeIdx < results.length - 1 ? activeIdx + 1 : results.length - 1);
+          break;
+        case 'ArrowUp':
+          e.preventDefault();
+          if (!open) { filter(itemEl.value); openList(); if (results.length) setActive(results.length - 1); break; }
+          if (activeIdx <= 0) setActive(-1); else setActive(activeIdx - 1);
+          break;
+        case 'Enter':
+          if (open && activeIdx >= 0 && results[activeIdx]) { e.preventDefault(); selectAndStay(results[activeIdx]); }
+          else if (open) { closeList(); }
+          break;
+        case 'Escape':
+          if (open) { e.preventDefault(); closeList(); }
+          break;
+        case 'Tab':
+          if (open && activeIdx >= 0 && results[activeIdx]) { applySelection(results[activeIdx]); } // let Tab move focus on
+          else if (open) { closeList(); }
+          break;
+        default: break;
+      }
+    });
+
+    caret.addEventListener('click', function () {
+      if (open) { closeList(); } else { filter(itemEl.value); openList(); }
+      itemEl.focus();
+    });
+
+    // select on pointerdown + preventDefault so focusout doesn't close before the tap resolves
+    listbox.addEventListener('pointerdown', function (e) {
+      var el = e.target.closest ? e.target.closest('.vb-pick-opt') : null;
+      if (!el) return;
+      e.preventDefault();
+      var o = optFromEl(el);
+      if (o) selectAndStay(o);
+    });
+    // belt-and-suspenders for assistive-tech synthetic clicks
+    listbox.addEventListener('click', function (e) {
+      var el = e.target.closest ? e.target.closest('.vb-pick-opt') : null;
+      if (!el) return;
+      var o = optFromEl(el);
+      if (o && itemEl.value !== o.labelText) selectAndStay(o);
+    });
+
+    // close when focus leaves the composite
+    field.addEventListener('focusout', function (e) {
+      if (!field.contains(e.relatedTarget)) closeList();
+    });
+    // fallback for browsers with unreliable relatedTarget (older Safari)
+    document.addEventListener('pointerdown', function (e) {
+      if (open && !field.contains(e.target)) closeList();
+    });
+  }
+
   // ---- restore / init --------------------------------------------------------
   function restore() {
     var saved = null;
@@ -1278,6 +1567,7 @@
 
   resultEl.addEventListener('click', onResultClick);
   ensureAnnouncer();
+  initItemCombo();
   injectExtras();
   injectJournalRail();
   renderJournalRail();
