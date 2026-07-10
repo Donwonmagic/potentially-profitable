@@ -47,7 +47,12 @@ bar → ratchet (keep only if it beats the best) → record here → repeat unti
 | Cycle | Judges (design-eng / product-designer / buyer) | Avg | toe-to-toe? | Commit |
 |------|-----------------------------------------------|-----|-------------|--------|
 | 1    | 8.5 / 8.5 / 9.0                               | 8.7 | yes (all)   | `6d9600195` |
-| 2    | _pending re-cert_ (gaps A/C/F/H closed)       |     |             | _working_ |
+| 2    | 9.0 / 9.2 / 9.5                               | 9.2 | yes; **min rose 8.5→9.0** (buyer best-in-class 9.5) | `6fb0c8986` |
+
+**Cycle-2 ratchet: ACCEPTED.** The minimum judge score rose 8.5→9.0 and every
+seat improved (avg 8.7→9.2); backlog gaps A/C/D/F/H closed; the FLOOR held on
+independent re-verification. The rising bar (≥9.5 from **every** judge) is **not
+yet met** — min is 9.0 — so the loop continues into cycle 3.
 
 ## Backlog — remaining gaps (cycle-3 targets)
 
