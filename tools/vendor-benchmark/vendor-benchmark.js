@@ -149,7 +149,7 @@
     ctxEvent: function (label) { return 'Coincide en el trasfondo (no es una causa): ' + label + '.'; },
     chartAriaDyn: function (yourR, mkR, gapAbs, gapSign) { return 'Tu precio terminó cerca de ' + yourR + ', el mercado cerca de ' + mkR + ', ambos indexados a 100 al inicio de tu ventana — ' + (gapAbs < 1 ? 'en línea con el mercado' : ('unos ' + gapAbs + ' puntos ' + (gapSign > 0 ? 'por encima' : 'por debajo') + ' del mercado')) + '.'; },
     chartAriaThin: ' Las lecturas del mercado son escasas, así que esta línea es aproximada.',
-    shareBtn: 'Copiar enlace', shareCopied: 'Copiado — incluye tus precios'
+    shareBtn: 'Copiar enlace', shareCopied: 'Copiado — incluye tus precios', shareShared: 'Compartido — incluye tus precios'
   } : {
     itemLabel: 'Item', itemHint: '— as it reads on your invoice',
     itemPlaceholder: 'e.g. ribeye, chicken breast, tomato',
@@ -259,7 +259,7 @@
     ctxEvent: function (label) { return 'Co-occurring in the backdrop (not a cause): ' + label + '.'; },
     chartAriaDyn: function (yourR, mkR, gapAbs, gapSign) { return 'Your price ended near ' + yourR + ', the market near ' + mkR + ', both indexed to 100 at your window start — ' + (gapAbs < 1 ? 'in line with the market' : ('about ' + gapAbs + ' points ' + (gapSign > 0 ? 'above' : 'below') + ' the market')) + '.'; },
     chartAriaThin: ' Market reads are thin, so this line is approximate.',
-    shareBtn: 'Copy shareable link', shareCopied: 'Copied — includes your prices'
+    shareBtn: 'Copy shareable link', shareCopied: 'Copied — includes your prices', shareShared: 'Shared — includes your prices'
   };
 
   // ---- small formatters ------------------------------------------------------
@@ -289,7 +289,13 @@
     } catch (_) { return iso; }
   }
   function track(name, props) {
-    try { if (window.plausible) window.plausible(name, props ? { props: props } : undefined); } catch (_) {}
+    try {
+      // Never emit an analytics event while a benchmark fragment is in the URL — an
+      // analytics call that echoed location.href could carry the encoded prices. The
+      // fragment is stripped right after share/hydrate, so this only guards the edge.
+      if (/[#&]b=/.test(location.hash || '')) return;
+      if (window.plausible) window.plausible(name, props ? { props: props } : undefined);
+    } catch (_) {}
   }
 
   // ---- DOM handles -----------------------------------------------------------
@@ -1044,6 +1050,9 @@
   // blocks, alters, or originates a request; every wrapper passes arguments straight
   // through, and all inspection is wrapped in try/catch so a bug can't break the call.
   var vbPriceTokens = []; // current typed price strings (len>=4), watched by the shim
+  var vbShareTokens = []; // encoded share-fragment payloads (base64) — the raw prices
+                          // don't appear literally in a share link, so the monitor would
+                          // be blind to a leaked #b= without watching the encoded form too
   var vbCarryCount = 0;   // outbound requests observed carrying a price token (stays 0)
   function vbSerialize(payload) {
     if (payload == null) return '';
@@ -1059,10 +1068,13 @@
   }
   function vbScan(payload) {
     try {
-      if (!vbPriceTokens.length || payload == null) return;
-      var s = vbSerialize(payload);
-      for (var i = 0; i < vbPriceTokens.length; i++) {
+      if (payload == null || (!vbPriceTokens.length && !vbShareTokens.length)) return;
+      var s = vbSerialize(payload), i;
+      for (i = 0; i < vbPriceTokens.length; i++) {
         if (s.indexOf(vbPriceTokens[i]) !== -1) { vbCarryCount++; renderCarry(); return; }
+      }
+      for (i = 0; i < vbShareTokens.length; i++) {
+        if (s.indexOf(vbShareTokens[i]) !== -1) { vbCarryCount++; renderCarry(); return; }
       }
     } catch (_) {}
   }
@@ -1663,10 +1675,15 @@
       ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
     } catch (_) {}
   }
+  function flashBtn(btn, label) {
+    if (!btn) return;
+    var restore = btn.textContent;
+    btn.textContent = label;
+    setTimeout(function () { btn.textContent = restore; }, 1600);
+  }
   function copyText(text, btn, doneLabel) {
     if (!text) return;
-    var restore = btn.textContent;
-    var done = function () { btn.textContent = doneLabel; setTimeout(function () { btn.textContent = restore; }, 1600); };
+    var done = function () { flashBtn(btn, doneLabel); };
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(done, function () { execCopy(text); done(); });
     } else { execCopy(text); done(); }
@@ -2018,13 +2035,19 @@
     var enc = encodeState();
     if (!enc) return;
     var url = location.origin + location.pathname + '#b=' + enc;
-    try { history.replaceState(null, '', '#b=' + enc); } catch (_) {}
+    // Register the encoded payload so the privacy monitor would catch it if any
+    // request ever carried the share fragment (the raw prices don't appear in it).
+    if (vbShareTokens.indexOf(enc) === -1) { vbShareTokens.push(enc); if (vbShareTokens.length > 8) vbShareTokens.shift(); }
+    // Deliberately do NOT write the fragment into the address bar — the sender's live
+    // URL (and anything that echoes it, like analytics) stays free of their prices.
+    // The link with #b= still goes to the clipboard / native share sheet by choice.
     track('Bench Link Shared');
-    // Native share sheet on mobile (a user-gesture API — no background request, so the
-    // privacy monitor is untouched); clipboard copy everywhere else. Cancel is a no-op.
     if (typeof navigator !== 'undefined' && navigator.share) {
-      try { navigator.share({ title: 'Vendor Benchmark', url: url }).catch(function () {}); return; }
-      catch (_) { /* fall through to copy */ }
+      try {
+        navigator.share({ title: 'Vendor Benchmark', url: url }).catch(function () {});
+        flashBtn(btn, T.shareShared); // mirror the "includes your prices" disclosure the copy path shows
+        return;
+      } catch (_) { /* fall through to copy */ }
     }
     copyText(url, btn, T.shareCopied);
   }
@@ -2038,6 +2061,9 @@
       return Array.isArray(x) && /^\d{4}-\d{2}-\d{2}$/.test(x[0]) && /^[\d.,\s$]{1,16}$/.test(String(x[1]));
     }).slice(0, 24).map(function (x) { return { date: x[0], price: String(x[1]) }; });
     if (!rows.length) return false;
+    // Strip #b= from the recipient's URL BEFORE hydrating — they should not carry the
+    // sender's prices in their address bar all session (and track() is gated on it).
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (_) {}
     itemEl.value = String(p.i).slice(0, 80);
     if (typeof p.u === 'string' && /^[a-z]{1,8}$/.test(p.u)) unitEl.value = p.u;
     renderRows(rows);
