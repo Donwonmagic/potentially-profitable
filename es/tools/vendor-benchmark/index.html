@@ -464,6 +464,13 @@ html{-webkit-text-size-adjust:100%}
 .vb-prov-cell{display:flex;flex-direction:column;gap:2px;padding:9px 12px;background:var(--vb-desk)}
 .vb-prov-k{font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--stone);font-family:var(--vb-font-mono)}
 .vb-prov-v{font-size:12px;line-height:1.35;color:var(--ink)}
+/* ── Privacy monitor — the live zero the operator watches hold while typing. The
+   --status-good 0 is a SYSTEM-STATE indicator (prices never left), not a verdict on
+   the vendor; it lives in the input panel, away from the result's verdict tones. ── */
+.vb-carry{font-family:var(--vb-font-mono);font-size:11.5px;color:var(--stone);margin:0 0 14px;display:flex;align-items:center;gap:7px;font-variant-numeric:tabular-nums;flex-wrap:wrap}
+.vb-carry strong{color:var(--ink);font-weight:700}
+.vb-carry strong[data-zero]{color:var(--status-good,#1F6B3A)}
+.vb-carry-dot{width:6px;height:6px;border-radius:50%;background:var(--status-good,#1F6B3A);flex:0 0 auto}
 </style>
 </head>
 <body>
@@ -661,6 +668,7 @@ html{-webkit-text-size-adjust:100%}
       <h2>Revisa un artículo</h2>
       <span class="vb-match-chip" id="vbMatchChip" role="status" aria-live="polite" hidden></span>
     </div>
+    <p class="vb-carry"><span class="vb-carry-dot" aria-hidden="true"></span>Tus precios &mdash; guardados aquí: <strong id="vbCarryN">0</strong> &middot; enviados: <strong id="vbCarryC" data-zero="1">0</strong></p>
     <div class="vb-itemrow">
       <div class="vb-field">
         <label for="vbItem">Artículo <span class="vb-hint">&mdash; como aparece en tu factura</span></label>

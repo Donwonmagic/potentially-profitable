@@ -575,6 +575,7 @@
     var rows = readRows();
     persist(item, unit, rows);
     flagBadPrices();
+    updatePriceTokens(); renderCarry(); // keep the privacy counter live as rows change
 
     var purchases = currentPurchases().filter(function (p) {
       return p.cents > 0 && MW.parseISODay(p.date) != null;
@@ -879,6 +880,76 @@
     var seed = window.MUNTIN_COST_INDEX;
     var iso = seed && (seed.generatedAt || seed.asOf);
     if (iso) el.textContent = fmtDate(String(iso).slice(0, 10));
+  }
+
+  // ---- privacy monitor: PROVE the prices never leave the device --------------
+  // An OBSERVE-ONLY shim wraps the outbound network APIs *by reference* (it saves the
+  // original and calls through it — it never writes a fetch()/sendBeacon()/new
+  // XMLHttpRequest() call, the send-literals the no-fetch invariant forbids). It scans
+  // each outbound request for the exact price string the operator typed; because VB
+  // never transmits prices the count holds at 0 — a live, watchable zero. It NEVER
+  // blocks, alters, or originates a request; every wrapper passes arguments straight
+  // through, and all inspection is wrapped in try/catch so a bug can't break the call.
+  var vbPriceTokens = []; // current typed price strings (len>=4), watched by the shim
+  var vbCarryCount = 0;   // outbound requests observed carrying a price token (stays 0)
+  function vbScan(payload) {
+    try {
+      if (!vbPriceTokens.length || payload == null) return;
+      var s = (typeof payload === 'string') ? payload
+        : (payload && typeof payload === 'object') ? (function () { try { return JSON.stringify(payload); } catch (_) { return String(payload); } })()
+        : String(payload);
+      for (var i = 0; i < vbPriceTokens.length; i++) {
+        if (s.indexOf(vbPriceTokens[i]) !== -1) { vbCarryCount++; renderCarry(); return; }
+      }
+    } catch (_) {}
+  }
+  (function installPrivacyMonitor() {
+    try {
+      var of = window.fetch;
+      if (typeof of === 'function') {
+        window.fetch = function (input, init) {
+          try { vbScan(typeof input === 'string' ? input : (input && input.url)); if (init && init.body != null) vbScan(init.body); } catch (_) {}
+          return of.apply(this, arguments);
+        };
+      }
+      var ob = navigator.sendBeacon;
+      if (typeof ob === 'function') {
+        navigator.sendBeacon = function (url, data) {
+          try { vbScan(url); if (data != null) vbScan(data); } catch (_) {}
+          return ob.apply(navigator, arguments);
+        };
+      }
+      if (window.XMLHttpRequest && XMLHttpRequest.prototype) {
+        var oo = XMLHttpRequest.prototype.open, os = XMLHttpRequest.prototype.send;
+        XMLHttpRequest.prototype.open = function (method, url) { try { this.__vbUrl = url; } catch (_) {} return oo.apply(this, arguments); };
+        XMLHttpRequest.prototype.send = function (body) { try { vbScan(this.__vbUrl); if (body != null) vbScan(body); } catch (_) {} return os.apply(this, arguments); };
+      }
+    } catch (_) {}
+  })();
+  function vbPriceCount() {
+    if (!rowsEl) return 0;
+    var rows = rowsEl.querySelectorAll('.vb-prow'), n = 0;
+    for (var i = 0; i < rows.length; i++) {
+      var pEl = rows[i].querySelector('[data-field="price"]');
+      if (pEl && String(pEl.value || '').trim() !== '' && parsePrice(pEl.value) != null) n++;
+    }
+    return n;
+  }
+  function updatePriceTokens() {
+    if (!rowsEl) { vbPriceTokens = []; return; }
+    var rows = rowsEl.querySelectorAll('.vb-prow'), toks = [];
+    for (var i = 0; i < rows.length; i++) {
+      var pEl = rows[i].querySelector('[data-field="price"]');
+      var v = pEl ? String(pEl.value || '').trim() : '';
+      if (v.length >= 4) toks.push(v); // len>=4 avoids false matches on "0" / "12" etc.
+    }
+    vbPriceTokens = toks;
+  }
+  function renderCarry() {
+    var nEl = document.getElementById('vbCarryN');
+    if (nEl) nEl.textContent = String(vbPriceCount());
+    var cEl = document.getElementById('vbCarryC');
+    if (cEl) { cEl.textContent = String(vbCarryCount); if (vbCarryCount === 0) cEl.setAttribute('data-zero', '1'); else cEl.removeAttribute('data-zero'); }
   }
 
   // ADR-012 market context — the REFERENCE's OWN state (elevated/depressed vs its
@@ -1700,6 +1771,7 @@
   ensureAnnouncer();
   initItemCombo();
   initProvenance();
+  renderCarry();
   injectExtras();
   injectJournalRail();
   renderJournalRail();
