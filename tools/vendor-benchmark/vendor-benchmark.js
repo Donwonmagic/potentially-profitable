@@ -34,13 +34,19 @@
   var BASE = ES ? '/es' : '';
   var h = SH.h, sh = SH.safeHtml, setHTML = SH.setHTML;
 
+  // Monotonic id source for form rows. performance.now() clamps to a coarse
+  // resolution on Firefox/Safari, so 2-3 rows built in one tick collapsed to
+  // identical ids — both date labels then bound to row 1 and aria-describedby
+  // pointed at an ambiguous hint. A plain counter is guaranteed-unique.
+  var VB_UID = 0;
+
   // ---- localized page chrome (verdicts come from the shared modules) --------
   var T = ES ? {
     itemLabel: 'Artículo', itemHint: '— como aparece en tu factura',
     itemPlaceholder: 'ej. ribeye, pechuga de pollo, tomate',
     unitLabel: 'Precio por',
     dateLabel: 'Fecha', priceLabel: 'Precio ($)',
-    add: 'Agregar una compra', example: 'Cargar el ejemplo', clear: 'Borrar',
+    add: 'Agregar una compra', clear: 'Borrar',
     removeAria: 'Quitar esta compra',
     purchasesLegend: 'Tus compras con fecha',
     scaffoldHint: 'Agrega dos o más facturas con fecha del mismo artículo. Cuantas más fechas, más nítida la comparación con el mercado.',
@@ -53,7 +59,6 @@
     ownHistoryEyebrow: 'Frente a tu propio historial',
     chartYou: 'Tú', chartMarket: 'Mercado', chartAria: 'Tu precio frente al precio mayorista del mercado, ambos indexados a 100 al inicio de tu ventana.',
     chartUncertain: 'Lecturas de mercado escasas — línea aproximada', showNumbers: 'Ver los números', tipGap: 'Diferencia:',
-    timelineEyebrow: 'Tu ventana, fecha por fecha',
     thDate: 'Fecha', thYou: 'Tu precio', thYouCum: 'Tú (acum.)', thMarketCum: 'Mercado (acum.)',
     attributionWholesale: 'Referencia mayorista — tu precio entregado normalmente es mayor.',
     attributionSources: 'Fuentes', attributionAsOf: 'Lecturas de mercado',
@@ -102,6 +107,7 @@
     volumeLead: 'A ese ritmo, esta diferencia corre cerca de', volumePerWeek: 'por semana', volumePerYear: 'al año si se mantiene',
     briefBtn: 'Preparar la hoja para tu proveedor', briefPrint: 'Imprimir', briefCopy: 'Copiar el resumen', briefCopied: 'Resumen copiado',
     jTitle: 'Tus artículos guardados', jClear: 'Borrar guardados', jThin: 'vigilar',
+    jOver: 'encima', jUnder: 'debajo', jEven: 'en línea',
     jSince: 'Desde tu última revisión', jWiden: 'la diferencia creció', jNarrow: 'la diferencia se redujo',
     bookLead: 'Tu libro —', bookItems: 'artículos en seguimiento.',
     bookWorst: 'Mayor diferencia del proveedor:', bookCall: 'La línea que vale la pena llamar primero.',
@@ -130,14 +136,13 @@
     ctxEvent: function (label) { return 'Coincide en el trasfondo (no es una causa): ' + label + '.'; },
     chartAriaDyn: function (yourR, mkR, gapAbs, gapSign) { return 'Tu precio terminó cerca de ' + yourR + ', el mercado cerca de ' + mkR + ', ambos indexados a 100 al inicio de tu ventana — ' + (gapAbs < 1 ? 'en línea con el mercado' : ('unos ' + gapAbs + ' puntos ' + (gapSign > 0 ? 'por encima' : 'por debajo') + ' del mercado')) + '.'; },
     chartAriaThin: ' Las lecturas del mercado son escasas, así que esta línea es aproximada.',
-    exampleFirstRun: 'Ver cómo funciona →',
     shareBtn: 'Copiar enlace', shareCopied: 'Copiado — incluye tus precios'
   } : {
     itemLabel: 'Item', itemHint: '— as it reads on your invoice',
     itemPlaceholder: 'e.g. ribeye, chicken breast, tomato',
     unitLabel: 'Priced per',
     dateLabel: 'Date', priceLabel: 'Price ($)',
-    add: 'Add a purchase', example: 'Load the example', clear: 'Clear',
+    add: 'Add a purchase', clear: 'Clear',
     removeAria: 'Remove this purchase',
     purchasesLegend: 'Your dated purchases',
     scaffoldHint: 'Add two or more dated invoices for the same item. The more dates, the sharper the read against the market.',
@@ -149,7 +154,6 @@
     ownHistoryEyebrow: 'Against your own history',
     chartYou: 'You', chartMarket: 'Market', chartAria: 'Your price versus the wholesale market price, both indexed to 100 at the start of your window.',
     chartUncertain: 'Thin market reads — line is approximate', showNumbers: 'Show the numbers', tipGap: 'Gap:',
-    timelineEyebrow: 'Your window, date by date',
     thDate: 'Date', thYou: 'Your price', thYouCum: 'You (cum.)', thMarketCum: 'Market (cum.)',
     attributionWholesale: 'Wholesale reference — your delivered price normally runs higher.',
     attributionSources: 'Sources', attributionAsOf: 'Market reads',
@@ -200,6 +204,7 @@
     volumeLead: 'At that pace, this gap runs about', volumePerWeek: 'a week', volumePerYear: 'a year if it holds',
     briefBtn: 'Make a one-page brief for your rep', briefPrint: 'Print', briefCopy: 'Copy the summary', briefCopied: 'Summary copied',
     jTitle: 'Your saved items', jClear: 'Clear saved items', jThin: 'watch',
+    jOver: 'over', jUnder: 'under', jEven: 'in line',
     jSince: 'Since your last check', jWiden: 'the gap widened', jNarrow: 'the gap narrowed',
     bookLead: 'Your book —', bookItems: 'items tracked.',
     bookWorst: 'Widest vendor gap:', bookCall: 'The line worth a call first.',
@@ -228,7 +233,6 @@
     ctxEvent: function (label) { return 'Co-occurring in the backdrop (not a cause): ' + label + '.'; },
     chartAriaDyn: function (yourR, mkR, gapAbs, gapSign) { return 'Your price ended near ' + yourR + ', the market near ' + mkR + ', both indexed to 100 at your window start — ' + (gapAbs < 1 ? 'in line with the market' : ('about ' + gapAbs + ' points ' + (gapSign > 0 ? 'above' : 'below') + ' the market')) + '.'; },
     chartAriaThin: ' Market reads are thin, so this line is approximate.',
-    exampleFirstRun: 'See it work →',
     shareBtn: 'Copy shareable link', shareCopied: 'Copied — includes your prices'
   };
 
@@ -269,7 +273,6 @@
   var resultEl = document.getElementById('vbResult');
   var errEl = document.getElementById('vbErr');
   var addBtn = document.getElementById('vbAdd');
-  var exampleBtn = document.getElementById('vbExample');
   var clearBtn = document.getElementById('vbClear');
   var matchChip = document.getElementById('vbMatchChip');
   if (!itemEl || !unitEl || !rowsEl || !resultEl) return;
@@ -342,7 +345,8 @@
     dInput.type = 'date'; dInput.className = 'vb-input'; dInput.setAttribute('data-field', 'date');
     dInput.setAttribute('aria-label', T.dateLabel);
     if (data.date) dInput.value = data.date;
-    var dId = 'vbd' + Math.round(performance.now() * 1000) + Math.floor(performance.now() % 97);
+    var uid = ++VB_UID;
+    var dId = 'vbd' + uid;
     dLab.setAttribute('for', dId); dInput.id = dId;
     dWrap.appendChild(dLab); dWrap.appendChild(dInput);
 
@@ -358,7 +362,7 @@
     pInput.setAttribute('inputmode', 'decimal'); pInput.setAttribute('autocomplete', 'off');
     pInput.setAttribute('placeholder', '0.00'); pInput.setAttribute('aria-label', T.priceLabel);
     if (data.price != null && data.price !== '') pInput.value = data.price;
-    var pId = 'vbp' + Math.round(performance.now() * 1000) + Math.floor(performance.now() % 89);
+    var pId = 'vbp' + uid;
     pLab.setAttribute('for', pId); pInput.id = pId;
     var pHint = document.createElement('span');
     pHint.className = 'vb-prow-hint'; pHint.setAttribute('data-role', 'badprice'); pHint.hidden = true;
@@ -565,7 +569,7 @@
     var chips = items.map(function (x) {
       var e = x.e;
       var gapTxt = (typeof e.gapPts === 'number')
-        ? h`<span class="vb-jchip-gap" data-tone="${e.gapPts >= 3 ? 'over' : e.gapPts <= -3 ? 'under' : 'match'}">${Math.abs(e.gapPts).toFixed(e.gapPts < 10 ? 1 : 0)} ${T.pointsWord}</span>`
+        ? h`<span class="vb-jchip-gap" data-tone="${e.gapPts >= 3 ? 'over' : e.gapPts <= -3 ? 'under' : 'match'}">${Math.abs(e.gapPts).toFixed(e.gapPts < 10 ? 1 : 0)} ${T.pointsWord} ${e.gapPts >= 3 ? T.jOver : e.gapPts <= -3 ? T.jUnder : T.jEven}</span>`
         : h`<span class="vb-jchip-gap" data-tone="watch">${T.jThin}</span>`;
       var spark = gapSpark(e);
       return h`<button type="button" class="vb-jchip" data-jkey="${x.k}"><span class="vb-jchip-name">${e.item}</span>${gapTxt}${spark ? sh(spark) : ''}<span class="vb-jchip-when">${relTime(e.at)}</span></button>`;
@@ -950,13 +954,11 @@
   function setFirstRun() {
     var shell = document.querySelector('.vb-shell');
     if (shell) shell.setAttribute('data-first-run', '1');
-    if (exampleBtn && T.exampleFirstRun) exampleBtn.textContent = T.exampleFirstRun;
   }
   function clearFirstRun() {
     var shell = document.querySelector('.vb-shell[data-first-run]');
     if (!shell) return;
     shell.removeAttribute('data-first-run');
-    if (exampleBtn) exampleBtn.textContent = T.example;
   }
 
   // Provenance strip — fill the live scope count (eager picker manifest) and the as-of
@@ -1342,14 +1344,6 @@
     return h`<div class="vb-headline" data-tone="${tone}"><div class="vb-metrics">${yourLine}<span class="vb-vs" aria-hidden="true">vs</span>${marketLine}</div>${verdict}</div>`;
   }
 
-  function timelineBlock(res) {
-    var m = res.market;
-    var rows = m.legs.map(function (leg) {
-      return h`<tr><td>${fmtDate(leg.date)}</td><td class="vb-num">${money(leg.cents)}</td><td class="vb-num" data-dir="${leg.yourCumPct > 0 ? 'up' : leg.yourCumPct < 0 ? 'down' : 'flat'}">${leg.yourCumPct === 0 ? '—' : pctStr(leg.yourCumPct)}</td><td class="vb-num vb-num--mkt" data-dir="${leg.marketCumPct == null ? 'flat' : leg.marketCumPct > 0 ? 'up' : leg.marketCumPct < 0 ? 'down' : 'flat'}">${leg.marketCumPct == null ? '—' : (leg.marketCumPct === 0 ? '—' : pctStr(leg.marketCumPct))}</td></tr>`;
-    });
-    return h`<div class="vb-subcard"><span class="vb-eyebrow">${T.timelineEyebrow}</span><div class="vb-timeline-wrap"><table class="vb-timeline"><thead><tr><th scope="col">${T.thDate}</th><th scope="col" class="vb-num">${T.thYou}</th><th scope="col" class="vb-num">${T.thYouCum}</th><th scope="col" class="vb-num">${T.thMarketCum}</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
-  }
-
   // The wholesale market value at a specific series date (the reads the verdict
   // snapped to are always exact series dates), for the receipt.
   function marketValueAt(m, dateStr) {
@@ -1601,7 +1595,6 @@
     run();
     revealResult(true); // explicit example load — land focus on the verdict, motion-gated
   }
-  function loadExample() { loadScenario('hot'); }
 
   // ---- ingredient picker (combobox) — progressive enhancement over #vbItem ---
   // The picker manifest (window.MUNTIN_CI_PICKER, eager first-paint) lists the
@@ -2000,7 +1993,6 @@
   itemEl.addEventListener('input', schedule);
   unitEl.addEventListener('change', schedule);
   if (addBtn) { addBtn.textContent = '+ ' + T.add; addBtn.addEventListener('click', addRow); }
-  if (exampleBtn) { exampleBtn.textContent = T.example; exampleBtn.addEventListener('click', loadExample); }
   if (clearBtn) { clearBtn.textContent = T.clear; clearBtn.addEventListener('click', clearAll); }
   var demosEl = document.querySelector('.vb-demos');
   if (demosEl) demosEl.addEventListener('click', function (e) {

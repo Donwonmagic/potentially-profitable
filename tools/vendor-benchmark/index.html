@@ -184,6 +184,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   --vb-ease:cubic-bezier(.2,.8,.2,1);--vb-ease-out:cubic-bezier(.16,1,.3,1);
   --vb-t-1:120ms;--vb-t-2:320ms;--vb-t-3:600ms;
   --vb-signal:#12A9BD;
+  --vb-signal-strong:#0A7C8C; /* darker signal step for the active-option rail — >=3:1 on the tinted row (WCAG 1.4.11) */
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --vb-desk:#191B1E;
@@ -197,6 +198,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   --vb-readout-bg:#1B1E24;
   --vb-readout-edge:#2C3038;
   --vb-signal:#3AD3E6;
+  --vb-signal-strong:#3AD3E6;
 }}
 :root[data-theme="dark"]{
   --vb-desk:#191B1E;
@@ -210,12 +212,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   --vb-readout-bg:#1B1E24;
   --vb-readout-edge:#2C3038;
   --vb-signal:#3AD3E6;
+  --vb-signal-strong:#3AD3E6;
 }
 @media print{:root{
   --vb-desk:#fff;--vb-desk-edge:#ccc;--vb-desk-inset:none;--vb-rule:#ddd;
   --vb-readout-wash:transparent;--vb-well-inset:none;
   --vb-readout-bg:#fff;--vb-readout-edge:#ddd;
-  --vb-grid:#e5e5e5;--vb-grid-100:#999;--vb-signal:#666;
+  --vb-grid:#e5e5e5;--vb-grid-100:#999;--vb-signal:#666;--vb-signal-strong:#666;
 }}
 .vb-shell{max-width:780px;margin:0 auto;padding:44px 16px 80px}
 .vb-hero{margin-bottom:26px}
@@ -252,11 +255,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .vb-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
 .vb-add{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border:1px dashed var(--line-dark);border-radius:999px;background:transparent;color:var(--ink);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;transition:border-color var(--t-fast,180ms),color var(--t-fast,180ms)}
 .vb-add:hover{border-color:var(--teal);color:var(--teal)}
-.vb-example{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border:1px solid var(--teal);border-radius:999px;background:transparent;color:var(--teal);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
-.vb-example:hover{background:var(--teal-tint,#EAF0FE)}
 .vb-clear{margin-left:auto;display:inline-flex;align-items:center;padding:9px 14px;border:1px solid var(--line-dark);border-radius:999px;background:transparent;color:var(--stone);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
 .vb-clear:hover{color:var(--rust);border-color:var(--rust)}
-.vb-add:focus-visible,.vb-example:focus-visible,.vb-clear:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.vb-add:focus-visible,.vb-clear:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 .vb-hint-line{font-size:12.5px;color:var(--stone);line-height:1.5;margin:14px 0 0}
 .vb-err{font-size:13px;color:var(--status-warn-deep,#8A3E16);margin:10px 0 0}
 /* ---- Result ---- */
@@ -433,7 +434,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .vb-pick-opt__ref{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;font-family:var(--vb-font-mono);font-size:11px;line-height:1;color:var(--ink-soft);border:1px solid var(--vb-rule);border-radius:3px}
 .vb-pick-opt__unit{flex:0 0 auto;font-family:var(--vb-font-mono);font-size:12px;letter-spacing:-0.01em;color:var(--stone);font-variant-numeric:tabular-nums}
 .vb-pick-opt:hover{background-color:rgba(20,22,26,.04)}
-.vb-pick-opt.is-active{background-color:rgba(18,169,189,.10);box-shadow:inset 2px 0 0 var(--vb-signal)}
+.vb-pick-opt.is-active{background-color:rgba(18,169,189,.10);box-shadow:inset 3px 0 0 var(--vb-signal-strong)}
 .vb-pick-opt.is-active .vb-pick-opt__ref{color:var(--ink);border-color:var(--line-dark)}
 .vb-pick-empty{padding:14px}
 .vb-pick-empty[hidden]{display:none}
@@ -450,7 +451,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
    2.5.5) for a one-thumbed kitchen phone; the 16px fields above kill iOS
    zoom-on-focus. ─────────────────────────────────────────────────────────── */
 html{-webkit-text-size-adjust:100%}
-.vb-add,.vb-example,.vb-clear,.vb-btn,.vb-jchip{min-height:var(--vb-touch,44px)}
+.vb-add,.vb-clear,.vb-btn,.vb-jchip{min-height:var(--vb-touch,44px)}
 .vb-chart-table>summary,.vb-receipt summary,.vb-more>summary{min-height:var(--vb-touch,44px);align-items:center}
 /* ── Market context (ADR-012) — the reference's OWN state vs its normal; a neutral
    --vb-signal rail, never a verdict tone, because it is context, not a verdict. ── */
@@ -500,8 +501,8 @@ html{-webkit-text-size-adjust:100%}
 .vb-ghost-chart{position:relative;height:60px;margin:14px 0 0;border-radius:8px;background:var(--surface-inset)}
 .vb-ghost-base{position:absolute;left:10px;right:10px;top:50%;border-top:1px dashed var(--line-dark)}
 .vb-ghost-hint{font-size:12.5px;line-height:1.5;color:var(--ink-soft);margin:12px 0 0}
-.vb-shell[data-first-run] .vb-example{background:var(--teal);color:#fff;border-color:var(--teal)}
-.vb-shell[data-first-run] .vb-example:hover{background:var(--teal-dark,#1F3A93)}
+.vb-shell[data-first-run] .vb-demos{border:1px solid var(--teal);border-radius:var(--r-md,14px);padding:12px 14px;background:var(--teal-tint,#EAF0FE)}
+.vb-shell[data-first-run] .vb-demo{border-color:var(--teal);color:var(--teal)}
 .vb-shell[data-first-run] .vb-add{opacity:.6}
 .vb-shell[data-first-run] .vb-clear{display:none}
 /* ── Worked-example switcher — three scenarios whose verdict is COMPUTED live, so the
@@ -530,6 +531,7 @@ html{-webkit-text-size-adjust:100%}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to main content</a>
 <!-- batch-banner:start -->
 <aside class="batch-marquee" data-batch="fathers-day-2026" role="complementary" aria-label="New dispatch · Get found for Father’s Day weekend" style="background:#16181D;color:#F6F7F8;font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(246,247,248,0.16);box-shadow:inset 0 1px 0 rgba(255,255,255,0.05)">
   <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
@@ -749,7 +751,7 @@ html{-webkit-text-size-adjust:100%}
   <script src="/assets/theme-toggle.js?v=phase8"></script>
 </header>
 
-<main>
+<main id="main">
 <section class="vb-shell">
   <div class="vb-hero">
     <span class="eyebrow">Free tool · Your price vs. the market, over the same dates</span>
@@ -802,7 +804,6 @@ html{-webkit-text-size-adjust:100%}
     <div class="vb-purchases" id="vbPurchases" role="group" aria-label="Your dated purchases"></div>
     <div class="vb-actions">
       <button type="button" class="vb-add" id="vbAdd">+ Add a purchase</button>
-      <button type="button" class="vb-example" id="vbExample">Load the example</button>
       <button type="button" class="vb-clear" id="vbClear">Clear</button>
       <button type="button" class="vb-share" id="vbShare" title="Encodes this benchmark in the link — it stays client-side and is never sent to a server.">Copy shareable link</button>
     </div>
@@ -822,7 +823,7 @@ html{-webkit-text-size-adjust:100%}
   <div class="vb-ghost" aria-hidden="true">
     <div class="vb-ghost-metrics"><span class="vb-ghost-m">&mdash;</span><span class="vb-ghost-vs">vs</span><span class="vb-ghost-m">&mdash;</span></div>
     <div class="vb-ghost-chart"><span class="vb-ghost-base"></span></div>
-    <p class="vb-ghost-hint">Your read lands here &mdash; add two dated prices, or load the example to see it work.</p>
+    <p class="vb-ghost-hint">Your read lands here &mdash; add two dated prices, or try a worked example to see it work.</p>
   </div>
 
   <div class="vb-card">
