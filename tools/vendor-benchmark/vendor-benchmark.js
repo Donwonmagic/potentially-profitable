@@ -1310,6 +1310,7 @@
     note.id = 'vbItemComboNote'; note.className = 'sr-only'; note.textContent = T.pickDescribe(n);
     var priorDesc = itemEl.getAttribute('aria-describedby');
     itemEl.setAttribute('aria-describedby', (priorDesc ? priorDesc + ' ' : '') + 'vbItemComboNote');
+    field.appendChild(note); // must be in the DOM for aria-describedby to resolve
 
     // caret / toggle button (pointer affordance; out of the tab order)
     var caret = document.createElement('button');
@@ -1399,19 +1400,19 @@
     field.appendChild(status);
 
     // ---- state + behavior ----
-    var open = false, activeIdx = -1, results = optionRefs.slice(), statusT = null;
+    var open = false, activeIdx = -1, activeEl = null, results = optionRefs.slice(), statusT = null;
 
+    // Clear the outgoing option by REFERENCE (activeEl), never by results[activeIdx]:
+    // filter() reassigns `results` to a fresh array, so an index would clear the
+    // wrong element and strand a stale is-active / aria-selected on the real one.
     function setActive(idx) {
-      if (activeIdx >= 0 && results[activeIdx]) {
-        results[activeIdx].el.classList.remove('is-active');
-        results[activeIdx].el.setAttribute('aria-selected', 'false');
-      }
+      if (activeEl) { activeEl.classList.remove('is-active'); activeEl.setAttribute('aria-selected', 'false'); activeEl = null; }
       activeIdx = idx;
       if (idx >= 0 && results[idx]) {
-        var el = results[idx].el;
-        el.classList.add('is-active'); el.setAttribute('aria-selected', 'true');
-        itemEl.setAttribute('aria-activedescendant', el.id);
-        if (el.scrollIntoView) el.scrollIntoView({ block: 'nearest' });
+        activeEl = results[idx].el;
+        activeEl.classList.add('is-active'); activeEl.setAttribute('aria-selected', 'true');
+        itemEl.setAttribute('aria-activedescendant', activeEl.id);
+        if (activeEl.scrollIntoView) activeEl.scrollIntoView({ block: 'nearest' });
       } else {
         itemEl.removeAttribute('aria-activedescendant');
       }

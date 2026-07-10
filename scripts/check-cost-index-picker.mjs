@@ -150,6 +150,38 @@ export function validateGroups(groups, items, categories, categoryOrder) {
   return errors;
 }
 
+/**
+ * HONESTY ROUND-TRIP: the ingredient picker writes a verbatim seed label into the
+ * item field, and the tool then resolves that string back to a Cost Index item via
+ * MuntinCostIndexLookup.match(). If a label resolves to a DIFFERENT item, the picker
+ * silently benchmarks the operator's price against the wrong wholesale series and
+ * prints a false "Market match" — a breach of the honesty contract. So every picker
+ * label (EN and ES) must resolve to its OWN item. matchFn is injected (the real
+ * lookup in the live check; a fake in the self-test).
+ *
+ * @param {Array} items   manifest items (each with key, label_en, label_es)
+ * @param {Object} seed   the seed passed to matchFn (seed.ingredients or the array)
+ * @param {(name:string, seed:any)=>({key:string}|null)} matchFn  the lookup
+ */
+export function validateRoundTrip(items, seed, matchFn) {
+  const errors = [];
+  if (typeof matchFn !== 'function') { errors.push('round-trip: no match function available'); return errors; }
+  if (!Array.isArray(items)) { errors.push('round-trip: items is not an array'); return errors; }
+  for (const it of items) {
+    for (const f of ['label_en', 'label_es']) {
+      const label = it && it[f];
+      if (!isNonEmptyStr(label)) continue;
+      let got = null;
+      try { const r = matchFn(label, seed); got = r && r.key; }
+      catch (e) { errors.push(`${it.key}: match(${f}) threw ${e.message}`); continue; }
+      if (got !== it.key) {
+        errors.push(`${it.key}: match(${f}="${label}") -> ${got || 'null'} (a picker label must resolve to its own item — honesty round-trip)`);
+      }
+    }
+  }
+  return errors;
+}
+
 // ---- Parse the inline taxonomy literals still in build-cost-index-pages.mjs --
 // so the shared module can be asserted equal to them (single-source drift guard).
 function parseInlineTaxonomy(src) {
@@ -240,6 +272,20 @@ function runCheck() {
   errors.push(...validateManifest(manifest, seedIngs, CATEGORIES, categoryOf));
   errors.push(...validateGroups(manifestDoc.groups, manifest, CATEGORIES, CATEGORY_ORDER));
 
+  // Honesty round-trip: load the SAME lookup the tool uses (browser-equivalent —
+  // MuntinStem + MuntinSkuMatch attached via a global.self shim) and assert every
+  // picker label resolves to its own item.
+  let matchFn = null;
+  try {
+    if (typeof globalThis.self === 'undefined') globalThis.self = globalThis;
+    require(path.join(repoRoot, 'tools/_shared/stem.js'));
+    require(path.join(repoRoot, 'tools/_shared/sku-match.js'));
+    matchFn = require(path.join(repoRoot, 'tools/_shared/cost-index-lookup.js')).match;
+  } catch (e) {
+    errors.push(`round-trip: could not load the lookup modules (${e.message})`);
+  }
+  if (matchFn) errors.push(...validateRoundTrip(manifest, seed, matchFn));
+
   // Single-source drift guard against the page generator's inline literals.
   let inline = null;
   try {
@@ -323,6 +369,19 @@ function selfTest() {
   gcase('groups missing populated fails', true, [goodGroups[0]]);
   gcase('groups drifted label fails', true, [{ key: 'alpha', label_en: 'Alfa!', label_es: 'Alfa' }, goodGroups[1]]);
   gcase('groups extra unpopulated fails', true, [...goodGroups, { key: 'gamma', label_en: 'G', label_es: 'G' }]);
+
+  // validateRoundTrip: a label that resolves to its own item passes; a cross-item
+  // resolution fails (this is the butter-lettuce class of honesty bug).
+  const rtItems = [
+    { key: 'a1', label_en: 'A One', label_es: 'A Uno' },
+    { key: 'a2', label_en: 'A Two', label_es: 'A Dos' },
+  ];
+  const okMatch = (label) => ({ key: /one|uno/i.test(label) ? 'a1' : 'a2' });
+  const badMatch = () => ({ key: 'a1' }); // always a1 -> a2's labels mis-resolve
+  const nullMatch = () => null;
+  cases.push({ name: 'round-trip valid passes', ok: validateRoundTrip(rtItems, {}, okMatch).length === 0, expectFail: false, errs: [] });
+  cases.push({ name: 'round-trip cross-item fails', ok: validateRoundTrip(rtItems, {}, badMatch).length > 0, expectFail: true, errs: [] });
+  cases.push({ name: 'round-trip null-resolve fails', ok: validateRoundTrip(rtItems, {}, nullMatch).length > 0, expectFail: true, errs: [] });
 
   const failed = cases.filter((c) => !c.ok);
   for (const c of failed) console.error(`  ✗ self-test case FAILED: ${c.name} (errs: ${JSON.stringify(c.errs)})`);
