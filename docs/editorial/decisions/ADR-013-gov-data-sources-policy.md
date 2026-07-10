@@ -52,11 +52,19 @@ answered: what to pull, and how to use it WITHOUT breaching the fact gate.
 ### EIA (energy)
 - **NOW:** **diesel** (weekly retail, verified) → coincident freight ASSOCIATION label in
   Drivers. `EIA_KEY` + populate the existing `eia-diesel` driver labels.
-- **NEXT:** demote the per-item diesel PRESSURE contributor to a single index-wide freight
-  backdrop (it's inert — signal 0 on 6 of 7 items); commercial electricity as a standalone
-  `kind:'energy'` context trend; enrich the `energy-oils` driver with the renewable-diesel→
-  soy-oil channel; a read-only diesel context line on Vendor Benchmark's wholesale-vs-delivered
-  explanation (never a pass-through number, never touches the gap verdict).
+- **NEXT:** ~~demote the per-item diesel PRESSURE contributor to a single index-wide freight
+  backdrop (it's inert — signal 0 on 6 of 7 items)~~ **DONE 2026-07-10 (manifest _version 2026-Q2-19).**
+  A design panel found the index-wide freight backdrop ALREADY EXISTS — the FRED **GASDESW**
+  measured driver (`data/cost-index-sources.json` `drivers.diesel`, `kind:energy`, `leads:[]`,
+  "coincident gauge… association only"), rendered on the hub as the single "Diesel / freight"
+  association direction. So the 78 per-item pressure votes were a double-count of one EIA
+  quantity and were **removed** (no new surface minted — a drivers-layer freight driver was
+  rejected because its per-cluster `affects[]` would re-create the false per-item arrow). The
+  EIA `diesel` pressure spec is kept **dormant**. `button-mushroom` (diesel-only) retired.
+  Still pending: commercial electricity as a standalone `kind:'energy'` context trend; enrich the
+  `energy-oils` driver with the renewable-diesel→soy-oil channel; a read-only diesel context line
+  on Vendor Benchmark's wholesale-vs-delivered explanation (never a pass-through number, never
+  touches the gap verdict) — deferred, separate sub-items.
 - **AVOID:** crude as an ingredient driver (double-counts diesel); nat-gas→fertilizer→feed→
   protein chains; any energy→single-ingredient pass-through / lead-lag / forecast.
 
@@ -69,14 +77,14 @@ deep-sea-freight — present in `pressure-source-specs.json`) — those are barr
 1. Zero-code: `NASS_KEY`+`EIA_KEY` → `fetch-pressure-observations.mjs --live` (placements + diesel).
 2. Cold-storage deseasonalization (ADR-014 — DONE) → then run pork (coincident), butter, and demote cheese/poultry; run `check-pressure-honesty.mjs`.
 3. Census exotics: verify `UNIT_QY1=kg` + flip coffee 090111 / cocoa 180100 (derived); fix olive/vanilla HS then ship; leave saffron/pine-nuts absent.
-4. EIA cleanup: electricity standalone; demote per-item diesel to a freight backdrop; VB diesel context line; energy-oils enrichment.
+4. EIA cleanup: ~~demote per-item diesel to a freight backdrop~~ **DONE 2026-07-10 (code-side, no live fetch needed)**; still pending — electricity standalone; VB diesel context line; energy-oils enrichment.
 5. Publishing wave on `/open/` (raw Census + crosswalk first, then derived exotics, cold-storage descriptive + "stocks don't invert to price" literacy note, diesel) — with the IMF/Comtrade guard.
 
 ## Open questions (founder call)
 - Re-validate `cold-storage-pork` calibration after the ADR-014 patch (was computed on the raw path).
 - Build a `fetchNass` price feed for corn/soy $/bu, or keep feed drivers on FRED/BLS?
 - Vanilla publish-threshold: what mix-noise level = ship-derived vs hold-absent?
-- Freight double-count: confirm exactly ONE series carries freight (pressure `eia-diesel` vs the shipped FRED GASDESW republish of the same EIA data).
+- ~~Freight double-count: confirm exactly ONE series carries freight (pressure `eia-diesel` vs the shipped FRED GASDESW republish of the same EIA data).~~ **RESOLVED 2026-07-10:** it WAS double- (triple-) counted — one EIA diesel quantity lived as 78 inert per-item pressure votes + the GASDESW measured driver + a per-page hub echo of that one GASDESW direction. Fixed by removing the 78 pressure votes; **exactly ONE live freight series now = the GASDESW measured driver** (index-wide, coincident, association-framed). `deep-sea-freight` (FRED PCU483111483111, ocean-freight PPI) is a genuinely distinct series and is not part of this count.
 
 ## Consequences
 - No measured-tier or Vendor-Benchmark exposure; every new number stays sourced or derived-with-caveats.

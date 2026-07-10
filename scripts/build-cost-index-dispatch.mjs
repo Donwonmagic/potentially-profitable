@@ -784,12 +784,12 @@ ${contribClose}
   }).join('\n');
   const pressureSection = (ins.pressure.length || driverCtx)
     ? `      <h2 id="whats-behind-the-moves">What's behind the moves</h2>
-      <p>A percentage tells you <em>what</em> moved; it does not tell you <em>why</em>. The cost index carries a second, slower read for that &mdash; the <strong>pressure layer</strong>, which infers whether each staple is building or easing from the public lead indicators underneath it: feed grain and cattle-on-feed placements for proteins, cold-storage stocks for dairy, shipment volume and drought for produce, diesel for freight. It points a direction on a lead, never a price.</p>
+      <p>A percentage tells you <em>what</em> moved; it does not tell you <em>why</em>. The cost index carries a second, slower read for that &mdash; the <strong>pressure layer</strong>, which infers whether each staple is building or easing from the public lead indicators underneath it: feed grain and cattle-on-feed placements for proteins, cold-storage stocks for dairy, shipment volume and drought for produce. (Freight/diesel is a common-mode cost that rides every delivered price roughly equally, so it is carried index-wide in the measured drivers, not as a per-ingredient pressure arrow.) It points a direction on a lead, never a price.</p>
 ${ins.pressure.length ? `      <p>Where the panel's tracked staples sit this week${ins.pressureAsOf ? `, as of ${ins.pressureAsOf}` : ''}:</p>
       <ul>
 ${pressureRows}
       </ul>
-      <details class="cite"><summary>Sources for the pressure read</summary><p>Inferred direction only &mdash; composed from public USDA NASS (Cattle-on-Feed, Broiler Hatchery, Cold Storage), USDA AMS movement and shipment reports, EIA diesel, and the U.S. Drought Monitor. No delivered price. See the <a href="/cost-index/methodology/">Cost Index methodology</a>.</p></details>
+      <details class="cite"><summary>Sources for the pressure read</summary><p>Inferred direction only &mdash; composed from public USDA NASS (Cattle-on-Feed, Broiler Hatchery, Cold Storage), USDA AMS movement and shipment reports, and the U.S. Drought Monitor. No delivered price. See the <a href="/cost-index/methodology/">Cost Index methodology</a>.</p></details>
 ` : ''}${driverCtx ? `      <p>The feed market is the clearest of these chains. This week, ${driverCtx} &mdash; a feed read that flows through to the proteins it sits behind on a lag:</p>
 
 ${flowFig}

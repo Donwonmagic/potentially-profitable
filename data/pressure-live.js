@@ -24,35 +24,29 @@
   "observations": {
     "chicken-breast": {
       "feed-grain": -0.09,
-      "broiler-placements": 0.04,
-      "diesel": 0.01
+      "broiler-placements": 0.04
     },
     "whole-chicken": {
       "feed-grain": -0.07,
-      "broiler-placements": 0.03,
-      "diesel": 0.01
+      "broiler-placements": 0.03
     },
     "ribeye": {
       "cattle-on-feed-placements": -0.05,
-      "feed-grain": 0.01,
-      "diesel": 0.05
+      "feed-grain": 0.01
     },
     "beef-tenderloin": {
       "cattle-on-feed-placements": -0.04,
-      "feed-grain": 0.01,
-      "diesel": 0.05
+      "feed-grain": 0.01
     },
     "pork-loin": {
       "hogs-market-supply": 0.05,
       "feed-grain": -0.04,
-      "cold-storage-pork": 0.01,
-      "diesel": 0.01
+      "cold-storage-pork": 0.01
     },
     "pork-shoulder": {
       "hogs-market-supply": 0.04,
       "feed-grain": -0.05,
-      "cold-storage-pork": 0.01,
-      "diesel": 0.01
+      "cold-storage-pork": 0.01
     },
     "romaine-lettuce": {
       "lettuce-shipments": -0.08,
@@ -60,7 +54,6 @@
       "lettuce-pace": -0.05,
       "freeze-alert": 0,
       "drought-ca-az": 0.06,
-      "diesel": 0.03,
       "lettuce-transition": 1
     },
     "tomato": {
@@ -69,7 +62,6 @@
       "tomato-pace": 0.06,
       "freeze-alert": 0,
       "drought-fl-ca": 0.05,
-      "diesel": 0.01,
       "tomato-transition": 0
     },
     "onion": {
@@ -77,7 +69,6 @@
       "onion-imports": 0.04,
       "onion-pace": -0.06,
       "drought-ca-az": 0.03,
-      "diesel": 0.04,
       "onion-transition": 0
     },
     "russet-potato": {
@@ -86,13 +77,11 @@
       "potato-imports": 0.01,
       "potato-pace": 0.03,
       "drought-id": 0,
-      "diesel": 0.01,
       "potato-transition": 0
     },
     "butter": {
       "cold-storage-butter": 0.04,
-      "feed-grain": -0.02,
-      "diesel": 0.01
+      "feed-grain": -0.02
     },
     "cheddar-cheese": {
       "eu-cheddar": 0.04,

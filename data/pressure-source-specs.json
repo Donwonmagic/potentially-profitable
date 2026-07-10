@@ -3,6 +3,7 @@
   "_version": "2026-Q2-2",
   "specs": {
     "diesel": { "type": "eia", "verified": true, "series": "PET.EMD_EPD2D_PTE_NUS_DPG.W", "tail": 5, "unit": "$/gal",
+      "_status": "DORMANT 2026-Q2-19 (ADR-013/EIA): no live manifest indicator references this — the per-item diesel pressure vote was removed from all 78 items. Freight is carried INDEX-WIDE by the single measured GASDESW driver (data/cost-index-sources.json drivers.diesel), the SAME EIA quantity FRED republishes, so a live per-item pull here would double-count. Kept (not deleted) for the deferred VB diesel-context sub-item / /open/ republish; do NOT re-wire a per-item `diesel` indicator.",
       "note": "Weekly U.S. No. 2 diesel retail (EIA Open Data v2). VERIFIED series id. Probe: rows=1682 change=-7.6%." },
 
     "drought-ca-az": { "type": "usdm", "verified": true, "areas": ["06", "04"], "categories": ["D2", "D3", "D4"], "tail": 5,
