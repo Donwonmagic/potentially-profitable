@@ -130,7 +130,8 @@
     ctxEvent: function (label) { return 'Coincide en el trasfondo (no es una causa): ' + label + '.'; },
     chartAriaDyn: function (yourR, mkR, gapAbs, gapSign) { return 'Tu precio terminó cerca de ' + yourR + ', el mercado cerca de ' + mkR + ', ambos indexados a 100 al inicio de tu ventana — ' + (gapAbs < 1 ? 'en línea con el mercado' : ('unos ' + gapAbs + ' puntos ' + (gapSign > 0 ? 'por encima' : 'por debajo') + ' del mercado')) + '.'; },
     chartAriaThin: ' Las lecturas del mercado son escasas, así que esta línea es aproximada.',
-    exampleFirstRun: 'Ver cómo funciona →'
+    exampleFirstRun: 'Ver cómo funciona →',
+    shareBtn: 'Copiar enlace', shareCopied: 'Copiado — incluye tus precios'
   } : {
     itemLabel: 'Item', itemHint: '— as it reads on your invoice',
     itemPlaceholder: 'e.g. ribeye, chicken breast, tomato',
@@ -227,7 +228,8 @@
     ctxEvent: function (label) { return 'Co-occurring in the backdrop (not a cause): ' + label + '.'; },
     chartAriaDyn: function (yourR, mkR, gapAbs, gapSign) { return 'Your price ended near ' + yourR + ', the market near ' + mkR + ', both indexed to 100 at your window start — ' + (gapAbs < 1 ? 'in line with the market' : ('about ' + gapAbs + ' points ' + (gapSign > 0 ? 'above' : 'below') + ' the market')) + '.'; },
     chartAriaThin: ' Market reads are thin, so this line is approximate.',
-    exampleFirstRun: 'See it work →'
+    exampleFirstRun: 'See it work →',
+    shareBtn: 'Copy shareable link', shareCopied: 'Copied — includes your prices'
   };
 
   // ---- small formatters ------------------------------------------------------
@@ -1842,8 +1844,54 @@
     });
   }
 
+  // ---- shareable link (URL fragment) ----------------------------------------
+  // The benchmark encodes into the URL FRAGMENT (#b=...), which the browser never sends
+  // in a request — so the state stays client-side (the privacy monitor stays 0) and the
+  // operator opts in explicitly by clicking. The link DOES contain the prices they typed,
+  // disclosed in the copied confirmation so sharing is an informed choice. Inbound links
+  // are decoded + strictly sanitized (untrusted URL input) before hydrating the form.
+  function b64urlEncode(s) {
+    try { return btoa(unescape(encodeURIComponent(s))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+    catch (_) { return ''; }
+  }
+  function b64urlDecode(s) {
+    try { var b = s.replace(/-/g, '+').replace(/_/g, '/'); while (b.length % 4) b += '='; return decodeURIComponent(escape(atob(b))); }
+    catch (_) { return ''; }
+  }
+  function encodeState() {
+    var item = (itemEl.value || '').trim();
+    var rows = readRows().filter(function (r) { return r.date && String(r.price).trim() !== ''; })
+      .map(function (r) { return [r.date, String(r.price).trim()]; });
+    if (!item || !rows.length) return '';
+    return b64urlEncode(JSON.stringify({ i: item, u: unitEl.value, r: rows }));
+  }
+  function shareLink(btn) {
+    var enc = encodeState();
+    if (!enc) return;
+    try { history.replaceState(null, '', '#b=' + enc); } catch (_) {}
+    copyText(location.origin + location.pathname + '#b=' + enc, btn, T.shareCopied);
+    track('Bench Link Shared');
+  }
+  function hydrateFromHash() {
+    var mm = (location.hash || '').match(/[#&]b=([^&]+)/);
+    if (!mm) return false;
+    var json = b64urlDecode(mm[1]); if (!json) return false;
+    var p; try { p = JSON.parse(json); } catch (_) { return false; }
+    if (!p || typeof p.i !== 'string' || !Array.isArray(p.r)) return false;
+    var rows = p.r.filter(function (x) {
+      return Array.isArray(x) && /^\d{4}-\d{2}-\d{2}$/.test(x[0]) && /^[\d.,\s$]{1,16}$/.test(String(x[1]));
+    }).slice(0, 24).map(function (x) { return { date: x[0], price: String(x[1]) }; });
+    if (!rows.length) return false;
+    itemEl.value = String(p.i).slice(0, 80);
+    if (typeof p.u === 'string' && /^[a-z]{1,8}$/.test(p.u)) unitEl.value = p.u;
+    renderRows(rows);
+    run();
+    return true;
+  }
+
   // ---- restore / init --------------------------------------------------------
   function restore() {
+    if (hydrateFromHash()) return; // a shared link wins over the saved session / scaffold
     var saved = null;
     if (CTX && typeof CTX.get === 'function') { try { saved = CTX.get('vbSession'); } catch (_) { saved = null; } }
     if (saved && saved.item && Array.isArray(saved.purchases) && saved.purchases.length) {
@@ -1877,6 +1925,8 @@
     var b = e.target && e.target.closest ? e.target.closest('[data-scenario]') : null;
     if (b) loadScenario(b.getAttribute('data-scenario'));
   });
+  var shareBtn = document.getElementById('vbShare');
+  if (shareBtn) { shareBtn.textContent = T.shareBtn; shareBtn.addEventListener('click', function () { shareLink(shareBtn); }); }
 
   resultEl.addEventListener('click', onResultClick);
   ensureAnnouncer();

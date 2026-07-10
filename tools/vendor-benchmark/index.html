@@ -512,6 +512,11 @@ html{-webkit-text-size-adjust:100%}
 .vb-demo:hover{border-color:var(--teal);color:var(--teal)}
 .vb-demo:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 .vb-demos-note{font-size:11px;color:var(--ink-soft);flex-basis:100%}
+/* Shareable link — encodes the benchmark in the URL fragment (client-side, never sent). */
+.vb-share{min-height:var(--vb-touch,44px);display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border:1px solid var(--line-dark);border-radius:999px;background:transparent;color:var(--ink-soft);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
+.vb-share:hover{border-color:var(--teal);color:var(--teal)}
+.vb-share:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.vb-shell[data-first-run] .vb-share{display:none}
 </style>
 </head>
 <body>
@@ -789,6 +794,7 @@ html{-webkit-text-size-adjust:100%}
       <button type="button" class="vb-add" id="vbAdd">+ Add a purchase</button>
       <button type="button" class="vb-example" id="vbExample">Load the example</button>
       <button type="button" class="vb-clear" id="vbClear">Clear</button>
+      <button type="button" class="vb-share" id="vbShare" title="Encodes this benchmark in the link — it stays client-side and is never sent to a server.">Copy shareable link</button>
     </div>
     <p class="vb-hint-line">Add two or more dated invoices for the same item. The more dates you give it, the sharper the read against the market &mdash; and it updates as you type.</p>
     <div class="vb-demos" role="group" aria-label="Worked examples — the verdict is computed live">

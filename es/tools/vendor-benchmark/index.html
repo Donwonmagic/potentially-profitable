@@ -509,6 +509,11 @@ html{-webkit-text-size-adjust:100%}
 .vb-demo:hover{border-color:var(--teal);color:var(--teal)}
 .vb-demo:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 .vb-demos-note{font-size:11px;color:var(--ink-soft);flex-basis:100%}
+/* Shareable link — encodes the benchmark in the URL fragment (client-side, never sent). */
+.vb-share{min-height:var(--vb-touch,44px);display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border:1px solid var(--line-dark);border-radius:999px;background:transparent;color:var(--ink-soft);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
+.vb-share:hover{border-color:var(--teal);color:var(--teal)}
+.vb-share:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.vb-shell[data-first-run] .vb-share{display:none}
 </style>
 </head>
 <body>
@@ -731,6 +736,7 @@ html{-webkit-text-size-adjust:100%}
       <button type="button" class="vb-add" id="vbAdd">+ Agregar una compra</button>
       <button type="button" class="vb-example" id="vbExample">Cargar el ejemplo</button>
       <button type="button" class="vb-clear" id="vbClear">Borrar</button>
+      <button type="button" class="vb-share" id="vbShare" title="Codifica esta comparación en el enlace — se queda en tu dispositivo y nunca se envía a un servidor.">Copiar enlace</button>
     </div>
     <p class="vb-hint-line">Agrega dos o más facturas con fecha del mismo artículo. Cuantas más fechas le des, más nítida la comparación con el mercado &mdash; y se actualiza mientras escribes.</p>
     <div class="vb-demos" role="group" aria-label="Ejemplos — el veredicto se calcula en vivo">
