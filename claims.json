@@ -1,6 +1,6 @@
 {
   "_doc": "Public, machine-readable claim ledger for muntin.digital. Every externally-verifiable factual claim used across the library, paired with its primary public source and the date it was last checked. Generated from data/sourced-claims.json by scripts/build-claims-json.mjs — do not edit by hand. Operator-experience claims (first-hand, no public URL) are documented at https://muntin.digital/about/#timeline.",
-  "as_of": "2026-07-02",
+  "as_of": "2026-07-09",
   "count": 43,
   "claims": [
     {
@@ -218,13 +218,15 @@
     },
     {
       "id": "ledger_founding_offer_2026",
-      "claim": "Muntin Ledger is free while in private beta; general availability is November 13, 2026. Operators who join the founding list before launch get the founding rate: three months free, then $19 a month for as long as they stay. Pricing is posted in writing at ledger.muntin.digital.",
-      "source_name": "Muntin Ledger — posted pricing (first-party, founder-confirmed 2026-06-27)",
+      "claim": "Muntin Ledger is free while in private beta; general availability is November 13, 2026. Operators who join the founding list before launch get the founding rate: three months free, then $19 a month per location for as long as they stay. Pricing is posted in writing at ledger.muntin.digital.",
+      "source_name": "Muntin Ledger — posted pricing (first-party, founder-confirmed 2026-06-27; per-location basis founder-confirmed 2026-07-09)",
       "source_url": "https://ledger.muntin.digital/",
-      "date_verified": "2026-07-02",
+      "date_verified": "2026-07-09",
       "used_in": [
         "ledger/",
         "es/ledger/",
+        "ledger/demo/",
+        "es/ledger/demo/",
         "index.html",
         "es/index.html"
       ]
