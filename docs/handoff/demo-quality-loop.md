@@ -47,32 +47,49 @@ bar → ratchet (keep only if it beats the best) → record here → repeat unti
 | Cycle | Judges (design-eng / product-designer / buyer) | Avg | toe-to-toe? | Commit |
 |------|-----------------------------------------------|-----|-------------|--------|
 | 1    | 8.5 / 8.5 / 9.0                               | 8.7 | yes (all)   | `6d9600195` |
-| 2    | _pending_                                     |     |             |        |
+| 2    | _pending re-cert_ (gaps A/C/F/H closed)       |     |             | _working_ |
 
-## Backlog — the named gaps to close (cycle-2 targets, highest-leverage first)
+## Backlog — remaining gaps (cycle-3 targets)
 
-From cycle-1's three certifying judges + the audit's un-done top-tier techniques:
+**Closed in cycle 2 (2026-07-10)** — floor re-verified over HTTP at the full
+matrix (320×568 … 1280×700, EN+ES, light+dark, 5 steps); check-all unchanged at
+227/250 (the 23 fails are pre-existing repo-wide `(idem)` build-state drift, none
+in the demo); every immutable number byte-intact; EN↔ES byte-parallel:
 
-- **[signature] Shared-element continuity** — the recurring romaine line should
-  *morph* across steps (invoice row → ledger row → charted point) via a FLIP-style
-  transform. Both design judges cited its absence as the #1 thing between this and
-  the absolute top tier. Compositor-only; reduced-motion + no-JS safe.
-- **[climax] Inspectable chart datapoints** — hover/focus value chips on the three
-  read dots + the flagged point (opacity-only; keep the interactive layer
-  aria-hidden since `<desc>` already carries the figures).
-- **[honesty] Mobile step-2 "3 of 7"** — at ≤767px the 4 ghost rows + the CSV are
-  hidden but the count/figcaption still say "3 of the 7"; reconcile so the screen
-  matches the words on mobile (fit a compact form, or adjust the mobile copy).
-- **[motion] Confidence** — the directional cross-fade (10px translateX) is nearly
-  imperceptible; make the signature transition more deliberate while staying tasteful.
-- **[motion] Invoice-arrives opening beat** — step 0 is named for an arrival but
-  paints static; add a one-shot in-view settle (no first-paint flash).
-- **[composition] Step-4 heading alignment** — sits ~36px from the stage top vs the
-  constant ~18px of steps 0–3 (dark-card padding); align it.
+- ~~**[signature] Shared-element continuity**~~ — **DONE.** Ghost-overlay FLIP: an
+  empty, decorative, aria-hidden `.ld-ghost` created only under `.ld-js`, positioned
+  by measuring the outgoing vs incoming `[data-ld-anchor="romaine"]` box each swap and
+  playing a transform+opacity FLIP over the ~240ms cross-fade. The ledger row
+  **contracts to the ~21px flagged chart-point halo on 2→3** and **expands back on 3→2**
+  (headless-measured: ghost width 710px→21px→710px); 0→1→2 read as a persistence pulse;
+  step 4 (no anchor) and rapid `.ld-quick` swaps skip it with no stacking. Reduced-motion
+  (`display:none`, JS behind `!prm`) and no-JS (never created) show finished states.
+- ~~**[honesty] Mobile step-2 "3 of 7"**~~ — **DONE.** Count copy "…lines **shown**
+  match" → "…**filed** lines match" (ES "en pantalla" → "archivadas"), true in both
+  breakpoints: 7 filed in the record, the search filters to the 3 romaine matches
+  (which is *why* mobile renders 3). The in-app figcaption stays `display:none`.
+- ~~**[composition] Step-4 heading alignment**~~ — **DONE.** CTA `padding-top` clamp(22–36px)
+  → fixed 18px; heading offsets now 18/18/18/18/**18** across both locales (was …/31 desktop).
+  Reducing top padding only *lowers* content-height demand, so the no-scroll floor is safe.
+- ~~**[nit] Step-1 anatomy underlines**~~ — **DONE.** Removed the `box-shadow:inset 0 -2px`
+  link-style underline on `.ld-anat-cap`; the teal-tint chip remains as an extraction
+  highlight (box-shadow only → no geometry change).
+- **[motion] Confidence** — largely addressed as a side effect of the signature: the
+  ghost's deliberate 240ms travel + visible scale contraction is the perceptible beat the
+  10px slide lacked. Revisit only if a judge still flags the panel slide itself.
+
+Not yet done (deferred to keep the ratchet monotonic — high surface / low marginal gain):
+
+- **[climax] Inspectable chart datapoints** — hover/focus value chips on the read dots +
+  flagged point (opacity-only; layer stays aria-hidden, `<desc>` carries AT). Deferred:
+  the three prices ($24.10/$24.35/$29.45) are already statically labeled on every chart
+  variant, so chips across 3 SVG variants × 2 locales are high-surface for marginal gain.
+- **[motion] Invoice-arrives opening beat** — already implemented earlier (`.ld-arrive-target`
+  + `armInView` one-shot settle on step 0); no first-paint flash. No action needed.
 - **[composition] Desktop sparse columns** — steps 3/4 left column reads a touch empty.
 - **[motion] First-mobile-step settle nudge** — ~42–46px on the first transition only.
-- **[nit] Step-1 anatomy underlines** read as clickable links; step-0 CTA orphan;
-  mobile chrome tucking under the sticky site nav at some scroll positions.
+- **[nit]** step-0 CTA orphan; mobile chrome tucking under the sticky site nav at some
+  scroll positions (partly mitigated by the boot re-anchor chain).
 
 ## How to run one cycle (fresh session or here)
 
