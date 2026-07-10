@@ -135,6 +135,82 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <style>
 /* Vendor Benchmark — tool-scoped styles. Built entirely from site-core tokens
    so light/dark and print are automatic. .vb-* namespace. */
+/* ── Vendor Benchmark material system — Phase 1 token layer ──────────────
+   A four-material "market instrument": INVOICE DESK (warm-paper input),
+   INSTRUMENT READOUT (raised verdict), MARKET WELL (recessed chart), and
+   LEDGER TAPE (zero-download system mono). Every COLOR / ELEVATION token
+   below is declared on all four theme paths — default (light),
+   @media (prefers-color-scheme:dark), :root[data-theme="dark"] (the site
+   toggle, which must win), and a grayscale @media print — the same pattern
+   site-core.css uses, so nothing recreates the old market-gap-panel dark
+   break. Verdict tone is REUSED from the site (over=--rust, under=--teal,
+   match=--status-good, watch=--status-warn); --vb-signal is non-semantic
+   chrome only, NEVER a verdict number. */
+:root{
+  /* Type ladder — four weights only (400/500/600/700); fluid --fs-* site
+     tokens where they exist, literal fallbacks for the pre-site-core
+     critical-CSS window. */
+  --vb-font-mono:ui-monospace,'SF Mono','SFMono-Regular',Menlo,Consolas,'Liberation Mono',monospace;
+  --vb-fs-display:clamp(30px,5vw,42px);
+  --vb-fs-verdict:clamp(40px,8vw,68px);
+  --vb-fs-stat:clamp(26px,5vw,38px);
+  --vb-fs-card-title:19px;
+  --vb-fs-body:var(--fs-body,15px);
+  --vb-fs-meta:12.5px;
+  --vb-fs-eyebrow:var(--fs-eyebrow,11px);
+  /* Zone spacing */
+  --vb-zone-gap:28px;
+  --vb-cluster-gap:14px;
+  --vb-stat-gap:8px;
+  /* INVOICE DESK — warm confined to a hairline + a very-low tint on the
+     input zone only (never a cream body fill, never serif-on-cream). */
+  --vb-desk:#FBFAF7;
+  --vb-desk-edge:rgba(183,121,31,0.30);
+  --vb-desk-inset:inset 0 1px 2px rgba(20,22,26,0.04);
+  --vb-rule:rgba(20,22,26,0.08);
+  /* INSTRUMENT READOUT — a very-light tone tint wash over the raised panel */
+  --vb-readout-wash:rgba(42,80,200,0.035);
+  /* MARKET WELL — recessed chart; faint teal gridlines + emphasized baseline */
+  --vb-well-inset:inset 0 1px 3px rgba(20,22,26,0.07),inset 0 0 0 1px rgba(20,22,26,0.02);
+  --vb-grid:rgba(42,80,200,0.12);
+  --vb-grid-100:rgba(42,80,200,0.34);
+  /* Non-semantic signal — compute-scan chrome / active combobox row ONLY */
+  --vb-readout-bg:var(--surface-1,#fff);
+  --vb-readout-edge:var(--line);
+  --vb-signal:#12A9BD;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --vb-desk:#191B1E;
+  --vb-desk-edge:rgba(217,176,106,0.24);
+  --vb-desk-inset:inset 0 1px 2px rgba(0,0,0,0.35);
+  --vb-rule:rgba(255,255,255,0.08);
+  --vb-readout-wash:rgba(122,167,255,0.05);
+  --vb-well-inset:inset 0 1px 3px rgba(0,0,0,0.45),inset 0 0 0 1px rgba(0,0,0,0.30);
+  --vb-grid:rgba(122,167,255,0.14);
+  --vb-grid-100:rgba(122,167,255,0.40);
+  --vb-readout-bg:#1B1E24;
+  --vb-readout-edge:#2C3038;
+  --vb-signal:#3AD3E6;
+}}
+:root[data-theme="dark"]{
+  --vb-desk:#191B1E;
+  --vb-desk-edge:rgba(217,176,106,0.24);
+  --vb-desk-inset:inset 0 1px 2px rgba(0,0,0,0.35);
+  --vb-rule:rgba(255,255,255,0.08);
+  --vb-readout-wash:rgba(122,167,255,0.05);
+  --vb-well-inset:inset 0 1px 3px rgba(0,0,0,0.45),inset 0 0 0 1px rgba(0,0,0,0.30);
+  --vb-grid:rgba(122,167,255,0.14);
+  --vb-grid-100:rgba(122,167,255,0.40);
+  --vb-readout-bg:#1B1E24;
+  --vb-readout-edge:#2C3038;
+  --vb-signal:#3AD3E6;
+}
+@media print{:root{
+  --vb-desk:#fff;--vb-desk-edge:#ccc;--vb-desk-inset:none;--vb-rule:#ddd;
+  --vb-readout-wash:transparent;--vb-well-inset:none;
+  --vb-readout-bg:#fff;--vb-readout-edge:#ddd;
+  --vb-grid:#e5e5e5;--vb-grid-100:#999;--vb-signal:#666;
+}}
 .vb-shell{max-width:780px;margin:0 auto;padding:44px 16px 80px}
 .vb-hero{margin-bottom:26px}
 .vb-hero h1{font-family:var(--font-display);font-size:clamp(30px,5vw,42px);font-weight:520;letter-spacing:-0.018em;color:var(--ink);margin:14px 0 10px;line-height:1.1;text-wrap:balance}
@@ -291,10 +367,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .vb-remove{grid-area:remove;justify-self:end}
 }
 /* Dark mode */
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .vb-panel,:root:not([data-theme="light"]) .vb-card,:root:not([data-theme="light"]) .vb-headline,:root:not([data-theme="light"]) .vb-subcard,:root:not([data-theme="light"]) .vb-chartwrap{background:#1B1E24;border-color:#2C3038}:root:not([data-theme="light"]) .vb-input,:root:not([data-theme="light"]) .vb-select{background:#16181D;border-color:#3A404A;color:#F1EDE5}:root:not([data-theme="light"]) .vb-prow{background:#21262E;border-color:#2C3038}}
-:root[data-theme="dark"] .vb-panel,:root[data-theme="dark"] .vb-card,:root[data-theme="dark"] .vb-headline,:root[data-theme="dark"] .vb-subcard,:root[data-theme="dark"] .vb-chartwrap{background:#1B1E24;border-color:#2C3038}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .vb-card,:root:not([data-theme="light"]) .vb-subcard{background:#1B1E24;border-color:#2C3038}:root:not([data-theme="light"]) .vb-input,:root:not([data-theme="light"]) .vb-select{background:#16181D;border-color:#3A404A;color:#F1EDE5}:root:not([data-theme="light"]) .vb-prow{background:#21262E}}
+:root[data-theme="dark"] .vb-card,:root[data-theme="dark"] .vb-subcard{background:#1B1E24;border-color:#2C3038}
 :root[data-theme="dark"] .vb-input,:root[data-theme="dark"] .vb-select{background:#16181D;border-color:#3A404A;color:#F1EDE5}
-:root[data-theme="dark"] .vb-prow{background:#21262E;border-color:#2C3038}
+:root[data-theme="dark"] .vb-prow{background:#21262E}
 .vb-anchor{font-size:14px;line-height:1.5;color:var(--ink);margin:8px 0 0}.vb-anchor strong{color:var(--ink);font-weight:600}.vb-spike{font-size:13.5px;line-height:1.5;margin:0;padding:10px 14px;border-radius:var(--r-sm,9px);background:var(--cream-2);color:var(--ink-soft)}.vb-spike[data-tone="over"]{color:var(--rust);background:var(--status-bad-tint,#F7E7DC)}.vb-spike[data-tone="under"]{color:var(--status-good,#1F6B3A);background:var(--status-good-tint,#E7F5EC)}.vb-spike[data-tone="watch"]{color:var(--status-warn-deep,#8A3E16);background:var(--status-warn-tint,#FDEFE3)}.vb-action{background:var(--surface-1,#fff);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-md,14px);padding:18px 20px;box-shadow:var(--elev-1)}.vb-ask{font-size:15px;line-height:1.55;color:var(--ink);margin:0 0 4px;font-style:italic}.vb-vol{font-size:14px;line-height:1.5;color:var(--ink);margin:8px 0 0}.vb-vol strong{color:var(--rust)}.vb-action-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.vb-btn{display:inline-flex;align-items:center;min-height:36px;padding:8px 16px;border-radius:999px;border:1px solid var(--line-dark);background:transparent;color:var(--ink);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}.vb-btn:hover{border-color:var(--teal);color:var(--teal)}.vb-btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px}.vb-more{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}.vb-more>summary{font-size:12.5px;font-weight:600;color:var(--teal);cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:6px}.vb-more>summary::-webkit-details-marker{display:none}.vb-more>summary::before{content:"+";font-weight:700}.vb-more[open]>summary::before{content:"\2212"}.vb-more-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:12px}.vb-brief{display:none}@media print{html.vb-printing body{visibility:hidden}html.vb-printing [data-brief]{visibility:visible;display:block !important;position:absolute;left:0;top:0;width:100%;padding:24px;font-size:13.5px;line-height:1.5;color:#000}html.vb-printing [data-brief] *{visibility:visible;color:#000}html.vb-printing [data-brief] p{margin:0 0 4px}}@media(min-width:560px){.vb-more-grid{grid-template-columns:1fr 1fr}}
 /* Print — grayscale the chart so a B&W kitchen printout survives */
 @media print{
@@ -304,6 +380,24 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .vb-ledger-h,.vb-ledger-eyebrow,.vb-ledger-lede,.vb-ledger-body,.vb-ledger-body strong,.vb-ledger-fine{color:#000 !important}
   .vb-actions,.vb-ledger-cta{display:none !important}
 }
+/* ── Material application — recess the Invoice Desk + Market Well, raise the
+   Instrument Readout. View-only: no functional element is removed or
+   restyled beyond its surface material. Placed last so it wins by source
+   order over the base component rules above. ───────────────────────────── */
+/* 1 · INVOICE DESK — warm paper, gold hairline, recessed (not lifted) */
+.vb-panel{background:var(--vb-desk);border-color:var(--vb-desk-edge);box-shadow:var(--vb-desk-inset)}
+.vb-prow{border-color:var(--vb-rule)}
+/* 2 · INSTRUMENT READOUT — raise to --elev-2, 2px tone bezel, tone wash; the
+   rate-of-change gap is the hero number at --vb-fs-verdict. */
+.vb-headline{box-shadow:var(--elev-2);border-top-width:2px;background-color:var(--vb-readout-bg);background-image:linear-gradient(var(--vb-readout-wash),var(--vb-readout-wash));border-color:var(--vb-readout-edge)}
+.vb-gap-num{font-size:var(--vb-fs-verdict)}
+/* 3 · MARKET WELL — recess the chart onto --surface-inset; emphasize the
+   indexed-to-100 baseline (the y=100 line). */
+.vb-chartwrap{background:var(--surface-inset);box-shadow:var(--vb-well-inset)}
+.vb-chart-base{stroke:var(--vb-grid-100)}
+.vb-chart-axis,.vb-chart-note,.vb-chart-endlabel--mkt{fill:var(--ink-soft)}
+/* 4 · LEDGER TAPE — receipt / attribution / timeline in system mono */
+.vb-rc-list,.vb-rc-meta,.vb-attr-dl dd,.vb-timeline{font-family:var(--vb-font-mono)}
 </style>
 </head>
 <body>
