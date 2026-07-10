@@ -25,7 +25,12 @@
 <!-- Tarjeta social (2026-07-07): la tarjeta de marca del sitio, para
      que un enlace pegado muestre una imagen con marca en lugar de una
      tarjeta sin texto. Cambiar por una tarjeta propia del demo cuando
-     build-og-cards la genere. -->
+     build-og-cards la genere.
+     TODO (2026-07-09, revisión ronda 2 #16/#18): generar la tarjeta OG
+     propia del demo — la fila de romana marcada + "▲ $5.23 por caja"
+     es la tarjeta — vía build-og-cards, y sellar ambos locales. Queda
+     aparcado como el seguimiento "demo OG card" en el tablero del
+     consejo; crear el recurso está fuera del alcance de esta pasada. -->
 <meta property="og:image" content="https://muntin.digital/brand/og/home-es.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
@@ -116,16 +121,22 @@
 .lg-row--ghost .lg-n{font-size:14px}
 .lg-stepnote{font-size:12.5px;color:var(--stone);margin:10px 0 0;font-style:italic}
 .lg-cap{position:relative;z-index:1;margin:22px 4px 0;font-size:13px;line-height:1.5;color:var(--ink-soft)}
-/* Step-3 band chart (P0-2, 2026-07-07). Two hand-drawn variants in
-   aspect-ratio boxes (no CLS); the hidden one is display:none so AT
-   sees exactly one. Geometry key — desktop: $1.00 = 32px, y(v) =
-   252 − (v − 23.50) × 32; mobile: $1.00 = 24px, y(v) = 200 −
-   (v − 23.50) × 24. Data: $24.10 / $24.35 / $29.45; trailing median
-   of the priors = $24.22; delta $5.23 = +21.6% — verified against
-   tools/_shared/bench-lookup.js computePriceHike (fires: ≥8% AND ≥$5). */
+/* Step-3 band chart (P0-2, 2026-07-07; frame variant 2026-07-09).
+   Three hand-drawn variants in aspect-ratio boxes (no CLS); the hidden
+   ones are display:none so AT sees exactly one — wide for the no-JS /
+   stacked read, narrow ≤560px, and frame drawn for desktop duty in the
+   ≥768px in-frame column (three dated ticks, value labels offset off
+   the move path, band label clear of the numbers — the scaled mobile
+   geometry was doing desktop duty before). Geometry key — wide + frame:
+   $1.00 = 32px, y(v) = 252 − (v − 23.50) × 32; narrow: $1.00 = 24px,
+   y(v) = 200 − (v − 23.50) × 24. Data: $24.10 / $24.35 / $29.45;
+   trailing median of the priors = $24.22; delta $5.23 = +21.6% —
+   verified against tools/_shared/bench-lookup.js computePriceHike
+   (fires: ≥8% AND ≥$5). */
 .lg-chart{margin:16px 0 6px}
 .lg-chart--wide{max-width:640px;aspect-ratio:640/300}
 .lg-chart--narrow{display:none;max-width:320px;aspect-ratio:320/240}
+.lg-chart--frame{display:none;max-width:430px;aspect-ratio:430/300}
 @media (max-width:560px){.lg-chart--wide{display:none}.lg-chart--narrow{display:block}}
 .lg-chart svg{display:block;width:100%;height:auto}
 .lgc-grid{stroke:var(--line,#E3E5E9);stroke-width:1}
@@ -147,25 +158,28 @@
 .lgc-num--sm{font-size:13px}
 .lgc-delta{font-family:var(--font-display,Georgia,serif);font-weight:600;font-size:16px;fill:var(--rust,#C42E2E)}
 .lgc-delta--sm{font-size:12.5px}
-/* One-time flag landing (P0-3, M1 — 2026-07-07). Base CSS is the
-   finished chart; the inline script arms .lg-armed only when motion is
-   allowed, then double-rAFs .lg-landed. All sequencing lives in
-   transition-delay: rust segment 120ms → dot pop 360ms → bracket +
-   labels 480ms → row pill + tint 600ms. Opacity/transform only, no
-   keyframes; no-JS and reduced-motion see the finished figure. */
+/* One-time flag landing (P0-3, M1 — 2026-07-07; tokenized 2026-07-09).
+   Base CSS is the finished chart; the inline script arms .lg-armed only
+   when motion is allowed, then double-rAFs .lg-landed. All sequencing
+   lives in transition-delay: rust segment 120ms → dot pop 360ms →
+   bracket + labels 480ms → row pill + tint 600ms. Every beat derives
+   from the site's --t-micro (120ms) scale: durations are 2× (beats) and
+   3× (tint) --t-micro via calc(); the delays are 1×/3×/4×/5× --t-micro.
+   Opacity/transform only, no keyframes; no-JS and reduced-motion see
+   the finished figure. */
 .lg-row--flag{position:relative;isolation:isolate}
 .lg-row--flag::before{content:"";position:absolute;inset:0 -6px;background:var(--status-bad-tint,#F7E7DC);opacity:1;z-index:-1;border-radius:4px}
 .lgf-dot{transform-box:fill-box;transform-origin:center}
 .lg-vignette.lg-armed .lg-flag{opacity:0;transform:translateY(-4px)}
-.lg-vignette.lg-armed.lg-landed .lg-flag{opacity:1;transform:none;transition:opacity 240ms var(--ease-out,ease-out) 600ms,transform 240ms var(--ease-out,ease-out) 600ms}
+.lg-vignette.lg-armed.lg-landed .lg-flag{opacity:1;transform:none;transition:opacity calc(var(--t-micro,120ms)*2) var(--ease-out,ease-out) 600ms,transform calc(var(--t-micro,120ms)*2) var(--ease-out,ease-out) 600ms}
 .lg-vignette.lg-armed .lg-row--flag::before{opacity:0}
-.lg-vignette.lg-armed.lg-landed .lg-row--flag::before{opacity:1;transition:opacity 360ms var(--ease-out,ease-out) 600ms}
+.lg-vignette.lg-armed.lg-landed .lg-row--flag::before{opacity:1;transition:opacity calc(var(--t-micro,120ms)*3) var(--ease-out,ease-out) 600ms}
 .lg-vignette.lg-armed .lgf-seg{opacity:0;transform:translateY(-4px)}
-.lg-vignette.lg-armed.lg-landed .lgf-seg{opacity:1;transform:none;transition:opacity 240ms var(--ease-out,ease-out) 120ms,transform 240ms var(--ease-out,ease-out) 120ms}
+.lg-vignette.lg-armed.lg-landed .lgf-seg{opacity:1;transform:none;transition:opacity calc(var(--t-micro,120ms)*2) var(--ease-out,ease-out) 120ms,transform calc(var(--t-micro,120ms)*2) var(--ease-out,ease-out) 120ms}
 .lg-vignette.lg-armed .lgf-dot{opacity:0;transform:scale(.4)}
-.lg-vignette.lg-armed.lg-landed .lgf-dot{opacity:1;transform:scale(1);transition:opacity 240ms var(--ease-spring,ease-out) 360ms,transform 240ms var(--ease-spring,ease-out) 360ms}
+.lg-vignette.lg-armed.lg-landed .lgf-dot{opacity:1;transform:scale(1);transition:opacity calc(var(--t-micro,120ms)*2) var(--ease-spring,ease-out) 360ms,transform calc(var(--t-micro,120ms)*2) var(--ease-spring,ease-out) 360ms}
 .lg-vignette.lg-armed .lgf-lbl{opacity:0}
-.lg-vignette.lg-armed.lg-landed .lgf-lbl{opacity:1;transition:opacity 240ms var(--ease-out,ease-out) 480ms}
+.lg-vignette.lg-armed.lg-landed .lgf-lbl{opacity:1;transition:opacity calc(var(--t-micro,120ms)*2) var(--ease-out,ease-out) 480ms}
 @media (prefers-reduced-motion:reduce){
   .lg-vignette .lg-flag,.lg-vignette.lg-armed .lg-flag,
   .lg-vignette .lgf-seg,.lg-vignette.lg-armed .lgf-seg,
@@ -179,6 +193,25 @@
    stays idempotent (--banner-h measures 0, harmless). The mobile
    sticky CTA bar is suppressed via <body data-hide-sticky-bar>. */
 .batch-marquee{display:none}
+/* Adenda ronda 2: site-core.css siembra un VALOR MÓVIL de respaldo
+   @media(max-width:640px){:root{--banner-h:72px}} para páginas con
+   banner vivo. Esta página suprime el banner por completo (regla de
+   arriba) y retiró su script de medición, así que ese respaldo sumaba
+   en silencio 72px fantasma a cada desplazamiento de ancla en
+   teléfonos — medido headless: las llegadas ancladas dejaban el marco
+   a 244px en vez de los 100 previstos (72px contados una vez en el
+   scroll-padding global y otra en los scroll-margin). Re-puesto a
+   cero con especificidad html:root para que la posición posterior de
+   la hoja asíncrona en la cascada no pueda resucitarlo; esto también
+   vuelve a hacer cierto el "consumers all default to 0" del
+   comentario centinela. */
+html:root{--banner-h:0px}
+/* No-JS twin of the sticky-bar suppression (round-2 catch): site-core
+   only hides the bar via [hidden], which the footer script sets — so a
+   JS-off phone still got the competing sticky CTA over the stacked
+   read. The attribute the body already carries now does the hiding in
+   CSS itself; the footer script stays as the JS-on path. */
+body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
 /* Step-4 three-stance strip — literal rgba like the rest of the
    .ld-cta ink band (tokens would double-flip in dark mode). */
 .lg-stances{display:flex;flex-wrap:wrap;gap:6px 18px;list-style:none;padding:14px 0 0;margin:22px 0 0;border-top:1px solid rgba(246,247,248,.14);font-size:12.5px;line-height:1.5;color:rgba(246,247,248,.66)}
@@ -215,43 +248,177 @@
 /* Demo walkthrough (.ld-*) — progressive enhancement: all panels ship
    visible and stacked; JS collapses them into a stepper. No uploads,
    no inputs, no network — the page is a guided reading of canned data. */
-.ld-wrap{max-width:880px;margin:0 auto}
+/* .container.ld-wrap (corrección 2026-07-09): el selector .ld-wrap a
+   secas perdía ante .container{max-width:var(--max)} (misma
+   especificidad, después en la cascada — CSS crítico inline +
+   site-core.css), así que el marco se pintaba a ~1100px con cada
+   proporción afinada para 880. El selector compuesto restaura la
+   medida prevista; las alturas del escenario de abajo se re-midieron
+   headless al ancho real de 880px. */
+.container.ld-wrap{max-width:880px;margin:0 auto}
 .ld-rail{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 28px;padding:0;list-style:none;font-size:13px;counter-reset:ld}
 .ld-rail li{counter-increment:ld}
-.ld-rail a{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;background:var(--surface-1,#fff);border:1px solid var(--line);border-radius:999px;color:var(--ink);text-decoration:none}
+.ld-rail a{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;background:var(--surface-1,#fff);border:1px solid var(--line);border-radius:999px;color:var(--ink);text-decoration:none;transition:border-color var(--t-micro,120ms) var(--ease,ease),box-shadow var(--t-micro,120ms) var(--ease,ease)}
 .ld-rail a::before{content:counter(ld,decimal-leading-zero);font-family:var(--font-display);font-weight:560;font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums lining-nums}
 .ld-rail li[aria-current="step"] a{border-color:var(--ink);box-shadow:var(--elev-1)}
-.ld-panel{margin:0 0 26px}
-.ld-js #ldPanels{display:grid;align-items:start;grid-template-columns:minmax(0,1fr);transition:height 200ms var(--ease-out,ease-out)}
-/* align-items:start: with default stretch, every grid-area:1/1 panel measures the
-   TALLEST panel (sizePanels read the same height on all five steps in round-3
-   headless verification), so per-step height never changed. minmax(0,1fr): the
-   auto track otherwise inherits the CSV pre min-content width and forces
-   page-level horizontal scroll at 360px. Verified live in Chromium, 2026-07-07. */
-.ld-js #ldPanels>.ld-panel{grid-area:1/1}
-/* Per-step height (review round 2, 2026-07-07). The grid-stack +
-   visibility (not display:none) still keeps every panel laid out at
-   full width, so content never reflows mid-transition — but the
-   region no longer sits at the TALLEST panel's height: that fix for
-   the founder-reported bounce (2026-07-06) traded it for a several-
-   hundred-pixel void under short steps. The stepper JS now sets
-   #ldPanels' inline height to the ACTIVE panel's offsetHeight on
-   every step change (recomputed on resize via one debounced
-   listener), and the 200ms height transition above turns each
-   difference into a calm animated frame — not the jarring instant
-   reflow the founder banned. Reduced motion: transition off, the
-   height still snaps straight to the right value. No-JS: .ld-js is
-   never added and no inline height is set, so the stacked read
-   keeps its natural flow. No overflow clipping: hidden panels don't
-   paint, and the footer below always covers their residual layout
-   overflow — clipping would cut the pane's --elev-3 shadow instead.
-   Hidden panels drop out of paint, pointer, and the accessibility
-   tree alike. */
-.ld-js .ld-panel:not(.ld-current){visibility:hidden}
-@media (prefers-reduced-motion:reduce){.ld-js #ldPanels{transition:none}}
+/* scroll-margin en la SECCIÓN (corrección de enlaces profundos
+   2026-07-09): el ancla nativa apunta a la sección, no a su h2, así el
+   salto pre-JS también libra el nav fijo de ~88px. Corrección ronda 2:
+   el html{scroll-padding-top} global (site-core.css — 64px de nav +
+   banner + 8px = 72px aquí) se SUMA por especificación al
+   scroll-margin, así que el margen anterior de 100px contaba el nav
+   dos veces y dejaba las llegadas ancladas a 172px, empujando la
+   propia barra de controles del marco bajo el pliegue en viewports de
+   portátil. 28px de margen + 72px de padding global = los 100px
+   previstos. La misma cuenta en las reglas del marco y del h2 abajo. */
+.ld-panel{margin:0 0 26px;scroll-margin-top:calc(28px + var(--banner-h,0px))}
+/* ===== El marco de app (rediseño del fundador, 2026-07-09) =====
+   Un escenario contenido de altura fija DENTRO del cual está el lector:
+   una franja de chrome (nombre del producto + nombre del paso + "2 de
+   5") arriba, el escenario en medio, Atrás/Siguiente anclados en la
+   barra inferior propia del marco. La altura de la página NUNCA cambia
+   entre pasos — la altura animada por paso (el sizePanels de la ronda 2
+   + su transición de height de 200ms) seguía moviendo la página y el
+   fundador vetó cualquier movimiento vertical, así que ambos
+   desaparecen. Los pasos ahora se intercambian DENTRO del escenario,
+   sale-y-entra: el panel saliente se desvanece 180ms en su sitio y el
+   ENTRANTE se funde + sube 8px con un compás de 60ms sobre su propia
+   superficie opaca (240ms en total) — transform+opacity, solo
+   compositor; con movimiento reducido el cambio es instantáneo (lo
+   garantiza la regla PRM inline de abajo, independiente de las hojas
+   asíncronas). Un panel más alto que el escenario se desplaza DENTRO
+   del cuerpo del marco (barra de scroll fina siempre visible como
+   señal; scroll con inercia en táctil), nunca la página. Sin JS: .ld-js
+   nunca llega, .ld-frame queda como un div sin estilo, el chrome y los
+   controles conservan su atributo [hidden], y la lectura apilada
+   completa mantiene su flujo natural — la invariante sin-JS-completo se
+   cumple. */
+.ld-js .ld-frame{background:var(--surface-1,#fff);border:1px solid var(--line,#E3E5E9);border-radius:16px;box-shadow:var(--elev-3);overflow:hidden;margin:0 0 26px;scroll-margin-top:calc(28px + var(--banner-h,0px))}
+.ld-js .ld-chrome{display:flex;align-items:center;gap:12px;padding:9px 18px;background:var(--cream-2,#EDEEF1);border-bottom:1px solid var(--line,#E3E5E9);font-size:12.5px;line-height:1.4}
+.ld-chrome-app{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display);font-weight:600;font-size:13px;color:var(--ink);white-space:nowrap}
+.ld-chrome-app::before{content:"";width:9px;height:9px;border-radius:3px;background:var(--teal,#2A50C8)}
+.ld-chrome-chip{display:inline-flex;padding:1px 9px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-radius:999px;border:1px solid var(--line-dark,#D7DAE0);color:var(--ink-soft);white-space:nowrap}
+/* Lectura del paso (corrección de recorte 2026-07-09): el strong del
+   título es la ÚNICA pieza que encoge — se corta con elipsis; el
+   contador "2 de 5" nunca se recorta (en ≤640px es el único contador
+   de paso de la página, #ldProgress está oculto). Los títulos ahora
+   son los nombres cortos del riel. */
+.ld-chrome-step{margin-left:auto;display:inline-flex;align-items:baseline;gap:5px;min-width:0;overflow:hidden;color:var(--ink-soft);white-space:nowrap;font-variant-numeric:tabular-nums lining-nums}
+.ld-chrome-step strong{font-weight:600;color:var(--ink);min-width:0;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:560px){.ld-chrome-chip{display:none}}
+/* El escenario. Altura fija por breakpoint. El escritorio se re-midió
+   el 2026-07-09 con el ancho de 880px RESTAURADO (la mediana anterior
+   de 700px se midió headless contra el ancho involuntario de ~1100px):
+   los cinco paneles recompuestos miden ahora 603-719px, así que el
+   escenario queda en 720 — el máximo — y ningún paso se desplaza
+   internamente a altura completa del escenario. El móvil conserva su
+   mediana de 640px (los anchos ≤767px nunca vieron el bug del wrap).
+   Después se limita con svh para que marco + chrome + barra quepan en
+   un viewport corto (svh, no dvh: dvh sigue a la barra de URL móvil y
+   volvería a rebotar la página); en viewports más cortos los paneles
+   se desplazan dentro del escenario tras la señal de degradado
+   .ld-overflow. Reservas re-derivadas en la ronda 2 con chrome + barra
+   medidos + el verdadero desplazamiento de ancla de 100px (72px de
+   scroll-padding global + 28px de scroll-margin del marco): escritorio
+   208 ≈ 100 de desplazamiento + 37.7 de chrome + 69.4 de barra (1px de
+   más — se queda); el móvil necesita 100 + 37.7 de chrome + 73 de
+   barra (controles de 52px + 2×10px de padding + borde) ≈ 211, así que
+   los 184 anteriores recortaban la barra ~28px en teléfonos cortos —
+   ahora es 213. Recortar cualquiera de las dos empujaría la propia
+   barra del marco bajo el pliegue en llegadas ancladas. La mecánica de
+   pila de grid + visibility
+   se conserva: cada panel se maqueta a ancho completo en la celda 1/1,
+   así que el contenido nunca refluye a mitad de transición.
+   minmax(0,1fr) en AMBOS ejes: la columna hereda si no el ancho
+   min-content del pre del CSV (scroll de página a 360px), y la fila
+   debe ceñirse al escenario en vez de crecer con el panel más alto. */
+.ld-js #ldPanels{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr);height:720px;overflow:hidden}
+@supports (height:1svh){.ld-js #ldPanels{height:clamp(430px,calc(100svh - 208px),720px)}}
+@media (max-width:767px){.ld-js #ldPanels{height:640px}@supports (height:1svh){.ld-js #ldPanels{height:clamp(430px,calc(100svh - 213px),640px)}}}
+/* Paneles dentro del escenario: cada uno llena el escenario y desplaza
+   su propio desbordamiento; los cortos se centran (safe center vuelve a
+   alinearse arriba en cuanto el contenido desborda, y a flex-start
+   donde `safe` no tiene soporte). Estados del intercambio (sale-y-entra,
+   2026-07-09): cada panel lleva una superficie OPACA, así que el panel
+   entrante (z-index:1) ocluye al saliente mientras se funde encima — el
+   panel oscuro del paso 4 ya no se mezcla en gris a través de su vecino
+   y desaparece la doble exposición tenue de los cambios claro-claro. El
+   fundido entrante espera un compás de 60ms (medio --t-micro) para que
+   el intercambio se lea sale-y-entra; el saliente conserva visibility
+   hasta 240ms (2× --t-micro, el intercambio completo). visibility sigue
+   manteniendo a los paneles ocultos fuera de la pintura, del puntero y
+   del árbol de accesibilidad. El encadenado de scroll queda NATIVO —
+   sin overscroll-behavior:contain — para que un desliz más allá del
+   final del panel mueva la página en vez de quedarse muerto (la ley de
+   altura de página nunca exigió contención). */
+.ld-js #ldPanels>.ld-panel{grid-area:1/1;margin:0;min-height:0;padding:18px clamp(16px,3vw,28px) 22px;background:var(--surface-1,#fff);display:flex;flex-direction:column;justify-content:flex-start;justify-content:safe center;overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--line-dark,#D7DAE0) transparent;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity var(--t-fast,180ms) var(--ease-out,ease-out),visibility 0s calc(var(--t-micro,120ms)*2),transform 0s calc(var(--t-micro,120ms)*2)}
+.ld-js #ldPanels>.ld-panel.ld-current{opacity:1;visibility:visible;transform:none;z-index:1;transition:opacity var(--t-fast,180ms) var(--ease-out,ease-out) calc(var(--t-micro,120ms)/2),transform var(--t-fast,180ms) var(--ease-out,ease-out) calc(var(--t-micro,120ms)/2)}
+/* Avance rápido (hallazgo ronda 2): un segundo Siguiente dentro del
+   intercambio de 240ms volvía a ocultar el panel interrumpido mientras
+   el retraso del entrante se reiniciaba — ~100ms de escenario en
+   blanco. A menos de 240ms del último cambio el recorrido sella
+   .ld-quick y el panel entrante se funde directo (sin compás muerto);
+   la clase se retira en el siguiente cambio sin prisa. */
+.ld-js #ldPanels.ld-quick>.ld-panel.ld-current{transition-delay:0s}
+.ld-js #ldPanels>.ld-panel::-webkit-scrollbar{width:10px}
+.ld-js #ldPanels>.ld-panel::-webkit-scrollbar-track{background:transparent}
+.ld-js #ldPanels>.ld-panel::-webkit-scrollbar-thumb{background:var(--line-dark,#D7DAE0);border-radius:999px;border:3px solid transparent;background-clip:padding-box}
+/* Señal de desbordamiento (2026-07-09): un panel más alto que el
+   escenario recibe un degradado inferior pegajoso; el recorrido activa
+   .ld-overflow y lo retira cuando el lector se acerca al final del
+   panel. Solo opacidad, cero impacto de layout (el margen negativo
+   compensa su propia altura). */
+.ld-js #ldPanels>.ld-panel::after{content:"";display:block;flex:none;position:sticky;bottom:0;height:40px;margin:-40px 0 0;background:linear-gradient(to bottom,transparent,var(--surface-1,#fff));opacity:0;pointer-events:none;transition:opacity var(--t-fast,180ms) var(--ease,ease)}
+.ld-js #ldPanels>.ld-panel.ld-overflow::after{opacity:1}
+/* PRM es dueño del fundido por derecho propio (2026-07-09): el selector
+   .ld-current se repite aquí con la misma especificidad, DESPUÉS en la
+   cascada, así el cambio instantáneo ya no depende de que la regla
+   universal de site-article.css (hoja asíncrona) llegue primero. */
+@media (prefers-reduced-motion:reduce){
+  .ld-js #ldPanels>.ld-panel,.ld-js #ldPanels>.ld-panel.ld-current{transition:none;transform:none}
+  .ld-js #ldPanels>.ld-panel::after{transition:none}
+  .ld-rail a{transition:none}
+}
+/* Escala dentro del marco: el chrome del marco lleva la jerarquía, así
+   que los encabezados de panel bajan un punto, las leyendas se acercan
+   y el interior de las viñetas se compacta un grado (densidad de app,
+   no de imprenta) para que cada paso quepa en el escenario compartido
+   en escritorio. Todo acotado bajo .ld-js — la lectura apilada sin JS
+   conserva el ritmo de página impresa. */
+.ld-js .ld-panel h2{font-size:clamp(22px,2.4vw,27px);margin:0 0 6px}
+/* Drawer opens must GROW the panel scroll, not flex-squash (round-2 catch:
+   .cite{overflow:hidden} zeroes min-height, so flex-shrink clipped the
+   how-the-flag-decides drawer to 87px of 253px at stage 720). */
+.ld-js .ld-panel>.ld-more{flex-shrink:0;min-height:max-content}
+
+.ld-js .ld-panel .ld-body{margin:0 0 12px}
+.ld-js .ld-panel .lg-cap{margin-top:10px}
+.ld-js .ld-panel .lg-pane{padding:14px 18px 12px}
+.ld-js .ld-panel .lg-rows .lg-row{padding:8px 2px}
+.ld-js .ld-panel .lg-row--ghost{padding:4px 2px}
+.ld-js .ld-panel .ld-anat{margin:2px 0 12px;padding:10px 14px 11px}
+.ld-js .ld-panel .ld-note{margin:12px 0 0;padding:7px 12px}
+.ld-js .ld-panel .ld-search{margin:0 0 10px;padding:7px 14px}
+.ld-js .ld-panel .ld-count{margin:0 0 6px}
+.ld-js .ld-panel .ld-csv{margin:10px 0 0;padding:8px 12px;font-size:11.5px;line-height:1.5}
+.ld-js .ld-panel .lg-stepnote{margin:8px 0 0}
+.ld-js .ld-panel .ld-more{margin:10px 0 0}
+.ld-js .ld-panel .ld-more>summary{padding:8px 14px}
+/* Solo ES, dentro del marco: la columna de proveedor pasa de 104px a
+   150px para que "Proveedor de verduras" quepa en UNA línea (la base
+   ES deja envolver .lg-v a propósito — P0-5 — y esas filas de dos
+   líneas empujaban los pasos 1-2 fuera del escenario compartido).
+   Acotado a ≥561px para no tocar la pila móvil de dos líneas. */
+@media (min-width:561px){
+  .ld-js .ld-panel .lg-row{grid-template-columns:52px 150px 1fr max-content max-content}
+  .ld-js .ld-panel .lg-rows--qty .lg-row{grid-template-columns:52px 150px 1fr 34px max-content max-content}
+}
 .ld-panel .lg-pane{box-shadow:var(--elev-1)}
-.ld-js .ld-panel.ld-current .lg-pane{box-shadow:var(--elev-3)}
-.ld-panel h2{font-family:var(--font-display);font-size:clamp(24px,3vw,32px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 8px;scroll-margin-top:calc(84px + var(--banner-h,0px))}
+/* Dentro del marco el panel de papel se aplana — el MARCO es el único
+   objeto elevado de la página; una sombra de tarjeta dentro de otra
+   tarjeta se lee como ruido. */
+.ld-js .ld-panel .lg-pane{box-shadow:none}
+.ld-panel h2{font-family:var(--font-display);font-size:clamp(24px,3vw,32px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 8px;scroll-margin-top:calc(28px + var(--banner-h,0px))}
 .ld-panel .ld-body{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 16px;max-width:640px}
 .ld-invoice-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:6px}
 .ld-invoice-title{font-family:var(--font-display);font-weight:600;font-size:15px;color:var(--ink)}
@@ -266,52 +433,139 @@
 .ld-search svg{flex:0 0 16px}
 .ld-search .ld-q{font-weight:600;color:var(--ink)}
 .ld-count{font-size:12.5px;color:var(--stone);margin:0 0 10px}
-/* Acotado bajo .ld-js (2026-07-07): un display:flex de autor sin
-   acotar vence la regla [hidden]{display:none} del UA, y la página
-   sin JS pintaría botones Atrás/Siguiente muertos. Con JS, .ld-js y
-   hidden=false llegan juntos; sin JS el atributo hidden los mantiene
-   fuera del layout.
-   Pegajosos al borde inferior del viewport en TODOS los anchos
-   (corrección de revisión 2026-07-07): la pila de grid reserva la
-   altura del panel más alto, así que en los pasos cortos
-   Atrás/Siguiente quedaban debajo de un vacío de cientos de píxeles —
-   bajo el pliegue en el paso 0. position:sticky los fija al borde
-   inferior mientras el recorrido está a la vista y los deja asentarse
-   en su posición natural al final, con orden del DOM = orden visual =
-   orden de foco (el volteo de orden en ≤640px desapareció). La barra
-   CTA móvil está suprimida en esta página (data-hide-sticky-bar), así
-   que el espacio inferior está libre. El fondo usa --cream para que
-   la barra cambie con el modo oscuro. */
-.ld-js .ld-controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;position:sticky;bottom:0;z-index:5;margin:0;padding:10px 2px calc(10px + env(safe-area-inset-bottom,0px));background:var(--cream,#F6F7F8);border-top:1px solid var(--line,#E3E5E9)}
+/* Controles — la barra inferior del marco (rediseño 2026-07-09).
+   Siguen acotados bajo .ld-js: un display:flex de autor sin acotar
+   vence la regla [hidden]{display:none} del UA y la página sin JS
+   pintaría botones Atrás/Siguiente muertos; con JS, .ld-js y
+   hidden=false llegan juntos. La barra ahora es parte del chrome de la
+   app — anclada dentro del marco, siempre visible con él, nunca
+   huérfana bajo un vacío (la regla pegajosa al borde del viewport se
+   fue con el vacío que compensaba). Orden del DOM = orden visual =
+   orden de foco: el contador de paso es un span no enfocable llevado
+   al borde izquierdo; Atrás y luego Siguiente (o, en el paso final,
+   Volver a empezar y el primario de la lista fundadora) quedan a la
+   derecha. En ≤640px los dos botones visibles se reparten la barra a
+   la mitad con altura fija de control de 52px, de modo que la barra no
+   puede cambiar de altura entre pasos ni cuando la etiqueta fundadora
+   se parte en dos líneas; el deber de contador pasa al "2 de 5" de la
+   franja de chrome. Los tokens usan --cream-2/--line para que la barra
+   cambie con el modo oscuro. */
+.ld-js .ld-controls{display:flex;flex-wrap:nowrap;gap:10px;align-items:center;margin:0;padding:12px 18px;background:var(--cream-2,#EDEEF1);border-top:1px solid var(--line,#E3E5E9)}
+/* Gramática de movimiento de la barra (2026-07-09): opacity se suma a
+   la lista de transición de .btn para que la atenuación de Atrás
+   deshabilitado se funda en vez de saltar, y @starting-style funde la
+   entrada del par del paso 4 (Volver a empezar / Unirme) con el mismo
+   ease-out de 180ms del escenario — solo motores modernos; en el resto
+   degrada al cambio instantáneo de antes. PRM lo anula abajo. */
+.ld-js .ld-controls .btn{padding:10px 20px;font-size:14px;transition:transform var(--t-fast,180ms) var(--ease,ease),background var(--t-fast,180ms) var(--ease,ease),color var(--t-fast,180ms) var(--ease,ease),box-shadow var(--t-fast,180ms) var(--ease,ease),opacity var(--t-fast,180ms) var(--ease-out,ease-out)}
+@starting-style{.ld-js .ld-controls .btn{opacity:0}}
+@media (prefers-reduced-motion:reduce){.ld-js .ld-controls .btn{transition:none}}
+.ld-js .ld-progress{order:-1;margin-right:auto}
+@media (max-width:640px){
+  .ld-js .ld-progress{display:none}
+  .ld-js .ld-controls{gap:8px;padding:10px 12px}
+  .ld-js .ld-controls .btn{flex:1 1 0;min-width:0;justify-content:center;white-space:normal;text-align:center;line-height:1.25;padding:8px 10px;font-size:13.5px;min-height:52px}
+}
 .ld-controls .btn[disabled]{opacity:.45;cursor:default;pointer-events:none}
 .ld-progress{font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums}
 .ld-cta{background:#16181D;color:rgba(246,247,248,.78);border-radius:18px;padding:clamp(26px,4vw,48px)}
 .ld-cta h2{color:#F6F7F8}
 .ld-cta .ld-body{color:rgba(246,247,248,.75)}
 .ld-cta .lg-cap{color:rgba(246,247,248,.55)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ld-cta{background:#1B1E24;border:1px solid #2C3038}}
-:root[data-theme="dark"] .ld-cta{background:#1B1E24;border:1px solid #2C3038}
-/* Escaneo del paso 1 (P1-2/M2, 2026-07-07) — la fila aparece y luego
-   su sello de "leída" se asienta. Toda la secuencia vive en los
-   transition-delay de CSS bajo .ld-go (el JS quedó en dos clases):
-   filas de 200ms con escalón de 60ms por :nth-child, sellos de 180ms
-   a +120ms por fila — todo termina en menos de 550ms. El CSS base es
-   el estado final; sin JS y con movimiento reducido se ve completo
-   al instante. */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ld-cta{background:#0F1116;border:1px solid #2C3038}}
+:root[data-theme="dark"] .ld-cta{background:#0F1116;border:1px solid #2C3038}
+/* Interior del paso 4 dentro del marco (rediseño 2026-07-09): la banda
+   de tinta llena el escenario de borde a borde (la franja de chrome y
+   la barra de controles siguen en crema) — el propio marco se oscurece
+   para la petición, todavía el único momento de tinta de la página. La
+   banda base .ld-cta de arriba conserva su radio para la lectura
+   apilada sin JS. */
+.ld-js #ldPanels>.ld-cta{border-radius:0;padding:clamp(22px,3vw,36px) clamp(18px,3.2vw,36px);background:#16181D;scrollbar-color:rgba(246,247,248,.4) transparent}
+.ld-js #ldPanels>.ld-cta::-webkit-scrollbar-thumb{background:rgba(246,247,248,.4)}
+.ld-js #ldPanels>.ld-cta::after{background:linear-gradient(to bottom,transparent,#16181D)}
+/* La banda de tinta dentro del marco reafirma su fondo con la misma
+   especificidad de la regla de panel (la superficie opaca del fundido
+   la taparía en la cascada) y se aclara en modo oscuro como la base. */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ld-js #ldPanels>.ld-cta{background:#0F1116}:root:not([data-theme="light"]) .ld-js #ldPanels>.ld-cta::after{background:linear-gradient(to bottom,transparent,#0F1116)}}
+:root[data-theme="dark"] .ld-js #ldPanels>.ld-cta{background:#0F1116}
+:root[data-theme="dark"] .ld-js #ldPanels>.ld-cta::after{background:linear-gradient(to bottom,transparent,#0F1116)}
+/* Una sola petición en el marco (2026-07-09): mientras corre el
+   recorrido, el primario de la barra de controles es dueño del CTA
+   fundador; el botón idéntico del panel se oculta para que la petición
+   nunca aparezca dos veces en una pantalla. La lectura apilada sin JS
+   conserva el botón del panel (la barra viaja [hidden]). */
+.ld-js #ldPanels>.ld-cta .ld-cta-main .studio-cta-row{display:none}
+.ld-js .ld-cta .lg-price-figure{font-size:clamp(40px,4.6vw,56px);margin:14px 0 0}
+/* Composición a dos columnas del paso 4 (≥768px): la petición (precio
+   + lista fundadora) a la izquierda, el carril de compruébalo-tú-mismo
+   (Vendor Benchmark + enlaces de prueba) a la derecha; las posturas se
+   pliegan en la franja compacta de ancho completo de abajo. El <hr>
+   que separa las mitades en la lectura apilada se vuelve la regla
+   entre columnas. */
+@media (min-width:768px){
+  .ld-js .ld-cta-cols{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);column-gap:clamp(24px,3.5vw,40px);align-items:start}
+  .ld-js .ld-cta-cols>hr{display:none}
+  .ld-js .ld-cta-side{border-left:1px solid rgba(246,247,248,.14);padding-left:clamp(24px,3.5vw,40px);margin-top:4px}
+  .ld-js .ld-cta .lg-stances{margin-top:20px;padding-top:12px}
+  .ld-js .ld-cta .lg-stances li{font-size:12px}
+}
+/* Recomposición del paso 3 (≥768px, rediseño 2026-07-09): filas a la
+   izquierda, gráfica a la derecha, para que el paso más alto quepa en
+   la altura compartida del escenario en vez de dictar una mayor. Las
+   filas reutilizan la pila de dos líneas ya probada en ≤560px; la
+   columna de la gráfica muestra la variante .lg-chart--frame de
+   servicio de escritorio (dibujada para este hueco de 430px — tres
+   marcas con fecha, etiquetas fuera del trazo — en lugar de la
+   geometría móvil escalada). La tecnología de asistencia sigue viendo
+   exactamente una gráfica: las otras quedan en display:none. Dentro
+   del marco, a todo ancho, el remate va ENCIMA de la gráfica (solo
+   orden visual — el orden del DOM / sin JS no cambia) para que el
+   ancla de conversión quede dentro del pliegue del escenario. */
+.ld-js .ld-flagcols-viz{display:flex;flex-direction:column}
+.ld-js .ld-flagcols-viz .lg-stepnote{order:-1;margin:0 0 10px}
+@media (min-width:768px){
+  .ld-js .ld-flagcols{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);column-gap:clamp(18px,2.6vw,30px);align-items:center}
+  .ld-js .ld-flagcols .lg-chart--wide{display:none}
+  .ld-js .ld-flagcols .lg-chart--narrow{display:none}
+  .ld-js .ld-flagcols .lg-chart--frame{display:block;max-width:430px;margin:0 auto}
+  .ld-js .ld-flagcols .lg-chart{margin:0}
+  .ld-js .ld-flagcols .lg-stepnote{margin:0 0 10px}
+  .ld-js .ld-flagcols .lg-row{grid-template-columns:max-content 1fr max-content;grid-template-areas:"i i n" "d v s";gap:2px 8px}
+  .ld-js .ld-flagcols .lg-i{grid-area:i}
+  .ld-js .ld-flagcols .lg-n{grid-area:n}
+  .ld-js .ld-flagcols .lg-d{grid-area:d;font-size:11.5px}
+  .ld-js .ld-flagcols .lg-v{grid-area:v;font-size:11.5px;color:var(--stone);white-space:normal}
+  .ld-js .ld-flagcols .lg-s{grid-area:s;font-size:10.5px}
+  .ld-js .ld-flagcols .lg-flag{grid-area:s;white-space:normal;text-align:right;line-height:1.3}
+}
+/* El cajón leer-más del paso 3 vive dentro del marco; abrirlo desplaza
+   el PANEL, nunca la página (la altura del escenario es fija). */
+.ld-more{margin:14px 0 0}
+/* Escaneo del paso 1 (P1-2/M2, 2026-07-07; compás de asiento
+   2026-07-09) — la fila aparece y luego su sello de "leída" se asienta.
+   Toda la secuencia vive en los transition-delay de CSS bajo .ld-go (el
+   JS quedó en dos clases): cada compás arranca ahora tras un asiento de
+   +120ms (--t-micro) para que el propio fundido de 180ms del panel
+   termine antes de que empiece el escaneo — las primeras filas ya no se
+   animan invisibles dentro del fundido del escenario. Filas a
+   var(--t-fast) en 120/180/240/300/360ms; sellos en 240/300/360/420/
+   480ms — la pasada completa termina en ~660ms. El CSS base es el
+   estado final; sin JS y con movimiento reducido se ve completo al
+   instante. */
 .ld-reveal{opacity:1}
 .ld-js .ld-armed .ld-reveal{opacity:0;transform:translateY(6px)}
 .ld-js .ld-armed .ld-reveal .lg-s{opacity:0;transform:scale(.85)}
-.ld-js .ld-armed.ld-go .ld-reveal{opacity:1;transform:none;transition:opacity 200ms var(--ease-out,ease-out),transform 200ms var(--ease-out,ease-out)}
-.ld-js .ld-armed.ld-go .ld-reveal .lg-s{opacity:1;transform:none;transition:opacity 180ms var(--ease-spring,ease-out),transform 180ms var(--ease-spring,ease-out)}
-.ld-js .ld-armed.ld-go .ld-reveal:nth-child(2){transition-delay:60ms}
-.ld-js .ld-armed.ld-go .ld-reveal:nth-child(3){transition-delay:120ms}
-.ld-js .ld-armed.ld-go .ld-reveal:nth-child(4){transition-delay:180ms}
-.ld-js .ld-armed.ld-go .ld-reveal:nth-child(5){transition-delay:240ms}
-.ld-js .ld-armed.ld-go .ld-reveal:nth-child(1) .lg-s{transition-delay:120ms}
-.ld-js .ld-armed.ld-go .ld-reveal:nth-child(2) .lg-s{transition-delay:180ms}
-.ld-js .ld-armed.ld-go .ld-reveal:nth-child(3) .lg-s{transition-delay:240ms}
-.ld-js .ld-armed.ld-go .ld-reveal:nth-child(4) .lg-s{transition-delay:300ms}
-.ld-js .ld-armed.ld-go .ld-reveal:nth-child(5) .lg-s{transition-delay:360ms}
+.ld-js .ld-armed.ld-go .ld-reveal{opacity:1;transform:none;transition:opacity var(--t-fast,180ms) var(--ease-out,ease-out),transform var(--t-fast,180ms) var(--ease-out,ease-out);transition-delay:120ms}
+.ld-js .ld-armed.ld-go .ld-reveal .lg-s{opacity:1;transform:none;transition:opacity var(--t-fast,180ms) var(--ease-spring,ease-out),transform var(--t-fast,180ms) var(--ease-spring,ease-out)}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(2){transition-delay:180ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(3){transition-delay:240ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(4){transition-delay:300ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(5){transition-delay:360ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(1) .lg-s{transition-delay:240ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(2) .lg-s{transition-delay:300ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(3) .lg-s{transition-delay:360ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(4) .lg-s{transition-delay:420ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(5) .lg-s{transition-delay:480ms}
 @media (prefers-reduced-motion:reduce){.ld-reveal,.ld-js .ld-armed .ld-reveal,.ld-reveal .lg-s,.ld-js .ld-armed .ld-reveal .lg-s{opacity:1!important;transform:none!important;transition:none!important}}
 /* Lockup de precio G5 a escala del demo (P1-5, 2026-07-07) — la cifra
    nunca viaja sin los términos fundadores registrados completos. */
@@ -321,8 +575,9 @@
    (controles arriba de la región de paneles) cambiaba el vacío de
    escritorio por uno móvil — tras leer un panel largo había que
    volver a subir para tocar Siguiente — y hacía divergir el orden
-   visual del orden del DOM/tab. La regla pegajosa de .ld-controls de
-   arriba lo sustituye en todos los anchos. */
+   visual del orden del DOM/tab. Su sucesora, la barra pegajosa, fue a
+   su vez reemplazada el 2026-07-09 por la barra inferior propia del
+   marco de app (ver las reglas .ld-controls de arriba). */
 .visually-hidden-ld{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 </style>
 <style>
@@ -337,8 +592,9 @@
 [hidden]{display:none!important}
 /* ^ [hidden] guard duplicated from site-core.css on purpose: that sheet loads
    async, but the stepper script runs at parse and relies on [hidden] to keep
-   all four controls unpainted until JS chooses — without this inline rule a
-   slow first load briefly paints Back/Next/Start-over/Join simultaneously
+   the frame's chrome strip and all four controls unpainted until JS chooses —
+   without this inline rule a slow first load briefly paints
+   Back/Next/Start-over/Join (and the step chrome) simultaneously
    (round-3 catch; splice repaired after certification round). */
 :root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
 html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
@@ -436,18 +692,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
 <a class="skip-link" href="#main">Saltar al contenido</a>
 
-<!-- batch-banner:start -->
-<aside class="batch-marquee" data-batch="fathers-day-2026" role="complementary" aria-label="Nuevo informe · Que te encuentren para el Día del Padre" style="background:#16181D;color:#F6F7F8;font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(246,247,248,0.16);box-shadow:inset 0 1px 0 rgba(255,255,255,0.05)">
-  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;flex:1 1 auto">
-      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:#2A50C8;color:#F6F7F8;padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">Nuevo informe</span>
-      <span style="font-family:'Fraunces',Georgia,'Times New Roman',serif;font-size:14px;font-style:italic;line-height:1.35;min-width:0;color:#F6F7F8">Es el fin de semana del Día del Padre. ¿Una familia que busca puede encontrarte?</span>
-    </div>
-    <a href="/es/blog/dia-del-padre-que-te-encuentren-2026/" style="display:inline-flex;align-items:center;gap:6px;color:#16181D;background:#F6F7F8;text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:13px;padding:6px 14px;border-radius:999px;white-space:nowrap;flex-shrink:0;box-shadow:0 1px 2px rgba(0,0,0,0.18);transition:transform .15s ease,box-shadow .15s ease">Leer el informe <span aria-hidden="true">&rarr;</span></a>
-  </div>
-</aside>
-<script>(function(){var d=document.documentElement;function s(){var b=document.querySelector('.batch-marquee');if(b){d.style.setProperty('--banner-h',b.offsetHeight+'px');}}s();addEventListener('resize',s,{passive:true});addEventListener('orientationchange',s);if(document.fonts&&document.fonts.ready){document.fonts.ready.then(s);}})();</script>
-<!-- batch-banner:end -->
+<!-- batch-banner:start --><!-- batch-banner:end -->
+<!-- El banner caduco del Día del Padre + su script medidor de
+     --banner-h se retiraron el 2026-07-09 (esta página suprime los
+     banners vía CSS de todos modos; ~1.5KB de marcado muerto y un
+     listener de resize vivo en la página cuyo argumento es que la
+     página es la prueba). El par de centinelas vacío de arriba
+     coincide con la salida de lote-caducado de inject-batch-banner.mjs,
+     así el inyector sigue siendo idempotente. Todos los consumidores
+     de var(--banner-h,0px) caen a 0. -->
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially
@@ -613,7 +866,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <header class="studio-section" style="margin:8px 0 4px">
       <p class="eyebrow">El demo de maqueta &middot; datos de muestra, sin subir nada</p>
       <h1 style="font-family:var(--font-display);font-size:clamp(36px,4.6vw,54px);font-weight:560;line-height:1.06;letter-spacing:-0.5px;margin:0 0 14px;text-wrap:balance">Una factura de muestra, <span class="serif-italic">de principio a fin.</span></h1>
-      <p class="lg-lede">Es un recorrido guiado con datos de muestra &mdash; el producto real, mostrado sobre una factura ficticia. No sube nada y no env&iacute;a nada; tus n&uacute;meros se quedan donde est&aacute;n.</p>
+      <p class="lg-lede">Es un recorrido guiado con datos de muestra &mdash; la mec&aacute;nica real, mostrada sobre una factura ficticia. No sube nada y no env&iacute;a nada; tus n&uacute;meros se quedan donde est&aacute;n.</p>
       <ol class="ld-rail" id="ldRail">
         <li><a href="#ld-step0">La factura</a></li>
         <li><a href="#ld-step1">Leer</a></li>
@@ -623,11 +876,25 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </ol>
     </header>
 
+    <!-- El marco de app (rediseño del fundador 2026-07-09): franja de
+         chrome + escenario de altura fija + barra de controles, un solo
+         objeto elevado. El chrome viaja [hidden] (el JS lo revela junto
+         con .ld-js) y aria-hidden — su nombre de paso + contador son
+         ecos visuales de #ldProgress / #ldLive, así que la tecnología de
+         asistencia oye cada paso exactamente una vez. Sin JS: este
+         contenedor es un div sin estilo y los paneles de abajo se leen
+         apilados, de arriba abajo, completos. -->
+    <div class="ld-frame" id="ldFrame">
+    <div class="ld-chrome" id="ldChrome" hidden aria-hidden="true">
+      <span class="ld-chrome-app">Muntin Ledger</span>
+      <span class="ld-chrome-chip">Demo &middot; datos de muestra</span>
+      <span class="ld-chrome-step"><strong id="ldChromeTitle"></strong> &middot; <span id="ldChromeCount"></span></span>
+    </div>
     <div id="ldPanels">
 
     <section class="ld-panel" id="ld-step0" aria-labelledby="ld-h0">
       <h2 id="ld-h0" tabindex="-1">Llega la factura.</h2>
-      <p class="ld-body">Una factura de verduras llega como siempre: cinco l&iacute;neas, un total. Una de esas cinco l&iacute;neas esconde una subida &mdash; y el total de $115.80 no te dir&aacute; cu&aacute;l. <a class="js-ld-jump" href="#ld-step3">Salta a la marca &rarr;</a></p>
+      <p class="ld-body">Una factura de verduras llega como siempre: cinco l&iacute;neas, un total. Una de esas cinco l&iacute;neas esconde una subida &mdash; y el total de $115.80 no te dir&aacute; cu&aacute;l. <a class="js-ld-jump" href="#ld-step3">Salta a la marca&nbsp;&rarr;</a></p>
       <figure class="lg-vignette" style="margin:0" data-audio-alt="Una factura de verduras de muestra con fecha veintiséis de junio: cinco líneas. Lechuga romana a veintinueve cuarenta y cinco, tomates Roma a treinta y uno cincuenta, cebollas amarillas a veintidós dólares, limones verdes a catorce veinticinco y cilantro a dieciocho sesenta, con un total de ciento quince dólares con ochenta centavos. Una de las cinco líneas esconde una subida; el total por sí solo no dirá cuál.">
         <div class="lg-pane">
           <div class="lg-pane-head">
@@ -660,7 +927,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <details class="cite">
             <summary>Compru&eacute;balo: lo que muestra la pesta&ntilde;a Red</summary>
             <div class="cite-body">
-              <p>Mira la pesta&ntilde;a Red mientras avanzas &mdash; el recorrido no dispara peticiones propias. Lo que s&iacute; ver&aacute;s es la maquinaria del propio sitio: una consulta de sesi&oacute;n, nuestro contador propio sin cookies y &mdash; si bajas hasta el formulario del pie &mdash; su escudo antispam, el &uacute;nico script de terceros en la p&aacute;gina.</p>
+              <p>Mira la pesta&ntilde;a Red mientras avanzas &mdash; el recorrido no dispara peticiones propias. Lo que s&iacute; ver&aacute;s es la maquinaria del propio sitio: una consulta de sesi&oacute;n, su contador propio sin cookies y &mdash; si bajas hasta el formulario del pie &mdash; su escudo antispam, el &uacute;nico script de terceros en la p&aacute;gina.</p>
             </div>
           </details>
         </figcaption>
@@ -669,7 +936,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <section class="ld-panel" id="ld-step1" aria-labelledby="ld-h1">
       <h2 id="ld-h1" tabindex="-1">Leer.</h2>
-      <p class="ld-body">Toma una foto o sube la factura; plantillas y reglas extraen las l&iacute;neas: proveedor, art&iacute;culo, cantidad, precio. Ninguna IA lee tus facturas &mdash; y no tienes que creernos: una puerta de build publicada hace fallar cualquier versi&oacute;n que agregue una biblioteca de modelos de lenguaje. <a href="/es/ai/" style="color:var(--teal)">La pol&iacute;tica de IA &rarr;</a></p>
+      <p class="ld-body">Tomas una foto o subes la factura; plantillas y reglas extraen las l&iacute;neas: proveedor, fecha, art&iacute;culo, cantidad, precio. Ning&uacute;n modelo de lenguaje lee tus facturas &mdash; y no tienes que creerlo a ciegas: una puerta de build publicada hace fallar cualquier versi&oacute;n que agregue una biblioteca de modelos de lenguaje. <a href="/es/ai/" style="color:var(--teal)">La pol&iacute;tica de IA&nbsp;&rarr;</a></p>
       <figure class="lg-vignette ld-armed-target" style="margin:0" data-audio-alt="Una línea impresa de la factura, lechuga romana, veinticuatro unidades, por uno, veintinueve cuarenta y cinco, diseccionada en campos etiquetados: proveedor, fecha, artículo, cantidad y precio. Debajo, las cinco filas extraídas del libro, cada una con su sello de leída. Plantillas y reglas hacen la lectura; ningún modelo de lenguaje toca el documento.">
         <div class="lg-pane">
           <div class="lg-pane-head">
@@ -704,7 +971,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           </div>
           <p class="ld-note">Reglas, no un modelo de lenguaje &mdash; la misma factura siempre da los mismos n&uacute;meros, y tus documentos nunca se vuelven datos de entrenamiento.</p>
         </div>
-        <figcaption class="lg-cap"><strong>Una l&iacute;nea impresa, cinco campos</strong> &mdash; el texto crudo de la factura, arriba, aterriza como las filas tecleadas de abajo: proveedor, fecha, art&iacute;culo, cantidad, precio, sin volver a teclear. Datos de muestra &mdash; una factura de verduras limpia es el caso f&aacute;cil; el demo muestra el mecanismo, no una cifra de precisi&oacute;n.</figcaption>
+        <figcaption class="lg-cap"><strong>Una l&iacute;nea impresa, cinco campos</strong> &mdash; el texto crudo de la factura, arriba, aterriza como las filas tecleadas de abajo: proveedor, fecha, art&iacute;culo, cantidad, precio, sin volver a teclear. Datos de muestra &mdash; una factura de verduras limpia es el mejor caso; el demo muestra el mecanismo, no una cifra de precisi&oacute;n.</figcaption>
       </figure>
     </section>
 
@@ -737,19 +1004,31 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <pre class="ld-csv">fecha,proveedor,art&iacute;culo,cant,precio
 2026-06-19,Proveedor de verduras,"Lechuga romana, 24 uds",1,24.35</pre>
         </div>
-        <figcaption class="lg-cap"><strong>El libro, reducido a un art&iacute;culo</strong> &mdash; tres lecturas de romana en tres facturas, con las dem&aacute;s l&iacute;neas del 26 de junio atenuadas; el CSV de abajo muestra c&oacute;mo el registro completo se va contigo, en un formato que abres sin nosotros. El buscador y la exportaci&oacute;n son parte de la maqueta, no controles reales. Filas ficticias.</figcaption>
+        <figcaption class="lg-cap"><strong>El libro, reducido a un art&iacute;culo</strong> &mdash; tres lecturas de romana en tres facturas, con las dem&aacute;s l&iacute;neas del 26 de junio atenuadas; el CSV de abajo muestra c&oacute;mo el registro completo se va contigo, en un formato que abres sin Muntin. El buscador y la exportaci&oacute;n son parte de la maqueta, no controles reales.</figcaption>
       </figure>
     </section>
 
     <section class="ld-panel" id="ld-step3" aria-labelledby="ld-h3">
       <h2 id="ld-h3" tabindex="-1">Marcar.</h2>
-      <p class="ld-body">La l&iacute;nea de lechuga romana del 26 de junio llega a $29.45 &mdash; $5.23 m&aacute;s por caja contra la mediana m&oacute;vil de tus lecturas previas (+21.6%) &mdash; y recibe la marca. La revisi&oacute;n corre contra tu propio historial, nada m&aacute;s, y solo se dispara cuando el movimiento cruza los dos umbrales de Ledger: al menos 8% <em>y</em> al menos $5.00 sobre tu mediana m&oacute;vil.</p>
+      <!-- Recomposición para el marco (2026-07-09): la introducción
+           conserva la frase del desenlace; la frase de los umbrales pasó
+           TEXTUAL al cajón leer-más bajo la figura (la leyenda sigue
+           llevando ambos umbrales en el panel, así que la revelación
+           queda a la vista). -->
+      <p class="ld-body">La l&iacute;nea de lechuga romana del 26 de junio llega a $29.45 &mdash; $5.23 m&aacute;s por caja contra la mediana m&oacute;vil de tus lecturas previas (+21.6%) &mdash; y recibe la marca.</p>
       <figure class="lg-vignette" style="margin:0" data-audio-alt="Gráfica de revisión de precio para lechuga romana de veinticuatro unidades. El doce de junio marca veinticuatro dólares con diez centavos y el diecinueve de junio veinticuatro treinta y cinco, ambos dentro de la banda de tus lecturas previas. El veintiséis de junio salta a veintinueve cuarenta y cinco: cinco dólares con veintitrés centavos, o veintiuno punto seis por ciento, sobre la mediana móvil de veinticuatro veintidós. Eso cruza los dos umbrales de Ledger, al menos ocho por ciento y al menos cinco dólares, así que la línea queda marcada.">
         <div class="lg-pane">
           <div class="lg-pane-head">
             <span class="lg-pane-title">Revisi&oacute;n de precio &mdash; contra tu propio historial</span>
             <span class="lg-chip">Historial de muestra &middot; ilustrativo</span>
           </div>
+          <!-- .ld-flagcols (2026-07-09): en ≥768px las filas quedan a la
+               izquierda y la gráfica a la derecha para que el paso quepa
+               en la altura compartida del escenario; el orden del DOM
+               (filas → gráfica → remate) no cambia, así que la lectura
+               apilada sin JS / móvil es idéntica a la de antes. -->
+          <div class="ld-flagcols">
+          <div class="ld-flagcols-rows">
           <div role="table" aria-label="Historial de precios de la lechuga romana">
             <div class="visually-hidden-ld" role="rowgroup"><div role="row"><span role="columnheader">Fecha</span><span role="columnheader">Proveedor</span><span role="columnheader">Art&iacute;culo</span><span role="columnheader">Precio</span><span role="columnheader">Estado</span></div></div>
             <div class="lg-rows" role="rowgroup">
@@ -758,6 +1037,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <div class="lg-row lg-row--flag" role="row"><span class="lg-d" role="cell">26 jun</span><span class="lg-v" role="cell">Proveedor de verduras</span><span class="lg-i" role="cell">Lechuga romana, 24&nbsp;uds</span><span class="lg-n" role="cell">$29.45</span><span class="lg-flag" role="cell"><span aria-hidden="true">&#9650;</span> el precio se movi&oacute;</span></div>
             </div>
           </div>
+          </div>
+          <div class="ld-flagcols-viz">
           <!-- Datos y mapeo de la gráfica (clave de renumeración): puntos
                12 jun $24.10, 19 jun $24.35, 26 jun $29.45; mediana de los
                previos $24.22; delta $5.23 = +21.6%. Escritorio y(v) =
@@ -832,36 +1113,113 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               </g>
               <line class="lgc-axis" x1="40" y1="200" x2="252" y2="200"/>
               <text class="lgc-lab lgc-lab--sm" x="64" y="220" text-anchor="middle">12 jun</text>
+              <text class="lgc-lab lgc-lab--sm" x="146" y="220" text-anchor="middle">19 jun</text>
               <text class="lgc-lab lgc-lab--sm" x="228" y="220" text-anchor="middle">26 jun</text>
             </svg>
           </div>
+          <!-- Variante de marco (2026-07-09): dibujada para la columna
+               del marco en ≥768px a 430px — las tres marcas con fecha,
+               las etiquetas de $24.35 y $29.45 fuera del trazo del
+               movimiento, la etiqueta de la banda bajo la banda y lejos
+               de los números. Misma clave geométrica que la gráfica
+               ancha: y(v) = 252 − (v − 23.50) × 32. Solo la muestra
+               .ld-flagcols en ≥768px; la tecnología de asistencia sigue
+               viendo exactamente una. -->
+          <div class="lg-chart lg-chart--frame">
+            <svg viewBox="0 0 430 300" width="430" height="300" role="img" aria-labelledby="ldc-f-t ldc-f-d" focusable="false">
+              <title id="ldc-f-t">Lechuga romana, 24 uds &mdash; el precio del 26 de junio se sale de la banda de sus lecturas previas</title>
+              <desc id="ldc-f-d">Gr&aacute;fica de l&iacute;nea con tres precios por caja de lechuga romana: 12 de junio $24.10 y 19 de junio $24.35, dentro de la banda; el 26 de junio salta a $29.45 &mdash; $5.23 y 21.6% por encima de la mediana m&oacute;vil de $24.22. La l&iacute;nea queda marcada porque el movimiento cruza los dos umbrales de Ledger: al menos 8% y al menos $5.00 sobre la mediana m&oacute;vil.</desc>
+              <line class="lgc-grid" x1="40" y1="236" x2="310" y2="236"/>
+              <line class="lgc-grid" x1="40" y1="172" x2="310" y2="172"/>
+              <line class="lgc-grid" x1="40" y1="108" x2="310" y2="108"/>
+              <line class="lgc-grid" x1="40" y1="44" x2="310" y2="44"/>
+              <text class="lgc-lab" x="34" y="240" text-anchor="end">$24</text>
+              <text class="lgc-lab" x="34" y="176" text-anchor="end">$26</text>
+              <text class="lgc-lab" x="34" y="112" text-anchor="end">$28</text>
+              <text class="lgc-lab" x="34" y="48" text-anchor="end">$30</text>
+              <rect class="lgc-band" x="40" y="224.8" width="270" height="8"/>
+              <line class="lgc-bandedge" x1="40" y1="224.8" x2="310" y2="224.8"/>
+              <line class="lgc-bandedge" x1="40" y1="232.8" x2="310" y2="232.8"/>
+              <text class="lgc-lab lgc-lab--band" x="310" y="247" text-anchor="end">BANDA DE LECTURAS PREVIAS</text>
+              <polyline class="lgc-hist" points="70,232.8 180,224.8"/>
+              <circle class="lgc-dot" cx="70" cy="232.8" r="4"/>
+              <circle class="lgc-dot" cx="180" cy="224.8" r="4"/>
+              <text class="lgc-num" x="70" y="212" text-anchor="middle">$24.10</text>
+              <text class="lgc-num" x="164" y="196" text-anchor="middle">$24.35</text>
+              <g class="lgf-seg"><line class="lgc-move" x1="180" y1="224.8" x2="290" y2="61.6"/></g>
+              <g class="lgf-dot"><circle class="lgc-halo" cx="290" cy="61.6" r="11"/><circle class="lgc-fdot" cx="290" cy="61.6" r="5.5"/></g>
+              <g class="lgf-lbl">
+                <text class="lgc-num" x="272" y="68" text-anchor="end">$29.45</text>
+                <polyline class="lgc-bracket" points="316,61.6 322,61.6 322,229 316,229"/>
+                <text class="lgc-delta" x="330" y="128">&#9650; $5.23</text>
+                <text class="lgc-lab lgc-lab--sub" x="330" y="146">por caja</text>
+                <text class="lgc-lab lgc-lab--sub" x="330" y="164">+21.6% sobre tu</text>
+                <text class="lgc-lab lgc-lab--sub" x="330" y="179">mediana de $24.22</text>
+                <text class="lgc-lab lgc-lab--sub" x="330" y="194">&mdash; marcada</text>
+              </g>
+              <line class="lgc-axis" x1="40" y1="252" x2="310" y2="252"/>
+              <text class="lgc-lab lgc-lab--tick" x="70" y="272" text-anchor="middle">12 jun</text>
+              <text class="lgc-lab lgc-lab--tick" x="180" y="272" text-anchor="middle">19 jun</text>
+              <text class="lgc-lab lgc-lab--tick" x="290" y="272" text-anchor="middle">26 jun</text>
+            </svg>
+          </div>
           <p class="lg-stepnote">El total de la factura, $115.80, nunca parpade&oacute; &mdash; la l&iacute;nea s&iacute;. Se detecta el d&iacute;a que llega, no al cierre del mes.</p>
+          </div>
+          </div><!-- /ld-flagcols -->
         </div>
         <figcaption class="lg-cap"><strong>Una marca, dos umbrales</strong> &mdash; se dispara solo cuando una l&iacute;nea cruza ambos contra su propio historial: al menos 8% y al menos $5.00 sobre la mediana m&oacute;vil. Cifras ilustrativas.</figcaption>
       </figure>
-      <p class="ld-body" style="margin-top:16px">$5.23 &divide; 24 piezas es cerca de 22&cent; por pieza &mdash; cada plato que la lechuga romana toca se recalcula el mismo d&iacute;a. Y como la lechuga romana est&aacute; en la canasta p&uacute;blica del &Iacute;ndice de Costos, la marca llega con contexto de mercado: &iquest;mi proveedor, o el mercado? Fuera de la canasta &mdash; licores, vino, cortes con grado &mdash; una subida igual se archiva y se recalcula, pero no se compara con el mercado. Y un art&iacute;culo sin lecturas previas no recibe marca alguna: sin nada tuyo contra qu&eacute; comparar, Ledger se abstiene en lugar de adivinar &mdash; as&iacute; que las primeras semanas se ven as&iacute;: las facturas se archivan y el historial crece, y las marcas empiezan a llegar cuando tus propias lecturas pueden respaldarlas.</p>
-      <p class="lg-cap">Ledger corre esta revisi&oacute;n en cada l&iacute;nea, el d&iacute;a que llega la factura &mdash; $19 al mes es menos que cuatro de estas cajas detectadas. Abre el 13 de noviembre de 2026 &mdash; a <!-- count:ledger.ga_weeks_out -->19<!-- /count --> semanas. <a href="/es/ledger/#pricing" class="plausible-event-name=Demo+Exit plausible-event-door=peak-founding" style="color:var(--teal)">Los t&eacute;rminos fundadores &rarr;</a></p>
+      <!-- Recomposición para el marco (2026-07-09): la frase de los
+           umbrales y el párrafo de la cuenta del mismo día pasaron aquí
+           TEXTUALES desde la prosa del panel para que el paso quepa en
+           el escenario fijo; el cajón se abre dentro del marco (el panel
+           se desplaza, la página no). -->
+      <details class="cite ld-more">
+        <summary>C&oacute;mo decide la marca &mdash; umbrales, contexto de mercado y las primeras semanas</summary>
+        <div class="cite-body">
+          <p>La revisi&oacute;n corre contra tu propio historial, nada m&aacute;s, y solo se dispara cuando el movimiento cruza los dos umbrales de Ledger: al menos 8% <em>y</em> al menos $5.00 sobre tu mediana m&oacute;vil.</p>
+          <p>$5.23 &divide; 24 piezas es cerca de 22&cent; por pieza &mdash; cada plato que la lechuga romana toca se recalcula el mismo d&iacute;a. Y como la lechuga romana est&aacute; en la canasta p&uacute;blica del &Iacute;ndice de Costos, la marca llega con contexto de mercado: &iquest;mi proveedor, o el mercado? Fuera de la canasta &mdash; licores, vino, cortes con grado &mdash; una subida igual se archiva y se recalcula, pero no se compara con el mercado. Y un art&iacute;culo sin lecturas previas no recibe marca alguna: sin nada tuyo contra qu&eacute; comparar, Ledger se abstiene en lugar de adivinar &mdash; as&iacute; que las primeras semanas se ven as&iacute;: las facturas se archivan y el historial crece, y las marcas empiezan a llegar cuando tus propias lecturas pueden respaldarlas.</p>
+        </div>
+      </details>
+      <p class="lg-cap">Ledger corre esta revisi&oacute;n en cada l&iacute;nea, el d&iacute;a que llega la factura &mdash; $19 al mes por local es menos que cuatro de estas cajas detectadas. Abre el 13 de noviembre de 2026 &mdash; a <!-- count:ledger.ga_weeks_out -->19<!-- /count --> semanas. <a href="/es/ledger/#pricing" class="plausible-event-name=Demo+Exit plausible-event-door=peak-founding" style="color:var(--teal)">Los t&eacute;rminos fundadores&nbsp;&rarr;</a></p>
     </section>
 
     <section class="ld-panel ld-cta" id="ld-step4" aria-labelledby="ld-h4">
+      <!-- Recomposición para el marco (2026-07-09): en ≥768px la
+           petición (precio + lista fundadora) queda a la izquierda y el
+           carril de compruébalo-tú-mismo (Vendor Benchmark + enlaces de
+           prueba) a la derecha; las lecturas apilada y sin JS no
+           cambian, con el <hr> de vuelta entre las mitades. Cláusula
+           por-local añadida 2026-07-09 (confirmada por el fundador;
+           sourced-claims ledger_founding_offer_2026). -->
+      <div class="ld-cta-cols">
+      <div class="ld-cta-main">
       <h2 id="ld-h4" tabindex="-1">Pon esta marca en cada línea.</h2>
-      <p class="ld-body">Esa marca, en cada l&iacute;nea de cada factura, el d&iacute;a que llega &mdash; <strong style="color:#F6F7F8">Muntin Ledger</strong> abre el 13 de noviembre de 2026.</p>
-      <p class="lg-price-figure"><span class="lg-price-cur">$</span>19<span class="lg-price-per">/mes</span></p>
-      <p class="lg-price-ga">Tres meses gratis para la lista fundadora, luego $19 al mes mientras te quedes &middot; abre el <span class="lg-price-date">13 de noviembre de 2026</span>.</p>
+      <!-- Corrección de copy 2026-07-09: la fecha de apertura se
+           imprimía dos veces en ~40px (cuerpo + línea de términos
+           registrados). La ley del lockup G5 conserva los términos
+           completos junto a la cifra; el cuerpo suelta su fecha. -->
+      <p class="ld-body">Esa marca, en cada l&iacute;nea de cada factura, el d&iacute;a que llega &mdash; eso es <strong style="color:#F6F7F8">Muntin Ledger</strong>.</p>
+      <p class="lg-price-figure"><span class="lg-price-cur">$</span>19<span class="lg-price-per">/mes por local</span></p>
+      <p class="lg-price-ga">Tres meses gratis para la lista fundadora, luego $19 al mes por local mientras te quedes &middot; abre el <span class="lg-price-date">13 de noviembre de 2026</span>.</p>
       <div class="studio-cta-row" style="margin-top:20px">
-        <a class="btn lg-btn-light plausible-event-name=Demo+Exit plausible-event-door=founding" href="/es/ledger/#pricing">Unirme a la lista fundadora &rarr;</a>
+        <a class="btn lg-btn-light plausible-event-name=Demo+Exit plausible-event-door=founding" href="/es/ledger/#pricing">Unirme a la lista fundadora&nbsp;&rarr;</a>
+      </div>
       </div>
       <hr style="border:none;border-top:1px solid rgba(246,247,248,.14);margin:28px 0 24px" aria-hidden="true">
-      <p class="ld-body">No le creas a un demo con datos ficticios. Toma un precio que ya pagaste &mdash; dos fechas, dos n&uacute;meros &mdash; y <strong style="color:#F6F7F8">Vendor Benchmark</strong> corre la misma regla de marca sobre tu propio historial que usa Ledger, calcada al centavo, y pone al lado una lectura del mercado con el &Iacute;ndice de Costos p&uacute;blico, sobre tus fechas exactas. Gratis, en tu navegador, sin registro, sin subir nada.</p>
+      <div class="ld-cta-side">
+      <p class="ld-body">No le creas a un demo con datos ficticios. <strong style="color:#F6F7F8">Vendor Benchmark</strong> corre la misma regla de marca sobre tu propio historial que usa Ledger &mdash; calcada al centavo &mdash; sobre un precio que ya pagaste: dos fechas, dos n&uacute;meros. Al lado, una lectura del mercado con el &Iacute;ndice de Costos p&uacute;blico, sobre tus fechas exactas. Gratis, en tu navegador, sin registro, sin subir nada.</p>
       <div class="studio-cta-row" style="margin-top:20px">
-        <a class="btn btn-ghost plausible-event-name=Demo+Exit plausible-event-door=benchmark" href="/es/tools/vendor-benchmark/" style="color:#F6F7F8;border-color:rgba(246,247,248,.4)">Corre tu propia línea &rarr;</a>
+        <a class="btn btn-ghost plausible-event-name=Demo+Exit plausible-event-door=benchmark" href="/es/tools/vendor-benchmark/" style="color:#F6F7F8;border-color:rgba(246,247,248,.4)">Corre tu propia línea&nbsp;&rarr;</a>
       </div>
-      <p class="ld-body" style="margin-top:24px;margin-bottom:0;font-size:14px">Comprueba lo que afirmamos: <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/es/trust/" style="color:#7AA7FF">el centro de confianza</a> &middot; <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/es/never/" style="color:#7AA7FF">lo que nunca hacemos</a> &middot; <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/es/cost-index/" style="color:#7AA7FF">los datos del &Iacute;ndice de Costos (CC0)</a>.</p>
+      <p class="ld-body" style="margin-top:24px;margin-bottom:0;font-size:14px">Comprueba las afirmaciones: <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/es/trust/" style="color:#7AA7FF">el centro de confianza</a> &middot; <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/es/never/" style="color:#7AA7FF">lo que Muntin nunca hace</a> &middot; <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/es/cost-index/" style="color:#7AA7FF">los datos del &Iacute;ndice de Costos (CC0)</a>.</p>
+      </div>
+      </div><!-- /ld-cta-cols -->
       <ul class="lg-stances">
         <li>Sin comisi&oacute;n sobre tus ventas, nunca</li>
         <li>Ning&uacute;n modelo de lenguaje lee tus facturas &mdash; bloqueado en el build, nunca datos de entrenamiento</li>
         <li>Tus datos no se venden nunca &mdash; ni a un corredor de datos ni a nadie m&aacute;s</li>
-        <li>Exporta el libro completo cuando quieras, en un formato que abres sin nosotros; b&oacute;rralo y desaparece</li>
+        <li>Exporta el libro completo cuando quieras, en un formato que abres sin Muntin; b&oacute;rralo y desaparece</li>
       </ul>
       <p class="lg-cap" style="margin-top:18px">El formulario fundador est&aacute; en la p&aacute;gina del Ledger &mdash; este demo no pide nada, ni siquiera un correo.</p>
     </section>
@@ -883,10 +1241,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <div class="ld-controls" id="ldControls" hidden>
       <button type="button" class="btn btn-ghost" id="ldBack">Atr&aacute;s</button>
       <button type="button" class="btn btn-ghost" id="ldRestart" hidden>Volver a empezar</button>
-      <a class="btn btn-primary plausible-event-name=Demo+Exit plausible-event-door=founding" id="ldCta" href="/es/ledger/#pricing" hidden>Unirme a la lista fundadora &rarr;</a>
+      <a class="btn btn-primary plausible-event-name=Demo+Exit plausible-event-door=founding" id="ldCta" href="/es/ledger/#pricing" hidden>Unirme a la lista fundadora&nbsp;&rarr;</a>
       <button type="button" class="btn btn-primary" id="ldNext">Siguiente</button>
       <span class="ld-progress" id="ldProgress"></span>
     </div>
+    </div><!-- /ldFrame -->
     <p class="visually-hidden-ld" aria-live="polite" id="ldLive"></p>
 
   </div>
@@ -902,39 +1261,87 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       var back = document.getElementById('ldBack'), next = document.getElementById('ldNext');
       var restart = document.getElementById('ldRestart'), cta = document.getElementById('ldCta');
       var progress = document.getElementById('ldProgress'), live = document.getElementById('ldLive');
-      var panelsBox = document.getElementById('ldPanels');
-      if (!wrap || panels.length < 5 || !rail || !controls || !restart || !cta || !panelsBox) return;
-      var titles = ['Llega la factura', 'Leer', 'Archivar', 'Marcar', 'Pon esta marca en cada línea'];
+      var chromeBar = document.getElementById('ldChrome');
+      var chromeTitle = document.getElementById('ldChromeTitle');
+      var chromeCount = document.getElementById('ldChromeCount');
+      var stage = document.getElementById('ldPanels');
+      if (!wrap || panels.length < 5 || !rail || !controls || !restart || !cta || !chromeBar || !chromeTitle || !chromeCount || !stage) return;
+      // Los títulos repiten los nombres cortos del riel (2026-07-09)
+      // para que riel, franja de chrome y región viva anuncien el mismo
+      // nombre de paso — y la lectura del chrome no desborde su franja
+      // en teléfonos.
+      var titles = ['La factura', 'Leer', 'Archivar', 'Marcar', 'Cada línea'];
       var i = 0;
+      var lastSwap = -1e9;
       var prm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+      // Compuerta de coreografías únicas (hallazgo ronda 2): el escaneo
+      // y el aterrizaje de la marca se consumían al LLEGAR — un arranque
+      // por enlace profundo aún re-anclándose, o un "Salta a la marca"
+      // desde el inicio de la página, los gastaba fuera de pantalla sin
+      // repetición. Cada armado espera ahora a que ~60% del escenario
+      // esté realmente a la vista (IntersectionObserver de un solo uso
+      // sobre #ldPanels), la escritura de dataset.played vive dentro del
+      // callback, y una función cuyo paso se abandonó antes de que el
+      // escenario apareciera se devuelve sin gastar. Sin IO disponible,
+      // el armado corre de inmediato (el comportamiento anterior).
+      function armInView(panel, arm) {
+        if (panel.dataset.played || panel.dataset.arming) return;
+        if (!window.IntersectionObserver) { panel.dataset.played = '1'; arm(); return; }
+        panel.dataset.arming = '1';
+        var io = new IntersectionObserver(function (entries) {
+          for (var k = 0; k < entries.length; k++) {
+            if (entries[k].isIntersecting) {
+              io.disconnect();
+              delete panel.dataset.arming;
+              if (!panel.classList.contains('ld-current')) return;
+              panel.dataset.played = '1';
+              arm();
+              return;
+            }
+          }
+        }, { threshold: 0.6 });
+        io.observe(stage);
+      }
       wrap.classList.add('ld-js');
       controls.hidden = false;
-      // Altura por paso (revisión ronda 2, 2026-07-07): la pila de grid
-      // reservaba la altura del panel MÁS ALTO, dejando un vacío muerto
-      // bajo los pasos cortos. En vez del reflujo instantáneo (vetado por
-      // brusco), la altura en línea del contenedor sigue el offsetHeight
-      // del panel ACTIVO y la transición CSS (200ms --ease-out; ninguna
-      // con movimiento reducido) anima entre lecturas. Se recalcula al
-      // cambiar de paso, al redimensionar (un solo listener con rebote),
-      // al abrir/cerrar un cajón details y cuando cargan las webfonts
-      // (sus métricas mueven la altura de las filas). Sin JS este código
-      // nunca corre, así que la lectura apilada no lleva altura en línea.
-      function sizePanels() {
-        panelsBox.style.height = panels[i].offsetHeight + 'px';
-      }
-      var rszT;
-      window.addEventListener('resize', function () {
-        clearTimeout(rszT);
-        rszT = setTimeout(sizePanels, 150);
-      }, { passive: true });
-      Array.prototype.forEach.call(panelsBox.querySelectorAll('details'), function (d) {
-        d.addEventListener('toggle', sizePanels);
-      });
-      if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizePanels);
+      chromeBar.hidden = false;
+      // Ley de altura del marco de app (rediseño del fundador,
+      // 2026-07-09): el escenario es un marco CSS de altura fija por
+      // breakpoint, así que el JS de altura por paso (sizePanels), su
+      // transición de height de 200ms y las re-mediciones por resize /
+      // cajón details / webfonts quedan ELIMINADOS. Cualquier diferencia
+      // de altura entre paneles vive ahora DENTRO del marco — los cortos
+      // se centran en el escenario, los altos se desplazan dentro de él —
+      // y la altura propia de la página es idéntica en cada paso. Aquí
+      // nada mide; nada puede mover la página.
       function show(n, focus) {
         i = Math.max(0, Math.min(panels.length - 1, n));
+        // Avance rápido (hallazgo ronda 2): un segundo Siguiente dentro
+        // del intercambio de 240ms volvía a ocultar el panel
+        // interrumpido mientras el retraso de 60ms del entrante se
+        // reiniciaba — ~100ms de escenario en blanco. A menos de 240ms
+        // del último cambio, .ld-quick suprime el retraso del entrante y
+        // el panel nuevo se funde directo; se retira en el siguiente
+        // cambio sin prisa.
+        var now = (window.performance && performance.now) ? performance.now() : Date.now();
+        stage.classList.toggle('ld-quick', now - lastSwap < 240);
+        lastSwap = now;
         panels.forEach(function (p, k) { p.classList.toggle('ld-current', k === i); });
-        sizePanels();
+        // Chrome del marco: nombre del paso + "2 de 5" (aria-hidden — la
+        // tecnología de asistencia oye lo mismo por #ldProgress /
+        // #ldLive exactamente una vez). El cambio es instantáneo a
+        // propósito: comportamiento de chrome de app, como una tira de
+        // pestañas — el escenario es dueño del movimiento de la página.
+        chromeTitle.textContent = titles[i];
+        chromeCount.textContent = (i + 1) + ' de ' + panels.length;
+        // Un paso siempre re-entra por su inicio: se reinicia el scroll
+        // del PANEL dentro del escenario fijo; la página nunca se mueve.
+        panels[i].scrollTop = 0;
+        // Señal de desbordamiento (2026-07-09): marca el panel que se
+        // desplaza dentro del escenario para que muestre su degradado
+        // inferior; el listener de scroll de abajo la retira cerca del
+        // final.
+        panels[i].classList.toggle('ld-overflow', panels[i].scrollHeight - panels[i].clientHeight > 1);
         Array.prototype.forEach.call(rail.children, function (li, k) {
           if (k === i) li.setAttribute('aria-current', 'step');
           else li.removeAttribute('aria-current');
@@ -959,24 +1366,29 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         if (focus && window.history && history.replaceState) { history.replaceState(null, '', '#ld-step' + i); }
         // P1-2/M2 — el escaneo de lectura, una vez: dos clases; cada
         // retraso vive en los transition-delay de CSS (:nth-child),
-        // total < 550ms.
-        if (i === 1 && !prm && !panels[1].dataset.played) {
-          panels[1].dataset.played = '1';
-          var fig = panels[1].querySelector('.ld-armed-target');
-          if (fig) {
-            fig.classList.add('ld-armed');
-            requestAnimationFrame(function () { requestAnimationFrame(function () { fig.classList.add('ld-go'); }); });
-          }
+        // total < 550ms. Ronda 2: condicionado a que el escenario esté
+        // a la vista (armInView, arriba).
+        if (i === 1 && !prm) {
+          armInView(panels[1], function () {
+            var fig = panels[1].querySelector('.ld-armed-target');
+            if (fig) {
+              fig.classList.add('ld-armed');
+              requestAnimationFrame(function () { requestAnimationFrame(function () { fig.classList.add('ld-go'); }); });
+            }
+          });
         }
         // P0-3 — el aterrizaje de la marca, una vez, al llegar al paso 3.
         // La secuencia vive en los transition-delay de .lg-armed/.lg-landed.
-        if (i === 3 && !prm && !panels[3].dataset.played) {
-          panels[3].dataset.played = '1';
-          var flagFig = panels[3].querySelector('.lg-vignette');
-          if (flagFig) {
-            flagFig.classList.add('lg-armed');
-            requestAnimationFrame(function () { requestAnimationFrame(function () { flagFig.classList.add('lg-landed'); }); });
-          }
+        // Ronda 2: condicionado a que el escenario esté a la vista
+        // (armInView, arriba).
+        if (i === 3 && !prm) {
+          armInView(panels[3], function () {
+            var flagFig = panels[3].querySelector('.lg-vignette');
+            if (flagFig) {
+              flagFig.classList.add('lg-armed');
+              requestAnimationFrame(function () { requestAnimationFrame(function () { flagFig.classList.add('lg-landed'); }); });
+            }
+          });
         }
       }
       back.addEventListener('click', function () { show(i - 1, true); });
@@ -984,14 +1396,43 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       restart.addEventListener('click', function () { show(0, true); });
       // Las píldoras del riel y los saltos internos comparten un handler:
       // los clics modificados (cmd/ctrl/shift/alt/central) pasan al navegador.
+      // stopImmediatePropagation (2026-07-09): el ayudante de anclas de
+      // site.js (vinculado en idle) también escucha estos enlaces y
+      // enfocaría la SECCIÓN con un setTimeout de 400ms — arrancando el
+      // foco del h2 que el recorrido acaba de enfocar, dejándolo en un
+      // panel que ya pasó a visibility:hidden (las flechas mueren) y
+      // filtrando tabindex="-1" a paneles ocultos. Este handler se
+      // vincula al parsear, antes de que site.js se vincule en idle,
+      // así que el corte es fiable.
       Array.prototype.forEach.call(document.querySelectorAll('#ldRail a, .js-ld-jump'), function (a) {
         a.addEventListener('click', function (e) {
           if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
           var m = /^#ld-step([0-4])$/.exec(a.getAttribute('href') || '');
           if (!m) return;
-          e.preventDefault(); show(+m[1], true);
+          e.preventDefault(); e.stopImmediatePropagation(); show(+m[1], true);
         });
       });
+      // Mantenimiento de la señal de desbordamiento: cada panel retira o
+      // repone su degradado al desplazarse (24px de holgura para que se
+      // levante justo antes del final exacto). Pasivo — nunca bloquea el
+      // scroll. Ronda 2: la misma comprobación se re-ejecuta cuando un
+      // cajón dentro del panel se abre o cierra (abrir añade
+      // desbordamiento sin evento de scroll) y cuando las webfonts se
+      // aplican (el reflujo tardío re-dimensiona el contenido). Ambas
+      // leen geometría solo dentro del marco — ninguna puede mover la
+      // página.
+      var cue = function (p) {
+        p.classList.toggle('ld-overflow', p.scrollHeight - p.scrollTop - p.clientHeight > 24);
+      };
+      panels.forEach(function (p) {
+        p.addEventListener('scroll', function () { cue(p); }, { passive: true });
+        Array.prototype.forEach.call(p.querySelectorAll('details'), function (d) {
+          d.addEventListener('toggle', function () { cue(p); });
+        });
+      });
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(function () { cue(panels[i]); });
+      }
       // P1-6/M4d — las flechas izquierda/derecha avanzan el recorrido.
       // Escuchan solo en el contenedor (nada a nivel de página), así
       // que actúan únicamente con el foco dentro del recorrido; con
@@ -1017,6 +1458,66 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       });
       var boot = /^#ld-step([0-4])$/.exec(location.hash || '');
       show(boot ? +boot[1] : 0, false);
+      // Corrección de arranque con enlace profundo (2026-07-09): el
+      // salto de ancla nativo apuntó al layout apilado pre-colapso, así
+      // que tras el colapso el scroll recortado deja el chrome del marco
+      // (y el h2, en teléfonos) bajo el nav fijo. Re-ancla el marco (su
+      // scroll-margin-top lleva el desplazamiento del nav) — y se
+      // re-aplica tras `load` y tras el cambio de webfonts, que vuelven
+      // a desplazar el layout sobre el marco. Con guarda: el re-anclaje
+      // se omite en cuanto el lector desplaza por su cuenta.
+      if (boot) {
+        // Reconstrucción ronda 2 de la cadena de corrección, medida
+        // headless: (1) Los re-anclajes son INSTANTÁNEOS — con el
+        // scroll-behavior suave del sitio una pasada posterior podía
+        // pillar el scroll de la anterior aún en vuelo; y el salto
+        // nativo que se corrige también es instantáneo. Los motores
+        // viejos que rechazan el objeto de opciones degradan al suave
+        // por defecto. (2) La guarda de scroll del usuario vigila
+        // ENTRADA real del lector (rueda / toque / puntero / tecla) en
+        // vez de inferir por posición: Chromium mantiene vivo su
+        // propio ancla de fragmento durante los reflujos tempranos
+        // (webfonts, hojas asíncronas) y su re-scroll a la SECCIÓN —
+        // medido 66px bajo el objetivo del marco — se leía como "el
+        // lector se movió", silenciando la guarda de posición justo
+        // cuando más falta hacía la corrección. Cualquier entrada
+        // genuina sigue terminando las correcciones de arranque para
+        // siempre.
+        var userTookOver = false;
+        var takeOver = function () { userTookOver = true; };
+        window.addEventListener('wheel', takeOver, { passive: true, once: true });
+        window.addEventListener('touchstart', takeOver, { passive: true, once: true });
+        window.addEventListener('pointerdown', takeOver, { passive: true, once: true });
+        window.addEventListener('keydown', takeOver, { once: true });
+        var reanchor = function () {
+          if (userTookOver) return;
+          var frame = document.getElementById('ldFrame');
+          if (frame && frame.scrollIntoView) {
+            try { frame.scrollIntoView({ block: 'start', behavior: 'instant' }); }
+            catch (err) { frame.scrollIntoView(true); }
+          }
+        };
+        requestAnimationFrame(reanchor);
+        window.addEventListener('load', function () {
+          requestAnimationFrame(reanchor);
+          // Pasadas de asentamiento post-load: el ancla de fragmento
+          // del UA se re-dispara con reflujos tardíos; estas dan al
+          // marco la última palabra cuando fuentes y hojas asíncronas
+          // han terminado de mover el layout.
+          setTimeout(reanchor, 200);
+          setTimeout(reanchor, 600);
+        }, { once: true });
+        if (document.fonts && document.fonts.ready) { document.fonts.ready.then(function () { requestAnimationFrame(reanchor); }); }
+        // Ronda 2: fonts.ready puede resolverse ANTES de que el cambio
+        // a Fraunces/Inter refluya los ~72px de encabezado sobre el
+        // marco, así que el último re-anclaje con guarda corría contra
+        // el layout previo al cambio. 'loadingdone' se dispara cuando
+        // un lote de webfonts se aplica de verdad; el re-anclaje se
+        // re-ejecuta entonces (misma guarda de entrada del usuario).
+        if (document.fonts && document.fonts.addEventListener) {
+          document.fonts.addEventListener('loadingdone', function () { requestAnimationFrame(reanchor); });
+        }
+      }
     } catch (e) { /* static fallback stays complete */ }
   })();
   </script>

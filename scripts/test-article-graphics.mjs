@@ -56,9 +56,47 @@ test('SCAN_ROOTS covers EN + ES library + blog', () => {
 });
 
 test('VIZ_KINDS includes the canon families', () => {
-  for (const kind of ['viz-bars', 'viz-flow', 'viz-tree', 'viz-ba', 'viz-ring', 'viz-waterfall']) {
+  for (const kind of ['viz-bars', 'viz-flow', 'viz-tree', 'viz-ba', 'viz-ring', 'viz-waterfall', 'viz-spark']) {
     assert.ok(VIZ_KINDS.includes(kind), `${kind} should be in VIZ_KINDS`);
   }
+});
+
+// --- viz-spark (canon §8; the monthly Cost Index edition's step-line family) ---
+
+// A representative spark figure as build-cost-index-dispatch.mjs emits it:
+// dated single-source step-line, endpoint/peak/trough annotations with date
+// + dollar, tone on the wrapper, narration + figcaption on the figure.
+const SPARK_FIXTURE = `<figure class="viz-figure" data-audio-alt="Green beans over the month ending 2026-07-06: ten dated reads from one wholesale series, opening at 33 dollars on June 22 and closing at 40 dollars on July 6, with the peak at 45 dollars 50 on June 25.">
+  <div class="viz-spark" data-tone="rust">
+    <p class="viz-spark__title">Green beans — 10 reads, 2026-06-22 → 2026-07-06</p>
+    <div class="viz-spark__chart"><svg viewBox="0 0 320 72" width="320" height="72" aria-hidden="true" focusable="false"><path class="viz-spark__line" d="M0,60H32V12H64"/><circle class="viz-spark__dot" cx="0" cy="60" r="3"/><circle class="viz-spark__dot" cx="64" cy="12" r="3"/></svg></div>
+    <p class="viz-spark__annos"><span class="viz-spark__anno">opened <strong>$33.00</strong> 06-22</span><span class="viz-spark__anno">closed <strong>$40.00</strong> 07-06</span><span class="viz-spark__anno">peak <strong>$45.50</strong> 06-25</span></p>
+  </div>
+  <figcaption>Green beans closed the month above its open — a dated arc, not a forecast.</figcaption>
+</figure>`;
+
+test('detectVizKinds recognizes a viz-spark figure', () => {
+  const figs = collectContentFigures(SPARK_FIXTURE);
+  assert.equal(figs.length, 1);
+  const kinds = detectVizKinds(figs[0].inner);
+  assert.ok(kinds.has('viz-spark'), 'viz-spark should be detected as the figure kind');
+  assert.equal(kinds.size, 1);
+});
+
+test('the spark fixture satisfies the per-figure gate rules (narration + figcaption)', () => {
+  const figs = collectContentFigures(SPARK_FIXTURE);
+  assert.ok(getDataAudioAlt(figs[0].openAttrs).length >= DATA_AUDIO_ALT_MIN);
+  assert.ok(hasFigcaption(figs[0].inner));
+});
+
+test('variety can be met by a spark plus a bars figure', () => {
+  const barsFig = '<figure class="viz-figure"><div class="viz-bars"></div></figure>';
+  const all = new Set([
+    ...detectVizKinds(collectContentFigures(SPARK_FIXTURE)[0].inner),
+    ...detectVizKinds(collectContentFigures(barsFig)[0].inner),
+  ]);
+  assert.ok(all.has('viz-spark') && all.has('viz-bars'));
+  assert.ok(all.size >= 2);
 });
 
 test('DATA_AUDIO_ALT_MIN is the 80-char canon floor', () => {

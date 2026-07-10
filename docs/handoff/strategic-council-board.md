@@ -15,13 +15,31 @@ council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 
 ## ⮕ CURRENT STATE — read this first (updated 2026-07-09)
 
-### 🔴 TWO LIVE REDS ON MAIN (found 2026-07-09 storefront catch-up — fix before any feature work)
+### 🔴 TWO LIVE REDS ON MAIN — **both have fixes on `-exsghc`, UNMERGED (updated 2026-07-10)**
 
 A fresh storefront session (branch `-rqdehe`, reset onto main) reconstructed state and
 verified two independent reds on main. **Both are real, NOT the self-healing "(idem)"
-deploy-regeneration class.** They block the storefront ACTIVE BUILD below (the July edition
-needs fresh ≥07-08 data, which red #1 is withholding). (This is separate from the 🟣 product
-`/try` session recorded directly below — both ran 07-09; nothing conflicts.)
+deploy-regeneration class.** As of 2026-07-10 both fixes sit on the
+`claude/muntin-strategic-council-exsghc` dev branch, pushed and gate-verified — **merging
+that branch clears both reds.** RED #1's fix = the calibration re-stamp as the refresh
+build's final action (found independently by the `-exsghc` lane on 07-09, same diagnosis).
+RED #2's fix = the "companion tools" line (Cost Pulse + plate-cost) added to the frozen
+07-06 weekly's Go-deeper list AND to both generator templates (weekly `goDeeperBlock` +
+monthly methodology block in `build-cost-index-dispatch.mjs`) so no future emit can
+reproduce it — guardrails now 98/98. Original findings kept below for the record.
+
+**RED #3 — the REAL Cloudflare deploy blocker (found 2026-07-10 from PR #513's Workers
+build log, fixed same session).** The Workers "muntin-digital" check was red — NOT a
+build-infra glitch (initial hypothesis, wrong). The deploy runs the full build chain then
+`check-all.mjs`, which exited 1 on its single non-idem failure: **`claims.json` out of
+sync with `data/sourced-claims.json`**. The per-location pricing edit to the
+`ledger_founding_offer_2026` claim never regenerated the public `claims.json`, and the
+deploy build chain does NOT run `build-claims-json.mjs` (same non-self-healing class as
+RED #2). Fixed: rebuilt `claims.json` (as_of 07-02→07-09, "$19 a month per location",
+used_in += demo paths), committed `d04cf4f44`. `build-claims-json.mjs --check` in sync;
+full suite now 0 non-idem reds. **Lesson for a fresh session:** whenever you edit
+`data/sourced-claims.json`, also run `node scripts/build-claims-json.mjs` and commit
+`claims.json` — the deploy won't do it for you.
 
 **RED #1 — the MWF Cost Index heartbeat is FROZEN at the 2026-07-06 read.**
 The 07-08 Wed refresh (`cost-index-refresh.yml` run #34, 2026-07-08T15:08Z, `schedule`)
@@ -107,44 +125,91 @@ launch: author 2–3 real Tier-1 A/B pairs first (Sysco + US Foods cover the lar
 first-upload slice) → re-measure F1 → flip the flag for those layouts → THEN promote.
 Everything else (design, honesty architecture, capture, hardening) is done.
 
-### 🟢 ACTIVE BUILD — the Monthly Dispatch (July edition ships this week)
+### 🟢 ACTIVE BUILD — updated 2026-07-09 (read ADRs 011/012/013 — all founder-signed)
 
-**Evening of 2026-07-06 (all decisions signed):** dispatch cadence pivoted to MONTHLY
-(first Tuesday 14:00 UTC, first cron edition 2026-08-04; refresh now Mon/Wed/Fri 13:00 —
-both merged to main via PR #505, live). Email P0 honesty fixes merged (gated action lists,
-sign-corrected reasons, no uncalibrated "high confidence", confirm-send fixed,
-stamp-on-success). Email trust rails built on the dev branch (payload spine with gated
-stories[] + dated cycle arcs + wow; golden render committed at data/email-preview/;
-check-cost-index-email.mjs content gate — all in check-all).
+**Governing decisions now in `docs/editorial/decisions/`:** ADR-011 (monthly first-Tuesday
+dispatch + Mon/Wed/Fri refresh, edition slug `cost-index-YYYY-MM`), ADR-012 (**manual
+authorship** — no cron, no generated posts; hand-written editions; dispatch workflow is
+the manual EMAIL button only; refresh catch-up = red reminder at 38d; full publish
+runbook inside), ADR-013 ($19/mo **per location**; **enterprise parked** post-GA, gated
+on founding-list demand). ADR-010 carries the ratified one-print extension (site only).
 
-**Founder-signed decisions:** monthly edition slug family `blog/cost-index-YYYY-MM/`
-(2026-07-06); ADR-010 extension RATIFIED — the h=1 one-print tilt ships on the SITE
-edition (never the email), recorded in the ADR file.
+**Merged to main (PRs #505/#507/#508):** cadence pivot + promise sweep; email P0 honesty
+fixes + trust rails (golden render `data/email-preview/` + `check-cost-index-email.mjs`);
+the ledger demo transformation (rule-true numbers ON BOTH the demo AND the /ledger/ hero
+— the old $3.55 flag never fired `computePriceHike`; now $24.10/$24.35/$29.45 = +$5.23/
++21.6% over the $24.22 median everywhere, byte-verified); 3 review rounds + certification.
 
-**Master plans (read both before building):**
-  - `docs/plans/monthly-dispatch-site-edition.md` — the ten-section architecture,
-    viz-spark family, AEO layer, Looking-ahead (forwards within ADR-010), gates, and the
-    build sequence. THE current work queue.
-  - `docs/plans/dispatch-email-upgrade.md` — the email side (P1 golden-render body due
-    before 08-04) + the Claude story-research pipeline (§13; routine to arm ~07-30).
+**On the dev branch, pushed, UNMERGED (founder: merge to resume the heartbeat):**
+  - **Refresh fix (URGENT):** first MWF cron (07-08) vendored fresh data then failed the
+    gates on stale calibration sentinels (fresh-data-only ordering; frozen-data testing
+    can't reproduce). Fix = re-stamp `inject-cost-index-calibration` as the build's last
+    action. **Heartbeat is stalled at the 2026-07-06 read until merged** — next cron
+    Fri 07-10 13:00 UTC, or founder runs the workflow manually post-merge.
+  - Per-location pricing on all surfaces + registered claim (ADR-013).
+  - Monthly edition machinery (generator monthly-default, `.viz-spark` family + canon
+    §8 + test fixtures, dispatch-fresh recognizes both slug families) — kept as dormant
+    tooling per ADR-012; the generated July draft itself was deleted.
+  - Manual-authorship pivot (both workflows per ADR-012).
+  - **Demo app frame** (founder design direction: fixed stage, in-frame cross-fade,
+    page height headless-verified constant): chrome strip + stage + control bar; step 3
+    two-column; step 4 full-ink ask; per-location terms; EN+ES.
+  - **RED #2 fix** (guardrails ≥2 tools links): companion-tools line on the frozen
+    07-06 weekly + both generator templates. **July edition full-suite fixes:** TL;DR
+    window (jump nav moved below In-short), intent=watch param dropped (plate-cost
+    doesn't consume intents), viz-spark moved INTO the site.css partition (site-article
+    .css is a GENERATED shell — never append to it directly) + shells rebuilt. Full
+    check-all on the branch: 225/249, every remaining red is the (idem) baseline.
 
-**Ledger demo transformed (overnight 2026-07-06→07):** founder-commissioned 11-agent
-workflow (plan: `docs/plans/ledger-demo-transform.md`) + P0/P1 builds + three review
-rounds (3 operators + 3 design pros) + certification. Headline product-integrity find:
-BOTH the demo and the /ledger/ hero showed a flag the real rule (computePriceHike)
-would never fire — all surfaces renumbered to the rule-derived trio ($24.10/$24.35/
-$29.45 = +$5.23/+21.6% over the $24.22 trailing median) and byte-verified. Demo now:
-rule-true story, annotated band chart, per-step animated frame (certified live),
-honest disclosure architecture, founding-list ask primary at the final step, full ES
-parity. PARKED for founder: the $19/mo pricing basis (per location vs per account —
-ops-reviewer blocker, one clause once decided); demo OG card; analytics registry entry.
+**FINAL DEMO CERTIFICATION — 2026-07-10 (run wf_cd93a13f-162, 5 fresh seats, honest record):**
+All 5 seats `wouldShipToFortune500: true`. Verdicts: interaction-design **WORLD_CLASS**
+(8.5/9/9); motion-design STRONG (8/8.5/9); copy-voice STRONG (9/8.5/8); frontend-eng
+STRONG (9/8.5/9); chef-owner STRONG (9/8.5/9). The founder's page-height law verified
+constant at every viewport/locale/scheme; deep-link, no-JS, PRM, quick-path all measured
+correct. Post-cert fixes applied same day (commit ce629a5d7): banned-word + royal-we
+canon violations (EN+ES), dark-mode ink moment restored (#0F1116 band vs #1B1E24
+panels — the override had made them identical), desktop stage min 480→430 (short-laptop
+control-bar clip 688.7→649.7 at 650svh; ≥690px unchanged). Headless re-verified ×6.
 
-**Next actions (in order):** July edition build per site-edition plan §8 items 1–6;
-publishes on the 2026-07-08 Wed refresh data (Wed eve/Thu) — founder reads the rendered
-draft first; the comeback email rides it via manual workflow_dispatch (guards bypass on
-manual). Note cost-outlook.json is STALE (2026-06-08) and must be wired into the refresh
-workflow (build + --check + staging) before the Looking-ahead section renders it.
+**Certification findings PARKED (recorded honestly, none blocks ship):**
+  - **The one real design tension (founder fork):** at 1280×800 every step scrolls
+    internally (52–127px hidden; stage 592 vs panels ≤719) and on phones >half of each
+    step sits below the in-panel fold incl. the flag chart (step 3 hides 528px). This
+    is inherent to fixed-stage + current content volume: the forks are (a) accept
+    in-panel scroll as the app idiom (cues are honest and working), (b) trim step copy,
+    or (c) shorten the marquee figures. Do NOT silently trim certified copy.
+  - Smaller parked items: 3px frame-under-nav on desktop deep-link (nav renders 103px
+    vs 100px offset budget — fixing it cascades through the pixel-exact reservation
+    math in 2 files ×2 locales; left alone deliberately); keyboard-only users can't
+    scroll overflowing panels (WCAG 2.1.1 edge — panels tabIndex −1); overflow cue not
+    recomputed on resize/orientation; ~80ms stage dim on triple-click Next; 35px rail
+    touch targets on mobile; mobile fade cue dims the flagged Jun 26 payoff row;
+    step-4 left-column dead zone at desktop; aria-current on li not the link; ES step-4
+    60px overflow at 1280×800 where EN fits; em-dash pairs vs sentence-shape rule 3.
+  - **CTA canon fork (founder):** demo uses 'Run your own line' + 'Join the founding
+    list' — both absent from the locked CTA canon (/methods/ #voice-contract). Seats
+    rate the labels better than the canon's 'Try it free' for these jobs. Either add a
+    canon v1.2 entry sanctioning them or conform the labels — founder's call, the canon
+    is his governing doc. Related: '/ledger/' itself still says 'without us' (same
+    royal-we idiom fixed on the demo); one-line fix pending the same call.
+  - Stale '19 weeks out' count (formula says 18) — self-heals on next deploy build.
 
+**Completed workflows (payloads in session transcripts):** `july-edition-product`
+(wf_56eb545c-4ca — the July edition, built + audited + full-suite green);
+`demo-world-class-pass` (wf_a2da5e7b-bcc — rounds 1–2 + closing pass);
+`demo-final-certification` (wf_cd93a13f-162 — the record above).
+
+**Parked / follow-ups:** demo OG card; `Demo Exit` analytics registry entry (product
+repo `tools/_shared/analytics.js`); `.ld-wrap` 880px cap overridden by `.container`
+(pre-existing, founder call); /ledger/ meta "six-month history" mentions; product repo:
+3 failing nightlies (real failures, untriaged) + the 4 CI fixes still unmerged on its
+dev branch (no PR without ask); ES edition decision for monthly dispatches; email P1
+body due before 2026-08-04.
+
+**Cadence truths a fresh session must know:** refresh = Mon/Wed/Fri 13:00 UTC from
+main; dispatch cron REMOVED (ADR-012); the 38d dispatch-fresh gate is the publication
+reminder; subscriber promise = "one email a month — the first Tuesday" (the editorial
+deadline for hand-publishing).
 
 ### ✅ P0 OUTAGE RESOLVED 2026-07-06 — was: GitHub Actions dead ACCOUNT-WIDE since 2026-06-20
 
