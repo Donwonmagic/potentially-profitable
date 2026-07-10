@@ -29,7 +29,7 @@
  *     real, k-anonymous pool of delivered prices exists in Ledger.
  *     That pool lives behind opt-in consent in the authenticated
  *     product, never in this no-login tool — collecting it here would
- *     break the storefront's "the Network tab stays empty" promise.
+ *     break the storefront's "your typed prices are never sent in a request" promise.
  *
  *   - marketTrend(): your rate-of-change vs. a public commodity index's
  *     rate-of-change ("the market moved 6%, your vendor moved you
