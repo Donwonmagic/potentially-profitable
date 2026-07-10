@@ -672,7 +672,8 @@
     flagBadPrices();
     updatePriceTokens(); renderCarry(); // keep the privacy counter live as rows change
 
-    var purchases = currentPurchases().filter(function (p) {
+    var allPurchases = currentPurchases(); // scan rows once — both filters derive from it
+    var purchases = allPurchases.filter(function (p) {
       return p.cents > 0 && MW.parseISODay(p.date) != null;
     }).map(function (p) { return { cents: p.cents, date: p.date, unit: p.unit }; });
 
@@ -684,7 +685,7 @@
       // an honest LEVEL read against the wholesale reference, plus the upsell into
       // the two-date engine. Below two dated purchases the market-vs-vendor verdict
       // stays withheld; this only places the level, never claims overpayment.
-      var priced = currentPurchases().filter(function (p) { return isFinite(p.cents) && p.cents > 0; });
+      var priced = allPurchases.filter(function (p) { return isFinite(p.cents) && p.cents > 0; });
       var sp = (item && priced.length === 1) ? singlePriceRead(item, priced[0]) : null;
       if (sp) {
         clearFirstRun();
@@ -790,9 +791,17 @@
 
     // Faint value gridlines (consume --vb-grid) at round index levels, so the eye
     // reads HOW FAR each line sits from the 100 baseline — not just that they split.
-    var gridStep = range > 45 ? 10 : 5;
+    // gridStep is DERIVED from the range (nice 1/2/5×10ⁿ) to hold ~6 lines: yourPts.v
+    // is unbounded (a dropped-decimal typo = 100× price = a range in the thousands), so
+    // a fixed step would emit thousands of <line>s and hang the tab. Hard-capped too.
+    var niceStep = (function (raw) {
+      if (!(raw > 0) || !isFinite(raw)) return 5;
+      var mag = Math.pow(10, Math.floor(Math.log10(raw))), n = raw / mag;
+      return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 5 ? 5 : 10) * mag;
+    })(range / 6);
+    var gridStep = Math.max(1, niceStep);
     var gridLines = '';
-    for (var gv = Math.ceil(minV / gridStep) * gridStep; gv <= maxV; gv += gridStep) {
+    for (var gv = Math.ceil(minV / gridStep) * gridStep, gN = 0; gv <= maxV && gN < 16; gv += gridStep, gN++) {
       if (Math.abs(gv - 100) < 0.5) continue; // 100 is the baseline, drawn separately
       var gy = Y(gv).toFixed(1);
       gridLines += '<line x1="' + padL + '" y1="' + gy + '" x2="' + (W - padR) + '" y2="' + gy + '" class="vb-chart-grid"/>';
@@ -1261,16 +1270,27 @@
   // alone. FairPriceGap governs that rule (a delivered price above wholesale is
   // normal); the ADR-012 context comes from the matched key, never the price.
   // The upsell funnels straight into the two-date engine.
+  // Localized label for a Cost Index key from the eager picker manifest — O(items)
+  // but no name-match/fuzzy work. Lets the single-price tier avoid a THIRD full
+  // Lookup.match per settle (FPG.assess already matched and returns the key).
+  function labelForKey(key) {
+    var PICK = window.MUNTIN_CI_PICKER;
+    var items = PICK && Array.isArray(PICK.items) ? PICK.items : null;
+    if (key && items) {
+      for (var i = 0; i < items.length; i++) {
+        if (items[i] && items[i].key === key) return (ES ? items[i].label_es : items[i].label_en) || key;
+      }
+    }
+    return null;
+  }
   function singlePriceRead(item, row) {
     var FPG = window.MuntinFairPriceGap;
     var seed = window.MUNTIN_COST_INDEX;
     if (!FPG || !seed) return null;
     var level = FPG.assess({ item: item, paidCents: row.cents, unit: row.unit, seed: seed });
     if (!level || !level.matched) return null; // no market match — nothing honest to place it against
-    var Lookup = window.MuntinCostIndexLookup;
-    var ref = null; try { ref = Lookup && Lookup.match(item, seed); } catch (_) { ref = null; }
-    var key = level.costIndexKey || (ref && ref.key) || '';
-    var label = ref ? ((ES ? ref.label_es : ref.label_en) || ref.key) : item;
+    var key = level.costIndexKey || '';
+    var label = labelForKey(key) || item;
 
     var blocks = [];
     if (level.comparable) {
@@ -2061,16 +2081,18 @@
   function hydrateFromHash() {
     var mm = (location.hash || '').match(/[#&]b=([^&]+)/);
     if (!mm) return false;
-    var json = b64urlDecode(mm[1]); if (!json) return false;
+    var enc = mm[1];
+    // Strip #b= IMMEDIATELY — before any validation early-return. track() is gated on a
+    // b= fragment, so a corrupt/truncated link that fails to decode must not linger and
+    // silence analytics all session; and the recipient never carries the prices anyway.
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (_) {}
+    var json = b64urlDecode(enc); if (!json) return false;
     var p; try { p = JSON.parse(json); } catch (_) { return false; }
     if (!p || typeof p.i !== 'string' || !Array.isArray(p.r)) return false;
     var rows = p.r.filter(function (x) {
       return Array.isArray(x) && /^\d{4}-\d{2}-\d{2}$/.test(x[0]) && /^[\d.,\s$]{1,16}$/.test(String(x[1]));
     }).slice(0, 24).map(function (x) { return { date: x[0], price: String(x[1]) }; });
     if (!rows.length) return false;
-    // Strip #b= from the recipient's URL BEFORE hydrating — they should not carry the
-    // sender's prices in their address bar all session (and track() is gated on it).
-    try { history.replaceState(null, '', location.pathname + location.search); } catch (_) {}
     itemEl.value = String(p.i).slice(0, 80);
     if (typeof p.u === 'string' && /^[a-z]{1,8}$/.test(p.u)) unitEl.value = p.u;
     renderRows(rows);
