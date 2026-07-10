@@ -127,6 +127,11 @@
     briefBtn: 'Preparar la hoja para tu proveedor', briefPrint: 'Imprimir', briefCopy: 'Copiar el resumen', briefCopied: 'Resumen copiado',
     jTitle: 'Tus artículos guardados', jClear: 'Borrar guardados', jThin: 'vigilar',
     jOver: 'encima', jUnder: 'debajo', jEven: 'en línea',
+    jLiveEyebrow: 'Tu libro hoy',
+    jLiveSay: function (el, de, total) { return el === '0'
+      ? de + ' de tus ' + total + ' artículos seguidos están por debajo de su mercado normal ahora mismo.'
+      : el + ' de tus ' + total + ' artículos seguidos están por encima de su mercado normal ahora mismo' + (de !== '0' ? ' (' + de + ' por debajo)' : '') + '.'; },
+    jLiveTop: function (pct) { return 'es el más alto — alrededor de ' + pct + '% por encima de su normal. Vale la pena revisarlo.'; },
     jSince: 'Desde tu última revisión', jWiden: 'la diferencia creció', jNarrow: 'la diferencia se redujo',
     bookLead: 'Tu libro —', bookItems: 'artículos en seguimiento.',
     bookWorst: 'Mayor diferencia del proveedor:', bookCall: 'La línea que vale la pena llamar primero.',
@@ -243,6 +248,11 @@
     briefBtn: 'Make a one-page brief for your rep', briefPrint: 'Print', briefCopy: 'Copy the summary', briefCopied: 'Summary copied',
     jTitle: 'Your saved items', jClear: 'Clear saved items', jThin: 'watch',
     jOver: 'over', jUnder: 'under', jEven: 'in line',
+    jLiveEyebrow: 'Your book today',
+    jLiveSay: function (el, de, total) { return el === '0'
+      ? de + ' of your ' + total + ' tracked items are running below their normal market right now.'
+      : el + ' of your ' + total + ' tracked items are running above their normal market right now' + (de !== '0' ? ' (' + de + ' below)' : '') + '.'; },
+    jLiveTop: function (pct) { return 'is furthest up — about ' + pct + '% above its normal. Worth a look.'; },
     jSince: 'Since your last check', jWiden: 'the gap widened', jNarrow: 'the gap narrowed',
     bookLead: 'Your book —', bookItems: 'items tracked.',
     bookWorst: 'Widest vendor gap:', bookCall: 'The line worth a call first.',
@@ -603,6 +613,15 @@
     return '<div class="vb-dist" role="img" aria-label="' + lbl + '">' + seg(over, 'over') + seg(match, 'match') + seg(under, 'under') + '</div>';
   }
 
+  // The reference's CURRENT state vs its own trailing-year normal, by Cost Index key
+  // (map key === CI key for matched entries). Pure read of the loaded context seed —
+  // never the operator's price. This is what makes the book LIVE on return instead of
+  // showing gaps frozen at check-time.
+  function marketNowFor(key) {
+    var CTX2 = window.MUNTIN_COST_CONTEXT;
+    var c = CTX2 && key ? CTX2[key] : null;
+    return (c && c.now && (c.now.state === 'elevated' || c.now.state === 'depressed')) ? c.now : null;
+  }
   function renderJournalRail() {
     if (!railEl) return;
     var map = readJournal();
@@ -610,6 +629,19 @@
       .filter(function (x) { return x.e && x.e.item; })
       .sort(function (a, b) { return (Math.abs(b.e.gapPts || 0) - Math.abs(a.e.gapPts || 0)); });
     if (!items.length) { railEl.hidden = true; setHTML(railEl, ''); return; }
+
+    // LIVE market pulse across the book — recomputed against TODAY's reference state on
+    // every load, so returning is worth it. Honest: the reference's own vs-normal state,
+    // not the operator's price, and never a gap it can't stand behind.
+    var live = '';
+    var withMkt = items.map(function (x) { return { x: x, now: marketNowFor(x.k) }; }).filter(function (r) { return r.now; });
+    if (withMkt.length) {
+      var elevated = withMkt.filter(function (r) { return r.now.state === 'elevated'; })
+        .sort(function (a, b) { return (Math.abs(b.now.pct) || 0) - (Math.abs(a.now.pct) || 0); });
+      var depressed = withMkt.filter(function (r) { return r.now.state === 'depressed'; });
+      var top = elevated[0] || null;
+      live = h`<div class="vb-book-live"><span class="vb-eyebrow">${T.jLiveEyebrow}</span><p class="vb-book-live-say">${T.jLiveSay(String(elevated.length), String(depressed.length), String(items.length))}${top ? h` <strong>${top.x.e.item}</strong> ${T.jLiveTop(String(Math.abs(top.now.pct)))}` : ''}</p></div>`;
+    }
     var chips = items.map(function (x) {
       var e = x.e;
       var gapTxt = (typeof e.gapPts === 'number')
@@ -632,7 +664,7 @@
         ? h`<p class="vb-book-count">${String(overCount)} ${T.bookOver}.</p>`
         : h`<p class="vb-book-count">${String(overCount)} ${T.bookOver} <a class="vb-inlink plausible-event-name=Ledger+Route+Click plausible-event-source=vendor-benchmark" href="https://ledger.muntin.digital/">${T.seeLedger} <span aria-hidden="true">→</span></a></p>`) : ''}</div>`;
     }
-    setHTML(railEl, h`<div class="vb-journal-head"><span class="vb-eyebrow">${T.jTitle}</span><button type="button" class="vb-linkbtn" data-jclear>${T.jClear}</button></div>${rollup}<div class="vb-journal-grid">${chips}</div>`);
+    setHTML(railEl, h`<div class="vb-journal-head"><span class="vb-eyebrow">${T.jTitle}</span><button type="button" class="vb-linkbtn" data-jclear>${T.jClear}</button></div>${live}${rollup}<div class="vb-journal-grid">${chips}</div>`);
     railEl.hidden = false;
   }
   function onRailClick(e) {
