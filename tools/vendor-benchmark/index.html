@@ -458,6 +458,15 @@ html{-webkit-text-size-adjust:100%}
 .vb-context{margin:0;padding:12px 14px;border-radius:var(--r-sm,9px);background:var(--surface-inset);border-left:3px solid var(--vb-signal)}
 .vb-context-say{font-size:13.5px;line-height:1.55;color:var(--ink);margin:5px 0 0}
 .vb-context-event{font-size:12px;line-height:1.5;color:var(--ink-soft);margin:7px 0 0}
+/* single-price tier — a calm LEVEL read (never a verdict tone): chrome accent only. */
+.vb-sp .vb-eyebrow{display:block}
+.vb-sp-read{margin:10px 0 0;font-size:clamp(15px,2.4vw,18px);line-height:1.5;color:var(--ink)}
+.vb-sp-read strong{font-variant-numeric:tabular-nums;white-space:nowrap}
+.vb-sp-anchor{margin:8px 0 0;font-size:12.5px;line-height:1.5;color:var(--ink-soft);font-family:var(--vb-font-mono)}
+.vb-sp-anchor strong{color:var(--ink)}
+.vb-sp-upsell{margin:16px 0 0;padding:14px 16px;border-radius:var(--r-md,14px);background:var(--surface-inset);border-left:3px solid var(--vb-signal)}
+.vb-sp-upsell p{margin:0 0 10px;font-size:13.5px;line-height:1.5;color:var(--ink)}
+.vb-sp-src{margin:14px 0 0;font-size:12px;line-height:1.5;color:var(--ink-soft)}
 /* the verdict answer is a real <h2 id=vbVerdictH> — focus lands here on explicit
    actions (example / journal reopen); show a ring for genuine keyboard focus. */
 .vb-verdict-h{scroll-margin-top:16px}

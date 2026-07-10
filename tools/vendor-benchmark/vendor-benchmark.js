@@ -72,6 +72,19 @@
     levelAt: 'Tu nivel está dentro de un margen de entrega normal frente a la referencia mayorista.',
     levelAbove: 'Tu nivel también corre por encima de la referencia mayorista',
     levelCalib: 'El flete y la distribución normalmente suman margen, así que tómalo como tu nivel — no como prueba de una factura inflada. La tasa de cambio de arriba es la señal más fuerte.',
+    spEyebrow: 'Un precio · referencia de mercado',
+    spYour: 'Tu',
+    spTailFar: function (g) { return 'corre ' + g + ' por encima de la referencia mayorista — muy por encima de un margen de entrega normal. Vale la pena preguntar a tu proveedor qué lo explica; aun así, solo tu precio entregado entre proveedores puede probar un sobrecosto, nunca la diferencia mayorista por sí sola.'; },
+    spTailAbove: function (g) { return 'corre ' + g + ' por encima de la referencia mayorista. Un precio entregado por encima del mayorista es normal — el flete y la distribución suman margen — así que léelo como tu nivel, no como prueba de una factura inflada.'; },
+    spTailBelow: function (g) { return 'está ' + g + ' por debajo de la referencia mayorista. Verifica que el empaque y la especificación coincidan antes de darlo por ganado.'; },
+    spTailAt: 'está dentro de un margen de entrega normal frente a la referencia mayorista — un buen lugar donde estar.',
+    spRefLevel: 'Referencia mayorista ahora:',
+    spRefBasis: 'Mayorista USDA · tu precio nunca sale de tu navegador',
+    spTrack: function (label) { return 'Seguimos ' + label + ', pero todavía no hay un nivel de precio mayorista firme para comparar el tuyo — agrega una segunda factura con fecha para leer tu propia tendencia.'; },
+    spUpsellLead: 'Una segunda factura con fecha convierte esto en la pregunta real: ¿una subida fue el mercado o tu proveedor?',
+    spUpsellCta: 'Agregar una segunda factura con fecha',
+    spAnnounce: 'Lectura de nivel de un precio lista.',
+    spAnnounceTrack: 'Artículo reconocido. Agrega una segunda factura con fecha para una tendencia.',
     receiptSummary: 'Cómo se midió esta diferencia',
     receiptDepthDeep: function (n, cadence, from, to) { return 'De ' + n + ' lecturas mayoristas ' + cadence + ' del USDA, ' + from + '–' + to + '.'; },
     receiptDepthShort: 'De un historial de mercado reciente y corto.',
@@ -167,6 +180,19 @@
     levelAt: 'Your level sits within a normal delivered markup over the wholesale reference.',
     levelAbove: 'Your level also runs above the wholesale reference',
     levelCalib: 'Freight and distribution normally add markup, so read this as your level — not proof of a padded bill. The rate-of-change above is the stronger signal.',
+    spEyebrow: 'One price · market reference',
+    spYour: 'Your',
+    spTailFar: function (g) { return 'runs ' + g + ' above the wholesale reference — well beyond a normal delivered markup. Worth asking your rep what is driving it; still, only your delivered price across vendors can prove an overcharge, never the wholesale gap alone.'; },
+    spTailAbove: function (g) { return 'runs ' + g + ' above the wholesale reference. A delivered price above wholesale is normal — freight and distribution add margin — so read this as your level, not proof of a padded bill.'; },
+    spTailBelow: function (g) { return 'sits ' + g + ' below the wholesale reference. Double-check the pack and spec match before counting it a win.'; },
+    spTailAt: 'sits within a normal delivered markup over the wholesale reference — a fair place to be.',
+    spRefLevel: 'Wholesale reference now:',
+    spRefBasis: 'USDA wholesale · your price never leaves your browser',
+    spTrack: function (label) { return 'We track ' + label + ', but there is no firm wholesale price level to place yours against yet — add a second dated invoice to read your own trend.'; },
+    spUpsellLead: 'A second dated invoice turns this into the real question: was a jump the market, or your vendor?',
+    spUpsellCta: 'Add a second dated invoice',
+    spAnnounce: 'Single-price level read ready.',
+    spAnnounceTrack: 'Item matched. Add a second dated invoice for a trend.',
     receiptSummary: 'How this gap was measured',
     // Post-audit (2026-07, HIGH-1): derive cadence + span per item — the deep series
     // are heterogeneous (beef is monthly, eggs spans ~1.4 years), so a blanket
@@ -646,6 +672,20 @@
     updateMatchChip(item);
 
     if (!item || purchases.length < 2) {
+      // Single-price tier — one item + exactly one priced row (dated or not) gets
+      // an honest LEVEL read against the wholesale reference, plus the upsell into
+      // the two-date engine. Below two dated purchases the market-vs-vendor verdict
+      // stays withheld; this only places the level, never claims overpayment.
+      var priced = currentPurchases().filter(function (p) { return isFinite(p.cents) && p.cents > 0; });
+      var sp = (item && priced.length === 1) ? singlePriceRead(item, priced[0]) : null;
+      if (sp) {
+        clearFirstRun();
+        setHTML(resultEl, sp.html);
+        resultEl.setAttribute('data-has-result', '1');
+        if (announceEl) { clearTimeout(announceT); announceT = setTimeout(function () { announceEl.textContent = sp.announce; }, 950); }
+        track('Bench Single-Price Read', { verdict: sp.level.verdict });
+        return;
+      }
       while (resultEl.firstChild) resultEl.removeChild(resultEl.firstChild);
       resultEl.removeAttribute('data-has-result');
       if (announceEl) { clearTimeout(announceT); announceEl.textContent = ''; }
@@ -1068,11 +1108,17 @@
   function contextBlock(res) {
     var m = res.market;
     if (!m || !m.available || !m.key) return '';
+    return contextBlockForKey(m.key, m.label || res.item);
+  }
+  // ADR-012 market context from a bare Cost Index key — the reference's OWN
+  // elevated/depressed state vs its trailing-year normal (never the operator's
+  // price). Shared by the two-date verdict and the single-price level read.
+  function contextBlockForKey(key, label) {
+    if (!key) return '';
     var CTX = window.MUNTIN_COST_CONTEXT;
     if (!CTX) return '';
-    var c = CTX[m.key];
+    var c = CTX[key];
     if (!c) return '';
-    var label = m.label || res.item;
     var now = c.now || null;
     var state = now && now.state;
     var hasState = state === 'elevated' || state === 'depressed';
@@ -1177,10 +1223,77 @@
     }
   }
 
+  // ---- single-price tier ---------------------------------------------------
+  // The most common arrival state: one invoice in hand ("ribeye came in at
+  // $14.40 — is that high?"). Two dated prices answer market-vs-vendor; one
+  // price can still answer LEVEL — where it sits against the wholesale
+  // reference — honestly, on-device, with NO overpayment claim from wholesale
+  // alone. FairPriceGap governs that rule (a delivered price above wholesale is
+  // normal); the ADR-012 context comes from the matched key, never the price.
+  // The upsell funnels straight into the two-date engine.
+  function singlePriceRead(item, row) {
+    var FPG = window.MuntinFairPriceGap;
+    var seed = window.MUNTIN_COST_INDEX;
+    if (!FPG || !seed) return null;
+    var level = FPG.assess({ item: item, paidCents: row.cents, unit: row.unit, seed: seed });
+    if (!level || !level.matched) return null; // no market match — nothing honest to place it against
+    var Lookup = window.MuntinCostIndexLookup;
+    var ref = null; try { ref = Lookup && Lookup.match(item, seed); } catch (_) { ref = null; }
+    var key = level.costIndexKey || (ref && ref.key) || '';
+    var label = ref ? ((ES ? ref.label_es : ref.label_en) || ref.key) : item;
+
+    var blocks = [];
+    if (level.comparable) {
+      // Both sides in the SAME (reference) unit — FPG already reconciled them.
+      var unit = level.marketUnit ? '/' + level.marketUnit : '';
+      var youStr = money(level.paidPerMarketUnit) + unit;
+      var refStr = money(level.marketCents) + unit;
+      var g = level.gapPct;
+      var gStr = (g > 0 ? '+' : '') + g + '%';
+      var tail;
+      if (level.verdict === 'far-above-reference') tail = T.spTailFar(gStr);
+      else if (level.verdict === 'above-reference') tail = T.spTailAbove(gStr);
+      else if (level.verdict === 'below-reference') tail = T.spTailBelow(Math.abs(g) + '%');
+      else tail = T.spTailAt;
+      blocks.push(h`<p class="vb-sp-read">${T.spYour} <strong>${youStr}</strong> ${tail}</p>`);
+      blocks.push(h`<p class="vb-sp-anchor">${T.spRefLevel} <strong>${refStr}</strong> · ${T.spRefBasis}</p>`);
+    } else {
+      // Matched, but no firm wholesale $-level (index-basis / thin) — link, don't compare.
+      blocks.push(h`<p class="vb-sp-read">${T.spTrack(label)}</p>`);
+    }
+
+    var ctx = key ? contextBlockForKey(key, label) : '';
+    if (ctx) blocks.push(ctx);
+
+    blocks.push(h`<div class="vb-sp-upsell"><p>${T.spUpsellLead}</p><button type="button" class="vb-demo" data-sp-add>${T.spUpsellCta} <span aria-hidden="true">→</span></button></div>`);
+    blocks.push(h`<p class="vb-sp-src">${T.attributionWholesale}${key ? h` <a class="vb-inlink" href="${BASE}/cost-index/${key}/">${T.seeReading} <span aria-hidden="true">→</span></a>` : ''}</p>`);
+
+    return {
+      html: h`<div class="vb-result-inner vb-sp"><span class="vb-eyebrow">${T.spEyebrow}</span>${blocks}</div>`,
+      level: level,
+      announce: level.comparable ? T.spAnnounce : T.spAnnounceTrack
+    };
+  }
+  // Upsell action: append a prior-dated row (21 days before the existing one, so
+  // the default lands in the PAST — never a future date) and focus its price, so
+  // the operator drops in their last invoice and the two-date engine takes over.
+  function addSecondInvoice() {
+    var rows = readRows();
+    var anchor = rows.length ? rows[rows.length - 1].date : '';
+    var newDate = isoMinusDays(anchor || todayISO(), 21);
+    rowsEl.appendChild(buildRow({ date: newDate }));
+    relabelRows();
+    var inputs = rowsEl.querySelectorAll('.vb-prow:last-child input');
+    if (inputs[1]) inputs[1].focus(); // the PRICE field of the new row
+    track('Bench Single-Price Upsell');
+    schedule();
+  }
+
   // One delegated handler for everything inside the re-rendered result.
   function onResultClick(e) {
     var t = e.target;
     if (!t || !t.closest) return;
+    if (t.closest('[data-sp-add]')) { addSecondInvoice(); return; }
     if (t.closest('#vbClearSaved')) { clearAll(); return; }
     var saveBtn = t.closest('[data-save-contract]');
     if (saveBtn) {
