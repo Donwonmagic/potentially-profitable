@@ -83,7 +83,13 @@
     spTrack: function (label) { return 'Seguimos ' + label + ', pero todavía no hay un nivel de precio mayorista firme para comparar el tuyo — agrega una segunda factura con fecha para leer tu propia tendencia.'; },
     spUpsellLead: 'Una segunda factura con fecha convierte esto en la pregunta real: ¿una subida fue el mercado o tu proveedor?',
     spUpsellCta: 'Agregar una segunda factura con fecha',
-    spAnnounce: 'Lectura de nivel de un precio lista.',
+    spHAbove: 'Por encima de la referencia mayorista',
+    spHAt: 'En línea con la referencia mayorista',
+    spHBelow: 'Por debajo de la referencia mayorista',
+    spHTrack: 'Seguido en el Cost Index',
+    spWatch: 'Seguir este artículo', spWatching: 'Siguiéndolo — en Tu Libro',
+    spWatchLead: 'Mantenlo vigilado:',
+    spNoMatch: function (item) { return 'Todavía no seguimos ' + item + ' en el Cost Index. Agrega una segunda factura con fecha y la herramienta seguirá igualmente TU propia tendencia de precio.'; },
     spAnnounceTrack: 'Artículo reconocido. Agrega una segunda factura con fecha para una tendencia.',
     receiptSummary: 'Cómo se midió esta diferencia',
     receiptDepthDeep: function (n, cadence, from, to) { return 'De ' + n + ' lecturas mayoristas ' + cadence + ' del USDA, ' + from + '–' + to + '.'; },
@@ -191,7 +197,13 @@
     spTrack: function (label) { return 'We track ' + label + ', but there is no firm wholesale price level to place yours against yet — add a second dated invoice to read your own trend.'; },
     spUpsellLead: 'A second dated invoice turns this into the real question: was a jump the market, or your vendor?',
     spUpsellCta: 'Add a second dated invoice',
-    spAnnounce: 'Single-price level read ready.',
+    spHAbove: 'Above the wholesale reference',
+    spHAt: 'In line with the wholesale reference',
+    spHBelow: 'Below the wholesale reference',
+    spHTrack: 'Tracked in the Cost Index',
+    spWatch: 'Watch this item', spWatching: 'Watching — in Your Book',
+    spWatchLead: 'Keep an eye on it:',
+    spNoMatch: function (item) { return 'We don’t track ' + item + ' in the Cost Index yet. Add a second dated invoice and the tool will still track your OWN price trend for it.'; },
     spAnnounceTrack: 'Item matched. Add a second dated invoice for a trend.',
     receiptSummary: 'How this gap was measured',
     // Post-audit (2026-07, HIGH-1): derive cadence + span per item — the deep series
@@ -689,10 +701,22 @@
       var sp = (item && priced.length === 1) ? singlePriceRead(item, priced[0]) : null;
       if (sp) {
         clearFirstRun();
+        lastSingle = { key: sp.key, item: sp.item, unit: sp.unit, level: sp.level };
         setHTML(resultEl, sp.html);
         resultEl.setAttribute('data-has-result', '1');
         if (announceEl) { clearTimeout(announceT); announceT = setTimeout(function () { announceEl.textContent = sp.announce; }, 950); }
         track('Bench Single-Price Read', { verdict: sp.level.verdict });
+        return;
+      }
+      lastSingle = null;
+      // No-match front door: item typed + one price + seeds loaded, but the item isn't
+      // in the Cost Index — don't blank out. Offer the own-trend path (the 2-date engine
+      // still tracks their own history without a market match) instead of dead silence.
+      if (item && priced.length === 1 && seedsPresent()) {
+        clearFirstRun();
+        setHTML(resultEl, h`<div class="vb-result-inner vb-sp"><span class="vb-eyebrow">${T.spEyebrow}</span><p class="vb-sp-read">${T.spNoMatch(item)}</p><div class="vb-sp-upsell"><p>${T.spUpsellLead}</p><button type="button" class="vb-demo" data-sp-add>${T.spUpsellCta} <span aria-hidden="true">→</span></button></div></div>`);
+        resultEl.setAttribute('data-has-result', '1');
+        if (announceEl) { clearTimeout(announceT); announceT = setTimeout(function () { announceEl.textContent = T.spNoMatch(item); }, 950); }
         return;
       }
       while (resultEl.firstChild) resultEl.removeChild(resultEl.firstChild);
@@ -982,6 +1006,7 @@
   var lastRes = null;
   var lastSig = null; // render-epoch identity signature — motion fires only when it changes
   var lastStrong = false; // did the last funnel render the strong Ledger card? (dedups the journal rollup CTA)
+  var lastSingle = null;  // last single-price read context {key,item,unit,level} for the "watch this item" action
 
   // rAF count-up for the hero gap number — lands EXACTLY on the true value; snaps under
   // reduced-motion or without rAF. Dollars never tween (a morphing $ would read as the
@@ -1292,7 +1317,7 @@
     var key = level.costIndexKey || '';
     var label = labelForKey(key) || item;
 
-    var blocks = [];
+    var blocks = [], heading, readText;
     if (level.comparable) {
       // Both sides in the SAME (reference) unit — FPG already reconciled them.
       var unit = level.marketUnit ? '/' + level.marketUnit : '';
@@ -1301,28 +1326,59 @@
       var g = level.gapPct;
       var gStr = (g > 0 ? '+' : '') + g + '%';
       var tail;
-      if (level.verdict === 'far-above-reference') tail = T.spTailFar(gStr);
-      else if (level.verdict === 'above-reference') tail = T.spTailAbove(gStr);
-      else if (level.verdict === 'below-reference') tail = T.spTailBelow(Math.abs(g) + '%');
-      else tail = T.spTailAt;
+      if (level.verdict === 'far-above-reference') { tail = T.spTailFar(gStr); heading = T.spHAbove; }
+      else if (level.verdict === 'above-reference') { tail = T.spTailAbove(gStr); heading = T.spHAbove; }
+      else if (level.verdict === 'below-reference') { tail = T.spTailBelow(Math.abs(g) + '%'); heading = T.spHBelow; }
+      else { tail = T.spTailAt; heading = T.spHAt; }
+      readText = T.spYour + ' ' + youStr + ' ' + tail; // plain-text twin for the SR announce
       blocks.push(h`<p class="vb-sp-read">${T.spYour} <strong>${youStr}</strong> ${tail}</p>`);
       blocks.push(h`<p class="vb-sp-anchor">${T.spRefLevel} <strong>${refStr}</strong> · ${T.spRefBasis}</p>`);
     } else {
       // Matched, but no firm wholesale $-level (index-basis / thin) — link, don't compare.
-      blocks.push(h`<p class="vb-sp-read">${T.spTrack(label)}</p>`);
+      heading = T.spHTrack;
+      readText = T.spTrack(label);
+      blocks.push(h`<p class="vb-sp-read">${readText}</p>`);
     }
 
     var ctx = key ? contextBlockForKey(key, label) : '';
     if (ctx) blocks.push(ctx);
 
+    // Seed the accumulation book straight from the arrival state — the common
+    // one-price visit can now add the item to Your Book without a second invoice.
+    blocks.push(h`<p class="vb-sp-watch">${T.spWatchLead} <button type="button" class="vb-linkbtn" data-sp-watch>${T.spWatch} <span aria-hidden="true">☆</span></button></p>`);
     blocks.push(h`<div class="vb-sp-upsell"><p>${T.spUpsellLead}</p><button type="button" class="vb-demo" data-sp-add>${T.spUpsellCta} <span aria-hidden="true">→</span></button></div>`);
     blocks.push(h`<p class="vb-sp-src">${T.attributionWholesale}${key ? h` <a class="vb-inlink" href="${BASE}/cost-index/${key}/">${T.seeReading} <span aria-hidden="true">→</span></a>` : ''}</p>`);
 
     return {
-      html: h`<div class="vb-result-inner vb-sp"><span class="vb-eyebrow">${T.spEyebrow}</span>${blocks}</div>`,
-      level: level,
-      announce: level.comparable ? T.spAnnounce : T.spAnnounceTrack
+      html: h`<div class="vb-result-inner vb-sp"><span class="vb-eyebrow">${T.spEyebrow}</span><h2 class="vb-sp-h" id="vbSpH" tabindex="-1">${heading}</h2>${blocks}</div>`,
+      level: level, key: key, item: item, unit: row.unit,
+      announce: heading + '. ' + readText // SR hears the verdict + the detail, not a constant
     };
+  }
+  // Save a WATCH-only journal entry (no gap yet) keyed by the Cost Index key — the
+  // same key saveToJournal uses, so a later two-date check UPGRADES this entry in
+  // place instead of duplicating it. Never downgrades a richer 2-date entry.
+  function saveWatch(ctx) {
+    if (!CTX || !ctx || !ctx.key || !ctx.item) return false;
+    var map = readJournal();
+    var existing = map[ctx.key];
+    if (existing && Array.isArray(existing.purchases) && existing.purchases.length >= 2) return true;
+    var now = Date.now();
+    var ring = ringOf(existing);
+    var check = { at: now, gapPts: null };
+    if (ring.length && (now - (ring[0].at || 0)) < SESSION_MS) { ring = ring.slice(); ring[0] = check; }
+    else { ring = [check].concat(ring); }
+    if (ring.length > CHECK_CAP) ring = ring.slice(0, CHECK_CAP);
+    map[ctx.key] = { item: ctx.item, unit: ctx.unit, at: now, gapPts: null, watch: true, level: (ctx.level && ctx.level.verdict) || null, checks: ring };
+    var keys = Object.keys(map);
+    if (keys.length > JOURNAL_CAP) {
+      keys.map(function (kk) { return { kk: kk, at: (map[kk] && map[kk].at) || 0 }; })
+        .sort(function (a, b) { return a.at - b.at; })
+        .slice(0, keys.length - JOURNAL_CAP)
+        .forEach(function (e) { delete map[e.kk]; });
+    }
+    writeJournal(map);
+    return true;
   }
   // Upsell action: append a prior-dated row (21 days before the existing one, so
   // the default lands in the PAST — never a future date) and focus its price, so
@@ -1344,6 +1400,11 @@
     var t = e.target;
     if (!t || !t.closest) return;
     if (t.closest('[data-sp-add]')) { addSecondInvoice(); return; }
+    var watchBtn = t.closest('[data-sp-watch]');
+    if (watchBtn) {
+      if (saveWatch(lastSingle)) { renderJournalRail(); watchBtn.textContent = T.spWatching; watchBtn.disabled = true; track('Bench Item Watched'); }
+      return;
+    }
     if (t.closest('#vbClearSaved')) { clearAll(); return; }
     var saveBtn = t.closest('[data-save-contract]');
     if (saveBtn) {
