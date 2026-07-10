@@ -69,9 +69,16 @@
 .lg-row:first-child{border-top:0}
 .lg-d{color:var(--stone);font-variant-numeric:tabular-nums}
 .lg-v{color:var(--ink-soft)}
-.lg-i{color:var(--ink)}
+.lg-i{color:var(--ink);font-weight:500}
 .lg-n{font-family:var(--font-display);font-weight:560;font-size:15.5px;letter-spacing:-.01em;font-variant-numeric:tabular-nums lining-nums;color:var(--ink);text-align:right}
-.lg-s{font-size:11px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--stone);text-align:right}
+/* Status as a state chip, not weak gray text (2026-07-10 incr. B — the
+   "blends together" fix): filed / read / in-band read as a committed STATE
+   in a subtle neutral pill, so each row parses as three clear tiers —
+   item (medium ink) · price (display numeral) · state (chip). The flag
+   keeps its rust pill (.lg-flag) as the one coloured badge, so the moved
+   line still owns the row's attention. 2px pad keeps the line box the same
+   height, so row height is unchanged and the no-scroll FLOOR is untouched. */
+.lg-s{justify-self:end;display:inline-flex;align-items:center;padding:2px 8px;font-size:10.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-soft);background:var(--cream-2);border-radius:999px;white-space:nowrap}
 .lg-row--flag .lg-n{font-size:16px}
 .lg-flag{display:inline-flex;align-items:center;gap:2px;justify-self:end;padding:1px 6px;font-size:10px;font-weight:700;letter-spacing:.02em;border-radius:999px;background:var(--status-bad-tint,#F7E7DC);color:var(--rust,#C42E2E);white-space:nowrap}
 /* Mobile row stack (P0-5, 2026-07-07) — two lines instead of hidden
