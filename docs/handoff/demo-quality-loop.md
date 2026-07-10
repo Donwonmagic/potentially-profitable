@@ -127,8 +127,10 @@ Cycle-4 targets — the ≥9.5 blockers the three cycle-3 judges converged on (h
   frame isn't guaranteed in view. Consider centering the stage on step-3 arrival (without a page bounce).
 - **[nit] Ghost teardown** — after the FLIP settles, `.ld-ghost` persists parked at opacity 0 on the
   chart point; harmless (invisible, out of flow) but a top-tier teardown would remove it.
-- **[craft] Dark-mode step-3 axis contrast** — the gridline/axis labels ($24/$26, band caption) sit a
-  hair below light-mode crispness on the dark pane.
+- ~~**[craft] Dark-mode step-3 axis contrast**~~ — **DISMISSED on measurement.** The dark labels are
+  `#9CA3AE` on the `#1B1E24` pane = ~6.5:1 contrast, *higher* than light mode's ~4.6:1 (`#6B7280` on
+  white); gridlines correctly darken to `#2C3038`. The design seat's "hair below light" is subjective,
+  not a real deficiency — no fix (would over-brighten).
 - **[composition] Step-4 CTA bottom-heavy** — the closing dark ink band ends ~55% down, leaving
   ~146–171px of empty ink before the control bar (documented trade-off; deflates the close).
 - **[composition] Mobile dead space steps 1–2** — ~200px empty below the short vignettes in the fixed
