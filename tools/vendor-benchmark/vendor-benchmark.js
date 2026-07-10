@@ -1555,19 +1555,26 @@
     if (CTX && typeof CTX.merge === 'function') { try { CTX.merge({ vbSession: null }); } catch (_) {} }
     itemEl.focus();
   }
-  function loadExample() {
-    // Illustrative operator prices; the market side is real, sourced USDA data.
-    itemEl.value = 'ribeye';
-    unitEl.value = 'lb';
-    renderRows([
-      { date: '2026-03-02', price: '12.20' },
-      { date: '2026-04-06', price: '13.10' },
-      { date: '2026-05-04', price: '14.40' }
-    ]);
+  // Three worked examples — the VERDICT is computed LIVE by the engine, never hardcoded,
+  // so onboarding shows the calibrated-honesty differentiator (hot / tracked / hold), not a
+  // generic happy path. Operator prices are ILLUSTRATIVE; the market side is real USDA data.
+  // Tones pinned by build-time probe (re-verify: node scripts/check-vb-scenarios.mjs):
+  //   hot → 'over' (+11)   tracked → 'match' (0)   thin → withheld hold (ok:false).
+  var SCENARIOS = {
+    hot:     { item: 'ribeye',          unit: 'lb', rows: [{ date: '2026-03-02', price: '12.20' }, { date: '2026-04-06', price: '13.10' }, { date: '2026-05-04', price: '14.40' }] },
+    tracked: { item: 'chicken breast',  unit: 'lb', rows: [{ date: '2026-03-02', price: '1.40' },  { date: '2026-04-06', price: '1.48' },  { date: '2026-05-04', price: '1.55' }] },
+    thin:    { item: 'beef tenderloin', unit: 'lb', rows: [{ date: '2026-06-15', price: '10.00' }, { date: '2026-06-29', price: '10.50' }] }
+  };
+  function loadScenario(key) {
+    var s = SCENARIOS[key] || SCENARIOS.hot;
+    itemEl.value = s.item;
+    unitEl.value = s.unit;
+    renderRows(s.rows.map(function (r) { return { date: r.date, price: r.price }; }));
     track('Bench Example Loaded');
     run();
     revealResult(true); // explicit example load — land focus on the verdict, motion-gated
   }
+  function loadExample() { loadScenario('hot'); }
 
   // ---- ingredient picker (combobox) — progressive enhancement over #vbItem ---
   // The picker manifest (window.MUNTIN_CI_PICKER, eager first-paint) lists the
@@ -1865,6 +1872,11 @@
   if (addBtn) { addBtn.textContent = '+ ' + T.add; addBtn.addEventListener('click', addRow); }
   if (exampleBtn) { exampleBtn.textContent = T.example; exampleBtn.addEventListener('click', loadExample); }
   if (clearBtn) { clearBtn.textContent = T.clear; clearBtn.addEventListener('click', clearAll); }
+  var demosEl = document.querySelector('.vb-demos');
+  if (demosEl) demosEl.addEventListener('click', function (e) {
+    var b = e.target && e.target.closest ? e.target.closest('[data-scenario]') : null;
+    if (b) loadScenario(b.getAttribute('data-scenario'));
+  });
 
   resultEl.addEventListener('click', onResultClick);
   ensureAnnouncer();

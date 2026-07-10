@@ -501,6 +501,14 @@ html{-webkit-text-size-adjust:100%}
 .vb-shell[data-first-run] .vb-example:hover{background:var(--teal-dark,#1F3A93)}
 .vb-shell[data-first-run] .vb-add{opacity:.6}
 .vb-shell[data-first-run] .vb-clear{display:none}
+/* ── Worked-example switcher — three scenarios whose verdict is COMPUTED live, so the
+   calibrated-honesty differentiator (hot / tracked / hold) is shown, not a happy path. ── */
+.vb-demos{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0 0}
+.vb-demos-k{font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--stone);font-family:var(--vb-font-mono)}
+.vb-demo{min-height:var(--vb-touch,44px);display:inline-flex;align-items:center;padding:7px 14px;border:1px solid var(--line-dark);border-radius:999px;background:transparent;color:var(--ink);font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:border-color var(--t-fast,180ms),color var(--t-fast,180ms)}
+.vb-demo:hover{border-color:var(--teal);color:var(--teal)}
+.vb-demo:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.vb-demos-note{font-size:11px;color:var(--ink-soft);flex-basis:100%}
 </style>
 </head>
 <body>
@@ -725,6 +733,13 @@ html{-webkit-text-size-adjust:100%}
       <button type="button" class="vb-clear" id="vbClear">Borrar</button>
     </div>
     <p class="vb-hint-line">Agrega dos o más facturas con fecha del mismo artículo. Cuantas más fechas le des, más nítida la comparación con el mercado &mdash; y se actualiza mientras escribes.</p>
+    <div class="vb-demos" role="group" aria-label="Ejemplos — el veredicto se calcula en vivo">
+      <span class="vb-demos-k">Míralo funcionar</span>
+      <button type="button" class="vb-demo" data-scenario="hot">El proveedor subió de más</button>
+      <button type="button" class="vb-demo" data-scenario="tracked">El proveedor siguió al mercado</button>
+      <button type="button" class="vb-demo" data-scenario="thin">Datos escasos &mdash; no opinamos</button>
+      <span class="vb-demos-note">Precios ilustrativos &middot; veredicto en vivo</span>
+    </div>
     <p class="vb-err" id="vbErr" role="alert" hidden></p>
   </div>
 

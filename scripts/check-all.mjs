@@ -442,6 +442,10 @@ const CHECKS = [
   // with the inline maps in build-cost-index-pages.mjs. Rebuild: build-cost-index-picker.mjs.
   ['Cost-index picker','check-cost-index-picker.mjs'],
   ['Cost-index picker self-test','check-cost-index-picker.mjs','--self-test'],
+  // Vendor Benchmark onboarding worked-examples — the live engine must still yield the
+  // tone each demo chip claims (hot→over, tracked→match, thin→hold). Parses the tool's
+  // own SCENARIOS so a seed refresh can't leave the honesty demo asserting a stale tone.
+  ['VB worked-example scenarios','check-vb-scenarios.mjs'],
   // Band coverage — the published prediction band is a CONFORMAL interval whose
   // realized coverage is backtested against deep history; this gate fails if the
   // 80% band doesn't actually cover ~80% of next prints (verified, not asserted).
