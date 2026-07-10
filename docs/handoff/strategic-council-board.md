@@ -15,13 +15,18 @@ council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 
 ## ⮕ CURRENT STATE — read this first (updated 2026-07-09)
 
-### 🔴 TWO LIVE REDS ON MAIN (found 2026-07-09 storefront catch-up — fix before any feature work)
+### 🔴 TWO LIVE REDS ON MAIN — **both have fixes on `-exsghc`, UNMERGED (updated 2026-07-10)**
 
 A fresh storefront session (branch `-rqdehe`, reset onto main) reconstructed state and
 verified two independent reds on main. **Both are real, NOT the self-healing "(idem)"
-deploy-regeneration class.** They block the storefront ACTIVE BUILD below (the July edition
-needs fresh ≥07-08 data, which red #1 is withholding). (This is separate from the 🟣 product
-`/try` session recorded directly below — both ran 07-09; nothing conflicts.)
+deploy-regeneration class.** As of 2026-07-10 both fixes sit on the
+`claude/muntin-strategic-council-exsghc` dev branch, pushed and gate-verified — **merging
+that branch clears both reds.** RED #1's fix = the calibration re-stamp as the refresh
+build's final action (found independently by the `-exsghc` lane on 07-09, same diagnosis).
+RED #2's fix = the "companion tools" line (Cost Pulse + plate-cost) added to the frozen
+07-06 weekly's Go-deeper list AND to both generator templates (weekly `goDeeperBlock` +
+monthly methodology block in `build-cost-index-dispatch.mjs`) so no future emit can
+reproduce it — guardrails now 98/98. Original findings kept below for the record.
 
 **RED #1 — the MWF Cost Index heartbeat is FROZEN at the 2026-07-06 read.**
 The 07-08 Wed refresh (`cost-index-refresh.yml` run #34, 2026-07-08T15:08Z, `schedule`)

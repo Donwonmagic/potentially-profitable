@@ -813,6 +813,8 @@ function citeBlock(ins, url) {
 
 // "Go deeper" — the tiered-depth descent. Keeps the top read short by LINKING the heavier
 // layers (per-ingredient pages, the machine feed, the archive) instead of inlining them.
+// The companion-tools line also satisfies check-content-guardrails.mjs's ≥2 /tools/<slug>/
+// links floor — without it an emitted edition's only tool link is the sticky bar's.
 function goDeeperBlock(ins) {
   return `      <h2 id="go-deeper">Go deeper</h2>
       <p>This dispatch is the surface read. The layers underneath it are addressable, so an analyst &mdash; or an answer engine &mdash; can descend without the top read bloating:</p>
@@ -820,6 +822,7 @@ function goDeeperBlock(ins) {
         <li><strong>Per-ingredient pages</strong> &mdash; every flagged item has its own live page with the full reading and its sources, e.g. <a href="/cost-index/">the Cost Index hub</a>.</li>
         <li><strong>This edition as data</strong> &mdash; <a href="/cost-index/week-${esc(ins.asOf)}.json">week-${esc(ins.asOf)}.json</a> and <a href="/cost-index/week-${esc(ins.asOf)}.csv">.csv</a>: the frozen per-ingredient snapshot behind this page.</li>
         <li><strong>The full series &amp; feed</strong> &mdash; <a href="/cost-index/feed.json">feed.json</a> (machine catalog) and the <a href="/cost-index/weekly/">edition archive</a> (every week).</li>
+        <li><strong>The companion tools</strong> &mdash; <a href="/tools/cost-pulse/">Cost Pulse</a> for today's tracked levels, and the <a href="/tools/plate-cost/">plate cost calculator</a> for what a level does to one dish.</li>
         <li><strong>Methodology &amp; confidence</strong> &mdash; the <a href="/cost-index/methodology/">versioned methodology</a>${ins.methodologyVersion ? ` (v${esc(ins.methodologyVersion)})` : ''}, including why nothing here is rated <em>high</em> (that needs two independent dollar sources) and the published band-coverage backtest.</li>
       </ul>`;
 }
@@ -1785,6 +1788,7 @@ function sProvenance(ctx) {
         <li><strong>Per-ingredient pages</strong> &mdash; every name on this page links its own live read with full sources, via <a href="/cost-index/">the Cost Index hub</a>.</li>
         <li><strong>This edition as data</strong> &mdash; <a href="/cost-index/week-${esc(ins.asOf)}.json">week-${esc(ins.asOf)}.json</a> and <a href="/cost-index/week-${esc(ins.asOf)}.csv">.csv</a>: the frozen CC0 snapshot behind this page.</li>
         <li><strong>The full series &amp; feed</strong> &mdash; <a href="/cost-index/feed.json">feed.json</a> (machine catalog) and the <a href="/cost-index/weekly/">edition archive</a>.</li>
+        <li><strong>The companion tools</strong> &mdash; <a href="/tools/cost-pulse/">Cost Pulse</a> for today's tracked levels, and the <a href="/tools/plate-cost/">plate cost calculator</a> for what a level does to one dish.</li>
         <li><strong>Methodology &amp; confidence</strong> &mdash; the <a href="/cost-index/methodology/">versioned methodology</a>${ins.methodologyVersion ? ` (v${esc(ins.methodologyVersion)})` : ''}, including why nothing here is rated <em>high</em> (that needs two independent dollar sources) and the published band-coverage backtest.</li>
       </ul>
       <h3 id="edition-faq">Quick answers</h3>
