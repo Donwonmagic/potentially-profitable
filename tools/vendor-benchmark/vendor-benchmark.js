@@ -1893,9 +1893,16 @@
   function shareLink(btn) {
     var enc = encodeState();
     if (!enc) return;
+    var url = location.origin + location.pathname + '#b=' + enc;
     try { history.replaceState(null, '', '#b=' + enc); } catch (_) {}
-    copyText(location.origin + location.pathname + '#b=' + enc, btn, T.shareCopied);
     track('Bench Link Shared');
+    // Native share sheet on mobile (a user-gesture API — no background request, so the
+    // privacy monitor is untouched); clipboard copy everywhere else. Cancel is a no-op.
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      try { navigator.share({ title: 'Vendor Benchmark', url: url }).catch(function () {}); return; }
+      catch (_) { /* fall through to copy */ }
+    }
+    copyText(url, btn, T.shareCopied);
   }
   function hydrateFromHash() {
     var mm = (location.hash || '').match(/[#&]b=([^&]+)/);
