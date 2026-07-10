@@ -44,9 +44,9 @@ function muntinField() {
 function card(t) {
   // right-side diverging viz — shared origin "today", El Niño up, food prices down
   const ox = 656, oy = 316;                 // origin ("today")
-  const rustEnd = [960, 198], blueEnd = [960, 434];
-  const rustPath = `M ${ox} ${oy} C 762 300, 848 246, ${rustEnd[0]} ${rustEnd[1]}`;
-  const bluePath = `M ${ox} ${oy} C 762 332, 848 388, ${blueEnd[0]} ${blueEnd[1]}`;
+  const rustEnd = [892, 210], blueEnd = [892, 424];
+  const rustPath = `M ${ox} ${oy} C 744 302, 806 254, ${rustEnd[0]} ${rustEnd[1]}`;
+  const bluePath = `M ${ox} ${oy} C 744 330, 806 380, ${blueEnd[0]} ${blueEnd[1]}`;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <defs>
     ${muntinField()}
@@ -78,18 +78,22 @@ function card(t) {
   <path d="${rustPath}" fill="none" stroke="${P.rust}" stroke-width="5" stroke-linecap="round"/>
   <path d="${bluePath}" fill="none" stroke="${P.blue}" stroke-width="5" stroke-linecap="round"/>
   <circle cx="${ox}" cy="${oy}" r="7" fill="${P.ink}"/>
-  <circle cx="${rustEnd[0]}" cy="${rustEnd[1]}" r="8" fill="${P.rust}"/>
-  <circle cx="${blueEnd[0]}" cy="${blueEnd[1]}" r="8" fill="${P.blue}"/>
+  <circle cx="${rustEnd[0]}" cy="${rustEnd[1]}" r="7" fill="${P.rust}"/>
+  <circle cx="${blueEnd[0]}" cy="${blueEnd[1]}" r="7" fill="${P.blue}"/>
+
+  <!-- dotted leaders bridge each endpoint to its value (clear air, still linked) -->
+  <line x1="${rustEnd[0] + 14}" y1="${rustEnd[1]}" x2="1030" y2="${rustEnd[1]}" stroke="${P.rust}" stroke-width="2.5" stroke-dasharray="1 7" stroke-linecap="round" opacity="0.45"/>
+  <line x1="${blueEnd[0] + 14}" y1="${blueEnd[1]}" x2="998" y2="${blueEnd[1]}" stroke="${P.blue}" stroke-width="2.5" stroke-dasharray="1 7" stroke-linecap="round" opacity="0.45"/>
 
   <!-- on-line labels -->
-  <text x="806" y="240" font-family="Inter, sans-serif" font-size="19" font-weight="700" fill="${P.rust}" text-anchor="middle">${esc(t.up)} &#8593;</text>
-  <text x="806" y="398" font-family="Inter, sans-serif" font-size="19" font-weight="700" fill="${P.blue}" text-anchor="middle">${esc(t.down)} &#8595;</text>
+  <text x="766" y="250" font-family="Inter, sans-serif" font-size="19" font-weight="700" fill="${P.rust}" text-anchor="middle">${esc(t.up)}</text>
+  <text x="760" y="408" font-family="Inter, sans-serif" font-size="19" font-weight="700" fill="${P.blue}" text-anchor="middle">${esc(t.down)}</text>
 
-  <!-- payoff numbers, clear of the line endpoints -->
-  <text x="1120" y="214" font-family="Fraunces, Georgia, serif" font-size="46" font-weight="600" fill="${P.rust}" text-anchor="end">81%</text>
-  <text x="1120" y="236" font-family="Inter, sans-serif" font-size="13" fill="${P.muted}" text-anchor="end">${esc(t.upSub)}</text>
-  <text x="1120" y="450" font-family="Fraunces, Georgia, serif" font-size="42" font-weight="600" fill="${P.blue}" text-anchor="end">&#8722;0.3%</text>
-  <text x="1120" y="472" font-family="Inter, sans-serif" font-size="13" fill="${P.muted}" text-anchor="end">${esc(t.downSub)}</text>
+  <!-- payoff numbers, well clear of the line endpoints -->
+  <text x="1120" y="226" font-family="Fraunces, Georgia, serif" font-size="46" font-weight="600" fill="${P.rust}" text-anchor="end">81%</text>
+  <text x="1120" y="248" font-family="Inter, sans-serif" font-size="13" fill="${P.muted}" text-anchor="end">${esc(t.upSub)}</text>
+  <text x="1120" y="440" font-family="Fraunces, Georgia, serif" font-size="42" font-weight="600" fill="${P.blue}" text-anchor="end">&#8722;0.3%</text>
+  <text x="1120" y="462" font-family="Inter, sans-serif" font-size="13" fill="${P.muted}" text-anchor="end">${esc(t.downSub)}</text>
 
   <!-- footer -->
   <line x1="80" y1="545" x2="1120" y2="545" stroke="${P.rule}" stroke-width="1.5"/>
