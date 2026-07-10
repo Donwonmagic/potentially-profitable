@@ -141,20 +141,57 @@ the ledger demo transformation (rule-true numbers ON BOTH the demo AND the /ledg
   - **Demo app frame** (founder design direction: fixed stage, in-frame cross-fade,
     page height headless-verified constant): chrome strip + stage + control bar; step 3
     two-column; step 4 full-ink ask; per-location terms; EN+ES.
+  - **RED #2 fix** (guardrails ≥2 tools links): companion-tools line on the frozen
+    07-06 weekly + both generator templates. **July edition full-suite fixes:** TL;DR
+    window (jump nav moved below In-short), intent=watch param dropped (plate-cost
+    doesn't consume intents), viz-spark moved INTO the site.css partition (site-article
+    .css is a GENERATED shell — never append to it directly) + shells rebuilt. Full
+    check-all on the branch: 225/249, every remaining red is the (idem) baseline.
 
-**In-flight workflows (check task outputs on resume):**
-  - `july-edition-product` (run wf_56eb545c-4ca): ground → writer/visual/interaction →
-    assemble `blog/cost-index-2026-07/index.html` → fact/empowerment/craft audits → fix.
-    Output = the hand-crafted July edition for the FOUNDER'S READ (then publish per the
-    ADR-012 runbook: registrations by hand, email via the manual button).
-  - `demo-world-class-pass` (run wf_a2da5e7b-bcc): reference study → 5 caliber seats →
-    fix → certification on the app-framed demo. Numbers immutable under it.
+**FINAL DEMO CERTIFICATION — 2026-07-10 (run wf_cd93a13f-162, 5 fresh seats, honest record):**
+All 5 seats `wouldShipToFortune500: true`. Verdicts: interaction-design **WORLD_CLASS**
+(8.5/9/9); motion-design STRONG (8/8.5/9); copy-voice STRONG (9/8.5/8); frontend-eng
+STRONG (9/8.5/9); chef-owner STRONG (9/8.5/9). The founder's page-height law verified
+constant at every viewport/locale/scheme; deep-link, no-JS, PRM, quick-path all measured
+correct. Post-cert fixes applied same day (commit ce629a5d7): banned-word + royal-we
+canon violations (EN+ES), dark-mode ink moment restored (#0F1116 band vs #1B1E24
+panels — the override had made them identical), desktop stage min 480→430 (short-laptop
+control-bar clip 688.7→649.7 at 650svh; ≥690px unchanged). Headless re-verified ×6.
+
+**Certification findings PARKED (recorded honestly, none blocks ship):**
+  - **The one real design tension (founder fork):** at 1280×800 every step scrolls
+    internally (52–127px hidden; stage 592 vs panels ≤719) and on phones >half of each
+    step sits below the in-panel fold incl. the flag chart (step 3 hides 528px). This
+    is inherent to fixed-stage + current content volume: the forks are (a) accept
+    in-panel scroll as the app idiom (cues are honest and working), (b) trim step copy,
+    or (c) shorten the marquee figures. Do NOT silently trim certified copy.
+  - Smaller parked items: 3px frame-under-nav on desktop deep-link (nav renders 103px
+    vs 100px offset budget — fixing it cascades through the pixel-exact reservation
+    math in 2 files ×2 locales; left alone deliberately); keyboard-only users can't
+    scroll overflowing panels (WCAG 2.1.1 edge — panels tabIndex −1); overflow cue not
+    recomputed on resize/orientation; ~80ms stage dim on triple-click Next; 35px rail
+    touch targets on mobile; mobile fade cue dims the flagged Jun 26 payoff row;
+    step-4 left-column dead zone at desktop; aria-current on li not the link; ES step-4
+    60px overflow at 1280×800 where EN fits; em-dash pairs vs sentence-shape rule 3.
+  - **CTA canon fork (founder):** demo uses 'Run your own line' + 'Join the founding
+    list' — both absent from the locked CTA canon (/methods/ #voice-contract). Seats
+    rate the labels better than the canon's 'Try it free' for these jobs. Either add a
+    canon v1.2 entry sanctioning them or conform the labels — founder's call, the canon
+    is his governing doc. Related: '/ledger/' itself still says 'without us' (same
+    royal-we idiom fixed on the demo); one-line fix pending the same call.
+  - Stale '19 weeks out' count (formula says 18) — self-heals on next deploy build.
+
+**Completed workflows (payloads in session transcripts):** `july-edition-product`
+(wf_56eb545c-4ca — the July edition, built + audited + full-suite green);
+`demo-world-class-pass` (wf_a2da5e7b-bcc — rounds 1–2 + closing pass);
+`demo-final-certification` (wf_cd93a13f-162 — the record above).
 
 **Parked / follow-ups:** demo OG card; `Demo Exit` analytics registry entry (product
 repo `tools/_shared/analytics.js`); `.ld-wrap` 880px cap overridden by `.container`
 (pre-existing, founder call); /ledger/ meta "six-month history" mentions; product repo:
 3 failing nightlies (real failures, untriaged) + the 4 CI fixes still unmerged on its
-dev branch (no PR without ask); ES edition decision for monthly dispatches.
+dev branch (no PR without ask); ES edition decision for monthly dispatches; email P1
+body due before 2026-08-04.
 
 **Cadence truths a fresh session must know:** refresh = Mon/Wed/Fri 13:00 UTC from
 main; dispatch cron REMOVED (ADR-012); the 38d dispatch-fresh gate is the publication
