@@ -531,6 +531,30 @@
     railEl.addEventListener('click', onRailClick);
     panel.parentNode.insertBefore(railEl, panel.nextSibling);
   }
+  // Your Book depth — a tiny gap-over-time sparkline per line (from the ring spine) and a
+  // book-level gap-distribution strip. 100% from the on-device journal; the gap is always
+  // rate-divergence, never an overpayment claim.
+  function gapSpark(entry) {
+    var ring = ringOf(entry);
+    var vals = ring.map(function (c) { return typeof c.gapPts === 'number' ? c.gapPts : null; }).filter(function (v) { return v !== null; });
+    if (vals.length < 2) return '';
+    vals.reverse(); // chronological
+    var W = 46, H = 14, n = vals.length;
+    var min = Math.min.apply(null, vals), max = Math.max.apply(null, vals), range = (max - min) || 1;
+    var pts = vals.map(function (v, i) { return ((W - 2) * i / (n - 1) + 1).toFixed(1) + ',' + (H - 1 - (H - 2) * (v - min) / range).toFixed(1); }).join(' ');
+    var last = vals[vals.length - 1];
+    var tone = last >= 3 ? 'over' : last <= -3 ? 'under' : 'match';
+    return '<svg class="vb-jspark" data-tone="' + tone + '" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" aria-hidden="true"><polyline points="' + pts + '" fill="none" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/></svg>';
+  }
+  function gapDistribution(withGap) {
+    var over = 0, under = 0, match = 0;
+    withGap.forEach(function (x) { var g = x.e.gapPts; if (g >= 3) over++; else if (g <= -3) under++; else match++; });
+    var tot = over + under + match; if (tot < 2) return '';
+    function seg(nn, tone) { return nn ? '<span class="vb-dist-seg" data-tone="' + tone + '" style="flex:' + nn + '"></span>' : ''; }
+    var lbl = over + (ES ? ' por encima, ' : ' above, ') + match + (ES ? ' en línea, ' : ' in line, ') + under + (ES ? ' por debajo del mercado' : ' below the market');
+    return '<div class="vb-dist" role="img" aria-label="' + lbl + '">' + seg(over, 'over') + seg(match, 'match') + seg(under, 'under') + '</div>';
+  }
+
   function renderJournalRail() {
     if (!railEl) return;
     var map = readJournal();
@@ -543,7 +567,8 @@
       var gapTxt = (typeof e.gapPts === 'number')
         ? h`<span class="vb-jchip-gap" data-tone="${e.gapPts >= 3 ? 'over' : e.gapPts <= -3 ? 'under' : 'match'}">${Math.abs(e.gapPts).toFixed(e.gapPts < 10 ? 1 : 0)} ${T.pointsWord}</span>`
         : h`<span class="vb-jchip-gap" data-tone="watch">${T.jThin}</span>`;
-      return h`<button type="button" class="vb-jchip" data-jkey="${x.k}"><span class="vb-jchip-name">${e.item}</span>${gapTxt}<span class="vb-jchip-when">${relTime(e.at)}</span></button>`;
+      var spark = gapSpark(e);
+      return h`<button type="button" class="vb-jchip" data-jkey="${x.k}"><span class="vb-jchip-name">${e.item}</span>${gapTxt}${spark ? sh(spark) : ''}<span class="vb-jchip-when">${relTime(e.at)}</span></button>`;
     });
     // MS3 — the whole-book worklist: rank the operator's tracked items and name the
     // one line worth a call first. The prioritized-negotiation view across the book,
@@ -555,7 +580,7 @@
       var worst = withGap[0]; // already sorted by |gap| desc
       var overCount = withGap.filter(function (x) { return x.e.gapPts >= 3; }).length;
       var g = Math.abs(worst.e.gapPts).toFixed(worst.e.gapPts < 10 ? 1 : 0);
-      rollup = h`<div class="vb-book"><p class="vb-book-lead">${T.bookLead} ${String(withGap.length)} ${T.bookItems}</p><p class="vb-book-worst" data-tone="over"><strong>${T.bookWorst}</strong> ${worst.e.item} — ${g} ${T.pointsWord}. ${T.bookCall}</p>${overCount > 1 ? h`<p class="vb-book-count">${String(overCount)} ${T.bookOver} <a class="vb-inlink plausible-event-name=Ledger+Route+Click plausible-event-source=vendor-benchmark" href="https://ledger.muntin.digital/">${T.seeLedger} <span aria-hidden="true">→</span></a></p>` : ''}</div>`;
+      rollup = h`<div class="vb-book"><p class="vb-book-lead">${T.bookLead} ${String(withGap.length)} ${T.bookItems}</p>${sh(gapDistribution(withGap))}<p class="vb-book-worst" data-tone="over"><strong>${T.bookWorst}</strong> ${worst.e.item} — ${g} ${T.pointsWord}. ${T.bookCall}</p>${overCount > 1 ? h`<p class="vb-book-count">${String(overCount)} ${T.bookOver} <a class="vb-inlink plausible-event-name=Ledger+Route+Click plausible-event-source=vendor-benchmark" href="https://ledger.muntin.digital/">${T.seeLedger} <span aria-hidden="true">→</span></a></p>` : ''}</div>`;
     }
     setHTML(railEl, h`<div class="vb-journal-head"><span class="vb-eyebrow">${T.jTitle}</span><button type="button" class="vb-linkbtn" data-jclear>${T.jClear}</button></div>${rollup}<div class="vb-journal-grid">${chips}</div>`);
     railEl.hidden = false;

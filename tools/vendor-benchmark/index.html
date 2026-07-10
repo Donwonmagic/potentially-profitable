@@ -517,6 +517,16 @@ html{-webkit-text-size-adjust:100%}
 .vb-share:hover{border-color:var(--teal);color:var(--teal)}
 .vb-share:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 .vb-shell[data-first-run] .vb-share{display:none}
+/* Your Book depth — per-line gap-over-time sparkline + book-level distribution strip. */
+.vb-jspark{flex:0 0 auto;display:block}
+.vb-jspark polyline{stroke:var(--stone)}
+.vb-jspark[data-tone="over"] polyline{stroke:var(--rust)}
+.vb-jspark[data-tone="under"] polyline{stroke:var(--status-good,#1F6B3A)}
+.vb-dist{display:flex;gap:2px;height:8px;border-radius:999px;overflow:hidden;margin:8px 0}
+.vb-dist-seg{display:block}
+.vb-dist-seg[data-tone="over"]{background:var(--rust)}
+.vb-dist-seg[data-tone="match"]{background:var(--stone-2,#9AA0AB)}
+.vb-dist-seg[data-tone="under"]{background:var(--status-good,#1F6B3A)}
 </style>
 </head>
 <body>
