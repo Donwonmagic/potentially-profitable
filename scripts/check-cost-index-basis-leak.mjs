@@ -27,10 +27,12 @@
  *     · CSV index feed          cost-index/index.csv      → price_low/median/high_usd
  *     · per-ingredient series   cost-index/<slug>/series.json + series.csv → priceUsd
  *     · weekly digest CSV       cost-index/week-*.csv     → median_cents
- *   TRACKED (fail-closed, content-bound) — the SOURCE data/cost-index.json:
+ *   TRACKED (fail-closed, basis-bound) — the SOURCE data/cost-index.json:
  *     10 index-basis seafood carry a $ level at their newest non-null points[].level
- *     but are SUPPRESSED from every rendered surface. Each is bound to its exact
- *     {basis, medianCents}; a NEW non-$ source level, or a mutated known one, FAILS.
+ *     but are SUPPRESSED from every rendered surface. Each is bound to its non-$
+ *     BASIS only — the NOAA unit-value drifts and is never rendered, so a value
+ *     move is not a leak. A NEW non-$ source key, or a known key whose basis
+ *     flips off index, FAILS.
  *   ORPHAN (info) — a rendered surface shipping a $ for a slug ABSENT from the
  *     source (e.g. poblano-pepper, genuine wholesale but dropped by a re-fetch):
  *     reported as a stale orphan pending republish, not a basis lie.
@@ -53,21 +55,25 @@ export const isDollarBasis = (b) => DOLLAR_BASES.indexOf(b) >= 0;
 
 // The index-basis seafood that carry a $ level at their newest non-null
 // points[].level in the SOURCE (data/cost-index.json — NOAA import unit-values)
-// but are suppressed from every rendered surface. Content-bound {basis, medianCents}
-// so a mutated or newly-added key cannot be silently absorbed (a bare count check
-// would pass when a 10th key is added alongside its allowlist entry). Set 2026-07-02;
-// salmon-fillet joined the day its stale mislabeled series.json was withdrawn.
+// but are suppressed from every rendered surface. Basis-bound only: the fixed
+// key-set guards against a NEW non-$ slug being silently absorbed, and the basis
+// pin guards against a known key flipping off index — but the NOAA unit-value
+// itself drifts and is never rendered, so pinning an exact medianCents turned
+// every routine NOAA update into a CI stop for zero honesty gain. Set 2026-07-02
+// (content-bound); relaxed value→basis 2026-07-10 after NOAA moved 9 of these off
+// their 07-02 values with no rendered-surface impact. salmon-fillet joined the
+// day its stale mislabeled series.json was withdrawn.
 export const KNOWN_SOURCE_LATENT = new Map([
-  ['octopus', { basis: 'index', medianCents: 429 }],
-  ['salmon-fillet', { basis: 'index', medianCents: 558 }],
-  ['salmon-skin-on-fillet', { basis: 'index', medianCents: 558 }],
-  ['scallops', { basis: 'index', medianCents: 865 }],
-  ['tuna-loin', { basis: 'index', medianCents: 522 }],
-  ['whole-crab', { basis: 'index', medianCents: 994 }],
-  ['whole-halibut', { basis: 'index', medianCents: 931 }],
-  ['whole-lobster', { basis: 'index', medianCents: 1090 }],
-  ['whole-salmon', { basis: 'index', medianCents: 403 }],
-  ['whole-trout', { basis: 'index', medianCents: 396 }],
+  ['octopus', { basis: 'index' }],
+  ['salmon-fillet', { basis: 'index' }],
+  ['salmon-skin-on-fillet', { basis: 'index' }],
+  ['scallops', { basis: 'index' }],
+  ['tuna-loin', { basis: 'index' }],
+  ['whole-crab', { basis: 'index' }],
+  ['whole-halibut', { basis: 'index' }],
+  ['whole-lobster', { basis: 'index' }],
+  ['whole-salmon', { basis: 'index' }],
+  ['whole-trout', { basis: 'index' }],
 ]);
 
 // RFC-4180-ish CSV line parser — quoted fields with commas (e.g. "Butter (AA, bulk)").
@@ -153,8 +159,8 @@ export function scan({ index, seedIng, indexJson, feedJson, indexCsv, weekCsvs, 
     const cents = levelCents(lvl);
     const bound = KNOWN_SOURCE_LATENT.get(k);
     const base = `data/cost-index.json: ${k} newest level is basis="${lvl.basis}" (non-$) with $${(cents / 100).toFixed(2)} (${cents}c)`;
-    if (bound && bound.basis === lvl.basis && bound.medianCents === cents) tracked.push(base + ' [suppressed from every rendered surface — tracked hygiene]');
-    else errors.push(base + (bound ? ` — MUTATED known-latent (bound ${bound.basis}/${bound.medianCents}c)` : ' — NEW non-$ source level, not in the content-bound known set'));
+    if (bound && bound.basis === lvl.basis) tracked.push(base + ' [suppressed from every rendered surface — tracked hygiene]');
+    else errors.push(base + (bound ? ` — MUTATED basis (bound ${bound.basis}, now "${lvl.basis}")` : ' — NEW non-$ source level, not in the basis-bound known set'));
   }
 
   // --- RENDERED: browser seed (assessment.level) ---
@@ -256,7 +262,9 @@ function selfTest() {
   ok(scan(src({ ribeye: lvl('wholesale', 1314) })).errors.length === 0, 'source: wholesale + $ level → no error');
   const known = scan(src({ 'whole-salmon': lvl('index', 403) }));
   ok(known.errors.length === 0 && known.tracked.some((t) => /whole-salmon/.test(t)), 'source: KNOWN content-bound seafood → tracked, not error');
-  ok(scan(src({ 'whole-salmon': lvl('index', 999) })).errors.some((e) => /MUTATED/.test(e)), 'source: known key with a MUTATED medianCents → hard fail');
+  const drifted = scan(src({ 'whole-salmon': lvl('index', 999) }));
+  ok(drifted.errors.length === 0 && drifted.tracked.some((t) => /whole-salmon/.test(t)), 'source: known key with a DRIFTED index value → still tracked (basis-only pin, value never rendered)');
+  ok(scan(src({ 'whole-salmon': lvl('customs', 403) })).errors.some((e) => /MUTATED basis/.test(e)), 'source: known key whose basis FLIPS off index (→ customs, non-$) → hard fail');
   ok(scan(src({ 'vegetable-oil': lvl('index', 35046) })).errors.some((e) => /NEW non-\$ source/.test(e)), 'source: NEW non-$ level → hard fail (fail-closed)');
   ok(scan(src({ 'salmon-fillet': { points: [{ level: null }, { level: { basis: 'index', medianCents: 558 } }] } })).tracked.some((t) => /salmon-fillet/.test(t)), 'source: non-$ level at points[1] (newest non-null) → tracked, not missed');
   ok(scan(src({ x: { points: [{ level: { basis: 'index', rangeCents: [34900, 35200] } }] } })).errors.some((e) => /NEW non-\$/.test(e)), 'source: non-$ level with $ in rangeCents (no medianCents) → caught');
@@ -294,7 +302,7 @@ if (import.meta.url === pathToFileURL(process.argv[1] || '').href) {
   } else {
     const { errors, tracked, orphans } = scan(liveSurfaces());
     if (tracked.length) {
-      console.log(`ℹ basis-leak: ${tracked.length} content-bound source-level latent item(s) in data/cost-index.json (suppressed from every rendered surface; pending engine-level level-suppression).`);
+      console.log(`ℹ basis-leak: ${tracked.length} basis-bound source-level latent item(s) in data/cost-index.json (suppressed from every rendered surface; pending engine-level level-suppression).`);
     }
     if (orphans.length) {
       console.log(`ℹ basis-leak: ${orphans.length} rendered orphan(s) — a $ shipped for a slug the source no longer backs (stale, pending republish):`);
