@@ -480,6 +480,11 @@ html{-webkit-text-size-adjust:100%}
   @keyframes vb-result-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
   .vb-result-inner[data-animate]{animation:vb-result-in var(--vb-t-2,320ms) var(--vb-ease,ease) both}
   .vb-result-inner[data-animate] .vb-chartwrap{animation:vb-result-in var(--vb-t-3,600ms) var(--vb-ease,ease) both;animation-delay:60ms}
+  /* the operator's own line draws in against the market reference — the gap OPENS.
+     pathLength=1 makes it length-independent; the market line keeps its dash/dotted
+     convention and thin-data withhold untouched. */
+  @keyframes vb-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+  .vb-result-inner[data-animate] .vb-chart-you{stroke-dasharray:1;animation:vb-draw var(--vb-t-3,600ms) var(--vb-ease,ease) both;animation-delay:120ms}
 }
 /* ── First-run onboarding — one primary CTA + a ghost readout that reserves the result
    region (shape only, em-dash placeholders — never a fabricated value). Gated by
