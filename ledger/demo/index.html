@@ -162,25 +162,26 @@
 /* One-time flag landing (P0-3, M1 — 2026-07-07; tokenized 2026-07-09).
    Base CSS is the finished chart; the inline script arms .lg-armed only
    when motion is allowed, then double-rAFs .lg-landed. All sequencing
-   lives in transition-delay: rust segment 120ms → dot pop 360ms →
-   bracket + labels 480ms → row pill + tint 600ms. Every beat derives
-   from the site's --t-micro (120ms) scale: durations are 2× (beats) and
-   3× (tint) --t-micro via calc(); the delays are 1×/3×/4×/5× --t-micro.
+   lives in transition-delay: rust segment 420ms → dot pop 760ms →
+   bracket + labels 1100ms → row pill + tint 1440ms (reading-pace redesign
+   2026-07-10 incr. A — was 120/360/480/600, too fast to read as a story;
+   the climax now resolves ~1.8s with dwell between beats). Durations ride
+   the demo-scoped --t-micro (190ms): 2× (beats) and 3× (tint) via calc().
    Opacity/transform only, no keyframes; no-JS and reduced-motion see
    the finished figure. */
 .lg-row--flag{position:relative;isolation:isolate}
 .lg-row--flag::before{content:"";position:absolute;inset:0 -6px;background:var(--status-bad-tint,#F7E7DC);opacity:1;z-index:-1;border-radius:4px}
 .lgf-dot{transform-box:fill-box;transform-origin:center}
 .lg-vignette.lg-armed .lg-flag{opacity:0;transform:translateY(-4px)}
-.lg-vignette.lg-armed.lg-landed .lg-flag{opacity:1;transform:none;transition:opacity calc(var(--t-micro,120ms)*2) var(--ease-out,ease-out) 600ms,transform calc(var(--t-micro,120ms)*2) var(--ease-out,ease-out) 600ms}
+.lg-vignette.lg-armed.lg-landed .lg-flag{opacity:1;transform:none;transition:opacity calc(var(--t-micro,120ms)*2) var(--ease-out,ease-out) 1440ms,transform calc(var(--t-micro,120ms)*2) var(--ease-out,ease-out) 1440ms}
 .lg-vignette.lg-armed .lg-row--flag::before{opacity:0}
-.lg-vignette.lg-armed.lg-landed .lg-row--flag::before{opacity:1;transition:opacity calc(var(--t-micro,120ms)*3) var(--ease-out,ease-out) 600ms}
+.lg-vignette.lg-armed.lg-landed .lg-row--flag::before{opacity:1;transition:opacity calc(var(--t-micro,120ms)*3) var(--ease-out,ease-out) 1440ms}
 .lg-vignette.lg-armed .lgf-seg{opacity:0;transform:translateY(-4px)}
-.lg-vignette.lg-armed.lg-landed .lgf-seg{opacity:1;transform:none;transition:opacity calc(var(--t-micro,120ms)*2) var(--ease-out,ease-out) 120ms,transform calc(var(--t-micro,120ms)*2) var(--ease-out,ease-out) 120ms}
+.lg-vignette.lg-armed.lg-landed .lgf-seg{opacity:1;transform:none;transition:opacity calc(var(--t-micro,120ms)*2) var(--ease-out,ease-out) 420ms,transform calc(var(--t-micro,120ms)*2) var(--ease-out,ease-out) 420ms}
 .lg-vignette.lg-armed .lgf-dot{opacity:0;transform:scale(.4)}
-.lg-vignette.lg-armed.lg-landed .lgf-dot{opacity:1;transform:scale(1);transition:opacity calc(var(--t-micro,120ms)*2) var(--ease-spring,ease-out) 360ms,transform calc(var(--t-micro,120ms)*2) var(--ease-spring,ease-out) 360ms}
+.lg-vignette.lg-armed.lg-landed .lgf-dot{opacity:1;transform:scale(1);transition:opacity calc(var(--t-micro,120ms)*2) var(--ease-spring,ease-out) 760ms,transform calc(var(--t-micro,120ms)*2) var(--ease-spring,ease-out) 760ms}
 .lg-vignette.lg-armed .lgf-lbl{opacity:0}
-.lg-vignette.lg-armed.lg-landed .lgf-lbl{opacity:1;transition:opacity calc(var(--t-micro,120ms)*2) var(--ease-out,ease-out) 480ms}
+.lg-vignette.lg-armed.lg-landed .lgf-lbl{opacity:1;transition:opacity calc(var(--t-micro,120ms)*2) var(--ease-out,ease-out) 1100ms}
 /* Build-then-break the band (2026-07-10 elevation P2): the prior-read
    points + connector + their value labels are grouped in .lgc-priors and
    settle up from +6px on flag-land at delay 0, so the in-band history
@@ -265,7 +266,14 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
    ~1100px wide with every proportion tuned for 880. The compound
    selector restores the intended measure; stage heights below were
    re-measured headless at the true 880px width. */
-.container.ld-wrap{max-width:880px;margin:0 auto}
+/* Reading-pace motion (2026-07-10 redesign incr. A) — the founder's note:
+   the keyframes were too fast to read as a story (the flag-land climax
+   resolved in ~0.7s). Demo-scoped slower motion tokens (site chrome lives
+   OUTSIDE .ld-wrap and keeps the global 120/180) uniformly stretch every
+   var()-driven duration ~1.6×; the hardcoded staggers below (scan, arrive,
+   flag-land) are re-spaced to match, with dwell before each beat.
+   Compositor-only; reduced-motion stays instant (the PRM rules are unchanged). */
+.container.ld-wrap{max-width:880px;margin:0 auto;--t-micro:190ms;--t-fast:300ms}
 .ld-rail{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 28px;padding:0;list-style:none;font-size:13px;counter-reset:ld}
 .ld-rail li{counter-increment:ld}
 .ld-rail a{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;background:var(--surface-1,#fff);border:1px solid var(--line);border-radius:999px;color:var(--ink);text-decoration:none;transition:border-color var(--t-micro,120ms) var(--ease,ease),box-shadow var(--t-micro,120ms) var(--ease,ease)}
@@ -775,31 +783,33 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
    appears, then its "read" stamp commits. All sequencing lives in CSS
    transition-delays under .ld-go (the JS shrank to two class adds):
    every beat now starts after a +120ms (--t-micro) settle so the
-   panel's own 180ms cross-fade lands before the scan begins — the
+   panel's own cross-fade lands before the scan begins — the
    first rows no longer animate invisibly inside the stage fade. Rows
-   run var(--t-fast) at 120/180/240/300/360ms; stamps at
-   240/300/360/420/480ms — the pass completes ~660ms. Base CSS is the
+   run var(--t-fast) at 220/340/460/580/700ms; stamps at
+   460/580/700/820/940ms — the pass completes ~1.24s (reading-pace redesign
+   2026-07-10 incr. A, was ~660ms). Base CSS is the
    finished state; no-JS and reduced-motion see the completed rows
    instantly. */
 .ld-reveal{opacity:1}
 .ld-js .ld-armed .ld-reveal{opacity:0;transform:translateY(6px)}
 .ld-js .ld-armed .ld-reveal .lg-s{opacity:0;transform:scale(.85)}
-.ld-js .ld-armed.ld-go .ld-reveal{opacity:1;transform:none;transition:opacity var(--t-fast,180ms) var(--ease-out,ease-out),transform var(--t-fast,180ms) var(--ease-out,ease-out);transition-delay:120ms}
+.ld-js .ld-armed.ld-go .ld-reveal{opacity:1;transform:none;transition:opacity var(--t-fast,180ms) var(--ease-out,ease-out),transform var(--t-fast,180ms) var(--ease-out,ease-out);transition-delay:220ms}
 .ld-js .ld-armed.ld-go .ld-reveal .lg-s{opacity:1;transform:none;transition:opacity var(--t-fast,180ms) var(--ease-spring,ease-out),transform var(--t-fast,180ms) var(--ease-spring,ease-out)}
-.ld-js .ld-armed.ld-go .ld-reveal:nth-child(2){transition-delay:180ms}
-.ld-js .ld-armed.ld-go .ld-reveal:nth-child(3){transition-delay:240ms}
-.ld-js .ld-armed.ld-go .ld-reveal:nth-child(4){transition-delay:300ms}
-.ld-js .ld-armed.ld-go .ld-reveal:nth-child(5){transition-delay:360ms}
-.ld-js .ld-armed.ld-go .ld-reveal:nth-child(1) .lg-s{transition-delay:240ms}
-.ld-js .ld-armed.ld-go .ld-reveal:nth-child(2) .lg-s{transition-delay:300ms}
-.ld-js .ld-armed.ld-go .ld-reveal:nth-child(3) .lg-s{transition-delay:360ms}
-.ld-js .ld-armed.ld-go .ld-reveal:nth-child(4) .lg-s{transition-delay:420ms}
-.ld-js .ld-armed.ld-go .ld-reveal:nth-child(5) .lg-s{transition-delay:480ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(2){transition-delay:340ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(3){transition-delay:460ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(4){transition-delay:580ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(5){transition-delay:700ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(1) .lg-s{transition-delay:460ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(2) .lg-s{transition-delay:580ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(3) .lg-s{transition-delay:700ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(4) .lg-s{transition-delay:820ms}
+.ld-js .ld-armed.ld-go .ld-reveal:nth-child(5) .lg-s{transition-delay:940ms}
 @media (prefers-reduced-motion:reduce){.ld-reveal,.ld-js .ld-armed .ld-reveal,.ld-reveal .lg-s,.ld-js .ld-armed .ld-reveal .lg-s{opacity:1!important;transform:none!important;transition:none!important}}
 /* Step-0 "the invoice arrives" opening beat (2026-07-10 elevation P2):
    step 0 is named for an arrival but painted statically. On first in-view
    arrival the pane settles from translateY(-6px)+opacity 0 and the five
-   invoice lines rise 6px on a short stagger, landing ~420ms — the demo's
+   invoice lines rise 6px on a stagger, landing ~660ms (reading-pace redesign
+   2026-07-10 incr. A, was ~420ms) — the demo's
    first impression now performs its own name. Reuses the armInView one-shot
    (fires once, ≥60% in view, so a deep-link to a later step never spends it
    offscreen). Base CSS is the finished state, so no-JS and reduced motion
@@ -809,11 +819,11 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
 .ld-js .ld-arrive.ld-arrived .lg-pane{opacity:1;transform:none;transition:opacity var(--t-fast,180ms) var(--ease-out,ease-out),transform var(--t-fast,180ms) var(--ease-out,ease-out)}
 .ld-js .ld-arrive .ld-line{opacity:0;transform:translateY(6px)}
 .ld-js .ld-arrive.ld-arrived .ld-line{opacity:1;transform:none;transition:opacity var(--t-fast,180ms) var(--ease-out,ease-out),transform var(--t-fast,180ms) var(--ease-out,ease-out)}
-.ld-js .ld-arrive.ld-arrived .ld-line:nth-child(1){transition-delay:120ms}
-.ld-js .ld-arrive.ld-arrived .ld-line:nth-child(2){transition-delay:180ms}
-.ld-js .ld-arrive.ld-arrived .ld-line:nth-child(3){transition-delay:240ms}
-.ld-js .ld-arrive.ld-arrived .ld-line:nth-child(4){transition-delay:300ms}
-.ld-js .ld-arrive.ld-arrived .ld-line:nth-child(5){transition-delay:360ms}
+.ld-js .ld-arrive.ld-arrived .ld-line:nth-child(1){transition-delay:180ms}
+.ld-js .ld-arrive.ld-arrived .ld-line:nth-child(2){transition-delay:300ms}
+.ld-js .ld-arrive.ld-arrived .ld-line:nth-child(3){transition-delay:420ms}
+.ld-js .ld-arrive.ld-arrived .ld-line:nth-child(4){transition-delay:540ms}
+.ld-js .ld-arrive.ld-arrived .ld-line:nth-child(5){transition-delay:660ms}
 @media (prefers-reduced-motion:reduce){.ld-js .ld-arrive .lg-pane,.ld-js .ld-arrive.ld-arrived .lg-pane,.ld-js .ld-arrive .ld-line,.ld-js .ld-arrive.ld-arrived .ld-line{opacity:1!important;transform:none!important;transition:none!important}}
 /* G5 price lockup at demo scale (P1-5, 2026-07-07) — the number never
    ships without the full registered founding terms beside it. */
@@ -1662,7 +1672,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         // the last swap, .ld-quick drops the incoming delay so the new
         // panel fades straight in; it clears on the next unhurried swap.
         var now = (window.performance && performance.now) ? performance.now() : Date.now();
-        var quick = now - lastSwap < 240;
+        // Reading-pace redesign (2026-07-10 incr. A): the cross-fade exchange
+        // slowed to ~380ms (demo-scoped --t-micro:190 × 2 on the outgoing
+        // visibility/transform delay), so the rapid-advance window widens to
+        // match — a second Next inside 380ms still fades straight in.
+        var quick = now - lastSwap < 380;
         stage.classList.toggle('ld-quick', quick);
         // Signature FLIP (cycle 2 backlog A): on a real, unhurried,
         // non-reduced-motion step change, morph the ghost from the outgoing
@@ -1703,7 +1717,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             void ghost.offsetWidth;
             requestAnimationFrame(function () {
               if (tok !== ghostToken) return;
-              ghost.style.transition = 'transform 240ms var(--ease-out,ease-out),opacity 120ms ease 120ms';
+              ghost.style.transition = 'transform 380ms var(--ease-out,ease-out),opacity 200ms ease 160ms';
               ghost.style.transform = 'translate(0,0) scale(1,1)';
               ghost.style.opacity = '0';
             });
@@ -1712,7 +1726,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               ghost.style.transition = 'none';
               ghost.style.opacity = '0';
               ghost.style.transform = 'none';
-            }, 300);
+            }, 560);
           }
         }
         lastSwap = now;
@@ -1808,7 +1822,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             q.textContent = '';
             (function type() {
               q.textContent = full.slice(0, k);
-              if (k++ < full.length) setTimeout(type, 70);
+              if (k++ < full.length) setTimeout(type, 110);
               else q.textContent = full;
             })();
           });
