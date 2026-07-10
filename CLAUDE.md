@@ -43,6 +43,8 @@ CI orchestrator is `scripts/check-all.mjs` — runs every `check-*.mjs` script i
   - **Image dimensions / formats / lazy** (`check-image-dimensions.mjs`, `check-image-formats.mjs`, `check-lazy-images.mjs`) — CLS / LCP guards.
   - **Site counts** (`inject-site-counts.mjs`, `build-site-counts.mjs`) — `<!-- count:KEY -->N<!-- /count -->` sentinels. Source of truth is `data/site-counts.json`.
   - **Locale parity** (`check-locale-parity.mjs`, `check-hreflang-orphans.mjs`) — EN ↔ ES surface parity.
+  - **Cost Index driver catalog** (`check-cost-index-drivers.mjs`) — validates the standing driver catalog (schema, source+`retrievedAt`, freshness) and blocks any driver named in a dispatch that has no catalog entry. Fail-CI.
+  - **Cost Index editor's note** (`check-cost-index-editors-note.mjs`) — the optional "from the floor" note: every number must trace to the edition snapshot or `sourced-claims.json`; no forecast; bio discipline. Fail-CI.
 
 ## viz-* graphic families
 
@@ -61,6 +63,16 @@ Every content figure carries `data-audio-alt` (full narration, not alt text), `<
   - Manifest: `data/article-audio.json` — per-article `{ path, title, languages, status, owner }`. Status is `rendered`, `partial`, `pending`, or `deferred`.
   - Per-post scripts: `<post>/audio.json` + `audio.<lang>.json` for `en/es/fr/it/pt/zh`. MP3 sibling files render via `scripts/render-post-audio.mjs`.
   - Audio script `text` is read aloud verbatim. Enforced by `scripts/check-audio-fabrications.mjs` — the language-aware fact gate that scans every `audio.<lang>.json` (`check-fabrications.mjs` itself skips the narration JSON). It applies the shared registry (`scripts/lib/fabrication-patterns.mjs`) per spoken language — invariant URL rules on every track, en/es/fr/it/pt/zh bio-drift rules on their own track — plus a warn-first numeric-parity check (a translation must not speak a number absent from the source article). Pattern hits are fail-CI; known-stale pre-cleanup renders are waived (dated) in the script pending re-render.
+
+## The Cost Index weekly dispatch (the publication)
+
+The weekly dispatch (`blog/cost-index-week-<asOf>/`, byline **Don Goldstein**) is a machine-generated, of-record market read — built by `scripts/build-cost-index-dispatch.mjs` from `data/cost-index.json`, one dated post per week. **Decisions of record:** `docs/editorial/decisions/ADR-010-cost-index-citable-publication.md`. **Full design + roadmap:** `docs/cost-index-publication-spec.md`. The honesty contract is inviolable: public wholesale levels never delivered price; a read vs each ingredient's own baseline window, not week-over-week unless the archive backs it.
+
+  - **Longitudinal spine** — append-only `data/cost-index-editions.json`, one frozen snapshot per `asOf` (basket, spread, per-ingredient `reads`, `basketWeightsVersion` + `basket.asOf`). Honest week-over-week is computed **only** across commensurable editions (same weights, refreshed anchor) and **withheld with a stated reason** across a re-anchor/re-weight. Reconstructed seed editions (06-05, 06-16) never anchor a per-ingredient WoW. `flag.elevatedWeeks` surfaces as "N weeks running."
+  - **Driver layer** — `data/cost-index-drivers.json`: **standing, public-sourced correlations, never invented dated events.** Attached to a flagged mover only when its measured direction agrees with `directionExpected` (eggs easing → no HPAI line). Every line is "association, not a measured cause"; never a magnitude, causation, or forecast. `retrievedAt` bumped **manually** (gate warns >365d); `*_es` fields present for future ES parity, but the dispatch is **EN-only** so they aren't rendered yet.
+  - **Human seat** — optional `data/cost-index-editors-notes.json` keyed by `asOf`; a gated "From the floor — Don Goldstein" block, **absent by default**; may not add a number, ingredient, or forecast.
+  - **Citability** — per-edition `Dataset` JSON-LD, a "Cite this edition" block, a CC0 per-week snapshot (`cost-index/week-<asOf>.json`/`.csv`), and the EN+ES edition archive at `/cost-index/weekly/` (`scripts/build-cost-index-archive.mjs`).
+  - **Automation** — `.github/workflows/cost-index-refresh.yml` (daily 13:00 UTC self-heal) + `cost-index-dispatch.yml` (Tuesday 14:00 UTC publish + email). Both run the archive/hero builds and the two gates, and commit the spine + per-week dataset + archive. Fresh data needs `FRED_KEY`/`BLS_KEY`/`AMS_KEY` secrets (else the refresh no-ops, holding last-good); email needs `COST_INDEX_BROADCAST_SECRET`. **Do NOT run `sync-includes` in these flows** — the `_includes` footer template drifts vs live count sentinels and would regress them. Live heartbeat/deploy status is on the storefront board, not frozen here.
 
 ## Conventions worth knowing
 
