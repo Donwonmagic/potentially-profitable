@@ -459,6 +459,14 @@ html{-webkit-text-size-adjust:100%}
    actions (example / journal reopen); show a ring for genuine keyboard focus. */
 .vb-verdict-h{scroll-margin-top:16px}
 .vb-verdict-h:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px}
+/* ── Provenance strip — an instrument-panel data label before the input: Invoice-Desk
+   cells, mono keys (Ledger Tape). Makes the honest source / basis / freshness / scope
+   scannable at a glance — the moat, shown. ──────────────────────────────────── */
+.vb-prov{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;margin:0 0 18px;background:var(--vb-rule);border:1px solid var(--vb-readout-edge);border-radius:var(--r-sm,9px);overflow:hidden;box-shadow:var(--vb-desk-inset)}
+@media(min-width:640px){.vb-prov{grid-template-columns:repeat(4,1fr)}}
+.vb-prov-cell{display:flex;flex-direction:column;gap:2px;padding:9px 12px;background:var(--vb-desk)}
+.vb-prov-k{font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--stone);font-family:var(--vb-font-mono)}
+.vb-prov-v{font-size:12px;line-height:1.35;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -697,6 +705,13 @@ html{-webkit-text-size-adjust:100%}
             </aside>
             <!-- data-promise:end -->
     <p class="vb-lede">Enter what you paid for an item on each invoice &mdash; with the date. Vendor Benchmark reads the wholesale market&rsquo;s move over your exact window and sets it beside yours, so a price jump stops being a mystery: you see whether the market moved, or your vendor did. It runs on your device and keeps your prices there.</p>
+  </div>
+
+  <div class="vb-prov" role="group" aria-label="Where this reference comes from">
+    <div class="vb-prov-cell"><span class="vb-prov-k">Source</span><span class="vb-prov-v">USDA wholesale &middot; public domain</span></div>
+    <div class="vb-prov-cell"><span class="vb-prov-k">Basis</span><span class="vb-prov-v">Wholesale &mdash; delivered runs higher</span></div>
+    <div class="vb-prov-cell"><span class="vb-prov-k">As of</span><span class="vb-prov-v" id="vbProvAsOf">&mdash;</span></div>
+    <div class="vb-prov-cell"><span class="vb-prov-k">Scope</span><span class="vb-prov-v"><span id="vbProvCount">&mdash;</span> items &middot; prices stay on your device</span></div>
   </div>
 
   <div class="vb-panel">

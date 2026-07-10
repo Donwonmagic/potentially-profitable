@@ -569,6 +569,7 @@
 
   function run() {
     if (errEl) errEl.hidden = true;
+    updateProvenanceAsOf(); // fill the as-of date as soon as the seed lands (before any early return)
     var item = (itemEl.value || '').trim();
     var unit = unitEl.value;
     var rows = readRows();
@@ -858,6 +859,26 @@
       if (vh) { try { vh.focus({ preventScroll: true }); } catch (_) { try { vh.focus(); } catch (__) {} } }
     }
     if (resultEl && resultEl.scrollIntoView) resultEl.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'nearest' });
+  }
+
+  // Provenance strip — fill the live scope count (eager picker manifest) and the as-of
+  // date (the reference set's generation date, once the lazy seed lands). Never a fake
+  // date: the cell stays "—" until the real value is available.
+  function initProvenance() {
+    var countEl = document.getElementById('vbProvCount');
+    if (countEl) {
+      var pk = window.MUNTIN_CI_PICKER;
+      var n = pk && (typeof pk.count === 'number' ? pk.count : ((pk.items && pk.items.length) || (Array.isArray(pk) ? pk.length : 0)));
+      if (n) countEl.textContent = String(n);
+    }
+    updateProvenanceAsOf();
+  }
+  function updateProvenanceAsOf() {
+    var el = document.getElementById('vbProvAsOf');
+    if (!el || /\d/.test(el.textContent)) return; // already filled with a real date
+    var seed = window.MUNTIN_COST_INDEX;
+    var iso = seed && (seed.generatedAt || seed.asOf);
+    if (iso) el.textContent = fmtDate(String(iso).slice(0, 10));
   }
 
   // ADR-012 market context — the REFERENCE's OWN state (elevated/depressed vs its
@@ -1678,6 +1699,7 @@
   resultEl.addEventListener('click', onResultClick);
   ensureAnnouncer();
   initItemCombo();
+  initProvenance();
   injectExtras();
   injectJournalRail();
   renderJournalRail();
