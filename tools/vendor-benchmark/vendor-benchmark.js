@@ -850,6 +850,30 @@
   }
 
   var lastRes = null;
+  var lastSig = null; // render-epoch identity signature — motion fires only when it changes
+
+  // rAF count-up for the hero gap number — lands EXACTLY on the true value; snaps under
+  // reduced-motion or without rAF. Dollars never tween (a morphing $ would read as the
+  // price itself changing); only the unitless gap points roll up.
+  function animateHero() {
+    var el = resultEl.querySelector('.vb-gap-num[data-countup]');
+    if (!el) return;
+    var target = parseFloat(el.getAttribute('data-countup'));
+    if (!isFinite(target)) return;
+    var dec = el.getAttribute('data-countup-dec') === '1' ? 1 : 0;
+    var raf = window.requestAnimationFrame;
+    if (!raf || reducedMotion()) { el.textContent = target.toFixed(dec); return; }
+    var dur = 600, start = null;
+    el.textContent = (0).toFixed(dec);
+    function ease(t) { return 1 - Math.pow(1 - t, 3); }
+    function step(ts) {
+      if (start == null) start = ts;
+      var p = Math.min(1, (ts - start) / dur);
+      el.textContent = (target * ease(p)).toFixed(dec);
+      if (p < 1) raf(step); else el.textContent = target.toFixed(dec);
+    }
+    raf(step);
+  }
   // a11y helpers — respect reduced-motion for programmatic scrolls, and move focus
   // to the verdict heading ONLY on the two explicit user actions (never on keystroke),
   // so a keyboard / screen-reader user lands on the answer, not mid-form.
@@ -1000,6 +1024,18 @@
   function render(res) {
     var m = res.market;
     lastRes = res;
+    // Render-epoch gate: an identity signature (item · tone · thin · sign(gap) · state).
+    // Motion fires ONLY when it changes — a new item, a flipped verdict, loading→resolved —
+    // never on a keystroke that just nudges the same answer. This is what lets signature
+    // motion live on a tool that re-renders every keystroke without becoming nauseating.
+    var _tone = (m && m.say && m.say.tone) || 'none';
+    var _thin = !!(m && m.res && m.res.thin);
+    var _gp = (m && m.res && m.res.ok) ? m.res.gapPts : null;
+    var _sign = _gp == null ? '-' : (_gp > 0 ? '+' : _gp < 0 ? '<' : '0');
+    var _phase = (m && m.available) ? 'r' : (seedsPresent() ? 'nr' : 'load');
+    var sig = (m && m.available ? (m.key || res.item) : (res.item || '')) + '|' + _tone + '|' + (_thin ? 1 : 0) + '|' + _sign + '|' + _phase;
+    var animateThis = sig !== lastSig;
+    lastSig = sig;
     var spike = classifyMarketSpike(res);
     chartModel = null;
     var blocks = [];
@@ -1058,6 +1094,11 @@
 
     setHTML(resultEl, h`<div class="vb-result-inner">${blocks}</div>`);
     wireChartHover();
+    if (animateThis) {
+      var inner = resultEl.firstChild;
+      if (inner && inner.setAttribute && !reducedMotion()) inner.setAttribute('data-animate', '1');
+      animateHero();
+    }
   }
 
   // One delegated handler for everything inside the re-rendered result.
@@ -1218,7 +1259,7 @@
       var anchor = (m.res.gapPts >= 3 && m.res.excessCents > 0 && anchorCents != null)
         ? h`<p class="vb-anchor"><strong>${T.anchorLead}</strong> ${money(anchorCents)}${uSuf} ${T.anchorTail} ${money(res.lastCents)}${uSuf}.</p>`
         : '';
-      verdict = h`<div class="vb-gap" data-tone="${tone}"><span class="vb-gap-num">${gapPts.toFixed(gapPts < 10 ? 1 : 0)}</span><span class="vb-gap-word">${T.pointsWord} ${dirWord}</span></div><h2 class="vb-headline-say vb-verdict-h" id="vbVerdictH" tabindex="-1">${m.say.headline}</h2>${excess}${anchor}`;
+      verdict = h`<div class="vb-gap" data-tone="${tone}"><span class="vb-gap-num" data-countup="${String(gapPts)}" data-countup-dec="${gapPts < 10 ? 1 : 0}">${gapPts.toFixed(gapPts < 10 ? 1 : 0)}</span><span class="vb-gap-word">${T.pointsWord} ${dirWord}</span></div><h2 class="vb-headline-say vb-verdict-h" id="vbVerdictH" tabindex="-1">${m.say.headline}</h2>${excess}${anchor}`;
     } else if (m.say && m.say.headline) {
       // honest hedge / soft refusal (thin, too-close, out-of-range)
       verdict = h`<div class="vb-hedge" data-tone="${tone}"><h2 class="vb-headline-say vb-verdict-h" id="vbVerdictH" tabindex="-1">${m.say.headline}</h2>${m.say.detail ? h`<p class="vb-headline-detail">${m.say.detail}</p>` : ''}</div>`;

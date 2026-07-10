@@ -181,6 +181,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   --vb-readout-bg:var(--surface-1,#fff);
   --vb-readout-edge:var(--line);
   --vb-touch:44px; /* shared minimum touch target (WCAG 2.5.5) */
+  --vb-ease:cubic-bezier(.2,.8,.2,1);--vb-ease-out:cubic-bezier(.16,1,.3,1);
+  --vb-t-1:120ms;--vb-t-2:320ms;--vb-t-3:600ms;
   --vb-signal:#12A9BD;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
@@ -474,6 +476,14 @@ html{-webkit-text-size-adjust:100%}
 .vb-carry strong{color:var(--ink);font-weight:700}
 .vb-carry strong[data-zero]{color:var(--status-good,#1F6B3A)}
 .vb-carry-dot{width:6px;height:6px;border-radius:50%;background:var(--status-good,#1F6B3A);flex:0 0 auto}
+/* ── Signature motion — gated by the render-epoch flag (data-animate is set only on a
+   NEW answer: a new item, a flipped verdict, loading→resolved — never on a keystroke),
+   and off entirely under reduced motion. The gap number rolls up via rAF (see JS). ── */
+@media (prefers-reduced-motion:no-preference){
+  @keyframes vb-result-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .vb-result-inner[data-animate]{animation:vb-result-in var(--vb-t-2,320ms) var(--vb-ease,ease) both}
+  .vb-result-inner[data-animate] .vb-chartwrap{animation:vb-result-in var(--vb-t-3,600ms) var(--vb-ease,ease) both;animation-delay:60ms}
+}
 </style>
 </head>
 <body>
