@@ -86,8 +86,8 @@ function card(t) {
   <line x1="${blueEnd[0] + 14}" y1="${blueEnd[1]}" x2="998" y2="${blueEnd[1]}" stroke="${P.blue}" stroke-width="2.5" stroke-dasharray="1 7" stroke-linecap="round" opacity="0.45"/>
 
   <!-- on-line labels -->
-  <text x="766" y="250" font-family="Inter, sans-serif" font-size="19" font-weight="700" fill="${P.rust}" text-anchor="middle">${esc(t.up)}</text>
-  <text x="760" y="408" font-family="Inter, sans-serif" font-size="19" font-weight="700" fill="${P.blue}" text-anchor="middle">${esc(t.down)}</text>
+  <text x="752" y="232" font-family="Inter, sans-serif" font-size="19" font-weight="700" fill="${P.rust}" text-anchor="middle">${esc(t.up)} &#8593;</text>
+  <text x="748" y="424" font-family="Inter, sans-serif" font-size="19" font-weight="700" fill="${P.blue}" text-anchor="middle">${esc(t.down)} &#8595;</text>
 
   <!-- payoff numbers, well clear of the line endpoints -->
   <text x="1120" y="226" font-family="Fraunces, Georgia, serif" font-size="46" font-weight="600" fill="${P.rust}" text-anchor="end">81%</text>
