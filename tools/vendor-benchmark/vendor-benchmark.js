@@ -610,7 +610,9 @@
       var worst = withGap[0]; // already sorted by |gap| desc
       var overCount = withGap.filter(function (x) { return x.e.gapPts >= 3; }).length;
       var g = Math.abs(worst.e.gapPts).toFixed(worst.e.gapPts < 10 ? 1 : 0);
-      rollup = h`<div class="vb-book"><p class="vb-book-lead">${T.bookLead} ${String(withGap.length)} ${T.bookItems}</p>${sh(gapDistribution(withGap))}<p class="vb-book-worst" data-tone="over"><strong>${T.bookWorst}</strong> ${worst.e.item} — ${g} ${T.pointsWord}. ${T.bookCall}</p>${overCount > 1 ? h`<p class="vb-book-count">${String(overCount)} ${T.bookOver} <a class="vb-inlink plausible-event-name=Ledger+Route+Click plausible-event-source=vendor-benchmark" href="https://ledger.muntin.digital/">${T.seeLedger} <span aria-hidden="true">→</span></a></p>` : ''}</div>`;
+      rollup = h`<div class="vb-book"><p class="vb-book-lead">${T.bookLead} ${String(withGap.length)} ${T.bookItems}</p>${sh(gapDistribution(withGap))}<p class="vb-book-worst" data-tone="over"><strong>${T.bookWorst}</strong> ${worst.e.item} — ${g} ${T.pointsWord}. ${T.bookCall}</p>${overCount > 1 ? (lastStrong
+        ? h`<p class="vb-book-count">${String(overCount)} ${T.bookOver}.</p>`
+        : h`<p class="vb-book-count">${String(overCount)} ${T.bookOver} <a class="vb-inlink plausible-event-name=Ledger+Route+Click plausible-event-source=vendor-benchmark" href="https://ledger.muntin.digital/">${T.seeLedger} <span aria-hidden="true">→</span></a></p>`) : ''}</div>`;
     }
     setHTML(railEl, h`<div class="vb-journal-head"><span class="vb-eyebrow">${T.jTitle}</span><button type="button" class="vb-linkbtn" data-jclear>${T.jClear}</button></div>${rollup}<div class="vb-journal-grid">${chips}</div>`);
     railEl.hidden = false;
@@ -780,6 +782,16 @@
     var tone = (m.say && m.say.tone) || 'info';
     var y100 = Y(100).toFixed(1);
 
+    // Faint value gridlines (consume --vb-grid) at round index levels, so the eye
+    // reads HOW FAR each line sits from the 100 baseline — not just that they split.
+    var gridStep = range > 45 ? 10 : 5;
+    var gridLines = '';
+    for (var gv = Math.ceil(minV / gridStep) * gridStep; gv <= maxV; gv += gridStep) {
+      if (Math.abs(gv - 100) < 0.5) continue; // 100 is the baseline, drawn separately
+      var gy = Y(gv).toFixed(1);
+      gridLines += '<line x1="' + padL + '" y1="' + gy + '" x2="' + (W - padR) + '" y2="' + gy + '" class="vb-chart-grid"/>';
+    }
+
     // Dynamic aria-label — the chart STATES its conclusion so a screen-reader user
     // hears the takeaway (and the thin/approximate hedge a sighted user sees).
     var yEnd = yourPts.length ? yourPts[yourPts.length - 1].v : 100;
@@ -791,6 +803,7 @@
       '<svg class="vb-chart" data-tone="' + escAttr(tone) + '"' + (uncertain ? ' data-uncertain="1"' : '') +
       ' width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H +
       '" role="img" aria-label="' + escAttr(ariaLabel) + '"' + (tableId ? ' aria-describedby="' + tableId + '"' : '') + ' preserveAspectRatio="xMidYMid meet">' +
+      gridLines +
       '<line x1="' + padL + '" y1="' + y100 + '" x2="' + (W - padR) + '" y2="' + y100 + '" class="vb-chart-base"/>';
 
     // Divergence wedge — only when the market line is real (never over a
@@ -953,6 +966,7 @@
 
   var lastRes = null;
   var lastSig = null; // render-epoch identity signature — motion fires only when it changes
+  var lastStrong = false; // did the last funnel render the strong Ledger card? (dedups the journal rollup CTA)
 
   // rAF count-up for the hero gap number — lands EXACTLY on the true value; snaps under
   // reduced-motion or without rAF. Dollars never tween (a morphing $ would read as the
@@ -1183,7 +1197,7 @@
     var tableId = 'vbChartTable';
     var svg = chartSvg(res, tableId);
     if (svg) {
-      blocks.push(h`<figure class="vb-chartwrap">${sh(svg)}<figcaption class="vb-chart-legend"><span class="vb-legend-you">${T.chartYou}</span><span class="vb-legend-mkt">${T.chartMarket}</span></figcaption>${chartTable(res, tableId)}</figure>`);
+      blocks.push(h`<figure class="vb-chartwrap">${sh(svg)}<figcaption class="vb-chart-legend" data-tone="${_tone}"><span class="vb-legend-you">${T.chartYou}</span><span class="vb-legend-mkt">${T.chartMarket}</span></figcaption>${chartTable(res, tableId)}</figure>`);
     }
 
     // 2b) THE ACTION — the exact line to read to the rep + the brief (only on a real vendor gap)
@@ -1520,6 +1534,7 @@
     // fight a vendor over a market move that may not hold.
     var spikeReverting = spike && spike.verdict === 'spike';
     var strong = (isOver && !spikeReverting) || res.tier === 'hike';
+    lastStrong = strong; // so renderJournalRail can suppress its duplicate Ledger CTA
     var plate = h`<p class="vb-crosslink">${T.plateHook} <a class="vb-inlink" href="${BASE}/tools/plate-cost/">${T.seePlate} <span aria-hidden="true">→</span></a></p>`;
 
     if (strong) {
@@ -1674,7 +1689,10 @@
   function addRow() {
     var rows = readRows();
     var lastDate = rows.length ? rows[rows.length - 1].date : todayISO();
-    rowsEl.appendChild(buildRow({ date: lastDate ? isoMinusDays(lastDate, -21) : todayISO() }));
+    var next = lastDate ? isoMinusDays(lastDate, -21) : todayISO();
+    var today = todayISO();
+    if (next > today) next = today; // a purchase already happened — never pre-fill a future date (ISO strings sort lexically)
+    rowsEl.appendChild(buildRow({ date: next }));
     relabelRows();
     var inputs = rowsEl.querySelectorAll('.vb-prow:last-child input');
     if (inputs[0]) inputs[0].focus();

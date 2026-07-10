@@ -294,6 +294,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .vb-chartwrap{margin:0;background:var(--surface-1,#fff);border:1px solid var(--line);border-radius:var(--r-md,14px);padding:16px 18px 10px;box-shadow:var(--elev-1)}
 .vb-chart{display:block;width:100%;height:auto;max-width:100%;overflow:visible}
 .vb-chart-base{stroke:var(--line-dark)}
+.vb-chart-grid{stroke:var(--vb-grid);stroke-width:1}
 .vb-chart-market{stroke:var(--stone)}
 .vb-chart-you{stroke:var(--ink)}
 .vb-chart-dot{fill:var(--ink)}
@@ -310,6 +311,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .vb-chart-legend{display:flex;gap:18px;justify-content:center;margin:4px 0 0;font-size:12px;color:var(--ink-soft)}
 .vb-chart-legend span{display:inline-flex;align-items:center;gap:6px}
 .vb-legend-you::before{content:"";width:16px;height:2.6px;border-radius:2px;background:var(--ink)}
+.vb-chart-legend[data-tone="over"] .vb-legend-you::before{background:var(--rust)}
+.vb-chart-legend[data-tone="under"] .vb-legend-you::before{background:var(--teal)}
+.vb-chart-legend[data-tone="match"] .vb-legend-you::before{background:var(--status-good,#1F6B3A)}
 .vb-legend-mkt::before{content:"";width:16px;height:0;border-top:2px dashed var(--stone)}
 /* Subcards */
 .vb-subcard{background:var(--surface-1,#fff);border:1px solid var(--line);border-radius:var(--r-md,14px);padding:18px 20px;box-shadow:var(--elev-1)}
