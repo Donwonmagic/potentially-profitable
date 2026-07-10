@@ -71,11 +71,14 @@ function pressureRead(items, key) {
   if (!it || !it.direction || it.direction === 'flat') return null;
   const top = (it.contributors || []).slice().sort((a, b) => (b.weight || 0) - (a.weight || 0))[0];
   if (!top) return null;
+  // ADR-014 §4: cold-storage stocks are a COINCIDENT supply-context read, not a
+  // leading indicator — never attach a lead-lag ("N-week lead") phrase to them.
+  const coincident = top.coincident === true || top.source === 'nass-cold-storage';
   // Singular unit — the lead reads adjectivally ("a 16–26 week lead").
-  const lead = top.lead && typeof top.lead.min === 'number'
+  const lead = (!coincident && top.lead && typeof top.lead.min === 'number')
     ? `${top.lead.min}–${top.lead.max} ${top.lead.unit || 'week'}`
     : null;
-  return { dir: it.direction, confidence: it.confidence || null, force: indLabel(top.indicator), lead, asOf: it.as_of || it.asOf || null };
+  return { dir: it.direction, confidence: it.confidence || null, force: indLabel(top.indicator), lead, coincident, asOf: it.as_of || it.asOf || null };
 }
 
 function computeInsight() {
@@ -296,7 +299,7 @@ function narrate(ins) {
 
   if (ins.pressure && ins.pressure.length) {
     L.push('WHAT\'S BEHIND THE MOVES (pressure layer — inferred direction on a lead, no price):');
-    for (const p of ins.pressure) L.push(`  • ${p.name} — ${p.dir}, led by ${p.force}${p.lead ? ` (${p.lead} lead)` : ''}${p.confidence ? `, ${p.confidence} conf` : ''}`);
+    for (const p of ins.pressure) L.push(`  • ${p.name} — ${p.dir}, led by ${p.force}${p.lead ? ` (${p.lead} lead)` : p.coincident ? ' (concurrent)' : ''}${p.confidence ? `, ${p.confidence} conf` : ''}`);
     L.push('');
   }
 
@@ -358,7 +361,7 @@ function elevatedClause(i) {
 // "the pressure read is building, led by cattle-on-feed placements on a 16–26 weeks lead".
 function pressurePhrase(p) {
   if (!p) return '';
-  const lead = p.lead ? ` on a ${p.lead} lead` : '';
+  const lead = p.lead ? ` on a ${p.lead} lead` : p.coincident ? ' as a concurrent supply read' : '';
   return `the pressure read is <strong>${esc(p.dir)}</strong>, led by ${esc(p.force)}${lead}`;
 }
 
@@ -775,7 +778,7 @@ ${contribClose}
   // under each staple's direction (cost-pressure.json), with the feed flow as one visual
   // chain. Inferred direction only, sourced, never a price.
   const pressureRows = ins.pressure.map((p) => {
-    const lead = p.lead ? ` <span style="opacity:.6">(${esc(p.lead)} lead)</span>` : '';
+    const lead = p.lead ? ` <span style="opacity:.6">(${esc(p.lead)} lead)</span>` : p.coincident ? ` <span style="opacity:.6">(concurrent)</span>` : '';
     const conf = p.confidence ? `, ${esc(p.confidence)} confidence` : '';
     return `        <li><strong>${esc(p.name)}</strong> &mdash; <strong>${esc(p.dir)}</strong>, led by ${esc(p.force)}${lead}${conf}.</li>`;
   }).join('\n');

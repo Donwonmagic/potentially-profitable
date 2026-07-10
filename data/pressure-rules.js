@@ -489,6 +489,7 @@
             "unit": "week"
           },
           "cite": "nass-cold-storage",
+          "coincident": true,
           "calibrated": {
             "date": "2026-06-14",
             "empSign": -1,
@@ -565,6 +566,7 @@
             "unit": "week"
           },
           "cite": "nass-cold-storage",
+          "coincident": true,
           "note": "Cold-storage pork stocks vs the same-month 5-year norm (deseasonalized, ADR-014) — a concurrent supply-context read, not a leading arrow; sign shared with the calibrated pork-loin/cold-storage-pork edge (coincident, N=102, p=0.008). Heavy stocks lean cost-down."
         },
         {
@@ -987,7 +989,8 @@
             "unit": "week"
           },
           "cite": "nass-cold-storage",
-          "note": "Cold-storage butter stocks vs the same-month 5-year norm (deseasonalized, ADR-014), not a raw spring build — a weak, uncalibrated supply-context read: heavy stocks lean cost-down, but a build can be strong production or soft demand. Confidence capped moderate; demoted from tier B/weight 2 (ADR-014 per-commodity gating)."
+          "coincident": true,
+          "note": "Cold-storage butter stocks vs the same-month 5-year norm (deseasonalized, ADR-014), not a raw spring build — a weak, uncalibrated supply-context read: heavy stocks lean cost-down, but a build can be strong production or soft demand. Coincident, not a leading arrow. As a lone tier-C/weight-1 signal it is expected to read moderate-at-most (not an engine-enforced cap); demoted from tier B/weight 2 (ADR-014 per-commodity gating)."
         },
         {
           "id": "feed-grain",
@@ -3962,6 +3965,7 @@
             "unit": "week"
           },
           "cite": "nass-cold-storage",
+          "coincident": true,
           "note": "Cold-storage pork stocks vs the same-month 5-year norm (deseasonalized, ADR-014) — a concurrent supply-context read, not a leading arrow; belly/bacon is the cut most directly tied to frozen pork stocks (weight 2). Sign shared with the calibrated pork-loin/cold-storage-pork edge (coincident, N=102, p=0.008); heavy stocks lean cost-down."
         },
         {

@@ -1,6 +1,6 @@
 # ADR-014 — NASS cold-storage deseasonalization (5-yr same-month median anomaly, per-commodity gated)
 
-- **Status:** ACCEPTED (transform + tests buildable offline now; contributors activate on the operator's live NASS fetch)
+- **Status:** ACCEPTED — transform + tests + **per-commodity gating (§3) APPLIED in the manifest** (commit fd19515a8: cheese/poultry/beef votes removed, butter demoted, pork relabeled coincident; §4 coincident framing wired into the dispatch). Contributors compute on real data only when the operator runs the live NASS fetch.
 - **Date:** 2026-07-09
 - **Owner:** Cost Index / strategic council
 - **Branch:** `claude/vendor-benchmark-redesign-yn273q`
@@ -74,7 +74,7 @@ asymmetrically (heavy stocks cap price; a normal build says nothing).
 | Commodity | Vote | Sign | Label |
 |---|---|---|---|
 | **pork** (`cold-storage-pork` → pork-loin/shoulder) | **scored** | −1 | *coincident* supply confirm (calibration lag ≈ 0, N=102, OOS-hold, p=0.008) — **not** a leading arrow |
-| **butter** (→ butter) | **scored (weak)** | −1 | deseasonalized-only; uncalibrated; confidence capped moderate |
+| **butter** (→ butter) | **scored (weak)** | −1 | deseasonalized-only; uncalibrated; as a lone tier-C/weight-1 signal, expected to read moderate-at-most (emergent from the weak weight, NOT an engine-enforced cap) |
 | **cheese** (→ cheddar) | **descriptive only** | — | secular production growth contaminates both YoY and 5-yr baseline — not a directional vote |
 | **poultry** (→ chicken) | **descriptive only** | — | total frozen chicken is export-confounded (a build can be strong production *or* collapsed export demand) |
 | **beef** | **excluded** | — | already dropped v2026-Q2-18 (empirical +1 inverted the textbook −1; inventory-cycle confounder) |

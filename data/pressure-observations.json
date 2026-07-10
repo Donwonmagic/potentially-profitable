@@ -1,16 +1,15 @@
 {
   "_doc": "GENERATED live by fetch-pressure-observations.mjs --live.",
+  "_note": "2026-07-09 (ADR-014): the removed cold-storage keys (poultry/cheese/beef, now descriptive-only or excluded) were hand-trimmed to match the manifest; cheddar-cheese is temporarily empty pending the next --live fetch, which fully regenerates this file (adding the dairy/beef items' real indicators). Inert in-container — the build/check read pressure-observations.demo.json.",
   "_status": "live",
   "asOf": "2026-06-15",
   "observations": {
     "chicken-breast": {
       "broiler-placements": 0.0035137850431902744,
-      "cold-storage-poultry": -0.025847820000997095,
       "diesel": -0.07607731867352371
     },
     "whole-chicken": {
       "broiler-placements": 0.0035137850431902744,
-      "cold-storage-poultry": -0.025847820000997095,
       "diesel": -0.07607731867352371
     },
     "ribeye": {
@@ -59,9 +58,7 @@
       "cold-storage-butter": 0.3592296803270375,
       "diesel": -0.07607731867352371
     },
-    "cheddar-cheese": {
-      "cold-storage-cheese": 0.025518438221811334
-    },
+    "cheddar-cheese": {},
     "salmon-fillet": {
       "diesel": -0.07607731867352371
     },
@@ -230,7 +227,6 @@
     },
     "chicken-thigh": {
       "broiler-placements": 0.0035137850431902744,
-      "cold-storage-poultry": -0.025847820000997095,
       "diesel": -0.07607731867352371
     },
     "whole-salmon": {
@@ -244,12 +240,10 @@
     },
     "short-rib": {
       "cattle-on-feed-placements": -0.022400919012062034,
-      "cold-storage-beef": -0.04444735653594236,
       "diesel": -0.07607731867352371
     },
     "ground-beef": {
       "cattle-on-feed-placements": -0.022400919012062034,
-      "cold-storage-beef": -0.04444735653594236,
       "diesel": -0.07607731867352371
     },
     "pork-belly": {
