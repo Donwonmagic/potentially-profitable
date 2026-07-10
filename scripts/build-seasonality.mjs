@@ -46,6 +46,17 @@ export const MIN_YEARS_PER_MONTH = 2;   // distinct years of a month before it e
 export const MIN_ESTABLISHED_MONTHS = 6; // established months before the ingredient reads "ready"
 const WEEKS_TARGET = 78;                 // progress denominator only — never a gate
 
+// Trailing same-month window (ADR-014 precedent). The "typical {month}" normal is a
+// LEVEL comparator — the consumer asks "is today's price high FOR this month?" — so it
+// must stay inside today's price regime. A raw multi-decade nominal median drags the
+// normal far below the current market (a 25yr ribeye median reads $6.82 when $13/lb IS
+// the 2026 normal → a false "~97% above typical"). We therefore compute each month's
+// normal from only the observations within WINDOW_YEARS of the series' OWN latest print
+// (deterministic — never `now`, so --check stays stable). The full deep series still
+// feeds the relative SHAPE surfaces (cheapest/priciest month, 12-month curve), which
+// compare months to each other within one pooled series and are robust to nominal drift.
+export const WINDOW_YEARS = 5;
+
 // Linear-interpolation percentile over an unsorted cents array (cents in → cents out).
 export function percentileCents(values, p) {
   const xs = values.filter((v) => typeof v === 'number').slice().sort((a, b) => a - b);
@@ -60,8 +71,20 @@ export const medianCents = (values) => percentileCents(values, 50);
 
 // Pure per-ingredient seasonal record from its history ({date, valueCents} oldest→newest).
 export function ingredientSeasonality(key, entry) {
-  const history = (entry && Array.isArray(entry.history) ? entry.history : [])
-    .filter((h) => h && typeof h.valueCents === 'number' && typeof h.date === 'string');
+  const all = (entry && Array.isArray(entry.history) ? entry.history : [])
+    .filter((h) => h && typeof h.valueCents === 'number' && typeof h.date === 'string'
+                   && /^\d{4}-\d{2}-\d{2}/.test(h.date));
+  // Trailing-window bound: keep only observations within WINDOW_YEARS of the series' OWN
+  // latest print (never `now`), so the seasonal normal reads today's regime, not a
+  // nominal-dragged multi-decade average. Older prints still exist in the deep store for
+  // the shape surfaces — they just don't set the level comparator here.
+  let history = all;
+  if (all.length) {
+    let maxYear = 0;
+    for (const h of all) { const y = Number(h.date.slice(0, 4)); if (y > maxYear) maxYear = y; }
+    const minYear = maxYear - WINDOW_YEARS + 1;
+    history = all.filter((h) => Number(h.date.slice(0, 4)) >= minYear);
+  }
   const weeks = historyWeeks(history);
   const years = new Set();
   const monthsObserved = new Set();
@@ -151,7 +174,7 @@ export function build(data, deep) {
   return {
     _doc: 'Per-ingredient seasonal baseline for the Cost Index, derived purely from the vendored history in data/cost-index.json by scripts/build-seasonality.mjs (CI runs --check). A month appears under `months` only once observed across ' + MIN_YEARS_PER_MONTH + '+ distinct years; `ready` means enough established months to read a season. Until then `building` names what it waits for. The current-vs-normal delta is computed by the consumer at render time so this file stays date-independent. Regenerate after every vendor.',
     generatedFrom: data.generatedAt || data._lastReviewed || data.asOf || null,
-    params: { minYearsPerMonth: MIN_YEARS_PER_MONTH, minEstablishedMonths: MIN_ESTABLISHED_MONTHS, weeksTarget: WEEKS_TARGET },
+    params: { minYearsPerMonth: MIN_YEARS_PER_MONTH, minEstablishedMonths: MIN_ESTABLISHED_MONTHS, weeksTarget: WEEKS_TARGET, windowYears: WINDOW_YEARS },
     summary: {
       total: rows.length,
       ready: rows.filter((r) => r.ready).length,
@@ -190,6 +213,14 @@ function run() {
     const bad = s.ingredients.find((r) => (r.ready && Object.keys(r.months).length === 0) || (!r.ready && !r.blocker));
     if (bad) {
       console.error(`seasonality: honesty invariant broken for ${bad.key} (ready without normals, or building without a reason).`);
+      process.exit(1);
+    }
+    // Bounded-window invariant (ADR-014): no published month may pool more than
+    // WINDOW_YEARS of history — that is what keeps the "typical {month}" normal in
+    // today's price regime instead of nominal-dragging it across decades.
+    const drift = s.ingredients.find((r) => Object.values(r.months || {}).some((m) => m && m.years > WINDOW_YEARS));
+    if (drift) {
+      console.error(`seasonality: bounded-window invariant broken for ${drift.key} (a month pools > ${WINDOW_YEARS} years — nominal-drag risk).`);
       process.exit(1);
     }
     console.log(`seasonality: baseline in sync — ${tag}.`);
@@ -231,6 +262,20 @@ function selfTest() {
   // ...but two established months is short of the readiness bar.
   ok('one established month → still building', r2.ready, false);
   ok('building names month-count blocker', /months proven/.test(r2.blocker), true);
+
+  // Trailing window: a decades-old print must NOT set the normal. Same June across
+  // 2001 (cheap nominal) + 2024/2025/2026 (current regime): the 2001 point falls
+  // outside the 5yr window of the 2026 anchor, so the median reads the recent regime
+  // and the month reports years<=WINDOW_YEARS.
+  const drifted = { history: [
+    { date: '2001-06-10', valueCents: 300 },   // out of window — must be dropped
+    { date: '2024-06-10', valueCents: 1200 }, { date: '2025-06-10', valueCents: 1300 },
+    { date: '2026-06-10', valueCents: 1400 },
+  ] };
+  const rW = ingredientSeasonality('w', drifted);
+  ok('trailing window drops 2001 print', rW.months['06'] && rW.months['06'].years, 3);
+  ok('trailing window median is in-regime (not dragged by 2001)', rW.months['06'] && rW.months['06'].medianCents, 1300);
+  ok('trailing window caps years at WINDOW_YEARS', rW.months['06'] && rW.months['06'].years <= WINDOW_YEARS, true);
 
   // No history → dropped from the matrix by build().
   ok('no history → weeks 0', ingredientSeasonality('z', { history: [] }).weeks, 0);
