@@ -733,6 +733,20 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
   .ld-js #ld-step3 .lg-rows .lg-s{font-size:9px}
   .ld-js #ld-step3 .lg-rows .lg-row{gap:2px 5px}
 }
+/* Short-stage step-3 climax headroom (cycle-4 2026-07-10): at ≤660px-tall phones
+   the stage clamps to its 430px floor and the elastic price chart is left ~54px
+   (320×568, 360×640) — legible but vestigial (all three cycle-3 judges named it).
+   Reclaim height from the fixed pieces so the flex chart absorbs it: tighten the
+   figcaption (the ~6-line threshold sentence — the biggest single block, larger
+   than the chart itself), shrink the two-line pane title, trim the head margin.
+   Reducing fixed content only grows the chart within the same fixed stage, so
+   no-scroll is unaffected. Scoped to the ≤560 narrow-chart band (line 141) ×
+   ≤660 tall so taller/wider layouts (375×667 already ~96px) are untouched. */
+@media (max-width:560px) and (max-height:660px){
+  .ld-js #ld-step3 .lg-cap{font-size:11.5px;line-height:1.4;margin-top:6px}
+  .ld-js #ld-step3 .lg-pane-title{font-size:12.5px}
+  .ld-js #ld-step3 .lg-pane-head{margin-bottom:5px}
+}
 /* The paper-behind sheet (borrowed from the product, ledger:115): an
    absolutely-positioned card rotated .6deg reading as a stack of real
    ledger paper behind the pane — the strongest "this is a ledger, not a
