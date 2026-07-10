@@ -7388,6 +7388,33 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
   .reveal.in .viz-ring__fill{stroke-dashoffset:calc(326.726 * (1 - var(--score,50) / 100))}
 }
 
+/* .viz-spark — the dated shape of ONE single-source series over one
+   cycle (canon §8; built for the monthly Cost Index edition). An
+   inline-SVG step-line of 8–13 dated reads, time-scaled on x so a
+   missing read renders as a visible gap (the generator breaks the
+   path — nothing here interpolates). The line ENDS at the last
+   committed read: no projection tail, ever. Tone is data-driven by
+   the generator: rust when the cycle closes above its open, teal
+   when below, stone when flat. Endpoint/peak/trough annotations
+   (date + dollar) render as an HTML row under the chart in tabular
+   figures. Tokens-only, same dark-mode posture as every viz family. */
+.viz-spark{margin:16px 0;font-family:var(--font-body);font-size:13px;color:var(--ink)}
+.viz-spark__title{font-family:var(--font-display);font-size:14.5px;font-weight:500;color:var(--ink);margin:0 0 6px;letter-spacing:-0.005em;line-height:1.4;font-variant-numeric:tabular-nums}
+.viz-spark__chart{background:var(--cream-2);border-radius:6px;padding:8px 10px}
+.viz-spark__chart svg{display:block;width:100%;height:auto;overflow:visible}
+.viz-spark__line{fill:none;stroke:var(--stone);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.viz-spark__dot{fill:var(--stone);stroke:var(--cream);stroke-width:1}
+.viz-spark[data-tone="rust"] .viz-spark__line{stroke:var(--rust)}
+.viz-spark[data-tone="rust"] .viz-spark__dot{fill:var(--rust)}
+.viz-spark[data-tone="teal"] .viz-spark__line{stroke:var(--teal)}
+.viz-spark[data-tone="teal"] .viz-spark__dot{fill:var(--teal)}
+.viz-spark__annos{display:flex;flex-wrap:wrap;gap:4px 14px;margin:6px 0 0;padding:0;font-size:12px;line-height:1.4;color:var(--stone);font-variant-numeric:tabular-nums}
+.viz-spark__anno{white-space:nowrap}
+.viz-spark__anno strong{color:var(--ink);font-weight:600}
+.viz-sparks{display:grid;gap:18px;margin:16px 0}
+.viz-sparks .viz-spark{margin:0}
+@media (min-width:640px){.viz-sparks--board{grid-template-columns:1fr 1fr}.viz-sparks--board>.viz-spark:first-child{grid-column:1/-1}}
+
 /* @shell:core === Window Phase 2/3.6/4/5+ additions (sash/sidelight, attach, now, pulses, admin) === */
 /* ============ THE WINDOW — Phase 2/3.6/4/5+ additions ============
    Sash/sidelight named-pane composer (Phase 2.1), photo+voice attach
