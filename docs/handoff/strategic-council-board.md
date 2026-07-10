@@ -28,6 +28,19 @@ RED #2's fix = the "companion tools" line (Cost Pulse + plate-cost) added to the
 monthly methodology block in `build-cost-index-dispatch.mjs`) so no future emit can
 reproduce it — guardrails now 98/98. Original findings kept below for the record.
 
+**RED #3 — the REAL Cloudflare deploy blocker (found 2026-07-10 from PR #513's Workers
+build log, fixed same session).** The Workers "muntin-digital" check was red — NOT a
+build-infra glitch (initial hypothesis, wrong). The deploy runs the full build chain then
+`check-all.mjs`, which exited 1 on its single non-idem failure: **`claims.json` out of
+sync with `data/sourced-claims.json`**. The per-location pricing edit to the
+`ledger_founding_offer_2026` claim never regenerated the public `claims.json`, and the
+deploy build chain does NOT run `build-claims-json.mjs` (same non-self-healing class as
+RED #2). Fixed: rebuilt `claims.json` (as_of 07-02→07-09, "$19 a month per location",
+used_in += demo paths), committed `d04cf4f44`. `build-claims-json.mjs --check` in sync;
+full suite now 0 non-idem reds. **Lesson for a fresh session:** whenever you edit
+`data/sourced-claims.json`, also run `node scripts/build-claims-json.mjs` and commit
+`claims.json` — the deploy won't do it for you.
+
 **RED #1 — the MWF Cost Index heartbeat is FROZEN at the 2026-07-06 read.**
 The 07-08 Wed refresh (`cost-index-refresh.yml` run #34, 2026-07-08T15:08Z, `schedule`)
 **failed and committed nothing** — last data commit is still `9239d1ac` (07-06). Cause (from
