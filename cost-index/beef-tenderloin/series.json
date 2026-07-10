@@ -6,43 +6,13 @@
   "currency": "USD",
   "note": "Wholesale reference prices compiled from public U.S. market sources (USDA AMS/LMR, BLS, FRED, EIA, NOAA). Values are in US dollars per unit. Not a delivered or retail price. Source: muntin.digital/cost-index/beef-tenderloin/",
   "coverage": {
-    "start": "2026-05-28",
-    "end": "2026-07-02",
+    "start": "2026-06-04",
+    "end": "2026-07-10",
     "points": 26,
     "reconstructed": 0
   },
-  "asOf": "2026-07-02",
+  "asOf": "2026-07-10",
   "observations": [
-    {
-      "date": "2026-05-28",
-      "priceUsd": 14.87,
-      "source": "usda-lmr",
-      "reconstructed": false
-    },
-    {
-      "date": "2026-05-29",
-      "priceUsd": 15.12,
-      "source": "usda-lmr",
-      "reconstructed": false
-    },
-    {
-      "date": "2026-06-01",
-      "priceUsd": 15.33,
-      "source": "usda-lmr",
-      "reconstructed": false
-    },
-    {
-      "date": "2026-06-02",
-      "priceUsd": 15.45,
-      "source": "usda-lmr",
-      "reconstructed": false
-    },
-    {
-      "date": "2026-06-03",
-      "priceUsd": 15.19,
-      "source": "usda-lmr",
-      "reconstructed": false
-    },
     {
       "date": "2026-06-04",
       "priceUsd": 14.76,
@@ -166,6 +136,36 @@
     {
       "date": "2026-07-02",
       "priceUsd": 14.43,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-06",
+      "priceUsd": 14.98,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-07",
+      "priceUsd": 14.23,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-08",
+      "priceUsd": 15.28,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-09",
+      "priceUsd": 14.47,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-10",
+      "priceUsd": 14.54,
       "source": "usda-lmr",
       "reconstructed": false
     }

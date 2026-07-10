@@ -8,11 +8,11 @@
   "reconstructedNote": "Observations marked reconstructed:true are a monthly backfill reconstructed from public sources after the fact — not figures published live on that date. Live points (reconstructed:false) were captured at publication.",
   "coverage": {
     "start": "2023-06-14",
-    "end": "2026-07-02",
-    "points": 181,
-    "reconstructed": 155
+    "end": "2026-07-10",
+    "points": 182,
+    "reconstructed": 156
   },
-  "asOf": "2026-07-02",
+  "asOf": "2026-07-10",
   "observations": [
     {
       "date": "2023-06-14",
@@ -945,34 +945,10 @@
       "reconstructed": true
     },
     {
-      "date": "2026-05-28",
-      "priceUsd": 0.94,
-      "source": "usda-lmr",
-      "reconstructed": false
-    },
-    {
-      "date": "2026-05-29",
-      "priceUsd": 0.96,
-      "source": "usda-lmr",
-      "reconstructed": false
-    },
-    {
-      "date": "2026-06-01",
-      "priceUsd": 0.96,
-      "source": "usda-lmr",
-      "reconstructed": false
-    },
-    {
-      "date": "2026-06-02",
-      "priceUsd": 0.94,
-      "source": "usda-lmr",
-      "reconstructed": false
-    },
-    {
       "date": "2026-06-03",
-      "priceUsd": 0.94,
-      "source": "usda-lmr",
-      "reconstructed": false
+      "priceUsd": 0.95,
+      "source": null,
+      "reconstructed": true
     },
     {
       "date": "2026-06-04",
@@ -1097,6 +1073,36 @@
     {
       "date": "2026-07-02",
       "priceUsd": 0.9,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-06",
+      "priceUsd": 0.91,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-07",
+      "priceUsd": 0.91,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-08",
+      "priceUsd": 0.9,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-09",
+      "priceUsd": 0.9,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-10",
+      "priceUsd": 0.91,
       "source": "usda-lmr",
       "reconstructed": false
     }

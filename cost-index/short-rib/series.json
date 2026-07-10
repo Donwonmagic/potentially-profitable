@@ -6,43 +6,13 @@
   "currency": "USD",
   "note": "Wholesale reference prices compiled from public U.S. market sources (USDA AMS/LMR, BLS, FRED, EIA, NOAA). Values are in US dollars per unit. Not a delivered or retail price. Source: muntin.digital/cost-index/short-rib/",
   "coverage": {
-    "start": "2026-05-28",
-    "end": "2026-07-02",
+    "start": "2026-06-04",
+    "end": "2026-07-10",
     "points": 26,
     "reconstructed": 0
   },
-  "asOf": "2026-07-02",
+  "asOf": "2026-07-10",
   "observations": [
-    {
-      "date": "2026-05-28",
-      "priceUsd": 5.96,
-      "source": "usda-lmr",
-      "reconstructed": false
-    },
-    {
-      "date": "2026-05-29",
-      "priceUsd": 5.85,
-      "source": "usda-lmr",
-      "reconstructed": false
-    },
-    {
-      "date": "2026-06-01",
-      "priceUsd": 6.08,
-      "source": "usda-lmr",
-      "reconstructed": false
-    },
-    {
-      "date": "2026-06-02",
-      "priceUsd": 6.2,
-      "source": "usda-lmr",
-      "reconstructed": false
-    },
-    {
-      "date": "2026-06-03",
-      "priceUsd": 6.01,
-      "source": "usda-lmr",
-      "reconstructed": false
-    },
     {
       "date": "2026-06-04",
       "priceUsd": 5.9,
@@ -166,6 +136,36 @@
     {
       "date": "2026-07-02",
       "priceUsd": 6.03,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-06",
+      "priceUsd": 6.25,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-07",
+      "priceUsd": 6.08,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-08",
+      "priceUsd": 5.99,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-09",
+      "priceUsd": 6.02,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-10",
+      "priceUsd": 5.99,
       "source": "usda-lmr",
       "reconstructed": false
     }

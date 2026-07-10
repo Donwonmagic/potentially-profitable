@@ -5,7 +5,7 @@
   "methodology": "https://muntin.digital/cost-index/methodology/",
   "index": "https://muntin.digital/cost-index/",
   "data": "https://muntin.digital/cost-index/index.json",
-  "lastReviewed": "2026-07-06",
+  "lastReviewed": "2026-07-10",
   "count": 81,
   "ingredients": [
     {
@@ -371,6 +371,22 @@
           "agency": "FRED, Federal Reserve Bank of St. Louis",
           "seriesId": "APU0000FC3101",
           "url": "https://fred.stlouisfed.org/"
+        }
+      ]
+    },
+    {
+      "slug": "chicken-thigh",
+      "name": "Chicken thigh",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportId": "3646",
+          "url": "https://www.ams.usda.gov/market-news"
+        },
+        {
+          "agency": "U.S. Bureau of Labor Statistics (PPI)",
+          "seriesId": "WPU0222",
+          "url": "https://www.bls.gov/ppi/"
         }
       ]
     },
@@ -2217,36 +2233,6 @@
     {
       "slug": "banana",
       "name": "Bananas",
-      "sources": [
-        {
-          "agency": "USDA AMS Market News (terminal markets)",
-          "reportIds": [
-            "2277",
-            "2281",
-            "2285",
-            "2290",
-            "2302",
-            "2306",
-            "2310",
-            "2314"
-          ],
-          "markets": [
-            "Atlanta",
-            "Baltimore",
-            "Boston",
-            "Chicago",
-            "Detroit",
-            "Los Angeles",
-            "Miami",
-            "New York"
-          ],
-          "url": "https://www.ams.usda.gov/market-news"
-        }
-      ]
-    },
-    {
-      "slug": "watermelon",
-      "name": "Watermelon",
       "sources": [
         {
           "agency": "USDA AMS Market News (terminal markets)",
