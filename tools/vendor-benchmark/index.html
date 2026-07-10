@@ -180,6 +180,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   /* Non-semantic signal — compute-scan chrome / active combobox row ONLY */
   --vb-readout-bg:var(--surface-1,#fff);
   --vb-readout-edge:var(--line);
+  --vb-touch:44px; /* shared minimum touch target (WCAG 2.5.5) */
   --vb-signal:#12A9BD;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
@@ -233,7 +234,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .vb-field{display:flex;flex-direction:column;gap:6px}
 .vb-field label{font-size:12.5px;font-weight:600;color:var(--ink)}
 .vb-hint{font-size:12px;color:var(--stone);font-weight:400}
-.vb-input,.vb-select{font:inherit;font-size:15px;padding:11px 13px;border:1px solid var(--line-dark);border-radius:var(--r-sm,9px);background:var(--surface-1,#fff);color:var(--ink);width:100%;font-variant-numeric:tabular-nums}
+.vb-input,.vb-select{font:inherit;font-size:16px;padding:11px 13px;border:1px solid var(--line-dark);border-radius:var(--r-sm,9px);background:var(--surface-1,#fff);color:var(--ink);width:100%;font-variant-numeric:tabular-nums}
 .vb-input:focus,.vb-select:focus{outline:2px solid var(--teal);outline-offset:1px;border-color:var(--teal)}
 .vb-match-chip{display:inline-flex;align-items:center;gap:7px;margin-top:2px;font-size:12.5px;color:var(--ink-soft);background:var(--teal-tint,#EAF0FE);border:1px solid var(--line);border-radius:999px;padding:4px 11px;align-self:flex-start}
 .vb-match-chip strong{color:var(--teal)}
@@ -242,7 +243,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .vb-purchases{display:flex;flex-direction:column;gap:10px}
 .vb-prow{display:grid;grid-template-columns:1fr 1fr 40px;gap:12px;align-items:end;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-sm,10px);padding:12px 12px}
 .vb-prow .vb-field label{font-size:11px;text-transform:uppercase;letter-spacing:0.04em;color:var(--ink-soft)}
-.vb-remove{align-self:end;width:36px;height:36px;border-radius:8px;border:1px solid transparent;background:transparent;color:var(--stone);font-size:22px;line-height:1;cursor:pointer;transition:color var(--t-fast,180ms),background var(--t-fast,180ms)}
+.vb-remove{align-self:end;width:var(--vb-touch,44px);height:var(--vb-touch,44px);border-radius:8px;border:1px solid transparent;background:transparent;color:var(--stone);font-size:22px;line-height:1;cursor:pointer;transition:color var(--t-fast,180ms),background var(--t-fast,180ms)}
 .vb-remove:hover{color:var(--rust);background:var(--status-bad-tint,#F7E7DC)}
 .vb-remove:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 /* Action strip */
@@ -443,6 +444,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 @media (prefers-reduced-motion:no-preference){@keyframes vb-pick-in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}.vb-combo.is-open .vb-pick-list{animation:vb-pick-in 140ms cubic-bezier(.2,.8,.2,1);transform-origin:top center}}
 @media (prefers-reduced-motion:reduce){.vb-combo.is-live::after,.vb-combo-caret,.vb-pick-opt{transition-duration:1ms}}
 @media print{.vb-pick-list,.vb-combo-caret{display:none}.vb-combo.is-live::after{display:none}}
+/* ── Mobile floor — every control clears the 44px tap floor (--vb-touch, WCAG
+   2.5.5) for a one-thumbed kitchen phone; the 16px fields above kill iOS
+   zoom-on-focus. ─────────────────────────────────────────────────────────── */
+html{-webkit-text-size-adjust:100%}
+.vb-add,.vb-example,.vb-clear,.vb-btn,.vb-jchip{min-height:var(--vb-touch,44px)}
+.vb-chart-table>summary,.vb-receipt summary,.vb-more>summary{min-height:var(--vb-touch,44px);align-items:center}
 </style>
 </head>
 <body>
