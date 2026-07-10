@@ -456,6 +456,10 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
 .ld-js .ld-panel .lg-pane{box-shadow:none}
 .ld-panel h2{font-family:var(--font-display);font-size:clamp(24px,3vw,32px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 8px;scroll-margin-top:calc(28px + var(--banner-h,0px))}
 .ld-panel .ld-body{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 16px;max-width:640px}
+/* Keep the step-0 jump CTA one unbreakable unit so it never orphans "flag →"
+   onto its own line (cycle-3). Desktop-only (.ld-body is hidden ≤767) and far
+   narrower than the 640px measure, so it can never poke a horizontal scroll. */
+.ld-panel .ld-body .js-ld-jump{white-space:nowrap}
 .ld-invoice-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:6px}
 .ld-invoice-title{font-family:var(--font-display);font-weight:600;font-size:15px;color:var(--ink)}
 .ld-invoice-date{font-size:12.5px;color:var(--stone);font-variant-numeric:tabular-nums}
@@ -683,16 +687,26 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
    430px min stage (step-0 and step-2 were the measured breaks). Shrink the
    step-0 invoice and step-2 rows one more notch so both fit without
    internal scroll; ghost rows are already mobile-hidden above.
-   Step-3 addendum (2026-07-10 verify pass): the ES row label "Lechuga
-   romana, 24 uds" is long enough that at <=360 the flag row's price-moved
-   pill crowded it into a second line, growing the flag row until the
-   figcaption landed ON TOP of the pill + chart (EN's shorter label stayed
-   clean). Fix by tightening step-3 rows one notch AND dropping the flag
-   pill onto its own grid row (item + price on line 1, pill right-aligned
-   on line 2) so the label keeps one line and the full pill copy survives —
-   the elastic chart absorbs the extra line, so caption clearance holds.
-   Byte-parallel with EN (EN's flag pill simply gets the same own-row slot,
-   still clean). */
+   (Step-3's row tightening + own-row flag pill moved up to the ≤560
+   narrow-chart band below — cycle-3.) */
+/* Step-3 narrow-chart band (cycle-3 2026-07-10): the ES flag-row labels
+   ("Lechuga romana, 24 uds") wrap and balloon the rows at 361–560px — above
+   the ≤360 tier's reach — so the elastic climax chart is crushed to ~44px
+   (ES 375×667, vs a healthy ~150px at 360). Apply the same single-line row
+   tightening + own-row flag pill (item + price on line 1, pill right-aligned
+   on line 2) across the whole narrow-chart band (≤560, line 141) so the
+   chart holds a real, legible height. EN's shorter labels are unaffected;
+   byte-parallel with ES. */
+@media (max-width:560px){
+  .ld-js #ld-step3 .lg-pane{padding:8px 10px 7px}
+  .ld-js #ld-step3 .lg-rows{font-size:11.5px}
+  .ld-js #ld-step3 .lg-rows .lg-row{padding:2px 2px}
+  .ld-js #ld-step3 .lg-rows .lg-n{font-size:13px}
+  .ld-js #ld-step3 .lg-row--flag{grid-template-columns:1fr auto;grid-template-areas:"i n" "f f";row-gap:1px}
+  .ld-js #ld-step3 .lg-row--flag .lg-i{grid-area:i}
+  .ld-js #ld-step3 .lg-row--flag .lg-n{grid-area:n}
+  .ld-js #ld-step3 .lg-row--flag .lg-flag{grid-area:f;justify-self:end}
+}
 @media (max-width:360px){
   .ld-js #ld-step0 .ld-line,.ld-js #ld-step0 .ld-total{font-size:11px}
   .ld-js #ld-step0 .ld-line{padding:2px 2px;line-height:1.3}
@@ -705,14 +719,6 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
   .ld-js #ld-step2 .lg-rows .lg-row{padding:2px 2px}
   .ld-js #ld-step2 .ld-search{margin:0 0 5px;padding:5px 10px}
   .ld-js #ld-step2 .ld-count{margin:0 0 3px}
-  .ld-js #ld-step3 .lg-pane{padding:8px 10px 7px}
-  .ld-js #ld-step3 .lg-rows{font-size:11.5px}
-  .ld-js #ld-step3 .lg-rows .lg-row{padding:2px 2px}
-  .ld-js #ld-step3 .lg-rows .lg-n{font-size:13px}
-  .ld-js #ld-step3 .lg-row--flag{grid-template-columns:1fr auto;grid-template-areas:"i n" "f f";row-gap:1px}
-  .ld-js #ld-step3 .lg-row--flag .lg-i{grid-area:i}
-  .ld-js #ld-step3 .lg-row--flag .lg-n{grid-area:n}
-  .ld-js #ld-step3 .lg-row--flag .lg-flag{grid-area:f;justify-self:end}
 }
 /* Sub-340 step-3 floor (2026-07-10 verify pass): at ~320px the shared
    stage inset leaves the step-3 rows barely ~200px wide, so even at 11.5px
@@ -1802,40 +1808,16 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             if (flagFig) {
               flagFig.classList.add('lg-armed');
               requestAnimationFrame(function () { requestAnimationFrame(function () { flagFig.classList.add('lg-landed'); }); });
-              // Count-up payoff (elevation P2 2026-07-10): as the flag labels
-              // fade in, tick the $29.45 price and the ▲$5.23 delta up from a
-              // floor over ~520ms ease-out. The final frame writes the exact
-              // CACHED source string, so it terminates on the gate-protected
-              // numerals; mid-tick values are runtime-only and never enter
-              // source. SVG text + tabular-nums = no reflow, no CLS.
-              setTimeout(function () { countUpFlag(panels[3]); }, 560);
+              // The flag labels ($29.45 / ▲$5.23) fade in at their final values
+              // via the .lg-landed reveal (staged move-line → dot pop → label →
+              // pill). No numeric count-up (cycle-3 2026-07-10): the climax
+              // price must equal the ledger row + body prose the instant it is
+              // visible — a ticking price that briefly disagrees with them
+              // (cycle-2 buyer note: "~500ms two-truths flicker") undercuts the
+              // trust pitch. The dot pop, move-line, and ghost FLIP carry the beat.
             }
           });
         }
-      }
-      // Count-up helpers (elevation P2). countNum eases a numeral from `from`
-      // to `to`, formatting each frame, then snaps to the element's cached
-      // original text so the end state is byte-exact with the source.
-      function countNum(el, from, to, dec, fmt, ms) {
-        var finalText = el.textContent, start = null;
-        function frame(t) {
-          if (start === null) start = t;
-          var p = Math.min(1, (t - start) / ms);
-          if (p >= 1) { el.textContent = finalText; return; }
-          var e = 1 - Math.pow(1 - p, 3);
-          el.textContent = fmt((from + (to - from) * e).toFixed(dec));
-          requestAnimationFrame(frame);
-        }
-        requestAnimationFrame(frame);
-      }
-      function countUpFlag(panel) {
-        var charts = panel.querySelectorAll('.lg-chart'), chart = null;
-        for (var c = 0; c < charts.length; c++) { if (charts[c].offsetParent !== null) { chart = charts[c]; break; } }
-        if (!chart) return;
-        var price = chart.querySelector('.lgf-lbl .lgc-num');
-        var delta = chart.querySelector('.lgc-delta');
-        if (price) countNum(price, 24.35, 29.45, 2, function (v) { return '$' + v; }, 520);
-        if (delta) countNum(delta, 0, 5.23, 2, function (v) { return '▲ $' + v; }, 520);
       }
       back.addEventListener('click', function () { show(i - 1, true); });
       next.addEventListener('click', function () { show(i + 1, true); });
