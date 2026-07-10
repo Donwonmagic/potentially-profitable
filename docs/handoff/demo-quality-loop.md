@@ -49,6 +49,13 @@ bar → ratchet (keep only if it beats the best) → record here → repeat unti
 | 1    | 8.5 / 8.5 / 9.0                               | 8.7 | yes (all)   | `6d9600195` |
 | 2    | 9.0 / 9.2 / 9.5                               | 9.2 | yes; **min rose 8.5→9.0** (buyer best-in-class 9.5) | `6fb0c8986` |
 | 3    | 9.3 / 9.3 / 9.6                               | 9.4 | yes; **min rose 9.0→9.3** (buyer best-in-class 9.6) | `924c6b190` |
+| 4    | **9.5** / 9.3† / 9.6†                          | 9.5 | design-eng → **best-in-class**; **2 of 3 seats ≥9.5** | `8977d9826` |
+
+<sup>† cycle-4 was a single tightly-scoped change (the 320px climax chart). Only the
+design-engineer seat — which named that gap as its #1 blocker — was re-certified
+(9.3→9.5). The product-designer (9.3) and buyer (9.6) scores are carried from cycle 3:
+the change doesn't touch the product-designer's #1 gap (laptop climax-framing) or affect
+the buyer's read.</sup>
 
 **Cycle-2 ratchet: ACCEPTED.** The minimum judge score rose 8.5→9.0 and every
 seat improved (avg 8.7→9.2); backlog gaps A/C/D/F/H closed; the FLOOR held on
@@ -74,7 +81,20 @@ the counts check is the tolerated `Site counts (idem)` self-healing check
 files) would fight the deploy pipeline and re-stale by the next day. The judge
 measured the un-deployed local HTTP snapshot. No action taken.**
 
-## Backlog — remaining gaps (cycle-4 targets)
+**Cycle-4 ratchet: ACCEPTED** (scoped, per the founder's "target the one real gap"
+steer). The single all-three-named gap — the 320×568 step-3 climax chart crushed to
+~54px — is closed: reclaiming height from the fixed pieces on ≤560×≤660 phones grew the
+elastic chart to **86px (ES) / 102px (EN)** at 320, and 100/120px at 360×640, with the
+already-fine viewports (375×667, 390×844) untouched. The design-engineer seat — which
+named this as its #1 blocker — re-certified **9.3→9.5** ("gap genuinely closed, no floor
+cost"); FLOOR held across 28 contexts; immutables byte-intact; 8 gates green. **Two of
+three seats are now best-in-class (design-eng 9.5, buyer 9.6).** The only seat below 9.5
+is the product-designer (9.3), held by its own #1 gap — **the laptop climax-in-view
+framing** (a scroll-behavior change near the no-bounce/preventScroll design), which was
+deliberately left out of this scoped cycle. That gap is the last thing between here and
+≥9.5-from-every-seat; attempting it is the higher-risk call the founder can weigh.
+
+## Backlog — remaining gaps
 
 **Closed in cycle 2 (2026-07-10)** — floor re-verified over HTTP at the full
 matrix (320×568 … 1280×700, EN+ES, light+dark, 5 steps); check-all unchanged at
@@ -116,15 +136,25 @@ in the demo); every immutable number byte-intact; EN↔ES byte-parallel:
 - ~~**[nit] Step-0 CTA orphan**~~ — **DONE.** `.js-ld-jump{white-space:nowrap}` keeps "Skip to the
   flag →" / "Salta a la marca →" one unit (desktop-only, within the 640px measure).
 
-Cycle-4 targets — the ≥9.5 blockers the three cycle-3 judges converged on (highest-leverage first):
+**Closed in cycle 4 (2026-07-10)** — the founder's scoped "target the one real gap":
 
-- **[climax] 320×568 chart floor** — the de-collapse reached 375 (96px) but the narrowest phone still
-  crushes the step-3 chart to **54px** (both EN+ES; the stage clamps to its 430px floor and the
-  elastic chart gets the scraps). All three judges named it. Trade prose/row density for chart height
-  at ≤340 so the payoff stays legible at the floor.
-- **[composition] Climax not framed on arrival at laptop heights** — at 1280×700 the apex labels sit
-  ~30–130px below the fold on step-3 arrival; no floor breach (panel scroll = 0) but the signature
-  frame isn't guaranteed in view. Consider centering the stage on step-3 arrival (without a page bounce).
+- ~~**[climax] 320×568 chart floor**~~ — **DONE.** Reclaimed height from the fixed step-3 pieces on
+  ≤560×≤660 phones (figcaption 11.5px, pane title 12.5px, tighter head margin) so the elastic chart
+  absorbs it → **320×568 54px→86px (ES) / 102px (EN)**, 360×640 →100/120px; 375×667 & 390×844 untouched.
+  Design-engineer re-cert **9.3→9.5** ("gap genuinely closed, no floor cost"); FLOOR held (28 configs);
+  immutables byte-intact; 8 gates green.
+
+Cycle-5 candidates — what separates the product-designer seat (9.3) from ≥9.5-from-all (highest-leverage first):
+
+- **[composition] Climax not framed on arrival at laptop heights** — the **product-designer's #1** (holds it
+  at 9.3): at 1280×700 the apex labels sit ~30–130px below the fold on step-3 arrival; no floor breach
+  (panel scroll = 0) but the signature frame isn't guaranteed in view. Consider centering the stage on
+  step-3 arrival without a page bounce. **Higher-risk** — touches the no-bounce / `preventScroll` design.
+- **[nit] ES/EN floor asymmetry (new, cycle-4)** — at 320 the ES chart (86px) is shorter than EN (102px):
+  ES's 4-line caption eats ~16px more than EN's 3-line, so ES gets ~16% less climax at the same 430px
+  floor. Could shave the ES caption one more notch at ≤560×≤660.
+- **[nit] Type-hierarchy compression (new, cycle-4)** — at 320/360 the pane title (12.5px) sits only 1px
+  above the caption (11.5px); hierarchy now rests on weight/family, not size. A Linear/Stripe eye notices.
 - **[nit] Ghost teardown** — after the FLIP settles, `.ld-ghost` persists parked at opacity 0 on the
   chart point; harmless (invisible, out of flow) but a top-tier teardown would remove it.
 - ~~**[craft] Dark-mode step-3 axis contrast**~~ — **DISMISSED on measurement.** The dark labels are
