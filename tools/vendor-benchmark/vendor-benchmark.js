@@ -301,6 +301,9 @@
   // MUNTIN_COST_INDEX_HISTORY, then a re-run upgrades the chart from the shallow
   // spark to the deep series. A same-origin <script> (exactly like loadSeeds) — no
   // fetch. Absent/failed shard → the shallow spark, so this stays purely additive.
+  // Optional hard-bust hint only — freshness is guaranteed by the shard's short,
+  // revalidated cache (_headers: max-age=1d + stale-while-revalidate), NOT by this
+  // constant, so a rebuilt shard reaches returning visitors within a day regardless.
   var HIST_V = '20260710-shard1';
   var vbHistReq = {};
   function maybeLoadHistoryShard(res) {
