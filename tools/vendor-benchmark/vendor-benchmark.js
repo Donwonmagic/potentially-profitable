@@ -892,12 +892,22 @@
   // through, and all inspection is wrapped in try/catch so a bug can't break the call.
   var vbPriceTokens = []; // current typed price strings (len>=4), watched by the shim
   var vbCarryCount = 0;   // outbound requests observed carrying a price token (stays 0)
+  function vbSerialize(payload) {
+    if (payload == null) return '';
+    if (typeof payload === 'string') return payload;
+    try {
+      if (typeof URLSearchParams !== 'undefined' && payload instanceof URLSearchParams) return payload.toString();
+      if (typeof FormData !== 'undefined' && payload instanceof FormData) {
+        var parts = []; payload.forEach(function (v, k) { parts.push(k + '=' + v); }); return parts.join('&');
+      }
+      if (typeof payload === 'object') { try { return JSON.stringify(payload); } catch (_) { return String(payload); } }
+    } catch (_) {}
+    return String(payload);
+  }
   function vbScan(payload) {
     try {
       if (!vbPriceTokens.length || payload == null) return;
-      var s = (typeof payload === 'string') ? payload
-        : (payload && typeof payload === 'object') ? (function () { try { return JSON.stringify(payload); } catch (_) { return String(payload); } })()
-        : String(payload);
+      var s = vbSerialize(payload);
       for (var i = 0; i < vbPriceTokens.length; i++) {
         if (s.indexOf(vbPriceTokens[i]) !== -1) { vbCarryCount++; renderCarry(); return; }
       }
