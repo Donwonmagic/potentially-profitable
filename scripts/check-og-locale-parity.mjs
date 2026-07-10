@@ -34,6 +34,16 @@ const checkMode  = process.argv.includes('--check');
 const cards  = JSON.parse(fs.readFileSync(path.join(repoRoot, 'brand', 'og', 'cards.json'), 'utf8')).cards;
 const bySlug = new Map(cards.map((c) => [c.slug, c]));
 
+// Bespoke, hand-composed share cards live as committed PNGs OUTSIDE the
+// template manifest (see scripts/render-bespoke-og-*.mjs). They are native
+// to their locale by construction — a Spanish card transcreated for a
+// Spanish post — so they satisfy parity without a cards.json entry, and
+// they must NOT be added to the manifest or build-og-cards.mjs would
+// template-render over the hand-authored art. Keep this list dated + tight.
+const BESPOKE_ALLOW = new Set([
+  'blog-el-nino-y-precios-de-alimentos-2026', // 2026-07-10 bespoke ES card; EN sibling blog-el-nino-food-prices-2026
+]);
+
 // First brand/og/<slug>.png referenced by og:image on the page.
 function ogCard(file) {
   const m = fs.readFileSync(file, 'utf8')
@@ -86,7 +96,10 @@ for (const { rel, file } of esPages()) {
   }
 
   const esCard = bySlug.get(esSlug);
-  if (!esCard) { fails.push(`${rel}: og card "${esSlug}" is not in the manifest`); continue; }
+  if (!esCard) {
+    if (BESPOKE_ALLOW.has(esSlug)) { ok++; continue; } // hand-authored PNG, off-manifest by design
+    fails.push(`${rel}: og card "${esSlug}" is not in the manifest`); continue;
+  }
   if (esCard.locale !== 'es') {
     fails.push(`${rel}: serves a non-Spanish card "${esSlug}" (locale=${esCard.locale || 'none'})`);
     continue;
