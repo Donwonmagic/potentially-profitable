@@ -415,11 +415,27 @@
   // Keyed by market key (or item name); each entry is the full state to reopen
   // plus the last honest gap. LRU-capped. All via MuntinContext — never leaves
   // the device. This is the accumulation moat and the honest Ledger on-ramp.
-  var JOURNAL_KEY = 'vbJournal', JOURNAL_CAP = 40;
-  var reopenBaseline = null; // {gapPts, at} stashed on reopen, for the trend note
+  var JOURNAL_KEY = 'vbJournal', JOURNAL_CAP = 40, CHECK_CAP = 12, SESSION_MS = 1800000; // 30-min sitting
   function readJournal() { try { var j = CTX && CTX.get(JOURNAL_KEY); return (j && typeof j === 'object') ? j : {}; } catch (_) { return {}; } }
   function writeJournal(map) { if (CTX && typeof CTX.merge === 'function') { var p = {}; p[JOURNAL_KEY] = map; try { CTX.merge(p); } catch (_) {} } }
   function journalKeyFor(res) { return (res.market && res.market.key) || ('item:' + (res.item || '').toLowerCase().replace(/\s+/g, ' ').trim()); }
+  // Each entry carries a capped, newest-first RING of checks so "since your last check"
+  // survives a refresh — the trend reads the prior check from storage, not an in-memory
+  // var. Old flat entries synthesize a single-check ring (back-compat reader).
+  function ringOf(e) {
+    if (!e) return [];
+    if (Array.isArray(e.checks) && e.checks.length) return e.checks;
+    if (typeof e.gapPts === 'number' || e.at) return [{ at: e.at || 0, gapPts: (typeof e.gapPts === 'number' ? e.gapPts : null), yourPct: e.yourPct, marketPct: e.marketPct }];
+    return [];
+  }
+  // Baseline for the trend note: the newest check from a PRIOR sitting (checks within
+  // SESSION_MS of the newest are the same sitting still being edited, not a comparison).
+  function priorCheck(res) {
+    var ring = ringOf(readJournal()[journalKeyFor(res)]);
+    if (!ring.length) return null;
+    if ((Date.now() - (ring[0].at || 0)) < SESSION_MS) return ring[1] || null;
+    return ring[0];
+  }
   function saveToJournal(res, rows) {
     if (!CTX || !res.item) return;
     var clean = rows.filter(function (r) { return r.date && String(r.price).trim() !== ''; });
@@ -427,12 +443,23 @@
     var map = readJournal();
     var k = journalKeyFor(res);
     var m = res.market;
-    map[k] = {
-      item: res.item, unit: res.unit, purchases: clean, at: Date.now(),
+    var check = {
+      at: Date.now(),
       gapPts: (m && m.res && m.res.ok && !m.res.thin) ? m.res.gapPts : null,
       yourPct: res.yourChangePct,
       marketPct: (m && m.res && m.res.ok) ? m.res.marketPct : null,
-      tier: res.tier, thin: !!(m && m.res && m.res.thin)
+      lastCents: res.lastCents, firstDate: res.firstDate, lastDate: res.lastDate
+    };
+    // Same sitting (within SESSION_MS) updates the newest check; a later visit
+    // prepends a new one — so the ring is one entry per sitting, not per keystroke.
+    var ring = ringOf(map[k]);
+    if (ring.length && (check.at - (ring[0].at || 0)) < SESSION_MS) { ring = ring.slice(); ring[0] = check; }
+    else { ring = [check].concat(ring); }
+    if (ring.length > CHECK_CAP) ring = ring.slice(0, CHECK_CAP);
+    map[k] = {
+      item: res.item, unit: res.unit, purchases: clean, at: check.at,
+      gapPts: check.gapPts, yourPct: check.yourPct, marketPct: check.marketPct,
+      tier: res.tier, thin: !!(m && m.res && m.res.thin), checks: ring
     };
     var keys = Object.keys(map);
     if (keys.length > JOURNAL_CAP) {
@@ -499,8 +526,7 @@
       if (entry && entry.item) {
         itemEl.value = entry.item; if (entry.unit) unitEl.value = entry.unit;
         renderRows(entry.purchases);
-        reopenBaseline = (typeof entry.gapPts === 'number') ? { gapPts: entry.gapPts, at: entry.at, key: chip.getAttribute('data-jkey') } : null;
-        run();
+        run(); // the trend note reads the prior check from storage (survives refresh)
         resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
     }
@@ -821,7 +847,10 @@
     var hasState = state === 'elevated' || state === 'depressed';
     var volWild = c.vol === 'wild' || c.vol === 'swingy';
     var ev = (c.recentEvent && c.recentEvent.recent) ? c.recentEvent : null;
-    if (!hasState && !volWild && !ev) return '';
+    // Fire only on a LIVE signal — the reference elevated/depressed vs its own normal,
+    // or a recent documented event. Volatility is a modifier on those, never a
+    // standalone trigger (nearly every series is volatile — it would surface on all).
+    if (!hasState && !ev) return '';
 
     var say = '';
     if (hasState) {
@@ -1003,13 +1032,14 @@
   }
 
   function journalTrendBlock(res) {
-    if (!reopenBaseline || reopenBaseline.key !== journalKeyFor(res)) return '';
     var m = res.market;
     if (!(m && m.res && m.res.ok && !m.res.thin)) return '';
-    var now = m.res.gapPts, was = reopenBaseline.gapPts;
+    var prior = priorCheck(res); // from storage — survives a page refresh
+    if (!prior || typeof prior.gapPts !== 'number' || !prior.at) return '';
+    var now = m.res.gapPts, was = prior.gapPts;
     if (Math.abs(now - was) < 1) return '';
     var widened = Math.abs(now) > Math.abs(was);
-    return h`<p class="vb-jtrend" data-tone="${widened ? 'over' : 'under'}">${T.jSince} ${relTime(reopenBaseline.at)}, ${widened ? T.jWiden : T.jNarrow} ${Math.abs(was).toFixed(was < 10 ? 1 : 0)} → ${Math.abs(now).toFixed(now < 10 ? 1 : 0)} ${T.pointsWord}.</p>`;
+    return h`<p class="vb-jtrend" data-tone="${widened ? 'over' : 'under'}">${T.jSince} ${relTime(prior.at)}, ${widened ? T.jWiden : T.jNarrow} ${Math.abs(was).toFixed(was < 10 ? 1 : 0)} → ${Math.abs(now).toFixed(now < 10 ? 1 : 0)} ${T.pointsWord}.</p>`;
   }
 
   function tierLabel(tier) {
@@ -1302,7 +1332,6 @@
     while (resultEl.firstChild) resultEl.removeChild(resultEl.firstChild);
     resultEl.removeAttribute('data-has-result');
     if (matchChip) matchChip.hidden = true;
-    reopenBaseline = null;
     if (CTX && typeof CTX.merge === 'function') { try { CTX.merge({ vbSession: null }); } catch (_) {} }
     itemEl.focus();
   }
