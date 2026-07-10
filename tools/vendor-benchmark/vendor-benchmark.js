@@ -127,7 +127,9 @@
     ctxDepressed: function (label, pct) { return 'Ahora mismo la referencia mayorista de ' + label + ' corre alrededor de ' + pct + '% por debajo de su propia norma del último año — un precio que parece justo frente a un mercado flojo aún puede merecer una segunda mirada.'; },
     ctxVolatile: function (label) { return 'La referencia mayorista de ' + label + ' es una serie históricamente volátil — su propia norma varía mucho de una temporada a otra.'; },
     ctxVolTag: ' También es una serie históricamente volátil.',
-    ctxEvent: function (label) { return 'Coincide en el trasfondo (no es una causa): ' + label + '.'; }
+    ctxEvent: function (label) { return 'Coincide en el trasfondo (no es una causa): ' + label + '.'; },
+    chartAriaDyn: function (yourR, mkR, gapAbs, gapSign) { return 'Tu precio terminó cerca de ' + yourR + ', el mercado cerca de ' + mkR + ', ambos indexados a 100 al inicio de tu ventana — ' + (gapAbs < 1 ? 'en línea con el mercado' : ('unos ' + gapAbs + ' puntos ' + (gapSign > 0 ? 'por encima' : 'por debajo') + ' del mercado')) + '.'; },
+    chartAriaThin: ' Las lecturas del mercado son escasas, así que esta línea es aproximada.'
   } : {
     itemLabel: 'Item', itemHint: '— as it reads on your invoice',
     itemPlaceholder: 'e.g. ribeye, chicken breast, tomato',
@@ -221,7 +223,9 @@
     ctxDepressed: function (label, pct) { return 'Right now the wholesale reference for ' + label + ' runs about ' + pct + '% below its own trailing-year normal — a price that looks fair against a soft market can still be worth a second look.'; },
     ctxVolatile: function (label) { return 'The wholesale reference for ' + label + ' is a historically volatile series — its own normal swings widely from season to season.'; },
     ctxVolTag: ' It is also a historically volatile series.',
-    ctxEvent: function (label) { return 'Co-occurring in the backdrop (not a cause): ' + label + '.'; }
+    ctxEvent: function (label) { return 'Co-occurring in the backdrop (not a cause): ' + label + '.'; },
+    chartAriaDyn: function (yourR, mkR, gapAbs, gapSign) { return 'Your price ended near ' + yourR + ', the market near ' + mkR + ', both indexed to 100 at your window start — ' + (gapAbs < 1 ? 'in line with the market' : ('about ' + gapAbs + ' points ' + (gapSign > 0 ? 'above' : 'below') + ' the market')) + '.'; },
+    chartAriaThin: ' Market reads are thin, so this line is approximate.'
   };
 
   // ---- small formatters ------------------------------------------------------
@@ -326,6 +330,7 @@
     pLab.setAttribute('for', pId); pInput.id = pId;
     var pHint = document.createElement('span');
     pHint.className = 'vb-prow-hint'; pHint.setAttribute('data-role', 'badprice'); pHint.hidden = true;
+    pHint.id = pId + '-hint';
     pHint.textContent = T.badPrice;
     pWrap.appendChild(pLab); pWrap.appendChild(pInput); pWrap.appendChild(pHint);
 
@@ -398,7 +403,13 @@
       var raw = (pEl.value || '').trim();
       var bad = raw !== '' && parsePrice(raw) == null;
       hint.hidden = !bad;
-      if (bad) pEl.setAttribute('aria-invalid', 'true'); else pEl.removeAttribute('aria-invalid');
+      if (bad) {
+        pEl.setAttribute('aria-invalid', 'true');
+        if (hint.id) pEl.setAttribute('aria-describedby', hint.id); // WCAG 3.3.1: name the error
+      } else {
+        pEl.removeAttribute('aria-invalid');
+        pEl.removeAttribute('aria-describedby');
+      }
       rows[i].classList.toggle('vb-prow--bad', bad);
     }
   }
@@ -527,7 +538,7 @@
         itemEl.value = entry.item; if (entry.unit) unitEl.value = entry.unit;
         renderRows(entry.purchases);
         run(); // the trend note reads the prior check from storage (survives refresh)
-        resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        revealResult(true); // explicit reopen — land focus on the verdict, motion-gated
       }
     }
   }
@@ -665,10 +676,17 @@
     var tone = (m.say && m.say.tone) || 'info';
     var y100 = Y(100).toFixed(1);
 
+    // Dynamic aria-label — the chart STATES its conclusion so a screen-reader user
+    // hears the takeaway (and the thin/approximate hedge a sighted user sees).
+    var yEnd = yourPts.length ? yourPts[yourPts.length - 1].v : 100;
+    var mEnd = mkPts.length ? mkPts[mkPts.length - 1].v : 100;
+    var gapSign = yEnd - mEnd;
+    var ariaLabel = T.chartAriaDyn(Math.round(yEnd), Math.round(mEnd), Math.abs(Math.round(gapSign)), gapSign) + (uncertain ? T.chartAriaThin : '');
+
     var svg =
       '<svg class="vb-chart" data-tone="' + escAttr(tone) + '"' + (uncertain ? ' data-uncertain="1"' : '') +
       ' width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H +
-      '" role="img" aria-label="' + escAttr(T.chartAria) + '"' + (tableId ? ' aria-describedby="' + tableId + '"' : '') + ' preserveAspectRatio="xMidYMid meet">' +
+      '" role="img" aria-label="' + escAttr(ariaLabel) + '"' + (tableId ? ' aria-describedby="' + tableId + '"' : '') + ' preserveAspectRatio="xMidYMid meet">' +
       '<line x1="' + padL + '" y1="' + y100 + '" x2="' + (W - padR) + '" y2="' + y100 + '" class="vb-chart-base"/>';
 
     // Divergence wedge — only when the market line is real (never over a
@@ -830,6 +848,18 @@
   }
 
   var lastRes = null;
+  // a11y helpers — respect reduced-motion for programmatic scrolls, and move focus
+  // to the verdict heading ONLY on the two explicit user actions (never on keystroke),
+  // so a keyboard / screen-reader user lands on the answer, not mid-form.
+  function reducedMotion() { return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); }
+  function revealResult(focusVerdict) {
+    if (focusVerdict) {
+      var vh = document.getElementById('vbVerdictH');
+      if (vh) { try { vh.focus({ preventScroll: true }); } catch (_) { try { vh.focus(); } catch (__) {} } }
+    }
+    if (resultEl && resultEl.scrollIntoView) resultEl.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'nearest' });
+  }
+
   // ADR-012 market context — the REFERENCE's OWN state (elevated/depressed vs its
   // trailing-year normal + volatility + a co-occurring documented event), NEVER the
   // operator's price, so it needs no lead-lag gate. Reads the lazy MUNTIN_COST_CONTEXT
@@ -1062,7 +1092,7 @@
         return h`<div class="vb-headline">${yourLine}<div class="vb-headline-note"><p class="vb-loading${seedsFailed ? '' : ' vb-loading--pulse'}" role="status">${msg}</p></div></div>`;
       }
       if (m.reason === 'no-match' || m.reason === 'no-series' || m.reason === 'no-index') {
-        return h`<div class="vb-headline vb-headline--info">${yourLine}<div class="vb-headline-note"><h2 class="vb-h2">${T.noMatchHead}</h2><p>${T.noMatchBody}</p><p><a class="vb-inlink" href="${BASE}/cost-index/">${T.seeReading} <span aria-hidden="true">→</span></a></p></div></div>`;
+        return h`<div class="vb-headline vb-headline--info">${yourLine}<div class="vb-headline-note"><h2 class="vb-h2" id="vbVerdictH" tabindex="-1">${T.noMatchHead}</h2><p>${T.noMatchBody}</p><p><a class="vb-inlink" href="${BASE}/cost-index/">${T.seeReading} <span aria-hidden="true">→</span></a></p></div></div>`;
       }
       return h`${yourLine}`;
     }
@@ -1086,10 +1116,10 @@
       var anchor = (m.res.gapPts >= 3 && m.res.excessCents > 0 && anchorCents != null)
         ? h`<p class="vb-anchor"><strong>${T.anchorLead}</strong> ${money(anchorCents)}${uSuf} ${T.anchorTail} ${money(res.lastCents)}${uSuf}.</p>`
         : '';
-      verdict = h`<div class="vb-gap" data-tone="${tone}"><span class="vb-gap-num">${gapPts.toFixed(gapPts < 10 ? 1 : 0)}</span><span class="vb-gap-word">${T.pointsWord} ${dirWord}</span></div><p class="vb-headline-say">${m.say.headline}</p>${excess}${anchor}`;
+      verdict = h`<div class="vb-gap" data-tone="${tone}"><span class="vb-gap-num">${gapPts.toFixed(gapPts < 10 ? 1 : 0)}</span><span class="vb-gap-word">${T.pointsWord} ${dirWord}</span></div><h2 class="vb-headline-say vb-verdict-h" id="vbVerdictH" tabindex="-1">${m.say.headline}</h2>${excess}${anchor}`;
     } else if (m.say && m.say.headline) {
       // honest hedge / soft refusal (thin, too-close, out-of-range)
-      verdict = h`<div class="vb-hedge" data-tone="${tone}"><p class="vb-headline-say">${m.say.headline}</p>${m.say.detail ? h`<p class="vb-headline-detail">${m.say.detail}</p>` : ''}</div>`;
+      verdict = h`<div class="vb-hedge" data-tone="${tone}"><h2 class="vb-headline-say vb-verdict-h" id="vbVerdictH" tabindex="-1">${m.say.headline}</h2>${m.say.detail ? h`<p class="vb-headline-detail">${m.say.detail}</p>` : ''}</div>`;
     }
 
     return h`<div class="vb-headline" data-tone="${tone}"><div class="vb-metrics">${yourLine}<span class="vb-vs" aria-hidden="true">vs</span>${marketLine}</div>${verdict}</div>`;
@@ -1346,7 +1376,7 @@
     ]);
     track('Bench Example Loaded');
     run();
-    resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    revealResult(true); // explicit example load — land focus on the verdict, motion-gated
   }
 
   // ---- ingredient picker (combobox) — progressive enhancement over #vbItem ---
