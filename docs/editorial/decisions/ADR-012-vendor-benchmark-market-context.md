@@ -1,6 +1,6 @@
 # ADR-012 — Vendor Benchmark market-context (reference-state only, never the operator's price)
 
-- **Status:** ACCEPTED (shipped on `claude/vendor-benchmark-redesign-yn273q`)
+- **Status:** ACCEPTED — but the standalone `market-gap-panel.js` implementation was **REMOVED 2026-07-10** during the VB redesign: the panel was orphaned (never wired into the page — it targeted `#vbForm`/`#vbLatest`, which no longer exist) and had drifted to carry a per-invoice gap verdict + an unsourced "aggregated buying typically saves 10–30%" line, both contract/fact-gate violations. The reference-state-only idea (this ADR's actual decision) is re-implemented **contract-safe** as the redesign's "re-light the ADR-012 reference-state context line" item (Phase 2), sourced from `data/cost-index-context.js`.
 - **Date:** 2026-07-09
 - **Owner:** Cost Index / strategic council
 - **Review by:** 2026-10-09
