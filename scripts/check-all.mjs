@@ -435,6 +435,13 @@ const CHECKS = [
   // Shippable bar — below-bar ingredients must stay out of the browser seed
   // (no thin / no-level read on the dashboard; they live as expanding-coverage).
   ['Cost-index shippable bar','check-shippable-bar.mjs'],
+  // Vendor Benchmark ingredient-picker manifest (data/cost-index-picker.js) — the
+  // honest source-of-truth list a coming picker reads. Pins it to the browser seed
+  // (length/keys/labels/units) + the shared taxonomy (group) + the exact reference()
+  // dollar rule (dollarRef), and asserts the shared category map stays in lockstep
+  // with the inline maps in build-cost-index-pages.mjs. Rebuild: build-cost-index-picker.mjs.
+  ['Cost-index picker','check-cost-index-picker.mjs'],
+  ['Cost-index picker self-test','check-cost-index-picker.mjs','--self-test'],
   // Band coverage — the published prediction band is a CONFORMAL interval whose
   // realized coverage is backtested against deep history; this gate fails if the
   // 80% band doesn't actually cover ~80% of next prints (verified, not asserted).
