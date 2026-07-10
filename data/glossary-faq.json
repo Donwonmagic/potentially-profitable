@@ -3257,11 +3257,11 @@
       "en": [
         {
           "q": "Is the EIA diesel price a food price?",
-          "a": "No. EIA publishes energy prices, not food prices. The Cost Index reads its weekly retail diesel series as a freight-cost pressure signal — when diesel climbs, delivery surcharges and freight-in costs tend to follow. It points to which way delivered cost is leaning; it is never the price of the food itself."
+          "a": "No. EIA publishes energy prices, not food prices. Diesel does lead freight — when it climbs, delivery surcharges and freight-in costs tend to follow — so it is a useful thing to watch. The Cost Index carries the weekly retail diesel series as a single index-wide freight and energy backdrop that moves alongside food costs, association rather than cause, the same market context behind every ingredient. It is never the price of the food itself, and it is not a per-ingredient forecast."
         },
         {
           "q": "How does the Cost Index use EIA diesel?",
-          "a": "Only in its leading-indicator pressure overlay. Diesel feeds an inferred direction on delivered cost — published with a direction but no dollar figure, and only once that rule's live track record clears a hold-until-proven bar. It corroborates freight pressure; it is not a wholesale price the index quotes."
+          "a": "As one index-wide freight and energy backdrop, not as a per-ingredient signal. The Cost Index carries the free weekly EIA diesel series (on FRED as GASDESW) as a single “Diesel / freight” association direction — the same market context behind every ingredient — framed as moving alongside food costs, association rather than cause. It never carries a dollar and it forecasts no single ingredient. Diesel is not a per-item leading signal in the overlay: freight is common-mode, riding nearly every delivered price about equally, so a separate freight arrow on each ingredient would be mis-specified. The overlay's leading edges are supply signals instead, such as cattle-on-feed placements ahead of beef and feed grain ahead of chicken and pork."
         },
         {
           "q": "Is EIA data free and how often does it come out?",
@@ -3271,11 +3271,11 @@
       "es": [
         {
           "q": "¿El precio del diésel de la EIA es un precio del alimento?",
-          "a": "No. La EIA publica precios de energía, no de alimentos. El Índice de costos lee su serie semanal del diésel al menudeo como una señal de presión sobre el costo de flete: cuando el diésel sube, los recargos de entrega y los costos de flete tienden a seguir. Indica hacia dónde se inclina el costo entregado; nunca es el precio del alimento en sí."
+          "a": "No. La EIA publica precios de energía, no de alimentos. El diésel sí adelanta al flete — cuando sube, los recargos de entrega y los costos de flete tienden a seguir — así que vale la pena vigilarlo. El Índice de costos lleva la serie semanal del diésel al menudeo como un solo trasfondo de flete y energía para todo el índice, que se mueve junto a los costos de los alimentos, asociación más que causa, el mismo contexto de mercado detrás de cada ingrediente. Nunca es el precio del alimento en sí, y no es un pronóstico por ingrediente."
         },
         {
           "q": "¿Cómo usa el Índice de costos el diésel de la EIA?",
-          "a": "Solo en su capa de presión, como indicador adelantado. El diésel alimenta una dirección inferida sobre el costo entregado — publicada con una dirección pero sin cifra en dólares, y solo cuando el historial real de esa regla supera un umbral de comprobación. Corrobora la presión del flete; no es un precio mayorista que el índice cotice."
+          "a": "Como un solo trasfondo de flete y energía para todo el índice, no como una señal por ingrediente. El Índice de costos lleva la serie semanal y gratuita del diésel de la EIA (en FRED como GASDESW) como una sola dirección de asociación “Diésel / flete” — el mismo contexto de mercado detrás de cada ingrediente — planteada como que se mueve junto a los costos de los alimentos, asociación más que causa. Nunca lleva un dólar y no pronostica ningún ingrediente en particular. El diésel no es una señal adelantada por ítem en la capa: el flete es de modo común, incide en casi todos los precios entregados por igual, así que una flecha de flete aparte en cada ingrediente estaría mal especificada. En cambio, los filos adelantados de la capa son señales de oferta, como las colocaciones de ganado en engorda antes de la res y el grano forrajero antes del pollo y el cerdo."
         },
         {
           "q": "¿Los datos de la EIA son gratuitos y cada cuánto salen?",
@@ -3643,11 +3643,11 @@
       "en": [
         {
           "q": "What is a leading indicator?",
-          "a": "A leading indicator is something that reliably moves before the thing you actually care about, so it gives you early warning. For restaurant cost, the clearest example is diesel: it leads freight, and freight is a chunk of delivered cost, so a sustained move in diesel tends to show up on your invoices weeks later. A leading indicator tells you which way cost is leaning before it lands — it does not tell you the number."
+          "a": "A leading indicator is something that reliably moves before the thing you actually care about, so it gives you early warning. Diesel is the textbook example: it leads freight, and freight is a chunk of delivered cost, so a sustained move in diesel tends to show up on invoices weeks later — useful to watch on its own. Inside the Cost Index, though, that diesel-to-freight link is carried as a shared, index-wide freight backdrop, not as a per-ingredient arrow; the overlay's own leading signals are supply-side ones like cattle-on-feed placements ahead of beef. A leading indicator tells you which way cost is leaning before it lands; it does not tell you the number."
         },
         {
           "q": "Does the pressure overlay give a price?",
-          "a": "No. The overlay publishes a direction of pressure — up, down, or flat — and never a dollar figure. That is the whole boundary: a leading signal like diesel can tell you delivered cost is leaning up before it lands on a bill, but it cannot tell you the number, so the overlay refuses to invent one. It is the one part of the Cost Index that looks forward, and it stays a direction."
+          "a": "No. The overlay publishes a direction of pressure — up, down, or flat — and never a dollar figure. That is the whole boundary: a leading signal, like cattle-on-feed placements running ahead of beef, can tell you delivered cost is leaning up before it lands on a bill, but it cannot tell you the number, so the overlay refuses to invent one. It is the one part of the Cost Index that looks forward, and it stays a direction."
         },
         {
           "q": "How does a signal earn a place in the overlay?",
@@ -3655,17 +3655,17 @@
         },
         {
           "q": "What is a leading indicator example?",
-          "a": "Diesel is the clearest one for restaurant cost. It moves before freight, and freight is part of your delivered cost, so a sustained climb in diesel tends to show up on invoices weeks later. The Cost Index reads it as a direction of pressure — a heads-up that delivered cost is leaning up — never as a price, and only after the signal proves out."
+          "a": "The clearest ones are supply-and-biology signals. Cattle placed on feed become beef months later, so a change in placements runs ahead of the beef price; feed-grain moves run ahead of chicken and pork. The overlay reads a signal like that as a direction of pressure — a heads-up that delivered cost is leaning up — never as a price, and an arrow appears only once that rule clears its own live track record, earned by hit rate rather than asserted. Diesel, by contrast, leads freight in general but sits in the index only as a shared freight backdrop, not as a per-ingredient arrow."
         }
       ],
       "es": [
         {
           "q": "¿Qué es un indicador adelantado?",
-          "a": "Un indicador adelantado es algo que se mueve de forma confiable antes que la cosa que de verdad te importa, así que te da un aviso temprano. Para el costo de un restaurante, el ejemplo más claro es el diésel: adelanta al flete, y el flete es una parte del costo entregado, así que un movimiento sostenido del diésel suele aparecer en tus facturas semanas después. Un indicador adelantado te dice hacia dónde se inclina el costo antes de que aterrice — no te dice la cifra."
+          "a": "Un indicador adelantado es algo que se mueve de forma confiable antes que la cosa que de verdad te importa, así que te da un aviso temprano. El diésel es el ejemplo de manual: adelanta al flete, y el flete es una parte del costo entregado, así que un movimiento sostenido del diésel suele aparecer en las facturas semanas después — útil de vigilar por sí solo. Dentro del Índice de costos, sin embargo, ese vínculo diésel-flete se lleva como un trasfondo de flete compartido para todo el índice, no como una flecha por ingrediente; las propias señales adelantadas de la capa son de oferta, como las colocaciones de ganado en engorda antes de la res. Un indicador adelantado te dice hacia dónde se inclina el costo antes de que aterrice; no te dice la cifra."
         },
         {
           "q": "¿La capa de presión da un precio?",
-          "a": "No. La capa publica una dirección de presión — sube, baja o estable — y nunca una cifra en dólares. Ese es todo el límite: una señal adelantada como el diésel puede decirte que el costo entregado se inclina hacia arriba antes de que aterrice en una cuenta, pero no puede decirte la cifra, así que la capa se niega a inventarla. Es la única parte del Índice de costos que mira hacia adelante, y se queda en una dirección."
+          "a": "No. La capa publica una dirección de presión — sube, baja o estable — y nunca una cifra en dólares. Ese es todo el límite: una señal adelantada, como las colocaciones de ganado en engorda que corren por delante de la res, puede decirte que el costo entregado se inclina hacia arriba antes de que aterrice en una cuenta, pero no puede decirte la cifra, así que la capa se niega a inventarla. Es la única parte del Índice de costos que mira hacia adelante, y se queda en una dirección."
         },
         {
           "q": "¿Cómo gana una señal su lugar en la capa?",
@@ -3673,7 +3673,7 @@
         },
         {
           "q": "¿Cuál es un ejemplo de indicador adelantado?",
-          "a": "El diésel es el más claro para el costo de un restaurante. Se mueve antes que el flete, y el flete es parte de tu costo entregado, así que una subida sostenida del diésel suele aparecer en las facturas semanas después. El Índice de costos lo lee como una dirección de presión — un aviso de que el costo entregado se inclina hacia arriba — nunca como un precio, y solo después de que la señal se comprueba."
+          "a": "Los más claros son señales de oferta y biología. El ganado que entra al corral de engorda se vuelve res meses después, así que un cambio en las colocaciones corre por delante del precio de la res; los movimientos del grano forrajero corren por delante del pollo y el cerdo. La capa lee una señal así como una dirección de presión — un aviso de que el costo entregado se inclina hacia arriba — nunca como un precio, y una flecha aparece solo cuando esa regla supera su propio historial en vivo, ganado por tasa de aciertos y no afirmado. El diésel, en cambio, adelanta al flete en general, pero en el índice está solo como un trasfondo de flete compartido, no como una flecha por ingrediente."
         }
       ]
     },
