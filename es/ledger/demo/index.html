@@ -156,7 +156,7 @@
 .lgc-lab--sub{fill:var(--ink-soft,#4A4F59)}
 .lgc-num{font-family:var(--font-display,Georgia,serif);font-weight:600;font-variant-numeric:tabular-nums lining-nums;font-size:20px;fill:var(--ink,#16181D)}
 .lgc-num--sm{font-size:13px}
-.lgc-delta{font-family:var(--font-display,Georgia,serif);font-weight:600;font-size:16px;fill:var(--rust,#C42E2E)}
+.lgc-delta{font-family:var(--font-display,Georgia,serif);font-weight:600;font-size:16px;fill:var(--rust,#C42E2E);font-variant-numeric:tabular-nums lining-nums}
 .lgc-delta--sm{font-size:12.5px}
 /* One-time flag landing (P0-3, M1 — 2026-07-07; tokenized 2026-07-09).
    Base CSS is the finished chart; the inline script arms .lg-armed only
@@ -180,11 +180,22 @@
 .lg-vignette.lg-armed.lg-landed .lgf-dot{opacity:1;transform:scale(1);transition:opacity calc(var(--t-micro,120ms)*2) var(--ease-spring,ease-out) 360ms,transform calc(var(--t-micro,120ms)*2) var(--ease-spring,ease-out) 360ms}
 .lg-vignette.lg-armed .lgf-lbl{opacity:0}
 .lg-vignette.lg-armed.lg-landed .lgf-lbl{opacity:1;transition:opacity calc(var(--t-micro,120ms)*2) var(--ease-out,ease-out) 480ms}
+/* Build-then-break the band (2026-07-10 elevation P2): the prior-read
+   points + connector + their value labels are grouped in .lgc-priors and
+   settle up from +6px on flag-land at delay 0, so the in-band history
+   establishes FIRST; then the existing rust seg (120ms) → dot (360ms) →
+   bracket ladder breaks out of it — restoring the causality the flag
+   depends on. Opacity/transform on the group ONLY (no stroke-dashoffset
+   draw-on, which would fail the cls-animation gate); the seg/dot/label
+   ladder is untouched. */
+.lg-vignette.lg-armed .lgc-priors{opacity:0;transform:translateY(6px)}
+.lg-vignette.lg-armed.lg-landed .lgc-priors{opacity:1;transform:none;transition:opacity calc(var(--t-micro,120ms)*2) var(--ease-out,ease-out),transform calc(var(--t-micro,120ms)*2) var(--ease-out,ease-out)}
 @media (prefers-reduced-motion:reduce){
   .lg-vignette .lg-flag,.lg-vignette.lg-armed .lg-flag,
   .lg-vignette .lgf-seg,.lg-vignette.lg-armed .lgf-seg,
   .lg-vignette .lgf-dot,.lg-vignette.lg-armed .lgf-dot,
   .lg-vignette .lgf-lbl,.lg-vignette.lg-armed .lgf-lbl{opacity:1;transform:none;transition:none}
+  .lg-vignette .lgc-priors,.lg-vignette.lg-armed .lgc-priors{opacity:1;transform:none;transition:none}
   .lg-vignette .lg-row--flag::before,.lg-vignette.lg-armed .lg-row--flag::before{opacity:1;transition:none}
 }
 /* One page, one ask (P1-8 pulled into P0 by the verdict amendments,
@@ -260,7 +271,14 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
 .ld-rail li{counter-increment:ld}
 .ld-rail a{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;background:var(--surface-1,#fff);border:1px solid var(--line);border-radius:999px;color:var(--ink);text-decoration:none;transition:border-color var(--t-micro,120ms) var(--ease,ease),box-shadow var(--t-micro,120ms) var(--ease,ease)}
 .ld-rail a::before{content:counter(ld,decimal-leading-zero);font-family:var(--font-display);font-weight:560;font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums lining-nums}
-.ld-rail li[aria-current="step"] a{border-color:var(--ink);box-shadow:var(--elev-1)}
+/* Current-step pill (aria-current relocated to the <a> — elevation P2
+   2026-07-10 — so JAWS/VoiceOver announce it when the link takes focus).
+   Non-color reinforcement: a 1px inset ink ring thickens the border so the
+   current step is distinguishable without relying on hue. Geometry
+   unchanged (inset ring + box-shadow don't reflow), so the rail can't
+   re-wrap. */
+.ld-rail a[aria-current="step"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink),var(--elev-1)}
+.ld-rail a[aria-current="step"]::before{color:var(--ink)}
 /* scroll-margin en la SECCIÓN (corrección de enlaces profundos
    2026-07-09): el ancla nativa apunta a la sección, no a su h2, así el
    salto pre-JS también libra el nav fijo de ~88px. Corrección ronda 2:
@@ -305,6 +323,15 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
    son los nombres cortos del riel. */
 .ld-chrome-step{margin-left:auto;display:inline-flex;align-items:baseline;gap:5px;min-width:0;overflow:hidden;color:var(--ink-soft);white-space:nowrap;font-variant-numeric:tabular-nums lining-nums}
 .ld-chrome-step strong{font-weight:600;color:var(--ink);min-width:0;overflow:hidden;text-overflow:ellipsis}
+/* Persistent in-chrome progress fill (2026-07-10 elevation P1): a 2px track
+   pinned to the chrome's bottom edge, its inner bar scaleX'd to (i+1)/5 in
+   show(). Compositor-only (transform), aria-hidden (the rail + #ldLive
+   already announce position once), and absolutely positioned so it adds
+   nothing to chrome height — the stage reservation is unchanged. Replaces
+   the progress read that vanished when the page-header rail scrolled off. */
+.ld-js .ld-chrome{position:relative}
+.ld-chrome-progress{position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--line-dark,#D7DAE0);overflow:hidden}
+.ld-chrome-progress-bar{display:block;height:100%;background:var(--teal,#2A50C8);transform-origin:left center;transform:scaleX(0);transition:transform var(--t-fast,180ms) var(--ease-out,ease-out)}
 @media (max-width:560px){.ld-chrome-chip{display:none}}
 /* El escenario. Altura fija por breakpoint. El escritorio se re-midió
    el 2026-07-09 con el ancho de 880px RESTAURADO (la mediana anterior
@@ -333,7 +360,7 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
    min-content del pre del CSV (scroll de página a 360px), y la fila
    debe ceñirse al escenario en vez de crecer con el panel más alto. */
 .ld-js #ldPanels{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr);height:720px;overflow:hidden}
-@supports (height:1svh){.ld-js #ldPanels{height:clamp(430px,calc(100svh - 208px),720px)}}
+@supports (height:1svh){.ld-js #ldPanels{height:clamp(430px,calc(100svh - 208px),560px)}}
 @media (max-width:767px){.ld-js #ldPanels{height:720px}@supports (height:1svh){.ld-js #ldPanels{height:clamp(430px,calc(100svh - 213px),720px)}}}
 /* Paneles dentro del escenario: cada uno llena el escenario y desplaza
    su propio desbordamiento; los cortos se centran (safe center vuelve a
@@ -351,7 +378,16 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
    sin overscroll-behavior:contain — para que un desliz más allá del
    final del panel mueva la página en vez de quedarse muerto (la ley de
    altura de página nunca exigió contención). */
-.ld-js #ldPanels>.ld-panel{grid-area:1/1;margin:0;min-height:0;padding:18px clamp(16px,3vw,28px) 22px;background:var(--surface-1,#fff);display:flex;flex-direction:column;justify-content:flex-start;justify-content:safe center;overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--line-dark,#D7DAE0) transparent;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity var(--t-fast,180ms) var(--ease-out,ease-out),visibility 0s calc(var(--t-micro,120ms)*2),transform 0s calc(var(--t-micro,120ms)*2)}
+.ld-js #ldPanels>.ld-panel{grid-area:1/1;margin:0;min-height:0;padding:18px clamp(16px,3vw,28px) 22px;background:var(--surface-1,#fff);display:flex;flex-direction:column;justify-content:flex-start;overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--line-dark,#D7DAE0) transparent;opacity:0;visibility:hidden;transform:translateX(10px);transition:opacity var(--t-fast,180ms) var(--ease-out,ease-out),visibility 0s calc(var(--t-micro,120ms)*2),transform 0s calc(var(--t-micro,120ms)*2)}
+/* Directional cross-fade (2026-07-10 elevation P1): the incoming panel
+   slides in from the side it "comes from" — from the right on Next
+   (default +10px above), from the left on Back — so the stepper reads as a
+   left/right track instead of an identical dissolve both ways. show()
+   stamps #ldPanels .ld-fwd/.ld-back. Only the incoming (.ld-current)
+   animates transform; the outgoing snaps (transform 0s, delayed) so no
+   large exit slide and no double-exposure returns. #ldPanels is
+   overflow:hidden so the clipped slide can never widen the page. */
+.ld-js #ldPanels.ld-back>.ld-panel:not(.ld-current){transform:translateX(-10px)}
 .ld-js #ldPanels>.ld-panel.ld-current{opacity:1;visibility:visible;transform:none;z-index:1;transition:opacity var(--t-fast,180ms) var(--ease-out,ease-out) calc(var(--t-micro,120ms)/2),transform var(--t-fast,180ms) var(--ease-out,ease-out) calc(var(--t-micro,120ms)/2)}
 /* Avance rápido (hallazgo ronda 2): un segundo Siguiente dentro del
    intercambio de 240ms volvía a ocultar el panel interrumpido mientras
@@ -360,6 +396,12 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
    .ld-quick y el panel entrante se funde directo (sin compás muerto);
    la clase se retira en el siguiente cambio sin prisa. */
 .ld-js #ldPanels.ld-quick>.ld-panel.ld-current{transition-delay:0s}
+/* GPU layer promotion (2026-07-10 elevation P2): pin only the on-stage
+   panel to its own compositor layer so the step-3 SVG chart + rotated
+   shadowed sheet and the step-4 dark band cross-fade without first-frame
+   compositing stutter on low-end mobile. Current panel only (not the four
+   idle ones); zeroed under reduced motion. Compositor hint, no layout. */
+.ld-js #ldPanels>.ld-panel.ld-current{will-change:opacity,transform}
 .ld-js #ldPanels>.ld-panel::-webkit-scrollbar{width:10px}
 .ld-js #ldPanels>.ld-panel::-webkit-scrollbar-track{background:transparent}
 .ld-js #ldPanels>.ld-panel::-webkit-scrollbar-thumb{background:var(--line-dark,#D7DAE0);border-radius:999px;border:3px solid transparent;background-clip:padding-box}
@@ -375,9 +417,11 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
    cascada, así el cambio instantáneo ya no depende de que la regla
    universal de site-article.css (hoja asíncrona) llegue primero. */
 @media (prefers-reduced-motion:reduce){
-  .ld-js #ldPanels>.ld-panel,.ld-js #ldPanels>.ld-panel.ld-current{transition:none;transform:none}
+  .ld-js #ldPanels>.ld-panel,.ld-js #ldPanels>.ld-panel.ld-current,.ld-js #ldPanels.ld-back>.ld-panel:not(.ld-current){transition:none;transform:none}
+  .ld-js #ldPanels>.ld-panel.ld-current{will-change:auto}
   .ld-js #ldPanels>.ld-panel::after{transition:none}
   .ld-rail a{transition:none}
+  .ld-chrome-progress-bar{transition:none}
 }
 /* Escala dentro del marco: el chrome del marco lleva la jerarquía, así
    que los encabezados de panel bajan un punto, las leyendas se acercan
@@ -386,6 +430,12 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
    en escritorio. Todo acotado bajo .ld-js — la lectura apilada sin JS
    conserva el ritmo de página impresa. */
 .ld-js .ld-panel h2{font-size:clamp(22px,2.4vw,27px);margin:0 0 6px}
+/* P0-2 (2026-07-10): the step heading is focused on every nav; :focus-visible
+   gives keyboard/AT the "you are here" ring that replaces the removed scroll
+   cue (preventScroll:true). Pointer clicks on Next stay focus-visible=false, so
+   mouse users see no lingering ring. Outline is out of flow (no CLS) and static
+   (cls-animation gate is transform/opacity only), so neither law is touched. */
+.ld-js .ld-panel h2:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:3px}
 /* Drawer opens must GROW the panel scroll, not flex-squash (round-2 catch:
    .cite{overflow:hidden} zeroes min-height, so flex-shrink clipped the
    how-the-flag-decides drawer to 87px of 253px at stage 720). */
@@ -495,7 +545,7 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
    nunca aparezca dos veces en una pantalla. La lectura apilada sin JS
    conserva el botón del panel (la barra viaja [hidden]). */
 .ld-js #ldPanels>.ld-cta .ld-cta-main .studio-cta-row{display:none}
-.ld-js .ld-cta .lg-price-figure{font-size:clamp(40px,4.6vw,56px);margin:14px 0 0}
+.ld-js .ld-cta .lg-price-figure{font-size:clamp(38px,4.2vw,48px);margin:8px 0 0}
 /* Composición a dos columnas del paso 4 (≥768px): la petición (precio
    + lista fundadora) a la izquierda, el carril de compruébalo-tú-mismo
    (Vendor Benchmark + enlaces de prueba) a la derecha; las posturas se
@@ -506,8 +556,8 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
   .ld-js .ld-cta-cols{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);column-gap:clamp(24px,3.5vw,40px);align-items:start}
   .ld-js .ld-cta-cols>hr{display:none}
   .ld-js .ld-cta-side{border-left:1px solid rgba(246,247,248,.14);padding-left:clamp(24px,3.5vw,40px);margin-top:4px}
-  .ld-js .ld-cta .lg-stances{margin-top:20px;padding-top:12px}
-  .ld-js .ld-cta .lg-stances li{font-size:12px}
+  .ld-js .ld-cta .lg-stances{margin-top:12px;padding-top:9px;gap:4px 14px}
+  .ld-js .ld-cta .lg-stances li{font-size:11px}
 }
 /* Recomposición del paso 3 (≥768px, rediseño 2026-07-09): filas a la
    izquierda, gráfica a la derecha, para que el paso más alto quepa en
@@ -557,15 +607,41 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
    EN<->ES locale parity both hold. Hiding is by step id — zero DOM change,
    so the two locales stay byte-parallel. */
 .ld-js .ld-panel details{display:none}
-.ld-js #ld-step1 .ld-body,.ld-js #ld-step1 .ld-note{display:none}
+/* Inlined from site-article.css (elevation P1 2026-07-10): the demo's ONLY
+   consumer of that ~181KB sheet was the .cite citation drawers, and the app
+   frame hides them (rule above) — so they paint only in the no-JS stacked
+   read. Inlining these few cite rules lets the render path drop the whole
+   sheet (its preload + noscript link are removed) while the JS-off drawers
+   keep their border, summary, and body styling. Tokens are all in
+   critical/core CSS already. */
+.cite{margin:12px 0 24px;border:1px solid var(--line);border-radius:10px;background:var(--cream-2);font-family:var(--font-body);overflow:hidden}
+.cite summary{display:flex;align-items:center;gap:8px;padding:10px 16px;font-size:13px;font-weight:600;color:var(--stone);cursor:pointer;list-style:none;user-select:none}
+.cite[open] summary{color:var(--ink);border-bottom:1px solid var(--line)}
+.cite-body{padding:14px 16px;font-size:14px;line-height:1.6;color:var(--ink-soft)}
+.cite-source{font-weight:600;color:var(--ink)}
+.ld-js #ld-step1 .ld-body{display:none}
 .ld-js #ld-step2 .ld-body{display:none}
 .ld-js #ld-step3 .ld-body{display:none}
-.ld-js #ld-step2 .lg-row--ghost{display:none}
 .ld-js #ld-step3 p.lg-cap{display:none}
-.ld-js #ld-step4 .lg-stances{display:none}
 .ld-js #ld-step4 p.lg-cap{display:none}
 .ld-js #ld-step4 .ld-cta-side .ld-body:last-of-type{display:none}
 .ld-js #ld-step0 figure>figcaption,.ld-js #ld-step1 figure>figcaption,.ld-js #ld-step2 figure>figcaption{display:none}
+/* Elevation P1/P2 (2026-07-10): differentiators restored to the interactive
+   path. The step-1 "rules, not a language model" note and the step-4
+   four-item stance strip — the buy-signals a serious evaluator looks for —
+   now show on the >=768 stage (room reclaimed by the composition pass); the
+   <=767 density tier below re-hides them so the short phone stage stays
+   scroll-free. The step-2 ghost rows are revealed on the >=768 stage so
+   "search" has a visible 7-row before/after that the on-screen "3 of the 7
+   lines" count matches; the <=767 tier below re-hides the four non-matching
+   rows (2026-07-10 verify pass confirmed all 7 do NOT fit the 430px min
+   panel in ES — the long "Cebollas amarillas, 50 lb" / "Lechuga romana, 24
+   uds" labels wrap and push 49-113px of internal panel scroll at 320-375,
+   which the no-internal-scroll law forbids; the modest bottom void that
+   leaves on phones is the accepted trade). The step-4 side
+   proof-links line shows on the desktop two-column ask; the mobile tier
+   (which stacks the columns) keeps hiding both side bodies. */
+.ld-js #ld-step1 .ld-note{margin:10px 0 0;padding:7px 12px;font-size:12.5px;line-height:1.45}
 /* App-density heroes: tabular rows collapse to the product's hard mobile
    grid (item / price / status), the date + vendor + qty columns hidden,
    rows and their surfaces tightened one notch below the print rhythm. */
@@ -597,10 +673,81 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
 @media (max-width:767px){
   .ld-js #ld-step0 .ld-body{display:none}
   .ld-js #ld-step1 .ld-anat{display:none}
+  .ld-js #ld-step1 .ld-note{display:none}
   .ld-js #ld-step2 .ld-csv{display:none}
+  .ld-js #ld-step2 .lg-row--ghost{display:none}
   .ld-js #ld-step3 .lg-stepnote{display:none}
   .ld-js #ld-step4 .ld-cta-main .ld-body,.ld-js #ld-step4 .ld-cta-side .ld-body{display:none}
+  .ld-js #ld-step4 .lg-stances{display:none}
   .ld-js #ld-step4 .lg-price-ga{margin:8px 0 0}
+}
+/* Short desktop/laptop heights (2026-07-10 elevation P1): the svh floor
+   shrinks the stage below the restored content's need, so the tallest
+   extras step down here rather than scroll INSIDE the frame. >740px tall
+   keeps the restored four-item stance strip; below that it folds away (the
+   core ask always fit the ~492px stage a 700px laptop leaves), and near the
+   700px floor the step-3 climax chart + step-2 ghost list trim one notch so
+   both fit. Never lowers the 430 min or the 208 reservation. Every hide
+   display:none, byte-parallel with EN. */
+@media (min-width:768px) and (max-height:740px){
+  .ld-js #ld-step4 .lg-stances{display:none}
+}
+@media (min-width:768px) and (max-height:730px){
+  .ld-js #ld-step3 .lg-chart--frame{max-width:360px}
+  .ld-js #ld-step3 .ld-flagcols .lg-stepnote{margin:0 0 5px}
+  .ld-js #ld-step3 .lg-pane{padding:9px 12px 8px}
+  .ld-js #ld-step2 .lg-rows .lg-row{padding:3px 2px}
+  .ld-js #ld-step2 .ld-search{margin:0 0 6px}
+  .ld-js #ld-step2 .ld-count{margin:0 0 4px}
+}
+/* Narrow-phone density floor (2026-07-10 elevation P1): at <=360px the
+   Spanish invoice lines + row labels wrap extra lines that overflow the
+   430px min stage (step-0 and step-2 were the measured breaks). Shrink the
+   step-0 invoice and step-2 rows one more notch so both fit without
+   internal scroll; ghost rows are already mobile-hidden above.
+   Step-3 addendum (2026-07-10 verify pass): the ES row label "Lechuga
+   romana, 24 uds" is long enough that at <=360 the flag row's price-moved
+   pill crowded it into a second line, growing the flag row until the
+   figcaption landed ON TOP of the pill + chart (EN's shorter label stayed
+   clean). Fix by tightening step-3 rows one notch AND dropping the flag
+   pill onto its own grid row (item + price on line 1, pill right-aligned
+   on line 2) so the label keeps one line and the full pill copy survives —
+   the elastic chart absorbs the extra line, so caption clearance holds.
+   Byte-parallel with EN (EN's flag pill simply gets the same own-row slot,
+   still clean). */
+@media (max-width:360px){
+  .ld-js #ld-step0 .ld-line,.ld-js #ld-step0 .ld-total{font-size:11px}
+  .ld-js #ld-step0 .ld-line{padding:2px 2px;line-height:1.3}
+  .ld-js #ld-step0 .ld-line .lg-n{font-size:12px}
+  .ld-js #ld-step0 .lg-pane{padding:8px 10px 7px}
+  .ld-js #ld-step0 .lg-pane-head{margin-bottom:5px}
+  .ld-js #ld-step0 .ld-invoice-head{padding-bottom:3px;margin-bottom:2px}
+  .ld-js #ld-step2 .lg-pane{padding:8px 10px 7px}
+  .ld-js #ld-step2 .lg-rows{font-size:11.5px}
+  .ld-js #ld-step2 .lg-rows .lg-row{padding:2px 2px}
+  .ld-js #ld-step2 .ld-search{margin:0 0 5px;padding:5px 10px}
+  .ld-js #ld-step2 .ld-count{margin:0 0 3px}
+  .ld-js #ld-step3 .lg-pane{padding:8px 10px 7px}
+  .ld-js #ld-step3 .lg-rows{font-size:11.5px}
+  .ld-js #ld-step3 .lg-rows .lg-row{padding:2px 2px}
+  .ld-js #ld-step3 .lg-rows .lg-n{font-size:13px}
+  .ld-js #ld-step3 .lg-row--flag{grid-template-columns:1fr auto;grid-template-areas:"i n" "f f";row-gap:1px}
+  .ld-js #ld-step3 .lg-row--flag .lg-i{grid-area:i}
+  .ld-js #ld-step3 .lg-row--flag .lg-n{grid-area:n}
+  .ld-js #ld-step3 .lg-row--flag .lg-flag{grid-area:f;justify-self:end}
+}
+/* Sub-340 step-3 floor (2026-07-10 verify pass): at ~320px the shared
+   stage inset leaves the step-3 rows barely ~200px wide, so even at 11.5px
+   the ES "Lechuga romana, 24 uds" label wrapped in the in-band rows (12/19
+   jun) and shoved the caption onto the chart. One more notch down (10.5px
+   rows, tighter numerals + status) keeps every row single-line at 320 so
+   the elastic chart holds its clearance. EN's shorter label is unaffected;
+   byte-parallel. */
+@media (max-width:340px){
+  .ld-js #ld-step3 .lg-rows{font-size:10.5px}
+  .ld-js #ld-step3 .lg-rows .lg-n{font-size:12px}
+  .ld-js #ld-step3 .lg-rows .lg-s{font-size:9px}
+  .ld-js #ld-step3 .lg-rows .lg-row{gap:2px 5px}
 }
 /* The paper-behind sheet (borrowed from the product, ledger:115): an
    absolutely-positioned card rotated .6deg reading as a stack of real
@@ -652,6 +799,25 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
 .ld-js .ld-armed.ld-go .ld-reveal:nth-child(4) .lg-s{transition-delay:420ms}
 .ld-js .ld-armed.ld-go .ld-reveal:nth-child(5) .lg-s{transition-delay:480ms}
 @media (prefers-reduced-motion:reduce){.ld-reveal,.ld-js .ld-armed .ld-reveal,.ld-reveal .lg-s,.ld-js .ld-armed .ld-reveal .lg-s{opacity:1!important;transform:none!important;transition:none!important}}
+/* Step-0 "the invoice arrives" opening beat (2026-07-10 elevation P2):
+   step 0 is named for an arrival but painted statically. On first in-view
+   arrival the pane settles from translateY(-6px)+opacity 0 and the five
+   invoice lines rise 6px on a short stagger, landing ~420ms — the demo's
+   first impression now performs its own name. Reuses the armInView one-shot
+   (fires once, ≥60% in view, so a deep-link to a later step never spends it
+   offscreen). Base CSS is the finished state, so no-JS and reduced motion
+   see it settled instantly. Compositor-only (opacity/transform); the pane
+   translate is inside the panel, so page height never moves. */
+.ld-js .ld-arrive .lg-pane{opacity:0;transform:translateY(-6px)}
+.ld-js .ld-arrive.ld-arrived .lg-pane{opacity:1;transform:none;transition:opacity var(--t-fast,180ms) var(--ease-out,ease-out),transform var(--t-fast,180ms) var(--ease-out,ease-out)}
+.ld-js .ld-arrive .ld-line{opacity:0;transform:translateY(6px)}
+.ld-js .ld-arrive.ld-arrived .ld-line{opacity:1;transform:none;transition:opacity var(--t-fast,180ms) var(--ease-out,ease-out),transform var(--t-fast,180ms) var(--ease-out,ease-out)}
+.ld-js .ld-arrive.ld-arrived .ld-line:nth-child(1){transition-delay:120ms}
+.ld-js .ld-arrive.ld-arrived .ld-line:nth-child(2){transition-delay:180ms}
+.ld-js .ld-arrive.ld-arrived .ld-line:nth-child(3){transition-delay:240ms}
+.ld-js .ld-arrive.ld-arrived .ld-line:nth-child(4){transition-delay:300ms}
+.ld-js .ld-arrive.ld-arrived .ld-line:nth-child(5){transition-delay:360ms}
+@media (prefers-reduced-motion:reduce){.ld-js .ld-arrive .lg-pane,.ld-js .ld-arrive.ld-arrived .lg-pane,.ld-js .ld-arrive .ld-line,.ld-js .ld-arrive.ld-arrived .ld-line{opacity:1!important;transform:none!important;transition:none!important}}
 /* Lockup de precio G5 a escala del demo (P1-5, 2026-07-07) — la cifra
    nunca viaja sin los términos fundadores registrados completos. */
 .ld-cta .lg-price-figure{font-size:clamp(48px,6vw,72px);margin:20px 0 0}
@@ -762,13 +928,20 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-italic.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-italic.woff2" crossorigin>
+<!-- Inter-italic preload RETAINED (elevation P2 re-evaluated 2026-07-10):
+     dropping it was tempting (its only consumer is .lg-stepnote, step 3,
+     display:none below 768px), but the site-wide inject-italic-font-preloads
+     gate requires all four italic faces preloaded, so it stays — a green
+     gate outranks the ~51KB high-priority-bandwidth micro-win. -->
 <!-- Async-load the main stylesheet. Pattern: preload + onload-swap
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
-     applies; before that the critical CSS above carries the page. -->
+     applies; before that the critical CSS above carries the page.
+     site-article.css dropped (elevation P1 2026-07-10): CSS coverage
+     showed the demo used 0.1% of that ~181KB sheet — only the .cite
+     drawer rules, now inlined above — so the render path ships core only. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=2830bb0a913c" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=158a407ca00a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=2830bb0a913c"><link rel="stylesheet" href="/assets/site-article.css?v=158a407ca00a"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=2830bb0a913c"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -952,7 +1125,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <p class="eyebrow">El demo de maqueta &middot; datos de muestra, sin subir nada</p>
       <h1 style="font-family:var(--font-display);font-size:clamp(36px,4.6vw,54px);font-weight:560;line-height:1.06;letter-spacing:-0.5px;margin:0 0 14px;text-wrap:balance">Una factura de muestra, <span class="serif-italic">de principio a fin.</span></h1>
       <p class="lg-lede">Es un recorrido guiado con datos de muestra &mdash; la mec&aacute;nica real, mostrada sobre una factura ficticia. No sube nada y no env&iacute;a nada; tus n&uacute;meros se quedan donde est&aacute;n.</p>
-      <ol class="ld-rail" id="ldRail">
+      <ol class="ld-rail" id="ldRail" aria-label="Pasos del demo">
         <li><a href="#ld-step0">La factura</a></li>
         <li><a href="#ld-step1">Leer</a></li>
         <li><a href="#ld-step2">Archivar</a></li>
@@ -974,13 +1147,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <span class="ld-chrome-app">Muntin Ledger</span>
       <span class="ld-chrome-chip">Demo &middot; datos de muestra</span>
       <span class="ld-chrome-step"><strong id="ldChromeTitle"></strong> &middot; <span id="ldChromeCount"></span></span>
+      <span class="ld-chrome-progress" aria-hidden="true"><span class="ld-chrome-progress-bar" id="ldChromeBar"></span></span>
     </div>
     <div id="ldPanels">
 
     <section class="ld-panel" id="ld-step0" aria-labelledby="ld-h0">
       <h2 id="ld-h0" tabindex="-1">Llega la factura.</h2>
       <p class="ld-body">Una factura de verduras llega como siempre: cinco l&iacute;neas, un total. Una de esas cinco l&iacute;neas esconde una subida &mdash; y el total de $115.80 no te dir&aacute; cu&aacute;l. <a class="js-ld-jump" href="#ld-step3">Salta a la marca&nbsp;&rarr;</a></p>
-      <figure class="lg-vignette" style="margin:0" data-audio-alt="Una factura de verduras de muestra con fecha veintiséis de junio: cinco líneas. Lechuga romana a veintinueve cuarenta y cinco, tomates Roma a treinta y uno cincuenta, cebollas amarillas a veintidós dólares, limones verdes a catorce veinticinco y cilantro a dieciocho sesenta, con un total de ciento quince dólares con ochenta centavos. Una de las cinco líneas esconde una subida; el total por sí solo no dirá cuál.">
+      <figure class="lg-vignette ld-arrive-target" style="margin:0" data-audio-alt="Una factura de verduras de muestra con fecha veintiséis de junio: cinco líneas. Lechuga romana a veintinueve cuarenta y cinco, tomates Roma a treinta y uno cincuenta, cebollas amarillas a veintidós dólares, limones verdes a catorce veinticinco y cilantro a dieciocho sesenta, con un total de ciento quince dólares con ochenta centavos. Una de las cinco líneas esconde una subida; el total por sí solo no dirá cuál.">
         <div class="lg-pane">
           <div class="lg-pane-head">
             <span class="lg-pane-title">Proveedor de verduras &mdash; factura</span>
@@ -1145,11 +1319,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <line class="lgc-bandedge" x1="64" y1="224.8" x2="508" y2="224.8"/>
               <line class="lgc-bandedge" x1="64" y1="232.8" x2="508" y2="232.8"/>
               <text class="lgc-lab lgc-lab--band" x="504" y="216" text-anchor="end">BANDA DE LECTURAS PREVIAS</text>
+              <g class="lgc-priors">
               <polyline class="lgc-hist" points="140,232.8 300,224.8"/>
               <circle class="lgc-dot" cx="140" cy="232.8" r="4"/>
               <circle class="lgc-dot" cx="300" cy="224.8" r="4"/>
               <text class="lgc-num" x="140" y="212" text-anchor="middle">$24.10</text>
               <text class="lgc-num" x="300" y="204" text-anchor="middle">$24.35</text>
+              </g>
               <g class="lgf-seg"><line class="lgc-move" x1="300" y1="224.8" x2="460" y2="61.6"/></g>
               <g class="lgf-dot"><circle class="lgc-halo" cx="460" cy="61.6" r="11"/><circle class="lgc-fdot" cx="460" cy="61.6" r="5.5"/></g>
               <g class="lgf-lbl">
@@ -1182,12 +1358,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <rect class="lgc-band" x="40" y="121" width="212" height="5"/>
               <line class="lgc-bandedge" x1="40" y1="121" x2="252" y2="121"/>
               <line class="lgc-bandedge" x1="40" y1="126" x2="252" y2="126"/>
-              <text class="lgc-lab lgc-lab--sm lgc-lab--band" x="252" y="116" text-anchor="end">TU BANDA</text>
+              <text class="lgc-lab lgc-lab--sm lgc-lab--band" x="44" y="116" text-anchor="start">TU BANDA</text>
+              <g class="lgc-priors">
               <polyline class="lgc-hist" points="64,126 146,121"/>
               <circle class="lgc-dot" cx="64" cy="126" r="3.5"/>
               <circle class="lgc-dot" cx="146" cy="121" r="3.5"/>
-              <text class="lgc-num lgc-num--sm" x="64" y="112" text-anchor="middle">$24.10</text>
-              <text class="lgc-num lgc-num--sm" x="146" y="112" text-anchor="middle">$24.35</text>
+              <text class="lgc-num lgc-num--sm" x="66" y="103" text-anchor="middle">$24.10</text>
+              <text class="lgc-num lgc-num--sm" x="138" y="103" text-anchor="end">$24.35</text>
+              </g>
               <g class="lgf-seg"><line class="lgc-move" x1="146" y1="121" x2="228" y2="19"/></g>
               <g class="lgf-dot"><circle class="lgc-halo" cx="228" cy="19" r="9"/><circle class="lgc-fdot" cx="228" cy="19" r="5"/></g>
               <g class="lgf-lbl">
@@ -1227,11 +1405,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <line class="lgc-bandedge" x1="40" y1="224.8" x2="310" y2="224.8"/>
               <line class="lgc-bandedge" x1="40" y1="232.8" x2="310" y2="232.8"/>
               <text class="lgc-lab lgc-lab--band" x="310" y="247" text-anchor="end">BANDA DE LECTURAS PREVIAS</text>
+              <g class="lgc-priors">
               <polyline class="lgc-hist" points="70,232.8 180,224.8"/>
               <circle class="lgc-dot" cx="70" cy="232.8" r="4"/>
               <circle class="lgc-dot" cx="180" cy="224.8" r="4"/>
               <text class="lgc-num" x="70" y="212" text-anchor="middle">$24.10</text>
               <text class="lgc-num" x="164" y="196" text-anchor="middle">$24.35</text>
+              </g>
               <g class="lgf-seg"><line class="lgc-move" x1="180" y1="224.8" x2="290" y2="61.6"/></g>
               <g class="lgf-dot"><circle class="lgc-halo" cx="290" cy="61.6" r="11"/><circle class="lgc-fdot" cx="290" cy="61.6" r="5.5"/></g>
               <g class="lgf-lbl">
@@ -1350,6 +1530,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       var chromeBar = document.getElementById('ldChrome');
       var chromeTitle = document.getElementById('ldChromeTitle');
       var chromeCount = document.getElementById('ldChromeCount');
+      var chromeProgress = document.getElementById('ldChromeBar');
       var stage = document.getElementById('ldPanels');
       if (!wrap || panels.length < 5 || !rail || !controls || !restart || !cta || !chromeBar || !chromeTitle || !chromeCount || !stage) return;
       // Los títulos repiten los nombres cortos del riel (2026-07-09)
@@ -1401,7 +1582,27 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       // y la altura propia de la página es idéntica en cada paso. Aquí
       // nada mide; nada puede mover la página.
       function show(n, focus) {
+        var prevI = i;
         i = Math.max(0, Math.min(panels.length - 1, n));
+        // Fundido direccional (elevación 2026-07-10, P1): marca el escenario
+        // con la dirección del recorrido para que el panel entrante deslice
+        // desde el lado del que viene (ver CSS .ld-fwd/.ld-back). Sin cambio
+        // en una llamada al mismo paso (arranque / riel al actual).
+        if (i > prevI) { stage.classList.add('ld-fwd'); stage.classList.remove('ld-back'); }
+        else if (i < prevI) { stage.classList.add('ld-back'); stage.classList.remove('ld-fwd'); }
+        // Vacía el desplazamiento de dirección antes del cambio: el panel
+        // entrante sigue en opacity:0 y no-actual, así que apagar un instante
+        // su transición y leer offsetWidth fija el offset base correcto por
+        // dirección (+10 adelante / -10 atrás) al INSTANTE — la transición de
+        // transform del no-actual está retrasada 240ms y el deslizamiento
+        // empezaría desde el lado obsoleto. Invisible (opacity 0); PRM lo
+        // omite (el panel cambia sin transform alguno).
+        if (i !== prevI && !prm) {
+          var inc = panels[i];
+          inc.style.transition = 'none';
+          void inc.offsetWidth;
+          inc.style.transition = '';
+        }
         // Avance rápido (hallazgo ronda 2): un segundo Siguiente dentro
         // del intercambio de 240ms volvía a ocultar el panel
         // interrumpido mientras el retraso de 60ms del entrante se
@@ -1420,6 +1621,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         // pestañas — el escenario es dueño del movimiento de la página.
         chromeTitle.textContent = titles[i];
         chromeCount.textContent = (i + 1) + ' de ' + panels.length;
+        // Barra de progreso persistente (elevación 2026-07-10, P1): scaleX
+        // de la barra del chrome a (i+1)/5. Solo compositor; el contador de
+        // texto de arriba es el inmutable "N de 5" y no se toca.
+        if (chromeProgress) chromeProgress.style.transform = 'scaleX(' + ((i + 1) / panels.length) + ')';
         // Un paso siempre re-entra por su inicio: se reinicia el scroll
         // del PANEL dentro del escenario fijo; la página nunca se mueve.
         panels[i].scrollTop = 0;
@@ -1429,8 +1634,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         // final.
         panels[i].classList.toggle('ld-overflow', panels[i].scrollHeight - panels[i].clientHeight > 1);
         Array.prototype.forEach.call(rail.children, function (li, k) {
-          if (k === i) li.setAttribute('aria-current', 'step');
-          else li.removeAttribute('aria-current');
+          var a = li.querySelector('a');
+          if (!a) return;
+          if (k === i) a.setAttribute('aria-current', 'step');
+          else a.removeAttribute('aria-current');
         });
         // Paso final (revisión ronda 2, 2026-07-07): el primario fijo se
         // vuelve el enlace a la lista fundadora — la única petición de la
@@ -1443,13 +1650,38 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         cta.hidden = !last;
         back.disabled = i === 0;
         progress.textContent = 'Paso ' + (i + 1) + ' de ' + panels.length;
-        live.textContent = 'Paso ' + (i + 1) + ' de ' + panels.length + ' — ' + titles[i];
-        // M7 — paridad no visual: el anuncio del paso 3 lleva el desenlace.
-        if (i === 3) live.textContent += '. La línea de lechuga romana del 26 de junio se sale de la banda de sus lecturas previas — $5.23 más, cruza ambos umbrales. Esa es la marca.';
-        if (focus) { var h = panels[i].querySelector('h2'); if (h) h.focus({ preventScroll: false }); }
+        // Posición solo (elevación P2 2026-07-10): el h2 con foco ya anuncia
+        // el título del paso, así que la región viva lo omite para no leerlo
+        // dos veces; queda como canal de posición/contexto.
+        live.textContent = 'Paso ' + (i + 1) + ' de ' + panels.length;
+        if (focus) { var h = panels[i].querySelector('h2'); if (h) h.focus({ preventScroll: true }); }
+        // M7 — paridad no visual, diferido (elevación P1 2026-07-10): el
+        // desenlace del paso 3 se escribe ~450ms DESPUÉS del movimiento de
+        // foco para que este anuncio "polite" no choque con (ni sea
+        // descartado por) el anuncio del cambio de foco — el único clímax no
+        // visual del demo. El guardián de i lo cancela si el lector ya avanzó.
+        if (i === 3) {
+          setTimeout(function () {
+            if (i === 3) live.textContent = 'La línea de lechuga romana del 26 de junio se sale de la banda de sus lecturas previas — $5.23 más, cruza ambos umbrales. Esa es la marca.';
+          }, 450);
+        }
         // P0-6 — la navegación del usuario mantiene el hash honesto sin
         // hacer crecer el historial; el arranque de abajo nunca escribe uno.
         if (focus && window.history && history.replaceState) { history.replaceState(null, '', '#ld-step' + i); }
+        // Paso 0 «llega la factura», compás de apertura (elevación P2
+        // 2026-07-10): en la primera llegada a la vista, asienta el panel y
+        // escalona las cinco líneas de la factura. armInView se dispara una
+        // vez, ≥60% a la vista, así que un enlace directo a un paso posterior
+        // nunca gasta el compás fuera de pantalla.
+        if (i === 0 && !prm) {
+          armInView(panels[0], function () {
+            var fig = panels[0].querySelector('.ld-arrive-target');
+            if (fig) {
+              fig.classList.add('ld-arrive');
+              requestAnimationFrame(function () { requestAnimationFrame(function () { fig.classList.add('ld-arrived'); }); });
+            }
+          });
+        }
         // P1-2/M2 — el escaneo de lectura, una vez: dos clases; cada
         // retraso vive en los transition-delay de CSS (:nth-child),
         // total < 550ms. Ronda 2: condicionado a que el escenario esté
@@ -1463,6 +1695,24 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             }
           });
         }
+        // Escribir la consulta (elevación P2 2026-07-10): al llegar a Archivar
+        // por primera vez, escribe la consulta en .ld-q en vez de mostrarla ya
+        // rellena — la app ejecutando la acción, junto al antes/después de 7
+        // filas visible. Solo textContent (sin cambio de layout/altura);
+        // termina en la palabra cacheada; no-JS y motion reducido la muestran.
+        if (i === 2 && !prm) {
+          armInView(panels[2], function () {
+            var q = panels[2].querySelector('.ld-q');
+            if (!q) return;
+            var full = q.textContent, k = 0;
+            q.textContent = '';
+            (function type() {
+              q.textContent = full.slice(0, k);
+              if (k++ < full.length) setTimeout(type, 70);
+              else q.textContent = full;
+            })();
+          });
+        }
         // P0-3 — el aterrizaje de la marca, una vez, al llegar al paso 3.
         // La secuencia vive en los transition-delay de .lg-armed/.lg-landed.
         // Ronda 2: condicionado a que el escenario esté a la vista
@@ -1473,9 +1723,40 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             if (flagFig) {
               flagFig.classList.add('lg-armed');
               requestAnimationFrame(function () { requestAnimationFrame(function () { flagFig.classList.add('lg-landed'); }); });
+              // Conteo del desenlace (elevación P2 2026-07-10): mientras las
+              // etiquetas de la marca aparecen, sube el precio $29.45 y el
+              // delta ▲$5.23 desde un piso en ~520ms. El último frame escribe
+              // la cadena original CACHEADA, así termina exacto en los
+              // numerales protegidos por el gate; los valores intermedios son
+              // solo de runtime y nunca entran al código. SVG + tabular-nums.
+              setTimeout(function () { countUpFlag(panels[3]); }, 560);
             }
           });
         }
+      }
+      // Ayudantes de conteo (elevación P2). countNum interpola un numeral de
+      // `from` a `to`, formatea cada frame y luego fija el texto original
+      // cacheado del elemento para que el estado final sea idéntico al código.
+      function countNum(el, from, to, dec, fmt, ms) {
+        var finalText = el.textContent, start = null;
+        function frame(t) {
+          if (start === null) start = t;
+          var p = Math.min(1, (t - start) / ms);
+          if (p >= 1) { el.textContent = finalText; return; }
+          var e = 1 - Math.pow(1 - p, 3);
+          el.textContent = fmt((from + (to - from) * e).toFixed(dec));
+          requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+      }
+      function countUpFlag(panel) {
+        var charts = panel.querySelectorAll('.lg-chart'), chart = null;
+        for (var c = 0; c < charts.length; c++) { if (charts[c].offsetParent !== null) { chart = charts[c]; break; } }
+        if (!chart) return;
+        var price = chart.querySelector('.lgf-lbl .lgc-num');
+        var delta = chart.querySelector('.lgc-delta');
+        if (price) countNum(price, 24.35, 29.45, 2, function (v) { return '$' + v; }, 520);
+        if (delta) countNum(delta, 0, 5.23, 2, function (v) { return '▲ $' + v; }, 520);
       }
       back.addEventListener('click', function () { show(i - 1, true); });
       next.addEventListener('click', function () { show(i + 1, true); });
@@ -1542,6 +1823,29 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         e.preventDefault();
         show(n, true);
       });
+      // Navegación por deslizamiento horizontal (elevación 2026-07-10, P1):
+      // el arco es una historia horizontal de 5 tiempos; en táctil, deslizar
+      // a la izquierda avanza y a la derecha retrocede. El listener de move
+      // queda pasivo y nunca hace preventDefault, así el encadenamiento de
+      // scroll vertical nativo sigue funcionando; la condición |dx|>|dy|
+      // evita secuestrar un scroll vertical. Umbral 45px.
+      (function () {
+        var sx = 0, sy = 0, tracking = false;
+        stage.addEventListener('touchstart', function (e) {
+          if (!e.touches || e.touches.length !== 1) { tracking = false; return; }
+          tracking = true; sx = e.touches[0].clientX; sy = e.touches[0].clientY;
+        }, { passive: true });
+        stage.addEventListener('touchend', function (e) {
+          if (!tracking) return;
+          tracking = false;
+          var t = (e.changedTouches && e.changedTouches[0]); if (!t) return;
+          var dx = t.clientX - sx, dy = t.clientY - sy;
+          if (Math.abs(dx) < 45 || Math.abs(dx) <= Math.abs(dy)) return;
+          var n = dx < 0 ? i + 1 : i - 1;
+          if (n < 0 || n >= panels.length) return;
+          show(n, true);
+        }, { passive: true });
+      })();
       var boot = /^#ld-step([0-4])$/.exec(location.hash || '');
       show(boot ? +boot[1] : 0, false);
       // Corrección de arranque con enlace profundo (2026-07-09): el
