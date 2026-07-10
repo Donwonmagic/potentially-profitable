@@ -48,13 +48,33 @@ bar → ratchet (keep only if it beats the best) → record here → repeat unti
 |------|-----------------------------------------------|-----|-------------|--------|
 | 1    | 8.5 / 8.5 / 9.0                               | 8.7 | yes (all)   | `6d9600195` |
 | 2    | 9.0 / 9.2 / 9.5                               | 9.2 | yes; **min rose 8.5→9.0** (buyer best-in-class 9.5) | `6fb0c8986` |
+| 3    | 9.3 / 9.3 / 9.6                               | 9.4 | yes; **min rose 9.0→9.3** (buyer best-in-class 9.6) | `924c6b190` |
 
 **Cycle-2 ratchet: ACCEPTED.** The minimum judge score rose 8.5→9.0 and every
 seat improved (avg 8.7→9.2); backlog gaps A/C/D/F/H closed; the FLOOR held on
 independent re-verification. The rising bar (≥9.5 from **every** judge) is **not
 yet met** — min is 9.0 — so the loop continues into cycle 3.
 
-## Backlog — remaining gaps (cycle-3 targets)
+**Cycle-3 ratchet: ACCEPTED.** Minimum rose 9.0→9.3, every seat improved
+(avg 9.2→9.4); the three cycle-2-named gaps closed — the two-truths count-up
+flicker removed (climax price always $29.45, no tick), the ES-mobile step-3
+climax chart de-collapsed (44px→96px at 375, tightening extended across the
+≤560 band), the step-0 CTA orphan fixed (`nowrap`). All three judges
+independently re-confirmed the FLOOR across 44/16/12 configs; immutables
+byte-intact; reduced-motion + no-JS finished states; the cycle-2 ghost FLIP
+still morphs. Still short of ≥9.5-from-every-judge (min 9.3) — loop continues
+into cycle 4. **Buyer flagged the `ga_weeks_out` sentinel (committed value 19).
+Investigated and dismissed as a non-issue: the Cloudflare deploy `command`
+(wrangler.jsonc) runs `build-site-counts` + `inject-site-counts` before building
+`dist`, so the LIVE site regenerates this count (→17 today) and the article
+counts (→53) from the current date + filesystem at every deploy. The committed
+sentinels are stale-by-design placeholders that are never served — which is why
+the counts check is the tolerated `Site counts (idem)` self-healing check
+(check-all.mjs). No live numeric error; committing a manual counts refresh (731
+files) would fight the deploy pipeline and re-stale by the next day. The judge
+measured the un-deployed local HTTP snapshot. No action taken.**
+
+## Backlog — remaining gaps (cycle-4 targets)
 
 **Closed in cycle 2 (2026-07-10)** — floor re-verified over HTTP at the full
 matrix (320×568 … 1280×700, EN+ES, light+dark, 5 steps); check-all unchanged at
@@ -83,18 +103,46 @@ in the demo); every immutable number byte-intact; EN↔ES byte-parallel:
   ghost's deliberate 240ms travel + visible scale contraction is the perceptible beat the
   10px slide lacked. Revisit only if a judge still flags the panel slide itself.
 
-Not yet done (deferred to keep the ratchet monotonic — high surface / low marginal gain):
+**Closed in cycle 3 (2026-07-10)** — all three judges independently re-verified the FLOOR
+(44/16/12 configs); immutables byte-intact; min score rose 9.0→9.3:
 
-- **[climax] Inspectable chart datapoints** — hover/focus value chips on the read dots +
-  flagged point (opacity-only; layer stays aria-hidden, `<desc>` carries AT). Deferred:
-  the three prices ($24.10/$24.35/$29.45) are already statically labeled on every chart
-  variant, so chips across 3 SVG variants × 2 locales are high-surface for marginal gain.
-- **[motion] Invoice-arrives opening beat** — already implemented earlier (`.ld-arrive-target`
-  + `armInView` one-shot settle on step 0); no first-paint flash. No action needed.
-- **[composition] Desktop sparse columns** — steps 3/4 left column reads a touch empty.
-- **[motion] First-mobile-step settle nudge** — ~42–46px on the first transition only.
-- **[nit]** step-0 CTA orphan; mobile chrome tucking under the sticky site nav at some
-  scroll positions (partly mitigated by the boot re-anchor chain).
+- ~~**[honesty] Two-truths count-up flicker**~~ — **DONE.** Removed the flagged-price count-up
+  (was ticking $24.35→$29.45 over ~520ms while the ledger row already read $29.45). Labels now
+  fade in at final values via the staged `.lg-landed` reveal; chart price sampled = $29.45 at
+  every frame, both locales. Also resolves the design seat's "flagged point under-tells its number."
+- ~~**[composition] ES-mobile step-3 climax collapse**~~ — **DONE.** Row tightening + own-row flag
+  pill extended from ≤360 to the whole ≤560 narrow-chart band → chart 44px→96px at ES 375×667;
+  no scroll anywhere 320–560. (The design seat's "#1 blocker to 9.5".)
+- ~~**[nit] Step-0 CTA orphan**~~ — **DONE.** `.js-ld-jump{white-space:nowrap}` keeps "Skip to the
+  flag →" / "Salta a la marca →" one unit (desktop-only, within the 640px measure).
+
+Cycle-4 targets — the ≥9.5 blockers the three cycle-3 judges converged on (highest-leverage first):
+
+- **[climax] 320×568 chart floor** — the de-collapse reached 375 (96px) but the narrowest phone still
+  crushes the step-3 chart to **54px** (both EN+ES; the stage clamps to its 430px floor and the
+  elastic chart gets the scraps). All three judges named it. Trade prose/row density for chart height
+  at ≤340 so the payoff stays legible at the floor.
+- **[composition] Climax not framed on arrival at laptop heights** — at 1280×700 the apex labels sit
+  ~30–130px below the fold on step-3 arrival; no floor breach (panel scroll = 0) but the signature
+  frame isn't guaranteed in view. Consider centering the stage on step-3 arrival (without a page bounce).
+- **[nit] Ghost teardown** — after the FLIP settles, `.ld-ghost` persists parked at opacity 0 on the
+  chart point; harmless (invisible, out of flow) but a top-tier teardown would remove it.
+- **[craft] Dark-mode step-3 axis contrast** — the gridline/axis labels ($24/$26, band caption) sit a
+  hair below light-mode crispness on the dark pane.
+- **[composition] Step-4 CTA bottom-heavy** — the closing dark ink band ends ~55% down, leaving
+  ~146–171px of empty ink before the control bar (documented trade-off; deflates the close).
+- **[composition] Mobile dead space steps 1–2** — ~200px empty below the short vignettes in the fixed
+  mobile stage.
+- **[nit] Step-4 lockup under sticky nav** — with `preventScroll` nav, if the frame is scrolled up the
+  "$19" lockup can slip partly under the sticky site nav (not a breach).
+
+Still deferred (judges accept these as defensible trade-offs, not defects):
+
+- **[climax] Inspectable chart datapoints** — hover/focus value chips; the three prices are already
+  statically labeled, so chips across 3 SVG variants × 2 locales are high-surface / low gain.
+- **[signature] Content-morph ghost** — the FLIP ghost is a decorative teal lozenge, not the row's
+  literal text; both design judges call this "a deliberate abstraction to protect the no-reflow +
+  immutable-number floor," so it stays abstract unless a safe content-morph is found.
 
 ## How to run one cycle (fresh session or here)
 
