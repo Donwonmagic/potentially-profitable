@@ -79,7 +79,7 @@
     spTailBelow: function (g) { return 'está ' + g + ' por debajo de la referencia mayorista. Verifica que el empaque y la especificación coincidan antes de darlo por ganado.'; },
     spTailAt: 'está dentro de un margen de entrega normal frente a la referencia mayorista — un buen lugar donde estar.',
     spRefLevel: 'Referencia mayorista ahora:',
-    spRefBasis: 'Mayorista USDA · tu precio nunca sale de tu navegador',
+    spRefBasis: 'Mayorista USDA · tu precio se queda en tu navegador',
     spTrack: function (label) { return 'Seguimos ' + label + ', pero todavía no hay un nivel de precio mayorista firme para comparar el tuyo — agrega una segunda factura con fecha para leer tu propia tendencia.'; },
     spUpsellLead: 'Una segunda factura con fecha convierte esto en la pregunta real: ¿una subida fue el mercado o tu proveedor?',
     spUpsellCta: 'Agregar una segunda factura con fecha',
@@ -187,7 +187,7 @@
     spTailBelow: function (g) { return 'sits ' + g + ' below the wholesale reference. Double-check the pack and spec match before counting it a win.'; },
     spTailAt: 'sits within a normal delivered markup over the wholesale reference — a fair place to be.',
     spRefLevel: 'Wholesale reference now:',
-    spRefBasis: 'USDA wholesale · your price never leaves your browser',
+    spRefBasis: 'USDA wholesale · your price stays in your browser',
     spTrack: function (label) { return 'We track ' + label + ', but there is no firm wholesale price level to place yours against yet — add a second dated invoice to read your own trend.'; },
     spUpsellLead: 'A second dated invoice turns this into the real question: was a jump the market, or your vendor?',
     spUpsellCta: 'Add a second dated invoice',
@@ -1078,6 +1078,10 @@
       }
     } catch (_) {}
   }
+  // SCOPE (keep sound if VB ever gains an egress path): the monitor wraps fetch,
+  // XMLHttpRequest, and sendBeacon — the only ways VB could send data today. If a
+  // future edit adds Image().src / WebSocket / EventSource / a form submit / an
+  // <a ping>, wrap it here too, or the "sent anywhere: 0" counter goes blind to it.
   (function installPrivacyMonitor() {
     try {
       var of = window.fetch;
@@ -2044,8 +2048,11 @@
     track('Bench Link Shared');
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
-        navigator.share({ title: 'Vendor Benchmark', url: url }).catch(function () {});
-        flashBtn(btn, T.shareShared); // mirror the "includes your prices" disclosure the copy path shows
+        // Disclose "includes your prices" only when the share actually COMPLETES
+        // (resolve), not on invocation — a cancelled share shouldn't claim "Shared".
+        navigator.share({ title: 'Vendor Benchmark', url: url })
+          .then(function () { flashBtn(btn, T.shareShared); })
+          .catch(function () {});
         return;
       } catch (_) { /* fall through to copy */ }
     }
