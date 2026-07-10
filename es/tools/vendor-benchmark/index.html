@@ -810,7 +810,8 @@ html{-webkit-text-size-adjust:100%}
 <script src="/tools/_shared/sku-match.js?v=20260504-w10-1"></script>
 <script src="/tools/_shared/bench-lookup.js?v=20260602-bench-1"></script>
 <script type="text/muntin-lazy-seed" data-src="/data/cost-index.js?v=20260607-live4"></script>
-<script type="text/muntin-lazy-seed" data-src="/data/cost-index-history.js?v=20260629-hist1"></script>
+<!-- Deep history is NOT loaded here as a ~1.6MB monolith — Vendor Benchmark loads only the
+     picked item's shard (/data/ci-history/<key>.js) on demand; see maybeLoadHistoryShard(). -->
 <script src="/tools/_shared/cost-index-lookup.js?v=20260608-w16-1"></script>
 <script src="/tools/_shared/portion-bridge.js?v=20260504-w10-2"></script>
 <script src="/tools/_shared/cost-index-format.js?v=20260629-fmt4"></script>

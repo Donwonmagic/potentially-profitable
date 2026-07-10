@@ -295,6 +295,31 @@
     });
   }
 
+  // ---- per-item deep-history shards -----------------------------------------
+  // Instead of the ~1.6 MB history monolith, load only the picked item's series
+  // (data/ci-history/<key>.js, ~a few KB) once it's matched. The shard MERGES into
+  // MUNTIN_COST_INDEX_HISTORY, then a re-run upgrades the chart from the shallow
+  // spark to the deep series. A same-origin <script> (exactly like loadSeeds) — no
+  // fetch. Absent/failed shard → the shallow spark, so this stays purely additive.
+  var HIST_V = '20260710-shard1';
+  var vbHistReq = {};
+  function maybeLoadHistoryShard(res) {
+    var m = res && res.market;
+    if (!m || !m.available || !m.key) return;
+    var key = m.key;
+    if (!/^[a-z0-9-]+$/.test(key)) return;            // only safe slug keys reach a URL
+    var H = window.MUNTIN_COST_INDEX_HISTORY;
+    if (H && H[key]) return;                            // deep series already present
+    if (vbHistReq[key]) return;                         // request in flight
+    vbHistReq[key] = true;
+    var sc = document.createElement('script');
+    sc.src = '/data/ci-history/' + key + '.js?v=' + HIST_V;
+    sc.async = true;
+    sc.onload = function () { run(); };                 // re-render — chart upgrades to deep
+    sc.onerror = function () {};                         // graceful: keep the shallow spark
+    document.head.appendChild(sc);
+  }
+
   // ---- repeatable dated-purchase rows (DOM-built; the DOM is the state) ------
   function buildRow(data) {
     data = data || {};
@@ -593,6 +618,7 @@
 
     var res = MW.compute({ item: item, purchases: purchases, locale: ES ? 'es' : 'en' });
     render(res);
+    maybeLoadHistoryShard(res); // load the picked item's deep series on demand (not the monolith)
     scheduleAnnounce(res);
     saveToJournal(res, rows);
     renderJournalRail();

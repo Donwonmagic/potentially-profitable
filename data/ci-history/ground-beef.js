@@ -1,0 +1,1 @@
+(function(root){if(!root)return;var H=root.MUNTIN_COST_INDEX_HISTORY=(root.MUNTIN_COST_INDEX_HISTORY||{});H["ground-beef"]=[["2023-11-16",419],["2024-01-05",386],["2026-03-18",549],["2026-06-10",558]];})(typeof window!=='undefined'?window:(typeof self!=='undefined'?self:null));
