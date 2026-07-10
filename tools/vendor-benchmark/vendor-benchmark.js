@@ -120,7 +120,14 @@
     pickEmptyHead: 'No está en nuestra lista de comparación.',
     pickEmptyBody: 'Déjalo como lo escribiste — Vendor Benchmark igual lo compara contra tu propio historial de precios. Revisa el Índice de costos para ver qué leemos frente al mercado.',
     pickCount: function (n) { return n + (n === 1 ? ' coincidencia' : ' coincidencias'); },
-    pickCountZero: 'Sin coincidencias — tu texto se comparará igual.'
+    pickCountZero: 'Sin coincidencias — tu texto se comparará igual.',
+    // market context (ADR-012) — the REFERENCE's own state, never the operator's price
+    ctxEyebrow: 'Contexto de mercado',
+    ctxElevated: function (label, pct) { return 'Ahora mismo la referencia mayorista de ' + label + ' corre alrededor de ' + pct + '% por encima de su propia norma del último año — cuando el mercado va alto, parte de una subida es el mercado, no tu proveedor.'; },
+    ctxDepressed: function (label, pct) { return 'Ahora mismo la referencia mayorista de ' + label + ' corre alrededor de ' + pct + '% por debajo de su propia norma del último año — un precio que parece justo frente a un mercado flojo aún puede merecer una segunda mirada.'; },
+    ctxVolatile: function (label) { return 'La referencia mayorista de ' + label + ' es una serie históricamente volátil — su propia norma varía mucho de una temporada a otra.'; },
+    ctxVolTag: ' También es una serie históricamente volátil.',
+    ctxEvent: function (label) { return 'Coincide en el trasfondo (no es una causa): ' + label + '.'; }
   } : {
     itemLabel: 'Item', itemHint: '— as it reads on your invoice',
     itemPlaceholder: 'e.g. ribeye, chicken breast, tomato',
@@ -207,7 +214,14 @@
     pickEmptyHead: 'Not on our benchmark list.',
     pickEmptyBody: 'Keep it as you typed it — Vendor Benchmark still checks it against your own price history. See the Cost Index for what we read against the market.',
     pickCount: function (n) { return n + (n === 1 ? ' match' : ' matches'); },
-    pickCountZero: 'No matches — your typed text will still be benchmarked.'
+    pickCountZero: 'No matches — your typed text will still be benchmarked.',
+    // market context (ADR-012) — the REFERENCE's own state, never the operator's price
+    ctxEyebrow: 'Market context',
+    ctxElevated: function (label, pct) { return 'Right now the wholesale reference for ' + label + ' runs about ' + pct + '% above its own trailing-year normal — when the market itself runs high, part of a price rise is the market, not your vendor.'; },
+    ctxDepressed: function (label, pct) { return 'Right now the wholesale reference for ' + label + ' runs about ' + pct + '% below its own trailing-year normal — a price that looks fair against a soft market can still be worth a second look.'; },
+    ctxVolatile: function (label) { return 'The wholesale reference for ' + label + ' is a historically volatile series — its own normal swings widely from season to season.'; },
+    ctxVolTag: ' It is also a historically volatile series.',
+    ctxEvent: function (label) { return 'Co-occurring in the backdrop (not a cause): ' + label + '.'; }
   };
 
   // ---- small formatters ------------------------------------------------------
@@ -790,6 +804,38 @@
   }
 
   var lastRes = null;
+  // ADR-012 market context — the REFERENCE's OWN state (elevated/depressed vs its
+  // trailing-year normal + volatility + a co-occurring documented event), NEVER the
+  // operator's price, so it needs no lead-lag gate. Reads the lazy MUNTIN_COST_CONTEXT
+  // seed (silent until it lands); neutral --vb-signal chrome, never a verdict tone.
+  function contextBlock(res) {
+    var m = res.market;
+    if (!m || !m.available || !m.key) return '';
+    var CTX = window.MUNTIN_COST_CONTEXT;
+    if (!CTX) return '';
+    var c = CTX[m.key];
+    if (!c) return '';
+    var label = m.label || res.item;
+    var now = c.now || null;
+    var state = now && now.state;
+    var hasState = state === 'elevated' || state === 'depressed';
+    var volWild = c.vol === 'wild' || c.vol === 'swingy';
+    var ev = (c.recentEvent && c.recentEvent.recent) ? c.recentEvent : null;
+    if (!hasState && !volWild && !ev) return '';
+
+    var say = '';
+    if (hasState) {
+      say = state === 'elevated' ? T.ctxElevated(label, Math.abs(now.pct)) : T.ctxDepressed(label, Math.abs(now.pct));
+      if (volWild) say += T.ctxVolTag;
+    } else if (volWild) {
+      say = T.ctxVolatile(label);
+    }
+    var sayLine = say ? h`<p class="vb-context-say">${say}</p>` : '';
+    var eventLine = ev ? h`<p class="vb-context-event">${T.ctxEvent(ev.label)}</p>` : '';
+    if (!sayLine && !eventLine) return '';
+    return h`<div class="vb-context" data-state="${state || 'normal'}"><span class="vb-eyebrow">${T.ctxEyebrow}</span>${sayLine}${eventLine}</div>`;
+  }
+
   function render(res) {
     var m = res.market;
     lastRes = res;
@@ -799,6 +845,10 @@
 
     // 1) THE HEADLINE — the gap (only a full verdict when the market data supports it)
     blocks.push(headlineBlock(res));
+
+    // 1a) MARKET CONTEXT — the reference's own state vs its normal (ADR-012); reframes
+    //     the market number without ever touching the operator's price.
+    var ctx = contextBlock(res); if (ctx) blocks.push(ctx);
 
     // 1b) "Will it stick?" — spike-vs-structural read of the market move.
     var sSay = spikeSay(spike);

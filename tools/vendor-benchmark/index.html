@@ -450,6 +450,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 html{-webkit-text-size-adjust:100%}
 .vb-add,.vb-example,.vb-clear,.vb-btn,.vb-jchip{min-height:var(--vb-touch,44px)}
 .vb-chart-table>summary,.vb-receipt summary,.vb-more>summary{min-height:var(--vb-touch,44px);align-items:center}
+/* ── Market context (ADR-012) — the reference's OWN state vs its normal; a neutral
+   --vb-signal rail, never a verdict tone, because it is context, not a verdict. ── */
+.vb-context{margin:0;padding:12px 14px;border-radius:var(--r-sm,9px);background:var(--surface-inset);border-left:3px solid var(--vb-signal)}
+.vb-context-say{font-size:13.5px;line-height:1.55;color:var(--ink);margin:5px 0 0}
+.vb-context-event{font-size:12px;line-height:1.5;color:var(--ink-soft);margin:7px 0 0}
 </style>
 </head>
 <body>
