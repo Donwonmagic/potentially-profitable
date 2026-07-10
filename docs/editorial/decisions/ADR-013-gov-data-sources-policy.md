@@ -61,10 +61,13 @@ answered: what to pull, and how to use it WITHOUT breaching the fact gate.
   quantity and were **removed** (no new surface minted — a drivers-layer freight driver was
   rejected because its per-cluster `affects[]` would re-create the false per-item arrow). The
   EIA `diesel` pressure spec is kept **dormant**. `button-mushroom` (diesel-only) retired.
-  Still pending: commercial electricity as a standalone `kind:'energy'` context trend; enrich the
-  `energy-oils` driver with the renewable-diesel→soy-oil channel; a read-only diesel context line
-  on Vendor Benchmark's wholesale-vs-delivered explanation (never a pass-through number, never
-  touches the gap verdict) — deferred, separate sub-items.
+  **DONE 2026-07-10:** the read-only diesel context line on Vendor Benchmark's wholesale-vs-delivered
+  explanation (`147088246` — static freight literacy: the wholesale reference is pre-freight, so a
+  diesel-driven freight rise lands in the "on your vendor" slice without being margin; no figure, never
+  the gap verdict); and the **`energy-oils` driver renewable-diesel→soy-oil enrichment** (mechanism now
+  names soybean oil as a leading renewable-diesel/biodiesel feedstock — biofuel demand bids up fryer oil;
+  cited to USDA ERS Oil Crops). **Still pending (operator-gated, needs the live fetch):** commercial
+  electricity as a standalone `kind:'energy'` context trend.
 - **AVOID:** crude as an ingredient driver (double-counts diesel); nat-gas→fertilizer→feed→
   protein chains; any energy→single-ingredient pass-through / lead-lag / forecast.
 
