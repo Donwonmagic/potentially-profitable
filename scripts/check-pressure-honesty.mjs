@@ -29,7 +29,11 @@ const rd = (p) => JSON.parse(readFileSync(path.join(repoRoot, p), 'utf8'));
 
 const rules = rd('data/pressure-rules.json');
 let pressure; try { pressure = rd('data/cost-pressure.json'); } catch { pressure = { items: {} }; }
-let obsDoc = null; try { obsDoc = rd('data/pressure-observations.demo.json'); } catch { /* live may differ */ }
+// Recompute (rule 9) must read the SAME observations the records were built from:
+// live records → data/pressure-observations.json; preview records → the demo fixture.
+// Reading the wrong one would spuriously fail the recompute-and-compare on a live build.
+const OBS_FILE = pressure && pressure.status === 'live' ? 'data/pressure-observations.json' : 'data/pressure-observations.demo.json';
+let obsDoc = null; try { obsDoc = rd(OBS_FILE); } catch { /* obs optional */ }
 
 const fails = [];
 const BANNED_KEYS = ['value', 'price', 'level', 'medianCents', 'cents', 'rangeCents'];

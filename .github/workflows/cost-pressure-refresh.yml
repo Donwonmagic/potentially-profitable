@@ -118,7 +118,10 @@ jobs:
           # Fetch the verified specs → data/pressure-observations.json (live).
           node scripts/fetch-pressure-observations.mjs --live
           # Score → records + browser seeds + track-record accrual.
-          node scripts/build-cost-pressure.mjs
+          # --live: consume the observations just fetched (data/pressure-observations.json),
+          # NOT the demo fixture — without this the live fetch above is silently discarded.
+          node scripts/build-cost-pressure.mjs --live
+          node scripts/build-cost-outlook.mjs
           # Re-join the pressure overlay into the dashboard seed.
           node scripts/build-cost-index-seed.mjs
           # Re-render the per-ingredient Outlook blocks + hub + lab.
@@ -142,7 +145,7 @@ jobs:
           # Stage ONLY the pressure data + the cost-index surfaces. Then discard any
           # incidental sweep (e.g. nav re-stamps on unrelated pages) so the commit
           # is always exactly the pressure refresh, never a surprise.
-          git add data/pressure-observations.json data/cost-pressure.json \
+          git add data/pressure-observations.json data/cost-pressure.json data/cost-outlook.json \
                   data/pressure-rules.js data/pressure-live.js data/pressure-history.json \
                   data/cost-index.js \
                   cost-index es/cost-index

@@ -28,10 +28,16 @@ const { assess } = require(path.join(repoRoot, 'tools/_shared/cost-pressure.js')
 const { isShippable } = require(path.join(repoRoot, 'tools/_shared/cost-confidence.js'));
 const Accuracy = require(path.join(repoRoot, 'tools/_shared/pressure-accuracy.js'));
 const DRY = process.argv.includes('--dry-run');
+// --live reads the fetched observations (data/pressure-observations.json, status:'live');
+// default reads the demo fixture (status:'preview'). The refresh workflow and any
+// credentialed local run must pass --live AFTER fetch-pressure-observations.mjs --live,
+// or the freshly fetched data is silently discarded and the overlay stays on demo.
+const LIVE = process.argv.includes('--live');
 const rd = (p) => JSON.parse(readFileSync(path.join(repoRoot, p), 'utf8'));
 
 const rules = rd('data/pressure-rules.json');
-const obsDoc = rd('data/pressure-observations.demo.json');
+const OBS_FILE = LIVE ? 'data/pressure-observations.json' : 'data/pressure-observations.demo.json';
+const obsDoc = rd(OBS_FILE);
 const ci = (rd('data/cost-index.json').ingredients) || {};
 const defaults = rules.defaults || {};
 const status = obsDoc._status || 'preview';
