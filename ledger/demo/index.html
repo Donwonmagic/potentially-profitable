@@ -27,7 +27,12 @@
 <meta property="og:site_name" content="Muntin Digital" />
 <!-- Social card (2026-07-07): the site-brand card, so a pasted link
      renders a branded image instead of a textless card. Swap for a
-     dedicated ledger-demo card when build-og-cards ships one. -->
+     dedicated ledger-demo card when build-og-cards ships one.
+     TODO (2026-07-09, round-2 review #16/#18): ship the dedicated
+     ledger-demo OG card — the flagged romaine row + "▲ $5.23 a case"
+     is the card — via build-og-cards, and stamp both locales. Parked
+     as the "demo OG card" follow-up on the council board; asset
+     creation is out of scope for this fix pass. -->
 <meta property="og:image" content="https://muntin.digital/brand/og/home.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
@@ -189,6 +194,24 @@
    stays idempotent (--banner-h measures 0, harmless). The mobile
    sticky CTA bar is suppressed via <body data-hide-sticky-bar>. */
 .batch-marquee{display:none}
+/* Round-2 addendum: site-core.css seeds a MOBILE FALLBACK
+   @media(max-width:640px){:root{--banner-h:72px}} for pages carrying
+   a live banner. This page suppresses the banner outright (rule
+   above) and dropped its measuring script, so that fallback would
+   silently add a phantom 72px to every scroll offset on phones —
+   headless-measured: anchored arrivals parked the frame at 244px
+   instead of the intended 100 (72px counted once in the global
+   scroll-padding and again in the scroll-margins). Re-zeroed at
+   html:root specificity so the async sheet's later cascade position
+   cannot resurrect it; this also makes the sentinel comment's
+   "consumers all default to 0" true again. */
+html:root{--banner-h:0px}
+/* No-JS twin of the sticky-bar suppression (round-2 catch): site-core
+   only hides the bar via [hidden], which the footer script sets — so a
+   JS-off phone still got the competing sticky CTA over the stacked
+   read. The attribute the body already carries now does the hiding in
+   CSS itself; the footer script stays as the JS-on path. */
+body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
 /* Step-4 three-stance strip — literal rgba like the rest of the
    .ld-cta ink band (tokens would double-flip in dark mode). */
 .lg-stances{display:flex;flex-wrap:wrap;gap:6px 18px;list-style:none;padding:14px 0 0;margin:22px 0 0;border-top:1px solid rgba(246,247,248,.14);font-size:12.5px;line-height:1.5;color:rgba(246,247,248,.66)}
@@ -239,8 +262,14 @@
 .ld-rail li[aria-current="step"] a{border-color:var(--ink);box-shadow:var(--elev-1)}
 /* scroll-margin on the SECTION (deep-link fix 2026-07-09): the native
    anchor targets the section, not its h2, so the pre-JS jump also
-   clears the ~88px fixed nav. */
-.ld-panel{margin:0 0 26px;scroll-margin-top:calc(100px + var(--banner-h,0px))}
+   clears the ~88px fixed nav. Round-2 correction: the global
+   html{scroll-padding-top} (site-core.css — 64px nav + banner + 8px =
+   72px here) SUMS with scroll-margin per spec, so the old 100px margin
+   double-counted the nav and parked anchored arrivals at 172px,
+   pushing the frame's own control bar below the fold on laptop
+   viewports. 28px margin + 72px global padding = the intended 100px.
+   Same math on the frame and h2 rules below. */
+.ld-panel{margin:0 0 26px;scroll-margin-top:calc(28px + var(--banner-h,0px))}
 /* ===== The app frame (founder redesign, 2026-07-09) =====
    One contained, fixed-height stage the reader is INSIDE: a chrome strip
    (product name + step name + "2 of 5") across the frame top, the stage
@@ -259,7 +288,7 @@
    .ld-js never lands, .ld-frame stays an unstyled div, chrome + controls
    keep their [hidden] attribute, and the stacked full read keeps its
    natural flow — the no-JS-complete invariant holds. */
-.ld-js .ld-frame{background:var(--surface-1,#fff);border:1px solid var(--line,#E3E5E9);border-radius:16px;box-shadow:var(--elev-3);overflow:hidden;margin:0 0 26px;scroll-margin-top:calc(100px + var(--banner-h,0px))}
+.ld-js .ld-frame{background:var(--surface-1,#fff);border:1px solid var(--line,#E3E5E9);border-radius:16px;box-shadow:var(--elev-3);overflow:hidden;margin:0 0 26px;scroll-margin-top:calc(28px + var(--banner-h,0px))}
 .ld-js .ld-chrome{display:flex;align-items:center;gap:12px;padding:9px 18px;background:var(--cream-2,#EDEEF1);border-bottom:1px solid var(--line,#E3E5E9);font-size:12.5px;line-height:1.4}
 .ld-chrome-app{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display);font-weight:600;font-size:13px;color:var(--ink);white-space:nowrap}
 .ld-chrome-app::before{content:"";width:9px;height:9px;border-radius:3px;background:var(--teal,#2A50C8)}
@@ -280,10 +309,15 @@
    bug). Then svh-capped so frame + chrome + bar still fit a short
    viewport (svh, not dvh: dvh tracks the mobile URL bar and would
    re-bounce the page mid-scroll); on shorter viewports panels scroll
-   inside the stage behind the .ld-overflow fade cue. The 208px
-   reservation is geometrically exact — 100px nav scroll-margin + the
-   chrome strip + the control bar — so trimming it would push the
-   frame's own bar below the fold; it stays. Grid-stack + visibility
+   inside the stage behind the .ld-overflow fade cue. Reservations
+   re-derived round-2 from measured chrome + bar + the true 100px
+   anchor offset (72px global scroll-padding + 28px frame
+   scroll-margin): desktop 208 ≈ 100 offset + 37.7 chrome + 69.4 bar
+   (1px over — stays); mobile needs 100 + 37.7 chrome + 73 bar (52px
+   controls + 2×10px padding + border) ≈ 211, so the old 184 cut the
+   bar ~28px on short phones — it is now 213. Trimming either would
+   push the frame's own bar below the fold on anchored arrivals.
+   Grid-stack + visibility
    mechanics stay: every panel is laid out at full width in cell 1/1,
    so content never reflows mid-transition. minmax(0,1fr) on BOTH axes:
    the column otherwise inherits the CSV pre's min-content width (360px
@@ -291,7 +325,7 @@
    with the tallest panel. */
 .ld-js #ldPanels{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr);height:720px;overflow:hidden}
 @supports (height:1svh){.ld-js #ldPanels{height:clamp(480px,calc(100svh - 208px),720px)}}
-@media (max-width:767px){.ld-js #ldPanels{height:640px}@supports (height:1svh){.ld-js #ldPanels{height:clamp(430px,calc(100svh - 184px),640px)}}}
+@media (max-width:767px){.ld-js #ldPanels{height:640px}@supports (height:1svh){.ld-js #ldPanels{height:clamp(430px,calc(100svh - 213px),640px)}}}
 /* Panels inside the stage: each fills the stage and scrolls its own
    overflow; short panels center (safe center falls back to top-aligned
    the moment content overflows, and to flex-start where `safe` isn't
@@ -307,8 +341,14 @@
    chaining stays NATIVE — no overscroll-behavior:contain — so a swipe
    past a panel's end moves the page instead of going dead (the
    page-height law never required containment). */
-.ld-js #ldPanels>.ld-panel{grid-area:1/1;margin:0;min-height:0;padding:18px clamp(16px,3vw,28px) 22px;background:var(--surface-1,#fff);display:flex;flex-direction:column;justify-content:flex-start;justify-content:safe center;overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--line-dark,#D7DAE0) transparent;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity var(--t-fast,180ms) var(--ease-out,ease-out),visibility 0s 240ms,transform 0s 240ms}
-.ld-js #ldPanels>.ld-panel.ld-current{opacity:1;visibility:visible;transform:none;z-index:1;transition:opacity var(--t-fast,180ms) var(--ease-out,ease-out) 60ms,transform var(--t-fast,180ms) var(--ease-out,ease-out) 60ms}
+.ld-js #ldPanels>.ld-panel{grid-area:1/1;margin:0;min-height:0;padding:18px clamp(16px,3vw,28px) 22px;background:var(--surface-1,#fff);display:flex;flex-direction:column;justify-content:flex-start;justify-content:safe center;overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--line-dark,#D7DAE0) transparent;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity var(--t-fast,180ms) var(--ease-out,ease-out),visibility 0s calc(var(--t-micro,120ms)*2),transform 0s calc(var(--t-micro,120ms)*2)}
+.ld-js #ldPanels>.ld-panel.ld-current{opacity:1;visibility:visible;transform:none;z-index:1;transition:opacity var(--t-fast,180ms) var(--ease-out,ease-out) calc(var(--t-micro,120ms)/2),transform var(--t-fast,180ms) var(--ease-out,ease-out) calc(var(--t-micro,120ms)/2)}
+/* Rapid advance (round-2 catch): a second Next inside the 240ms
+   exchange re-hid the interrupted panel while the incoming delay
+   restarted — ~100ms of blank stage. Within 240ms of the last swap the
+   stepper stamps .ld-quick and the incoming panel fades straight in
+   (no dead beat); the class clears on the next unhurried swap. */
+.ld-js #ldPanels.ld-quick>.ld-panel.ld-current{transition-delay:0s}
 .ld-js #ldPanels>.ld-panel::-webkit-scrollbar{width:10px}
 .ld-js #ldPanels>.ld-panel::-webkit-scrollbar-track{background:transparent}
 .ld-js #ldPanels>.ld-panel::-webkit-scrollbar-thumb{background:var(--line-dark,#D7DAE0);border-radius:999px;border:3px solid transparent;background-clip:padding-box}
@@ -355,7 +395,7 @@
 /* Inside the frame the pane flattens — the FRAME is the page's one
    elevated object; a card shadow inside a card reads as clutter. */
 .ld-js .ld-panel .lg-pane{box-shadow:none}
-.ld-panel h2{font-family:var(--font-display);font-size:clamp(24px,3vw,32px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 8px;scroll-margin-top:calc(100px + var(--banner-h,0px))}
+.ld-panel h2{font-family:var(--font-display);font-size:clamp(24px,3vw,32px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 8px;scroll-margin-top:calc(28px + var(--banner-h,0px))}
 .ld-panel .ld-body{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 16px;max-width:640px}
 .ld-invoice-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:6px}
 .ld-invoice-title{font-family:var(--font-display);font-weight:600;font-size:15px;color:var(--ink)}
@@ -905,7 +945,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <details class="cite">
             <summary>Verify it: what the Network tab shows</summary>
             <div class="cite-body">
-              <p>Watch the Network tab while you click through &mdash; the stepper fires no requests of its own. What you will see is the site&rsquo;s own chrome: a sign-in check, our self-hosted cookieless counter, and &mdash; if you scroll down to the footer form &mdash; its anti-spam widget, the one third-party script on the page.</p>
+              <p>Watch the Network tab while you click through &mdash; the stepper fires no requests of its own. What you will see is the site&rsquo;s own chrome: a sign-in check, its self-hosted cookieless counter, and &mdash; if you scroll down to the footer form &mdash; its anti-spam widget, the one third-party script on the page.</p>
             </div>
           </details>
         </figcaption>
@@ -914,7 +954,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <section class="ld-panel" id="ld-step1" aria-labelledby="ld-h1">
       <h2 id="ld-h1" tabindex="-1">Read.</h2>
-      <p class="ld-body">Snap or upload the invoice; templates and rules pull the lines &mdash; vendor, item, quantity, price. No language model reads your invoices &mdash; and you don&rsquo;t have to take our word for that: a published build gate fails any release that adds a language-model library. <a href="/ai/" style="color:var(--teal)">The AI policy&nbsp;&rarr;</a></p>
+      <p class="ld-body">You snap or upload the invoice; templates and rules pull the lines &mdash; vendor, date, item, quantity, price. No language model reads your invoices &mdash; and you don&rsquo;t have to take that on faith: a published build gate fails any release that adds a language-model library. <a href="/ai/" style="color:var(--teal)">The AI policy&nbsp;&rarr;</a></p>
       <figure class="lg-vignette ld-armed-target" style="margin:0" data-audio-alt="One printed invoice line, romaine hearts, twenty-four count, times one, twenty-nine forty-five, dissected into tagged fields: vendor, date, item, quantity, price. Below it, the five extracted ledger rows, each stamped read. Templates and rules do the reading; no language model touches the document.">
         <div class="lg-pane">
           <div class="lg-pane-head">
@@ -981,7 +1021,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <pre class="ld-csv">date,vendor,item,qty,price
 2026-06-19,Produce vendor,"Romaine, 24 ct",1,24.35</pre>
         </div>
-        <figcaption class="lg-cap"><strong>The ledger, narrowed to one item</strong> &mdash; three romaine reads across three invoices, the other June 26 lines dimmed; the CSV beneath shows how the whole record leaves with you, in a format you can open without us. Search and export are part of the mockup, not live controls. Canned rows.</figcaption>
+        <figcaption class="lg-cap"><strong>The ledger, narrowed to one item</strong> &mdash; three romaine reads across three invoices, the other June 26 lines dimmed; the CSV beneath shows how the whole record leaves with you, in a format you can open without us. Search and export are part of the mockup, not live controls.</figcaption>
       </figure>
     </section>
 
@@ -1180,11 +1220,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </div>
       <hr style="border:none;border-top:1px solid rgba(246,247,248,.14);margin:28px 0 24px" aria-hidden="true">
       <div class="ld-cta-side">
-      <p class="ld-body">Don&rsquo;t take a canned demo&rsquo;s word for it. Take a price you&rsquo;ve actually paid &mdash; two dates, two numbers &mdash; and <strong style="color:#F6F7F8">Vendor Benchmark</strong> runs the same own-history flag rule Ledger uses, mirrored to the cent, and sets a market read from the public Cost Index beside it, over your exact dates. Free, in your browser, no signup, nothing to upload.</p>
+      <p class="ld-body">Don&rsquo;t take a canned demo&rsquo;s word for it. <strong style="color:#F6F7F8">Vendor Benchmark</strong> runs the same own-history flag rule Ledger uses &mdash; mirrored to the cent &mdash; on a price you&rsquo;ve actually paid: two dates, two numbers. Beside it, a market read from the public Cost Index over your exact dates. Free, in your browser, no signup, nothing to upload.</p>
       <div class="studio-cta-row" style="margin-top:20px">
         <a class="btn btn-ghost plausible-event-name=Demo+Exit plausible-event-door=benchmark" href="/tools/vendor-benchmark/" style="color:#F6F7F8;border-color:rgba(246,247,248,.4)">Run your own line&nbsp;&rarr;</a>
       </div>
-      <p class="ld-body" style="margin-top:24px;margin-bottom:0;font-size:14px">Check what we claim: <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/trust/" style="color:#7AA7FF">the trust center</a> &middot; <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/never/" style="color:#7AA7FF">what we never do</a> &middot; <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/cost-index/" style="color:#7AA7FF">the Cost Index data (CC0)</a>.</p>
+      <p class="ld-body" style="margin-top:24px;margin-bottom:0;font-size:14px">Check the claims: <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/trust/" style="color:#7AA7FF">the trust center</a> &middot; <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/never/" style="color:#7AA7FF">what we never do</a> &middot; <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/cost-index/" style="color:#7AA7FF">the Cost Index data (CC0)</a>.</p>
       </div>
       </div><!-- /ld-cta-cols -->
       <ul class="lg-stances">
@@ -1234,13 +1274,42 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       var chromeBar = document.getElementById('ldChrome');
       var chromeTitle = document.getElementById('ldChromeTitle');
       var chromeCount = document.getElementById('ldChromeCount');
-      if (!wrap || panels.length < 5 || !rail || !controls || !restart || !cta || !chromeBar || !chromeTitle || !chromeCount) return;
+      var stage = document.getElementById('ldPanels');
+      if (!wrap || panels.length < 5 || !rail || !controls || !restart || !cta || !chromeBar || !chromeTitle || !chromeCount || !stage) return;
       // Titles echo the rail's short names (2026-07-09) so rail, chrome
       // strip, and live region announce the same step name — and the
       // chrome readout can't outgrow its strip on phones.
       var titles = ['The invoice', 'Read', 'File', 'Flag', 'Every line'];
       var i = 0;
+      var lastSwap = -1e9;
       var prm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+      // One-shot choreography gate (round-2 catch): the scan and the
+      // flag landing used to be consumed on ARRIVAL — a deep-link boot
+      // still mid-reanchor, or "Skip to the flag" clicked from page
+      // top, spent them off-screen with no replay. Each arming now
+      // waits until ~60% of the stage is actually in view (one-shot
+      // IntersectionObserver on #ldPanels), the dataset.played write
+      // lives inside the callback, and a play whose step was left
+      // before the stage came into view is returned unspent. Where IO
+      // is unavailable the arm runs immediately (the old behavior).
+      function armInView(panel, arm) {
+        if (panel.dataset.played || panel.dataset.arming) return;
+        if (!window.IntersectionObserver) { panel.dataset.played = '1'; arm(); return; }
+        panel.dataset.arming = '1';
+        var io = new IntersectionObserver(function (entries) {
+          for (var k = 0; k < entries.length; k++) {
+            if (entries[k].isIntersecting) {
+              io.disconnect();
+              delete panel.dataset.arming;
+              if (!panel.classList.contains('ld-current')) return;
+              panel.dataset.played = '1';
+              arm();
+              return;
+            }
+          }
+        }, { threshold: 0.6 });
+        io.observe(stage);
+      }
       wrap.classList.add('ld-js');
       controls.hidden = false;
       chromeBar.hidden = false;
@@ -1254,6 +1323,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       // measures; nothing here can move the page.
       function show(n, focus) {
         i = Math.max(0, Math.min(panels.length - 1, n));
+        // Rapid advance (round-2 catch): a second Next inside the 240ms
+        // exchange re-hid the interrupted panel while the incoming
+        // 60ms delay restarted — ~100ms of blank stage. Within 240ms of
+        // the last swap, .ld-quick drops the incoming delay so the new
+        // panel fades straight in; it clears on the next unhurried swap.
+        var now = (window.performance && performance.now) ? performance.now() : Date.now();
+        stage.classList.toggle('ld-quick', now - lastSwap < 240);
+        lastSwap = now;
         panels.forEach(function (p, k) {
           p.classList.toggle('ld-current', k === i);
         });
@@ -1293,23 +1370,27 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         if (focus && window.history && history.replaceState) { history.replaceState(null, '', '#ld-step' + i); }
         // P1-2/M2 — the read scan, once: two class adds; every delay
         // lives in CSS transition-delays (:nth-child), total < 550ms.
-        if (i === 1 && !prm && !panels[1].dataset.played) {
-          panels[1].dataset.played = '1';
-          var fig = panels[1].querySelector('.ld-armed-target');
-          if (fig) {
-            fig.classList.add('ld-armed');
-            requestAnimationFrame(function () { requestAnimationFrame(function () { fig.classList.add('ld-go'); }); });
-          }
+        // Round-2: gated on the stage being in view (armInView above).
+        if (i === 1 && !prm) {
+          armInView(panels[1], function () {
+            var fig = panels[1].querySelector('.ld-armed-target');
+            if (fig) {
+              fig.classList.add('ld-armed');
+              requestAnimationFrame(function () { requestAnimationFrame(function () { fig.classList.add('ld-go'); }); });
+            }
+          });
         }
         // P0-3 — the flag landing, once, on first arrival at step 3.
         // Sequencing lives in CSS transition-delays on .lg-armed/.lg-landed.
-        if (i === 3 && !prm && !panels[3].dataset.played) {
-          panels[3].dataset.played = '1';
-          var flagFig = panels[3].querySelector('.lg-vignette');
-          if (flagFig) {
-            flagFig.classList.add('lg-armed');
-            requestAnimationFrame(function () { requestAnimationFrame(function () { flagFig.classList.add('lg-landed'); }); });
-          }
+        // Round-2: gated on the stage being in view (armInView above).
+        if (i === 3 && !prm) {
+          armInView(panels[3], function () {
+            var flagFig = panels[3].querySelector('.lg-vignette');
+            if (flagFig) {
+              flagFig.classList.add('lg-armed');
+              requestAnimationFrame(function () { requestAnimationFrame(function () { flagFig.classList.add('lg-landed'); }); });
+            }
+          });
         }
       }
       back.addEventListener('click', function () { show(i - 1, true); });
@@ -1334,12 +1415,23 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       });
       // Overflow-cue upkeep: each panel clears/raises its own fade as
       // it scrolls (24px of slack so the fade lifts just before the
-      // exact end). Passive — never blocks the scroll.
+      // exact end). Passive — never blocks the scroll. Round-2: the
+      // same check re-runs when a drawer inside the panel toggles
+      // (opening adds overflow with no scroll event) and once the
+      // webfonts apply (late reflow re-sizes panel content). Both read
+      // geometry inside the frame only — neither can move the page.
+      var cue = function (p) {
+        p.classList.toggle('ld-overflow', p.scrollHeight - p.scrollTop - p.clientHeight > 24);
+      };
       panels.forEach(function (p) {
-        p.addEventListener('scroll', function () {
-          p.classList.toggle('ld-overflow', p.scrollHeight - p.scrollTop - p.clientHeight > 24);
-        }, { passive: true });
+        p.addEventListener('scroll', function () { cue(p); }, { passive: true });
+        Array.prototype.forEach.call(p.querySelectorAll('details'), function (d) {
+          d.addEventListener('toggle', function () { cue(p); });
+        });
       });
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(function () { cue(panels[i]); });
+      }
       // P1-6/M4d — ArrowLeft/ArrowRight step the walkthrough. Bound to
       // the wrap only (no page-wide listener), so arrows act solely
       // while focus is inside the stepper; clamped at the ends (no
@@ -1372,18 +1464,53 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       // re-shift layout above the frame. Guarded: a re-anchor is
       // skipped the moment the reader has scrolled on their own.
       if (boot) {
-        var lastAnchorY = -1;
+        // Round-2 rebuild of the correction chain, headless-measured:
+        // (1) Reanchors are INSTANT — under the site's smooth
+        // scroll-behavior a later pass could catch the previous pass's
+        // scroll still in flight; and instant is what the native jump
+        // being corrected does anyway. Older engines that reject the
+        // options object fall back to the smooth default.
+        // (2) The user-scroll guard watches for REAL reader input
+        // (wheel / touch / pointer / key) instead of inferring from
+        // scroll position: Chromium keeps its own fragment anchor live
+        // through early layout shifts (webfonts, async CSS) and its
+        // re-scroll to the SECTION — measured 66px below the frame's
+        // target — read as "the reader moved", muting the old
+        // position-delta guard exactly when the correction was needed
+        // most. Any genuine input still ends the boot corrections for
+        // good.
+        var userTookOver = false;
+        var takeOver = function () { userTookOver = true; };
+        window.addEventListener('wheel', takeOver, { passive: true, once: true });
+        window.addEventListener('touchstart', takeOver, { passive: true, once: true });
+        window.addEventListener('pointerdown', takeOver, { passive: true, once: true });
+        window.addEventListener('keydown', takeOver, { once: true });
         var reanchor = function () {
-          if (lastAnchorY >= 0 && Math.abs((window.pageYOffset || 0) - lastAnchorY) > 8) return;
+          if (userTookOver) return;
           var frame = document.getElementById('ldFrame');
           if (frame && frame.scrollIntoView) {
-            frame.scrollIntoView(true);
-            lastAnchorY = window.pageYOffset || 0;
+            try { frame.scrollIntoView({ block: 'start', behavior: 'instant' }); }
+            catch (err) { frame.scrollIntoView(true); }
           }
         };
         requestAnimationFrame(reanchor);
-        window.addEventListener('load', function () { requestAnimationFrame(reanchor); }, { once: true });
+        window.addEventListener('load', function () {
+          requestAnimationFrame(reanchor);
+          // Post-load settle passes: the UA fragment anchor re-fires on
+          // late reflows; these give the frame the last word once fonts
+          // and the async sheets have finished moving the layout.
+          setTimeout(reanchor, 200);
+          setTimeout(reanchor, 600);
+        }, { once: true });
         if (document.fonts && document.fonts.ready) { document.fonts.ready.then(function () { requestAnimationFrame(reanchor); }); }
+        // Round-2: fonts.ready can resolve BEFORE the Fraunces/Inter
+        // swap reflows the ~72px of heading above the frame, so the
+        // last guarded reanchor ran against pre-swap layout.
+        // 'loadingdone' fires after a batch of webfonts actually
+        // applies; the reanchor re-runs then (same user-input guard).
+        if (document.fonts && document.fonts.addEventListener) {
+          document.fonts.addEventListener('loadingdone', function () { requestAnimationFrame(reanchor); });
+        }
       }
     } catch (e) { /* static fallback stays complete */ }
   })();

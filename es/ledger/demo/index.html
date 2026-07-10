@@ -25,7 +25,12 @@
 <!-- Tarjeta social (2026-07-07): la tarjeta de marca del sitio, para
      que un enlace pegado muestre una imagen con marca en lugar de una
      tarjeta sin texto. Cambiar por una tarjeta propia del demo cuando
-     build-og-cards la genere. -->
+     build-og-cards la genere.
+     TODO (2026-07-09, revisión ronda 2 #16/#18): generar la tarjeta OG
+     propia del demo — la fila de romana marcada + "▲ $5.23 por caja"
+     es la tarjeta — vía build-og-cards, y sellar ambos locales. Queda
+     aparcado como el seguimiento "demo OG card" en el tablero del
+     consejo; crear el recurso está fuera del alcance de esta pasada. -->
 <meta property="og:image" content="https://muntin.digital/brand/og/home-es.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
@@ -188,6 +193,25 @@
    stays idempotent (--banner-h measures 0, harmless). The mobile
    sticky CTA bar is suppressed via <body data-hide-sticky-bar>. */
 .batch-marquee{display:none}
+/* Adenda ronda 2: site-core.css siembra un VALOR MÓVIL de respaldo
+   @media(max-width:640px){:root{--banner-h:72px}} para páginas con
+   banner vivo. Esta página suprime el banner por completo (regla de
+   arriba) y retiró su script de medición, así que ese respaldo sumaba
+   en silencio 72px fantasma a cada desplazamiento de ancla en
+   teléfonos — medido headless: las llegadas ancladas dejaban el marco
+   a 244px en vez de los 100 previstos (72px contados una vez en el
+   scroll-padding global y otra en los scroll-margin). Re-puesto a
+   cero con especificidad html:root para que la posición posterior de
+   la hoja asíncrona en la cascada no pueda resucitarlo; esto también
+   vuelve a hacer cierto el "consumers all default to 0" del
+   comentario centinela. */
+html:root{--banner-h:0px}
+/* No-JS twin of the sticky-bar suppression (round-2 catch): site-core
+   only hides the bar via [hidden], which the footer script sets — so a
+   JS-off phone still got the competing sticky CTA over the stacked
+   read. The attribute the body already carries now does the hiding in
+   CSS itself; the footer script stays as the JS-on path. */
+body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
 /* Step-4 three-stance strip — literal rgba like the rest of the
    .ld-cta ink band (tokens would double-flip in dark mode). */
 .lg-stances{display:flex;flex-wrap:wrap;gap:6px 18px;list-style:none;padding:14px 0 0;margin:22px 0 0;border-top:1px solid rgba(246,247,248,.14);font-size:12.5px;line-height:1.5;color:rgba(246,247,248,.66)}
@@ -239,8 +263,15 @@
 .ld-rail li[aria-current="step"] a{border-color:var(--ink);box-shadow:var(--elev-1)}
 /* scroll-margin en la SECCIÓN (corrección de enlaces profundos
    2026-07-09): el ancla nativa apunta a la sección, no a su h2, así el
-   salto pre-JS también libra el nav fijo de ~88px. */
-.ld-panel{margin:0 0 26px;scroll-margin-top:calc(100px + var(--banner-h,0px))}
+   salto pre-JS también libra el nav fijo de ~88px. Corrección ronda 2:
+   el html{scroll-padding-top} global (site-core.css — 64px de nav +
+   banner + 8px = 72px aquí) se SUMA por especificación al
+   scroll-margin, así que el margen anterior de 100px contaba el nav
+   dos veces y dejaba las llegadas ancladas a 172px, empujando la
+   propia barra de controles del marco bajo el pliegue en viewports de
+   portátil. 28px de margen + 72px de padding global = los 100px
+   previstos. La misma cuenta en las reglas del marco y del h2 abajo. */
+.ld-panel{margin:0 0 26px;scroll-margin-top:calc(28px + var(--banner-h,0px))}
 /* ===== El marco de app (rediseño del fundador, 2026-07-09) =====
    Un escenario contenido de altura fija DENTRO del cual está el lector:
    una franja de chrome (nombre del producto + nombre del paso + "2 de
@@ -262,7 +293,7 @@
    controles conservan su atributo [hidden], y la lectura apilada
    completa mantiene su flujo natural — la invariante sin-JS-completo se
    cumple. */
-.ld-js .ld-frame{background:var(--surface-1,#fff);border:1px solid var(--line,#E3E5E9);border-radius:16px;box-shadow:var(--elev-3);overflow:hidden;margin:0 0 26px;scroll-margin-top:calc(100px + var(--banner-h,0px))}
+.ld-js .ld-frame{background:var(--surface-1,#fff);border:1px solid var(--line,#E3E5E9);border-radius:16px;box-shadow:var(--elev-3);overflow:hidden;margin:0 0 26px;scroll-margin-top:calc(28px + var(--banner-h,0px))}
 .ld-js .ld-chrome{display:flex;align-items:center;gap:12px;padding:9px 18px;background:var(--cream-2,#EDEEF1);border-bottom:1px solid var(--line,#E3E5E9);font-size:12.5px;line-height:1.4}
 .ld-chrome-app{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display);font-weight:600;font-size:13px;color:var(--ink);white-space:nowrap}
 .ld-chrome-app::before{content:"";width:9px;height:9px;border-radius:3px;background:var(--teal,#2A50C8)}
@@ -286,10 +317,16 @@
    un viewport corto (svh, no dvh: dvh sigue a la barra de URL móvil y
    volvería a rebotar la página); en viewports más cortos los paneles
    se desplazan dentro del escenario tras la señal de degradado
-   .ld-overflow. La reserva de 208px es geométricamente exacta — 100px
-   de scroll-margin del nav + la franja de chrome + la barra de
-   controles — así que recortarla empujaría la propia barra del marco
-   bajo el pliegue; se queda. La mecánica de pila de grid + visibility
+   .ld-overflow. Reservas re-derivadas en la ronda 2 con chrome + barra
+   medidos + el verdadero desplazamiento de ancla de 100px (72px de
+   scroll-padding global + 28px de scroll-margin del marco): escritorio
+   208 ≈ 100 de desplazamiento + 37.7 de chrome + 69.4 de barra (1px de
+   más — se queda); el móvil necesita 100 + 37.7 de chrome + 73 de
+   barra (controles de 52px + 2×10px de padding + borde) ≈ 211, así que
+   los 184 anteriores recortaban la barra ~28px en teléfonos cortos —
+   ahora es 213. Recortar cualquiera de las dos empujaría la propia
+   barra del marco bajo el pliegue en llegadas ancladas. La mecánica de
+   pila de grid + visibility
    se conserva: cada panel se maqueta a ancho completo en la celda 1/1,
    así que el contenido nunca refluye a mitad de transición.
    minmax(0,1fr) en AMBOS ejes: la columna hereda si no el ancho
@@ -297,7 +334,7 @@
    debe ceñirse al escenario en vez de crecer con el panel más alto. */
 .ld-js #ldPanels{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr);height:720px;overflow:hidden}
 @supports (height:1svh){.ld-js #ldPanels{height:clamp(480px,calc(100svh - 208px),720px)}}
-@media (max-width:767px){.ld-js #ldPanels{height:640px}@supports (height:1svh){.ld-js #ldPanels{height:clamp(430px,calc(100svh - 184px),640px)}}}
+@media (max-width:767px){.ld-js #ldPanels{height:640px}@supports (height:1svh){.ld-js #ldPanels{height:clamp(430px,calc(100svh - 213px),640px)}}}
 /* Paneles dentro del escenario: cada uno llena el escenario y desplaza
    su propio desbordamiento; los cortos se centran (safe center vuelve a
    alinearse arriba en cuanto el contenido desborda, y a flex-start
@@ -314,8 +351,15 @@
    sin overscroll-behavior:contain — para que un desliz más allá del
    final del panel mueva la página en vez de quedarse muerto (la ley de
    altura de página nunca exigió contención). */
-.ld-js #ldPanels>.ld-panel{grid-area:1/1;margin:0;min-height:0;padding:18px clamp(16px,3vw,28px) 22px;background:var(--surface-1,#fff);display:flex;flex-direction:column;justify-content:flex-start;justify-content:safe center;overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--line-dark,#D7DAE0) transparent;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity var(--t-fast,180ms) var(--ease-out,ease-out),visibility 0s 240ms,transform 0s 240ms}
-.ld-js #ldPanels>.ld-panel.ld-current{opacity:1;visibility:visible;transform:none;z-index:1;transition:opacity var(--t-fast,180ms) var(--ease-out,ease-out) 60ms,transform var(--t-fast,180ms) var(--ease-out,ease-out) 60ms}
+.ld-js #ldPanels>.ld-panel{grid-area:1/1;margin:0;min-height:0;padding:18px clamp(16px,3vw,28px) 22px;background:var(--surface-1,#fff);display:flex;flex-direction:column;justify-content:flex-start;justify-content:safe center;overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--line-dark,#D7DAE0) transparent;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity var(--t-fast,180ms) var(--ease-out,ease-out),visibility 0s calc(var(--t-micro,120ms)*2),transform 0s calc(var(--t-micro,120ms)*2)}
+.ld-js #ldPanels>.ld-panel.ld-current{opacity:1;visibility:visible;transform:none;z-index:1;transition:opacity var(--t-fast,180ms) var(--ease-out,ease-out) calc(var(--t-micro,120ms)/2),transform var(--t-fast,180ms) var(--ease-out,ease-out) calc(var(--t-micro,120ms)/2)}
+/* Avance rápido (hallazgo ronda 2): un segundo Siguiente dentro del
+   intercambio de 240ms volvía a ocultar el panel interrumpido mientras
+   el retraso del entrante se reiniciaba — ~100ms de escenario en
+   blanco. A menos de 240ms del último cambio el recorrido sella
+   .ld-quick y el panel entrante se funde directo (sin compás muerto);
+   la clase se retira en el siguiente cambio sin prisa. */
+.ld-js #ldPanels.ld-quick>.ld-panel.ld-current{transition-delay:0s}
 .ld-js #ldPanels>.ld-panel::-webkit-scrollbar{width:10px}
 .ld-js #ldPanels>.ld-panel::-webkit-scrollbar-track{background:transparent}
 .ld-js #ldPanels>.ld-panel::-webkit-scrollbar-thumb{background:var(--line-dark,#D7DAE0);border-radius:999px;border:3px solid transparent;background-clip:padding-box}
@@ -374,7 +418,7 @@
    objeto elevado de la página; una sombra de tarjeta dentro de otra
    tarjeta se lee como ruido. */
 .ld-js .ld-panel .lg-pane{box-shadow:none}
-.ld-panel h2{font-family:var(--font-display);font-size:clamp(24px,3vw,32px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 8px;scroll-margin-top:calc(100px + var(--banner-h,0px))}
+.ld-panel h2{font-family:var(--font-display);font-size:clamp(24px,3vw,32px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 8px;scroll-margin-top:calc(28px + var(--banner-h,0px))}
 .ld-panel .ld-body{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 16px;max-width:640px}
 .ld-invoice-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:6px}
 .ld-invoice-title{font-family:var(--font-display);font-weight:600;font-size:15px;color:var(--ink)}
@@ -883,7 +927,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <details class="cite">
             <summary>Compru&eacute;balo: lo que muestra la pesta&ntilde;a Red</summary>
             <div class="cite-body">
-              <p>Mira la pesta&ntilde;a Red mientras avanzas &mdash; el recorrido no dispara peticiones propias. Lo que s&iacute; ver&aacute;s es la maquinaria del propio sitio: una consulta de sesi&oacute;n, nuestro contador propio sin cookies y &mdash; si bajas hasta el formulario del pie &mdash; su escudo antispam, el &uacute;nico script de terceros en la p&aacute;gina.</p>
+              <p>Mira la pesta&ntilde;a Red mientras avanzas &mdash; el recorrido no dispara peticiones propias. Lo que s&iacute; ver&aacute;s es la maquinaria del propio sitio: una consulta de sesi&oacute;n, su contador propio sin cookies y &mdash; si bajas hasta el formulario del pie &mdash; su escudo antispam, el &uacute;nico script de terceros en la p&aacute;gina.</p>
             </div>
           </details>
         </figcaption>
@@ -892,7 +936,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <section class="ld-panel" id="ld-step1" aria-labelledby="ld-h1">
       <h2 id="ld-h1" tabindex="-1">Leer.</h2>
-      <p class="ld-body">Toma una foto o sube la factura; plantillas y reglas extraen las l&iacute;neas: proveedor, art&iacute;culo, cantidad, precio. Ning&uacute;n modelo de lenguaje lee tus facturas &mdash; y no tienes que creernos: una puerta de build publicada hace fallar cualquier versi&oacute;n que agregue una biblioteca de modelos de lenguaje. <a href="/es/ai/" style="color:var(--teal)">La pol&iacute;tica de IA&nbsp;&rarr;</a></p>
+      <p class="ld-body">Tomas una foto o subes la factura; plantillas y reglas extraen las l&iacute;neas: proveedor, fecha, art&iacute;culo, cantidad, precio. Ning&uacute;n modelo de lenguaje lee tus facturas &mdash; y no tienes que creerlo a ciegas: una puerta de build publicada hace fallar cualquier versi&oacute;n que agregue una biblioteca de modelos de lenguaje. <a href="/es/ai/" style="color:var(--teal)">La pol&iacute;tica de IA&nbsp;&rarr;</a></p>
       <figure class="lg-vignette ld-armed-target" style="margin:0" data-audio-alt="Una línea impresa de la factura, lechuga romana, veinticuatro unidades, por uno, veintinueve cuarenta y cinco, diseccionada en campos etiquetados: proveedor, fecha, artículo, cantidad y precio. Debajo, las cinco filas extraídas del libro, cada una con su sello de leída. Plantillas y reglas hacen la lectura; ningún modelo de lenguaje toca el documento.">
         <div class="lg-pane">
           <div class="lg-pane-head">
@@ -960,7 +1004,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <pre class="ld-csv">fecha,proveedor,art&iacute;culo,cant,precio
 2026-06-19,Proveedor de verduras,"Lechuga romana, 24 uds",1,24.35</pre>
         </div>
-        <figcaption class="lg-cap"><strong>El libro, reducido a un art&iacute;culo</strong> &mdash; tres lecturas de romana en tres facturas, con las dem&aacute;s l&iacute;neas del 26 de junio atenuadas; el CSV de abajo muestra c&oacute;mo el registro completo se va contigo, en un formato que abres sin nosotros. El buscador y la exportaci&oacute;n son parte de la maqueta, no controles reales. Filas ficticias.</figcaption>
+        <figcaption class="lg-cap"><strong>El libro, reducido a un art&iacute;culo</strong> &mdash; tres lecturas de romana en tres facturas, con las dem&aacute;s l&iacute;neas del 26 de junio atenuadas; el CSV de abajo muestra c&oacute;mo el registro completo se va contigo, en un formato que abres sin nosotros. El buscador y la exportaci&oacute;n son parte de la maqueta, no controles reales.</figcaption>
       </figure>
     </section>
 
@@ -1164,11 +1208,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </div>
       <hr style="border:none;border-top:1px solid rgba(246,247,248,.14);margin:28px 0 24px" aria-hidden="true">
       <div class="ld-cta-side">
-      <p class="ld-body">No le creas a un demo con datos ficticios. Toma un precio que ya pagaste &mdash; dos fechas, dos n&uacute;meros &mdash; y <strong style="color:#F6F7F8">Vendor Benchmark</strong> corre la misma regla de marca sobre tu propio historial que usa Ledger, calcada al centavo, y pone al lado una lectura del mercado con el &Iacute;ndice de Costos p&uacute;blico, sobre tus fechas exactas. Gratis, en tu navegador, sin registro, sin subir nada.</p>
+      <p class="ld-body">No le creas a un demo con datos ficticios. <strong style="color:#F6F7F8">Vendor Benchmark</strong> corre la misma regla de marca sobre tu propio historial que usa Ledger &mdash; calcada al centavo &mdash; sobre un precio que ya pagaste: dos fechas, dos n&uacute;meros. Al lado, una lectura del mercado con el &Iacute;ndice de Costos p&uacute;blico, sobre tus fechas exactas. Gratis, en tu navegador, sin registro, sin subir nada.</p>
       <div class="studio-cta-row" style="margin-top:20px">
         <a class="btn btn-ghost plausible-event-name=Demo+Exit plausible-event-door=benchmark" href="/es/tools/vendor-benchmark/" style="color:#F6F7F8;border-color:rgba(246,247,248,.4)">Corre tu propia línea&nbsp;&rarr;</a>
       </div>
-      <p class="ld-body" style="margin-top:24px;margin-bottom:0;font-size:14px">Comprueba lo que afirmamos: <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/es/trust/" style="color:#7AA7FF">el centro de confianza</a> &middot; <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/es/never/" style="color:#7AA7FF">lo que nunca hacemos</a> &middot; <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/es/cost-index/" style="color:#7AA7FF">los datos del &Iacute;ndice de Costos (CC0)</a>.</p>
+      <p class="ld-body" style="margin-top:24px;margin-bottom:0;font-size:14px">Comprueba las afirmaciones: <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/es/trust/" style="color:#7AA7FF">el centro de confianza</a> &middot; <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/es/never/" style="color:#7AA7FF">lo que nunca hacemos</a> &middot; <a class="plausible-event-name=Demo+Exit plausible-event-door=proof" href="/es/cost-index/" style="color:#7AA7FF">los datos del &Iacute;ndice de Costos (CC0)</a>.</p>
       </div>
       </div><!-- /ld-cta-cols -->
       <ul class="lg-stances">
@@ -1220,14 +1264,44 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       var chromeBar = document.getElementById('ldChrome');
       var chromeTitle = document.getElementById('ldChromeTitle');
       var chromeCount = document.getElementById('ldChromeCount');
-      if (!wrap || panels.length < 5 || !rail || !controls || !restart || !cta || !chromeBar || !chromeTitle || !chromeCount) return;
+      var stage = document.getElementById('ldPanels');
+      if (!wrap || panels.length < 5 || !rail || !controls || !restart || !cta || !chromeBar || !chromeTitle || !chromeCount || !stage) return;
       // Los títulos repiten los nombres cortos del riel (2026-07-09)
       // para que riel, franja de chrome y región viva anuncien el mismo
       // nombre de paso — y la lectura del chrome no desborde su franja
       // en teléfonos.
       var titles = ['La factura', 'Leer', 'Archivar', 'Marcar', 'Cada línea'];
       var i = 0;
+      var lastSwap = -1e9;
       var prm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+      // Compuerta de coreografías únicas (hallazgo ronda 2): el escaneo
+      // y el aterrizaje de la marca se consumían al LLEGAR — un arranque
+      // por enlace profundo aún re-anclándose, o un "Salta a la marca"
+      // desde el inicio de la página, los gastaba fuera de pantalla sin
+      // repetición. Cada armado espera ahora a que ~60% del escenario
+      // esté realmente a la vista (IntersectionObserver de un solo uso
+      // sobre #ldPanels), la escritura de dataset.played vive dentro del
+      // callback, y una función cuyo paso se abandonó antes de que el
+      // escenario apareciera se devuelve sin gastar. Sin IO disponible,
+      // el armado corre de inmediato (el comportamiento anterior).
+      function armInView(panel, arm) {
+        if (panel.dataset.played || panel.dataset.arming) return;
+        if (!window.IntersectionObserver) { panel.dataset.played = '1'; arm(); return; }
+        panel.dataset.arming = '1';
+        var io = new IntersectionObserver(function (entries) {
+          for (var k = 0; k < entries.length; k++) {
+            if (entries[k].isIntersecting) {
+              io.disconnect();
+              delete panel.dataset.arming;
+              if (!panel.classList.contains('ld-current')) return;
+              panel.dataset.played = '1';
+              arm();
+              return;
+            }
+          }
+        }, { threshold: 0.6 });
+        io.observe(stage);
+      }
       wrap.classList.add('ld-js');
       controls.hidden = false;
       chromeBar.hidden = false;
@@ -1242,6 +1316,16 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       // nada mide; nada puede mover la página.
       function show(n, focus) {
         i = Math.max(0, Math.min(panels.length - 1, n));
+        // Avance rápido (hallazgo ronda 2): un segundo Siguiente dentro
+        // del intercambio de 240ms volvía a ocultar el panel
+        // interrumpido mientras el retraso de 60ms del entrante se
+        // reiniciaba — ~100ms de escenario en blanco. A menos de 240ms
+        // del último cambio, .ld-quick suprime el retraso del entrante y
+        // el panel nuevo se funde directo; se retira en el siguiente
+        // cambio sin prisa.
+        var now = (window.performance && performance.now) ? performance.now() : Date.now();
+        stage.classList.toggle('ld-quick', now - lastSwap < 240);
+        lastSwap = now;
         panels.forEach(function (p, k) { p.classList.toggle('ld-current', k === i); });
         // Chrome del marco: nombre del paso + "2 de 5" (aria-hidden — la
         // tecnología de asistencia oye lo mismo por #ldProgress /
@@ -1282,24 +1366,29 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         if (focus && window.history && history.replaceState) { history.replaceState(null, '', '#ld-step' + i); }
         // P1-2/M2 — el escaneo de lectura, una vez: dos clases; cada
         // retraso vive en los transition-delay de CSS (:nth-child),
-        // total < 550ms.
-        if (i === 1 && !prm && !panels[1].dataset.played) {
-          panels[1].dataset.played = '1';
-          var fig = panels[1].querySelector('.ld-armed-target');
-          if (fig) {
-            fig.classList.add('ld-armed');
-            requestAnimationFrame(function () { requestAnimationFrame(function () { fig.classList.add('ld-go'); }); });
-          }
+        // total < 550ms. Ronda 2: condicionado a que el escenario esté
+        // a la vista (armInView, arriba).
+        if (i === 1 && !prm) {
+          armInView(panels[1], function () {
+            var fig = panels[1].querySelector('.ld-armed-target');
+            if (fig) {
+              fig.classList.add('ld-armed');
+              requestAnimationFrame(function () { requestAnimationFrame(function () { fig.classList.add('ld-go'); }); });
+            }
+          });
         }
         // P0-3 — el aterrizaje de la marca, una vez, al llegar al paso 3.
         // La secuencia vive en los transition-delay de .lg-armed/.lg-landed.
-        if (i === 3 && !prm && !panels[3].dataset.played) {
-          panels[3].dataset.played = '1';
-          var flagFig = panels[3].querySelector('.lg-vignette');
-          if (flagFig) {
-            flagFig.classList.add('lg-armed');
-            requestAnimationFrame(function () { requestAnimationFrame(function () { flagFig.classList.add('lg-landed'); }); });
-          }
+        // Ronda 2: condicionado a que el escenario esté a la vista
+        // (armInView, arriba).
+        if (i === 3 && !prm) {
+          armInView(panels[3], function () {
+            var flagFig = panels[3].querySelector('.lg-vignette');
+            if (flagFig) {
+              flagFig.classList.add('lg-armed');
+              requestAnimationFrame(function () { requestAnimationFrame(function () { flagFig.classList.add('lg-landed'); }); });
+            }
+          });
         }
       }
       back.addEventListener('click', function () { show(i - 1, true); });
@@ -1326,12 +1415,24 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       // Mantenimiento de la señal de desbordamiento: cada panel retira o
       // repone su degradado al desplazarse (24px de holgura para que se
       // levante justo antes del final exacto). Pasivo — nunca bloquea el
-      // scroll.
+      // scroll. Ronda 2: la misma comprobación se re-ejecuta cuando un
+      // cajón dentro del panel se abre o cierra (abrir añade
+      // desbordamiento sin evento de scroll) y cuando las webfonts se
+      // aplican (el reflujo tardío re-dimensiona el contenido). Ambas
+      // leen geometría solo dentro del marco — ninguna puede mover la
+      // página.
+      var cue = function (p) {
+        p.classList.toggle('ld-overflow', p.scrollHeight - p.scrollTop - p.clientHeight > 24);
+      };
       panels.forEach(function (p) {
-        p.addEventListener('scroll', function () {
-          p.classList.toggle('ld-overflow', p.scrollHeight - p.scrollTop - p.clientHeight > 24);
-        }, { passive: true });
+        p.addEventListener('scroll', function () { cue(p); }, { passive: true });
+        Array.prototype.forEach.call(p.querySelectorAll('details'), function (d) {
+          d.addEventListener('toggle', function () { cue(p); });
+        });
       });
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(function () { cue(panels[i]); });
+      }
       // P1-6/M4d — las flechas izquierda/derecha avanzan el recorrido.
       // Escuchan solo en el contenedor (nada a nivel de página), así
       // que actúan únicamente con el foco dentro del recorrido; con
@@ -1366,18 +1467,56 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       // a desplazar el layout sobre el marco. Con guarda: el re-anclaje
       // se omite en cuanto el lector desplaza por su cuenta.
       if (boot) {
-        var lastAnchorY = -1;
+        // Reconstrucción ronda 2 de la cadena de corrección, medida
+        // headless: (1) Los re-anclajes son INSTANTÁNEOS — con el
+        // scroll-behavior suave del sitio una pasada posterior podía
+        // pillar el scroll de la anterior aún en vuelo; y el salto
+        // nativo que se corrige también es instantáneo. Los motores
+        // viejos que rechazan el objeto de opciones degradan al suave
+        // por defecto. (2) La guarda de scroll del usuario vigila
+        // ENTRADA real del lector (rueda / toque / puntero / tecla) en
+        // vez de inferir por posición: Chromium mantiene vivo su
+        // propio ancla de fragmento durante los reflujos tempranos
+        // (webfonts, hojas asíncronas) y su re-scroll a la SECCIÓN —
+        // medido 66px bajo el objetivo del marco — se leía como "el
+        // lector se movió", silenciando la guarda de posición justo
+        // cuando más falta hacía la corrección. Cualquier entrada
+        // genuina sigue terminando las correcciones de arranque para
+        // siempre.
+        var userTookOver = false;
+        var takeOver = function () { userTookOver = true; };
+        window.addEventListener('wheel', takeOver, { passive: true, once: true });
+        window.addEventListener('touchstart', takeOver, { passive: true, once: true });
+        window.addEventListener('pointerdown', takeOver, { passive: true, once: true });
+        window.addEventListener('keydown', takeOver, { once: true });
         var reanchor = function () {
-          if (lastAnchorY >= 0 && Math.abs((window.pageYOffset || 0) - lastAnchorY) > 8) return;
+          if (userTookOver) return;
           var frame = document.getElementById('ldFrame');
           if (frame && frame.scrollIntoView) {
-            frame.scrollIntoView(true);
-            lastAnchorY = window.pageYOffset || 0;
+            try { frame.scrollIntoView({ block: 'start', behavior: 'instant' }); }
+            catch (err) { frame.scrollIntoView(true); }
           }
         };
         requestAnimationFrame(reanchor);
-        window.addEventListener('load', function () { requestAnimationFrame(reanchor); }, { once: true });
+        window.addEventListener('load', function () {
+          requestAnimationFrame(reanchor);
+          // Pasadas de asentamiento post-load: el ancla de fragmento
+          // del UA se re-dispara con reflujos tardíos; estas dan al
+          // marco la última palabra cuando fuentes y hojas asíncronas
+          // han terminado de mover el layout.
+          setTimeout(reanchor, 200);
+          setTimeout(reanchor, 600);
+        }, { once: true });
         if (document.fonts && document.fonts.ready) { document.fonts.ready.then(function () { requestAnimationFrame(reanchor); }); }
+        // Ronda 2: fonts.ready puede resolverse ANTES de que el cambio
+        // a Fraunces/Inter refluya los ~72px de encabezado sobre el
+        // marco, así que el último re-anclaje con guarda corría contra
+        // el layout previo al cambio. 'loadingdone' se dispara cuando
+        // un lote de webfonts se aplica de verdad; el re-anclaje se
+        // re-ejecuta entonces (misma guarda de entrada del usuario).
+        if (document.fonts && document.fonts.addEventListener) {
+          document.fonts.addEventListener('loadingdone', function () { requestAnimationFrame(reanchor); });
+        }
       }
     } catch (e) { /* static fallback stays complete */ }
   })();
