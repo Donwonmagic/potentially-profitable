@@ -1,7 +1,34 @@
 # FINDING — deep-history seasonal normals are nominal-dragged (latent honesty bug)
 
-**Status:** OPEN · operator decision required · **live site is SAFE** (not yet activated)
+**Status:** ✅ BUILDER FIXED 2026-07-10 (`04268f66b`, trailing-window per operator
+call) · **page activation pending a refresh regen** (see "Activation" below).
 **Found:** 2026-07-10, during the VB audit-loop Pass B (seed minify).
+**Severity:** was a LIVE false-signal on 58 ingredient pages ("current read is
+running above its typical {month}" off a 25yr-dragged normal); root cause now
+fixed at the builder.
+
+## Resolution (2026-07-10)
+
+`build-seasonality.mjs` now bounds each "typical {month}" normal to a trailing
+`WINDOW_YEARS=5` same-month window anchored to the series' own latest print
+(deterministic — ADR-014 precedent). Deep history still feeds the relative SHAPE
+surfaces. ribeye typical-June median $6.82 (25yr) → $10.76 (5yr, range
+$9.97–$11.59); current $13.14 now reads an honest ~+22% (beef genuinely elevated
+in 2026), not a fabricated +97%. New bounded-window `--check` invariant (no
+published month pools > WINDOW_YEARS) + 3 self-tests. `data/seasonality.json`
+regenerated.
+
+## Activation (the remaining step)
+
+The ingredient pages bake these bands at BUILD time. Run
+`node scripts/build-cost-index-pages.mjs` (or the daily `cost-index-refresh`
+workflow, which already runs it) to re-render the 58 pages with the honest 5yr
+bands and reconcile `check-cost-index-seasonal` — the same page regen the
+196-file `build-cost-index-pages --check` baseline drift already awaits.
+
+---
+
+**(original finding, for the record)**
 **Severity:** would be a fact-gate/honesty violation *if activated*. Currently latent.
 
 ## What
