@@ -756,62 +756,172 @@ function emitIngredientPage(ing, locale) {
   </section>` + pageTail;
 }
 
+// The hub is a robust OPEN-DATA EXPLORE surface, not a card index: a
+// searchable/sortable all-ingredient yield table, an on-device AP→EP yield-cost
+// calculator, CC-BY downloads (JSON+CSV) + a cite block, and a browse-by-category
+// tail. Interactive JS is inline + guarded by element id (no fetch, no storage).
+const YIELDS_LICENSE = 'https://creativecommons.org/licenses/by/4.0/';
 function emitHubPage(locale) {
-  const lang = locale === 'es' ? 'es' : 'en';
-  const base = locale === 'es' ? '/es' : '';
+  const es = locale === 'es';
+  const lang = es ? 'es' : 'en';
+  const base = es ? '/es' : '';
   const canonEn = 'https://muntin.digital/library/ingredient-yields/';
   const canonEs = 'https://muntin.digital/es/library/ingredient-yields/';
-  const title = locale === 'es' ? 'Rendimiento de ingredientes | Muntin Digital' : 'Ingredient yields | Muntin Digital';
-  const desc = locale === 'es'
-    ? 'El rendimiento (porción comestible) de ingredientes comunes de restaurante, con la cuenta AP→EP y la merma que la factura esconde. Tablas CIA.'
-    : 'The yield — edible portion — of common restaurant ingredients, with the AP→EP math and the loss your invoice hides. CIA yield tables.';
-  const heroH1 = locale === 'es' ? 'Rendimiento de ingredientes' : 'Ingredient yields';
-  const heroLede = locale === 'es'
-    ? 'Lo que compras no es lo que emplatas. Estas páginas muestran cuánto de cada ingrediente sobrevive a la limpieza y el recorte — y qué le hace a tu costo por platillo.'
-    : 'What you buy is not what you plate. These pages show how much of each ingredient survives cleaning and trim — and what that does to your plate cost.';
+  const baseUrl = es ? canonEs : canonEn;
+  const title = es ? 'Rendimiento de ingredientes — explorador de datos abiertos | Muntin Digital' : 'Ingredient yields — open-data explorer | Muntin Digital';
+  const desc = es
+    ? 'Explora el rendimiento (porción comestible) de 118 ingredientes de restaurante: busca, ordena y calcula el costo comestible. Datos abiertos CC-BY, con la cuenta AP→EP.'
+    : 'Explore edible-portion yield for 118 restaurant ingredients: search, sort, and compute edible-unit cost. Open CC-BY data with the AP→EP math your invoice hides.';
+  const heroH1 = es ? 'Rendimiento de ingredientes' : 'Ingredient yields';
+  const heroLede = es
+    ? 'Lo que compras no es lo que emplatas. Explora cuánto de cada ingrediente sobrevive a la limpieza y el recorte — busca, ordena, calcula tu costo comestible, y descarga el conjunto completo.'
+    : 'What you buy is not what you plate. Explore how much of each ingredient survives cleaning and trim — search, sort, compute your edible-unit cost, and download the whole set.';
+
+  const L = es ? {
+    open: 'Datos abiertos', lic: 'CC-BY 4.0', rows: '118 ingredientes', json: 'JSON', csv: 'CSV', cite: 'Citar',
+    citeHow: 'Cómo citar', srch: 'Buscar ingrediente', srchPh: 'p. ej. cebolla, salmón…',
+    cat: 'Categoría', allCats: 'Todas las categorías', sort: 'Ordenar',
+    sYieldHi: 'Rendimiento (mayor primero)', sYieldLo: 'Rendimiento (menor primero)', sName: 'Nombre (A–Z)',
+    colIng: 'Ingrediente', colCat: 'Categoría', colYield: 'Rendimiento', colLoss: 'Merma', colUnit: 'Unidad',
+    count: '{n} de {m} ingredientes', none: 'Ningún ingrediente coincide.',
+    calcH: 'Calculadora de costo comestible', calcLede: 'El precio que pagas es por el peso de compra. Esto convierte tu precio AP en costo por unidad comestible, con el rendimiento sourced. En tu dispositivo — nada se envía.',
+    calcIng: 'Ingrediente', calcPrice: 'Tu precio AP', calcUnit: 'por', calcEmpty: 'Escribe tu precio de compra para ver el costo por unidad comestible.',
+    browseH: 'Explorar por categoría',
+    srcLabel: 'Fuente', srcTail: 'tablas de rendimiento estándar del CIA, vía la',
+    pcTool: 'Calculadora de Costo por Platillo',
+    licNote: 'Los porcentajes de rendimiento son datos de referencia públicos; la compilación es CC-BY 4.0. Únete por slug al Cost Index. No es un precio.'
+  } : {
+    open: 'Open data', lic: 'CC-BY 4.0', rows: '118 ingredients', json: 'JSON', csv: 'CSV', cite: 'Cite',
+    citeHow: 'How to cite', srch: 'Search ingredient', srchPh: 'e.g. onion, salmon…',
+    cat: 'Category', allCats: 'All categories', sort: 'Sort',
+    sYieldHi: 'Yield (highest first)', sYieldLo: 'Yield (lowest first)', sName: 'Name (A–Z)',
+    colIng: 'Ingredient', colCat: 'Category', colYield: 'Yield', colLoss: 'Loss', colUnit: 'Unit',
+    count: '{n} of {m} ingredients', none: 'No ingredient matches.',
+    calcH: 'Edible-unit cost calculator', calcLede: 'You pay for purchase weight. This turns your AP price into cost per edible unit, at the sourced yield. On your device — nothing is sent.',
+    calcIng: 'Ingredient', calcPrice: 'Your AP price', calcUnit: 'per', calcEmpty: 'Type your purchase price to see the cost per edible unit.',
+    browseH: 'Browse by category',
+    srcLabel: 'Sourced', srcTail: 'CIA Standard Yield Tables, via the',
+    pcTool: 'Plate Cost Calculator',
+    licNote: 'Yield percentages are public reference data; the compilation is CC-BY 4.0. Join on slug to the Cost Index. Not a price.'
+  };
+
   const cats = {};
   INGREDIENTS.forEach(i => { (cats[i.cat] = cats[i.cat] || []).push(i); });
+  const catName = (k) => escHtml(es ? CATEGORIES[k].es : CATEGORIES[k].en);
+
+  // Explore table — all ingredients, default sorted by yield desc.
+  const sortedAll = INGREDIENTS.slice().sort((a, b) => b.yield - a.yield);
+  const tableRows = sortedAll.map(i => {
+    const nm = es ? i.es : i.en;
+    const unit = es ? i.unit_es : i.unit_en;
+    const y = Math.round(i.yield * 100);
+    return `<tr data-name="${escHtml(nm.toLowerCase())}" data-cat="${i.cat}" data-yield="${i.yield}">`
+      + `<th scope="row"><a href="${base}/library/ingredient-yields/${i.slug}/">${escHtml(nm)}</a></th>`
+      + `<td class="iy-x-cat">${catName(i.cat)}</td>`
+      + `<td class="iy-x-num">${y}%</td>`
+      + `<td class="iy-x-num iy-x-loss">${100 - y}%</td>`
+      + `<td class="iy-x-unit">${escHtml(unit)}</td></tr>`;
+  }).join('\n        ');
+  const catOptions = Object.keys(cats).sort((a, b) => catName(a).localeCompare(catName(b)))
+    .map(k => `<option value="${k}">${catName(k)}</option>`).join('');
+  const calcOptions = sortedAll.map(i =>
+    `<option value="${i.slug}" data-yield="${i.yield}" data-unit="${escHtml(es ? i.unit_es : i.unit_en)}">${escHtml(es ? i.es : i.en)}</option>`
+  ).join('');
+
+  // Browse-by-category tail (kept: strong internal links + SEO enumeration).
   const sections = Object.keys(cats).map(catKey => {
-    const c = CATEGORIES[catKey];
     const cards = cats[catKey].map(i => {
-      const nm = locale === 'es' ? i.es : i.en;
-      return `<div class="iy-card"><a href="${base}/library/ingredient-yields/${i.slug}/">${escHtml(nm)}</a><span class="iy-card-y">${Math.round(i.yield*100)}% ${locale === 'es' ? 'rendimiento' : 'yield'}</span></div>`;
+      const nm = es ? i.es : i.en;
+      return `<div class="iy-card"><a href="${base}/library/ingredient-yields/${i.slug}/">${escHtml(nm)}</a><span class="iy-card-y">${Math.round(i.yield * 100)}% ${es ? 'rendimiento' : 'yield'}</span></div>`;
     }).join('');
-    const catName = escHtml(locale === 'es' ? c.es : c.en);
-    return `<h2 class="iy-cat-h"><a href="${base}/library/ingredient-yields/${catKey}/">${catName}</a></h2><div class="iy-grid">${cards}</div>`;
+    return `<h3 class="iy-cat-h"><a href="${base}/library/ingredient-yields/${catKey}/">${catName(catKey)}</a></h3><div class="iy-grid">${cards}</div>`;
   }).join('\n');
+
   const items = INGREDIENTS.map((i, idx) => ({
     '@type': 'ListItem', 'position': idx + 1,
-    'item': { '@type': 'WebPage', 'name': (locale === 'es' ? i.es : i.en), 'url': (locale === 'es' ? canonEs : canonEn) + i.slug + '/' }
+    'item': { '@type': 'WebPage', 'name': (es ? i.es : i.en), 'url': baseUrl + i.slug + '/' }
   }));
-  const baseUrl = locale === 'es' ? canonEs : canonEn;
   const jsonld = JSON.stringify({
     '@context': 'https://schema.org',
     '@graph': [
       { '@type': 'CollectionPage', '@id': baseUrl + '#webpage', 'name': heroH1, 'description': heroLede, 'url': baseUrl,
-        'inLanguage': locale === 'es' ? 'es-US' : 'en-US', 'isPartOf': { '@id': 'https://muntin.digital/#website' }, 'publisher': { '@id': 'https://muntin.digital/#business' } },
+        'inLanguage': es ? 'es-US' : 'en-US', 'isPartOf': { '@id': 'https://muntin.digital/#website' }, 'publisher': { '@id': 'https://muntin.digital/#business' } },
       { '@type': 'ItemList', 'numberOfItems': items.length, 'itemListElement': items },
       // The hub is the ENTITY REGISTRY: a DefinedTermSet naming every ingredient term,
       // so an LLM lands here to enumerate all of them. And it IS a sourced dataset
-      // (N ingredients × edible-portion yield) — Dataset schema makes it citable.
-      { '@type': 'DefinedTermSet', '@id': baseUrl + '#termset', 'name': heroH1, 'inLanguage': locale === 'es' ? 'es-US' : 'en-US',
-        'hasDefinedTerm': INGREDIENTS.map((i) => ({ '@id': (locale === 'es' ? canonEs : canonEn) + i.slug + '/#term' })) },
+      // (N ingredients × edible-portion yield) — Dataset schema + a DataDownload
+      // distribution make it a citable, machine-fetchable open dataset.
+      { '@type': 'DefinedTermSet', '@id': baseUrl + '#termset', 'name': heroH1, 'inLanguage': es ? 'es-US' : 'en-US',
+        'hasDefinedTerm': INGREDIENTS.map((i) => ({ '@id': baseUrl + i.slug + '/#term' })) },
       { '@type': 'Dataset', '@id': baseUrl + '#dataset',
-        'name': locale === 'es' ? 'Rendimiento de ingredientes de restaurante (porción comestible)' : 'Restaurant ingredient yields (edible portion)',
-        'description': locale === 'es'
+        'name': es ? 'Rendimiento de ingredientes de restaurante (porción comestible)' : 'Restaurant ingredient yields (edible portion)',
+        'description': es
           ? `Rendimiento de porción comestible de ${items.length} ingredientes comunes de restaurante, según las tablas de rendimiento estándar del CIA.`
           : `Edible-portion yield for ${items.length} common restaurant ingredients, per the CIA Standard Yield Tables.`,
-        'url': baseUrl, 'inLanguage': locale === 'es' ? 'es-US' : 'en-US', 'isAccessibleForFree': true,
+        'url': baseUrl, 'inLanguage': es ? 'es-US' : 'en-US', 'isAccessibleForFree': true, 'license': YIELDS_LICENSE,
         'creator': { '@id': 'https://muntin.digital/#business' }, 'citation': 'CIA Standard Yield Tables / USDA Food Buying Guide',
-        'variableMeasured': locale === 'es' ? 'porcentaje de rendimiento de porción comestible' : 'edible-portion yield percent' },
+        'variableMeasured': es ? 'porcentaje de rendimiento de porción comestible' : 'edible-portion yield percent',
+        'distribution': [
+          { '@type': 'DataDownload', 'encodingFormat': 'application/json', 'contentUrl': 'https://muntin.digital/cost-index/yields.json' },
+          { '@type': 'DataDownload', 'encodingFormat': 'text/csv', 'contentUrl': 'https://muntin.digital/cost-index/yields.csv' }
+        ] },
       { '@type': 'BreadcrumbList', 'itemListElement': [
-        ['Home','https://muntin.digital/'],['Library','https://muntin.digital/library/'],[heroH1, baseUrl]
-      ].map((c, i) => ({ '@type': 'ListItem', 'position': i + 1, 'name': (locale === 'es' && i < 2 ? ['Inicio','Biblioteca'][i] : c[0]), 'item': c[1] })) }
+        ['Home', 'https://muntin.digital/'], ['Library', 'https://muntin.digital/library/'], [heroH1, baseUrl]
+      ].map((c, i) => ({ '@type': 'ListItem', 'position': i + 1, 'name': (es && i < 2 ? ['Inicio', 'Biblioteca'][i] : c[0]), 'item': c[1] })) }
     ]
   });
-  const bcHome = locale === 'es' ? 'Inicio' : 'Home';
-  const bcLib = locale === 'es' ? 'Biblioteca' : 'Library';
-  return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld }) + `
+  const bcHome = es ? 'Inicio' : 'Home';
+  const bcLib = es ? 'Biblioteca' : 'Library';
+  const citeText = `Muntin Digital, "Ingredient yields (edible portion)," open dataset, CC-BY 4.0. ${baseUrl}`;
+  const calcTpls = JSON.stringify({
+    empty: L.calcEmpty,
+    out: es ? '{name}: a {pct}% de rendimiento, {ap}/{unit} de compra cuesta {ep} por {unit} comestible.'
+            : '{name}: at {pct}% yield, {ap}/{unit} bought costs {ep} per edible {unit}.',
+    sub: es ? 'La merma se lleva {loss}% — {diff} de cada {ap} nunca llega al plato.'
+            : 'Trim eats {loss}% — {diff} of every {ap} never reaches the plate.'
+  });
+
+  const exploreCss = `
+.iy-x-open{display:flex;flex-wrap:wrap;align-items:center;gap:9px 14px;margin:20px 0 0;padding:12px 16px;border:1px solid var(--line);border-radius:10px;background:var(--white);font-size:13.5px}
+.iy-x-open .iy-x-open-label{font-weight:700;color:var(--ink)}
+.iy-x-open .iy-x-lic{font-weight:700;font-size:11px;letter-spacing:.03em;color:#fff;background:var(--teal);border-radius:4px;padding:2px 7px}
+.iy-x-open .iy-x-open-rows{color:var(--ink-soft)}
+.iy-x-open a{color:var(--teal);font-weight:600;text-decoration:none;border-bottom:1px solid transparent}
+.iy-x-open a:hover{border-bottom-color:currentColor}
+.iy-x-open .iy-x-sep{color:var(--line)}
+.iy-x-cite{margin:10px 0 0}
+.iy-x-cite summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--ink-soft)}
+.iy-x-cite code{display:block;margin:8px 0 0;padding:10px 12px;background:var(--cream-2,#EDEEF1);border-radius:6px;font-size:12.5px;line-height:1.5;white-space:pre-wrap;word-break:break-word}
+.iy-x-tools{margin:26px 0 0;padding:14px 16px;background:var(--white);border:1px solid var(--line);border-radius:12px;display:flex;flex-wrap:wrap;gap:12px 14px;align-items:end}
+.iy-x-field{display:flex;flex-direction:column;gap:5px}
+.iy-x-field label{font-size:11px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em}
+.iy-x-field input,.iy-x-field select{font-size:16px;padding:9px 11px;border:1px solid var(--stone,#cfc8bb);border-radius:7px;background:#fff;color:var(--ink);min-height:44px}
+.iy-x-search{min-width:200px;flex:1 1 220px}
+.iy-x-count{font-size:13px;color:var(--ink-soft);margin:12px 2px 0}
+.iy-x-tablewrap{margin:8px 0 0;overflow-x:auto}
+.iy-x-table{border-collapse:collapse;width:100%;font-size:15px;min-width:560px}
+.iy-x-table thead th{font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);font-weight:700;text-align:left;padding:10px 14px;border-bottom:2px solid var(--line);white-space:nowrap}
+.iy-x-table thead th.iy-x-num{text-align:right}
+.iy-x-table tbody th{font-weight:500;text-align:left;padding:11px 14px;border-bottom:1px solid var(--line)}
+.iy-x-table tbody td{padding:11px 14px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.iy-x-table tbody th a{color:var(--ink);text-decoration:none;border-bottom:1px solid transparent}
+.iy-x-table tbody th a:hover{color:var(--teal);border-bottom-color:currentColor}
+.iy-x-num{text-align:right;font-weight:600}
+.iy-x-loss{color:var(--ink-soft);font-weight:500}
+.iy-x-cat,.iy-x-unit{color:var(--ink-soft);font-size:13.5px}
+.iy-x-empty td{padding:20px 14px;color:var(--ink-soft);font-size:14px;text-align:left}
+.iy-x-calc{margin:28px 0 0;padding:18px 20px;border-radius:12px;background:var(--cream-2,#EDEEF1);border:1px solid var(--line)}
+.iy-x-calc h2{font-size:17px;margin:0 0 4px}
+.iy-x-calc-lede{font-size:13.5px;color:var(--ink-soft);margin:0 0 14px;max-width:62ch}
+.iy-x-calc-row{display:flex;flex-wrap:wrap;gap:12px 14px;align-items:end}
+.iy-x-calc-cur{font-size:15px;color:var(--ink-soft);padding-bottom:10px}
+.iy-x-calc-out{margin:14px 0 0;font-size:15px;line-height:1.55;color:var(--ink)}
+.iy-x-calc-ep{font-weight:600}
+.iy-x-calc-out small{display:block;font-size:12.5px;color:var(--ink-soft);margin-top:5px;font-weight:400}
+.iy-cat-h{margin:20px 0 0}
+.iy-x-browse-h{font-family:var(--font-display);font-size:19px;margin:34px 0 0}`;
+
+  return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld, extraCss: exploreCss }) + `
   <p class="breadcrumb">
     <a href="${base}/">${bcHome}</a> ›
     <a href="${base}/library/">${bcLib}</a> ›
@@ -820,13 +930,124 @@ function emitHubPage(locale) {
   <section class="iy-hero">
     <h1>${escHtml(heroH1)}</h1>
     <p class="iy-hero-lede">${escHtml(heroLede)}</p>
+    <div class="iy-x-open">
+      <span class="iy-x-open-label">${L.open}</span>
+      <span class="iy-x-lic">${L.lic}</span>
+      <span class="iy-x-open-rows">${L.rows}</span>
+      <span class="iy-x-sep">·</span>
+      <a href="/cost-index/yields.json" download>${L.json}</a>
+      <a href="/cost-index/yields.csv" download>${L.csv}</a>
+    </div>
+    <details class="iy-x-cite">
+      <summary>${L.citeHow}</summary>
+      <code>${escHtml(citeText)}</code>
+    </details>
   </section>
   <section class="iy-body">
+    <div class="iy-x-tools" role="search">
+      <div class="iy-x-field iy-x-search">
+        <label for="iyxSearch">${L.srch}</label>
+        <input type="search" id="iyxSearch" placeholder="${escHtml(L.srchPh)}" autocomplete="off" />
+      </div>
+      <div class="iy-x-field">
+        <label for="iyxCat">${L.cat}</label>
+        <select id="iyxCat"><option value="">${L.allCats}</option>${catOptions}</select>
+      </div>
+      <div class="iy-x-field">
+        <label for="iyxSort">${L.sort}</label>
+        <select id="iyxSort">
+          <option value="yield-desc">${L.sYieldHi}</option>
+          <option value="yield-asc">${L.sYieldLo}</option>
+          <option value="name">${L.sName}</option>
+        </select>
+      </div>
+    </div>
+    <p class="iy-x-count" id="iyxCount" aria-live="polite">${L.count.replace('{n}', String(sortedAll.length)).replace('{m}', String(sortedAll.length))}</p>
+    <div class="iy-x-tablewrap">
+      <table class="iy-x-table" id="iyxTable">
+        <thead><tr>
+          <th scope="col">${L.colIng}</th>
+          <th scope="col">${L.colCat}</th>
+          <th scope="col" class="iy-x-num">${L.colYield}</th>
+          <th scope="col" class="iy-x-num">${L.colLoss}</th>
+          <th scope="col">${L.colUnit}</th>
+        </tr></thead>
+        <tbody id="iyxBody">
+        ${tableRows}
+        <tr class="iy-x-empty" id="iyxEmpty" hidden><td colspan="5">${L.none}</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <section class="iy-x-calc" id="iyxCalc" data-tpls='${calcTpls.replace(/'/g, '&#39;')}'>
+      <h2>${L.calcH}</h2>
+      <p class="iy-x-calc-lede">${escHtml(L.calcLede)}</p>
+      <div class="iy-x-calc-row">
+        <div class="iy-x-field">
+          <label for="iyxCalcIng">${L.calcIng}</label>
+          <select id="iyxCalcIng">${calcOptions}</select>
+        </div>
+        <div class="iy-x-field">
+          <label for="iyxCalcPrice">${L.calcPrice}</label>
+          <input type="number" inputmode="decimal" min="0" step="0.01" id="iyxCalcPrice" placeholder="0.00" />
+        </div>
+        <span class="iy-x-calc-cur" id="iyxCalcUnit"></span>
+      </div>
+      <p class="iy-x-calc-out" id="iyxCalcOut"><span class="iy-x-calc-ep"></span><small></small></p>
+    </section>
+
+    <h2 class="iy-x-browse-h">${L.browseH}</h2>
     ${sections}
-    <p class="iy-source"><strong>${locale === 'es' ? 'Fuente' : 'Sourced'}:</strong> ${locale === 'es'
-      ? `tablas de rendimiento estándar del CIA, vía la <a href="${base}/tools/plate-cost/">Calculadora de Costo por Platillo</a>`
-      : `CIA Standard Yield Tables, via the <a href="${base}/tools/plate-cost/">Plate Cost Calculator</a>`}</p>
-  </section>` + pageTail;
+    <p class="iy-source"><strong>${L.srcLabel}:</strong> ${L.srcTail} <a href="${base}/tools/plate-cost/">${L.pcTool}</a>. ${escHtml(L.licNote)}</p>
+  </section>
+  <script>
+  (function(){
+    var body = document.getElementById('iyxBody'); if(!body) return;
+    var search = document.getElementById('iyxSearch'), catSel = document.getElementById('iyxCat'),
+        sortSel = document.getElementById('iyxSort'), count = document.getElementById('iyxCount'),
+        empty = document.getElementById('iyxEmpty');
+    var rows = Array.prototype.slice.call(body.querySelectorAll('tr[data-name]'));
+    var total = rows.length;
+    var tpl = ${JSON.stringify(L.count)};
+    function apply(){
+      var q = (search.value||'').trim().toLowerCase(), cat = catSel.value, sort = sortSel.value, shown = 0;
+      var vis = rows.filter(function(r){
+        var ok = (!q || r.getAttribute('data-name').indexOf(q) !== -1) && (!cat || r.getAttribute('data-cat') === cat);
+        r.hidden = !ok; if (ok) shown++; return ok;
+      });
+      vis.sort(function(a,b){
+        if (sort === 'name') return a.getAttribute('data-name').localeCompare(b.getAttribute('data-name'));
+        var d = parseFloat(b.getAttribute('data-yield')) - parseFloat(a.getAttribute('data-yield'));
+        return sort === 'yield-asc' ? -d : d;
+      });
+      vis.forEach(function(r){ body.appendChild(r); });
+      body.appendChild(empty);
+      empty.hidden = shown !== 0;
+      count.textContent = tpl.replace('{n}', shown).replace('{m}', total);
+    }
+    search.addEventListener('input', apply); catSel.addEventListener('change', apply); sortSel.addEventListener('change', apply);
+    apply();
+  })();
+  (function(){
+    var calc = document.getElementById('iyxCalc'); if(!calc) return;
+    var sel = document.getElementById('iyxCalcIng'), price = document.getElementById('iyxCalcPrice'),
+        unitEl = document.getElementById('iyxCalcUnit'), out = document.getElementById('iyxCalcOut');
+    var ep = out.querySelector('.iy-x-calc-ep'), sub = out.querySelector('small');
+    var tpl; try { tpl = JSON.parse(calc.getAttribute('data-tpls')); } catch(e){ return; }
+    function money(n){ return '$' + (Math.round(n*100)/100).toFixed(2); }
+    function curUnit(){ var o = sel.options[sel.selectedIndex]; return o ? (o.getAttribute('data-unit')||'unit') : 'unit'; }
+    function render(){
+      var o = sel.options[sel.selectedIndex]; if(!o){ return; }
+      var yld = parseFloat(o.getAttribute('data-yield')), unit = curUnit(), ap = parseFloat(price.value);
+      unitEl.textContent = ${JSON.stringify(L.calcUnit)} + ' ' + unit;
+      if(!(ap>0) || !(yld>0)){ ep.textContent = tpl.empty; sub.textContent=''; return; }
+      var epv = ap/yld, pct = Math.round(yld*100), loss = 100-pct, diff = epv-ap;
+      ep.textContent = tpl.out.replace('{name}', o.textContent).replace('{pct}', pct).replace('{ap}', money(ap)).replace(/\\{unit\\}/g, unit).replace('{ep}', money(epv));
+      sub.textContent = tpl.sub.replace('{loss}', loss).replace('{ap}', money(ap)).replace('{diff}', money(diff));
+    }
+    sel.addEventListener('change', render); price.addEventListener('input', render); render();
+  })();
+  </script>` + pageTail;
 }
 
 // A routable category hub — the taxonomy middle tier (Library → master hub →
