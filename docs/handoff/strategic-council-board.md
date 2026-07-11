@@ -40,15 +40,23 @@ discoverable). Capability is shown, never invented.
 - **`ffabeeadf` — home hero de-solo (EN+ES).** Positioning pivot on the flagship: dropped the first-person
   "numbers I check on my own shifts" + removed the hero-meta-note (Don byline + "Reply within 4 hours").
   Removal only, honesty boundary held. Gates green; headless clean.
-- **`37c70aac4` — home hero window → live Cost Index instrument (EN+ES).** The decorative empty muntin
-  window is now a functional sample cost read: big tabular-mono headline (+14.6% count-up), flagged mover
-  chip, hairline-divided rows (grille AS structure), "one thing to look at" verdict. Real 07-06 edition
-  DIRECTIONS (onion +14.6%, ribeye/chicken easing), unmistakably labelled SAMPLE/ILLUSTRATIVE/"Not your
-  prices" — no fabricated $ (fact gate 0 hits). Scoped `.ci-inst` CSS (tokens only → css-drift unchanged
-  504; scoped mono stack), auto-themes, scan boot, degrade-safe. Shells regenerated. Verified: all gates +
-  headless both themes 360/390/1280 + ES. Screenshots sent to founder. **Visual read: strong, app-grade,
-  on-brand both themes.** NOTE for later: the h1 is still Fraunces serif (type unification pending) and the
-  nav CTA still says "Reach Don" (solo signal — nav is a synced _includes; separate increment).
+- **`37c70aac4` (+`00e596345` missed shell) — home hero window → live Cost Index instrument (EN+ES).**
+  Decorative empty muntin window → functional sample cost read: tabular-mono headline (+14.6% count-up),
+  flagged mover chip, hairline rows (grille AS structure), verdict. Real 07-06 DIRECTIONS, labelled
+  SAMPLE/ILLUSTRATIVE/"Not your prices" (fact gate 0 hits). Scoped `.ci-inst` CSS (tokens only, css-drift
+  unchanged 504), auto-themes, scan boot, degrade-safe. Screenshots sent. **Strong, app-grade both themes.**
+- **`fe1e76808` — de-solo the nav + footer + home CTAs, company voice, SITE-WIDE (EN+ES).** "Reach Don" →
+  "Contact" / "Contacta a Don" → "Contacto" across nav CTA + footer CTA + footer link + mobile sticky bar;
+  first-person "A direct line to Don. I read every one." → "A direct line to Muntin — every message is
+  read."; neutralized the "Don is around" presence-pulse titles. Canonical `_includes/{,es/}{nav,footer}.html`
+  → sync-includes (1235 nav + 727 footer, sync --check clean, no count drift). Home body final-CTA also
+  de-solo'd (first-person → company voice). Honesty boundary held (company voice only, nothing fabricated).
+  Verified: gates + headless both themes EN/ES. **Deferred:** body-content solo residuals on ~13 other pages
+  (/window/ itself, ledger, studio, for/restaurants, course) + the generator-owned cost-index/open pages
+  (regen picks up the synced chrome). NOTE: h1 still Fraunces serif — type unification is a considered
+  SITE-WIDE decision (don't do piecemeal). The /window/ page is inherently "the line to Don" — its
+  personal-access framing may be a deliberate FEATURE, not a bug: **founder-fork to surface** (keep the
+  human-access differentiator vs full company-voice?).
 
 **NEXT (autonomous, ordered):**
 1. **Home hero visual → the instrument.** The hero already holds a DECORATIVE empty muntin window
