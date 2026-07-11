@@ -97,6 +97,19 @@ for (const [slug, post] of Object.entries(tags.blog_posts || {})) {
   // both the home + learn rails (EN and ES).
   const ns  = post.namespace || 'blog';
   const url = `/${ns}/${slug}/`;
+  // Fail loud on a card that would 404: a library article registered in
+  // library-tags.json WITHOUT its "namespace" field silently defaults to
+  // /blog/ and ships a dead link (bit us 2026-06 on the old library posts,
+  // again 2026-07-05 on the beef-prices article). The rail must never link
+  // a path that doesn't exist in the tree.
+  if (!fs.existsSync(path.join(REPO, ns, slug, 'index.html'))) {
+    console.error(
+      `build-library-recent: /${ns}/${slug}/ does not exist — ` +
+      `"${slug}" in data/library-tags.json is missing (or has a wrong) ` +
+      `"namespace" field. Refusing to stamp a dead card.`
+    );
+    process.exit(1);
+  }
   // Prefer the friendly label from tool-knit.json.articles{} (keyed by the real
   // namespaced URL) so the card uses the same short text as the rest of the
   // ecosystem; fall back to the long title if no label is set.

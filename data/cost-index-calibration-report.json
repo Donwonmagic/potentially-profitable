@@ -4,31 +4,31 @@
   "band": {
     "method": "split/EnbPI conformal, raw walk-forward coverage (un-tuned)",
     "nominal": 0.8,
-    "pooledCoverage": 0.767,
-    "items": 76,
-    "scoredSteps": 79567,
-    "minItemCoverage": 0.731,
-    "maxItemCoverage": 0.875,
-    "underCovering": 0
+    "pooledCoverage": 0.772,
+    "items": 32,
+    "scoredSteps": 4588,
+    "minItemCoverage": 0.682,
+    "maxItemCoverage": 0.885,
+    "underCovering": 2
   },
   "trend": {
     "method": "price-only direction call, reliability by signal strength",
-    "baseline": 0.502,
-    "overallHitRate": 0.505,
-    "scoredCalls": 34160,
-    "items": 80,
+    "baseline": 0.501,
+    "overallHitRate": 0.537,
+    "scoredCalls": 1858,
+    "items": 41,
     "tiers": {
       "low": {
-        "n": 6582,
-        "hitRate": 0.5
+        "n": 319,
+        "hitRate": 0.48
       },
       "medium": {
-        "n": 14079,
-        "hitRate": 0.482
+        "n": 668,
+        "hitRate": 0.506
       },
       "high": {
-        "n": 13499,
-        "hitRate": 0.532
+        "n": 871,
+        "hitRate": 0.582
       }
     }
   }

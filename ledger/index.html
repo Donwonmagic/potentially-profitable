@@ -44,7 +44,34 @@
       "inLanguage": "en-US",
       "isPartOf": { "@id": "https://muntin.digital/#website" },
       "publisher": { "@id": "https://muntin.digital/#business" },
+      "mainEntity": { "@id": "https://muntin.digital/ledger/#software" },
       "dateModified": "2026-06-17"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://muntin.digital/ledger/#software",
+      "name": "Muntin Ledger",
+      "applicationCategory": "BusinessApplication",
+      "applicationSubCategory": "FinanceApplication",
+      "operatingSystem": "Web",
+      "url": "https://muntin.digital/ledger/",
+      "description": "Muntin Ledger reads vendor invoices with templates and rules — no language model in the path — files them in a searchable ledger, and flags price hikes against your own six-month history.",
+      "publisher": { "@id": "https://muntin.digital/#business" },
+      "offers": {
+        "@type": "Offer",
+        "price": "19.00",
+        "priceCurrency": "USD",
+        "priceSpecification": {
+          "@type": "UnitPriceSpecification",
+          "price": "19.00",
+          "priceCurrency": "USD",
+          "unitCode": "MON",
+          "unitText": "per month"
+        },
+        "availability": "https://schema.org/PreOrder",
+        "availabilityStarts": "2026-11-13",
+        "description": "Muntin Ledger is free during private beta; general availability is November 13, 2026. Founding-list members before launch get the founding rate: three months free, then $19 a month per location."
+      }
     },
     {
       "@type": "BreadcrumbList",
@@ -525,10 +552,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <span class="lg-pane-title">Invoice lines &mdash; filed</span>
               <span class="lg-chip">Sample ledger &middot; illustrative</span>
             </div>
+            <!-- Vignette trio (renumbered 2026-07-07, rule-true): $24.10 /
+                 $24.35 priors, $29.45 flagged — +$5.23 over the $24.22
+                 trailing median (+21.6%), which clears computePriceHike's
+                 co-gate (>=8% AND >=$5.00). Verified against
+                 tools/_shared/bench-lookup.js; matches /ledger/demo/.
+                 (The pre-renumber flagged read sat under the five-dollar
+                 floor, so the rule would never actually have fired.) -->
             <div class="lg-rows">
               <div class="lg-row"><span class="lg-d">Jun 12</span><span class="lg-v">Produce vendor</span><span class="lg-i">Romaine, 24&nbsp;ct</span><span class="lg-n">$24.10</span><span class="lg-s">filed</span></div>
               <div class="lg-row"><span class="lg-d">Jun 19</span><span class="lg-v">Produce vendor</span><span class="lg-i">Romaine, 24&nbsp;ct</span><span class="lg-n">$24.35</span><span class="lg-s">filed</span></div>
-              <div class="lg-row lg-row--flag"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Romaine, 24&nbsp;ct</span><span class="lg-n">$27.90</span><span class="lg-flag"><span aria-hidden="true">&#9650;</span> price moved</span></div>
+              <div class="lg-row lg-row--flag"><span class="lg-d">Jun 26</span><span class="lg-v">Produce vendor</span><span class="lg-i">Romaine, 24&nbsp;ct</span><span class="lg-n">$29.45</span><span class="lg-flag"><span aria-hidden="true">&#9650;</span> price moved</span></div>
             </div>
             <svg class="lg-step" viewBox="0 0 280 44" width="280" height="44" aria-hidden="true" focusable="false">
               <rect class="band" x="8" y="14" width="264" height="16" rx="2"></rect>
@@ -536,7 +570,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <polyline class="move" points="186,22 204,9 272,8"></polyline>
               <circle class="dot" cx="272" cy="8" r="3"></circle>
             </svg>
-            <p class="lg-stepnote">The line steps out of its six-month band &mdash; that&rsquo;s the flag.</p>
+            <p class="lg-stepnote">The line steps out of the band of its prior reads &mdash; that&rsquo;s the flag.</p>
           </div>
           <figcaption class="lg-cap"><strong>Illustrative sample</strong> &mdash; how a filed invoice line gets flagged against your own price history. Not live or customer data.</figcaption>
         </figure>
@@ -601,11 +635,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <div class="lg-pricing">
         <div>
           <h2 id="pricing-h">Pricing and the founding list.</h2>
-          <p class="lead">Muntin Ledger is free while in private beta; general availability is November 13, 2026. Pricing is posted in writing at <a href="https://ledger.muntin.digital/">ledger.muntin.digital</a>, with the per-invoice cost math published next to it. Operators who join the founding list before launch get the founding rate: <strong>three months free, then $19 a month for as long as they stay</strong>. You can join the list right here; the numbers are posted on the product site too.</p>
+          <p class="lead">Muntin Ledger is free while in private beta; general availability is November 13, 2026. Pricing is posted in writing at <a href="https://ledger.muntin.digital/">ledger.muntin.digital</a>, with the per-invoice cost math published next to it. Operators who join the founding list before launch get the founding rate: <strong>three months free, then $19 a month per location for as long as they stay</strong>. You can join the list right here; the numbers are posted on the product site too.</p>
         </div>
         <div class="lg-price-lockup">
           <p class="lg-price-figure"><span class="lg-price-cur">$</span>19<span class="lg-price-per">a month</span></p>
-          <p class="lg-price-terms">The founding rate: three months free, then $19 a month &mdash; for as long as you stay.</p>
+          <p class="lg-price-terms">The founding rate: three months free, then $19 a month per location &mdash; for as long as you stay.</p>
           <p class="lg-price-ga">General availability &mdash; <span class="lg-price-date">November 13, 2026</span> &middot; <!-- count:ledger.ga_weeks_out -->19<!-- /count --> weeks out</p>
         </div>
           <div class="lg-founding" style="grid-column:1/-1;border-top:1px solid rgba(246,247,248,.14);padding-top:26px;margin-top:6px">

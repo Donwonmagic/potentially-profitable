@@ -8,12 +8,12 @@ externalized so a fresh session can resume in one read. The environment is
 ephemeral and a new session does not remember the prior chat — only what's in the
 repo survives. Update this file as threads move.
 
-**Branches:** both repos develop on `claude/muntin-strategic-council-rqdehe`
-(storefront `potentially-profitable`, product `Muntin-Invoice-Decoder`). The prior
-dev branch `claude/muntin-digital-strategy-07sowb` is merged to main (storefront
-PR #482, product PR #227) and closed — start fresh from `main`.
+**Branches:** both repos develop on `claude/muntin-strategic-council-exsghc`
+(storefront `potentially-profitable`, product `Muntin-Invoice-Decoder`). Prior
+council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
+#234–#239 product) are merged to main and closed.
 
-## ⮕ CURRENT STATE — Cost Index data-company expansion (updated 2026-07-09)
+## ⮕ CURRENT STATE — Cost Index data-company expansion (updated 2026-07-11)
 
 **Session on branch `claude/vendor-benchmark-redesign-yn273q`** (storefront `potentially-profitable`). Thread: turn the Cost Index into a genuine **data company + open library** — surface the deep price history, add the "events that moved the market" layer, and wire the HONEST use of new public data (NASS/Census/EIA). Cadence: plan → build → audit → iterate, with **expert panels at the forks**. `check-all` baseline unchanged (232–233/252; the ~19 failures are the deploy-regenerated site-wide idempotency drift, NOT ours — see Gotchas). Every cost-index/events/context gate GREEN.
 
@@ -96,7 +96,378 @@ Ran the recurring-loop re-audit after Passes A–E + seasonality (6 lenses → p
 
 ---
 
-## ⮕ CURRENT STATE — read this first (updated 2026-06-27)
+## ⮕ CURRENT STATE — read this first (updated 2026-07-09)
+
+### 🔴 TWO LIVE REDS ON MAIN — **both have fixes on `-exsghc`, UNMERGED (updated 2026-07-10)**
+
+A fresh storefront session (branch `-rqdehe`, reset onto main) reconstructed state and
+verified two independent reds on main. **Both are real, NOT the self-healing "(idem)"
+deploy-regeneration class.** As of 2026-07-10 both fixes sit on the
+`claude/muntin-strategic-council-exsghc` dev branch, pushed and gate-verified — **merging
+that branch clears both reds.** RED #1's fix = the calibration re-stamp as the refresh
+build's final action (found independently by the `-exsghc` lane on 07-09, same diagnosis).
+RED #2's fix = the "companion tools" line (Cost Pulse + plate-cost) added to the frozen
+07-06 weekly's Go-deeper list AND to both generator templates (weekly `goDeeperBlock` +
+monthly methodology block in `build-cost-index-dispatch.mjs`) so no future emit can
+reproduce it — guardrails now 98/98. Original findings kept below for the record.
+
+**RED #3 — the REAL Cloudflare deploy blocker (found 2026-07-10 from PR #513's Workers
+build log, fixed same session).** The Workers "muntin-digital" check was red — NOT a
+build-infra glitch (initial hypothesis, wrong). The deploy runs the full build chain then
+`check-all.mjs`, which exited 1 on its single non-idem failure: **`claims.json` out of
+sync with `data/sourced-claims.json`**. The per-location pricing edit to the
+`ledger_founding_offer_2026` claim never regenerated the public `claims.json`, and the
+deploy build chain does NOT run `build-claims-json.mjs` (same non-self-healing class as
+RED #2). Fixed: rebuilt `claims.json` (as_of 07-02→07-09, "$19 a month per location",
+used_in += demo paths), committed `d04cf4f44`. `build-claims-json.mjs --check` in sync;
+full suite now 0 non-idem reds. **Lesson for a fresh session:** whenever you edit
+`data/sourced-claims.json`, also run `node scripts/build-claims-json.mjs` and commit
+`claims.json` — the deploy won't do it for you.
+
+**RED #1 — the MWF Cost Index heartbeat is FROZEN at the 2026-07-06 read.**
+The 07-08 Wed refresh (`cost-index-refresh.yml` run #34, 2026-07-08T15:08Z, `schedule`)
+**failed and committed nothing** — last data commit is still `9239d1ac` (07-06). Cause (from
+run #34's job logs): the fresh read moved the calibration numbers, and
+`inject-cost-index-calibration.mjs --check` found the methodology-page sentinels stale
+(`✗ cost-index/methodology/index.html calibration sentinels are stale`, EN+ES → exit 1). The
+workflow runs that injector in write mode (`cost-index-refresh.yml:141`) before the `--check`
+(`:175`), so this is an **ordering bug** — a step between L141 and L175 re-emits the methodology
+pages and drops the fresh sentinels. RECURRENCE of the #504 "calibration sentinels can't
+self-heal" class. **Fix:** move/duplicate the calibration inject to run AFTER the final
+methodology page-gen and before the `--check`, and stage `cost-index/methodology/index.html` +
+`es/…`. Verify by reproducing the refresh's rebuild order locally. Until fixed, every MWF run
+re-freezes.
+
+**RED #2 — the next Workers deploy will fail on `check-content-guardrails`.**
+`blog/cost-index-week-2026-07-06/index.html` has exactly **1** `/tools/<slug>/` link
+(`/tools/cost-pulse/`); the gate (`check-content-guardrails.mjs:87`) requires **≥2**. Every
+other link is `/cost-index/*`, which the matcher doesn't count. **Verified non-self-healing:**
+the deploy build's CTA injectors (post-end-cta, smart-next, ledger-cta) leave it at 1. On main's
+frozen tree this is the ONLY non-idem red, so a `wrangler` build of the next merge fails here
+(same failure mode as #489). **Fix:** durably in the dispatch generator (so the first Aug monthly
+edition can't reproduce it) AND a direct 2nd honest `/tools/` link on the frozen 07-06 weekly
+(historical — cadence is monthly now — so a direct edit won't be clobbered). **RISK TO CONFIRM:**
+if #2 has been red since ~07-06, Cloudflare Workers deploys may have been failing that whole time
+→ the ledger-demo work (#505–508) may NOT be live. Cloudflare deploy status isn't visible from
+the session; confirm.
+
+**Recommended order:** fix #1 (unfreeze the heartbeat) → fix #2 (unblock the deploy) → resume the
+July Monthly Dispatch edition build. Open PR **#501** (yn273q, Open-data `/open/`) still needs
+triage. The 07-09 storefront catch-up itself was read-only (this board note is its only commit,
+via PR #511 → superseded by this integrated version); develop on `-rqdehe`, author config
+`Claude <noreply@anthropic.com>`.
+
+### 🟣 SESSION 2026-07-09 (product repo, branch `claude/muntin-strategic-council-fzdd1j`) — `/try` demo finished + reliability roadmap closed
+
+**⚠ Branch note:** this session was pinned to `-fzdd1j` (per its task config); its
+product work merged to main via **PR #239** (Ledger) and the branch now sits at
+latest main. The board's "active branch is `-exsghc`" line above predates this —
+these two council branches ran concurrently. Nothing is lost; `-fzdd1j`'s work is
+on main. Reconcile the branch name next session if the founder wants one lane.
+
+**The arc (all on main via #239):** completed the first-try reliability roadmap AND
+built + hardened + visually elevated the anonymous `/try` demo. Recorded as
+**product ADR-007** (`docs/ux/decisions/ADR-007-try-anonymous-demo-and-gating.md`).
+
+  - **Reliability roadmap COMPLETE** (`docs/plans/first-try-reliability-roadmap.md`):
+    community column-rule pool Slices 1–6 (row-invariant `column_v2`, community
+    confidence band, column-fan apply, held-out lift gate, pool-aware drift +
+    supersession + distinct-org demote-back trigger), the first-try lift corpus, and
+    the **OCR-noise measurement layer**. All adversarially verified.
+  - **`/try` BUILT + hardened + ELEVATED:** deterministic live read (no LLM, no
+    persistence — both CI-gated), animated read pipeline, ReadReceiptRail, "$X off"
+    catch-as-hero, honest cause inference (`catch-cause.ts`), founding-list capture on
+    every branch, phone-photo downscale, reactive Turnstile. Then a 9-agent design
+    workflow re-skinned it to the **precision-instrument** language (mono tabular
+    numerics, hairline grid, one blue accent, triple-encoded confidence, count-up
+    total) — verified via Playwright across idle/reading/clean/catch in light+dark.
+    Gate-green: tsc, next build, 111 vitest, focus-discipline, demo-no-persistence,
+    locale-parity.
+
+**⮕ WHAT'S LEFT before the demo can take a real invoice and reliably produce results
+(i.e. flip `DEMO_ANONYMOUS_EXTRACT` on):** exactly ONE accuracy gate, plus ops.
+  - **Gate (a) — real-invoice coverage.** The pool match is robust to value /
+    positional / header case+whitespace noise but **breaks on header GLYPH
+    corruption**. So un-gating requires (i) the actual top-~10 broadliner layouts
+    (Sysco, US Foods, PFG, GFS…) as real reference-A + held-out-B pairs run through
+    production docling, and (ii) **seeding header glyph-variants per column** (not one
+    spelling), then a re-measured blended first-try F1 (Tier-1 PDF ≥ 0.90 held-out).
+    The synthetic corpus proves the mechanism + names this requirement; it does not
+    supply real invoices. **This is the single blocker.** Until it clears, `/try`
+    degrades safely to the guided `/demo` sample (503 `fallback:"static"`), so the
+    surface is already shippable at full craft.
+  - **Ops (independent of gate a):** provision Turnstile keys
+    (`NEXT_PUBLIC_TURNSTILE_SITE_KEY` + server secret); NCMEC enrolment before public
+    promotion of an anonymous upload endpoint; decide the demo↔pool fork (roadmap
+    §5.10 / Q7 — recommended: read-only pool exception for `demo:anon`).
+
+**Bold-launch opener (founder asked "get people excited in a unique, bold way"):** the
+precision-instrument surface is the vehicle; the missing spark is the LIVE own-invoice
+read, which is exactly what gate (a) unlocks. Recommended sequence to a confident public
+launch: author 2–3 real Tier-1 A/B pairs first (Sysco + US Foods cover the largest
+first-upload slice) → re-measure F1 → flip the flag for those layouts → THEN promote.
+Everything else (design, honesty architecture, capture, hardening) is done.
+
+### 🟢 ACTIVE BUILD — updated 2026-07-09 (read ADRs 011/012/013 — all founder-signed)
+
+**Governing decisions now in `docs/editorial/decisions/`:** ADR-011 (monthly first-Tuesday
+dispatch + Mon/Wed/Fri refresh, edition slug `cost-index-YYYY-MM`), ADR-012 (**manual
+authorship** — no cron, no generated posts; hand-written editions; dispatch workflow is
+the manual EMAIL button only; refresh catch-up = red reminder at 38d; full publish
+runbook inside), ADR-013 ($19/mo **per location**; **enterprise parked** post-GA, gated
+on founding-list demand). ADR-010 carries the ratified one-print extension (site only).
+
+**Merged to main (PRs #505/#507/#508):** cadence pivot + promise sweep; email P0 honesty
+fixes + trust rails (golden render `data/email-preview/` + `check-cost-index-email.mjs`);
+the ledger demo transformation (rule-true numbers ON BOTH the demo AND the /ledger/ hero
+— the old $3.55 flag never fired `computePriceHike`; now $24.10/$24.35/$29.45 = +$5.23/
++21.6% over the $24.22 median everywhere, byte-verified); 3 review rounds + certification.
+
+**On the dev branch, pushed, UNMERGED (founder: merge to resume the heartbeat):**
+  - **Refresh fix (URGENT):** first MWF cron (07-08) vendored fresh data then failed the
+    gates on stale calibration sentinels (fresh-data-only ordering; frozen-data testing
+    can't reproduce). Fix = re-stamp `inject-cost-index-calibration` as the build's last
+    action. **Heartbeat is stalled at the 2026-07-06 read until merged** — next cron
+    Fri 07-10 13:00 UTC, or founder runs the workflow manually post-merge.
+  - Per-location pricing on all surfaces + registered claim (ADR-013).
+  - Monthly edition machinery (generator monthly-default, `.viz-spark` family + canon
+    §8 + test fixtures, dispatch-fresh recognizes both slug families) — kept as dormant
+    tooling per ADR-012; the generated July draft itself was deleted.
+  - Manual-authorship pivot (both workflows per ADR-012).
+  - **Demo app frame** (founder design direction: fixed stage, in-frame cross-fade,
+    page height headless-verified constant): chrome strip + stage + control bar; step 3
+    two-column; step 4 full-ink ask; per-location terms; EN+ES.
+  - **RED #2 fix** (guardrails ≥2 tools links): companion-tools line on the frozen
+    07-06 weekly + both generator templates. **July edition full-suite fixes:** TL;DR
+    window (jump nav moved below In-short), intent=watch param dropped (plate-cost
+    doesn't consume intents), viz-spark moved INTO the site.css partition (site-article
+    .css is a GENERATED shell — never append to it directly) + shells rebuilt. Full
+    check-all on the branch: 225/249, every remaining red is the (idem) baseline.
+
+**FINAL DEMO CERTIFICATION — 2026-07-10 (run wf_cd93a13f-162, 5 fresh seats, honest record):**
+All 5 seats `wouldShipToFortune500: true`. Verdicts: interaction-design **WORLD_CLASS**
+(8.5/9/9); motion-design STRONG (8/8.5/9); copy-voice STRONG (9/8.5/8); frontend-eng
+STRONG (9/8.5/9); chef-owner STRONG (9/8.5/9). The founder's page-height law verified
+constant at every viewport/locale/scheme; deep-link, no-JS, PRM, quick-path all measured
+correct. Post-cert fixes applied same day (commit ce629a5d7): banned-word + royal-we
+canon violations (EN+ES), dark-mode ink moment restored (#0F1116 band vs #1B1E24
+panels — the override had made them identical), desktop stage min 480→430 (short-laptop
+control-bar clip 688.7→649.7 at 650svh; ≥690px unchanged). Headless re-verified ×6.
+
+**Certification findings PARKED (recorded honestly, none blocks ship):**
+  - **The one real design tension (founder fork):** at 1280×800 every step scrolls
+    internally (52–127px hidden; stage 592 vs panels ≤719) and on phones >half of each
+    step sits below the in-panel fold incl. the flag chart (step 3 hides 528px). This
+    is inherent to fixed-stage + current content volume: the forks are (a) accept
+    in-panel scroll as the app idiom (cues are honest and working), (b) trim step copy,
+    or (c) shorten the marquee figures. Do NOT silently trim certified copy.
+  - Smaller parked items: 3px frame-under-nav on desktop deep-link (nav renders 103px
+    vs 100px offset budget — fixing it cascades through the pixel-exact reservation
+    math in 2 files ×2 locales; left alone deliberately); keyboard-only users can't
+    scroll overflowing panels (WCAG 2.1.1 edge — panels tabIndex −1); overflow cue not
+    recomputed on resize/orientation; ~80ms stage dim on triple-click Next; 35px rail
+    touch targets on mobile; mobile fade cue dims the flagged Jun 26 payoff row;
+    step-4 left-column dead zone at desktop; aria-current on li not the link; ES step-4
+    60px overflow at 1280×800 where EN fits; em-dash pairs vs sentence-shape rule 3.
+  - **CTA canon fork (founder):** demo uses 'Run your own line' + 'Join the founding
+    list' — both absent from the locked CTA canon (/methods/ #voice-contract). Seats
+    rate the labels better than the canon's 'Try it free' for these jobs. Either add a
+    canon v1.2 entry sanctioning them or conform the labels — founder's call, the canon
+    is his governing doc. Related: '/ledger/' itself still says 'without us' (same
+    royal-we idiom fixed on the demo); one-line fix pending the same call.
+  - Stale '19 weeks out' count (formula says 18) — self-heals on next deploy build.
+
+**Completed workflows (payloads in session transcripts):** `july-edition-product`
+(wf_56eb545c-4ca — the July edition, built + audited + full-suite green);
+`demo-world-class-pass` (wf_a2da5e7b-bcc — rounds 1–2 + closing pass);
+`demo-final-certification` (wf_cd93a13f-162 — the record above).
+
+**Parked / follow-ups:** demo OG card; `Demo Exit` analytics registry entry (product
+repo `tools/_shared/analytics.js`); `.ld-wrap` 880px cap overridden by `.container`
+(pre-existing, founder call); /ledger/ meta "six-month history" mentions; product repo:
+3 failing nightlies (real failures, untriaged) + the 4 CI fixes still unmerged on its
+dev branch (no PR without ask); ES edition decision for monthly dispatches; email P1
+body due before 2026-08-04.
+
+**Cadence truths a fresh session must know:** refresh = Mon/Wed/Fri 13:00 UTC from
+main; dispatch cron REMOVED (ADR-012); the 38d dispatch-fresh gate is the publication
+reminder; subscriber promise = "one email a month — the first Tuesday" (the editorial
+deadline for hand-publishing).
+
+### ✅ P0 OUTAGE RESOLVED 2026-07-06 — was: GitHub Actions dead ACCOUNT-WIDE since 2026-06-20
+
+**Finding (session 2026-07-06, fully verified via the Actions API):** every GitHub
+Actions job across BOTH repos has been refused a runner since 2026-06-20. Jobs
+die in 2–4 s with `runner_id: 0`, no logs (404), no annotations — the signature
+of a **billing lock** ("recent account payments have failed or your spending
+limit needs to be increased"), NOT a code problem. All workflow YAML in both
+repos validated clean (incl. duplicate-key check). Only the founder can fix it:
+**GitHub → Settings → Billing and plans → check payment method / spending
+limit.** Evidence:
+
+  - `cost-index-refresh.yml`: last success run #13 **2026-06-19**; runs #14–#30
+    (06-20 → 07-06) ALL failed pre-execution. Cost Pressure refresh: same.
+  - `cost-index-dispatch.yml` (weekly subscriber email): run #1 (06-16) is the
+    ONLY email ever delivered; #2 (06-23) and #3 (06-30) refused runners.
+  - Storefront PR checks (Playwright / Lighthouse / axe) also get no runner —
+    job-level failure in ~3 s even where the run-level rollup shows "success".
+  - Product repo (private): `ci.yml` last executed **2026-06-19**. Every
+    push/schedule run since 06-20 is a `startup_failure` attributed to a phantom
+    deleted workflow (id 299264922, path "BuildFailed", created 06-20 04:37 ET).
+
+**Impact (compounds daily):**
+  1. **Live Cost Index data is frozen at the 2026-06-19 read** (last data commit
+     `d2b598e88`). The daily-heartbeat promise ("level ≤1 day old") has been
+     broken for 17 days. The 06-27 poblano and 07-03 pumpkin commits were HAND
+     -fixes aging out points that the frozen data pushed past the stale gates —
+     each passing calendar day risks another ingredient aging out and blocking
+     Workers deploys of ANY merge.
+  2. Weekly dispatch subscribers have received exactly one email, three weeks ago.
+  3. Product PRs #234–#239 (fraud detectors, PII scrub, community pool, /try)
+     merged with ZERO GitHub CI executed — the no-llm gate, privacy gates,
+     vitest/golden suites ran only inside dev sessions. The "enforced in CI"
+     trust claim on /ai + /never has not actually executed since 06-19.
+
+**Recovery status (2026-07-06 ~17:05 UTC): billing UNBLOCKED** — founder paid;
+runners returned instantly (probe: product CI run #1969 executed, first real CI
+since 06-19). Founder's first refresh dispatch was cancelled cleanly (nothing
+committed) pending ingredient-coverage confirmation. Grounded answer: the
+roster (`data/cost-index-sources.json`) is unchanged since 06-16 — the batch-1
+12 high-traffic ingredients are in it, the fetch iterates the roster on the
+run's own ref, and below-bar newcomers graduate to the seed/pages automatically
+via the shippable-bar gate. **But the pause caught a real wiring gap:** PR #490/
+#500 added five committed live-data-derived artifacts + sync gates while the
+heartbeat was dead (`cost-lockfloat.json/.js`, `cost-index-audit.json`,
+`cost-index-calibration-report.json` + methodology sentinels,
+`cost-forecast-backtest.json`, provenance `cost-index/sources.json`) — none
+rebuilt/staged by the refresh workflow, so the FIRST post-freeze refresh would
+have left every one drifted → red `--check` gates on all subsequent sessions.
+**Patched on this branch** (cost-index-refresh.yml): rebuild steps in dependency
+order, pre-commit `--check` re-derivation, the new honesty gates (basis-leak,
+shippable-bar, seasonal-band, band-coverage, trend-skill) run before commit, and
+the artifacts added to the scoped `git add`. Validated on frozen data: all six
+write-mode runs byte-identical, all 11 gates pass.
+
+**MERGED 2026-07-06 ~18:35 UTC as PR #504 (`c0e8e417d`) — Workers deploy green
+(check-all 246/246).** The evening's additional findings, all fixed in the PR:
+  - **Second artifact family** was also un-wired (embeds, `cost-index/feed.json`,
+    revisions log, reproduce stamp, both confidence reports, speakable stamps) —
+    now rebuilt + `--check`-gated + staged by the refresh workflow.
+  - **Run #33's silent catch-up skip root-caused:** one unmatched pathspec
+    (`es/blog/cost-index-week-*/`, generator writes EN only) voids the entire
+    `git add`; `2>/dev/null || true` swallowed it. Both refresh + dispatch
+    workflows now stage per-pathspec. Catch-up week 2026-07-06 published
+    (basket −5.0%, 24/81 above baseline; dispatch lag 0d).
+  - **`build-blog-index.mjs` ran in NO workflow** (dispatch's comment claimed it
+    did) — weekly posts were invisible on /blog/ without a manual rerun. Added
+    to both workflows.
+  - **Footer-count landmine:** `_includes/footer.html` still said 13 tools/150
+    terms (truth 5/171); the injector skipped `_includes`, so every
+    sync-includes re-smeared stale counts sitewide. Injector now stamps the
+    partials too (gate tightened); partial healed same commit.
+  - **lhci had NEVER actually run since `44d64cc74`** (three deleted retired-
+    tool scripts still in its build chain killed it at step 3; then its URL
+    list gated retired pages → 404 crash). Dead calls removed, URLs swapped to
+    living funnel equivalents (/tools/margin-math/, /cost-index/ + ES). It now
+    measures real surfaces — first honest numbers may be red (advisory-only,
+    `continue-on-error`).
+  - **Rebase-staleness lesson:** artifacts stamped pre-rebase (calibration
+    sentinels on the methodology pages) went stale when the bot's daily-read
+    commit moved the report JSON — reproduced 245/246 locally via the deploy
+    chain, restamped. The deploy chain does NOT re-run
+    `inject-cost-index-calibration.mjs`, so this class can't self-heal.
+
+Branch restarted from main post-merge (same name, merged-PR rule). Remaining
+watch items: **07-07 13:00 UTC refresh cron** (first cron on the patched
+workflow) and **07-07 ~16:20 UTC dispatch cron** (first subscriber email since
+06-16 — post already current, so it should just send); confirm phantom
+"BuildFailed" runs stopped on the product repo's next main push; then the
+/status/ freshness-note honesty call (founder's if publicly visible).
+
+### Delta — glossary + audio lane (branch `claude/compassionate-dirac-rdkw22`, work 2026-06-26/27, recorded 2026-07-09)
+
+A **parallel lane** (separate from the council branch family) shipped + merged to main. Recording it here so the council lane and any fresh session know it happened and don't re-do or contradict it. All verified live on main `a0577ca3`.
+
+- **Cost Data & Sources glossary class — SHIPPED (PR #488, merged).** A **9th glossary topic** (`learn/topics/cost-data/` + ES) tying the glossary to the Cost Index's own sources + methodology: **19 bespoke terms, EN+ES** — 9 source agencies (BLS, USDA Market News, USDA-LMR, USDA-Dairy/NDPSR, FRED, EIA, NOAA Fisheries **+ FDA and CME as honest negatives** — "safety not price", "futures not your invoice") and 10 methodology concepts (measured/derived/absent, price-confidence, shippable-bar, prediction-band, calibration, ratio-bridge, freshness, pressure-overlay, revisions, assessed-benchmark). Each term: a **bespoke page built by a per-term specialist (NOT a template)**, DefinedTerm+Article+FAQPage schema, a FAQ (+ a People-Also-Ask 4th question on each methodology term), a bespoke OG card (added a `source` glyph + AKA auto-fit to `build-og-cards.mjs`/`seed-glossary-og.mjs`), a Cost Pulse tie. SEO/AEO pass over all 19 (`data/glossary-seo.json`); 90-second explainers for 4 methodology terms (`data/glossary-explainers/`); the methodology-source sentence, the Cost Pulse lede, and **164 ingredient-page source lines** now link the term pages. Grounded to `methodology.json`/`sources.json`/`calibration.json` (band 80%→84%, calibration 48/51/58); zero inventions. This is the source of the **171 glossary terms / 9 topics** count referenced above.
+
+- **Topic-page-schema idempotency fix — SHIPPED (PR #488, merged).** `check-all`'s "Topic page schema (idem)" went red the day the Father's-Day batch banner expired. Root cause: `listTopicArticles` (`inject-topic-page-schema.mjs`) scraped **every** `/blog/` href on the topic page — including the rotating batch-banner promo link — so the permanent JSON-LD `ItemList` was seeded from ephemeral content; because `inject-batch-banner.mjs` runs **after** the schema writer in the deploy chain and hid the expired banner, the end-of-build `--check` recomputed a shorter list → 14-page drift, blocking Workers deploys of any merge. **Fix (live at `inject-topic-page-schema.mjs:40`):** strip the `<!-- batch-banner:start -->…end -->` region before scraping, so the ItemList reflects the article cluster only. Same class of bug as the theme/cuisine-generator normalizer miss (PR #504) — see the new gotcha below.
+
+- **Audio render batch — MERGED (PR #491).** The Colab's accumulated per-article blog+library listen-along `audio.json` + MP3 siblings (64 files).
+
+- **Poblano hand-fix in PR #491 was REDUNDANT — superseded, correctly discarded.** This lane independently prepared a full *removal* of poblano when the 120-day level-staleness gate tripped (06-26). On rebase we found the council lane had already landed the **canonical fix** (`9239e0fe5` — age out to *expanding-coverage*: drop the 5 stale points, KEEP the 26-entry history + page) **plus the durable root-cause guard** (`buildCompositeInput` `levelEligible` at `tools/_shared/cost-index-sources.js:287` — a dead terminal feeds trend but never anchors/date-stamps the level). Adopted main's version wholesale; PR #491 reduced to the audio batch only. **No poblano action outstanding** — and note for the record: the heartbeat stall behind it was the **GitHub-Actions billing lock** (§"P0 OUTAGE RESOLVED 2026-07-06"), NOT a source-API-key issue.
+
+### Delta 2026-06-28 → 07-06 (merged to main; board was stale for this window)
+
+Storefront (PRs #490, #493–#500, #502–#503):
+  - **Naming fork #5 partially RESOLVED:** "Cost Pulse" folded into the **Cost
+    Index** brand (`78c8654a1`); "Muntin Bench" renamed **Vendor Benchmark**
+    (`51d1e2edb`); OG cards re-arted. (Ledger split still off-site by design.)
+  - **Ingredient card redesigned answer-first** + then-vs-now two-invoice-dates
+    comparator on a new multi-year deep-history seed (PR #493).
+  - **Bolder/premium design pass** sitewide EN+ES (PR #495; brief in
+    `docs/handoff-bolder-pass.md`): /ledger/ goldenhour hero + ink pricing band,
+    homepage "Receipts, not promises" stances, tools-hub "instruments at rest",
+    footer trust column, founding-capture band.
+  - **Own-invoice demo route CLOSED sitewide** → `/ledger/demo/` guided mockup
+    walkthrough (EN+ES) ending in "run your own line" → live Vendor Benchmark.
+  - **Vendor Benchmark rebuilt ground-up** Phases 1–2 (PRs #497/#498): market-
+    window engine + honest chart layer; Price Journal (device-local compounding
+    log), forecast + regime-break layer, whole-book worklist.
+  - **Honesty-remediation wave** (PR #490 + #500): new fail-CI gates
+    `check-cost-index-basis-leak.mjs` + `check-lockfloat-copy.mjs`; conformal
+    coverage de-circularized; per-item null gate w/ Benjamini–Yekutieli; per-item
+    provenance receipts; cross-repo conformal golden-vector parity lock.
+  - **Lock-or-float reframe** on the live tool (PR #500): Lock Sheet (committed
+    artifact + drift gate), Lock Book, Menu Cushion, contract checker, Backtest
+    Replay, Ledger bridge.
+  - **New library article** end-to-end in a day: beef-prices EN + native ES +
+    EN audio (PRs #499/#502/#503). Ledger SoftwareApplication+Offer ($19/mo)
+    JSON-LD EN+ES — first structured-data claim of the paid product.
+
+Product (PRs #234–#239):
+  - **cost-alerts comparability gate** — never accuse a vendor on a category
+    error; proxy-quality registry (PR #234).
+  - **PII-scrub donation disclosure** (5 adversarial rounds) + anonymous-demo
+    no-persistence covenant promoted to a CI gate (PR #235).
+  - **5 fraud/integrity detectors** wired into extract() w/ EN+es-MX reason
+    copy + reason→safety-chip CI exhaustiveness gate (PR #235).
+  - **Read Receipt trust rail** Phase 3 (cost + "safe to pay?" segments; binding
+    cognitive-load canon) (PR #235).
+  - **Community column-rule pool Slices 1–6 complete** (held-out lift gate,
+    supersession + distinct-org demote-back, migrations 0056/0057). OCR-noise
+    corpus isolated the one remaining un-park gate for /try: header glyph-variant
+    seeding + real top-~10 broadliner layouts, then re-measure first-try F1.
+  - **/try anonymous demo BUILT + hardened, PARKED behind `DEMO_ANONYMOUS_EXTRACT`**
+    (founder: "not until it's the very best we can"). Plans:
+    `docs/plans/try-anonymous-demo-plan.md`, `first-try-reliability-roadmap.md`.
+  - Vendor-benchmark math parity-ported into the Ledger (golden vectors);
+    `ledger-spec/cost-index/IS-IT-YOU-OR-THE-MARKET.md` specs the own-series
+    overlay. **POS-SPEC.md** (07-05) carries its own tiered insight catalog §6 —
+    reconcile with `docs/plans/muntin-plate-insight-catalog.md` before building
+    Plate entries.
+
+**Gate baseline re-verified 2026-07-06:** check-all = 226/246, 20 failures, ALL
+"(idem)" deploy-regenerated drifts (warm-palette + cost-index sync now GREEN —
+baseline improved from ~21). Hard gates all green; fabrications 0 hits.
+
+**Open-PR triage (2026-07-06):** storefront #501 (residual diff on the merged
+vendor-benchmark branch — CI failures are outage artifacts, but its Workers
+Build failure needs real triage), #448 (stale audio PR), #374 (stale cursor
+draft); product #237 (stale). None block main.
+
+**Queue state:** A — Plate insight catalog **EXISTS**
+(`docs/plans/muntin-plate-insight-catalog.md`, E1–E15 ranked, flagship = E1+E2
+pair; ADR-010 + E14 already shipped) → thread A is now "pick the next entry to
+BUILD", not "write the catalog". B — vertical generality **NOT STARTED**, and
+the claim is already live in marketing (`/vs/marginedge` "vertical-agnostic";
+homepage "for small business") while every code path is restaurant-hardcoded
+(`seedDefaultsForOrg` → `RESTAURANT_DEFAULTS`, NRA-chart GL seed, all-restaurant
+golden suite) — an honesty gap to either EARN (fixtures + vertical selector) or
+SOFTEN (copy). C — social pre-launch still blocked on the founder IG decision.
+
+---
+
+### Prior state (updated 2026-06-27, superseded by the section above)
 
 **Session on branch `claude/muntin-strategic-council-fzdd1j`** (PR #489 — the prior `-rqdehe` heartbeat/prune/anti-Factura work + the Worker-build fix — is **merged to main**, commit `3b3bb6cb0`). Caught up with main; `check-all` re-verified green (215/236 = the documented deploy-regenerated idempotency baseline; all hard gates + every cost-index gate GREEN even after calendar aging).
 
@@ -279,3 +650,5 @@ Don't loosen gates. Fact gate is absolute (it's spoken aloud in EN+ES).
 - **OG cards render locally** via `@resvg/resvg-js` at `/tmp/og-render-deps` (no `rsvg-convert`); committed PNGs can be `Read` to see/verify a card. Build one: `node scripts/build-og-cards.mjs <slug>`.
 - **es-MX voice gates (product)** are strict: no `inteligencia artificial`, `sin esfuerzo`, regressive tone, or "no AI" — describe the *mechanism* ("never a language model") instead.
 - "The window in." is **sanctioned brand equity** (the muntin/window metaphor), not stale — keep it.
+- **Derived committed content must never scrape ephemeral injector regions.** An injector that reads a page to build permanent output (JSON-LD `ItemList`, normalized snapshots) must exclude the regions later injectors rewrite at build time — the **batch-banner** (`inject-batch-banner.mjs`, hides an expired promo), perf-critical CSS, lazy-load. Two instances bit us: the topic-page `ItemList` scraping the banner's `/blog/` link (PR #488, fixed at `inject-topic-page-schema.mjs:40`) and the theme/cuisine `--check` normalizer not stripping the feed-discovery block (PR #504). Symptom is always the same: a silent end-of-build idempotency `--check` drift when the ephemeral region changes.
+- **Standalone page-generator reruns STRIP injected furniture.** `build-cost-index-pages.mjs` / `build-library.mjs` are NOT in the deploy chain; committed pages carry furniture added by later injectors (the WebPage/speakable JSON-LD node, css cache-bust hashes). Regenerating a single page by hand drops that furniture + resets hashes. For a small surgical change (e.g. removing one cross-link), **edit the committed page directly** rather than regenerate — regeneration is only safe as the full cron sequence (generate → sync-includes → inject-* → scoped commit). Verified on the 06-27 poblano attempt.

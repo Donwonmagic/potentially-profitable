@@ -16,9 +16,9 @@
 (function (root) {
   'use strict';
   var DATA = {
-  "_doc": "Vendor Benchmark ingredient picker: the honest list of what the tool can benchmark, derived from the browser seed + the shared category taxonomy. 81 ingredient(s); 20 carry a firm dollar reference.",
+  "_doc": "Vendor Benchmark ingredient picker: the honest list of what the tool can benchmark, derived from the browser seed + the shared category taxonomy. 81 ingredient(s); 21 carry a firm dollar reference.",
   "count": 81,
-  "dollarRefCount": 20,
+  "dollarRefCount": 21,
   "groups": [
     {"key":"beef","label_en":"Beef","label_es":"Res"},
     {"key":"poultry","label_en":"Poultry","label_es":"Aves"},
@@ -45,7 +45,7 @@
     {"key":"banana","label_en":"Bananas","label_es":"Plátano","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
     {"key":"basil","label_en":"Basil","label_es":"Albahaca","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
     {"key":"beet","label_en":"Beet","label_es":"Remolacha","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":true},
-    {"key":"bell-pepper","label_en":"Bell pepper","label_es":"Pimiento morrón","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
+    {"key":"bell-pepper","label_en":"Bell pepper","label_es":"Pimiento morrón","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":true},
     {"key":"blueberry","label_en":"Blueberries","label_es":"Arándano azul","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
     {"key":"bok-choy","label_en":"Bok choy","label_es":"Bok choy","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
     {"key":"broccoli","label_en":"Broccoli","label_es":"Brócoli","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
@@ -87,6 +87,7 @@
     {"key":"parsley","label_en":"Parsley","label_es":"Perejil","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
     {"key":"pear","label_en":"Pears","label_es":"Pera","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
     {"key":"pineapple","label_en":"Pineapple","label_es":"Piña","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
+    {"key":"poblano-pepper","label_en":"Poblano pepper","label_es":"Chile poblano","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
     {"key":"raspberry","label_en":"Raspberries","label_es":"Frambuesa","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
     {"key":"red-leaf-lettuce","label_en":"Red leaf lettuce","label_es":"Lechuga hoja roja","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
     {"key":"red-onion","label_en":"Red onion","label_es":"Cebolla roja","unit_en":"sack","unit_es":"saco","group":"produce","dollarRef":false},
@@ -102,7 +103,6 @@
     {"key":"tarragon","label_en":"Tarragon","label_es":"Estragón","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
     {"key":"thyme","label_en":"Thyme","label_es":"Tomillo","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
     {"key":"tomato","label_en":"Tomatoes (round)","label_es":"Jitomate (bola)","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
-    {"key":"watermelon","label_en":"Watermelon","label_es":"Sandía","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
     {"key":"yellow-squash","label_en":"Yellow squash","label_es":"Calabaza amarilla","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
     {"key":"zucchini","label_en":"Zucchini","label_es":"Calabacín","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
     {"key":"butter","label_en":"Butter (AA, bulk)","label_es":"Mantequilla (AA, a granel)","unit_en":"lb","unit_es":"libra","group":"dairy-eggs","dollarRef":true},

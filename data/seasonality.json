@@ -1,6 +1,6 @@
 {
   "_doc": "Per-ingredient seasonal baseline for the Cost Index, derived purely from the vendored history in data/cost-index.json by scripts/build-seasonality.mjs (CI runs --check). A month appears under `months` only once observed across 2+ distinct years; `ready` means enough established months to read a season. Until then `building` names what it waits for. The current-vs-normal delta is computed by the consumer at render time so this file stays date-independent. Regenerate after every vendor.",
-  "generatedFrom": "2026-06-19",
+  "generatedFrom": "2026-07-10",
   "params": {
     "minYearsPerMonth": 2,
     "minEstablishedMonths": 6,
@@ -8,8 +8,8 @@
     "windowYears": 5
   },
   "summary": {
-    "total": 101,
-    "ready": 85,
+    "total": 100,
+    "ready": 84,
     "building": 16
   },
   "ingredients": [
@@ -7882,74 +7882,6 @@
           "p75Cents": 25558,
           "n": 4,
           "years": 4
-        }
-      }
-    },
-    {
-      "key": "pumpkin",
-      "ready": true,
-      "weeks": 101,
-      "distinctYears": 5,
-      "distinctMonths": 12,
-      "establishedMonths": 8,
-      "progress": "building baseline — 101 of ~78 weeks · 5 of 2 years · 8 established month(s)",
-      "blocker": null,
-      "months": {
-        "10": {
-          "medianCents": 7500,
-          "p25Cents": 2400,
-          "p75Cents": 18000,
-          "n": 22,
-          "years": 5
-        },
-        "11": {
-          "medianCents": 18000,
-          "p25Cents": 6563,
-          "p75Cents": 20000,
-          "n": 17,
-          "years": 5
-        },
-        "12": {
-          "medianCents": 19750,
-          "p25Cents": 6250,
-          "p75Cents": 30500,
-          "n": 7,
-          "years": 3
-        },
-        "01": {
-          "medianCents": 28890,
-          "p25Cents": 2017,
-          "p75Cents": 38625,
-          "n": 5,
-          "years": 2
-        },
-        "05": {
-          "medianCents": 39705,
-          "p25Cents": 37500,
-          "p75Cents": 44081,
-          "n": 8,
-          "years": 2
-        },
-        "07": {
-          "medianCents": 43000,
-          "p25Cents": 42900,
-          "p75Cents": 43000,
-          "n": 5,
-          "years": 2
-        },
-        "08": {
-          "medianCents": 39500,
-          "p25Cents": 33875,
-          "p75Cents": 42000,
-          "n": 7,
-          "years": 2
-        },
-        "09": {
-          "medianCents": 19657,
-          "p25Cents": 14430,
-          "p75Cents": 25000,
-          "n": 16,
-          "years": 5
         }
       }
     },

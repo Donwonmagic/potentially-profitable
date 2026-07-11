@@ -41,7 +41,34 @@
       "inLanguage": "es-US",
       "isPartOf": { "@id": "https://muntin.digital/#website" },
       "publisher": { "@id": "https://muntin.digital/#business" },
+      "mainEntity": { "@id": "https://muntin.digital/es/ledger/#software" },
       "dateModified": "2026-06-17"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://muntin.digital/es/ledger/#software",
+      "name": "Muntin Ledger",
+      "applicationCategory": "BusinessApplication",
+      "applicationSubCategory": "FinanceApplication",
+      "operatingSystem": "Web",
+      "url": "https://muntin.digital/es/ledger/",
+      "description": "Muntin Ledger lee las facturas de proveedores con plantillas y reglas — sin modelo de lenguaje en el camino — las archiva en un libro consultable, y marca subas de precio contra tu propio historial de seis meses.",
+      "publisher": { "@id": "https://muntin.digital/#business" },
+      "offers": {
+        "@type": "Offer",
+        "price": "19.00",
+        "priceCurrency": "USD",
+        "priceSpecification": {
+          "@type": "UnitPriceSpecification",
+          "price": "19.00",
+          "priceCurrency": "USD",
+          "unitCode": "MON",
+          "unitText": "al mes"
+        },
+        "availability": "https://schema.org/PreOrder",
+        "availabilityStarts": "2026-11-13",
+        "description": "Muntin Ledger es gratis durante la beta privada; la disponibilidad general es el 13 de noviembre de 2026. Los miembros de la lista fundadora antes del lanzamiento obtienen la tarifa fundadora: tres meses gratis, luego $19 al mes por local."
+      }
     },
     {
       "@type": "BreadcrumbList",
@@ -467,10 +494,18 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <span class="lg-pane-title">Líneas de factura &mdash; archivadas</span>
               <span class="lg-chip">Libro de muestra &middot; ilustrativo</span>
             </div>
+            <!-- Trío de la viñeta (renumerado 2026-07-07, fiel a la regla):
+                 previos $24.10 / $24.35, marcada $29.45 — +$5.23 sobre la
+                 mediana móvil de $24.22 (+21.6%), que cruza el doble umbral
+                 de computePriceHike (>=8% Y >=$5.00). Verificado contra
+                 tools/_shared/bench-lookup.js; coincide con /es/ledger/demo/.
+                 (La lectura marcada previa a la renumeraci&oacute;n quedaba
+                 bajo el piso de cinco d&oacute;lares, as&iacute; que la regla
+                 nunca habr&iacute;a disparado.) -->
             <div class="lg-rows">
               <div class="lg-row"><span class="lg-d">12 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$24.10</span><span class="lg-s">archivada</span></div>
               <div class="lg-row"><span class="lg-d">19 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$24.35</span><span class="lg-s">archivada</span></div>
-              <div class="lg-row lg-row--flag"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$27.90</span><span class="lg-flag"><span aria-hidden="true">&#9650;</span> el precio se movió</span></div>
+              <div class="lg-row lg-row--flag"><span class="lg-d">26 jun</span><span class="lg-v">Proveedor de verduras</span><span class="lg-i">Lechuga romana, 24&nbsp;uds</span><span class="lg-n">$29.45</span><span class="lg-flag"><span aria-hidden="true">&#9650;</span> el precio se movió</span></div>
             </div>
             <svg class="lg-step" viewBox="0 0 280 44" width="280" height="44" aria-hidden="true" focusable="false">
               <rect class="band" x="8" y="14" width="264" height="16" rx="2"></rect>
@@ -478,7 +513,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <polyline class="move" points="186,22 204,9 272,8"></polyline>
               <circle class="dot" cx="272" cy="8" r="3"></circle>
             </svg>
-            <p class="lg-stepnote">La línea se sale de su banda de seis meses &mdash; esa es la alerta.</p>
+            <p class="lg-stepnote">La línea se sale de la banda de sus lecturas previas &mdash; esa es la marca.</p>
           </div>
           <figcaption class="lg-cap"><strong>Muestra ilustrativa</strong> &mdash; así se marca una línea de factura archivada contra tu propio historial de precios. No son datos en vivo ni de clientes.</figcaption>
         </figure>
@@ -543,11 +578,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <div class="lg-pricing">
         <div>
           <h2 id="pricing-h">Precios y la lista fundadora.</h2>
-          <p class="lead">Muntin Ledger es gratis durante la beta privada; la disponibilidad general es el 13 de noviembre de 2026. Los precios están publicados por escrito en <a href="https://ledger.muntin.digital/">ledger.muntin.digital</a>, con la cuenta del costo por factura al lado. Los operadores que se unan a la lista fundadora antes del lanzamiento obtienen la tarifa fundadora: <strong>tres meses gratis, luego $19 al mes mientras se queden</strong>. La lista y los números viven en el sitio del producto.</p>
+          <p class="lead">Muntin Ledger es gratis durante la beta privada; la disponibilidad general es el 13 de noviembre de 2026. Los precios están publicados por escrito en <a href="https://ledger.muntin.digital/">ledger.muntin.digital</a>, con la cuenta del costo por factura al lado. Los operadores que se unan a la lista fundadora antes del lanzamiento obtienen la tarifa fundadora: <strong>tres meses gratis, luego $19 al mes por local mientras se queden</strong>. La lista y los números viven en el sitio del producto.</p>
         </div>
         <div class="lg-price-lockup">
           <p class="lg-price-figure"><span class="lg-price-cur">$</span>19<span class="lg-price-per">al mes</span></p>
-          <p class="lg-price-terms">La tarifa fundadora: tres meses gratis, luego $19 al mes &mdash; mientras te quedes.</p>
+          <p class="lg-price-terms">La tarifa fundadora: tres meses gratis, luego $19 al mes por local &mdash; mientras te quedes.</p>
           <p class="lg-price-ga">Disponibilidad general &mdash; <span class="lg-price-date">13 de noviembre de 2026</span> &middot; a <!-- count:ledger.ga_weeks_out -->19<!-- /count --> semanas</p>
         </div>
           <div class="lg-founding" style="grid-column:1/-1;border-top:1px solid rgba(246,247,248,.14);padding-top:26px;margin-top:6px">

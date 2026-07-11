@@ -1,16 +1,18 @@
-# Cost Index daily refresh — the freshness heartbeat.
+# Cost Index refresh — the freshness heartbeat. Monday/Wednesday/Friday.
+# (Daily until the 2026-07-06 cadence pivot, founder call.)
 #
-# Every day 13:00 UTC: fetch the live public sources (USDA AMS/LMR, BLS, FRED,
-# EIA) for verified ingredients, compose the honest artifact, vendor it through
-# the build's own fact gate, reconcile each shown trend to its curve, rebuild
-# the browser seed + cost-index + ingredient-yield pages, gate, and commit.
+# Every Mon/Wed/Fri 13:00 UTC: fetch the live public sources (USDA AMS/LMR, BLS,
+# FRED, EIA) for verified ingredients, compose the honest artifact, vendor it
+# through the build's own fact gate, reconcile each shown trend to its curve,
+# rebuild the browser seed + cost-index + ingredient-yield pages, gate, commit.
 #
-# Why DAILY: the dollar LEVEL for produce (USDA AMS terminals) and beef/pork
-# (LMR cutout) updates business-daily — a weekly cron sampled it once a week, so
-# a card could read a ~6-day-old price. Daily keeps the level <=1 day old. The
-# monthly/weekly legs (BLS PPI, EIA, FRED diesel) just contribute their latest
-# each run. The sparkline is a per-fetch windowed source curve, so cadence
-# doesn't change it; the weekly EMAIL stays weekly (separate dispatch workflow).
+# Why MON/WED/FRI: the dollar LEVEL for produce (USDA AMS terminals) and
+# beef/pork (LMR cutout) updates business-daily, so an every-other-business-day
+# sample keeps the shown level <=2 days old on weekdays (<=3 across a weekend)
+# at half the run volume of daily. The monthly/weekly legs (BLS PPI, EIA, FRED
+# diesel) just contribute their latest each run. The sparkline is a per-fetch
+# windowed source curve, so cadence doesn't change it; the EMAIL is monthly
+# (first Tuesday — separate dispatch workflow).
 #
 # Honest-failure posture (matches the engine):
 #   - No API keys configured  -> log + exit 0 (never a red X before the
@@ -26,11 +28,11 @@
 #   FRED_KEY, BLS_KEY, AMS_KEY  (required for --live)
 #   LMR_KEY, EIA_KEY            (optional)
 
-name: Cost Index daily refresh
+name: Cost Index refresh (Mon/Wed/Fri)
 
 on:
   schedule:
-    - cron: "0 13 * * *" # daily 13:00 UTC
+    - cron: "0 13 * * 1,3,5" # Mon/Wed/Fri 13:00 UTC (cadence pivot 2026-07-06)
   workflow_dispatch:
 
 permissions:
@@ -90,6 +92,11 @@ jobs:
           # Rebuild the browser seed (data/cost-index.js) so Cost Pulse / the
           # client read the fresh numbers — not just the server-rendered pages.
           node scripts/build-cost-index-seed.mjs
+          # Rebuild the Vendor Benchmark ingredient-picker manifest (data/cost-index-picker.js).
+          # It's a pure function of the seed's pickable subset, so a refresh that adds or
+          # drops an ingredient (or flips a firm-$ reference) leaves it stale and trips
+          # check-cost-index-picker on the next PR unless it's rewritten here.
+          node scripts/build-cost-index-picker.mjs
           # Regenerate the coverage/health matrix + seasonal baseline — both are
           # pure functions of the freshly vendored data/cost-index.json and are
           # --check-gated in CI, so they must be rewritten here or the next PR
@@ -105,6 +112,18 @@ jobs:
           # state, most recent documented event per ingredient). Reads the fresh index/history/
           # events/registry; --check-gated in CI.
           node scripts/build-cost-index-context.mjs
+          # Rebuild the pure-data/ committed artifacts whose inputs are all
+          # final at this point (cost-index.json + seed + deep history +
+          # seasonality) — each is --check-gated in check-all, so any one left
+          # out drifts stale the moment the read above commits (the 2026-07-06
+          # gap: these gates landed while the refresh was down, so no run ever
+          # exercised them). The provenance/audit/calibration-report rebuilds
+          # run AFTER page generation below — provenance reads the regenerated
+          # cost-index/index.json aggregate (the 2026-07-06 first-recovery-run
+          # ordering failure: built here, it derives from the stale aggregate
+          # and its own gate correctly refuses the commit).
+          node scripts/build-cost-lockfloat.mjs
+          node scripts/backtest-cost-forecast.mjs
           # Re-render hub / per-ingredient / lab pages.
           node scripts/build-cost-index-pages.mjs
           # Re-render the ingredient-yield library pages — their market-read block
@@ -121,8 +140,52 @@ jobs:
           node scripts/build-sitemap.mjs
           # Stamp the seed's generatedAt into the Dataset / DataCatalog JSON-LD
           # dateModified (methodology EN+ES + hub) so the machine-readable
-          # freshness signal tracks each daily read. In place, idempotent.
+          # freshness signal tracks each measured read. In place, idempotent.
           node scripts/inject-cost-index-dataset-date.mjs
+          # Post-page derived artifacts, in dependency order. Provenance reads
+          # the freshly regenerated cost-index/index.json aggregate and stamps
+          # the source-registry table into the sources pages (sentinel region,
+          # so the include/loader re-stamps above don't disturb it); the audit
+          # reconciles against it; the calibration report is rebuilt before its
+          # methodology-page sentinel injection, which — like the dataset-date
+          # stamp — must run after page generation.
+          node scripts/build-cost-index-provenance.mjs
+          node scripts/build-cost-index-audit.mjs
+          node scripts/build-cost-index-calibration-report.mjs
+          node scripts/inject-cost-index-calibration.mjs
+          # Second artifact family the 2026-07-06 recovery surfaced (the deploy
+          # build regenerates the idem class itself but NOT these; committed
+          # copies must stay in sync or the Workers deploy check goes red):
+          # per-ingredient embeds, the public feed, the revisions log, the
+          # methodology reproduce stamp, both confidence reports, and the
+          # speakable stamps on the regenerated pages.
+          node scripts/build-cost-index-embed.mjs
+          node scripts/build-cost-index-feed.mjs
+          node scripts/build-cost-revisions.mjs
+          node scripts/build-cost-index-reproduce.mjs
+          node scripts/build-cost-confidence-calibration.mjs
+          node scripts/build-cost-confidence-shadow.mjs
+          node scripts/inject-cost-index-speakable.mjs
+          # The published one-print outlook (2026-07-09): data/cost-outlook.json
+          # is a pure function of cost-pressure + the forecast backtest +
+          # seasonality + the basket weights. The backtest and seasonality were
+          # just rebuilt above, so the outlook must re-derive here or it drifts
+          # stale the moment this read commits (it sat at 2026-06-08 for a
+          # month because no run rebuilt it). The monthly edition's
+          # Looking-ahead block renders its h=1 weighted tilt (ADR-010 §6.4
+          # extension, ratified 2026-07-06) — --check-gated below like the
+          # rest of this family.
+          node scripts/build-cost-outlook.mjs
+          # Re-stamp the calibration sentinels LAST (2026-07-09): the first MWF
+          # cron (07-08) proved that on a fresh-data run a later rebuild in this
+          # chain can leave the stamp stale relative to the final page state —
+          # the gates step then correctly refuses the commit and the heartbeat
+          # stalls. Idempotent; the --check in the gates step stays the verifier.
+          node scripts/inject-cost-index-calibration.mjs
+          # Golden render of the dispatch email (data/email-preview/) — the
+          # committed, human-readable copy of exactly what subscribers would
+          # get from this data. Sync-gated below; content-gated in check-all.
+          node scripts/build-cost-index-email-preview.mjs
 
       - name: Fact + calibration gates
         if: steps.keys.outputs.configured == 'true'
@@ -132,8 +195,40 @@ jobs:
           # A fresh fetch must never publish a trend % that contradicts its own
           # sparkline (the unwindowed-index-source bug). Fail the run before commit.
           node scripts/reconcile-cost-index-trends.mjs --check
+          # Every derived artifact rebuilt above must re-derive byte-identical —
+          # a drift here means the build order broke, not the data. Fail pre-commit.
+          node scripts/build-cost-index-provenance.mjs --check
+          node scripts/build-cost-index-audit.mjs --check
+          node scripts/build-cost-lockfloat.mjs --check
+          node scripts/build-cost-index-calibration-report.mjs --check
+          node scripts/backtest-cost-forecast.mjs --check
+          node scripts/inject-cost-index-calibration.mjs --check
+          node scripts/build-cost-index-embed.mjs --check
+          node scripts/build-cost-index-feed.mjs --check
+          node scripts/build-cost-revisions.mjs --check
+          node scripts/build-cost-index-reproduce.mjs --check
+          node scripts/build-cost-confidence-calibration.mjs --check
+          node scripts/build-cost-confidence-shadow.mjs --check
+          node scripts/build-cost-outlook.mjs --check
+          node scripts/inject-cost-index-speakable.mjs --check
+          node scripts/build-cost-index-email-preview.mjs --check
+          # The emailed render itself must pass its content rules (banned
+          # techniques, numeric parity, confidence language, sign agreement,
+          # quiet-lead determinism) BEFORE the data that produces it commits.
+          node scripts/check-cost-index-email.mjs
+          # The honesty gates that ship with the fresh surfaces: no non-dollar
+          # basis mislabeled as a $ level, no below-bar ingredient in the seed,
+          # every rendered seasonal band re-derived, and the published 80% band
+          # + trend-skill claims re-verified against realized history. If the
+          # fresh read breaks an earned claim, the run fails red and nothing
+          # commits — a stale-but-true index beats a fresh-but-wrong one.
+          node scripts/check-cost-index-basis-leak.mjs
+          node scripts/check-shippable-bar.mjs
+          node scripts/check-cost-index-seasonal.mjs
+          node scripts/check-band-coverage.mjs
+          node scripts/check-trend-skill.mjs
 
-      - name: Commit the daily read
+      - name: Commit the measured read
         if: steps.keys.outputs.configured == 'true'
         run: |
           git config user.name "muntin-cost-index-bot"
@@ -148,6 +243,11 @@ jobs:
           # re-stamp from sync-includes, so the commit is always exactly the read.
           git add data/cost-index.json data/cost-index.js \
             data/cost-index-health.json data/seasonality.json \
+            data/cost-lockfloat.json data/cost-lockfloat.js \
+            data/cost-index-audit.json data/cost-index-calibration-report.json \
+            data/cost-forecast-backtest.json data/cost-outlook.json \
+            data/cost-revisions.json data/cost-confidence-calibration.json \
+            data/cost-confidence-shadow.json data/email-preview/ \
             cost-index/ es/cost-index/ \
             library/ingredient-yields/ es/library/ingredient-yields/ sitemap.xml
           git checkout -- . 2>/dev/null || true
@@ -155,75 +255,32 @@ jobs:
             echo "No data change today — nothing to commit."
             exit 0
           fi
-          git commit -m "data(cost-index): daily read $(date -u +%F)"
+          git commit -m "data(cost-index): measured read $(date -u +%F)"
           git push
 
       - name: Publish the dispatch if it has fallen behind the data
         if: steps.keys.outputs.configured == 'true'
-        # Self-healing safety net for the weekly write-up. The Tuesday dispatch
-        # workflow normally keeps blog/cost-index-week-<asOf>/ within a week of the
-        # data. If that single weekly run is ever missed (cron skipped, a red gate,
-        # the broadcast secret lapsed), the published post drifts behind the fresh
-        # data we just committed — exactly the 2026-06-16 drift. The freshness gate
-        # detects that lag; when it trips, publish the dated post NOW so the write-up
-        # can never trail the index by more than a week, whatever happened on Tuesday.
-        #
-        # POST ONLY — this never POSTs the broadcast. The weekly EMAIL stays the
-        # dispatch workflow's job (idempotent per week), so a daily refresh can never
-        # mail subscribers. Worst case the post publishes here and Tuesday's run finds
-        # it already current and just sends the email.
+        # MANUAL AUTHORSHIP (founder call 2026-07-09): the monthly dispatch is
+        # hand-written — this workflow must never auto-generate a post. This
+        # step is now purely the REMINDER: when the published dispatch trails
+        # the data by more than the monthly threshold, fail the run red so
+        # GitHub emails the founder "time to write the monthly dispatch."
+        # Nothing is generated, published, or emailed here.
         run: |
-          set -e
           if node scripts/check-cost-index-dispatch-fresh.mjs; then
-            echo "Dispatch is current — no catch-up post needed."
-            exit 0
-          fi
-          echo "Dispatch has fallen behind the data — publishing the dated post."
-          # Same emit + register chain the weekly dispatch runs (minus the broadcast).
-          # The generator also appends the spine (data/cost-index-editions.json) and
-          # writes the per-week snapshot (cost-index/week-<asOf>.json + .csv) the
-          # Dataset JSON-LD links to; the archive + hero rebuilds keep those surfaces
-          # current too. All three must be committed below or they're discarded.
-          node scripts/build-cost-index-dispatch.mjs
-          node scripts/build-cost-index-archive.mjs
-          node scripts/inject-library-cost-index-hero.mjs
-          node scripts/sync-includes.mjs
-          node scripts/build-library-recent.mjs              || true
-          node scripts/wire-glossary-knit.mjs                || true
-          node scripts/inject-glossary-article-backlinks.mjs || true
-          node scripts/build-rss.mjs                          || true
-          node scripts/build-sitemap.mjs                      || true
-          node scripts/build-llms-txt.mjs                     || true
-          # Gate the generated post — fail the run before committing if it's malformed.
-          node scripts/check-article-graphics.mjs
-          # Fact-gate the driver catalog + the optional note before any catch-up publish.
-          node scripts/check-cost-index-drivers.mjs
-          node scripts/check-cost-index-editors-note.mjs
-          ASOF=$(node -e 'console.log((require("fs").readFileSync("data/cost-index.js","utf8").match(/"generatedAt"\s*:\s*"(\d{4}-\d{2}-\d{2})"/)||[])[1]||"")')
-          # Scoped commit: only the post + its registration surfaces (git identity is
-          # already configured by the daily-read commit step earlier in this job).
-          git add "blog/cost-index-week-${ASOF}/" "es/blog/cost-index-week-${ASOF}/" \
-                  data/cost-index-editions.json \
-                  cost-index/week-*.json cost-index/week-*.csv \
-                  cost-index/weekly/ es/cost-index/weekly/ \
-                  library/index.html es/library/index.html \
-                  blog/index.html feed.xml sitemap.xml llms.txt data/library-tags.json \
-                  glossary 2>/dev/null || true
-          git checkout -- . 2>/dev/null || true
-          if git diff --cached --quiet; then
-            echo "Nothing to commit for the catch-up post."
+            echo "Dispatch is current — nothing to do."
           else
-            git commit -m "data(cost-index): catch-up dispatch ${ASOF}"
-            git push
+            echo "::error::The Cost Index data is more than a month ahead of the last published dispatch — time to hand-write the monthly edition (see docs/plans/monthly-dispatch-site-edition.md)."
+            exit 1
           fi
-
       - name: Heartbeat freshness check
         if: steps.keys.outputs.configured == 'true'
-        # Keys are set, so the index IS expected to be current. On a DAILY cadence
-        # the freshest read should be <=1-2 days old; 5 days tolerates a long
-        # weekend/holiday in the business-daily AMS reports but alarms on a real
-        # stall (keys lapsed / sources down) — fail so the scheduled run goes red
-        # and GitHub emails the founder. The alert the last-good posture swallows.
+        # Keys are set, so the index IS expected to be current. On the Mon/Wed/Fri
+        # cadence (2026-07-06 pivot) the freshest read is <=2 days old on weekdays
+        # and <=3 across a weekend; 6 days tolerates one holiday-skipped run
+        # (Fri holiday -> Wed is 5d) but alarms on a real stall (keys lapsed /
+        # sources down) — fail so the scheduled run goes red and GitHub emails
+        # the founder. The alert the last-good posture swallows.
         env:
-          COST_INDEX_MAX_AGE_DAYS: "5"
+          COST_INDEX_MAX_AGE_DAYS: "6"
         run: node scripts/check-cost-index-freshness.mjs --check

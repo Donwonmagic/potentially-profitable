@@ -3,7 +3,7 @@
 // JSON-LD `dateModified` on the methodology pages (EN + ES) and — if it
 // carries the catalog — the hub.
 //
-// Why: freshness is a top AI-citation factor. The index IS refreshed daily
+// Why: freshness is a top AI-citation factor. The index IS refreshed Mon/Wed/Fri
 // (data/cost-index.js#generatedAt), but the structured-data `dateModified`
 // machines read did not move with it. This wires the one to the other so the
 // machine-readable freshness signal always matches the live read.
@@ -18,7 +18,7 @@
 //
 // Idempotent: a second run makes no change. The --check mode is wired into
 // scripts/check-all.mjs; the non-check invocation belongs in the cost-index
-// refresh workflow so the stamp tracks each daily read.
+// refresh workflow so the stamp tracks each measured read.
 
 import fs from 'node:fs';
 import path from 'node:path';

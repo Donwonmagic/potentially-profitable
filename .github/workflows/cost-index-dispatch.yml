@@ -1,30 +1,29 @@
-# Cost Index weekly dispatch — publishes the dated write-up, then emails it.
+# Cost Index dispatch — MANUAL-ONLY (founder call 2026-07-09): the monthly
+# dispatch is HAND-WRITTEN and hand-published each month; no cron generates
+# or publishes posts. This workflow remains as the one-click EMAIL button:
+# run it with dry-run=false AFTER the hand-written edition is live to send
+# the monthly broadcast to subscribers (idempotent per asOf). The freshness
+# gate (check-cost-index-dispatch-fresh.mjs, 38d) reds CI as the reminder
+# if a month ever slips — the machine reminds, humans write.
 #
-# Runs an hour after the daily measured refresh (cost-index-refresh.yml, 13:00 UTC)
-# so the day's fresh data/cost-index.json is committed and checked out before the
-# post is built — never a race that writes the post off yesterday's numbers.
+# Each edition it: (1) generates the dated dispatch at blog/cost-index-week-<asOf>/
+# (the slug family is dated, so it carries across the cadence change; existing
+# slugs are final-forever), registers it (RSS, sitemap, blog index, glossary
+# backlinks), gates it, and commits it so Cloudflare deploys the published post;
+# then (2) POSTs the edition's insight to the Worker's secret-gated broadcast
+# endpoint, which renders costIndexWeeklyEmail and sends it to every ACTIVE
+# 'cost-index' subscriber, linking to that dated post.
 #
-# Note the daily refresh now SELF-HEALS the post: if this weekly run is ever missed,
-# the next daily refresh republishes the dated post (post only, no email) the moment
-# the data is more than a week ahead of it. This Tuesday run remains the canonical
-# cadence and is the one that sends the weekly broadcast email.
-#
-# Each Tuesday it: (1) generates the dated dispatch at blog/cost-index-week-<asOf>/,
-# registers it (RSS, sitemap, blog index, glossary backlinks), gates it, and commits
-# it so Cloudflare deploys the published post; then (2) POSTs the week's insight to
-# the Worker's secret-gated broadcast endpoint, which renders costIndexWeeklyEmail
-# and sends it to every ACTIVE 'cost-index' subscriber, linking to that dated post.
-#
-# The broadcast is IDEMPOTENT per week (Worker stamps the asOf), so a re-run never
-# double-sends. Nothing emails unless COST_INDEX_BROADCAST_SECRET is set here AND on
-# the Worker (they must match). Manual dispatch defaults to dry-run = preview only:
-# prints the insight, publishes nothing, sends nothing.
+# The broadcast is IDEMPOTENT per edition (Worker stamps the asOf), so a re-run
+# never double-sends. Nothing emails unless COST_INDEX_BROADCAST_SECRET is set
+# here AND on the Worker (they must match). Manual dispatch defaults to dry-run =
+# preview only: prints the insight, publishes nothing, sends nothing.
 #
 # Secret (Settings → Secrets and variables → Actions):
 #   COST_INDEX_BROADCAST_SECRET — high-entropy shared secret, also `wrangler secret put`
 #                                 on the Worker as COST_INDEX_BROADCAST_SECRET.
 
-name: Cost Index weekly dispatch
+name: Cost Index monthly dispatch
 
 on:
   workflow_dispatch:
@@ -33,11 +32,6 @@ on:
         description: 'dry-run = print the insight, publish nothing, send nothing'
         type: boolean
         default: true
-  schedule:
-    # Tuesdays 14:00 UTC — an hour after the daily 13:00 UTC measured refresh, so the
-    # day's data is committed and settled before the post publishes and the email
-    # goes out (the refresh has a 20-minute timeout, so an hour clears it cleanly).
-    - cron: '0 14 * * 2'
 
 permissions:
   contents: write   # publishes the dated dispatch post
@@ -59,7 +53,7 @@ jobs:
         with:
           node-version: 20
 
-      - name: Compute the week's insight
+      - name: Compute the month's insight
         run: |
           set -e
           node scripts/build-cost-index-dispatch.mjs --dry-run
@@ -70,7 +64,7 @@ jobs:
 
       # Scheduled runs publish + send; manual dispatch only does so when dry-run=false.
       - name: Publish the dated dispatch
-        if: ${{ github.event_name == 'schedule' || github.event.inputs.dry-run == 'false' }}
+        if: ${{ github.event.inputs.dry-run == 'false' }}
         run: |
           set -e
           # Emit blog/cost-index-week-<asOf>/index.html from the measured index.
@@ -88,11 +82,19 @@ jobs:
           # them keeps git in sync and the gate green.
           node scripts/sync-includes.mjs
           node scripts/build-library-recent.mjs           || true
+          # Card the post on /blog/ — the comment above always promised "blog
+          # index" but the call was missing until 2026-07-06; every workflow-
+          # published week needed a manual rerun to appear on the blog index.
+          node scripts/build-blog-index.mjs               || true
           node scripts/wire-glossary-knit.mjs             || true
           node scripts/inject-glossary-article-backlinks.mjs || true
           node scripts/build-rss.mjs                       || true
           node scripts/build-sitemap.mjs                   || true
           node scripts/build-llms-txt.mjs                  || true
+          # Re-render the golden email preview: the edition just published, so
+          # the preview's postUrl (latest edition) changes with it. Keeps the
+          # committed render equal to what the broadcast step actually sends.
+          node scripts/build-cost-index-email-preview.mjs
           # Gate the generated post — fail the run before committing if it's malformed.
           node scripts/check-article-graphics.mjs
           # Fact-gate the driver catalog + the optional "from the floor" note, so a
@@ -103,13 +105,27 @@ jobs:
           # incidental site-wide sync-includes sweep so the commit is exactly the post.
           git config user.name  "muntin-cost-index-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add "blog/cost-index-week-${ASOF}/" "es/blog/cost-index-week-${ASOF}/" \
-                  data/cost-index-editions.json \
-                  cost-index/week-*.json cost-index/week-*.csv \
-                  cost-index/weekly/ es/cost-index/weekly/ \
-                  library/index.html es/library/index.html \
-                  blog/index.html feed.xml sitemap.xml llms.txt data/library-tags.json \
-                  glossary 2>/dev/null || true
+          # Stage per-pathspec: a single `git add` with one unmatched pathspec stages
+          # NOTHING (git aborts the whole add), and `|| true` then swallows the error —
+          # the generator writes the EN post only, so "es/blog/cost-index-week-*/"
+          # never matches and silently voided the entire publish (refresh run #33,
+          # 2026-07-06). Looping makes each path independent.
+          # The default emit is MONTHLY since the 2026-07-09 naming pivot:
+          # blog/cost-index-<YYYY-MM>/ keyed on the edition date (EDITION_DATE
+          # env, default = data asOf). The weekly pathspecs stay for the
+          # final-forever dated family (--weekly emits).
+          EDMONTH="${ASOF%-*}"
+          for p in "blog/cost-index-${EDMONTH}/" "blog/cost-index-week-${ASOF}/" "es/blog/cost-index-week-${ASOF}/" \
+                   data/cost-index-editions.json data/cost-index-readings.prev.json \
+                   cost-index/week-*.json cost-index/week-*.csv \
+                   cost-index/weekly/ es/cost-index/weekly/ \
+                   library/index.html es/library/index.html \
+                   blog/index.html es/blog/index.html \
+                   feed.xml es/feed.xml sitemap.xml \
+                   llms.txt es/llms.txt data/library-tags.json \
+                   glossary/ es/glossary/ data/email-preview/; do
+            git add "$p" 2>/dev/null || echo "dispatch stage: no match for $p (skipped)"
+          done
           git checkout -- . 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No dispatch change this week — nothing to commit."
@@ -118,8 +134,8 @@ jobs:
             git push
           fi
 
-      - name: Broadcast the weekly email
-        if: ${{ github.event_name == 'schedule' || github.event.inputs.dry-run == 'false' }}
+      - name: Broadcast the monthly email
+        if: ${{ github.event.inputs.dry-run == 'false' }}
         env:
           BROADCAST_SECRET: ${{ secrets.COST_INDEX_BROADCAST_SECRET }}
         run: |
@@ -128,8 +144,10 @@ jobs:
             echo "COST_INDEX_BROADCAST_SECRET not set — skipping send (nothing emailed)."
             exit 0
           fi
-          # postUrl points subscribers at the dated dispatch just published above.
-          node -e 'const i=require("/tmp/insight.json"); i.postUrl="https://muntin.digital/blog/cost-index-week-"+i.asOf+"/"; require("fs").writeFileSync("/tmp/payload.json", JSON.stringify(i));'
+          # postUrl points subscribers at the dated dispatch just published above —
+          # the MONTHLY slug family since the 2026-07-09 naming pivot (the publish
+          # step above runs the default monthly emit, editionDate = data asOf).
+          node -e 'const i=require("/tmp/insight.json"); i.postUrl="https://muntin.digital/blog/cost-index-"+i.asOf.slice(0,7)+"/"; require("fs").writeFileSync("/tmp/payload.json", JSON.stringify(i));'
           code=$(curl -sS -o /tmp/resp.json -w '%{http_code}' \
             -X POST 'https://muntin.digital/api/admin/cost-index-broadcast' \
             -H "Authorization: Bearer $BROADCAST_SECRET" \

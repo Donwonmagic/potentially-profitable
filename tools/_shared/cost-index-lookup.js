@@ -21,8 +21,23 @@
  *
  * match(name, seed) -> {
  *   key, label_en, label_es, unit_en, unit_es,
- *   wholesaleCents, rangeCents, basis, asOf, confidence, tier ('auto'|'propose')
+ *   wholesaleCents, rangeCents, epCents, basis, asOf, confidence,
+ *   trend, verdict, tier ('auto'|'propose')
  * } | null
+ *
+ * The richer fields obey the same honesty rule, each gated at its own source:
+ *   - `epCents` (yield-adjusted edible-portion cost) rides the SAME `hasDollar`
+ *     gate as `wholesaleCents` — it is a dollar figure, so it only publishes on
+ *     a medium+ confidence wholesale/delivered level.
+ *   - `trend` ({pct, dir}) is the direction the reference has moved. It is NOT
+ *     gated by `hasDollar`: a direction is meaningful even on an index-basis
+ *     item that yields no dollar level. Present whenever the assessment carries
+ *     a numeric trend; the caller reads `confidence` to decide how loudly to
+ *     show it.
+ *   - `verdict` (the calibrated buy/hold/watch voice from cost-verdict.js) is
+ *     produced ONLY from the build-time `flag`, and cost-verdict.js self-governs
+ *     honesty (thin data downgrades "structural" to Watch). null when the item
+ *     carries no flag or the verdict module is unavailable.
  *
  * Pure, deterministic, no DOM/network. Browser: window.MuntinCostIndexLookup.
  */
@@ -50,21 +65,47 @@
     return true;
   }
 
+  // The verdict voice (cost-verdict.js) is a browser global when the page loads
+  // it, and a sibling CommonJS module under Node/Ledger. Resolve from whichever
+  // is present so the calibrated call travels with the reference on both sides
+  // of the loop. Absent in either → verdict rides as null (honest degrade).
+  function verdictMod() {
+    if (root && root.MuntinCostVerdict) return root.MuntinCostVerdict;
+    if (typeof require === 'function') {
+      try { return require('./cost-verdict.js'); } catch (e) { /* not resolvable here */ }
+    }
+    return null;
+  }
+
   function reference(it, tier) {
     var a = it.assessment || {};
     var lvl = a.level || null;
     var conf = a.confidence || null;
     var firm = conf === 'high' || conf === 'medium';
     var hasDollar = !!(lvl && typeof lvl.medianCents === 'number' && lvl.basis !== 'index' && firm);
+    // Trend: a direction is honest even with no dollar level, so it is gated on
+    // the trend's own presence, not on hasDollar. `dir` is baked upstream; derive
+    // it defensively from the sign of pct if an older seed omits it.
+    var tr = a.trend;
+    var trend = (tr && typeof tr.pct === 'number')
+      ? { pct: tr.pct, dir: tr.dir || (tr.pct > 0 ? 'up' : (tr.pct < 0 ? 'down' : 'flat')) }
+      : null;
+    // Verdict: built only from the fact-gated `flag`; cost-verdict.js self-governs
+    // confidence honesty (thin "structural" → Watch), so pass conf straight through.
+    var CV = it.flag ? verdictMod() : null;
+    var verdict = (CV && CV.verdict) ? CV.verdict(it.flag, conf) : null;
     return {
       key: it.key,
       label_en: it.label_en, label_es: it.label_es,
       unit_en: it.unit_en || 'unit', unit_es: it.unit_es || 'unidad',
       wholesaleCents: hasDollar ? lvl.medianCents : null,
       rangeCents: hasDollar && Array.isArray(lvl.rangeCents) ? lvl.rangeCents : null,
+      epCents: (hasDollar && typeof it.epCents === 'number') ? it.epCents : null,
       basis: lvl ? (lvl.basis || null) : null,
       asOf: a.asOf || null,
       confidence: conf,
+      trend: trend,
+      verdict: verdict,
       tier: tier
     };
   }
