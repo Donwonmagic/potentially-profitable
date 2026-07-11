@@ -1105,6 +1105,29 @@ to{opacity:1;transform:translateZ(0)}
 }
 .window:hover .pane{transform:translateY(-1px)}
 .window-caption{margin-top:18px;display:flex;justify-content:space-between;font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums}
+/* ===== Home hero — Cost Index sample instrument (the muntin window, made functional) ===== */
+.ci-inst{position:relative;margin:0;background:var(--white);border:2px solid var(--ink);border-radius:8px;padding:22px 22px 20px;overflow:hidden;box-shadow:0 50px 90px -40px rgba(20,22,26,0.25),0 20px 40px -20px rgba(42,80,200,0.15);--ci-mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono","Roboto Mono",Menlo,monospace}
+.ci-inst__scan{position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--teal),transparent);opacity:0;pointer-events:none}
+.ci-inst[data-boot] .ci-inst__scan{animation:ci-scan 1s var(--ease-out) .5s 1}
+.ci-inst__top{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.ci-inst__label{font-family:var(--ci-mono);font-size:11.5px;text-transform:uppercase;letter-spacing:0.12em;color:var(--stone)}
+.ci-inst__state{margin-left:auto;font-family:var(--ci-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:0.08em;color:var(--stone);display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:3px 9px}
+.ci-inst__state i{width:6px;height:6px;border-radius:50%;background:var(--gold);display:block}
+.ci-inst__head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.ci-inst__big{font-family:var(--ci-mono);font-variant-numeric:tabular-nums;font-size:clamp(34px,5.4vw,46px);font-weight:600;letter-spacing:-0.02em;line-height:1;color:var(--ink)}
+.ci-inst__chip{font-family:var(--ci-mono);font-size:12.5px;font-weight:600;padding:3px 9px;border-radius:6px;color:var(--rust);background:color-mix(in srgb,var(--rust) 12%,transparent)}
+.ci-inst__cap{margin:8px 0 0;font-size:12.5px;line-height:1.5;color:var(--stone)}
+.ci-inst__rows{margin-top:16px;border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.ci-inst__r{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;padding:10px 13px;border-bottom:1px solid var(--line);font-size:13.5px}
+.ci-inst__r:last-child{border-bottom:0}
+.ci-inst__r--flag{background:color-mix(in srgb,var(--rust) 7%,var(--white))}
+.ci-inst__nm{color:var(--ink);font-weight:600}
+.ci-inst__unit{font-family:var(--ci-mono);font-size:12px;color:var(--stone);font-variant-numeric:tabular-nums}
+.ci-inst__d{font-family:var(--ci-mono);font-variant-numeric:tabular-nums;font-weight:600;text-align:right;color:var(--rust);white-space:nowrap}
+.ci-inst__d--calm{color:var(--stone)}
+.ci-inst__verdict{margin:14px 0 0;font-size:12.5px;line-height:1.5;color:var(--ink-soft)}
+.ci-inst__verdict b{color:var(--ink)}
+@keyframes ci-scan{0%{opacity:.85;transform:translateY(0)}100%{opacity:0;transform:translateY(360px)}}
 /* Mobile + small-tablet: the decorative .window is purely brand identity
    (aria-hidden) and at column width with aspect-ratio:5/6 it becomes a
    ~480px-tall black-grid overlay between the contact line and the count

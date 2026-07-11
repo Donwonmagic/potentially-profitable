@@ -481,24 +481,49 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </div>
 
     <div>
-      <div class="window" aria-hidden="true">
-        <div class="pane"></div><div class="pane"></div><div class="pane"></div>
-        <div class="pane"></div><div class="pane"></div><div class="pane"></div>
-        <div class="pane"></div><div class="pane"></div><div class="pane"></div>
-        <div class="pane"></div><div class="pane"></div><div class="pane"></div>
-        <div class="muntins">
-          <div class="bar v1"></div><div class="bar v2"></div>
-          <div class="bar h1"></div><div class="bar h2"></div><div class="bar h3"></div>
-          <div class="frame"></div>
+      <figure class="ci-inst" aria-label="Sample Cost Index basket read">
+        <span class="ci-inst__scan" aria-hidden="true"></span>
+        <div class="ci-inst__top">
+          <span class="ci-inst__label">Cost Index &middot; sample basket</span>
+          <span class="ci-inst__state"><i aria-hidden="true"></i>illustrative</span>
         </div>
-      </div>
-      <div class="window-caption">
-        <span>mun·tin / noun</span>
-        <span>the connective tissue of a window</span>
-      </div>
+        <div class="ci-inst__head">
+          <span class="ci-inst__big" id="ciBasket">+14.6%</span>
+          <span class="ci-inst__chip">onions, this month</span>
+        </div>
+        <p class="ci-inst__cap">A sample of what the Index shows &mdash; one line carrying the move, the rest quiet. Not your prices.</p>
+        <div class="ci-inst__rows">
+          <div class="ci-inst__r ci-inst__r--flag">
+            <span class="ci-inst__nm">Onion</span><span class="ci-inst__unit">50&nbsp;lb</span><span class="ci-inst__d">up 14.6%</span>
+          </div>
+          <div class="ci-inst__r">
+            <span class="ci-inst__nm">Ribeye</span><span class="ci-inst__unit">12&nbsp;lb</span><span class="ci-inst__d ci-inst__d--calm">down 3.1%</span>
+          </div>
+          <div class="ci-inst__r">
+            <span class="ci-inst__nm">Chicken breast</span><span class="ci-inst__unit">40&nbsp;lb</span><span class="ci-inst__d ci-inst__d--calm">down 14.4%</span>
+          </div>
+        </div>
+        <figcaption class="ci-inst__verdict"><b>One thing to look at</b> &mdash; proteins eased, so it&rsquo;s the produce line to reprice, not the plate.</figcaption>
+      </figure>
     </div>
   </div>
 </section>
+
+<script>
+/* Home hero — Cost Index sample instrument: count-up + scan on load.
+   Degrades gracefully: the number is present in the HTML for no-JS, and
+   reduced-motion sets it immediately without animating. */
+(function(){
+  var el=document.getElementById('ciBasket'); if(!el) return;
+  var inst=el.closest('.ci-inst');
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){ el.textContent='+14.6%'; return; }
+  if(inst) inst.setAttribute('data-boot','');
+  var target=14.6, t0=null; el.textContent='+0.0%';
+  function step(ts){ if(!t0)t0=ts; var k=Math.min(1,(ts-t0)/1000); var e=1-Math.pow(1-k,3);
+    el.textContent='+'+(target*e).toFixed(1)+'%'; if(k<1){requestAnimationFrame(step);} else {el.textContent='+14.6%';} }
+  setTimeout(function(){ requestAnimationFrame(step); }, 400);
+})();
+</script>
 
 <!-- ============ STANCES STRIP ============
      Three signature stances per launch plan Part III. Each one
