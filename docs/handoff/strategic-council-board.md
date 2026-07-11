@@ -57,6 +57,22 @@ discoverable). Capability is shown, never invented.
   SITE-WIDE decision (don't do piecemeal). The /window/ page is inherently "the line to Don" — its
   personal-access framing may be a deliberate FEATURE, not a bug: **founder-fork to surface** (keep the
   human-access differentiator vs full company-voice?).
+- **`9b47e6763` — finish body-content de-solo (product/company pages, EN+ES).** Reframed first-person
+  narration + CTAs to company voice on ledger, for/restaurants, studio, trust, es/404 (+ ES): "I run
+  front-of-house… numbers I check on my own shifts" → universal, "straight to me / I read every one" →
+  "straight to us / every one gets read", body "Reach Don" → "Contact". **Deliberately KEPT** (appropriate):
+  /about/+es (Don's story = the human seat), the library articles (voice canon permits first-person
+  operator voice), the frozen course, /window/ (the fork). **→ Positioning-pivot de-solo is now
+  substantially COMPLETE** (chrome site-wide + home + product/company; only intentional keeps + the
+  generator-owned cost-index/open pages remain, which regen with the synced chrome on deploy).
+
+**NEXT (autonomous) — escalate to VISIBLE v3 transformation, one home section per increment:** the home's
+remaining sections toward the app-grade/capability/personality look — **tool-cta-flagships** ("Find the leak
+before you fix it" + the 2 flagship free tools, ~index.html:546) first (the Workbench pane, prominent),
+then trust-strip, library island, founding band. Build with existing tokens + scoped v3 CSS (tabular-mono
+where numbers appear, hairline/grille structure, capability-forward copy), headless + adversarial-review
+each, EN+ES, preserve machinery/gates. DEFER (care needed): the defensive stances section (cal:band
+injector — reframe copy defense→capability KEEPING sentinels, or leave for founder); type unification.
 
 **NEXT (autonomous, ordered):**
 1. **Home hero visual → the instrument.** The hero already holds a DECORATIVE empty muntin window
