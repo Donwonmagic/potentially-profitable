@@ -32,8 +32,14 @@ is the execution spine** (folds the reinvention master plan + the locked macro d
 the flagship prototype). Autonomous run: one increment → adversarial/expert audit → iterate → commit+push →
 update this block → continue.
 
-**🟢 ACTIVE — SITE-WIDE v3 PROPAGATION (founder picked ALL 4 levers + de-solo newsletter + keep human seat, 2026-07-11).**
-Blueprint from workflow wbr35q2x7. Ordered execution (systemic-first so hubs inherit it):
+**✅ COMPLETE — SITE-WIDE v3 PROPAGATION (founder picked ALL 4 levers + de-solo newsletter + keep human seat, 2026-07-11).**
+ALL SHIPPED + pushed: newsletter de-solo `d9dd78900`; type `31f4013a5`; radius `84273de79`; hubs cost-index
+`2b567e382` / ledger `c434c77d5` / tools `987aeb3a7` / library `8a391210c`; tool-card layout `63f6cb55f`.
+/about/ + /window/ kept personal (no change). All EN+ES, both themes headless-verified; css-drift 502 (improved
+from 504); gates green (fabrications 0, newsletter-copy ✓ enforcing company voice, locale-parity). Hub polish
+ran via workflow w71suln37 (polish+adversarial-verify per hub); the tools raw-6px radii were tokenized to
+var(--r-md) post-verify to hold drift; the library cost-index-hero was made durable by bumping its injector
+template (inject-library-cost-index-hero.mjs 16→8px) + re-running. Blueprint from workflow wbr35q2x7. Original plan:
 - **[DONE `d9dd78900`] Newsletter de-solo** — "We send…"; G.10 gate updated to require company framing (teeth kept).
 - **[1] Type unification** (site.css, LOW risk): do NOT split the global `h1,h2,h3,h4{font-family:var(--font-display)}`
   (:743) — that would demote every article h3-h4. Instead add scoped `font-family:var(--font-body)` on the
