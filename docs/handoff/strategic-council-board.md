@@ -37,10 +37,18 @@ advertise headcount — but NEVER fabricate a team/scale (that lie breaks the ho
 discoverable). Capability is shown, never invented.
 
 **LIVE CASCADE — shipped:**
-- **`ffabeeadf` — home hero de-solo (EN+ES).** Executed the positioning pivot on the flagship: dropped
-  the first-person "numbers I check on my own shifts" from the hero-sub (now product/company-voice) +
-  removed the hero-meta-note (Don byline + "Reply within 4 hours" personal-service promise). Honesty
-  boundary held (removal only, nothing fabricated). Gates green; headless both themes 390/1280 clean.
+- **`ffabeeadf` — home hero de-solo (EN+ES).** Positioning pivot on the flagship: dropped the first-person
+  "numbers I check on my own shifts" + removed the hero-meta-note (Don byline + "Reply within 4 hours").
+  Removal only, honesty boundary held. Gates green; headless clean.
+- **`37c70aac4` — home hero window → live Cost Index instrument (EN+ES).** The decorative empty muntin
+  window is now a functional sample cost read: big tabular-mono headline (+14.6% count-up), flagged mover
+  chip, hairline-divided rows (grille AS structure), "one thing to look at" verdict. Real 07-06 edition
+  DIRECTIONS (onion +14.6%, ribeye/chicken easing), unmistakably labelled SAMPLE/ILLUSTRATIVE/"Not your
+  prices" — no fabricated $ (fact gate 0 hits). Scoped `.ci-inst` CSS (tokens only → css-drift unchanged
+  504; scoped mono stack), auto-themes, scan boot, degrade-safe. Shells regenerated. Verified: all gates +
+  headless both themes 360/390/1280 + ES. Screenshots sent to founder. **Visual read: strong, app-grade,
+  on-brand both themes.** NOTE for later: the h1 is still Fraunces serif (type unification pending) and the
+  nav CTA still says "Reach Don" (solo signal — nav is a synced _includes; separate increment).
 
 **NEXT (autonomous, ordered):**
 1. **Home hero visual → the instrument.** The hero already holds a DECORATIVE empty muntin window
