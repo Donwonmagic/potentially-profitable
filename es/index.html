@@ -548,19 +548,19 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <span class="ci-inst__state"><i aria-hidden="true"></i>ilustrativo</span>
         </div>
         <div class="ci-inst__head">
-          <span class="ci-inst__big" id="ciBasket">+14.6%</span>
-          <span class="ci-inst__chip">cebolla, este mes</span>
+          <span class="ci-inst__big" id="ciBasket">+0.6%</span>
+          <span class="ci-inst__chip">cebolla al frente</span>
         </div>
-        <p class="ci-inst__cap">Una muestra de lo que ense&ntilde;a el &Iacute;ndice &mdash; una l&iacute;nea carga el movimiento, el resto est&aacute; quieto. No son tus precios.</p>
+        <p class="ci-inst__cap">Una muestra de lo que ense&ntilde;a el &Iacute;ndice &mdash; la canasta apenas se movi&oacute;; la cebolla corri&oacute; mientras las prote&iacute;nas cedieron. No son tus precios.</p>
         <div class="ci-inst__rows">
           <div class="ci-inst__r ci-inst__r--flag">
             <span class="ci-inst__nm">Cebolla</span><span class="ci-inst__unit">50&nbsp;lb</span><span class="ci-inst__d">sube 14.6%</span>
           </div>
           <div class="ci-inst__r">
-            <span class="ci-inst__nm">Ribeye</span><span class="ci-inst__unit">12&nbsp;lb</span><span class="ci-inst__d ci-inst__d--calm">baja 3.1%</span>
+            <span class="ci-inst__nm">Ribeye</span><span class="ci-inst__unit">12&nbsp;lb</span><span class="ci-inst__d ci-inst__d--calm">baja 2.4%</span>
           </div>
           <div class="ci-inst__r">
-            <span class="ci-inst__nm">Pechuga de pollo</span><span class="ci-inst__unit">40&nbsp;lb</span><span class="ci-inst__d ci-inst__d--calm">baja 14.4%</span>
+            <span class="ci-inst__nm">Pechuga de pollo</span><span class="ci-inst__unit">40&nbsp;lb</span><span class="ci-inst__d ci-inst__d--calm">baja 3.8%</span>
           </div>
         </div>
         <figcaption class="ci-inst__verdict"><b>Una cosa que mirar</b> &mdash; las prote&iacute;nas cedieron, as&iacute; que es la l&iacute;nea de verdura la que se re-precifica, no el plato.</figcaption>
@@ -575,11 +575,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 (function(){
   var el=document.getElementById('ciBasket'); if(!el) return;
   var inst=el.closest('.ci-inst');
-  if(matchMedia('(prefers-reduced-motion: reduce)').matches){ el.textContent='+14.6%'; return; }
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){ el.textContent='+0.6%'; return; }
   if(inst) inst.setAttribute('data-boot','');
-  var target=14.6, t0=null; el.textContent='+0.0%';
+  var target=0.6, t0=null; el.textContent='+0.0%';
   function step(ts){ if(!t0)t0=ts; var k=Math.min(1,(ts-t0)/1000); var e=1-Math.pow(1-k,3);
-    el.textContent='+'+(target*e).toFixed(1)+'%'; if(k<1){requestAnimationFrame(step);} else {el.textContent='+14.6%';} }
+    el.textContent='+'+(target*e).toFixed(1)+'%'; if(k<1){requestAnimationFrame(step);} else {el.textContent='+0.6%';} }
   setTimeout(function(){ requestAnimationFrame(step); }, 400);
 })();
 </script>
