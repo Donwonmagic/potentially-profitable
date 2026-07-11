@@ -64,6 +64,22 @@ section-level heads stay Fraunces by the system's own rule, and they're mixed-re
 (cost-pulse `.cp-card` has data-title "Drift this week" beside framing "What this dashboard isn't."), so there's
 no clean scope and a blanket demote would flatten warmth. Full reasoning in `docs/handoff/redesign-v3-system.md`
 (Deliberate keeps). The v3 storefront redesign is complete.
+
+**➡ PIVOT TO PRODUCT REPO (founder, 2026-07-11).** After storefront v3 was certified + long-tail-swept, the
+founder chose to carry the v3 language onto the paid **Ledger product** (`Muntin-Invoice-Decoder`, app
+`apps/web`, same branch). **Key finding on arrival:** the product does NOT need v3 applied — it IS the CANONICAL
+SOURCE of the v3 language and MORE mature than the storefront. `packages/ui/tokens.css` is a financial-grade
+token system (Linear/Mercury/Ramp), WCAG baked into token comments, gated by `check-contrast` /
+`check-focus-discipline` / `check-editorial-accent-boundary` / `check-keyframes-allowlist`, dark-canon,
+chrome/editorial/expressive tiers. It DELIBERATELY diverges on two axes: (1) accent — product `--mun-accent`
+#3b68f5 light / #5b82ff dark vs storefront `--teal` #2A50C8 / #7AA7FF (same blue family; product's #2A50C8 is
+its `--mun-accent-text`); (2) display face — product RETIRED the serif from chrome (Inter-only; Fraunces only
+as `--mun-font-editorial`, gated), storefront KEEPS Fraunces display. Applying storefront tokens wholesale
+would REGRESS the product. **Founder chose "full parity audit first"** → workflow `wzy4egv8m` (6 dimension
+auditors × both repos → synthesized reconciliation plan → adversarial verify). No token edits until reviewed.
+⚠ The product repo has NO CLAUDE.md yet — add continuity there once the reconciliation direction is set.
+⚠ Container reverted a THIRD time this session (storefront only; product repo stable) — same runbook, recovered.
+
 - **[DONE `d9dd78900`] Newsletter de-solo** — "We send…"; G.10 gate updated to require company framing (teeth kept).
 - **[1] Type unification** (site.css, LOW risk): do NOT split the global `h1,h2,h3,h4{font-family:var(--font-display)}`
   (:743) — that would demote every article h3-h4. Instead add scoped `font-family:var(--font-body)` on the
