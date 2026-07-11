@@ -385,18 +385,23 @@
    cover of a reference work. Hairline rule between rows; tabular
    figures on the date column; subtle eyebrow color on Section to
    distinguish navigation labels from titles. */
-.lib-idx{width:100%;max-width:760px;margin:24px auto 0;border-collapse:collapse;font-size:15px;line-height:1.5;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+/* Dense mono app-index (2026-07-11): the recently-added rail recast as a
+   live library index — mono tabular dates + section tags, mono column
+   headers, hairline rows, subtle teal row-hover — so it reads as a live
+   index, not a blog roll. Scoped --li-mono; token-only; both themes. */
+.lib-idx{width:100%;max-width:820px;margin:24px auto 0;border-collapse:collapse;table-layout:fixed;font-size:14.5px;line-height:1.45;color:var(--ink-soft);font-variant-numeric:tabular-nums;--li-mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono","Roboto Mono",Menlo,monospace}
 .lib-idx caption{text-align:left}
-.lib-idx thead th{text-align:left;font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--stone);padding:0 12px 10px;border-bottom:1px solid var(--line)}
-.lib-idx tbody tr{border-bottom:var(--rule)}
-.lib-idx tbody tr:last-child{border-bottom:1px solid var(--line)}
-.lib-idx td{padding:14px 12px;vertical-align:baseline}
-.lib-idx-title{width:48%}
+.lib-idx thead th{text-align:left;font-family:var(--li-mono);font-size:10.5px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--stone);padding:0 12px 9px;border-bottom:1px solid var(--line-dark)}
+.lib-idx tbody tr{border-bottom:1px solid var(--line);transition:background var(--t-fast) var(--ease)}
+.lib-idx tbody tr:last-child{border-bottom:1px solid var(--line-dark)}
+.lib-idx tbody tr:hover{background:color-mix(in srgb,var(--teal) 5%,transparent)}
+.lib-idx td{padding:9px 12px;vertical-align:baseline}
+.lib-idx-title{width:46%}
 .lib-idx-title a{color:var(--ink);text-decoration:none;font-weight:500;border-bottom:1px solid transparent;transition:border-color var(--t-fast) var(--ease)}
 .lib-idx-title a:hover{border-bottom-color:var(--ink)}
-.lib-idx-section{width:18%;color:var(--teal);font-size:13px;letter-spacing:0.02em}
-.lib-idx-date{width:18%;color:var(--stone);font-size:13.5px;white-space:nowrap}
-.lib-idx-contributor{width:16%;color:var(--stone);font-size:13.5px}
+.lib-idx-section{width:18%;font-family:var(--li-mono);font-size:11px;letter-spacing:0.04em;text-transform:uppercase;color:var(--teal)}
+.lib-idx-date{width:18%;font-family:var(--li-mono);font-size:12px;color:var(--stone);white-space:nowrap;font-variant-numeric:tabular-nums}
+.lib-idx-contributor{width:18%;color:var(--stone);font-size:13px}
 @media (max-width:640px){
   .lib-idx,.lib-idx thead,.lib-idx tbody,.lib-idx tr,.lib-idx td,.lib-idx th{display:block}
   .lib-idx thead{display:none}
