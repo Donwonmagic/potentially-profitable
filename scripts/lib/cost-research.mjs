@@ -211,7 +211,12 @@ export function pricingCards(repoRoot) {
     // Only a STRONG companion supports the "a swap buys nothing" read — it must have shared at
     // least half of this ingredient's own notable moves. A weak co-mover (e.g. 2 of 6) is noise.
     if (!(a.n >= 2 && k / a.n >= 0.5)) return null;
-    return { slug: nbSlug, en: nm(nbSlug).en, es: nm(nbSlug).es, k, n: a.n };
+    // A co-mover is only a plausible SUBSTITUTE if it shares the ingredient's category. Cross-category
+    // companions (onion co-moving with short rib) move together in the market but nobody plates one
+    // for the other — so we surface them as "companion, not a substitute," never a futile swap.
+    const cs = yBySlug[s] ? yBySlug[s].cat : null; const cn = yBySlug[nbSlug] ? yBySlug[nbSlug].cat : null;
+    const sameCat = cs != null && cn != null && cs === cn;
+    return { slug: nbSlug, en: nm(nbSlug).en, es: nm(nbSlug).es, k, n: a.n, sameCat };
   };
   const cards = Object.keys(lf).filter((s) => lf[s] && lf[s].bucket).map((s) => {
     const y = yBySlug[s]; const t = timingFor(s); const sw = swapFor(s);
@@ -899,8 +904,8 @@ const PLAYBOOK_CSS = `
 .pb-pill{display:inline-block;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap;border:1px solid var(--line)}
 .pb-pill--lock{background:var(--teal);color:var(--white);border-color:var(--teal)}
 .pb-pill--cushion{background:var(--teal-wash);color:var(--teal);border-color:var(--teal-wash)}
-.pb-pill--float{background:transparent;color:var(--gold);border-color:var(--gold)}
-.pb-pill--withhold{background:var(--cream-2);color:var(--stone)}
+.pb-pill--float{background:transparent;color:var(--ink-soft);border-color:var(--gold)}
+.pb-pill--withhold{background:var(--cream-2);color:var(--ink-soft)}
 .pb-guide{margin:34px 0 0}
 .pb-guide .rs-section{margin:0 0 26px}
 .pb-guide .rs-section p{font-size:15.5px;line-height:1.62;color:var(--ink);margin:0 0 12px;max-width:66ch}
@@ -1008,14 +1013,15 @@ const PLAYBOOK_CSS = `
 // the delivered price; a strong co-mover means a swap is a mirror, never a cause).
 function cardLines(c, es) {
   const nm = es ? c.es : c.en; const low = nm.toLowerCase();
+  const poss = (w) => (/s$/i.test(w) ? w + "'" : w + "'s"); // avoid "Onions's"
   const mo = (es ? MONTH_ABBR_ES : MONTH_ABBR_EN)[c.cheapMonth || 0];
   const posture = {
-    lock: es ? `Fíjalo. Su banda de referencia mayorista se ha mantenido en ±${c.bandPct}% — bastante estable para comprometer un precio impreso durante el ciclo.`
-      : `Print it. Its wholesale-reference band has held ±${c.bandPct}% — steady enough to commit a menu price for the print cycle.`,
-    cushion: es ? `Imprímelo con colchón. La banda corre ±${c.bandPct}% — ponle precio al tope de la banda, no a la mitad.`
-      : `Print it with a cushion. The band runs ±${c.bandPct}% — price to the top of it, not the middle.`,
-    float: es ? `Déjalo flotar. La banda corre ±${c.bandPct}% — va mejor como precio de mercado o especial rotativo que como precio impreso fijo.`
-      : `Float it. The band runs ±${c.bandPct}% — better as market price or a rotating special than a locked print.`,
+    lock: es ? `Fíjalo. Su banda de ±${c.bandPct}% es estrecha y se ha comprobado en semanas recientes — bastante estable para comprometer un precio impreso durante el ciclo.`
+      : `Print it. Its ±${c.bandPct}% band is both tight and proven across recent weeks — steady enough to commit a menu price for the print cycle.`,
+    cushion: es ? `Imprímelo con colchón. Su banda de ±${c.bandPct}% es estrecha pero aún no se ha comprobado suficientes semanas para fijar — así que ponle precio al tope de la banda, no a la mitad.`
+      : `Print it with a cushion. Its ±${c.bandPct}% band is tight but hasn't proven out enough recent weeks to lock — so price to the top of the band, not the middle.`,
+    float: es ? `Déjalo flotar. La banda corre ±${c.bandPct}% — va mejor como precio de mercado o especial rotativo; si tienes que imprimir un precio fijo, constrúyelo al tope de la banda, no a la mitad.`
+      : `Float it. The band runs ±${c.bandPct}% — better as market price or a rotating special; if you must print a fixed price, build it to the top of the band, not the middle.`,
     withhold: es ? `Muy poca evidencia para decidir. Aún no hay historial reciente suficiente para puntuar su banda — trátalo como flotante hasta que se gane un veredicto.`
       : `Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.`,
   }[c.bucket];
@@ -1025,7 +1031,7 @@ function cardLines(c, es) {
     : (es ? 'Costo real: sin rendimiento estándar en archivo — cálcúlalo desde tu propio peso limpio.' : 'True cost: no standard yield on file — price it off your own trimmed weight.');
   const reason = c.timingReason || (c.cheapMonth == null ? 'thin' : (c.worthTiming ? 'worth' : 'flat'));
   const timing = reason === 'worth'
-    ? (es ? `Compra: históricamente más barato hacia ${mo}, unos ${c.savePct}% bajo su propio máximo anual — vale concentrar una compra grande ahí.` : `Buy timing: has historically run cheapest around ${mo}, about ${c.savePct}% under its own yearly high — worth concentrating a bulk buy there.`)
+    ? (es ? `Compra: en el registro ha resultado más barato hacia ${mo}, unos ${c.savePct}% bajo su propio máximo anual — un patrón pasado, no una promesa; tu ahorro real depende de cuándo comprarías si no.` : `Buy timing: in the tracked record it has run cheapest around ${mo}, about ${c.savePct}% under its own yearly high — a past pattern, not a promise; your realized saving depends on when you'd otherwise buy.`)
     : reason === 'flat'
       ? (es ? `Compra: sin ventana estacional fuerte — su mes más barato ahorra solo ${c.savePct}%, así que no persigas el calendario.` : `Buy timing: no strong seasonal window — its cheapest month saves only ${c.savePct}%, so don't chase the calendar.`)
       : reason === 'noisy'
@@ -1033,11 +1039,13 @@ function cardLines(c, es) {
         : (es ? 'Compra: no hay historial estacional suficiente para nombrar un mes más barato.' : 'Buy timing: not enough seasonal history to name a cheapest month.');
   const swapNm = c.swap ? (es ? c.swap.es : c.swap.en) : null;
   const swap = c.swap
-    ? (es ? `El cambio que no lo es: no te cubras cambiando ${nm} por ${swapNm} — se han movido juntos en ${c.swap.k} de ${c.swap.n} de sus movimientos notables, así que cambiarías un número al alza por otro.` : `The swap that isn't: don't hedge by trading ${nm} for ${swapNm} — they've moved together in ${c.swap.k} of ${c.swap.n} of ${nm}'s notable moves, so you'd trade one rising number for another.`)
+    ? (c.swap.sameCat
+      ? (es ? `El cambio que no lo es: no te cubras cambiando ${nm} por ${swapNm} — se han movido juntos en ${c.swap.k} de ${c.swap.n} de los movimientos notables de ${nm}, así que cambiarías un número al alza por otro.` : `The swap that isn't: don't hedge by trading ${nm} for ${swapNm} — they've moved together in ${c.swap.k} of ${c.swap.n} of ${poss(nm)} notable moves, so you'd trade one rising number for another.`)
+      : (es ? `Compañero, no sustituto: ${nm} tiende a moverse con ${swapNm} (${c.swap.k} de ${c.swap.n}), pero no puedes servir uno por otro — ningún cambio directo lo cubre.` : `Companion, not a substitute: ${nm} tends to move with ${swapNm} (${c.swap.k} of ${c.swap.n}), but you can't plate one for the other — so no like-for-like swap hedges it.`))
     : (es ? `Sustitución: ${nm} se mueve en gran medida por su cuenta, así que un cambio sí es una cobertura real aquí, no un espejo.` : `Substitution: ${nm} moves largely on its own, so a swap is a real hedge here, not a mirror.`);
   return { posture, cost, timing, swap };
 }
-const BUCKET_LABEL = { lock: { en: 'Print', es: 'Fijar' }, cushion: { en: 'Cushion', es: 'Colchón' }, float: { en: 'Float', es: 'Flotar' }, withhold: { en: 'Thin', es: 'Reservar' } };
+const BUCKET_LABEL = { lock: { en: 'Print', es: 'Fijar' }, cushion: { en: 'Cushion', es: 'Colchón' }, float: { en: 'Float', es: 'Flotar' }, withhold: { en: 'Withhold', es: 'Reservar' } };
 
 function emitPlaybook(locale, ctx) {
   const { pageHead, pageTail, escHtml, repoRoot } = ctx;
@@ -1101,10 +1109,10 @@ function emitPlaybook(locale, ctx) {
       altEn: 'A ranked bar chart of trim tax by category, the cost multiplier of one divided by edible yield, running from citrus at 2.16 times down to mushroom at 1.14 times.',
       altEs: 'Un gráfico de barras del impuesto de merma por categoría, el multiplicador de costo de uno dividido por el rendimiento comestible, de cítricos a 2.16 veces hasta hongos a 1.14 veces.' },
     { body: () => pbFigSeason(P, es),
-      capEn: 'Eight proteins with a readable buying window — each troughs after its own demand peak.',
-      capEs: 'Ocho proteínas con una ventana de compra legible — cada una toca fondo después de su propio pico de demanda.',
-      altEn: 'A ranked bar chart of eight proteins by how far the cheapest month sits under the yearly high, from whole chicken in May at forty-seven percent down to pork loin in December at eighteen percent.',
-      altEs: 'Un gráfico de barras de ocho proteínas según cuánto queda el mes más barato bajo el máximo anual, desde pollo entero en mayo al cuarenta y siete por ciento hasta lomo de cerdo en diciembre al dieciocho por ciento.' },
+      capEn: 'Eight proteins with a buying window worth timing — each set in the month it troughs, after its own peak.',
+      capEs: 'Ocho proteínas con una ventana de compra que vale cronometrar — cada una en el mes que toca fondo, tras su propio pico.',
+      altEn: 'A twelve-month column chart placing eight proteins each in the month it has run cheapest, column height showing how far under the yearly high — whole chicken in May at forty-seven percent, chicken breast in November, striploin in September, down to pork loin in December at eighteen percent — so each cut troughs in a different month, after its own peak, not on one ranked axis.',
+      altEs: 'Un gráfico de columnas de doce meses que ubica ocho proteínas cada una en el mes en que ha resultado más barata, con la altura mostrando cuánto queda bajo el máximo anual — pollo entero en mayo al cuarenta y siete por ciento, pechuga en noviembre, bife de lomo en septiembre, hasta lomo de cerdo en diciembre al dieciocho por ciento — así cada corte toca fondo en un mes distinto, tras su propio pico, no en un solo eje ordenado.' },
     { body: () => pbFigMirror(P, es),
       capEn: 'Co-moving protein families — a within-family swap trades one rising number for another.',
       capEs: 'Familias de proteínas que se mueven juntas — un cambio dentro de la familia cambia un número al alza por otro.',
@@ -1131,16 +1139,17 @@ function emitPlaybook(locale, ctx) {
   // --- methodology: calculations broken into inspectable dropdowns (CC-BY reproducibility) -------
   const ex = (slug) => P.cards.find((c) => c.slug === slug) || {};
   const rib = ex('ribeye'); const rom = ex('romaine-lettuce'); const crab = ex('whole-crab');
+  const thigh = ex('chicken-thigh'); const shoulder = ex('pork-shoulder');
   const method = [
     { sEn: `The ±band → print, cushion, float, or withhold`, sEs: `La banda ± → fijar, colchón, flotar o reservar`,
-      bEn: `Each ingredient's band is the half-width of its wholesale reference around its own recent normal: ±X% means a typical week sits within X% of center. It measures <em>predictability</em>, not price level, and it is a wholesale reference — never your delivered price. Tighter bands print (lock); wider bands float; too few recent weeks to score → withhold (unproven, not unstable). <b>Worked:</b> ribeye's band is ±${rib.bandPct}% → lock; romaine's is ±${rom.bandPct}% → float.`,
-      bEs: `La banda de cada ingrediente es la semi-amplitud de su referencia mayorista alrededor de su propio normal reciente: ±X% significa que una semana típica queda dentro del X% del centro. Mide la <em>previsibilidad</em>, no el nivel de precio, y es una referencia mayorista — nunca tu precio de entrega. Bandas más estrechas se imprimen (fijar); más anchas flotan; muy pocas semanas para puntuar → reservar (no probado, no inestable). <b>Ejemplo:</b> la banda del ribeye es ±${rib.bandPct}% → fijar; la de la romana es ±${rom.bandPct}% → flotar.` },
+      bEn: `Each ingredient's band is the half-width of its wholesale reference around its own recent normal: ±X% means a typical week sits within X% of center. It measures <em>predictability</em>, not price level, and it is a wholesale reference — never your delivered price. Posture takes <em>two</em> things, not one: how tight the band is <em>and</em> whether it has proven out. A band that is both tight and has held across enough recent weeks prints (lock); a tight band that has not yet proven gets a cushion — price to the top of it; a wide band floats; too little recent history → withhold (unproven, not unstable). That is why a tighter ±${thigh.bandPct}% band (chicken thigh) can be a cushion while a wider ±${shoulder.bandPct}% one (pork shoulder) prints: the wider band simply had more proof behind it. <b>Worked:</b> ribeye's band is ±${rib.bandPct}% → lock; romaine's is ±${rom.bandPct}% → float.`,
+      bEs: `La banda de cada ingrediente es la semi-amplitud de su referencia mayorista alrededor de su propio normal reciente: ±X% significa que una semana típica queda dentro del X% del centro. Mide la <em>previsibilidad</em>, no el nivel de precio, y es una referencia mayorista — nunca tu precio de entrega. La postura toma <em>dos</em> cosas, no una: qué tan estrecha es la banda <em>y</em> si se ha comprobado. Una banda estrecha que además se ha sostenido suficientes semanas recientes se imprime (fijar); una banda estrecha que aún no se comprueba recibe colchón — ponle precio al tope; una banda ancha flota; muy poco historial reciente → reservar (no probado, no inestable). Por eso una banda más estrecha de ±${thigh.bandPct}% (muslo de pollo) puede ser colchón mientras una más ancha de ±${shoulder.bandPct}% (paleta de cerdo) se imprime: la banda más ancha tenía más comprobación detrás. <b>Ejemplo:</b> la banda del ribeye es ±${rib.bandPct}% → fijar; la de la romana es ±${rom.bandPct}% → flotar.` },
     { sEn: `True cost = 1 ÷ edible yield (the trim tax)`, sEs: `Costo real = 1 ÷ rendimiento comestible (el impuesto de merma)`,
-      bEn: `An invoice price is per pound <em>bought</em>; a plate price is per pound <em>served</em>. Trim tax = 1 ÷ edible yield converts one to the other. Romaine keeps ${rom.yieldPct}% after trim → 1 ÷ 0.${rom.yieldPct} = ×${rom.trimTax != null ? rom.trimTax.toFixed(2) : ''}: every invoice dollar is $${rom.trimTax != null ? rom.trimTax.toFixed(2) : ''} on the plate. Whole crab keeps just ${crab.yieldPct}% → ×${crab.trimTax != null ? crab.trimTax.toFixed(2) : ''}. Always multiply by the item's <em>own</em> yield, never a category average.`,
-      bEs: `Un precio de factura es por libra <em>comprada</em>; uno de plato es por libra <em>servida</em>. Impuesto de merma = 1 ÷ rendimiento comestible convierte uno en otro. La romana conserva ${rom.yieldPct}% tras el recorte → 1 ÷ 0.${rom.yieldPct} = ×${rom.trimTax != null ? rom.trimTax.toFixed(2) : ''}: cada dólar de factura es $${rom.trimTax != null ? rom.trimTax.toFixed(2) : ''} en el plato. El cangrejo entero conserva solo ${crab.yieldPct}% → ×${crab.trimTax != null ? crab.trimTax.toFixed(2) : ''}. Multiplica siempre por el rendimiento <em>propio</em> del artículo, nunca por un promedio de categoría.` },
+      bEn: `An invoice price is per pound <em>bought</em>; a plate price is per pound <em>served</em>. Trim tax = 1 ÷ edible yield converts one to the other. Romaine keeps ${rom.yieldPct}% after trim → 1 ÷ 0.${rom.yieldPct} = ×${rom.trimTax != null ? rom.trimTax.toFixed(2) : ''}: every invoice dollar is $${rom.trimTax != null ? rom.trimTax.toFixed(2) : ''} on the plate. Whole crab keeps just ${crab.yieldPct}% → ×${crab.trimTax != null ? crab.trimTax.toFixed(2) : ''}. Always multiply by the item's <em>own</em> yield, never a category average. <b>Caveat:</b> these are generic book yields (raw edible trim only). They exclude cooking loss and, for a frozen-then-thawed cut, thaw purge; and for anything you juice or use as garnish the edible-flesh figure won't match your real use. Treat the trim tax as a starting estimate and verify it against your own fabrication.`,
+      bEs: `Un precio de factura es por libra <em>comprada</em>; uno de plato es por libra <em>servida</em>. Impuesto de merma = 1 ÷ rendimiento comestible convierte uno en otro. La romana conserva ${rom.yieldPct}% tras el recorte → 1 ÷ 0.${rom.yieldPct} = ×${rom.trimTax != null ? rom.trimTax.toFixed(2) : ''}: cada dólar de factura es $${rom.trimTax != null ? rom.trimTax.toFixed(2) : ''} en el plato. El cangrejo entero conserva solo ${crab.yieldPct}% → ×${crab.trimTax != null ? crab.trimTax.toFixed(2) : ''}. Multiplica siempre por el rendimiento <em>propio</em> del artículo, nunca por un promedio de categoría. <b>Salvedad:</b> son rendimientos genéricos de referencia (solo merma comestible en crudo). Excluyen la pérdida por cocción y, en un corte congelado y descongelado, la purga; y para lo que exprimes o usas de guarnición el dato de pulpa comestible no coincide con tu uso real. Trátalo como estimación inicial y verifícalo contra tu propio despiece.` },
     { sEn: `When a cheapest month is real, not noise`, sEs: `Cuándo un mes más barato es real, no ruido`,
-      bEn: `A cheapest-month window is named only when the trough clears the noise: (1) the cheap month's median beats the dearest month's own 25th-percentile week, <em>and</em> (2) the peak-to-trough swing is at least the ordinary within-month spread. Save% = (dear median − cheap median) ÷ dear median. Whole turkey fails both — its monthly medians scatter and a typical January already undercuts a typical February — so it earns no window and prices year-round. Descriptive of the tracked record, never a forecast.`,
-      bEs: `Una ventana de mes más barato se nombra solo cuando el fondo supera el ruido: (1) la mediana del mes barato vence a la semana del percentil 25 del mes más caro, <em>y</em> (2) el vaivén de pico a fondo es al menos la dispersión habitual dentro del mes. Ahorro% = (mediana cara − mediana barata) ÷ mediana cara. El pavo entero falla ambas — sus medianas mensuales se dispersan y un enero típico ya queda por debajo de un febrero típico — así que no gana ventana y se cotiza todo el año. Descriptivo del registro, nunca un pronóstico.` },
+      bEn: `A cheapest-month window is named only when the trough clears the noise: (1) the cheap month's median beats the dearest month's own 25th-percentile week, <em>and</em> (2) the peak-to-trough swing is at least the ordinary within-month spread. Save% = (dear median − cheap median) ÷ dear median. Whole turkey fails both — its monthly medians scatter and a typical January already undercuts a typical February — so it earns no window and prices year-round. Descriptive of the tracked record, never a forecast. <b>Why an item can be "withheld" yet still name a cheap month:</b> the ±band scores an item's <em>recent weeks</em>, while the seasonal low reads its <em>deep multi-year history</em> — two different windows, so thin recent evidence and a real long-run cheap month can honestly coexist.`,
+      bEs: `Una ventana de mes más barato se nombra solo cuando el fondo supera el ruido: (1) la mediana del mes barato vence a la semana del percentil 25 del mes más caro, <em>y</em> (2) el vaivén de pico a fondo es al menos la dispersión habitual dentro del mes. Ahorro% = (mediana cara − mediana barata) ÷ mediana cara. El pavo entero falla ambas — sus medianas mensuales se dispersan y un enero típico ya queda por debajo de un febrero típico — así que no gana ventana y se cotiza todo el año. Descriptivo del registro, nunca un pronóstico. <b>Por qué un artículo puede estar "reservado" y aun así nombrar un mes barato:</b> la banda ± puntúa las <em>semanas recientes</em> del artículo, mientras que el mínimo estacional lee su <em>historial profundo de varios años</em> — dos ventanas distintas, así que evidencia reciente escasa y un mes barato real de largo plazo pueden coexistir honestamente.` },
     { sEn: `When a swap only mirrors the rise (k of n)`, sEs: `Cuándo un cambio solo refleja la subida (k de n)`,
       bEn: `For each item we count how many of its notable moves a neighbor shared — k of n. Pork shoulder and ground pork shared 6 of 6: every notable move moved together, so the swap is a mirror, not a hedge. Below half shared → the swap is a real hedge. This is co-occurrence, never cause — a shared growing region or shipping lane, not one item pushing the other.`,
       bEs: `Para cada artículo contamos cuántos de sus movimientos notables compartió un vecino — k de n. Paleta de cerdo y cerdo molido compartieron 6 de 6: cada movimiento notable se movió junto, así que el cambio es un espejo, no una cobertura. Menos de la mitad compartido → el cambio sí cubre. Esto es coincidencia, nunca causa — una región de cultivo o ruta de envío compartida, no un artículo empujando al otro.` },
@@ -1166,8 +1175,8 @@ function emitPlaybook(locale, ctx) {
       { '@type': 'ListItem', 'position': 3, 'name': h1, 'item': es ? canonEs : canonEn } ] },
   ] }).replace(/</g, '\\u003c');
   const answer = es
-    ? `De ${P.total} ingredientes con veredicto, ${P.counts.lock} se han mantenido bastante estables para imprimir su precio, ${P.counts.cushion} piden colchón y ${P.counts.float} deben flotar — y para ${P.layer4} este manual une las cuatro capas: precio, costo comestible, mes más barato y qué cambio no ahorra nada.`
-    : `Of ${P.total} ingredients with a verdict, ${P.counts.lock} have held steady enough to print their price, ${P.counts.cushion} want a cushion, and ${P.counts.float} should float — and for ${P.layer4} this playbook joins all four layers: pricing, edible cost, cheapest month, and which swap saves nothing.`;
+    ? `De ${P.total} ingredientes, ${P.counts.lock} se han mantenido bastante estables para imprimir su precio, ${P.counts.cushion} piden colchón, ${P.counts.float} deben flotar y ${P.counts.withhold} se reservan por evidencia escasa — y para ${P.layer4} este manual une las cuatro capas: precio, costo comestible, mes más barato y qué cambio no ahorra nada.`
+    : `Of ${P.total} ingredients, ${P.counts.lock} have held steady enough to print their price, ${P.counts.cushion} want a cushion, ${P.counts.float} should float, and ${P.counts.withhold} are withheld for thin evidence — and for ${P.layer4} this playbook joins all four layers: pricing, edible cost, cheapest month, and which swap saves nothing.`;
   const cross = [
     [es ? 'La herramienta fijar-o-flotar' : 'The lock-or-float tool', `${base}/tools/cost-pulse/`],
     [es ? 'Costea un plato' : 'Cost a plate', `${base}/tools/plate-cost/`],
@@ -1194,7 +1203,7 @@ function emitPlaybook(locale, ctx) {
     <section class="pb-tablewrap" aria-labelledby="pb-table-h">
       <h2 id="pb-table-h" class="rs-section-h">${es ? 'Los ' + P.total + ' ingredientes, de un vistazo' : 'All ' + P.total + ' ingredients, at a glance'}</h2>
       <p class="pb-tool__lede">${es ? 'Ordenados por postura de precio (fijar → flotar). La banda es una referencia mayorista contra su propio normal, nunca el precio de entrega.' : 'Sorted by pricing posture (print → float). The band is a wholesale reference against its own normal, never the delivered price.'}</p>
-      <div class="rs-scroll"><table class="rs-table pb-table"><thead><tr>${th.map((h, i) => `<th${i > 1 ? ' class="pb-num"' : ''}>${h}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>
+      <div class="rs-scroll"><table class="rs-table pb-table"><thead><tr>${th.map((h, i) => `<th scope="col"${i > 1 ? ' class="pb-num"' : ''}>${h}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>
     </section>
     ${citeHtml}
     ${relHtml}
