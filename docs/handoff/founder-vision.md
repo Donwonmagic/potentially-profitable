@@ -50,6 +50,35 @@ depth; signature interactions italic-on-commit / window / bbox / scan). The
 storefront should **extend this language site-wide**. The `/ledger/demo/` was already
 re-skinned to it this session (commits incr. E/F) as the first proof.
 
+## THE EMOTIONAL PIVOT (2026-07-11 — supersedes the defensive framing)
+
+The founder's decisive correction: **stop making the site defend itself.** "We can only
+push the fact that we tell the truth so far. It feels like every surface has to be us
+defending ourselves, and I want to stop pushing in that direction. I want an emotional
+re-working that considers how the user experiences the website — reimagine the entire way
+a customer experiences the site, not just design tokens."
+
+**What was wrong:** the blueprint + first prototype centered US — our honesty, our miss
+rate, our failing-build, our PII competence, our fight with the incumbents. Every surface
+was an *argument* on our back foot. Truth-telling is the **foundation we stand on, not the
+flag we wave on every wall.**
+
+**The new axis — the site is about the OPERATOR and how they feel, not about us:**
+- **Meet them in their world** (recognition/empathy): the month-end P&L that already bled,
+  the price that crept up and nobody caught, the exhaustion of always reacting.
+- **The turn:** it doesn't have to be a surprise — you can see it coming.
+- **Who they become** (empowerment, felt not claimed): the operator who walks in already
+  knowing, calm, a week ahead of their costs, running a tight ship.
+- **Kinship:** Don is one of them, still on the floor — not a credential.
+- **Trust goes AMBIENT:** stated once, quietly, as the calm that lets them relax in
+  ("your invoices stay yours") — never a headline, never a self-defending section.
+- The app-grade craft now serves the FEELING (sharper, calmer, in command) — not proof.
+
+This is an **experience/journey** reimagining (the emotional arc a visitor moves through),
+not a token swap. The "published failure as identity" idea is RETIRED as a headline — it
+was the epitome of the defensive posture. Emotion → empowerment → retention → advocacy,
+delivered through the user's experience.
+
 ## The design-language fork (confirmed 2026-07-11, incl. PR #501)
 
 The site currently runs **two design languages**, and the reinvention must unify them:
