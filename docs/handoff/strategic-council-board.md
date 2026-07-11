@@ -73,32 +73,50 @@ discoverable). Capability is shown, never invented.
   titles stay Fraunces (type unification deferred). Tokens-only (css-drift unchanged 504), shells regen'd,
   headless both themes clean. Screenshots sent.
 
-**⏳ ADVERSARIAL HOME REVIEW running** (agent a3cf6e82…) — reviewing the half-cascaded home (hero instrument
-+ de-solo + tools re-skin vs the untouched warm-editorial sections) for coherence/Frankenstein-seam risk,
-the Fraunces-serif↔mono-data pairing (is type unification the #1 fix?), and prioritization of the remaining
-sections. **Fold its findings before choosing the next increment.**
+**✓ ADVERSARIAL HOME REVIEW complete** (agent a3cf6e82…) — **verdict: ADJUST** (direction right, the top
+third proves it works; finish the cascade + tighten, not a rethink). Its 3 highest-leverage moves — all now SHIPPED:
+- **Move #1 (solo tail) — `c902109c4` + `92238ce51`.** The review's #1 seam + brief-violation was the About
+  teaser (founder photo + "I'm Don"). `c902109c4`: retired the portrait → a literal **muntin window** (cool
+  glass, six panes, sash — the metaphor in the adjacent headline; scoped .about-window CSS, token-only, both
+  themes, css-drift 504), rewrote About to company "we", CTA "The story behind Muntin →" (still → /about/,
+  where Don's story lives), + swept FAQ eyebrow "Questions I get"→"we get" and founding error "I'll add
+  you"→"we'll". `92238ce51`: last chrome solo tell — footer newsletter "I send a short note"→"We send"
+  (EN+ES templates, surgical string-propagate across 728 pages, **zero count-sentinel touch** — no idem
+  drift chased). EN+ES.
+- **Move #2 (hero instrument believability) — `a64bf8662`.** The load-bearing fix: the big +14.6% was the
+  ONION move under a "sample basket" label (contradicted caption/verdict/math). Reconciled to "basket steady,
+  onions the mover": big → **+0.6% basket net**, chip "onions leading", protein rows tamed to a genuine ease
+  (ribeye 3.1→2.4, chicken 14.4→3.8), caption rewritten, the flagged Onion +14.6% row keeps the drama;
+  count-up boot retargeted. Still illustrative; EN+ES; both themes + count-up verified.
+- **Move #3 (data voice past the fold), surface 1 — `5a4514738` (+`e88a8f8bf` shell sync).** Trust-strip
+  recast as a **mono system-readout** (scoped --ts-mono, teal status-LED per fact, tabular "43", middots
+  dropped) → reads as capable infrastructure; + reframed the residual solo fact "Built by a working
+  front-of-house manager"→"Grounded in a working restaurant floor — Tacombi" (honest, no fabricated scale).
+  Token-only, css-drift 504, both themes.
+- Review also flagged for later: type unification is **#2, a site-wide call, NOT the #1 fix** (deferring is
+  defensible; if touched, neutralize the serif titling on product-UI surfaces locally). Flagship tool-cards'
+  wide single column + small left glyph is the least-resolved layout (composition, not chrome). Desktop pins
+  ~104px of chrome above the fold (banner+nav) — revisit whether the dispatch marquee must stay pinned on desktop.
 
-**NEXT (autonomous) — remaining home sections toward v3, per the review's priority:** stances section (the
-defensive "Every claim carries its own receipt" — high-value per "stop defending", but its cal:band.*
-sentinels are injected by inject-cost-index-calibration.mjs [SENSITIVE, heartbeat-tied] → reframe copy
-defense→capability KEEPING the sentinels, don't remove), trust-strip, library island, founding band. One
-section per increment, existing-tokens + scoped v3 CSS, headless + adversarial, EN+ES, preserve machinery.
-DEFERRED: type unification (site-wide decision — the review may argue it's now the #1 lever); the /window/
-personal-access founder-fork.
+**NEXT (autonomous) — continue the cascade (the 3 review moves are done; now the momentum surfaces):**
+1. **Move #3 surface 2 — recently-added block (index.html ~698-769):** mono the dates, hairline the rows,
+   tighten to a dense app-table so the library reads as a live index, not a blog roll.
+2. **Founding band** (the Ledger conversion surface) — re-skin app-grade (hairline inputs, mono labels,
+   "19 weeks out" as a live readout); should feel like enrolling in a capable product, not a newsletter.
+3. **"Start here" library island + product/About 3-cards** — re-skin learn-tool/service cards to the
+   flagship hairline pattern for consistency (lower urgency; removes visual inconsistency).
+4. **Stances section** — already had a bolder pass; if touched, make proof links look inspectable (mono
+   claim counts). ⚠ Its `cal:band.*` sentinels are injected by inject-cost-index-calibration.mjs (SENSITIVE,
+   heartbeat-tied) — reframe copy only, do NOT remove the sentinels.
+One section per increment; scoped v3 CSS, tokens-only, css-drift 504; headless both themes; EN+ES; preserve
+machinery. DEFERRED (site-wide, deliberate): type unification (Fraunces→Inter — review says #2, not #1);
+the /window/ personal-access founder-fork; the flagship tool-card composition (2-up or full-width glyph).
 
-**NEXT (autonomous, ordered):**
-1. **Home hero visual → the instrument.** The hero already holds a DECORATIVE empty muntin window
-   (12 empty panes + bars + "mun·tin/noun" caption). Turn it into the v3 LIVE COST INSTRUMENT (a
-   believable basket read, tabular-mono data voice, the grille as structure, count-up + scan on load,
-   both themes, reduced-motion/no-JS safe). Bounded to the hero graphic — no sentinel machinery. ES mirror.
-2. **Retire the defensive stances section** ("Every claim carries its own receipt", index.html ~514) →
-   reframe to a capability band (v3 "why it holds up"). BLOCKED ON MACHINERY: `inject-cost-index-calibration.mjs`
-   targets index.html for the `cal:band.*` sentinels (line 89) + the EN/ES homes already differ here
-   (ES has no 3-pane stances). Update the injector to drop index.html (or relocate the sentinels) FIRST,
-   then reframe. Do carefully.
-3. Then the pane archetypes + the token re-pigment (accent already blue #2A50C8/#7AA7FF — nudge to
-   electric #3b68f5/#5b82ff only if AA holds, else leave; the v3 feel is mostly composition + mono voice).
-4. Phase 0 remainder (cost-index cadence, /security/, generator-owned footer handler) in parallel where independent.
+**NEXT (autonomous, ordered) — SUPERSEDED** by the review-driven NEXT above (item 1 instrument shipped as
+`37c70aac4`+`a64bf8662`; item 2 stances now deferred behind the momentum surfaces). Retained context: the
+pane archetypes + token re-pigment (accent already blue #2A50C8/#7AA7FF — nudge to electric #3b68f5/#5b82ff
+only if AA holds; the v3 feel is mostly composition + mono voice); Phase 0 remainder (cost-index cadence,
+/security/, generator-owned footer handler) in parallel where independent.
 
 **Thread (prior):** executing the fully-mapped storefront reinvention (`docs/handoff/reinvention-master-plan.md`)
 in the founder's build → audit → iterate cadence, expert-verified per increment. Strategy docs on
