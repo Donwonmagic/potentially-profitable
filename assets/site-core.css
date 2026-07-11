@@ -3025,7 +3025,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .tool-data-promise__links a:hover{border-bottom-color:var(--teal)}
 
 
-/* ===== [core] Newsletter capture (in global footer; on every page) (lines 6573-6630) ===== */
+/* ===== [core] Newsletter capture (in global footer; on every page) (lines 6573-6636) ===== */
 
 /* Phase G.10 (Growth) — quiet newsletter capture in the global footer.
    Two short lines, one input, one button — no badges, no pop-ups, no
@@ -3046,6 +3046,9 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .foot-newsletter-form button:hover{filter:brightness(1.08)}
 .foot-newsletter-form[data-state="ok"] input,.foot-newsletter-form[data-state="ok"] button{display:none}
 .foot-newsletter-form[data-state="ok"] .foot-newsletter-pitch::after{content:" — got it. Check your inbox.";opacity:1;font-style:italic}
+.foot-newsletter-form[data-locale="es"][data-state="ok"] .foot-newsletter-pitch::after{content:" — ¡listo! Revisa tu correo."}
+.foot-newsletter-form[data-state="error"] .foot-newsletter-pitch::after{content:" — that didn't go through. Email don@muntin.digital and I'll add you.";opacity:1;font-style:italic}
+.foot-newsletter-form[data-locale="es"][data-state="error"] .foot-newsletter-pitch::after{content:" — no se pudo enviar. Escribe a don@muntin.digital y te agrego."}
 /* Muntin Ledger pre-launch — founding-member waitlist band (homepage).
    A light, centered band that sits in the page rhythm between the
    field-notes rail and the product cards. Uses section.block padding
@@ -3076,6 +3079,9 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .founding-form-confirm{display:none;margin:0;text-align:center;font-family:var(--font-display);font-style:italic;font-size:18px;line-height:1.4;color:var(--teal-dark)}
 .js-signup-form[data-state="ok"] .founding-form-fields,.js-signup-form[data-state="ok"] .cf-turnstile,.js-signup-form[data-state="ok"] button{display:none}
 .js-signup-form[data-state="ok"] .founding-form-confirm{display:block}
+.founding-form-error{display:none;margin:0;text-align:center;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--rust)}
+.founding-form-error a{color:inherit;text-decoration:underline}
+.js-signup-form[data-state="error"] .founding-form-error{display:block}
 .founding-demo-note{margin:24px auto 0;text-align:center;font-family:var(--font-body);font-size:var(--fs-body);color:var(--stone)}
 .founding-demo-note a{color:var(--teal);font-weight:600;border-bottom:1px solid color-mix(in srgb, var(--teal) 30%, transparent)}
 .founding-demo-note a:hover,.founding-demo-note a:focus-visible{color:var(--teal-dark);border-bottom-color:var(--teal-dark)}
@@ -3084,7 +3090,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 
 
 
-/* ===== [core] Touch-device hover hygiene (lines 6693-6731) ===== */
+/* ===== [core] Touch-device hover hygiene (lines 6699-6737) ===== */
 /* ============================================================
    Touch-device hover hygiene — neutralize sticky :hover effects
    on devices that don't have a hover capability. CSS :hover on
@@ -3124,7 +3130,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   *:hover { transition-duration: 0ms !important; }
 }
 
-/* ===== [core] Hero mobile reorder (homepage) (lines 6732-6756) ===== */
+/* ===== [core] Hero mobile reorder (homepage) (lines 6738-6762) ===== */
 
 /* ============================================================
    Hero mobile reorder — phones first, primary CTA above the fold.
@@ -3150,7 +3156,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Hero count chips (homepage) (lines 6832-6863) ===== */
+/* ===== [core] Hero count chips (homepage) (lines 6838-6869) ===== */
 
 /* ============================================================
    Hero count chips — small pill row showing library counts
@@ -3183,7 +3189,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   color: var(--teal);
 }
 
-/* ===== [core] Trust strip (homepage) (lines 6864-6890) ===== */
+/* ===== [core] Trust strip (homepage) (lines 6870-6896) ===== */
 
 /* ============================================================
    Trust strip — single thin band immediately under flagship
@@ -3211,7 +3217,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   color: var(--stone);
 }
 
-/* ===== [core] Compare cards (homepage) (lines 6891-6976) ===== */
+/* ===== [core] Compare cards (homepage) (lines 6897-6982) ===== */
 
 /* ============================================================
    Compare cards — three-column Patchwork / Agency / Muntin
@@ -3298,7 +3304,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Window Phase 2/3.6/4/5+ additions (sash/sidelight, attach, now, pulses, admin) (lines 7418-7681) ===== */
+/* ===== [core] Window Phase 2/3.6/4/5+ additions (sash/sidelight, attach, now, pulses, admin) (lines 7424-7687) ===== */
 /* ============ THE WINDOW — Phase 2/3.6/4/5+ additions ============
    Sash/sidelight named-pane composer (Phase 2.1), photo+voice attach
    row (Phase 3.2-3.6), now-line widget (Phase 4), site-wide pulse
@@ -3563,7 +3569,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .admin-callbacks__voice-label--deleted{color:var(--stone)}
 .admin-callbacks__meta{font-size:12px;color:var(--ink-soft);font-style:italic;margin:8px 0 0}
 
-/* ===== [core] Phase 1 — design tokens + MuntinUI component shells (.mtn-*) (lines 7682-7894) ===== */
+/* ===== [core] Phase 1 — design tokens + MuntinUI component shells (.mtn-*) (lines 7688-7900) ===== */
 
 /* ============ Phase 1 tokens (tool-suite upgrade) ============
    Additive tokens that the MuntinUI primitives consume. Existing
@@ -3777,7 +3783,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   }
 }
 
-/* ===== [core] Phase 2 — hub tier badge + tool-tier-filter strip (lines 7895-7948) ===== */
+/* ===== [core] Phase 2 — hub tier badge + tool-tier-filter strip (lines 7901-7954) ===== */
 
 /* ============ Phase 2 hub styles (tool-suite upgrade) ============
    Tier badge on each tool card + a JS-enhanced filter strip that
@@ -3832,7 +3838,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   display:none;
 }
 
-/* ===== [core] Phase 5 — dark-mode token override (prefers-color-scheme + [data-theme]) (lines 7949-8010) ===== */
+/* ===== [core] Phase 5 — dark-mode token override (prefers-color-scheme + [data-theme]) (lines 7955-8016) ===== */
 
 /* ============ Phase 5 dark-mode tokens (tool-suite upgrade) ============
    The Phase 1 component primitives all reference --mtn-surface /
@@ -3895,7 +3901,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Phase 7 — dark-mode toggle button (.theme-toggle) (lines 8011-8071) ===== */
+/* ===== [core] Phase 7 — dark-mode toggle button (.theme-toggle) (lines 8017-8077) ===== */
 /* ============ Phase 7 — dark-mode toggle button =============
    Sits in the nav next to lang-switch. Two SVG icons (sun + moon)
    stacked; CSS shows one based on the current [data-theme] state.
@@ -3957,7 +3963,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .mobile-theme .theme-toggle__label{display:inline}
 
 
-/* ===== [core] Phase 4 — next-tool recommendation card (.mtn-next-tool) (lines 8072-8112) ===== */
+/* ===== [core] Phase 4 — next-tool recommendation card (.mtn-next-tool) (lines 8078-8118) ===== */
 /* ============ Phase 4 — next-tool recommendation card =============
    Mounted at the end of a tool's result region by
    MuntinNextTool.render(). Visually quiet so it doesn't compete
@@ -3999,13 +4005,13 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .mtn-next-tool__link:focus-visible{outline:none;box-shadow:var(--ring-focus)}
 
 
-/* ===== [core] Phase G — About portrait frame (real photo overlay) (lines 8113-8117) ===== */
+/* ===== [core] Phase G — About portrait frame (real photo overlay) (lines 8119-8123) ===== */
 /* ===== Phase G — About portrait frame (real photo overlay; reused on homepage About teaser + /about/) ===== */
 .about-portrait-frame{position:relative;width:100%;aspect-ratio:4/5;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line-dark);background:var(--cream-2)}
 .about-portrait-frame .portrait{position:absolute;inset:0;border:0;border-radius:0;aspect-ratio:auto;width:100%;height:100%}
 .about-portrait-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 
-/* ===== [core] Batch marquee (lines 8118-8131) ===== */
+/* ===== [core] Batch marquee (lines 8124-8137) ===== */
 /* ===== Batch marquee — fixed strip above the nav (.batch-marquee is on every page when a batch is active) ===== */
 .batch-marquee{position:fixed;top:0;left:0;right:0;z-index:60}
 /* The fixed nav is offset below the fixed banner by --banner-h (set to the
@@ -4020,7 +4026,7 @@ body:has(.batch-marquee) main{padding-top:calc(64px + max(var(--banner-h,50px),5
 @media (max-width:640px){:root{--banner-h:72px}}
 
 
-/* ===== [core] Phase 9 — Light refresh (micro-interactions, depth, voice search, dark-mode polish) (lines 8132-8336) ===== */
+/* ===== [core] Phase 9 — Light refresh (micro-interactions, depth, voice search, dark-mode polish) (lines 8138-8342) ===== */
 /* ============ Phase 9 — Light refresh ============
    A small, additive cosmetic pass that layers on top of every
    previous phase without re-declaring anything. Five concerns:
@@ -4226,10 +4232,10 @@ body:has(.batch-marquee) main{padding-top:calc(64px + max(var(--banner-h,50px),5
 :root[data-theme="dark"] .theme-toggle:hover{background:var(--refresh-surface-1);border-color:var(--teal)}
 
 
-/* ===== [core] Dark-mode contrast completion (lines 8337-8337) ===== */
+/* ===== [core] Dark-mode contrast completion (lines 8343-8343) ===== */
 
 
-/* ===== [core] Nav width discipline (bolder pass 2026-07) (lines 8338-8636) ===== */
+/* ===== [core] Nav width discipline (bolder pass 2026-07) (lines 8344-8642) ===== */
 /* At 1440 the nav row's natural demand (~1307px) exceeds the 1200px
    container, pushing the primary CTA off-canvas ("Reach Do"). Shed
    demand progressively instead of letting the row overflow: tighter

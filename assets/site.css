@@ -6591,6 +6591,9 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .foot-newsletter-form button:hover{filter:brightness(1.08)}
 .foot-newsletter-form[data-state="ok"] input,.foot-newsletter-form[data-state="ok"] button{display:none}
 .foot-newsletter-form[data-state="ok"] .foot-newsletter-pitch::after{content:" — got it. Check your inbox.";opacity:1;font-style:italic}
+.foot-newsletter-form[data-locale="es"][data-state="ok"] .foot-newsletter-pitch::after{content:" — ¡listo! Revisa tu correo."}
+.foot-newsletter-form[data-state="error"] .foot-newsletter-pitch::after{content:" — that didn't go through. Email don@muntin.digital and I'll add you.";opacity:1;font-style:italic}
+.foot-newsletter-form[data-locale="es"][data-state="error"] .foot-newsletter-pitch::after{content:" — no se pudo enviar. Escribe a don@muntin.digital y te agrego."}
 /* Muntin Ledger pre-launch — founding-member waitlist band (homepage).
    A light, centered band that sits in the page rhythm between the
    field-notes rail and the product cards. Uses section.block padding
@@ -6621,6 +6624,9 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .founding-form-confirm{display:none;margin:0;text-align:center;font-family:var(--font-display);font-style:italic;font-size:18px;line-height:1.4;color:var(--teal-dark)}
 .js-signup-form[data-state="ok"] .founding-form-fields,.js-signup-form[data-state="ok"] .cf-turnstile,.js-signup-form[data-state="ok"] button{display:none}
 .js-signup-form[data-state="ok"] .founding-form-confirm{display:block}
+.founding-form-error{display:none;margin:0;text-align:center;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--rust)}
+.founding-form-error a{color:inherit;text-decoration:underline}
+.js-signup-form[data-state="error"] .founding-form-error{display:block}
 .founding-demo-note{margin:24px auto 0;text-align:center;font-family:var(--font-body);font-size:var(--fs-body);color:var(--stone)}
 .founding-demo-note a{color:var(--teal);font-weight:600;border-bottom:1px solid color-mix(in srgb, var(--teal) 30%, transparent)}
 .founding-demo-note a:hover,.founding-demo-note a:focus-visible{color:var(--teal-dark);border-bottom-color:var(--teal-dark)}
