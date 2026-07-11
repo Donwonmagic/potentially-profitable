@@ -79,6 +79,12 @@ would REGRESS the product. **Founder chose "full parity audit first"** → workf
 auditors × both repos → synthesized reconciliation plan → adversarial verify). No token edits until reviewed.
 ⚠ The product repo has NO CLAUDE.md yet — add continuity there once the reconciliation direction is set.
 ⚠ Container reverted a THIRD time this session (storefront only; product repo stable) — same runbook, recovered.
+**FOUNDER STEER (2026-07-11): "I really like the current design language of the Ledger — the app itself."**
+→ The product's design language is the KEEPER; nothing regresses it (no Fraunces into app chrome, no swapping
+its a11y-tuned #3b68f5 accent). This removes "converge product→storefront" from the table. Reconciliation, IF
+any, is storefront-side only (the storefront optionally moves toward the product's accent); the deliberate
+Fraunces-storefront / Inter-product divergence otherwise STANDS. The parity audit now serves as a map of what a
+storefront-side nudge would entail + a clean-bill on the product side, not a to-do list against the product.
 
 - **[DONE `d9dd78900`] Newsletter de-solo** — "We send…"; G.10 gate updated to require company framing (teeth kept).
 - **[1] Type unification** (site.css, LOW risk): do NOT split the global `h1,h2,h3,h4{font-family:var(--font-display)}`
