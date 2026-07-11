@@ -1180,6 +1180,14 @@ section.block{padding:clamp(80px,10vw,140px) 0;border-top:1px solid var(--sectio
 .service li{padding:10px 0;border-bottom:1px solid var(--line);font-size:14.5px;color:var(--ink-soft);display:flex;align-items:flex-start;gap:10px}
 .service li:last-child{border-bottom:0}
 .service li svg{width:14px;height:14px;color:var(--teal);flex:0 0 14px;margin-top:5px}
+/* Home product 3-card → flagship hairline pattern (2026-07-11). Scoped to
+   #services (home-only) so the shared .service pricing tiers on /studio/ stay
+   untouched; the id selector cleanly wins the cascade. Token-only. */
+#services .service{border-radius:6px;padding:30px 28px;overflow:hidden;transition:transform var(--t-fast) var(--ease-out),box-shadow var(--t-fast) var(--ease-out),border-color var(--t-fast) var(--ease);--sv-mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono","Roboto Mono",Menlo,monospace}
+#services .service::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--teal);transform:scaleX(0);transform-origin:left;transition:transform var(--t-med) var(--ease-out)}
+#services .service:hover{transform:translateY(-2px);box-shadow:0 1px 0 var(--line-dark),0 14px 26px -18px rgba(20,22,26,0.22);border-color:var(--teal)}
+#services .service:hover::before{transform:scaleX(1)}
+#services .service .label{font-family:var(--sv-mono);font-size:10.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone)}
 .process{background:var(--ink);color:var(--cream)}
 .process h2,.process .eyebrow{color:var(--cream)}
 .process .eyebrow::before{background:var(--cream)}
