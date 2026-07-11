@@ -19,9 +19,27 @@ council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 build → audit → iterate, frequently, all the way through." Macro-first. → **`docs/handoff/redesign-execution-plan.md`
 is the execution spine** (folds the reinvention master plan + the locked macro design direction from
 the flagship prototype). Autonomous run: one increment → adversarial/expert audit → iterate → commit+push →
-update this block → continue. Macro direction locked from artifact "flagship-macro-v1" (one unified
-app-grade language + one-window-many-panes + the emotional arc + ambient trust). Currently: Phase A
-(flagship v2 after the adversarial design panel) → then cascade to the live home + pane archetypes.
+update this block → continue.
+
+**Macro direction LOCKED — flagship prototype v3** (`docs/handoff/redesign-flagship-prototype.html`,
+artifact "flagship-macro-v3"): one unified app-grade language (slate + electric-blue #3b68f5/#5b82ff,
+tabular-mono data voice, dark-first both themes, the **muntin grille AS structure** — flush hairline
+panes, not gapped cards), one-window-many-panes registers, the emotional arc, trust stated ONCE
+(ambient). Iterated through 2 adversarial/expert panels (design-craft + brand/operator) — fixed
+grille-as-decoration, type weight range, accent identity, AA contrast, one boot sequence, believable
+real-data read, honest pricing, no-JS degrade; headless-clean both themes at 360/390/1280.
+
+**⚠ POSITIONING PIVOT (founder, mid-build) — recorded in `founder-vision.md`:** "No face; be a big
+CAPABLE company; I worry 'just me' gets the product discounted." → removed the founder-face/kinship
+centerpiece; lead with **product capability + company voice**; operator-grounding reframed as
+capability, not smallness. **HARD HONESTY BOUNDARY:** project capability + use company "we" + don't
+advertise headcount — but NEVER fabricate a team/scale (that lie breaks the honesty brand + is
+discoverable). Capability is shown, never invented.
+
+**NEXT (autonomous):** extract the v3 token/register system into the live `assets/site.css` re-pigment
+layer → cascade to the live home (`index.html`+ES) preserving all machinery/gates → then the pane
+archetypes. Continue Phase 0 remainder (cost-index cadence, /security/, generator-owned footer handler)
+in parallel where independent.
 
 **Thread (prior):** executing the fully-mapped storefront reinvention (`docs/handoff/reinvention-master-plan.md`)
 in the founder's build → audit → iterate cadence, expert-verified per increment. Strategy docs on

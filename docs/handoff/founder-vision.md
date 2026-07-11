@@ -121,3 +121,36 @@ re-pigment roadmap, and the pre-#501 audit of them is refreshed after merge.
 The absolute fact/honesty gates; EN↔ES parity; performance budgets; accessibility;
 the ~249 CI gates. Trust is earned by discipline as much as by craft — a polished
 site that overclaims would destroy the very trust we're building.
+
+## THE POSITIONING PIVOT (2026-07-11) — a capable company, not a solo face
+
+The founder's decisive shift after seeing the flagship prototype: **"I don't want to give
+me a face. I want to be a big company absolutely capable of creating a product that will
+blow people away. I worry that if people know it's just me, they'll discount the product —
+you'd expect a huge team behind any product worth using."**
+
+**What changes (supersedes the "Don is one of you / seat next to yours" kinship centerpiece):**
+- **Stop foregrounding "it's one person."** No founder photo, no "one of you," no scrappy-solo
+  framing as the credibility. That invites the discount the founder fears.
+- **Lead with product capability + craft in the company voice.** "Muntin" / "we" (brand voice —
+  honest, not a headcount claim). The design polish and the product doing its job are what read
+  as a serious, formidable company. People judge scale by the WORK, not a team-size line.
+- Operator-grounded judgment survives, but reframed as **capability** (a market read written
+  from behind a real pass, not a research desk) — expertise, never smallness.
+- Reconciles with the earlier constraints: user-empathy arc STAYS (it's about the operator);
+  trust stays AMBIENT; the honesty foundation is unchanged. What shifts is the COMPANY's
+  self-presentation: humble-solo → capable-formidable.
+
+**THE HONESTY BOUNDARY (hard line — must never cross, even under this pressure):** we may
+project capability, use the company "we," and decline to advertise the headcount — but we may
+NOT fabricate a team, invent "our engineers," or claim a scale that doesn't exist. That single
+lie would detonate the whole honesty brand and is trivially discoverable (the `/about/` page,
+`sourced-claims.json`, the documented "Don, still on the floor" story). Capability is SHOWN
+(the public sourced Index, on-device invoice decoding, the tool suite, the craft), never
+fabricated. Absence of a headcount claim is honest; a false headcount is not. If the founder
+ever wants to push past this line, it needs his explicit call — and the counsel is: don't.
+
+**Applied in the flagship prototype (artifact "flagship-macro-v3"):** removed the founder-face
+section → replaced with a confident "Why it holds up" capability band (public sourced index ·
+on-device decoding · materiality-gated precision); reframed the human pane off "one of you";
+company/capability voice throughout; honest pricing stated plainly ($19/mo per location).
