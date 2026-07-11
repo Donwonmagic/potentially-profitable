@@ -545,6 +545,12 @@
   }
   function saveToJournal(res, rows) {
     if (!CTX || !res.item) return;
+    // Don't persist a PRE-SEED compute: before the lazy seed lands there's no market key,
+    // so journalKeyFor falls back to 'item:<name>' with a null gap — then the post-seed
+    // re-run keys the SAME item by its real Cost Index key, leaving a phantom duplicate in
+    // the book. Once seeds are present, a genuine no-match item still saves under 'item:<name>'
+    // (its own-history is trackable), so this guard drops only the transient pre-seed entry.
+    if (!seedsPresent()) return;
     var clean = rows.filter(function (r) { return r.date && String(r.price).trim() !== ''; });
     if (clean.length < 2) return;
     var map = readJournal();
