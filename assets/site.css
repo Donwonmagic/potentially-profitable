@@ -2884,6 +2884,7 @@ body[data-audio-seek] .article-body .listen-sent:hover{background:rgba(42,80,200
   transition:transform var(--t-med) var(--ease-out),box-shadow var(--t-med) var(--ease-out),border-color var(--t-fast);
   position:relative;
   overflow:hidden;
+  --tc-mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono","Roboto Mono",Menlo,monospace;
 }
 .tool-card.live:hover{
   transform:translateY(-4px);
@@ -2901,6 +2902,8 @@ body[data-audio-seek] .article-body .listen-sent:hover{background:rgba(42,80,200
   gap:8px;
   padding:4px 12px;
   border-radius:999px;
+  font-family:var(--tc-mono);
+  font-variant-numeric:tabular-nums;
   font-size:10px;
   font-weight:700;
   letter-spacing:0.12em;
@@ -7985,6 +7988,7 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
   display:inline-flex;align-items:center;
   padding:var(--badge-sm-py) var(--badge-sm-px);
   margin-left:var(--space-1);
+  font-family:var(--tc-mono);font-variant-numeric:tabular-nums;
   font-size:var(--badge-sm-fs);font-weight:700;
   letter-spacing:.06em;text-transform:uppercase;
   border-radius:999px;border:1px solid var(--mtn-border);

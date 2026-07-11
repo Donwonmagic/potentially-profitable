@@ -82,9 +82,12 @@
    hands you). Dark closer de-drifted to ink + faint muntin frame
    lines, matching the homepage closer. */
 .breadcrumb{padding-top:28px}
-.tool-card.tool-card--compact{background:var(--surface-1,#fff);border-top:3px solid var(--ink);box-shadow:var(--elev-1)}
-.tool-card.tool-card--compact h3{font-family:var(--font-display);font-weight:540;letter-spacing:-.012em}
-.tool-card__walkaway.tool-card__walkaway{border-top:0;border-left:3px solid var(--teal);background:rgba(42,80,200,.06);border-radius:0 6px 6px 0;padding:8px 12px;flex:1 0 auto}
+.tool-card.tool-card--compact{background:var(--surface-1,#fff);border-radius:var(--r-md);box-shadow:var(--elev-1)}
+.tool-card.tool-card--compact::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--teal);transform:scaleX(0);transform-origin:left;transition:transform var(--t-med) var(--ease-out)}
+.tool-card.tool-card--compact:hover::before{transform:scaleX(1)}
+.tool-card.tool-card--compact:hover{transform:translateY(-2px);border-color:var(--teal)}
+.tool-card.tool-card--compact h3{font-family:var(--font-body);font-weight:540;letter-spacing:-.012em}
+.tool-card__walkaway.tool-card__walkaway{border-top:0;border-left:3px solid var(--teal);background:color-mix(in srgb,var(--teal) 6%,transparent);border-radius:0 var(--r-md) var(--r-md) 0;padding:8px 12px;flex:1 0 auto}
 .tool-card__tier{opacity:.85;align-self:flex-start}
 .final.final::before{background:linear-gradient(rgba(246,247,248,.055),rgba(246,247,248,.055)) 33% 0/3px 100% no-repeat,linear-gradient(rgba(246,247,248,.055),rgba(246,247,248,.055)) 66% 0/3px 100% no-repeat,linear-gradient(rgba(246,247,248,.055),rgba(246,247,248,.055)) 0 58%/100% 3px no-repeat}
 </style>
@@ -564,10 +567,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </div>
   </section>
 
-    <aside class="tool-sheets-band" aria-labelledby="tool-sheets-band-h" style="margin:32px 0 0;padding:22px 24px;border:1px solid var(--line,#E5DFD2);border-left:4px solid var(--teal,#2A50C8);border-radius:var(--r-md,12px);background:var(--white,#FFFFFF);display:flex;flex-wrap:wrap;align-items:center;gap:18px;">
+    <aside class="tool-sheets-band" aria-labelledby="tool-sheets-band-h" style="margin:32px 0 0;padding:22px 24px;border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:var(--r-md);background:var(--white);display:flex;flex-wrap:wrap;align-items:center;gap:18px;">
       <div style="flex:1;min-width:240px;">
         <span class="eyebrow" style="display:block;margin-bottom:4px;">Empareja con papeleo</span>
-        <h2 id="tool-sheets-band-h" style="font-family:var(--font-display,'Fraunces',Georgia,serif);font-size:22px;font-weight:500;margin:0 0 6px;color:var(--ink,#16181D);">Hojas del Operador — imprimibles, llenables, exportan a CSV.</h2>
+        <h2 id="tool-sheets-band-h" style="font-family:var(--font-body);font-size:22px;font-weight:500;margin:0 0 6px;color:var(--ink,#16181D);">Hojas del Operador — imprimibles, llenables, exportan a CSV.</h2>
         <p style="font-size:14.5px;line-height:1.5;color:var(--ink-soft,#4A4F59);margin:0;max-width:640px;">Tarjetas de costo, costo primo semanal, auditoría mensual de GBP, P&amp;G diario. Gratis, sin registro. Tus números no salen de la página.</p>
       </div>
       <a class="btn btn-primary" href="/es/sheets/" style="white-space:nowrap;">Explora las hojas <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
