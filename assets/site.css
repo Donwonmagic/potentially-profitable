@@ -68,8 +68,15 @@
   --elev-2: 0 2px 4px rgba(20,22,26,.04), 0 12px 24px -8px rgba(20,22,26,.08);
   --elev-3: 0 4px 8px rgba(20,22,26,.05), 0 24px 48px -12px rgba(20,22,26,.10);
 
-  /* Focus affordance — consistent across every interactive element */
-  --ring-focus: 0 0 0 3px rgba(59, 104, 245, 0.3);
+  /* Focus affordance — consistent across every interactive element.
+     Glow is derived from --teal via color-mix so it tracks the accent in
+     every scope: the storefront proper resolves it to #2A50C8 (matching
+     the focus outline), and the .ld-wrap Ledger demo — which deliberately
+     re-skins --teal to the app's brighter #3b68f5 — gets a matching glow
+     for free. Was a hardcoded rgba(59,104,245) (#3b68f5, the app accent),
+     which painted two different blues on one focused control outside the
+     demo. Each property keys focus off its OWN primary. */
+  --ring-focus: 0 0 0 3px color-mix(in srgb, var(--teal) 30%, transparent);
 
   /* --gradient-hero retired in Phase 4 (launch-plan audit #2).
      The plan's visual-identity edit calls for restraint above the
@@ -92,10 +99,10 @@
   --t-micro:    120ms;
   --ease-spring: cubic-bezier(.2,.9,.25,1.2);
 
-  /* Tool radii — every free tool input/button on the site agreed on
-     12px before this token existed; declaring it explicitly stops the
-     8/10/12/14 drift the next tool was going to introduce. Keep
-     --r-sm (8px) for compact UI and --r-md (14px) for cards / CTAs. */
+  /* Tool radii — the v3 pass unified every free-tool input/button onto
+     the 6px hairline scale (it stops the 8/10/12/14 drift that predated
+     this token). Current scale: --r-sm (6px) / --r-md (6px) for compact
+     UI + cards, --r-lg (8px) for larger surfaces. */
   --r-input: 6px;
 
   /* Status palette — used by tool result UIs that grade or assess
@@ -3298,7 +3305,7 @@ body[data-audio-seek] .article-body .listen-sent:hover{background:rgba(42,80,200
   padding:10px 14px;
   background:var(--white);
   border:1px solid var(--line);
-  border-radius:var(--r-sm,8px);
+  border-radius:var(--r-sm,6px);
   color:var(--ink);
   font-size:15px;
   line-height:1.35;
