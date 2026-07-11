@@ -434,6 +434,95 @@ function figProteinFamily(A, es) {
       + `<div class="rs-cluster__couple">${es ? f.a.es : f.a.en} + ${es ? f.b.es : f.b.en} · <span class="rs-cluster__couple-r">${f.tightK} ${lbl}</span></div></div>`;
   }).join('') + `</div>`;
 }
+// ============================================================================================
+// BESPOKE playbook figures — purpose-built per section, NOT the rs-* research templates.
+// Honesty contract holds: every data mark is a single teal length (--teal); the posture tint is an
+// ORDINAL predictability ladder (print→withhold), never a red/green semaphore; every number is
+// computed from the engine (pricingCards P / researchInputs A). Each returns a bare body; emitPlaybook
+// wraps it in <figure class="rs-fig viz-figure"> with a figcaption + full data-audio-alt.
+const PB_POSTURE = [['lock', { en: 'Print', es: 'Fijar' }], ['cushion', { en: 'Cushion', es: 'Colchón' }], ['float', { en: 'Float', es: 'Flotar' }], ['withhold', { en: 'Withhold', es: 'Reservar' }]];
+
+// §1 — the 100-ingredient posture split as a UNIT GRID: one cell = one ingredient, ordered
+// print→withhold, so the proportion is literal, not abstract. Legend carries the counts.
+function pbFigSplit(P, es) {
+  let cells = '';
+  for (const [k] of PB_POSTURE) for (let i = 0; i < (P.counts[k] || 0); i++) cells += `<i class="pbf-cell pbf-cell--${k}"></i>`;
+  const legend = PB_POSTURE.map(([k, lab]) => `<span class="pbf-key"><i class="pbf-cell pbf-cell--${k}"></i>${es ? lab.es : lab.en} <b>${P.counts[k] || 0}</b></span>`).join('');
+  return `<div class="pbf pbf-split"><div class="pbf-grid" aria-hidden="true">${cells}</div><div class="pbf-legend">${legend}</div></div>`;
+}
+
+// §2 — "how far the price wanders": each item is a band CENTERED on its own normal, half-width ∝
+// the ±band%. Steady staples/proteins render as slivers; wild produce as wide bands. Length = the
+// whole story, one teal hue.
+function pbFigBands(A, es) {
+  const steady = (A.volatility.lock || []).slice(0, 5).map((x) => ({ n: x.name, w: x.halfWidthPct * 100 }));
+  const wild = (A.volatility.float || []).slice(0, 5).map((x) => ({ n: x.name, w: x.halfWidthPct * 100 }));
+  const max = Math.max(...steady.concat(wild).map((r) => r.w), 1);
+  const row = (r) => `<div class="pbf-band"><span class="pbf-band__n">${r.n}</span>`
+    + `<span class="pbf-band__track"><span class="pbf-band__fill" style="--hw:${Math.round((r.w / max) * 50)}"></span></span>`
+    + `<span class="pbf-band__v">±${r.w.toFixed(1)}%</span></div>`;
+  return `<div class="pbf pbf-bands">`
+    + `<p class="pbf-grouph">${es ? 'Los más estables — se imprimen' : 'Steadiest — they print'}</p>${steady.map(row).join('')}`
+    + `<p class="pbf-grouph">${es ? 'Los más salvajes — flotan' : 'Wildest — they float'}</p>${wild.map(row).join('')}`
+    + `<div class="pbf-band__axis"><span>−</span><span class="pbf-band__c">${es ? 'su propio normal' : "each item's own normal"}</span><span>+</span></div></div>`;
+}
+
+// §3 — the trim tax as a SHRINK: one invoice pound (the track), with the edible share filled teal
+// and the trimmed-away remainder left empty. The ×multiplier is what the plate pays for the loss.
+function pbFigTrim(A, es) {
+  const cats = A.trimTaxCats.slice();
+  const pick = cats.slice(0, 5).concat(cats.slice(-2)); // steepest few + gentlest couple
+  const row = (c) => { const edible = Math.round(c.meanYield * 100);
+    return `<div class="pbf-trim"><span class="pbf-trim__n">${es ? catNameEs(c.cat) : c.cat}</span>`
+      + `<span class="pbf-trim__bar"><span class="pbf-trim__edible" style="--e:${edible}"></span><b class="pbf-trim__e">${edible}%</b></span>`
+      + `<span class="pbf-trim__x">×${c.tax.toFixed(2)}</span></div>`; };
+  return `<div class="pbf pbf-trims"><div class="pbf-trim pbf-trim--head"><span class="pbf-trim__n"></span>`
+    + `<span class="pbf-trim__bar pbf-trim__bar--head">${es ? 'porción comestible de 1 lb de factura' : 'edible share of one invoice pound'}</span>`
+    + `<span class="pbf-trim__x">${es ? 'impuesto' : 'trim tax'}</span></div>${pick.map(row).join('')}</div>`;
+}
+
+// §4 — the hero: the hidden season of meat on a 12-MONTH AXIS. Each protein with a real (noise-gated)
+// window is a teal column standing in its trough month, height ∝ how far under its own yearly high.
+// The eye sees the backward shape — the grill cuts stand in Aug/Sep, after summer, not during it.
+function pbFigSeason(P, es) {
+  const MOA = es ? MONTH_ABBR_ES : MONTH_ABBR_EN;
+  const wins = P.cards.filter((c) => c.timingReason === 'worth' && PROTEIN_RE.test(c.en))
+    .map((c) => ({ n: es ? c.es : c.en, m: c.cheapMonth, s: c.savePct }));
+  const maxS = Math.max(...wins.map((w) => w.s), 1);
+  const byMonth = {}; for (const w of wins) (byMonth[w.m] = byMonth[w.m] || []).push(w);
+  const cols = Array.from({ length: 12 }, (_, i) => i + 1).map((m) => {
+    const items = (byMonth[m] || []).sort((a, b) => b.s - a.s);
+    const bars = items.map((w) => `<span class="pbf-cal__bar" style="--h:${Math.round((w.s / maxS) * 100)}"><b class="pbf-cal__save">−${w.s}%</b><b class="pbf-cal__cut">${w.n}</b></span>`).join('');
+    return `<div class="pbf-cal__col${items.length ? ' is-on' : ''}"><div class="pbf-cal__stack">${bars}</div><span class="pbf-cal__m">${MOA[m]}</span></div>`;
+  }).join('');
+  return `<div class="pbf pbf-cal"><div class="pbf-cal__scroll"><div class="pbf-cal__row">${cols}</div></div></div>`;
+}
+
+// §5 — the swap that isn't: co-moving protein pairs face each other across a "shared moves" bar
+// (k of n). A full bar means the two are a mirror — a swap trades one rising number for another.
+function pbFigMirror(P, es) {
+  const pairs = []; const seen = new Set();
+  for (const c of P.cards) {
+    if (!c.swap || !PROTEIN_RE.test(c.en) || !PROTEIN_RE.test(c.swap.en)) continue;
+    const key = [c.en, c.swap.en].sort().join('|'); if (seen.has(key)) continue; seen.add(key);
+    pairs.push({ a: es ? c.es : c.en, b: es ? c.swap.es : c.swap.en, k: c.swap.k, n: c.swap.n });
+  }
+  const row = (p) => `<div class="pbf-mir"><span class="pbf-mir__a">${p.a}</span>`
+    + `<span class="pbf-mir__link"><span class="pbf-mir__track"><span class="pbf-mir__fill" style="--v:${Math.round((p.k / p.n) * 100)}"></span></span><b class="pbf-mir__k">${p.k}/${p.n}</b></span>`
+    + `<span class="pbf-mir__b">${p.b}</span></div>`;
+  return `<div class="pbf pbf-mirror">${pairs.map(row).join('')}`
+    + `<p class="pbf-note">${es ? "de los movimientos notables del primer artículo, cuántos compartió su vecino — lleno = espejo" : "of the first item's notable moves, how many its neighbor shared — full bar = a mirror"}</p></div>`;
+}
+
+// shock duration as a bespoke range strip (median marker inside the p25–p75 band).
+function pbFigDuration(A, es) {
+  const d = A.duration; const max = d.p75 * 1.15;
+  const L = (v) => Math.round((v / max) * 100);
+  return `<div class="pbf pbf-dur"><div class="pbf-dur__track" style="--p25:${L(d.p25)};--p75:${L(d.p75)};--med:${L(d.medianDays)}">`
+    + `<span class="pbf-dur__band"></span><span class="pbf-dur__med"><b>${es ? 'mediana' : 'median'} ${d.medianDays}${es ? 'd' : 'd'}</b></span></div>`
+    + `<div class="pbf-dur__ax"><span>0d</span><span>p25 ${d.p25}d</span><span>p75 ${d.p75}d</span><span>${Math.round(max)}d</span></div>`
+    + `<p class="pbf-note">${es ? `${d.total} movimientos detectados; la mitad central se resuelve entre ${d.p25} y ${d.p75} días` : `${d.total} detected moves; the middle half clears between ${d.p25} and ${d.p75} days`}</p></div>`;
+}
 const FIG = { company: figCompany, clusters: figClusters, catTax: figCatTax, worst: figWorst, taxonomy: figTaxonomy, steadyWild: figSteadyWild, duration: figDuration, updown: figUpdown, calendar: figCalendar, method: figMethod, proteinLock: figProteinLock, proteinFamily: figProteinFamily };
 const FIG_NEEDS_NAME = new Set(['clusters', 'worst', 'calendar']);
 
@@ -826,6 +915,94 @@ const PLAYBOOK_CSS = `
 .pb-table td.pb-num,.pb-table th.pb-num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .pb-table td:last-child{color:var(--ink-soft);font-size:13px}
 @media(max-width:640px){.pb-card__head{flex-wrap:wrap}.pb-table{font-size:12.5px}}
+
+/* ---- bespoke playbook figures (pbf-*): single teal data hue, length-only encoding ---- */
+.pb-guide .rs-fig,.pb-play .rs-fig{margin:18px 0 22px}
+.pbf{margin:2px 0;font-variant-numeric:tabular-nums}
+/* §1 posture unit grid */
+.pbf-grid{display:grid;grid-template-columns:repeat(20,1fr);gap:3px;margin:0 0 14px}
+.pbf-cell{display:block;aspect-ratio:1;border-radius:3px;background:var(--cream-2)}
+.pbf-cell--lock{background:var(--teal)}
+.pbf-cell--cushion{background:var(--teal);opacity:.4}
+.pbf-cell--float{background:transparent;border:1.5px solid var(--gold)}
+.pbf-cell--withhold{background:var(--cream-2);border:1px solid var(--line)}
+.pbf-legend{display:flex;flex-wrap:wrap;gap:8px 20px}
+.pbf-key{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--ink-soft)}
+.pbf-key .pbf-cell{width:13px;height:13px;aspect-ratio:auto;flex:none;border-radius:3px}
+.pbf-key b{color:var(--ink);font-weight:700}
+/* §2 centered "how far it wanders" bands */
+.pbf-grouph{font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);margin:16px 0 9px}
+.pbf-grouph:first-child{margin-top:0}
+.pbf-band{display:grid;grid-template-columns:118px 1fr 60px;align-items:center;gap:10px;margin:0 0 6px}
+.pbf-band__n{font-size:13px;color:var(--ink);text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pbf-band__track{position:relative;height:16px;background:var(--cream);border:1px solid var(--line);border-radius:4px}
+.pbf-band__track::before{content:"";position:absolute;left:50%;top:-2px;bottom:-2px;width:1px;background:var(--stone);opacity:.5}
+.pbf-band__fill{position:absolute;top:2px;bottom:2px;left:calc(50% - var(--hw)*1%);width:calc(var(--hw)*2%);min-width:3px;background:var(--teal);border-radius:3px;opacity:.9}
+.pbf-band__v{font-size:12.5px;color:var(--ink-soft);text-align:right}
+.pbf-band__axis{display:flex;justify-content:space-between;font-size:11px;color:var(--stone);margin:8px 0 0;padding:0 60px 0 128px}
+.pbf-band__c{color:var(--ink-soft)}
+/* §3 trim-tax shrink bars */
+.pbf-trims{font-size:13px}
+.pbf-trim{display:grid;grid-template-columns:92px 1fr 52px;align-items:center;gap:10px;margin:0 0 7px}
+.pbf-trim__n{text-align:right;color:var(--ink)}
+.pbf-trim--head{color:var(--stone);font-size:11px;text-transform:uppercase;letter-spacing:.03em;margin-bottom:10px}
+.pbf-trim__bar{position:relative;height:20px;background:var(--cream);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.pbf-trim__bar--head{background:none;border:none;height:auto;overflow:visible}
+.pbf-trim__edible{position:absolute;left:0;top:0;bottom:0;width:calc(var(--e)*1%);background:var(--teal);opacity:.85}
+.pbf-trim__e{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:700;color:var(--white);z-index:1}
+.pbf-trim__x{text-align:right;color:var(--ink);font-weight:700}
+/* §4 the hidden season: month-axis columns */
+.pbf-cal__scroll{overflow-x:auto}
+.pbf-cal__row{display:grid;grid-template-columns:repeat(12,minmax(44px,1fr));gap:4px;align-items:end;min-height:220px;min-width:560px}
+.pbf-cal__col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.pbf-cal__stack{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px;width:100%;flex:1}
+.pbf-cal__bar{position:relative;width:80%;min-height:26px;height:calc(var(--h)*1.55px + 26px);background:var(--teal);border-radius:5px 5px 0 0;display:flex;flex-direction:column;align-items:center;padding:5px 2px;opacity:.92}
+.pbf-cal__save{font-size:11px;font-weight:800;color:var(--white);line-height:1}
+.pbf-cal__cut{font-size:10px;color:var(--white);writing-mode:vertical-rl;transform:rotate(180deg);margin-top:5px;font-weight:600;letter-spacing:.02em;white-space:nowrap;overflow:hidden}
+.pbf-cal__m{font-size:11px;color:var(--ink-soft);margin-top:7px}
+.pbf-cal__col.is-on .pbf-cal__m{color:var(--ink);font-weight:700}
+/* §5 co-mover mirror */
+.pbf-mir{display:grid;grid-template-columns:1fr 128px 1fr;align-items:center;gap:12px;margin:0 0 9px}
+.pbf-mir__a{text-align:right;font-size:13.5px;color:var(--ink)}
+.pbf-mir__b{text-align:left;font-size:13.5px;color:var(--ink)}
+.pbf-mir__link{display:flex;flex-direction:column;align-items:center;gap:4px}
+.pbf-mir__track{width:100%;height:8px;background:var(--cream-2);border-radius:99px;overflow:hidden}
+.pbf-mir__fill{display:block;height:100%;width:calc(var(--v)*1%);background:var(--teal);border-radius:99px}
+.pbf-mir__k{font-size:11.5px;font-weight:700;color:var(--ink-soft)}
+.pbf-note{font-size:12px;color:var(--stone);margin:14px 0 0;text-align:center}
+/* shock duration range */
+.pbf-dur__track{position:relative;height:30px;background:var(--cream);border:1px solid var(--line);border-radius:6px;margin:0 0 7px}
+.pbf-dur__band{position:absolute;top:0;bottom:0;left:calc(var(--p25)*1%);width:calc((var(--p75) - var(--p25))*1%);background:var(--teal);opacity:.22;border-left:2px solid var(--teal);border-right:2px solid var(--teal)}
+.pbf-dur__med{position:absolute;top:-3px;bottom:-3px;left:calc(var(--med)*1%);width:2px;background:var(--teal)}
+.pbf-dur__med b{position:absolute;left:7px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:700;color:var(--ink);white-space:nowrap}
+.pbf-dur__ax{display:flex;justify-content:space-between;font-size:11px;color:var(--stone)}
+/* ---- methodology dropdowns (inspectable calculations) ---- */
+.pb-method{margin:34px 0 0}
+.pb-calc{border:1px solid var(--line);border-radius:12px;margin:0 0 8px;background:var(--white);overflow:hidden}
+.pb-calc>summary{cursor:pointer;padding:14px 18px;font-weight:600;font-size:15px;color:var(--ink);list-style:none;display:flex;align-items:center;gap:11px}
+.pb-calc>summary::-webkit-details-marker{display:none}
+.pb-calc>summary::before{content:"+";font-size:19px;color:var(--teal);font-weight:400;line-height:1;width:14px;text-align:center}
+.pb-calc[open]>summary::before{content:"\\2013"}
+.pb-calc[open]>summary{border-bottom:1px solid var(--line)}
+.pb-calc>p,.pb-calc>.rs-scroll{margin:0;padding:15px 18px;font-size:14.5px;line-height:1.62;color:var(--ink-soft)}
+.pb-calc em{font-style:italic;color:var(--ink);font-weight:500}
+.pb-calc b{color:var(--ink)}
+/* ---- CC-BY cite + download ---- */
+.pb-cite{margin:30px 0 0;padding:22px 24px;background:var(--cream);border:1px solid var(--line);border-radius:16px}
+.pb-cite p{font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 13px;max-width:72ch}
+.pb-cite__cite{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;color:var(--ink);background:var(--white);border:1px solid var(--line);border-radius:8px;padding:11px 13px;line-height:1.5}
+.pb-cite__lab{display:inline-block;font-weight:700;color:var(--teal);margin-right:8px;text-transform:uppercase;font-size:10.5px;letter-spacing:.05em;font-family:var(--font-body)}
+.pb-cite__dl{display:flex;flex-wrap:wrap;gap:10px;margin:0}
+.pb-dl{display:inline-flex;align-items:center;gap:6px;padding:9px 15px;border:1px solid var(--teal);border-radius:9px;color:var(--teal);font-size:13.5px;font-weight:600;text-decoration:none}
+.pb-dl::before{content:"\\2193";font-weight:700}
+.pb-dl--ghost{border-color:var(--line);color:var(--ink-soft)}
+.pb-dl--ghost::before{content:""}
+@media(max-width:640px){
+  .pbf-grid{grid-template-columns:repeat(10,1fr)}
+  .pbf-band{grid-template-columns:92px 1fr 52px}
+  .pbf-band__axis{padding:0 52px 0 102px}
+  .pbf-mir{grid-template-columns:1fr 96px 1fr;gap:8px}
+}
 `;
 // Per-card sentences, computed (never a forecast; a wholesale reference vs its own normal, never
 // the delivered price; a strong co-mover means a swap is a mirror, never a cause).
@@ -901,14 +1078,86 @@ function emitPlaybook(locale, ctx) {
       + `<td><span class="pb-pill pb-pill--${c.bucket}">${es ? bl.es : bl.en}</span></td>`
       + `<td class="pb-num">${band}</td><td class="pb-num">${cost}</td><td class="pb-num">${cheap}</td><td>${swap}</td></tr>`;
   }).join('');
-  const secHtml = guide ? (guide.sections || []).map((s) => {
-    const paras = (s.paragraphs || []).map((p) => `<p>${escHtml(p)}</p>`).join('');
-    return `<section class="rs-section"><h2>${escHtml(s.h2)}</h2>${paras}</section>`;
+  // --- figures (grounded in the SAME engine as the prose) interleaved into the guide ------------
+  const A = researchInputs(repoRoot);
+  const NM = nameMap(repoRoot);
+  const nmFn = (s, e) => (NM[s] || { en: s, es: s })[e ? 'es' : 'en'];
+  const wrapFig = (bodyHtml, cap, alt) => `<figure class="rs-fig viz-figure" data-audio-alt="${escHtml(alt)}">${bodyHtml}<figcaption class="rs-fig__cap">${escHtml(cap)}</figcaption></figure>`;
+  // One figure per guide section, by position (claim → figure → detail). null = no figure.
+  const FIGSPEC = [
+    { body: () => pbFigSplit(P, es),
+      capEn: `Of ${P.total} scored ingredients: ${P.counts.lock} print, ${P.counts.cushion} cushion, ${P.counts.float} float, ${P.counts.withhold} withheld for thin evidence.`,
+      capEs: `De ${P.total} ingredientes evaluados: ${P.counts.lock} se imprimen, ${P.counts.cushion} con colchón, ${P.counts.float} flotan, ${P.counts.withhold} reservados por evidencia escasa.`,
+      altEn: `A four-column split of ${P.total} scored ingredients by pricing posture: ${P.counts.lock} print a steady price, ${P.counts.cushion} want a cushion, ${P.counts.float} float on market price, and ${P.counts.withhold} are withheld for too little evidence.`,
+      altEs: `Una división en cuatro columnas de ${P.total} ingredientes evaluados por postura de precio: ${P.counts.lock} imprimen un precio estable, ${P.counts.cushion} quieren colchón, ${P.counts.float} flotan y ${P.counts.withhold} se reservan por muy poca evidencia.` },
+    { body: () => pbFigBands(A, es),
+      capEn: 'The steadiest wholesale bands are staples and proteins; the widest are all produce.',
+      capEs: 'Las bandas mayoristas más estables son básicos y proteínas; las más anchas son todas de producto fresco.',
+      altEn: 'Two ranked bar columns comparing wholesale band width: the steadiest items run near plus or minus one percent, while the wildest — broccoli, yellow squash, raspberry, green leaf lettuce — run above plus or minus twenty-two percent.',
+      altEs: 'Dos columnas de barras que comparan el ancho de la banda mayorista: los más estables rondan más o menos uno por ciento, mientras que los más salvajes — brócoli, calabaza amarilla, frambuesa, lechuga verde — superan más o menos veintidós por ciento.' },
+    { body: () => pbFigTrim(A, es),
+      capEn: 'Trim tax by category — the multiplier from an invoice pound to a plated pound.',
+      capEs: 'Impuesto de merma por categoría — el multiplicador de una libra de factura a una libra en el plato.',
+      altEn: 'A ranked bar chart of trim tax by category, the cost multiplier of one divided by edible yield, running from citrus at 2.16 times down to mushroom at 1.14 times.',
+      altEs: 'Un gráfico de barras del impuesto de merma por categoría, el multiplicador de costo de uno dividido por el rendimiento comestible, de cítricos a 2.16 veces hasta hongos a 1.14 veces.' },
+    { body: () => pbFigSeason(P, es),
+      capEn: 'Eight proteins with a readable buying window — each troughs after its own demand peak.',
+      capEs: 'Ocho proteínas con una ventana de compra legible — cada una toca fondo después de su propio pico de demanda.',
+      altEn: 'A ranked bar chart of eight proteins by how far the cheapest month sits under the yearly high, from whole chicken in May at forty-seven percent down to pork loin in December at eighteen percent.',
+      altEs: 'Un gráfico de barras de ocho proteínas según cuánto queda el mes más barato bajo el máximo anual, desde pollo entero en mayo al cuarenta y siete por ciento hasta lomo de cerdo en diciembre al dieciocho por ciento.' },
+    { body: () => pbFigMirror(P, es),
+      capEn: 'Co-moving protein families — a within-family swap trades one rising number for another.',
+      capEs: 'Familias de proteínas que se mueven juntas — un cambio dentro de la familia cambia un número al alza por otro.',
+      altEn: 'Chip cards of co-moving protein families showing shared notable moves: chicken breast and thigh, and ground pork and pork shoulder, each moving together in most of their notable windows.',
+      altEs: 'Tarjetas de familias de proteínas que se mueven juntas mostrando movimientos notables compartidos: pechuga y muslo de pollo, y cerdo molido y paleta de cerdo, moviéndose juntos en la mayoría de sus ventanas.' },
+    null,
+  ];
+  const figFor = (i) => { const f = FIGSPEC[i]; return f ? wrapFig(f.body(), es ? f.capEs : f.capEn, es ? f.altEs : f.altEn) : ''; };
+  // Section = h2 → first paragraph → figure → remaining paragraphs. Breaks the wall of text.
+  const secHtml = guide ? (guide.sections || []).map((s, i) => {
+    const ps = (s.paragraphs || []).map((p) => `<p>${escHtml(p)}</p>`);
+    const fig = figFor(i);
+    const head = ps.length ? ps[0] : '';
+    const rest = ps.slice(1).join('');
+    return `<section class="rs-section"><h2>${escHtml(s.h2)}</h2>${head}${fig}${rest}</section>`;
   }).join('') : '';
   const ledeHtml = guide && Array.isArray(guide.intro) ? guide.intro.map((p) => `<p class="pb-lede">${escHtml(p)}</p>`).join('') : '';
-  const playHtml = guide && guide.operatorPlay ? `<aside class="pb-play"><h3>${es ? 'Esta semana' : 'This week'}</h3><p>${escHtml(guide.operatorPlay)}</p></aside>` : '';
+  const durFig = wrapFig(pbFigDuration(A, es),
+    es ? `Cuánto se mantiene un choque fuera de su base — mediana ${A.duration.medianDays} días en ${A.duration.total} movimientos.` : `How long a detected shock stays off baseline — median ${A.duration.medianDays} days across ${A.duration.total} moves.`,
+    es ? `Un gráfico de rango de la duración del choque en ${A.duration.total} movimientos detectados: el movimiento mediano se mantiene fuera de su base ${A.duration.medianDays} días, y la mitad central se resuelve entre ${A.duration.p25} y ${A.duration.p75} días.` : `A range plot of shock duration across ${A.duration.total} detected moves: the median move stays off its baseline ${A.duration.medianDays} days, with the middle half clearing between ${A.duration.p25} and ${A.duration.p75} days.`);
+  const playHtml = guide && guide.operatorPlay ? `<aside class="pb-play"><h3>${es ? 'Esta semana' : 'This week'}</h3><p>${escHtml(guide.operatorPlay)}</p>${durFig}</aside>` : '';
   const takeawayHtml = guide && guide.takeaway ? `<p class="pb-takeaway">${escHtml(guide.takeaway)}</p>` : '';
   const guideHtml = guide ? `<div class="pb-guide">${ledeHtml}${secHtml}${playHtml}${takeawayHtml}</div>` : '';
+  // --- methodology: calculations broken into inspectable dropdowns (CC-BY reproducibility) -------
+  const ex = (slug) => P.cards.find((c) => c.slug === slug) || {};
+  const rib = ex('ribeye'); const rom = ex('romaine-lettuce'); const crab = ex('whole-crab');
+  const method = [
+    { sEn: `The ±band → print, cushion, float, or withhold`, sEs: `La banda ± → fijar, colchón, flotar o reservar`,
+      bEn: `Each ingredient's band is the half-width of its wholesale reference around its own recent normal: ±X% means a typical week sits within X% of center. It measures <em>predictability</em>, not price level, and it is a wholesale reference — never your delivered price. Tighter bands print (lock); wider bands float; too few recent weeks to score → withhold (unproven, not unstable). <b>Worked:</b> ribeye's band is ±${rib.bandPct}% → lock; romaine's is ±${rom.bandPct}% → float.`,
+      bEs: `La banda de cada ingrediente es la semi-amplitud de su referencia mayorista alrededor de su propio normal reciente: ±X% significa que una semana típica queda dentro del X% del centro. Mide la <em>previsibilidad</em>, no el nivel de precio, y es una referencia mayorista — nunca tu precio de entrega. Bandas más estrechas se imprimen (fijar); más anchas flotan; muy pocas semanas para puntuar → reservar (no probado, no inestable). <b>Ejemplo:</b> la banda del ribeye es ±${rib.bandPct}% → fijar; la de la romana es ±${rom.bandPct}% → flotar.` },
+    { sEn: `True cost = 1 ÷ edible yield (the trim tax)`, sEs: `Costo real = 1 ÷ rendimiento comestible (el impuesto de merma)`,
+      bEn: `An invoice price is per pound <em>bought</em>; a plate price is per pound <em>served</em>. Trim tax = 1 ÷ edible yield converts one to the other. Romaine keeps ${rom.yieldPct}% after trim → 1 ÷ 0.${rom.yieldPct} = ×${rom.trimTax != null ? rom.trimTax.toFixed(2) : ''}: every invoice dollar is $${rom.trimTax != null ? rom.trimTax.toFixed(2) : ''} on the plate. Whole crab keeps just ${crab.yieldPct}% → ×${crab.trimTax != null ? crab.trimTax.toFixed(2) : ''}. Always multiply by the item's <em>own</em> yield, never a category average.`,
+      bEs: `Un precio de factura es por libra <em>comprada</em>; uno de plato es por libra <em>servida</em>. Impuesto de merma = 1 ÷ rendimiento comestible convierte uno en otro. La romana conserva ${rom.yieldPct}% tras el recorte → 1 ÷ 0.${rom.yieldPct} = ×${rom.trimTax != null ? rom.trimTax.toFixed(2) : ''}: cada dólar de factura es $${rom.trimTax != null ? rom.trimTax.toFixed(2) : ''} en el plato. El cangrejo entero conserva solo ${crab.yieldPct}% → ×${crab.trimTax != null ? crab.trimTax.toFixed(2) : ''}. Multiplica siempre por el rendimiento <em>propio</em> del artículo, nunca por un promedio de categoría.` },
+    { sEn: `When a cheapest month is real, not noise`, sEs: `Cuándo un mes más barato es real, no ruido`,
+      bEn: `A cheapest-month window is named only when the trough clears the noise: (1) the cheap month's median beats the dearest month's own 25th-percentile week, <em>and</em> (2) the peak-to-trough swing is at least the ordinary within-month spread. Save% = (dear median − cheap median) ÷ dear median. Whole turkey fails both — its monthly medians scatter and a typical January already undercuts a typical February — so it earns no window and prices year-round. Descriptive of the tracked record, never a forecast.`,
+      bEs: `Una ventana de mes más barato se nombra solo cuando el fondo supera el ruido: (1) la mediana del mes barato vence a la semana del percentil 25 del mes más caro, <em>y</em> (2) el vaivén de pico a fondo es al menos la dispersión habitual dentro del mes. Ahorro% = (mediana cara − mediana barata) ÷ mediana cara. El pavo entero falla ambas — sus medianas mensuales se dispersan y un enero típico ya queda por debajo de un febrero típico — así que no gana ventana y se cotiza todo el año. Descriptivo del registro, nunca un pronóstico.` },
+    { sEn: `When a swap only mirrors the rise (k of n)`, sEs: `Cuándo un cambio solo refleja la subida (k de n)`,
+      bEn: `For each item we count how many of its notable moves a neighbor shared — k of n. Pork shoulder and ground pork shared 6 of 6: every notable move moved together, so the swap is a mirror, not a hedge. Below half shared → the swap is a real hedge. This is co-occurrence, never cause — a shared growing region or shipping lane, not one item pushing the other.`,
+      bEs: `Para cada artículo contamos cuántos de sus movimientos notables compartió un vecino — k de n. Paleta de cerdo y cerdo molido compartieron 6 de 6: cada movimiento notable se movió junto, así que el cambio es un espejo, no una cobertura. Menos de la mitad compartido → el cambio sí cubre. Esto es coincidencia, nunca causa — una región de cultivo o ruta de envío compartida, no un artículo empujando al otro.` },
+  ];
+  const methodHtml = `<section class="pb-method" aria-labelledby="pb-method-h">
+    <h2 id="pb-method-h" class="rs-section-h">${es ? 'Cómo se calcula cada número' : 'How each number is computed'}</h2>
+    <p class="pb-tool__lede">${es ? 'Cada capa es una fórmula sobre los datos abiertos — inspecciónala. Abre cualquiera para ver el cálculo y un ejemplo con números reales.' : 'Every layer is a formula over the open data — inspect it. Open any one for the calculation and a worked example with real numbers.'}</p>
+    ${method.map((m) => `<details class="pb-calc"><summary>${es ? m.sEs : m.sEn}</summary><p>${es ? m.bEs : m.bEn}</p></details>`).join('')}
+    <details class="pb-calc"><summary>${es ? 'Los ingredientes de mayor merma' : 'The steepest-trim single items'}</summary>${figWorst(A, es, nmFn)}</details>
+  </section>`;
+  // --- CC-BY cite + license + download (this is open-data content) ------------------------------
+  const citeHtml = `<section class="pb-cite" aria-labelledby="pb-cite-h">
+    <h2 id="pb-cite-h" class="rs-section-h">${es ? 'Cita y descarga (CC BY 4.0)' : 'Cite &amp; download (CC BY 4.0)'}</h2>
+    <p>${es ? `Este manual une cuatro conjuntos abiertos de Muntin por ingrediente — fijar-o-flotar y co-movimiento, rendimientos (CC BY 4.0) y normales estacionales (CC0). La tabla unida de ${P.total} ingredientes se publica bajo <a href="https://creativecommons.org/licenses/by/4.0/" rel="license">CC BY 4.0</a>: úsala, con atribución.` : `This playbook joins four Muntin open sets per ingredient — lock-or-float and co-movement, yields (CC BY 4.0) and seasonal normals (CC0). The joined ${P.total}-ingredient table is released under <a href="https://creativecommons.org/licenses/by/4.0/" rel="license">CC BY 4.0</a>: reuse it, with attribution.`}</p>
+    <p class="pb-cite__cite"><span class="pb-cite__lab">${es ? 'Cita' : 'Cite'}</span> Muntin Cost Index — Menu-Pricing Playbook dataset. muntin.digital${base}/cost-index/menu-pricing/. CC BY 4.0.</p>
+    <p class="pb-cite__dl"><a class="pb-dl" href="/cost-index/menu-pricing.json" download>menu-pricing.json</a><a class="pb-dl" href="/cost-index/menu-pricing.csv" download>menu-pricing.csv</a><a class="pb-dl pb-dl--ghost" href="${base}/open/">${es ? 'Todos los datos abiertos →' : 'All the open data →'}</a></p>
+  </section>`;
   const jsonld = JSON.stringify({ '@context': 'https://schema.org', '@graph': [
     { '@type': ['CollectionPage', 'HowTo'], '@id': (es ? canonEs : canonEn) + '#page', 'url': es ? canonEs : canonEn, 'name': h1, 'inLanguage': es ? 'es-US' : 'en-US', 'description': desc, 'isPartOf': { '@id': 'https://muntin.digital/#website' }, 'isBasedOn': 'https://muntin.digital/open/', 'speakable': { '@type': 'SpeakableSpecification', 'cssSelector': ['h1', '.ci-answer'] } },
     { '@type': 'BreadcrumbList', 'itemListElement': [
@@ -940,12 +1189,14 @@ function emitPlaybook(locale, ctx) {
         <select id="pbSel">${options}</select></div>
       <div id="pbCard">${cardHtml(def)}</div>
     </section>
+    ${methodHtml}
     ${guideHtml}
     <section class="pb-tablewrap" aria-labelledby="pb-table-h">
       <h2 id="pb-table-h" class="rs-section-h">${es ? 'Los ' + P.total + ' ingredientes, de un vistazo' : 'All ' + P.total + ' ingredients, at a glance'}</h2>
       <p class="pb-tool__lede">${es ? 'Ordenados por postura de precio (fijar → flotar). La banda es una referencia mayorista contra su propio normal, nunca el precio de entrega.' : 'Sorted by pricing posture (print → float). The band is a wholesale reference against its own normal, never the delivered price.'}</p>
       <div class="rs-scroll"><table class="rs-table pb-table"><thead><tr>${th.map((h, i) => `<th${i > 1 ? ' class="pb-num"' : ''}>${h}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>
     </section>
+    ${citeHtml}
     ${relHtml}
     <p class="rs-src">${es ? 'Une cuatro conjuntos abiertos de Muntin — fijar-o-flotar y co-movimiento (CC-BY), rendimientos (CC-BY) y normales estacionales (CC0) — cada uno una lectura de referencia mayorista contra la propia línea base del ingrediente, no el precio de entrega. Descriptivo, nunca un pronóstico; coincidencia, nunca causa.' : "Joins four Muntin open sets — lock-or-float and co-movement (CC-BY), yields (CC-BY), and seasonal normals (CC0) — each a wholesale-reference read against the ingredient's own baseline, not the delivered price. Descriptive, never a forecast; co-occurrence, never cause."}</p>
     <div class="rs-cta"><a class="btn btn-primary" href="${base}/tools/cost-pulse/">${es ? 'Abre la herramienta fijar-o-flotar' : 'Open the lock-or-float tool'} <span aria-hidden="true">→</span></a></div>
@@ -984,7 +1235,41 @@ export function researchTargets(ctx) {
   // ingredient into one decision surface). The thin single-metric research pages are retired.
   targets.push({ path: 'cost-index/menu-pricing/index.html', content: emitPlaybook('en', ctx) });
   targets.push({ path: 'es/cost-index/menu-pricing/index.html', content: emitPlaybook('es', ctx) });
+  // The joined dataset as a CC-BY open-data artifact (JSON + CSV). Language-neutral, one canonical
+  // copy both locales link to. No timestamp → stable across rebuilds (no spurious drift).
+  const ds = pricingDataset(repoRoot);
+  targets.push({ path: 'cost-index/menu-pricing.json', content: ds.json });
+  targets.push({ path: 'cost-index/menu-pricing.csv', content: ds.csv });
   return targets;
+}
+
+// The menu-pricing playbook as a downloadable CC-BY dataset — one row per scored ingredient, the
+// four joined layers. Cheapest-month/save only where the noise-gated window is real (matches the
+// on-page table). Honest nulls elsewhere. Deterministic (no timestamp) so rebuilds don't churn it.
+function pricingDataset(repoRoot) {
+  const P = pricingCards(repoRoot);
+  const rows = P.cards.map((c) => ({
+    slug: c.slug, name: c.en, category: c.cat || null, posture: c.bucket,
+    band_pct: c.bucket === 'withhold' ? null : c.bandPct,
+    coverage_pct: c.coverage, edible_yield_pct: c.yieldPct, trim_tax: c.trimTax,
+    cheapest_month: c.worthTiming ? c.cheapMonth : null,
+    save_pct: c.worthTiming ? c.savePct : null,
+    comover: c.swap ? c.swap.en : null,
+    comover_shared: c.swap ? c.swap.k : null, comover_of: c.swap ? c.swap.n : null,
+  }));
+  const meta = {
+    dataset: 'Muntin Cost Index — Menu-Pricing Playbook',
+    url: 'https://muntin.digital/cost-index/menu-pricing/',
+    license: 'CC BY 4.0', license_url: 'https://creativecommons.org/licenses/by/4.0/',
+    attribution: 'Muntin Cost Index (muntin.digital)',
+    joins: 'lock-or-float + co-movement (CC-BY), yields (CC-BY), seasonal normals (CC0)',
+    note: "Every band is a wholesale reference read against each ingredient's own baseline window — never a delivered or retail price. cheapest_month is named only when the seasonal trough clears the noise gate; null means priced year-round. Descriptive of the tracked record, never a forecast; co-occurrence, never cause.",
+    count: rows.length, ingredients: rows,
+  };
+  const cols = ['slug', 'name', 'category', 'posture', 'band_pct', 'coverage_pct', 'edible_yield_pct', 'trim_tax', 'cheapest_month', 'save_pct', 'comover', 'comover_shared', 'comover_of'];
+  const esc = (v) => { if (v == null) return ''; const s = String(v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
+  const csv = [cols.join(',')].concat(rows.map((r) => cols.map((k) => esc(r[k])).join(','))).join('\n') + '\n';
+  return { json: JSON.stringify(meta, null, 2) + '\n', csv };
 }
 
 function emitResearchPage(page, loc, A, nm, ctx) {
