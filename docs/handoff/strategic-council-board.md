@@ -66,13 +66,25 @@ discoverable). Capability is shown, never invented.
   substantially COMPLETE** (chrome site-wide + home + product/company; only intentional keeps + the
   generator-owned cost-index/open pages remain, which regen with the synced chrome on deploy).
 
-**NEXT (autonomous) — escalate to VISIBLE v3 transformation, one home section per increment:** the home's
-remaining sections toward the app-grade/capability/personality look — **tool-cta-flagships** ("Find the leak
-before you fix it" + the 2 flagship free tools, ~index.html:546) first (the Workbench pane, prominent),
-then trust-strip, library island, founding band. Build with existing tokens + scoped v3 CSS (tabular-mono
-where numbers appear, hairline/grille structure, capability-forward copy), headless + adversarial-review
-each, EN+ES, preserve machinery/gates. DEFER (care needed): the defensive stances section (cal:band
-injector — reframe copy defense→capability KEEPING sentinels, or leave for founder); type unification.
+- **`efc151449` — app-grade re-skin of the flagship free-tools section (Workbench pane, EN+ES).** Scoped
+  CSS-only (cards are home-only): soft 14px cards + big lift → sharper 6px hairline cards, tighter
+  hairline-depth hover, muntin top-accent on hover; pill teal chips → mono uppercase hairline labels;
+  glyph-notes → tabular mono (the DATA VOICE). Kept the honest illustrative viz glyphs + live tool links;
+  titles stay Fraunces (type unification deferred). Tokens-only (css-drift unchanged 504), shells regen'd,
+  headless both themes clean. Screenshots sent.
+
+**⏳ ADVERSARIAL HOME REVIEW running** (agent a3cf6e82…) — reviewing the half-cascaded home (hero instrument
++ de-solo + tools re-skin vs the untouched warm-editorial sections) for coherence/Frankenstein-seam risk,
+the Fraunces-serif↔mono-data pairing (is type unification the #1 fix?), and prioritization of the remaining
+sections. **Fold its findings before choosing the next increment.**
+
+**NEXT (autonomous) — remaining home sections toward v3, per the review's priority:** stances section (the
+defensive "Every claim carries its own receipt" — high-value per "stop defending", but its cal:band.*
+sentinels are injected by inject-cost-index-calibration.mjs [SENSITIVE, heartbeat-tied] → reframe copy
+defense→capability KEEPING the sentinels, don't remove), trust-strip, library island, founding band. One
+section per increment, existing-tokens + scoped v3 CSS, headless + adversarial, EN+ES, preserve machinery.
+DEFERRED: type unification (site-wide decision — the review may argue it's now the #1 lever); the /window/
+personal-access founder-fork.
 
 **NEXT (autonomous, ordered):**
 1. **Home hero visual → the instrument.** The hero already holds a DECORATIVE empty muntin window
