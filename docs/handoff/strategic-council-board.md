@@ -36,10 +36,25 @@ capability, not smallness. **HARD HONESTY BOUNDARY:** project capability + use c
 advertise headcount — but NEVER fabricate a team/scale (that lie breaks the honesty brand + is
 discoverable). Capability is shown, never invented.
 
-**NEXT (autonomous):** extract the v3 token/register system into the live `assets/site.css` re-pigment
-layer → cascade to the live home (`index.html`+ES) preserving all machinery/gates → then the pane
-archetypes. Continue Phase 0 remainder (cost-index cadence, /security/, generator-owned footer handler)
-in parallel where independent.
+**LIVE CASCADE — shipped:**
+- **`ffabeeadf` — home hero de-solo (EN+ES).** Executed the positioning pivot on the flagship: dropped
+  the first-person "numbers I check on my own shifts" from the hero-sub (now product/company-voice) +
+  removed the hero-meta-note (Don byline + "Reply within 4 hours" personal-service promise). Honesty
+  boundary held (removal only, nothing fabricated). Gates green; headless both themes 390/1280 clean.
+
+**NEXT (autonomous, ordered):**
+1. **Home hero visual → the instrument.** The hero already holds a DECORATIVE empty muntin window
+   (12 empty panes + bars + "mun·tin/noun" caption). Turn it into the v3 LIVE COST INSTRUMENT (a
+   believable basket read, tabular-mono data voice, the grille as structure, count-up + scan on load,
+   both themes, reduced-motion/no-JS safe). Bounded to the hero graphic — no sentinel machinery. ES mirror.
+2. **Retire the defensive stances section** ("Every claim carries its own receipt", index.html ~514) →
+   reframe to a capability band (v3 "why it holds up"). BLOCKED ON MACHINERY: `inject-cost-index-calibration.mjs`
+   targets index.html for the `cal:band.*` sentinels (line 89) + the EN/ES homes already differ here
+   (ES has no 3-pane stances). Update the injector to drop index.html (or relocate the sentinels) FIRST,
+   then reframe. Do carefully.
+3. Then the pane archetypes + the token re-pigment (accent already blue #2A50C8/#7AA7FF — nudge to
+   electric #3b68f5/#5b82ff only if AA holds, else leave; the v3 feel is mostly composition + mono voice).
+4. Phase 0 remainder (cost-index cadence, /security/, generator-owned footer handler) in parallel where independent.
 
 **Thread (prior):** executing the fully-mapped storefront reinvention (`docs/handoff/reinvention-master-plan.md`)
 in the founder's build → audit → iterate cadence, expert-verified per increment. Strategy docs on
