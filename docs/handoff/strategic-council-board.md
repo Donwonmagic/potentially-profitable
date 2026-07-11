@@ -110,7 +110,10 @@ durations, the cubic-bezier(.16,1,.3,1) emphasis easing — is intact).
     the `.ld-wrap` Ledger demo, which deliberately re-skins --teal to the app's #3b68f5, gets a matching glow for
     free (a hardcoded teal would have created a NEW two-blue mismatch inside the demo — caught in verification).
     color-mix already used 22× in site.css. Regenerated the 3 CSS shells (build-css-shells.mjs); check-css-shells
-    clean; tokens-sync clean; check-all green. Also refreshed stale radius docs to the v3 6/6/8 scale. NOTE: the
+    clean; tokens-sync clean. (check-all exits 1 with 233/258 — but the 25 misses are all "(idem)" build-freshness
+    reporters — site-counts/sitemap/glossary-schema/cache-bust "would update N files" — that fail IDENTICALLY at
+    the parent commit; container build-drift the operator's pipeline regenerates, NOT a regression from this change,
+    verified parent-vs-HEAD on cache-bust.) Also refreshed stale radius docs to the v3 6/6/8 scale. NOTE: the
     demo's `#3b68f5` is CORRECT/deliberate (the storefront's mini-mirror of the product app) — do NOT "fix" it.
   - **HELD for founder (survivor 3 + editorial):** off-scale raw-radii sweep is cosmetic churn with real visible
     corner changes across many components — not shipped without a look. Plus the two editorial calls below.
