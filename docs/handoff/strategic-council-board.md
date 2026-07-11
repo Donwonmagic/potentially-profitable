@@ -13,9 +13,17 @@ repo survives. Update this file as threads move.
 council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 #234–#239 product) are merged to main and closed.
 
-## ⮕ CURRENT STATE — Reinvention execution, Phase 0 (updated 2026-07-11)
+## ⮕ CURRENT STATE — AUTONOMOUS REDESIGN RUN (updated 2026-07-11)
 
-**Thread:** executing the fully-mapped storefront reinvention (`docs/handoff/reinvention-master-plan.md`)
+**Founder directive:** "Fold both plans together. Execute the entirety of the redesign as I sleep,
+build → audit → iterate, frequently, all the way through." Macro-first. → **`docs/handoff/redesign-execution-plan.md`
+is the execution spine** (folds the reinvention master plan + the locked macro design direction from
+the flagship prototype). Autonomous run: one increment → adversarial/expert audit → iterate → commit+push →
+update this block → continue. Macro direction locked from artifact "flagship-macro-v1" (one unified
+app-grade language + one-window-many-panes + the emotional arc + ambient trust). Currently: Phase A
+(flagship v2 after the adversarial design panel) → then cascade to the live home + pane archetypes.
+
+**Thread (prior):** executing the fully-mapped storefront reinvention (`docs/handoff/reinvention-master-plan.md`)
 in the founder's build → audit → iterate cadence, expert-verified per increment. Strategy docs on
 this branch: `founder-vision.md`, `retention-strategy.md`, `tools-strategy.md`, `site-coverage-ledger.md`,
 `every-surface-map.md`, `library-audit-full.md`, `site-reinvention-blueprint.md`. Strategy = PRUNE →
