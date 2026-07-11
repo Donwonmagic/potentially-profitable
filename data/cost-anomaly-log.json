@@ -15,306 +15,2168 @@
     }
   },
   "summary": {
-    "ingredients": 51,
-    "withHistory": 51,
-    "pointOutliers": 50,
-    "regimeBreaks": 38
+    "ingredients": 102,
+    "withHistory": 102,
+    "pointOutliers": 953,
+    "regimeBreaks": 86
   },
   "items": [
     {
-      "key": "apple",
-      "n": 158,
+      "key": "acorn-squash",
+      "n": 1305,
       "pointOutliers": [
         {
-          "index": 19,
-          "date": "2023-10-25",
-          "valueCents": 3510,
-          "score": 10.117
+          "index": 279,
+          "date": "2006-08-30",
+          "valueCents": 1200,
+          "score": 6.745
         },
         {
-          "index": 68,
-          "date": "2024-10-02",
-          "valueCents": 3890,
-          "score": 5.733
+          "index": 333,
+          "date": "2007-09-12",
+          "valueCents": 1380,
+          "score": 4.721
+        },
+        {
+          "index": 390,
+          "date": "2008-10-15",
+          "valueCents": 2050,
+          "score": 6.745
+        },
+        {
+          "index": 401,
+          "date": "2008-12-31",
+          "valueCents": 1650,
+          "score": 5.188
+        },
+        {
+          "index": 1077,
+          "date": "2022-02-09",
+          "valueCents": 2765,
+          "score": 5.565
         }
       ],
       "changePoint": {
-        "index": 79,
-        "date": "2024-12-18",
-        "K": 3306,
+        "index": 862,
+        "date": "2017-11-15",
+        "K": 287070,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "apple",
+      "n": 1313,
+      "pointOutliers": [
+        {
+          "index": 99,
+          "date": "2003-03-19",
+          "valueCents": 1450,
+          "score": 5.059
+        },
+        {
+          "index": 160,
+          "date": "2004-05-19",
+          "valueCents": 1945,
+          "score": 6.745
+        },
+        {
+          "index": 170,
+          "date": "2004-07-28",
+          "valueCents": 1940,
+          "score": 4.721
+        },
+        {
+          "index": 279,
+          "date": "2006-08-30",
+          "valueCents": 2715,
+          "score": 4.341
+        },
+        {
+          "index": 478,
+          "date": "2010-06-23",
+          "valueCents": 2288,
+          "score": 10.117
+        },
+        {
+          "index": 482,
+          "date": "2010-07-21",
+          "valueCents": 2295,
+          "score": 4.946
+        },
+        {
+          "index": 574,
+          "date": "2012-04-25",
+          "valueCents": 2350,
+          "score": 5.396
+        },
+        {
+          "index": 591,
+          "date": "2012-08-22",
+          "valueCents": 2940,
+          "score": 5.292
+        },
+        {
+          "index": 998,
+          "date": "2020-06-24",
+          "valueCents": 2270,
+          "score": 4.384
+        },
+        {
+          "index": 999,
+          "date": "2020-07-01",
+          "valueCents": 2280,
+          "score": 4.047
+        },
+        {
+          "index": 1060,
+          "date": "2021-09-01",
+          "valueCents": 3200,
+          "score": 10.117
+        },
+        {
+          "index": 1061,
+          "date": "2021-09-08",
+          "valueCents": 3400,
+          "score": 16.862
+        },
+        {
+          "index": 1118,
+          "date": "2022-10-12",
+          "valueCents": 3213,
+          "score": 9.119
+        },
+        {
+          "index": 1152,
+          "date": "2023-06-07",
+          "valueCents": 3150,
+          "score": 6.745
+        },
+        {
+          "index": 1208,
+          "date": "2024-07-03",
+          "valueCents": 2975,
+          "score": 4.946
+        },
+        {
+          "index": 1209,
+          "date": "2024-07-10",
+          "valueCents": 3006,
+          "score": 11.916
+        }
+      ],
+      "changePoint": {
+        "index": 534,
+        "date": "2011-07-20",
+        "K": 372708,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "artichoke",
+      "n": 1307,
+      "pointOutliers": [
+        {
+          "index": 68,
+          "date": "2002-08-14",
+          "valueCents": 1760,
+          "score": 5.508
+        },
+        {
+          "index": 193,
+          "date": "2005-01-05",
+          "valueCents": 3738,
+          "score": 4.09
+        },
+        {
+          "index": 521,
+          "date": "2011-04-20",
+          "valueCents": 2980,
+          "score": 5.565
+        },
+        {
+          "index": 529,
+          "date": "2011-06-15",
+          "valueCents": 1920,
+          "score": 12.815
+        },
+        {
+          "index": 612,
+          "date": "2013-01-16",
+          "valueCents": 2030,
+          "score": 7.562
+        },
+        {
+          "index": 613,
+          "date": "2013-01-23",
+          "valueCents": 2000,
+          "score": 7.073
+        },
+        {
+          "index": 839,
+          "date": "2017-06-07",
+          "valueCents": 2650,
+          "score": 8.853
+        },
+        {
+          "index": 881,
+          "date": "2018-03-28",
+          "valueCents": 1620,
+          "score": 4.721
+        },
+        {
+          "index": 882,
+          "date": "2018-04-04",
+          "valueCents": 1730,
+          "score": 4.932
+        },
+        {
+          "index": 995,
+          "date": "2020-06-03",
+          "valueCents": 3080,
+          "score": 6.97
+        },
+        {
+          "index": 1195,
+          "date": "2024-05-08",
+          "valueCents": 4740,
+          "score": 6.61
+        },
+        {
+          "index": 1196,
+          "date": "2024-05-15",
+          "valueCents": 5080,
+          "score": 5.261
+        },
+        {
+          "index": 1221,
+          "date": "2024-11-06",
+          "valueCents": 4350,
+          "score": 6.49
+        },
+        {
+          "index": 1251,
+          "date": "2025-06-11",
+          "valueCents": 3190,
+          "score": 11.736
+        },
+        {
+          "index": 1252,
+          "date": "2025-06-18",
+          "valueCents": 2680,
+          "score": 4.101
+        },
+        {
+          "index": 1273,
+          "date": "2025-11-12",
+          "valueCents": 3306,
+          "score": 40.308
+        }
+      ],
+      "changePoint": {
+        "index": 704,
+        "date": "2014-11-05",
+        "K": 178361,
         "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "asparagus",
-      "n": 157,
+      "n": 1314,
       "pointOutliers": [
         {
-          "index": 9,
-          "date": "2023-08-16",
-          "valueCents": 4000,
-          "score": 4.047
+          "index": 241,
+          "date": "2005-11-30",
+          "valueCents": 1800,
+          "score": 8.768
         },
         {
-          "index": 136,
-          "date": "2026-01-28",
-          "valueCents": 3420,
-          "score": 5.471
+          "index": 301,
+          "date": "2007-01-24",
+          "valueCents": 3830,
+          "score": 4.011
+        },
+        {
+          "index": 413,
+          "date": "2009-03-18",
+          "valueCents": 2675,
+          "score": 4.384
+        },
+        {
+          "index": 419,
+          "date": "2009-04-29",
+          "valueCents": 3820,
+          "score": 5.762
+        },
+        {
+          "index": 457,
+          "date": "2010-01-20",
+          "valueCents": 2344,
+          "score": 4.216
+        },
+        {
+          "index": 601,
+          "date": "2012-10-24",
+          "valueCents": 2430,
+          "score": 4.553
+        },
+        {
+          "index": 915,
+          "date": "2018-11-14",
+          "valueCents": 1675,
+          "score": 7.1
         }
       ],
       "changePoint": {
-        "index": 111,
-        "date": "2025-08-06",
-        "K": 3087,
+        "index": 576,
+        "date": "2012-05-02",
+        "K": 281711,
         "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "avocado",
-      "n": 158,
+      "n": 1218,
       "pointOutliers": [
         {
-          "index": 148,
-          "date": "2026-04-15",
-          "valueCents": 4015,
-          "score": 4.834
+          "index": 60,
+          "date": "2002-08-14",
+          "valueCents": 1985,
+          "score": 6.45
         },
         {
-          "index": 149,
-          "date": "2026-04-22",
-          "valueCents": 4130,
-          "score": 7.419
+          "index": 103,
+          "date": "2003-06-11",
+          "valueCents": 5030,
+          "score": 4.759
+        },
+        {
+          "index": 124,
+          "date": "2003-11-05",
+          "valueCents": 2300,
+          "score": 6.726
+        },
+        {
+          "index": 228,
+          "date": "2005-11-02",
+          "valueCents": 2083,
+          "score": 7.63
+        },
+        {
+          "index": 283,
+          "date": "2006-11-22",
+          "valueCents": 2230,
+          "score": 4.343
+        },
+        {
+          "index": 376,
+          "date": "2008-09-03",
+          "valueCents": 4269,
+          "score": 5.689
+        },
+        {
+          "index": 469,
+          "date": "2010-07-21",
+          "valueCents": 3300,
+          "score": 7.774
+        },
+        {
+          "index": 470,
+          "date": "2010-07-28",
+          "valueCents": 3140,
+          "score": 8.094
+        },
+        {
+          "index": 492,
+          "date": "2010-12-29",
+          "valueCents": 2000,
+          "score": 5.492
+        },
+        {
+          "index": 631,
+          "date": "2013-09-30",
+          "valueCents": 4000,
+          "score": 7.88
+        },
+        {
+          "index": 637,
+          "date": "2013-11-27",
+          "valueCents": 1770,
+          "score": 7.599
+        },
+        {
+          "index": 659,
+          "date": "2014-04-30",
+          "valueCents": 4220,
+          "score": 6.022
+        },
+        {
+          "index": 689,
+          "date": "2014-11-26",
+          "valueCents": 1760,
+          "score": 6.93
+        },
+        {
+          "index": 834,
+          "date": "2017-09-06",
+          "valueCents": 2825,
+          "score": 4.322
+        },
+        {
+          "index": 948,
+          "date": "2019-11-13",
+          "valueCents": 2338,
+          "score": 4.232
+        },
+        {
+          "index": 1074,
+          "date": "2022-04-13",
+          "valueCents": 6395,
+          "score": 4.536
+        },
+        {
+          "index": 1093,
+          "date": "2022-08-24",
+          "valueCents": 3480,
+          "score": 4.609
+        },
+        {
+          "index": 1123,
+          "date": "2023-03-22",
+          "valueCents": 3630,
+          "score": 4.047
+        },
+        {
+          "index": 1125,
+          "date": "2023-04-05",
+          "valueCents": 3280,
+          "score": 4.047
+        },
+        {
+          "index": 1148,
+          "date": "2023-09-13",
+          "valueCents": 5210,
+          "score": 4.43
         }
       ],
       "changePoint": {
-        "index": 114,
-        "date": "2025-08-20",
-        "K": 4358,
+        "index": 764,
+        "date": "2016-05-04",
+        "K": 189176,
         "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "banana",
-      "n": 158,
+      "n": 1313,
       "pointOutliers": [
         {
-          "index": 9,
-          "date": "2023-08-16",
-          "valueCents": 2230,
-          "score": 4.384
+          "index": 76,
+          "date": "2002-10-09",
+          "valueCents": 1555,
+          "score": 5.155
+        },
+        {
+          "index": 143,
+          "date": "2004-01-21",
+          "valueCents": 950,
+          "score": 13.49
+        },
+        {
+          "index": 184,
+          "date": "2004-11-03",
+          "valueCents": 950,
+          "score": 7.757
+        },
+        {
+          "index": 185,
+          "date": "2004-11-10",
+          "valueCents": 1000,
+          "score": 4.946
+        },
+        {
+          "index": 447,
+          "date": "2009-11-18",
+          "valueCents": 1475,
+          "score": 7.7
+        },
+        {
+          "index": 541,
+          "date": "2011-09-07",
+          "valueCents": 1425,
+          "score": 5.188
+        },
+        {
+          "index": 594,
+          "date": "2012-09-12",
+          "valueCents": 1488,
+          "score": 7.026
+        },
+        {
+          "index": 600,
+          "date": "2012-10-24",
+          "valueCents": 1400,
+          "score": 7.16
+        },
+        {
+          "index": 671,
+          "date": "2014-03-19",
+          "valueCents": 1700,
+          "score": 8.431
+        },
+        {
+          "index": 714,
+          "date": "2015-01-14",
+          "valueCents": 1575,
+          "score": 4.272
         }
       ],
       "changePoint": {
-        "index": 40,
-        "date": "2024-03-20",
-        "K": 3588,
+        "index": 500,
+        "date": "2010-11-24",
+        "K": 391952,
         "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "basil",
-      "n": 127,
+      "n": 130,
+      "pointOutliers": [],
+      "changePoint": {
+        "index": 44,
+        "date": "2024-11-13",
+        "K": 3825,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "beef-tenderloin",
+      "n": 1309,
       "pointOutliers": [
         {
-          "index": 108,
-          "date": "2026-02-11",
-          "valueCents": 1780,
-          "score": 4.28
+          "index": 163,
+          "date": "2004-06-02",
+          "valueCents": 912,
+          "score": 6.07
+        },
+        {
+          "index": 590,
+          "date": "2012-08-08",
+          "valueCents": 865,
+          "score": 8.937
+        },
+        {
+          "index": 631,
+          "date": "2013-06-05",
+          "valueCents": 975,
+          "score": 4.452
+        },
+        {
+          "index": 639,
+          "date": "2013-07-31",
+          "valueCents": 935,
+          "score": 7.757
+        },
+        {
+          "index": 755,
+          "date": "2015-11-04",
+          "valueCents": 1054,
+          "score": 5.059
+        },
+        {
+          "index": 843,
+          "date": "2017-07-10",
+          "valueCents": 910,
+          "score": 6.97
+        },
+        {
+          "index": 849,
+          "date": "2017-08-30",
+          "valueCents": 812,
+          "score": 7.195
+        },
+        {
+          "index": 850,
+          "date": "2017-09-05",
+          "valueCents": 805,
+          "score": 7.082
+        },
+        {
+          "index": 881,
+          "date": "2018-04-18",
+          "valueCents": 840,
+          "score": 4.519
+        },
+        {
+          "index": 920,
+          "date": "2019-01-22",
+          "valueCents": 945,
+          "score": 4.721
+        },
+        {
+          "index": 1009,
+          "date": "2020-10-07",
+          "valueCents": 884,
+          "score": 27.519
+        },
+        {
+          "index": 1031,
+          "date": "2021-03-10",
+          "valueCents": 791,
+          "score": 15.759
+        },
+        {
+          "index": 1045,
+          "date": "2021-06-15",
+          "valueCents": 1171,
+          "score": 12.096
+        },
+        {
+          "index": 1066,
+          "date": "2021-11-10",
+          "valueCents": 1293,
+          "score": 7.195
+        },
+        {
+          "index": 1069,
+          "date": "2021-12-01",
+          "valueCents": 863,
+          "score": 5.508
+        },
+        {
+          "index": 1153,
+          "date": "2023-07-12",
+          "valueCents": 1083,
+          "score": 6.528
+        },
+        {
+          "index": 1267,
+          "date": "2025-09-17",
+          "valueCents": 1406,
+          "score": 4.527
         }
       ],
       "changePoint": {
-        "index": 103,
-        "date": "2026-01-07",
-        "K": 2184,
+        "index": 594,
+        "date": "2012-09-04",
+        "K": 339331,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "beet",
+      "n": 1314,
+      "pointOutliers": [
+        {
+          "index": 83,
+          "date": "2002-11-20",
+          "valueCents": 785,
+          "score": 5.621
+        },
+        {
+          "index": 565,
+          "date": "2012-02-15",
+          "valueCents": 950,
+          "score": 5.227
+        },
+        {
+          "index": 566,
+          "date": "2012-02-22",
+          "valueCents": 1000,
+          "score": 6.745
+        },
+        {
+          "index": 822,
+          "date": "2017-02-01",
+          "valueCents": 1325,
+          "score": 4.65
+        },
+        {
+          "index": 862,
+          "date": "2017-11-08",
+          "valueCents": 1513,
+          "score": 5.621
+        },
+        {
+          "index": 921,
+          "date": "2018-12-26",
+          "valueCents": 1450,
+          "score": 9.443
+        },
+        {
+          "index": 1223,
+          "date": "2024-10-09",
+          "valueCents": 2768,
+          "score": 5.18
+        },
+        {
+          "index": 1225,
+          "date": "2024-10-23",
+          "valueCents": 2260,
+          "score": 7.015
+        },
+        {
+          "index": 1229,
+          "date": "2024-11-20",
+          "valueCents": 2465,
+          "score": 6.273
+        },
+        {
+          "index": 1230,
+          "date": "2024-11-27",
+          "valueCents": 2450,
+          "score": 12.815
+        },
+        {
+          "index": 1231,
+          "date": "2024-12-04",
+          "valueCents": 2450,
+          "score": 12.815
+        },
+        {
+          "index": 1311,
+          "date": "2026-06-17",
+          "valueCents": 2200,
+          "score": 8.768
+        }
+      ],
+      "changePoint": {
+        "index": 645,
+        "date": "2013-08-28",
+        "K": 407529,
         "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "bell-pepper",
-      "n": 158,
-      "pointOutliers": [],
+      "n": 1314,
+      "pointOutliers": [
+        {
+          "index": 39,
+          "date": "2002-01-16",
+          "valueCents": 1330,
+          "score": 7.13
+        },
+        {
+          "index": 57,
+          "date": "2002-05-22",
+          "valueCents": 2515,
+          "score": 4.806
+        },
+        {
+          "index": 174,
+          "date": "2004-08-18",
+          "valueCents": 1550,
+          "score": 4.818
+        },
+        {
+          "index": 315,
+          "date": "2007-05-02",
+          "valueCents": 2030,
+          "score": 4.967
+        },
+        {
+          "index": 643,
+          "date": "2013-08-14",
+          "valueCents": 2150,
+          "score": 4.721
+        },
+        {
+          "index": 674,
+          "date": "2014-04-02",
+          "valueCents": 1945,
+          "score": 5.508
+        },
+        {
+          "index": 675,
+          "date": "2014-04-09",
+          "valueCents": 1550,
+          "score": 5.059
+        },
+        {
+          "index": 806,
+          "date": "2016-10-12",
+          "valueCents": 1431,
+          "score": 4.303
+        },
+        {
+          "index": 882,
+          "date": "2018-03-28",
+          "valueCents": 1610,
+          "score": 4.047
+        },
+        {
+          "index": 910,
+          "date": "2018-10-10",
+          "valueCents": 1650,
+          "score": 7.708
+        },
+        {
+          "index": 975,
+          "date": "2020-01-08",
+          "valueCents": 2320,
+          "score": 12.366
+        },
+        {
+          "index": 976,
+          "date": "2020-01-15",
+          "valueCents": 2490,
+          "score": 26.305
+        },
+        {
+          "index": 1057,
+          "date": "2021-08-04",
+          "valueCents": 2280,
+          "score": 4.047
+        },
+        {
+          "index": 1114,
+          "date": "2022-09-07",
+          "valueCents": 3550,
+          "score": 5.902
+        },
+        {
+          "index": 1249,
+          "date": "2025-04-09",
+          "valueCents": 2720,
+          "score": 4.384
+        },
+        {
+          "index": 1275,
+          "date": "2025-10-08",
+          "valueCents": 1650,
+          "score": 6.745
+        },
+        {
+          "index": 1286,
+          "date": "2025-12-23",
+          "valueCents": 3050,
+          "score": 4.548
+        }
+      ],
       "changePoint": {
-        "index": 137,
-        "date": "2026-01-28",
-        "K": 1957,
-        "pApprox": 0.006,
+        "index": 888,
+        "date": "2018-05-09",
+        "K": 238561,
+        "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "blueberry",
-      "n": 158,
+      "n": 1307,
       "pointOutliers": [
         {
-          "index": 0,
-          "date": "2023-06-14",
-          "valueCents": 2785,
-          "score": 5.024
+          "index": 235,
+          "date": "2005-10-20",
+          "valueCents": 4250,
+          "score": 4.123
         },
         {
-          "index": 18,
+          "index": 465,
+          "date": "2010-05-05",
+          "valueCents": 2865,
+          "score": 4.284
+        },
+        {
+          "index": 515,
+          "date": "2011-04-20",
+          "valueCents": 2300,
+          "score": 5.86
+        },
+        {
+          "index": 564,
+          "date": "2012-03-28",
+          "valueCents": 1735,
+          "score": 4.092
+        },
+        {
+          "index": 590,
+          "date": "2012-09-26",
+          "valueCents": 2265,
+          "score": 4.519
+        },
+        {
+          "index": 644,
+          "date": "2013-10-23",
+          "valueCents": 5063,
+          "score": 4.467
+        },
+        {
+          "index": 645,
+          "date": "2013-10-30",
+          "valueCents": 3930,
+          "score": 6.871
+        },
+        {
+          "index": 781,
+          "date": "2016-06-08",
+          "valueCents": 1350,
+          "score": 4.625
+        },
+        {
+          "index": 1165,
           "date": "2023-10-18",
           "valueCents": 6620,
           "score": 5.107
         }
       ],
       "changePoint": {
-        "index": 115,
-        "date": "2025-08-27",
-        "K": 2685,
+        "index": 735,
+        "date": "2015-07-22",
+        "K": 112720,
         "pApprox": 0,
         "significant": true
       }
     },
     {
-      "key": "broccoli",
-      "n": 157,
+      "key": "bok-choy",
+      "n": 129,
       "pointOutliers": [],
       "changePoint": {
-        "index": 116,
-        "date": "2025-09-10",
-        "K": 3210,
+        "index": 83,
+        "date": "2025-08-20",
+        "K": 1469,
+        "pApprox": 0.005,
+        "significant": true
+      }
+    },
+    {
+      "key": "broccoli",
+      "n": 1313,
+      "pointOutliers": [
+        {
+          "index": 25,
+          "date": "2001-10-10",
+          "valueCents": 1206,
+          "score": 13.861
+        },
+        {
+          "index": 65,
+          "date": "2002-07-17",
+          "valueCents": 1095,
+          "score": 4.592
+        },
+        {
+          "index": 72,
+          "date": "2002-09-04",
+          "valueCents": 1725,
+          "score": 5.936
+        },
+        {
+          "index": 82,
+          "date": "2002-11-13",
+          "valueCents": 1581,
+          "score": 5.328
+        },
+        {
+          "index": 90,
+          "date": "2003-01-08",
+          "valueCents": 1160,
+          "score": 4.415
+        },
+        {
+          "index": 160,
+          "date": "2004-05-12",
+          "valueCents": 1160,
+          "score": 4.159
+        },
+        {
+          "index": 246,
+          "date": "2006-01-04",
+          "valueCents": 956,
+          "score": 4.54
+        },
+        {
+          "index": 333,
+          "date": "2007-09-05",
+          "valueCents": 1250,
+          "score": 4.192
+        },
+        {
+          "index": 507,
+          "date": "2011-01-05",
+          "valueCents": 1367,
+          "score": 7.324
+        },
+        {
+          "index": 681,
+          "date": "2014-05-21",
+          "valueCents": 1880,
+          "score": 4.159
+        },
+        {
+          "index": 1026,
+          "date": "2020-12-30",
+          "valueCents": 2500,
+          "score": 4.159
+        },
+        {
+          "index": 1027,
+          "date": "2021-01-06",
+          "valueCents": 2450,
+          "score": 6.745
+        },
+        {
+          "index": 1037,
+          "date": "2021-03-17",
+          "valueCents": 2500,
+          "score": 5.059
+        },
+        {
+          "index": 1062,
+          "date": "2021-09-08",
+          "valueCents": 1763,
+          "score": 8.212
+        },
+        {
+          "index": 1128,
+          "date": "2022-12-14",
+          "valueCents": 4970,
+          "score": 4.3
+        },
+        {
+          "index": 1276,
+          "date": "2025-10-15",
+          "valueCents": 5275,
+          "score": 4.162
+        },
+        {
+          "index": 1286,
+          "date": "2025-12-31",
+          "valueCents": 3875,
+          "score": 4.721
+        }
+      ],
+      "changePoint": {
+        "index": 900,
+        "date": "2018-08-01",
+        "K": 297607,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "brussels-sprouts",
+      "n": 1256,
+      "pointOutliers": [
+        {
+          "index": 506,
+          "date": "2011-05-04",
+          "valueCents": 4420,
+          "score": 5.354
+        },
+        {
+          "index": 532,
+          "date": "2011-11-02",
+          "valueCents": 3275,
+          "score": 4.497
+        },
+        {
+          "index": 997,
+          "date": "2020-11-10",
+          "valueCents": 3200,
+          "score": 4.047
+        },
+        {
+          "index": 1142,
+          "date": "2023-08-23",
+          "valueCents": 6563,
+          "score": 6.332
+        }
+      ],
+      "changePoint": {
+        "index": 482,
+        "date": "2010-11-17",
+        "K": 268859,
         "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "butter",
-      "n": 157,
-      "pointOutliers": [],
+      "n": 743,
+      "pointOutliers": [
+        {
+          "index": 186,
+          "date": "2015-10-24",
+          "valueCents": 264,
+          "score": 10.117
+        }
+      ],
       "changePoint": {
-        "index": 87,
-        "date": "2025-02-08",
-        "K": 5799,
+        "index": 510,
+        "date": "2022-01-08",
+        "K": 81262,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "butter-lettuce",
+      "n": 1309,
+      "pointOutliers": [
+        {
+          "index": 43,
+          "date": "2002-02-20",
+          "valueCents": 2613,
+          "score": 5.163
+        },
+        {
+          "index": 48,
+          "date": "2002-03-27",
+          "valueCents": 1270,
+          "score": 5.396
+        },
+        {
+          "index": 72,
+          "date": "2002-09-11",
+          "valueCents": 1190,
+          "score": 5.396
+        },
+        {
+          "index": 83,
+          "date": "2002-11-27",
+          "valueCents": 1255,
+          "score": 6.132
+        },
+        {
+          "index": 84,
+          "date": "2002-12-04",
+          "valueCents": 1381,
+          "score": 5.72
+        },
+        {
+          "index": 175,
+          "date": "2004-09-01",
+          "valueCents": 1210,
+          "score": 4.047
+        },
+        {
+          "index": 223,
+          "date": "2005-08-03",
+          "valueCents": 1275,
+          "score": 6.745
+        },
+        {
+          "index": 224,
+          "date": "2005-08-10",
+          "valueCents": 1300,
+          "score": 10.117
+        },
+        {
+          "index": 260,
+          "date": "2006-04-19",
+          "valueCents": 1510,
+          "score": 4.751
+        },
+        {
+          "index": 293,
+          "date": "2006-12-06",
+          "valueCents": 1443,
+          "score": 5.733
+        },
+        {
+          "index": 471,
+          "date": "2010-05-05",
+          "valueCents": 1555,
+          "score": 7.082
+        },
+        {
+          "index": 551,
+          "date": "2011-11-16",
+          "valueCents": 1538,
+          "score": 5.126
+        },
+        {
+          "index": 575,
+          "date": "2012-05-02",
+          "valueCents": 1570,
+          "score": 7.419
+        },
+        {
+          "index": 597,
+          "date": "2012-10-03",
+          "valueCents": 1555,
+          "score": 13.49
+        },
+        {
+          "index": 598,
+          "date": "2012-10-10",
+          "valueCents": 1563,
+          "score": 6.947
+        },
+        {
+          "index": 628,
+          "date": "2013-05-08",
+          "valueCents": 1695,
+          "score": 6.07
+        },
+        {
+          "index": 678,
+          "date": "2014-05-07",
+          "valueCents": 1845,
+          "score": 6.461
+        },
+        {
+          "index": 783,
+          "date": "2016-05-11",
+          "valueCents": 1825,
+          "score": 4.384
+        },
+        {
+          "index": 844,
+          "date": "2017-07-12",
+          "valueCents": 1605,
+          "score": 6.07
+        },
+        {
+          "index": 1016,
+          "date": "2020-10-28",
+          "valueCents": 2360,
+          "score": 4.047
+        },
+        {
+          "index": 1027,
+          "date": "2021-01-13",
+          "valueCents": 2025,
+          "score": 4.336
+        },
+        {
+          "index": 1217,
+          "date": "2024-10-02",
+          "valueCents": 2800,
+          "score": 14.614
+        },
+        {
+          "index": 1218,
+          "date": "2024-10-09",
+          "valueCents": 2800,
+          "score": 8.768
+        },
+        {
+          "index": 1304,
+          "date": "2026-06-03",
+          "valueCents": 2888,
+          "score": 5.112
+        }
+      ],
+      "changePoint": {
+        "index": 611,
+        "date": "2013-01-09",
+        "K": 361925,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "butternut-squash",
+      "n": 1313,
+      "pointOutliers": [
+        {
+          "index": 71,
+          "date": "2002-09-04",
+          "valueCents": 770,
+          "score": 4.047
+        },
+        {
+          "index": 182,
+          "date": "2004-10-20",
+          "valueCents": 1000,
+          "score": 6.07
+        },
+        {
+          "index": 245,
+          "date": "2006-01-04",
+          "valueCents": 888,
+          "score": 4.991
+        },
+        {
+          "index": 309,
+          "date": "2007-03-28",
+          "valueCents": 1913,
+          "score": 4.081
+        },
+        {
+          "index": 381,
+          "date": "2008-08-13",
+          "valueCents": 2170,
+          "score": 4.787
+        },
+        {
+          "index": 397,
+          "date": "2008-12-03",
+          "valueCents": 1575,
+          "score": 4.216
+        },
+        {
+          "index": 448,
+          "date": "2009-11-25",
+          "valueCents": 1518,
+          "score": 6.07
+        },
+        {
+          "index": 494,
+          "date": "2010-10-13",
+          "valueCents": 1088,
+          "score": 28.598
+        },
+        {
+          "index": 536,
+          "date": "2011-08-03",
+          "valueCents": 1780,
+          "score": 6.346
+        },
+        {
+          "index": 553,
+          "date": "2011-11-30",
+          "valueCents": 1500,
+          "score": 4.946
+        },
+        {
+          "index": 705,
+          "date": "2014-11-12",
+          "valueCents": 1500,
+          "score": 4.047
+        },
+        {
+          "index": 744,
+          "date": "2015-08-12",
+          "valueCents": 1590,
+          "score": 6.07
+        },
+        {
+          "index": 759,
+          "date": "2015-11-25",
+          "valueCents": 1475,
+          "score": 4.384
+        },
+        {
+          "index": 801,
+          "date": "2016-09-14",
+          "valueCents": 1920,
+          "score": 16.188
+        },
+        {
+          "index": 927,
+          "date": "2019-02-13",
+          "valueCents": 1525,
+          "score": 5.621
+        },
+        {
+          "index": 1237,
+          "date": "2025-01-22",
+          "valueCents": 13656,
+          "score": 37.454
+        },
+        {
+          "index": 1238,
+          "date": "2025-01-29",
+          "valueCents": 8440,
+          "score": 19.864
+        }
+      ],
+      "changePoint": {
+        "index": 841,
+        "date": "2017-06-21",
+        "K": 288693,
         "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "button-mushroom",
-      "n": 158,
+      "n": 1314,
       "pointOutliers": [],
       "changePoint": {
-        "index": 0,
-        "date": "2023-06-14",
-        "K": 0,
-        "pApprox": 1,
-        "significant": false
+        "index": 791,
+        "date": "2016-06-29",
+        "K": 413380,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "cabbage",
+      "n": 1314,
+      "pointOutliers": [
+        {
+          "index": 139,
+          "date": "2003-12-17",
+          "valueCents": 1153,
+          "score": 6.61
+        },
+        {
+          "index": 188,
+          "date": "2004-11-24",
+          "valueCents": 925,
+          "score": 5.396
+        },
+        {
+          "index": 238,
+          "date": "2005-11-09",
+          "valueCents": 1000,
+          "score": 5.203
+        },
+        {
+          "index": 251,
+          "date": "2006-02-08",
+          "valueCents": 950,
+          "score": 18.211
+        },
+        {
+          "index": 287,
+          "date": "2006-10-18",
+          "valueCents": 1485,
+          "score": 5.546
+        },
+        {
+          "index": 398,
+          "date": "2008-12-03",
+          "valueCents": 850,
+          "score": 5.059
+        },
+        {
+          "index": 458,
+          "date": "2010-01-27",
+          "valueCents": 1470,
+          "score": 8.094
+        },
+        {
+          "index": 627,
+          "date": "2013-04-24",
+          "valueCents": 1663,
+          "score": 4.114
+        },
+        {
+          "index": 638,
+          "date": "2013-07-10",
+          "valueCents": 1113,
+          "score": 4.047
+        },
+        {
+          "index": 670,
+          "date": "2014-03-05",
+          "valueCents": 1390,
+          "score": 34.399
+        },
+        {
+          "index": 740,
+          "date": "2015-07-08",
+          "valueCents": 1250,
+          "score": 5.396
+        },
+        {
+          "index": 813,
+          "date": "2016-11-30",
+          "valueCents": 1775,
+          "score": 12.523
+        },
+        {
+          "index": 938,
+          "date": "2019-04-24",
+          "valueCents": 2900,
+          "score": 4.047
+        },
+        {
+          "index": 939,
+          "date": "2019-05-01",
+          "valueCents": 3030,
+          "score": 5.261
+        },
+        {
+          "index": 968,
+          "date": "2019-11-20",
+          "valueCents": 1720,
+          "score": 4.363
+        },
+        {
+          "index": 1212,
+          "date": "2024-07-24",
+          "valueCents": 2845,
+          "score": 7.564
+        },
+        {
+          "index": 1218,
+          "date": "2024-09-04",
+          "valueCents": 2925,
+          "score": 8.6
+        },
+        {
+          "index": 1235,
+          "date": "2024-12-31",
+          "valueCents": 3425,
+          "score": 5.059
+        }
+      ],
+      "changePoint": {
+        "index": 596,
+        "date": "2012-09-19",
+        "K": 396952,
+        "pApprox": 0,
+        "significant": true
       }
     },
     {
       "key": "cantaloupe",
-      "n": 158,
+      "n": 1313,
       "pointOutliers": [
         {
-          "index": 155,
-          "date": "2026-06-03",
-          "valueCents": 19025,
-          "score": 70.274
+          "index": 25,
+          "date": "2001-10-17",
+          "valueCents": 1100,
+          "score": 4.047
         },
         {
-          "index": 156,
-          "date": "2026-06-10",
-          "valueCents": 12335,
-          "score": 25.061
+          "index": 79,
+          "date": "2002-10-30",
+          "valueCents": 1375,
+          "score": 5.013
+        },
+        {
+          "index": 276,
+          "date": "2006-08-09",
+          "valueCents": 4890,
+          "score": 21.369
+        },
+        {
+          "index": 435,
+          "date": "2009-08-26",
+          "valueCents": 2080,
+          "score": 4.946
+        },
+        {
+          "index": 684,
+          "date": "2014-06-18",
+          "valueCents": 2465,
+          "score": 8.6
+        },
+        {
+          "index": 762,
+          "date": "2015-12-16",
+          "valueCents": 2860,
+          "score": 5.985
+        },
+        {
+          "index": 767,
+          "date": "2016-01-20",
+          "valueCents": 650,
+          "score": 7.504
+        },
+        {
+          "index": 1215,
+          "date": "2024-08-21",
+          "valueCents": 1680,
+          "score": 4.721
+        },
+        {
+          "index": 1251,
+          "date": "2025-04-30",
+          "valueCents": 1230,
+          "score": 5.974
         }
       ],
       "changePoint": {
-        "index": 108,
-        "date": "2025-07-09",
-        "K": 1601,
-        "pApprox": 0.042,
+        "index": 908,
+        "date": "2018-10-03",
+        "K": 244969,
+        "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "carrot",
-      "n": 158,
+      "n": 1312,
       "pointOutliers": [
         {
-          "index": 18,
-          "date": "2023-10-18",
-          "valueCents": 2900,
-          "score": 4.778
+          "index": 116,
+          "date": "2003-07-09",
+          "valueCents": 1526,
+          "score": 14.164
+        },
+        {
+          "index": 117,
+          "date": "2003-07-16",
+          "valueCents": 1533,
+          "score": 11.804
+        },
+        {
+          "index": 131,
+          "date": "2003-10-22",
+          "valueCents": 1091,
+          "score": 6.295
+        },
+        {
+          "index": 150,
+          "date": "2004-03-03",
+          "valueCents": 1175,
+          "score": 8.431
+        },
+        {
+          "index": 547,
+          "date": "2011-10-12",
+          "valueCents": 1700,
+          "score": 4.047
+        },
+        {
+          "index": 640,
+          "date": "2013-07-24",
+          "valueCents": 2210,
+          "score": 5.028
+        },
+        {
+          "index": 712,
+          "date": "2014-12-24",
+          "valueCents": 2030,
+          "score": 9.443
         }
       ],
       "changePoint": {
-        "index": 94,
-        "date": "2025-04-02",
-        "K": 3710,
+        "index": 506,
+        "date": "2010-12-29",
+        "K": 370764,
         "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "cauliflower",
-      "n": 157,
+      "n": 1314,
       "pointOutliers": [
         {
-          "index": 144,
-          "date": "2026-03-25",
-          "valueCents": 4700,
-          "score": 17.312
+          "index": 72,
+          "date": "2002-09-04",
+          "valueCents": 1275,
+          "score": 4.173
+        },
+        {
+          "index": 108,
+          "date": "2003-05-14",
+          "valueCents": 1790,
+          "score": 5.427
+        },
+        {
+          "index": 139,
+          "date": "2003-12-17",
+          "valueCents": 1970,
+          "score": 15.977
+        },
+        {
+          "index": 159,
+          "date": "2004-05-05",
+          "valueCents": 870,
+          "score": 5.396
+        },
+        {
+          "index": 160,
+          "date": "2004-05-12",
+          "valueCents": 1268,
+          "score": 5.654
+        },
+        {
+          "index": 178,
+          "date": "2004-09-15",
+          "valueCents": 1410,
+          "score": 7.749
+        },
+        {
+          "index": 217,
+          "date": "2005-06-15",
+          "valueCents": 1520,
+          "score": 7.548
+        },
+        {
+          "index": 261,
+          "date": "2006-04-19",
+          "valueCents": 2065,
+          "score": 4.029
+        },
+        {
+          "index": 336,
+          "date": "2007-09-26",
+          "valueCents": 1153,
+          "score": 5.177
+        },
+        {
+          "index": 350,
+          "date": "2008-01-02",
+          "valueCents": 1688,
+          "score": 4.529
+        },
+        {
+          "index": 351,
+          "date": "2008-01-09",
+          "valueCents": 1740,
+          "score": 6.07
+        },
+        {
+          "index": 373,
+          "date": "2008-06-11",
+          "valueCents": 1650,
+          "score": 6.745
+        },
+        {
+          "index": 374,
+          "date": "2008-06-18",
+          "valueCents": 1655,
+          "score": 17.424
+        },
+        {
+          "index": 378,
+          "date": "2008-07-16",
+          "valueCents": 1540,
+          "score": 4.497
+        },
+        {
+          "index": 381,
+          "date": "2008-08-06",
+          "valueCents": 1588,
+          "score": 11.871
+        },
+        {
+          "index": 399,
+          "date": "2008-12-10",
+          "valueCents": 1345,
+          "score": 6.295
+        },
+        {
+          "index": 433,
+          "date": "2009-08-05",
+          "valueCents": 1710,
+          "score": 4.121
+        },
+        {
+          "index": 470,
+          "date": "2010-04-21",
+          "valueCents": 1690,
+          "score": 4.806
+        },
+        {
+          "index": 553,
+          "date": "2011-11-23",
+          "valueCents": 1715,
+          "score": 11.466
+        },
+        {
+          "index": 614,
+          "date": "2013-01-23",
+          "valueCents": 1935,
+          "score": 17.424
+        },
+        {
+          "index": 615,
+          "date": "2013-01-30",
+          "valueCents": 1755,
+          "score": 7.307
+        },
+        {
+          "index": 772,
+          "date": "2016-02-17",
+          "valueCents": 1731,
+          "score": 10.168
+        },
+        {
+          "index": 773,
+          "date": "2016-02-24",
+          "valueCents": 1428,
+          "score": 5.059
+        },
+        {
+          "index": 777,
+          "date": "2016-03-23",
+          "valueCents": 1688,
+          "score": 9.443
+        },
+        {
+          "index": 800,
+          "date": "2016-08-31",
+          "valueCents": 1150,
+          "score": 16.862
+        },
+        {
+          "index": 837,
+          "date": "2017-05-17",
+          "valueCents": 2450,
+          "score": 21.584
+        },
+        {
+          "index": 889,
+          "date": "2018-05-16",
+          "valueCents": 2250,
+          "score": 4.047
+        },
+        {
+          "index": 986,
+          "date": "2020-03-25",
+          "valueCents": 2460,
+          "score": 4.047
+        },
+        {
+          "index": 1128,
+          "date": "2022-12-14",
+          "valueCents": 3695,
+          "score": 4.825
+        },
+        {
+          "index": 1137,
+          "date": "2023-02-15",
+          "valueCents": 3575,
+          "score": 11.129
+        },
+        {
+          "index": 1206,
+          "date": "2024-06-12",
+          "valueCents": 2730,
+          "score": 8.094
         }
       ],
       "changePoint": {
-        "index": 49,
-        "date": "2024-05-22",
-        "K": 4073,
+        "index": 825,
+        "date": "2017-02-22",
+        "K": 345302,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "celery",
+      "n": 1314,
+      "pointOutliers": [
+        {
+          "index": 20,
+          "date": "2001-09-05",
+          "valueCents": 788,
+          "score": 8.499
+        },
+        {
+          "index": 28,
+          "date": "2001-10-31",
+          "valueCents": 675,
+          "score": 4.047
+        },
+        {
+          "index": 117,
+          "date": "2003-07-16",
+          "valueCents": 1125,
+          "score": 5.48
+        },
+        {
+          "index": 234,
+          "date": "2005-10-12",
+          "valueCents": 788,
+          "score": 4.766
+        },
+        {
+          "index": 249,
+          "date": "2006-01-25",
+          "valueCents": 755,
+          "score": 4.272
+        },
+        {
+          "index": 552,
+          "date": "2011-11-16",
+          "valueCents": 1176,
+          "score": 4.022
+        },
+        {
+          "index": 792,
+          "date": "2016-07-06",
+          "valueCents": 1400,
+          "score": 7.869
+        },
+        {
+          "index": 827,
+          "date": "2017-03-08",
+          "valueCents": 1140,
+          "score": 8.094
+        },
+        {
+          "index": 883,
+          "date": "2018-04-04",
+          "valueCents": 1435,
+          "score": 5.586
+        },
+        {
+          "index": 919,
+          "date": "2018-12-12",
+          "valueCents": 3060,
+          "score": 5.471
+        },
+        {
+          "index": 920,
+          "date": "2018-12-19",
+          "valueCents": 3330,
+          "score": 9.022
+        },
+        {
+          "index": 923,
+          "date": "2019-01-09",
+          "valueCents": 2223,
+          "score": 4.393
+        },
+        {
+          "index": 1080,
+          "date": "2022-01-12",
+          "valueCents": 2010,
+          "score": 4.186
+        },
+        {
+          "index": 1115,
+          "date": "2022-09-14",
+          "valueCents": 1670,
+          "score": 4.721
+        },
+        {
+          "index": 1116,
+          "date": "2022-09-21",
+          "valueCents": 1650,
+          "score": 6.07
+        },
+        {
+          "index": 1217,
+          "date": "2024-08-28",
+          "valueCents": 1900,
+          "score": 6.745
+        }
+      ],
+      "changePoint": {
+        "index": 585,
+        "date": "2012-07-03",
+        "K": 262253,
         "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "cheddar-cheese",
-      "n": 157,
-      "pointOutliers": [],
+      "n": 743,
+      "pointOutliers": [
+        {
+          "index": 742,
+          "date": "2026-06-20",
+          "valueCents": 162,
+          "score": 4.721
+        }
+      ],
       "changePoint": {
-        "index": 129,
-        "date": "2025-11-29",
-        "K": 2675,
+        "index": 378,
+        "date": "2019-06-29",
+        "K": 52984,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "cherry-tomato",
+      "n": 1313,
+      "pointOutliers": [
+        {
+          "index": 12,
+          "date": "2001-07-18",
+          "valueCents": 995,
+          "score": 4.599
+        },
+        {
+          "index": 30,
+          "date": "2001-11-21",
+          "valueCents": 1563,
+          "score": 5.007
+        },
+        {
+          "index": 54,
+          "date": "2002-05-08",
+          "valueCents": 810,
+          "score": 4.047
+        },
+        {
+          "index": 223,
+          "date": "2005-08-03",
+          "valueCents": 1950,
+          "score": 4.721
+        },
+        {
+          "index": 272,
+          "date": "2006-07-12",
+          "valueCents": 1450,
+          "score": 6.07
+        },
+        {
+          "index": 338,
+          "date": "2007-10-17",
+          "valueCents": 2285,
+          "score": 9.038
+        },
+        {
+          "index": 437,
+          "date": "2009-09-09",
+          "valueCents": 1625,
+          "score": 5.059
+        },
+        {
+          "index": 438,
+          "date": "2009-09-16",
+          "valueCents": 1620,
+          "score": 6.745
+        },
+        {
+          "index": 495,
+          "date": "2010-10-20",
+          "valueCents": 1800,
+          "score": 4.721
+        },
+        {
+          "index": 534,
+          "date": "2011-07-20",
+          "valueCents": 1575,
+          "score": 5.059
+        },
+        {
+          "index": 535,
+          "date": "2011-07-27",
+          "valueCents": 1595,
+          "score": 8.768
+        },
+        {
+          "index": 561,
+          "date": "2012-01-25",
+          "valueCents": 2050,
+          "score": 9.743
+        },
+        {
+          "index": 634,
+          "date": "2013-06-19",
+          "valueCents": 1950,
+          "score": 5.059
+        },
+        {
+          "index": 767,
+          "date": "2016-01-20",
+          "valueCents": 1800,
+          "score": 10.117
+        },
+        {
+          "index": 784,
+          "date": "2016-05-18",
+          "valueCents": 1400,
+          "score": 5.902
+        },
+        {
+          "index": 1007,
+          "date": "2020-08-26",
+          "valueCents": 1930,
+          "score": 5.733
+        },
+        {
+          "index": 1054,
+          "date": "2021-07-21",
+          "valueCents": 3200,
+          "score": 5.967
+        },
+        {
+          "index": 1125,
+          "date": "2022-11-30",
+          "valueCents": 2757,
+          "score": 6.122
+        },
+        {
+          "index": 1142,
+          "date": "2023-03-29",
+          "valueCents": 2520,
+          "score": 4.946
+        },
+        {
+          "index": 1204,
+          "date": "2024-06-05",
+          "valueCents": 1135,
+          "score": 5.059
+        }
+      ],
+      "changePoint": {
+        "index": 734,
+        "date": "2015-06-03",
+        "K": 234515,
         "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "chicken-breast",
-      "n": 158,
+      "n": 200,
       "pointOutliers": [
         {
-          "index": 125,
+          "index": 14,
+          "date": "2022-12-05",
+          "valueCents": 84,
+          "score": 8.094
+        },
+        {
+          "index": 165,
           "date": "2025-10-27",
           "valueCents": 120,
           "score": 4.047
         },
         {
-          "index": 130,
+          "index": 170,
           "date": "2025-12-01",
           "valueCents": 121,
           "score": 4.047
         }
       ],
       "changePoint": {
-        "index": 40,
+        "index": 80,
         "date": "2024-03-11",
-        "K": 3378,
+        "K": 6586,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "chicken-thigh",
+      "n": 200,
+      "pointOutliers": [
+        {
+          "index": 94,
+          "date": "2024-06-17",
+          "valueCents": 164,
+          "score": 12.815
+        },
+        {
+          "index": 142,
+          "date": "2025-05-19",
+          "valueCents": 213,
+          "score": 15.513
+        },
+        {
+          "index": 199,
+          "date": "2026-06-22",
+          "valueCents": 137,
+          "score": 6.745
+        }
+      ],
+      "changePoint": {
+        "index": 81,
+        "date": "2024-03-18",
+        "K": 8022,
         "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "cilantro",
-      "n": 128,
+      "n": 130,
       "pointOutliers": [],
       "changePoint": {
         "index": 18,
         "date": "2024-05-15",
-        "K": 1956,
+        "K": 1994,
         "pApprox": 0,
         "significant": true
       }
@@ -333,130 +2195,2000 @@
       "changePoint": null
     },
     {
-      "key": "corn-on-the-cob",
-      "n": 157,
+      "key": "collard-greens",
+      "n": 1313,
       "pointOutliers": [
         {
-          "index": 79,
-          "date": "2024-12-18",
-          "valueCents": 3160,
-          "score": 20.598
+          "index": 39,
+          "date": "2002-01-23",
+          "valueCents": 794,
+          "score": 4.789
         },
         {
-          "index": 101,
-          "date": "2025-05-28",
-          "valueCents": 2338,
-          "score": 11.979
+          "index": 873,
+          "date": "2018-01-31",
+          "valueCents": 2125,
+          "score": 4.216
         },
         {
-          "index": 135,
-          "date": "2026-01-21",
-          "valueCents": 2350,
-          "score": 4.047
+          "index": 897,
+          "date": "2018-07-18",
+          "valueCents": 2030,
+          "score": 14.164
+        },
+        {
+          "index": 919,
+          "date": "2018-12-19",
+          "valueCents": 3150,
+          "score": 4.027
+        },
+        {
+          "index": 945,
+          "date": "2019-06-19",
+          "valueCents": 2400,
+          "score": 10.117
         }
       ],
       "changePoint": {
-        "index": 39,
-        "date": "2024-03-13",
-        "K": 2043,
-        "pApprox": 0.003,
+        "index": 650,
+        "date": "2013-10-23",
+        "K": 428411,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "corn-on-the-cob",
+      "n": 1309,
+      "pointOutliers": [
+        {
+          "index": 50,
+          "date": "2002-04-03",
+          "valueCents": 1405,
+          "score": 4.637
+        },
+        {
+          "index": 83,
+          "date": "2002-11-20",
+          "valueCents": 1060,
+          "score": 6.745
+        },
+        {
+          "index": 84,
+          "date": "2002-11-27",
+          "valueCents": 1075,
+          "score": 4.047
+        },
+        {
+          "index": 93,
+          "date": "2003-01-29",
+          "valueCents": 1510,
+          "score": 5.396
+        },
+        {
+          "index": 244,
+          "date": "2005-12-21",
+          "valueCents": 1335,
+          "score": 4.721
+        },
+        {
+          "index": 261,
+          "date": "2006-04-19",
+          "valueCents": 2290,
+          "score": 4.159
+        },
+        {
+          "index": 301,
+          "date": "2007-01-24",
+          "valueCents": 1830,
+          "score": 6.475
+        },
+        {
+          "index": 302,
+          "date": "2007-01-31",
+          "valueCents": 1650,
+          "score": 4.047
+        },
+        {
+          "index": 374,
+          "date": "2008-06-18",
+          "valueCents": 1860,
+          "score": 8.094
+        },
+        {
+          "index": 490,
+          "date": "2010-09-08",
+          "valueCents": 1319,
+          "score": 8.836
+        },
+        {
+          "index": 491,
+          "date": "2010-09-15",
+          "valueCents": 1378,
+          "score": 4.856
+        },
+        {
+          "index": 529,
+          "date": "2011-06-08",
+          "valueCents": 1618,
+          "score": 4.141
+        },
+        {
+          "index": 626,
+          "date": "2013-04-17",
+          "valueCents": 2110,
+          "score": 4.272
+        },
+        {
+          "index": 734,
+          "date": "2015-05-27",
+          "valueCents": 2138,
+          "score": 4.362
+        },
+        {
+          "index": 752,
+          "date": "2015-09-30",
+          "valueCents": 2615,
+          "score": 15.682
+        },
+        {
+          "index": 756,
+          "date": "2015-10-28",
+          "valueCents": 1930,
+          "score": 5.936
+        },
+        {
+          "index": 832,
+          "date": "2017-04-12",
+          "valueCents": 2080,
+          "score": 6.07
+        },
+        {
+          "index": 864,
+          "date": "2017-11-22",
+          "valueCents": 2590,
+          "score": 4.231
+        },
+        {
+          "index": 909,
+          "date": "2018-10-03",
+          "valueCents": 2120,
+          "score": 5.621
+        },
+        {
+          "index": 1071,
+          "date": "2021-11-10",
+          "valueCents": 4810,
+          "score": 6.248
+        },
+        {
+          "index": 1081,
+          "date": "2022-01-19",
+          "valueCents": 2600,
+          "score": 10.539
+        },
+        {
+          "index": 1239,
+          "date": "2025-03-05",
+          "valueCents": 2290,
+          "score": 18.548
+        },
+        {
+          "index": 1240,
+          "date": "2025-03-12",
+          "valueCents": 2250,
+          "score": 5.25
+        },
+        {
+          "index": 1251,
+          "date": "2025-05-28",
+          "valueCents": 2400,
+          "score": 5.227
+        }
+      ],
+      "changePoint": {
+        "index": 645,
+        "date": "2013-08-28",
+        "K": 339146,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "cucumber",
+      "n": 1314,
+      "pointOutliers": [
+        {
+          "index": 0,
+          "date": "2001-04-18",
+          "valueCents": 1800,
+          "score": 4.921
+        },
+        {
+          "index": 9,
+          "date": "2001-06-20",
+          "valueCents": 2000,
+          "score": 5.3
+        },
+        {
+          "index": 30,
+          "date": "2001-11-14",
+          "valueCents": 1388,
+          "score": 10.96
+        },
+        {
+          "index": 96,
+          "date": "2003-02-19",
+          "valueCents": 1050,
+          "score": 6.07
+        },
+        {
+          "index": 97,
+          "date": "2003-02-26",
+          "valueCents": 1240,
+          "score": 5.733
+        },
+        {
+          "index": 167,
+          "date": "2004-06-30",
+          "valueCents": 1510,
+          "score": 4.336
+        },
+        {
+          "index": 180,
+          "date": "2004-09-29",
+          "valueCents": 2278,
+          "score": 16.488
+        },
+        {
+          "index": 236,
+          "date": "2005-10-26",
+          "valueCents": 2300,
+          "score": 4.134
+        },
+        {
+          "index": 237,
+          "date": "2005-11-02",
+          "valueCents": 2258,
+          "score": 5.576
+        },
+        {
+          "index": 245,
+          "date": "2005-12-28",
+          "valueCents": 2313,
+          "score": 8.796
+        },
+        {
+          "index": 263,
+          "date": "2006-05-03",
+          "valueCents": 1250,
+          "score": 4.047
+        },
+        {
+          "index": 285,
+          "date": "2006-10-04",
+          "valueCents": 1530,
+          "score": 4.3
+        },
+        {
+          "index": 358,
+          "date": "2008-02-27",
+          "valueCents": 2065,
+          "score": 4.019
+        },
+        {
+          "index": 359,
+          "date": "2008-03-05",
+          "valueCents": 2020,
+          "score": 5.194
+        },
+        {
+          "index": 427,
+          "date": "2009-06-24",
+          "valueCents": 1270,
+          "score": 7.869
+        },
+        {
+          "index": 536,
+          "date": "2011-07-27",
+          "valueCents": 1250,
+          "score": 6.745
+        },
+        {
+          "index": 818,
+          "date": "2017-01-04",
+          "valueCents": 1175,
+          "score": 6.438
+        },
+        {
+          "index": 838,
+          "date": "2017-05-24",
+          "valueCents": 2085,
+          "score": 4.679
+        },
+        {
+          "index": 839,
+          "date": "2017-05-31",
+          "valueCents": 1913,
+          "score": 6.995
+        },
+        {
+          "index": 889,
+          "date": "2018-05-16",
+          "valueCents": 1418,
+          "score": 9.443
+        },
+        {
+          "index": 896,
+          "date": "2018-07-03",
+          "valueCents": 1254,
+          "score": 4.614
+        },
+        {
+          "index": 1101,
+          "date": "2022-06-08",
+          "valueCents": 1550,
+          "score": 10.117
+        },
+        {
+          "index": 1213,
+          "date": "2024-07-31",
+          "valueCents": 1285,
+          "score": 4.452
+        },
+        {
+          "index": 1225,
+          "date": "2024-10-23",
+          "valueCents": 2120,
+          "score": 16.323
+        },
+        {
+          "index": 1244,
+          "date": "2025-03-05",
+          "valueCents": 2260,
+          "score": 4.272
+        },
+        {
+          "index": 1247,
+          "date": "2025-03-26",
+          "valueCents": 2450,
+          "score": 4.272
+        }
+      ],
+      "changePoint": {
+        "index": 903,
+        "date": "2018-08-22",
+        "K": 198865,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "daikon",
+      "n": 130,
+      "pointOutliers": [],
+      "changePoint": {
+        "index": 105,
+        "date": "2026-01-14",
+        "K": 2482,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "dill",
+      "n": 134,
+      "pointOutliers": [
+        {
+          "index": 78,
+          "date": "2025-06-11",
+          "valueCents": 4625,
+          "score": 4.152
+        },
+        {
+          "index": 79,
+          "date": "2025-06-18",
+          "valueCents": 5575,
+          "score": 6.361
+        },
+        {
+          "index": 80,
+          "date": "2025-06-25",
+          "valueCents": 5575,
+          "score": 6.361
+        },
+        {
+          "index": 125,
+          "date": "2026-05-06",
+          "valueCents": 3410,
+          "score": 12.276
+        },
+        {
+          "index": 126,
+          "date": "2026-05-13",
+          "valueCents": 3650,
+          "score": 15.513
+        },
+        {
+          "index": 127,
+          "date": "2026-05-20",
+          "valueCents": 3650,
+          "score": 15.513
+        }
+      ],
+      "changePoint": {
+        "index": 72,
+        "date": "2025-04-30",
+        "K": 2886,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "eggplant",
+      "n": 1314,
+      "pointOutliers": [
+        {
+          "index": 0,
+          "date": "2001-04-18",
+          "valueCents": 60,
+          "score": 4.721
+        },
+        {
+          "index": 21,
+          "date": "2001-09-12",
+          "valueCents": 247,
+          "score": 35.579
+        },
+        {
+          "index": 22,
+          "date": "2001-09-19",
+          "valueCents": 245,
+          "score": 17.621
+        },
+        {
+          "index": 68,
+          "date": "2002-08-07",
+          "valueCents": 197,
+          "score": 6.504
+        },
+        {
+          "index": 81,
+          "date": "2002-11-06",
+          "valueCents": 277,
+          "score": 4.856
+        },
+        {
+          "index": 82,
+          "date": "2002-11-13",
+          "valueCents": 751,
+          "score": 8.839
+        },
+        {
+          "index": 139,
+          "date": "2003-12-17",
+          "valueCents": 1860,
+          "score": 4.967
+        },
+        {
+          "index": 279,
+          "date": "2006-08-23",
+          "valueCents": 2145,
+          "score": 5.592
+        },
+        {
+          "index": 358,
+          "date": "2008-02-27",
+          "valueCents": 1740,
+          "score": 4.317
+        },
+        {
+          "index": 480,
+          "date": "2010-06-30",
+          "valueCents": 2545,
+          "score": 6.981
+        },
+        {
+          "index": 539,
+          "date": "2011-08-17",
+          "valueCents": 2000,
+          "score": 4.721
+        },
+        {
+          "index": 627,
+          "date": "2013-04-24",
+          "valueCents": 1990,
+          "score": 5.733
+        },
+        {
+          "index": 682,
+          "date": "2014-05-28",
+          "valueCents": 2363,
+          "score": 6.29
+        },
+        {
+          "index": 712,
+          "date": "2014-12-24",
+          "valueCents": 2498,
+          "score": 9.611
+        },
+        {
+          "index": 735,
+          "date": "2015-06-03",
+          "valueCents": 2430,
+          "score": 6.153
+        },
+        {
+          "index": 879,
+          "date": "2018-03-07",
+          "valueCents": 1490,
+          "score": 20.235
+        },
+        {
+          "index": 988,
+          "date": "2020-04-08",
+          "valueCents": 2683,
+          "score": 4.492
+        },
+        {
+          "index": 999,
+          "date": "2020-06-24",
+          "valueCents": 1975,
+          "score": 6.492
+        },
+        {
+          "index": 1000,
+          "date": "2020-07-01",
+          "valueCents": 2025,
+          "score": 8.206
+        },
+        {
+          "index": 1015,
+          "date": "2020-10-14",
+          "valueCents": 2538,
+          "score": 6.34
+        },
+        {
+          "index": 1165,
+          "date": "2023-08-30",
+          "valueCents": 2740,
+          "score": 14.164
+        },
+        {
+          "index": 1169,
+          "date": "2023-09-27",
+          "valueCents": 2500,
+          "score": 6.745
+        },
+        {
+          "index": 1176,
+          "date": "2023-11-15",
+          "valueCents": 2600,
+          "score": 10.117
+        }
+      ],
+      "changePoint": {
+        "index": 706,
+        "date": "2014-11-12",
+        "K": 279965,
+        "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "eggs",
-      "n": 72,
+      "n": 74,
       "pointOutliers": [],
       "changePoint": {
-        "index": 32,
-        "date": "2025-09-08",
-        "K": 1287,
+        "index": 33,
+        "date": "2025-09-15",
+        "K": 1355,
         "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "garlic",
-      "n": 158,
+      "n": 1292,
       "pointOutliers": [
         {
-          "index": 20,
-          "date": "2023-11-01",
-          "valueCents": 6940,
-          "score": 8.768
+          "index": 325,
+          "date": "2007-07-11",
+          "valueCents": 2900,
+          "score": 7.869
         },
         {
-          "index": 29,
+          "index": 742,
+          "date": "2015-07-22",
+          "valueCents": 5995,
+          "score": 18.211
+        },
+        {
+          "index": 785,
+          "date": "2016-05-18",
+          "valueCents": 6595,
+          "score": 7.554
+        },
+        {
+          "index": 792,
+          "date": "2016-07-06",
+          "valueCents": 6500,
+          "score": 4.047
+        },
+        {
+          "index": 1096,
+          "date": "2022-08-31",
+          "valueCents": 6800,
+          "score": 4.497
+        },
+        {
+          "index": 1156,
+          "date": "2023-11-29",
+          "valueCents": 7300,
+          "score": 5.059
+        },
+        {
+          "index": 1161,
           "date": "2024-01-03",
           "valueCents": 6200,
           "score": 4.721
         },
         {
-          "index": 137,
+          "index": 1269,
           "date": "2026-01-28",
           "valueCents": 7275,
           "score": 5.059
         }
       ],
       "changePoint": {
-        "index": 68,
-        "date": "2024-10-02",
-        "K": 4165,
+        "index": 688,
+        "date": "2014-07-09",
+        "K": 396569,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "ginger",
+      "n": 130,
+      "pointOutliers": [],
+      "changePoint": {
+        "index": 24,
+        "date": "2024-06-26",
+        "K": 2378,
         "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "grapefruit",
-      "n": 137,
-      "pointOutliers": [],
+      "n": 1306,
+      "pointOutliers": [
+        {
+          "index": 36,
+          "date": "2002-01-02",
+          "valueCents": 1088,
+          "score": 11.871
+        },
+        {
+          "index": 206,
+          "date": "2005-04-06",
+          "valueCents": 1430,
+          "score": 5.936
+        },
+        {
+          "index": 325,
+          "date": "2007-07-18",
+          "valueCents": 1828,
+          "score": 9.038
+        },
+        {
+          "index": 326,
+          "date": "2007-07-25",
+          "valueCents": 1860,
+          "score": 5.396
+        },
+        {
+          "index": 389,
+          "date": "2008-10-08",
+          "valueCents": 2150,
+          "score": 4.384
+        },
+        {
+          "index": 533,
+          "date": "2011-07-13",
+          "valueCents": 2060,
+          "score": 4.89
+        },
+        {
+          "index": 625,
+          "date": "2013-04-17",
+          "valueCents": 1610,
+          "score": 4.216
+        },
+        {
+          "index": 667,
+          "date": "2014-02-19",
+          "valueCents": 1700,
+          "score": 9.443
+        },
+        {
+          "index": 741,
+          "date": "2015-09-02",
+          "valueCents": 2300,
+          "score": 4.336
+        },
+        {
+          "index": 746,
+          "date": "2015-10-07",
+          "valueCents": 2430,
+          "score": 5.396
+        },
+        {
+          "index": 752,
+          "date": "2015-11-18",
+          "valueCents": 2090,
+          "score": 5.733
+        },
+        {
+          "index": 875,
+          "date": "2018-04-04",
+          "valueCents": 2540,
+          "score": 7.195
+        },
+        {
+          "index": 936,
+          "date": "2019-06-05",
+          "valueCents": 2400,
+          "score": 4.047
+        },
+        {
+          "index": 968,
+          "date": "2020-01-15",
+          "valueCents": 2150,
+          "score": 5.059
+        },
+        {
+          "index": 1050,
+          "date": "2021-08-11",
+          "valueCents": 3690,
+          "score": 10.117
+        }
+      ],
       "changePoint": {
-        "index": 71,
-        "date": "2024-10-22",
-        "K": 4108,
+        "index": 726,
+        "date": "2015-05-20",
+        "K": 406867,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "green-beans",
+      "n": 1306,
+      "pointOutliers": [
+        {
+          "index": 13,
+          "date": "2001-07-25",
+          "valueCents": 1210,
+          "score": 9.443
+        },
+        {
+          "index": 201,
+          "date": "2005-03-02",
+          "valueCents": 1680,
+          "score": 4.959
+        },
+        {
+          "index": 423,
+          "date": "2009-06-03",
+          "valueCents": 3825,
+          "score": 6.027
+        },
+        {
+          "index": 437,
+          "date": "2009-09-09",
+          "valueCents": 1950,
+          "score": 5.212
+        },
+        {
+          "index": 438,
+          "date": "2009-09-16",
+          "valueCents": 2660,
+          "score": 4.19
+        },
+        {
+          "index": 462,
+          "date": "2010-03-03",
+          "valueCents": 5525,
+          "score": 6.527
+        },
+        {
+          "index": 481,
+          "date": "2010-07-14",
+          "valueCents": 2960,
+          "score": 4.821
+        },
+        {
+          "index": 551,
+          "date": "2011-11-16",
+          "valueCents": 1963,
+          "score": 4.275
+        },
+        {
+          "index": 607,
+          "date": "2013-01-23",
+          "valueCents": 2550,
+          "score": 4.66
+        },
+        {
+          "index": 608,
+          "date": "2013-01-30",
+          "valueCents": 2600,
+          "score": 5.088
+        },
+        {
+          "index": 733,
+          "date": "2015-07-08",
+          "valueCents": 3838,
+          "score": 4.933
+        },
+        {
+          "index": 893,
+          "date": "2018-08-01",
+          "valueCents": 3000,
+          "score": 5.921
+        },
+        {
+          "index": 894,
+          "date": "2018-08-08",
+          "valueCents": 2880,
+          "score": 4.587
+        },
+        {
+          "index": 913,
+          "date": "2018-12-19",
+          "valueCents": 2850,
+          "score": 7.051
+        },
+        {
+          "index": 976,
+          "date": "2020-03-04",
+          "valueCents": 2745,
+          "score": 5.621
+        },
+        {
+          "index": 1008,
+          "date": "2020-10-14",
+          "valueCents": 2519,
+          "score": 6.059
+        },
+        {
+          "index": 1071,
+          "date": "2021-12-29",
+          "valueCents": 1950,
+          "score": 7.166
+        },
+        {
+          "index": 1204,
+          "date": "2024-07-17",
+          "valueCents": 4025,
+          "score": 5.372
+        },
+        {
+          "index": 1233,
+          "date": "2025-02-05",
+          "valueCents": 3200,
+          "score": 4.243
+        },
+        {
+          "index": 1234,
+          "date": "2025-02-12",
+          "valueCents": 3340,
+          "score": 5.351
+        },
+        {
+          "index": 1263,
+          "date": "2025-09-03",
+          "valueCents": 3031,
+          "score": 5.514
+        }
+      ],
+      "changePoint": {
+        "index": 502,
+        "date": "2010-12-08",
+        "K": 183555,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "green-leaf-lettuce",
+      "n": 1313,
+      "pointOutliers": [
+        {
+          "index": 57,
+          "date": "2002-05-29",
+          "valueCents": 750,
+          "score": 5.621
+        },
+        {
+          "index": 155,
+          "date": "2004-04-14",
+          "valueCents": 755,
+          "score": 7.419
+        },
+        {
+          "index": 178,
+          "date": "2004-09-22",
+          "valueCents": 1090,
+          "score": 4.129
+        },
+        {
+          "index": 299,
+          "date": "2007-01-17",
+          "valueCents": 1388,
+          "score": 4.652
+        },
+        {
+          "index": 403,
+          "date": "2009-01-14",
+          "valueCents": 1233,
+          "score": 4.456
+        },
+        {
+          "index": 409,
+          "date": "2009-02-25",
+          "valueCents": 1095,
+          "score": 4.26
+        },
+        {
+          "index": 410,
+          "date": "2009-03-04",
+          "valueCents": 1110,
+          "score": 4.792
+        },
+        {
+          "index": 536,
+          "date": "2011-08-03",
+          "valueCents": 990,
+          "score": 5.396
+        },
+        {
+          "index": 560,
+          "date": "2012-01-18",
+          "valueCents": 1382,
+          "score": 4.101
+        },
+        {
+          "index": 561,
+          "date": "2012-01-25",
+          "valueCents": 1600,
+          "score": 4.514
+        },
+        {
+          "index": 591,
+          "date": "2012-08-22",
+          "valueCents": 1575,
+          "score": 4.454
+        },
+        {
+          "index": 605,
+          "date": "2012-11-28",
+          "valueCents": 988,
+          "score": 6.07
+        },
+        {
+          "index": 741,
+          "date": "2015-07-22",
+          "valueCents": 1073,
+          "score": 13.939
+        },
+        {
+          "index": 872,
+          "date": "2018-01-24",
+          "valueCents": 1135,
+          "score": 8.094
+        },
+        {
+          "index": 958,
+          "date": "2019-09-18",
+          "valueCents": 1340,
+          "score": 5.396
+        },
+        {
+          "index": 984,
+          "date": "2020-03-18",
+          "valueCents": 1553,
+          "score": 12.579
+        },
+        {
+          "index": 1057,
+          "date": "2021-08-11",
+          "valueCents": 1350,
+          "score": 5.171
+        },
+        {
+          "index": 1211,
+          "date": "2024-07-24",
+          "valueCents": 1930,
+          "score": 8.364
+        },
+        {
+          "index": 1216,
+          "date": "2024-08-28",
+          "valueCents": 3450,
+          "score": 15.288
+        }
+      ],
+      "changePoint": {
+        "index": 674,
+        "date": "2014-04-09",
+        "K": 313515,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "green-onion",
+      "n": 1313,
+      "pointOutliers": [
+        {
+          "index": 29,
+          "date": "2001-11-14",
+          "valueCents": 738,
+          "score": 8.319
+        },
+        {
+          "index": 30,
+          "date": "2001-11-21",
+          "valueCents": 748,
+          "score": 4.231
+        },
+        {
+          "index": 39,
+          "date": "2002-01-23",
+          "valueCents": 656,
+          "score": 4.506
+        },
+        {
+          "index": 154,
+          "date": "2004-04-07",
+          "valueCents": 845,
+          "score": 8.693
+        },
+        {
+          "index": 155,
+          "date": "2004-04-14",
+          "valueCents": 1035,
+          "score": 7.49
+        },
+        {
+          "index": 333,
+          "date": "2007-09-12",
+          "valueCents": 1190,
+          "score": 4.721
+        },
+        {
+          "index": 532,
+          "date": "2011-07-06",
+          "valueCents": 900,
+          "score": 4.384
+        },
+        {
+          "index": 576,
+          "date": "2012-05-09",
+          "valueCents": 750,
+          "score": 9.162
+        },
+        {
+          "index": 599,
+          "date": "2012-10-17",
+          "valueCents": 1000,
+          "score": 4.272
+        },
+        {
+          "index": 654,
+          "date": "2013-11-20",
+          "valueCents": 975,
+          "score": 7.757
+        },
+        {
+          "index": 696,
+          "date": "2014-09-10",
+          "valueCents": 2800,
+          "score": 8.431
+        },
+        {
+          "index": 697,
+          "date": "2014-09-17",
+          "valueCents": 3525,
+          "score": 13.321
+        },
+        {
+          "index": 698,
+          "date": "2014-09-24",
+          "valueCents": 2720,
+          "score": 5.274
+        },
+        {
+          "index": 727,
+          "date": "2015-04-15",
+          "valueCents": 1510,
+          "score": 5.396
+        },
+        {
+          "index": 728,
+          "date": "2015-04-22",
+          "valueCents": 1550,
+          "score": 12.815
+        },
+        {
+          "index": 854,
+          "date": "2017-09-20",
+          "valueCents": 3495,
+          "score": 5.756
+        },
+        {
+          "index": 1138,
+          "date": "2023-03-01",
+          "valueCents": 2705,
+          "score": 6.774
+        },
+        {
+          "index": 1234,
+          "date": "2024-12-31",
+          "valueCents": 2225,
+          "score": 32.319
+        },
+        {
+          "index": 1235,
+          "date": "2025-01-07",
+          "valueCents": 2225,
+          "score": 15.513
+        },
+        {
+          "index": 1236,
+          "date": "2025-01-15",
+          "valueCents": 2225,
+          "score": 15.513
+        },
+        {
+          "index": 1291,
+          "date": "2026-02-04",
+          "valueCents": 3850,
+          "score": 5.107
+        }
+      ],
+      "changePoint": {
+        "index": 590,
+        "date": "2012-08-15",
+        "K": 319908,
         "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "ground-beef",
-      "n": 36,
-      "pointOutliers": [
-        {
-          "index": 34,
-          "date": "2026-04-01",
-          "valueCents": 690,
-          "score": 10.117
-        }
-      ],
+      "n": 4,
+      "pointOutliers": [],
+      "changePoint": null
+    },
+    {
+      "key": "ground-pork",
+      "n": 702,
+      "pointOutliers": [],
       "changePoint": {
-        "index": 15,
-        "date": "2024-08-01",
-        "K": 318,
+        "index": 424,
+        "date": "2021-03-10",
+        "K": 86616,
         "pApprox": 0,
         "significant": true
       }
     },
     {
-      "key": "ground-pork",
-      "n": 158,
-      "pointOutliers": [],
+      "key": "habanero-pepper",
+      "n": 1313,
+      "pointOutliers": [
+        {
+          "index": 13,
+          "date": "2001-07-25",
+          "valueCents": 2140,
+          "score": 4.047
+        },
+        {
+          "index": 183,
+          "date": "2004-10-27",
+          "valueCents": 2320,
+          "score": 4.856
+        },
+        {
+          "index": 193,
+          "date": "2005-01-05",
+          "valueCents": 2613,
+          "score": 4.249
+        },
+        {
+          "index": 194,
+          "date": "2005-01-12",
+          "valueCents": 2710,
+          "score": 10.792
+        },
+        {
+          "index": 221,
+          "date": "2005-07-20",
+          "valueCents": 2800,
+          "score": 6.07
+        },
+        {
+          "index": 487,
+          "date": "2010-08-25",
+          "valueCents": 2880,
+          "score": 5.733
+        },
+        {
+          "index": 508,
+          "date": "2011-01-19",
+          "valueCents": 2725,
+          "score": 5.34
+        },
+        {
+          "index": 627,
+          "date": "2013-05-01",
+          "valueCents": 2125,
+          "score": 7.757
+        },
+        {
+          "index": 650,
+          "date": "2013-10-23",
+          "valueCents": 2000,
+          "score": 4.047
+        },
+        {
+          "index": 723,
+          "date": "2015-03-18",
+          "valueCents": 1990,
+          "score": 4.789
+        },
+        {
+          "index": 724,
+          "date": "2015-03-25",
+          "valueCents": 1800,
+          "score": 7.588
+        },
+        {
+          "index": 781,
+          "date": "2016-04-27",
+          "valueCents": 2890,
+          "score": 8.865
+        },
+        {
+          "index": 811,
+          "date": "2016-11-23",
+          "valueCents": 2170,
+          "score": 4.469
+        },
+        {
+          "index": 973,
+          "date": "2019-12-31",
+          "valueCents": 3225,
+          "score": 4.103
+        },
+        {
+          "index": 984,
+          "date": "2020-03-18",
+          "valueCents": 2570,
+          "score": 8.768
+        },
+        {
+          "index": 1065,
+          "date": "2021-10-06",
+          "valueCents": 2880,
+          "score": 5.396
+        }
+      ],
       "changePoint": {
-        "index": 99,
-        "date": "2025-05-07",
-        "K": 3093,
+        "index": 717,
+        "date": "2015-02-04",
+        "K": 248429,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "iceberg-lettuce",
+      "n": 1307,
+      "pointOutliers": [
+        {
+          "index": 8,
+          "date": "2001-06-20",
+          "valueCents": 795,
+          "score": 6.849
+        },
+        {
+          "index": 81,
+          "date": "2002-11-13",
+          "valueCents": 863,
+          "score": 4.068
+        },
+        {
+          "index": 89,
+          "date": "2003-01-08",
+          "valueCents": 1105,
+          "score": 7.711
+        },
+        {
+          "index": 95,
+          "date": "2003-02-19",
+          "valueCents": 897,
+          "score": 33.32
+        },
+        {
+          "index": 102,
+          "date": "2003-04-09",
+          "valueCents": 800,
+          "score": 7.588
+        },
+        {
+          "index": 107,
+          "date": "2003-05-14",
+          "valueCents": 1680,
+          "score": 4.891
+        },
+        {
+          "index": 135,
+          "date": "2003-11-26",
+          "valueCents": 4510,
+          "score": 4.126
+        },
+        {
+          "index": 148,
+          "date": "2004-02-25",
+          "valueCents": 2020,
+          "score": 8.52
+        },
+        {
+          "index": 157,
+          "date": "2004-04-28",
+          "valueCents": 1110,
+          "score": 5.621
+        },
+        {
+          "index": 163,
+          "date": "2004-06-09",
+          "valueCents": 1115,
+          "score": 6.576
+        },
+        {
+          "index": 205,
+          "date": "2005-03-30",
+          "valueCents": 2353,
+          "score": 5.694
+        },
+        {
+          "index": 234,
+          "date": "2005-10-19",
+          "valueCents": 1010,
+          "score": 9.78
+        },
+        {
+          "index": 294,
+          "date": "2006-12-13",
+          "valueCents": 1758,
+          "score": 5.796
+        },
+        {
+          "index": 397,
+          "date": "2008-12-03",
+          "valueCents": 1472,
+          "score": 4.955
+        },
+        {
+          "index": 442,
+          "date": "2009-10-14",
+          "valueCents": 1894,
+          "score": 4.519
+        },
+        {
+          "index": 487,
+          "date": "2010-08-25",
+          "valueCents": 1753,
+          "score": 4.606
+        },
+        {
+          "index": 525,
+          "date": "2011-05-18",
+          "valueCents": 1850,
+          "score": 4.946
+        },
+        {
+          "index": 526,
+          "date": "2011-05-25",
+          "valueCents": 2085,
+          "score": 4.726
+        },
+        {
+          "index": 534,
+          "date": "2011-07-20",
+          "valueCents": 1350,
+          "score": 6.425
+        },
+        {
+          "index": 535,
+          "date": "2011-07-27",
+          "valueCents": 1430,
+          "score": 12.411
+        },
+        {
+          "index": 580,
+          "date": "2012-06-06",
+          "valueCents": 1620,
+          "score": 4.12
+        },
+        {
+          "index": 772,
+          "date": "2016-02-24",
+          "valueCents": 1560,
+          "score": 6.452
+        },
+        {
+          "index": 783,
+          "date": "2016-05-11",
+          "valueCents": 2380,
+          "score": 5.872
+        },
+        {
+          "index": 792,
+          "date": "2016-07-13",
+          "valueCents": 1810,
+          "score": 14.103
+        },
+        {
+          "index": 908,
+          "date": "2018-10-03",
+          "valueCents": 2015,
+          "score": 11.466
+        },
+        {
+          "index": 984,
+          "date": "2020-03-18",
+          "valueCents": 2250,
+          "score": 9.682
+        },
+        {
+          "index": 985,
+          "date": "2020-03-25",
+          "valueCents": 2280,
+          "score": 6.194
+        },
+        {
+          "index": 1056,
+          "date": "2021-08-04",
+          "valueCents": 1780,
+          "score": 26.98
+        },
+        {
+          "index": 1168,
+          "date": "2023-09-27",
+          "valueCents": 2210,
+          "score": 5.059
+        }
+      ],
+      "changePoint": {
+        "index": 679,
+        "date": "2014-05-14",
+        "K": 288367,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "jalapeno",
+      "n": 1312,
+      "pointOutliers": [
+        {
+          "index": 148,
+          "date": "2004-02-25",
+          "valueCents": 1450,
+          "score": 4.946
+        },
+        {
+          "index": 331,
+          "date": "2007-08-29",
+          "valueCents": 1050,
+          "score": 5.396
+        },
+        {
+          "index": 332,
+          "date": "2007-09-05",
+          "valueCents": 1175,
+          "score": 4.216
+        },
+        {
+          "index": 369,
+          "date": "2008-05-21",
+          "valueCents": 1485,
+          "score": 4.384
+        },
+        {
+          "index": 388,
+          "date": "2008-10-01",
+          "valueCents": 1580,
+          "score": 5.396
+        },
+        {
+          "index": 389,
+          "date": "2008-10-08",
+          "valueCents": 1600,
+          "score": 6.745
+        },
+        {
+          "index": 412,
+          "date": "2009-03-18",
+          "valueCents": 1550,
+          "score": 7.644
+        },
+        {
+          "index": 485,
+          "date": "2010-08-11",
+          "valueCents": 1000,
+          "score": 8.094
+        },
+        {
+          "index": 554,
+          "date": "2011-12-07",
+          "valueCents": 1980,
+          "score": 4.317
+        },
+        {
+          "index": 708,
+          "date": "2014-12-03",
+          "valueCents": 2056,
+          "score": 4.766
+        },
+        {
+          "index": 709,
+          "date": "2014-12-10",
+          "valueCents": 2100,
+          "score": 4.047
+        },
+        {
+          "index": 775,
+          "date": "2016-03-16",
+          "valueCents": 2910,
+          "score": 14.434
+        },
+        {
+          "index": 776,
+          "date": "2016-03-23",
+          "valueCents": 2510,
+          "score": 5.227
+        },
+        {
+          "index": 1061,
+          "date": "2021-09-08",
+          "valueCents": 2188,
+          "score": 4.209
+        },
+        {
+          "index": 1064,
+          "date": "2021-09-29",
+          "valueCents": 2500,
+          "score": 16.862
+        }
+      ],
+      "changePoint": {
+        "index": 580,
+        "date": "2012-06-06",
+        "K": 363329,
         "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "kale",
-      "n": 157,
-      "pointOutliers": [],
+      "n": 1314,
+      "pointOutliers": [
+        {
+          "index": 87,
+          "date": "2002-12-18",
+          "valueCents": 735,
+          "score": 4.203
+        },
+        {
+          "index": 411,
+          "date": "2009-03-04",
+          "valueCents": 1150,
+          "score": 25.293
+        },
+        {
+          "index": 412,
+          "date": "2009-03-11",
+          "valueCents": 940,
+          "score": 91.056
+        },
+        {
+          "index": 663,
+          "date": "2014-01-15",
+          "valueCents": 1160,
+          "score": 7.419
+        },
+        {
+          "index": 874,
+          "date": "2018-01-31",
+          "valueCents": 1700,
+          "score": 6.07
+        }
+      ],
       "changePoint": {
-        "index": 86,
-        "date": "2025-02-12",
-        "K": 5198,
+        "index": 826,
+        "date": "2017-03-01",
+        "K": 373513,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "leek",
+      "n": 1313,
+      "pointOutliers": [
+        {
+          "index": 29,
+          "date": "2001-11-07",
+          "valueCents": 1180,
+          "score": 6.07
+        },
+        {
+          "index": 135,
+          "date": "2003-11-19",
+          "valueCents": 2950,
+          "score": 5.292
+        },
+        {
+          "index": 260,
+          "date": "2006-04-12",
+          "valueCents": 1720,
+          "score": 4.731
+        },
+        {
+          "index": 369,
+          "date": "2008-05-14",
+          "valueCents": 1688,
+          "score": 4.587
+        },
+        {
+          "index": 529,
+          "date": "2011-06-08",
+          "valueCents": 1468,
+          "score": 4.461
+        },
+        {
+          "index": 872,
+          "date": "2018-01-24",
+          "valueCents": 1650,
+          "score": 4.818
+        },
+        {
+          "index": 902,
+          "date": "2018-08-22",
+          "valueCents": 1605,
+          "score": 4.272
+        },
+        {
+          "index": 946,
+          "date": "2019-06-26",
+          "valueCents": 1675,
+          "score": 8.431
+        },
+        {
+          "index": 947,
+          "date": "2019-07-03",
+          "valueCents": 1650,
+          "score": 6.745
+        },
+        {
+          "index": 992,
+          "date": "2020-05-13",
+          "valueCents": 3800,
+          "score": 10.117
+        },
+        {
+          "index": 993,
+          "date": "2020-05-20",
+          "valueCents": 3575,
+          "score": 8.094
+        },
+        {
+          "index": 1000,
+          "date": "2020-07-08",
+          "valueCents": 1933,
+          "score": 4.488
+        },
+        {
+          "index": 1184,
+          "date": "2024-01-17",
+          "valueCents": 3125,
+          "score": 7.783
+        },
+        {
+          "index": 1237,
+          "date": "2025-01-22",
+          "valueCents": 4325,
+          "score": 8.768
+        }
+      ],
+      "changePoint": {
+        "index": 602,
+        "date": "2012-10-31",
+        "K": 343423,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "lemon",
+      "n": 1314,
+      "pointOutliers": [
+        {
+          "index": 339,
+          "date": "2007-10-17",
+          "valueCents": 3538,
+          "score": 12.478
+        },
+        {
+          "index": 443,
+          "date": "2009-10-14",
+          "valueCents": 2750,
+          "score": 4.152
+        },
+        {
+          "index": 451,
+          "date": "2009-12-09",
+          "valueCents": 1775,
+          "score": 5.171
+        },
+        {
+          "index": 473,
+          "date": "2010-05-12",
+          "valueCents": 2810,
+          "score": 5.059
+        },
+        {
+          "index": 528,
+          "date": "2011-06-01",
+          "valueCents": 2107,
+          "score": 10.455
+        },
+        {
+          "index": 668,
+          "date": "2014-02-19",
+          "valueCents": 2785,
+          "score": 7.419
+        },
+        {
+          "index": 679,
+          "date": "2014-05-07",
+          "valueCents": 3235,
+          "score": 5.621
+        },
+        {
+          "index": 764,
+          "date": "2015-12-23",
+          "valueCents": 2595,
+          "score": 4.254
+        },
+        {
+          "index": 813,
+          "date": "2016-11-30",
+          "valueCents": 2779,
+          "score": 4.829
+        },
+        {
+          "index": 814,
+          "date": "2016-12-07",
+          "valueCents": 2765,
+          "score": 4.452
+        },
+        {
+          "index": 1055,
+          "date": "2021-07-21",
+          "valueCents": 3880,
+          "score": 5.531
+        },
+        {
+          "index": 1090,
+          "date": "2022-03-23",
+          "valueCents": 2195,
+          "score": 4.309
+        }
+      ],
+      "changePoint": {
+        "index": 639,
+        "date": "2013-07-17",
+        "K": 342537,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "lime",
+      "n": 1314,
+      "pointOutliers": [
+        {
+          "index": 65,
+          "date": "2002-07-17",
+          "valueCents": 675,
+          "score": 4.908
+        },
+        {
+          "index": 99,
+          "date": "2003-03-12",
+          "valueCents": 1850,
+          "score": 4.339
+        },
+        {
+          "index": 134,
+          "date": "2003-11-12",
+          "valueCents": 575,
+          "score": 4.497
+        },
+        {
+          "index": 157,
+          "date": "2004-04-21",
+          "valueCents": 3040,
+          "score": 8.658
+        },
+        {
+          "index": 523,
+          "date": "2011-04-27",
+          "valueCents": 1350,
+          "score": 12.141
+        },
+        {
+          "index": 524,
+          "date": "2011-05-04",
+          "valueCents": 1500,
+          "score": 18.886
+        },
+        {
+          "index": 553,
+          "date": "2011-11-23",
+          "valueCents": 1315,
+          "score": 6.677
+        },
+        {
+          "index": 554,
+          "date": "2011-11-30",
+          "valueCents": 1363,
+          "score": 4.479
+        },
+        {
+          "index": 753,
+          "date": "2015-10-07",
+          "valueCents": 800,
+          "score": 4.151
+        },
+        {
+          "index": 827,
+          "date": "2017-03-08",
+          "valueCents": 1520,
+          "score": 7.277
+        },
+        {
+          "index": 1186,
+          "date": "2024-01-24",
+          "valueCents": 4220,
+          "score": 4.758
+        },
+        {
+          "index": 1196,
+          "date": "2024-04-03",
+          "valueCents": 4120,
+          "score": 4.272
+        }
+      ],
+      "changePoint": {
+        "index": 658,
+        "date": "2013-12-11",
+        "K": 305282,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "mint",
+      "n": 130,
+      "pointOutliers": [
+        {
+          "index": 11,
+          "date": "2024-03-27",
+          "valueCents": 1318,
+          "score": 6.07
+        },
+        {
+          "index": 56,
+          "date": "2025-02-05",
+          "valueCents": 1428,
+          "score": 4.497
+        },
+        {
+          "index": 61,
+          "date": "2025-03-12",
+          "valueCents": 1418,
+          "score": 4.047
+        },
+        {
+          "index": 85,
+          "date": "2025-08-27",
+          "valueCents": 1240,
+          "score": 4.047
+        },
+        {
+          "index": 86,
+          "date": "2025-09-03",
+          "valueCents": 1150,
+          "score": 5.059
+        }
+      ],
+      "changePoint": {
+        "index": 98,
+        "date": "2025-11-26",
+        "K": 1461,
+        "pApprox": 0.006,
+        "significant": true
+      }
+    },
+    {
+      "key": "napa-cabbage",
+      "n": 1313,
+      "pointOutliers": [
+        {
+          "index": 632,
+          "date": "2013-06-05",
+          "valueCents": 1690,
+          "score": 8.094
+        },
+        {
+          "index": 992,
+          "date": "2020-05-13",
+          "valueCents": 3440,
+          "score": 16.188
+        },
+        {
+          "index": 993,
+          "date": "2020-05-20",
+          "valueCents": 3390,
+          "score": 15.224
+        },
+        {
+          "index": 1030,
+          "date": "2021-02-03",
+          "valueCents": 1786,
+          "score": 4.182
+        },
+        {
+          "index": 1134,
+          "date": "2023-02-01",
+          "valueCents": 3020,
+          "score": 4.085
+        },
+        {
+          "index": 1260,
+          "date": "2025-07-02",
+          "valueCents": 2100,
+          "score": 13.49
+        },
+        {
+          "index": 1261,
+          "date": "2025-07-09",
+          "valueCents": 2050,
+          "score": 10.117
+        }
+      ],
+      "changePoint": {
+        "index": 611,
+        "date": "2013-01-09",
+        "K": 311443,
         "pApprox": 0,
         "significant": true
       }
@@ -468,210 +4200,1344 @@
       "changePoint": null
     },
     {
-      "key": "onion",
-      "n": 158,
+      "key": "okra",
+      "n": 1306,
       "pointOutliers": [
         {
-          "index": 32,
-          "date": "2024-01-24",
-          "valueCents": 2905,
-          "score": 14.164
+          "index": 133,
+          "date": "2003-11-12",
+          "valueCents": 1581,
+          "score": 4.059
         },
         {
-          "index": 68,
-          "date": "2024-10-02",
-          "valueCents": 2745,
-          "score": 5.552
+          "index": 425,
+          "date": "2009-06-17",
+          "valueCents": 800,
+          "score": 4.047
         },
         {
-          "index": 74,
-          "date": "2024-11-13",
-          "valueCents": 2950,
-          "score": 13.04
+          "index": 444,
+          "date": "2009-10-28",
+          "valueCents": 1240,
+          "score": 5.733
+        },
+        {
+          "index": 505,
+          "date": "2011-01-19",
+          "valueCents": 3200,
+          "score": 4.143
+        },
+        {
+          "index": 506,
+          "date": "2011-01-26",
+          "valueCents": 2900,
+          "score": 4.452
+        },
+        {
+          "index": 557,
+          "date": "2012-01-18",
+          "valueCents": 1625,
+          "score": 7.588
+        },
+        {
+          "index": 572,
+          "date": "2012-05-02",
+          "valueCents": 1595,
+          "score": 6.914
+        },
+        {
+          "index": 690,
+          "date": "2014-08-27",
+          "valueCents": 1040,
+          "score": 4.991
+        },
+        {
+          "index": 736,
+          "date": "2015-07-15",
+          "valueCents": 1305,
+          "score": 4.216
+        },
+        {
+          "index": 737,
+          "date": "2015-07-22",
+          "valueCents": 1700,
+          "score": 9.115
+        },
+        {
+          "index": 1092,
+          "date": "2022-05-18",
+          "valueCents": 1340,
+          "score": 4.452
+        },
+        {
+          "index": 1188,
+          "date": "2024-03-27",
+          "valueCents": 1475,
+          "score": 8.768
         }
       ],
       "changePoint": {
-        "index": 48,
-        "date": "2024-05-15",
-        "K": 4459,
+        "index": 915,
+        "date": "2018-12-26",
+        "K": 217433,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "onion",
+      "n": 1314,
+      "pointOutliers": [
+        {
+          "index": 148,
+          "date": "2004-02-18",
+          "valueCents": 1150,
+          "score": 4.216
+        },
+        {
+          "index": 458,
+          "date": "2010-01-27",
+          "valueCents": 1070,
+          "score": 5.396
+        },
+        {
+          "index": 590,
+          "date": "2012-08-08",
+          "valueCents": 1500,
+          "score": 6.745
+        },
+        {
+          "index": 625,
+          "date": "2013-04-10",
+          "valueCents": 1415,
+          "score": 5.733
+        },
+        {
+          "index": 782,
+          "date": "2016-04-27",
+          "valueCents": 1410,
+          "score": 5.396
+        },
+        {
+          "index": 888,
+          "date": "2018-05-09",
+          "valueCents": 1615,
+          "score": 5.059
+        },
+        {
+          "index": 1023,
+          "date": "2020-12-09",
+          "valueCents": 2000,
+          "score": 4.721
+        },
+        {
+          "index": 1067,
+          "date": "2021-10-13",
+          "valueCents": 2350,
+          "score": 4.384
+        },
+        {
+          "index": 1129,
+          "date": "2022-12-21",
+          "valueCents": 3230,
+          "score": 4.721
+        },
+        {
+          "index": 1211,
+          "date": "2024-07-17",
+          "valueCents": 2225,
+          "score": 4.959
+        }
+      ],
+      "changePoint": {
+        "index": 840,
+        "date": "2017-06-07",
+        "K": 318681,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "oregano",
+      "n": 130,
+      "pointOutliers": [],
+      "changePoint": {
+        "index": 95,
+        "date": "2025-11-05",
+        "K": 3264,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "parsley",
+      "n": 1313,
+      "pointOutliers": [
+        {
+          "index": 80,
+          "date": "2002-11-06",
+          "valueCents": 745,
+          "score": 4.924
+        },
+        {
+          "index": 980,
+          "date": "2020-02-19",
+          "valueCents": 1100,
+          "score": 16.188
+        },
+        {
+          "index": 1198,
+          "date": "2024-04-24",
+          "valueCents": 2390,
+          "score": 8.319
+        },
+        {
+          "index": 1199,
+          "date": "2024-05-01",
+          "valueCents": 2340,
+          "score": 18.211
+        }
+      ],
+      "changePoint": {
+        "index": 624,
+        "date": "2013-04-10",
+        "K": 352120,
         "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "pear",
-      "n": 158,
+      "n": 1313,
       "pointOutliers": [
         {
-          "index": 7,
-          "date": "2023-08-02",
-          "valueCents": 4680,
-          "score": 6.07
+          "index": 69,
+          "date": "2002-08-21",
+          "valueCents": 1275,
+          "score": 4.89
         },
         {
-          "index": 70,
-          "date": "2024-10-16",
-          "valueCents": 4175,
-          "score": 4.553
+          "index": 76,
+          "date": "2002-10-09",
+          "valueCents": 1340,
+          "score": 5.396
+        },
+        {
+          "index": 202,
+          "date": "2005-03-09",
+          "valueCents": 2115,
+          "score": 4.721
+        },
+        {
+          "index": 274,
+          "date": "2006-07-26",
+          "valueCents": 2760,
+          "score": 15.378
+        },
+        {
+          "index": 331,
+          "date": "2007-08-29",
+          "valueCents": 1792,
+          "score": 10.387
+        },
+        {
+          "index": 434,
+          "date": "2009-08-19",
+          "valueCents": 1540,
+          "score": 5.396
+        },
+        {
+          "index": 435,
+          "date": "2009-08-26",
+          "valueCents": 1540,
+          "score": 5.396
+        },
+        {
+          "index": 545,
+          "date": "2011-10-05",
+          "valueCents": 2240,
+          "score": 4.047
+        },
+        {
+          "index": 565,
+          "date": "2012-02-22",
+          "valueCents": 1950,
+          "score": 4.047
+        },
+        {
+          "index": 698,
+          "date": "2014-09-24",
+          "valueCents": 2470,
+          "score": 18.436
+        },
+        {
+          "index": 737,
+          "date": "2015-06-24",
+          "valueCents": 2180,
+          "score": 7.419
+        },
+        {
+          "index": 738,
+          "date": "2015-07-01",
+          "valueCents": 2180,
+          "score": 7.419
+        },
+        {
+          "index": 892,
+          "date": "2018-06-13",
+          "valueCents": 2900,
+          "score": 4.047
+        },
+        {
+          "index": 970,
+          "date": "2019-12-11",
+          "valueCents": 2878,
+          "score": 7.105
+        },
+        {
+          "index": 991,
+          "date": "2020-05-06",
+          "valueCents": 3020,
+          "score": 5.104
+        },
+        {
+          "index": 1028,
+          "date": "2021-01-20",
+          "valueCents": 2900,
+          "score": 4.946
+        },
+        {
+          "index": 1087,
+          "date": "2022-03-09",
+          "valueCents": 2950,
+          "score": 26.98
+        },
+        {
+          "index": 1088,
+          "date": "2022-03-16",
+          "valueCents": 2990,
+          "score": 21.584
+        },
+        {
+          "index": 1179,
+          "date": "2023-12-13",
+          "valueCents": 3300,
+          "score": 4.497
         }
       ],
       "changePoint": {
-        "index": 43,
-        "date": "2024-04-10",
-        "K": 4638,
+        "index": 743,
+        "date": "2015-08-05",
+        "K": 386753,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "pineapple",
+      "n": 1314,
+      "pointOutliers": [
+        {
+          "index": 55,
+          "date": "2002-05-08",
+          "valueCents": 1795,
+          "score": 5.733
+        },
+        {
+          "index": 75,
+          "date": "2002-09-25",
+          "valueCents": 1480,
+          "score": 5.936
+        },
+        {
+          "index": 123,
+          "date": "2003-08-27",
+          "valueCents": 1560,
+          "score": 5.396
+        },
+        {
+          "index": 217,
+          "date": "2005-06-15",
+          "valueCents": 1260,
+          "score": 5.396
+        },
+        {
+          "index": 322,
+          "date": "2007-06-20",
+          "valueCents": 1020,
+          "score": 6.205
+        },
+        {
+          "index": 376,
+          "date": "2008-07-02",
+          "valueCents": 1185,
+          "score": 7.082
+        },
+        {
+          "index": 654,
+          "date": "2013-11-13",
+          "valueCents": 550,
+          "score": 7.285
+        },
+        {
+          "index": 829,
+          "date": "2017-03-22",
+          "valueCents": 1440,
+          "score": 4.047
+        },
+        {
+          "index": 871,
+          "date": "2018-01-10",
+          "valueCents": 1244,
+          "score": 4.452
+        },
+        {
+          "index": 939,
+          "date": "2019-05-01",
+          "valueCents": 1480,
+          "score": 20.235
+        },
+        {
+          "index": 1016,
+          "date": "2020-10-21",
+          "valueCents": 1340,
+          "score": 7.419
+        },
+        {
+          "index": 1096,
+          "date": "2022-05-04",
+          "valueCents": 1390,
+          "score": 4.721
+        },
+        {
+          "index": 1176,
+          "date": "2023-11-15",
+          "valueCents": 1281,
+          "score": 17.672
+        },
+        {
+          "index": 1259,
+          "date": "2025-06-18",
+          "valueCents": 1870,
+          "score": 5.666
+        }
+      ],
+      "changePoint": {
+        "index": 236,
+        "date": "2005-10-26",
+        "K": 146378,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "poblano-pepper",
+      "n": 1313,
+      "pointOutliers": [
+        {
+          "index": 56,
+          "date": "2002-05-22",
+          "valueCents": 2040,
+          "score": 4.272
+        },
+        {
+          "index": 57,
+          "date": "2002-05-29",
+          "valueCents": 2175,
+          "score": 6.408
+        },
+        {
+          "index": 640,
+          "date": "2013-07-31",
+          "valueCents": 2200,
+          "score": 4.67
+        },
+        {
+          "index": 778,
+          "date": "2016-04-06",
+          "valueCents": 2050,
+          "score": 12.815
+        },
+        {
+          "index": 791,
+          "date": "2016-07-06",
+          "valueCents": 2100,
+          "score": 5.396
+        },
+        {
+          "index": 840,
+          "date": "2017-06-14",
+          "valueCents": 1660,
+          "score": 4.497
+        },
+        {
+          "index": 848,
+          "date": "2017-08-09",
+          "valueCents": 2140,
+          "score": 4.272
+        },
+        {
+          "index": 853,
+          "date": "2017-09-13",
+          "valueCents": 2140,
+          "score": 4.272
+        },
+        {
+          "index": 869,
+          "date": "2018-01-03",
+          "valueCents": 2200,
+          "score": 6.07
+        },
+        {
+          "index": 1017,
+          "date": "2020-11-04",
+          "valueCents": 2100,
+          "score": 4.497
+        },
+        {
+          "index": 1048,
+          "date": "2021-06-09",
+          "valueCents": 1890,
+          "score": 5.396
+        }
+      ],
+      "changePoint": {
+        "index": 606,
+        "date": "2012-12-05",
+        "K": 381092,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "pork-belly",
+      "n": 233,
+      "pointOutliers": [
+        {
+          "index": 0,
+          "date": "2007-01-01",
+          "valueCents": 12890,
+          "score": 21.449
+        },
+        {
+          "index": 40,
+          "date": "2010-05-01",
+          "valueCents": 15010,
+          "score": 5.825
+        },
+        {
+          "index": 75,
+          "date": "2013-04-01",
+          "valueCents": 15270,
+          "score": 8.319
+        },
+        {
+          "index": 108,
+          "date": "2016-01-01",
+          "valueCents": 13740,
+          "score": 4.587
+        }
+      ],
+      "changePoint": {
+        "index": 165,
+        "date": "2020-10-01",
+        "K": 8994,
         "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "pork-loin",
-      "n": 158,
-      "pointOutliers": [],
+      "n": 702,
+      "pointOutliers": [
+        {
+          "index": 37,
+          "date": "2013-09-25",
+          "valueCents": 103,
+          "score": 4.047
+        }
+      ],
       "changePoint": {
-        "index": 68,
-        "date": "2024-10-02",
-        "K": 1701,
-        "pApprox": 0.025,
+        "index": 424,
+        "date": "2021-03-10",
+        "K": 54168,
+        "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "pork-shoulder",
-      "n": 158,
+      "n": 702,
       "pointOutliers": [],
       "changePoint": {
-        "index": 99,
-        "date": "2025-05-07",
-        "K": 3093,
+        "index": 424,
+        "date": "2021-03-10",
+        "K": 86616,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "pumpkin",
+      "n": 490,
+      "pointOutliers": [
+        {
+          "index": 11,
+          "date": "2002-09-18",
+          "valueCents": 13938,
+          "score": 6.825
+        },
+        {
+          "index": 30,
+          "date": "2004-10-06",
+          "valueCents": 2060,
+          "score": 9.578
+        },
+        {
+          "index": 32,
+          "date": "2004-10-20",
+          "valueCents": 5775,
+          "score": 17.86
+        },
+        {
+          "index": 36,
+          "date": "2005-09-21",
+          "valueCents": 10617,
+          "score": 42.267
+        },
+        {
+          "index": 37,
+          "date": "2005-09-28",
+          "valueCents": 2780,
+          "score": 17.537
+        },
+        {
+          "index": 49,
+          "date": "2006-10-25",
+          "valueCents": 2300,
+          "score": 4.506
+        },
+        {
+          "index": 57,
+          "date": "2007-10-30",
+          "valueCents": 5406,
+          "score": 7.32
+        },
+        {
+          "index": 66,
+          "date": "2009-09-01",
+          "valueCents": 50000,
+          "score": 14.839
+        },
+        {
+          "index": 115,
+          "date": "2012-05-31",
+          "valueCents": 34500,
+          "score": 6.07
+        },
+        {
+          "index": 157,
+          "date": "2014-09-03",
+          "valueCents": 20000,
+          "score": 21.522
+        },
+        {
+          "index": 158,
+          "date": "2014-09-10",
+          "valueCents": 20000,
+          "score": 18.211
+        },
+        {
+          "index": 159,
+          "date": "2014-09-17",
+          "valueCents": 10040,
+          "score": 7.876
+        },
+        {
+          "index": 165,
+          "date": "2014-10-29",
+          "valueCents": 5350,
+          "score": 5.497
+        },
+        {
+          "index": 214,
+          "date": "2016-01-29",
+          "valueCents": 2200,
+          "score": 7.942
+        },
+        {
+          "index": 273,
+          "date": "2018-04-25",
+          "valueCents": 5935,
+          "score": 11.871
+        },
+        {
+          "index": 277,
+          "date": "2018-05-23",
+          "valueCents": 8535,
+          "score": 4.197
+        },
+        {
+          "index": 278,
+          "date": "2018-05-30",
+          "valueCents": 31250,
+          "score": 8.73
+        },
+        {
+          "index": 409,
+          "date": "2021-05-26",
+          "valueCents": 24595,
+          "score": 11.389
+        },
+        {
+          "index": 478,
+          "date": "2025-09-17",
+          "valueCents": 25000,
+          "score": 20.351
+        }
+      ],
+      "changePoint": {
+        "index": 76,
+        "date": "2009-11-06",
+        "K": 24895,
         "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "raspberry",
-      "n": 158,
+      "n": 1313,
       "pointOutliers": [
         {
-          "index": 1,
+          "index": 247,
+          "date": "2006-01-18",
+          "valueCents": 1650,
+          "score": 5.986
+        },
+        {
+          "index": 335,
+          "date": "2007-09-26",
+          "valueCents": 2275,
+          "score": 4.539
+        },
+        {
+          "index": 353,
+          "date": "2008-01-30",
+          "valueCents": 3680,
+          "score": 6.443
+        },
+        {
+          "index": 402,
+          "date": "2009-01-07",
+          "valueCents": 3506,
+          "score": 4.112
+        },
+        {
+          "index": 440,
+          "date": "2009-09-30",
+          "valueCents": 2153,
+          "score": 5.951
+        },
+        {
+          "index": 930,
+          "date": "2019-03-06",
+          "valueCents": 2490,
+          "score": 4.047
+        },
+        {
+          "index": 1055,
+          "date": "2021-07-28",
+          "valueCents": 1130,
+          "score": 4.122
+        },
+        {
+          "index": 1062,
+          "date": "2021-09-15",
+          "valueCents": 1250,
+          "score": 9.274
+        },
+        {
+          "index": 1087,
+          "date": "2022-03-09",
+          "valueCents": 1860,
+          "score": 4.818
+        },
+        {
+          "index": 1154,
           "date": "2023-06-21",
           "valueCents": 1688,
           "score": 7.475
         },
         {
-          "index": 2,
-          "date": "2023-06-28",
-          "valueCents": 1820,
-          "score": 4.479
-        },
-        {
-          "index": 55,
+          "index": 1208,
           "date": "2024-07-03",
           "valueCents": 840,
           "score": 4.761
         },
         {
-          "index": 108,
+          "index": 1261,
           "date": "2025-07-09",
           "valueCents": 675,
           "score": 8.383
         }
       ],
       "changePoint": {
-        "index": 49,
-        "date": "2024-05-22",
-        "K": 1933,
-        "pApprox": 0.007,
+        "index": 469,
+        "date": "2010-04-21",
+        "K": 72867,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "red-leaf-lettuce",
+      "n": 1313,
+      "pointOutliers": [
+        {
+          "index": 87,
+          "date": "2002-12-24",
+          "valueCents": 669,
+          "score": 6.475
+        },
+        {
+          "index": 155,
+          "date": "2004-04-14",
+          "valueCents": 755,
+          "score": 12.366
+        },
+        {
+          "index": 236,
+          "date": "2005-11-02",
+          "valueCents": 705,
+          "score": 7.195
+        },
+        {
+          "index": 285,
+          "date": "2006-10-11",
+          "valueCents": 1763,
+          "score": 5.756
+        },
+        {
+          "index": 339,
+          "date": "2007-10-24",
+          "valueCents": 1135,
+          "score": 4.991
+        },
+        {
+          "index": 393,
+          "date": "2008-11-05",
+          "valueCents": 980,
+          "score": 4.047
+        },
+        {
+          "index": 397,
+          "date": "2008-12-03",
+          "valueCents": 1225,
+          "score": 8.6
+        },
+        {
+          "index": 605,
+          "date": "2012-11-28",
+          "valueCents": 988,
+          "score": 6.07
+        },
+        {
+          "index": 653,
+          "date": "2013-11-13",
+          "valueCents": 1000,
+          "score": 4.497
+        },
+        {
+          "index": 741,
+          "date": "2015-07-22",
+          "valueCents": 1038,
+          "score": 4.309
+        },
+        {
+          "index": 909,
+          "date": "2018-10-10",
+          "valueCents": 1132,
+          "score": 6.273
+        },
+        {
+          "index": 958,
+          "date": "2019-09-18",
+          "valueCents": 1340,
+          "score": 5.396
+        },
+        {
+          "index": 984,
+          "date": "2020-03-18",
+          "valueCents": 1528,
+          "score": 11.736
+        },
+        {
+          "index": 1211,
+          "date": "2024-07-24",
+          "valueCents": 1930,
+          "score": 8.364
+        }
+      ],
+      "changePoint": {
+        "index": 704,
+        "date": "2014-11-05",
+        "K": 331102,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "red-onion",
+      "n": 1313,
+      "pointOutliers": [
+        {
+          "index": 244,
+          "date": "2005-12-28",
+          "valueCents": 938,
+          "score": 4.272
+        },
+        {
+          "index": 432,
+          "date": "2009-08-05",
+          "valueCents": 1480,
+          "score": 8.319
+        },
+        {
+          "index": 521,
+          "date": "2011-04-20",
+          "valueCents": 800,
+          "score": 4.721
+        },
+        {
+          "index": 591,
+          "date": "2012-08-22",
+          "valueCents": 1750,
+          "score": 4.384
+        },
+        {
+          "index": 601,
+          "date": "2012-10-31",
+          "valueCents": 1185,
+          "score": 4.553
+        },
+        {
+          "index": 828,
+          "date": "2017-03-22",
+          "valueCents": 838,
+          "score": 4.637
+        },
+        {
+          "index": 840,
+          "date": "2017-06-14",
+          "valueCents": 1280,
+          "score": 4.721
+        }
+      ],
+      "changePoint": {
+        "index": 569,
+        "date": "2012-03-21",
+        "K": 302255,
+        "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "red-potato",
-      "n": 158,
+      "n": 1313,
       "pointOutliers": [
         {
-          "index": 0,
-          "date": "2023-06-14",
-          "valueCents": 3660,
-          "score": 6.745
+          "index": 56,
+          "date": "2002-05-22",
+          "valueCents": 2425,
+          "score": 5.059
         },
         {
-          "index": 55,
-          "date": "2024-07-03",
-          "valueCents": 3465,
-          "score": 16.019
+          "index": 259,
+          "date": "2006-04-12",
+          "valueCents": 2100,
+          "score": 4.497
         },
         {
-          "index": 66,
-          "date": "2024-09-18",
-          "valueCents": 3400,
-          "score": 13.49
+          "index": 405,
+          "date": "2009-01-28",
+          "valueCents": 2110,
+          "score": 4.721
+        },
+        {
+          "index": 637,
+          "date": "2013-07-10",
+          "valueCents": 3200,
+          "score": 4.047
+        },
+        {
+          "index": 755,
+          "date": "2015-10-28",
+          "valueCents": 2200,
+          "score": 5.436
+        },
+        {
+          "index": 756,
+          "date": "2015-11-04",
+          "valueCents": 1920,
+          "score": 5.396
+        },
+        {
+          "index": 795,
+          "date": "2016-08-03",
+          "valueCents": 1995,
+          "score": 6.239
+        },
+        {
+          "index": 801,
+          "date": "2016-09-14",
+          "valueCents": 2015,
+          "score": 6.567
+        },
+        {
+          "index": 847,
+          "date": "2017-08-02",
+          "valueCents": 1570,
+          "score": 6.428
+        },
+        {
+          "index": 862,
+          "date": "2017-11-15",
+          "valueCents": 2006,
+          "score": 5.234
+        },
+        {
+          "index": 874,
+          "date": "2018-02-07",
+          "valueCents": 1788,
+          "score": 5.261
+        },
+        {
+          "index": 919,
+          "date": "2018-12-19",
+          "valueCents": 1920,
+          "score": 4.974
+        },
+        {
+          "index": 977,
+          "date": "2020-01-29",
+          "valueCents": 3100,
+          "score": 5.171
+        },
+        {
+          "index": 998,
+          "date": "2020-06-24",
+          "valueCents": 4070,
+          "score": 13.625
+        },
+        {
+          "index": 1064,
+          "date": "2021-09-29",
+          "valueCents": 2600,
+          "score": 4.047
         }
       ],
       "changePoint": {
-        "index": 70,
-        "date": "2024-10-16",
-        "K": 4022,
+        "index": 631,
+        "date": "2013-05-29",
+        "K": 344169,
         "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "ribeye",
-      "n": 36,
-      "pointOutliers": [],
+      "n": 1314,
+      "pointOutliers": [
+        {
+          "index": 294,
+          "date": "2006-12-06",
+          "valueCents": 696,
+          "score": 4.182
+        },
+        {
+          "index": 405,
+          "date": "2009-01-21",
+          "valueCents": 462,
+          "score": 4.991
+        },
+        {
+          "index": 527,
+          "date": "2011-05-25",
+          "valueCents": 504,
+          "score": 8.768
+        },
+        {
+          "index": 693,
+          "date": "2014-08-13",
+          "valueCents": 696,
+          "score": 4.047
+        },
+        {
+          "index": 967,
+          "date": "2019-11-13",
+          "valueCents": 926,
+          "score": 4.384
+        }
+      ],
       "changePoint": {
-        "index": 19,
-        "date": "2024-12-01",
-        "K": 316,
+        "index": 676,
+        "date": "2014-04-16",
+        "K": 416283,
         "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "romaine-lettuce",
-      "n": 157,
+      "n": 1313,
+      "pointOutliers": [
+        {
+          "index": 19,
+          "date": "2001-08-29",
+          "valueCents": 1615,
+          "score": 5.621
+        },
+        {
+          "index": 62,
+          "date": "2002-06-26",
+          "valueCents": 1300,
+          "score": 4.272
+        },
+        {
+          "index": 195,
+          "date": "2005-01-12",
+          "valueCents": 1170,
+          "score": 4.371
+        },
+        {
+          "index": 235,
+          "date": "2005-10-19",
+          "valueCents": 1205,
+          "score": 20.235
+        },
+        {
+          "index": 243,
+          "date": "2005-12-14",
+          "valueCents": 1193,
+          "score": 5.096
+        },
+        {
+          "index": 244,
+          "date": "2005-12-21",
+          "valueCents": 1275,
+          "score": 5.059
+        },
+        {
+          "index": 309,
+          "date": "2007-03-21",
+          "valueCents": 1573,
+          "score": 6.655
+        },
+        {
+          "index": 335,
+          "date": "2007-09-19",
+          "valueCents": 1300,
+          "score": 7.987
+        },
+        {
+          "index": 336,
+          "date": "2007-09-26",
+          "valueCents": 1305,
+          "score": 7.81
+        },
+        {
+          "index": 371,
+          "date": "2008-05-28",
+          "valueCents": 1038,
+          "score": 5.621
+        },
+        {
+          "index": 395,
+          "date": "2008-11-12",
+          "valueCents": 1450,
+          "score": 4.352
+        },
+        {
+          "index": 416,
+          "date": "2009-04-08",
+          "valueCents": 1310,
+          "score": 5.666
+        },
+        {
+          "index": 592,
+          "date": "2012-08-22",
+          "valueCents": 1820,
+          "score": 7.419
+        },
+        {
+          "index": 593,
+          "date": "2012-08-29",
+          "valueCents": 1860,
+          "score": 6.07
+        },
+        {
+          "index": 693,
+          "date": "2014-08-13",
+          "valueCents": 2190,
+          "score": 18.211
+        },
+        {
+          "index": 937,
+          "date": "2019-04-24",
+          "valueCents": 1710,
+          "score": 8.768
+        }
+      ],
+      "changePoint": {
+        "index": 674,
+        "date": "2014-04-02",
+        "K": 317114,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "rosemary",
+      "n": 130,
       "pointOutliers": [],
       "changePoint": {
-        "index": 104,
-        "date": "2025-06-18",
-        "K": 3752,
+        "index": 95,
+        "date": "2025-11-05",
+        "K": 3264,
         "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "russet-potato",
-      "n": 158,
+      "n": 1314,
       "pointOutliers": [
         {
-          "index": 26,
-          "date": "2023-12-13",
-          "valueCents": 2335,
-          "score": 17.986
+          "index": 263,
+          "date": "2006-05-03",
+          "valueCents": 1240,
+          "score": 4.384
         },
         {
-          "index": 30,
-          "date": "2024-01-10",
-          "valueCents": 1823,
-          "score": 19.448
+          "index": 732,
+          "date": "2015-05-13",
+          "valueCents": 1395,
+          "score": 4.811
         },
         {
-          "index": 39,
-          "date": "2024-03-13",
-          "valueCents": 2310,
-          "score": 5.519
+          "index": 745,
+          "date": "2015-08-12",
+          "valueCents": 1545,
+          "score": 5.261
         },
         {
-          "index": 147,
-          "date": "2026-04-08",
-          "valueCents": 1710,
-          "score": 4.497
+          "index": 773,
+          "date": "2016-02-24",
+          "valueCents": 1318,
+          "score": 5.126
+        },
+        {
+          "index": 810,
+          "date": "2016-11-09",
+          "valueCents": 1025,
+          "score": 8.431
+        },
+        {
+          "index": 891,
+          "date": "2018-05-30",
+          "valueCents": 1650,
+          "score": 4.047
+        },
+        {
+          "index": 937,
+          "date": "2019-04-17",
+          "valueCents": 1760,
+          "score": 4.384
+        },
+        {
+          "index": 949,
+          "date": "2019-07-10",
+          "valueCents": 1550,
+          "score": 4.721
+        },
+        {
+          "index": 983,
+          "date": "2020-03-04",
+          "valueCents": 2100,
+          "score": 5.995
+        },
+        {
+          "index": 1063,
+          "date": "2021-09-15",
+          "valueCents": 2860,
+          "score": 8.094
+        },
+        {
+          "index": 1211,
+          "date": "2024-07-17",
+          "valueCents": 1200,
+          "score": 16.188
+        },
+        {
+          "index": 1312,
+          "date": "2026-06-24",
+          "valueCents": 1500,
+          "score": 10.117
         }
       ],
       "changePoint": {
-        "index": 39,
-        "date": "2024-03-13",
-        "K": 3940,
+        "index": 838,
+        "date": "2017-05-24",
+        "K": 304708,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "rutabaga",
+      "n": 1304,
+      "pointOutliers": [
+        {
+          "index": 96,
+          "date": "2003-02-26",
+          "valueCents": 813,
+          "score": 8.431
+        },
+        {
+          "index": 105,
+          "date": "2003-04-30",
+          "valueCents": 750,
+          "score": 4.216
+        },
+        {
+          "index": 209,
+          "date": "2005-04-27",
+          "valueCents": 880,
+          "score": 8.684
+        },
+        {
+          "index": 210,
+          "date": "2005-05-04",
+          "valueCents": 910,
+          "score": 6.155
+        },
+        {
+          "index": 491,
+          "date": "2010-10-06",
+          "valueCents": 1815,
+          "score": 6.745
+        },
+        {
+          "index": 492,
+          "date": "2010-10-13",
+          "valueCents": 1844,
+          "score": 4.789
+        }
+      ],
+      "changePoint": {
+        "index": 857,
+        "date": "2017-10-25",
+        "K": 370319,
         "pApprox": 0,
         "significant": true
       }
@@ -695,23 +5561,217 @@
       "changePoint": null
     },
     {
-      "key": "shrimp",
-      "n": 37,
+      "key": "serrano-pepper",
+      "n": 1312,
       "pointOutliers": [
         {
-          "index": 23,
-          "date": "2025-04-01",
-          "valueCents": 659,
+          "index": 102,
+          "date": "2003-04-09",
+          "valueCents": 286,
+          "score": 21.246
+        },
+        {
+          "index": 113,
+          "date": "2003-06-25",
+          "valueCents": 63,
+          "score": 4.583
+        },
+        {
+          "index": 178,
+          "date": "2004-09-22",
+          "valueCents": 395,
+          "score": 5.801
+        },
+        {
+          "index": 229,
+          "date": "2005-09-14",
+          "valueCents": 325,
+          "score": 10.117
+        },
+        {
+          "index": 243,
+          "date": "2005-12-21",
+          "valueCents": 490,
+          "score": 5.059
+        },
+        {
+          "index": 253,
+          "date": "2006-03-01",
+          "valueCents": 419,
+          "score": 10.888
+        },
+        {
+          "index": 324,
+          "date": "2007-07-11",
+          "valueCents": 296,
+          "score": 9.021
+        },
+        {
+          "index": 510,
+          "date": "2011-02-02",
+          "valueCents": 269,
+          "score": 5.059
+        },
+        {
+          "index": 514,
+          "date": "2011-03-02",
+          "valueCents": 413,
+          "score": 8.768
+        },
+        {
+          "index": 517,
+          "date": "2011-03-23",
+          "valueCents": 348,
+          "score": 4.806
+        },
+        {
+          "index": 690,
+          "date": "2014-07-30",
+          "valueCents": 354,
+          "score": 5.171
+        },
+        {
+          "index": 894,
+          "date": "2018-06-27",
+          "valueCents": 47,
           "score": 4.047
+        },
+        {
+          "index": 960,
+          "date": "2019-10-02",
+          "valueCents": 36,
+          "score": 8.094
+        },
+        {
+          "index": 1164,
+          "date": "2023-08-30",
+          "valueCents": 3540,
+          "score": 10.792
+        },
+        {
+          "index": 1281,
+          "date": "2025-12-02",
+          "valueCents": 7250,
+          "score": 5.589
         }
       ],
       "changePoint": {
-        "index": 7,
-        "date": "2023-12-01",
-        "K": 120,
-        "pApprox": 0.38,
-        "significant": false
+        "index": 1005,
+        "date": "2020-08-12",
+        "K": 290505,
+        "pApprox": 0,
+        "significant": true
       }
+    },
+    {
+      "key": "short-rib",
+      "n": 1314,
+      "pointOutliers": [
+        {
+          "index": 278,
+          "date": "2006-08-16",
+          "valueCents": 126,
+          "score": 4.047
+        },
+        {
+          "index": 437,
+          "date": "2009-09-02",
+          "valueCents": 177,
+          "score": 4.721
+        },
+        {
+          "index": 703,
+          "date": "2014-10-22",
+          "valueCents": 463,
+          "score": 4.047
+        },
+        {
+          "index": 818,
+          "date": "2017-01-04",
+          "valueCents": 369,
+          "score": 4.047
+        },
+        {
+          "index": 912,
+          "date": "2018-10-24",
+          "valueCents": 457,
+          "score": 5.733
+        },
+        {
+          "index": 935,
+          "date": "2019-04-03",
+          "valueCents": 447,
+          "score": 4.721
+        },
+        {
+          "index": 940,
+          "date": "2019-05-08",
+          "valueCents": 475,
+          "score": 5.396
+        },
+        {
+          "index": 994,
+          "date": "2020-05-20",
+          "valueCents": 442,
+          "score": 5.733
+        },
+        {
+          "index": 998,
+          "date": "2020-06-17",
+          "valueCents": 402,
+          "score": 4.721
+        },
+        {
+          "index": 1094,
+          "date": "2022-04-20",
+          "valueCents": 574,
+          "score": 5.781
+        },
+        {
+          "index": 1110,
+          "date": "2022-08-10",
+          "valueCents": 555,
+          "score": 4.047
+        },
+        {
+          "index": 1223,
+          "date": "2024-10-09",
+          "valueCents": 588,
+          "score": 6.07
+        },
+        {
+          "index": 1274,
+          "date": "2025-10-01",
+          "valueCents": 550,
+          "score": 4.272
+        },
+        {
+          "index": 1282,
+          "date": "2025-11-26",
+          "valueCents": 541,
+          "score": 4.721
+        }
+      ],
+      "changePoint": {
+        "index": 616,
+        "date": "2013-02-06",
+        "K": 428605,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "shrimp",
+      "n": 10,
+      "pointOutliers": [
+        {
+          "index": 5,
+          "date": "2025-07-01",
+          "valueCents": 322,
+          "score": 4.047
+        }
+      ],
+      "changePoint": null
     },
     {
       "key": "shrimp-head-on",
@@ -740,13 +5800,201 @@
       "changePoint": null
     },
     {
-      "key": "spinach",
-      "n": 158,
-      "pointOutliers": [],
+      "key": "snow-peas",
+      "n": 1307,
+      "pointOutliers": [
+        {
+          "index": 29,
+          "date": "2001-11-14",
+          "valueCents": 1788,
+          "score": 7.554
+        },
+        {
+          "index": 45,
+          "date": "2002-03-06",
+          "valueCents": 1025,
+          "score": 9.106
+        },
+        {
+          "index": 81,
+          "date": "2002-11-13",
+          "valueCents": 2219,
+          "score": 4.267
+        },
+        {
+          "index": 432,
+          "date": "2009-08-05",
+          "valueCents": 1923,
+          "score": 6.901
+        },
+        {
+          "index": 629,
+          "date": "2013-05-15",
+          "valueCents": 2165,
+          "score": 7.869
+        },
+        {
+          "index": 702,
+          "date": "2014-10-22",
+          "valueCents": 1785,
+          "score": 7.987
+        },
+        {
+          "index": 866,
+          "date": "2017-12-13",
+          "valueCents": 1145,
+          "score": 4.521
+        },
+        {
+          "index": 1300,
+          "date": "2026-05-20",
+          "valueCents": 2500,
+          "score": 4.075
+        },
+        {
+          "index": 1304,
+          "date": "2026-06-17",
+          "valueCents": 2100,
+          "score": 6.794
+        }
+      ],
       "changePoint": {
-        "index": 77,
-        "date": "2024-12-04",
-        "K": 4581,
+        "index": 746,
+        "date": "2015-08-26",
+        "K": 186765,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "spinach",
+      "n": 1313,
+      "pointOutliers": [
+        {
+          "index": 49,
+          "date": "2002-03-27",
+          "valueCents": 1083,
+          "score": 5.396
+        },
+        {
+          "index": 72,
+          "date": "2002-09-04",
+          "valueCents": 1238,
+          "score": 11.129
+        },
+        {
+          "index": 73,
+          "date": "2002-09-11",
+          "valueCents": 1363,
+          "score": 11.054
+        },
+        {
+          "index": 187,
+          "date": "2004-11-17",
+          "valueCents": 1225,
+          "score": 6.07
+        },
+        {
+          "index": 271,
+          "date": "2006-06-28",
+          "valueCents": 1465,
+          "score": 5.974
+        },
+        {
+          "index": 272,
+          "date": "2006-07-05",
+          "valueCents": 1385,
+          "score": 4.432
+        },
+        {
+          "index": 412,
+          "date": "2009-03-18",
+          "valueCents": 1135,
+          "score": 6.07
+        },
+        {
+          "index": 486,
+          "date": "2010-08-18",
+          "valueCents": 1225,
+          "score": 8.319
+        },
+        {
+          "index": 582,
+          "date": "2012-06-20",
+          "valueCents": 1250,
+          "score": 4.946
+        },
+        {
+          "index": 586,
+          "date": "2012-07-18",
+          "valueCents": 1120,
+          "score": 23.607
+        },
+        {
+          "index": 588,
+          "date": "2012-08-01",
+          "valueCents": 1085,
+          "score": 6.295
+        },
+        {
+          "index": 635,
+          "date": "2013-06-26",
+          "valueCents": 1285,
+          "score": 4.497
+        },
+        {
+          "index": 636,
+          "date": "2013-07-03",
+          "valueCents": 1225,
+          "score": 6.745
+        },
+        {
+          "index": 662,
+          "date": "2014-01-15",
+          "valueCents": 1380,
+          "score": 4.151
+        },
+        {
+          "index": 694,
+          "date": "2014-08-27",
+          "valueCents": 1293,
+          "score": 9.443
+        },
+        {
+          "index": 871,
+          "date": "2018-01-17",
+          "valueCents": 1450,
+          "score": 8.094
+        },
+        {
+          "index": 872,
+          "date": "2018-01-24",
+          "valueCents": 1380,
+          "score": 25.855
+        },
+        {
+          "index": 1060,
+          "date": "2021-09-01",
+          "valueCents": 1700,
+          "score": 7.869
+        },
+        {
+          "index": 1091,
+          "date": "2022-04-06",
+          "valueCents": 1588,
+          "score": 4.654
+        },
+        {
+          "index": 1154,
+          "date": "2023-06-21",
+          "valueCents": 1663,
+          "score": 5.621
+        }
+      ],
+      "changePoint": {
+        "index": 610,
+        "date": "2013-01-02",
+        "K": 355344,
         "pApprox": 0,
         "significant": true
       }
@@ -758,81 +6006,606 @@
       "changePoint": null
     },
     {
+      "key": "striploin",
+      "n": 1314,
+      "pointOutliers": [
+        {
+          "index": 224,
+          "date": "2005-08-03",
+          "valueCents": 461,
+          "score": 4.89
+        },
+        {
+          "index": 373,
+          "date": "2008-06-11",
+          "valueCents": 641,
+          "score": 4.047
+        },
+        {
+          "index": 447,
+          "date": "2009-11-11",
+          "valueCents": 403,
+          "score": 5.396
+        },
+        {
+          "index": 592,
+          "date": "2012-08-22",
+          "valueCents": 559,
+          "score": 4.721
+        },
+        {
+          "index": 768,
+          "date": "2016-01-20",
+          "valueCents": 584,
+          "score": 5.621
+        },
+        {
+          "index": 970,
+          "date": "2019-12-04",
+          "valueCents": 498,
+          "score": 4.047
+        },
+        {
+          "index": 1022,
+          "date": "2020-12-02",
+          "valueCents": 607,
+          "score": 4.24
+        },
+        {
+          "index": 1227,
+          "date": "2024-11-06",
+          "valueCents": 799,
+          "score": 4.047
+        }
+      ],
+      "changePoint": {
+        "index": 669,
+        "date": "2014-02-26",
+        "K": 325781,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
       "key": "sweet-potato",
-      "n": 157,
+      "n": 65,
       "pointOutliers": [],
       "changePoint": {
-        "index": 126,
-        "date": "2025-11-19",
-        "K": 3810,
+        "index": 40,
+        "date": "2026-01-14",
+        "K": 984,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "tarragon",
+      "n": 130,
+      "pointOutliers": [],
+      "changePoint": {
+        "index": 62,
+        "date": "2025-03-19",
+        "K": 4221,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "thyme",
+      "n": 130,
+      "pointOutliers": [],
+      "changePoint": {
+        "index": 54,
+        "date": "2025-01-22",
+        "K": 4125,
         "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "tomato",
-      "n": 157,
+      "n": 1314,
       "pointOutliers": [
         {
-          "index": 41,
-          "date": "2024-03-27",
-          "valueCents": 2080,
-          "score": 7.901
+          "index": 198,
+          "date": "2005-02-02",
+          "valueCents": 760,
+          "score": 4.384
+        },
+        {
+          "index": 326,
+          "date": "2007-07-18",
+          "valueCents": 1440,
+          "score": 5.059
+        },
+        {
+          "index": 513,
+          "date": "2011-02-16",
+          "valueCents": 2815,
+          "score": 8.544
+        },
+        {
+          "index": 681,
+          "date": "2014-05-21",
+          "valueCents": 1050,
+          "score": 4.24
+        },
+        {
+          "index": 859,
+          "date": "2017-10-18",
+          "valueCents": 1390,
+          "score": 5.227
+        },
+        {
+          "index": 881,
+          "date": "2018-03-21",
+          "valueCents": 1640,
+          "score": 5.519
+        },
+        {
+          "index": 932,
+          "date": "2019-03-13",
+          "valueCents": 1760,
+          "score": 16.525
+        },
+        {
+          "index": 941,
+          "date": "2019-05-15",
+          "valueCents": 1510,
+          "score": 4.721
+        },
+        {
+          "index": 944,
+          "date": "2019-06-05",
+          "valueCents": 1290,
+          "score": 7.419
+        },
+        {
+          "index": 1155,
+          "date": "2023-06-21",
+          "valueCents": 1550,
+          "score": 4.796
+        },
+        {
+          "index": 1189,
+          "date": "2024-02-14",
+          "valueCents": 1750,
+          "score": 4.505
+        },
+        {
+          "index": 1269,
+          "date": "2025-08-27",
+          "valueCents": 2260,
+          "score": 8.094
         }
       ],
       "changePoint": {
-        "index": 81,
-        "date": "2025-01-08",
-        "K": 2767,
+        "index": 701,
+        "date": "2014-10-08",
+        "K": 269128,
         "pApprox": 0,
         "significant": true
       }
     },
     {
+      "key": "tuna-loin",
+      "n": 10,
+      "pointOutliers": [
+        {
+          "index": 2,
+          "date": "2025-04-01",
+          "valueCents": 1112,
+          "score": 11.046
+        },
+        {
+          "index": 5,
+          "date": "2025-07-01",
+          "valueCents": 464,
+          "score": 4.292
+        }
+      ],
+      "changePoint": null
+    },
+    {
       "key": "vegetable-oil",
-      "n": 37,
-      "pointOutliers": [],
+      "n": 303,
+      "pointOutliers": [
+        {
+          "index": 57,
+          "date": "2005-12-01",
+          "valueCents": 9920,
+          "score": 4.216
+        },
+        {
+          "index": 67,
+          "date": "2006-10-01",
+          "valueCents": 10200,
+          "score": 7.869
+        }
+      ],
       "changePoint": {
-        "index": 21,
-        "date": "2025-02-01",
-        "K": 308,
+        "index": 80,
+        "date": "2007-11-01",
+        "K": 17622,
         "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "watermelon",
-      "n": 157,
+      "n": 1313,
       "pointOutliers": [
         {
-          "index": 93,
-          "date": "2025-04-02",
-          "valueCents": 2318,
-          "score": 45.455
+          "index": 237,
+          "date": "2005-11-09",
+          "valueCents": 300,
+          "score": 23.017
         },
         {
-          "index": 100,
-          "date": "2025-05-21",
-          "valueCents": 800,
-          "score": 5.396
+          "index": 239,
+          "date": "2005-11-23",
+          "valueCents": 361,
+          "score": 17.07
+        },
+        {
+          "index": 240,
+          "date": "2005-11-30",
+          "valueCents": 298,
+          "score": 35.883
+        },
+        {
+          "index": 272,
+          "date": "2006-07-12",
+          "valueCents": 15,
+          "score": 4.047
+        },
+        {
+          "index": 276,
+          "date": "2006-08-09",
+          "valueCents": 27,
+          "score": 4.047
+        },
+        {
+          "index": 308,
+          "date": "2007-03-21",
+          "valueCents": 44,
+          "score": 4.047
+        },
+        {
+          "index": 343,
+          "date": "2007-11-21",
+          "valueCents": 579,
+          "score": 33.602
+        },
+        {
+          "index": 354,
+          "date": "2008-02-06",
+          "valueCents": 267,
+          "score": 26.193
+        },
+        {
+          "index": 357,
+          "date": "2008-02-27",
+          "valueCents": 962,
+          "score": 4.473
+        },
+        {
+          "index": 358,
+          "date": "2008-03-05",
+          "valueCents": 1560,
+          "score": 7.716
+        },
+        {
+          "index": 361,
+          "date": "2008-03-26",
+          "valueCents": 698,
+          "score": 111.797
+        },
+        {
+          "index": 362,
+          "date": "2008-04-02",
+          "valueCents": 1033,
+          "score": 337.245
+        },
+        {
+          "index": 391,
+          "date": "2008-10-22",
+          "valueCents": 467,
+          "score": 74.194
+        },
+        {
+          "index": 396,
+          "date": "2008-11-26",
+          "valueCents": 102,
+          "score": 6.661
+        },
+        {
+          "index": 397,
+          "date": "2008-12-03",
+          "valueCents": 313,
+          "score": 11.03
+        },
+        {
+          "index": 410,
+          "date": "2009-03-04",
+          "valueCents": 207,
+          "score": 6.229
+        },
+        {
+          "index": 411,
+          "date": "2009-03-11",
+          "valueCents": 499,
+          "score": 27.899
+        },
+        {
+          "index": 412,
+          "date": "2009-03-18",
+          "valueCents": 150,
+          "score": 25.631
+        },
+        {
+          "index": 448,
+          "date": "2009-11-25",
+          "valueCents": 109,
+          "score": 6.22
+        },
+        {
+          "index": 483,
+          "date": "2010-07-28",
+          "valueCents": 97,
+          "score": 17.537
+        },
+        {
+          "index": 484,
+          "date": "2010-08-04",
+          "valueCents": 135,
+          "score": 19.392
+        },
+        {
+          "index": 488,
+          "date": "2010-09-01",
+          "valueCents": 235,
+          "score": 48.114
+        },
+        {
+          "index": 490,
+          "date": "2010-09-15",
+          "valueCents": 163,
+          "score": 23.944
+        },
+        {
+          "index": 524,
+          "date": "2011-05-11",
+          "valueCents": 289,
+          "score": 17.941
+        },
+        {
+          "index": 535,
+          "date": "2011-07-27",
+          "valueCents": 163,
+          "score": 91.731
+        },
+        {
+          "index": 539,
+          "date": "2011-08-24",
+          "valueCents": 332,
+          "score": 41.684
+        },
+        {
+          "index": 551,
+          "date": "2011-11-16",
+          "valueCents": 1038,
+          "score": 17.778
+        },
+        {
+          "index": 565,
+          "date": "2012-02-22",
+          "valueCents": 46,
+          "score": 19.133
+        },
+        {
+          "index": 566,
+          "date": "2012-02-29",
+          "valueCents": 48,
+          "score": 4.475
+        },
+        {
+          "index": 576,
+          "date": "2012-05-09",
+          "valueCents": 128,
+          "score": 4.272
+        },
+        {
+          "index": 582,
+          "date": "2012-06-20",
+          "valueCents": 268,
+          "score": 55.533
+        },
+        {
+          "index": 588,
+          "date": "2012-08-01",
+          "valueCents": 424,
+          "score": 134.898
+        },
+        {
+          "index": 589,
+          "date": "2012-08-08",
+          "valueCents": 374,
+          "score": 118.036
+        },
+        {
+          "index": 600,
+          "date": "2012-10-24",
+          "valueCents": 732,
+          "score": 79.028
+        },
+        {
+          "index": 601,
+          "date": "2012-10-31",
+          "valueCents": 264,
+          "score": 26.418
+        },
+        {
+          "index": 626,
+          "date": "2013-04-24",
+          "valueCents": 541,
+          "score": 38.071
+        },
+        {
+          "index": 675,
+          "date": "2014-04-16",
+          "valueCents": 300,
+          "score": 93.417
+        },
+        {
+          "index": 682,
+          "date": "2014-06-04",
+          "valueCents": 120,
+          "score": 12.411
+        },
+        {
+          "index": 683,
+          "date": "2014-06-11",
+          "valueCents": 241,
+          "score": 23.944
+        },
+        {
+          "index": 687,
+          "date": "2014-07-09",
+          "valueCents": 37,
+          "score": 9.443
+        },
+        {
+          "index": 688,
+          "date": "2014-07-16",
+          "valueCents": 33,
+          "score": 6.745
+        },
+        {
+          "index": 697,
+          "date": "2014-09-17",
+          "valueCents": 93,
+          "score": 6.745
+        },
+        {
+          "index": 705,
+          "date": "2014-11-12",
+          "valueCents": 397,
+          "score": 4.359
+        },
+        {
+          "index": 723,
+          "date": "2015-03-18",
+          "valueCents": 768,
+          "score": 81.838
+        },
+        {
+          "index": 730,
+          "date": "2015-05-06",
+          "valueCents": 103,
+          "score": 4.476
+        },
+        {
+          "index": 743,
+          "date": "2015-08-05",
+          "valueCents": 240,
+          "score": 47.664
+        },
+        {
+          "index": 764,
+          "date": "2015-12-30",
+          "valueCents": 245,
+          "score": 6.199
+        },
+        {
+          "index": 813,
+          "date": "2016-12-07",
+          "valueCents": 2195,
+          "score": 5.427
+        },
+        {
+          "index": 852,
+          "date": "2017-09-06",
+          "valueCents": 4694,
+          "score": 6.372
+        },
+        {
+          "index": 853,
+          "date": "2017-09-13",
+          "valueCents": 9955,
+          "score": 20.723
+        },
+        {
+          "index": 854,
+          "date": "2017-09-20",
+          "valueCents": 8975,
+          "score": 6.313
+        },
+        {
+          "index": 863,
+          "date": "2017-11-22",
+          "valueCents": 3970,
+          "score": 4.553
+        },
+        {
+          "index": 870,
+          "date": "2018-01-10",
+          "valueCents": 4020,
+          "score": 4.796
+        },
+        {
+          "index": 877,
+          "date": "2018-02-28",
+          "valueCents": 1810,
+          "score": 5.227
+        },
+        {
+          "index": 970,
+          "date": "2019-12-11",
+          "valueCents": 13110,
+          "score": 4.967
+        },
+        {
+          "index": 1013,
+          "date": "2020-10-07",
+          "valueCents": 6660,
+          "score": 6.644
+        },
+        {
+          "index": 1074,
+          "date": "2021-12-08",
+          "valueCents": 2800,
+          "score": 4.384
+        },
+        {
+          "index": 1121,
+          "date": "2022-11-02",
+          "valueCents": 4845,
+          "score": 16.621
+        },
+        {
+          "index": 1148,
+          "date": "2023-05-10",
+          "valueCents": 2900,
+          "score": 5.853
         }
       ],
       "changePoint": {
-        "index": 30,
-        "date": "2024-01-10",
-        "K": 3405,
+        "index": 765,
+        "date": "2015-12-31",
+        "K": 417581,
         "pApprox": 0,
         "significant": true
       }
     },
     {
       "key": "whole-chicken",
-      "n": 158,
+      "n": 200,
       "pointOutliers": [],
       "changePoint": {
-        "index": 91,
-        "date": "2025-03-03",
-        "K": 4649,
+        "index": 50,
+        "date": "2023-08-14",
+        "K": 5404,
         "pApprox": 0,
         "significant": true
       }
@@ -850,6 +6623,18 @@
       "changePoint": null
     },
     {
+      "key": "whole-lobster",
+      "n": 10,
+      "pointOutliers": [],
+      "changePoint": null
+    },
+    {
+      "key": "whole-salmon",
+      "n": 9,
+      "pointOutliers": [],
+      "changePoint": null
+    },
+    {
       "key": "whole-trout",
       "n": 10,
       "pointOutliers": [],
@@ -857,37 +6642,303 @@
     },
     {
       "key": "whole-turkey",
-      "n": 156,
+      "n": 198,
       "pointOutliers": [
         {
-          "index": 11,
+          "index": 51,
           "date": "2023-08-21",
           "valueCents": 136,
           "score": 4.047
         },
         {
-          "index": 40,
+          "index": 80,
           "date": "2024-03-11",
           "valueCents": 118,
           "score": 9.443
         },
         {
-          "index": 44,
+          "index": 84,
           "date": "2024-04-08",
           "valueCents": 92,
           "score": 7.419
         },
         {
-          "index": 45,
+          "index": 85,
           "date": "2024-04-15",
           "valueCents": 91,
           "score": 8.094
         }
       ],
       "changePoint": {
-        "index": 93,
-        "date": "2025-03-24",
-        "K": 5337,
+        "index": 46,
+        "date": "2023-07-17",
+        "K": 4980,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "yellow-squash",
+      "n": 1308,
+      "pointOutliers": [
+        {
+          "index": 17,
+          "date": "2001-08-22",
+          "valueCents": 725,
+          "score": 4.553
+        },
+        {
+          "index": 38,
+          "date": "2002-01-16",
+          "valueCents": 1435,
+          "score": 6.34
+        },
+        {
+          "index": 96,
+          "date": "2003-02-26",
+          "valueCents": 1080,
+          "score": 4.566
+        },
+        {
+          "index": 197,
+          "date": "2005-02-02",
+          "valueCents": 1300,
+          "score": 4.102
+        },
+        {
+          "index": 277,
+          "date": "2006-08-16",
+          "valueCents": 2060,
+          "score": 8.266
+        },
+        {
+          "index": 282,
+          "date": "2006-09-20",
+          "valueCents": 1380,
+          "score": 6.226
+        },
+        {
+          "index": 365,
+          "date": "2008-04-23",
+          "valueCents": 2115,
+          "score": 4.609
+        },
+        {
+          "index": 436,
+          "date": "2009-09-02",
+          "valueCents": 1275,
+          "score": 6.615
+        },
+        {
+          "index": 477,
+          "date": "2010-07-21",
+          "valueCents": 665,
+          "score": 4.946
+        },
+        {
+          "index": 499,
+          "date": "2010-12-22",
+          "valueCents": 2440,
+          "score": 6.414
+        },
+        {
+          "index": 873,
+          "date": "2018-03-07",
+          "valueCents": 2150,
+          "score": 5.552
+        },
+        {
+          "index": 1042,
+          "date": "2021-06-02",
+          "valueCents": 1900,
+          "score": 4.216
+        },
+        {
+          "index": 1116,
+          "date": "2022-11-02",
+          "valueCents": 2150,
+          "score": 17.031
+        },
+        {
+          "index": 1256,
+          "date": "2025-07-09",
+          "valueCents": 2550,
+          "score": 22.933
+        },
+        {
+          "index": 1257,
+          "date": "2025-07-16",
+          "valueCents": 2760,
+          "score": 7.15
+        },
+        {
+          "index": 1290,
+          "date": "2026-03-04",
+          "valueCents": 2960,
+          "score": 4.047
+        },
+        {
+          "index": 1307,
+          "date": "2026-06-29",
+          "valueCents": 1600,
+          "score": 5.621
+        }
+      ],
+      "changePoint": {
+        "index": 597,
+        "date": "2012-11-07",
+        "K": 215332,
+        "pApprox": 0,
+        "significant": true
+      }
+    },
+    {
+      "key": "zucchini",
+      "n": 1314,
+      "pointOutliers": [
+        {
+          "index": 8,
+          "date": "2001-06-13",
+          "valueCents": 1110,
+          "score": 4.452
+        },
+        {
+          "index": 14,
+          "date": "2001-07-25",
+          "valueCents": 1075,
+          "score": 7.419
+        },
+        {
+          "index": 28,
+          "date": "2001-10-31",
+          "valueCents": 646,
+          "score": 6.359
+        },
+        {
+          "index": 58,
+          "date": "2002-05-29",
+          "valueCents": 1138,
+          "score": 5.839
+        },
+        {
+          "index": 105,
+          "date": "2003-04-23",
+          "valueCents": 1410,
+          "score": 6.295
+        },
+        {
+          "index": 210,
+          "date": "2005-04-27",
+          "valueCents": 1365,
+          "score": 4.834
+        },
+        {
+          "index": 265,
+          "date": "2006-05-17",
+          "valueCents": 1250,
+          "score": 13.49
+        },
+        {
+          "index": 291,
+          "date": "2006-11-15",
+          "valueCents": 1369,
+          "score": 4.23
+        },
+        {
+          "index": 440,
+          "date": "2009-09-23",
+          "valueCents": 710,
+          "score": 4.047
+        },
+        {
+          "index": 457,
+          "date": "2010-01-20",
+          "valueCents": 1538,
+          "score": 4.506
+        },
+        {
+          "index": 473,
+          "date": "2010-05-12",
+          "valueCents": 1210,
+          "score": 4.272
+        },
+        {
+          "index": 504,
+          "date": "2010-12-15",
+          "valueCents": 1730,
+          "score": 7.852
+        },
+        {
+          "index": 505,
+          "date": "2010-12-22",
+          "valueCents": 2000,
+          "score": 5.059
+        },
+        {
+          "index": 605,
+          "date": "2012-11-21",
+          "valueCents": 1780,
+          "score": 7.166
+        },
+        {
+          "index": 606,
+          "date": "2012-11-28",
+          "valueCents": 1163,
+          "score": 5.239
+        },
+        {
+          "index": 794,
+          "date": "2016-07-20",
+          "valueCents": 850,
+          "score": 13.49
+        },
+        {
+          "index": 807,
+          "date": "2016-10-19",
+          "valueCents": 850,
+          "score": 6.07
+        },
+        {
+          "index": 848,
+          "date": "2017-08-02",
+          "valueCents": 910,
+          "score": 4.272
+        },
+        {
+          "index": 862,
+          "date": "2017-11-08",
+          "valueCents": 1135,
+          "score": 16.188
+        },
+        {
+          "index": 1021,
+          "date": "2020-11-25",
+          "valueCents": 1380,
+          "score": 4.354
+        },
+        {
+          "index": 1099,
+          "date": "2022-05-25",
+          "valueCents": 1420,
+          "score": 4.216
+        },
+        {
+          "index": 1100,
+          "date": "2022-06-01",
+          "valueCents": 1550,
+          "score": 6.589
+        },
+        {
+          "index": 1162,
+          "date": "2023-08-09",
+          "valueCents": 1100,
+          "score": 6.07
+        }
+      ],
+      "changePoint": {
+        "index": 697,
+        "date": "2014-09-10",
+        "K": 180044,
         "pApprox": 0,
         "significant": true
       }

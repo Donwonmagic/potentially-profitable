@@ -42,7 +42,12 @@ function changeFromRaw(spec, raw) {
   switch (spec.type) {
     case 'eia':  return S.windowChange(S.eiaSeries(raw, { tail: spec.tail }));
     case 'fred': return S.windowChange(S.fredSeries(raw, { tail: spec.tail }));
-    case 'nass': return S.windowChange(S.nassSeries((raw && raw.data) || raw, { tail: spec.tail }));
+    // A seasonal stock series (cold storage) MUST be deseasonalized or a spring build
+    // prints a false signal (ADR-014). `transform:"anomaly"` reads same-month deviation
+    // from the trailing 5-yr same-month median; no transform ⇒ legacy raw windowChange.
+    case 'nass': return spec.transform === 'anomaly'
+      ? S.coldStorageAnomaly((raw && raw.data) || raw, { years: spec.years, minYears: spec.minYears, window: spec.window })
+      : S.windowChange(S.nassSeries((raw && raw.data) || raw, { tail: spec.tail }));
     case 'ams':  return S.windowChange(S.amsSeries((raw && raw.results) || raw, { field: spec.field, dateKey: spec.dateKey, commodity: spec.commodity, commodityKey: spec.commodityKey, tail: spec.tail }));
     case 'usdm': return S.windowChange(S.usdmSeverity((raw && raw.length != null) ? raw : (raw && raw.data) || [], { categories: spec.categories, tail: spec.tail }));
     case 'nws':  return S.eventSignal(S.nwsFreezeActive(raw, { events: spec.events, areaMatch: spec.areaMatch }));

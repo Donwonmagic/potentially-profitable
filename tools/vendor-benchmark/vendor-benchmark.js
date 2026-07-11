@@ -34,13 +34,19 @@
   var BASE = ES ? '/es' : '';
   var h = SH.h, sh = SH.safeHtml, setHTML = SH.setHTML;
 
+  // Monotonic id source for form rows. performance.now() clamps to a coarse
+  // resolution on Firefox/Safari, so 2-3 rows built in one tick collapsed to
+  // identical ids — both date labels then bound to row 1 and aria-describedby
+  // pointed at an ambiguous hint. A plain counter is guaranteed-unique.
+  var VB_UID = 0;
+
   // ---- localized page chrome (verdicts come from the shared modules) --------
   var T = ES ? {
     itemLabel: 'Artículo', itemHint: '— como aparece en tu factura',
-    itemPlaceholder: 'ej. ribeye, lomo de res, aceite de oliva 3L',
+    itemPlaceholder: 'ej. ribeye, pechuga de pollo, tomate',
     unitLabel: 'Precio por',
     dateLabel: 'Fecha', priceLabel: 'Precio ($)',
-    add: 'Agregar una compra', example: 'Cargar el ejemplo', clear: 'Borrar',
+    add: 'Agregar una compra', clear: 'Borrar',
     removeAria: 'Quitar esta compra',
     purchasesLegend: 'Tus compras con fecha',
     scaffoldHint: 'Agrega dos o más facturas con fecha del mismo artículo. Cuantas más fechas, más nítida la comparación con el mercado.',
@@ -53,7 +59,7 @@
     ownHistoryEyebrow: 'Frente a tu propio historial',
     chartYou: 'Tú', chartMarket: 'Mercado', chartAria: 'Tu precio frente al precio mayorista del mercado, ambos indexados a 100 al inicio de tu ventana.',
     chartUncertain: 'Lecturas de mercado escasas — línea aproximada', showNumbers: 'Ver los números', tipGap: 'Diferencia:',
-    timelineEyebrow: 'Tu ventana, fecha por fecha',
+    showAnalysis: 'Ver el gráfico y el análisis completo',
     thDate: 'Fecha', thYou: 'Tu precio', thYouCum: 'Tú (acum.)', thMarketCum: 'Mercado (acum.)',
     attributionWholesale: 'Referencia mayorista — tu precio entregado normalmente es mayor.',
     attributionSources: 'Fuentes', attributionAsOf: 'Lecturas de mercado',
@@ -67,6 +73,25 @@
     levelAt: 'Tu nivel está dentro de un margen de entrega normal frente a la referencia mayorista.',
     levelAbove: 'Tu nivel también corre por encima de la referencia mayorista',
     levelCalib: 'El flete y la distribución normalmente suman margen, así que tómalo como tu nivel — no como prueba de una factura inflada. La tasa de cambio de arriba es la señal más fuerte.',
+    spEyebrow: 'Un precio · referencia de mercado',
+    spYour: 'Tu',
+    spTailFar: function (g) { return 'corre ' + g + ' por encima de la referencia mayorista — muy por encima de un margen de entrega normal. Vale la pena preguntar a tu proveedor qué lo explica; aun así, solo tu precio entregado entre proveedores puede probar un sobrecosto, nunca la diferencia mayorista por sí sola.'; },
+    spTailAbove: function (g) { return 'corre ' + g + ' por encima de la referencia mayorista. Un precio entregado por encima del mayorista es normal — el flete y la distribución suman margen — así que léelo como tu nivel, no como prueba de una factura inflada.'; },
+    spTailBelow: function (g) { return 'está ' + g + ' por debajo de la referencia mayorista. Verifica que el empaque y la especificación coincidan antes de darlo por ganado.'; },
+    spTailAt: 'está dentro de un margen de entrega normal frente a la referencia mayorista — un buen lugar donde estar.',
+    spRefLevel: 'Referencia mayorista ahora:',
+    spRefBasis: 'Mayorista USDA · tu precio se queda en tu navegador',
+    spTrack: function (label) { return 'Seguimos ' + label + ', pero todavía no hay un nivel de precio mayorista firme para comparar el tuyo — agrega una segunda factura con fecha para leer tu propia tendencia.'; },
+    spUpsellLead: 'Una segunda factura con fecha convierte esto en la pregunta real: ¿una subida fue el mercado o tu proveedor?',
+    spUpsellCta: 'Agregar una segunda factura con fecha',
+    spHAbove: 'Por encima de la referencia mayorista',
+    spHAt: 'En línea con la referencia mayorista',
+    spHBelow: 'Por debajo de la referencia mayorista',
+    spHTrack: 'Seguido en el Cost Index',
+    spWatch: 'Seguir este artículo', spWatching: 'Siguiéndolo — en Tu Libro',
+    spWatchLead: 'Mantenlo vigilado:',
+    spNoMatch: function (item) { return 'Todavía no seguimos ' + item + ' en el Cost Index. Agrega una segunda factura con fecha y la herramienta seguirá igualmente TU propia tendencia de precio.'; },
+    spAnnounceTrack: 'Artículo reconocido. Agrega una segunda factura con fecha para una tendencia.',
     receiptSummary: 'Cómo se midió esta diferencia',
     receiptDepthDeep: function (n, cadence, from, to) { return 'De ' + n + ' lecturas mayoristas ' + cadence + ' del USDA, ' + from + '–' + to + '.'; },
     receiptDepthShort: 'De un historial de mercado reciente y corto.',
@@ -102,19 +127,47 @@
     volumeLead: 'A ese ritmo, esta diferencia corre cerca de', volumePerWeek: 'por semana', volumePerYear: 'al año si se mantiene',
     briefBtn: 'Preparar la hoja para tu proveedor', briefPrint: 'Imprimir', briefCopy: 'Copiar el resumen', briefCopied: 'Resumen copiado',
     jTitle: 'Tus artículos guardados', jClear: 'Borrar guardados', jThin: 'vigilar',
+    jOver: 'encima', jUnder: 'debajo', jEven: 'en línea',
+    jLiveEyebrow: 'Tu libro hoy',
+    jLiveSay: function (el, de, total) { return el === '0'
+      ? de + ' de tus ' + total + ' artículos seguidos están por debajo de su mercado normal ahora mismo.'
+      : el + ' de tus ' + total + ' artículos seguidos están por encima de su mercado normal ahora mismo' + (de !== '0' ? ' (' + de + ' por debajo)' : '') + '.'; },
+    jLiveTop: function (pct) { return 'es el más alto — alrededor de ' + pct + '% por encima de su normal. Vale la pena revisarlo.'; },
     jSince: 'Desde tu última revisión', jWiden: 'la diferencia creció', jNarrow: 'la diferencia se redujo',
     bookLead: 'Tu libro —', bookItems: 'artículos en seguimiento.',
     bookWorst: 'Mayor diferencia del proveedor:', bookCall: 'La línea que vale la pena llamar primero.',
     bookOver: 'de tus líneas corren por encima del mercado — Ledger las vigila todas.',
     forecastEyebrow: 'La próxima lectura del mercado',
     errItem: 'Escribe el nombre del artículo.',
-    errRows: 'Agrega al menos dos compras con fecha y precio.'
+    errRows: 'Agrega al menos dos compras con fecha y precio.',
+    // ingredient picker (combobox)
+    pickToggle: 'Mostrar ingredientes que podemos comparar',
+    pickListAria: 'Artículos que Vendor Benchmark puede leer frente al mercado',
+    pickScopeTitle: function (n) { return 'Los ' + n + ' artículos que podemos leer frente al mercado mayorista'; },
+    pickScopeNote: 'Todos comparan el movimiento del mercado. Más a medida que crece el Índice de costos.',
+    pickDescribe: function (n) { return 'Los ' + n + ' artículos que podemos comparar; escribe lo que sea — tu propio texto también funciona.'; },
+    pickRefSr: ' — referencia firme de dólar mayorista',
+    pickRefLegend: '$ señala un nivel firme de dólar mayorista — una cifra de mercado, no un precio a pagar. Tu precio entregado es mayor.',
+    pickEmptyHead: 'No está en nuestra lista de comparación.',
+    pickEmptyBody: 'Déjalo como lo escribiste — Vendor Benchmark igual lo compara contra tu propio historial de precios. Revisa el Índice de costos para ver qué leemos frente al mercado.',
+    pickCount: function (n) { return n + (n === 1 ? ' coincidencia' : ' coincidencias'); },
+    pickCountZero: 'Sin coincidencias — tu texto se comparará igual.',
+    // market context (ADR-012) — the REFERENCE's own state, never the operator's price
+    ctxEyebrow: 'Contexto de mercado',
+    ctxElevated: function (label, pct) { return 'Ahora mismo la referencia mayorista de ' + label + ' corre alrededor de ' + pct + '% por encima de su propia norma del último año — cuando el mercado va alto, parte de una subida es el mercado, no tu proveedor.'; },
+    ctxDepressed: function (label, pct) { return 'Ahora mismo la referencia mayorista de ' + label + ' corre alrededor de ' + pct + '% por debajo de su propia norma del último año — un precio que parece justo frente a un mercado flojo aún puede merecer una segunda mirada.'; },
+    ctxVolatile: function (label) { return 'La referencia mayorista de ' + label + ' es una serie históricamente volátil — su propia norma varía mucho de una temporada a otra.'; },
+    ctxVolTag: ' También es una serie históricamente volátil.',
+    ctxEvent: function (label) { return 'Coincide en el trasfondo (no es una causa): ' + label + '.'; },
+    chartAriaDyn: function (yourR, mkR, gapAbs, gapSign) { return 'Tu precio terminó cerca de ' + yourR + ', el mercado cerca de ' + mkR + ', ambos indexados a 100 al inicio de tu ventana — ' + (gapAbs < 1 ? 'en línea con el mercado' : ('unos ' + gapAbs + ' puntos ' + (gapSign > 0 ? 'por encima' : 'por debajo') + ' del mercado')) + '.'; },
+    chartAriaThin: ' Las lecturas del mercado son escasas, así que esta línea es aproximada.',
+    shareBtn: 'Copiar enlace', shareCopied: 'Copiado — incluye tus precios', shareShared: 'Compartido — incluye tus precios'
   } : {
     itemLabel: 'Item', itemHint: '— as it reads on your invoice',
-    itemPlaceholder: 'e.g. ribeye, beef tenderloin, olive oil 3L',
+    itemPlaceholder: 'e.g. ribeye, chicken breast, tomato',
     unitLabel: 'Priced per',
     dateLabel: 'Date', priceLabel: 'Price ($)',
-    add: 'Add a purchase', example: 'Load the example', clear: 'Clear',
+    add: 'Add a purchase', clear: 'Clear',
     removeAria: 'Remove this purchase',
     purchasesLegend: 'Your dated purchases',
     scaffoldHint: 'Add two or more dated invoices for the same item. The more dates, the sharper the read against the market.',
@@ -126,7 +179,7 @@
     ownHistoryEyebrow: 'Against your own history',
     chartYou: 'You', chartMarket: 'Market', chartAria: 'Your price versus the wholesale market price, both indexed to 100 at the start of your window.',
     chartUncertain: 'Thin market reads — line is approximate', showNumbers: 'Show the numbers', tipGap: 'Gap:',
-    timelineEyebrow: 'Your window, date by date',
+    showAnalysis: 'See the chart & the full analysis',
     thDate: 'Date', thYou: 'Your price', thYouCum: 'You (cum.)', thMarketCum: 'Market (cum.)',
     attributionWholesale: 'Wholesale reference — your delivered price normally runs higher.',
     attributionSources: 'Sources', attributionAsOf: 'Market reads',
@@ -140,6 +193,25 @@
     levelAt: 'Your level sits within a normal delivered markup over the wholesale reference.',
     levelAbove: 'Your level also runs above the wholesale reference',
     levelCalib: 'Freight and distribution normally add markup, so read this as your level — not proof of a padded bill. The rate-of-change above is the stronger signal.',
+    spEyebrow: 'One price · market reference',
+    spYour: 'Your',
+    spTailFar: function (g) { return 'runs ' + g + ' above the wholesale reference — well beyond a normal delivered markup. Worth asking your rep what is driving it; still, only your delivered price across vendors can prove an overcharge, never the wholesale gap alone.'; },
+    spTailAbove: function (g) { return 'runs ' + g + ' above the wholesale reference. A delivered price above wholesale is normal — freight and distribution add margin — so read this as your level, not proof of a padded bill.'; },
+    spTailBelow: function (g) { return 'sits ' + g + ' below the wholesale reference. Double-check the pack and spec match before counting it a win.'; },
+    spTailAt: 'sits within a normal delivered markup over the wholesale reference — a fair place to be.',
+    spRefLevel: 'Wholesale reference now:',
+    spRefBasis: 'USDA wholesale · your price stays in your browser',
+    spTrack: function (label) { return 'We track ' + label + ', but there is no firm wholesale price level to place yours against yet — add a second dated invoice to read your own trend.'; },
+    spUpsellLead: 'A second dated invoice turns this into the real question: was a jump the market, or your vendor?',
+    spUpsellCta: 'Add a second dated invoice',
+    spHAbove: 'Above the wholesale reference',
+    spHAt: 'In line with the wholesale reference',
+    spHBelow: 'Below the wholesale reference',
+    spHTrack: 'Tracked in the Cost Index',
+    spWatch: 'Watch this item', spWatching: 'Watching — in Your Book',
+    spWatchLead: 'Keep an eye on it:',
+    spNoMatch: function (item) { return 'We don’t track ' + item + ' in the Cost Index yet. Add a second dated invoice and the tool will still track your OWN price trend for it.'; },
+    spAnnounceTrack: 'Item matched. Add a second dated invoice for a trend.',
     receiptSummary: 'How this gap was measured',
     // Post-audit (2026-07, HIGH-1): derive cadence + span per item — the deep series
     // are heterogeneous (beef is monthly, eggs spans ~1.4 years), so a blanket
@@ -177,13 +249,41 @@
     volumeLead: 'At that pace, this gap runs about', volumePerWeek: 'a week', volumePerYear: 'a year if it holds',
     briefBtn: 'Make a one-page brief for your rep', briefPrint: 'Print', briefCopy: 'Copy the summary', briefCopied: 'Summary copied',
     jTitle: 'Your saved items', jClear: 'Clear saved items', jThin: 'watch',
+    jOver: 'over', jUnder: 'under', jEven: 'in line',
+    jLiveEyebrow: 'Your book today',
+    jLiveSay: function (el, de, total) { return el === '0'
+      ? de + ' of your ' + total + ' tracked items are running below their normal market right now.'
+      : el + ' of your ' + total + ' tracked items are running above their normal market right now' + (de !== '0' ? ' (' + de + ' below)' : '') + '.'; },
+    jLiveTop: function (pct) { return 'is furthest up — about ' + pct + '% above its normal. Worth a look.'; },
     jSince: 'Since your last check', jWiden: 'the gap widened', jNarrow: 'the gap narrowed',
     bookLead: 'Your book —', bookItems: 'items tracked.',
     bookWorst: 'Widest vendor gap:', bookCall: 'The line worth a call first.',
     bookOver: 'of your lines run above the market — Ledger watches every one.',
     forecastEyebrow: 'The market’s next print',
     errItem: 'Enter the item name.',
-    errRows: 'Add at least two purchases with a date and price.'
+    errRows: 'Add at least two purchases with a date and price.',
+    // ingredient picker (combobox)
+    pickToggle: 'Show benchmarkable ingredients',
+    pickListAria: 'Items Vendor Benchmark can read against the market',
+    pickScopeTitle: function (n) { return 'The ' + n + ' items we can read against the wholesale market'; },
+    pickScopeNote: 'Every one benchmarks the market’s move. More as the Cost Index grows.',
+    pickDescribe: function (n) { return 'The ' + n + ' items we can benchmark; type anything — your own text still works.'; },
+    pickRefSr: ' — firm wholesale dollar reference',
+    pickRefLegend: '$ marks a firm wholesale dollar level — a market figure, not a price to pay. Your delivered price runs higher.',
+    pickEmptyHead: 'Not on our benchmark list.',
+    pickEmptyBody: 'Keep it as you typed it — Vendor Benchmark still checks it against your own price history. See the Cost Index for what we read against the market.',
+    pickCount: function (n) { return n + (n === 1 ? ' match' : ' matches'); },
+    pickCountZero: 'No matches — your typed text will still be benchmarked.',
+    // market context (ADR-012) — the REFERENCE's own state, never the operator's price
+    ctxEyebrow: 'Market context',
+    ctxElevated: function (label, pct) { return 'Right now the wholesale reference for ' + label + ' runs about ' + pct + '% above its own trailing-year normal — when the market itself runs high, part of a price rise is the market, not your vendor.'; },
+    ctxDepressed: function (label, pct) { return 'Right now the wholesale reference for ' + label + ' runs about ' + pct + '% below its own trailing-year normal — a price that looks fair against a soft market can still be worth a second look.'; },
+    ctxVolatile: function (label) { return 'The wholesale reference for ' + label + ' is a historically volatile series — its own normal swings widely from season to season.'; },
+    ctxVolTag: ' It is also a historically volatile series.',
+    ctxEvent: function (label) { return 'Co-occurring in the backdrop (not a cause): ' + label + '.'; },
+    chartAriaDyn: function (yourR, mkR, gapAbs, gapSign) { return 'Your price ended near ' + yourR + ', the market near ' + mkR + ', both indexed to 100 at your window start — ' + (gapAbs < 1 ? 'in line with the market' : ('about ' + gapAbs + ' points ' + (gapSign > 0 ? 'above' : 'below') + ' the market')) + '.'; },
+    chartAriaThin: ' Market reads are thin, so this line is approximate.',
+    shareBtn: 'Copy shareable link', shareCopied: 'Copied — includes your prices', shareShared: 'Shared — includes your prices'
   };
 
   // ---- small formatters ------------------------------------------------------
@@ -213,7 +313,13 @@
     } catch (_) { return iso; }
   }
   function track(name, props) {
-    try { if (window.plausible) window.plausible(name, props ? { props: props } : undefined); } catch (_) {}
+    try {
+      // Never emit an analytics event while a benchmark fragment is in the URL — an
+      // analytics call that echoed location.href could carry the encoded prices. The
+      // fragment is stripped right after share/hydrate, so this only guards the edge.
+      if (/[#&]b=/.test(location.hash || '')) return;
+      if (window.plausible) window.plausible(name, props ? { props: props } : undefined);
+    } catch (_) {}
   }
 
   // ---- DOM handles -----------------------------------------------------------
@@ -223,7 +329,6 @@
   var resultEl = document.getElementById('vbResult');
   var errEl = document.getElementById('vbErr');
   var addBtn = document.getElementById('vbAdd');
-  var exampleBtn = document.getElementById('vbExample');
   var clearBtn = document.getElementById('vbClear');
   var matchChip = document.getElementById('vbMatchChip');
   if (!itemEl || !unitEl || !rowsEl || !resultEl) return;
@@ -246,11 +351,43 @@
       Array.prototype.forEach.call(tags, function (tag) {
         var src = tag.getAttribute('data-src'); if (!src) return;
         var sc = document.createElement('script'); sc.src = src; sc.async = true;
-        sc.onload = function () { run(); };                 // recompute the market half
+        // run() recomputes the market half; renderJournalRail() repaints the book's LIVE
+        // market pulse once the MUNTIN_COST_CONTEXT seed lands — the rail was first painted
+        // at boot before this seed, and a single-price/empty return never re-reaches the
+        // rail through run()'s gated 2-date branch, so the pulse would otherwise no-op.
+        sc.onload = function () { run(); renderJournalRail(); };
         sc.onerror = function () { seedsFailed = true; run(); };
         document.head.appendChild(sc);
       });
     });
+  }
+
+  // ---- per-item deep-history shards -----------------------------------------
+  // Instead of the ~1.6 MB history monolith, load only the picked item's series
+  // (data/ci-history/<key>.js, ~a few KB) once it's matched. The shard MERGES into
+  // MUNTIN_COST_INDEX_HISTORY, then a re-run upgrades the chart from the shallow
+  // spark to the deep series. A same-origin <script> (exactly like loadSeeds) — no
+  // fetch. Absent/failed shard → the shallow spark, so this stays purely additive.
+  // Optional hard-bust hint only — freshness is guaranteed by the shard's short,
+  // revalidated cache (_headers: max-age=1d + stale-while-revalidate), NOT by this
+  // constant, so a rebuilt shard reaches returning visitors within a day regardless.
+  var HIST_V = '20260710-shard1';
+  var vbHistReq = {};
+  function maybeLoadHistoryShard(res) {
+    var m = res && res.market;
+    if (!m || !m.available || !m.key) return;
+    var key = m.key;
+    if (!/^[a-z0-9-]+$/.test(key)) return;            // only safe slug keys reach a URL
+    var H = window.MUNTIN_COST_INDEX_HISTORY;
+    if (H && H[key]) return;                            // deep series already present
+    if (vbHistReq[key]) return;                         // request in flight
+    vbHistReq[key] = true;
+    var sc = document.createElement('script');
+    sc.src = '/data/ci-history/' + key + '.js?v=' + HIST_V;
+    sc.async = true;
+    sc.onload = function () { run(); };                 // re-render — chart upgrades to deep
+    sc.onerror = function () {};                         // graceful: keep the shallow spark
+    document.head.appendChild(sc);
   }
 
   // ---- repeatable dated-purchase rows (DOM-built; the DOM is the state) ------
@@ -268,7 +405,8 @@
     dInput.type = 'date'; dInput.className = 'vb-input'; dInput.setAttribute('data-field', 'date');
     dInput.setAttribute('aria-label', T.dateLabel);
     if (data.date) dInput.value = data.date;
-    var dId = 'vbd' + Math.round(performance.now() * 1000) + Math.floor(performance.now() % 97);
+    var uid = ++VB_UID;
+    var dId = 'vbd' + uid;
     dLab.setAttribute('for', dId); dInput.id = dId;
     dWrap.appendChild(dLab); dWrap.appendChild(dInput);
 
@@ -284,10 +422,11 @@
     pInput.setAttribute('inputmode', 'decimal'); pInput.setAttribute('autocomplete', 'off');
     pInput.setAttribute('placeholder', '0.00'); pInput.setAttribute('aria-label', T.priceLabel);
     if (data.price != null && data.price !== '') pInput.value = data.price;
-    var pId = 'vbp' + Math.round(performance.now() * 1000) + Math.floor(performance.now() % 89);
+    var pId = 'vbp' + uid;
     pLab.setAttribute('for', pId); pInput.id = pId;
     var pHint = document.createElement('span');
     pHint.className = 'vb-prow-hint'; pHint.setAttribute('data-role', 'badprice'); pHint.hidden = true;
+    pHint.id = pId + '-hint';
     pHint.textContent = T.badPrice;
     pWrap.appendChild(pLab); pWrap.appendChild(pInput); pWrap.appendChild(pHint);
 
@@ -360,7 +499,13 @@
       var raw = (pEl.value || '').trim();
       var bad = raw !== '' && parsePrice(raw) == null;
       hint.hidden = !bad;
-      if (bad) pEl.setAttribute('aria-invalid', 'true'); else pEl.removeAttribute('aria-invalid');
+      if (bad) {
+        pEl.setAttribute('aria-invalid', 'true');
+        if (hint.id) pEl.setAttribute('aria-describedby', hint.id); // WCAG 3.3.1: name the error
+      } else {
+        pEl.removeAttribute('aria-invalid');
+        pEl.removeAttribute('aria-describedby');
+      }
       rows[i].classList.toggle('vb-prow--bad', bad);
     }
   }
@@ -377,24 +522,57 @@
   // Keyed by market key (or item name); each entry is the full state to reopen
   // plus the last honest gap. LRU-capped. All via MuntinContext — never leaves
   // the device. This is the accumulation moat and the honest Ledger on-ramp.
-  var JOURNAL_KEY = 'vbJournal', JOURNAL_CAP = 40;
-  var reopenBaseline = null; // {gapPts, at} stashed on reopen, for the trend note
+  var JOURNAL_KEY = 'vbJournal', JOURNAL_CAP = 40, CHECK_CAP = 12, SESSION_MS = 1800000; // 30-min sitting
   function readJournal() { try { var j = CTX && CTX.get(JOURNAL_KEY); return (j && typeof j === 'object') ? j : {}; } catch (_) { return {}; } }
   function writeJournal(map) { if (CTX && typeof CTX.merge === 'function') { var p = {}; p[JOURNAL_KEY] = map; try { CTX.merge(p); } catch (_) {} } }
   function journalKeyFor(res) { return (res.market && res.market.key) || ('item:' + (res.item || '').toLowerCase().replace(/\s+/g, ' ').trim()); }
+  // Each entry carries a capped, newest-first RING of checks so "since your last check"
+  // survives a refresh — the trend reads the prior check from storage, not an in-memory
+  // var. Old flat entries synthesize a single-check ring (back-compat reader).
+  function ringOf(e) {
+    if (!e) return [];
+    if (Array.isArray(e.checks) && e.checks.length) return e.checks;
+    if (typeof e.gapPts === 'number' || e.at) return [{ at: e.at || 0, gapPts: (typeof e.gapPts === 'number' ? e.gapPts : null), yourPct: e.yourPct, marketPct: e.marketPct }];
+    return [];
+  }
+  // Baseline for the trend note: the newest check from a PRIOR sitting (checks within
+  // SESSION_MS of the newest are the same sitting still being edited, not a comparison).
+  function priorCheck(res) {
+    var ring = ringOf(readJournal()[journalKeyFor(res)]);
+    if (!ring.length) return null;
+    if ((Date.now() - (ring[0].at || 0)) < SESSION_MS) return ring[1] || null;
+    return ring[0];
+  }
   function saveToJournal(res, rows) {
     if (!CTX || !res.item) return;
+    // Don't persist a PRE-SEED compute: before the lazy seed lands there's no market key,
+    // so journalKeyFor falls back to 'item:<name>' with a null gap — then the post-seed
+    // re-run keys the SAME item by its real Cost Index key, leaving a phantom duplicate in
+    // the book. Once seeds are present, a genuine no-match item still saves under 'item:<name>'
+    // (its own-history is trackable), so this guard drops only the transient pre-seed entry.
+    if (!seedsPresent()) return;
     var clean = rows.filter(function (r) { return r.date && String(r.price).trim() !== ''; });
     if (clean.length < 2) return;
     var map = readJournal();
     var k = journalKeyFor(res);
     var m = res.market;
-    map[k] = {
-      item: res.item, unit: res.unit, purchases: clean, at: Date.now(),
+    var check = {
+      at: Date.now(),
       gapPts: (m && m.res && m.res.ok && !m.res.thin) ? m.res.gapPts : null,
       yourPct: res.yourChangePct,
       marketPct: (m && m.res && m.res.ok) ? m.res.marketPct : null,
-      tier: res.tier, thin: !!(m && m.res && m.res.thin)
+      lastCents: res.lastCents, firstDate: res.firstDate, lastDate: res.lastDate
+    };
+    // Same sitting (within SESSION_MS) updates the newest check; a later visit
+    // prepends a new one — so the ring is one entry per sitting, not per keystroke.
+    var ring = ringOf(map[k]);
+    if (ring.length && (check.at - (ring[0].at || 0)) < SESSION_MS) { ring = ring.slice(); ring[0] = check; }
+    else { ring = [check].concat(ring); }
+    if (ring.length > CHECK_CAP) ring = ring.slice(0, CHECK_CAP);
+    map[k] = {
+      item: res.item, unit: res.unit, purchases: clean, at: check.at,
+      gapPts: check.gapPts, yourPct: check.yourPct, marketPct: check.marketPct,
+      tier: res.tier, thin: !!(m && m.res && m.res.thin), checks: ring
     };
     var keys = Object.keys(map);
     if (keys.length > JOURNAL_CAP) {
@@ -423,6 +601,39 @@
     railEl.addEventListener('click', onRailClick);
     panel.parentNode.insertBefore(railEl, panel.nextSibling);
   }
+  // Your Book depth — a tiny gap-over-time sparkline per line (from the ring spine) and a
+  // book-level gap-distribution strip. 100% from the on-device journal; the gap is always
+  // rate-divergence, never an overpayment claim.
+  function gapSpark(entry) {
+    var ring = ringOf(entry);
+    var vals = ring.map(function (c) { return typeof c.gapPts === 'number' ? c.gapPts : null; }).filter(function (v) { return v !== null; });
+    if (vals.length < 2) return '';
+    vals.reverse(); // chronological
+    var W = 46, H = 14, n = vals.length;
+    var min = Math.min.apply(null, vals), max = Math.max.apply(null, vals), range = (max - min) || 1;
+    var pts = vals.map(function (v, i) { return ((W - 2) * i / (n - 1) + 1).toFixed(1) + ',' + (H - 1 - (H - 2) * (v - min) / range).toFixed(1); }).join(' ');
+    var last = vals[vals.length - 1];
+    var tone = last >= 3 ? 'over' : last <= -3 ? 'under' : 'match';
+    return '<svg class="vb-jspark" data-tone="' + tone + '" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" aria-hidden="true"><polyline points="' + pts + '" fill="none" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/></svg>';
+  }
+  function gapDistribution(withGap) {
+    var over = 0, under = 0, match = 0;
+    withGap.forEach(function (x) { var g = x.e.gapPts; if (g >= 3) over++; else if (g <= -3) under++; else match++; });
+    var tot = over + under + match; if (tot < 2) return '';
+    function seg(nn, tone) { return nn ? '<span class="vb-dist-seg" data-tone="' + tone + '" style="flex:' + nn + '"></span>' : ''; }
+    var lbl = over + (ES ? ' por encima, ' : ' above, ') + match + (ES ? ' en línea, ' : ' in line, ') + under + (ES ? ' por debajo del mercado' : ' below the market');
+    return '<div class="vb-dist" role="img" aria-label="' + lbl + '">' + seg(over, 'over') + seg(match, 'match') + seg(under, 'under') + '</div>';
+  }
+
+  // The reference's CURRENT state vs its own trailing-year normal, by Cost Index key
+  // (map key === CI key for matched entries). Pure read of the loaded context seed —
+  // never the operator's price. This is what makes the book LIVE on return instead of
+  // showing gaps frozen at check-time.
+  function marketNowFor(key) {
+    var CTX2 = window.MUNTIN_COST_CONTEXT;
+    var c = CTX2 && key ? CTX2[key] : null;
+    return (c && c.now && (c.now.state === 'elevated' || c.now.state === 'depressed')) ? c.now : null;
+  }
   function renderJournalRail() {
     if (!railEl) return;
     var map = readJournal();
@@ -430,12 +641,26 @@
       .filter(function (x) { return x.e && x.e.item; })
       .sort(function (a, b) { return (Math.abs(b.e.gapPts || 0) - Math.abs(a.e.gapPts || 0)); });
     if (!items.length) { railEl.hidden = true; setHTML(railEl, ''); return; }
+
+    // LIVE market pulse across the book — recomputed against TODAY's reference state on
+    // every load, so returning is worth it. Honest: the reference's own vs-normal state,
+    // not the operator's price, and never a gap it can't stand behind.
+    var live = '';
+    var withMkt = items.map(function (x) { return { x: x, now: marketNowFor(x.k) }; }).filter(function (r) { return r.now; });
+    if (withMkt.length) {
+      var elevated = withMkt.filter(function (r) { return r.now.state === 'elevated'; })
+        .sort(function (a, b) { return (Math.abs(b.now.pct) || 0) - (Math.abs(a.now.pct) || 0); });
+      var depressed = withMkt.filter(function (r) { return r.now.state === 'depressed'; });
+      var top = elevated[0] || null;
+      live = h`<div class="vb-book-live"><span class="vb-eyebrow">${T.jLiveEyebrow}</span><p class="vb-book-live-say">${T.jLiveSay(String(elevated.length), String(depressed.length), String(items.length))}${top ? h` <strong>${top.x.e.item}</strong> ${T.jLiveTop(String(Math.abs(top.now.pct)))}` : ''}</p></div>`;
+    }
     var chips = items.map(function (x) {
       var e = x.e;
       var gapTxt = (typeof e.gapPts === 'number')
-        ? h`<span class="vb-jchip-gap" data-tone="${e.gapPts >= 3 ? 'over' : e.gapPts <= -3 ? 'under' : 'match'}">${Math.abs(e.gapPts).toFixed(e.gapPts < 10 ? 1 : 0)} ${T.pointsWord}</span>`
+        ? h`<span class="vb-jchip-gap" data-tone="${e.gapPts >= 3 ? 'over' : e.gapPts <= -3 ? 'under' : 'match'}">${Math.abs(e.gapPts).toFixed(e.gapPts < 10 ? 1 : 0)} ${T.pointsWord} ${e.gapPts >= 3 ? T.jOver : e.gapPts <= -3 ? T.jUnder : T.jEven}</span>`
         : h`<span class="vb-jchip-gap" data-tone="watch">${T.jThin}</span>`;
-      return h`<button type="button" class="vb-jchip" data-jkey="${x.k}"><span class="vb-jchip-name">${e.item}</span>${gapTxt}<span class="vb-jchip-when">${relTime(e.at)}</span></button>`;
+      var spark = gapSpark(e);
+      return h`<button type="button" class="vb-jchip" data-jkey="${x.k}"><span class="vb-jchip-name">${e.item}</span>${gapTxt}${spark ? sh(spark) : ''}<span class="vb-jchip-when">${relTime(e.at)}</span></button>`;
     });
     // MS3 — the whole-book worklist: rank the operator's tracked items and name the
     // one line worth a call first. The prioritized-negotiation view across the book,
@@ -447,23 +672,24 @@
       var worst = withGap[0]; // already sorted by |gap| desc
       var overCount = withGap.filter(function (x) { return x.e.gapPts >= 3; }).length;
       var g = Math.abs(worst.e.gapPts).toFixed(worst.e.gapPts < 10 ? 1 : 0);
-      rollup = h`<div class="vb-book"><p class="vb-book-lead">${T.bookLead} ${String(withGap.length)} ${T.bookItems}</p><p class="vb-book-worst" data-tone="over"><strong>${T.bookWorst}</strong> ${worst.e.item} — ${g} ${T.pointsWord}. ${T.bookCall}</p>${overCount > 1 ? h`<p class="vb-book-count">${String(overCount)} ${T.bookOver} <a class="vb-inlink plausible-event-name=Ledger+Route+Click plausible-event-source=vendor-benchmark" href="https://ledger.muntin.digital/">${T.seeLedger} <span aria-hidden="true">→</span></a></p>` : ''}</div>`;
+      rollup = h`<div class="vb-book"><p class="vb-book-lead">${T.bookLead} ${String(withGap.length)} ${T.bookItems}</p>${sh(gapDistribution(withGap))}<p class="vb-book-worst" data-tone="over"><strong>${T.bookWorst}</strong> ${worst.e.item} — ${g} ${T.pointsWord}. ${T.bookCall}</p>${overCount > 1 ? (lastStrong
+        ? h`<p class="vb-book-count">${String(overCount)} ${T.bookOver}.</p>`
+        : h`<p class="vb-book-count">${String(overCount)} ${T.bookOver} <a class="vb-inlink plausible-event-name=Ledger+Route+Click plausible-event-source=vendor-benchmark" href="https://ledger.muntin.digital/">${T.seeLedger} <span aria-hidden="true">→</span></a></p>`) : ''}</div>`;
     }
-    setHTML(railEl, h`<div class="vb-journal-head"><span class="vb-eyebrow">${T.jTitle}</span><button type="button" class="vb-linkbtn" data-jclear>${T.jClear}</button></div>${rollup}<div class="vb-journal-grid">${chips}</div>`);
+    setHTML(railEl, h`<div class="vb-journal-head"><span class="vb-eyebrow">${T.jTitle}</span><button type="button" class="vb-linkbtn" data-jclear>${T.jClear}</button></div>${live}${rollup}<div class="vb-journal-grid">${chips}</div>`);
     railEl.hidden = false;
   }
   function onRailClick(e) {
     var t = e.target; if (!t || !t.closest) return;
-    if (t.closest('[data-jclear]')) { writeJournal({}); renderJournalRail(); return; }
+    if (t.closest('[data-jclear]')) { writeJournal({}); lastJournalSig = null; renderJournalRail(); return; }
     var chip = t.closest('.vb-jchip');
     if (chip) {
       var map = readJournal(); var entry = map[chip.getAttribute('data-jkey')];
       if (entry && entry.item) {
         itemEl.value = entry.item; if (entry.unit) unitEl.value = entry.unit;
         renderRows(entry.purchases);
-        reopenBaseline = (typeof entry.gapPts === 'number') ? { gapPts: entry.gapPts, at: entry.at, key: chip.getAttribute('data-jkey') } : null;
-        run();
-        resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        run(); // the trend note reads the prior check from storage (survives refresh)
+        revealResult(true); // explicit reopen — land focus on the verdict, motion-gated
       }
     }
   }
@@ -494,13 +720,16 @@
 
   function run() {
     if (errEl) errEl.hidden = true;
+    updateProvenanceAsOf(); // fill the as-of date as soon as the seed lands (before any early return)
     var item = (itemEl.value || '').trim();
     var unit = unitEl.value;
     var rows = readRows();
     persist(item, unit, rows);
     flagBadPrices();
+    updatePriceTokens(); renderCarry(); // keep the privacy counter live as rows change
 
-    var purchases = currentPurchases().filter(function (p) {
+    var allPurchases = currentPurchases(); // scan rows once — both filters derive from it
+    var purchases = allPurchases.filter(function (p) {
       return p.cents > 0 && MW.parseISODay(p.date) != null;
     }).map(function (p) { return { cents: p.cents, date: p.date, unit: p.unit }; });
 
@@ -508,6 +737,36 @@
     updateMatchChip(item);
 
     if (!item || purchases.length < 2) {
+      // Single-price tier — one item + exactly one priced row (dated or not) gets
+      // an honest LEVEL read against the wholesale reference, plus the upsell into
+      // the two-date engine. Below two dated purchases the market-vs-vendor verdict
+      // stays withheld; this only places the level, never claims overpayment.
+      var priced = allPurchases.filter(function (p) { return isFinite(p.cents) && p.cents > 0; });
+      var sp = (item && priced.length === 1) ? singlePriceRead(item, priced[0]) : null;
+      if (sp) {
+        clearFirstRun();
+        // Carry the priced row so a "watch" chip reopened from Your Book restores the
+        // price (renders the single-price read) instead of dead-ending on an empty form.
+        var pr0 = priced[0];
+        lastSingle = { key: sp.key, item: sp.item, unit: sp.unit, level: sp.level,
+          purchases: [{ date: pr0.date || '', price: (pr0.priceRaw != null ? String(pr0.priceRaw) : '') }] };
+        setHTML(resultEl, sp.html);
+        resultEl.setAttribute('data-has-result', '1');
+        if (announceEl) { clearTimeout(announceT); announceT = setTimeout(function () { announceEl.textContent = sp.announce; }, 950); }
+        track('Bench Single-Price Read', { verdict: sp.level.verdict });
+        return;
+      }
+      lastSingle = null;
+      // No-match front door: item typed + one price + seeds loaded, but the item isn't
+      // in the Cost Index — don't blank out. Offer the own-trend path (the 2-date engine
+      // still tracks their own history without a market match) instead of dead silence.
+      if (item && priced.length === 1 && seedsPresent()) {
+        clearFirstRun();
+        setHTML(resultEl, h`<div class="vb-result-inner vb-sp"><span class="vb-eyebrow">${T.spEyebrow}</span><p class="vb-sp-read">${T.spNoMatch(item)}</p><div class="vb-sp-upsell"><p>${T.spUpsellLead}</p><button type="button" class="vb-demo" data-sp-add>${T.spUpsellCta} <span aria-hidden="true">→</span></button></div></div>`);
+        resultEl.setAttribute('data-has-result', '1');
+        if (announceEl) { clearTimeout(announceT); announceT = setTimeout(function () { announceEl.textContent = T.spNoMatch(item); }, 950); }
+        return;
+      }
       while (resultEl.firstChild) resultEl.removeChild(resultEl.firstChild);
       resultEl.removeAttribute('data-has-result');
       if (announceEl) { clearTimeout(announceT); announceEl.textContent = ''; }
@@ -516,9 +775,22 @@
 
     var res = MW.compute({ item: item, purchases: purchases, locale: ES ? 'es' : 'en' });
     render(res);
+    maybeLoadHistoryShard(res); // load the picked item's deep series on demand (not the monolith)
     scheduleAnnounce(res);
-    saveToJournal(res, rows);
-    renderJournalRail();
+    // Gate the journal side-effects to a CHANGED, settled result. saveToJournal's whole-blob
+    // read/parse/write + the full rail rebuild are the dominant per-settle main-thread cost
+    // once the book is populated, and they re-fire on every keystroke and every seed/shard
+    // re-render even when the saved entry would be identical. Only touch storage when the
+    // meaningful result actually moved (item · gap · tier · thin). lastJournalSig resets on
+    // each page load, so the first settled result per visit still records a new-sitting check
+    // (saveToJournal's own SESSION_MS coalescing then does the right within/across-sitting thing).
+    var mj = res.market;
+    var jsig = journalKeyFor(res) + '|' + ((mj && mj.res && mj.res.ok && !mj.res.thin) ? mj.res.gapPts : 'x') + '|' + res.tier + '|' + ((mj && mj.res && mj.res.thin) ? 1 : 0);
+    if (jsig !== lastJournalSig) {
+      lastJournalSig = jsig;
+      saveToJournal(res, rows);
+      renderJournalRail();
+    }
     resultEl.setAttribute('data-has-result', '1');
 
     track('Bench Multi-Date Computed', {
@@ -601,10 +873,36 @@
     var tone = (m.say && m.say.tone) || 'info';
     var y100 = Y(100).toFixed(1);
 
+    // Faint value gridlines (consume --vb-grid) at round index levels, so the eye
+    // reads HOW FAR each line sits from the 100 baseline — not just that they split.
+    // gridStep is DERIVED from the range (nice 1/2/5×10ⁿ) to hold ~6 lines: yourPts.v
+    // is unbounded (a dropped-decimal typo = 100× price = a range in the thousands), so
+    // a fixed step would emit thousands of <line>s and hang the tab. Hard-capped too.
+    var niceStep = (function (raw) {
+      if (!(raw > 0) || !isFinite(raw)) return 5;
+      var mag = Math.pow(10, Math.floor(Math.log10(raw))), n = raw / mag;
+      return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 5 ? 5 : 10) * mag;
+    })(range / 6);
+    var gridStep = Math.max(1, niceStep);
+    var gridLines = '';
+    for (var gv = Math.ceil(minV / gridStep) * gridStep, gN = 0; gv <= maxV && gN < 16; gv += gridStep, gN++) {
+      if (Math.abs(gv - 100) < 0.5) continue; // 100 is the baseline, drawn separately
+      var gy = Y(gv).toFixed(1);
+      gridLines += '<line x1="' + padL + '" y1="' + gy + '" x2="' + (W - padR) + '" y2="' + gy + '" class="vb-chart-grid"/>';
+    }
+
+    // Dynamic aria-label — the chart STATES its conclusion so a screen-reader user
+    // hears the takeaway (and the thin/approximate hedge a sighted user sees).
+    var yEnd = yourPts.length ? yourPts[yourPts.length - 1].v : 100;
+    var mEnd = mkPts.length ? mkPts[mkPts.length - 1].v : 100;
+    var gapSign = yEnd - mEnd;
+    var ariaLabel = T.chartAriaDyn(Math.round(yEnd), Math.round(mEnd), Math.abs(Math.round(gapSign)), gapSign) + (uncertain ? T.chartAriaThin : '');
+
     var svg =
       '<svg class="vb-chart" data-tone="' + escAttr(tone) + '"' + (uncertain ? ' data-uncertain="1"' : '') +
       ' width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H +
-      '" role="img" aria-label="' + escAttr(T.chartAria) + '"' + (tableId ? ' aria-describedby="' + tableId + '"' : '') + ' preserveAspectRatio="xMidYMid meet">' +
+      '" role="img" aria-label="' + escAttr(ariaLabel) + '"' + (tableId ? ' aria-describedby="' + tableId + '"' : '') + ' preserveAspectRatio="xMidYMid meet">' +
+      gridLines +
       '<line x1="' + padL + '" y1="' + y100 + '" x2="' + (W - padR) + '" y2="' + y100 + '" class="vb-chart-base"/>';
 
     // Divergence wedge — only when the market line is real (never over a
@@ -616,7 +914,7 @@
     }
 
     svg += '<path d="' + pathOf(mkPts) + '" fill="none" class="vb-chart-market" stroke-width="2" stroke-dasharray="' + (uncertain ? '2 5' : '5 4') + '" stroke-linejoin="round" stroke-linecap="round"/>' +
-      '<path d="' + pathOf(yourPts) + '" fill="none" class="vb-chart-you" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>';
+      '<path d="' + pathOf(yourPts) + '" fill="none" class="vb-chart-you" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" pathLength="1"/>';
     yourPts.forEach(function (p) {
       svg += '<circle class="vb-chart-dot" cx="' + X(p.t).toFixed(1) + '" cy="' + Y(p.v).toFixed(1) + '" r="3.4"/>';
     });
@@ -703,6 +1001,12 @@
     for (var i = 0; i < pts.length; i++) { var d = Math.abs(pts[i].t - t); if (d < bd) { bd = d; best = pts[i]; } }
     return best;
   }
+  // Preserve the SUPPORTING disclosure's open/closed choice across the per-keystroke
+  // re-renders (setHTML rebuilds the node each time; re-attach the listener each time).
+  function wireAnalysisToggle() {
+    var d = resultEl.querySelector('.vb-analysis');
+    if (d) d.addEventListener('toggle', function () { analysisOpen = !!d.open; });
+  }
   function wireChartHover() {
     if (!chartModel) return;
     var wrap = resultEl.querySelector('.vb-chartwrap');
@@ -766,69 +1070,397 @@
   }
 
   var lastRes = null;
+  var lastSig = null; // render-epoch identity signature — motion fires only when it changes
+  var lastStrong = false; // did the last funnel render the strong Ledger card? (dedups the journal rollup CTA)
+  var lastSingle = null;  // last single-price read context {key,item,unit,level} for the "watch this item" action
+  var analysisOpen = false; // preserved open/closed state of the two-date result's SUPPORTING disclosure across re-renders
+  var lastJournalSig = null; // last saved journal signature — skip redundant storage writes + rail rebuilds on unchanged re-renders
+
+  // rAF count-up for the hero gap number — lands EXACTLY on the true value; snaps under
+  // reduced-motion or without rAF. Dollars never tween (a morphing $ would read as the
+  // price itself changing); only the unitless gap points roll up.
+  function animateHero() {
+    var el = resultEl.querySelector('.vb-gap-num[data-countup]');
+    if (!el) return;
+    var target = parseFloat(el.getAttribute('data-countup'));
+    if (!isFinite(target)) return;
+    var dec = el.getAttribute('data-countup-dec') === '1' ? 1 : 0;
+    var raf = window.requestAnimationFrame;
+    if (!raf || reducedMotion()) { el.textContent = target.toFixed(dec); return; }
+    var dur = 600, start = null;
+    el.textContent = (0).toFixed(dec);
+    function ease(t) { return 1 - Math.pow(1 - t, 3); }
+    function step(ts) {
+      if (start == null) start = ts;
+      var p = Math.min(1, (ts - start) / dur);
+      el.textContent = (target * ease(p)).toFixed(dec);
+      if (p < 1) raf(step); else el.textContent = target.toFixed(dec);
+    }
+    raf(step);
+  }
+  // a11y helpers — respect reduced-motion for programmatic scrolls, and move focus
+  // to the verdict heading ONLY on the two explicit user actions (never on keystroke),
+  // so a keyboard / screen-reader user lands on the answer, not mid-form.
+  function reducedMotion() { return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); }
+  function revealResult(focusVerdict) {
+    if (focusVerdict) {
+      // Land focus on whichever verdict heading rendered — the two-date #vbVerdictH,
+      // or the single-price #vbSpH (a reopened "watch" chip renders the single-price read).
+      var vh = document.getElementById('vbVerdictH') || document.getElementById('vbSpH');
+      if (vh) { try { vh.focus({ preventScroll: true }); } catch (_) { try { vh.focus(); } catch (__) {} } }
+    }
+    if (resultEl && resultEl.scrollIntoView) resultEl.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'nearest' });
+  }
+
+  // First-run onboarding — a single primary CTA + a ghost readout that reserves the
+  // result region, both gated by data-first-run on the shell. Cleared the moment a real
+  // result renders, so the promotion never competes with the operator's own answer.
+  function setFirstRun() {
+    var shell = document.querySelector('.vb-shell');
+    if (shell) shell.setAttribute('data-first-run', '1');
+  }
+  function clearFirstRun() {
+    var shell = document.querySelector('.vb-shell[data-first-run]');
+    if (!shell) return;
+    shell.removeAttribute('data-first-run');
+  }
+
+  // Provenance strip — fill the live scope count (eager picker manifest) and the as-of
+  // date (the reference set's generation date, once the lazy seed lands). Never a fake
+  // date: the cell stays "—" until the real value is available.
+  function initProvenance() {
+    var countEl = document.getElementById('vbProvCount');
+    if (countEl) {
+      var pk = window.MUNTIN_CI_PICKER;
+      var n = pk && (typeof pk.count === 'number' ? pk.count : ((pk.items && pk.items.length) || (Array.isArray(pk) ? pk.length : 0)));
+      if (n) countEl.textContent = String(n);
+    }
+    updateProvenanceAsOf();
+  }
+  function updateProvenanceAsOf() {
+    var el = document.getElementById('vbProvAsOf');
+    if (!el || /\d/.test(el.textContent)) return; // already filled with a real date
+    var seed = window.MUNTIN_COST_INDEX;
+    var iso = seed && (seed.generatedAt || seed.asOf);
+    if (iso) el.textContent = fmtDate(String(iso).slice(0, 10));
+  }
+
+  // ---- privacy monitor: PROVE the prices never leave the device --------------
+  // An OBSERVE-ONLY shim wraps the outbound network APIs *by reference* (it saves the
+  // original and calls through it — it never writes a fetch()/sendBeacon()/new
+  // XMLHttpRequest() call, the send-literals the no-fetch invariant forbids). It scans
+  // each outbound request for the exact price string the operator typed; because VB
+  // never transmits prices the count holds at 0 — a live, watchable zero. It NEVER
+  // blocks, alters, or originates a request; every wrapper passes arguments straight
+  // through, and all inspection is wrapped in try/catch so a bug can't break the call.
+  var vbPriceTokens = []; // current typed price strings (len>=4), watched by the shim
+  var vbShareTokens = []; // encoded share-fragment payloads (base64) — the raw prices
+                          // don't appear literally in a share link, so the monitor would
+                          // be blind to a leaked #b= without watching the encoded form too
+  var vbCarryCount = 0;   // outbound requests observed carrying a price token (stays 0)
+  function vbSerialize(payload) {
+    if (payload == null) return '';
+    if (typeof payload === 'string') return payload;
+    try {
+      if (typeof URLSearchParams !== 'undefined' && payload instanceof URLSearchParams) return payload.toString();
+      if (typeof FormData !== 'undefined' && payload instanceof FormData) {
+        var parts = []; payload.forEach(function (v, k) { parts.push(k + '=' + v); }); return parts.join('&');
+      }
+      if (typeof payload === 'object') { try { return JSON.stringify(payload); } catch (_) { return String(payload); } }
+    } catch (_) {}
+    return String(payload);
+  }
+  function vbScan(payload) {
+    try {
+      if (payload == null || (!vbPriceTokens.length && !vbShareTokens.length)) return;
+      var s = vbSerialize(payload), i;
+      for (i = 0; i < vbPriceTokens.length; i++) {
+        if (s.indexOf(vbPriceTokens[i]) !== -1) { vbCarryCount++; renderCarry(); return; }
+      }
+      for (i = 0; i < vbShareTokens.length; i++) {
+        if (s.indexOf(vbShareTokens[i]) !== -1) { vbCarryCount++; renderCarry(); return; }
+      }
+    } catch (_) {}
+  }
+  // SCOPE (keep sound if VB ever gains an egress path): the monitor wraps fetch,
+  // XMLHttpRequest, and sendBeacon — the only ways VB could send data today. If a
+  // future edit adds Image().src / WebSocket / EventSource / a form submit / an
+  // <a ping>, wrap it here too, or the "sent anywhere: 0" counter goes blind to it.
+  (function installPrivacyMonitor() {
+    try {
+      var of = window.fetch;
+      if (typeof of === 'function') {
+        window.fetch = function (input, init) {
+          try { vbScan(typeof input === 'string' ? input : (input && input.url)); if (init && init.body != null) vbScan(init.body); } catch (_) {}
+          return of.apply(this, arguments);
+        };
+      }
+      var ob = navigator.sendBeacon;
+      if (typeof ob === 'function') {
+        navigator.sendBeacon = function (url, data) {
+          try { vbScan(url); if (data != null) vbScan(data); } catch (_) {}
+          return ob.apply(navigator, arguments);
+        };
+      }
+      if (window.XMLHttpRequest && XMLHttpRequest.prototype) {
+        var oo = XMLHttpRequest.prototype.open, os = XMLHttpRequest.prototype.send;
+        XMLHttpRequest.prototype.open = function (method, url) { try { this.__vbUrl = url; } catch (_) {} return oo.apply(this, arguments); };
+        XMLHttpRequest.prototype.send = function (body) { try { vbScan(this.__vbUrl); if (body != null) vbScan(body); } catch (_) {} return os.apply(this, arguments); };
+      }
+    } catch (_) {}
+  })();
+  function vbPriceCount() {
+    if (!rowsEl) return 0;
+    var rows = rowsEl.querySelectorAll('.vb-prow'), n = 0;
+    for (var i = 0; i < rows.length; i++) {
+      var pEl = rows[i].querySelector('[data-field="price"]');
+      if (pEl && String(pEl.value || '').trim() !== '' && parsePrice(pEl.value) != null) n++;
+    }
+    return n;
+  }
+  function updatePriceTokens() {
+    if (!rowsEl) { vbPriceTokens = []; return; }
+    var rows = rowsEl.querySelectorAll('.vb-prow'), toks = [];
+    for (var i = 0; i < rows.length; i++) {
+      var pEl = rows[i].querySelector('[data-field="price"]');
+      var v = pEl ? String(pEl.value || '').trim() : '';
+      if (v.length >= 4) toks.push(v); // len>=4 avoids false matches on "0" / "12" etc.
+    }
+    vbPriceTokens = toks;
+  }
+  function renderCarry() {
+    var nEl = document.getElementById('vbCarryN');
+    if (nEl) nEl.textContent = String(vbPriceCount());
+    var cEl = document.getElementById('vbCarryC');
+    if (cEl) { cEl.textContent = String(vbCarryCount); if (vbCarryCount === 0) cEl.setAttribute('data-zero', '1'); else cEl.removeAttribute('data-zero'); }
+  }
+
+  // ADR-012 market context — the REFERENCE's OWN state (elevated/depressed vs its
+  // trailing-year normal + volatility + a co-occurring documented event), NEVER the
+  // operator's price, so it needs no lead-lag gate. Reads the lazy MUNTIN_COST_CONTEXT
+  // seed (silent until it lands); neutral --vb-signal chrome, never a verdict tone.
+  function contextBlock(res) {
+    var m = res.market;
+    if (!m || !m.available || !m.key) return '';
+    return contextBlockForKey(m.key, m.label || res.item);
+  }
+  // ADR-012 market context from a bare Cost Index key — the reference's OWN
+  // elevated/depressed state vs its trailing-year normal (never the operator's
+  // price). Shared by the two-date verdict and the single-price level read.
+  function contextBlockForKey(key, label) {
+    if (!key) return '';
+    var CTX = window.MUNTIN_COST_CONTEXT;
+    if (!CTX) return '';
+    var c = CTX[key];
+    if (!c) return '';
+    var now = c.now || null;
+    var state = now && now.state;
+    var hasState = state === 'elevated' || state === 'depressed';
+    var volWild = c.vol === 'wild' || c.vol === 'swingy';
+    var ev = (c.recentEvent && c.recentEvent.recent) ? c.recentEvent : null;
+    // Fire only on a LIVE signal — the reference elevated/depressed vs its own normal,
+    // or a recent documented event. Volatility is a modifier on those, never a
+    // standalone trigger (nearly every series is volatile — it would surface on all).
+    if (!hasState && !ev) return '';
+
+    var say = '';
+    if (hasState) {
+      say = state === 'elevated' ? T.ctxElevated(label, Math.abs(now.pct)) : T.ctxDepressed(label, Math.abs(now.pct));
+      if (volWild) say += T.ctxVolTag;
+    } else if (volWild) {
+      say = T.ctxVolatile(label);
+    }
+    var sayLine = say ? h`<p class="vb-context-say">${say}</p>` : '';
+    var eventLine = ev ? h`<p class="vb-context-event">${T.ctxEvent(ev.label)}</p>` : '';
+    if (!sayLine && !eventLine) return '';
+    return h`<div class="vb-context" data-state="${state || 'normal'}"><span class="vb-eyebrow">${T.ctxEyebrow}</span>${sayLine}${eventLine}</div>`;
+  }
+
   function render(res) {
     var m = res.market;
     lastRes = res;
+    clearFirstRun(); // a real answer is rendering — retire the onboarding promotion
+    // Render-epoch gate: an identity signature (item · tone · thin · sign(gap) · state).
+    // Motion fires ONLY when it changes — a new item, a flipped verdict, loading→resolved —
+    // never on a keystroke that just nudges the same answer. This is what lets signature
+    // motion live on a tool that re-renders every keystroke without becoming nauseating.
+    var _tone = (m && m.say && m.say.tone) || 'none';
+    var _thin = !!(m && m.res && m.res.thin);
+    var _gp = (m && m.res && m.res.ok) ? m.res.gapPts : null;
+    var _sign = _gp == null ? '-' : (_gp > 0 ? '+' : _gp < 0 ? '<' : '0');
+    var _phase = (m && m.available) ? 'r' : (seedsPresent() ? 'nr' : 'load');
+    var sig = (m && m.available ? (m.key || res.item) : (res.item || '')) + '|' + _tone + '|' + (_thin ? 1 : 0) + '|' + _sign + '|' + _phase;
+    var animateThis = sig !== lastSig;
+    lastSig = sig;
     var spike = classifyMarketSpike(res);
     chartModel = null;
-    var blocks = [];
 
-    // 1) THE HEADLINE — the gap (only a full verdict when the market data supports it)
-    blocks.push(headlineBlock(res));
+    // TWO-TIER result: the ANSWER (what happened + what it means + what to do) stays
+    // always-visible; the SUPPORTING evidence (chart, own-history, outlook, attribution)
+    // collapses behind one disclosure so the verdict + the take-to-your-rep action aren't
+    // buried under the analysis. The honesty REFRAMES (market context, "will it stick")
+    // stay in the answer — they temper the verdict and must never hide behind a click.
+    var answer = [], supporting = [];
 
-    // 1b) "Will it stick?" — spike-vs-structural read of the market move.
-    var sSay = spikeSay(spike);
-    if (sSay) {
-      blocks.push(h`<p class="vb-spike" data-tone="${sSay.tone}">${sSay.text}</p>`);
-    }
+    // ── ANSWER ──────────────────────────────────────────────────────────────
+    answer.push(headlineBlock(res)); // the gap verdict (real only when the data supports it)
+    var ctx = contextBlock(res); if (ctx) answer.push(ctx); // ADR-012 reframe (reference state, never the price)
+    var sSay = spikeSay(spike);      // "will it stick?" — spike vs structural
+    if (sSay) answer.push(h`<p class="vb-spike" data-tone="${sSay.tone}">${sSay.text}</p>`);
+    var jt = journalTrendBlock(res); if (jt) answer.push(jt); // "since your last check" (journal reopen)
+    var action = actionBlock(res, spike); if (action) answer.push(action); // THE ACTION — moved up, under the verdict
+    answer.push(funnelBlock(res, spike)); // the conversion (Ledger CTA / clean-vendor bridge)
 
-    // 1c) "Since your last check" — only when this item was reopened from the journal.
-    var jt = journalTrendBlock(res);
-    if (jt) blocks.push(jt);
-
-    // 2) THE CHART + its accessible table twin (the numbers are never chart-only)
+    // ── SUPPORTING (behind one disclosure) ──────────────────────────────────
     var tableId = 'vbChartTable';
     var svg = chartSvg(res, tableId);
-    if (svg) {
-      blocks.push(h`<figure class="vb-chartwrap">${sh(svg)}<figcaption class="vb-chart-legend"><span class="vb-legend-you">${T.chartYou}</span><span class="vb-legend-mkt">${T.chartMarket}</span></figcaption>${chartTable(res, tableId)}</figure>`);
-    }
+    if (svg) supporting.push(h`<figure class="vb-chartwrap">${sh(svg)}<figcaption class="vb-chart-legend" data-tone="${_tone}"><span class="vb-legend-you">${T.chartYou}</span><span class="vb-legend-mkt">${T.chartMarket}</span></figcaption>${chartTable(res, tableId)}</figure>`);
+    if (res.talkingPoint) supporting.push(h`<div class="vb-subcard"><span class="vb-eyebrow">${T.ownHistoryEyebrow}</span><span class="vb-badge" data-tier="${res.tier}">${tierLabel(res.tier)}</span><p class="vb-verdict">${res.talkingPoint}</p></div>`);
+    var rb = regimeBreakBlock(res); if (rb) supporting.push(rb);
+    var fc = forecastBlock(res); if (fc) supporting.push(fc);
+    if (m.available) supporting.push(attributionBlock(res));
 
-    // 2b) THE ACTION — the exact line to read to the rep + the brief (only on a real vendor gap)
-    var action = actionBlock(res, spike);
-    if (action) blocks.push(action);
+    var analysis = supporting.length
+      ? h`<details class="vb-analysis"${analysisOpen ? sh(' open') : ''}><summary>${T.showAnalysis}</summary><div class="vb-analysis-body">${supporting}</div></details>`
+      : '';
 
-    // 3) YOUR OWN HISTORY verdict (secondary — the trailing-median call)
-    if (res.talkingPoint) {
-      blocks.push(h`<div class="vb-subcard"><span class="vb-eyebrow">${T.ownHistoryEyebrow}</span><span class="vb-badge" data-tier="${res.tier}">${tierLabel(res.tier)}</span><p class="vb-verdict">${res.talkingPoint}</p></div>`);
-    }
-
-    // 4) MARKET OUTLOOK — regime-break (did the whole market step?) + the honest
-    //    coverage-validated next-print forecast. Both self-withhold on thin data.
-    var rb = regimeBreakBlock(res); if (rb) blocks.push(rb);
-    var fc = forecastBlock(res); if (fc) blocks.push(fc);
-
-    // 5) ATTRIBUTION (only when a market read exists)
-    if (m.available) {
-      blocks.push(attributionBlock(res));
-    }
-
-    // 6) THE FUNNEL
-    blocks.push(funnelBlock(res, spike));
-
-    // 7) on-device + clear + (consent) seed the cost profile
+    // on-device + clear + (consent) seed the cost profile
     var saveContract = (res.lastCents > 0)
       ? h` · <button type="button" class="vb-linkbtn" data-save-contract>${T.saveContract}</button>`
       : '';
-    blocks.push(h`<p class="vb-ondevice">${T.ondevice} <button type="button" class="vb-linkbtn" id="vbClearSaved">${T.clearSaved}</button>${saveContract}</p>`);
+    var ondevice = h`<p class="vb-ondevice">${T.ondevice} <button type="button" class="vb-linkbtn" id="vbClearSaved">${T.clearSaved}</button>${saveContract}</p>`;
 
-    setHTML(resultEl, h`<div class="vb-result-inner">${blocks}</div>`);
+    setHTML(resultEl, h`<div class="vb-result-inner">${answer}${analysis}${ondevice}</div>`);
     wireChartHover();
+    wireAnalysisToggle();
+    if (animateThis) {
+      var inner = resultEl.firstChild;
+      if (inner && inner.setAttribute && !reducedMotion()) inner.setAttribute('data-animate', '1');
+      animateHero();
+    }
+  }
+
+  // ---- single-price tier ---------------------------------------------------
+  // The most common arrival state: one invoice in hand ("ribeye came in at
+  // $14.40 — is that high?"). Two dated prices answer market-vs-vendor; one
+  // price can still answer LEVEL — where it sits against the wholesale
+  // reference — honestly, on-device, with NO overpayment claim from wholesale
+  // alone. FairPriceGap governs that rule (a delivered price above wholesale is
+  // normal); the ADR-012 context comes from the matched key, never the price.
+  // The upsell funnels straight into the two-date engine.
+  // Localized label for a Cost Index key from the eager picker manifest — O(items)
+  // but no name-match/fuzzy work. Lets the single-price tier avoid a THIRD full
+  // Lookup.match per settle (FPG.assess already matched and returns the key).
+  function labelForKey(key) {
+    var PICK = window.MUNTIN_CI_PICKER;
+    var items = PICK && Array.isArray(PICK.items) ? PICK.items : null;
+    if (key && items) {
+      for (var i = 0; i < items.length; i++) {
+        if (items[i] && items[i].key === key) return (ES ? items[i].label_es : items[i].label_en) || key;
+      }
+    }
+    return null;
+  }
+  function singlePriceRead(item, row) {
+    var FPG = window.MuntinFairPriceGap;
+    var seed = window.MUNTIN_COST_INDEX;
+    if (!FPG || !seed) return null;
+    var level = FPG.assess({ item: item, paidCents: row.cents, unit: row.unit, seed: seed });
+    if (!level || !level.matched) return null; // no market match — nothing honest to place it against
+    var key = level.costIndexKey || '';
+    var label = labelForKey(key) || item;
+
+    var blocks = [], heading, readText;
+    if (level.comparable) {
+      // Both sides in the SAME (reference) unit — FPG already reconciled them.
+      var unit = level.marketUnit ? '/' + level.marketUnit : '';
+      var youStr = money(level.paidPerMarketUnit) + unit;
+      var refStr = money(level.marketCents) + unit;
+      var g = level.gapPct;
+      var gStr = (g > 0 ? '+' : '') + g + '%';
+      var tail;
+      if (level.verdict === 'far-above-reference') { tail = T.spTailFar(gStr); heading = T.spHAbove; }
+      else if (level.verdict === 'above-reference') { tail = T.spTailAbove(gStr); heading = T.spHAbove; }
+      else if (level.verdict === 'below-reference') { tail = T.spTailBelow(Math.abs(g) + '%'); heading = T.spHBelow; }
+      else { tail = T.spTailAt; heading = T.spHAt; }
+      readText = T.spYour + ' ' + youStr + ' ' + tail; // plain-text twin for the SR announce
+      blocks.push(h`<p class="vb-sp-read">${T.spYour} <strong>${youStr}</strong> ${tail}</p>`);
+      blocks.push(h`<p class="vb-sp-anchor">${T.spRefLevel} <strong>${refStr}</strong> · ${T.spRefBasis}</p>`);
+    } else {
+      // Matched, but no firm wholesale $-level (index-basis / thin) — link, don't compare.
+      heading = T.spHTrack;
+      readText = T.spTrack(label);
+      blocks.push(h`<p class="vb-sp-read">${readText}</p>`);
+    }
+
+    var ctx = key ? contextBlockForKey(key, label) : '';
+    if (ctx) blocks.push(ctx);
+
+    // Seed the accumulation book straight from the arrival state — the common
+    // one-price visit can now add the item to Your Book without a second invoice.
+    blocks.push(h`<p class="vb-sp-watch">${T.spWatchLead} <button type="button" class="vb-linkbtn" data-sp-watch>${T.spWatch} <span aria-hidden="true">☆</span></button></p>`);
+    blocks.push(h`<div class="vb-sp-upsell"><p>${T.spUpsellLead}</p><button type="button" class="vb-demo" data-sp-add>${T.spUpsellCta} <span aria-hidden="true">→</span></button></div>`);
+    blocks.push(h`<p class="vb-sp-src">${T.attributionWholesale}${key ? h` <a class="vb-inlink" href="${BASE}/cost-index/${key}/">${T.seeReading} <span aria-hidden="true">→</span></a>` : ''}</p>`);
+
+    return {
+      html: h`<div class="vb-result-inner vb-sp"><span class="vb-eyebrow">${T.spEyebrow}</span><h2 class="vb-sp-h" id="vbSpH" tabindex="-1">${heading}</h2>${blocks}</div>`,
+      level: level, key: key, item: item, unit: row.unit,
+      announce: heading + '. ' + readText // SR hears the verdict + the detail, not a constant
+    };
+  }
+  // Save a WATCH-only journal entry (no gap yet) keyed by the Cost Index key — the
+  // same key saveToJournal uses, so a later two-date check UPGRADES this entry in
+  // place instead of duplicating it. Never downgrades a richer 2-date entry.
+  function saveWatch(ctx) {
+    if (!CTX || !ctx || !ctx.key || !ctx.item) return false;
+    var map = readJournal();
+    var existing = map[ctx.key];
+    if (existing && Array.isArray(existing.purchases) && existing.purchases.length >= 2) return true;
+    var now = Date.now();
+    var ring = ringOf(existing);
+    var check = { at: now, gapPts: null };
+    if (ring.length && (now - (ring[0].at || 0)) < SESSION_MS) { ring = ring.slice(); ring[0] = check; }
+    else { ring = [check].concat(ring); }
+    if (ring.length > CHECK_CAP) ring = ring.slice(0, CHECK_CAP);
+    // Persist the single priced row so reopening this chip restores the price (renders
+    // the single-price read) rather than dead-ending on an empty form.
+    var watchRows = Array.isArray(ctx.purchases) && ctx.purchases.length ? ctx.purchases.slice(0, 1) : [];
+    map[ctx.key] = { item: ctx.item, unit: ctx.unit, at: now, gapPts: null, watch: true, level: (ctx.level && ctx.level.verdict) || null, purchases: watchRows, checks: ring };
+    var keys = Object.keys(map);
+    if (keys.length > JOURNAL_CAP) {
+      keys.map(function (kk) { return { kk: kk, at: (map[kk] && map[kk].at) || 0 }; })
+        .sort(function (a, b) { return a.at - b.at; })
+        .slice(0, keys.length - JOURNAL_CAP)
+        .forEach(function (e) { delete map[e.kk]; });
+    }
+    writeJournal(map);
+    return true;
+  }
+  // Upsell action: append a prior-dated row (21 days before the existing one, so
+  // the default lands in the PAST — never a future date) and focus its price, so
+  // the operator drops in their last invoice and the two-date engine takes over.
+  function addSecondInvoice() {
+    var rows = readRows();
+    var anchor = rows.length ? rows[rows.length - 1].date : '';
+    var newDate = isoMinusDays(anchor || todayISO(), 21);
+    rowsEl.appendChild(buildRow({ date: newDate }));
+    relabelRows();
+    var inputs = rowsEl.querySelectorAll('.vb-prow:last-child input');
+    if (inputs[1]) inputs[1].focus(); // the PRICE field of the new row
+    track('Bench Single-Price Upsell');
+    schedule();
   }
 
   // One delegated handler for everything inside the re-rendered result.
   function onResultClick(e) {
     var t = e.target;
     if (!t || !t.closest) return;
+    if (t.closest('[data-sp-add]')) { addSecondInvoice(); return; }
+    var watchBtn = t.closest('[data-sp-watch]');
+    if (watchBtn) {
+      if (saveWatch(lastSingle)) { renderJournalRail(); watchBtn.textContent = T.spWatching; watchBtn.disabled = true; track('Bench Item Watched'); }
+      return;
+    }
     if (t.closest('#vbClearSaved')) { clearAll(); return; }
     var saveBtn = t.closest('[data-save-contract]');
     if (saveBtn) {
@@ -929,13 +1561,14 @@
   }
 
   function journalTrendBlock(res) {
-    if (!reopenBaseline || reopenBaseline.key !== journalKeyFor(res)) return '';
     var m = res.market;
     if (!(m && m.res && m.res.ok && !m.res.thin)) return '';
-    var now = m.res.gapPts, was = reopenBaseline.gapPts;
+    var prior = priorCheck(res); // from storage — survives a page refresh
+    if (!prior || typeof prior.gapPts !== 'number' || !prior.at) return '';
+    var now = m.res.gapPts, was = prior.gapPts;
     if (Math.abs(now - was) < 1) return '';
     var widened = Math.abs(now) > Math.abs(was);
-    return h`<p class="vb-jtrend" data-tone="${widened ? 'over' : 'under'}">${T.jSince} ${relTime(reopenBaseline.at)}, ${widened ? T.jWiden : T.jNarrow} ${Math.abs(was).toFixed(was < 10 ? 1 : 0)} → ${Math.abs(now).toFixed(now < 10 ? 1 : 0)} ${T.pointsWord}.</p>`;
+    return h`<p class="vb-jtrend" data-tone="${widened ? 'over' : 'under'}">${T.jSince} ${relTime(prior.at)}, ${widened ? T.jWiden : T.jNarrow} ${Math.abs(was).toFixed(was < 10 ? 1 : 0)} → ${Math.abs(now).toFixed(now < 10 ? 1 : 0)} ${T.pointsWord}.</p>`;
   }
 
   function tierLabel(tier) {
@@ -958,7 +1591,7 @@
         return h`<div class="vb-headline">${yourLine}<div class="vb-headline-note"><p class="vb-loading${seedsFailed ? '' : ' vb-loading--pulse'}" role="status">${msg}</p></div></div>`;
       }
       if (m.reason === 'no-match' || m.reason === 'no-series' || m.reason === 'no-index') {
-        return h`<div class="vb-headline vb-headline--info">${yourLine}<div class="vb-headline-note"><h2 class="vb-h2">${T.noMatchHead}</h2><p>${T.noMatchBody}</p><p><a class="vb-inlink" href="${BASE}/cost-index/">${T.seeReading} <span aria-hidden="true">→</span></a></p></div></div>`;
+        return h`<div class="vb-headline vb-headline--info">${yourLine}<div class="vb-headline-note"><h2 class="vb-h2" id="vbVerdictH" tabindex="-1">${T.noMatchHead}</h2><p>${T.noMatchBody}</p><p><a class="vb-inlink" href="${BASE}/cost-index/">${T.seeReading} <span aria-hidden="true">→</span></a></p></div></div>`;
       }
       return h`${yourLine}`;
     }
@@ -982,21 +1615,13 @@
       var anchor = (m.res.gapPts >= 3 && m.res.excessCents > 0 && anchorCents != null)
         ? h`<p class="vb-anchor"><strong>${T.anchorLead}</strong> ${money(anchorCents)}${uSuf} ${T.anchorTail} ${money(res.lastCents)}${uSuf}.</p>`
         : '';
-      verdict = h`<div class="vb-gap" data-tone="${tone}"><span class="vb-gap-num">${gapPts.toFixed(gapPts < 10 ? 1 : 0)}</span><span class="vb-gap-word">${T.pointsWord} ${dirWord}</span></div><p class="vb-headline-say">${m.say.headline}</p>${excess}${anchor}`;
+      verdict = h`<div class="vb-gap" data-tone="${tone}"><span class="vb-gap-num" data-countup="${String(gapPts)}" data-countup-dec="${gapPts < 10 ? 1 : 0}">${gapPts.toFixed(gapPts < 10 ? 1 : 0)}</span><span class="vb-gap-word">${T.pointsWord} ${dirWord}</span></div><h2 class="vb-headline-say vb-verdict-h" id="vbVerdictH" tabindex="-1">${m.say.headline}</h2>${excess}${anchor}`;
     } else if (m.say && m.say.headline) {
       // honest hedge / soft refusal (thin, too-close, out-of-range)
-      verdict = h`<div class="vb-hedge" data-tone="${tone}"><p class="vb-headline-say">${m.say.headline}</p>${m.say.detail ? h`<p class="vb-headline-detail">${m.say.detail}</p>` : ''}</div>`;
+      verdict = h`<div class="vb-hedge" data-tone="${tone}"><h2 class="vb-headline-say vb-verdict-h" id="vbVerdictH" tabindex="-1">${m.say.headline}</h2>${m.say.detail ? h`<p class="vb-headline-detail">${m.say.detail}</p>` : ''}</div>`;
     }
 
     return h`<div class="vb-headline" data-tone="${tone}"><div class="vb-metrics">${yourLine}<span class="vb-vs" aria-hidden="true">vs</span>${marketLine}</div>${verdict}</div>`;
-  }
-
-  function timelineBlock(res) {
-    var m = res.market;
-    var rows = m.legs.map(function (leg) {
-      return h`<tr><td>${fmtDate(leg.date)}</td><td class="vb-num">${money(leg.cents)}</td><td class="vb-num" data-dir="${leg.yourCumPct > 0 ? 'up' : leg.yourCumPct < 0 ? 'down' : 'flat'}">${leg.yourCumPct === 0 ? '—' : pctStr(leg.yourCumPct)}</td><td class="vb-num vb-num--mkt" data-dir="${leg.marketCumPct == null ? 'flat' : leg.marketCumPct > 0 ? 'up' : leg.marketCumPct < 0 ? 'down' : 'flat'}">${leg.marketCumPct == null ? '—' : (leg.marketCumPct === 0 ? '—' : pctStr(leg.marketCumPct))}</td></tr>`;
-    });
-    return h`<div class="vb-subcard"><span class="vb-eyebrow">${T.timelineEyebrow}</span><div class="vb-timeline-wrap"><table class="vb-timeline"><thead><tr><th scope="col">${T.thDate}</th><th scope="col" class="vb-num">${T.thYou}</th><th scope="col" class="vb-num">${T.thYouCum}</th><th scope="col" class="vb-num">${T.thMarketCum}</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
   }
 
   // The wholesale market value at a specific series date (the reads the verdict
@@ -1062,6 +1687,7 @@
     // fight a vendor over a market move that may not hold.
     var spikeReverting = spike && spike.verdict === 'spike';
     var strong = (isOver && !spikeReverting) || res.tier === 'hike';
+    lastStrong = strong; // so renderJournalRail can suppress its duplicate Ledger CTA
     var plate = h`<p class="vb-crosslink">${T.plateHook} <a class="vb-inlink" href="${BASE}/tools/plate-cost/">${T.seePlate} <span aria-hidden="true">→</span></a></p>`;
 
     if (strong) {
@@ -1190,10 +1816,15 @@
       ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
     } catch (_) {}
   }
+  function flashBtn(btn, label) {
+    if (!btn) return;
+    var restore = btn.textContent;
+    btn.textContent = label;
+    setTimeout(function () { btn.textContent = restore; }, 1600);
+  }
   function copyText(text, btn, doneLabel) {
     if (!text) return;
-    var restore = btn.textContent;
-    var done = function () { btn.textContent = doneLabel; setTimeout(function () { btn.textContent = restore; }, 1600); };
+    var done = function () { flashBtn(btn, doneLabel); };
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(done, function () { execCopy(text); done(); });
     } else { execCopy(text); done(); }
@@ -1216,7 +1847,10 @@
   function addRow() {
     var rows = readRows();
     var lastDate = rows.length ? rows[rows.length - 1].date : todayISO();
-    rowsEl.appendChild(buildRow({ date: lastDate ? isoMinusDays(lastDate, -21) : todayISO() }));
+    var next = lastDate ? isoMinusDays(lastDate, -21) : todayISO();
+    var today = todayISO();
+    if (next > today) next = today; // a purchase already happened — never pre-fill a future date (ISO strings sort lexically)
+    rowsEl.appendChild(buildRow({ date: next }));
     relabelRows();
     var inputs = rowsEl.querySelectorAll('.vb-prow:last-child input');
     if (inputs[0]) inputs[0].focus();
@@ -1228,26 +1862,395 @@
     while (resultEl.firstChild) resultEl.removeChild(resultEl.firstChild);
     resultEl.removeAttribute('data-has-result');
     if (matchChip) matchChip.hidden = true;
-    reopenBaseline = null;
     if (CTX && typeof CTX.merge === 'function') { try { CTX.merge({ vbSession: null }); } catch (_) {} }
     itemEl.focus();
   }
-  function loadExample() {
-    // Illustrative operator prices; the market side is real, sourced USDA data.
-    itemEl.value = 'ribeye';
-    unitEl.value = 'lb';
-    renderRows([
-      { date: '2026-03-02', price: '12.20' },
-      { date: '2026-04-06', price: '13.10' },
-      { date: '2026-05-04', price: '14.40' }
-    ]);
+  // Three worked examples — the VERDICT is computed LIVE by the engine, never hardcoded,
+  // so onboarding shows the calibrated-honesty differentiator (hot / tracked / hold), not a
+  // generic happy path. Operator prices are ILLUSTRATIVE; the market side is real USDA data.
+  // Tones pinned by build-time probe (re-verify: node scripts/check-vb-scenarios.mjs):
+  //   hot → 'over' (+11)   tracked → 'match' (0)   thin → withheld hold (ok:false).
+  var SCENARIOS = {
+    hot:     { item: 'ribeye',          unit: 'lb', rows: [{ date: '2026-03-02', price: '12.20' }, { date: '2026-04-06', price: '13.10' }, { date: '2026-05-04', price: '14.40' }] },
+    tracked: { item: 'chicken breast',  unit: 'lb', rows: [{ date: '2026-03-02', price: '1.40' },  { date: '2026-04-06', price: '1.48' },  { date: '2026-05-04', price: '1.55' }] },
+    thin:    { item: 'beef tenderloin', unit: 'lb', rows: [{ date: '2026-06-15', price: '10.00' }, { date: '2026-06-29', price: '10.50' }] }
+  };
+  function loadScenario(key) {
+    var s = SCENARIOS[key] || SCENARIOS.hot;
+    itemEl.value = s.item;
+    unitEl.value = s.unit;
+    renderRows(s.rows.map(function (r) { return { date: r.date, price: r.price }; }));
     track('Bench Example Loaded');
     run();
-    resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    revealResult(true); // explicit example load — land focus on the verdict, motion-gated
+  }
+
+  // ---- ingredient picker (combobox) — progressive enhancement over #vbItem ---
+  // The picker manifest (window.MUNTIN_CI_PICKER, eager first-paint) lists the
+  // items the tool can honestly benchmark. This enhances the free-text item field
+  // into an ARIA-1.2 editable combobox with a grouped, filterable listbox. No-JS
+  // or manifest-missing => the plain #vbItem input, unchanged. On select we write
+  // the resolvable label and dispatch 'input' (the existing pipeline re-matches it);
+  // we NEVER touch #vbUnit (the manifest carries carton/sack units that are not
+  // <select> options, and the unit is "as it reads on your invoice"). All picker
+  // chrome uses --vb-signal / neutral ink — never a verdict tone.
+  function initItemCombo() {
+    var PICK = window.MUNTIN_CI_PICKER;
+    if (!PICK || !Array.isArray(PICK.items) || !PICK.items.length || !itemEl) return;
+    var field = itemEl.closest ? itemEl.closest('.vb-field') : null;
+    if (!field || field.getAttribute('data-vb-combo') === '1') return; // idempotent
+    field.setAttribute('data-vb-combo', '1');
+    field.classList.add('vb-combo', 'is-live');
+
+    var items = PICK.items;
+    var groupsMeta = Array.isArray(PICK.groups) ? PICK.groups : [];
+    var n = items.length;
+    var LB_ID = 'vbPickList';
+
+    function norm(s) {
+      return (s == null ? '' : String(s)).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    }
+
+    // ARIA on the input (applied at runtime so the no-JS field stays clean)
+    itemEl.setAttribute('role', 'combobox');
+    itemEl.setAttribute('aria-expanded', 'false');
+    itemEl.setAttribute('aria-controls', LB_ID);
+    itemEl.setAttribute('aria-autocomplete', 'list');
+    itemEl.setAttribute('aria-haspopup', 'listbox');
+    itemEl.setAttribute('spellcheck', 'false');
+    itemEl.classList.add('vb-input--combo');
+
+    // sr-only scope note, referenced via aria-describedby (heard on focus)
+    var note = document.createElement('p');
+    note.id = 'vbItemComboNote'; note.className = 'sr-only'; note.textContent = T.pickDescribe(n);
+    var priorDesc = itemEl.getAttribute('aria-describedby');
+    itemEl.setAttribute('aria-describedby', (priorDesc ? priorDesc + ' ' : '') + 'vbItemComboNote');
+    field.appendChild(note); // must be in the DOM for aria-describedby to resolve
+
+    // caret / toggle button (pointer affordance; out of the tab order)
+    var caret = document.createElement('button');
+    caret.type = 'button'; caret.className = 'vb-combo-caret'; caret.tabIndex = -1;
+    caret.setAttribute('aria-label', T.pickToggle);
+    caret.setAttribute('aria-controls', LB_ID);
+    caret.setAttribute('aria-expanded', 'false');
+    caret.textContent = '▾'; // ▾
+    itemEl.insertAdjacentElement('afterend', caret);
+
+    // listbox
+    var listbox = document.createElement('div');
+    listbox.id = LB_ID; listbox.className = 'vb-pick-list'; listbox.hidden = true;
+    listbox.setAttribute('role', 'listbox');
+    listbox.setAttribute('aria-label', T.pickListAria);
+
+    // sticky scope header (presentational, always visible while filtering)
+    var scope = document.createElement('div');
+    scope.className = 'vb-pick-scope'; scope.setAttribute('role', 'presentation');
+    var scTitle = document.createElement('div'); scTitle.className = 'vb-pick-scope__title'; scTitle.textContent = T.pickScopeTitle(n);
+    var scNote = document.createElement('div'); scNote.className = 'vb-pick-scope__note'; scNote.textContent = T.pickScopeNote;
+    scope.appendChild(scTitle); scope.appendChild(scNote);
+    listbox.appendChild(scope);
+
+    var groupLabel = {};
+    groupsMeta.forEach(function (g) { groupLabel[g.key] = ES ? g.label_es : g.label_en; });
+
+    // options, grouped in manifest order (already sorted group→label by the builder)
+    var optionRefs = [];   // { el, item, group, labelText, norm }
+    var groupEls = {};      // groupKey -> { el, headCount }
+    var curKey = null, curGroupEl = null;
+    items.forEach(function (it) {
+      if (it.group !== curKey) {
+        curKey = it.group;
+        var gEl = document.createElement('div');
+        gEl.setAttribute('role', 'group');
+        var gLabel = groupLabel[it.group] || it.group;
+        gEl.setAttribute('aria-label', gLabel);
+        var head = document.createElement('div');
+        head.className = 'vb-pick-grouphead'; head.setAttribute('role', 'presentation');
+        var hName = document.createElement('span'); hName.className = 'vb-pick-grouphead__name'; hName.textContent = gLabel;
+        var hCount = document.createElement('span'); hCount.className = 'vb-pick-grouphead__count'; hCount.setAttribute('aria-hidden', 'true');
+        head.appendChild(hName); head.appendChild(hCount);
+        gEl.appendChild(head);
+        listbox.appendChild(gEl);
+        groupEls[it.group] = { el: gEl, headCount: hCount };
+        curGroupEl = gEl;
+      }
+      var lbl = ES ? it.label_es : it.label_en;
+      var opt = document.createElement('div');
+      opt.id = 'vb-opt-' + it.key; opt.className = 'vb-pick-opt';
+      opt.setAttribute('role', 'option'); opt.setAttribute('aria-selected', 'false');
+      var labelEl = document.createElement('span'); labelEl.className = 'vb-pick-opt__label'; labelEl.textContent = lbl;
+      opt.appendChild(labelEl);
+      if (it.dollarRef) {
+        var ref = document.createElement('span'); ref.className = 'vb-pick-opt__ref'; ref.setAttribute('aria-hidden', 'true');
+        ref.textContent = '$'; ref.title = T.pickRefLegend;
+        opt.appendChild(ref);
+        var sr = document.createElement('span'); sr.className = 'sr-only'; sr.textContent = T.pickRefSr;
+        labelEl.appendChild(sr); // fold into the option's accessible name
+      }
+      var unit = document.createElement('span'); unit.className = 'vb-pick-opt__unit';
+      unit.textContent = '/' + (ES ? it.unit_es : it.unit_en);
+      opt.appendChild(unit);
+      curGroupEl.appendChild(opt);
+      optionRefs.push({ el: opt, item: it, group: it.group, labelText: lbl, norm: norm(lbl + ' ' + it.key) });
+    });
+
+    // empty (no-match) state — presentational, invites free-text
+    var empty = document.createElement('div');
+    empty.className = 'vb-pick-empty'; empty.setAttribute('role', 'presentation'); empty.hidden = true;
+    var eHead = document.createElement('div'); eHead.className = 'vb-pick-empty__head'; eHead.textContent = T.pickEmptyHead;
+    var eBody = document.createElement('p'); eBody.className = 'vb-pick-empty__body'; eBody.textContent = T.pickEmptyBody;
+    empty.appendChild(eHead); empty.appendChild(eBody);
+    listbox.appendChild(empty);
+
+    // sticky footer legend for the $ marker (presentational)
+    var legend = document.createElement('div');
+    legend.className = 'vb-pick-legend'; legend.setAttribute('role', 'presentation'); legend.textContent = T.pickRefLegend;
+    listbox.appendChild(legend);
+
+    field.appendChild(listbox);
+
+    // sr-only status region for filter counts (polite; self-clears)
+    var status = document.createElement('div');
+    status.className = 'vb-pick-status sr-only'; status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
+    field.appendChild(status);
+
+    // ---- state + behavior ----
+    var open = false, activeIdx = -1, activeEl = null, results = optionRefs.slice(), statusT = null;
+
+    // Clear the outgoing option by REFERENCE (activeEl), never by results[activeIdx]:
+    // filter() reassigns `results` to a fresh array, so an index would clear the
+    // wrong element and strand a stale is-active / aria-selected on the real one.
+    function setActive(idx) {
+      if (activeEl) { activeEl.classList.remove('is-active'); activeEl.setAttribute('aria-selected', 'false'); activeEl = null; }
+      activeIdx = idx;
+      if (idx >= 0 && results[idx]) {
+        activeEl = results[idx].el;
+        activeEl.classList.add('is-active'); activeEl.setAttribute('aria-selected', 'true');
+        itemEl.setAttribute('aria-activedescendant', activeEl.id);
+        if (activeEl.scrollIntoView) activeEl.scrollIntoView({ block: 'nearest' });
+      } else {
+        itemEl.removeAttribute('aria-activedescendant');
+      }
+    }
+    function openList() {
+      if (open) return;
+      open = true; listbox.hidden = false; field.classList.add('is-open');
+      itemEl.setAttribute('aria-expanded', 'true'); caret.setAttribute('aria-expanded', 'true');
+    }
+    function closeList() {
+      setActive(-1);
+      if (!open) return;
+      open = false; listbox.hidden = true; field.classList.remove('is-open');
+      itemEl.setAttribute('aria-expanded', 'false'); caret.setAttribute('aria-expanded', 'false');
+      if (statusT) { clearTimeout(statusT); statusT = null; }
+      status.textContent = '';
+    }
+    function announceCount(nRes) {
+      if (statusT) clearTimeout(statusT);
+      statusT = setTimeout(function () {
+        status.textContent = nRes > 0 ? T.pickCount(nRes) : T.pickCountZero;
+      }, 350);
+    }
+    function filter(q) {
+      var nq = norm(q); results = [];
+      var perGroup = {};
+      optionRefs.forEach(function (o) {
+        var show = nq === '' || o.norm.indexOf(nq) !== -1;
+        o.el.hidden = !show;
+        if (show) { results.push(o); perGroup[o.group] = (perGroup[o.group] || 0) + 1; }
+      });
+      Object.keys(groupEls).forEach(function (gk) {
+        var c = perGroup[gk] || 0;
+        groupEls[gk].el.hidden = c === 0;
+        groupEls[gk].headCount.textContent = c ? String(c) : '';
+      });
+      empty.hidden = results.length !== 0;
+      setActive(-1);
+      announceCount(results.length);
+    }
+    function applySelection(o) {
+      itemEl.value = o.labelText;
+      closeList();
+      itemEl.dispatchEvent(new Event('input', { bubbles: true })); // drives the existing pipeline
+      try { track('Bench Picker Select', { group: o.group }); } catch (_) {}
+    }
+    function selectAndStay(o) { // Enter / pointer path — keep focus in the field
+      applySelection(o);
+      try { var L = itemEl.value.length; itemEl.setSelectionRange(L, L); } catch (_) {}
+      itemEl.focus();
+    }
+    function optFromEl(el) {
+      for (var i = 0; i < optionRefs.length; i++) { if (optionRefs[i].el === el) return optionRefs[i]; }
+      return null;
+    }
+
+    // filter as the user types (real keystrokes only — the synthetic 'input' from
+    // applySelection must not reopen/refilter; the separate 'schedule' listener,
+    // which does the compute, does not gate on isTrusted so it still recomputes)
+    itemEl.addEventListener('input', function (e) {
+      if (!e.isTrusted) return;
+      filter(itemEl.value);
+      if (itemEl.value.trim() !== '') openList();
+    });
+
+    itemEl.addEventListener('keydown', function (e) {
+      switch (e.key) {
+        case 'ArrowDown':
+          e.preventDefault();
+          if (!open) { filter(itemEl.value); openList(); }
+          if (results.length) setActive(activeIdx < results.length - 1 ? activeIdx + 1 : results.length - 1);
+          break;
+        case 'ArrowUp':
+          e.preventDefault();
+          if (!open) { filter(itemEl.value); openList(); if (results.length) setActive(results.length - 1); break; }
+          if (activeIdx <= 0) setActive(-1); else setActive(activeIdx - 1);
+          break;
+        case 'Enter':
+          if (open && activeIdx >= 0 && results[activeIdx]) { e.preventDefault(); selectAndStay(results[activeIdx]); }
+          else if (open) { closeList(); }
+          break;
+        case 'Escape':
+          if (open) { e.preventDefault(); closeList(); }
+          break;
+        case 'Tab':
+          if (open && activeIdx >= 0 && results[activeIdx]) { applySelection(results[activeIdx]); } // let Tab move focus on
+          else if (open) { closeList(); }
+          break;
+        default: break;
+      }
+    });
+
+    caret.addEventListener('click', function () {
+      if (open) { closeList(); } else { filter(itemEl.value); openList(); }
+      itemEl.focus();
+    });
+
+    // select on pointerdown + preventDefault so focusout doesn't close before the tap resolves
+    listbox.addEventListener('pointerdown', function (e) {
+      var el = e.target.closest ? e.target.closest('.vb-pick-opt') : null;
+      if (!el) return;
+      e.preventDefault();
+      var o = optFromEl(el);
+      if (o) selectAndStay(o);
+    });
+    // belt-and-suspenders for assistive-tech synthetic clicks
+    listbox.addEventListener('click', function (e) {
+      var el = e.target.closest ? e.target.closest('.vb-pick-opt') : null;
+      if (!el) return;
+      var o = optFromEl(el);
+      if (o && itemEl.value !== o.labelText) selectAndStay(o);
+    });
+
+    // close when focus leaves the composite
+    field.addEventListener('focusout', function (e) {
+      if (!field.contains(e.relatedTarget)) closeList();
+    });
+    // fallback for browsers with unreliable relatedTarget (older Safari)
+    document.addEventListener('pointerdown', function (e) {
+      if (open && !field.contains(e.target)) closeList();
+    });
+  }
+
+  // ---- shareable link (URL fragment) ----------------------------------------
+  // The benchmark encodes into the URL FRAGMENT (#b=...), which the browser never sends
+  // in a request — so the state stays client-side (the privacy monitor stays 0) and the
+  // operator opts in explicitly by clicking. The link DOES contain the prices they typed,
+  // disclosed in the copied confirmation so sharing is an informed choice. Inbound links
+  // are decoded + strictly sanitized (untrusted URL input) before hydrating the form.
+  function b64urlEncode(s) {
+    try { return btoa(unescape(encodeURIComponent(s))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+    catch (_) { return ''; }
+  }
+  function b64urlDecode(s) {
+    try { var b = s.replace(/-/g, '+').replace(/_/g, '/'); while (b.length % 4) b += '='; return decodeURIComponent(escape(atob(b))); }
+    catch (_) { return ''; }
+  }
+  function encodeState() {
+    var item = (itemEl.value || '').trim();
+    var rows = readRows().filter(function (r) { return r.date && String(r.price).trim() !== ''; })
+      .map(function (r) { return [r.date, String(r.price).trim()]; });
+    if (!item || !rows.length) return '';
+    return b64urlEncode(JSON.stringify({ i: item, u: unitEl.value, r: rows }));
+  }
+  function shareLink(btn) {
+    var enc = encodeState();
+    if (!enc) return;
+    var url = location.origin + location.pathname + '#b=' + enc;
+    // Register the encoded payload so the privacy monitor would catch it if any
+    // request ever carried the share fragment (the raw prices don't appear in it).
+    if (vbShareTokens.indexOf(enc) === -1) { vbShareTokens.push(enc); if (vbShareTokens.length > 8) vbShareTokens.shift(); }
+    // Deliberately do NOT write the fragment into the address bar — the sender's live
+    // URL (and anything that echoes it, like analytics) stays free of their prices.
+    // The link with #b= still goes to the clipboard / native share sheet by choice.
+    track('Bench Link Shared');
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      try {
+        // Disclose "includes your prices" only when the share actually COMPLETES
+        // (resolve), not on invocation — a cancelled share shouldn't claim "Shared".
+        navigator.share({ title: 'Vendor Benchmark', url: url })
+          .then(function () { flashBtn(btn, T.shareShared); })
+          .catch(function () {});
+        return;
+      } catch (_) { /* fall through to copy */ }
+    }
+    copyText(url, btn, T.shareCopied);
+  }
+  function hydrateFromHash() {
+    var mm = (location.hash || '').match(/[#&]b=([^&]+)/);
+    if (!mm) return false;
+    var enc = mm[1];
+    // Strip #b= IMMEDIATELY — before any validation early-return. track() is gated on a
+    // b= fragment, so a corrupt/truncated link that fails to decode must not linger and
+    // silence analytics all session; and the recipient never carries the prices anyway.
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (_) {}
+    var json = b64urlDecode(enc); if (!json) return false;
+    var p; try { p = JSON.parse(json); } catch (_) { return false; }
+    if (!p || typeof p.i !== 'string' || !Array.isArray(p.r)) return false;
+    var rows = p.r.filter(function (x) {
+      return Array.isArray(x) && /^\d{4}-\d{2}-\d{2}$/.test(x[0]) && /^[\d.,\s$]{1,16}$/.test(String(x[1]));
+    }).slice(0, 24).map(function (x) { return { date: x[0], price: String(x[1]) }; });
+    if (!rows.length) return false;
+    itemEl.value = String(p.i).slice(0, 80);
+    if (typeof p.u === 'string' && /^[a-z]{1,8}$/.test(p.u)) unitEl.value = p.u;
+    renderRows(rows);
+    run();
+    return true;
+  }
+
+  // ---- power-user fast entry: paste a table -------------------------------
+  // Paste rows of "date price" (from a spreadsheet / invoice export) into any field and
+  // the tool parses them into dated rows — ISO or M/D/Y dates, $ / comma-tolerant prices.
+  function parseLooseDate(s) {
+    s = String(s || '').trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+    var m = s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
+    if (m) {
+      var mo = +m[1], da = +m[2], yr = +m[3]; if (yr < 100) yr += 2000;
+      if (mo >= 1 && mo <= 12 && da >= 1 && da <= 31) {
+        return yr + '-' + String(mo).padStart(2, '0') + '-' + String(da).padStart(2, '0');
+      }
+    }
+    return null;
+  }
+  function parsePastedRows(text) {
+    var lines = String(text || '').split(/[\r\n]+/).map(function (l) { return l.trim(); }).filter(Boolean);
+    var out = [];
+    lines.forEach(function (line) {
+      var parts = line.split(/[\t,;]|\s{2,}/).map(function (s) { return s.trim(); }).filter(Boolean);
+      if (parts.length === 1) parts = line.split(/\s+/); // single-space "date price"
+      var date = null, price = null;
+      parts.forEach(function (p) {
+        if (!date) { var d = parseLooseDate(p); if (d) { date = d; return; } }
+        if (!price && /^\$?\s*[\d,]+\.?\d*\s*$/.test(p) && /\d/.test(p)) price = p.replace(/[^\d.]/g, '');
+      });
+      if (date && price) out.push({ date: date, price: price });
+    });
+    return out;
   }
 
   // ---- restore / init --------------------------------------------------------
   function restore() {
+    if (hydrateFromHash()) return; // a shared link wins over the saved session / scaffold
     var saved = null;
     if (CTX && typeof CTX.get === 'function') { try { saved = CTX.get('vbSession'); } catch (_) { saved = null; } }
     if (saved && saved.item && Array.isArray(saved.purchases) && saved.purchases.length) {
@@ -1257,12 +2260,32 @@
       run();
       return;
     }
-    // Fresh: a two-row scaffold with a sensible 6-week window.
+    // Fresh: a two-row scaffold with a sensible 6-week window + the first-run onboarding.
     renderRows([{ date: isoMinusDays(todayISO(), 42) }, { date: todayISO() }]);
+    setFirstRun();
   }
 
   rowsEl.addEventListener('input', schedule);
   rowsEl.addEventListener('change', schedule);
+  // Paste a table of dated prices into any row field → populate all rows at once.
+  rowsEl.addEventListener('paste', function (e) {
+    var t = e.target; if (!t || !t.matches || !t.matches('.vb-input')) return;
+    var cd = e.clipboardData || window.clipboardData;
+    var text = cd && cd.getData ? cd.getData('text') : '';
+    var pairs = parsePastedRows(text);
+    if (pairs.length >= 2) { e.preventDefault(); renderRows(pairs); run(); revealResult(false); }
+  });
+  // Enter in a row field advances to the next row (adding one if you're on the last).
+  rowsEl.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter') return;
+    var t = e.target; if (!t || !t.matches || !t.matches('.vb-input')) return;
+    e.preventDefault();
+    var rowsNow = Array.prototype.slice.call(rowsEl.querySelectorAll('.vb-prow'));
+    var idx = rowsNow.indexOf(t.closest('.vb-prow'));
+    if (idx === rowsNow.length - 1) addRow();
+    var after = rowsEl.querySelectorAll('.vb-prow')[idx + 1];
+    if (after) { var d = after.querySelector('[data-field="date"]'); if (d && d.focus) d.focus(); }
+  });
   rowsEl.addEventListener('click', function (e) {
     var btn = e.target.closest ? e.target.closest('.vb-remove') : null;
     if (btn) {
@@ -1273,11 +2296,20 @@
   itemEl.addEventListener('input', schedule);
   unitEl.addEventListener('change', schedule);
   if (addBtn) { addBtn.textContent = '+ ' + T.add; addBtn.addEventListener('click', addRow); }
-  if (exampleBtn) { exampleBtn.textContent = T.example; exampleBtn.addEventListener('click', loadExample); }
   if (clearBtn) { clearBtn.textContent = T.clear; clearBtn.addEventListener('click', clearAll); }
+  var demosEl = document.querySelector('.vb-demos');
+  if (demosEl) demosEl.addEventListener('click', function (e) {
+    var b = e.target && e.target.closest ? e.target.closest('[data-scenario]') : null;
+    if (b) loadScenario(b.getAttribute('data-scenario'));
+  });
+  var shareBtn = document.getElementById('vbShare');
+  if (shareBtn) { shareBtn.textContent = T.shareBtn; shareBtn.addEventListener('click', function () { shareLink(shareBtn); }); }
 
   resultEl.addEventListener('click', onResultClick);
   ensureAnnouncer();
+  initItemCombo();
+  initProvenance();
+  renderCarry();
   injectExtras();
   injectJournalRail();
   renderJournalRail();

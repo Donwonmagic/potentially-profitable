@@ -8,15 +8,15 @@
     "live": "data/cost-index.json"
   },
   "grounding": "data/sourced-claims.json#usda_wholesale_protein_oil_refs_2026",
-  "asOf": "2026-06-14T18:32:30.355Z",
+  "asOf": "2026-06-27T21:42:49.598Z",
   "lbBand": [
     0.3,
     60
   ],
   "summary": {
-    "ingredientsScanned": 51,
+    "ingredientsScanned": 102,
     "cloneClusters": 3,
-    "clonedIngredients": 6,
+    "clonedIngredients": 7,
     "clonesByClass": {
       "documented-proxy": 2,
       "index-no-level": 1
@@ -33,12 +33,12 @@
         "pork-shoulder"
       ],
       "classification": "documented-proxy",
-      "lastCents": 131,
+      "lastCents": 123,
       "liveLevels": {
         "ground-pork": null,
         "pork-shoulder": 118
       },
-      "points": 158,
+      "points": 702,
       "note": "identical series, and the registry draws all members from one source — an expected proxy; collapse to one for independence."
     },
     {
@@ -57,12 +57,14 @@
     },
     {
       "members": [
+        "shrimp",
         "shrimp-head-on",
         "shrimp-pd"
       ],
       "classification": "index-no-level",
       "lastCents": 373,
       "liveLevels": {
+        "shrimp": 355,
         "shrimp-head-on": 355,
         "shrimp-pd": 355
       },

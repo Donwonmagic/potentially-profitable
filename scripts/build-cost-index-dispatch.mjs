@@ -121,11 +121,14 @@ function pressureRead(items, key) {
   if (!it || !it.direction || it.direction === 'flat') return null;
   const top = (it.contributors || []).slice().sort((a, b) => (b.weight || 0) - (a.weight || 0))[0];
   if (!top) return null;
+  // ADR-014 §4: cold-storage stocks are a COINCIDENT supply-context read, not a
+  // leading indicator — never attach a lead-lag ("N-week lead") phrase to them.
+  const coincident = top.coincident === true || top.source === 'nass-cold-storage';
   // Singular unit — the lead reads adjectivally ("a 16–26 week lead").
-  const lead = top.lead && typeof top.lead.min === 'number'
+  const lead = (!coincident && top.lead && typeof top.lead.min === 'number')
     ? `${top.lead.min}–${top.lead.max} ${top.lead.unit || 'week'}`
     : null;
-  return { dir: it.direction, confidence: it.confidence || null, force: indLabel(top.indicator), lead, asOf: it.as_of || it.asOf || null };
+  return { dir: it.direction, confidence: it.confidence || null, force: indLabel(top.indicator), lead, coincident, asOf: it.as_of || it.asOf || null };
 }
 
 // computeInsight({ editionDate, monthly }) — the one payload both renders consume.
@@ -497,7 +500,7 @@ function narrate(ins) {
 
   if (ins.pressure && ins.pressure.length) {
     L.push('WHAT\'S BEHIND THE MOVES (pressure layer — inferred direction on a lead, no price):');
-    for (const p of ins.pressure) L.push(`  • ${p.name} — ${p.dir}, led by ${p.force}${p.lead ? ` (${p.lead} lead)` : ''}${p.confidence ? `, ${p.confidence} conf` : ''}`);
+    for (const p of ins.pressure) L.push(`  • ${p.name} — ${p.dir}, led by ${p.force}${p.lead ? ` (${p.lead} lead)` : p.coincident ? ' (concurrent)' : ''}${p.confidence ? `, ${p.confidence} conf` : ''}`);
     L.push('');
   }
 
@@ -559,7 +562,7 @@ function elevatedClause(i) {
 // "the pressure read is building, led by cattle-on-feed placements on a 16–26 weeks lead".
 function pressurePhrase(p) {
   if (!p) return '';
-  const lead = p.lead ? ` on a ${p.lead} lead` : '';
+  const lead = p.lead ? ` on a ${p.lead} lead` : p.coincident ? ' as a concurrent supply read' : '';
   return `the pressure read is <strong>${esc(p.dir)}</strong>, led by ${esc(p.force)}${lead}`;
 }
 
@@ -985,18 +988,18 @@ ${contribClose}
   // under each staple's direction (cost-pressure.json), with the feed flow as one visual
   // chain. Inferred direction only, sourced, never a price.
   const pressureRows = ins.pressure.map((p) => {
-    const lead = p.lead ? ` <span style="opacity:.6">(${esc(p.lead)} lead)</span>` : '';
+    const lead = p.lead ? ` <span style="opacity:.6">(${esc(p.lead)} lead)</span>` : p.coincident ? ` <span style="opacity:.6">(concurrent)</span>` : '';
     const conf = p.confidence ? `, ${esc(p.confidence)} confidence` : '';
     return `        <li><strong>${esc(p.name)}</strong> &mdash; <strong>${esc(p.dir)}</strong>, led by ${esc(p.force)}${lead}${conf}.</li>`;
   }).join('\n');
   const pressureSection = (ins.pressure.length || driverCtx)
     ? `      <h2 id="whats-behind-the-moves">What's behind the moves</h2>
-      <p>A percentage tells you <em>what</em> moved; it does not tell you <em>why</em>. The cost index carries a second, slower read for that &mdash; the <strong>pressure layer</strong>, which infers whether each staple is building or easing from the public lead indicators underneath it: feed grain and cattle-on-feed placements for proteins, cold-storage stocks for dairy, shipment volume and drought for produce, diesel for freight. It points a direction on a lead, never a price.</p>
+      <p>A percentage tells you <em>what</em> moved; it does not tell you <em>why</em>. The cost index carries a second, slower read for that &mdash; the <strong>pressure layer</strong>, which infers whether each staple is building or easing from the public lead indicators underneath it: feed grain and cattle-on-feed placements for proteins, cold-storage stocks for dairy, shipment volume and drought for produce. (Freight/diesel is a common-mode cost that rides every delivered price roughly equally, so it is carried index-wide in the measured drivers, not as a per-ingredient pressure arrow.) It points a direction on a lead, never a price.</p>
 ${ins.pressure.length ? `      <p>Where the panel's tracked staples sit this week${ins.pressureAsOf ? `, as of ${ins.pressureAsOf}` : ''}:</p>
       <ul>
 ${pressureRows}
       </ul>
-      <details class="cite"><summary>Sources for the pressure read</summary><p>Inferred direction only &mdash; composed from public USDA NASS (Cattle-on-Feed, Broiler Hatchery, Cold Storage), USDA AMS movement and shipment reports, EIA diesel, and the U.S. Drought Monitor. No delivered price. See the <a href="/cost-index/methodology/">Cost Index methodology</a>.</p></details>
+      <details class="cite"><summary>Sources for the pressure read</summary><p>Inferred direction only &mdash; composed from public USDA NASS (Cattle-on-Feed, Broiler Hatchery, Cold Storage), USDA AMS movement and shipment reports, and the U.S. Drought Monitor. No delivered price. See the <a href="/cost-index/methodology/">Cost Index methodology</a>.</p></details>
 ` : ''}${driverCtx ? `      <p>The feed market is the clearest of these chains. This week, ${driverCtx} &mdash; a feed read that flows through to the proteins it sits behind on a lag:</p>
 
 ${flowFig}

@@ -28,46 +28,37 @@
     "vegetable-oil",
     "whole-chicken"
   ],
-  "weightedTilt": -0.145,
+  "weightedTilt": -0.02,
   "outlook": "mixed",
   "counts": {
     "building": 5,
-    "easing": 7,
-    "steady": 0,
+    "easing": 6,
+    "steady": 1,
     "n": 12
   },
   "lockCandidates": [],
   "watchCandidates": [
-    "beef-tenderloin",
+    "cheddar-cheese",
     "onion",
     "romaine-lettuce",
-    "cheddar-cheese",
+    "beef-tenderloin",
     "ribeye"
   ],
   "featureCandidates": [
+    "russet-potato",
     "chicken-breast",
-    "whole-chicken",
-    "butter",
     "pork-loin",
     "pork-shoulder",
-    "russet-potato",
-    "tomato"
+    "tomato",
+    "whole-chicken"
   ],
   "movers": [
     {
-      "slug": "beef-tenderloin",
+      "slug": "cheddar-cheese",
       "direction": "building",
       "confidence": "high",
       "storable": false,
       "action": "watch-negotiate",
-      "seasonalNote": null
-    },
-    {
-      "slug": "chicken-breast",
-      "direction": "easing",
-      "confidence": "high",
-      "storable": false,
-      "action": "feature-now",
       "seasonalNote": null
     },
     {
@@ -87,7 +78,7 @@
       "seasonalNote": null
     },
     {
-      "slug": "whole-chicken",
+      "slug": "russet-potato",
       "direction": "easing",
       "confidence": "high",
       "storable": false,
@@ -95,7 +86,15 @@
       "seasonalNote": null
     },
     {
-      "slug": "butter",
+      "slug": "beef-tenderloin",
+      "direction": "building",
+      "confidence": "moderate",
+      "storable": false,
+      "action": "watch-negotiate",
+      "seasonalNote": null
+    },
+    {
+      "slug": "chicken-breast",
       "direction": "easing",
       "confidence": "moderate",
       "storable": false,

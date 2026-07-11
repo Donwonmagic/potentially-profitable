@@ -75,12 +75,12 @@
       "affects": ["vegetable-oil", "canola-oil", "olive-oil"],
       "directionExpected": "up",
       "strength": "correlation",
-      "mechanism": "Oilseed crush economics and energy/biofuel demand move edible-oil costs",
-      "mechanism_es": "La economía de la molienda de oleaginosas y la demanda de energía/biocombustibles mueven los costos del aceite comestible",
-      "source": "USDA NASS; FRED oilseed & energy series; EIA",
-      "sourceUrl": "https://fred.stlouisfed.org/",
-      "retrievedAt": "2026-06-20",
-      "note": "Edible-oil channel, distinct from the produce and protein chains."
+      "mechanism": "Edible-oil costs increasingly move on energy demand, not just food: soybean oil is a leading renewable-diesel and biodiesel feedstock, so a biofuel-demand run bids up the same oil that fills the fryer — layered on top of oilseed crush economics.",
+      "mechanism_es": "Los costos del aceite comestible se mueven cada vez más por la demanda de energía, no solo de alimentos: el aceite de soya es un insumo principal del diésel renovable y el biodiésel, así que un alza en la demanda de biocombustibles empuja el mismo aceite que llena la freidora — encima de la economía de la molienda de oleaginosas.",
+      "source": "USDA ERS Oil Crops (soybean-oil biofuel-feedstock demand); FRED oilseed & energy series; EIA",
+      "sourceUrl": "https://www.ers.usda.gov/topics/crops/soybeans-and-oil-crops",
+      "retrievedAt": "2026-07-10",
+      "note": "Edible-oil channel, distinct from the produce and protein chains; the renewable-diesel→soy-oil link ties it to energy demand, not just crop weather (ADR-013 EIA enrichment)."
     },
     {
       "id": "feed-grain-livestock",

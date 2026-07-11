@@ -150,10 +150,20 @@ async function liveFetch(ingredient, m) {
     // so one market missing the commodity or one slow report drops only itself —
     // the others still contribute (the cardinal rule), without 8 sequential waits.
     const settled = await F.mapLimit(amsSpecs(m), F.AMS_CONCURRENCY,
-      (spec) => (DEEP_DAYS > (spec.windowDays || 0)
-        ? F.fetchAmsReportDeep(spec.reportId, spec.section, auth, DEEP_DAYS)   // backfill: stitch 150-day windows (MARS caps a single window)
-        : F.fetchAmsReport(spec.reportId, spec.section, auth, spec.windowDays)
-      ).then((json) => ({ json, spec })));
+      (spec) => {
+        // Deep stitch only: pre-filter each window down to THIS commodity's rows so a
+        // multi-market produce backfill doesn't hold every commodity's rows in RAM (the
+        // single-ingredient OOM — arugula's 8 markets). needle mirrors normalizeAms's
+        // lowercased substring match; scanning all fields makes it a safe superset.
+        const needle = spec.commodity ? String(spec.commodity).toLowerCase() : null;
+        const rowFilter = needle
+          ? (row) => { for (const k in row) { const v = row[k]; if (v != null && String(v).toLowerCase().indexOf(needle) !== -1) return true; } return false; }
+          : null;
+        return (DEEP_DAYS > (spec.windowDays || 0)
+          ? F.fetchAmsReportDeep(spec.reportId, spec.section, auth, DEEP_DAYS, undefined, rowFilter)   // backfill: stitch 150-day windows (MARS caps a single window)
+          : F.fetchAmsReport(spec.reportId, spec.section, auth, spec.windowDays)
+        ).then((json) => ({ json, spec }));
+      });
     settled.forEach((r) => { if (r.ok) out.ams.push(r.value); });
   }
   if (m.lmr) {
@@ -169,6 +179,10 @@ async function liveFetch(ingredient, m) {
     // NOAA Fisheries import unit value (keyless). One trade dump, cached + reused
     // across species; normalizeNoaaTrade filters by commodity.
     try { out.noaa = await F.fetchNoaaTrade({ years: DEEP_DAYS ? Math.max(m.noaa.years || 2, Math.ceil(DEEP_DAYS / 365)) : m.noaa.years }); } catch (e) { /* skip; others contribute */ }
+  }
+  if (m.census && typeof S.normalizeCensusTrade === 'function') {
+    // US Census import unit value (keyless) → landed $/lb for any HS code.
+    try { out.census = await F.fetchCensusTrade({ hs: m.census.hs, years: DEEP_DAYS ? Math.max(m.census.years || 3, Math.ceil(DEEP_DAYS / 365)) : (m.census.years || 3) }); } catch (e) { /* skip; others contribute */ }
   }
   if (m.eia && process.env.EIA_KEY) {
     // EIA v2 (electricity etc.) — needs EIA_KEY; an energy-direction index signal.
@@ -226,6 +240,7 @@ function toOutputs(ingredient, raw, m) {
     if (o.points.length) outs.push(o);
   });
   if (raw.noaa && typeof S.normalizeNoaaTrade === 'function') { const o = S.normalizeNoaaTrade(raw.noaa, { source: 'noaa', basis: (m.noaa && m.noaa.basis) || 'wholesale', commodity: m.noaa && m.noaa.commodity, hts: m.noaa && m.noaa.hts, nameMatch: m.noaa && m.noaa.nameMatch, edibleOnly: m.noaa && m.noaa.edibleOnly, unit: (m.noaa && m.noaa.unit) || 'lb' }); o.family = 'noaa'; o.type = 'noaa-trade'; if (o.points.length) outs.push(o); }
+  if (raw.census && typeof S.normalizeCensusTrade === 'function') { const o = S.normalizeCensusTrade(raw.census, { source: 'census', basis: (m.census && m.census.basis) || 'index', hts: m.census && m.census.hts, unit: (m.census && m.census.unit) || 'lb' }); o.family = 'census'; o.type = 'census-trade'; if (o.points.length) outs.push(o); }
   if (raw.bls) { const o = S.normalizeBls(raw.bls, { source: 'bls', basis: 'index' }); o.family = (m.bls && m.bls.family) || 'bls'; o.type = (m.bls && m.bls.type) || 'bls'; if (o.points.length) outs.push(o); }
   // FRED fan-out: an array of {json, spec} (multi-series) or a single json (demo).
   // Distinct `source` per series so sourceSeries keys don't collide; default stays
@@ -328,7 +343,15 @@ async function main() {
     if (!historyOutFile || !_fs) return null;
     const keys = Object.keys(deepHistory);
     if (!keys.length) return null;
-    _fs.writeFileSync(historyOutFile, JSON.stringify({ _doc: HIST_DOC, generatedAt: artifact.generatedAt, ingredients: deepHistory }, null, 2) + '\n');
+    // ATOMIC write: serialize to a sibling .tmp then rename over the target. A hard
+    // crash (OOM/kill) MID-WRITE can otherwise leave a truncated JSON that the next
+    // --resume fails to parse and discards ("start clean") — losing the whole run.
+    // writeFileSync + renameSync are synchronous with no await between, so concurrent
+    // ingredient checkpoints never interleave, and the target is always a complete store.
+    const body = JSON.stringify({ _doc: HIST_DOC, generatedAt: artifact.generatedAt, ingredients: deepHistory }, null, 2) + '\n';
+    const tmp = historyOutFile + '.tmp';
+    _fs.writeFileSync(tmp, body);
+    _fs.renameSync(tmp, historyOutFile);
     return { keys: keys.length, pts: keys.reduce((n, k) => n + (deepHistory[k] ? deepHistory[k].length : 0), 0) };
   }
   if (historyOutFile) {
@@ -339,6 +362,13 @@ async function main() {
     });
   }
   let ckpt = 0;
+  // Checkpoint throttle: re-serializing the WHOLE store after every ingredient is
+  // O(store-size) per fetch, which dwarfs a fast single-request BLS/NOAA fetch once
+  // the store is large (e.g. a resumed run). Write at most once per COST_INDEX_CHECKPOINT_MS
+  // instead; a hard crash loses at most that window (SIGINT + the final write stay
+  // unconditional, so nothing completed is lost), and --resume continues from it.
+  let lastCkptAt = 0;
+  const CHECKPOINT_MS = Math.max(0, Number(process.env.COST_INDEX_CHECKPOINT_MS) || 10000);
   // Deep backfill (--history-out) is otherwise silent (jsonMode) and can run many
   // minutes across the windowed AMS stitch — emit a per-ingredient tick to stderr
   // (never stdout, so the --json / --out artifact contract stays untouched) so the
@@ -381,14 +411,31 @@ async function main() {
     // build-cost-index.mjs vendors (it adds asOf already; ensure it's present).
     // history = the citeable curve behind it (gaps verbatim), if any.
     const history = buildHistory(point.kept);
-    artifact.points[ing] = { asOf: point.result.asOf, ...point.result, ...(history.length ? { history } : {}) };
+    // Retain the FULL composite result ONLY when something consumes it: the --out
+    // artifact serializes it, and a normal (non-deep) run prints/needs the basket.
+    // In pure --history-out mode the artifact is never written or printed (jsonMode
+    // suppresses the summary; only --out serializes points), so holding every
+    // ingredient's fat result for the whole run is dead weight that OOMs a deep
+    // backfill around ingredient ~110. Dropping it lets each result GC immediately —
+    // the lean deepHistory series below is all the deep run actually keeps.
+    if (outFile || !historyOutFile) {
+      artifact.points[ing] = { asOf: point.result.asOf, ...point.result, ...(history.length ? { history } : {}) };
+    }
     // Deep backfill store: the FULL (uncapped) primary series, weekly-deduped, on the
     // exact vendor scale — so build-seasonality's normals are comparable to the live level.
     if (historyOutFile) {
       const deep = weeklyDedup(buildHistory(point.kept, Number.MAX_SAFE_INTEGER));
       if (deep.length) {
         deepHistory[ing] = deep;
-        if ((++ckpt) % 8 === 0) { try { writeHistoryStore(); } catch (_) {} }   // checkpoint so a Ctrl-C keeps progress
+        // Checkpoint atomically, throttled (see CHECKPOINT_MS) so the growing store
+        // isn't rewritten on every fast fetch — a hard OOM/kill loses at most that
+        // window, never the whole run; re-run with --resume to continue.
+        const nowMs = Date.now();
+        if (nowMs - lastCkptAt >= CHECKPOINT_MS) { try { writeHistoryStore(); lastCkptAt = nowMs; } catch (_) {} }
+        // Bound heap on a deep backfill: periodically drop the report cache (12–50y of
+        // windows for every report otherwise accumulates for the whole process). Every
+        // 16 keeps most cross-ingredient dedup while capping worst-case growth.
+        if ((++ckpt) % 16 === 0 && typeof F.clearReportCache === 'function') F.clearReportCache();
       }
     }
     composed++;
@@ -420,9 +467,11 @@ async function main() {
 
   // Headline: compose the per-ingredient trends into the Muntin Restaurant Basket
   // (a weighted basis-agnostic % move for the declared basket — never a level).
-  const basket = B.basketTrend(artifact.points, basketWeights);
-  artifact.basket = basket;
-  if (!jsonMode) {
+  // artifact.points is intentionally empty in pure --history-out mode (see the loop),
+  // so skip the basket there — it's neither written nor printed on a deep backfill.
+  const basket = Object.keys(artifact.points).length ? B.basketTrend(artifact.points, basketWeights) : null;
+  if (basket) artifact.basket = basket;
+  if (!jsonMode && basket) {
     log('\n══ Muntin Restaurant Basket ══');
     log('  ' + B.basketPhrase(basket));
   }

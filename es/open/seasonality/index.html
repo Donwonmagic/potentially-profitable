@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<title>Estacionalidad: qué mueve de verdad los precios | Muntin Open Data</title>
+<meta name="description" content="Por qué existen las curvas de precio estacionales, cómo leer la curva de 12 meses y dónde el momento del calendario realmente paga — de datos públicos." />
+<meta name="theme-color" content="#2A50C8" />
+<link rel="canonical" href="https://muntin.digital/es/open/seasonality/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/open/seasonality/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/open/seasonality/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/open/seasonality/" />
+<meta property="og:locale" content="es_US" />
+<meta property="og:locale:alternate" content="en_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Estacionalidad: qué mueve de verdad los precios | Muntin Open Data" />
+<meta property="og:description" content="Por qué existen las curvas de precio estacionales, cómo leer la curva de 12 meses y dónde el momento del calendario realmente paga — de datos públicos." />
+<meta property="og:url" content="https://muntin.digital/es/open/seasonality/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Estacionalidad: qué mueve de verdad los precios | Muntin Open Data" />
+<meta name="twitter:description" content="Por qué existen las curvas de precio estacionales, cómo leer la curva de 12 meses y dónde el momento del calendario realmente paga — de datos públicos." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":["WebPage","LearningResource"],"@id":"https://muntin.digital/es/open/seasonality/#page","url":"https://muntin.digital/es/open/seasonality/","name":"¿Qué mueve de verdad los precios estacionales?","inLanguage":"es-US","isPartOf":{"@id":"https://muntin.digital/#website"},"description":"Por qué existen las curvas de precio estacionales, cómo leer la curva de 12 meses y dónde el momento del calendario realmente paga — de datos públicos.","learningResourceType":"explainer","speakable":{"@type":"SpeakableSpecification","cssSelector":["h1",".od-hero__lede"]}},{"@type":"BreadcrumbList","@id":"https://muntin.digital/es/open/seasonality/#breadcrumbs","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://muntin.digital/es/"},{"@type":"ListItem","position":2,"name":"Datos abiertos","item":"https://muntin.digital/es/open/"},{"@type":"ListItem","position":3,"name":"Estacionalidad","item":"https://muntin.digital/es/open/seasonality/"}]},{"@type":"FAQPage","@id":"https://muntin.digital/es/open/seasonality/#faq","inLanguage":"es-US","mainEntity":[{"@type":"Question","name":"¿Cuándo son más baratas las frutas y verduras?","acceptedAnswer":{"@type":"Answer","text":"Depende del cultivo: cada uno toca su mínimo cuando su región principal cosecha a pleno volumen. En este conjunto de datos, la mayoría de los 57 ingredientes con una ventana estacional clara son más baratos en verano o a inicios de otoño, pero los cultivos de almacenamiento e importados se mantienen casi planos todo el año."}},{"@type":"Question","name":"¿Qué ingredientes vale la pena comprar por temporada?","acceptedAnswer":{"@type":"Answer","text":"Los cultivos de campo frescos sin lugar para almacenarse — calabacita de verano, elote, cebollín, melones — oscilan fuerte y premian el momento. Los que se almacenan bien (cebollas, papas, manzanas) o llegan de importación todo el año se cotizan casi planos."}}]}]}</script>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<style>
+:root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--white:#fff;--line:#E3E5E9;--teal-wash:rgba(42,80,200,.06);--stone:#6B7280;--gold:#B7791F;--season:#6b4fa1;--font-display:'Fraunces',Georgia,serif;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#16181D;color:#F6F7F8;padding:12px 16px;z-index:100}
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D7DAE0}
+header.nav{min-height:64px}
+.nav{position:fixed;top:0;left:0;right:0;background:var(--cream);z-index:50;border-bottom:1px solid #E3E5E9}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:64px;padding:12px 0}
+.logo{display:flex;align-items:center;gap:10px;font-family:Georgia,serif;font-size:22px;font-weight:600;letter-spacing:-0.02em;flex-shrink:0;white-space:nowrap;color:inherit;text-decoration:none}
+.logo-mark{width:28px;height:28px;flex:0 0 28px}
+.nav-links{display:flex;gap:36px;font-size:15px}
+.nav-toggle{display:none}
+.nav-search-btn,.lang-switch{display:none}
+@media (max-width:1100px){.nav-links{display:none}}
+main{padding-top:64px}
+.breadcrumb{font-size:13px;color:var(--ink-soft);margin:24px 0 0}
+.breadcrumb a{color:var(--ink-soft);text-decoration:none;border-bottom:1px dashed currentColor}
+.breadcrumb a:hover{color:var(--teal)}
+.ci-hero{padding:40px 0 8px}
+.ci-eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
+.ci-eyebrow a{color:var(--teal);text-decoration:none}
+.ci-hero h1{font-family:var(--font-display);font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.12;color:var(--ink);margin:0 0 14px}
+.ci-answer{font-size:clamp(18px,3vw,22px);font-weight:600;color:var(--ink);margin:0 0 14px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
+.ci-lede{font-size:18px;line-height:1.6;color:var(--ink);margin:0;max-width:720px}
+.ci-body{margin:8px auto 0;max-width:760px}
+.ci-body h2{font-family:var(--font-display);font-size:clamp(20px,3vw,26px);font-weight:500;color:var(--ink);margin:34px 0 10px;line-height:1.2}
+.ci-body p{margin:0 0 16px;font-size:16px;line-height:1.7}
+.ci-body ol,.ci-body ul{margin:0 0 16px;padding-left:22px;font-size:16px;line-height:1.7}
+.ci-body li{margin:0 0 8px}
+.ci-read{margin:22px 0 8px;padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px;font-variant-numeric:tabular-nums}
+.ci-read__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+.ci-read__badge{font-weight:600;text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink-soft);margin-left:8px}
+.ci-read__line{font-size:16px;line-height:1.55;color:var(--ink);margin:0}
+.ci-read__trend{margin:6px 0 0;font-size:14.5px;line-height:1.5;color:var(--ink-soft)}
+.ci-read__verdict{margin:10px 0 0;font-size:15px;line-height:1.5;color:var(--ink)}
+.ci-read__verb{display:inline-block;font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-right:8px;vertical-align:1px;background:var(--cream);border:1px solid var(--line);color:var(--ink-soft)}
+.ci-read__verb[data-bias="hold"]{color:#2A50C8;border-color:#2A50C8}
+.ci-read__verb[data-bias="watch"]{color:#6b540f;border-color:#9a7d2e}
+.ci-read__verb[data-bias="re-price"]{color:#A23B2D;border-color:#A23B2D}
+.ci-read__spark{margin:12px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.ci-read__spark .mtn-spark{flex:0 0 auto;overflow:visible}
+.ci-read__capsule{margin:0;font-size:14.5px;line-height:1.45;color:var(--ink)}
+.ci-read__capsule-note{color:var(--ink-soft);font-size:12.5px}
+.ci-read__rank{color:var(--ink-soft)}
+.ci-why{margin:14px 0 8px;padding:14px 18px;background:var(--white);border:1px solid var(--line);border-radius:12px}
+.ci-why__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px}
+.ci-why__line{font-size:15px;line-height:1.55;color:var(--ink);margin:0}
+.ci-read__src{margin-top:8px;font-size:12.5px}
+.ci-read__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
+.ci-read__src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
+.ci-read__verified{margin:10px 0 0;font-size:13px;color:var(--ink);background:var(--teal-wash);border-left:3px solid var(--teal);padding:6px 10px;border-radius:3px}
+.ci-read__verified strong{color:var(--teal)}
+.ci-read__live,.ci-read__method{margin:10px 0 0;font-size:14px}
+.ci-read__live a,.ci-read__method a,.ci-read__data a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-read__method{margin-top:6px;font-size:13px}
+.ci-read__data{margin:4px 0 0;font-size:13px;color:var(--ink-soft)}
+.ci-season{margin:12px 0 4px;padding:12px 16px;background:var(--white);border:1px solid var(--line);border-left:3px solid var(--season);border-radius:10px;font-variant-numeric:tabular-nums}
+.ci-season__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--season);margin:0 0 4px}
+.ci-season__body{font-size:14.5px;line-height:1.5;color:var(--ink);margin:0}
+.ci-season__src{margin:6px 0 0;font-size:12.5px}
+.ci-season__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
+.ci-season__src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
+.ci-season__src a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-season-curve{margin:12px 0 2px}
+.ci-season-curve svg{display:block;width:100%;height:auto;overflow:visible}
+.ci-season-curve .sc-band{fill:var(--season);fill-opacity:.15}
+.ci-season-curve .sc-line{fill:none;stroke:var(--season);stroke-width:1.4;stroke-opacity:.7}
+.ci-season-curve .sc-dot{fill:var(--season)}
+.ci-season-curve .sc-dot--cheap{fill:var(--gold)}
+.ci-season-curve .sc-ring{fill:none;stroke:var(--season);stroke-width:1.3}
+.ci-season-curve .sc-lab{fill:var(--stone)}
+.ci-season-curve .sc-lab--cur{fill:var(--ink);font-weight:700}
+.ci-season-curve__cap{font-size:12.5px;color:var(--ink-soft);line-height:1.5;margin:7px 0 0}
+.ci-season-curve__cap strong{color:var(--ink)}
+.ci-season-curve__note{color:var(--stone);font-size:11.5px;white-space:nowrap}
+.ci-seasonal{margin:26px 0 8px}
+.ci-season-q{font-family:var(--font-display);font-size:clamp(20px,3.4vw,26px);font-weight:600;line-height:1.2;color:var(--ink);margin:0 0 10px;text-wrap:balance}
+.ci-season-answer{font-size:clamp(16px,2.4vw,18px);line-height:1.6;color:var(--ink-soft);margin:0;max-width:62ch;border-left:3px solid var(--season);padding-left:14px}
+.ci-yield{margin:18px 0;padding:14px 16px;background:var(--white);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:10px}
+.ci-yield__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 5px}
+.ci-yield__body{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0}
+.ci-yield__body strong{font-weight:700}
+.ci-yield__link{margin:9px 0 0;font-size:13.5px}
+.ci-yield__link a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-yield__src{margin:7px 0 0;font-size:12px;color:var(--stone)}
+.ci-faq{margin:34px 0 0}
+.ci-faq__item{margin:0 0 18px}
+.ci-faq__q{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink);margin:0 0 6px}
+.ci-faq__a{font-size:15.5px;line-height:1.65;color:var(--ink-soft);margin:0}
+.ci-sibs{margin:30px 0 0;font-size:14px;color:var(--ink-soft)}
+.ci-sibs-label{display:inline-block;font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:11px;margin-right:8px}
+.ci-sibs a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 8px}
+.ci-composite{margin:22px 0 6px;padding:20px 22px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--ink-soft);border-radius:12px;font-variant-numeric:tabular-nums}
+.ci-composite[data-band="up"]{border-left-color:#A23B2D}
+.ci-composite[data-band="down"]{border-left-color:var(--teal)}
+.ci-composite__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px}
+.ci-composite__read{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;margin:0}
+.ci-composite__num{font-family:var(--font-display);font-size:clamp(30px,6vw,44px);font-weight:500;line-height:1;color:var(--ink)}
+.ci-composite[data-band="up"] .ci-composite__num{color:#A23B2D}
+.ci-composite[data-band="down"] .ci-composite__num{color:var(--teal)}
+.ci-composite__say{font-size:15px;line-height:1.4;color:var(--ink);font-weight:600;max-width:46ch}
+.ci-composite__meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin:10px 0 0}
+.ci-composite__chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--white);border:1px solid var(--line);color:var(--ink-soft)}
+.ci-composite__spread{font-size:14px;line-height:1.5;color:var(--ink-soft);margin:10px 0 0}
+.ci-composite__spread strong{color:var(--ink)}
+.ci-composite__src{margin:8px 0 0;font-size:12.5px}
+.ci-composite__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
+.ci-composite__src div{margin-top:6px;color:var(--ink-soft);line-height:1.55}
+.ci-composite__src a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-orient{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));margin:18px 0 8px}
+.ci-orient__cell{background:var(--cream-2);border-radius:6px;padding:14px 16px}
+.ci-orient__h{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+.ci-orient__b{font-size:14px;line-height:1.5;color:var(--ink);margin:0}
+.ci-signup--compact{margin:18px 0}
+.ci-signup-alt{margin:12px 0 0;font-size:13.5px;color:var(--ink-soft);line-height:1.6}
+.ci-signup-alt a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-signup-sep{color:var(--stone,#9aa0aa);margin:0 4px}
+.ci-source{font-size:12.5px;color:var(--ink-soft);margin:24px 0 40px}
+.ci-source a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));margin:14px 0 0}
+.ci-card{padding:16px 18px;background:var(--white);border:1px solid var(--line);border-radius:10px}
+.ci-card a{font-family:var(--font-display);font-size:17px;color:var(--ink);text-decoration:none}
+.ci-card a:hover{color:var(--teal)}
+.ci-card-note{display:block;font-size:13px;color:var(--ink-soft);margin-top:4px}
+.ci-cat-h{font-family:var(--font-display);font-size:16px;color:var(--ink-soft);margin:30px 0 0;text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+.ci-card-action{margin-top:10px}
+.ci-moving{margin:20px 0 8px;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px}
+.ci-moving .ci-cat-h{margin:0 0 10px}
+.ci-moving-list{list-style:none;margin:0;padding:0}
+.ci-moving-item{margin:0 0 8px;font-size:15.5px;line-height:1.5}
+.ci-moving-item a{color:var(--ink);text-decoration:none;font-weight:600;border-bottom:1px dashed var(--line)}
+.ci-moving-item a:hover{color:var(--teal)}
+.ci-moving-reason{color:var(--ink-soft);font-size:14px}
+.ci-moving-calm{margin:0;font-size:15.5px;color:var(--ink)}
+.ci-moving-bar{margin:0 0 12px;font-size:13px;line-height:1.5;color:var(--ink-soft);padding:8px 12px;background:var(--surface-1,#faf9f7);border:1px solid var(--line);border-radius:8px}
+.ci-vkey{margin:2px 0 12px;font-size:12.5px;color:var(--ink-soft);line-height:1.6}
+.ci-vkey strong{color:var(--ink)}
+.ci-moving-insight{margin:3px 0 2px}
+.ci-moving-read{margin:2px 0;font-size:14.5px;line-height:1.5;color:var(--ink)}
+.ci-assoc-tag{color:var(--ink-soft);font-style:italic;font-size:12.5px}
+.ci-moving-cite{margin:3px 0 4px;font-size:12.5px}
+.ci-moving-cite summary{color:var(--teal);cursor:pointer}
+.ci-moving-cite p{margin:4px 0 0;color:var(--ink-soft)}
+.ci-moving-act{margin:2px 0 0;font-size:13.5px;color:var(--ink-soft)}
+.ci-moving-act strong{color:var(--ink)}
+.ci-moving-more{font-size:12.5px}
+.ci-moving-more-all{margin:10px 0 0;font-size:13.5px;color:var(--ink-soft)}
+.ci-moving-more-all a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-index--mini{display:inline-block;vertical-align:middle;margin:4px 0 2px;opacity:.9}
+.ci-index{margin:10px 0 4px}
+.ci-index__cap{margin:0 0 4px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+.ci-index .mtn-spark{max-width:100%;height:auto}
+.ci-card--pending{opacity:.72;background:var(--cream-2)}
+.ci-card--pending a{color:var(--ink-soft)}
+.ci-pending-note{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
+.ci-readings{margin:20px 0 8px}
+.ci-table-tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:12px 0 0}
+.ci-table-search__label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+.ci-table-search{flex:1 1 220px;max-width:340px;font:inherit;font-size:14px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--white);color:var(--ink)}
+.ci-table-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.ci-table-count{font-size:13px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.ci-table-empty td{color:var(--ink-soft);font-style:italic;padding:14px 10px}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0}
+.ci-table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+.ci-table th,.ci-table td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap;vertical-align:middle}
+.ci-table th{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft)}
+.ci-table tbody tr:hover{background:var(--cream-2)}
+.ci-table td a{color:var(--ink);text-decoration:none;font-weight:600;border-bottom:1px dashed var(--line)}
+.ci-table td a:hover{color:var(--teal)}
+.ci-table .ci-t-dir{font-weight:600}
+.ci-table .ci-t-dir[data-dir="up"]{color:#A23B2D}
+.ci-table .ci-t-dir[data-dir="down"]{color:var(--teal)}
+.ci-table .ci-t-na{color:var(--stone,#9aa0aa)}
+.ci-table .ci-index--mini{margin:0}
+:root[data-theme="dark"] .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
+.ci-read--pending{border-left-color:#cdb368;background:var(--cream-2)}
+.ci-read--pending .ci-read__head{color:#8a6d1f}
+.ci-outlook{margin:14px 0 8px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--season);border-radius:12px}
+.ci-outlook__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--season);margin:0 0 6px}
+.ci-outlook__line{font-size:15.5px;line-height:1.5;color:var(--ink);margin:0}
+.ci-outlook__record{margin:6px 0 0;font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.ci-outlook__how{margin-top:8px;font-size:12.5px}
+.ci-outlook__how summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
+.ci-outlook__how div{margin-top:6px;color:var(--ink-soft);line-height:1.55}
+.ci-outlook__panel{margin:0 0 8px;padding-left:18px}
+.ci-outlook__panel li{margin:0 0 4px}
+.ci-outlook__lab{margin:10px 0 0;font-size:13.5px}
+.ci-outlook__lab a{color:var(--season);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-events{margin:30px 0 8px}
+.ci-events__intro{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 14px;max-width:66ch}
+.ci-events__take{margin:0 0 16px;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px}
+.ci-events__take[data-vol="wild"]{border-left-color:#A23B2D}
+.ci-events__take[data-vol="swingy"]{border-left-color:var(--gold)}
+.ci-events__take[data-vol="steady"]{border-left-color:var(--teal)}
+.ci-events__take-h{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px}
+.ci-events__take-b{font-size:15px;line-height:1.6;color:var(--ink);margin:0 0 8px;max-width:68ch}
+.ci-events__take-b strong{color:var(--ink)}
+.ci-events__take-mv{font-size:13.5px;line-height:1.55;color:var(--ink-soft);margin:0;max-width:68ch}
+.ci-events__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.ci-events__ev{padding:14px 16px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px;font-variant-numeric:tabular-nums}
+.ci-events__ev[data-dir="up"]{border-left-color:#A23B2D}
+.ci-events__ev[data-dir="down"]{border-left-color:var(--teal)}
+.ci-events__hd{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
+.ci-events__date{font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--ink);min-width:76px}
+.ci-events__mag{font-size:14px;font-weight:700;letter-spacing:.01em;white-space:nowrap}
+.ci-events__mag[data-dir="up"]{color:#A23B2D}
+.ci-events__mag[data-dir="down"]{color:var(--teal)}
+.ci-events__meta{margin:6px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
+.ci-events__meta a{color:var(--ink-soft);text-decoration:none;border-bottom:1px dashed var(--line)}
+.ci-events__meta a:hover{color:var(--teal)}
+.ci-events__ctx{margin:10px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
+.ci-events__ctx-t{margin:0;font-size:14px;font-weight:600;color:var(--ink);line-height:1.5}
+.ci-events__ctx-tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--stone);margin-right:6px;vertical-align:1px}
+.ci-events__cite{margin:8px 0 0;font-size:12.5px}
+.ci-events__cite summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
+.ci-events__cite p{margin:6px 0 0;color:var(--ink-soft);line-height:1.55}
+.ci-events__cite a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-events__srcs{font-size:12px}
+.ci-events__also{margin:14px 0 0;padding:12px 14px;background:var(--white);border:1px solid var(--line);border-radius:10px}
+.ci-events__also-h{margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.ci-events__also .ci-events__ctx{background:transparent;padding:6px 0;border-top:1px solid var(--line);border-radius:0}
+.ci-events__also .ci-events__ctx:first-of-type{border-top:0}
+.ci-events__foot{margin:12px 0 0;font-size:12.5px;color:var(--stone);line-height:1.5}
+.ci-events__foot a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-events--stable .ci-events__intro{margin-bottom:0}
+/* a11y: a keyboard/switch user must always see focus (only the skip-link had one). */
+.ci-card a:focus-visible,.ci-read a:focus-visible,.ci-sibs a:focus-visible,.breadcrumb a:focus-visible,.ci-source a:focus-visible,.ci-events a:focus-visible,summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:2px}
+/* touch: lift the drawer summaries to a real tap target (WCAG 2.5.8). */
+.ci-read__src summary,.ci-outlook__how summary{display:inline-block;padding:6px 0;min-height:24px}
+/* the pre-rendered sparkline must never clip in a narrower container. */
+.mtn-spark{max-width:100%;height:auto}
+/* print: the controller-PDFs-a-reading-for-a-vendor workflow. Drop the chrome, force the
+   provenance drawers open, and print the verdict with a border + its word (never color-only). */
+@media print{
+  .nav,.ci-cta-row,.ci-sibs,.ci-read__live,.ci-read__method,.skip-link,form,footer{display:none!important}
+  main{padding-top:0!important}
+  body{background:#fff!important;color:#000!important}
+  .ci-read{break-inside:avoid;border-color:#000}
+  details>*:not(summary){display:block!important}
+  details summary{font-weight:700}
+  .ci-read__verb{border:1px solid #000!important;color:#000!important;background:#fff!important}
+  a[href]::after{content:""!important}
+}
+/* dark mode: the inline tokens hardcoded light, so the reading area stayed cream in dark.
+   Redefine the cost-index tokens (light text on dark = high-contrast by construction) and
+   lighten the three verdict accents so they stay legible. Honors OS preference AND the
+   site theme toggle ([data-theme]); a forced-light toggle wins over OS dark. */
+:root[data-theme="dark"]{--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12);--stone:#9aa0aa;--gold:#d8bd6a;--season:#a992d6}
+:root[data-theme="dark"] .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
+:root[data-theme="dark"] .ci-read__verb[data-bias="watch"]{color:#d8bd6a;border-color:#8a7530}
+:root[data-theme="dark"] .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
+:root[data-theme="dark"] .ci-composite[data-band="up"]{border-left-color:#ed9a8e}
+:root[data-theme="dark"] .ci-composite[data-band="up"] .ci-composite__num{color:#ed9a8e}
+:root[data-theme="dark"] .ci-events__ev[data-dir="up"]{border-left-color:#ed9a8e}
+:root[data-theme="dark"] .ci-events__mag[data-dir="up"]{color:#ed9a8e}
+:root[data-theme="dark"] .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12);--stone:#9aa0aa;--gold:#d8bd6a;--season:#a992d6}
+  :root:not([data-theme="light"]) .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
+  :root:not([data-theme="light"]) .ci-read__verb[data-bias="watch"]{color:#d8bd6a;border-color:#8a7530}
+  :root:not([data-theme="light"]) .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
+  :root:not([data-theme="light"]) .ci-composite[data-band="up"]{border-left-color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-composite[data-band="up"] .ci-composite__num{color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-events__ev[data-dir="up"]{border-left-color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
+}
+</style>
+<link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=25763285dde3" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=5d99713cf1c2"><link rel="stylesheet" href="/assets/site-article.css?v=25763285dde3"></noscript>
+<style>
+.od-wrap{max-width:min(1080px,92vw);margin:0 auto}
+.od-eyebrow{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin:0 0 12px}
+.od-eyebrow a{color:var(--teal);text-decoration:none}
+.od-hero{padding:16px 0 6px}
+.od-hero h1{font-family:var(--font-display);font-weight:600;line-height:1.04;letter-spacing:-.01em;font-size:clamp(34px,6vw,60px);margin:0 0 16px;text-wrap:balance}
+.od-hero__lede{font-size:clamp(17px,2.4vw,20px);line-height:1.55;color:var(--ink-soft);max-width:64ch;margin:0 0 20px}
+.od-cta{display:flex;flex-wrap:wrap;gap:12px;margin:20px 0 6px}
+.od-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:10px;font-weight:600;font-size:15px;text-decoration:none;border:1px solid transparent}
+.od-btn--primary{background:var(--teal);color:#fff}
+.od-btn--ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.od-btn--ghost:hover{border-color:var(--teal);color:var(--teal)}
+.od-rule{height:1px;background:var(--line);border:0;margin:34px 0}
+.od-h2{font-family:var(--font-display);font-weight:600;font-size:clamp(22px,3.4vw,30px);line-height:1.15;margin:0 0 8px;text-wrap:balance}
+.od-sub{font-size:15.5px;line-height:1.6;color:var(--ink-soft);max-width:64ch;margin:0 0 20px}
+.od-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(248px,1fr));gap:16px;margin:8px 0}
+.od-card{display:flex;flex-direction:column;background:var(--white);border:1px solid var(--line);border-radius:14px;padding:20px 20px 18px;border-top:3px solid var(--accent,var(--teal))}
+.od-card h3{font-family:var(--font-display);font-weight:600;font-size:19px;margin:0 0 6px;color:var(--ink)}
+.od-card__stat{font-variant-numeric:tabular-nums;font-size:14px;font-weight:700;color:var(--accent,var(--teal));margin:0 0 8px;letter-spacing:.01em}
+.od-card__desc{font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0 0 14px;flex:1}
+.od-card__links{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;font-size:13.5px}
+.od-card__links a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.od-lic{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--stone);border:1px solid var(--line);border-radius:999px;padding:3px 9px}
+.od-prose p{font-size:15.5px;line-height:1.68;color:var(--ink-soft);max-width:66ch;margin:0 0 14px}
+.od-prose strong{color:var(--ink)}
+.od-mech{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin:14px 0 4px}
+.od-mech__i{background:var(--white);border:1px solid var(--line);border-left:3px solid var(--season);border-radius:12px;padding:14px 16px}
+.od-mech__i h4{font-size:13px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--season);margin:0 0 5px}
+.od-mech__i p{font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0}
+/* radial seasonal clock */
+.sea-clock{display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:26px;align-items:start;margin:10px 0}
+.sea-clock svg{width:100%;height:auto;overflow:visible}
+.scl-sector{stroke:var(--white);stroke-width:1.5;cursor:pointer;transition:stroke-width .1s ease}
+.scl-sector:hover{stroke:var(--season);stroke-width:2.5}
+.scl-sector.is-active{stroke:var(--ink);stroke-width:2.5}
+.scl-sector:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.scl-mo{font-size:9px;fill:var(--stone);font-weight:600;pointer-events:none}
+.scl-n{font-size:8.5px;fill:var(--ink-soft);font-variant-numeric:tabular-nums;pointer-events:none}
+.scl-hub{fill:var(--white);pointer-events:none}
+.scl-hubn{font-size:15px;font-weight:700;fill:var(--season);font-variant-numeric:tabular-nums;text-anchor:middle;pointer-events:none}
+.scl-hubl{font-size:7.5px;fill:var(--stone);text-anchor:middle;letter-spacing:.05em;text-transform:uppercase;pointer-events:none}
+/* interactive explorer panel */
+.sea-explore__hint{font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0 0 14px;max-width:52ch}
+.sea-explore__hint strong{color:var(--ink)}
+.sea-explore__bar{display:flex;align-items:baseline;gap:10px;margin:0 0 4px;padding-bottom:8px;border-bottom:2px solid var(--season)}
+.sea-explore__mo{font-family:var(--font-display);font-size:23px;font-weight:600;color:var(--season)}
+.sea-explore__cnt{font-size:11.5px;color:var(--stone);text-transform:uppercase;letter-spacing:.04em;font-weight:700}
+.sea-explore__list{list-style:none;padding:0;margin:0;max-height:264px;overflow-y:auto}
+.sea-explore__list li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:7px 2px;border-bottom:1px solid var(--line);font-size:14.5px}
+.sea-explore__list a{color:var(--ink);text-decoration:none;font-weight:600;border-bottom:1px solid transparent}
+.sea-explore__list a:hover{border-bottom-color:var(--season)}
+.sea-explore__meta{display:flex;align-items:baseline;gap:10px;flex:none}
+.sea-explore__peak{font-size:11.5px;color:var(--stone)}
+.sea-explore__amp{font-variant-numeric:tabular-nums;font-weight:700;color:var(--season);font-size:13px;flex:none;white-space:nowrap}
+.sea-explore__empty{color:var(--ink-soft);font-size:14px;line-height:1.5;border-bottom:0!important;display:block!important}
+/* amplitude ranking */
+.sea-rank{margin:6px 0 0}
+.sea-row{display:grid;grid-template-columns:minmax(120px,150px) 1fr 92px;align-items:center;gap:14px;padding:7px 0}
+.sea-row__lab{display:flex;flex-direction:column;gap:1px;min-width:0}
+.sea-row__lab a{color:var(--ink);text-decoration:none;font-weight:600;font-size:14.5px;border-bottom:1px solid transparent}
+.sea-row__lab a:hover{border-bottom-color:var(--season)}
+.sea-row__track{height:9px;background:var(--cream-2);border-radius:5px;overflow:hidden}
+.sea-row__bar{display:block;height:100%;background:var(--season);border-radius:5px;min-width:3px}
+.sea-row__amp{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;color:var(--season);font-size:13px;white-space:nowrap}
+.sea-row__mo{font-size:11px;color:var(--stone)}
+.sea-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--ink-soft);margin-right:6px}
+.sea-play{counter-reset:play;list-style:none;padding:0;margin:8px 0 0}
+.sea-play li{position:relative;padding:0 0 14px 40px;font-size:15px;line-height:1.6;color:var(--ink-soft)}
+.sea-play li:before{counter-increment:play;content:counter(play);position:absolute;left:0;top:-2px;width:26px;height:26px;border-radius:8px;background:var(--season);color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.sea-play strong{color:var(--ink)}
+.od-note{background:var(--cream-2);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:8px 0}
+.od-note p{font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px}
+.od-note p:last-child{margin:0}
+@media (max-width:640px){.sea-clock{grid-template-columns:1fr}.sea-row{grid-template-columns:104px 1fr 46px}}
+</style></head>
+<body>
+<a class="skip-link" href="#main">Saltar al contenido</a>
+<!-- batch-banner:start --><!-- batch-banner:end -->
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
+<header class="nav" id="nav">
+  <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
+             Placed inside <header> so sync-includes replaces it atomically
+             along with the rest of the nav block on every build, keeping
+             the partial strictly idempotent. Valid HTML5: <script> may
+             appear in any flow-content context. */
+  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","audio.byline_studio":"Narrado para The Muntin Desk","audio.byline_browser":"Leído por tu navegador","audio.preview":"Escucha 30 segundos primero →","audio.resume_chip_aria":"Reanudar desde la posición guardada","audio.share_aria":"Copiar enlace en este momento","audio.dismiss":"Descartar","audio.kicker":"Edición en audio","audio.headline":"¿Prefieres escucharlo?","audio.sub":"Pulsa reproducir y leeremos el artículo entero — gráficos incluidos.","audio.meta_handsfree":"manos libres","audio.meta_min":"min","audio.now_reading":"Reproduciendo","audio.resume_continue":"Continuar desde","audio.help_aria":"Ver atajos de teclado e información del reproductor","audio.help_title":"Consejos para escuchar","audio.help_chapters_eyebrow":"Capítulos","audio.finished_done":"Listo.","audio.finished_browse":"Explora la biblioteca →","audio.share_toast_ok":"Enlace copiado en {time}","audio.share_toast_fail":"No se pudo copiar — portapapeles bloqueado","audio.language_label":"Idioma","lesson.widget_wait":"Don está esperando — usa el widget","lesson.widget_wait_labeled":"Don está esperando — {label}","lesson.opener_recorded":"Don abre esta lección","lesson.wrap_recorded":"Don cierra esta lección","audio.help_kbd_eyebrow":"Teclado","audio.kbd_space":"Espacio","audio.kbd_space_help":"Reproducir o pausar","audio.kbd_jk_help":"Retroceder 15 segundos / avanzar 15 segundos","audio.kbd_arrows_help":"Párrafo anterior / siguiente párrafo","audio.help_about_eyebrow":"Sobre la voz","audio.help_about_body":"The Muntin Desk usa una voz generada por computadora ajustada para una lectura clara. Usamos la misma voz en cada artículo para que te resulte familiar. Cada grabación se produce una sola vez y se guarda como un archivo de audio que puedes descargar.","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","search.voice_start":"Buscar por voz","search.voice_stop":"Detener la escucha","search.voice_hint":"Escuchando… habla ahora","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
+  <div class="container nav-inner">
+    <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
+      <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="53" x2="110" y2="53"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
+    </a>
+    <!-- Phase 7: nav de 4 elementos, según el plan de lanzamiento Parte II.
+         Biblioteca / Herramientas / Estudio / Acceder.
+         Biblioteca apunta al hub canónico /es/library/. Herramientas
+         se promueve del antiguo mega-menú a un elemento de primer
+         nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
+         Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
+         se retira (el hub ES el menú); el controlador del script
+         también desaparece.
+
+         /es/work/ se retiró en la pasada de portfolio-sunset de la
+         Fase 8 (el encuadre de la empresa-como-CV hizo redundante
+         el portafolio personal). Las URLs /es/work/* hacen 301 a
+         /es/studio/ vía _redirects. -->
+    <nav class="nav-links" aria-label="Principal">
+      <a href="/es/library/">Biblioteca</a>
+      <a href="/es/cost-index/">Índice de costos</a>
+      <a href="/es/open/">Datos abiertos</a>
+      <a href="/es/tools/">Herramientas</a>
+      <a href="/es/studio/">Empresa</a>
+      <a href="/es/ledger/">Ledger</a>
+      <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
+      <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
+    </nav>
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Abrir búsqueda (Cmd+K)" title="Buscar — Cmd K">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+      <span class="nav-search-label">Buscar</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
+    </button>
+    <nav class="lang-switch" aria-label="Idioma">
+      <a href="/open/seasonality/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
+      <span class="lang-switch-current" aria-current="true">ES</span>
+    </nav>
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">
+      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don está cerca"></span>
+      Contacta a Don
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
+    <a href="/es/library/">Biblioteca</a>
+    <a href="/es/cost-index/">Índice de costos</a>
+    <a href="/es/open/">Datos abiertos</a>
+    <a href="/es/tools/">Herramientas</a>
+    <a href="/es/studio/">Empresa</a>
+    <a href="/es/ledger/">Ledger</a>
+    <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
+    <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
+    <button type="button" class="mobile-search js-open-search">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Buscar en la biblioteca</span>
+    </button>
+    <!-- Interruptor de modo oscuro para móvil (el de escritorio se oculta
+         en teléfonos ≤640px). Mismo gancho .js-theme-toggle. -->
+    <button type="button" class="theme-toggle mobile-theme js-theme-toggle" aria-pressed="false" aria-label="Cambiar modo oscuro" data-label-dark="Modo oscuro" data-label-light="Modo claro" hidden>
+      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+        <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+        <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
+        <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
+      </svg>
+      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <span class="theme-toggle__label js-theme-label">Modo claro</span>
+    </button>
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Contacta a Don</a>
+    <a href="/open/seasonality/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
+  </nav>
+
+  <!-- Mega-menu controller retired in Phase 7: Biblioteca is now a
+       single link to /es/library/ (the canonical three-doors hub IS
+       the menu). Las reglas CSS de .nav-library-* permanecen para
+       reusar el patrón si vuelve un mega-menú en el futuro. -->
+
+  <!-- Phase 2 (Workshop) — toggle del estado de auth para el nav.
+       Llama a /api/auth/me y revela el enlace "Acceder" o "El Taller"
+       según la respuesta. Ambos enlaces empiezan ocultos para que un
+       visitante anónimo sin JS no vea ninguno (la biblioteca y las
+       herramientas funcionan completas sin acceso, así que la
+       affordance ausente es aceptable). -->
+  <script>
+    (function () {
+      var signin   = document.querySelectorAll('.js-nav-signin');
+      var workshop = document.querySelectorAll('.js-nav-workshop');
+      if (!signin.length && !workshop.length) return;
+      var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 200) {
+            show(workshop);
+            fetch('/api/workbench/count', { credentials: 'same-origin' })
+              .then(function (r2) { return r2.ok ? r2.json() : null; })
+              .then(function (j) {
+                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
+                workshop.forEach(function (n) {
+                  if (n.querySelector('.nav-workshop-count')) return;
+                  var b = document.createElement('span');
+                  b.className = 'nav-workshop-count';
+                  b.textContent = ' (' + j.count + ')';
+                  n.appendChild(b);
+                });
+              })
+              .catch(function () {});
+            return;
+          }
+          show(signin);
+        })
+        .catch(function () { show(signin); });
+    })();
+  </script>
+  <!-- Phase 7 — manejador del modo oscuro. Cargado después del nav
+       para que el botón .js-theme-toggle ya esté en el DOM. (Faltaba
+       en el nav en español, así que el interruptor no funcionaba en
+       las páginas /es/.) -->
+  <script src="/assets/theme-toggle.js?v=phase8"></script>
+</header>
+<main id="main" role="main">
+<div class="container">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/es/">Inicio</a> › <a href="/es/open/">Datos abiertos</a> › Estacionalidad</nav>
+  <div class="od-wrap">
+  <section class="od-hero">
+    <p class="od-eyebrow"><a href="/es/open/">Muntin Open Data</a> → Estacionalidad</p>
+    <h1>¿Qué mueve de verdad los precios estacionales?</h1>
+    <p class="od-hero__lede">La estacionalidad es el ritmo anual de lo que cuesta un ingrediente — fijado por cosechas, almacenamiento, importaciones y clima. El titular honesto: un puñado de cultivos de campo frescos premian el momento, y la mayoría de los cultivos de almacén, importaciones y proteínas no.</p>
+  </section>
+  <section class="sea-clock" aria-labelledby="sea-clock-h">
+    <svg viewBox="0 0 300 300" width="300" height="300" role="group" aria-label="Reloj estacional interactivo: cuántos de 74 ingredientes con datos tocan su precio más bajo en cada mes. Elige un mes para ver cuáles." preserveAspectRatio="xMidYMid meet">
+    <path class="scl-sector" data-month="1" role="button" tabindex="0" aria-label="enero: 10 ingredientes en su punto más bajo" fill="var(--season)" fill-opacity="0.900" d="M151.1 98.0 L152.6 28.1 A121.9 121.9 0 0 1 208.7 43.2 L175.1 104.4 A52 52 0 0 0 151.1 98.0 Z"><title>enero: 10 ingredientes en su punto más bajo</title></path><path class="scl-sector" data-month="2" role="button" tabindex="0" aria-label="febrero: 4 ingredientes en su punto más bajo" fill="var(--season)" fill-opacity="0.528" d="M176.9 105.5 L191.4 81.6 A80.0 80.0 0 0 1 218.4 108.6 L194.5 123.1 A52 52 0 0 0 176.9 105.5 Z"><title>febrero: 4 ingredientes en su punto más bajo</title></path><path class="scl-sector" data-month="3" role="button" tabindex="0" aria-label="marzo: 9 ingredientes en su punto más bajo" fill="var(--season)" fill-opacity="0.838" d="M195.6 124.9 L250.7 94.6 A114.9 114.9 0 0 1 264.9 147.6 L202.0 148.9 A52 52 0 0 0 195.6 124.9 Z"><title>marzo: 9 ingredientes en su punto más bajo</title></path><path class="scl-sector" data-month="4" role="button" tabindex="0" aria-label="abril: 5 ingredientes en su punto más bajo" fill="var(--season)" fill-opacity="0.590" d="M202.0 151.1 L236.9 151.8 A87.0 87.0 0 0 1 226.2 191.9 L195.6 175.1 A52 52 0 0 0 202.0 151.1 Z"><title>abril: 5 ingredientes en su punto más bajo</title></path><path class="scl-sector" data-month="5" role="button" tabindex="0" aria-label="mayo: 9 ingredientes en su punto más bajo" fill="var(--season)" fill-opacity="0.838" d="M194.5 176.9 L248.3 209.5 A114.9 114.9 0 0 1 209.5 248.3 L176.9 194.5 A52 52 0 0 0 194.5 176.9 Z"><title>mayo: 9 ingredientes en su punto más bajo</title></path><path class="scl-sector" data-month="6" role="button" tabindex="0" aria-label="junio: 8 ingredientes en su punto más bajo" fill="var(--season)" fill-opacity="0.776" d="M175.1 195.6 L202.0 244.6 A107.9 107.9 0 0 1 152.3 257.9 L151.1 202.0 A52 52 0 0 0 175.1 195.6 Z"><title>junio: 8 ingredientes en su punto más bajo</title></path><path class="scl-sector" data-month="7" role="button" tabindex="0" aria-label="julio: 5 ingredientes en su punto más bajo" fill="var(--season)" fill-opacity="0.590" d="M148.9 202.0 L148.2 236.9 A87.0 87.0 0 0 1 108.1 226.2 L124.9 195.6 A52 52 0 0 0 148.9 202.0 Z"><title>julio: 5 ingredientes en su punto más bajo</title></path><path class="scl-sector" data-month="8" role="button" tabindex="0" aria-label="agosto: 7 ingredientes en su punto más bajo" fill="var(--season)" fill-opacity="0.714" d="M123.1 194.5 L97.7 236.3 A100.9 100.9 0 0 1 63.7 202.3 L105.5 176.9 A52 52 0 0 0 123.1 194.5 Z"><title>agosto: 7 ingredientes en su punto más bajo</title></path><path class="scl-sector" data-month="9" role="button" tabindex="0" aria-label="septiembre: 4 ingredientes en su punto más bajo" fill="var(--season)" fill-opacity="0.528" d="M104.4 175.1 L79.9 188.5 A80.0 80.0 0 0 1 70.0 151.7 L98.0 151.1 A52 52 0 0 0 104.4 175.1 Z"><title>septiembre: 4 ingredientes en su punto más bajo</title></path><path class="scl-sector" data-month="10" role="button" tabindex="0" aria-label="octubre: 3 ingredientes en su punto más bajo" fill="var(--season)" fill-opacity="0.466" d="M98.0 148.9 L77.0 148.5 A73.0 73.0 0 0 1 86.1 114.8 L104.4 124.9 A52 52 0 0 0 98.0 148.9 Z"><title>octubre: 3 ingredientes en su punto más bajo</title></path><path class="scl-sector" data-month="11" role="button" tabindex="0" aria-label="noviembre: 6 ingredientes en su punto más bajo" fill="var(--season)" fill-opacity="0.652" d="M105.5 123.1 L69.6 101.3 A94.0 94.0 0 0 1 101.3 69.6 L123.1 105.5 A52 52 0 0 0 105.5 123.1 Z"><title>noviembre: 6 ingredientes en su punto más bajo</title></path><path class="scl-sector" data-month="12" role="button" tabindex="0" aria-label="diciembre: 4 ingredientes en su punto más bajo" fill="var(--season)" fill-opacity="0.528" d="M124.9 104.4 L111.5 79.9 A80.0 80.0 0 0 1 148.3 70.0 L148.9 98.0 A52 52 0 0 0 124.9 104.4 Z"><title>diciembre: 4 ingredientes en su punto más bajo</title></path><text class="scl-mo" x="186.2" y="17.8" text-anchor="middle">E</text><text class="scl-n" x="183.9" y="26.5" text-anchor="middle">10</text><text class="scl-mo" x="249.0" y="54.0" text-anchor="middle">F</text><text class="scl-n" x="212.9" y="90.1" text-anchor="middle">4</text><text class="scl-mo" x="285.2" y="116.8" text-anchor="middle">M</text><text class="scl-n" x="269.7" y="120.9" text-anchor="middle">9</text><text class="scl-mo" x="285.2" y="189.2" text-anchor="middle">A</text><text class="scl-n" x="242.7" y="177.8" text-anchor="middle">5</text><text class="scl-mo" x="249.0" y="252.0" text-anchor="middle">M</text><text class="scl-n" x="237.6" y="240.6" text-anchor="middle">9</text><text class="scl-mo" x="186.2" y="288.2" text-anchor="middle">J</text><text class="scl-n" x="180.3" y="266.0" text-anchor="middle">8</text><text class="scl-mo" x="113.8" y="288.2" text-anchor="middle">J</text><text class="scl-n" x="125.2" y="245.7" text-anchor="middle">5</text><text class="scl-mo" x="51.0" y="252.0" text-anchor="middle">A</text><text class="scl-n" x="72.3" y="230.7" text-anchor="middle">7</text><text class="scl-mo" x="14.8" y="189.2" text-anchor="middle">S</text><text class="scl-n" x="64.1" y="176.0" text-anchor="middle">4</text><text class="scl-mo" x="14.8" y="116.8" text-anchor="middle">O</text><text class="scl-n" x="70.8" y="131.8" text-anchor="middle">3</text><text class="scl-mo" x="51.0" y="54.0" text-anchor="middle">N</text><text class="scl-n" x="77.2" y="80.2" text-anchor="middle">6</text><text class="scl-mo" x="113.8" y="17.8" text-anchor="middle">D</text><text class="scl-n" x="127.0" y="67.1" text-anchor="middle">4</text>
+    <circle class="scl-hub" cx="150" cy="150" r="48"/>
+    <text class="scl-hubn" x="150" y="148">74</text>
+    <text class="scl-hubl" x="150" y="162">ingredientes</text>
+  </svg>
+    <div class="sea-explore">
+      <h2 class="od-h2" id="sea-clock-h" style="margin-bottom:4px">Qué está en su punto más bajo</h2>
+      <p class="sea-explore__hint">Elige un mes en el reloj — o déjalo abrir en el mes actual. Estos ingredientes suelen estar en su punto más barato del año entonces. El <strong>“% más barato”</strong> es cuánto menos cuestan ahora que en su mes más caro — como un descuento. Más alto = mejor momento para comprar.</p>
+      <div class="sea-explore__bar"><strong class="sea-explore__mo" id="seaMo">enero</strong> <span class="sea-explore__cnt" id="seaCnt">10 en su punto bajo</span></div>
+      <ul class="sea-explore__list" id="seaList"><li><a href="/es/cost-index/iceberg-lettuce/#cheapest">Lechuga iceberg</a><span class="sea-explore__meta"><b class="sea-explore__amp" title="qué tan barato está ahora frente a su mes más caro">63% más barato</b><span class="sea-explore__peak">que en noviembre</span></span></li><li><a href="/es/cost-index/green-leaf-lettuce/#cheapest">Lechuga hoja verde</a><span class="sea-explore__meta"><b class="sea-explore__amp" title="qué tan barato está ahora frente a su mes más caro">51% más barato</b><span class="sea-explore__peak">que en noviembre</span></span></li><li><a href="/es/cost-index/romaine-lettuce/#cheapest">Lechuga romana</a><span class="sea-explore__meta"><b class="sea-explore__amp" title="qué tan barato está ahora frente a su mes más caro">47% más barato</b><span class="sea-explore__peak">que en noviembre</span></span></li><li><a href="/es/cost-index/red-leaf-lettuce/#cheapest">Lechuga hoja roja</a><span class="sea-explore__meta"><b class="sea-explore__amp" title="qué tan barato está ahora frente a su mes más caro">44% más barato</b><span class="sea-explore__peak">que en noviembre</span></span></li><li><a href="/es/cost-index/chicken-thigh/#cheapest">Muslo de pollo</a><span class="sea-explore__meta"><b class="sea-explore__amp" title="qué tan barato está ahora frente a su mes más caro">40% más barato</b><span class="sea-explore__peak">que en julio</span></span></li><li><a href="/es/cost-index/eggplant/#cheapest">Berenjena</a><span class="sea-explore__meta"><b class="sea-explore__amp" title="qué tan barato está ahora frente a su mes más caro">33% más barato</b><span class="sea-explore__peak">que en julio</span></span></li><li><a href="/es/cost-index/butternut-squash/#cheapest">Calabaza moscada</a><span class="sea-explore__meta"><b class="sea-explore__amp" title="qué tan barato está ahora frente a su mes más caro">19% más barato</b><span class="sea-explore__peak">que en julio</span></span></li><li><a href="/es/cost-index/daikon/#cheapest">Rábano daikon</a><span class="sea-explore__meta"><b class="sea-explore__amp" title="qué tan barato está ahora frente a su mes más caro">14% más barato</b><span class="sea-explore__peak">que en junio</span></span></li><li><a href="/es/cost-index/tarragon/#cheapest">Estragón</a><span class="sea-explore__meta"><b class="sea-explore__amp" title="qué tan barato está ahora frente a su mes más caro">8% más barato</b><span class="sea-explore__peak">que en abril</span></span></li><li><a href="/es/cost-index/vegetable-oil/#cheapest">Aceite vegetal</a><span class="sea-explore__meta"><b class="sea-explore__amp" title="qué tan barato está ahora frente a su mes más caro">6% más barato</b><span class="sea-explore__peak">que en noviembre</span></span></li></ul>
+    </div>
+  </section>
+  <script type="application/json" id="seaMonthData">{"months":["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"],"data":{"1":[["iceberg-lettuce","Lechuga iceberg",63,11],["green-leaf-lettuce","Lechuga hoja verde",51,11],["romaine-lettuce","Lechuga romana",47,11],["red-leaf-lettuce","Lechuga hoja roja",44,11],["chicken-thigh","Muslo de pollo",40,7],["eggplant","Berenjena",33,7],["butternut-squash","Calabaza moscada",19,7],["daikon","Rábano daikon",14,6],["tarragon","Estragón",8,4],["vegetable-oil","Aceite vegetal",6,11]],"2":[["serrano-pepper","Chile serrano",45,11],["whole-turkey","Pavo entero",35,1],["collard-greens","Berza (collard)",19,8],["thyme","Tomillo",15,1]],"3":[["green-beans","Ejotes",51,11],["tomato","Jitomate (bola)",47,12],["snow-peas","Arvejas de nieve",46,11],["lemon","Limón amarillo",40,10],["brussels-sprouts","Coles de Bruselas",38,7],["asparagus","Espárragos",32,8],["parsley","Perejil",30,12],["pear","Pera",17,5],["butter-lettuce","Lechuga mantequilla (Boston)",15,12]],"4":[["russet-potato","Papa russet",55,8],["zucchini","Calabacín",42,1],["cabbage","Repollo",24,7],["leek","Puerro",20,11],["red-onion","Cebolla roja",19,8]],"5":[["whole-chicken","Pollo entero",47,8],["bell-pepper","Pimiento morrón",26,8],["butter","Mantequilla (AA, a granel)",22,10],["corn-on-the-cob","Elote (mazorca)",16,11],["apple","Manzana",14,10],["grapefruit","Toronja",12,11],["kale","Col rizada (kale)",12,3],["pork-belly","pork-belly",11,12],["cheddar-cheese","Queso cheddar",10,9]],"6":[["green-onion","Cebollín",68,9],["raspberry","Frambuesa",50,2],["spinach","Espinaca",39,12],["napa-cabbage","Col napa",33,5],["red-potato","Papa roja",26,8],["broccoli","Brócoli",22,4],["garlic","Ajo",17,10],["jalapeno","Chile jalapeño",16,7]],"7":[["yellow-squash","Calabaza amarilla",44,2],["cucumber","Pepino",40,2],["habanero-pepper","Chile habanero",23,1],["beef-tenderloin","Lomo fino de res",20,12],["banana","Plátano",12,2]],"8":[["blueberry","Arándano azul",57,10],["artichoke","Alcachofa",45,12],["okra","Quimbombó",36,2],["ribeye","Ribeye (bife ancho)",26,12],["cantaloupe","Melón cantalupo",26,11],["beet","Remolacha",21,2],["button-mushroom","Champiñón",4,12]],"9":[["celery","Apio",52,12],["striploin","striploin",40,6],["cauliflower","Coliflor",31,12],["rutabaga","Colinabo (rutabaga)",7,1]],"10":[["watermelon","Sandía",29,4],["cherry-tomato","Jitomate cherry",28,11],["pork-shoulder","Espaldilla de cerdo",21,6]],"11":[["lime","Limón",64,4],["chicken-breast","Pechuga de pollo (sin hueso)",43,8],["pineapple","Piña",36,9],["avocado","Aguacate",32,6],["short-rib","Costilla corta de res",11,8],["poblano-pepper","Chile poblano",8,7]],"12":[["onion","Cebolla",44,8],["acorn-squash","Calabaza bellota",26,9],["carrot","Zanahoria",26,5],["pork-loin","Lomo de cerdo",18,7]]},"base":"/es","t":{"than":"que en","cheaper":"más barato","empty":"Nada en su mínimo estacional este mes — la mayor parte de la despensa se mantiene plana.","cnt":"en su punto bajo"}}</script>
+  <script>
+  (function(){
+    var el=document.getElementById('seaMonthData');if(!el)return;
+    var cfg;try{cfg=JSON.parse(el.textContent)}catch(e){return}
+    var moEl=document.getElementById('seaMo'),cntEl=document.getElementById('seaCnt'),listEl=document.getElementById('seaList');
+    if(!moEl||!cntEl||!listEl)return;
+    var secs=document.querySelectorAll('.scl-sector');
+    function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+    function render(m){
+      var rows=cfg.data[m]||[];
+      moEl.textContent=cfg.months[m-1];
+      cntEl.textContent=rows.length+' '+cfg.t.cnt;
+      listEl.innerHTML=rows.length?rows.map(function(r){return '<li><a href="'+cfg.base+'/cost-index/'+encodeURIComponent(r[0])+'/#cheapest">'+esc(r[1])+'</a><span class="sea-explore__meta"><b class="sea-explore__amp">'+r[2]+'% '+cfg.t.cheaper+'</b><span class="sea-explore__peak">'+cfg.t.than+' '+esc(cfg.months[r[3]-1])+'</span></span></li>'}).join(''):'<li class="sea-explore__empty">'+esc(cfg.t.empty)+'</li>';
+      for(var i=0;i<secs.length;i++){var on=secs[i].getAttribute('data-month')===String(m);secs[i].classList.toggle('is-active',on);secs[i].setAttribute('aria-pressed',on?'true':'false')}
+    }
+    for(var i=0;i<secs.length;i++){(function(s){var m=parseInt(s.getAttribute('data-month'),10);
+      s.addEventListener('click',function(){render(m)});
+      s.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();render(m)}});
+    })(secs[i])}
+    render((new Date()).getMonth()+1);
+  })();
+  </script>
+  <hr class="od-rule">
+  <section class="od-prose" aria-labelledby="sea-what">
+    <h2 class="od-h2" id="sea-what">Qué es la estacionalidad</h2>
+    <p>La estacionalidad existe porque la comida fresca se cultiva, no se fabrica. La oferta llega según el calendario de la naturaleza mientras la demanda de una cocina se mantiene pareja, así que el precio se mueve para cerrar la brecha. Cuatro mecanismos hacen casi todo el trabajo.</p>
+    <div class="od-mech"><div class="od-mech__i"><h4>Ventana de cosecha</h4><p>Cuando la región principal de un cultivo corta a pleno volumen, la oferta inunda el mercado y el precio toca fondo.</p></div><div class="od-mech__i"><h4>Almacenamiento</h4><p>Los cultivos que se guardan en frío se cosechan en una ventana estrecha y se dosifican todo el año, lo que aplana la curva.</p></div><div class="od-mech__i"><h4>Importaciones</h4><p>La oferta durante todo el año de México, Chile y Perú llena la temporada baja — o impone su propio ciclo de cosecha extranjero.</p></div><div class="od-mech__i"><h4>Clima</h4><p>Una helada, una ola de calor o lluvia fuerte en un distrito agrícola pasa directo al precio de los cultivos perecederos sin colchón de almacenamiento.</p></div></div>
+    <p style="margin-top:16px">Cuál mecanismo domina es toda la historia para un operador. Un cultivo con cosecha nacional definida y sin dónde guardarse oscila fuerte; uno que se almacena bien o llega de importación todo el año se cotiza casi plano. A menudo varias fuerzas se apilan — un mínimo de cosecha, una temporada de importación y un pico de demanda festiva encima.</p>
+  </section>
+  <hr class="od-rule">
+  <section aria-labelledby="sea-timing">
+    <h2 class="od-h2" id="sea-timing">Dónde el momento realmente paga</h2>
+    <p class="od-sub">Los ingredientes que más recompensan el momento — “% más barato” es cuánto menos cuestan en su mes más barato que en el más caro, según el historial de varios años. Toca cualquiera para su curva completa.</p>
+    <div class="sea-rank"><div class="sea-row"><div class="sea-row__lab"><a href="/es/cost-index/iceberg-lettuce/#cheapest">Lechuga iceberg</a><span class="sea-row__mo">más barato enero · más caro noviembre</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:63%"></span></div><span class="sea-row__amp" title="qué tan barato en su mes más barato frente al más caro">63% más barato</span></div><div class="sea-row"><div class="sea-row__lab"><a href="/es/cost-index/blueberry/#cheapest">Arándano azul</a><span class="sea-row__mo">más barato agosto · más caro octubre</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:57%"></span></div><span class="sea-row__amp" title="qué tan barato en su mes más barato frente al más caro">57% más barato</span></div><div class="sea-row"><div class="sea-row__lab"><a href="/es/cost-index/russet-potato/#cheapest">Papa russet</a><span class="sea-row__mo">más barato abril · más caro agosto</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:55%"></span></div><span class="sea-row__amp" title="qué tan barato en su mes más barato frente al más caro">55% más barato</span></div><div class="sea-row"><div class="sea-row__lab"><a href="/es/cost-index/celery/#cheapest">Apio</a><span class="sea-row__mo">más barato septiembre · más caro diciembre</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:52%"></span></div><span class="sea-row__amp" title="qué tan barato en su mes más barato frente al más caro">52% más barato</span></div><div class="sea-row"><div class="sea-row__lab"><a href="/es/cost-index/green-leaf-lettuce/#cheapest">Lechuga hoja verde</a><span class="sea-row__mo">más barato enero · más caro noviembre</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:51%"></span></div><span class="sea-row__amp" title="qué tan barato en su mes más barato frente al más caro">51% más barato</span></div><div class="sea-row"><div class="sea-row__lab"><a href="/es/cost-index/green-beans/#cheapest">Ejotes</a><span class="sea-row__mo">más barato marzo · más caro noviembre</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:51%"></span></div><span class="sea-row__amp" title="qué tan barato en su mes más barato frente al más caro">51% más barato</span></div><div class="sea-row"><div class="sea-row__lab"><a href="/es/cost-index/raspberry/#cheapest">Frambuesa</a><span class="sea-row__mo">más barato junio · más caro febrero</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:50%"></span></div><span class="sea-row__amp" title="qué tan barato en su mes más barato frente al más caro">50% más barato</span></div><div class="sea-row"><div class="sea-row__lab"><a href="/es/cost-index/whole-chicken/#cheapest">Pollo entero</a><span class="sea-row__mo">más barato mayo · más caro agosto</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:47%"></span></div><span class="sea-row__amp" title="qué tan barato en su mes más barato frente al más caro">47% más barato</span></div><div class="sea-row"><div class="sea-row__lab"><a href="/es/cost-index/romaine-lettuce/#cheapest">Lechuga romana</a><span class="sea-row__mo">más barato enero · más caro noviembre</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:47%"></span></div><span class="sea-row__amp" title="qué tan barato en su mes más barato frente al más caro">47% más barato</span></div><div class="sea-row"><div class="sea-row__lab"><a href="/es/cost-index/tomato/#cheapest">Jitomate (bola)</a><span class="sea-row__mo">más barato marzo · más caro diciembre</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:47%"></span></div><span class="sea-row__amp" title="qué tan barato en su mes más barato frente al más caro">47% más barato</span></div><div class="sea-row"><div class="sea-row__lab"><a href="/es/cost-index/snow-peas/#cheapest">Arvejas de nieve</a><span class="sea-row__mo">más barato marzo · más caro noviembre</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:46%"></span></div><span class="sea-row__amp" title="qué tan barato en su mes más barato frente al más caro">46% más barato</span></div><div class="sea-row"><div class="sea-row__lab"><a href="/es/cost-index/artichoke/#cheapest">Alcachofa</a><span class="sea-row__mo">más barato agosto · más caro diciembre</span></div><div class="sea-row__track"><span class="sea-row__bar" style="width:45%"></span></div><span class="sea-row__amp" title="qué tan barato en su mes más barato frente al más caro">45% más barato</span></div></div>
+    <div class="od-note" style="margin-top:16px"><p>Excluidos a propósito: Cebollín, Limón muestran oscilaciones aún mayores que casi con certeza son un cambio de empaque o unidad entre la fruta de verano y la de invierno, no un movimiento de precio real. La dirección es confiable; el múltiplo exacto no.</p></div>
+  </section>
+  <hr class="od-rule">
+  <section class="od-prose" aria-labelledby="sea-read">
+    <h2 class="od-h2" id="sea-read">Cómo leer la curva de 12 meses</h2>
+    <p>Cada página de ingrediente trae una curva de 12 meses construida con medianas de varios años. La <strong>línea</strong> es la mediana (lo típico) de cada mes — el centro del rango histórico, para que un año raro no distorsione la forma. La <strong>banda</strong> sombreada es la dispersión: cuánto ha variado ese mes de un año a otro. Banda estrecha = precio confiable; banda ancha = mes volátil.</p>
+    <p>Marcamos el mes más barato, el más caro y la <strong>amplitud</strong> — el porcentaje entre ellos — que es el mejor indicador de si vale la pena cronometrar un artículo. Dos precauciones: revisa la banda antes de fijar la ficha, y recuerda que la línea es una mediana, no un pronóstico.</p>
+  </section>
+  <hr class="od-rule">
+  <section aria-labelledby="sea-play-h">
+    <h2 class="od-h2" id="sea-play-h">El manual del operador</h2>
+    <ol class="sea-play"><li>Trata el <strong>mes más barato</strong> como tu ventana de destacar-y-comprar, y el <strong>mes más caro</strong> como tu ventana de recortar-o-sustituir.</li><li>Cuando la amplitud es grande, vale la pena construir el menú alrededor del calendario: destaca el artículo en su mínimo y sustituye o precompra antes de su máximo.</li><li>Cuando la amplitud es pequeña — bajo ~15-20% — la curva es casi ruido: compra según necesidad y aprovecha la oferta puntual del momento.</li><li>Revisa la banda antes de comprometer la ficha técnica: un mes barato con banda ancha aún puede dispararse.</li><li>Recuerda que la línea es una mediana, no un pronóstico. Te dice el ritmo habitual, no lo que costará el camión de la próxima semana.</li></ol>
+  </section>
+  <hr class="od-rule">
+  <section aria-labelledby="sea-honest">
+    <h2 class="od-h2" id="sea-honest">Dónde el calendario apenas importa</h2>
+    <p class="od-sub">La mayor parte del índice está más cerca de plano que de estacional, y fingir lo contrario haría perder el tiempo a un operador. De 74 ingredientes clasificados, solo <strong>57</strong> tienen una ventana estacional clara; <strong>14</strong> son moderados y <strong>3</strong> son prácticamente planos.</p>
+    <div class="od-note">
+      <p>Los bulbos de almacén (cebolla, ajo), las raíces (papa, zanahoria, betabel), la fruta de pepita (manzana, pera), las importaciones de todo el año (plátano, pimiento) y las hierbas duras se mueven en bandas de un solo dígito hasta ~20% — eso es ruido normal, no una señal. Las proteínas son mercados de materias primas sobre ciclos de alimento y combustible, no un calendario de cosecha.</p>
+      <p>El almacenamiento es el gran aplanador: un cultivo puede ser intensamente estacional en el campo y aún cotizarse plano porque el almacenamiento en atmósfera controlada lo dosifica todo el año. Y estas curvas son medianas de varios años — una helada, una enfermedad o un choque de flete puede anular el calendario en cualquier mes dado.</p>
+    </div>
+    <p class="od-sub" style="margin-top:18px">Derivado del historial público profundo (USDA, BLS, FRED). Los números son de dominio público (CC0). <a href="/es/open/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Volver a Datos abiertos</a></p>
+  </section>
+  </div></div>
+</main>
+<footer class="site-footer" id="footer"></footer>
+<!-- Newsletter signup — eager progressive enhancement. This page ships
+     an empty footer (no footer assets, so first-touch.js never loads
+     here); wire the in-page #weekly-email form at parse time so a quick
+     submit can't fall back to a native POST that paints the API's raw
+     {"ok":true}. Stamps ts for the anti-spam gate, posts via fetch, and
+     flips data-state="ok" for the inline confirmation. -->
+<script>
+(function () {
+  'use strict';
+  if (typeof document === 'undefined') return;
+  function wire(form) {
+    if (!form || form.dataset.enhanced === '1') return;
+    form.dataset.enhanced = '1';
+    var ts = form.querySelector('input[name="ts"]');
+    if (ts) ts.value = String(Date.now());
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var params = new URLSearchParams();
+      new FormData(form).forEach(function (v, k) { params.append(k, v); });
+      fetch(form.action, {
+        method: 'POST',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        body: params.toString(),
+        credentials: 'same-origin',
+      }).then(function () {
+        form.dataset.state = 'ok';
+        if (typeof window.plausible === 'function') {
+          var evName = form.dataset.event || 'Newsletter Signup';
+          var surface = form.dataset.surface || (form.dataset.locale === 'es' ? 'cost-index-es' : 'cost-index-en');
+          try { window.plausible(evName, { props: { surface: surface } }); } catch (_) {}
+        }
+      }).catch(function () { /* fire-and-forget; no error UI by design */ });
+    });
+  }
+  function init() {
+    var forms = document.querySelectorAll('.foot-newsletter-form, .js-signup-form');
+    Array.prototype.forEach.call(forms, wire);
+  }
+  init();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+<!-- Find-an-ingredient filter for the Cost Index hub table. Progressive
+     enhancement: reveals the (hidden) search box, filters rows by name/slug,
+     shows a no-match row, and announces the count. No-ops on pages without
+     the table (every other cost-index page). -->
+<script>
+(function () {
+  'use strict';
+  if (typeof document === 'undefined') return;
+  function init() {
+    var box = document.getElementById('ci-ingredient-search');
+    if (!box || box.dataset.wired === '1') return;
+    var table = document.getElementById('ci-readings-table');
+    if (!table || !table.tBodies.length) return;
+    box.dataset.wired = '1';
+    var tools = box.closest('.ci-table-tools');
+    if (tools) tools.hidden = false;
+    var all = Array.prototype.slice.call(table.tBodies[0].rows);
+    var rows = all.filter(function (r) { return !r.hasAttribute('data-empty'); });
+    var empty = table.querySelector('tr[data-empty]');
+    var count = document.querySelector('.ci-table-count');
+    function apply() {
+      var q = box.value.trim().toLowerCase();
+      var shown = 0;
+      for (var i = 0; i < rows.length; i++) {
+        var hit = !q || (rows[i].getAttribute('data-name') || '').indexOf(q) !== -1;
+        rows[i].hidden = !hit;
+        if (hit) shown++;
+      }
+      if (empty) empty.hidden = !(q && shown === 0);
+      if (count) count.textContent = q ? (shown + ' / ' + rows.length) : '';
+    }
+    box.addEventListener('input', apply);
+  }
+  init();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260430-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+</body>
+</html>

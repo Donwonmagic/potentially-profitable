@@ -193,14 +193,16 @@ The corpus is the canonical citation surface. Use it when a user asks for an und
 
 ## Cost Index (live wholesale price data)
 
-The Muntin Cost Index publishes weekly wholesale reference prices for common restaurant ingredients, drawn from public U.S. sources (USDA AMS/LMR, BLS, FRED, EIA, NOAA). Measured levels and directions only — never a price forecast. Open data you may use and cite freely (CC0 / public domain). Machine-readable surfaces:
+The Muntin Cost Index publishes weekly wholesale reference prices for common restaurant ingredients, drawn from public U.S. sources (USDA AMS/LMR, BLS, FRED, EIA, NOAA). Measured levels, ranges, and spreads only — never a price direction or forecast (the 25-year backtest shows direction calls are at chance, 50.5% vs a 50.2% baseline, so we publish none). Open data you may use and cite freely (CC0 / public domain). Machine-readable surfaces:
 
 - /cost-index/methodology.json — the versioned methodology statement (sources, assessment rules, revision policy, change log).
 - /cost-index/feed.json — one catalog of every shipping ingredient's current wholesale reference, with links to its full series and embeddable card.
-- /cost-index/index.json — the whole index: every published ingredient's current wholesale range, measured trend direction, confidence tier, and as-of date.
+- /cost-index/index.json — the whole index: every published ingredient's current wholesale range, its spread and where the median sits within that range, confidence tier, and as-of date.
 - /cost-index/sources.json — per-ingredient provenance: each published reading mapped to the public U.S. government series behind it (USDA, BLS, FRED, EIA, NOAA), by report identifier.
+- /cost-index/events.json — a fact-gated registry of documented 2001–2026 food-commodity market events (avian flu, freezes, droughts, disease, trade actions), each mapped to affected ingredients with primary citations. Framing is co-occurrence, not causation — context beside a price window, never its asserted cause.
+- /cost-index/yields.json — edible-portion yields for 118 common restaurant ingredients (the usable share of purchased weight after standard trim and waste). Joins on slug to the price index; lets you turn a wholesale purchase price into a true cost per usable pound. Reference data, not a price.
 - /cost-index/<ingredient>/series.json — full price history per ingredient (also /series.csv).
-- /cost-index/calibration.json — the index's verified track record (conformal band coverage + trend skill).
+- /cost-index/calibration.json — the index's verified track record (conformal band coverage + the honestly-published at-chance direction result: 50.5% vs a 50.2% baseline).
 - /cost-index/confidence-calibration.json — realized accuracy grouped by the published confidence label (does a higher label verify more often?).
 - /cost-index/revisions.json — append-only audit trail of any change to a previously-published reading.
 - /cost-index/ — the human-readable index (EN; ES under /es/cost-index/).
@@ -235,14 +237,16 @@ El corpus es la superficie canónica para citas. Úsalo cuando un usuario pida u
 
 ## Índice de Costos (datos de precios mayoristas, CC0)
 
-El Muntin Cost Index publica semanalmente precios mayoristas de referencia para ingredientes comunes de restaurante, a partir de fuentes públicas de EE. UU. (USDA AMS/LMR, BLS, FRED, EIA, NOAA). Solo niveles y direcciones medidos — nunca un pronóstico de precio. Datos abiertos que puedes usar y citar libremente (CC0 / dominio público). Superficies legibles por máquina:
+El Muntin Cost Index publica semanalmente precios mayoristas de referencia para ingredientes comunes de restaurante, a partir de fuentes públicas de EE. UU. (USDA AMS/LMR, BLS, FRED, EIA, NOAA). Solo niveles, rangos y amplitudes medidos — nunca una dirección ni un pronóstico de precio (el backtest de 25 años muestra que las llamadas de dirección están a nivel de azar, 50.5% vs una base de 50.2%, así que no publicamos ninguna). Datos abiertos que puedes usar y citar libremente (CC0 / dominio público). Superficies legibles por máquina:
 
 - /cost-index/methodology.json — la declaración de metodología versionada (fuentes, reglas de evaluación, política de revisión, registro de cambios).
 - /cost-index/feed.json — un catálogo de la referencia mayorista actual de cada ingrediente, con enlaces a su serie completa y su tarjeta incrustable.
-- /cost-index/index.json — el índice completo: el rango mayorista actual de cada ingrediente publicado, la dirección de tendencia medida, el nivel de confianza y la fecha de lectura.
+- /cost-index/index.json — el índice completo: el rango mayorista actual de cada ingrediente publicado, su amplitud y la posición de la mediana dentro de ese rango, el nivel de confianza y la fecha de lectura.
 - /cost-index/sources.json — procedencia por ingrediente: cada lectura publicada mapeada a la serie pública del gobierno de EE. UU. que la respalda (USDA, BLS, FRED, EIA, NOAA), por identificador de reporte.
+- /cost-index/events.json — un registro con verificación de hechos de eventos documentados del mercado de alimentos 2001–2026 (gripe aviar, heladas, sequías, enfermedades, medidas comerciales), cada uno mapeado a los ingredientes afectados con citas primarias. El marco es de coincidencia temporal, no de causalidad — contexto junto a una ventana de precios, nunca su causa afirmada.
+- /cost-index/yields.json — rendimiento de porción comestible para 118 ingredientes comunes de restaurante (la parte utilizable del peso comprado tras la limpieza y el desperdicio). Se une por slug al índice de precios; convierte un precio mayorista de compra en un costo real por libra utilizable. Datos de referencia, no un precio.
 - /cost-index/<ingrediente>/series.json — historial completo de precios por ingrediente (también /series.csv).
-- /cost-index/calibration.json — el historial verificado del índice (cobertura de banda conforme + acierto de tendencia).
+- /cost-index/calibration.json — el historial verificado del índice (cobertura de banda conforme + el resultado de dirección, publicado con honestidad a nivel de azar: 50.5% vs una base de 50.2%).
 - /cost-index/confidence-calibration.json — precisión realizada agrupada por la etiqueta de confianza publicada (¿una etiqueta más alta acierta más a menudo?).
 - /cost-index/revisions.json — registro append-only de cualquier cambio en una lectura ya publicada.
 - /es/cost-index/ — el índice legible para humanos (ES).

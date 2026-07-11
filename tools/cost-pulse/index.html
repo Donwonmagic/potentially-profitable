@@ -384,6 +384,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .lf-hbtn.is-on{background:var(--ink);color:var(--surface-1);font-weight:600}
 .lf-hbtn:focus-visible{outline:2px solid var(--rust);outline-offset:-2px}
 .lf-ladder{background:var(--surface-1);border:1px solid var(--line);border-radius:14px;padding:16px 16px 10px;overflow-x:auto;margin:0 0 24px}
+.lf-ladder-note{font-size:11.5px;color:var(--stone);margin:10px 0 2px;line-height:1.4}
 .lf-scale{position:relative;height:18px;margin:0 0 4px 130px}
 .lf-tick{position:absolute;top:0;transform:translateX(-50%);font-size:10.5px;color:var(--stone)}
 .lf-lrow{display:grid;grid-template-columns:130px 1fr;align-items:center;padding:2.5px 0}
@@ -410,7 +411,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .lf-card-lvln{color:var(--ink);font-weight:600;font-size:14.5px}
 .lf-pill{font-size:10.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;border-radius:6px;padding:3px 7px;white-space:nowrap}
 .lf-pill--lock{color:var(--lf-lock-ink);background:var(--lf-lock-soft)}.lf-pill--cushion{color:var(--lf-cushion-ink);background:var(--lf-cushion-soft)}.lf-pill--float{color:var(--lf-float-ink);background:var(--lf-float-soft)}.lf-pill--hold{color:var(--lf-hold-ink);background:var(--lf-hold-soft)}
+.lf-plain{font-size:13.5px;color:var(--ink);line-height:1.5;margin:11px 0 0;font-weight:500}
 .lf-card-band{margin:12px 0 7px}
+.lf-drawer{margin-top:11px;border-top:1px solid var(--line)}
+.lf-drawer-sum{cursor:pointer;font-size:12px;color:var(--accent);font-weight:600;padding:8px 0 2px;list-style:none;user-select:none}
+.lf-drawer-sum::-webkit-details-marker{display:none}
+.lf-drawer-sum::before{content:"▸";font-size:9px;margin-right:5px}
+.lf-drawer[open] .lf-drawer-sum::before{content:"▾"}
+.lf-drawer[open] .lf-drawer-sum{margin-bottom:4px}
+.lf-drawer-sum:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .lf-cb-row{display:flex;justify-content:space-between;font-size:11px;color:var(--stone);margin-bottom:3px}
 .lf-cbsvg,.lf-spark{display:block;width:100%}
 .lf-cbsvg{height:26px}.lf-spark{height:30px;margin-top:9px}
@@ -480,6 +489,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .lf-refusal-item{display:flex;justify-content:space-between;gap:10px;font-size:13px;border-bottom:1px solid var(--line);padding:5px 0}
 .lf-refusal-name{color:var(--ink);font-weight:500}
 .lf-refusal-reason{color:var(--stone);font-size:12px;text-align:right}
+.lf-refusal-group{margin:0 0 16px}.lf-refusal-group:last-child{margin-bottom:0}
+.lf-refusal-ghead{display:flex;align-items:baseline;gap:7px;margin:0 0 8px}
+.lf-refusal-glabel{font-size:13px;font-weight:700;color:var(--ink)}
+.lf-refusal-gcount{font-size:12px;font-weight:700;color:var(--stone)}
+.lf-refusal-chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.lf-rchip{appearance:none;-webkit-appearance:none;display:inline-flex;align-items:center;gap:4px;background:var(--surface-1);border:1px solid var(--line);border-radius:16px;color:var(--ink-soft);font-size:12px;padding:3px 10px;cursor:pointer;line-height:1.3}
+.lf-rchip:hover,.lf-rchip.is-on{border-color:var(--accent);color:var(--accent)}
+.lf-rchip-star{font-size:11px;color:var(--stone)}
+.lf-rchip:hover .lf-rchip-star,.lf-rchip.is-on .lf-rchip-star{color:var(--accent)}
+.lf-rchip:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.lf-refusal-more{font-size:12px;color:var(--stone);padding:3px 4px}
 .lf-asof{font-size:12px;color:var(--stone);margin:14px 0 0}
 .lf-ledger{background:var(--surface-1);border:1px solid var(--line);border-left:4px solid var(--ink);border-radius:14px;padding:22px;margin:20px 0 6px}
 .lf-ledger-h{font-size:19px;margin:0 0 8px;color:var(--ink)}
@@ -551,6 +571,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
       <a href="/cost-index/">Cost Index</a>
+      <a href="/open/">Open data</a>
       <a href="/tools/">Tools</a>
       <a href="/studio/">Company</a>
       <!-- Ledger — the paid product. Nav points at the on-site /ledger/
@@ -613,6 +634,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
     <a href="/cost-index/">Cost Index</a>
+    <a href="/open/">Open data</a>
     <a href="/tools/">Tools</a>
     <a href="/studio/">Company</a>
     <a href="/ledger/">Ledger</a>
@@ -724,8 +746,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Data promise">
-              <p class="tool-data-promise__line">Runs in your browser. No accounts, no fetches, no tracking.</p>
-              <p class="tool-data-promise__line">Verify it: open DevTools → Network → run the tool. The Network tab stays empty.</p>
+              <p class="tool-data-promise__line">Your invoice prices stay in this browser — no account, no upload.</p>
+              <p class="tool-data-promise__line">The page loads its own code and reference data, but your typed prices are never sent in a request — any analytics is anonymous counts, never your numbers. Verify: DevTools → Network.</p>
               <p class="tool-data-promise__links"><a href="/security/">Read the full data promise &rarr;</a> &middot; <a href="/learn/checklists/audit-any-tool/">Audit any tool &rarr;</a></p>
             </aside>
             <!-- data-promise:end -->
@@ -982,7 +1004,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/tools/_shared/cost-index-format.js?v=20260629-fmt4"></script>
 <script src="/tools/_shared/cost-index-ui.js?v=20260630-design2"></script>
 <script src="/data/cost-lockfloat.js?v=20260705-lf2"></script>
-<script src="/tools/_shared/cost-lockfloat-ui.js?v=20260705-lf8"></script>
+<script src="/tools/_shared/cost-lockfloat-ui.js?v=20260705-lf13"></script>
 <script>
 // The Lock Sheet — isolated so it can never break the level-detail dashboard below.
 (function () {

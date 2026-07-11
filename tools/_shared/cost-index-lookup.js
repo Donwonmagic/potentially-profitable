@@ -116,21 +116,31 @@
     if (!Array.isArray(items) || !items.length) return null;
     var n = norm(name);
     if (n.length < 2) return null;
+    // Also compare against the parenthetical-stripped incoming name (cands() strips
+    // candidate labels the SAME way), so a fully-disambiguated label — e.g. the
+    // ingredient picker writing "Lechuga mantequilla (Boston)" — round-trips to its
+    // OWN item instead of a shorter cross-item token-subset ("mantequilla" ⊆ tokens
+    // would otherwise propose Butter). An EXACT match always wins over any stem or
+    // token-subset match, regardless of item order, so the correct item can't be
+    // pre-empted by an earlier propose. Guarded by check-cost-index-picker.mjs.
+    var nStripped = norm(String(name).replace(/\s*\([^)]*\)\s*/g, ' '));
     var nTok = tokens(n), nStem = stemOf(name);
 
-    var auto = null, propose = null;
+    var autoExact = null, autoStem = null, propose = null;
     for (var i = 0; i < items.length; i++) {
       var cs = cands(items[i]);
       for (var j = 0; j < cs.length; j++) {
         var c = cs[j];
-        if (c === n || stemOf(c) === nStem) { auto = items[i]; break; }
+        if (c === n || c === nStripped) { autoExact = items[i]; break; }
+        if (!autoStem && stemOf(c) === nStem) autoStem = items[i];
         if (!propose && c.length >= 3) {
           var cTok = tokens(c);
           if (subset(nTok, cTok) || subset(cTok, nTok)) propose = items[i];
         }
       }
-      if (auto) break;
+      if (autoExact) break;
     }
+    var auto = autoExact || autoStem;
     if (!auto && propose == null && root && root.MuntinSkuMatch && root.MuntinSkuMatch.classify) {
       // Browser fuzzy fallback (Levenshtein + Jaccard) for typos/variants.
       var bestScore = -1, bestItem = null;

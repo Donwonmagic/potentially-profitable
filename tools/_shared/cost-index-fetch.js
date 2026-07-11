@@ -183,6 +183,50 @@ async function fetchNoaaTrade(opts) {
   return pr;
 }
 
+// US Census International Trade — monthly imports by HS code. Public-domain
+// US-gov data (redistributable, unlike IMF/World Bank/UN Comtrade). Keyless for
+// light use; CENSUS_KEY raises the limit. Response is array-of-arrays with a
+// header row; we parse it into {hs,val,qty,unit,time} objects for the normalizer.
+// NOTE: field names + the quantity unit (UNIT_QY1) must be confirmed on the first
+// live run — the endpoint returns kg for most foods but "no"/"l" for some.
+var CENSUS_IMPORTS_BASE = 'https://api.census.gov/data/timeseries/intltrade/imports/hs';
+async function fetchCensusTrade(opts) {
+  opts = opts || {};
+  var years = opts.years || 3;
+  var hsList = (Array.isArray(opts.hs) ? opts.hs : (opts.hs ? [opts.hs] : [])).map(String);
+  if (!hsList.length) throw new Error('census: no hs codes');
+  var thisYear = new Date().getFullYear();
+  var startYM = (thisYear - years + 1) + '-01', endYM = thisYear + '-12';
+  var key = opts.key || process.env.CENSUS_KEY;
+  var cacheKey = 'census|' + hsList.join(',') + '|' + startYM + '|' + endYM;
+  if (_reportCache.has(cacheKey)) return _reportCache.get(cacheKey);
+  var pr = (async function () {
+    var items = [];
+    for (var i = 0; i < hsList.length; i++) {
+      var hs = hsList[i], lvl = 'HS' + hs.length;
+      var url = CENSUS_IMPORTS_BASE
+        + '?get=' + encodeURIComponent('I_COMMODITY,GEN_VAL_MO,GEN_QY1_MO,UNIT_QY1')
+        + '&COMM_LVL=' + lvl
+        + '&I_COMMODITY=' + encodeURIComponent(hs)
+        + '&time=' + encodeURIComponent('from ' + startYM + ' to ' + endYM)
+        + (key ? '&key=' + encodeURIComponent(key) : '');
+      var j;
+      try { j = await fetchJson(url, { headers: { Accept: 'application/json' } }); }
+      catch (e) { continue; }   // one bad HS code shouldn't kill the batch
+      if (!Array.isArray(j) || j.length < 2) continue;
+      var head = j[0], ix = {};
+      head.forEach(function (h, k) { ix[h] = k; });
+      for (var r = 1; r < j.length; r++) {
+        var row = j[r];
+        items.push({ hs: row[ix.I_COMMODITY], val: row[ix.GEN_VAL_MO], qty: row[ix.GEN_QY1_MO], unit: row[ix.UNIT_QY1], time: row[ix.time] });
+      }
+    }
+    return { items: items };
+  })().catch(function (e) { _reportCache.delete(cacheKey); throw e; });
+  _reportCache.set(cacheKey, pr);
+  return pr;
+}
+
 var EIA_BASE = 'https://api.eia.gov/v2/';   // EIA Open Data API v2 — needs EIA_KEY
 
 // EIA v2 time series. spec: { route, facets:{sectorid,stateid,...}, frequency, value }.
@@ -239,7 +283,7 @@ async function mapLimit(items, limit, fn) {
 // SAME normalize path (no scale drift). Returns the report-JSON shape
 // ({ results, reportSection }) so normalizeAms consumes it unchanged. Per-window
 // failures are tolerated (one gap can't sink the series); fetchJson already retries 5xx.
-async function fetchAmsReportDeep(reportId, sectionRaw, auth, days, winField) {
+async function fetchAmsReportDeep(reportId, sectionRaw, auth, days, winField, rowFilter) {
   winField = winField || 'report_begin_date';
   var h = auth ? { Authorization: auth } : {};
   var base = MARS_BASE + reportId;
@@ -262,25 +306,65 @@ async function fetchAmsReportDeep(reportId, sectionRaw, auth, days, winField) {
   } catch (e) { /* probe failed → proceed; each window still tries the default section */ }
   var ranges = [];
   for (var end = now; end > now - days * 864e5; end -= STEP) ranges.push([new Date(end - STEP), new Date(end)]);
-  var merged = [];
+  // Early-stop: a MARS terminal report retains a rolling window (often ~1–3y), far
+  // short of a deep backfill's 12–50y — so the older windows return empty. `ranges`
+  // runs newest→oldest, so once a RUN of consecutive fully-empty windows appears we
+  // have walked off the end of MARS's retention; fetching further only burns minutes
+  // and heap (this is the produce-deep OOM). We stop after AMS_DEEP_EMPTY_RUN (4)
+  // consecutive empties — a real, continuously-reported commodity has no ~600-day
+  // hole inside its own retention, and by construction we only ever drop windows that
+  // returned ZERO rows, never a window that had data. Escape hatch: set
+  // AMS_DEEP_NO_EARLYSTOP=1 to scan every window regardless.
+  var noEarly = process.env.AMS_DEEP_NO_EARLYSTOP === '1';
+  var EARLYSTOP_EMPTY = Math.max(1, Number(process.env.AMS_DEEP_EMPTY_RUN) || 4);
+  // rowFilter (optional): keep only rows matching THIS ingredient's commodity, applied
+  // per window BEFORE merging. A deep produce stitch pulls ~15 windows × up to 8 markets
+  // of EVERY commodity's rows; holding them all before normalizeAms filters is what OOMs a
+  // single heavy item (arugula et al. — 8 markets). Filtering here bounds `merged` to the
+  // target commodity's own rows. The filter is a strict SUPERSET of normalizeAms's match
+  // (substring, across all fields), so it can never drop a row normalizeAms would keep.
+  // Early-stop keys on the RAW window row count (MARS retention), NOT the filtered count,
+  // so a commodity merely absent from a live window can't trigger a false stop.
+  var merged = [], consecutiveEmpty = 0, stoppedAt = null;
   for (var i = 0; i < ranges.length; i += AMS_CONCURRENCY) {
-    var batch = ranges.slice(i, i + AMS_CONCURRENCY).map(function (r) {
+    var slice = ranges.slice(i, i + AMS_CONCURRENCY);
+    var batch = slice.map(function (r) {
       return fetchJson(rangeUrl(section, r[0], r[1]), { headers: h })
-        .then(function (j) { return (j && j.results) || []; }, function () { return []; });   // tolerate a dead window
+        .then(function (j) {
+          var rows = (j && j.results) || [];
+          return { raw: rows.length, keep: rowFilter ? rows.filter(rowFilter) : rows };
+        }, function () { return { raw: 0, keep: [] }; });   // tolerate a dead window
     });
-    (await Promise.all(batch)).forEach(function (rows) { for (var k = 0; k < rows.length; k++) merged.push(rows[k]); });
+    var results = await Promise.all(batch);
+    for (var bi = 0; bi < results.length; bi++) {
+      var rr = results[bi];
+      for (var k = 0; k < rr.keep.length; k++) merged.push(rr.keep[k]);
+      if (rr.raw === 0) consecutiveEmpty++; else consecutiveEmpty = 0;   // MARS retention keys on RAW rows, not filtered
+    }
+    if (!noEarly && consecutiveEmpty >= EARLYSTOP_EMPTY) { stoppedAt = slice[slice.length - 1][0]; break; }
   }
+  if (stoppedAt) process.stderr.write('  · ams-deep ' + reportId + ': no rows past ~' + f(stoppedAt) + ' (stopped after ' + consecutiveEmpty + ' empty windows — MARS retention limit; AMS_DEEP_NO_EARLYSTOP=1 forces a full scan)\n');
   return { results: merged, reportSection: section };
 }
+
+// Drop every cached report+window response. The in-run cache (`_reportCache`) is a
+// dedup for a NORMAL fetch (a report+section+window fetched once, reused across the
+// few ingredients that share it). In a DEEP backfill it becomes a memory hog — 12–50y
+// of windows for every report held for the whole process — so the deep loop calls
+// this periodically to bound heap. Cheap: it only clears a Map; anything still needed
+// is simply re-fetched on the next miss.
+function clearReportCache() { _reportCache.clear(); }
 
 module.exports = {
   fetchJson: fetchJson,
   isTransient: isTransient,
   amsWindow: amsWindow,
+  clearReportCache: clearReportCache,
   fetchAmsReport: fetchAmsReport,
   fetchAmsReportDeep: fetchAmsReportDeep,
   fetchLmrReport: fetchLmrReport,
   fetchNoaaTrade: fetchNoaaTrade,
+  fetchCensusTrade: fetchCensusTrade,
   fetchEia: fetchEia,
   LMR_BASE: LMR_BASE,
   NOAA_TRADE_BASE: NOAA_TRADE_BASE,

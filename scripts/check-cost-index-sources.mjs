@@ -23,7 +23,7 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot = path.resolve(path.dirname(__filename), '..');
 
-const ID_FIELD = { ams: 'reportId', lmr: 'reportId', bls: 'seriesId', fred: 'seriesId', noaa: 'commodity', eia: 'route' };
+const ID_FIELD = { ams: 'reportId', lmr: 'reportId', bls: 'seriesId', fred: 'seriesId', noaa: 'commodity', census: 'hs', eia: 'route' };
 const REDUCERS = new Set(['mostlyMid', 'wtdAvg', 'valuePerPound', 'single']);
 
 const errors = [];
@@ -61,7 +61,10 @@ if (sources) {
         if (Array.isArray(entry[sk]) && entry[sk].length === 0) errors.push(`${key}.${sk}: empty array.`);
         specs.forEach((obj, i) => {
           const where = Array.isArray(entry[sk]) ? `${key}.${sk}[${i}]` : `${key}.${sk}`;
-          if (!obj || typeof obj !== 'object' || typeof obj[idField] !== 'string' || obj[idField] === '') {
+          // Most ids are strings; census.hs is an array of HS codes.
+          const idVal = obj && obj[idField];
+          const idOk = (typeof idVal === 'string' && idVal !== '') || (Array.isArray(idVal) && idVal.length > 0);
+          if (!obj || typeof obj !== 'object' || !idOk) {
             errors.push(`${where}: missing "${idField}".`);
           }
           if ((sk === 'ams' || sk === 'lmr') && obj && obj.reducer && !REDUCERS.has(obj.reducer)) {

@@ -209,7 +209,7 @@ function main() {
 `;
   const body = `(function (root) {
   'use strict';
-  var DATA = ${JSON.stringify(seed, null, 2)};
+  var DATA = ${JSON.stringify(seed)};
   if (typeof module !== 'undefined' && module.exports) module.exports = DATA;
   if (typeof self !== 'undefined') self.MUNTIN_COST_INDEX = DATA;
   if (root) root.MUNTIN_COST_INDEX = DATA;

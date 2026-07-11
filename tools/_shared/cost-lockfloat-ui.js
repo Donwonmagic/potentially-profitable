@@ -38,7 +38,7 @@
     withhold: { cls: 'hold',     en: "Won't call it", es: 'No lo llamamos', verb_en: 'Withheld',       verb_es: 'Retenido' },
   };
   var REASON = {
-    'no-series':    { en: 'no public history to band yet', es: 'aún sin historial público para acotar' },
+    'no-series':    { en: 'public source mapped — its price history isn’t pulled in yet', es: 'fuente pública mapeada — su historial de precios aún no está cargado' },
     'monthly-thin': { en: 'prints too thin to band — only a monthly read', es: 'muy pocas lecturas para acotar — solo lectura mensual' },
     'thin':         { en: 'not enough history to back a band', es: 'historial insuficiente para respaldar una banda' },
     'flat':         { en: 'flat and stale — nothing to call', es: 'plano y sin cambios — nada que llamar' },
@@ -254,11 +254,18 @@
     function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
 
     function ladder(items, horizon) {
-      var order = { lock: 0, cushion: 1, float: 2, withhold: 3 };
-      var rows = items.slice().sort(function (a, b) {
-        var ba = reclassify(a, horizon), bb = reclassify(b, horizon);
-        return (order[ba] - order[bb]) || ((a.halfWidthPct == null ? 9 : a.halfWidthPct) - (b.halfWidthPct == null ? 9 : b.halfWidthPct));
-      });
+      // The ladder RANKS items by how far their price reaches — so it plots only the
+      // ones that HAVE a band (lock/cushion/float). Listing the ~74 withheld items as
+      // empty rows made the tool look barren and buried the real read below a screen of
+      // "withheld"; they're already counted in the hero lane and itemized, with reasons,
+      // in the "What we won't call" wall. A one-line note keeps the omission honest.
+      var order = { lock: 0, cushion: 1, float: 2 };
+      var rows = items.filter(function (it) { var b = reclassify(it, horizon); return b === 'lock' || b === 'cushion' || b === 'float'; })
+        .sort(function (a, b) {
+          var ba = reclassify(a, horizon), bb = reclassify(b, horizon);
+          return (order[ba] - order[bb]) || ((a.halfWidthPct == null ? 9 : a.halfWidthPct) - (b.halfWidthPct == null ? 9 : b.halfWidthPct));
+        });
+      var withheldN = items.length - rows.length;
       var box = el('div', 'lf-ladder');
       var scaleWrap = el('div', 'lf-scale');
       [-60, -30, 0, 30, 60].forEach(function (t) { var s = el('span', 'lf-tick', (t > 0 ? '+' : '') + t + '%'); s.style.left = xreach(t) + '%'; scaleWrap.appendChild(s); });
@@ -271,18 +278,15 @@
         var track = el('div', 'lf-ltrack');
         [-60, -30, 30, 60].forEach(function (g) { var gl = el('span', 'lf-grid'); gl.style.left = xreach(g) + '%'; track.appendChild(gl); });
         var z = el('span', 'lf-grid lf-grid--zero'); z.style.left = xreach(0) + '%'; track.appendChild(z);
-        if (it.upPct != null && it.downPct != null && !(it.upPct === 0 && it.downPct === 0)) {
-          var lft = xreach(-it.downPct * 100), rgt = xreach(it.upPct * 100);
-          var band = el('div', 'lf-band lf-band--' + BK[bk].cls);
-          band.style.left = lft + '%'; band.style.width = Math.max(1.2, rgt - lft) + '%';
-          if (bk === 'withhold') band.style.opacity = '.4';
-          track.appendChild(band);
-        } else {
-          var cap2 = el('span', 'lf-lcap', it.reason === 'flat' ? L('flat — no range', 'plano — sin rango') : L('withheld', 'retenido'));
-          cap2.style.left = xreach(0) + '%'; track.appendChild(cap2);
-        }
+        var lft = xreach(-it.downPct * 100), rgt = xreach(it.upPct * 100);
+        var band = el('div', 'lf-band lf-band--' + BK[bk].cls);
+        band.style.left = lft + '%'; band.style.width = Math.max(1.2, rgt - lft) + '%';
+        track.appendChild(band);
         row.appendChild(nm); row.appendChild(track); box.appendChild(row);
       });
+      if (withheldN > 0) box.appendChild(el('p', 'lf-ladder-note', L(
+        '+' + withheldN + ' more we won’t fence — no band to plot. They’re listed with reasons under “What we won’t call,” below.',
+        '+' + withheldN + ' más que no acotamos — sin banda que trazar. Están listados con motivos en “Lo que no llamamos”, más abajo.')));
       return box;
     }
 
@@ -322,11 +326,15 @@
       var hitD = '', missD = '', hits = 0, i;
       for (i = 0; i < n; i++) {
         var x = (pad + (n === 1 ? 0 : (i / (n - 1)) * (W - 2 * pad))).toFixed(2);
-        if (seq.charAt(i) === '1') { hits++; hitD += 'M' + x + ' 12L' + x + ' 20'; }
+        // Catches fill most of the strip (they're the ~coverage% majority), so they
+        // must READ as present — a faint catch makes an 80%-caught strip look mostly
+        // red and understates the very coverage it proves. Catches: tall, steady hue,
+        // solid-enough. Misses: tallest + rust, so the minority still pops by colour.
+        if (seq.charAt(i) === '1') { hits++; hitD += 'M' + x + ' 6L' + x + ' 20'; }
         else { missD += 'M' + x + ' 2L' + x + ' 20'; }
       }
-      if (hitD) svg.appendChild(svgEl('path', { d: hitD, stroke: 'var(--lf-lock)', 'stroke-width': '1', 'stroke-opacity': '.5', 'vector-effect': 'non-scaling-stroke' }));
-      if (missD) svg.appendChild(svgEl('path', { d: missD, stroke: 'var(--lf-float)', 'stroke-width': '1.3', 'vector-effect': 'non-scaling-stroke' }));
+      if (hitD) svg.appendChild(svgEl('path', { d: hitD, stroke: 'var(--lf-lock)', 'stroke-width': '1', 'stroke-opacity': '.62', 'vector-effect': 'non-scaling-stroke' }));
+      if (missD) svg.appendChild(svgEl('path', { d: missD, stroke: 'var(--lf-float)', 'stroke-width': '1.4', 'vector-effect': 'non-scaling-stroke' }));
       fig.appendChild(svg);
       var miss = n - hits;
       fig.appendChild(el('figcaption', 'lf-replay-cap', L(
@@ -345,6 +353,17 @@
       return p;
     }
 
+    // The one plain-language sentence a busy operator reads: the answer + the single
+    // number that matters (worst-side weekly reach). No stats, no jargon — the proof
+    // for those numbers lives one tap down in the drawer.
+    function plainRead(it, bk) {
+      var reach = it.halfWidthPct != null ? ('±' + Math.round(it.halfWidthPct * 100) + '%') : '';
+      if (bk === 'lock') return L('Steady enough to lock a price — it usually moves less than ' + reach + ' week to week.', 'Bastante estable para fijar un precio — suele moverse menos de ' + reach + ' de semana a semana.');
+      if (bk === 'cushion') return L('Workable if you leave headroom — it can move about ' + reach + ' in a week.', 'Manejable si dejas holgura — puede moverse alrededor de ' + reach + ' en una semana.');
+      if (bk === 'float') return L('Too jumpy to pin a fixed price on — it can swing about ' + reach + ' in a week.', 'Demasiado inestable para fijar un precio — puede oscilar alrededor de ' + reach + ' en una semana.');
+      return '';
+    }
+
     function card(it, horizon) {
       var bk = reclassify(it, horizon);
       var c = el('div', 'lf-card');
@@ -359,41 +378,44 @@
       if (STATE && it.slug) right.appendChild(starBtn(it.slug));
       top.appendChild(left); top.appendChild(right); c.appendChild(top);
 
-      if (it.upPct != null && it.downPct != null && !(it.upPct === 0 && it.downPct === 0)) {
+      if (bk === 'withhold') {
+        var w = el('p', 'lf-why'); var wr = REASON[it.reason] || REASON.thin;
+        w.appendChild(el('strong', null, L('Held back: ', 'Retenido: ')));
+        w.appendChild(document.createTextNode(L(wr.en, wr.es) + '.'));
+        c.appendChild(w);
+        return c;
+      }
+
+      // --- PRIMARY: the answer in one plain sentence + the band picture ---
+      c.appendChild(el('p', 'lf-plain', plainRead(it, bk)));
+      var hasBand = it.upPct != null && it.downPct != null && !(it.upPct === 0 && it.downPct === 0);
+      if (hasBand) {
         var bandWrap = el('div', 'lf-card-band');
         var row = el('div', 'lf-cb-row');
         row.appendChild(el('span', null, pctTxt(-it.downPct)));
         row.appendChild(el('span', 'lf-cb-now', L('today', 'hoy')));
         row.appendChild(el('span', null, pctTxt(it.upPct)));
         bandWrap.appendChild(row);
-        bandWrap.appendChild(bandSvg(it, bk === 'withhold' ? 'hold' : BK[bk].cls));
+        bandWrap.appendChild(bandSvg(it, BK[bk].cls));
         c.appendChild(bandWrap);
-        if (bk !== 'withhold' && it.coverage != null) {
-          c.appendChild(receiptLine(it));
-          if (it.replay) { var rp = replayStrip(it); if (rp) c.appendChild(rp); }
-        }
       }
-      if (it.spark) c.appendChild(sparkSvg(it.spark, BK[bk].cls));
 
-      if (bk === 'withhold') {
-        var w = el('p', 'lf-why'); var wr = REASON[it.reason] || REASON.thin;
-        w.appendChild(el('strong', null, L('Held back: ', 'Retenido: ')));
-        w.appendChild(document.createTextNode(L(wr.en, wr.es) + '.'));
-        c.appendChild(w);
-      } else {
-        // Menu cushion — a decision job, on the buckets where holding a fixed menu
-        // price is realistic (lock/cushion). Reframes the certified UP-side reach as
-        // margin headroom: size for the +up% top and the backtested band held it. It
-        // is a MAGNITUDE read (how much to absorb), never a forecast that prices rise,
-        // and the two-sided coverage attributed to the one edge is deliberately
-        // conservative. Float gets NO cushion line — its absence is the honest message.
-        if ((bk === 'lock' || bk === 'cushion') && it.upPct != null && it.upPct > 0 && it.coverage != null) {
-          c.appendChild(menuCushion(it));
-        }
-        // horizon stamp + lock≠cheap discipline
-        var stamp = el('p', 'lf-stamp', L('Next-week reach — ' + HORIZONS[horizon].stamp_en + '.', 'Alcance de la próxima semana — ' + HORIZONS[horizon].stamp_es + '.'));
-        c.appendChild(stamp);
-        if (bk === 'lock') c.appendChild(el('p', 'lf-caveat', L('Steady, not necessarily a level you want to marry.', 'Estable, no necesariamente un nivel al que quieras casarte.')));
+      // --- SECONDARY: the proof + the pricing action, collapsed by default ---
+      // Progressive disclosure keeps the card scannable for the average operator while
+      // the evidence (the backtest that makes this defensible) stays one tap away.
+      if (it.coverage != null) {
+        var d = el('details', 'lf-drawer');
+        var sum = el('summary', 'lf-drawer-sum', L('Show the proof it holds', 'Ver la prueba de que se sostiene'));
+        d.appendChild(sum);
+        if ((bk === 'lock' || bk === 'cushion') && it.upPct != null && it.upPct > 0) d.appendChild(menuCushion(it));
+        d.appendChild(receiptLine(it));
+        if (it.replay) { var rp = replayStrip(it); if (rp) d.appendChild(rp); }
+        if (it.spark) d.appendChild(sparkSvg(it.spark, BK[bk].cls));
+        d.appendChild(el('p', 'lf-stamp', L('Next-week reach — ' + HORIZONS[horizon].stamp_en + '.', 'Alcance de la próxima semana — ' + HORIZONS[horizon].stamp_es + '.')));
+        if (bk === 'lock') d.appendChild(el('p', 'lf-caveat', L('Steady, not necessarily a level you want to marry.', 'Estable, no necesariamente un nivel al que quieras casarte.')));
+        c.appendChild(d);
+      } else if (it.spark) {
+        c.appendChild(sparkSvg(it.spark, BK[bk].cls));
       }
       return c;
     }
@@ -518,27 +540,50 @@
       return wrap;
     }
 
+    function capFirst(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
+
+    // A withheld item as a compact star-toggle chip — grouping by reason means the
+    // reason is stated ONCE per cluster instead of repeated on every row, so the wall
+    // reads as a structured "here's why" instead of the same phrase 60 times. The star
+    // keeps the "track it until it can be called" hook (pairs with the Lock Book).
+    function refusalChip(it) {
+      var on = STATE && STATE.book.has(it.slug);
+      var b = el('button', 'lf-rchip' + (on ? ' is-on' : ''));
+      b.type = 'button';
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.setAttribute('aria-label', (on ? L('In your Lock Book: ', 'En tu Libro: ') : L('Track ', 'Seguir ')) + shortName(it.name));
+      b.appendChild(el('span', 'lf-rchip-star', on ? '★' : '☆'));
+      b.appendChild(document.createTextNode(shortName(it.name)));
+      if (STATE && it.slug) b.addEventListener('click', function () { STATE.toggle(it.slug); });
+      return b;
+    }
+
     function refusalWall(items, DATA) {
       var withheld = items.filter(function (it) { return it.bucket === 'withhold'; });
       var sec = el('section', 'lf-refusal');
-      var h = el('h2', 'lf-refusal-h', L("What we won't call", 'Lo que no llamamos'));
-      sec.appendChild(h);
-      var lead = el('p', 'lf-refusal-lead', L(
-        'The majority of the catalog — ' + DATA.counts.withhold + ' of ' + DATA.catalog + ' ingredients — we refuse to fence, and we say why. A tool that sells alerts would have shown you something here.',
-        'La mayoría del catálogo — ' + DATA.counts.withhold + ' de ' + DATA.catalog + ' ingredientes — nos negamos a acotar, y decimos por qué. Una herramienta que vende alertas te habría mostrado algo aquí.'));
-      sec.appendChild(lead);
-      var list = el('ul', 'lf-refusal-list');
-      // Feature the recognizable staples first (a wild center-of-plate line is the headline).
-      withheld.sort(function (a, b) { return (a.level && b.level) ? (b.level - a.level) : 0; });
-      withheld.slice(0, 24).forEach(function (it) {
-        var li = el('li', 'lf-refusal-item');
-        if (STATE && it.slug) li.appendChild(starBtn(it.slug));
-        li.appendChild(el('span', 'lf-refusal-name', it.name));
-        var wr = REASON[it.reason] || REASON.thin;
-        li.appendChild(el('span', 'lf-refusal-reason', L(wr.en, wr.es)));
-        list.appendChild(li);
+      sec.appendChild(el('h2', 'lf-refusal-h', L("What we won't call", 'Lo que no llamamos')));
+      sec.appendChild(el('p', 'lf-refusal-lead', L(
+        'The catalog outruns what we’ll put a band on — ' + DATA.counts.withhold + ' of ' + DATA.catalog + ' ingredients. A handful genuinely swing too wide, print too thin, or sit flat to call; the rest just have a public source mapped that we haven’t pulled in yet. Grouped by why, below. A tool that sells alerts would have shown you a number for every one.',
+        'El catálogo supera lo que acotamos con una banda — ' + DATA.counts.withhold + ' de ' + DATA.catalog + ' ingredientes. Unos pocos de verdad oscilan demasiado, dan lecturas muy escasas o están planos para llamarlos; el resto solo tiene una fuente pública mapeada que aún no hemos cargado. Agrupados por el motivo, abajo. Una herramienta que vende alertas te habría mostrado un número para cada uno.')));
+      // Group by machine reason; state the reason once, then chip the items. Order the
+      // groups biggest-first, and recognizable staples first within each.
+      var groups = {};
+      withheld.forEach(function (it) { (groups[it.reason] = groups[it.reason] || []).push(it); });
+      var CAP = 20;
+      Object.keys(groups).sort(function (a, b) { return groups[b].length - groups[a].length; }).forEach(function (reason) {
+        var g = groups[reason].slice().sort(function (a, b) { return (a.level && b.level) ? (b.level - a.level) : 0; });
+        var wr = REASON[reason] || REASON.thin;
+        var block = el('div', 'lf-refusal-group');
+        var head = el('div', 'lf-refusal-ghead');
+        head.appendChild(el('span', 'lf-refusal-glabel', capFirst(L(wr.en, wr.es))));
+        head.appendChild(el('span', 'lf-refusal-gcount', '· ' + g.length));
+        block.appendChild(head);
+        var chips = el('div', 'lf-refusal-chips');
+        g.slice(0, CAP).forEach(function (it) { chips.appendChild(refusalChip(it)); });
+        if (g.length > CAP) chips.appendChild(el('span', 'lf-refusal-more', L('+' + (g.length - CAP) + ' more', '+' + (g.length - CAP) + ' más')));
+        block.appendChild(chips);
+        sec.appendChild(block);
       });
-      sec.appendChild(list);
       return sec;
     }
 

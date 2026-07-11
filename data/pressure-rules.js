@@ -5,8 +5,13 @@
   'use strict';
   var RULES = {
   "_doc": "Muntin Cost PRESSURE rules — the transparent, versioned manifest the deterministic engine (tools/_shared/cost-pressure.js) scores into an inferred 'where it's headed' direction per ingredient. THIS IS NOT A PRICE. Each indicator declares: a public free SOURCE, a direction SIGN (does indicator-up mean cost-up +1 or cost-down -1), an evidence-tier WEIGHT, a sourced LEAD range, and a CITE. The reports + lead ranges are USDA/EIA-sourced and citeable; the per-indicator WEIGHTS are Muntin's evidence-tier judgment (illustrative, frozen per _version). Enforced by scripts/check-pressure-honesty.mjs: every indicator needs source+lead+cite, weight above tier C needs a cite, and the rendered direction must equal what this manifest + the engine recompute. A weight/sign change REQUIRES a _version bump + changelog. Sequencing: status:'preview' (demo observations) until the free fetchers (NASS Quick Stats, EIA, AMS MMN/MARS, USDM, NWS) are wired; then live.",
-  "_version": "2026-Q2-18",
+  "_version": "2026-Q2-19",
   "_changelog": [
+    {
+      "version": "2026-Q2-19",
+      "date": "2026-07-10",
+      "note": "Freight demotion (ADR-013/EIA) — removed the per-item `diesel` PRESSURE contributor from all 78 items. It was common-mode by its own admission (note: 'freight rides every ingredient'), inert (signed_signal 0 on 6 of 7 built items in cost-pressure.json; only beef-tenderloin=+1, already building on feed), and mechanism-less as a per-ingredient arrow — the same reasoning that dropped ribeye/romaine/tomato/onion/cheddar diesel at 2026-Q2-18. Freight is already carried INDEX-WIDE by exactly one measured series: the FRED GASDESW diesel driver (data/cost-index-sources.json drivers.diesel, kind:energy, leads:[], 'coincident gauge... association only'), which the hub renders as the single 'Diesel / freight' association direction (same value every page), so 78 pressure copies were a double-count of one EIA quantity — this resolves the ADR-013 open freight-double-count question (exactly one live freight series = GASDESW). The EIA `diesel` pressure spec is kept dormant (no live indicator references it), mirroring the ADR-014 keep-the-spec pattern. button-mushroom was diesel-ONLY, so it dropped to 0 indicators and its (never-rendered) panel was retired, completing the 2026-Q2-15 indoor-crop drop. The `freight` group key stays LIVE via deep-sea-freight (FRED PCU483111483111, a genuinely distinct ocean-freight series for imports on 11 items) — no per-item diesel vote should be re-added to that bucket."
+    },
     {
       "version": "2026-Q2-18",
       "date": "2026-06-14",
@@ -85,7 +90,7 @@
     "2026-Q2-16: +33 ingredient rules (proteins, seafood, leaf-lettuce, herbs, domestic veg, fruit) — reasoned per-ingredient estimates from validated analogs + production reality; uncalibrated, held until track-record-proven.",
     "2026-Q2-17: +ca-frost (calibratable Open-Meteo Yuma/Imperial min-temp) to 6 desert-SW leaf/cole crops (iceberg-lettuce, spinach, broccoli, cauliflower, celery, cabbage) that carried only the non-calibratable freeze-alert — brings them to parity with romaine/green-leaf/red-leaf lettuce (roadmap §3e). sign -1 (min-temp up → less freeze → cost down), tier C, held until track-record-proven."
   ],
-  "_methodology": "P = Σ(weight × sign × discretize(window-change, deadband)); correlated indicators share one weight bucket (group); |P|≥cutoffT → building/easing else steady; confidence from sign-agreement, decayed by weeks since the last MEASURED print, suppressed to 'under review' past the floor. Lags are biological/empirical (USDA ERS); the month-by-month pass-through weighting is Muntin's estimate, never a USDA figure.",
+  "_methodology": "P = Σ(weight × sign × discretize(window-change, deadband)); correlated indicators share one weight bucket (group); |P|≥cutoffT → building/easing else steady; confidence from sign-agreement, decayed by weeks since the last MEASURED print, suppressed to 'under review' past the floor. Lags are biological/empirical (USDA ERS); the month-by-month pass-through weighting is Muntin's estimate, never a USDA figure. FREIGHT (2026-Q2-19): domestic trucking diesel is a common-mode, index-wide term carried by the single measured GASDESW driver (rendered as an association-framed 'Diesel / freight' direction), NOT a per-item pressure vote — do not re-add a per-item `diesel` indicator. The `group:\"freight\"` bucket is now ocean-freight-for-imports (deep-sea-freight) only.",
   "defaults": {
     "deadband": 0.02,
     "cutoffT": 2,
@@ -209,36 +214,6 @@
           },
           "cite": "nass-broiler",
           "note": "more chicks placed → more meat ~6-10 wk out → cost down"
-        },
-        {
-          "id": "cold-storage-poultry",
-          "source": "nass-cold-storage",
-          "sign": -1,
-          "weight": 1,
-          "tier": "C",
-          "window": "1m",
-          "lead": {
-            "min": 4,
-            "max": 8,
-            "unit": "week"
-          },
-          "cite": "nass-cold-storage"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -322,35 +297,6 @@
             "unit": "week"
           },
           "cite": "nass-broiler"
-        },
-        {
-          "id": "cold-storage-poultry",
-          "source": "nass-cold-storage",
-          "sign": -1,
-          "weight": 1,
-          "tier": "C",
-          "window": "1m",
-          "lead": {
-            "min": 4,
-            "max": 8,
-            "unit": "week"
-          },
-          "cite": "nass-cold-storage"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -446,21 +392,6 @@
             "unit": "week"
           },
           "cite": "fred-feed"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -517,6 +448,7 @@
             "unit": "week"
           },
           "cite": "nass-cold-storage",
+          "coincident": true,
           "calibrated": {
             "date": "2026-06-14",
             "empSign": -1,
@@ -527,23 +459,8 @@
             "suggestWeight": 0.1,
             "nnlsWeight": -0.905,
             "nnlsLeadMo": 0,
-            "note": "PROVEN — one of the 4 edges that survived the full 12y BH+OOS+N bar (data/pressure-calibration.json, 2026-06-14). 12y LMR-2498 cutout anchor backtest confirms the -1 sign and holds OOS. Empirical relationship is ~coincident (|r|-best lag ~0w; NNLS ~-0.905 @ 0mo), so cold storage reads as a concurrent supply confirm more than a 4-8w leader; lead range retained pending more evidence. OOS-shrunk standalone weight 0.1; prior operating weight 1 retained."
+            "note": "PROVEN — one of the 4 edges that survived the full 12y BH+OOS+N bar (data/pressure-calibration.json, 2026-06-14). 12y LMR-2498 cutout anchor backtest confirms the -1 sign and holds OOS. Empirical relationship is ~coincident (|r|-best lag ~0w; NNLS ~-0.905 @ 0mo), so cold storage reads as a concurrent supply confirm more than a 4-8w leader; lead range retained pending more evidence. OOS-shrunk standalone weight 0.1; prior operating weight 1 retained. CAVEAT (ADR-014): this calibration ran on the RAW windowChange path; re-validate on the deseasonalized (5-yr same-month median anomaly) series before treating the empirical lag/weight as final — the sign + coincident read are expected to hold."
           }
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -592,22 +509,9 @@
             "max": 8,
             "unit": "week"
           },
-          "cite": "nass-cold-storage"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
+          "cite": "nass-cold-storage",
+          "coincident": true,
+          "note": "Cold-storage pork stocks vs the same-month 5-year norm (deseasonalized, ADR-014) — a concurrent supply-context read, not a leading arrow; sign shared with the calibrated pork-loin/cold-storage-pork edge (coincident, N=102, p=0.008). Heavy stocks lean cost-down."
         }
       ]
     },
@@ -952,21 +856,6 @@
           "note": "season pace above last year → ample supply → cost down"
         },
         {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
-        },
-        {
           "id": "potato-transition",
           "source": "ams-shipping-point",
           "sign": 1,
@@ -1005,8 +894,8 @@
           "id": "cold-storage-butter",
           "source": "nass-cold-storage",
           "sign": -1,
-          "weight": 2,
-          "tier": "B",
+          "weight": 1,
+          "tier": "C",
           "window": "1m",
           "lead": {
             "min": 4,
@@ -1014,7 +903,8 @@
             "unit": "week"
           },
           "cite": "nass-cold-storage",
-          "note": "Cold Storage tracks butter stocks; high stocks → downward pressure"
+          "coincident": true,
+          "note": "Cold-storage butter stocks vs the same-month 5-year norm (deseasonalized, ADR-014), not a raw spring build — a weak, uncalibrated supply-context read: heavy stocks lean cost-down, but a build can be strong production or soft demand. Coincident, not a leading arrow. As a lone tier-C/weight-1 signal it is expected to read moderate-at-most (not an engine-enforced cap); demoted from tier B/weight 2 (ADR-014 per-commodity gating)."
         },
         {
           "id": "feed-grain",
@@ -1030,21 +920,6 @@
           },
           "cite": "fred-feed",
           "note": "feed → milk cost is a slow, weaker channel"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -1080,21 +955,6 @@
           },
           "cite": "fred-nzd-fx",
           "note": "intl-test: NZ global dairy price-setter; USD-per-NZD, NZD stronger → US cheese import cost up"
-        },
-        {
-          "id": "cold-storage-cheese",
-          "source": "nass-cold-storage",
-          "sign": -1,
-          "weight": 2,
-          "tier": "B",
-          "window": "1m",
-          "lead": {
-            "min": 4,
-            "max": 8,
-            "unit": "week"
-          },
-          "cite": "nass-cold-storage",
-          "note": "Cold Storage tracks natural-cheese stocks"
         },
         {
           "id": "feed-grain",
@@ -1232,21 +1092,6 @@
           },
           "cite": "fred-soymeal",
           "note": "soy-based aquaculture feed leads farmed-salmon price ~1-2 quarters"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -1343,21 +1188,6 @@
           "group": "freight",
           "cite": "fred-deep-sea-freight",
           "note": "intl-test: frozen shrimp ships by ocean container; freight up → landed cost up"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -1407,22 +1237,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -1487,22 +1301,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -1567,22 +1365,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -1647,22 +1429,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -1712,22 +1478,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -1777,22 +1527,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -1842,22 +1576,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -1907,22 +1625,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -1972,22 +1674,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -2037,22 +1723,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -2102,22 +1772,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -2182,22 +1836,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -2262,22 +1900,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -2327,22 +1949,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -2392,22 +1998,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -2457,22 +2047,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -2522,22 +2096,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -2587,22 +2145,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -2652,22 +2194,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -2717,22 +2243,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -2782,22 +2292,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -2847,22 +2341,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -2912,22 +2390,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -2977,22 +2439,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -3057,22 +2503,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -3122,22 +2552,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -3187,22 +2601,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -3252,22 +2650,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -3317,22 +2699,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -3382,22 +2748,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -3447,22 +2797,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -3512,22 +2846,6 @@
           },
           "cite": "nws-alerts",
           "note": "active freeze in CA/AZ growing zone → spike in 1-6 wk"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -3594,36 +2912,6 @@
           },
           "cite": "nass-broiler",
           "note": "more chicks placed → more meat ~6-10 wk out → cost down"
-        },
-        {
-          "id": "cold-storage-poultry",
-          "source": "nass-cold-storage",
-          "sign": -1,
-          "weight": 1,
-          "tier": "C",
-          "window": "1m",
-          "lead": {
-            "min": 4,
-            "max": 8,
-            "unit": "week"
-          },
-          "cite": "nass-cold-storage"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -3737,21 +3025,6 @@
           },
           "cite": "fred-soymeal",
           "note": "soy-based aquaculture feed leads farmed-salmon price ~1-2 quarters"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -3788,22 +3061,6 @@
           "group": "feed",
           "cite": "fred-soymeal",
           "note": "intl-test: soybean meal is the PROTEIN feed component (corn is energy); the documented feed lead beyond corn"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -3825,22 +3082,6 @@
           "group": "feed",
           "cite": "fred-soymeal",
           "note": "intl-test: soybean meal is the PROTEIN feed component (corn is energy); the documented feed lead beyond corn"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel",
-          "note": "freight rides every ingredient"
         }
       ]
     },
@@ -3863,20 +3104,6 @@
           "note": "placements forecast marketings 4-6 mo out (NASS)"
         },
         {
-          "id": "cold-storage-beef",
-          "source": "nass-cold-storage",
-          "sign": -1,
-          "weight": 1,
-          "tier": "C",
-          "window": "1m",
-          "lead": {
-            "min": 4,
-            "max": 8,
-            "unit": "week"
-          },
-          "cite": "nass-cold-storage"
-        },
-        {
           "id": "feed-grain",
           "source": "fred-feed",
           "sign": 1,
@@ -3890,21 +3117,6 @@
           },
           "cite": "fred-feed",
           "note": "feed weak near-term for beef; herd cycle dominates"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -3925,20 +3137,6 @@
           },
           "cite": "nass-cattle-on-feed",
           "note": "placements forecast marketings 4-6 mo out (NASS)"
-        },
-        {
-          "id": "cold-storage-beef",
-          "source": "nass-cold-storage",
-          "sign": -1,
-          "weight": 1,
-          "tier": "C",
-          "window": "1m",
-          "lead": {
-            "min": 4,
-            "max": 8,
-            "unit": "week"
-          },
-          "cite": "nass-cold-storage"
         },
         {
           "id": "feed-grain",
@@ -3969,21 +3167,6 @@
           },
           "cite": "fred-aud-fx",
           "note": "AU/NZ lean-trim import for grinding; AUD stronger → US import beef cost up"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -4045,22 +3228,9 @@
             "max": 8,
             "unit": "week"
           },
-          "cite": "nass-cold-storage"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
+          "cite": "nass-cold-storage",
+          "coincident": true,
+          "note": "Cold-storage pork stocks vs the same-month 5-year norm (deseasonalized, ADR-014) — a concurrent supply-context read, not a leading arrow; belly/bacon is the cut most directly tied to frozen pork stocks (weight 2). Sign shared with the calibrated pork-loin/cold-storage-pork edge (coincident, N=102, p=0.008); heavy stocks lean cost-down."
         }
       ]
     },
@@ -4082,21 +3252,6 @@
           "group": "freight",
           "cite": "fred-deep-sea-freight",
           "note": "ocean-freight PPI; imported product rides landed cost"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -4118,21 +3273,6 @@
           "group": "freight",
           "cite": "fred-deep-sea-freight",
           "note": "ocean-freight PPI; imported product rides landed cost"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -4199,21 +3339,6 @@
           },
           "group": "feed",
           "cite": "fred-soymeal"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -4280,21 +3405,6 @@
           },
           "group": "feed",
           "cite": "fred-soymeal"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -4374,21 +3484,6 @@
             "unit": "week"
           },
           "cite": "usdm-drought"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -4468,21 +3563,6 @@
             "unit": "week"
           },
           "cite": "usdm-drought"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -4562,21 +3642,6 @@
             "unit": "week"
           },
           "cite": "usdm-drought"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -4610,21 +3675,6 @@
             "unit": "week"
           },
           "cite": "nws-alerts"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -4673,21 +3723,6 @@
             "unit": "week"
           },
           "cite": "nws-alerts"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -4736,21 +3771,6 @@
             "unit": "week"
           },
           "cite": "nws-alerts"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -4799,21 +3819,6 @@
             "unit": "week"
           },
           "cite": "nws-alerts"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -4862,21 +3867,6 @@
             "unit": "week"
           },
           "cite": "nws-alerts"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -4925,21 +3915,6 @@
             "unit": "week"
           },
           "cite": "nws-alerts"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -4988,21 +3963,6 @@
             "unit": "week"
           },
           "cite": "nws-alerts"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -5036,41 +3996,6 @@
             "unit": "week"
           },
           "cite": "usdm-drought"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
-        }
-      ]
-    },
-    "button-mushroom": {
-      "rule_version": "2026-Q2-16",
-      "indicators": [
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -5090,21 +4015,6 @@
             "unit": "week"
           },
           "cite": "usdm-drought"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -5138,21 +4048,6 @@
             "unit": "week"
           },
           "cite": "nws-alerts"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -5186,21 +4081,6 @@
             "unit": "week"
           },
           "cite": "nws-alerts"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -5234,21 +4114,6 @@
             "unit": "week"
           },
           "cite": "nws-alerts"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -5313,21 +4178,6 @@
             "unit": "week"
           },
           "cite": "usdm-drought"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -5361,21 +4211,6 @@
             "unit": "week"
           },
           "cite": "usdm-drought"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -5409,21 +4244,6 @@
             "unit": "week"
           },
           "cite": "nws-alerts"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -5457,21 +4277,6 @@
             "unit": "week"
           },
           "cite": "nws-alerts"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -5493,21 +4298,6 @@
           "group": "freight",
           "cite": "fred-deep-sea-freight",
           "note": "ocean-freight PPI; imported product rides landed cost"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -5529,21 +4319,6 @@
           "group": "freight",
           "cite": "fred-deep-sea-freight",
           "note": "ocean-freight PPI; imported product rides landed cost"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -5565,21 +4340,6 @@
           "group": "freight",
           "cite": "fred-deep-sea-freight",
           "note": "ocean-freight PPI; imported product rides landed cost"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -5613,21 +4373,6 @@
             "unit": "week"
           },
           "cite": "nws-alerts"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -5692,21 +4437,6 @@
           "group": "freight",
           "cite": "fred-deep-sea-freight",
           "note": "ocean-freight PPI; imported product rides landed cost"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     },
@@ -5755,21 +4485,6 @@
           },
           "cite": "fred-mxn-fx",
           "note": "Mexico winter import; peso weaker → cheaper USD → cost down"
-        },
-        {
-          "id": "diesel",
-          "source": "eia-diesel",
-          "sign": 1,
-          "weight": 1,
-          "tier": "A",
-          "window": "4w",
-          "lead": {
-            "min": 0,
-            "max": 4,
-            "unit": "week"
-          },
-          "group": "freight",
-          "cite": "eia-diesel"
         }
       ]
     }

@@ -92,12 +92,26 @@ jobs:
           # Rebuild the browser seed (data/cost-index.js) so Cost Pulse / the
           # client read the fresh numbers — not just the server-rendered pages.
           node scripts/build-cost-index-seed.mjs
+          # Rebuild the Vendor Benchmark ingredient-picker manifest (data/cost-index-picker.js).
+          # It's a pure function of the seed's pickable subset, so a refresh that adds or
+          # drops an ingredient (or flips a firm-$ reference) leaves it stale and trips
+          # check-cost-index-picker on the next PR unless it's rewritten here.
+          node scripts/build-cost-index-picker.mjs
           # Regenerate the coverage/health matrix + seasonal baseline — both are
           # pure functions of the freshly vendored data/cost-index.json and are
           # --check-gated in CI, so they must be rewritten here or the next PR
           # trips the stale gate.
           node scripts/build-cost-index-health.mjs
           node scripts/build-seasonality.mjs
+          # Re-detect notable price events (biggest sustained moves off local normal
+          # + duration / own-season / co-movement) from the deep history. Pure math,
+          # --check-gated in CI; the per-ingredient pages read it at BUILD time, so it
+          # must be rewritten here before the pages render.
+          node scripts/build-cost-index-events.mjs
+          # Rebuild the Vendor Benchmark market-context seed (volatility, current-vs-normal
+          # state, most recent documented event per ingredient). Reads the fresh index/history/
+          # events/registry; --check-gated in CI.
+          node scripts/build-cost-index-context.mjs
           # Rebuild the pure-data/ committed artifacts whose inputs are all
           # final at this point (cost-index.json + seed + deep history +
           # seasonality) — each is --check-gated in check-all, so any one left

@@ -64,11 +64,16 @@
       var sign = ind.sign === -1 ? -1 : 1;          // does indicator-up mean cost-up (+) or cost-down (−)?
       var c = sign * d;                             // this indicator's cost-pressure vote ∈ {−1,0,+1}
       var w = ind.weight != null ? ind.weight : 1;
-      contributors.push({
+      var contrib = {
         indicator: ind.id, source: ind.source || null, signed_signal: c, weight: w,
         lead: ind.lead || null, tier: ind.tier || null, cite: ind.cite || null,
         group: ind.group || null, change_pct: obs.changePct, as_of: obs.asOf || null
-      });
+      };
+      // ADR-014 §4: a coincident indicator (e.g. cold-storage stocks) is concurrent
+      // supply context, NOT a leading indicator — surfaces must not attach a lead-lag
+      // ("N-week lead") phrase to it. Propagate the manifest flag so they can honor it.
+      if (ind.coincident) contrib.coincident = true;
+      contributors.push(contrib);
       if (ind.group) {
         var g = groups[ind.group] = groups[ind.group] || { signedSum: 0, bucketWeight: 0 };
         g.signedSum += w * c;

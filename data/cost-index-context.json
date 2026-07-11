@@ -1,0 +1,878 @@
+{
+  "_doc": "Market-context seed for Vendor Benchmark — per tracked ingredient: volatility class (vol), whether the wholesale reference is itself unusual right now vs its own trailing-year normal (now), and the most recent DOCUMENTED market event affecting it (recentEvent, from the cited registry). Used only to add co-occurrence context about the REFERENCE’s state — never a claim about the operator’s own price, which keeps the fair-price-gap honesty contract intact. Pure/deterministic; recency judged against the data’s own latest date. Built by scripts/build-cost-index-context.mjs; CI re-checks with --check.",
+  "_version": 1,
+  "params": {
+    "nowThreshold": 12,
+    "recentYears": 3
+  },
+  "generatedFrom": {
+    "index": "data/cost-index.json",
+    "history": "data/cost-index-history.json",
+    "events": "data/cost-index-events.json",
+    "registry": "cost-index/events.json"
+  },
+  "items": {
+    "acorn-squash": {
+      "vol": "wild",
+      "now": {
+        "pct": 63,
+        "state": "elevated"
+      }
+    },
+    "apple": {
+      "vol": "wild",
+      "now": {
+        "pct": -54,
+        "state": "depressed"
+      }
+    },
+    "artichoke": {
+      "vol": "wild",
+      "now": {
+        "pct": 61,
+        "state": "elevated"
+      }
+    },
+    "asparagus": {
+      "vol": "wild",
+      "now": {
+        "pct": -27,
+        "state": "depressed"
+      }
+    },
+    "avocado": {
+      "vol": "wild",
+      "now": {
+        "pct": 19,
+        "state": "elevated"
+      },
+      "recentEvent": {
+        "label": "US suspension of Mexican avocado imports from Michoacan (February 2022)",
+        "year": "2022",
+        "recent": true
+      }
+    },
+    "banana": {
+      "vol": "swingy",
+      "now": {
+        "pct": -1,
+        "state": "normal"
+      }
+    },
+    "basil": {
+      "vol": "steady",
+      "now": {
+        "pct": 0,
+        "state": "normal"
+      }
+    },
+    "beef-tenderloin": {
+      "vol": "wild",
+      "now": {
+        "pct": 0,
+        "state": "normal"
+      },
+      "recentEvent": {
+        "label": "US cattle herd contraction to a 1951 low (2022-2026)",
+        "year": "2026",
+        "recent": true
+      }
+    },
+    "beet": {
+      "vol": "wild",
+      "now": {
+        "pct": 14,
+        "state": "elevated"
+      }
+    },
+    "bell-pepper": {
+      "vol": "wild",
+      "now": {
+        "pct": -6,
+        "state": "normal"
+      },
+      "recentEvent": {
+        "label": "Northwestern Mexico hard freeze (February 2011)",
+        "year": "2011",
+        "recent": false
+      }
+    },
+    "blueberry": {
+      "vol": "wild",
+      "now": {
+        "pct": -21,
+        "state": "depressed"
+      }
+    },
+    "bok-choy": {
+      "vol": "wild",
+      "now": {
+        "pct": 5,
+        "state": "normal"
+      }
+    },
+    "broccoli": {
+      "vol": "wild",
+      "now": {
+        "pct": -34,
+        "state": "depressed"
+      },
+      "recentEvent": {
+        "label": "2023 Salinas Valley / Pajaro River flooding",
+        "year": "2023",
+        "recent": false
+      }
+    },
+    "brussels-sprouts": {
+      "vol": "wild",
+      "now": {
+        "pct": -8,
+        "state": "normal"
+      }
+    },
+    "butter": {
+      "vol": "swingy",
+      "now": {
+        "pct": -11,
+        "state": "normal"
+      },
+      "recentEvent": {
+        "label": "Low US butter cold-storage stocks (2022)",
+        "year": "2022",
+        "recent": false
+      }
+    },
+    "butter-lettuce": {
+      "vol": "wild",
+      "now": {
+        "pct": 30,
+        "state": "elevated"
+      },
+      "recentEvent": {
+        "label": "INSV outbreak and fall lettuce supply shortfall, Salinas Valley (2022)",
+        "year": "2022",
+        "recent": false
+      }
+    },
+    "butternut-squash": {
+      "vol": "wild",
+      "now": {
+        "pct": -4,
+        "state": "normal"
+      }
+    },
+    "button-mushroom": {
+      "vol": "steady",
+      "now": {
+        "pct": -4,
+        "state": "normal"
+      }
+    },
+    "cabbage": {
+      "vol": "wild",
+      "now": {
+        "pct": 31,
+        "state": "elevated"
+      }
+    },
+    "cantaloupe": {
+      "vol": "wild",
+      "now": {
+        "pct": 118,
+        "state": "elevated"
+      },
+      "recentEvent": {
+        "label": "Listeria outbreak - Jensen Farms cantaloupe (2011)",
+        "year": "2011",
+        "recent": false
+      }
+    },
+    "carrot": {
+      "vol": "wild",
+      "now": {
+        "pct": 23,
+        "state": "elevated"
+      }
+    },
+    "cauliflower": {
+      "vol": "wild",
+      "now": {
+        "pct": -41,
+        "state": "depressed"
+      }
+    },
+    "celery": {
+      "vol": "wild",
+      "now": {
+        "pct": -23,
+        "state": "depressed"
+      },
+      "recentEvent": {
+        "label": "2023 Salinas Valley / Pajaro River flooding",
+        "year": "2023",
+        "recent": false
+      }
+    },
+    "cheddar-cheese": {
+      "vol": "swingy",
+      "now": {
+        "pct": -4,
+        "state": "normal"
+      },
+      "recentEvent": {
+        "label": "COVID-19 US dairy supply-chain disruption (2020)",
+        "year": "2020",
+        "recent": false
+      }
+    },
+    "cherry-tomato": {
+      "vol": "wild",
+      "now": {
+        "pct": 39,
+        "state": "elevated"
+      },
+      "recentEvent": {
+        "label": "Northwestern Mexico hard freeze (February 2011)",
+        "year": "2011",
+        "recent": false
+      }
+    },
+    "chicken-breast": {
+      "vol": "wild",
+      "now": {
+        "pct": -10,
+        "state": "normal"
+      },
+      "recentEvent": {
+        "label": "2024-2025 winter avian influenza surge",
+        "year": "2025",
+        "recent": true
+      }
+    },
+    "chicken-thigh": {
+      "vol": "wild",
+      "now": {
+        "pct": 11,
+        "state": "normal"
+      },
+      "recentEvent": {
+        "label": "2024-2025 winter avian influenza surge",
+        "year": "2025",
+        "recent": true
+      }
+    },
+    "cilantro": {
+      "vol": "swingy",
+      "now": {
+        "pct": 7,
+        "state": "normal"
+      }
+    },
+    "collard-greens": {
+      "vol": "wild",
+      "now": {
+        "pct": 0,
+        "state": "normal"
+      }
+    },
+    "corn-on-the-cob": {
+      "vol": "wild",
+      "now": {
+        "pct": 33,
+        "state": "elevated"
+      }
+    },
+    "cucumber": {
+      "vol": "wild",
+      "now": {
+        "pct": -5,
+        "state": "normal"
+      },
+      "recentEvent": {
+        "label": "Northwestern Mexico hard freeze (February 2011)",
+        "year": "2011",
+        "recent": false
+      }
+    },
+    "daikon": {
+      "vol": "swingy",
+      "now": {
+        "pct": 10,
+        "state": "normal"
+      }
+    },
+    "dill": {
+      "vol": "wild",
+      "now": {
+        "pct": -13,
+        "state": "depressed"
+      }
+    },
+    "eggplant": {
+      "vol": "wild",
+      "now": {
+        "pct": 37,
+        "state": "elevated"
+      },
+      "recentEvent": {
+        "label": "Northwestern Mexico hard freeze (February 2011)",
+        "year": "2011",
+        "recent": false
+      }
+    },
+    "eggs": {
+      "vol": "wild",
+      "now": {
+        "pct": -67,
+        "state": "depressed"
+      },
+      "recentEvent": {
+        "label": "2024-2025 winter avian influenza surge",
+        "year": "2025",
+        "recent": true
+      }
+    },
+    "garlic": {
+      "vol": "wild",
+      "now": {
+        "pct": -19,
+        "state": "depressed"
+      }
+    },
+    "ginger": {
+      "vol": "swingy",
+      "now": {
+        "pct": 1,
+        "state": "normal"
+      }
+    },
+    "grapefruit": {
+      "vol": "wild",
+      "now": {
+        "pct": -6,
+        "state": "normal"
+      },
+      "recentEvent": {
+        "label": "Florida citrus greening (Huanglongbing/HLB), first detected 2005 - ongoing",
+        "year": "2026",
+        "recent": true
+      }
+    },
+    "green-beans": {
+      "vol": "wild",
+      "now": {
+        "pct": 24,
+        "state": "elevated"
+      }
+    },
+    "green-leaf-lettuce": {
+      "vol": "wild",
+      "now": {
+        "pct": -8,
+        "state": "normal"
+      },
+      "recentEvent": {
+        "label": "INSV outbreak and fall lettuce supply shortfall, Salinas Valley (2022)",
+        "year": "2022",
+        "recent": false
+      }
+    },
+    "green-onion": {
+      "vol": "wild",
+      "now": {
+        "pct": -32,
+        "state": "depressed"
+      }
+    },
+    "ground-beef": {
+      "vol": "steady",
+      "recentEvent": {
+        "label": "US cattle herd contraction to a 1951 low (2022-2026)",
+        "year": "2026",
+        "recent": true
+      }
+    },
+    "habanero-pepper": {
+      "vol": "wild",
+      "now": {
+        "pct": 43,
+        "state": "elevated"
+      }
+    },
+    "iceberg-lettuce": {
+      "vol": "wild",
+      "now": {
+        "pct": 47,
+        "state": "elevated"
+      },
+      "recentEvent": {
+        "label": "2023 Salinas Valley / Pajaro River flooding",
+        "year": "2023",
+        "recent": false
+      }
+    },
+    "jalapeno": {
+      "vol": "wild",
+      "now": {
+        "pct": -9,
+        "state": "normal"
+      },
+      "recentEvent": {
+        "label": "Northwestern Mexico hard freeze (February 2011)",
+        "year": "2011",
+        "recent": false
+      }
+    },
+    "kale": {
+      "vol": "wild",
+      "now": {
+        "pct": -15,
+        "state": "depressed"
+      }
+    },
+    "leek": {
+      "vol": "wild",
+      "now": {
+        "pct": 1,
+        "state": "normal"
+      }
+    },
+    "lemon": {
+      "vol": "wild",
+      "now": {
+        "pct": 40,
+        "state": "elevated"
+      },
+      "recentEvent": {
+        "label": "California citrus freeze (January 2007)",
+        "year": "2007",
+        "recent": false
+      }
+    },
+    "lime": {
+      "vol": "wild",
+      "now": {
+        "pct": -25,
+        "state": "depressed"
+      },
+      "recentEvent": {
+        "label": "Mexican lime supply shortfall (2014)",
+        "year": "2014",
+        "recent": false
+      }
+    },
+    "mint": {
+      "vol": "swingy",
+      "now": {
+        "pct": -4,
+        "state": "normal"
+      }
+    },
+    "napa-cabbage": {
+      "vol": "wild",
+      "now": {
+        "pct": -20,
+        "state": "depressed"
+      }
+    },
+    "okra": {
+      "vol": "wild",
+      "now": {
+        "pct": -2,
+        "state": "normal"
+      }
+    },
+    "onion": {
+      "vol": "wild",
+      "now": {
+        "pct": 25,
+        "state": "elevated"
+      },
+      "recentEvent": {
+        "label": "Thomson International onion recall - Salmonella Newport (2020)",
+        "year": "2020",
+        "recent": false
+      }
+    },
+    "oregano": {
+      "vol": "steady",
+      "now": {
+        "pct": 0,
+        "state": "normal"
+      }
+    },
+    "parsley": {
+      "vol": "wild",
+      "now": {
+        "pct": 3,
+        "state": "normal"
+      }
+    },
+    "pear": {
+      "vol": "swingy",
+      "now": {
+        "pct": 23,
+        "state": "elevated"
+      }
+    },
+    "pineapple": {
+      "vol": "wild",
+      "now": {
+        "pct": -2,
+        "state": "normal"
+      }
+    },
+    "poblano-pepper": {
+      "vol": "wild",
+      "now": {
+        "pct": 52,
+        "state": "elevated"
+      },
+      "recentEvent": {
+        "label": "Northwestern Mexico hard freeze (February 2011)",
+        "year": "2011",
+        "recent": false
+      }
+    },
+    "pork-belly": {
+      "vol": "steady",
+      "now": {
+        "pct": 5,
+        "state": "normal"
+      },
+      "recentEvent": {
+        "label": "African swine fever in China (2018-19), global hog-supply shock",
+        "year": "2020",
+        "recent": false
+      }
+    },
+    "pork-loin": {
+      "vol": "wild",
+      "now": {
+        "pct": 1,
+        "state": "normal"
+      },
+      "recentEvent": {
+        "label": "African swine fever in China (2018-19), global hog-supply shock",
+        "year": "2020",
+        "recent": false
+      }
+    },
+    "pork-shoulder": {
+      "vol": "wild",
+      "now": {
+        "pct": 5,
+        "state": "normal"
+      },
+      "recentEvent": {
+        "label": "African swine fever in China (2018-19), global hog-supply shock",
+        "year": "2020",
+        "recent": false
+      }
+    },
+    "raspberry": {
+      "vol": "wild",
+      "now": {
+        "pct": 15,
+        "state": "elevated"
+      }
+    },
+    "red-leaf-lettuce": {
+      "vol": "wild",
+      "now": {
+        "pct": -3,
+        "state": "normal"
+      },
+      "recentEvent": {
+        "label": "INSV outbreak and fall lettuce supply shortfall, Salinas Valley (2022)",
+        "year": "2022",
+        "recent": false
+      }
+    },
+    "red-onion": {
+      "vol": "wild",
+      "now": {
+        "pct": 41,
+        "state": "elevated"
+      },
+      "recentEvent": {
+        "label": "Thomson International onion recall - Salmonella Newport (2020)",
+        "year": "2020",
+        "recent": false
+      }
+    },
+    "red-potato": {
+      "vol": "swingy",
+      "now": {
+        "pct": 16,
+        "state": "elevated"
+      },
+      "recentEvent": {
+        "label": "Early autumn freeze - US potato crop (October 2019)",
+        "year": "2019",
+        "recent": false
+      }
+    },
+    "ribeye": {
+      "vol": "swingy",
+      "now": {
+        "pct": 9,
+        "state": "normal"
+      },
+      "recentEvent": {
+        "label": "US cattle herd contraction to a 1951 low (2022-2026)",
+        "year": "2026",
+        "recent": true
+      }
+    },
+    "romaine-lettuce": {
+      "vol": "wild",
+      "now": {
+        "pct": 3,
+        "state": "normal"
+      },
+      "recentEvent": {
+        "label": "2023 Salinas Valley / Pajaro River flooding",
+        "year": "2023",
+        "recent": false
+      }
+    },
+    "rosemary": {
+      "vol": "steady",
+      "now": {
+        "pct": 0,
+        "state": "normal"
+      }
+    },
+    "russet-potato": {
+      "vol": "wild",
+      "now": {
+        "pct": 18,
+        "state": "elevated"
+      },
+      "recentEvent": {
+        "label": "Early autumn freeze - US potato crop (October 2019)",
+        "year": "2019",
+        "recent": false
+      }
+    },
+    "rutabaga": {
+      "vol": "wild",
+      "now": {
+        "pct": 0,
+        "state": "normal"
+      }
+    },
+    "salmon-fillet": {
+      "vol": "steady",
+      "recentEvent": {
+        "label": "Chilean farmed salmon ISA virus outbreak (2007-2010)",
+        "year": "2010",
+        "recent": false
+      }
+    },
+    "salmon-skin-on-fillet": {
+      "vol": "steady",
+      "recentEvent": {
+        "label": "Chilean farmed salmon ISA virus outbreak (2007-2010)",
+        "year": "2010",
+        "recent": false
+      }
+    },
+    "serrano-pepper": {
+      "vol": "wild",
+      "now": {
+        "pct": -19,
+        "state": "depressed"
+      },
+      "recentEvent": {
+        "label": "Northwestern Mexico hard freeze (February 2011)",
+        "year": "2011",
+        "recent": false
+      }
+    },
+    "short-rib": {
+      "vol": "wild",
+      "now": {
+        "pct": 3,
+        "state": "normal"
+      },
+      "recentEvent": {
+        "label": "US cattle herd contraction to a 1951 low (2022-2026)",
+        "year": "2026",
+        "recent": true
+      }
+    },
+    "shrimp": {
+      "vol": "steady",
+      "recentEvent": {
+        "label": "Deepwater Horizon oil spill Gulf of Mexico fishery closures (2010-2011)",
+        "year": "2011",
+        "recent": false
+      }
+    },
+    "shrimp-head-on": {
+      "vol": "steady",
+      "recentEvent": {
+        "label": "Deepwater Horizon oil spill Gulf of Mexico fishery closures (2010-2011)",
+        "year": "2011",
+        "recent": false
+      }
+    },
+    "shrimp-pd": {
+      "vol": "steady",
+      "recentEvent": {
+        "label": "Deepwater Horizon oil spill Gulf of Mexico fishery closures (2010-2011)",
+        "year": "2011",
+        "recent": false
+      }
+    },
+    "snow-peas": {
+      "vol": "wild",
+      "now": {
+        "pct": -4,
+        "state": "normal"
+      }
+    },
+    "spinach": {
+      "vol": "wild",
+      "now": {
+        "pct": -20,
+        "state": "depressed"
+      },
+      "recentEvent": {
+        "label": "2023 Salinas Valley / Pajaro River flooding",
+        "year": "2023",
+        "recent": false
+      }
+    },
+    "striploin": {
+      "vol": "wild",
+      "now": {
+        "pct": 14,
+        "state": "elevated"
+      },
+      "recentEvent": {
+        "label": "US cattle herd contraction to a 1951 low (2022-2026)",
+        "year": "2026",
+        "recent": true
+      }
+    },
+    "sweet-potato": {
+      "vol": "steady",
+      "now": {
+        "pct": 6,
+        "state": "normal"
+      }
+    },
+    "tarragon": {
+      "vol": "steady",
+      "now": {
+        "pct": 0,
+        "state": "normal"
+      }
+    },
+    "thyme": {
+      "vol": "steady",
+      "now": {
+        "pct": -5,
+        "state": "normal"
+      }
+    },
+    "tomato": {
+      "vol": "wild",
+      "now": {
+        "pct": 2,
+        "state": "normal"
+      },
+      "recentEvent": {
+        "label": "Northwestern Mexico hard freeze (February 2011)",
+        "year": "2011",
+        "recent": false
+      }
+    },
+    "vegetable-oil": {
+      "vol": "wild",
+      "now": {
+        "pct": 31,
+        "state": "elevated"
+      },
+      "recentEvent": {
+        "label": "Russia-Ukraine war: Black Sea grain & sunflower-oil disruption (2022)",
+        "year": "2022",
+        "recent": false
+      }
+    },
+    "watermelon": {
+      "vol": "wild",
+      "now": {
+        "pct": 20,
+        "state": "elevated"
+      }
+    },
+    "whole-chicken": {
+      "vol": "swingy",
+      "now": {
+        "pct": -23,
+        "state": "depressed"
+      },
+      "recentEvent": {
+        "label": "2024-2025 winter avian influenza surge",
+        "year": "2025",
+        "recent": true
+      }
+    },
+    "whole-crab": {
+      "vol": "steady",
+      "recentEvent": {
+        "label": "Deepwater Horizon oil spill Gulf of Mexico fishery closures (2010-2011)",
+        "year": "2011",
+        "recent": false
+      }
+    },
+    "whole-salmon": {
+      "vol": "steady",
+      "recentEvent": {
+        "label": "Chilean farmed salmon ISA virus outbreak (2007-2010)",
+        "year": "2010",
+        "recent": false
+      }
+    },
+    "whole-turkey": {
+      "vol": "swingy",
+      "now": {
+        "pct": 7,
+        "state": "normal"
+      },
+      "recentEvent": {
+        "label": "2024-2025 winter avian influenza surge",
+        "year": "2025",
+        "recent": true
+      }
+    },
+    "yellow-squash": {
+      "vol": "wild",
+      "now": {
+        "pct": 19,
+        "state": "elevated"
+      },
+      "recentEvent": {
+        "label": "Northwestern Mexico hard freeze (February 2011)",
+        "year": "2011",
+        "recent": false
+      }
+    },
+    "zucchini": {
+      "vol": "wild",
+      "now": {
+        "pct": -33,
+        "state": "depressed"
+      },
+      "recentEvent": {
+        "label": "Northwestern Mexico hard freeze (February 2011)",
+        "year": "2011",
+        "recent": false
+      }
+    }
+  }
+}

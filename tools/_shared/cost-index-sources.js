@@ -108,14 +108,48 @@
     return { lo: lo, hi: hi };
   }
 
-  // Convert a reported price unit to the composite's base ($ per the ingredient's
-  // unit). Cents→dollars and $/cwt→$/lb both scale by 0.01; an unknown/absent
-  // unit is left as-is. A wrong factor is caught downstream by the bounds gate.
+  // Convert a reported price unit to the composite's base. A price is
+  // currency × denominator: we compose a CURRENCY factor (cents→dollars) with a
+  // WEIGHT factor (any mass unit → per pound). Weight units all resolve to $/lb
+  // so different reports for one ingredient are comparable. PACK/VOLUME units
+  // (carton, case, dozen, bushel, gallon…) are NOT mass — they stay native, and
+  // the ingredient's canonical `unit` must then be that pack unit (eggs = dozen).
+  // unitClass() lets a caller assert a "$/lb" ingredient is really fed by a
+  // weight source. Unknown → left as-is (factor 1); any gross miss is still
+  // caught downstream by the bounds gate. Units of measure are the sharpest edge
+  // in this pipeline — keep every factor here, explicit and tested.
+  var WEIGHT_TO_LB = {
+    lb: 1, lbs: 1, pound: 1, pounds: 1,
+    cwt: 0.01, hundredweight: 0.01,          // 100 lb
+    oz: 16, ounce: 16, ounces: 16,           // 1 lb = 16 oz
+    kg: 1 / 2.20462262, kilogram: 1 / 2.20462262, kilo: 1 / 2.20462262,
+    g: 453.59237, gram: 453.59237, grams: 453.59237,
+    ton: 0.0005, tonne: 1 / 2204.62262       // short ton = 2000 lb; metric tonne
+  };
+  var PACK_UNITS = ['carton', 'case', 'crate', 'box', 'lug', 'flat', 'bin', 'bag', 'sack',
+    'bunch', 'dozen', 'dz', 'head', 'each', 'count', 'piece', 'pieces',
+    'bushel', 'peck', 'pint', 'quart', 'gallon', 'liter', 'litre'];
+  function unitWordIn(s, words) {
+    // longest term first so 'hundredweight' isn't shadowed by a shorter key, and
+    // whole-word boundaries so 'g' never matches inside 'kilogram' / 'lb' inside a word.
+    var ks = words.slice().sort(function (a, b) { return b.length - a.length; });
+    for (var i = 0; i < ks.length; i++) {
+      if (new RegExp('(^|[^a-z])' + ks[i] + '([^a-z]|$)').test(s)) return ks[i];
+    }
+    return null;
+  }
   function priceUnitFactor(pu) {
     var s = String(pu || '').toLowerCase();
-    if (s.indexOf('cent') !== -1) return 0.01;                                       // cents per X → dollars per X
-    if (s.indexOf('cwt') !== -1 || s.indexOf('hundredweight') !== -1) return 0.01;   // $/cwt → $/lb (100 lb)
-    return 1;
+    var cur = s.indexOf('cent') !== -1 ? 0.01 : 1;   // cents per X → dollars per X
+    var w = unitWordIn(s, Object.keys(WEIGHT_TO_LB));
+    return w ? cur * WEIGHT_TO_LB[w] : cur;          // weight → per lb; pack/volume/unknown → native
+  }
+  // 'weight' | 'pack' | 'unknown' — is a $/lb interpretation valid for this unit?
+  function unitClass(pu) {
+    var s = String(pu || '').toLowerCase();
+    if (unitWordIn(s, Object.keys(WEIGHT_TO_LB))) return 'weight';
+    if (unitWordIn(s, PACK_UNITS)) return 'pack';
+    return 'unknown';
   }
 
   function normalizeAms(json, meta) {
@@ -245,6 +279,40 @@
     return { source: meta.source || 'noaa', basis: meta.basis || 'wholesale', unit: meta.unit || 'lb', points: points };
   }
 
+  // US Census International Trade import unit value → $/lb, month by month.
+  // Generalizes normalizeNoaaTrade (which is Census fisheries data) to ANY
+  // imported HS code, so import-only goods (olive oil, vanilla, cocoa beans)
+  // get a landed dollar figure. Public-domain US-gov data (redistributable —
+  // unlike the IMF/World Bank global-price feeds we deliberately avoid).
+  // Input rows: { hs, val (import $), qty (quantity), unit (UNIT_QY1), time (YYYY-MM) }.
+  // A customs/landed value runs BELOW delivered wholesale, so callers default
+  // basis:index (directional) unless they've confirmed it tracks a real level.
+  function normalizeCensusTrade(json, meta) {
+    meta = meta || {};
+    var items = (json && (json.items || json.results || json.data)) || [];
+    var htsPrefixes = Array.isArray(meta.hts) ? meta.hts.map(String) : (meta.hts ? [String(meta.hts)] : null);
+    // pounds per one quantity unit; non-mass units (count "NO"/"X", volume "L")
+    // can't become an honest $/lb, so they're skipped, not guessed.
+    var TO_LB = { KG: 2.20462, KILOGRAMS: 2.20462, KILOGRAM: 2.20462, T: 2204.62, MT: 2204.62, TON: 2204.62, TONNE: 2204.62, G: 0.00220462, GRAMS: 0.00220462, LB: 1, LBS: 1, POUNDS: 1, POUND: 1 };
+    var acc = {};
+    items.forEach(function (r) {
+      if (!r || r.time == null) return;
+      var hs = String(r.hs || '');
+      if (htsPrefixes && !htsPrefixes.some(function (p) { return hs.indexOf(p) === 0; })) return;
+      var val = num(r.val), qty = num(r.qty);
+      if (val == null || qty == null || qty <= 0) return;
+      var lbPer = TO_LB[String(r.unit || '').toUpperCase().trim()];
+      if (!lbPer) return;   // count / volume quantity → no honest $/lb
+      var key = String(r.time).slice(0, 7);   // YYYY-MM
+      var a = acc[key] || (acc[key] = { val: 0, lbs: 0 });
+      a.val += val; a.lbs += qty * lbPer;
+    });
+    var points = Object.keys(acc).filter(function (k) { return acc[k].lbs > 0; }).map(function (key) {
+      return { date: key + '-01', value: acc[key].val / acc[key].lbs };   // $/lb landed
+    }).sort(byDate);
+    return { source: meta.source || 'census', basis: meta.basis || 'index', unit: meta.unit || 'lb', points: points };
+  }
+
   function latestDate(outputs) {
     var d = null;
     (outputs || []).forEach(function (o) {
@@ -300,12 +368,15 @@
 
   var api = {
     isoDate: isoDate,
+    priceUnitFactor: priceUnitFactor,
+    unitClass: unitClass,
     normalizeFred: normalizeFred,
     normalizeBls: normalizeBls,
     reduceAmsRow: reduceAmsRow,
     normalizeAms: normalizeAms,
     normalizeEia: normalizeEia,
     normalizeNoaaTrade: normalizeNoaaTrade,
+    normalizeCensusTrade: normalizeCensusTrade,
     buildCompositeInput: buildCompositeInput
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

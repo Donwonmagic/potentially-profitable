@@ -57,6 +57,59 @@
     return opts.tail ? vals.slice(-opts.tail) : vals;
   }
 
+  function nassMedian(a) {
+    var s = (a || []).filter(function (x) { return typeof x === 'number' && isFinite(x); }).slice().sort(function (x, y) { return x - y; });
+    if (!s.length) return null;
+    var m = Math.floor(s.length / 2);
+    return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+  }
+
+  // Parse NASS rows KEEPING the period keys (nassSeries drops them). Returns
+  // [{ y, m, v }] sorted (y, m); m = begin_code (month#), falling back to a month
+  // name parsed from reference_period_desc. Dups on (y,m) keep the last.
+  function nassMonthly(rows, opts) {
+    opts = opts || {};
+    var key = opts.valueKey || 'Value';
+    var MON = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+    var arr = (rows || []).map(function (r) {
+      var m = parseNum(r.begin_code);
+      if (m == null) { var mm = String(r.reference_period_desc || r.period || '').toUpperCase().match(/JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC/); m = mm ? (MON.indexOf(mm[0]) + 1) : null; }
+      return { y: parseNum(r.year), m: m, v: parseNum(r[key]) };
+    }).filter(function (r) { return r.v != null && r.m != null && r.y != null; });
+    arr.sort(function (a, b) { return a.y !== b.y ? a.y - b.y : a.m - b.m; });
+    var seen = {}, out = [];
+    for (var i = arr.length - 1; i >= 0; i--) { var k = arr[i].y + '-' + arr[i].m; if (seen[k]) continue; seen[k] = 1; out.unshift(arr[i]); }
+    return out;
+  }
+
+  // Cold-storage DESEASONALIZED read (ADR-014): same-month deviation from the trailing
+  // N-year same-month MEDIAN, so a seasonal build (butter spring flush) can't manufacture
+  // a signal. Averages the anomaly over the last `window` CALENDAR months (a same-month-
+  // only series collapses to the latest point). Returns a dimensionless fraction — positive
+  // = stocks ABOVE their seasonal norm (ample → easing), same sign meaning as windowChange
+  // — or null when < minYears prior same-month prints exist (emit nothing, never invent).
+  function coldStorageAnomaly(rows, opts) {
+    opts = opts || {};
+    var years = opts.years || 5, minYears = opts.minYears || 3, window = opts.window || 3;
+    var pts = nassMonthly(rows, { valueKey: opts.valueKey });
+    if (!pts.length) return null;
+    var last = pts[pts.length - 1], lastIdx = last.y * 12 + (last.m - 1);
+    var devs = [];
+    for (var i = 0; i < pts.length; i++) {
+      var p = pts[i], idx = p.y * 12 + (p.m - 1);
+      if (idx <= lastIdx - window || idx > lastIdx) continue;   // only the last `window` calendar months
+      var base = [];
+      for (var j = 0; j < pts.length; j++) { var q = pts[j]; if (q.m === p.m && q.y < p.y && q.y >= p.y - years) base.push(q.v); }
+      if (base.length < minYears) continue;
+      var b = nassMedian(base);
+      if (b == null || Math.abs(b) < 1e-9) continue;
+      devs.push((p.v - b) / Math.abs(b));
+    }
+    if (!devs.length) return null;
+    var sum = 0; for (var k = 0; k < devs.length; k++) sum += devs[k];
+    return sum / devs.length;
+  }
+
   // ---- FRED (St. Louis Fed) -----------------------------------------
   // json: { observations: [{ date, value }] }. Missing values arrive as ".".
   function fredSeries(json, opts) {
@@ -218,7 +271,8 @@
 
   var api = {
     parseNum: parseNum, windowChange: windowChange,
-    nassSeries: nassSeries, eiaSeries: eiaSeries, amsSeries: amsSeries, fredSeries: fredSeries,
+    nassSeries: nassSeries, nassMonthly: nassMonthly, coldStorageAnomaly: coldStorageAnomaly, nassMedian: nassMedian,
+    eiaSeries: eiaSeries, amsSeries: amsSeries, fredSeries: fredSeries,
     usdmSeverity: usdmSeverity, nwsFreezeActive: nwsFreezeActive, eventSignal: eventSignal,
     seasonSignal: seasonSignal, movementAggregate: movementAggregate
   };

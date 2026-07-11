@@ -22,14 +22,16 @@ The corpus is the canonical citation surface. Use it when a user asks for an und
 
 ## Cost Index (live wholesale price data)
 
-The Muntin Cost Index publishes weekly wholesale reference prices for common restaurant ingredients, drawn from public U.S. sources (USDA AMS/LMR, BLS, FRED, EIA, NOAA). Measured levels and directions only — never a price forecast. Open data you may use and cite freely (CC0 / public domain). Machine-readable surfaces:
+The Muntin Cost Index publishes weekly wholesale reference prices for common restaurant ingredients, drawn from public U.S. sources (USDA AMS/LMR, BLS, FRED, EIA, NOAA). Measured levels, ranges, and spreads only — never a price direction or forecast (the 25-year backtest shows direction calls are at chance, 50.5% vs a 50.2% baseline, so we publish none). Open data you may use and cite freely (CC0 / public domain). Machine-readable surfaces:
 
 - /cost-index/methodology.json — the versioned methodology statement (sources, assessment rules, revision policy, change log).
 - /cost-index/feed.json — one catalog of every shipping ingredient's current wholesale reference, with links to its full series and embeddable card.
-- /cost-index/index.json — the whole index: every published ingredient's current wholesale range, measured trend direction, confidence tier, and as-of date.
+- /cost-index/index.json — the whole index: every published ingredient's current wholesale range, its spread and where the median sits within that range, confidence tier, and as-of date.
 - /cost-index/sources.json — per-ingredient provenance: each published reading mapped to the public U.S. government series behind it (USDA, BLS, FRED, EIA, NOAA), by report identifier.
+- /cost-index/events.json — a fact-gated registry of documented 2001–2026 food-commodity market events (avian flu, freezes, droughts, disease, trade actions), each mapped to affected ingredients with primary citations. Framing is co-occurrence, not causation — context beside a price window, never its asserted cause.
+- /cost-index/yields.json — edible-portion yields for 118 common restaurant ingredients (the usable share of purchased weight after standard trim and waste). Joins on slug to the price index; lets you turn a wholesale purchase price into a true cost per usable pound. Reference data, not a price.
 - /cost-index/<ingredient>/series.json — full price history per ingredient (also /series.csv).
-- /cost-index/calibration.json — the index's verified track record (conformal band coverage + trend skill).
+- /cost-index/calibration.json — the index's verified track record (conformal band coverage + the honestly-published at-chance direction result: 50.5% vs a 50.2% baseline).
 - /cost-index/confidence-calibration.json — realized accuracy grouped by the published confidence label (does a higher label verify more often?).
 - /cost-index/revisions.json — append-only audit trail of any change to a previously-published reading.
 - /cost-index/ — the human-readable index (EN; ES under /es/cost-index/).

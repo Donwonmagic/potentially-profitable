@@ -1,0 +1,1069 @@
+{
+  "_doc": "Edible-portion yield reference for common restaurant ingredients: the usable share of purchased weight after standard trim and waste. Compiled from standard industry reference yield tables. Facts (yield percentages) are public reference data; the compilation is CC-BY. Join on slug to the Cost Index. Not a price.",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "count": 118,
+  "ingredients": [
+    {
+      "slug": "romaine-lettuce",
+      "name_en": "Romaine lettuce",
+      "name_es": "Lechuga romana",
+      "edible_yield": 0.75,
+      "unit_en": "head",
+      "unit_es": "pieza",
+      "category": "greens"
+    },
+    {
+      "slug": "spinach",
+      "name_en": "Spinach",
+      "name_es": "Espinaca",
+      "edible_yield": 0.75,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "greens"
+    },
+    {
+      "slug": "broccoli",
+      "name_en": "Broccoli",
+      "name_es": "Brócoli",
+      "edible_yield": 0.65,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "cruciferous"
+    },
+    {
+      "slug": "asparagus",
+      "name_en": "Asparagus",
+      "name_es": "Espárragos",
+      "edible_yield": 0.55,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "stalks"
+    },
+    {
+      "slug": "onion",
+      "name_en": "Onion",
+      "name_es": "Cebolla",
+      "edible_yield": 0.88,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "allium"
+    },
+    {
+      "slug": "garlic",
+      "name_en": "Garlic",
+      "name_es": "Ajo",
+      "edible_yield": 0.87,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "allium"
+    },
+    {
+      "slug": "carrot",
+      "name_en": "Carrot",
+      "name_es": "Zanahoria",
+      "edible_yield": 0.82,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "root"
+    },
+    {
+      "slug": "russet-potato",
+      "name_en": "Russet potato",
+      "name_es": "Papa russet",
+      "edible_yield": 0.81,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "tuber"
+    },
+    {
+      "slug": "tomato",
+      "name_en": "Tomato",
+      "name_es": "Jitomate",
+      "edible_yield": 0.91,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "fruiting"
+    },
+    {
+      "slug": "avocado",
+      "name_en": "Avocado",
+      "name_es": "Aguacate",
+      "edible_yield": 0.75,
+      "unit_en": "each",
+      "unit_es": "pieza",
+      "category": "fruit"
+    },
+    {
+      "slug": "lime",
+      "name_en": "Lime",
+      "name_es": "Limón",
+      "edible_yield": 0.35,
+      "unit_en": "each",
+      "unit_es": "pieza",
+      "category": "citrus"
+    },
+    {
+      "slug": "whole-chicken",
+      "name_en": "Whole chicken",
+      "name_es": "Pollo entero",
+      "edible_yield": 0.6,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "meat"
+    },
+    {
+      "slug": "chicken-breast",
+      "name_en": "Chicken breast",
+      "name_es": "Pechuga de pollo",
+      "edible_yield": 0.95,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "meat"
+    },
+    {
+      "slug": "chicken-thigh",
+      "name_en": "Chicken thigh",
+      "name_es": "Muslo de pollo",
+      "edible_yield": 0.9,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "meat"
+    },
+    {
+      "slug": "pork-shoulder",
+      "name_en": "Pork shoulder",
+      "name_es": "Espaldilla de cerdo",
+      "edible_yield": 0.75,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "meat"
+    },
+    {
+      "slug": "pork-loin",
+      "name_en": "Pork loin",
+      "name_es": "Lomo de cerdo",
+      "edible_yield": 0.85,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "meat"
+    },
+    {
+      "slug": "ribeye",
+      "name_en": "Ribeye",
+      "name_es": "Ribeye (bife ancho)",
+      "edible_yield": 0.75,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "beef"
+    },
+    {
+      "slug": "striploin",
+      "name_en": "Striploin",
+      "name_es": "New York (bife angosto)",
+      "edible_yield": 0.8,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "beef"
+    },
+    {
+      "slug": "beef-tenderloin",
+      "name_en": "Beef tenderloin",
+      "name_es": "Filete de res",
+      "edible_yield": 0.85,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "beef"
+    },
+    {
+      "slug": "leg-of-lamb",
+      "name_en": "Leg of lamb",
+      "name_es": "Pierna de cordero",
+      "edible_yield": 0.7,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "beef"
+    },
+    {
+      "slug": "whole-salmon",
+      "name_en": "Whole salmon",
+      "name_es": "Salmón entero",
+      "edible_yield": 0.55,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "seafood"
+    },
+    {
+      "slug": "salmon-fillet",
+      "name_en": "Salmon fillet",
+      "name_es": "Filete de salmón",
+      "edible_yield": 0.95,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "seafood"
+    },
+    {
+      "slug": "tuna-loin",
+      "name_en": "Tuna loin",
+      "name_es": "Lomo de atún",
+      "edible_yield": 0.85,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "seafood"
+    },
+    {
+      "slug": "whole-branzino",
+      "name_en": "Whole branzino",
+      "name_es": "Branzino entero",
+      "edible_yield": 0.55,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "seafood"
+    },
+    {
+      "slug": "shrimp",
+      "name_en": "Shrimp (shell-on)",
+      "name_es": "Camarón con cáscara",
+      "edible_yield": 0.85,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "shellfish"
+    },
+    {
+      "slug": "whole-lobster",
+      "name_en": "Whole lobster",
+      "name_es": "Langosta entera",
+      "edible_yield": 0.3,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "shellfish"
+    },
+    {
+      "slug": "kale",
+      "name_en": "Kale",
+      "name_es": "Col rizada (kale)",
+      "edible_yield": 0.7,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "greens"
+    },
+    {
+      "slug": "cauliflower",
+      "name_en": "Cauliflower",
+      "name_es": "Coliflor",
+      "edible_yield": 0.6,
+      "unit_en": "head",
+      "unit_es": "pieza",
+      "category": "cruciferous"
+    },
+    {
+      "slug": "bell-pepper",
+      "name_en": "Bell pepper",
+      "name_es": "Pimiento morrón",
+      "edible_yield": 0.82,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "fruiting"
+    },
+    {
+      "slug": "sweet-potato",
+      "name_en": "Sweet potato",
+      "name_es": "Camote",
+      "edible_yield": 0.75,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "tuber"
+    },
+    {
+      "slug": "corn-on-the-cob",
+      "name_en": "Corn on the cob",
+      "name_es": "Elote (mazorca)",
+      "edible_yield": 0.28,
+      "unit_en": "ear",
+      "unit_es": "pieza",
+      "category": "fruiting"
+    },
+    {
+      "slug": "button-mushroom",
+      "name_en": "Button mushroom",
+      "name_es": "Champiñón",
+      "edible_yield": 0.9,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "mushroom"
+    },
+    {
+      "slug": "basil",
+      "name_en": "Basil",
+      "name_es": "Albahaca",
+      "edible_yield": 0.5,
+      "unit_en": "bunch",
+      "unit_es": "manojo",
+      "category": "herbs"
+    },
+    {
+      "slug": "cilantro",
+      "name_en": "Cilantro",
+      "name_es": "Cilantro",
+      "edible_yield": 0.7,
+      "unit_en": "bunch",
+      "unit_es": "manojo",
+      "category": "herbs"
+    },
+    {
+      "slug": "lemon",
+      "name_en": "Lemon",
+      "name_es": "Limón amarillo",
+      "edible_yield": 0.45,
+      "unit_en": "each",
+      "unit_es": "pieza",
+      "category": "citrus"
+    },
+    {
+      "slug": "pineapple",
+      "name_en": "Pineapple",
+      "name_es": "Piña",
+      "edible_yield": 0.5,
+      "unit_en": "each",
+      "unit_es": "pieza",
+      "category": "fruit"
+    },
+    {
+      "slug": "cucumber",
+      "name_en": "Cucumber",
+      "name_es": "Pepino",
+      "edible_yield": 0.95,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "fruiting"
+    },
+    {
+      "slug": "celery",
+      "name_en": "Celery",
+      "name_es": "Apio",
+      "edible_yield": 0.75,
+      "unit_en": "head",
+      "unit_es": "pieza",
+      "category": "stalks"
+    },
+    {
+      "slug": "cabbage",
+      "name_en": "Cabbage",
+      "name_es": "Repollo",
+      "edible_yield": 0.8,
+      "unit_en": "head",
+      "unit_es": "pieza",
+      "category": "cruciferous"
+    },
+    {
+      "slug": "eggplant",
+      "name_en": "Eggplant",
+      "name_es": "Berenjena",
+      "edible_yield": 0.81,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "fruiting"
+    },
+    {
+      "slug": "zucchini",
+      "name_en": "Zucchini",
+      "name_es": "Calabacín",
+      "edible_yield": 0.95,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "fruiting"
+    },
+    {
+      "slug": "beet",
+      "name_en": "Beet",
+      "name_es": "Remolacha",
+      "edible_yield": 0.75,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "root"
+    },
+    {
+      "slug": "leek",
+      "name_en": "Leek",
+      "name_es": "Puerro",
+      "edible_yield": 0.5,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "allium"
+    },
+    {
+      "slug": "ginger",
+      "name_en": "Ginger root",
+      "name_es": "Jengibre",
+      "edible_yield": 0.85,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "root"
+    },
+    {
+      "slug": "yellow-squash",
+      "name_en": "Yellow squash",
+      "name_es": "Calabaza amarilla",
+      "edible_yield": 0.95,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "fruiting"
+    },
+    {
+      "slug": "jalapeno",
+      "name_en": "Jalapeño",
+      "name_es": "Chile jalapeño",
+      "edible_yield": 0.85,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "fruiting"
+    },
+    {
+      "slug": "green-onion",
+      "name_en": "Green onion",
+      "name_es": "Cebollín",
+      "edible_yield": 0.65,
+      "unit_en": "bunch",
+      "unit_es": "manojo",
+      "category": "allium"
+    },
+    {
+      "slug": "green-beans",
+      "name_en": "Green beans",
+      "name_es": "Ejotes",
+      "edible_yield": 0.88,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "fruiting"
+    },
+    {
+      "slug": "parsley",
+      "name_en": "Parsley",
+      "name_es": "Perejil",
+      "edible_yield": 0.7,
+      "unit_en": "bunch",
+      "unit_es": "manojo",
+      "category": "herbs"
+    },
+    {
+      "slug": "brussels-sprouts",
+      "name_en": "Brussels sprouts",
+      "name_es": "Coles de Bruselas",
+      "edible_yield": 0.8,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "cruciferous"
+    },
+    {
+      "slug": "butternut-squash",
+      "name_en": "Butternut squash",
+      "name_es": "Calabaza moscada",
+      "edible_yield": 0.7,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "fruiting"
+    },
+    {
+      "slug": "iceberg-lettuce",
+      "name_en": "Iceberg lettuce",
+      "name_es": "Lechuga iceberg",
+      "edible_yield": 0.74,
+      "unit_en": "head",
+      "unit_es": "pieza",
+      "category": "greens"
+    },
+    {
+      "slug": "bok-choy",
+      "name_en": "Bok choy",
+      "name_es": "Bok choy",
+      "edible_yield": 0.8,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "greens"
+    },
+    {
+      "slug": "artichoke",
+      "name_en": "Artichoke",
+      "name_es": "Alcachofa",
+      "edible_yield": 0.4,
+      "unit_en": "each",
+      "unit_es": "pieza",
+      "category": "stalks"
+    },
+    {
+      "slug": "okra",
+      "name_en": "Okra",
+      "name_es": "Quimbombó",
+      "edible_yield": 0.85,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "fruiting"
+    },
+    {
+      "slug": "arugula",
+      "name_en": "Arugula",
+      "name_es": "Arúgula",
+      "edible_yield": 0.85,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "greens"
+    },
+    {
+      "slug": "swiss-chard",
+      "name_en": "Swiss chard",
+      "name_es": "Acelga",
+      "edible_yield": 0.75,
+      "unit_en": "bunch",
+      "unit_es": "manojo",
+      "category": "greens"
+    },
+    {
+      "slug": "fennel",
+      "name_en": "Fennel",
+      "name_es": "Hinojo",
+      "edible_yield": 0.65,
+      "unit_en": "each",
+      "unit_es": "pieza",
+      "category": "stalks"
+    },
+    {
+      "slug": "shallot",
+      "name_en": "Shallot",
+      "name_es": "Chalota",
+      "edible_yield": 0.85,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "allium"
+    },
+    {
+      "slug": "parsnip",
+      "name_en": "Parsnip",
+      "name_es": "Chirivía",
+      "edible_yield": 0.85,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "root"
+    },
+    {
+      "slug": "radish",
+      "name_en": "Radish",
+      "name_es": "Rábano",
+      "edible_yield": 0.85,
+      "unit_en": "bunch",
+      "unit_es": "manojo",
+      "category": "root"
+    },
+    {
+      "slug": "turnip",
+      "name_en": "Turnip",
+      "name_es": "Nabo",
+      "edible_yield": 0.78,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "root"
+    },
+    {
+      "slug": "yukon-potato",
+      "name_en": "Yukon Gold potato",
+      "name_es": "Papa Yukon Gold",
+      "edible_yield": 0.85,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "tuber"
+    },
+    {
+      "slug": "cremini-mushroom",
+      "name_en": "Cremini mushroom",
+      "name_es": "Champiñón cremini",
+      "edible_yield": 0.9,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "mushroom"
+    },
+    {
+      "slug": "portobello-mushroom",
+      "name_en": "Portobello mushroom",
+      "name_es": "Champiñón portobello",
+      "edible_yield": 0.85,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "mushroom"
+    },
+    {
+      "slug": "shiitake-mushroom",
+      "name_en": "Shiitake mushroom",
+      "name_es": "Hongo shiitake",
+      "edible_yield": 0.85,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "mushroom"
+    },
+    {
+      "slug": "mango",
+      "name_en": "Mango",
+      "name_es": "Mango",
+      "edible_yield": 0.65,
+      "unit_en": "each",
+      "unit_es": "pieza",
+      "category": "fruit"
+    },
+    {
+      "slug": "strawberry",
+      "name_en": "Strawberry",
+      "name_es": "Fresa",
+      "edible_yield": 0.89,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "fruit"
+    },
+    {
+      "slug": "orange",
+      "name_en": "Orange",
+      "name_es": "Naranja",
+      "edible_yield": 0.55,
+      "unit_en": "each",
+      "unit_es": "pieza",
+      "category": "citrus"
+    },
+    {
+      "slug": "mussels",
+      "name_en": "Mussels",
+      "name_es": "Mejillones",
+      "edible_yield": 0.35,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "shellfish"
+    },
+    {
+      "slug": "snow-peas",
+      "name_en": "Snow peas",
+      "name_es": "Arvejas de nieve",
+      "edible_yield": 0.9,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "fruiting"
+    },
+    {
+      "slug": "butter-lettuce",
+      "name_en": "Butter lettuce",
+      "name_es": "Lechuga mantequilla",
+      "edible_yield": 0.65,
+      "unit_en": "head",
+      "unit_es": "pieza",
+      "category": "greens"
+    },
+    {
+      "slug": "green-leaf-lettuce",
+      "name_en": "Green leaf lettuce",
+      "name_es": "Lechuga verde",
+      "edible_yield": 0.7,
+      "unit_en": "head",
+      "unit_es": "pieza",
+      "category": "greens"
+    },
+    {
+      "slug": "red-leaf-lettuce",
+      "name_en": "Red leaf lettuce",
+      "name_es": "Lechuga roja",
+      "edible_yield": 0.7,
+      "unit_en": "head",
+      "unit_es": "pieza",
+      "category": "greens"
+    },
+    {
+      "slug": "collard-greens",
+      "name_en": "Collard greens",
+      "name_es": "Berza",
+      "edible_yield": 0.65,
+      "unit_en": "bunch",
+      "unit_es": "manojo",
+      "category": "greens"
+    },
+    {
+      "slug": "napa-cabbage",
+      "name_en": "Napa cabbage",
+      "name_es": "Col china",
+      "edible_yield": 0.8,
+      "unit_en": "head",
+      "unit_es": "pieza",
+      "category": "greens"
+    },
+    {
+      "slug": "red-onion",
+      "name_en": "Red onion",
+      "name_es": "Cebolla morada",
+      "edible_yield": 0.88,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "allium"
+    },
+    {
+      "slug": "rutabaga",
+      "name_en": "Rutabaga",
+      "name_es": "Nabo sueco",
+      "edible_yield": 0.78,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "root"
+    },
+    {
+      "slug": "daikon",
+      "name_en": "Daikon radish",
+      "name_es": "Rábano daikon",
+      "edible_yield": 0.85,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "root"
+    },
+    {
+      "slug": "red-potato",
+      "name_en": "Red potato",
+      "name_es": "Papa roja",
+      "edible_yield": 0.85,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "tuber"
+    },
+    {
+      "slug": "cherry-tomato",
+      "name_en": "Cherry tomato",
+      "name_es": "Tomate cherry",
+      "edible_yield": 1,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "fruiting"
+    },
+    {
+      "slug": "acorn-squash",
+      "name_en": "Acorn squash",
+      "name_es": "Calabaza bellota",
+      "edible_yield": 0.7,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "fruiting"
+    },
+    {
+      "slug": "pumpkin",
+      "name_en": "Pumpkin",
+      "name_es": "Calabaza",
+      "edible_yield": 0.55,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "fruiting"
+    },
+    {
+      "slug": "serrano-pepper",
+      "name_en": "Serrano pepper",
+      "name_es": "Chile serrano",
+      "edible_yield": 0.85,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "fruiting"
+    },
+    {
+      "slug": "poblano-pepper",
+      "name_en": "Poblano pepper",
+      "name_es": "Chile poblano",
+      "edible_yield": 0.8,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "fruiting"
+    },
+    {
+      "slug": "habanero-pepper",
+      "name_en": "Habanero pepper",
+      "name_es": "Chile habanero",
+      "edible_yield": 0.85,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "fruiting"
+    },
+    {
+      "slug": "oyster-mushroom",
+      "name_en": "Oyster mushroom",
+      "name_es": "Hongo ostra",
+      "edible_yield": 0.9,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "mushroom"
+    },
+    {
+      "slug": "mint",
+      "name_en": "Mint",
+      "name_es": "Menta",
+      "edible_yield": 0.7,
+      "unit_en": "bunch",
+      "unit_es": "manojo",
+      "category": "herbs"
+    },
+    {
+      "slug": "rosemary",
+      "name_en": "Rosemary",
+      "name_es": "Romero",
+      "edible_yield": 0.5,
+      "unit_en": "bunch",
+      "unit_es": "manojo",
+      "category": "herbs"
+    },
+    {
+      "slug": "thyme",
+      "name_en": "Thyme",
+      "name_es": "Tomillo",
+      "edible_yield": 0.5,
+      "unit_en": "bunch",
+      "unit_es": "manojo",
+      "category": "herbs"
+    },
+    {
+      "slug": "oregano",
+      "name_en": "Oregano",
+      "name_es": "Orégano",
+      "edible_yield": 0.55,
+      "unit_en": "bunch",
+      "unit_es": "manojo",
+      "category": "herbs"
+    },
+    {
+      "slug": "tarragon",
+      "name_en": "Tarragon",
+      "name_es": "Estragón",
+      "edible_yield": 0.55,
+      "unit_en": "bunch",
+      "unit_es": "manojo",
+      "category": "herbs"
+    },
+    {
+      "slug": "dill",
+      "name_en": "Dill",
+      "name_es": "Eneldo",
+      "edible_yield": 0.65,
+      "unit_en": "bunch",
+      "unit_es": "manojo",
+      "category": "herbs"
+    },
+    {
+      "slug": "grapefruit",
+      "name_en": "Grapefruit",
+      "name_es": "Toronja",
+      "edible_yield": 0.5,
+      "unit_en": "each",
+      "unit_es": "pieza",
+      "category": "citrus"
+    },
+    {
+      "slug": "apple",
+      "name_en": "Apple",
+      "name_es": "Manzana",
+      "edible_yield": 0.78,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "fruit"
+    },
+    {
+      "slug": "pear",
+      "name_en": "Pear",
+      "name_es": "Pera",
+      "edible_yield": 0.78,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "fruit"
+    },
+    {
+      "slug": "banana",
+      "name_en": "Banana",
+      "name_es": "Plátano",
+      "edible_yield": 0.65,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "fruit"
+    },
+    {
+      "slug": "watermelon",
+      "name_en": "Watermelon",
+      "name_es": "Sandía",
+      "edible_yield": 0.5,
+      "unit_en": "each",
+      "unit_es": "pieza",
+      "category": "fruit"
+    },
+    {
+      "slug": "cantaloupe",
+      "name_en": "Cantaloupe",
+      "name_es": "Melón",
+      "edible_yield": 0.5,
+      "unit_en": "each",
+      "unit_es": "pieza",
+      "category": "fruit"
+    },
+    {
+      "slug": "blueberry",
+      "name_en": "Blueberry",
+      "name_es": "Arándano",
+      "edible_yield": 1,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "fruit"
+    },
+    {
+      "slug": "raspberry",
+      "name_en": "Raspberry",
+      "name_es": "Frambuesa",
+      "edible_yield": 1,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "fruit"
+    },
+    {
+      "slug": "short-rib",
+      "name_en": "Short rib",
+      "name_es": "Costilla corta",
+      "edible_yield": 0.65,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "beef"
+    },
+    {
+      "slug": "ground-beef",
+      "name_en": "Ground beef",
+      "name_es": "Carne molida",
+      "edible_yield": 1,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "beef"
+    },
+    {
+      "slug": "lamb-shoulder",
+      "name_en": "Lamb shoulder",
+      "name_es": "Paleta de cordero",
+      "edible_yield": 0.65,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "beef"
+    },
+    {
+      "slug": "pork-belly",
+      "name_en": "Pork belly",
+      "name_es": "Panceta de cerdo",
+      "edible_yield": 0.9,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "meat"
+    },
+    {
+      "slug": "ground-pork",
+      "name_en": "Ground pork",
+      "name_es": "Cerdo molido",
+      "edible_yield": 1,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "meat"
+    },
+    {
+      "slug": "whole-turkey",
+      "name_en": "Whole turkey",
+      "name_es": "Pavo entero",
+      "edible_yield": 0.5,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "meat"
+    },
+    {
+      "slug": "ground-turkey",
+      "name_en": "Ground turkey",
+      "name_es": "Pavo molido",
+      "edible_yield": 1,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "meat"
+    },
+    {
+      "slug": "whole-halibut",
+      "name_en": "Whole halibut",
+      "name_es": "Fletán entero",
+      "edible_yield": 0.5,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "seafood"
+    },
+    {
+      "slug": "whole-trout",
+      "name_en": "Whole trout",
+      "name_es": "Trucha entera",
+      "edible_yield": 0.55,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "seafood"
+    },
+    {
+      "slug": "scallops",
+      "name_en": "Scallops",
+      "name_es": "Vieiras",
+      "edible_yield": 1,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "shellfish"
+    },
+    {
+      "slug": "whole-crab",
+      "name_en": "Whole crab",
+      "name_es": "Cangrejo entero",
+      "edible_yield": 0.25,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "shellfish"
+    },
+    {
+      "slug": "octopus",
+      "name_en": "Octopus",
+      "name_es": "Pulpo",
+      "edible_yield": 0.45,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "shellfish"
+    },
+    {
+      "slug": "clams",
+      "name_en": "Clams",
+      "name_es": "Almejas",
+      "edible_yield": 0.3,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "shellfish"
+    },
+    {
+      "slug": "salmon-skin-on-fillet",
+      "name_en": "Salmon (skin-on fillet)",
+      "name_es": "Filete de salmón con piel",
+      "edible_yield": 0.8,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "seafood"
+    },
+    {
+      "slug": "squid",
+      "name_en": "Squid",
+      "name_es": "Calamar",
+      "edible_yield": 0.8,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "shellfish"
+    },
+    {
+      "slug": "shrimp-head-on",
+      "name_en": "Shrimp (head-on)",
+      "name_es": "Camarón con cabeza",
+      "edible_yield": 0.5,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "shellfish"
+    },
+    {
+      "slug": "shrimp-pd",
+      "name_en": "Shrimp (P&D)",
+      "name_es": "Camarón pelado y desvenado",
+      "edible_yield": 1,
+      "unit_en": "lb",
+      "unit_es": "libra",
+      "category": "shellfish"
+    }
+  ]
+}

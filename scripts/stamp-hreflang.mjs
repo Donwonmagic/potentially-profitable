@@ -67,7 +67,11 @@ const SKIP_PATH_PREFIXES = [
   // Cost-index pages — build-cost-index-pages.mjs emits its own hreflang
   // + og:locale block, same pattern as the generators above.
   'cost-index/',
-  'es/cost-index/'
+  'es/cost-index/',
+  // Open-data hub — emitted by build-cost-index-pages.mjs (emitOpenHub /
+  // emitSeasonalityHub) with the same inline hreflang, so skip it here too.
+  'open/',
+  'es/open/'
 ];
 
 function collectHtml(dir, out = []) {

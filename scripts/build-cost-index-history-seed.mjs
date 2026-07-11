@@ -71,3 +71,26 @@ const body = `(function (root) {
 if (!DRY) fs.writeFileSync(OUT, banner + body);
 const bytes = Buffer.byteLength(banner + body);
 console.log(`build-cost-index-history-seed: ${kept} ingredient(s), ${points} points, ${(bytes / 1024).toFixed(1)} KB → data/cost-index-history.js${DRY ? ' (dry-run)' : ''}.`);
+
+// Per-item SHARDS — one tiny same-origin <script> per ingredient (data/ci-history/<key>.js)
+// that MERGES its own series into window.MUNTIN_COST_INDEX_HISTORY without clobbering the
+// map. Vendor Benchmark loads only the picked item's shard (a few KB) instead of the whole
+// ~1.6 MB monolith; the monolith above stays for the Cost Index pages and as a fallback.
+// Same data, split by key — verified below that each shard round-trips to the monolith entry.
+const shardDir = path.join(repoRoot, 'data/ci-history');
+if (!DRY) {
+  fs.mkdirSync(shardDir, { recursive: true });
+  for (const f of fs.readdirSync(shardDir)) { // drop stale shards for keys no longer emitted
+    if (f.endsWith('.js') && !Object.prototype.hasOwnProperty.call(out, f.slice(0, -3))) {
+      fs.unlinkSync(path.join(shardDir, f));
+    }
+  }
+}
+let shardBytes = 0, shardCount = 0;
+for (const key of Object.keys(out)) {
+  if (!/^[a-z0-9-]+$/.test(key)) { console.error(`build-cost-index-history-seed: unsafe shard key '${key}' — refusing.`); process.exit(1); }
+  const shard = `(function(root){if(!root)return;var H=root.MUNTIN_COST_INDEX_HISTORY=(root.MUNTIN_COST_INDEX_HISTORY||{});H[${JSON.stringify(key)}]=${JSON.stringify(out[key])};})(typeof window!=='undefined'?window:(typeof self!=='undefined'?self:null));\n`;
+  shardBytes += Buffer.byteLength(shard); shardCount++;
+  if (!DRY) fs.writeFileSync(path.join(shardDir, `${key}.js`), shard);
+}
+console.log(`  + ${shardCount} per-item shard(s) → data/ci-history/ (${(shardBytes / 1024).toFixed(1)} KB total, ~${(shardBytes / Math.max(1, shardCount) / 1024).toFixed(1)} KB each)${DRY ? ' (dry-run)' : ''}.`);

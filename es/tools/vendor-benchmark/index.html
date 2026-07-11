@@ -135,6 +135,88 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <style>
 /* Vendor Benchmark — tool-scoped styles. Built entirely from site-core tokens
    so light/dark and print are automatic. .vb-* namespace. */
+/* ── Vendor Benchmark material system — Phase 1 token layer ──────────────
+   A four-material "market instrument": INVOICE DESK (warm-paper input),
+   INSTRUMENT READOUT (raised verdict), MARKET WELL (recessed chart), and
+   LEDGER TAPE (zero-download system mono). Every COLOR / ELEVATION token
+   below is declared on all four theme paths — default (light),
+   @media (prefers-color-scheme:dark), :root[data-theme="dark"] (the site
+   toggle, which must win), and a grayscale @media print — the same pattern
+   site-core.css uses, so nothing recreates the old market-gap-panel dark
+   break. Verdict tone is REUSED from the site (over=--rust, under=--teal,
+   match=--status-good, watch=--status-warn); --vb-signal is non-semantic
+   chrome only, NEVER a verdict number. */
+:root{
+  /* Type ladder — four weights only (400/500/600/700); fluid --fs-* site
+     tokens where they exist, literal fallbacks for the pre-site-core
+     critical-CSS window. */
+  --vb-font-mono:ui-monospace,'SF Mono','SFMono-Regular',Menlo,Consolas,'Liberation Mono',monospace;
+  --vb-fs-display:clamp(30px,5vw,42px);
+  --vb-fs-verdict:clamp(40px,8vw,68px);
+  --vb-fs-stat:clamp(26px,5vw,38px);
+  --vb-fs-card-title:19px;
+  --vb-fs-body:var(--fs-body,15px);
+  --vb-fs-meta:12.5px;
+  --vb-fs-eyebrow:var(--fs-eyebrow,11px);
+  /* Zone spacing */
+  --vb-zone-gap:28px;
+  --vb-cluster-gap:14px;
+  --vb-stat-gap:8px;
+  /* INVOICE DESK — warm confined to a hairline + a very-low tint on the
+     input zone only (never a cream body fill, never serif-on-cream). */
+  --vb-desk:#FBFAF7;
+  --vb-desk-edge:rgba(183,121,31,0.30);
+  --vb-desk-inset:inset 0 1px 2px rgba(20,22,26,0.04);
+  --vb-rule:rgba(20,22,26,0.08);
+  /* INSTRUMENT READOUT — a very-light tone tint wash over the raised panel */
+  --vb-readout-wash:rgba(42,80,200,0.035);
+  /* MARKET WELL — recessed chart; faint teal gridlines + emphasized baseline */
+  --vb-well-inset:inset 0 1px 3px rgba(20,22,26,0.07),inset 0 0 0 1px rgba(20,22,26,0.02);
+  --vb-grid:rgba(42,80,200,0.12);
+  --vb-grid-100:rgba(42,80,200,0.34);
+  /* Non-semantic signal — compute-scan chrome / active combobox row ONLY */
+  --vb-readout-bg:var(--surface-1,#fff);
+  --vb-readout-edge:var(--line);
+  --vb-touch:44px; /* shared minimum touch target (WCAG 2.5.5) */
+  --vb-ease:cubic-bezier(.2,.8,.2,1);--vb-ease-out:cubic-bezier(.16,1,.3,1);
+  --vb-t-1:120ms;--vb-t-2:320ms;--vb-t-3:600ms;
+  --vb-signal:#12A9BD;
+  --vb-signal-strong:#0A7C8C; /* darker signal step for the active-option rail — >=3:1 on the tinted row (WCAG 1.4.11) */
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --vb-desk:#191B1E;
+  --vb-desk-edge:rgba(217,176,106,0.24);
+  --vb-desk-inset:inset 0 1px 2px rgba(0,0,0,0.35);
+  --vb-rule:rgba(255,255,255,0.08);
+  --vb-readout-wash:rgba(122,167,255,0.05);
+  --vb-well-inset:inset 0 1px 3px rgba(0,0,0,0.45),inset 0 0 0 1px rgba(0,0,0,0.30);
+  --vb-grid:rgba(122,167,255,0.14);
+  --vb-grid-100:rgba(122,167,255,0.40);
+  --vb-readout-bg:#1B1E24;
+  --vb-readout-edge:#2C3038;
+  --vb-signal:#3AD3E6;
+  --vb-signal-strong:#3AD3E6;
+}}
+:root[data-theme="dark"]{
+  --vb-desk:#191B1E;
+  --vb-desk-edge:rgba(217,176,106,0.24);
+  --vb-desk-inset:inset 0 1px 2px rgba(0,0,0,0.35);
+  --vb-rule:rgba(255,255,255,0.08);
+  --vb-readout-wash:rgba(122,167,255,0.05);
+  --vb-well-inset:inset 0 1px 3px rgba(0,0,0,0.45),inset 0 0 0 1px rgba(0,0,0,0.30);
+  --vb-grid:rgba(122,167,255,0.14);
+  --vb-grid-100:rgba(122,167,255,0.40);
+  --vb-readout-bg:#1B1E24;
+  --vb-readout-edge:#2C3038;
+  --vb-signal:#3AD3E6;
+  --vb-signal-strong:#3AD3E6;
+}
+@media print{:root{
+  --vb-desk:#fff;--vb-desk-edge:#ccc;--vb-desk-inset:none;--vb-rule:#ddd;
+  --vb-readout-wash:transparent;--vb-well-inset:none;
+  --vb-readout-bg:#fff;--vb-readout-edge:#ddd;
+  --vb-grid:#e5e5e5;--vb-grid-100:#999;--vb-signal:#666;--vb-signal-strong:#666;
+}}
 .vb-shell{max-width:780px;margin:0 auto;padding:44px 16px 80px}
 .vb-hero{margin-bottom:26px}
 .vb-hero h1{font-family:var(--font-display);font-size:clamp(30px,5vw,42px);font-weight:520;letter-spacing:-0.018em;color:var(--ink);margin:14px 0 10px;line-height:1.1;text-wrap:balance}
@@ -154,7 +236,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .vb-field{display:flex;flex-direction:column;gap:6px}
 .vb-field label{font-size:12.5px;font-weight:600;color:var(--ink)}
 .vb-hint{font-size:12px;color:var(--stone);font-weight:400}
-.vb-input,.vb-select{font:inherit;font-size:15px;padding:11px 13px;border:1px solid var(--line-dark);border-radius:var(--r-sm,9px);background:var(--surface-1,#fff);color:var(--ink);width:100%;font-variant-numeric:tabular-nums}
+.vb-input,.vb-select{font:inherit;font-size:16px;padding:11px 13px;border:1px solid var(--line-dark);border-radius:var(--r-sm,9px);background:var(--surface-1,#fff);color:var(--ink);width:100%;font-variant-numeric:tabular-nums}
 .vb-input:focus,.vb-select:focus{outline:2px solid var(--teal);outline-offset:1px;border-color:var(--teal)}
 .vb-match-chip{display:inline-flex;align-items:center;gap:7px;margin-top:2px;font-size:12.5px;color:var(--ink-soft);background:var(--teal-tint,#EAF0FE);border:1px solid var(--line);border-radius:999px;padding:4px 11px;align-self:flex-start}
 .vb-match-chip strong{color:var(--teal)}
@@ -162,19 +244,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 /* Dated purchase rows */
 .vb-purchases{display:flex;flex-direction:column;gap:10px}
 .vb-prow{display:grid;grid-template-columns:1fr 1fr 40px;gap:12px;align-items:end;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-sm,10px);padding:12px 12px}
-.vb-prow .vb-field label{font-size:11px;text-transform:uppercase;letter-spacing:0.04em;color:var(--stone)}
-.vb-remove{align-self:end;width:36px;height:36px;border-radius:8px;border:1px solid transparent;background:transparent;color:var(--stone);font-size:22px;line-height:1;cursor:pointer;transition:color var(--t-fast,180ms),background var(--t-fast,180ms)}
+.vb-prow .vb-field label{font-size:11px;text-transform:uppercase;letter-spacing:0.04em;color:var(--ink-soft)}
+.vb-remove{align-self:end;width:var(--vb-touch,44px);height:var(--vb-touch,44px);border-radius:8px;border:1px solid transparent;background:transparent;color:var(--stone);font-size:22px;line-height:1;cursor:pointer;transition:color var(--t-fast,180ms),background var(--t-fast,180ms)}
 .vb-remove:hover{color:var(--rust);background:var(--status-bad-tint,#F7E7DC)}
 .vb-remove:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 /* Action strip */
 .vb-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
 .vb-add{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border:1px dashed var(--line-dark);border-radius:999px;background:transparent;color:var(--ink);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;transition:border-color var(--t-fast,180ms),color var(--t-fast,180ms)}
 .vb-add:hover{border-color:var(--teal);color:var(--teal)}
-.vb-example{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border:1px solid var(--teal);border-radius:999px;background:transparent;color:var(--teal);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
-.vb-example:hover{background:var(--teal-tint,#EAF0FE)}
 .vb-clear{margin-left:auto;display:inline-flex;align-items:center;padding:9px 14px;border:1px solid var(--line-dark);border-radius:999px;background:transparent;color:var(--stone);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
 .vb-clear:hover{color:var(--rust);border-color:var(--rust)}
-.vb-add:focus-visible,.vb-example:focus-visible,.vb-clear:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.vb-add:focus-visible,.vb-clear:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 .vb-hint-line{font-size:12.5px;color:var(--stone);line-height:1.5;margin:14px 0 0}
 .vb-err{font-size:13px;color:var(--status-warn-deep,#8A3E16);margin:10px 0 0}
 /* ---- Result ---- */
@@ -214,6 +294,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .vb-chartwrap{margin:0;background:var(--surface-1,#fff);border:1px solid var(--line);border-radius:var(--r-md,14px);padding:16px 18px 10px;box-shadow:var(--elev-1)}
 .vb-chart{display:block;width:100%;height:auto;max-width:100%;overflow:visible}
 .vb-chart-base{stroke:var(--line-dark)}
+.vb-chart-grid{stroke:var(--vb-grid);stroke-width:1}
 .vb-chart-market{stroke:var(--stone)}
 .vb-chart-you{stroke:var(--ink)}
 .vb-chart-dot{fill:var(--ink)}
@@ -230,6 +311,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .vb-chart-legend{display:flex;gap:18px;justify-content:center;margin:4px 0 0;font-size:12px;color:var(--ink-soft)}
 .vb-chart-legend span{display:inline-flex;align-items:center;gap:6px}
 .vb-legend-you::before{content:"";width:16px;height:2.6px;border-radius:2px;background:var(--ink)}
+.vb-chart-legend[data-tone="over"] .vb-legend-you::before{background:var(--rust)}
+.vb-chart-legend[data-tone="under"] .vb-legend-you::before{background:var(--teal)}
+.vb-chart-legend[data-tone="match"] .vb-legend-you::before{background:var(--status-good,#1F6B3A)}
 .vb-legend-mkt::before{content:"";width:16px;height:0;border-top:2px dashed var(--stone)}
 /* Subcards */
 .vb-subcard{background:var(--surface-1,#fff);border:1px solid var(--line);border-radius:var(--r-md,14px);padding:18px 20px;box-shadow:var(--elev-1)}
@@ -254,7 +338,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .vb-attr-wholesale{font-size:12.5px;color:var(--ink-soft);margin:0 0 10px;line-height:1.5}
 .vb-attr-dl{display:flex;flex-wrap:wrap;gap:6px 22px;margin:0 0 8px}
 .vb-attr-dl>div{display:flex;flex-direction:column}
-.vb-attr-dl dt{font-size:10.5px;text-transform:uppercase;letter-spacing:0.05em;color:var(--stone);font-weight:700}
+.vb-attr-dl dt{font-size:10.5px;text-transform:uppercase;letter-spacing:0.05em;color:var(--ink-soft);font-weight:700}
 .vb-attr-dl dd{font-size:12.5px;color:var(--ink);margin:1px 0 0;font-variant-numeric:tabular-nums}
 .vb-attr-level{font-size:12.5px;color:var(--ink-soft);margin:8px 0 0;line-height:1.5}
 .vb-inlink{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px solid transparent}
@@ -275,11 +359,20 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .vb-softbridge{background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-sm,10px);padding:14px 16px}
 .vb-softbridge p{font-size:13.5px;color:var(--ink-soft);line-height:1.55;margin:0}
 .vb-ondevice{font-size:12px;color:var(--stone);margin:6px 0 0;text-align:center;line-height:1.5}
+/* two-tier result: SUPPORTING evidence behind one disclosure (answer stays above) */
+.vb-analysis{margin:18px 0 0;border-top:1px solid var(--line);padding-top:14px}
+.vb-analysis>summary{font-size:13.5px;font-weight:600;color:var(--teal);cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:8px;padding:4px 0}
+.vb-analysis>summary::-webkit-details-marker{display:none}
+.vb-analysis>summary::before{content:"+";font-weight:700;font-size:15px;line-height:1}
+.vb-analysis[open]>summary::before{content:"\2212"}
+.vb-analysis>summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:4px}
+.vb-analysis-body{margin-top:14px;display:flex;flex-direction:column;gap:16px}
 /* explainer strong list */
 .vb-explain-list{display:grid;gap:12px;margin:0}
 .vb-prow-hint{font-size:11.5px;color:var(--status-warn-deep,#8A3E16);margin-top:2px}.vb-prow--bad .vb-input[data-field="price"]{border-color:var(--status-warn-deep,#8A3E16)}.vb-receipt{margin:10px 0 0;border-top:1px solid var(--line);padding-top:10px}.vb-receipt summary{font-size:12px;font-weight:600;color:var(--teal);cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:6px}.vb-receipt summary::-webkit-details-marker{display:none}.vb-receipt summary::before{content:"+";font-weight:700}.vb-receipt[open] summary::before{content:"\2212"}.vb-rc-list{margin:8px 0 6px;padding-left:18px;font-size:12.5px;color:var(--ink-soft);line-height:1.5;font-variant-numeric:tabular-nums}.vb-rc-list strong{color:var(--ink)}.vb-rc-off{color:var(--stone)}.vb-rc-meta{font-size:12px;color:var(--stone);margin:0;line-height:1.5;font-variant-numeric:tabular-nums}
 .vb-book{margin:0 0 12px;padding:12px 14px;border-radius:var(--r-sm,9px);background:var(--cream-2);border-left:3px solid var(--rust)}.vb-book-lead{font-size:12px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--stone);margin:0 0 6px}.vb-book-worst{font-size:14px;line-height:1.5;color:var(--ink);margin:0}.vb-book-worst strong{color:var(--rust)}.vb-book-count{font-size:12.5px;color:var(--ink-soft);margin:6px 0 0}:root[data-theme="dark"] .vb-book{background:#21262E}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .vb-book{background:#21262E}}
-.vb-journal{background:var(--surface-1,#fff);border:1px solid var(--line);border-radius:var(--r-md,14px);padding:16px 18px;margin:0 0 18px;box-shadow:var(--elev-1)}.vb-journal-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px}.vb-journal-head .vb-eyebrow{margin:0}.vb-journal-grid{display:flex;flex-wrap:wrap;gap:8px}.vb-jchip{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid var(--line-dark);border-radius:999px;background:var(--cream-2);font:inherit;font-size:13px;color:var(--ink);cursor:pointer}.vb-jchip:hover{border-color:var(--teal)}.vb-jchip:focus-visible{outline:2px solid var(--teal);outline-offset:2px}.vb-jchip-name{font-weight:600}.vb-jchip-gap{font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;padding:1px 7px;border-radius:999px}.vb-jchip-gap[data-tone="over"]{background:var(--status-bad-tint,#F7E7DC);color:var(--rust)}.vb-jchip-gap[data-tone="under"]{background:var(--status-good-tint,#E7F5EC);color:var(--status-good,#1F6B3A)}.vb-jchip-gap[data-tone="match"]{background:var(--cream-2);color:var(--ink-soft)}.vb-jchip-gap[data-tone="watch"]{background:var(--status-warn-tint,#FDEFE3);color:var(--status-warn-deep,#8A3E16)}.vb-jchip-when{font-size:11px;color:var(--stone)}.vb-jtrend{font-size:13.5px;line-height:1.5;margin:0;padding:9px 13px;border-radius:var(--r-sm,9px);background:var(--cream-2);color:var(--ink)}.vb-jtrend[data-tone="over"]{color:var(--rust);background:var(--status-bad-tint,#F7E7DC)}.vb-jtrend[data-tone="under"]{color:var(--status-good,#1F6B3A);background:var(--status-good-tint,#E7F5EC)}:root[data-theme="dark"] .vb-journal{background:#1B1E24;border-color:#2C3038}:root[data-theme="dark"] .vb-jchip{background:#21262E;border-color:#2C3038}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .vb-journal{background:#1B1E24;border-color:#2C3038}:root:not([data-theme="light"]) .vb-jchip{background:#21262E;border-color:#2C3038}}
+.vb-book-live{margin:0 0 12px;padding:10px 14px;border-radius:var(--r-sm,9px);background:var(--surface-inset);border-left:3px solid var(--vb-signal)}.vb-book-live .vb-eyebrow{display:block;margin:0 0 4px}.vb-book-live-say{font-size:13px;line-height:1.5;color:var(--ink);margin:0}
+.vb-journal{background:var(--surface-1,#fff);border:1px solid var(--line);border-radius:var(--r-md,14px);padding:16px 18px;margin:0 0 18px;box-shadow:var(--elev-1)}.vb-journal-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px}.vb-journal-head .vb-eyebrow{margin:0}.vb-journal-grid{display:flex;flex-wrap:wrap;gap:8px}.vb-jchip{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid var(--line-dark);border-radius:999px;background:var(--cream-2);font:inherit;font-size:13px;color:var(--ink);cursor:pointer}.vb-jchip:hover{border-color:var(--teal)}.vb-jchip:focus-visible{outline:2px solid var(--teal);outline-offset:2px}.vb-jchip-name{font-weight:600}.vb-jchip-gap{font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;padding:1px 7px;border-radius:999px}.vb-jchip-gap[data-tone="over"]{background:var(--status-bad-tint,#F7E7DC);color:var(--rust)}.vb-jchip-gap[data-tone="under"]{background:var(--status-good-tint,#E7F5EC);color:var(--status-good,#1F6B3A)}.vb-jchip-gap[data-tone="match"]{background:var(--cream-2);color:var(--ink-soft)}.vb-jchip-gap[data-tone="watch"]{background:var(--status-warn-tint,#FDEFE3);color:var(--status-warn-deep,#8A3E16)}.vb-jchip-when{font-size:11px;color:var(--ink-soft)}.vb-jtrend{font-size:13.5px;line-height:1.5;margin:0;padding:9px 13px;border-radius:var(--r-sm,9px);background:var(--cream-2);color:var(--ink)}.vb-jtrend[data-tone="over"]{color:var(--rust);background:var(--status-bad-tint,#F7E7DC)}.vb-jtrend[data-tone="under"]{color:var(--status-good,#1F6B3A);background:var(--status-good-tint,#E7F5EC)}:root[data-theme="dark"] .vb-journal{background:#1B1E24;border-color:#2C3038}:root[data-theme="dark"] .vb-jchip{background:#21262E;border-color:#2C3038}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .vb-journal{background:#1B1E24;border-color:#2C3038}:root:not([data-theme="light"]) .vb-jchip{background:#21262E;border-color:#2C3038}}
 .vb-outlook{font-size:14px;line-height:1.5;margin:0;padding:11px 14px;border-radius:var(--r-sm,9px);background:var(--cream-2);color:var(--ink-soft)}.vb-outlook strong{color:var(--ink)}.vb-outlook[data-tone="over"]{color:var(--rust);background:var(--status-bad-tint,#F7E7DC)}.vb-outlook[data-tone="over"] strong{color:var(--rust)}.vb-outlook[data-tone="under"]{color:var(--status-good,#1F6B3A);background:var(--status-good-tint,#E7F5EC)}.vb-outlook[data-tone="under"] strong{color:var(--status-good,#1F6B3A)}.vb-forecast{background:var(--surface-1,#fff);border:1px solid var(--line);border-radius:var(--r-md,14px);padding:16px 18px;box-shadow:var(--elev-1)}.vb-forecast p{font-size:14px;line-height:1.55;color:var(--ink);margin:0;font-variant-numeric:tabular-nums}.vb-forecast-fine{font-size:12px;color:var(--stone);margin:8px 0 0 !important}:root[data-theme="dark"] .vb-forecast{background:#1B1E24;border-color:#2C3038}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .vb-forecast{background:#1B1E24;border-color:#2C3038}}
 /* Responsive */
 @media(max-width:560px){
@@ -291,10 +384,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .vb-remove{grid-area:remove;justify-self:end}
 }
 /* Dark mode */
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .vb-panel,:root:not([data-theme="light"]) .vb-card,:root:not([data-theme="light"]) .vb-headline,:root:not([data-theme="light"]) .vb-subcard,:root:not([data-theme="light"]) .vb-chartwrap{background:#1B1E24;border-color:#2C3038}:root:not([data-theme="light"]) .vb-input,:root:not([data-theme="light"]) .vb-select{background:#16181D;border-color:#3A404A;color:#F1EDE5}:root:not([data-theme="light"]) .vb-prow{background:#21262E;border-color:#2C3038}}
-:root[data-theme="dark"] .vb-panel,:root[data-theme="dark"] .vb-card,:root[data-theme="dark"] .vb-headline,:root[data-theme="dark"] .vb-subcard,:root[data-theme="dark"] .vb-chartwrap{background:#1B1E24;border-color:#2C3038}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .vb-card,:root:not([data-theme="light"]) .vb-subcard{background:#1B1E24;border-color:#2C3038}:root:not([data-theme="light"]) .vb-input,:root:not([data-theme="light"]) .vb-select{background:#16181D;border-color:#3A404A;color:#F1EDE5}:root:not([data-theme="light"]) .vb-prow{background:#21262E}}
+:root[data-theme="dark"] .vb-card,:root[data-theme="dark"] .vb-subcard{background:#1B1E24;border-color:#2C3038}
 :root[data-theme="dark"] .vb-input,:root[data-theme="dark"] .vb-select{background:#16181D;border-color:#3A404A;color:#F1EDE5}
-:root[data-theme="dark"] .vb-prow{background:#21262E;border-color:#2C3038}
+:root[data-theme="dark"] .vb-prow{background:#21262E}
 .vb-anchor{font-size:14px;line-height:1.5;color:var(--ink);margin:8px 0 0}.vb-anchor strong{color:var(--ink);font-weight:600}.vb-spike{font-size:13.5px;line-height:1.5;margin:0;padding:10px 14px;border-radius:var(--r-sm,9px);background:var(--cream-2);color:var(--ink-soft)}.vb-spike[data-tone="over"]{color:var(--rust);background:var(--status-bad-tint,#F7E7DC)}.vb-spike[data-tone="under"]{color:var(--status-good,#1F6B3A);background:var(--status-good-tint,#E7F5EC)}.vb-spike[data-tone="watch"]{color:var(--status-warn-deep,#8A3E16);background:var(--status-warn-tint,#FDEFE3)}.vb-action{background:var(--surface-1,#fff);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-md,14px);padding:18px 20px;box-shadow:var(--elev-1)}.vb-ask{font-size:15px;line-height:1.55;color:var(--ink);margin:0 0 4px;font-style:italic}.vb-vol{font-size:14px;line-height:1.5;color:var(--ink);margin:8px 0 0}.vb-vol strong{color:var(--rust)}.vb-action-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.vb-btn{display:inline-flex;align-items:center;min-height:36px;padding:8px 16px;border-radius:999px;border:1px solid var(--line-dark);background:transparent;color:var(--ink);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}.vb-btn:hover{border-color:var(--teal);color:var(--teal)}.vb-btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px}.vb-more{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}.vb-more>summary{font-size:12.5px;font-weight:600;color:var(--teal);cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:6px}.vb-more>summary::-webkit-details-marker{display:none}.vb-more>summary::before{content:"+";font-weight:700}.vb-more[open]>summary::before{content:"\2212"}.vb-more-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:12px}.vb-brief{display:none}@media print{html.vb-printing body{visibility:hidden}html.vb-printing [data-brief]{visibility:visible;display:block !important;position:absolute;left:0;top:0;width:100%;padding:24px;font-size:13.5px;line-height:1.5;color:#000}html.vb-printing [data-brief] *{visibility:visible;color:#000}html.vb-printing [data-brief] p{margin:0 0 4px}}@media(min-width:560px){.vb-more-grid{grid-template-columns:1fr 1fr}}
 /* Print — grayscale the chart so a B&W kitchen printout survives */
 @media print{
@@ -304,9 +397,162 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .vb-ledger-h,.vb-ledger-eyebrow,.vb-ledger-lede,.vb-ledger-body,.vb-ledger-body strong,.vb-ledger-fine{color:#000 !important}
   .vb-actions,.vb-ledger-cta{display:none !important}
 }
+/* ── Material application — recess the Invoice Desk + Market Well, raise the
+   Instrument Readout. View-only: no functional element is removed or
+   restyled beyond its surface material. Placed last so it wins by source
+   order over the base component rules above. ───────────────────────────── */
+/* 1 · INVOICE DESK — warm paper, gold hairline, recessed (not lifted) */
+.vb-panel{background:var(--vb-desk);border-color:var(--vb-desk-edge);box-shadow:var(--vb-desk-inset)}
+.vb-prow{border-color:var(--vb-rule)}
+/* 2 · INSTRUMENT READOUT — raise to --elev-2, 2px tone bezel, tone wash; the
+   rate-of-change gap is the hero number at --vb-fs-verdict. */
+.vb-headline{box-shadow:var(--elev-2);border-top-width:2px;background-color:var(--vb-readout-bg);background-image:linear-gradient(var(--vb-readout-wash),var(--vb-readout-wash));border-color:var(--vb-readout-edge)}
+.vb-gap-num{font-size:var(--vb-fs-verdict)}
+/* 3 · MARKET WELL — recess the chart onto --surface-inset; emphasize the
+   indexed-to-100 baseline (the y=100 line). */
+.vb-chartwrap{background:var(--surface-inset);box-shadow:var(--vb-well-inset)}
+.vb-chart-base{stroke:var(--vb-grid-100)}
+.vb-chart-axis,.vb-chart-note,.vb-chart-endlabel--mkt{fill:var(--ink-soft)}
+/* 4 · LEDGER TAPE — receipt / attribution / timeline in system mono */
+.vb-rc-list,.vb-rc-meta,.vb-attr-dl dd,.vb-timeline{font-family:var(--vb-font-mono)}
+/* ── Ingredient picker (combobox) — JS-enhanced dropdown over #vbItem. Every
+   visible cue is gated behind .vb-combo.is-live, so with JS off (or the manifest
+   missing) the field stays today's plain text input. The only accent is
+   --vb-signal, and only for scan/seam/active chrome — never a verdict tone.
+   Surfaces reuse the Instrument Readout tokens (--vb-readout-*). ────────────── */
+.vb-combo.is-live{position:relative}
+.vb-combo.is-live .vb-input--combo{padding-right:46px}
+.vb-combo-caret{position:absolute;right:1px;bottom:1px;z-index:42;display:none;align-items:center;justify-content:center;width:44px;height:44px;padding:0;border:0;background:transparent;color:var(--ink-soft);font-size:12px;line-height:1;cursor:pointer;transition:transform 160ms cubic-bezier(.2,.8,.2,1),color 160ms}
+.vb-combo.is-live .vb-combo-caret{display:inline-flex}
+.vb-combo-caret:focus-visible{outline:2px solid var(--teal);outline-offset:-2px;border-radius:6px}
+.vb-combo.is-open .vb-combo-caret{transform:rotate(180deg);color:var(--vb-signal)}
+.vb-combo.is-live::after{content:"";position:absolute;left:1px;right:1px;bottom:0;height:2px;background:var(--vb-signal);border-radius:2px;transform:scaleX(0);transform-origin:left center;transition:transform 200ms cubic-bezier(.2,.8,.2,1);pointer-events:none;z-index:41}
+.vb-combo.is-live:focus-within::after,.vb-combo.is-open::after{transform:scaleX(1)}
+.vb-combo.is-open .vb-input--combo{border-bottom-left-radius:0;border-bottom-right-radius:0}
+.vb-pick-list{position:absolute;left:0;right:0;top:100%;z-index:40;max-height:min(340px,52vh);overflow-y:auto;overscroll-behavior:contain;background-color:var(--vb-readout-bg);background-image:linear-gradient(var(--vb-readout-wash),var(--vb-readout-wash));border:1px solid var(--vb-readout-edge);border-top:0;border-radius:0 0 var(--r-sm,9px) var(--r-sm,9px);box-shadow:var(--elev-2);scrollbar-width:thin;scrollbar-color:var(--line-dark) transparent}
+.vb-pick-list[hidden]{display:none}
+.vb-pick-list::-webkit-scrollbar{width:10px}
+.vb-pick-list::-webkit-scrollbar-thumb{background:var(--line-dark);border-radius:6px;border:3px solid transparent;background-clip:content-box}
+.vb-pick-scope{position:sticky;top:0;z-index:2;padding:10px 14px 9px;background-color:var(--vb-readout-bg);background-image:linear-gradient(var(--vb-readout-wash),var(--vb-readout-wash));border-bottom:1px solid var(--vb-rule)}
+.vb-pick-scope__title{font-size:12px;font-weight:700;color:var(--ink);line-height:1.35}
+.vb-pick-scope__note{font-size:11.5px;color:var(--ink-soft);line-height:1.4;margin-top:2px}
+.vb-pick-grouphead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:9px 14px 6px;border-bottom:1px solid var(--vb-rule);font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--stone)}
+.vb-pick-grouphead__count{font-family:var(--vb-font-mono);font-size:11px;color:var(--stone);font-variant-numeric:tabular-nums;opacity:.8}
+.vb-pick-opt{display:flex;align-items:center;gap:10px;min-height:44px;padding:8px 14px;cursor:pointer;transition:background-color 120ms ease,box-shadow 120ms ease}
+.vb-pick-opt[hidden]{display:none}
+.vb-pick-opt__label{flex:1 1 auto;min-width:0;font-size:14.5px;font-weight:500;color:var(--ink);line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vb-pick-opt__ref{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;font-family:var(--vb-font-mono);font-size:11px;line-height:1;color:var(--ink-soft);border:1px solid var(--vb-rule);border-radius:3px}
+.vb-pick-opt__unit{flex:0 0 auto;font-family:var(--vb-font-mono);font-size:12px;letter-spacing:-0.01em;color:var(--stone);font-variant-numeric:tabular-nums}
+.vb-pick-opt:hover{background-color:rgba(20,22,26,.04)}
+.vb-pick-opt.is-active{background-color:rgba(18,169,189,.10);box-shadow:inset 3px 0 0 var(--vb-signal-strong)}
+.vb-pick-opt.is-active .vb-pick-opt__ref{color:var(--ink);border-color:var(--line-dark)}
+.vb-pick-empty{padding:14px}
+.vb-pick-empty[hidden]{display:none}
+.vb-pick-empty__head{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.vb-pick-empty__body{font-size:13px;line-height:1.5;color:var(--ink-soft);margin:0}
+.vb-pick-legend{position:sticky;bottom:0;z-index:2;padding:8px 14px;background-color:var(--vb-readout-bg);background-image:linear-gradient(var(--vb-readout-wash),var(--vb-readout-wash));border-top:1px solid var(--vb-rule);font-size:11px;line-height:1.4;color:var(--stone)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .vb-pick-opt:hover{background-color:rgba(255,255,255,.05)}:root:not([data-theme="light"]) .vb-pick-opt.is-active{background-color:rgba(58,211,230,.12)}}
+:root[data-theme="dark"] .vb-pick-opt:hover{background-color:rgba(255,255,255,.05)}
+:root[data-theme="dark"] .vb-pick-opt.is-active{background-color:rgba(58,211,230,.12)}
+@media (prefers-reduced-motion:no-preference){@keyframes vb-pick-in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}.vb-combo.is-open .vb-pick-list{animation:vb-pick-in 140ms cubic-bezier(.2,.8,.2,1);transform-origin:top center}}
+@media (prefers-reduced-motion:reduce){.vb-combo.is-live::after,.vb-combo-caret,.vb-pick-opt{transition-duration:1ms}}
+@media print{.vb-pick-list,.vb-combo-caret{display:none}.vb-combo.is-live::after{display:none}}
+/* ── Mobile floor — every control clears the 44px tap floor (--vb-touch, WCAG
+   2.5.5) for a one-thumbed kitchen phone; the 16px fields above kill iOS
+   zoom-on-focus. ─────────────────────────────────────────────────────────── */
+html{-webkit-text-size-adjust:100%}
+.vb-add,.vb-clear,.vb-btn,.vb-jchip{min-height:var(--vb-touch,44px)}
+.vb-chart-table>summary,.vb-receipt summary,.vb-more>summary{min-height:var(--vb-touch,44px);align-items:center}
+/* ── Market context (ADR-012) — the reference's OWN state vs its normal; a neutral
+   --vb-signal rail, never a verdict tone, because it is context, not a verdict. ── */
+.vb-context{margin:0;padding:12px 14px;border-radius:var(--r-sm,9px);background:var(--surface-inset);border-left:3px solid var(--vb-signal)}
+.vb-context-say{font-size:13.5px;line-height:1.55;color:var(--ink);margin:5px 0 0}
+.vb-context-event{font-size:12px;line-height:1.5;color:var(--ink-soft);margin:7px 0 0}
+/* single-price tier — a calm LEVEL read (never a verdict tone): chrome accent only. */
+.vb-sp .vb-eyebrow{display:block}
+.vb-sp-h{margin:6px 0 0;font-family:var(--font-display);font-size:clamp(18px,3vw,22px);font-weight:600;line-height:1.2;color:var(--ink);text-wrap:balance;scroll-margin-top:16px}
+.vb-sp-read{margin:10px 0 0;font-size:clamp(15px,2.4vw,18px);line-height:1.5;color:var(--ink)}
+.vb-sp-read strong{font-variant-numeric:tabular-nums;white-space:nowrap}
+.vb-sp-anchor{margin:8px 0 0;font-size:12.5px;line-height:1.5;color:var(--ink-soft);font-family:var(--vb-font-mono)}
+.vb-sp-anchor strong{color:var(--ink)}
+.vb-sp-watch{margin:12px 0 0;font-size:12.5px;color:var(--ink-soft)}
+.vb-sp-upsell{margin:16px 0 0;padding:14px 16px;border-radius:var(--r-md,14px);background:var(--surface-inset);border-left:3px solid var(--vb-signal)}
+.vb-sp-upsell p{margin:0 0 10px;font-size:13.5px;line-height:1.5;color:var(--ink)}
+.vb-sp-src{margin:14px 0 0;font-size:12px;line-height:1.5;color:var(--ink-soft)}
+/* the verdict answer is a real <h2 id=vbVerdictH> — focus lands here on explicit
+   actions (example / journal reopen); show a ring for genuine keyboard focus. */
+.vb-verdict-h{scroll-margin-top:16px}
+.vb-verdict-h:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px}
+/* ── Provenance strip — an instrument-panel data label before the input: Invoice-Desk
+   cells, mono keys (Ledger Tape). Makes the honest source / basis / freshness / scope
+   scannable at a glance — the moat, shown. ──────────────────────────────────── */
+.vb-prov{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;margin:0 0 18px;background:var(--vb-rule);border:1px solid var(--vb-readout-edge);border-radius:var(--r-sm,9px);overflow:hidden;box-shadow:var(--vb-desk-inset)}
+@media(min-width:640px){.vb-prov{grid-template-columns:repeat(4,1fr)}}
+.vb-prov-cell{display:flex;flex-direction:column;gap:2px;padding:9px 12px;background:var(--vb-desk)}
+.vb-prov-k{font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--stone);font-family:var(--vb-font-mono)}
+.vb-prov-v{font-size:12px;line-height:1.35;color:var(--ink)}
+/* ── Privacy monitor — the live zero the operator watches hold while typing. The
+   --status-good 0 is a SYSTEM-STATE indicator (prices never left), not a verdict on
+   the vendor; it lives in the input panel, away from the result's verdict tones. ── */
+.vb-carry{font-family:var(--vb-font-mono);font-size:11.5px;color:var(--stone);margin:0 0 14px;display:flex;align-items:center;gap:7px;font-variant-numeric:tabular-nums;flex-wrap:wrap}
+.vb-carry strong{color:var(--ink);font-weight:700}
+.vb-carry strong[data-zero]{color:var(--status-good,#1F6B3A)}
+.vb-carry-dot{width:6px;height:6px;border-radius:50%;background:var(--status-good,#1F6B3A);flex:0 0 auto}
+/* ── Signature motion — gated by the render-epoch flag (data-animate is set only on a
+   NEW answer: a new item, a flipped verdict, loading→resolved — never on a keystroke),
+   and off entirely under reduced motion. The gap number rolls up via rAF (see JS). ── */
+@media (prefers-reduced-motion:no-preference){
+  @keyframes vb-result-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .vb-result-inner[data-animate]{animation:vb-result-in var(--vb-t-2,320ms) var(--vb-ease,ease) both}
+  .vb-result-inner[data-animate] .vb-chartwrap{animation:vb-result-in var(--vb-t-3,600ms) var(--vb-ease,ease) both;animation-delay:60ms}
+  /* the operator's own line draws in against the market reference — the gap OPENS.
+     pathLength=1 makes it length-independent; the market line keeps its dash/dotted
+     convention and thin-data withhold untouched. */
+  @keyframes vb-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+  .vb-result-inner[data-animate] .vb-chart-you{stroke-dasharray:1;animation:vb-draw var(--vb-t-3,600ms) var(--vb-ease,ease) both;animation-delay:120ms}
+}
+/* ── First-run onboarding — one primary CTA + a ghost readout that reserves the result
+   region (shape only, em-dash placeholders — never a fabricated value). Gated by
+   data-first-run on the shell; retired the instant a real answer renders. ────────── */
+.vb-ghost{display:none}
+.vb-shell[data-first-run] .vb-ghost{display:block;opacity:.5;margin:18px 0 0;padding:18px 20px;border:1px dashed var(--line-dark);border-radius:var(--r-md,14px)}
+.vb-ghost-metrics{display:flex;align-items:center;gap:14px}
+.vb-ghost-m{font-size:30px;font-weight:700;line-height:1;color:var(--stone-2,#9AA0AB)}
+.vb-ghost-vs{font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--stone)}
+.vb-ghost-chart{position:relative;height:60px;margin:14px 0 0;border-radius:8px;background:var(--surface-inset)}
+.vb-ghost-base{position:absolute;left:10px;right:10px;top:50%;border-top:1px dashed var(--line-dark)}
+.vb-ghost-hint{font-size:12.5px;line-height:1.5;color:var(--ink-soft);margin:12px 0 0}
+.vb-shell[data-first-run] .vb-demos{border:1px solid var(--teal);border-radius:var(--r-md,14px);padding:12px 14px;background:var(--teal-tint,#EAF0FE)}
+.vb-shell[data-first-run] .vb-demo{border-color:var(--teal);color:var(--teal)}
+.vb-shell[data-first-run] .vb-add{opacity:.6}
+.vb-shell[data-first-run] .vb-clear{display:none}
+/* ── Worked-example switcher — three scenarios whose verdict is COMPUTED live, so the
+   calibrated-honesty differentiator (hot / tracked / hold) is shown, not a happy path. ── */
+.vb-demos{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0 0}
+.vb-demos-k{font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--stone);font-family:var(--vb-font-mono)}
+.vb-demo{min-height:var(--vb-touch,44px);display:inline-flex;align-items:center;padding:7px 14px;border:1px solid var(--line-dark);border-radius:999px;background:transparent;color:var(--ink);font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:border-color var(--t-fast,180ms),color var(--t-fast,180ms)}
+.vb-demo:hover{border-color:var(--teal);color:var(--teal)}
+.vb-demo:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.vb-demos-note{font-size:11px;color:var(--ink-soft);flex-basis:100%}
+/* Shareable link — encodes the benchmark in the URL fragment (client-side, never sent). */
+.vb-share{min-height:var(--vb-touch,44px);display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border:1px solid var(--line-dark);border-radius:999px;background:transparent;color:var(--ink-soft);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
+.vb-share:hover{border-color:var(--teal);color:var(--teal)}
+.vb-share:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.vb-shell[data-first-run] .vb-share{display:none}
+/* Your Book depth — per-line gap-over-time sparkline + book-level distribution strip. */
+.vb-jspark{flex:0 0 auto;display:block}
+.vb-jspark polyline{stroke:var(--stone)}
+.vb-jspark[data-tone="over"] polyline{stroke:var(--rust)}
+.vb-jspark[data-tone="under"] polyline{stroke:var(--status-good,#1F6B3A)}
+.vb-dist{display:flex;gap:2px;height:8px;border-radius:999px;overflow:hidden;margin:8px 0}
+.vb-dist-seg{display:block}
+.vb-dist-seg[data-tone="over"]{background:var(--rust)}
+.vb-dist-seg[data-tone="match"]{background:var(--stone-2,#9AA0AB)}
+.vb-dist-seg[data-tone="under"]{background:var(--status-good,#1F6B3A)}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main">Saltar al contenido principal</a>
 <!-- batch-banner:start -->
 <aside class="batch-marquee" data-batch="fathers-day-2026" role="complementary" aria-label="Nuevo informe · Que te encuentren para el Día del Padre" style="background:#16181D;color:#F6F7F8;font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(246,247,248,0.16);box-shadow:inset 0 1px 0 rgba(255,255,255,0.05)">
   <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
@@ -363,6 +609,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <nav class="nav-links" aria-label="Principal">
       <a href="/es/library/">Biblioteca</a>
       <a href="/es/cost-index/">Índice de costos</a>
+      <a href="/es/open/">Datos abiertos</a>
       <a href="/es/tools/">Herramientas</a>
       <a href="/es/studio/">Empresa</a>
       <a href="/es/ledger/">Ledger</a>
@@ -393,6 +640,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
     <a href="/es/library/">Biblioteca</a>
     <a href="/es/cost-index/">Índice de costos</a>
+    <a href="/es/open/">Datos abiertos</a>
     <a href="/es/tools/">Herramientas</a>
     <a href="/es/studio/">Empresa</a>
     <a href="/es/ledger/">Ledger</a>
@@ -469,7 +717,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   <script src="/assets/theme-toggle.js?v=phase8"></script>
 </header>
 
-<main>
+<main id="main">
 <section class="vb-shell">
   <div class="vb-hero">
     <span class="eyebrow">Herramienta gratis · Tu precio vs. el mercado, en las mismas fechas</span>
@@ -479,12 +727,19 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Promesa de datos">
-              <p class="tool-data-promise__line">Corre en tu navegador. Sin cuentas, sin fetches, sin tracking.</p>
-              <p class="tool-data-promise__line">Verifícalo: abre DevTools → Network → usa la herramienta. La pestaña Network se mantiene vacía.</p>
+              <p class="tool-data-promise__line">Tus precios de factura se quedan en este navegador — sin cuenta, sin subir nada.</p>
+              <p class="tool-data-promise__line">La página carga su propio código y datos de referencia, pero tus precios escritos nunca se envían en una solicitud — cualquier analítica son conteos anónimos, nunca tus cifras. Verifícalo: DevTools → Network.</p>
               <p class="tool-data-promise__links"><a href="/es/security/">Lee la promesa completa &rarr;</a> &middot; <a href="/es/learn/checklists/audit-any-tool/">Audita cualquier herramienta &rarr;</a></p>
             </aside>
             <!-- data-promise:end -->
     <p class="vb-lede">Escribe lo que pagaste por un artículo en cada factura &mdash; con la fecha. Vendor Benchmark lee el movimiento del mercado mayorista en tu ventana exacta y lo pone junto al tuyo, así una subida deja de ser un misterio: ves si se movió el mercado, o tu proveedor. Corre en tu dispositivo y guarda tus precios ahí.</p>
+  </div>
+
+  <div class="vb-prov" role="group" aria-label="De dónde viene esta referencia">
+    <div class="vb-prov-cell"><span class="vb-prov-k">Fuente</span><span class="vb-prov-v">Mayorista USDA &middot; dominio público</span></div>
+    <div class="vb-prov-cell"><span class="vb-prov-k">Base</span><span class="vb-prov-v">Mayorista &mdash; el entregado es mayor</span></div>
+    <div class="vb-prov-cell"><span class="vb-prov-k">Al día</span><span class="vb-prov-v" id="vbProvAsOf">&mdash;</span></div>
+    <div class="vb-prov-cell"><span class="vb-prov-k">Alcance</span><span class="vb-prov-v"><span id="vbProvCount">&mdash;</span> artículos &middot; tus precios se quedan en tu dispositivo</span></div>
   </div>
 
   <div class="vb-panel">
@@ -492,10 +747,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <h2>Revisa un artículo</h2>
       <span class="vb-match-chip" id="vbMatchChip" role="status" aria-live="polite" hidden></span>
     </div>
+    <p class="vb-carry"><span class="vb-carry-dot" aria-hidden="true"></span>Tus precios &mdash; guardados aquí: <strong id="vbCarryN">0</strong> &middot; enviados: <strong id="vbCarryC" data-zero="1">0</strong></p>
     <div class="vb-itemrow">
       <div class="vb-field">
         <label for="vbItem">Artículo <span class="vb-hint">&mdash; como aparece en tu factura</span></label>
-        <input class="vb-input" type="text" id="vbItem" name="item" autocomplete="off" placeholder="ej. ribeye, lomo de res, aceite de oliva 3L" />
+        <input class="vb-input" type="text" id="vbItem" name="item" autocomplete="off" placeholder="ej. ribeye, pechuga de pollo, tomate" />
       </div>
       <div class="vb-field">
         <label for="vbUnit">Precio por</label>
@@ -514,14 +770,27 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <div class="vb-purchases" id="vbPurchases" role="group" aria-label="Tus compras con fecha"></div>
     <div class="vb-actions">
       <button type="button" class="vb-add" id="vbAdd">+ Agregar una compra</button>
-      <button type="button" class="vb-example" id="vbExample">Cargar el ejemplo</button>
       <button type="button" class="vb-clear" id="vbClear">Borrar</button>
+      <button type="button" class="vb-share" id="vbShare" title="Codifica esta comparación en el enlace. Tus precios se quedan en tu navegador — el enlace solo los lleva si eliges compartirlo.">Copiar enlace</button>
     </div>
     <p class="vb-hint-line">Agrega dos o más facturas con fecha del mismo artículo. Cuantas más fechas le des, más nítida la comparación con el mercado &mdash; y se actualiza mientras escribes.</p>
+    <div class="vb-demos" role="group" aria-label="Ejemplos — el veredicto se calcula en vivo">
+      <span class="vb-demos-k">Míralo funcionar</span>
+      <button type="button" class="vb-demo" data-scenario="hot">El proveedor subió de más</button>
+      <button type="button" class="vb-demo" data-scenario="tracked">El proveedor siguió al mercado</button>
+      <button type="button" class="vb-demo" data-scenario="thin">Datos escasos &mdash; no opinamos</button>
+      <span class="vb-demos-note">Precios ilustrativos &middot; veredicto en vivo</span>
+    </div>
     <p class="vb-err" id="vbErr" role="alert" hidden></p>
   </div>
 
   <div id="vbResult" class="vb-result" aria-live="polite"></div>
+
+  <div class="vb-ghost" aria-hidden="true">
+    <div class="vb-ghost-metrics"><span class="vb-ghost-m">&mdash;</span><span class="vb-ghost-vs">vs</span><span class="vb-ghost-m">&mdash;</span></div>
+    <div class="vb-ghost-chart"><span class="vb-ghost-base"></span></div>
+    <p class="vb-ghost-hint">Tu lectura aparece aquí &mdash; agrega dos precios con fecha, o prueba un ejemplo para verlo.</p>
+  </div>
 
   <div class="vb-card">
     <h2>Cómo lo lee Vendor Benchmark.</h2>
@@ -529,8 +798,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <p><strong>Le pone fecha a cada precio.</strong> Cada compra lleva la fecha de la factura, así la herramienta compara una ventana real &mdash; tu entrega de la segunda semana de mayo contra la de la semana pasada &mdash; no un vago &laquo;antes y después&raquo;.</p>
       <p><strong>Lee el mercado en tu ventana.</strong> Para un artículo reconocido, toma la referencia mayorista en tu primera y tu última fecha del Índice de costos en vivo y mide el movimiento del mercado en el mismo lapso. Tu movimiento menos el del mercado es la parte que corre por cuenta de tu proveedor.</p>
       <p><strong>Es honesto sobre el mayorista.</strong> El Índice de costos es una referencia mayorista; un precio entregado corre más alto, así que la herramienta lidera con la tasa de cambio, nunca con &laquo;deberías pagar $X&raquo;. Cuando el historial de mercado de un artículo es escaso, lo dice y retiene el veredicto en vez de acusar a un proveedor por ruido.</p>
+      <p><strong>El flete viaja dentro de esa brecha &mdash; y el flete se mueve con el diésel.</strong> El espacio entre una referencia mayorista y un precio entregado es en parte el camino: combustible, kilometraje, entregas. La referencia es previa al flete, así que un aumento de flete impulsado por el diésel cae en la porción &laquo;por cuenta de tu proveedor&raquo; aunque no sea margen &mdash; así que cuando el diésel sube (el Índice de costos sigue la lectura semanal y gratuita de la EIA como un trasfondo para todo el índice), lee una brecha amplia con eso en mente. Solo contexto: nunca una cifra restada de tu brecha, y nunca un empujón al veredicto.</p>
       <p><strong>Usa también tu propia base.</strong> Junto a la lectura de mercado, marca una subida contra la mediana reciente de lo que <em>tú</em> has pagado &mdash; la misma regla que usa <a href="https://ledger.muntin.digital/">Muntin Ledger</a>, para que nunca se contradigan.</p>
-      <p><strong>Se queda en tu dispositivo.</strong> Tus precios con fecha se guardan en este navegador, nunca se envían. La comparación con otros operadores es una función aparte, opcional, dentro de Ledger &mdash; nunca se construye con lo que escribes aquí.</p>
+      <p><strong>Se queda en tu dispositivo.</strong> Tus precios con fecha se guardan en este navegador &mdash; la herramienta nunca los envía por su cuenta. Un enlace para compartir lleva los precios que escribiste, pero solo si eliges crearlo y enviarlo. La comparación con otros operadores es una función aparte, opcional, dentro de Ledger &mdash; nunca se construye con lo que escribes aquí.</p>
     </div>
   </div>
 </section>
@@ -622,7 +892,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/tools/_shared/sku-match.js?v=20260504-w10-1"></script>
 <script src="/tools/_shared/bench-lookup.js?v=20260602-bench-1"></script>
 <script type="text/muntin-lazy-seed" data-src="/data/cost-index.js?v=20260607-live4"></script>
-<script type="text/muntin-lazy-seed" data-src="/data/cost-index-history.js?v=20260629-hist1"></script>
+<!-- Deep history is NOT loaded here as a ~1.6MB monolith — Vendor Benchmark loads only the
+     picked item's shard (/data/ci-history/<key>.js) on demand; see maybeLoadHistoryShard(). -->
 <script src="/tools/_shared/cost-index-lookup.js?v=20260608-w16-1"></script>
 <script src="/tools/_shared/portion-bridge.js?v=20260504-w10-2"></script>
 <script src="/tools/_shared/cost-index-format.js?v=20260629-fmt4"></script>
@@ -633,6 +904,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/tools/_shared/cost-anomaly.js?v=20260705-vb2"></script>
 <script src="/tools/_shared/cost-conformal.js?v=20260705-vb2"></script>
 <script src="/tools/_shared/market-window.js?v=20260704-mw1"></script>
+<!-- Ingredient-picker manifest — tiny, eager (first paint) so a picker can render before the ~1MB compute seed lazy-loads. Generated by scripts/build-cost-index-picker.mjs. -->
+<script src="/data/cost-index-picker.js?v=20260710-pick2"></script>
 <script src="/tools/vendor-benchmark/vendor-benchmark.js?v=20260705-vb10" defer></script>
 </body>
 </html>

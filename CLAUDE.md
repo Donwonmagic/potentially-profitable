@@ -22,6 +22,16 @@ New work consolidates around the cost-intelligence funnel (the Cost Index, the l
   - `data/` — JSON manifests (sourced claims, audio coverage, slug map, site counts).
   - `_includes/` — shared HTML partials (nav, footer).
 
+## Continuity & decisions (read first in a fresh context)
+
+The container is ephemeral; only what's in the repo survives a context reset. To resume:
+
+  - **`docs/handoff/strategic-council-board.md`** — the resume-here board. Its top "CURRENT STATE" block is the latest thread's shipped work, in-flight items, runbooks, and open questions. Update it as threads move.
+  - **`docs/editorial/decisions/ADR-NNN-*.md`** — Architecture Decision Records (context → decision → consequences). Record every non-trivial decision here. Cost-Index / data decisions: ADR-010 (insight grammar), **ADR-011 (notable price events surface), ADR-012 (Vendor Benchmark market-context), ADR-013 (NASS/Census/EIA data-sources policy), ADR-014 (cold-storage deseasonalization)**.
+  - **Method:** ground → build → audit → iterate, convening expert-panel sub-agents / workflows at the forks and adversarially verifying. Surface only genuine forks; don't loosen gates; the fact gate is absolute.
+  - **Events surface** (ADR-011): detection (`data/cost-index-events.json`) × the cited registry (`cost-index/events.json`) as **co-occurrence, never cause**, on ingredient pages + `/cost-index/events/`. Gated by `check-cost-index-events.mjs`.
+  - **New public data (ADR-013):** NASS/Census/EIA are US-gov public-domain (redistributable). Honest subset only — never the measured tier or the Vendor Benchmark reference. The live fetch runs on the operator's Mac (keys + network); the container has neither.
+
 ## Editorial canons (binding for any prose change)
 
   - `/methods/index.html` #voice-contract — site-wide voice contract, banned-words list, CTA canon, POV-by-page-type table. Governs.

@@ -26,9 +26,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 
 const __filename = fileURLToPath(import.meta.url);
 const REPO       = path.resolve(path.dirname(__filename), '..');
+const require    = createRequire(import.meta.url);
 const checkOnly  = process.argv.includes('--check');
 
 function countDirs(rel, { skip = new Set(), require = 'index.html' } = {}) {
@@ -79,6 +81,21 @@ const toolCounts = toolsJson ? countToolsFromJson(toolsJson) : countToolsFromHtm
 const blogArticles    = countDirs('blog',    { skip: new Set(['drafts']) });
 const libraryArticles = countDirs('library', { skip: new Set(['menu-design-cuisines', 'menu-design-themes']) });
 
+// cost_index.pickable — how many ingredients the Vendor Benchmark ingredient
+// picker can offer. Derived (not hand-written) from the generated picker
+// manifest (data/cost-index-picker.js → window.MUNTIN_CI_PICKER), which is a
+// 1:1 mirror of the browser seed's shippable ingredients. This is the number a
+// future picker header will cite ("Benchmarks N ingredients"); it is NOT the
+// coverage.measured tally, which counts more than this tool actually reads.
+function countPickerIngredients() {
+  const fp = path.join(REPO, 'data', 'cost-index-picker.js');
+  if (!fs.existsSync(fp)) return 0;
+  try {
+    const items = require(fp);
+    return Array.isArray(items) ? items.length : 0;
+  } catch { return 0; }
+}
+
 const counts = {
   _doc: 'Single source of truth for the counts that appear in nav, footer, and library copy. Built by scripts/build-site-counts.mjs from the filesystem; injected into HTML by scripts/inject-site-counts.mjs via <!-- count:KEY -->VALUE<!-- /count --> sentinels.',
   tools: {
@@ -103,6 +120,11 @@ const counts = {
     // Registered entries in the public claim ledger. Counted from the
     // registry so homepage/trust-strip copy can never drift from /claims/.
     sourced: Object.keys(JSON.parse(fs.readFileSync(path.join(REPO, 'data', 'sourced-claims.json'), 'utf8')).claims).length,
+  },
+  cost_index: {
+    // Ingredients the Vendor Benchmark picker can offer (derived from the
+    // generated picker manifest). See countPickerIngredients above.
+    pickable: countPickerIngredients(),
   },
   updated:  new Date().toISOString().slice(0, 10),
 };
