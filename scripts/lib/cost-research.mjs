@@ -120,6 +120,36 @@ function cheapestMonthCalendar(repoRoot) {
   return { byMonth, readyN: ready.length };
 }
 
+// F6 — the protein map. Cross-joins lock-or-float (the pricing-posture verdict) with the
+// co-movement clusters, restricted to center-of-plate proteins — the operator's biggest cost
+// line. The honest read is counterintuitive: the pricey proteins mostly hold, and swapping
+// within a protein family (breast↔thigh) buys nothing because the family moves together.
+const PROTEIN_RE = /chicken|turkey|pork|beef|ribeye|striploin|short rib|tenderloin|crab|lobster|clam|mussel|shrimp|scallop|salmon|tuna|trout|halibut|octopus|ground/i;
+function proteinMap(repoRoot, events, rows) {
+  const lf = rd(repoRoot, 'data/cost-lockfloat.json');
+  // {en, es} per slug — from yields; lock-or-float names (English) as fallback for both locales.
+  const nm = {}; for (const r of rows) nm[r.slug] = { en: r.en, es: r.es };
+  for (const s of Object.keys(lf.items)) if (!nm[s]) nm[s] = { en: lf.items[s].name, es: lf.items[s].name };
+  const NM = (s) => nm[s] || { en: s, es: s };
+  const CATP = new Set(['beef', 'meat', 'seafood', 'shellfish', 'poultry']);
+  const catBySlug = {}; for (const r of rows) catBySlug[r.slug] = r.cat;
+  const isProtein = (s) => CATP.has(catBySlug[s]) || PROTEIN_RE.test((nm[s] && nm[s].en) || '');
+  const proteinSlugs = new Set([...Object.keys(lf.items).filter(isProtein), ...rows.map((r) => r.slug).filter(isProtein)]);
+  // the lock-or-float verdict per protein that HAS one (dropping the raw price level, as the dataset does)
+  const scored = [...proteinSlugs].filter((s) => lf.items[s]).map((s) => ({
+    slug: s, en: NM(s).en, es: NM(s).es, bucket: lf.items[s].bucket, halfWidthPct: Math.round(lf.items[s].halfWidthPct * 100 * 10) / 10,
+  }));
+  const counts = scored.reduce((o, x) => { o[x.bucket] = (o[x.bucket] || 0) + 1; return o; }, {});
+  const lockList = scored.filter((x) => x.bucket === 'lock').sort((a, b) => a.halfWidthPct - b.halfWidthPct);
+  const cushionList = scored.filter((x) => x.bucket === 'cushion').sort((a, b) => a.halfWidthPct - b.halfWidthPct);
+  // co-moving protein families (clusters with ≥2 protein members)
+  const cl = clusters(events);
+  const families = cl.map((c) => ({ members: c.members.filter((m) => proteinSlugs.has(m)), tight: c.tight }))
+    .filter((c) => c.members.length >= 2)
+    .map((c) => ({ members: c.members.map((m) => NM(m)), tightK: c.tight.k, a: NM(c.tight.a), b: NM(c.tight.b) }));
+  return { total: scored.length, counts, lockList, cushionList, families };
+}
+
 export function researchInputs(repoRoot) {
   const events = loadEventsData(repoRoot);
   const rows = yieldRows(repoRoot);
@@ -131,6 +161,7 @@ export function researchInputs(repoRoot) {
     volatility: volatilityTaxonomy(repoRoot),
     duration: shockDuration(events),
     calendar: cheapestMonthCalendar(repoRoot),
+    proteins: proteinMap(repoRoot, events, rows),
     yieldCount: rows.length,
   };
 }
@@ -293,7 +324,40 @@ function figMethod(A, es) {
   return `<ol class="rs-steps">` + steps.map(([h, b]) => `<li class="rs-step"><span class="rs-step__n"></span>`
     + `<div><p class="rs-step__h">${h}</p><p class="rs-step__b">${b}</p></div></li>`).join('') + `</ol>`;
 }
-const FIG = { company: figCompany, clusters: figClusters, catTax: figCatTax, worst: figWorst, taxonomy: figTaxonomy, steadyWild: figSteadyWild, duration: figDuration, updown: figUpdown, calendar: figCalendar, method: figMethod };
+// Protein pricing-posture ranking: the lock + cushion proteins by band width (data mark = teal
+// length only; bucket carried as muted text, never a status hue). Foot states the full split.
+function figProteinLock(A, es) {
+  const p = A.proteins;
+  // Sort ALL shown proteins by band width globally (steadiest first) so the visual order matches
+  // the "steadiest first … out to ribeye ±5.8%" caption — not lock-group-then-cushion-group.
+  const list = p.lockList.concat(p.cushionList).slice().sort((a, b) => a.halfWidthPct - b.halfWidthPct);
+  const max = Math.max(...list.map((x) => x.halfWidthPct), 1);
+  const bars = list.map((x) => {
+    const tag = x.bucket === 'lock' ? (es ? 'fijar' : 'lock') : (es ? 'cojín' : 'cushion');
+    return `<div class="rs-bar"><span class="rs-bar__label">${es ? x.es : x.en}</span>`
+      + `<span class="rs-bar__track"><span class="rs-bar__fill" style="--v:${barV(x.halfWidthPct, max)}"></span></span>`
+      + `<span class="rs-bar__val">±${x.halfWidthPct.toFixed(1)}% <span class="rs-bar__val--muted">${tag}</span></span></div>`;
+  }).join('');
+  const c = p.counts;
+  const foot = es
+    ? `${c.lock || 0} para fijar, ${c.cushion || 0} con cojín, ${c.withhold || 0} sin evidencia suficiente — de ${p.total} proteínas con veredicto. Ninguna oscila lo bastante para flotar.`
+    : `${c.lock || 0} lock, ${c.cushion || 0} cushion, ${c.withhold || 0} withheld for thin evidence — of ${p.total} proteins with a verdict. None swing wide enough to float.`;
+  return `<div class="rs-bars">${bars}</div><p class="rs-fig__note">${foot}</p>`;
+}
+// Co-moving protein families (chicken breast↔thigh, ground pork↔shoulder): a within-family swap
+// buys nothing because the family moves together.
+function figProteinFamily(A, es) {
+  return `<div class="rs-clusters">` + A.proteins.families.map((f) => {
+    const chips = f.members.map((m) => `<span class="rs-chip${(m.en === f.a.en || m.en === f.b.en) ? ' rs-chip--tight' : ''}">${es ? m.es : m.en}</span>`).join('');
+    const name = es ? `Familia de ${f.members.length}` : `${f.members.length}-member family`;
+    const meta = es ? 'se movieron juntas en ventanas compartidas' : 'moved together in shared windows';
+    const lbl = es ? 'movimientos compartidos' : 'shared moves';
+    return `<div class="rs-cluster"><p class="rs-cluster__name">${name}</p>`
+      + `<p class="rs-cluster__meta">${meta}</p><div class="rs-cluster__chips">${chips}</div>`
+      + `<div class="rs-cluster__couple">${es ? f.a.es : f.a.en} + ${es ? f.b.es : f.b.en} · <span class="rs-cluster__couple-r">${f.tightK} ${lbl}</span></div></div>`;
+  }).join('') + `</div>`;
+}
+const FIG = { company: figCompany, clusters: figClusters, catTax: figCatTax, worst: figWorst, taxonomy: figTaxonomy, steadyWild: figSteadyWild, duration: figDuration, updown: figUpdown, calendar: figCalendar, method: figMethod, proteinLock: figProteinLock, proteinFamily: figProteinFamily };
 const FIG_NEEDS_NAME = new Set(['clusters', 'worst', 'calendar']);
 
 // Category display names in ES (EN uses the raw key, which is already a plain word).

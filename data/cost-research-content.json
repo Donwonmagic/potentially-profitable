@@ -619,6 +619,120 @@
         "sourcesNote": "Este método reempaqueta los datos abiertos del Muntin Cost Index, las instantáneas semanales de referencia mayorista que Muntin Digital publica bajo CC0.",
         "takeaway": "Una referencia mayorista es una vara de medir para dos trabajos —si el artículo se puede referenciar y si una línea se ha alejado mucho por encima de su propia historia—, nunca el precio que pagas."
       }
+    },
+    {
+      "slug": "protein-volatility-map",
+      "accent": "var(--gold)",
+      "crossLinks": [
+        [
+          "The lock-or-float tool",
+          "/tools/cost-pulse/"
+        ],
+        [
+          "The lock-or-float dataset (CC-BY)",
+          "/cost-index/lockfloat.json"
+        ],
+        [
+          "Steady vs wild (the whole basket)",
+          "/cost-index/research/steady-vs-wild/"
+        ],
+        [
+          "What moves together",
+          "/cost-index/research/what-moves-together/"
+        ]
+      ],
+      "en": {
+        "slug": "protein-volatility-map",
+        "title": "Protein Volatility Map: Lock or Float | Muntin",
+        "metaDesc": "27 proteins scored: 9 run steady enough to lock a printed menu price, only 2 need a cushion, 16 withheld for thin evidence, and none float.",
+        "h1": "Which proteins can you lock onto a printed menu, and which need a cushion?",
+        "speakableAnswer": "Of 27 tracked proteins scored, 9 have run steady enough to lock straight onto a printed menu price, only 2 (chicken breast and thigh) need a cushion, and none swing wide enough to float.",
+        "intro": [
+          "Protein is the biggest line on most independent kitchens' cost sheet, which is why the reflex is to treat it as the number most at risk on a printed menu. The Muntin lock-or-float read points the other way. Of 27 tracked proteins scored, 9 have run steady enough to lock straight onto a printed price, 2 earned a cushion, and none swing wide enough to float.",
+          "The band behind each verdict is a wholesale reference against that protein's own normal — how steady the cut has run, not the delivered price on your invoice and not a call on where it goes next. Read that way, the pricey cuts are the surprise: they mostly hold."
+        ],
+        "sections": [
+          {
+            "h2": "The split: 9 lock, 2 cushion, none float",
+            "paragraphs": [
+              "Start with the count. 27 proteins were scored. 9 landed in the lock band, 2 in the cushion band, and 16 are withheld. None float. Withheld means too little evidence to render a verdict — unproven here, not proven to swing. It is a gap in the record, not a red flag on the cut.",
+              "The surprise is which proteins locked. The tight end is whole turkey at plus or minus 0.8 percent, pork loin at 1.6 percent, and short rib at 1.8 percent. The premium cuts sit on the same printable list: striploin at 3 percent, beef tenderloin at 3.5 percent, ribeye at 5.8 percent. Price is not predictability. A ribeye can hold its own band as tightly as a ground cut holds its.",
+              "The verdict is a read on predictability — band width plus evidence — never a read on price level. A cheap protein can need a cushion while an expensive one locks. And the band names how steady the cut has run against its own normal, not what it costs delivered. Above wholesale is normal, not overpayment."
+            ],
+            "figureKey": "proteinLock",
+            "figureCaption": "The 9 lock and 2 cushion proteins, steadiest first — whole turkey at ±0.8% out to ribeye at ±5.8%. Foot: 9 lock, 2 cushion, 16 withheld, of 27; none float.",
+            "figureAudioAlt": "A ranked band chart of eleven proteins, steadiest first: whole turkey holds tightest at plus or minus 0.8 percent, then pork loin at 1.6 percent and short rib at 1.8 percent, on through striploin at 3 percent, beef tenderloin at 3.5 percent, and chicken breast at 5.3 percent, out to ribeye at plus or minus 5.8 percent. Nine proteins lock, two cushion, sixteen of twenty-seven are withheld for too little evidence, and none float."
+          },
+          {
+            "h2": "Swapping within a family dodges nothing",
+            "paragraphs": [
+              "When a protein climbs, the reflex hedge is to swap within its family — chicken breast for thigh, ground pork for shoulder. The record says that buys nothing.",
+              "Ground pork and pork shoulder kept company across 6 shared moves. Chicken breast and chicken thigh kept company across 5. That is co-occurrence, not cause — neither cut moved the other; the family moved together. When breast is climbing, thigh is usually climbing with it. The swap trades one rising number for another rising number.",
+              "The two chicken cuts are also the only two proteins that earned a cushion: chicken thigh at plus or minus 2.9 percent, chicken breast at 5.3 percent. Wider bands than the lock group, so price those dishes to the top of the band rather than the middle, and stop counting on the swap to save you."
+            ],
+            "figureKey": "proteinFamily",
+            "figureCaption": "Two co-moving families: ground pork with pork shoulder (6 shared moves) and chicken breast with chicken thigh (5 shared moves).",
+            "figureAudioAlt": "Two chip cards showing protein families that kept company move for move. Ground pork and pork shoulder shared six moves. Chicken breast and chicken thigh shared five moves. They traveled together, which is co-occurrence and not cause, so swapping one cut for the other inside a family dodges nothing."
+          },
+          {
+            "h2": "The wild swings live in produce, not protein",
+            "paragraphs": [
+              "If protein is this printable, where does the real movement live? A category over. Broccoli runs plus or minus 26.4 percent, yellow squash 25 percent, romaine 21.8 percent — bands several times wider than the widest protein cushion.",
+              "Those produce figures are framing contrast, pulled from a different category. They mark where volatility sits; they are not a claim that protein behaves like produce. The printed number is at real risk on the broccoli, not on the short rib. Point your market-price and daily-special flexibility there, and leave the steady proteins printed.",
+              "Keep the withheld tier in its lane while you do. The 16 withheld proteins are unproven here, not proven to swing. They earned no verdict because the record is thin, not because they ran wide. Do not read a withhold as a warning."
+            ]
+          }
+        ],
+        "operatorPlay": "Monday: take the 9 lock proteins to the printer. Build each dish's menu price off its reference band and commit it for the full print cycle — whole turkey, pork loin, and short rib held tightest (±0.8% / ±1.6% / ±1.8%), and the premium cuts (striploin ±3%, beef tenderloin ±3.5%, ribeye ±5.8%) belong on that same printable list. Price your chicken breast and chicken thigh dishes to the top of their band, not the middle — they are the only two proteins that earned a cushion (±5.3% and ±2.9%). Kill the within-family swap as a cost hedge: breast-for-thigh or ground-pork-for-shoulder dodges nothing, because the family kept company move for move (5 to 6 shared moves). Aim your market-price and daily-special flexibility at produce, where the printed number is at real risk (broccoli ±26.4%).",
+        "sourcesNote": "Verdicts come from the Muntin lock-or-float dataset, which scores each protein's band width against its own normal wholesale window; the family pairings come from the co-movement (what-moves-together) dataset, counting shared moves between cuts. Both are wholesale reference reads against each ingredient's own baseline — not the delivered or retail price on your invoice — and both publish CC-BY. Every band is descriptive of how a protein has run, never a forecast of where it goes next; every family pairing is co-occurrence, never cause.",
+        "takeaway": "Your biggest cost line is your most printable: 9 of 27 proteins lock onto a menu — the pricey cuts among them — 2 need a cushion, none float, and the wild swings live in produce."
+      },
+      "es": {
+        "slug": "protein-volatility-map",
+        "title": "Mapa de volatilidad de proteínas: fijar o flotar | Muntin",
+        "metaDesc": "27 proteínas evaluadas: 9 estables para fijar un precio impreso, solo 2 piden colchón, 16 se reservan por poca evidencia y ninguna flota.",
+        "h1": "¿Qué proteínas puedes fijar en un menú impreso y cuáles piden colchón?",
+        "speakableAnswer": "De 27 proteínas evaluadas, 9 se han mantenido lo bastante estables para fijarse directo en un precio impreso, solo 2 (pechuga y muslo de pollo) piden colchón y ninguna se mueve lo suficiente para flotar.",
+        "intro": [
+          "La proteína es la línea más grande en la hoja de costos de casi toda cocina independiente, y por eso el reflejo es tratarla como el número de mayor riesgo en un menú impreso. La lectura fijar-o-flotar de Muntin apunta al otro lado. De 27 proteínas evaluadas, 9 se han mantenido lo bastante estables para fijarse directo en un precio impreso, 2 se ganaron un colchón y ninguna se mueve lo suficiente para flotar.",
+          "La banda detrás de cada veredicto es una referencia mayorista contra el nivel normal de esa proteína: qué tan estable ha corrido el corte, no el precio de entrega de tu factura ni una apuesta sobre a dónde va después. Leído así, los cortes caros son la sorpresa: en su mayoría aguantan."
+        ],
+        "sections": [
+          {
+            "h2": "El reparto: 9 fijan, 2 colchón, ninguna flota",
+            "paragraphs": [
+              "Empieza por el conteo. Se evaluaron 27 proteínas. 9 cayeron en la banda de fijar, 2 en la banda de colchón y 16 se reservan. Ninguna flota. Reservar significa muy poca evidencia para dar un veredicto: no comprobada aquí, no comprobada como volátil. Es un hueco en el registro, no una alerta sobre el corte.",
+              "La sorpresa es cuáles proteínas fijaron. El extremo más estrecho es el pavo entero con más o menos 0.8 por ciento, el lomo de cerdo con 1.6 por ciento y la costilla corta con 1.8 por ciento. Los cortes premium están en la misma lista imprimible: striploin con 3 por ciento, lomo fino de res con 3.5 por ciento y ribeye con 5.8 por ciento. El precio no es lo mismo que la previsibilidad. Un ribeye puede sostener su propia banda tan estrecha como la sostiene un corte molido.",
+              "El veredicto es una lectura de la previsibilidad —ancho de banda más evidencia—, nunca una lectura del nivel de precio. Una proteína barata puede pedir colchón mientras una cara se fija. Y la banda nombra qué tan estable ha corrido el corte contra su propio nivel normal, no lo que cuesta entregado. Por encima del mayoreo es normal, no un sobreprecio."
+            ],
+            "figureKey": "proteinLock",
+            "figureCaption": "Las 9 proteínas de fijar y las 2 de colchón, de la más estable en adelante: pavo entero con ±0.8% hasta ribeye con ±5.8%. Pie: 9 fijan, 2 colchón, 16 se reservan, de 27; ninguna flota.",
+            "figureAudioAlt": "Una gráfica de bandas ordenada de once proteínas, de la más estable en adelante: el pavo entero es el más estrecho con más o menos 0.8 por ciento, luego el lomo de cerdo con 1.6 por ciento y la costilla corta con 1.8 por ciento, pasando por el striploin con 3 por ciento, el lomo fino de res con 3.5 por ciento y la pechuga de pollo con 5.3 por ciento, hasta el ribeye con más o menos 5.8 por ciento. Nueve proteínas fijan, dos reciben colchón, dieciséis de veintisiete se reservan por muy poca evidencia y ninguna flota."
+          },
+          {
+            "h2": "Cambiar dentro de una familia no esquiva nada",
+            "paragraphs": [
+              "Cuando una proteína sube, el reflejo de cobertura es cambiar dentro de su familia: pechuga por muslo, molida de cerdo por espaldilla. El registro dice que eso no compra nada.",
+              "La molida de cerdo y la espaldilla de cerdo se acompañaron en 6 movimientos compartidos. La pechuga y el muslo de pollo se acompañaron en 5. Eso es coincidencia, no una causa: ningún corte movió al otro; la familia se movió junta. Cuando la pechuga sube, el muslo suele subir con ella. El cambio troca un número al alza por otro número al alza.",
+              "Los dos cortes de pollo son también las únicas dos proteínas que se ganaron un colchón: el muslo de pollo con más o menos 2.9 por ciento y la pechuga con 5.3 por ciento. Bandas más anchas que el grupo de fijar, así que ponle precio a esos platillos al tope de la banda y no a la mitad, y deja de contar con el cambio para salvarte."
+            ],
+            "figureKey": "proteinFamily",
+            "figureCaption": "Dos familias que se mueven juntas: molida de cerdo con espaldilla de cerdo (6 movimientos compartidos) y pechuga de pollo con muslo de pollo (5 movimientos compartidos).",
+            "figureAudioAlt": "Dos tarjetas que muestran familias de proteínas que se acompañaron movimiento a movimiento. La molida de cerdo y la espaldilla de cerdo compartieron seis movimientos. La pechuga y el muslo de pollo compartieron cinco movimientos. Viajaron juntas, lo cual es coincidencia y no una causa, así que cambiar un corte por el otro dentro de una familia no esquiva nada."
+          },
+          {
+            "h2": "Los saltos bruscos viven en las verduras, no en la proteína",
+            "paragraphs": [
+              "Si la proteína es así de imprimible, ¿dónde vive el movimiento de verdad? Una categoría más allá. El brócoli corre con más o menos 26.4 por ciento, la calabaza amarilla con 25 por ciento y la romana con 21.8 por ciento: bandas varias veces más anchas que el colchón de proteína más ancho.",
+              "Esas cifras de verduras son un contraste de encuadre, tomadas de otra categoría. Marcan dónde vive la volatilidad; no son una afirmación de que la proteína se comporte como las verduras. El número impreso corre riesgo real en el brócoli, no en la costilla corta. Apunta ahí tu flexibilidad de precio de mercado y de especial del día, y deja impresas las proteínas estables.",
+              "Mantén en su carril el nivel de las reservadas mientras lo haces. Las 16 proteínas reservadas no están comprobadas aquí, no comprobadas como volátiles. No se ganaron un veredicto porque el registro es delgado, no porque hayan corrido anchas. No leas una reserva como una advertencia."
+            ]
+          }
+        ],
+        "operatorPlay": "El lunes: lleva las 9 proteínas de fijar a la imprenta. Arma el precio de cada platillo a partir de su banda de referencia y compromételo por el ciclo de impresión completo: el pavo entero, el lomo de cerdo y la costilla corta fueron los más estrechos (±0.8% / ±1.6% / ±1.8%), y los cortes premium (striploin ±3%, lomo fino de res ±3.5%, ribeye ±5.8%) pertenecen a esa misma lista imprimible. Ponles precio a tus platillos de pechuga y muslo de pollo al tope de su banda, no a la mitad: son las únicas dos proteínas que se ganaron un colchón (±5.3% y ±2.9%). Mata el cambio dentro de la familia como cobertura de costo: pechuga por muslo o molida de cerdo por espaldilla no esquiva nada, porque la familia se acompañó movimiento a movimiento (5 a 6 movimientos compartidos). Apunta tu flexibilidad de precio de mercado y de especial del día a las verduras, donde el número impreso corre riesgo real (brócoli ±26.4%).",
+        "sourcesNote": "Los veredictos vienen del conjunto de datos fijar-o-flotar de Muntin, que puntúa el ancho de banda de cada proteína contra su propia ventana normal de mayoreo; los pares de familia vienen del conjunto de datos de co-movimiento (qué-se-mueve-junto), que cuenta los movimientos compartidos entre cortes. Ambos son lecturas de referencia mayorista contra la propia línea base de cada ingrediente —no el precio de entrega ni el minorista de tu factura— y ambos se publican bajo CC-BY. Cada banda es descriptiva de cómo ha corrido una proteína, nunca un pronóstico de a dónde va después; cada par de familia es coincidencia, nunca una causa.",
+        "takeaway": "Tu línea de costo más grande es la más imprimible: 9 de 27 proteínas se fijan en un menú —los cortes caros entre ellas—, 2 piden colchón, ninguna flota y los saltos bruscos viven en las verduras."
+      }
     }
   ]
 }
