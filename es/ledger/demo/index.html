@@ -303,6 +303,47 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
    marketing site keeps its current brand until a site-wide re-pigment is
    decided. Neutral ramp already matches the app; only the accent + type change. */
 .container.ld-wrap{--font-display:var(--font-body);--teal:#3b68f5;--teal-dark:#2647b8;--teal-tint:#eaf0fe;--teal-link:#2a50c8}
+/* ===== (A) App-grade re-skin — token/pigment completion (2026-07-11 incr. F) =====
+   Increment E re-accented the demo but left --surface-1 / --rust / --status-bad-tint /
+   --elev-1 / --elev-3 fallback-only, and gave the demo NO dark layer — so in dark the
+   frame rendered its #fff surface-1 fallback (a white island on the #16181D page). This
+   block (A1) defines those semantics in light (all pigment-aligned no-ops) and (A2) adds
+   the missing dark canon from the real app, SCOPED to .ld-wrap so the rest of the site
+   keeps its brand until a site-wide re-pigment. */
+.container.ld-wrap{
+  --surface-1:#ffffff;          /* frame + panels + panes (was fallback-only) */
+  --rust:#c42e2e;               /* = app danger light (already the fallback) */
+  --status-bad-tint:#fbe6e6;    /* app danger-soft (was peach #F7E7DC) */
+  --acc-fg:#ffffff;             /* text on accent fill */
+  --success:#1e874b;            /* app success (Read/Ready confidence dot) */
+  --ease-emphasis:cubic-bezier(.16,1,.3,1);
+  --t-flash:400ms;
+  --elev-1:inset 0 0 0 1px #d7dae0,0 1px 2px rgba(16,18,21,.05);
+  --elev-3:inset 0 0 0 1px #d7dae0,0 8px 24px -6px rgba(16,18,21,.10);
+}
+/* A2 — the dark canon the demo never had. Frame lifts to the app surface #141517 on
+   the page's #16181D ground (near-match; the wrap can't paint its own bg without leaving
+   gutter seams — accept it, flag a future site-wide re-pigment). Chrome/controls -> #191b1e. */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .container.ld-wrap{
+    --cream:#0f1012;--surface-1:#141517;--cream-2:#191b1e;
+    --ink:#e9ebef;--ink-soft:#aeb3bd;--stone:#878d98;
+    --line:#26282d;--line-dark:#3a3e45;
+    --teal:#5b82ff;--teal-dark:#4a72f0;--teal-tint:#16203a;--teal-link:#9db6ff;
+    --rust:#f0605f;--status-bad-tint:#2c1717;--acc-fg:#0b0c0e;--success:#3fbe74;
+    --elev-1:inset 0 0 0 1px #26282d,0 1px 2px rgba(0,0,0,.40);
+    --elev-3:inset 0 0 0 1px #26282d,0 8px 24px -6px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"] .container.ld-wrap{
+  --cream:#0f1012;--surface-1:#141517;--cream-2:#191b1e;
+  --ink:#e9ebef;--ink-soft:#aeb3bd;--stone:#878d98;
+  --line:#26282d;--line-dark:#3a3e45;
+  --teal:#5b82ff;--teal-dark:#4a72f0;--teal-tint:#16203a;--teal-link:#9db6ff;
+  --rust:#f0605f;--status-bad-tint:#2c1717;--acc-fg:#0b0c0e;--success:#3fbe74;
+  --elev-1:inset 0 0 0 1px #26282d,0 1px 2px rgba(0,0,0,.40);
+  --elev-3:inset 0 0 0 1px #26282d,0 8px 24px -6px rgba(0,0,0,.55);
+}
 .container.ld-wrap .ld-panel h2{font-weight:640;letter-spacing:-0.02em}
 .container.ld-wrap .lg-pane-title{font-weight:600}
 /* Financial-grade numerals: Inter tabular, tracked tight, medium-semibold —
@@ -571,6 +612,36 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
   .ld-js .ld-controls .btn{flex:1 1 0;min-width:0;justify-content:center;white-space:normal;text-align:center;line-height:1.25;padding:8px 10px;font-size:13.5px;min-height:52px}
 }
 .ld-controls .btn[disabled]{opacity:.45;cursor:default;pointer-events:none}
+/* ===== (B) App button + chrome grammar (2026-07-11 incr. F) =====
+   B1 — control-bar buttons: pill -> app rounded-rect (6px) + app accent fill / hairline
+   surface / mechanical press. The 4-class prefix (.container.ld-wrap .ld-controls .btn-*)
+   out-specifies the site dark .btn-primary flip (:root:not([data-theme=light]) .btn-primary,
+   0,3,0) regardless of source order. min-height / padding / font-size are deliberately NOT
+   restated so the incr-E desktop 43px and the <=640px 52px half-and-half (the FLOOR
+   reservation) stay exactly as measured — only the corner, fills, and press are additive.
+   Buttons are border-box, so the added 1px borders sit inside min-height (no growth). */
+.container.ld-wrap .ld-controls .btn{border-radius:6px}
+.container.ld-wrap .ld-controls .btn:active{transform:scale(.985)}
+@media (prefers-reduced-motion:reduce){.container.ld-wrap .ld-controls .btn:active{transform:none}}
+.container.ld-wrap .ld-controls .btn-primary{background:var(--teal);color:var(--acc-fg);border:1px solid var(--teal)}
+.container.ld-wrap .ld-controls .btn-primary:hover{background:var(--teal-dark);border-color:var(--teal-dark)}
+.container.ld-wrap .ld-controls .btn-primary:active{background:#2647b8;border-color:#2647b8}
+.container.ld-wrap .ld-controls .btn-ghost{background:var(--surface-1);color:var(--ink);border:1px solid var(--line-dark)}
+.container.ld-wrap .ld-controls .btn-ghost:hover{background:var(--cream-2)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .container.ld-wrap .ld-controls .btn-primary:active{background:#4a72f0;border-color:#4a72f0}}
+:root[data-theme="dark"] .container.ld-wrap .ld-controls .btn-primary:active{background:#4a72f0;border-color:#4a72f0}
+/* B2 — rail chips: app rounded-rect + hairline; current step = accent-tinted with a teal
+   inset ring replacing the ink one (non-color reinforcement preserved). Padding + ring
+   geometry unchanged, so the rail can't re-wrap. */
+.container.ld-wrap .ld-rail a{border-radius:6px;background:var(--surface-1);border:1px solid var(--line-dark)}
+.container.ld-wrap .ld-rail a[aria-current="step"]{background:var(--teal-tint);border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);color:var(--teal-link)}
+.container.ld-wrap .ld-rail a[aria-current="step"]::before{color:var(--teal-link)}
+/* B3 — chrome strip = app product-header. The brand dot becomes a WindowMark-style ink
+   rounded-square with a hairline muntin cross (two layered gradients, single element, no
+   DOM node); the chip squares to 6px. No chrome height change (padding stays 9px 18px, dot
+   12px < the 18px text line box) so the stage svh reservation is untouched. */
+.container.ld-wrap .ld-chrome-app::before{content:"";width:12px;height:12px;border-radius:3px;background:var(--ink);background-image:linear-gradient(var(--cream-2),var(--cream-2)),linear-gradient(var(--cream-2),var(--cream-2));background-size:1.5px 100%,100% 1.5px;background-position:center,center;background-repeat:no-repeat}
+.container.ld-wrap .ld-chrome-chip{border-radius:6px;border-color:var(--line-dark)}
 .ld-progress{font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums}
 .ld-cta{background:#16181D;color:rgba(246,247,248,.78);border-radius:18px;padding:clamp(26px,4vw,48px)}
 .ld-cta h2{color:#F6F7F8}
@@ -590,9 +661,12 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
 /* La banda de tinta dentro del marco reafirma su fondo con la misma
    especificidad de la regla de panel (la superficie opaca del fundido
    la taparía en la cascada) y se aclara en modo oscuro como la base. */
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ld-js #ldPanels>.ld-cta{background:#0F1116}:root:not([data-theme="light"]) .ld-js #ldPanels>.ld-cta::after{background:linear-gradient(to bottom,transparent,#0F1116)}}
-:root[data-theme="dark"] .ld-js #ldPanels>.ld-cta{background:#0F1116}
-:root[data-theme="dark"] .ld-js #ldPanels>.ld-cta::after{background:linear-gradient(to bottom,transparent,#0F1116)}
+/* A3 (2026-07-11): the in-frame ask band drops to the app's deepest slate #0b0c0e in
+   dark, distinct-darker than the #141517 panels, so the "put this flag to work" moment
+   reads as a discrete object. Light band stays #16181D (= app inverted, correct). */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ld-js #ldPanels>.ld-cta{background:#0b0c0e}:root:not([data-theme="light"]) .ld-js #ldPanels>.ld-cta::after{background:linear-gradient(to bottom,transparent,#0b0c0e)}}
+:root[data-theme="dark"] .ld-js #ldPanels>.ld-cta{background:#0b0c0e}
+:root[data-theme="dark"] .ld-js #ldPanels>.ld-cta::after{background:linear-gradient(to bottom,transparent,#0b0c0e)}
 /* Una sola petición en el marco (2026-07-09): mientras corre el
    recorrido, el primario de la barra de controles es dueño del CTA
    fundador; el botón idéntico del panel se oculta para que la petición
@@ -938,6 +1012,62 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
    visual del orden del DOM/tab. Su sucesora, la barra pegajosa, fue a
    su vez reemplazada el 2026-07-09 por la barra inferior propia del
    marco de app (ver las reglas .ld-controls de arriba). */
+/* ===== (C)+(D) Per-beat component upgrades + signature motion (2026-07-11 incr. F) =====
+   Static data & numbers unchanged; app roles applied to existing selectors. All scoped to
+   .ld-wrap. The two motion beats (C4 ring, C5 commit) are compositor-only and key on the
+   EXISTING .ld-go scan class -> no JS, no DOM, so EN/ES stay byte-parallel; each has a
+   reduced-motion twin forcing the resolved state. Selector note: .ld-armed/.ld-go land on
+   the .lg-vignette figure INSIDE #ld-step1, so the reveal selector is #ld-step1 .ld-go .ld-reveal. */
+/* C1 — ledger rows -> app DataTable: solid hairline dividers (was dashed), a reserved 3px
+   transparent left rule (inset shadow = zero box change), single wash = hover -> surface-2.
+   first-child border kept 0 at matching specificity so the pane's top rule isn't doubled.
+   .ld-line (the invoice) is left dashed = the printed-paper artifact. */
+.container.ld-wrap .lg-row{border-top:1px solid var(--line);box-shadow:inset 3px 0 0 transparent;transition:background-color 120ms var(--ease-out,ease-out),box-shadow 120ms var(--ease-out,ease-out)}
+.container.ld-wrap .lg-row:first-child{border-top:0}
+.container.ld-wrap .lg-row:hover{background:var(--cream-2)}
+/* C2 — flag row -> app AnomalyCard: a 3px danger left rule (via the reserved inset, no width
+   change) on the danger-soft card; the badge becomes an app dashed "attention" outline chip
+   (transparent, danger-text). Chart flag dot/halo/delta already map to --rust via (A). The
+   flag-land choreography (opacity/transform on .lg-flag) is untouched. */
+.container.ld-wrap .lg-row--flag{box-shadow:inset 3px 0 0 var(--rust)}
+.container.ld-wrap .lg-flag{background:transparent;color:var(--rust);border:1px dashed var(--rust);border-radius:999px}
+/* C3 — the read/filed state pill -> app ConfidenceChip (high tier): transparent, hairline,
+   with a success dot (::before, no DOM node -> locale-safe) gated >=561px so the <=560 ES
+   single-line rows are never widened. NO numeral (a new number would trip the fact gate). */
+.container.ld-wrap .lg-s{background:transparent;border:1px solid var(--line);color:var(--ink-soft);gap:6px;padding-top:1px;padding-bottom:1px}
+@media (min-width:561px){
+  .container.ld-wrap #ld-step1 .lg-s::before,
+  .container.ld-wrap #ld-step2 .lg-s::before{content:"";width:6px;height:6px;border-radius:999px;background:var(--success,#1e874b);flex:0 0 auto}
+}
+/* C4 — bbox field-extraction ring on Read: as the scan runs, each row raises an inset accent
+   ring + faint accent tint ("we located this line on the document"). Decorative ::after,
+   opacity-driven (compositor-safe, no box change), keyed on the existing .ld-go reveal. The
+   -6px horizontal bleed sits inside the pane padding, so no overflow. */
+.container.ld-wrap #ld-step1 .ld-reveal{position:relative;isolation:isolate}
+.container.ld-wrap #ld-step1 .ld-reveal::after{content:"";position:absolute;inset:0 -6px;z-index:-1;border-radius:4px;box-shadow:inset 0 0 0 1.5px var(--teal);background:color-mix(in srgb,var(--teal) 9%,transparent);opacity:0;transition:opacity var(--t-micro,190ms) var(--ease-out,ease-out)}
+.container.ld-wrap #ld-step1 .ld-go .ld-reveal::after,
+.container.ld-wrap #ld-step1 .ld-reveal:hover::after{opacity:1}
+@media (prefers-reduced-motion:reduce){.container.ld-wrap #ld-step1 .ld-reveal::after{opacity:1;transition:none}}
+/* C5 — commit flash: as each read value settles the numeral lifts 1px and returns
+   (transform-only = compositor-safe; no color/font/letter-spacing swap, so no false-alarm
+   read and nothing the fact gate could see). .lg-n is a grid cell (already blockified), so
+   transform applies with NO display change and the baseline is unchanged. */
+@keyframes mun-commit{0%{transform:translateY(0)}45%{transform:translateY(-1px)}100%{transform:translateY(0)}}
+.container.ld-wrap #ld-step1 .ld-go .ld-reveal .lg-n{animation:mun-commit var(--t-flash,400ms) var(--ease-emphasis,ease-out) both}
+.container.ld-wrap #ld-step1 .ld-go .ld-reveal:nth-child(2) .lg-n{animation-delay:120ms}
+.container.ld-wrap #ld-step1 .ld-go .ld-reveal:nth-child(3) .lg-n{animation-delay:240ms}
+.container.ld-wrap #ld-step1 .ld-go .ld-reveal:nth-child(4) .lg-n{animation-delay:360ms}
+.container.ld-wrap #ld-step1 .ld-go .ld-reveal:nth-child(5) .lg-n{animation-delay:480ms}
+@media (prefers-reduced-motion:reduce){.container.ld-wrap #ld-step1 .ld-go .ld-reveal .lg-n{animation:none}}
+/* C6 — price band chart -> app BandStrip/Sparkline: band fill = accent-soft ("what the
+   market did"), edges hairline-dashed, prior points = ink-soft trend, grid/axis = app
+   hairline. All numbers unchanged; only fills/strokes move. Flag point stays danger. */
+.container.ld-wrap .lgc-band{fill:var(--teal-tint)}
+.container.ld-wrap .lgc-bandedge{stroke:var(--line-dark);stroke-dasharray:4 3}
+.container.ld-wrap .lgc-hist{stroke:var(--ink-soft);stroke-width:1.5}
+.container.ld-wrap .lgc-dot{fill:var(--ink-soft);stroke:var(--surface-1)}
+.container.ld-wrap .lgc-grid{stroke:var(--line)}
+.container.ld-wrap .lgc-axis{stroke:var(--line-dark)}
 .visually-hidden-ld{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 </style>
 <style>
