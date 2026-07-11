@@ -98,19 +98,48 @@ third proves it works; finish the cascade + tighten, not a rethink). Its 3 highe
   wide single column + small left glyph is the least-resolved layout (composition, not chrome). Desktop pins
   ~104px of chrome above the fold (banner+nav) — revisit whether the dispatch marquee must stay pinned on desktop.
 
-**NEXT (autonomous) — continue the cascade (the 3 review moves are done; now the momentum surfaces):**
-1. **Move #3 surface 2 — recently-added block (index.html ~698-769):** mono the dates, hairline the rows,
-   tighten to a dense app-table so the library reads as a live index, not a blog roll.
-2. **Founding band** (the Ledger conversion surface) — re-skin app-grade (hairline inputs, mono labels,
-   "19 weeks out" as a live readout); should feel like enrolling in a capable product, not a newsletter.
-3. **"Start here" library island + product/About 3-cards** — re-skin learn-tool/service cards to the
-   flagship hairline pattern for consistency (lower urgency; removes visual inconsistency).
-4. **Stances section** — already had a bolder pass; if touched, make proof links look inspectable (mono
-   claim counts). ⚠ Its `cal:band.*` sentinels are injected by inject-cost-index-calibration.mjs (SENSITIVE,
+**CASCADE CONTINUED (momentum surfaces + a fork):**
+- **`b33fe119d` — recently-added rail → dense mono app-index.** Mono tabular dates + mono uppercase section
+  tags + mono column headers (scoped --li-mono), hairline rows, subtle teal row-hover. Also fixed a latent
+  overflow bug: `table-layout:auto` + long titles blew the table to 1661px inside a 994px scroll container,
+  hiding the Last-updated + Contributor columns → `table-layout:fixed` (820px, all 4 columns, titles wrap).
+- **`0b3fb7b96` — recents contributor by byline canon.** The rail hardcoded every contributor to "Don
+  Goldstein" — a byline-canon violation (library = "The Muntin Desk") AND, once the table tightened, a
+  column of 8× "Don Goldstein" that read as a one-person shop. Now derived from the URL namespace
+  (library/tools → "The Muntin Desk", blog → "Don Goldstein"); regenerated EN+ES home + /learn/ rails; matches
+  the live article bylines. Fixes correctness + de-solos in one move.
+- **`21d677c84` — founding band → product enrollment.** CSS-only (form machinery untouched): mono field
+  labels (scoped --fd-mono), hairline inputs (--line-dark) + 6px radii, and the GA countdown wrapped in a
+  mono teal readout ("19 weeks out" — sentinel intact inside the span). Enrolling in a product, not a newsletter.
+- **`dd841e383` — library-island cards → flagship hairline pattern.** learn-tool cards get 6px hairline,
+  muntin top-accent on hover, −2px lift, mono uppercase kickers (rust body-font → mono stone). `.service`
+  product 3-card DEFERRED (shared with /studio/ pricing tiers → cross-page risk).
+- **⚠ FORK — footer newsletter reverted to Don's gated voice (`01d13d038`, reverts `92238ce51`).** The
+  full-gate audit (`check-all` 232/258; the 25 other misses are all `(idem)` deploy-healed drift) caught the
+  ONE real regression: `check-newsletter-copy.mjs` (Phase G.10) REQUIRES "when I publish something" / "cuando
+  publique algo" — Don's humble first-person newsletter framing, an explicit anti-corporate-SaaS guard. The
+  de-solo pass overreached into that gated, intentional keep. Resolved toward the gate ("never loosen gates";
+  a warm first-person footer note doesn't dent the capability positioning). **Open founder decision:** de-solo
+  the newsletter too (→ update the G.10 gate) or keep it personal (current). The rest of the solo-tail de-solo stands.
+
+**AUDIT CHECKPOINT (`check-all`, post-cascade):** 232/258. Every miss is `(idem)` deploy-regeneration drift
+(sitemap, OG cards, CSS cache-bust, site-counts 359-file drift, glossary schema, RSS, etc. — the standing
+deploy-healed set, NOT chased per board rule) EXCEPT the newsletter-copy gate, now fixed (`01d13d038`).
+Per-increment gates were green throughout (fabrications 0, css-drift 504, locale-parity, footer-payload, sync).
+
+**NEXT (autonomous) — home v3 is substantially cascaded; what remains:**
+1. **`.service` product 3-card** (home "The product" band + About 3-card) → flagship hairline pattern. Shared
+   with /studio/ pricing tiers, so scope a home-only class or screenshot /studio/ too before committing.
+2. **Stances section** — already had a bolder pass; if touched, make proof links look inspectable (mono claim
+   counts). ⚠ Its `cal:band.*` sentinels are injected by inject-cost-index-calibration.mjs (SENSITIVE,
    heartbeat-tied) — reframe copy only, do NOT remove the sentinels.
+3. Then the OTHER pane archetypes (tools / cost-index / library / ledger / about pages) — carry the same
+   app-grade hairline + mono data-voice system off the home and across the site.
 One section per increment; scoped v3 CSS, tokens-only, css-drift 504; headless both themes; EN+ES; preserve
-machinery. DEFERRED (site-wide, deliberate): type unification (Fraunces→Inter — review says #2, not #1);
-the /window/ personal-access founder-fork; the flagship tool-card composition (2-up or full-width glyph).
+machinery. **FOUNDER DECISIONS parked:** (a) footer newsletter — keep Don's gated first-person voice
+(current) or de-solo it too (needs the G.10 gate updated); (b) type unification (Fraunces→Inter — review says
+#2, a site-wide call, not #1); (c) the /window/ personal-access founder-fork; (d) flagship tool-card
+composition (2-up or full-width glyph — the review's least-resolved layout).
 
 **NEXT (autonomous, ordered) — SUPERSEDED** by the review-driven NEXT above (item 1 instrument shipped as
 `37c70aac4`+`a64bf8662`; item 2 stances now deferred behind the momentum surfaces). Retained context: the
