@@ -160,8 +160,8 @@ function accentScope(accent) {
 // 1px-bordered track; the per-page accent is chrome only. Fills read `--v` (a %-of-max number).
 function figCompany(A, es) {
   const c = A.company;
-  const say = es ? 'de los mayores movimientos detectados viajaron con un vecino de clúster'
-    : 'of the biggest detected moves traveled with a cluster-mate';
+  const say = es ? 'de los mayores movimientos detectados viajaron con un acompañante'
+    : 'of the biggest detected moves traveled with a companion';
   const sub = es
     ? `${c.withCompany} de ${c.total} mayores movimientos detectados tuvieron compañía · ${c.alone} se movieron solos`
     : `${c.withCompany} of ${c.total} biggest detected moves had company · ${c.alone} moved alone`;
