@@ -59,6 +59,7 @@
     ownHistoryEyebrow: 'Frente a tu propio historial',
     chartYou: 'Tú', chartMarket: 'Mercado', chartAria: 'Tu precio frente al precio mayorista del mercado, ambos indexados a 100 al inicio de tu ventana.',
     chartUncertain: 'Lecturas de mercado escasas — línea aproximada', showNumbers: 'Ver los números', tipGap: 'Diferencia:',
+    showAnalysis: 'Ver el gráfico y el análisis completo',
     thDate: 'Fecha', thYou: 'Tu precio', thYouCum: 'Tú (acum.)', thMarketCum: 'Mercado (acum.)',
     attributionWholesale: 'Referencia mayorista — tu precio entregado normalmente es mayor.',
     attributionSources: 'Fuentes', attributionAsOf: 'Lecturas de mercado',
@@ -178,6 +179,7 @@
     ownHistoryEyebrow: 'Against your own history',
     chartYou: 'You', chartMarket: 'Market', chartAria: 'Your price versus the wholesale market price, both indexed to 100 at the start of your window.',
     chartUncertain: 'Thin market reads — line is approximate', showNumbers: 'Show the numbers', tipGap: 'Gap:',
+    showAnalysis: 'See the chart & the full analysis',
     thDate: 'Date', thYou: 'Your price', thYouCum: 'You (cum.)', thMarketCum: 'Market (cum.)',
     attributionWholesale: 'Wholesale reference — your delivered price normally runs higher.',
     attributionSources: 'Sources', attributionAsOf: 'Market reads',
@@ -973,6 +975,12 @@
     for (var i = 0; i < pts.length; i++) { var d = Math.abs(pts[i].t - t); if (d < bd) { bd = d; best = pts[i]; } }
     return best;
   }
+  // Preserve the SUPPORTING disclosure's open/closed choice across the per-keystroke
+  // re-renders (setHTML rebuilds the node each time; re-attach the listener each time).
+  function wireAnalysisToggle() {
+    var d = resultEl.querySelector('.vb-analysis');
+    if (d) d.addEventListener('toggle', function () { analysisOpen = !!d.open; });
+  }
   function wireChartHover() {
     if (!chartModel) return;
     var wrap = resultEl.querySelector('.vb-chartwrap');
@@ -1039,6 +1047,7 @@
   var lastSig = null; // render-epoch identity signature — motion fires only when it changes
   var lastStrong = false; // did the last funnel render the strong Ledger card? (dedups the journal rollup CTA)
   var lastSingle = null;  // last single-price read context {key,item,unit,level} for the "watch this item" action
+  var analysisOpen = false; // preserved open/closed state of the two-date result's SUPPORTING disclosure across re-renders
 
   // rAF count-up for the hero gap number — lands EXACTLY on the true value; snaps under
   // reduced-motion or without rAF. Dollars never tween (a morphing $ would read as the
@@ -1256,62 +1265,45 @@
     lastSig = sig;
     var spike = classifyMarketSpike(res);
     chartModel = null;
-    var blocks = [];
 
-    // 1) THE HEADLINE — the gap (only a full verdict when the market data supports it)
-    blocks.push(headlineBlock(res));
+    // TWO-TIER result: the ANSWER (what happened + what it means + what to do) stays
+    // always-visible; the SUPPORTING evidence (chart, own-history, outlook, attribution)
+    // collapses behind one disclosure so the verdict + the take-to-your-rep action aren't
+    // buried under the analysis. The honesty REFRAMES (market context, "will it stick")
+    // stay in the answer — they temper the verdict and must never hide behind a click.
+    var answer = [], supporting = [];
 
-    // 1a) MARKET CONTEXT — the reference's own state vs its normal (ADR-012); reframes
-    //     the market number without ever touching the operator's price.
-    var ctx = contextBlock(res); if (ctx) blocks.push(ctx);
+    // ── ANSWER ──────────────────────────────────────────────────────────────
+    answer.push(headlineBlock(res)); // the gap verdict (real only when the data supports it)
+    var ctx = contextBlock(res); if (ctx) answer.push(ctx); // ADR-012 reframe (reference state, never the price)
+    var sSay = spikeSay(spike);      // "will it stick?" — spike vs structural
+    if (sSay) answer.push(h`<p class="vb-spike" data-tone="${sSay.tone}">${sSay.text}</p>`);
+    var jt = journalTrendBlock(res); if (jt) answer.push(jt); // "since your last check" (journal reopen)
+    var action = actionBlock(res, spike); if (action) answer.push(action); // THE ACTION — moved up, under the verdict
+    answer.push(funnelBlock(res, spike)); // the conversion (Ledger CTA / clean-vendor bridge)
 
-    // 1b) "Will it stick?" — spike-vs-structural read of the market move.
-    var sSay = spikeSay(spike);
-    if (sSay) {
-      blocks.push(h`<p class="vb-spike" data-tone="${sSay.tone}">${sSay.text}</p>`);
-    }
-
-    // 1c) "Since your last check" — only when this item was reopened from the journal.
-    var jt = journalTrendBlock(res);
-    if (jt) blocks.push(jt);
-
-    // 2) THE CHART + its accessible table twin (the numbers are never chart-only)
+    // ── SUPPORTING (behind one disclosure) ──────────────────────────────────
     var tableId = 'vbChartTable';
     var svg = chartSvg(res, tableId);
-    if (svg) {
-      blocks.push(h`<figure class="vb-chartwrap">${sh(svg)}<figcaption class="vb-chart-legend" data-tone="${_tone}"><span class="vb-legend-you">${T.chartYou}</span><span class="vb-legend-mkt">${T.chartMarket}</span></figcaption>${chartTable(res, tableId)}</figure>`);
-    }
+    if (svg) supporting.push(h`<figure class="vb-chartwrap">${sh(svg)}<figcaption class="vb-chart-legend" data-tone="${_tone}"><span class="vb-legend-you">${T.chartYou}</span><span class="vb-legend-mkt">${T.chartMarket}</span></figcaption>${chartTable(res, tableId)}</figure>`);
+    if (res.talkingPoint) supporting.push(h`<div class="vb-subcard"><span class="vb-eyebrow">${T.ownHistoryEyebrow}</span><span class="vb-badge" data-tier="${res.tier}">${tierLabel(res.tier)}</span><p class="vb-verdict">${res.talkingPoint}</p></div>`);
+    var rb = regimeBreakBlock(res); if (rb) supporting.push(rb);
+    var fc = forecastBlock(res); if (fc) supporting.push(fc);
+    if (m.available) supporting.push(attributionBlock(res));
 
-    // 2b) THE ACTION — the exact line to read to the rep + the brief (only on a real vendor gap)
-    var action = actionBlock(res, spike);
-    if (action) blocks.push(action);
+    var analysis = supporting.length
+      ? h`<details class="vb-analysis"${analysisOpen ? sh(' open') : ''}><summary>${T.showAnalysis}</summary><div class="vb-analysis-body">${supporting}</div></details>`
+      : '';
 
-    // 3) YOUR OWN HISTORY verdict (secondary — the trailing-median call)
-    if (res.talkingPoint) {
-      blocks.push(h`<div class="vb-subcard"><span class="vb-eyebrow">${T.ownHistoryEyebrow}</span><span class="vb-badge" data-tier="${res.tier}">${tierLabel(res.tier)}</span><p class="vb-verdict">${res.talkingPoint}</p></div>`);
-    }
-
-    // 4) MARKET OUTLOOK — regime-break (did the whole market step?) + the honest
-    //    coverage-validated next-print forecast. Both self-withhold on thin data.
-    var rb = regimeBreakBlock(res); if (rb) blocks.push(rb);
-    var fc = forecastBlock(res); if (fc) blocks.push(fc);
-
-    // 5) ATTRIBUTION (only when a market read exists)
-    if (m.available) {
-      blocks.push(attributionBlock(res));
-    }
-
-    // 6) THE FUNNEL
-    blocks.push(funnelBlock(res, spike));
-
-    // 7) on-device + clear + (consent) seed the cost profile
+    // on-device + clear + (consent) seed the cost profile
     var saveContract = (res.lastCents > 0)
       ? h` · <button type="button" class="vb-linkbtn" data-save-contract>${T.saveContract}</button>`
       : '';
-    blocks.push(h`<p class="vb-ondevice">${T.ondevice} <button type="button" class="vb-linkbtn" id="vbClearSaved">${T.clearSaved}</button>${saveContract}</p>`);
+    var ondevice = h`<p class="vb-ondevice">${T.ondevice} <button type="button" class="vb-linkbtn" id="vbClearSaved">${T.clearSaved}</button>${saveContract}</p>`;
 
-    setHTML(resultEl, h`<div class="vb-result-inner">${blocks}</div>`);
+    setHTML(resultEl, h`<div class="vb-result-inner">${answer}${analysis}${ondevice}</div>`);
     wireChartHover();
+    wireAnalysisToggle();
     if (animateThis) {
       var inner = resultEl.firstChild;
       if (inner && inner.setAttribute && !reducedMotion()) inner.setAttribute('data-animate', '1');
