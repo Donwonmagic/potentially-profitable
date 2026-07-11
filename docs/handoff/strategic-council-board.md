@@ -13,6 +13,54 @@ repo survives. Update this file as threads move.
 council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 #234–#239 product) are merged to main and closed.
 
+## ⮕ CURRENT STATE — Reinvention execution, Phase 0 (updated 2026-07-11)
+
+**Thread:** executing the fully-mapped storefront reinvention (`docs/handoff/reinvention-master-plan.md`)
+in the founder's build → audit → iterate cadence, expert-verified per increment. Strategy docs on
+this branch: `founder-vision.md`, `retention-strategy.md`, `tools-strategy.md`, `site-coverage-ledger.md`,
+`every-surface-map.md`, `library-audit-full.md`, `site-reinvention-blueprint.md`. Strategy = PRUNE →
+REFOCUS → ELEVATE; 7 phases (0 correctness → 1 prune → 2 re-pigment → 3 retention engine → 4 trust/human
+→ 5 content refocus → 6 signature craft). Demo work + #501 already merged to main; this branch had been
+docs-only until Phase 0 build started.
+
+**Phase 0 (correctness/staleness) — SHIPPED so far (each committed + pushed + gate-verified):**
+- **Increment 1 (`3be5e1d82`) — retired-tool dead-navs + OCR privacy violation.** Removed, EN+ES:
+  (a) Menu Engineering's "Open N in Menu Converter" card — the P0 menu-wipe (menu-converter 301-loops
+  back to menu-engineering → reloaded the page with an empty grid, destroying the typed menu); plus the
+  menu-copy/photo-brief quadrant handoffs + dead briefLinkFor/priorityForQ + stale edu link. (b) Plate
+  Cost's Tesseract-CDN OCR (CSS+HTML+JS) — it lazy-loaded ~3MB from cdn.jsdelivr.net, breaking the page's
+  own "no upload… Zero requests fire" promise (P0 honesty); + the retired photo-brief "Brief your
+  photographer" button. (c) Margin Math's menu-copy cross-suggest. (d) Pruned `next-tool-map.json`
+  24→3 live→live rules (killed the recommender's retired-tool cards). Verified: all inline scripts parse,
+  zero orphans, check-all 236/258 with a **byte-identical failing set to the pre-edit baseline** (all 22
+  are deploy-regen idempotency drift), tool-no-fetch/retired-links(chrome)/locale-parity(239)/banned-words green.
+- **Adversarial review** (general-purpose agent, 32 tool-uses): verdict FIX-FIRST — findings 1/2/5/6 CLEAN,
+  honesty materially fixed; caught ONE completeness gap (4 sibling escalate CTAs still → retired audit).
+- **Increment 1b (`29343de52`) — closed that gap.** Repointed margin-math's 4 result-flow escalate CTAs
+  off retired `/tools/audits/restaurant/` to topic-matched live reads (channel→delivery-economics,
+  prime-cost→pricing guide, break-even→menu-engineering read, raise→Menu Engineering tool); link+copy only,
+  JS toggles untouched; correct ES library slugs. Reworded menu-eng's "same architecture as Brand Suite"
+  data-posture line off the retired brand-suite tool. Gates green.
+
+**Phase 0 — STILL OPEN (next increments, ordered):**
+1. **Fire-and-forget forms that fabricate success** (founding-list + newsletter) — honesty defect, HIGH.
+2. **Cost-index stale-anchor + cadence contradiction → monthly everywhere** — trust-debt ("teaches people
+   not to return"); site says monthly/quarterly/weekly simultaneously. HIGH.
+3. Audit-found fact defects; `/security/` claim-count + schema bugs.
+
+**Deferred by design (logged so not lost):**
+- **Increment 2 — chrome-freshness sweep:** the bottom "Where to go next" (mm-next) blocks + the stale
+  "Free tools" footer nav on margin-math (7 retired links) + menu-engineering (1) still list retired tools;
+  the clean `_includes/footer.html` dropped the Free-tools column entirely (plate-cost/cost-pulse/vendor-
+  benchmark already synced). Bring the two stale footers in line; verify `check-footer-payload`. Homepage
+  `index.html:654` prose also still names retired tools.
+- **plate-cost "Zero requests fire" honesty reconciliation:** plausible IS loaded (`/api/event`) and fires
+  on Compute, so that exact line is a (pre-existing) overstatement; it's synchronized across prose +
+  JSON-LD FAQ + audio script + the "5 verifiable claims" artifact (both locales) + likely security-claims —
+  fix all instances together, or it desyncs / trips the audio-fabrication + security-claims gates.
+- **plate-cost Invoice-Decoder integration** (`pcPullInvoice`/`pcStaleBanner`/stale error string) — a whole
+  retired-tool FEATURE, not a stray link; Phase-3 tools-loop rebuild decision.
+
 ## ⮕ CURRENT STATE — Cost Index data-company expansion (updated 2026-07-11)
 
 **Session on branch `claude/vendor-benchmark-redesign-yn273q`** (storefront `potentially-profitable`). Thread: turn the Cost Index into a genuine **data company + open library** — surface the deep price history, add the "events that moved the market" layer, and wire the HONEST use of new public data (NASS/Census/EIA). Cadence: plan → build → audit → iterate, with **expert panels at the forks**. `check-all` baseline unchanged (232–233/252; the ~19 failures are the deploy-regenerated site-wide idempotency drift, NOT ours — see Gotchas). Every cost-index/events/context gate GREEN.
