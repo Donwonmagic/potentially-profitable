@@ -6902,26 +6902,49 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
    tools, before the library section. Operator-language facts
    in one row.
    ============================================================ */
+/* System-readout status bar (2026-07-11): the constraint-facts recast in
+   mono, each with a small teal status LED, so the band reads as capable
+   infrastructure rather than marketing copy. Scoped --ts-mono mirrors the
+   .ci-inst pattern; token-only so both themes + css-drift baseline hold. */
 .trust-strip {
-  padding: 18px 0;
+  padding: 14px 0;
   background: var(--cream-2);
   border-block: 1px solid var(--line);
+  --ts-mono: ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono","Roboto Mono",Menlo,monospace;
 }
 .trust-strip__list {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 8px 18px;
+  gap: 7px 20px;
   list-style: none;
   padding: 0;
   margin: 0;
-  font-size: 13.5px;
+  font-family: var(--ts-mono);
+  font-size: 12px;
+  letter-spacing: 0.01em;
   color: var(--ink-soft);
   line-height: 1.5;
 }
-.trust-strip__sep {
-  color: var(--stone);
+.trust-strip__list > li:not(.trust-strip__sep) {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
+.trust-strip__list > li:not(.trust-strip__sep)::before {
+  content: "";
+  flex: none;
+  width: 5px;
+  height: 5px;
+  border-radius: 1.5px;
+  background: color-mix(in srgb, var(--teal) 80%, transparent);
+}
+.trust-strip__list strong {
+  font-weight: 600;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.trust-strip__sep { display: none; }
 /* @shell:core === Compare cards (homepage) === */
 
 /* ============================================================
