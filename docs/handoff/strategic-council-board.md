@@ -39,7 +39,11 @@ ALL SHIPPED + pushed: newsletter de-solo `d9dd78900`; type `31f4013a5`; radius `
 from 504); gates green (fabrications 0, newsletter-copy ✓ enforcing company voice, locale-parity). Hub polish
 ran via workflow w71suln37 (polish+adversarial-verify per hub); the tools raw-6px radii were tokenized to
 var(--r-md) post-verify to hold drift; the library cost-index-hero was made durable by bumping its injector
-template (inject-library-cost-index-hero.mjs 16→8px) + re-running. Blueprint from workflow wbr35q2x7. Original plan:
+template (inject-library-cost-index-hero.mjs 16→8px) + re-running. Blueprint from workflow wbr35q2x7. **CERTIFIED 2026-07-11** — full 258-gate `check-all.mjs` run (task
+ba3butwm6, exit 0): 233/258 passed; all 25 failures are deploy-healed `(idem)` builders (sitemap, OG cards,
+CSS cache-bust, site-counts, glossary/hub schema, RSS, H2 anchor IDs, theme/cuisine build pages) — matching
+the pre-redesign idem baseline exactly, ZERO non-idem regressions from the levers / mono-token / newsletter
+work. CSS shells verified in sync (rebuild = 0 changes). HEAD `8dc1788ee` == origin. Original plan:
 - **[DONE `d9dd78900`] Newsletter de-solo** — "We send…"; G.10 gate updated to require company framing (teeth kept).
 - **[1] Type unification** (site.css, LOW risk): do NOT split the global `h1,h2,h3,h4{font-family:var(--font-display)}`
   (:743) — that would demote every article h3-h4. Instead add scoped `font-family:var(--font-body)` on the
