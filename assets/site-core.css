@@ -6,7 +6,7 @@
  */
 
 /* ===== [core] Root tokens (:root) (lines 1-2) ===== */
-:root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--teal-dark:#1F3A93;--teal-tint:#EAF0FE;--rust:#C42E2E;--stone:#6B7280;--stone-2:#9AA0AB;--line:#E3E5E9;--line-dark:#D7DAE0;--line-input:#868D9A;--white:#FFFFFF;--font-display:'Fraunces','Fraunces Fallback',Georgia,'Times New Roman',serif;--font-body:'Inter','Inter Fallback',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--max:1200px;--pad-x:clamp(20px,4vw,64px);--ease:cubic-bezier(.22,.61,.36,1);--ease-out:cubic-bezier(.16,1,.3,1);--t-fast:180ms;--t-med:420ms;--t-slow:900ms;--r-sm:6px;--r-md:6px;--r-lg:8px;--gold:#B7791F}
+:root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--teal-dark:#1F3A93;--teal-tint:#EAF0FE;--rust:#C42E2E;--stone:#6B7280;--stone-2:#9AA0AB;--line:#E3E5E9;--line-dark:#D7DAE0;--line-input:#868D9A;--white:#FFFFFF;--font-display:'Fraunces','Fraunces Fallback',Georgia,'Times New Roman',serif;--font-body:'Inter','Inter Fallback',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--max:1200px;--pad-x:clamp(20px,4vw,64px);--ease:cubic-bezier(.22,.61,.36,1);--ease-out:cubic-bezier(.16,1,.3,1);--t-fast:180ms;--t-med:420ms;--t-slow:900ms;--r-sm:6px;--r-md:6px;--r-lg:8px;--font-mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono","Roboto Mono",Menlo,monospace;--gold:#B7791F}
 
 
 /* ===== [core] Golden Hour expressive layer (2026 brand) (lines 3-42) ===== */
@@ -403,9 +403,9 @@
    live library index — mono tabular dates + section tags, mono column
    headers, hairline rows, subtle teal row-hover — so it reads as a live
    index, not a blog roll. Scoped --li-mono; token-only; both themes. */
-.lib-idx{width:100%;max-width:820px;margin:24px auto 0;border-collapse:collapse;table-layout:fixed;font-size:14.5px;line-height:1.45;color:var(--ink-soft);font-variant-numeric:tabular-nums;--li-mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono","Roboto Mono",Menlo,monospace}
+.lib-idx{width:100%;max-width:820px;margin:24px auto 0;border-collapse:collapse;table-layout:fixed;font-size:14.5px;line-height:1.45;color:var(--ink-soft);font-variant-numeric:tabular-nums}
 .lib-idx caption{text-align:left}
-.lib-idx thead th{text-align:left;font-family:var(--li-mono);font-size:10.5px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--stone);padding:0 12px 9px;border-bottom:1px solid var(--line-dark)}
+.lib-idx thead th{text-align:left;font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--stone);padding:0 12px 9px;border-bottom:1px solid var(--line-dark)}
 .lib-idx tbody tr{border-bottom:1px solid var(--line);transition:background var(--t-fast) var(--ease)}
 .lib-idx tbody tr:last-child{border-bottom:1px solid var(--line-dark)}
 .lib-idx tbody tr:hover{background:color-mix(in srgb,var(--teal) 5%,transparent)}
@@ -413,8 +413,8 @@
 .lib-idx-title{width:46%}
 .lib-idx-title a{color:var(--ink);text-decoration:none;font-weight:500;border-bottom:1px solid transparent;transition:border-color var(--t-fast) var(--ease)}
 .lib-idx-title a:hover{border-bottom-color:var(--ink)}
-.lib-idx-section{width:18%;font-family:var(--li-mono);font-size:11px;letter-spacing:0.04em;text-transform:uppercase;color:var(--teal)}
-.lib-idx-date{width:18%;font-family:var(--li-mono);font-size:12px;color:var(--stone);white-space:nowrap;font-variant-numeric:tabular-nums}
+.lib-idx-section{width:18%;font-family:var(--font-mono);font-size:11px;letter-spacing:0.04em;text-transform:uppercase;color:var(--teal)}
+.lib-idx-date{width:18%;font-family:var(--font-mono);font-size:12px;color:var(--stone);white-space:nowrap;font-variant-numeric:tabular-nums}
 .lib-idx-contributor{width:18%;color:var(--stone);font-size:13px}
 @media (max-width:640px){
   .lib-idx,.lib-idx thead,.lib-idx tbody,.lib-idx tr,.lib-idx td,.lib-idx th{display:block}
@@ -1130,24 +1130,24 @@ to{opacity:1;transform:translateZ(0)}
 .window:hover .pane{transform:translateY(-1px)}
 .window-caption{margin-top:18px;display:flex;justify-content:space-between;font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums}
 /* ===== Home hero — Cost Index sample instrument (the muntin window, made functional) ===== */
-.ci-inst{position:relative;margin:0;background:var(--white);border:2px solid var(--ink);border-radius:6px;padding:22px 22px 20px;overflow:hidden;box-shadow:0 50px 90px -40px rgba(20,22,26,0.25),0 20px 40px -20px rgba(42,80,200,0.15);--ci-mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono","Roboto Mono",Menlo,monospace}
+.ci-inst{position:relative;margin:0;background:var(--white);border:2px solid var(--ink);border-radius:6px;padding:22px 22px 20px;overflow:hidden;box-shadow:0 50px 90px -40px rgba(20,22,26,0.25),0 20px 40px -20px rgba(42,80,200,0.15)}
 .ci-inst__scan{position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--teal),transparent);opacity:0;pointer-events:none}
 .ci-inst[data-boot] .ci-inst__scan{animation:ci-scan 1s var(--ease-out) .5s 1}
 .ci-inst__top{display:flex;align-items:center;gap:10px;margin-bottom:16px}
-.ci-inst__label{font-family:var(--ci-mono);font-size:11.5px;text-transform:uppercase;letter-spacing:0.12em;color:var(--stone)}
-.ci-inst__state{margin-left:auto;font-family:var(--ci-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:0.08em;color:var(--stone);display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:3px 9px}
+.ci-inst__label{font-family:var(--font-mono);font-size:11.5px;text-transform:uppercase;letter-spacing:0.12em;color:var(--stone)}
+.ci-inst__state{margin-left:auto;font-family:var(--font-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:0.08em;color:var(--stone);display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:3px 9px}
 .ci-inst__state i{width:6px;height:6px;border-radius:50%;background:var(--gold);display:block}
 .ci-inst__head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
-.ci-inst__big{font-family:var(--ci-mono);font-variant-numeric:tabular-nums;font-size:clamp(34px,5.4vw,46px);font-weight:600;letter-spacing:-0.02em;line-height:1;color:var(--ink)}
-.ci-inst__chip{font-family:var(--ci-mono);font-size:12.5px;font-weight:600;padding:3px 9px;border-radius:6px;color:var(--rust);background:color-mix(in srgb,var(--rust) 12%,transparent)}
+.ci-inst__big{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-size:clamp(34px,5.4vw,46px);font-weight:600;letter-spacing:-0.02em;line-height:1;color:var(--ink)}
+.ci-inst__chip{font-family:var(--font-mono);font-size:12.5px;font-weight:600;padding:3px 9px;border-radius:6px;color:var(--rust);background:color-mix(in srgb,var(--rust) 12%,transparent)}
 .ci-inst__cap{margin:8px 0 0;font-size:12.5px;line-height:1.5;color:var(--stone)}
 .ci-inst__rows{margin-top:16px;border:1px solid var(--line);border-radius:4px;overflow:hidden}
 .ci-inst__r{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;padding:10px 13px;border-bottom:1px solid var(--line);font-size:13.5px}
 .ci-inst__r:last-child{border-bottom:0}
 .ci-inst__r--flag{background:color-mix(in srgb,var(--rust) 7%,var(--white))}
 .ci-inst__nm{color:var(--ink);font-weight:600}
-.ci-inst__unit{font-family:var(--ci-mono);font-size:12px;color:var(--stone);font-variant-numeric:tabular-nums}
-.ci-inst__d{font-family:var(--ci-mono);font-variant-numeric:tabular-nums;font-weight:600;text-align:right;color:var(--rust);white-space:nowrap}
+.ci-inst__unit{font-family:var(--font-mono);font-size:12px;color:var(--stone);font-variant-numeric:tabular-nums}
+.ci-inst__d{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-weight:600;text-align:right;color:var(--rust);white-space:nowrap}
 .ci-inst__d--calm{color:var(--stone)}
 .ci-inst__verdict{margin:14px 0 0;font-size:12.5px;line-height:1.5;color:var(--ink-soft)}
 .ci-inst__verdict b{color:var(--ink)}
@@ -1202,11 +1202,11 @@ section.block{padding:clamp(80px,10vw,140px) 0;border-top:1px solid var(--sectio
 /* Home product 3-card → flagship hairline pattern (2026-07-11). Scoped to
    #services (home-only) so the shared .service pricing tiers on /studio/ stay
    untouched; the id selector cleanly wins the cascade. Token-only. */
-#services .service{border-radius:6px;padding:30px 28px;overflow:hidden;transition:transform var(--t-fast) var(--ease-out),box-shadow var(--t-fast) var(--ease-out),border-color var(--t-fast) var(--ease);--sv-mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono","Roboto Mono",Menlo,monospace}
+#services .service{border-radius:6px;padding:30px 28px;overflow:hidden;transition:transform var(--t-fast) var(--ease-out),box-shadow var(--t-fast) var(--ease-out),border-color var(--t-fast) var(--ease)}
 #services .service::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--teal);transform:scaleX(0);transform-origin:left;transition:transform var(--t-med) var(--ease-out)}
 #services .service:hover{transform:translateY(-2px);box-shadow:0 1px 0 var(--line-dark),0 14px 26px -18px rgba(20,22,26,0.22);border-color:var(--teal)}
 #services .service:hover::before{transform:scaleX(1)}
-#services .service .label{font-family:var(--sv-mono);font-size:10.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone)}
+#services .service .label{font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone)}
 .process{background:var(--ink);color:var(--cream)}
 .process h2,.process .eyebrow{color:var(--cream)}
 .process .eyebrow::before{background:var(--cream)}
@@ -1724,7 +1724,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [core] Homepage primary tool CTA (restaurant audit) (lines 2555-2851) ===== */
+/* ===== [core] Homepage primary tool CTA (restaurant audit) (lines 2555-2850) ===== */
 /* ============================================================
    Homepage primary tool CTA (restaurant audit)
    ============================================================
@@ -1944,7 +1944,6 @@ br.br-lg{display:none}
   color: inherit;
   transition: transform var(--t-fast) var(--ease-out), box-shadow var(--t-fast) var(--ease-out), border-color var(--t-fast);
   overflow: hidden;
-  --fg-mono: ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono","Roboto Mono",Menlo,monospace;
 }
 .tool-card-flagship::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--teal);transform:scaleX(0);transform-origin:left;transition:transform var(--t-med) var(--ease-out)}
 .tool-card-flagship:hover::before{transform:scaleX(1)}
@@ -1958,7 +1957,7 @@ br.br-lg{display:none}
   padding: 4px 10px;
   background: transparent;
   color: var(--stone);
-  font-family: var(--fg-mono);
+  font-family: var(--font-mono);
   font-size: 10.5px;
   font-weight: 600;
   letter-spacing: 0.12em;
@@ -2002,7 +2001,7 @@ br.br-lg{display:none}
   color: var(--ink-soft);
 }
 .tool-cta-flagships__secondary a{ color: var(--teal); font-weight: 500; }
-.tool-card-flagship .fg-glyph-note{font-family:var(--fg-mono);font-size:11px;letter-spacing:0.02em;color:var(--stone);text-transform:none}
+.tool-card-flagship .fg-glyph-note{font-family:var(--font-mono);font-size:11px;letter-spacing:0.02em;color:var(--stone);text-transform:none}
 @media (max-width: 560px){
   .tool-card-flagship{ padding: 28px 24px 24px; }
   .tool-cta-flagships{ padding: 48px 0 40px; }
@@ -2022,7 +2021,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [core] Library nav-mega regroup (nav is everywhere) (lines 3589-3909) ===== */
+/* ===== [core] Library nav-mega regroup (nav is everywhere) (lines 3588-3908) ===== */
 
 /* ---------- Library nav-mega regroup (Phase 5) ---------------------
    The Library dropdown was an 8-item linear list. Now grouped into
@@ -2344,7 +2343,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [core] /system/ colophon page (small, kept in core) (lines 4019-4096) ===== */
+/* ===== [core] /system/ colophon page (small, kept in core) (lines 4018-4095) ===== */
 /* ============================================================
    /system/ COLOPHON PAGE
    Shows the stack, design tokens, i18n pipeline, URL restructure
@@ -2423,7 +2422,7 @@ br.br-lg{display:none}
 .sys-a11y p{font-size:14.5px;line-height:1.6;color:var(--stone);margin:0}
 
 
-/* ===== [core] Search modal (Pagefind-backed; on every page) (lines 4097-4272) ===== */
+/* ===== [core] Search modal (Pagefind-backed; on every page) (lines 4096-4271) ===== */
 /* ============================================================
    SEARCH MODAL (Pagefind-backed)
    Keyboard opens via Cmd/Ctrl+K or the nav search button. Modal
@@ -2600,7 +2599,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [core] Cloudflare Turnstile widget (reservation min-height) (lines 5754-5767) ===== */
+/* ===== [core] Cloudflare Turnstile widget (reservation min-height) (lines 5753-5766) ===== */
 
 /* ============ Cloudflare Turnstile widget (Phase 3B) ============
    Reserve the widget's render height so layout doesn't shift when
@@ -2615,7 +2614,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [core] Workshop save banner (multi-context, kept in core) (lines 5768-5819) ===== */
+/* ===== [core] Workshop save banner (multi-context, kept in core) (lines 5767-5818) ===== */
 /* ============ Workshop (Sprint 3 — cohesion) ============
    /workbench/ + /es/workbench/ saved-items page. Shares the
    global frame (.nav + <footer>) with every other page so the
@@ -2668,7 +2667,7 @@ br.br-lg{display:none}
   .wsh-item-actions{justify-content:flex-end}
 }
 
-/* ===== [core] Companion kit — four-corner cross-surface footer block (lines 5988-6114) ===== */
+/* ===== [core] Companion kit — four-corner cross-surface footer block (lines 5987-6113) ===== */
 /* ============ Companion kit (Phase 2B — cohesion) ============
    The four-corner footer block — Read · Run · Write · Look up —
    injected by scripts/inject-companion-kit.mjs at the bottom of
@@ -2796,7 +2795,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [core] Workshop rationale (lines 6115-6131) ===== */
+/* ===== [core] Workshop rationale (lines 6114-6130) ===== */
 /* ============ Workshop rationale (Sprint 14 — cohesion) ============
    A small editorial block on /tools/, /glossary/, and a few other
    pages that explains the Workshop to anonymous visitors. The two
@@ -2814,7 +2813,7 @@ br.br-lg{display:none}
 .workshop-rationale-cta .js-nav-signin:hover,.workshop-rationale-cta .js-nav-workshop:hover{color:var(--teal-dark)}
 
 
-/* ===== [core] The Window (/window/ — kept in core to avoid a 4th shell) (lines 6132-6249) ===== */
+/* ===== [core] The Window (/window/ — kept in core to avoid a 4th shell) (lines 6131-6248) ===== */
 /* ============ THE WINDOW (Phase W.3) ============
    Full-page editorial canvas at /window/ and /es/window/. Suppresses
    the standard nav via body.window-canvas. The muntin hairline at
@@ -2933,7 +2932,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .window-signin strong{color:var(--ink)}
 
 
-/* ===== [core] Window composer (Phase-2 redesign) (lines 6250-6282) ===== */
+/* ===== [core] Window composer (Phase-2 redesign) (lines 6249-6281) ===== */
 /* ============ WINDOW COMPOSER — Phase-2 redesign ============
    On-ramp chips moved above the form, surface productized offers
    with prices. Optional context grid (Name / Restaurant / Site)
@@ -2967,7 +2966,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   .window-composer__alt-row li + li::before{display:none}
 }
 
-/* ===== [core] ADMIN /admin/window/ (kept in core; admin is auth-gated noindex) (lines 6283-6380) ===== */
+/* ===== [core] ADMIN /admin/window/ (kept in core; admin is auth-gated noindex) (lines 6282-6379) ===== */
 
 /* ============ ADMIN /admin/window/ (Phase W.3) ============ */
 .admin-window{max-width:760px;margin:0 auto;padding:32px 16px}
@@ -3066,7 +3065,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .tool-data-promise__links a:hover{border-bottom-color:var(--teal)}
 
 
-/* ===== [core] Newsletter capture (in global footer; on every page) (lines 6622-6689) ===== */
+/* ===== [core] Newsletter capture (in global footer; on every page) (lines 6621-6688) ===== */
 
 /* Phase G.10 (Growth) — quiet newsletter capture in the global footer.
    Two short lines, one input, one button — no badges, no pop-ups, no
@@ -3097,11 +3096,11 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
    it as its own zone without going dark. The .founding-form posts to
    /api/waitlist and gets ts-stamp + async submit + inline success from
    first-touch.js via the shared .js-signup-form handler. */
-.founding-band{background:var(--cream-2);border-top:3px solid var(--ink);border-bottom:1px solid var(--line);--fd-mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono","Roboto Mono",Menlo,monospace}
+.founding-band{background:var(--cream-2);border-top:3px solid var(--ink);border-bottom:1px solid var(--line)}
 /* App-grade enrollment (2026-07-11): mono field labels + a mono countdown
    readout so the founding capture reads as enrolling in a capable product,
    not a newsletter signup. Token-only; the form machinery is untouched. */
-.founding-countdown{font-family:var(--fd-mono);font-weight:600;color:var(--teal);white-space:nowrap;font-variant-numeric:tabular-nums}
+.founding-countdown{font-family:var(--font-mono);font-weight:600;color:var(--teal);white-space:nowrap;font-variant-numeric:tabular-nums}
 .founding-band .section-header{margin-bottom:36px}
 .founding-band .section-header .eyebrow{justify-content:center}
 .founding-band .section-header p{margin-inline:auto;color:var(--ink-soft)}
@@ -3109,7 +3108,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .founding-form-fields{display:flex;flex-direction:column;gap:14px}
 @media(min-width:560px){.founding-form-fields{flex-direction:row;gap:12px}.founding-field{flex:1 1 0;min-width:0}}
 .founding-field{display:flex;flex-direction:column;gap:6px;text-align:left}
-.founding-form-label{font-family:var(--fd-mono);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--stone)}
+.founding-form-label{font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--stone)}
 .founding-optional{font-weight:400;letter-spacing:0.02em;text-transform:none;color:var(--stone)}
 .founding-form input[type="email"],.founding-form input[type="text"]:not([name="hp"]){width:100%;box-sizing:border-box;padding:12px 14px;min-height:46px;border:1px solid var(--line-dark);border-radius:6px;background:var(--white);color:var(--ink);font:inherit;font-size:16px}
 .founding-form input[type="email"]::placeholder,.founding-form input[type="text"]:not([name="hp"])::placeholder{color:var(--stone)}
@@ -3135,7 +3134,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 
 
 
-/* ===== [core] Touch-device hover hygiene (lines 6752-6790) ===== */
+/* ===== [core] Touch-device hover hygiene (lines 6751-6789) ===== */
 /* ============================================================
    Touch-device hover hygiene — neutralize sticky :hover effects
    on devices that don't have a hover capability. CSS :hover on
@@ -3175,7 +3174,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   *:hover { transition-duration: 0ms !important; }
 }
 
-/* ===== [core] Hero mobile reorder (homepage) (lines 6791-6815) ===== */
+/* ===== [core] Hero mobile reorder (homepage) (lines 6790-6814) ===== */
 
 /* ============================================================
    Hero mobile reorder — phones first, primary CTA above the fold.
@@ -3201,7 +3200,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Hero count chips (homepage) (lines 6891-6922) ===== */
+/* ===== [core] Hero count chips (homepage) (lines 6890-6921) ===== */
 
 /* ============================================================
    Hero count chips — small pill row showing library counts
@@ -3234,7 +3233,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   color: var(--teal);
 }
 
-/* ===== [core] Trust strip (homepage) (lines 6923-6972) ===== */
+/* ===== [core] Trust strip (homepage) (lines 6922-6970) ===== */
 
 /* ============================================================
    Trust strip — single thin band immediately under flagship
@@ -3249,7 +3248,6 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   padding: 14px 0;
   background: var(--cream-2);
   border-block: 1px solid var(--line);
-  --ts-mono: ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono","Roboto Mono",Menlo,monospace;
 }
 .trust-strip__list {
   display: flex;
@@ -3259,7 +3257,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   list-style: none;
   padding: 0;
   margin: 0;
-  font-family: var(--ts-mono);
+  font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.01em;
   color: var(--ink-soft);
@@ -3285,7 +3283,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 .trust-strip__sep { display: none; }
 
-/* ===== [core] Compare cards (homepage) (lines 6973-7058) ===== */
+/* ===== [core] Compare cards (homepage) (lines 6971-7056) ===== */
 
 /* ============================================================
    Compare cards — three-column Patchwork / Agency / Muntin
@@ -3372,7 +3370,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Window Phase 2/3.6/4/5+ additions (sash/sidelight, attach, now, pulses, admin) (lines 7500-7763) ===== */
+/* ===== [core] Window Phase 2/3.6/4/5+ additions (sash/sidelight, attach, now, pulses, admin) (lines 7498-7761) ===== */
 /* ============ THE WINDOW — Phase 2/3.6/4/5+ additions ============
    Sash/sidelight named-pane composer (Phase 2.1), photo+voice attach
    row (Phase 3.2-3.6), now-line widget (Phase 4), site-wide pulse
@@ -3637,7 +3635,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .admin-callbacks__voice-label--deleted{color:var(--stone)}
 .admin-callbacks__meta{font-size:12px;color:var(--ink-soft);font-style:italic;margin:8px 0 0}
 
-/* ===== [core] Phase 1 — design tokens + MuntinUI component shells (.mtn-*) (lines 7764-7976) ===== */
+/* ===== [core] Phase 1 — design tokens + MuntinUI component shells (.mtn-*) (lines 7762-7974) ===== */
 
 /* ============ Phase 1 tokens (tool-suite upgrade) ============
    Additive tokens that the MuntinUI primitives consume. Existing
@@ -3851,7 +3849,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   }
 }
 
-/* ===== [core] Phase 2 — hub tier badge + tool-tier-filter strip (lines 7977-8031) ===== */
+/* ===== [core] Phase 2 — hub tier badge + tool-tier-filter strip (lines 7975-8029) ===== */
 
 /* ============ Phase 2 hub styles (tool-suite upgrade) ============
    Tier badge on each tool card + a JS-enhanced filter strip that
@@ -3865,7 +3863,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   display:inline-flex;align-items:center;
   padding:var(--badge-sm-py) var(--badge-sm-px);
   margin-left:var(--space-1);
-  font-family:var(--tc-mono);font-variant-numeric:tabular-nums;
+  font-family:var(--font-mono);font-variant-numeric:tabular-nums;
   font-size:var(--badge-sm-fs);font-weight:700;
   letter-spacing:.06em;text-transform:uppercase;
   border-radius:999px;border:1px solid var(--mtn-border);
@@ -3907,7 +3905,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   display:none;
 }
 
-/* ===== [core] Phase 5 — dark-mode token override (prefers-color-scheme + [data-theme]) (lines 8032-8093) ===== */
+/* ===== [core] Phase 5 — dark-mode token override (prefers-color-scheme + [data-theme]) (lines 8030-8091) ===== */
 
 /* ============ Phase 5 dark-mode tokens (tool-suite upgrade) ============
    The Phase 1 component primitives all reference --mtn-surface /
@@ -3970,7 +3968,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Phase 7 — dark-mode toggle button (.theme-toggle) (lines 8094-8154) ===== */
+/* ===== [core] Phase 7 — dark-mode toggle button (.theme-toggle) (lines 8092-8152) ===== */
 /* ============ Phase 7 — dark-mode toggle button =============
    Sits in the nav next to lang-switch. Two SVG icons (sun + moon)
    stacked; CSS shows one based on the current [data-theme] state.
@@ -4032,7 +4030,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .mobile-theme .theme-toggle__label{display:inline}
 
 
-/* ===== [core] Phase 4 — next-tool recommendation card (.mtn-next-tool) (lines 8155-8195) ===== */
+/* ===== [core] Phase 4 — next-tool recommendation card (.mtn-next-tool) (lines 8153-8193) ===== */
 /* ============ Phase 4 — next-tool recommendation card =============
    Mounted at the end of a tool's result region by
    MuntinNextTool.render(). Visually quiet so it doesn't compete
@@ -4074,7 +4072,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .mtn-next-tool__link:focus-visible{outline:none;box-shadow:var(--ring-focus)}
 
 
-/* ===== [core] Phase G — About portrait frame (real photo overlay) (lines 8196-8210) ===== */
+/* ===== [core] Phase G — About portrait frame (real photo overlay) (lines 8194-8208) ===== */
 /* ===== Phase G — About portrait frame (real photo overlay; reused on homepage About teaser + /about/) ===== */
 .about-portrait-frame{position:relative;width:100%;aspect-ratio:4/5;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line-dark);background:var(--cream-2)}
 .about-portrait-frame .portrait{position:absolute;inset:0;border:0;border-radius:0;aspect-ratio:auto;width:100%;height:100%}
@@ -4090,7 +4088,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .about-window .portrait{position:absolute;inset:0;border:0;border-radius:0;aspect-ratio:auto;width:100%;height:100%;overflow:hidden;background:linear-gradient(150deg,color-mix(in srgb,var(--teal) 24%,var(--cream)) 0%,color-mix(in srgb,var(--teal) 11%,var(--cream)) 52%,var(--cream-2) 100%)}
 .about-window .portrait::after{content:'';position:absolute;inset:0;background:linear-gradient(color-mix(in srgb,var(--ink) 24%,transparent),color-mix(in srgb,var(--ink) 24%,transparent)) 50% 0/2px 100% no-repeat,linear-gradient(color-mix(in srgb,var(--ink) 24%,transparent),color-mix(in srgb,var(--ink) 24%,transparent)) 0 33.333%/100% 2px no-repeat,linear-gradient(color-mix(in srgb,var(--ink) 24%,transparent),color-mix(in srgb,var(--ink) 24%,transparent)) 0 66.666%/100% 2px no-repeat;box-shadow:inset 0 0 0 9px var(--cream),inset 0 0 0 11px color-mix(in srgb,var(--ink) 20%,transparent);pointer-events:none}
 
-/* ===== [core] Batch marquee (lines 8211-8224) ===== */
+/* ===== [core] Batch marquee (lines 8209-8222) ===== */
 /* ===== Batch marquee — fixed strip above the nav (.batch-marquee is on every page when a batch is active) ===== */
 .batch-marquee{position:fixed;top:0;left:0;right:0;z-index:60}
 /* The fixed nav is offset below the fixed banner by --banner-h (set to the
@@ -4105,7 +4103,7 @@ body:has(.batch-marquee) main{padding-top:calc(64px + max(var(--banner-h,50px),5
 @media (max-width:640px){:root{--banner-h:72px}}
 
 
-/* ===== [core] Phase 9 — Light refresh (micro-interactions, depth, voice search, dark-mode polish) (lines 8225-8429) ===== */
+/* ===== [core] Phase 9 — Light refresh (micro-interactions, depth, voice search, dark-mode polish) (lines 8223-8427) ===== */
 /* ============ Phase 9 — Light refresh ============
    A small, additive cosmetic pass that layers on top of every
    previous phase without re-declaring anything. Five concerns:
@@ -4311,10 +4309,10 @@ body:has(.batch-marquee) main{padding-top:calc(64px + max(var(--banner-h,50px),5
 :root[data-theme="dark"] .theme-toggle:hover{background:var(--refresh-surface-1);border-color:var(--teal)}
 
 
-/* ===== [core] Dark-mode contrast completion (lines 8430-8430) ===== */
+/* ===== [core] Dark-mode contrast completion (lines 8428-8428) ===== */
 
 
-/* ===== [core] Nav width discipline (bolder pass 2026-07) (lines 8431-8729) ===== */
+/* ===== [core] Nav width discipline (bolder pass 2026-07) (lines 8429-8727) ===== */
 /* At 1440 the nav row's natural demand (~1307px) exceeds the 1200px
    container, pushing the primary CTA off-canvas ("Reach Do"). Shed
    demand progressively instead of letting the row overflow: tighter

@@ -5,7 +5,7 @@
  * the SECTIONS map in scripts/build-css-shells.mjs.
  */
 
-/* ===== [tool] TOOL SHELL — shared primitives for /tools/* pages (lines 2852-2952) ===== */
+/* ===== [tool] TOOL SHELL — shared primitives for /tools/* pages (lines 2851-2951) ===== */
 /* ============================================================
    TOOL SHELL — shared primitives for /tools/* pages
    Promoted from seven near-identical inline <style> blocks
@@ -40,7 +40,7 @@
   transition:transform var(--t-med) var(--ease-out),box-shadow var(--t-med) var(--ease-out),border-color var(--t-fast);
   position:relative;
   overflow:hidden;
-  --tc-mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono","Roboto Mono",Menlo,monospace;
+  
 }
 .tool-card.live:hover{
   transform:translateY(-4px);
@@ -58,7 +58,7 @@
   gap:8px;
   padding:4px 12px;
   border-radius:999px;
-  font-family:var(--tc-mono);
+  font-family:var(--font-mono);
   font-variant-numeric:tabular-nums;
   font-size:10px;
   font-weight:700;
@@ -107,7 +107,7 @@
 .tool-card.soon .cta{ color:var(--stone); }
 .tool-card .cta svg{ width:16px; height:16px; }
 
-/* ===== [tool] Tools-landing cluster layout (lines 2953-3244) ===== */
+/* ===== [tool] Tools-landing cluster layout (lines 2952-3243) ===== */
 
 /* ---------- Tools-landing cluster layout (Phase 2 cohesion pass) -----
    The /tools/ page is now grouped by the same 6-topic taxonomy used at
@@ -400,7 +400,7 @@
 @media (max-width:960px){ .tool-roadmap .tool-grid{ grid-template-columns:repeat(2,1fr); } }
 @media (max-width:560px){ .tool-roadmap .tool-grid{ grid-template-columns:1fr; } }
 
-/* ===== [tool] Per-tool "Keep going" knit-in (lines 3245-3356) ===== */
+/* ===== [tool] Per-tool "Keep going" knit-in (lines 3244-3355) ===== */
 
 /* ---------- Per-tool "Keep going" knit-in (Phase 3 cohesion pass) ----
    Renders at the bottom of every live tool page (between
@@ -513,7 +513,7 @@
   .tool-knit__grid{ grid-template-columns:1fr; }
 }
 
-/* ===== [tool] Tool deep-links (.tool-deep-* — bottom of every /tools/* page) (lines 4588-4672) ===== */
+/* ===== [tool] Tool deep-links (.tool-deep-* — bottom of every /tools/* page) (lines 4587-4671) ===== */
 
 /* Tool deep-links — the Phase-3.5 block at the bottom of every
    /tools/* page. Closes the loop from a tool's result back into
@@ -599,7 +599,7 @@
   color:var(--teal);
 }
 
-/* ===== [tool] Tool states (loading / error / empty) (lines 5820-5866) ===== */
+/* ===== [tool] Tool states (loading / error / empty) (lines 5819-5865) ===== */
 
 /* ============ Tool states (Sprint 5 — cohesion) ============
    Shared loading + error patterns for tool result regions. Every
@@ -647,7 +647,7 @@
 .tool-error-meta{margin-top:12px;font-size:12.5px;color:var(--stone);font-variant-numeric:tabular-nums}
 
 
-/* ===== [tool] Learn-back (in tool result region) (lines 5951-5970) ===== */
+/* ===== [tool] Learn-back (in tool result region) (lines 5950-5969) ===== */
 
 /* ============ Learn-back (Sprint 12 — cohesion) ============
    A thin, prose-shaped row that sits inside a tool's result region
@@ -668,7 +668,7 @@
 .learn-back-body a:hover,.learn-back-body a:focus-visible{color:var(--teal-dark)}
 
 
-/* ===== [tool] .edu-result — interpretation card under tool output (lines 6381-6420) ===== */
+/* ===== [tool] .edu-result — interpretation card under tool output (lines 6380-6419) ===== */
 /* ============ .edu-result — interpretation card under tool output ============
    Every calculator emits a number; this block lives directly under
    the result panel and answers the two questions a small-business
@@ -709,7 +709,7 @@
 @media print{.edu-result{display:none}}
 
 
-/* ===== [tool] Statistical disclosure components (lines 6421-6464) ===== */
+/* ===== [tool] Statistical disclosure components (lines 6420-6463) ===== */
 /* ============ Statistical disclosure components ============
    Phase 3 — building on .edu-result so calculators can disclose
    uncertainty bands, hard-coded assumptions, and the formula behind
@@ -754,7 +754,7 @@
 @media print{.edu-range,.edu-source,.edu-formula,.edu-caveat{display:none}}
 
 
-/* ===== [tool] Tool-internal type minimums (lines 6465-6621) ===== */
+/* ===== [tool] Tool-internal type minimums (lines 6464-6620) ===== */
 /* ============ Tool-internal type minimums ============
    Utility floor for text inside tool result panels, tables, and
    helpers. Tools previously drifted to 10.5–12px in tight grids; the
