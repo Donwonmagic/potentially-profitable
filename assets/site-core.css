@@ -6,7 +6,7 @@
  */
 
 /* ===== [core] Root tokens (:root) (lines 1-2) ===== */
-:root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--teal-dark:#1F3A93;--teal-tint:#EAF0FE;--rust:#C42E2E;--stone:#6B7280;--stone-2:#9AA0AB;--line:#E3E5E9;--line-dark:#D7DAE0;--line-input:#868D9A;--white:#FFFFFF;--font-display:'Fraunces','Fraunces Fallback',Georgia,'Times New Roman',serif;--font-body:'Inter','Inter Fallback',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--max:1200px;--pad-x:clamp(20px,4vw,64px);--ease:cubic-bezier(.22,.61,.36,1);--ease-out:cubic-bezier(.16,1,.3,1);--t-fast:180ms;--t-med:420ms;--t-slow:900ms;--r-sm:8px;--r-md:14px;--r-lg:22px;--gold:#B7791F}
+:root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--teal-dark:#1F3A93;--teal-tint:#EAF0FE;--rust:#C42E2E;--stone:#6B7280;--stone-2:#9AA0AB;--line:#E3E5E9;--line-dark:#D7DAE0;--line-input:#868D9A;--white:#FFFFFF;--font-display:'Fraunces','Fraunces Fallback',Georgia,'Times New Roman',serif;--font-body:'Inter','Inter Fallback',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--max:1200px;--pad-x:clamp(20px,4vw,64px);--ease:cubic-bezier(.22,.61,.36,1);--ease-out:cubic-bezier(.16,1,.3,1);--t-fast:180ms;--t-med:420ms;--t-slow:900ms;--r-sm:6px;--r-md:6px;--r-lg:8px;--gold:#B7791F}
 
 
 /* ===== [core] Golden Hour expressive layer (2026 brand) (lines 3-42) ===== */
@@ -106,7 +106,7 @@
      12px before this token existed; declaring it explicitly stops the
      8/10/12/14 drift the next tool was going to introduce. Keep
      --r-sm (8px) for compact UI and --r-md (14px) for cards / CTAs. */
-  --r-input: 12px;
+  --r-input: 6px;
 
   /* Status palette — used by tool result UIs that grade or assess
      (Restaurant Audit, GBP Grader, Margin Math health bands, Brand
@@ -1130,7 +1130,7 @@ to{opacity:1;transform:translateZ(0)}
 .window:hover .pane{transform:translateY(-1px)}
 .window-caption{margin-top:18px;display:flex;justify-content:space-between;font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums}
 /* ===== Home hero — Cost Index sample instrument (the muntin window, made functional) ===== */
-.ci-inst{position:relative;margin:0;background:var(--white);border:2px solid var(--ink);border-radius:8px;padding:22px 22px 20px;overflow:hidden;box-shadow:0 50px 90px -40px rgba(20,22,26,0.25),0 20px 40px -20px rgba(42,80,200,0.15);--ci-mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono","Roboto Mono",Menlo,monospace}
+.ci-inst{position:relative;margin:0;background:var(--white);border:2px solid var(--ink);border-radius:6px;padding:22px 22px 20px;overflow:hidden;box-shadow:0 50px 90px -40px rgba(20,22,26,0.25),0 20px 40px -20px rgba(42,80,200,0.15);--ci-mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono","Roboto Mono",Menlo,monospace}
 .ci-inst__scan{position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--teal),transparent);opacity:0;pointer-events:none}
 .ci-inst[data-boot] .ci-inst__scan{animation:ci-scan 1s var(--ease-out) .5s 1}
 .ci-inst__top{display:flex;align-items:center;gap:10px;margin-bottom:16px}
