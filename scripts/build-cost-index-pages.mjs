@@ -2919,12 +2919,22 @@ function evSlugLink(slug, es, base) {
   const nm = escHtml(evSlugName(slug, es));
   return shippable(slug) ? `<a href="${base}/cost-index/${slug}/">${nm}</a>` : `<span>${nm}</span>`;
 }
-// Normalize a YYYY / YYYY-MM / YYYY-MM-DD registry date to a full ISO date for datePublished.
+// Normalize a YYYY / YYYY-MM / YYYY-MM-DD registry date to a full ISO date.
 function evIsoDate(s) {
   const a = String(s || '').split('-');
   if (a.length >= 3) return `${a[0]}-${a[1]}-${a[2]}`;
   if (a.length === 2) return `${a[0]}-${a[1]}-01`;
   return `${a[0] || '2001'}-01-01`;
+}
+// The per-event detail pages first shipped on this date; datePublished is that stable surface
+// date, NOT the event's own start date — the article is ABOUT a past event, it was not published
+// back then. Fixed constant so the build stays deterministic (no wall-clock in a --check build).
+const EVENTS_SURFACE_PUBLISHED = '2026-07-11';
+// ISO 8601 interval for the documented event window — the correct home for the event's dates
+// (temporalCoverage = what the article is about), so nothing is lost by fixing datePublished.
+function evTemporalCoverage(ev) {
+  const s = evIsoDate(ev.startDate), e = evIsoDate(ev.endDate || ev.startDate);
+  return s === e ? s : `${s}/${e}`;
 }
 // Loose [startMs,endMs] for an event: a bare year spans Jan-Dec; a bare month spans the month.
 function evWindowMs(ev) {
@@ -3143,7 +3153,8 @@ function emitEventPage(ev, locale) {
   const jsonld = JSON.stringify({ '@context': 'https://schema.org', '@graph': [
     { '@type': 'Article', '@id': canon + '#article', 'headline': ev.label, 'name': ev.label,
       'inLanguage': es ? 'es-US' : 'en-US', 'description': numFreeDesc,
-      'articleBody': evExcerpt(ev.whatHappened, 600), 'datePublished': evIsoDate(ev.startDate),
+      'articleBody': evExcerpt(ev.whatHappened, 600),
+      'datePublished': EVENTS_SURFACE_PUBLISHED, 'temporalCoverage': evTemporalCoverage(ev),
       'isAccessibleForFree': true, 'author': { '@id': 'https://muntin.digital/#business' },
       'publisher': { '@id': 'https://muntin.digital/#business' },
       'isBasedOn': 'https://muntin.digital/cost-index/events.json',
