@@ -105,6 +105,15 @@ durations, the cubic-bezier(.16,1,.3,1) emphasis easing — is intact).
     is --teal #2A50C8, so one focused control shows two blues. Recommended pilot fix (one-liner, ungated).
     (2) stale radius comments/fallback (site.css L95-98 says --r-sm 8/--r-md 14; real = 6/6/8; also a stale set
     in check-css-drift.mjs's own comment). (3) off-scale raw radii sweep (storefront onto 6/8; INTRA-repo only).
+  - **✅ SHIPPED `03d8ebe00` (survivors 1+2):** `--ring-focus` now **derives from --teal via color-mix** (not a
+    hardcoded teal) so the glow tracks the accent in EVERY scope — storefront resolves #2A50C8 (matches outline);
+    the `.ld-wrap` Ledger demo, which deliberately re-skins --teal to the app's #3b68f5, gets a matching glow for
+    free (a hardcoded teal would have created a NEW two-blue mismatch inside the demo — caught in verification).
+    color-mix already used 22× in site.css. Regenerated the 3 CSS shells (build-css-shells.mjs); check-css-shells
+    clean; tokens-sync clean; check-all green. Also refreshed stale radius docs to the v3 6/6/8 scale. NOTE: the
+    demo's `#3b68f5` is CORRECT/deliberate (the storefront's mini-mirror of the product app) — do NOT "fix" it.
+  - **HELD for founder (survivor 3 + editorial):** off-scale raw-radii sweep is cosmetic churn with real visible
+    corner changes across many components — not shipped without a look. Plus the two editorial calls below.
   - **DEFER / maintenance notes:** dark-accent seam #7AA7FF vs #5b82ff (only accent slot no gate cross-checks)
     + dark status pigments diverge independently (storefront ships a full dark theme the shared spec says doesn't
     exist — stale spec). Dark --stone-2 #99A0AB is under-flipped but it's DECORATIVE (dividers/ring-tracks), not
