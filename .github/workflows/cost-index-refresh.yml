@@ -131,6 +131,15 @@ jobs:
           # reads data/cost-index.json at BUILD time, so without this they freeze
           # at last build while the hub refreshes. Current information everywhere.
           node scripts/build-ingredient-yield-pages.mjs
+          # Open-data reshapes (CC0/CC-BY) — re-derive the public cost-index/*.{json,csv}
+          # datasets from the freshly regenerated sources (seasonality, events, lockfloat)
+          # so the /open downloads never lag the index. Pure data files, no nav. Their
+          # --check in check-all fails the deploy if this is ever skipped.
+          node scripts/build-seasonality-open-data.mjs
+          node scripts/build-events-open-data.mjs
+          node scripts/build-lockfloat-open-data.mjs
+          node scripts/build-anomaly-open-data.mjs
+          node scripts/build-yields-open-data.mjs
           # Restore canonical nav — the page builders emit skeleton include
           # sentinels; without this the committed pages would ship stripped nav.
           node scripts/sync-includes.mjs

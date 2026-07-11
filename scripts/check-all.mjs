@@ -505,6 +505,22 @@ const CHECKS = [
   ['Cost-index events sync','build-cost-index-events.mjs','--check'],
   ['Cost-index events honesty self-test','check-cost-index-events.mjs','--self-test'],
   ['Cost-index events honesty','check-cost-index-events.mjs'],
+  // Open-data publication artifacts (CC0/CC-BY) — deterministic reshapes of the gated source
+  // data into cost-index/*.{json,csv}, surfaced on /open. These generators are NOT in the deploy
+  // build chain, so their --check here is the ONLY guard against a published open dataset drifting
+  // from its source (e.g. a data refresh that regenerates seasonality/events/lockfloat but not the
+  // reshape). Each also self-tests its transform + honesty (license, no price-bulk leak, honest
+  // column naming). The cost-index-refresh workflow re-runs the generators so refreshes stay in sync.
+  ['Yields open-data self-test','build-yields-open-data.mjs','--self-test'],
+  ['Yields open-data sync','build-yields-open-data.mjs','--check'],
+  ['Events open-data self-test','build-events-open-data.mjs','--self-test'],
+  ['Events open-data sync','build-events-open-data.mjs','--check'],
+  ['Seasonality open-data self-test','build-seasonality-open-data.mjs','--self-test'],
+  ['Seasonality open-data sync','build-seasonality-open-data.mjs','--check'],
+  ['Lock-or-float open-data self-test','build-lockfloat-open-data.mjs','--self-test'],
+  ['Lock-or-float open-data sync','build-lockfloat-open-data.mjs','--check'],
+  ['Anomaly open-data self-test','build-anomaly-open-data.mjs','--self-test'],
+  ['Anomaly open-data sync','build-anomaly-open-data.mjs','--check'],
   // Market-context seed for Vendor Benchmark — per ingredient: volatility class, whether the
   // reference is itself unusual right now vs its own normal, and the most recent DOCUMENTED
   // event. Lets the tool add co-occurrence context about the REFERENCE's state (never the
