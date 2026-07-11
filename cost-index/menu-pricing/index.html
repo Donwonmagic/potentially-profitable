@@ -1,0 +1,1022 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<title>The menu-pricing playbook | Muntin Cost Index</title>
+<meta name="description" content="Joins four data layers per ingredient: what to print or float, true cost per edible portion, the cheapest month, and which swap saves nothing. 37 of 100…" />
+<meta name="theme-color" content="#2A50C8" />
+<link rel="canonical" href="https://muntin.digital/cost-index/menu-pricing/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/cost-index/menu-pricing/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/cost-index/menu-pricing/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/cost-index/menu-pricing/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="es_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="The menu-pricing playbook | Muntin Cost Index" />
+<meta property="og:description" content="Joins four data layers per ingredient: what to print or float, true cost per edible portion, the cheapest month, and which swap saves nothing. 37 of 100…" />
+<meta property="og:url" content="https://muntin.digital/cost-index/menu-pricing/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="The menu-pricing playbook | Muntin Cost Index" />
+<meta name="twitter:description" content="Joins four data layers per ingredient: what to print or float, true cost per edible portion, the cheapest month, and which swap saves nothing. 37 of 100…" />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":["CollectionPage","HowTo"],"@id":"https://muntin.digital/cost-index/menu-pricing/#page","url":"https://muntin.digital/cost-index/menu-pricing/","name":"The menu-pricing playbook","inLanguage":"en-US","description":"Joins four data layers per ingredient: what to print or float, true cost per edible portion, the cheapest month, and which swap saves nothing. 37 of 100 are printable.","isPartOf":{"@id":"https://muntin.digital/#website"},"isBasedOn":"https://muntin.digital/open/","speakable":{"@type":"SpeakableSpecification","cssSelector":["h1",".ci-answer"]}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Cost index","item":"https://muntin.digital/cost-index/"},{"@type":"ListItem","position":3,"name":"The menu-pricing playbook","item":"https://muntin.digital/cost-index/menu-pricing/"}]}]}</script>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<style>
+:root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--white:#fff;--line:#E3E5E9;--teal-wash:rgba(42,80,200,.06);--stone:#6B7280;--gold:#B7791F;--season:#6b4fa1;--font-display:'Fraunces',Georgia,serif;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#16181D;color:#F6F7F8;padding:12px 16px;z-index:100}
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D7DAE0}
+header.nav{min-height:64px}
+.nav{position:fixed;top:0;left:0;right:0;background:var(--cream);z-index:50;border-bottom:1px solid #E3E5E9}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:64px;padding:12px 0}
+.logo{display:flex;align-items:center;gap:10px;font-family:Georgia,serif;font-size:22px;font-weight:600;letter-spacing:-0.02em;flex-shrink:0;white-space:nowrap;color:inherit;text-decoration:none}
+.logo-mark{width:28px;height:28px;flex:0 0 28px}
+.nav-links{display:flex;gap:36px;font-size:15px}
+.nav-toggle{display:none}
+.nav-search-btn,.lang-switch{display:none}
+@media (max-width:1100px){.nav-links{display:none}}
+main{padding-top:64px}
+.breadcrumb{font-size:13px;color:var(--ink-soft);margin:24px 0 0}
+.breadcrumb a{color:var(--ink-soft);text-decoration:none;border-bottom:1px dashed currentColor}
+.breadcrumb a:hover{color:var(--teal)}
+.ci-hero{padding:40px 0 8px}
+.ci-eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
+.ci-eyebrow a{color:var(--teal);text-decoration:none}
+.ci-hero h1{font-family:var(--font-display);font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.12;color:var(--ink);margin:0 0 14px}
+.ci-answer{font-size:clamp(18px,3vw,22px);font-weight:600;color:var(--ink);margin:0 0 14px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
+.ci-lede{font-size:18px;line-height:1.6;color:var(--ink);margin:0;max-width:720px}
+.ci-body{margin:8px auto 0;max-width:760px}
+.ci-body h2{font-family:var(--font-display);font-size:clamp(20px,3vw,26px);font-weight:500;color:var(--ink);margin:34px 0 10px;line-height:1.2}
+.ci-body p{margin:0 0 16px;font-size:16px;line-height:1.7}
+.ci-body ol,.ci-body ul{margin:0 0 16px;padding-left:22px;font-size:16px;line-height:1.7}
+.ci-body li{margin:0 0 8px}
+.ci-read{margin:22px 0 8px;padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px;font-variant-numeric:tabular-nums}
+.ci-read__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+.ci-read__badge{font-weight:600;text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink-soft);margin-left:8px}
+.ci-read__line{font-size:16px;line-height:1.55;color:var(--ink);margin:0}
+.ci-read__trend{margin:6px 0 0;font-size:14.5px;line-height:1.5;color:var(--ink-soft)}
+.ci-read__verdict{margin:10px 0 0;font-size:15px;line-height:1.5;color:var(--ink)}
+.ci-read__verb{display:inline-block;font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-right:8px;vertical-align:1px;background:var(--cream);border:1px solid var(--line);color:var(--ink-soft)}
+.ci-read__verb[data-bias="hold"]{color:#2A50C8;border-color:#2A50C8}
+.ci-read__verb[data-bias="watch"]{color:#6b540f;border-color:#9a7d2e}
+.ci-read__verb[data-bias="re-price"]{color:#A23B2D;border-color:#A23B2D}
+.ci-read__spark{margin:12px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.ci-read__spark .mtn-spark{flex:0 0 auto;overflow:visible}
+.ci-read__capsule{margin:0;font-size:14.5px;line-height:1.45;color:var(--ink)}
+.ci-read__capsule-note{color:var(--ink-soft);font-size:12.5px}
+.ci-read__rank{color:var(--ink-soft)}
+.ci-why{margin:14px 0 8px;padding:14px 18px;background:var(--white);border:1px solid var(--line);border-radius:12px}
+.ci-why__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px}
+.ci-why__line{font-size:15px;line-height:1.55;color:var(--ink);margin:0}
+.ci-read__src{margin-top:8px;font-size:12.5px}
+.ci-read__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
+.ci-read__src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
+.ci-read__verified{margin:10px 0 0;font-size:13px;color:var(--ink);background:var(--teal-wash);border-left:3px solid var(--teal);padding:6px 10px;border-radius:3px}
+.ci-read__verified strong{color:var(--teal)}
+.ci-read__live,.ci-read__method{margin:10px 0 0;font-size:14px}
+.ci-read__live a,.ci-read__method a,.ci-read__data a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-read__method{margin-top:6px;font-size:13px}
+.ci-read__data{margin:4px 0 0;font-size:13px;color:var(--ink-soft)}
+.ci-season{margin:12px 0 4px;padding:12px 16px;background:var(--white);border:1px solid var(--line);border-left:3px solid var(--season);border-radius:10px;font-variant-numeric:tabular-nums}
+.ci-season__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--season);margin:0 0 4px}
+.ci-season__body{font-size:14.5px;line-height:1.5;color:var(--ink);margin:0}
+.ci-season__src{margin:6px 0 0;font-size:12.5px}
+.ci-season__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
+.ci-season__src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
+.ci-season__src a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-season-curve{margin:12px 0 2px}
+.ci-season-curve svg{display:block;width:100%;height:auto;overflow:visible}
+.ci-season-curve .sc-band{fill:var(--season);fill-opacity:.15}
+.ci-season-curve .sc-line{fill:none;stroke:var(--season);stroke-width:1.4;stroke-opacity:.7}
+.ci-season-curve .sc-dot{fill:var(--season)}
+.ci-season-curve .sc-dot--cheap{fill:var(--gold)}
+.ci-season-curve .sc-ring{fill:none;stroke:var(--season);stroke-width:1.3}
+.ci-season-curve .sc-lab{fill:var(--stone)}
+.ci-season-curve .sc-lab--cur{fill:var(--ink);font-weight:700}
+.ci-season-curve__cap{font-size:12.5px;color:var(--ink-soft);line-height:1.5;margin:7px 0 0}
+.ci-season-curve__cap strong{color:var(--ink)}
+.ci-season-curve__note{color:var(--stone);font-size:11.5px;white-space:nowrap}
+.ci-seasonal{margin:26px 0 8px}
+.ci-season-q{font-family:var(--font-display);font-size:clamp(20px,3.4vw,26px);font-weight:600;line-height:1.2;color:var(--ink);margin:0 0 10px;text-wrap:balance}
+.ci-season-answer{font-size:clamp(16px,2.4vw,18px);line-height:1.6;color:var(--ink-soft);margin:0;max-width:62ch;border-left:3px solid var(--season);padding-left:14px}
+.ci-yield{margin:18px 0;padding:14px 16px;background:var(--white);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:10px}
+.ci-yield__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 5px}
+.ci-yield__body{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0}
+.ci-yield__body strong{font-weight:700}
+.ci-yield__link{margin:9px 0 0;font-size:13.5px}
+.ci-yield__link a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-yield__src{margin:7px 0 0;font-size:12px;color:var(--stone)}
+.ci-faq{margin:34px 0 0}
+.ci-faq__item{margin:0 0 18px}
+.ci-faq__q{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink);margin:0 0 6px}
+.ci-faq__a{font-size:15.5px;line-height:1.65;color:var(--ink-soft);margin:0}
+.ci-sibs{margin:30px 0 0;font-size:14px;color:var(--ink-soft)}
+.ci-sibs-label{display:inline-block;font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:11px;margin-right:8px}
+.ci-sibs a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 8px}
+.ci-composite{margin:22px 0 6px;padding:20px 22px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--ink-soft);border-radius:12px;font-variant-numeric:tabular-nums}
+.ci-composite[data-band="up"]{border-left-color:#A23B2D}
+.ci-composite[data-band="down"]{border-left-color:var(--teal)}
+.ci-composite__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px}
+.ci-composite__read{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;margin:0}
+.ci-composite__num{font-family:var(--font-display);font-size:clamp(30px,6vw,44px);font-weight:500;line-height:1;color:var(--ink)}
+.ci-composite[data-band="up"] .ci-composite__num{color:#A23B2D}
+.ci-composite[data-band="down"] .ci-composite__num{color:var(--teal)}
+.ci-composite__say{font-size:15px;line-height:1.4;color:var(--ink);font-weight:600;max-width:46ch}
+.ci-composite__meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin:10px 0 0}
+.ci-composite__chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--white);border:1px solid var(--line);color:var(--ink-soft)}
+.ci-composite__spread{font-size:14px;line-height:1.5;color:var(--ink-soft);margin:10px 0 0}
+.ci-composite__spread strong{color:var(--ink)}
+.ci-composite__src{margin:8px 0 0;font-size:12.5px}
+.ci-composite__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
+.ci-composite__src div{margin-top:6px;color:var(--ink-soft);line-height:1.55}
+.ci-composite__src a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-orient{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));margin:18px 0 8px}
+.ci-orient__cell{background:var(--cream-2);border-radius:6px;padding:14px 16px}
+.ci-orient__h{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+.ci-orient__b{font-size:14px;line-height:1.5;color:var(--ink);margin:0}
+.ci-signup--compact{margin:18px 0}
+.ci-signup-alt{margin:12px 0 0;font-size:13.5px;color:var(--ink-soft);line-height:1.6}
+.ci-signup-alt a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-signup-sep{color:var(--stone,#9aa0aa);margin:0 4px}
+.ci-source{font-size:12.5px;color:var(--ink-soft);margin:24px 0 40px}
+.ci-source a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));margin:14px 0 0}
+.ci-card{padding:16px 18px;background:var(--white);border:1px solid var(--line);border-radius:10px}
+.ci-card a{font-family:var(--font-display);font-size:17px;color:var(--ink);text-decoration:none}
+.ci-card a:hover{color:var(--teal)}
+.ci-card-note{display:block;font-size:13px;color:var(--ink-soft);margin-top:4px}
+.ci-cat-h{font-family:var(--font-display);font-size:16px;color:var(--ink-soft);margin:30px 0 0;text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+.ci-card-action{margin-top:10px}
+.ci-moving{margin:20px 0 8px;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px}
+.ci-moving .ci-cat-h{margin:0 0 10px}
+.ci-moving-list{list-style:none;margin:0;padding:0}
+.ci-moving-item{margin:0 0 8px;font-size:15.5px;line-height:1.5}
+.ci-moving-item a{color:var(--ink);text-decoration:none;font-weight:600;border-bottom:1px dashed var(--line)}
+.ci-moving-item a:hover{color:var(--teal)}
+.ci-moving-reason{color:var(--ink-soft);font-size:14px}
+.ci-moving-calm{margin:0;font-size:15.5px;color:var(--ink)}
+.ci-moving-bar{margin:0 0 12px;font-size:13px;line-height:1.5;color:var(--ink-soft);padding:8px 12px;background:var(--surface-1,#faf9f7);border:1px solid var(--line);border-radius:8px}
+.ci-vkey{margin:2px 0 12px;font-size:12.5px;color:var(--ink-soft);line-height:1.6}
+.ci-vkey strong{color:var(--ink)}
+.ci-moving-insight{margin:3px 0 2px}
+.ci-moving-read{margin:2px 0;font-size:14.5px;line-height:1.5;color:var(--ink)}
+.ci-assoc-tag{color:var(--ink-soft);font-style:italic;font-size:12.5px}
+.ci-moving-cite{margin:3px 0 4px;font-size:12.5px}
+.ci-moving-cite summary{color:var(--teal);cursor:pointer}
+.ci-moving-cite p{margin:4px 0 0;color:var(--ink-soft)}
+.ci-moving-act{margin:2px 0 0;font-size:13.5px;color:var(--ink-soft)}
+.ci-moving-act strong{color:var(--ink)}
+.ci-moving-more{font-size:12.5px}
+.ci-moving-more-all{margin:10px 0 0;font-size:13.5px;color:var(--ink-soft)}
+.ci-moving-more-all a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-index--mini{display:inline-block;vertical-align:middle;margin:4px 0 2px;opacity:.9}
+.ci-index{margin:10px 0 4px}
+.ci-index__cap{margin:0 0 4px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+.ci-index .mtn-spark{max-width:100%;height:auto}
+.ci-card--pending{opacity:.72;background:var(--cream-2)}
+.ci-card--pending a{color:var(--ink-soft)}
+.ci-pending-note{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
+.ci-readings{margin:20px 0 8px}
+.ci-table-tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:12px 0 0}
+.ci-table-search__label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+.ci-table-search{flex:1 1 220px;max-width:340px;font:inherit;font-size:14px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--white);color:var(--ink)}
+.ci-table-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.ci-table-count{font-size:13px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.ci-table-empty td{color:var(--ink-soft);font-style:italic;padding:14px 10px}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0}
+.ci-table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+.ci-table th,.ci-table td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap;vertical-align:middle}
+.ci-table th{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft)}
+.ci-table tbody tr:hover{background:var(--cream-2)}
+.ci-table td a{color:var(--ink);text-decoration:none;font-weight:600;border-bottom:1px dashed var(--line)}
+.ci-table td a:hover{color:var(--teal)}
+.ci-table .ci-t-dir{font-weight:600}
+.ci-table .ci-t-dir[data-dir="up"]{color:#A23B2D}
+.ci-table .ci-t-dir[data-dir="down"]{color:var(--teal)}
+.ci-table .ci-t-na{color:var(--stone,#9aa0aa)}
+.ci-table .ci-index--mini{margin:0}
+:root[data-theme="dark"] .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
+.ci-read--pending{border-left-color:#cdb368;background:var(--cream-2)}
+.ci-read--pending .ci-read__head{color:#8a6d1f}
+.ci-outlook{margin:14px 0 8px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--season);border-radius:12px}
+.ci-outlook__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--season);margin:0 0 6px}
+.ci-outlook__line{font-size:15.5px;line-height:1.5;color:var(--ink);margin:0}
+.ci-outlook__record{margin:6px 0 0;font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.ci-outlook__how{margin-top:8px;font-size:12.5px}
+.ci-outlook__how summary{cursor:pointer;color:var(--ink-soft);font-weight:600}
+.ci-outlook__how div{margin-top:6px;color:var(--ink-soft);line-height:1.55}
+.ci-outlook__panel{margin:0 0 8px;padding-left:18px}
+.ci-outlook__panel li{margin:0 0 4px}
+.ci-outlook__lab{margin:10px 0 0;font-size:13.5px}
+.ci-outlook__lab a{color:var(--season);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-events{margin:30px 0 8px}
+.ci-events__intro{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 14px;max-width:66ch}
+.ci-events__take{margin:0 0 16px;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px}
+.ci-events__take[data-vol="wild"]{border-left-color:#A23B2D}
+.ci-events__take[data-vol="swingy"]{border-left-color:var(--gold)}
+.ci-events__take[data-vol="steady"]{border-left-color:var(--teal)}
+.ci-events__take-h{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px}
+.ci-events__take-b{font-size:15px;line-height:1.6;color:var(--ink);margin:0 0 8px;max-width:68ch}
+.ci-events__take-b strong{color:var(--ink)}
+.ci-events__take-mv{font-size:13.5px;line-height:1.55;color:var(--ink-soft);margin:0;max-width:68ch}
+.ci-events__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.ci-events__ev{padding:14px 16px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px;font-variant-numeric:tabular-nums}
+.ci-events__ev[data-dir="up"]{border-left-color:#A23B2D}
+.ci-events__ev[data-dir="down"]{border-left-color:var(--teal)}
+.ci-events__hd{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
+.ci-events__date{font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--ink);min-width:76px}
+.ci-events__mag{font-size:14px;font-weight:700;letter-spacing:.01em;white-space:nowrap}
+.ci-events__mag[data-dir="up"]{color:#A23B2D}
+.ci-events__mag[data-dir="down"]{color:var(--teal)}
+.ci-events__meta{margin:6px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
+.ci-events__meta a{color:var(--ink-soft);text-decoration:none;border-bottom:1px dashed var(--line)}
+.ci-events__meta a:hover{color:var(--teal)}
+.ci-events__ctx{margin:10px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
+.ci-events__ctx-t{margin:0;font-size:14px;font-weight:600;color:var(--ink);line-height:1.5}
+.ci-events__ctx-tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--stone);margin-right:6px;vertical-align:1px}
+.ci-events__cite{margin:8px 0 0;font-size:12.5px}
+.ci-events__cite summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
+.ci-events__cite p{margin:6px 0 0;color:var(--ink-soft);line-height:1.55}
+.ci-events__cite a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-events__srcs{font-size:12px}
+.ci-events__also{margin:14px 0 0;padding:12px 14px;background:var(--white);border:1px solid var(--line);border-radius:10px}
+.ci-events__also-h{margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.ci-events__also .ci-events__ctx{background:transparent;padding:6px 0;border-top:1px solid var(--line);border-radius:0}
+.ci-events__also .ci-events__ctx:first-of-type{border-top:0}
+.ci-events__foot{margin:12px 0 0;font-size:12.5px;color:var(--stone);line-height:1.5}
+.ci-events__foot a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-events--stable .ci-events__intro{margin-bottom:0}
+/* a11y: a keyboard/switch user must always see focus (only the skip-link had one). */
+.ci-card a:focus-visible,.ci-read a:focus-visible,.ci-sibs a:focus-visible,.breadcrumb a:focus-visible,.ci-source a:focus-visible,.ci-events a:focus-visible,summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:2px}
+/* touch: lift the drawer summaries to a real tap target (WCAG 2.5.8). */
+.ci-read__src summary,.ci-outlook__how summary{display:inline-block;padding:6px 0;min-height:24px}
+/* the pre-rendered sparkline must never clip in a narrower container. */
+.mtn-spark{max-width:100%;height:auto}
+/* print: the controller-PDFs-a-reading-for-a-vendor workflow. Drop the chrome, force the
+   provenance drawers open, and print the verdict with a border + its word (never color-only). */
+@media print{
+  .nav,.ci-cta-row,.ci-sibs,.ci-read__live,.ci-read__method,.skip-link,form,footer{display:none!important}
+  main{padding-top:0!important}
+  body{background:#fff!important;color:#000!important}
+  .ci-read{break-inside:avoid;border-color:#000}
+  details>*:not(summary){display:block!important}
+  details summary{font-weight:700}
+  .ci-read__verb{border:1px solid #000!important;color:#000!important;background:#fff!important}
+  a[href]::after{content:""!important}
+}
+/* dark mode: the inline tokens hardcoded light, so the reading area stayed cream in dark.
+   Redefine the cost-index tokens (light text on dark = high-contrast by construction) and
+   lighten the three verdict accents so they stay legible. Honors OS preference AND the
+   site theme toggle ([data-theme]); a forced-light toggle wins over OS dark. */
+:root[data-theme="dark"]{--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12);--stone:#9aa0aa;--gold:#d8bd6a;--season:#a992d6}
+:root[data-theme="dark"] .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
+:root[data-theme="dark"] .ci-read__verb[data-bias="watch"]{color:#d8bd6a;border-color:#8a7530}
+:root[data-theme="dark"] .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
+:root[data-theme="dark"] .ci-composite[data-band="up"]{border-left-color:#ed9a8e}
+:root[data-theme="dark"] .ci-composite[data-band="up"] .ci-composite__num{color:#ed9a8e}
+:root[data-theme="dark"] .ci-events__ev[data-dir="up"]{border-left-color:#ed9a8e}
+:root[data-theme="dark"] .ci-events__mag[data-dir="up"]{color:#ed9a8e}
+:root[data-theme="dark"] .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12);--stone:#9aa0aa;--gold:#d8bd6a;--season:#a992d6}
+  :root:not([data-theme="light"]) .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
+  :root:not([data-theme="light"]) .ci-read__verb[data-bias="watch"]{color:#d8bd6a;border-color:#8a7530}
+  :root:not([data-theme="light"]) .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
+  :root:not([data-theme="light"]) .ci-composite[data-band="up"]{border-left-color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-composite[data-band="up"] .ci-composite__num{color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-events__ev[data-dir="up"]{border-left-color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
+}
+</style>
+<link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=25763285dde3" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=5d99713cf1c2"><link rel="stylesheet" href="/assets/site-article.css?v=25763285dde3"></noscript>
+<style>/* ============================================================
+   RESEARCH SURFACE — /cost-index/research/
+   rs-* system. Reuses the cost-index tokens; THEME-AWARE — those
+   tokens flip under [data-theme="dark"] / prefers-color-scheme:dark
+   on every cost-index page, and the rs-scoped tokens below
+   (--rs-accent-text, --rs-fill-soft, --rs-shadow) supply dark-correct
+   equivalents, so the surface is honest in BOTH light and dark.
+   DATAVIZ CONTRACT: every bar is a single teal fill on a
+   neutral 1px-bordered track. The per-page accent (teal/gold/
+   season) colors CHROME ONLY (top rule, kicker, step numerals,
+   callout borders) and NEVER a data mark. tabular-nums on all
+   figures. No red/green; "wild"/loss is length, not a status hue.
+   ACCESSIBLE ACCENT: readable text reads --rs-accent-text, kept
+   AA >=4.5:1 on white AND cream-2 — gold resolves to --ink-soft so
+   it never drives small text below the floor; only >=3px graphical
+   chrome and >=3:1 focus rings read the raw --rs-accent (teal/gold/
+   season). Data marks read --rs-fill (always teal).
+   ============================================================ */
+
+/* ---- accent scope: chrome reads --rs-accent; readable text reads
+   --rs-accent-text; data marks read --rs-fill (always teal) ---- */
+.rs{
+  --rs-accent:var(--teal);
+  --rs-accent-text:var(--teal);
+  --rs-track:var(--cream-2);
+  --rs-track-line:var(--line);
+  --rs-fill:var(--teal);
+  --rs-fill-soft:var(--teal-wash);
+  --rs-shadow:0 14px 34px -20px rgba(20,22,26,.4);
+}
+.rs[data-accent="gold"]{--rs-accent:var(--gold);--rs-accent-text:var(--ink-soft)}
+.rs[data-accent="season"]{--rs-accent:var(--season);--rs-accent-text:var(--season)}
+/* dark: gold accent-text stays --ink-soft (a token that already flips),
+   teal/season stay legible, so only the drop-shadow needs a darker cast */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .rs{--rs-shadow:0 14px 34px -20px rgba(0,0,0,.6)}}
+:root[data-theme="dark"] .rs{--rs-shadow:0 14px 34px -20px rgba(0,0,0,.6)}
+
+/* ============================================================
+   1. HUB  /cost-index/research/
+   ============================================================ */
+.rs-hub{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.rs-hub__lede{max-width:64ch;font-size:clamp(16px,2.4vw,18px);line-height:1.6;color:var(--ink-soft);margin:8px 0 26px}
+.rs-hub__lede strong{color:var(--ink)}
+.rs-hub__grid{
+  display:grid;gap:16px;margin:0 0 8px;
+  grid-template-columns:repeat(auto-fill,minmax(min(320px,100%),1fr));
+}
+.rs-hub-card{
+  --rs-accent:var(--teal);
+  --rs-accent-text:var(--teal);
+  position:relative;display:flex;flex-direction:column;
+  background:var(--white);border:1px solid var(--line);
+  border-top:3px solid var(--rs-accent);border-radius:12px;
+  padding:20px 22px 18px;text-decoration:none;color:inherit;
+  transition:border-color .16s ease,box-shadow .16s ease,transform .16s ease;
+}
+.rs-hub-card[data-accent="gold"]{--rs-accent:var(--gold);--rs-accent-text:var(--ink-soft)}
+.rs-hub-card[data-accent="season"]{--rs-accent:var(--season);--rs-accent-text:var(--season)}
+.rs-hub-card:hover,.rs-hub-card:focus-visible{
+  border-color:var(--rs-accent);box-shadow:var(--rs-shadow);
+  transform:translateY(-2px);outline:none;
+}
+.rs-hub-card:focus-visible{outline:2px solid var(--rs-accent);outline-offset:2px}
+.rs-hub-card__kicker{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--rs-accent-text);margin:0 0 10px}
+.rs-hub-card__q{font-family:var(--font-display);font-size:clamp(19px,2.4vw,22px);font-weight:500;line-height:1.22;color:var(--ink);margin:0 0 12px;text-wrap:balance}
+.rs-hub-card__a{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:0 0 16px}
+.rs-hub-card__foot{margin-top:auto;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+.rs-hub-card__stat{font-family:var(--font-display);font-size:clamp(26px,4vw,34px);font-weight:500;line-height:1;color:var(--ink)}
+.rs-hub-card__statlab{font-size:12.5px;line-height:1.4;color:var(--stone)}
+.rs-hub-card__go{margin-top:14px;font-size:13px;font-weight:600;color:var(--rs-accent-text)}
+.rs-hub-card__go::after{content:" \2192"}
+
+/* ============================================================
+   2. PAGE HERO  (augments .ci-hero, does not redefine it)
+   ============================================================ */
+.rs-hero{position:relative;padding-top:34px}
+.rs-hero::before{content:"";position:absolute;top:0;left:0;width:56px;height:4px;border-radius:2px;background:var(--rs-accent)}
+.rs-hero__eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--rs-accent-text);margin:0 0 10px}
+.rs-hero__eyebrow a{color:inherit;text-decoration:none}
+.rs-hero__answer{
+  font-size:clamp(17px,2.6vw,20px);font-weight:600;line-height:1.5;color:var(--ink);
+  margin:6px 0 16px;max-width:60ch;font-variant-numeric:tabular-nums;
+  border-left:3px solid var(--rs-accent);padding-left:16px;
+}
+.rs-hero__stat{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:0 0 6px;font-variant-numeric:tabular-nums}
+.rs-hero__stat-num{font-family:var(--font-display);font-size:clamp(38px,7vw,56px);font-weight:500;line-height:1;color:var(--ink);letter-spacing:-.01em}
+.rs-hero__stat-lab{font-size:15px;line-height:1.4;color:var(--ink-soft);max-width:34ch}
+.rs-hero__meta{font-size:12.5px;color:var(--stone);margin:8px 0 0}
+
+/* ============================================================
+   3. SECTION RHYTHM inside .ci-body
+   ============================================================ */
+.rs-section{margin:8px 0 0}
+.rs-section + .rs-section{margin-top:6px}
+.rs-lede{font-size:16px;line-height:1.7;color:var(--ink-soft);margin:0 0 16px;max-width:66ch}
+.rs-lede strong{color:var(--ink)}
+/* recessive "don't over-read it" caveat block */
+.rs-caution{
+  margin:18px 0;padding:14px 18px;background:var(--cream-2);
+  border:1px solid var(--line);border-left:3px solid var(--stone);border-radius:10px;
+}
+.rs-caution__h{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px}
+.rs-caution p{font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 8px}
+.rs-caution p:last-child{margin-bottom:0}
+/* the page verdict / action line */
+.rs-takeaway{
+  margin:22px 0 8px;padding:18px 20px;background:var(--white);
+  border:1px solid var(--line);border-left:4px solid var(--rs-accent);border-radius:12px;
+}
+.rs-takeaway__h{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--rs-accent-text);margin:0 0 6px}
+.rs-takeaway__b{font-size:16.5px;line-height:1.55;color:var(--ink);margin:0;font-weight:500;max-width:60ch}
+.rs-takeaway__b strong{font-weight:700}
+
+/* ============================================================
+   4. SHARED FIGURE FRAME
+   ============================================================ */
+.rs-fig{margin:22px 0;padding:18px 20px 16px;background:var(--white);border:1px solid var(--line);border-radius:12px;font-variant-numeric:tabular-nums}
+.rs-fig__head{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 14px}
+.rs-fig figcaption,.rs-fig__cap{margin:14px 0 0;font-size:13px;line-height:1.55;color:var(--ink-soft)}
+.rs-fig__cap strong{color:var(--ink)}
+.rs-fig__note{margin:8px 0 0;font-size:12px;color:var(--stone);line-height:1.5}
+/* legend — present only when a single plot carries >=2 series.
+   Keys differ by TEXTURE, not alpha: solid teal vs teal + teal hatch,
+   both with a full-strength teal border, so low-vision users can tell
+   them apart without a second hue. */
+.rs-legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin:0 0 12px;font-size:12.5px;color:var(--ink-soft)}
+.rs-legend__key{display:inline-flex;align-items:center;gap:7px}
+.rs-legend__sw{width:11px;height:11px;border-radius:3px;background:var(--rs-fill);flex:0 0 auto}
+.rs-legend__sw--soft{background-color:var(--rs-fill-soft);background-image:repeating-linear-gradient(-45deg,var(--rs-fill) 0 1.5px,transparent 1.5px 5px);border:1px solid var(--rs-fill)}
+/* sources drawer */
+.rs-src{margin:14px 0 0;font-size:12.5px}
+.rs-src summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:flex;align-items:center;padding:8px 0;min-height:40px;list-style:none}
+.rs-src summary::-webkit-details-marker{display:none}
+.rs-src summary::before{content:"\203A\00a0";color:var(--stone);display:inline-block;transition:transform .16s ease}
+.rs-src[open] summary::before{transform:rotate(90deg)}
+.rs-src__body{margin:8px 0 0;color:var(--ink-soft);line-height:1.6}
+.rs-src__body a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.rs-src__body a:hover{color:var(--teal)}
+
+/* ---- reusable horizontal bar (catTax, steadyWild, updown) ---- */
+.rs-bars{display:flex;flex-direction:column;gap:11px;margin:0}
+.rs-bar{display:grid;grid-template-columns:minmax(120px,34%) 1fr auto;align-items:center;gap:12px}
+.rs-bar__label{font-size:14px;line-height:1.35;color:var(--ink)}
+.rs-bar__track{position:relative;height:18px;background:var(--rs-track);border:1px solid var(--rs-track-line);border-radius:4px;overflow:hidden}
+/* min-width is gated by the value: a true 0 renders empty (no 2px
+   sliver overstating a genuine zero); any value>0 keeps a 2px floor. */
+.rs-bar__fill{height:100%;width:calc(var(--v,0)*1%);background:var(--rs-fill);border-radius:0 3px 3px 0;min-width:calc(2px * min(var(--v,0),1))}
+.rs-bar__val{font-size:14px;font-weight:600;color:var(--ink);text-align:right;min-width:5ch;white-space:nowrap}
+.rs-bar__val--muted{color:var(--ink-soft);font-weight:500}
+
+/* ============================================================
+   5a. company-stat  (single big share — a stat tile + proof meter)
+   ============================================================ */
+.rs-stat{margin:22px 0;padding:22px 24px;background:var(--white);border:1px solid var(--line);border-radius:12px;font-variant-numeric:tabular-nums}
+.rs-stat__row{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.rs-stat__num{font-family:var(--font-display);font-size:clamp(46px,9vw,72px);font-weight:500;line-height:.95;color:var(--ink);letter-spacing:-.015em}
+.rs-stat__say{font-size:16px;line-height:1.45;color:var(--ink);font-weight:500;max-width:34ch}
+.rs-stat__proof{margin:18px 0 0}
+.rs-stat__meter{position:relative;height:14px;background:var(--rs-track);border:1px solid var(--rs-track-line);border-radius:4px;overflow:hidden}
+.rs-stat__meter-fill{height:100%;width:calc(var(--v,0)*1%);background:var(--rs-fill);border-radius:0 3px 3px 0}
+.rs-stat__proof-lab{display:flex;justify-content:space-between;gap:10px;margin:7px 0 0;font-size:12.5px;color:var(--ink-soft)}
+.rs-stat__sub{margin:12px 0 0;font-size:13px;color:var(--stone);line-height:1.5}
+
+/* ============================================================
+   5b. clusters  (grouped ingredient chips + tight-couple emphasis)
+   ============================================================ */
+.rs-clusters{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr))}
+.rs-cluster{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.rs-cluster__name{font-family:var(--font-display);font-size:16px;font-weight:600;color:var(--ink);margin:0 0 3px}
+.rs-cluster__meta{font-size:12px;color:var(--stone);margin:0 0 12px;font-variant-numeric:tabular-nums}
+.rs-cluster__chips{display:flex;flex-wrap:wrap;gap:7px}
+.rs-chip{display:inline-block;font-size:13px;line-height:1.3;padding:5px 11px;border-radius:999px;background:var(--cream-2);border:1px solid var(--line);color:var(--ink)}
+.rs-chip--tight{background:var(--rs-fill-soft);border-color:var(--rs-fill);color:var(--ink);font-weight:600}
+.rs-cluster__couple{margin:12px 0 0;display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.rs-cluster__couple-r{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--ink)}
+.rs-cluster__couple-r::before{content:"";width:9px;height:9px;border-radius:2px;background:var(--rs-fill)}
+
+/* ============================================================
+   5d. worst  (compact table — scrolls in its own container)
+   ============================================================ */
+.rs-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:18px 0}
+.rs-table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums;min-width:420px}
+.rs-table caption{text-align:left;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);padding:0 0 10px}
+.rs-table th,.rs-table td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);white-space:nowrap;vertical-align:middle}
+.rs-table thead th{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft)}
+.rs-table td.rs-num,.rs-table th.rs-num{text-align:right;font-variant-numeric:tabular-nums}
+.rs-table tbody tr:hover{background:var(--cream-2)}
+.rs-table .rs-rank{color:var(--stone);width:1%}
+/* link reads as a link WITHOUT hover (persistent teal dashed underline
+   hugging the text) and carries a >=40px tap area */
+.rs-table td a{color:var(--ink);text-decoration:underline dashed var(--teal);text-underline-offset:3px;text-decoration-thickness:1px;font-weight:600;display:inline-flex;align-items:center;min-height:40px}
+.rs-table td a:hover{color:var(--teal)}
+/* optional in-cell magnitude sparkbar (single teal, no second meaning) */
+.rs-cellbar{display:inline-block;vertical-align:middle;width:64px;height:9px;background:var(--rs-track);border:1px solid var(--rs-track-line);border-radius:3px;overflow:hidden;margin-right:8px}
+.rs-cellbar > i{display:block;height:100%;width:calc(var(--v,0)*1%);background:var(--rs-fill)}
+
+/* ============================================================
+   5e. taxonomy  (4-way split lock / cushion / float / withhold)
+   ordered buckets: differentiated by POSITION + LABEL, never hue.
+   a single-hue teal meter per column carries the rising spread.
+   ============================================================ */
+.rs-tax{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(180px,100%),1fr))}
+.rs-tax__col{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:15px 16px;display:flex;flex-direction:column}
+.rs-tax__label{font-family:var(--font-display);font-size:16px;font-weight:600;color:var(--ink);margin:0}
+.rs-tax__count{font-size:12px;color:var(--stone);margin:2px 0 10px;font-variant-numeric:tabular-nums}
+.rs-tax__meter{height:8px;background:var(--rs-track);border:1px solid var(--rs-track-line);border-radius:3px;overflow:hidden;margin:0 0 4px}
+.rs-tax__meter > i{display:block;height:100%;width:calc(var(--v,0)*1%);background:var(--rs-fill)}
+.rs-tax__spread{font-size:11.5px;color:var(--ink-soft);margin:0 0 12px;font-variant-numeric:tabular-nums}
+.rs-tax__def{font-size:13px;line-height:1.5;color:var(--ink-soft);margin:0 0 10px}
+.rs-tax__items{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}
+.rs-tax__items .rs-chip{font-size:12px;padding:4px 9px}
+
+/* ============================================================
+   5f. steadyWild  (two ranked single-series bar lists side by side)
+   BOTH lists use the same teal; "wild" reads by length, not color.
+   ============================================================ */
+.rs-duo{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr))}
+.rs-duo__col{min-width:0}
+.rs-duo__h{font-family:var(--font-display);font-size:15px;font-weight:600;color:var(--ink);margin:0 0 3px}
+.rs-duo__sub{font-size:12.5px;color:var(--stone);margin:0 0 14px}
+/* a compact bar variant: label above, track+value below (phone-safe) */
+.rs-duo .rs-bar{grid-template-columns:1fr auto}
+.rs-duo .rs-bar__label{grid-column:1 / -1;font-size:13.5px;margin-bottom:-4px}
+
+/* ============================================================
+   5g. duration  (p25 - median - p75 range bar, in days)
+   positions are % of a labeled day-axis; median is a 2px tick.
+   ============================================================ */
+.rs-range{margin:30px 0 0}
+.rs-range__track{position:relative;height:26px;background:var(--rs-track);border:1px solid var(--rs-track-line);border-radius:5px}
+.rs-range__band{position:absolute;top:-1px;bottom:-1px;left:calc(var(--p25,0)*1%);width:calc((var(--p75,0) - var(--p25,0))*1%);background:var(--rs-fill-soft);border:1px solid var(--rs-fill);border-radius:4px}
+.rs-range__median{position:absolute;top:-5px;bottom:-5px;left:calc(var(--med,0)*1%);width:2px;background:var(--rs-fill);transform:translateX(-1px)}
+.rs-range__medlab{position:absolute;left:calc(var(--med,0)*1%);top:-26px;transform:translateX(-50%);white-space:nowrap;font-size:13px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+.rs-range__ends{display:flex;justify-content:space-between;margin:10px 0 0;font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.rs-range__axis{display:flex;justify-content:space-between;margin:14px 2px 0;font-size:11px;color:var(--stone);font-variant-numeric:tabular-nums;border-top:1px solid var(--line);padding-top:5px}
+
+/* ============================================================
+   5h. updown  (2-way split — two labeled bars on one scale)
+   ============================================================ */
+.rs-split{display:flex;flex-direction:column;gap:14px;margin:4px 0 0}
+.rs-split .rs-bar{grid-template-columns:minmax(150px,40%) 1fr auto}
+.rs-split__note{margin:14px 0 0;font-size:13.5px;line-height:1.55;color:var(--ink-soft)}
+.rs-split__note strong{color:var(--ink)}
+
+/* ============================================================
+   5i. calendar  (12-month grid; reflows to 1 col on phones)
+   ============================================================ */
+.rs-cal{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(190px,100%),1fr))}
+.rs-cal__m{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:12px 13px;display:flex;flex-direction:column}
+.rs-cal__mh{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:0 0 9px}
+.rs-cal__mname{font-family:var(--font-display);font-size:14px;font-weight:600;color:var(--ink)}
+.rs-cal__mtag{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--rs-accent-text)}
+.rs-cal__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.rs-cal__item{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:13px;line-height:1.35;color:var(--ink);font-variant-numeric:tabular-nums}
+/* the calendar's PRIMARY action: a >=40px tap row with a persistent
+   teal dashed underline so it reads as a link on touch (no hover cue) */
+.rs-cal__item a{color:var(--ink);text-decoration:underline dashed var(--teal);text-underline-offset:3px;text-decoration-thickness:1px;display:flex;align-items:center;min-height:40px;flex:1 1 auto;min-width:0}
+.rs-cal__item a:hover{color:var(--teal)}
+.rs-cal__save{color:var(--ink-soft);font-size:12px;white-space:nowrap}
+.rs-cal__m--flat{background:var(--cream-2);border-style:dashed}
+.rs-cal__m--flat .rs-cal__mtag{color:var(--ink-soft)}
+.rs-cal__flatnote{font-size:12px;color:var(--ink-soft);line-height:1.45;margin:0}
+
+/* ============================================================
+   5j. method  (3 numbered steps — a walked sequence)
+   ============================================================ */
+.rs-steps{list-style:none;counter-reset:rs-step;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:2px}
+.rs-step{position:relative;display:grid;grid-template-columns:auto 1fr;gap:16px;padding:16px 0}
+.rs-step + .rs-step{border-top:1px solid var(--line)}
+.rs-step__n{
+  counter-increment:rs-step;
+  width:38px;height:38px;flex:0 0 38px;border-radius:999px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:18px;font-weight:600;
+  color:var(--rs-accent-text);background:var(--white);
+  border:2px solid var(--rs-accent);font-variant-numeric:tabular-nums;
+}
+.rs-step__n::before{content:counter(rs-step)}
+.rs-step__h{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink);margin:4px 0 5px;line-height:1.25}
+.rs-step__b{font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0}
+.rs-step__b strong{color:var(--ink)}
+
+/* ============================================================
+   6. RELATED  (cross-link module to the other research pages)
+   ============================================================ */
+.rs-related{margin:36px 0 8px;padding-top:22px;border-top:1px solid var(--line)}
+.rs-related__h{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 14px}
+.rs-related__grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr))}
+.rs-related__link{
+  --rs-accent:var(--teal);
+  --rs-accent-text:var(--teal);
+  display:block;padding:13px 15px;background:var(--white);border:1px solid var(--line);
+  border-left:3px solid var(--rs-accent);border-radius:10px;text-decoration:none;color:inherit;
+  transition:border-color .16s ease,background .16s ease;
+}
+.rs-related__link[data-accent="gold"]{--rs-accent:var(--gold);--rs-accent-text:var(--ink-soft)}
+.rs-related__link[data-accent="season"]{--rs-accent:var(--season);--rs-accent-text:var(--season)}
+.rs-related__link:hover{border-color:var(--rs-accent);background:var(--cream)}
+.rs-related__kicker{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--rs-accent-text);margin:0 0 4px}
+.rs-related__q{font-size:14px;line-height:1.4;color:var(--ink);margin:0}
+
+/* ---- focus-visible: one designed >=3:1 ring on every interactive
+   element (gold ring = 3.64:1, clears the 3:1 non-text minimum) ---- */
+.rs-related__link:focus-visible,
+.rs-table td a:focus-visible,
+.rs-cal__item a:focus-visible,
+.rs-src summary:focus-visible,
+.rs-hero__eyebrow a:focus-visible{outline:2px solid var(--rs-accent);outline-offset:2px;border-radius:3px}
+
+/* ============================================================
+   7. MOBILE  (kitchen phone)
+   ============================================================ */
+@media (max-width:600px){
+  /* bars: label rides above the track+value so text never truncates */
+  .rs-bar,.rs-split .rs-bar{grid-template-columns:1fr auto}
+  .rs-bar__label{grid-column:1 / -1;margin-bottom:-3px}
+  /* calendar collapses to a single readable column */
+  .rs-cal{grid-template-columns:1fr}
+  .rs-fig{padding:16px 15px 14px}
+  .rs-stat{padding:18px 16px}
+  .rs-range__medlab{font-size:12px}
+  /* duration axis stays legible; range keeps its labels */
+  .rs-hero__answer{padding-left:12px}
+}
+/* very wide figures (worst table) always scroll inside .rs-scroll,
+   never the page body — enforced by min-width on .rs-table above. */
+@media (prefers-reduced-motion:reduce){
+  .rs-hub-card,.rs-related__link{transition:none}
+  .rs-hub-card:hover{transform:none}
+}
+.rs-cta{margin-top:28px}
+
+.pb-body h2{font-family:var(--font-display);font-weight:500;font-size:23px;line-height:1.15;margin:0 0 8px;text-wrap:balance}
+.pb-tool{margin:8px 0 0;padding:22px;background:var(--white);border:1px solid var(--line);border-radius:16px}
+.pb-tool__lede{font-size:14.5px;color:var(--ink-soft);line-height:1.55;margin:0 0 16px;max-width:62ch}
+.pb-picker{display:flex;flex-direction:column;gap:6px;max-width:340px;margin:0 0 18px}
+.pb-picker label{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft)}
+.pb-picker select{font:inherit;font-size:16px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:var(--cream);color:var(--ink);min-height:44px}
+.pb-card{background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.pb-card__head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 10px}
+.pb-card__name{font-family:var(--font-display);font-weight:600;font-size:21px;margin:0}
+.pb-card__posture{font-size:16px;line-height:1.5;color:var(--ink);margin:0 0 14px;font-weight:500}
+.pb-card__layers{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.pb-lyr{position:relative;padding:0 0 0 22px;font-size:14.5px;line-height:1.5;color:var(--ink-soft)}
+.pb-lyr:before{position:absolute;left:0;top:.05em;font-size:14px}
+.pb-lyr--cost:before{content:"$"}.pb-lyr--time:before{content:"◷"}.pb-lyr--swap:before{content:"⇄"}
+.pb-pill{display:inline-block;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap;border:1px solid var(--line)}
+.pb-pill--lock{background:var(--teal);color:var(--white);border-color:var(--teal)}
+.pb-pill--cushion{background:var(--teal-wash);color:var(--teal);border-color:var(--teal-wash)}
+.pb-pill--float{background:transparent;color:var(--gold);border-color:var(--gold)}
+.pb-pill--withhold{background:var(--cream-2);color:var(--stone)}
+.pb-guide{margin:34px 0 0}
+.pb-guide .rs-section{margin:0 0 26px}
+.pb-guide .rs-section p{font-size:15.5px;line-height:1.62;color:var(--ink);margin:0 0 12px;max-width:66ch}
+.pb-lede{font-size:17px;line-height:1.55;color:var(--ink);font-weight:500;margin:0 0 20px;max-width:64ch}
+.pb-play{margin:6px 0 24px;padding:18px 20px;background:var(--teal-wash);border:1px solid var(--teal);border-radius:14px}
+.pb-play h3{font-family:var(--font-display);font-weight:600;font-size:16px;margin:0 0 8px;color:var(--teal);text-transform:uppercase;letter-spacing:.04em}
+.pb-play p{font-size:15px;line-height:1.58;color:var(--ink);margin:0;max-width:66ch}
+.pb-takeaway{font-family:var(--font-display);font-size:19px;line-height:1.4;font-weight:500;color:var(--ink);margin:0 0 6px;padding:16px 0 0;border-top:1px solid var(--line);text-wrap:balance;max-width:64ch}
+.pb-tablewrap{margin:34px 0 0}
+.pb-table{font-size:13.5px}
+.pb-table th[scope=row]{font-weight:500;white-space:nowrap}
+.pb-table td.pb-num,.pb-table th.pb-num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pb-table td:last-child{color:var(--ink-soft);font-size:13px}
+@media(max-width:640px){.pb-card__head{flex-wrap:wrap}.pb-table{font-size:12.5px}}
+</style></head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<!-- batch-banner:start --><!-- batch-banner:end -->
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g fill="currentColor">
+          <path d="M32 8 H58 V46 H8 V32 A24 24 0 0 1 32 8 Z"/>
+          <path d="M70 8 H96 A24 24 0 0 1 120 32 V46 H70 V8 Z"/>
+          <path d="M8 58 H58 V120 H32 A24 24 0 0 1 8 96 V58 Z"/>
+          <path d="M70 58 H120 V96 A24 24 0 0 1 96 120 H70 V58 Z"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
+    </a>
+    <!-- Phase 7: 5-item nav, per launch plan Part II.
+         Library / Tools / Studio / Sign in.
+         Library points at the canonical /library/ hub (the
+         three-doors page). Tools is promoted from the old Library
+         mega-menu to a top-level item. Studio replaces Services +
+         Restaurants + About — they all live under /studio/ now,
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
+         retired (the hub IS the menu now); the controller script
+         is gone too.
+
+         /work/ was retired with the Phase 8 portfolio-sunset pass:
+         the company-as-resume framing made the personal-portfolio
+         showcase redundant. Legacy /work/* URLs 301 to /studio/
+         via _redirects so old backlinks land softly. -->
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/library/">Library</a>
+      <a href="/cost-index/">Cost Index</a>
+      <a href="/open/">Open data</a>
+      <a href="/tools/">Tools</a>
+      <a href="/studio/">Company</a>
+      <!-- Ledger — the paid product. Nav points at the on-site /ledger/
+           explainer (what it is, why a platform can't copy it, the founding
+           offer) rather than dumping cold nav traffic straight onto the
+           subdomain; /ledger/ owns the outbound "See Muntin Ledger" CTA. -->
+      <a href="/ledger/">Ledger</a>
+      <!-- Both sign-in / workshop ship hidden by default; the
+           auth-state JS at the bottom of this file calls
+           /api/auth/me and reveals exactly one. No-JS visitors see
+           neither, which is acceptable: the library and tools work
+           fully without sign-in (Workshop is the only auth surface). -->
+      <a class="js-nav-signin nav-link-auth" href="/sign-in/" hidden>Sign in</a>
+      <a class="js-nav-workshop nav-link-auth" href="/workbench/" hidden>Workshop</a>
+    </nav>
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+      <span class="nav-search-label">Search</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
+    </button>
+    <nav class="lang-switch" aria-label="Language">
+      <a href="/es/cost-index/menu-pricing/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
+      <span class="lang-switch-current" aria-current="true">EN</span>
+    </nav>
+    <!-- Phase 7 — dark-mode toggle. The icon SVG flips between sun
+         and moon via CSS based on the [data-theme] state set by
+         theme-toggle.js. With JS off the button stays in its
+         default state (sun) and clicks do nothing; the OS
+         preference still drives dark-mode tokens via media query. -->
+    <button type="button" class="theme-toggle js-theme-toggle" aria-label="Toggle dark mode" aria-pressed="false" hidden>
+      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+        <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+        <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
+        <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
+      </svg>
+      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">
+      <!-- Phase 5+ — site-wide pulse propagation. Hidden by default;
+           window-state.js reveals when lastSeen <4h. Decorative; the
+           label "Reach Don" remains the accessible affordance. -->
+      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don is around"></span>
+      Reach Don
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <!-- Mobile menu mirrors the 5-item desktop nav, plus search, lang
+       switcher, and the Reach Don CTA. The auth-state JS below
+       toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+    <a href="/library/">Library</a>
+    <a href="/cost-index/">Cost Index</a>
+    <a href="/open/">Open data</a>
+    <a href="/tools/">Tools</a>
+    <a href="/studio/">Company</a>
+    <a href="/ledger/">Ledger</a>
+    <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
+    <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
+    <button type="button" class="mobile-search js-open-search">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Search the library</span>
+    </button>
+    <!-- Mobile dark-mode toggle. The desktop .theme-toggle is hidden on
+         phones (≤640px), so this surfaces the same control inside the
+         menu. Same .js-theme-toggle hook — theme-toggle.js wires every
+         instance and keeps them in sync. Shows a text label (the desktop
+         one is icon-only). Un-hidden by the script so no-JS users don't
+         see a dead control. -->
+    <button type="button" class="theme-toggle mobile-theme js-theme-toggle" aria-pressed="false" aria-label="Toggle dark mode" data-label-dark="Dark mode" data-label-light="Light mode" hidden>
+      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+        <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+        <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
+        <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
+      </svg>
+      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <span class="theme-toggle__label js-theme-label">Light mode</span>
+    </button>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don</a>
+    <a href="/es/cost-index/menu-pricing/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
+  </nav>
+
+  <!-- Opt-in Spanish banner. Rendered hidden by default; site.js
+       removes the hidden attribute only when (a) the reader's browser
+       lists Spanish in navigator.languages, (b) no md_locale cookie
+       has been set yet, and (c) the banner hasn't been dismissed.
+       Speaks directly in Spanish because its audience, by definition,
+       is a Spanish-speaking visitor. Link target is the page's own
+       hreflang="es" alternate from <head>, read at runtime. -->
+  <aside class="lang-hint" id="langHint" role="complementary" aria-label="Sugerencia de idioma" lang="es" hidden>
+    <div class="container lang-hint-inner">
+      <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
+      <a href="/es/cost-index/menu-pricing/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
+      <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Mega-menu controller retired in Phase 7: Library is a single
+       link to /library/ now (the canonical three-doors hub IS the
+       menu). The CSS rules in site.css for .nav-library-* remain in
+       place defensively so any future mega-menu reuses the pattern. -->
+
+  <!-- Phase 2 (Workshop) — auth-state toggle for the nav.
+       Calls /api/auth/me and reveals either the "Sign in" or
+       "Workshop" link based on the response. Both links ship hidden
+       so anonymous visitors with JS disabled see neither (the
+       library + tools work fully without sign-in, so the missing
+       affordance is acceptable). The script runs once, fire-and-
+       forget; no observable side effects on a 401. -->
+  <script>
+    /* Phase 3C-perf — deferred via requestIdleCallback so the
+       /api/auth/me round-trip stays off the critical path. Both
+       .js-nav-signin / .js-nav-workshop ship hidden, so a one-frame
+       delay before the correct affordance reveals is invisible. */
+    (window.requestIdleCallback || function (cb) { return setTimeout(cb, 200); })(function () {
+      var signin   = document.querySelectorAll('.js-nav-signin');
+      var workshop = document.querySelectorAll('.js-nav-workshop');
+      if (!signin.length && !workshop.length) return;
+      var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 200) {
+            show(workshop);
+            // Phase G.10 — append (N) badge with the user's save count.
+            fetch('/api/workbench/count', { credentials: 'same-origin' })
+              .then(function (r2) { return r2.ok ? r2.json() : null; })
+              .then(function (j) {
+                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
+                workshop.forEach(function (n) {
+                  if (n.querySelector('.nav-workshop-count')) return;
+                  var b = document.createElement('span');
+                  b.className = 'nav-workshop-count';
+                  b.textContent = ' (' + j.count + ')';
+                  n.appendChild(b);
+                });
+              })
+              .catch(function () { /* silent */ });
+            return;
+          }
+          show(signin);
+        })
+        .catch(function () { show(signin); });
+    });
+  </script>
+  <!-- Phase 7 — dark-mode toggle handler. Loaded after the nav
+       partial so the .js-theme-toggle button is in the DOM. -->
+  <script src="/assets/theme-toggle.js?v=phase8"></script>
+</header>
+<main id="main" role="main">
+<div class="container">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> › <a href="/cost-index/">Cost index</a> › The menu-pricing playbook</nav>
+  <div class="rs" data-accent="teal">
+  <section class="ci-hero rs-hero"><p class="ci-eyebrow rs-hero__eyebrow">Muntin Research</p>
+    <h1>The menu-pricing playbook</h1>
+    <p class="ci-answer rs-hero__answer">Of 100 ingredients with a verdict, 37 have held steady enough to print their price, 19 want a cushion, and 7 should float — and for 24 this playbook joins all four layers: pricing, edible cost, cheapest month, and which swap saves nothing.</p></section>
+  <div class="ci-body rs-body pb-body">
+    <section class="pb-tool" aria-labelledby="pb-tool-h">
+      <h2 id="pb-tool-h" class="rs-section-h">Look up an ingredient</h2>
+      <p class="pb-tool__lede">Pick an ingredient to see its pricing card — what to print or float, the true cost per edible portion, the cheapest month, and which swap saves you nothing.</p>
+      <div class="pb-picker"><label for="pbSel">Ingredient</label>
+        <select id="pbSel"><option value="acorn-squash">Acorn squash</option><option value="banana">Banana</option><option value="beef-tenderloin">Beef tenderloin</option><option value="beet">Beet</option><option value="bok-choy">Bok choy</option><option value="butter">Butter (AA, bulk)</option><option value="butter-lettuce">Butter lettuce</option><option value="butternut-squash">Butternut squash</option><option value="cabbage">Cabbage</option><option value="cheddar-cheese">Cheddar cheese</option><option value="cilantro">Cilantro</option><option value="daikon">Daikon radish</option><option value="dill">Dill</option><option value="eggplant">Eggplant</option><option value="garlic">Garlic</option><option value="ginger">Ginger root</option><option value="grapefruit">Grapefruit</option><option value="habanero-pepper">Habanero pepper</option><option value="leek">Leek</option><option value="lemon">Lemon</option><option value="mint">Mint</option><option value="onion">Onion</option><option value="pear">Pear</option><option value="pineapple">Pineapple</option><option value="poblano-pepper">Poblano pepper</option><option value="pork-belly">Pork belly</option><option value="pork-loin">Pork loin</option><option value="pork-shoulder">Pork shoulder</option><option value="red-onion">Red onion</option><option value="red-potato">Red potato</option><option value="ribeye" selected>Ribeye</option><option value="russet-potato">Russet potato</option><option value="short-rib">Short rib</option><option value="striploin">Striploin</option><option value="vegetable-oil">Vegetable oil</option><option value="whole-chicken">Whole chicken</option><option value="whole-turkey">Whole turkey</option><option value="apple">Apple</option><option value="artichoke">Artichoke</option><option value="asparagus">Asparagus</option><option value="avocado">Avocado</option><option value="bell-pepper">Bell pepper</option><option value="cantaloupe">Cantaloupe</option><option value="cherry-tomato">Cherry tomato</option><option value="chicken-breast">Chicken breast</option><option value="chicken-thigh">Chicken thigh</option><option value="corn-on-the-cob">Corn on the cob</option><option value="cucumber">Cucumber</option><option value="green-beans">Green beans</option><option value="napa-cabbage">Napa cabbage</option><option value="okra">Okra</option><option value="parsley">Parsley</option><option value="red-leaf-lettuce">Red leaf lettuce</option><option value="snow-peas">Snow peas</option><option value="spinach">Spinach</option><option value="watermelon">Watermelon</option><option value="broccoli">Broccoli</option><option value="brussels-sprouts">Brussels sprouts</option><option value="green-leaf-lettuce">Green leaf lettuce</option><option value="raspberry">Raspberry</option><option value="romaine-lettuce">Romaine lettuce</option><option value="serrano-pepper">Serrano pepper</option><option value="yellow-squash">Yellow squash</option><option value="basil">Basil</option><option value="blueberry">Blueberry</option><option value="button-mushroom">Button mushroom</option><option value="carrot">Carrot</option><option value="cauliflower">Cauliflower</option><option value="celery">Celery</option><option value="clams">Clams</option><option value="collard-greens">Collard greens</option><option value="eggs">Eggs</option><option value="green-onion">Green onion</option><option value="ground-beef">Ground beef</option><option value="iceberg-lettuce">Iceberg lettuce</option><option value="jalapeno">Jalapeño</option><option value="kale">Kale</option><option value="lime">Lime</option><option value="octopus">Octopus</option><option value="oregano">Oregano</option><option value="rosemary">Rosemary</option><option value="rutabaga">Rutabaga</option><option value="salmon-skin-on-fillet">Salmon (skin-on fillet)</option><option value="salmon-fillet">Salmon fillet</option><option value="scallops">Scallops</option><option value="shrimp-head-on">Shrimp (head-on)</option><option value="shrimp-pd">Shrimp (P&amp;D)</option><option value="shrimp">Shrimp (shell-on)</option><option value="squid">Squid</option><option value="sweet-potato">Sweet potato</option><option value="tarragon">Tarragon</option><option value="thyme">Thyme</option><option value="tomato">Tomato</option><option value="tuna-loin">Tuna loin</option><option value="whole-crab">Whole crab</option><option value="whole-halibut">Whole halibut</option><option value="whole-lobster">Whole lobster</option><option value="whole-salmon">Whole salmon</option><option value="whole-trout">Whole trout</option><option value="zucchini">Zucchini</option></select></div>
+      <div id="pbCard"><article class="pb-card" data-slug="ribeye" data-bucket="lock"><header class="pb-card__head"><h3 class="pb-card__name">Ribeye</h3><span class="pb-pill pb-pill--lock">Print</span></header><p class="pb-card__posture">Print it. Its wholesale-reference band has held ±5.8% — steady enough to commit a menu price for the print cycle.</p><ul class="pb-card__layers"><li class="pb-lyr pb-lyr--cost">True cost: every wholesale dollar buys ×1.33 of edible ribeye — 75% survives trim.</li><li class="pb-lyr pb-lyr--time">Buy timing: has historically run cheapest around Aug, about 26% under its own yearly high — worth concentrating a bulk buy there.</li><li class="pb-lyr pb-lyr--swap">Substitution: Ribeye moves largely on its own, so a swap is a real hedge here, not a mirror.</li></ul></article></div>
+    </section>
+    <div class="pb-guide"><p class="pb-lede">A menu price is a bet you print and then live with for months, so pricing a menu well is less about the number on any one invoice than about knowing which numbers hold still. This playbook joins four data layers on each ingredient to answer that in order: whether a cost has held steady enough to print, what a portion actually costs once you pay for the trim, when a cut sits at the bottom of its own year, and whether the obvious swap saves a dollar or just moves the same rise to another line. Of 100 scored ingredients, 37 have held steady enough to print, 19 want a cushion, 7 should float, and 37 stay withheld for want of evidence.</p><p class="pb-lede">The interactive cards and the 100-row table carry the raw numbers; this page teaches the decision those numbers feed. One honesty note governs all of it: every band here is a wholesale reference read against each ingredient&#39;s own normal — how steady the number has run, never the delivered price you pay. Above wholesale is normal, not overpayment. The posture on each card — lock, cushion, float, withhold — is a read on predictability, not a claim about how expensive the item is.</p><section class="rs-section"><h2>The one decision: print the price or float it</h2><p>Every ingredient sorts into one of four postures, and the posture is about predictability, not price level. Thirty-seven print. Nineteen cushion — price to the top of the band and let the room absorb the wobble. Seven float — market price, or a rotating special that carries no printed number. And 37 stay withheld: too little evidence to call, so treat them like a float until the record fills in.</p><p>The band is the mechanism underneath the posture. It is a wholesale reference read against the item&#39;s own recent normal — a half-width that says how far the number has wandered, not how high it sits. A lock is a band tight enough that a printed price still reads true a month later. A float is a band so wide that any printed price is stale by the next delivery. The card hands you the width; the width picks the posture.</p><p>Withhold is the one to read carefully, because it is easy to misread as danger. Withhold is not &quot;unstable.&quot; It is &quot;not enough history to say.&quot; A withheld line behaves like a float on the menu — market price, or off the printed card — but for the opposite reason: not because it swings, because it is unproven. Whole crab is a withhold; so is much of the fish case. Treat those as market-price until they earn a band, not as risks to flee.</p></section><section class="rs-section"><h2>Your biggest cost line is your most printable</h2><p>Here is the counterintuitive part. Proteins — usually the top of the invoice — mostly hold their week-to-week price. Of 27 proteins scored, 9 lock, 2 cushion, and none float. The three steadiest bands on the entire board are proteins: whole turkey at plus-or-minus 0.8%, pork loin at plus-or-minus 1.6%, and short rib at plus-or-minus 1.8%. The scary line item is the calm one.</p><p>The wild week-to-week swings live in produce, down at the cheap end of the invoice: broccoli at plus-or-minus 26.4%, yellow squash at plus-or-minus 25%, raspberry at plus-or-minus 24.6%, green leaf lettuce at plus-or-minus 22.3%. A printed broccoli price is stale inside a month; a printed short-rib price holds. The dollar risk on the plate and the volatility of the wholesale reference point in opposite directions.</p><p>So trust the print list even for the pricey cuts, and aim the market-price flexibility at produce. The instinct to float the expensive thing because it scares you is backward — the expensive thing is often the steady thing. Point the rotating special and the market-price line at the salad, not the steak. This is a read on the width of the band, the predictability of the number; it is a separate question from when a cut sits cheapest in its own year, which is the seasonal window covered further down.</p></section><section class="rs-section"><h2>Price on what reaches the plate, not what crosses the back door</h2><p>An invoice cost is a cost per pound you buy. A plate cost is a cost per pound you serve. The gap between them is trim, and it works as a multiplier on the reference: 1 divided by the edible yield. Call it the trim tax. A romaine head at 75% yield carries a 1.33 trim tax — every dollar of romaine on the invoice is $1.33 of romaine on the plate. Price on the invoice number and you underprice the dish by a third.</p><p>Category means run from citrus at 2.16x — all that peel and pith — down to mushroom at 1.14x, which nearly all cooks down onto the plate. The steepest single item is whole crab at 4x: only 25% of the purchased weight is edible, so a crab invoice quadruples on its way to the guest. The trim tax is often larger than any week-to-week price move, which is why it belongs in the price before the market ever moves.</p><p>The discipline is to multiply the reference by the item&#39;s own trim tax, never the category average. Two greens in the same category trim differently; two fish in the same category trim very differently. The category mean orients you to the neighborhood — proteins and roots run low, citrus and whole fish run high — but the item&#39;s own yield is what prices the specific dish on your specific menu.</p></section><section class="rs-section"><h2>The hidden season of meat: the cut is cheapest after its rush, not during</h2><p>Proteins have a real buying season, and it runs backward from intuition — a cut bottoms out after its demand peak, not during it. Eight proteins carry a readable window in the tracked record. The deepest: whole chicken cheapest in May, about 47% under its own yearly high; chicken breast in November, about 42% under; striploin in September, about 40%; chicken thigh in January, about 40%; ribeye in August, about 26%; pork shoulder in October, about 21%. These are not small gaps between months — they are the difference between a cut&#39;s cheap season and its dear one.</p><p>Read ribeye and striploin together to see the shape. Both are summer-grill cuts, and both bottom out in August and September — after the summer grilling months, not during them. In the tracked record the trough arrives on the far side of the grilling season, once the rush has passed. The window opens after the rush, which is exactly where nobody is looking, because the calendar instinct says buy the grilling cut in grilling season.</p><p>The freeze angle is the whole point. The season matters more for a protein than for produce for one reason: you can freeze a protein. A real August ribeye trough is a buy-and-hold play a produce trough can never be, because the lettuce will not keep. That is the layer that turns a low month into inventory on your shelf, and it is why the seasonal read earns its place on the pricey cuts specifically — the same cuts that already print steady enough to hold a menu price.</p><p>A real season has to be told apart from noise, and the gate is strict. A cheapest-month window is named only when the trough is real: the cheap month&#39;s median has to beat the dear month&#39;s own cheap-week — its 25th percentile — and the peak-to-trough swing has to be at least as large as the ordinary month-to-month scatter. Whole turkey is the trap. Folk belief says buy it cheap at Thanksgiving; the wholesale record shows no readable window — its monthly medians scatter, and a typical January week already buys under a typical February. Turkey also holds the steadiest band on the board at plus-or-minus 0.8%, so the honest read is the opposite of a calendar play: its price barely moves, print it year-round. Most seafood carries too little multi-year history to read a season at all, so those stay withheld, not timed. All of this is descriptive of where a cut has sat, month by month — never a forecast that a given month will come in cheap. Act on it two ways: at a cut&#39;s window month, lock a freeze buy; ignore any cheap month that does not clear the gate.</p></section><section class="rs-section"><h2>The swap that isn&#39;t: when substitution only mirrors the rise</h2><p>The reflex when a price jumps is to swap to a cousin ingredient. The co-movement layer shows when that reflex saves nothing. It reads, for each item, how many of its own notable moves each other item shared — moved the same way within a short window of each other. A high share means the two lines rise together; a low share means the substitute has a life of its own.</p><p>The tightest pairs move as one. Pork shoulder and ground pork shared 6 of 6. Chicken thigh tracked chicken breast on 5 of 5; chicken breast tracked thigh on 5 of 6. Across the lettuces it is the same story: red leaf and iceberg 5 of 6, romaine and red leaf 5 of 6, iceberg and red leaf 5 of 6. Swap within a pair like that and you trade one rising number for another that is rising with it — a mirror, not a hedge.</p><p>This is co-occurrence, never cause — a shared growing region, a shared shipping lane, a shared aisle, not one item pushing the other. But the menu lesson holds either way: a swap only hedges when the replacement moves largely on its own. If the cousin keeps close company with the thing you are fleeing, the swap saves nothing. Look for a substitute with a low shared count, not the one that feels closest on the plate.</p></section><section class="rs-section"><h2>Four layers, three dishes: worked examples</h2><p>Start with ribeye, a lock that carries a real window. The card reads bucket lock, band plus-or-minus 5.8%, trim tax 1.33 at 75% yield, cheapest August at minus 26%, no strong swap. Layer one says print it — a plus-or-minus 5.8% band holds a printed price. Layer two says your plate cost is your own invoice times 1.33, because a quarter of the ribeye is trim. Layer three says August is the freeze month: buy and hold at roughly 26% under its own yearly high. Layer four says there is no mirror-free swap to chase, so do not. Print the steak, freeze in August, leave it alone.</p><p>Now a produce float. Romaine&#39;s card: float, band plus-or-minus 21.8%, trim tax 1.33, cheapest January at minus 47%, and a 5-of-6 co-mover in red leaf lettuce. Broccoli&#39;s: float, band plus-or-minus 26.4%, trim tax 1.54, no readable seasonal window because its monthly prices scatter, and only a 3-of-6 tie to cauliflower. Layer one says print neither — market-price the salad or rotate it. Layer two still bites: broccoli&#39;s 1.54 trim tax means a third of the head is stalk you paid for. Layer three splits them — romaine has a January trough you can lean a feature into for a few weeks, broccoli has no window, so time nothing. Layer four says a romaine-to-red-leaf swap mostly mirrors at 5 of 6, while broccoli-to-cauliflower is a looser 3-of-6 tie and the marginally better hedge. Neither leaf freezes, so none of this is buy-and-hold; it is a this-week call.</p><p>Close with whole turkey, the steady band with no season. Its card: lock, band plus-or-minus 0.8%, trim tax 2.0 at 50% yield, no readable window. The folk move times it to Thanksgiving; the record says its months scatter and it barely moves at all. So the four layers land as: print it year-round, price the plate at twice the invoice because half the bird is frame and trim, time nothing, swap nothing. Set that beside whole crab — a withhold with a 4x trim tax: no band to print against yet, and only a quarter of it edible, exactly the line that belongs at market price with the trim math done before it reaches the menu. And note onion (a lock, cheapest December at minus 44%, 1.14 trim tax) against chicken breast (a cushion, cheapest November at minus 42%, priced to the top of its plus-or-minus 5.3% band): the same four questions, four different answers each time.</p></section><aside class="pb-play"><h3>This week</h3><p>This week, run your five highest-spend lines through the four layers in order. First, read the posture: a lock prints or holds, a cushion prices to the top of the band, a float or a withhold goes to market price or a rotating special. Second, multiply each line&#39;s own invoice cost by its own trim tax, so you are pricing the plated portion and not the delivered weight — a 1.33 tax adds a third, a 1.54 adds half, a 4x quadruples. Third, check the seasonal window: if a freezable protein sits at its trough month, lock a freeze buy and hold it; if the cheap month does not clear the gate, ignore it. Fourth, before you swap anything, check the co-mover count and skip any substitute that keeps close company with the line you are leaving.
+
+Then hold your nerve on a spike. Across 432 of the biggest detected moves, the reference stayed off its baseline a median of 77 days — about two and a half months — with the middle half clearing inside 50 to 105 days. So when a line spikes, do not reprint the menu on day one. Pull a temporary lever first: 86 the dish, sub the ingredient, feature around it, or tighten the portion. Recheck near the 105-day mark, and reprice permanently only if it is still elevated.</p></aside><p class="pb-takeaway">Print the steady lines, float the swingy produce, freeze-buy a protein at its own trough, and skip the swap that only mirrors the rise.</p></div>
+    <section class="pb-tablewrap" aria-labelledby="pb-table-h">
+      <h2 id="pb-table-h" class="rs-section-h">All 100 ingredients, at a glance</h2>
+      <p class="pb-tool__lede">Sorted by pricing posture (print → float). The band is a wholesale reference against its own normal, never the delivered price.</p>
+      <div class="rs-scroll"><table class="rs-table pb-table"><thead><tr><th>Ingredient</th><th>Pricing</th><th class="pb-num">Band</th><th class="pb-num">True cost</th><th class="pb-num">Cheapest</th><th class="pb-num">Futile swap</th></tr></thead><tbody><tr data-bucket="lock"><th scope="row">Acorn squash</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±6%</td><td class="pb-num">×1.43</td><td class="pb-num">Dec −26%</td><td>—</td></tr><tr data-bucket="lock"><th scope="row">Banana</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±0.6%</td><td class="pb-num">×1.54</td><td class="pb-num">—</td><td>Apple</td></tr><tr data-bucket="lock"><th scope="row">Beef tenderloin</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±3.5%</td><td class="pb-num">×1.18</td><td class="pb-num">Jul −20%</td><td>—</td></tr><tr data-bucket="lock"><th scope="row">Beet</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±6.1%</td><td class="pb-num">×1.33</td><td class="pb-num">Aug −21%</td><td>—</td></tr><tr data-bucket="lock"><th scope="row">Bok choy</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±5.8%</td><td class="pb-num">×1.25</td><td class="pb-num">Mar −34%</td><td>—</td></tr><tr data-bucket="lock"><th scope="row">Butter (AA, bulk)</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±4.4%</td><td class="pb-num">—</td><td class="pb-num">May −22%</td><td>—</td></tr><tr data-bucket="lock"><th scope="row">Butter lettuce</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±5.8%</td><td class="pb-num">×1.54</td><td class="pb-num">—</td><td>Green leaf lettuce</td></tr><tr data-bucket="lock"><th scope="row">Butternut squash</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±3.8%</td><td class="pb-num">×1.43</td><td class="pb-num">Jan −19%</td><td>Red onion</td></tr><tr data-bucket="lock"><th scope="row">Cabbage</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±6.6%</td><td class="pb-num">×1.25</td><td class="pb-num">—</td><td>Kale</td></tr><tr data-bucket="lock"><th scope="row">Cheddar cheese</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±2.5%</td><td class="pb-num">—</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="lock"><th scope="row">Cilantro</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±1.2%</td><td class="pb-num">×1.43</td><td class="pb-num">Jan −19%</td><td>—</td></tr><tr data-bucket="lock"><th scope="row">Daikon radish</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±4.4%</td><td class="pb-num">×1.18</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="lock"><th scope="row">Dill</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±2.9%</td><td class="pb-num">×1.54</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="lock"><th scope="row">Eggplant</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±7.1%</td><td class="pb-num">×1.23</td><td class="pb-num">Jan −33%</td><td>Red onion</td></tr><tr data-bucket="lock"><th scope="row">Garlic</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±3.6%</td><td class="pb-num">×1.15</td><td class="pb-num">Jun −17%</td><td>—</td></tr><tr data-bucket="lock"><th scope="row">Ginger root</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±4.4%</td><td class="pb-num">×1.18</td><td class="pb-num">Sep −32%</td><td>—</td></tr><tr data-bucket="lock"><th scope="row">Grapefruit</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±3.4%</td><td class="pb-num">×2.00</td><td class="pb-num">—</td><td>Apple</td></tr><tr data-bucket="lock"><th scope="row">Habanero pepper</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±3.9%</td><td class="pb-num">×1.18</td><td class="pb-num">Jul −23%</td><td>—</td></tr><tr data-bucket="lock"><th scope="row">Leek</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±1.5%</td><td class="pb-num">×2.00</td><td class="pb-num">—</td><td>Artichoke</td></tr><tr data-bucket="lock"><th scope="row">Lemon</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±7.1%</td><td class="pb-num">×2.22</td><td class="pb-num">Mar −40%</td><td>—</td></tr><tr data-bucket="lock"><th scope="row">Mint</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±6%</td><td class="pb-num">×1.43</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="lock"><th scope="row">Onion</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±5.4%</td><td class="pb-num">×1.14</td><td class="pb-num">Dec −44%</td><td>Short rib</td></tr><tr data-bucket="lock"><th scope="row">Pear</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±1.3%</td><td class="pb-num">×1.28</td><td class="pb-num">Mar −18%</td><td>—</td></tr><tr data-bucket="lock"><th scope="row">Pineapple</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±5.3%</td><td class="pb-num">×2.00</td><td class="pb-num">Nov −36%</td><td>—</td></tr><tr data-bucket="lock"><th scope="row">Poblano pepper</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±2.9%</td><td class="pb-num">×1.25</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="lock"><th scope="row">Pork belly</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±3.2%</td><td class="pb-num">×1.11</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="lock"><th scope="row">Pork loin</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±1.6%</td><td class="pb-num">×1.18</td><td class="pb-num">Dec −18%</td><td>—</td></tr><tr data-bucket="lock"><th scope="row">Pork shoulder</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±4.9%</td><td class="pb-num">×1.33</td><td class="pb-num">Oct −21%</td><td>Ground pork</td></tr><tr data-bucket="lock"><th scope="row">Red onion</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±5.8%</td><td class="pb-num">×1.14</td><td class="pb-num">—</td><td>Butternut squash</td></tr><tr data-bucket="lock"><th scope="row">Red potato</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±0.8%</td><td class="pb-num">×1.18</td><td class="pb-num">Jun −26%</td><td>—</td></tr><tr data-bucket="lock"><th scope="row">Ribeye</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±5.8%</td><td class="pb-num">×1.33</td><td class="pb-num">Aug −26%</td><td>—</td></tr><tr data-bucket="lock"><th scope="row">Russet potato</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±4.5%</td><td class="pb-num">×1.23</td><td class="pb-num">Apr −55%</td><td>—</td></tr><tr data-bucket="lock"><th scope="row">Short rib</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±1.8%</td><td class="pb-num">×1.54</td><td class="pb-num">—</td><td>Onion</td></tr><tr data-bucket="lock"><th scope="row">Striploin</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±3%</td><td class="pb-num">×1.25</td><td class="pb-num">Sep −40%</td><td>—</td></tr><tr data-bucket="lock"><th scope="row">Vegetable oil</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±5.1%</td><td class="pb-num">—</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="lock"><th scope="row">Whole chicken</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±5.7%</td><td class="pb-num">×1.67</td><td class="pb-num">May −47%</td><td>—</td></tr><tr data-bucket="lock"><th scope="row">Whole turkey</th><td><span class="pb-pill pb-pill--lock">Print</span></td><td class="pb-num">±0.8%</td><td class="pb-num">×2.00</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="cushion"><th scope="row">Apple</th><td><span class="pb-pill pb-pill--cushion">Cushion</span></td><td class="pb-num">±19.6%</td><td class="pb-num">×1.28</td><td class="pb-num">—</td><td>Grapefruit</td></tr><tr data-bucket="cushion"><th scope="row">Artichoke</th><td><span class="pb-pill pb-pill--cushion">Cushion</span></td><td class="pb-num">±11.5%</td><td class="pb-num">×2.50</td><td class="pb-num">Aug −45%</td><td>Leek</td></tr><tr data-bucket="cushion"><th scope="row">Asparagus</th><td><span class="pb-pill pb-pill--cushion">Cushion</span></td><td class="pb-num">±16.7%</td><td class="pb-num">×1.82</td><td class="pb-num">Mar −32%</td><td>—</td></tr><tr data-bucket="cushion"><th scope="row">Avocado</th><td><span class="pb-pill pb-pill--cushion">Cushion</span></td><td class="pb-num">±16.8%</td><td class="pb-num">×1.33</td><td class="pb-num">Nov −32%</td><td>—</td></tr><tr data-bucket="cushion"><th scope="row">Bell pepper</th><td><span class="pb-pill pb-pill--cushion">Cushion</span></td><td class="pb-num">±14.4%</td><td class="pb-num">×1.22</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="cushion"><th scope="row">Cantaloupe</th><td><span class="pb-pill pb-pill--cushion">Cushion</span></td><td class="pb-num">±11.5%</td><td class="pb-num">×2.00</td><td class="pb-num">Aug −26%</td><td>—</td></tr><tr data-bucket="cushion"><th scope="row">Cherry tomato</th><td><span class="pb-pill pb-pill--cushion">Cushion</span></td><td class="pb-num">±12.7%</td><td class="pb-num">×1.00</td><td class="pb-num">Oct −28%</td><td>Yellow squash</td></tr><tr data-bucket="cushion"><th scope="row">Chicken breast</th><td><span class="pb-pill pb-pill--cushion">Cushion</span></td><td class="pb-num">±5.3%</td><td class="pb-num">×1.05</td><td class="pb-num">Nov −42%</td><td>Chicken thigh</td></tr><tr data-bucket="cushion"><th scope="row">Chicken thigh</th><td><span class="pb-pill pb-pill--cushion">Cushion</span></td><td class="pb-num">±2.9%</td><td class="pb-num">×1.11</td><td class="pb-num">Jan −40%</td><td>Chicken breast</td></tr><tr data-bucket="cushion"><th scope="row">Corn on the cob</th><td><span class="pb-pill pb-pill--cushion">Cushion</span></td><td class="pb-num">±16.1%</td><td class="pb-num">×3.57</td><td class="pb-num">May −16%</td><td>—</td></tr><tr data-bucket="cushion"><th scope="row">Cucumber</th><td><span class="pb-pill pb-pill--cushion">Cushion</span></td><td class="pb-num">±12.6%</td><td class="pb-num">×1.05</td><td class="pb-num">Jul −40%</td><td>Zucchini</td></tr><tr data-bucket="cushion"><th scope="row">Green beans</th><td><span class="pb-pill pb-pill--cushion">Cushion</span></td><td class="pb-num">±18.9%</td><td class="pb-num">×1.14</td><td class="pb-num">Mar −51%</td><td>Cherry tomato</td></tr><tr data-bucket="cushion"><th scope="row">Napa cabbage</th><td><span class="pb-pill pb-pill--cushion">Cushion</span></td><td class="pb-num">±14.6%</td><td class="pb-num">×1.25</td><td class="pb-num">Jun −33%</td><td>—</td></tr><tr data-bucket="cushion"><th scope="row">Okra</th><td><span class="pb-pill pb-pill--cushion">Cushion</span></td><td class="pb-num">±19.2%</td><td class="pb-num">×1.18</td><td class="pb-num">Aug −36%</td><td>—</td></tr><tr data-bucket="cushion"><th scope="row">Parsley</th><td><span class="pb-pill pb-pill--cushion">Cushion</span></td><td class="pb-num">±8.3%</td><td class="pb-num">×1.43</td><td class="pb-num">Mar −30%</td><td>—</td></tr><tr data-bucket="cushion"><th scope="row">Red leaf lettuce</th><td><span class="pb-pill pb-pill--cushion">Cushion</span></td><td class="pb-num">±18.2%</td><td class="pb-num">×1.43</td><td class="pb-num">Jan −44%</td><td>Iceberg lettuce</td></tr><tr data-bucket="cushion"><th scope="row">Snow peas</th><td><span class="pb-pill pb-pill--cushion">Cushion</span></td><td class="pb-num">±13.7%</td><td class="pb-num">×1.11</td><td class="pb-num">Mar −46%</td><td>—</td></tr><tr data-bucket="cushion"><th scope="row">Spinach</th><td><span class="pb-pill pb-pill--cushion">Cushion</span></td><td class="pb-num">±19%</td><td class="pb-num">×1.33</td><td class="pb-num">Jun −39%</td><td>—</td></tr><tr data-bucket="cushion"><th scope="row">Watermelon</th><td><span class="pb-pill pb-pill--cushion">Cushion</span></td><td class="pb-num">±19.4%</td><td class="pb-num">×2.00</td><td class="pb-num">Oct −29%</td><td>—</td></tr><tr data-bucket="float"><th scope="row">Broccoli</th><td><span class="pb-pill pb-pill--float">Float</span></td><td class="pb-num">±26.4%</td><td class="pb-num">×1.54</td><td class="pb-num">—</td><td>Cauliflower</td></tr><tr data-bucket="float"><th scope="row">Brussels sprouts</th><td><span class="pb-pill pb-pill--float">Float</span></td><td class="pb-num">±21.2%</td><td class="pb-num">×1.25</td><td class="pb-num">Mar −38%</td><td>—</td></tr><tr data-bucket="float"><th scope="row">Green leaf lettuce</th><td><span class="pb-pill pb-pill--float">Float</span></td><td class="pb-num">±22.3%</td><td class="pb-num">×1.43</td><td class="pb-num">Jan −51%</td><td>Iceberg lettuce</td></tr><tr data-bucket="float"><th scope="row">Raspberry</th><td><span class="pb-pill pb-pill--float">Float</span></td><td class="pb-num">±24.6%</td><td class="pb-num">×1.00</td><td class="pb-num">Jun −50%</td><td>Romaine lettuce</td></tr><tr data-bucket="float"><th scope="row">Romaine lettuce</th><td><span class="pb-pill pb-pill--float">Float</span></td><td class="pb-num">±21.8%</td><td class="pb-num">×1.33</td><td class="pb-num">Jan −47%</td><td>Red leaf lettuce</td></tr><tr data-bucket="float"><th scope="row">Serrano pepper</th><td><span class="pb-pill pb-pill--float">Float</span></td><td class="pb-num">±20.1%</td><td class="pb-num">×1.18</td><td class="pb-num">Feb −45%</td><td>—</td></tr><tr data-bucket="float"><th scope="row">Yellow squash</th><td><span class="pb-pill pb-pill--float">Float</span></td><td class="pb-num">±25%</td><td class="pb-num">×1.05</td><td class="pb-num">Jul −44%</td><td>Cherry tomato</td></tr><tr data-bucket="withhold"><th scope="row">Basil</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×2.00</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Blueberry</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×1.00</td><td class="pb-num">Aug −57%</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Button mushroom</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×1.11</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Carrot</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×1.22</td><td class="pb-num">—</td><td>Rutabaga</td></tr><tr data-bucket="withhold"><th scope="row">Cauliflower</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×1.67</td><td class="pb-num">Sep −30%</td><td>Broccoli</td></tr><tr data-bucket="withhold"><th scope="row">Celery</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×1.33</td><td class="pb-num">Sep −52%</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Clams</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×3.33</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Collard greens</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×1.54</td><td class="pb-num">—</td><td>Leek</td></tr><tr data-bucket="withhold"><th scope="row">Eggs</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">—</td><td class="pb-num">Jan −80%</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Green onion</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×1.54</td><td class="pb-num">Jun −68%</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Ground beef</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×1.00</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Iceberg lettuce</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×1.35</td><td class="pb-num">Jan −63%</td><td>Red leaf lettuce</td></tr><tr data-bucket="withhold"><th scope="row">Jalapeño</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×1.18</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Kale</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×1.43</td><td class="pb-num">—</td><td>Cabbage</td></tr><tr data-bucket="withhold"><th scope="row">Lime</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×2.86</td><td class="pb-num">Nov −64%</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Octopus</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×2.22</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Oregano</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×1.82</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Rosemary</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×2.00</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Rutabaga</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×1.28</td><td class="pb-num">—</td><td>Carrot</td></tr><tr data-bucket="withhold"><th scope="row">Salmon (skin-on fillet)</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×1.25</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Salmon fillet</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×1.05</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Scallops</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×1.00</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Shrimp (head-on)</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×2.00</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Shrimp (P&amp;D)</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×1.00</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Shrimp (shell-on)</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×1.18</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Squid</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×1.25</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Sweet potato</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×1.33</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Tarragon</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×1.82</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Thyme</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×2.00</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Tomato</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×1.10</td><td class="pb-num">Mar −47%</td><td>Cherry tomato</td></tr><tr data-bucket="withhold"><th scope="row">Tuna loin</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×1.18</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Whole crab</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×4.00</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Whole halibut</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×2.00</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Whole lobster</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×3.33</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Whole salmon</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×1.82</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Whole trout</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×1.82</td><td class="pb-num">—</td><td>—</td></tr><tr data-bucket="withhold"><th scope="row">Zucchini</th><td><span class="pb-pill pb-pill--withhold">Thin</span></td><td class="pb-num">—</td><td class="pb-num">×1.05</td><td class="pb-num">Apr −42%</td><td>Cucumber</td></tr></tbody></table></div>
+    </section>
+    <nav class="rs-related" aria-label="Tools"><h2>Put it to work</h2><ul><li><a href="/tools/cost-pulse/">The lock-or-float tool</a></li><li><a href="/tools/plate-cost/">Cost a plate</a></li><li><a href="/tools/vendor-benchmark/">Check your invoice vs the reference</a></li><li><a href="/open/">The open data</a></li></ul></nav>
+    <p class="rs-src">Joins four Muntin open sets — lock-or-float and co-movement (CC-BY), yields (CC-BY), and seasonal normals (CC0) — each a wholesale-reference read against the ingredient's own baseline, not the delivered price. Descriptive, never a forecast; co-occurrence, never cause.</p>
+    <div class="rs-cta"><a class="btn btn-primary" href="/tools/cost-pulse/">Open the lock-or-float tool <span aria-hidden="true">→</span></a></div>
+  </div>
+  </div>
+  <script type="application/json" id="pbData">[{"slug":"acorn-squash","name":"Acorn squash","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±6% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.43 of edible acorn squash — 70% survives trim.","timing":"Buy timing: has historically run cheapest around Dec, about 26% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Acorn squash moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"banana","name":"Banana","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±0.6% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.54 of edible banana — 65% survives trim.","timing":"Buy timing: no strong seasonal window — its cheapest month saves only 11%, so don't chase the calendar.","swap":"The swap that isn't: don't hedge by trading Banana for Apple — they've moved together in 1 of 2 of Banana's notable moves, so you'd trade one rising number for another."}},{"slug":"beef-tenderloin","name":"Beef tenderloin","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±3.5% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.18 of edible beef tenderloin — 85% survives trim.","timing":"Buy timing: has historically run cheapest around Jul, about 20% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Beef tenderloin moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"beet","name":"Beet","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±6.1% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.33 of edible beet — 75% survives trim.","timing":"Buy timing: has historically run cheapest around Aug, about 21% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Beet moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"bok-choy","name":"Bok choy","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±5.8% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.25 of edible bok choy — 80% survives trim.","timing":"Buy timing: has historically run cheapest around Mar, about 34% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Bok choy moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"butter","name":"Butter (AA, bulk)","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±4.4% — steady enough to commit a menu price for the print cycle.","cost":"True cost: no standard yield on file — price it off your own trimmed weight.","timing":"Buy timing: has historically run cheapest around May, about 22% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Butter (AA, bulk) moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"butter-lettuce","name":"Butter lettuce","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±5.8% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.54 of edible butter lettuce — 65% survives trim.","timing":"Buy timing: its monthly prices scatter without a reliable cheap window — no calendar play; price it year-round.","swap":"The swap that isn't: don't hedge by trading Butter lettuce for Green leaf lettuce — they've moved together in 3 of 6 of Butter lettuce's notable moves, so you'd trade one rising number for another."}},{"slug":"butternut-squash","name":"Butternut squash","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±3.8% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.43 of edible butternut squash — 70% survives trim.","timing":"Buy timing: has historically run cheapest around Jan, about 19% under its own yearly high — worth concentrating a bulk buy there.","swap":"The swap that isn't: don't hedge by trading Butternut squash for Red onion — they've moved together in 3 of 6 of Butternut squash's notable moves, so you'd trade one rising number for another."}},{"slug":"cabbage","name":"Cabbage","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±6.6% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.25 of edible cabbage — 80% survives trim.","timing":"Buy timing: its monthly prices scatter without a reliable cheap window — no calendar play; price it year-round.","swap":"The swap that isn't: don't hedge by trading Cabbage for Kale — they've moved together in 3 of 6 of Cabbage's notable moves, so you'd trade one rising number for another."}},{"slug":"cheddar-cheese","name":"Cheddar cheese","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±2.5% — steady enough to commit a menu price for the print cycle.","cost":"True cost: no standard yield on file — price it off your own trimmed weight.","timing":"Buy timing: its monthly prices scatter without a reliable cheap window — no calendar play; price it year-round.","swap":"Substitution: Cheddar cheese moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"cilantro","name":"Cilantro","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±1.2% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.43 of edible cilantro — 70% survives trim.","timing":"Buy timing: has historically run cheapest around Jan, about 19% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Cilantro moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"daikon","name":"Daikon radish","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±4.4% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.18 of edible daikon radish — 85% survives trim.","timing":"Buy timing: no strong seasonal window — its cheapest month saves only 13%, so don't chase the calendar.","swap":"Substitution: Daikon radish moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"dill","name":"Dill","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±2.9% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.54 of edible dill — 65% survives trim.","timing":"Buy timing: its monthly prices scatter without a reliable cheap window — no calendar play; price it year-round.","swap":"Substitution: Dill moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"eggplant","name":"Eggplant","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±7.1% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.23 of edible eggplant — 81% survives trim.","timing":"Buy timing: has historically run cheapest around Jan, about 33% under its own yearly high — worth concentrating a bulk buy there.","swap":"The swap that isn't: don't hedge by trading Eggplant for Red onion — they've moved together in 3 of 6 of Eggplant's notable moves, so you'd trade one rising number for another."}},{"slug":"garlic","name":"Garlic","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±3.6% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.15 of edible garlic — 87% survives trim.","timing":"Buy timing: has historically run cheapest around Jun, about 17% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Garlic moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"ginger","name":"Ginger root","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±4.4% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.18 of edible ginger root — 85% survives trim.","timing":"Buy timing: has historically run cheapest around Sep, about 32% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Ginger root moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"grapefruit","name":"Grapefruit","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±3.4% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×2.00 of edible grapefruit — 50% survives trim.","timing":"Buy timing: no strong seasonal window — its cheapest month saves only 12%, so don't chase the calendar.","swap":"The swap that isn't: don't hedge by trading Grapefruit for Apple — they've moved together in 3 of 6 of Grapefruit's notable moves, so you'd trade one rising number for another."}},{"slug":"habanero-pepper","name":"Habanero pepper","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±3.9% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.18 of edible habanero pepper — 85% survives trim.","timing":"Buy timing: has historically run cheapest around Jul, about 23% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Habanero pepper moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"leek","name":"Leek","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±1.5% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×2.00 of edible leek — 50% survives trim.","timing":"Buy timing: its monthly prices scatter without a reliable cheap window — no calendar play; price it year-round.","swap":"The swap that isn't: don't hedge by trading Leek for Artichoke — they've moved together in 3 of 6 of Leek's notable moves, so you'd trade one rising number for another."}},{"slug":"lemon","name":"Lemon","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±7.1% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×2.22 of edible lemon — 45% survives trim.","timing":"Buy timing: has historically run cheapest around Mar, about 40% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Lemon moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"mint","name":"Mint","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±6% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.43 of edible mint — 70% survives trim.","timing":"Buy timing: no strong seasonal window — its cheapest month saves only 7%, so don't chase the calendar.","swap":"Substitution: Mint moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"onion","name":"Onion","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±5.4% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.14 of edible onion — 88% survives trim.","timing":"Buy timing: has historically run cheapest around Dec, about 44% under its own yearly high — worth concentrating a bulk buy there.","swap":"The swap that isn't: don't hedge by trading Onion for Short rib — they've moved together in 3 of 6 of Onion's notable moves, so you'd trade one rising number for another."}},{"slug":"pear","name":"Pear","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±1.3% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.28 of edible pear — 78% survives trim.","timing":"Buy timing: has historically run cheapest around Mar, about 18% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Pear moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"pineapple","name":"Pineapple","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±5.3% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×2.00 of edible pineapple — 50% survives trim.","timing":"Buy timing: has historically run cheapest around Nov, about 36% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Pineapple moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"poblano-pepper","name":"Poblano pepper","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±2.9% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.25 of edible poblano pepper — 80% survives trim.","timing":"Buy timing: its monthly prices scatter without a reliable cheap window — no calendar play; price it year-round.","swap":"Substitution: Poblano pepper moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"pork-belly","name":"Pork belly","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±3.2% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.11 of edible pork belly — 90% survives trim.","timing":"Buy timing: no strong seasonal window — its cheapest month saves only 11%, so don't chase the calendar.","swap":"Substitution: Pork belly moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"pork-loin","name":"Pork loin","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±1.6% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.18 of edible pork loin — 85% survives trim.","timing":"Buy timing: has historically run cheapest around Dec, about 18% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Pork loin moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"pork-shoulder","name":"Pork shoulder","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±4.9% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.33 of edible pork shoulder — 75% survives trim.","timing":"Buy timing: has historically run cheapest around Oct, about 21% under its own yearly high — worth concentrating a bulk buy there.","swap":"The swap that isn't: don't hedge by trading Pork shoulder for Ground pork — they've moved together in 6 of 6 of Pork shoulder's notable moves, so you'd trade one rising number for another."}},{"slug":"red-onion","name":"Red onion","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±5.8% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.14 of edible red onion — 88% survives trim.","timing":"Buy timing: its monthly prices scatter without a reliable cheap window — no calendar play; price it year-round.","swap":"The swap that isn't: don't hedge by trading Red onion for Butternut squash — they've moved together in 3 of 6 of Red onion's notable moves, so you'd trade one rising number for another."}},{"slug":"red-potato","name":"Red potato","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±0.8% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.18 of edible red potato — 85% survives trim.","timing":"Buy timing: has historically run cheapest around Jun, about 26% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Red potato moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"ribeye","name":"Ribeye","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±5.8% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.33 of edible ribeye — 75% survives trim.","timing":"Buy timing: has historically run cheapest around Aug, about 26% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Ribeye moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"russet-potato","name":"Russet potato","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±4.5% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.23 of edible russet potato — 81% survives trim.","timing":"Buy timing: has historically run cheapest around Apr, about 55% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Russet potato moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"short-rib","name":"Short rib","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±1.8% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.54 of edible short rib — 65% survives trim.","timing":"Buy timing: no strong seasonal window — its cheapest month saves only 11%, so don't chase the calendar.","swap":"The swap that isn't: don't hedge by trading Short rib for Onion — they've moved together in 3 of 6 of Short rib's notable moves, so you'd trade one rising number for another."}},{"slug":"striploin","name":"Striploin","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±3% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.25 of edible striploin — 80% survives trim.","timing":"Buy timing: has historically run cheapest around Sep, about 40% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Striploin moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"vegetable-oil","name":"Vegetable oil","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±5.1% — steady enough to commit a menu price for the print cycle.","cost":"True cost: no standard yield on file — price it off your own trimmed weight.","timing":"Buy timing: its monthly prices scatter without a reliable cheap window — no calendar play; price it year-round.","swap":"Substitution: Vegetable oil moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"whole-chicken","name":"Whole chicken","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±5.7% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×1.67 of edible whole chicken — 60% survives trim.","timing":"Buy timing: has historically run cheapest around May, about 47% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Whole chicken moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"whole-turkey","name":"Whole turkey","bucket":"lock","lines":{"posture":"Print it. Its wholesale-reference band has held ±0.8% — steady enough to commit a menu price for the print cycle.","cost":"True cost: every wholesale dollar buys ×2.00 of edible whole turkey — 50% survives trim.","timing":"Buy timing: its monthly prices scatter without a reliable cheap window — no calendar play; price it year-round.","swap":"Substitution: Whole turkey moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"apple","name":"Apple","bucket":"cushion","lines":{"posture":"Print it with a cushion. The band runs ±19.6% — price to the top of it, not the middle.","cost":"True cost: every wholesale dollar buys ×1.28 of edible apple — 78% survives trim.","timing":"Buy timing: no strong seasonal window — its cheapest month saves only 14%, so don't chase the calendar.","swap":"The swap that isn't: don't hedge by trading Apple for Grapefruit — they've moved together in 3 of 6 of Apple's notable moves, so you'd trade one rising number for another."}},{"slug":"artichoke","name":"Artichoke","bucket":"cushion","lines":{"posture":"Print it with a cushion. The band runs ±11.5% — price to the top of it, not the middle.","cost":"True cost: every wholesale dollar buys ×2.50 of edible artichoke — 40% survives trim.","timing":"Buy timing: has historically run cheapest around Aug, about 45% under its own yearly high — worth concentrating a bulk buy there.","swap":"The swap that isn't: don't hedge by trading Artichoke for Leek — they've moved together in 3 of 6 of Artichoke's notable moves, so you'd trade one rising number for another."}},{"slug":"asparagus","name":"Asparagus","bucket":"cushion","lines":{"posture":"Print it with a cushion. The band runs ±16.7% — price to the top of it, not the middle.","cost":"True cost: every wholesale dollar buys ×1.82 of edible asparagus — 55% survives trim.","timing":"Buy timing: has historically run cheapest around Mar, about 32% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Asparagus moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"avocado","name":"Avocado","bucket":"cushion","lines":{"posture":"Print it with a cushion. The band runs ±16.8% — price to the top of it, not the middle.","cost":"True cost: every wholesale dollar buys ×1.33 of edible avocado — 75% survives trim.","timing":"Buy timing: has historically run cheapest around Nov, about 32% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Avocado moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"bell-pepper","name":"Bell pepper","bucket":"cushion","lines":{"posture":"Print it with a cushion. The band runs ±14.4% — price to the top of it, not the middle.","cost":"True cost: every wholesale dollar buys ×1.22 of edible bell pepper — 82% survives trim.","timing":"Buy timing: its monthly prices scatter without a reliable cheap window — no calendar play; price it year-round.","swap":"Substitution: Bell pepper moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"cantaloupe","name":"Cantaloupe","bucket":"cushion","lines":{"posture":"Print it with a cushion. The band runs ±11.5% — price to the top of it, not the middle.","cost":"True cost: every wholesale dollar buys ×2.00 of edible cantaloupe — 50% survives trim.","timing":"Buy timing: has historically run cheapest around Aug, about 26% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Cantaloupe moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"cherry-tomato","name":"Cherry tomato","bucket":"cushion","lines":{"posture":"Print it with a cushion. The band runs ±12.7% — price to the top of it, not the middle.","cost":"True cost: every wholesale dollar buys ×1.00 of edible cherry tomato — 100% survives trim.","timing":"Buy timing: has historically run cheapest around Oct, about 28% under its own yearly high — worth concentrating a bulk buy there.","swap":"The swap that isn't: don't hedge by trading Cherry tomato for Yellow squash — they've moved together in 4 of 6 of Cherry tomato's notable moves, so you'd trade one rising number for another."}},{"slug":"chicken-breast","name":"Chicken breast","bucket":"cushion","lines":{"posture":"Print it with a cushion. The band runs ±5.3% — price to the top of it, not the middle.","cost":"True cost: every wholesale dollar buys ×1.05 of edible chicken breast — 95% survives trim.","timing":"Buy timing: has historically run cheapest around Nov, about 42% under its own yearly high — worth concentrating a bulk buy there.","swap":"The swap that isn't: don't hedge by trading Chicken breast for Chicken thigh — they've moved together in 5 of 6 of Chicken breast's notable moves, so you'd trade one rising number for another."}},{"slug":"chicken-thigh","name":"Chicken thigh","bucket":"cushion","lines":{"posture":"Print it with a cushion. The band runs ±2.9% — price to the top of it, not the middle.","cost":"True cost: every wholesale dollar buys ×1.11 of edible chicken thigh — 90% survives trim.","timing":"Buy timing: has historically run cheapest around Jan, about 40% under its own yearly high — worth concentrating a bulk buy there.","swap":"The swap that isn't: don't hedge by trading Chicken thigh for Chicken breast — they've moved together in 5 of 5 of Chicken thigh's notable moves, so you'd trade one rising number for another."}},{"slug":"corn-on-the-cob","name":"Corn on the cob","bucket":"cushion","lines":{"posture":"Print it with a cushion. The band runs ±16.1% — price to the top of it, not the middle.","cost":"True cost: every wholesale dollar buys ×3.57 of edible corn on the cob — 28% survives trim.","timing":"Buy timing: has historically run cheapest around May, about 16% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Corn on the cob moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"cucumber","name":"Cucumber","bucket":"cushion","lines":{"posture":"Print it with a cushion. The band runs ±12.6% — price to the top of it, not the middle.","cost":"True cost: every wholesale dollar buys ×1.05 of edible cucumber — 95% survives trim.","timing":"Buy timing: has historically run cheapest around Jul, about 40% under its own yearly high — worth concentrating a bulk buy there.","swap":"The swap that isn't: don't hedge by trading Cucumber for Zucchini — they've moved together in 3 of 6 of Cucumber's notable moves, so you'd trade one rising number for another."}},{"slug":"green-beans","name":"Green beans","bucket":"cushion","lines":{"posture":"Print it with a cushion. The band runs ±18.9% — price to the top of it, not the middle.","cost":"True cost: every wholesale dollar buys ×1.14 of edible green beans — 88% survives trim.","timing":"Buy timing: has historically run cheapest around Mar, about 51% under its own yearly high — worth concentrating a bulk buy there.","swap":"The swap that isn't: don't hedge by trading Green beans for Cherry tomato — they've moved together in 3 of 6 of Green beans's notable moves, so you'd trade one rising number for another."}},{"slug":"napa-cabbage","name":"Napa cabbage","bucket":"cushion","lines":{"posture":"Print it with a cushion. The band runs ±14.6% — price to the top of it, not the middle.","cost":"True cost: every wholesale dollar buys ×1.25 of edible napa cabbage — 80% survives trim.","timing":"Buy timing: has historically run cheapest around Jun, about 33% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Napa cabbage moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"okra","name":"Okra","bucket":"cushion","lines":{"posture":"Print it with a cushion. The band runs ±19.2% — price to the top of it, not the middle.","cost":"True cost: every wholesale dollar buys ×1.18 of edible okra — 85% survives trim.","timing":"Buy timing: has historically run cheapest around Aug, about 36% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Okra moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"parsley","name":"Parsley","bucket":"cushion","lines":{"posture":"Print it with a cushion. The band runs ±8.3% — price to the top of it, not the middle.","cost":"True cost: every wholesale dollar buys ×1.43 of edible parsley — 70% survives trim.","timing":"Buy timing: has historically run cheapest around Mar, about 30% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Parsley moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"red-leaf-lettuce","name":"Red leaf lettuce","bucket":"cushion","lines":{"posture":"Print it with a cushion. The band runs ±18.2% — price to the top of it, not the middle.","cost":"True cost: every wholesale dollar buys ×1.43 of edible red leaf lettuce — 70% survives trim.","timing":"Buy timing: has historically run cheapest around Jan, about 44% under its own yearly high — worth concentrating a bulk buy there.","swap":"The swap that isn't: don't hedge by trading Red leaf lettuce for Iceberg lettuce — they've moved together in 5 of 6 of Red leaf lettuce's notable moves, so you'd trade one rising number for another."}},{"slug":"snow-peas","name":"Snow peas","bucket":"cushion","lines":{"posture":"Print it with a cushion. The band runs ±13.7% — price to the top of it, not the middle.","cost":"True cost: every wholesale dollar buys ×1.11 of edible snow peas — 90% survives trim.","timing":"Buy timing: has historically run cheapest around Mar, about 46% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Snow peas moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"spinach","name":"Spinach","bucket":"cushion","lines":{"posture":"Print it with a cushion. The band runs ±19% — price to the top of it, not the middle.","cost":"True cost: every wholesale dollar buys ×1.33 of edible spinach — 75% survives trim.","timing":"Buy timing: has historically run cheapest around Jun, about 39% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Spinach moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"watermelon","name":"Watermelon","bucket":"cushion","lines":{"posture":"Print it with a cushion. The band runs ±19.4% — price to the top of it, not the middle.","cost":"True cost: every wholesale dollar buys ×2.00 of edible watermelon — 50% survives trim.","timing":"Buy timing: has historically run cheapest around Oct, about 29% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Watermelon moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"broccoli","name":"Broccoli","bucket":"float","lines":{"posture":"Float it. The band runs ±26.4% — better as market price or a rotating special than a locked print.","cost":"True cost: every wholesale dollar buys ×1.54 of edible broccoli — 65% survives trim.","timing":"Buy timing: its monthly prices scatter without a reliable cheap window — no calendar play; price it year-round.","swap":"The swap that isn't: don't hedge by trading Broccoli for Cauliflower — they've moved together in 3 of 6 of Broccoli's notable moves, so you'd trade one rising number for another."}},{"slug":"brussels-sprouts","name":"Brussels sprouts","bucket":"float","lines":{"posture":"Float it. The band runs ±21.2% — better as market price or a rotating special than a locked print.","cost":"True cost: every wholesale dollar buys ×1.25 of edible brussels sprouts — 80% survives trim.","timing":"Buy timing: has historically run cheapest around Mar, about 38% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Brussels sprouts moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"green-leaf-lettuce","name":"Green leaf lettuce","bucket":"float","lines":{"posture":"Float it. The band runs ±22.3% — better as market price or a rotating special than a locked print.","cost":"True cost: every wholesale dollar buys ×1.43 of edible green leaf lettuce — 70% survives trim.","timing":"Buy timing: has historically run cheapest around Jan, about 51% under its own yearly high — worth concentrating a bulk buy there.","swap":"The swap that isn't: don't hedge by trading Green leaf lettuce for Iceberg lettuce — they've moved together in 4 of 6 of Green leaf lettuce's notable moves, so you'd trade one rising number for another."}},{"slug":"raspberry","name":"Raspberry","bucket":"float","lines":{"posture":"Float it. The band runs ±24.6% — better as market price or a rotating special than a locked print.","cost":"True cost: every wholesale dollar buys ×1.00 of edible raspberry — 100% survives trim.","timing":"Buy timing: has historically run cheapest around Jun, about 50% under its own yearly high — worth concentrating a bulk buy there.","swap":"The swap that isn't: don't hedge by trading Raspberry for Romaine lettuce — they've moved together in 3 of 6 of Raspberry's notable moves, so you'd trade one rising number for another."}},{"slug":"romaine-lettuce","name":"Romaine lettuce","bucket":"float","lines":{"posture":"Float it. The band runs ±21.8% — better as market price or a rotating special than a locked print.","cost":"True cost: every wholesale dollar buys ×1.33 of edible romaine lettuce — 75% survives trim.","timing":"Buy timing: has historically run cheapest around Jan, about 47% under its own yearly high — worth concentrating a bulk buy there.","swap":"The swap that isn't: don't hedge by trading Romaine lettuce for Red leaf lettuce — they've moved together in 5 of 6 of Romaine lettuce's notable moves, so you'd trade one rising number for another."}},{"slug":"serrano-pepper","name":"Serrano pepper","bucket":"float","lines":{"posture":"Float it. The band runs ±20.1% — better as market price or a rotating special than a locked print.","cost":"True cost: every wholesale dollar buys ×1.18 of edible serrano pepper — 85% survives trim.","timing":"Buy timing: has historically run cheapest around Feb, about 45% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Serrano pepper moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"yellow-squash","name":"Yellow squash","bucket":"float","lines":{"posture":"Float it. The band runs ±25% — better as market price or a rotating special than a locked print.","cost":"True cost: every wholesale dollar buys ×1.05 of edible yellow squash — 95% survives trim.","timing":"Buy timing: has historically run cheapest around Jul, about 44% under its own yearly high — worth concentrating a bulk buy there.","swap":"The swap that isn't: don't hedge by trading Yellow squash for Cherry tomato — they've moved together in 4 of 6 of Yellow squash's notable moves, so you'd trade one rising number for another."}},{"slug":"basil","name":"Basil","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×2.00 of edible basil — 50% survives trim.","timing":"Buy timing: no strong seasonal window — its cheapest month saves only 13%, so don't chase the calendar.","swap":"Substitution: Basil moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"blueberry","name":"Blueberry","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×1.00 of edible blueberry — 100% survives trim.","timing":"Buy timing: has historically run cheapest around Aug, about 57% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Blueberry moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"button-mushroom","name":"Button mushroom","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×1.11 of edible button mushroom — 90% survives trim.","timing":"Buy timing: its monthly prices scatter without a reliable cheap window — no calendar play; price it year-round.","swap":"Substitution: Button mushroom moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"carrot","name":"Carrot","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×1.22 of edible carrot — 82% survives trim.","timing":"Buy timing: its monthly prices scatter without a reliable cheap window — no calendar play; price it year-round.","swap":"The swap that isn't: don't hedge by trading Carrot for Rutabaga — they've moved together in 4 of 6 of Carrot's notable moves, so you'd trade one rising number for another."}},{"slug":"cauliflower","name":"Cauliflower","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×1.67 of edible cauliflower — 60% survives trim.","timing":"Buy timing: has historically run cheapest around Sep, about 30% under its own yearly high — worth concentrating a bulk buy there.","swap":"The swap that isn't: don't hedge by trading Cauliflower for Broccoli — they've moved together in 3 of 6 of Cauliflower's notable moves, so you'd trade one rising number for another."}},{"slug":"celery","name":"Celery","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×1.33 of edible celery — 75% survives trim.","timing":"Buy timing: has historically run cheapest around Sep, about 52% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Celery moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"clams","name":"Clams","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×3.33 of edible clams — 30% survives trim.","timing":"Buy timing: not enough seasonal history to name a cheapest month.","swap":"Substitution: Clams moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"collard-greens","name":"Collard greens","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×1.54 of edible collard greens — 65% survives trim.","timing":"Buy timing: its monthly prices scatter without a reliable cheap window — no calendar play; price it year-round.","swap":"The swap that isn't: don't hedge by trading Collard greens for Leek — they've moved together in 3 of 6 of Collard greens's notable moves, so you'd trade one rising number for another."}},{"slug":"eggs","name":"Eggs","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: no standard yield on file — price it off your own trimmed weight.","timing":"Buy timing: has historically run cheapest around Jan, about 80% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Eggs moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"green-onion","name":"Green onion","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×1.54 of edible green onion — 65% survives trim.","timing":"Buy timing: has historically run cheapest around Jun, about 68% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Green onion moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"ground-beef","name":"Ground beef","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×1.00 of edible ground beef — 100% survives trim.","timing":"Buy timing: not enough seasonal history to name a cheapest month.","swap":"Substitution: Ground beef moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"iceberg-lettuce","name":"Iceberg lettuce","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×1.35 of edible iceberg lettuce — 74% survives trim.","timing":"Buy timing: has historically run cheapest around Jan, about 63% under its own yearly high — worth concentrating a bulk buy there.","swap":"The swap that isn't: don't hedge by trading Iceberg lettuce for Red leaf lettuce — they've moved together in 5 of 6 of Iceberg lettuce's notable moves, so you'd trade one rising number for another."}},{"slug":"jalapeno","name":"Jalapeño","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×1.18 of edible jalapeño — 85% survives trim.","timing":"Buy timing: its monthly prices scatter without a reliable cheap window — no calendar play; price it year-round.","swap":"Substitution: Jalapeño moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"kale","name":"Kale","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×1.43 of edible kale — 70% survives trim.","timing":"Buy timing: its monthly prices scatter without a reliable cheap window — no calendar play; price it year-round.","swap":"The swap that isn't: don't hedge by trading Kale for Cabbage — they've moved together in 3 of 6 of Kale's notable moves, so you'd trade one rising number for another."}},{"slug":"lime","name":"Lime","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×2.86 of edible lime — 35% survives trim.","timing":"Buy timing: has historically run cheapest around Nov, about 64% under its own yearly high — worth concentrating a bulk buy there.","swap":"Substitution: Lime moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"octopus","name":"Octopus","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×2.22 of edible octopus — 45% survives trim.","timing":"Buy timing: not enough seasonal history to name a cheapest month.","swap":"Substitution: Octopus moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"oregano","name":"Oregano","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×1.82 of edible oregano — 55% survives trim.","timing":"Buy timing: its monthly prices scatter without a reliable cheap window — no calendar play; price it year-round.","swap":"Substitution: Oregano moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"rosemary","name":"Rosemary","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×2.00 of edible rosemary — 50% survives trim.","timing":"Buy timing: its monthly prices scatter without a reliable cheap window — no calendar play; price it year-round.","swap":"Substitution: Rosemary moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"rutabaga","name":"Rutabaga","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×1.28 of edible rutabaga — 78% survives trim.","timing":"Buy timing: no strong seasonal window — its cheapest month saves only 7%, so don't chase the calendar.","swap":"The swap that isn't: don't hedge by trading Rutabaga for Carrot — they've moved together in 4 of 6 of Rutabaga's notable moves, so you'd trade one rising number for another."}},{"slug":"salmon-skin-on-fillet","name":"Salmon (skin-on fillet)","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×1.25 of edible salmon (skin-on fillet) — 80% survives trim.","timing":"Buy timing: not enough seasonal history to name a cheapest month.","swap":"Substitution: Salmon (skin-on fillet) moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"salmon-fillet","name":"Salmon fillet","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×1.05 of edible salmon fillet — 95% survives trim.","timing":"Buy timing: not enough seasonal history to name a cheapest month.","swap":"Substitution: Salmon fillet moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"scallops","name":"Scallops","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×1.00 of edible scallops — 100% survives trim.","timing":"Buy timing: not enough seasonal history to name a cheapest month.","swap":"Substitution: Scallops moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"shrimp-head-on","name":"Shrimp (head-on)","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×2.00 of edible shrimp (head-on) — 50% survives trim.","timing":"Buy timing: not enough seasonal history to name a cheapest month.","swap":"Substitution: Shrimp (head-on) moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"shrimp-pd","name":"Shrimp (P&D)","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×1.00 of edible shrimp (p&d) — 100% survives trim.","timing":"Buy timing: not enough seasonal history to name a cheapest month.","swap":"Substitution: Shrimp (P&D) moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"shrimp","name":"Shrimp (shell-on)","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×1.18 of edible shrimp (shell-on) — 85% survives trim.","timing":"Buy timing: not enough seasonal history to name a cheapest month.","swap":"Substitution: Shrimp (shell-on) moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"squid","name":"Squid","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×1.25 of edible squid — 80% survives trim.","timing":"Buy timing: not enough seasonal history to name a cheapest month.","swap":"Substitution: Squid moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"sweet-potato","name":"Sweet potato","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×1.33 of edible sweet potato — 75% survives trim.","timing":"Buy timing: no strong seasonal window — its cheapest month saves only 12%, so don't chase the calendar.","swap":"Substitution: Sweet potato moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"tarragon","name":"Tarragon","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×1.82 of edible tarragon — 55% survives trim.","timing":"Buy timing: its monthly prices scatter without a reliable cheap window — no calendar play; price it year-round.","swap":"Substitution: Tarragon moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"thyme","name":"Thyme","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×2.00 of edible thyme — 50% survives trim.","timing":"Buy timing: its monthly prices scatter without a reliable cheap window — no calendar play; price it year-round.","swap":"Substitution: Thyme moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"tomato","name":"Tomato","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×1.10 of edible tomato — 91% survives trim.","timing":"Buy timing: has historically run cheapest around Mar, about 47% under its own yearly high — worth concentrating a bulk buy there.","swap":"The swap that isn't: don't hedge by trading Tomato for Cherry tomato — they've moved together in 3 of 6 of Tomato's notable moves, so you'd trade one rising number for another."}},{"slug":"tuna-loin","name":"Tuna loin","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×1.18 of edible tuna loin — 85% survives trim.","timing":"Buy timing: not enough seasonal history to name a cheapest month.","swap":"Substitution: Tuna loin moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"whole-crab","name":"Whole crab","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×4.00 of edible whole crab — 25% survives trim.","timing":"Buy timing: not enough seasonal history to name a cheapest month.","swap":"Substitution: Whole crab moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"whole-halibut","name":"Whole halibut","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×2.00 of edible whole halibut — 50% survives trim.","timing":"Buy timing: not enough seasonal history to name a cheapest month.","swap":"Substitution: Whole halibut moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"whole-lobster","name":"Whole lobster","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×3.33 of edible whole lobster — 30% survives trim.","timing":"Buy timing: not enough seasonal history to name a cheapest month.","swap":"Substitution: Whole lobster moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"whole-salmon","name":"Whole salmon","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×1.82 of edible whole salmon — 55% survives trim.","timing":"Buy timing: not enough seasonal history to name a cheapest month.","swap":"Substitution: Whole salmon moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"whole-trout","name":"Whole trout","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×1.82 of edible whole trout — 55% survives trim.","timing":"Buy timing: not enough seasonal history to name a cheapest month.","swap":"Substitution: Whole trout moves largely on its own, so a swap is a real hedge here, not a mirror."}},{"slug":"zucchini","name":"Zucchini","bucket":"withhold","lines":{"posture":"Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.","cost":"True cost: every wholesale dollar buys ×1.05 of edible zucchini — 95% survives trim.","timing":"Buy timing: has historically run cheapest around Apr, about 42% under its own yearly high — worth concentrating a bulk buy there.","swap":"The swap that isn't: don't hedge by trading Zucchini for Cucumber — they've moved together in 3 of 6 of Zucchini's notable moves, so you'd trade one rising number for another."}}]</script>
+  <script>
+  (function(){
+    var sel=document.getElementById('pbSel'),host=document.getElementById('pbCard'),el=document.getElementById('pbData');
+    if(!sel||!host||!el)return; var cards;try{cards=JSON.parse(el.textContent)}catch(e){return}
+    var byId={};for(var i=0;i<cards.length;i++)byId[cards[i].slug]=cards[i];
+    var LB={"lock":"Print","cushion":"Cushion","float":"Float","withhold":"Thin"};
+    function mk(t,c,txt){var e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e}
+    function render(c){
+      while(host.firstChild)host.removeChild(host.firstChild);
+      var art=mk('article','pb-card');art.setAttribute('data-bucket',c.bucket);
+      var hd=mk('header','pb-card__head');hd.appendChild(mk('h3','pb-card__name',c.name));
+      var pill=mk('span','pb-pill pb-pill--'+c.bucket,LB[c.bucket]||c.bucket);hd.appendChild(pill);art.appendChild(hd);
+      art.appendChild(mk('p','pb-card__posture',c.lines.posture));
+      var ul=mk('ul','pb-card__layers');
+      ['cost','time','swap'].forEach(function(k){ul.appendChild(mk('li','pb-lyr pb-lyr--'+k,c.lines[k==='time'?'timing':k]))});
+      art.appendChild(ul);host.appendChild(art);
+    }
+    sel.addEventListener('change',function(){var c=byId[sel.value];if(c)render(c)});
+  })();
+  </script></div>
+</main>
+<footer class="site-footer" id="footer"></footer>
+<!-- Newsletter signup — eager progressive enhancement. This page ships
+     an empty footer (no footer assets, so first-touch.js never loads
+     here); wire the in-page #weekly-email form at parse time so a quick
+     submit can't fall back to a native POST that paints the API's raw
+     {"ok":true}. Stamps ts for the anti-spam gate, posts via fetch, and
+     flips data-state="ok" for the inline confirmation. -->
+<script>
+(function () {
+  'use strict';
+  if (typeof document === 'undefined') return;
+  function wire(form) {
+    if (!form || form.dataset.enhanced === '1') return;
+    form.dataset.enhanced = '1';
+    var ts = form.querySelector('input[name="ts"]');
+    if (ts) ts.value = String(Date.now());
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var params = new URLSearchParams();
+      new FormData(form).forEach(function (v, k) { params.append(k, v); });
+      fetch(form.action, {
+        method: 'POST',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        body: params.toString(),
+        credentials: 'same-origin',
+      }).then(function () {
+        form.dataset.state = 'ok';
+        if (typeof window.plausible === 'function') {
+          var evName = form.dataset.event || 'Newsletter Signup';
+          var surface = form.dataset.surface || (form.dataset.locale === 'es' ? 'cost-index-es' : 'cost-index-en');
+          try { window.plausible(evName, { props: { surface: surface } }); } catch (_) {}
+        }
+      }).catch(function () { /* fire-and-forget; no error UI by design */ });
+    });
+  }
+  function init() {
+    var forms = document.querySelectorAll('.foot-newsletter-form, .js-signup-form');
+    Array.prototype.forEach.call(forms, wire);
+  }
+  init();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+<!-- Find-an-ingredient filter for the Cost Index hub table. Progressive
+     enhancement: reveals the (hidden) search box, filters rows by name/slug,
+     shows a no-match row, and announces the count. No-ops on pages without
+     the table (every other cost-index page). -->
+<script>
+(function () {
+  'use strict';
+  if (typeof document === 'undefined') return;
+  function init() {
+    var box = document.getElementById('ci-ingredient-search');
+    if (!box || box.dataset.wired === '1') return;
+    var table = document.getElementById('ci-readings-table');
+    if (!table || !table.tBodies.length) return;
+    box.dataset.wired = '1';
+    var tools = box.closest('.ci-table-tools');
+    if (tools) tools.hidden = false;
+    var all = Array.prototype.slice.call(table.tBodies[0].rows);
+    var rows = all.filter(function (r) { return !r.hasAttribute('data-empty'); });
+    var empty = table.querySelector('tr[data-empty]');
+    var count = document.querySelector('.ci-table-count');
+    function apply() {
+      var q = box.value.trim().toLowerCase();
+      var shown = 0;
+      for (var i = 0; i < rows.length; i++) {
+        var hit = !q || (rows[i].getAttribute('data-name') || '').indexOf(q) !== -1;
+        rows[i].hidden = !hit;
+        if (hit) shown++;
+      }
+      if (empty) empty.hidden = !(q && shown === 0);
+      if (count) count.textContent = q ? (shown + ' / ' + rows.length) : '';
+    }
+    box.addEventListener('input', apply);
+  }
+  init();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260430-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+</body>
+</html>

@@ -20,7 +20,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { researchInputs } from './lib/cost-research.mjs';
+import { researchInputs, pricingCards } from './lib/cost-research.mjs';
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CONTENT = 'data/cost-research-content.json';
@@ -83,6 +83,18 @@ function displayForms(A) {
   for (const x of (A.volatility?.lock || []).concat(A.volatility?.float || [])) { add(Math.round(x.halfWidthPct * 100 * 10) / 10); }
   for (const cl of A.clusters || []) { add(cl.size); if (cl.tight) add(cl.tight.k); }
   add(A.duration?.medianMonths); add(A.duration?.p75Months);
+  // The menu-pricing playbook's per-ingredient numbers (band %, trim tax ×, edible %, savings %,
+  // co-mover k/n) are all real computed values — ground them so the guide can cite worked examples.
+  try {
+    const P = pricingCards(repo);
+    for (const c of P.cards) {
+      add(c.bandPct); if (c.trimTax != null) add(c.trimTax); if (c.yieldPct != null) add(c.yieldPct);
+      if (c.savePct != null) add(c.savePct); if (c.cheapMonth != null) add(c.cheapMonth);
+      if (c.swap) { add(c.swap.k); add(c.swap.n); }
+    }
+    for (const k of ['total', 'layer4', 'withYield', 'withTiming']) add(P[k]);
+    for (const b of Object.keys(P.counts)) add(P.counts[b]);
+  } catch { /* pricingCards optional */ }
   // structural constants in framing (percentile ranks, window sizes, multipliers, the "86" idiom):
   for (const s of ['1', '2', '3', '4', '5', '6', '7', '8', '10', '12', '24', '25', '26', '50', '75', '86', '100', '2026']) set.add(s);
   return set;

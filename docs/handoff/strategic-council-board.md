@@ -17,6 +17,16 @@ council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 
 **Session on branch `claude/vendor-benchmark-redesign-yn273q`** (storefront `potentially-profitable`). Thread: turn the Cost Index into a genuine **data company + open library** — surface the deep price history, add the "events that moved the market" layer, and wire the HONEST use of new public data (NASS/Census/EIA). Cadence: plan → build → audit → iterate, with **expert panels at the forks**. `check-all` baseline unchanged (232–233/252; the ~19 failures are the deploy-regenerated site-wide idempotency drift, NOT ours — see Gotchas). Every cost-index/events/context gate GREEN.
 
+### ⮕ MENU-PRICING PLAYBOOK — the "1 quality piece" consolidation (2026-07-11) — decisions in ADR-016
+
+Founder judged the 7 Workstream-F research pages "slim and surface level — I'd rather do 1 quality piece than 7 halfway pieces." Retired all 7 (+ hub, EN+ES) into a single interactive **menu-pricing playbook** at `/cost-index/menu-pricing/` that joins four data layers per ingredient (posture+band · trim tax · seasonal window · futile swap): a per-ingredient card picker + a deep 6-section teaching guide + a 100-row table, all from `pricingCards()`/`researchInputs()`, grounded by `check-cost-research.mjs`.
+
+- **Seasonality noise gate (founder caught "turkey cheapest in Feb").** `timingFor()` now names a cheapest-month window only when the trough is robust: cheap-month median beats the **peak** month's p25 AND the swing ≥ median within-month IQR. Fail → "price it year-round" (`noisy`), distinct from `thin`/`flat`. Suppresses 20 noise windows (incl. turkey), keeps 54 real ones; surviving windows framed descriptively, never a forecast.
+- **Protein seasonality taught (founder's ask):** guide §4 "the hidden season of meat" — cuts bottom out *after* the demand peak (ribeye Aug −26%, striploin Sep −40%), the freeze angle, turkey as myth-buster (steadiest band ±0.8%, no window).
+- **Redirects:** `/cost-index/research/*` (+ ES, hub, sub-paths) 301 → `/cost-index/menu-pricing/` via `src/worker.js` (`_redirects` is at the 100-rule cap). Sitemap regenerated; `/open` callout repointed.
+- **Guide built by a write→adversarial-verify→revise→translate workflow** — the verify pass killed a driver→price causal sentence + a spelled-out invented span the digit-only gate misses.
+- **OPEN (in flight):** the page is prose-heavy — a data-figure layer (print/float split, protein-hold-vs-produce-swing, trim-tax ladder, backward-season chart) is the next pass to make it a modern data study, not an essay. Events 39 read-me pages → registry-only de-emphasis still pending.
+
 ### ⮕ OPEN-DATA EXPLORE SURFACES + PRODUCT LINE (2026-07-11) — decisions in ADR-015
 
 Turned the JSON-only `/open` sets into real explore surfaces + a licensed open-data product line. **Master plan:** `docs/plans/open-data-explore-surfaces-plan.md`. **Decisions of record:** **ADR-015** (co-movement honesty + CC0/CC-BY split + detail-page date semantics + gate coverage).

@@ -166,6 +166,83 @@ export function researchInputs(repoRoot) {
   };
 }
 
+// ---- the menu-pricing playbook: one card per ingredient, joining every layer ----------
+// For each ingredient with a pricing-posture verdict, join: lock-or-float (print/cushion/float/
+// withhold + band + coverage), yield (edible % + trim tax = 1/yield), seasonality (cheapest month
+// + how far under its own high), and co-movement (the tightest same-direction companion — the swap
+// that buys nothing). Honest nulls where a layer is missing. Every number is computed here.
+const MONTH_ABBR_EN = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const MONTH_ABBR_ES = ['', 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+const TIMING_MIN_SAVE = 15; // below this, calendar-timing isn't worth chasing (flat item)
+export function pricingCards(repoRoot) {
+  const rows = yieldRows(repoRoot);
+  const yBySlug = {}; for (const r of rows) yBySlug[r.slug] = r;
+  const lf = rd(repoRoot, 'data/cost-lockfloat.json').items;
+  const sea = (rd(repoRoot, 'data/seasonality.json').ingredients || []).filter((i) => i.ready && i.months);
+  const seaBySlug = {}; for (const i of sea) seaBySlug[i.key] = i;
+  const cm = coMovement(loadEventsData(repoRoot));
+  const NM = nameMap(repoRoot);
+  const nm = (s) => NM[s] || { en: s, es: s };
+  // cheapest month + savings vs own priciest, for a ready seasonality ingredient. A "window" is
+  // only READABLE when the trough is robust against the ordinary within-month price scatter —
+  // otherwise the low month is just a noisy median draw (whole turkey's Feb median sits ABOVE
+  // January's own 25th-percentile week, so a typical January buys cheaper than a typical February;
+  // "cheapest in Feb" is noise, not a season). Require the trough month's median to beat the PEAK
+  // month's p25 AND the peak-to-trough swing to be at least the typical within-month IQR. Fails →
+  // no window (price it year-round), never a bogus calendar play. This is what year-round-produced
+  // proteins mostly land on — the honest read, item by item, not a category rule.
+  const timingFor = (s) => {
+    const i = seaBySlug[s]; if (!i) return null;
+    const ms = Object.keys(i.months);
+    let lo = null, hi = null;
+    for (const m of ms) { const v = i.months[m].medianCents; if (lo == null || v < i.months[lo].medianCents) lo = m; if (hi == null || v > i.months[hi].medianCents) hi = m; }
+    const loM = i.months[lo], hiM = i.months[hi];
+    const save = hiM.medianCents > 0 ? Math.round((hiM.medianCents - loM.medianCents) / hiM.medianCents * 100) : 0;
+    const iqrs = ms.map((m) => i.months[m].p75Cents - i.months[m].p25Cents).sort((a, b) => a - b);
+    const medIQR = iqrs[Math.floor(iqrs.length / 2)];
+    const amp = hiM.medianCents - loM.medianCents;
+    const robust = loM.medianCents < hiM.p25Cents && amp >= medIQR;
+    if (!robust) return { cheapMonth: null, savePct: null, worthTiming: false, reason: 'noisy' };
+    return { cheapMonth: Number(lo), savePct: save, worthTiming: save >= TIMING_MIN_SAVE, reason: save >= TIMING_MIN_SAVE ? 'worth' : 'flat' };
+  };
+  const swapFor = (s) => {
+    const a = cm[s]; if (!a || !a.neighbors || !a.neighbors.length) return null;
+    const [nbSlug, k] = a.neighbors[0]; // tightest same-direction companion
+    // Only a STRONG companion supports the "a swap buys nothing" read — it must have shared at
+    // least half of this ingredient's own notable moves. A weak co-mover (e.g. 2 of 6) is noise.
+    if (!(a.n >= 2 && k / a.n >= 0.5)) return null;
+    return { slug: nbSlug, en: nm(nbSlug).en, es: nm(nbSlug).es, k, n: a.n };
+  };
+  const cards = Object.keys(lf).filter((s) => lf[s] && lf[s].bucket).map((s) => {
+    const y = yBySlug[s]; const t = timingFor(s); const sw = swapFor(s);
+    const cat = y ? y.cat : null;
+    return {
+      slug: s, en: nm(s).en, es: nm(s).es, cat,
+      bucket: lf[s].bucket,
+      bandPct: Math.round(lf[s].halfWidthPct * 100 * 10) / 10,
+      coverage: lf[s].coverage != null ? Math.round(lf[s].coverage * 100) : null,
+      yieldPct: y ? Math.round(y.yield * 100) : null,
+      trimTax: y ? Math.round((1 / y.yield) * 100) / 100 : null,
+      cheapMonth: t ? t.cheapMonth : null,
+      savePct: t ? t.savePct : null,
+      worthTiming: t ? t.worthTiming : false,
+      timingReason: t ? t.reason : 'thin',
+      swap: sw,
+    };
+  });
+  // stable, useful default sort: by posture (lock→cushion→float→withhold), then name
+  const order = { lock: 0, cushion: 1, float: 2, withhold: 3 };
+  cards.sort((a, b) => (order[a.bucket] - order[b.bucket]) || a.en.localeCompare(b.en));
+  const counts = cards.reduce((o, c) => { o[c.bucket] = (o[c.bucket] || 0) + 1; return o; }, {});
+  const layer4 = cards.filter((c) => c.yieldPct != null && c.cheapMonth != null && c.swap).length;
+  return {
+    cards, counts, total: cards.length, layer4,
+    withYield: cards.filter((c) => c.yieldPct != null).length,
+    withTiming: cards.filter((c) => c.worthTiming).length,
+    monthAbbrEn: MONTH_ABBR_EN, monthAbbrEs: MONTH_ABBR_ES,
+  };
+}
+
 // ---- render ------------------------------------------------------------
 // slug→{en,es} display names, from the yields + lock-or-float data.
 function nameMap(repoRoot) {
@@ -711,25 +788,202 @@ const RESEARCH_CSS = `/* =======================================================
   .rs-hub-card:hover{transform:none}
 }\n.rs-cta{margin-top:28px}\n`;
 
+// ---- the menu-pricing playbook page (the flagship) --------------------------------------
+// Playbook CSS (pb-*). Reuses the rs-* tokens; the posture pill encodes an ordered posture
+// (print→cushion→float→thin) by tint depth + a TEXT label — never color alone, no red/green
+// semaphore. Data marks elsewhere stay teal.
+const PLAYBOOK_CSS = `
+.pb-body h2{font-family:var(--font-display);font-weight:500;font-size:23px;line-height:1.15;margin:0 0 8px;text-wrap:balance}
+.pb-tool{margin:8px 0 0;padding:22px;background:var(--white);border:1px solid var(--line);border-radius:16px}
+.pb-tool__lede{font-size:14.5px;color:var(--ink-soft);line-height:1.55;margin:0 0 16px;max-width:62ch}
+.pb-picker{display:flex;flex-direction:column;gap:6px;max-width:340px;margin:0 0 18px}
+.pb-picker label{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft)}
+.pb-picker select{font:inherit;font-size:16px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:var(--cream);color:var(--ink);min-height:44px}
+.pb-card{background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.pb-card__head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 10px}
+.pb-card__name{font-family:var(--font-display);font-weight:600;font-size:21px;margin:0}
+.pb-card__posture{font-size:16px;line-height:1.5;color:var(--ink);margin:0 0 14px;font-weight:500}
+.pb-card__layers{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.pb-lyr{position:relative;padding:0 0 0 22px;font-size:14.5px;line-height:1.5;color:var(--ink-soft)}
+.pb-lyr:before{position:absolute;left:0;top:.05em;font-size:14px}
+.pb-lyr--cost:before{content:"$"}.pb-lyr--time:before{content:"◷"}.pb-lyr--swap:before{content:"⇄"}
+.pb-pill{display:inline-block;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap;border:1px solid var(--line)}
+.pb-pill--lock{background:var(--teal);color:var(--white);border-color:var(--teal)}
+.pb-pill--cushion{background:var(--teal-wash);color:var(--teal);border-color:var(--teal-wash)}
+.pb-pill--float{background:transparent;color:var(--gold);border-color:var(--gold)}
+.pb-pill--withhold{background:var(--cream-2);color:var(--stone)}
+.pb-guide{margin:34px 0 0}
+.pb-guide .rs-section{margin:0 0 26px}
+.pb-guide .rs-section p{font-size:15.5px;line-height:1.62;color:var(--ink);margin:0 0 12px;max-width:66ch}
+.pb-lede{font-size:17px;line-height:1.55;color:var(--ink);font-weight:500;margin:0 0 20px;max-width:64ch}
+.pb-play{margin:6px 0 24px;padding:18px 20px;background:var(--teal-wash);border:1px solid var(--teal);border-radius:14px}
+.pb-play h3{font-family:var(--font-display);font-weight:600;font-size:16px;margin:0 0 8px;color:var(--teal);text-transform:uppercase;letter-spacing:.04em}
+.pb-play p{font-size:15px;line-height:1.58;color:var(--ink);margin:0;max-width:66ch}
+.pb-takeaway{font-family:var(--font-display);font-size:19px;line-height:1.4;font-weight:500;color:var(--ink);margin:0 0 6px;padding:16px 0 0;border-top:1px solid var(--line);text-wrap:balance;max-width:64ch}
+.pb-tablewrap{margin:34px 0 0}
+.pb-table{font-size:13.5px}
+.pb-table th[scope=row]{font-weight:500;white-space:nowrap}
+.pb-table td.pb-num,.pb-table th.pb-num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pb-table td:last-child{color:var(--ink-soft);font-size:13px}
+@media(max-width:640px){.pb-card__head{flex-wrap:wrap}.pb-table{font-size:12.5px}}
+`;
+// Per-card sentences, computed (never a forecast; a wholesale reference vs its own normal, never
+// the delivered price; a strong co-mover means a swap is a mirror, never a cause).
+function cardLines(c, es) {
+  const nm = es ? c.es : c.en; const low = nm.toLowerCase();
+  const mo = (es ? MONTH_ABBR_ES : MONTH_ABBR_EN)[c.cheapMonth || 0];
+  const posture = {
+    lock: es ? `Fíjalo. Su banda de referencia mayorista se ha mantenido en ±${c.bandPct}% — bastante estable para comprometer un precio impreso durante el ciclo.`
+      : `Print it. Its wholesale-reference band has held ±${c.bandPct}% — steady enough to commit a menu price for the print cycle.`,
+    cushion: es ? `Imprímelo con colchón. La banda corre ±${c.bandPct}% — ponle precio al tope de la banda, no a la mitad.`
+      : `Print it with a cushion. The band runs ±${c.bandPct}% — price to the top of it, not the middle.`,
+    float: es ? `Déjalo flotar. La banda corre ±${c.bandPct}% — va mejor como precio de mercado o especial rotativo que como precio impreso fijo.`
+      : `Float it. The band runs ±${c.bandPct}% — better as market price or a rotating special than a locked print.`,
+    withhold: es ? `Muy poca evidencia para decidir. Aún no hay historial reciente suficiente para puntuar su banda — trátalo como flotante hasta que se gane un veredicto.`
+      : `Too thin to call. Not enough recent evidence to score its band yet — treat it like a float until it earns a verdict.`,
+  }[c.bucket];
+  const cost = c.yieldPct != null
+    ? (es ? `Costo real: cada dólar mayorista compra ×${c.trimTax.toFixed(2)} de ${low} comestible — solo el ${c.yieldPct}% sobrevive al recorte.`
+      : `True cost: every wholesale dollar buys ×${c.trimTax.toFixed(2)} of edible ${low} — ${c.yieldPct}% survives trim.`)
+    : (es ? 'Costo real: sin rendimiento estándar en archivo — cálcúlalo desde tu propio peso limpio.' : 'True cost: no standard yield on file — price it off your own trimmed weight.');
+  const reason = c.timingReason || (c.cheapMonth == null ? 'thin' : (c.worthTiming ? 'worth' : 'flat'));
+  const timing = reason === 'worth'
+    ? (es ? `Compra: históricamente más barato hacia ${mo}, unos ${c.savePct}% bajo su propio máximo anual — vale concentrar una compra grande ahí.` : `Buy timing: has historically run cheapest around ${mo}, about ${c.savePct}% under its own yearly high — worth concentrating a bulk buy there.`)
+    : reason === 'flat'
+      ? (es ? `Compra: sin ventana estacional fuerte — su mes más barato ahorra solo ${c.savePct}%, así que no persigas el calendario.` : `Buy timing: no strong seasonal window — its cheapest month saves only ${c.savePct}%, so don't chase the calendar.`)
+      : reason === 'noisy'
+        ? (es ? 'Compra: sus precios mensuales se dispersan sin una ventana barata confiable — sin jugada de calendario; ponle precio todo el año.' : "Buy timing: its monthly prices scatter without a reliable cheap window — no calendar play; price it year-round.")
+        : (es ? 'Compra: no hay historial estacional suficiente para nombrar un mes más barato.' : 'Buy timing: not enough seasonal history to name a cheapest month.');
+  const swapNm = c.swap ? (es ? c.swap.es : c.swap.en) : null;
+  const swap = c.swap
+    ? (es ? `El cambio que no lo es: no te cubras cambiando ${nm} por ${swapNm} — se han movido juntos en ${c.swap.k} de ${c.swap.n} de sus movimientos notables, así que cambiarías un número al alza por otro.` : `The swap that isn't: don't hedge by trading ${nm} for ${swapNm} — they've moved together in ${c.swap.k} of ${c.swap.n} of ${nm}'s notable moves, so you'd trade one rising number for another.`)
+    : (es ? `Sustitución: ${nm} se mueve en gran medida por su cuenta, así que un cambio sí es una cobertura real aquí, no un espejo.` : `Substitution: ${nm} moves largely on its own, so a swap is a real hedge here, not a mirror.`);
+  return { posture, cost, timing, swap };
+}
+const BUCKET_LABEL = { lock: { en: 'Print', es: 'Fijar' }, cushion: { en: 'Cushion', es: 'Colchón' }, float: { en: 'Float', es: 'Flotar' }, withhold: { en: 'Thin', es: 'Reservar' } };
+
+function emitPlaybook(locale, ctx) {
+  const { pageHead, pageTail, escHtml, repoRoot } = ctx;
+  const es = locale === 'es'; const lang = es ? 'es' : 'en'; const base = es ? '/es' : '';
+  const P = pricingCards(repoRoot);
+  const content = (() => { try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-research-content.json'), 'utf8')); } catch { return { pages: [] }; } })();
+  const guide = (content.pages.find((p) => p.slug === 'menu-pricing-playbook') || {})[locale] || null;
+  const canonEn = 'https://muntin.digital/cost-index/menu-pricing/';
+  const canonEs = 'https://muntin.digital/es/cost-index/menu-pricing/';
+  const title = es ? 'Manual de precios de menú | Muntin Cost Index' : 'The menu-pricing playbook | Muntin Cost Index';
+  const desc = es
+    ? `Une cuatro capas de datos por ingrediente: qué fijar o flotar, el costo real por porción comestible, el mes más barato y qué cambio no ahorra nada. ${P.counts.lock} de ${P.total} se pueden imprimir.`
+    : `Joins four data layers per ingredient: what to print or float, true cost per edible portion, the cheapest month, and which swap saves nothing. ${P.counts.lock} of ${P.total} are printable.`;
+  const h1 = es ? 'El manual de precios de menú' : 'The menu-pricing playbook';
+  // card data for the JS island (sentences pre-computed per locale → no logic in the client)
+  const cardData = P.cards.map((c) => ({ slug: c.slug, name: es ? c.es : c.en, bucket: c.bucket, lines: cardLines(c, es) }));
+  const cardHtml = (c) => {
+    const nm = es ? c.es : c.en; const L = cardLines(c, es); const bl = BUCKET_LABEL[c.bucket];
+    return `<article class="pb-card" data-slug="${c.slug}" data-bucket="${c.bucket}">`
+      + `<header class="pb-card__head"><h3 class="pb-card__name">${escHtml(nm)}</h3><span class="pb-pill pb-pill--${c.bucket}">${es ? bl.es : bl.en}</span></header>`
+      + `<p class="pb-card__posture">${escHtml(L.posture)}</p>`
+      + `<ul class="pb-card__layers"><li class="pb-lyr pb-lyr--cost">${escHtml(L.cost)}</li>`
+      + `<li class="pb-lyr pb-lyr--time">${escHtml(L.timing)}</li>`
+      + `<li class="pb-lyr pb-lyr--swap">${escHtml(L.swap)}</li></ul></article>`;
+  };
+  const def = P.cards.find((c) => c.slug === 'ribeye') || P.cards[0];
+  const options = P.cards.map((c) => `<option value="${c.slug}"${c.slug === def.slug ? ' selected' : ''}>${escHtml(es ? c.es : c.en)}</option>`).join('');
+  // full table (no-JS core): name | posture | band | true cost | cheapest | swap-buys-nothing
+  const th = es ? ['Ingrediente', 'Precio', 'Banda', 'Costo real', 'Más barato', 'Cambio inútil'] : ['Ingredient', 'Pricing', 'Band', 'True cost', 'Cheapest', 'Futile swap'];
+  const moA = es ? MONTH_ABBR_ES : MONTH_ABBR_EN;
+  const rows = P.cards.map((c) => {
+    const nm = es ? c.es : c.en; const bl = BUCKET_LABEL[c.bucket];
+    const band = c.bucket === 'withhold' ? '—' : `±${c.bandPct}%`;
+    const cost = c.trimTax != null ? `×${c.trimTax.toFixed(2)}` : '—';
+    const cheap = c.worthTiming ? `${moA[c.cheapMonth]} −${c.savePct}%` : '—';
+    const swap = c.swap ? escHtml(es ? c.swap.es : c.swap.en) : '—';
+    return `<tr data-bucket="${c.bucket}"><th scope="row">${escHtml(nm)}</th>`
+      + `<td><span class="pb-pill pb-pill--${c.bucket}">${es ? bl.es : bl.en}</span></td>`
+      + `<td class="pb-num">${band}</td><td class="pb-num">${cost}</td><td class="pb-num">${cheap}</td><td>${swap}</td></tr>`;
+  }).join('');
+  const secHtml = guide ? (guide.sections || []).map((s) => {
+    const paras = (s.paragraphs || []).map((p) => `<p>${escHtml(p)}</p>`).join('');
+    return `<section class="rs-section"><h2>${escHtml(s.h2)}</h2>${paras}</section>`;
+  }).join('') : '';
+  const ledeHtml = guide && Array.isArray(guide.intro) ? guide.intro.map((p) => `<p class="pb-lede">${escHtml(p)}</p>`).join('') : '';
+  const playHtml = guide && guide.operatorPlay ? `<aside class="pb-play"><h3>${es ? 'Esta semana' : 'This week'}</h3><p>${escHtml(guide.operatorPlay)}</p></aside>` : '';
+  const takeawayHtml = guide && guide.takeaway ? `<p class="pb-takeaway">${escHtml(guide.takeaway)}</p>` : '';
+  const guideHtml = guide ? `<div class="pb-guide">${ledeHtml}${secHtml}${playHtml}${takeawayHtml}</div>` : '';
+  const jsonld = JSON.stringify({ '@context': 'https://schema.org', '@graph': [
+    { '@type': ['CollectionPage', 'HowTo'], '@id': (es ? canonEs : canonEn) + '#page', 'url': es ? canonEs : canonEn, 'name': h1, 'inLanguage': es ? 'es-US' : 'en-US', 'description': desc, 'isPartOf': { '@id': 'https://muntin.digital/#website' }, 'isBasedOn': 'https://muntin.digital/open/', 'speakable': { '@type': 'SpeakableSpecification', 'cssSelector': ['h1', '.ci-answer'] } },
+    { '@type': 'BreadcrumbList', 'itemListElement': [
+      { '@type': 'ListItem', 'position': 1, 'name': es ? 'Inicio' : 'Home', 'item': es ? 'https://muntin.digital/es/' : 'https://muntin.digital/' },
+      { '@type': 'ListItem', 'position': 2, 'name': es ? 'Índice de costos' : 'Cost index', 'item': `https://muntin.digital${base}/cost-index/` },
+      { '@type': 'ListItem', 'position': 3, 'name': h1, 'item': es ? canonEs : canonEn } ] },
+  ] }).replace(/</g, '\\u003c');
+  const answer = es
+    ? `De ${P.total} ingredientes con veredicto, ${P.counts.lock} se han mantenido bastante estables para imprimir su precio, ${P.counts.cushion} piden colchón y ${P.counts.float} deben flotar — y para ${P.layer4} este manual une las cuatro capas: precio, costo comestible, mes más barato y qué cambio no ahorra nada.`
+    : `Of ${P.total} ingredients with a verdict, ${P.counts.lock} have held steady enough to print their price, ${P.counts.cushion} want a cushion, and ${P.counts.float} should float — and for ${P.layer4} this playbook joins all four layers: pricing, edible cost, cheapest month, and which swap saves nothing.`;
+  const cross = [
+    [es ? 'La herramienta fijar-o-flotar' : 'The lock-or-float tool', `${base}/tools/cost-pulse/`],
+    [es ? 'Costea un plato' : 'Cost a plate', `${base}/tools/plate-cost/`],
+    [es ? 'Compara tu factura con la referencia' : 'Check your invoice vs the reference', `${base}/tools/vendor-benchmark/`],
+    [es ? 'Los datos abiertos' : 'The open data', `${base}/open/`],
+  ];
+  const relHtml = `<nav class="rs-related" aria-label="${es ? 'Herramientas' : 'Tools'}"><h2>${es ? 'Llévalo a la práctica' : 'Put it to work'}</h2><ul>${cross.map(([t, u]) => `<li><a href="${u}">${escHtml(t)}</a></li>`).join('')}</ul></nav>`;
+  const body = `
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="${base}/">${es ? 'Inicio' : 'Home'}</a> › <a href="${base}/cost-index/">${es ? 'Índice de costos' : 'Cost index'}</a> › ${escHtml(h1)}</nav>
+  <div class="rs" data-accent="teal">
+  <section class="ci-hero rs-hero"><p class="ci-eyebrow rs-hero__eyebrow">${es ? 'Investigación Muntin' : 'Muntin Research'}</p>
+    <h1>${escHtml(h1)}</h1>
+    <p class="ci-answer rs-hero__answer">${escHtml(answer)}</p></section>
+  <div class="ci-body rs-body pb-body">
+    <section class="pb-tool" aria-labelledby="pb-tool-h">
+      <h2 id="pb-tool-h" class="rs-section-h">${es ? 'Busca un ingrediente' : 'Look up an ingredient'}</h2>
+      <p class="pb-tool__lede">${es ? 'Elige un ingrediente para ver su tarjeta de precios: qué fijar o flotar, el costo real por porción comestible, el mes más barato y qué cambio no te ahorra nada.' : 'Pick an ingredient to see its pricing card — what to print or float, the true cost per edible portion, the cheapest month, and which swap saves you nothing.'}</p>
+      <div class="pb-picker"><label for="pbSel">${es ? 'Ingrediente' : 'Ingredient'}</label>
+        <select id="pbSel">${options}</select></div>
+      <div id="pbCard">${cardHtml(def)}</div>
+    </section>
+    ${guideHtml}
+    <section class="pb-tablewrap" aria-labelledby="pb-table-h">
+      <h2 id="pb-table-h" class="rs-section-h">${es ? 'Los ' + P.total + ' ingredientes, de un vistazo' : 'All ' + P.total + ' ingredients, at a glance'}</h2>
+      <p class="pb-tool__lede">${es ? 'Ordenados por postura de precio (fijar → flotar). La banda es una referencia mayorista contra su propio normal, nunca el precio de entrega.' : 'Sorted by pricing posture (print → float). The band is a wholesale reference against its own normal, never the delivered price.'}</p>
+      <div class="rs-scroll"><table class="rs-table pb-table"><thead><tr>${th.map((h, i) => `<th${i > 1 ? ' class="pb-num"' : ''}>${h}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>
+    </section>
+    ${relHtml}
+    <p class="rs-src">${es ? 'Une cuatro conjuntos abiertos de Muntin — fijar-o-flotar y co-movimiento (CC-BY), rendimientos (CC-BY) y normales estacionales (CC0) — cada uno una lectura de referencia mayorista contra la propia línea base del ingrediente, no el precio de entrega. Descriptivo, nunca un pronóstico; coincidencia, nunca causa.' : "Joins four Muntin open sets — lock-or-float and co-movement (CC-BY), yields (CC-BY), and seasonal normals (CC0) — each a wholesale-reference read against the ingredient's own baseline, not the delivered price. Descriptive, never a forecast; co-occurrence, never cause."}</p>
+    <div class="rs-cta"><a class="btn btn-primary" href="${base}/tools/cost-pulse/">${es ? 'Abre la herramienta fijar-o-flotar' : 'Open the lock-or-float tool'} <span aria-hidden="true">→</span></a></div>
+  </div>
+  </div>
+  <script type="application/json" id="pbData">${JSON.stringify(cardData).replace(/</g, '\\u003c')}</script>
+  <script>
+  (function(){
+    var sel=document.getElementById('pbSel'),host=document.getElementById('pbCard'),el=document.getElementById('pbData');
+    if(!sel||!host||!el)return; var cards;try{cards=JSON.parse(el.textContent)}catch(e){return}
+    var byId={};for(var i=0;i<cards.length;i++)byId[cards[i].slug]=cards[i];
+    var LB=${JSON.stringify(Object.fromEntries(Object.keys(BUCKET_LABEL).map((k) => [k, es ? BUCKET_LABEL[k].es : BUCKET_LABEL[k].en])))};
+    function mk(t,c,txt){var e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e}
+    function render(c){
+      while(host.firstChild)host.removeChild(host.firstChild);
+      var art=mk('article','pb-card');art.setAttribute('data-bucket',c.bucket);
+      var hd=mk('header','pb-card__head');hd.appendChild(mk('h3','pb-card__name',c.name));
+      var pill=mk('span','pb-pill pb-pill--'+c.bucket,LB[c.bucket]||c.bucket);hd.appendChild(pill);art.appendChild(hd);
+      art.appendChild(mk('p','pb-card__posture',c.lines.posture));
+      var ul=mk('ul','pb-card__layers');
+      ['cost','time','swap'].forEach(function(k){ul.appendChild(mk('li','pb-lyr pb-lyr--'+k,c.lines[k==='time'?'timing':k]))});
+      art.appendChild(ul);host.appendChild(art);
+    }
+    sel.addEventListener('change',function(){var c=byId[sel.value];if(c)render(c)});
+  })();
+  </script>`;
+  return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld, extraCss: `<style>${RESEARCH_CSS}${PLAYBOOK_CSS}</style>` }) + body + pageTail;
+}
+
 // Build the /cost-index/research/ targets. Empty until data/cost-research-content.json exists,
 // so the page build never breaks while the content is in flight.
 export function researchTargets(ctx) {
-  const { pageHead, pageTail, escHtml, repoRoot } = ctx;
-  const contentPath = path.join(repoRoot, 'data/cost-research-content.json');
-  if (!fs.existsSync(contentPath)) return [];
-  const content = JSON.parse(fs.readFileSync(contentPath, 'utf8'));
-  if (!content || !Array.isArray(content.pages) || !content.pages.length) return [];
-  const A = researchInputs(repoRoot);
-  const NAMES = nameMap(repoRoot);
-  const nm = (slug, es) => { const e = NAMES[slug]; return e ? (es ? (e.es || e.en) : e.en) : slug; };
+  const { repoRoot } = ctx;
   const targets = [];
-  for (const page of content.pages) {
-    for (const loc of ['en', 'es']) {
-      targets.push({ path: `${loc === 'es' ? 'es/' : ''}cost-index/research/${page.slug}/index.html`, content: emitResearchPage(page, loc, A, nm, ctx) });
-    }
-  }
-  targets.push({ path: 'cost-index/research/index.html', content: emitResearchHub(content, 'en', ctx) });
-  targets.push({ path: 'es/cost-index/research/index.html', content: emitResearchHub(content, 'es', ctx) });
+  // The flagship: the menu-pricing playbook — always emitted (joins all four datasets per
+  // ingredient into one decision surface). The thin single-metric research pages are retired.
+  targets.push({ path: 'cost-index/menu-pricing/index.html', content: emitPlaybook('en', ctx) });
+  targets.push({ path: 'es/cost-index/menu-pricing/index.html', content: emitPlaybook('es', ctx) });
   return targets;
 }
 
