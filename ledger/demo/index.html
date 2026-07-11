@@ -661,6 +661,36 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
 .ld-js .ld-panel .lg-rows .lg-s{grid-area:auto}
 .ld-js .ld-panel .lg-rows .lg-flag{grid-area:auto}
 .ld-js .ld-panel .lg-rows .lg-d,.ld-js .ld-panel .lg-rows .lg-v,.ld-js .ld-panel .lg-rows .lg-q{display:none}
+/* The app's own ledger table on the wide stage (2026-07-11 incr. D — "show
+   the design language from the app itself"): the live product-page hero
+   renders the ledger as a full Date · Vendor · Item · Price · State table
+   in a card (ledger/index.html vignette). The app-density collapse to
+   item/price/state above was a PHONE compromise; on the >=768 stage there's
+   room (the File/Read void), so restore the real ledger columns there so the
+   demo reads like the app, not a marketing list. Horizontal only — same row
+   count, same row height — so the no-scroll FLOOR is untouched. Phones keep
+   the collapsed hero row. Steps 1 (Read, with qty) + 2 (File). */
+/* >=1024 desktop: the full app ledger table (Date · Vendor · Item · Price ·
+   State). Item nowrap so a long ES label ("Lechuga romana, 24 uds") can never
+   wrap the row to a second line — the change is horizontal only, so row height
+   (and the FLOOR) is unchanged. */
+@media (min-width:1024px){
+  .ld-js #ld-step1 .lg-rows .lg-row,.ld-js #ld-step2 .lg-rows .lg-row{grid-template-columns:54px 156px 1fr max-content max-content;gap:4px 16px}
+  .ld-js #ld-step1 .lg-rows--qty .lg-row{grid-template-columns:54px 156px 1fr 30px max-content max-content}
+  .ld-js #ld-step1 .lg-rows .lg-d,.ld-js #ld-step1 .lg-rows .lg-v,.ld-js #ld-step1 .lg-rows .lg-q,
+  .ld-js #ld-step2 .lg-rows .lg-d,.ld-js #ld-step2 .lg-rows .lg-v{display:block}
+  .ld-js #ld-step1 .lg-rows .lg-i,.ld-js #ld-step2 .lg-rows .lg-i{white-space:nowrap}
+}
+/* 768–1023 tablet: Date · Item · Price · State — restore the date column (the
+   biggest app-ledger tell) but drop the repetitive single vendor so the item
+   stays on one line at the narrower tablet width. */
+@media (min-width:768px) and (max-width:1023px){
+  .ld-js #ld-step1 .lg-rows .lg-row,.ld-js #ld-step2 .lg-rows .lg-row{grid-template-columns:54px 1fr max-content max-content;gap:4px 14px}
+  .ld-js #ld-step1 .lg-rows--qty .lg-row{grid-template-columns:54px 1fr 30px max-content max-content}
+  .ld-js #ld-step1 .lg-rows .lg-d,.ld-js #ld-step1 .lg-rows .lg-q,
+  .ld-js #ld-step2 .lg-rows .lg-d{display:block}
+  .ld-js #ld-step1 .lg-rows .lg-i,.ld-js #ld-step2 .lg-rows .lg-i{white-space:nowrap}
+}
 .ld-js .ld-panel .lg-pane{padding:12px 14px 10px}
 .ld-js .ld-panel .lg-pane-head{margin-bottom:8px}
 .ld-js #ld-step0 .ld-invoice-head{padding-bottom:6px;margin-bottom:4px}
