@@ -189,26 +189,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .pc-pull-invoice:hover{filter:brightness(1.06)}
 .pc-pull-invoice[disabled]{opacity:.55;cursor:wait}
 .pc-pull-invoice-msg{font-size:12.5px;margin:6px 12px 0;color:var(--ink-soft)}
-.pc-ocr{margin:0;padding:14px 16px;background:var(--cream-2);border-top:1px solid var(--line)}
-.pc-ocr[open]{padding-bottom:18px}
-.pc-ocr-summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink);list-style:none;display:flex;align-items:center;gap:8px}
-.pc-ocr-summary::-webkit-details-marker{display:none}
-.pc-ocr-summary::before{content:'+ ';color:var(--ink-soft);font-weight:700}
-.pc-ocr[open] .pc-ocr-summary::before{content:'− '}
-.pc-ocr-beta{display:inline-block;padding:1px 8px;font-size:10.5px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--cream);background:var(--teal);border-radius:999px}
-.pc-ocr-body{margin-top:12px}
-.pc-ocr-help{font-size:13px;color:var(--ink-soft);margin:0 0 10px;line-height:1.5}
-.pc-ocr-fileLabel{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border:1px solid var(--ink);border-radius:999px;background:var(--white);color:var(--ink);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
-.pc-ocr-fileLabel:hover{background:var(--ink);color:var(--cream)}
-.pc-ocr-fileLabel input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
-.pc-ocr-progress{margin-top:12px}
-.pc-ocr-progress-bar{height:6px;background:var(--white);border:1px solid var(--line);border-radius:999px;overflow:hidden}
-.pc-ocr-progress-fill{height:100%;background:var(--teal);width:0;transition:width 200ms ease}
-.pc-ocr-progress-msg{margin:6px 0 0;font-size:12px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
-.pc-ocr-status{margin-top:10px;padding:8px 12px;background:var(--white);border:1px solid var(--line);border-radius:6px;font-size:12.5px;color:var(--ink);line-height:1.5}
-.pc-ocr-status.error{border-color:var(--rust);color:var(--rust)}
-.pc-ocr-status.success{border-color:var(--teal);color:var(--teal)}
-.pc-ocr-disclaimer{margin-top:12px;font-size:11.5px;color:var(--stone);line-height:1.5;font-style:italic}
 .pc-sample-btn{padding:6px 14px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:12px;font-weight:600;cursor:pointer}
 .pc-sample-btn:hover{background:var(--teal);color:var(--cream)}
 .pc-clear-btn{padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--stone);font:inherit;font-size:12px;font-weight:600;cursor:pointer;margin-left:auto}
@@ -524,9 +504,9 @@ body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
       <a href="/tools/plate-cost/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
-    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don está cerca"></span>
-      Contacta a Don
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Muntin &mdash; leemos cada mensaje.">
+      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true"></span>
+      Contacto
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
@@ -561,7 +541,7 @@ body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
       </svg>
       <span class="theme-toggle__label js-theme-label">Modo claro</span>
     </button>
-    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Contacta a Don</a>
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Muntin &mdash; leemos cada mensaje.">Contacto</a>
     <a href="/tools/plate-cost/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
   </nav>
 
@@ -717,22 +697,6 @@ body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
       </div>
       <p class="pc-pull-invoice-msg" id="pcPullInvoiceMsg" role="status" aria-live="polite"></p>
 
-      <details class="pc-ocr">
-        <summary class="pc-ocr-summary">📷 Sácale foto a tu factura mejor <span class="pc-ocr-beta">beta</span></summary>
-        <div class="pc-ocr-body">
-          <p class="pc-ocr-help">Tómale una foto clara a tu factura del proveedor — la leemos en este dispositivo (la foto nunca sale del teléfono) y pre-llenamos las filas. Edita lo que se lea mal.</p>
-          <label class="pc-ocr-fileLabel" for="pcOcrFile">
-            <span>Elegir foto o tomar una nueva</span>
-            <input type="file" id="pcOcrFile" accept="image/*" capture="environment" />
-          </label>
-          <div class="pc-ocr-progress" id="pcOcrProgress" hidden>
-            <div class="pc-ocr-progress-bar"><div class="pc-ocr-progress-fill" id="pcOcrProgressFill"></div></div>
-            <p class="pc-ocr-progress-msg" id="pcOcrProgressMsg">Cargando el lector (~3 MB, una sola vez)…</p>
-          </div>
-          <p class="pc-ocr-status" id="pcOcrStatus" aria-live="polite" hidden></p>
-          <p class="pc-ocr-disclaimer">El OCR corre completo en tu navegador con Tesseract.js. Sin subida ni llamadas a APIs. La precisión depende de la luz y el contraste — funcionan mejor las fotos brillantes, planas y enfocadas.</p>
-        </div>
-      </details>
     </div>
 
     <ul class="pc-warnings" id="pcWarnings" aria-live="polite" style="display:none;"></ul>
@@ -816,7 +780,6 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
       <button type="button" class="pc-action-btn" id="pcDownloadJson">Descargar <span class="pc-action-fmt">.json</span></button>
       <button type="button" class="pc-action-btn" id="pcPushMe">Agregar a Ingeniería de Menú &rarr;</button>
       <button type="button" class="pc-action-btn" id="pcPushMm">Usar en Margen Math &rarr;</button>
-      <button type="button" class="pc-action-btn" id="pcPushPb">Brief para tu fotógrafo &rarr;</button>
       <span class="sr-only" role="status" aria-live="polite" aria-atomic="true" id="pcActionStatus"></span>
     </div>
 
@@ -1652,141 +1615,6 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
   if (sampleBtn)  sampleBtn.addEventListener('click', loadSample);
   if (sampleBtn2) sampleBtn2.addEventListener('click', loadSample);
 
-  // -------------------- OCR de factura --------------------
-  var TESSERACT_CDN = 'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';
-  var tesseractLoadPromise = null;
-  function loadTesseract() {
-    if (tesseractLoadPromise) return tesseractLoadPromise;
-    tesseractLoadPromise = new Promise(function (resolve, reject) {
-      if (window.Tesseract) return resolve(window.Tesseract);
-      var s = document.createElement('script');
-      s.src = TESSERACT_CDN;
-      s.async = true;
-      s.crossOrigin = 'anonymous';
-      s.onload = function () {
-        if (window.Tesseract) resolve(window.Tesseract);
-        else reject(new Error('Tesseract loaded but global is missing'));
-      };
-      s.onerror = function () { reject(new Error('No se pudo cargar la biblioteca OCR')); };
-      document.head.appendChild(s);
-    });
-    return tesseractLoadPromise;
-  }
-
-  function parseInvoiceText(text) {
-    if (!text) return [];
-    var lines = String(text).split(/\r?\n/);
-    var UNITS = /^(lb|lbs|oz|ozs|kg|g|gal|qt|pt|fl\s*oz|ml|l|case|cs|ea|each|count|ct|dozen|doz|bag|bx|box)$/i;
-    var rows = [];
-    lines.forEach(function (raw) {
-      var line = (raw || '').replace(/[’‘]/g, "'").replace(/[“”]/g, '"').trim();
-      if (line.length < 6) return;
-      if (/^(factura|total|subtotal|impuesto|iva|adeudo|cliente|p[áa]gina|fecha|cuenta|t[ée]rminos)/i.test(line)) return;
-      var m = line.match(/^(\d+(?:[.,]\d+)?)\s+([a-zA-Z]+)\s+(.+?)\s+\$?(\d+(?:[.,]\d{2}))\s*$/);
-      if (m && UNITS.test(m[2])) {
-        rows.push({
-          ingredient: m[3].replace(/\s{2,}/g, ' '),
-          apQty: m[1].replace(',', '.'),
-          apUnit: m[2].toLowerCase().replace(/^lbs$/, 'lb').replace(/^ozs$/, 'oz').replace(/^each$/, 'ea'),
-          apPrice: m[4].replace(',', '.'),
-          yieldPercent: '',
-          usedQty: '',
-          usedUnit: 'oz'
-        });
-        return;
-      }
-      m = line.match(/^(.+?)\s+(\d+(?:[.,]\d+)?)\s*([a-zA-Z]+)?\s+\$?(\d+(?:[.,]\d{2}))\s*$/);
-      if (m && (!m[3] || UNITS.test(m[3]))) {
-        rows.push({
-          ingredient: m[1].replace(/\s{2,}/g, ' '),
-          apQty: m[2].replace(',', '.'),
-          apUnit: (m[3] || 'lb').toLowerCase().replace(/^lbs$/, 'lb').replace(/^ozs$/, 'oz'),
-          apPrice: m[4].replace(',', '.'),
-          yieldPercent: '',
-          usedQty: '',
-          usedUnit: 'oz'
-        });
-        return;
-      }
-      m = line.match(/^(.+?)\s+\$?(\d+\.\d{2})\s*$/);
-      if (m) {
-        rows.push({
-          ingredient: m[1].replace(/\s{2,}/g, ' '),
-          apQty: '1',
-          apUnit: 'lb',
-          apPrice: m[2],
-          yieldPercent: '',
-          usedQty: '',
-          usedUnit: 'oz'
-        });
-        return;
-      }
-    });
-    return rows.slice(0, 30);
-  }
-
-  (function setupInvoiceOcr() {
-    var fileInput  = document.getElementById('pcOcrFile');
-    var progress   = document.getElementById('pcOcrProgress');
-    var fill       = document.getElementById('pcOcrProgressFill');
-    var msg        = document.getElementById('pcOcrProgressMsg');
-    var status     = document.getElementById('pcOcrStatus');
-    if (!fileInput) return;
-
-    function setStatus(text, kind) {
-      if (!status) return;
-      status.textContent = text || '';
-      status.classList.remove('error', 'success');
-      if (kind) status.classList.add(kind);
-      status.hidden = !text;
-    }
-    function setProgress(pct, text) {
-      if (progress) progress.hidden = (pct == null);
-      if (fill && pct != null) fill.style.width = Math.max(0, Math.min(100, pct)) + '%';
-      if (msg && text) msg.textContent = text;
-    }
-
-    fileInput.addEventListener('change', function (ev) {
-      var file = ev.target.files && ev.target.files[0];
-      if (!file) return;
-      setStatus('');
-      setProgress(2, 'Cargando el lector (~3 MB, una sola vez)…');
-      // Tesseract con paquete de español + inglés (las facturas de
-      // distribuidores latinos suelen venir bilingües).
-      loadTesseract().then(function (T) {
-        setProgress(15, 'Leyendo la imagen…');
-        return T.recognize(file, 'spa+eng', {
-          logger: function (m) {
-            if (m && m.status === 'recognizing text' && typeof m.progress === 'number') {
-              setProgress(15 + Math.round(m.progress * 80), 'Leyendo la imagen — ' + Math.round(m.progress * 100) + '%');
-            }
-          }
-        });
-      }).then(function (result) {
-        var text = result && result.data && result.data.text || '';
-        var parsed = parseInvoiceText(text);
-        setProgress(null);
-        if (!parsed.length) {
-          setStatus('No se encontraron filas de ingredientes en esta foto. Prueba con una foto más brillante y plana — o teclea las filas abajo.', 'error');
-          return;
-        }
-        var current = readRows();
-        var nonEmpty = current.filter(function (r) {
-          return (r.ingredient || '').trim() || (r.apPrice || '').trim();
-        });
-        var merged = nonEmpty.length ? nonEmpty.concat(parsed) : parsed;
-        rerenderRows(merged);
-        renderResults();
-        setStatus('Se leyeron ' + parsed.length + ' fila' + (parsed.length === 1 ? '' : 's') + ' de tu foto. Edita lo que se haya leído mal abajo.', 'success');
-        if (window.plausible) window.plausible('Plate Cost OCR', { props: { rows: String(parsed.length), locale: 'es' } });
-      }).catch(function (err) {
-        setProgress(null);
-        setStatus('OCR falló: ' + (err && err.message || 'error desconocido') + '. Aún puedes teclear las filas abajo.', 'error');
-      }).finally(function () {
-        fileInput.value = '';
-      });
-    });
-  })();
 
   // -------------------- Exportaciones (CSV + JSON) --------------------
   function buildCsv() {
@@ -2056,20 +1884,6 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
     window.location.assign('/es/tools/margin-math/#calc-primecost');
   });
 
-  // -------------------- Brief para el fotógrafo --------------------
-  var pushPbBtn = document.getElementById('pcPushPb');
-  if (pushPbBtn) pushPbBtn.addEventListener('click', function(){
-    if (!latestSummary || !latestRecipe) return;
-    var name = (latestRecipe.name || 'Plato sin nombre').replace(/\|/g, '');
-    var prices = PC.suggestMenuPrices(latestSummary.plateCost);
-    var seedPrice = prices.length ? prices[1].price : 0;
-    var starsLine    = [name, 'main', 'hero'].join('|');
-    var marginsLine  = [name, latestSummary.plateCost.toFixed(2), seedPrice.toFixed(2)].join('|');
-    var url = '/es/tools/photo-brief/#stars=' + encodeURIComponent(starsLine) +
-              '&margins=' + encodeURIComponent(marginsLine);
-    if (window.plausible) window.plausible('Plate Cost Push', { props: { target: 'photo-brief' } });
-    window.location.assign(url);
-  });
 
   // Pegar desde hoja de cálculo. Reemplaza la grilla con las filas
   // procesadas. Los encabezados en inglés y en español se mapean

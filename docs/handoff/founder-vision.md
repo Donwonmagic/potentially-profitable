@@ -1,0 +1,156 @@
+<!-- Durable capture of the founder's vision for the storefront reinvention
+     (2026-07-11 session). Feeds the storefront-reinvention blueprint + the
+     eventual implementation. Not web-routable. -->
+
+# Founder vision — storefront reinvention
+
+The strategic intent behind the full-site design/UX reinvention, in the founder's
+own framing. This is the lens the reinvention blueprint and every implementation
+phase must be measured against.
+
+## The mandate
+
+The storefront currently reads **emotionless** and lacks the **technicality and
+design strength** of the category leaders (MarginEdge, Restaurant365, Toast).
+We must make restaurant owners believe Muntin is **more trustworthy than these
+longstanding incumbents** — with no brand legacy to lean on, **execution is the
+proof**. Three levers:
+
+1. **Differentiation** — lean on what makes us genuinely better (no per-order rake;
+   no LLM in the invoice path, build-gated; data stays yours; pricing in writing;
+   the public, sourced Cost Index).
+2. **PII / data competence** — make it unmistakable, and visceral, that we are
+   competent to hold customer PII + invoices safely.
+3. **Cutting-edge design craft on every touchpoint** — technical expertise
+   demonstrated through the design itself, everywhere.
+
+Method: understand **how the leaders got to their standard**, reach it, then
+**surpass it with better practices**. Every touchpoint considered; every line read
+before reinventing.
+
+## The emotional engine (the point of it all)
+
+Cutting-edge craft is not decoration — it is a **feeling** we engineer in the user:
+
+> **cutting-edge craft → the owner feels EMPOWERED** (ahead of their peers, in
+> command of their costs, holding a technical superpower their competitors lack)
+> **→ they keep using the product** because it makes them feel capable **→ they
+> evangelize it** and become followers/advocates of the brand.
+
+The design bar: every touchpoint must answer not only *"is this trustworthy?"* but
+*"does using this make me feel like I just leveled up?"* — the same mechanism that
+built cult followings for Superhuman, Linear, Ramp, Arc, Notion.
+
+## North star (already in hand)
+
+The real Muntin Ledger app (`Muntin-Invoice-Decoder/packages/ui/tokens.css`) already
+has a financial-grade design system (Linear/Mercury/Ramp: slate ramp, electric-blue
+#3b68f5, Inter + tabular numerics, serif retired from chrome, dark-first, hairline
+depth; signature interactions italic-on-commit / window / bbox / scan). The
+storefront should **extend this language site-wide**. The `/ledger/demo/` was already
+re-skinned to it this session (commits incr. E/F) as the first proof.
+
+## CORRECTION — Cost Index is MONTHLY, not weekly (2026-07-11)
+
+The Cost Index publication cadence changed to **monthly**. This materially reshapes the
+return-visitor strategy: monthly is a weak habit loop (an anticipated *report*, not a
+weekly *ritual*). Do NOT build retention on "check the Cost Index every week." Re-weight:
+- **Free tools = the everyday, event-triggered return engine** ("I need a number now").
+- **Cost-movement alerts = the honest triggered return** (come back when something moves).
+- **The monthly edition = the anchor + the email re-engagement hook** (emailed edition as
+  an *event*, since nobody habitually checks monthly).
+The `return-visitor-investigation` workflow launched framed as "weekly" — its cadence-
+agnostic findings (Hook Model, habit loops, SaaS/consumer mechanics) stay valid; re-weight
+the Muntin-specific synthesis to monthly on integration. (Note: CLAUDE.md + the dispatch
+automation still say "weekly" — a separate reconciliation task if/when the founder asks.)
+
+## THE EMOTIONAL PIVOT (2026-07-11 — supersedes the defensive framing)
+
+The founder's decisive correction: **stop making the site defend itself.** "We can only
+push the fact that we tell the truth so far. It feels like every surface has to be us
+defending ourselves, and I want to stop pushing in that direction. I want an emotional
+re-working that considers how the user experiences the website — reimagine the entire way
+a customer experiences the site, not just design tokens."
+
+**What was wrong:** the blueprint + first prototype centered US — our honesty, our miss
+rate, our failing-build, our PII competence, our fight with the incumbents. Every surface
+was an *argument* on our back foot. Truth-telling is the **foundation we stand on, not the
+flag we wave on every wall.**
+
+**The new axis — the site is about the OPERATOR and how they feel, not about us:**
+- **Meet them in their world** (recognition/empathy): the month-end P&L that already bled,
+  the price that crept up and nobody caught, the exhaustion of always reacting.
+- **The turn:** it doesn't have to be a surprise — you can see it coming.
+- **Who they become** (empowerment, felt not claimed): the operator who walks in already
+  knowing, calm, a week ahead of their costs, running a tight ship.
+- **Kinship:** Don is one of them, still on the floor — not a credential.
+- **Trust goes AMBIENT:** stated once, quietly, as the calm that lets them relax in
+  ("your invoices stay yours") — never a headline, never a self-defending section.
+- The app-grade craft now serves the FEELING (sharper, calmer, in command) — not proof.
+
+This is an **experience/journey** reimagining (the emotional arc a visitor moves through),
+not a token swap. The "published failure as identity" idea is RETIRED as a headline — it
+was the epitome of the defensive posture. Emotion → empowerment → retention → advocacy,
+delivered through the user's experience.
+
+## The design-language fork (confirmed 2026-07-11, incl. PR #501)
+
+The site currently runs **two design languages**, and the reinvention must unify them:
+
+- **App financial-grade** (slate + electric-blue #3b68f5 + Inter tabular, serif retired,
+  dark-first) — the REAL app (`Muntin-Invoice-Decoder`) and, as of this session, the
+  re-skinned `/ledger/demo/` (incr. E/F).
+- **Warm editorial** (cream/ink + teal #2A50C8 + Fraunces serif) — the entire marketing
+  site AND the freshly-redesigned Vendor Benchmark + Cost Index expansion in **PR #501**
+  (verified: `#501` Vendor Benchmark uses `--teal` #2A50C8 ×49, Fraunces, `--cream/--ink-soft/
+  --stone/--rust`; zero electric-blue / `--mun-*` / slate). Warm-editorial IS the
+  "emotionless" register the founder flagged.
+
+**Decision the mandate implies:** unify the whole storefront on the **app financial-grade
+language** (cutting-edge, matches the product, delivers the empowerment feeling). The
+warm-editorial surfaces — including #501's — become **re-pigment targets**, not rebuilds:
+as the demo proved (incr. E), the neutral ramp already matches; only accent (teal→
+electric-blue) and type (Fraunces→Inter) change, via scoped token overrides.
+
+**PR #501 coordination:** let it merge — do NOT block/rework it. It lands a strong
+Vendor Benchmark + Cost Index into `main`; those two surfaces then join the reinvention
+re-pigment roadmap, and the pre-#501 audit of them is refreshed after merge.
+
+## Guardrails the reinvention must never break
+
+The absolute fact/honesty gates; EN↔ES parity; performance budgets; accessibility;
+the ~249 CI gates. Trust is earned by discipline as much as by craft — a polished
+site that overclaims would destroy the very trust we're building.
+
+## THE POSITIONING PIVOT (2026-07-11) — a capable company, not a solo face
+
+The founder's decisive shift after seeing the flagship prototype: **"I don't want to give
+me a face. I want to be a big company absolutely capable of creating a product that will
+blow people away. I worry that if people know it's just me, they'll discount the product —
+you'd expect a huge team behind any product worth using."**
+
+**What changes (supersedes the "Don is one of you / seat next to yours" kinship centerpiece):**
+- **Stop foregrounding "it's one person."** No founder photo, no "one of you," no scrappy-solo
+  framing as the credibility. That invites the discount the founder fears.
+- **Lead with product capability + craft in the company voice.** "Muntin" / "we" (brand voice —
+  honest, not a headcount claim). The design polish and the product doing its job are what read
+  as a serious, formidable company. People judge scale by the WORK, not a team-size line.
+- Operator-grounded judgment survives, but reframed as **capability** (a market read written
+  from behind a real pass, not a research desk) — expertise, never smallness.
+- Reconciles with the earlier constraints: user-empathy arc STAYS (it's about the operator);
+  trust stays AMBIENT; the honesty foundation is unchanged. What shifts is the COMPANY's
+  self-presentation: humble-solo → capable-formidable.
+
+**THE HONESTY BOUNDARY (hard line — must never cross, even under this pressure):** we may
+project capability, use the company "we," and decline to advertise the headcount — but we may
+NOT fabricate a team, invent "our engineers," or claim a scale that doesn't exist. That single
+lie would detonate the whole honesty brand and is trivially discoverable (the `/about/` page,
+`sourced-claims.json`, the documented "Don, still on the floor" story). Capability is SHOWN
+(the public sourced Index, on-device invoice decoding, the tool suite, the craft), never
+fabricated. Absence of a headcount claim is honest; a false headcount is not. If the founder
+ever wants to push past this line, it needs his explicit call — and the counsel is: don't.
+
+**Applied in the flagship prototype (artifact "flagship-macro-v3"):** removed the founder-face
+section → replaced with a confident "Why it holds up" capability band (public sourced index ·
+on-device decoding · materiality-gated precision); reframed the human pane off "one of you";
+company/capability voice throughout; honest pricing stated plainly ($19/mo per location).

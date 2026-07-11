@@ -4,7 +4,7 @@
 // Scans tool pages under /tools/* for inline <style> blocks that bypass
 // the tokens. A failing pattern is one that:
 //   - Uses border-radius with a raw px value other than 999px or 50%
-//     (the token set is --r-sm 8 / --r-input 12 / --r-md 14 / --r-lg 22).
+//     (the token set is --r-sm 6 / --r-input 6 / --r-md 6 / --r-lg 8).
 //   - Uses box-shadow with a raw rgba(...) instead of --elev-1/2/3 or
 //     --ring-focus.
 //   - Uses a hex color that's not in the documented allowlist.

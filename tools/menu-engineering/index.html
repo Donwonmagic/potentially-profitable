@@ -465,12 +465,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
       </svg>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Muntin &mdash; every message is read.">
       <!-- Phase 5+ — site-wide pulse propagation. Hidden by default;
            window-state.js reveals when lastSeen <4h. Decorative; the
-           label "Reach Don" remains the accessible affordance. -->
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don is around"></span>
-      Reach Don
+           label "Contact" remains the accessible affordance. -->
+      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true"></span>
+      Contact
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
@@ -478,7 +478,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </button>
   </div>
   <!-- Mobile menu mirrors the 5-item desktop nav, plus search, lang
-       switcher, and the Reach Don CTA. The auth-state JS below
+       switcher, and the Contact CTA. The auth-state JS below
        toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
@@ -512,7 +512,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </svg>
       <span class="theme-toggle__label js-theme-label">Light mode</span>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don</a>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Muntin &mdash; every message is read.">Contact</a>
     <a href="/es/tools/menu-engineering/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
 
@@ -699,7 +699,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <aside class="edu-result" id="meEduResult" aria-labelledby="meEduResultLede">
         <p class="edu-result__lede" id="meEduResultLede">The matrix shows you <strong>where energy belongs</strong>: protect the Stars, re-engineer the Plowhorses, reposition the Puzzles, retire the Dogs. The labels are directional, not verdicts.</p>
         <p class="edu-result__rule">Survivorship caveat: this only sees items <em>currently on your menu</em>. The dishes you cut last quarter are invisible here, so the median is your retained-menu median, not your full-history median. If you've made cuts in the last six months, treat the Dog quadrant as a list of candidates, not a deletion order.</p>
-        <p class="edu-result__next"><span class="edu-result__next-label">Next step</span><a href="#meWhatIf">Run the price-uplift simulator on Plowhorses</a><span aria-hidden="true">&middot;</span><a href="/tools/margin-math/#calc-priceraise">Sanity-check raises with elasticity</a><span aria-hidden="true">&middot;</span><a href="/tools/menu-copy/">Audit how Stars read on the menu</a></p>
+        <p class="edu-result__next"><span class="edu-result__next-label">Next step</span><a href="#meWhatIf">Run the price-uplift simulator on Plowhorses</a><span aria-hidden="true">&middot;</span><a href="/tools/margin-math/#calc-priceraise">Sanity-check raises with elasticity</a></p>
         <p class="edu-result__source"><span class="edu-result__source-label">Method</span>Kasavana &amp; Smith (1990) median split &middot; <a href="/glossary/contribution-margin/">contribution margin</a> = price &minus; food cost &middot; <a href="/glossary/menu-mix/">menu mix</a> = share of total units sold</p>
       </aside>
     </div>
@@ -790,7 +790,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <span class="eyebrow">Lead by example</span>
     <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:12px 0 12px;">Your menu data stays in your browser.</h2>
     <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0 0 14px;">No upload, no account, no <code>localStorage</code> writes. Close the tab and the form is empty. Open DevTools → Network and click <em>Add item</em> or <em>Load sample menu</em> — the request list won't grow. The whole math module is plain JavaScript at <code>/tools/menu-engineering/menu-engineering.js</code>; right-click <em>View Page Source</em> and read it.</p>
-    <p style="font-size:13px;color:var(--stone);margin:0;">Same architecture as Brand Suite — see <a href="/tools/brand-suite/#how-we-protect" style="color:inherit;border-bottom:1px dashed var(--teal);">how Brand Suite protects your logo</a> for the same posture, point by point.</p>
+    <p style="font-size:13px;color:var(--stone);margin:0;">The same posture holds across every Muntin tool — your inputs stay in your browser, and you can verify it point by point in DevTools.</p>
   </div>
 </div></section>
 
@@ -1220,11 +1220,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       firePlausibleOnce(summary);
       if (meWb) meWb.showAffordance({ items: raw, groupBy: currentGroupBy, savedAt: Date.now() });
 
-      // Phase 4 wiring — quadrant signals drive the next-tool card.
-      // puzzlesFound → menu-copy (rewrite descriptions to lift mix).
-      // dogsFound → menu-converter (rebuild the published menu without them).
-      // First-match-wins; puzzlesFound is listed before dogsFound in
-      // next-tool-map.json so it takes priority.
+      // Phase 4 wiring — record the visit + quadrant signals for the
+      // hub's returning-visitor history. The menu-copy (puzzlesFound) and
+      // menu-converter (dogsFound) next-tool cards were retired with those
+      // tools in the 2026-06 migration and pruned from next-tool-map.json,
+      // so no card renders today; the signals stay for the Phase-3 rebuild.
       if (window.MuntinHandoff && window.MuntinHandoff.complete) {
         var items = (summary && summary.items) || [];
         window.MuntinHandoff.complete({
@@ -1406,24 +1406,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     var byQ = { Star: [], Plowhorse: [], Puzzle: [], Dog: [] };
     summary.items.forEach(function(it){ if (byQ[it.quadrant]) byQ[it.quadrant].push(it); });
     var actions = window.ME.ACTIONS_EN;
-    // Per-quadrant tool deeplinks. The Puzzle quadrant is the
-    // re-describe / re-photograph quadrant — point at Menu Copy
-    // Inspector for the language half. Stars and Plowhorses get a
-    // Photo Brief link with the items pre-encoded so the brief
-    // arrives populated.
-    function priorityForQ(q){
-      return q === 'Star' ? 'hero' : (q === 'Plowhorse' ? 'secondary' : 'standard');
-    }
-    function briefLinkFor(q, items){
-      // Mirrors the format encodeStarsFragment uses in photo-brief.js:
-      // "name|category|priority" joined with "~", URL-encoded.
-      var lines = items.map(function(it){
-        var name = String(it.item || '').replace(/\|/g, '');
-        var cat  = String(it.category || 'main').toLowerCase().replace(/[^a-z]/g, '') || 'main';
-        return [name, cat, priorityForQ(q)].join('|');
-      }).join('~');
-      return '/tools/photo-brief/#stars=' + encodeURIComponent(lines);
-    }
+    // Per-quadrant tool deeplinks — live, on-funnel tools only. Menu
+    // Copy Inspector + Photo Brief were retired in the 2026-06 product-
+    // only migration, so Stars carry no handoff and Puzzles point at
+    // Plate Cost (re-cost before rewriting copy).
     // Margin Math handoff for Plowhorses — pre-fill the Price Raise
     // calculator's contribution-margin slider with the average CM%
     // across the Plowhorse items so the simulator opens at a number
@@ -1445,32 +1431,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       return '/tools/margin-math/#v=1&pr.m=' + avgPct;
     }
     var toolLinks = {
-      Star: function(items){ return [
-        { href: briefLinkFor('Star', items), label: 'Brief these for your photographer &rarr;' }
-      ]; },
+      Star: function(){ return []; },
       Plowhorse: function(items){ return [
         { href: plowhorseMarginMathHref(items),        label: 'Re-cost in Margin Math &rarr;' },
-        { href: '/tools/plate-cost/',                  label: 'Audit ingredient cost in Plate Cost &rarr;' },
-        { href: briefLinkFor('Plowhorse', items),      label: 'Brief these for your photographer &rarr;' }
+        { href: '/tools/plate-cost/',                  label: 'Audit ingredient cost in Plate Cost &rarr;' }
       ]; },
-      Puzzle: function(items){
-        // Handoff to Menu Copy: pre-fill the single-dish form with
-        // the first Puzzle item's name + price (we don't carry a
-        // description because the whole point is the description
-        // needs rewriting). The single-dish flow accepts a
-        // #name=…&price=… fragment.
-        var first = items && items[0];
-        var mcHref = '/tools/menu-copy/';
-        if (first && first.item) {
-          var bits = ['name=' + encodeURIComponent(first.item)];
-          if (typeof first.price === 'number' && isFinite(first.price)) {
-            bits.push('price=' + encodeURIComponent('$' + first.price));
-          }
-          mcHref += '#' + bits.join('&');
-        }
+      Puzzle: function(){
+        // Menu Copy Inspector + Photo Brief were retired in the 2026-06
+        // product-only migration; Plate Cost is the live next step for a
+        // Puzzle — re-cost the recipe to see whether margin or mix is the
+        // real problem before touching the copy.
         return [
-          { href: mcHref,                                label: 'Re-describe in Menu Copy Inspector &rarr;' },
-          { href: briefLinkFor('Puzzle', items),         label: 'Re-photograph these &rarr;' },
           { href: '/tools/plate-cost/',                  label: 'Re-cost the recipe in Plate Cost &rarr;' }
         ];
       }
@@ -1495,79 +1466,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               toolLine +
               '</article>';
     });
-    // Wave studio-quality (C9) — Menu Design handoff. After the matrix
-    // surfaces Plowhorses / Stars / Puzzles / Dogs, the next operator
-    // action is often "let me re-lay-out the menu so my Stars get hero
-    // treatment and my Plowhorses don't sit in a dead corner." We push
-    // the canonical item list into MuntinContext (cuisine + dishes
-    // with name / category / price / quadrant tag) then deeplink to
-    // Menu Design where the context-bus banner offers "Load this 12-
-    // item menu — Stars highlighted." Inflection toast appears below
-    // the quadrant cards, copy adapts to highlight the dominant
-    // quadrant when ≥1 Plowhorse or ≥1 Star is present.
-    var allItems = summary.items || [];
-    var hasContent = allItems.length > 0;
-    if (hasContent) {
-      var nPlow = byQ.Plowhorse.length;
-      var nStar = byQ.Star.length;
-      var headline;
-      if (nPlow > 0 && nStar > 0) {
-        headline = nPlow + ' Plowhorse' + (nPlow === 1 ? '' : 's') + ' and ' +
-                   nStar + ' Star' + (nStar === 1 ? '' : 's') +
-                   ' — see how a redesign reframes them';
-      } else if (nPlow > 0) {
-        headline = nPlow + ' Plowhorse' + (nPlow === 1 ? '' : 's') +
-                   ' — see how a redesign reframes ' + (nPlow === 1 ? 'it' : 'them');
-      } else if (nStar > 0) {
-        headline = nStar + ' Star' + (nStar === 1 ? '' : 's') +
-                   ' — give ' + (nStar === 1 ? 'it' : 'them') + ' the layout treatment ' +
-                   (nStar === 1 ? 'it' : 'they') + ' deserve' + (nStar === 1 ? 's' : '');
-      } else {
-        headline = 'Ship the structured menu HTML with the data you just gathered';
-      }
-      html += '<aside class="me-handoff-card" data-handoff="menu-converter" style="margin-top:18px;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px">' +
-              '<p style="margin:0 0 4px;font-weight:600;color:var(--ink);font-size:14px;">' + escHtml(headline) + '.</p>' +
-              '<p style="margin:0 0 10px;font-size:12.5px;color:var(--stone);">Menu Converter reads your items + their quadrants and emits HTML + JSON-LD schema you can paste into your site &mdash; Stars in hero positions, Plowhorses re-described.</p>' +
-              '<button type="button" id="meHandoffMenuDesign" class="me-btn" style="font-size:13px;padding:8px 14px;">Open ' + allItems.length + ' item' + (allItems.length === 1 ? '' : 's') + ' in Menu Converter &rarr;</button>' +
-              '</aside>';
-    }
     actionsEl.innerHTML = html;
-    // Wire the handoff button (after innerHTML rewrite).
-    var handoffBtn = document.getElementById('meHandoffMenuDesign');
-    if (handoffBtn) {
-      handoffBtn.addEventListener('click', function () {
-        try {
-          if (typeof MuntinContext !== 'undefined' && typeof MuntinContext.merge === 'function') {
-            MuntinContext.merge({
-              dishes: allItems.map(function (it) {
-                return {
-                  name: it.item || '',
-                  category: it.category || '',
-                  price: typeof it.price === 'number' ? it.price : null,
-                  quadrant: it.quadrant || ''
-                };
-              }),
-              menuEngineeringHint: {
-                stars: byQ.Star.length,
-                plowhorses: byQ.Plowhorse.length,
-                puzzles: byQ.Puzzle.length,
-                dogs: byQ.Dog.length,
-                from: 'menu-engineering'
-              }
-            });
-          }
-        } catch (_) { /* best-effort context push */ }
-        if (window.plausible) {
-          try {
-            window.plausible('Menu Engineering Handoff', { props: {
-              to: 'menu-converter',
-              itemCount_bucket: allItems.length < 6 ? '<6' : allItems.length < 12 ? '6-11' : allItems.length < 25 ? '12-24' : '25+'
-            }});
-          } catch (_) {}
-        }
-        window.location.href = '/tools/menu-converter/?from=menu-engineering';
-      });
-    }
   }
 
   function paintItemTable(items){

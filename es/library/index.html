@@ -56,27 +56,32 @@
 
 <style>
 .breadcrumb{padding-top:100px}
+/* Scoped mono "data voice" stack — defined once, inherited by numbers,
+   dates, and uppercase micro-labels across the library hub. */
+#main{--lib-mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono","Roboto Mono",Menlo,monospace}
 .lib-three{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:32px 0 0}
 @media (max-width:780px){.lib-three{grid-template-columns:1fr}}
-.lib-door{display:block;padding:28px 28px 24px;background:var(--cream-2);border:1px solid var(--line);border-radius:14px;text-decoration:none;color:inherit;transition:border-color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
-.lib-door:hover{border-color:var(--teal);transform:translateY(-2px)}
-.lib-door__verb{font-family:var(--font-display);font-size:14px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.lib-door{position:relative;overflow:hidden;display:block;padding:28px 28px 24px;background:var(--white);border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit;transition:border-color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+.lib-door::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--teal);transform:scaleX(0);transform-origin:left;transition:transform var(--t-med) var(--ease-out)}
+.lib-door:hover,.lib-door:focus-within{border-color:var(--teal);transform:translateY(-2px)}
+.lib-door:hover::before,.lib-door:focus-within::before{transform:scaleX(1)}
+.lib-door__verb{font-family:var(--lib-mono);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
 .lib-door h2{font-family:var(--font-display);font-size:28px;font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 12px}
 .lib-door p.lead{font-size:15px;line-height:1.6;color:var(--ink-soft);margin:0 0 18px}
 .lib-door__list{list-style:none;padding:0;margin:0;font-size:14.5px;line-height:1.65}
 .lib-door__list li{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--line);color:var(--ink)}
 .lib-door__list li:first-child{border-top:0}
 .lib-door__list li strong{font-weight:500}
-.lib-door__list li small{color:var(--stone);font-size:12.5px;flex-shrink:0;white-space:nowrap}
+.lib-door__list li small{font-family:var(--lib-mono);font-variant-numeric:tabular-nums;color:var(--stone);font-size:12.5px;flex-shrink:0;white-space:nowrap}
 .lib-door__cta{display:inline-block;margin-top:18px;font-size:14px;font-weight:600;color:var(--teal);border-bottom:1px dashed currentColor}
 .lib-strip{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 0;padding:0;list-style:none;font-size:13px}
 .lib-strip li{padding:6px 14px;background:var(--cream-2);border:1px solid var(--line);border-radius:999px;color:var(--ink-soft)}
-.lib-strip strong{color:var(--ink);font-weight:600}
+.lib-strip strong{font-family:var(--lib-mono);font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600}
 .lib-section{margin:64px 0 0;padding-top:32px;border-top:1px solid var(--line)}
 .lib-pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:0;padding:0;list-style:none}
 @media (max-width:780px){.lib-pillars{grid-template-columns:1fr 1fr}}
 @media (max-width:480px){.lib-pillars{grid-template-columns:1fr}}
-.lib-pillars li a{display:block;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px;text-decoration:none;color:var(--ink);font-size:14.5px;font-weight:500;transition:border-color var(--t-fast) var(--ease)}
+.lib-pillars li a{display:block;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:6px;text-decoration:none;color:var(--ink);font-size:14.5px;font-weight:500;transition:border-color var(--t-fast) var(--ease)}
 .lib-pillars li a:hover{border-color:var(--teal);color:var(--teal)}
 .lib-pillars span{display:block;font-size:12.5px;color:var(--stone);font-weight:400;margin-top:4px}
 </style>
@@ -267,9 +272,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/library/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
-    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don está cerca"></span>
-      Contacta a Don
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Muntin &mdash; leemos cada mensaje.">
+      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true"></span>
+      Contacto
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
@@ -304,7 +309,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </svg>
       <span class="theme-toggle__label js-theme-label">Modo claro</span>
     </button>
-    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Contacta a Don</a>
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Muntin &mdash; leemos cada mensaje.">Contacto</a>
     <a href="/library/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
   </nav>
 
@@ -384,7 +389,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </header>
 
     <!-- cost-index-hero:start -->
-<a class="ci-hero" href="/es/cost-index/" style="display:block;margin:0 0 40px;padding:28px 32px;border-radius:16px;background:radial-gradient(140% 180% at 92% 50%,rgba(42,80,200,0.18) 0%,rgba(22,24,29,0) 62%),#16181D;color:#F6F7F8;text-decoration:none;border:1px solid rgba(246,247,248,0.12);box-shadow:0 18px 40px -28px rgba(0,0,0,0.5)">
+<a class="ci-hero" href="/es/cost-index/" style="display:block;margin:0 0 40px;padding:28px 32px;border-radius:8px;background:radial-gradient(140% 180% at 92% 50%,rgba(42,80,200,0.18) 0%,rgba(22,24,29,0) 62%),#16181D;color:#F6F7F8;text-decoration:none;border:1px solid rgba(246,247,248,0.12);box-shadow:0 18px 40px -28px rgba(0,0,0,0.5)">
   <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-weight:700;color:#9DB4FF;margin-bottom:10px">La lectura más reciente del Índice de Costos · 6 de julio de 2026</span>
   <h2 style="font-family:var(--font-display),Georgia,serif;font-size:clamp(23px,2.8vw,31px);font-weight:500;line-height:1.12;margin:0 0 10px;color:#F6F7F8;letter-spacing:-0.01em">El Índice de Costos: cómo está la canasta</h2>
   <p style="font-family:Inter,system-ui,sans-serif;font-size:16px;line-height:1.55;color:rgba(246,247,248,0.80);margin:0 0 16px;max-width:680px">La lectura de los costos mayoristas de ingredientes &mdash; niveles públicos, con fecha y fuente, nunca tu precio de entrega.</p>
@@ -466,7 +471,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <a class="btn btn-primary" href="/es/ledger/">Ver Muntin Ledger
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
-        <a class="btn btn-ghost js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje."><span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don está cerca"></span>Contacta a Don</a>
+        <a class="btn btn-ghost js-window" href="/es/window/" title="Una línea directa con Muntin &mdash; leemos cada mensaje."><span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true"></span>Contacto</a>
       </div>
     </div>
 
@@ -539,7 +544,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <p class="foot-heading" id="foot-contact">Contacto</p>
         <ul class="foot-links">
           <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
-          <li><a href="/es/window/">Contacta a Don</a></li>
+          <li><a href="/es/window/">Contacto</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (se abre en una pestaña nueva)</span></a></li>
         </ul>
         <p class="foot-trust"><strong>Respuesta:</strong> en menos de 4 horas de lunes a viernes; fines de semana, el lunes.</p>
@@ -549,7 +554,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <!-- newsletter-capture:start -->
     <div class="foot-newsletter">
       <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="es">
-        <p class="foot-newsletter-pitch">Te aviso cuando publique algo &mdash; cuatro notas por trimestre, sin secuencias automatizadas.</p>
+        <p class="foot-newsletter-pitch">Te avisamos cuando publiquemos algo &mdash; cuatro notas por trimestre, sin secuencias automatizadas.</p>
         <label class="foot-newsletter-label" for="foot-news-email">Tu correo</label>
         <input id="foot-news-email" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="tu@turestaurante.com" />
         <input type="hidden" name="locale" value="es" />
@@ -589,14 +594,18 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               headers: { 'content-type': 'application/x-www-form-urlencoded' },
               body: params.toString(),
               credentials: 'same-origin',
-            }).then(function () {
-              form.dataset.state = 'ok';
-              if (typeof window.plausible === 'function') {
-                var evName = form.dataset.event || 'Newsletter Signup';
-                var surface = form.dataset.surface || (form.dataset.locale === 'es' ? 'footer-es' : 'footer-en');
-                try { window.plausible(evName, { props: { surface: surface } }); } catch (_) {}
+            }).then(function (res) {
+              if (res && res.ok) {
+                form.dataset.state = 'ok';
+                if (typeof window.plausible === 'function') {
+                  var evName = form.dataset.event || 'Newsletter Signup';
+                  var surface = form.dataset.surface || (form.dataset.locale === 'es' ? 'footer-es' : 'footer-en');
+                  try { window.plausible(evName, { props: { surface: surface } }); } catch (_) {}
+                }
+              } else {
+                form.dataset.state = 'error';
               }
-            }).catch(function () { /* fire-and-forget; sin UI de error por diseño */ });
+            }).catch(function () { form.dataset.state = 'error'; /* fire-and-forget; sin UI de error por diseño */ });
           });
         }
         function init() {
@@ -626,9 +635,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       Revisa precios
     </a>
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/es/window/" data-event="sticky-cta-window">
-      <span class="mobile-cta-bar__pulse" id="mobileCtaBarPulse" hidden aria-hidden="true" title="Don está cerca"></span>
+      <span class="mobile-cta-bar__pulse" id="mobileCtaBarPulse" hidden aria-hidden="true"></span>
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-      Contacta a Don
+      Contacto
     </a>
   </aside>
   <script>

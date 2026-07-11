@@ -63,13 +63,13 @@ main{padding-top:64px}
 .ci-hero h1{font-family:var(--font-display);font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.12;color:var(--ink);margin:0 0 14px}
 .ci-answer{font-size:clamp(18px,3vw,22px);font-weight:600;color:var(--ink);margin:0 0 14px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
 .ci-lede{font-size:18px;line-height:1.6;color:var(--ink);margin:0;max-width:720px}
-.ci-body{margin:8px auto 0;max-width:760px}
-.ci-body h2{font-family:var(--font-display);font-size:clamp(20px,3vw,26px);font-weight:500;color:var(--ink);margin:34px 0 10px;line-height:1.2}
+.ci-body{margin:8px auto 0;max-width:760px;--ci-mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono","Roboto Mono",Menlo,monospace}
+.ci-body h2{font-family:var(--font-body);font-size:clamp(20px,3vw,26px);font-weight:500;color:var(--ink);margin:34px 0 10px;line-height:1.2}
 .ci-body p{margin:0 0 16px;font-size:16px;line-height:1.7}
 .ci-body ol,.ci-body ul{margin:0 0 16px;padding-left:22px;font-size:16px;line-height:1.7}
 .ci-body li{margin:0 0 8px}
-.ci-read{margin:22px 0 8px;padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px;font-variant-numeric:tabular-nums}
-.ci-read__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+.ci-read{margin:22px 0 8px;padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:6px;font-variant-numeric:tabular-nums}
+.ci-read__head{font-family:var(--ci-mono);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
 .ci-read__badge{font-weight:600;text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink-soft);margin-left:8px}
 .ci-read__line{font-size:16px;line-height:1.55;color:var(--ink);margin:0}
 .ci-read__trend{margin:6px 0 0;font-size:14.5px;line-height:1.5;color:var(--ink-soft)}
@@ -96,7 +96,7 @@ main{padding-top:64px}
 .ci-read__method{margin-top:6px;font-size:13px}
 .ci-read__data{margin:4px 0 0;font-size:13px;color:var(--ink-soft)}
 .ci-season{margin:12px 0 4px;padding:12px 16px;background:var(--white);border:1px solid var(--line);border-left:3px solid var(--season);border-radius:10px;font-variant-numeric:tabular-nums}
-.ci-season__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--season);margin:0 0 4px}
+.ci-season__head{font-family:var(--ci-mono);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--season);margin:0 0 4px}
 .ci-season__body{font-size:14.5px;line-height:1.5;color:var(--ink);margin:0}
 .ci-season__src{margin:6px 0 0;font-size:12.5px}
 .ci-season__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
@@ -115,10 +115,10 @@ main{padding-top:64px}
 .ci-season-curve__cap strong{color:var(--ink)}
 .ci-season-curve__note{color:var(--stone);font-size:11.5px;white-space:nowrap}
 .ci-seasonal{margin:26px 0 8px}
-.ci-season-q{font-family:var(--font-display);font-size:clamp(20px,3.4vw,26px);font-weight:600;line-height:1.2;color:var(--ink);margin:0 0 10px;text-wrap:balance}
+.ci-season-q{font-family:var(--font-body);font-size:clamp(20px,3.4vw,26px);font-weight:600;line-height:1.2;color:var(--ink);margin:0 0 10px;text-wrap:balance}
 .ci-season-answer{font-size:clamp(16px,2.4vw,18px);line-height:1.6;color:var(--ink-soft);margin:0;max-width:62ch;border-left:3px solid var(--season);padding-left:14px}
 .ci-yield{margin:18px 0;padding:14px 16px;background:var(--white);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:10px}
-.ci-yield__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 5px}
+.ci-yield__head{font-family:var(--ci-mono);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 5px}
 .ci-yield__body{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0}
 .ci-yield__body strong{font-weight:700}
 .ci-yield__link{margin:9px 0 0;font-size:13.5px}
@@ -126,23 +126,23 @@ main{padding-top:64px}
 .ci-yield__src{margin:7px 0 0;font-size:12px;color:var(--stone)}
 .ci-faq{margin:34px 0 0}
 .ci-faq__item{margin:0 0 18px}
-.ci-faq__q{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink);margin:0 0 6px}
+.ci-faq__q{font-family:var(--font-body);font-size:17px;font-weight:600;color:var(--ink);margin:0 0 6px}
 .ci-faq__a{font-size:15.5px;line-height:1.65;color:var(--ink-soft);margin:0}
 .ci-sibs{margin:30px 0 0;font-size:14px;color:var(--ink-soft)}
 .ci-sibs-label{display:inline-block;font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:11px;margin-right:8px}
 .ci-sibs a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 8px}
-.ci-composite{margin:22px 0 6px;padding:20px 22px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--ink-soft);border-radius:12px;font-variant-numeric:tabular-nums}
+.ci-composite{margin:22px 0 6px;padding:20px 22px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--ink-soft);border-radius:6px;font-variant-numeric:tabular-nums}
 .ci-composite[data-band="up"]{border-left-color:#A23B2D}
 .ci-composite[data-band="down"]{border-left-color:var(--teal)}
-.ci-composite__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px}
+.ci-composite__head{font-family:var(--ci-mono);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px}
 .ci-composite__read{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;margin:0}
-.ci-composite__num{font-family:var(--font-display);font-size:clamp(30px,6vw,44px);font-weight:500;line-height:1;color:var(--ink)}
+.ci-composite__num{font-family:var(--ci-mono);font-variant-numeric:tabular-nums;font-size:clamp(30px,6vw,44px);font-weight:500;line-height:1;color:var(--ink)}
 .ci-composite[data-band="up"] .ci-composite__num{color:#A23B2D}
 .ci-composite[data-band="down"] .ci-composite__num{color:var(--teal)}
 .ci-composite__say{font-size:15px;line-height:1.4;color:var(--ink);font-weight:600;max-width:46ch}
 .ci-composite__meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin:10px 0 0}
-.ci-composite__chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--white);border:1px solid var(--line);color:var(--ink-soft)}
+.ci-composite__chip{display:inline-block;font-family:var(--ci-mono);font-variant-numeric:tabular-nums;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--white);border:1px solid var(--line);color:var(--ink-soft)}
 .ci-composite__spread{font-size:14px;line-height:1.5;color:var(--ink-soft);margin:10px 0 0}
 .ci-composite__spread strong{color:var(--ink)}
 .ci-composite__src{margin:8px 0 0;font-size:12.5px}
@@ -151,7 +151,7 @@ main{padding-top:64px}
 .ci-composite__src a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-orient{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));margin:18px 0 8px}
 .ci-orient__cell{background:var(--cream-2);border-radius:6px;padding:14px 16px}
-.ci-orient__h{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+.ci-orient__h{font-family:var(--ci-mono);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
 .ci-orient__b{font-size:14px;line-height:1.5;color:var(--ink);margin:0}
 .ci-signup--compact{margin:18px 0}
 .ci-signup-alt{margin:12px 0 0;font-size:13.5px;color:var(--ink-soft);line-height:1.6}
@@ -160,13 +160,16 @@ main{padding-top:64px}
 .ci-source{font-size:12.5px;color:var(--ink-soft);margin:24px 0 40px}
 .ci-source a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));margin:14px 0 0}
-.ci-card{padding:16px 18px;background:var(--white);border:1px solid var(--line);border-radius:10px}
-.ci-card a{font-family:var(--font-display);font-size:17px;color:var(--ink);text-decoration:none}
+.ci-card{position:relative;overflow:hidden;padding:16px 18px;background:var(--white);border:1px solid var(--line);border-radius:6px;transition:transform var(--t-med) var(--ease-out),border-color var(--t-med) var(--ease-out)}
+.ci-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--teal);transform:scaleX(0);transform-origin:left;transition:transform var(--t-med) var(--ease-out)}
+.ci-card:hover::before{transform:scaleX(1)}
+.ci-card:hover{transform:translateY(-2px);border-color:var(--teal)}
+.ci-card a{font-family:var(--font-body);font-size:17px;color:var(--ink);text-decoration:none}
 .ci-card a:hover{color:var(--teal)}
 .ci-card-note{display:block;font-size:13px;color:var(--ink-soft);margin-top:4px}
-.ci-cat-h{font-family:var(--font-display);font-size:16px;color:var(--ink-soft);margin:30px 0 0;text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+.ci-cat-h{font-family:var(--font-body);font-size:16px;color:var(--ink-soft);margin:30px 0 0;text-transform:uppercase;letter-spacing:.04em;font-weight:600}
 .ci-card-action{margin-top:10px}
-.ci-moving{margin:20px 0 8px;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px}
+.ci-moving{margin:20px 0 8px;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:6px}
 .ci-moving .ci-cat-h{margin:0 0 10px}
 .ci-moving-list{list-style:none;margin:0;padding:0}
 .ci-moving-item{margin:0 0 8px;font-size:15.5px;line-height:1.5}
@@ -205,7 +208,7 @@ main{padding-top:64px}
 .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0}
 .ci-table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
 .ci-table th,.ci-table td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap;vertical-align:middle}
-.ci-table th{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft)}
+.ci-table th{font-family:var(--ci-mono);font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft)}
 .ci-table tbody tr:hover{background:var(--cream-2)}
 .ci-table td a{color:var(--ink);text-decoration:none;font-weight:600;border-bottom:1px dashed var(--line)}
 .ci-table td a:hover{color:var(--teal)}
@@ -217,8 +220,8 @@ main{padding-top:64px}
 :root[data-theme="dark"] .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
 .ci-read--pending{border-left-color:#cdb368;background:var(--cream-2)}
 .ci-read--pending .ci-read__head{color:#8a6d1f}
-.ci-outlook{margin:14px 0 8px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--season);border-radius:12px}
-.ci-outlook__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--season);margin:0 0 6px}
+.ci-outlook{margin:14px 0 8px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--season);border-radius:6px}
+.ci-outlook__head{font-family:var(--ci-mono);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--season);margin:0 0 6px}
 .ci-outlook__line{font-size:15.5px;line-height:1.5;color:var(--ink);margin:0}
 .ci-outlook__record{margin:6px 0 0;font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
 .ci-outlook__how{margin-top:8px;font-size:12.5px}
@@ -230,7 +233,7 @@ main{padding-top:64px}
 .ci-outlook__lab a{color:var(--season);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
 .ci-events{margin:30px 0 8px}
 .ci-events__intro{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 14px;max-width:66ch}
-.ci-events__take{margin:0 0 16px;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px}
+.ci-events__take{margin:0 0 16px;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:6px}
 .ci-events__take[data-vol="wild"]{border-left-color:#A23B2D}
 .ci-events__take[data-vol="swingy"]{border-left-color:var(--gold)}
 .ci-events__take[data-vol="steady"]{border-left-color:var(--teal)}
@@ -239,11 +242,11 @@ main{padding-top:64px}
 .ci-events__take-b strong{color:var(--ink)}
 .ci-events__take-mv{font-size:13.5px;line-height:1.55;color:var(--ink-soft);margin:0;max-width:68ch}
 .ci-events__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
-.ci-events__ev{padding:14px 16px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px;font-variant-numeric:tabular-nums}
+.ci-events__ev{padding:14px 16px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:6px;font-variant-numeric:tabular-nums}
 .ci-events__ev[data-dir="up"]{border-left-color:#A23B2D}
 .ci-events__ev[data-dir="down"]{border-left-color:var(--teal)}
 .ci-events__hd{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
-.ci-events__date{font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--ink);min-width:76px}
+.ci-events__date{font-family:var(--ci-mono);font-variant-numeric:tabular-nums;font-size:18px;font-weight:600;color:var(--ink);min-width:76px}
 .ci-events__mag{font-size:14px;font-weight:700;letter-spacing:.01em;white-space:nowrap}
 .ci-events__mag[data-dir="up"]{color:#A23B2D}
 .ci-events__mag[data-dir="down"]{color:var(--teal)}
@@ -403,12 +406,12 @@ main{padding-top:64px}
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
       </svg>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Muntin &mdash; every message is read.">
       <!-- Phase 5+ — site-wide pulse propagation. Hidden by default;
            window-state.js reveals when lastSeen <4h. Decorative; the
-           label "Reach Don" remains the accessible affordance. -->
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don is around"></span>
-      Reach Don
+           label "Contact" remains the accessible affordance. -->
+      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true"></span>
+      Contact
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
@@ -416,7 +419,7 @@ main{padding-top:64px}
     </button>
   </div>
   <!-- Mobile menu mirrors the 5-item desktop nav, plus search, lang
-       switcher, and the Reach Don CTA. The auth-state JS below
+       switcher, and the Contact CTA. The auth-state JS below
        toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
@@ -450,7 +453,7 @@ main{padding-top:64px}
       </svg>
       <span class="theme-toggle__label js-theme-label">Light mode</span>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don</a>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Muntin &mdash; every message is read.">Contact</a>
     <a href="/es/cost-index/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
 
@@ -552,11 +555,11 @@ main{padding-top:64px}
     <p class="ci-composite__spread"><strong>6</strong> of 16 reading above their baseline · <strong>9</strong> below · <strong>1</strong> flat. A state-of-play reading, not a week-over-week move. The staples are nearly evenly split (agreement 16%), so read it as a soft signal, not a precise figure.</p>
     <details class="ci-composite__src"><summary>How this figure is built</summary><div>Weighted composite of 16 tracked staples, each read against its own baseline window from public U.S. market data (USDA, BLS, FRED, EIA, NOAA). A reading against baseline — not a price, and not a change since last week. See all 16 weights and how the composite is assembled in <a href="/cost-index/basket/">The Muntin Restaurant Basket</a>, or <a href="/cost-index/methodology/">how the index is built</a>.</div></details>
   </section>
-    <section class="ci-scorecard" aria-label="Calibration scorecard" style="margin:22px 0 8px;padding:20px 24px;background:var(--surface-1,#fff);border:1px solid var(--line);border-top:3px solid var(--ink);border-radius:12px;box-shadow:var(--elev-1)">
+    <section class="ci-scorecard" aria-label="Calibration scorecard" style="margin:22px 0 8px;padding:20px 24px;background:var(--surface-1,#fff);border:1px solid var(--line);border-top:3px solid var(--ink);border-radius:6px;box-shadow:var(--elev-1)">
       <div style="display:flex;flex-wrap:wrap;gap:18px 36px;align-items:flex-start">
-        <div style="min-width:120px"><div style="font-family:var(--font-display);font-size:clamp(24px,2.6vw,32px);font-weight:560;letter-spacing:-.015em;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums lining-nums">80%</div><div style="font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--stone);font-weight:600;margin-top:6px">nominal band</div></div>
-        <div style="min-width:120px"><div style="font-family:var(--font-display);font-size:clamp(24px,2.6vw,32px);font-weight:560;letter-spacing:-.015em;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums lining-nums">77%</div><div style="font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--stone);font-weight:600;margin-top:6px">realized coverage</div></div>
-        <div style="min-width:120px"><div style="font-family:var(--font-display);font-size:clamp(24px,2.6vw,32px);font-weight:560;letter-spacing:-.015em;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums lining-nums">4,588</div><div style="font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--stone);font-weight:600;margin-top:6px">scored reads</div></div>
+        <div style="min-width:120px"><div style="font-family:var(--ci-mono);font-size:clamp(24px,2.6vw,32px);font-weight:560;letter-spacing:-.015em;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums lining-nums">80%</div><div style="font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--stone);font-weight:600;margin-top:6px">nominal band</div></div>
+        <div style="min-width:120px"><div style="font-family:var(--ci-mono);font-size:clamp(24px,2.6vw,32px);font-weight:560;letter-spacing:-.015em;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums lining-nums">77%</div><div style="font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--stone);font-weight:600;margin-top:6px">realized coverage</div></div>
+        <div style="min-width:120px"><div style="font-family:var(--ci-mono);font-size:clamp(24px,2.6vw,32px);font-weight:560;letter-spacing:-.015em;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums lining-nums">4,588</div><div style="font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--stone);font-weight:600;margin-top:6px">scored reads</div></div>
         <div style="flex:1 1 260px;min-width:240px">
           <p style="margin:0;font-family:var(--font-display);font-size:16px;font-weight:600;color:var(--ink)">Graded in public, misses included.</p>
           <p style="margin:6px 0 0;font-size:13.5px;line-height:1.55;color:var(--ink-soft)">The 80%-target band caught the next print about 77% of the time across 4,588 scored reads — its raw, un-tuned rate; anything without a price print reports absent, never guessed. <a href="/cost-index/methodology/#track-record" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">See the full track record →</a></p>

@@ -311,7 +311,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .stance-pane .stance-proof{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0}
 .stance-pane .stance-proof a{color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none}
 .hero-counts__chip strong{font-family:var(--font-display);font-size:15px;font-weight:560;font-variant-numeric:tabular-nums lining-nums}
-.fg-glyph{display:block;width:100%;height:auto;max-width:420px;margin:0}
+.fg-glyph{display:block;width:100%;height:auto;max-width:none;margin:0}
 .fg-glyph .gbase{stroke:var(--stone);stroke-width:1.6;fill:none;stroke-dasharray:4 4}
 .fg-glyph .gmove{stroke:var(--rust);stroke-width:2.2;fill:none}
 .fg-glyph .gwedge{fill:var(--rust);opacity:.13}
@@ -416,9 +416,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
-    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don está cerca"></span>
-      Contacta a Don
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Muntin &mdash; leemos cada mensaje.">
+      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true"></span>
+      Contacto
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
@@ -453,7 +453,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </svg>
       <span class="theme-toggle__label js-theme-label">Modo claro</span>
     </button>
-    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Contacta a Don</a>
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Muntin &mdash; leemos cada mensaje.">Contacto</a>
     <a href="/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
   </nav>
 
@@ -516,7 +516,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         Conoce lo que cuesta cada plato <span class="serif-italic">antes de que la semana se coma el margen.</span>
       </h1>
       <p class="hero-sub">
-        Muntin Digital es la empresa de n&uacute;meros para restaurantes que no te alquila de vuelta a tus propios clientes &mdash; un &Iacute;ndice de Costos de fuente primaria, herramientas privadas gratuitas, y Muntin Ledger, el libro de facturas. Llevo el sal&oacute;n de un restaurante del DMV; estos son los n&uacute;meros que reviso en mis propios turnos. La biblioteca de abajo es gratis, sin registro.
+        Muntin Digital es la empresa de n&uacute;meros para restaurantes que no te alquila de vuelta a tus propios clientes &mdash; un &Iacute;ndice de Costos de fuente primaria, herramientas privadas gratuitas, y Muntin Ledger, el libro de facturas. Todas las herramientas de abajo son gratis, sin registro.
       </p>
       <div class="hero-ctas">
         <a class="btn btn-primary" href="/es/cost-index/">Ver el &Iacute;ndice de costos
@@ -532,10 +532,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <p class="hero-note">
         &iquest;S&oacute;lo investigando? <a href="/es/learn/start-here/">Haz el recorrido guiado de 60 minutos &rarr;</a>
       </p>
-      <p class="hero-meta-note">
-        <em>Don Goldstein &mdash; gerente de sal&oacute;n en Tacombi en Bethesda.</em>
-        <span class="hero-meta-sub">Respuesta: de lunes a viernes, en menos de 4 horas &middot; cada n&uacute;mero del sitio tiene fuente &middot; ES + EN.</span>
-      </p>
       <ul class="hero-counts" aria-label="La biblioteca en cifras">
         <li class="hero-counts__chip"><strong><!-- count:glossary.terms -->171<!-- /count --></strong>&nbsp;t&eacute;rminos</li>
         <li class="hero-counts__chip"><strong><!-- count:tools.live -->5<!-- /count --></strong>&nbsp;herramientas gratis</li>
@@ -545,24 +541,48 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </div>
 
     <div>
-      <div class="window" aria-hidden="true">
-        <div class="pane"></div><div class="pane"></div><div class="pane"></div>
-        <div class="pane"></div><div class="pane"></div><div class="pane"></div>
-        <div class="pane"></div><div class="pane"></div><div class="pane"></div>
-        <div class="pane"></div><div class="pane"></div><div class="pane"></div>
-        <div class="muntins">
-          <div class="bar v1"></div><div class="bar v2"></div>
-          <div class="bar h1"></div><div class="bar h2"></div><div class="bar h3"></div>
-          <div class="frame"></div>
+      <figure class="ci-inst" aria-label="Lectura de muestra del &Iacute;ndice de Costos">
+        <span class="ci-inst__scan" aria-hidden="true"></span>
+        <div class="ci-inst__top">
+          <span class="ci-inst__label">&Iacute;ndice de Costos &middot; canasta muestra</span>
+          <span class="ci-inst__state"><i aria-hidden="true"></i>ilustrativo</span>
         </div>
-      </div>
-      <div class="window-caption">
-        <span lang="en">mun·tin / sustantivo</span>
-        <span>el tejido que sostiene una ventana</span>
-      </div>
+        <div class="ci-inst__head">
+          <span class="ci-inst__big" id="ciBasket">+0.6%</span>
+          <span class="ci-inst__chip">cebolla al frente</span>
+        </div>
+        <p class="ci-inst__cap">Una muestra de lo que ense&ntilde;a el &Iacute;ndice &mdash; la canasta apenas se movi&oacute;; la cebolla corri&oacute; mientras las prote&iacute;nas cedieron. No son tus precios.</p>
+        <div class="ci-inst__rows">
+          <div class="ci-inst__r ci-inst__r--flag">
+            <span class="ci-inst__nm">Cebolla</span><span class="ci-inst__unit">50&nbsp;lb</span><span class="ci-inst__d">sube 14.6%</span>
+          </div>
+          <div class="ci-inst__r">
+            <span class="ci-inst__nm">Ribeye</span><span class="ci-inst__unit">12&nbsp;lb</span><span class="ci-inst__d ci-inst__d--calm">baja 2.4%</span>
+          </div>
+          <div class="ci-inst__r">
+            <span class="ci-inst__nm">Pechuga de pollo</span><span class="ci-inst__unit">40&nbsp;lb</span><span class="ci-inst__d ci-inst__d--calm">baja 3.8%</span>
+          </div>
+        </div>
+        <figcaption class="ci-inst__verdict"><b>Una cosa que mirar</b> &mdash; las prote&iacute;nas cedieron, as&iacute; que es la l&iacute;nea de verdura la que se re-precifica, no el plato.</figcaption>
+      </figure>
     </div>
   </div>
 </section>
+
+<script>
+/* Hero — instrumento de muestra del Índice: cuenta ascendente + barrido al cargar.
+   Degrada bien: el número está en el HTML para no-JS; reduced-motion lo fija sin animar. */
+(function(){
+  var el=document.getElementById('ciBasket'); if(!el) return;
+  var inst=el.closest('.ci-inst');
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){ el.textContent='+0.6%'; return; }
+  if(inst) inst.setAttribute('data-boot','');
+  var target=0.6, t0=null; el.textContent='+0.0%';
+  function step(ts){ if(!t0)t0=ts; var k=Math.min(1,(ts-t0)/1000); var e=1-Math.pow(1-k,3);
+    el.textContent='+'+(target*e).toFixed(1)+'%'; if(k<1){requestAnimationFrame(step);} else {el.textContent='+0.6%';} }
+  setTimeout(function(){ requestAnimationFrame(step); }, 400);
+})();
+</script>
 
 <!-- ============ PRIMARY TOOL CTA ============ -->
 <!-- Phase 7 W1-4 ES — flagship hero. -->
@@ -572,7 +592,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <span class="eyebrow">Herramientas insignia gratis &middot; en tu dispositivo &middot; sin registro</span>
       <h2 id="tool-cta-heading" class="tool-cta-flagships__heading">Encuentra la fuga antes de arreglarla.</h2>
     </div>
-    <div class="tool-cta-flagships__grid tool-cta-flagships__grid--single">
+    <div class="tool-cta-flagships__grid">
       <a class="tool-card-flagship" href="/es/tools/vendor-benchmark/">
         <span class="tool-card-flagship__chip">Gratis &middot; en tu dispositivo &middot; sin registro</span>
         <h3 class="tool-card-flagship__title">Vendor Benchmark</h3>
@@ -625,7 +645,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
       <li><a href="/es/never/" style="color:inherit;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px">Cinco negativas, por escrito</a></li>
       <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
-      <li>Hecho por un gerente de sala en activo &mdash; Tacombi</li>
+      <li>Con base en un sal&oacute;n de restaurante en activo &mdash; Tacombi</li>
     </ul>
   </div>
 </section>
@@ -721,7 +741,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <td class="lib-idx-title"><a href="/es/library/precios-de-la-carne-de-res-para-tu-restaurante/">Qué significan los precios de la carne para tu restaurante</a></td>
         <td class="lib-idx-section">Artículos</td>
         <td class="lib-idx-date" aria-label="2026-07-05"><time datetime="2026-07-05">2026-07-05</time></td>
-        <td class="lib-idx-contributor">Don Goldstein</td>
+        <td class="lib-idx-contributor">The Muntin Desk</td>
       </tr>
       <tr>
         <td class="lib-idx-title"><a href="/es/blog/dia-del-padre-que-te-encuentren-2026/">Restaurantes en el Día del Padre 2026: que te encuentren antes de la reserva</a></td>
@@ -739,25 +759,25 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <td class="lib-idx-title"><a href="/es/library/checklist-de-seo-tecnico-para-sitios-de-restaurantes/">Checklist de SEO técnico para sitios de restaurantes (2026): la auditoría del operador</a></td>
         <td class="lib-idx-section">Artículos</td>
         <td class="lib-idx-date" aria-label="2026-06-03"><time datetime="2026-06-03">2026-06-03</time></td>
-        <td class="lib-idx-contributor">Don Goldstein</td>
+        <td class="lib-idx-contributor">The Muntin Desk</td>
       </tr>
       <tr>
         <td class="lib-idx-title"><a href="/es/library/sistema-de-marca-para-restaurantes-color-tipografia-logo/">Sistema de marca para restaurantes (2026): color, tipografía y el logo que viaja</a></td>
         <td class="lib-idx-section">Artículos</td>
         <td class="lib-idx-date" aria-label="2026-06-03"><time datetime="2026-06-03">2026-06-03</time></td>
-        <td class="lib-idx-contributor">Don Goldstein</td>
+        <td class="lib-idx-contributor">The Muntin Desk</td>
       </tr>
       <tr>
         <td class="lib-idx-title"><a href="/es/library/ingenieria-de-menu-para-restaurantes/">Ingeniería de menú para restaurantes (2026): las cuentas detrás de qué platillos dan dinero</a></td>
         <td class="lib-idx-section">Artículos</td>
         <td class="lib-idx-date" aria-label="2026-06-03"><time datetime="2026-06-03">2026-06-03</time></td>
-        <td class="lib-idx-contributor">Don Goldstein</td>
+        <td class="lib-idx-contributor">The Muntin Desk</td>
       </tr>
       <tr>
         <td class="lib-idx-title"><a href="/es/library/requisitos-legales-del-sitio-web-de-tu-restaurante/">Requisitos legales y de confianza del sitio web de tu restaurante (2026): términos, privacidad, cookies, SSL</a></td>
         <td class="lib-idx-section">Artículos</td>
         <td class="lib-idx-date" aria-label="2026-06-03"><time datetime="2026-06-03">2026-06-03</time></td>
-        <td class="lib-idx-contributor">Don Goldstein</td>
+        <td class="lib-idx-contributor">The Muntin Desk</td>
       </tr>
       </tbody>
     </table>
@@ -785,7 +805,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <div class="section-header reveal" style="max-width:760px;margin-inline:auto;text-align:center;">
       <span class="eyebrow">Miembros fundadores</span>
       <h2 id="founding-heading">S&eacute; de los primeros cuando abra <span class="serif-italic">Muntin Ledger</span> &mdash; 13 de noviembre de 2026.</h2>
-      <p>Un motor determinista lee tus facturas de proveedores y las archiva en un libro consultable &mdash; ning&uacute;n modelo de lenguaje lee tus n&uacute;meros, sin anuncios, sin rastreo. Muestra lo que midi&oacute; y se&ntilde;ala lo que estim&oacute;. Cuando no se puede leer una l&iacute;nea, retiene el dato en lugar de inventar una cifra. Los miembros fundadores tienen <strong>tres meses gratis, luego $19 al mes por local</strong> mientras se queden &mdash; la tarifa fundadora es para quienes se unan antes del lanzamiento, ahora a <!-- count:ledger.ga_weeks_out -->19<!-- /count --> semanas. Tus n&uacute;meros siguen siendo tuyos.</p>
+      <p>Un motor determinista lee tus facturas de proveedores y las archiva en un libro consultable &mdash; ning&uacute;n modelo de lenguaje lee tus n&uacute;meros, sin anuncios, sin rastreo. Muestra lo que midi&oacute; y se&ntilde;ala lo que estim&oacute;. Cuando no se puede leer una l&iacute;nea, retiene el dato en lugar de inventar una cifra. Los miembros fundadores tienen <strong>tres meses gratis, luego $19 al mes por local</strong> mientras se queden &mdash; la tarifa fundadora es para quienes se unan antes del lanzamiento, ahora a <span class="founding-countdown"><!-- count:ledger.ga_weeks_out -->19<!-- /count --> semanas</span>. Tus n&uacute;meros siguen siendo tuyos.</p>
     </div>
 
     <!-- founding-capture:start -->
@@ -808,6 +828,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <!-- Turnstile (Phase 3B). Auto-injects cf-turnstile-response on pass. -->
       <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="waitlist" data-language="es" data-size="flexible"></div>
       <p class="founding-form-confirm" aria-live="polite">Gracias &mdash; revisa tu correo para confirmar tu lugar.</p>
+      <p class="founding-form-error" aria-live="polite">No se pudo enviar. Escribe a <a href="mailto:don@muntin.digital">don@muntin.digital</a> y te agregamos.</p>
       <button type="submit">Unirme a la lista fundadora</button>
     </form>
     <!-- founding-capture:end -->
@@ -851,7 +872,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <div class="hero-ctas" style="justify-content:center;margin-top:24px;">
       <a class="btn btn-ghost" href="https://ledger.muntin.digital/">Ver precios</a>
-      <a class="btn btn-ghost js-window" href="/es/window/">Escribirle a Don</a>
+      <a class="btn btn-ghost js-window" href="/es/window/">Contacto</a>
     </div>
   </div>
 </section>
@@ -860,24 +881,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <section class="block" id="about" aria-labelledby="about-heading">
   <div class="container about-grid">
     <div class="reveal">
-      <div class="about-portrait-frame">
-        <div class="portrait" aria-hidden="true">D</div>
-        <!-- picture:start -->
-<picture>
-<source type="image/avif" srcset="/about/portrait/don.avif">
-<source type="image/webp" srcset="/about/portrait/don.webp">
-<img src="/about/portrait/don.png" alt="Retrato de Don Goldstein, fundador de Muntin Digital." width="640" height="800" loading="eager" decoding="async" onerror="this.style.display='none'">
-</picture>
-<!-- picture:end -->
+      <div class="about-portrait-frame about-window">
+        <div class="portrait" aria-hidden="true"></div>
       </div>
     </div>
     <div class="about-copy reveal">
       <span class="eyebrow">Sobre Muntin Digital</span>
       <h2 id="about-heading" class="muntin-title">Un <em lang="en">muntin</em> es la tira fina que sostiene una ventana.</h2>
       <p>Discreto, callado, y la razón por la que el vidrio no se cae.</p>
-      <p>Soy Don. Soy jefe de sal&oacute;n en Tacombi en Bethesda &mdash; y Muntin sali&oacute; de ver a peque&ntilde;os negocios malabarear cuatro proveedores que nunca se hablaban entre s&iacute;.</p>
-      <p><em>La biblioteca es lo que quer&iacute;a haber tenido cuando empec&eacute;. Muntin Ledger es lo que quer&iacute;a haber tenido en el sal&oacute;n &mdash; los n&uacute;meros de los proveedores, le&iacute;dos y archivados.</em></p>
-      <p style="margin-top:28px;"><a href="/es/about/" class="gallery-cta" style="font-weight:600;color:var(--teal);display:inline-flex;align-items:center;gap:8px;">Lee la historia completa de Don <span aria-hidden="true">&rarr;</span></a></p>
+      <p>Muntin sali&oacute; de ver a peque&ntilde;os negocios malabarear cuatro proveedores que nunca se hablaban entre s&iacute; &mdash; y de construir las herramientas que hacen legibles esos n&uacute;meros.</p>
+      <p><em>La biblioteca es la referencia que quisi&eacute;ramos que todo operador tuviera. Muntin Ledger es la herramienta &mdash; los n&uacute;meros de tus proveedores, le&iacute;dos y archivados, contrastados con tu propio historial.</em></p>
+      <p style="margin-top:28px;"><a href="/es/about/" class="gallery-cta" style="font-weight:600;color:var(--teal);display:inline-flex;align-items:center;gap:8px;">La historia detr&aacute;s de Muntin <span aria-hidden="true">&rarr;</span></a></p>
     </div>
   </div>
 </section>
@@ -941,14 +955,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <div class="section-header reveal section-center">
       <span class="eyebrow">Empieza por donde quieras</span>
       <h2 id="contact-heading">Corre una herramienta gratis, lee el &iacute;ndice <span class="serif-italic">o abre el libro.</span></h2>
-      <p class="final-sub">Todo en la biblioteca es gratis, sin registro. Cuando las facturas se acumulan, Muntin Ledger las lee y las archiva. Las preguntas llegan directo a m&iacute; &mdash; leo cada una.</p>
+      <p class="final-sub">Todo en la biblioteca es gratis, sin registro. Cuando las facturas se acumulan, Muntin Ledger las lee y las archiva. Las preguntas reciben una respuesta real &mdash; se lee cada mensaje.</p>
     </div>
     <div class="hero-ctas reveal hero-ctas-center" style="justify-content:center;margin-top:8px;">
       <a class="btn btn-primary" href="/es/tools/">Explorar las herramientas gratis
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
       </a>
       <a class="btn btn-ghost" href="/es/ledger/">Ver Muntin Ledger</a>
-      <a class="btn btn-ghost js-window" href="/es/window/">Contacta a Don</a>
+      <a class="btn btn-ghost js-window" href="/es/window/">Contacto</a>
     </div>
     <div class="contact-details contact-details--center" style="justify-content:center;margin-top:28px;">
       <div class="contact-detail">
@@ -976,7 +990,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <a class="btn btn-primary" href="/es/ledger/">Ver Muntin Ledger
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
-        <a class="btn btn-ghost js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje."><span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don está cerca"></span>Contacta a Don</a>
+        <a class="btn btn-ghost js-window" href="/es/window/" title="Una línea directa con Muntin &mdash; leemos cada mensaje."><span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true"></span>Contacto</a>
       </div>
     </div>
 
@@ -1049,7 +1063,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <p class="foot-heading" id="foot-contact">Contacto</p>
         <ul class="foot-links">
           <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
-          <li><a href="/es/window/">Contacta a Don</a></li>
+          <li><a href="/es/window/">Contacto</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (se abre en una pestaña nueva)</span></a></li>
         </ul>
         <p class="foot-trust"><strong>Respuesta:</strong> en menos de 4 horas de lunes a viernes; fines de semana, el lunes.</p>
@@ -1059,7 +1073,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <!-- newsletter-capture:start -->
     <div class="foot-newsletter">
       <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="es">
-        <p class="foot-newsletter-pitch">Te aviso cuando publique algo &mdash; cuatro notas por trimestre, sin secuencias automatizadas.</p>
+        <p class="foot-newsletter-pitch">Te avisamos cuando publiquemos algo &mdash; cuatro notas por trimestre, sin secuencias automatizadas.</p>
         <label class="foot-newsletter-label" for="foot-news-email">Tu correo</label>
         <input id="foot-news-email" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="tu@turestaurante.com" />
         <input type="hidden" name="locale" value="es" />
@@ -1099,14 +1113,18 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               headers: { 'content-type': 'application/x-www-form-urlencoded' },
               body: params.toString(),
               credentials: 'same-origin',
-            }).then(function () {
-              form.dataset.state = 'ok';
-              if (typeof window.plausible === 'function') {
-                var evName = form.dataset.event || 'Newsletter Signup';
-                var surface = form.dataset.surface || (form.dataset.locale === 'es' ? 'footer-es' : 'footer-en');
-                try { window.plausible(evName, { props: { surface: surface } }); } catch (_) {}
+            }).then(function (res) {
+              if (res && res.ok) {
+                form.dataset.state = 'ok';
+                if (typeof window.plausible === 'function') {
+                  var evName = form.dataset.event || 'Newsletter Signup';
+                  var surface = form.dataset.surface || (form.dataset.locale === 'es' ? 'footer-es' : 'footer-en');
+                  try { window.plausible(evName, { props: { surface: surface } }); } catch (_) {}
+                }
+              } else {
+                form.dataset.state = 'error';
               }
-            }).catch(function () { /* fire-and-forget; sin UI de error por diseño */ });
+            }).catch(function () { form.dataset.state = 'error'; /* fire-and-forget; sin UI de error por diseño */ });
           });
         }
         function init() {
@@ -1136,9 +1154,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       Revisa precios
     </a>
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/es/window/" data-event="sticky-cta-window">
-      <span class="mobile-cta-bar__pulse" id="mobileCtaBarPulse" hidden aria-hidden="true" title="Don está cerca"></span>
+      <span class="mobile-cta-bar__pulse" id="mobileCtaBarPulse" hidden aria-hidden="true"></span>
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-      Contacta a Don
+      Contacto
     </a>
   </aside>
   <script>

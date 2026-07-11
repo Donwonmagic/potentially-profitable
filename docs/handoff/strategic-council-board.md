@@ -13,6 +13,329 @@ repo survives. Update this file as threads move.
 council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 #234–#239 product) are merged to main and closed.
 
+## ⮕ CURRENT STATE — AUTONOMOUS REDESIGN RUN (updated 2026-07-11)
+
+**⚠ OPS NOTE (2026-07-11) — container reverted TWICE; both recovered.** It has now happened twice in this
+run (same signature both times: HEAD drops to the stale demo checkpoint `e6afa2258`, remote-tracking ref
+stale, "Reach Don" reappears in the working tree). **Second occurrence:** mid-turn, AFTER a good push —
+detected when a headless glossary screenshot showed "Reach Don" though origin was correct. Recovery is the
+same and reliable: `git fetch origin claude/muntin-strategic-council-exsghc && git reset --hard origin/…`.
+**Hardened rule:** commit + push every increment BEFORE running the (slower) headless audit — the push is the
+only durable artifact; anything uncommitted when the container rolls is gone. The glossary sweep below was
+pushed first (`597bc5f23`) precisely for this reason, and survived. Original first-occurrence note follows.
+
+**⚠ OPS NOTE (2026-07-11) — container reverted; recovered.** A worker restart reverted this container's
+working tree to a STALE demo-thread checkout (HEAD `e6afa2258` "wip(demo): single-frame no-scroll redesign",
+remote-tracking ref stale at `2401bf103`) — 192 commits behind, my entire redesign cascade absent locally,
+`index.html` showing pre-de-solo "Reach Don"/"Email Don". **All work was safe on origin** (pushed). Recovery:
+`git fetch` then `git reset --hard origin/claude/muntin-strategic-council-exsghc` (working tree was clean).
+The orphan demo-wip is preserved as tag `orphan-demo-wip-e6afa2258` if ever needed. **Runbook for a future
+session:** if HEAD looks wrong (demo commits, missing redesign, "Reach Don" on the home), you're on a stale
+checkout — `git fetch origin claude/muntin-strategic-council-exsghc && git reset --hard origin/…` to restore.
+Push every increment (the only thing that survives a restart). Post-recovery: clean, synced at `1ca49932d`,
+gates green (fabrications 0, newsletter-copy ✓, css-drift 504); restored cost-index nav correctly shows "Contact".
+
+**Founder directive:** "Fold both plans together. Execute the entirety of the redesign as I sleep,
+build → audit → iterate, frequently, all the way through." Macro-first. → **`docs/handoff/redesign-execution-plan.md`
+is the execution spine** (folds the reinvention master plan + the locked macro design direction from
+the flagship prototype). Autonomous run: one increment → adversarial/expert audit → iterate → commit+push →
+update this block → continue.
+
+**✅ COMPLETE — SITE-WIDE v3 PROPAGATION (founder picked ALL 4 levers + de-solo newsletter + keep human seat, 2026-07-11).**
+ALL SHIPPED + pushed: newsletter de-solo `d9dd78900`; type `31f4013a5`; radius `84273de79`; hubs cost-index
+`2b567e382` / ledger `c434c77d5` / tools `987aeb3a7` / library `8a391210c`; tool-card layout `63f6cb55f`.
+/about/ + /window/ kept personal (no change). All EN+ES, both themes headless-verified; css-drift 502 (improved
+from 504); gates green (fabrications 0, newsletter-copy ✓ enforcing company voice, locale-parity). Hub polish
+ran via workflow w71suln37 (polish+adversarial-verify per hub); the tools raw-6px radii were tokenized to
+var(--r-md) post-verify to hold drift; the library cost-index-hero was made durable by bumping its injector
+template (inject-library-cost-index-hero.mjs 16→8px) + re-running. Blueprint from workflow wbr35q2x7. **CERTIFIED 2026-07-11** — full 258-gate `check-all.mjs` run (task
+ba3butwm6, exit 0): 233/258 passed; all 25 failures are deploy-healed `(idem)` builders (sitemap, OG cards,
+CSS cache-bust, site-counts, glossary/hub schema, RSS, H2 anchor IDs, theme/cuisine build pages) — matching
+the pre-redesign idem baseline exactly, ZERO non-idem regressions from the levers / mono-token / newsletter
+work. CSS shells verified in sync (rebuild = 0 changes). HEAD `8dc1788ee` == origin. Original plan:
+
+**✅ LONG-TAIL SWEEP (founder picked it, 2026-07-11) — `597bc5f23`.** Glossary index app-chrome brought onto
+the v3 tokens: search box / filter bar / empty states off raw 10·14·22px radii → `--r-input`/`--r-md`/`--r-lg`;
+the recently-added link cards dropped the old focus-ring box-shadow for the muntin top-accent hover-reveal +
+2px lift, dates now tabular-mono. EN+ES; verified headless both themes AND by computed-style assertions
+(mono/tabular/overflow:hidden/accent scaleX 0→1/translateY-2px all PASS). **Sheets index needed nothing** —
+it reuses the already-swept `.tool-card--compact`. **Tool-page section `<h2>`s = deliberate keep** (not a gap):
+section-level heads stay Fraunces by the system's own rule, and they're mixed-register even within one panel
+(cost-pulse `.cp-card` has data-title "Drift this week" beside framing "What this dashboard isn't."), so there's
+no clean scope and a blanket demote would flatten warmth. Full reasoning in `docs/handoff/redesign-v3-system.md`
+(Deliberate keeps). The v3 storefront redesign is complete.
+
+**➡ PIVOT TO PRODUCT REPO (founder, 2026-07-11).** After storefront v3 was certified + long-tail-swept, the
+founder chose to carry the v3 language onto the paid **Ledger product** (`Muntin-Invoice-Decoder`, app
+`apps/web`, same branch). **Key finding on arrival:** the product does NOT need v3 applied — it IS the CANONICAL
+SOURCE of the v3 language and MORE mature than the storefront. `packages/ui/tokens.css` is a financial-grade
+token system (Linear/Mercury/Ramp), WCAG baked into token comments, gated by `check-contrast` /
+`check-focus-discipline` / `check-editorial-accent-boundary` / `check-keyframes-allowlist`, dark-canon,
+chrome/editorial/expressive tiers. It DELIBERATELY diverges on two axes: (1) accent — product `--mun-accent`
+#3b68f5 light / #5b82ff dark vs storefront `--teal` #2A50C8 / #7AA7FF (same blue family; product's #2A50C8 is
+its `--mun-accent-text`); (2) display face — product RETIRED the serif from chrome (Inter-only; Fraunces only
+as `--mun-font-editorial`, gated), storefront KEEPS Fraunces display. Applying storefront tokens wholesale
+would REGRESS the product. **Founder chose "full parity audit first"** → workflow `wzy4egv8m` (6 dimension
+auditors × both repos → synthesized reconciliation plan → adversarial verify). No token edits until reviewed.
+⚠ The product repo has NO CLAUDE.md yet — add continuity there once the reconciliation direction is set.
+⚠ Container reverted a THIRD time this session (storefront only; product repo stable) — same runbook, recovered.
+**FOUNDER STEER (2026-07-11): "I really like the current design language of the Ledger — the app itself."**
+→ The product's design language is the KEEPER; nothing regresses it (no Fraunces into app chrome, no swapping
+its a11y-tuned #3b68f5 accent). This removes "converge product→storefront" from the table. Reconciliation, IF
+any, is storefront-side only (the storefront optionally moves toward the product's accent); the deliberate
+Fraunces-storefront / Inter-product divergence otherwise STANDS. The parity audit now serves as a map of what a
+storefront-side nudge would entail + a clean-bill on the product side, not a to-do list against the product.
+
+**✅ PARITY AUDIT COMPLETE (workflow `wzy4egv8m`, 6 dims + synth + adversarial-verify, 2026-07-11).** Result:
+**the product gets a CLEAN BILL — zero changes.** The light-mode token spine is already pigment-identical across
+both repos (verified exact: storefront `--teal` #2A50C8 == product `--mun-accent-text`; `--teal-tint` #EAF0FE ==
+`--mun-accent-soft`; `--rust` #C42E2E == `--mun-danger`; `--gold` #B7791F == `--mun-warning`; `--line-input`
+#868D9A == `--mun-border-strong`; full neutral ramp). The two headline divergences (accent FILL #2A50C8 vs
+#3b68f5 — same hue ~226°, value/chroma split for AA-on-cream vs bright-on-dark; Fraunces display kept vs serif
+retired from product chrome) are DELIBERATE, documented on both sides, and gated — KEEP. So are the warm-cream
+vs cool-slate dark text, the 6px vs 8px card radius register, and the muntin-hover vs inset-ring interaction
+grammar (the two properties are meant to feel different; shared brand-DNA — muntin/pane vocab, 120/180ms
+durations, the cubic-bezier(.16,1,.3,1) emphasis easing — is intact).
+  - **Adversarial verify overturned one item (holdsUp=false):** the synthesis proposed nudging storefront
+    `--stone` #6B7280→#5f6670 and called it "ungated" — WRONG. `--stone` is one of 15 tokens locked by
+    `check-tokens-sync.mjs` (fail-CI); changing it breaks CI, and the spine-hash pin blocks the JSON path too.
+    DROPPED. The plan also cited a phantom `build-tokens.mjs` color-lock (real enforcer is check-tokens-sync).
+  - **Survivors = small, storefront-only, verified-ungated hygiene:** (1) **focus-glow mis-pigment** — site.css
+    `--ring-focus` glow is hardcoded rgba(59,104,245,.3)=#3b68f5 (the PRODUCT's accent) while the focus OUTLINE
+    is --teal #2A50C8, so one focused control shows two blues. Recommended pilot fix (one-liner, ungated).
+    (2) stale radius comments/fallback (site.css L95-98 says --r-sm 8/--r-md 14; real = 6/6/8; also a stale set
+    in check-css-drift.mjs's own comment). (3) off-scale raw radii sweep (storefront onto 6/8; INTRA-repo only).
+  - **✅ SHIPPED `03d8ebe00` (survivors 1+2):** `--ring-focus` now **derives from --teal via color-mix** (not a
+    hardcoded teal) so the glow tracks the accent in EVERY scope — storefront resolves #2A50C8 (matches outline);
+    the `.ld-wrap` Ledger demo, which deliberately re-skins --teal to the app's #3b68f5, gets a matching glow for
+    free (a hardcoded teal would have created a NEW two-blue mismatch inside the demo — caught in verification).
+    color-mix already used 22× in site.css. Regenerated the 3 CSS shells (build-css-shells.mjs); check-css-shells
+    clean; tokens-sync clean. (check-all exits 1 with 233/258 — but the 25 misses are all "(idem)" build-freshness
+    reporters — site-counts/sitemap/glossary-schema/cache-bust "would update N files" — that fail IDENTICALLY at
+    the parent commit; container build-drift the operator's pipeline regenerates, NOT a regression from this change,
+    verified parent-vs-HEAD on cache-bust.) Also refreshed stale radius docs to the v3 6/6/8 scale. NOTE: the
+    demo's `#3b68f5` is CORRECT/deliberate (the storefront's mini-mirror of the product app) — do NOT "fix" it.
+  - **HELD for founder (survivor 3 + editorial):** off-scale raw-radii sweep is cosmetic churn with real visible
+    corner changes across many components — not shipped without a look. Plus the two editorial calls below.
+  - **DEFER / maintenance notes:** dark-accent seam #7AA7FF vs #5b82ff (only accent slot no gate cross-checks)
+    + dark status pigments diverge independently (storefront ships a full dark theme the shared spec says doesn't
+    exist — stale spec). Dark --stone-2 #99A0AB is under-flipped but it's DECORATIVE (dividers/ring-tracks), not
+    disabled text — don't dim it toward #5a5f68 blindly. All generated (build-dark-mode.mjs) — regen, don't hand-patch.
+  - **Genuine EDITORIAL open questions for founder (NOT token edits):** (a) Cost-Index money direction — storefront
+    shows elevated cost in --rust / calm in neutral, never a green "prices fell/good"; deliberate one-directional
+    honesty stance, or an unadopted-spine gap? (b) does the storefront want a dedicated --info hue (today info-blue
+    folds onto --teal) and should it match product #3b68f5 or stay deeper editorial teal?
+
+- **[DONE `d9dd78900`] Newsletter de-solo** — "We send…"; G.10 gate updated to require company framing (teeth kept).
+- **[1] Type unification** (site.css, LOW risk): do NOT split the global `h1,h2,h3,h4{font-family:var(--font-display)}`
+  (:743) — that would demote every article h3-h4. Instead add scoped `font-family:var(--font-body)` on the
+  product-UI selectors: `.score-card-title/.score-card-value` (:428-429), `.mtn-card__title/.mtn-modal__title/.mtn-empty__title`
+  (:7837/:7929/:7892). Reconcile `.logo` (:868, inline blocks hardcode Georgia) → var(--font-display). DEFER viz-* numerals.
+  Regenerate 3 shells. Hero/masthead/.serif-italic/.foot-cta-text/home stances KEEP Fraunces.
+- **[2] Radius→6px** (site.css tokens, HIGH risk/blast): FIRST give `.portrait` (:1218, reads --r-lg) an explicit radius
+  or images square. THEN retokenize `--r-sm`(8)/`--r-md`(14)/`--r-lg`(22)/`--r-input`(12) toward 6px (:1,:99) — sweeps
+  ~200 card call-sites in one edit. Bump `.ci-inst` 8→6 (:1114). Leave 999px pills / 50% circles. Regenerate shells.
+  Visually once-over FROZEN surfaces (/studio/, /course/, .plan) since the sweep hits them.
+- **[3-6] Hub polish** cost-index → ledger → tools → library (each inline-CSS, one EN+ES commit): scoped mono stack
+  (--ci-mono/--lg-mono/--tc-mono/--lib-mono) for the DATA voice (numbers/dates/tier-labels → tabular-mono), app
+  titles/heads → Inter, uppercase labels → mono, hardcoded radii → 6px, and REPLACE the static `border-top:3px ink`
+  slab with the home hover-reveal muntin top-accent. Use color-mix (css-drift 504). PRESERVE (documented warmth):
+  ledger `.lg-pricing` ink band + its intentional hexes, cost-index semantic left-rails (signal), `.ledger-asym`
+  ordinals, library autolink sentinels + its hairline article-row dividers (rows NOT cards).
+- **[7] Tool-card layout fix** (home `.tool-card-flagship` :2770+): blueprint's spec agent failed — spec it inline;
+  land AFTER tools so it inherits the unified grammar.
+- **FORKS proceeding with defaults (reversible, flag in commits):** (a) unify hub "3px ink slab" → home's
+  hover-reveal accent — overrides the recent "bolder passes" but IS what "unify treatment" means; (b) keep the ONE
+  ledger $19 pricing lockup as an editorial moment (mono only the date). Founder can veto either.
+
+**Macro direction LOCKED — flagship prototype v3** (`docs/handoff/redesign-flagship-prototype.html`,
+artifact "flagship-macro-v3"): one unified app-grade language (slate + electric-blue #3b68f5/#5b82ff,
+tabular-mono data voice, dark-first both themes, the **muntin grille AS structure** — flush hairline
+panes, not gapped cards), one-window-many-panes registers, the emotional arc, trust stated ONCE
+(ambient). Iterated through 2 adversarial/expert panels (design-craft + brand/operator) — fixed
+grille-as-decoration, type weight range, accent identity, AA contrast, one boot sequence, believable
+real-data read, honest pricing, no-JS degrade; headless-clean both themes at 360/390/1280.
+
+**⚠ POSITIONING PIVOT (founder, mid-build) — recorded in `founder-vision.md`:** "No face; be a big
+CAPABLE company; I worry 'just me' gets the product discounted." → removed the founder-face/kinship
+centerpiece; lead with **product capability + company voice**; operator-grounding reframed as
+capability, not smallness. **HARD HONESTY BOUNDARY:** project capability + use company "we" + don't
+advertise headcount — but NEVER fabricate a team/scale (that lie breaks the honesty brand + is
+discoverable). Capability is shown, never invented.
+
+**LIVE CASCADE — shipped:**
+- **`ffabeeadf` — home hero de-solo (EN+ES).** Positioning pivot on the flagship: dropped the first-person
+  "numbers I check on my own shifts" + removed the hero-meta-note (Don byline + "Reply within 4 hours").
+  Removal only, honesty boundary held. Gates green; headless clean.
+- **`37c70aac4` (+`00e596345` missed shell) — home hero window → live Cost Index instrument (EN+ES).**
+  Decorative empty muntin window → functional sample cost read: tabular-mono headline (+14.6% count-up),
+  flagged mover chip, hairline rows (grille AS structure), verdict. Real 07-06 DIRECTIONS, labelled
+  SAMPLE/ILLUSTRATIVE/"Not your prices" (fact gate 0 hits). Scoped `.ci-inst` CSS (tokens only, css-drift
+  unchanged 504), auto-themes, scan boot, degrade-safe. Screenshots sent. **Strong, app-grade both themes.**
+- **`fe1e76808` — de-solo the nav + footer + home CTAs, company voice, SITE-WIDE (EN+ES).** "Reach Don" →
+  "Contact" / "Contacta a Don" → "Contacto" across nav CTA + footer CTA + footer link + mobile sticky bar;
+  first-person "A direct line to Don. I read every one." → "A direct line to Muntin — every message is
+  read."; neutralized the "Don is around" presence-pulse titles. Canonical `_includes/{,es/}{nav,footer}.html`
+  → sync-includes (1235 nav + 727 footer, sync --check clean, no count drift). Home body final-CTA also
+  de-solo'd (first-person → company voice). Honesty boundary held (company voice only, nothing fabricated).
+  Verified: gates + headless both themes EN/ES. **Deferred:** body-content solo residuals on ~13 other pages
+  (/window/ itself, ledger, studio, for/restaurants, course) + the generator-owned cost-index/open pages
+  (regen picks up the synced chrome). NOTE: h1 still Fraunces serif — type unification is a considered
+  SITE-WIDE decision (don't do piecemeal). The /window/ page is inherently "the line to Don" — its
+  personal-access framing may be a deliberate FEATURE, not a bug: **founder-fork to surface** (keep the
+  human-access differentiator vs full company-voice?).
+- **`9b47e6763` — finish body-content de-solo (product/company pages, EN+ES).** Reframed first-person
+  narration + CTAs to company voice on ledger, for/restaurants, studio, trust, es/404 (+ ES): "I run
+  front-of-house… numbers I check on my own shifts" → universal, "straight to me / I read every one" →
+  "straight to us / every one gets read", body "Reach Don" → "Contact". **Deliberately KEPT** (appropriate):
+  /about/+es (Don's story = the human seat), the library articles (voice canon permits first-person
+  operator voice), the frozen course, /window/ (the fork). **→ Positioning-pivot de-solo is now
+  substantially COMPLETE** (chrome site-wide + home + product/company; only intentional keeps + the
+  generator-owned cost-index/open pages remain, which regen with the synced chrome on deploy).
+
+- **`efc151449` — app-grade re-skin of the flagship free-tools section (Workbench pane, EN+ES).** Scoped
+  CSS-only (cards are home-only): soft 14px cards + big lift → sharper 6px hairline cards, tighter
+  hairline-depth hover, muntin top-accent on hover; pill teal chips → mono uppercase hairline labels;
+  glyph-notes → tabular mono (the DATA VOICE). Kept the honest illustrative viz glyphs + live tool links;
+  titles stay Fraunces (type unification deferred). Tokens-only (css-drift unchanged 504), shells regen'd,
+  headless both themes clean. Screenshots sent.
+
+**✓ ADVERSARIAL HOME REVIEW complete** (agent a3cf6e82…) — **verdict: ADJUST** (direction right, the top
+third proves it works; finish the cascade + tighten, not a rethink). Its 3 highest-leverage moves — all now SHIPPED:
+- **Move #1 (solo tail) — `c902109c4` + `92238ce51`.** The review's #1 seam + brief-violation was the About
+  teaser (founder photo + "I'm Don"). `c902109c4`: retired the portrait → a literal **muntin window** (cool
+  glass, six panes, sash — the metaphor in the adjacent headline; scoped .about-window CSS, token-only, both
+  themes, css-drift 504), rewrote About to company "we", CTA "The story behind Muntin →" (still → /about/,
+  where Don's story lives), + swept FAQ eyebrow "Questions I get"→"we get" and founding error "I'll add
+  you"→"we'll". `92238ce51`: last chrome solo tell — footer newsletter "I send a short note"→"We send"
+  (EN+ES templates, surgical string-propagate across 728 pages, **zero count-sentinel touch** — no idem
+  drift chased). EN+ES.
+- **Move #2 (hero instrument believability) — `a64bf8662`.** The load-bearing fix: the big +14.6% was the
+  ONION move under a "sample basket" label (contradicted caption/verdict/math). Reconciled to "basket steady,
+  onions the mover": big → **+0.6% basket net**, chip "onions leading", protein rows tamed to a genuine ease
+  (ribeye 3.1→2.4, chicken 14.4→3.8), caption rewritten, the flagged Onion +14.6% row keeps the drama;
+  count-up boot retargeted. Still illustrative; EN+ES; both themes + count-up verified.
+- **Move #3 (data voice past the fold), surface 1 — `5a4514738` (+`e88a8f8bf` shell sync).** Trust-strip
+  recast as a **mono system-readout** (scoped --ts-mono, teal status-LED per fact, tabular "43", middots
+  dropped) → reads as capable infrastructure; + reframed the residual solo fact "Built by a working
+  front-of-house manager"→"Grounded in a working restaurant floor — Tacombi" (honest, no fabricated scale).
+  Token-only, css-drift 504, both themes.
+- Review also flagged for later: type unification is **#2, a site-wide call, NOT the #1 fix** (deferring is
+  defensible; if touched, neutralize the serif titling on product-UI surfaces locally). Flagship tool-cards'
+  wide single column + small left glyph is the least-resolved layout (composition, not chrome). Desktop pins
+  ~104px of chrome above the fold (banner+nav) — revisit whether the dispatch marquee must stay pinned on desktop.
+
+**CASCADE CONTINUED (momentum surfaces + a fork):**
+- **`b33fe119d` — recently-added rail → dense mono app-index.** Mono tabular dates + mono uppercase section
+  tags + mono column headers (scoped --li-mono), hairline rows, subtle teal row-hover. Also fixed a latent
+  overflow bug: `table-layout:auto` + long titles blew the table to 1661px inside a 994px scroll container,
+  hiding the Last-updated + Contributor columns → `table-layout:fixed` (820px, all 4 columns, titles wrap).
+- **`0b3fb7b96` — recents contributor by byline canon.** The rail hardcoded every contributor to "Don
+  Goldstein" — a byline-canon violation (library = "The Muntin Desk") AND, once the table tightened, a
+  column of 8× "Don Goldstein" that read as a one-person shop. Now derived from the URL namespace
+  (library/tools → "The Muntin Desk", blog → "Don Goldstein"); regenerated EN+ES home + /learn/ rails; matches
+  the live article bylines. Fixes correctness + de-solos in one move.
+- **`21d677c84` — founding band → product enrollment.** CSS-only (form machinery untouched): mono field
+  labels (scoped --fd-mono), hairline inputs (--line-dark) + 6px radii, and the GA countdown wrapped in a
+  mono teal readout ("19 weeks out" — sentinel intact inside the span). Enrolling in a product, not a newsletter.
+- **`dd841e383` — library-island cards → flagship hairline pattern.** learn-tool cards get 6px hairline,
+  muntin top-accent on hover, −2px lift, mono uppercase kickers (rust body-font → mono stone). `.service`
+  product 3-card DEFERRED (shared with /studio/ pricing tiers → cross-page risk).
+- **⚠ FORK — footer newsletter reverted to Don's gated voice (`01d13d038`, reverts `92238ce51`).** The
+  full-gate audit (`check-all` 232/258; the 25 other misses are all `(idem)` deploy-healed drift) caught the
+  ONE real regression: `check-newsletter-copy.mjs` (Phase G.10) REQUIRES "when I publish something" / "cuando
+  publique algo" — Don's humble first-person newsletter framing, an explicit anti-corporate-SaaS guard. The
+  de-solo pass overreached into that gated, intentional keep. Resolved toward the gate ("never loosen gates";
+  a warm first-person footer note doesn't dent the capability positioning). **Open founder decision:** de-solo
+  the newsletter too (→ update the G.10 gate) or keep it personal (current). The rest of the solo-tail de-solo stands.
+
+**AUDIT CHECKPOINT (`check-all`, post-cascade):** 232/258. Every miss is `(idem)` deploy-regeneration drift
+(sitemap, OG cards, CSS cache-bust, site-counts 359-file drift, glossary schema, RSS, etc. — the standing
+deploy-healed set, NOT chased per board rule) EXCEPT the newsletter-copy gate, now fixed (`01d13d038`).
+Per-increment gates were green throughout (fabrications 0, css-drift 504, locale-parity, footer-payload, sync).
+
+**✅ HOME v3 CASCADE COMPLETE.** All review moves + momentum surfaces shipped (`c902109c4`→`528368966`).
+The `.service` 3-card is DONE (`528368966`). The stances section is intentionally LEFT (review: lowest
+priority; its `cal:band.*` sentinels are SENSITIVE/heartbeat-tied — not worth touching unattended for low reward).
+
+**OFF-HOME ASSESSMENT (2026-07-11, autonomous):** the funnel pages were **already given prior v3 passes** and
+are substantially aligned — NOT soft-card pages needing transformation:
+- **/tools/** — inline "Bolder pass 2026-07" (3px ink top-frame cards, teal "You leave with:" walkaways, tier
+  badges, muntin dark-closer lines) "matching the homepage closer." Already capability-forward.
+- **/cost-index/**, **/library/** — heavy mono/hairline/tabular signal (25 / 46 hits); library has 0 soft cards.
+- **/ledger/** — its "soft" signals are deliberate instrument panes (`.lg-pane`/`.studio-card` = 1px line +
+  3px ink top-frame), an illustrative rotated sheet graphic, and callout boxes — not generic soft cards.
+- **/about/** — least mono, no bolder pass, BY DESIGN: it's the founder's human seat (personal voice KEPT per
+  the pivot). Re-skinning it cold would fight its role.
+→ **Conclusion: the visible v3 redesign is SUBSTANTIALLY COMPLETE across the funnel.** The home was the one
+untransformed flagship; it's now done + audited. No clear high-value off-home transformation remains.
+
+**REMAINING = FOUNDER-LEVEL, SITE-WIDE DECISIONS (surface, don't do unattended):**
+- (a) **Footer newsletter** — keep Don's gated first-person voice (current) or de-solo it too (→ update the
+  G.10 `check-newsletter-copy` gate).
+- (b) **Type unification** (Fraunces→Inter on product-UI surfaces — review's #2, a site-wide call).
+- (c) **Radius/treatment unification** — home uses 6px hairline; off-home funnel uses 10–12px softer radii from
+  earlier passes. Unifying to 6px site-wide would make it read as ONE app-grade system (site-wide call, may
+  conflict with prior deliberate passes — founder's call).
+- (d) The **/window/** personal-access founder-fork; the **flagship tool-card composition** (2-up / full-width glyph).
+
+**OPTIONAL internal cleanup (non-visible, low-priority):** 6 duplicated scoped mono stacks (`--ci-mono`,
+`--ts-mono`, `--li-mono`, `--fd-mono`, `--lt-mono`, `--sv-mono`, all identical) → one global `--font-mono`
+token. Deferred: needs the token-sync gate + data/muntin.tokens.json editorial-register updated; gate risk not
+worth taking unattended for a non-visible DRY win.
+
+**NEXT (autonomous, ordered) — SUPERSEDED** by the review-driven NEXT above (item 1 instrument shipped as
+`37c70aac4`+`a64bf8662`; item 2 stances now deferred behind the momentum surfaces). Retained context: the
+pane archetypes + token re-pigment (accent already blue #2A50C8/#7AA7FF — nudge to electric #3b68f5/#5b82ff
+only if AA holds; the v3 feel is mostly composition + mono voice); Phase 0 remainder (cost-index cadence,
+/security/, generator-owned footer handler) in parallel where independent.
+
+**Thread (prior):** executing the fully-mapped storefront reinvention (`docs/handoff/reinvention-master-plan.md`)
+in the founder's build → audit → iterate cadence, expert-verified per increment. Strategy docs on
+this branch: `founder-vision.md`, `retention-strategy.md`, `tools-strategy.md`, `site-coverage-ledger.md`,
+`every-surface-map.md`, `library-audit-full.md`, `site-reinvention-blueprint.md`. Strategy = PRUNE →
+REFOCUS → ELEVATE; 7 phases (0 correctness → 1 prune → 2 re-pigment → 3 retention engine → 4 trust/human
+→ 5 content refocus → 6 signature craft). Demo work + #501 already merged to main; this branch had been
+docs-only until Phase 0 build started.
+
+**Phase 0 (correctness/staleness) — SHIPPED so far (each committed + pushed + gate-verified):**
+- **Increment 1 (`3be5e1d82`) — retired-tool dead-navs + OCR privacy violation.** Removed, EN+ES:
+  (a) Menu Engineering's "Open N in Menu Converter" card — the P0 menu-wipe (menu-converter 301-loops
+  back to menu-engineering → reloaded the page with an empty grid, destroying the typed menu); plus the
+  menu-copy/photo-brief quadrant handoffs + dead briefLinkFor/priorityForQ + stale edu link. (b) Plate
+  Cost's Tesseract-CDN OCR (CSS+HTML+JS) — it lazy-loaded ~3MB from cdn.jsdelivr.net, breaking the page's
+  own "no upload… Zero requests fire" promise (P0 honesty); + the retired photo-brief "Brief your
+  photographer" button. (c) Margin Math's menu-copy cross-suggest. (d) Pruned `next-tool-map.json`
+  24→3 live→live rules (killed the recommender's retired-tool cards). Verified: all inline scripts parse,
+  zero orphans, check-all 236/258 with a **byte-identical failing set to the pre-edit baseline** (all 22
+  are deploy-regen idempotency drift), tool-no-fetch/retired-links(chrome)/locale-parity(239)/banned-words green.
+- **Adversarial review** (general-purpose agent, 32 tool-uses): verdict FIX-FIRST — findings 1/2/5/6 CLEAN,
+  honesty materially fixed; caught ONE completeness gap (4 sibling escalate CTAs still → retired audit).
+- **Increment 1b (`29343de52`) — closed that gap.** Repointed margin-math's 4 result-flow escalate CTAs
+  off retired `/tools/audits/restaurant/` to topic-matched live reads (channel→delivery-economics,
+  prime-cost→pricing guide, break-even→menu-engineering read, raise→Menu Engineering tool); link+copy only,
+  JS toggles untouched; correct ES library slugs. Reworded menu-eng's "same architecture as Brand Suite"
+  data-posture line off the retired brand-suite tool. Gates green.
+
+**Phase 0 — STILL OPEN (next increments, ordered):**
+1. **Fire-and-forget forms that fabricate success** (founding-list + newsletter) — honesty defect, HIGH.
+2. **Cost-index stale-anchor + cadence contradiction → monthly everywhere** — trust-debt ("teaches people
+   not to return"); site says monthly/quarterly/weekly simultaneously. HIGH.
+3. Audit-found fact defects; `/security/` claim-count + schema bugs.
+
+**Deferred by design (logged so not lost):**
+- **Increment 2 — chrome-freshness sweep:** the bottom "Where to go next" (mm-next) blocks + the stale
+  "Free tools" footer nav on margin-math (7 retired links) + menu-engineering (1) still list retired tools;
+  the clean `_includes/footer.html` dropped the Free-tools column entirely (plate-cost/cost-pulse/vendor-
+  benchmark already synced). Bring the two stale footers in line; verify `check-footer-payload`. Homepage
+  `index.html:654` prose also still names retired tools.
+- **plate-cost "Zero requests fire" honesty reconciliation:** plausible IS loaded (`/api/event`) and fires
+  on Compute, so that exact line is a (pre-existing) overstatement; it's synchronized across prose +
+  JSON-LD FAQ + audio script + the "5 verifiable claims" artifact (both locales) + likely security-claims —
+  fix all instances together, or it desyncs / trips the audio-fabrication + security-claims gates.
+- **plate-cost Invoice-Decoder integration** (`pcPullInvoice`/`pcStaleBanner`/stale error string) — a whole
+  retired-tool FEATURE, not a stray link; Phase-3 tools-loop rebuild decision.
+
 ## ⮕ CURRENT STATE — Cost Index data-company expansion (updated 2026-07-11)
 
 **Session on branch `claude/vendor-benchmark-redesign-yn273q`** (storefront `potentially-profitable`). Thread: turn the Cost Index into a genuine **data company + open library** — surface the deep price history, add the "events that moved the market" layer, and wire the HONEST use of new public data (NASS/Census/EIA). Cadence: plan → build → audit → iterate, with **expert panels at the forks**. `check-all` baseline unchanged (232–233/252; the ~19 failures are the deploy-regenerated site-wide idempotency drift, NOT ours — see Gotchas). Every cost-index/events/context gate GREEN.

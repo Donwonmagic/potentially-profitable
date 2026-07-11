@@ -725,12 +725,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
       </svg>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Muntin &mdash; every message is read.">
       <!-- Phase 5+ — site-wide pulse propagation. Hidden by default;
            window-state.js reveals when lastSeen <4h. Decorative; the
-           label "Reach Don" remains the accessible affordance. -->
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don is around"></span>
-      Reach Don
+           label "Contact" remains the accessible affordance. -->
+      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true"></span>
+      Contact
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
@@ -738,7 +738,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </button>
   </div>
   <!-- Mobile menu mirrors the 5-item desktop nav, plus search, lang
-       switcher, and the Reach Don CTA. The auth-state JS below
+       switcher, and the Contact CTA. The auth-state JS below
        toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
@@ -772,7 +772,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </svg>
       <span class="theme-toggle__label js-theme-label">Light mode</span>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don</a>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Muntin &mdash; every message is read.">Contact</a>
     <a href="/es/tools/margin-math/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
 
@@ -1003,8 +1003,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <a href="#calc-primecost">Prime Cost below &rarr;</a>
         </div>
         <div class="mm-escalate" id="dbe-escalate">
-          <p>When the channel math looks this hostile, the lever is usually structural — fixed overhead, menu mix, or online-ordering setup. A 15-minute Restaurant Audit maps the top three in your case.</p>
-          <a href="/tools/audits/restaurant/">Run the Restaurant Audit &rarr;</a>
+          <p>When the channel math looks this hostile, the biggest lever is usually the delivery channels themselves — what each order actually nets after commission. The library breaks the math down.</p>
+          <a href="/library/third-party-delivery-economics/">Read: the real delivery-channel math &rarr;</a>
         </div>
       </div>
 
@@ -1108,8 +1108,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <a href="/tools/menu-engineering/">Open Menu Engineering &rarr;</a>
         </div>
         <div class="mm-escalate" id="pc-escalate">
-          <p>Above 70% prime cost rarely fixes itself. The Restaurant Audit walks the labor schedule, menu mix, and channel economics together — which is where the real moves hide.</p>
-          <a href="/tools/audits/restaurant/">Run the Restaurant Audit &rarr;</a>
+          <p>Above 70% prime cost usually means the menu is underpriced for its cost base. This walks a defensible raise without losing covers.</p>
+          <a href="/library/how-to-raise-restaurant-menu-prices-without-losing-reservations/">Read: raise prices without losing covers &rarr;</a>
         </div>
       </div>
 
@@ -1179,8 +1179,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <a href="#calc-priceraise">Price-Raise Simulator below &rarr;</a>
         </div>
         <div class="mm-escalate" id="bec-escalate">
-          <p>Break-even on typical volume means every structural question matters — rent, menu, daypart mix, channel margins. The Restaurant Audit maps them in one pass.</p>
-          <a href="/tools/audits/restaurant/">Run the Restaurant Audit &rarr;</a>
+          <p>Break-even on typical volume means menu mix is the lever you can move fastest — which items to push, reprice, or cut. This is how to read it.</p>
+          <a href="/library/restaurant-menu-engineering/">Read: menu engineering &rarr;</a>
         </div>
       </div>
       <aside class="edu-result edu-result--mini" aria-label="What this means">
@@ -1254,13 +1254,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <span>When raise math is tight, prime cost is usually running hot. Check food + labor against the band.</span>
           <a href="#calc-primecost">Prime Cost above &rarr;</a>
         </div>
-        <div class="mm-cross-suggest" id="pr-suggest-copy" data-visible="true" style="display:flex;">
-          <span>Before you reprint at the new price — audit how that price <em>reads</em> on the menu. Dollar sign, decimals, and adjacent copy all move spend almost as much as the digits do.</span>
-          <a href="/tools/menu-copy/">Open Menu Copy Inspector &rarr;</a>
-        </div>
         <div class="mm-escalate" id="pr-escalate">
-          <p>Losing ground on a blanket raise usually means the wrong items carried the increase. The Restaurant Audit re-engineers the menu so the raise lands on low-elasticity signatures instead.</p>
-          <a href="/tools/audits/restaurant/">Run the Restaurant Audit &rarr;</a>
+          <p>Losing ground on a blanket raise usually means the wrong items carried it. Menu Engineering ranks each item so the next raise lands on the ones that can hold it.</p>
+          <a href="/tools/menu-engineering/">Open Menu Engineering &rarr;</a>
         </div>
       </div>
 

@@ -1,0 +1,428 @@
+<title>Muntin — one window, many panes</title>
+<!-- Prototype note: the Artifact CSP blocks font CDNs and no Inter binary is
+     available to inline, so this uses a system stack; the LIVE site ships the
+     brand's Inter + Geist Mono. Personality here rides on the grille-as-structure,
+     tabular-mono data voice, weight range, and color — not a novelty face. -->
+<style>
+  :root{
+    /* chosen neutrals — slate pushed enough to read as a decision, not charcoal */
+    --bg:#0e1013; --surface:#15181c; --surface-2:#1b1f24; --surface-3:#232830;
+    --line:#2a2f37; --line-soft:#22262d; --grille:#333a44;
+    --ink:#eef1f5; --ink-2:#a7afbc; --ink-3:#828b99;      /* dark ink-3 ~4.9:1 */
+    --accent:#5b82ff; --accent-strong:#5b82ff; --accent-ink:#0a1020;
+    --good:#5cc794; --warn:#e2ab52; --crit:#ec7a67;
+    --glow:color-mix(in srgb,var(--accent) 24%,transparent);
+    --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono","Roboto Mono",Menlo,monospace;
+    /* type scale */
+    --f-lbl:12px; --f-cap:13px; --f-sm:14px; --f-base:17px; --f-lg:19px;
+    --maxw:1140px; --ease:cubic-bezier(.16,1,.3,1);
+  }
+  @media (prefers-color-scheme: light){
+    :root{
+      --bg:#fafbfd; --surface:#ffffff; --surface-2:#f2f4f8; --surface-3:#e9edf3;
+      --line:#dde1e9; --line-soft:#e7ebf1; --grille:#d3d9e3;
+      --ink:#161a20; --ink-2:#494f5b; --ink-3:#697084;      /* light ink-3 ~4.9:1 */
+      --accent:#3b68f5; --accent-strong:#2a50c8; --accent-ink:#ffffff;
+      --good:#1c9860; --warn:#a9701c; --crit:#c44a39;
+      --glow:color-mix(in srgb,var(--accent) 13%,transparent);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0e1013; --surface:#15181c; --surface-2:#1b1f24; --surface-3:#232830;
+    --line:#2a2f37; --line-soft:#22262d; --grille:#333a44;
+    --ink:#eef1f5; --ink-2:#a7afbc; --ink-3:#828b99;
+    --accent:#5b82ff; --accent-strong:#5b82ff; --accent-ink:#0a1020;
+    --good:#5cc794; --warn:#e2ab52; --crit:#ec7a67;
+    --glow:color-mix(in srgb,var(--accent) 24%,transparent);
+  }
+  :root[data-theme="light"]{
+    --bg:#fafbfd; --surface:#ffffff; --surface-2:#f2f4f8; --surface-3:#e9edf3;
+    --line:#dde1e9; --line-soft:#e7ebf1; --grille:#d3d9e3;
+    --ink:#161a20; --ink-2:#494f5b; --ink-3:#697084;
+    --accent:#3b68f5; --accent-strong:#2a50c8; --accent-ink:#ffffff;
+    --good:#1c9860; --warn:#a9701c; --crit:#c44a39;
+    --glow:color-mix(in srgb,var(--accent) 13%,transparent);
+  }
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    font-size:var(--f-base);line-height:1.6;font-weight:400;-webkit-font-smoothing:antialiased;
+    letter-spacing:-0.005em}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .num{font-family:var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-0.02em}
+  .lbl{font-family:var(--mono);text-transform:uppercase;letter-spacing:0.15em;font-size:var(--f-lbl);
+    font-weight:500;color:var(--ink-3)}
+  a{color:inherit}
+  h1,h2,h3{margin:0;letter-spacing:-0.022em;font-weight:680;text-wrap:balance}
+  ::selection{background:var(--glow);color:var(--ink)}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+  .body-x{overflow-x:clip}
+
+  /* logo mark = the correct muntin: a pane bisected into four by hairlines */
+  .mark{width:26px;height:26px;border:1.5px solid var(--ink);border-radius:5px;position:relative;flex:0 0 auto}
+  .mark::before,.mark::after{content:"";position:absolute;background:var(--ink)}
+  .mark::before{left:50%;top:2px;bottom:2px;width:1.5px;transform:translateX(-50%)}
+  .mark::after{top:50%;left:2px;right:2px;height:1.5px;transform:translateY(-50%)}
+
+  /* ---------- top bar ---------- */
+  header{position:sticky;top:0;z-index:40;backdrop-filter:blur(14px);
+    background:color-mix(in srgb,var(--bg) 80%,transparent);border-bottom:1px solid var(--line-soft)}
+  .bar{display:flex;align-items:center;gap:16px;height:62px}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:640;letter-spacing:-0.02em}
+  .brand small{color:var(--ink-3);font-family:var(--mono);font-size:11px;letter-spacing:.04em;font-weight:500;text-transform:uppercase}
+  .bar nav{margin-left:auto;display:flex;gap:24px;align-items:center}
+  .bar nav a{color:var(--ink-2);text-decoration:none;font-size:var(--f-sm)}
+  .bar nav a:hover{color:var(--ink)}
+  .toggle{background:var(--surface-2);border:1px solid var(--line);color:var(--ink-2);
+    width:34px;height:34px;border-radius:8px;cursor:pointer;display:grid;place-items:center;font-size:14px}
+  .toggle:hover{color:var(--ink);border-color:var(--accent)}
+  .cta-sm{background:var(--accent);color:var(--accent-ink);border:0;border-radius:8px;
+    padding:9px 15px;font:inherit;font-size:var(--f-sm);font-weight:600;cursor:pointer;text-decoration:none}
+  .cta-sm:hover{filter:brightness(1.06)}
+  @media(max-width:760px){.bar nav a:not(.cta-sm){display:none}.brand small{display:none}}
+
+  /* ---------- hero: grille snapped to the real composition ---------- */
+  .hero{position:relative;padding:72px 0 8px;overflow:hidden}
+  .hero .grille{position:absolute;inset:0;pointer-events:none;z-index:0}
+  .hero .grille b{position:absolute;background:var(--grille);display:block}
+  .gv{top:0;bottom:0;width:1px;transform:scaleY(0);transform-origin:top}
+  .gh{left:0;right:0;height:1px;transform:scaleX(0);transform-origin:left}
+  .lit .gv{transform:scaleY(1);transition:transform .85s var(--ease)}
+  .lit .gh{transform:scaleX(1);transition:transform .85s var(--ease)}
+  .hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1.02fr 1.05fr;gap:0;align-items:stretch}
+  @media(max-width:900px){.hero .wrap{grid-template-columns:1fr}}
+  .hcol{padding:26px 40px 40px 0}
+  @media(max-width:900px){.hcol{padding:8px 0 30px}}
+  .eyebrow{display:inline-flex;align-items:center;gap:9px;margin-bottom:20px;flex-wrap:wrap;max-width:100%}
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--good)}
+  .hero h1{font-size:clamp(2.35rem,5.6vw,3.6rem);line-height:1.03;letter-spacing:-0.032em;font-weight:700}
+  .hero h1 em{font-style:normal;color:var(--accent);font-weight:700}
+  .hero .sub{color:var(--ink-2);font-size:var(--f-lg);margin-top:22px;max-width:36ch}
+  .hero .row{display:flex;gap:13px;margin-top:30px;flex-wrap:wrap;align-items:center}
+  .btn{border-radius:10px;padding:13px 20px;font:inherit;font-weight:600;cursor:pointer;text-decoration:none;
+    display:inline-flex;align-items:center;gap:9px;font-size:15px;transition:transform .12s var(--ease),filter .12s,border-color .12s,color .12s}
+  .btn.pri{background:var(--accent);color:var(--accent-ink);border:1px solid transparent}
+  .btn.pri:hover{transform:translateY(-1px);filter:brightness(1.06)}
+  .btn.sec{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  .btn.sec:hover{border-color:var(--accent);color:var(--accent)}
+  .price{margin-top:20px;color:var(--ink-3);font-size:var(--f-cap)}
+  .price b{color:var(--ink-2);font-weight:600}
+
+  /* the instrument — the thesis object, flush against the grille */
+  .inst{background:var(--surface);border-left:1px solid var(--line);position:relative;
+    padding:26px 0 26px 40px;display:flex;flex-direction:column;justify-content:center}
+  @media(max-width:900px){.inst{border-left:0;border-top:1px solid var(--line);padding:26px 0 6px}}
+  .inst .scan{position:absolute;left:0;right:0;top:0;height:2px;
+    background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0}
+  .inst-top{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+  .inst-top .t{font-family:var(--mono);font-size:12px;color:var(--ink-3);letter-spacing:.03em;text-transform:uppercase}
+  .inst-top .state{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-3);
+    display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:3px 9px}
+  .inst-top .state i{width:6px;height:6px;border-radius:50%;background:var(--warn);display:block}
+  .basket-val{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .basket-val .big{font-family:var(--mono);font-variant-numeric:tabular-nums;
+    font-size:clamp(2.4rem,6.5vw,3.2rem);font-weight:600;letter-spacing:-0.03em;line-height:1}
+  .chip{font-family:var(--mono);font-size:13px;font-weight:600;padding:3px 9px;border-radius:6px;
+    display:inline-flex;align-items:center;gap:5px}
+  .chip.up{color:var(--crit);background:color-mix(in srgb,var(--crit) 14%,transparent)}
+  .caption{color:var(--ink-3);font-size:var(--f-cap);margin-top:8px}
+  .rows{margin-top:20px;border:1px solid var(--line);border-radius:2px;overflow:hidden}
+  .r{display:grid;grid-template-columns:1fr auto auto;gap:14px;align-items:center;padding:11px 14px;
+    background:var(--surface);font-size:var(--f-sm);border-bottom:1px solid var(--line)}
+  .r:last-child{border-bottom:0}
+  .r .name{display:flex;align-items:center;gap:9px;min-width:0}
+  .r .name .tag{width:8px;height:8px;border-radius:2px;flex:0 0 auto}
+  .r .p{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--ink-3);font-size:13px}
+  .r .d{font-family:var(--mono);font-variant-numeric:tabular-nums;font-weight:600;text-align:right;min-width:66px}
+  .r.flag{background:color-mix(in srgb,var(--crit) 7%,var(--surface))}
+  .r.flag .d{color:var(--crit)} .r .d.calm{color:var(--ink-3)} .r .d.good{color:var(--good)}
+  .verdict{margin-top:14px;font-size:var(--f-cap);color:var(--ink-2)}
+  .verdict b{color:var(--ink);font-weight:600}
+  .cu{opacity:1}
+
+  /* ---------- ambient trust — the ONLY place trust is stated ---------- */
+  .ambient{border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);background:var(--surface-2);margin-top:44px}
+  .ambient .wrap{display:flex;gap:14px 30px;flex-wrap:wrap;padding:20px 24px;align-items:center;justify-content:center}
+  .ambient span{display:inline-flex;align-items:center;gap:9px;color:var(--ink-2);font-size:var(--f-sm)}
+  .ambient span::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent)}
+
+  /* ---------- section frame ---------- */
+  section.band{position:relative;padding:76px 0}
+  section.band+section.band{border-top:1px solid var(--line-soft)}
+  .klabel{display:flex;align-items:center;gap:14px;margin-bottom:26px}
+  .klabel::after{content:"";height:1px;flex:1;background:var(--line)}
+  h2.big{font-size:clamp(1.75rem,3.7vw,2.55rem);line-height:1.07;letter-spacing:-0.026em;max-width:20ch;font-weight:700}
+  .lede{color:var(--ink-2);font-size:var(--f-lg);max-width:58ch;margin-top:18px}
+
+  /* the turn */
+  .turn{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:2px;overflow:hidden;margin-top:30px}
+  @media(max-width:760px){.turn{grid-template-columns:1fr}}
+  .turn>div{padding:30px 30px}
+  .turn .after{background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 8%,var(--surface)),var(--surface));border-left:1px solid var(--line)}
+  @media(max-width:760px){.turn .after{border-left:0;border-top:1px solid var(--line)}}
+  .turn h3{font-size:var(--f-lg);margin-bottom:12px;font-weight:600}
+  .turn .before h3{color:var(--ink-2)} .turn .after h3{color:var(--accent)}
+  .turn p{color:var(--ink-2);font-size:var(--f-sm);margin:0}
+  .turn .quote{margin-top:16px;font-size:var(--f-sm);color:var(--ink);font-family:var(--mono);
+    border-left:2px solid var(--line);padding-left:14px;line-height:1.5}
+  .turn .after .quote{border-color:var(--accent)}
+
+  /* who you become — concrete moments, no ornamental numerals */
+  .become{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:2px;overflow:hidden;margin-top:30px}
+  @media(max-width:760px){.become{grid-template-columns:1fr}}
+  .become .card{padding:26px 24px;border-right:1px solid var(--line)}
+  .become .card:last-child{border-right:0}
+  @media(max-width:760px){.become .card{border-right:0;border-bottom:1px solid var(--line)}.become .card:last-child{border-bottom:0}}
+  .become .when{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+  .become h3{font-size:var(--f-lg);margin:12px 0 8px;font-weight:600}
+  .become p{color:var(--ink-2);font-size:var(--f-sm);margin:0}
+
+  /* ---------- THE PANES: a real muntin grille (flush, hairline-divided) ---------- */
+  .window{margin-top:30px;border:1px solid var(--grille);border-radius:2px;background:var(--grille);
+    display:grid;grid-template-columns:repeat(6,1fr);gap:1px;overflow:hidden}
+  @media(max-width:900px){.window{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.window{grid-template-columns:1fr}}
+  .pane{background:var(--surface);padding:24px 22px;position:relative;min-height:150px;
+    transition:background .2s var(--ease)}
+  .pane:hover{background:var(--surface-2)}
+  .pane h3{font-size:var(--f-lg);margin:10px 0 6px;font-weight:600}
+  .pane p{color:var(--ink-2);font-size:var(--f-sm);margin:0}
+  .pane.market{grid-column:span 3} .pane.work{grid-column:span 3}
+  .pane.ref{grid-column:span 2} .pane.cockpit{grid-column:span 2} .pane.human{grid-column:span 2}
+  @media(max-width:900px){.pane{grid-column:span 1 !important}}
+  .spark{display:flex;align-items:flex-end;gap:3px;height:36px;margin-top:16px}
+  .spark i{flex:1;background:var(--surface-3);border-radius:1px}
+  .spark i.hot{background:var(--accent)}
+  .pane .grow{margin-top:14px;font-family:var(--mono);font-size:13px;color:var(--ink-3)}
+
+  /* Don — kinship */
+  .don{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;
+    border:1px solid var(--line);border-radius:2px;padding:30px 32px;margin-top:30px;background:var(--surface)}
+  @media(max-width:640px){.don{grid-template-columns:1fr}}
+  .don .face{width:84px;height:84px;border-radius:3px;border:1px solid var(--line);position:relative;
+    background:var(--surface-2);display:grid;place-items:center;overflow:hidden}
+  .don .face::before,.don .face::after{content:"";position:absolute;background:var(--grille)}
+  .don .face::before{left:50%;top:0;bottom:0;width:1px} .don .face::after{top:50%;left:0;right:0;height:1px}
+  .don .face span{font-family:var(--mono);font-weight:600;color:var(--ink-2);font-size:13px;position:relative;z-index:1;background:var(--surface-2);padding:2px 5px}
+  .don p{margin:0;color:var(--ink-2);font-size:var(--f-lg)}
+  .don p b{color:var(--ink);font-weight:600}
+  .don .who{margin-top:12px;font-family:var(--mono);font-size:12px;color:var(--ink-3)}
+
+  /* close */
+  .close{text-align:center;padding:86px 0 92px}
+  .close h2{font-size:clamp(2rem,4.6vw,3rem);line-height:1.05;letter-spacing:-0.03em;margin:0 auto;max-width:18ch;font-weight:700}
+  .close h2 em{font-style:normal;color:var(--accent)}
+  .close .row{justify-content:center;margin-top:28px;display:flex;gap:13px;flex-wrap:wrap}
+  .close .price{max-width:44ch;margin:22px auto 0}
+  footer{border-top:1px solid var(--line-soft);padding:26px 0;color:var(--ink-3);font-size:13px}
+  footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+
+  .rv{opacity:0;transform:translateY(16px)}
+  .rv.in{opacity:1;transform:none;transition:opacity .65s var(--ease),transform .65s var(--ease)}
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important}
+    .rv{opacity:1;transform:none}.gv{transform:scaleY(1)}.gh{transform:scaleX(1)}
+  }
+</style>
+
+<body class="body-x">
+<header>
+  <div class="wrap bar">
+    <div class="brand"><span class="mark" aria-hidden="true"></span>Muntin&nbsp;<small>cost intelligence</small></div>
+    <nav>
+      <a href="#index">The Index</a>
+      <a href="#tools">The tools</a>
+      <a href="#close">Pricing</a>
+      <button class="toggle" id="tg" aria-label="Switch light or dark theme">◑</button>
+      <a href="#index" class="cta-sm">See this month's Index</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="grille" id="grille" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="hcol">
+      <div class="eyebrow"><span class="dot"></span><span class="lbl">In front of your costs, not behind them</span></div>
+      <h1>The price crept up.<br>Nobody caught it.<br><em>This time you will.</em></h1>
+      <p class="sub">Muntin watches the ingredients you actually buy and flags the one that moved enough to matter — and stays quiet when nothing did.</p>
+      <div class="row">
+        <a href="#index" class="btn pri">See this month's Index →</a>
+        <a href="#tools" class="btn sec">Try a free tool</a>
+      </div>
+      <p class="price"><b>The Index and every tool are free.</b> Muntin Ledger is $19 a month per location.</p>
+    </div>
+
+    <div class="inst" id="inst">
+      <div class="scan"></div>
+      <div class="inst-top">
+        <span class="t">Cost Index · basket read</span>
+        <span class="state"><i></i>held · wk of Jul 6</span>
+      </div>
+      <div class="basket-val">
+        <span class="big cu num" id="basket">+14.6%</span>
+        <span class="chip up">onions ▲ this week</span>
+      </div>
+      <p class="caption">Illustrative read from this month's basket. One line is carrying the move; the rest is quiet.</p>
+      <div class="rows" aria-label="basket lines">
+        <div class="r flag">
+          <span class="name"><span class="tag" style="background:var(--crit)"></span>Onion, 50 lb</span>
+          <span class="p">$19.20 → $22.00</span><span class="d">▲ +14.6%</span>
+        </div>
+        <div class="r">
+          <span class="name"><span class="tag" style="background:var(--ink-3)"></span>Ribeye, 12 lb</span>
+          <span class="p">$248 → $240</span><span class="d calm">−3.1%</span>
+        </div>
+        <div class="r">
+          <span class="name"><span class="tag" style="background:var(--good)"></span>Chicken breast, 40 lb</span>
+          <span class="p">$146 → $125</span><span class="d good">−14.4%</span>
+        </div>
+      </div>
+      <p class="verdict"><b>One thing to look at</b> — proteins eased, so it's the produce line to reprice, not the plate.</p>
+    </div>
+  </div>
+</section>
+
+<div class="ambient">
+  <div class="wrap">
+    <span>Your invoices stay yours</span>
+    <span>Pricing in writing</span>
+    <span>A public, sourced Index</span>
+    <span>Export everything, anytime</span>
+  </div>
+</div>
+
+<!-- ============ THE TURN ============ -->
+<section class="band" id="turn">
+  <div class="wrap">
+    <div class="klabel rv"><span class="lbl">The read</span></div>
+    <h2 class="big rv">Month-end is where most operators find out. That's the wrong window.</h2>
+    <p class="lede rv">Costs don't jump — they drift, a line at a time, under a week already too busy to notice. The P&amp;L just confirms what already happened. Muntin moves that moment earlier, to where you can still do something about it.</p>
+    <div class="turn rv">
+      <div class="before">
+        <h3>How it goes now</h3>
+        <p>You close the month, the food-cost line is up two points, and you spend an afternoon reverse-engineering why. The onions that jumped in week two are invisible by the time you go looking.</p>
+        <div class="quote">"Where did the margin go?" — asked too late to answer.</div>
+      </div>
+      <div class="after">
+        <h3>How it goes with the window</h3>
+        <p>The week a line moves enough to matter, you get one line — a real number, not a dashboard to go check. Most weeks it says nothing, because most weeks nothing moved. That's the read working, not failing.</p>
+        <div class="quote">"Onions are up 15% — reprice the app." — decided on Tuesday.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHO YOU BECOME — concrete moments ============ -->
+<section class="band">
+  <div class="wrap">
+    <div class="klabel rv"><span class="lbl">Who you become</span></div>
+    <h2 class="big rv">Not a bigger dashboard. A calmer Tuesday.</h2>
+    <div class="become rv">
+      <div class="card"><div class="when">Before service</div><h3>The number finds you first</h3><p>You already know the line that changed before you write the order — not after you close the month.</p></div>
+      <div class="card"><div class="when">At the pass</div><h3>You move on the one that matters</h3><p>Cents-per-plate honest, materiality-gated. You reprice the app, leave the steak, and skip the other forty items that didn't move.</p></div>
+      <div class="card"><div class="when">At the table</div><h3>You're the one who already knew</h3><p>When the numbers come up, you're not reconstructing them. You brought them.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE PANES — a real muntin grille ============ -->
+<section class="band" id="tools">
+  <div class="wrap">
+    <div class="klabel rv"><span class="lbl">One window, many panes</span></div>
+    <h2 class="big rv">Each pane is its own clear view into your cost world.</h2>
+    <p class="lede rv">A muntin is the slim bar between panes — separate views, one frame. Every surface has its own job and its own register, held together by one thing being true: what you see is current, and it's yours.</p>
+    <div class="window rv" id="index">
+      <div class="pane market"><span class="lbl">Market read</span><h3>The Cost Index</h3><p>A public, sourced read on where wholesale is moving — the market's weather, not your bill.</p>
+        <div class="spark"><i style="height:38%"></i><i style="height:50%"></i><i style="height:46%"></i><i style="height:62%"></i><i style="height:56%"></i><i style="height:70%"></i><i class="hot" style="height:88%"></i></div>
+      </div>
+      <div class="pane work"><span class="lbl">Workbench</span><h3>The free tools</h3><p>Plate cost, margin math, menu engineering — you leave with a number, no sign-in. Save one and we'll tell you the month it moves.</p>
+        <div class="grow num">plate cost · margin · menu mix</div>
+      </div>
+      <div class="pane ref"><span class="lbl">Reference</span><h3>The library</h3><p>Plain, sourced answers to the cost questions operators actually ask.</p></div>
+      <div class="pane cockpit"><span class="lbl">Cockpit</span><h3>Muntin Ledger</h3><p>Your own invoices, decoded and watched. A price hike against your own history is the least-fakeable signal there is.</p></div>
+      <div class="pane human"><span class="lbl">The read</span><h3>From the floor</h3><p>A market note written from behind a real pass, not a research desk — the judgment the raw numbers can't make on their own.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CAPABILITY (product, not a face) ============ -->
+<section class="band" id="standard">
+  <div class="wrap">
+    <div class="klabel rv"><span class="lbl">Why it holds up</span></div>
+    <h2 class="big rv">The polish is the point. Loose tools quietly cost you money.</h2>
+    <div class="become rv">
+      <div class="card"><div class="when">Open</div><h3>A public, sourced price index</h3><p>Published on a schedule, every number traced to a named source — a reference you can cite, not a black box.</p></div>
+      <div class="card"><div class="when">Private</div><h3>Invoices decoded on your device</h3><p>No model reads them; nothing leaves the machine. Privacy is the architecture here, not a promise on a page.</p></div>
+      <div class="card"><div class="when">Precise</div><h3>Quiet until it isn't</h3><p>Materiality-gated to the cent-per-plate, so the one alert you get is the one actually worth acting on.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CLOSE ============ -->
+<section class="close" id="close">
+  <div class="wrap">
+    <h2>Stop finding out at month-end.<br><em>See it coming.</em></h2>
+    <div class="row">
+      <a href="#index" class="btn pri">See this month's Cost Index →</a>
+      <a href="#tools" class="btn sec">Try a free tool</a>
+    </div>
+    <p class="price">The Index and every tool are free — no sign-in. Muntin Ledger is $19 a month per location, and your invoices stay yours.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="brand" style="font-size:15px"><span class="mark" aria-hidden="true"></span>Muntin</div>
+    <span class="lbl" style="letter-spacing:.08em">Silver Spring, MD · product-only · prototype of the reinvented storefront</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  document.getElementById('tg').addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme');
+    var isDark = cur ? cur==='dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+    root.setAttribute('data-theme', isDark?'light':'dark');
+  });
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // grille snapped to the composition: gutters + the two-column split + baseline
+  var g=document.getElementById('grille');
+  var cols=[0,50,100], rows=[100];
+  // vertical: left gutter, the column split (~50%), right gutter
+  [4,50,96].forEach(function(p,i){var b=document.createElement('b');b.className='gv';b.style.left=p+'%';b.style.transitionDelay=(i*80)+'ms';g.appendChild(b);});
+  // one horizontal baseline under the eyebrow region
+  var b=document.createElement('b');b.className='gh';b.style.top='0';b.style.transitionDelay='260ms';g.appendChild(b);
+
+  var inst=document.getElementById('inst'), scan=inst.querySelector('.scan'), basket=document.getElementById('basket');
+
+  function boot(){
+    g.parentElement.classList.add('lit');           // 1) grille draws (~0.85s)
+    if(reduce){basket.textContent='+14.6%';return;}
+    setTimeout(function(){                            // 2) scan sweep
+      scan.animate([{opacity:.9,transform:'translateY(0)'},{opacity:0,transform:'translateY('+(inst.offsetHeight-4)+'px)'}],{duration:900,easing:'cubic-bezier(.16,1,.3,1)'});
+    },700);
+    setTimeout(function(){ countUp(basket,14.6,'+','%',1000); },1200);   // 3) count-up settles
+  }
+  function countUp(el,target,pre,suf,dur){
+    var t0=null;
+    function step(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/dur);var e=1-Math.pow(1-k,3);
+      el.textContent=pre+(target*e).toFixed(1)+suf;if(k<1)requestAnimationFrame(step);else el.textContent=pre+target.toFixed(1)+suf;}
+    requestAnimationFrame(step);
+  }
+  // hero number degrades visible without JS; JS resets to 0 then boots
+  if(!reduce) basket.textContent='+0.0%';
+  requestAnimationFrame(boot);
+
+  if('IntersectionObserver' in window && !reduce){
+    var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:.14});
+    document.querySelectorAll('.rv').forEach(function(n){io.observe(n);});
+  } else { document.querySelectorAll('.rv').forEach(function(n){n.classList.add('in');}); }
+})();
+</script>
+</body>

@@ -273,14 +273,18 @@
           headers: { 'content-type': 'application/x-www-form-urlencoded' },
           body: params.toString(),
           credentials: 'same-origin',
-        }).then(function () {
-          form.dataset.state = 'ok';
-          if (typeof window.plausible === 'function') {
-            var evName = form.dataset.event || 'Newsletter Signup';
-            var surface = form.dataset.surface || (form.dataset.locale === 'es' ? 'footer-es' : 'footer-en');
-            try { window.plausible(evName, { props: { surface: surface } }); } catch (_) {}
+        }).then(function (res) {
+          if (res && res.ok) {
+            form.dataset.state = 'ok';
+            if (typeof window.plausible === 'function') {
+              var evName = form.dataset.event || 'Newsletter Signup';
+              var surface = form.dataset.surface || (form.dataset.locale === 'es' ? 'footer-es' : 'footer-en');
+              try { window.plausible(evName, { props: { surface: surface } }); } catch (_) {}
+            }
+          } else {
+            form.dataset.state = 'error';
           }
-        }).catch(function () { /* silent — error UI not needed for fire-and-forget */ });
+        }).catch(function () { form.dataset.state = 'error'; /* silent — error UI not needed for fire-and-forget */ });
       });
     });
   }

@@ -428,9 +428,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/tools/menu-engineering/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
-    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don está cerca"></span>
-      Contacta a Don
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Muntin &mdash; leemos cada mensaje.">
+      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true"></span>
+      Contacto
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
@@ -465,7 +465,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </svg>
       <span class="theme-toggle__label js-theme-label">Modo claro</span>
     </button>
-    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Contacta a Don</a>
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Muntin &mdash; leemos cada mensaje.">Contacto</a>
     <a href="/tools/menu-engineering/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
   </nav>
 
@@ -631,7 +631,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <aside class="edu-result" id="meEduResult" aria-labelledby="meEduResultLede">
         <p class="edu-result__lede" id="meEduResultLede">La matriz te muestra <strong>dónde poner la energía</strong>: protege a las Estrellas, re-ingenierea a los Caballos de tiro, reposiciona los Acertijos, retira los Perros. Las etiquetas son direccionales, no veredictos.</p>
         <p class="edu-result__rule">Sesgo de supervivencia: esto solo ve los platos que <em>están hoy en tu menú</em>. Los que cortaste el trimestre pasado son invisibles aquí, así que la mediana es la de tu menú retenido, no la de tu historia completa. Si recortaste en los últimos seis meses, trata el cuadrante de Perros como una lista de candidatos, no una orden de borrado.</p>
-        <p class="edu-result__next"><span class="edu-result__next-label">Siguiente paso</span><a href="#meWhatIf">Corre el simulador de alza sobre los Caballos de tiro</a><span aria-hidden="true">&middot;</span><a href="/es/tools/margin-math/#calc-priceraise">Verifica las alzas con elasticidad</a><span aria-hidden="true">&middot;</span><a href="/es/tools/menu-copy/">Audita cómo leen las Estrellas en el menú</a></p>
+        <p class="edu-result__next"><span class="edu-result__next-label">Siguiente paso</span><a href="#meWhatIf">Corre el simulador de alza sobre los Caballos de tiro</a><span aria-hidden="true">&middot;</span><a href="/es/tools/margin-math/#calc-priceraise">Verifica las alzas con elasticidad</a></p>
         <p class="edu-result__source"><span class="edu-result__source-label">Método</span>Kasavana &amp; Smith (1990) división por mediana &middot; <a href="/es/glossary/contribution-margin/">margen de contribución</a> = precio &minus; food cost &middot; <a href="/es/glossary/menu-mix/">menu mix</a> = participación del total de unidades vendidas</p>
       </aside>
     </div>
@@ -722,7 +722,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <span class="eyebrow">Predicar con el ejemplo</span>
     <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:12px 0 12px;">Los datos de tu menú se quedan en tu navegador.</h2>
     <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0 0 14px;">Sin subida, sin cuenta, sin escrituras a <code>localStorage</code>. Cierra la pestaña y el formulario queda vacío. Abre DevTools → Network y dale click a <em>Añadir plato</em> o <em>Cargar menú de ejemplo</em> — la lista de peticiones no crecerá. El módulo de matemática completo es JavaScript en <code>/tools/menu-engineering/menu-engineering.js</code>; click derecho <em>Ver código fuente</em> y léelo.</p>
-    <p style="font-size:13px;color:var(--stone);margin:0;">Misma arquitectura que Suite de Marca — mira <a href="/es/tools/brand-suite/#how-we-protect" style="color:inherit;border-bottom:1px dashed var(--teal);">cómo Suite de Marca protege tu logo</a> para la misma postura, paso por paso.</p>
+    <p style="font-size:13px;color:var(--stone);margin:0;">La misma postura vale en cada herramienta de Muntin — tus datos se quedan en tu navegador, y lo puedes verificar paso por paso en DevTools.</p>
   </div>
 </div></section>
 
@@ -1265,17 +1265,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     var byQ = { Star: [], Plowhorse: [], Puzzle: [], Dog: [] };
     summary.items.forEach(function(it){ if (byQ[it.quadrant]) byQ[it.quadrant].push(it); });
     var actions = window.ME.ACTIONS_EN;
-    function priorityForQ(q){
-      return q === 'Star' ? 'hero' : (q === 'Plowhorse' ? 'secondary' : 'standard');
-    }
-    function briefLinkFor(q, items){
-      var lines = items.map(function(it){
-        var name = String(it.item || '').replace(/\|/g, '');
-        var cat  = String(it.category || 'main').toLowerCase().replace(/[^a-z]/g, '') || 'main';
-        return [name, cat, priorityForQ(q)].join('|');
-      }).join('~');
-      return '/es/tools/photo-brief/#stars=' + encodeURIComponent(lines);
-    }
     // Pre-llena el slider de margen del simulador con el promedio de
     // CM% de los Caballos de tiro para que el simulador abra con un
     // número atado a este menú, no con el 20 % global por defecto.
@@ -1293,29 +1282,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       return '/es/tools/margin-math/#v=1&pr.m=' + avgPct;
     }
     var toolLinks = {
-      Star: function(items){ return [
-        { href: briefLinkFor('Star', items), label: 'Crear brief para tu fotógrafo &rarr;' }
-      ]; },
+      Star: function(){ return []; },
       Plowhorse: function(items){ return [
         { href: plowhorseMarginMathHref(items),           label: 'Re-costear en Margin Math &rarr;' },
-        { href: '/es/tools/plate-cost/',                  label: 'Auditar costo de ingredientes en Costo del Plato &rarr;' },
-        { href: briefLinkFor('Plowhorse', items),         label: 'Crear brief para tu fotógrafo &rarr;' }
+        { href: '/es/tools/plate-cost/',                  label: 'Auditar costo de ingredientes en Costo del Plato &rarr;' }
       ]; },
-      Puzzle: function(items){
-        // Handoff a Menu Copy — pre-llena el formulario con el primer
-        // Puzzle. Sin descripción (precisamente lo que falta reescribir).
-        var first = items && items[0];
-        var mcHref = '/es/tools/menu-copy/';
-        if (first && first.item) {
-          var bits = ['name=' + encodeURIComponent(first.item)];
-          if (typeof first.price === 'number' && isFinite(first.price)) {
-            bits.push('price=' + encodeURIComponent('$' + first.price));
-          }
-          mcHref += '#' + bits.join('&');
-        }
+      Puzzle: function(){
+        // El Inspector de Copy y el Brief de Fotos se retiraron en la
+        // migración product-only de 2026-06; Costo del Plato es el paso vivo
+        // para un Puzzle — re-costea la receta para ver si el problema real es
+        // el margen o la mezcla antes de tocar la copy.
         return [
-          { href: mcHref,                                   label: 'Re-describir en Inspector de Copy &rarr;' },
-          { href: briefLinkFor('Puzzle', items),            label: 'Re-fotografiar estos &rarr;' },
           { href: '/es/tools/plate-cost/',                  label: 'Re-costear la receta en Costo del Plato &rarr;' }
         ];
       }
