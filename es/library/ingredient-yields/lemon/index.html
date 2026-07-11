@@ -72,6 +72,8 @@ main{padding-top:64px}
 .iy-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:24px 0 0}
 .iy-cta{display:inline-flex;align-items:center;gap:6px;padding:12px 22px;border-radius:999px;background:var(--ink);color:var(--cream);font-weight:600;font-size:14px;text-decoration:none}
 .iy-cta:hover{background:var(--teal)}
+.iy-trimtax{margin:16px 0 0;padding:11px 15px;background:var(--cream-2,#EDEEF1);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:8px;font-size:14.5px;line-height:1.5;color:var(--ink);max-width:60ch;font-variant-numeric:tabular-nums}
+.iy-cta-lede{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:24px 0 10px;max-width:60ch}
 .iy-keep{margin:28px 0 0;padding:20px 22px;border-radius:12px;background:linear-gradient(100deg,#0f3a37 0%,#1f6f6a 100%);color:#fff;}
 .iy-keep h2{font-family:var(--font-display);font-size:19px;font-weight:500;color:#fff;margin:0 0 8px;line-height:1.2}
 .iy-keep p{font-size:14px;line-height:1.55;color:rgba(255,255,255,0.92);margin:0 0 14px;max-width:60ch}
@@ -305,9 +307,28 @@ main{padding-top:64px}
     <p class="iy-yield">45%</p>
     <h1>Limón amarillo rinde 45%</h1>
     <p class="iy-hero-lede">Compras limón amarillo por su peso entero, pero solo emplatas el 45%. Ese 55% de merma es costo real que no aparece en la factura — aquí está la cuenta.</p>
+    <p class="iy-trimtax">Con un rendimiento del 45%, limón amarillo carga un impuesto de merma de ×2.22: su parte aprovechable cuesta el precio de factura multiplicado por 2.22.</p>
   </section>
   <section class="iy-body">
-    <p><strong>Rendimiento (yield)</strong> es la fracción de un ingrediente que de verdad llega al plato después de limpiar, pelar y recortar. Lo que pagas es el precio <em>AP</em> (as-purchased, como se compra); lo que cuesta en el plato es el precio <em>EP</em> (edible portion, porción comestible).</p>
+    
+<div class="iy-costindex">
+  <p class="iy-ci-head">Lectura de mercado<span class="iy-ci-badge">confianza media · al 2026-07-10</span></p>
+  <p class="iy-ci-line">Alrededor de $46.06–$49.82/caja (referencia mayorista), al alza +30.3% en la ventana reciente.</p>
+  <p class="iy-ci-spread">Más barato en Los Angeles (~$45.00), más caro en Baltimore (~$53.00).</p>
+  <p class="iy-ci-verdict iy-ci-hold"><strong>Espera.</strong> Dentro de su rango usual — nada que hacer.</p>
+  <div class="iy-pricecheck" data-ref="4794" data-tpls="{&quot;empty&quot;:&quot;Ingresa tu precio para compararlo con esta referencia mayorista pública.&quot;,&quot;even&quot;:&quot;Está casi a la par con la referencia mayorista pública. La referencia es mayorista — tu precio entregado suele ser algo más alto.&quot;,&quot;above&quot;:&quot;Está alrededor de {pct}% por encima de la referencia mayorista pública. El entregado normalmente va por encima del mayorista, así que algo de diferencia es de esperar; una grande amerita hablar con tu proveedor.&quot;,&quot;below&quot;:&quot;Está alrededor de {pct}% por debajo de la referencia mayorista pública — un buen número (la referencia ya está por debajo del entregado). Conviene confirmar que sea el mismo grado y empaque.&quot;}">
+    <label class="iy-pc-label" for="iy-yp-lemon">Tu precio (opcional)</label>
+    <div class="iy-pc-row">
+      <span class="iy-pc-cur" aria-hidden="true">$</span>
+      <input class="iy-pc-input" id="iy-yp-lemon" type="number" inputmode="decimal" min="0" step="0.01" placeholder="47.94" autocomplete="off" />
+      <span class="iy-pc-unit">/ caja</span>
+    </div>
+    <p class="iy-pc-out" aria-live="polite">Ingresa tu precio para compararlo con esta referencia mayorista pública.</p>
+  </div>
+  <p class="iy-ci-why">Una sola metodología de precio respalda el nivel.</p>
+  <details class="iy-ci-src"><summary>Fuentes · 2</summary><div>USDA AMS · BLS PPI — datos públicos, al 2026-07-10. Referencia mayorista, no el precio entregado que pagas.</div></details>
+  <p class="iy-ci-more"><a href="/es/tools/cost-pulse/#ci-lemon">Ver la lectura completa en el panel <span aria-hidden="true">→</span></a></p>
+</div><p><strong>Rendimiento (yield)</strong> es la fracción de un ingrediente que de verdad llega al plato después de limpiar, pelar y recortar. Lo que pagas es el precio <em>AP</em> (as-purchased, como se compra); lo que cuesta en el plato es el precio <em>EP</em> (edible portion, porción comestible).</p>
 <p>Compras la fruta entera pero usas solo el jugo o los gajos. El rendimiento es bajo, así que el costo por onza útil sube.</p>
 <div class="iy-calc">
   <p class="iy-calc-line">Digamos que tu factura muestra <strong>$0.40</strong> por pieza de limón amarillo (precio AP, de ejemplo).</p>
@@ -331,26 +352,9 @@ main{padding-top:64px}
       <details class="iy-faq-item"><summary>¿Cuánto se pierde al limpiar limón amarillo?</summary><p>Alrededor del 55% del peso comprado se pierde al limpiar, pelar y recortar antes de emplatar.</p></details>
       <details class="iy-faq-item"><summary>¿Cómo se calcula el costo de porción comestible de limón amarillo?</summary><p>Divide el precio de compra entre el rendimiento: costo EP = precio AP ÷ 0.45. Con 45% de rendimiento, la merma hace que tu costo real en el plato sea bastante mayor que el precio de la factura.</p></details>
     </div>
-<div class="iy-costindex">
-  <p class="iy-ci-head">Lectura de mercado<span class="iy-ci-badge">confianza media · al 2026-07-10</span></p>
-  <p class="iy-ci-line">Alrededor de $46.06–$49.82/caja (referencia mayorista), al alza +30.3% en la ventana reciente.</p>
-  <p class="iy-ci-spread">Más barato en Los Angeles (~$45.00), más caro en Baltimore (~$53.00).</p>
-  <p class="iy-ci-verdict iy-ci-hold"><strong>Espera.</strong> Dentro de su rango usual — nada que hacer.</p>
-  <div class="iy-pricecheck" data-ref="4794" data-tpls="{&quot;empty&quot;:&quot;Ingresa tu precio para compararlo con esta referencia mayorista pública.&quot;,&quot;even&quot;:&quot;Está casi a la par con la referencia mayorista pública. La referencia es mayorista — tu precio entregado suele ser algo más alto.&quot;,&quot;above&quot;:&quot;Está alrededor de {pct}% por encima de la referencia mayorista pública. El entregado normalmente va por encima del mayorista, así que algo de diferencia es de esperar; una grande amerita hablar con tu proveedor.&quot;,&quot;below&quot;:&quot;Está alrededor de {pct}% por debajo de la referencia mayorista pública — un buen número (la referencia ya está por debajo del entregado). Conviene confirmar que sea el mismo grado y empaque.&quot;}">
-    <label class="iy-pc-label" for="iy-yp-lemon">Tu precio (opcional)</label>
-    <div class="iy-pc-row">
-      <span class="iy-pc-cur" aria-hidden="true">$</span>
-      <input class="iy-pc-input" id="iy-yp-lemon" type="number" inputmode="decimal" min="0" step="0.01" placeholder="47.94" autocomplete="off" />
-      <span class="iy-pc-unit">/ caja</span>
-    </div>
-    <p class="iy-pc-out" aria-live="polite">Ingresa tu precio para compararlo con esta referencia mayorista pública.</p>
-  </div>
-  <p class="iy-ci-why">Una sola metodología de precio respalda el nivel.</p>
-  <details class="iy-ci-src"><summary>Fuentes · 2</summary><div>USDA AMS · BLS PPI — datos públicos, al 2026-07-10. Referencia mayorista, no el precio entregado que pagas.</div></details>
-  <p class="iy-ci-more"><a href="/es/tools/cost-pulse/#ci-lemon">Ver la lectura completa en el panel <span aria-hidden="true">→</span></a></p>
-</div>
+    <p class="iy-cta-lede">El recorte de un ingrediente es el impuesto de arriba — un plato apila diez de ellos. La calculadora los suma.</p>
     <div class="iy-cta-row">
-      <a class="iy-cta" href="/es/tools/plate-cost/">Costéalo en la calculadora <span aria-hidden="true">→</span></a>
+      <a class="iy-cta" href="/es/tools/plate-cost/">Costea el plato entero <span aria-hidden="true">→</span></a>
     </div>
     <aside class="iy-keep" aria-labelledby="iyKeepH-lemon">
       <h2 id="iyKeepH-lemon">Mantén este costo al día</h2>

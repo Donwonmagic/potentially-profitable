@@ -557,6 +557,8 @@ main{padding-top:64px}
 .iy-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:24px 0 0}
 .iy-cta{display:inline-flex;align-items:center;gap:6px;padding:12px 22px;border-radius:999px;background:var(--ink);color:var(--cream);font-weight:600;font-size:14px;text-decoration:none}
 .iy-cta:hover{background:var(--teal)}
+.iy-trimtax{margin:16px 0 0;padding:11px 15px;background:var(--cream-2,#EDEEF1);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:8px;font-size:14.5px;line-height:1.5;color:var(--ink);max-width:60ch;font-variant-numeric:tabular-nums}
+.iy-cta-lede{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:24px 0 10px;max-width:60ch}
 .iy-keep{margin:28px 0 0;padding:20px 22px;border-radius:12px;background:linear-gradient(100deg,#0f3a37 0%,#1f6f6a 100%);color:#fff;}
 .iy-keep h2{font-family:var(--font-display);font-size:19px;font-weight:500;color:#fff;margin:0 0 8px;line-height:1.2}
 .iy-keep p{font-size:14px;line-height:1.55;color:rgba(255,255,255,0.92);margin:0 0 14px;max-width:60ch}
@@ -684,6 +686,10 @@ function emitIngredientPage(ing, locale) {
   const lossPct = 100 - pct;
   const unit = locale === 'es' ? ing.unit_es : ing.unit_en;
   const ep = ing.apCents / ing.yield;
+  // Trim tax = 1 / yield — a pure function of the SOURCED yield. Unitless (a bare
+  // ×N.NN multiplier, never a dollar figure), so it can never launder the
+  // illustrative apCents into a claim.
+  const tax = (1 / ing.yield).toFixed(2);
   const canonEn = `https://muntin.digital/library/ingredient-yields/${ing.slug}/`;
   const canonEs = `https://muntin.digital/es/library/ingredient-yields/${ing.slug}/`;
 
@@ -714,7 +720,20 @@ function emitIngredientPage(ing, locale) {
   <small>AP price is illustrative; the EP figure is computed (AP ÷ yield). Use your real invoice price below.</small>
 </div>`;
 
-  const calcCta = locale === 'es' ? 'Costéalo en la calculadora' : 'Cost it in the calculator';
+  // One-line trim-tax read — the ×N.NN cost multiplier. Unit-agnostic on purpose:
+  // ingredients ship by lb, head, each, ear, or bunch, so a "you buy N lb" weight
+  // clause would be false for the 34 count/head/bunch items. The multiplier IS the
+  // cost relationship (cost per edible part = invoice ÷ yield = invoice × 1/yield),
+  // the same math as the EP figure above and the hub's "true cost" column header.
+  // Derives from the sourced yield only; no dollars, no illustrative price.
+  const trimTaxLine = locale === 'es'
+    ? `Con un rendimiento del ${pct}%, ${name.toLowerCase()} carga un impuesto de merma de ×${tax}: su parte aprovechable cuesta el precio de factura multiplicado por ${tax}.`
+    : `At ${pct}% yield, ${name.toLowerCase()} carries a ×${tax} trim tax: its usable part costs the invoice price times ${tax}.`;
+  // Dish-level escalation: this page's trim tax is one ingredient; a plate stacks many.
+  const ctaLede = locale === 'es'
+    ? 'El recorte de un ingrediente es el impuesto de arriba — un plato apila diez de ellos. La calculadora los suma.'
+    : "One ingredient's trim is the tax above — a plate stacks ten of them. The calculator adds them up.";
+  const calcCta = locale === 'es' ? 'Costea el plato entero' : 'Cost the whole plate';
   const keepH = locale === 'es' ? 'Mantén este costo al día' : 'Keep this cost live';
   const keepP = locale === 'es'
     ? `Cuando el precio de ${name.toLowerCase()} cambia, cada platillo que lo usa cambia con él. Muntin Ledger lee tus facturas reales, recostea esos platillos solo, y te avisa el día que el precio se mueve.`
@@ -740,9 +759,11 @@ function emitIngredientPage(ing, locale) {
     <p class="iy-yield">${pct}%</p>
     <h1>${escHtml(name)} ${locale === 'es' ? 'rinde' : 'yields'} ${pct}%</h1>
     <p class="iy-hero-lede">${escHtml(lede)}</p>
+    <p class="iy-trimtax">${escHtml(trimTaxLine)}</p>
   </section>
   <section class="iy-body">
-    ${body}${faqBlock(ing, locale)}${costIndexBlock(ing.slug, locale)}
+    ${costIndexBlock(ing.slug, locale)}${body}${faqBlock(ing, locale)}
+    <p class="iy-cta-lede">${escHtml(ctaLede)}</p>
     <div class="iy-cta-row">
       <a class="iy-cta" href="${base}/tools/plate-cost/">${calcCta} <span aria-hidden="true">→</span></a>
     </div>
@@ -782,7 +803,9 @@ function emitHubPage(locale) {
     citeHow: 'Cómo citar', srch: 'Buscar ingrediente', srchPh: 'p. ej. cebolla, salmón…',
     cat: 'Categoría', allCats: 'Todas las categorías', sort: 'Ordenar',
     sYieldHi: 'Rendimiento (mayor primero)', sYieldLo: 'Rendimiento (menor primero)', sName: 'Nombre (A–Z)',
-    colIng: 'Ingrediente', colCat: 'Categoría', colYield: 'Rendimiento', colLoss: 'Merma', colUnit: 'Unidad',
+    sTaxHi: 'Impuesto de merma (mayor primero)', sTaxLo: 'Impuesto de merma (menor primero)',
+    colIng: 'Ingrediente', colCat: 'Categoría', colYield: 'Rendimiento',
+    colTax: 'Impuesto de merma — costo real = factura × esto.', colLoss: 'Merma', colUnit: 'Unidad',
     count: '{n} de {m} ingredientes', none: 'Ningún ingrediente coincide.',
     calcH: 'Calculadora de costo comestible', calcLede: 'El precio que pagas es por el peso de compra. Esto convierte tu precio AP en costo por unidad comestible, con el rendimiento sourced. En tu dispositivo — nada se envía.',
     calcIng: 'Ingrediente', calcPrice: 'Tu precio AP', calcUnit: 'por', calcEmpty: 'Escribe tu precio de compra para ver el costo por unidad comestible.',
@@ -795,7 +818,9 @@ function emitHubPage(locale) {
     citeHow: 'How to cite', srch: 'Search ingredient', srchPh: 'e.g. onion, salmon…',
     cat: 'Category', allCats: 'All categories', sort: 'Sort',
     sYieldHi: 'Yield (highest first)', sYieldLo: 'Yield (lowest first)', sName: 'Name (A–Z)',
-    colIng: 'Ingredient', colCat: 'Category', colYield: 'Yield', colLoss: 'Loss', colUnit: 'Unit',
+    sTaxHi: 'Trim tax (highest first)', sTaxLo: 'Trim tax (lowest first)',
+    colIng: 'Ingredient', colCat: 'Category', colYield: 'Yield',
+    colTax: 'Trim tax — true cost = invoice × this.', colLoss: 'Loss', colUnit: 'Unit',
     count: '{n} of {m} ingredients', none: 'No ingredient matches.',
     calcH: 'Edible-unit cost calculator', calcLede: 'You pay for purchase weight. This turns your AP price into cost per edible unit, at the sourced yield. On your device — nothing is sent.',
     calcIng: 'Ingredient', calcPrice: 'Your AP price', calcUnit: 'per', calcEmpty: 'Type your purchase price to see the cost per edible unit.',
@@ -815,10 +840,17 @@ function emitHubPage(locale) {
     const nm = es ? i.es : i.en;
     const unit = es ? i.unit_es : i.unit_en;
     const y = Math.round(i.yield * 100);
-    return `<tr data-name="${escHtml(nm.toLowerCase())}" data-cat="${i.cat}" data-yield="${i.yield}">`
+    // Trim tax = 1 / yield, a pure sourced-yield function (unitless ×N.NN, no dollars).
+    const t = (1 / i.yield).toFixed(2);
+    // Single-hue teal fill on a neutral, 1px-bordered track; the % stays the visible,
+    // sortable label. role=img + aria-label carries the meaning (loss is NOT colored —
+    // rust is a status hue and would misread).
+    const meterAria = es ? `${y}% comestible, ${100 - y}% de merma` : `${y}% edible, ${100 - y}% lost to trim`;
+    return `<tr data-name="${escHtml(nm.toLowerCase())}" data-cat="${i.cat}" data-yield="${i.yield}" data-tax="${t}">`
       + `<th scope="row"><a href="${base}/library/ingredient-yields/${i.slug}/">${escHtml(nm)}</a></th>`
       + `<td class="iy-x-cat">${catName(i.cat)}</td>`
-      + `<td class="iy-x-num">${y}%</td>`
+      + `<td class="iy-x-num"><span class="iy-meter" role="img" aria-label="${meterAria}"><span class="iy-meter-fill" style="--w:${y}%"></span></span><span class="iy-meter-num">${y}%</span></td>`
+      + `<td class="iy-x-num iy-tax" data-tax="${t}">×${t}</td>`
       + `<td class="iy-x-num iy-x-loss">${100 - y}%</td>`
       + `<td class="iy-x-unit">${escHtml(unit)}</td></tr>`;
   }).join('\n        ');
@@ -837,6 +869,43 @@ function emitHubPage(locale) {
     return `<h3 class="iy-cat-h"><a href="${base}/library/ingredient-yields/${catKey}/">${catName(catKey)}</a></h3><div class="iy-grid">${cards}</div>`;
   }).join('\n');
 
+  // Speakable, citational answer — the definitional read an answer engine can lift.
+  // Wired to the CollectionPage speakable node below (selector: h1 + .od-answer).
+  const odAnswer = es
+    ? `Rendimiento de porción comestible de ${INGREDIENTS.length} ingredientes comunes de restaurante — la parte aprovechable tras el recorte — según las tablas de rendimiento estándar del CIA. Una referencia, no un precio.`
+    : `Edible-portion yield for ${INGREDIENTS.length} common restaurant ingredients — the usable share after trim — from the CIA Standard Yield Tables. A reference, not a price.`;
+
+  // Memorable hero — the worst REAL yield in the set paired with its trim tax,
+  // computed from the data (no hardcode). Unit-agnostic cost framing (the set mixes
+  // lb/head/each/ear/bunch, so a weight clause would be false for count items): the
+  // ×N.NN is the cost multiplier, no dollars, so nothing here is a price claim.
+  const worst = INGREDIENTS.slice().sort((a, b) => a.yield - b.yield)[0];
+  const worstName = es ? worst.es : worst.en;
+  const worstPct = Math.round(worst.yield * 100);
+  const worstTax = (1 / worst.yield).toFixed(2);
+  const taxHero = es
+    ? `<strong>${escHtml(worstName)} rinde apenas ${worstPct}%.</strong> Es un impuesto de merma de ×${worstTax}: la parte comestible cuesta ${worstTax}× el precio de factura.`
+    : `<strong>${escHtml(worstName)} keeps just ${worstPct}%.</strong> That's a ×${worstTax} trim tax — the edible part costs ${worstTax}× the invoice price.`;
+
+  // Category comparison — MEAN member yield per category, single teal hue, ranked
+  // lowest→highest (15 categories > any honest 7-color legend, so bars, not hues).
+  // Derived from the sourced yields; no new claim.
+  const catMeans = Object.keys(cats).map(k => ({
+    k, mean: cats[k].reduce((s, i) => s + i.yield, 0) / cats[k].length
+  })).sort((a, b) => a.mean - b.mean);
+  const catBars = catMeans.map(cm => {
+    const pm = Math.round(cm.mean * 100);
+    const lbl = catName(cm.k);   // already escaped, attribute-safe
+    const aria = es ? `${lbl}: rendimiento medio ${pm}%` : `${lbl}: mean yield ${pm}%`;
+    return `<li><span class="iy-x-catbar-label">${lbl}</span>`
+      + `<span class="iy-x-catbar" role="img" aria-label="${aria}"><span class="iy-x-catbar-fill" style="--w:${pm}%"></span></span>`
+      + `<span class="iy-x-catbar-num">${pm}%</span></li>`;
+  }).join('');
+  const catCompareH = es ? 'Comparar categorías' : 'Compare categories';
+  const catCompareSrc = es
+    ? 'Media de los rendimientos de cada categoría. Fuente: tablas de rendimiento estándar del CIA.'
+    : "Mean of each category's member yields. Source: CIA Standard Yield Tables.";
+
   const items = INGREDIENTS.map((i, idx) => ({
     '@type': 'ListItem', 'position': idx + 1,
     'item': { '@type': 'WebPage', 'name': (es ? i.es : i.en), 'url': baseUrl + i.slug + '/' }
@@ -845,7 +914,8 @@ function emitHubPage(locale) {
     '@context': 'https://schema.org',
     '@graph': [
       { '@type': 'CollectionPage', '@id': baseUrl + '#webpage', 'name': heroH1, 'description': heroLede, 'url': baseUrl,
-        'inLanguage': es ? 'es-US' : 'en-US', 'isPartOf': { '@id': 'https://muntin.digital/#website' }, 'publisher': { '@id': 'https://muntin.digital/#business' } },
+        'inLanguage': es ? 'es-US' : 'en-US', 'isPartOf': { '@id': 'https://muntin.digital/#website' }, 'publisher': { '@id': 'https://muntin.digital/#business' },
+        'speakable': { '@type': 'SpeakableSpecification', 'cssSelector': ['h1', '.od-answer'] } },
       { '@type': 'ItemList', 'numberOfItems': items.length, 'itemListElement': items },
       // The hub is the ENTITY REGISTRY: a DefinedTermSet naming every ingredient term,
       // so an LLM lands here to enumerate all of them. And it IS a sourced dataset
@@ -860,7 +930,10 @@ function emitHubPage(locale) {
           : `Edible-portion yield for ${items.length} common restaurant ingredients, per the CIA Standard Yield Tables.`,
         'url': baseUrl, 'inLanguage': es ? 'es-US' : 'en-US', 'isAccessibleForFree': true, 'license': YIELDS_LICENSE,
         'creator': { '@id': 'https://muntin.digital/#business' }, 'citation': 'CIA Standard Yield Tables / USDA Food Buying Guide',
-        'variableMeasured': es ? 'porcentaje de rendimiento de porción comestible' : 'edible-portion yield percent',
+        'includedInDataCatalog': { '@id': 'https://muntin.digital/cost-index/#catalog' },
+        'variableMeasured': { '@type': 'PropertyValue',
+          'name': es ? 'rendimiento de porción comestible' : 'edible-portion yield',
+          'unitText': es ? 'por ciento' : 'percent', 'minValue': 0, 'maxValue': 100 },
         'distribution': [
           { '@type': 'DataDownload', 'encodingFormat': 'application/json', 'contentUrl': 'https://muntin.digital/cost-index/yields.json' },
           { '@type': 'DataDownload', 'encodingFormat': 'text/csv', 'contentUrl': 'https://muntin.digital/cost-index/yields.csv' }
@@ -919,7 +992,21 @@ function emitHubPage(locale) {
 .iy-x-calc-ep{font-weight:600}
 .iy-x-calc-out small{display:block;font-size:12.5px;color:var(--ink-soft);margin-top:5px;font-weight:400}
 .iy-cat-h{margin:20px 0 0}
-.iy-x-browse-h{font-family:var(--font-display);font-size:19px;margin:34px 0 0}`;
+.iy-x-browse-h{font-family:var(--font-display);font-size:19px;margin:34px 0 0}
+.od-answer{font-size:15.5px;line-height:1.55;color:var(--ink);margin:12px 0 0;max-width:720px}
+.iy-meter{display:inline-block;width:64px;height:8px;border-radius:4px;background:var(--cream-2);border:1px solid var(--line);vertical-align:middle;overflow:hidden}.iy-meter-fill{display:block;height:100%;width:var(--w);background:var(--teal);border-radius:4px}.iy-meter-num{margin-left:8px;font-variant-numeric:tabular-nums}
+.iy-tax{font-variant-numeric:tabular-nums}
+.iy-x-table thead th.iy-tax-h{white-space:normal;min-width:140px;font-weight:700}
+.iy-x-tax-hero{margin:18px 0 0;padding:14px 18px;background:var(--cream-2,#EDEEF1);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:10px;font-size:16px;line-height:1.5;color:var(--ink);font-variant-numeric:tabular-nums}
+.iy-x-catcompare{margin:14px 0 0}
+.iy-x-catcompare>summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink-soft)}
+.iy-x-catbars{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:7px}
+.iy-x-catbars li{display:grid;grid-template-columns:minmax(110px,150px) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.iy-x-catbar-label{color:var(--ink)}
+.iy-x-catbar{display:block;height:12px;border-radius:6px;background:var(--cream-2);border:1px solid var(--line);overflow:hidden}
+.iy-x-catbar-fill{display:block;height:100%;width:var(--w);background:var(--teal);border-radius:6px}
+.iy-x-catbar-num{font-variant-numeric:tabular-nums;color:var(--ink-soft);font-weight:600}
+.iy-x-catbars-src{font-size:12px;color:var(--ink-soft);margin:10px 0 0}`;
 
   return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld, extraCss: exploreCss }) + `
   <p class="breadcrumb">
@@ -929,6 +1016,7 @@ function emitHubPage(locale) {
   </p>
   <section class="iy-hero">
     <h1>${escHtml(heroH1)}</h1>
+    <p class="od-answer">${escHtml(odAnswer)}</p>
     <p class="iy-hero-lede">${escHtml(heroLede)}</p>
     <div class="iy-x-open">
       <span class="iy-x-open-label">${L.open}</span>
@@ -944,6 +1032,12 @@ function emitHubPage(locale) {
     </details>
   </section>
   <section class="iy-body">
+    <p class="iy-x-tax-hero">${taxHero}</p>
+    <details class="iy-x-catcompare">
+      <summary>${catCompareH}</summary>
+      <ol class="iy-x-catbars">${catBars}</ol>
+      <p class="iy-x-catbars-src">${escHtml(catCompareSrc)}</p>
+    </details>
     <div class="iy-x-tools" role="search">
       <div class="iy-x-field iy-x-search">
         <label for="iyxSearch">${L.srch}</label>
@@ -958,6 +1052,8 @@ function emitHubPage(locale) {
         <select id="iyxSort">
           <option value="yield-desc">${L.sYieldHi}</option>
           <option value="yield-asc">${L.sYieldLo}</option>
+          <option value="tax-desc">${L.sTaxHi}</option>
+          <option value="tax-asc">${L.sTaxLo}</option>
           <option value="name">${L.sName}</option>
         </select>
       </div>
@@ -969,12 +1065,13 @@ function emitHubPage(locale) {
           <th scope="col">${L.colIng}</th>
           <th scope="col">${L.colCat}</th>
           <th scope="col" class="iy-x-num">${L.colYield}</th>
+          <th scope="col" class="iy-x-num iy-tax-h">${L.colTax}</th>
           <th scope="col" class="iy-x-num">${L.colLoss}</th>
           <th scope="col">${L.colUnit}</th>
         </tr></thead>
         <tbody id="iyxBody">
         ${tableRows}
-        <tr class="iy-x-empty" id="iyxEmpty" hidden><td colspan="5">${L.none}</td></tr>
+        <tr class="iy-x-empty" id="iyxEmpty" hidden><td colspan="6">${L.none}</td></tr>
         </tbody>
       </table>
     </div>
@@ -1017,6 +1114,10 @@ function emitHubPage(locale) {
       });
       vis.sort(function(a,b){
         if (sort === 'name') return a.getAttribute('data-name').localeCompare(b.getAttribute('data-name'));
+        if (sort === 'tax-desc' || sort === 'tax-asc') {
+          var t = parseFloat(a.getAttribute('data-tax')) - parseFloat(b.getAttribute('data-tax'));
+          return sort === 'tax-asc' ? t : -t;
+        }
         var d = parseFloat(b.getAttribute('data-yield')) - parseFloat(a.getAttribute('data-yield'));
         return sort === 'yield-asc' ? -d : d;
       });

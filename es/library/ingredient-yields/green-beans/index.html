@@ -72,6 +72,8 @@ main{padding-top:64px}
 .iy-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:24px 0 0}
 .iy-cta{display:inline-flex;align-items:center;gap:6px;padding:12px 22px;border-radius:999px;background:var(--ink);color:var(--cream);font-weight:600;font-size:14px;text-decoration:none}
 .iy-cta:hover{background:var(--teal)}
+.iy-trimtax{margin:16px 0 0;padding:11px 15px;background:var(--cream-2,#EDEEF1);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:8px;font-size:14.5px;line-height:1.5;color:var(--ink);max-width:60ch;font-variant-numeric:tabular-nums}
+.iy-cta-lede{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:24px 0 10px;max-width:60ch}
 .iy-keep{margin:28px 0 0;padding:20px 22px;border-radius:12px;background:linear-gradient(100deg,#0f3a37 0%,#1f6f6a 100%);color:#fff;}
 .iy-keep h2{font-family:var(--font-display);font-size:19px;font-weight:500;color:#fff;margin:0 0 8px;line-height:1.2}
 .iy-keep p{font-size:14px;line-height:1.55;color:rgba(255,255,255,0.92);margin:0 0 14px;max-width:60ch}
@@ -305,9 +307,29 @@ main{padding-top:64px}
     <p class="iy-yield">88%</p>
     <h1>Ejotes rinde 88%</h1>
     <p class="iy-hero-lede">Compras ejotes por su peso entero, pero solo emplatas el 88%. Ese 12% de merma es costo real que no aparece en la factura — aquí está la cuenta.</p>
+    <p class="iy-trimtax">Con un rendimiento del 88%, ejotes carga un impuesto de merma de ×1.14: su parte aprovechable cuesta el precio de factura multiplicado por 1.14.</p>
   </section>
   <section class="iy-body">
-    <p><strong>Rendimiento (yield)</strong> es la fracción de un ingrediente que de verdad llega al plato después de limpiar, pelar y recortar. Lo que pagas es el precio <em>AP</em> (as-purchased, como se compra); lo que cuesta en el plato es el precio <em>EP</em> (edible portion, porción comestible).</p>
+    
+<div class="iy-costindex">
+  <p class="iy-ci-head">Lectura de mercado<span class="iy-ci-badge">confianza baja · al 2026-07-10</span></p>
+  <p class="iy-ci-line">Alrededor de $36.50–$46.50/caja (referencia mayorista), al alza +42.3% en la ventana reciente.</p>
+  <p class="iy-ci-pctl">Más alto que 19 de sus últimas 26 lecturas semanales — cerca de la mitad de su rango reciente.</p>
+  <p class="iy-ci-spread">Más barato en Miami (~$33.50), más caro en Baltimore (~$45.00).</p>
+  <p class="iy-ci-verdict iy-ci-hold"><strong>Espera.</strong> Dentro de su rango usual — nada que hacer.</p>
+  <div class="iy-pricecheck" data-ref="4150" data-tpls="{&quot;empty&quot;:&quot;Ingresa tu precio para compararlo con esta referencia mayorista pública.&quot;,&quot;even&quot;:&quot;Está casi a la par con la referencia mayorista pública. La referencia es mayorista — tu precio entregado suele ser algo más alto.&quot;,&quot;above&quot;:&quot;Está alrededor de {pct}% por encima de la referencia mayorista pública. El entregado normalmente va por encima del mayorista, así que algo de diferencia es de esperar; una grande amerita hablar con tu proveedor.&quot;,&quot;below&quot;:&quot;Está alrededor de {pct}% por debajo de la referencia mayorista pública — un buen número (la referencia ya está por debajo del entregado). Conviene confirmar que sea el mismo grado y empaque.&quot;}">
+    <label class="iy-pc-label" for="iy-yp-green-beans">Tu precio (opcional)</label>
+    <div class="iy-pc-row">
+      <span class="iy-pc-cur" aria-hidden="true">$</span>
+      <input class="iy-pc-input" id="iy-yp-green-beans" type="number" inputmode="decimal" min="0" step="0.01" placeholder="41.50" autocomplete="off" />
+      <span class="iy-pc-unit">/ caja</span>
+    </div>
+    <p class="iy-pc-out" aria-live="polite">Ingresa tu precio para compararlo con esta referencia mayorista pública.</p>
+  </div>
+  <p class="iy-ci-why">Una sola metodología de precio respalda el nivel, pero los precios saltan semana a semana, así que la tendencia no es firme.</p>
+  <details class="iy-ci-src"><summary>Fuentes · 1</summary><div>USDA AMS — datos públicos, al 2026-07-10. Referencia mayorista, no el precio entregado que pagas.</div></details>
+  <p class="iy-ci-more"><a href="/es/tools/cost-pulse/#ci-green-beans">Ver la lectura completa en el panel <span aria-hidden="true">→</span></a></p>
+</div><p><strong>Rendimiento (yield)</strong> es la fracción de un ingrediente que de verdad llega al plato después de limpiar, pelar y recortar. Lo que pagas es el precio <em>AP</em> (as-purchased, como se compra); lo que cuesta en el plato es el precio <em>EP</em> (edible portion, porción comestible).</p>
 <p>Centros, semillas y tallos son la merma; aquí casi nada se desperdicia.</p>
 <div class="iy-calc">
   <p class="iy-calc-line">Digamos que tu factura muestra <strong>$1.91</strong> por libra de ejotes (precio AP, de ejemplo).</p>
@@ -331,27 +353,9 @@ main{padding-top:64px}
       <details class="iy-faq-item"><summary>¿Cuánto se pierde al limpiar ejotes?</summary><p>Alrededor del 12% del peso comprado se pierde al limpiar, pelar y recortar antes de emplatar.</p></details>
       <details class="iy-faq-item"><summary>¿Cómo se calcula el costo de porción comestible de ejotes?</summary><p>Divide el precio de compra entre el rendimiento: costo EP = precio AP ÷ 0.88. Con 88% de rendimiento, la merma hace que tu costo real en el plato sea bastante mayor que el precio de la factura.</p></details>
     </div>
-<div class="iy-costindex">
-  <p class="iy-ci-head">Lectura de mercado<span class="iy-ci-badge">confianza baja · al 2026-07-10</span></p>
-  <p class="iy-ci-line">Alrededor de $36.50–$46.50/caja (referencia mayorista), al alza +42.3% en la ventana reciente.</p>
-  <p class="iy-ci-pctl">Más alto que 19 de sus últimas 26 lecturas semanales — cerca de la mitad de su rango reciente.</p>
-  <p class="iy-ci-spread">Más barato en Miami (~$33.50), más caro en Baltimore (~$45.00).</p>
-  <p class="iy-ci-verdict iy-ci-hold"><strong>Espera.</strong> Dentro de su rango usual — nada que hacer.</p>
-  <div class="iy-pricecheck" data-ref="4150" data-tpls="{&quot;empty&quot;:&quot;Ingresa tu precio para compararlo con esta referencia mayorista pública.&quot;,&quot;even&quot;:&quot;Está casi a la par con la referencia mayorista pública. La referencia es mayorista — tu precio entregado suele ser algo más alto.&quot;,&quot;above&quot;:&quot;Está alrededor de {pct}% por encima de la referencia mayorista pública. El entregado normalmente va por encima del mayorista, así que algo de diferencia es de esperar; una grande amerita hablar con tu proveedor.&quot;,&quot;below&quot;:&quot;Está alrededor de {pct}% por debajo de la referencia mayorista pública — un buen número (la referencia ya está por debajo del entregado). Conviene confirmar que sea el mismo grado y empaque.&quot;}">
-    <label class="iy-pc-label" for="iy-yp-green-beans">Tu precio (opcional)</label>
-    <div class="iy-pc-row">
-      <span class="iy-pc-cur" aria-hidden="true">$</span>
-      <input class="iy-pc-input" id="iy-yp-green-beans" type="number" inputmode="decimal" min="0" step="0.01" placeholder="41.50" autocomplete="off" />
-      <span class="iy-pc-unit">/ caja</span>
-    </div>
-    <p class="iy-pc-out" aria-live="polite">Ingresa tu precio para compararlo con esta referencia mayorista pública.</p>
-  </div>
-  <p class="iy-ci-why">Una sola metodología de precio respalda el nivel, pero los precios saltan semana a semana, así que la tendencia no es firme.</p>
-  <details class="iy-ci-src"><summary>Fuentes · 1</summary><div>USDA AMS — datos públicos, al 2026-07-10. Referencia mayorista, no el precio entregado que pagas.</div></details>
-  <p class="iy-ci-more"><a href="/es/tools/cost-pulse/#ci-green-beans">Ver la lectura completa en el panel <span aria-hidden="true">→</span></a></p>
-</div>
+    <p class="iy-cta-lede">El recorte de un ingrediente es el impuesto de arriba — un plato apila diez de ellos. La calculadora los suma.</p>
     <div class="iy-cta-row">
-      <a class="iy-cta" href="/es/tools/plate-cost/">Costéalo en la calculadora <span aria-hidden="true">→</span></a>
+      <a class="iy-cta" href="/es/tools/plate-cost/">Costea el plato entero <span aria-hidden="true">→</span></a>
     </div>
     <aside class="iy-keep" aria-labelledby="iyKeepH-green-beans">
       <h2 id="iyKeepH-green-beans">Mantén este costo al día</h2>

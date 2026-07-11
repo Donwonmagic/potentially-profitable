@@ -72,6 +72,8 @@ main{padding-top:64px}
 .iy-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:24px 0 0}
 .iy-cta{display:inline-flex;align-items:center;gap:6px;padding:12px 22px;border-radius:999px;background:var(--ink);color:var(--cream);font-weight:600;font-size:14px;text-decoration:none}
 .iy-cta:hover{background:var(--teal)}
+.iy-trimtax{margin:16px 0 0;padding:11px 15px;background:var(--cream-2,#EDEEF1);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:8px;font-size:14.5px;line-height:1.5;color:var(--ink);max-width:60ch;font-variant-numeric:tabular-nums}
+.iy-cta-lede{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:24px 0 10px;max-width:60ch}
 .iy-keep{margin:28px 0 0;padding:20px 22px;border-radius:12px;background:linear-gradient(100deg,#0f3a37 0%,#1f6f6a 100%);color:#fff;}
 .iy-keep h2{font-family:var(--font-display);font-size:19px;font-weight:500;color:#fff;margin:0 0 8px;line-height:1.2}
 .iy-keep p{font-size:14px;line-height:1.55;color:rgba(255,255,255,0.92);margin:0 0 14px;max-width:60ch}
@@ -360,9 +362,29 @@ main{padding-top:64px}
     <p class="iy-yield">85%</p>
     <h1>Red potato yields 85%</h1>
     <p class="iy-hero-lede">You buy red potato by its whole weight, but you only plate 85% of it. That 15% loss is real cost the invoice never shows — here&#39;s the math.</p>
+    <p class="iy-trimtax">At 85% yield, red potato carries a ×1.18 trim tax: its usable part costs the invoice price times 1.18.</p>
   </section>
   <section class="iy-body">
-    <p><strong>Yield</strong> is the fraction of an ingredient that actually reaches the plate after you clean, peel, and trim it. What you pay is the <em>AP</em> (as-purchased) price; what it costs on the plate is the <em>EP</em> (edible-portion) price.</p>
+    
+<div class="iy-costindex">
+  <p class="iy-ci-head">Market read<span class="iy-ci-badge">confidence medium · as of 2026-07-10</span></p>
+  <p class="iy-ci-line">About $27.94–$34.50/sack (wholesale reference), up +16.5% over the recent window.</p>
+  <p class="iy-ci-pctl">Higher than 26 of its last 26 weekly reads — near the top of its recent range.</p>
+  <p class="iy-ci-spread">Cheapest in Miami (~$22.00), priciest in New York (~$42.00).</p>
+  <p class="iy-ci-verdict iy-ci-watch"><strong>Watch.</strong> Up on paper, but for this item the move is not yet distinguishable from its own week-to-week noise once we account for every ingredient we check at once — we are holding this read as context until the next print.</p>
+  <div class="iy-pricecheck" data-ref="3150" data-tpls="{&quot;empty&quot;:&quot;Enter your price to compare it against this public wholesale reference.&quot;,&quot;even&quot;:&quot;That&#39;s about even with the public wholesale reference. The reference is wholesale — your delivered price usually runs a little higher.&quot;,&quot;above&quot;:&quot;That&#39;s about {pct}% above the public wholesale reference. Delivered normally runs above wholesale, so some gap is expected; a large one is worth a vendor conversation.&quot;,&quot;below&quot;:&quot;That&#39;s about {pct}% below the public wholesale reference — a strong number (the reference already sits below delivered). Worth confirming it&#39;s the same grade and pack.&quot;}">
+    <label class="iy-pc-label" for="iy-yp-red-potato">Your price (optional)</label>
+    <div class="iy-pc-row">
+      <span class="iy-pc-cur" aria-hidden="true">$</span>
+      <input class="iy-pc-input" id="iy-yp-red-potato" type="number" inputmode="decimal" min="0" step="0.01" placeholder="31.50" autocomplete="off" />
+      <span class="iy-pc-unit">/ sack</span>
+    </div>
+    <p class="iy-pc-out" aria-live="polite">Enter your price to compare it against this public wholesale reference.</p>
+  </div>
+  <p class="iy-ci-why">One pricing methodology backs the level.</p>
+  <details class="iy-ci-src"><summary>Sources · 2</summary><div>USDA AMS · BLS PPI — public data, as of 2026-07-10. Wholesale reference, not the delivered price you pay.</div></details>
+  <p class="iy-ci-more"><a href="/tools/cost-pulse/#ci-red-potato">See the full market read <span aria-hidden="true">→</span></a></p>
+</div><p><strong>Yield</strong> is the fraction of an ingredient that actually reaches the plate after you clean, peel, and trim it. What you pay is the <em>AP</em> (as-purchased) price; what it costs on the plate is the <em>EP</em> (edible-portion) price.</p>
 <p>Peel loss is real; skin-on prep recovers most of it when the dish allows.</p>
 <div class="iy-calc">
   <p class="iy-calc-line">Say your invoice shows <strong>$1.10</strong> per lb of red potato (an example AP price).</p>
@@ -386,27 +408,9 @@ main{padding-top:64px}
       <details class="iy-faq-item"><summary>How much red potato is lost to trim?</summary><p>About 15% of the as-purchased weight is lost to cleaning, peeling, and trimming before it reaches the plate.</p></details>
       <details class="iy-faq-item"><summary>How do you calculate the edible-portion cost of red potato?</summary><p>Divide the as-purchased price by the yield: EP cost = AP price ÷ 0.85. At 85% yield, the trim makes your real plated cost meaningfully higher than the invoice price.</p></details>
     </div>
-<div class="iy-costindex">
-  <p class="iy-ci-head">Market read<span class="iy-ci-badge">confidence medium · as of 2026-07-10</span></p>
-  <p class="iy-ci-line">About $27.94–$34.50/sack (wholesale reference), up +16.5% over the recent window.</p>
-  <p class="iy-ci-pctl">Higher than 26 of its last 26 weekly reads — near the top of its recent range.</p>
-  <p class="iy-ci-spread">Cheapest in Miami (~$22.00), priciest in New York (~$42.00).</p>
-  <p class="iy-ci-verdict iy-ci-watch"><strong>Watch.</strong> Up on paper, but for this item the move is not yet distinguishable from its own week-to-week noise once we account for every ingredient we check at once — we are holding this read as context until the next print.</p>
-  <div class="iy-pricecheck" data-ref="3150" data-tpls="{&quot;empty&quot;:&quot;Enter your price to compare it against this public wholesale reference.&quot;,&quot;even&quot;:&quot;That&#39;s about even with the public wholesale reference. The reference is wholesale — your delivered price usually runs a little higher.&quot;,&quot;above&quot;:&quot;That&#39;s about {pct}% above the public wholesale reference. Delivered normally runs above wholesale, so some gap is expected; a large one is worth a vendor conversation.&quot;,&quot;below&quot;:&quot;That&#39;s about {pct}% below the public wholesale reference — a strong number (the reference already sits below delivered). Worth confirming it&#39;s the same grade and pack.&quot;}">
-    <label class="iy-pc-label" for="iy-yp-red-potato">Your price (optional)</label>
-    <div class="iy-pc-row">
-      <span class="iy-pc-cur" aria-hidden="true">$</span>
-      <input class="iy-pc-input" id="iy-yp-red-potato" type="number" inputmode="decimal" min="0" step="0.01" placeholder="31.50" autocomplete="off" />
-      <span class="iy-pc-unit">/ sack</span>
-    </div>
-    <p class="iy-pc-out" aria-live="polite">Enter your price to compare it against this public wholesale reference.</p>
-  </div>
-  <p class="iy-ci-why">One pricing methodology backs the level.</p>
-  <details class="iy-ci-src"><summary>Sources · 2</summary><div>USDA AMS · BLS PPI — public data, as of 2026-07-10. Wholesale reference, not the delivered price you pay.</div></details>
-  <p class="iy-ci-more"><a href="/tools/cost-pulse/#ci-red-potato">See the full market read <span aria-hidden="true">→</span></a></p>
-</div>
+    <p class="iy-cta-lede">One ingredient&#39;s trim is the tax above — a plate stacks ten of them. The calculator adds them up.</p>
     <div class="iy-cta-row">
-      <a class="iy-cta" href="/tools/plate-cost/">Cost it in the calculator <span aria-hidden="true">→</span></a>
+      <a class="iy-cta" href="/tools/plate-cost/">Cost the whole plate <span aria-hidden="true">→</span></a>
     </div>
     <aside class="iy-keep" aria-labelledby="iyKeepH-red-potato">
       <h2 id="iyKeepH-red-potato">Keep this cost live</h2>
