@@ -122,6 +122,18 @@
    button); <mark> + the literal CSV <pre> are the honest artifacts. */
 .lg-rows mark{background:var(--teal-tint,#EAF0FE);color:inherit;padding:0 1px;border-radius:2px}
 .ld-csv{margin:12px 0 0;padding:10px 12px;border:1px solid var(--line,#E3E5E9);border-radius:8px;background:var(--cream-2,#EDEEF1);font-size:12px;line-height:1.6;color:var(--ink-soft,#4A4F59);overflow-x:auto;font-variant-numeric:tabular-nums}
+/* Export targets (2026-07-10 incr. C, surface tour) — the File step named
+   only CSV; the product also posts straight to QuickBooks Online (ledger
+   #what/File). Two illustrative chips above the CSV sample name both exits.
+   Static labels, not live controls — the figcaption's "not live controls"
+   honesty rail already governs this artifact. QBO chip carries the one teal
+   accent so the second exit reads as the richer integration. */
+.ld-export{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:14px 0 0}
+.ld-export-lbl{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--stone)}
+.ld-export-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;font-size:12.5px;font-weight:600;border-radius:999px;border:1px solid var(--line-dark,#D7DAE0);background:var(--surface-1,#fff);color:var(--ink);white-space:nowrap}
+.ld-export-chip svg{flex:0 0 13px;opacity:.75}
+.ld-export-chip--qbo{color:var(--teal,#2A50C8);border-color:color-mix(in srgb,var(--teal,#2A50C8) 35%,var(--line-dark,#D7DAE0))}
+.ld-export-chip--qbo svg{opacity:1}
 /* Step-2 ghost rows — the non-matching Jun 26 lines, dimmed so the
    "3 of the 7 filed lines match" count is countable on screen. They
    duplicate step-0 invoice lines, so no information lives only here. */
@@ -664,6 +676,7 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
 .ld-js #ld-step2 .ld-search{margin:0 0 8px;padding:6px 12px}
 .ld-js #ld-step2 .ld-count{margin:0 0 6px}
 .ld-js #ld-step2 .ld-csv{margin:8px 0 0;padding:7px 10px;font-size:11px;line-height:1.45}
+.ld-js #ld-step2 .ld-export{margin:11px 0 0}
 /* Desktop (>=768) keeps its two-column steps 3 & 4 and the anatomy /
    intro bodies where the 512-or-taller stage has room; the sub-768
    single column is the constrained case and drops more. */
@@ -672,6 +685,7 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
   .ld-js #ld-step1 .ld-anat{display:none}
   .ld-js #ld-step1 .ld-note{display:none}
   .ld-js #ld-step2 .ld-csv{display:none}
+  .ld-js #ld-step2 .ld-export{display:none}
   .ld-js #ld-step2 .lg-row--ghost{display:none}
   .ld-js #ld-step3 .lg-stepnote{display:none}
   .ld-js #ld-step4 .ld-cta-main .ld-body,.ld-js #ld-step4 .ld-cta-side .ld-body{display:none}
@@ -688,6 +702,12 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
    display:none, byte-parallel with ES. */
 @media (min-width:768px) and (max-height:740px){
   .ld-js #ld-step4 .lg-stances{display:none}
+  /* Short-laptop File (2026-07-10 incr. C): the new export chips (CSV +
+     QuickBooks) name both exits compactly, so on a short stage drop the raw
+     CSV sample beneath them — the chips carry the export story and the step
+     fits the svh-clamped stage without internal scroll (already CSV-hidden
+     on phones). */
+  .ld-js #ld-step2 .ld-csv{display:none}
 }
 @media (min-width:768px) and (max-height:730px){
   .ld-js #ld-step3 .lg-chart--frame{max-width:360px}
@@ -1299,8 +1319,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <section class="ld-panel" id="ld-step2" aria-labelledby="ld-h2">
       <h2 id="ld-h2" tabindex="-1">File.</h2>
-      <p class="ld-body">Every line lands filed and searchable &mdash; by vendor, by item, by date &mdash; and the whole record exports to a clean CSV whenever you ask. This is the price spreadsheet you never had to build; it filed itself.</p>
-      <figure class="lg-vignette" style="margin:0" data-audio-alt="The ledger searched for romaine: three matching rows, June twelfth at twenty-four ten, June nineteenth at twenty-four thirty-five, and June twenty-sixth at twenty-nine forty-five, with the four other June twenty-sixth lines dimmed. Beneath the rows, a two-line sample of the CSV export showing date, vendor, item, quantity, and price.">
+      <p class="ld-body">Every line lands filed and searchable &mdash; by vendor, by item, by date &mdash; and the whole record exports to a clean CSV, or posts straight to QuickBooks Online, whenever you ask. This is the price spreadsheet you never had to build; it filed itself.</p>
+      <figure class="lg-vignette" style="margin:0" data-audio-alt="The ledger searched for romaine: three matching rows, June twelfth at twenty-four ten, June nineteenth at twenty-four thirty-five, and June twenty-sixth at twenty-nine forty-five, with the four other June twenty-sixth lines dimmed. The record exports two ways: a clean CSV, shown as a two-line sample of date, vendor, item, quantity, and price, or a post straight to QuickBooks Online.">
         <div class="lg-pane">
           <div class="lg-pane-head">
             <span class="lg-pane-title">The ledger &mdash; searchable</span>
@@ -1323,10 +1343,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               <div class="lg-row lg-row--ghost" role="row"><span class="lg-d" role="cell">Jun 26</span><span class="lg-v" role="cell">Produce vendor</span><span class="lg-i" role="cell">Cilantro, 30&nbsp;ct</span><span class="lg-n" role="cell">$18.60</span><span class="lg-s" role="cell">filed</span></div>
             </div>
           </div>
+          <div class="ld-export">
+            <span class="ld-export-lbl">Export</span>
+            <span class="ld-export-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/></svg>CSV</span>
+            <span class="ld-export-chip ld-export-chip--qbo"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 3h7v7"/><path d="M21 3l-9 9"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>QuickBooks Online</span>
+          </div>
           <pre class="ld-csv">date,vendor,item,qty,price
 2026-06-19,Produce vendor,"Romaine, 24 ct",1,24.35</pre>
         </div>
-        <figcaption class="lg-cap"><strong>The ledger, narrowed to one item</strong> &mdash; three romaine reads across three invoices, the other June 26 lines dimmed; the CSV beneath shows how the whole record leaves with you, in a format you can open without Muntin. Search and export are part of the mockup, not live controls.</figcaption>
+        <figcaption class="lg-cap"><strong>The ledger, narrowed to one item</strong> &mdash; three romaine reads across three invoices, the other June 26 lines dimmed; the whole record leaves with you as a clean CSV, or posts straight to QuickBooks Online. Search and export are part of the mockup, not live controls.</figcaption>
       </figure>
     </section>
 
