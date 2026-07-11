@@ -3058,7 +3058,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .tool-data-promise__links a:hover{border-bottom-color:var(--teal)}
 
 
-/* ===== [core] Newsletter capture (in global footer; on every page) (lines 6606-6669) ===== */
+/* ===== [core] Newsletter capture (in global footer; on every page) (lines 6606-6673) ===== */
 
 /* Phase G.10 (Growth) — quiet newsletter capture in the global footer.
    Two short lines, one input, one button — no badges, no pop-ups, no
@@ -3089,7 +3089,11 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
    it as its own zone without going dark. The .founding-form posts to
    /api/waitlist and gets ts-stamp + async submit + inline success from
    first-touch.js via the shared .js-signup-form handler. */
-.founding-band{background:var(--cream-2);border-top:3px solid var(--ink);border-bottom:1px solid var(--line)}
+.founding-band{background:var(--cream-2);border-top:3px solid var(--ink);border-bottom:1px solid var(--line);--fd-mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono","Roboto Mono",Menlo,monospace}
+/* App-grade enrollment (2026-07-11): mono field labels + a mono countdown
+   readout so the founding capture reads as enrolling in a capable product,
+   not a newsletter signup. Token-only; the form machinery is untouched. */
+.founding-countdown{font-family:var(--fd-mono);font-weight:600;color:var(--teal);white-space:nowrap;font-variant-numeric:tabular-nums}
 .founding-band .section-header{margin-bottom:36px}
 .founding-band .section-header .eyebrow{justify-content:center}
 .founding-band .section-header p{margin-inline:auto;color:var(--ink-soft)}
@@ -3097,13 +3101,13 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .founding-form-fields{display:flex;flex-direction:column;gap:14px}
 @media(min-width:560px){.founding-form-fields{flex-direction:row;gap:12px}.founding-field{flex:1 1 0;min-width:0}}
 .founding-field{display:flex;flex-direction:column;gap:6px;text-align:left}
-.founding-form-label{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-soft)}
+.founding-form-label{font-family:var(--fd-mono);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--stone)}
 .founding-optional{font-weight:400;letter-spacing:0.02em;text-transform:none;color:var(--stone)}
-.founding-form input[type="email"],.founding-form input[type="text"]:not([name="hp"]){width:100%;box-sizing:border-box;padding:12px 14px;min-height:46px;border:1px solid var(--line-input);border-radius:var(--r-sm);background:var(--white);color:var(--ink);font:inherit;font-size:16px}
+.founding-form input[type="email"],.founding-form input[type="text"]:not([name="hp"]){width:100%;box-sizing:border-box;padding:12px 14px;min-height:46px;border:1px solid var(--line-dark);border-radius:6px;background:var(--white);color:var(--ink);font:inherit;font-size:16px}
 .founding-form input[type="email"]::placeholder,.founding-form input[type="text"]:not([name="hp"])::placeholder{color:var(--stone)}
 .founding-form input[type="email"]:focus-visible,.founding-form input[type="text"]:not([name="hp"]):focus-visible{outline:2px solid var(--teal);outline-offset:1px;border-color:var(--teal)}
 .founding-form .cf-turnstile{margin:2px auto 0}
-.founding-form button{align-self:center;padding:13px 28px;min-height:48px;border:0;border-radius:var(--r-sm);background:var(--teal);color:#fff;font:inherit;font-weight:600;font-size:16px;cursor:pointer;letter-spacing:0.02em}
+.founding-form button{align-self:center;padding:13px 28px;min-height:48px;border:0;border-radius:6px;background:var(--teal);color:#fff;font:inherit;font-weight:600;font-size:16px;cursor:pointer;letter-spacing:0.02em}
 .founding-form button:hover{background:var(--teal-dark)}
 .founding-form button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 /* Inline success: the confirm line is hidden until the async submit
@@ -3123,7 +3127,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 
 
 
-/* ===== [core] Touch-device hover hygiene (lines 6732-6770) ===== */
+/* ===== [core] Touch-device hover hygiene (lines 6736-6774) ===== */
 /* ============================================================
    Touch-device hover hygiene — neutralize sticky :hover effects
    on devices that don't have a hover capability. CSS :hover on
@@ -3163,7 +3167,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   *:hover { transition-duration: 0ms !important; }
 }
 
-/* ===== [core] Hero mobile reorder (homepage) (lines 6771-6795) ===== */
+/* ===== [core] Hero mobile reorder (homepage) (lines 6775-6799) ===== */
 
 /* ============================================================
    Hero mobile reorder — phones first, primary CTA above the fold.
@@ -3189,7 +3193,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Hero count chips (homepage) (lines 6871-6902) ===== */
+/* ===== [core] Hero count chips (homepage) (lines 6875-6906) ===== */
 
 /* ============================================================
    Hero count chips — small pill row showing library counts
@@ -3222,7 +3226,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   color: var(--teal);
 }
 
-/* ===== [core] Trust strip (homepage) (lines 6903-6952) ===== */
+/* ===== [core] Trust strip (homepage) (lines 6907-6956) ===== */
 
 /* ============================================================
    Trust strip — single thin band immediately under flagship
@@ -3273,7 +3277,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 .trust-strip__sep { display: none; }
 
-/* ===== [core] Compare cards (homepage) (lines 6953-7038) ===== */
+/* ===== [core] Compare cards (homepage) (lines 6957-7042) ===== */
 
 /* ============================================================
    Compare cards — three-column Patchwork / Agency / Muntin
@@ -3360,7 +3364,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Window Phase 2/3.6/4/5+ additions (sash/sidelight, attach, now, pulses, admin) (lines 7480-7743) ===== */
+/* ===== [core] Window Phase 2/3.6/4/5+ additions (sash/sidelight, attach, now, pulses, admin) (lines 7484-7747) ===== */
 /* ============ THE WINDOW — Phase 2/3.6/4/5+ additions ============
    Sash/sidelight named-pane composer (Phase 2.1), photo+voice attach
    row (Phase 3.2-3.6), now-line widget (Phase 4), site-wide pulse
@@ -3625,7 +3629,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .admin-callbacks__voice-label--deleted{color:var(--stone)}
 .admin-callbacks__meta{font-size:12px;color:var(--ink-soft);font-style:italic;margin:8px 0 0}
 
-/* ===== [core] Phase 1 — design tokens + MuntinUI component shells (.mtn-*) (lines 7744-7956) ===== */
+/* ===== [core] Phase 1 — design tokens + MuntinUI component shells (.mtn-*) (lines 7748-7960) ===== */
 
 /* ============ Phase 1 tokens (tool-suite upgrade) ============
    Additive tokens that the MuntinUI primitives consume. Existing
@@ -3839,7 +3843,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   }
 }
 
-/* ===== [core] Phase 2 — hub tier badge + tool-tier-filter strip (lines 7957-8010) ===== */
+/* ===== [core] Phase 2 — hub tier badge + tool-tier-filter strip (lines 7961-8014) ===== */
 
 /* ============ Phase 2 hub styles (tool-suite upgrade) ============
    Tier badge on each tool card + a JS-enhanced filter strip that
@@ -3894,7 +3898,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   display:none;
 }
 
-/* ===== [core] Phase 5 — dark-mode token override (prefers-color-scheme + [data-theme]) (lines 8011-8072) ===== */
+/* ===== [core] Phase 5 — dark-mode token override (prefers-color-scheme + [data-theme]) (lines 8015-8076) ===== */
 
 /* ============ Phase 5 dark-mode tokens (tool-suite upgrade) ============
    The Phase 1 component primitives all reference --mtn-surface /
@@ -3957,7 +3961,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Phase 7 — dark-mode toggle button (.theme-toggle) (lines 8073-8133) ===== */
+/* ===== [core] Phase 7 — dark-mode toggle button (.theme-toggle) (lines 8077-8137) ===== */
 /* ============ Phase 7 — dark-mode toggle button =============
    Sits in the nav next to lang-switch. Two SVG icons (sun + moon)
    stacked; CSS shows one based on the current [data-theme] state.
@@ -4019,7 +4023,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .mobile-theme .theme-toggle__label{display:inline}
 
 
-/* ===== [core] Phase 4 — next-tool recommendation card (.mtn-next-tool) (lines 8134-8174) ===== */
+/* ===== [core] Phase 4 — next-tool recommendation card (.mtn-next-tool) (lines 8138-8178) ===== */
 /* ============ Phase 4 — next-tool recommendation card =============
    Mounted at the end of a tool's result region by
    MuntinNextTool.render(). Visually quiet so it doesn't compete
@@ -4061,7 +4065,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .mtn-next-tool__link:focus-visible{outline:none;box-shadow:var(--ring-focus)}
 
 
-/* ===== [core] Phase G — About portrait frame (real photo overlay) (lines 8175-8189) ===== */
+/* ===== [core] Phase G — About portrait frame (real photo overlay) (lines 8179-8193) ===== */
 /* ===== Phase G — About portrait frame (real photo overlay; reused on homepage About teaser + /about/) ===== */
 .about-portrait-frame{position:relative;width:100%;aspect-ratio:4/5;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line-dark);background:var(--cream-2)}
 .about-portrait-frame .portrait{position:absolute;inset:0;border:0;border-radius:0;aspect-ratio:auto;width:100%;height:100%}
@@ -4077,7 +4081,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .about-window .portrait{position:absolute;inset:0;border:0;border-radius:0;aspect-ratio:auto;width:100%;height:100%;overflow:hidden;background:linear-gradient(150deg,color-mix(in srgb,var(--teal) 24%,var(--cream)) 0%,color-mix(in srgb,var(--teal) 11%,var(--cream)) 52%,var(--cream-2) 100%)}
 .about-window .portrait::after{content:'';position:absolute;inset:0;background:linear-gradient(color-mix(in srgb,var(--ink) 24%,transparent),color-mix(in srgb,var(--ink) 24%,transparent)) 50% 0/2px 100% no-repeat,linear-gradient(color-mix(in srgb,var(--ink) 24%,transparent),color-mix(in srgb,var(--ink) 24%,transparent)) 0 33.333%/100% 2px no-repeat,linear-gradient(color-mix(in srgb,var(--ink) 24%,transparent),color-mix(in srgb,var(--ink) 24%,transparent)) 0 66.666%/100% 2px no-repeat;box-shadow:inset 0 0 0 9px var(--cream),inset 0 0 0 11px color-mix(in srgb,var(--ink) 20%,transparent);pointer-events:none}
 
-/* ===== [core] Batch marquee (lines 8190-8203) ===== */
+/* ===== [core] Batch marquee (lines 8194-8207) ===== */
 /* ===== Batch marquee — fixed strip above the nav (.batch-marquee is on every page when a batch is active) ===== */
 .batch-marquee{position:fixed;top:0;left:0;right:0;z-index:60}
 /* The fixed nav is offset below the fixed banner by --banner-h (set to the
@@ -4092,7 +4096,7 @@ body:has(.batch-marquee) main{padding-top:calc(64px + max(var(--banner-h,50px),5
 @media (max-width:640px){:root{--banner-h:72px}}
 
 
-/* ===== [core] Phase 9 — Light refresh (micro-interactions, depth, voice search, dark-mode polish) (lines 8204-8408) ===== */
+/* ===== [core] Phase 9 — Light refresh (micro-interactions, depth, voice search, dark-mode polish) (lines 8208-8412) ===== */
 /* ============ Phase 9 — Light refresh ============
    A small, additive cosmetic pass that layers on top of every
    previous phase without re-declaring anything. Five concerns:
@@ -4298,10 +4302,10 @@ body:has(.batch-marquee) main{padding-top:calc(64px + max(var(--banner-h,50px),5
 :root[data-theme="dark"] .theme-toggle:hover{background:var(--refresh-surface-1);border-color:var(--teal)}
 
 
-/* ===== [core] Dark-mode contrast completion (lines 8409-8409) ===== */
+/* ===== [core] Dark-mode contrast completion (lines 8413-8413) ===== */
 
 
-/* ===== [core] Nav width discipline (bolder pass 2026-07) (lines 8410-8708) ===== */
+/* ===== [core] Nav width discipline (bolder pass 2026-07) (lines 8414-8712) ===== */
 /* At 1440 the nav row's natural demand (~1307px) exceeds the 1200px
    container, pushing the primary CTA off-canvas ("Reach Do"). Shed
    demand progressively instead of letting the row overflow: tighter

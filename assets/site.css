@@ -6634,7 +6634,11 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
    it as its own zone without going dark. The .founding-form posts to
    /api/waitlist and gets ts-stamp + async submit + inline success from
    first-touch.js via the shared .js-signup-form handler. */
-.founding-band{background:var(--cream-2);border-top:3px solid var(--ink);border-bottom:1px solid var(--line)}
+.founding-band{background:var(--cream-2);border-top:3px solid var(--ink);border-bottom:1px solid var(--line);--fd-mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono","Roboto Mono",Menlo,monospace}
+/* App-grade enrollment (2026-07-11): mono field labels + a mono countdown
+   readout so the founding capture reads as enrolling in a capable product,
+   not a newsletter signup. Token-only; the form machinery is untouched. */
+.founding-countdown{font-family:var(--fd-mono);font-weight:600;color:var(--teal);white-space:nowrap;font-variant-numeric:tabular-nums}
 .founding-band .section-header{margin-bottom:36px}
 .founding-band .section-header .eyebrow{justify-content:center}
 .founding-band .section-header p{margin-inline:auto;color:var(--ink-soft)}
@@ -6642,13 +6646,13 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .founding-form-fields{display:flex;flex-direction:column;gap:14px}
 @media(min-width:560px){.founding-form-fields{flex-direction:row;gap:12px}.founding-field{flex:1 1 0;min-width:0}}
 .founding-field{display:flex;flex-direction:column;gap:6px;text-align:left}
-.founding-form-label{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-soft)}
+.founding-form-label{font-family:var(--fd-mono);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--stone)}
 .founding-optional{font-weight:400;letter-spacing:0.02em;text-transform:none;color:var(--stone)}
-.founding-form input[type="email"],.founding-form input[type="text"]:not([name="hp"]){width:100%;box-sizing:border-box;padding:12px 14px;min-height:46px;border:1px solid var(--line-input);border-radius:var(--r-sm);background:var(--white);color:var(--ink);font:inherit;font-size:16px}
+.founding-form input[type="email"],.founding-form input[type="text"]:not([name="hp"]){width:100%;box-sizing:border-box;padding:12px 14px;min-height:46px;border:1px solid var(--line-dark);border-radius:6px;background:var(--white);color:var(--ink);font:inherit;font-size:16px}
 .founding-form input[type="email"]::placeholder,.founding-form input[type="text"]:not([name="hp"])::placeholder{color:var(--stone)}
 .founding-form input[type="email"]:focus-visible,.founding-form input[type="text"]:not([name="hp"]):focus-visible{outline:2px solid var(--teal);outline-offset:1px;border-color:var(--teal)}
 .founding-form .cf-turnstile{margin:2px auto 0}
-.founding-form button{align-self:center;padding:13px 28px;min-height:48px;border:0;border-radius:var(--r-sm);background:var(--teal);color:#fff;font:inherit;font-weight:600;font-size:16px;cursor:pointer;letter-spacing:0.02em}
+.founding-form button{align-self:center;padding:13px 28px;min-height:48px;border:0;border-radius:6px;background:var(--teal);color:#fff;font:inherit;font-weight:600;font-size:16px;cursor:pointer;letter-spacing:0.02em}
 .founding-form button:hover{background:var(--teal-dark)}
 .founding-form button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 /* Inline success: the confirm line is hidden until the async submit
