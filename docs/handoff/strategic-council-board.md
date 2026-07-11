@@ -15,6 +15,17 @@ council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 
 ## ⮕ CURRENT STATE — AUTONOMOUS REDESIGN RUN (updated 2026-07-11)
 
+**⚠ OPS NOTE (2026-07-11) — container reverted; recovered.** A worker restart reverted this container's
+working tree to a STALE demo-thread checkout (HEAD `e6afa2258` "wip(demo): single-frame no-scroll redesign",
+remote-tracking ref stale at `2401bf103`) — 192 commits behind, my entire redesign cascade absent locally,
+`index.html` showing pre-de-solo "Reach Don"/"Email Don". **All work was safe on origin** (pushed). Recovery:
+`git fetch` then `git reset --hard origin/claude/muntin-strategic-council-exsghc` (working tree was clean).
+The orphan demo-wip is preserved as tag `orphan-demo-wip-e6afa2258` if ever needed. **Runbook for a future
+session:** if HEAD looks wrong (demo commits, missing redesign, "Reach Don" on the home), you're on a stale
+checkout — `git fetch origin claude/muntin-strategic-council-exsghc && git reset --hard origin/…` to restore.
+Push every increment (the only thing that survives a restart). Post-recovery: clean, synced at `1ca49932d`,
+gates green (fabrications 0, newsletter-copy ✓, css-drift 504); restored cost-index nav correctly shows "Contact".
+
 **Founder directive:** "Fold both plans together. Execute the entirety of the redesign as I sleep,
 build → audit → iterate, frequently, all the way through." Macro-first. → **`docs/handoff/redesign-execution-plan.md`
 is the execution spine** (folds the reinvention master plan + the locked macro design direction from
