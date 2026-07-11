@@ -96,6 +96,34 @@ function listPages() {
   }
   return out;
 }
+// The per-event DETAIL pages live one level deeper (cost-index/events/<id>/index.html + ES
+// mirror) and so are invisible to listPages()' one-level walk. They are the surface's most
+// detailed prose, so the co-occurrence-only invariant must be enforced HERE too, not just on
+// the hub. The hub itself (cost-index/events/index.html) is not a subdir and is excluded.
+function listEventDetailPages() {
+  const out = [];
+  for (const dir of [path.join('cost-index', 'events'), path.join('es', 'cost-index', 'events')]) {
+    const abs = path.join(repo, dir);
+    let ids = [];
+    try { ids = fs.readdirSync(abs, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name); } catch { continue; }
+    for (const id of ids) { const f = path.join(abs, id, 'index.html'); if (fs.existsSync(f)) out.push(f); }
+  }
+  return out;
+}
+// A detail page is ENTIRELY an events surface, so — like the hub — the whole body is framing,
+// minus the parts that legitimately hold documented history: the <head> (JSON-LD articleBody +
+// source-title citations), every <script> block (JSON-LD in body, JS islands), the <details>
+// drawers and [data-quoted-source] elements (stripped downstream by framingText). What's left is
+// the site's OWN voice, held to co-occurrence / no-forecast.
+function detailFramingText(html) {
+  const body = html
+    .replace(/<head[\s\S]*?<\/head>/i, ' ')
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ');
+  return framingText(body);
+}
+// Every detail page must visibly carry the co-occurrence caveat in its own voice (EN + ES forms),
+// the structural guarantee that it presents the event as context, never as a cause.
+const COOCCUR_MARKERS = [/co-occurrence/i, /coincidencia en el tiempo/i];
 
 function run() {
   const problems = [];
@@ -140,6 +168,18 @@ function run() {
     }
   }
 
+  // (4) per-event DETAIL pages (39×2) — the deepest prose, previously unscanned. Same invariant:
+  // the site's own framing (JSON-LD, scripts, drawers, quoted sources stripped) may assert no
+  // causation and no forecast, and each page must visibly carry the co-occurrence caveat.
+  for (const f of listEventDetailPages()) {
+    const html = fs.readFileSync(f, 'utf8');
+    const rel = path.relative(repo, f);
+    const frame = detailFramingText(html);
+    const cz = causalHit(frame); if (cz) problems.push(`RENDER (event detail): ${rel} framing asserts causation — "${cz}"`);
+    const fz = forecastHit(frame); if (fz) problems.push(`RENDER (event detail): ${rel} framing speaks a forecast — "${fz}"`);
+    if (!COOCCUR_MARKERS.some((re) => re.test(html))) problems.push(`RENDER (event detail): ${rel} is missing its co-occurrence caveat`);
+  }
+
   return problems;
 }
 
@@ -158,6 +198,16 @@ function selfTest() {
     ['causal render string is caught', causalHit('the outbreak caused the price to spike') !== null],
     ['co-occurrence render string is clean', causalHit('Documented around this time: BSE case. Prices moved 40% above normal.') === null && forecastHit('Documented around this time: BSE case.') === null],
     ['forecast render string is caught', forecastHit('prices will rise next year') !== null],
+    // Detail-page framing extraction: JSON-LD (in <head> + in-body <script>), <details> drawers,
+    // and [data-quoted-source] documented prose are NOT the site's voice and must be stripped.
+    ['detail framing strips head JSON-LD (articleBody causal history ignored)',
+      causalHit(detailFramingText('<head><script type="application/ld+json">{"articleBody":"drought drove the prices higher"}</script></head><body><p class="evd-caveat">Co-occurrence in time, not a cause.</p></body>')) === null],
+    ['detail framing strips in-body script + quoted source titles',
+      causalHit(detailFramingText('<body><li data-quoted-source>Shortage drove the prices up</li><script>var x="caused the price to spike"</script><p>Documented around this time.</p></body>')) === null],
+    ['detail framing still catches causation in the SITE voice',
+      causalHit(detailFramingText('<body><p class="evd-note">The outbreak caused the price to spike.</p></body>')) !== null],
+    ['co-occurrence marker matches EN + ES', COOCCUR_MARKERS.some((re) => re.test('… co-occurrence in time …')) && COOCCUR_MARKERS.some((re) => re.test('… coincidencia en el tiempo, no una causa …'))],
+    ['co-occurrence marker absent is detectable', !COOCCUR_MARKERS.some((re) => re.test('a page with no caveat at all'))],
   ];
   const failed = checks.filter((c) => !c[1]);
   failed.forEach((c) => console.error('  ✗ ' + c[0]));
@@ -174,4 +224,5 @@ if (problems.length) {
   process.exit(1);
 }
 const reg = rd('cost-index/events.json') || { events: [] };
-console.log(`✓ cost-index events honesty gate — ${reg.events.length} documented event(s), co-occurrence framing intact; no causation or forecast on any page.`);
+const detailCount = listEventDetailPages().length;
+console.log(`✓ cost-index events honesty gate — ${reg.events.length} documented event(s); co-occurrence framing intact across ingredient pages, the events hub, and ${detailCount} per-event detail page(s); no causation or forecast in any page's own voice.`);
