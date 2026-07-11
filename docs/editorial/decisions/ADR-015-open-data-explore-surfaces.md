@@ -69,6 +69,22 @@ date; the documented event window rides in **`temporalCoverage`** (an ISO-8601 i
 the correct home for "what the article is about." Setting `datePublished` to the event
 date misrepresented pages built this week as years-old content.
 
+## Decision 4 — The research layer: analysis, with numbers the engine owns
+
+`/cost-index/research/` is the "data company, not aggregator" line — original computed
+analysis over the same open datasets (co-movement, yields, lock-or-float, seasonality),
+written for a DMV operator to act on. The honesty mechanism is a **split of labor**: every
+NUMBER is computed deterministically in `scripts/lib/cost-research.mjs` and rendered into
+the figures; the editorial PROSE (EN+ES) lives in `data/cost-research-content.json` and may
+only *frame* those numbers. `check-cost-research.mjs` (in check-all) grounds every prose
+number against the engine and blocks forecast, event→price causation, and
+wholesale-as-delivered-price framing in both languages — so an LLM-written sentence can
+never introduce a number the data doesn't support, and a future edit can't drift. Pages
+carry `Article`+`speakable` JSON-LD and cross-link the dataset + explore surface they draw
+from; the design is the theme-aware, contrast-safe `rs-*` system (single-hue teal data
+marks, accent as chrome only). Any new research page follows the same split: numbers from
+the engine, prose in the content JSON, gated.
+
 ## Gate coverage (the invariant is enforced where the prose lives)
 
 - `check-cost-index-events.mjs` now scans the **78 per-event detail pages** (previously
