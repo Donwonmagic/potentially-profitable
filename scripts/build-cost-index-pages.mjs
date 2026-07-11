@@ -3624,6 +3624,11 @@ function emitOpenHub(locale) {
   const es = locale === 'es';
   const lang = es ? 'es' : 'en';
   const base = es ? '/es' : '';
+  // License URIs + a DataDownload builder for the DataCatalog. CC0 = deterministic recompute of
+  // public-domain gov data; CC-BY = Muntin's compiled/curated sets (credit required).
+  const CC0 = 'https://creativecommons.org/publicdomain/zero/1.0/';
+  const CCBY = 'https://creativecommons.org/licenses/by/4.0/';
+  const dl = (fmt, contentUrl, license) => ({ '@type': 'DataDownload', 'encodingFormat': fmt === 'csv' ? 'text/csv' : 'application/json', 'contentUrl': contentUrl, 'license': license });
   const canonEn = 'https://muntin.digital/open/';
   const canonEs = 'https://muntin.digital/es/open/';
   const url = es ? canonEs : canonEn;
@@ -3650,19 +3655,34 @@ function emitOpenHub(locale) {
       accent: 'var(--season)', h: es ? 'Estacionalidad' : 'Seasonality',
       stat: es ? `Normales de 12 meses · ${readyN} ingredientes` : `12-month normals · ${readyN} ingredients`,
       d: es ? 'Cuándo está más barato cada ingrediente — y dónde el calendario apenas importa. Derivado del historial público profundo.' : 'When each ingredient is cheapest — and where the calendar barely matters. Derived from the deep public history.',
-      links: [[es ? 'Aprender y explorar' : 'Learn & explore', `${base}/open/seasonality/`]], lic: 'CC0',
+      links: [[es ? 'Aprender y explorar' : 'Learn & explore', `${base}/open/seasonality/`], ['CSV', '/cost-index/seasonality.csv'], ['JSON', '/cost-index/seasonality.json']], lic: 'CC0',
     },
     {
+      // Two license layers, made unambiguous per-link: the detected-moves + co-movement bulk is
+      // CC0 (pure recompute of a public series); the curated, cited registry is CC-BY (Muntin's
+      // compilation), self-labeled in its own link so the badge is never read across both.
       accent: 'var(--gold)', h: es ? 'Eventos de mercado' : 'Market events',
       stat: es ? `${nEvents} eventos documentados` : `${nEvents} documented events`,
       d: es ? 'Choques de oferta y su co-ocurrencia con el precio — enmarcados como asociación, nunca como causa.' : 'Supply shocks and their price co-occurrence — framed as association, never as cause.',
-      links: [[es ? 'Ver el explorador' : 'Browse the explorer', `${base}/cost-index/events/`], ['CSV', '/cost-index/events-detected.csv'], ['JSON', '/cost-index/events-detected.json']], lic: 'CC0 · CC-BY',
+      links: [[es ? 'Ver el explorador' : 'Browse the explorer', `${base}/cost-index/events/`], [es ? 'Movimientos (CSV)' : 'Detected moves (CSV)', '/cost-index/events-detected.csv'], ['JSON', '/cost-index/events-detected.json'], [es ? 'Co-movimiento (CSV)' : 'Co-movement (CSV)', '/cost-index/co-movement.csv'], ['JSON', '/cost-index/co-movement.json'], [es ? 'Registro citado — CC-BY' : 'Cited registry — CC-BY', '/cost-index/events.json']], lic: 'CC0',
     },
     {
       accent: 'var(--teal)', h: es ? 'Rendimientos' : 'Ingredient yields',
       stat: es ? `${nYields} rendimientos comestibles` : `${nYields} edible yields`,
       d: es ? 'Convierte una libra al mayoreo en costo por plato — el porcentaje comestible de cada ingrediente.' : 'Turn a wholesale pound into plate cost — the edible portion of each ingredient.',
       links: [[es ? 'Ver el explorador' : 'Browse the explorer', `${base}/library/ingredient-yields/`], ['CSV', '/cost-index/yields.csv'], ['JSON', '/cost-index/yields.json']], lic: 'CC-BY',
+    },
+    {
+      accent: 'var(--season)', h: es ? 'Fijar o flotar' : 'Lock-or-float',
+      stat: es ? '100 ingredientes · fijar / cojín / flotar / reservar' : '100 ingredients · lock / cushion / float / withhold',
+      d: es ? 'Qué tan estrecha ha corrido la banda mayorista de cada ingrediente — si puedes fijar un precio de menú o conviene dejarlo flotar. Ancho de banda, nunca un pronóstico.' : "How tight each ingredient's recent wholesale band has run — whether you can lock a menu price or should float it. Band width, never a forecast.",
+      links: [[es ? 'Usa la herramienta' : 'Use the tool', `${base}/tools/cost-pulse/`], ['CSV', '/cost-index/lockfloat.csv'], ['JSON', '/cost-index/lockfloat.json']], lic: 'CC-BY',
+    },
+    {
+      accent: 'var(--gold)', h: es ? 'Registro de anomalías' : 'Anomaly log',
+      stat: es ? '102 ingredientes · Hampel + Pettitt' : '102 ingredients · Hampel + Pettitt',
+      d: es ? 'Valores atípicos y quiebres de régimen en el historial profundo de precios de cada ingrediente — descriptivo, nunca una causa ni un pronóstico.' : "Statistical outliers and regime breaks in each ingredient's deep price history — descriptive, never a cause and never a forecast.",
+      links: [['CSV', '/cost-index/anomaly-log.csv'], ['JSON', '/cost-index/anomaly-log.json']], lic: 'CC-BY',
     },
   ];
   const cardHtml = cards.map((c) => `
@@ -3681,9 +3701,20 @@ function emitOpenHub(locale) {
       { '@type': ['CollectionPage', 'DataCatalog'], '@id': url + '#page', 'url': url, 'name': h1, 'inLanguage': es ? 'es-US' : 'en-US',
         'isPartOf': { '@id': 'https://muntin.digital/#website' }, 'description': desc,
         'dataset': [
-          { '@type': 'Dataset', 'name': es ? 'Índice de costos de ingredientes' : 'Restaurant ingredient cost index', 'url': 'https://muntin.digital' + base + '/cost-index/', 'license': 'https://creativecommons.org/publicdomain/zero/1.0/', 'creator': { '@id': 'https://muntin.digital/#business' } },
-          { '@type': 'Dataset', 'name': es ? 'Eventos de mercado del índice de costos' : 'Cost index market events', 'url': 'https://muntin.digital/cost-index/events/', 'license': 'https://creativecommons.org/licenses/by/4.0/', 'creator': { '@id': 'https://muntin.digital/#business' } },
-          { '@type': 'Dataset', 'name': es ? 'Rendimientos comestibles de ingredientes' : 'Ingredient edible yields', 'url': 'https://muntin.digital/library/ingredient-yields/', 'license': 'https://creativecommons.org/licenses/by/4.0/', 'creator': { '@id': 'https://muntin.digital/#business' } },
+          { '@type': 'Dataset', 'name': es ? 'Índice de costos de ingredientes' : 'Restaurant ingredient cost index', 'url': 'https://muntin.digital' + base + '/cost-index/', 'license': CC0, 'creator': { '@id': 'https://muntin.digital/#business' },
+            'distribution': [ dl('json', 'https://muntin.digital/cost-index/index.json', CC0), dl('csv', 'https://muntin.digital/cost-index/index.csv', CC0) ] },
+          { '@type': 'Dataset', 'name': es ? 'Normales estacionales mayoristas' : 'Seasonal wholesale normals', 'url': 'https://muntin.digital' + base + '/open/seasonality/', 'license': CC0, 'creator': { '@id': 'https://muntin.digital/#business' },
+            'distribution': [ dl('json', 'https://muntin.digital/cost-index/seasonality.json', CC0), dl('csv', 'https://muntin.digital/cost-index/seasonality.csv', CC0) ] },
+          { '@type': 'Dataset', 'name': es ? 'Eventos de mercado (registro citado)' : 'Cost index market events (cited registry)', 'url': 'https://muntin.digital/cost-index/events/', 'license': CCBY, 'creator': { '@id': 'https://muntin.digital/#business' },
+            'distribution': [ dl('json', 'https://muntin.digital/cost-index/events.json', CCBY) ] },
+          { '@type': 'Dataset', 'name': es ? 'Movimientos de precio detectados y co-movimiento' : 'Detected price moves & co-movement', 'url': 'https://muntin.digital/cost-index/events/', 'license': CC0, 'creator': { '@id': 'https://muntin.digital/#business' },
+            'distribution': [ dl('json', 'https://muntin.digital/cost-index/events-detected.json', CC0), dl('csv', 'https://muntin.digital/cost-index/events-detected.csv', CC0), dl('json', 'https://muntin.digital/cost-index/co-movement.json', CC0), dl('csv', 'https://muntin.digital/cost-index/co-movement.csv', CC0) ] },
+          { '@type': 'Dataset', 'name': es ? 'Rendimientos comestibles de ingredientes' : 'Ingredient edible yields', 'url': 'https://muntin.digital' + base + '/library/ingredient-yields/', 'license': CCBY, 'creator': { '@id': 'https://muntin.digital/#business' },
+            'distribution': [ dl('json', 'https://muntin.digital/cost-index/yields.json', CCBY), dl('csv', 'https://muntin.digital/cost-index/yields.csv', CCBY) ] },
+          { '@type': 'Dataset', 'name': es ? 'Predictibilidad fijar-o-flotar' : 'Lock-or-float predictability', 'url': 'https://muntin.digital' + base + '/tools/cost-pulse/', 'license': CCBY, 'creator': { '@id': 'https://muntin.digital/#business' },
+            'distribution': [ dl('json', 'https://muntin.digital/cost-index/lockfloat.json', CCBY), dl('csv', 'https://muntin.digital/cost-index/lockfloat.csv', CCBY) ] },
+          { '@type': 'Dataset', 'name': es ? 'Registro de anomalías de precio' : 'Price anomaly log', 'url': 'https://muntin.digital/cost-index/anomaly-log.json', 'license': CCBY, 'creator': { '@id': 'https://muntin.digital/#business' },
+            'distribution': [ dl('json', 'https://muntin.digital/cost-index/anomaly-log.json', CCBY), dl('csv', 'https://muntin.digital/cost-index/anomaly-log.csv', CCBY) ] },
         ] },
       { '@type': 'BreadcrumbList', '@id': url + '#breadcrumbs', 'itemListElement': crumb.map((c, i) => ({ '@type': 'ListItem', 'position': i + 1, 'name': c[0], 'item': c[1] })) },
     ],
@@ -3703,7 +3734,7 @@ function emitOpenHub(locale) {
   <hr class="od-rule">
   <section aria-labelledby="od-sets">
     <h2 class="od-h2" id="od-sets">${es ? 'Los conjuntos de datos' : 'The datasets'}</h2>
-    <p class="od-sub">${es ? 'Cuatro superficies, una postura: cada cifra es rastreable a datos públicos y descargable en formatos abiertos.' : 'Four surfaces, one posture: every figure traces to public data and downloads in open formats.'}</p>
+    <p class="od-sub">${es ? 'Seis conjuntos de datos, una postura: cada cifra es rastreable a datos públicos y descargable en formatos abiertos.' : 'Six datasets, one posture: every figure traces to public data and downloads in open formats.'}</p>
     <div class="od-grid">${cardHtml}</div>
   </section>
   <hr class="od-rule">
@@ -3711,7 +3742,7 @@ function emitOpenHub(locale) {
     <h2 class="od-h2" id="od-honest">${es ? 'Cómo se mantiene honesto' : 'How this stays honest'}</h2>
     <p>${es ? 'Un número se publica solo cuando lo respalda un <strong>nivel mayorista real en dólares</strong> de una fuente pública, corroborado por una segunda — nunca un índice sin nivel ni una sola cotización sin verificar. Si no supera esa barra, la página lo dice en lugar de inventar una cifra.' : 'A number publishes only when a <strong>real wholesale dollar level</strong> from a public source clears the bar, corroborated by a second — never an index with no level, never a single unverified quote. If it does not clear the bar, the page says so instead of inventing a figure.'}</p>
     <p>${es ? 'El movimiento se enmarca como <strong>co-ocurrencia, no causa</strong>: mostramos que un precio se movió junto a un factor, no que el factor lo causó. Y cada figura es una <strong>re-derivación determinista</strong> del historial público — puedes reconstruirla desde la misma fuente.' : 'Movement is framed as <strong>co-occurrence, not cause</strong>: we show a price moved alongside a driver, not that the driver caused it. And every figure is a <strong>deterministic re-derivation</strong> of the public record — you can rebuild it from the same source.'}</p>
-    <p>${es ? 'Fuentes: USDA Market News, USDA NDPSR, BLS (IPP/PPI) y FRED. Licencia: los números del índice son de dominio público (CC0); los conjuntos compilados (eventos, rendimientos) son CC-BY — úsalos, cítanos como “Muntin Digital”.' : 'Sources: USDA Market News, USDA NDPSR, BLS (PPI/APU) and FRED. License: the index numbers are public domain (CC0); the compiled datasets (events, yields) are CC-BY — use them, credit “Muntin Digital.”'}</p>
+    <p>${es ? 'Fuentes: USDA Market News, USDA NDPSR, BLS (IPP/PPI), FRED y NASS. Licencia: los archivos derivados del gobierno — el índice, las normales estacionales y los movimientos detectados + co-movimiento — son de dominio público (CC0); los conjuntos compilados — el registro de eventos de mercado, los rendimientos, fijar-o-flotar y el registro de anomalías — son CC-BY: úsalos y cítanos como “Muntin Digital”.' : 'Sources: USDA Market News, USDA NDPSR, BLS (PPI/APU), FRED and NASS. License: the government-derived files — the index, the seasonal normals, and the detected price moves + co-movement — are public domain (CC0); the compiled datasets — the market-events registry, ingredient yields, lock-or-float, and the anomaly log — are CC-BY: use them, credit “Muntin Digital.”'}</p>
   </section>
   </div>`;
   return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld, extraCss: OPEN_CSS }) + body + pageTail;
