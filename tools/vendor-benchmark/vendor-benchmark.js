@@ -351,7 +351,11 @@
       Array.prototype.forEach.call(tags, function (tag) {
         var src = tag.getAttribute('data-src'); if (!src) return;
         var sc = document.createElement('script'); sc.src = src; sc.async = true;
-        sc.onload = function () { run(); };                 // recompute the market half
+        // run() recomputes the market half; renderJournalRail() repaints the book's LIVE
+        // market pulse once the MUNTIN_COST_CONTEXT seed lands — the rail was first painted
+        // at boot before this seed, and a single-price/empty return never re-reaches the
+        // rail through run()'s gated 2-date branch, so the pulse would otherwise no-op.
+        sc.onload = function () { run(); renderJournalRail(); };
         sc.onerror = function () { seedsFailed = true; run(); };
         document.head.appendChild(sc);
       });
@@ -735,7 +739,11 @@
       var sp = (item && priced.length === 1) ? singlePriceRead(item, priced[0]) : null;
       if (sp) {
         clearFirstRun();
-        lastSingle = { key: sp.key, item: sp.item, unit: sp.unit, level: sp.level };
+        // Carry the priced row so a "watch" chip reopened from Your Book restores the
+        // price (renders the single-price read) instead of dead-ending on an empty form.
+        var pr0 = priced[0];
+        lastSingle = { key: sp.key, item: sp.item, unit: sp.unit, level: sp.level,
+          purchases: [{ date: pr0.date || '', price: (pr0.priceRaw != null ? String(pr0.priceRaw) : '') }] };
         setHTML(resultEl, sp.html);
         resultEl.setAttribute('data-has-result', '1');
         if (announceEl) { clearTimeout(announceT); announceT = setTimeout(function () { announceEl.textContent = sp.announce; }, 950); }
@@ -1090,7 +1098,9 @@
   function reducedMotion() { return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); }
   function revealResult(focusVerdict) {
     if (focusVerdict) {
-      var vh = document.getElementById('vbVerdictH');
+      // Land focus on whichever verdict heading rendered — the two-date #vbVerdictH,
+      // or the single-price #vbSpH (a reopened "watch" chip renders the single-price read).
+      var vh = document.getElementById('vbVerdictH') || document.getElementById('vbSpH');
       if (vh) { try { vh.focus({ preventScroll: true }); } catch (_) { try { vh.focus(); } catch (__) {} } }
     }
     if (resultEl && resultEl.scrollIntoView) resultEl.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'nearest' });
@@ -1406,7 +1416,10 @@
     if (ring.length && (now - (ring[0].at || 0)) < SESSION_MS) { ring = ring.slice(); ring[0] = check; }
     else { ring = [check].concat(ring); }
     if (ring.length > CHECK_CAP) ring = ring.slice(0, CHECK_CAP);
-    map[ctx.key] = { item: ctx.item, unit: ctx.unit, at: now, gapPts: null, watch: true, level: (ctx.level && ctx.level.verdict) || null, checks: ring };
+    // Persist the single priced row so reopening this chip restores the price (renders
+    // the single-price read) rather than dead-ending on an empty form.
+    var watchRows = Array.isArray(ctx.purchases) && ctx.purchases.length ? ctx.purchases.slice(0, 1) : [];
+    map[ctx.key] = { item: ctx.item, unit: ctx.unit, at: now, gapPts: null, watch: true, level: (ctx.level && ctx.level.verdict) || null, purchases: watchRows, checks: ring };
     var keys = Object.keys(map);
     if (keys.length > JOURNAL_CAP) {
       keys.map(function (kk) { return { kk: kk, at: (map[kk] && map[kk].at) || 0 }; })
