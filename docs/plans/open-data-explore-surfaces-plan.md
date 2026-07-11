@@ -208,6 +208,43 @@ you're not counting").
 
 ---
 
+### F — Educated-inference / research pages (truly-Muntin repackaging)
+
+Not aggregation — **original analysis** that repackages the open data into
+something legitimately useful to a DMV independent operator, and that no
+aggregator produces. Each is a crafted, individually-built page (Muntin Desk
+byline in the library; or `/learn/research/` where the house already ships
+original research), honesty-gated (**descriptive/computed, never a forecast**
+per ADR-010; co-occurrence never cause; every number sourced or labeled).
+Candidate slate (build/audit/iterate each individually):
+
+- **"What actually moves together"** — the honest co-movement clusters (the
+  lettuce complex, the beef complex…) from the 432-event cohorts; the operator
+  read is *menu-concentration risk + substitution futility* (swapping within a
+  cluster buys nothing).
+- **"The trim tax across the pantry"** — the money operators never count, from
+  the yields table (×1/yield); which categories punish trim most.
+- **"Steady vs wild"** — a volatility taxonomy for menu engineering (print the
+  steady items; put the wild ones on market price), from the per-ingredient
+  volatility class.
+- **"How long do food-price shocks last?"** — the recovery-time study from
+  `durationDays` across 432 detected moves (historical, "big moves have held ~N
+  months," explicitly not a forecast).
+- **"The cheapest-month buying calendar"** — from the 5-yr seasonality normals.
+- **"Reading your invoice against the wholesale reference"** — the market-vs-vendor
+  method piece (bridges Vendor Benchmark), honest by ADR-012.
+
+Each research page is a citation magnet (Article + Dataset-cite JSON-LD,
+speakable, sources drawer) AND a funnel entry, and each cross-links the relevant
+explore surface + tool. This is the "data company, not data aggregator" line.
+
+## Site reinvigoration (queued — keep in view)
+
+A complete site reinvigoration is separately queued (see the strategic board).
+These open-data surfaces + research pages are built to **fit** that redesign, not
+fight it: house tokens/chrome only, no bespoke one-off visual systems, so the
+reinvigoration can restyle them centrally. Revisit alignment before Phase 5.
+
 ## 4. Sequencing
 
 - **Phase 0 — done.** Yields explorer v1 (`612b33e58`).
