@@ -55,6 +55,10 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
+// The single honest computation over the detected price-events dataset (co-movement +
+// the "shocks had company" stat). Shared with the CC0 downloads + the research page so
+// no two surfaces can drift. Co-occurrence, never cause — bounded, directed counts only.
+import { coMovement, companyStat } from './lib/cost-events-analysis.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
@@ -121,6 +125,18 @@ const EVENT_REGISTRY = (() => {
     return m;
   } catch { return {}; }
 })();
+// The full curated registry array (id, label, whatHappened, sources, affectedSlugs,
+// startDate/endDate) — 39 documented events. Source of truth for the per-event detail
+// pages and the hub. Read once here; every render joins against it.
+const REGISTRY_EVENTS = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'cost-index/events.json'), 'utf8')).events || []; }
+  catch { return []; }
+})();
+// Directed, bounded co-movement + the "shocks had company" stat, computed ONCE over the
+// detection dataset (EVENTS is already its .items map). Co-occurrence, never cause: the
+// measure is "in K of X's own N notable moves, Y co-moved the same direction."
+const CO_MOVEMENT = coMovement({ items: EVENTS });
+const COMPANY_STAT = companyStat({ items: EVENTS });
 // Prefer the deep backfill (enough points to backtest coverage); fall back to the
 // vendored capped history.
 function bandSeries(slug, entry) {
@@ -2871,6 +2887,362 @@ const EVENTS_HUB_CSS = `<style>
 // Client filter — category chips toggle card visibility; count updates. No innerHTML.
 const EVENTS_HUB_JS = "(function(){var chips=document.querySelectorAll('.evh-chip');var cards=document.querySelectorAll('.evh-card');var count=document.getElementById('evhCount');if(!chips.length||!cards.length)return;var tmpl=count?count.getAttribute('data-tmpl')||'{n} shown':'';function apply(cat){var n=0;cards.forEach(function(c){var ok=cat==='all'||(' '+c.getAttribute('data-cats')+' ').indexOf(' '+cat+' ')!==-1;c.hidden=!ok;if(ok)n++;});chips.forEach(function(ch){ch.setAttribute('aria-pressed',ch.getAttribute('data-cat')===cat?'true':'false');});if(count)count.textContent=tmpl.replace('{n}',n);}chips.forEach(function(ch){ch.addEventListener('click',function(){apply(ch.getAttribute('data-cat'));});});})();";
 
+// ====================================================================
+// /cost-index/events/<id>/ — the per-event detail pages + the hub co-movement explorer.
+// Everything here is CO-OCCURRENCE, never cause: a documented event sits beside the price
+// windows it overlapped; a magnitude is always "a wholesale reference vs its own ±26-week
+// normal," never a delivered price; nothing forecasts.
+// ====================================================================
+
+// The voice contract's retired words (mirror of check-banned-words.mjs). Registry prose is
+// exempted at scan time via data-quoted-source, but a page TITLE / META can't be wrapped —
+// so when a documented label carries a retired word (e.g. "disruption"), the title/meta use
+// a trimmed form while the visible <h1> keeps the verbatim, quoted-source label.
+const RETIRED_WORD_RE = [
+  /\bsynergize[ds]?\b/i, /\bbest[- ]in[- ]class\b/i, /\bgrowth[- ]hack(?:s|er|ers|ed|ing)?\b/i,
+  /\bworld[- ]class\b/i, /\bgame[- ]chang(?:er|ing)\b/i, /\bdisrupt(?:s|ed|ing|ive|ion)?\b/i,
+  /\bparadigm(?:s)?\b/i, /\blow[- ]hanging fruit\b/i, /\bmove the needle\b/i,
+];
+function titleSafeLabel(label) {
+  let s = String(label || '');
+  for (const re of RETIRED_WORD_RE) s = s.replace(new RegExp(re.source, 'gi'), '');
+  return s.replace(/\s{2,}/g, ' ').replace(/\s+([)\],:;])/g, '$1').replace(/\(\s*\)/g, '').replace(/\s{2,}/g, ' ').trim();
+}
+// Display name for a slug in event context: the curated label (parenthetical trimmed), or a
+// humanized fallback for a detected-only slug that never earned a published page.
+function evSlugName(slug, es) {
+  const l = LABELS[slug];
+  if (l) return evProse(es ? (l.es || l.en) : l.en);
+  return String(slug).split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+}
+function evSlugLink(slug, es, base) {
+  const nm = escHtml(evSlugName(slug, es));
+  return shippable(slug) ? `<a href="${base}/cost-index/${slug}/">${nm}</a>` : `<span>${nm}</span>`;
+}
+// Normalize a YYYY / YYYY-MM / YYYY-MM-DD registry date to a full ISO date for datePublished.
+function evIsoDate(s) {
+  const a = String(s || '').split('-');
+  if (a.length >= 3) return `${a[0]}-${a[1]}-${a[2]}`;
+  if (a.length === 2) return `${a[0]}-${a[1]}-01`;
+  return `${a[0] || '2001'}-01-01`;
+}
+// Loose [startMs,endMs] for an event: a bare year spans Jan-Dec; a bare month spans the month.
+function evWindowMs(ev) {
+  const p = (s, end) => {
+    const a = String(s).split('-').map(Number);
+    if (a.length === 1) return Date.UTC(a[0], end ? 11 : 0, end ? 31 : 1);
+    if (a.length === 2) return end ? Date.UTC(a[0], a[1], 0) : Date.UTC(a[0], a[1] - 1, 1);
+    return Date.UTC(a[0], a[1] - 1, a[2]);
+  };
+  return [p(ev.startDate, false), p(ev.endDate || ev.startDate, true)];
+}
+function evExcerpt(text, n) {
+  const s = String(text || '').replace(/\s+/g, ' ').trim();
+  if (s.length <= n) return s;
+  const cut = s.slice(0, n), i = cut.lastIndexOf(' ');
+  return (i > 0 ? cut.slice(0, i) : cut).replace(/[\s,;:.\-]+$/, '') + '…';
+}
+// One anchor's co-movement view (line + single-hue teal bars, or an honest "moved alone").
+// K/N = the share of the anchor's OWN notable moves in which the peer co-moved the same way.
+function renderCmvView(slug, es, base, limit) {
+  const a = CO_MOVEMENT[slug];
+  const name = escHtml(evSlugName(slug, es));
+  if (!a || !a.neighbors.length) {
+    return { line: '', bars: '', empty: es
+      ? `En este conjunto, los movimientos notables de ${name} no compartieron dirección con ningún otro ingrediente rastreado — se movió por su cuenta.`
+      : `In this dataset, ${name}'s notable moves didn't share a direction with any other tracked ingredient — it moved on its own.` };
+  }
+  const n = a.n;
+  const line = (es
+    ? `En los ${n} movimientos notables de ${name}, estos ingredientes corrieron la misma dirección en las mismas semanas:`
+    : `In ${name}'s ${n} notable moves, these ingredients ran the same direction in the same weeks:`);
+  const bars = a.neighbors.slice(0, limit || 8).map(([y, k]) => {
+    const pct = Math.max(4, Math.round(k / n * 100));
+    const ynm = escHtml(evSlugName(y, es));
+    const lab = shippable(y) ? `<a href="${base}/cost-index/${y}/">${ynm}</a>` : ynm;
+    const num = es ? `${k} de ${n} mov.` : `${k} of ${n} moves`;
+    return `<li class="cmv-bar-row"><span class="cmv-bar-lab">${lab}</span><span class="cmv-bar-track"><span class="cmv-bar-fill" style="--w:${pct}%"></span></span><span class="cmv-bar-num">${num}</span></li>`;
+  }).join('');
+  return { line, bars, empty: '' };
+}
+// The default anchor for the server-rendered (no-JS) co-movement view: the ingredient with the
+// most notable moves that also has at least one co-mover (deterministic; slug tie-break).
+function defaultCmvAnchor() {
+  let best = null, bestN = -1;
+  for (const slug of Object.keys(CO_MOVEMENT).sort()) {
+    const a = CO_MOVEMENT[slug];
+    if (!a.neighbors.length) continue;
+    if (a.n > bestN) { bestN = a.n; best = slug; }
+  }
+  return best;
+}
+// The inline JSON island feeding the anchored explorer (no fetch; the whole dataset ships in
+// the page). Per anchor: display name, N, and top-8 movers [name, K, slug, shippable?].
+function cmvIslandData(es, base) {
+  const a = {};
+  for (const slug of Object.keys(CO_MOVEMENT)) {
+    const rec = CO_MOVEMENT[slug];
+    a[slug] = { name: evSlugName(slug, es), n: rec.n,
+      m: rec.neighbors.slice(0, 8).map(([y, k]) => [evSlugName(y, es), k, y, shippable(y) ? 1 : 0]) };
+  }
+  return { base, t: {
+    line: es ? 'En los {n} movimientos notables de {name}, estos ingredientes corrieron la misma dirección en las mismas semanas:'
+             : "In {name}'s {n} notable moves, these ingredients ran the same direction in the same weeks:",
+    alone: es ? 'En este conjunto, los movimientos notables de {name} no compartieron dirección con ningún otro ingrediente rastreado — se movió por su cuenta.'
+              : "In this dataset, {name}'s notable moves didn't share a direction with any other tracked ingredient — it moved on its own.",
+    num: es ? '{k} de {n} mov.' : '{k} of {n} moves',
+  }, a };
+}
+
+// Co-movement bar/view rules — shared by the hub explorer and the per-event detail pages so the
+// two surfaces render one visual language. Single-hue teal (all bars share a direction).
+const CMV_BARS_RULES = `
+.cmv-line{font-size:15px;line-height:1.55;color:var(--ink);margin:0 0 12px;max-width:68ch}
+.cmv-bars{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.cmv-bar-row{display:grid;grid-template-columns:minmax(110px,1.4fr) minmax(80px,3fr) auto;align-items:center;gap:8px 12px;font-variant-numeric:tabular-nums}
+.cmv-bar-lab{font-size:14px;color:var(--ink);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cmv-bar-lab a{color:var(--ink);text-decoration:none;border-bottom:1px dashed var(--line)}
+.cmv-bar-lab a:hover{color:var(--teal)}
+.cmv-bar-track{height:14px;background:var(--cream-2);border-radius:999px;overflow:hidden}
+.cmv-bar-fill{display:block;height:100%;width:var(--w,0%);background:#2A50C8;border-radius:999px}
+.cmv-bar-num{font-size:12.5px;color:var(--ink-soft);white-space:nowrap}
+.cmv-empty{font-size:14px;line-height:1.55;color:var(--ink-soft);font-style:italic;margin:8px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
+:root[data-theme="dark"] .cmv-bar-fill{background:#6d8bf2}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .cmv-bar-fill{background:#6d8bf2}}`;
+
+// Anchored co-movement explorer — rebuilds the bar list on <select> change via createElement
+// (NO innerHTML), reads the inline island (no fetch), and honors a #comove=<slug> deep link.
+const CMV_HUB_JS = "(function(){var el=document.getElementById('cmvData');if(!el)return;var cfg;try{cfg=JSON.parse(el.textContent)}catch(e){return}var sel=document.getElementById('cmvAnchor'),line=document.getElementById('cmvLine'),list=document.getElementById('cmvList'),empty=document.getElementById('cmvEmpty');if(!sel||!line||!list)return;function clr(n){while(n.firstChild)n.removeChild(n.firstChild)}function mk(t,c){var e=document.createElement(t);if(c)e.className=c;return e}function fill(s,name,n){return s.replace('{name}',name).replace('{n}',n)}function render(slug){var a=cfg.a[slug];if(!a)return;clr(list);if(!a.m||!a.m.length){line.textContent='';if(empty){empty.hidden=false;empty.textContent=fill(cfg.t.alone,a.name,a.n)}return}if(empty)empty.hidden=true;line.textContent=fill(cfg.t.line,a.name,a.n);for(var i=0;i<a.m.length;i++){var m=a.m[i],name=m[0],k=m[1],mslug=m[2],ship=m[3],pct=Math.max(4,Math.round(k/a.n*100));var li=mk('li','cmv-bar-row'),lab=mk('span','cmv-bar-lab');if(ship){var lk=mk('a');lk.href=cfg.base+'/cost-index/'+mslug+'/';lk.textContent=name;lab.appendChild(lk)}else{lab.textContent=name}var track=mk('span','cmv-bar-track'),f=mk('span','cmv-bar-fill');f.style.setProperty('--w',pct+'%');track.appendChild(f);var num=mk('span','cmv-bar-num');num.textContent=cfg.t.num.replace('{k}',k).replace('{n}',a.n);li.appendChild(lab);li.appendChild(track);li.appendChild(num);list.appendChild(li)}}sel.addEventListener('change',function(){render(sel.value);if(window.history&&history.replaceState){history.replaceState(null,'','#comove='+sel.value)}});var hm=/comove=([a-z0-9-]+)/.exec(location.hash||'');if(hm&&cfg.a[hm[1]]){sel.value=hm[1];render(hm[1])}})();";
+
+const EVENT_DETAIL_CSS = `<style>
+.evd-section{margin:30px 0 8px}
+.evd-section h2{font-family:var(--font-display);font-size:clamp(20px,3vw,26px);font-weight:500;color:var(--ink);margin:0 0 10px;line-height:1.2}
+.evd-what{font-size:16px;line-height:1.7;color:var(--ink);margin:0 0 12px;padding:16px 18px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px}
+.evd-note{font-size:13px;line-height:1.6;color:var(--ink-soft);margin:0;max-width:72ch}
+.evd-affected{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.evd-affected a,.evd-affected span{display:inline-block;padding:7px 13px;border-radius:999px;border:1px solid var(--line);background:var(--white);font-size:14px;font-weight:600;color:var(--ink);text-decoration:none}
+.evd-affected a:hover{color:var(--teal);border-color:var(--teal)}
+.evd-affected span{color:var(--ink-soft)}
+.evd-moves{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;font-variant-numeric:tabular-nums}
+.evd-move{padding:12px 14px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px}
+.evd-move[data-dir="up"]{border-left-color:#A23B2D}
+.evd-move[data-dir="down"]{border-left-color:#2A50C8}
+.evd-move__hd{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0}
+.evd-move__mag[data-dir="up"]{color:#A23B2D;font-weight:700}
+.evd-move__mag[data-dir="down"]{color:#2A50C8;font-weight:700}
+.evd-move__tag{display:block;margin:5px 0 0;font-size:12px;color:var(--stone);font-style:italic}
+.evd-empty{font-size:14.5px;line-height:1.6;color:var(--ink-soft);font-style:italic;margin:0;padding:12px 14px;background:var(--cream-2);border-radius:10px}
+.evd-cmv__anchor{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);margin:16px 0 6px}
+.evd-caveat{font-size:13px;line-height:1.6;color:var(--ink-soft);margin:12px 0 0;max-width:72ch;padding:10px 12px;background:var(--cream-2);border-radius:8px}
+.evd-src{margin:10px 0 0;font-size:13px}
+.evd-src summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
+.evd-src ul{margin:8px 0 0;padding-left:18px;color:var(--ink-soft);line-height:1.75}
+.evd-src a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.evd-foot{margin:18px 0 30px;font-size:12.5px;color:var(--stone);line-height:1.6}
+.evd-foot a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.evd-eyebrow-note{font-size:12.5px;color:var(--ink-soft);font-style:italic;margin:0 0 12px}
+:root[data-theme="dark"] .evd-move[data-dir="up"]{border-left-color:#d06a58}
+:root[data-theme="dark"] .evd-move__mag[data-dir="up"]{color:#d06a58}
+:root[data-theme="dark"] .evd-move[data-dir="down"]{border-left-color:#6d8bf2}
+:root[data-theme="dark"] .evd-move__mag[data-dir="down"]{color:#6d8bf2}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .evd-move[data-dir="up"]{border-left-color:#d06a58}
+  :root:not([data-theme="light"]) .evd-move__mag[data-dir="up"]{color:#d06a58}
+  :root:not([data-theme="light"]) .evd-move[data-dir="down"]{border-left-color:#6d8bf2}
+  :root:not([data-theme="light"]) .evd-move__mag[data-dir="down"]{color:#6d8bf2}
+}
+${CMV_BARS_RULES}
+</style>`;
+
+function emitEventPage(ev, locale) {
+  const es = locale === 'es';
+  const lang = es ? 'es' : 'en';
+  const base = es ? '/es' : '';
+  const id = ev.id;
+  const canonEn = `https://muntin.digital/cost-index/events/${id}/`;
+  const canonEs = `https://muntin.digital/es/cost-index/events/${id}/`;
+  const canon = es ? canonEs : canonEn;
+
+  const [startMs, endMs] = evWindowMs(ev);
+  const sy = String(ev.startDate).slice(0, 4), ey = String(ev.endDate || ev.startDate).slice(0, 4);
+  const sMo = +String(ev.startDate).slice(5, 7) || 0;
+  const monthName = (mo) => (es ? EV_MONTHS_ES : EV_MONTHS_EN)[mo] || '';
+  const whenLabel = sy === ey ? (sMo ? `${monthName(sMo)} ${sy}` : sy) : `${sy}–${ey}`;
+
+  const affected = Array.isArray(ev.affectedSlugs) ? ev.affectedSlugs : [];
+  const nAff = affected.length;
+  const safe = titleSafeLabel(ev.label);
+
+  const title = es
+    ? `${safe} — evento de mercado documentado | Muntin`
+    : `${safe} — a documented market event | Muntin Cost Index`;
+  const desc = es
+    ? `${safe} (${whenLabel}): un evento de mercado documentado junto a las ventanas de precio mayorista que abarcó — coincidencia en el tiempo, nunca una causa. Con fuentes primarias.`
+    : `${safe} (${whenLabel}): a documented market event set beside the wholesale price windows it overlapped — co-occurrence in time, never a cause. Primary sources included.`;
+
+  // Speakable answer (dates + what + affected count + the guard clause). No causal/forecast words.
+  const answer = es
+    ? `${whenLabel}: un evento de mercado documentado que coincidió con las ventanas de precio mayorista de ${nAff} ingrediente${nAff === 1 ? '' : 's'} rastreado${nAff === 1 ? '' : 's'} — coincidencia en el tiempo, nunca una causa afirmada.`
+    : `${whenLabel}: a documented market event that overlapped the wholesale price windows of ${nAff} tracked ingredient${nAff === 1 ? '' : 's'} — co-occurrence in time, never an asserted cause.`;
+
+  // Affected ingredients (deep links to shippable readings).
+  const affHtml = affected.map((s) => `<li>${evSlugLink(s, es, base)}</li>`).join('');
+
+  // Detected moves that overlapped this event's window (±45d, matching the hub magnitude scan).
+  const MARGIN = 45 * 864e5;
+  const moveRows = [];
+  for (const s of affected) {
+    const rec = EVENTS[s];
+    if (!rec || !Array.isArray(rec.events)) continue;
+    const nm = escHtml(evSlugName(s, es));
+    for (const mv of rec.events) {
+      const t = Date.parse(mv.date);
+      if (!(t >= startMs - MARGIN && t <= endMs + MARGIN)) continue;
+      const up = mv.direction === 'up';
+      const dir = up ? 'up' : 'down';
+      const sign = up ? '+' : '−';
+      const rel = up ? (es ? 'por encima de' : 'above') : (es ? 'por debajo de' : 'below');
+      const held = es ? `se mantuvo ${mv.durationDays} días` : `held ${mv.durationDays} days`;
+      const hd = es
+        ? `<strong>${nm}</strong> — ${evDate(mv.date, es)}: la referencia mayorista corrió <span class="evd-move__mag" data-dir="${dir}">${sign}${Math.abs(mv.pctFromNormal)}%</span> ${rel} su normal de ±26 semanas, ${held}.`
+        : `<strong>${nm}</strong> — ${evDate(mv.date, es)}: the wholesale reference ran <span class="evd-move__mag" data-dir="${dir}">${sign}${Math.abs(mv.pctFromNormal)}%</span> ${rel} its ±26-week normal, ${held}.`;
+      const tag = es ? 'Coincidencia en el tiempo, no una causa.' : 'Co-occurrence in time, not a cause.';
+      moveRows.push({ t, html: `<li class="evd-move" data-dir="${dir}"><p class="evd-move__hd">${hd}</p><span class="evd-move__tag">${tag}</span></li>` });
+    }
+  }
+  moveRows.sort((a, b) => a.t - b.t);
+  const movesBlock = moveRows.length
+    ? `<ol class="evd-moves">${moveRows.map((r) => r.html).join('')}</ol>`
+    : `<p class="evd-empty">${es
+        ? 'Ningún movimiento mayorista sostenido de nuestro conjunto detectado cae dentro de la ventana de este evento. El evento está documentado; nuestra serie pública de precios simplemente no marcó una desviación notable de lo normal para estos ingredientes entonces — una ausencia honesta, no oculta.'
+        : "No sustained wholesale move in our detected set falls inside this event's window. The event is documented; our public price series simply didn't flag a notable departure from normal for these ingredients then — an honest absence, not a hidden one."}</p>`;
+
+  // Co-movement per affected slug (top 5 directed co-movers each).
+  const cmvBlocks = affected.map((s) => {
+    if (!CO_MOVEMENT[s]) return '';
+    const v = renderCmvView(s, es, base, 5);
+    const head = `<p class="evd-cmv__anchor">${escHtml(evSlugName(s, es))}</p>`;
+    if (v.empty) return `${head}<p class="cmv-empty">${v.empty}</p>`;
+    return `${head}<p class="cmv-line">${v.line}</p><ol class="cmv-bars">${v.bars}</ol>`;
+  }).filter(Boolean).join('');
+
+  // Sources (verbatim registry, marked data-quoted-source so the banned-word gate treats it as
+  // the cited source material it is).
+  const srcs = (ev.sources || []).filter((s) => s && s.url).map((s) => {
+    const label = escHtml(s.title || s.publisher || s.url);
+    const pub = s.title && s.publisher ? ` — ${escHtml(s.publisher)}` : '';
+    return `<li data-quoted-source><a href="${escHtml(s.url)}" rel="nofollow noopener" target="_blank">${label}</a>${pub}</li>`;
+  }).join('');
+
+  // JSON-LD @graph — number-free description; the cited history rides in articleBody + citation.
+  const numFreeDesc = es
+    ? 'Un evento de mercado documentado en EE. UU., mostrado junto a las ventanas de precio mayorista que abarcó — coincidencia en el tiempo, nunca una causa afirmada.'
+    : 'A documented U.S. food-market event, shown beside the wholesale price windows it overlapped — co-occurrence in time, never an asserted cause.';
+  const citation = (ev.sources || []).filter((s) => s && s.url)
+    .map((s) => ({ '@type': 'CreativeWork', 'url': s.url, ...(s.title ? { 'name': s.title } : {}), ...(s.publisher ? { 'publisher': { '@type': 'Organization', 'name': s.publisher } } : {}) }));
+  const jsonld = JSON.stringify({ '@context': 'https://schema.org', '@graph': [
+    { '@type': 'Article', '@id': canon + '#article', 'headline': ev.label, 'name': ev.label,
+      'inLanguage': es ? 'es-US' : 'en-US', 'description': numFreeDesc,
+      'articleBody': evExcerpt(ev.whatHappened, 600), 'datePublished': evIsoDate(ev.startDate),
+      'isAccessibleForFree': true, 'author': { '@id': 'https://muntin.digital/#business' },
+      'publisher': { '@id': 'https://muntin.digital/#business' },
+      'isBasedOn': 'https://muntin.digital/cost-index/events.json',
+      'about': affected.map((s) => ({ '@type': 'Thing', 'name': evSlugName(s, false) })),
+      'citation': citation,
+      'speakable': { '@type': 'SpeakableSpecification', 'cssSelector': ['h1', '.ci-answer'] },
+      'isPartOf': { '@id': 'https://muntin.digital/cost-index/events/#dataset' } },
+    { '@type': 'BreadcrumbList', 'itemListElement': [
+      { '@type': 'ListItem', 'position': 1, 'name': es ? 'Inicio' : 'Home', 'item': es ? 'https://muntin.digital/es/' : 'https://muntin.digital/' },
+      { '@type': 'ListItem', 'position': 2, 'name': es ? 'Índice de costos' : 'Cost index', 'item': (es ? 'https://muntin.digital/es' : 'https://muntin.digital') + '/cost-index/' },
+      { '@type': 'ListItem', 'position': 3, 'name': es ? 'Eventos de mercado' : 'Market events', 'item': (es ? 'https://muntin.digital/es' : 'https://muntin.digital') + '/cost-index/events/' },
+      { '@type': 'ListItem', 'position': 4, 'name': safe, 'item': canon } ] },
+  ] }).replace(/</g, '\\u003c');
+
+  const body = `
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="${base}/">${es ? 'Inicio' : 'Home'}</a> ›
+    <a href="${base}/cost-index/">${es ? 'Índice de costos' : 'Cost index'}</a> ›
+    <a href="${base}/cost-index/events/">${es ? 'Eventos de mercado' : 'Market events'}</a> ›
+    <span data-quoted-source>${escHtml(ev.label)}</span>
+  </nav>
+  <section class="ci-hero">
+    <p class="ci-eyebrow"><a href="${base}/cost-index/events/">${es ? 'Eventos de mercado' : 'Market events'}</a></p>
+    <h1><span data-quoted-source>${escHtml(ev.label)}</span></h1>
+    <p class="ci-answer">${answer}</p>
+  </section>
+  <div class="ci-body" style="max-width:820px">
+    <section class="evd-section" aria-labelledby="evd-what-h">
+      <h2 id="evd-what-h">${es ? 'Qué pasó' : 'What happened'}</h2>
+      <p class="evd-what" data-quoted-source>${escHtml(ev.whatHappened || '')}</p>
+      <p class="evd-note">${es
+        ? 'Relato documentado de nuestro registro abierto y citado (fuentes abajo). Se muestra como contexto junto al historial de precios — coincidencia en el tiempo, nunca una causa afirmada.'
+        : 'Documented account from our open, cited registry (sources below). Shown as context beside the price record — co-occurrence in time, never an asserted cause.'}</p>
+    </section>
+    <section class="evd-section" aria-labelledby="evd-aff-h">
+      <h2 id="evd-aff-h">${es ? 'Ingredientes afectados' : 'Affected ingredients'}</h2>
+      <ul class="evd-affected">${affHtml}</ul>
+    </section>
+    <section class="evd-section" aria-labelledby="evd-mv-h">
+      <h2 id="evd-mv-h">${es ? 'Los movimientos detectados que coincidieron' : 'The detected moves that overlapped'}</h2>
+      <p class="evd-eyebrow-note">${es
+        ? 'Cada cifra es una referencia mayorista frente a su propio normal de ±26 semanas — un movimiento de mercado, nunca un precio entregado.'
+        : "Each figure is a wholesale reference against its own ±26-week normal — a market move, never a delivered price."}</p>
+      ${movesBlock}
+    </section>
+    ${cmvBlocks ? `<section class="evd-section" aria-labelledby="evd-cmv-h">
+      <h2 id="evd-cmv-h">${es ? 'Qué se movió junto' : 'What moved together'}</h2>
+      <p class="evd-eyebrow-note">${es ? 'Coincidencia, no causa' : 'Co-occurrence, not cause'}</p>
+      ${cmvBlocks}
+      <p class="evd-caveat">${es
+        ? 'Moverse en las mismas semanas no es que una cosa cause la otra — muchos de estos comparten una región de cultivo, una ruta de envío o un pasillo. Es un conteo dirigido y acotado: en K de los movimientos notables de un ingrediente, otro corrió igual.'
+        : 'Moving in the same weeks is not one thing causing another — many of these share a growing region, a shipping lane, or an aisle. It is a directed, bounded count: in K of an ingredient\'s own notable moves, another ran the same way.'}</p>
+    </section>` : ''}
+    <section class="evd-section" aria-labelledby="evd-src-h">
+      <h2 id="evd-src-h">${es ? 'Fuentes' : 'Sources'}</h2>
+      <details class="evd-src" open><summary>${(ev.sources || []).length} ${(ev.sources || []).length === 1 ? (es ? 'fuente' : 'source') : (es ? 'fuentes' : 'sources')}</summary><ul>${srcs}</ul></details>
+    </section>
+    <div class="ci-cta-row">
+      <a class="btn btn-primary" href="${base}/tools/vendor-benchmark/">${es ? 'Compara tu factura con esta referencia' : 'Check your own invoice against this reference'}</a>
+      <a class="btn btn-ghost" href="${base}/cost-index/events/">${es ? 'Todos los eventos de mercado' : 'All market events'}</a>
+    </div>
+    <p class="evd-foot">${es
+      ? 'Los eventos documentados vienen de nuestro <a href="/cost-index/events.json">registro abierto y citado</a> (CC‑BY). Los movimientos de precio se detectan del historial público (USDA/BLS/FRED) y se muestran como contexto que coincide en el tiempo, nunca como la causa. <a href="' + base + '/glossary/cost-index/">Cómo se eligen los eventos</a>.'
+      : 'Documented events come from our <a href="/cost-index/events.json">open, cited registry</a> (CC‑BY). Price moves are detected from public history (USDA/BLS/FRED) and shown as co-occurring context, never asserted as the cause. <a href="' + base + '/glossary/cost-index/">How events are picked</a>.'}</p>
+  </div>`;
+  return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld, extraCss: EVENT_DETAIL_CSS }) + body + pageTail;
+}
+
+// Hub-only additions: the clickable card title, the co-movement section (hero stat +
+// anchored explorer), and the downloads/cite block. Appended to EVENTS_HUB_CSS.
+const EVH_ADD_CSS = `<style>
+.evh-card__label a{color:inherit;text-decoration:none}
+.evh-card__label a:hover{color:var(--teal)}
+.cmv-section{margin:38px 0 8px}
+.cmv-eyebrow{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+.cmv-section h2{font-family:var(--font-display);font-size:clamp(20px,3vw,28px);font-weight:500;color:var(--ink);margin:0 0 12px;line-height:1.2}
+.cmv-hero{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px;margin:0 0 12px;padding:16px 18px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px}
+.cmv-hero__pct{font-family:var(--font-display);font-size:clamp(40px,8vw,64px);font-weight:560;line-height:.95;color:var(--teal);letter-spacing:-.02em}
+.cmv-hero__gloss{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0;max-width:54ch;flex:1 1 260px}
+.cmv-caveat{font-size:13px;line-height:1.6;color:var(--ink-soft);margin:0 0 16px;max-width:72ch;padding:10px 12px;background:var(--white);border:1px solid var(--line);border-radius:8px}
+.cmv-controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0 0 14px}
+.cmv-controls__lab{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+.cmv-controls select{font:inherit;font-size:14px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--white);color:var(--ink);max-width:100%}
+.cmv-controls select:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.cmv-src{font-size:12.5px;color:var(--stone);line-height:1.55;margin:14px 0 0}
+.cmv-src a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.evh-downloads{margin:34px 0 8px;padding:16px 18px;background:var(--cream-2);border:1px solid var(--line);border-radius:12px}
+.evh-downloads h2{font-family:var(--font-display);font-size:clamp(18px,2.6vw,24px);font-weight:500;color:var(--ink);margin:0 0 8px}
+.evh-downloads p{font-size:14px;color:var(--ink-soft);margin:0 0 10px;line-height:1.55}
+.evh-dl-list{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:8px;font-size:14px;color:var(--ink)}
+.evh-dl-list a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.evh-dl-list .evh-lic{color:var(--stone);font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-left:8px}
+.evh-cite{margin:12px 0 0;font-size:13px}
+.evh-cite summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
+.evh-cite p{margin:6px 0 0;color:var(--ink-soft);line-height:1.6}
+.evh-cite code{font-size:12.5px;background:var(--white);padding:1px 5px;border-radius:4px}
+${CMV_BARS_RULES}
+</style>`;
+
 function emitEventsHubPage(locale) {
   const es = locale === 'es';
   const lang = es ? 'es' : 'en';
@@ -2921,9 +3293,12 @@ function emitEventsHubPage(locale) {
     }).join(', ');
     const srcs = (e.ev.sources || []).filter((s) => s && s.url)
       .map((s) => `<li data-quoted-source><a href="${escHtml(s.url)}" rel="nofollow noopener" target="_blank">${escHtml(s.publisher || s.title || s.url)}</a>${s.publisher && s.title ? ' — ' + escHtml(s.title) : ''}</li>`).join('');
+    // The permalink id + the detail-page link both ride INSIDE the data-quoted-source <h3>: the
+    // scan-time scrub drops the whole element, so a registry id/label carrying a retired word
+    // (e.g. "…-disruption-2022") never reaches the banned-word gate as the site's own copy.
     return `<li class="evh-card" data-cats="${escHtml(e.cats.join(' '))}" data-move="${move}">
       <div class="evh-card__head"><span class="evh-card__when">${escHtml(whenLabel(e))}</span>${magBadge}</div>
-      <h3 class="evh-card__label" data-quoted-source>${escHtml(e.ev.label)}</h3>
+      <h3 class="evh-card__label" id="ev-${escHtml(e.ev.id)}" data-quoted-source><a href="${base}/cost-index/events/${escHtml(e.ev.id)}/">${escHtml(e.ev.label)}</a></h3>
       <p class="evh-card__what" data-quoted-source>${escHtml(e.ev.whatHappened || '')}</p>
       <p class="evh-card__items"><strong>${es ? 'Afecta' : 'Affected'}</strong>${items}</p>
       <details class="evh-card__src"><summary>${(e.ev.sources || []).length} ${(e.ev.sources || []).length === 1 ? (es ? 'fuente' : 'source') : (es ? 'fuentes' : 'sources')}</summary><ul>${srcs}</ul></details>
@@ -2931,16 +3306,92 @@ function emitEventsHubPage(locale) {
   }).join('\n    ');
 
   const countTmpl = es ? '{n} de ' + nEv + ' mostrados' : '{n} of ' + nEv + ' shown';
+  const pageUrl = es ? canonEs : canonEn;
+  const absBase = es ? 'https://muntin.digital/es' : 'https://muntin.digital';
+
+  // ---- Co-movement explorer (94% had company) --------------------------------
+  const cs = COMPANY_STAT;
+  const cmvDef = defaultCmvAnchor();
+  const cmvView = renderCmvView(cmvDef, es, base, 8);
+  const cmvOptions = Object.keys(CO_MOVEMENT)
+    .sort((x, y) => evSlugName(x, es).localeCompare(evSlugName(y, es)))
+    .map((s) => `<option value="${s}"${s === cmvDef ? ' selected' : ''}>${escHtml(evSlugName(s, es))}</option>`).join('');
+  const cmvIsland = JSON.stringify(cmvIslandData(es, base)).replace(/</g, '\\u003c');
+  const cmvSection = `
+    <section class="cmv-section" aria-labelledby="cmv-h">
+      <p class="cmv-eyebrow">${es ? 'Coincidencia, no causa' : 'Co-occurrence, not cause'}</p>
+      <h2 id="cmv-h">${es ? 'Cuando un choque tuvo compañía' : 'When one shock had company'}</h2>
+      <div class="cmv-hero">
+        <span class="cmv-hero__pct">${cs.pct}%</span>
+        <p class="cmv-hero__gloss">${es
+          ? `de los ${cs.total} movimientos de precio notables que detectamos (${cs.withCompany} de ${cs.total}) compartieron sus semanas con al menos otro ingrediente que corrió en la misma dirección. Solo ${cs.alone} se movieron en soledad.`
+          : `of the ${cs.total} notable price shocks we detected (${cs.withCompany} of ${cs.total}) shared their weeks with at least one other ingredient running the same direction. Just ${cs.alone} moved alone.`}</p>
+      </div>
+      <p class="cmv-caveat">${es
+        ? 'Moverse en las mismas semanas no es que una cosa cause la otra — muchos comparten una región de cultivo, una ruta de envío o un pasillo. Es un conteo dirigido y acotado: en K de los movimientos propios de un ingrediente, otro corrió igual.'
+        : "Moving in the same weeks is not one thing causing another — many share a growing region, a shipping lane, or an aisle. It is a directed, bounded count: in K of an ingredient's own moves, another ran the same way."}</p>
+      <div class="cmv-controls">
+        <label class="cmv-controls__lab" for="cmvAnchor">${es ? 'Ingrediente ancla' : 'Anchor ingredient'}</label>
+        <select id="cmvAnchor">${cmvOptions}</select>
+      </div>
+      <div class="cmv-view">
+        <p class="cmv-line" id="cmvLine">${cmvView.line}</p>
+        <ol class="cmv-bars" id="cmvList">${cmvView.bars}</ol>
+        <p class="cmv-empty" id="cmvEmpty"${cmvView.empty ? '' : ' hidden'}>${cmvView.empty}</p>
+      </div>
+      <p class="cmv-src">${es
+        ? 'Co-movimiento dirigido sobre el conjunto de eventos detectados (CC0). Coincidencia en el tiempo, nunca una causa afirmada.'
+        : 'Directed co-movement over the detected-events dataset (CC0). Co-occurrence in time, never an asserted cause.'}</p>
+    </section>
+    <script type="application/json" id="cmvData">${cmvIsland}</script>`;
+
+  // ---- Downloads + cite ------------------------------------------------------
+  const tasl = es
+    ? 'Muntin Cost Index — Eventos de mercado · Muntin Digital · https://muntin.digital/cost-index/events/ · CC BY 4.0 para el registro documentado; CC0 1.0 para los extractos de movimientos detectados y co-movimiento.'
+    : 'Muntin Cost Index — Market Events · Muntin Digital · https://muntin.digital/cost-index/events/ · CC BY 4.0 for the documented registry; CC0 1.0 for the detected-moves and co-movement extracts.';
+  const dlSection = `
+    <section class="evh-downloads" aria-labelledby="evh-dl-h">
+      <h2 id="evh-dl-h">${es ? 'Datos abiertos' : 'Open data'}</h2>
+      <p>${es ? 'Descarga el registro documentado y los extractos derivados. Reutilízalos libremente.' : 'Download the documented registry and the derived extracts. Reuse them freely.'}</p>
+      <ul class="evh-dl-list">
+        <li>${es ? 'Registro documentado' : 'Documented registry'}: <a href="/cost-index/events.json" download>events.json</a><span class="evh-lic">CC BY 4.0</span></li>
+        <li>${es ? 'Movimientos detectados' : 'Detected moves'}: <a href="/cost-index/events-detected.json" download>JSON</a> · <a href="/cost-index/events-detected.csv" download>CSV</a><span class="evh-lic">CC0</span></li>
+        <li>${es ? 'Co-movimiento' : 'Co-movement'}: <a href="/cost-index/co-movement.json" download>JSON</a> · <a href="/cost-index/co-movement.csv" download>CSV</a><span class="evh-lic">CC0</span></li>
+      </ul>
+      <details class="evh-cite"><summary>${es ? 'Citar este conjunto de datos' : 'Cite this dataset'}</summary><p>${escHtml(tasl)}</p></details>
+    </section>`;
+
+  // ---- Schema: CollectionPage + ItemList + upgraded Dataset ------------------
+  const seenU = new Set(); const citationUrls = [];
+  for (const en of entries) for (const s of (en.ev.sources || [])) if (s && s.url && !seenU.has(s.url)) { seenU.add(s.url); citationUrls.push(s.url); }
+  const itemList = entries.map((e, i) => ({ '@type': 'ListItem', 'position': i + 1, 'name': e.ev.label, 'url': absBase + '/cost-index/events/' + e.ev.id + '/' }));
+  const answerLine = es
+    ? `${nEv} eventos de mercado documentados en EE. UU., ${yMin}–${yMax}, cada uno junto a las ventanas de precio mayorista que abarcó — coincidencia en el tiempo, nunca una causa afirmada.`
+    : `${nEv} documented U.S. food-market events, ${yMin}–${yMax}, each set beside the wholesale price windows it overlapped — co-occurrence in time, never an asserted cause.`;
   const jsonld = JSON.stringify({ '@context': 'https://schema.org', '@graph': [
-    { '@type': 'Dataset', '@id': (es ? canonEs : canonEn) + '#dataset', 'name': h1, 'url': es ? canonEs : canonEn, 'description': desc, 'temporalCoverage': `${yMin}/${yMax}`, 'license': 'https://creativecommons.org/licenses/by/4.0/', 'creator': { '@id': 'https://muntin.digital/#business' }, 'isAccessibleForFree': true, 'distribution': { '@type': 'DataDownload', 'encodingFormat': 'application/json', 'contentUrl': 'https://muntin.digital/cost-index/events.json' } },
+    { '@type': ['CollectionPage'], '@id': pageUrl + '#page', 'url': pageUrl, 'name': h1, 'inLanguage': es ? 'es-US' : 'en-US', 'isPartOf': { '@id': 'https://muntin.digital/#website' }, 'description': desc, 'speakable': { '@type': 'SpeakableSpecification', 'cssSelector': ['h1', '.ci-answer'] }, 'mainEntity': { '@id': pageUrl + '#eventlist' } },
+    { '@type': 'ItemList', '@id': pageUrl + '#eventlist', 'numberOfItems': nEv, 'itemListElement': itemList },
+    { '@type': 'Dataset', '@id': pageUrl + '#dataset', 'name': h1, 'url': pageUrl, 'description': desc, 'temporalCoverage': `${yMin}/${yMax}`, 'license': 'https://creativecommons.org/licenses/by/4.0/', 'creator': { '@id': 'https://muntin.digital/#business' }, 'isAccessibleForFree': true,
+      'variableMeasured': [
+        { '@type': 'PropertyValue', 'name': es ? 'Desviación de la referencia mayorista frente al normal de ±26 semanas' : 'Wholesale reference departure from ±26-week normal', 'unitText': 'PERCENT', 'description': es ? 'Cuánto se alejó la referencia mayorista pública de un ingrediente afectado de su propio normal local centrado de ±26 semanas en la ventana del evento. Una referencia de mercado, no un precio entregado.' : "How far an affected ingredient's public wholesale reference ran from its own centered ±26-week local normal in the event window. A market reference, not a delivered price." },
+        { '@type': 'PropertyValue', 'name': es ? 'Conteo de co-movimiento dirigido' : 'Directed co-movement count', 'description': es ? 'En K de los N movimientos notables propios de un ingrediente, otro corrió en la misma dirección en la misma ventana de ~6 semanas. Coincidencia, nunca causa.' : "In K of an ingredient's own N notable moves, another ran the same direction in the same ~6-week window. Co-occurrence, never cause." },
+      ],
+      'citation': citationUrls,
+      'distribution': [
+        { '@type': 'DataDownload', 'name': es ? 'Registro documentado (CC BY)' : 'Documented registry (CC BY)', 'encodingFormat': 'application/json', 'contentUrl': 'https://muntin.digital/cost-index/events.json', 'license': 'https://creativecommons.org/licenses/by/4.0/' },
+        { '@type': 'DataDownload', 'name': 'Detected moves (JSON)', 'encodingFormat': 'application/json', 'contentUrl': 'https://muntin.digital/cost-index/events-detected.json', 'license': 'https://creativecommons.org/publicdomain/zero/1.0/' },
+        { '@type': 'DataDownload', 'name': 'Detected moves (CSV)', 'encodingFormat': 'text/csv', 'contentUrl': 'https://muntin.digital/cost-index/events-detected.csv', 'license': 'https://creativecommons.org/publicdomain/zero/1.0/' },
+        { '@type': 'DataDownload', 'name': 'Co-movement (JSON)', 'encodingFormat': 'application/json', 'contentUrl': 'https://muntin.digital/cost-index/co-movement.json', 'license': 'https://creativecommons.org/publicdomain/zero/1.0/' },
+        { '@type': 'DataDownload', 'name': 'Co-movement (CSV)', 'encodingFormat': 'text/csv', 'contentUrl': 'https://muntin.digital/cost-index/co-movement.csv', 'license': 'https://creativecommons.org/publicdomain/zero/1.0/' },
+      ] },
     { '@type': 'BreadcrumbList', 'itemListElement': [
       { '@type': 'ListItem', 'position': 1, 'name': es ? 'Inicio' : 'Home', 'item': es ? 'https://muntin.digital/es/' : 'https://muntin.digital/' },
       { '@type': 'ListItem', 'position': 2, 'name': es ? 'Índice de costos' : 'Cost index', 'item': (es ? 'https://muntin.digital/es' : 'https://muntin.digital') + '/cost-index/' },
-      { '@type': 'ListItem', 'position': 3, 'name': h1, 'item': es ? canonEs : canonEn } ] }
-  ] });
+      { '@type': 'ListItem', 'position': 3, 'name': h1, 'item': pageUrl } ] },
+  ] }).replace(/</g, '\\u003c');
 
   const stat = (n, l) => `<div><div class="evh-stat__n">${n}</div><div class="evh-stat__l">${escHtml(l)}</div></div>`;
-  return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld, extraCss: EVENTS_HUB_CSS }) + `
+  return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld, extraCss: EVENTS_HUB_CSS + EVH_ADD_CSS }) + `
   <nav class="breadcrumb" aria-label="Breadcrumb">
     <a href="${base}/">${es ? 'Inicio' : 'Home'}</a> ›
     <a href="${base}/cost-index/">${es ? 'Índice de costos' : 'Cost index'}</a> ›
@@ -2949,6 +3400,7 @@ function emitEventsHubPage(locale) {
   <section class="ci-hero">
     <p class="ci-eyebrow"><a href="${base}/cost-index/">${es ? 'Índice de costos' : 'Cost index'}</a></p>
     <h1>${escHtml(h1)}</h1>
+    <p class="ci-answer">${answerLine}</p>
     <p class="ci-lede">${lede}</p>
   </section>
   <div class="ci-body" style="max-width:860px">
@@ -2969,12 +3421,15 @@ function emitEventsHubPage(locale) {
     ${cards}
     </ul>
     <p class="evh-empty" hidden>${es ? 'Ningún evento en esa categoría.' : 'No events in that category.'}</p>
+    ${cmvSection}
+    ${dlSection}
     <div class="ci-cta-row">
       <a class="btn btn-ghost" href="${base}/cost-index/">${es ? 'Ver el índice' : 'Browse the index'}</a>
       <a class="btn btn-ghost" href="${base}/open/">${es ? 'Datos abiertos' : 'Open data'}</a>
     </div>
   </div>
-  <script>${EVENTS_HUB_JS}</script>` + pageTail;
+  <script>${EVENTS_HUB_JS}</script>
+  <script>${CMV_HUB_JS}</script>` + pageTail;
 }
 
 // ====================================================================
@@ -3190,13 +3645,13 @@ function emitOpenHub(locale) {
       accent: 'var(--gold)', h: es ? 'Eventos de mercado' : 'Market events',
       stat: es ? `${nEvents} eventos documentados` : `${nEvents} documented events`,
       d: es ? 'Choques de oferta y su co-ocurrencia con el precio — enmarcados como asociación, nunca como causa.' : 'Supply shocks and their price co-occurrence — framed as association, never as cause.',
-      links: [['JSON', '/cost-index/events.json']], lic: 'CC-BY',
+      links: [[es ? 'Ver el explorador' : 'Browse the explorer', `${base}/cost-index/events/`], ['CSV', '/cost-index/events-detected.csv'], ['JSON', '/cost-index/events-detected.json']], lic: 'CC0 · CC-BY',
     },
     {
       accent: 'var(--teal)', h: es ? 'Rendimientos' : 'Ingredient yields',
       stat: es ? `${nYields} rendimientos comestibles` : `${nYields} edible yields`,
       d: es ? 'Convierte una libra al mayoreo en costo por plato — el porcentaje comestible de cada ingrediente.' : 'Turn a wholesale pound into plate cost — the edible portion of each ingredient.',
-      links: [['JSON', '/cost-index/yields.json']], lic: 'CC-BY',
+      links: [[es ? 'Ver el explorador' : 'Browse the explorer', `${base}/library/ingredient-yields/`], ['CSV', '/cost-index/yields.csv'], ['JSON', '/cost-index/yields.json']], lic: 'CC-BY',
     },
   ];
   const cardHtml = cards.map((c) => `
@@ -3216,8 +3671,8 @@ function emitOpenHub(locale) {
         'isPartOf': { '@id': 'https://muntin.digital/#website' }, 'description': desc,
         'dataset': [
           { '@type': 'Dataset', 'name': es ? 'Índice de costos de ingredientes' : 'Restaurant ingredient cost index', 'url': 'https://muntin.digital' + base + '/cost-index/', 'license': 'https://creativecommons.org/publicdomain/zero/1.0/', 'creator': { '@id': 'https://muntin.digital/#business' } },
-          { '@type': 'Dataset', 'name': es ? 'Eventos de mercado del índice de costos' : 'Cost index market events', 'url': 'https://muntin.digital/cost-index/events.json', 'license': 'https://creativecommons.org/licenses/by/4.0/', 'creator': { '@id': 'https://muntin.digital/#business' } },
-          { '@type': 'Dataset', 'name': es ? 'Rendimientos comestibles de ingredientes' : 'Ingredient edible yields', 'url': 'https://muntin.digital/cost-index/yields.json', 'license': 'https://creativecommons.org/licenses/by/4.0/', 'creator': { '@id': 'https://muntin.digital/#business' } },
+          { '@type': 'Dataset', 'name': es ? 'Eventos de mercado del índice de costos' : 'Cost index market events', 'url': 'https://muntin.digital/cost-index/events/', 'license': 'https://creativecommons.org/licenses/by/4.0/', 'creator': { '@id': 'https://muntin.digital/#business' } },
+          { '@type': 'Dataset', 'name': es ? 'Rendimientos comestibles de ingredientes' : 'Ingredient edible yields', 'url': 'https://muntin.digital/library/ingredient-yields/', 'license': 'https://creativecommons.org/licenses/by/4.0/', 'creator': { '@id': 'https://muntin.digital/#business' } },
         ] },
       { '@type': 'BreadcrumbList', '@id': url + '#breadcrumbs', 'itemListElement': crumb.map((c, i) => ({ '@type': 'ListItem', 'position': i + 1, 'name': c[0], 'item': c[1] })) },
     ],
@@ -3445,6 +3900,13 @@ targets.push({ path: 'cost-index/lab/index.html',    content: emitLabPage('en') 
 targets.push({ path: 'es/cost-index/lab/index.html', content: emitLabPage('es') });
 targets.push({ path: 'cost-index/events/index.html',    content: emitEventsHubPage('en') });
 targets.push({ path: 'es/cost-index/events/index.html', content: emitEventsHubPage('es') });
+// Per-event detail pages — one per curated registry event, EN + ES. Slug = the event id
+// (final-forever). Built whole regardless of --only so EN↔ES stay in parity.
+for (const ev of REGISTRY_EVENTS) {
+  if (!ev || !ev.id) continue;
+  targets.push({ path: `cost-index/events/${ev.id}/index.html`,    content: emitEventPage(ev, 'en') });
+  targets.push({ path: `es/cost-index/events/${ev.id}/index.html`, content: emitEventPage(ev, 'es') });
+}
 
 targets.push({ path: 'open/index.html',                content: emitOpenHub('en') });
 targets.push({ path: 'es/open/index.html',             content: emitOpenHub('es') });
