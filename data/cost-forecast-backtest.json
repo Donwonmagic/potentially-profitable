@@ -69,20 +69,20 @@
   },
   "seasonalTermStructure": {
     "method": "seasonal monthly-median direction vs realized next-step sign, calendar-month aware; compared to persistence and majority baseline",
-    "items": 82,
+    "items": 81,
     "seasonal": {
-      "hitRate": 0.579,
-      "scored": 15232
+      "hitRate": 0.547,
+      "scored": 15296
     },
     "persistence": {
       "hitRate": 0.629,
-      "scored": 60622
+      "scored": 60291
     },
-    "majorityBaseline": 0.524,
+    "majorityBaseline": 0.523,
     "headToHead": {
-      "bothCalled": 13799,
-      "disagreements": 5900,
-      "seasonalWinOnDisagree": 0.449,
+      "bothCalled": 13832,
+      "disagreements": 6123,
+      "seasonalWinOnDisagree": 0.407,
       "addsSignalOverMomentum": false
     },
     "seasonalBeatsPersistence": false,

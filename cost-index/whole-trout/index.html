@@ -34,7 +34,7 @@
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
 <style>
-:root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--white:#fff;--line:#E3E5E9;--teal-wash:rgba(42,80,200,.06);--font-display:'Fraunces',Georgia,serif;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+:root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--white:#fff;--line:#E3E5E9;--teal-wash:rgba(42,80,200,.06);--stone:#6B7280;--gold:#B7791F;--season:#6b4fa1;--font-display:'Fraunces',Georgia,serif;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
 html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
 .container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
@@ -95,13 +95,35 @@ main{padding-top:64px}
 .ci-read__live a,.ci-read__method a,.ci-read__data a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
 .ci-read__method{margin-top:6px;font-size:13px}
 .ci-read__data{margin:4px 0 0;font-size:13px;color:var(--ink-soft)}
-.ci-season{margin:12px 0 4px;padding:12px 16px;background:var(--white);border:1px solid var(--line);border-left:3px solid #6b4fa1;border-radius:10px;font-variant-numeric:tabular-nums}
-.ci-season__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6b4fa1;margin:0 0 4px}
+.ci-season{margin:12px 0 4px;padding:12px 16px;background:var(--white);border:1px solid var(--line);border-left:3px solid var(--season);border-radius:10px;font-variant-numeric:tabular-nums}
+.ci-season__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--season);margin:0 0 4px}
 .ci-season__body{font-size:14.5px;line-height:1.5;color:var(--ink);margin:0}
 .ci-season__src{margin:6px 0 0;font-size:12.5px}
 .ci-season__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
 .ci-season__src div{margin-top:6px;color:var(--ink-soft);line-height:1.5}
 .ci-season__src a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-season-curve{margin:12px 0 2px}
+.ci-season-curve svg{display:block;width:100%;height:auto;overflow:visible}
+.ci-season-curve .sc-band{fill:var(--season);fill-opacity:.15}
+.ci-season-curve .sc-line{fill:none;stroke:var(--season);stroke-width:1.4;stroke-opacity:.7}
+.ci-season-curve .sc-dot{fill:var(--season)}
+.ci-season-curve .sc-dot--cheap{fill:var(--gold)}
+.ci-season-curve .sc-ring{fill:none;stroke:var(--season);stroke-width:1.3}
+.ci-season-curve .sc-lab{fill:var(--stone)}
+.ci-season-curve .sc-lab--cur{fill:var(--ink);font-weight:700}
+.ci-season-curve__cap{font-size:12.5px;color:var(--ink-soft);line-height:1.5;margin:7px 0 0}
+.ci-season-curve__cap strong{color:var(--ink)}
+.ci-season-curve__note{color:var(--stone);font-size:11.5px;white-space:nowrap}
+.ci-seasonal{margin:26px 0 8px}
+.ci-season-q{font-family:var(--font-display);font-size:clamp(20px,3.4vw,26px);font-weight:600;line-height:1.2;color:var(--ink);margin:0 0 10px;text-wrap:balance}
+.ci-season-answer{font-size:clamp(16px,2.4vw,18px);line-height:1.6;color:var(--ink-soft);margin:0;max-width:62ch;border-left:3px solid var(--season);padding-left:14px}
+.ci-yield{margin:18px 0;padding:14px 16px;background:var(--white);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:10px}
+.ci-yield__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 5px}
+.ci-yield__body{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0}
+.ci-yield__body strong{font-weight:700}
+.ci-yield__link{margin:9px 0 0;font-size:13.5px}
+.ci-yield__link a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-yield__src{margin:7px 0 0;font-size:12px;color:var(--stone)}
 .ci-faq{margin:34px 0 0}
 .ci-faq__item{margin:0 0 18px}
 .ci-faq__q{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink);margin:0 0 6px}
@@ -195,8 +217,8 @@ main{padding-top:64px}
 :root[data-theme="dark"] .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
 .ci-read--pending{border-left-color:#cdb368;background:var(--cream-2)}
 .ci-read--pending .ci-read__head{color:#8a6d1f}
-.ci-outlook{margin:14px 0 8px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-left:4px solid #6b4fa1;border-radius:12px}
-.ci-outlook__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6b4fa1;margin:0 0 6px}
+.ci-outlook{margin:14px 0 8px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--season);border-radius:12px}
+.ci-outlook__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--season);margin:0 0 6px}
 .ci-outlook__line{font-size:15.5px;line-height:1.5;color:var(--ink);margin:0}
 .ci-outlook__record{margin:6px 0 0;font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
 .ci-outlook__how{margin-top:8px;font-size:12.5px}
@@ -205,9 +227,46 @@ main{padding-top:64px}
 .ci-outlook__panel{margin:0 0 8px;padding-left:18px}
 .ci-outlook__panel li{margin:0 0 4px}
 .ci-outlook__lab{margin:10px 0 0;font-size:13.5px}
-.ci-outlook__lab a{color:#6b4fa1;text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-outlook__lab a{color:var(--season);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
+.ci-events{margin:30px 0 8px}
+.ci-events__intro{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 14px;max-width:66ch}
+.ci-events__take{margin:0 0 16px;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px}
+.ci-events__take[data-vol="wild"]{border-left-color:#A23B2D}
+.ci-events__take[data-vol="swingy"]{border-left-color:var(--gold)}
+.ci-events__take[data-vol="steady"]{border-left-color:var(--teal)}
+.ci-events__take-h{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px}
+.ci-events__take-b{font-size:15px;line-height:1.6;color:var(--ink);margin:0 0 8px;max-width:68ch}
+.ci-events__take-b strong{color:var(--ink)}
+.ci-events__take-mv{font-size:13.5px;line-height:1.55;color:var(--ink-soft);margin:0;max-width:68ch}
+.ci-events__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.ci-events__ev{padding:14px 16px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px;font-variant-numeric:tabular-nums}
+.ci-events__ev[data-dir="up"]{border-left-color:#A23B2D}
+.ci-events__ev[data-dir="down"]{border-left-color:var(--teal)}
+.ci-events__hd{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
+.ci-events__date{font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--ink);min-width:76px}
+.ci-events__mag{font-size:14px;font-weight:700;letter-spacing:.01em;white-space:nowrap}
+.ci-events__mag[data-dir="up"]{color:#A23B2D}
+.ci-events__mag[data-dir="down"]{color:var(--teal)}
+.ci-events__meta{margin:6px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
+.ci-events__meta a{color:var(--ink-soft);text-decoration:none;border-bottom:1px dashed var(--line)}
+.ci-events__meta a:hover{color:var(--teal)}
+.ci-events__ctx{margin:10px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
+.ci-events__ctx-t{margin:0;font-size:14px;font-weight:600;color:var(--ink);line-height:1.5}
+.ci-events__ctx-tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--stone);margin-right:6px;vertical-align:1px}
+.ci-events__cite{margin:8px 0 0;font-size:12.5px}
+.ci-events__cite summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
+.ci-events__cite p{margin:6px 0 0;color:var(--ink-soft);line-height:1.55}
+.ci-events__cite a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-events__srcs{font-size:12px}
+.ci-events__also{margin:14px 0 0;padding:12px 14px;background:var(--white);border:1px solid var(--line);border-radius:10px}
+.ci-events__also-h{margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.ci-events__also .ci-events__ctx{background:transparent;padding:6px 0;border-top:1px solid var(--line);border-radius:0}
+.ci-events__also .ci-events__ctx:first-of-type{border-top:0}
+.ci-events__foot{margin:12px 0 0;font-size:12.5px;color:var(--stone);line-height:1.5}
+.ci-events__foot a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.ci-events--stable .ci-events__intro{margin-bottom:0}
 /* a11y: a keyboard/switch user must always see focus (only the skip-link had one). */
-.ci-card a:focus-visible,.ci-read a:focus-visible,.ci-sibs a:focus-visible,.breadcrumb a:focus-visible,.ci-source a:focus-visible,summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:2px}
+.ci-card a:focus-visible,.ci-read a:focus-visible,.ci-sibs a:focus-visible,.breadcrumb a:focus-visible,.ci-source a:focus-visible,.ci-events a:focus-visible,summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:2px}
 /* touch: lift the drawer summaries to a real tap target (WCAG 2.5.8). */
 .ci-read__src summary,.ci-outlook__how summary{display:inline-block;padding:6px 0;min-height:24px}
 /* the pre-rendered sparkline must never clip in a narrower container. */
@@ -228,20 +287,26 @@ main{padding-top:64px}
    Redefine the cost-index tokens (light text on dark = high-contrast by construction) and
    lighten the three verdict accents so they stay legible. Honors OS preference AND the
    site theme toggle ([data-theme]); a forced-light toggle wins over OS dark. */
-:root[data-theme="dark"]{--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12)}
+:root[data-theme="dark"]{--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12);--stone:#9aa0aa;--gold:#d8bd6a;--season:#a992d6}
 :root[data-theme="dark"] .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
 :root[data-theme="dark"] .ci-read__verb[data-bias="watch"]{color:#d8bd6a;border-color:#8a7530}
 :root[data-theme="dark"] .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
 :root[data-theme="dark"] .ci-composite[data-band="up"]{border-left-color:#ed9a8e}
 :root[data-theme="dark"] .ci-composite[data-band="up"] .ci-composite__num{color:#ed9a8e}
+:root[data-theme="dark"] .ci-events__ev[data-dir="up"]{border-left-color:#ed9a8e}
+:root[data-theme="dark"] .ci-events__mag[data-dir="up"]{color:#ed9a8e}
+:root[data-theme="dark"] .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 @media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12)}
+  :root:not([data-theme="light"]){--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12);--stone:#9aa0aa;--gold:#d8bd6a;--season:#a992d6}
   :root:not([data-theme="light"]) .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
   :root:not([data-theme="light"]) .ci-read__verb[data-bias="watch"]{color:#d8bd6a;border-color:#8a7530}
   :root:not([data-theme="light"]) .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
   :root:not([data-theme="light"]) .ci-composite[data-band="up"]{border-left-color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-composite[data-band="up"] .ci-composite__num{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-events__ev[data-dir="up"]{border-left-color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
@@ -293,6 +358,7 @@ main{padding-top:64px}
     <nav class="nav-links" aria-label="Primary">
       <a href="/library/">Library</a>
       <a href="/cost-index/">Cost Index</a>
+      <a href="/open/">Open data</a>
       <a href="/tools/">Tools</a>
       <a href="/studio/">Company</a>
       <!-- Ledger — the paid product. Nav points at the on-site /ledger/
@@ -355,6 +421,7 @@ main{padding-top:64px}
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
     <a href="/cost-index/">Cost Index</a>
+    <a href="/open/">Open data</a>
     <a href="/tools/">Tools</a>
     <a href="/studio/">Company</a>
     <a href="/ledger/">Ledger</a>
@@ -473,6 +540,13 @@ main{padding-top:64px}
     </aside>
     <h2>Why there's no number yet</h2>
     <p>The rule is simple: a price ships only when we can source it from public USDA, BLS or FRED data at a quality we'd act on ourselves. For trout (whole), the free wholesale series we need isn't wired up yet — and a thin, single-source guess would be worse than nothing.</p>
+    
+    <aside class="ci-yield" aria-label="Edible-portion yield">
+      <p class="ci-yield__head">What we do know</p>
+      <p class="ci-yield__body">Even without a live price for <strong>whole trout</strong> yet, we do know its <strong>edible-portion yield: ~55%</strong>. About 55% of what you buy reaches the plate after trim and waste (~45% loss), so your true cost per usable pound runs higher than the purchase price.</p>
+      <p class="ci-yield__link"><a href="/library/ingredient-yields/whole-trout/">See the full yield &amp; edible-cost analysis <span aria-hidden="true">→</span></a></p>
+      <p class="ci-yield__src">Standard industry reference yield.</p>
+    </aside>
     <h2>What you can do now</h2>
     <p>Check your last trout (whole) invoice against your own recent ones, or open <a href="/tools/cost-pulse/">the live tool</a> for the ingredients we do cover. This page fills in when the data does.</p>
     <div class="ci-cta-row">
