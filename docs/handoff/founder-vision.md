@@ -50,6 +50,20 @@ depth; signature interactions italic-on-commit / window / bbox / scan). The
 storefront should **extend this language site-wide**. The `/ledger/demo/` was already
 re-skinned to it this session (commits incr. E/F) as the first proof.
 
+## CORRECTION — Cost Index is MONTHLY, not weekly (2026-07-11)
+
+The Cost Index publication cadence changed to **monthly**. This materially reshapes the
+return-visitor strategy: monthly is a weak habit loop (an anticipated *report*, not a
+weekly *ritual*). Do NOT build retention on "check the Cost Index every week." Re-weight:
+- **Free tools = the everyday, event-triggered return engine** ("I need a number now").
+- **Cost-movement alerts = the honest triggered return** (come back when something moves).
+- **The monthly edition = the anchor + the email re-engagement hook** (emailed edition as
+  an *event*, since nobody habitually checks monthly).
+The `return-visitor-investigation` workflow launched framed as "weekly" — its cadence-
+agnostic findings (Hook Model, habit loops, SaaS/consumer mechanics) stay valid; re-weight
+the Muntin-specific synthesis to monthly on integration. (Note: CLAUDE.md + the dispatch
+automation still say "weekly" — a separate reconciliation task if/when the founder asks.)
+
 ## THE EMOTIONAL PIVOT (2026-07-11 — supersedes the defensive framing)
 
 The founder's decisive correction: **stop making the site defend itself.** "We can only
