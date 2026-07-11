@@ -59,6 +59,7 @@ import { createRequire } from 'node:module';
 // the "shocks had company" stat). Shared with the CC0 downloads + the research page so
 // no two surfaces can drift. Co-occurrence, never cause — bounded, directed counts only.
 import { coMovement, companyStat } from './lib/cost-events-analysis.mjs';
+import { researchTargets } from './lib/cost-research.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
@@ -3738,6 +3739,11 @@ function emitOpenHub(locale) {
     <div class="od-grid">${cardHtml}</div>
   </section>
   <hr class="od-rule">
+  <section class="od-prose" aria-labelledby="od-research">
+    <h2 class="od-h2" id="od-research">${es ? 'La lectura, no solo los datos' : 'The read, not just the data'}</h2>
+    <p>${es ? 'Estos conjuntos son la materia prima. La <a href="' + base + '/cost-index/research/">Investigación del Cost Index</a> los reempaqueta en lecturas que una cocina puede usar: qué se mueve junto, el impuesto de merma en la despensa, qué fijar y qué flotar, cuánto duran los choques y el mes más barato para comprar. Análisis original, no agregación — cada cifra sale de estos datos.' : 'These sets are the raw material. <a href="' + base + '/cost-index/research/">Cost Index research</a> repackages them into reads a kitchen can act on: what moves together, the trim tax across the pantry, what to lock and what to float, how long shocks last, and the cheapest month to buy. Original analysis, not aggregation — every figure comes from this data.'}</p>
+  </section>
+  <hr class="od-rule">
   <section class="od-prose" aria-labelledby="od-honest">
     <h2 class="od-h2" id="od-honest">${es ? 'Cómo se mantiene honesto' : 'How this stays honest'}</h2>
     <p>${es ? 'Un número se publica solo cuando lo respalda un <strong>nivel mayorista real en dólares</strong> de una fuente pública, corroborado por una segunda — nunca un índice sin nivel ni una sola cotización sin verificar. Si no supera esa barra, la página lo dice en lugar de inventar una cifra.' : 'A number publishes only when a <strong>real wholesale dollar level</strong> from a public source clears the bar, corroborated by a second — never an index with no level, never a single unverified quote. If it does not clear the bar, the page says so instead of inventing a figure.'}</p>
@@ -3954,6 +3960,9 @@ targets.push({ path: 'open/index.html',                content: emitOpenHub('en'
 targets.push({ path: 'es/open/index.html',             content: emitOpenHub('es') });
 targets.push({ path: 'open/seasonality/index.html',    content: emitSeasonalityHub('en') });
 targets.push({ path: 'es/open/seasonality/index.html', content: emitSeasonalityHub('es') });
+// /cost-index/research/ — original computed analysis over the open data (Workstream F).
+// Returns [] until data/cost-research-content.json exists, so this is inert until content lands.
+for (const t of researchTargets({ pageHead, pageTail, escHtml, repoRoot })) targets.push(t);
 let drift = 0;
 for (const tgt of targets) {
   const fullPath = path.join(repoRoot, tgt.path);

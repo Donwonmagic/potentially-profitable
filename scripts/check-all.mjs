@@ -521,6 +521,12 @@ const CHECKS = [
   ['Lock-or-float open-data sync','build-lockfloat-open-data.mjs','--check'],
   ['Anomaly open-data self-test','build-anomaly-open-data.mjs','--self-test'],
   ['Anomaly open-data sync','build-anomaly-open-data.mjs','--check'],
+  // Cost-Index RESEARCH pages (Workstream F) — original computed analysis over the open data.
+  // Editorial prose in data/cost-research-content.json; the honesty gate grounds every number
+  // against the deterministic engine (scripts/lib/cost-research.mjs) and blocks forecast,
+  // event→price causation, and wholesale-as-delivered-price framing across EN+ES.
+  ['Cost-research honesty self-test','check-cost-research.mjs','--self-test'],
+  ['Cost-research honesty','check-cost-research.mjs'],
   // Market-context seed for Vendor Benchmark — per ingredient: volatility class, whether the
   // reference is itself unusual right now vs its own normal, and the most recent DOCUMENTED
   // event. Lets the tool add co-occurrence context about the REFERENCE's state (never the

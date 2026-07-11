@@ -1,0 +1,773 @@
+/**
+ * cost-research.mjs — the Muntin Cost-Index RESEARCH surface (/cost-index/research/).
+ *
+ * Original, computed analysis that repackages the open datasets into reads a DMV
+ * independent operator can act on — the "data company, not data aggregator" line.
+ * Every number is DERIVED here from a committed dataset (events/co-movement, yields,
+ * lock-or-float, seasonality); nothing is hand-typed. Honesty contract (ADR-010/-015):
+ * descriptive/computed, NEVER a forecast; co-occurrence, never cause; a wholesale
+ * reference vs its own normal, never a delivered price.
+ *
+ * Self-contained: it loads its own data and is handed only the site chrome
+ * (pageHead/pageTail/escHtml/clampDesc), the slug→name LABELS, and repoRoot.
+ * Consumed by build-cost-index-pages.mjs, which spreads researchTargets() into its
+ * page list. Honesty-gated by scripts/check-cost-research.mjs.
+ */
+import fs from 'node:fs';
+import path from 'node:path';
+import { loadEventsData, coMovement, companyStat, durationSummary } from './cost-events-analysis.mjs';
+
+const CC0 = 'https://creativecommons.org/publicdomain/zero/1.0/';
+const CCBY = 'https://creativecommons.org/licenses/by/4.0/';
+
+// ---- data loading ------------------------------------------------------
+function rd(repoRoot, rel) { return JSON.parse(fs.readFileSync(path.join(repoRoot, rel), 'utf8')); }
+function yieldRows(repoRoot) {
+  const y = rd(repoRoot, 'data/ingredient-yields.json');
+  return Array.isArray(y) ? y : (y.ingredients || y.items || Object.values(y).find(Array.isArray));
+}
+
+// ---- analysis (all deterministic) --------------------------------------
+
+// F1 — co-movement CLUSTERS. Undirected edge a—b when EITHER direction shared ≥ MIN
+// of that anchor's own notable moves; connected components ≥2 are the clusters. The
+// honest read is substitution futility: swapping within a cluster buys nothing.
+function clusters(events, MIN = 3) {
+  const cm = coMovement(events);
+  const anchors = Object.keys(cm);
+  const adj = new Map(anchors.map((a) => [a, new Set()]));
+  const pairK = new Map(); // "a|b" (sorted) -> max shared count seen either direction
+  for (const a of anchors) {
+    for (const [b, k] of cm[a].neighbors) {
+      if (k < MIN) continue;
+      if (!adj.has(a)) adj.set(a, new Set());
+      if (!adj.has(b)) adj.set(b, new Set());
+      adj.get(a).add(b); adj.get(b).add(a);
+      const key = [a, b].sort().join('|');
+      pairK.set(key, Math.max(pairK.get(key) || 0, k));
+    }
+  }
+  const seen = new Set(); const out = [];
+  for (const a of anchors) {
+    if (seen.has(a) || !adj.get(a) || !adj.get(a).size) continue;
+    const comp = []; const stack = [a];
+    while (stack.length) { const x = stack.pop(); if (seen.has(x)) continue; seen.add(x); comp.push(x); for (const nb of (adj.get(x) || [])) if (!seen.has(nb)) stack.push(nb); }
+    if (comp.length < 2) continue;
+    // tightest internal pair (max shared count)
+    let tight = null;
+    for (let i = 0; i < comp.length; i++) for (let j = i + 1; j < comp.length; j++) {
+      const key = [comp[i], comp[j]].sort().join('|'); const k = pairK.get(key);
+      if (k != null && (!tight || k > tight.k)) tight = { a: comp[i], b: comp[j], k };
+    }
+    out.push({ members: comp.sort(), size: comp.length, tight });
+  }
+  return out.sort((x, y) => y.size - x.size || (y.tight?.k || 0) - (x.tight?.k || 0));
+}
+
+// F2 — trim tax by category. Mean edible yield per category → trim tax = 1/mean.
+function trimTaxByCategory(rows) {
+  const byCat = {};
+  for (const r of rows) { (byCat[r.cat] = byCat[r.cat] || []).push(r.yield); }
+  const cats = Object.keys(byCat).map((cat) => {
+    const ys = byCat[cat]; const mean = ys.reduce((s, v) => s + v, 0) / ys.length;
+    return { cat, n: ys.length, meanYield: mean, tax: 1 / mean };
+  });
+  return cats.sort((a, b) => b.tax - a.tax);
+}
+// worst individual offenders (lowest yield = highest tax), for the lede number.
+function worstYields(rows, n = 8) {
+  return rows.slice().sort((a, b) => a.yield - b.yield).slice(0, n)
+    .map((r) => ({ slug: r.slug, en: r.en, es: r.es, yield: r.yield, tax: 1 / r.yield }));
+}
+
+// F3 — steady-vs-wild taxonomy from lock-or-float buckets.
+function volatilityTaxonomy(repoRoot) {
+  const lf = rd(repoRoot, 'data/cost-lockfloat.json');
+  const counts = lf.counts || {};
+  const items = lf.items || {};
+  const pick = (bucket, n) => Object.keys(items).filter((s) => items[s].bucket === bucket)
+    .sort((a, b) => items[a].halfWidthPct - items[b].halfWidthPct)
+    .slice(0, n).map((s) => ({ slug: s, name: items[s].name, halfWidthPct: items[s].halfWidthPct }));
+  const wildPick = (bucket, n) => Object.keys(items).filter((s) => items[s].bucket === bucket)
+    .sort((a, b) => items[b].halfWidthPct - items[a].halfWidthPct)
+    .slice(0, n).map((s) => ({ slug: s, name: items[s].name, halfWidthPct: items[s].halfWidthPct }));
+  const total = Object.keys(items).length;
+  return { counts, total, lock: pick('lock', 8), float: wildPick('float', 8), asOf: lf.asOf || null };
+}
+
+// F4 — shock duration study (historical, never a forecast).
+function shockDuration(events) {
+  const d = durationSummary(events); const c = companyStat(events);
+  return { ...d, up: c.up, down: c.down, withCompany: c.withCompany, pct: c.pct, total: c.total,
+    medianMonths: Math.round(d.medianDays / 30.4 * 10) / 10, p75Months: Math.round(d.p75 / 30.4 * 10) / 10 };
+}
+
+// F5 — cheapest-month calendar. Per ready ingredient, the month of its lowest median.
+function cheapestMonthCalendar(repoRoot) {
+  const sea = rd(repoRoot, 'data/seasonality.json');
+  const ready = (sea.ingredients || []).filter((i) => i.ready && i.months && Object.keys(i.months).length);
+  const byMonth = {}; for (let m = 1; m <= 12; m++) byMonth[m] = [];
+  for (const i of ready) {
+    let lo = null;
+    for (const m of Object.keys(i.months)) { const med = i.months[m].medianCents; if (lo == null || med < i.months[lo].medianCents) lo = m; }
+    // savings vs its own priciest month
+    let hi = null; for (const m of Object.keys(i.months)) { const med = i.months[m].medianCents; if (hi == null || med > i.months[hi].medianCents) hi = m; }
+    const loMed = i.months[lo].medianCents, hiMed = i.months[hi].medianCents;
+    const savePct = hiMed > 0 ? Math.round((hiMed - loMed) / hiMed * 100) : 0;
+    byMonth[Number(lo)].push({ slug: i.key, savePct });
+  }
+  for (const m of Object.keys(byMonth)) byMonth[m].sort((a, b) => b.savePct - a.savePct);
+  return { byMonth, readyN: ready.length };
+}
+
+export function researchInputs(repoRoot) {
+  const events = loadEventsData(repoRoot);
+  const rows = yieldRows(repoRoot);
+  return {
+    clusters: clusters(events),
+    company: companyStat(events),
+    trimTaxCats: trimTaxByCategory(rows),
+    worstYields: worstYields(rows),
+    volatility: volatilityTaxonomy(repoRoot),
+    duration: shockDuration(events),
+    calendar: cheapestMonthCalendar(repoRoot),
+    yieldCount: rows.length,
+  };
+}
+
+// ---- render ------------------------------------------------------------
+// slug→{en,es} display names, from the yields + lock-or-float data.
+function nameMap(repoRoot) {
+  const map = {};
+  for (const r of yieldRows(repoRoot)) map[r.slug] = { en: r.en, es: r.es };
+  try { const lf = rd(repoRoot, 'data/cost-lockfloat.json'); for (const s of Object.keys(lf.items)) if (!map[s]) map[s] = { en: lf.items[s].name, es: lf.items[s].name }; } catch { /* ok */ }
+  return map;
+}
+// Bar/meter fill as a plain % of the scale max (0–100, no forced floor): the design's
+// `.rs-bar__fill`/meters read `--v` and calc(var(--v)*1%), applying their own 2px min-width
+// gating, so a true 0 renders empty while any value>0 keeps a hairline. Length is the only encoding.
+const barV = (v, max) => (max > 0 ? Math.round((v / max) * 100) : 0);
+// page.accent is "var(--teal)|var(--gold)|var(--season)" → the design's data-accent scope value.
+function accentScope(accent) {
+  const m = /--(\w+)\)/.exec(String(accent || ''));
+  const a = m ? m[1] : 'teal';
+  return (a === 'gold' || a === 'season') ? a : 'teal';
+}
+
+// Figure BODY renderers. Each returns inner HTML for the figure; renderFigure wraps it in the
+// design's <figure class="rs-fig viz-figure"> with the writer's data-audio-alt + a .rs-fig__cap
+// figcaption. DATAVIZ CONTRACT: every data mark is a single teal fill (--rs-fill) on a neutral
+// 1px-bordered track; the per-page accent is chrome only. Fills read `--v` (a %-of-max number).
+function figCompany(A, es) {
+  const c = A.company;
+  const say = es ? 'de los mayores movimientos detectados viajaron con un vecino de clúster'
+    : 'of the biggest detected moves traveled with a cluster-mate';
+  const sub = es
+    ? `${c.withCompany} de ${c.total} mayores movimientos detectados tuvieron compañía · ${c.alone} se movieron solos`
+    : `${c.withCompany} of ${c.total} biggest detected moves had company · ${c.alone} moved alone`;
+  return `<div class="rs-stat__row"><span class="rs-stat__num">${c.pct}%</span>`
+    + `<span class="rs-stat__say">${say}</span></div>`
+    + `<div class="rs-stat__proof"><div class="rs-stat__meter"><span class="rs-stat__meter-fill" style="--v:${c.pct}"></span></div>`
+    + `<div class="rs-stat__proof-lab"><span>${es ? 'con compañía' : 'with company'} ${c.withCompany}</span>`
+    + `<span>${es ? 'solos' : 'alone'} ${c.alone}</span></div></div>`
+    + `<p class="rs-stat__sub">${sub}</p>`;
+}
+function figClusters(A, es, nm) {
+  const top = A.clusters.slice(0, 6);
+  return `<div class="rs-clusters">` + top.map((cl) => {
+    const tightSet = new Set([cl.tight.a, cl.tight.b]);
+    const chips = cl.members.map((s) => `<span class="rs-chip${tightSet.has(s) ? ' rs-chip--tight' : ''}">${nm(s, es)}</span>`).join('');
+    const name = es ? `Clúster de ${cl.size} miembros` : `${cl.size}-member cluster`;
+    const meta = es ? 'se hicieron compañía en ventanas compartidas' : 'kept company in shared windows';
+    const lbl = es ? 'pareja más estrecha' : 'tightest couple';
+    const shared = es ? `${cl.tight.k} movimientos compartidos` : `${cl.tight.k} shared moves`;
+    return `<div class="rs-cluster"><p class="rs-cluster__name">${name}</p>`
+      + `<p class="rs-cluster__meta">${meta}</p>`
+      + `<div class="rs-cluster__chips">${chips}</div>`
+      + `<div class="rs-cluster__couple">${lbl}: <span class="rs-cluster__couple-r">${nm(cl.tight.a, es)} + ${nm(cl.tight.b, es)} · ${shared}</span></div></div>`;
+  }).join('') + `</div>`;
+}
+function figCatTax(A, es) {
+  const cats = A.trimTaxCats; const max = Math.max(...cats.map((c) => c.tax));
+  return `<div class="rs-bars">` + cats.map((c) => {
+    return `<div class="rs-bar"><span class="rs-bar__label">${es ? catNameEs(c.cat) : c.cat}</span>`
+      + `<span class="rs-bar__track"><span class="rs-bar__fill" style="--v:${barV(c.tax, max)}"></span></span>`
+      + `<span class="rs-bar__val">×${c.tax.toFixed(2)}</span></div>`;
+  }).join('') + `</div>`;
+}
+function figWorst(A, es, nm) {
+  const cap = es ? 'Los artículos individuales de mayor merma' : 'Steepest single-item trim taxes';
+  const head = es ? ['#', 'Ingrediente', 'Comestible', 'Impuesto de merma'] : ['#', 'Ingredient', 'Edible', 'Trim tax'];
+  return `<div class="rs-scroll"><table class="rs-table"><caption>${cap}</caption>`
+    + `<thead><tr><th class="rs-rank" scope="col">${head[0]}</th><th scope="col">${head[1]}</th>`
+    + `<th class="rs-num" scope="col">${head[2]}</th><th class="rs-num" scope="col">${head[3]}</th></tr></thead><tbody>`
+    + A.worstYields.map((w, i) => `<tr><td class="rs-rank">${i + 1}</td><th scope="row">${nm(w.slug, es)}</th>`
+      + `<td class="rs-num">${Math.round(w.yield * 100)}%</td><td class="rs-num">×${(1 / w.yield).toFixed(2)}</td></tr>`).join('')
+    + `</tbody></table></div>`;
+}
+function figTaxonomy(A, es) {
+  const c = A.volatility.counts; const total = A.volatility.total;
+  const lockPick = A.volatility.lock || []; const floatPick = A.volatility.float || [];
+  const rep = (arr) => (arr.length ? `±${(arr[0].halfWidthPct * 100).toFixed(1)}%` : '');
+  const cols = [
+    { k: 'lock', lab: es ? 'Fijar' : 'Lock', def: es ? 'Estable para fijar un precio impreso' : 'Steady enough to print a price', items: lockPick, spread: lockPick.length ? `${es ? 'el más estable' : 'steadiest'} ${rep(lockPick)}` : '' },
+    { k: 'cushion', lab: es ? 'Colchón' : 'Cushion', def: es ? 'Más o menos estable; un colchón modesto' : 'Steady-ish; a modest buffer', items: [], spread: '' },
+    { k: 'float', lab: es ? 'Flotar' : 'Float', def: es ? 'Volátil; una línea de precio de mercado' : 'Wild enough for a market line', items: floatPick, spread: floatPick.length ? `${es ? 'el más volátil' : 'wildest'} ${rep(floatPick)}` : '' },
+    { k: 'withhold', lab: es ? 'Reservar' : 'Withhold', def: es ? 'Muy poca evidencia para puntuar' : 'Too little evidence to score', items: [], spread: '' },
+  ];
+  const max = Math.max(...cols.map((x) => c[x.k] || 0));
+  return `<div class="rs-tax">` + cols.map((col) => {
+    const n = c[col.k] || 0;
+    const chips = col.items.slice(0, 5).map((x) => `<span class="rs-chip">${x.name}</span>`).join('');
+    return `<div class="rs-tax__col"><p class="rs-tax__label">${col.lab}</p>`
+      + `<p class="rs-tax__count">${n} ${es ? 'ingredientes' : 'ingredients'}</p>`
+      + `<div class="rs-tax__meter"><i style="--v:${barV(n, max)}"></i></div>`
+      + (col.spread ? `<p class="rs-tax__spread">${col.spread}</p>` : '')
+      + `<p class="rs-tax__def">${col.def}</p>`
+      + (chips ? `<div class="rs-tax__items">${chips}</div>` : '') + `</div>`;
+  }).join('') + `</div><p class="rs-fig__note">${es ? `de ${total} ingredientes evaluados` : `of ${total} ingredients scored`}</p>`;
+}
+function figSteadyWild(A, es) {
+  // halfWidthPct is a FRACTION in the source (0.006 = ±0.6%); ×100 to the display percent the
+  // research prose cites. Both lists share one magnitude scale so lengths compare across columns.
+  const lock = A.volatility.lock || []; const float = A.volatility.float || [];
+  const max = Math.max(...lock.concat(float).map((x) => x.halfWidthPct * 100));
+  const col = (arr, head, sub) => `<div class="rs-duo__col"><p class="rs-duo__h">${head}</p><p class="rs-duo__sub">${sub}</p><div class="rs-bars">`
+    + arr.map((x) => { const p = x.halfWidthPct * 100; return `<div class="rs-bar"><span class="rs-bar__label">${x.name}</span>`
+      + `<span class="rs-bar__track"><span class="rs-bar__fill" style="--v:${barV(p, max)}"></span></span>`
+      + `<span class="rs-bar__val">±${p.toFixed(1)}%</span></div>`; }).join('') + `</div></div>`;
+  return `<div class="rs-duo">`
+    + col(lock, es ? 'Los más estables' : 'Steadiest', es ? 'banda mayorista más estrecha' : 'tightest wholesale band')
+    + col(float, es ? 'Los más salvajes' : 'Wildest', es ? 'banda mayorista más ancha' : 'widest wholesale band')
+    + `</div>`;
+}
+function figDuration(A, es) {
+  const d = A.duration; const max = d.p75 * 1.15;
+  const L = (v) => Math.round((v / max) * 100);
+  const medlab = es ? `mediana ${d.medianDays}d` : `median ${d.medianDays}d`;
+  return `<div class="rs-range"><div class="rs-range__track" style="--p25:${L(d.p25)};--p75:${L(d.p75)};--med:${L(d.medianDays)}">`
+    + `<span class="rs-range__medlab">${medlab}</span>`
+    + `<span class="rs-range__band"></span>`
+    + `<span class="rs-range__median"></span></div>`
+    + `<div class="rs-range__ends"><span>p25 ${d.p25}d</span><span>p75 ${d.p75}d</span></div>`
+    + `<div class="rs-range__axis"><span>0d</span><span>${Math.round(max / 2)}d</span><span>${Math.round(max)}d</span></div></div>`;
+}
+function figUpdown(A, es) {
+  const d = A.duration; const max = Math.max(d.up, d.down);
+  const bar = (lab, v) => `<div class="rs-bar"><span class="rs-bar__label">${lab}</span>`
+    + `<span class="rs-bar__track"><span class="rs-bar__fill" style="--v:${barV(v, max)}"></span></span>`
+    + `<span class="rs-bar__val">${v}</span></div>`;
+  const note = es
+    ? `De los ${d.total} movimientos, <strong>${d.up}</strong> fueron al alza y ${d.down} a la baja.`
+    : `Of the ${d.total} moves, <strong>${d.up}</strong> ran up and ${d.down} eased down.`;
+  return `<div class="rs-split">${bar(es ? 'Al alza' : 'Moves that ran up', d.up)}${bar(es ? 'A la baja' : 'Moves that eased down', d.down)}</div>`
+    + `<p class="rs-split__note">${note}</p>`;
+}
+const MONTHS_EN = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const MONTHS_ES = ['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+function figCalendar(A, es, nm) {
+  const cal = A.calendar.byMonth;
+  return `<div class="rs-cal">` + Array.from({ length: 12 }, (_, i) => i + 1).map((m) => {
+    const items = (cal[m] || []).slice(0, 5);
+    const mname = (es ? MONTHS_ES : MONTHS_EN)[m];
+    if (!items.length) {
+      return `<div class="rs-cal__m rs-cal__m--flat"><div class="rs-cal__mh"><span class="rs-cal__mname">${mname}</span>`
+        + `<span class="rs-cal__mtag">${es ? 'SIN MÍNIMO' : 'NO LOW'}</span></div>`
+        + `<p class="rs-cal__flatnote">${es ? 'ningún ingrediente toca fondo aquí' : 'no tracked low lands here'}</p></div>`;
+    }
+    const lis = items.map((x) => `<li class="rs-cal__item"><span>${nm(x.slug, es)}</span>`
+      + `<span class="rs-cal__save">${x.savePct}%</span></li>`).join('');
+    return `<div class="rs-cal__m"><div class="rs-cal__mh"><span class="rs-cal__mname">${mname}</span>`
+      + `<span class="rs-cal__mtag">${es ? 'COMPRA' : 'BUY'}</span></div>`
+      + `<ul class="rs-cal__list">${lis}</ul></div>`;
+  }).join('') + `</div>`;
+}
+function figMethod(A, es) {
+  const steps = es
+    ? [['¿Se puede referenciar?', '¿El artículo tiene precio? Un nivel mayorista medido, no solo un índice direccional.'],
+      ['Por encima del mayorista es normal', 'Un precio de entrega por encima del mayorista es NORMAL: flete, mano de obra y el margen del distribuidor.'],
+      ['Vigila su propia historia', 'Vigila un precio de entrega muy por encima de su PROPIO historial reciente — entonces pregunta a tu proveedor.']]
+    : [['Is it priceable?', 'Is the item priceable at all? A measured wholesale level, not just a directional index.'],
+      ['Above wholesale is normal', 'A delivered price above wholesale is NORMAL — freight, labor, and the distributor’s margin.'],
+      ['Watch its own history', 'Watch for a delivered price far above its OWN recent history — then ask your rep.']];
+  return `<ol class="rs-steps">` + steps.map(([h, b]) => `<li class="rs-step"><span class="rs-step__n"></span>`
+    + `<div><p class="rs-step__h">${h}</p><p class="rs-step__b">${b}</p></div></li>`).join('') + `</ol>`;
+}
+const FIG = { company: figCompany, clusters: figClusters, catTax: figCatTax, worst: figWorst, taxonomy: figTaxonomy, steadyWild: figSteadyWild, duration: figDuration, updown: figUpdown, calendar: figCalendar, method: figMethod };
+const FIG_NEEDS_NAME = new Set(['clusters', 'worst', 'calendar']);
+
+// Category display names in ES (EN uses the raw key, which is already a plain word).
+const CAT_ES = { citrus: 'cítricos', shellfish: 'mariscos', stalks: 'tallos', herbs: 'hierbas', seafood: 'pescado', cruciferous: 'crucíferas', fruit: 'fruta', greens: 'hojas verdes', beef: 'res', allium: 'aliáceas', fruiting: 'frutos', tuber: 'tubérculo', root: 'raíz', meat: 'carne', mushroom: 'hongos' };
+function catNameEs(cat) { return CAT_ES[cat] || cat; }
+
+function renderFigure(key, A, es, nm, cap, audioAlt, escHtml) {
+  const fn = FIG[key]; if (!fn) return '';
+  const body = FIG_NEEDS_NAME.has(key) ? fn(A, es, nm) : fn(A, es);
+  const aa = audioAlt ? ` data-audio-alt="${escHtml(audioAlt)}"` : '';
+  const cp = cap ? `<figcaption class="rs-fig__cap">${escHtml(cap)}</figcaption>` : '';
+  return `<figure class="rs-fig viz-figure"${aa}>${body}${cp}</figure>`;
+}
+
+const RESEARCH_HUB_BLURB = {
+  en: 'Original analysis over the Muntin Cost Index open data — the reads a kitchen can act on, not a data dump. Descriptive and computed; co-occurrence, never cause; a wholesale reference, never the price you pay.',
+  es: 'Análisis original sobre los datos abiertos del Muntin Cost Index — las lecturas que una cocina puede usar, no un volcado de datos. Descriptivo y calculado; coincidencia, nunca causa; una referencia mayorista, nunca el precio que pagas.',
+};
+
+// Research-surface CSS. Single teal hue on neutral 1px tracks (dataviz honesty); tabular-nums on
+// every figure; wide figures (calendar, category bars) scroll in their own container; no color as
+// the only signal. Reuses the site's global tokens + base .ci-hero/.ci-answer/.ci-body classes.
+const RESEARCH_CSS = `/* ============================================================
+   RESEARCH SURFACE — /cost-index/research/
+   rs-* system. Reuses the cost-index tokens; THEME-AWARE — those
+   tokens flip under [data-theme="dark"] / prefers-color-scheme:dark
+   on every cost-index page, and the rs-scoped tokens below
+   (--rs-accent-text, --rs-fill-soft, --rs-shadow) supply dark-correct
+   equivalents, so the surface is honest in BOTH light and dark.
+   DATAVIZ CONTRACT: every bar is a single teal fill on a
+   neutral 1px-bordered track. The per-page accent (teal/gold/
+   season) colors CHROME ONLY (top rule, kicker, step numerals,
+   callout borders) and NEVER a data mark. tabular-nums on all
+   figures. No red/green; "wild"/loss is length, not a status hue.
+   ACCESSIBLE ACCENT: readable text reads --rs-accent-text, kept
+   AA >=4.5:1 on white AND cream-2 — gold resolves to --ink-soft so
+   it never drives small text below the floor; only >=3px graphical
+   chrome and >=3:1 focus rings read the raw --rs-accent (teal/gold/
+   season). Data marks read --rs-fill (always teal).
+   ============================================================ */
+
+/* ---- accent scope: chrome reads --rs-accent; readable text reads
+   --rs-accent-text; data marks read --rs-fill (always teal) ---- */
+.rs{
+  --rs-accent:var(--teal);
+  --rs-accent-text:var(--teal);
+  --rs-track:var(--cream-2);
+  --rs-track-line:var(--line);
+  --rs-fill:var(--teal);
+  --rs-fill-soft:var(--teal-wash);
+  --rs-shadow:0 14px 34px -20px rgba(20,22,26,.4);
+}
+.rs[data-accent="gold"]{--rs-accent:var(--gold);--rs-accent-text:var(--ink-soft)}
+.rs[data-accent="season"]{--rs-accent:var(--season);--rs-accent-text:var(--season)}
+/* dark: gold accent-text stays --ink-soft (a token that already flips),
+   teal/season stay legible, so only the drop-shadow needs a darker cast */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .rs{--rs-shadow:0 14px 34px -20px rgba(0,0,0,.6)}}
+:root[data-theme="dark"] .rs{--rs-shadow:0 14px 34px -20px rgba(0,0,0,.6)}
+
+/* ============================================================
+   1. HUB  /cost-index/research/
+   ============================================================ */
+.rs-hub{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.rs-hub__lede{max-width:64ch;font-size:clamp(16px,2.4vw,18px);line-height:1.6;color:var(--ink-soft);margin:8px 0 26px}
+.rs-hub__lede strong{color:var(--ink)}
+.rs-hub__grid{
+  display:grid;gap:16px;margin:0 0 8px;
+  grid-template-columns:repeat(auto-fill,minmax(min(320px,100%),1fr));
+}
+.rs-hub-card{
+  --rs-accent:var(--teal);
+  --rs-accent-text:var(--teal);
+  position:relative;display:flex;flex-direction:column;
+  background:var(--white);border:1px solid var(--line);
+  border-top:3px solid var(--rs-accent);border-radius:12px;
+  padding:20px 22px 18px;text-decoration:none;color:inherit;
+  transition:border-color .16s ease,box-shadow .16s ease,transform .16s ease;
+}
+.rs-hub-card[data-accent="gold"]{--rs-accent:var(--gold);--rs-accent-text:var(--ink-soft)}
+.rs-hub-card[data-accent="season"]{--rs-accent:var(--season);--rs-accent-text:var(--season)}
+.rs-hub-card:hover,.rs-hub-card:focus-visible{
+  border-color:var(--rs-accent);box-shadow:var(--rs-shadow);
+  transform:translateY(-2px);outline:none;
+}
+.rs-hub-card:focus-visible{outline:2px solid var(--rs-accent);outline-offset:2px}
+.rs-hub-card__kicker{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--rs-accent-text);margin:0 0 10px}
+.rs-hub-card__q{font-family:var(--font-display);font-size:clamp(19px,2.4vw,22px);font-weight:500;line-height:1.22;color:var(--ink);margin:0 0 12px;text-wrap:balance}
+.rs-hub-card__a{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:0 0 16px}
+.rs-hub-card__foot{margin-top:auto;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+.rs-hub-card__stat{font-family:var(--font-display);font-size:clamp(26px,4vw,34px);font-weight:500;line-height:1;color:var(--ink)}
+.rs-hub-card__statlab{font-size:12.5px;line-height:1.4;color:var(--stone)}
+.rs-hub-card__go{margin-top:14px;font-size:13px;font-weight:600;color:var(--rs-accent-text)}
+.rs-hub-card__go::after{content:" \\2192"}
+
+/* ============================================================
+   2. PAGE HERO  (augments .ci-hero, does not redefine it)
+   ============================================================ */
+.rs-hero{position:relative;padding-top:34px}
+.rs-hero::before{content:"";position:absolute;top:0;left:0;width:56px;height:4px;border-radius:2px;background:var(--rs-accent)}
+.rs-hero__eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--rs-accent-text);margin:0 0 10px}
+.rs-hero__eyebrow a{color:inherit;text-decoration:none}
+.rs-hero__answer{
+  font-size:clamp(17px,2.6vw,20px);font-weight:600;line-height:1.5;color:var(--ink);
+  margin:6px 0 16px;max-width:60ch;font-variant-numeric:tabular-nums;
+  border-left:3px solid var(--rs-accent);padding-left:16px;
+}
+.rs-hero__stat{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:0 0 6px;font-variant-numeric:tabular-nums}
+.rs-hero__stat-num{font-family:var(--font-display);font-size:clamp(38px,7vw,56px);font-weight:500;line-height:1;color:var(--ink);letter-spacing:-.01em}
+.rs-hero__stat-lab{font-size:15px;line-height:1.4;color:var(--ink-soft);max-width:34ch}
+.rs-hero__meta{font-size:12.5px;color:var(--stone);margin:8px 0 0}
+
+/* ============================================================
+   3. SECTION RHYTHM inside .ci-body
+   ============================================================ */
+.rs-section{margin:8px 0 0}
+.rs-section + .rs-section{margin-top:6px}
+.rs-lede{font-size:16px;line-height:1.7;color:var(--ink-soft);margin:0 0 16px;max-width:66ch}
+.rs-lede strong{color:var(--ink)}
+/* recessive "don't over-read it" caveat block */
+.rs-caution{
+  margin:18px 0;padding:14px 18px;background:var(--cream-2);
+  border:1px solid var(--line);border-left:3px solid var(--stone);border-radius:10px;
+}
+.rs-caution__h{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px}
+.rs-caution p{font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 8px}
+.rs-caution p:last-child{margin-bottom:0}
+/* the page verdict / action line */
+.rs-takeaway{
+  margin:22px 0 8px;padding:18px 20px;background:var(--white);
+  border:1px solid var(--line);border-left:4px solid var(--rs-accent);border-radius:12px;
+}
+.rs-takeaway__h{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--rs-accent-text);margin:0 0 6px}
+.rs-takeaway__b{font-size:16.5px;line-height:1.55;color:var(--ink);margin:0;font-weight:500;max-width:60ch}
+.rs-takeaway__b strong{font-weight:700}
+
+/* ============================================================
+   4. SHARED FIGURE FRAME
+   ============================================================ */
+.rs-fig{margin:22px 0;padding:18px 20px 16px;background:var(--white);border:1px solid var(--line);border-radius:12px;font-variant-numeric:tabular-nums}
+.rs-fig__head{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 14px}
+.rs-fig figcaption,.rs-fig__cap{margin:14px 0 0;font-size:13px;line-height:1.55;color:var(--ink-soft)}
+.rs-fig__cap strong{color:var(--ink)}
+.rs-fig__note{margin:8px 0 0;font-size:12px;color:var(--stone);line-height:1.5}
+/* legend — present only when a single plot carries >=2 series.
+   Keys differ by TEXTURE, not alpha: solid teal vs teal + teal hatch,
+   both with a full-strength teal border, so low-vision users can tell
+   them apart without a second hue. */
+.rs-legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin:0 0 12px;font-size:12.5px;color:var(--ink-soft)}
+.rs-legend__key{display:inline-flex;align-items:center;gap:7px}
+.rs-legend__sw{width:11px;height:11px;border-radius:3px;background:var(--rs-fill);flex:0 0 auto}
+.rs-legend__sw--soft{background-color:var(--rs-fill-soft);background-image:repeating-linear-gradient(-45deg,var(--rs-fill) 0 1.5px,transparent 1.5px 5px);border:1px solid var(--rs-fill)}
+/* sources drawer */
+.rs-src{margin:14px 0 0;font-size:12.5px}
+.rs-src summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:flex;align-items:center;padding:8px 0;min-height:40px;list-style:none}
+.rs-src summary::-webkit-details-marker{display:none}
+.rs-src summary::before{content:"\\203A\\00a0";color:var(--stone);display:inline-block;transition:transform .16s ease}
+.rs-src[open] summary::before{transform:rotate(90deg)}
+.rs-src__body{margin:8px 0 0;color:var(--ink-soft);line-height:1.6}
+.rs-src__body a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+.rs-src__body a:hover{color:var(--teal)}
+
+/* ---- reusable horizontal bar (catTax, steadyWild, updown) ---- */
+.rs-bars{display:flex;flex-direction:column;gap:11px;margin:0}
+.rs-bar{display:grid;grid-template-columns:minmax(120px,34%) 1fr auto;align-items:center;gap:12px}
+.rs-bar__label{font-size:14px;line-height:1.35;color:var(--ink)}
+.rs-bar__track{position:relative;height:18px;background:var(--rs-track);border:1px solid var(--rs-track-line);border-radius:4px;overflow:hidden}
+/* min-width is gated by the value: a true 0 renders empty (no 2px
+   sliver overstating a genuine zero); any value>0 keeps a 2px floor. */
+.rs-bar__fill{height:100%;width:calc(var(--v,0)*1%);background:var(--rs-fill);border-radius:0 3px 3px 0;min-width:calc(2px * min(var(--v,0),1))}
+.rs-bar__val{font-size:14px;font-weight:600;color:var(--ink);text-align:right;min-width:5ch;white-space:nowrap}
+.rs-bar__val--muted{color:var(--ink-soft);font-weight:500}
+
+/* ============================================================
+   5a. company-stat  (single big share — a stat tile + proof meter)
+   ============================================================ */
+.rs-stat{margin:22px 0;padding:22px 24px;background:var(--white);border:1px solid var(--line);border-radius:12px;font-variant-numeric:tabular-nums}
+.rs-stat__row{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.rs-stat__num{font-family:var(--font-display);font-size:clamp(46px,9vw,72px);font-weight:500;line-height:.95;color:var(--ink);letter-spacing:-.015em}
+.rs-stat__say{font-size:16px;line-height:1.45;color:var(--ink);font-weight:500;max-width:34ch}
+.rs-stat__proof{margin:18px 0 0}
+.rs-stat__meter{position:relative;height:14px;background:var(--rs-track);border:1px solid var(--rs-track-line);border-radius:4px;overflow:hidden}
+.rs-stat__meter-fill{height:100%;width:calc(var(--v,0)*1%);background:var(--rs-fill);border-radius:0 3px 3px 0}
+.rs-stat__proof-lab{display:flex;justify-content:space-between;gap:10px;margin:7px 0 0;font-size:12.5px;color:var(--ink-soft)}
+.rs-stat__sub{margin:12px 0 0;font-size:13px;color:var(--stone);line-height:1.5}
+
+/* ============================================================
+   5b. clusters  (grouped ingredient chips + tight-couple emphasis)
+   ============================================================ */
+.rs-clusters{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr))}
+.rs-cluster{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.rs-cluster__name{font-family:var(--font-display);font-size:16px;font-weight:600;color:var(--ink);margin:0 0 3px}
+.rs-cluster__meta{font-size:12px;color:var(--stone);margin:0 0 12px;font-variant-numeric:tabular-nums}
+.rs-cluster__chips{display:flex;flex-wrap:wrap;gap:7px}
+.rs-chip{display:inline-block;font-size:13px;line-height:1.3;padding:5px 11px;border-radius:999px;background:var(--cream-2);border:1px solid var(--line);color:var(--ink)}
+.rs-chip--tight{background:var(--rs-fill-soft);border-color:var(--rs-fill);color:var(--ink);font-weight:600}
+.rs-cluster__couple{margin:12px 0 0;display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.rs-cluster__couple-r{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--ink)}
+.rs-cluster__couple-r::before{content:"";width:9px;height:9px;border-radius:2px;background:var(--rs-fill)}
+
+/* ============================================================
+   5d. worst  (compact table — scrolls in its own container)
+   ============================================================ */
+.rs-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:18px 0}
+.rs-table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums;min-width:420px}
+.rs-table caption{text-align:left;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);padding:0 0 10px}
+.rs-table th,.rs-table td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);white-space:nowrap;vertical-align:middle}
+.rs-table thead th{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft)}
+.rs-table td.rs-num,.rs-table th.rs-num{text-align:right;font-variant-numeric:tabular-nums}
+.rs-table tbody tr:hover{background:var(--cream-2)}
+.rs-table .rs-rank{color:var(--stone);width:1%}
+/* link reads as a link WITHOUT hover (persistent teal dashed underline
+   hugging the text) and carries a >=40px tap area */
+.rs-table td a{color:var(--ink);text-decoration:underline dashed var(--teal);text-underline-offset:3px;text-decoration-thickness:1px;font-weight:600;display:inline-flex;align-items:center;min-height:40px}
+.rs-table td a:hover{color:var(--teal)}
+/* optional in-cell magnitude sparkbar (single teal, no second meaning) */
+.rs-cellbar{display:inline-block;vertical-align:middle;width:64px;height:9px;background:var(--rs-track);border:1px solid var(--rs-track-line);border-radius:3px;overflow:hidden;margin-right:8px}
+.rs-cellbar > i{display:block;height:100%;width:calc(var(--v,0)*1%);background:var(--rs-fill)}
+
+/* ============================================================
+   5e. taxonomy  (4-way split lock / cushion / float / withhold)
+   ordered buckets: differentiated by POSITION + LABEL, never hue.
+   a single-hue teal meter per column carries the rising spread.
+   ============================================================ */
+.rs-tax{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(180px,100%),1fr))}
+.rs-tax__col{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:15px 16px;display:flex;flex-direction:column}
+.rs-tax__label{font-family:var(--font-display);font-size:16px;font-weight:600;color:var(--ink);margin:0}
+.rs-tax__count{font-size:12px;color:var(--stone);margin:2px 0 10px;font-variant-numeric:tabular-nums}
+.rs-tax__meter{height:8px;background:var(--rs-track);border:1px solid var(--rs-track-line);border-radius:3px;overflow:hidden;margin:0 0 4px}
+.rs-tax__meter > i{display:block;height:100%;width:calc(var(--v,0)*1%);background:var(--rs-fill)}
+.rs-tax__spread{font-size:11.5px;color:var(--ink-soft);margin:0 0 12px;font-variant-numeric:tabular-nums}
+.rs-tax__def{font-size:13px;line-height:1.5;color:var(--ink-soft);margin:0 0 10px}
+.rs-tax__items{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}
+.rs-tax__items .rs-chip{font-size:12px;padding:4px 9px}
+
+/* ============================================================
+   5f. steadyWild  (two ranked single-series bar lists side by side)
+   BOTH lists use the same teal; "wild" reads by length, not color.
+   ============================================================ */
+.rs-duo{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr))}
+.rs-duo__col{min-width:0}
+.rs-duo__h{font-family:var(--font-display);font-size:15px;font-weight:600;color:var(--ink);margin:0 0 3px}
+.rs-duo__sub{font-size:12.5px;color:var(--stone);margin:0 0 14px}
+/* a compact bar variant: label above, track+value below (phone-safe) */
+.rs-duo .rs-bar{grid-template-columns:1fr auto}
+.rs-duo .rs-bar__label{grid-column:1 / -1;font-size:13.5px;margin-bottom:-4px}
+
+/* ============================================================
+   5g. duration  (p25 - median - p75 range bar, in days)
+   positions are % of a labeled day-axis; median is a 2px tick.
+   ============================================================ */
+.rs-range{margin:30px 0 0}
+.rs-range__track{position:relative;height:26px;background:var(--rs-track);border:1px solid var(--rs-track-line);border-radius:5px}
+.rs-range__band{position:absolute;top:-1px;bottom:-1px;left:calc(var(--p25,0)*1%);width:calc((var(--p75,0) - var(--p25,0))*1%);background:var(--rs-fill-soft);border:1px solid var(--rs-fill);border-radius:4px}
+.rs-range__median{position:absolute;top:-5px;bottom:-5px;left:calc(var(--med,0)*1%);width:2px;background:var(--rs-fill);transform:translateX(-1px)}
+.rs-range__medlab{position:absolute;left:calc(var(--med,0)*1%);top:-26px;transform:translateX(-50%);white-space:nowrap;font-size:13px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+.rs-range__ends{display:flex;justify-content:space-between;margin:10px 0 0;font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.rs-range__axis{display:flex;justify-content:space-between;margin:14px 2px 0;font-size:11px;color:var(--stone);font-variant-numeric:tabular-nums;border-top:1px solid var(--line);padding-top:5px}
+
+/* ============================================================
+   5h. updown  (2-way split — two labeled bars on one scale)
+   ============================================================ */
+.rs-split{display:flex;flex-direction:column;gap:14px;margin:4px 0 0}
+.rs-split .rs-bar{grid-template-columns:minmax(150px,40%) 1fr auto}
+.rs-split__note{margin:14px 0 0;font-size:13.5px;line-height:1.55;color:var(--ink-soft)}
+.rs-split__note strong{color:var(--ink)}
+
+/* ============================================================
+   5i. calendar  (12-month grid; reflows to 1 col on phones)
+   ============================================================ */
+.rs-cal{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(190px,100%),1fr))}
+.rs-cal__m{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:12px 13px;display:flex;flex-direction:column}
+.rs-cal__mh{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:0 0 9px}
+.rs-cal__mname{font-family:var(--font-display);font-size:14px;font-weight:600;color:var(--ink)}
+.rs-cal__mtag{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--rs-accent-text)}
+.rs-cal__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.rs-cal__item{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:13px;line-height:1.35;color:var(--ink);font-variant-numeric:tabular-nums}
+/* the calendar's PRIMARY action: a >=40px tap row with a persistent
+   teal dashed underline so it reads as a link on touch (no hover cue) */
+.rs-cal__item a{color:var(--ink);text-decoration:underline dashed var(--teal);text-underline-offset:3px;text-decoration-thickness:1px;display:flex;align-items:center;min-height:40px;flex:1 1 auto;min-width:0}
+.rs-cal__item a:hover{color:var(--teal)}
+.rs-cal__save{color:var(--ink-soft);font-size:12px;white-space:nowrap}
+.rs-cal__m--flat{background:var(--cream-2);border-style:dashed}
+.rs-cal__m--flat .rs-cal__mtag{color:var(--ink-soft)}
+.rs-cal__flatnote{font-size:12px;color:var(--ink-soft);line-height:1.45;margin:0}
+
+/* ============================================================
+   5j. method  (3 numbered steps — a walked sequence)
+   ============================================================ */
+.rs-steps{list-style:none;counter-reset:rs-step;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:2px}
+.rs-step{position:relative;display:grid;grid-template-columns:auto 1fr;gap:16px;padding:16px 0}
+.rs-step + .rs-step{border-top:1px solid var(--line)}
+.rs-step__n{
+  counter-increment:rs-step;
+  width:38px;height:38px;flex:0 0 38px;border-radius:999px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:18px;font-weight:600;
+  color:var(--rs-accent-text);background:var(--white);
+  border:2px solid var(--rs-accent);font-variant-numeric:tabular-nums;
+}
+.rs-step__n::before{content:counter(rs-step)}
+.rs-step__h{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink);margin:4px 0 5px;line-height:1.25}
+.rs-step__b{font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0}
+.rs-step__b strong{color:var(--ink)}
+
+/* ============================================================
+   6. RELATED  (cross-link module to the other research pages)
+   ============================================================ */
+.rs-related{margin:36px 0 8px;padding-top:22px;border-top:1px solid var(--line)}
+.rs-related__h{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 14px}
+.rs-related__grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr))}
+.rs-related__link{
+  --rs-accent:var(--teal);
+  --rs-accent-text:var(--teal);
+  display:block;padding:13px 15px;background:var(--white);border:1px solid var(--line);
+  border-left:3px solid var(--rs-accent);border-radius:10px;text-decoration:none;color:inherit;
+  transition:border-color .16s ease,background .16s ease;
+}
+.rs-related__link[data-accent="gold"]{--rs-accent:var(--gold);--rs-accent-text:var(--ink-soft)}
+.rs-related__link[data-accent="season"]{--rs-accent:var(--season);--rs-accent-text:var(--season)}
+.rs-related__link:hover{border-color:var(--rs-accent);background:var(--cream)}
+.rs-related__kicker{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--rs-accent-text);margin:0 0 4px}
+.rs-related__q{font-size:14px;line-height:1.4;color:var(--ink);margin:0}
+
+/* ---- focus-visible: one designed >=3:1 ring on every interactive
+   element (gold ring = 3.64:1, clears the 3:1 non-text minimum) ---- */
+.rs-related__link:focus-visible,
+.rs-table td a:focus-visible,
+.rs-cal__item a:focus-visible,
+.rs-src summary:focus-visible,
+.rs-hero__eyebrow a:focus-visible{outline:2px solid var(--rs-accent);outline-offset:2px;border-radius:3px}
+
+/* ============================================================
+   7. MOBILE  (kitchen phone)
+   ============================================================ */
+@media (max-width:600px){
+  /* bars: label rides above the track+value so text never truncates */
+  .rs-bar,.rs-split .rs-bar{grid-template-columns:1fr auto}
+  .rs-bar__label{grid-column:1 / -1;margin-bottom:-3px}
+  /* calendar collapses to a single readable column */
+  .rs-cal{grid-template-columns:1fr}
+  .rs-fig{padding:16px 15px 14px}
+  .rs-stat{padding:18px 16px}
+  .rs-range__medlab{font-size:12px}
+  /* duration axis stays legible; range keeps its labels */
+  .rs-hero__answer{padding-left:12px}
+}
+/* very wide figures (worst table) always scroll inside .rs-scroll,
+   never the page body — enforced by min-width on .rs-table above. */
+@media (prefers-reduced-motion:reduce){
+  .rs-hub-card,.rs-related__link{transition:none}
+  .rs-hub-card:hover{transform:none}
+}\n.rs-cta{margin-top:28px}\n`;
+
+// Build the /cost-index/research/ targets. Empty until data/cost-research-content.json exists,
+// so the page build never breaks while the content is in flight.
+export function researchTargets(ctx) {
+  const { pageHead, pageTail, escHtml, repoRoot } = ctx;
+  const contentPath = path.join(repoRoot, 'data/cost-research-content.json');
+  if (!fs.existsSync(contentPath)) return [];
+  const content = JSON.parse(fs.readFileSync(contentPath, 'utf8'));
+  if (!content || !Array.isArray(content.pages) || !content.pages.length) return [];
+  const A = researchInputs(repoRoot);
+  const NAMES = nameMap(repoRoot);
+  const nm = (slug, es) => { const e = NAMES[slug]; return e ? (es ? (e.es || e.en) : e.en) : slug; };
+  const targets = [];
+  for (const page of content.pages) {
+    for (const loc of ['en', 'es']) {
+      targets.push({ path: `${loc === 'es' ? 'es/' : ''}cost-index/research/${page.slug}/index.html`, content: emitResearchPage(page, loc, A, nm, ctx) });
+    }
+  }
+  targets.push({ path: 'cost-index/research/index.html', content: emitResearchHub(content, 'en', ctx) });
+  targets.push({ path: 'es/cost-index/research/index.html', content: emitResearchHub(content, 'es', ctx) });
+  return targets;
+}
+
+function emitResearchPage(page, loc, A, nm, ctx) {
+  const { pageHead, pageTail, escHtml } = ctx;
+  const es = loc === 'es'; const lang = es ? 'es' : 'en'; const base = es ? '/es' : '';
+  const spec = page[loc]; const accent = page.accent || 'var(--teal)';
+  const canonEn = `https://muntin.digital/cost-index/research/${page.slug}/`;
+  const canonEs = `https://muntin.digital/es/cost-index/research/${page.slug}/`;
+  const secHtml = (spec.sections || []).map((s) => {
+    const paras = (s.paragraphs || []).map((p) => `<p>${escHtml(p)}</p>`).join('');
+    const fig = s.figureKey ? renderFigure(s.figureKey, A, es, nm, s.figureCaption, s.figureAudioAlt, escHtml) : '';
+    return `<section class="rs-section"><h2>${escHtml(s.h2)}</h2>${paras}${fig}</section>`;
+  }).join('');
+  const crumb = [[es ? 'Inicio' : 'Home', es ? 'https://muntin.digital/es/' : 'https://muntin.digital/'],
+    [es ? 'Índice de costos' : 'Cost index', `https://muntin.digital${base}/cost-index/`],
+    [es ? 'Investigación' : 'Research', `https://muntin.digital${base}/cost-index/research/`],
+    [escHtml(spec.h1), es ? canonEs : canonEn]];
+  const jsonld = JSON.stringify({ '@context': 'https://schema.org', '@graph': [
+    { '@type': 'Article', '@id': (es ? canonEs : canonEn) + '#article', 'headline': spec.h1, 'name': spec.title,
+      'inLanguage': es ? 'es-US' : 'en-US', 'description': spec.metaDesc, 'datePublished': RESEARCH_PUBLISHED,
+      'isAccessibleForFree': true, 'author': { '@id': 'https://muntin.digital/#business' }, 'publisher': { '@id': 'https://muntin.digital/#business' },
+      'isBasedOn': 'https://muntin.digital/open/', 'speakable': { '@type': 'SpeakableSpecification', 'cssSelector': ['h1', '.ci-answer'] } },
+    { '@type': 'BreadcrumbList', 'itemListElement': crumb.map((c, i) => ({ '@type': 'ListItem', 'position': i + 1, 'name': c[0], 'item': c[1] })) },
+  ] }).replace(/</g, '\\u003c');
+  const rel = (page.crossLinks || spec.crossLinks || []);
+  const relHtml = rel.length ? `<nav class="rs-related" aria-label="${es ? 'Relacionado' : 'Related'}"><h2 class="rs-related__h">${es ? 'Sigue el hilo' : 'Follow the thread'}</h2><div class="rs-related__grid">`
+    + rel.map(([t, u]) => `<a class="rs-related__link" href="${u.startsWith('http') ? u : base + u}"><p class="rs-related__q">${escHtml(t)}</p></a>`).join('') + `</div></nav>` : '';
+  const cta = es ? 'Compara tu factura con la referencia' : 'Check your invoice against the reference';
+  const body = `
+  <div class="rs" data-accent="${accentScope(accent)}">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="${base}/">${es ? 'Inicio' : 'Home'}</a> › <a href="${base}/cost-index/">${es ? 'Índice de costos' : 'Cost index'}</a> › <a href="${base}/cost-index/research/">${es ? 'Investigación' : 'Research'}</a></nav>
+  <section class="ci-hero rs-hero">
+    <p class="ci-eyebrow rs-hero__eyebrow"><a href="${base}/cost-index/research/">${es ? 'Investigación Muntin' : 'Muntin Research'}</a></p>
+    <h1>${escHtml(spec.h1)}</h1>
+    <p class="ci-answer rs-hero__answer">${escHtml(spec.speakableAnswer)}</p>
+  </section>
+  <div class="ci-body">
+    ${(spec.intro || []).map((p) => `<p class="rs-lede">${escHtml(p)}</p>`).join('')}
+    ${secHtml}
+    <section class="rs-takeaway"><p class="rs-takeaway__h">${es ? 'Qué hacer con esto' : 'What to do with this'}</p><p class="rs-takeaway__b">${escHtml(spec.operatorPlay)}</p></section>
+    <details class="rs-src"><summary>${es ? 'Fuentes y método' : 'Sources & method'}</summary><div class="rs-src__body">${escHtml(spec.sourcesNote)}</div></details>
+    ${relHtml}
+    <div class="rs-cta"><a class="btn btn-primary" href="${base}/tools/vendor-benchmark/">${cta} <span aria-hidden="true">→</span></a></div>
+  </div>
+  </div>`;
+  return pageHead({ lang, locale: loc, title: spec.title, desc: spec.metaDesc, canonEn, canonEs, jsonld, extraCss: `<style>${RESEARCH_CSS}</style>` }) + body + pageTail;
+}
+
+function emitResearchHub(content, loc, ctx) {
+  const { pageHead, pageTail, escHtml } = ctx;
+  const es = loc === 'es'; const lang = es ? 'es' : 'en'; const base = es ? '/es' : '';
+  const canonEn = 'https://muntin.digital/cost-index/research/';
+  const canonEs = 'https://muntin.digital/es/cost-index/research/';
+  const h1 = es ? 'Investigación del Cost Index' : 'Cost Index research';
+  const title = es ? 'Investigación — Muntin Cost Index' : 'Research — Muntin Cost Index';
+  const desc = es ? 'Análisis original sobre los datos abiertos del Cost Index: co-movimiento, impuesto de merma, volatilidad, duración de choques y estacionalidad.'
+    : 'Original analysis over the Cost Index open data: co-movement, trim tax, volatility, shock duration, and seasonality.';
+  const STRANDS = {
+    'what-moves-together': ['Co-movement', 'Co-movimiento'],
+    'trim-tax-across-the-pantry': ['Yield & trim', 'Rendimiento y merma'],
+    'steady-vs-wild': ['Volatility', 'Volatilidad'],
+    'how-long-do-food-price-shocks-last': ['Shock duration', 'Duración del shock'],
+    'cheapest-month-buying-calendar': ['Seasonality', 'Estacionalidad'],
+    'reading-your-invoice-against-wholesale': ['Invoice method', 'Método de factura'],
+  };
+  const cards = content.pages.map((p) => {
+    const s = p[loc];
+    const kick = (STRANDS[p.slug] || ['Research', 'Investigación'])[es ? 1 : 0];
+    return `<a class="rs-hub-card" data-accent="${accentScope(p.accent || 'var(--teal)')}" href="${base}/cost-index/research/${p.slug}/">`
+      + `<p class="rs-hub-card__kicker">${kick}</p>`
+      + `<h2 class="rs-hub-card__q">${escHtml(s.h1)}</h2>`
+      + `<p class="rs-hub-card__a">${escHtml(s.takeaway)}</p>`
+      + `<span class="rs-hub-card__go">${es ? 'Leer' : 'Read'}</span></a>`;
+  }).join('');
+  const jsonld = JSON.stringify({ '@context': 'https://schema.org', '@graph': [
+    { '@type': 'CollectionPage', '@id': (es ? canonEs : canonEn) + '#page', 'url': es ? canonEs : canonEn, 'name': h1, 'inLanguage': es ? 'es-US' : 'en-US', 'description': desc, 'isPartOf': { '@id': 'https://muntin.digital/#website' } },
+    { '@type': 'ItemList', 'numberOfItems': content.pages.length, 'itemListElement': content.pages.map((p, i) => ({ '@type': 'ListItem', 'position': i + 1, 'name': p[loc].h1, 'url': `https://muntin.digital${base}/cost-index/research/${p.slug}/` })) },
+  ] }).replace(/</g, '\\u003c');
+  const body = `
+  <div class="rs" data-accent="teal">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="${base}/">${es ? 'Inicio' : 'Home'}</a> › <a href="${base}/cost-index/">${es ? 'Índice de costos' : 'Cost index'}</a> › ${es ? 'Investigación' : 'Research'}</nav>
+  <section class="ci-hero"><p class="ci-eyebrow">${es ? 'Investigación' : 'Research'}</p><h1>${escHtml(h1)}</h1><p class="ci-lede">${escHtml(desc)}</p></section>
+  <div class="rs-hub"><p class="rs-hub__lede">${escHtml(RESEARCH_HUB_BLURB[loc])}</p><div class="rs-hub__grid">${cards}</div></div>
+  </div>`;
+  return pageHead({ lang, locale: loc, title, desc, canonEn, canonEs, jsonld, extraCss: `<style>${RESEARCH_CSS}</style>` }) + body + pageTail;
+}
+
+const RESEARCH_PUBLISHED = '2026-07-11';
+
+// CLI debug: node scripts/lib/cost-research.mjs --debug (from repo root)
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const repoRoot = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', '..');
+  const A = researchInputs(repoRoot);
+  console.log('clusters:', A.clusters.map((c) => ({ size: c.size, tight: c.tight, members: c.members })));
+  console.log('company:', A.company);
+  console.log('trimTaxCats:', A.trimTaxCats.map((c) => ({ cat: c.cat, tax: +c.tax.toFixed(2), meanYield: +(c.meanYield * 100).toFixed(0), n: c.n })));
+  console.log('worstYields:', A.worstYields.map((w) => ({ en: w.en, tax: +w.tax.toFixed(2) })));
+  console.log('volatility counts:', A.volatility.counts, 'total', A.volatility.total);
+  console.log('  lock (steady):', A.volatility.lock.map((x) => x.name + ' ' + (x.halfWidthPct * 100).toFixed(1) + '%'));
+  console.log('  float (wild):', A.volatility.float.map((x) => x.name + ' ' + (x.halfWidthPct * 100).toFixed(1) + '%'));
+  console.log('duration:', A.duration);
+  console.log('calendar readyN:', A.calendar.readyN);
+  for (let m = 1; m <= 12; m++) console.log('  month', m, '→', A.calendar.byMonth[m].length, 'cheapest; top', A.calendar.byMonth[m].slice(0, 3).map((x) => x.slug + ' ' + x.savePct + '%'));
+}

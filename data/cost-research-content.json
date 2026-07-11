@@ -1,0 +1,624 @@
+{
+  "_doc": "Muntin Cost-Index research pages (Workstream F). Editorial content only; every NUMBER is rendered from the deterministic engine in scripts/lib/cost-research.mjs and gated by scripts/check-cost-research.mjs. EN+ES per page.",
+  "generated": "2026-07-11",
+  "pages": [
+    {
+      "slug": "what-moves-together",
+      "accent": "var(--teal)",
+      "crossLinks": [
+        [
+          "The market-events explorer",
+          "/cost-index/events/"
+        ],
+        [
+          "The co-movement dataset (CC0)",
+          "/cost-index/co-movement.json"
+        ],
+        [
+          "Check a delivered price vs the reference",
+          "/tools/vendor-benchmark/"
+        ]
+      ],
+      "en": {
+        "slug": "what-moves-together",
+        "title": "What Moves Together in the Cost Index | Muntin",
+        "metaDesc": "94% of the 432 biggest wholesale-reference moves in the Muntin Cost Index had company. 407 traveled with a cluster-mate, only 25 moved alone.",
+        "h1": "When one ingredient spikes, does swapping within its cluster help?",
+        "speakableAnswer": "Across the 432 biggest detected wholesale-reference moves in the Muntin Cost Index, 94% traveled with at least one cluster-mate, so a within-cluster swap during a shock buys a kitchen little.",
+        "intro": [
+          "When a headline ingredient jumps, the reflex is to swap it for its neighbor: romaine for iceberg, one lettuce for another. This page counts how often that neighbor had already jumped too.",
+          "The answer, across 432 detected moves, is almost always. So the swap that saves a kitchen on a shock day is cross-cluster, not within the cluster."
+        ],
+        "sections": [
+          {
+            "h2": "94% of the biggest moves had company",
+            "figureKey": "company",
+            "figureCaption": "Of the 432 biggest detected moves, 407 traveled with a cluster-mate and 25 moved alone.",
+            "figureAudioAlt": "Of the 432 biggest detected wholesale-reference moves, 407 moved together with at least one cluster-mate and only 25 moved alone, which is 94 percent traveling with company.",
+            "paragraphs": [
+              "Across the 432 biggest wholesale-reference moves the Cost Index has detected, 407 traveled with at least one cluster-mate. Only 25 moved alone. That is 94% with company. A move here is one ingredient's wholesale reference stepping outside its own normal, never a delivered or retail price, and a delivered price sitting above that reference is normal, not overpayment.",
+              "Company mostly runs one direction. Of the 432 moves, 393 were upward and 39 downward. When a cluster stirs, it mostly stirs up. For a kitchen, the number reframes the shock-day reflex: reaching for the neighbor on the same shelf usually reaches for something that already moved in the same window."
+            ]
+          },
+          {
+            "h2": "The clusters that keep company",
+            "figureKey": "clusters",
+            "figureCaption": "The co-movement clusters, from an eight-member lettuce group down to pairs; romaine and red leaf shared 5 of one anchor's own notable moves.",
+            "figureAudioAlt": "The moves sort into clusters, from an eight-member lettuce group down to pairs. Inside the largest, romaine lettuce and red leaf lettuce kept the closest company, sharing 5 of one anchor's own notable moves.",
+            "paragraphs": [
+              "The moves sort into clusters, groups whose members kept company inside the same detection windows. The largest holds eight: broccoli, butter lettuce, cauliflower, green leaf lettuce, iceberg lettuce, raspberry, red leaf lettuce, and romaine lettuce. Inside it, romaine and red leaf kept the closest company, sharing 5 of one anchor's own notable moves. This is co-occurrence, a shared episode like one growing region or one produce aisle, never a measured cause.",
+              "Below the lettuce group sits a four-member cluster: cherry tomato, green beans, tomato, and yellow squash, with cherry tomato and yellow squash sharing 4 moves. Then two three-member clusters, one of artichoke, collard greens, and leek, another of butternut squash, eggplant, and red onion. The rest are pairs. The tightest couple in the whole set is ground pork and pork shoulder, which shared 6 of one anchor's notable moves; chicken breast and chicken thigh shared 5; carrot and rutabaga, 4."
+            ]
+          },
+          {
+            "h2": "Swap across a cluster, not inside it",
+            "paragraphs": [
+              "This is why a within-cluster swap buys a kitchen little on a shock day. Romaine's five-times companion is red leaf, and both live in the same eight-member cluster, along with iceberg, butter lettuce, and green leaf. When romaine's reference jumps, the usual swaps have usually jumped in the same window. Trading romaine for iceberg trades one member of a moving cluster for another.",
+              "The risk hides in menu sections. A Caesar, a wedge, and a broccoli side all draw from that single eight-member cluster, so one shock can land on the whole section at once. Map each menu section to its cluster, then flag any section whose ingredients all sit in one cluster as concentration risk.",
+              "For each flagged section, pre-designate a cross-cluster swap. When the lettuce cluster runs hot, the hedge is not romaine to iceberg or romaine to red leaf. It is shifting the dish toward a different cluster, cabbage and kale, or cucumber and zucchini, or onto a staple. 407 of the 432 biggest moves had company; only 25 moved alone. The company is inside the cluster, so the hedge has to leave it."
+            ]
+          }
+        ],
+        "operatorPlay": "Monday, map each menu section to its cluster and flag any section whose ingredients all sit in one cluster. A Caesar-plus-wedge-plus-broccoli-side lineup all lives in the single eight-member lettuce cluster, so one shock lands on the whole section at once. For each flagged section, pre-designate a cross-cluster swap: when the lettuce cluster runs hot, the hedge is not romaine to iceberg or romaine to red leaf, it is shifting the dish toward a different cluster, cabbage and kale, or cucumber and zucchini, or onto a staple. 407 of the 432 biggest moves had company; only 25 moved alone.",
+        "sourcesNote": "Built from the Muntin co-movement dataset (CC0), computed from the Muntin Cost Index; every move is a wholesale-reference read against each ingredient's own normal, not a delivered price.",
+        "takeaway": "When a cluster runs hot, the hedge is the next cluster over, not the next shelf."
+      },
+      "es": {
+        "slug": "what-moves-together",
+        "title": "Qué se mueve junto en el Cost Index | Muntin",
+        "metaDesc": "El 94% de los 432 mayores movimientos de referencia mayorista del Muntin Cost Index tuvo compañía: 407 con un vecino de clúster, solo 25 solos.",
+        "h1": "Cuando un ingrediente se dispara, ¿sirve cambiarlo por otro de su clúster?",
+        "speakableAnswer": "En los 432 mayores movimientos de referencia mayorista detectados por el Muntin Cost Index, el 94% viajó con al menos un vecino de clúster, así que cambiar dentro del clúster durante un shock le sirve de poco a una cocina.",
+        "intro": [
+          "Cuando un ingrediente protagonista se dispara, el reflejo es cambiarlo por su vecino: romana por iceberg, una lechuga por otra. Esta página cuenta cuántas veces ese vecino ya se había disparado también.",
+          "La respuesta, en 432 movimientos detectados, es casi siempre. Así que el cambio que le ahorra a una cocina en un día de shock es entre clústeres, no dentro del clúster."
+        ],
+        "sections": [
+          {
+            "h2": "El 94% de los mayores movimientos tuvo compañía",
+            "figureKey": "company",
+            "figureCaption": "De los 432 mayores movimientos detectados, 407 viajaron con un vecino de clúster y 25 se movieron solos.",
+            "figureAudioAlt": "De los 432 mayores movimientos de referencia mayorista detectados, 407 se movieron junto con al menos un vecino de clúster y solo 25 se movieron solos, es decir, el 94 por ciento viajó con compañía.",
+            "paragraphs": [
+              "En los 432 mayores movimientos de referencia mayorista que el Cost Index ha detectado, 407 viajaron con al menos un vecino de clúster. Solo 25 se movieron solos. Eso es el 94% con compañía. Aquí, un movimiento es la referencia mayorista de un ingrediente saliéndose de su propio nivel normal, nunca un precio de entrega ni de venta al público, y un precio de entrega por encima de esa referencia es normal, no un sobreprecio.",
+              "La compañía casi siempre va en una sola dirección. De los 432 movimientos, 393 fueron al alza y 39 a la baja. Cuando un clúster se agita, casi siempre se agita hacia arriba. Para una cocina, el número replantea el reflejo del día de shock: echar mano del vecino del mismo estante suele ser echar mano de algo que ya se movió en la misma ventana."
+            ]
+          },
+          {
+            "h2": "Los clústeres que se hacen compañía",
+            "figureKey": "clusters",
+            "figureCaption": "Los clústeres de co-movimiento, desde un grupo de lechugas de ocho miembros hasta pares; la romana y la hoja roja compartieron 5 de los movimientos notables de un mismo ancla.",
+            "figureAudioAlt": "Los movimientos se ordenan en clústeres, desde un grupo de lechugas de ocho miembros hasta pares. Dentro del más grande, la lechuga romana y la lechuga de hoja roja se hicieron la compañía más cercana, al compartir 5 de los movimientos notables de una misma ancla.",
+            "paragraphs": [
+              "Los movimientos se ordenan en clústeres, grupos cuyos miembros se hicieron compañía dentro de las mismas ventanas de detección. El más grande tiene ocho: brócoli, lechuga mantecosa, coliflor, lechuga de hoja verde, lechuga iceberg, frambuesa, lechuga de hoja roja y lechuga romana. Dentro de él, la romana y la hoja roja se hicieron la compañía más cercana, al compartir 5 de los movimientos notables de una misma ancla. Esto es co-ocurrencia, un episodio compartido como una misma región de cultivo o un mismo pasillo de verduras, nunca una causa medida.",
+              "Debajo del grupo de lechugas hay un clúster de cuatro miembros: tomate cherry, ejotes, tomate y calabaza amarilla, donde el tomate cherry y la calabaza amarilla comparten 4 movimientos. Luego dos clústeres de tres miembros, uno de alcachofa, berzas y puerro, y otro de calabaza butternut, berenjena y cebolla morada. El resto son pares. La pareja más estrecha de todo el conjunto es el cerdo molido y la paleta de cerdo, que compartieron 6 de los movimientos notables de una misma ancla; la pechuga y el muslo de pollo compartieron 5; la zanahoria y la rutabaga, 4."
+            ]
+          },
+          {
+            "h2": "Cambia entre clústeres, no dentro de uno",
+            "paragraphs": [
+              "Por eso cambiar dentro del clúster le sirve de poco a una cocina en un día de shock. La compañera de la romana cinco veces es la hoja roja, y ambas viven en el mismo clúster de ocho miembros, junto con la iceberg, la mantecosa y la de hoja verde. Cuando la referencia de la romana se dispara, los cambios de siempre suelen haberse disparado en la misma ventana. Cambiar romana por iceberg cambia un miembro de un clúster en movimiento por otro.",
+              "El riesgo se esconde en las secciones del menú. Una César, una ensalada wedge y una guarnición de brócoli salen todas de ese único clúster de ocho miembros, así que un solo shock puede caer sobre toda la sección a la vez. Mapea cada sección del menú a su clúster y luego marca como riesgo de concentración cualquier sección cuyos ingredientes estén todos en un mismo clúster.",
+              "Para cada sección marcada, designa de antemano un cambio entre clústeres. Cuando el clúster de las lechugas se calienta, la cobertura no es romana por iceberg ni romana por hoja roja. Es mover el plato hacia un clúster distinto, col y kale, o pepino y calabacín, o hacia un básico. 407 de los 432 mayores movimientos tuvieron compañía; solo 25 se movieron solos. La compañía está dentro del clúster, así que la cobertura tiene que salir de él."
+            ]
+          }
+        ],
+        "operatorPlay": "El lunes, mapea cada sección del menú a su clúster y marca cualquier sección cuyos ingredientes estén todos en un mismo clúster. Una alineación de ensalada César más wedge más guarnición de brócoli vive toda en el único clúster de lechugas de ocho miembros, así que un solo shock cae sobre toda la sección a la vez. Para cada sección marcada, designa de antemano un cambio entre clústeres: cuando el clúster de las lechugas se calienta, la cobertura no es romana por iceberg ni romana por hoja roja, es mover el plato hacia un clúster distinto, col y kale, o pepino y calabacín, o hacia un básico. 407 de los 432 mayores movimientos tuvieron compañía; solo 25 se movieron solos.",
+        "sourcesNote": "Elaborado a partir del conjunto de datos de co-movimiento de Muntin (CC0), calculado desde el Muntin Cost Index; cada movimiento es una lectura de referencia mayorista contra el nivel normal de cada ingrediente, no un precio de entrega.",
+        "takeaway": "Cuando un clúster se calienta, la cobertura es el clúster de al lado, no el estante de al lado."
+      }
+    },
+    {
+      "slug": "trim-tax-across-the-pantry",
+      "accent": "var(--gold)",
+      "crossLinks": [
+        [
+          "The ingredient-yields explorer",
+          "/library/ingredient-yields/"
+        ],
+        [
+          "The yields dataset (CC-BY)",
+          "/cost-index/yields.json"
+        ],
+        [
+          "Cost a full plate",
+          "/tools/plate-cost/"
+        ]
+      ],
+      "en": {
+        "slug": "trim-tax-across-the-pantry",
+        "title": "The Trim Tax Across the Pantry | Muntin Cost Index",
+        "metaDesc": "Trim tax is 1 / edible yield, a cost multiplier on the wholesale reference. Citrus taxes hardest at 2.16x; whole crab keeps just 25%. Muntin's read.",
+        "h1": "Which pantry categories punish trim the hardest?",
+        "speakableAnswer": "Citrus carries the steepest trim tax in Muntin's 118-ingredient yield set, a mean 2.16x cost multiplier on the wholesale reference, with only 46% of it edible.",
+        "intro": [
+          "Every invoice hides a second number. Trim tax is 1 divided by edible yield. It is the multiplier that turns a wholesale reference cost into the real cost of the part that plates. Buy a low-yield category and more of each dollar lands in the trim bin than on the plate.",
+          "This is a reference, not a receipt. Trim tax rides on a wholesale reference cost, not the delivered price you pay, and it describes the edible share of an ingredient. It never predicts where a price is headed."
+        ],
+        "sections": [
+          {
+            "h2": "What the trim tax measures",
+            "paragraphs": [
+              "Trim tax is one number: 1 divided by an ingredient's edible yield. If half of what you buy plates, the tax is 2x. Every edible ounce carries the cost of the ounce you trimmed away. It is unit-agnostic and computed, a multiplier on the wholesale reference cost, not a price you were charged.",
+              "Across 118 ingredients the spread is wide. Citrus is the worst category at a mean 2.16x, with only 46% edible. Mushrooms barely tax at 1.14x, keeping 88% of the buy. The single steepest item is whole crab: 25% edible, a 4x tax on every dollar."
+            ]
+          },
+          {
+            "h2": "Which categories punish trim",
+            "figureKey": "catTax",
+            "figureCaption": "Mean trim tax by category, worst to gentlest: citrus 2.16x down to mushroom 1.14x.",
+            "figureAudioAlt": "A ranked bar chart of mean trim tax by category. Citrus tops it at 2.16 times, only 46 percent edible, followed by shellfish at 1.72, stalks at 1.7, herbs at 1.68, seafood at 1.47, cruciferous at 1.4, fruit at 1.38, greens at 1.36, beef and allium both at 1.3, fruiting, tuber and root all at 1.23, meat at 1.21, and mushroom gentlest at 1.14 times, 88 percent edible.",
+            "paragraphs": [
+              "Rank the fifteen categories and the order reads like a shopping map. Citrus leads at 2.16x. Shellfish follows at 1.72x, stalks at 1.7x, herbs at 1.68x. The top four each lose more than 40% to trim on average. Seafood sits at 1.47x, cruciferous at 1.4x, fruit at 1.38x, greens at 1.36x.",
+              "The gentle end is where a dollar mostly survives. Beef and allium both land at 1.3x. Fruiting vegetables, tubers, and roots share 1.23x. Meat is 1.21x. Mushrooms close the list at 1.14x. Steer a flexible dish toward that end and the trim tax lands at its gentlest, 1.14x."
+            ]
+          },
+          {
+            "h2": "The steepest single items",
+            "figureKey": "worst",
+            "figureCaption": "The eight steepest single items: whole crab 4x at 25% edible down to lemon 2.22x.",
+            "figureAudioAlt": "A bar chart of the eight steepest individual trim taxes. Whole crab keeps just 25 percent edible for a 4 times tax, corn on the cob 28 percent at 3.57 times, whole lobster and clams 30 percent at 3.33 times, lime and mussels 35 percent at 2.86 times, artichoke 40 percent at 2.5 times, and lemon 45 percent at 2.22 times.",
+            "paragraphs": [
+              "Category means hide the outliers, so read the item list. Whole crab keeps 25% for a 4x tax. Corn on the cob keeps 28% (3.57x). Whole lobster and clams both keep 30% (3.33x). Lime and mussels keep 35% (2.86x). Artichoke keeps 40% (2.5x). Lemon keeps 45% (2.22x).",
+              "Trim is not the same as waste. Yield is the fraction that plates, but usable trim recovers part of the tax. Shells go to bisque, bones and heads to stock, citrus peel to zest. Treat the trim tax as an upper bound on loss, not a guaranteed dollar figure gone."
+            ]
+          },
+          {
+            "h2": "How to read it without over-reading it",
+            "paragraphs": [
+              "Two honesty checks. First, this is a reference, not a receipt: the multiplier rides on a wholesale reference cost, and a delivered price above wholesale is normal, not overpayment. Second, it is descriptive, never a forecast. It tells you the edible share of an ingredient, not where any price is headed.",
+              "Mind the sample size. Several category means rest on as few as four items. Citrus, stalks, cruciferous, and tubers are each n=4, and mushrooms n=5, out of the 118 in the set. Each mean describes the items sampled, not a universal law for everything in the category."
+            ]
+          }
+        ],
+        "operatorPlay": "Monday, pull your five highest-trim SKUs and reprice off edible cost instead of invoice cost. The steepest sit at the top of the item list: whole crab, corn on the cob, whole lobster, clams, and lime. Multiply the wholesale reference by that item's own trim tax, not a category average, to get real cost per edible ounce. The citrus mean is 2.16x, but the individual citrus items run higher, with lime at 2.86x and lemon at 2.22x, and whole crab reaches 4x. Then confirm the plate price still clears margin. Gentle categories barely move, with mushrooms at 1.14x and roots and tubers at 1.23x, so when a dish is flexible, steer prep toward them or build a use for the trim you are already paying for.",
+        "sourcesNote": "Original Muntin Digital analysis of the ingredient-yields dataset — 118 ingredients and their edible-yield fractions — published open under CC-BY at /cost-index/yields.json.",
+        "takeaway": "The category you buy decides how much of each dollar never reaches the plate."
+      },
+      "es": {
+        "slug": "trim-tax-across-the-pantry",
+        "title": "El impuesto de merma en la despensa | Muntin Cost Index",
+        "metaDesc": "El impuesto de merma es 1 / rendimiento comestible, un multiplicador sobre la referencia mayorista. Los cítricos gravan más: 2.16x. La lectura de Muntin.",
+        "h1": "¿Qué categorías de la despensa castigan más la merma?",
+        "speakableAnswer": "Los cítricos cargan el impuesto de merma más alto del conjunto de 118 ingredientes de Muntin: un multiplicador de costo promedio de 2.16x sobre la referencia mayorista, con solo 46% comestible.",
+        "intro": [
+          "Cada factura esconde un segundo número. El impuesto de merma es 1 dividido entre el rendimiento comestible. Es el multiplicador que convierte un costo de referencia mayorista en el costo real de la parte que llega al plato. Compra una categoría de bajo rendimiento y más de cada dólar termina en el bote de la merma que en el plato.",
+          "Esto es una referencia, no un recibo. El impuesto de merma se monta sobre un costo de referencia mayorista, no sobre el precio de entrega que pagas, y describe la porción comestible de un ingrediente. Nunca predice hacia dónde va un precio."
+        ],
+        "sections": [
+          {
+            "h2": "Qué mide el impuesto de merma",
+            "paragraphs": [
+              "El impuesto de merma es un solo número: 1 dividido entre el rendimiento comestible de un ingrediente. Si la mitad de lo que compras llega al plato, el impuesto es 2x. Cada onza comestible carga con el costo de la onza que recortaste. Es independiente de la unidad y calculado, un multiplicador sobre el costo de referencia mayorista, no un precio que te cobraron.",
+              "En 118 ingredientes el rango es amplio. Los cítricos son la peor categoría con un promedio de 2.16x, con solo 46% comestible. Los hongos casi no gravan, con 1.14x, y conservan 88% de la compra. El artículo individual más alto es el cangrejo entero: 25% comestible, un impuesto de 4x sobre cada dólar."
+            ]
+          },
+          {
+            "h2": "Qué categorías castigan la merma",
+            "figureKey": "catTax",
+            "figureCaption": "Impuesto de merma promedio por categoría, del peor al más leve: cítricos 2.16x hasta hongos 1.14x.",
+            "figureAudioAlt": "Un gráfico de barras ordenado del impuesto de merma promedio por categoría. Los cítricos encabezan con 2.16 veces, solo 46 por ciento comestible, seguidos de mariscos con 1.72, tallos con 1.7, hierbas con 1.68, pescado con 1.47, crucíferas con 1.4, fruta con 1.38, hojas verdes con 1.36, res y aliáceas ambas con 1.3, hortalizas de fruto, tubérculo y raíz todas con 1.23, carne con 1.21, y hongos como el más leve con 1.14 veces, 88 por ciento comestible.",
+            "paragraphs": [
+              "Ordena las quince categorías y la secuencia se lee como un mapa de compras. Los cítricos van a la cabeza con 2.16x. Los mariscos siguen con 1.72x, los tallos con 1.7x, las hierbas con 1.68x. Las cuatro primeras pierden en promedio más de 40% por merma. El pescado se ubica en 1.47x, las crucíferas en 1.4x, la fruta en 1.38x, las hojas verdes en 1.36x.",
+              "El extremo leve es donde el dólar sobrevive casi entero. La res y las aliáceas caen ambas en 1.3x. Las hortalizas de fruto, los tubérculos y las raíces comparten 1.23x. La carne está en 1.21x. Los hongos cierran la lista con 1.14x. Orienta un platillo flexible hacia ese extremo y el impuesto de merma cae en su punto más leve, 1.14x."
+            ]
+          },
+          {
+            "h2": "Los artículos individuales más altos",
+            "figureKey": "worst",
+            "figureCaption": "Los ocho artículos individuales más altos: cangrejo entero 4x con 25% comestible hasta limón amarillo 2.22x.",
+            "figureAudioAlt": "Un gráfico de barras de los ocho impuestos de merma individuales más altos. El cangrejo entero conserva solo 25 por ciento comestible para un impuesto de 4 veces, el elote 28 por ciento con 3.57 veces, la langosta entera y las almejas 30 por ciento con 3.33 veces, el limón verde y los mejillones 35 por ciento con 2.86 veces, la alcachofa 40 por ciento con 2.5 veces, y el limón amarillo 45 por ciento con 2.22 veces.",
+            "paragraphs": [
+              "Los promedios de categoría esconden los valores atípicos, así que lee la lista de artículos. El cangrejo entero conserva 25% para un impuesto de 4x. El elote conserva 28% (3.57x). La langosta entera y las almejas conservan ambas 30% (3.33x). El limón verde y los mejillones conservan 35% (2.86x). La alcachofa conserva 40% (2.5x). El limón amarillo conserva 45% (2.22x).",
+              "La merma no es lo mismo que el desperdicio. El rendimiento es la fracción que llega al plato, pero la merma aprovechable recupera parte del impuesto. Las conchas van al bisque, los huesos y las cabezas al fondo, la cáscara de cítrico a la ralladura. Trata el impuesto de merma como un límite superior de la pérdida, no como una cifra en dólares garantizada que se esfuma."
+            ]
+          },
+          {
+            "h2": "Cómo leerlo sin sobreinterpretarlo",
+            "paragraphs": [
+              "Dos controles de honestidad. Primero, esto es una referencia, no un recibo: el multiplicador se monta sobre un costo de referencia mayorista, y un precio de entrega por encima del mayorista es normal, no un sobrepago. Segundo, es descriptivo, nunca un pronóstico. Te dice la porción comestible de un ingrediente, no hacia dónde va ningún precio.",
+              "Ojo con el tamaño de la muestra. Varios promedios de categoría se apoyan en apenas cuatro artículos. Los cítricos, los tallos, las crucíferas y los tubérculos tienen cada uno n=4, y los hongos n=5, de los 118 del conjunto. Cada promedio describe los artículos muestreados, no una ley universal para todo lo de la categoría."
+            ]
+          }
+        ],
+        "operatorPlay": "El lunes, saca tus cinco SKU de mayor merma y vuelve a fijar precio a partir del costo comestible en lugar del costo de factura. Los más altos están en la cima de la lista de artículos: cangrejo entero, elote, langosta entera, almejas y limón verde. Multiplica la referencia mayorista por el impuesto de merma propio de ese artículo, no por un promedio de categoría, para obtener el costo real por onza comestible. El promedio de los cítricos es 2.16x, pero los cítricos individuales corren más alto, con el limón verde en 2.86x y el limón amarillo en 2.22x, y el cangrejo entero llega a 4x. Luego confirma que el precio del platillo aún deja margen. Las categorías leves apenas se mueven, con los hongos en 1.14x y las raíces y los tubérculos en 1.23x, así que cuando un platillo es flexible, orienta la preparación hacia ellas o crea un uso para la merma que ya estás pagando.",
+        "sourcesNote": "Análisis original de Muntin Digital del conjunto de datos de rendimientos de ingredientes — 118 ingredientes y sus fracciones de rendimiento comestible — publicado abierto bajo CC-BY en /cost-index/yields.json.",
+        "takeaway": "La categoría que compras decide cuánto de cada dólar nunca llega al plato."
+      }
+    },
+    {
+      "slug": "steady-vs-wild",
+      "accent": "var(--gold)",
+      "crossLinks": [
+        [
+          "The lock-or-float tool",
+          "/tools/cost-pulse/"
+        ],
+        [
+          "The lock-or-float dataset (CC-BY)",
+          "/cost-index/lockfloat.json"
+        ]
+      ],
+      "en": {
+        "slug": "steady-vs-wild",
+        "title": "Steady vs. Wild: Lock or Float Your Menu | Muntin",
+        "metaDesc": "Of 100 ingredients scored on their recent wholesale band, 37 are steady enough to lock a printed menu price and 7 wild enough to float.",
+        "h1": "Which menu ingredients can you lock, and which should you float?",
+        "speakableAnswer": "Of 100 ingredients scored on how tight their recent wholesale band has run, only 7 run wild enough to float on a market-price line and 37 run steady enough to lock a printed menu price.",
+        "intro": [
+          "You do not have to float your whole menu. Of 100 ingredients scored on how tight their recent wholesale band has run, 37 hold a band tight enough to lock a printed menu price with confidence, and only 7 run wild enough to warrant a market-price line.",
+          "Every band here is a wholesale reference measured against that ingredient's own normal window, not the delivered price on an invoice. The scores describe what a recent window has done. Read them as history, then route the menu accordingly."
+        ],
+        "sections": [
+          {
+            "h2": "The split: lock, cushion, float, withhold",
+            "paragraphs": [
+              "The taxonomy sorts 100 ingredients into four bands. 37 are steady enough to lock a printed price. 19 sit in a cushion, steady-ish, worth a modest margin buffer but not a market line. 7 run wild enough to float. And 37 are withheld because there is too little evidence to score them.",
+              "Withheld is not a verdict. An ingredient's absence from the lock or float list means not enough data, not that it is safe or risky. The taxonomy only scores the ingredients where the recent band is well-measured. The other 37 stay out of the read until there is enough history to place them."
+            ],
+            "figureKey": "taxonomy",
+            "figureCaption": "Of 100 ingredients, 37 lock, 19 cushion, 7 float, and 37 are withheld for too little evidence.",
+            "figureAudioAlt": "Across one hundred scored ingredients, thirty-seven fall in the lock band, nineteen in the cushion band, seven in the float band, and thirty-seven are withheld for too little evidence to score."
+          },
+          {
+            "h2": "Bananas hold plus or minus 0.6 percent; broccoli runs plus or minus 26.4 percent",
+            "paragraphs": [
+              "The steadiest band belongs to bananas at plus or minus 0.6 percent. Behind them: red potato and whole turkey at plus or minus 0.8 percent, cilantro at 1.2 percent, pears at 1.3 percent, leek at 1.5 percent, pork loin at 1.6 percent, short rib at 1.8 percent. A band this tight means the wholesale reference has stayed close to its own normal, so a dish built on one of these carries a printed price cleanly.",
+              "The wild end runs far wider. Broccoli tops the float list at plus or minus 26.4 percent, then yellow squash at 25 percent, raspberries at 24.6 percent, green leaf lettuce at 22.3 percent, romaine lettuce at 21.8 percent, Brussels sprouts at 21.2 percent, and serrano pepper at 20.1 percent. Each half-width is a wholesale reference against that ingredient's own window, not the price you pay. A delivered price above wholesale is normal, not overpayment.",
+              "These half-widths describe what a recent window has done. Bananas running steady and broccoli running wild is measured history, not a claim about what either band does next."
+            ],
+            "figureKey": "steadyWild",
+            "figureCaption": "Bananas hold the tightest band at plus or minus 0.6 percent; broccoli runs the widest at plus or minus 26.4 percent.",
+            "figureAudioAlt": "The steadiest band belongs to bananas at plus or minus 0.6 percent, with red potato and whole turkey at 0.8 percent; the wildest is broccoli at plus or minus 26.4 percent, with yellow squash at 25 percent and raspberries at 24.6 percent close behind."
+          },
+          {
+            "h2": "Print the steady, float the wild",
+            "paragraphs": [
+              "The move is to match the menu line to the band. A dish built on a lock ingredient gets a committed printed price. A dish riding a float ingredient goes to a specials or market-price line, so a plus or minus 26.4 percent wholesale band cannot quietly eat a fixed margin. A cushion dish gets a modest margin buffer without floating.",
+              "Each float item earns its place on its own. Broccoli at plus or minus 26.4 percent, yellow squash at 25 percent, raspberries at 24.6 percent, green leaf lettuce at 22.3 percent, romaine lettuce at 21.8 percent, Brussels sprouts at 21.2 percent, and serrano pepper at 20.1 percent each carried a wide band against its own normal window. Every score is measured independently, one ingredient at a time. A dish riding any one of them goes to a market-price line on the strength of that ingredient's own band."
+            ]
+          }
+        ],
+        "operatorPlay": "Monday, pull the printed menu and tag each dish by its driver ingredient. Dishes built on the 37 lock items (bananas, red potato, whole turkey, cilantro, pork loin, short rib) get a committed printed price. Route greens-and-produce dishes riding the 7 float items (broccoli, romaine lettuce, green leaf lettuce, Brussels sprouts, raspberries, serrano pepper) to a specials or market-price line so a plus or minus 26.4 percent wholesale band cannot eat a fixed margin. Give the 19 cushion items a modest margin buffer without floating them, and leave the 37 withhold items alone until there is enough data to score them.",
+        "sourcesNote": "Built from Muntin Digital's open lock-or-float dataset (CC-BY), the volatility half-width scores that sit behind the Cost Index.",
+        "takeaway": "Print the steady, float the wild: 37 of 100 ingredients lock a menu price, only 7 need a market line."
+      },
+      "es": {
+        "slug": "steady-vs-wild",
+        "title": "Estable o volátil: fijar o flotar el menú | Muntin",
+        "metaDesc": "De 100 ingredientes evaluados por su banda mayorista reciente, 37 son estables para fijar precio impreso y 7 tan volátiles que conviene flotarlos.",
+        "h1": "¿Qué ingredientes del menú puedes fijar y cuáles conviene flotar?",
+        "speakableAnswer": "De 100 ingredientes evaluados por lo estrecha que ha sido su banda mayorista reciente, solo 7 son tan volátiles que conviene flotarlos en una línea de precio de mercado y 37 son tan estables que puedes fijar un precio impreso en el menú.",
+        "intro": [
+          "No tienes que flotar todo el menú. De 100 ingredientes evaluados por lo estrecha que ha sido su banda mayorista reciente, 37 mantienen una banda lo bastante estrecha para fijar con confianza un precio impreso en el menú, y solo 7 son tan volátiles que ameritan una línea de precio de mercado.",
+          "Cada banda aquí es una referencia mayorista medida contra la ventana normal del propio ingrediente, no el precio de entrega de una factura. Los puntajes describen lo que ha hecho una ventana reciente. Léelos como historia y luego enruta el menú en consecuencia."
+        ],
+        "sections": [
+          {
+            "h2": "La división: fijar, colchón, flotar, reservar",
+            "paragraphs": [
+              "La taxonomía ordena 100 ingredientes en cuatro bandas. 37 son lo bastante estables para fijar un precio impreso. 19 caen en un colchón, más o menos estables, dignos de un margen de reserva modesto pero no de una línea de mercado. 7 son tan volátiles que conviene flotarlos. Y 37 se reservan porque hay muy poca evidencia para puntuarlos.",
+              "Reservar no es un veredicto. La ausencia de un ingrediente de la lista de fijar o flotar significa que no hay datos suficientes, no que sea seguro o riesgoso. La taxonomía solo puntúa los ingredientes cuya banda reciente está bien medida. Los otros 37 quedan fuera de la lectura hasta que haya suficiente historia para ubicarlos."
+            ],
+            "figureKey": "taxonomy",
+            "figureCaption": "De 100 ingredientes, 37 se fijan, 19 van a colchón, 7 flotan y 37 se reservan por muy poca evidencia.",
+            "figureAudioAlt": "De cien ingredientes puntuados, treinta y siete caen en la banda de fijar, diecinueve en la banda de colchón, siete en la banda de flotar y treinta y siete se reservan por muy poca evidencia para puntuarlos."
+          },
+          {
+            "h2": "El plátano se mantiene en más o menos 0.6 por ciento; el brócoli corre en más o menos 26.4 por ciento",
+            "paragraphs": [
+              "La banda más estable pertenece al plátano, con más o menos 0.6 por ciento. Detrás: la papa roja y el pavo entero con más o menos 0.8 por ciento, el cilantro con 1.2 por ciento, las peras con 1.3 por ciento, el poro con 1.5 por ciento, el lomo de cerdo con 1.6 por ciento, la costilla corta con 1.8 por ciento. Una banda así de estrecha significa que la referencia mayorista se ha mantenido cerca de su propio nivel normal, así que un platillo armado sobre uno de estos lleva un precio impreso sin problema.",
+              "El extremo volátil corre mucho más ancho. El brócoli encabeza la lista de flotar con más o menos 26.4 por ciento, luego la calabaza amarilla con 25 por ciento, las frambuesas con 24.6 por ciento, la lechuga de hoja verde con 22.3 por ciento, la lechuga romana con 21.8 por ciento, las coles de Bruselas con 21.2 por ciento y el chile serrano con 20.1 por ciento. Cada semiancho es una referencia mayorista contra la propia ventana del ingrediente, no el precio que pagas. Un precio de entrega por encima del mayorista es normal, no un sobreprecio.",
+              "Estos semianchos describen lo que ha hecho una ventana reciente. Que el plátano corra estable y el brócoli corra volátil es historia medida, no una afirmación sobre lo que hará cualquiera de las dos bandas después."
+            ],
+            "figureKey": "steadyWild",
+            "figureCaption": "El plátano mantiene la banda más estrecha con más o menos 0.6 por ciento; el brócoli corre la más ancha con más o menos 26.4 por ciento.",
+            "figureAudioAlt": "La banda más estable pertenece al plátano con más o menos 0.6 por ciento, con la papa roja y el pavo entero en 0.8 por ciento; la más volátil es el brócoli con más o menos 26.4 por ciento, con la calabaza amarilla en 25 por ciento y las frambuesas en 24.6 por ciento muy cerca."
+          },
+          {
+            "h2": "Imprime lo estable, flota lo volátil",
+            "paragraphs": [
+              "La jugada es emparejar la línea del menú con la banda. Un platillo armado sobre un ingrediente de fijar recibe un precio impreso comprometido. Un platillo que depende de un ingrediente de flotar va a una línea de especiales o de precio de mercado, para que una banda mayorista de más o menos 26.4 por ciento no se coma en silencio un margen fijo. Un platillo de colchón recibe un margen de reserva modesto sin flotar.",
+              "Cada artículo de flotar se gana su lugar por sí solo. El brócoli con más o menos 26.4 por ciento, la calabaza amarilla con 25 por ciento, las frambuesas con 24.6 por ciento, la lechuga de hoja verde con 22.3 por ciento, la lechuga romana con 21.8 por ciento, las coles de Bruselas con 21.2 por ciento y el chile serrano con 20.1 por ciento cargaron cada uno una banda ancha contra su propia ventana normal. Cada puntaje se mide de forma independiente, un ingrediente a la vez. Un platillo que depende de cualquiera de ellos va a una línea de precio de mercado por la fuerza de la banda de ese ingrediente."
+            ]
+          }
+        ],
+        "operatorPlay": "El lunes, saca el menú impreso y etiqueta cada platillo por su ingrediente rector. Los platillos armados sobre los 37 artículos de fijar (plátano, papa roja, pavo entero, cilantro, lomo de cerdo, costilla corta) reciben un precio impreso comprometido. Manda los platillos de verduras y hortalizas que dependen de los 7 artículos de flotar (brócoli, lechuga romana, lechuga de hoja verde, coles de Bruselas, frambuesas, chile serrano) a una línea de especiales o de precio de mercado, para que una banda mayorista de más o menos 26.4 por ciento no se coma un margen fijo. Dales a los 19 artículos de colchón un margen de reserva modesto sin flotarlos, y deja en paz los 37 artículos reservados hasta que haya datos suficientes para puntuarlos.",
+        "sourcesNote": "Construido a partir del conjunto de datos abierto de fijar-o-flotar de Muntin Digital (CC-BY), los puntajes de semiancho de volatilidad que están detrás del Cost Index.",
+        "takeaway": "Imprime lo estable, flota lo volátil: 37 de 100 ingredientes fijan un precio de menú, solo 7 necesitan una línea de mercado."
+      }
+    },
+    {
+      "slug": "how-long-do-food-price-shocks-last",
+      "accent": "var(--teal)",
+      "crossLinks": [
+        [
+          "The market-events explorer",
+          "/cost-index/events/"
+        ],
+        [
+          "The detected-moves dataset (CC0)",
+          "/cost-index/events-detected.json"
+        ]
+      ],
+      "en": {
+        "slug": "how-long-do-food-price-shocks-last",
+        "title": "How Long Food Price Shocks Last | Muntin",
+        "metaDesc": "Across 432 of the biggest detected wholesale moves in the Cost Index, the median move lasted 77 days, about 2.5 months. What that means for a menu.",
+        "h1": "How long do food price shocks actually last?",
+        "speakableAnswer": "Across 432 of the biggest detected wholesale moves in the Cost Index, the wholesale reference stayed away from its own baseline window a median of 77 days, about 2.5 months.",
+        "intro": [
+          "A wholesale reference jumps on eggs, or avocados, or cooking oil, and the question in the kitchen is always the same. Is this the new price of doing business, or does it pass? The detected-moves dataset behind the Cost Index answers it with a number instead of a feeling.",
+          "Across the 432 biggest detected wholesale moves in the Cost Index, the reference stayed away from its own baseline window a median of 77 days, about two and a half months. Descriptive, not a forecast. This is what has happened across past moves, not a prediction of what any live move does."
+        ],
+        "sections": [
+          {
+            "h2": "The number: a median of 77 days",
+            "paragraphs": [
+              "Take the 432 biggest moves our detection has flagged in the wholesale references behind the Cost Index. Line up how long each one stayed away from the ingredient's own normal window, and the middle of the pack is 77 days. Call it about a fifth of the year.",
+              "The spread matters as much as the middle. The middle half of those moves ran from 50 days at the 25th percentile to 105 days at the 75th. So a move that clears in about 50 days and a move that runs to about three and a half months both sit inside the normal range. What is rare is the reference jumping and simply never coming back."
+            ],
+            "figureKey": "duration",
+            "figureCaption": "The 432 biggest detected moves lasted a median of 77 days; the middle half ran 50 to 105.",
+            "figureAudioAlt": "A distribution of how long the 432 biggest detected wholesale moves stayed away from their own baseline window. The 25th percentile is 50 days, the median is 77 days, about two and a half months, and the 75th percentile is 105 days."
+          },
+          {
+            "h2": "Up-heavy, and rarely moving alone",
+            "paragraphs": [
+              "Of the 432 moves, 393 were up-moves and 39 were down. Say that tilt plainly. This study measures how long each move stayed away from its own baseline window, up or down. It is not a claim that up-moves and down-moves behave the same way.",
+              "The moves also kept company. 407 of the 432, which is 94 percent, moved inside a shared window with at least one other ingredient. Read that as co-occurrence, not cause. A shared growing region, a shipping lane, or an aisle can move several references at once. One ingredient did not push another. They shared an episode."
+            ],
+            "figureKey": "updown",
+            "figureCaption": "Of the 432 moves, 393 ran up and 39 ran down; this measures how long each move stayed away from its own baseline, up or down.",
+            "figureAudioAlt": "The direction split of the 432 biggest detected wholesale moves. 393 were up-moves and 39 were down-moves, so the sample is up-heavy, and this is not a claim that both directions behave the same."
+          },
+          {
+            "h2": "The median is the middle, not a ceiling",
+            "paragraphs": [
+              "Seventy-seven days is the middle of the pack, not a promise. The longest move in the set ran 4,243 days. Most moves reverted long before that, and a rare few ran far past the median. The median tells you the typical case, not your case.",
+              "One more discipline. These are wholesale references measured against each ingredient's own normal window, never the delivered price on your invoice. A delivered price sitting above wholesale is normal, not overpayment. What the reference tells you is whether the market moved, and roughly how long such a move has historically lasted."
+            ]
+          }
+        ],
+        "operatorPlay": "When a wholesale reference jumps on an ingredient, don't reprint the menu that week. Log the date and pull a temporary lever instead: 86 the dish, substitute, feature a cheaper protein, or tighten the portion. Put a recheck on the calendar near the 77-day mark. Historically the middle half of the biggest moves cleared inside 50 to 105 days, so treat it as the new normal, and reprice permanently, only if the reference is still elevated past about the 105-day mark.",
+        "sourcesNote": "This page repackages the Muntin Cost Index detected-moves dataset, released CC0 by Muntin Digital, covering the 432 biggest detected wholesale reference moves.",
+        "takeaway": "A wholesale spike has usually been a season that reverts, not a new normal, but plan and staff it as if it runs about 2.5 months."
+      },
+      "es": {
+        "slug": "how-long-do-food-price-shocks-last",
+        "title": "¿Cuánto duran los saltos de precios? | Muntin",
+        "metaDesc": "En 432 de los movimientos mayoristas más grandes del Cost Index, el movimiento típico duró 77 días, unos 2.5 meses. Lo que eso significa para un menú.",
+        "h1": "¿Cuánto duran en realidad los saltos de precios de los alimentos?",
+        "speakableAnswer": "En 432 de los movimientos mayoristas más grandes detectados en el Cost Index, la referencia mayorista se mantuvo alejada de su propia ventana base una mediana de 77 días, unos 2.5 meses.",
+        "intro": [
+          "Una referencia mayorista salta en los huevos, o en los aguacates, o en el aceite de cocina, y la pregunta en la cocina siempre es la misma. ¿Es este el nuevo precio de trabajar, o pasa? El conjunto de movimientos detectados detrás del Cost Index la responde con un número en lugar de una sensación.",
+          "En los 432 movimientos mayoristas más grandes detectados en el Cost Index, la referencia se mantuvo alejada de su propia ventana base una mediana de 77 días, unos dos meses y medio. Es descriptivo, no un pronóstico. Es lo que ha pasado en movimientos anteriores, no una predicción de lo que hará cualquier movimiento en curso."
+        ],
+        "sections": [
+          {
+            "h2": "El número: una mediana de 77 días",
+            "paragraphs": [
+              "Toma los 432 movimientos más grandes que nuestra detección ha marcado en las referencias mayoristas detrás del Cost Index. Alinea cuánto tiempo se mantuvo cada uno alejado de la ventana normal del ingrediente, y el punto medio es 77 días. Llámalo alrededor de una quinta parte del año.",
+              "La dispersión importa tanto como el centro. La mitad central de esos movimientos fue de 50 días en el percentil 25 a 105 días en el percentil 75. Así que un movimiento que se resuelve en unos 50 días y otro que llega a unos tres meses y medio caben ambos dentro del rango normal. Lo raro es que la referencia salte y simplemente nunca vuelva."
+            ],
+            "figureKey": "duration",
+            "figureCaption": "Los 432 movimientos detectados más grandes duraron una mediana de 77 días; la mitad central fue de 50 a 105.",
+            "figureAudioAlt": "Una distribución de cuánto tiempo se mantuvieron los 432 movimientos mayoristas detectados más grandes alejados de su propia ventana base. El percentil 25 es de 50 días, la mediana es de 77 días, unos dos meses y medio, y el percentil 75 es de 105 días."
+          },
+          {
+            "h2": "Cargado hacia arriba, y rara vez se mueve solo",
+            "paragraphs": [
+              "De los 432 movimientos, 393 fueron al alza y 39 a la baja. Dilo sin rodeos. Este estudio mide cuánto tiempo se mantuvo cada movimiento alejado de su propia ventana base, al alza o a la baja. No es una afirmación de que los movimientos al alza y a la baja se comporten igual.",
+              "Los movimientos también anduvieron acompañados. 407 de los 432, que es el 94 por ciento, se movieron dentro de una ventana compartida con al menos otro ingrediente. Léelo como co-ocurrencia, no como causa. Una región de cultivo compartida, una ruta de envío o un pasillo pueden mover varias referencias a la vez. Un ingrediente no empujó a otro. Compartieron un episodio."
+            ],
+            "figureKey": "updown",
+            "figureCaption": "De los 432 movimientos, 393 fueron al alza y 39 a la baja; esto mide cuánto se mantuvo cada uno alejado de su base, al alza o a la baja.",
+            "figureAudioAlt": "La división por dirección de los 432 movimientos mayoristas detectados más grandes. 393 fueron al alza y 39 a la baja, así que la muestra está cargada hacia arriba, y esto no es una afirmación de que ambas direcciones se comporten igual."
+          },
+          {
+            "h2": "La mediana es el centro, no un techo",
+            "paragraphs": [
+              "Setenta y siete días es el punto medio, no una promesa. El movimiento más largo del conjunto duró 4,243 días. La mayoría de los movimientos revirtió mucho antes, y unos pocos raros corrieron muy por encima de la mediana. La mediana te dice el caso típico, no tu caso.",
+              "Una disciplina más. Estas son referencias mayoristas medidas contra la ventana normal de cada ingrediente, nunca el precio de entrega de tu factura. Un precio de entrega por encima del mayorista es normal, no un sobreprecio. Lo que la referencia te dice es si el mercado se movió, y aproximadamente cuánto ha durado históricamente un movimiento así."
+            ]
+          }
+        ],
+        "operatorPlay": "Cuando una referencia mayorista salta en un ingrediente, no reimprimas el menú esa semana. Anota la fecha y usa una palanca temporal en su lugar: quita el plato del menú, sustitúyelo, destaca una proteína más barata o ajusta la porción. Pon una revisión en el calendario cerca de la marca de los 77 días. Históricamente la mitad central de los movimientos más grandes se resolvió dentro de 50 a 105 días, así que trátalo como la nueva normalidad, y reajusta el precio de forma permanente, solo si la referencia sigue elevada más allá de la marca de unos 105 días.",
+        "sourcesNote": "Esta página reempaqueta el conjunto de movimientos detectados del Muntin Cost Index, publicado como CC0 por Muntin Digital, que cubre los 432 movimientos de referencia mayorista detectados más grandes.",
+        "takeaway": "Un salto mayorista casi siempre ha sido una temporada que revierte, no una nueva normalidad, pero planifícalo y organiza los turnos como si durara unos 2.5 meses."
+      }
+    },
+    {
+      "slug": "cheapest-month-buying-calendar",
+      "accent": "var(--season)",
+      "crossLinks": [
+        [
+          "The seasonality explorer",
+          "/open/seasonality/"
+        ],
+        [
+          "The seasonality dataset (CC0)",
+          "/cost-index/seasonality.json"
+        ]
+      ],
+      "en": {
+        "slug": "cheapest-month-buying-calendar",
+        "title": "The cheapest month to buy 84 ingredients | Muntin",
+        "metaDesc": "A buying calendar from 84 ingredients' five-year seasonal normals: the month each hits its wholesale-reference low, and how far under its own high.",
+        "h1": "Which month is the cheapest to buy each ingredient?",
+        "speakableAnswer": "Eggs reach their wholesale-reference low in January at 80% under their own priciest month, the widest swing in the 84-ingredient basket.",
+        "intro": [
+          "Timing a buy pays off wildly unevenly across the basket. Eggs at their January wholesale-reference low run 80% under their own priciest month, the widest swing of the 84 ingredients tracked.",
+          "Green onion swings 68% under its own high in June. Lime, 64% in November. The herbs barely move at all. The calendar below marks where each low has historically landed, so you can time the buys that matter and leave the ones that don't."
+        ],
+        "sections": [
+          {
+            "h2": "Time the wide swings, skip the flat ones",
+            "paragraphs": [
+              "Three numbers carry the calendar. Eggs at their January wholesale-reference low sit 80% under their own priciest month. Green onion in June sits 68% under its own high. Lime in November, 64%. Each figure measures an ingredient against itself across a five-year seasonal normal. None of them compares to a dollar amount or to another ingredient, so eggs' 80% and lime's 64% are not prices you can rank side by side.",
+              "Every percentage is a swing in the wholesale reference, not the delivered price on your invoice. A delivered price sits above the wholesale reference. It carries markup and freight, and that is normal. What the calendar gives you is direction: the month an item has historically bottomed is the month to concentrate a hold-able or bulk buy."
+            ]
+          },
+          {
+            "h2": "The full year, month by month",
+            "paragraphs": [
+              "January runs deepest on the board. Eggs at 80%, iceberg lettuce at 63%, green leaf lettuce at 51%, romaine at 47%. March turns the spring produce over: green beans 51%, tomato 47%, snow peas 46%, lemon 40%. April is russet potato's month at 55%. May belongs to whole chicken at 47%.",
+              "June is green onion at 68%, with raspberry at 50% and spinach at 39%. August is blueberry at 57% and artichoke at 45%. September is celery at 52% and striploin at 40%. November is lime at 64%, chicken breast at 42%, and pineapple at 36%. December closes with onion at 44%. When several items bottom in the same month, that is separate seasonal cycles landing in the same window, not one item moving another."
+            ],
+            "figureKey": "calendar",
+            "figureCaption": "Each month's tracked ingredients at their wholesale-reference low, and how far under their own priciest month.",
+            "figureAudioAlt": "A twelve-month buying calendar. January runs deepest, with eggs 80% under their own yearly high, iceberg lettuce 63%, and green leaf lettuce 51%. June is green onion at 68% and raspberry at 50%. September is celery at 52%. November is lime at 64% and chicken breast at 42%. Each percentage is a wholesale-reference low measured against that ingredient's own priciest month, not a delivered price."
+          },
+          {
+            "h2": "Where timing is wasted",
+            "paragraphs": [
+              "Not every ingredient rewards the attention. Rosemary swings only 6% between its October low and its own high. Rutabaga moves 7% in September. Oregano, 8% in July. Basil, 13%. Thyme, 14%. For items this flat, no month is worth timing, because the wholesale reference barely moves across the year.",
+              "Spend the negotiating energy on the wide swingers and leave the herbs alone. The savings you can time live in eggs, green onion, lime, celery, russet potato, and the other items whose low runs deep under their own high."
+            ]
+          }
+        ],
+        "operatorPlay": "On Monday, list your top five to eight volume ingredients and mark each one's low month from this calendar on your purchasing calendar. Concentrate menu specials and any hold-able or bulk buying in those windows: limes in November at 64% under their own high, green onion in June at 68%, eggs in January at 80%. Skip the flat items like rosemary that barely move all year. Then sanity-check each low month against your own delivered invoices, since what you actually pay sits above the wholesale reference.",
+        "sourcesNote": "Source: the Muntin Digital seasonality dataset, 84 ingredients' five-year wholesale-reference normals, released CC0.",
+        "takeaway": "Calendar-timing earns its keep on the wide swingers and is wasted on the flat items."
+      },
+      "es": {
+        "slug": "cheapest-month-buying-calendar",
+        "title": "El mes más barato para comprar 84 ingredientes | Muntin",
+        "metaDesc": "Calendario de compra según normales estacionales de cinco años de 84 ingredientes: el mes en que cada uno toca su mínimo de referencia mayorista.",
+        "h1": "¿Qué mes es el más barato para comprar cada ingrediente?",
+        "speakableAnswer": "Los huevos tocan su mínimo de referencia mayorista en enero, 80% bajo su propio mes más caro, la mayor oscilación de la canasta de 84 ingredientes.",
+        "intro": [
+          "Cronometrar una compra rinde de forma muy desigual a lo largo de la canasta. Los huevos, en su mínimo de referencia mayorista de enero, corren 80% bajo su propio mes más caro, la mayor oscilación de los 84 ingredientes que seguimos.",
+          "El cebollín oscila 68% bajo su propio máximo en junio. El limón, 64% en noviembre. Las hierbas casi no se mueven. El calendario de abajo marca dónde ha caído históricamente cada mínimo, para que cronometres las compras que importan y dejes las que no."
+        ],
+        "sections": [
+          {
+            "h2": "Cronometra las oscilaciones amplias, salta las planas",
+            "paragraphs": [
+              "Tres números cargan el calendario. Los huevos, en su mínimo de referencia mayorista de enero, se ubican 80% bajo su propio mes más caro. El cebollín en junio se ubica 68% bajo su propio máximo. El limón en noviembre, 64%. Cada cifra mide un ingrediente contra sí mismo a lo largo de un normal estacional de cinco años. Ninguna se compara con un monto en dólares ni con otro ingrediente, así que el 80% de los huevos y el 64% del limón no son precios que puedas ordenar lado a lado.",
+              "Cada porcentaje es una oscilación en la referencia mayorista, no el precio de entrega de tu factura. Un precio de entrega se ubica por encima de la referencia mayorista. Lleva margen y flete, y eso es normal. Lo que el calendario te da es dirección: el mes en que un producto ha tocado fondo históricamente es el mes para concentrar una compra a granel o de lo que aguanta almacenado."
+            ]
+          },
+          {
+            "h2": "El año completo, mes a mes",
+            "paragraphs": [
+              "Enero corre más profundo en el tablero. Huevos al 80%, lechuga iceberg al 63%, lechuga verde al 51%, lechuga romana al 47%. Marzo da vuelta a las verduras de primavera: ejotes 51%, jitomate 47%, arvejas de nieve 46%, limón amarillo 40%. Abril es el mes de la papa russet, al 55%. Mayo le pertenece al pollo entero, al 47%.",
+              "Junio es el cebollín al 68%, con la frambuesa al 50% y la espinaca al 39%. Agosto es el arándano al 57% y la alcachofa al 45%. Septiembre es el apio al 52% y el bife angosto al 40%. Noviembre es el limón al 64%, la pechuga de pollo al 42% y la piña al 36%. Diciembre cierra con la cebolla al 44%. Cuando varios productos tocan fondo en el mismo mes, son ciclos estacionales distintos que aterrizan en la misma ventana, no un producto moviendo a otro."
+            ],
+            "figureKey": "calendar",
+            "figureCaption": "Los ingredientes que seguimos en cada mes, en su mínimo de referencia mayorista, y cuánto por debajo de su propio mes más caro.",
+            "figureAudioAlt": "Un calendario de compra de doce meses. Enero corre más profundo, con los huevos 80% bajo su propio máximo anual, la lechuga iceberg al 63% y la lechuga verde al 51%. Junio es el cebollín al 68% y la frambuesa al 50%. Septiembre es el apio al 52%. Noviembre es el limón al 64% y la pechuga de pollo al 42%. Cada porcentaje es un mínimo de referencia mayorista medido contra el propio mes más caro de ese ingrediente, no un precio de entrega."
+          },
+          {
+            "h2": "Dónde no vale la pena cronometrar",
+            "paragraphs": [
+              "No todos los ingredientes premian la atención. El romero oscila apenas 6% entre su mínimo de octubre y su propio máximo. El nabo sueco se mueve 7% en septiembre. El orégano, 8% en julio. La albahaca, 13%. El tomillo, 14%. Para productos así de planos, ningún mes vale la pena cronometrar, porque la referencia mayorista casi no se mueve en todo el año.",
+              "Gasta la energía de negociación en los que oscilan amplio y deja las hierbas en paz. El ahorro que puedes cronometrar vive en los huevos, el cebollín, el limón, el apio, la papa russet y los demás productos cuyo mínimo corre profundo bajo su propio máximo."
+            ]
+          }
+        ],
+        "operatorPlay": "El lunes, lista tus cinco a ocho ingredientes de mayor volumen y marca en tu calendario de compras el mes de mínimo de cada uno según este calendario. Concentra los especiales del menú y cualquier compra a granel o de lo que aguanta almacenado en esas ventanas: limón en noviembre al 64% bajo su propio máximo, cebollín en junio al 68%, huevos en enero al 80%. Salta los productos planos como el romero, que casi no se mueven en todo el año. Luego contrasta cada mes de mínimo con tus propias facturas de entrega, ya que lo que de verdad pagas se ubica por encima de la referencia mayorista.",
+        "sourcesNote": "Fuente: el conjunto de datos de estacionalidad de Muntin Digital, los normales de referencia mayorista de cinco años de 84 ingredientes, publicado en CC0.",
+        "takeaway": "Cronometrar con el calendario se gana su lugar en los que oscilan amplio y se desperdicia en los planos."
+      }
+    },
+    {
+      "slug": "reading-your-invoice-against-wholesale",
+      "accent": "var(--teal)",
+      "crossLinks": [
+        [
+          "The Vendor Benchmark tool",
+          "/tools/vendor-benchmark/"
+        ],
+        [
+          "The Cost Index",
+          "/cost-index/"
+        ],
+        [
+          "How the index is built",
+          "/methods/"
+        ]
+      ],
+      "en": {
+        "slug": "reading-your-invoice-against-wholesale",
+        "title": "Read Your Invoice Against Wholesale | Muntin",
+        "metaDesc": "A method for reading your invoice against a public wholesale reference. Above wholesale is normal; flag a line that drifts far above its own history.",
+        "h1": "How do you read your invoice against a wholesale reference?",
+        "speakableAnswer": "Reading a delivered invoice against a public wholesale reference is a three-step check: whether the item is priceable at all, that above-wholesale is normal by design, and whether a single line has drifted far above its own recent history.",
+        "intro": [
+          "The wholesale reference is not a price you should be paying. It is a yardstick for two jobs: telling you whether an item is even priceable, and flagging when a delivered price has drifted far above its own recent history.",
+          "The read takes three steps, and none of them is 'am I above wholesale.' A delivered price above wholesale is normal, built from freight, labor, and the distributor's margin."
+        ],
+        "sections": [
+          {
+            "h2": "A wholesale reference is not the price on your invoice",
+            "paragraphs": [
+              "A wholesale reference is a public market level, not the delivered price you pay. Your invoice sits above it by design. Freight, labor, and the distributor's margin all live in the gap. Above the reference is normal, not overpayment.",
+              "The reference does one narrow thing well. It reads a delivered price against that ingredient's own recent normal. It never names another vendor's number as yours, and it never says where a price is headed. A yardstick, not a verdict."
+            ]
+          },
+          {
+            "h2": "The read has three steps",
+            "figureKey": "method",
+            "figureCaption": "The read runs three steps: is the item priceable, is above-wholesale normal, and has a single line drifted far above its own history.",
+            "figureAudioAlt": "A three-step stack. Step one asks whether the item is priceable at all, measured wholesale versus index-only. Step two notes that a delivered price above wholesale is normal by design, from freight, labor, and the distributor's margin. Step three watches for a single delivered line far above its own recent history, and only then do you ask your rep what changed.",
+            "paragraphs": [
+              "The read runs in three steps, and the first one is a gate. Step one asks whether the item is priceable at all. Some items are measured against a wholesale level; others are index-only. An index-only item cannot be benchmarked against a wholesale number, so knowing which is which comes before any comparison.",
+              "Step two is a reminder, not a check: above wholesale is normal. A delivered price above the reference is the freight and the margin doing their ordinary work. Step three is the only alarm the reference is built to raise. Watch a single line against its own recent history, and mark the one that has stair-stepped far above where it has been."
+            ]
+          },
+          {
+            "h2": "When one line has drifted, ask your rep",
+            "paragraphs": [
+              "When one line has climbed far above its own history, flag that one line and no others. Check the Vendor Benchmark to see whether the item is measured or index-only. Then take the single line to your rep, reference in hand, and ask what changed. Freight, pack size, a substitution. Not an accusation.",
+              "Two items that moved together in the same window kept company, nothing more. A shared growing region, a shipping lane, one crowded aisle. That is co-occurrence, not a measured cause. It is context for the question you carry to your rep, never the answer you hand them."
+            ]
+          }
+        ],
+        "operatorPlay": "Monday, pull your last six to eight invoices for your top five items by spend. For each item, plot the delivered price against its own recent line, not against wholesale. Only when a single item has stair-stepped far above its own history do you flag that one line. Check the Vendor Benchmark to see whether the item is measured (priceable) or index-only, then take that single line to your rep with the reference in hand and ask what changed, freight or pack size or a substitution, rather than opening with an accusation.",
+        "sourcesNote": "This method repackages the Muntin Cost Index open data, the per-week wholesale-reference snapshots Muntin Digital publishes under CC0.",
+        "takeaway": "A wholesale reference is a yardstick for two jobs, whether the item is priceable and whether a line has drifted far above its own history, never the price you pay."
+      },
+      "es": {
+        "slug": "reading-your-invoice-against-wholesale",
+        "title": "Lee tu factura contra el mayorista | Muntin",
+        "metaDesc": "Un método para leer tu factura contra una referencia mayorista pública. Por encima del mayorista es normal; marca la línea muy lejos de su historial.",
+        "h1": "¿Cómo se lee tu factura contra una referencia mayorista?",
+        "speakableAnswer": "Leer una factura entregada contra una referencia mayorista pública es una verificación de tres pasos: si el artículo siquiera se puede referenciar, que estar por encima del mayorista es normal por diseño, y si una sola línea se ha alejado mucho por encima de su propia historia reciente.",
+        "intro": [
+          "La referencia mayorista no es un precio que debas estar pagando. Es una vara de medir para dos trabajos: decirte si un artículo siquiera se puede referenciar, y avisarte cuando un precio entregado se ha alejado mucho por encima de su propia historia reciente.",
+          "La lectura toma tres pasos, y ninguno de ellos es '¿estoy por encima del mayorista?'. Un precio entregado por encima del mayorista es normal, formado por el flete, la mano de obra y el margen del distribuidor."
+        ],
+        "sections": [
+          {
+            "h2": "Una referencia mayorista no es el precio de tu factura",
+            "paragraphs": [
+              "Una referencia mayorista es un nivel de mercado público, no el precio entregado que pagas. Tu factura queda por encima de ella por diseño. El flete, la mano de obra y el margen del distribuidor viven en esa brecha. Estar por encima de la referencia es normal, no es pagar de más.",
+              "La referencia hace bien una sola cosa acotada. Lee un precio entregado contra el propio normal reciente de ese ingrediente. Nunca nombra el número de otro proveedor como si fuera el tuyo, y nunca dice hacia dónde va un precio. Una vara de medir, no un veredicto."
+            ]
+          },
+          {
+            "h2": "La lectura tiene tres pasos",
+            "figureKey": "method",
+            "figureCaption": "La lectura corre en tres pasos: si el artículo se puede referenciar, si estar por encima del mayorista es normal, y si una sola línea se ha alejado mucho por encima de su propia historia.",
+            "figureAudioAlt": "Una pila de tres pasos. El primer paso pregunta si el artículo siquiera se puede referenciar, medido contra un nivel mayorista frente a solo índice. El segundo paso señala que un precio entregado por encima del mayorista es normal por diseño, por el flete, la mano de obra y el margen del distribuidor. El tercer paso vigila una sola línea entregada muy por encima de su propia historia reciente, y solo entonces le preguntas a tu representante qué cambió.",
+            "paragraphs": [
+              "La lectura corre en tres pasos, y el primero es una compuerta. El primer paso pregunta si el artículo siquiera se puede referenciar. Algunos artículos se miden contra un nivel mayorista; otros son solo índice. Un artículo de solo índice no se puede comparar contra un número mayorista, así que saber cuál es cuál viene antes de cualquier comparación.",
+              "El segundo paso es un recordatorio, no una revisión: estar por encima del mayorista es normal. Un precio entregado por encima de la referencia es el flete y el margen haciendo su trabajo de siempre. El tercer paso es la única alarma que la referencia está hecha para levantar. Vigila una sola línea contra su propia historia reciente, y marca la que ha subido en escalones muy por encima de donde ha estado."
+            ]
+          },
+          {
+            "h2": "Cuando una línea se ha alejado, pregúntale a tu representante",
+            "paragraphs": [
+              "Cuando una línea ha trepado muy por encima de su propia historia, marca esa línea y ninguna otra. Revisa el Vendor Benchmark para ver si el artículo es medido o de solo índice. Luego lleva esa sola línea a tu representante, referencia en mano, y pregunta qué cambió. Flete, tamaño de empaque, una sustitución. No una acusación.",
+              "Dos artículos que se movieron juntos en la misma ventana solo se hicieron compañía, nada más. Una región de cultivo compartida, una ruta de embarque, un mismo pasillo lleno. Eso es co-ocurrencia, no una causa medida. Es contexto para la pregunta que le llevas a tu representante, nunca la respuesta que le entregas."
+            ]
+          }
+        ],
+        "operatorPlay": "El lunes, saca tus últimas seis a ocho facturas de tus cinco artículos de mayor gasto. Para cada artículo, grafica el precio entregado contra su propia línea reciente, no contra el mayorista. Solo cuando un solo artículo ha subido en escalones muy por encima de su propia historia marcas esa línea. Revisa el Vendor Benchmark para ver si el artículo es medido (se puede referenciar) o de solo índice, luego lleva esa sola línea a tu representante con la referencia en mano y pregunta qué cambió —flete, tamaño de empaque o una sustitución— en lugar de abrir con una acusación.",
+        "sourcesNote": "Este método reempaqueta los datos abiertos del Muntin Cost Index, las instantáneas semanales de referencia mayorista que Muntin Digital publica bajo CC0.",
+        "takeaway": "Una referencia mayorista es una vara de medir para dos trabajos —si el artículo se puede referenciar y si una línea se ha alejado mucho por encima de su propia historia—, nunca el precio que pagas."
+      }
+    }
+  ]
+}
