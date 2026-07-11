@@ -294,6 +294,20 @@ body[data-hide-sticky-bar] .mobile-cta-bar{display:none!important}
    flag-land) are re-spaced to match, with dwell before each beat.
    Compositor-only; reduced-motion stays instant (the PRM rules are unchanged). */
 .container.ld-wrap{max-width:880px;margin:0 auto;--t-micro:190ms;--t-fast:300ms}
+/* App design language (2026-07-11 incr. E — "the design language from the app
+   itself"): the real Muntin Ledger app (Muntin-Invoice-Decoder repo,
+   packages/ui/tokens.css) is a financial-grade system in the Linear / Mercury /
+   Ramp mold — Inter everywhere (serif is retired from product chrome), tabular
+   numerics, and one electric-blue accent (#3b68f5) rather than the old
+   editorial teal. Re-skin the demo to it, SCOPED to .ld-wrap so the rest of the
+   marketing site keeps its current brand until a site-wide re-pigment is
+   decided. Neutral ramp already matches the app; only the accent + type change. */
+.container.ld-wrap{--font-display:var(--font-body);--teal:#3b68f5;--teal-dark:#2647b8;--teal-tint:#eaf0fe;--teal-link:#2a50c8}
+.container.ld-wrap .ld-panel h2{font-weight:640;letter-spacing:-0.02em}
+.container.ld-wrap .lg-pane-title{font-weight:600}
+/* Financial-grade numerals: Inter tabular, tracked tight, medium-semibold —
+   the app's number material, not editorial serif figures. */
+.container.ld-wrap .lg-n,.container.ld-wrap .lgc-num,.container.ld-wrap .lg-price-figure,.container.ld-wrap .lgc-delta{font-feature-settings:"tnum" 1,"cv01" 1;letter-spacing:-0.01em}
 .ld-rail{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 28px;padding:0;list-style:none;font-size:13px;counter-reset:ld}
 .ld-rail li{counter-increment:ld}
 .ld-rail a{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;background:var(--surface-1,#fff);border:1px solid var(--line);border-radius:999px;color:var(--ink);text-decoration:none;transition:border-color var(--t-micro,120ms) var(--ease,ease),box-shadow var(--t-micro,120ms) var(--ease,ease)}
