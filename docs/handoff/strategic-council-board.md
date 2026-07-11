@@ -32,6 +32,30 @@ is the execution spine** (folds the reinvention master plan + the locked macro d
 the flagship prototype). Autonomous run: one increment → adversarial/expert audit → iterate → commit+push →
 update this block → continue.
 
+**🟢 ACTIVE — SITE-WIDE v3 PROPAGATION (founder picked ALL 4 levers + de-solo newsletter + keep human seat, 2026-07-11).**
+Blueprint from workflow wbr35q2x7. Ordered execution (systemic-first so hubs inherit it):
+- **[DONE `d9dd78900`] Newsletter de-solo** — "We send…"; G.10 gate updated to require company framing (teeth kept).
+- **[1] Type unification** (site.css, LOW risk): do NOT split the global `h1,h2,h3,h4{font-family:var(--font-display)}`
+  (:743) — that would demote every article h3-h4. Instead add scoped `font-family:var(--font-body)` on the
+  product-UI selectors: `.score-card-title/.score-card-value` (:428-429), `.mtn-card__title/.mtn-modal__title/.mtn-empty__title`
+  (:7837/:7929/:7892). Reconcile `.logo` (:868, inline blocks hardcode Georgia) → var(--font-display). DEFER viz-* numerals.
+  Regenerate 3 shells. Hero/masthead/.serif-italic/.foot-cta-text/home stances KEEP Fraunces.
+- **[2] Radius→6px** (site.css tokens, HIGH risk/blast): FIRST give `.portrait` (:1218, reads --r-lg) an explicit radius
+  or images square. THEN retokenize `--r-sm`(8)/`--r-md`(14)/`--r-lg`(22)/`--r-input`(12) toward 6px (:1,:99) — sweeps
+  ~200 card call-sites in one edit. Bump `.ci-inst` 8→6 (:1114). Leave 999px pills / 50% circles. Regenerate shells.
+  Visually once-over FROZEN surfaces (/studio/, /course/, .plan) since the sweep hits them.
+- **[3-6] Hub polish** cost-index → ledger → tools → library (each inline-CSS, one EN+ES commit): scoped mono stack
+  (--ci-mono/--lg-mono/--tc-mono/--lib-mono) for the DATA voice (numbers/dates/tier-labels → tabular-mono), app
+  titles/heads → Inter, uppercase labels → mono, hardcoded radii → 6px, and REPLACE the static `border-top:3px ink`
+  slab with the home hover-reveal muntin top-accent. Use color-mix (css-drift 504). PRESERVE (documented warmth):
+  ledger `.lg-pricing` ink band + its intentional hexes, cost-index semantic left-rails (signal), `.ledger-asym`
+  ordinals, library autolink sentinels + its hairline article-row dividers (rows NOT cards).
+- **[7] Tool-card layout fix** (home `.tool-card-flagship` :2770+): blueprint's spec agent failed — spec it inline;
+  land AFTER tools so it inherits the unified grammar.
+- **FORKS proceeding with defaults (reversible, flag in commits):** (a) unify hub "3px ink slab" → home's
+  hover-reveal accent — overrides the recent "bolder passes" but IS what "unify treatment" means; (b) keep the ONE
+  ledger $19 pricing lockup as an editorial moment (mono only the date). Founder can veto either.
+
 **Macro direction LOCKED — flagship prototype v3** (`docs/handoff/redesign-flagship-prototype.html`,
 artifact "flagship-macro-v3"): one unified app-grade language (slate + electric-blue #3b68f5/#5b82ff,
 tabular-mono data voice, dark-first both themes, the **muntin grille AS structure** — flush hairline
