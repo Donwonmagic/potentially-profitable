@@ -15,6 +15,15 @@ council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 
 ## ⮕ CURRENT STATE — AUTONOMOUS REDESIGN RUN (updated 2026-07-11)
 
+**⚠ OPS NOTE (2026-07-11) — container reverted TWICE; both recovered.** It has now happened twice in this
+run (same signature both times: HEAD drops to the stale demo checkpoint `e6afa2258`, remote-tracking ref
+stale, "Reach Don" reappears in the working tree). **Second occurrence:** mid-turn, AFTER a good push —
+detected when a headless glossary screenshot showed "Reach Don" though origin was correct. Recovery is the
+same and reliable: `git fetch origin claude/muntin-strategic-council-exsghc && git reset --hard origin/…`.
+**Hardened rule:** commit + push every increment BEFORE running the (slower) headless audit — the push is the
+only durable artifact; anything uncommitted when the container rolls is gone. The glossary sweep below was
+pushed first (`597bc5f23`) precisely for this reason, and survived. Original first-occurrence note follows.
+
 **⚠ OPS NOTE (2026-07-11) — container reverted; recovered.** A worker restart reverted this container's
 working tree to a STALE demo-thread checkout (HEAD `e6afa2258` "wip(demo): single-frame no-scroll redesign",
 remote-tracking ref stale at `2401bf103`) — 192 commits behind, my entire redesign cascade absent locally,
@@ -44,6 +53,17 @@ ba3butwm6, exit 0): 233/258 passed; all 25 failures are deploy-healed `(idem)` b
 CSS cache-bust, site-counts, glossary/hub schema, RSS, H2 anchor IDs, theme/cuisine build pages) — matching
 the pre-redesign idem baseline exactly, ZERO non-idem regressions from the levers / mono-token / newsletter
 work. CSS shells verified in sync (rebuild = 0 changes). HEAD `8dc1788ee` == origin. Original plan:
+
+**✅ LONG-TAIL SWEEP (founder picked it, 2026-07-11) — `597bc5f23`.** Glossary index app-chrome brought onto
+the v3 tokens: search box / filter bar / empty states off raw 10·14·22px radii → `--r-input`/`--r-md`/`--r-lg`;
+the recently-added link cards dropped the old focus-ring box-shadow for the muntin top-accent hover-reveal +
+2px lift, dates now tabular-mono. EN+ES; verified headless both themes AND by computed-style assertions
+(mono/tabular/overflow:hidden/accent scaleX 0→1/translateY-2px all PASS). **Sheets index needed nothing** —
+it reuses the already-swept `.tool-card--compact`. **Tool-page section `<h2>`s = deliberate keep** (not a gap):
+section-level heads stay Fraunces by the system's own rule, and they're mixed-register even within one panel
+(cost-pulse `.cp-card` has data-title "Drift this week" beside framing "What this dashboard isn't."), so there's
+no clean scope and a blanket demote would flatten warmth. Full reasoning in `docs/handoff/redesign-v3-system.md`
+(Deliberate keeps). The v3 storefront redesign is complete.
 - **[DONE `d9dd78900`] Newsletter de-solo** — "We send…"; G.10 gate updated to require company framing (teeth kept).
 - **[1] Type unification** (site.css, LOW risk): do NOT split the global `h1,h2,h3,h4{font-family:var(--font-display)}`
   (:743) — that would demote every article h3-h4. Instead add scoped `font-family:var(--font-body)` on the

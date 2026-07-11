@@ -60,6 +60,18 @@ company voice) · tool pages already inherit the token layer. Mobile (390px) ver
   (deliberate, so dark-mode doesn't double-flip).
 - **cost-index semantic left-rails** (teal/rust/purple = signal), the library autolink
   sentinels, count/cal sentinels — machinery, not decoration.
+- **Glossary `.gloss-term` reference cards:** their Fraunces headwords stay — a glossary
+  reads as a reference work (a dictionary), the same editorial register as `viz-*` numerals.
+  Only the glossary *app-chrome* (search, filter bar, the recently-added link cards) is on the
+  app grammar.
+- **Tool-page section `<h2>`s stay Fraunces** (RESOLVED long-tail, 2026-07-11). By the system's
+  own rule, section-level heads keep Fraunces everywhere; only tight component titles
+  (`.mtn-card__title`, `.score-card-*`, `.tool-card-flagship__title`) opt down to Inter. The
+  tool pages' heads are section-level and *mixed register even within one container* — e.g. in
+  cost-pulse's `.cp-card`, the data-panel title "Drift this week" sits beside the framing head
+  "What this dashboard isn't." There is no clean CSS scope; a blanket `.tool-page h2{Inter}`
+  would flatten the warm framing heads. Per-head classing (~40 heads × EN+ES = 14 files) is
+  not worth it for a low-traffic surface. Deliberate keep.
 
 ## Extending the system (checklist for a new surface)
 
@@ -73,6 +85,10 @@ company voice) · tool pages already inherit the token layer. Mobile (390px) ver
 
 ## Known follow-ups (optional, low-priority)
 
-- Tool-page bare `<h2>` section heads still inherit Fraunces (no shared wrapper class to
-  scope an override cleanly) — leave, or add a `.tool-page` body hook first.
-- Glossary / sheets index cards: not yet swept to the hairline grammar (long-tail).
+- **Glossary index app-chrome — DONE 2026-07-11** (`597bc5f23`): search / filter bar / empty
+  states tokenized to the 6px/8px radius scale; the recently-added link cards took the muntin
+  top-accent hover-reveal + mono tabular dates. `.gloss-term` reference cards + Fraunces
+  headwords kept (see Deliberate keeps).
+- **Sheets index — already on-grammar:** its cards reuse the swept `.tool-card--compact`; its
+  inline `<style>` is critical-CSS only. Nothing to sweep.
+- **Tool-page section `<h2>`s — RESOLVED as a deliberate keep** (see Deliberate keeps). Not a gap.
