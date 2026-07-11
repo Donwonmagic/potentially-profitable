@@ -5310,23 +5310,38 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 @media (max-width:900px){.gloss-recent__list{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:600px){.gloss-recent__list{grid-template-columns:1fr}}
 .gloss-recent__card{
+  position:relative;
   display:flex;flex-direction:column;gap:4px;
   padding:14px 16px;
   background:var(--white);
   border:1px solid var(--line);
   border-radius:var(--r-sm);
+  overflow:hidden;
   text-decoration:none;color:inherit;
-  transition:border-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease);
+  transition:border-color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease);
+}
+/* v3: the muntin top-accent hover-reveal (matches the home + hub cards),
+   replacing the old focus-ring box-shadow. These are real links, so the
+   hover lift is an honest affordance. */
+.gloss-recent__card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--teal);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform var(--t-fast) var(--ease);
 }
 .gloss-recent__card:hover,
 .gloss-recent__card:focus-visible{
   border-color:var(--teal);
-  box-shadow:0 0 0 3px var(--teal-tint);
+  transform:translateY(-2px);
   outline:none;
 }
+.gloss-recent__card:hover::before,
+.gloss-recent__card:focus-visible::before{transform:scaleX(1)}
 .gloss-recent__date{
+  font-family:var(--font-mono);
   font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;
   color:var(--stone);
+  font-variant-numeric:tabular-nums;
 }
 .gloss-recent__head{
   font-family:var(--font-display);font-weight:500;font-size:16px;

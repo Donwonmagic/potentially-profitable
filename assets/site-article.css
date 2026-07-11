@@ -2135,7 +2135,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 }
 
 
-/* ===== [article] "Recently added" rail (under glossary hero) (lines 5280-5338) ===== */
+/* ===== [article] "Recently added" rail (under glossary hero) (lines 5280-5353) ===== */
 /* ===== "Recently added" rail (under glossary hero) =====
  * Surfaces newest terms to returning readers; populated by
  * scripts/inject-glossary-recent.mjs from data/glossary-added.json.
@@ -2168,23 +2168,38 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 @media (max-width:900px){.gloss-recent__list{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:600px){.gloss-recent__list{grid-template-columns:1fr}}
 .gloss-recent__card{
+  position:relative;
   display:flex;flex-direction:column;gap:4px;
   padding:14px 16px;
   background:var(--white);
   border:1px solid var(--line);
   border-radius:var(--r-sm);
+  overflow:hidden;
   text-decoration:none;color:inherit;
-  transition:border-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease);
+  transition:border-color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease);
+}
+/* v3: the muntin top-accent hover-reveal (matches the home + hub cards),
+   replacing the old focus-ring box-shadow. These are real links, so the
+   hover lift is an honest affordance. */
+.gloss-recent__card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--teal);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform var(--t-fast) var(--ease);
 }
 .gloss-recent__card:hover,
 .gloss-recent__card:focus-visible{
   border-color:var(--teal);
-  box-shadow:0 0 0 3px var(--teal-tint);
+  transform:translateY(-2px);
   outline:none;
 }
+.gloss-recent__card:hover::before,
+.gloss-recent__card:focus-visible::before{transform:scaleX(1)}
 .gloss-recent__date{
+  font-family:var(--font-mono);
   font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;
   color:var(--stone);
+  font-variant-numeric:tabular-nums;
 }
 .gloss-recent__head{
   font-family:var(--font-display);font-weight:500;font-size:16px;
@@ -2195,7 +2210,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 }
 
 
-/* ===== [article] Glossary index "▶ 90s explainer" chip (lines 5339-5360) ===== */
+/* ===== [article] Glossary index "▶ 90s explainer" chip (lines 5354-5375) ===== */
 /* ===== Glossary index "▶ 90s explainer" chip =====
  * Variant of .gloss-tag (defined inline on glossary/index.html) used
  * on the five flagship-term cards. Sits inside .gloss-tags next to
@@ -2218,7 +2233,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 }
 
 
-/* ===== [article] Glossary explainer (90-second narrated diagram) (lines 5361-5627) ===== */
+/* ===== [article] Glossary explainer (90-second narrated diagram) (lines 5376-5642) ===== */
 /* ===== Glossary explainer (90-second narrated diagram) =====
  * Inline-SVG explainer for the five flagship glossary terms (menu
  * engineering, prime cost, plate cost, contribution margin, aspect
@@ -2486,7 +2501,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 }
 
 
-/* ===== [article] Inline glossary popover (lines 5628-5695) ===== */
+/* ===== [article] Inline glossary popover (lines 5643-5710) ===== */
 /* ===== Inline glossary popover =====
  * Hover/focus tooltip rendered by site.js when a reader interacts with
  * an in-article autolink (a[data-glossary-blurb]). Single shared popover
@@ -2555,7 +2570,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 }
 
 
-/* ===== [article] Print view for glossary section landing pages (lines 5696-5752) ===== */
+/* ===== [article] Print view for glossary section landing pages (lines 5711-5767) ===== */
 /* ===== Print view for glossary section landing pages =====
  * Activates only on /glossary/<section>/ pages. Strips site chrome
  * (nav, footer, CTAs, the print button itself) and reflows the
@@ -2613,7 +2628,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   }
 }
 
-/* ===== [article] Editorial callouts (lines 5866-5949) ===== */
+/* ===== [article] Editorial callouts (lines 5881-5964) ===== */
 /* ============ Editorial callouts (Sprint 10 — cohesion) ============
    .callout--field is the "Field note from the kitchen" — a per-
    glossary-term italic aside that adds Don's operator anecdote
@@ -2698,7 +2713,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .field-notes-rail__more{text-align:center;margin:28px 0 0}
 .field-notes-rail__more a{color:var(--teal);font-weight:500;text-decoration:none;border-bottom:1px solid currentColor}
 
-/* ===== [article] Post-end Workshop CTA (lines 5970-5986) ===== */
+/* ===== [article] Post-end Workshop CTA (lines 5985-6001) ===== */
 /* ============ Post-end Workshop CTA (Sprint 13 — cohesion) ============
    The "Workshop next step" card at the close of every blog post.
    Sits between .post-end-mark and the see-also block — the moment
@@ -2716,7 +2731,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .post-end-cta .btn-primary:hover{background:var(--teal-dark)}
 
 
-/* ===== [article] Inline graphics — globalized from gold articles (lines 6689-6750) ===== */
+/* ===== [article] Inline graphics — globalized from gold articles (lines 6704-6765) ===== */
 /* ============ INLINE GRAPHICS — globalized from gold articles ============ */
 /* .recovery-stack: vertical stacked rows with row tints + dark total cap.
    Pattern from blog/five-restaurant-website-changes-recover-one-percent-margin/.
@@ -2779,7 +2794,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 @media(max-width:640px){.report-decider,.photo-aspect-decoder{padding:18px 20px}.report-decider__item summary,.photo-aspect-decoder__item summary{font-size:15.5px}}
 
 
-/* ===== [article] KnitRail — "what’s next" component for articles (lines 6815-6889) ===== */
+/* ===== [article] KnitRail — "what’s next" component for articles (lines 6830-6904) ===== */
 /* ============================================================
    KnitRail — unified four-lane "what's next" component for
    articles. Replaces the smart-next 3-line CTA with a 4-column
@@ -2855,7 +2870,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   }
 }
 
-/* ===== [article] Article viz components (.viz-* family) (lines 7057-7497) ===== */
+/* ===== [article] Article viz components (.viz-* family) (lines 7072-7512) ===== */
 /* ============ ARTICLE VIZ COMPONENTS ============
    Namespaced .viz-* family for inline article graphics. Tokens-only
    (--cream, --ink, --teal, --rust, --stone, --status-*, --t-*),

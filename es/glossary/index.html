@@ -188,7 +188,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .gloss-section-head h2{margin-top:14px;font-size:clamp(28px,3.4vw,40px)}
   .gloss-section-head p{margin-top:14px;font-size:16px;line-height:1.6;color:var(--ink-soft);max-width:620px}
 
-  .gloss-empty{font-size:14px;color:var(--stone);font-style:italic;padding:24px;border:1px dashed var(--line-dark);border-radius:10px;text-align:center}
+  .gloss-empty{font-size:14px;color:var(--stone);font-style:italic;padding:24px;border:1px dashed var(--line-dark);border-radius:var(--r-md);text-align:center}
 
   /* Term entries. Each .gloss-term is an <article> with a headword,
      industry tag badges, a plain-English definition, and a "why it
@@ -293,7 +293,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
   .gloss-search{
     position:relative;display:flex;align-items:center;gap:8px;
-    background:var(--white);border:1px solid var(--line-dark);border-radius:14px;padding:8px 12px;
+    background:var(--white);border:1px solid var(--line-dark);border-radius:var(--r-input);padding:8px 12px;
     transition:border-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease);
   }
   .gloss-search:focus-within{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-tint)}
@@ -310,7 +310,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .gloss-search__clear svg{width:16px;height:16px}
   .gloss-search-empty{
     display:none;margin:24px auto;max-width:480px;text-align:center;
-    padding:24px;border:1px dashed var(--line-dark);border-radius:14px;color:var(--stone);font-style:italic;
+    padding:24px;border:1px dashed var(--line-dark);border-radius:var(--r-md);color:var(--stone);font-style:italic;
   }
   main[data-search-empty="1"] .gloss-search-empty{display:block}
 
@@ -332,7 +332,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     backdrop-filter:blur(10px);
     -webkit-backdrop-filter:blur(10px);
     border:1px solid var(--line);
-    border-radius:22px;
+    border-radius:var(--r-lg);
     display:flex;
     flex-direction:column;
     gap:10px;
@@ -417,7 +417,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     .gloss-filterbar{
       top:56px;
       max-width:none;
-      border-radius:14px;
+      border-radius:var(--r-md);
     }
     .gloss-filters-label{display:none}
   }
