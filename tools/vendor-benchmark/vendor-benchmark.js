@@ -671,7 +671,7 @@
   }
   function onRailClick(e) {
     var t = e.target; if (!t || !t.closest) return;
-    if (t.closest('[data-jclear]')) { writeJournal({}); renderJournalRail(); return; }
+    if (t.closest('[data-jclear]')) { writeJournal({}); lastJournalSig = null; renderJournalRail(); return; }
     var chip = t.closest('.vb-jchip');
     if (chip) {
       var map = readJournal(); var entry = map[chip.getAttribute('data-jkey')];
@@ -763,8 +763,20 @@
     render(res);
     maybeLoadHistoryShard(res); // load the picked item's deep series on demand (not the monolith)
     scheduleAnnounce(res);
-    saveToJournal(res, rows);
-    renderJournalRail();
+    // Gate the journal side-effects to a CHANGED, settled result. saveToJournal's whole-blob
+    // read/parse/write + the full rail rebuild are the dominant per-settle main-thread cost
+    // once the book is populated, and they re-fire on every keystroke and every seed/shard
+    // re-render even when the saved entry would be identical. Only touch storage when the
+    // meaningful result actually moved (item · gap · tier · thin). lastJournalSig resets on
+    // each page load, so the first settled result per visit still records a new-sitting check
+    // (saveToJournal's own SESSION_MS coalescing then does the right within/across-sitting thing).
+    var mj = res.market;
+    var jsig = journalKeyFor(res) + '|' + ((mj && mj.res && mj.res.ok && !mj.res.thin) ? mj.res.gapPts : 'x') + '|' + res.tier + '|' + ((mj && mj.res && mj.res.thin) ? 1 : 0);
+    if (jsig !== lastJournalSig) {
+      lastJournalSig = jsig;
+      saveToJournal(res, rows);
+      renderJournalRail();
+    }
     resultEl.setAttribute('data-has-result', '1');
 
     track('Bench Multi-Date Computed', {
@@ -1048,6 +1060,7 @@
   var lastStrong = false; // did the last funnel render the strong Ledger card? (dedups the journal rollup CTA)
   var lastSingle = null;  // last single-price read context {key,item,unit,level} for the "watch this item" action
   var analysisOpen = false; // preserved open/closed state of the two-date result's SUPPORTING disclosure across re-renders
+  var lastJournalSig = null; // last saved journal signature — skip redundant storage writes + rail rebuilds on unchanged re-renders
 
   // rAF count-up for the hero gap number — lands EXACTLY on the true value; snaps under
   // reduced-motion or without rAF. Dollars never tween (a morphing $ would read as the
