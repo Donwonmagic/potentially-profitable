@@ -127,19 +127,35 @@ third proves it works; finish the cascade + tighten, not a rethink). Its 3 highe
 deploy-healed set, NOT chased per board rule) EXCEPT the newsletter-copy gate, now fixed (`01d13d038`).
 Per-increment gates were green throughout (fabrications 0, css-drift 504, locale-parity, footer-payload, sync).
 
-**NEXT (autonomous) — home v3 is substantially cascaded; what remains:**
-1. **`.service` product 3-card** (home "The product" band + About 3-card) → flagship hairline pattern. Shared
-   with /studio/ pricing tiers, so scope a home-only class or screenshot /studio/ too before committing.
-2. **Stances section** — already had a bolder pass; if touched, make proof links look inspectable (mono claim
-   counts). ⚠ Its `cal:band.*` sentinels are injected by inject-cost-index-calibration.mjs (SENSITIVE,
-   heartbeat-tied) — reframe copy only, do NOT remove the sentinels.
-3. Then the OTHER pane archetypes (tools / cost-index / library / ledger / about pages) — carry the same
-   app-grade hairline + mono data-voice system off the home and across the site.
-One section per increment; scoped v3 CSS, tokens-only, css-drift 504; headless both themes; EN+ES; preserve
-machinery. **FOUNDER DECISIONS parked:** (a) footer newsletter — keep Don's gated first-person voice
-(current) or de-solo it too (needs the G.10 gate updated); (b) type unification (Fraunces→Inter — review says
-#2, a site-wide call, not #1); (c) the /window/ personal-access founder-fork; (d) flagship tool-card
-composition (2-up or full-width glyph — the review's least-resolved layout).
+**✅ HOME v3 CASCADE COMPLETE.** All review moves + momentum surfaces shipped (`c902109c4`→`528368966`).
+The `.service` 3-card is DONE (`528368966`). The stances section is intentionally LEFT (review: lowest
+priority; its `cal:band.*` sentinels are SENSITIVE/heartbeat-tied — not worth touching unattended for low reward).
+
+**OFF-HOME ASSESSMENT (2026-07-11, autonomous):** the funnel pages were **already given prior v3 passes** and
+are substantially aligned — NOT soft-card pages needing transformation:
+- **/tools/** — inline "Bolder pass 2026-07" (3px ink top-frame cards, teal "You leave with:" walkaways, tier
+  badges, muntin dark-closer lines) "matching the homepage closer." Already capability-forward.
+- **/cost-index/**, **/library/** — heavy mono/hairline/tabular signal (25 / 46 hits); library has 0 soft cards.
+- **/ledger/** — its "soft" signals are deliberate instrument panes (`.lg-pane`/`.studio-card` = 1px line +
+  3px ink top-frame), an illustrative rotated sheet graphic, and callout boxes — not generic soft cards.
+- **/about/** — least mono, no bolder pass, BY DESIGN: it's the founder's human seat (personal voice KEPT per
+  the pivot). Re-skinning it cold would fight its role.
+→ **Conclusion: the visible v3 redesign is SUBSTANTIALLY COMPLETE across the funnel.** The home was the one
+untransformed flagship; it's now done + audited. No clear high-value off-home transformation remains.
+
+**REMAINING = FOUNDER-LEVEL, SITE-WIDE DECISIONS (surface, don't do unattended):**
+- (a) **Footer newsletter** — keep Don's gated first-person voice (current) or de-solo it too (→ update the
+  G.10 `check-newsletter-copy` gate).
+- (b) **Type unification** (Fraunces→Inter on product-UI surfaces — review's #2, a site-wide call).
+- (c) **Radius/treatment unification** — home uses 6px hairline; off-home funnel uses 10–12px softer radii from
+  earlier passes. Unifying to 6px site-wide would make it read as ONE app-grade system (site-wide call, may
+  conflict with prior deliberate passes — founder's call).
+- (d) The **/window/** personal-access founder-fork; the **flagship tool-card composition** (2-up / full-width glyph).
+
+**OPTIONAL internal cleanup (non-visible, low-priority):** 6 duplicated scoped mono stacks (`--ci-mono`,
+`--ts-mono`, `--li-mono`, `--fd-mono`, `--lt-mono`, `--sv-mono`, all identical) → one global `--font-mono`
+token. Deferred: needs the token-sync gate + data/muntin.tokens.json editorial-register updated; gate risk not
+worth taking unattended for a non-visible DRY win.
 
 **NEXT (autonomous, ordered) — SUPERSEDED** by the review-driven NEXT above (item 1 instrument shipped as
 `37c70aac4`+`a64bf8662`; item 2 stances now deferred behind the momentum surfaces). Retained context: the
