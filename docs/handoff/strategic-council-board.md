@@ -86,6 +86,34 @@ any, is storefront-side only (the storefront optionally moves toward the product
 Fraunces-storefront / Inter-product divergence otherwise STANDS. The parity audit now serves as a map of what a
 storefront-side nudge would entail + a clean-bill on the product side, not a to-do list against the product.
 
+**✅ PARITY AUDIT COMPLETE (workflow `wzy4egv8m`, 6 dims + synth + adversarial-verify, 2026-07-11).** Result:
+**the product gets a CLEAN BILL — zero changes.** The light-mode token spine is already pigment-identical across
+both repos (verified exact: storefront `--teal` #2A50C8 == product `--mun-accent-text`; `--teal-tint` #EAF0FE ==
+`--mun-accent-soft`; `--rust` #C42E2E == `--mun-danger`; `--gold` #B7791F == `--mun-warning`; `--line-input`
+#868D9A == `--mun-border-strong`; full neutral ramp). The two headline divergences (accent FILL #2A50C8 vs
+#3b68f5 — same hue ~226°, value/chroma split for AA-on-cream vs bright-on-dark; Fraunces display kept vs serif
+retired from product chrome) are DELIBERATE, documented on both sides, and gated — KEEP. So are the warm-cream
+vs cool-slate dark text, the 6px vs 8px card radius register, and the muntin-hover vs inset-ring interaction
+grammar (the two properties are meant to feel different; shared brand-DNA — muntin/pane vocab, 120/180ms
+durations, the cubic-bezier(.16,1,.3,1) emphasis easing — is intact).
+  - **Adversarial verify overturned one item (holdsUp=false):** the synthesis proposed nudging storefront
+    `--stone` #6B7280→#5f6670 and called it "ungated" — WRONG. `--stone` is one of 15 tokens locked by
+    `check-tokens-sync.mjs` (fail-CI); changing it breaks CI, and the spine-hash pin blocks the JSON path too.
+    DROPPED. The plan also cited a phantom `build-tokens.mjs` color-lock (real enforcer is check-tokens-sync).
+  - **Survivors = small, storefront-only, verified-ungated hygiene:** (1) **focus-glow mis-pigment** — site.css
+    `--ring-focus` glow is hardcoded rgba(59,104,245,.3)=#3b68f5 (the PRODUCT's accent) while the focus OUTLINE
+    is --teal #2A50C8, so one focused control shows two blues. Recommended pilot fix (one-liner, ungated).
+    (2) stale radius comments/fallback (site.css L95-98 says --r-sm 8/--r-md 14; real = 6/6/8; also a stale set
+    in check-css-drift.mjs's own comment). (3) off-scale raw radii sweep (storefront onto 6/8; INTRA-repo only).
+  - **DEFER / maintenance notes:** dark-accent seam #7AA7FF vs #5b82ff (only accent slot no gate cross-checks)
+    + dark status pigments diverge independently (storefront ships a full dark theme the shared spec says doesn't
+    exist — stale spec). Dark --stone-2 #99A0AB is under-flipped but it's DECORATIVE (dividers/ring-tracks), not
+    disabled text — don't dim it toward #5a5f68 blindly. All generated (build-dark-mode.mjs) — regen, don't hand-patch.
+  - **Genuine EDITORIAL open questions for founder (NOT token edits):** (a) Cost-Index money direction — storefront
+    shows elevated cost in --rust / calm in neutral, never a green "prices fell/good"; deliberate one-directional
+    honesty stance, or an unadopted-spine gap? (b) does the storefront want a dedicated --info hue (today info-blue
+    folds onto --teal) and should it match product #3b68f5 or stay deeper editorial teal?
+
 - **[DONE `d9dd78900`] Newsletter de-solo** — "We send…"; G.10 gate updated to require company framing (teeth kept).
 - **[1] Type unification** (site.css, LOW risk): do NOT split the global `h1,h2,h3,h4{font-family:var(--font-display)}`
   (:743) — that would demote every article h3-h4. Instead add scoped `font-family:var(--font-body)` on the
