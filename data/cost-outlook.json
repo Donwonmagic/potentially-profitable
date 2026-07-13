@@ -7,8 +7,8 @@
     "seasonality": "data/seasonality.json",
     "basket": "data/cost-basket-weights.json"
   },
-  "asOf": "2026-06-08",
-  "month": 6,
+  "asOf": "2026-07-13",
+  "month": 7,
   "horizonHonest": 1,
   "basket": [
     "beef-tenderloin",
@@ -28,33 +28,27 @@
     "vegetable-oil",
     "whole-chicken"
   ],
-  "weightedTilt": -0.02,
-  "outlook": "mixed",
+  "weightedTilt": 0.33,
+  "outlook": "building",
   "counts": {
-    "building": 5,
-    "easing": 6,
-    "steady": 1,
-    "n": 12
+    "building": 6,
+    "easing": 2,
+    "steady": 3,
+    "n": 11
   },
   "lockCandidates": [],
   "watchCandidates": [
-    "cheddar-cheese",
-    "onion",
-    "romaine-lettuce",
-    "beef-tenderloin",
-    "ribeye"
-  ],
-  "featureCandidates": [
     "russet-potato",
-    "chicken-breast",
+    "onion",
     "pork-loin",
     "pork-shoulder",
-    "tomato",
-    "whole-chicken"
+    "romaine-lettuce",
+    "tomato"
   ],
+  "featureCandidates": [],
   "movers": [
     {
-      "slug": "cheddar-cheese",
+      "slug": "russet-potato",
       "direction": "building",
       "confidence": "high",
       "storable": false,
@@ -64,7 +58,23 @@
     {
       "slug": "onion",
       "direction": "building",
-      "confidence": "high",
+      "confidence": "moderate",
+      "storable": false,
+      "action": "watch-negotiate",
+      "seasonalNote": null
+    },
+    {
+      "slug": "pork-loin",
+      "direction": "building",
+      "confidence": "moderate",
+      "storable": false,
+      "action": "watch-negotiate",
+      "seasonalNote": null
+    },
+    {
+      "slug": "pork-shoulder",
+      "direction": "building",
+      "confidence": "moderate",
       "storable": false,
       "action": "watch-negotiate",
       "seasonalNote": null
@@ -72,33 +82,17 @@
     {
       "slug": "romaine-lettuce",
       "direction": "building",
-      "confidence": "high",
+      "confidence": "moderate",
       "storable": false,
       "action": "watch-negotiate",
       "seasonalNote": null
     },
     {
-      "slug": "russet-potato",
-      "direction": "easing",
-      "confidence": "high",
-      "storable": false,
-      "action": "feature-now",
-      "seasonalNote": null
-    },
-    {
-      "slug": "beef-tenderloin",
+      "slug": "tomato",
       "direction": "building",
       "confidence": "moderate",
       "storable": false,
       "action": "watch-negotiate",
-      "seasonalNote": null
-    },
-    {
-      "slug": "chicken-breast",
-      "direction": "easing",
-      "confidence": "moderate",
-      "storable": false,
-      "action": "feature-now",
       "seasonalNote": null
     }
   ],
