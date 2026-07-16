@@ -48,7 +48,12 @@ loops — the "nobody tells you" boxes: Verifier, Stop-condition, Memory. Closin
   `cost-watch-digest.ts` assemble + materiality (`9e01535`/`a0b0a81`/`f179e27`, 22-case suite);
   `cost-watch-impact.ts` the only new number, INCREMENTAL spend×Δ/(1+Δ), null=held (`cf0bad5`,
   6 tests); `cost-watch-scan.ts` I/O feeder, typechecks vs every real store sig (`5dbfea0`);
-  `email.ts` render+send, copy-gates green, prints NO $ (`417a825`). **NOT built — staging-gated
+  `email.ts` render+send, copy-gates green, prints NO $ (`417a825`). **Impl adversarially audited
+  (3-skeptic workflow) → 3 defects FIXED (`d7a7b1f`):** materiality now per-ITEM not per-row (dup-
+  itemId hikes can't double-count a held move or show an item as both fired+held); the email splits
+  `belowFloor` (measured, "under the $X line") vs `unmeasuredHeld` ("not measured yet") so it never
+  asserts a magnitude for an unmeasured move; a measured $0 never fires. Scan's serial vendor-ask +
+  dup-canonical refetch = LOW efficiency, deferred (correctness unaffected). **NOT built — staging-gated
   (mechanical accountant-digest mirrors whose only real verification is a staging DB/Resend run;
   fully specified in blueprint §5/§6):** weekly cron (`scheduled/cost-watch-digest.ts` + index/
   wrangler), D1 `cost_watch_subscriptions` store + migration 0031 (default-off), opt-in route.
