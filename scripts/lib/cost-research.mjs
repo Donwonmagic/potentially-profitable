@@ -901,6 +901,20 @@ const PLAYBOOK_CSS = `
 .pb-lyr{position:relative;padding:0 0 0 22px;font-size:14.5px;line-height:1.5;color:var(--ink-soft)}
 .pb-lyr:before{position:absolute;left:0;top:.05em;font-size:14px}
 .pb-lyr--cost:before{content:"$"}.pb-lyr--time:before{content:"◷"}.pb-lyr--swap:before{content:"⇄"}
+.pb-more{margin:14px 0 0;border-top:1px solid var(--line);padding:10px 0 0}
+.pb-more>summary{cursor:pointer;font-size:12.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--teal);list-style:none}
+.pb-more>summary::-webkit-details-marker{display:none}
+.pb-more>summary:before{content:"+ ";font-weight:700}
+.pb-more[open]>summary:before{content:"– "}
+.pb-more[open]>summary{margin:0 0 10px}
+.pb-deplist{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.pb-dep{position:relative;padding:0 0 0 22px;font-size:14px;line-height:1.5;color:var(--ink-soft)}
+.pb-dep:before{position:absolute;left:0;top:.05em;font-size:13px}
+.pb-dep--sub:before{content:"↔"}
+.pb-dep--cook:before{content:"◐"}.pb-dep--juice:before{content:"◔"}.pb-dep--store:before{content:"⌂"}
+.pb-dep--freeze:before{content:"❄"}.pb-dep--season:before{content:"☼"}.pb-dep--trim:before{content:"♻"}
+.pb-dep__src{margin:12px 0 0;font-size:12px;line-height:1.5;color:var(--stone)}
+.pb-dep__cite{display:block;margin:3px 0 0;color:var(--ink-soft)}
 .pb-pill{display:inline-block;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap;border:1px solid var(--line)}
 .pb-pill--lock{background:var(--teal);color:var(--white);border-color:var(--teal)}
 .pb-pill--cushion{background:var(--teal-wash);color:var(--teal);border-color:var(--teal-wash)}
@@ -1047,10 +1061,54 @@ function cardLines(c, es) {
 }
 const BUCKET_LABEL = { lock: { en: 'Print', es: 'Fijar' }, cushion: { en: 'Cushion', es: 'Colchón' }, float: { en: 'Float', es: 'Flotar' }, withhold: { en: 'Withhold', es: 'Reservar' } };
 
+// The "Full profile" depth drawer, computed from data/ingredient-depth.json (sourced + adversarially
+// verified culinary yields, storage, season, substitutes, waste-to-value). Reference/book values —
+// labeled "verify your own," with the authoritative source shown. Only lines with real data render;
+// a null field (dropped as uncorroboratable) simply doesn't appear.
+function depthLines(c, D, es) {
+  if (!D) return null;
+  const nm = es ? c.es : c.en; const low = nm.toLowerCase();
+  const out = [];
+  // A swap that HELPS — the culinary substitute that also hedges the price (moves on its own). The
+  // card's own swap line already names the co-mover "swap that isn't"; here we surface the one that works.
+  const helps = (D.substitutes || []).find((s) => s.hedge && s.hedge.verdict === 'hedge' && !s.hedge.thin);
+  const anySub = (D.substitutes || [])[0];
+  if (helps) out.push({ k: 'sub', t: es
+    ? `Un cambio que sí ayuda: ${helps.name} (${helps.ratio}) — se mueve en gran medida por su cuenta, así que también cubre el precio cuando ${low} sube.`
+    : `A swap that helps: ${helps.name} (${helps.ratio}) — it moves largely on its own, so it hedges when ${low} climbs, not just mirrors it.` });
+  else if (anySub) out.push({ k: 'sub', t: es
+    ? `Cambio de cocina: ${anySub.name} (${anySub.ratio}) — sirve para ${anySub.worksFor}.`
+    : `Kitchen swap: ${anySub.name} (${anySub.ratio}) — works for ${anySub.worksFor}.` });
+  if (D.cookedYield != null) {
+    if (D.cookedYield < 1) { const surv = Math.round(D.cookedYield * 100); out.push({ k: 'cook', t: es
+      ? `Rinde cocido: ~${surv}% sobrevive a la cocción — costea el plato sobre el peso cocido, no el crudo.`
+      : `Cooked yield: about ${surv}% survives cooking — cost the plate on cooked weight, not raw.` }); }
+    else { out.push({ k: 'cook', t: es
+      ? `Rinde cocido: ×${D.cookedYield} — 1 libra en seco rinde ~${D.cookedYield} libras cocidas.`
+      : `Cooked yield: ×${D.cookedYield} — 1 lb dry makes about ${D.cookedYield} lb cooked.` }); }
+  }
+  if (D.juiceYield != null) { const j = Math.round(D.juiceYield * 100); out.push({ k: 'juice', t: es
+    ? `Jugo: ~${j}% del peso de la fruta es jugo — costea los tragos por onza exprimida, no por pieza.`
+    : `Juice: about ${j}% of the fruit's weight is juice — cost drinks by the ounce pressed, not the piece.` }); }
+  if (D.shelfLifeDays != null || D.storageMethod) {
+    const life = D.shelfLifeDays != null ? (es ? `Se conserva ~${D.shelfLifeDays} días refrigerado. ` : `Keeps about ${D.shelfLifeDays} days refrigerated. `) : '';
+    out.push({ k: 'store', t: life + (D.storageMethod || '') });
+  }
+  if (D.freezeMonths != null) out.push({ k: 'freeze', t: es
+    ? `Congelador: ~${D.freezeMonths} meses de vida útil de calidad.`
+    : `Freezer: about ${D.freezeMonths} months of quality hold-life.` });
+  if (D.peakSeason) out.push({ k: 'season', t: es ? `Mejor calidad: ${D.peakSeason}.` : `Best quality: ${D.peakSeason}.` });
+  if (D.trimToValue) out.push({ k: 'trim', t: es ? `De la merma al valor: ${D.trimToValue}.` : `Waste to value: ${D.trimToValue}.` });
+  if (!out.length) return null;
+  const src = (D.yieldSource || D.depthSource || '').trim();
+  return { lines: out, source: src, note: es ? 'Valores de referencia — verifica con tu propio despiece.' : 'Reference/book values — verify against your own fabrication.' };
+}
+
 function emitPlaybook(locale, ctx) {
   const { pageHead, pageTail, escHtml, repoRoot } = ctx;
   const es = locale === 'es'; const lang = es ? 'es' : 'en'; const base = es ? '/es' : '';
   const P = pricingCards(repoRoot);
+  const DEPTH = (() => { try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/ingredient-depth.json'), 'utf8')).ingredients || {}; } catch { return {}; } })();
   const content = (() => { try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-research-content.json'), 'utf8')); } catch { return { pages: [] }; } })();
   const guide = (content.pages.find((p) => p.slug === 'menu-pricing-playbook') || {})[locale] || null;
   const canonEn = 'https://muntin.digital/cost-index/menu-pricing/';
@@ -1061,15 +1119,22 @@ function emitPlaybook(locale, ctx) {
     : `Joins four data layers per ingredient: what to print or float, true cost per edible portion, the cheapest month, and which swap saves nothing. ${P.counts.lock} of ${P.total} are printable.`;
   const h1 = es ? 'El manual de precios de menú' : 'The menu-pricing playbook';
   // card data for the JS island (sentences pre-computed per locale → no logic in the client)
-  const cardData = P.cards.map((c) => ({ slug: c.slug, name: es ? c.es : c.en, bucket: c.bucket, lines: cardLines(c, es) }));
+  const cardData = P.cards.map((c) => ({ slug: c.slug, name: es ? c.es : c.en, bucket: c.bucket, lines: cardLines(c, es), depth: depthLines(c, DEPTH[c.slug], es) }));
+  const moreLabel = es ? 'Perfil completo' : 'Full profile';
+  const depthHtml = (dp) => {
+    if (!dp) return '';
+    const items = dp.lines.map((l) => `<li class="pb-dep pb-dep--${l.k}">${escHtml(l.t)}</li>`).join('');
+    const src = dp.source ? `<p class="pb-dep__src"><span>${escHtml(dp.note)}</span>${dp.source ? ` <span class="pb-dep__cite">${es ? 'Fuente' : 'Source'}: ${escHtml(dp.source)}</span>` : ''}</p>` : `<p class="pb-dep__src"><span>${escHtml(dp.note)}</span></p>`;
+    return `<details class="pb-more"><summary>${moreLabel}</summary><ul class="pb-deplist">${items}</ul>${src}</details>`;
+  };
   const cardHtml = (c) => {
-    const nm = es ? c.es : c.en; const L = cardLines(c, es); const bl = BUCKET_LABEL[c.bucket];
+    const nm = es ? c.es : c.en; const L = cardLines(c, es); const bl = BUCKET_LABEL[c.bucket]; const dp = depthLines(c, DEPTH[c.slug], es);
     return `<article class="pb-card" data-slug="${c.slug}" data-bucket="${c.bucket}">`
       + `<header class="pb-card__head"><h3 class="pb-card__name">${escHtml(nm)}</h3><span class="pb-pill pb-pill--${c.bucket}">${es ? bl.es : bl.en}</span></header>`
       + `<p class="pb-card__posture">${escHtml(L.posture)}</p>`
       + `<ul class="pb-card__layers"><li class="pb-lyr pb-lyr--cost">${escHtml(L.cost)}</li>`
       + `<li class="pb-lyr pb-lyr--time">${escHtml(L.timing)}</li>`
-      + `<li class="pb-lyr pb-lyr--swap">${escHtml(L.swap)}</li></ul></article>`;
+      + `<li class="pb-lyr pb-lyr--swap">${escHtml(L.swap)}</li></ul>${depthHtml(dp)}</article>`;
   };
   const def = P.cards.find((c) => c.slug === 'ribeye') || P.cards[0];
   const options = P.cards.map((c) => `<option value="${c.slug}"${c.slug === def.slug ? ' selected' : ''}>${escHtml(es ? c.es : c.en)}</option>`).join('');
@@ -1227,7 +1292,15 @@ function emitPlaybook(locale, ctx) {
       art.appendChild(mk('p','pb-card__posture',c.lines.posture));
       var ul=mk('ul','pb-card__layers');
       ['cost','time','swap'].forEach(function(k){ul.appendChild(mk('li','pb-lyr pb-lyr--'+k,c.lines[k==='time'?'timing':k]))});
-      art.appendChild(ul);host.appendChild(art);
+      art.appendChild(ul);
+      if(c.depth&&c.depth.lines&&c.depth.lines.length){
+        var d=mk('details','pb-more');d.appendChild(mk('summary',null,${JSON.stringify(moreLabel)}));
+        var dl=mk('ul','pb-deplist');c.depth.lines.forEach(function(l){dl.appendChild(mk('li','pb-dep pb-dep--'+l.k,l.t))});d.appendChild(dl);
+        var sp=mk('p','pb-dep__src');sp.appendChild(mk('span',null,c.depth.note));
+        if(c.depth.source){sp.appendChild(document.createTextNode(' '));sp.appendChild(mk('span','pb-dep__cite',${JSON.stringify(es ? 'Fuente' : 'Source')}+': '+c.depth.source));}
+        d.appendChild(sp);art.appendChild(d);
+      }
+      host.appendChild(art);
     }
     sel.addEventListener('change',function(){var c=byId[sel.value];if(c)render(c)});
   })();
