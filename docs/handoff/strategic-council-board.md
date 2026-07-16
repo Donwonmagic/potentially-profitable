@@ -53,13 +53,17 @@ loops — the "nobody tells you" boxes: Verifier, Stop-condition, Memory. Closin
   itemId hikes can't double-count a held move or show an item as both fired+held); the email splits
   `belowFloor` (measured, "under the $X line") vs `unmeasuredHeld` ("not measured yet") so it never
   asserts a magnitude for an unmeasured move; a measured $0 never fires. Scan's serial vendor-ask +
-  dup-canonical refetch = LOW efficiency, deferred (correctness unaffected). **NOT built — staging-gated
-  (mechanical accountant-digest mirrors whose only real verification is a staging DB/Resend run;
-  fully specified in blueprint §5/§6):** weekly cron (`scheduled/cost-watch-digest.ts` + index/
-  wrangler), D1 `cost_watch_subscriptions` store + migration 0031 (default-off), opt-in route.
-  **Before the flag flips on:** the 5 staging checks in ADR-010's walk receipt (impact end-to-end,
-  null/held frequency, 10th cron slot, recipient re-resolve, Resend delivery). Then Phase 0 full
-  auto-refresh cron (needs the storefront-read token).
+  dup-canonical refetch = LOW efficiency, deferred (correctness unaffected). **WIRING NOW BUILT
+  end-to-end (tsc/gate/stub-tests; NOT runtime-verified — mechanical accountant-digest mirrors):**
+  D1 subscription store + migration 0031 default-off + 7 stub tests (`f19dd43`); weekly cron
+  `scheduled/cost-watch-digest.ts` (re-resolves the current owner) + index/wrangler `"0 15 * * 2"`
+  10th slot (`8dac1d4`); opt-in route `/v1/cost-watch` GET/PUT (`8a9bae3`); scheduled file added to
+  both copy gates. Whole cron→scan→digest→email→store→owner-resolver→audit path typechecks.
+  **REMAINING = staging + launch (need the founder/staging):** the 5 ADR-010 staging checks before
+  enabling (impact end-to-end + floor calibration, null/held frequency, confirm 10th Workers cron
+  slot, recipient re-resolve, Resend delivery + unsub toggle); + two launch items — the apps/web
+  settings toggle (calls PUT /v1/cost-watch/subscription; needs copy.ts/es strings) and a signed
+  one-click unsubscribe endpoint. Then Phase 0 auto-refresh cron (needs the storefront-read token).
 
 ### Storefront (`potentially-profitable`) — v3 redesign COMPLETE + CERTIFIED
 The app-grade v3 language (slate + electric-blue, tabular-mono data voice, muntin-grille-as-
