@@ -651,14 +651,31 @@ const CHECKS = [
 // stays STRICT — that is the deploy gate; this flag never weakens it, it
 // only interprets a partial run.
 //
-// SAFETY: the baseline may NEVER name a hard honesty/correctness gate. The
-// DENYLIST below is enforced at load — a baseline that names a denylisted
-// script aborts (exit 2), so this mechanism can't be used to hide a real
-// failure. A baselined check that PASSES is warned (prune it) so the list
-// can't silently rot.
+// SAFETY (two layers, enforced at load; a baseline that violates either aborts
+// with exit 2, so this mechanism can't be used to hide a real failure):
+//   1. POSITIVE gate — every baseline entry must be an `(idem)`-labeled
+//      regeneration check (or an explicitly-reviewed entry in
+//      BASELINE_ALLOW_NONIDEM, currently empty). By convention every
+//      deploy-regenerated builder in CHECKS is tagged "(idem)" and NO hard
+//      honesty/correctness gate is — so this structurally excludes fabrications,
+//      the fact/honesty gates, locale-parity, no-fetch, tokens-sync, etc. This
+//      is the real guarantee; the denylist below is a backstop, not the floor.
+//   2. DENYLIST backstop — a short, non-exhaustive list of the most critical
+//      hard gates that must never be baselined even if one were mislabeled
+//      "(idem)". It is NOT a complete catalog of hard gates (most of the ~80
+//      non-idem checks are simply blocked by layer 1).
+// A baselined check that PASSES is warned (prune it) so the list can't rot; a
+// baseline label matching no check aborts (stale/typo). Beyond the two layers,
+// the reviewer still confirms each entry is genuinely deploy-regenerated.
 
-// Scripts that must NEVER be baselined away. Floor, not exhaustive: the
-// reviewer keeps the baseline to deploy-regenerated builders only.
+// An `(idem)`-labeled entry whose failure is pure regeneration ("would update N
+// files"). Any label ending in "(idem)" is allowed by layer 1; this set is the
+// escape hatch for a reviewed non-idem regeneration builder (e.g. a `* sync`
+// builder) — keep it empty unless a real one appears, with a dated reason.
+const BASELINE_ALLOW_NONIDEM = new Set([]);
+
+// Backstop only (see SAFETY layer 2). NOT the floor — layer 1 (the "(idem)"
+// requirement) is what actually excludes hard gates.
 const BASELINE_DENYLIST = new Set([
   'check-fabrications.mjs',
   'check-audio-fabrications.mjs',
@@ -741,6 +758,17 @@ function loadBaseline(file) {
       console.error(`check-all: --baseline label "${label}" is ambiguous (duplicate label).`);
       process.exit(2);
     }
+    // Layer 1 (the real guarantee): only `(idem)`-labeled regeneration checks
+    // (or an explicitly-reviewed non-idem builder) may be baselined. No hard
+    // gate is labeled "(idem)", so this structurally excludes them.
+    if (!label.endsWith('(idem)') && !BASELINE_ALLOW_NONIDEM.has(label)) {
+      console.error(
+        `check-all: REFUSED — "${label}" is not an "(idem)" regeneration check ` +
+          `and is not in BASELINE_ALLOW_NONIDEM; only deploy-regenerated builders may be baselined.`,
+      );
+      process.exit(2);
+    }
+    // Layer 2 (backstop): the most critical hard gates, even if mislabeled.
     if (BASELINE_DENYLIST.has(script)) {
       console.error(
         `check-all: REFUSED — "${label}" (${script}) is a hard gate and may never be baselined.`,
@@ -755,7 +783,8 @@ function loadBaseline(file) {
 // ── --self-test: exercise classifyResults on synthetic data ──────────
 if (process.argv.includes('--self-test')) {
   const fails = [];
-  const ok = (c, m) => { if (!c) fails.push(m); };
+  let count = 0;
+  const ok = (c, m) => { count += 1; if (!c) fails.push(m); };
   const R = (label, status) => ({ label, status });
   const rs = [R('A', 'FAIL'), R('B', 'FAIL'), R('C', 'PASS'), R('D', 'FAIL')];
   const c1 = classifyResults(rs, ['A', 'B']); // A,B expected-fail; D unexpected-fail
@@ -768,14 +797,21 @@ if (process.argv.includes('--self-test')) {
   ok(c2.unexpectedFail.length === 3, 'A,B,D all unexpected-fail when only C baselined');
   const c3 = classifyResults(rs, ['A', 'ZZZ']); // ZZZ matches nothing -> missing
   ok(c3.missing.length === 1 && c3.missing[0] === 'ZZZ', 'ZZZ should be missing');
-  // denylist is enforced by loadBaseline, spot-check membership
+  // Layer 1 (the real guarantee): hard-gate labels are NOT "(idem)"-tagged, so
+  // loadBaseline refuses them; deploy-regenerated builders ARE tagged.
+  const idemLabels = CHECKS.map(([l]) => l).filter((l) => l.endsWith('(idem)'));
+  const hardLabels = ['Fabrication blocklist', 'Locale parity', 'Retired-link guard', 'Newsletter copy'];
+  ok(hardLabels.every((l) => !l.endsWith('(idem)') && !BASELINE_ALLOW_NONIDEM.has(l)),
+    'hard-gate labels must be excluded by layer 1 (not (idem)-tagged)');
+  ok(idemLabels.length >= 20, `expected many (idem) builders, found ${idemLabels.length}`);
+  // Layer 2 (backstop): the most critical hard gates are denylisted by script.
   ok(BASELINE_DENYLIST.has('check-fabrications.mjs'), 'fabrications must be denylisted');
   if (fails.length) {
     console.error('check-all --self-test FAILED:');
     for (const f of fails) console.error(`  ✗ ${f}`);
     process.exit(1);
   }
-  console.log('check-all --self-test: OK (8 assertions)');
+  console.log(`check-all --self-test: OK (${count} assertions)`);
   process.exit(0);
 }
 
