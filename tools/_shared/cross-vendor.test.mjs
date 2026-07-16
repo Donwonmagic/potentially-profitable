@@ -76,3 +76,22 @@ test("withholds disjoint clusters within the window (overlap): drift is not a ma
   };
   assert.equal(CV.compare({ name: "romaine" }), null);
 });
+
+test("compares a recent SWITCH: adjacent clusters a few days apart (bounded gap, not overlap)", () => {
+  DATA = {
+    skuHistory: {
+      romaine: [
+        e("sysco", 1.25, JUN - 5 * DAY),
+        e("sysco", 1.2, JUN - 4 * DAY),
+        e("sysco", 1.3, JUN - 3 * DAY),
+        e("usfoods", 1.1, JUN - 2 * DAY),
+        e("usfoods", 1.05, JUN - DAY),
+        e("usfoods", 1.15, JUN),
+      ],
+    },
+  };
+  const rows = CV.compare({ name: "romaine" });
+  assert.ok(rows);
+  assert.equal(rows[0].vendor, "usfoods");
+  assert.equal(rows[1].gapPctVsCheapest, 13.6);
+});

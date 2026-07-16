@@ -35,6 +35,10 @@
   // storefront skuHistory carries no currency, so the currency guard the TS port
   // adds has no analogue here; everything else mirrors.)
   var CONTEMPORANEITY_WINDOW_MS = 120 * 24 * 60 * 60 * 1000;
+  // How far apart two vendors' buying periods may sit and still compare — a
+  // vendor SWITCH produces disjoint-but-adjacent clusters, so a bounded gap
+  // (not literal overlap) is required. Parity with cross-vendor.ts.
+  var MAX_INTERVENDOR_GAP_MS = 45 * 24 * 60 * 60 * 1000;
 
   function compare(rowOrName) {
     var ctx = _ctx();
@@ -95,15 +99,15 @@
     }).filter(function (c) { return c.prices.length >= 3; });
     if (candidates.length < 2) return null;
 
-    // Inter-vendor contemporaneity: the compared vendors must share a period you
-    // actually bought from both; disjoint clusters make a market move look like a
-    // vendor markup. Require a common overlap, else withhold.
+    // Inter-vendor contemporaneity: the compared vendors' buying periods must be
+    // close in time — overlapping OR adjacent within a bounded gap (a vendor
+    // SWITCH is disjoint-but-adjacent). Reject only seasonally-apart clusters.
     var latestStart = -Infinity, earliestEnd = Infinity;
     candidates.forEach(function (c) {
       if (c.min > latestStart) latestStart = c.min;
       if (c.max < earliestEnd) earliestEnd = c.max;
     });
-    if (isFinite(latestStart) && isFinite(earliestEnd) && latestStart > earliestEnd) return null;
+    if (isFinite(latestStart) && isFinite(earliestEnd) && (latestStart - earliestEnd) > MAX_INTERVENDOR_GAP_MS) return null;
 
     var rows = candidates.map(function (c) {
       var sorted = c.prices.slice().sort(function (a, b) { return a - b; });
