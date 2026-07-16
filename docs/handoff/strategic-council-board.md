@@ -17,6 +17,19 @@ council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 
 **Session on branch `claude/vendor-benchmark-redesign-yn273q`** (storefront `potentially-profitable`). Thread: turn the Cost Index into a genuine **data company + open library** — surface the deep price history, add the "events that moved the market" layer, and wire the HONEST use of new public data (NASS/Census/EIA). Cadence: plan → build → audit → iterate, with **expert panels at the forks**. `check-all` baseline unchanged (232–233/252; the ~19 failures are the deploy-regenerated site-wide idempotency drift, NOT ours — see Gotchas). Every cost-index/events/context gate GREEN.
 
+### ⮕ MENU-PRICING DISPATCH — PUBLISHED (2026-07-16)
+
+Founder: "seems deserving of an expert focused dispatch" → then "I don't want any shop floor reference." Both done and pushed.
+
+- **Shop-floor removal (`104734493`).** Stripped every working-the-line reference from the Don Goldstein dispatch in `data/pending-dispatch.json` — lunch push, pre-shift, four o'clock, "protein line", "back door", "on a Tuesday" (EN + ES, 0 hits on a broad re-scan). Findings + every sourced number unchanged.
+- **Dispatch SHIPPED (`41da6f225`).** Assembled the gate-passing blog HTML from `data/pending-dispatch.json` via the canonical `new-article-skeleton.mjs` + a body renderer:
+  - `blog/menu-pricing-grounded-100-ingredients-2026/` (EN) + `es/blog/fijar-precios-con-datos-100-ingredientes-2026/` (ES). Slugs final-forever; EN↔ES in `i18n-slug-map.json`.
+  - 5 sections, 3 figures (2 viz-bars + 1 viz-flow, teal/rust balanced, audio-alts 284–346 chars, per-figure `<figcaption>`), TL;DR + key-takeaways rails, per-section `<details class="cite">` drawers mapping every number to `research-references.json` or the field report. Pullquote is a verbatim body line (no new facts).
+  - Registered: `library-tags.json` (blog_posts), `article-audio.json` (pending, EN listen-btn), rebuilt blog index + sitemap + RSS + `llms.txt` (EN+ES). Per-post OG cards rendered (gold/margin template, "37 / 100" stat) via `build-og-cards.mjs` resvg-js fallback (`/tmp/og-render-deps`; container has no rsvg-convert).
+  - **Latent fabrication fix (same commit):** the NRA citation used the blocklisted `restaurant.org/research-and-media/…` deep-link (was already red at HEAD in the study pages EN+ES, `research-references.json`, `pending-dispatch.json`). Swapped to TLD-only `https://restaurant.org/`, kept full bibliographic detail. `check-fabrications` now 0 hits.
+  - Gates green for the new posts: article-graphics (0 viol.), fabrications, banned-words, OG images/coverage/locale-parity/accents, hreflang, locale-parity, RSS coverage, TL;DR, cost-research honesty, image dims/formats/lazy.
+  - **Commit hygiene:** injectors re-stamp the whole site (feed-discovery 650, batch-banner removing expired Father's-Day marquee on 725, site-counts 360, h2-anchor 80+ glossary) — all PRE-EXISTING drift, none reference the new post (verified el-niño diff). Reconciled per runbook: staged only the 21 intended files, `git checkout -- .` the rest. Deploy build sweeps the drift.
+
 ### ⮕ COVERAGE EXPANSION + RESEARCH-STUDY ELEVATION (2026-07-11, in flight)
 
 Founder direction: make the playbook read like a **research study** (not just a tool), expand ingredient **breadth + depth**, ground it in **real published research** (food science + economics), translate the science for the operator, and **integrate across the whole learning ecosystem** (glossary, library, ingredient pages, tools, open data), all from **one source of truth**. Hard boundary: **no fabricated prices** (new ingredients ship "no wholesale band yet" until the operator's fetch); **no fabricated citations** (every reference adversarially verified or cut).
