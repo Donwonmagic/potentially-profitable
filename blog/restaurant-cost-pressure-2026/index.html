@@ -446,6 +446,16 @@ header.nav{min-height:64px}
       <h1 style="font-family:var(--font-display);font-size:clamp(36px,5.5vw,56px);font-weight:500;line-height:1.05;letter-spacing:-0.5px;margin:0 0 18px">
         The menu looks calm. Five fronts are <span class="serif-italic">pushing.</span>
       </h1>
+      <div class="row-center">
+        <button type="button" id="listen-btn" class="listen-btn" aria-pressed="false" data-state="idle" data-audio-src="audio.mp3" data-audio-languages="en">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+          </svg>
+          <span class="listen-label i18n">Listen to this article</span>
+        </button>
+      </div>
       <p style="font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0"><strong>+3.4% against 42%.</strong> Restaurant menu prices rose 3.4% over the year to June 2026, the tamest inflation in years &mdash; yet 42% of operators still closed last year without a profit. The gap between those two numbers is five cost fronts, moving on five different clocks under one calm average.</p>
     </header>
 
@@ -1145,6 +1155,10 @@ header.nav{min-height:64px}
   }
 })();
 </script>
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260503-modsplit";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+  <!-- listen-script:start -->
+  <script src="/assets/js/listen.js?v=20260503-modsplit" defer></script>
+  <!-- listen-script:end -->
 
 </body>
 </html>
