@@ -39,15 +39,22 @@ loops — the "nobody tells you" boxes: Verifier, Stop-condition, Memory. Closin
   wired into `ci.yml`. Turns a silent lapse loud. Full auto-refresh (cross-repo cron) is the
   follow-up fork (needs a storefront-read token — founder call).
 - **[DONE] Storefront: truthful `check-all` verdict** — see the deploy-regen runbook below.
-- **[SPEC + Phase-1 core] Product: operator watch→flag→act loop.** Moat-safe design doc
-  (`Muntin-Invoice-Decoder/docs/plans/operator-watch-act-loop-spec.md`, `b3c4041`) — 3-lens
-  design + adversarial verify; verdict = a PAID-Ledger, opt-in, default-off weekly EMAIL digest
-  reusing existing engines (free tool stays pull-only; market half is rate-of-change, not "crossed
-  its normal", until the vs-normal band is vendored). Phase-1 deterministic core BUILT (`9e01535`):
-  `apps/api/src/lib/cost-watch-digest.ts` `assembleCostWatchDigest` — pure fold of E7+E1 into one
-  ranked, capped, one-per-item digest (tsc-clean + 10-case authored suite; vitest not run in
-  container). **Next (founder-gated):** Phase-1 wiring (async scan + Resend email + opt-in flag +
-  cadence/materiality knobs — the spec's 6 open decisions), then Phase 0 full auto-refresh cron.
+- **[Phase-1 BUILT to tsc/gate — staging-gated] Product: operator watch→flag→act loop.** Founder
+  greenlit 2026-07-16: operator recipient · moderate ~$25/wk floor · implicit whole-catalog · weekly ·
+  rate-of-change · email-only · opt-in default-off. **Decision of record: product ADR-010**
+  (`Muntin-Invoice-Decoder/docs/ux/decisions/ADR-010-operator-cost-watch-digest.md`). Spec
+  (`docs/plans/operator-watch-act-loop-spec.md`, `b3c4041`) + adversarially-verified impl blueprint
+  (`docs/plans/costwatch-phase1-blueprint.md`, `6bc5bab`). **BUILT + verified (tsc/gates/tests):**
+  `cost-watch-digest.ts` assemble + materiality (`9e01535`/`a0b0a81`/`f179e27`, 22-case suite);
+  `cost-watch-impact.ts` the only new number, INCREMENTAL spend×Δ/(1+Δ), null=held (`cf0bad5`,
+  6 tests); `cost-watch-scan.ts` I/O feeder, typechecks vs every real store sig (`5dbfea0`);
+  `email.ts` render+send, copy-gates green, prints NO $ (`417a825`). **NOT built — staging-gated
+  (mechanical accountant-digest mirrors whose only real verification is a staging DB/Resend run;
+  fully specified in blueprint §5/§6):** weekly cron (`scheduled/cost-watch-digest.ts` + index/
+  wrangler), D1 `cost_watch_subscriptions` store + migration 0031 (default-off), opt-in route.
+  **Before the flag flips on:** the 5 staging checks in ADR-010's walk receipt (impact end-to-end,
+  null/held frequency, 10th cron slot, recipient re-resolve, Resend delivery). Then Phase 0 full
+  auto-refresh cron (needs the storefront-read token).
 
 ### Storefront (`potentially-profitable`) — v3 redesign COMPLETE + CERTIFIED
 The app-grade v3 language (slate + electric-blue, tabular-mono data voice, muntin-grille-as-
