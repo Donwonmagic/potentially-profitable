@@ -321,9 +321,13 @@
     if (typeof root.MuntinContext === 'undefined' || typeof root.MuntinContext.latestSkuByStem !== 'function') return;
     var rows = document.querySelectorAll('[data-pc-row]');
     if (!rows.length) return;
-    var portionsEl = document.getElementById('pcPortions');
-    var portions = parseFloat(portionsEl && portionsEl.value) || 1;
-    var coversPerWeek = portions * 7;     // assumption: 1 batch/day per portion
+    // Covers/week come from the operator's own plates-sold input (#pcYearVolume,
+    // the same source Plate Cost's food-cost math uses) — never a fabricated
+    // batch-yield x 7. When it's blank we withhold the $/mo clause below rather
+    // than invent a volume (projectMonthlySaving returns null on a null covers).
+    var volEl = document.getElementById('pcYearVolume');
+    var coversPerWeek = volEl ? parseFloat(volEl.value) : NaN;
+    if (!isFinite(coversPerWeek) || coversPerWeek <= 0) coversPerWeek = null;
     var latest = root.MuntinContext.latestSkuByStem();
     var stems = Object.keys(latest);
     if (!stems.length) return;
@@ -360,7 +364,14 @@
       var btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'pc-vswap-chip';
-      var label = '↓ ' + cheapest.vendor + ' −' + current.gapPctVsCheapest.toFixed(0) + '%';
+      // Label the cheaper vendor with the TRUE discount (current-cheapest)/current,
+      // not gapPctVsCheapest (how much MORE the current vendor runs = (current-
+      // cheapest)/cheapest, a larger number). Labeling the cheaper vendor "-X%" off
+      // the more-than figure overstates the saving.
+      var discountPct = current.medianComparable > 0
+        ? ((current.medianComparable - cheapest.medianComparable) / current.medianComparable) * 100
+        : 0;
+      var label = '↓ ' + cheapest.vendor + ' −' + discountPct.toFixed(0) + '%';
       btn.textContent = label;
       var savingStr = saving
         ? (' — saves $' + Math.abs(saving.savingPerMonth).toFixed(0) + '/mo at ' + Math.round(coversPerWeek) + ' covers/wk')
