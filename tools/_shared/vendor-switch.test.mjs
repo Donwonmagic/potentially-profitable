@@ -38,6 +38,15 @@ test('switch (ES): full Spanish, loss-framed on the price (running ~9% more)', (
   assert.equal(c.options[0].label, 'Pon US Foods de preferido');
 });
 
+test("softens the vendor tally to 'more than one vendor' (never a count that could undercount)", () => {
+  const en = W.build({ compareRows: ROWS, currentVendor: 'Sysco', ingredient: 'mozzarella', locale: 'en' });
+  assert.match(en.headline, /from more than one vendor/);
+  assert.doesNotMatch(en.headline, /from \d+ vendors/);
+  const es = W.build({ compareRows: ROWS, currentVendor: 'Sysco', ingredient: 'mozzarella', locale: 'es' });
+  assert.match(es.headline, /de más de un proveedor/);
+  assert.doesNotMatch(es.headline, /de \d+ proveedores/);
+});
+
 test('already cheapest: calm green, show:false, no CTA', () => {
   const c = W.build({ compareRows: ROWS, currentVendor: 'US Foods', ingredient: 'mozzarella', locale: 'en' });
   assert.equal(c.tier, 'best');

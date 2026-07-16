@@ -94,9 +94,13 @@
 
     return {
       tier: 'switch', show: true,
+      // "more than one vendor" (never a specific count): rows.length is the
+      // number of vendors we can COMPARE (>=3 samples on the dominant unit),
+      // which can be fewer than the vendors the operator actually buys from, so a
+      // hard number could be a flat undercount. Gap stays exact; the tally softens.
       headline: tt(locale,
-        'You buy ' + ing + ' from ' + rows.length + ' vendors. ' + current + ' has been running about ' + gap + '% more than ' + cheapest.vendor + ' on the same ' + unit + '.' + saveClause,
-        'Compras ' + ing + ' de ' + rows.length + ' proveedores. ' + current + ' ha estado como ' + gap + '% más caro que ' + cheapest.vendor + ' en el mismo ' + unit + '.' + saveClause),
+        'You buy ' + ing + ' from more than one vendor. ' + current + ' has been running about ' + gap + '% more than ' + cheapest.vendor + ' on the same ' + unit + '.' + saveClause,
+        'Compras ' + ing + ' de más de un proveedor. ' + current + ' ha estado como ' + gap + '% más caro que ' + cheapest.vendor + ' en el mismo ' + unit + '.' + saveClause),
       options: [
         { kind: 'switch_vendor', label: tt(locale, 'Make ' + cheapest.vendor + ' the default', 'Pon ' + cheapest.vendor + ' de preferido') },
         { kind: 'dismiss',       label: tt(locale, 'Dismiss', 'Descartar') }
