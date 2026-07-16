@@ -59,11 +59,21 @@ loops — the "nobody tells you" boxes: Verifier, Stop-condition, Memory. Closin
   `scheduled/cost-watch-digest.ts` (re-resolves the current owner) + index/wrangler `"0 15 * * 2"`
   10th slot (`8dac1d4`); opt-in route `/v1/cost-watch` GET/PUT (`8a9bae3`); scheduled file added to
   both copy gates. Whole cron→scan→digest→email→store→owner-resolver→audit path typechecks.
-  **REMAINING = staging + launch (need the founder/staging):** the 5 ADR-010 staging checks before
-  enabling (impact end-to-end + floor calibration, null/held frequency, confirm 10th Workers cron
-  slot, recipient re-resolve, Resend delivery + unsub toggle); + two launch items — the apps/web
-  settings toggle (calls PUT /v1/cost-watch/subscription; needs copy.ts/es strings) and a signed
-  one-click unsubscribe endpoint. Then Phase 0 auto-refresh cron (needs the storefront-read token).
+  **apps/web settings toggle BUILT** — `settings/notifications/cost-watch-client.tsx` (optimistic
+  PUT + aria-live) + `page.tsx` section + `costWatchSettings` copy in EN+ES; opt-in default-off.
+  **WIRING ADVERSARIALLY AUDITED (workflow) → 5 findings, all FIXED (`170b5f6`, product repo):**
+  [MED] cron fail-soft gap — `resolveActiveOwnerEmail` was the one unguarded per-org await, so one
+  org's D1 failure rejected `ctx.waitUntil` and aborted the batch; now try/catch → `failed`+continue,
+  plus a `.catch` backstop on the outer run. [MED] route floor-wipe — an enabled-only PUT overwrote a
+  custom floor to NULL; now an enabled-only toggle routes through `setEnabled` (preserves floor +
+  owner_email), floor persisted only when present. [LOW] null/array/scalar body → 400 not 500. [LOW]
+  opt-out on a non-subscriber is now a no-op (no disabled row). [LOW] web "saved→idle" timer held in a
+  ref, cleared on re-toggle + unmount. Added a store test pinning setEnabled-preserves-floor.
+  **REMAINING = staging + one optional launch item (need the founder/staging):** the 5 ADR-010 staging
+  checks before enabling (impact end-to-end + floor calibration, null/held frequency, confirm 10th
+  Workers cron slot, recipient re-resolve, Resend delivery + unsub toggle); + a signed one-click
+  unsubscribe endpoint (the email currently links to the settings page, which works). Then Phase 0
+  auto-refresh cron (needs the storefront-read token).
 
 ### Storefront (`potentially-profitable`) — v3 redesign COMPLETE + CERTIFIED
 The app-grade v3 language (slate + electric-blue, tabular-mono data voice, muntin-grille-as-
