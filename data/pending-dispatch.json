@@ -1,0 +1,485 @@
+{
+ "_doc": "VERIFIED, ready-to-publish Don Goldstein blog dispatch about the menu-pricing field report. Written by a write->adversarial-fact-check->revise->translate workflow; numbers are our findings or cited to research-references.json; bio discipline + honest framing held. PUBLISH STEP (pending): assemble gate-passing blog HTML (viz-bars x2 + viz-flow x1 already spec'd with >=80-char audioAlt + captions; teal<->rust tone balance; <details class=cite> drawers) at blog/menu-pricing-grounded-100-ingredients-2026/ (EN) + es/, register in data/article-audio.json + data/i18n-slug-map.json, run scripts/build-blog-index.mjs, then check-article-graphics + check-fabrications + banned-words + locale-parity.",
+ "slug": "menu-pricing-grounded-100-ingredients-2026",
+ "generated": "2026-07-11",
+ "en": {
+  "title": "Menu pricing, grounded: what 100 ingredients told me",
+  "slug": "menu-pricing-grounded-100-ingredients-2026",
+  "dek": "I joined our public wholesale history with open yield and co-movement data into a per-ingredient read for 100 ingredients, grounded in 61 studies. Here's the plain-English version.",
+  "metaDesc": "A floor manager grounded menu pricing in 61 studies and a per-ingredient read of 100 ingredients — what the research says, what to change on the line.",
+  "intro": [
+   "I price a menu against inputs that never sit still. The citrus that costs one thing in March costs another by June, the produce order swings while the protein line holds steady, and the invoice pound is never the pound that reaches the plate. For years I did what plenty of operators I know do — held a price too long, then reprinted in a panic the week the invoice jumped. This spring, between the lunch push and the four o'clock pre-shift, I stopped guessing and did the work instead.",
+   "I joined our public wholesale-price history with open yield, seasonality, and co-movement data into a per-ingredient read for 100 ingredients, checked it against a 134-ingredient yield reference, and grounded every layer in 61 published studies. Two honesty notes before the numbers. This is a descriptive read, not a forecast — it says how an ingredient behaved against its own baseline, never what it will do next. And it leans on wholesale reference levels, which are not the delivered price on your invoice; it stands on peer-reviewed work without being peer-reviewed itself. Here is what fell out."
+  ],
+  "sections": [
+   {
+    "h2": "The margin is thin — but '90% fail' is a myth",
+    "figureIndex": -1,
+    "paragraphs": [
+     "Start with the fear, because it drives bad pricing. The line you have heard a hundred times — that 90% of restaurants fail in the first year — is a myth. When Parsa and his co-authors went and measured it, first-year failure for independents landed near 26%, and the 90% number traced back to a source that could not produce the data behind it (Parsa et al. 2005). The business is hard enough without a made-up figure setting the panic level.",
+     "The margins are genuinely thin. Full-service median pre-tax margins run in the low single digits (National Restaurant Association 2025), so a few points of food cost is the whole game. That is exactly why you cannot reprice every time an input twitches. Changing a printed price carries a real cost, and Mankiw's point was not about paper and ink: even a small friction in changing your posted price makes it rational to leave the price alone after a shock, and that rigidity has outsized effects (Mankiw 1985). The reprint is the least of it — the binding cost is informational and relational, the guest who notices (Blinder et al. 1998).",
+     "One more myth to clear before the postures make sense. The wholesale number is not the plate. The commodity price you see quoted is a reference, not the delivered price on your invoice, and it is not even most of what a plate costs: farm establishments received about 15.9 cents of each food dollar in 2023 (USDA Economic Research Service 2023). The rest is labor, freight, packaging, the walk from the field to your back door. So when a wholesale reference spikes, your plate cost moves less than the headline does."
+    ]
+   },
+   {
+    "h2": "Print or float: 37 lock, 7 float, 37 withhold",
+    "figureIndex": 0,
+    "paragraphs": [
+     "So which prices do you print, and which do you keep loose? I scored all 100 ingredients into four postures. Thirty-seven earned a lock — steady enough against their own baseline to print a fixed price and leave it. Nineteen earned a cushion — print, but build in a buffer because they drift. Seven earned a float — they move too much to pin to a printed number, so they belong on the special board or a market line. And for 37, the read withheld a posture entirely, because the signal was not clean enough to call. I want to name that last column plainly: the instrument says 'I don't know' 37 times out of 100. That honesty is the reason I trust the other 63.",
+     "Here is the part that surprised me. You brace for the protein line — the meat order is the one operators lie awake over. But nine of the 27 proteins scored steady enough to print a fixed price. That is a third of the meat order, and it lands right alongside the basket as a whole, where 37 of 100 ingredients earned that same lock. The lesson I took to my own menu: the protein line is not the special case you brace for. Score each ingredient on its own baseline, because the meat order prints about as often as everything else does."
+    ]
+   },
+   {
+    "h2": "Price on the edible pound, not the invoice pound",
+    "figureIndex": 1,
+    "paragraphs": [
+     "The invoice lies to you, and not on purpose. You pay for the as-purchased pound; the guest eats the edible pound; the gap between them is a tax you pay whether or not you cost for it. In our read the tax ran from gentle to brutal: mushrooms lose the least, so the edible pound costs about 1.14 times the invoice pound, while citrus is the worst at 2.16 times. Cost a plate on the invoice pound and you have under-costed citrus by more than double.",
+     "This is not guesswork. The USDA's Food Buying Guide publishes as-purchased-to-served yield tables, and they work as a general purchase-yield reference, not only a school-kitchen tool (USDA Food and Nutrition Service 2024). And the loss is not mostly the prep cook's knife: the USDA's cooking-yield tables show that for cooked proteins, a large share of the loss from as-purchased to edible is moisture and fat driven off in the pan, not trim (Roseland et al. 2017). The edible pound has to account for what the fire takes, not only what the knife takes.",
+     "Two moves fall out of this. First, rank your plates on contribution-margin dollars, not food-cost percentage — that is the menu-engineering point, and the lowest-food-cost item is not automatically your most profitable one (Kasavana and Smith 1982). Second, the trim you cost for is also trim you can cut: the widely quoted 14-to-1 return on food-waste work is a multi-sector average, and the restaurant-specific figure is about 7 to 1 (Champions 12.3 2019). Costing the edible pound and cutting the waste are the same project seen from two ends."
+    ]
+   },
+   {
+    "h2": "The swap that mirrors doesn't hedge",
+    "figureIndex": -1,
+    "paragraphs": [
+     "Here is the finding that cost me money before I understood it. When an ingredient runs hot, the instinct is to swap in a cheaper cousin. But 94% of the big moves in our read were idiosyncratic — specific to one ingredient, not a wave lifting a whole category. That has a hard consequence: a substitute that moves in step with the thing you are replacing is no hedge at all. When your primary spikes, the mirror spikes with it, and you have swapped your way into the same problem.",
+     "The economics back this up. Pindyck and Rotemberg showed that commodity prices co-move more than shared fundamentals explain — the co-movement is 'excess' (Pindyck and Rotemberg 1990). So two ingredients moving together tells you nothing about whether they are economically linked, and a co-moving swap does not protect you. The backup that actually hedges is the one that moves on its own clock, the one whose chart looks nothing like your primary's. Pick the substitute for its independence, not its resemblance."
+    ]
+   },
+   {
+    "h2": "Don't reprint on a spike — the median cleared in 77 days",
+    "figureIndex": 2,
+    "paragraphs": [
+     "The last finding is the most useful on a Tuesday. When an ingredient spikes, the median move in our read cleared in 77 days, and three of four had cleared by about day 105. For the median ingredient, the spike self-resolves inside a quarter. Reprint the menu the week the invoice jumps and you have paid the menu cost (Mankiw 1985) to chase a number that was coming back on its own.",
+     "This is why regular prices are sticky, and why the stickiness is rational. Bils and Klenow found the median price spell lasts about 4.3 months including sales (Bils and Klenow 2004). Strip the temporary sales out and Nakamura and Steinsson found regular prices change about half as often, closer to every 8 to 11 months (Nakamura and Steinsson 2008). Firms that Blinder's team interviewed reported repricing once or twice a year, with the physical cost of the change ranking low (Blinder et al. 1998). Prices are sticky because repricing has real friction — the research and the floor agree.",
+     "So the move is a temporary lever, not a reprint. Pull the item to a special, tighten the portion, run a substitution, and put a recheck on the calendar near day 105. Two honesty notes on yourself. When the input finally falls, watch that you actually bring the price back down — Peltzman found output prices across 242 markets rise faster than they fall in more than two of every three (Peltzman 2000); the rocket goes up fast and the feather drifts down slow, and your menu is not exempt. And do not assume the guest will not notice: a review of 160 studies found no single food-price elasticity, with food away from home among the most responsive categories (Andreyeva et al. 2010). The printed price is a promise. Keep it steady, and move the temporary levers underneath it."
+    ]
+   }
+  ],
+  "figures": [
+   {
+    "kind": "viz-bars",
+    "title": "Print or float: 100 ingredients, four postures",
+    "caption": "Only 7 of 100 ingredients swing enough to keep off a printed price; 37 lock, and for 37 the read honestly won't call it.",
+    "audioAlt": "Of one hundred ingredients scored, thirty-seven were steady enough to print a fixed price, nineteen wanted a built-in cushion, seven moved too much to fix and should float on a market line, and for thirty-seven the read withheld a posture because the signal was not clean enough to call.",
+    "items": [
+     {
+      "label": "Lock — print it",
+      "value": "37",
+      "note": "37 of 100 — steady vs its own baseline"
+     },
+     {
+      "label": "Cushion — print with a buffer",
+      "value": "19",
+      "note": "19 of 100 — drifts"
+     },
+     {
+      "label": "Float — market line",
+      "value": "7",
+      "note": "7 of 100 — swings too much to fix"
+     },
+     {
+      "label": "Withhold — no clean call",
+      "value": "37",
+      "note": "37 of 100 — signal not clean enough"
+     }
+    ]
+   },
+   {
+    "kind": "viz-bars",
+    "title": "The trim tax: the edible pound vs the invoice pound",
+    "caption": "Citrus's edible pound costs 2.16x its invoice pound and mushroom's only 1.14x, so the plate has to be costed on what survives.",
+    "audioAlt": "The invoice pound is the baseline. Mushrooms lose the least to trim and cooking, so the edible pound costs about one-point-one-four times the invoice pound. Citrus loses the most, at two-point-one-six times the invoice pound. Cost the plate on the edible pound, not the invoice pound.",
+    "items": [
+     {
+      "label": "Invoice pound (as purchased)",
+      "value": "46",
+      "note": "1.00x — the baseline you pay"
+     },
+     {
+      "label": "Mushroom (gentlest trim)",
+      "value": "53",
+      "note": "1.14x — edible pound"
+     },
+     {
+      "label": "Citrus (worst trim)",
+      "value": "100",
+      "note": "2.16x — edible pound"
+     }
+    ]
+   },
+   {
+    "kind": "viz-flow",
+    "title": "When one ingredient spikes: pull a lever, don't reprint",
+    "caption": "The median input spike cleared in 77 days and three in four cleared by about day 105 — pull a temporary lever, then recheck.",
+    "audioAlt": "When one ingredient spikes against its own baseline, do not reprint. Pull a temporary lever — a special, a smaller portion, a substitution. The median move cleared in seventy-seven days, and three in four had cleared by about day one hundred five, so recheck near day one hundred five before touching the printed price.",
+    "items": [
+     {
+      "label": "A spike flags",
+      "value": "",
+      "note": "One ingredient jumps against its own baseline."
+     },
+     {
+      "label": "Pull a temporary lever",
+      "value": "",
+      "note": "A special, a smaller portion, a substitution — not a reprint."
+     },
+     {
+      "label": "Recheck near day 105",
+      "value": "",
+      "note": "Three in four moves had cleared by about day 105."
+     },
+     {
+      "label": "Then reprice or release",
+      "value": "",
+      "note": "The median move cleared in 77 days; leave the printed price alone."
+     }
+    ]
+   }
+  ],
+  "sourcedClaims": [
+   {
+    "claim": "Of 100 ingredients scored, 37 lock, 19 cushion, 7 float, and 37 withhold a posture.",
+    "source": "Muntin menu-pricing field report",
+    "id": "muntin"
+   },
+   {
+    "claim": "Nine of the 27 proteins scored steady enough to print a fixed price.",
+    "source": "Muntin menu-pricing field report",
+    "id": "muntin"
+   },
+   {
+    "claim": "The edible-pound trim tax ran from 1.14x (mushroom) to 2.16x (citrus) the invoice pound.",
+    "source": "Muntin menu-pricing field report",
+    "id": "muntin"
+   },
+   {
+    "claim": "94% of the largest ingredient moves were idiosyncratic to a single ingredient.",
+    "source": "Muntin menu-pricing field report",
+    "id": "muntin"
+   },
+   {
+    "claim": "The median ingredient spike cleared in 77 days; three in four cleared by about day 105.",
+    "source": "Muntin menu-pricing field report",
+    "id": "muntin"
+   },
+   {
+    "claim": "The read covered 100 ingredients against a 134-ingredient yield reference and was grounded in 61 published studies.",
+    "source": "Muntin menu-pricing field report",
+    "id": "muntin"
+   },
+   {
+    "claim": "First-year failure for independent restaurants was about 26%, not the widely repeated 90%.",
+    "source": "Parsa et al. (2005)",
+    "id": "https://doi.org/10.1177/0010880405275598"
+   },
+   {
+    "claim": "A small fixed cost of changing a posted price makes price rigidity privately rational, with large effects.",
+    "source": "N. Gregory Mankiw (1985)",
+    "id": "https://doi.org/10.2307/1885395"
+   },
+   {
+    "claim": "Full-service median pre-tax margins run in the low single digits.",
+    "source": "National Restaurant Association (2025)",
+    "id": "https://restaurant.org/research-and-media/research/research-reports/2025-operations-data-abstract/"
+   },
+   {
+    "claim": "In interviews, firms reported repricing once or twice a year, and the physical cost of changing prices ranked low.",
+    "source": "Blinder et al. (1998)",
+    "id": "https://www.russellsage.org/publications/book/asking-about-prices"
+   },
+   {
+    "claim": "Farm establishments received about 15.9 cents of each dollar spent on domestically produced food in 2023.",
+    "source": "USDA Economic Research Service (2023)",
+    "id": "https://www.ers.usda.gov/data-products/food-dollar-series"
+   },
+   {
+    "claim": "The USDA Food Buying Guide publishes as-purchased-to-served yield data usable as a general purchase-yield reference.",
+    "source": "USDA Food and Nutrition Service (2024)",
+    "id": "https://www.fns.usda.gov/tn/fbg"
+   },
+   {
+    "claim": "For cooked proteins, a large share of AP-to-EP loss is moisture and fat driven off in cooking, not knife trim.",
+    "source": "Roseland et al. (2017), USDA Cooking Yields",
+    "id": "https://doi.org/10.15482/USDA.ADC/1409031"
+   },
+   {
+    "claim": "Menu engineering ranks items on contribution-margin dollars, not food-cost percentage.",
+    "source": "Kasavana and Smith (1982)",
+    "id": "OCLC 9550099"
+   },
+   {
+    "claim": "The restaurant-specific return on food-waste reduction is about 7 to 1, not the multi-sector 14 to 1 average.",
+    "source": "Champions 12.3 (2019)",
+    "id": "https://champions123.org/publication/business-case-reducing-food-loss-and-waste-restaurants"
+   },
+   {
+    "claim": "Commodity prices co-move more than shared fundamentals explain, so co-movement is not evidence of an economic linkage.",
+    "source": "Pindyck and Rotemberg (1990)",
+    "id": "https://academic.oup.com/ej/article-abstract/100/403/1173/5188414"
+   },
+   {
+    "claim": "The median price spell lasts about 4.3 months including temporary sales.",
+    "source": "Bils and Klenow (2004)",
+    "id": "https://doi.org/10.1086/422559"
+   },
+   {
+    "claim": "Once temporary sales are excluded, regular prices change only about half as often — roughly every 8 to 11 months.",
+    "source": "Nakamura and Steinsson (2008)",
+    "id": "https://doi.org/10.1162/qjec.2008.123.4.1415"
+   },
+   {
+    "claim": "Across 242 markets, output prices respond faster to input-cost increases than to decreases in more than two of every three.",
+    "source": "Peltzman (2000)",
+    "id": "https://doi.org/10.1086/262126"
+   },
+   {
+    "claim": "A review of 160 studies found no single food-price elasticity; food away from home is among the most responsive categories.",
+    "source": "Andreyeva et al. (2010)",
+    "id": "https://doi.org/10.2105/AJPH.2008.151415"
+   }
+  ],
+  "takeaway": "Ground the menu in the read, not the fear: of 100 ingredients, 37 print, 7 float, and for 37 the instrument honestly won't call it. Cost the edible pound — 1.14x to 2.16x the invoice pound. Hedge with the ingredient that moves on its own clock, not the one that mirrors. And when something spikes, pull a temporary lever and recheck near day 105 — the median move cleared in 77 days.",
+  "cta": "Read the full field report at /cost-index/menu-pricing/study/, then run your own ingredients through the instrument at /cost-index/menu-pricing/."
+ },
+ "es": {
+  "title": "Fijar precios con datos: lo que me dijeron 100 ingredientes",
+  "slug": "menu-pricing-grounded-100-ingredients-2026",
+  "dek": "Uní nuestro historial público de precios mayoristas con datos abiertos de rendimiento y co-movimiento en una lectura por ingrediente para 100 ingredientes, con base en 61 estudios. Esta es la versión en palabras sencillas.",
+  "metaDesc": "Un gerente de piso fundamentó el precio del menú en 61 estudios y una lectura de 100 ingredientes: qué dice la ciencia y qué cambiar en la línea.",
+  "intro": [
+   "Fijo el precio de un menú contra insumos que nunca se quedan quietos. El cítrico que cuesta una cosa en marzo cuesta otra para junio, el pedido de verdura se mueve mientras la línea de proteína aguanta firme, y la libra de la factura nunca es la libra que llega al plato. Durante años hice lo que hacen muchos operadores que conozco: aguanté un precio demasiado tiempo y luego reimprimí en pánico la semana en que saltó la factura. Esta primavera, entre el ajetreo del almuerzo y el pre-turno de las cuatro, dejé de adivinar y me puse a hacer el trabajo.",
+   "Uní nuestro historial público de precios mayoristas con datos abiertos de rendimiento, estacionalidad y co-movimiento en una lectura por ingrediente para 100 ingredientes, la contrasté con una referencia de rendimiento de 134 ingredientes y fundamenté cada capa en 61 estudios publicados. Dos notas de honestidad antes de los números. Esta es una lectura descriptiva, no un pronóstico: dice cómo se comportó un ingrediente contra su propia línea base, nunca lo que hará después. Y se apoya en niveles mayoristas de referencia, que no son el precio entregado en tu factura; se para sobre trabajo revisado por pares sin estar revisada por pares ella misma. Esto es lo que salió."
+  ],
+  "sections": [
+   {
+    "h2": "El margen es estrecho, pero el '90% quiebra' es un mito",
+    "figureIndex": -1,
+    "paragraphs": [
+     "Empecemos por el miedo, porque es lo que lleva a fijar mal los precios. La frase que has oído cien veces, que el 90% de los restaurantes quiebra en el primer año, es un mito. Cuando Parsa y sus coautores fueron y lo midieron, la quiebra en el primer año de los independientes quedó cerca del 26%, y el número del 90% se rastreó hasta una fuente que no pudo mostrar los datos detrás (Parsa et al. 2005). El negocio ya es bastante duro sin una cifra inventada marcando el nivel de pánico.",
+     "Los márgenes son de verdad estrechos. En servicio completo, el margen mediano antes de impuestos anda en dígitos simples bajos (National Restaurant Association 2025), así que unos pocos puntos de costo de alimento son todo el juego. Por eso mismo no puedes recotizar cada vez que un insumo se mueve un pelo. Cambiar un precio impreso tiene un costo real, y el punto de Mankiw no era sobre papel y tinta: hasta una fricción pequeña al cambiar tu precio publicado hace que sea racional dejarlo quieto después de un golpe, y esa rigidez tiene efectos desproporcionados (Mankiw 1985). La reimpresión es lo de menos: el costo que amarra es informativo y relacional, el comensal que se da cuenta (Blinder et al. 1998).",
+     "Un mito más que aclarar antes de que las posturas tengan sentido. El número mayorista no es el plato. El precio de la materia prima que ves cotizado es una referencia, no el precio entregado en tu factura, y ni siquiera es la mayor parte de lo que cuesta un plato: las granjas recibieron cerca de 15.9 centavos de cada dólar de alimento en 2023 (USDA Economic Research Service 2023). El resto es mano de obra, flete, empaque, el camino del campo hasta tu puerta de atrás. Así que cuando una referencia mayorista se dispara, el costo de tu plato se mueve menos que el titular."
+    ]
+   },
+   {
+    "h2": "Imprimir o dejar flotar: 37 fijan, 7 flotan, 37 se reservan",
+    "figureIndex": 0,
+    "paragraphs": [
+     "Entonces, ¿qué precios imprimes y cuáles dejas sueltos? Puntué los 100 ingredientes en cuatro posturas. Treinta y siete se ganaron un fijo: lo bastante estables contra su propia línea base como para imprimir un precio fijo y dejarlo. Diecinueve se ganaron un colchón: imprímelo, pero mete un margen porque se van moviendo. Siete se ganaron un flotante: se mueven demasiado para clavarlos en un número impreso, así que van en la pizarra de especiales o en una línea de mercado. Y para 37, la lectura se reservó la postura por completo, porque la señal no estaba lo bastante limpia para decidir. Quiero nombrar esa última columna sin rodeos: el instrumento dice 'no sé' 37 veces de cada 100. Esa honestidad es la razón por la que confío en los otros 63.",
+     "Aquí está la parte que me sorprendió. Te preparas para la línea de proteína: el pedido de carne es el que quita el sueño a los operadores. Pero nueve de los 27 productos de proteína salieron lo bastante estables como para imprimir un precio fijo. Eso es un tercio del pedido de carne, y queda justo al lado de la canasta completa, donde 37 de 100 ingredientes se ganaron ese mismo fijo. La lección que me llevé a mi propio menú: la línea de proteína no es el caso especial para el que te preparas. Puntúa cada ingrediente sobre su propia línea base, porque el pedido de carne se imprime más o menos con la misma frecuencia que todo lo demás."
+    ]
+   },
+   {
+    "h2": "Fija el precio sobre la libra comestible, no la libra de la factura",
+    "figureIndex": 1,
+    "paragraphs": [
+     "La factura te miente, y no a propósito. Pagas por la libra tal como se compra; el comensal se come la libra comestible; la brecha entre las dos es un impuesto que pagas lo cuentes o no en tu costo. En nuestra lectura ese impuesto fue de suave a brutal: los hongos pierden lo menos, así que la libra comestible cuesta cerca de 1.14 veces la libra de la factura, mientras que el cítrico es el peor con 2.16 veces. Cuesta un plato sobre la libra de la factura y habrás subvaluado el cítrico en más del doble.",
+     "Esto no es adivinar. El Food Buying Guide del USDA publica tablas de rendimiento de lo comprado a lo servido, y sirven como referencia general de rendimiento de compra, no solo como herramienta de cocina escolar (USDA Food and Nutrition Service 2024). Y la pérdida no es sobre todo el cuchillo del cocinero de preparación: las tablas de rendimiento de cocción del USDA muestran que, en proteínas cocidas, buena parte de la pérdida de lo comprado a lo comestible es humedad y grasa que se van en la sartén, no recorte (Roseland et al. 2017). La libra comestible tiene que dar cuenta de lo que se lleva el fuego, no solo de lo que se lleva el cuchillo.",
+     "De aquí salen dos movidas. Primero, ordena tus platos por dólares de margen de contribución, no por porcentaje de costo de alimento: ese es el punto de la ingeniería de menú, y el plato de menor costo de alimento no es automáticamente el más rentable (Kasavana and Smith 1982). Segundo, el recorte que metes en el costo es también recorte que puedes cortar: el famoso retorno de 14 a 1 en el trabajo contra el desperdicio de alimento es un promedio de varios sectores, y la cifra específica de restaurantes es cerca de 7 a 1 (Champions 12.3 2019). Costear la libra comestible y cortar el desperdicio son el mismo proyecto visto desde dos puntas."
+    ]
+   },
+   {
+    "h2": "El reemplazo que va en espejo no te cubre",
+    "figureIndex": -1,
+    "paragraphs": [
+     "Aquí está el hallazgo que me costó dinero antes de entenderlo. Cuando un ingrediente se pone caro, el instinto es meter un primo más barato. Pero el 94% de los grandes movimientos en nuestra lectura fueron idiosincráticos: propios de un solo ingrediente, no una ola que levanta toda una categoría. Eso tiene una consecuencia dura: un sustituto que se mueve al mismo paso que lo que reemplazas no te cubre nada. Cuando tu principal se dispara, el espejo se dispara con él, y te reemplazaste directo al mismo problema.",
+     "La economía respalda esto. Pindyck y Rotemberg mostraron que los precios de las materias primas se mueven juntos más de lo que explican los fundamentos compartidos: ese co-movimiento es 'excesivo' (Pindyck and Rotemberg 1990). Así que dos ingredientes moviéndose juntos no te dice nada sobre si están ligados económicamente, y un reemplazo que se co-mueve no te protege. El respaldo que de verdad cubre es el que se mueve con su propio reloj, el que en la gráfica no se parece en nada a tu principal. Escoge el sustituto por su independencia, no por su parecido."
+    ]
+   },
+   {
+    "h2": "No reimprimas por un pico: la mediana se resolvió en 77 días",
+    "figureIndex": 2,
+    "paragraphs": [
+     "El último hallazgo es el más útil un martes. Cuando un ingrediente se dispara, el movimiento mediano en nuestra lectura se resolvió en 77 días, y tres de cada cuatro ya se habían resuelto para cerca del día 105. Para el ingrediente mediano, el pico se resuelve solo dentro de un trimestre. Reimprime el menú la semana en que salta la factura y habrás pagado el costo del menú (Mankiw 1985) para perseguir un número que ya iba de regreso por su cuenta.",
+     "Por esto los precios regulares son pegajosos, y por esto la pegajosidad es racional. Bils y Klenow encontraron que el episodio de precio mediano dura cerca de 4.3 meses incluyendo rebajas (Bils and Klenow 2004). Quita las rebajas temporales y Nakamura y Steinsson encontraron que los precios regulares cambian como la mitad de seguido, más cerca de cada 8 a 11 meses (Nakamura and Steinsson 2008). Las empresas que entrevistó el equipo de Blinder reportaron recotizar una o dos veces al año, con el costo físico del cambio quedando bajo (Blinder et al. 1998). Los precios son pegajosos porque recotizar tiene fricción real: la investigación y el piso están de acuerdo.",
+     "Así que la movida es una palanca temporal, no una reimpresión. Pasa el plato a un especial, aprieta la porción, corre una sustitución y pon en el calendario una revisión cerca del día 105. Dos notas de honestidad contigo mismo. Cuando el insumo por fin baje, cuida de bajar de verdad el precio otra vez: Peltzman encontró que, en 242 mercados, los precios de salida suben más rápido de lo que bajan en más de dos de cada tres (Peltzman 2000); el cohete sube rápido y la pluma baja despacio, y tu menú no está exento. Y no asumas que el comensal no se dará cuenta: una revisión de 160 estudios no encontró una sola elasticidad del precio de los alimentos, con la comida fuera de casa entre las categorías más sensibles (Andreyeva et al. 2010). El precio impreso es una promesa. Mantenlo firme, y mueve las palancas temporales por debajo."
+    ]
+   }
+  ],
+  "figures": [
+   {
+    "kind": "viz-bars",
+    "title": "Imprimir o flotar: 100 ingredientes, cuatro posturas",
+    "caption": "Solo 7 de 100 ingredientes se mueven lo bastante para no llevar precio impreso; 37 se fijan, y en 37 la lectura, con honestidad, no se atreve a decidir.",
+    "audioAlt": "De cien ingredientes puntuados, treinta y siete quedaron lo bastante estables para imprimir un precio fijo, diecinueve pidieron un colchón incorporado, siete se movieron demasiado para fijarlos y deben flotar en una línea de mercado, y en treinta y siete la lectura se reservó la postura porque la señal no estaba lo bastante limpia para decidir.",
+    "items": [
+     {
+      "label": "Fijar — imprímelo",
+      "value": "37",
+      "note": "37 de 100 — estable vs su propia línea base"
+     },
+     {
+      "label": "Colchón — imprime con margen",
+      "value": "19",
+      "note": "19 de 100 — se va moviendo"
+     },
+     {
+      "label": "Flotar — línea de mercado",
+      "value": "7",
+      "note": "7 de 100 — se mueve demasiado para fijar"
+     },
+     {
+      "label": "Reservar — sin decisión clara",
+      "value": "37",
+      "note": "37 de 100 — señal no lo bastante limpia"
+     }
+    ]
+   },
+   {
+    "kind": "viz-bars",
+    "title": "El impuesto del recorte: la libra comestible vs la libra de la factura",
+    "caption": "La libra comestible del cítrico cuesta 2.16x su libra de factura y la del hongo solo 1.14x, así que el plato hay que costearlo sobre lo que sobrevive.",
+    "audioAlt": "La libra de la factura es la línea base. Los hongos pierden lo menos por recorte y cocción, así que la libra comestible cuesta cerca de 1.14 veces la libra de la factura. El cítrico pierde lo más, a 2.16 veces la libra de la factura. Costea el plato sobre la libra comestible, no la libra de la factura.",
+    "items": [
+     {
+      "label": "Libra de factura (tal como se compra)",
+      "value": "46",
+      "note": "1.00x — la línea base que pagas"
+     },
+     {
+      "label": "Hongo (recorte más suave)",
+      "value": "53",
+      "note": "1.14x — libra comestible"
+     },
+     {
+      "label": "Cítrico (peor recorte)",
+      "value": "100",
+      "note": "2.16x — libra comestible"
+     }
+    ]
+   },
+   {
+    "kind": "viz-flow",
+    "title": "Cuando un ingrediente se dispara: mueve una palanca, no reimprimas",
+    "caption": "El pico mediano de un insumo se resolvió en 77 días y tres de cada cuatro se resolvieron para cerca del día 105; mueve una palanca temporal, luego revisa.",
+    "audioAlt": "Cuando un ingrediente se dispara contra su propia línea base, no reimprimas. Mueve una palanca temporal: un especial, una porción más chica, una sustitución. El movimiento mediano se resolvió en 77 días, y tres de cada cuatro ya se habían resuelto para cerca del día 105, así que revisa cerca del día 105 antes de tocar el precio impreso.",
+    "items": [
+     {
+      "label": "Se marca un pico",
+      "value": "",
+      "note": "Un ingrediente salta contra su propia línea base."
+     },
+     {
+      "label": "Mueve una palanca temporal",
+      "value": "",
+      "note": "Un especial, una porción más chica, una sustitución, no una reimpresión."
+     },
+     {
+      "label": "Revisa cerca del día 105",
+      "value": "",
+      "note": "Tres de cada cuatro movimientos ya se habían resuelto para cerca del día 105."
+     },
+     {
+      "label": "Luego recotiza o suelta",
+      "value": "",
+      "note": "El movimiento mediano se resolvió en 77 días; deja quieto el precio impreso."
+     }
+    ]
+   }
+  ],
+  "sourcedClaims": [
+   {
+    "claim": "De 100 ingredientes puntuados, 37 se fijan, 19 llevan colchón, 7 flotan y en 37 se reserva la postura.",
+    "source": "Reporte de campo de precios de menú de Muntin",
+    "id": "muntin"
+   },
+   {
+    "claim": "Nueve de los 27 productos de proteína salieron lo bastante estables como para imprimir un precio fijo.",
+    "source": "Reporte de campo de precios de menú de Muntin",
+    "id": "muntin"
+   },
+   {
+    "claim": "El impuesto del recorte de la libra comestible fue de 1.14x (hongo) a 2.16x (cítrico) la libra de la factura.",
+    "source": "Reporte de campo de precios de menú de Muntin",
+    "id": "muntin"
+   },
+   {
+    "claim": "El 94% de los mayores movimientos de ingredientes fueron idiosincráticos, propios de un solo ingrediente.",
+    "source": "Reporte de campo de precios de menú de Muntin",
+    "id": "muntin"
+   },
+   {
+    "claim": "El pico mediano de un ingrediente se resolvió en 77 días; tres de cada cuatro se resolvieron para cerca del día 105.",
+    "source": "Reporte de campo de precios de menú de Muntin",
+    "id": "muntin"
+   },
+   {
+    "claim": "La lectura cubrió 100 ingredientes contra una referencia de rendimiento de 134 ingredientes y se fundamentó en 61 estudios publicados.",
+    "source": "Reporte de campo de precios de menú de Muntin",
+    "id": "muntin"
+   },
+   {
+    "claim": "La quiebra en el primer año de los restaurantes independientes fue cerca del 26%, no el 90% que se repite tanto.",
+    "source": "Parsa et al. (2005)",
+    "id": "https://doi.org/10.1177/0010880405275598"
+   },
+   {
+    "claim": "Un pequeño costo fijo de cambiar un precio publicado hace que la rigidez de precios sea privadamente racional, con efectos grandes.",
+    "source": "N. Gregory Mankiw (1985)",
+    "id": "https://doi.org/10.2307/1885395"
+   },
+   {
+    "claim": "Los márgenes medianos antes de impuestos en servicio completo andan en dígitos simples bajos.",
+    "source": "National Restaurant Association (2025)",
+    "id": "https://restaurant.org/research-and-media/research/research-reports/2025-operations-data-abstract/"
+   },
+   {
+    "claim": "En entrevistas, las empresas reportaron recotizar una o dos veces al año, y el costo físico de cambiar precios quedó bajo.",
+    "source": "Blinder et al. (1998)",
+    "id": "https://www.russellsage.org/publications/book/asking-about-prices"
+   },
+   {
+    "claim": "Las granjas recibieron cerca de 15.9 centavos de cada dólar gastado en alimentos producidos internamente en 2023.",
+    "source": "USDA Economic Research Service (2023)",
+    "id": "https://www.ers.usda.gov/data-products/food-dollar-series"
+   },
+   {
+    "claim": "El Food Buying Guide del USDA publica datos de rendimiento de lo comprado a lo servido, usables como referencia general de rendimiento de compra.",
+    "source": "USDA Food and Nutrition Service (2024)",
+    "id": "https://www.fns.usda.gov/tn/fbg"
+   },
+   {
+    "claim": "En proteínas cocidas, buena parte de la pérdida de lo comprado a lo comestible es humedad y grasa que se van en la cocción, no recorte con cuchillo.",
+    "source": "Roseland et al. (2017), USDA Cooking Yields",
+    "id": "https://doi.org/10.15482/USDA.ADC/1409031"
+   },
+   {
+    "claim": "La ingeniería de menú ordena los platos por dólares de margen de contribución, no por porcentaje de costo de alimento.",
+    "source": "Kasavana and Smith (1982)",
+    "id": "OCLC 9550099"
+   },
+   {
+    "claim": "El retorno específico de restaurantes al reducir el desperdicio de alimento es cerca de 7 a 1, no el promedio de 14 a 1 de varios sectores.",
+    "source": "Champions 12.3 (2019)",
+    "id": "https://champions123.org/publication/business-case-reducing-food-loss-and-waste-restaurants"
+   },
+   {
+    "claim": "Los precios de las materias primas se mueven juntos más de lo que explican los fundamentos compartidos, así que el co-movimiento no es prueba de un vínculo económico.",
+    "source": "Pindyck and Rotemberg (1990)",
+    "id": "https://academic.oup.com/ej/article-abstract/100/403/1173/5188414"
+   },
+   {
+    "claim": "El episodio de precio mediano dura cerca de 4.3 meses incluyendo rebajas temporales.",
+    "source": "Bils and Klenow (2004)",
+    "id": "https://doi.org/10.1086/422559"
+   },
+   {
+    "claim": "Una vez que se excluyen las rebajas temporales, los precios regulares cambian solo como la mitad de seguido, más o menos cada 8 a 11 meses.",
+    "source": "Nakamura and Steinsson (2008)",
+    "id": "https://doi.org/10.1162/qjec.2008.123.4.1415"
+   },
+   {
+    "claim": "En 242 mercados, los precios de salida responden más rápido a subidas de costos de insumos que a bajadas en más de dos de cada tres.",
+    "source": "Peltzman (2000)",
+    "id": "https://doi.org/10.1086/262126"
+   },
+   {
+    "claim": "Una revisión de 160 estudios no encontró una sola elasticidad del precio de los alimentos; la comida fuera de casa está entre las categorías más sensibles.",
+    "source": "Andreyeva et al. (2010)",
+    "id": "https://doi.org/10.2105/AJPH.2008.151415"
+   }
+  ],
+  "takeaway": "Fundamenta el menú en la lectura, no en el miedo: de 100 ingredientes, 37 se imprimen, 7 flotan, y en 37 el instrumento, con honestidad, no se atreve a decidir. Costea la libra comestible: de 1.14x a 2.16x la libra de la factura. Cúbrete con el ingrediente que se mueve con su propio reloj, no con el que hace de espejo. Y cuando algo se dispare, mueve una palanca temporal y revisa cerca del día 105: el movimiento mediano se resolvió en 77 días.",
+  "cta": "Lee el reporte de campo completo en /cost-index/menu-pricing/study/, luego pasa tus propios ingredientes por el instrumento en /cost-index/menu-pricing/."
+ }
+}
