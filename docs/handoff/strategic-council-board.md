@@ -39,8 +39,15 @@ loops — the "nobody tells you" boxes: Verifier, Stop-condition, Memory. Closin
   wired into `ci.yml`. Turns a silent lapse loud. Full auto-refresh (cross-repo cron) is the
   follow-up fork (needs a storefront-read token — founder call).
 - **[DONE] Storefront: truthful `check-all` verdict** — see the deploy-regen runbook below.
-- **[SPEC] Product/storefront: operator watch→flag→act loop** — moat-safe design doc for
-  founder review (the one big unbuilt END-USER loop). See the deliverable this session produced.
+- **[SPEC + Phase-1 core] Product: operator watch→flag→act loop.** Moat-safe design doc
+  (`Muntin-Invoice-Decoder/docs/plans/operator-watch-act-loop-spec.md`, `b3c4041`) — 3-lens
+  design + adversarial verify; verdict = a PAID-Ledger, opt-in, default-off weekly EMAIL digest
+  reusing existing engines (free tool stays pull-only; market half is rate-of-change, not "crossed
+  its normal", until the vs-normal band is vendored). Phase-1 deterministic core BUILT (`9e01535`):
+  `apps/api/src/lib/cost-watch-digest.ts` `assembleCostWatchDigest` — pure fold of E7+E1 into one
+  ranked, capped, one-per-item digest (tsc-clean + 10-case authored suite; vitest not run in
+  container). **Next (founder-gated):** Phase-1 wiring (async scan + Resend email + opt-in flag +
+  cadence/materiality knobs — the spec's 6 open decisions), then Phase 0 full auto-refresh cron.
 
 ### Storefront (`potentially-profitable`) — v3 redesign COMPLETE + CERTIFIED
 The app-grade v3 language (slate + electric-blue, tabular-mono data voice, muntin-grille-as-
