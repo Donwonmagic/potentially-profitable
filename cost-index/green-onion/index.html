@@ -68,6 +68,17 @@ main{padding-top:64px}
 .ci-body p{margin:0 0 16px;font-size:16px;line-height:1.7}
 .ci-body ol,.ci-body ul{margin:0 0 16px;padding-left:22px;font-size:16px;line-height:1.7}
 .ci-body li{margin:0 0 8px}
+.ci-profile{margin:34px 0 0;padding:20px 22px;background:var(--cream);border:1px solid var(--line);border-radius:14px}
+.ci-profile h2{margin:0 0 4px;font-size:20px}
+.ci-prof__note{margin:0 0 14px;font-size:13px;line-height:1.5;color:var(--ink-soft)}
+.ci-prof__note a{color:var(--teal);font-weight:600}
+.ci-prof__grid{margin:0;display:grid;gap:0}
+.ci-prof__row{display:grid;grid-template-columns:170px 1fr;gap:12px;padding:9px 0;border-top:1px solid var(--line)}
+.ci-prof__row:first-child{border-top:none}
+.ci-prof__row dt{margin:0;font-size:12px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--teal)}
+.ci-prof__row dd{margin:0;font-size:14.5px;line-height:1.5;color:var(--ink)}
+.ci-prof__src{margin:14px 0 0;font-size:11.5px;line-height:1.5;color:var(--stone)}
+@media(max-width:560px){.ci-prof__row{grid-template-columns:1fr;gap:2px}}
 .ci-read{margin:22px 0 8px;padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px;font-variant-numeric:tabular-nums}
 .ci-read__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
 .ci-read__badge{font-weight:600;text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink-soft);margin-left:8px}
@@ -632,6 +643,12 @@ main{padding-top:64px}
   <li>Watch the direction over a few weeks before re-pricing a dish — one week is noise.</li>
 </ol>
 <p>Costing a dish that uses green onion? Use the <a href="/tools/plate-cost/">Plate Cost Calculator</a>.</p>
+    <section class="ci-profile" aria-labelledby="ci-prof-h">
+    <h2 id="ci-prof-h">Kitchen profile</h2>
+    <p class="ci-prof__note">Sourced reference values — verify against your own fabrication. Also in the <a href="/cost-index/menu-pricing/">menu-pricing playbook</a>.</p>
+    <dl class="ci-prof__grid"><div class="ci-prof__row"><dt>Edible yield</dt><dd>65% (trim tax ×1.54)</dd></div><div class="ci-prof__row"><dt>Keeps</dt><dd>~10 days refrigerated</dd></div><div class="ci-prof__row"><dt>Storage</dt><dd>Refrigerate in the crisper with roots in a little water or loosely wrapped in a damp towel/bag; do NOT wash until use.</dd></div><div class="ci-prof__row"><dt>Best season</dt><dd>spring, but grown year-round</dd></div><div class="ci-prof__row"><dt>A swap that helps</dt><dd>leek (white and light-green, thinly sliced) — moves on its own, so it also hedges the price</dd></div><div class="ci-prof__row"><dt>Waste to value</dt><dd>root ends -&gt; regrow on a tray of water, or add to stock</dd></div></dl>
+    <p class="ci-prof__src">Source: Foodservice scallion-trimmed yield ~0.60-0.67 supports 0.65; freezeMonths dropped because NCHFP &#39;Foods That Do Not Freeze Well&#39; lists green onions among salad vegetables that do not freeze satisfactorily, and no authoritative freezer duration exists.</p>
+  </section>
     <div class="ci-signup ci-signup--compact">
       <div class="foot-newsletter">
         <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en" data-surface="cost-index-ingredient">

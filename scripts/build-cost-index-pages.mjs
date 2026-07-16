@@ -1590,6 +1590,17 @@ main{padding-top:64px}
 .ci-body p{margin:0 0 16px;font-size:16px;line-height:1.7}
 .ci-body ol,.ci-body ul{margin:0 0 16px;padding-left:22px;font-size:16px;line-height:1.7}
 .ci-body li{margin:0 0 8px}
+.ci-profile{margin:34px 0 0;padding:20px 22px;background:var(--cream);border:1px solid var(--line);border-radius:14px}
+.ci-profile h2{margin:0 0 4px;font-size:20px}
+.ci-prof__note{margin:0 0 14px;font-size:13px;line-height:1.5;color:var(--ink-soft)}
+.ci-prof__note a{color:var(--teal);font-weight:600}
+.ci-prof__grid{margin:0;display:grid;gap:0}
+.ci-prof__row{display:grid;grid-template-columns:170px 1fr;gap:12px;padding:9px 0;border-top:1px solid var(--line)}
+.ci-prof__row:first-child{border-top:none}
+.ci-prof__row dt{margin:0;font-size:12px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--teal)}
+.ci-prof__row dd{margin:0;font-size:14.5px;line-height:1.5;color:var(--ink)}
+.ci-prof__src{margin:14px 0 0;font-size:11.5px;line-height:1.5;color:var(--stone)}
+@media(max-width:560px){.ci-prof__row{grid-template-columns:1fr;gap:2px}}
 .ci-read{margin:22px 0 8px;padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px;font-variant-numeric:tabular-nums}
 .ci-read__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
 .ci-read__badge{font-weight:600;text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink-soft);margin-left:8px}
@@ -2473,6 +2484,43 @@ function weeklySignup(locale, opts) {
     </div>`;
 }
 
+// The per-ingredient KITCHEN PROFILE — the verified depth spine (data/ingredient-depth.json) on the
+// ingredient page: sourced yields, storage/shelf-life, best season, the substitute that also hedges
+// the price, and waste-to-value. Reference/book values labeled "verify your own," source shown. Only
+// rows with data render (a null field was dropped as uncorroboratable, so it simply doesn't appear).
+const INGREDIENT_DEPTH = (() => { try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/ingredient-depth.json'), 'utf8')).ingredients || {}; } catch { return {}; } })();
+function kitchenProfileBlock(slug, locale) {
+  const D = INGREDIENT_DEPTH[slug]; if (!D) return '';
+  const es = locale === 'es';
+  const rows = [];
+  if (D.edibleYield != null) {
+    const tt = Math.round((1 / D.edibleYield) * 100) / 100;
+    rows.push([es ? 'Rendimiento comestible' : 'Edible yield', `${Math.round(D.edibleYield * 100)}% ${es ? `(merma ×${tt})` : `(trim tax ×${tt})`}`]);
+  }
+  if (D.cookedYield != null) rows.push([es ? 'Rendimiento cocido' : 'Cooked yield', D.cookedYield < 1 ? `${Math.round(D.cookedYield * 100)}%` : `×${D.cookedYield}`]);
+  if (D.juiceYield != null) rows.push([es ? 'Jugo' : 'Juice yield', `${Math.round(D.juiceYield * 100)}%`]);
+  const keeps = [];
+  if (D.shelfLifeDays != null) keeps.push(es ? `~${D.shelfLifeDays} días refrigerado` : `~${D.shelfLifeDays} days refrigerated`);
+  if (D.freezeMonths != null) keeps.push(es ? `congelador ~${D.freezeMonths} meses` : `freezer ~${D.freezeMonths} months`);
+  if (keeps.length) rows.push([es ? 'Dura' : 'Keeps', keeps.join(' · ')]);
+  if (D.storageMethod) rows.push([es ? 'Conservación' : 'Storage', D.storageMethod]);
+  if (D.peakSeason) rows.push([es ? 'Mejor temporada' : 'Best season', D.peakSeason]);
+  const helps = (D.substitutes || []).find((s) => s.hedge && s.hedge.verdict === 'hedge' && !s.hedge.thin);
+  const anySub = (D.substitutes || [])[0];
+  if (helps) rows.push([es ? 'Un cambio que ayuda' : 'A swap that helps', es ? `${helps.name} — se mueve por su cuenta, así que también cubre el precio` : `${helps.name} — moves on its own, so it also hedges the price`]);
+  else if (anySub) rows.push([es ? 'Sustituto' : 'Substitute', `${anySub.name} (${anySub.ratio})`]);
+  if (D.trimToValue) rows.push([es ? 'De la merma al valor' : 'Waste to value', D.trimToValue]);
+  if (!rows.length) return '';
+  const src = String(D.yieldSource || D.depthSource || '').trim();
+  const dl = rows.map(([k, v]) => `<div class="ci-prof__row"><dt>${escHtml(k)}</dt><dd>${escHtml(v)}</dd></div>`).join('');
+  return `<section class="ci-profile" aria-labelledby="ci-prof-h">
+    <h2 id="ci-prof-h">${es ? 'Perfil de cocina' : 'Kitchen profile'}</h2>
+    <p class="ci-prof__note">${es ? 'Valores de referencia verificados — comprueba con tu propio despiece. También en el ' : 'Sourced reference values — verify against your own fabrication. Also in the '}<a href="${es ? '/es' : ''}/cost-index/menu-pricing/">${es ? 'manual de precios' : 'menu-pricing playbook'}</a>.</p>
+    <dl class="ci-prof__grid">${dl}</dl>
+    ${src ? `<p class="ci-prof__src">${es ? 'Fuente' : 'Source'}: ${escHtml(src)}</p>` : ''}
+  </section>`;
+}
+
 function emitIngredientPage(slug, locale) {
   if (!shippable(slug)) return emitExpandingPage(slug, locale);
   const es = locale === 'es';
@@ -2538,6 +2586,7 @@ function emitIngredientPage(slug, locale) {
     ${whyItMatters(slug, locale)}
     ${notableEventsBlock(slug, locale)}
     ${howToUse(slug, locale)}
+    ${kitchenProfileBlock(slug, locale)}
     ${weeklySignup(locale, { id: 'ci-news-email-ing', source: 'cost-index-ingredient', compact: true, pitch: (locale === 'es'
       ? '¿No quieres revisar esto a mano? Recibe la lectura mensual — el primer martes de cada mes, lo que se movió y qué hacer. Sin relleno.'
       : 'Don’t want to check this by hand? Get the monthly read — the first Tuesday of each month, what moved and what to do. No filler, no funnels.') })}
