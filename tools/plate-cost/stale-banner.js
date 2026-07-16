@@ -379,9 +379,14 @@
       btn.title = 'Cheaper at ' + cheapest.vendor + savingStr + '. Tap to copy as a comparison note.';
       btn.addEventListener('click', function () {
         if (!saving) return;
+        // Show the arithmetic that RECONCILES: per-portion × covers/wk is the
+        // WEEKLY saving (monthly = weekly × ~4.345), so lead with the weekly the
+        // shown factors actually produce and give the month as a labelled
+        // projection — never a "×" breakdown whose factors don't sum to the total.
         var note = 'Switching ' + name + ' from ' + info.vendor + ' to ' + cheapest.vendor +
-                   ' projects $' + Math.abs(saving.savingPerMonth).toFixed(2) + '/mo savings (' +
-                   '$' + Math.abs(saving.savingPerPortion).toFixed(4) + '/portion × ~' + Math.round(coversPerWeek) + ' covers/wk).';
+                   ' saves ~$' + Math.abs(saving.savingPerWeek).toFixed(2) + '/wk (' +
+                   '$' + Math.abs(saving.savingPerPortion).toFixed(4) + '/portion × ~' + Math.round(coversPerWeek) + ' covers/wk)' +
+                   ', about $' + Math.abs(saving.savingPerMonth).toFixed(2) + '/mo.';
         try { navigator.clipboard && navigator.clipboard.writeText(note); } catch (_) {}
         btn.textContent = '✓ copied';
         setTimeout(function () { btn.textContent = label; }, 1800);
