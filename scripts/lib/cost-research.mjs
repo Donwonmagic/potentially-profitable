@@ -916,6 +916,7 @@ const PLAYBOOK_CSS = `
 .pb-dep__src{margin:12px 0 0;font-size:12px;line-height:1.5;color:var(--stone)}
 .pb-dep__cite{display:block;margin:3px 0 0;color:var(--ink-soft)}
 .pb-newtag{display:inline-block;margin-left:7px;font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--teal);background:var(--teal-wash);padding:1px 6px;border-radius:999px;vertical-align:1px}
+.pb-studylink{margin:16px 0 0;font-size:14.5px}.pb-studylink a{color:var(--teal);font-weight:600;text-decoration:none;border-bottom:1px solid var(--teal-wash);padding-bottom:1px}
 .pb-pill{display:inline-block;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap;border:1px solid var(--line)}
 .pb-pill--lock{background:var(--teal);color:var(--white);border-color:var(--teal)}
 .pb-pill--cushion{background:var(--teal-wash);color:var(--teal);border-color:var(--teal-wash)}
@@ -1277,7 +1278,8 @@ function emitPlaybook(locale, ctx) {
   <div class="rs" data-accent="teal">
   <section class="ci-hero rs-hero"><p class="ci-eyebrow rs-hero__eyebrow">${es ? 'Investigación Muntin' : 'Muntin Research'}</p>
     <h1>${escHtml(h1)}</h1>
-    <p class="ci-answer rs-hero__answer">${escHtml(answer)}</p></section>
+    <p class="ci-answer rs-hero__answer">${escHtml(answer)}</p>
+    <p class="pb-studylink"><a href="${base}/cost-index/menu-pricing/study/">${es ? 'Lee el informe de campo — cómo cada capa se apoya en investigación publicada' : 'Read the field report — how each layer stands on published research'} <span aria-hidden="true">→</span></a></p></section>
   <div class="ci-body rs-body pb-body">
     <section class="pb-tool" aria-labelledby="pb-tool-h">
       <h2 id="pb-tool-h" class="rs-section-h">${es ? 'Busca un ingrediente' : 'Look up an ingredient'}</h2>
@@ -1332,6 +1334,87 @@ function emitPlaybook(locale, ctx) {
   return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld, extraCss: `<style>${RESEARCH_CSS}${PLAYBOOK_CSS}</style>` }) + body + pageTail;
 }
 
+// ---- the research STUDY: the paper that wraps the tool -------------------------------------
+// A practitioner field report that STANDS ON peer-reviewed work (never claims to be peer-reviewed).
+// Renders the verified study (data/cost-research-study.json) with numbered inline citations mapped
+// to the verified references (data/research-references.json), each shown with its DOI.
+const STUDY_CSS = `
+.pb-abstract{margin:6px 0 0;padding:18px 20px;background:var(--cream);border-left:3px solid var(--teal);border-radius:0 12px 12px 0}
+.pb-abstract p{font-size:15.5px;line-height:1.62;color:var(--ink);margin:0 0 10px;max-width:70ch}.pb-abstract p:last-child{margin:0}
+.pb-kw{margin:14px 0 0;font-size:12.5px;color:var(--ink-soft)}.pb-kw b{color:var(--teal);text-transform:uppercase;letter-spacing:.04em;font-size:11px}
+.pb-contribution{margin:26px 0 0;padding:18px 20px;background:var(--teal-wash);border-radius:14px}
+.pb-contribution h2{margin:0 0 8px;font-size:16px;color:var(--teal);text-transform:uppercase;letter-spacing:.04em}
+.pb-contribution p{font-size:15px;line-height:1.6;color:var(--ink);margin:0;max-width:68ch}
+.pb-study .rs-section{margin:0 0 24px}
+.pb-study .rs-section p{font-size:15.5px;line-height:1.62;color:var(--ink);margin:0 0 12px;max-width:68ch}
+.pb-groundedin{font-size:12.5px;color:var(--ink-soft);margin:4px 0 0}
+.pb-groundedin b{text-transform:uppercase;letter-spacing:.03em;font-size:11px;color:var(--stone)}
+.pb-groundedin a{color:var(--teal);text-decoration:none;font-weight:600;padding:0 1px}
+.pb-ml{margin:20px 0 0;padding:16px 18px;border:1px solid var(--line);border-radius:12px}
+.pb-ml h2{font-size:14px;margin:0 0 6px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft)}
+.pb-ml p{font-size:14.5px;line-height:1.58;color:var(--ink);margin:0;max-width:70ch}
+.pb-refs{margin:30px 0 0}.pb-refs h2{font-family:var(--font-display);font-weight:500;font-size:22px;margin:0 0 14px}
+.pb-reflist{list-style:none;margin:0;padding:0;counter-reset:none}
+.pb-ref{position:relative;padding:0 0 0 34px;margin:0 0 12px;font-size:13.5px;line-height:1.5;color:var(--ink)}
+.pb-ref__n{position:absolute;left:0;top:0;font-weight:700;color:var(--teal);font-variant-numeric:tabular-nums}
+.pb-ref a{color:var(--teal);word-break:break-word}
+.pb-ref__k{display:block;margin:2px 0 0;color:var(--ink-soft);font-size:12.5px}
+.pb-ref:target{background:var(--teal-wash);border-radius:8px;padding-top:4px;padding-bottom:4px}
+`;
+function emitStudy(locale, ctx) {
+  const { pageHead, pageTail, escHtml, repoRoot } = ctx;
+  const es = locale === 'es'; const lang = es ? 'es' : 'en'; const base = es ? '/es' : '';
+  const study = (() => { try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-research-study.json'), 'utf8'))[locale]; } catch { return null; } })();
+  const refsData = (() => { try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/research-references.json'), 'utf8')).studies || []; } catch { return []; } })();
+  const canonEn = 'https://muntin.digital/cost-index/menu-pricing/study/';
+  const canonEs = 'https://muntin.digital/es/cost-index/menu-pricing/study/';
+  if (!study) return pageHead({ lang, locale, title: 'Study', desc: 'Study', canonEn, canonEs, jsonld: '{}', extraCss: '' }) + '<main></main>' + pageTail;
+  const citeKey = (s) => `${s.authors} (${s.year}), "${s.title}", ${s.venue}`;
+  const refByKey = {}; for (const s of refsData) refByKey[citeKey(s)] = s;
+  // assign reference numbers in first-appearance order across sections
+  const num = {}; const ordered = []; let n = 0;
+  for (const sec of study.sections) for (const c of (sec.citeStrings || [])) { if (num[c] == null && refByKey[c]) { num[c] = ++n; ordered.push(refByKey[c]); } }
+  const title = es ? 'El manual de precios de menú — un informe | Muntin' : study.title;
+  const h1 = study.h1;
+  const abstractHtml = (study.abstract || []).map((p) => `<p>${escHtml(p)}</p>`).join('');
+  const kwHtml = (study.keywords || []).length ? `<p class="pb-kw"><b>${es ? 'Palabras clave' : 'Keywords'}:</b> ${study.keywords.map(escHtml).join(' · ')}</p>` : '';
+  const secHtml = study.sections.map((sec) => {
+    const paras = (sec.paragraphs || []).map((p) => `<p>${escHtml(p)}</p>`).join('');
+    const cites = (sec.citeStrings || []).filter((c) => num[c]).map((c) => `<a href="#ref-${num[c]}">[${num[c]}]</a>`).join(' ');
+    const ground = cites ? `<p class="pb-groundedin"><b>${es ? 'Se apoya en' : 'Grounded in'}:</b> ${cites}</p>` : '';
+    return `<section class="rs-section"><h2>${escHtml(sec.h2)}</h2>${paras}${ground}</section>`;
+  }).join('');
+  const refItem = (s, i) => {
+    const idIsUrl = /^https?:\/\//.test(s.id || '');
+    const idHtml = s.id ? (idIsUrl ? `<a href="${escHtml(s.id)}" rel="nofollow noopener" target="_blank">${escHtml(s.id)}</a>` : escHtml(s.id)) : '';
+    const k = s.kitchen ? `<span class="pb-ref__k">${escHtml(s.kitchen)}</span>` : '';
+    return `<li class="pb-ref" id="ref-${i + 1}"><span class="pb-ref__n">${i + 1}</span>${escHtml(s.authors)} (${s.year}). ${escHtml(s.title)}. <em>${escHtml(s.venue)}</em>. ${idHtml}${k}</li>`;
+  };
+  const refsHtml = ordered.length ? `<section class="pb-refs" aria-labelledby="pb-refs-h"><h2 id="pb-refs-h">${es ? 'Referencias' : 'References'}</h2><ol class="pb-reflist">${ordered.map(refItem).join('')}</ol></section>` : '';
+  const jsonld = JSON.stringify({ '@context': 'https://schema.org', '@type': 'ScholarlyArticle', '@id': (es ? canonEs : canonEn) + '#study', 'headline': h1, 'name': study.title, 'inLanguage': es ? 'es-US' : 'en-US', 'abstract': (study.abstract || []).join(' '), 'keywords': (study.keywords || []).join(', '), 'isPartOf': { '@id': 'https://muntin.digital/#website' }, 'isBasedOn': 'https://muntin.digital/open/', 'author': { '@type': 'Organization', 'name': 'The Muntin Desk' }, 'citation': ordered.map((s) => ({ '@type': 'CreativeWork', 'name': s.title, 'author': s.authors, 'datePublished': String(s.year), 'identifier': s.id })), 'speakable': { '@type': 'SpeakableSpecification', 'cssSelector': ['h1', '.pb-abstract'] } }).replace(/</g, '\\u003c');
+  const toolUrl = `${base}/cost-index/menu-pricing/`;
+  const body = `
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="${base}/">${es ? 'Inicio' : 'Home'}</a> › <a href="${base}/cost-index/">${es ? 'Índice de costos' : 'Cost index'}</a> › <a href="${toolUrl}">${es ? 'Manual de precios' : 'Menu-pricing playbook'}</a> › ${es ? 'El informe' : 'The field report'}</nav>
+  <div class="rs" data-accent="teal">
+  <section class="ci-hero rs-hero"><p class="ci-eyebrow rs-hero__eyebrow">${es ? 'Investigación Muntin · Informe de campo' : 'Muntin Research · Field report'}</p>
+    <h1>${escHtml(h1)}</h1>
+    <div class="pb-abstract">${abstractHtml}${kwHtml}</div>
+    <div class="rs-cta" style="margin-top:20px"><a class="btn btn-primary" href="${toolUrl}">${es ? 'Abre el manual interactivo' : 'Open the interactive playbook'} <span aria-hidden="true">→</span></a></div>
+  </section>
+  <div class="ci-body rs-body pb-study">
+    <section class="pb-contribution"><h2>${es ? 'Nuestra contribución' : 'Our contribution'}</h2><p>${escHtml(study.contribution)}</p></section>
+    ${secHtml}
+    ${study.methods ? `<div class="pb-ml"><h2>${es ? 'Métodos' : 'Methods'}</h2><p>${escHtml(study.methods)}</p></div>` : ''}
+    ${study.limitations ? `<div class="pb-ml"><h2>${es ? 'Limitaciones' : 'Limitations'}</h2><p>${escHtml(study.limitations)}</p></div>` : ''}
+    ${study.takeaway ? `<p class="pb-takeaway">${escHtml(study.takeaway)}</p>` : ''}
+    ${refsHtml}
+    <p class="rs-src">${es ? 'Informe práctico que se apoya en trabajo revisado por pares; no es revisado por pares ni un experimento controlado. Descriptivo, nunca un pronóstico; coincidencia, nunca causa; referencia mayorista, nunca el precio de entrega. Cada cifra es propia o atribuida a su fuente citada.' : 'A practitioner field report that stands on peer-reviewed work; it is not peer-reviewed and not a controlled experiment. Descriptive, never a forecast; co-occurrence, never cause; a wholesale reference, never the delivered price. Every figure is our own or attributed to its cited source.'}</p>
+    <div class="rs-cta"><a class="btn btn-primary" href="${toolUrl}">${es ? 'Abre el manual interactivo' : 'Open the interactive playbook'} <span aria-hidden="true">→</span></a></div>
+  </div>
+  </div>`;
+  return pageHead({ lang, locale, title, desc: study.metaDesc, canonEn, canonEs, jsonld, extraCss: `<style>${RESEARCH_CSS}${PLAYBOOK_CSS}${STUDY_CSS}</style>` }) + body + pageTail;
+}
+
 // Build the /cost-index/research/ targets. Empty until data/cost-research-content.json exists,
 // so the page build never breaks while the content is in flight.
 export function researchTargets(ctx) {
@@ -1341,6 +1424,11 @@ export function researchTargets(ctx) {
   // ingredient into one decision surface). The thin single-metric research pages are retired.
   targets.push({ path: 'cost-index/menu-pricing/index.html', content: emitPlaybook('en', ctx) });
   targets.push({ path: 'es/cost-index/menu-pricing/index.html', content: emitPlaybook('es', ctx) });
+  // The field report — the paper that wraps the tool, grounded in the verified literature.
+  if (fs.existsSync(path.join(repoRoot, 'data/cost-research-study.json'))) {
+    targets.push({ path: 'cost-index/menu-pricing/study/index.html', content: emitStudy('en', ctx) });
+    targets.push({ path: 'es/cost-index/menu-pricing/study/index.html', content: emitStudy('es', ctx) });
+  }
   // The joined dataset as a CC-BY open-data artifact (JSON + CSV). Language-neutral, one canonical
   // copy both locales link to. No timestamp → stable across rebuilds (no spurious drift).
   const ds = pricingDataset(repoRoot);

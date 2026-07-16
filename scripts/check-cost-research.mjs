@@ -41,11 +41,20 @@ const CAUSAL_RE = [
 // Wholesale reference spoken as the delivered/retail price the operator pays.
 const PRICE_RE = [
   /\bthe\s+price\s+you\s+pay\b/i, /\byour\s+(delivered|invoice)\s+price\s+is\b/i,
-  /\bwholesale\s+price\s+you\s+pay\b/i, /\bretail\s+price\b/i,
+  /\bwholesale\s+price\s+you\s+pay\b/i,
+  // "retail price" spoken as what the operator pays — but NOT the academic term "farm-to-retail
+  // price transmission / spread / pass-through" (legitimate in the literature-grounded study).
+  /\bretail\s+price\b(?!\s+(transmission|spread|pass|series|index|data|dispersion))/i,
+];
+// The research STUDY is a PRACTITIONER field report standing on peer-reviewed work — it must never
+// claim to BE peer-reviewed / a controlled study / statistically significant. These are honest only
+// when disclaimed ("not peer-reviewed", "no claim of statistical significance", "not a controlled…").
+const OVERCLAIM_RE = [
+  /\bpeer[-\s]reviewed\b/i, /\bstatistically\s+significant\b/i, /\bcontrolled\s+(study|experiment|trial)\b/i,
 ];
 // A forecast/price phrase is honest when it is DISCLAIMED ("not a forecast", "never the price you
-// pay", "descriptive, not a prediction"). Skip a match whose ~34 preceding chars carry a negation.
-const NEG_RE = /\b(not|never|no|n't|rather than|instead of|isn't|aren't|isn’t|descriptive|reference,)\b[^.]{0,34}$/i;
+// pay", "descriptive, not a prediction"). Skip a match whose ~40 preceding chars carry a negation.
+const NEG_RE = /\b(not|never|no|n't|rather than|instead of|isn't|aren't|isn’t|descriptive|reference,|makes\s+no|without)\b[^.]{0,40}$/i;
 function hit(res, text) {
   const t = String(text || '');
   for (const re of res) {
@@ -178,8 +187,39 @@ function selfTest() {
   process.exit(failed.length ? 1 : 0);
 }
 
+// The research STUDY honesty gate: it is a literature-grounded field report, so its numbers are our
+// own findings OR attributed to a cited reference (NOT engine-grounded). What we DO enforce: every
+// citeString maps to a verified reference; no forecast / causation / wholesale-as-price; and no claim
+// that our work is peer-reviewed / a controlled study / statistically significant.
+function runStudy() {
+  const problems = [];
+  const sAbs = path.join(repo, 'data/cost-research-study.json');
+  const rAbs = path.join(repo, 'data/research-references.json');
+  if (!fs.existsSync(sAbs)) return problems;
+  let study, refs;
+  try { study = JSON.parse(fs.readFileSync(sAbs, 'utf8')); } catch (e) { return [`cost-research-study.json invalid JSON: ${e.message}`]; }
+  try { refs = JSON.parse(fs.readFileSync(rAbs, 'utf8')).studies || []; } catch { refs = []; }
+  const refKeys = new Set(refs.map((s) => `${s.authors} (${s.year}), "${s.title}", ${s.venue}`));
+  for (const loc of ['en', 'es']) {
+    const spec = study[loc];
+    if (!spec) { problems.push(`study[${loc}]: missing`); continue; }
+    const md = String(spec.metaDesc || '');
+    if (md.length < 60 || md.length > 155) problems.push(`study[${loc}]: metaDesc ${md.length} chars (must be 60–155)`);
+    for (const sec of (spec.sections || [])) for (const c of (sec.citeStrings || [])) {
+      if (!refKeys.has(c)) problems.push(`study[${loc}]: citation not in research-references.json → "${String(c).slice(0, 70)}"`);
+    }
+    for (const t of strings(spec)) {
+      const f = hit(FORECAST_RE, t); if (f) problems.push(`study[${loc}]: FORECAST "${f}" in "${t.slice(0, 70)}"`);
+      const c = hit(CAUSAL_RE, t); if (c) problems.push(`study[${loc}]: CAUSATION "${c}" in "${t.slice(0, 70)}"`);
+      const p = hit(PRICE_RE, t); if (p) problems.push(`study[${loc}]: WHOLESALE-AS-PRICE "${p}" in "${t.slice(0, 70)}"`);
+      const o = hit(OVERCLAIM_RE, t); if (o) problems.push(`study[${loc}]: OVERCLAIM "${o}" (must be disclaimed) in "${t.slice(0, 70)}"`);
+    }
+  }
+  return problems;
+}
+
 if (process.argv.includes('--self-test')) selfTest();
-const problems = run();
+const problems = run().concat(runStudy());
 if (problems.length) {
   problems.forEach((m) => console.error('✗ ' + m));
   console.error(`✗ cost-research honesty gate: ${problems.length} problem(s).`);
