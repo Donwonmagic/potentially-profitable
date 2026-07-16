@@ -16,9 +16,9 @@
 (function (root) {
   'use strict';
   var DATA = {
-  "_doc": "Vendor Benchmark ingredient picker: the honest list of what the tool can benchmark, derived from the browser seed + the shared category taxonomy. 81 ingredient(s); 21 carry a firm dollar reference.",
+  "_doc": "Vendor Benchmark ingredient picker: the honest list of what the tool can benchmark, derived from the browser seed + the shared category taxonomy. 81 ingredient(s); 20 carry a firm dollar reference.",
   "count": 81,
-  "dollarRefCount": 21,
+  "dollarRefCount": 20,
   "groups": [
     {"key":"beef","label_en":"Beef","label_es":"Res"},
     {"key":"poultry","label_en":"Poultry","label_es":"Aves"},
@@ -68,7 +68,7 @@
     {"key":"eggplant","label_en":"Eggplant","label_es":"Berenjena","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":true},
     {"key":"garlic","label_en":"Garlic","label_es":"Ajo","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
     {"key":"ginger","label_en":"Ginger root","label_es":"Jengibre","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
-    {"key":"grapefruit","label_en":"Grapefruit","label_es":"Toronja","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":true},
+    {"key":"grapefruit","label_en":"Grapefruit","label_es":"Toronja","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
     {"key":"green-beans","label_en":"Green beans","label_es":"Ejotes","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
     {"key":"green-leaf-lettuce","label_en":"Green leaf lettuce","label_es":"Lechuga hoja verde","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
     {"key":"green-onion","label_en":"Green onion","label_es":"Cebollín","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
