@@ -915,6 +915,7 @@ const PLAYBOOK_CSS = `
 .pb-dep--freeze:before{content:"❄"}.pb-dep--season:before{content:"☼"}.pb-dep--trim:before{content:"♻"}
 .pb-dep__src{margin:12px 0 0;font-size:12px;line-height:1.5;color:var(--stone)}
 .pb-dep__cite{display:block;margin:3px 0 0;color:var(--ink-soft)}
+.pb-newtag{display:inline-block;margin-left:7px;font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--teal);background:var(--teal-wash);padding:1px 6px;border-radius:999px;vertical-align:1px}
 .pb-pill{display:inline-block;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap;border:1px solid var(--line)}
 .pb-pill--lock{background:var(--teal);color:var(--white);border-color:var(--teal)}
 .pb-pill--cushion{background:var(--teal-wash);color:var(--teal);border-color:var(--teal-wash)}
@@ -1249,6 +1250,28 @@ function emitPlaybook(locale, ctx) {
     [es ? 'Los datos abiertos' : 'The open data', `${base}/open/`],
   ];
   const relHtml = `<nav class="rs-related" aria-label="${es ? 'Herramientas' : 'Tools'}"><h2>${es ? 'Llévalo a la práctica' : 'Put it to work'}</h2><ul>${cross.map(([t, u]) => `<li><a href="${u}">${escHtml(t)}</a></li>`).join('')}</ul></nav>`;
+  // Kitchen profiles: ingredients we track for prep (yield, storage, season, substitutes) but do
+  // NOT yet publish a wholesale band for — the 16 new staples + the yield-only items. Honest breadth:
+  // a full profile, plainly labeled "no wholesale band tracked yet." Static (no picker/JS).
+  const pricedSlugs = new Set(P.cards.map((c) => c.slug));
+  const profiles = Object.keys(DEPTH).filter((s) => !pricedSlugs.has(s) && DEPTH[s]).map((s) => ({ slug: s, ...DEPTH[s] }))
+    .sort((a, b) => (Number(b.isNew) - Number(a.isNew)) || String(a.en).localeCompare(String(b.en)));
+  const helpSub = (D) => { const h = (D.substitutes || []).find((x) => x.hedge && x.hedge.verdict === 'hedge' && !x.hedge.thin) || (D.substitutes || [])[0]; return h ? h.name : '—'; };
+  const cookCell = (D) => D.cookedYield == null ? '—' : (D.cookedYield < 1 ? `${Math.round(D.cookedYield * 100)}%` : `×${D.cookedYield}`);
+  const profTh = es ? ['Ingrediente', 'Comestible', 'Cocido', 'Dura', 'Un cambio que ayuda', 'Mejor temporada'] : ['Ingredient', 'Edible', 'Cooked', 'Keeps', 'A swap that helps', 'Best season'];
+  const profRows = profiles.map((D) => {
+    const nm = es ? (D.es || D.en) : D.en;
+    const edible = D.edibleYield != null ? `${Math.round(D.edibleYield * 100)}%` : '—';
+    const keeps = D.shelfLifeDays != null ? `${D.shelfLifeDays}${es ? ' d' : ' d'}` : '—';
+    const season = D.peakSeason ? escHtml(D.peakSeason) : (es ? 'todo el año' : 'year-round');
+    const tag = D.isNew ? `<span class="pb-newtag">${es ? 'nuevo' : 'new'}</span>` : '';
+    return `<tr><th scope="row">${escHtml(nm)}${tag}</th><td class="pb-num">${edible}</td><td class="pb-num">${cookCell(D)}</td><td class="pb-num">${keeps}</td><td>${escHtml(helpSub(D))}</td><td>${season}</td></tr>`;
+  }).join('');
+  const profilesHtml = profiles.length ? `<section class="pb-tablewrap" aria-labelledby="pb-prof-h">
+      <h2 id="pb-prof-h" class="rs-section-h">${es ? `${profiles.length} perfiles de cocina — sin banda de precio aún` : `${profiles.length} kitchen profiles — no price band yet`}</h2>
+      <p class="pb-tool__lede">${es ? 'Los ingredientes que seguimos para la preparación pero cuyo precio mayorista aún no publicamos (los básicos nuevos y los de solo-rendimiento). Rendimiento, conservación, temporada y sustitutos verificados; el precio se enciende cuando el índice lo cubra.' : 'Ingredients we track for prep but do not yet publish a wholesale price for (the new staples + yield-only items). Verified yield, storage, season, and substitutes; the price lights up when the index covers it.'}</p>
+      <div class="rs-scroll"><table class="rs-table pb-table"><thead><tr>${profTh.map((h, i) => `<th scope="col"${i >= 1 && i <= 3 ? ' class="pb-num"' : ''}>${h}</th>`).join('')}</tr></thead><tbody>${profRows}</tbody></table></div>
+    </section>` : '';
   const body = `
   <nav class="breadcrumb" aria-label="Breadcrumb"><a href="${base}/">${es ? 'Inicio' : 'Home'}</a> › <a href="${base}/cost-index/">${es ? 'Índice de costos' : 'Cost index'}</a> › ${escHtml(h1)}</nav>
   <div class="rs" data-accent="teal">
@@ -1270,6 +1293,7 @@ function emitPlaybook(locale, ctx) {
       <p class="pb-tool__lede">${es ? 'Ordenados por postura de precio (fijar → flotar). La banda es una referencia mayorista contra su propio normal, nunca el precio de entrega.' : 'Sorted by pricing posture (print → float). The band is a wholesale reference against its own normal, never the delivered price.'}</p>
       <div class="rs-scroll"><table class="rs-table pb-table"><thead><tr>${th.map((h, i) => `<th scope="col"${i > 1 ? ' class="pb-num"' : ''}>${h}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>
     </section>
+    ${profilesHtml}
     ${citeHtml}
     ${relHtml}
     <p class="rs-src">${es ? 'Une cuatro conjuntos abiertos de Muntin — fijar-o-flotar y co-movimiento (CC-BY), rendimientos (CC-BY) y normales estacionales (CC0) — cada uno una lectura de referencia mayorista contra la propia línea base del ingrediente, no el precio de entrega. Descriptivo, nunca un pronóstico; coincidencia, nunca causa.' : "Joins four Muntin open sets — lock-or-float and co-movement (CC-BY), yields (CC-BY), and seasonal normals (CC0) — each a wholesale-reference read against the ingredient's own baseline, not the delivered price. Descriptive, never a forecast; co-occurrence, never cause."}</p>
