@@ -1,0 +1,31 @@
+{
+  "_doc": "Opt-in baseline for `node scripts/check-all.mjs --baseline scripts/check-all-baseline.json`. Lists the checks EXPECTED to fail on a partial container checkout because the DEPLOY build chain regenerates them (pure structural idempotency: 'would update N files/hashes'). With the baseline, check-all exits 0 on 'zero NEW regressions' and reds only on an UNEXPECTED fail — so a session/agent can trust the exit code instead of re-deriving 'which of the 25 are idem noise' by hand every time. The plain `check-all.mjs` (no flag) stays STRICT; THAT is the Cloudflare deploy gate — never weaken it. RULES: (1) only add a check here if it is a deploy-regenerated builder whose ONLY container-failure mode is 'output would be rebuilt' — NEVER a hard gate (the runner denylists honesty/correctness gates and refuses a baseline that names one). (2) Each entry carries a dated reason. (3) If a baselined check PASSES, the runner warns to prune it (keeps this list honest). Regenerate the set by running `node scripts/check-all.mjs`, confirming each red is a 'would update' regenerator, and copying its label here. NOT baselined on purpose (they flag SEMANTIC data drift, not idempotency, so they stay visible even though the cost-index-refresh workflow also heals them): 'Cost-index picker' (a stale dollarRef flag vs the seed) and 'Cost-index revisions sync' (published readings moved on the 07-13/07-15 reads).",
+  "_generated": "2026-07-16 from a full `node scripts/check-all.mjs` run on claude/strategic-council-board-docs-g9yuen (231/258; the 27 reds were 25 deploy-healed idem builders + the 2 data-drifts noted above).",
+  "expectedFail": [
+    { "label": "H2 anchor IDs (idem)", "reason": "2026-07-16: inject-h2-anchor-ids --check; deploy regenerates. '…and 80 more'." },
+    { "label": "Glossary OG seed (idem)", "reason": "2026-07-16: seed-glossary-og --check; deploy regenerates brand/og/cards.json." },
+    { "label": "Glossary OG meta (idem)", "reason": "2026-07-16: inject-glossary-og --check; deploy regenerates." },
+    { "label": "CSS shells injected (idem)", "reason": "2026-07-16: inject-css-shells --check; deploy regenerates the shell <link>s." },
+    { "label": "CSS cache-bust (idem)", "reason": "2026-07-16: inject-css-cache-bust --check; deploy re-stamps content-hash ?v=." },
+    { "label": "Critical-CSS fonts+skeleton (idem)", "reason": "2026-07-16: inject-critical-fonts --check; deploy regenerates (96/1396)." },
+    { "label": "Lazy script loader (idem)", "reason": "2026-07-16: inject-lazy-script-loader --check; deploy regenerates (98/1396)." },
+    { "label": "Site counts (idem)", "reason": "2026-07-16: inject-site-counts --check; deploy re-stamps count sentinels (359/733)." },
+    { "label": "Article abstract+mentions (idem)", "reason": "2026-07-16: inject-article-abstract-mentions --check; deploy regenerates (4 articles)." },
+    { "label": "Smart-next CTA (idem)", "reason": "2026-07-16: inject-smart-next-cta --check; deploy regenerates (4 articles)." },
+    { "label": "Glossary verified stamp (idem)", "reason": "2026-07-16: inject-glossary-verified-stamp --check; deploy regenerates (22 terms)." },
+    { "label": "Glossary sheet sidecar (idem)", "reason": "2026-07-16: inject-glossary-sheet-sidecar --check; deploy regenerates (16 terms)." },
+    { "label": "Topic sheets rail (idem)", "reason": "2026-07-16: inject-topic-sheets-rail --check; deploy regenerates (6 topics)." },
+    { "label": "Tool sheet rail (idem)", "reason": "2026-07-16: inject-tool-sheet-rail --check; deploy regenerates (2 tools)." },
+    { "label": "Sheet OG cards (idem)", "reason": "2026-07-16: sync-sheet-og-cards --check; deploy regenerates brand/og/cards.json." },
+    { "label": "Hub collection schema (idem)", "reason": "2026-07-16: inject-hub-collection-schema --check; deploy regenerates (6 hubs)." },
+    { "label": "Sitemap (idem)", "reason": "2026-07-16: build-sitemap --check; deploy regenerates sitemap.xml (1216 URLs)." },
+    { "label": "Tool verified stamp (idem)", "reason": "2026-07-16: inject-tool-verified-stamp --check; deploy regenerates (10/14 tools)." },
+    { "label": "llms.txt (idem)", "reason": "2026-07-16: build-llms-txt --check; deploy regenerates llms.txt." },
+    { "label": "Claims rows (idem)", "reason": "2026-07-16: inject-claims-rows --check; deploy regenerates claims/ rows. (NB: build-claims-json is NOT deploy-healed — see the sourced-claims runbook.)" },
+    { "label": "Glossary article schema (idem)", "reason": "2026-07-16: inject-glossary-article-schema --check; deploy regenerates (320 files)." },
+    { "label": "RSS feeds (idem)", "reason": "2026-07-16: build-rss --check; deploy regenerates the 2 feeds." },
+    { "label": "Themes review board (idem)", "reason": "2026-07-16: build-themes-review-board --check; deploy regenerates." },
+    { "label": "Theme story pages (idem)", "reason": "2026-07-16: build-theme-story-pages --check; deploy regenerates." },
+    { "label": "Cuisine landing pages (idem)", "reason": "2026-07-16: build-cuisine-landing-pages --check; deploy regenerates." }
+  ]
+}

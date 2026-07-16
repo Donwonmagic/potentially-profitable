@@ -17,6 +17,7 @@
  */
 
 import { spawnSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -634,6 +635,156 @@ const CHECKS = [
   ['Audio coverage (warn)',  'check-audio-coverage.mjs',    '--warn'],
 ];
 
+// ── Opt-in baseline verdict ──────────────────────────────────────────
+//
+// A PARTIAL container run reds on ~25 deploy-regenerated idempotency
+// builders (sitemap, OG cards, cache-bust, site-counts, RSS, …). The real
+// Cloudflare deploy runs the FULL build chain, which regenerates them, so
+// its `check-all` exits 0. Historically every session re-derived by hand
+// "233/258, and those 25 are the idem ones, ignore them" — a verifier
+// whose exit code can't be trusted.
+//
+// `--baseline <file>` turns that judgment into a checked artifact:
+// partition the results against a reviewed, dated allowlist of
+// deploy-regenerated checks (scripts/check-all-baseline.json) and exit 0
+// only on ZERO *unexpected* fails. The plain `check-all.mjs` (no flag)
+// stays STRICT — that is the deploy gate; this flag never weakens it, it
+// only interprets a partial run.
+//
+// SAFETY: the baseline may NEVER name a hard honesty/correctness gate. The
+// DENYLIST below is enforced at load — a baseline that names a denylisted
+// script aborts (exit 2), so this mechanism can't be used to hide a real
+// failure. A baselined check that PASSES is warned (prune it) so the list
+// can't silently rot.
+
+// Scripts that must NEVER be baselined away. Floor, not exhaustive: the
+// reviewer keeps the baseline to deploy-regenerated builders only.
+const BASELINE_DENYLIST = new Set([
+  'check-fabrications.mjs',
+  'check-audio-fabrications.mjs',
+  'check-retired-links.mjs',
+  'check-locale-parity.mjs',
+  'check-hreflang-orphans.mjs',
+  'check-cta-canon.mjs',
+  'check-banned-words.mjs',
+  'check-newsletter-copy.mjs',
+  'check-security-claims.mjs',
+  'check-tokens-sync.mjs',
+  'check-tool-no-fetch.mjs',
+  'check-sheet-no-fetch.mjs',
+  'check-shippable-bar.mjs',
+  'check-cost-index-basis-leak.mjs',
+  'check-cost-index-events.mjs',
+  'check-cost-index-independence.mjs',
+  'check-cost-index-drivers.mjs',
+  'check-cost-index-editors-note.mjs',
+  'check-cost-index-seasonal.mjs',
+  'check-staleness-honesty.mjs',
+  'check-lockfloat-copy.mjs',
+]);
+
+const scriptForLabel = (() => {
+  const m = new Map();
+  for (const [label, script] of CHECKS) {
+    if (!m.has(label)) m.set(label, script);
+    else m.set(label, '__DUP__'); // duplicate label — ambiguous
+  }
+  return (label) => m.get(label);
+})();
+
+/**
+ * Pure partition of run results against a set of expected-fail labels.
+ * Kept pure so --self-test can exercise it without running the checks.
+ */
+export function classifyResults(results, expectedLabels) {
+  const expected = new Set(expectedLabels);
+  const seen = new Set();
+  const expectedFail = [];
+  const unexpectedFail = [];
+  const unexpectedPass = [];
+  for (const r of results) {
+    const inBase = expected.has(r.label);
+    if (inBase) seen.add(r.label);
+    if (r.status === 'FAIL') (inBase ? expectedFail : unexpectedFail).push(r);
+    else if (inBase) unexpectedPass.push(r);
+  }
+  const missing = expectedLabels.filter((l) => !seen.has(l));
+  return { expectedFail, unexpectedFail, unexpectedPass, missing };
+}
+
+function loadBaseline(file) {
+  let parsed;
+  try {
+    parsed = JSON.parse(readFileSync(file, 'utf8'));
+  } catch (e) {
+    console.error(`check-all: --baseline file unreadable: ${e.message}`);
+    process.exit(2);
+  }
+  const rows = Array.isArray(parsed?.expectedFail) ? parsed.expectedFail : null;
+  if (!rows) {
+    console.error(`check-all: --baseline file has no "expectedFail" array.`);
+    process.exit(2);
+  }
+  const labels = [];
+  for (const row of rows) {
+    const label = typeof row === 'string' ? row : row?.label;
+    if (!label) {
+      console.error(`check-all: --baseline entry missing a label: ${JSON.stringify(row)}`);
+      process.exit(2);
+    }
+    const script = scriptForLabel(label);
+    if (!script) {
+      console.error(`check-all: --baseline label "${label}" matches no check (stale/typo).`);
+      process.exit(2);
+    }
+    if (script === '__DUP__') {
+      console.error(`check-all: --baseline label "${label}" is ambiguous (duplicate label).`);
+      process.exit(2);
+    }
+    if (BASELINE_DENYLIST.has(script)) {
+      console.error(
+        `check-all: REFUSED — "${label}" (${script}) is a hard gate and may never be baselined.`,
+      );
+      process.exit(2);
+    }
+    labels.push(label);
+  }
+  return labels;
+}
+
+// ── --self-test: exercise classifyResults on synthetic data ──────────
+if (process.argv.includes('--self-test')) {
+  const fails = [];
+  const ok = (c, m) => { if (!c) fails.push(m); };
+  const R = (label, status) => ({ label, status });
+  const rs = [R('A', 'FAIL'), R('B', 'FAIL'), R('C', 'PASS'), R('D', 'FAIL')];
+  const c1 = classifyResults(rs, ['A', 'B']); // A,B expected-fail; D unexpected-fail
+  ok(c1.expectedFail.length === 2, 'expectedFail should be 2');
+  ok(c1.unexpectedFail.length === 1 && c1.unexpectedFail[0].label === 'D', 'D should be unexpected-fail');
+  ok(c1.unexpectedPass.length === 0, 'no unexpected-pass');
+  ok(c1.missing.length === 0, 'no missing');
+  const c2 = classifyResults(rs, ['C']); // C baselined but PASSES -> unexpected-pass
+  ok(c2.unexpectedPass.length === 1 && c2.unexpectedPass[0].label === 'C', 'C should be unexpected-pass');
+  ok(c2.unexpectedFail.length === 3, 'A,B,D all unexpected-fail when only C baselined');
+  const c3 = classifyResults(rs, ['A', 'ZZZ']); // ZZZ matches nothing -> missing
+  ok(c3.missing.length === 1 && c3.missing[0] === 'ZZZ', 'ZZZ should be missing');
+  // denylist is enforced by loadBaseline, spot-check membership
+  ok(BASELINE_DENYLIST.has('check-fabrications.mjs'), 'fabrications must be denylisted');
+  if (fails.length) {
+    console.error('check-all --self-test FAILED:');
+    for (const f of fails) console.error(`  ✗ ${f}`);
+    process.exit(1);
+  }
+  console.log('check-all --self-test: OK (8 assertions)');
+  process.exit(0);
+}
+
+const baselineArgIdx = process.argv.indexOf('--baseline');
+const baselineFile = baselineArgIdx !== -1 ? process.argv[baselineArgIdx + 1] : null;
+const expectedLabels = baselineFile
+  ? loadBaseline(path.isAbsolute(baselineFile) ? baselineFile : path.join(repoRoot, baselineFile))
+  : null;
+
 const results = [];
 let failed = 0;
 
@@ -658,4 +809,34 @@ for (const r of results) {
 console.log(`───────────────`);
 console.log(`${results.length - failed} of ${results.length} passed.`);
 
-process.exit(failed > 0 ? 1 : 0);
+// Default (no --baseline): STRICT — any fail is a fail. This is the deploy gate.
+if (!expectedLabels) {
+  process.exit(failed > 0 ? 1 : 0);
+}
+
+// --baseline: partition against the reviewed deploy-regenerated allowlist.
+const { expectedFail, unexpectedFail, unexpectedPass, missing } = classifyResults(
+  results,
+  expectedLabels,
+);
+console.log('');
+console.log('Baseline verdict');
+console.log('───────────────');
+console.log(`  expected-fail (deploy-healed idem): ${expectedFail.length} / ${expectedLabels.length} baselined`);
+if (unexpectedPass.length) {
+  console.log(`  ⚠ baselined but PASSING (prune from baseline): ${unexpectedPass.map((r) => r.label).join(', ')}`);
+}
+if (missing.length) {
+  console.log(`  ✗ baseline labels matching no check (stale/typo): ${missing.join(', ')}`);
+}
+if (unexpectedFail.length) {
+  console.log(`  ✗ NEW regressions (${unexpectedFail.length}) — NOT in the baseline:`);
+  for (const r of unexpectedFail) console.log(`      ✗ ${r.label.padEnd(22)}  ${r.summary}`);
+} else {
+  console.log(`  ✓ zero NEW regressions.`);
+}
+console.log('───────────────');
+
+// Exit red only on something genuinely new or a broken baseline; an
+// unexpected PASS is good news, so it warns but does not fail.
+process.exit(unexpectedFail.length > 0 || missing.length > 0 ? 1 : 0);
