@@ -44,9 +44,11 @@ artifact — the container restarts).
 - `1daf2a39b` — CI ingredient (99 EN + 99 ES + generator): center the reading column on wide bands (kills the right void).
 - `d47276398` — CI ingredient: events → card grid, sparkline stays on one row, price sentence anchored (17px/600).
 - `85cddd2fa` — CI hub (+ES + generator): catalog grid density (3-up tablet / 4-5 wide) + editorial category dividers.
+- `b7b8133ae` — CI events (+ES + generator): zone width release + `.evh-card` 2-col ledger rows at ≥880 (date/magnitude gutter + narrative).
 
 **Done surfaces:** homepage (stances/ledger/service/FAQ), article shell (H2/see-also), CI ingredient
-(center + events/spark/line), CI hub (density + dividers). **Generator discipline confirmed working:**
+(center + events/spark/line), CI hub (density + dividers), CI events (width + ledger card) — **the CI
+funnel spine is elevated.** **Generator discipline confirmed working:**
 surgical inline-CSS edits across the committed cost-index pages + mirror into `build-cost-index-pages.mjs`
 (never run it — it carries a half-finished template rollout); every ci patch verified `0 drift lines`.
 
