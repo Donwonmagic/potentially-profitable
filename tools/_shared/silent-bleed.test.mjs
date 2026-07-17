@@ -66,6 +66,18 @@ test('HONESTY: a top dish below one half reads "about N%", never "more than half
   assert.doesNotMatch(c.headline, /more than half/);
 });
 
+test('HONESTY: sub-dollar bleeds that round to $0 are dropped — no "-$0" row, no NaN share', () => {
+  // Every dish rounds to $0 → nothing to show (total would be 0 → 0/0 NaN).
+  const allTiny = B.build({ impacts: [{ dish: 'A', dollarsPerWeek: 0.3 }, { dish: 'B', dollarsPerWeek: 0.48 }], locale: 'en' });
+  assert.equal(allTiny.tier, 'none');
+  assert.equal(allTiny.headline, null);
+  // Mixed: the $0.40 dish drops; only the real $5 dish remains.
+  const mix = B.build({ impacts: [{ dish: 'Tiny', dollarsPerWeek: 0.4 }, { dish: 'Real', dollarsPerWeek: 5 }], locale: 'en' });
+  assert.deepEqual(mix.ranked.map((r) => r.dish), ['Real']);
+  assert.doesNotMatch(mix.headline, /NaN/);
+  assert.doesNotMatch(mix.headline, /-\$0\b/);
+});
+
 test('a single bleeding dish: a leaderboard of one, no "start at the top"', () => {
   const c = B.build({ impacts: [{ dish: 'Solo', dollarsPerWeek: 30 }], locale: 'en' });
   assert.equal(c.tier, 'leaderboard');

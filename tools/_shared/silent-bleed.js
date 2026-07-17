@@ -50,9 +50,14 @@
     var impacts = Array.isArray(input.impacts) ? input.impacts : [];
 
     // Keep only real, positive weekly losses — never invent or zero a cover count.
+    // Drop AFTER rounding too: a sub-$0.50 bleed rounds to $0, and everything
+    // downstream (list, total, top-share) uses the rounded value. Left in, it
+    // shows a "-$0" dish, inflates the count, and — if every dish rounds to $0 —
+    // makes total 0 so the top-share is 0/0 = NaN ("about NaN% of it").
     var ranked = impacts
       .filter(function (i) { return i && typeof i.dollarsPerWeek === 'number' && isFinite(i.dollarsPerWeek) && i.dollarsPerWeek > 0 && i.dish; })
       .map(function (i) { return { dish: i.dish, dollarsPerWeek: Math.round(i.dollarsPerWeek) }; })
+      .filter(function (i) { return i.dollarsPerWeek > 0; })
       .sort(function (a, b) { return b.dollarsPerWeek - a.dollarsPerWeek; });
 
     if (!ranked.length) {
