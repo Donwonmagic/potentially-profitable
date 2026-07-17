@@ -72,9 +72,6 @@ modulate it with a device signal, we do not invent a palette.
 | 12 | Time-aware Cost Index cadence reframe vs the local clock | S | REVISE (derive live edition from real asOf) | ✅ |
 
 **P0 honesty defect — ALREADY FIXED (verified 2026-07-17):** both signup handlers (footer + homepage) already gate success on `res.ok` with an error state + `.catch`, so "check your inbox" no longer fires on a 4xx/5xx. No action needed.
-founding-capture handler fires the success confirm on a 4xx/5xx (`fetch` resolves on error). A
-warm site cannot fabricate "check your inbox" on a 500. The sign-in/account flow (`res.ok` check +
-persistent error) is the gold standard to copy. Fold into Phase 1.
 
 ## Phased plan
 
