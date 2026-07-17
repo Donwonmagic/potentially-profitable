@@ -100,6 +100,13 @@ marker), B (`contract_price.py`) + C (`price_trend_pct`) done-unwired earlier.
   Additive + fail-silent; verbs from `cost-verdict.js` (no new copy/fact); neutral styling (no green
   "prices fell" — one-directional honesty); cache-bust bumped EN+ES; lookup test pins the EN+ES verb
   contract (10/10). DOM render is browser-verified in the real env, not this container.
+- **[DONE — item A second consumer, engine layer, `2c988fe3`] fair-price-gap marketTrend.**
+  `fair-price-gap.assess()` now carries `marketTrend` ({pct,dir}|null) on every matched path (comparable,
+  unit-mismatch, index-basis-no-level — direction is honest without a $-level), so a price gap reads WITH
+  market context (above a rising vs falling reference). Node-verified: 3 new vectors, 13/13; cache-bust
+  bumped EN+ES. Render in the Vendor Benchmark is the follow-on (its intricate localized verdict/focus/
+  motion chrome wants a browser). **The node-verifiable ENGINE layer of "widen → consume" is now complete
+  across both storefront consumers; every remaining stroke is a render (browser-verified).**
 - **Next candidate bricks — each with a container caveat (a real fork, not an obvious default):** E
   (demo→Vendor Benchmark URL-fragment prefill; the "lands as comparable" acceptance is a browser hand-test
   we can't run here) · the B/C **Python wiring** (`off_contract`/`price_creep` capture + SOFT registration;
