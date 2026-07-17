@@ -62,16 +62,16 @@ modulate it with a device signal, we do not invent a palette.
 | 2 | `warmth.js` on-device substrate | M | **SHIPPED (homepage)** | ✅ |
 | 3 | Golden-Hour clock whisper (hero corner) | M | **SHIPPED (homepage)** | ✅ |
 | 4 | ~~`mun_pref` cookie~~ → read the system instead | S | **CUT (decision 3)** | ✅ |
-| 5 | Theme-swap cross-fade + reassurance beats (copy/save/cite) | M | **KEEP** | ✅ |
+| 5 | Theme-swap cross-fade (**shipped**) + reassurance beats (copy/save/cite, next) | M | **PARTIAL** | ✅ |
 | 6 | Visit-trail writer + "where you left off" chip | M | **REVISE — borders on CUT** (Claim-8) | ✅ |
 | 7 | Close the Cost-Index loop: tool card → its own reference page | S | **SHIPPED** | ✅ |
 | 8 | Cross-link weekly dispatch ↔ per-ingredient reference pages | M | **KEEP** (name only, generator) | ✅ |
 | 9 | Tools read `?from` and echo one locale-aware continuity line | M | REVISE (EN+ES + registered title map) | ✅ |
-| 10 | Warm the plate-cost empty state + confirm coda (EN+ES) | S | **KEEP** | ✅ |
+| 10 | Warm the plate-cost empty state (**shipped**) + confirm coda (next) | S | **PARTIAL** | ✅ |
 | 11 | Visible tool breadcrumb + Window field-notes empty voice | S | **KEEP** | ✅ |
 | 12 | Time-aware Cost Index cadence reframe vs the local clock | S | REVISE (derive live edition from real asOf) | ✅ |
 
-**Also (P0 honesty defect the every-surface-map flagged — the OPPOSITE of warm/native):** the
+**P0 honesty defect — ALREADY FIXED (verified 2026-07-17):** both signup handlers (footer + homepage) already gate success on `res.ok` with an error state + `.catch`, so "check your inbox" no longer fires on a 4xx/5xx. No action needed.
 founding-capture handler fires the success confirm on a 4xx/5xx (`fetch` resolves on error). A
 warm site cannot fabricate "check your inbox" on a 500. The sign-in/account flow (`res.ok` check +
 persistent error) is the gold standard to copy. Fold into Phase 1.
