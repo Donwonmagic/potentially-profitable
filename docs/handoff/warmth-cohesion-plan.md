@@ -59,8 +59,8 @@ modulate it with a device signal, we do not invent a palette.
 | # | Move | Eff | Verdict | In-container |
 |---|---|---|---|---|
 | 1 | Fix the royal-we POV in the founding-form error (EN+ES) — "I'll add you by hand" | S | **KEEP — SHIPPED** | ✅ |
-| 2 | `warmth.js` on-device substrate | M | **SHIPPED (homepage)** | ✅ |
-| 3 | Golden-Hour clock whisper (hero corner) | M | **SHIPPED (homepage)** | ✅ |
+| 2 | `warmth.js` on-device substrate | M | **SHIPPED (site-wide)** | ✅ |
+| 3 | Golden-Hour clock whisper (hero corner) | M | **SHIPPED (site-wide)** | ✅ |
 | 4 | ~~`mun_pref` cookie~~ → read the system instead | S | **CUT (decision 3)** | ✅ |
 | 5 | Theme-swap cross-fade (**shipped**) + copy-link reassurance beat (**shipped**) | M | **PARTIAL** (save/cite beats on tools next) | ✅ |
 | 6 | Visit-trail writer + "where you left off" chip | M | **REVISE — borders on CUT** (Claim-8) | ✅ |
@@ -104,7 +104,19 @@ modulate it with a device signal, we do not invent a palette.
 
 ## Next (post-decision build order)
 
-- **Site-wide `warmth.js` rollout — needs a multi-surface plan, NOT a one-line footer edit.** Finding
+- **✅ Site-wide `warmth.js` rollout — SHIPPED (2026-07-17).** After the reconciliation cleared the
+  generator-drift blocker, warmth.js was added INSIDE `<footer>` in both footer templates
+  (`_includes/footer.html` + `_includes/es/footer.html`) so `sync-includes`' `FOOTER_RE` replaces it
+  atomically — idempotent across two full sync cycles (an earlier after-turnstile placement double-
+  stamped, the documented turnstile failure mode). Reaches every synced hero-bearing surface (library /
+  glossary / learn / research / sheets, EN+ES); the homepage's bespoke copy was removed (footer template
+  is now the single source); three non-synced ES pages (404 + two research) got the tag directly for
+  parity. Headless-verified (loads once, `--gh-eve`→0.06 at golden hour, `.hero::after` consumes it, 0
+  errors); parity back to the pre-existing 2 flags. **Decision:** the cost-index `/cost-index/<key>/`
+  pages use `.ci-hero` — a clean data-first text block with NO warm pane — so they deliberately get NO
+  Golden-Hour gradient (that would be "paint on the wall," against the thesis). They express warmth via
+  cohesion instead (breadcrumbs, reference-page links, dispatch cross-links — already shipped).
+- ~~**Site-wide `warmth.js` rollout — needs a multi-surface plan, NOT a one-line footer edit.**~~ Finding
   (2026-07-17): the funnel-core hero pages (the 81 `/cost-index/<key>/` ingredient pages, the tools)
   report "missing footer" under `sync-includes` — they carry a *different* footer than the canonical
   content-page template, so adding `warmth.js` to `_includes/footer.html` `FOOTER_ASSETS` would reach
