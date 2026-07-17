@@ -89,7 +89,11 @@ marker), B (`contract_price.py`) + C (`price_trend_pct`) done-unwired earlier.
   cover / null-or-stale trend → cover-only or nothing). Reuses the parity-locked pure engine + the
   `testCostIndexOverride` snapshot seam. Web `ReorderRow` gains an optional read-subset type (no render
   yet). Route test mirrors `buy-or-ride-route` (watch/buy-now by cover + 3 honesty holds); tsc (2
-  baseline) + prettier clean; runs in CI. **Follow-on:** render the card on the web `/reorder` row.
+  baseline) + prettier clean; runs in CI. **Web render shipped (`310fbf5`) — item D is now end-to-end:**
+  a calm one-line market read on the `/reorder` card, keyed by `tier` through EN+ES copy (the API
+  headline is EN-only, so tier-keyed copy keeps the gated parity honest). Copy-grade + verboten +
+  prettier clean; web tsc/build:cf/vitest run in CI, not the container. Optional later: thread the web
+  user's locale into the reorder request to render the richer calibrated server headline directly.
 - **Next candidate bricks (autonomous, in-container-verifiable):** the NEXT-tier items — E (demo→Vendor
   Benchmark URL-fragment prefill; caveat: the "lands as comparable" hand-test wants a browser we lack),
   or the B/C **wiring** bricks (Python `off_contract`/`price_creep` capture + SOFT registration; heavier,
