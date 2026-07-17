@@ -921,3 +921,27 @@
   .sheet-form textarea[data-prefilled="1"] { background: transparent; }
 }
 
+
+/* B12c · Allergen matrix cells hold a single C/X mark — center it, and in the
+   stacked-card views cap the box so it reads like a matrix cell, not an empty
+   full-width field. (Only allergen-matrix rows carry maxlength=2 inputs.) */
+.sheet-row-table td input[maxlength="2"] { text-align: center; }
+@media (max-width: 600px) {
+  .sheet-row-table td input[maxlength="2"] { flex: 0 0 auto; width: 3.75em; }
+}
+@media (min-width: 601px) and (max-width: 900px) {
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table td input[maxlength="2"] { flex: 0 0 auto; width: 3.75em; }
+}
+
+/* B12d · Allergen grid view (>=901px): give the two text columns room instead
+   of the browser splitting all 11 columns near-equally and cramping Menu item
+   and Notes to single-letter width. Fixed layout lets the 9 one-letter allergen
+   columns share the middle; overflow-wrap keeps "SHELLFISH" from spilling. */
+@media (min-width: 901px) {
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table { table-layout: fixed; }
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table th { overflow-wrap: anywhere; }
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table th:first-child,
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table td:first-child { width: 17%; }
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table th:last-child,
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table td:last-child { width: 19%; }
+}

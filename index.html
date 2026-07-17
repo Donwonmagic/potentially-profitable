@@ -121,9 +121,10 @@ h1,h2,h3,h4,h5,.serif-italic{font-family:var(--font-display)}
 .hero{padding:160px 0 100px;position:relative;overflow:hidden}
 .hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:60px;align-items:center}
 @media (max-width:960px){.hero{padding:130px 0 60px}.hero-grid{grid-template-columns:1fr;gap:48px}}
+@media (min-width:641px) and (max-width:960px){.hero-grid .ci-inst{max-width:540px}}
 .hero h1{margin-top:24px;text-wrap:balance;max-width:18ch}
 .hero h1 .serif-italic{font-style:italic;font-weight:400;color:var(--teal)}
-.hero-sub{margin-top:28px;max-width:520px;font-size:clamp(17px,1.35vw,20px);line-height:1.55;color:var(--ink-soft)}
+.hero-sub{margin-top:28px;max-width:520px;font-size:clamp(17px, 0.75vw + 10px, 20px);line-height:1.55;color:var(--ink-soft)}
 .hero-ctas{margin-top:40px;display:flex;gap:14px;flex-wrap:wrap}
 .hero-counts{display:flex;flex-wrap:wrap;gap:10px 14px;list-style:none;padding:0;margin:18px 0 22px;font-size:13.5px;font-weight:600;letter-spacing:0.02em;color:var(--ink-soft)}
 .hero-counts__chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--cream-2)}
@@ -163,8 +164,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=6558c9f2d6a5" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=abb0a063b1ee" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=ae9e2118f83a" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=d184aa00dcf3" onload="this.onload=null;this.rel='stylesheet'">
 <style>
 /* Bolder pass 2026-07 — mid-page material: stance panes on the elevation
    scale, instrument glyphs in the flagship cards, Fraunces number chips,
@@ -194,7 +195,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .muntin-title::before{content:"";display:block;width:34px;height:40px;margin:0 0 18px;border:3px solid var(--ink);border-radius:5px;background:linear-gradient(var(--ink),var(--ink)) 50% 0/3px 100% no-repeat,linear-gradient(var(--ink),var(--ink)) 0 38%/100% 3px no-repeat}
 .final::before{background:linear-gradient(rgba(246,247,248,.055),rgba(246,247,248,.055)) 33% 0/3px 100% no-repeat,linear-gradient(rgba(246,247,248,.055),rgba(246,247,248,.055)) 66% 0/3px 100% no-repeat,linear-gradient(rgba(246,247,248,.055),rgba(246,247,248,.055)) 0 58%/100% 3px no-repeat}
 </style>
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=6558c9f2d6a5"><link rel="stylesheet" href="/assets/site-article.css?v=abb0a063b1ee"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ae9e2118f83a"><link rel="stylesheet" href="/assets/site-article.css?v=d184aa00dcf3"></noscript>
 <!-- hub-modified:start (scripts/inject-hub-modified-time.mjs) -->
 <meta property="article:modified_time" content="2026-06-22" />
 <!-- /hub-modified:end -->

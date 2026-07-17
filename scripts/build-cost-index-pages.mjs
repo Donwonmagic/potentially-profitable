@@ -1697,7 +1697,7 @@ main{padding-top:64px}
 .ci-index--mini{display:inline-block;vertical-align:middle;margin:4px 0 2px;opacity:.9}
 .ci-index{margin:10px 0 4px}
 .ci-index__cap{margin:0 0 4px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
-.ci-index .mtn-spark{max-width:100%;height:auto}
+.ci-index .mtn-spark{max-width:100%;height:auto}figure.ci-index>svg.mtn-spark{width:100%}
 .ci-card--pending{opacity:.72;background:var(--cream-2)}
 .ci-card--pending a{color:var(--ink-soft)}
 .ci-pending-note{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}

@@ -134,12 +134,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=6558c9f2d6a5" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-tool.css?v=d705c3d95604" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=6558c9f2d6a5"><link rel="stylesheet" href="/assets/site-tool.css?v=d705c3d95604"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=ae9e2118f83a" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-tool.css?v=72f93dad58e0" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ae9e2118f83a"><link rel="stylesheet" href="/assets/site-tool.css?v=72f93dad58e0"></noscript>
 <style>
 .cp-shell{max-width:1080px;margin:0 auto;padding:48px 16px 80px}
-.cp-hero h1{font-family:var(--font-display);font-size:36px;font-weight:500;color:var(--ink);margin:0 0 10px;line-height:1.15}
+.cp-hero h1{font-family:var(--font-display);font-size:clamp(28px, 3.9vw + 6px, 40px);font-weight:500;color:var(--ink);margin:0 0 10px;line-height:1.15}
 .cp-hero p.cp-lede{font-size:17px;color:var(--ink-soft);line-height:1.55;margin:0 0 32px;max-width:620px}
 .cp-lede-legacy{display:block;margin-top:8px;font-size:14px;color:var(--stone)}
 .cp-card{background:var(--surface-1,#fff);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:0 0 18px;box-shadow:var(--elev-1)}
@@ -358,7 +358,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .cp-diff-strip{margin-top:18px;padding:10px 14px;background:linear-gradient(90deg,#0f3a37 0%,#1f6f6a 100%);color:#fff;border-radius:8px;font-size:13px;line-height:1.45}
 .cp-diff-strip strong{color:#fff;font-weight:600}
 @media(max-width:540px){
-  .cp-hero h1{font-size:28px}
   .cp-card{padding:18px}
   .cp-drift-row{flex-direction:column;gap:4px}
   .cp-drift-cat,.cp-drift-delta{min-width:0}
@@ -512,7 +511,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .lf-proof-cap{font-size:11.5px;color:var(--stone);line-height:1.45;margin:8px 0 0;max-width:64ch}
 .lf-ledger-cta{display:inline-flex;align-items:center;gap:6px;background:var(--ink);color:var(--surface-1);font-weight:600;font-size:14.5px;padding:11px 18px;border-radius:9px;text-decoration:none}
 .lf-ledger-cta:focus-visible{outline:2px solid var(--rust);outline-offset:2px}
-@media (max-width:560px){.lf-lanes{grid-template-columns:repeat(2,1fr)}.lf-scale{margin-left:104px}.lf-lrow{grid-template-columns:104px 1fr}.lf-hbtn{min-height:44px}.lf-starter,.lf-cterm,.lf-rchip{min-height:44px;display:inline-flex;align-items:center}}
+@media (min-width:900px){.lf-lane-n{font-size:clamp(26px, 3vw, 34px)}.lf-lanes{gap:clamp(8px, 1.2vw, 14px)}}
+@media (max-width:560px){.lf-lanes{grid-template-columns:repeat(2,1fr)}.lf-scale{margin-left:104px}.lf-lrow{grid-template-columns:104px 1fr}.lf-lunit{display:none}.lf-hbtn{min-height:44px}.lf-starter,.lf-cterm,.lf-rchip{min-height:44px;display:inline-flex;align-items:center}}
 @media (prefers-reduced-motion:reduce){.lf-hbtn{transition:none}}
 </style>
 </head>

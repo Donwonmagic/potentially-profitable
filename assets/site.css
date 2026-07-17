@@ -799,6 +799,11 @@ pre code{overflow-wrap:normal;word-break:normal;white-space:pre}
    label+glyph alignment), which on a phone squeezes each text-run and link into
    a narrow shrinking column. Let this one flow and wrap as normal text. */
 .article-body > header > .eyebrow{display:block;line-height:1.7}
+/* Reading-column H2: cap the section-header scale so it stays subordinate to
+   the article H1 and proportionate to the fixed ~720px measure. The global
+   h2{clamp(32px,4.2vw,54px)} is tuned for full-width hub headers, not a narrow
+   reading column, and nearly matched the H1 on laptop/wide. Mobile (32px) same. */
+.article-body h2{font-size:clamp(32px,3.4vw,40px);line-height:1.12}
 .eyebrow::before{content:'';width:28px;height:1px;background:var(--teal)}
 /* Eyebrow with leading glyph: replaces the 28px rule with a 24px line-stroked SVG mark in the same accent color. Used to add a page-relevance cue without breaking the eyebrow's existing inline-flex rhythm. */
 .eyebrow--glyph::before{display:none}
@@ -1061,7 +1066,7 @@ pre code{overflow-wrap:normal;word-break:normal;white-space:pre}
 }
 .hero h1{margin-top:24px}
 .hero h1 .serif-italic{font-style:italic;font-weight:400;color:var(--teal)}
-.hero-sub{margin-top:28px;max-width:520px;font-size:clamp(17px,1.35vw,20px);line-height:1.55;color:var(--ink-soft)}
+.hero-sub{margin-top:28px;max-width:520px;font-size:clamp(17px, 0.75vw + 10px, 20px);line-height:1.55;color:var(--ink-soft)}
 .hero-ctas{margin-top:40px;display:flex;gap:14px;flex-wrap:wrap}
 .hero-note{margin:18px 0 0;font-size:13.5px;line-height:1.55;color:var(--stone)}
 .hero-note a{color:var(--teal);border-bottom:1px dashed currentColor;font-weight:500;text-decoration:none}
@@ -2504,6 +2509,10 @@ body[data-audio-seek] .article-body .listen-sent:hover{background:rgba(42,80,200
    owns fixed-nav clearance, so the inline margin is pure dead space above the
    fold (worst on phone). Scoped to elements that actually carry the inline. */
 .breadcrumb[style*="margin-top"]{margin-top:0 !important}
+/* Align an article breadcrumb with its centered 720px reading column instead of
+   the 1200px page container, so it doesn't hang out to the left on wide screens.
+   :has(+ .article-body) targets only breadcrumbs that head a reading column. */
+.breadcrumb:has(+ .article-body){max-width:720px;padding-inline:var(--pad-x)}
 /* Cost Index weekly archive table: a normal table on wider screens; on phones
    it reflows to one card per edition — cells carry data-label from
    build-cost-index-archive.mjs — so all six columns fit with ZERO horizontal
@@ -2519,6 +2528,9 @@ body[data-audio-seek] .article-body .listen-sent:hover{background:rgba(42,80,200
   .ci-archive td:first-child{font-size:16px;padding-top:2px}
   .ci-archive td::before{content:attr(data-label);font-size:12px;font-weight:600;color:var(--ink-soft);letter-spacing:.02em;white-space:nowrap}
 }
+/* Desktop table view: restore body-cell padding (the reflow at <=640px sets its
+   own; the base table had padding only on <th>, colliding the Read/Data links). */
+@media (min-width:641px){ .ci-archive td{padding:11px 12px;vertical-align:baseline} }
 .breadcrumb a{color:var(--stone);transition:color var(--t-fast) var(--ease);white-space:nowrap}
 .breadcrumb a:hover{color:var(--teal)}
 .breadcrumb-sep{display:inline-block;margin:0 clamp(6px,1vw,8px);color:var(--stone-2);font-size:15px;line-height:1;user-select:none}
@@ -3202,6 +3214,14 @@ body[data-page="sheets-hub"] .tool-card--compact.live:hover > p:last-child::afte
   body[data-page="sheets-hub"] .tool-card--compact > p:last-child::after{ transition:none; }
   body[data-page="sheets-hub"] .tool-card--compact.live:hover{ transform:none; }
 }
+/* Hero: the eyebrow + H1 were flush-left while the sub + CTAs were centered.
+   Center the whole hero on wider screens so it reads as one deliberate block. */
+@media (min-width:1024px){
+  body[data-page="sheets-hub"] .hero-tight .mm-hero{ text-align:center; }
+  body[data-page="sheets-hub"] .hero-tight .mm-hero h1{ margin-left:auto; margin-right:auto; }
+}
+/* Trim the oversized gap between the compact hero and the catalog masthead. */
+body[data-page="sheets-hub"] main > section.block{ padding-top:clamp(48px, 5vw, 80px); }
 /* ===== end Sheets hub ===================================================== */
 
 /* Spotlight section — Phase 7 W1-3. Two flagship tools (Menu
@@ -3631,6 +3651,9 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 @media (max-width:520px){
   .glossary-knit__grid{ grid-template-columns:1fr; }
 }
+/* Keep the closing "Keep going" knit within the term page's ~780px editorial
+   spine (was sprawling full-width on desktop, breaking the centered column). */
+@media (min-width:901px){ .glossary-knit__grid{ max-width:900px; margin-inline:auto; } }
 /* @shell:article === "Recently added" strip on /learn/ === */
 
 /* ---------- "Recently added" strip on /learn/ (Phase 5) -----------
@@ -6485,6 +6508,11 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
    `data-llm` hints so AI engines can identify them. */
 .tldr{max-width:680px;margin:24px 0 32px;padding:18px 24px;background:var(--surface-1);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-md);box-shadow:var(--elev-1)}
 .tldr__eyebrow{font-family:var(--font-body);font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+/* "In short" list: intentional indent + rhythm instead of the raw browser 40px
+   disc default (matches the bespoke key-takeaways treatment). */
+.tldr__list{margin:0;padding-left:22px}
+.tldr__list li{margin:6px 0;line-height:1.55}
+@media (max-width:400px){ .tldr__list{padding-left:18px} }
 .tldr__body{font-family:var(--font-display);font-style:italic;font-size:16px;line-height:1.6;color:var(--ink);margin:0}
 .key-takeaways{max-width:680px;margin:32px 0;padding:22px 26px;background:var(--surface-1);border:1px solid var(--line);border-top:3px solid var(--ink);border-radius:var(--r-md);box-shadow:var(--elev-1)}
 .key-takeaways__eyebrow{font-family:var(--font-body);font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 12px}

@@ -5,7 +5,7 @@
  * the SECTIONS map in scripts/build-css-shells.mjs.
  */
 
-/* ===== [tool] TOOL SHELL — shared primitives for /tools/* pages (lines 2919-3019) ===== */
+/* ===== [tool] TOOL SHELL — shared primitives for /tools/* pages (lines 2931-3031) ===== */
 /* ============================================================
    TOOL SHELL — shared primitives for /tools/* pages
    Promoted from seven near-identical inline <style> blocks
@@ -107,7 +107,7 @@
 .tool-card.soon .cta{ color:var(--stone); }
 .tool-card .cta svg{ width:16px; height:16px; }
 
-/* ===== [tool] Tools-landing cluster layout (lines 3020-3357) ===== */
+/* ===== [tool] Tools-landing cluster layout (lines 3032-3377) ===== */
 
 /* ---------- Tools-landing cluster layout (Phase 2 cohesion pass) -----
    The /tools/ page is now grouped by the same 6-topic taxonomy used at
@@ -292,6 +292,14 @@ body[data-page="sheets-hub"] .tool-card--compact.live:hover > p:last-child::afte
   body[data-page="sheets-hub"] .tool-card--compact > p:last-child::after{ transition:none; }
   body[data-page="sheets-hub"] .tool-card--compact.live:hover{ transform:none; }
 }
+/* Hero: the eyebrow + H1 were flush-left while the sub + CTAs were centered.
+   Center the whole hero on wider screens so it reads as one deliberate block. */
+@media (min-width:1024px){
+  body[data-page="sheets-hub"] .hero-tight .mm-hero{ text-align:center; }
+  body[data-page="sheets-hub"] .hero-tight .mm-hero h1{ margin-left:auto; margin-right:auto; }
+}
+/* Trim the oversized gap between the compact hero and the catalog masthead. */
+body[data-page="sheets-hub"] main > section.block{ padding-top:clamp(48px, 5vw, 80px); }
 /* ===== end Sheets hub ===================================================== */
 
 /* Spotlight section — Phase 7 W1-3. Two flagship tools (Menu
@@ -446,7 +454,7 @@ body[data-page="sheets-hub"] .tool-card--compact.live:hover > p:last-child::afte
 @media (max-width:960px){ .tool-roadmap .tool-grid{ grid-template-columns:repeat(2,1fr); } }
 @media (max-width:560px){ .tool-roadmap .tool-grid{ grid-template-columns:1fr; } }
 
-/* ===== [tool] Per-tool "Keep going" knit-in (lines 3358-3469) ===== */
+/* ===== [tool] Per-tool "Keep going" knit-in (lines 3378-3489) ===== */
 
 /* ---------- Per-tool "Keep going" knit-in (Phase 3 cohesion pass) ----
    Renders at the bottom of every live tool page (between
@@ -559,7 +567,7 @@ body[data-page="sheets-hub"] .tool-card--compact.live:hover > p:last-child::afte
   .tool-knit__grid{ grid-template-columns:1fr; }
 }
 
-/* ===== [tool] Tool deep-links (.tool-deep-* — bottom of every /tools/* page) (lines 4709-4793) ===== */
+/* ===== [tool] Tool deep-links (.tool-deep-* — bottom of every /tools/* page) (lines 4732-4816) ===== */
 
 /* Tool deep-links — the Phase-3.5 block at the bottom of every
    /tools/* page. Closes the loop from a tool's result back into
@@ -645,7 +653,7 @@ body[data-page="sheets-hub"] .tool-card--compact.live:hover > p:last-child::afte
   color:var(--teal);
 }
 
-/* ===== [tool] Tool states (loading / error / empty) (lines 5961-6007) ===== */
+/* ===== [tool] Tool states (loading / error / empty) (lines 5984-6030) ===== */
 
 /* ============ Tool states (Sprint 5 — cohesion) ============
    Shared loading + error patterns for tool result regions. Every
@@ -693,7 +701,7 @@ body[data-page="sheets-hub"] .tool-card--compact.live:hover > p:last-child::afte
 .tool-error-meta{margin-top:12px;font-size:12.5px;color:var(--stone);font-variant-numeric:tabular-nums}
 
 
-/* ===== [tool] Learn-back (in tool result region) (lines 6092-6111) ===== */
+/* ===== [tool] Learn-back (in tool result region) (lines 6115-6134) ===== */
 
 /* ============ Learn-back (Sprint 12 — cohesion) ============
    A thin, prose-shaped row that sits inside a tool's result region
@@ -714,7 +722,7 @@ body[data-page="sheets-hub"] .tool-card--compact.live:hover > p:last-child::afte
 .learn-back-body a:hover,.learn-back-body a:focus-visible{color:var(--teal-dark)}
 
 
-/* ===== [tool] .edu-result — interpretation card under tool output (lines 6532-6571) ===== */
+/* ===== [tool] .edu-result — interpretation card under tool output (lines 6560-6599) ===== */
 /* ============ .edu-result — interpretation card under tool output ============
    Every calculator emits a number; this block lives directly under
    the result panel and answers the two questions a small-business
@@ -755,7 +763,7 @@ body[data-page="sheets-hub"] .tool-card--compact.live:hover > p:last-child::afte
 @media print{.edu-result{display:none}}
 
 
-/* ===== [tool] Statistical disclosure components (lines 6572-6615) ===== */
+/* ===== [tool] Statistical disclosure components (lines 6600-6643) ===== */
 /* ============ Statistical disclosure components ============
    Phase 3 — building on .edu-result so calculators can disclose
    uncertainty bands, hard-coded assumptions, and the formula behind
@@ -800,7 +808,7 @@ body[data-page="sheets-hub"] .tool-card--compact.live:hover > p:last-child::afte
 @media print{.edu-range,.edu-source,.edu-formula,.edu-caveat{display:none}}
 
 
-/* ===== [tool] Tool-internal type minimums (lines 6616-6744) ===== */
+/* ===== [tool] Tool-internal type minimums (lines 6644-6772) ===== */
 /* ============ Tool-internal type minimums ============
    Utility floor for text inside tool result panels, tables, and
    helpers. Tools previously drifted to 10.5–12px in tight grids; the
@@ -930,7 +938,7 @@ body[data-page="sheets-hub"] .tool-card--compact.live:hover > p:last-child::afte
 .window-fieldnotes-rail__empty{font-style:italic;color:var(--ink-soft);font-size:14.5px}
 
 
-/* ===== [tool] sub-tool rail back to Storefront Health (lines 6769-6774) ===== */
+/* ===== [tool] sub-tool rail back to Storefront Health (lines 6797-6802) ===== */
 /* Phase G.8 (Growth) — sub-tool rail back to Storefront Health.
    Quiet single line; the bold tool name carries the click weight. */
 .tool-storefront-rail{font-size:13.5px;color:var(--ink-soft);line-height:1.55;margin:6px 0 0;max-width:680px}

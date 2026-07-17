@@ -188,9 +188,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=6558c9f2d6a5" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=abb0a063b1ee" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=6558c9f2d6a5"><link rel="stylesheet" href="/assets/site-article.css?v=abb0a063b1ee"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=ae9e2118f83a" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=d184aa00dcf3" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ae9e2118f83a"><link rel="stylesheet" href="/assets/site-article.css?v=d184aa00dcf3"></noscript>
 
 <style>
   /* ============ BLOG INDEX + POST LAYOUT STYLES ============ */
@@ -249,6 +249,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     .post-card { grid-template-columns: 1fr; gap: 10px; align-content: start; }
     .post-card .meta { padding-top: 0; }
     .post-card:nth-of-type(2) { border-top: 1px solid var(--line); }
+  }
+  /* Tablet + upper-phablet single-column: let the Fraunces title grow with
+     the wider content column instead of staying pinned at the 24px phone
+     floor. Scoped to the single-column rail band only — phone (<560) and the
+     two-column desktop grid (>=1000, which is already well-proportioned at
+     26→34px) keep their current sizes untouched. */
+  @media (min-width: 560px) and (max-width: 999px) {
+    .post-card h3 { font-size: clamp(26px, 4.4vw, 33px); }
   }
 
   /* Empty state */
