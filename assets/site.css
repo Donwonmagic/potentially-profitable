@@ -2499,6 +2499,21 @@ body[data-audio-seek] .article-body .listen-sent:hover{background:rgba(42,80,200
    owns fixed-nav clearance, so the inline margin is pure dead space above the
    fold (worst on phone). Scoped to elements that actually carry the inline. */
 .breadcrumb[style*="margin-top"]{margin-top:0 !important}
+/* Cost Index weekly archive table: a normal table on wider screens; on phones
+   it reflows to one card per edition — cells carry data-label from
+   build-cost-index-archive.mjs — so all six columns fit with ZERO horizontal
+   scroll (replacing the earlier scroll wrapper). */
+.ci-archive-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+@media (max-width:640px){
+  .ci-archive-wrap{overflow-x:visible}
+  .ci-archive,.ci-archive tbody,.ci-archive tr,.ci-archive td{display:block;width:100%}
+  .ci-archive thead{position:absolute;left:-9999px}
+  .ci-archive tr{border:1px solid var(--line);border-radius:10px;margin:0 0 12px;padding:6px 14px 10px;background:var(--white)}
+  .ci-archive td{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:7px 0}
+  .ci-archive td:not(:last-child){border-bottom:1px dashed var(--line)}
+  .ci-archive td:first-child{font-size:16px;padding-top:2px}
+  .ci-archive td::before{content:attr(data-label);font-size:12px;font-weight:600;color:var(--ink-soft);letter-spacing:.02em;white-space:nowrap}
+}
 .breadcrumb a{color:var(--stone);transition:color var(--t-fast) var(--ease);white-space:nowrap}
 .breadcrumb a:hover{color:var(--teal)}
 .breadcrumb-sep{display:inline-block;margin:0 clamp(6px,1vw,8px);color:var(--stone-2);font-size:15px;line-height:1;user-select:none}

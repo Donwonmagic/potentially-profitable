@@ -209,7 +209,21 @@
 .pos-table tbody td.feature-name { font-weight: 500; color: var(--ink); font-size: 14.5px; }
 .pos-table .note { display: block; font-size: 12px; color: var(--stone); margin-top: 4px; line-height: 1.4; font-weight: 400; }
 .table-scroll > .pos-table { min-width: 640px; }
-@media (max-width: 640px) { .pos-table-wrap { margin: 40px -16px; } .pos-table tbody td, .pos-table thead th { padding: 10px 8px; } .pos-table thead th { font-size: 14px; } .pos-table { font-size: 13px; } .table-scroll > .pos-table { min-width: 560px; } }
+@media (max-width: 640px) {
+  .pos-table-wrap { margin: 40px 0; overflow: visible; }
+  .table-scroll { overflow: visible; }
+  .table-scroll > .pos-table { min-width: 0; }
+  .pos-table, .pos-table tbody, .pos-table tr, .pos-table td { display: block; width: 100%; }
+  .pos-table thead { position: absolute; left: -9999px; }
+  .pos-table { font-size: 14px; border-radius: 12px; }
+  .pos-table tbody tr { border: 1px solid var(--line); border-radius: 12px; margin: 0 0 14px; padding: 2px 16px 12px; background: var(--white); }
+  .pos-table tbody td { padding: 9px 0; border-bottom: 1px dashed var(--line); display: flex; flex-direction: column; gap: 3px; }
+  .pos-table tbody tr td:last-child { border-bottom: 0; }
+  .pos-table tbody td.feature-name { font-size: 17px; padding: 12px 0 9px; border-bottom: 2px solid var(--ink); }
+  .pos-table tbody td::before { content: attr(data-label); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--stone); }
+  .pos-table tbody td.feature-name::before { content: none; }
+  .pos-table .viz-magbar { display: none; }
+}
 </style>
 <style>
 :root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
@@ -240,9 +254,9 @@ main{padding-top:64px}
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-italic.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-italic.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site-core.css?v=e06d0e64c85f" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=090dbae39a84" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=e06d0e64c85f"><link rel="stylesheet" href="/assets/site-article.css?v=090dbae39a84"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=55a640ee7cc9" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=fb6367eb51b8" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=55a640ee7cc9"><link rel="stylesheet" href="/assets/site-article.css?v=fb6367eb51b8"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -799,59 +813,59 @@ main{padding-top:64px}
           <tbody>
             <tr>
               <td class="feature-name">Custom build (your own files)<span class="note">HTML/CSS on a host you control</span></td>
-              <td>Yes &mdash; files and domain in your name</td>
-              <td>0% platform &middot; processor only (~2.9% + 30&cent;)</td>
-              <td>~$0&ndash;10/mo hosting + ~$10/yr domain<span class="viz-magbar" style="--w:0.005" aria-hidden="true"></span><span class="note">Upfront build cost separate</span></td>
-              <td>Owner-operators who plan to keep the site for years</td>
+              <td data-label="Own the site?">Yes &mdash; files and domain in your name</td>
+              <td data-label="Online-order commission">0% platform &middot; processor only (~2.9% + 30&cent;)</td>
+              <td data-label="Monthly (May 2026)">~$0&ndash;10/mo hosting + ~$10/yr domain<span class="viz-magbar" style="--w:0.005" aria-hidden="true"></span><span class="note">Upfront build cost separate</span></td>
+              <td data-label="Best for">Owner-operators who plan to keep the site for years</td>
             </tr>
             <tr>
               <td class="feature-name">Wix<span class="note">All-in-one builder with restaurant tools</span></td>
-              <td>No &mdash; proprietary, site cannot be exported</td>
-              <td>Marketed 0%; tier-dependent fees reported<span class="note">Verify your tier on wix.com</span></td>
-              <td>~$16&ndash;39/mo<span class="viz-magbar" style="--w:0.02" aria-hidden="true"></span><span class="note">Per Wix pricing pages, May 2026</span></td>
-              <td>Small dine-in launching tonight on a credit card</td>
+              <td data-label="Own the site?">No &mdash; proprietary, site cannot be exported</td>
+              <td data-label="Online-order commission">Marketed 0%; tier-dependent fees reported<span class="note">Verify your tier on wix.com</span></td>
+              <td data-label="Monthly (May 2026)">~$16&ndash;39/mo<span class="viz-magbar" style="--w:0.02" aria-hidden="true"></span><span class="note">Per Wix pricing pages, May 2026</span></td>
+              <td data-label="Best for">Small dine-in launching tonight on a credit card</td>
             </tr>
             <tr>
               <td class="feature-name">Squarespace<span class="note">Template-quality leader; content-only export</span></td>
-              <td>No &mdash; XML content export; design stays</td>
-              <td>0% platform &middot; payment processor on top</td>
-              <td>~$23&ndash;49/mo on commerce tiers<span class="viz-magbar" style="--w:0.025" aria-hidden="true"></span><span class="note">Per squarespace.com pricing, May 2026</span></td>
-              <td>Brand-led small restaurant, low ordering volume</td>
+              <td data-label="Own the site?">No &mdash; XML content export; design stays</td>
+              <td data-label="Online-order commission">0% platform &middot; payment processor on top</td>
+              <td data-label="Monthly (May 2026)">~$23&ndash;49/mo on commerce tiers<span class="viz-magbar" style="--w:0.025" aria-hidden="true"></span><span class="note">Per squarespace.com pricing, May 2026</span></td>
+              <td data-label="Best for">Brand-led small restaurant, low ordering volume</td>
             </tr>
             <tr>
               <td class="feature-name">Square Online<span class="note">Free site bundled with Square POS</span></td>
-              <td>No &mdash; locked to Square Payments</td>
-              <td>0% platform &middot; processor tier-dependent</td>
-              <td>$0 free tier; ~$35/mo paid tier<span class="viz-magbar" style="--w:0.018" aria-hidden="true"></span><span class="note">Per squareup.com pricing, May 2026</span></td>
-              <td>Square-on-POS shop wanting a basic ordering page</td>
+              <td data-label="Own the site?">No &mdash; locked to Square Payments</td>
+              <td data-label="Online-order commission">0% platform &middot; processor tier-dependent</td>
+              <td data-label="Monthly (May 2026)">$0 free tier; ~$35/mo paid tier<span class="viz-magbar" style="--w:0.018" aria-hidden="true"></span><span class="note">Per squareup.com pricing, May 2026</span></td>
+              <td data-label="Best for">Square-on-POS shop wanting a basic ordering page</td>
             </tr>
             <tr>
               <td class="feature-name">BentoBox<span class="note">Done-for-you premium design</span></td>
-              <td>No &mdash; hosted by BentoBox</td>
-              <td>Add-on; per-order or % fee on ordering</td>
-              <td>~$279 (Foundations) to ~$479+ (Signature)<span class="viz-magbar" style="--w:0.24" aria-hidden="true"></span><span class="note">Per secondary coverage; verify on getbento.com</span></td>
-              <td>Upscale full-service where brand is the differentiator</td>
+              <td data-label="Own the site?">No &mdash; hosted by BentoBox</td>
+              <td data-label="Online-order commission">Add-on; per-order or % fee on ordering</td>
+              <td data-label="Monthly (May 2026)">~$279 (Foundations) to ~$479+ (Signature)<span class="viz-magbar" style="--w:0.24" aria-hidden="true"></span><span class="note">Per secondary coverage; verify on getbento.com</span></td>
+              <td data-label="Best for">Upscale full-service where brand is the differentiator</td>
             </tr>
             <tr>
               <td class="feature-name">Popmenu<span class="note">Per-dish SEO pages + marketing automation</span></td>
-              <td>No &mdash; hosted; 12-month contract standard</td>
-              <td>Ordering add-on ~$50/mo + ~$1/order</td>
-              <td>~$179 / $299 / $499/mo + ~$300/mo per extra location<span class="viz-magbar" style="--w:0.25" aria-hidden="true"></span><span class="note">Per secondary coverage; verify on popmenu.com</span></td>
-              <td>Multi-location group running marketing automation</td>
+              <td data-label="Own the site?">No &mdash; hosted; 12-month contract standard</td>
+              <td data-label="Online-order commission">Ordering add-on ~$50/mo + ~$1/order</td>
+              <td data-label="Monthly (May 2026)">~$179 / $299 / $499/mo + ~$300/mo per extra location<span class="viz-magbar" style="--w:0.25" aria-hidden="true"></span><span class="note">Per secondary coverage; verify on popmenu.com</span></td>
+              <td data-label="Best for">Multi-location group running marketing automation</td>
             </tr>
             <tr>
               <td class="feature-name">Owner.com<span class="note">Ordering-first commission-free stack</span></td>
-              <td>No &mdash; hosted by Owner.com</td>
-              <td>0% restaurant (Flat) with ~5% guest support fee; or ~5% restaurant (Flex)</td>
-              <td>~$249/mo (Flex) to ~$499/mo (Flat)<span class="viz-magbar" style="--w:0.25" aria-hidden="true"></span><span class="note">Per owner.com pricing, May 2026</span></td>
-              <td>Restaurant where direct ordering is the business</td>
+              <td data-label="Own the site?">No &mdash; hosted by Owner.com</td>
+              <td data-label="Online-order commission">0% restaurant (Flat) with ~5% guest support fee; or ~5% restaurant (Flex)</td>
+              <td data-label="Monthly (May 2026)">~$249/mo (Flex) to ~$499/mo (Flat)<span class="viz-magbar" style="--w:0.25" aria-hidden="true"></span><span class="note">Per owner.com pricing, May 2026</span></td>
+              <td data-label="Best for">Restaurant where direct ordering is the business</td>
             </tr>
             <tr>
               <td class="feature-name">Toast<span class="note">POS + website + ordering, one stack</span></td>
-              <td>No &mdash; hosted as part of the POS stack</td>
-              <td>0% platform commission on direct ordering; processing layered</td>
-              <td>~$300&ndash;700/mo (cafe) to $1,000&ndash;2,000+/mo (full-service)<span class="viz-magbar" style="--w:1" aria-hidden="true"></span><span class="note">Directional all-in; verify quote on toasttab.com</span></td>
-              <td>Restaurant where website, ordering, and POS are one bill</td>
+              <td data-label="Own the site?">No &mdash; hosted as part of the POS stack</td>
+              <td data-label="Online-order commission">0% platform commission on direct ordering; processing layered</td>
+              <td data-label="Monthly (May 2026)">~$300&ndash;700/mo (cafe) to $1,000&ndash;2,000+/mo (full-service)<span class="viz-magbar" style="--w:1" aria-hidden="true"></span><span class="note">Directional all-in; verify quote on toasttab.com</span></td>
+              <td data-label="Best for">Restaurant where website, ordering, and POS are one bill</td>
             </tr>
           </tbody>
         </table></div>

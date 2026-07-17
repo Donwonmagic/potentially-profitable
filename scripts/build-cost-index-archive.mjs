@@ -68,12 +68,12 @@ function editionsDesc(c, editions) {
     const spread = e.spread ? `${e.spread.above} / ${e.spread.panel}` : '—';
     const reconTag = e.reconstructed ? ` <span style="opacity:.55;font-size:.85em">(${c.recon})</span>` : '';
     return `          <tr>
-            <td><strong>${esc(e.asOf)}</strong>${reconTag}</td>
-            <td>${pct(e.basket && e.basket.pct)}</td>
-            <td>${conf}</td>
-            <td>${spread}</td>
-            <td style="white-space:nowrap"><a href="${dispatch}">${c.read}</a></td>
-            <td style="white-space:nowrap">${dataLink}</td>
+            <td data-label="${c.thWeek}"><strong>${esc(e.asOf)}</strong>${reconTag}</td>
+            <td data-label="${c.thBasket}">${pct(e.basket && e.basket.pct)}</td>
+            <td data-label="${c.thConf}">${conf}</td>
+            <td data-label="${c.thSpread}">${spread}</td>
+            <td data-label="${c.thRead}" style="white-space:nowrap"><a href="${dispatch}">${c.read}</a></td>
+            <td data-label="${c.thData}" style="white-space:nowrap">${dataLink}</td>
           </tr>`;
   }).join('\n');
 
@@ -89,8 +89,8 @@ function editionsDesc(c, editions) {
     <p class="ci-lede">${c.lede}</p>
   </section>
   <div class="ci-body" style="margin-inline:0">
-    <div class="ci-archive-wrap" style="overflow-x:auto;-webkit-overflow-scrolling:touch;margin:8px 0 24px">
-    <table class="ci-archive" style="width:100%;min-width:32rem;border-collapse:collapse;font-size:15.5px">
+    <div class="ci-archive-wrap" style="margin:8px 0 24px">
+    <table class="ci-archive" style="width:100%;border-collapse:collapse;font-size:15.5px">
       <thead>
         <tr style="text-align:left;border-bottom:2px solid var(--line)">
           <th style="padding:10px 12px">${c.thWeek}</th>
