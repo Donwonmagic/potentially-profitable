@@ -23,6 +23,34 @@
     return (d && typeof d[key] === 'string') ? d[key] : en;
   };
 
+  // Shared polite announcer — a calm, screen-reader-only reassurance beat
+  // for actions that otherwise confirm only by sight (copy / cite / save).
+  // One reused visually-hidden aria-live region, created lazily on first
+  // use so pages that never trigger a confirmation carry zero extra DOM.
+  // The reassurance is *spoken* to assistive tech; the visible "✓" state
+  // stays the sighted signal. Best-effort by construction — a failure to
+  // announce never blocks or throws inside the action it accompanies.
+  let __live = null;
+  const announce = (msg) => {
+    if (typeof document === 'undefined' || !document.body || !msg) return;
+    try {
+      if (!__live) {
+        __live = document.createElement('div');
+        __live.setAttribute('aria-live', 'polite');
+        __live.setAttribute('aria-atomic', 'true');
+        __live.className = 'sr-only';
+        __live.setAttribute('data-live-announcer', '');
+        document.body.appendChild(__live);
+      }
+      // Clear first, then set on the next frame, so an identical repeat
+      // message ("Link copied" twice in a row) still re-announces.
+      __live.textContent = '';
+      const set = () => { __live.textContent = msg; };
+      if (typeof requestAnimationFrame === 'function') requestAnimationFrame(set);
+      else set();
+    } catch (_) { /* announcing is best-effort; never break the action */ }
+  };
+
   // Language switcher: clicking the "Español" / "English" anchor in the
   // nav sets a functional cookie so the server can prefer the chosen
   // locale on first-load hints (see src/worker.js) and so the user's
@@ -501,15 +529,21 @@
             // API isn't available so the user sees the manual-select
             // hint immediately. The existing catch covers async
             // throws from .writeText() itself.
+            const failMsg = i18n('share.copy_failed', 'Copy failed — select the URL manually');
             if (!navigator.clipboard || typeof navigator.clipboard.writeText !== 'function') {
-              el.textContent = 'Copy failed — select the URL manually';
+              el.textContent = failMsg;
+              announce(failMsg);
               return;
             }
             try {
               await navigator.clipboard.writeText(url);
               const original = el.textContent;
-              el.textContent = 'Link copied ✓';
+              const okMsg = i18n('share.copied', 'Link copied');
+              // Visible state keeps the "✓"; the spoken beat drops it so a
+              // screen reader hears "Link copied", not "Link copied check mark".
+              el.textContent = okMsg + ' ✓';
               el.classList.add('copied');
+              announce(okMsg);
               track('copy');
               setTimeout(() => {
                 el.textContent = original;
@@ -517,7 +551,8 @@
                 closeMenu();
               }, 1500);
             } catch (_) {
-              el.textContent = 'Copy failed — select the URL manually';
+              el.textContent = failMsg;
+              announce(failMsg);
             }
           });
         } else if (intents[target]) {

@@ -1640,6 +1640,14 @@ br.br-lg{display:none}
 .share-item{display:block;width:100%;text-align:left;padding:10px 14px;font-family:var(--font-body);font-size:14px;color:var(--ink);background:transparent;border:0;border-radius:8px;cursor:pointer;transition:background-color var(--t-fast) var(--ease)}
 .share-item:hover,.share-item:focus-visible{background-color:var(--cream-2);outline:none}
 .share-item.copied{color:var(--teal);font-weight:600}
+/* Reassurance beat: a single calm settle when the copy confirms. Compositor-
+   only (transform+opacity), scoped inside no-preference so reduced-motion
+   readers get the state change with no motion — mutually exclusive with the
+   global reduce cap, safe by construction. */
+@media (prefers-reduced-motion:no-preference){
+  .share-item.copied{animation:share-copied-settle 240ms var(--ease-out) both}
+}
+@keyframes share-copied-settle{from{transform:translateY(-2px);opacity:.72}to{transform:translateY(0);opacity:1}}
 /* @shell:article === Listen / audio player === */
 /* ============ LISTEN / AUDIO PLAYER ============
    Two surfaces share one engine:
