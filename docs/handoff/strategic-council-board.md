@@ -45,10 +45,20 @@ artifact — the container restarts).
 - `d47276398` — CI ingredient: events → card grid, sparkline stays on one row, price sentence anchored (17px/600).
 - `85cddd2fa` — CI hub (+ES + generator): catalog grid density (3-up tablet / 4-5 wide) + editorial category dividers.
 - `b7b8133ae` — CI events (+ES + generator): zone width release + `.evh-card` 2-col ledger rows at ≥880 (date/magnitude gutter + narrative).
+- `acc20a8ad` — CI weekly dispatch: `.ci-dispatch>.viz-figure` breaks onto a min(960px,92vw) stage at ≥1024 (scoped; print-neutralized; EN-only).
+- `90d5d7ac4` — Library hub: 2-column back-of-book article index at ≥1024.
+- `e2631eb42` — Vendor-benchmark (+ES): framed fluid shell (no edge-to-edge tablet / stranded ribbon).
+- `642f46802` — Plate-cost (+ES): 44px tap targets on calculator inputs (touch a11y).
+- `c5614d621` — **adversarial-review follow-up:** backfilled `.ci-dispatch` onto ALL dispatch editions (the current *monthly* was untagged) + corrected the "weekly-only" comment.
+- `51c8f862e` — **viz-spark phone overflow fix** (found via the adversarial pass): long nowrap annotations forced h-scroll on the monthly dispatch at 360/390; annos wrap ≤520px + minmax(0,1fr) grid hardening. Shared — hardens every viz-spark.
 
-**Done surfaces:** homepage (stances/ledger/service/FAQ), article shell (H2/see-also), CI ingredient
-(center + events/spark/line), CI hub (density + dividers), CI events (width + ledger card) — **the CI
-funnel spine is elevated.** **Generator discipline confirmed working:**
+**Adversarial-pass discipline (per founder directive):** each risky increment gets an independent
+reviewer that refutes scope/overflow/print/dark/regression before or right after commit. The dispatch
+review verified the breakout clean AND caught the monthly-untagged rollout gap → led to the real
+viz-spark h-scroll bug fix. This is the loop working: adversarial review → real defect found → fixed.
+
+**Done surfaces:** homepage, article shell, CI ingredient, CI hub, CI events, **CI weekly+monthly
+dispatch** (funnel spine complete), library hub, vendor-benchmark, plate-cost a11y, viz-spark (shared). **Generator discipline confirmed working:**
 surgical inline-CSS edits across the committed cost-index pages + mirror into `build-cost-index-pages.mjs`
 (never run it — it carries a half-finished template rollout); every ci patch verified `0 drift lines`.
 
