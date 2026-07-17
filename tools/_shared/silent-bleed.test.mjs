@@ -58,6 +58,14 @@ test('share band scales: a dominant top dish reads "three-quarters"', () => {
   assert.match(c.headline, /about three-quarters of it/);
 });
 
+test('HONESTY: a top dish below one half reads "about N%", never "more than half"', () => {
+  // 47/100 = 0.47 — a plurality, not a majority. "More than half" would be a
+  // false direction; the honest band states the real fraction.
+  const c = B.build({ impacts: [{ dish: 'A', dollarsPerWeek: 47 }, { dish: 'B', dollarsPerWeek: 28 }, { dish: 'C', dollarsPerWeek: 25 }], locale: 'en' });
+  assert.match(c.headline, /about 47% of it/);
+  assert.doesNotMatch(c.headline, /more than half/);
+});
+
 test('a single bleeding dish: a leaderboard of one, no "start at the top"', () => {
   const c = B.build({ impacts: [{ dish: 'Solo', dollarsPerWeek: 30 }], locale: 'en' });
   assert.equal(c.tier, 'leaderboard');

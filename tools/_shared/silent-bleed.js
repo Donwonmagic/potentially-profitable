@@ -37,7 +37,10 @@
   function sharePhrase(locale, s) {
     if (s >= 0.72) return tt(locale, 'about three-quarters of it', 'como tres cuartas partes');
     if (s >= 0.60) return tt(locale, 'about two-thirds of it', 'como dos tercios');
-    if (s >= 0.45) return tt(locale, 'more than half of it', 'más de la mitad');
+    // Strictly greater than one half — "more than half" is a direction, not a
+    // hedge, so a top share in [0.45, 0.5] must NOT read as a majority. Below
+    // this it falls to the honest "about N%" band that states the real fraction.
+    if (s > 0.5) return tt(locale, 'more than half of it', 'más de la mitad');
     return tt(locale, 'about ' + Math.round(s * 100) + '% of it', 'como ' + Math.round(s * 100) + '%');
   }
 
