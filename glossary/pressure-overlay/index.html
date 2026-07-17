@@ -43,7 +43,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=9c20170c9cfc">
+<link rel="preload" as="style" href="/assets/site-core.css?v=4d3925609798" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=1ff1de200f52" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=4d3925609798"><link rel="stylesheet" href="/assets/site-article.css?v=1ff1de200f52"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -169,7 +171,7 @@
         "@id": "https://muntin.digital/#business"
       },
       "image": "https://muntin.digital/brand/og/glossary-pressure-overlay.png",
-      "datePublished": "2026-06-23T05:52:59.492Z",
+      "datePublished": "2026-07-11T05:59:36+00:00",
       "isPartOf": {
         "@id": "https://muntin.digital/glossary/#muntin-glossary"
       }
@@ -193,6 +195,7 @@
     document.documentElement.dataset.platform = 'mac';
   }
 </script>
+<!-- batch-banner:start --><!-- batch-banner:end -->
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="/" class="logo" aria-label="Muntin Digital home">
@@ -418,7 +421,7 @@
 
     <div class="term-body">
       <p class="term-def">A leading indicator is something that reliably moves before the thing you care about, giving early warning. The Cost Index runs a leading-indicator pressure overlay: supply signals that lead delivered cost — like cattle-on-feed placements ahead of beef — published as an inferred direction of pressure (up, down, or flat), never as a dollar price, and only after the signal's own live track record proves out.</p>
-      <h2 class="term-why-h">Why it matters</h2>
+      <h2 class="term-why-h" id="why-it-matters">Why it matters</h2>
       <p class="term-why">It tells you which way cost is leaning before it lands on an invoice, without pretending to know the number. A leading signal — like cattle-on-feed placements running ahead of beef — can warn that cost is building before it lands, so the move isn't a surprise — while the overlay stays honest about its limit: a direction, with a track record attached, and no dollar figure. It is the one part of the index that looks forward, and it is bounded hard.</p>
       
       <!-- glossary-explainer-cue:start -->
@@ -471,7 +474,7 @@
   <div class="container">
     <div class="section-header reveal section-center">
       <span class="eyebrow">Glossary</span>
-      <h2>Browse all<br><span class="serif-italic"><!-- count:glossary.terms -->171<!-- /count --> terms.</span></h2>
+      <h2 id="browse-all171-terms">Browse all<br><span class="serif-italic"><!-- count:glossary.terms -->171<!-- /count --> terms.</span></h2>
       <p class="final-sub">Plain-English definitions for every term in your audit, organized by category.</p>
     </div>
     <div class="hero-ctas reveal hero-ctas-center">
@@ -542,7 +545,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->5<!-- /count --> tools, <!-- count:glossary.terms -->171<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->37<!-- /count --> articles, <!-- count:tools.live -->5<!-- /count --> tools, <!-- count:glossary.terms -->171<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav

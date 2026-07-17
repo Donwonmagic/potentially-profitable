@@ -42,7 +42,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=9c20170c9cfc">
+<link rel="preload" as="style" href="/assets/site-core.css?v=4d3925609798" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=1ff1de200f52" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=4d3925609798"><link rel="stylesheet" href="/assets/site-article.css?v=1ff1de200f52"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -168,7 +170,7 @@
         "@id": "https://muntin.digital/#business"
       },
       "image": "https://muntin.digital/brand/og/glossary-prediction-band-es.png",
-      "datePublished": "2026-06-23T05:53:04.229Z",
+      "datePublished": "2026-07-11T05:59:36+00:00",
       "isPartOf": {
         "@id": "https://muntin.digital/glossary/#muntin-glossary"
       }
@@ -192,6 +194,7 @@
     document.documentElement.dataset.platform = 'mac';
   }
 </script>
+<!-- batch-banner:start --><!-- batch-banner:end -->
 <header class="nav" id="nav">
   <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
              Placed inside <header> so sync-includes replaces it atomically
@@ -362,7 +365,7 @@
 
     <div class="term-body">
       <p class="term-def">Un rango de incertidumbre calibrado, no un solo número adivinado. Una banda de predicción (o conformal) es un rango donde el valor real debería caer una parte declarada de las veces — 80% de cobertura significa que el número real debería caer dentro unas 8 de cada 10 veces.</p>
-      <h2 class="term-why-h">Por qué importa</h2>
+      <h2 class="term-why-h" id="por-que-importa">Por qué importa</h2>
       <p class="term-why">Un solo número de pronóstico esconde qué tan seguro es; una banda lo muestra. El ancho es la honestidad: una banda angosta afirma mucho, una ancha admite duda. El Índice de costos publica sus pronósticos derivados como una banda con meta de 80% de cobertura (un método conformal split/EnbPI, ensanchado hasta que aguanta). Caminando hacia adelante a través de 84 ingredientes y 5,929 pasos evaluados, la banda de hecho acertó cerca del 84% de las veces — cubriendo un poco más de lo prometido, que es el lado honesto del error.</p>
       
       <!-- glossary-explainer-cue:start -->
@@ -400,7 +403,7 @@
 <aside id="prediction-band-explainer" class="term-explainer" data-term-slug="prediction-band" tabindex="0" aria-label="El explicador de 90 segundos">
   <header class="term-explainer__head">
     <span class="eyebrow">El explicador de 90 segundos</span>
-    <h2>The prediction band, in 90 seconds.</h2>
+    <h2 id="the-prediction-band-in-90-seconds">The prediction band, in 90 seconds.</h2>
     <p class="term-explainer__sub"><strong>A calibrated range, not a single guess.</strong> <span aria-hidden="true">·</span> 74s</p>
   </header>
   <div class="term-explainer__stage">
@@ -596,7 +599,7 @@
   <div class="container">
     <div class="section-header reveal section-center">
       <span class="eyebrow">Glosario</span>
-      <h2>Explora los<br><span class="serif-italic"><!-- count:glossary.terms -->171<!-- /count --> términos.</span></h2>
+      <h2 id="explora-los171-terminos">Explora los<br><span class="serif-italic"><!-- count:glossary.terms -->171<!-- /count --> términos.</span></h2>
       <p class="final-sub">Definiciones en lenguaje claro para cada término en tu auditoría, organizadas por categoría.</p>
     </div>
     <div class="hero-ctas reveal hero-ctas-center">
@@ -669,7 +672,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">La ventana.</p>
-        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->36<!-- /count --> art&iacute;culos, <!-- count:tools.live -->5<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->171<!-- /count --> t&eacute;rminos &mdash; de Muntin Digital, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
+        <p class="foot-blurb">Una biblioteca gratuita para restaurantes &mdash; <!-- count:articles.library -->37<!-- /count --> art&iacute;culos, <!-- count:tools.live -->5<!-- /count --> herramientas y un glosario de <!-- count:glossary.terms -->171<!-- /count --> t&eacute;rminos &mdash; de Muntin Digital, en Silver Spring, MD. Se habla espa&ntilde;ol.</p>
       </div>
 
       <!-- El orden de columnas refleja la navegación principal de 5
