@@ -1568,9 +1568,10 @@ main{padding-top:64px}
 .ci-hero h1{font-family:var(--font-display);font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.12;color:var(--ink);margin:0 0 14px}
 .ci-answer{font-size:clamp(18px,3vw,22px);font-weight:600;color:var(--ink);margin:0 0 14px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
 .ci-lede{font-size:18px;line-height:1.6;color:var(--ink);margin:0;max-width:720px}
-.ci-body{margin:8px auto 0;max-width:760px}
+.ci-body{margin:8px 0 0;max-width:760px}
 .ci-body h2{font-family:var(--font-display);font-size:clamp(20px,3vw,26px);font-weight:500;color:var(--ink);margin:34px 0 10px;line-height:1.2}
 .ci-body p{margin:0 0 16px;font-size:16px;line-height:1.7}
+.ci-body>p:not([class]),.ci-body>ol,.ci-body>ul{max-width:68ch}
 .ci-body ol,.ci-body ul{margin:0 0 16px;padding-left:22px;font-size:16px;line-height:1.7}
 .ci-body li{margin:0 0 8px}
 .ci-read{margin:22px 0 8px;padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px;font-variant-numeric:tabular-nums}
@@ -1774,6 +1775,8 @@ main{padding-top:64px}
 .ci-card a:focus-visible,.ci-read a:focus-visible,.ci-sibs a:focus-visible,.breadcrumb a:focus-visible,.ci-source a:focus-visible,.ci-events a:focus-visible,summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:2px}
 /* touch: lift the drawer summaries to a real tap target (WCAG 2.5.8). */
 .ci-read__src summary,.ci-outlook__how summary{display:inline-block;padding:6px 0;min-height:24px}
+/* touch: on phones, lift the provenance drawer toggles to a full 44px tap target (WCAG 2.5.5). */
+@media (max-width:560px){.ci-read__src summary,.ci-season__src summary,.ci-composite__src summary,.ci-events__cite summary,.ci-outlook__how summary{min-height:44px;padding:10px 0}}
 /* the pre-rendered sparkline must never clip in a narrower container. */
 .mtn-spark{max-width:100%;height:auto}
 /* print: the controller-PDFs-a-reading-for-a-vendor workflow. Drop the chrome, force the

@@ -289,9 +289,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=2830bb0a913c" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=158a407ca00a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=2830bb0a913c"><link rel="stylesheet" href="/assets/site-article.css?v=158a407ca00a"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=e06d0e64c85f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=090dbae39a84" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=e06d0e64c85f"><link rel="stylesheet" href="/assets/site-article.css?v=090dbae39a84"></noscript>
 
 <style>
   /* ===== ABOUT PAGE LOCAL STYLES ===== */
@@ -341,6 +341,23 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
   /* References line sits quietly above the CTA */
   .references-line{text-align:center;font-size:14px;color:rgba(250,247,242,0.62);letter-spacing:0.02em;margin:28px auto 0;max-width:520px}
+
+  /* Desktop: center the ~820px bio narrative + career timeline within the
+     1200px container so they don't sit left-aligned against a wide right
+     gutter while the page's own notes are centered. */
+  @media (min-width:961px){
+    [aria-labelledby="narrative-heading"] .section-header,
+    [aria-labelledby="narrative-heading"] .narrative,
+    [aria-labelledby="timeline-heading"] .section-header,
+    [aria-labelledby="timeline-heading"] .timeline{margin-inline:auto}
+  }
+
+  /* Tablet (721–960): restore the side-by-side hero. .about-grid only goes
+     2-col at 961, so between 721–960 the portrait balloons full-width.
+     Aria-scoped to the hero so any shared .about-grid teaser is untouched. */
+  @media (min-width:721px) and (max-width:960px){
+    [aria-labelledby="about-heading"] .about-grid{grid-template-columns:0.8fr 1.2fr;gap:40px;align-items:center}
+  }
 </style>
 </head>
 <body>

@@ -208,7 +208,8 @@
 .pos-table tbody tr:last-child td { border-bottom: 0; }
 .pos-table tbody td.feature-name { font-weight: 500; color: var(--ink); font-size: 14.5px; }
 .pos-table .note { display: block; font-size: 12px; color: var(--stone); margin-top: 4px; line-height: 1.4; font-weight: 400; }
-@media (max-width: 640px) { .pos-table-wrap { margin: 40px -16px; } .pos-table tbody td, .pos-table thead th { padding: 10px 8px; } .pos-table thead th { font-size: 14px; } .pos-table { font-size: 13px; } }
+.table-scroll > .pos-table { min-width: 640px; }
+@media (max-width: 640px) { .pos-table-wrap { margin: 40px -16px; } .pos-table tbody td, .pos-table thead th { padding: 10px 8px; } .pos-table thead th { font-size: 14px; } .pos-table { font-size: 13px; } .table-scroll > .pos-table { min-width: 560px; } }
 </style>
 <style>
 :root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
@@ -239,9 +240,9 @@ main{padding-top:64px}
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-italic.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-italic.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site-core.css?v=2830bb0a913c" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=158a407ca00a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=2830bb0a913c"><link rel="stylesheet" href="/assets/site-article.css?v=158a407ca00a"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=e06d0e64c85f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=090dbae39a84" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=e06d0e64c85f"><link rel="stylesheet" href="/assets/site-article.css?v=090dbae39a84"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>

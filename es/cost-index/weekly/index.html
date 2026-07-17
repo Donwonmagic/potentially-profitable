@@ -102,9 +102,9 @@ main{padding-top:64px}
 .ci-rel__val{flex:0 0 42px;font-size:13px;font-weight:600;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink)}
 .ci-rel figcaption{font-size:13px;color:var(--ink-soft);margin-top:8px}
 </style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=2830bb0a913c" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=158a407ca00a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=2830bb0a913c"><link rel="stylesheet" href="/assets/site-article.css?v=158a407ca00a"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=e06d0e64c85f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=090dbae39a84" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=e06d0e64c85f"><link rel="stylesheet" href="/assets/site-article.css?v=090dbae39a84"></noscript>
 </head>
 <body>
 <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -283,16 +283,17 @@ main{padding-top:64px}
     <h1>Todas las ediciones</h1>
     <p class="ci-lede">El Índice de costos de restaurantes publica un despacho fechado — mensual el primer martes desde agosto de 2026, semanal antes de eso: dónde se ubica la canasta ponderada, qué activa una señal de reprecio o de vigilancia, y el contexto de los factores detrás. Esta es la serie completa, de la más reciente a la más antigua. Cada edición es un registro permanente y citable; las ediciones nativas incluyen un conjunto de datos abierto por edición junto a la lectura.</p>
   </section>
-  <div class="ci-body">
-    <table class="ci-archive" style="width:100%;border-collapse:collapse;margin:8px 0 24px;font-size:15.5px">
+  <div class="ci-body" style="margin-inline:0">
+    <div class="ci-archive-wrap" style="overflow-x:auto;-webkit-overflow-scrolling:touch;margin:8px 0 24px">
+    <table class="ci-archive" style="width:100%;min-width:32rem;border-collapse:collapse;font-size:15.5px">
       <thead>
         <tr style="text-align:left;border-bottom:2px solid var(--line)">
           <th style="padding:10px 12px">Semana del</th>
           <th style="padding:10px 12px">Canasta vs. base</th>
           <th style="padding:10px 12px">Confianza</th>
           <th style="padding:10px 12px">Por encima de la base</th>
-          <th style="padding:10px 12px">Leer</th>
-          <th style="padding:10px 12px">Datos</th>
+          <th style="padding:10px 12px;white-space:nowrap">Leer</th>
+          <th style="padding:10px 12px;white-space:nowrap">Datos</th>
         </tr>
       </thead>
       <tbody>
@@ -301,35 +302,36 @@ main{padding-top:64px}
             <td>−5.0%</td>
             <td>high</td>
             <td>24 / 81</td>
-            <td><a href="/blog/cost-index-week-2026-07-06/">Abrir despacho</a></td>
-            <td><a href="/cost-index/week-2026-07-06.json">JSON</a></td>
+            <td style="white-space:nowrap"><a href="/blog/cost-index-week-2026-07-06/">Abrir despacho</a></td>
+            <td style="white-space:nowrap"><a href="/cost-index/week-2026-07-06.json">JSON</a></td>
           </tr>
           <tr>
             <td><strong>2026-06-18</strong></td>
             <td>+3.2%</td>
             <td>medium</td>
             <td>36 / 82</td>
-            <td><a href="/blog/cost-index-week-2026-06-18/">Abrir despacho</a></td>
-            <td><a href="/cost-index/week-2026-06-18.json">JSON</a></td>
+            <td style="white-space:nowrap"><a href="/blog/cost-index-week-2026-06-18/">Abrir despacho</a></td>
+            <td style="white-space:nowrap"><a href="/cost-index/week-2026-06-18.json">JSON</a></td>
           </tr>
           <tr>
             <td><strong>2026-06-16</strong> <span style="opacity:.55;font-size:.85em">(reconstruida)</span></td>
             <td>+3.2%</td>
             <td>medium</td>
             <td>32 / 82</td>
-            <td><a href="/blog/cost-index-week-2026-06-16/">Abrir despacho</a></td>
-            <td>—</td>
+            <td style="white-space:nowrap"><a href="/blog/cost-index-week-2026-06-16/">Abrir despacho</a></td>
+            <td style="white-space:nowrap">—</td>
           </tr>
           <tr>
             <td><strong>2026-06-05</strong> <span style="opacity:.55;font-size:.85em">(reconstruida)</span></td>
             <td>+9.1%</td>
             <td>high</td>
             <td>9 / 13</td>
-            <td><a href="/blog/cost-index-week-2026-06-05/">Abrir despacho</a></td>
-            <td>—</td>
+            <td style="white-space:nowrap"><a href="/blog/cost-index-week-2026-06-05/">Abrir despacho</a></td>
+            <td style="white-space:nowrap">—</td>
           </tr>
       </tbody>
     </table>
+    </div>
     <p style="font-size:13.5px;color:var(--ink-soft);line-height:1.55">Las ediciones marcadas como “reconstruidas” se rellenaron a nivel de canasta a partir del despacho publicado antes de que existiera el conjunto de datos por semana; no incluyen archivo de datos abierto y nunca anclan una comparación semana a semana por ingrediente. Las ediciones nativas incluyen una instantánea abierta (CC0) en /cost-index/week-&lt;fecha&gt;.json.</p>
     <p><a href="/cost-index/methodology/">Cómo se construyen estos números →</a></p>
   </div>

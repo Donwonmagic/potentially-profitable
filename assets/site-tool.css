@@ -5,7 +5,7 @@
  * the SECTIONS map in scripts/build-css-shells.mjs.
  */
 
-/* ===== [tool] TOOL SHELL — shared primitives for /tools/* pages (lines 2858-2958) ===== */
+/* ===== [tool] TOOL SHELL — shared primitives for /tools/* pages (lines 2899-2999) ===== */
 /* ============================================================
    TOOL SHELL — shared primitives for /tools/* pages
    Promoted from seven near-identical inline <style> blocks
@@ -107,7 +107,7 @@
 .tool-card.soon .cta{ color:var(--stone); }
 .tool-card .cta svg{ width:16px; height:16px; }
 
-/* ===== [tool] Tools-landing cluster layout (lines 2959-3250) ===== */
+/* ===== [tool] Tools-landing cluster layout (lines 3000-3296) ===== */
 
 /* ---------- Tools-landing cluster layout (Phase 2 cohesion pass) -----
    The /tools/ page is now grouped by the same 6-topic taxonomy used at
@@ -219,6 +219,11 @@
 }
 .tool-cluster__topic:hover{ text-decoration:underline; }
 .tool-cluster .tool-grid{ margin-top:24px; }
+/* Keep the /tools/ index cluster 2-up through tablet (desktop base .tool-grid
+   is already 2-up; the generic <=960 collapse drops it to 1-col, stacking 5
+   compact cards full-width). Bounded to 641-960 so phones stay 1-up and
+   desktop is untouched. */
+@media (min-width:641px) and (max-width:960px){ .tool-cluster .tool-grid{ grid-template-columns:repeat(2,1fr); } }
 @media (max-width:720px){
   .tool-cluster__head{ grid-template-columns:1fr; align-items:start; }
   .tool-cluster__topic{ justify-self:start; }
@@ -400,7 +405,7 @@
 @media (max-width:960px){ .tool-roadmap .tool-grid{ grid-template-columns:repeat(2,1fr); } }
 @media (max-width:560px){ .tool-roadmap .tool-grid{ grid-template-columns:1fr; } }
 
-/* ===== [tool] Per-tool "Keep going" knit-in (lines 3251-3362) ===== */
+/* ===== [tool] Per-tool "Keep going" knit-in (lines 3297-3408) ===== */
 
 /* ---------- Per-tool "Keep going" knit-in (Phase 3 cohesion pass) ----
    Renders at the bottom of every live tool page (between
@@ -513,7 +518,7 @@
   .tool-knit__grid{ grid-template-columns:1fr; }
 }
 
-/* ===== [tool] Tool deep-links (.tool-deep-* — bottom of every /tools/* page) (lines 4594-4678) ===== */
+/* ===== [tool] Tool deep-links (.tool-deep-* — bottom of every /tools/* page) (lines 4648-4732) ===== */
 
 /* Tool deep-links — the Phase-3.5 block at the bottom of every
    /tools/* page. Closes the loop from a tool's result back into
@@ -599,7 +604,7 @@
   color:var(--teal);
 }
 
-/* ===== [tool] Tool states (loading / error / empty) (lines 5841-5887) ===== */
+/* ===== [tool] Tool states (loading / error / empty) (lines 5900-5946) ===== */
 
 /* ============ Tool states (Sprint 5 — cohesion) ============
    Shared loading + error patterns for tool result regions. Every
@@ -647,7 +652,7 @@
 .tool-error-meta{margin-top:12px;font-size:12.5px;color:var(--stone);font-variant-numeric:tabular-nums}
 
 
-/* ===== [tool] Learn-back (in tool result region) (lines 5972-5991) ===== */
+/* ===== [tool] Learn-back (in tool result region) (lines 6031-6050) ===== */
 
 /* ============ Learn-back (Sprint 12 — cohesion) ============
    A thin, prose-shaped row that sits inside a tool's result region
@@ -668,7 +673,7 @@
 .learn-back-body a:hover,.learn-back-body a:focus-visible{color:var(--teal-dark)}
 
 
-/* ===== [tool] .edu-result — interpretation card under tool output (lines 6412-6451) ===== */
+/* ===== [tool] .edu-result — interpretation card under tool output (lines 6471-6510) ===== */
 /* ============ .edu-result — interpretation card under tool output ============
    Every calculator emits a number; this block lives directly under
    the result panel and answers the two questions a small-business
@@ -709,7 +714,7 @@
 @media print{.edu-result{display:none}}
 
 
-/* ===== [tool] Statistical disclosure components (lines 6452-6495) ===== */
+/* ===== [tool] Statistical disclosure components (lines 6511-6554) ===== */
 /* ============ Statistical disclosure components ============
    Phase 3 — building on .edu-result so calculators can disclose
    uncertainty bands, hard-coded assumptions, and the formula behind
@@ -754,7 +759,7 @@
 @media print{.edu-range,.edu-source,.edu-formula,.edu-caveat{display:none}}
 
 
-/* ===== [tool] Tool-internal type minimums (lines 6496-6652) ===== */
+/* ===== [tool] Tool-internal type minimums (lines 6555-6683) ===== */
 /* ============ Tool-internal type minimums ============
    Utility floor for text inside tool result panels, tables, and
    helpers. Tools previously drifted to 10.5–12px in tight grids; the
@@ -883,29 +888,8 @@
 .window-fieldnotes-rail__cite a{color:var(--teal);text-decoration:none}
 .window-fieldnotes-rail__empty{font-style:italic;color:var(--ink-soft);font-size:14.5px}
 
-/* Phase G.8 (Growth) — glossary-index "Tools that use these terms"
-   sidecar. Sits below the recently-added rail. Quiet two-column
-   list on wide screens, one-column on phones. */
-.gloss-tool-sidecar{padding:32px 0 16px;border-top:1px solid var(--line);max-width:1080px}
-.gloss-tool-sidecar__h{font-family:var(--font-display);font-size:22px;line-height:1.25;margin:0 0 8px;color:var(--ink)}
-.gloss-tool-sidecar__lead{font-size:14.5px;color:var(--ink-soft);max-width:680px;line-height:1.55;margin:0 0 16px}
-.gloss-tool-sidecar__list{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:8px 24px}
-.gloss-tool-sidecar__list li{font-size:14.5px;line-height:1.55;padding:6px 0;border-bottom:1px dashed color-mix(in srgb, var(--line) 70%, transparent)}
-.gloss-tool-sidecar__list li a{color:var(--teal);text-decoration:none}
-.gloss-tool-sidecar__list li a:hover{text-decoration:underline}
-.gloss-tool-sidecar__list li span{color:var(--ink-soft);display:block;font-size:13.5px}
 
-/* Phase G.4 (Growth) — Last-verified stamp on volatile glossary
-   terms (GBP, Find a Table, Web Vitals, third-party platforms). */
-.glossary-verified{font-size:12px;color:var(--ink-soft);font-style:italic;margin:6px 0 16px;letter-spacing:0.02em}
-.glossary-verified time{font-style:normal;font-variant-numeric:tabular-nums;color:var(--ink)}
-
-/* Phase G.4 (Growth) — concrete-example sentence on glossary term
-   pages. Quiet inline emphasis: italic for the leading "Example:",
-   tabular figures so dollar amounts align cleanly. */
-.term-example{font-style:italic;font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:8px 0 24px;max-width:680px;font-variant-numeric:tabular-nums}
-.term-example code{font-style:normal;background:var(--cream-2);padding:1px 4px;border-radius:3px;font-size:13px}
-
+/* ===== [tool] sub-tool rail back to Storefront Health (lines 6708-6713) ===== */
 /* Phase G.8 (Growth) — sub-tool rail back to Storefront Health.
    Quiet single line; the bold tool name carries the click weight. */
 .tool-storefront-rail{font-size:13.5px;color:var(--ink-soft);line-height:1.55;margin:6px 0 0;max-width:680px}

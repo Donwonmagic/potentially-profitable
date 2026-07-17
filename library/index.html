@@ -59,11 +59,14 @@
 
 <style>
 .breadcrumb{padding-top:100px}
+@media (max-width:780px){.breadcrumb{margin-top:0 !important;padding-top:48px}}
+@media (max-width:600px){.breadcrumb{padding-top:28px}}
 /* Scoped mono "data voice" stack — defined once, inherited by numbers,
    dates, and uppercase micro-labels across the library hub. */
 #main{--lib-mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono","Roboto Mono",Menlo,monospace}
 .lib-three{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:32px 0 0}
-@media (max-width:780px){.lib-three{grid-template-columns:1fr}}
+@media (max-width:780px){.lib-three{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.lib-three{grid-template-columns:1fr}}
 .lib-door{position:relative;overflow:hidden;display:block;padding:28px 28px 24px;background:var(--white);border:1px solid var(--line);border-radius:6px;color:inherit;transition:border-color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
 .lib-door::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--teal);transform:scaleX(0);transform-origin:left;transition:transform var(--t-med) var(--ease-out)}
 .lib-door:hover,.lib-door:focus-within{border-color:var(--teal);transform:translateY(-2px)}
@@ -188,9 +191,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=2830bb0a913c" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=158a407ca00a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=2830bb0a913c"><link rel="stylesheet" href="/assets/site-article.css?v=158a407ca00a"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=e06d0e64c85f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=090dbae39a84" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=e06d0e64c85f"><link rel="stylesheet" href="/assets/site-article.css?v=090dbae39a84"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>

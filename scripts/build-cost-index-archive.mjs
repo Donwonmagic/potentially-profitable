@@ -72,8 +72,8 @@ function editionsDesc(c, editions) {
             <td>${pct(e.basket && e.basket.pct)}</td>
             <td>${conf}</td>
             <td>${spread}</td>
-            <td><a href="${dispatch}">${c.read}</a></td>
-            <td>${dataLink}</td>
+            <td style="white-space:nowrap"><a href="${dispatch}">${c.read}</a></td>
+            <td style="white-space:nowrap">${dataLink}</td>
           </tr>`;
   }).join('\n');
 
@@ -88,22 +88,24 @@ function editionsDesc(c, editions) {
     <h1>${c.h1}</h1>
     <p class="ci-lede">${c.lede}</p>
   </section>
-  <div class="ci-body">
-    <table class="ci-archive" style="width:100%;border-collapse:collapse;margin:8px 0 24px;font-size:15.5px">
+  <div class="ci-body" style="margin-inline:0">
+    <div class="ci-archive-wrap" style="overflow-x:auto;-webkit-overflow-scrolling:touch;margin:8px 0 24px">
+    <table class="ci-archive" style="width:100%;min-width:32rem;border-collapse:collapse;font-size:15.5px">
       <thead>
         <tr style="text-align:left;border-bottom:2px solid var(--line)">
           <th style="padding:10px 12px">${c.thWeek}</th>
           <th style="padding:10px 12px">${c.thBasket}</th>
           <th style="padding:10px 12px">${c.thConf}</th>
           <th style="padding:10px 12px">${c.thSpread}</th>
-          <th style="padding:10px 12px">${c.thRead}</th>
-          <th style="padding:10px 12px">${c.thData}</th>
+          <th style="padding:10px 12px;white-space:nowrap">${c.thRead}</th>
+          <th style="padding:10px 12px;white-space:nowrap">${c.thData}</th>
         </tr>
       </thead>
       <tbody>
 ${rows}
       </tbody>
     </table>
+    </div>
     <p style="font-size:13.5px;color:var(--ink-soft);line-height:1.55">${c.note}</p>
     <p><a href="/cost-index/methodology/">${c.methodLink}</a></p>
   </div>

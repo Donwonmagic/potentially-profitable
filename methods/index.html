@@ -59,7 +59,6 @@
 }
 </script>
 
-<style>.breadcrumb{padding-top:100px}</style>
 <style>
 /* Critical CSS — prevents flash of unstyled content while the main
    stylesheet (assets/site.css) loads non-render-blocking via the
@@ -158,9 +157,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=2830bb0a913c" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=158a407ca00a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=2830bb0a913c"><link rel="stylesheet" href="/assets/site-article.css?v=158a407ca00a"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=e06d0e64c85f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=090dbae39a84" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=e06d0e64c85f"><link rel="stylesheet" href="/assets/site-article.css?v=090dbae39a84"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>
@@ -393,7 +392,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 </header>
 
 <main id="main">
-  <nav class="breadcrumb container" aria-label="Breadcrumb" style="margin-top:90px">
+  <nav class="breadcrumb container" aria-label="Breadcrumb" style="max-width:760px">
     <ol style="list-style:none;padding:0;margin:0;display:flex;gap:8px;font-size:13px;color:var(--stone)">
       <li><a href="/" style="color:var(--teal)">Home</a></li>
       <li aria-hidden="true">›</li>

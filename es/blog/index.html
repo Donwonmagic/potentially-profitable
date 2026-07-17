@@ -187,9 +187,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=2830bb0a913c" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=158a407ca00a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=2830bb0a913c"><link rel="stylesheet" href="/assets/site-article.css?v=158a407ca00a"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=e06d0e64c85f" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=090dbae39a84" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=e06d0e64c85f"><link rel="stylesheet" href="/assets/site-article.css?v=090dbae39a84"></noscript>
 
 <style>
   /* ============ BLOG INDEX + POST LAYOUT STYLES ============ */
@@ -242,6 +242,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   @media (max-width: 640px) {
     .post-card { grid-template-columns: 1fr; gap: 10px; padding: 24px 0; }
     .post-card .meta { padding-top: 0; }
+  }
+  @media (min-width: 1000px) {
+    .post-list { max-width: 1080px; grid-template-columns: 1fr 1fr; column-gap: 48px; row-gap: 4px; }
+    .post-card { grid-template-columns: 1fr; gap: 10px; align-content: start; }
+    .post-card .meta { padding-top: 0; }
+    .post-card:nth-of-type(2) { border-top: 1px solid var(--line); }
   }
 
   /* Empty state */
