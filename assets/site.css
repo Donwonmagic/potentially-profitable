@@ -6021,7 +6021,17 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
    they don't depend on the article shell. */
 
 .companion-kit{
-  margin:48px auto 64px;
+  /* Injected inside the 720px article body on library pages, which
+     crushed its four columns to ~150px and stretched the block tall.
+     Break it out to its intended ~1100px width, centered on the page.
+     The article body is centered, so left:50% + translateX(-50%)
+     re-centers regardless of the narrow parent — and it's a no-op on
+     full-width tool/sheet/glossary containers. */
+  width:min(1100px, 92vw);
+  margin:48px 0 64px;
+  position:relative;
+  left:50%;
+  transform:translateX(-50%);
   padding:clamp(28px,4vw,40px) clamp(20px,3vw,28px);
   background:var(--cream-2);
   border-top:1px solid var(--line);
