@@ -673,7 +673,7 @@ function siteFooter() {
   </div>
 </footer>
 
-<script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="/assets/site.js?v=20260717-reassure" defer></script>
 </body>
 </html>
 `;

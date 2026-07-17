@@ -641,7 +641,7 @@ ${extraCss || ''}
 const pageTail = `</div>
 </main>
 <footer class="site-footer" id="footer"></footer>
-<script src="/assets/site.js?v=20260430-cohesion" defer></script>
+<script src="/assets/site.js?v=20260717-reassure" defer></script>
 <script>
 /* Operator price check — pure in-memory compare against the public wholesale
  * reference. No fetch, no localStorage: the typed price never leaves the page. */

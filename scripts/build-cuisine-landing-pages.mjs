@@ -449,7 +449,7 @@ main{padding-top:64px}
 </div>
 </main>
 <footer class="site-footer" id="footer"></footer>
-<script src="/assets/site.js?v=20260430-cohesion" defer></script>
+<script src="/assets/site.js?v=20260717-reassure" defer></script>
 </body>
 </html>
 `;
@@ -591,7 +591,7 @@ function emitHubPage(locale) {
 </div>
 </main>
 <footer class="site-footer" id="footer"></footer>
-<script src="/assets/site.js?v=20260430-cohesion" defer></script>
+<script src="/assets/site.js?v=20260717-reassure" defer></script>
 </body>
 </html>
 `;
