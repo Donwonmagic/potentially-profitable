@@ -2933,7 +2933,7 @@ const EVENTS_HUB_CSS = `<style>
 .evh-chip:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 .evh-count{font-size:13px;color:var(--ink-soft);margin-left:auto;font-variant-numeric:tabular-nums}
 .evh-list{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-direction:column;gap:14px}
-.evh-card{padding:16px 18px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px}
+.evh-card{padding:16px 18px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px}@media(min-width:880px){.evh-card{display:grid;grid-template-columns:154px minmax(0,1fr);column-gap:30px;align-items:start;padding:20px 26px}.evh-card__head{grid-column:1;flex-direction:column;align-items:flex-start;gap:8px;margin:0}.evh-card__label,.evh-card__what,.evh-card__items,.evh-card__src{grid-column:2}}
 .evh-card[data-move="up"]{border-left-color:#A23B2D}
 .evh-card[data-move="down"]{border-left-color:var(--teal)}
 .evh-card__head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin:0 0 4px}
@@ -3040,7 +3040,7 @@ function emitEventsHubPage(locale) {
     <h1>${escHtml(h1)}</h1>
     <p class="ci-lede">${lede}</p>
   </section>
-  <div class="ci-body" style="max-width:860px">
+  <div class="ci-body" style="max-width:min(1040px,100%)">
     <div class="evh-stats">
       ${stat(nEv, es ? 'eventos documentados' : 'documented events')}
       ${stat(`${yMin}–${yMax}`, es ? 'de historia' : 'of history')}
