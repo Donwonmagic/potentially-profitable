@@ -59,9 +59,9 @@ modulate it with a device signal, we do not invent a palette.
 | # | Move | Eff | Verdict | In-container |
 |---|---|---|---|---|
 | 1 | Fix the royal-we POV in the founding-form error (EN+ES) — "I'll add you by hand" | S | **KEEP — SHIPPED** | ✅ |
-| 2 | `warmth.js` site-wide substrate + shared motion/storage helpers | M | **KEEP (strongest)** | ✅ |
-| 3 | Golden-Hour clock modulation of the hero wash | M | REVISE (whisper + contrast) | ✅ |
-| 4 | `mun_pref` cross-subdomain theme+locale cookie | L | REVISE (cookie IS sent; +`/cookies`) | dev-env |
+| 2 | `warmth.js` on-device substrate | M | **SHIPPED (homepage)** | ✅ |
+| 3 | Golden-Hour clock whisper (hero corner) | M | **SHIPPED (homepage)** | ✅ |
+| 4 | ~~`mun_pref` cookie~~ → read the system instead | S | **CUT (decision 3)** | ✅ |
 | 5 | Theme-swap cross-fade + reassurance beats (copy/save/cite) | M | **KEEP** | ✅ |
 | 6 | Visit-trail writer + "where you left off" chip | M | **REVISE — borders on CUT** (Claim-8) | ✅ |
 | 7 | Close the Cost-Index loop: tool card → its own reference page | S | **KEEP (best cohesion/effort)** | ✅ |
@@ -90,18 +90,30 @@ persistent error) is the gold standard to copy. Fold into Phase 1.
   Move 9 (`?from` title map). Vendor shared token/brand-mark specs as checked-in artifacts per repo, not
   a live cross-repo deploy dependency.
 
-## The genuine founder forks (yours to decide — see the chat)
+## Founder decisions (2026-07-17)
 
-1. **Golden-Hour loudness** — whisper (rec) / felt shift / skip time-of-day.
-2. **Claim-8 & continuity (the biggest risk).** The "where you left off" chip contradicts the
-   published, machine-readable `security/` Claim-8: *"no account, no saved history, no 'welcome back'
-   — unless you sign in to the optional Workshop."* Options: (A) no anonymous continuity cue, honor the
-   Claim literally; (B) device-local chip explicitly framed "your browser remembered — we didn't" (the
-   critique says copy can't override a schema.org Claim); (C) reconcile/amend Claim-8; **(D) scope
-   continuity to the signed-in Workshop only — the promise's own exception already ALLOWS it.** Rec: D
-   (honest for anonymous, warm for signed-in) or A.
-3. **Cross-subdomain cookie** — one first-party `.muntin.digital` `{theme,locale}` cookie (rec, gated
-   behind the dev-env walk) / CTA locale-param only / leave the crossing as-is.
+1. **Golden-Hour loudness → WHISPER.** SHIPPED as a homepage prototype (`58b61be2` + `2db889c5`):
+   `warmth.js` reads the local hour and leans the top-right hero-corner light a hair warmer toward
+   evening via `--gh-eve`, confined to the empty corner (zero text-contrast risk), byte-identical to
+   certified at midday and with JS off. Verified headless (Chromium) + node tests + contrast gates.
+2. **Continuity → WORKSHOP-ONLY.** The "where you left off" cue ships ONLY for signed-in Workshop
+   users — the published Claim-8 exception already allows it — so anonymous visitors keep the "no
+   welcome back" promise intact. Move 6 is re-scoped to the authed context, NOT the anonymous storefront.
+3. **Cross-app → READ THE SYSTEM (no cookie).** Each property independently honors the OS theme
+   (`prefers-color-scheme`) + system language; consistency comes from the user's own machine, not a
+   carried cookie. **Move 4 (the `mun_pref` cookie) is CUT** — replaced by "ensure both the storefront
+   AND the app default to the system signals" (the storefront already does via theme auto; the app-side
+   default is a dev-env check). This is the purest form of the thesis and deletes the privacy paperwork.
+
+## Next (post-decision build order)
+
+- **Site-wide `warmth.js` rollout** via the footer template + `sync-includes` → `inject-site-counts`
+  (documented build-chain order), so the substrate + whisper reach every hero surface, not just the homepage.
+- **Phase-1 cohesion wins (fork-free, in-container):** Move 7 (tool card → its Cost Index reference),
+  Move 10 (warm empty states + confirm coda), Move 11 (visible breadcrumb + field-notes voice), and the
+  P0 fabricated-success handler fix (the signup confirm must not fire on a 5xx).
+- **Move 5** theme cross-fade + reassurance beats (KEEP). **Move 6** Workshop-only continuity (authed).
+  **App-side system defaults** (theme + locale) once the product dev-env is up.
 
 ## Biggest risk (from the critique)
 
