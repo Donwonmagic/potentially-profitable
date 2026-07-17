@@ -75,6 +75,26 @@ loops — the "nobody tells you" boxes: Verifier, Stop-condition, Memory. Closin
   unsubscribe endpoint (the email currently links to the settings page, which works). Then Phase 0
   auto-refresh cron (needs the storefront-read token).
 
+### This session (cont.) — next surface: Ledger cost-intelligence bricks
+With cost-watch parked on the founder/staging, moved to the next autonomous surface: the grounded
+**`Muntin-Invoice-Decoder/docs/ledger-cost-intelligence-upgrade-plan.md`** (items A–K, the sibling of
+the E1–E15 catalog). State: the NOW bricks A/B/C are all at first-brick-done — **A confirmed already
+shipped** (`22415549`, `reference()` carries `epCents`+`trend`+`verdict`; the plan just lacked the DONE
+marker), B (`contract_price.py`) + C (`price_trend_pct`) done-unwired earlier.
+- **[DONE — first brick, `4ccbf32`] Item D: fold buy-or-ride into `/reorder`.** The market-aware
+  "buy ahead vs. ride it out" read lived one screen over under `/insights`; put it on the exact rows
+  where the order is committed. `GET /v1/inventory/reorder` now fetches `recentPriceHikes` (7d) and
+  attaches the E7 card (`buildBuyOrRideFromContext` + `resolveCostIndexTrend`) **only when a hike meets
+  known days-of-cover** — every other row `buyOrRide: null`, never a guess. Honest degrade (no hike / no
+  cover / null-or-stale trend → cover-only or nothing). Reuses the parity-locked pure engine + the
+  `testCostIndexOverride` snapshot seam. Web `ReorderRow` gains an optional read-subset type (no render
+  yet). Route test mirrors `buy-or-ride-route` (watch/buy-now by cover + 3 honesty holds); tsc (2
+  baseline) + prettier clean; runs in CI. **Follow-on:** render the card on the web `/reorder` row.
+- **Next candidate bricks (autonomous, in-container-verifiable):** the NEXT-tier items — E (demo→Vendor
+  Benchmark URL-fragment prefill; caveat: the "lands as comparable" hand-test wants a browser we lack),
+  or the B/C **wiring** bricks (Python `off_contract`/`price_creep` capture + SOFT registration; heavier,
+  want pytest + basis-bridge care). Item F (`above_market`) stays gated on the Python hit-rate probe.
+
 ### Storefront (`potentially-profitable`) — v3 redesign COMPLETE + CERTIFIED
 The app-grade v3 language (slate + electric-blue, tabular-mono data voice, muntin-grille-as-
 structure, 6px hairline) is shipped site-wide and certified (full 258-gate run, 0 non-idem
@@ -189,7 +209,9 @@ Don't loosen gates. Fact gate is absolute (it's spoken aloud in EN+ES).
 ## Older open threads (detail in the archive)
 
 - **A — Muntin Plate emergent-insight catalog** (`docs/plans/muntin-plate-insight-catalog.md`,
-  E1–E15 ranked; ADR-010 + E14 shipped). Thread is "pick the next entry to BUILD."
+  E1–E15 ranked; ADR-010 + E14 shipped). Thread is "pick the next entry to BUILD." Its grounded
+  product-side sibling is `Muntin-Invoice-Decoder/docs/ledger-cost-intelligence-upgrade-plan.md`
+  (items A–K; A/B/C first-brick done, **D shipped this session** — see CURRENT STATE above).
 - **B — vertical generality** (product): the "any small business" claim is live in marketing while
   every code path is restaurant-hardcoded — an honesty gap to either EARN (non-restaurant fixtures
   + a vertical selector) or SOFTEN (copy).
