@@ -112,6 +112,13 @@ modulate it with a device signal, we do not invent a palette.
   (bespoke `<script defer>`). Real rollout = hook the substrate into each hero-bearing surface's own
   script tail (cost-index page generator, tool pages, cuisine/theme landings), verifying each regen is
   drift-clean the way the dispatch regen was NOT. Treat as a deliberate pass, not a quick brick.
+  - **Two more constraints found (2026-07-17):** (a) cost-index pages use `.ci-hero`, not `.hero`, so the
+    `--gh-eve` whisper CSS (`.hero::after` / `.window::after`) must be **extended per hero variant**, each
+    extension re-run through the contrast gate keeping the wash in an empty corner away from text. (b) The
+    cost-index page generator carries **198 files of pre-existing drift** (`build-cost-index-pages.mjs
+    --check`) — a regen to add the hook would sweep it in. Hard prerequisite: **reconcile each generator's
+    standing drift first** (understand it the way the footer i18n drift was understood before propagating),
+    THEN add the hook. That reconciliation is a focused pass of its own — do not bundle it into a warmth brick.
 - **`sync-includes` drift is benign + now cleared.** The 614-file drift was *only* the Move 5b i18n
   keys awaiting propagation; running `sync-includes` → `inject-site-counts` propagated them AND healed
   stale ES footer counts (24/12/149 → the true 36/5/171). Counts are idempotent again; EN untouched.
