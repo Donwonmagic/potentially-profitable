@@ -1667,12 +1667,12 @@ main{padding-top:64px}
 .ci-signup-sep{color:var(--stone,#9aa0aa);margin:0 4px}
 .ci-source{font-size:12.5px;color:var(--ink-soft);margin:24px 0 40px}
 .ci-source a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
-.ci-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));margin:14px 0 0}
+.ci-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(210px,100%),1fr));margin:14px 0 0}
 .ci-card{padding:16px 18px;background:var(--white);border:1px solid var(--line);border-radius:10px}
 .ci-card a{font-family:var(--font-display);font-size:17px;color:var(--ink);text-decoration:none}
 .ci-card a:hover{color:var(--teal)}
 .ci-card-note{display:block;font-size:13px;color:var(--ink-soft);margin-top:4px}
-.ci-cat-h{font-family:var(--font-display);font-size:16px;color:var(--ink-soft);margin:30px 0 0;text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+.ci-cat-h{font-family:var(--font-display);font-size:16px;color:var(--ink-soft);margin:30px 0 0;text-transform:uppercase;letter-spacing:.04em;font-weight:600}.ci-body>.ci-cat-h{border-top:1px solid var(--line);padding-top:18px;margin-top:40px}
 .ci-card-action{margin-top:10px}
 .ci-moving{margin:20px 0 8px;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px}
 .ci-moving .ci-cat-h{margin:0 0 10px}
