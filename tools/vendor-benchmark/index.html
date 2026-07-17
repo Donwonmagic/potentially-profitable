@@ -132,9 +132,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=2830bb0a913c" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-tool.css?v=aee67503f378" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=2830bb0a913c"><link rel="stylesheet" href="/assets/site-tool.css?v=aee67503f378"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=4d3925609798" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-tool.css?v=d7265c6157ff" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=4d3925609798"><link rel="stylesheet" href="/assets/site-tool.css?v=d7265c6157ff"></noscript>
 <style>
 /* Vendor Benchmark — tool-scoped styles. Built entirely from site-core tokens
    so light/dark and print are automatic. .vb-* namespace. */
@@ -556,18 +556,7 @@ html{-webkit-text-size-adjust:100%}
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a>
-<!-- batch-banner:start -->
-<aside class="batch-marquee" data-batch="fathers-day-2026" role="complementary" aria-label="New dispatch · Get found for Father’s Day weekend" style="background:#16181D;color:#F6F7F8;font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(246,247,248,0.16);box-shadow:inset 0 1px 0 rgba(255,255,255,0.05)">
-  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;flex:1 1 auto">
-      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:#2A50C8;color:#F6F7F8;padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">New dispatch</span>
-      <span style="font-family:'Fraunces',Georgia,'Times New Roman',serif;font-size:14px;font-style:italic;line-height:1.35;min-width:0;color:#F6F7F8">It’s Father’s Day weekend. Can a searching family find you?</span>
-    </div>
-    <a href="/blog/get-found-fathers-day-weekend-2026/" style="display:inline-flex;align-items:center;gap:6px;color:#16181D;background:#F6F7F8;text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:13px;padding:6px 14px;border-radius:999px;white-space:nowrap;flex-shrink:0;box-shadow:0 1px 2px rgba(0,0,0,0.18);transition:transform .15s ease,box-shadow .15s ease">Read the dispatch <span aria-hidden="true">&rarr;</span></a>
-  </div>
-</aside>
-<script>(function(){var d=document.documentElement;function s(){var b=document.querySelector('.batch-marquee');if(b){d.style.setProperty('--banner-h',b.offsetHeight+'px');}}s();addEventListener('resize',s,{passive:true});addEventListener('orientationchange',s);if(document.fonts&&document.fonts.ready){document.fonts.ready.then(s);}})();</script>
-<!-- batch-banner:end -->
+<!-- batch-banner:start --><!-- batch-banner:end -->
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially
@@ -774,6 +763,7 @@ html{-webkit-text-size-adjust:100%}
        partial so the .js-theme-toggle button is in the DOM. -->
   <script src="/assets/theme-toggle.js?v=phase8"></script>
 </header>
+<nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep" aria-hidden="true">›</span><a href="/tools/">Tools</a><span class="breadcrumb-sep" aria-hidden="true">›</span><span aria-current="page">Vendor Benchmark</span></nav>
 
 <main id="main">
 <section class="vb-shell">
@@ -781,7 +771,7 @@ html{-webkit-text-size-adjust:100%}
     <span class="eyebrow">Free tool · Your price vs. the market, over the same dates</span>
     <h1>Was that the market, <em>or your vendor?</em></h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Last verified: <time datetime="2026-06-28">June 28, 2026</time></p>
+            <p class="tool-verified">Last verified: <time datetime="2026-07-17">July 17, 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Data promise">
@@ -938,20 +928,20 @@ html{-webkit-text-size-adjust:100%}
 
 <footer class="site-footer" id="footer"></footer>
 
-<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260430-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260717-reassure";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 <script src="/tools/_shared/safe-html.js?v=phase0"></script>
 <script src="/tools/_shared/context-bus.js?v=20260504-w10-3"></script>
 <script src="/tools/_shared/stem.js?v=20260504-w10-0a"></script>
 <script src="/tools/_shared/sku-match.js?v=20260504-w10-1"></script>
 <script src="/tools/_shared/bench-lookup.js?v=20260602-bench-1"></script>
-<script type="text/muntin-lazy-seed" data-src="/data/cost-index.js?v=20260607-live4"></script>
+<script type="text/muntin-lazy-seed" data-src="/data/cost-index.js?v=20260717-refpage1"></script>
 <!-- Deep history is NOT loaded here as a ~1.6MB monolith — Vendor Benchmark loads only the
      picked item's shard (/data/ci-history/<key>.js) on demand; see maybeLoadHistoryShard(). -->
 <script type="text/muntin-lazy-seed" data-src="/data/cost-index-context.js?v=20260709-ctx1"></script>
 <script src="/tools/_shared/cost-index-lookup.js?v=20260608-w16-1"></script>
 <script src="/tools/_shared/portion-bridge.js?v=20260504-w10-2"></script>
-<script src="/tools/_shared/cost-index-format.js?v=20260629-fmt4"></script>
-<script src="/tools/_shared/fair-price-gap.js?v=20260619-fpg1"></script>
+<script src="/tools/_shared/cost-index-format.js?v=20260717-fmt5"></script>
+<script src="/tools/_shared/fair-price-gap.js?v=20260717-fpg-trend1"></script>
 <script src="/tools/_shared/parse-number.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/cost-spike.js?v=20260704-vb1b"></script>
 <script src="/tools/_shared/vendor-ask.js?v=20260704-vb1b"></script>

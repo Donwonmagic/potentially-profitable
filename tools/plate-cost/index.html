@@ -140,9 +140,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=2830bb0a913c" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-tool.css?v=aee67503f378" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=2830bb0a913c"><link rel="stylesheet" href="/assets/site-tool.css?v=aee67503f378"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=4d3925609798" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-tool.css?v=d7265c6157ff" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=4d3925609798"><link rel="stylesheet" href="/assets/site-tool.css?v=d7265c6157ff"></noscript>
 <style>.breadcrumb{padding-top:100px}
 /* === Plate Cost Calculator tool-scoped styles. Page-prefix .pc-*. === */
 .pc-form{display:flex;flex-direction:column;gap:18px}
@@ -338,6 +338,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
 body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
 .pc-recost-banner{display:none;align-items:flex-start;gap:14px;padding:14px 18px;margin:0 0 14px;border:1px solid var(--teal);border-left-width:4px;border-radius:var(--r-md);background:var(--cream-2)}
+.pc-from-note{font-size:13px;color:var(--ink-soft);background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-md);padding:8px 12px;margin:0 0 14px}
+.pc-from-note strong{color:var(--ink);font-weight:600}
 .pc-recost-banner-body{flex:1;font-size:13.5px;line-height:1.55;color:var(--ink)}
 .pc-recost-banner-eyebrow{display:block;font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);margin-bottom:2px}
 .pc-recost-banner strong{color:var(--ink)}
@@ -495,18 +497,7 @@ body[data-pc-mode="recost"] .pc-prev-cell{display:block}
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a>
-<!-- batch-banner:start -->
-<aside class="batch-marquee" data-batch="fathers-day-2026" role="complementary" aria-label="New dispatch · Get found for Father’s Day weekend" style="background:#16181D;color:#F6F7F8;font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(246,247,248,0.16);box-shadow:inset 0 1px 0 rgba(255,255,255,0.05)">
-  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;flex:1 1 auto">
-      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:#2A50C8;color:#F6F7F8;padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">New dispatch</span>
-      <span style="font-family:'Fraunces',Georgia,'Times New Roman',serif;font-size:14px;font-style:italic;line-height:1.35;min-width:0;color:#F6F7F8">It’s Father’s Day weekend. Can a searching family find you?</span>
-    </div>
-    <a href="/blog/get-found-fathers-day-weekend-2026/" style="display:inline-flex;align-items:center;gap:6px;color:#16181D;background:#F6F7F8;text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:13px;padding:6px 14px;border-radius:999px;white-space:nowrap;flex-shrink:0;box-shadow:0 1px 2px rgba(0,0,0,0.18);transition:transform .15s ease,box-shadow .15s ease">Read the dispatch <span aria-hidden="true">&rarr;</span></a>
-  </div>
-</aside>
-<script>(function(){var d=document.documentElement;function s(){var b=document.querySelector('.batch-marquee');if(b){d.style.setProperty('--banner-h',b.offsetHeight+'px');}}s();addEventListener('resize',s,{passive:true});addEventListener('orientationchange',s);if(document.fonts&&document.fonts.ready){document.fonts.ready.then(s);}})();</script>
-<!-- batch-banner:end -->
+<!-- batch-banner:start --><!-- batch-banner:end -->
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially
@@ -723,7 +714,7 @@ body[data-pc-mode="recost"] .pc-prev-cell{display:block}
     <span class="eyebrow">Free tool · stays in your browser</span>
     <h1 style="font-family:var(--font-display);font-size:clamp(34px,4.5vw,52px);font-weight:500;color:var(--ink);margin:14px 0 14px;line-height:1.1;">What does each plate actually cost?</h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Last verified: <time datetime="2026-06-18">June 18, 2026</time></p>
+            <p class="tool-verified">Last verified: <time datetime="2026-07-17">July 17, 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Data promise">
@@ -981,7 +972,7 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
     </article>
 
     <div class="pc-empty" id="pcEmpty">
-      Fill in a row above &mdash; or <button type="button" class="pc-sample-btn" id="pcSample2" style="margin:0 6px;">load the sample recipe</button> &mdash; to see the math.
+      Add a row above, then Compute &mdash; the math runs right here on your device, sent nowhere. Or <button type="button" class="pc-sample-btn" id="pcSample2" style="margin:0 6px;">load the sample recipe</button>.
     </div>
   </div>
 </div></section>
@@ -1212,16 +1203,16 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
 </footer>
 
-<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260422-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260717-reassure";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 <script src="/tools/_shared/parse-number.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/context-bus.js?v=20260504-w10-3"></script>
 <script src="/tools/_shared/next-tool.js?v=phase4"></script>
 <script src="/tools/_shared/handoff.js?v=phase4"></script>
 <script src="/tools/_shared/stem.js?v=20260504-w10-0a"></script>
 <script src="/tools/_shared/sku-match.js?v=20260504-w10-1"></script>
-<script src="/data/cost-index.js?v=20260607-live4"></script>
+<script src="/data/cost-index.js?v=20260717-refpage1"></script>
 <script src="/tools/_shared/cost-index-lookup.js?v=20260608-w16-1"></script>
-<script src="/tools/plate-cost/cost-index-hint.js?v=20260608-w16-1" defer></script>
+<script src="/tools/plate-cost/cost-index-hint.js?v=20260717-verdict1" defer></script>
 <script src="/tools/_shared/sales-mix.js?v=20260602-pos1"></script>
 <script src="/tools/_shared/plate-advice.js?v=20260603-plate1"></script>
 <script src="/tools/_shared/portion-bridge.js?v=20260504-w10-2"></script>
@@ -1234,6 +1225,25 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
 <script src="/tools/plate-cost/plate-cost.js?v=20260504-w10-7"></script>
 <script src="/tools/plate-cost/stale-banner.js?v=20260504-w10-5" defer></script>
 <script src="/tools/plate-cost/card-render.js?v=20260426-pc2"></script>
+<script src="/tools/_shared/cost-index-from-titles.js?v=20260717-from1"></script>
+<script src="/tools/_shared/from-continuity.js?v=20260717-from1"></script>
+<script>
+/* Move 9 — ?from continuity. If the reader arrived from a Cost Index ingredient
+   page (…/tools/plate-cost/?from=<slug>), name it above the recost banner. The
+   title comes ONLY from the closed committed map (window.MUNTIN_FROM_TITLES) via
+   MuntinFromContinuity (textContent, silent no-op on any miss). No fetch, no storage. */
+(function () {
+  'use strict';
+  if (typeof MuntinFromContinuity === 'undefined' || !window.MUNTIN_FROM_TITLES) return;
+  var banner = document.getElementById('pcRecostBanner');
+  if (!banner) return;
+  MuntinFromContinuity.mount({
+    map: window.MUNTIN_FROM_TITLES, mountEl: banner, position: 'before', className: 'pc-from-note',
+    leadEn: 'Costing a dish with', tailEn: '— its live market read is in the Cost Index.',
+    leadES: 'Costeando un platillo con', tailES: '— su lectura de mercado en vivo está en el Índice de Costos.'
+  });
+})();
+</script>
 <script>
 /* Plate Cost — recommendation panel UI (the free→Ledger funnel hook).
    Defines window.MuntinPlateAdviceUI = { render(summary), clear() }, called

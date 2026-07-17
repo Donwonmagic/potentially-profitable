@@ -62,6 +62,7 @@ main{padding-top:64px}
 .ci-eyebrow a{color:var(--teal);text-decoration:none}
 .ci-hero h1{font-family:var(--font-display);font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.12;color:var(--ink);margin:0 0 14px}
 .ci-answer{font-size:clamp(18px,3vw,22px);font-weight:600;color:var(--ink);margin:0 0 14px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
+.ci-asof-rel{color:var(--ink-soft);font-weight:400}
 .ci-lede{font-size:18px;line-height:1.6;color:var(--ink);margin:0;max-width:720px}
 .ci-body{margin:8px auto 0;max-width:760px}
 .ci-body h2{font-family:var(--font-display);font-size:clamp(20px,3vw,26px);font-weight:500;color:var(--ink);margin:34px 0 10px;line-height:1.2}
@@ -309,9 +310,9 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
 </style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=311c0ace1faf" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=f6016ed317bf" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=311c0ace1faf"><link rel="stylesheet" href="/assets/site-article.css?v=f6016ed317bf"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=4d3925609798" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=1ff1de200f52" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=4d3925609798"><link rel="stylesheet" href="/assets/site-article.css?v=1ff1de200f52"></noscript>
 </head>
 <body>
 <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -332,7 +333,7 @@ main{padding-top:64px}
              along with the rest of the nav block on every build, keeping
              the partial strictly idempotent. Valid HTML5: <script> may
              appear in any flow-content context. */
-  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","audio.byline_studio":"Narrado para The Muntin Desk","audio.byline_browser":"Leído por tu navegador","audio.preview":"Escucha 30 segundos primero →","audio.resume_chip_aria":"Reanudar desde la posición guardada","audio.share_aria":"Copiar enlace en este momento","audio.dismiss":"Descartar","audio.kicker":"Edición en audio","audio.headline":"¿Prefieres escucharlo?","audio.sub":"Pulsa reproducir y leeremos el artículo entero — gráficos incluidos.","audio.meta_handsfree":"manos libres","audio.meta_min":"min","audio.now_reading":"Reproduciendo","audio.resume_continue":"Continuar desde","audio.help_aria":"Ver atajos de teclado e información del reproductor","audio.help_title":"Consejos para escuchar","audio.help_chapters_eyebrow":"Capítulos","audio.finished_done":"Listo.","audio.finished_browse":"Explora la biblioteca →","audio.share_toast_ok":"Enlace copiado en {time}","audio.share_toast_fail":"No se pudo copiar — portapapeles bloqueado","audio.language_label":"Idioma","lesson.widget_wait":"Don está esperando — usa el widget","lesson.widget_wait_labeled":"Don está esperando — {label}","lesson.opener_recorded":"Don abre esta lección","lesson.wrap_recorded":"Don cierra esta lección","audio.help_kbd_eyebrow":"Teclado","audio.kbd_space":"Espacio","audio.kbd_space_help":"Reproducir o pausar","audio.kbd_jk_help":"Retroceder 15 segundos / avanzar 15 segundos","audio.kbd_arrows_help":"Párrafo anterior / siguiente párrafo","audio.help_about_eyebrow":"Sobre la voz","audio.help_about_body":"The Muntin Desk usa una voz generada por computadora ajustada para una lectura clara. Usamos la misma voz en cada artículo para que te resulte familiar. Cada grabación se produce una sola vez y se guarda como un archivo de audio que puedes descargar.","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","search.voice_start":"Buscar por voz","search.voice_stop":"Detener la escucha","search.voice_hint":"Escuchando… habla ahora","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
+  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","audio.byline_studio":"Narrado para The Muntin Desk","audio.byline_browser":"Leído por tu navegador","audio.preview":"Escucha 30 segundos primero →","audio.resume_chip_aria":"Reanudar desde la posición guardada","audio.share_aria":"Copiar enlace en este momento","audio.dismiss":"Descartar","audio.kicker":"Edición en audio","audio.headline":"¿Prefieres escucharlo?","audio.sub":"Pulsa reproducir y leeremos el artículo entero — gráficos incluidos.","audio.meta_handsfree":"manos libres","audio.meta_min":"min","audio.now_reading":"Reproduciendo","audio.resume_continue":"Continuar desde","audio.help_aria":"Ver atajos de teclado e información del reproductor","audio.help_title":"Consejos para escuchar","audio.help_chapters_eyebrow":"Capítulos","audio.finished_done":"Listo.","audio.finished_browse":"Explora la biblioteca →","audio.share_toast_ok":"Enlace copiado en {time}","audio.share_toast_fail":"No se pudo copiar — portapapeles bloqueado","audio.language_label":"Idioma","share.copied":"Enlace copiado","share.copy_failed":"No se pudo copiar — selecciona la URL a mano","lesson.widget_wait":"Don está esperando — usa el widget","lesson.widget_wait_labeled":"Don está esperando — {label}","lesson.opener_recorded":"Don abre esta lección","lesson.wrap_recorded":"Don cierra esta lección","audio.help_kbd_eyebrow":"Teclado","audio.kbd_space":"Espacio","audio.kbd_space_help":"Reproducir o pausar","audio.kbd_jk_help":"Retroceder 15 segundos / avanzar 15 segundos","audio.kbd_arrows_help":"Párrafo anterior / siguiente párrafo","audio.help_about_eyebrow":"Sobre la voz","audio.help_about_body":"The Muntin Desk usa una voz generada por computadora ajustada para una lectura clara. Usamos la misma voz en cada artículo para que te resulte familiar. Cada grabación se produce una sola vez y se guarda como un archivo de audio que puedes descargar.","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","search.voice_start":"Buscar por voz","search.voice_stop":"Detener la escucha","search.voice_hint":"Escuchando… habla ahora","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
   <div class="container nav-inner">
     <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
       <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
@@ -477,7 +478,7 @@ main{padding-top:64px}
   <section class="ci-hero">
     <p class="ci-eyebrow"><a href="/es/cost-index/#produce">Frutas y verduras</a></p>
     <h1>Frambuesa</h1>
-    <p class="ci-answer">~$32.75–$38.06/caja · al 2026-07-16 <span class="ci-read__verb" data-bias="watch">Vigilar</span></p>
+    <p class="ci-answer">~$32.75–$38.06/caja · <span class="ci-asof" data-asof="2026-07-16">al 2026-07-16</span> <span class="ci-read__verb" data-bias="watch">Vigilar</span></p>
     <p class="ci-lede">Frambuesa se cotiza con un precio de referencia de mayoreo que cambia semana a semana; ahora va <strong>al alza</strong> según fuentes públicas (al 2026-07-16). Para ver el número en vivo, el rango típico y dónde queda tu precio, abre la lectura de abajo — y compárala con tu última factura.</p>
   </section>
   <div class="ci-body">
@@ -500,7 +501,7 @@ main{padding-top:64px}
     <p class="ci-read__verified"><strong>Verificado:</strong> nuestro rango del 80% capturó la próxima lectura semanal cerca del 78% de las veces (75–80%, 1304 lecturas) · al día para la cadencia de su fuente.</p>
     <p class="ci-read__method"><a href="/es/cost-index/methodology/#track-record">Cómo verificamos este número <span aria-hidden="true">→</span></a></p>
     <p class="ci-read__data">Descarga los datos: <a href="/cost-index/raspberry/series.csv" download>CSV</a> · <a href="/cost-index/raspberry/series.json">JSON</a></p>
-    <p class="ci-read__live"><a href="/es/tools/cost-pulse/#ci-raspberry">Ver frambuesa en vivo en el Índice de Costos <span aria-hidden="true">→</span></a></p>
+    <p class="ci-read__live"><a href="/es/tools/cost-pulse/?from=raspberry#ci-raspberry">Ver frambuesa en vivo en el Índice de Costos <span aria-hidden="true">→</span></a></p>
   </aside>
     
   <section class="ci-seasonal" aria-labelledby="cheapest">
@@ -576,7 +577,7 @@ main{padding-top:64px}
   <li>Debajo del rango = buen trato; dentro = normal; muy por encima = conversación con el proveedor.</li>
   <li>Observa la dirección unas semanas antes de re-cotizar un platillo — una sola semana es ruido.</li>
 </ol>
-<p>¿Vas a costear un platillo que lleva frambuesa? Usa la <a href="/es/tools/plate-cost/">Calculadora de Costo por Platillo</a>.</p>
+<p>¿Vas a costear un platillo que lleva frambuesa? Usa la <a href="/es/tools/plate-cost/?from=raspberry">Calculadora de Costo por Platillo</a>.</p>
     <div class="ci-signup ci-signup--compact">
       <div class="foot-newsletter">
         <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="es" data-surface="cost-index-ingredient">
@@ -602,7 +603,7 @@ main{padding-top:64px}
 </section>
     <p class="ci-sibs"><span class="ci-sibs-label">Más en frutas y verduras</span><a href="/es/cost-index/romaine-lettuce/">Lechuga romana</a> · <a href="/es/cost-index/tomato/">Jitomate (bola)</a> · <a href="/es/cost-index/onion/">Cebolla</a> · <a href="/es/cost-index/russet-potato/">Papa russet</a> · <a href="/es/cost-index/bell-pepper/">Pimiento morrón</a> · <a href="/es/cost-index/garlic/">Ajo</a> · <a href="/es/cost-index/avocado/">Aguacate</a> · <a href="/es/cost-index/lemon/">Limón amarillo</a> · <a href="/es/cost-index/button-mushroom/">Champiñón</a> · <a href="/es/cost-index/cucumber/">Pepino</a> · <a href="/es/cost-index/broccoli/">Brócoli</a> · <a href="/es/cost-index/cauliflower/">Coliflor</a> · <a href="/es/cost-index/spinach/">Espinaca</a> · <a href="/es/cost-index/asparagus/">Espárragos</a> · <a href="/es/cost-index/carrot/">Zanahoria</a> · <a href="/es/cost-index/corn-on-the-cob/">Elote (mazorca)</a> · <a href="/es/cost-index/kale/">Col rizada (kale)</a> · <a href="/es/cost-index/basil/">Albahaca</a> · <a href="/es/cost-index/cilantro/">Cilantro</a> · <a href="/es/cost-index/sweet-potato/">Camote</a> · <a href="/es/cost-index/lime/">Limón</a> · <a href="/es/cost-index/pineapple/">Piña</a> · <a href="/es/cost-index/celery/">Apio</a> · <a href="/es/cost-index/cabbage/">Repollo</a> · <a href="/es/cost-index/eggplant/">Berenjena</a> · <a href="/es/cost-index/zucchini/">Calabacín</a> · <a href="/es/cost-index/beet/">Remolacha</a> · <a href="/es/cost-index/leek/">Puerro</a> · <a href="/es/cost-index/ginger/">Jengibre</a> · <a href="/es/cost-index/yellow-squash/">Calabaza amarilla</a> · <a href="/es/cost-index/jalapeno/">Chile jalapeño</a> · <a href="/es/cost-index/green-onion/">Cebollín</a> · <a href="/es/cost-index/green-beans/">Ejotes</a> · <a href="/es/cost-index/parsley/">Perejil</a> · <a href="/es/cost-index/brussels-sprouts/">Coles de Bruselas</a> · <a href="/es/cost-index/butternut-squash/">Calabaza moscada</a> · <a href="/es/cost-index/iceberg-lettuce/">Lechuga iceberg</a> · <a href="/es/cost-index/bok-choy/">Bok choy</a> · <a href="/es/cost-index/artichoke/">Alcachofa</a> · <a href="/es/cost-index/okra/">Quimbombó</a> · <a href="/es/cost-index/snow-peas/">Arvejas de nieve</a> · <a href="/es/cost-index/butter-lettuce/">Lechuga mantequilla (Boston)</a> · <a href="/es/cost-index/green-leaf-lettuce/">Lechuga hoja verde</a> · <a href="/es/cost-index/red-leaf-lettuce/">Lechuga hoja roja</a> · <a href="/es/cost-index/collard-greens/">Berza (collard)</a> · <a href="/es/cost-index/napa-cabbage/">Col napa</a> · <a href="/es/cost-index/rutabaga/">Colinabo (rutabaga)</a> · <a href="/es/cost-index/daikon/">Rábano daikon</a> · <a href="/es/cost-index/cherry-tomato/">Jitomate cherry</a> · <a href="/es/cost-index/acorn-squash/">Calabaza bellota</a> · <a href="/es/cost-index/serrano-pepper/">Chile serrano</a> · <a href="/es/cost-index/poblano-pepper/">Chile poblano</a> · <a href="/es/cost-index/habanero-pepper/">Chile habanero</a> · <a href="/es/cost-index/mint/">Menta</a> · <a href="/es/cost-index/rosemary/">Romero</a> · <a href="/es/cost-index/thyme/">Tomillo</a> · <a href="/es/cost-index/oregano/">Orégano</a> · <a href="/es/cost-index/tarragon/">Estragón</a> · <a href="/es/cost-index/dill/">Eneldo</a> · <a href="/es/cost-index/red-onion/">Cebolla roja</a> · <a href="/es/cost-index/red-potato/">Papa roja</a> · <a href="/es/cost-index/grapefruit/">Toronja</a> · <a href="/es/cost-index/apple/">Manzana</a> · <a href="/es/cost-index/pear/">Pera</a> · <a href="/es/cost-index/banana/">Plátano</a> · <a href="/es/cost-index/watermelon/">Sandía</a> · <a href="/es/cost-index/cantaloupe/">Melón cantalupo</a> · <a href="/es/cost-index/blueberry/">Arándano azul</a></p>
     <div class="ci-cta-row">
-      <a class="btn btn-primary" href="/es/tools/cost-pulse/#ci-raspberry">Abrir la herramienta en vivo</a>
+      <a class="btn btn-primary" href="/es/tools/cost-pulse/?from=raspberry#ci-raspberry">Abrir la herramienta en vivo</a>
       <a class="btn btn-ghost" href="/es/cost-index/">Ver todas las lecturas</a>
     </div>
     <p class="ci-ledger-bridge" style="margin:16px 0 0;font-size:14.5px;line-height:1.6;color:var(--ink-soft)">Esta es la referencia del mercado. Para ver si <em>tus</em> facturas la siguen, l&iacute;nea por l&iacute;nea, eso es <a href="/es/ledger/" style="color:var(--teal);font-weight:600">Muntin Ledger</a> &mdash; tus datos, sin modelo de lenguaje.</p>
@@ -689,6 +690,42 @@ main{padding-top:64px}
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
 })();
 </script>
-<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260430-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+<!-- On-device as-of age gloss (Move 12): re-renders the AGE of an already-printed,
+     certified date on the reader's own clock — appends " · 3 days ago" / " · hace 3
+     días" after a static "as of <date>". Appends only: JS-off (or a stale/CSP-blocked
+     module) leaves the certified static date untouched. Reuses the tested, parity-
+     locked relativeDay() from MuntinCostFormat — never invents a date or a number. -->
+<script>
+(function () {
+  'use strict';
+  if (typeof document === 'undefined') return;
+  var nodes = document.querySelectorAll('.ci-asof[data-asof]');
+  if (!nodes.length) return;
+  var es = (document.documentElement.lang || 'en').slice(0, 2) === 'es';
+  function paint(F) {
+    if (!F || typeof F.relativeDay !== 'function') return;   // stale/old cached module → leave static date
+    var now = Date.now();
+    Array.prototype.forEach.call(nodes, function (n) {
+      if (n.getAttribute('data-rel-wired') === '1') return;
+      var rel = F.relativeDay(n.getAttribute('data-asof'), now);
+      if (!rel) return;                                      // future / bad / no-clock → silent
+      n.setAttribute('data-rel-wired', '1');
+      var sep = document.createElement('span');
+      sep.className = 'ci-asof-rel';
+      sep.textContent = ' · ' + rel;                         // textContent only, never innerHTML
+      n.appendChild(sep);
+    });
+  }
+  function boot() { if (typeof MuntinCostFormat !== 'undefined') paint(MuntinCostFormat(es)); }
+  (window.requestIdleCallback || function (c) { return setTimeout(c, 200); })(function () {
+    if (typeof MuntinCostFormat !== 'undefined') { boot(); return; }
+    var s = document.createElement('script');
+    s.src = '/tools/_shared/cost-index-format.js?v=20260717-fmt5';
+    s.async = true; s.onload = boot;
+    document.head.appendChild(s);
+  });
+})();
+</script>
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260717-reassure";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 </body>
 </html>

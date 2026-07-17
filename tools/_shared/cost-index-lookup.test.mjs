@@ -81,6 +81,18 @@ test('VERDICT: a structural flag reads "reprice" (up-and-holding), spike reads "
   assert.ok(tom.verdict, 'a flagged item must carry a verdict');
   assert.equal(tom.verdict.tone, 'hold', 'spike → hold tone');
 
+  // The Plate Cost hint (cost-index-hint.js) renders these verbs verbatim, so
+  // the widen must always deliver a non-empty EN+ES verb pair with the tone —
+  // the consumer's render contract.
+  assert.ok(
+    rib.verdict.verb_en && rib.verdict.verb_es,
+    'verdict carries the EN+ES verbs the hint renders',
+  );
+  assert.ok(
+    tom.verdict.verb_en && tom.verdict.verb_es,
+    'verdict carries the EN+ES verbs the hint renders',
+  );
+
   const noFlag = match('Chicken Breast', seed);
   assert.equal(noFlag.verdict, null, 'an unflagged item carries no verdict');
 });

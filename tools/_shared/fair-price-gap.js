@@ -66,6 +66,7 @@
    *   matched, comparable, verdict, reason?,
    *   costIndexKey?, marketCents?, marketUnit?, paidPerMarketUnit?,
    *   gapPct?, gapCents?, worthAsking?, basis?, confidence?, matchTier?,
+   *   marketTrend?,  // {pct,dir} the reference's own direction, or null — on every matched path
    *   wholesaleReference: true
    * }
    * verdict ∈ 'unknown' | 'at-reference' | 'above-reference' | 'far-above-reference' | 'below-reference'
@@ -94,6 +95,13 @@
     base.basis = ref.basis || null;
     base.confidence = ref.confidence || null;
     base.matchTier = ref.tier || null;
+    // The reference's own market direction (item A widen). It travels on EVERY
+    // matched path — a direction is honest even with no dollar level — so a
+    // caller can read "above the reference" WITH context: above a rising
+    // reference vs a falling one are different decisions. null when the seed
+    // carries no numeric trend. It is never a magnitude claim about the
+    // operator's own delivered price.
+    base.marketTrend = ref.trend || null;
     if (ref.wholesaleCents == null) {
       // No firm $-level (index-basis / thin confidence) — we can link, not compare.
       return Object.assign(base, { reason: ref.basis === 'index' ? 'index-basis-no-level' : 'no-market-level' });
@@ -138,6 +146,7 @@
       basis: ref.basis || null,
       confidence: ref.confidence || null,
       matchTier: ref.tier || null,
+      marketTrend: ref.trend || null,
       wholesaleReference: true
     };
   }
