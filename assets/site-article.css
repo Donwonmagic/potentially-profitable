@@ -2934,7 +2934,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 
 .viz-figure{margin:32px 0;padding:0}
 .viz-figure>figcaption{font-family:var(--font-body);font-size:13px;line-height:1.5;color:var(--stone);margin-top:14px;font-style:italic;text-align:center}
-/* Elevation dream — SCOPED to the weekly Cost-Index dispatch (.ci-dispatch) only:
+/* Elevation dream — SCOPED to the Cost-Index dispatch (.ci-dispatch) — weekly + monthly editions:
    on desktop, data figures break out of the 720px reading column onto a wider
    stage while prose stays at the reading measure. min(960px,92vw) is horizontal-
    scroll-safe (caps at 92vw so it never exceeds the viewport). Print resets the
