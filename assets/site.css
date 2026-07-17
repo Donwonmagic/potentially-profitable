@@ -768,6 +768,26 @@ pre code{overflow-wrap:normal;word-break:normal;white-space:pre}
    library indexes, tool sub-tables. Lets phones scroll horizontally
    inside the wrapper instead of pushing the article wide. */
 .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+/* Wide comparison/data tables tagged .table--stack (data-label on each cell, via
+   scripts/inject or hand) reflow to stacked label-above-value cards on phones —
+   no horizontal scroll. Only tagged tables reflow; narrow tables that already
+   fit are untouched. The > .table--stack selector (0,0,2,0) beats the
+   .table-scroll>table{min-width:max-content} rule so the table can shrink. */
+@media (max-width:640px){
+  .table-scroll:has(.table--stack){overflow-x:visible}
+  .table-scroll > .table--stack{display:block;min-width:0;width:100%}
+  .table--stack thead{position:absolute;left:-9999px}
+  .table--stack tbody,.table--stack tbody tr,.table--stack tbody td,.table--stack tbody th{display:block;width:auto}
+  .table--stack tbody tr{border:1px solid var(--line);border-radius:10px;margin:0 0 12px;padding:2px 15px 10px;background:var(--white)}
+  .table--stack tbody td,.table--stack tbody th{padding:8px 0;border:0;border-bottom:1px dashed var(--line);text-align:left}
+  .table--stack tbody tr > :last-child{border-bottom:0}
+  .table--stack tbody td::before,.table--stack tbody th[data-label]::before{content:attr(data-label);display:block;margin-bottom:3px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft)}
+  .table--stack tbody tr > :first-child{font-size:16px;font-weight:600;color:var(--ink);padding-top:12px;border-bottom:2px solid var(--line)}
+  .table--stack tbody tr > :first-child::before{content:none}
+}
+/* Head-to-head compare-card scaffold (6 library articles): stack on phones so
+   each posture gets a full-width measure instead of two crushed ~150px ribbons. */
+@media (max-width:640px){ [role="group"][aria-label*="head to head"]{ grid-template-columns:1fr !important } }
 .table-scroll>table{min-width:max-content}
 /* Margin-walk / operator tables (.op-table). Three columns —
    line label, $ amount, % of ticket — that overflow on phones if left

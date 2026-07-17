@@ -279,9 +279,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ae9e2118f83a" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=d184aa00dcf3" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ae9e2118f83a"><link rel="stylesheet" href="/assets/site-article.css?v=d184aa00dcf3"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=be49576ea8dc" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=5f21c6dd6baf" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=be49576ea8dc"><link rel="stylesheet" href="/assets/site-article.css?v=5f21c6dd6baf"></noscript>
 
 <style>
   /* ============ BLOG POST LAYOUT STYLES ============ */
@@ -1036,7 +1036,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <figure class="viz-figure" style="margin:48px 0;" data-audio-alt="The ten-feature head-to-head: Toast, Square, and Clover scored across native online ordering, menu sync, real-time eighty-six, kitchen ticket pipeline, developer API, transparent pricing, custom-website pairing, hardware variety, contract flexibility, and restaurant-specific design. Toast and Square each land seven confident yeses out of ten. Clover lands one — with eight of its rows reading as &apos;maybe, depending on the reseller you bought from.&apos; Toast wins on restaurant-built workflow: online ordering and reservations are first-party. Square wins on transparent pricing and fastest setup. Clover&apos;s feature list looks comparable on paper, but the reseller patchwork means two restaurants on Clover can have completely different software for the same monthly fee — which is the reason this scorecard exists.">
         <div class="pos-table-wrap">
-          <div class="table-scroll"><table class="pos-table">
+          <div class="table-scroll"><table class="pos-table table--stack">
             <thead>
               <tr>
                 <th class="feature-col">Feature</th>
@@ -1047,64 +1047,64 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             </thead>
             <tbody>
               <tr>
-                <td class="feature-name">Native online ordering<span class="note">Built into the POS, not a tablet handoff</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark partial" aria-label="Partial">~</span></td>
+                <td class="feature-name" data-label="Feature">Native online ordering<span class="note">Built into the POS, not a tablet handoff</span></td>
+                <td data-label="Toast"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Square"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Clover"><span class="mark partial" aria-label="Partial">~</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Automatic menu sync<span class="note">POS → website, including images and modifiers</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark partial" aria-label="Partial">~</span></td>
+                <td class="feature-name" data-label="Feature">Automatic menu sync<span class="note">POS → website, including images and modifiers</span></td>
+                <td data-label="Toast"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Square"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Clover"><span class="mark partial" aria-label="Partial">~</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Real-time 86 of out-of-stock<span class="note">POS change propagates to the site immediately</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark partial" aria-label="Partial">~</span></td>
-                <td><span class="mark partial" aria-label="Partial">~</span></td>
+                <td class="feature-name" data-label="Feature">Real-time 86 of out-of-stock<span class="note">POS change propagates to the site immediately</span></td>
+                <td data-label="Toast"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Square"><span class="mark partial" aria-label="Partial">~</span></td>
+                <td data-label="Clover"><span class="mark partial" aria-label="Partial">~</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Direct kitchen ticket pipeline<span class="note">Web orders land on the KDS with no intermediate tablet</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark partial" aria-label="Partial">~</span></td>
+                <td class="feature-name" data-label="Feature">Direct kitchen ticket pipeline<span class="note">Web orders land on the KDS with no intermediate tablet</span></td>
+                <td data-label="Toast"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Square"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Clover"><span class="mark partial" aria-label="Partial">~</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Public developer API<span class="note">Clean, documented, actively supported</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark partial" aria-label="Partial">~</span></td>
+                <td class="feature-name" data-label="Feature">Public developer API<span class="note">Clean, documented, actively supported</span></td>
+                <td data-label="Toast"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Square"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Clover"><span class="mark partial" aria-label="Partial">~</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Public, transparent pricing<span class="note">Rates published on the provider's own site</span></td>
-                <td><span class="mark no" aria-label="No">✕</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark no" aria-label="No">✕</span></td>
+                <td class="feature-name" data-label="Feature">Public, transparent pricing<span class="note">Rates published on the provider's own site</span></td>
+                <td data-label="Toast"><span class="mark no" aria-label="No">✕</span></td>
+                <td data-label="Square"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Clover"><span class="mark no" aria-label="No">✕</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Works with a fully custom website<span class="note">Clean pairing with a hand-built site on a modern stack</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark partial" aria-label="Partial">~</span></td>
+                <td class="feature-name" data-label="Feature">Works with a fully custom website<span class="note">Clean pairing with a hand-built site on a modern stack</span></td>
+                <td data-label="Toast"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Square"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Clover"><span class="mark partial" aria-label="Partial">~</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Hardware variety<span class="note">Station, Flex (handheld), Mini, Go, Kiosk</span></td>
-                <td><span class="mark partial" aria-label="Partial">~</span></td>
-                <td><span class="mark partial" aria-label="Partial">~</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td class="feature-name" data-label="Feature">Hardware variety<span class="note">Station, Flex (handheld), Mini, Go, Kiosk</span></td>
+                <td data-label="Toast"><span class="mark partial" aria-label="Partial">~</span></td>
+                <td data-label="Square"><span class="mark partial" aria-label="Partial">~</span></td>
+                <td data-label="Clover"><span class="mark yes" aria-label="Yes">✓</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Contract flexibility<span class="note">Short or month-to-month, low switching cost</span></td>
-                <td><span class="mark no" aria-label="No">✕</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark partial" aria-label="Partial">~</span></td>
+                <td class="feature-name" data-label="Feature">Contract flexibility<span class="note">Short or month-to-month, low switching cost</span></td>
+                <td data-label="Toast"><span class="mark no" aria-label="No">✕</span></td>
+                <td data-label="Square"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Clover"><span class="mark partial" aria-label="Partial">~</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Restaurant-specific from day one<span class="note">Built for restaurants, not retrofitted from retail</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark partial" aria-label="Partial">~</span></td>
-                <td><span class="mark partial" aria-label="Partial">~</span></td>
+                <td class="feature-name" data-label="Feature">Restaurant-specific from day one<span class="note">Built for restaurants, not retrofitted from retail</span></td>
+                <td data-label="Toast"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Square"><span class="mark partial" aria-label="Partial">~</span></td>
+                <td data-label="Clover"><span class="mark partial" aria-label="Partial">~</span></td>
               </tr>
             </tbody>
           </table></div>

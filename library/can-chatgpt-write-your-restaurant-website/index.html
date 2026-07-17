@@ -267,9 +267,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ae9e2118f83a" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=d184aa00dcf3" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ae9e2118f83a"><link rel="stylesheet" href="/assets/site-article.css?v=d184aa00dcf3"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=be49576ea8dc" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=5f21c6dd6baf" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=be49576ea8dc"><link rel="stylesheet" href="/assets/site-article.css?v=5f21c6dd6baf"></noscript>
 
 <style>
   /* ============ SHARED BLOG POST LAYOUT ============ */
@@ -860,20 +860,20 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <p>Here is the whole teardown as one table &mdash; every page and task on a restaurant site, scored by whether the model earns its place. Read it as the verdict on that pasted draft: the rows marked <em>yes</em> are the hours you get back; the rows marked <em>no</em> are the ones a guest can feel you didn&rsquo;t write.</p>
 
       <figure class="article-figure" data-audio-alt="Where ChatGPT earns its place on the site, and where it doesn&apos;t. Yes for menu item descriptions, photo alt text, and your privacy and terms pages — generic compliance copy is exactly what AI does well, and sensory menu writing is its sweet spot. Yes-with-heavy-editing for FAQ schema and blog posts: generate twelve questions, prune to six, rewrite the answers in your voice. No for the homepage hero, the About page, and any hyperlocal claim — AI can&apos;t fake earned voice, and it&apos;ll confidently invent restaurants on your block that don&apos;t exist.">
-      <div class="table-scroll"><table class="comparison-table">
+      <div class="table-scroll"><table class="comparison-table table--stack">
         <caption>Where ChatGPT actually helps vs. where it gets your restaurant wrong</caption>
         <thead>
           <tr><th scope="col">Page or task</th><th scope="col">Use AI?</th><th scope="col">Why</th></tr>
         </thead>
         <tbody>
-          <tr><th scope="row">Menu item descriptions</th><td>Yes</td><td><!-- LIBRARY:autolink:start --><a href="/glossary/sensory-adjective/" data-glossary-head="Sensory adjective" data-glossary-aka="a word that names a flavor, texture, temperature, or preparation" data-glossary-blurb="A modifier in a menu description that names a perceptual quality of the dish — flavor (smoky, briny, tangy), texture (crispy, silky, chewy), temperature (chilled, blistering,…">Sensory adjectives</a><!-- LIBRARY:autolink:end --> + provenance language are AI's sweet spot — it's read 10K menus.</td></tr>
-          <tr><th scope="row"><!-- LIBRARY:autolink:start --><a href="/glossary/alt-text/" data-glossary-head="Alt text" data-glossary-aka="image descriptions" data-glossary-blurb="A short written description of every image, set via the alt=&quot;…&quot; attribute in the HTML.">Alt text</a><!-- LIBRARY:autolink:end --> for photos</th><td>Yes</td><td>Boring, repetitive, accessibility-critical — exactly what AI does well.</td></tr>
-          <tr><th scope="row">FAQ schema content</th><td>Yes (with editing)</td><td>Generate 12 questions, prune to 6, rewrite the answers in your voice.</td></tr>
-          <tr><th scope="row">Privacy / accessibility / terms</th><td>Yes</td><td>Compliance copy is generic on purpose. AI is fine.</td></tr>
-          <tr><th scope="row">Blog posts (recipes, neighborhood)</th><td>Hesitantly</td><td>Useful as outline + first draft; the voice is the editing pass.</td></tr>
-          <tr><th scope="row">Homepage hero copy</th><td>No</td><td>The 12 words that decide tonight's reservation. Write them yourself.</td></tr>
-          <tr><th scope="row">About / story page</th><td>No</td><td>This is the page guests share to convince friends. AI can't fake earned voice.</td></tr>
-          <tr><th scope="row">Hyperlocal / neighborhood claims</th><td>No</td><td>AI confidently invents restaurants that don't exist 4 blocks from you.</td></tr>
+          <tr><th scope="row" data-label="Page or task">Menu item descriptions</th><td data-label="Use AI?">Yes</td><td data-label="Why"><!-- LIBRARY:autolink:start --><a href="/glossary/sensory-adjective/" data-glossary-head="Sensory adjective" data-glossary-aka="a word that names a flavor, texture, temperature, or preparation" data-glossary-blurb="A modifier in a menu description that names a perceptual quality of the dish — flavor (smoky, briny, tangy), texture (crispy, silky, chewy), temperature (chilled, blistering,…">Sensory adjectives</a><!-- LIBRARY:autolink:end --> + provenance language are AI's sweet spot — it's read 10K menus.</td></tr>
+          <tr><th scope="row" data-label="Page or task"><!-- LIBRARY:autolink:start --><a href="/glossary/alt-text/" data-glossary-head="Alt text" data-glossary-aka="image descriptions" data-glossary-blurb="A short written description of every image, set via the alt=&quot;…&quot; attribute in the HTML.">Alt text</a><!-- LIBRARY:autolink:end --> for photos</th><td data-label="Use AI?">Yes</td><td data-label="Why">Boring, repetitive, accessibility-critical — exactly what AI does well.</td></tr>
+          <tr><th scope="row" data-label="Page or task">FAQ schema content</th><td data-label="Use AI?">Yes (with editing)</td><td data-label="Why">Generate 12 questions, prune to 6, rewrite the answers in your voice.</td></tr>
+          <tr><th scope="row" data-label="Page or task">Privacy / accessibility / terms</th><td data-label="Use AI?">Yes</td><td data-label="Why">Compliance copy is generic on purpose. AI is fine.</td></tr>
+          <tr><th scope="row" data-label="Page or task">Blog posts (recipes, neighborhood)</th><td data-label="Use AI?">Hesitantly</td><td data-label="Why">Useful as outline + first draft; the voice is the editing pass.</td></tr>
+          <tr><th scope="row" data-label="Page or task">Homepage hero copy</th><td data-label="Use AI?">No</td><td data-label="Why">The 12 words that decide tonight's reservation. Write them yourself.</td></tr>
+          <tr><th scope="row" data-label="Page or task">About / story page</th><td data-label="Use AI?">No</td><td data-label="Why">This is the page guests share to convince friends. AI can't fake earned voice.</td></tr>
+          <tr><th scope="row" data-label="Page or task">Hyperlocal / neighborhood claims</th><td data-label="Use AI?">No</td><td data-label="Why">AI confidently invents restaurants that don't exist 4 blocks from you.</td></tr>
         </tbody>
       </table></div>
       

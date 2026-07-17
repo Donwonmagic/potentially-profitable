@@ -228,9 +228,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ae9e2118f83a" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=d184aa00dcf3" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ae9e2118f83a"><link rel="stylesheet" href="/assets/site-article.css?v=d184aa00dcf3"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=be49576ea8dc" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=5f21c6dd6baf" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=be49576ea8dc"><link rel="stylesheet" href="/assets/site-article.css?v=5f21c6dd6baf"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -900,18 +900,18 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <p>If you want the shortcut version of this whole post, here&rsquo;s the framework I use when an operator asks me whether to stay, leave, or compete:</p>
 
       <figure class="article-figure" data-audio-alt="What a hundred dollars of revenue actually becomes after each channel takes its cut, in a sortable table where every net-to-you cell carries a small magnitude bar. DoorDash Basic at thirty percent commission leaves you sixty-six to sixty-eight dollars net. Plus tier at twenty-five percent leaves seventy-one to seventy-three. Premier at fifteen percent leaves eighty-one to eighty-three — and that&apos;s before packaging. Toast or Square direct ordering nets you ninety-three to ninety-eight. ChowNow with a flat monthly fee nets ninety-six to ninety-eight. A dine-in cover with no third party is a clean hundred. The gap between DoorDash Basic and your own ordering is roughly thirty dollars on every hundred — that&apos;s the question this whole article exists to answer.">
-      <div class="table-scroll"><table class="comparison-table" data-viz-sortable>
+      <div class="table-scroll"><table class="comparison-table table--stack" data-viz-sortable>
         <caption>What $100 of revenue actually becomes — DoorDash vs. own-ordering vs. dine-in (click a header to re-rank)</caption>
         <thead>
           <tr><th scope="col">Channel</th><th scope="col">Gross</th><th scope="col">Commission / fees</th><th scope="col">Packaging</th><th scope="col">Net to you</th></tr>
         </thead>
         <tbody>
-          <tr><th scope="row">DoorDash (Basic tier)</th><td>$100</td><td>−$30 (30%)</td><td>−$2-4</td><td><strong>$66-68</strong><span class="viz-magbar" style="--w:0.67" aria-hidden="true"></span></td></tr>
-          <tr><th scope="row">DoorDash (Plus tier)</th><td>$100</td><td>−$25 (25%)</td><td>−$2-4</td><td><strong>$71-73</strong><span class="viz-magbar" style="--w:0.72" aria-hidden="true"></span></td></tr>
-          <tr><th scope="row">DoorDash (Premier)</th><td>$100</td><td>−$15 (15%)</td><td>−$2-4</td><td><strong>$81-83</strong><span class="viz-magbar" data-tone="stone" style="--w:0.82" aria-hidden="true"></span></td></tr>
-          <tr><th scope="row">Toast / Square <!-- LIBRARY:autolink:start --><a href="/glossary/direct-ordering/" data-glossary-head="Direct ordering" data-glossary-aka="orders through your own site" data-glossary-blurb="A customer ordering through your own website or POS (Toast, Square, Olo, ChowNow), bypassing aggregators.">direct ordering</a><!-- LIBRARY:autolink:end --></th><td>$100</td><td>−$0-3 (0-3%)</td><td>−$2-4</td><td><strong>$93-98</strong><span class="viz-magbar" data-tone="teal" style="--w:0.95" aria-hidden="true"></span></td></tr>
-          <tr><th scope="row">ChowNow direct ordering</th><td>$100</td><td>flat $99-300/mo</td><td>−$2-4</td><td><strong>$96-98</strong><span class="viz-magbar" data-tone="teal" style="--w:0.97" aria-hidden="true"></span></td></tr>
-          <tr><th scope="row">Dine-in (no third party)</th><td>$100</td><td>0%</td><td>$0</td><td><strong>$100</strong><span class="viz-magbar" data-tone="teal" style="--w:1.00" aria-hidden="true"></span></td></tr>
+          <tr><th scope="row" data-label="Channel">DoorDash (Basic tier)</th><td data-label="Gross">$100</td><td data-label="Commission / fees">−$30 (30%)</td><td data-label="Packaging">−$2-4</td><td data-label="Net to you"><strong>$66-68</strong><span class="viz-magbar" style="--w:0.67" aria-hidden="true"></span></td></tr>
+          <tr><th scope="row" data-label="Channel">DoorDash (Plus tier)</th><td data-label="Gross">$100</td><td data-label="Commission / fees">−$25 (25%)</td><td data-label="Packaging">−$2-4</td><td data-label="Net to you"><strong>$71-73</strong><span class="viz-magbar" style="--w:0.72" aria-hidden="true"></span></td></tr>
+          <tr><th scope="row" data-label="Channel">DoorDash (Premier)</th><td data-label="Gross">$100</td><td data-label="Commission / fees">−$15 (15%)</td><td data-label="Packaging">−$2-4</td><td data-label="Net to you"><strong>$81-83</strong><span class="viz-magbar" data-tone="stone" style="--w:0.82" aria-hidden="true"></span></td></tr>
+          <tr><th scope="row" data-label="Channel">Toast / Square <!-- LIBRARY:autolink:start --><a href="/glossary/direct-ordering/" data-glossary-head="Direct ordering" data-glossary-aka="orders through your own site" data-glossary-blurb="A customer ordering through your own website or POS (Toast, Square, Olo, ChowNow), bypassing aggregators.">direct ordering</a><!-- LIBRARY:autolink:end --></th><td data-label="Gross">$100</td><td data-label="Commission / fees">−$0-3 (0-3%)</td><td data-label="Packaging">−$2-4</td><td data-label="Net to you"><strong>$93-98</strong><span class="viz-magbar" data-tone="teal" style="--w:0.95" aria-hidden="true"></span></td></tr>
+          <tr><th scope="row" data-label="Channel">ChowNow direct ordering</th><td data-label="Gross">$100</td><td data-label="Commission / fees">flat $99-300/mo</td><td data-label="Packaging">−$2-4</td><td data-label="Net to you"><strong>$96-98</strong><span class="viz-magbar" data-tone="teal" style="--w:0.97" aria-hidden="true"></span></td></tr>
+          <tr><th scope="row" data-label="Channel">Dine-in (no third party)</th><td data-label="Gross">$100</td><td data-label="Commission / fees">0%</td><td data-label="Packaging">$0</td><td data-label="Net to you"><strong>$100</strong><span class="viz-magbar" data-tone="teal" style="--w:1.00" aria-hidden="true"></span></td></tr>
         </tbody>
       </table></div>
       

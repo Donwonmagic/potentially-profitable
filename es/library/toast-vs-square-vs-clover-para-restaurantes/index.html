@@ -248,9 +248,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-italic.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-italic.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site-core.css?v=ae9e2118f83a" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=d184aa00dcf3" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ae9e2118f83a"><link rel="stylesheet" href="/assets/site-article.css?v=d184aa00dcf3"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=be49576ea8dc" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=5f21c6dd6baf" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=be49576ea8dc"><link rel="stylesheet" href="/assets/site-article.css?v=5f21c6dd6baf"></noscript>
 
 <style>
   .post-hero { max-width: 760px; margin: 0 auto; text-align: center; padding-bottom: 24px; }
@@ -881,7 +881,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <figure style="margin:48px 0;">
         <div class="pos-table-wrap">
-          <div class="table-scroll"><table class="pos-table">
+          <div class="table-scroll"><table class="pos-table table--stack">
             <thead>
               <tr>
                 <th class="feature-col">Función</th>
@@ -892,64 +892,64 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             </thead>
             <tbody>
               <tr>
-                <td class="feature-name">Online ordering nativo<span class="note">Integrado al POS, no un traspaso por tablet</span></td>
-                <td><span class="mark yes" aria-label="Sí">✓</span></td>
-                <td><span class="mark yes" aria-label="Sí">✓</span></td>
-                <td><span class="mark partial" aria-label="Parcial">~</span></td>
+                <td class="feature-name" data-label="Función">Online ordering nativo<span class="note">Integrado al POS, no un traspaso por tablet</span></td>
+                <td data-label="Toast"><span class="mark yes" aria-label="Sí">✓</span></td>
+                <td data-label="Square"><span class="mark yes" aria-label="Sí">✓</span></td>
+                <td data-label="Clover"><span class="mark partial" aria-label="Parcial">~</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Sincronización automática del menú<span class="note">POS → sitio, incluyendo imágenes y modificadores</span></td>
-                <td><span class="mark yes" aria-label="Sí">✓</span></td>
-                <td><span class="mark yes" aria-label="Sí">✓</span></td>
-                <td><span class="mark partial" aria-label="Parcial">~</span></td>
+                <td class="feature-name" data-label="Función">Sincronización automática del menú<span class="note">POS → sitio, incluyendo imágenes y modificadores</span></td>
+                <td data-label="Toast"><span class="mark yes" aria-label="Sí">✓</span></td>
+                <td data-label="Square"><span class="mark yes" aria-label="Sí">✓</span></td>
+                <td data-label="Clover"><span class="mark partial" aria-label="Parcial">~</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Bajada en tiempo real de productos sin stock<span class="note">El cambio en el POS se propaga al sitio de inmediato</span></td>
-                <td><span class="mark yes" aria-label="Sí">✓</span></td>
-                <td><span class="mark partial" aria-label="Parcial">~</span></td>
-                <td><span class="mark partial" aria-label="Parcial">~</span></td>
+                <td class="feature-name" data-label="Función">Bajada en tiempo real de productos sin stock<span class="note">El cambio en el POS se propaga al sitio de inmediato</span></td>
+                <td data-label="Toast"><span class="mark yes" aria-label="Sí">✓</span></td>
+                <td data-label="Square"><span class="mark partial" aria-label="Parcial">~</span></td>
+                <td data-label="Clover"><span class="mark partial" aria-label="Parcial">~</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Pipeline directo al ticket de cocina<span class="note">Los pedidos web aterrizan en el KDS sin tablet intermedia</span></td>
-                <td><span class="mark yes" aria-label="Sí">✓</span></td>
-                <td><span class="mark yes" aria-label="Sí">✓</span></td>
-                <td><span class="mark partial" aria-label="Parcial">~</span></td>
+                <td class="feature-name" data-label="Función">Pipeline directo al ticket de cocina<span class="note">Los pedidos web aterrizan en el KDS sin tablet intermedia</span></td>
+                <td data-label="Toast"><span class="mark yes" aria-label="Sí">✓</span></td>
+                <td data-label="Square"><span class="mark yes" aria-label="Sí">✓</span></td>
+                <td data-label="Clover"><span class="mark partial" aria-label="Parcial">~</span></td>
               </tr>
               <tr>
-                <td class="feature-name">API pública para desarrolladores<span class="note">Limpia, documentada, mantenida activamente</span></td>
-                <td><span class="mark yes" aria-label="Sí">✓</span></td>
-                <td><span class="mark yes" aria-label="Sí">✓</span></td>
-                <td><span class="mark partial" aria-label="Parcial">~</span></td>
+                <td class="feature-name" data-label="Función">API pública para desarrolladores<span class="note">Limpia, documentada, mantenida activamente</span></td>
+                <td data-label="Toast"><span class="mark yes" aria-label="Sí">✓</span></td>
+                <td data-label="Square"><span class="mark yes" aria-label="Sí">✓</span></td>
+                <td data-label="Clover"><span class="mark partial" aria-label="Parcial">~</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Precios públicos y transparentes<span class="note">Tarifas publicadas en el propio sitio del proveedor</span></td>
-                <td><span class="mark no" aria-label="No">✕</span></td>
-                <td><span class="mark yes" aria-label="Sí">✓</span></td>
-                <td><span class="mark no" aria-label="No">✕</span></td>
+                <td class="feature-name" data-label="Función">Precios públicos y transparentes<span class="note">Tarifas publicadas en el propio sitio del proveedor</span></td>
+                <td data-label="Toast"><span class="mark no" aria-label="No">✕</span></td>
+                <td data-label="Square"><span class="mark yes" aria-label="Sí">✓</span></td>
+                <td data-label="Clover"><span class="mark no" aria-label="No">✕</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Funciona con un sitio totalmente a medida<span class="note">Emparejamiento limpio con un build a medida estilo Muntin</span></td>
-                <td><span class="mark yes" aria-label="Sí">✓</span></td>
-                <td><span class="mark yes" aria-label="Sí">✓</span></td>
-                <td><span class="mark partial" aria-label="Parcial">~</span></td>
+                <td class="feature-name" data-label="Función">Funciona con un sitio totalmente a medida<span class="note">Emparejamiento limpio con un build a medida estilo Muntin</span></td>
+                <td data-label="Toast"><span class="mark yes" aria-label="Sí">✓</span></td>
+                <td data-label="Square"><span class="mark yes" aria-label="Sí">✓</span></td>
+                <td data-label="Clover"><span class="mark partial" aria-label="Parcial">~</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Variedad de hardware<span class="note">Station, Flex (de mano), Mini, Go, Kiosk</span></td>
-                <td><span class="mark partial" aria-label="Parcial">~</span></td>
-                <td><span class="mark partial" aria-label="Parcial">~</span></td>
-                <td><span class="mark yes" aria-label="Sí">✓</span></td>
+                <td class="feature-name" data-label="Función">Variedad de hardware<span class="note">Station, Flex (de mano), Mini, Go, Kiosk</span></td>
+                <td data-label="Toast"><span class="mark partial" aria-label="Parcial">~</span></td>
+                <td data-label="Square"><span class="mark partial" aria-label="Parcial">~</span></td>
+                <td data-label="Clover"><span class="mark yes" aria-label="Sí">✓</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Flexibilidad de contrato<span class="note">Corto o mes a mes, bajo costo de cambio</span></td>
-                <td><span class="mark no" aria-label="No">✕</span></td>
-                <td><span class="mark yes" aria-label="Sí">✓</span></td>
-                <td><span class="mark partial" aria-label="Parcial">~</span></td>
+                <td class="feature-name" data-label="Función">Flexibilidad de contrato<span class="note">Corto o mes a mes, bajo costo de cambio</span></td>
+                <td data-label="Toast"><span class="mark no" aria-label="No">✕</span></td>
+                <td data-label="Square"><span class="mark yes" aria-label="Sí">✓</span></td>
+                <td data-label="Clover"><span class="mark partial" aria-label="Parcial">~</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Específico para restaurantes desde el día uno<span class="note">Construido para restaurantes, no adaptado desde retail</span></td>
-                <td><span class="mark yes" aria-label="Sí">✓</span></td>
-                <td><span class="mark partial" aria-label="Parcial">~</span></td>
-                <td><span class="mark partial" aria-label="Parcial">~</span></td>
+                <td class="feature-name" data-label="Función">Específico para restaurantes desde el día uno<span class="note">Construido para restaurantes, no adaptado desde retail</span></td>
+                <td data-label="Toast"><span class="mark yes" aria-label="Sí">✓</span></td>
+                <td data-label="Square"><span class="mark partial" aria-label="Parcial">~</span></td>
+                <td data-label="Clover"><span class="mark partial" aria-label="Parcial">~</span></td>
               </tr>
             </tbody>
           </table></div>

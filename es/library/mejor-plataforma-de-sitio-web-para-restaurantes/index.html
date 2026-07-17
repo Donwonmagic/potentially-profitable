@@ -694,7 +694,7 @@ main{padding-top:64px}
 
     <figure class="viz-figure" style="margin:48px 0;" data-audio-alt="Una tabla de comparación ordenable de ocho plataformas de sitio web para restaurantes con cuatro columnas: si eres dueño del sitio, la comisión de plataforma por cada pedido en línea, el costo mensual a mayo de dos mil veintiséis, y el operador que la plataforma calza. Fila uno, a la medida construido por Muntin: sí eres dueño, cero por ciento de comisión de plataforma encima de tu propio procesador de pago, más o menos cero a diez dólares al mes de hosting más un dominio anual encima de la construcción inicial, calza a los operadores dueños que necesitan controlar el sitio a largo plazo. Fila dos, Wix: no, amarre a Wix, promocionada como sin comisión con tarifas dependientes del tier según la cobertura secundaria, dieciséis a treinta y nueve dólares al mes en los tiers comunes, calza a un restaurante pequeño de salón que lanza esta noche. Fila tres, Squarespace: no, el contenido se exporta solo como XML, cero por ciento de comisión de plataforma con el procesador de pago encima, veintitrés a cuarenta y nueve dólares al mes en los tiers de comercio, calza a un restaurante pequeño guiado por la marca cuyo volumen de pedidos es bajo. Fila cuatro, Square Online: no, amarrado a Square Payments, sin comisión de plataforma con tarifas de procesador que varían por tier, gratis a cerca de treinta y cinco dólares al mes en el tier de pago, calza a un local con Square-en-POS que quiere una página de pedidos básica. Fila cinco, BentoBox: no, hospedado por BentoBox, los pedidos en línea son un add-on por orden o porcentual, doscientos setenta y nueve a cuatrocientos setenta y nueve dólares al mes más add-ons según la cobertura secundaria, calza a un restaurante de servicio completo de gama alta cuya marca es el diferenciador. Fila seis, Popmenu: no, hospedado con un contrato de doce meses, add-on de pedidos en línea alrededor de cincuenta dólares al mes más un dólar por orden, ciento setenta y nueve a cuatrocientos noventa y nueve dólares al mes más trescientos dólares por local extra según la cobertura secundaria, calza a un grupo de varios locales que corre automatización de marketing. Fila siete, Owner punto com: no, hospedado, cero por ciento de comisión de plataforma con una tarifa de soporte del comensal del cinco por ciento en Flat o una comisión al restaurante del cinco por ciento en Flex, doscientos cuarenta y nueve a cuatrocientos noventa y nueve dólares al mes, calza a un restaurante cuyos pedidos directos son el negocio. Fila ocho, Toast: no, hospedado como parte del stack del POS, cero por ciento de comisión de plataforma en pedidos directos con el procesamiento montado encima, trescientos a dos mil dólares al mes todo-incluido según los terminales y add-ons, calza a un restaurante donde el sitio web, los pedidos y el POS son un solo stack facturado. Los números son cifras reportadas de páginas públicas o de cobertura secundaria a mayo de dos mil veintiséis. Verifica con cada proveedor antes de firmar.">
       <div class="pos-table-wrap">
-        <div class="table-scroll"><table class="pos-table" data-viz-sortable>
+        <div class="table-scroll"><table class="pos-table table--stack" data-viz-sortable>
           <thead>
             <tr>
               <th class="feature-col">Plataforma</th>
@@ -706,60 +706,60 @@ main{padding-top:64px}
           </thead>
           <tbody>
             <tr>
-              <td class="feature-name">A la medida (construido por Muntin)<span class="note">HTML/CSS en un hosting que tú controlas</span></td>
-              <td>Sí &mdash; archivos y dominio a tu nombre</td>
-              <td>0% plataforma &middot; solo procesador (~2.9% + 30&cent;)</td>
-              <td>~$0&ndash;10/mes hosting + ~$10/año dominio<span class="viz-magbar" style="--w:0.005" aria-hidden="true"></span><span class="note">Costo de construcción inicial aparte</span></td>
-              <td>Operadores dueños que planean conservar el sitio por años</td>
+              <td class="feature-name" data-label="Plataforma">A la medida (construido por Muntin)<span class="note">HTML/CSS en un hosting que tú controlas</span></td>
+              <td data-label="¿Dueño del sitio?">Sí &mdash; archivos y dominio a tu nombre</td>
+              <td data-label="Comisión por pedido en línea">0% plataforma &middot; solo procesador (~2.9% + 30&cent;)</td>
+              <td data-label="Mensual (mayo 2026)">~$0&ndash;10/mes hosting + ~$10/año dominio<span class="viz-magbar" style="--w:0.005" aria-hidden="true"></span><span class="note">Costo de construcción inicial aparte</span></td>
+              <td data-label="Mejor para">Operadores dueños que planean conservar el sitio por años</td>
             </tr>
             <tr>
-              <td class="feature-name">Wix<span class="note">Constructor todo-en-uno con herramientas de restaurante</span></td>
-              <td>No &mdash; propietario, el sitio no se puede exportar</td>
-              <td>Promocionado 0%; tarifas dependientes del tier reportadas<span class="note">Verifica tu tier en wix.com</span></td>
-              <td>~$16&ndash;39/mes<span class="viz-magbar" style="--w:0.02" aria-hidden="true"></span><span class="note">Según páginas de precios de Wix, mayo 2026</span></td>
-              <td>Salón pequeño que lanza esta noche con una tarjeta de crédito</td>
+              <td class="feature-name" data-label="Plataforma">Wix<span class="note">Constructor todo-en-uno con herramientas de restaurante</span></td>
+              <td data-label="¿Dueño del sitio?">No &mdash; propietario, el sitio no se puede exportar</td>
+              <td data-label="Comisión por pedido en línea">Promocionado 0%; tarifas dependientes del tier reportadas<span class="note">Verifica tu tier en wix.com</span></td>
+              <td data-label="Mensual (mayo 2026)">~$16&ndash;39/mes<span class="viz-magbar" style="--w:0.02" aria-hidden="true"></span><span class="note">Según páginas de precios de Wix, mayo 2026</span></td>
+              <td data-label="Mejor para">Salón pequeño que lanza esta noche con una tarjeta de crédito</td>
             </tr>
             <tr>
-              <td class="feature-name">Squarespace<span class="note">Líder en calidad de plantilla; exportación solo de contenido</span></td>
-              <td>No &mdash; exportación XML de contenido; el diseño se queda</td>
-              <td>0% plataforma &middot; procesador de pago encima</td>
-              <td>~$23&ndash;49/mes en los tiers de comercio<span class="viz-magbar" style="--w:0.025" aria-hidden="true"></span><span class="note">Según precios de squarespace.com, mayo 2026</span></td>
-              <td>Restaurante pequeño guiado por la marca, bajo volumen de pedidos</td>
+              <td class="feature-name" data-label="Plataforma">Squarespace<span class="note">Líder en calidad de plantilla; exportación solo de contenido</span></td>
+              <td data-label="¿Dueño del sitio?">No &mdash; exportación XML de contenido; el diseño se queda</td>
+              <td data-label="Comisión por pedido en línea">0% plataforma &middot; procesador de pago encima</td>
+              <td data-label="Mensual (mayo 2026)">~$23&ndash;49/mes en los tiers de comercio<span class="viz-magbar" style="--w:0.025" aria-hidden="true"></span><span class="note">Según precios de squarespace.com, mayo 2026</span></td>
+              <td data-label="Mejor para">Restaurante pequeño guiado por la marca, bajo volumen de pedidos</td>
             </tr>
             <tr>
-              <td class="feature-name">Square Online<span class="note">Sitio gratis empaquetado con Square POS</span></td>
-              <td>No &mdash; amarrado a Square Payments</td>
-              <td>0% plataforma &middot; procesador dependiente del tier</td>
-              <td>$0 tier gratis; ~$35/mes tier de pago<span class="viz-magbar" style="--w:0.018" aria-hidden="true"></span><span class="note">Según precios de squareup.com, mayo 2026</span></td>
-              <td>Local con Square-en-POS que quiere una página de pedidos básica</td>
+              <td class="feature-name" data-label="Plataforma">Square Online<span class="note">Sitio gratis empaquetado con Square POS</span></td>
+              <td data-label="¿Dueño del sitio?">No &mdash; amarrado a Square Payments</td>
+              <td data-label="Comisión por pedido en línea">0% plataforma &middot; procesador dependiente del tier</td>
+              <td data-label="Mensual (mayo 2026)">$0 tier gratis; ~$35/mes tier de pago<span class="viz-magbar" style="--w:0.018" aria-hidden="true"></span><span class="note">Según precios de squareup.com, mayo 2026</span></td>
+              <td data-label="Mejor para">Local con Square-en-POS que quiere una página de pedidos básica</td>
             </tr>
             <tr>
-              <td class="feature-name">BentoBox<span class="note">Diseño premium hecho-por-ti</span></td>
-              <td>No &mdash; hospedado por BentoBox</td>
-              <td>Add-on; tarifa por orden o % sobre los pedidos</td>
-              <td>~$279 (Foundations) a ~$479+ (Signature)<span class="viz-magbar" style="--w:0.24" aria-hidden="true"></span><span class="note">Según cobertura secundaria; verifica en getbento.com</span></td>
-              <td>Servicio completo de gama alta donde la marca es el diferenciador</td>
+              <td class="feature-name" data-label="Plataforma">BentoBox<span class="note">Diseño premium hecho-por-ti</span></td>
+              <td data-label="¿Dueño del sitio?">No &mdash; hospedado por BentoBox</td>
+              <td data-label="Comisión por pedido en línea">Add-on; tarifa por orden o % sobre los pedidos</td>
+              <td data-label="Mensual (mayo 2026)">~$279 (Foundations) a ~$479+ (Signature)<span class="viz-magbar" style="--w:0.24" aria-hidden="true"></span><span class="note">Según cobertura secundaria; verifica en getbento.com</span></td>
+              <td data-label="Mejor para">Servicio completo de gama alta donde la marca es el diferenciador</td>
             </tr>
             <tr>
-              <td class="feature-name">Popmenu<span class="note">Páginas de SEO por platillo + automatización de marketing</span></td>
-              <td>No &mdash; hospedado; contrato de 12 meses estándar</td>
-              <td>Add-on de pedidos ~$50/mes + ~$1/orden</td>
-              <td>~$179 / $299 / $499/mes + ~$300/mes por local extra<span class="viz-magbar" style="--w:0.25" aria-hidden="true"></span><span class="note">Según cobertura secundaria; verifica en popmenu.com</span></td>
-              <td>Grupo de varios locales que corre automatización de marketing</td>
+              <td class="feature-name" data-label="Plataforma">Popmenu<span class="note">Páginas de SEO por platillo + automatización de marketing</span></td>
+              <td data-label="¿Dueño del sitio?">No &mdash; hospedado; contrato de 12 meses estándar</td>
+              <td data-label="Comisión por pedido en línea">Add-on de pedidos ~$50/mes + ~$1/orden</td>
+              <td data-label="Mensual (mayo 2026)">~$179 / $299 / $499/mes + ~$300/mes por local extra<span class="viz-magbar" style="--w:0.25" aria-hidden="true"></span><span class="note">Según cobertura secundaria; verifica en popmenu.com</span></td>
+              <td data-label="Mejor para">Grupo de varios locales que corre automatización de marketing</td>
             </tr>
             <tr>
-              <td class="feature-name">Owner.com<span class="note">Stack ordering-first sin comisión</span></td>
-              <td>No &mdash; hospedado por Owner.com</td>
-              <td>0% restaurante (Flat) con ~5% tarifa de soporte del comensal; o ~5% restaurante (Flex)</td>
-              <td>~$249/mes (Flex) a ~$499/mes (Flat)<span class="viz-magbar" style="--w:0.25" aria-hidden="true"></span><span class="note">Según precios de owner.com, mayo 2026</span></td>
-              <td>Restaurante donde los pedidos directos son el negocio</td>
+              <td class="feature-name" data-label="Plataforma">Owner.com<span class="note">Stack ordering-first sin comisión</span></td>
+              <td data-label="¿Dueño del sitio?">No &mdash; hospedado por Owner.com</td>
+              <td data-label="Comisión por pedido en línea">0% restaurante (Flat) con ~5% tarifa de soporte del comensal; o ~5% restaurante (Flex)</td>
+              <td data-label="Mensual (mayo 2026)">~$249/mes (Flex) a ~$499/mes (Flat)<span class="viz-magbar" style="--w:0.25" aria-hidden="true"></span><span class="note">Según precios de owner.com, mayo 2026</span></td>
+              <td data-label="Mejor para">Restaurante donde los pedidos directos son el negocio</td>
             </tr>
             <tr>
-              <td class="feature-name">Toast<span class="note">POS + sitio web + pedidos, un solo stack</span></td>
-              <td>No &mdash; hospedado como parte del stack del POS</td>
-              <td>0% de comisión de plataforma en pedidos directos; procesamiento montado encima</td>
-              <td>~$300&ndash;700/mes (café) a $1,000&ndash;2,000+/mes (servicio completo)<span class="viz-magbar" style="--w:1" aria-hidden="true"></span><span class="note">Todo-incluido direccional; verifica la cotización en toasttab.com</span></td>
-              <td>Restaurante donde el sitio web, los pedidos y el POS son una sola factura</td>
+              <td class="feature-name" data-label="Plataforma">Toast<span class="note">POS + sitio web + pedidos, un solo stack</span></td>
+              <td data-label="¿Dueño del sitio?">No &mdash; hospedado como parte del stack del POS</td>
+              <td data-label="Comisión por pedido en línea">0% de comisión de plataforma en pedidos directos; procesamiento montado encima</td>
+              <td data-label="Mensual (mayo 2026)">~$300&ndash;700/mes (café) a $1,000&ndash;2,000+/mes (servicio completo)<span class="viz-magbar" style="--w:1" aria-hidden="true"></span><span class="note">Todo-incluido direccional; verifica la cotización en toasttab.com</span></td>
+              <td data-label="Mejor para">Restaurante donde el sitio web, los pedidos y el POS son una sola factura</td>
             </tr>
           </tbody>
         </table></div>

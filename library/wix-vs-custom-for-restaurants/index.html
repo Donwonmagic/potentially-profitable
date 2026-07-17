@@ -282,9 +282,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ae9e2118f83a" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=d184aa00dcf3" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ae9e2118f83a"><link rel="stylesheet" href="/assets/site-article.css?v=d184aa00dcf3"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=be49576ea8dc" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=5f21c6dd6baf" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=be49576ea8dc"><link rel="stylesheet" href="/assets/site-article.css?v=5f21c6dd6baf"></noscript>
 
 <style>
   /* ============ BLOG POST LAYOUT STYLES ============ */
@@ -1091,19 +1091,19 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <h2 id="the-math-that-almost-always-works">The math that almost always works</h2>
       <p>Here is the comparison most restaurant owners never actually do:</p>
       <figure class="article-figure" data-audio-alt="Two-year total cost, line by line. Wix DIY: roughly twenty-five dollars a month in software for six hundred over twenty-four months, no upfront, no explicit care plan, plus about three thousand dollars of your own time at a hundred twenty hours valued at twenty-five an hour. Real two-year total: about thirty-six hundred. Custom site, small-studio base tier: twenty-five hundred upfront, hosting included, care plan one twenty-five to three fifty a month for three thousand to eighty-four hundred. Two-year total: fifty-five hundred to ten thousand nine hundred. The custom site is roughly two to three times the cash cost, but it owns the code and clocks a mobile speed score above ninety against Wix&apos;s forty to fifty. The question isn&apos;t which line item is cheaper — it&apos;s whether the next two years of reservations are worth the speed and ownership gap.">
-      <div class="table-scroll"><table class="comparison-table">
+      <div class="table-scroll"><table class="comparison-table table--stack">
         <caption>Two-year total cost: Wix vs. custom site for an independent restaurant</caption>
         <thead>
           <tr><th scope="col">Line item</th><th scope="col">Wix (DIY)</th><th scope="col">Custom site (small-studio base build)</th></tr>
         </thead>
         <tbody>
-          <tr><th scope="row">Software / hosting</th><td>~$25/mo × 24 = <strong>$600</strong></td><td>included in care plan</td></tr>
-          <tr><th scope="row">Setup / launch</th><td>$0 (you build it)</td><td>$2,500 upfront</td></tr>
-          <tr><th scope="row">Care plan / maintenance</th><td>$0 explicit</td><td>$125–$350/mo × 24 = $3,000–$8,400</td></tr>
-          <tr><th scope="row">Owner time (~120 h)</th><td>$3,000 (at $25/h)</td><td>~$0</td></tr>
-          <tr><th scope="row"><strong>Two-year total</strong></th><td><strong>~$3,600</strong></td><td><strong>$5,500–$10,900</strong></td></tr>
-          <tr><th scope="row">Mobile speed score</th><td>40-50 / 100</td><td>90+ / 100</td></tr>
-          <tr><th scope="row">You own the code</th><td>No</td><td>Yes</td></tr>
+          <tr><th scope="row" data-label="Line item">Software / hosting</th><td data-label="Wix (DIY)">~$25/mo × 24 = <strong>$600</strong></td><td data-label="Custom site (small-studio base build)">included in care plan</td></tr>
+          <tr><th scope="row" data-label="Line item">Setup / launch</th><td data-label="Wix (DIY)">$0 (you build it)</td><td data-label="Custom site (small-studio base build)">$2,500 upfront</td></tr>
+          <tr><th scope="row" data-label="Line item">Care plan / maintenance</th><td data-label="Wix (DIY)">$0 explicit</td><td data-label="Custom site (small-studio base build)">$125–$350/mo × 24 = $3,000–$8,400</td></tr>
+          <tr><th scope="row" data-label="Line item">Owner time (~120 h)</th><td data-label="Wix (DIY)">$3,000 (at $25/h)</td><td data-label="Custom site (small-studio base build)">~$0</td></tr>
+          <tr><th scope="row" data-label="Line item"><strong>Two-year total</strong></th><td data-label="Wix (DIY)"><strong>~$3,600</strong></td><td data-label="Custom site (small-studio base build)"><strong>$5,500–$10,900</strong></td></tr>
+          <tr><th scope="row" data-label="Line item">Mobile speed score</th><td data-label="Wix (DIY)">40-50 / 100</td><td data-label="Custom site (small-studio base build)">90+ / 100</td></tr>
+          <tr><th scope="row" data-label="Line item">You own the code</th><td data-label="Wix (DIY)">No</td><td data-label="Custom site (small-studio base build)">Yes</td></tr>
         </tbody>
       </table></div>
       

@@ -182,9 +182,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ae9e2118f83a" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=d184aa00dcf3" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ae9e2118f83a"><link rel="stylesheet" href="/assets/site-article.css?v=d184aa00dcf3"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=be49576ea8dc" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=5f21c6dd6baf" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=be49576ea8dc"><link rel="stylesheet" href="/assets/site-article.css?v=5f21c6dd6baf"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -457,19 +457,19 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <p>Eight dimensions, weighted equally. The set was assembled to match what an operator can actually fix in an afternoon &mdash; no proprietary signals, no third-party tools required. Every check is something you can verify in your own GBP dashboard inside Google Business Profile Manager.</p>
 
-    <div class="table-scroll"><table class="note-table" aria-label="Eight GBP scoring dimensions">
+    <div class="table-scroll"><table class="note-table table--stack" aria-label="Eight GBP scoring dimensions">
       <thead>
         <tr><th scope="col">Dimension</th><th scope="col">What &ldquo;complete&rdquo; means</th><th scope="col" style="text-align:right">% complete (n=100)</th></tr>
       </thead>
       <tbody>
-        <tr><td>Hours, current</td><td>Open / closed days set, not blank, no &ldquo;permanently closed&rdquo; flag on a live business</td><td class="num">82%</td></tr>
-        <tr><td>Hours, holiday</td><td>At least one of the next four US restaurant holidays (Mother&rsquo;s Day, Memorial Day, July 4, Labor Day) configured</td><td class="num">19%</td></tr>
-        <tr><td>Website link</td><td>Restaurant&rsquo;s own URL (not an aggregator landing page) set on the &ldquo;Website&rdquo; field</td><td class="num">66%</td></tr>
-        <tr><td>Reservation link</td><td>OpenTable / Resy / Tock venue page deeplink, not the platform&rsquo;s home page</td><td class="num">41%</td></tr>
-        <tr><td>Menu link</td><td>HTML menu URL on the &ldquo;Menu&rdquo; field, not a PDF or aggregator menu</td><td class="num">38%</td></tr>
-        <tr><td>Photo recency</td><td>At least one photo uploaded within the last 90 days</td><td class="num">61%</td></tr>
-        <tr><td>Q&amp;A activity</td><td>Owner has answered at least one customer question</td><td class="num">29%</td></tr>
-        <tr><td>Review responses</td><td>Owner has responded to at least 50% of reviews from the last 90 days</td><td class="num">44%</td></tr>
+        <tr><td data-label="Dimension">Hours, current</td><td data-label="What &ldquo;complete&rdquo; means">Open / closed days set, not blank, no &ldquo;permanently closed&rdquo; flag on a live business</td><td class="num" data-label="% complete (n=100)">82%</td></tr>
+        <tr><td data-label="Dimension">Hours, holiday</td><td data-label="What &ldquo;complete&rdquo; means">At least one of the next four US restaurant holidays (Mother&rsquo;s Day, Memorial Day, July 4, Labor Day) configured</td><td class="num" data-label="% complete (n=100)">19%</td></tr>
+        <tr><td data-label="Dimension">Website link</td><td data-label="What &ldquo;complete&rdquo; means">Restaurant&rsquo;s own URL (not an aggregator landing page) set on the &ldquo;Website&rdquo; field</td><td class="num" data-label="% complete (n=100)">66%</td></tr>
+        <tr><td data-label="Dimension">Reservation link</td><td data-label="What &ldquo;complete&rdquo; means">OpenTable / Resy / Tock venue page deeplink, not the platform&rsquo;s home page</td><td class="num" data-label="% complete (n=100)">41%</td></tr>
+        <tr><td data-label="Dimension">Menu link</td><td data-label="What &ldquo;complete&rdquo; means">HTML menu URL on the &ldquo;Menu&rdquo; field, not a PDF or aggregator menu</td><td class="num" data-label="% complete (n=100)">38%</td></tr>
+        <tr><td data-label="Dimension">Photo recency</td><td data-label="What &ldquo;complete&rdquo; means">At least one photo uploaded within the last 90 days</td><td class="num" data-label="% complete (n=100)">61%</td></tr>
+        <tr><td data-label="Dimension">Q&amp;A activity</td><td data-label="What &ldquo;complete&rdquo; means">Owner has answered at least one customer question</td><td class="num" data-label="% complete (n=100)">29%</td></tr>
+        <tr><td data-label="Dimension">Review responses</td><td data-label="What &ldquo;complete&rdquo; means">Owner has responded to at least 50% of reviews from the last 90 days</td><td class="num" data-label="% complete (n=100)">44%</td></tr>
       </tbody>
       <tfoot>
         <tr><td colspan="2">Median total score</td><td class="num">5.4 / 8</td></tr>
@@ -504,17 +504,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <p>Whitespark and BrightLocal have published click-through estimates for each GBP element across multiple sample sizes. Applying their published lift figures to a typical DMV independent doing 8,000 GBP impressions per month:</p>
 
-    <div class="table-scroll"><table class="note-table" aria-label="Estimated monthly click-through impact per missed field">
+    <div class="table-scroll"><table class="note-table table--stack" aria-label="Estimated monthly click-through impact per missed field">
       <thead>
         <tr><th scope="col">Field</th><th scope="col" style="text-align:right">Lift if added (CTR)</th><th scope="col" style="text-align:right">Monthly clicks recovered (n=8,000 impressions)</th></tr>
       </thead>
       <tbody>
-        <tr><td>Website link</td><td class="num">+1.8%</td><td class="num">+144</td></tr>
-        <tr><td>Menu link (HTML)</td><td class="num">+1.4%</td><td class="num">+112</td></tr>
-        <tr><td>Reservation deeplink</td><td class="num">+1.1%</td><td class="num">+88</td></tr>
-        <tr><td>Holiday hours configured</td><td class="num">+0.6% (volatile)</td><td class="num">+48 (peak holidays)</td></tr>
-        <tr><td>Photo within 90 days</td><td class="num">+0.5%</td><td class="num">+40</td></tr>
-        <tr><td>Q&amp;A response (≥1)</td><td class="num">+0.3%</td><td class="num">+24</td></tr>
+        <tr><td data-label="Field">Website link</td><td class="num" data-label="Lift if added (CTR)">+1.8%</td><td class="num" data-label="Monthly clicks recovered (n=8,000 impressions)">+144</td></tr>
+        <tr><td data-label="Field">Menu link (HTML)</td><td class="num" data-label="Lift if added (CTR)">+1.4%</td><td class="num" data-label="Monthly clicks recovered (n=8,000 impressions)">+112</td></tr>
+        <tr><td data-label="Field">Reservation deeplink</td><td class="num" data-label="Lift if added (CTR)">+1.1%</td><td class="num" data-label="Monthly clicks recovered (n=8,000 impressions)">+88</td></tr>
+        <tr><td data-label="Field">Holiday hours configured</td><td class="num" data-label="Lift if added (CTR)">+0.6% (volatile)</td><td class="num" data-label="Monthly clicks recovered (n=8,000 impressions)">+48 (peak holidays)</td></tr>
+        <tr><td data-label="Field">Photo within 90 days</td><td class="num" data-label="Lift if added (CTR)">+0.5%</td><td class="num" data-label="Monthly clicks recovered (n=8,000 impressions)">+40</td></tr>
+        <tr><td data-label="Field">Q&amp;A response (≥1)</td><td class="num" data-label="Lift if added (CTR)">+0.3%</td><td class="num" data-label="Monthly clicks recovered (n=8,000 impressions)">+24</td></tr>
       </tbody>
     </table></div>
 

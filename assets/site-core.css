@@ -741,7 +741,7 @@
    links don't land the target heading hidden behind the chrome. */
 html{scroll-behavior:smooth;scroll-padding-top:calc(64px + var(--banner-h,0px) + 8px);-webkit-text-size-adjust:100%}
 
-/* ===== [core] Global reduced-motion safety net (lines 726-821) ===== */
+/* ===== [core] Global reduced-motion safety net (lines 726-841) ===== */
 /* Site-wide catch-all so animations/transitions/smooth-scroll honor the
    OS "reduce motion" setting even on surfaces without a component-scoped
    rule (WCAG 2.3.3). Component blocks elsewhere can still add specifics;
@@ -786,6 +786,26 @@ pre code{overflow-wrap:normal;word-break:normal;white-space:pre}
    library indexes, tool sub-tables. Lets phones scroll horizontally
    inside the wrapper instead of pushing the article wide. */
 .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+/* Wide comparison/data tables tagged .table--stack (data-label on each cell, via
+   scripts/inject or hand) reflow to stacked label-above-value cards on phones —
+   no horizontal scroll. Only tagged tables reflow; narrow tables that already
+   fit are untouched. The > .table--stack selector (0,0,2,0) beats the
+   .table-scroll>table{min-width:max-content} rule so the table can shrink. */
+@media (max-width:640px){
+  .table-scroll:has(.table--stack){overflow-x:visible}
+  .table-scroll > .table--stack{display:block;min-width:0;width:100%}
+  .table--stack thead{position:absolute;left:-9999px}
+  .table--stack tbody,.table--stack tbody tr,.table--stack tbody td,.table--stack tbody th{display:block;width:auto}
+  .table--stack tbody tr{border:1px solid var(--line);border-radius:10px;margin:0 0 12px;padding:2px 15px 10px;background:var(--white)}
+  .table--stack tbody td,.table--stack tbody th{padding:8px 0;border:0;border-bottom:1px dashed var(--line);text-align:left}
+  .table--stack tbody tr > :last-child{border-bottom:0}
+  .table--stack tbody td::before,.table--stack tbody th[data-label]::before{content:attr(data-label);display:block;margin-bottom:3px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft)}
+  .table--stack tbody tr > :first-child{font-size:16px;font-weight:600;color:var(--ink);padding-top:12px;border-bottom:2px solid var(--line)}
+  .table--stack tbody tr > :first-child::before{content:none}
+}
+/* Head-to-head compare-card scaffold (6 library articles): stack on phones so
+   each posture gets a full-width measure instead of two crushed ~150px ribbons. */
+@media (max-width:640px){ [role="group"][aria-label*="head to head"]{ grid-template-columns:1fr !important } }
 .table-scroll>table{min-width:max-content}
 /* Margin-walk / operator tables (.op-table). Three columns —
    line label, $ amount, % of ticket — that overflow on phones if left
@@ -838,7 +858,7 @@ pre code{overflow-wrap:normal;word-break:normal;white-space:pre}
 .post-end-mark p{font-family:var(--font-display);font-style:italic;font-size:18px;color:var(--stone);margin:0}
 .container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
 
-/* ===== [core] Button vocabulary (.btn family) (lines 822-1432) ===== */
+/* ===== [core] Button vocabulary (.btn family) (lines 842-1452) ===== */
 /* ============ Button vocabulary (Sprint 4 — locked) ============
    The site has ONE button family. Every interactive control should
    compose from these primitives unless it is a registered exception
@@ -1450,7 +1470,7 @@ section.block{padding:clamp(80px,10vw,140px) 0;border-top:1px solid var(--sectio
 .final .btn-ghost{color:var(--cream);border-color:rgba(250,247,242,0.3)}
 .final .btn-ghost:hover{background:rgba(250,247,242,0.08);border-color:var(--cream)}
 
-/* ===== [core] Footer (lines 1433-1532) ===== */
+/* ===== [core] Footer (lines 1453-1552) ===== */
 /* ============ FOOTER ============
    Three-section footer: a top CTA row, a 3-column discovery grid,
    and a thin bottom row with copyright + legal. Unified across all
@@ -1551,7 +1571,7 @@ body:has(.block.final a[href$="/ledger/"]) .foot-cta,body:has(.block.final a[hre
 @media (max-width:640px){.foot-bottom{flex-direction:column;align-items:flex-start;gap:14px}}
 
 
-/* ===== [core] Global focus-visible + skip-link + sr-only + nav-toggle + mobile-menu (every-page chrome) (lines 1563-1631) ===== */
+/* ===== [core] Global focus-visible + skip-link + sr-only + nav-toggle + mobile-menu (every-page chrome) (lines 1583-1651) ===== */
 :focus{outline:none}
 /* Sprint 3: global focus affordance. The 2px solid outline reads as
    a browser-default; the layered halo from --ring-focus reads as
@@ -1621,7 +1641,7 @@ br.br-lg{display:none}
    container width — the compression shoves the text against one side
    of the pill, which reads as "the text isn't centered". */
 
-/* ===== [core] Nav refinements + share widget (was inside CITATION DRAWER section) (lines 1632-1667) ===== */
+/* ===== [core] Nav refinements + share widget (was inside CITATION DRAWER section) (lines 1652-1687) ===== */
 .nav-inner .btn-primary{flex-shrink:0}
 @media (max-width:1100px){.nav-inner .btn-primary{display:none}
 .nav-toggle{display:flex}
@@ -1658,7 +1678,7 @@ br.br-lg{display:none}
 .share-item:hover,.share-item:focus-visible{background-color:var(--cream-2);outline:none}
 .share-item.copied{color:var(--teal);font-weight:600}
 
-/* ===== [core] Breadcrumbs (lines 2492-2545) ===== */
+/* ===== [core] Breadcrumbs (lines 2512-2565) ===== */
 /* ============ BREADCRUMBS ============
    Visual counterpart to the BreadcrumbList schema already present in
    JSON-LD on secondary pages. Sits between the nav and the page hero,
@@ -1713,7 +1733,7 @@ br.br-lg{display:none}
 @media (max-width:640px){.breadcrumb{font-size:12px;padding:88px 0 12px}.breadcrumb + .hero{padding-top:24px}}
 
 
-/* ===== [core] Homepage utility classes (lines 2546-2598) ===== */
+/* ===== [core] Homepage utility classes (lines 2566-2618) ===== */
 /* ============ HOMEPAGE UTILITY CLASSES ============
    Extracted from inline style= attributes during the Sprint 1 cleanup.
    Keep these tightly scoped — prefer new semantic classes over atomic
@@ -1767,7 +1787,7 @@ br.br-lg{display:none}
 .honeypot{display:none}
 
 
-/* ===== [core] Legal pages (lines 2599-2625) ===== */
+/* ===== [core] Legal pages (lines 2619-2645) ===== */
 /* ===== Legal pages (accessibility, privacy, cookies, terms) ===== */
 .legal{max-width:760px;margin:0 auto;padding:clamp(80px, 7vw, 112px) var(--pad-x) 96px}
 .legal h1{font-family:var(--font-display);font-weight:500;font-size:clamp(34px,5vw,48px);line-height:1.1;letter-spacing:-0.02em;margin:0 0 8px;color:var(--ink)}
@@ -1795,7 +1815,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [core] Homepage primary tool CTA (restaurant audit) (lines 2626-2930) ===== */
+/* ===== [core] Homepage primary tool CTA (restaurant audit) (lines 2646-2950) ===== */
 /* ============================================================
    Homepage primary tool CTA (restaurant audit)
    ============================================================
@@ -2101,7 +2121,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [core] Library nav-mega regroup (nav is everywhere) (lines 3733-4053) ===== */
+/* ===== [core] Library nav-mega regroup (nav is everywhere) (lines 3753-4073) ===== */
 
 /* ---------- Library nav-mega regroup (Phase 5) ---------------------
    The Library dropdown was an 8-item linear list. Now grouped into
@@ -2423,7 +2443,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [core] /system/ colophon page (small, kept in core) (lines 4163-4240) ===== */
+/* ===== [core] /system/ colophon page (small, kept in core) (lines 4183-4260) ===== */
 /* ============================================================
    /system/ COLOPHON PAGE
    Shows the stack, design tokens, i18n pipeline, URL restructure
@@ -2502,7 +2522,7 @@ br.br-lg{display:none}
 .sys-a11y p{font-size:14.5px;line-height:1.6;color:var(--stone);margin:0}
 
 
-/* ===== [core] Search modal (Pagefind-backed; on every page) (lines 4241-4416) ===== */
+/* ===== [core] Search modal (Pagefind-backed; on every page) (lines 4261-4436) ===== */
 /* ============================================================
    SEARCH MODAL (Pagefind-backed)
    Keyboard opens via Cmd/Ctrl+K or the nav search button. Modal
@@ -2679,7 +2699,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [core] Cloudflare Turnstile widget (reservation min-height) (lines 5918-5931) ===== */
+/* ===== [core] Cloudflare Turnstile widget (reservation min-height) (lines 5938-5951) ===== */
 
 /* ============ Cloudflare Turnstile widget (Phase 3B) ============
    Reserve the widget's render height so layout doesn't shift when
@@ -2694,7 +2714,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [core] Workshop save banner (multi-context, kept in core) (lines 5932-5983) ===== */
+/* ===== [core] Workshop save banner (multi-context, kept in core) (lines 5952-6003) ===== */
 /* ============ Workshop (Sprint 3 — cohesion) ============
    /workbench/ + /es/workbench/ saved-items page. Shares the
    global frame (.nav + <footer>) with every other page so the
@@ -2747,7 +2767,7 @@ br.br-lg{display:none}
   .wsh-item-actions{justify-content:flex-end}
 }
 
-/* ===== [core] Companion kit — four-corner cross-surface footer block (lines 6152-6288) ===== */
+/* ===== [core] Companion kit — four-corner cross-surface footer block (lines 6172-6308) ===== */
 /* ============ Companion kit (Phase 2B — cohesion) ============
    The four-corner footer block — Read · Run · Write · Look up —
    injected by scripts/inject-companion-kit.mjs at the bottom of
@@ -2885,7 +2905,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [core] Workshop rationale (lines 6289-6305) ===== */
+/* ===== [core] Workshop rationale (lines 6309-6325) ===== */
 /* ============ Workshop rationale (Sprint 14 — cohesion) ============
    A small editorial block on /tools/, /glossary/, and a few other
    pages that explains the Workshop to anonymous visitors. The two
@@ -2903,7 +2923,7 @@ br.br-lg{display:none}
 .workshop-rationale-cta .js-nav-signin:hover,.workshop-rationale-cta .js-nav-workshop:hover{color:var(--teal-dark)}
 
 
-/* ===== [core] The Window (/window/ — kept in core to avoid a 4th shell) (lines 6306-6423) ===== */
+/* ===== [core] The Window (/window/ — kept in core to avoid a 4th shell) (lines 6326-6443) ===== */
 /* ============ THE WINDOW (Phase W.3) ============
    Full-page editorial canvas at /window/ and /es/window/. Suppresses
    the standard nav via body.window-canvas. The muntin hairline at
@@ -3022,7 +3042,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .window-signin strong{color:var(--ink)}
 
 
-/* ===== [core] Window composer (Phase-2 redesign) (lines 6424-6456) ===== */
+/* ===== [core] Window composer (Phase-2 redesign) (lines 6444-6476) ===== */
 /* ============ WINDOW COMPOSER — Phase-2 redesign ============
    On-ramp chips moved above the form, surface productized offers
    with prices. Optional context grid (Name / Restaurant / Site)
@@ -3056,7 +3076,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   .window-composer__alt-row li + li::before{display:none}
 }
 
-/* ===== [core] ADMIN /admin/window/ (kept in core; admin is auth-gated noindex) (lines 6457-6559) ===== */
+/* ===== [core] ADMIN /admin/window/ (kept in core; admin is auth-gated noindex) (lines 6477-6579) ===== */
 
 /* ============ ADMIN /admin/window/ (Phase W.3) ============ */
 .admin-window{max-width:760px;margin:0 auto;padding:32px 16px}
@@ -3160,7 +3180,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .tool-data-promise__links a:hover{border-bottom-color:var(--teal)}
 
 
-/* ===== [core] Newsletter capture (in global footer; on every page) (lines 6803-6870) ===== */
+/* ===== [core] Newsletter capture (in global footer; on every page) (lines 6823-6890) ===== */
 
 /* Phase G.10 (Growth) — quiet newsletter capture in the global footer.
    Two short lines, one input, one button — no badges, no pop-ups, no
@@ -3229,7 +3249,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 
 
 
-/* ===== [core] Touch-device hover hygiene (lines 6933-6971) ===== */
+/* ===== [core] Touch-device hover hygiene (lines 6953-6991) ===== */
 /* ============================================================
    Touch-device hover hygiene — neutralize sticky :hover effects
    on devices that don't have a hover capability. CSS :hover on
@@ -3269,7 +3289,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   *:hover { transition-duration: 0ms !important; }
 }
 
-/* ===== [core] Hero mobile reorder (homepage) (lines 6972-6996) ===== */
+/* ===== [core] Hero mobile reorder (homepage) (lines 6992-7016) ===== */
 
 /* ============================================================
    Hero mobile reorder — phones first, primary CTA above the fold.
@@ -3295,7 +3315,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Hero count chips (homepage) (lines 7072-7103) ===== */
+/* ===== [core] Hero count chips (homepage) (lines 7092-7123) ===== */
 
 /* ============================================================
    Hero count chips — small pill row showing library counts
@@ -3328,7 +3348,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   color: var(--teal);
 }
 
-/* ===== [core] Trust strip (homepage) (lines 7104-7152) ===== */
+/* ===== [core] Trust strip (homepage) (lines 7124-7172) ===== */
 
 /* ============================================================
    Trust strip — single thin band immediately under flagship
@@ -3378,7 +3398,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 .trust-strip__sep { display: none; }
 
-/* ===== [core] Compare cards (homepage) (lines 7153-7238) ===== */
+/* ===== [core] Compare cards (homepage) (lines 7173-7258) ===== */
 
 /* ============================================================
    Compare cards — three-column Patchwork / Agency / Muntin
@@ -3465,7 +3485,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Window Phase 2/3.6/4/5+ additions (sash/sidelight, attach, now, pulses, admin) (lines 7680-7943) ===== */
+/* ===== [core] Window Phase 2/3.6/4/5+ additions (sash/sidelight, attach, now, pulses, admin) (lines 7700-7963) ===== */
 /* ============ THE WINDOW — Phase 2/3.6/4/5+ additions ============
    Sash/sidelight named-pane composer (Phase 2.1), photo+voice attach
    row (Phase 3.2-3.6), now-line widget (Phase 4), site-wide pulse
@@ -3730,7 +3750,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .admin-callbacks__voice-label--deleted{color:var(--stone)}
 .admin-callbacks__meta{font-size:12px;color:var(--ink-soft);font-style:italic;margin:8px 0 0}
 
-/* ===== [core] Phase 1 — design tokens + MuntinUI component shells (.mtn-*) (lines 7944-8156) ===== */
+/* ===== [core] Phase 1 — design tokens + MuntinUI component shells (.mtn-*) (lines 7964-8176) ===== */
 
 /* ============ Phase 1 tokens (tool-suite upgrade) ============
    Additive tokens that the MuntinUI primitives consume. Existing
@@ -3944,7 +3964,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   }
 }
 
-/* ===== [core] Phase 2 — hub tier badge + tool-tier-filter strip (lines 8157-8211) ===== */
+/* ===== [core] Phase 2 — hub tier badge + tool-tier-filter strip (lines 8177-8231) ===== */
 
 /* ============ Phase 2 hub styles (tool-suite upgrade) ============
    Tier badge on each tool card + a JS-enhanced filter strip that
@@ -4000,7 +4020,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   display:none;
 }
 
-/* ===== [core] Phase 5 — dark-mode token override (prefers-color-scheme + [data-theme]) (lines 8212-8273) ===== */
+/* ===== [core] Phase 5 — dark-mode token override (prefers-color-scheme + [data-theme]) (lines 8232-8293) ===== */
 
 /* ============ Phase 5 dark-mode tokens (tool-suite upgrade) ============
    The Phase 1 component primitives all reference --mtn-surface /
@@ -4063,7 +4083,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Phase 7 — dark-mode toggle button (.theme-toggle) (lines 8274-8334) ===== */
+/* ===== [core] Phase 7 — dark-mode toggle button (.theme-toggle) (lines 8294-8354) ===== */
 /* ============ Phase 7 — dark-mode toggle button =============
    Sits in the nav next to lang-switch. Two SVG icons (sun + moon)
    stacked; CSS shows one based on the current [data-theme] state.
@@ -4125,7 +4145,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .mobile-theme .theme-toggle__label{display:inline}
 
 
-/* ===== [core] Phase 4 — next-tool recommendation card (.mtn-next-tool) (lines 8335-8375) ===== */
+/* ===== [core] Phase 4 — next-tool recommendation card (.mtn-next-tool) (lines 8355-8395) ===== */
 /* ============ Phase 4 — next-tool recommendation card =============
    Mounted at the end of a tool's result region by
    MuntinNextTool.render(). Visually quiet so it doesn't compete
@@ -4167,7 +4187,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .mtn-next-tool__link:focus-visible{outline:none;box-shadow:var(--ring-focus)}
 
 
-/* ===== [core] Phase G — About portrait frame (real photo overlay) (lines 8376-8390) ===== */
+/* ===== [core] Phase G — About portrait frame (real photo overlay) (lines 8396-8410) ===== */
 /* ===== Phase G — About portrait frame (real photo overlay; reused on homepage About teaser + /about/) ===== */
 .about-portrait-frame{position:relative;width:100%;aspect-ratio:4/5;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line-dark);background:var(--cream-2)}
 .about-portrait-frame .portrait{position:absolute;inset:0;border:0;border-radius:0;aspect-ratio:auto;width:100%;height:100%}
@@ -4183,7 +4203,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .about-window .portrait{position:absolute;inset:0;border:0;border-radius:0;aspect-ratio:auto;width:100%;height:100%;overflow:hidden;background:linear-gradient(150deg,color-mix(in srgb,var(--teal) 24%,var(--cream)) 0%,color-mix(in srgb,var(--teal) 11%,var(--cream)) 52%,var(--cream-2) 100%)}
 .about-window .portrait::after{content:'';position:absolute;inset:0;background:linear-gradient(color-mix(in srgb,var(--ink) 24%,transparent),color-mix(in srgb,var(--ink) 24%,transparent)) 50% 0/2px 100% no-repeat,linear-gradient(color-mix(in srgb,var(--ink) 24%,transparent),color-mix(in srgb,var(--ink) 24%,transparent)) 0 33.333%/100% 2px no-repeat,linear-gradient(color-mix(in srgb,var(--ink) 24%,transparent),color-mix(in srgb,var(--ink) 24%,transparent)) 0 66.666%/100% 2px no-repeat;box-shadow:inset 0 0 0 9px var(--cream),inset 0 0 0 11px color-mix(in srgb,var(--ink) 20%,transparent);pointer-events:none}
 
-/* ===== [core] Batch marquee (lines 8391-8404) ===== */
+/* ===== [core] Batch marquee (lines 8411-8424) ===== */
 /* ===== Batch marquee — fixed strip above the nav (.batch-marquee is on every page when a batch is active) ===== */
 .batch-marquee{position:fixed;top:0;left:0;right:0;z-index:60}
 /* The fixed nav is offset below the fixed banner by --banner-h (set to the
@@ -4198,7 +4218,7 @@ body:has(.batch-marquee) main{padding-top:calc(64px + max(var(--banner-h,50px),5
 @media (max-width:640px){:root{--banner-h:72px}}
 
 
-/* ===== [core] Phase 9 — Light refresh (micro-interactions, depth, voice search, dark-mode polish) (lines 8405-8609) ===== */
+/* ===== [core] Phase 9 — Light refresh (micro-interactions, depth, voice search, dark-mode polish) (lines 8425-8629) ===== */
 /* ============ Phase 9 — Light refresh ============
    A small, additive cosmetic pass that layers on top of every
    previous phase without re-declaring anything. Five concerns:
@@ -4404,10 +4424,10 @@ body:has(.batch-marquee) main{padding-top:calc(64px + max(var(--banner-h,50px),5
 :root[data-theme="dark"] .theme-toggle:hover{background:var(--refresh-surface-1);border-color:var(--teal)}
 
 
-/* ===== [core] Dark-mode contrast completion (lines 8610-8610) ===== */
+/* ===== [core] Dark-mode contrast completion (lines 8630-8630) ===== */
 
 
-/* ===== [core] Nav width discipline (bolder pass 2026-07) (lines 8611-8909) ===== */
+/* ===== [core] Nav width discipline (bolder pass 2026-07) (lines 8631-8929) ===== */
 /* At 1440 the nav row's natural demand (~1307px) exceeds the 1200px
    container, pushing the primary CTA off-canvas ("Reach Do"). Shed
    demand progressively instead of letting the row overflow: tighter

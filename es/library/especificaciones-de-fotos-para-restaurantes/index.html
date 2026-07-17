@@ -204,9 +204,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ae9e2118f83a" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=d184aa00dcf3" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ae9e2118f83a"><link rel="stylesheet" href="/assets/site-article.css?v=d184aa00dcf3"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=be49576ea8dc" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=5f21c6dd6baf" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=be49576ea8dc"><link rel="stylesheet" href="/assets/site-article.css?v=5f21c6dd6baf"></noscript>
 
 <style>
   .spec-table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14.5px;line-height:1.55}
@@ -481,21 +481,21 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <h2 id="los-10-tamanos-que-realmente-necesitas">Los 10 tamaños que realmente necesitas</h2>
 
       <figure class="article-figure" data-audio-alt="Las diez superficies a las que necesita llegar una foto de restaurante, con la proporción y resolución mínima de cada una. Google Business Profile pide tres: portada dieciséis por nueve a dos mil ciento veinte por mil ciento noventa y dos, foto de perfil uno a uno a setecientos veinte cuadrado, y galería cuatro por tres a mil veinticuatro por setecientos sesenta y ocho — y quieres treinta de esas en los primeros noventa días. Tu sitio toma dos: hero a veintiuno por nueve o dieciséis por nueve, dos mil cuatrocientos por mil veinticuatro, y banners interiores tres por dos a mil ochocientos por mil doscientos. Miniaturas de menú cuatro por tres o uno a uno a ochocientos por seiscientos — elige una y úsala en cada plato. Open Graph para links compartidos: uno punto noventa y uno a uno, mil doscientos por seiscientos treinta. Yelp pide una portada tres a uno a mil quinientos por quinientos. Instagram quiere dos formatos: cuadrado uno a uno a mil ochenta, y vertical cuatro por cinco a mil ochenta por mil trescientos cincuenta — el vertical es el que realmente se ve en dos mil veintiséis.">
-      <div class="table-scroll"><table class="spec-table">
+      <div class="table-scroll"><table class="spec-table table--stack">
         <thead>
           <tr><th>Superficie</th><th>Aspect</th><th>Resolución mínima</th><th>Para qué sirve</th></tr>
         </thead>
         <tbody>
-          <tr><td>Portada de GBP</td><td><code>16:9</code></td><td>2120 × 1192</td><td>El hero del panel de Google; se cropea a ~16:9 incluso desde subida cuadrada.</td></tr>
-          <tr><td>Foto de perfil GBP</td><td><code>1:1</code></td><td>720 × 720</td><td>El badge circular; usualmente el logo o un food shot apretado.</td></tr>
-          <tr><td>Galería GBP</td><td><code>4:3</code></td><td>1024 × 768</td><td>30+ de estas en los primeros 90 días.</td></tr>
-          <tr><td>Hero del sitio</td><td><code>21:9</code> o <code>16:9</code></td><td>2400 × 1024</td><td>Define el feel de todo el sitio.</td></tr>
-          <tr><td>Banners interiores</td><td><code>3:2</code></td><td>1800 × 1200</td><td>Uno por sección: intro de menú, historia, ubicación.</td></tr>
-          <tr><td>Miniaturas de menú</td><td><code>4:3</code> o <code>1:1</code></td><td>800 × 600</td><td>Una sola spec, usada consistente en cada plato — nunca mezcles.</td></tr>
-          <tr><td>OG / Twitter cards</td><td><code>1.91:1</code></td><td>1200 × 630</td><td>Previews sociales para links compartidos.</td></tr>
-          <tr><td>Portada Yelp</td><td><code>3:1</code></td><td>1500 × 500</td><td>Vive en el tope de tu listing de Yelp.</td></tr>
-          <tr><td>Instagram cuadrado</td><td><code>1:1</code></td><td>1080 × 1080</td><td>El formato default del feed.</td></tr>
-          <tr><td>Instagram vertical</td><td><code>4:5</code></td><td>1080 × 1350</td><td>El formato que realmente se ve.</td></tr>
+          <tr><td data-label="Superficie">Portada de GBP</td><td data-label="Aspect"><code>16:9</code></td><td data-label="Resolución mínima">2120 × 1192</td><td data-label="Para qué sirve">El hero del panel de Google; se cropea a ~16:9 incluso desde subida cuadrada.</td></tr>
+          <tr><td data-label="Superficie">Foto de perfil GBP</td><td data-label="Aspect"><code>1:1</code></td><td data-label="Resolución mínima">720 × 720</td><td data-label="Para qué sirve">El badge circular; usualmente el logo o un food shot apretado.</td></tr>
+          <tr><td data-label="Superficie">Galería GBP</td><td data-label="Aspect"><code>4:3</code></td><td data-label="Resolución mínima">1024 × 768</td><td data-label="Para qué sirve">30+ de estas en los primeros 90 días.</td></tr>
+          <tr><td data-label="Superficie">Hero del sitio</td><td data-label="Aspect"><code>21:9</code> o <code>16:9</code></td><td data-label="Resolución mínima">2400 × 1024</td><td data-label="Para qué sirve">Define el feel de todo el sitio.</td></tr>
+          <tr><td data-label="Superficie">Banners interiores</td><td data-label="Aspect"><code>3:2</code></td><td data-label="Resolución mínima">1800 × 1200</td><td data-label="Para qué sirve">Uno por sección: intro de menú, historia, ubicación.</td></tr>
+          <tr><td data-label="Superficie">Miniaturas de menú</td><td data-label="Aspect"><code>4:3</code> o <code>1:1</code></td><td data-label="Resolución mínima">800 × 600</td><td data-label="Para qué sirve">Una sola spec, usada consistente en cada plato — nunca mezcles.</td></tr>
+          <tr><td data-label="Superficie">OG / Twitter cards</td><td data-label="Aspect"><code>1.91:1</code></td><td data-label="Resolución mínima">1200 × 630</td><td data-label="Para qué sirve">Previews sociales para links compartidos.</td></tr>
+          <tr><td data-label="Superficie">Portada Yelp</td><td data-label="Aspect"><code>3:1</code></td><td data-label="Resolución mínima">1500 × 500</td><td data-label="Para qué sirve">Vive en el tope de tu listing de Yelp.</td></tr>
+          <tr><td data-label="Superficie">Instagram cuadrado</td><td data-label="Aspect"><code>1:1</code></td><td data-label="Resolución mínima">1080 × 1080</td><td data-label="Para qué sirve">El formato default del feed.</td></tr>
+          <tr><td data-label="Superficie">Instagram vertical</td><td data-label="Aspect"><code>4:5</code></td><td data-label="Resolución mínima">1080 × 1350</td><td data-label="Para qué sirve">El formato que realmente se ve.</td></tr>
         </tbody>
       </table></div>
       

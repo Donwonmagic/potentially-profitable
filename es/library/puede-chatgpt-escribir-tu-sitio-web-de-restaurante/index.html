@@ -266,9 +266,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=ae9e2118f83a" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=d184aa00dcf3" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=ae9e2118f83a"><link rel="stylesheet" href="/assets/site-article.css?v=d184aa00dcf3"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=be49576ea8dc" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=5f21c6dd6baf" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=be49576ea8dc"><link rel="stylesheet" href="/assets/site-article.css?v=5f21c6dd6baf"></noscript>
 
 <style>
   /* ============ SHARED BLOG POST LAYOUT ============ */
@@ -765,20 +765,20 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <h2 id="so-should-it">Entonces&hellip; ¿debería?</h2>
 
-      <div class="table-scroll"><table class="comparison-table">
+      <div class="table-scroll"><table class="comparison-table table--stack">
         <caption>Dónde ayuda ChatGPT en serio vs. dónde equivoca tu restaurante</caption>
         <thead>
           <tr><th scope="col">Página o tarea</th><th scope="col">¿Usar IA?</th><th scope="col">Por qué</th></tr>
         </thead>
         <tbody>
-          <tr><th scope="row">Descripciones de platos del menú</th><td>Sí</td><td><!-- LIBRARY:autolink:start --><a href="/es/glossary/sensory-adjective/" data-glossary-head="Adjetivo sensorial" data-glossary-aka="una palabra que nombra sabor, textura, temperatura o preparación" data-glossary-blurb="Un modificador en la descripción de un plato que nombra una cualidad perceptual — sabor (ahumado, salobre, picante), textura (crocante, sedoso, masticable), temperatura (helado,…">Adjetivos sensoriales</a><!-- LIBRARY:autolink:end --> + lenguaje de procedencia son el punto fuerte de la IA — ha leído 10K menús.</td></tr>
-          <tr><th scope="row">Alt text para fotos</th><td>Sí</td><td>Aburrido, repetitivo, crítico para accesibilidad — exactamente lo que la IA hace bien.</td></tr>
-          <tr><th scope="row">Contenido de schema FAQ</th><td>Sí (con edición)</td><td>Genera 12 preguntas, recorta a 6, reescribe las respuestas en tu voz.</td></tr>
-          <tr><th scope="row">Privacidad / accesibilidad / términos</th><td>Sí</td><td>El texto de cumplimiento es genérico a propósito. La IA está bien.</td></tr>
-          <tr><th scope="row">Posts de blog (recetas, barrio)</th><td>Con dudas</td><td>Útil como guion + primer borrador; la voz es la pasada de edición.</td></tr>
-          <tr><th scope="row">Texto del hero de la home</th><td>No</td><td>Las 12 palabras que deciden la reserva de esta noche. Escríbelas tú.</td></tr>
-          <tr><th scope="row">Página Sobre Nosotros / historia</th><td>No</td><td>Esta es la página que los comensales comparten para convencer amigos. La IA no puede fingir voz ganada.</td></tr>
-          <tr><th scope="row">Afirmaciones hiperlocales / de barrio</th><td>No</td><td>La IA inventa con confianza restaurantes que no existen a 4 cuadras de ti.</td></tr>
+          <tr><th scope="row" data-label="Página o tarea">Descripciones de platos del menú</th><td data-label="¿Usar IA?">Sí</td><td data-label="Por qué"><!-- LIBRARY:autolink:start --><a href="/es/glossary/sensory-adjective/" data-glossary-head="Adjetivo sensorial" data-glossary-aka="una palabra que nombra sabor, textura, temperatura o preparación" data-glossary-blurb="Un modificador en la descripción de un plato que nombra una cualidad perceptual — sabor (ahumado, salobre, picante), textura (crocante, sedoso, masticable), temperatura (helado,…">Adjetivos sensoriales</a><!-- LIBRARY:autolink:end --> + lenguaje de procedencia son el punto fuerte de la IA — ha leído 10K menús.</td></tr>
+          <tr><th scope="row" data-label="Página o tarea">Alt text para fotos</th><td data-label="¿Usar IA?">Sí</td><td data-label="Por qué">Aburrido, repetitivo, crítico para accesibilidad — exactamente lo que la IA hace bien.</td></tr>
+          <tr><th scope="row" data-label="Página o tarea">Contenido de schema FAQ</th><td data-label="¿Usar IA?">Sí (con edición)</td><td data-label="Por qué">Genera 12 preguntas, recorta a 6, reescribe las respuestas en tu voz.</td></tr>
+          <tr><th scope="row" data-label="Página o tarea">Privacidad / accesibilidad / términos</th><td data-label="¿Usar IA?">Sí</td><td data-label="Por qué">El texto de cumplimiento es genérico a propósito. La IA está bien.</td></tr>
+          <tr><th scope="row" data-label="Página o tarea">Posts de blog (recetas, barrio)</th><td data-label="¿Usar IA?">Con dudas</td><td data-label="Por qué">Útil como guion + primer borrador; la voz es la pasada de edición.</td></tr>
+          <tr><th scope="row" data-label="Página o tarea">Texto del hero de la home</th><td data-label="¿Usar IA?">No</td><td data-label="Por qué">Las 12 palabras que deciden la reserva de esta noche. Escríbelas tú.</td></tr>
+          <tr><th scope="row" data-label="Página o tarea">Página Sobre Nosotros / historia</th><td data-label="¿Usar IA?">No</td><td data-label="Por qué">Esta es la página que los comensales comparten para convencer amigos. La IA no puede fingir voz ganada.</td></tr>
+          <tr><th scope="row" data-label="Página o tarea">Afirmaciones hiperlocales / de barrio</th><td data-label="¿Usar IA?">No</td><td data-label="Por qué">La IA inventa con confianza restaurantes que no existen a 4 cuadras de ti.</td></tr>
         </tbody>
       </table></div>
 
