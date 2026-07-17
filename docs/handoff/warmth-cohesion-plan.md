@@ -155,9 +155,25 @@ them; none are wired into a GitHub workflow. The Moves 9/12 work is green on eve
     blocker on the warmth rollout is now cleared** — a warmth-hook regen of a given surface should now
     show only the hook's own diff. Per-surface content drift on OTHER generators (cuisine, theme-story,
     ingredient-yield) is handled the same way when their hook lands: regen → confirm benign → sync → counts.
-  - **Pre-existing, left as-is:** `check-cost-index-picker` fails `grapefruit: dollarRef true != recomputed
-    false` (a data/generator provenance mismatch, NOT a page issue — identical against HEAD with the regen
-    stashed). Flag for a separate data pass; unrelated to warmth.
+  - **RESOLVED 2026-07-17 (deploy blocker):** the Cloudflare Workers build runs `check-all.mjs` and needs
+    exit 0 to deploy — it was failing on **two** pre-existing cost-index checks (identical on merge-base
+    `a893e69f`; neither introduced by this branch). Both now fixed on the branch:
+      1. `check-cost-index-picker` — `grapefruit: dollarRef true != recomputed false`. Grapefruit's seed
+         confidence is now `low`, so the `reference()` rule recomputes `dollarRef=false`, but the generated
+         manifest still said `true`. Fix: `node scripts/build-cost-index-picker.mjs` (regen the not-yet-live
+         manifest). Net: grapefruit `true→false`, firm-count `21→20`. Commit `764329d9`.
+      2. `Cost-index revisions sync` — `1344 pending event(s)` (1257 revisions + 87 withdrawals, 65
+         ingredients). Signature is a **re-baseline artifact** (prior baseline held flat placeholders, e.g.
+         acorn-squash a flat $34.00 across many dates, vs real per-date values now), not genuine day-level
+         corrections. Per operator direction + precedent `5eac4b5c`, **re-stamped the baseline**
+         (`data/cost-index-readings.prev.json`) forward to the current published projection **without**
+         appending to the public of-record ledger (`data/cost-revisions.json` / `cost-index/revisions.json`
+         stay at 8057 recorded). Commit `2186b5ca`. Irreversible: those 1344 diffs can never be recorded as
+         public revisions afterward — accepted deliberately.
+    - **`(idem)` checks in a bare `check-all` are false-positive:** running `check-all.mjs` locally without
+      first running the deploy's injector chain reports ~20 `✗ … (idem) would update N file(s)`. The
+      Cloudflare build runs every injector BEFORE `check-all`, so all `(idem)` checks read ✓ there — the
+      only real hard failures were the two above. Do not chase the local `(idem)` count.
 - **`sync-includes` drift is benign + now cleared.** The 614-file drift was *only* the Move 5b i18n
   keys awaiting propagation; running `sync-includes` → `inject-site-counts` propagated them AND healed
   stale ES footer counts (24/12/149 → the true 36/5/171). Counts are idempotent again; EN untouched.
