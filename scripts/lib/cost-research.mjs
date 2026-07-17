@@ -1444,7 +1444,12 @@ function pricingDataset(repoRoot) {
   const P = pricingCards(repoRoot);
   const rows = P.cards.map((c) => ({
     slug: c.slug, name: c.en, category: c.cat || null, posture: c.bucket,
-    band_pct: c.bucket === 'withhold' ? null : c.bandPct,
+    // Withholds are two mechanically-opposite populations: 10 carry a real wholesale
+    // series but swing too wide to anchor (too_volatile — keep the MEASURED band, 30-62%),
+    // 27 have no public series at all (no_series — band is genuinely unmeasurable → null).
+    // Collapsing both to null hid a band the engine actually measured, so split them here.
+    band_pct: c.bucket === 'withhold' ? (c.coverage ? c.bandPct : null) : c.bandPct,
+    withhold_reason: c.bucket === 'withhold' ? (c.coverage ? 'too_volatile' : 'no_series') : null,
     coverage_pct: c.coverage, edible_yield_pct: c.yieldPct, trim_tax: c.trimTax,
     cheapest_month: c.worthTiming ? c.cheapMonth : null,
     save_pct: c.worthTiming ? c.savePct : null,
@@ -1457,10 +1462,10 @@ function pricingDataset(repoRoot) {
     license: 'CC BY 4.0', license_url: 'https://creativecommons.org/licenses/by/4.0/',
     attribution: 'Muntin Cost Index (muntin.digital)',
     joins: 'lock-or-float + co-movement (CC-BY), yields (CC-BY), seasonal normals (CC0)',
-    note: "Every band is a wholesale reference read against each ingredient's own baseline window — never a delivered or retail price. cheapest_month is named only when the seasonal trough clears the noise gate; null means priced year-round. Descriptive of the tracked record, never a forecast; co-occurrence, never cause.",
+    note: "Every band is a wholesale reference read against each ingredient's own baseline window — never a delivered or retail price. cheapest_month is named only when the seasonal trough clears the noise gate; null means priced year-round. Descriptive of the tracked record, never a forecast; co-occurrence, never cause. For withholds, band_pct carries the measured band where a public wholesale series exists (withhold_reason=too_volatile: the band is too wide to anchor a printed price) and is null where no series exists (withhold_reason=no_series). edible_yield_pct is book edible yield; for citrus it is JUICE yield (juice is the used pound), so its trim_tax is a juice-extraction cost, not knife trim.",
     count: rows.length, ingredients: rows,
   };
-  const cols = ['slug', 'name', 'category', 'posture', 'band_pct', 'coverage_pct', 'edible_yield_pct', 'trim_tax', 'cheapest_month', 'save_pct', 'comover', 'comover_shared', 'comover_of'];
+  const cols = ['slug', 'name', 'category', 'posture', 'band_pct', 'withhold_reason', 'coverage_pct', 'edible_yield_pct', 'trim_tax', 'cheapest_month', 'save_pct', 'comover', 'comover_shared', 'comover_of'];
   const esc = (v) => { if (v == null) return ''; const s = String(v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
   const csv = [cols.join(',')].concat(rows.map((r) => cols.map((k) => esc(r[k])).join(','))).join('\n') + '\n';
   return { json: JSON.stringify(meta, null, 2) + '\n', csv };
