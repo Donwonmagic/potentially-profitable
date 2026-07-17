@@ -125,7 +125,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 @media (max-width:960px){.foot-grid{grid-template-columns:1fr 1fr 1fr;gap:40px}}
 @media (max-width:640px){.foot-grid{grid-template-columns:1fr 1fr}.foot-cta{flex-direction:column;align-items:flex-start;gap:20px}}
 @media (max-width:420px){.foot-grid{grid-template-columns:1fr}}
-.foot-bottom{display:flex;justify-content:space-between;gap:24px;align-items:center;flex-wrap:wrap}
+.foot-bottom{display:flex;justify-content:space-between;gap:24px;align-items:center;flex-wrap:wrap;max-width:var(--max);margin-inline:auto;padding-inline:var(--pad-x)}
 .below-fold-island{content-visibility:auto;contain-intrinsic-size:auto 1200px}
 @media print{.below-fold-island{content-visibility:visible}}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body{background:#16181D;color:#F1EDE5}:root:not([data-theme="light"]) .nav{background:#16181D;border-bottom-color:#2C3038}:root:not([data-theme="light"]) .nav-toggle span{background:#F1EDE5}:root:not([data-theme="light"]) .logo{color:#F1EDE5}:root:not([data-theme="light"]) h1,:root:not([data-theme="light"]) h2,:root:not([data-theme="light"]) h3,:root:not([data-theme="light"]) h4{color:#F1EDE5}:root:not([data-theme="light"]) .hero h1 .serif-italic{color:#7AA7FF}:root:not([data-theme="light"]) .hero-sub,:root:not([data-theme="light"]) .hero-counts,:root:not([data-theme="light"]) .section-header p,:root:not([data-theme="light"]) .trust-strip__list{color:#B8B3A8}:root:not([data-theme="light"]) .hero-counts__chip{background:#1B1E24;border-color:#2C3038}:root:not([data-theme="light"]) .hero-counts__chip strong{color:#7AA7FF}:root:not([data-theme="light"]) .bg-cream2{background:#1B1E24}:root:not([data-theme="light"]) .trust-strip{background:#1B1E24;border-block-color:#2C3038}:root:not([data-theme="light"]) .btn-ghost{color:#F1EDE5;border-color:#707784}:root:not([data-theme="light"]) .btn-primary{background:#F1EDE5;color:#16181D}}
@@ -153,19 +153,19 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .pc-meta input:focus{outline:2px solid var(--teal);outline-offset:1px}
 
 .pc-grid{border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
-@media(min-width:640px){.pc-grid{overflow-x:auto;-webkit-overflow-scrolling:touch}}
+@media(min-width:860px){.pc-grid{overflow-x:auto;-webkit-overflow-scrolling:touch}}
 .pc-grid table{width:100%;border-collapse:collapse;font-size:13px}
-@media(min-width:640px){.pc-grid table{min-width:780px}}
+@media(min-width:860px){.pc-grid table{min-width:780px}}
 /* Mobile card-stack for the 9-column ingredient grid — the audit's
    biggest abandonment risk in the suite. Phone owners couldn't
    complete the form via horizontal scroll. Under 640px every row
    reads as a card with each field labeled inline. */
-@media(max-width:639px){
+@media(max-width:859px){
   .pc-grid{padding:8px;background:transparent;border:0}
   .pc-grid table,.pc-grid thead,.pc-grid tbody,.pc-grid tr,.pc-grid td{display:block;width:100%}
   .pc-grid thead{position:absolute;left:-9999px;top:auto}
   .pc-grid tr{padding:14px 14px 8px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);margin-bottom:10px;position:relative}
-  .pc-grid td{padding:6px 0;border-bottom:1px dashed var(--line);display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:center}
+  .pc-grid td{padding:6px 0;border-bottom:1px dashed var(--line);display:grid;grid-template-columns:120px minmax(0,280px);gap:10px;align-items:center}
   .pc-grid td:last-of-type{border-bottom:0}
   .pc-grid td:not([data-label]){display:block}
   .pc-grid td::before{content:attr(data-label);font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--stone);text-transform:uppercase;align-self:center}
