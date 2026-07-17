@@ -724,6 +724,14 @@
       }
     })();
   </script>
+  <!-- On-device warmth (warmth.js): the Golden-Hour whisper — a hero's light leans a
+       hair warmer at the edges of the reader's local day, computed on their machine
+       from the local clock and sent nowhere. Only surfaces with a .hero/.window pane
+       show it; everywhere else it is inert. Fail-silent; with JS off (or motion
+       reduced) the page is the certified v3. Placed INSIDE <footer> so sync-includes
+       (FOOTER_RE) replaces it atomically and never double-stamps. The homepage loads
+       its own copy (bespoke footer). See docs/handoff/warmth-cohesion-plan.md. -->
+  <script src="/assets/js/warmth.js?v=20260717-warmth1" defer></script>
 </footer>
 <!-- Phase 3D-perf — lazy-load non-critical JS after `load` + idle.
      Previously, the 4 footer scripts (first-touch, save-next-time,

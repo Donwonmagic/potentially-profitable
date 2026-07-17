@@ -1256,6 +1256,13 @@ main{padding-top:64px}
       }
     })();
   </script>
+  <!-- Calidez en el dispositivo (warmth.js): el susurro de la hora dorada — la luz de
+       un .hero/.window se inclina un pelín más cálida en los bordes del día local del
+       lector, calculado en su máquina y enviado a ninguna parte. Solo se ve donde hay
+       un panel .hero/.window; en el resto es inerte. Silencioso ante fallos; sin JS (o
+       con movimiento reducido) la página es la v3 certificada. Va DENTRO de <footer>
+       para que sync-includes (FOOTER_RE) lo reemplace sin duplicar. Paridad con EN. -->
+  <script src="/assets/js/warmth.js?v=20260717-warmth1" defer></script>
 </footer>
 <script src="/assets/js/first-touch.js" defer></script>
 <script src="/assets/js/save-next-time.js" defer></script>
