@@ -17,6 +17,10 @@ council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 
 **Session on branch `claude/vendor-benchmark-redesign-yn273q`** (storefront `potentially-profitable`). Thread: turn the Cost Index into a genuine **data company + open library** — surface the deep price history, add the "events that moved the market" layer, and wire the HONEST use of new public data (NASS/Census/EIA). Cadence: plan → build → audit → iterate, with **expert panels at the forks**. `check-all` baseline unchanged (232–233/252; the ~19 failures are the deploy-regenerated site-wide idempotency drift, NOT ours — see Gotchas). Every cost-index/events/context gate GREEN.
 
+### ⮕ LATEST THREAD (2026-07-17): menu-pricing perfection + cost-pressure — see the full roadmap
+
+**`docs/handoff/2026-07-17-menu-pricing-pressure-roadmap.md`** is the resume-here plan for this thread. It captures **four expert-panel workflows** (visual/"greatness", scholarly audit, corpus-datasource dreaming, pressure-weather), a **shipped honesty pass** (4 commits, pushed; origin `31573c0f3`), two **grounding corrections** (do NOT "unify the yield spine" — `yields.json` is CIA-gated; the container engine is BEHIND the committed pages, so full page rebuilds belong on the Mac), and the sequenced next steps (in-container: freshness-clock fix → Dataset JSON-LD → gate scoping; Mac: the unified public-API fetch program + calibration backtest + DOI). In progress: the cost-pressure **freshness-clock fix** (`tools/_shared/cost-pressure.js:96`, a dead staleness governor).
+
 ### ⮕ MENU-PRICING DISPATCH — PUBLISHED (2026-07-16)
 
 Founder: "seems deserving of an expert focused dispatch" → then "I don't want any shop floor reference." Both done and pushed.
