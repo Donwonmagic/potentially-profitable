@@ -66,10 +66,10 @@ modulate it with a device signal, we do not invent a palette.
 | 6 | Visit-trail writer + "where you left off" chip | M | **REVISE — borders on CUT** (Claim-8) | ✅ |
 | 7 | Close the Cost-Index loop: tool card → its own reference page | S | **SHIPPED** | ✅ |
 | 8 | Cross-link weekly dispatch → per-ingredient reference pages (name only, generator) | M | **SHIPPED (dispatch→ingredient half; ships next cron)** | ✅ |
-| 9 | Tools read `?from` and echo one locale-aware continuity line | M | REVISE (EN+ES + registered title map) | ✅ |
+| 9 | Tools read `?from` and echo one locale-aware continuity line | M | **SHIPPED (cost-pulse + plate-cost, EN+ES)** | ✅ |
 | 10 | Warm the plate-cost empty state (**shipped**) + confirm coda (next) | S | **PARTIAL** | ✅ |
 | 11 | Visible tool breadcrumb (**shipped** — cost-pulse + vendor-benchmark) + field-notes voice (next) | S | **PARTIAL** | ✅ |
-| 12 | Time-aware Cost Index cadence reframe vs the local clock | S | REVISE (derive live edition from real asOf) | ✅ |
+| 12 | Time-aware Cost Index cadence reframe vs the local clock | S | **SHIPPED (as-of age gloss on hub + ingredient pages)** | ✅ |
 
 **P0 honesty defect — ALREADY FIXED (verified 2026-07-17):** both signup handlers (footer + homepage) already gate success on `res.ok` with an error state + `.catch`, so "check your inbox" no longer fires on a 4xx/5xx. No action needed.
 

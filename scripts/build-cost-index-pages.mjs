@@ -1204,7 +1204,7 @@ function marketReadBlock(slug, locale) {
     ${verified}
     <p class="ci-read__method"><a href="${es ? '/es' : ''}/cost-index/methodology/#track-record">${es ? 'Cómo verificamos este número' : 'How we verify this number'} <span aria-hidden="true">→</span></a></p>
     <p class="ci-read__data">${es ? 'Descarga los datos' : 'Download this series'}: <a href="/cost-index/${slug}/series.csv" download>CSV</a> · <a href="/cost-index/${slug}/series.json">JSON</a></p>
-    <p class="ci-read__live"><a href="${es ? '/es' : ''}/tools/cost-pulse/#ci-${slug}">${liveLabel} <span aria-hidden="true">→</span></a></p>
+    <p class="ci-read__live"><a href="${es ? '/es' : ''}/tools/cost-pulse/?from=${slug}#ci-${slug}">${liveLabel} <span aria-hidden="true">→</span></a></p>
   </aside>`;
 }
 
@@ -2259,14 +2259,14 @@ function howToUse(slug, locale) {
   <li>Debajo del rango = buen trato; dentro = normal; muy por encima = conversación con el proveedor.</li>
   <li>Observa la dirección unas semanas antes de re-cotizar un platillo — una sola semana es ruido.</li>
 </ol>
-<p>¿Vas a costear un platillo que lleva ${lc}? Usa la <a href="${base}/tools/plate-cost/">Calculadora de Costo por Platillo</a>.</p>`
+<p>¿Vas a costear un platillo que lleva ${lc}? Usa la <a href="${base}/tools/plate-cost/?from=${slug}">Calculadora de Costo por Platillo</a>.</p>`
     : `<ol>
   <li>Open the reading above and note the typical range and the date.</li>
   <li>Pull your last ${lc} invoice, in the same unit.</li>
   <li>Below the range is a good deal; inside is normal; well above is a vendor conversation.</li>
   <li>Watch the direction over a few weeks before re-pricing a dish — one week is noise.</li>
 </ol>
-<p>Costing a dish that uses ${lc}? Use the <a href="${base}/tools/plate-cost/">Plate Cost Calculator</a>.</p>`;
+<p>Costing a dish that uses ${lc}? Use the <a href="${base}/tools/plate-cost/?from=${slug}">Plate Cost Calculator</a>.</p>`;
   return `<h2 id="how-to-use">${h}</h2>${steps}`;
 }
 
@@ -2421,7 +2421,7 @@ function emitExpandingPage(slug, locale) {
     <p>La regla es simple: un precio se publica solo cuando podemos obtenerlo de datos públicos (USDA, BLS, FRED) con una calidad sobre la que actuaríamos nosotros mismos. Para ${lc}, la serie mayorista gratuita que necesitamos aún no está conectada. Una estimación de una sola fuente sería peor que nada.</p>
     ${yieldBlock(slug, locale)}
     <h2>Qué puedes hacer ahora</h2>
-    <p>Compara tu última factura de ${lc} con tus facturas recientes, o abre <a href="${base}/tools/cost-pulse/">la herramienta en vivo</a> para los ingredientes que sí cubrimos. Esta página se completará cuando lo hagan los datos.</p>
+    <p>Compara tu última factura de ${lc} con tus facturas recientes, o abre <a href="${base}/tools/cost-pulse/?from=${slug}">la herramienta en vivo</a> para los ingredientes que sí cubrimos. Esta página se completará cuando lo hagan los datos.</p>
     <div class="ci-cta-row">
       <a class="btn btn-ghost" href="${base}/cost-index/">Ver todas las lecturas</a>
       <a class="btn btn-ghost" href="${base}/glossary/cost-index/">Qué es un índice de costos</a>
@@ -2436,7 +2436,7 @@ function emitExpandingPage(slug, locale) {
     <p>The rule is simple: a price ships only when we can source it from public USDA, BLS or FRED data at a quality we'd act on ourselves. For ${lc}, the free wholesale series we need isn't wired up yet — and a thin, single-source guess would be worse than nothing.</p>
     ${yieldBlock(slug, locale)}
     <h2>What you can do now</h2>
-    <p>Check your last ${lc} invoice against your own recent ones, or open <a href="${base}/tools/cost-pulse/">the live tool</a> for the ingredients we do cover. This page fills in when the data does.</p>
+    <p>Check your last ${lc} invoice against your own recent ones, or open <a href="${base}/tools/cost-pulse/?from=${slug}">the live tool</a> for the ingredients we do cover. This page fills in when the data does.</p>
     <div class="ci-cta-row">
       <a class="btn btn-ghost" href="${base}/cost-index/">Browse all readings</a>
       <a class="btn btn-ghost" href="${base}/glossary/cost-index/">What is a cost index?</a>
@@ -2564,7 +2564,7 @@ function emitIngredientPage(slug, locale) {
     ${faqHtml}
     ${siblings(slug, locale)}
     <div class="ci-cta-row">
-      <a class="btn btn-primary" href="${base}/tools/cost-pulse/#ci-${slug}">${es ? 'Abrir la herramienta en vivo' : 'Open the live tool'}</a>
+      <a class="btn btn-primary" href="${base}/tools/cost-pulse/?from=${slug}#ci-${slug}">${es ? 'Abrir la herramienta en vivo' : 'Open the live tool'}</a>
       <a class="btn btn-ghost" href="${base}/cost-index/">${es ? 'Ver todas las lecturas' : 'Browse all readings'}</a>
     </div>
     <p class="ci-ledger-bridge" style="margin:16px 0 0;font-size:14.5px;line-height:1.6;color:var(--ink-soft)">${es

@@ -280,6 +280,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
 body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
 .pc-recost-banner{display:none;align-items:flex-start;gap:14px;padding:14px 18px;margin:0 0 14px;border:1px solid var(--teal);border-left-width:4px;border-radius:var(--r-md);background:var(--cream-2)}
+.pc-from-note{font-size:13px;color:var(--ink-soft);background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-md);padding:8px 12px;margin:0 0 14px}
+.pc-from-note strong{color:var(--ink);font-weight:600}
 .pc-recost-banner-body{flex:1;font-size:13.5px;line-height:1.55;color:var(--ink)}
 .pc-recost-banner-eyebrow{display:block;font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);margin-bottom:2px}
 .pc-recost-banner strong{color:var(--ink)}
@@ -988,6 +990,26 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
 <script src="/tools/_shared/plate-advice.js?v=20260606-w15-1"></script>
 <script src="/tools/plate-cost/plate-cost.js?v=20260428-pcF"></script>
 <script src="/tools/plate-cost/card-render.js?v=20260426-pc2"></script>
+<script src="/tools/_shared/cost-index-from-titles.js?v=20260717-from1"></script>
+<script src="/tools/_shared/from-continuity.js?v=20260717-from1"></script>
+<script>
+/* Move 9 — continuidad ?from. Si el lector llegó desde una página de ingrediente
+   del Índice de Costos (…/tools/plate-cost/?from=<slug>), la nombra sobre el aviso
+   de recosteo. El título viene SOLO del mapa cerrado y comprometido
+   (window.MUNTIN_FROM_TITLES) vía MuntinFromContinuity (textContent, no-op silencioso
+   en cualquier fallo). Sin fetch, sin almacenamiento. */
+(function () {
+  'use strict';
+  if (typeof MuntinFromContinuity === 'undefined' || !window.MUNTIN_FROM_TITLES) return;
+  var banner = document.getElementById('pcRecostBanner');
+  if (!banner) return;
+  MuntinFromContinuity.mount({
+    map: window.MUNTIN_FROM_TITLES, mountEl: banner, position: 'before', className: 'pc-from-note',
+    leadEn: 'Costing a dish with', tailEn: '— its live market read is in the Cost Index.',
+    leadES: 'Costeando un platillo con', tailES: '— su lectura de mercado en vivo está en el Índice de Costos.'
+  });
+})();
+</script>
 <script>
 /* Plate Cost — panel de recomendación (el gancho gratis→Ledger). Define
    window.MuntinPlateAdviceUI = { render(summary), clear() }, llamado desde
