@@ -493,6 +493,28 @@ header.nav{min-height:64px}
 </table>
 </div>
 
+<figure class="viz-figure article-figure" data-audio-alt="Una libra de factura, repartida según a dónde va. En el lomo fino cerca del 64 por ciento sobrevive al plato, 15 por ciento se pierde al cuchillo como recorte y 21 por ciento al fuego; en el champiñón cremini solo cerca del 40 por ciento sobrevive, 10 por ciento al cuchillo y 50 por ciento al fuego. El corte más suave al cuchillo es el costo más alto en el plato.">
+  <div class="viz-waterfall">
+    <p class="viz-waterfall__title">Dos cortes de pelo en una libra de factura &mdash; el corte suave al cuchillo es el brutal en el plato</p>
+    <div class="viz-waterfall__bar" role="img" aria-label="Lomo fino: cerca del 64 por ciento de la libra de la factura sobrevive al plato, 15 por ciento al cuchillo, 21 por ciento al fuego; libra servida 1.57 veces.">
+      <span class="viz-waterfall__seg" data-tone="teal" style="--w:0.64">Lomo fino &times;1.57</span>
+      <span class="viz-waterfall__seg" data-tone="stone" style="--w:0.15"></span>
+      <span class="viz-waterfall__seg" data-tone="rust" style="--w:0.21"></span>
+    </div>
+    <div class="viz-waterfall__bar" role="img" aria-label="Champiñón cremini: solo cerca del 40 por ciento de la libra de la factura sobrevive al plato, 10 por ciento al cuchillo, 50 por ciento al fuego; libra servida 2.47 veces.">
+      <span class="viz-waterfall__seg" data-tone="teal" style="--w:0.40">Cremini &times;2.47</span>
+      <span class="viz-waterfall__seg" data-tone="stone" style="--w:0.10"></span>
+      <span class="viz-waterfall__seg" data-tone="rust" style="--w:0.50"></span>
+    </div>
+    <div class="viz-waterfall__legend">
+      <div class="viz-waterfall__row"><span class="viz-waterfall__swatch" data-tone="teal"></span><span>Sobrevive al plato &mdash; rendimiento comestible &times; cocción (la libra servida)</span></div>
+      <div class="viz-waterfall__row"><span class="viz-waterfall__swatch" data-tone="stone"></span><span>Perdido al cuchillo &mdash; recorte</span></div>
+      <div class="viz-waterfall__row"><span class="viz-waterfall__swatch" data-tone="rust"></span><span>Perdido al fuego &mdash; humedad y grasa que se van en la sartén</span></div>
+    </div>
+  </div>
+  <figcaption>Costeado sobre el plato, el champiñón barato (&times;2.47) corre más que el lomo fino (&times;1.57): casi todo lo que compras es agua que se va en la sartén &mdash; la merma más suave es el costo de plato más alto.</figcaption>
+</figure>
+
 <p>Los granos y los frijoles secos hacen el trato al revés, y por eso son la forma más barata de estirar una proteína en el menú: una libra de arroz o quinua seca absorbe agua y rinde cerca de tres libras cocidas, así que la libra servida cuesta cerca de un tercio de la libra de la factura &mdash; cerca de &times;0.33. Los frijoles negros secos corren cerca de &times;0.42. Compras el número bajo y sirves más o menos tres veces el peso; aquí el fuego devuelve peso en vez de llevárselo. <em>(La libra servida es 1&nbsp;&divide;&nbsp;(rendimiento comestible&nbsp;&times;&nbsp;rendimiento de cocción); los rendimientos de cocción de proteínas son del USDA, Roseland et al. 2017, y los de granos y frijoles salen del Food Buying Guide del USDA &mdash; ambos citados abajo.)</em></p>
 
 <p>De aquí salen dos movidas. Primero, ordena tus platos por dólares de <a href="/es/glossary/contribution-margin/">margen de contribución</a>, no por porcentaje de costo de alimento: ese es el punto de la <a href="/es/glossary/menu-engineering/">ingeniería de menú</a>, y el plato de menor costo de alimento no es automáticamente el más rentable (Kasavana and Smith 1982). Segundo, el recorte que metes en el costo es también recorte que puedes cortar: el famoso retorno de 14 a 1 en el trabajo contra el desperdicio de alimento es un promedio de varios sectores, y la cifra específica de restaurantes es cerca de 7 a 1 (Champions 12.3 2019). Costear la libra comestible y cortar el desperdicio son el mismo proyecto visto desde dos puntas.</p>
@@ -512,6 +534,17 @@ header.nav{min-height:64px}
 
 <p>Aquí está el hallazgo que me costó dinero antes de entenderlo. Cuando un ingrediente se pone caro, el instinto es meter un primo más barato. Pero en nuestra lectura, el 94% de los grandes movimientos viajaron junto con al menos otro ingrediente: el co-movimiento es la regla, no la excepción. Y el solapamiento es profundo, no marginal: el movimiento co-móvil mediano viajó con otros cuatro ingredientes a la vez, y casi la mitad viajó con cinco o más. Eso tiene una consecuencia dura: el primo más barato que sueles buscar suele ser un espejo que se mueve al mismo paso que tu principal, así que no te cubre nada. Cuando tu principal se dispara, el espejo se dispara con él, y te reemplazaste directo al mismo problema.</p>
 
+<figure class="viz-figure article-figure" data-audio-alt="De los 432 grandes movimientos, solo 25 se movieron solos y 47 viajaron con un único otro ingrediente, mientras que 161 viajaron con dos a cuatro y 199 con cinco o más. La compañía profunda es la regla, así que el primo más barato que buscas suele quedar dentro del mismo grupo y no cubre nada.">
+  <div class="viz-bars">
+    <p class="viz-bars__title">Cuánta compañía lleva un gran movimiento &mdash; 432 movimientos, según cuántos ingredientes se movieron con él</p>
+    <div class="viz-bars__row"><p class="viz-bars__label">Se movió solo</p><div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.13"></span></div><p class="viz-bars__num">25</p></div>
+    <div class="viz-bars__row"><p class="viz-bars__label">Con 1 más</p><div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.24"></span></div><p class="viz-bars__num">47</p></div>
+    <div class="viz-bars__row"><p class="viz-bars__label">Con 2&ndash;4 más</p><div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.81"></span></div><p class="viz-bars__num">161</p></div>
+    <div class="viz-bars__row"><p class="viz-bars__label">Con 5 o más</p><div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:1.00"></span></div><p class="viz-bars__num">199</p></div>
+  </div>
+  <figcaption>Solo 25 de 432 grandes movimientos viajan solos y 47 con un único compañero; la mayoría se mueve en grupos de cinco o más, así que el primo que buscas suele quedar en el mismo grupo.</figcaption>
+</figure>
+
 <p>La economía respalda esto. Pindyck y Rotemberg mostraron que los precios de las materias primas se mueven juntos más de lo que explican los fundamentos compartidos: ese co-movimiento es 'excesivo' (Pindyck and Rotemberg 1990). Así que dos ingredientes moviéndose juntos no te dice nada sobre si están ligados económicamente, y un reemplazo que se co-mueve no te protege. El respaldo que de verdad cubre es el que se mueve con su propio reloj, el que en la gráfica no se parece en nada a tu principal. Escoge el sustituto por su independencia, no por su parecido.</p>
 
 <details class="cite">
@@ -527,6 +560,15 @@ header.nav{min-height:64px}
 <p>El último hallazgo es el que más uso. Cuando un ingrediente se dispara, el movimiento mediano en nuestra lectura se resolvió en 77 días, y tres de cada cuatro ya se habían resuelto para cerca del día 105. Para el movimiento mediano, el pico se resuelve solo dentro de un trimestre. Reimprime el menú la semana en que salta la factura y habrás pagado el costo del menú (Mankiw 1985) para perseguir un número que ya iba de regreso por su cuenta. Y estás reaccionando a una <a href="/es/glossary/wholesale/">referencia mayorista</a>, no al plato: las granjas recibieron cerca de 15.9 centavos de cada dólar de alimento en 2023 (USDA Economic Research Service 2023), y el resto es mano de obra, flete, empaque, el camino del campo hasta tu cocina — así que cuando un número mayorista salta, el costo de tu plato se mueve menos que el titular.</p>
 
 <p>Y los grandes movimientos son desparejos. De los 432 grandes movimientos en la lectura, 393 apuntan hacia arriba y solo 39 hacia abajo &mdash; las dislocaciones bruscas que tientan a reimprimir corren cerca de diez a uno hacia arriba, y las subidas son las m&aacute;s grandes, una mediana de 85% por encima de la normal de un ingrediente contra 33% por debajo. Eso moldea c&oacute;mo se ve el alivio: rara vez llega como un pico igual hacia abajo. Llega como la deriva lenta que mide el despeje de 77 d&iacute;as &mdash; la referencia mayorista aflojando de regreso hacia lo normal, no desplom&aacute;ndose por debajo. As&iacute; que la trampa no es solo reimprimir hacia arriba demasiado r&aacute;pido; es reimprimir hacia arriba y luego no tener ninguna se&ntilde;al sim&eacute;trica que te diga cu&aacute;ndo volver a bajar el precio.</p>
+
+<figure class="viz-figure article-figure" data-audio-alt="De los 432 grandes movimientos en la lectura, 393 fueron hacia arriba y solo 39 hacia abajo, cerca de diez a uno. Las subidas también fueron las más grandes, una mediana de 85 por ciento por encima de la normal de un ingrediente contra 33 por ciento por debajo. El alivio brusco es raro; un pico afloja a la deriva, no desplomándose.">
+  <div class="viz-bars">
+    <p class="viz-bars__title">Los grandes movimientos corren en un sentido &mdash; 393 arriba contra 39 abajo (referencia mayorista vs la propia normal de cada ingrediente)</p>
+    <div class="viz-bars__row"><p class="viz-bars__label">Grandes movimientos arriba</p><div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:1.00"></span></div><p class="viz-bars__num">393</p></div>
+    <div class="viz-bars__row"><p class="viz-bars__label">Grandes movimientos abajo</p><div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.099"></span></div><p class="viz-bars__num">39</p></div>
+  </div>
+  <figcaption>Cerca de diez movimientos bruscos hacia arriba por cada uno hacia abajo &mdash; y las subidas son más grandes &mdash; así que el alivio de un pico suele ser la deriva lenta de regreso, no un desplome igual hacia abajo.</figcaption>
+</figure>
 
 <p>Una aclaración sobre esos 77: es una mediana agrupada sobre los 432 movimientos notables de la lectura — la mitad central cayó entre 50 y 105 días — no una promesa por ingrediente. Los picos de un solo ingrediente descansan sobre muchos menos episodios, y uno cualquiera puede quedar bien afuera en la cola; dos de los 432 pasaron de un año.</p>
 

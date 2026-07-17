@@ -551,6 +551,28 @@ header.nav{min-height:64px}
 </table>
 </div>
 
+<figure class="viz-figure article-figure" data-audio-alt="One invoice pound, split by where it goes. For beef tenderloin about 64 percent survives to the plate, 15 percent is lost to the knife as trim, and 21 percent to the fire; for cremini mushroom only about 40 percent survives, 10 percent to the knife and 50 percent to the fire. The gentlest cut at the knife is the steepest cost on the plate.">
+  <div class="viz-waterfall">
+    <p class="viz-waterfall__title">Two haircuts on one invoice pound &mdash; the gentle cut at the knife is the brutal one on the plate</p>
+    <div class="viz-waterfall__bar" role="img" aria-label="Beef tenderloin: about 64 percent of the invoice pound survives to the plate, 15 percent lost to the knife, 21 percent to the fire; served pound 1.57 times.">
+      <span class="viz-waterfall__seg" data-tone="teal" style="--w:0.64">Tenderloin &times;1.57</span>
+      <span class="viz-waterfall__seg" data-tone="stone" style="--w:0.15"></span>
+      <span class="viz-waterfall__seg" data-tone="rust" style="--w:0.21"></span>
+    </div>
+    <div class="viz-waterfall__bar" role="img" aria-label="Cremini mushroom: only about 40 percent of the invoice pound survives to the plate, 10 percent lost to the knife, 50 percent to the fire; served pound 2.47 times.">
+      <span class="viz-waterfall__seg" data-tone="teal" style="--w:0.40">Cremini &times;2.47</span>
+      <span class="viz-waterfall__seg" data-tone="stone" style="--w:0.10"></span>
+      <span class="viz-waterfall__seg" data-tone="rust" style="--w:0.50"></span>
+    </div>
+    <div class="viz-waterfall__legend">
+      <div class="viz-waterfall__row"><span class="viz-waterfall__swatch" data-tone="teal"></span><span>Survives to the plate &mdash; edible &times; cooked yield (the served pound)</span></div>
+      <div class="viz-waterfall__row"><span class="viz-waterfall__swatch" data-tone="stone"></span><span>Lost to the knife &mdash; trim</span></div>
+      <div class="viz-waterfall__row"><span class="viz-waterfall__swatch" data-tone="rust"></span><span>Lost to the fire &mdash; moisture and fat cooked off</span></div>
+    </div>
+  </div>
+  <figcaption>Costed on the plate, the cheap mushroom (&times;2.47) runs harder than the tenderloin (&times;1.57): most of what you buy is water that leaves in the pan &mdash; the gentlest trim is the steepest plate cost.</figcaption>
+</figure>
+
 <p>Grains and dried beans run the trade the other way, which is why they are the cheapest way to stretch a protein on the menu: a pound of dry rice or quinoa absorbs water and yields about three pounds cooked, so the served pound costs about a third of the invoice pound &mdash; about &times;0.33. Dry black beans run about &times;0.42. You buy the low number and serve roughly three times the weight; here the fire gives weight back instead of taking it. <em>(The served pound is 1&nbsp;&divide;&nbsp;(edible-yield&nbsp;&times;&nbsp;cooked-yield); protein cooking yields are USDA, Roseland et al. 2017, and grain and bean yields are from the USDA Food Buying Guide &mdash; both cited below.)</em></p>
 
 <p>Two moves fall out of this. First, rank your plates on <a href="/glossary/contribution-margin/">contribution-margin</a> dollars, not food-cost percentage — that is the <a href="/glossary/menu-engineering/">menu-engineering</a> point, and the lowest-food-cost item is not automatically your most profitable one (Kasavana and Smith 1982). Second, the trim you cost for is also trim you can cut: the widely quoted 14-to-1 return on food-waste work is a multi-sector average, and the restaurant-specific figure is about 7 to 1 (Champions 12.3 2019). Costing the edible pound and cutting the waste are the same project seen from two ends.</p>
@@ -570,6 +592,17 @@ header.nav{min-height:64px}
 
 <p>Here is the finding that cost me money before I understood it. When an ingredient runs hot, the instinct is to swap in a cheaper cousin. But in our read, 94% of the big moves traveled with at least one other ingredient — co-movement is the rule, not the exception. And the overlap runs deep, not marginal: the median co-moving move traveled with four other ingredients at once, and nearly half traveled with five or more. That has a hard consequence: the cheaper cousin you reach for is usually a mirror that moves in step with your primary, so it is no hedge at all. When your primary spikes, the mirror spikes with it, and you have swapped your way into the same problem.</p>
 
+<figure class="viz-figure article-figure" data-audio-alt="Of the 432 big moves, only 25 moved alone and 47 traveled with a single other ingredient, while 161 traveled with two to four others and 199 with five or more. Deep company is the rule, so the cheaper cousin you reach for is usually inside the same cluster and hedges nothing.">
+  <div class="viz-bars">
+    <p class="viz-bars__title">How much company a big move keeps &mdash; 432 moves, by how many ingredients moved with it</p>
+    <div class="viz-bars__row"><p class="viz-bars__label">Moved alone</p><div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.13"></span></div><p class="viz-bars__num">25</p></div>
+    <div class="viz-bars__row"><p class="viz-bars__label">With 1 other</p><div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.24"></span></div><p class="viz-bars__num">47</p></div>
+    <div class="viz-bars__row"><p class="viz-bars__label">With 2&ndash;4 others</p><div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.81"></span></div><p class="viz-bars__num">161</p></div>
+    <div class="viz-bars__row"><p class="viz-bars__label">With 5 or more</p><div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:1.00"></span></div><p class="viz-bars__num">199</p></div>
+  </div>
+  <figcaption>Only 25 of 432 big moves travel alone and 47 with a single partner; the bulk move in crowds of five or more, so the cousin you reach for is usually caught in the same cluster.</figcaption>
+</figure>
+
 <p>The economics back this up. Pindyck and Rotemberg showed that commodity prices co-move more than shared fundamentals explain — the co-movement is 'excess' (Pindyck and Rotemberg 1990). So two ingredients moving together tells you nothing about whether they are economically linked, and a co-moving swap does not protect you. The backup that actually hedges is the one that moves on its own clock, the one whose chart looks nothing like your primary's. Pick the substitute for its independence, not its resemblance.</p>
 
 <details class="cite">
@@ -585,6 +618,15 @@ header.nav{min-height:64px}
 <p>The last finding is the one I reach for most. When an ingredient spikes, the median move in our read cleared in 77 days, and three of four had cleared by about day 105. For the median move, the spike self-resolves inside a quarter. Reprint the menu the week the invoice jumps and you have paid the menu cost (Mankiw 1985) to chase a number that was coming back on its own. And you are reacting to a wholesale reference, not the plate: farm establishments received about 15.9 cents of each food dollar in 2023 (USDA Economic Research Service 2023), and the rest is labor, freight, packaging, the walk from the field to your kitchen — so when a wholesale number jumps, your plate cost moves less than the headline does.</p>
 
 <p>And the big moves are lopsided. Of the 432 big moves in the read, 393 point up and only 39 point down &mdash; the sharp dislocations that tempt a reprice run about ten to one upward, and the up-moves are the bigger ones, a median 85% above an ingredient&rsquo;s normal against 33% below. That shapes what relief looks like: it rarely arrives as a matching downward spike. It arrives as the slow drift the 77-day clearing measures &mdash; the wholesale reference easing back toward normal, not crashing under it. So the trap is not only reprinting up too fast; it is reprinting up and then having no symmetric signal to tell you when to bring the price back down.</p>
+
+<figure class="viz-figure article-figure" data-audio-alt="Of the 432 big moves in the read, 393 were upward and only 39 downward, about ten to one. The up-moves were also the bigger ones, a median 85 percent above an ingredient's normal against 33 percent below. Sharp relief is rare; a spike eases back by drifting, not by crashing.">
+  <div class="viz-bars">
+    <p class="viz-bars__title">Big moves run one way &mdash; 393 up against 39 down (wholesale reference vs each ingredient&rsquo;s own normal)</p>
+    <div class="viz-bars__row"><p class="viz-bars__label">Big moves up</p><div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:1.00"></span></div><p class="viz-bars__num">393</p></div>
+    <div class="viz-bars__row"><p class="viz-bars__label">Big moves down</p><div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.099"></span></div><p class="viz-bars__num">39</p></div>
+  </div>
+  <figcaption>Roughly ten sharp moves up for every one down &mdash; and the up-moves run bigger &mdash; so relief from a spike is usually the slow drift back, not a matching downward crash.</figcaption>
+</figure>
 
 <p>One caveat on that 77: it is a pooled median across all 432 notable moves in the read — the middle half landed between 50 and 105 days — not a per-ingredient promise. A single ingredient&rsquo;s own spikes ride on far fewer episodes, and a given one can sit well out in the tail; two of the 432 ran past a year.</p>
 
