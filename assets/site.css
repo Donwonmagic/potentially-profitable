@@ -18,6 +18,10 @@
   --gradient-goldenhour:radial-gradient(120% 120% at 88% 6%,rgba(255,176,32,0.26) 0%,rgba(255,107,92,0.11) 38%,rgba(255,176,32,0) 76%);
   --gradient-goldenhour-soft:radial-gradient(100% 100% at 92% 4%,rgba(255,176,32,0.12) 0%,rgba(255,107,92,0.05) 52%,rgba(255,176,32,0) 80%);
   --glass-warm:rgba(255,176,32,0.06);
+  /* On-device warmth (warmth.js): the WHISPER by which the window-glass light
+     leans a hair warmer at the edges of the reader's local day. Defaults to 0 —
+     byte-identical to certified v3 — and warmth.js only ever raises it. */
+  --gh-eve:0;
   /* Section rhythm (2026) — clear, AA-verified section separation.
      Sections separated only by a near-identical bg swap with no edge, so
      neighbours blurred. Composed fix: a crisp hairline on every section
@@ -37,7 +41,7 @@
    absolutely positioned, so it does NOT become a grid item. */
 .hero::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background:var(--gradient-goldenhour)}
 .hero>.container{position:relative;z-index:1}
-.window::after{content:'';position:absolute;inset:0;z-index:5;pointer-events:none;border-radius:6px;background:radial-gradient(86% 86% at 90% 7%,rgba(255,176,32,0.36) 0%,rgba(255,138,92,0.15) 34%,rgba(255,176,32,0) 70%)}
+.window::after{content:'';position:absolute;inset:0;z-index:5;pointer-events:none;border-radius:6px;background:radial-gradient(86% 86% at 90% 7%,rgba(255,138,92,var(--gh-eve,0)) 0%,rgba(255,138,92,0) 55%),radial-gradient(86% 86% at 90% 7%,rgba(255,176,32,0.36) 0%,rgba(255,138,92,0.15) 34%,rgba(255,176,32,0) 70%)}
 @media (max-width:960px){.hero::after{background:var(--gradient-goldenhour-soft)}}
 
 /* @shell:core === Modernization tokens (Sprint 1) === */
