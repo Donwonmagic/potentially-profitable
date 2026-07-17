@@ -119,6 +119,10 @@ function main() {
     }
     if (SEASON_NORMALS[key]) entry.seasonalNormals = SEASON_NORMALS[key];   // S3: measured "vs typical {month}"
     if (YIELD_SLUGS.has(key)) entry.yieldSlug = key;   // deep-link target for the dashboard→leaf rail
+    // Reference-page deep link (the dashboard→reference half of the loop): only when
+    // the ingredient has a live /cost-index/<key>/ page (events, drivers, sources,
+    // siblings). existsSync-gated at build time so a card never links to a 404.
+    if (existsSync(path.join(repoRoot, 'cost-index', key, 'index.html'))) entry.page = true;
     // The spike-vs-structural flag (verdict + actionBias) — a build-time, fact-gated
     // "story so far" the renderer turns into a buy/hold/watch suggestion.
     if (ingredientsObj[key].flag) entry.flag = ingredientsObj[key].flag;

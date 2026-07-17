@@ -996,6 +996,19 @@
       fig.appendChild(yl);
     }
 
+    // Dashboard → the ingredient's own Cost Index page (events, drivers, full
+    // sources, siblings) — the dashboard→reference half of the loop, so the live
+    // tool stops stranding a reader away from the richer citable page. Only when
+    // the seed marked a live page for this key (build-time existsSync), never a 404.
+    if (ing.page && ing.key) {
+      var rl = el('p', 'cp-market-refpage');
+      var ra = el('a', null, L('Open the Cost Index page', 'Abrir la página del Índice'));
+      ra.href = (es ? '/es' : '') + '/cost-index/' + ing.key + '/';
+      ra.appendChild(document.createTextNode(' →'));
+      rl.appendChild(ra);
+      fig.appendChild(rl);
+    }
+
     // Dashboard → Plate Cost deep link: land in the calculator with this ingredient
     // prefilled (one tap from a market move to "what this does to my dish"). Only
     // for dollar-priced reads, where costing into a plate is meaningful.
