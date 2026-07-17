@@ -788,12 +788,14 @@ function allReadingsTable(slugs, locale) {
     const spark = indexedMovement(r.entry, locale, {});
     // data-name (display name + slug) is the filter key for the search box below.
     const key = `${nm} ${s}`.toLowerCase();
-    return `<tr data-name="${escHtml(key)}">`
-      + `<td><a href="${base}/cost-index/${s}/">${escHtml(nm)}</a></td>`
-      + `<td class="ci-t-dir" data-dir="${dir}">${escHtml(dw)}</td>`
-      + `<td>${verdictChip(v, locale)}</td>`
-      + `<td>${spark || '<span class="ci-t-na">—</span>'}</td>`
-      + `<td>${escHtml(r.asOf || '—')}</td>`
+    // Per-cell classes + data-tone drive the phone reflow (see the <=680px block
+    // in the inline <style>): each row stacks into a 2-line card, no h-scroll.
+    return `<tr data-name="${escHtml(key)}" data-tone="${v.tone}">`
+      + `<td class="ci-c-name"><a href="${base}/cost-index/${s}/">${escHtml(nm)}</a></td>`
+      + `<td class="ci-c-dir ci-t-dir" data-dir="${dir}">${escHtml(dw)}</td>`
+      + `<td class="ci-c-sig">${verdictChip(v, locale)}</td>`
+      + `<td class="ci-c-spark">${spark || '<span class="ci-t-na">—</span>'}</td>`
+      + `<td class="ci-c-asof" data-label="${escHtml(cols[4])}">${escHtml(r.asOf || '—')}</td>`
       + `</tr>`;
   }).join('');
   // The find-an-ingredient box (the #1 experiential miss — two operators bounced
@@ -1720,6 +1722,90 @@ main{padding-top:64px}
 .ci-table .ci-t-dir[data-dir="down"]{color:var(--teal)}
 .ci-table .ci-t-na{color:var(--stone,#9aa0aa)}
 .ci-table .ci-index--mini{margin:0}
+/* ─── Phone / small-tablet reflow: "All readings" → compact stacked rows ──────
+   The 5-col nowrap table's min-content is ~638px, so under ~680px .table-scroll
+   forces horizontal scroll (Signal/Movement/As-of clipped off-screen). At
+   <=680px each data <tr> becomes a 2-line grid over the SAME <tr>/<td> DOM, so
+   the live #ci-ingredient-search filter (toggles tr[hidden] by data-name) keeps
+   working untouched. Everything is scoped under .ci-readings so it is safe even
+   if hoisted to assets/site.css (.ci-table is emitted inline on other pages too).
+   Append after the existing .ci-table rules (~line 1723) in the generator's
+   inline <style>. Desktop (>680px) is byte-for-byte unchanged. */
+@media (max-width:680px){
+  /* 1 ─ neutralize the scroll shell; nothing left to scroll */
+  .ci-readings .table-scroll{overflow-x:visible;margin:12px 0}
+
+  /* 2 ─ collapse table internals to normal flow so each <tr> can be a grid.
+     thead is dropped: display:block strips the table role regardless, and every
+     cell is self-labeling (link text, up/down word, pill word, the sparkline's
+     full-sentence aria-label, and a visible "As of" prefix), so a floating
+     header row would only add screen-reader noise. */
+  .ci-readings .ci-table,
+  .ci-readings .ci-table tbody{display:block;width:100%}
+  .ci-readings .ci-table{min-width:0}
+  .ci-readings .ci-table thead{display:none}
+  .ci-readings .ci-table td{padding:0;border:0;white-space:normal}
+
+  /* 3 ─ the card-without-the-box: two lines, sparkline pinned right across both.
+     name↔signal on the left, direction↔as-of mirrored on the right. */
+  .ci-readings .ci-table tbody tr[data-name]{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto auto;
+    column-gap:8px;row-gap:2px;
+    align-items:center;
+    padding:10px 2px;
+    border-bottom:1px solid var(--line);
+  }
+  .ci-readings .ci-table tbody tr[data-name]:hover{background:transparent} /* no touch-hover flash */
+
+  /* line 1 — the scan unit */
+  .ci-readings .ci-c-name{grid-row:1;grid-column:1;min-width:0}
+  .ci-readings .ci-c-name a{display:inline-block;font-size:15px;line-height:1.25;padding:1px 0}
+  .ci-readings .ci-c-dir{grid-row:1;grid-column:2;font-size:13px;white-space:nowrap}
+  .ci-readings .ci-c-spark{grid-row:1 / span 2;grid-column:3;justify-self:end;align-self:center;line-height:0}
+  .ci-readings .ci-c-spark .mtn-spark{width:104px;height:auto}
+  .ci-readings .ci-c-spark .ci-t-na{color:var(--stone,#9aa0aa)}
+
+  /* line 2 — quiet provenance */
+  .ci-readings .ci-c-sig{grid-row:2;grid-column:1;justify-self:start}
+  .ci-readings .ci-c-sig .ci-read__verb{font-size:10.5px;margin:0}
+  .ci-readings .ci-c-asof{grid-row:2;grid-column:2;justify-self:end;white-space:nowrap;font-size:12px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+  .ci-readings .ci-c-asof::before{content:attr(data-label) " ";color:var(--ink-soft)}
+
+  /* 4 ─ DE-NOISE (grafted from Approach 2, contrast-safe): verdictChip() emits a
+     pill on EVERY row and ~60 are "Hold". On mobile, strip the Hold pill's chrome
+     to muted full-contrast text so real movers keep the only visible badge.
+     Watch / re-price pills are untouched. */
+  .ci-readings .ci-c-sig .ci-read__verb[data-bias="hold"]{
+    background:transparent;border-color:transparent;padding:0;color:var(--ink-soft)
+  }
+
+  /* 5 ─ MOVERS RAIL (grafted from Approach 4, phone-only, zero data dropped):
+     rows already sort reprice→watch→hold, so a left rail on the movers turns the
+     top of the list into a quiet market board. Keyed off data-tone on the <tr>. */
+  .ci-readings .ci-table tbody tr[data-tone="reprice"]{border-left:3px solid #A23B2D;padding-left:9px}
+  .ci-readings .ci-table tbody tr[data-tone="watch"]{border-left:3px solid #9a7d2e;padding-left:9px}
+
+  /* 6 ─ the no-match row stays a plain full-width line, not a broken 1-col grid */
+  .ci-readings .ci-table tbody tr.ci-table-empty{display:block;padding:14px 2px}
+  .ci-readings .ci-table tbody tr.ci-table-empty td{display:block;padding:0;border:0}
+
+  /* 7 ─ FILTER CONTRACT — display:grid on <tr> is an author rule that outranks
+     the UA [hidden]{display:none}, which would un-hide filtered-out rows. Restore
+     it. Equal specificity to the grid rule, so it MUST stay after it in source. */
+  .ci-readings .ci-table tbody tr[hidden]{display:none}
+}
+
+/* dark-mode movers rail (site uses BOTH the explicit toggle and the media default) */
+@media (max-width:680px){
+  :root[data-theme="dark"] .ci-readings .ci-table tbody tr[data-tone="reprice"]{border-left-color:#ed9a8e}
+  :root[data-theme="dark"] .ci-readings .ci-table tbody tr[data-tone="watch"]{border-left-color:#d8bd6a}
+}
+@media (max-width:680px) and (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .ci-readings .ci-table tbody tr[data-tone="reprice"]{border-left-color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-readings .ci-table tbody tr[data-tone="watch"]{border-left-color:#d8bd6a}
+}
+
 :root[data-theme="dark"] .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
 .ci-read--pending{border-left-color:#cdb368;background:var(--cream-2)}
 .ci-read--pending .ci-read__head{color:#8a6d1f}
