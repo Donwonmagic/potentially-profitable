@@ -40,13 +40,24 @@ artifact — the container restarts).
 - `83d6509f1` — home: stances → 3-up principles masthead at ≥1024 (adopts `--measure-wide`).
 - `3f1a0b199` — home: recently-added ledger widens to `--measure-wide`; orphaned 3rd service card spans full-width at tablet.
 - `d7f6f9279` — home: FAQ → 2 columns at ≥1024.
+- `11a985e71` — **articles** (all ~100): H2 section-start hairlines + see-also 2-up band at tablet.
+- `1daf2a39b` — CI ingredient (99 EN + 99 ES + generator): center the reading column on wide bands (kills the right void).
+- `d47276398` — CI ingredient: events → card grid, sparkline stays on one row, price sentence anchored (17px/600).
+- `85cddd2fa` — CI hub (+ES + generator): catalog grid density (3-up tablet / 4-5 wide) + editorial category dividers.
 
-**Next (queued):** homepage hero CTA stack (phone-sm) is the last homepage micro-win; then the
-funnel-spine surfaces (CI ingredient center-column, CI hub masthead, CI events ledger, CI dispatch
-figure-breakout — the CI pages are GENERATED, so surgical edit + mirror into the generator),
-library/blog article shared surface, then the critic's coverage gaps (global chrome + mobile drawer,
-tool empty/validation states, print neutralization, Ledger page, legal template, 404, focus-visible
-token, ES end-to-end). Harness: `python3 -m http.server 8099` + headless_shell on a fresh port;
+**Done surfaces:** homepage (stances/ledger/service/FAQ), article shell (H2/see-also), CI ingredient
+(center + events/spark/line), CI hub (density + dividers). **Generator discipline confirmed working:**
+surgical inline-CSS edits across the committed cost-index pages + mirror into `build-cost-index-pages.mjs`
+(never run it — it carries a half-finished template rollout); every ci patch verified `0 drift lines`.
+
+**Next (queued):** CI hub remaining (full-width composite/scorecard masthead — bold; orient about-strip;
+basket display-figure; movers board — judge pushed back on the 2-col, do carefully); CI events surface +
+CI weekly dispatch (figure-breakout, scoped `.ci-dispatch > .viz-figure`); remaining article wins
+(`.smart-next` card, scoped figure-breakout); then the critic's coverage gaps (global chrome + mobile
+drawer, tool empty/validation states, print neutralization, Ledger page, legal template, 404,
+`:focus-visible` token, ES end-to-end). Deferred to explicit checkpoints (red-team risky set): fluid
+body-size reflow, dark-mode mechanism consolidation, radius value bumps. Harness:
+`python3 -m http.server 8099` + headless_shell on a fresh port;
 scratchpad has `shot.mjs`/`clip-sec.mjs`/`clip-cv.mjs`/`leak-detect.mjs`. Chrome HTTP-cache can serve
 stale renders — use a fresh port or a `?x=` query buster when verifying edits.
 
