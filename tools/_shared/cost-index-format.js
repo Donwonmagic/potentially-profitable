@@ -371,7 +371,27 @@
       return L('You last checked these prices ' + rel + '.', 'Revisaste estos precios por última vez ' + rel + '.');
     }
 
-    return { L: L, money: money, sparkShape: sparkShape, percentileLine: percentileLine, weekOverWeek: weekOverWeek, vsLastYear: vsLastYear, thenVsNow: thenVsNow, thenVsNowSay: thenVsNowSay, heartbeat: heartbeat, flagVerb: flagVerb };
+    // relativeDay — a locale-aware "how long ago" gloss for a REAL, already-printed
+    // ISO date (a read's asOf). Pure: parse the date, compare to nowMs, return ONLY
+    // the relative phrase — or '' when it can't honestly say (bad input, or a date
+    // in the future). It never invents a date, never adds a number the page doesn't
+    // already show, never implies a forecast: it re-renders the AGE of a date the
+    // reader is already looking at, on their own clock. Same bands as heartbeat() so
+    // the two can never disagree. Deterministic (nowMs is passed, not read here) so
+    // the test pins it. Stale reads honestly grow to "N weeks ago" — we don't hide age.
+    function relativeDay(fromISO, nowMs) {
+      var t = parseISODay(fromISO);
+      if (t == null || typeof nowMs !== 'number' || !isFinite(nowMs)) return '';
+      var days = Math.floor((nowMs - t) / 86400000);
+      if (days < 0) return '';                                 // a future date → say nothing
+      if (days === 0) return L('today', 'hoy');
+      if (days === 1) return L('yesterday', 'ayer');
+      if (days < 7) return L(days + ' days ago', 'hace ' + days + ' días');
+      if (days < 14) return L('about a week ago', 'hace cerca de una semana');
+      return L(Math.round(days / 7) + ' weeks ago', 'hace ' + Math.round(days / 7) + ' semanas');
+    }
+
+    return { L: L, money: money, sparkShape: sparkShape, percentileLine: percentileLine, weekOverWeek: weekOverWeek, vsLastYear: vsLastYear, thenVsNow: thenVsNow, thenVsNowSay: thenVsNowSay, heartbeat: heartbeat, relativeDay: relativeDay, flagVerb: flagVerb };
   }
 
   var api = make;          // MuntinCostFormat(es) → bound, locale-aware helpers
