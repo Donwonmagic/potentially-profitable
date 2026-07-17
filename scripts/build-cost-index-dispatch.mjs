@@ -814,15 +814,40 @@ function citeBlock(ins, url) {
   </aside>`;
 }
 
+// Move 8 (cohesion) — the flagged movers this edition names each get a link to
+// their OWN standing reference page, so a reader who sees "eggs flashed re-price"
+// can descend straight to the eggs page and its sources. Name only: no invented
+// relationship, no number, just the navigational link the item already earns by
+// being flagged. never-404 — a key is linked only when /cost-index/<key>/ exists
+// on disk (the same existsSync guard the seed builder and the live tools use).
+// De-duped by key and capped so the "Go deeper" line stays a pointer, not a
+// directory; the hub link always follows as the catch-all.
+function flaggedRefLinks(ins) {
+  const seen = new Set();
+  const out = [];
+  for (const i of [...(ins.reprice || []), ...(ins.watch || [])]) {
+    if (!i.key || seen.has(i.key)) continue;
+    if (!existsSync(path.join(repoRoot, 'cost-index', i.key, 'index.html'))) continue;
+    seen.add(i.key);
+    out.push(`<a href="/cost-index/${esc(i.key)}/">${esc(i.name || i.key)}</a>`);
+    if (out.length >= 8) break;
+  }
+  return out;
+}
+
 // "Go deeper" — the tiered-depth descent. Keeps the top read short by LINKING the heavier
 // layers (per-ingredient pages, the machine feed, the archive) instead of inlining them.
 // The companion-tools line also satisfies check-content-guardrails.mjs's ≥2 /tools/<slug>/
 // links floor — without it an emitted edition's only tool link is the sticky bar's.
 function goDeeperBlock(ins) {
+  const refLinks = flaggedRefLinks(ins);
+  const perIngredient = refLinks.length
+    ? `every flagged item has its own live page with the full reading and its sources &mdash; ${refLinks.join(', ')}, or browse <a href="/cost-index/">the Cost Index hub</a>.`
+    : `every flagged item has its own live page with the full reading and its sources, e.g. <a href="/cost-index/">the Cost Index hub</a>.`;
   return `      <h2 id="go-deeper">Go deeper</h2>
       <p>This dispatch is the surface read. The layers underneath it are addressable, so an analyst &mdash; or an answer engine &mdash; can descend without the top read bloating:</p>
       <ul>
-        <li><strong>Per-ingredient pages</strong> &mdash; every flagged item has its own live page with the full reading and its sources, e.g. <a href="/cost-index/">the Cost Index hub</a>.</li>
+        <li><strong>Per-ingredient pages</strong> &mdash; ${perIngredient}</li>
         <li><strong>This edition as data</strong> &mdash; <a href="/cost-index/week-${esc(ins.asOf)}.json">week-${esc(ins.asOf)}.json</a> and <a href="/cost-index/week-${esc(ins.asOf)}.csv">.csv</a>: the frozen per-ingredient snapshot behind this page.</li>
         <li><strong>The full series &amp; feed</strong> &mdash; <a href="/cost-index/feed.json">feed.json</a> (machine catalog) and the <a href="/cost-index/weekly/">edition archive</a> (every week).</li>
         <li><strong>The companion tools</strong> &mdash; <a href="/tools/cost-pulse/">Cost Pulse</a> for today's tracked levels, and the <a href="/tools/plate-cost/">plate cost calculator</a> for what a level does to one dish.</li>
