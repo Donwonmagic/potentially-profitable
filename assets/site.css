@@ -3163,6 +3163,47 @@ body[data-audio-seek] .article-body .listen-sent:hover{background:rgba(42,80,200
   flex:1;
 }
 
+/* ===== Sheets hub — "The Sheet Index" =====================================
+   Elevate the operator-sheet cards + frame /sheets/ as a browsable catalog
+   (owner: the boxes felt un-styled and the page should read as a hub).
+   Synthesized from the design panel: hub framing (masthead / index-tab chips /
+   muntin-glyph section headers / labeled deliverable band / "Open sheet"
+   affordance) + a stilled LIVE dot. Scoped to body[data-page="sheets-hub"];
+   /tools/ reuses these classes but has no data-page, so it never matches. */
+body[data-page="sheets-hub"] .tool-goals{ margin-top:24px; padding:0 0 12px; background:transparent; border:0; border-bottom:1px solid var(--line-dark); border-radius:0; }
+body[data-page="sheets-hub"] .tool-chipnav{ margin:26px 0 4px; gap:8px; }
+body[data-page="sheets-hub"] .tool-chipnav a{ border-color:var(--line-dark); background:var(--surface-1); font-variant-numeric:tabular-nums; }
+body[data-page="sheets-hub"] .tool-chipnav a:hover,
+body[data-page="sheets-hub"] .tool-chipnav a:focus-visible{ background:var(--teal-tint); border-color:var(--teal); color:var(--teal); }
+body[data-page="sheets-hub"] .tool-cluster__head{ border-bottom-color:var(--line-dark); }
+body[data-page="sheets-hub"] .tool-cluster__head h2{ display:flex; align-items:center; gap:14px; }
+body[data-page="sheets-hub"] .tool-cluster__head h2::before{ content:""; flex:none; width:0.66em; height:0.66em; border-radius:2px; border:1.5px solid var(--teal); opacity:.9; background:linear-gradient(var(--teal),var(--teal)) center / 1.5px 100% no-repeat, linear-gradient(var(--teal),var(--teal)) center / 100% 1.5px no-repeat; }
+body[data-page="sheets-hub"] .tool-cluster__intro{ grid-column:1 / -1; margin-top:2px; }
+body[data-page="sheets-hub"] .tool-cluster__intro-toggle{ list-style:none; cursor:pointer; user-select:none; display:inline-flex; align-items:center; gap:8px; min-height:36px; font-family:var(--font-body); font-size:13px; font-weight:600; letter-spacing:.02em; color:var(--teal); }
+body[data-page="sheets-hub"] .tool-cluster__intro-toggle::-webkit-details-marker{ display:none; }
+body[data-page="sheets-hub"] .tool-cluster__intro-toggle::after{ content:"+"; font-family:var(--font-mono); font-size:15px; line-height:1; color:var(--stone); }
+body[data-page="sheets-hub"] .tool-cluster__intro[open] .tool-cluster__intro-toggle::after{ content:"\2212"; }
+body[data-page="sheets-hub"] .tool-cluster__intro-toggle:focus-visible{ outline:none; color:var(--teal-dark); text-decoration:underline; }
+body[data-page="sheets-hub"] .tool-cluster .tool-grid{ gap:20px; margin-top:22px; }
+body[data-page="sheets-hub"] .tool-card--compact{ padding:24px 26px 20px; background:var(--surface-1); box-shadow:var(--elev-1); }
+body[data-page="sheets-hub"] .tool-card--compact::before{ content:""; position:absolute; left:0; right:0; top:0; height:2px; background:var(--teal); transform:scaleX(0); transform-origin:left; transition:transform var(--t-med) var(--ease-out); }
+body[data-page="sheets-hub"] .tool-card--compact.live:hover::before{ transform:scaleX(1); }
+body[data-page="sheets-hub"] .tool-card--compact.live:hover{ transform:translateY(-3px); box-shadow:var(--elev-2); }
+body[data-page="sheets-hub"] .tool-card--compact .status{ margin-bottom:14px; }
+body[data-page="sheets-hub"] .tool-card--compact .status::before{ animation:none; }
+body[data-page="sheets-hub"] .tool-card--compact h3{ letter-spacing:-0.015em; margin:0 0 8px; }
+body[data-page="sheets-hub"] .tool-card--compact .tool-card__walkaway{ flex:0 0 auto; margin:2px 0 0 !important; padding:11px 14px; border-top:0; border-left:3px solid var(--teal); border-radius:0 var(--r-sm) var(--r-sm) 0; background:color-mix(in srgb, var(--teal) 6%, transparent); color:var(--ink-soft); font-size:14px; line-height:1.5; }
+body[data-page="sheets-hub"] .tool-card__walkaway-label{ display:block; margin-bottom:3px; font-size:10.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--teal-dark); }
+body[data-page="sheets-hub"] .tool-card--compact > p:last-child{ display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px 14px; margin-top:auto !important; padding-top:13px; border-top:1px solid var(--line); }
+body[data-page="sheets-hub"] .tool-card--compact > p:last-child::after{ content:"Open sheet \2192"; display:inline-block; margin-left:auto; white-space:nowrap; font-family:var(--font-body); font-size:13px; font-weight:600; letter-spacing:.01em; color:var(--teal); transition:transform var(--t-fast) var(--ease-out), color var(--t-fast); }
+body[data-page="sheets-hub"] .tool-card--compact.live:hover > p:last-child::after{ transform:translateX(3px); color:var(--teal-dark); }
+@media (prefers-reduced-motion:reduce){
+  body[data-page="sheets-hub"] .tool-card--compact::before,
+  body[data-page="sheets-hub"] .tool-card--compact > p:last-child::after{ transition:none; }
+  body[data-page="sheets-hub"] .tool-card--compact.live:hover{ transform:none; }
+}
+/* ===== end Sheets hub ===================================================== */
+
 /* Spotlight section — Phase 7 W1-3. Two flagship tools (Menu
    Design Suite + Advanced Invoice Decoder) rendered as large,
    high-weight cards above the existing 4-cluster grid on
