@@ -1570,7 +1570,7 @@ main{padding-top:64px}
 .ci-hero h1{font-family:var(--font-display);font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.12;color:var(--ink);margin:0 0 14px}
 .ci-answer{font-size:clamp(18px,3vw,22px);font-weight:600;color:var(--ink);margin:0 0 14px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
 .ci-lede{font-size:18px;line-height:1.6;color:var(--ink);margin:0;max-width:720px}
-.ci-body{margin:8px 0 0;max-width:760px}
+.ci-body{margin:8px 0 0;max-width:760px}@media(min-width:1024px){.breadcrumb,.ci-hero,.ci-body{max-width:840px;margin-inline:auto}}
 .ci-body h2{font-family:var(--font-display);font-size:clamp(20px,3vw,26px);font-weight:500;color:var(--ink);margin:34px 0 10px;line-height:1.2}
 .ci-body p{margin:0 0 16px;font-size:16px;line-height:1.7}
 .ci-body>p:not([class]),.ci-body>ol,.ci-body>ul{max-width:68ch}
