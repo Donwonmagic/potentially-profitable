@@ -44,6 +44,14 @@
 .window::after{content:'';position:absolute;inset:0;z-index:5;pointer-events:none;border-radius:6px;background:radial-gradient(86% 86% at 90% 7%,rgba(255,138,92,var(--gh-eve,0)) 0%,rgba(255,138,92,0) 55%),radial-gradient(86% 86% at 90% 7%,rgba(255,176,32,0.36) 0%,rgba(255,138,92,0.15) 34%,rgba(255,176,32,0) 70%)}
 @media (max-width:960px){.hero::after{background:var(--gradient-goldenhour-soft)}}
 
+/* Theme-swap cross-fade (warmth.js family): when the operator flips the theme,
+   ease the color/background/border change over ~280ms instead of snapping — the
+   way the OS does. theme-toggle.js adds .theme-animating for the transient
+   window. GATED on (prefers-reduced-motion: no-preference), which is mutually
+   exclusive with the global reduce cap, so reduced-motion users get the instant
+   swap by construction — the ease can never override their preference. */
+@media (prefers-reduced-motion:no-preference){html.theme-animating,html.theme-animating *{transition:background-color 280ms var(--ease-out),color 280ms var(--ease-out),border-color 280ms var(--ease-out),fill 280ms var(--ease-out)}}
+
 /* @shell:core === Modernization tokens (Sprint 1) === */
 /* ============ Modernization tokens (Sprint 1) ============
    Additive vocabulary that later modernization sprints consume. No
