@@ -73,6 +73,33 @@ test('staleness decay steps confidence down, then suppresses to under-review', (
   assert.equal(r10.confidence, 'low');
 });
 
+test('freshness clock reads wall-clock now — a served snapshot ages (dead-clock fix)', () => {
+  const obs = { corn: { changePct: 0.06 }, placements: { changePct: -0.06 }, coldstorage: { changePct: -0.06 } };
+  // A snapshot fresh at build: asOf == last measured print. Pre-fix this pinned
+  // freshness to 0 forever, so a stale preview kept its full-confidence arrow.
+  const fresh = { anchorPrintDate: '2026-06-08', asOf: '2026-06-08' };
+  const atBuild = assess(panel, obs, fresh);
+  assert.equal(atBuild.freshness_weeks, 0);
+  assert.equal(atBuild.confidence, 'high');       // genuinely fresh → full confidence
+  assert.equal(atBuild.under_review, false);
+
+  // Same frozen snapshot, read 6 weeks later by wall-clock → decays high → low.
+  const wk = 7 * 86400000, base = Date.parse('2026-06-08');
+  const stale6 = assess(panel, obs, Object.assign({}, fresh, { now: base + 6 * wk }));
+  assert.equal(stale6.freshness_weeks, 6);
+  assert.equal(stale6.confidence, 'low');
+  assert.equal(stale6.under_review, false);        // 6 < floorWeeks(8), not yet suppressed
+
+  // Read 10 weeks later → past the 8-week floor → under review, arrow suppressed.
+  const stale10 = assess(panel, obs, Object.assign({}, fresh, { now: base + 10 * wk }));
+  assert.equal(stale10.under_review, true);
+  assert.equal(stale10.direction, 'steady');
+  assert.equal(stale10.confidence, 'low');
+
+  // Omitting `now` keeps the frozen build-time read — deterministic for the honesty gate.
+  assert.equal(assess(panel, obs, fresh).freshness_weeks, 0);
+});
+
 test('no observations → unknown (never a fabricated lean)', () => {
   const r = assess(panel, {}, opts);
   assert.equal(r.direction, 'unknown');
