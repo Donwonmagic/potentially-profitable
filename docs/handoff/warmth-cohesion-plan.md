@@ -64,7 +64,7 @@ modulate it with a device signal, we do not invent a palette.
 | 4 | ~~`mun_pref` cookie~~ → read the system instead | S | **CUT (decision 3)** | ✅ |
 | 5 | Theme-swap cross-fade + reassurance beats (copy/save/cite) | M | **KEEP** | ✅ |
 | 6 | Visit-trail writer + "where you left off" chip | M | **REVISE — borders on CUT** (Claim-8) | ✅ |
-| 7 | Close the Cost-Index loop: tool card → its own reference page | S | **KEEP (best cohesion/effort)** | ✅ |
+| 7 | Close the Cost-Index loop: tool card → its own reference page | S | **SHIPPED** | ✅ |
 | 8 | Cross-link weekly dispatch ↔ per-ingredient reference pages | M | **KEEP** (name only, generator) | ✅ |
 | 9 | Tools read `?from` and echo one locale-aware continuity line | M | REVISE (EN+ES + registered title map) | ✅ |
 | 10 | Warm the plate-cost empty state + confirm coda (EN+ES) | S | **KEEP** | ✅ |
