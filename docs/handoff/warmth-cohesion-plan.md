@@ -62,10 +62,10 @@ modulate it with a device signal, we do not invent a palette.
 | 2 | `warmth.js` on-device substrate | M | **SHIPPED (homepage)** | ✅ |
 | 3 | Golden-Hour clock whisper (hero corner) | M | **SHIPPED (homepage)** | ✅ |
 | 4 | ~~`mun_pref` cookie~~ → read the system instead | S | **CUT (decision 3)** | ✅ |
-| 5 | Theme-swap cross-fade (**shipped**) + reassurance beats (copy/save/cite, next) | M | **PARTIAL** | ✅ |
+| 5 | Theme-swap cross-fade (**shipped**) + copy-link reassurance beat (**shipped**) | M | **PARTIAL** (save/cite beats on tools next) | ✅ |
 | 6 | Visit-trail writer + "where you left off" chip | M | **REVISE — borders on CUT** (Claim-8) | ✅ |
 | 7 | Close the Cost-Index loop: tool card → its own reference page | S | **SHIPPED** | ✅ |
-| 8 | Cross-link weekly dispatch ↔ per-ingredient reference pages | M | **KEEP** (name only, generator) | ✅ |
+| 8 | Cross-link weekly dispatch → per-ingredient reference pages (name only, generator) | M | **SHIPPED (dispatch→ingredient half; ships next cron)** | ✅ |
 | 9 | Tools read `?from` and echo one locale-aware continuity line | M | REVISE (EN+ES + registered title map) | ✅ |
 | 10 | Warm the plate-cost empty state (**shipped**) + confirm coda (next) | S | **PARTIAL** | ✅ |
 | 11 | Visible tool breadcrumb (**shipped** — cost-pulse + vendor-benchmark) + field-notes voice (next) | S | **PARTIAL** | ✅ |
@@ -109,8 +109,15 @@ modulate it with a device signal, we do not invent a palette.
 - **Phase-1 cohesion wins (fork-free, in-container):** Move 7 (tool card → its Cost Index reference),
   Move 10 (warm empty states + confirm coda), Move 11 (visible breadcrumb + field-notes voice), and the
   P0 fabricated-success handler fix (the signup confirm must not fire on a 5xx).
-- **Move 5** theme cross-fade + reassurance beats (KEEP). **Move 6** Workshop-only continuity (authed).
-  **App-side system defaults** (theme + locale) once the product dev-env is up.
+- **Move 5** theme cross-fade + copy-link beat SHIPPED (site.js `announce()` aria-live + `.copied`
+  settle, reduced-motion-safe; ES i18n keys staged, propagate on next `sync-includes`). Site.js
+  cache-bust unified to `20260717-reassure` (healed a 5-way version skew). Remaining Move-5 beats:
+  save/cite confirmations on the tool-local copy handlers (cost-index-ui / swatch / pressure-lab).
+- **Move 8** dispatch→ingredient links SHIPPED in the generator (`goDeeperBlock` names each flagged
+  mover, links to `/cost-index/<key>/`, never-404 + dedup + cap 8); takes effect on the next
+  cost-index cron emit. Reciprocal half (ingredient page → latest edition) still open.
+- **Move 6** Workshop-only continuity (authed). **App-side system defaults** (theme + locale) once
+  the product dev-env is up.
 
 ## Biggest risk (from the critique)
 
