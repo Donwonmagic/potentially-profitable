@@ -94,10 +94,21 @@ marker), B (`contract_price.py`) + C (`price_trend_pct`) done-unwired earlier.
   headline is EN-only, so tier-keyed copy keeps the gated parity honest). Copy-grade + verboten +
   prettier clean; web tsc/build:cf/vitest run in CI, not the container. Optional later: thread the web
   user's locale into the reorder request to render the richer calibrated server headline directly.
-- **Next candidate bricks (autonomous, in-container-verifiable):** the NEXT-tier items — E (demo→Vendor
-  Benchmark URL-fragment prefill; caveat: the "lands as comparable" hand-test wants a browser we lack),
-  or the B/C **wiring** bricks (Python `off_contract`/`price_creep` capture + SOFT registration; heavier,
-  want pytest + basis-bridge care). Item F (`above_market`) stays gated on the Python hit-rate probe.
+- **[DONE — item A first consumer lit, `b0f0f286`] Plate Cost verdict hint.** Lit the first consumer of
+  A's widened `reference()`: `plate-cost/cost-index-hint.js` now renders the calibrated buy/hold/watch
+  verb next to the wholesale reference (attached to the Cost Index read, never the operator's price).
+  Additive + fail-silent; verbs from `cost-verdict.js` (no new copy/fact); neutral styling (no green
+  "prices fell" — one-directional honesty); cache-bust bumped EN+ES; lookup test pins the EN+ES verb
+  contract (10/10). DOM render is browser-verified in the real env, not this container.
+- **Next candidate bricks — each with a container caveat (a real fork, not an obvious default):** E
+  (demo→Vendor Benchmark URL-fragment prefill; the "lands as comparable" acceptance is a browser hand-test
+  we can't run here) · the B/C **Python wiring** (`off_contract`/`price_creep` capture + SOFT registration;
+  needs `pytest` — installable — but the core-pipeline stakes + the corpus-calibration the plan itself
+  requires make this better done on a full dev machine) · item F (`above_market`, gated on a Python
+  hit-rate probe that needs a real line corpus) · more A consumers (`fair-price-gap.js`, the trend arrow,
+  the no-dollar verdict path). **The cleanly-in-container-verifiable well is thinning — the remaining
+  value increasingly needs a browser / pytest+DB / real corpus. Surface the fork; don't force a
+  low-confidence brick.**
 
 ### Storefront (`potentially-profitable`) — v3 redesign COMPLETE + CERTIFIED
 The app-grade v3 language (slate + electric-blue, tabular-mono data voice, muntin-grille-as-
