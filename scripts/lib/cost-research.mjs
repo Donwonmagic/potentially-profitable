@@ -1234,12 +1234,54 @@ function emitPlaybook(locale, ctx) {
     <p class="pb-cite__cite"><span class="pb-cite__lab">${es ? 'Cita' : 'Cite'}</span> Muntin Cost Index — Menu-Pricing Playbook dataset. muntin.digital${base}/cost-index/menu-pricing/. CC BY 4.0.</p>
     <p class="pb-cite__dl"><a class="pb-dl" href="/cost-index/menu-pricing.json" download>menu-pricing.json</a><a class="pb-dl" href="/cost-index/menu-pricing.csv" download>menu-pricing.csv</a><a class="pb-dl pb-dl--ghost" href="${base}/open/">${es ? 'Todos los datos abiertos →' : 'All the open data →'}</a></p>
   </section>`;
+  // The joined 100-ingredient table is a genuine CC-BY dataset — publish a schema.org
+  // Dataset node so scholars/journalists can find + cite it (Google Dataset Search,
+  // DataCite). dateModified tracks the pricing data's own asOf (cost-lockfloat.json), not
+  // a build clock, so it never churns. sameAs→DOI is added once the Zenodo DOI is minted.
+  const dsUrl = es ? canonEs : canonEn;
+  const lfAsOf = (() => { try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-lockfloat.json'), 'utf8')).asOf || null; } catch { return null; } })();
+  const datasetLd = {
+    '@type': 'Dataset', '@id': dsUrl + '#dataset',
+    'name': es ? 'Conjunto de datos del manual de precios de menú — 100 ingredientes' : 'Menu-pricing playbook dataset — 100 ingredients',
+    'alternateName': 'Muntin Cost Index — Menu-Pricing Playbook',
+    'description': es
+      ? 'Tabla de decisión por ingrediente para 100 ingredientes de restaurante: postura de precio (fijar/colchón/flotar/reservar), banda contra su propia línea base, rendimiento comestible e impuesto de merma, mes más barato y co-movimiento de precios — unida a partir de referencias mayoristas públicas de EE. UU. con datos abiertos de rendimiento y estacionalidad. Descriptiva del registro seguido, nunca un precio de entrega ni un pronóstico.'
+      : 'A per-ingredient decision table for 100 restaurant ingredients: pricing posture (lock/cushion/float/withhold), own-baseline band, edible yield and trim tax, cheapest month, and price co-movement — joined from public U.S. wholesale references with open yield and seasonality data. Descriptive of the tracked record, never a delivered price or a forecast.',
+    'url': dsUrl, 'mainEntityOfPage': dsUrl, 'inLanguage': es ? 'es-US' : 'en-US', 'isAccessibleForFree': true,
+    'license': 'https://creativecommons.org/licenses/by/4.0/',
+    'creditText': 'Muntin Cost Index (muntin.digital), compiled from public USDA, BLS, FRED and EIA market data.',
+    'keywords': es
+      ? ['precios de menú de restaurante', 'precios mayoristas de alimentos', 'rendimiento comestible', 'impuesto de merma', 'estacionalidad de precios', 'co-movimiento de precios']
+      : ['restaurant menu pricing', 'wholesale food prices', 'edible yield', 'trim tax', 'food price seasonality', 'price co-movement'],
+    'variableMeasured': [
+      { '@type': 'PropertyValue', 'name': 'posture', 'description': es ? 'fijar / colchón / flotar / reservar — si la banda contra su propia línea base es bastante estable para imprimir' : 'lock / cushion / float / withhold — whether the own-baseline band is steady enough to print' },
+      { '@type': 'PropertyValue', 'name': 'band_pct', 'description': es ? 'ancho de la banda de referencia mayorista contra la propia ventana base del ingrediente (porcentaje); nulo para reservados sin serie' : 'width of the wholesale reference band against the ingredient own baseline window (percent); null for no-series withholds' },
+      { '@type': 'PropertyValue', 'name': 'edible_yield_pct', 'description': es ? 'rendimiento comestible de referencia (porcentaje); para cítricos es rendimiento de jugo' : 'book edible yield (percent); for citrus this is juice yield' },
+      { '@type': 'PropertyValue', 'name': 'trim_tax', 'description': es ? '1 dividido entre el rendimiento comestible — multiplicador de libra de factura a libra comestible' : '1 divided by edible yield — invoice-pound to edible-pound multiplier' },
+      { '@type': 'PropertyValue', 'name': 'cheapest_month', 'description': es ? 'mes históricamente más barato donde un valle estacional pasó el filtro de ruido; nulo si no. Descriptivo, no un pronóstico' : 'historical cheapest month where a seasonal trough cleared the noise gate; null otherwise. Descriptive, not a forecast' },
+      { '@type': 'PropertyValue', 'name': 'co-movement', 'description': es ? 'conteo dirigido de cuántos de los grandes movimientos de un ingrediente compartió un sustituto nombrado (k de n) — coincidencia, nunca causa' : 'directed count of how many of an ingredient big moves a named substitute shared (k of n) — co-occurrence, never cause' }
+    ],
+    'measurementTechnique': es
+      ? 'Precios mayoristas públicos de referencia leídos contra la propia ventana base de cada ingrediente; rendimientos de tablas publicadas; estacionalidad admitida solo tras un filtro de ruido por dispersión; co-movimiento como conteos dirigidos de episodios compartidos. Nunca un precio de entrega o minorista; nunca un pronóstico.'
+      : 'Public wholesale reference prices read against each ingredient own baseline window; yields from published tables; seasonality admitted only past a dispersion noise gate; co-movement as directed shared-episode counts. Never a delivered/retail price; never a forecast.',
+    'creator': { '@type': 'Person', '@id': 'https://muntin.digital/#don-goldstein', 'name': 'Don Goldstein', 'url': 'https://muntin.digital/about/' },
+    'publisher': { '@id': 'https://muntin.digital/#business' },
+    'includedInDataCatalog': { '@id': 'https://muntin.digital/cost-index/#catalog' },
+    'distribution': [
+      { '@type': 'DataDownload', 'name': 'Menu-pricing playbook (JSON)', 'encodingFormat': 'application/json', 'contentUrl': 'https://muntin.digital/cost-index/menu-pricing.json', 'license': 'https://creativecommons.org/licenses/by/4.0/' },
+      { '@type': 'DataDownload', 'name': 'Menu-pricing playbook (CSV)', 'encodingFormat': 'text/csv', 'contentUrl': 'https://muntin.digital/cost-index/menu-pricing.csv', 'license': 'https://creativecommons.org/licenses/by/4.0/' }
+    ],
+    'datePublished': '2001-02-01',
+    'temporalCoverage': '2001-02-01/' + (lfAsOf || '2026-07-10')
+  };
+  if (lfAsOf) datasetLd.dateModified = lfAsOf;
   const jsonld = JSON.stringify({ '@context': 'https://schema.org', '@graph': [
     { '@type': ['CollectionPage', 'HowTo'], '@id': (es ? canonEs : canonEn) + '#page', 'url': es ? canonEs : canonEn, 'name': h1, 'inLanguage': es ? 'es-US' : 'en-US', 'description': desc, 'isPartOf': { '@id': 'https://muntin.digital/#website' }, 'isBasedOn': 'https://muntin.digital/open/', 'speakable': { '@type': 'SpeakableSpecification', 'cssSelector': ['h1', '.ci-answer'] } },
     { '@type': 'BreadcrumbList', 'itemListElement': [
       { '@type': 'ListItem', 'position': 1, 'name': es ? 'Inicio' : 'Home', 'item': es ? 'https://muntin.digital/es/' : 'https://muntin.digital/' },
       { '@type': 'ListItem', 'position': 2, 'name': es ? 'Índice de costos' : 'Cost index', 'item': `https://muntin.digital${base}/cost-index/` },
       { '@type': 'ListItem', 'position': 3, 'name': h1, 'item': es ? canonEs : canonEn } ] },
+    datasetLd,
   ] }).replace(/</g, '\\u003c');
   const answer = es
     ? `De ${P.total} ingredientes, ${P.counts.lock} se han mantenido bastante estables para imprimir su precio, ${P.counts.cushion} piden colchón, ${P.counts.float} deben flotar y ${P.counts.withhold} se reservan por evidencia escasa — y para ${P.layer4} este manual une las cuatro capas: precio, costo comestible, mes más barato y qué cambio no ahorra nada.`
