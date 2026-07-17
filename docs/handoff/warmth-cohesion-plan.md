@@ -104,8 +104,17 @@ modulate it with a device signal, we do not invent a palette.
 
 ## Next (post-decision build order)
 
-- **Site-wide `warmth.js` rollout** via the footer template + `sync-includes` → `inject-site-counts`
-  (documented build-chain order), so the substrate + whisper reach every hero surface, not just the homepage.
+- **Site-wide `warmth.js` rollout — needs a multi-surface plan, NOT a one-line footer edit.** Finding
+  (2026-07-17): the funnel-core hero pages (the 81 `/cost-index/<key>/` ingredient pages, the tools)
+  report "missing footer" under `sync-includes` — they carry a *different* footer than the canonical
+  content-page template, so adding `warmth.js` to `_includes/footer.html` `FOOTER_ASSETS` would reach
+  only blog/library/glossary (many of which have no `.hero` anyway). The homepage already has it
+  (bespoke `<script defer>`). Real rollout = hook the substrate into each hero-bearing surface's own
+  script tail (cost-index page generator, tool pages, cuisine/theme landings), verifying each regen is
+  drift-clean the way the dispatch regen was NOT. Treat as a deliberate pass, not a quick brick.
+- **`sync-includes` drift is benign + now cleared.** The 614-file drift was *only* the Move 5b i18n
+  keys awaiting propagation; running `sync-includes` → `inject-site-counts` propagated them AND healed
+  stale ES footer counts (24/12/149 → the true 36/5/171). Counts are idempotent again; EN untouched.
 - **Phase-1 cohesion wins (fork-free, in-container):** Move 7 (tool card → its Cost Index reference),
   Move 10 (warm empty states + confirm coda), Move 11 (visible breadcrumb + field-notes voice), and the
   P0 fabricated-success handler fix (the signup confirm must not fire on a 5xx).
