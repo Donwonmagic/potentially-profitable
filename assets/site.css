@@ -794,6 +794,11 @@ pre code{overflow-wrap:normal;word-break:normal;white-space:pre}
   .table-scroll>.op-table{min-width:0}
 }
 .eyebrow{font-family:var(--font-body);font-size:13px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);display:inline-flex;align-items:center;gap:10px}
+/* The article-header meta line ("Library · Topic · N min read · By …") is a
+   multi-part TEXT line, not a short label. Base .eyebrow is inline-flex (for
+   label+glyph alignment), which on a phone squeezes each text-run and link into
+   a narrow shrinking column. Let this one flow and wrap as normal text. */
+.article-body > header > .eyebrow{display:block;line-height:1.7}
 .eyebrow::before{content:'';width:28px;height:1px;background:var(--teal)}
 /* Eyebrow with leading glyph: replaces the 28px rule with a 24px line-stroked SVG mark in the same accent color. Used to add a page-relevance cue without breaking the eyebrow's existing inline-flex rhythm. */
 .eyebrow--glyph::before{display:none}
