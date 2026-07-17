@@ -2914,7 +2914,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   }
 }
 
-/* ===== [article] Article viz components (.viz-* family) (lines 7330-7777) ===== */
+/* ===== [article] Article viz components (.viz-* family) (lines 7330-7781) ===== */
 /* ============ ARTICLE VIZ COMPONENTS ============
    Namespaced .viz-* family for inline article graphics. Tokens-only
    (--cream, --ink, --teal, --rust, --stone, --status-*, --t-*),
@@ -3345,7 +3345,7 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
    when below, stone when flat. Endpoint/peak/trough annotations
    (date + dollar) render as an HTML row under the chart in tabular
    figures. Tokens-only, same dark-mode posture as every viz family. */
-.viz-spark{margin:16px 0;font-family:var(--font-body);font-size:13px;color:var(--ink)}
+.viz-spark{margin:16px 0;font-family:var(--font-body);font-size:13px;color:var(--ink);min-width:0}
 .viz-spark__title{font-family:var(--font-display);font-size:14.5px;font-weight:500;color:var(--ink);margin:0 0 6px;letter-spacing:-0.005em;line-height:1.4;font-variant-numeric:tabular-nums}
 .viz-spark__chart{background:var(--cream-2);border-radius:6px;padding:8px 10px}
 .viz-spark__chart svg{display:block;width:100%;height:auto;overflow:visible}
@@ -3357,7 +3357,11 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
 .viz-spark[data-tone="teal"] .viz-spark__dot{fill:var(--teal)}
 .viz-spark__annos{display:flex;flex-wrap:wrap;gap:4px 14px;margin:6px 0 0;padding:0;font-size:12px;line-height:1.4;color:var(--stone);font-variant-numeric:tabular-nums}
 .viz-spark__anno{white-space:nowrap}
+/* On phones a long annotation ("seasonal July median $18.70 — …") can exceed the
+   column at nowrap and force a horizontal scroll; let annos wrap under 520px
+   (short ones still fit on one line, so they don't wrap unnecessarily). */
+@media (max-width:520px){.viz-spark__anno{white-space:normal}}
 .viz-spark__anno strong{color:var(--ink);font-weight:600}
-.viz-sparks{display:grid;gap:18px;margin:16px 0}
+.viz-sparks{display:grid;gap:18px;margin:16px 0;grid-template-columns:minmax(0,1fr)}
 .viz-sparks .viz-spark{margin:0}
-@media (min-width:640px){.viz-sparks--board{grid-template-columns:1fr 1fr}.viz-sparks--board>.viz-spark:first-child{grid-column:1/-1}}
+@media (min-width:640px){.viz-sparks--board{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.viz-sparks--board>.viz-spark:first-child{grid-column:1/-1}}
