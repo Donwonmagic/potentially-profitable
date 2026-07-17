@@ -13,6 +13,43 @@ repo survives. Update this file as threads move.
 council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 #234–#239 product) are merged to main and closed.
 
+## ⮕ CURRENT STATE — UX/UI ELEVATION PROGRAM (updated 2026-07-17)
+
+**Branch:** `claude/strategic-council-board-docs-m3w6dy` (a distinct thread from the redesign
+run below). **Directive:** make every surface feel native at every viewport, build → audit →
+iterate; no horizontal scroll; "the very best we can make it."
+
+**Plan of record:** `docs/design/elevation-dream-backlog.md` — the reconciled output of two
+adversarial "dreaming" workflows (top-down design-language + bottom-up per-surface), with the
+north star, principles, the phased build sequence, per-surface top tier, and the completeness-
+critic's 11 coverage gaps. **Read it first to resume.**
+
+**Method:** Phase 1 = pure-additive token foundation in the CORE `:root`, seeded to current
+values, referenced by nothing (provably inert — verify with a repo-wide `var(--token)` collision
+scan before shipping; the `--accent` role is DEFERRED because cost-pulse/plate-cost/seasonality
+reference an undefined `var(--accent)`). Then adopt-as-you-touch, SCOPED per surface (never move
+global `--max`/`--pad-x`; the coherence rule is *prose stays narrow ~68ch, data breaks wide* to
+the new `--measure-*` tokens). Every visible change verified on the headless render across the
+7-viewport native matrix + dark + ES, gated, committed per increment (push is the only durable
+artifact — the container restarts).
+
+**Shipped so far (all pushed):**
+- `b23fba57a`, `3e2853cd5` — margin-math: calculator fits 360px + in-box "read more" links wrap (no leak).
+- `91fe5d081` — **design-system token foundation** (semantic role layer + `--measure-*` + `--sp-*` +
+  motion + `--r-pill` + `--elev-feature`), inert, in core `:root`.
+- `83d6509f1` — home: stances → 3-up principles masthead at ≥1024 (adopts `--measure-wide`).
+- `3f1a0b199` — home: recently-added ledger widens to `--measure-wide`; orphaned 3rd service card spans full-width at tablet.
+- `d7f6f9279` — home: FAQ → 2 columns at ≥1024.
+
+**Next (queued):** homepage hero CTA stack (phone-sm) is the last homepage micro-win; then the
+funnel-spine surfaces (CI ingredient center-column, CI hub masthead, CI events ledger, CI dispatch
+figure-breakout — the CI pages are GENERATED, so surgical edit + mirror into the generator),
+library/blog article shared surface, then the critic's coverage gaps (global chrome + mobile drawer,
+tool empty/validation states, print neutralization, Ledger page, legal template, 404, focus-visible
+token, ES end-to-end). Harness: `python3 -m http.server 8099` + headless_shell on a fresh port;
+scratchpad has `shot.mjs`/`clip-sec.mjs`/`clip-cv.mjs`/`leak-detect.mjs`. Chrome HTTP-cache can serve
+stale renders — use a fresh port or a `?x=` query buster when verifying edits.
+
 ## ⮕ CURRENT STATE — AUTONOMOUS REDESIGN RUN (updated 2026-07-11)
 
 **⚠ OPS NOTE (2026-07-11) — container reverted TWICE; both recovered.** It has now happened twice in this
