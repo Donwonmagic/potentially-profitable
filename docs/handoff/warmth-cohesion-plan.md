@@ -119,6 +119,19 @@ modulate it with a device signal, we do not invent a palette.
     --check`) — a regen to add the hook would sweep it in. Hard prerequisite: **reconcile each generator's
     standing drift first** (understand it the way the footer i18n drift was understood before propagating),
     THEN add the hook. That reconciliation is a focused pass of its own — do not bundle it into a warmth brick.
+  - **RECONCILIATION PASS DONE (2026-07-17).** Two repo-wide staleness sources cleared: (1) the cost-index
+    family (198 pages) rebuilt to the current generator — the "drift" was the by-design skeleton-nav
+    round-trip (re-expanded by `sync-includes`, net-zero) plus stale CSS-hash + stale JSON-LD
+    (`speakable` dropped on uncovered ingredients; events graph leads with `Dataset`); zero data files
+    moved, all cost-index gates green. (2) Repo-wide CSS cache-bust (996 pages) via
+    `inject-css-cache-bust.mjs` so this session's site.css warmth edits (reassurance settle + `--gh-eve`
+    whisper) refetch for returning visitors everywhere, not just cost-index. **The generator-drift
+    blocker on the warmth rollout is now cleared** — a warmth-hook regen of a given surface should now
+    show only the hook's own diff. Per-surface content drift on OTHER generators (cuisine, theme-story,
+    ingredient-yield) is handled the same way when their hook lands: regen → confirm benign → sync → counts.
+  - **Pre-existing, left as-is:** `check-cost-index-picker` fails `grapefruit: dollarRef true != recomputed
+    false` (a data/generator provenance mismatch, NOT a page issue — identical against HEAD with the regen
+    stashed). Flag for a separate data pass; unrelated to warmth.
 - **`sync-includes` drift is benign + now cleared.** The 614-file drift was *only* the Move 5b i18n
   keys awaiting propagation; running `sync-includes` → `inject-site-counts` propagated them AND healed
   stale ES footer counts (24/12/149 → the true 36/5/171). Counts are idempotent again; EN untouched.
