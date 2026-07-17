@@ -54,6 +54,20 @@ modulate it with a device signal, we do not invent a palette.
    focus-visible warmth halo as a SECOND box-shadow that never weakens `--ring-focus`. Auto-
    neutralized by the global reduced-motion cap.
 
+## check-all note (2026-07-17)
+
+`scripts/check-all.mjs` reports **22 failing `(idem)` deploy-builder checks** (glossary OG/schema, sitemap,
+RSS, H2 anchors, critical-CSS, lazy-loader, tool/glossary verified stamps, …). These are **pre-existing,
+not regressions**: a worktree run at the branch merge-base had **27** such failures, and the set failing at
+HEAD is a strict subset (this session's `inject-site-counts` / `inject-css-cache-bust` / cost-index-injector
+runs actually *fixed* 5 — CSS cache-bust, site counts, cuisine-landing, theme-story, themes-review-board).
+They are the standing "the container is never fully deploy-built" state — the deploy pipeline regenerates
+them; none are wired into a GitHub workflow. The Moves 9/12 work is green on every content/security gate
+(fabrications, basis-leak, tool-no-fetch, no-innerhtml, locale-parity, cost-index-sync) + 26/26 unit tests
++ adversarial headless. **Lesson:** always run the cost-index post-generator injector chain
+(`inject-cost-index-{basket-weights,calibration,dataset-date,speakable}.mjs`) after `build-cost-index-pages.mjs`
+— the spec's regen sequence omitted it, which briefly red-flagged dataset-date + speakable until fixed.
+
 ## The moves (ranked; verdict from the adversarial critique)
 
 | # | Move | Eff | Verdict | In-container |
