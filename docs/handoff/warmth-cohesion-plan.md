@@ -68,7 +68,7 @@ modulate it with a device signal, we do not invent a palette.
 | 8 | Cross-link weekly dispatch ↔ per-ingredient reference pages | M | **KEEP** (name only, generator) | ✅ |
 | 9 | Tools read `?from` and echo one locale-aware continuity line | M | REVISE (EN+ES + registered title map) | ✅ |
 | 10 | Warm the plate-cost empty state (**shipped**) + confirm coda (next) | S | **PARTIAL** | ✅ |
-| 11 | Visible tool breadcrumb + Window field-notes empty voice | S | **KEEP** | ✅ |
+| 11 | Visible tool breadcrumb (**shipped** — cost-pulse + vendor-benchmark) + field-notes voice (next) | S | **PARTIAL** | ✅ |
 | 12 | Time-aware Cost Index cadence reframe vs the local clock | S | REVISE (derive live edition from real asOf) | ✅ |
 
 **P0 honesty defect — ALREADY FIXED (verified 2026-07-17):** both signup handlers (footer + homepage) already gate success on `res.ok` with an error state + `.catch`, so "check your inbox" no longer fires on a 4xx/5xx. No action needed.
