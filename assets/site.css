@@ -452,6 +452,10 @@
    headers, hairline rows, subtle teal row-hover — so it reads as a live
    index, not a blog roll. Scoped --li-mono; token-only; both themes. */
 .lib-idx{width:100%;max-width:820px;margin:24px auto 0;border-collapse:collapse;table-layout:fixed;font-size:14.5px;line-height:1.45;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+/* Elevation dream — let the front-page "recently added" index read as a full
+   publication ledger on desktop instead of a narrow strip centered in the band.
+   Scoped to .recently-added so other .lib-idx index tables keep their measure. */
+@media (min-width:1024px){.recently-added .lib-idx{max-width:var(--measure-wide)}}
 .lib-idx caption{text-align:left}
 .lib-idx thead th{text-align:left;font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--stone);padding:0 12px 9px;border-bottom:1px solid var(--line-dark)}
 .lib-idx tbody tr{border-bottom:1px solid var(--line);transition:background var(--t-fast) var(--ease)}
@@ -1269,7 +1273,7 @@ section.block{padding:clamp(80px,10vw,140px) 0;border-top:1px solid var(--sectio
    three product cards use the width (~55ch copy) instead of full-width stacking.
    #services scope excludes the checklist #scoreBands grid that shares .services;
    (1,0,1) specificity beats the (0,0,1) collapse regardless of source order. */
-@media (min-width:641px) and (max-width:960px){#services .services{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:641px) and (max-width:960px){#services .services{grid-template-columns:repeat(2,1fr)}#services .service:last-child{grid-column:1 / -1}}
 .service{background:var(--white);border:1px solid var(--line);border-radius:var(--r-md);padding:38px 34px;position:relative;transition:transform var(--t-med) var(--ease),border-color var(--t-med) var(--ease),box-shadow var(--t-med) var(--ease);display:flex;flex-direction:column}
 .service:hover{transform:translateY(-4px);border-color:var(--teal);box-shadow:0 30px 60px -30px rgba(42,80,200,0.25)}
 .service .label{font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);font-weight:600}
