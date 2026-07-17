@@ -883,6 +883,10 @@ pre code{overflow-wrap:normal;word-break:normal;white-space:pre}
    h2{clamp(32px,4.2vw,54px)} is tuned for full-width hub headers, not a narrow
    reading column, and nearly matched the H1 on laptop/wide. Mobile (32px) same. */
 .article-body h2{font-size:clamp(32px,3.4vw,40px);line-height:1.12}
+/* Elevation dream — a short teal hairline above each section head gives long
+   articles scannable section starts, in the same accent language as .eyebrow,
+   without adding chrome. Restrained "hairline as compositional tool". */
+.article-body h2::before{content:"";display:block;width:44px;height:2px;background:var(--teal);border-radius:1px;margin:0 0 18px}
 .eyebrow::before{content:'';width:28px;height:1px;background:var(--teal)}
 /* Eyebrow with leading glyph: replaces the 28px rule with a 24px line-stroked SVG mark in the same accent color. Used to add a page-relevance cue without breaking the eyebrow's existing inline-flex rhythm. */
 .eyebrow--glyph::before{display:none}
@@ -5137,7 +5141,10 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   display:grid;gap:10px;
   grid-template-columns:repeat(3,1fr);
 }
-@media (max-width:760px){ .see-also-list{ grid-template-columns:1fr; } }
+@media (max-width:560px){ .see-also-list{ grid-template-columns:1fr; } }
+/* Elevation dream — tablet-portrait got three ~230px cramped cards; give it a
+   comfortable 2-up band before the phone 1-col collapse. */
+@media (min-width:561px) and (max-width:900px){ .see-also-list{ grid-template-columns:repeat(2,1fr); } }
 /* Glossary "Where this term shows up" backlinks: auto-fit so a single card
    fills the row (instead of stranding at 1/3 width with a 6-line wrapped
    title), 2 make a clean 2-up, 3+ still wrap. Scoped to .glossary-backlinks
