@@ -139,6 +139,61 @@
   --rule:               1px solid var(--section-line);  /* hairline rules vs cards on index pages */
 }
 
+/* @shell:core === Design-language foundation (dream pass, 2026-07-17) ===
+   Additive vocabulary from the elevation dream (docs/design/elevation-dream-backlog.md).
+   Declared here, REFERENCED BY NOTHING yet — so this block is provably inert
+   (an unreferenced custom property has no rendered effect). Surfaces adopt
+   these adopt-as-you-touch, in later verified tiers. Everything lives in the
+   CORE :root so tool/article/generated shells never reference an undefined var. */
+:root{
+  /* -- Semantic role layer over the hue palette. The hue names lie (--teal is
+     royal blue #2A50C8, --rust is red #C42E2E); roles decouple meaning from hue
+     and inherit dark for free (they resolve through the dark token-flip). */
+  --color-bg:      var(--cream);
+  --surface:       var(--surface-1);          /* raised card ground */
+  --surface-sunk:  var(--surface-inset);      /* recessed tray */
+  --text:          var(--ink);
+  --text-soft:     var(--ink-soft);
+  --text-muted:    var(--stone);              /* AA-safe muted TEXT */
+  --border-muted:  var(--stone-2);            /* sub-AA gray — dividers/icons ONLY, never text */
+  --border:        var(--line);
+  --border-strong: var(--line-dark);
+  --danger:        var(--rust);
+  --status-bad:    var(--rust);               /* error role — so fail TEXT stops being the brand accent token */
+  /* NOTE: the --accent role is intentionally DEFERRED. cost-pulse, plate-cost,
+     and open/seasonality reference an undefined var(--accent) locally (cost-pulse
+     even expects a teal-green #1f6f6a); a global --accent would capture and
+     recolor them. It lands in a later tier once those pages scope their own. */
+
+  /* -- Measure vocabulary: the one answer to "narrow column stranded in a wide
+     container". Scoped surfaces widen by pulling from these, never by moving the
+     global --max (which re-composes generated pages). Prose narrow, data wide. */
+  --measure-prose: 68ch;                       /* reading column */
+  --measure-panel: 960px;                      /* data panels / ledgers */
+  --measure-wide:  1100px;                     /* wide tables / mastheads */
+  --card-min:      260px;                       /* auto-fit card floor */
+  --grid-gap:      clamp(16px, 2vw, 24px);      /* fluid card gutter */
+
+  /* -- Spacing rhythm: an 8px-rooted scale for section/card/gutter rhythm. */
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px; --sp-9: 96px;
+
+  /* -- Motion cadence: one standard for micro-interactions so timing doesn't
+     drift the way widths did. Page-like — fast, quiet, decelerating. */
+  --dur-fast:      120ms;
+  --ease-standard: cubic-bezier(.2, 0, 0, 1);
+  --ease-in:       cubic-bezier(.4, 0, 1, 1);
+
+  /* -- Shape: pill indirection to retire the 999px magic numbers. Radius value
+     STEPS are deferred (held at current values pending an in-theme A/B). */
+  --r-pill:        999px;
+
+  /* -- Feature elevation, declared for hero/intake/success to later adopt so
+     they stop losing their shadow on dark (light value matches --elev-3). A
+     dark override lands when this is adopted, in the dark-mode tier. */
+  --elev-feature:  0 4px 8px rgba(20,22,26,.05), 0 24px 48px -12px rgba(20,22,26,.10);
+}
+
 /* @shell:core === Line-height convention === */
 /* ============ Line-height convention ============
    Three tokens, three contexts. Use the token, not the literal:
