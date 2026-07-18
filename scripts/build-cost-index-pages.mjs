@@ -4022,7 +4022,12 @@ targets.push({ path: 'es/open/seasonality/index.html', content: emitSeasonalityH
 // Returns [] until data/cost-research-content.json exists, so this is inert until content lands.
 for (const t of researchTargets({ pageHead, pageTail, escHtml, repoRoot })) targets.push(t);
 let drift = 0;
+// Dev affordance: CI_ONLY_PATH=<substr> writes ONLY targets whose path matches, so a single
+// data-driven page (e.g. the menu-pricing explorer) can be regenerated without churning the
+// other ~130 committed pages the ephemeral engine is behind on. Inert unless the env is set.
+const onlyPath = process.env.CI_ONLY_PATH || null;
 for (const tgt of targets) {
+  if (onlyPath && !tgt.path.includes(onlyPath)) continue;
   const fullPath = path.join(repoRoot, tgt.path);
   if (checkMode) {
     const existing = fs.existsSync(fullPath) ? fs.readFileSync(fullPath, 'utf8') : null;
