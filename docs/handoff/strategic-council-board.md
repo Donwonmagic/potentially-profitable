@@ -58,6 +58,11 @@ review verified the breakout clean AND caught the monthly-untagged rollout gap �
 viz-spark h-scroll bug fix. This is the loop working: adversarial review → real defect found → fixed.
 
 - `a88782790` — Glossary term (~149 pages): center the reading column on wide bands.
+- `b74e25b53` — **founder feedback:** retire the expired Father's Day dispatch banner (inject-batch-banner
+  had not been re-run since batch expired 2026-06-22; collapsed to empty sentinels site-wide, 0 drift).
+- `6983d5897` — **founder feedback ("leaning right"):** rebalance the golden-hour hero wash off the
+  top-right corner (peak 88%→68% center-top, alpha 0.26→0.20) + `-soft` variant; verified balanced on the
+  1280 render. Container is centered; the lean was purely the asymmetric warm wash stacking on the card side.
 
 **Done surfaces:** homepage, article shell, CI ingredient, CI hub, CI events, **CI weekly+monthly
 dispatch** (funnel spine complete), library hub, vendor-benchmark, plate-cost a11y, viz-spark (shared),
