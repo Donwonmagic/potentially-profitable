@@ -242,6 +242,46 @@ function nassBySlug() {
   return out;
 }
 
+// ---- harmony: cross-source synthesis reads (structured; the island renders EN/ES) --------------
+// Each entry fuses >=2 fields into a read no single field gives, and appears ONLY when its inputs
+// are present (degrades by absence). STRUCTURED params only — bounded numbers + enums + in-corpus
+// slugs, never free prose — so nothing here can forecast, assert cause, or price a delivered pound;
+// the island owns the reviewed EN/ES sentence templates and resolves slugs to names. This is a pure
+// function of the finished record (same semantics the island reads), so it is trivially testable.
+//   buyclock    the wholesale-cheapest month vs the import supply peak — do the two seasons agree?
+//   supplyshape import origin concentration + top source — where the import stream comes from (today)
+//   reliance    share of US supply VALUE that is imported (Census customs x NASS farm-gate) — the
+//               flagship cross-source read; a value-share proxy, inert until NASS lands
+//   served      edible x cooked yield -> the cost multiplier of the pound actually plated
+//   persistence how long a move runs + the ingredient it most often travels with (co-occurrence)
+function quarterOf(m) { return Math.floor((m - 1) / 3) + 1; }
+function harmonyFor(r) {
+  const H = [];
+  if (r.cheapest_month != null && Array.isArray(r.import_peak_months) && r.import_peak_months.length === 3) {
+    const q = [0, 0, 0, 0]; for (const m of r.import_peak_months) q[quarterOf(m) - 1]++;
+    const peakQ = q.indexOf(Math.max(...q)) + 1;
+    const agree = r.import_peak_months.includes(r.cheapest_month) || quarterOf(r.cheapest_month) === peakQ;
+    H.push({ kind: 'buyclock', cheapest_month: r.cheapest_month, import_peak_quarter: peakQ, agree });
+  }
+  if (r.import_source_concentration && Array.isArray(r.import_top_sources) && r.import_top_sources.length) {
+    const t = r.import_top_sources[0];
+    H.push({ kind: 'supplyshape', concentration: r.import_source_concentration, hhi: r.import_source_hhi != null ? r.import_source_hhi : null, top_country: t.country, top_share: t.share_pct });
+  }
+  if (r.import_reliance_pct != null) {
+    const t = (r.import_top_sources && r.import_top_sources[0]) || null;
+    H.push({ kind: 'reliance', reliance_pct: r.import_reliance_pct, top_country: t ? t.country : null, top_share: t ? t.share_pct : null });
+  }
+  if (r.edible_yield_pct != null && r.cooked_yield != null && r.cooked_yield > 0) {
+    const served = Math.round((1 / ((r.edible_yield_pct / 100) * r.cooked_yield)) * 100) / 100;
+    H.push({ kind: 'served', edible_yield_pct: r.edible_yield_pct, cooked_yield: r.cooked_yield, served_mult: served });
+  }
+  if (r.notable_events_n && r.median_shock_days != null) {
+    const co = (r.comovers && r.comovers[0]) || null;
+    H.push({ kind: 'persistence', n: r.notable_events_n, median_days: r.median_shock_days, comover_slug: co ? co.slug : null, comover_shared: co ? co.shared_of_n : null });
+  }
+  return H.length ? H : null;
+}
+
 // ---- fuse ------------------------------------------------------------------
 function build() {
   const P = pricingCards(repoRoot);
@@ -279,7 +319,7 @@ function build() {
 
   const records = P.cards.map((c) => {
     const d = depth[c.slug] || {}; const pr = pressure[c.slug]; const im = imp[c.slug]; const ed = evd[c.slug] || {};
-    return {
+    const rec = {
       slug: c.slug, name: c.en, category: c.cat || null,
       posture: c.bucket,
       band_pct: c.bucket === 'withhold' ? (c.coverage ? c.bandPct : null) : c.bandPct,
@@ -309,6 +349,8 @@ function build() {
       comovers: ed.comovers || null,
       ...nassFields(c.slug, im ? im.latest_year_usd : null),
     };
+    rec.harmony = harmonyFor(rec);
+    return rec;
   });
 
   // Specialty / import-defined ingredients (data/ingredient-specialty.json): NOT wholesale-priced,
@@ -321,7 +363,7 @@ function build() {
     // has nothing to show yet, so it's skipped until its data lands (list it in the registry now;
     // it appears the moment its HS codes are fetched). Keeps the record honest — no empty entries.
     if (!im && sp.edible_yield_pct == null) continue;
-    records.push({
+    const rec = {
       slug: sp.slug, name: sp.name, category: sp.category || null,
       posture: null, band_pct: null,
       edible_yield_pct: sp.edible_yield_pct != null ? sp.edible_yield_pct : null,
@@ -344,7 +386,9 @@ function build() {
       notable_events_n: null, median_shock_days: null, biggest_move_pct: null, biggest_move_date: null,
       comovers: null, specialty: true,
       ...nassFields(sp.slug, im ? im.latest_year_usd : null),
-    });
+    };
+    rec.harmony = harmonyFor(rec);
+    records.push(rec);
   }
 
   const meta = {
