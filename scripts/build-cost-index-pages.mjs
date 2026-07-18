@@ -3734,6 +3734,12 @@ function emitOpenHub(locale) {
       d: es ? 'Valores atípicos y quiebres de régimen en el historial profundo de precios de cada ingrediente — descriptivo, nunca una causa ni un pronóstico.' : "Statistical outliers and regime breaks in each ingredient's deep price history — descriptive, never a cause and never a forecast.",
       links: [['CSV', '/cost-index/anomaly-log.csv'], ['JSON', '/cost-index/anomaly-log.json']], lic: 'CC-BY',
     },
+    {
+      accent: 'var(--teal)', h: es ? 'Ficha de estado del ingrediente' : 'Ingredient State Record',
+      stat: es ? '100 ingredientes · postura + rendimiento + presión + importación' : '100 ingredients · posture + yield + pressure + imports',
+      d: es ? 'Una ficha por ingrediente: postura de precio, rendimiento comestible y cocido, mes más barato, la cobertura, la dirección de presión presente y el flujo de importación de EE. UU. (2010–2025). Descriptivo, nunca un pronóstico.' : 'One record per ingredient — pricing posture, edible & cooked yield, cheapest month, the hedge swap, present pressure direction, and the 2010–2025 US import stream. Descriptive, never a forecast.',
+      links: [[es ? 'Ver el manual' : 'Browse the playbook', `${base}/cost-index/menu-pricing/`], ['CSV', '/cost-index/ingredient-state-record.csv'], ['JSON', '/cost-index/ingredient-state-record.json']], lic: 'CC-BY',
+    },
   ];
   const cardHtml = cards.map((c) => `
       <div class="od-card" style="--accent:${c.accent}">
@@ -3765,6 +3771,9 @@ function emitOpenHub(locale) {
             'distribution': [ dl('json', 'https://muntin.digital/cost-index/lockfloat.json', CCBY), dl('csv', 'https://muntin.digital/cost-index/lockfloat.csv', CCBY) ] },
           { '@type': 'Dataset', 'name': es ? 'Registro de anomalías de precio' : 'Price anomaly log', 'url': 'https://muntin.digital/cost-index/anomaly-log.json', 'license': CCBY, 'creator': { '@id': 'https://muntin.digital/#business' },
             'distribution': [ dl('json', 'https://muntin.digital/cost-index/anomaly-log.json', CCBY), dl('csv', 'https://muntin.digital/cost-index/anomaly-log.csv', CCBY) ] },
+          { '@type': 'Dataset', 'name': es ? 'Ficha de estado del ingrediente' : 'Ingredient State Record', 'url': 'https://muntin.digital' + base + '/cost-index/menu-pricing/', 'license': CCBY, 'creator': { '@id': 'https://muntin.digital/#business' },
+            'description': es ? 'Una ficha de estado presente por ingrediente: postura, banda, rendimiento y merma, temporada, cobertura, dirección de presión y flujo de importación de EE. UU. 2010-2025. Descriptivo, nunca un pronóstico.' : 'One present-state record per ingredient: posture, band, yield & trim, season, hedge, pressure direction, and the 2010-2025 US import stream. Descriptive, never a forecast.',
+            'distribution': [ dl('json', 'https://muntin.digital/cost-index/ingredient-state-record.json', CCBY), dl('csv', 'https://muntin.digital/cost-index/ingredient-state-record.csv', CCBY) ] },
         ] },
       { '@type': 'BreadcrumbList', '@id': url + '#breadcrumbs', 'itemListElement': crumb.map((c, i) => ({ '@type': 'ListItem', 'position': i + 1, 'name': c[0], 'item': c[1] })) },
     ],
@@ -3784,7 +3793,7 @@ function emitOpenHub(locale) {
   <hr class="od-rule">
   <section aria-labelledby="od-sets">
     <h2 class="od-h2" id="od-sets">${es ? 'Los conjuntos de datos' : 'The datasets'}</h2>
-    <p class="od-sub">${es ? 'Seis conjuntos de datos, una postura: cada cifra es rastreable a datos públicos y descargable en formatos abiertos.' : 'Six datasets, one posture: every figure traces to public data and downloads in open formats.'}</p>
+    <p class="od-sub">${es ? 'Siete conjuntos de datos, una postura: cada cifra es rastreable a datos públicos y descargable en formatos abiertos.' : 'Seven datasets, one posture: every figure traces to public data and downloads in open formats.'}</p>
     <div class="od-grid">${cardHtml}</div>
   </section>
   <hr class="od-rule">
@@ -3797,7 +3806,7 @@ function emitOpenHub(locale) {
     <h2 class="od-h2" id="od-honest">${es ? 'Cómo se mantiene honesto' : 'How this stays honest'}</h2>
     <p>${es ? 'Un número se publica solo cuando lo respalda un <strong>nivel mayorista real en dólares</strong> de una fuente pública, corroborado por una segunda — nunca un índice sin nivel ni una sola cotización sin verificar. Si no supera esa barra, la página lo dice en lugar de inventar una cifra.' : 'A number publishes only when a <strong>real wholesale dollar level</strong> from a public source clears the bar, corroborated by a second — never an index with no level, never a single unverified quote. If it does not clear the bar, the page says so instead of inventing a figure.'}</p>
     <p>${es ? 'El movimiento se enmarca como <strong>co-ocurrencia, no causa</strong>: mostramos que un precio se movió junto a un factor, no que el factor lo causó. Y cada figura es una <strong>re-derivación determinista</strong> del historial público — puedes reconstruirla desde la misma fuente.' : 'Movement is framed as <strong>co-occurrence, not cause</strong>: we show a price moved alongside a driver, not that the driver caused it. And every figure is a <strong>deterministic re-derivation</strong> of the public record — you can rebuild it from the same source.'}</p>
-    <p>${es ? 'Fuentes: USDA Market News, USDA NDPSR, BLS (IPP/PPI), FRED y NASS. Licencia: los archivos derivados del gobierno — el índice, las normales estacionales y los movimientos detectados + co-movimiento — son de dominio público (CC0); los conjuntos compilados — el registro de eventos de mercado, los rendimientos, fijar-o-flotar y el registro de anomalías — son CC-BY: úsalos y cítanos como “Muntin Digital”.' : 'Sources: USDA Market News, USDA NDPSR, BLS (PPI/APU), FRED and NASS. License: the government-derived files — the index, the seasonal normals, and the detected price moves + co-movement — are public domain (CC0); the compiled datasets — the market-events registry, ingredient yields, lock-or-float, and the anomaly log — are CC-BY: use them, credit “Muntin Digital.”'}</p>
+    <p>${es ? 'Fuentes: USDA Market News, USDA NDPSR, BLS (IPP/PPI), FRED, NASS y el US Census Bureau. Licencia: los archivos derivados del gobierno — el índice, las normales estacionales y los movimientos detectados + co-movimiento — son de dominio público (CC0); los conjuntos compilados — el registro de eventos de mercado, los rendimientos, fijar-o-flotar, el registro de anomalías y la ficha de estado del ingrediente — son CC-BY: úsalos y cítanos como “Muntin Digital” (las columnas de importación de la ficha son de dominio público de EE. UU.).' : 'Sources: USDA Market News, USDA NDPSR, BLS (PPI/APU), FRED, NASS and the US Census Bureau. License: the government-derived files — the index, the seasonal normals, and the detected price moves + co-movement — are public domain (CC0); the compiled datasets — the market-events registry, ingredient yields, lock-or-float, the anomaly log, and the ingredient state record — are CC-BY: use them, credit “Muntin Digital” (the state record’s US import columns are themselves US public domain).'}</p>
   </section>
   </div>`;
   return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld, extraCss: OPEN_CSS }) + body + pageTail;
