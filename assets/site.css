@@ -14,9 +14,11 @@
   --light-coral:#FF6B5C;
   --light-amber:#F5A623;
   /* Warm corner-light washes, normal-blend (browser-predictable, no
-     mix-blend gamble). Peak in the top-right, fading to nothing. */
-  --gradient-goldenhour:radial-gradient(120% 120% at 88% 6%,rgba(255,176,32,0.26) 0%,rgba(255,107,92,0.11) 38%,rgba(255,176,32,0) 76%);
-  --gradient-goldenhour-soft:radial-gradient(100% 100% at 92% 4%,rgba(255,176,32,0.12) 0%,rgba(255,107,92,0.05) 52%,rgba(255,176,32,0) 80%);
+     mix-blend gamble). Peak just right of center-top (a whisper of warmth
+     toward the window/card), fading symmetrically to nothing — kept off the
+     top-right corner so the hero reads balanced, not right-leaning. */
+  --gradient-goldenhour:radial-gradient(120% 120% at 68% 0%,rgba(255,176,32,0.20) 0%,rgba(255,107,92,0.085) 41%,rgba(255,176,32,0) 79%);
+  --gradient-goldenhour-soft:radial-gradient(100% 100% at 72% 0%,rgba(255,176,32,0.11) 0%,rgba(255,107,92,0.045) 54%,rgba(255,176,32,0) 82%);
   --glass-warm:rgba(255,176,32,0.06);
   /* Section rhythm (2026) — clear, AA-verified section separation.
      Sections separated only by a near-identical bg swap with no edge, so
