@@ -67,22 +67,16 @@ function check(record) {
       if (!Array.isArray(r.harmony)) E(s, 'harmony must be an array or null');
       else for (const h of r.harmony) {
         const K = h && h.kind;
-        if (!['buyclock', 'supplyshape', 'reliance', 'served', 'persistence'].includes(K)) { E(s, `harmony kind "${K}" unknown`); continue; }
-        if (K === 'buyclock') {
-          if (!(h.cheapest_month >= 1 && h.cheapest_month <= 12)) E(s, `harmony buyclock cheapest_month ${h.cheapest_month} out of 1..12`);
-          if (!(h.import_peak_quarter >= 1 && h.import_peak_quarter <= 4)) E(s, `harmony buyclock import_peak_quarter ${h.import_peak_quarter} out of 1..4`);
-          if (typeof h.agree !== 'boolean') E(s, 'harmony buyclock agree not boolean');
-        } else if (K === 'supplyshape') {
+        if (!['supplyshape', 'reliance', 'persistence'].includes(K)) { E(s, `harmony kind "${K}" unknown`); continue; }
+        if (K === 'supplyshape') {
           if (!['single-source', 'concentrated', 'diversified'].includes(h.concentration)) E(s, `harmony supplyshape concentration "${h.concentration}" invalid`);
           if (h.hhi != null && !(h.hhi >= 0 && h.hhi <= 1)) E(s, `harmony supplyshape hhi ${h.hhi} out of 0..1`);
           if (h.top_share != null && !(h.top_share >= 0 && h.top_share <= 100)) E(s, `harmony supplyshape top_share ${h.top_share} out of 0..100`);
         } else if (K === 'reliance') {
           if (!(h.reliance_pct >= 0 && h.reliance_pct <= 100)) E(s, `harmony reliance reliance_pct ${h.reliance_pct} out of 0..100`);
+          if (h.reliance_year != null && !(h.reliance_year >= 2000 && h.reliance_year <= 2100)) E(s, `harmony reliance reliance_year ${h.reliance_year} implausible`);
           // reliance is a cross-source read: the record must actually carry both sides
           if (r.us_import_value_usd == null || r.us_production_usd == null) E(s, 'harmony reliance present without both import + production value');
-        } else if (K === 'served') {
-          if (!(h.edible_yield_pct >= 0 && h.edible_yield_pct <= 100)) E(s, `harmony served edible_yield_pct ${h.edible_yield_pct} out of 0..100`);
-          if (!(h.served_mult > 0)) E(s, `harmony served served_mult ${h.served_mult} not > 0`);
         } else if (K === 'persistence') {
           if (!(h.n > 0)) E(s, `harmony persistence n ${h.n} not > 0`);
           if (!(h.median_days >= 0)) E(s, `harmony persistence median_days ${h.median_days} not >= 0`);
@@ -119,11 +113,11 @@ function selfTest() {
     { slug: 'x', name: 'X', cheapest_month: 13, import_source_hhi: 2, import_reliance_pct: 120,
       import_peak_months: [1, 2], us_import_value_usd: null, import_note: 'prices will rise due to drought',
       specialty: true, band_pct: 5,
-      harmony: [{ kind: 'reliance', reliance_pct: 200 }, { kind: 'buyclock', cheapest_month: 9, import_peak_quarter: 7, agree: 'yes' }, { kind: 'bogus' }] },
+      harmony: [{ kind: 'reliance', reliance_pct: 200, reliance_year: 1990 }, { kind: 'persistence', n: 0, median_days: -1, comover_shared: 'x' }, { kind: 'bogus' }] },
   ] };
   const errs = check(bad);
   const want = ['cheapest_month', 'import_source_hhi', 'import_reliance_pct', 'import_peak_months length', 'banned language', 'must not carry band_pct', 'withImport',
-    'harmony reliance reliance_pct', 'harmony buyclock import_peak_quarter', 'harmony buyclock agree not boolean', 'harmony kind "bogus" unknown'];
+    'harmony reliance reliance_pct', 'harmony reliance reliance_year', 'harmony persistence n', 'harmony persistence median_days', 'harmony persistence comover_shared', 'harmony kind "bogus" unknown'];
   const miss = want.filter((w) => !errs.some((e) => e.includes(w)));
   if (miss.length) { console.error('SELF-TEST FAIL — missed:', miss, '\ngot:', errs); process.exit(1); }
   console.log('✓ self-test: caught all', want.length, 'seeded violations'); process.exit(0);

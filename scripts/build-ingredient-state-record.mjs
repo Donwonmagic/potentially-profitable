@@ -141,10 +141,15 @@ function deriveOrigins(b) {
   const tot = Object.values(b).reduce((a, c) => a + c, 0); if (!tot) return null;
   const sorted = Object.entries(b).map(([c, v]) => [c, v / tot]).sort((a, b) => b[1] - a[1]);
   const hhi = Math.round(sorted.reduce((a, pair) => a + pair[1] * pair[1], 0) * 100) / 100;
+  const topShare = sorted[0][1];
+  // "single-source" is reserved for a stream that really is ~one country (top >= 90%); a dominant-but-
+  // -not-sole stream (Mexico 81% of tomatoes, 88% of avocados) is "concentrated", not "single-source"
+  // (an 81% top share means a fifth comes from elsewhere — the old HHI>=0.5 label contradicted itself).
+  const concentration = topShare >= 0.90 ? 'single-source' : (hhi >= 0.25 || topShare >= 0.50) ? 'concentrated' : 'diversified';
   return {
     import_top_sources: sorted.slice(0, 3).map((pair) => ({ country: title(pair[0]), share_pct: Math.round(pair[1] * 100) })),
     import_source_hhi: hhi,
-    import_source_concentration: hhi >= 0.5 ? 'single-source' : hhi >= 0.25 ? 'concentrated' : 'diversified',
+    import_source_concentration: concentration,
     import_source_countries_n: sorted.length,
   };
 }
@@ -232,7 +237,7 @@ function nassBySlug() {
     out[slug] = {
       commodity: meta.commodity,
       production_volume: vol ? vol.v : null, production_unit: vol ? vol.u : null,
-      production_usd: usd ? Math.round(usd.v) : null,
+      production_usd: usd ? Math.round(usd.v) : null, production_usd_year: usd ? usd.y : null,
       farm_price: price ? price.v : null, farm_price_unit: price ? price.u.replace(/\s+/g, ' ').trim() : null,
       production_years: years.length ? Math.min(...years) + '-' + Math.max(...years) : null,
       area_acres: area ? Math.round(area.v) : null,
@@ -248,35 +253,40 @@ function nassBySlug() {
 // slugs, never free prose — so nothing here can forecast, assert cause, or price a delivered pound;
 // the island owns the reviewed EN/ES sentence templates and resolves slugs to names. This is a pure
 // function of the finished record (same semantics the island reads), so it is trivially testable.
-//   buyclock    the wholesale-cheapest month vs the import supply peak — do the two seasons agree?
-//   supplyshape import origin concentration + top source — where the import stream comes from (today)
-//   reliance    share of US supply VALUE that is imported (Census customs x NASS farm-gate) — the
-//               flagship cross-source read; a value-share proxy, inert until NASS lands
-//   served      edible x cooked yield -> the cost multiplier of the pound actually plated
-//   persistence how long a move runs + the ingredient it most often travels with (co-occurrence)
-function quarterOf(m) { return Math.floor((m - 1) / 3) + 1; }
+//   supplyshape where the import stream comes from — origin concentration + top source (present today)
+//   reliance    Census import VALUE vs NASS farm-gate PRODUCTION value — the flagship cross-source read.
+//               A cross-POINT dollar ratio, NEVER a supply share: import value carries freight the farm
+//               price does not, and exports are not netted out (so it overstates the imported share).
+//               Inert until NASS lands. The island states the caveat; here it is bounded params only.
+//   persistence how long a move ran + (only when it clears the noise bar) the ingredient it most often
+//               moved WITH — past-tense, co-occurrence, NEVER cause.
+// (An earlier draft also carried `buyclock` and `served`; an adversarial audit dropped both — buyclock
+//  mislabeled an import-VALUE peak as a supply/volume peak and added nothing to a buy the cheapest-month
+//  field already decides; served crossed two different trim bases and mispriced raw-portioned cuts. The
+//  served-pound teaching lives, properly caveated, in the menu-pricing dispatch instead.)
+//
+// A co-mover is NAMED only when it moved the same way in a MAJORITY of an ingredient's own moves
+// (>=3 shared AND >=half of n). Argmax over ~100 candidates at n~6 is winner's-curse noise otherwise
+// (it manufactured implausible pairs like avocado<->acorn-squash at 2/6); below the bar we keep the
+// run-length and drop the co-mover.
+function strongComover(r) {
+  const co = (r.comovers && r.comovers[0]) || null; if (!co) return null;
+  const m = /^(\d+)\/(\d+)$/.exec(String(co.shared_of_n || '')); if (!m) return null;
+  const k = Number(m[1]), n = Number(m[2]);
+  return (k >= 3 && n > 0 && k / n >= 0.5) ? co : null;
+}
 function harmonyFor(r) {
   const H = [];
-  if (r.cheapest_month != null && Array.isArray(r.import_peak_months) && r.import_peak_months.length === 3) {
-    const q = [0, 0, 0, 0]; for (const m of r.import_peak_months) q[quarterOf(m) - 1]++;
-    const peakQ = q.indexOf(Math.max(...q)) + 1;
-    const agree = r.import_peak_months.includes(r.cheapest_month) || quarterOf(r.cheapest_month) === peakQ;
-    H.push({ kind: 'buyclock', cheapest_month: r.cheapest_month, import_peak_quarter: peakQ, agree });
-  }
   if (r.import_source_concentration && Array.isArray(r.import_top_sources) && r.import_top_sources.length) {
     const t = r.import_top_sources[0];
     H.push({ kind: 'supplyshape', concentration: r.import_source_concentration, hhi: r.import_source_hhi != null ? r.import_source_hhi : null, top_country: t.country, top_share: t.share_pct });
   }
   if (r.import_reliance_pct != null) {
     const t = (r.import_top_sources && r.import_top_sources[0]) || null;
-    H.push({ kind: 'reliance', reliance_pct: r.import_reliance_pct, top_country: t ? t.country : null, top_share: t ? t.share_pct : null });
-  }
-  if (r.edible_yield_pct != null && r.cooked_yield != null && r.cooked_yield > 0) {
-    const served = Math.round((1 / ((r.edible_yield_pct / 100) * r.cooked_yield)) * 100) / 100;
-    H.push({ kind: 'served', edible_yield_pct: r.edible_yield_pct, cooked_yield: r.cooked_yield, served_mult: served });
+    H.push({ kind: 'reliance', reliance_pct: r.import_reliance_pct, reliance_year: r.import_reliance_year != null ? r.import_reliance_year : null, top_country: t ? t.country : null, top_share: t ? t.share_pct : null });
   }
   if (r.notable_events_n && r.median_shock_days != null) {
-    const co = (r.comovers && r.comovers[0]) || null;
+    const co = strongComover(r);
     H.push({ kind: 'persistence', n: r.notable_events_n, median_days: r.median_shock_days, comover_slug: co ? co.slug : null, comover_shared: co ? co.shared_of_n : null });
   }
   return H.length ? H : null;
@@ -293,13 +303,20 @@ function build() {
   // NASS domestic-supply layer. `nass` is null until data/nass-domestic.jsonl lands, so nassFields
   // adds NOTHING then (record schema unchanged) — forward-compatible, exactly like the specialty tier.
   const nass = nassBySlug();
-  const nassFields = (slug, importUsd) => {
+  const nassFields = (slug, im) => {
     if (!nass) return {};
     const n = nass[slug] || null;
     const prodUsd = n && n.production_usd != null ? n.production_usd : null;
-    // Import-reliance: share of US supply VALUE that is imported (customs import value ÷ (import +
-    // farm-gate production value)). A descriptive proxy — the two are measured at different points
-    // in the chain (customs-landed vs farm-gate) — never a forecast. Null unless both are present.
+    const prodYear = n && n.production_usd_year != null ? n.production_usd_year : null;
+    // Import-vs-domestic-production VALUE ratio (import value ÷ (import + NASS farm-gate production
+    // value)). NOT a supply share: the two are measured at DIFFERENT points in the chain (import value
+    // carries freight/insurance the farm-gate price does not) and exports are not netted out, so the
+    // ratio OVERSTATES the imported share. Descriptive, never a forecast. Align the import value to the
+    // production year when the series reaches it (never a 2025-import / 2023-production ratio); else use
+    // the latest import year, stamping whichever year was used. Null unless both sides are present.
+    let importUsd = im ? im.latest_year_usd : null;
+    let relianceYear = im ? im.latest_year : null;
+    if (im && im.annual_usd && prodYear != null && im.annual_usd[prodYear] != null) { importUsd = im.annual_usd[prodYear]; relianceYear = prodYear; }
     const reliance = (importUsd != null && prodUsd != null && (importUsd + prodUsd) > 0)
       ? Math.round((importUsd / (importUsd + prodUsd)) * 100) : null;
     return {
@@ -314,6 +331,7 @@ function build() {
       us_yield_unit: n ? n.yield_unit : null,
       production_years: n ? n.production_years : null,
       import_reliance_pct: reliance,
+      import_reliance_year: reliance != null ? relianceYear : null,
     };
   };
 
@@ -347,7 +365,7 @@ function build() {
       biggest_move_pct: ed.biggest_move_pct != null ? ed.biggest_move_pct : null,
       biggest_move_date: ed.biggest_move_date || null,
       comovers: ed.comovers || null,
-      ...nassFields(c.slug, im ? im.latest_year_usd : null),
+      ...nassFields(c.slug, im || null),
     };
     rec.harmony = harmonyFor(rec);
     return rec;
@@ -385,7 +403,7 @@ function build() {
       import_note: im ? im.note : null,
       notable_events_n: null, median_shock_days: null, biggest_move_pct: null, biggest_move_date: null,
       comovers: null, specialty: true,
-      ...nassFields(sp.slug, im ? im.latest_year_usd : null),
+      ...nassFields(sp.slug, im || null),
     };
     rec.harmony = harmonyFor(rec);
     records.push(rec);

@@ -95,12 +95,6 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 12,
-          "import_peak_quarter": 1,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
           "concentration": "single-source",
           "hhi": 0.95,
@@ -111,8 +105,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 70,
-          "comover_slug": "avocado",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -217,8 +211,8 @@
           "kind": "persistence",
           "n": 2,
           "median_days": 7,
-          "comover_slug": "apple",
-          "comover_shared": "1/2"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -308,12 +302,6 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 7,
-          "import_peak_quarter": 1,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
           "concentration": "concentrated",
           "hhi": 0.36,
@@ -321,17 +309,11 @@
           "top_share": 53
         },
         {
-          "kind": "served",
-          "edible_yield_pct": 85,
-          "cooked_yield": 0.75,
-          "served_mult": 1.57
-        },
-        {
           "kind": "persistence",
           "n": 6,
           "median_days": 77,
-          "comover_slug": "artichoke",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -428,12 +410,6 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 8,
-          "import_peak_quarter": 1,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
           "concentration": "concentrated",
           "hhi": 0.46,
@@ -444,8 +420,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 84,
-          "comover_slug": "celery",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -487,7 +463,7 @@
         0.92,
         1.1
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.66,
       "import_top_sources": [
         {
@@ -526,14 +502,8 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 3,
-          "import_peak_quarter": 1,
-          "agree": true
-        },
-        {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.66,
           "top_country": "Mexico",
           "top_share": 78
@@ -542,8 +512,8 @@
           "kind": "persistence",
           "n": 4,
           "median_days": 35,
-          "comover_slug": "cilantro",
-          "comover_shared": "1/4"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -640,12 +610,6 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 5,
-          "import_peak_quarter": 4,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
           "concentration": "concentrated",
           "hhi": 0.37,
@@ -656,8 +620,8 @@
           "kind": "persistence",
           "n": 5,
           "median_days": 98,
-          "comover_slug": "cheddar-cheese",
-          "comover_shared": "2/5"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -832,12 +796,6 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 1,
-          "import_peak_quarter": 4,
-          "agree": true
-        },
-        {
           "kind": "supplyshape",
           "concentration": "single-source",
           "hhi": 0.91,
@@ -891,7 +849,7 @@
         0.99,
         0.93
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.5,
       "import_top_sources": [
         {
@@ -947,7 +905,7 @@
       "harmony": [
         {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.5,
           "top_country": "Mexico",
           "top_share": 54
@@ -1064,8 +1022,8 @@
           "kind": "persistence",
           "n": 5,
           "median_days": 63,
-          "comover_slug": "butter",
-          "comover_shared": "2/5"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -1147,12 +1105,6 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 1,
-          "import_peak_quarter": 1,
-          "agree": true
-        },
-        {
           "kind": "supplyshape",
           "concentration": "single-source",
           "hhi": 0.91,
@@ -1163,8 +1115,8 @@
           "kind": "persistence",
           "n": 1,
           "median_days": 85,
-          "comover_slug": "bok-choy",
-          "comover_shared": "1/1"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -1267,8 +1219,8 @@
           "kind": "persistence",
           "n": 1,
           "median_days": 34,
-          "comover_slug": "chicken-thigh",
-          "comover_shared": "1/1"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -1321,8 +1273,8 @@
           "kind": "persistence",
           "n": 5,
           "median_days": 48,
-          "comover_slug": "chicken-breast",
-          "comover_shared": "2/5"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -1364,7 +1316,7 @@
         1.26,
         1.51
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.77,
       "import_top_sources": [
         {
@@ -1419,14 +1371,8 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 1,
-          "import_peak_quarter": 1,
-          "agree": true
-        },
-        {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.77,
           "top_country": "Mexico",
           "top_share": 87
@@ -1533,12 +1479,6 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 6,
-          "import_peak_quarter": 1,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
           "concentration": "concentrated",
           "hhi": 0.25,
@@ -1549,8 +1489,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 77,
-          "comover_slug": "asparagus",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -1645,12 +1585,6 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 9,
-          "import_peak_quarter": 1,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
           "concentration": "concentrated",
           "hhi": 0.3,
@@ -1661,8 +1595,8 @@
           "kind": "persistence",
           "n": 3,
           "median_days": 98,
-          "comover_slug": "bok-choy",
-          "comover_shared": "1/3"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -1854,12 +1788,6 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 7,
-          "import_peak_quarter": 2,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
           "concentration": "single-source",
           "hhi": 0.88,
@@ -1870,8 +1798,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 56,
-          "comover_slug": "yellow-squash",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -1913,7 +1841,7 @@
         0.76,
         1.22
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.51,
       "import_top_sources": [
         {
@@ -1957,7 +1885,7 @@
       "harmony": [
         {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.51,
           "top_country": "Mexico",
           "top_share": 67
@@ -2009,7 +1937,7 @@
         0.68,
         0.72
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.6,
       "import_top_sources": [
         {
@@ -2064,14 +1992,8 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 3,
-          "import_peak_quarter": 3,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.6,
           "top_country": "Mexico",
           "top_share": 76
@@ -2080,8 +2002,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 120,
-          "comover_slug": "apple",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -2134,8 +2056,8 @@
           "kind": "persistence",
           "n": 1,
           "median_days": 92,
-          "comover_slug": "brussels-sprouts",
-          "comover_shared": "1/1"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -2231,12 +2153,6 @@
         }
       ],
       "harmony": [
-        {
-          "kind": "buyclock",
-          "cheapest_month": 12,
-          "import_peak_quarter": 1,
-          "agree": false
-        },
         {
           "kind": "supplyshape",
           "concentration": "concentrated",
@@ -2344,12 +2260,6 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 3,
-          "import_peak_quarter": 2,
-          "agree": true
-        },
-        {
           "kind": "supplyshape",
           "concentration": "concentrated",
           "hhi": 0.38,
@@ -2360,8 +2270,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 70,
-          "comover_slug": "carrot",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -2403,7 +2313,7 @@
         0.97,
         0.93
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.7,
       "import_top_sources": [
         {
@@ -2458,14 +2368,8 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 11,
-          "import_peak_quarter": 2,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.7,
           "top_country": "Costa Rica",
           "top_share": 83
@@ -2474,8 +2378,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 42,
-          "comover_slug": "cabbage",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -2565,8 +2469,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 84,
-          "comover_slug": "jalapeno",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -2758,12 +2662,6 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 12,
-          "import_peak_quarter": 2,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
           "concentration": "diversified",
           "hhi": 0.15,
@@ -2771,17 +2669,11 @@
           "top_share": 23
         },
         {
-          "kind": "served",
-          "edible_yield_pct": 85,
-          "cooked_yield": 0.75,
-          "served_mult": 1.57
-        },
-        {
           "kind": "persistence",
           "n": 6,
           "median_days": 70,
-          "comover_slug": "beet",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -2823,7 +2715,7 @@
         1.05,
         1.05
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.6,
       "import_top_sources": [
         {
@@ -2878,23 +2770,11 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 10,
-          "import_peak_quarter": 2,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.6,
           "top_country": "Canada",
           "top_share": 76
-        },
-        {
-          "kind": "served",
-          "edible_yield_pct": 75,
-          "cooked_yield": 0.65,
-          "served_mult": 2.05
         },
         {
           "kind": "persistence",
@@ -3106,12 +2986,6 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 6,
-          "import_peak_quarter": 1,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
           "concentration": "single-source",
           "hhi": 1,
@@ -3122,8 +2996,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 77,
-          "comover_slug": "butter-lettuce",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -3213,12 +3087,6 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 8,
-          "import_peak_quarter": 4,
-          "agree": true
-        },
-        {
           "kind": "supplyshape",
           "concentration": "concentrated",
           "hhi": 0.34,
@@ -3226,17 +3094,11 @@
           "top_share": 51
         },
         {
-          "kind": "served",
-          "edible_yield_pct": 75,
-          "cooked_yield": 0.75,
-          "served_mult": 1.78
-        },
-        {
           "kind": "persistence",
           "n": 6,
           "median_days": 49,
-          "comover_slug": "garlic",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -3333,12 +3195,6 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 4,
-          "import_peak_quarter": 1,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
           "concentration": "single-source",
           "hhi": 1,
@@ -3349,8 +3205,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 63,
-          "comover_slug": "carrot",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -3399,12 +3255,6 @@
         }
       ],
       "harmony": [
-        {
-          "kind": "served",
-          "edible_yield_pct": 65,
-          "cooked_yield": 0.6,
-          "served_mult": 2.56
-        },
         {
           "kind": "persistence",
           "n": 6,
@@ -3500,12 +3350,6 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 9,
-          "import_peak_quarter": 1,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
           "concentration": "concentrated",
           "hhi": 0.36,
@@ -3513,17 +3357,11 @@
           "top_share": 53
         },
         {
-          "kind": "served",
-          "edible_yield_pct": 80,
-          "cooked_yield": 0.75,
-          "served_mult": 1.67
-        },
-        {
           "kind": "persistence",
           "n": 6,
           "median_days": 105,
-          "comover_slug": "ground-pork",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -3576,8 +3414,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 273,
-          "comover_slug": "carrot",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -3627,17 +3465,11 @@
       ],
       "harmony": [
         {
-          "kind": "served",
-          "edible_yield_pct": 60,
-          "cooked_yield": 0.75,
-          "served_mult": 2.22
-        },
-        {
           "kind": "persistence",
           "n": 3,
           "median_days": 77,
-          "comover_slug": "bell-pepper",
-          "comover_shared": "1/3"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -3679,17 +3511,11 @@
       ],
       "harmony": [
         {
-          "kind": "served",
-          "edible_yield_pct": 50,
-          "cooked_yield": 0.7,
-          "served_mult": 2.86
-        },
-        {
           "kind": "persistence",
           "n": 1,
           "median_days": 28,
-          "comover_slug": "bok-choy",
-          "comover_shared": "1/1"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -3892,12 +3718,6 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 8,
-          "import_peak_quarter": 1,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
           "concentration": "single-source",
           "hhi": 0.93,
@@ -4006,12 +3826,6 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 3,
-          "import_peak_quarter": 1,
-          "agree": true
-        },
-        {
           "kind": "supplyshape",
           "concentration": "concentrated",
           "hhi": 0.47,
@@ -4022,8 +3836,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 28,
-          "comover_slug": "broccoli",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -4065,7 +3879,7 @@
         0.88,
         0.93
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.78,
       "import_top_sources": [
         {
@@ -4120,14 +3934,8 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 11,
-          "import_peak_quarter": 1,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.78,
           "top_country": "Mexico",
           "top_share": 88
@@ -4136,8 +3944,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 91,
-          "comover_slug": "acorn-squash",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -4179,7 +3987,7 @@
         0.74,
         1.04
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.6,
       "import_top_sources": [
         {
@@ -4235,7 +4043,7 @@
       "harmony": [
         {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.6,
           "top_country": "Mexico",
           "top_share": 73
@@ -4244,8 +4052,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 70,
-          "comover_slug": "avocado",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -4342,12 +4150,6 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 8,
-          "import_peak_quarter": 1,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
           "concentration": "concentrated",
           "hhi": 0.41,
@@ -4358,8 +4160,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 49,
-          "comover_slug": "cherry-tomato",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -4401,7 +4203,7 @@
         0.75,
         0.9
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.59,
       "import_top_sources": [
         {
@@ -4444,14 +4246,8 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 10,
-          "import_peak_quarter": 1,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.59,
           "top_country": "Mexico",
           "top_share": 75
@@ -4511,12 +4307,6 @@
       ],
       "harmony": [
         {
-          "kind": "served",
-          "edible_yield_pct": 95,
-          "cooked_yield": 0.72,
-          "served_mult": 1.46
-        },
-        {
           "kind": "persistence",
           "n": 6,
           "median_days": 56,
@@ -4571,12 +4361,6 @@
       ],
       "harmony": [
         {
-          "kind": "served",
-          "edible_yield_pct": 90,
-          "cooked_yield": 0.75,
-          "served_mult": 1.48
-        },
-        {
           "kind": "persistence",
           "n": 5,
           "median_days": 112,
@@ -4623,7 +4407,7 @@
         0.42,
         1.96
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.76,
       "import_top_sources": [
         {
@@ -4676,14 +4460,8 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 5,
-          "import_peak_quarter": 1,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.76,
           "top_country": "Mexico",
           "top_share": 87
@@ -4692,8 +4470,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 70,
-          "comover_slug": "jalapeno",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -4735,7 +4513,7 @@
         1.04,
         1.11
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.5,
       "import_top_sources": [
         {
@@ -4790,14 +4568,8 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 7,
-          "import_peak_quarter": 1,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.5,
           "top_country": "Mexico",
           "top_share": 54
@@ -4890,12 +4662,6 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 3,
-          "import_peak_quarter": 1,
-          "agree": true
-        },
-        {
           "kind": "persistence",
           "n": 6,
           "median_days": 49,
@@ -4942,7 +4708,7 @@
         0.59,
         0.42
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.5,
       "import_top_sources": [
         {
@@ -4980,14 +4746,8 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 6,
-          "import_peak_quarter": 3,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.5,
           "top_country": "Mexico",
           "top_share": 51
@@ -4996,8 +4756,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 77,
-          "comover_slug": "brussels-sprouts",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -5092,12 +4852,6 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 8,
-          "import_peak_quarter": 1,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
           "concentration": "concentrated",
           "hhi": 0.45,
@@ -5108,8 +4862,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 105,
-          "comover_slug": "artichoke",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -5162,8 +4916,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 77,
-          "comover_slug": "romaine-lettuce",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -5205,7 +4959,7 @@
         0.74,
         0.92
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.5,
       "import_top_sources": [
         {
@@ -5243,14 +4997,8 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 1,
-          "import_peak_quarter": 1,
-          "agree": true
-        },
-        {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.5,
           "top_country": "Canada",
           "top_share": 53
@@ -5344,12 +5092,6 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 3,
-          "import_peak_quarter": 1,
-          "agree": true
-        },
-        {
           "kind": "supplyshape",
           "concentration": "concentrated",
           "hhi": 0.38,
@@ -5360,8 +5102,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 77,
-          "comover_slug": "avocado",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -5403,7 +5145,7 @@
         1.07,
         1.23
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.59,
       "import_top_sources": [
         {
@@ -5458,14 +5200,8 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 6,
-          "import_peak_quarter": 1,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.59,
           "top_country": "Mexico",
           "top_share": 71
@@ -5474,8 +5210,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 28,
-          "comover_slug": "poblano-pepper",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -5517,7 +5253,7 @@
         0.75,
         0.67
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.62,
       "import_top_sources": [
         {
@@ -5572,14 +5308,8 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 10,
-          "import_peak_quarter": 2,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.62,
           "top_country": "Mexico",
           "top_share": 77
@@ -5588,8 +5318,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 126,
-          "comover_slug": "asparagus",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -5726,7 +5456,7 @@
         0.7,
         0.74
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.77,
       "import_top_sources": [
         {
@@ -5781,14 +5511,8 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 3,
-          "import_peak_quarter": 1,
-          "agree": true
-        },
-        {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.77,
           "top_country": "Mexico",
           "top_share": 87
@@ -5797,8 +5521,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 70,
-          "comover_slug": "avocado",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -5840,7 +5564,7 @@
         0.74,
         0.92
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.5,
       "import_top_sources": [
         {
@@ -5878,14 +5602,8 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 1,
-          "import_peak_quarter": 1,
-          "agree": true
-        },
-        {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.5,
           "top_country": "Canada",
           "top_share": 53
@@ -5984,12 +5702,6 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 6,
-          "import_peak_quarter": 2,
-          "agree": true
-        },
-        {
           "kind": "supplyshape",
           "concentration": "single-source",
           "hhi": 1,
@@ -6043,7 +5755,7 @@
         1.01,
         1.16
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.8,
       "import_top_sources": [
         {
@@ -6081,14 +5793,8 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 1,
-          "import_peak_quarter": 1,
-          "agree": true
-        },
-        {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.8,
           "top_country": "Mexico",
           "top_share": 89
@@ -6182,12 +5888,6 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 2,
-          "import_peak_quarter": 2,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
           "concentration": "single-source",
           "hhi": 1,
@@ -6198,8 +5898,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 84,
-          "comover_slug": "collard-greens",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -6283,12 +5983,6 @@
         }
       ],
       "harmony": [
-        {
-          "kind": "buyclock",
-          "cheapest_month": 7,
-          "import_peak_quarter": 1,
-          "agree": false
-        },
         {
           "kind": "supplyshape",
           "concentration": "single-source",
@@ -6431,12 +6125,6 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 8,
-          "import_peak_quarter": 1,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
           "concentration": "concentrated",
           "hhi": 0.39,
@@ -6447,8 +6135,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 35,
-          "comover_slug": "bell-pepper",
-          "comover_shared": "1/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -6537,12 +6225,6 @@
           "hhi": 0.88,
           "top_country": "Canada",
           "top_share": 94
-        },
-        {
-          "kind": "served",
-          "edible_yield_pct": 90,
-          "cooked_yield": 0.45,
-          "served_mult": 2.47
         },
         {
           "kind": "persistence",
@@ -6699,7 +6381,7 @@
         0.92,
         1.05
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.58,
       "import_top_sources": [
         {
@@ -6754,14 +6436,8 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 9,
-          "import_peak_quarter": 3,
-          "agree": true
-        },
-        {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.58,
           "top_country": "Mexico",
           "top_share": 72
@@ -6813,7 +6489,7 @@
         0.9,
         1.23
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.81,
       "import_top_sources": [
         {
@@ -6868,14 +6544,8 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 9,
-          "import_peak_quarter": 1,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.81,
           "top_country": "Mexico",
           "top_share": 90
@@ -6884,8 +6554,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 98,
-          "comover_slug": "beet",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -7013,7 +6683,7 @@
         1.66,
         1.57
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.53,
       "import_top_sources": [
         {
@@ -7053,7 +6723,7 @@
       "harmony": [
         {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.53,
           "top_country": "Mexico",
           "top_share": 62
@@ -7153,12 +6823,6 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 1,
-          "import_peak_quarter": 2,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
           "concentration": "concentrated",
           "hhi": 0.27,
@@ -7169,8 +6833,8 @@
           "kind": "persistence",
           "n": 4,
           "median_days": 28,
-          "comover_slug": "butternut-squash",
-          "comover_shared": "1/4"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -7255,12 +6919,6 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 6,
-          "import_peak_quarter": 4,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
           "concentration": "single-source",
           "hhi": 0.9,
@@ -7271,8 +6929,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 70,
-          "comover_slug": "chicken-breast",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -7354,12 +7012,6 @@
           "hhi": 0.3,
           "top_country": "Australia",
           "top_share": 49
-        },
-        {
-          "kind": "served",
-          "edible_yield_pct": 100,
-          "cooked_yield": 0.73,
-          "served_mult": 1.37
         }
       ]
     },
@@ -7401,7 +7053,7 @@
         1.15,
         0.97
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.61,
       "import_top_sources": [
         {
@@ -7456,14 +7108,8 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 1,
-          "import_peak_quarter": 4,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.61,
           "top_country": "Mexico",
           "top_share": 74
@@ -7567,8 +7213,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 91,
-          "comover_slug": "butternut-squash",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -7702,7 +7348,7 @@
         0.68,
         0.72
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.6,
       "import_top_sources": [
         {
@@ -7757,14 +7403,8 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 11,
-          "import_peak_quarter": 3,
-          "agree": false
-        },
-        {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.6,
           "top_country": "Mexico",
           "top_share": 76
@@ -7773,8 +7413,8 @@
           "kind": "persistence",
           "n": 6,
           "median_days": 112,
-          "comover_slug": "corn-on-the-cob",
-          "comover_shared": "2/6"
+          "comover_slug": null,
+          "comover_shared": null
         }
       ]
     },
@@ -8196,12 +7836,6 @@
           "hhi": 0.45,
           "top_country": "Chile",
           "top_share": 63
-        },
-        {
-          "kind": "served",
-          "edible_yield_pct": 95,
-          "cooked_yield": 0.8,
-          "served_mult": 1.32
         }
       ]
     },
@@ -8290,12 +7924,6 @@
           "hhi": 0.23,
           "top_country": "Japan",
           "top_share": 41
-        },
-        {
-          "kind": "served",
-          "edible_yield_pct": 100,
-          "cooked_yield": 0.8,
-          "served_mult": 1.25
         }
       ]
     },
@@ -8373,12 +8001,6 @@
           "hhi": 0.3,
           "top_country": "Ecuador",
           "top_share": 50
-        },
-        {
-          "kind": "served",
-          "edible_yield_pct": 50,
-          "cooked_yield": 0.85,
-          "served_mult": 2.35
         }
       ]
     },
@@ -8456,12 +8078,6 @@
           "hhi": 0.32,
           "top_country": "India",
           "top_share": 50
-        },
-        {
-          "kind": "served",
-          "edible_yield_pct": 100,
-          "cooked_yield": 0.85,
-          "served_mult": 1.18
         }
       ]
     },
@@ -8539,12 +8155,6 @@
           "hhi": 0.3,
           "top_country": "Ecuador",
           "top_share": 50
-        },
-        {
-          "kind": "served",
-          "edible_yield_pct": 85,
-          "cooked_yield": 0.85,
-          "served_mult": 1.38
         }
       ]
     },
@@ -8626,12 +8236,6 @@
           "hhi": 0.12,
           "top_country": "Argentina",
           "top_share": 23
-        },
-        {
-          "kind": "served",
-          "edible_yield_pct": 80,
-          "cooked_yield": 0.65,
-          "served_mult": 1.92
         }
       ]
     },
@@ -8827,7 +8431,7 @@
         0.94,
         1
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.68,
       "import_top_sources": [
         {
@@ -8882,14 +8486,8 @@
       ],
       "harmony": [
         {
-          "kind": "buyclock",
-          "cheapest_month": 3,
-          "import_peak_quarter": 1,
-          "agree": true
-        },
-        {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.68,
           "top_country": "Mexico",
           "top_share": 81
@@ -9027,7 +8625,7 @@
         0.44,
         0.52
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.63,
       "import_top_sources": [
         {
@@ -9070,7 +8668,7 @@
       "harmony": [
         {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.63,
           "top_country": "Canada",
           "top_share": 79
@@ -9115,7 +8713,7 @@
         0.68,
         0.54
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.8,
       "import_top_sources": [
         {
@@ -9158,16 +8756,10 @@
       "harmony": [
         {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.8,
           "top_country": "Canada",
           "top_share": 89
-        },
-        {
-          "kind": "served",
-          "edible_yield_pct": 50,
-          "cooked_yield": 0.75,
-          "served_mult": 2.67
         }
       ]
     },
@@ -9342,12 +8934,6 @@
           "hhi": 0.28,
           "top_country": "Canada",
           "top_share": 47
-        },
-        {
-          "kind": "served",
-          "edible_yield_pct": 55,
-          "cooked_yield": 0.8,
-          "served_mult": 2.27
         }
       ]
     },
@@ -9389,7 +8975,7 @@
         0.97,
         1.01
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.65,
       "import_top_sources": [
         {
@@ -9432,16 +9018,10 @@
       "harmony": [
         {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.65,
           "top_country": "Norway",
           "top_share": 80
-        },
-        {
-          "kind": "served",
-          "edible_yield_pct": 55,
-          "cooked_yield": 0.8,
-          "served_mult": 2.27
         }
       ]
     },
@@ -9525,12 +9105,6 @@
         }
       ],
       "harmony": [
-        {
-          "kind": "buyclock",
-          "cheapest_month": 4,
-          "import_peak_quarter": 1,
-          "agree": false
-        },
         {
           "kind": "supplyshape",
           "concentration": "single-source",
@@ -9728,7 +9302,7 @@
         1.23,
         1.04
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.52,
       "import_top_sources": [
         {
@@ -9770,7 +9344,7 @@
       "harmony": [
         {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.52,
           "top_country": "Mexico",
           "top_share": 60
@@ -9815,7 +9389,7 @@
         0.86,
         0.95
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.76,
       "import_top_sources": [
         {
@@ -9857,7 +9431,7 @@
       "harmony": [
         {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.76,
           "top_country": "Mexico",
           "top_share": 86
@@ -10237,7 +9811,7 @@
         1.18,
         0.99
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.61,
       "import_top_sources": [
         {
@@ -10281,7 +9855,7 @@
       "harmony": [
         {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.61,
           "top_country": "Italy",
           "top_share": 76
@@ -10500,7 +10074,7 @@
         0.76,
         0.89
       ],
-      "import_source_concentration": "single-source",
+      "import_source_concentration": "concentrated",
       "import_source_hhi": 0.52,
       "import_top_sources": [
         {
@@ -10542,7 +10116,7 @@
       "harmony": [
         {
           "kind": "supplyshape",
-          "concentration": "single-source",
+          "concentration": "concentrated",
           "hhi": 0.52,
           "top_country": "Ecuador",
           "top_share": 71
