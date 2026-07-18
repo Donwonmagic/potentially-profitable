@@ -1735,15 +1735,20 @@ br.br-lg{display:none}
 .nav.menu-open{background:var(--cream);border-bottom-color:var(--line)}
 }
 /* Spanish nav labels make the desktop row ~1315px wide, so the shared 1100px
-   collapse (tuned to English's ~1050px row) leaves the "Contacto" CTA clipped
-   off-canvas at the two most common laptop widths (1280, 1366). Collapse ES to
-   the hamburger up to 1400px, scoped to :lang(es) so English is untouched. The
-   base .nav-toggle geometry + .nav-toggle span bars are global, and this block
-   mirrors the full open-menu chrome (.mobile-menu:not([hidden]) show) so the
-   hamburger actually opens the panel in the 1101-1400 band (>1400 keeps full nav). */
-@media (max-width:1400px){
+   collapse (tuned to English's ~1050px row) used to clip the "Contacto" CTA
+   off-canvas at common laptop widths, so ES hamburgered all the way up to
+   1400px. Two things changed (2026-07): the Contacto CTA is gone, and the
+   nav became an uppercase tab bar. The Spanish labels still run longer than
+   English ("Índice de costos", "Datos abiertos"), so ES tabs are set a touch
+   smaller + tighter (12px / .02em, gap 18) to fit — which lets ES show the
+   real desktop tab bar down to 1200px instead of 1400. Below 1200 ES still
+   hamburgers (the labels genuinely don't fit that narrow). Scoped to :lang(es)
+   so English is untouched. This block mirrors the open-menu chrome so the
+   hamburger opens the panel in the 1101-1200 band. */
+:root:lang(es) .nav-links{gap:18px}
+:root:lang(es) .nav-links a{font-size:12px;letter-spacing:.02em}
+@media (max-width:1200px){
   :root:lang(es) .nav-links{display:none}
-  :root:lang(es) .nav-inner .btn-primary{display:none}
   :root:lang(es) .nav-toggle{display:flex}
   :root:lang(es) .mobile-menu:not([hidden]){display:flex}
   :root:lang(es) .nav.menu-open{background:var(--cream);border-bottom-color:var(--line)}
