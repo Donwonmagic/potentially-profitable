@@ -55,9 +55,9 @@ header.nav{min-height:64px}
 @media (max-width:1100px){.nav-links{display:none}}
 main{padding-top:64px}
 </style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=48902f5460f4" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=7b16d9a30f15" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=48902f5460f4"><link rel="stylesheet" href="/assets/site-article.css?v=7b16d9a30f15"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=7b03a222f568" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=330cd4263e33" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=7b03a222f568"><link rel="stylesheet" href="/assets/site-article.css?v=330cd4263e33"></noscript>
 <style>
 .iy-hero{padding:48px 0 24px;border-bottom:1px solid var(--line)}
 .iy-hero h1{font-family:var(--font-display);font-size:clamp(28px,4vw,40px);font-weight:500;line-height:1.15;color:var(--ink);margin:0 0 12px}
@@ -204,11 +204,10 @@ main{padding-top:64px}
       <a href="/library/ingredient-yields/oyster-mushroom/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
-    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Muntin &mdash; leemos cada mensaje.">
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true"></span>
-      Contacto
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-    </a>
+    <!-- Contacto retirado de la navegación principal (2026-07): el botón
+         relleno era el elemento más ancho de la derecha y desequilibraba la
+         barra. La línea directa sigue en el pie, el menú móvil y la barra fija
+         móvil. -->
     <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -290,6 +289,29 @@ main{padding-top:64px}
        para que el botón .js-theme-toggle ya esté en el DOM. (Faltaba
        en el nav en español, así que el interruptor no funcionaba en
        las páginas /es/.) -->
+  <!-- Detección de pestaña activa. Marca con aria-current="page" el enlace
+       de navegación cuyo href coincide mejor (prefijo más largo) con la ruta
+       actual; el estilo lo muestra como la pestaña activa (subrayada).
+       Mejora progresiva: sin JS no hay pestaña activa. -->
+  <script>
+    (function () {
+      try {
+        var path = location.pathname.replace(/\/index\.html$/, '/');
+        if (path.charAt(path.length - 1) !== '/') path += '/';
+        var links = document.querySelectorAll('.nav-links a[href^="/"]');
+        var best = null, bestLen = -1;
+        for (var i = 0; i < links.length; i++) {
+          var h = links[i].getAttribute('href').replace(/\/index\.html$/, '/');
+          if (h.charAt(h.length - 1) !== '/') h += '/';
+          if (h === '/' || h === '/es/') continue;
+          if (path === h || path.indexOf(h) === 0) {
+            if (h.length > bestLen) { best = links[i]; bestLen = h.length; }
+          }
+        }
+        if (best) best.setAttribute('aria-current', 'page');
+      } catch (e) { /* no-op */ }
+    })();
+  </script>
   <script src="/assets/theme-toggle.js?v=phase8"></script>
 </header>
 <main id="main" role="main">

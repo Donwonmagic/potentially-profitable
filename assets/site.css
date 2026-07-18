@@ -1012,11 +1012,19 @@ pre code{overflow-wrap:normal;word-break:normal;white-space:pre}
   opacity:0.7;
   vertical-align:baseline;
 }
-.nav-links{display:flex;gap:36px;font-size:15px;color:var(--ink-soft)}
-.nav-links a{position:relative;min-width:0;transition:color var(--t-fast) var(--ease);white-space:nowrap;flex-shrink:0}
-.nav-links a::after{content:'';position:absolute;left:0;right:0;bottom:-6px;height:1px;background:var(--teal);transform:scaleX(0);transform-origin:left;transition:transform var(--t-med) var(--ease-out)}
-.nav-links a:hover{color:var(--teal)}
+/* Primary nav as tabs (2026-07): uppercase tracked labels read as a
+   structured "data publication" tab bar with real presence, and the
+   underline indicator gives the current section an active tab. Active is
+   set via aria-current="page" by the detect-active script in the nav
+   partial; hover fades the same indicator in on any tab. No padding, so
+   the row width (and the Contact-removal balance) is unchanged. */
+.nav-links{display:flex;gap:22px;font-size:12.5px;color:var(--ink-soft)}
+.nav-links a{position:relative;min-width:0;font-weight:600;text-transform:uppercase;letter-spacing:.085em;transition:color var(--t-fast) var(--ease);white-space:nowrap;flex-shrink:0}
+.nav-links a::after{content:'';position:absolute;left:0;right:0;bottom:-7px;height:2px;border-radius:2px;background:var(--teal);transform:scaleX(0);transform-origin:left;transition:transform var(--t-med) var(--ease-out)}
+.nav-links a:hover{color:var(--ink)}
 .nav-links a:hover::after{transform:scaleX(1)}
+.nav-links a[aria-current="page"]{color:var(--teal);font-weight:700}
+.nav-links a[aria-current="page"]::after{transform:scaleX(1)}
 @media (max-width:1100px){.nav-links{display:none}
 }
 
@@ -8712,20 +8720,16 @@ body:has(.batch-marquee) main{padding-top:calc(64px + max(var(--banner-h,50px),5
 :root[data-theme="dark"] .theme-toggle:hover{background:var(--refresh-surface-1);border-color:var(--teal)}
 
 /* @shell:core === Dark-mode contrast completion === */
-/* @shell:core === Nav width discipline (bolder pass 2026-07) === */
-/* At 1440 the nav row's natural demand (~1307px) exceeds the 1200px
-   container, pushing the primary CTA off-canvas ("Reach Do"). Shed
-   demand progressively instead of letting the row overflow: tighter
-   gaps under 1600px, icon-only search under 1360px (Cmd+K and the
-   aria-label keep it discoverable). */
-@media (max-width:1600px){
-  .nav-links{gap:22px}
-  .nav-inner{gap:16px}
-}
-@media (max-width:1360px){
-  .nav-search-btn .nav-search-label,.nav-search-btn .nav-search-kbd{display:none}
-  .nav-search-btn{padding-inline:10px}
-}
+/* @shell:core === Nav width discipline (unconditional pass 2026-07) === */
+/* The Contact CTA that used to overflow at ~1440 ("Reach Do") is gone, so
+   the nav no longer needs a wide-width expansion. Shed demand at EVERY
+   width instead: a consistent icon-only search (Cmd+K + aria-label keep it
+   discoverable) + tight gaps keep the row inside the 1200 container, so
+   justify-content:space-between keeps logo-left and the utility cluster
+   symmetric at all widths — no more right-lean on wide monitors. */
+.nav-search-btn .nav-search-label,.nav-search-btn .nav-search-kbd{display:none}
+.nav-search-btn{padding-inline:10px}
+.nav-inner{gap:16px}
 @media (max-width:1200px){
   .nav-links{gap:14px}
   .nav-inner{gap:12px}

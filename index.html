@@ -164,8 +164,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=48902f5460f4" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=7b16d9a30f15" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=7b03a222f568" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=330cd4263e33" onload="this.onload=null;this.rel='stylesheet'">
 <style>
 /* Bolder pass 2026-07 — mid-page material: stance panes on the elevation
    scale, instrument glyphs in the flagship cards, Fraunces number chips,
@@ -205,7 +205,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .muntin-title::before{content:"";display:block;width:34px;height:40px;margin:0 0 18px;border:3px solid var(--ink);border-radius:5px;background:linear-gradient(var(--ink),var(--ink)) 50% 0/3px 100% no-repeat,linear-gradient(var(--ink),var(--ink)) 0 38%/100% 3px no-repeat}
 .final::before{background:linear-gradient(rgba(246,247,248,.055),rgba(246,247,248,.055)) 33% 0/3px 100% no-repeat,linear-gradient(rgba(246,247,248,.055),rgba(246,247,248,.055)) 66% 0/3px 100% no-repeat,linear-gradient(rgba(246,247,248,.055),rgba(246,247,248,.055)) 0 58%/100% 3px no-repeat}
 </style>
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=48902f5460f4"><link rel="stylesheet" href="/assets/site-article.css?v=7b16d9a30f15"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=7b03a222f568"><link rel="stylesheet" href="/assets/site-article.css?v=330cd4263e33"></noscript>
 <!-- hub-modified:start (scripts/inject-hub-modified-time.mjs) -->
 <meta property="article:modified_time" content="2026-06-22" />
 <!-- /hub-modified:end -->
@@ -421,6 +421,32 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         })
         .catch(function () { show(signin); });
     });
+  </script>
+  <!-- Active-tab detection. Marks the top-level nav link whose href is the
+       best (longest) prefix match for the current path with
+       aria-current="page"; the tab styling renders that as the active
+       (underlined) tab. Runs synchronously — the .nav-links are already
+       parsed above. Progressive enhancement: no-JS visitors see no active
+       tab, which is acceptable. The home link is not a tab, so "/" never
+       matches on every page. -->
+  <script>
+    (function () {
+      try {
+        var path = location.pathname.replace(/\/index\.html$/, '/');
+        if (path.charAt(path.length - 1) !== '/') path += '/';
+        var links = document.querySelectorAll('.nav-links a[href^="/"]');
+        var best = null, bestLen = -1;
+        for (var i = 0; i < links.length; i++) {
+          var h = links[i].getAttribute('href').replace(/\/index\.html$/, '/');
+          if (h.charAt(h.length - 1) !== '/') h += '/';
+          if (h === '/') continue;
+          if (path === h || path.indexOf(h) === 0) {
+            if (h.length > bestLen) { best = links[i]; bestLen = h.length; }
+          }
+        }
+        if (best) best.setAttribute('aria-current', 'page');
+      } catch (e) { /* no-op */ }
+    })();
   </script>
   <!-- Phase 7 — dark-mode toggle handler. Loaded after the nav
        partial so the .js-theme-toggle button is in the DOM. -->
