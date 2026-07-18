@@ -1126,13 +1126,13 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
     var head=el('div','isr-head');
     head.appendChild(el('h3','isr-name', r.name));
     head.appendChild(el('span','isr-cat', r.category==null?'—':r.category));
-    var badge=el('span','pb-pill pb-pill--'+r.posture, POSTURE[r.posture]||r.posture);
-    head.appendChild(badge);
+    if(r.posture)head.appendChild(el('span','pb-pill pb-pill--'+r.posture, POSTURE[r.posture]||r.posture));
+    void 0;
     card.appendChild(head);
 
     // od-answer sentence, assembled from present fields only
     var bits=[];
-    bits.push((ES?'Una postura de ':'A ') + (POSTURE[r.posture]||r.posture) + (ES?'':' pricing stance'));
+    if(r.posture)bits.push((ES?'Una postura de ':'A ') + (POSTURE[r.posture]||r.posture) + (ES?'':' pricing stance'));else bits.push(ES?'Ingrediente de especialidad (definido por importación)':'A specialty ingredient (import-defined)');
     if (r.edible_yield_pct!=null) bits.push('~'+r.edible_yield_pct+'% '+T.edible);
     if (r.cheapest_month!=null) bits.push(T.cheapest+' '+MONTHS[r.cheapest_month-1]);
     if (r.us_import_value_usd!=null) bits.push((ES?'un flujo de importación de ':'a ')+usd(r.us_import_value_usd)+(ES?'':' import stream'));

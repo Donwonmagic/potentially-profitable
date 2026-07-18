@@ -839,6 +839,145 @@
       "slugs": [
         "squid"
       ]
+    },
+    "0709991000": {
+      "sdesc": "CHAYOTE (SECHIUM EDULE), FRESH OR CHILLED",
+      "slugs": [
+        "chayote"
+      ],
+      "note": "Fresh chayote."
+    },
+    "0709990500": {
+      "sdesc": "JICAMAS AND BREADFRUIT, FRESH OR CHILLED",
+      "slugs": [
+        "jicama"
+      ],
+      "note": "HS10 combines jicama and breadfruit."
+    },
+    "0709999030": {
+      "sdesc": "CACTUS LEAVES, FRESH OR CHILLED, NESOI",
+      "slugs": [
+        "nopales"
+      ],
+      "note": "Fresh cactus paddles (nopales)."
+    },
+    "0810904610": {
+      "sdesc": "TOMATILLOS, FRESH",
+      "slugs": [
+        "tomatillo"
+      ],
+      "note": "Fresh tomatillos specifically."
+    },
+    "0803101000": {
+      "sdesc": "PLANTAINS, FRESH",
+      "slugs": [
+        "plantain"
+      ],
+      "note": "Fresh plantains."
+    },
+    "040640": {
+      "sdesc": "BLUE-VEINED CHEESE (Roquefort, Gorgonzola, Stilton, etc.)",
+      "slugs": [
+        "blue-cheese"
+      ],
+      "note": "All blue-veined cheese at HS6 — Roquefort, Stilton and blue-veined NESOI."
+    },
+    "0406904100": {
+      "sdesc": "ITALIAN CHEESES MADE FROM COWS MILK, ADD US NTE 21",
+      "slugs": [
+        "parmesan"
+      ],
+      "note": "Italian cow-milk grating cheeses (Parmigiano/Grana + Romano/Reggiano/Parmesan/Provolone), summed across the three lines."
+    },
+    "0406904200": {
+      "sdesc": "ITALIAN CHEESES MADE FROM COWS MILK, NESOI",
+      "slugs": [
+        "parmesan"
+      ]
+    },
+    "0406904300": {
+      "sdesc": "ROMANO/REGGIANO/PARMESAN/PROVOLONE CHEESES, NESOI",
+      "slugs": [
+        "parmesan"
+      ]
+    },
+    "0406905600": {
+      "sdesc": "CHEESE FROM SHEEPS MILK IN ORIG LOAVES SUITABLE FOR GRATING",
+      "slugs": [
+        "pecorino"
+      ],
+      "note": "Sheep-milk grating cheeses (Pecorino Romano and relatives), summed."
+    },
+    "0406905700": {
+      "sdesc": "PECORINO CHEESE IN ORIG LOAVES NOT SUITABLE FOR GRATING",
+      "slugs": [
+        "pecorino"
+      ]
+    },
+    "0406905900": {
+      "sdesc": "CHEESES MADE FROM SHEEPS MILK, NESOI",
+      "slugs": [
+        "pecorino"
+      ]
+    },
+    "0210110010": {
+      "sdesc": "HAMS & CUTS OF SWINE W/BONE SALTED/BRINE/DRIED/SMOKED",
+      "slugs": [
+        "prosciutto"
+      ],
+      "note": "Cured swine — bone-in hams plus the boneless cured-swine NESOI line (0210190090), summed. Prosciutto, serrano, speck, etc."
+    },
+    "0210190090": {
+      "sdesc": "MEAT OF SWINE, SALTED, BRINE, DRIED, SMOKED, NESOI",
+      "slugs": [
+        "prosciutto"
+      ]
+    },
+    "0302895058": {
+      "sdesc": "SNAPPER, FR/CH, EXC FILLET LIVER AND ROE NESOI",
+      "slugs": [
+        "snapper"
+      ],
+      "note": "Whole snapper, fresh + frozen (0303890067) summed; excludes fillets."
+    },
+    "0303890067": {
+      "sdesc": "SNAPPER, FROZEN, EXCEPT FILLETS, LIVERS AND ROES",
+      "slugs": [
+        "snapper"
+      ]
+    },
+    "0302895061": {
+      "sdesc": "GROUPER, FR/CH, EXCEPT FILLET, LIVER AND ROE NESOI",
+      "slugs": [
+        "grouper"
+      ],
+      "note": "Whole grouper, fresh + frozen (0303890070) summed; excludes fillets."
+    },
+    "0303890070": {
+      "sdesc": "GROUPER, FROZEN, EXCEPT FILLETS, LIVERS AND ROES",
+      "slugs": [
+        "grouper"
+      ]
+    },
+    "0302895072": {
+      "sdesc": "MAHI MAHI FR/CH, EXC LIVERS ROES FILLETS ETC NESOI",
+      "slugs": [
+        "mahi-mahi"
+      ],
+      "note": "Whole fresh mahi-mahi (dolphinfish); excludes fillets."
+    },
+    "0302230000": {
+      "sdesc": "SOLE, FRESH/CHILLED, EXCEPT FILLETS, LIVERS & ROES",
+      "slugs": [
+        "dover-sole"
+      ],
+      "note": "Whole sole, fresh + frozen (0303330000) summed; excludes fillets."
+    },
+    "0303330000": {
+      "sdesc": "SOLE, FROZEN, EXCEPT FILLETS, LIVERS AND ROES",
+      "slugs": [
+        "dover-sole"
+      ]
     }
   },
   "_pending": {
@@ -848,6 +987,7 @@
     "deliberately_unmapped": "Left without an import code on purpose: short-rib is not isolable at HS10 (it spans the chuck/plate/rib primals); pork-loin has no loin-specific pork line (stays on the frozen-cuts NESOI); the fresh herbs other than cilantro (basil, parsley, dill, mint, oregano, rosemary, tarragon, thyme) have no HS10 line of their own; chicken and turkey are domestic-dominant and their import streams misrepresent the tracked cuts; vegetable-oil is a blend with no single HS code. Absence here is a deliberate honesty choice, not missing work.",
     "note": "The import field is populated only for ingredients with a genuine, SDESC-verified US import stream. Where HS6 combines several tracked items under one code (peppers, lettuces, brassicas, squash, pork cuts...), the shared stream is attached to each with a 'combines / not split' note — descriptive supply context, never a per-item delivered price or volume.",
     "hs10_produce_2026_07": "Produce mapped to its finest HS10 level: peppers split bell (HS8 07096040) / jalapeño / serrano / poblano / habanero-as-chili-NESOI; squash into zucchini/butternut/acorn/yellow (org+non-org summed); the brassica basket into cabbage/broccoli/bok-choy/kale/napa/collard; lettuce into romaine/butterhead/red+green (iceberg stays head lettuce); blueberries exclude cranberries and raspberries exclude blackberries; green-onion & leek split; snow-peas and green-beans isolated; and three breadth wins — cilantro, okra and corn-on-the-cob — get their own lines. Tomatoes (cherry vs round) and shrimp (by size / peeled vs shell) captured in the raw subtree, mapping still pending.",
-    "hs10_seafood_produce_2026_07": "Tomato split into round (the standard slicing tomato -> tomato) vs cherry (-> cherry-tomato); roma and grape are distinct HS10 types left for a specialty pass. Shrimp split into peeled/P&D (-> shrimp-pd) vs shell-on across all size grades (-> shrimp & shrimp-head-on, which HS cannot distinguish). Squid isolated from cuttlefish. All from the already-pulled HS10 subtree."
+    "hs10_seafood_produce_2026_07": "Tomato split into round (the standard slicing tomato -> tomato) vs cherry (-> cherry-tomato); roma and grape are distinct HS10 types left for a specialty pass. Shrimp split into peeled/P&D (-> shrimp-pd) vs shell-on across all size grades (-> shrimp & shrimp-head-on, which HS cannot distinguish). Squid isolated from cuttlefish. All from the already-pulled HS10 subtree.",
+    "specialty_2026_07": "Specialty import-defined ingredients added (see data/ingredient-specialty.json): Latin/taqueria produce (tomatillo, plantain, chayote, jicama, nopales), specialty cheeses (blue-cheese, parmesan, pecorino), cured ham (prosciutto), and chef fish (snapper, grouper, mahi-mahi, dover-sole). Each carries a US import stream only — no wholesale band/posture/seasonality, honestly absent. Poultry (chicken/turkey) confirmed unmapped: HS10 does not split them by cut and the import is tiny \"meat & edible offal\", not a breast or thigh."
   }
 }

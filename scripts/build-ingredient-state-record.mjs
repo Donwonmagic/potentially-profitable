@@ -225,6 +225,37 @@ function build() {
     };
   });
 
+  // Specialty / import-defined ingredients (data/ingredient-specialty.json): NOT wholesale-priced,
+  // so they carry an import stream (+ a sourced yield where present) and nothing else — band,
+  // posture, seasonality, co-movement all honestly absent. Appended after the 100 priced records.
+  const specialty = (() => { try { return rd('data/ingredient-specialty.json').ingredients || []; } catch { return []; } })();
+  for (const sp of specialty) {
+    const im = imp[sp.slug];
+    records.push({
+      slug: sp.slug, name: sp.name, category: sp.category || null,
+      posture: null, band_pct: null,
+      edible_yield_pct: sp.edible_yield_pct != null ? sp.edible_yield_pct : null,
+      trim_tax: sp.edible_yield_pct != null ? Math.round((100 / sp.edible_yield_pct) * 100) / 100 : null,
+      cooked_yield: sp.cooked_yield != null ? sp.cooked_yield : null,
+      cheapest_month: null, save_pct: null, hedge_swap: null,
+      pressure_dir: null, pressure_conf: null,
+      us_import_value_usd: im ? im.latest_year_usd : null,
+      import_years: im ? im.span : null,
+      import_peak_months: im ? im.peak_months : null,
+      import_peak_quarter_share: im ? im.peak_quarter_share : null,
+      import_hs6: im ? im.hs6 : null,
+      import_yoy_pct: im ? im.import_yoy_pct : null,
+      import_seasonal_index: im ? im.import_seasonal_index : null,
+      import_source_concentration: im ? im.import_source_concentration || null : null,
+      import_source_hhi: im && im.import_source_hhi != null ? im.import_source_hhi : null,
+      import_top_sources: im ? im.import_top_sources || null : null,
+      import_annual_usd: im ? im.annual_usd : null,
+      import_note: im ? im.note : null,
+      notable_events_n: null, median_shock_days: null, biggest_move_pct: null, biggest_move_date: null,
+      comovers: null, specialty: true,
+    });
+  }
+
   const meta = {
     dataset: 'Muntin Cost Index — Ingredient State Record',
     url: 'https://muntin.digital/cost-index/menu-pricing/',

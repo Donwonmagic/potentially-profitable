@@ -1,0 +1,18 @@
+{
+  "_doc": "Specialty / import-defined ingredients — NOT part of the 100-ingredient wholesale-priced corpus. These carry a US Census import stream (and, where sourced, a book yield) but NO wholesale price band, posture, seasonality or co-movement, because no USDA/BLS wholesale reference tracks them. Every such field is honestly absent. Appended to the Ingredient State Record after the 100 priced ingredients, flagged specialty:true. Import columns are US public domain; the compiled record is CC BY 4.0.",
+  "ingredients": [
+    { "slug": "tomatillo", "name": "Tomatillo", "category": "fruiting" },
+    { "slug": "plantain", "name": "Plantain", "category": "fruit" },
+    { "slug": "chayote", "name": "Chayote", "category": "fruiting" },
+    { "slug": "jicama", "name": "Jicama", "category": "root" },
+    { "slug": "nopales", "name": "Nopales (cactus paddles)", "category": "greens" },
+    { "slug": "blue-cheese", "name": "Blue cheese", "category": "dairy" },
+    { "slug": "parmesan", "name": "Parmesan (Italian grating cheese)", "category": "dairy" },
+    { "slug": "pecorino", "name": "Pecorino (sheep's-milk cheese)", "category": "dairy" },
+    { "slug": "prosciutto", "name": "Prosciutto & cured ham", "category": "meat" },
+    { "slug": "snapper", "name": "Snapper", "category": "seafood" },
+    { "slug": "grouper", "name": "Grouper", "category": "seafood" },
+    { "slug": "mahi-mahi", "name": "Mahi-mahi", "category": "seafood" },
+    { "slug": "dover-sole", "name": "Sole (Dover/lemon)", "category": "seafood" }
+  ]
+}
