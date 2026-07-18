@@ -56,9 +56,9 @@
     "070200": {
       "sdesc": "TOMATOES, FRESH OR CHILLED",
       "slugs": [
-        "tomato",
-        "cherry-tomato"
-      ]
+        "tomato"
+      ],
+      "note": "All fresh tomatoes (2010-2025 full history). Cherry tomatoes are also broken out to cherry-tomato at HS10 — a subset of this total, not additional; roma and grape are distinct HS10 types left for a specialty pass."
     },
     "070700": {
       "sdesc": "CUCUMBERS AND GHERKINS, FRESH OR CHILLED",
@@ -84,15 +84,6 @@
         "ginger"
       ],
       "note": "Fresh ginger (not crushed or ground)."
-    },
-    "030617": {
-      "sdesc": "SHRIMPS AND PRAWNS, FROZEN, NESOI",
-      "slugs": [
-        "shrimp",
-        "shrimp-pd",
-        "shrimp-head-on"
-      ],
-      "note": "Frozen shrimp/prawns (the dominant import form); fresh shrimp is a separate code."
     },
     "030441": {
       "sdesc": "PACIFIC, ATLANTIC, DANUBE SALMON FILLETS",
@@ -135,13 +126,6 @@
       "slugs": [
         "octopus"
       ]
-    },
-    "030743": {
-      "sdesc": "SQUID, FROZEN",
-      "slugs": [
-        "squid"
-      ],
-      "note": "Frozen squid; HS6 present from 2017 (earlier years under prior codes)."
     },
     "030779": {
       "sdesc": "CLAMS, COCKLES AND ARK SHELLS, NESOI",
@@ -661,6 +645,200 @@
       "slugs": [
         "raspberry"
       ]
+    },
+    "0702002019": {
+      "sdesc": "CHERRY GREENHOUSE TOMATO, FR",
+      "slugs": [
+        "cherry-tomato"
+      ],
+      "note": "Cherry tomatoes specifically, summed across entry periods and greenhouse/field lines (a subset of the all-tomatoes total on tomato)."
+    },
+    "0702002052": {
+      "sdesc": "CHERRY TOMATOES, FR/CH NESOI",
+      "slugs": [
+        "cherry-tomato"
+      ]
+    },
+    "0702004019": {
+      "sdesc": "CHERRY GREENHOUSE TOMATOES (7/15-8/31), FR/CH",
+      "slugs": [
+        "cherry-tomato"
+      ]
+    },
+    "0702004041": {
+      "sdesc": "CHERRY TOMATOES (7/15-8/31), FR/CH NESOI",
+      "slugs": [
+        "cherry-tomato"
+      ]
+    },
+    "0702006019": {
+      "sdesc": "CHERRY GRNHSE TOMATO (11/15-FEB), FR/CH NESOI",
+      "slugs": [
+        "cherry-tomato"
+      ]
+    },
+    "0702006039": {
+      "sdesc": "CHERRY TOMATO (11/15-FEB), NESOI",
+      "slugs": [
+        "cherry-tomato"
+      ]
+    },
+    "0306170041": {
+      "sdesc": "FARMED SHRIMPS & PRAWNS, FROZEN PEELED",
+      "slugs": [
+        "shrimp-pd"
+      ],
+      "note": "Peeled (P&D) shrimp — farmed + wild (0306170042) summed. The dominant import form."
+    },
+    "0306170042": {
+      "sdesc": "SHRIMPS & PRAWNS, FROZEN PEELED NESOI",
+      "slugs": [
+        "shrimp-pd"
+      ]
+    },
+    "0306170004": {
+      "sdesc": "FARMED SHRIMP FZ SHELL <33/KG",
+      "slugs": [
+        "shrimp",
+        "shrimp-head-on"
+      ],
+      "note": "Frozen shell-on shrimp, summed across all count-per-kg size grades (farmed + wild). HS does not distinguish head-on from headless shell-on, so both shell slugs share this stream."
+    },
+    "0306170005": {
+      "sdesc": "FARMED SHRIMP FZ SHELL 33-45/KG",
+      "slugs": [
+        "shrimp",
+        "shrimp-head-on"
+      ]
+    },
+    "0306170007": {
+      "sdesc": "FARMED SHRIMP FZ SHELL 46-55/KG",
+      "slugs": [
+        "shrimp",
+        "shrimp-head-on"
+      ]
+    },
+    "0306170008": {
+      "sdesc": "FARMED SHRIMP FZ SHELL 56-66/KG",
+      "slugs": [
+        "shrimp",
+        "shrimp-head-on"
+      ]
+    },
+    "0306170010": {
+      "sdesc": "FARMED SHRIMP FZ SHELL 67-88/KG",
+      "slugs": [
+        "shrimp",
+        "shrimp-head-on"
+      ]
+    },
+    "0306170011": {
+      "sdesc": "FARMED SHRIMP FZ SHELL 89-110/KG",
+      "slugs": [
+        "shrimp",
+        "shrimp-head-on"
+      ]
+    },
+    "0306170013": {
+      "sdesc": "FARMED SHRIMP FZ SHELL 111-132/KG",
+      "slugs": [
+        "shrimp",
+        "shrimp-head-on"
+      ]
+    },
+    "0306170014": {
+      "sdesc": "FARMED SHRIMP FZ SHELL 133-154/KG",
+      "slugs": [
+        "shrimp",
+        "shrimp-head-on"
+      ]
+    },
+    "0306170016": {
+      "sdesc": "FARMED SHRIMP FZ SHELL >154/KG",
+      "slugs": [
+        "shrimp",
+        "shrimp-head-on"
+      ]
+    },
+    "0306170017": {
+      "sdesc": "SHRIMP FZ SHELL <33/KG NESOI",
+      "slugs": [
+        "shrimp",
+        "shrimp-head-on"
+      ]
+    },
+    "0306170019": {
+      "sdesc": "SHRIMP FZ SHELL 33-45/KG NESOI",
+      "slugs": [
+        "shrimp",
+        "shrimp-head-on"
+      ]
+    },
+    "0306170020": {
+      "sdesc": "SHRIMP FZ SHELL 46-55/KG NESOI",
+      "slugs": [
+        "shrimp",
+        "shrimp-head-on"
+      ]
+    },
+    "0306170022": {
+      "sdesc": "SHRIMP FZ SHELL 56-66/KG NESOI",
+      "slugs": [
+        "shrimp",
+        "shrimp-head-on"
+      ]
+    },
+    "0306170023": {
+      "sdesc": "SHRIMP FZ SHELL 67-88/KG NESOI",
+      "slugs": [
+        "shrimp",
+        "shrimp-head-on"
+      ]
+    },
+    "0306170025": {
+      "sdesc": "SHRIMP FZ SHELL 89-110/KG NESOI",
+      "slugs": [
+        "shrimp",
+        "shrimp-head-on"
+      ]
+    },
+    "0306170026": {
+      "sdesc": "SHRIMP FZ SHELL 111-132/KG NESOI",
+      "slugs": [
+        "shrimp",
+        "shrimp-head-on"
+      ]
+    },
+    "0307430010": {
+      "sdesc": "SQUID FILLETS, FROZEN",
+      "slugs": [
+        "squid"
+      ],
+      "note": "Squid only (fillets + Loligo + other squid), summed; excludes the cuttlefish that shares the HS6 code."
+    },
+    "0307430022": {
+      "sdesc": "SQUID, LOLIGO OPALESCENS, FROZEN",
+      "slugs": [
+        "squid"
+      ]
+    },
+    "0307430024": {
+      "sdesc": "SQUID, LOLIGO PEALEI, FROZEN",
+      "slugs": [
+        "squid"
+      ]
+    },
+    "0307430029": {
+      "sdesc": "LOLIGO SQUID, FROZEN, NESOI",
+      "slugs": [
+        "squid"
+      ]
+    },
+    "0307430050": {
+      "sdesc": "SQUID, FROZEN, NESOI",
+      "slugs": [
+        "squid"
+      ]
     }
   },
   "_pending": {
@@ -669,6 +847,7 @@
     "hs10_cut_level_2026_07": "Beef and pork now map at HS10 (US statistical primal level, from 2017): ribeye = rib primal (0201305025 + frozen 0202305025), striploin + beef-tenderloin = loin primal (…5045), ground-beef = boneless-NESOI trim (…5085), pork-belly = fresh bellies (0203194010), pork-shoulder = bone-in shoulder + frozen ham/shoulder. Aggregated fresh+frozen per cut by the builder.",
     "deliberately_unmapped": "Left without an import code on purpose: short-rib is not isolable at HS10 (it spans the chuck/plate/rib primals); pork-loin has no loin-specific pork line (stays on the frozen-cuts NESOI); the fresh herbs other than cilantro (basil, parsley, dill, mint, oregano, rosemary, tarragon, thyme) have no HS10 line of their own; chicken and turkey are domestic-dominant and their import streams misrepresent the tracked cuts; vegetable-oil is a blend with no single HS code. Absence here is a deliberate honesty choice, not missing work.",
     "note": "The import field is populated only for ingredients with a genuine, SDESC-verified US import stream. Where HS6 combines several tracked items under one code (peppers, lettuces, brassicas, squash, pork cuts...), the shared stream is attached to each with a 'combines / not split' note — descriptive supply context, never a per-item delivered price or volume.",
-    "hs10_produce_2026_07": "Produce mapped to its finest HS10 level: peppers split bell (HS8 07096040) / jalapeño / serrano / poblano / habanero-as-chili-NESOI; squash into zucchini/butternut/acorn/yellow (org+non-org summed); the brassica basket into cabbage/broccoli/bok-choy/kale/napa/collard; lettuce into romaine/butterhead/red+green (iceberg stays head lettuce); blueberries exclude cranberries and raspberries exclude blackberries; green-onion & leek split; snow-peas and green-beans isolated; and three breadth wins — cilantro, okra and corn-on-the-cob — get their own lines. Tomatoes (cherry vs round) and shrimp (by size / peeled vs shell) captured in the raw subtree, mapping still pending."
+    "hs10_produce_2026_07": "Produce mapped to its finest HS10 level: peppers split bell (HS8 07096040) / jalapeño / serrano / poblano / habanero-as-chili-NESOI; squash into zucchini/butternut/acorn/yellow (org+non-org summed); the brassica basket into cabbage/broccoli/bok-choy/kale/napa/collard; lettuce into romaine/butterhead/red+green (iceberg stays head lettuce); blueberries exclude cranberries and raspberries exclude blackberries; green-onion & leek split; snow-peas and green-beans isolated; and three breadth wins — cilantro, okra and corn-on-the-cob — get their own lines. Tomatoes (cherry vs round) and shrimp (by size / peeled vs shell) captured in the raw subtree, mapping still pending.",
+    "hs10_seafood_produce_2026_07": "Tomato split into round (the standard slicing tomato -> tomato) vs cherry (-> cherry-tomato); roma and grape are distinct HS10 types left for a specialty pass. Shrimp split into peeled/P&D (-> shrimp-pd) vs shell-on across all size grades (-> shrimp & shrimp-head-on, which HS cannot distinguish). Squid isolated from cuttlefish. All from the already-pulled HS10 subtree."
   }
 }
