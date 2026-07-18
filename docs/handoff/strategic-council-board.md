@@ -72,10 +72,22 @@ with the real render — that's the point of verifying.
 
 **Remaining work is now either checkpoint-gated or JS-dependent — surface-elevation pass is
 substantially complete:**
-- RISKY-SHARED (needs founder checkpoint per the design-language red-team): dark-mode mechanism
-  consolidation (retire Phase-5 `--mtn-*` + `--refresh-*` into the token-flip); unified `:focus-visible`
-  token (touches every interactive el + inverse-surface focus); fluid body-size (`--fs-body`) reflow;
-  radius value bumps. Each ripples ~1,200 pages and must be verified per-surface in both themes.
+- RISKY-SHARED — **INVESTIGATED 2026-07-18 (founder said "take it on"); finding: NO genuine user-facing
+  defect here worth the ~1,200-page blast radius. It is code-hygiene refactoring + already-done items.**
+  Evidence:
+  · `:focus-visible` — ALREADY a mature unified system: global recipe `a/button/.btn:focus-visible`
+    {2px teal outline + offset + `--ring-focus`} at site.css:1659, inverse-surface override
+    (`.final/.process/footer` → cream) at :1661, form-input focus at :1466. 88 focus rules. Not a gap.
+  · `--elev-feature` "invisible-shadow-in-dark" — `.intake-form` is on NO served page (moot); `.edu-result`
+    (tool results) keeps separation in dark via its re-tokenizing `--line` border + teal left-accent — the
+    faded shadow is imperceptible depth loss, not a defect. Dark mode already reads correctly (verified
+    repeatedly all session).
+  · Dark-mode consolidation (retire `--mtn-*`/`--refresh-*` into the token-flip) — the three mechanisms
+    are redundant but WORKING; the divergences are imperceptible (#1a1d22 vs #1B1E24). Pure maintainability
+    refactor with real regression risk on every dark surface. Poor risk/reward for autonomous execution.
+  · Semantic-role adoption / body-size / radius — inert refactoring or the red-team's cut-from-rollout set.
+  **Recommendation: do the systemic tier only in a dedicated, reviewed session (not autonomously). The
+  user-facing elevation program is complete.**
 - JS-DEPENDENT / lower-leverage: mobile-drawer polish + search-overlay cap (need interaction to verify);
   tool empty/loading/validation states (per-tool inline JS work); tools-hub tier-badge/hover polish.
 - The full semantic-role adoption (migrate surfaces off raw `--teal`/`--rust` onto the Phase-1 role
