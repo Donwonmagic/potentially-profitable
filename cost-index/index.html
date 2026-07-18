@@ -64,7 +64,7 @@ main{padding-top:64px}
 .ci-answer{font-size:clamp(18px,3vw,22px);font-weight:600;color:var(--ink);margin:0 0 14px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
 .ci-asof-rel{color:var(--ink-soft);font-weight:400}
 .ci-lede{font-size:18px;line-height:1.6;color:var(--ink);margin:0;max-width:720px}
-.ci-body{margin:8px auto 0;max-width:760px}
+.ci-body{margin:8px auto 0;max-width:760px}@media (min-width:1000px){.ci-body{max-width:none;margin-inline:0}.ci-body>:not(.ci-readings):not(.ci-grid):not(.ci-orient){max-width:760px}}
 .ci-body h2{font-family:var(--font-display);font-size:clamp(20px,3vw,26px);font-weight:500;color:var(--ink);margin:34px 0 10px;line-height:1.2}
 .ci-body p{margin:0 0 16px;font-size:16px;line-height:1.7}
 .ci-body ol,.ci-body ul{margin:0 0 16px;padding-left:22px;font-size:16px;line-height:1.7}
@@ -72,14 +72,14 @@ main{padding-top:64px}
 .ci-read{margin:22px 0 8px;padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px;font-variant-numeric:tabular-nums}
 .ci-read__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
 .ci-read__badge{font-weight:600;text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink-soft);margin-left:8px}
-.ci-read__line{font-size:16px;line-height:1.55;color:var(--ink);margin:0}
+.ci-read__line{font-size:17px;font-weight:600;line-height:1.55;color:var(--ink);margin:0}
 .ci-read__trend{margin:6px 0 0;font-size:14.5px;line-height:1.5;color:var(--ink-soft)}
 .ci-read__verdict{margin:10px 0 0;font-size:15px;line-height:1.5;color:var(--ink)}
 .ci-read__verb{display:inline-block;font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-right:8px;vertical-align:1px;background:var(--cream);border:1px solid var(--line);color:var(--ink-soft)}
 .ci-read__verb[data-bias="hold"]{color:#2A50C8;border-color:#2A50C8}
 .ci-read__verb[data-bias="watch"]{color:#6b540f;border-color:#9a7d2e}
 .ci-read__verb[data-bias="re-price"]{color:#A23B2D;border-color:#A23B2D}
-.ci-read__spark{margin:12px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.ci-read__spark{margin:12px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}@media(min-width:600px){.ci-read__spark{flex-wrap:nowrap;align-items:flex-start}.ci-read__spark .ci-read__capsule{flex:1 1 auto}}
 .ci-read__spark .mtn-spark{flex:0 0 auto;overflow:visible}
 .ci-read__capsule{margin:0;font-size:14.5px;line-height:1.45;color:var(--ink)}
 .ci-read__capsule-note{color:var(--ink-soft);font-size:12.5px}
@@ -144,7 +144,7 @@ main{padding-top:64px}
 .ci-composite__say{font-size:15px;line-height:1.4;color:var(--ink);font-weight:600;max-width:46ch}
 .ci-composite__meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin:10px 0 0}
 .ci-composite__chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--white);border:1px solid var(--line);color:var(--ink-soft)}
-.ci-composite__spread{font-size:14px;line-height:1.5;color:var(--ink-soft);margin:10px 0 0}
+.ci-composite__spread{font-size:14px;line-height:1.5;color:var(--ink-soft);margin:10px 0 0;max-width:66ch}
 .ci-composite__spread strong{color:var(--ink)}
 .ci-composite__src{margin:8px 0 0;font-size:12.5px}
 .ci-composite__src summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
@@ -160,12 +160,12 @@ main{padding-top:64px}
 .ci-signup-sep{color:var(--stone,#9aa0aa);margin:0 4px}
 .ci-source{font-size:12.5px;color:var(--ink-soft);margin:24px 0 40px}
 .ci-source a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
-.ci-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));margin:14px 0 0}
+.ci-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(210px,100%),1fr));margin:14px 0 0}
 .ci-card{padding:16px 18px;background:var(--white);border:1px solid var(--line);border-radius:10px}
 .ci-card a{font-family:var(--font-display);font-size:17px;color:var(--ink);text-decoration:none}
 .ci-card a:hover{color:var(--teal)}
 .ci-card-note{display:block;font-size:13px;color:var(--ink-soft);margin-top:4px}
-.ci-cat-h{font-family:var(--font-display);font-size:16px;color:var(--ink-soft);margin:30px 0 0;text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+.ci-cat-h{font-family:var(--font-display);font-size:16px;color:var(--ink-soft);margin:30px 0 0;text-transform:uppercase;letter-spacing:.04em;font-weight:600}.ci-body>.ci-cat-h{border-top:1px solid var(--line);padding-top:18px;margin-top:40px}
 .ci-card-action{margin-top:10px}
 .ci-moving{margin:20px 0 8px;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px}
 .ci-moving .ci-cat-h{margin:0 0 10px}
@@ -199,7 +199,7 @@ main{padding-top:64px}
 .ci-readings{margin:20px 0 8px}
 .ci-table-tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:12px 0 0}
 .ci-table-search__label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
-.ci-table-search{flex:1 1 220px;max-width:340px;font:inherit;font-size:14px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--white);color:var(--ink)}
+.ci-table-search{flex:1 1 220px;max-width:340px;font:inherit;font-size:14px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--white);color:var(--ink);min-height:44px}
 .ci-table-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
 .ci-table-count{font-size:13px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
 .ci-table-empty td{color:var(--ink-soft);font-style:italic;padding:14px 10px}
@@ -215,6 +215,90 @@ main{padding-top:64px}
 .ci-table .ci-t-dir[data-dir="down"]{color:var(--teal)}
 .ci-table .ci-t-na{color:var(--stone,#9aa0aa)}
 .ci-table .ci-index--mini{margin:0}
+/* ─── Phone / small-tablet reflow: "All readings" → compact stacked rows ──────
+   The 5-col nowrap table's min-content is ~638px, so under ~680px .table-scroll
+   forces horizontal scroll (Signal/Movement/As-of clipped off-screen). At
+   <=680px each data <tr> becomes a 2-line grid over the SAME <tr>/<td> DOM, so
+   the live #ci-ingredient-search filter (toggles tr[hidden] by data-name) keeps
+   working untouched. Everything is scoped under .ci-readings so it is safe even
+   if hoisted to assets/site.css (.ci-table is emitted inline on other pages too).
+   Append after the existing .ci-table rules (~line 1723) in the generator's
+   inline <style>. Desktop (>680px) is byte-for-byte unchanged. */
+@media (max-width:680px){
+  /* 1 ─ neutralize the scroll shell; nothing left to scroll */
+  .ci-readings .table-scroll{overflow-x:visible;margin:12px 0}
+
+  /* 2 ─ collapse table internals to normal flow so each <tr> can be a grid.
+     thead is dropped: display:block strips the table role regardless, and every
+     cell is self-labeling (link text, up/down word, pill word, the sparkline's
+     full-sentence aria-label, and a visible "As of" prefix), so a floating
+     header row would only add screen-reader noise. */
+  .ci-readings .ci-table,
+  .ci-readings .ci-table tbody{display:block;width:100%}
+  .ci-readings .ci-table{min-width:0}
+  .ci-readings .ci-table thead{display:none}
+  .ci-readings .ci-table td{padding:0;border:0;white-space:normal}
+
+  /* 3 ─ the card-without-the-box: two lines, sparkline pinned right across both.
+     name↔signal on the left, direction↔as-of mirrored on the right. */
+  .ci-readings .ci-table tbody tr[data-name]{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto auto;
+    column-gap:8px;row-gap:2px;
+    align-items:center;
+    padding:10px 2px;
+    border-bottom:1px solid var(--line);
+  }
+  .ci-readings .ci-table tbody tr[data-name]:hover{background:transparent} /* no touch-hover flash */
+
+  /* line 1 — the scan unit */
+  .ci-readings .ci-c-name{grid-row:1;grid-column:1;min-width:0}
+  .ci-readings .ci-c-name a{display:inline-block;font-size:15px;line-height:1.25;padding:1px 0}
+  .ci-readings .ci-c-dir{grid-row:1;grid-column:2;font-size:13px;white-space:nowrap}
+  .ci-readings .ci-c-spark{grid-row:1 / span 2;grid-column:3;justify-self:end;align-self:center;line-height:0}
+  .ci-readings .ci-c-spark .mtn-spark{width:104px;height:auto}
+  .ci-readings .ci-c-spark .ci-t-na{color:var(--stone,#9aa0aa)}
+
+  /* line 2 — quiet provenance */
+  .ci-readings .ci-c-sig{grid-row:2;grid-column:1;justify-self:start}
+  .ci-readings .ci-c-sig .ci-read__verb{font-size:10.5px;margin:0}
+  .ci-readings .ci-c-asof{grid-row:2;grid-column:2;justify-self:end;white-space:nowrap;font-size:12px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+  .ci-readings .ci-c-asof::before{content:attr(data-label) " ";color:var(--ink-soft)}
+
+  /* 4 ─ DE-NOISE (grafted from Approach 2, contrast-safe): verdictChip() emits a
+     pill on EVERY row and ~60 are "Hold". On mobile, strip the Hold pill's chrome
+     to muted full-contrast text so real movers keep the only visible badge.
+     Watch / re-price pills are untouched. */
+  .ci-readings .ci-c-sig .ci-read__verb[data-bias="hold"]{
+    background:transparent;border-color:transparent;padding:0;color:var(--ink-soft)
+  }
+
+  /* 5 ─ MOVERS RAIL (grafted from Approach 4, phone-only, zero data dropped):
+     rows already sort reprice→watch→hold, so a left rail on the movers turns the
+     top of the list into a quiet market board. Keyed off data-tone on the <tr>. */
+  .ci-readings .ci-table tbody tr[data-tone="reprice"]{border-left:3px solid #A23B2D;padding-left:9px}
+  .ci-readings .ci-table tbody tr[data-tone="watch"]{border-left:3px solid #9a7d2e;padding-left:9px}
+
+  /* 6 ─ the no-match row stays a plain full-width line, not a broken 1-col grid */
+  .ci-readings .ci-table tbody tr.ci-table-empty{display:block;padding:14px 2px}
+  .ci-readings .ci-table tbody tr.ci-table-empty td{display:block;padding:0;border:0}
+
+  /* 7 ─ FILTER CONTRACT — display:grid on <tr> is an author rule that outranks
+     the UA [hidden]{display:none}, which would un-hide filtered-out rows. Restore
+     it. Equal specificity to the grid rule, so it MUST stay after it in source. */
+  .ci-readings .ci-table tbody tr[hidden]{display:none}
+}
+
+/* dark-mode movers rail (site uses BOTH the explicit toggle and the media default) */
+@media (max-width:680px){
+  :root[data-theme="dark"] .ci-readings .ci-table tbody tr[data-tone="reprice"]{border-left-color:#ed9a8e}
+  :root[data-theme="dark"] .ci-readings .ci-table tbody tr[data-tone="watch"]{border-left-color:#d8bd6a}
+}
+@media (max-width:680px) and (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .ci-readings .ci-table tbody tr[data-tone="reprice"]{border-left-color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-readings .ci-table tbody tr[data-tone="watch"]{border-left-color:#d8bd6a}
+}
+
 :root[data-theme="dark"] .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
 .ci-read--pending{border-left-color:#cdb368;background:var(--cream-2)}
 .ci-read--pending .ci-read__head{color:#8a6d1f}
@@ -239,11 +323,11 @@ main{padding-top:64px}
 .ci-events__take-b{font-size:15px;line-height:1.6;color:var(--ink);margin:0 0 8px;max-width:68ch}
 .ci-events__take-b strong{color:var(--ink)}
 .ci-events__take-mv{font-size:13.5px;line-height:1.55;color:var(--ink-soft);margin:0;max-width:68ch}
-.ci-events__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.ci-events__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}@media(min-width:680px){.ci-events__list{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}}
 .ci-events__ev{padding:14px 16px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px;font-variant-numeric:tabular-nums}
 .ci-events__ev[data-dir="up"]{border-left-color:#A23B2D}
 .ci-events__ev[data-dir="down"]{border-left-color:var(--teal)}
-.ci-events__hd{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
+.ci-events__hd{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;justify-content:space-between}
 .ci-events__date{font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--ink);min-width:76px}
 .ci-events__mag{font-size:14px;font-weight:700;letter-spacing:.01em;white-space:nowrap}
 .ci-events__mag[data-dir="up"]{color:#A23B2D}
@@ -310,9 +394,9 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
 </style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=4d3925609798" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=1ff1de200f52" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=4d3925609798"><link rel="stylesheet" href="/assets/site-article.css?v=1ff1de200f52"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=f8b6c001b1bb" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=8787ec2df8b4" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=f8b6c001b1bb"><link rel="stylesheet" href="/assets/site-article.css?v=8787ec2df8b4"></noscript>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -404,14 +488,11 @@ main{padding-top:64px}
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
       </svg>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Muntin &mdash; every message is read.">
-      <!-- Phase 5+ — site-wide pulse propagation. Hidden by default;
-           window-state.js reveals when lastSeen <4h. Decorative; the
-           label "Contact" remains the accessible affordance. -->
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true"></span>
-      Contact
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-    </a>
+    <!-- Contact CTA retired from the primary nav (2026-07): the filled pill was
+         the widest right-side item, so justify-content:space-between dumped the
+         row's overflow onto it and pushed it past the right padding — the nav
+         read as leaning right. The direct line still lives in the footer, the
+         mobile menu (below), and the mobile sticky CTA bar. -->
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -518,6 +599,32 @@ main{padding-top:64px}
         })
         .catch(function () { show(signin); });
     });
+  </script>
+  <!-- Active-tab detection. Marks the top-level nav link whose href is the
+       best (longest) prefix match for the current path with
+       aria-current="page"; the tab styling renders that as the active
+       (underlined) tab. Runs synchronously — the .nav-links are already
+       parsed above. Progressive enhancement: no-JS visitors see no active
+       tab, which is acceptable. The home link is not a tab, so "/" never
+       matches on every page. -->
+  <script>
+    (function () {
+      try {
+        var path = location.pathname.replace(/\/index\.html$/, '/');
+        if (path.charAt(path.length - 1) !== '/') path += '/';
+        var links = document.querySelectorAll('.nav-links a[href^="/"]');
+        var best = null, bestLen = -1;
+        for (var i = 0; i < links.length; i++) {
+          var h = links[i].getAttribute('href').replace(/\/index\.html$/, '/');
+          if (h.charAt(h.length - 1) !== '/') h += '/';
+          if (h === '/') continue;
+          if (path === h || path.indexOf(h) === 0) {
+            if (h.length > bestLen) { best = links[i]; bestLen = h.length; }
+          }
+        }
+        if (best) best.setAttribute('aria-current', 'page');
+      } catch (e) { /* no-op */ }
+    })();
   </script>
   <!-- Phase 7 — dark-mode toggle handler. Loaded after the nav
        partial so the .js-theme-toggle button is in the DOM. -->

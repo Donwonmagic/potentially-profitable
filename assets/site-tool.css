@@ -5,7 +5,7 @@
  * the SECTIONS map in scripts/build-css-shells.mjs.
  */
 
-/* ===== [tool] TOOL SHELL — shared primitives for /tools/* pages (lines 2878-2978) ===== */
+/* ===== [tool] TOOL SHELL — shared primitives for /tools/* pages (lines 3054-3154) ===== */
 /* ============================================================
    TOOL SHELL — shared primitives for /tools/* pages
    Promoted from seven near-identical inline <style> blocks
@@ -107,7 +107,7 @@
 .tool-card.soon .cta{ color:var(--stone); }
 .tool-card .cta svg{ width:16px; height:16px; }
 
-/* ===== [tool] Tools-landing cluster layout (lines 2979-3270) ===== */
+/* ===== [tool] Tools-landing cluster layout (lines 3155-3500) ===== */
 
 /* ---------- Tools-landing cluster layout (Phase 2 cohesion pass) -----
    The /tools/ page is now grouped by the same 6-topic taxonomy used at
@@ -219,6 +219,11 @@
 }
 .tool-cluster__topic:hover{ text-decoration:underline; }
 .tool-cluster .tool-grid{ margin-top:24px; }
+/* Keep the /tools/ index cluster 2-up through tablet (desktop base .tool-grid
+   is already 2-up; the generic <=960 collapse drops it to 1-col, stacking 5
+   compact cards full-width). Bounded to 641-960 so phones stay 1-up and
+   desktop is untouched. */
+@media (min-width:641px) and (max-width:960px){ .tool-cluster .tool-grid{ grid-template-columns:repeat(2,1fr); } }
 @media (max-width:720px){
   .tool-cluster__head{ grid-template-columns:1fr; align-items:start; }
   .tool-cluster__topic{ justify-self:start; }
@@ -247,6 +252,55 @@
   border-top:1px dashed var(--line);
   flex:1;
 }
+
+/* ===== Sheets hub — "The Sheet Index" =====================================
+   Elevate the operator-sheet cards + frame /sheets/ as a browsable catalog
+   (owner: the boxes felt un-styled and the page should read as a hub).
+   Synthesized from the design panel: hub framing (masthead / index-tab chips /
+   muntin-glyph section headers / labeled deliverable band / "Open sheet"
+   affordance) + a stilled LIVE dot. Scoped to body[data-page="sheets-hub"];
+   /tools/ reuses these classes but has no data-page, so it never matches. */
+body[data-page="sheets-hub"] .tool-goals{ margin-top:24px; padding:0 0 12px; background:transparent; border:0; border-bottom:1px solid var(--line-dark); border-radius:0; }
+body[data-page="sheets-hub"] .tool-chipnav{ margin:26px 0 4px; gap:8px; }
+body[data-page="sheets-hub"] .tool-chipnav a{ border-color:var(--line-dark); background:var(--surface-1); font-variant-numeric:tabular-nums; }
+body[data-page="sheets-hub"] .tool-chipnav a:hover,
+body[data-page="sheets-hub"] .tool-chipnav a:focus-visible{ background:var(--teal-tint); border-color:var(--teal); color:var(--teal); }
+body[data-page="sheets-hub"] .tool-cluster__head{ border-bottom-color:var(--line-dark); }
+body[data-page="sheets-hub"] .tool-cluster__head h2{ display:flex; align-items:center; gap:14px; }
+body[data-page="sheets-hub"] .tool-cluster__head h2::before{ content:""; flex:none; width:0.66em; height:0.66em; border-radius:2px; border:1.5px solid var(--teal); opacity:.9; background:linear-gradient(var(--teal),var(--teal)) center / 1.5px 100% no-repeat, linear-gradient(var(--teal),var(--teal)) center / 100% 1.5px no-repeat; }
+body[data-page="sheets-hub"] .tool-cluster__intro{ grid-column:1 / -1; margin-top:2px; }
+body[data-page="sheets-hub"] .tool-cluster__intro-toggle{ list-style:none; cursor:pointer; user-select:none; display:inline-flex; align-items:center; gap:8px; min-height:36px; font-family:var(--font-body); font-size:13px; font-weight:600; letter-spacing:.02em; color:var(--teal); }
+body[data-page="sheets-hub"] .tool-cluster__intro-toggle::-webkit-details-marker{ display:none; }
+body[data-page="sheets-hub"] .tool-cluster__intro-toggle::after{ content:"+"; font-family:var(--font-mono); font-size:15px; line-height:1; color:var(--stone); }
+body[data-page="sheets-hub"] .tool-cluster__intro[open] .tool-cluster__intro-toggle::after{ content:"\2212"; }
+body[data-page="sheets-hub"] .tool-cluster__intro-toggle:focus-visible{ outline:none; color:var(--teal-dark); text-decoration:underline; }
+body[data-page="sheets-hub"] .tool-cluster .tool-grid{ gap:20px; margin-top:22px; }
+body[data-page="sheets-hub"] .tool-card--compact{ padding:24px 26px 20px; background:var(--surface-1); box-shadow:var(--elev-1); }
+body[data-page="sheets-hub"] .tool-card--compact::before{ content:""; position:absolute; left:0; right:0; top:0; height:2px; background:var(--teal); transform:scaleX(0); transform-origin:left; transition:transform var(--t-med) var(--ease-out); }
+body[data-page="sheets-hub"] .tool-card--compact.live:hover::before{ transform:scaleX(1); }
+body[data-page="sheets-hub"] .tool-card--compact.live:hover{ transform:translateY(-3px); box-shadow:var(--elev-2); }
+body[data-page="sheets-hub"] .tool-card--compact .status{ margin-bottom:14px; }
+body[data-page="sheets-hub"] .tool-card--compact .status::before{ animation:none; }
+body[data-page="sheets-hub"] .tool-card--compact h3{ letter-spacing:-0.015em; margin:0 0 8px; }
+body[data-page="sheets-hub"] .tool-card--compact .tool-card__walkaway{ flex:0 0 auto; margin:2px 0 0 !important; padding:11px 14px; border-top:0; border-left:3px solid var(--teal); border-radius:0 var(--r-sm) var(--r-sm) 0; background:color-mix(in srgb, var(--teal) 6%, transparent); color:var(--ink-soft); font-size:14px; line-height:1.5; }
+body[data-page="sheets-hub"] .tool-card__walkaway-label{ display:block; margin-bottom:3px; font-size:10.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--teal-dark); }
+body[data-page="sheets-hub"] .tool-card--compact > p:last-child{ display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px 14px; margin-top:auto !important; padding-top:13px; border-top:1px solid var(--line); }
+body[data-page="sheets-hub"] .tool-card--compact > p:last-child::after{ content:"Open sheet \2192"; display:inline-block; margin-left:auto; white-space:nowrap; font-family:var(--font-body); font-size:13px; font-weight:600; letter-spacing:.01em; color:var(--teal); transition:transform var(--t-fast) var(--ease-out), color var(--t-fast); }
+body[data-page="sheets-hub"] .tool-card--compact.live:hover > p:last-child::after{ transform:translateX(3px); color:var(--teal-dark); }
+@media (prefers-reduced-motion:reduce){
+  body[data-page="sheets-hub"] .tool-card--compact::before,
+  body[data-page="sheets-hub"] .tool-card--compact > p:last-child::after{ transition:none; }
+  body[data-page="sheets-hub"] .tool-card--compact.live:hover{ transform:none; }
+}
+/* Hero: the eyebrow + H1 were flush-left while the sub + CTAs were centered.
+   Center the whole hero on wider screens so it reads as one deliberate block. */
+@media (min-width:1024px){
+  body[data-page="sheets-hub"] .hero-tight .mm-hero{ text-align:center; }
+  body[data-page="sheets-hub"] .hero-tight .mm-hero h1{ margin-left:auto; margin-right:auto; }
+}
+/* Trim the oversized gap between the compact hero and the catalog masthead. */
+body[data-page="sheets-hub"] main > section.block{ padding-top:clamp(48px, 5vw, 80px); }
+/* ===== end Sheets hub ===================================================== */
 
 /* Spotlight section — Phase 7 W1-3. Two flagship tools (Menu
    Design Suite + Advanced Invoice Decoder) rendered as large,
@@ -400,7 +454,7 @@
 @media (max-width:960px){ .tool-roadmap .tool-grid{ grid-template-columns:repeat(2,1fr); } }
 @media (max-width:560px){ .tool-roadmap .tool-grid{ grid-template-columns:1fr; } }
 
-/* ===== [tool] Per-tool "Keep going" knit-in (lines 3271-3382) ===== */
+/* ===== [tool] Per-tool "Keep going" knit-in (lines 3501-3612) ===== */
 
 /* ---------- Per-tool "Keep going" knit-in (Phase 3 cohesion pass) ----
    Renders at the bottom of every live tool page (between
@@ -513,7 +567,7 @@
   .tool-knit__grid{ grid-template-columns:1fr; }
 }
 
-/* ===== [tool] Tool deep-links (.tool-deep-* — bottom of every /tools/* page) (lines 4614-4698) ===== */
+/* ===== [tool] Tool deep-links (.tool-deep-* — bottom of every /tools/* page) (lines 4855-4939) ===== */
 
 /* Tool deep-links — the Phase-3.5 block at the bottom of every
    /tools/* page. Closes the loop from a tool's result back into
@@ -599,7 +653,7 @@
   color:var(--teal);
 }
 
-/* ===== [tool] Tool states (loading / error / empty) (lines 5861-5907) ===== */
+/* ===== [tool] Tool states (loading / error / empty) (lines 6110-6156) ===== */
 
 /* ============ Tool states (Sprint 5 — cohesion) ============
    Shared loading + error patterns for tool result regions. Every
@@ -647,7 +701,7 @@
 .tool-error-meta{margin-top:12px;font-size:12.5px;color:var(--stone);font-variant-numeric:tabular-nums}
 
 
-/* ===== [tool] Learn-back (in tool result region) (lines 5992-6011) ===== */
+/* ===== [tool] Learn-back (in tool result region) (lines 6241-6260) ===== */
 
 /* ============ Learn-back (Sprint 12 — cohesion) ============
    A thin, prose-shaped row that sits inside a tool's result region
@@ -668,7 +722,7 @@
 .learn-back-body a:hover,.learn-back-body a:focus-visible{color:var(--teal-dark)}
 
 
-/* ===== [tool] .edu-result — interpretation card under tool output (lines 6432-6471) ===== */
+/* ===== [tool] .edu-result — interpretation card under tool output (lines 6686-6725) ===== */
 /* ============ .edu-result — interpretation card under tool output ============
    Every calculator emits a number; this block lives directly under
    the result panel and answers the two questions a small-business
@@ -709,7 +763,7 @@
 @media print{.edu-result{display:none}}
 
 
-/* ===== [tool] Statistical disclosure components (lines 6472-6515) ===== */
+/* ===== [tool] Statistical disclosure components (lines 6726-6769) ===== */
 /* ============ Statistical disclosure components ============
    Phase 3 — building on .edu-result so calculators can disclose
    uncertainty bands, hard-coded assumptions, and the formula behind
@@ -754,7 +808,7 @@
 @media print{.edu-range,.edu-source,.edu-formula,.edu-caveat{display:none}}
 
 
-/* ===== [tool] Tool-internal type minimums (lines 6516-6672) ===== */
+/* ===== [tool] Tool-internal type minimums (lines 6770-6898) ===== */
 /* ============ Tool-internal type minimums ============
    Utility floor for text inside tool result panels, tables, and
    helpers. Tools previously drifted to 10.5–12px in tight grids; the
@@ -883,29 +937,8 @@
 .window-fieldnotes-rail__cite a{color:var(--teal);text-decoration:none}
 .window-fieldnotes-rail__empty{font-style:italic;color:var(--ink-soft);font-size:14.5px}
 
-/* Phase G.8 (Growth) — glossary-index "Tools that use these terms"
-   sidecar. Sits below the recently-added rail. Quiet two-column
-   list on wide screens, one-column on phones. */
-.gloss-tool-sidecar{padding:32px 0 16px;border-top:1px solid var(--line);max-width:1080px}
-.gloss-tool-sidecar__h{font-family:var(--font-display);font-size:22px;line-height:1.25;margin:0 0 8px;color:var(--ink)}
-.gloss-tool-sidecar__lead{font-size:14.5px;color:var(--ink-soft);max-width:680px;line-height:1.55;margin:0 0 16px}
-.gloss-tool-sidecar__list{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:8px 24px}
-.gloss-tool-sidecar__list li{font-size:14.5px;line-height:1.55;padding:6px 0;border-bottom:1px dashed color-mix(in srgb, var(--line) 70%, transparent)}
-.gloss-tool-sidecar__list li a{color:var(--teal);text-decoration:none}
-.gloss-tool-sidecar__list li a:hover{text-decoration:underline}
-.gloss-tool-sidecar__list li span{color:var(--ink-soft);display:block;font-size:13.5px}
 
-/* Phase G.4 (Growth) — Last-verified stamp on volatile glossary
-   terms (GBP, Find a Table, Web Vitals, third-party platforms). */
-.glossary-verified{font-size:12px;color:var(--ink-soft);font-style:italic;margin:6px 0 16px;letter-spacing:0.02em}
-.glossary-verified time{font-style:normal;font-variant-numeric:tabular-nums;color:var(--ink)}
-
-/* Phase G.4 (Growth) — concrete-example sentence on glossary term
-   pages. Quiet inline emphasis: italic for the leading "Example:",
-   tabular figures so dollar amounts align cleanly. */
-.term-example{font-style:italic;font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:8px 0 24px;max-width:680px;font-variant-numeric:tabular-nums}
-.term-example code{font-style:normal;background:var(--cream-2);padding:1px 4px;border-radius:3px;font-size:13px}
-
+/* ===== [tool] sub-tool rail back to Storefront Health (lines 6923-6928) ===== */
 /* Phase G.8 (Growth) — sub-tool rail back to Storefront Health.
    Quiet single line; the bold tool name carries the click weight. */
 .tool-storefront-rail{font-size:13.5px;color:var(--ink-soft);line-height:1.55;margin:6px 0 0;max-width:680px}

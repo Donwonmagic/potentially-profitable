@@ -145,9 +145,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=4d3925609798" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-tool.css?v=d7265c6157ff" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=4d3925609798"><link rel="stylesheet" href="/assets/site-tool.css?v=d7265c6157ff"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=f8b6c001b1bb" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-tool.css?v=1f57a490e24f" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=f8b6c001b1bb"><link rel="stylesheet" href="/assets/site-tool.css?v=1f57a490e24f"></noscript>
 <style>
   /* Margin Math — page-scoped styles. Conservative in Phase 0; the
      calculator-specific layouts land with each phase. Palette borrows
@@ -157,7 +157,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .mm-pledge::before{content:'\2713';font-weight:700}
   .mm-pledge a{color:inherit;text-decoration:underline;text-underline-offset:2px}
   .mm-pledge-cta{text-decoration:underline;text-underline-offset:2px}
-  .mm-grid{display:grid;grid-template-columns:1fr;gap:16px;max-width:760px;margin:0 auto}
+  .mm-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;max-width:760px;margin:0 auto}
   @media (min-width:640px){.mm-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
   .mm-card{display:flex;flex-direction:column;padding:22px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);gap:12px;position:relative}
   /* Wave 10.10 — cross-tool cascade banner (break-even shifted) */
@@ -216,7 +216,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .mm-pnl-msg.error{color:var(--rust)}
   .mm-pnl-foot{font-size:12px;color:var(--stone);margin:0;line-height:1.5}
   .mm-pnl-foot code{background:var(--cream-2);padding:1px 5px;border-radius:3px;font-size:11.5px}
-  .mm-tier-group{display:flex;gap:6px;border:0;padding:0;margin:0}
+  .mm-tier-group{display:flex;gap:6px;border:0;padding:0;margin:0;min-width:0}
   .mm-tier-group legend{font-size:13px;font-weight:600;color:var(--ink-soft);margin-bottom:6px;padding:0}
   .mm-tier-btns{display:flex;gap:6px;width:100%}
   .mm-tier-btns button{flex:1;padding:10px 8px;border:1px solid var(--line-dark);border-radius:var(--r-input);background:var(--white);font:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;transition:border-color 140ms,background 140ms;line-height:1.3}
@@ -277,7 +277,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .mm-escalate[data-visible="true"]{display:flex}
   .mm-escalate p{margin:0;flex:1 1 100%}
   @media (min-width:480px){.mm-escalate p{flex:1 1 200px}}
-  .mm-escalate a{color:var(--rust);font-weight:700;text-decoration:none;border-bottom:1px solid currentColor;white-space:nowrap}
+  .mm-escalate a{color:var(--rust);font-weight:700;text-decoration:none;border-bottom:1px solid currentColor}
   .mm-escalate a:hover{color:var(--status-warn-deep)}
   /* Cross-calculator suggestion — appears on mid-severity bands
      (warn / optimize / ok) to nudge the user toward the next
@@ -288,7 +288,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .mm-cross-suggest[data-visible="true"]{display:flex}
   .mm-cross-suggest span{flex:1 1 100%}
   @media (min-width:480px){.mm-cross-suggest span{flex:1 1 200px}}
-  .mm-cross-suggest a{color:var(--teal);font-weight:700;text-decoration:none;border-bottom:1px solid currentColor;white-space:nowrap}
+  .mm-cross-suggest a{color:var(--teal);font-weight:700;text-decoration:none;border-bottom:1px solid currentColor}
   .mm-cross-suggest a:hover{color:var(--teal-dark)}
   @media print { .mm-cross-suggest { display: none !important; } }
   /* Glossary popover — reads definitions from data-def attributes on
@@ -714,14 +714,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
       </svg>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Muntin &mdash; every message is read.">
-      <!-- Phase 5+ — site-wide pulse propagation. Hidden by default;
-           window-state.js reveals when lastSeen <4h. Decorative; the
-           label "Contact" remains the accessible affordance. -->
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true"></span>
-      Contact
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-    </a>
+    <!-- Contact CTA retired from the primary nav (2026-07): the filled pill was
+         the widest right-side item, so justify-content:space-between dumped the
+         row's overflow onto it and pushed it past the right padding — the nav
+         read as leaning right. The direct line still lives in the footer, the
+         mobile menu (below), and the mobile sticky CTA bar. -->
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -828,6 +825,32 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         })
         .catch(function () { show(signin); });
     });
+  </script>
+  <!-- Active-tab detection. Marks the top-level nav link whose href is the
+       best (longest) prefix match for the current path with
+       aria-current="page"; the tab styling renders that as the active
+       (underlined) tab. Runs synchronously — the .nav-links are already
+       parsed above. Progressive enhancement: no-JS visitors see no active
+       tab, which is acceptable. The home link is not a tab, so "/" never
+       matches on every page. -->
+  <script>
+    (function () {
+      try {
+        var path = location.pathname.replace(/\/index\.html$/, '/');
+        if (path.charAt(path.length - 1) !== '/') path += '/';
+        var links = document.querySelectorAll('.nav-links a[href^="/"]');
+        var best = null, bestLen = -1;
+        for (var i = 0; i < links.length; i++) {
+          var h = links[i].getAttribute('href').replace(/\/index\.html$/, '/');
+          if (h.charAt(h.length - 1) !== '/') h += '/';
+          if (h === '/') continue;
+          if (path === h || path.indexOf(h) === 0) {
+            if (h.length > bestLen) { best = links[i]; bestLen = h.length; }
+          }
+        }
+        if (best) best.setAttribute('aria-current', 'page');
+      } catch (e) { /* no-op */ }
+    })();
   </script>
   <!-- Phase 7 — dark-mode toggle handler. Loaded after the nav
        partial so the .js-theme-toggle button is in the DOM. -->

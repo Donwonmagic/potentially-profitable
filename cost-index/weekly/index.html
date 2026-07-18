@@ -66,10 +66,10 @@ main{padding-top:64px}
 .ci-eyebrow a{color:var(--teal);text-decoration:none}
 .ci-hero h1{font-family:var(--font-display);font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.12;color:var(--ink);margin:0 0 14px}
 .ci-lede{font-size:18px;line-height:1.6;color:var(--ink);margin:0;max-width:720px}
-.ci-body{margin:8px auto 0;max-width:760px}
+.ci-body{margin:8px 0 0;max-width:760px}@media(min-width:1024px){.breadcrumb,.ci-hero,.ci-body{max-width:840px;margin-inline:auto}}
 .ci-body h2{font-family:var(--font-display);font-size:clamp(20px,3vw,26px);font-weight:500;color:var(--ink);margin:38px 0 10px;line-height:1.2}
 .ci-body h3{font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--ink);margin:24px 0 8px;line-height:1.25}
-.ci-body p{margin:0 0 16px;font-size:16px;line-height:1.7}
+.ci-body p{margin:0 0 16px;font-size:16px;line-height:1.7}.ci-body>p:not([class]),.ci-body>ol,.ci-body>ul{max-width:68ch}
 .ci-body ol,.ci-body ul{margin:0 0 16px;padding-left:22px;font-size:16px;line-height:1.7}
 .ci-body li{margin:0 0 8px}
 .ci-body strong{font-weight:700}
@@ -103,9 +103,9 @@ main{padding-top:64px}
 .ci-rel__val{flex:0 0 42px;font-size:13px;font-weight:600;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink)}
 .ci-rel figcaption{font-size:13px;color:var(--ink-soft);margin-top:8px}
 </style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=4d3925609798" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=1ff1de200f52" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=4d3925609798"><link rel="stylesheet" href="/assets/site-article.css?v=1ff1de200f52"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=f8b6c001b1bb" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=8787ec2df8b4" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=f8b6c001b1bb"><link rel="stylesheet" href="/assets/site-article.css?v=8787ec2df8b4"></noscript>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -197,14 +197,11 @@ main{padding-top:64px}
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
       </svg>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Muntin &mdash; every message is read.">
-      <!-- Phase 5+ — site-wide pulse propagation. Hidden by default;
-           window-state.js reveals when lastSeen <4h. Decorative; the
-           label "Contact" remains the accessible affordance. -->
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true"></span>
-      Contact
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-    </a>
+    <!-- Contact CTA retired from the primary nav (2026-07): the filled pill was
+         the widest right-side item, so justify-content:space-between dumped the
+         row's overflow onto it and pushed it past the right padding — the nav
+         read as leaning right. The direct line still lives in the footer, the
+         mobile menu (below), and the mobile sticky CTA bar. -->
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -312,6 +309,32 @@ main{padding-top:64px}
         .catch(function () { show(signin); });
     });
   </script>
+  <!-- Active-tab detection. Marks the top-level nav link whose href is the
+       best (longest) prefix match for the current path with
+       aria-current="page"; the tab styling renders that as the active
+       (underlined) tab. Runs synchronously — the .nav-links are already
+       parsed above. Progressive enhancement: no-JS visitors see no active
+       tab, which is acceptable. The home link is not a tab, so "/" never
+       matches on every page. -->
+  <script>
+    (function () {
+      try {
+        var path = location.pathname.replace(/\/index\.html$/, '/');
+        if (path.charAt(path.length - 1) !== '/') path += '/';
+        var links = document.querySelectorAll('.nav-links a[href^="/"]');
+        var best = null, bestLen = -1;
+        for (var i = 0; i < links.length; i++) {
+          var h = links[i].getAttribute('href').replace(/\/index\.html$/, '/');
+          if (h.charAt(h.length - 1) !== '/') h += '/';
+          if (h === '/') continue;
+          if (path === h || path.indexOf(h) === 0) {
+            if (h.length > bestLen) { best = links[i]; bestLen = h.length; }
+          }
+        }
+        if (best) best.setAttribute('aria-current', 'page');
+      } catch (e) { /* no-op */ }
+    })();
+  </script>
   <!-- Phase 7 — dark-mode toggle handler. Loaded after the nav
        partial so the .js-theme-toggle button is in the DOM. -->
   <script src="/assets/theme-toggle.js?v=phase8"></script>
@@ -328,53 +351,55 @@ main{padding-top:64px}
     <h1>Every edition</h1>
     <p class="ci-lede">The Restaurant Cost Index publishes a dated dispatch — monthly on the first Tuesday since August 2026, weekly before that — where the weighted basket stands, what is flashing a re-price or watch signal, and the driver context behind it. This is the full run, newest first. Each edition is a permanent, citable record; the native editions ship an open per-edition dataset alongside the read.</p>
   </section>
-  <div class="ci-body">
-    <table class="ci-archive" style="width:100%;border-collapse:collapse;margin:8px 0 24px;font-size:15.5px">
+  <div class="ci-body" style="margin-inline:0">
+    <div class="ci-archive-wrap" style="margin:8px 0 24px">
+    <table class="ci-archive" style="width:100%;border-collapse:collapse;font-size:15.5px">
       <thead>
         <tr style="text-align:left;border-bottom:2px solid var(--line)">
           <th style="padding:10px 12px">Week of</th>
           <th style="padding:10px 12px">Basket vs baseline</th>
           <th style="padding:10px 12px">Confidence</th>
           <th style="padding:10px 12px">Above baseline</th>
-          <th style="padding:10px 12px">Read</th>
-          <th style="padding:10px 12px">Data</th>
+          <th style="padding:10px 12px;white-space:nowrap">Read</th>
+          <th style="padding:10px 12px;white-space:nowrap">Data</th>
         </tr>
       </thead>
       <tbody>
           <tr>
-            <td><strong>2026-07-06</strong></td>
-            <td>−5.0%</td>
-            <td>high</td>
-            <td>24 / 81</td>
-            <td><a href="/blog/cost-index-week-2026-07-06/">Open dispatch</a></td>
-            <td><a href="/cost-index/week-2026-07-06.json">JSON</a></td>
+            <td data-label="Week of"><strong>2026-07-06</strong></td>
+            <td data-label="Basket vs baseline">−5.0%</td>
+            <td data-label="Confidence">high</td>
+            <td data-label="Above baseline">24 / 81</td>
+            <td data-label="Read" style="white-space:nowrap"><a href="/blog/cost-index-week-2026-07-06/">Open dispatch</a></td>
+            <td data-label="Data" style="white-space:nowrap"><a href="/cost-index/week-2026-07-06.json">JSON</a></td>
           </tr>
           <tr>
-            <td><strong>2026-06-18</strong></td>
-            <td>+3.2%</td>
-            <td>medium</td>
-            <td>36 / 82</td>
-            <td><a href="/blog/cost-index-week-2026-06-18/">Open dispatch</a></td>
-            <td><a href="/cost-index/week-2026-06-18.json">JSON</a></td>
+            <td data-label="Week of"><strong>2026-06-18</strong></td>
+            <td data-label="Basket vs baseline">+3.2%</td>
+            <td data-label="Confidence">medium</td>
+            <td data-label="Above baseline">36 / 82</td>
+            <td data-label="Read" style="white-space:nowrap"><a href="/blog/cost-index-week-2026-06-18/">Open dispatch</a></td>
+            <td data-label="Data" style="white-space:nowrap"><a href="/cost-index/week-2026-06-18.json">JSON</a></td>
           </tr>
           <tr>
-            <td><strong>2026-06-16</strong> <span style="opacity:.55;font-size:.85em">(reconstructed)</span></td>
-            <td>+3.2%</td>
-            <td>medium</td>
-            <td>32 / 82</td>
-            <td><a href="/blog/cost-index-week-2026-06-16/">Open dispatch</a></td>
-            <td>—</td>
+            <td data-label="Week of"><strong>2026-06-16</strong> <span style="opacity:.55;font-size:.85em">(reconstructed)</span></td>
+            <td data-label="Basket vs baseline">+3.2%</td>
+            <td data-label="Confidence">medium</td>
+            <td data-label="Above baseline">32 / 82</td>
+            <td data-label="Read" style="white-space:nowrap"><a href="/blog/cost-index-week-2026-06-16/">Open dispatch</a></td>
+            <td data-label="Data" style="white-space:nowrap">—</td>
           </tr>
           <tr>
-            <td><strong>2026-06-05</strong> <span style="opacity:.55;font-size:.85em">(reconstructed)</span></td>
-            <td>+9.1%</td>
-            <td>high</td>
-            <td>9 / 13</td>
-            <td><a href="/blog/cost-index-week-2026-06-05/">Open dispatch</a></td>
-            <td>—</td>
+            <td data-label="Week of"><strong>2026-06-05</strong> <span style="opacity:.55;font-size:.85em">(reconstructed)</span></td>
+            <td data-label="Basket vs baseline">+9.1%</td>
+            <td data-label="Confidence">high</td>
+            <td data-label="Above baseline">9 / 13</td>
+            <td data-label="Read" style="white-space:nowrap"><a href="/blog/cost-index-week-2026-06-05/">Open dispatch</a></td>
+            <td data-label="Data" style="white-space:nowrap">—</td>
           </tr>
       </tbody>
     </table>
+    </div>
     <p style="font-size:13.5px;color:var(--ink-soft);line-height:1.55">Editions marked “reconstructed” were backfilled at basket level from the published dispatch before the per-week dataset existed; they carry no open data file and never anchor a per-ingredient week-over-week claim. Native editions ship an open snapshot (CC0) at /cost-index/week-&lt;date&gt;.json.</p>
     <p><a href="/cost-index/methodology/">How these numbers are built →</a></p>
   </div>

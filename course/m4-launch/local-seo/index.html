@@ -286,14 +286,11 @@ main{padding-top:64px}
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
       </svg>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Muntin &mdash; every message is read.">
-      <!-- Phase 5+ — site-wide pulse propagation. Hidden by default;
-           window-state.js reveals when lastSeen <4h. Decorative; the
-           label "Contact" remains the accessible affordance. -->
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true"></span>
-      Contact
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-    </a>
+    <!-- Contact CTA retired from the primary nav (2026-07): the filled pill was
+         the widest right-side item, so justify-content:space-between dumped the
+         row's overflow onto it and pushed it past the right padding — the nav
+         read as leaning right. The direct line still lives in the footer, the
+         mobile menu (below), and the mobile sticky CTA bar. -->
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -400,6 +397,32 @@ main{padding-top:64px}
         })
         .catch(function () { show(signin); });
     });
+  </script>
+  <!-- Active-tab detection. Marks the top-level nav link whose href is the
+       best (longest) prefix match for the current path with
+       aria-current="page"; the tab styling renders that as the active
+       (underlined) tab. Runs synchronously — the .nav-links are already
+       parsed above. Progressive enhancement: no-JS visitors see no active
+       tab, which is acceptable. The home link is not a tab, so "/" never
+       matches on every page. -->
+  <script>
+    (function () {
+      try {
+        var path = location.pathname.replace(/\/index\.html$/, '/');
+        if (path.charAt(path.length - 1) !== '/') path += '/';
+        var links = document.querySelectorAll('.nav-links a[href^="/"]');
+        var best = null, bestLen = -1;
+        for (var i = 0; i < links.length; i++) {
+          var h = links[i].getAttribute('href').replace(/\/index\.html$/, '/');
+          if (h.charAt(h.length - 1) !== '/') h += '/';
+          if (h === '/') continue;
+          if (path === h || path.indexOf(h) === 0) {
+            if (h.length > bestLen) { best = links[i]; bestLen = h.length; }
+          }
+        }
+        if (best) best.setAttribute('aria-current', 'page');
+      } catch (e) { /* no-op */ }
+    })();
   </script>
   <!-- Phase 7 — dark-mode toggle handler. Loaded after the nav
        partial so the .js-theme-toggle button is in the DOM. -->

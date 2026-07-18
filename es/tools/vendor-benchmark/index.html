@@ -129,9 +129,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=4d3925609798" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-tool.css?v=d7265c6157ff" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=4d3925609798"><link rel="stylesheet" href="/assets/site-tool.css?v=d7265c6157ff"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=f8b6c001b1bb" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-tool.css?v=1f57a490e24f" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=f8b6c001b1bb"><link rel="stylesheet" href="/assets/site-tool.css?v=1f57a490e24f"></noscript>
 <style>
 /* Vendor Benchmark — tool-scoped styles. Built entirely from site-core tokens
    so light/dark and print are automatic. .vb-* namespace. */
@@ -217,7 +217,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   --vb-readout-bg:#fff;--vb-readout-edge:#ddd;
   --vb-grid:#e5e5e5;--vb-grid-100:#999;--vb-signal:#666;--vb-signal-strong:#666;
 }}
-.vb-shell{max-width:780px;margin:0 auto;padding:44px 16px 80px}
+.vb-shell{max-width:820px;margin:0 auto;padding:44px clamp(16px,4.5vw,44px) 80px}@media(min-width:768px) and (max-width:1023px){.vb-shell{max-width:860px}}
 .vb-hero{margin-bottom:26px}
 .vb-hero h1{font-family:var(--font-display);font-size:clamp(30px,5vw,42px);font-weight:520;letter-spacing:-0.018em;color:var(--ink);margin:14px 0 10px;line-height:1.1;text-wrap:balance}
 .vb-hero h1 em{font-style:italic;font-weight:420;color:var(--teal)}
@@ -617,11 +617,10 @@ html{-webkit-text-size-adjust:100%}
       <a href="/tools/vendor-benchmark/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
-    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Muntin &mdash; leemos cada mensaje.">
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true"></span>
-      Contacto
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-    </a>
+    <!-- Contacto retirado de la navegación principal (2026-07): el botón
+         relleno era el elemento más ancho de la derecha y desequilibraba la
+         barra. La línea directa sigue en el pie, el menú móvil y la barra fija
+         móvil. -->
     <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -703,6 +702,29 @@ html{-webkit-text-size-adjust:100%}
        para que el botón .js-theme-toggle ya esté en el DOM. (Faltaba
        en el nav en español, así que el interruptor no funcionaba en
        las páginas /es/.) -->
+  <!-- Detección de pestaña activa. Marca con aria-current="page" el enlace
+       de navegación cuyo href coincide mejor (prefijo más largo) con la ruta
+       actual; el estilo lo muestra como la pestaña activa (subrayada).
+       Mejora progresiva: sin JS no hay pestaña activa. -->
+  <script>
+    (function () {
+      try {
+        var path = location.pathname.replace(/\/index\.html$/, '/');
+        if (path.charAt(path.length - 1) !== '/') path += '/';
+        var links = document.querySelectorAll('.nav-links a[href^="/"]');
+        var best = null, bestLen = -1;
+        for (var i = 0; i < links.length; i++) {
+          var h = links[i].getAttribute('href').replace(/\/index\.html$/, '/');
+          if (h.charAt(h.length - 1) !== '/') h += '/';
+          if (h === '/' || h === '/es/') continue;
+          if (path === h || path.indexOf(h) === 0) {
+            if (h.length > bestLen) { best = links[i]; bestLen = h.length; }
+          }
+        }
+        if (best) best.setAttribute('aria-current', 'page');
+      } catch (e) { /* no-op */ }
+    })();
+  </script>
   <script src="/assets/theme-toggle.js?v=phase8"></script>
 </header>
 <nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/es/">Inicio</a><span class="breadcrumb-sep" aria-hidden="true">›</span><a href="/es/tools/">Herramientas</a><span class="breadcrumb-sep" aria-hidden="true">›</span><span aria-current="page">Vendor Benchmark</span></nav>
@@ -813,8 +835,8 @@ html{-webkit-text-size-adjust:100%}
       <div class="tool-knit__col">
         <h3>Lee</h3>
         <ul>
-          <li><a href="/es/library/keep-plate-cost-honest-when-prices-change/">Mantén honesto el costo del plato</a></li>
-          <li><a href="/es/library/how-to-raise-restaurant-menu-prices-without-losing-reservations/">Subir precios sin perder reservas</a></li>
+          <li><a href="/es/library/costo-del-plato-cuando-cambian-los-precios/">Mantén honesto el costo del plato</a></li>
+          <li><a href="/es/library/como-subir-precios-de-menu-sin-perder-reservas/">Subir precios sin perder reservas</a></li>
         </ul>
       </div>
       <div class="tool-knit__col">

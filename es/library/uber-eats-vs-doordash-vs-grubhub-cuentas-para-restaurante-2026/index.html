@@ -250,11 +250,10 @@ main{padding-top:64px}
       <a href="/library/third-party-delivery-comparison/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
-    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Muntin &mdash; leemos cada mensaje.">
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true"></span>
-      Contacto
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-    </a>
+    <!-- Contacto retirado de la navegación principal (2026-07): el botón
+         relleno era el elemento más ancho de la derecha y desequilibraba la
+         barra. La línea directa sigue en el pie, el menú móvil y la barra fija
+         móvil. -->
     <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -336,6 +335,29 @@ main{padding-top:64px}
        para que el botón .js-theme-toggle ya esté en el DOM. (Faltaba
        en el nav en español, así que el interruptor no funcionaba en
        las páginas /es/.) -->
+  <!-- Detección de pestaña activa. Marca con aria-current="page" el enlace
+       de navegación cuyo href coincide mejor (prefijo más largo) con la ruta
+       actual; el estilo lo muestra como la pestaña activa (subrayada).
+       Mejora progresiva: sin JS no hay pestaña activa. -->
+  <script>
+    (function () {
+      try {
+        var path = location.pathname.replace(/\/index\.html$/, '/');
+        if (path.charAt(path.length - 1) !== '/') path += '/';
+        var links = document.querySelectorAll('.nav-links a[href^="/"]');
+        var best = null, bestLen = -1;
+        for (var i = 0; i < links.length; i++) {
+          var h = links[i].getAttribute('href').replace(/\/index\.html$/, '/');
+          if (h.charAt(h.length - 1) !== '/') h += '/';
+          if (h === '/' || h === '/es/') continue;
+          if (path === h || path.indexOf(h) === 0) {
+            if (h.length > bestLen) { best = links[i]; bestLen = h.length; }
+          }
+        }
+        if (best) best.setAttribute('aria-current', 'page');
+      } catch (e) { /* no-op */ }
+    })();
+  </script>
   <script src="/assets/theme-toggle.js?v=phase8"></script>
 </header>
 
@@ -367,7 +389,7 @@ main{padding-top:64px}
           <span class="listen-label i18n">Escuchar este artículo</span>
         </button>
       </div>
-      <p style="font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0">Las tarifas de <!-- LIBRARY:autolink:start --><a href="/es/glossary/commission/" data-glossary-head="Comisión" data-glossary-aka="el % que la plataforma se lleva por orden" data-glossary-blurb="El porcentaje que un agregador o plataforma de pago se queda por transacción.">comisión</a><!-- LIBRARY:autolink:end --> en el titular en las tres grandes plataformas de delivery se ven idénticas: DoorDash 30%, Uber Eats 30%, Grubhub 30% en el tier estándar que paga la mayoría de los independientes. La caminata real de <!-- LIBRARY:autolink:start --><a href="/es/glossary/margin/" data-glossary-head="Margen" data-glossary-aka="ventas menos costos; varios tipos" data-glossary-blurb="Ventas menos costos.">margen</a><!-- LIBRARY:autolink:end --> &mdash;una vez sumas la tarifa de marketing, el procesamiento de pago, el cargo de &ldquo;promoción&rdquo; que nadie negoció&mdash; cuenta una historia distinta por plataforma. Las estructuras de fees abajo vienen de la documentación pública para comerciantes de cada plataforma; las cuentas por ticket usan el mismo <!-- LIBRARY:autolink:start --><a href="/es/glossary/average-check/" data-glossary-head="Ticket promedio" data-glossary-aka="ventas totales ÷ cubiertos" data-glossary-blurb="También llamado &quot;average check.&quot; Ventas totales divididas entre cubiertos totales.">ticket promedio</a><!-- LIBRARY:autolink:end --> de $42 que usa el <a href="/es/blog/cuentas-honestas-de-doordash-para-restaurantes-independientes-2026/" style="color:var(--teal)">walk de margen de DoorDash</a>.</p>
+      <p style="font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0">Las tarifas de <!-- LIBRARY:autolink:start --><a href="/es/glossary/commission/" data-glossary-head="Comisión" data-glossary-aka="el % que la plataforma se lleva por orden" data-glossary-blurb="El porcentaje que un agregador o plataforma de pago se queda por transacción.">comisión</a><!-- LIBRARY:autolink:end --> en el titular en las tres grandes plataformas de delivery se ven idénticas: DoorDash 30%, Uber Eats 30%, Grubhub 30% en el tier estándar que paga la mayoría de los independientes. La caminata real de <!-- LIBRARY:autolink:start --><a href="/es/glossary/margin/" data-glossary-head="Margen" data-glossary-aka="ventas menos costos; varios tipos" data-glossary-blurb="Ventas menos costos.">margen</a><!-- LIBRARY:autolink:end --> &mdash;una vez sumas la tarifa de marketing, el procesamiento de pago, el cargo de &ldquo;promoción&rdquo; que nadie negoció&mdash; cuenta una historia distinta por plataforma. Las estructuras de fees abajo vienen de la documentación pública para comerciantes de cada plataforma; las cuentas por ticket usan el mismo <!-- LIBRARY:autolink:start --><a href="/es/glossary/average-check/" data-glossary-head="Ticket promedio" data-glossary-aka="ventas totales ÷ cubiertos" data-glossary-blurb="También llamado &quot;average check.&quot; Ventas totales divididas entre cubiertos totales.">ticket promedio</a><!-- LIBRARY:autolink:end --> de $42 que usa el walk de margen de DoorDash.</p>
     </header>
 
       <!-- article-tldr:start -->
@@ -385,7 +407,7 @@ main{padding-top:64px}
 
     <h2 id="el-mismo-ticket-de-42-tres-plataformas">El mismo ticket de $42, tres plataformas</h2>
 
-    <p>El ejemplo usa un ticket de $42 &mdash; una orden representativa de restaurante independiente en una plataforma de terceros, el mismo ancla que usa el <a href="/es/blog/cuentas-honestas-de-doordash-para-restaurantes-independientes-2026/" style="color:var(--teal)">walk de margen de DoorDash</a>. Tu ticket será distinto. El spread porcentual es lo que carga el argumento, no el monto en dólares.</p>
+    <p>El ejemplo usa un ticket de $42 &mdash; una orden representativa de restaurante independiente en una plataforma de terceros, el mismo ancla que usa el walk de margen de DoorDash. Tu ticket será distinto. El spread porcentual es lo que carga el argumento, no el monto en dólares.</p>
 
     <figure class="viz-figure article-figure" data-audio-alt="La caminata de margen de DoorDash en un ticket Marketplace Plus de cuarenta y dos dólares. La comisión al treinta por ciento se lleva doce dólares sesenta. El procesamiento de pago al tres coma cuatro por ciento se lleva otro dólar cuarenta y tres. La tarifa de listado patrocinado promedia un dólar veinte, dos coma nueve por ciento. El empaque es un dólar cuarenta, tres coma tres por ciento. El food cost al veintiocho por ciento son once dólares setenta y seis. La mano de obra variable al catorce por ciento son cinco dólares ochenta y ocho. Lo que se queda en el restaurante son siete dólares setenta y tres, dieciocho coma cuatro por ciento. Arrastra el control para cambiar el tier de comisión entre quince y treinta y cinco por ciento y ver la cuña retenida recalcularse en vivo.">
       <div class="viz-waterfall" data-viz-waterfall data-vw-config='{"ticket":42,"variableSeg":"commission","baseRate":0.30,"baseKeep":0.184}'>

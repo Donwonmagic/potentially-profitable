@@ -788,12 +788,14 @@ function allReadingsTable(slugs, locale) {
     const spark = indexedMovement(r.entry, locale, {});
     // data-name (display name + slug) is the filter key for the search box below.
     const key = `${nm} ${s}`.toLowerCase();
-    return `<tr data-name="${escHtml(key)}">`
-      + `<td><a href="${base}/cost-index/${s}/">${escHtml(nm)}</a></td>`
-      + `<td class="ci-t-dir" data-dir="${dir}">${escHtml(dw)}</td>`
-      + `<td>${verdictChip(v, locale)}</td>`
-      + `<td>${spark || '<span class="ci-t-na">—</span>'}</td>`
-      + `<td>${escHtml(r.asOf || '—')}</td>`
+    // Per-cell classes + data-tone drive the phone reflow (see the <=680px block
+    // in the inline <style>): each row stacks into a 2-line card, no h-scroll.
+    return `<tr data-name="${escHtml(key)}" data-tone="${v.tone}">`
+      + `<td class="ci-c-name"><a href="${base}/cost-index/${s}/">${escHtml(nm)}</a></td>`
+      + `<td class="ci-c-dir ci-t-dir" data-dir="${dir}">${escHtml(dw)}</td>`
+      + `<td class="ci-c-sig">${verdictChip(v, locale)}</td>`
+      + `<td class="ci-c-spark">${spark || '<span class="ci-t-na">—</span>'}</td>`
+      + `<td class="ci-c-asof" data-label="${escHtml(cols[4])}">${escHtml(r.asOf || '—')}</td>`
       + `</tr>`;
   }).join('');
   // The find-an-ingredient box (the #1 experiential miss — two operators bounced
@@ -1569,22 +1571,23 @@ main{padding-top:64px}
 .ci-answer{font-size:clamp(18px,3vw,22px);font-weight:600;color:var(--ink);margin:0 0 14px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
 .ci-asof-rel{color:var(--ink-soft);font-weight:400}
 .ci-lede{font-size:18px;line-height:1.6;color:var(--ink);margin:0;max-width:720px}
-.ci-body{margin:8px auto 0;max-width:760px}
+.ci-body{margin:8px 0 0;max-width:760px}@media(min-width:1024px){.breadcrumb,.ci-hero,.ci-body{max-width:840px;margin-inline:auto}}
 .ci-body h2{font-family:var(--font-display);font-size:clamp(20px,3vw,26px);font-weight:500;color:var(--ink);margin:34px 0 10px;line-height:1.2}
 .ci-body p{margin:0 0 16px;font-size:16px;line-height:1.7}
+.ci-body>p:not([class]),.ci-body>ol,.ci-body>ul{max-width:68ch}
 .ci-body ol,.ci-body ul{margin:0 0 16px;padding-left:22px;font-size:16px;line-height:1.7}
 .ci-body li{margin:0 0 8px}
 .ci-read{margin:22px 0 8px;padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px;font-variant-numeric:tabular-nums}
 .ci-read__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
 .ci-read__badge{font-weight:600;text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink-soft);margin-left:8px}
-.ci-read__line{font-size:16px;line-height:1.55;color:var(--ink);margin:0}
+.ci-read__line{font-size:17px;font-weight:600;line-height:1.55;color:var(--ink);margin:0}
 .ci-read__trend{margin:6px 0 0;font-size:14.5px;line-height:1.5;color:var(--ink-soft)}
 .ci-read__verdict{margin:10px 0 0;font-size:15px;line-height:1.5;color:var(--ink)}
 .ci-read__verb{display:inline-block;font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-right:8px;vertical-align:1px;background:var(--cream);border:1px solid var(--line);color:var(--ink-soft)}
 .ci-read__verb[data-bias="hold"]{color:#2A50C8;border-color:#2A50C8}
 .ci-read__verb[data-bias="watch"]{color:#6b540f;border-color:#9a7d2e}
 .ci-read__verb[data-bias="re-price"]{color:#A23B2D;border-color:#A23B2D}
-.ci-read__spark{margin:12px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.ci-read__spark{margin:12px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}@media(min-width:600px){.ci-read__spark{flex-wrap:nowrap;align-items:flex-start}.ci-read__spark .ci-read__capsule{flex:1 1 auto}}
 .ci-read__spark .mtn-spark{flex:0 0 auto;overflow:visible}
 .ci-read__capsule{margin:0;font-size:14.5px;line-height:1.45;color:var(--ink)}
 .ci-read__capsule-note{color:var(--ink-soft);font-size:12.5px}
@@ -1665,12 +1668,12 @@ main{padding-top:64px}
 .ci-signup-sep{color:var(--stone,#9aa0aa);margin:0 4px}
 .ci-source{font-size:12.5px;color:var(--ink-soft);margin:24px 0 40px}
 .ci-source a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
-.ci-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));margin:14px 0 0}
+.ci-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(210px,100%),1fr));margin:14px 0 0}
 .ci-card{padding:16px 18px;background:var(--white);border:1px solid var(--line);border-radius:10px}
 .ci-card a{font-family:var(--font-display);font-size:17px;color:var(--ink);text-decoration:none}
 .ci-card a:hover{color:var(--teal)}
 .ci-card-note{display:block;font-size:13px;color:var(--ink-soft);margin-top:4px}
-.ci-cat-h{font-family:var(--font-display);font-size:16px;color:var(--ink-soft);margin:30px 0 0;text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+.ci-cat-h{font-family:var(--font-display);font-size:16px;color:var(--ink-soft);margin:30px 0 0;text-transform:uppercase;letter-spacing:.04em;font-weight:600}.ci-body>.ci-cat-h{border-top:1px solid var(--line);padding-top:18px;margin-top:40px}
 .ci-card-action{margin-top:10px}
 .ci-moving{margin:20px 0 8px;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px}
 .ci-moving .ci-cat-h{margin:0 0 10px}
@@ -1697,7 +1700,7 @@ main{padding-top:64px}
 .ci-index--mini{display:inline-block;vertical-align:middle;margin:4px 0 2px;opacity:.9}
 .ci-index{margin:10px 0 4px}
 .ci-index__cap{margin:0 0 4px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
-.ci-index .mtn-spark{max-width:100%;height:auto}
+.ci-index .mtn-spark{max-width:100%;height:auto}figure.ci-index>svg.mtn-spark{width:100%}
 .ci-card--pending{opacity:.72;background:var(--cream-2)}
 .ci-card--pending a{color:var(--ink-soft)}
 .ci-pending-note{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
@@ -1720,6 +1723,90 @@ main{padding-top:64px}
 .ci-table .ci-t-dir[data-dir="down"]{color:var(--teal)}
 .ci-table .ci-t-na{color:var(--stone,#9aa0aa)}
 .ci-table .ci-index--mini{margin:0}
+/* ─── Phone / small-tablet reflow: "All readings" → compact stacked rows ──────
+   The 5-col nowrap table's min-content is ~638px, so under ~680px .table-scroll
+   forces horizontal scroll (Signal/Movement/As-of clipped off-screen). At
+   <=680px each data <tr> becomes a 2-line grid over the SAME <tr>/<td> DOM, so
+   the live #ci-ingredient-search filter (toggles tr[hidden] by data-name) keeps
+   working untouched. Everything is scoped under .ci-readings so it is safe even
+   if hoisted to assets/site.css (.ci-table is emitted inline on other pages too).
+   Append after the existing .ci-table rules (~line 1723) in the generator's
+   inline <style>. Desktop (>680px) is byte-for-byte unchanged. */
+@media (max-width:680px){
+  /* 1 ─ neutralize the scroll shell; nothing left to scroll */
+  .ci-readings .table-scroll{overflow-x:visible;margin:12px 0}
+
+  /* 2 ─ collapse table internals to normal flow so each <tr> can be a grid.
+     thead is dropped: display:block strips the table role regardless, and every
+     cell is self-labeling (link text, up/down word, pill word, the sparkline's
+     full-sentence aria-label, and a visible "As of" prefix), so a floating
+     header row would only add screen-reader noise. */
+  .ci-readings .ci-table,
+  .ci-readings .ci-table tbody{display:block;width:100%}
+  .ci-readings .ci-table{min-width:0}
+  .ci-readings .ci-table thead{display:none}
+  .ci-readings .ci-table td{padding:0;border:0;white-space:normal}
+
+  /* 3 ─ the card-without-the-box: two lines, sparkline pinned right across both.
+     name↔signal on the left, direction↔as-of mirrored on the right. */
+  .ci-readings .ci-table tbody tr[data-name]{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto auto;
+    column-gap:8px;row-gap:2px;
+    align-items:center;
+    padding:10px 2px;
+    border-bottom:1px solid var(--line);
+  }
+  .ci-readings .ci-table tbody tr[data-name]:hover{background:transparent} /* no touch-hover flash */
+
+  /* line 1 — the scan unit */
+  .ci-readings .ci-c-name{grid-row:1;grid-column:1;min-width:0}
+  .ci-readings .ci-c-name a{display:inline-block;font-size:15px;line-height:1.25;padding:1px 0}
+  .ci-readings .ci-c-dir{grid-row:1;grid-column:2;font-size:13px;white-space:nowrap}
+  .ci-readings .ci-c-spark{grid-row:1 / span 2;grid-column:3;justify-self:end;align-self:center;line-height:0}
+  .ci-readings .ci-c-spark .mtn-spark{width:104px;height:auto}
+  .ci-readings .ci-c-spark .ci-t-na{color:var(--stone,#9aa0aa)}
+
+  /* line 2 — quiet provenance */
+  .ci-readings .ci-c-sig{grid-row:2;grid-column:1;justify-self:start}
+  .ci-readings .ci-c-sig .ci-read__verb{font-size:10.5px;margin:0}
+  .ci-readings .ci-c-asof{grid-row:2;grid-column:2;justify-self:end;white-space:nowrap;font-size:12px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+  .ci-readings .ci-c-asof::before{content:attr(data-label) " ";color:var(--ink-soft)}
+
+  /* 4 ─ DE-NOISE (grafted from Approach 2, contrast-safe): verdictChip() emits a
+     pill on EVERY row and ~60 are "Hold". On mobile, strip the Hold pill's chrome
+     to muted full-contrast text so real movers keep the only visible badge.
+     Watch / re-price pills are untouched. */
+  .ci-readings .ci-c-sig .ci-read__verb[data-bias="hold"]{
+    background:transparent;border-color:transparent;padding:0;color:var(--ink-soft)
+  }
+
+  /* 5 ─ MOVERS RAIL (grafted from Approach 4, phone-only, zero data dropped):
+     rows already sort reprice→watch→hold, so a left rail on the movers turns the
+     top of the list into a quiet market board. Keyed off data-tone on the <tr>. */
+  .ci-readings .ci-table tbody tr[data-tone="reprice"]{border-left:3px solid #A23B2D;padding-left:9px}
+  .ci-readings .ci-table tbody tr[data-tone="watch"]{border-left:3px solid #9a7d2e;padding-left:9px}
+
+  /* 6 ─ the no-match row stays a plain full-width line, not a broken 1-col grid */
+  .ci-readings .ci-table tbody tr.ci-table-empty{display:block;padding:14px 2px}
+  .ci-readings .ci-table tbody tr.ci-table-empty td{display:block;padding:0;border:0}
+
+  /* 7 ─ FILTER CONTRACT — display:grid on <tr> is an author rule that outranks
+     the UA [hidden]{display:none}, which would un-hide filtered-out rows. Restore
+     it. Equal specificity to the grid rule, so it MUST stay after it in source. */
+  .ci-readings .ci-table tbody tr[hidden]{display:none}
+}
+
+/* dark-mode movers rail (site uses BOTH the explicit toggle and the media default) */
+@media (max-width:680px){
+  :root[data-theme="dark"] .ci-readings .ci-table tbody tr[data-tone="reprice"]{border-left-color:#ed9a8e}
+  :root[data-theme="dark"] .ci-readings .ci-table tbody tr[data-tone="watch"]{border-left-color:#d8bd6a}
+}
+@media (max-width:680px) and (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .ci-readings .ci-table tbody tr[data-tone="reprice"]{border-left-color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-readings .ci-table tbody tr[data-tone="watch"]{border-left-color:#d8bd6a}
+}
+
 :root[data-theme="dark"] .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
 .ci-read--pending{border-left-color:#cdb368;background:var(--cream-2)}
 .ci-read--pending .ci-read__head{color:#8a6d1f}
@@ -1744,11 +1831,11 @@ main{padding-top:64px}
 .ci-events__take-b{font-size:15px;line-height:1.6;color:var(--ink);margin:0 0 8px;max-width:68ch}
 .ci-events__take-b strong{color:var(--ink)}
 .ci-events__take-mv{font-size:13.5px;line-height:1.55;color:var(--ink-soft);margin:0;max-width:68ch}
-.ci-events__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.ci-events__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}@media(min-width:680px){.ci-events__list{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}}
 .ci-events__ev{padding:14px 16px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px;font-variant-numeric:tabular-nums}
 .ci-events__ev[data-dir="up"]{border-left-color:#A23B2D}
 .ci-events__ev[data-dir="down"]{border-left-color:var(--teal)}
-.ci-events__hd{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
+.ci-events__hd{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;justify-content:space-between}
 .ci-events__date{font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--ink);min-width:76px}
 .ci-events__mag{font-size:14px;font-weight:700;letter-spacing:.01em;white-space:nowrap}
 .ci-events__mag[data-dir="up"]{color:#A23B2D}
@@ -1775,6 +1862,8 @@ main{padding-top:64px}
 .ci-card a:focus-visible,.ci-read a:focus-visible,.ci-sibs a:focus-visible,.breadcrumb a:focus-visible,.ci-source a:focus-visible,.ci-events a:focus-visible,summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:2px}
 /* touch: lift the drawer summaries to a real tap target (WCAG 2.5.8). */
 .ci-read__src summary,.ci-outlook__how summary{display:inline-block;padding:6px 0;min-height:24px}
+/* touch: on phones, lift the provenance drawer toggles to a full 44px tap target (WCAG 2.5.5). */
+@media (max-width:560px){.ci-read__src summary,.ci-season__src summary,.ci-composite__src summary,.ci-events__cite summary,.ci-outlook__how summary{min-height:44px;padding:10px 0}}
 /* the pre-rendered sparkline must never clip in a narrower container. */
 .mtn-spark{max-width:100%;height:auto}
 /* print: the controller-PDFs-a-reading-for-a-vendor workflow. Drop the chrome, force the
@@ -2881,7 +2970,7 @@ const EVENTS_HUB_CSS = `<style>
 .evh-chip:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 .evh-count{font-size:13px;color:var(--ink-soft);margin-left:auto;font-variant-numeric:tabular-nums}
 .evh-list{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-direction:column;gap:14px}
-.evh-card{padding:16px 18px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px}
+.evh-card{padding:16px 18px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px}@media(min-width:880px){.evh-card{display:grid;grid-template-columns:154px minmax(0,1fr);column-gap:30px;align-items:start;padding:20px 26px}.evh-card__head{grid-column:1;flex-direction:column;align-items:flex-start;gap:8px;margin:0}.evh-card__label,.evh-card__what,.evh-card__items,.evh-card__src{grid-column:2}}
 .evh-card[data-move="up"]{border-left-color:#A23B2D}
 .evh-card[data-move="down"]{border-left-color:var(--teal)}
 .evh-card__head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin:0 0 4px}
@@ -2988,7 +3077,7 @@ function emitEventsHubPage(locale) {
     <h1>${escHtml(h1)}</h1>
     <p class="ci-lede">${lede}</p>
   </section>
-  <div class="ci-body" style="max-width:860px">
+  <div class="ci-body" style="max-width:min(1040px,100%)">
     <div class="evh-stats">
       ${stat(nEv, es ? 'eventos documentados' : 'documented events')}
       ${stat(`${yMin}–${yMax}`, es ? 'de historia' : 'of history')}

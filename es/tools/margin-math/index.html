@@ -142,9 +142,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=4d3925609798" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-tool.css?v=d7265c6157ff" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=4d3925609798"><link rel="stylesheet" href="/assets/site-tool.css?v=d7265c6157ff"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=f8b6c001b1bb" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-tool.css?v=1f57a490e24f" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=f8b6c001b1bb"><link rel="stylesheet" href="/assets/site-tool.css?v=1f57a490e24f"></noscript>
 <style>
   /* Cálculo de Margen — estilos page-scoped. Conservador en Fase 0.
      La paleta viene de site.css; no se introducen primitivos nuevos. */
@@ -153,7 +153,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .mm-pledge::before{content:'\2713';font-weight:700}
   .mm-pledge a{color:inherit;text-decoration:underline;text-underline-offset:2px}
   .mm-pledge-cta{text-decoration:underline;text-underline-offset:2px}
-  .mm-grid{display:grid;grid-template-columns:1fr;gap:16px;max-width:760px;margin:0 auto}
+  .mm-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;max-width:760px;margin:0 auto}
   @media (min-width:640px){.mm-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
   .mm-card{display:flex;flex-direction:column;padding:22px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);gap:12px;position:relative}
   .mm-card.mm-coming{background:var(--cream-2);border-style:dashed;opacity:.85}
@@ -198,7 +198,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .mm-pnl-msg.error{color:var(--rust)}
   .mm-pnl-foot{font-size:12px;color:var(--stone);margin:0;line-height:1.5}
   .mm-pnl-foot code{background:var(--cream-2);padding:1px 5px;border-radius:3px;font-size:11.5px}
-  .mm-tier-group{display:flex;gap:6px;border:0;padding:0;margin:0}
+  .mm-tier-group{display:flex;gap:6px;border:0;padding:0;margin:0;min-width:0}
   .mm-tier-group legend{font-size:13px;font-weight:600;color:var(--ink-soft);margin-bottom:6px;padding:0}
   .mm-tier-btns{display:flex;gap:6px;width:100%}
   .mm-tier-btns button{flex:1;padding:10px 8px;border:1px solid var(--line-dark);border-radius:var(--r-input);background:var(--white);font:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;transition:border-color 140ms,background 140ms;line-height:1.3}
@@ -261,7 +261,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .mm-escalate[data-visible="true"]{display:flex}
   .mm-escalate p{margin:0;flex:1 1 100%}
   @media (min-width:480px){.mm-escalate p{flex:1 1 200px}}
-  .mm-escalate a{color:var(--rust);font-weight:700;text-decoration:none;border-bottom:1px solid currentColor;white-space:nowrap}
+  .mm-escalate a{color:var(--rust);font-weight:700;text-decoration:none;border-bottom:1px solid currentColor}
   .mm-escalate a:hover{color:var(--status-warn-deep)}
   /* Sugerencia cruzada entre calculadoras — aparece en bandas
      intermedias (warn / optimize / ok) para empujar al usuario a la
@@ -273,7 +273,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .mm-cross-suggest[data-visible="true"]{display:flex}
   .mm-cross-suggest span{flex:1 1 100%}
   @media (min-width:480px){.mm-cross-suggest span{flex:1 1 200px}}
-  .mm-cross-suggest a{color:var(--teal);font-weight:700;text-decoration:none;border-bottom:1px solid currentColor;white-space:nowrap}
+  .mm-cross-suggest a{color:var(--teal);font-weight:700;text-decoration:none;border-bottom:1px solid currentColor}
   .mm-cross-suggest a:hover{color:var(--teal-dark)}
   @media print { .mm-cross-suggest { display: none !important; } }
   /* Popover del glosario — lee las definiciones de los atributos
@@ -669,11 +669,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <a href="/tools/margin-math/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
-    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Muntin &mdash; leemos cada mensaje.">
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true"></span>
-      Contacto
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-    </a>
+    <!-- Contacto retirado de la navegación principal (2026-07): el botón
+         relleno era el elemento más ancho de la derecha y desequilibraba la
+         barra. La línea directa sigue en el pie, el menú móvil y la barra fija
+         móvil. -->
     <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -755,6 +754,29 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
        para que el botón .js-theme-toggle ya esté en el DOM. (Faltaba
        en el nav en español, así que el interruptor no funcionaba en
        las páginas /es/.) -->
+  <!-- Detección de pestaña activa. Marca con aria-current="page" el enlace
+       de navegación cuyo href coincide mejor (prefijo más largo) con la ruta
+       actual; el estilo lo muestra como la pestaña activa (subrayada).
+       Mejora progresiva: sin JS no hay pestaña activa. -->
+  <script>
+    (function () {
+      try {
+        var path = location.pathname.replace(/\/index\.html$/, '/');
+        if (path.charAt(path.length - 1) !== '/') path += '/';
+        var links = document.querySelectorAll('.nav-links a[href^="/"]');
+        var best = null, bestLen = -1;
+        for (var i = 0; i < links.length; i++) {
+          var h = links[i].getAttribute('href').replace(/\/index\.html$/, '/');
+          if (h.charAt(h.length - 1) !== '/') h += '/';
+          if (h === '/' || h === '/es/') continue;
+          if (path === h || path.indexOf(h) === 0) {
+            if (h.length > bestLen) { best = links[i]; bestLen = h.length; }
+          }
+        }
+        if (best) best.setAttribute('aria-current', 'page');
+      } catch (e) { /* no-op */ }
+    })();
+  </script>
   <script src="/assets/theme-toggle.js?v=phase8"></script>
 </header>
 
@@ -1237,8 +1259,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <div class="tool-knit__col">
         <h3>Lee</h3>
         <ul>
-          <li><a href="/es/library/third-party-delivery-economics/">¿Vale la pena DoorDash en 2026?</a></li>
-          <li><a href="/es/library/how-to-raise-restaurant-menu-prices-without-losing-reservations/">Subir precios sin perder reservas</a></li>
+          <li><a href="/es/library/como-salir-de-doordash-mi-restaurante/">¿Vale la pena DoorDash en 2026?</a></li>
+          <li><a href="/es/library/como-subir-precios-de-menu-sin-perder-reservas/">Subir precios sin perder reservas</a></li>
         </ul>
       </div>
       <div class="tool-knit__col">

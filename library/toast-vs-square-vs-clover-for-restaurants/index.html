@@ -279,9 +279,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=4d3925609798" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=1ff1de200f52" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=4d3925609798"><link rel="stylesheet" href="/assets/site-article.css?v=1ff1de200f52"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=f8b6c001b1bb" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=8787ec2df8b4" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=f8b6c001b1bb"><link rel="stylesheet" href="/assets/site-article.css?v=8787ec2df8b4"></noscript>
 
 <style>
   /* ============ BLOG POST LAYOUT STYLES ============ */
@@ -684,14 +684,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
       </svg>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Muntin &mdash; every message is read.">
-      <!-- Phase 5+ — site-wide pulse propagation. Hidden by default;
-           window-state.js reveals when lastSeen <4h. Decorative; the
-           label "Contact" remains the accessible affordance. -->
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true"></span>
-      Contact
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-    </a>
+    <!-- Contact CTA retired from the primary nav (2026-07): the filled pill was
+         the widest right-side item, so justify-content:space-between dumped the
+         row's overflow onto it and pushed it past the right padding — the nav
+         read as leaning right. The direct line still lives in the footer, the
+         mobile menu (below), and the mobile sticky CTA bar. -->
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -798,6 +795,32 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         })
         .catch(function () { show(signin); });
     });
+  </script>
+  <!-- Active-tab detection. Marks the top-level nav link whose href is the
+       best (longest) prefix match for the current path with
+       aria-current="page"; the tab styling renders that as the active
+       (underlined) tab. Runs synchronously — the .nav-links are already
+       parsed above. Progressive enhancement: no-JS visitors see no active
+       tab, which is acceptable. The home link is not a tab, so "/" never
+       matches on every page. -->
+  <script>
+    (function () {
+      try {
+        var path = location.pathname.replace(/\/index\.html$/, '/');
+        if (path.charAt(path.length - 1) !== '/') path += '/';
+        var links = document.querySelectorAll('.nav-links a[href^="/"]');
+        var best = null, bestLen = -1;
+        for (var i = 0; i < links.length; i++) {
+          var h = links[i].getAttribute('href').replace(/\/index\.html$/, '/');
+          if (h.charAt(h.length - 1) !== '/') h += '/';
+          if (h === '/') continue;
+          if (path === h || path.indexOf(h) === 0) {
+            if (h.length > bestLen) { best = links[i]; bestLen = h.length; }
+          }
+        }
+        if (best) best.setAttribute('aria-current', 'page');
+      } catch (e) { /* no-op */ }
+    })();
   </script>
   <!-- Phase 7 — dark-mode toggle handler. Loaded after the nav
        partial so the .js-theme-toggle button is in the DOM. -->
@@ -1025,7 +1048,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <figure class="viz-figure" style="margin:48px 0;" data-audio-alt="The ten-feature head-to-head: Toast, Square, and Clover scored across native online ordering, menu sync, real-time eighty-six, kitchen ticket pipeline, developer API, transparent pricing, custom-website pairing, hardware variety, contract flexibility, and restaurant-specific design. Toast and Square each land seven confident yeses out of ten. Clover lands one — with eight of its rows reading as &apos;maybe, depending on the reseller you bought from.&apos; Toast wins on restaurant-built workflow: online ordering and reservations are first-party. Square wins on transparent pricing and fastest setup. Clover&apos;s feature list looks comparable on paper, but the reseller patchwork means two restaurants on Clover can have completely different software for the same monthly fee — which is the reason this scorecard exists.">
         <div class="pos-table-wrap">
-          <div class="table-scroll"><table class="pos-table">
+          <div class="table-scroll"><table class="pos-table table--stack">
             <thead>
               <tr>
                 <th class="feature-col">Feature</th>
@@ -1036,64 +1059,64 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
             </thead>
             <tbody>
               <tr>
-                <td class="feature-name">Native online ordering<span class="note">Built into the POS, not a tablet handoff</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark partial" aria-label="Partial">~</span></td>
+                <td class="feature-name" data-label="Feature">Native online ordering<span class="note">Built into the POS, not a tablet handoff</span></td>
+                <td data-label="Toast"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Square"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Clover"><span class="mark partial" aria-label="Partial">~</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Automatic menu sync<span class="note">POS → website, including images and modifiers</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark partial" aria-label="Partial">~</span></td>
+                <td class="feature-name" data-label="Feature">Automatic menu sync<span class="note">POS → website, including images and modifiers</span></td>
+                <td data-label="Toast"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Square"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Clover"><span class="mark partial" aria-label="Partial">~</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Real-time 86 of out-of-stock<span class="note">POS change propagates to the site immediately</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark partial" aria-label="Partial">~</span></td>
-                <td><span class="mark partial" aria-label="Partial">~</span></td>
+                <td class="feature-name" data-label="Feature">Real-time 86 of out-of-stock<span class="note">POS change propagates to the site immediately</span></td>
+                <td data-label="Toast"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Square"><span class="mark partial" aria-label="Partial">~</span></td>
+                <td data-label="Clover"><span class="mark partial" aria-label="Partial">~</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Direct kitchen ticket pipeline<span class="note">Web orders land on the KDS with no intermediate tablet</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark partial" aria-label="Partial">~</span></td>
+                <td class="feature-name" data-label="Feature">Direct kitchen ticket pipeline<span class="note">Web orders land on the KDS with no intermediate tablet</span></td>
+                <td data-label="Toast"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Square"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Clover"><span class="mark partial" aria-label="Partial">~</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Public developer API<span class="note">Clean, documented, actively supported</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark partial" aria-label="Partial">~</span></td>
+                <td class="feature-name" data-label="Feature">Public developer API<span class="note">Clean, documented, actively supported</span></td>
+                <td data-label="Toast"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Square"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Clover"><span class="mark partial" aria-label="Partial">~</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Public, transparent pricing<span class="note">Rates published on the provider's own site</span></td>
-                <td><span class="mark no" aria-label="No">✕</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark no" aria-label="No">✕</span></td>
+                <td class="feature-name" data-label="Feature">Public, transparent pricing<span class="note">Rates published on the provider's own site</span></td>
+                <td data-label="Toast"><span class="mark no" aria-label="No">✕</span></td>
+                <td data-label="Square"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Clover"><span class="mark no" aria-label="No">✕</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Works with a fully custom website<span class="note">Clean pairing with a hand-built site on a modern stack</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark partial" aria-label="Partial">~</span></td>
+                <td class="feature-name" data-label="Feature">Works with a fully custom website<span class="note">Clean pairing with a hand-built site on a modern stack</span></td>
+                <td data-label="Toast"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Square"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Clover"><span class="mark partial" aria-label="Partial">~</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Hardware variety<span class="note">Station, Flex (handheld), Mini, Go, Kiosk</span></td>
-                <td><span class="mark partial" aria-label="Partial">~</span></td>
-                <td><span class="mark partial" aria-label="Partial">~</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td class="feature-name" data-label="Feature">Hardware variety<span class="note">Station, Flex (handheld), Mini, Go, Kiosk</span></td>
+                <td data-label="Toast"><span class="mark partial" aria-label="Partial">~</span></td>
+                <td data-label="Square"><span class="mark partial" aria-label="Partial">~</span></td>
+                <td data-label="Clover"><span class="mark yes" aria-label="Yes">✓</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Contract flexibility<span class="note">Short or month-to-month, low switching cost</span></td>
-                <td><span class="mark no" aria-label="No">✕</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark partial" aria-label="Partial">~</span></td>
+                <td class="feature-name" data-label="Feature">Contract flexibility<span class="note">Short or month-to-month, low switching cost</span></td>
+                <td data-label="Toast"><span class="mark no" aria-label="No">✕</span></td>
+                <td data-label="Square"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Clover"><span class="mark partial" aria-label="Partial">~</span></td>
               </tr>
               <tr>
-                <td class="feature-name">Restaurant-specific from day one<span class="note">Built for restaurants, not retrofitted from retail</span></td>
-                <td><span class="mark yes" aria-label="Yes">✓</span></td>
-                <td><span class="mark partial" aria-label="Partial">~</span></td>
-                <td><span class="mark partial" aria-label="Partial">~</span></td>
+                <td class="feature-name" data-label="Feature">Restaurant-specific from day one<span class="note">Built for restaurants, not retrofitted from retail</span></td>
+                <td data-label="Toast"><span class="mark yes" aria-label="Yes">✓</span></td>
+                <td data-label="Square"><span class="mark partial" aria-label="Partial">~</span></td>
+                <td data-label="Clover"><span class="mark partial" aria-label="Partial">~</span></td>
               </tr>
             </tbody>
           </table></div>

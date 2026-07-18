@@ -715,6 +715,56 @@
   }
 }
 
+/* B12b · The allergen matrix carries 11 columns — far more than any other
+   sheet — so between 601px and 900px (where the generic <=600 collapse has
+   not kicked in yet) it forces its fieldset ~17px past the viewport with
+   cramped ~40px cells. Extend the identical card-stack up to 900px, scoped
+   to this one sheet only: other sheets' rows carry no data-label, so their
+   collapse must stay at <=600px. */
+@media (min-width: 601px) and (max-width: 900px) {
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table thead {
+    position: absolute;
+    left: -9999px;
+  }
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table,
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table tbody,
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table tr,
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table td {
+    display: block;
+    width: 100%;
+  }
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table tr {
+    border: 1px solid var(--line, #E3E5E9);
+    border-radius: 8px;
+    margin: 8px 0;
+    padding: 4px 8px;
+    background: var(--white, #FFFFFF);
+  }
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--cream-2, #EDEEF1);
+  }
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table td:last-child { border-bottom: 0; }
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table td::before {
+    content: attr(data-label);
+    flex: 0 0 auto;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-soft, #4A4F59);
+    letter-spacing: 0.02em;
+  }
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table td input,
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table td select {
+    flex: 1 1 auto;
+    text-align: right;
+    background: transparent;
+  }
+}
+
 /* D3 · Worked example disclosure block.
    Sits right before <form id="sheet-fields">; collapsed by default,
    opens to a typical Tuesday-morning fill-in for that sheet. */
@@ -871,3 +921,27 @@
   .sheet-form textarea[data-prefilled="1"] { background: transparent; }
 }
 
+
+/* B12c · Allergen matrix cells hold a single C/X mark — center it, and in the
+   stacked-card views cap the box so it reads like a matrix cell, not an empty
+   full-width field. (Only allergen-matrix rows carry maxlength=2 inputs.) */
+.sheet-row-table td input[maxlength="2"] { text-align: center; }
+@media (max-width: 600px) {
+  .sheet-row-table td input[maxlength="2"] { flex: 0 0 auto; width: 3.75em; }
+}
+@media (min-width: 601px) and (max-width: 900px) {
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table td input[maxlength="2"] { flex: 0 0 auto; width: 3.75em; }
+}
+
+/* B12d · Allergen grid view (>=901px): give the two text columns room instead
+   of the browser splitting all 11 columns near-equally and cramping Menu item
+   and Notes to single-letter width. Fixed layout lets the 9 one-letter allergen
+   columns share the middle; overflow-wrap keeps "SHELLFISH" from spilling. */
+@media (min-width: 901px) {
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table { table-layout: fixed; }
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table th { overflow-wrap: anywhere; }
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table th:first-child,
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table td:first-child { width: 17%; }
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table th:last-child,
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table td:last-child { width: 19%; }
+}

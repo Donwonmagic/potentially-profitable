@@ -298,11 +298,10 @@ main{padding-top:64px}
       <a href="/library/restaurant-local-seo/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
-    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Muntin &mdash; leemos cada mensaje.">
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true"></span>
-      Contacto
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-    </a>
+    <!-- Contacto retirado de la navegación principal (2026-07): el botón
+         relleno era el elemento más ancho de la derecha y desequilibraba la
+         barra. La línea directa sigue en el pie, el menú móvil y la barra fija
+         móvil. -->
     <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -384,6 +383,29 @@ main{padding-top:64px}
        para que el botón .js-theme-toggle ya esté en el DOM. (Faltaba
        en el nav en español, así que el interruptor no funcionaba en
        las páginas /es/.) -->
+  <!-- Detección de pestaña activa. Marca con aria-current="page" el enlace
+       de navegación cuyo href coincide mejor (prefijo más largo) con la ruta
+       actual; el estilo lo muestra como la pestaña activa (subrayada).
+       Mejora progresiva: sin JS no hay pestaña activa. -->
+  <script>
+    (function () {
+      try {
+        var path = location.pathname.replace(/\/index\.html$/, '/');
+        if (path.charAt(path.length - 1) !== '/') path += '/';
+        var links = document.querySelectorAll('.nav-links a[href^="/"]');
+        var best = null, bestLen = -1;
+        for (var i = 0; i < links.length; i++) {
+          var h = links[i].getAttribute('href').replace(/\/index\.html$/, '/');
+          if (h.charAt(h.length - 1) !== '/') h += '/';
+          if (h === '/' || h === '/es/') continue;
+          if (path === h || path.indexOf(h) === 0) {
+            if (h.length > bestLen) { best = links[i]; bestLen = h.length; }
+          }
+        }
+        if (best) best.setAttribute('aria-current', 'page');
+      } catch (e) { /* no-op */ }
+    })();
+  </script>
   <script src="/assets/theme-toggle.js?v=phase8"></script>
 </header>
 
@@ -627,7 +649,7 @@ main{padding-top:64px}
     </details>
 
     <div class="callout">
-      <p><strong>Lee tus cuatro números.</strong> La caminata completa sobre visibilidad en la búsqueda con IA está en <a href="/es/blog/how-to-appear-in-ai-search-restaurant-2026/">cómo aparecer en la búsqueda con IA para tu restaurante</a>, y la respuesta en texto plano que la IA puede levantar es justo para lo que existe el <a href="/es/library/los-6-tipos-de-schema-markup-que-google-usa/">schema markup de restaurante</a>.</p>
+      <p><strong>Lee tus cuatro números.</strong> La caminata completa sobre visibilidad en la búsqueda con IA está en <a href="/es/blog/como-aparecer-en-busqueda-ai-restaurante-2026/">cómo aparecer en la búsqueda con IA para tu restaurante</a>, y la respuesta en texto plano que la IA puede levantar es justo para lo que existe el <a href="/es/library/los-6-tipos-de-schema-markup-que-google-usa/">schema markup de restaurante</a>.</p>
     </div>
 
     <h2 id="preguntas-frecuentes">Preguntas frecuentes</h2>
@@ -654,7 +676,7 @@ main{padding-top:64px}
         <li><a href="/es/library/mi-restaurante-no-aparece-en-google-maps/">Mi restaurante no aparece en Google Maps: el diagnóstico de 10 minutos</a> &mdash; la forma más rápida de hallar cuál de las cuatro causas se está disparando</li>
         <li><a href="/es/library/como-configurar-google-business-profile-para-tu-restaurante/">Cómo configurar Google Business Profile</a> &mdash; reclama, verifica y elige la categoría que carga el trabajo pesado</li>
         <li><a href="/es/library/como-conseguir-mas-resenas-google-para-tu-restaurante/">Cómo conseguir más reseñas de Google</a> &mdash; el sistema que compone en segundo plano</li>
-        <li><a href="/es/blog/how-to-appear-in-ai-search-restaurant-2026/">Cómo aparecer en la búsqueda con IA</a> &mdash; los cuatro números que deciden si te nombran</li>
+        <li><a href="/es/blog/como-aparecer-en-busqueda-ai-restaurante-2026/">Cómo aparecer en la búsqueda con IA</a> &mdash; los cuatro números que deciden si te nombran</li>
       </ul>
     </section>
 

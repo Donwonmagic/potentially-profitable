@@ -312,11 +312,10 @@ main{padding-top:64px}
       <a href="/course/m4-launch/rhythm/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
-    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Muntin &mdash; leemos cada mensaje.">
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true"></span>
-      Contacto
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-    </a>
+    <!-- Contacto retirado de la navegación principal (2026-07): el botón
+         relleno era el elemento más ancho de la derecha y desequilibraba la
+         barra. La línea directa sigue en el pie, el menú móvil y la barra fija
+         móvil. -->
     <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -398,6 +397,29 @@ main{padding-top:64px}
        para que el botón .js-theme-toggle ya esté en el DOM. (Faltaba
        en el nav en español, así que el interruptor no funcionaba en
        las páginas /es/.) -->
+  <!-- Detección de pestaña activa. Marca con aria-current="page" el enlace
+       de navegación cuyo href coincide mejor (prefijo más largo) con la ruta
+       actual; el estilo lo muestra como la pestaña activa (subrayada).
+       Mejora progresiva: sin JS no hay pestaña activa. -->
+  <script>
+    (function () {
+      try {
+        var path = location.pathname.replace(/\/index\.html$/, '/');
+        if (path.charAt(path.length - 1) !== '/') path += '/';
+        var links = document.querySelectorAll('.nav-links a[href^="/"]');
+        var best = null, bestLen = -1;
+        for (var i = 0; i < links.length; i++) {
+          var h = links[i].getAttribute('href').replace(/\/index\.html$/, '/');
+          if (h.charAt(h.length - 1) !== '/') h += '/';
+          if (h === '/' || h === '/es/') continue;
+          if (path === h || path.indexOf(h) === 0) {
+            if (h.length > bestLen) { best = links[i]; bestLen = h.length; }
+          }
+        }
+        if (best) best.setAttribute('aria-current', 'page');
+      } catch (e) { /* no-op */ }
+    })();
+  </script>
   <script src="/assets/theme-toggle.js?v=phase8"></script>
 </header>
 
@@ -571,7 +593,7 @@ main{padding-top:64px}
       <p>Nombrar el alcance con honestidad. El bootcamp es un camino completo de sitio-web-de-restaurante — del nombre al sitio desplegado al ritmo continuo — pero deliberadamente no cubre cuatro decisiones adyacentes grandes-y-reales. Saber qué NO está aquí te ayuda a planificar el próximo trimestre intencionalmente en vez de frustrarte a mitad del deploy:</p>
 
       <ul>
-        <li><strong>Pedidos en línea + integración de delivery.</strong> Toast TakeOut, ChowNow, Square Online, enlaces directo-al-checkout — estos necesitan su propia evaluación contra tu modelo de margen. La página L8 (menú) del bootcamp expone los platos; no enruta un flujo de "agregar al carrito". Si tu meta es escapar del 30% de DoorDash, la lectura más palanca es primero el <a href="/es/blog/an-honest-doordash-math-for-independent-restaurants-2026/" style="color:var(--teal);font-weight:600">artículo de matemáticas de DoorDash</a> de Muntin, y luego elegir una plataforma de pedidos cuya economía realmente funcione para el tamaño de tu cuenta.</li>
+        <li><strong>Pedidos en línea + integración de delivery.</strong> Toast TakeOut, ChowNow, Square Online, enlaces directo-al-checkout — estos necesitan su propia evaluación contra tu modelo de margen. La página L8 (menú) del bootcamp expone los platos; no enruta un flujo de "agregar al carrito". Si tu meta es escapar del 30% de DoorDash, la lectura más palanca es primero el <a href="/es/library/uber-eats-vs-doordash-vs-grubhub-cuentas-para-restaurante-2026/" style="color:var(--teal);font-weight:600">artículo de matemáticas de DoorDash</a> de Muntin, y luego elegir una plataforma de pedidos cuya economía realmente funcione para el tamaño de tu cuenta.</li>
         <li><strong>Widgets de reservaciones (OpenTable, Resy, Tock).</strong> La mayoría de las plataformas de reservaciones cobran $200-300/mes + una tarifa por cubierto. El sitio generado por L14 del bootcamp tiene un CTA "Reservar una mesa" que apunta a donde quieras — teléfono, correo, un Google Form, o un widget pagado. La decisión de CUÁL plataforma no está en el alcance aquí; la decisión de SI tomar reservaciones es tuya.</li>
         <li><strong>Venta de tarjetas de regalo + e-commerce.</strong> Square, Toast, y OpenTable todos ofrecen plataformas de tarjetas de regalo (~3% de tarifa por venta). Un enlace "Tarjetas de regalo" en tu nav apuntando a esa plataforma es dos minutos de trabajo, no una lección. Si vendes merchandise (libros de cocina, salsas, camisetas), esa es una decisión real de e-commerce y probablemente pertenece a un sitio o plataforma separados.</li>
         <li><strong>Email marketing + programas de lealtad.</strong> Mailchimp, Klaviyo, Square Loyalty, Toast Marketing — todos en el rango de $20-200/mes. El bootcamp captura el GBP del operador y la postura de respuesta a reseñas; no construye un CRM. La mayoría de los independientes no necesitan uno en el año uno; el GBP + un número de teléfono + una nota personal a los regulares es más que suficiente para los primeros 6 meses de operaciones.</li>

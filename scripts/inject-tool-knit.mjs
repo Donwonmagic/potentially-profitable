@@ -99,7 +99,19 @@ function glossaryLabel(slug, locale) {
 }
 
 function articleUrl(url, locale) {
-  return locale === 'en' ? url : `/es${url}`;
+  if (locale === 'en') return url;
+  // Phase 7: ES articles live at native Spanish slugs (data/i18n-slug-map.json,
+  // split by namespace) — the validation below already resolves them. Translate
+  // the slug here too so the emitted /es/ link resolves instead of pointing at
+  // /es/<ns>/<en-slug>/ (which 404s for translated posts). EN-only articles have
+  // no mapping and fall back to the same slug.
+  const m = url.match(/^\/(blog|library)\/([^/]+)\/$/);
+  if (m) {
+    const [, ns, enSlug] = m;
+    const esSlug = (slugMap && slugMap[ns] && slugMap[ns][enSlug]) || enSlug;
+    return `/es/${ns}/${esSlug}/`;
+  }
+  return `/es${url}`;
 }
 
 function articleLabel(url, locale) {

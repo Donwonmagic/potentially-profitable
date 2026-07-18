@@ -186,9 +186,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=4d3925609798" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=1ff1de200f52" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=4d3925609798"><link rel="stylesheet" href="/assets/site-article.css?v=1ff1de200f52"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=f8b6c001b1bb" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=8787ec2df8b4" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=f8b6c001b1bb"><link rel="stylesheet" href="/assets/site-article.css?v=8787ec2df8b4"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -285,14 +285,11 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
       </svg>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Muntin &mdash; every message is read.">
-      <!-- Phase 5+ — site-wide pulse propagation. Hidden by default;
-           window-state.js reveals when lastSeen <4h. Decorative; the
-           label "Contact" remains the accessible affordance. -->
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true"></span>
-      Contact
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-    </a>
+    <!-- Contact CTA retired from the primary nav (2026-07): the filled pill was
+         the widest right-side item, so justify-content:space-between dumped the
+         row's overflow onto it and pushed it past the right padding — the nav
+         read as leaning right. The direct line still lives in the footer, the
+         mobile menu (below), and the mobile sticky CTA bar. -->
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -400,6 +397,32 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         .catch(function () { show(signin); });
     });
   </script>
+  <!-- Active-tab detection. Marks the top-level nav link whose href is the
+       best (longest) prefix match for the current path with
+       aria-current="page"; the tab styling renders that as the active
+       (underlined) tab. Runs synchronously — the .nav-links are already
+       parsed above. Progressive enhancement: no-JS visitors see no active
+       tab, which is acceptable. The home link is not a tab, so "/" never
+       matches on every page. -->
+  <script>
+    (function () {
+      try {
+        var path = location.pathname.replace(/\/index\.html$/, '/');
+        if (path.charAt(path.length - 1) !== '/') path += '/';
+        var links = document.querySelectorAll('.nav-links a[href^="/"]');
+        var best = null, bestLen = -1;
+        for (var i = 0; i < links.length; i++) {
+          var h = links[i].getAttribute('href').replace(/\/index\.html$/, '/');
+          if (h.charAt(h.length - 1) !== '/') h += '/';
+          if (h === '/') continue;
+          if (path === h || path.indexOf(h) === 0) {
+            if (h.length > bestLen) { best = links[i]; bestLen = h.length; }
+          }
+        }
+        if (best) best.setAttribute('aria-current', 'page');
+      } catch (e) { /* no-op */ }
+    })();
+  </script>
   <!-- Phase 7 — dark-mode toggle handler. Loaded after the nav
        partial so the .js-theme-toggle button is in the DOM. -->
   <script src="/assets/theme-toggle.js?v=phase8"></script>
@@ -450,17 +473,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <p>The 1% number isn&rsquo;t a hunch. It&rsquo;s a sum across six measured leaks, each with a published lift figure from primary research, applied to the operator&rsquo;s own reported revenue. The methodology is below; the headline result is in this table.</p>
 
-    <div class="table-scroll"><table class="note-table" data-viz-sortable aria-label="Six leaks, average impact across 50 restaurants. Click any column header to sort." data-audio-alt="Six leaks, ranked by impact when present. The biggest single-impact leak is aggregator-only ordering, costing nearly half a point of revenue but only present at 22 percent of operators. The most prevalent leak is missing direct-order call-to-action, present at 71 percent of operators, costing 0.27 points each. Reservation deeplink errors hit 59 percent of operators at 0.34 points. Mobile LCP over 3 seconds affects 68 percent at 0.18 points. English-only on bilingual blocks affects 38 percent at 0.31 points. Hours buried below the fold affects 52 percent at 0.21 points. Median total leak across present leaks: 0.94 percent.">
+    <div class="table-scroll"><table class="note-table table--stack" data-viz-sortable aria-label="Six leaks, average impact across 50 restaurants. Click any column header to sort." data-audio-alt="Six leaks, ranked by impact when present. The biggest single-impact leak is aggregator-only ordering, costing nearly half a point of revenue but only present at 22 percent of operators. The most prevalent leak is missing direct-order call-to-action, present at 71 percent of operators, costing 0.27 points each. Reservation deeplink errors hit 59 percent of operators at 0.34 points. Mobile LCP over 3 seconds affects 68 percent at 0.18 points. English-only on bilingual blocks affects 38 percent at 0.31 points. Hours buried below the fold affects 52 percent at 0.21 points. Median total leak across present leaks: 0.94 percent.">
       <thead>
         <tr><th scope="col">Leak</th><th scope="col">% of operators with this leak</th><th scope="col" style="text-align:right">Median revenue impact when present</th></tr>
       </thead>
       <tbody>
-        <tr><td>Reservation button doesn&rsquo;t deeplink to your venue</td><td class="num">59%<span class="viz-magbar" data-tone="teal" style="--w:0.831" aria-hidden="true"></span></td><td class="num">&minus;0.34%<span class="viz-magbar" style="--w:0.756" aria-hidden="true"></span></td></tr>
-        <tr><td>Hours buried below the fold on mobile</td><td class="num">52%<span class="viz-magbar" data-tone="teal" style="--w:0.732" aria-hidden="true"></span></td><td class="num">&minus;0.21%<span class="viz-magbar" style="--w:0.467" aria-hidden="true"></span></td></tr>
-        <tr><td>Mobile LCP &gt; 3.0s</td><td class="num">68%<span class="viz-magbar" data-tone="teal" style="--w:0.958" aria-hidden="true"></span></td><td class="num">&minus;0.18%<span class="viz-magbar" style="--w:0.400" aria-hidden="true"></span></td></tr>
-        <tr><td>No direct-order CTA above third-party links</td><td class="num">71%<span class="viz-magbar" data-tone="teal" style="--w:1.000" aria-hidden="true"></span></td><td class="num">&minus;0.27%<span class="viz-magbar" style="--w:0.600" aria-hidden="true"></span></td></tr>
-        <tr><td>EN-only on a bilingual block</td><td class="num">38%<span class="viz-magbar" data-tone="teal" style="--w:0.535" aria-hidden="true"></span></td><td class="num">&minus;0.31%<span class="viz-magbar" style="--w:0.689" aria-hidden="true"></span></td></tr>
-        <tr><td>Aggregator-only ordering (no direct path)</td><td class="num">22%<span class="viz-magbar" data-tone="teal" style="--w:0.310" aria-hidden="true"></span></td><td class="num">&minus;0.45%<span class="viz-magbar" style="--w:1.000" aria-hidden="true"></span></td></tr>
+        <tr><td data-label="Leak">Reservation button doesn&rsquo;t deeplink to your venue</td><td class="num" data-label="% of operators with this leak">59%<span class="viz-magbar" data-tone="teal" style="--w:0.831" aria-hidden="true"></span></td><td class="num" data-label="Median revenue impact when present">&minus;0.34%<span class="viz-magbar" style="--w:0.756" aria-hidden="true"></span></td></tr>
+        <tr><td data-label="Leak">Hours buried below the fold on mobile</td><td class="num" data-label="% of operators with this leak">52%<span class="viz-magbar" data-tone="teal" style="--w:0.732" aria-hidden="true"></span></td><td class="num" data-label="Median revenue impact when present">&minus;0.21%<span class="viz-magbar" style="--w:0.467" aria-hidden="true"></span></td></tr>
+        <tr><td data-label="Leak">Mobile LCP &gt; 3.0s</td><td class="num" data-label="% of operators with this leak">68%<span class="viz-magbar" data-tone="teal" style="--w:0.958" aria-hidden="true"></span></td><td class="num" data-label="Median revenue impact when present">&minus;0.18%<span class="viz-magbar" style="--w:0.400" aria-hidden="true"></span></td></tr>
+        <tr><td data-label="Leak">No direct-order CTA above third-party links</td><td class="num" data-label="% of operators with this leak">71%<span class="viz-magbar" data-tone="teal" style="--w:1.000" aria-hidden="true"></span></td><td class="num" data-label="Median revenue impact when present">&minus;0.27%<span class="viz-magbar" style="--w:0.600" aria-hidden="true"></span></td></tr>
+        <tr><td data-label="Leak">EN-only on a bilingual block</td><td class="num" data-label="% of operators with this leak">38%<span class="viz-magbar" data-tone="teal" style="--w:0.535" aria-hidden="true"></span></td><td class="num" data-label="Median revenue impact when present">&minus;0.31%<span class="viz-magbar" style="--w:0.689" aria-hidden="true"></span></td></tr>
+        <tr><td data-label="Leak">Aggregator-only ordering (no direct path)</td><td class="num" data-label="% of operators with this leak">22%<span class="viz-magbar" data-tone="teal" style="--w:0.310" aria-hidden="true"></span></td><td class="num" data-label="Median revenue impact when present">&minus;0.45%<span class="viz-magbar" style="--w:1.000" aria-hidden="true"></span></td></tr>
       </tbody>
       <tfoot>
         <tr><td colspan="2">Median total leak (across present leaks)</td><td class="num">&minus;0.94%</td></tr>
