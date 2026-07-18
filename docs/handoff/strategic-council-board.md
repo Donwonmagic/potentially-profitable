@@ -101,6 +101,30 @@ viz-spark h-scroll bug fix. This is the loop working: adversarial review → rea
     consolidation) are genuinely INVISIBLE refactoring** — the undefined-token bugs were the only user-facing
     defects hiding in the tier. Scanner (theme-agnostic) confirms no undefined dark tokens either. Recommend
     against autonomous churn: regression risk across ~1200 pages for zero visible change. Reviewed session only.
+- **Runtime/console-error sweep** (26 representative page types): 25 clean; caught 1 real bug.
+  · `edfd0a2b3` — 404.html + es/404.html loaded site.js TWICE (stray eager `<script src>` + the
+    standard lazy-loader every other page uses alone) → `const i18n` re-declared → "SyntaxError: Identifier
+    'i18n' has already been declared" aborted site.js init on the 404 page. Removed the eager tag. Re-swept: 26/26 clean.
+- **Broken-internal-link sweep (redirect-worker-aware).** Naive scan found 93; the site has TWO Cloudflare
+  Worker redirect maps (`src/lib/tool-redirects.js` 8 tool slugs, `src/lib/blog-library-redirects.js` 91→93
+  keys) that `_redirects` is too capped (100-rule cap, error 100324) to hold — accounting for both collapses
+  93 → **15 truly broken**. So the retired-tool + moved-blog links are ALREADY handled; nothing to add to the
+  capped `_redirects`. Founder approved fixing the unambiguous groups B/C/D:
+  · **B** (`2ffca30dc`) — 2 library articles the blog index links at `/blog/<slug>/` were missing from
+    the blog→library Worker map (keep-plate-cost-honest, what-beef-prices-mean). Added to the map.
+  · **C** — 3 EN + 3 ES library "Keep reading" blocks linked `/blog/drafts/<slug>/` for posts published at
+    `/library/<slug>/` (`/es/library/<es-slug>/`). Repointed.
+  · **D** (`00164c9a4`) — ES pages linked ES library articles by their ENGLISH slug (404). Fixed at
+    the SOURCE (pages would drift): `inject-tool-knit.mjs` articleUrl() now translates EN→ES via the i18n map
+    (regen 5 ES tool rails); `data/topic-essays.json` 12 inline links remapped (regen 6 ES topic pages).
+  · **DEFERRED per founder ("you decide per-group, I'll list") — the remaining ~15:** (A) library-hub links to
+    5 dead `/learn/topics/` slugs (restaurant-websites, menus-and-pricing, conversion-and-reservations,
+    margin-and-aggregators, photography-and-brand — the live topics are ai-search/brand-design/conversions/
+    cost-data/information-security/local-seo/operations-margin/speed-mobile/trust-reviews; needs old→new map);
+    (E) ES blog cross-language gaps; (F) `/blog/how-to-tell-if-your-restaurant-has-a-data-leak/` (no library
+    version), `/es/glossary/care-plan/`; (G) `/audio/assets/course/` (~40 refs, course frozen). Re-run
+    `scratchpad/scan-true.mjs` (worker-map-aware) to resume. **Scanner caveat:** a naive files+_redirects scan
+    gives false positives — MUST load both `src/lib/*redirects*.js` maps (scan-true does).
 
 **Done surfaces:** homepage, article shell, CI ingredient, CI hub, CI events, **CI weekly+monthly
 dispatch** (funnel spine complete), library hub, vendor-benchmark, plate-cost a11y, viz-spark (shared),
