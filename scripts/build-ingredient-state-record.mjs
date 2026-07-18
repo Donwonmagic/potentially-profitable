@@ -183,6 +183,65 @@ function importBySlug() {
   return bySlug;
 }
 
+// ---- NASS domestic-supply layer (forward-compatible) -----------------------------------------
+// Reads the raw national annual SURVEY rows the operator fetches into data/nass-domestic.jsonl
+// (one line per commodity+statisticcat query: {commodity, stat, rows:[[year,class,refPeriod,unit,
+// Value,short_desc], ...]}). Selects the clean series per ingredient (fresh-market production
+// volume + $ value, marketing-year farm price, area, yield). Descriptive of the tracked record —
+// farm price is farm-gate, a DISTINCT point in the chain, never the wholesale reference, never a
+// forecast. Returns {} until the file lands, so the whole layer is inert until then.
+// NOTE: NASS proliferates rows by class/period/unit; the selection heuristics below are conservative
+// and MUST be verified against the first real pull (short_desc/class values confirm the picks).
+const NASS_FILE = 'data/nass-domestic.jsonl';
+function nassRaw() {
+  let lines; try { lines = fs.readFileSync(path.join(repoRoot, NASS_FILE), 'utf8').trim().split('\n'); } catch { return null; }
+  const byCom = {};
+  for (const ln of lines) {
+    let o; try { o = JSON.parse(ln); } catch { continue; }
+    if (!o.commodity || !Array.isArray(o.rows)) continue;
+    const c = byCom[o.commodity] = byCom[o.commodity] || {};
+    (c[o.stat] = c[o.stat] || []).push(...o.rows);
+  }
+  return byCom;
+}
+function num(v) { const n = parseFloat(String(v).replace(/[^0-9.\-]/g, '')); return isFinite(n) ? n : null; }
+function nassLatest(rows, pred) {
+  // rows: [year, class_desc, reference_period_desc, unit_desc, Value, short_desc]
+  const ok = (rows || []).map((r) => ({ y: Number(r[0]), cls: r[1] || '', rp: r[2] || '', u: r[3] || '', v: num(r[4]), sd: r[5] || '' }))
+    .filter((r) => r.v != null && r.y && pred(r)).sort((a, b) => b.y - a.y);
+  return ok[0] || null;
+}
+function nassBySlug() {
+  const raw = nassRaw(); if (!raw) return null; // null => file not present yet
+  const cross = (() => { try { return rd('data/ingredient-nass-codes.json').codes || {}; } catch { return {}; } })();
+  const clsHit = (r, cls) => !cls || r.cls.toUpperCase().includes(cls.toUpperCase());
+  const out = {};
+  for (const [slug, meta] of Object.entries(cross)) {
+    const com = raw[meta.commodity]; if (!com) continue;
+    const cls = meta.class || null;
+    // production VOLUME: PRODUCTION, annual, non-$ unit, class match, prefer a "UTILIZED" fresh series
+    const prodRows = com['PRODUCTION'] || [];
+    const volCand = prodRows.filter((r) => (r[3] || '') !== '$' && (r[2] || '') === 'YEAR');
+    const vol = nassLatest(volCand, (r) => clsHit(r, cls) && /UTILIZED|PRODUCTION/.test(r.sd)) || nassLatest(volCand, (r) => clsHit(r, cls));
+    const usd = nassLatest(prodRows, (r) => r.u === '$' && r.rp === 'YEAR' && clsHit(r, cls));
+    const price = nassLatest(com['PRICE RECEIVED'] || [], (r) => /\$ \//.test(r.u) && (r.rp === 'MARKETING YEAR' || r.rp === 'YEAR') && clsHit(r, cls));
+    const area = nassLatest(com['AREA HARVESTED'] || [], (r) => r.rp === 'YEAR' && clsHit(r, cls));
+    const yld = nassLatest(com['YIELD'] || [], (r) => r.rp === 'YEAR' && clsHit(r, cls));
+    if (!vol && !usd && !price) continue;
+    const years = [...(prodRows || [])].map((r) => Number(r[0])).filter(Boolean);
+    out[slug] = {
+      commodity: meta.commodity,
+      production_volume: vol ? vol.v : null, production_unit: vol ? vol.u : null,
+      production_usd: usd ? Math.round(usd.v) : null,
+      farm_price: price ? price.v : null, farm_price_unit: price ? price.u.replace(/\s+/g, ' ').trim() : null,
+      production_years: years.length ? Math.min(...years) + '-' + Math.max(...years) : null,
+      area_acres: area ? Math.round(area.v) : null,
+      yield_val: yld ? yld.v : null, yield_unit: yld ? yld.u : null,
+    };
+  }
+  return out;
+}
+
 // ---- fuse ------------------------------------------------------------------
 function build() {
   const P = pricingCards(repoRoot);
@@ -191,6 +250,32 @@ function build() {
   const imp = importBySlug();
   const evd = eventDepthBySlug();
   const lfAsOf = (() => { try { return rd('data/cost-lockfloat.json').asOf || null; } catch { return null; } })();
+  // NASS domestic-supply layer. `nass` is null until data/nass-domestic.jsonl lands, so nassFields
+  // adds NOTHING then (record schema unchanged) — forward-compatible, exactly like the specialty tier.
+  const nass = nassBySlug();
+  const nassFields = (slug, importUsd) => {
+    if (!nass) return {};
+    const n = nass[slug] || null;
+    const prodUsd = n && n.production_usd != null ? n.production_usd : null;
+    // Import-reliance: share of US supply VALUE that is imported (customs import value ÷ (import +
+    // farm-gate production value)). A descriptive proxy — the two are measured at different points
+    // in the chain (customs-landed vs farm-gate) — never a forecast. Null unless both are present.
+    const reliance = (importUsd != null && prodUsd != null && (importUsd + prodUsd) > 0)
+      ? Math.round((importUsd / (importUsd + prodUsd)) * 100) : null;
+    return {
+      nass_commodity: n ? n.commodity : null,
+      us_production_usd: prodUsd,
+      us_production_volume: n ? n.production_volume : null,
+      us_production_unit: n ? n.production_unit : null,
+      farm_price: n ? n.farm_price : null,
+      farm_price_unit: n ? n.farm_price_unit : null,
+      us_area_acres: n ? n.area_acres : null,
+      us_yield: n ? n.yield_val : null,
+      us_yield_unit: n ? n.yield_unit : null,
+      production_years: n ? n.production_years : null,
+      import_reliance_pct: reliance,
+    };
+  };
 
   const records = P.cards.map((c) => {
     const d = depth[c.slug] || {}; const pr = pressure[c.slug]; const im = imp[c.slug]; const ed = evd[c.slug] || {};
@@ -222,6 +307,7 @@ function build() {
       biggest_move_pct: ed.biggest_move_pct != null ? ed.biggest_move_pct : null,
       biggest_move_date: ed.biggest_move_date || null,
       comovers: ed.comovers || null,
+      ...nassFields(c.slug, im ? im.latest_year_usd : null),
     };
   });
 
@@ -257,6 +343,7 @@ function build() {
       import_note: im ? im.note : null,
       notable_events_n: null, median_shock_days: null, biggest_move_pct: null, biggest_move_date: null,
       comovers: null, specialty: true,
+      ...nassFields(sp.slug, im ? im.latest_year_usd : null),
     });
   }
 
