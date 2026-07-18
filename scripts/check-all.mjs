@@ -657,6 +657,8 @@ const CHECKS = [
   ['ERS per-capita availability honesty','check-ers-availability.mjs'],
   ['ERS meat price-chain (idem)','build-ers-meat-chain.mjs', '--check'],
   ['ERS meat price-chain honesty','check-ers-meat-chain.mjs'],
+  ['ERS food dollar (idem)','build-ers-food-dollar.mjs', '--check'],
+  ['ERS food dollar honesty','check-ers-food-dollar.mjs'],
   ['Open-data catalog (idem)','build-open-data-catalog.mjs', '--check'],
   ['Open-data catalog gate','check-open-data-catalog.mjs'],
   // Audio coverage — manifest-driven audit of which written pieces

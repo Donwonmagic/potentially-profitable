@@ -7,10 +7,10 @@
     "muntin_compilation": "https://creativecommons.org/licenses/by/4.0/"
   },
   "counts": {
-    "total": 17,
-    "cc0": 11,
-    "ccby": 6,
-    "available": 17
+    "total": 19,
+    "cc0": 12,
+    "ccby": 7,
+    "available": 19
   },
   "datasets": [
     {
@@ -212,6 +212,24 @@
       "total_bytes": 1824049
     },
     {
+      "id": "ers-food-dollar",
+      "title": "US Food Dollar Series — farm share + marketing chain (1993–2023)",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "rights": "US Government work — public domain (17 USC 105); redistributed verbatim.",
+      "source": "USDA Economic Research Service — Food Dollar Series",
+      "honesty_note": "How each dollar Americans spend on domestically-produced food splits across the marketing chain (farm production, processing, packaging, transport, wholesale, retail, foodservices, energy, …) in cents per domestic food dollar, plus the farm share. A national macro statistic, never a per-ingredient claim, never a forecast. Public domain.",
+      "downloads": [
+        {
+          "path": "data/ers-food-dollar.jsonl",
+          "url": "https://muntin.digital/data/ers-food-dollar.jsonl",
+          "bytes": 1148117
+        }
+      ],
+      "available": true,
+      "total_bytes": 1148117
+    },
+    {
       "id": "ingredient-state-record",
       "title": "Ingredient State Record (fused corpus)",
       "license": "CC BY 4.0",
@@ -323,6 +341,24 @@
       ],
       "available": true,
       "total_bytes": 336015
+    },
+    {
+      "id": "food-dollar",
+      "title": "The Food Dollar — farm share + marketing-chain split",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "rights": "Compilation © Muntin Cost Index, licensed CC BY 4.0. Attribution: \"Muntin Cost Index, muntin.digital\".",
+      "source": "Muntin Cost Index — computed from USDA ERS Food Dollar Series",
+      "honesty_note": "The farm share of the US food dollar (~16¢) and the marketing-chain split (foodservices, retail, processing, wholesale, farm production, energy, …) summing to 100, per year. The sitewide macro bookend to the per-protein meat chain. A national macro statistic, never a per-ingredient claim, never a forecast. Underlying series are US-gov public domain; the computed reads are CC BY 4.0.",
+      "downloads": [
+        {
+          "path": "cost-index/food-dollar.json",
+          "url": "https://muntin.digital/cost-index/food-dollar.json",
+          "bytes": 19476
+        }
+      ],
+      "available": true,
+      "total_bytes": 19476
     }
   ]
 }

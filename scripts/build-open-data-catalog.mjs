@@ -76,6 +76,10 @@ const DATASETS = [
     agency: 'USDA Economic Research Service — Meat Price Spreads',
     files: ['data/ers-meat-price-spreads.jsonl'],
     note: 'Monthly national-average farm value, wholesale value, retail value, and the spreads between them for beef, pork, and broilers, in cents per pound of retail equivalent. The retail figure is national-average grocery retail, never a delivered or menu price; the spreads are documented statistics, never a forecast. Public domain.' },
+  { id: 'ers-food-dollar', tier: 'gov', title: 'US Food Dollar Series — farm share + marketing chain (1993–2023)',
+    agency: 'USDA Economic Research Service — Food Dollar Series',
+    files: ['data/ers-food-dollar.jsonl'],
+    note: 'How each dollar Americans spend on domestically-produced food splits across the marketing chain (farm production, processing, packaging, transport, wholesale, retail, foodservices, energy, …) in cents per domestic food dollar, plus the farm share. A national macro statistic, never a per-ingredient claim, never a forecast. Public domain.' },
 
   // ---- MUNTIN VALUE-ADDED ANALYSIS → CC BY 4.0 ---------------------------------------------------
   { id: 'ingredient-state-record', tier: 'derived', title: 'Ingredient State Record (fused corpus)',
@@ -102,6 +106,10 @@ const DATASETS = [
     agency: 'Muntin Cost Index — computed from USDA ERS Meat Price Spreads',
     files: ['cost-index/meat-price-chain.json'],
     note: 'The documented national-average farm → wholesale → retail chain for beef, pork, and broilers, with the spreads and the downstream-markup share (how much of the farm-to-retail spread sits above wholesale — downstream of where a kitchen buys). Retail is national-average grocery retail, never a delivered or menu price; a documented spread, never a forecast. Underlying series are US-gov public domain; the computed reads are CC BY 4.0.' },
+  { id: 'food-dollar', tier: 'derived', title: 'The Food Dollar — farm share + marketing-chain split',
+    agency: 'Muntin Cost Index — computed from USDA ERS Food Dollar Series',
+    files: ['cost-index/food-dollar.json'],
+    note: 'The farm share of the US food dollar (~16¢) and the marketing-chain split (foodservices, retail, processing, wholesale, farm production, energy, …) summing to 100, per year. The sitewide macro bookend to the per-protein meat chain. A national macro statistic, never a per-ingredient claim, never a forecast. Underlying series are US-gov public domain; the computed reads are CC BY 4.0.' },
 ];
 
 function build() {
