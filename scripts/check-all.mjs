@@ -653,6 +653,8 @@ const CHECKS = [
   ['Crop-condition backdrop honesty','check-crop-condition-backdrop.mjs'],
   ['NOAA domestic landings (idem)','build-noaa-landings.mjs', '--check'],
   ['NOAA domestic landings honesty','check-noaa-landings.mjs'],
+  ['ERS per-capita availability (idem)','build-ers-availability.mjs', '--check'],
+  ['ERS per-capita availability honesty','check-ers-availability.mjs'],
   ['Open-data catalog (idem)','build-open-data-catalog.mjs', '--check'],
   ['Open-data catalog gate','check-open-data-catalog.mjs'],
   // Audio coverage — manifest-driven audit of which written pieces

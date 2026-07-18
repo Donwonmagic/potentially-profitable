@@ -7,10 +7,10 @@
     "muntin_compilation": "https://creativecommons.org/licenses/by/4.0/"
   },
   "counts": {
-    "total": 13,
-    "cc0": 9,
-    "ccby": 4,
-    "available": 13
+    "total": 15,
+    "cc0": 10,
+    "ccby": 5,
+    "available": 15
   },
   "datasets": [
     {
@@ -176,6 +176,24 @@
       "total_bytes": 7556535
     },
     {
+      "id": "ers-food-availability",
+      "title": "US per-capita food availability by commodity",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "rights": "US Government work — public domain (17 USC 105); redistributed verbatim.",
+      "source": "USDA Economic Research Service — Food Availability (Per Capita) Data System",
+      "honesty_note": "Per-capita food availability (pounds/person/year) and the underlying supply-and-use series by commodity and year, across 12 food groups. A supply-side proxy for consumption, never a measured intake, never a price, never a forecast. Public domain.",
+      "downloads": [
+        {
+          "path": "data/ers-food-availability.jsonl",
+          "url": "https://muntin.digital/data/ers-food-availability.jsonl",
+          "bytes": 20819704
+        }
+      ],
+      "available": true,
+      "total_bytes": 20819704
+    },
+    {
       "id": "ingredient-state-record",
       "title": "Ingredient State Record (fused corpus)",
       "license": "CC BY 4.0",
@@ -187,16 +205,16 @@
         {
           "path": "cost-index/ingredient-state-record.json",
           "url": "https://muntin.digital/cost-index/ingredient-state-record.json",
-          "bytes": 448341
+          "bytes": 472129
         },
         {
           "path": "cost-index/ingredient-state-record.csv",
           "url": "https://muntin.digital/cost-index/ingredient-state-record.csv",
-          "bytes": 33915
+          "bytes": 34891
         }
       ],
       "available": true,
-      "total_bytes": 482256
+      "total_bytes": 507020
     },
     {
       "id": "eia-energy-backdrop",
@@ -251,6 +269,24 @@
       ],
       "available": true,
       "total_bytes": 104895
+    },
+    {
+      "id": "ers-food-availability-mapped",
+      "title": "Per-capita availability mapped to tracked ingredients",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "rights": "Compilation © Muntin Cost Index, licensed CC BY 4.0. Attribution: \"Muntin Cost Index, muntin.digital\".",
+      "source": "Muntin Cost Index — computed from USDA ERS public-domain availability series",
+      "honesty_note": "USDA ERS per-capita availability (lbs/person/year) mapped to tracked ingredients — the VOLUME companion to the value-based reliance read (how many pounds per person are available domestically). A supply-side proxy for consumption, published at the commodity level (a variety/cut carries its parent commodity figure), never a measured intake, never a price, never a forecast. Underlying series are US-gov public domain; the mapping/compilation is CC BY 4.0.",
+      "downloads": [
+        {
+          "path": "cost-index/ers-food-availability.json",
+          "url": "https://muntin.digital/cost-index/ers-food-availability.json",
+          "bytes": 277745
+        }
+      ],
+      "available": true,
+      "total_bytes": 277745
     }
   ]
 }

@@ -68,6 +68,10 @@ const DATASETS = [
     agency: 'NOAA Fisheries — FOSS commercial landings',
     files: ['data/noaa-landings.jsonl'],
     note: 'US commercial (wild-caught) landings — value ($, nominal ex-vessel) and pounds (round weight) — by species and state, for the restaurant-relevant seafood categories. Confidential rows are withheld (null), never zero-padded. Public domain.' },
+  { id: 'ers-food-availability', tier: 'gov', title: 'US per-capita food availability by commodity',
+    agency: 'USDA Economic Research Service — Food Availability (Per Capita) Data System',
+    files: ['data/ers-food-availability.jsonl'],
+    note: 'Per-capita food availability (pounds/person/year) and the underlying supply-and-use series by commodity and year, across 12 food groups. A supply-side proxy for consumption, never a measured intake, never a price, never a forecast. Public domain.' },
 
   // ---- MUNTIN VALUE-ADDED ANALYSIS → CC BY 4.0 ---------------------------------------------------
   { id: 'ingredient-state-record', tier: 'derived', title: 'Ingredient State Record (fused corpus)',
@@ -86,6 +90,10 @@ const DATASETS = [
     agency: 'Muntin Cost Index — computed from NOAA Fisheries FOSS public-domain landings',
     files: ['cost-index/noaa-landings-domestic.json'],
     note: 'US commercial WILD landings (value + pounds) summed to national by seafood species group — the domestic pair for each seafood import stream. A wild-catch figure set beside a largely-farmed import stream: the wild-vs-farmed seam is named per group, never collapsed into a clean apparent-consumption share; negligible wild fisheries are flagged. Underlying series are US-gov public domain; the computed reads are CC BY 4.0.' },
+  { id: 'ers-food-availability-mapped', tier: 'derived', title: 'Per-capita availability mapped to tracked ingredients',
+    agency: 'Muntin Cost Index — computed from USDA ERS public-domain availability series',
+    files: ['cost-index/ers-food-availability.json'],
+    note: 'USDA ERS per-capita availability (lbs/person/year) mapped to tracked ingredients — the VOLUME companion to the value-based reliance read (how many pounds per person are available domestically). A supply-side proxy for consumption, published at the commodity level (a variety/cut carries its parent commodity figure), never a measured intake, never a price, never a forecast. Underlying series are US-gov public domain; the mapping/compilation is CC BY 4.0.' },
 ];
 
 function build() {
