@@ -134,9 +134,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=94b64345454f" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-tool.css?v=b10f3ed7f71e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=94b64345454f"><link rel="stylesheet" href="/assets/site-tool.css?v=b10f3ed7f71e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=f8b6c001b1bb" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-tool.css?v=1f57a490e24f" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=f8b6c001b1bb"><link rel="stylesheet" href="/assets/site-tool.css?v=1f57a490e24f"></noscript>
 <style>
 /* Accent token (2026-07 fix). The lockfloat/line-finder (.lf-*) styles below
    reference var(--accent) with NO fallback, but --accent was never defined on
@@ -155,6 +155,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .cp-market-dek{font-size:14px;color:var(--ink-soft);line-height:1.5;margin:2px 0 14px;max-width:60ch}
 .cp-market-asof{font-size:12.5px;color:var(--ink-soft);margin:-8px 0 16px}
 .cp-market-asof strong{color:var(--ink);font-weight:600}
+.cp-market-continuity{font-size:13px;color:var(--ink-soft);background:var(--cream-2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin:0 0 14px}
+.cp-market-continuity strong{color:var(--ink);font-weight:600}
 .cp-stale-chip{display:inline-flex;align-items:center;gap:4px;padding:1px 9px;font-size:11px;font-weight:700;letter-spacing:.02em;border-radius:999px;background:var(--status-bad-tint,#F7E7DC);color:var(--status-warn-deep,#8A3E16);white-space:nowrap;vertical-align:baseline}
 .cp-market-preview{font-size:12.5px;color:var(--status-warn-deep,#8A3E16);background:var(--status-bad-tint,#F7E7DC);border-radius:8px;padding:8px 12px;margin:0 0 16px}
 .cp-market-item{position:relative;margin:0;padding:16px 0 16px 15px;border-top:1px solid var(--line)}
@@ -755,6 +757,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
        partial so the .js-theme-toggle button is in the DOM. -->
   <script src="/assets/theme-toggle.js?v=phase8"></script>
 </header>
+<nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep" aria-hidden="true">›</span><a href="/tools/">Tools</a><span class="breadcrumb-sep" aria-hidden="true">›</span><span aria-current="page">The Cost Index, live</span></nav>
 
 <main>
 <section class="cp-shell">
@@ -762,7 +765,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <span class="eyebrow">Free tool · Which prices you can lock</span>
     <h1>Which prices you can lock. Which you have to float.</h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Last verified: <time datetime="2026-07-05">July 5, 2026</time></p>
+            <p class="tool-verified">Last verified: <time datetime="2026-07-17">July 17, 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Data promise">
@@ -1007,7 +1010,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
 <footer class="site-footer" id="footer"></footer>
 
-<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260430-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260717-reassure";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 <script src="/tools/_shared/context-bus.js?v=20260504-w10-3"></script>
 <script src="/tools/_shared/next-tool.js?v=phase4"></script>
 <script src="/tools/_shared/handoff.js?v=phase4"></script>
@@ -1015,14 +1018,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/tools/_shared/sparkline.js?v=20260501-w4-9"></script>
 <script src="/tools/_shared/composite-price.js?v=20260606-w15-1"></script>
 <script src="/tools/_shared/cost-verdict.js?v=20260608-w16-1"></script>
-<script src="/data/cost-index.js?v=20260607-live4"></script>
+<script src="/data/cost-index.js?v=20260717-refpage1"></script>
 <script src="/data/cost-index-history.js?v=20260629-hist1"></script>
 <script src="/tools/_shared/stem.js?v=20260504-w10-0a"></script>
 <script src="/tools/_shared/portion-bridge.js?v=20260504-w10-2"></script>
 <script src="/tools/_shared/dish-drift.js?v=20260504-w10-11"></script>
 <script src="/tools/_shared/whats-new.js?v=20260504-w14-8" defer></script>
-<script src="/tools/_shared/cost-index-format.js?v=20260629-fmt4"></script>
-<script src="/tools/_shared/cost-index-ui.js?v=20260630-design2"></script>
+<script src="/tools/_shared/cost-index-format.js?v=20260717-fmt5"></script>
+<script src="/tools/_shared/from-continuity.js?v=20260717-from1"></script>
+<script src="/tools/_shared/cost-index-ui.js?v=20260717-from1"></script>
 <script src="/data/cost-lockfloat.js?v=20260705-lf2"></script>
 <script src="/tools/_shared/cost-lockfloat-ui.js?v=20260705-lf13"></script>
 <script>

@@ -200,9 +200,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=94b64345454f" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-tool.css?v=b10f3ed7f71e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=94b64345454f"><link rel="stylesheet" href="/assets/site-tool.css?v=b10f3ed7f71e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=f8b6c001b1bb" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-tool.css?v=1f57a490e24f" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=f8b6c001b1bb"><link rel="stylesheet" href="/assets/site-tool.css?v=1f57a490e24f"></noscript>
 <style>
   /* "We remember" pill — surfaced by MuntinContext on returning visits. */
   .ctx-pill { display: block; padding: 12px 0; background: var(--cream-2, #F2EEE5); border-bottom: 1px solid var(--line); }
@@ -226,7 +226,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       "@type": "CollectionPage",
       "@id": "https://muntin.digital/tools/#collection",
       "name": "Free tools",
-      "description": "Free, browser-only tools for restaurant ingredient prices, margin math, and plate costing.",
+      "description": "Free, browser-only tools for restaurant SEO, margin math, and storefront diagnostics.",
       "url": "https://muntin.digital/tools/",
       "inLanguage": "en-US",
       "mainEntity": {
@@ -239,19 +239,19 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     {
       "@type": "ItemList",
       "@id": "https://muntin.digital/tools/#items",
-      "numberOfItems": 5,
+      "numberOfItems": 6,
       "itemListElement": [
         {
           "@type": "ListItem",
           "position": 1,
-          "url": "https://muntin.digital/tools/cost-pulse/",
-          "name": "The Cost Index, live"
+          "url": "https://muntin.digital/tools/audits/",
+          "name": "Free Website Audits for Small Businesses"
         },
         {
           "@type": "ListItem",
           "position": 2,
-          "url": "https://muntin.digital/tools/vendor-benchmark/",
-          "name": "Vendor Benchmark"
+          "url": "https://muntin.digital/tools/cost-pulse/",
+          "name": "Which ingredient prices you can lock"
         },
         {
           "@type": "ListItem",
@@ -270,6 +270,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           "position": 5,
           "url": "https://muntin.digital/tools/plate-cost/",
           "name": "Plate Cost Calculator"
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "url": "https://muntin.digital/tools/vendor-benchmark/",
+          "name": "Vendor Benchmark"
         }
       ]
     }
@@ -636,10 +642,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </div>
   </section>
 
-    <aside class="tool-sheets-band" aria-labelledby="tool-sheets-band-h" style="margin:32px 0 0;padding:22px 24px;border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:var(--r-md);background:var(--white);display:flex;flex-wrap:wrap;align-items:center;gap:18px;">
+    <aside class="tool-sheets-band" aria-labelledby="tool-sheets-band-h" style="margin:32px 0 0;padding:22px 24px;border:1px solid var(--line,#E5DFD2);border-left:4px solid var(--teal,#2A50C8);border-radius:var(--r-md,12px);background:var(--white,#FFFFFF);display:flex;flex-wrap:wrap;align-items:center;gap:18px;">
       <div style="flex:1;min-width:240px;">
         <span class="eyebrow" style="display:block;margin-bottom:4px;">Pair them with paperwork</span>
-        <h2 id="tool-sheets-band-h" style="font-family:var(--font-body);font-size:22px;font-weight:500;margin:0 0 6px;color:var(--ink,#16181D);">Operator Sheets — printable + fillable, exports to CSV.</h2>
+        <h2 id="tool-sheets-band-h" style="font-family:var(--font-display,'Fraunces',Georgia,serif);font-size:22px;font-weight:500;margin:0 0 6px;color:var(--ink,#16181D);">Operator Sheets — printable + fillable, exports to CSV.</h2>
         <p style="font-size:14.5px;line-height:1.5;color:var(--ink-soft,#4A4F59);margin:0;max-width:640px;">Recipe cost cards, weekly prime cost, GBP monthly audit, daily P&amp;L. Free, no signup. None of your numbers leave the page.</p>
       </div>
       <a class="btn btn-primary" href="/sheets/" style="white-space:nowrap;">Browse the sheets <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
@@ -710,7 +716,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->5<!-- /count --> tools, <!-- count:glossary.terms -->171<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->37<!-- /count --> articles, <!-- count:tools.live -->5<!-- /count --> tools, <!-- count:glossary.terms -->171<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -889,6 +895,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       }
     })();
   </script>
+  <!-- On-device warmth (warmth.js): the Golden-Hour whisper — a hero's light leans a
+       hair warmer at the edges of the reader's local day, computed on their machine
+       from the local clock and sent nowhere. Only surfaces with a .hero/.window pane
+       show it; everywhere else it is inert. Fail-silent; with JS off (or motion
+       reduced) the page is the certified v3. Placed INSIDE <footer> so sync-includes
+       (FOOTER_RE) replaces it atomically and never double-stamps. The homepage loads
+       its own copy (bespoke footer). See docs/handoff/warmth-cohesion-plan.md. -->
+  <script src="/assets/js/warmth.js?v=20260717-warmth1" defer></script>
 </footer>
 <!-- Phase 3D-perf — lazy-load non-critical JS after `load` + idle.
      Previously, the 4 footer scripts (first-touch, save-next-time,
@@ -966,7 +980,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 })();
 </script>
 
-<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260422-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260717-reassure";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="/tools/_shared/tier-filter.js?v=phase2"></script>
 <script>

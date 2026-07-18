@@ -43,9 +43,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=94b64345454f" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=ec596ee8c682" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=94b64345454f"><link rel="stylesheet" href="/assets/site-article.css?v=ec596ee8c682"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=f8b6c001b1bb" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=8787ec2df8b4" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=f8b6c001b1bb"><link rel="stylesheet" href="/assets/site-article.css?v=8787ec2df8b4"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -123,7 +123,7 @@
         "@id": "https://muntin.digital/#business"
       },
       "image": "https://muntin.digital/brand/og/glossary-contribution-margin.png",
-      "datePublished": "2026-06-02T13:38:16+00:00",
+      "datePublished": "2026-07-11T05:59:36+00:00",
       "isPartOf": {
         "@id": "https://muntin.digital/glossary/#muntin-glossary"
       }
@@ -432,18 +432,12 @@
       <!-- term-sheet-sidecar:start -->
       <aside class="term-sheet-sidecar" aria-labelledby="term-sheet-sidecar-h-contribution-margin">
         <p class="term-sheet-sidecar__eyebrow">Use this sheet</p>
-        <p class="term-sheet-sidecar__intro" id="term-sheet-sidecar-h-contribution-margin">Printable + fillable sheets pair with this term:</p>
+        <p class="term-sheet-sidecar__intro" id="term-sheet-sidecar-h-contribution-margin">A printable + fillable sheet pairs with this term:</p>
         <ul class="term-sheet-sidecar__list">
         <li>
           <a class="term-sheet-sidecar__link" href="/sheets/monthly-pnl-snapshot/">
             <span class="term-sheet-sidecar__title">Monthly P&amp;L Snapshot</span>
             <span class="term-sheet-sidecar__walkaway">Prime cost percent, contribution margin percent, breakeven sales per day.</span>
-          </a>
-        </li>
-        <li>
-          <a class="term-sheet-sidecar__link" href="/sheets/third-party-channel-pnl/">
-            <span class="term-sheet-sidecar__title">Third-Party Channel P&amp;L</span>
-            <span class="term-sheet-sidecar__walkaway">True margin per channel and the breakeven menu markup if you keep the channel on.</span>
           </a>
         </li>
         </ul>
@@ -489,7 +483,7 @@
 <aside id="contribution-margin-explainer" class="term-explainer" data-term-slug="contribution-margin" tabindex="0" aria-label="The 90-second explainer">
   <header class="term-explainer__head">
     <span class="eyebrow">The 90-second explainer</span>
-    <h2>Contribution margin, in 90 seconds.</h2>
+    <h2 id="contribution-margin-in-90-seconds">Contribution margin, in 90 seconds.</h2>
     <p class="term-explainer__sub"><strong>Why CM dollars — not CM percent — pays the rent.</strong> <span aria-hidden="true">·</span> 90s</p>
   </header>
   <div class="term-explainer__stage">
@@ -726,8 +720,8 @@
           <li><a href="/blog/is-doordash-worth-it-for-restaurants-in-2026/">is-doordash-worth-it-for-restaurants-in-2026</a></li>
           <li><a href="/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">How to Raise Restaurant Menu Prices Without Losing Reservations</a></li>
           <li><a href="/blog/five-restaurant-website-changes-recover-one-percent-margin/">five-restaurant-website-changes-recover-one-percent-margin</a></li>
+          <li><a href="/blog/restaurant-cost-pressure-2026/">The 2026 restaurant cost storm: a tame average, five fronts squeezing</a></li>
           <li><a href="/blog/ai-search-restaurant-website-platform-recommendations-2026/">I asked ChatGPT, Perplexity &amp; Google AI which restaurant website platform to use. Here's what they said.</a></li>
-          <li><a href="/blog/how-to-tell-if-a-restaurant-tool-is-safe/">How to Tell If a Restaurant Tool Is Safe</a></li>
         </ul>
       </div>
       <div class="glossary-knit__col">
@@ -821,7 +815,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->5<!-- /count --> tools, <!-- count:glossary.terms -->171<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->37<!-- /count --> articles, <!-- count:tools.live -->5<!-- /count --> tools, <!-- count:glossary.terms -->171<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -1000,6 +994,14 @@
       }
     })();
   </script>
+  <!-- On-device warmth (warmth.js): the Golden-Hour whisper — a hero's light leans a
+       hair warmer at the edges of the reader's local day, computed on their machine
+       from the local clock and sent nowhere. Only surfaces with a .hero/.window pane
+       show it; everywhere else it is inert. Fail-silent; with JS off (or motion
+       reduced) the page is the certified v3. Placed INSIDE <footer> so sync-includes
+       (FOOTER_RE) replaces it atomically and never double-stamps. The homepage loads
+       its own copy (bespoke footer). See docs/handoff/warmth-cohesion-plan.md. -->
+  <script src="/assets/js/warmth.js?v=20260717-warmth1" defer></script>
 </footer>
 <!-- Phase 3D-perf — lazy-load non-critical JS after `load` + idle.
      Previously, the 4 footer scripts (first-touch, save-next-time,
@@ -1077,6 +1079,6 @@
 })();
 </script>
 
-<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260422-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260717-reassure";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 </body>
 </html>

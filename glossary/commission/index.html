@@ -43,9 +43,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=94b64345454f" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=ec596ee8c682" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=94b64345454f"><link rel="stylesheet" href="/assets/site-article.css?v=ec596ee8c682"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=f8b6c001b1bb" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=8787ec2df8b4" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=f8b6c001b1bb"><link rel="stylesheet" href="/assets/site-article.css?v=8787ec2df8b4"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -123,7 +123,7 @@
         "@id": "https://muntin.digital/#business"
       },
       "image": "https://muntin.digital/brand/og/glossary-commission.png",
-      "datePublished": "2026-06-02T13:38:16+00:00",
+      "datePublished": "2026-07-11T05:59:36+00:00",
       "isPartOf": {
         "@id": "https://muntin.digital/glossary/#muntin-glossary"
       }
@@ -429,20 +429,7 @@
       <!-- term-example:start -->
             <p class="term-example">Example: When a neighborhood taqueria fills a $25 burrito order through an aggregator, a roughly 25% commission plus 2% processing leaves about $18 before food cost, while the same order taken direct at 3% processing leaves closer to $24.</p>
             <!-- term-example:end -->
-      <!-- term-sheet-sidecar:start -->
-      <aside class="term-sheet-sidecar" aria-labelledby="term-sheet-sidecar-h-commission">
-        <p class="term-sheet-sidecar__eyebrow">Use this sheet</p>
-        <p class="term-sheet-sidecar__intro" id="term-sheet-sidecar-h-commission">A printable + fillable sheet pairs with this term:</p>
-        <ul class="term-sheet-sidecar__list">
-        <li>
-          <a class="term-sheet-sidecar__link" href="/sheets/third-party-channel-pnl/">
-            <span class="term-sheet-sidecar__title">Third-Party Channel P&amp;L</span>
-            <span class="term-sheet-sidecar__walkaway">True margin per channel and the breakeven menu markup if you keep the channel on.</span>
-          </a>
-        </li>
-        </ul>
-      </aside>
-      <!-- term-sheet-sidecar:end -->
+      
       <!-- glossary-backlinks:start -->
       <aside class="see-also glossary-backlinks" aria-labelledby="glossary-backlinks-h">
         <p class="see-also-label" id="glossary-backlinks-h">Where this term shows up</p>
@@ -503,7 +490,7 @@
 <aside id="commission-explainer" class="term-explainer" data-term-slug="commission" tabindex="0" aria-label="The 90-second explainer">
   <header class="term-explainer__head">
     <span class="eyebrow">The 90-second explainer</span>
-    <h2>Commission, in 90 seconds.</h2>
+    <h2 id="commission-in-90-seconds">Commission, in 90 seconds.</h2>
     <p class="term-explainer__sub"><strong>The cut a marketplace takes from every order — and what is left.</strong> <span aria-hidden="true">·</span> 74s</p>
   </header>
   <div class="term-explainer__stage">
@@ -721,8 +708,8 @@
           <li><a href="/blog/30-days-after-leaving-doordash-restaurant-case-study/">30 Days After Leaving DoorDash: A Restaurant Operator’s Case Study</a></li>
           <li><a href="/blog/ai-search-restaurant-website-platform-recommendations-2026/">I asked ChatGPT, Perplexity &amp; Google AI which restaurant website platform to use. Here's what they said.</a></li>
           <li><a href="/blog/may-2026-wave-publishing-for-citation/">The May 2026 Wave: Nine Pieces, One Operating Thesis</a></li>
+          <li><a href="/blog/restaurant-cost-pressure-2026/">The 2026 restaurant cost storm: a tame average, five fronts squeezing</a></li>
           <li><a href="/blog/how-to-tell-if-a-restaurant-tool-is-safe/">How to Tell If a Restaurant Tool Is Safe</a></li>
-          <li><a href="/blog/privacy-forward-restaurant-bookkeeping/">Privacy-Forward Restaurant Bookkeeping: What a Digital Ledger Should Never Do</a></li>
         </ul>
       </div>
       <div class="glossary-knit__col">
@@ -816,7 +803,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->5<!-- /count --> tools, <!-- count:glossary.terms -->171<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->37<!-- /count --> articles, <!-- count:tools.live -->5<!-- /count --> tools, <!-- count:glossary.terms -->171<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -995,6 +982,14 @@
       }
     })();
   </script>
+  <!-- On-device warmth (warmth.js): the Golden-Hour whisper — a hero's light leans a
+       hair warmer at the edges of the reader's local day, computed on their machine
+       from the local clock and sent nowhere. Only surfaces with a .hero/.window pane
+       show it; everywhere else it is inert. Fail-silent; with JS off (or motion
+       reduced) the page is the certified v3. Placed INSIDE <footer> so sync-includes
+       (FOOTER_RE) replaces it atomically and never double-stamps. The homepage loads
+       its own copy (bespoke footer). See docs/handoff/warmth-cohesion-plan.md. -->
+  <script src="/assets/js/warmth.js?v=20260717-warmth1" defer></script>
 </footer>
 <!-- Phase 3D-perf — lazy-load non-critical JS after `load` + idle.
      Previously, the 4 footer scripts (first-touch, save-next-time,
@@ -1072,6 +1067,6 @@
 })();
 </script>
 
-<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260422-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260717-reassure";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 </body>
 </html>

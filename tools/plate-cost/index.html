@@ -140,9 +140,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=94b64345454f" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-tool.css?v=b10f3ed7f71e" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=94b64345454f"><link rel="stylesheet" href="/assets/site-tool.css?v=b10f3ed7f71e"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=f8b6c001b1bb" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-tool.css?v=1f57a490e24f" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=f8b6c001b1bb"><link rel="stylesheet" href="/assets/site-tool.css?v=1f57a490e24f"></noscript>
 <style>.breadcrumb{padding-top:100px}
 /* === Plate Cost Calculator tool-scoped styles. Page-prefix .pc-*. === */
 .pc-form{display:flex;flex-direction:column;gap:18px}
@@ -338,6 +338,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
 body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
 .pc-recost-banner{display:none;align-items:flex-start;gap:14px;padding:14px 18px;margin:0 0 14px;border:1px solid var(--teal);border-left-width:4px;border-radius:var(--r-md);background:var(--cream-2)}
+.pc-from-note{font-size:13px;color:var(--ink-soft);background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-md);padding:8px 12px;margin:0 0 14px}
+.pc-from-note strong{color:var(--ink);font-weight:600}
 .pc-recost-banner-body{flex:1;font-size:13.5px;line-height:1.55;color:var(--ink)}
 .pc-recost-banner-eyebrow{display:block;font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);margin-bottom:2px}
 .pc-recost-banner strong{color:var(--ink)}
@@ -735,7 +737,7 @@ body[data-pc-mode="recost"] .pc-prev-cell{display:block}
     <span class="eyebrow">Free tool · stays in your browser</span>
     <h1 style="font-family:var(--font-display);font-size:clamp(34px,4.5vw,52px);font-weight:500;color:var(--ink);margin:14px 0 14px;line-height:1.1;">What does each plate actually cost?</h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Last verified: <time datetime="2026-06-18">June 18, 2026</time></p>
+            <p class="tool-verified">Last verified: <time datetime="2026-07-17">July 17, 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Data promise">
@@ -993,7 +995,7 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
     </article>
 
     <div class="pc-empty" id="pcEmpty">
-      Fill in a row above &mdash; or <button type="button" class="pc-sample-btn" id="pcSample2" style="margin:0 6px;">load the sample recipe</button> &mdash; to see the math.
+      Add a row above, then Compute &mdash; the math runs right here on your device, sent nowhere. Or <button type="button" class="pc-sample-btn" id="pcSample2" style="margin:0 6px;">load the sample recipe</button>.
     </div>
   </div>
 </div></section>
@@ -1224,16 +1226,16 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
 </footer>
 
-<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260422-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260717-reassure";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 <script src="/tools/_shared/parse-number.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/context-bus.js?v=20260504-w10-3"></script>
 <script src="/tools/_shared/next-tool.js?v=phase4"></script>
 <script src="/tools/_shared/handoff.js?v=phase4"></script>
 <script src="/tools/_shared/stem.js?v=20260504-w10-0a"></script>
 <script src="/tools/_shared/sku-match.js?v=20260504-w10-1"></script>
-<script src="/data/cost-index.js?v=20260607-live4"></script>
+<script src="/data/cost-index.js?v=20260717-refpage1"></script>
 <script src="/tools/_shared/cost-index-lookup.js?v=20260608-w16-1"></script>
-<script src="/tools/plate-cost/cost-index-hint.js?v=20260608-w16-1" defer></script>
+<script src="/tools/plate-cost/cost-index-hint.js?v=20260717-verdict1" defer></script>
 <script src="/tools/_shared/sales-mix.js?v=20260602-pos1"></script>
 <script src="/tools/_shared/plate-advice.js?v=20260603-plate1"></script>
 <script src="/tools/_shared/portion-bridge.js?v=20260504-w10-2"></script>
@@ -1246,6 +1248,25 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
 <script src="/tools/plate-cost/plate-cost.js?v=20260504-w10-7"></script>
 <script src="/tools/plate-cost/stale-banner.js?v=20260504-w10-5" defer></script>
 <script src="/tools/plate-cost/card-render.js?v=20260426-pc2"></script>
+<script src="/tools/_shared/cost-index-from-titles.js?v=20260717-from1"></script>
+<script src="/tools/_shared/from-continuity.js?v=20260717-from1"></script>
+<script>
+/* Move 9 — ?from continuity. If the reader arrived from a Cost Index ingredient
+   page (…/tools/plate-cost/?from=<slug>), name it above the recost banner. The
+   title comes ONLY from the closed committed map (window.MUNTIN_FROM_TITLES) via
+   MuntinFromContinuity (textContent, silent no-op on any miss). No fetch, no storage. */
+(function () {
+  'use strict';
+  if (typeof MuntinFromContinuity === 'undefined' || !window.MUNTIN_FROM_TITLES) return;
+  var banner = document.getElementById('pcRecostBanner');
+  if (!banner) return;
+  MuntinFromContinuity.mount({
+    map: window.MUNTIN_FROM_TITLES, mountEl: banner, position: 'before', className: 'pc-from-note',
+    leadEn: 'Costing a dish with', tailEn: '— its live market read is in the Cost Index.',
+    leadES: 'Costeando un platillo con', tailES: '— su lectura de mercado en vivo está en el Índice de Costos.'
+  });
+})();
+</script>
 <script>
 /* Plate Cost — recommendation panel UI (the free→Ledger funnel hook).
    Defines window.MuntinPlateAdviceUI = { render(summary), clear() }, called

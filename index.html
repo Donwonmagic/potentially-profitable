@@ -164,8 +164,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=94b64345454f" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=ec596ee8c682" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=f8b6c001b1bb" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=8787ec2df8b4" onload="this.onload=null;this.rel='stylesheet'">
 <style>
 /* Bolder pass 2026-07 — mid-page material: stance panes on the elevation
    scale, instrument glyphs in the flagship cards, Fraunces number chips,
@@ -205,7 +205,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .muntin-title::before{content:"";display:block;width:34px;height:40px;margin:0 0 18px;border:3px solid var(--ink);border-radius:5px;background:linear-gradient(var(--ink),var(--ink)) 50% 0/3px 100% no-repeat,linear-gradient(var(--ink),var(--ink)) 0 38%/100% 3px no-repeat}
 .final::before{background:linear-gradient(rgba(246,247,248,.055),rgba(246,247,248,.055)) 33% 0/3px 100% no-repeat,linear-gradient(rgba(246,247,248,.055),rgba(246,247,248,.055)) 66% 0/3px 100% no-repeat,linear-gradient(rgba(246,247,248,.055),rgba(246,247,248,.055)) 0 58%/100% 3px no-repeat}
 </style>
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=94b64345454f"><link rel="stylesheet" href="/assets/site-article.css?v=ec596ee8c682"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=f8b6c001b1bb"><link rel="stylesheet" href="/assets/site-article.css?v=8787ec2df8b4"></noscript>
 <!-- hub-modified:start (scripts/inject-hub-modified-time.mjs) -->
 <meta property="article:modified_time" content="2026-06-22" />
 <!-- /hub-modified:end -->
@@ -498,7 +498,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <ul class="hero-counts" aria-label="Library at a glance">
         <li class="hero-counts__chip"><a href="/glossary/" style="color:inherit;text-decoration:none"><strong><!-- count:glossary.terms -->171<!-- /count --></strong>&nbsp;glossary terms</a></li>
         <li class="hero-counts__chip"><a href="/tools/" style="color:inherit;text-decoration:none"><strong><!-- count:tools.live -->5<!-- /count --></strong>&nbsp;free tools</a></li>
-        <li class="hero-counts__chip"><a href="/library/" style="color:inherit;text-decoration:none"><strong><!-- count:articles.library -->36<!-- /count --></strong>&nbsp;articles</a></li>
+        <li class="hero-counts__chip"><a href="/library/" style="color:inherit;text-decoration:none"><strong><!-- count:articles.library -->37<!-- /count --></strong>&nbsp;articles</a></li>
         <li class="hero-counts__chip">All free</li>
       </ul>
     </div>
@@ -738,6 +738,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </thead>
       <tbody>
       <tr>
+        <td class="lib-idx-title"><a href="/blog/restaurant-cost-pressure-2026/">The 2026 restaurant cost storm: a tame average, five fronts squeezing</a></td>
+        <td class="lib-idx-section">Articles</td>
+        <td class="lib-idx-date" aria-label="2026-07-16"><time datetime="2026-07-16">2026-07-16</time></td>
+        <td class="lib-idx-contributor">Don Goldstein</td>
+      </tr>
+      <tr>
         <td class="lib-idx-title"><a href="/blog/el-nino-food-prices-2026/">A historic El Niño is forming — and your food invoices haven't noticed</a></td>
         <td class="lib-idx-section">Articles</td>
         <td class="lib-idx-date" aria-label="2026-07-10"><time datetime="2026-07-10">2026-07-10</time></td>
@@ -779,12 +785,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <td class="lib-idx-date" aria-label="2026-06-03"><time datetime="2026-06-03">2026-06-03</time></td>
         <td class="lib-idx-contributor">The Muntin Desk</td>
       </tr>
-      <tr>
-        <td class="lib-idx-title"><a href="/library/restaurant-website-legal-essentials/">Restaurant Website Legal &amp; Trust Essentials (2026): ToS, Privacy, Cookies, SSL</a></td>
-        <td class="lib-idx-section">Articles</td>
-        <td class="lib-idx-date" aria-label="2026-06-03"><time datetime="2026-06-03">2026-06-03</time></td>
-        <td class="lib-idx-contributor">The Muntin Desk</td>
-      </tr>
       </tbody>
     </table>
     </div>
@@ -811,7 +811,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <div class="section-header" style="max-width:760px;margin-inline:auto;text-align:center;">
       <span class="eyebrow">Founding members</span>
       <h2 id="founding-heading">Be first when <span class="serif-italic">Muntin Ledger</span> opens &mdash; November 13, 2026.</h2>
-      <p>A deterministic engine reads your vendor invoices into a searchable ledger &mdash; no language model reads your numbers, no ads, no tracking. It shows what it measured and labels what it estimated. When a line can't be read, it holds the number back rather than print a guess. Founding members get <strong>three months free, then $19 a month per location</strong> for as long as they stay &mdash; the founding rate is for operators who join before launch, now <span class="founding-countdown"><!-- count:ledger.ga_weeks_out -->19<!-- /count --> weeks out</span>. Your numbers stay yours.</p>
+      <p>A deterministic engine reads your vendor invoices into a searchable ledger &mdash; no language model reads your numbers, no ads, no tracking. It shows what it measured and labels what it estimated. When a line can't be read, it holds the number back rather than print a guess. Founding members get <strong>three months free, then $19 a month per location</strong> for as long as they stay &mdash; the founding rate is for operators who join before launch, now <span class="founding-countdown"><!-- count:ledger.ga_weeks_out -->16<!-- /count --> weeks out</span>. Your numbers stay yours.</p>
     </div>
 
     <!-- founding-capture:start -->
@@ -836,7 +836,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
            passes; the worker validates via /api/lib/turnstile.js. -->
       <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="waitlist" data-size="flexible"></div>
       <p class="founding-form-confirm" aria-live="polite">Thanks &mdash; check your inbox to confirm your spot.</p>
-      <p class="founding-form-error" aria-live="polite">That didn't go through. Email <a href="mailto:don@muntin.digital">don@muntin.digital</a> and we'll add you.</p>
+      <p class="founding-form-error" aria-live="polite">That didn't go through. Email <a href="mailto:don@muntin.digital">don@muntin.digital</a> and I'll add you by hand.</p>
       <button type="submit">Join the founding list</button>
     </form>
     <!-- founding-capture:end -->
@@ -1007,7 +1007,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->5<!-- /count --> tools, <!-- count:glossary.terms -->171<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->37<!-- /count --> articles, <!-- count:tools.live -->5<!-- /count --> tools, <!-- count:glossary.terms -->171<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -1186,6 +1186,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       }
     })();
   </script>
+  <!-- On-device warmth (warmth.js): the Golden-Hour whisper — a hero's light leans a
+       hair warmer at the edges of the reader's local day, computed on their machine
+       from the local clock and sent nowhere. Only surfaces with a .hero/.window pane
+       show it; everywhere else it is inert. Fail-silent; with JS off (or motion
+       reduced) the page is the certified v3. Placed INSIDE <footer> so sync-includes
+       (FOOTER_RE) replaces it atomically and never double-stamps. The homepage loads
+       its own copy (bespoke footer). See docs/handoff/warmth-cohesion-plan.md. -->
+  <script src="/assets/js/warmth.js?v=20260717-warmth1" defer></script>
 </footer>
 <!-- Phase 3D-perf — lazy-load non-critical JS after `load` + idle.
      Previously, the 4 footer scripts (first-touch, save-next-time,
@@ -1263,7 +1271,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 })();
 </script>
 
-<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260501-engagement";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260717-reassure";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 
 <!-- JSON-LD entity graph. Lives at end-of-body (not <head>) so the
      ~13KB structured-data payload no longer sits in the parser’s

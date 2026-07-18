@@ -43,9 +43,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=94b64345454f" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=ec596ee8c682" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=94b64345454f"><link rel="stylesheet" href="/assets/site-article.css?v=ec596ee8c682"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=f8b6c001b1bb" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=8787ec2df8b4" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=f8b6c001b1bb"><link rel="stylesheet" href="/assets/site-article.css?v=8787ec2df8b4"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -171,7 +171,7 @@
         "@id": "https://muntin.digital/#business"
       },
       "image": "https://muntin.digital/brand/og/glossary-pressure-overlay.png",
-      "datePublished": "2026-06-23T05:52:59.492Z",
+      "datePublished": "2026-07-11T05:59:36+00:00",
       "isPartOf": {
         "@id": "https://muntin.digital/glossary/#muntin-glossary"
       }
@@ -196,6 +196,7 @@
     document.documentElement.dataset.platform = 'mac';
   }
 </script>
+<!-- batch-banner:start --><!-- batch-banner:end -->
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="/" class="logo" aria-label="Muntin Digital home">
@@ -444,7 +445,7 @@
 
     <div class="term-body">
       <p class="term-def">A leading indicator is something that reliably moves before the thing you care about, giving early warning. The Cost Index runs a leading-indicator pressure overlay: supply signals that lead delivered cost — like cattle-on-feed placements ahead of beef — published as an inferred direction of pressure (up, down, or flat), never as a dollar price, and only after the signal's own live track record proves out.</p>
-      <h2 class="term-why-h">Why it matters</h2>
+      <h2 class="term-why-h" id="why-it-matters">Why it matters</h2>
       <p class="term-why">It tells you which way cost is leaning before it lands on an invoice, without pretending to know the number. A leading signal — like cattle-on-feed placements running ahead of beef — can warn that cost is building before it lands, so the move isn't a surprise — while the overlay stays honest about its limit: a direction, with a track record attached, and no dollar figure. It is the one part of the index that looks forward, and it is bounded hard.</p>
       
       <!-- glossary-explainer-cue:start -->
@@ -497,7 +498,7 @@
   <div class="container">
     <div class="section-header reveal section-center">
       <span class="eyebrow">Glossary</span>
-      <h2>Browse all<br><span class="serif-italic"><!-- count:glossary.terms -->171<!-- /count --> terms.</span></h2>
+      <h2 id="browse-all171-terms">Browse all<br><span class="serif-italic"><!-- count:glossary.terms -->171<!-- /count --> terms.</span></h2>
       <p class="final-sub">Plain-English definitions for every term in your audit, organized by category.</p>
     </div>
     <div class="hero-ctas reveal hero-ctas-center">
@@ -568,7 +569,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->5<!-- /count --> tools, <!-- count:glossary.terms -->171<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->37<!-- /count --> articles, <!-- count:tools.live -->5<!-- /count --> tools, <!-- count:glossary.terms -->171<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -747,6 +748,14 @@
       }
     })();
   </script>
+  <!-- On-device warmth (warmth.js): the Golden-Hour whisper — a hero's light leans a
+       hair warmer at the edges of the reader's local day, computed on their machine
+       from the local clock and sent nowhere. Only surfaces with a .hero/.window pane
+       show it; everywhere else it is inert. Fail-silent; with JS off (or motion
+       reduced) the page is the certified v3. Placed INSIDE <footer> so sync-includes
+       (FOOTER_RE) replaces it atomically and never double-stamps. The homepage loads
+       its own copy (bespoke footer). See docs/handoff/warmth-cohesion-plan.md. -->
+  <script src="/assets/js/warmth.js?v=20260717-warmth1" defer></script>
 </footer>
 <!-- Phase 3D-perf — lazy-load non-critical JS after `load` + idle.
      Previously, the 4 footer scripts (first-touch, save-next-time,
@@ -824,6 +833,6 @@
 })();
 </script>
 
-<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260422-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260717-reassure";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 </body>
 </html>

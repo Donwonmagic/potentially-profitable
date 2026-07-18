@@ -43,9 +43,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=94b64345454f" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=ec596ee8c682" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=94b64345454f"><link rel="stylesheet" href="/assets/site-article.css?v=ec596ee8c682"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=f8b6c001b1bb" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=8787ec2df8b4" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=f8b6c001b1bb"><link rel="stylesheet" href="/assets/site-article.css?v=8787ec2df8b4"></noscript>
 
 <!-- topic-schema:start -->
 <script type="application/ld+json">
@@ -591,60 +591,7 @@
   </div>
 </section>
 
-<!-- topic-sheets-rail:start -->
-<section class="topic-section">
-  <div class="container">
-    <header class="topic-section-head">
-      <span class="eyebrow">Operator sheets</span>
-      <h2>Hand off to the designer.</h2>
-    </header>
-    <ul class="topic-tool-list">
-      <li>
-        <a class="topic-tool-card" href="/sheets/menu-redesign-brief/">
-          <h4>Menu Redesign Brief</h4>
-          <p>What the designer needs to do the work — top 10 sellers, dogs to cut, price changes, callout items, dietary flags, print and digital and POS targets.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/brand-asset-inventory/">
-          <h4>Brand Asset Inventory</h4>
-          <p>Asset type, file location, last updated, owner, license. Catches the logo that only exists on a former employee's laptop.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/signage-spec-sheet/">
-          <h4>Signage &amp; Print Spec Sheet</h4>
-          <p>Sign type, dimensions, material, color codes, mounting, vendor, install date. Hands the printer everything they need to start.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/photo-shot-list/">
-          <h4>Photo Shoot Shot List</h4>
-          <p>Dish, plate type, garnish, props, channel target, priority. Lives on set, ticks off as you go.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/social-content-calendar/">
-          <h4>Social Content Calendar</h4>
-          <p>Date, channel, post type, asset link, caption draft, CTA, status. Thirty days planned at a time so you stop posting the same hero shot.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-      <li>
-        <a class="topic-tool-card" href="/sheets/vendor-contact-sheet/">
-          <h4>Vendor Contact Sheet</h4>
-          <p>Vendor, contact, phone, email, account number, delivery days, payment terms. Lives by the office phone for the day a vendor disappears.</p>
-          <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
-        </a>
-      </li>
-    </ul>
-  </div>
-</section>
-<!-- topic-sheets-rail:end -->
+
 
 </main>
 
@@ -672,7 +619,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->5<!-- /count --> tools, <!-- count:glossary.terms -->171<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->37<!-- /count --> articles, <!-- count:tools.live -->5<!-- /count --> tools, <!-- count:glossary.terms -->171<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -851,6 +798,14 @@
       }
     })();
   </script>
+  <!-- On-device warmth (warmth.js): the Golden-Hour whisper — a hero's light leans a
+       hair warmer at the edges of the reader's local day, computed on their machine
+       from the local clock and sent nowhere. Only surfaces with a .hero/.window pane
+       show it; everywhere else it is inert. Fail-silent; with JS off (or motion
+       reduced) the page is the certified v3. Placed INSIDE <footer> so sync-includes
+       (FOOTER_RE) replaces it atomically and never double-stamps. The homepage loads
+       its own copy (bespoke footer). See docs/handoff/warmth-cohesion-plan.md. -->
+  <script src="/assets/js/warmth.js?v=20260717-warmth1" defer></script>
 </footer>
 <!-- Phase 3D-perf — lazy-load non-critical JS after `load` + idle.
      Previously, the 4 footer scripts (first-touch, save-next-time,
@@ -928,6 +883,6 @@
 })();
 </script>
 
-<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260422-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260717-reassure";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 </body>
 </html>

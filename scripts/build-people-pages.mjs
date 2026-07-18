@@ -251,7 +251,7 @@ ${noteBlocks}
 </main>
 
 ${footer}
-<script src="/assets/site.js?v=20260429-batch3" defer></script>
+<script src="/assets/site.js?v=20260717-reassure" defer></script>
 </body>
 </html>
 `;

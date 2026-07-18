@@ -62,6 +62,7 @@ main{padding-top:64px}
 .ci-eyebrow a{color:var(--teal);text-decoration:none}
 .ci-hero h1{font-family:var(--font-display);font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.12;color:var(--ink);margin:0 0 14px}
 .ci-answer{font-size:clamp(18px,3vw,22px);font-weight:600;color:var(--ink);margin:0 0 14px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
+.ci-asof-rel{color:var(--ink-soft);font-weight:400}
 .ci-lede{font-size:18px;line-height:1.6;color:var(--ink);margin:0;max-width:720px}
 .ci-body{margin:8px 0 0;max-width:760px}@media(min-width:1024px){.breadcrumb,.ci-hero,.ci-body{max-width:840px;margin-inline:auto}}
 .ci-body h2{font-family:var(--font-display);font-size:clamp(20px,3vw,26px);font-weight:500;color:var(--ink);margin:34px 0 10px;line-height:1.2}
@@ -309,9 +310,9 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
 </style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=94b64345454f" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=ec596ee8c682" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=94b64345454f"><link rel="stylesheet" href="/assets/site-article.css?v=ec596ee8c682"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=f8b6c001b1bb" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=8787ec2df8b4" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=f8b6c001b1bb"><link rel="stylesheet" href="/assets/site-article.css?v=8787ec2df8b4"></noscript>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -571,7 +572,7 @@ main{padding-top:64px}
       <p class="ci-yield__src">Standard industry reference yield.</p>
     </aside>
     <h2>What you can do now</h2>
-    <p>Check your last watermelon invoice against your own recent ones, or open <a href="/tools/cost-pulse/">the live tool</a> for the ingredients we do cover. This page fills in when the data does.</p>
+    <p>Check your last watermelon invoice against your own recent ones, or open <a href="/tools/cost-pulse/?from=watermelon">the live tool</a> for the ingredients we do cover. This page fills in when the data does.</p>
     <div class="ci-cta-row">
       <a class="btn btn-ghost" href="/cost-index/">Browse all readings</a>
       <a class="btn btn-ghost" href="/glossary/cost-index/">What is a cost index?</a>
@@ -658,6 +659,42 @@ main{padding-top:64px}
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
 })();
 </script>
-<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260430-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+<!-- On-device as-of age gloss (Move 12): re-renders the AGE of an already-printed,
+     certified date on the reader's own clock — appends " · 3 days ago" / " · hace 3
+     días" after a static "as of <date>". Appends only: JS-off (or a stale/CSP-blocked
+     module) leaves the certified static date untouched. Reuses the tested, parity-
+     locked relativeDay() from MuntinCostFormat — never invents a date or a number. -->
+<script>
+(function () {
+  'use strict';
+  if (typeof document === 'undefined') return;
+  var nodes = document.querySelectorAll('.ci-asof[data-asof]');
+  if (!nodes.length) return;
+  var es = (document.documentElement.lang || 'en').slice(0, 2) === 'es';
+  function paint(F) {
+    if (!F || typeof F.relativeDay !== 'function') return;   // stale/old cached module → leave static date
+    var now = Date.now();
+    Array.prototype.forEach.call(nodes, function (n) {
+      if (n.getAttribute('data-rel-wired') === '1') return;
+      var rel = F.relativeDay(n.getAttribute('data-asof'), now);
+      if (!rel) return;                                      // future / bad / no-clock → silent
+      n.setAttribute('data-rel-wired', '1');
+      var sep = document.createElement('span');
+      sep.className = 'ci-asof-rel';
+      sep.textContent = ' · ' + rel;                         // textContent only, never innerHTML
+      n.appendChild(sep);
+    });
+  }
+  function boot() { if (typeof MuntinCostFormat !== 'undefined') paint(MuntinCostFormat(es)); }
+  (window.requestIdleCallback || function (c) { return setTimeout(c, 200); })(function () {
+    if (typeof MuntinCostFormat !== 'undefined') { boot(); return; }
+    var s = document.createElement('script');
+    s.src = '/tools/_shared/cost-index-format.js?v=20260717-fmt5';
+    s.async = true; s.onload = boot;
+    document.head.appendChild(s);
+  });
+})();
+</script>
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260717-reassure";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 </body>
 </html>

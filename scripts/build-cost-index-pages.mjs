@@ -751,7 +751,7 @@ function compositeBand(locale) {
     </div>
     <div class="ci-composite__meta">
       <span class="ci-composite__chip">${confChip}</span>
-      <span class="ci-composite__chip">${asOfChip}</span>
+      <span class="ci-composite__chip ci-asof" data-asof="${asOf}">${asOfChip}</span>
     </div>
     <p class="ci-composite__spread">${spread}</p>
     <details class="ci-composite__src"><summary>${srcSummary}</summary><div>${srcBody}</div></details>
@@ -1076,7 +1076,7 @@ function answerBanner(slug, locale) {
   // committability verdict chip (Hold/Watch) is volatility, not a price call.
   const asOf = r.asOf || '—';
   const chip = verdictChip(ingVerdict(slug), locale);
-  return `<p class="ci-answer">~${range}${unitSfx} · ${es ? 'al' : 'as of'} ${asOf} ${chip}</p>`;
+  return `<p class="ci-answer">~${range}${unitSfx} · <span class="ci-asof" data-asof="${asOf}">${es ? 'al' : 'as of'} ${asOf}</span> ${chip}</p>`;
 }
 
 // ---- Price-free INDEXED movement chart ----------------------------
@@ -1206,7 +1206,7 @@ function marketReadBlock(slug, locale) {
     ${verified}
     <p class="ci-read__method"><a href="${es ? '/es' : ''}/cost-index/methodology/#track-record">${es ? 'Cómo verificamos este número' : 'How we verify this number'} <span aria-hidden="true">→</span></a></p>
     <p class="ci-read__data">${es ? 'Descarga los datos' : 'Download this series'}: <a href="/cost-index/${slug}/series.csv" download>CSV</a> · <a href="/cost-index/${slug}/series.json">JSON</a></p>
-    <p class="ci-read__live"><a href="${es ? '/es' : ''}/tools/cost-pulse/#ci-${slug}">${liveLabel} <span aria-hidden="true">→</span></a></p>
+    <p class="ci-read__live"><a href="${es ? '/es' : ''}/tools/cost-pulse/?from=${slug}#ci-${slug}">${liveLabel} <span aria-hidden="true">→</span></a></p>
   </aside>`;
 }
 
@@ -1569,6 +1569,7 @@ main{padding-top:64px}
 .ci-eyebrow a{color:var(--teal);text-decoration:none}
 .ci-hero h1{font-family:var(--font-display);font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.12;color:var(--ink);margin:0 0 14px}
 .ci-answer{font-size:clamp(18px,3vw,22px);font-weight:600;color:var(--ink);margin:0 0 14px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
+.ci-asof-rel{color:var(--ink-soft);font-weight:400}
 .ci-lede{font-size:18px;line-height:1.6;color:var(--ink);margin:0;max-width:720px}
 .ci-body{margin:8px 0 0;max-width:760px}@media(min-width:1024px){.breadcrumb,.ci-hero,.ci-body{max-width:840px;margin-inline:auto}}
 .ci-body h2{font-family:var(--font-display);font-size:clamp(20px,3vw,26px);font-weight:500;color:var(--ink);margin:34px 0 10px;line-height:1.2}
@@ -2004,7 +2005,43 @@ const pageTail = `</div>
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
 })();
 </script>
-<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260430-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+<!-- On-device as-of age gloss (Move 12): re-renders the AGE of an already-printed,
+     certified date on the reader's own clock — appends " · 3 days ago" / " · hace 3
+     días" after a static "as of <date>". Appends only: JS-off (or a stale/CSP-blocked
+     module) leaves the certified static date untouched. Reuses the tested, parity-
+     locked relativeDay() from MuntinCostFormat — never invents a date or a number. -->
+<script>
+(function () {
+  'use strict';
+  if (typeof document === 'undefined') return;
+  var nodes = document.querySelectorAll('.ci-asof[data-asof]');
+  if (!nodes.length) return;
+  var es = (document.documentElement.lang || 'en').slice(0, 2) === 'es';
+  function paint(F) {
+    if (!F || typeof F.relativeDay !== 'function') return;   // stale/old cached module → leave static date
+    var now = Date.now();
+    Array.prototype.forEach.call(nodes, function (n) {
+      if (n.getAttribute('data-rel-wired') === '1') return;
+      var rel = F.relativeDay(n.getAttribute('data-asof'), now);
+      if (!rel) return;                                      // future / bad / no-clock → silent
+      n.setAttribute('data-rel-wired', '1');
+      var sep = document.createElement('span');
+      sep.className = 'ci-asof-rel';
+      sep.textContent = ' · ' + rel;                         // textContent only, never innerHTML
+      n.appendChild(sep);
+    });
+  }
+  function boot() { if (typeof MuntinCostFormat !== 'undefined') paint(MuntinCostFormat(es)); }
+  (window.requestIdleCallback || function (c) { return setTimeout(c, 200); })(function () {
+    if (typeof MuntinCostFormat !== 'undefined') { boot(); return; }
+    var s = document.createElement('script');
+    s.src = '/tools/_shared/cost-index-format.js?v=20260717-fmt5';
+    s.async = true; s.onload = boot;
+    document.head.appendChild(s);
+  });
+})();
+</script>
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260717-reassure";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 </body>
 </html>
 `;
@@ -2311,14 +2348,14 @@ function howToUse(slug, locale) {
   <li>Debajo del rango = buen trato; dentro = normal; muy por encima = conversación con el proveedor.</li>
   <li>Observa la dirección unas semanas antes de re-cotizar un platillo — una sola semana es ruido.</li>
 </ol>
-<p>¿Vas a costear un platillo que lleva ${lc}? Usa la <a href="${base}/tools/plate-cost/">Calculadora de Costo por Platillo</a>.</p>`
+<p>¿Vas a costear un platillo que lleva ${lc}? Usa la <a href="${base}/tools/plate-cost/?from=${slug}">Calculadora de Costo por Platillo</a>.</p>`
     : `<ol>
   <li>Open the reading above and note the typical range and the date.</li>
   <li>Pull your last ${lc} invoice, in the same unit.</li>
   <li>Below the range is a good deal; inside is normal; well above is a vendor conversation.</li>
   <li>Watch the direction over a few weeks before re-pricing a dish — one week is noise.</li>
 </ol>
-<p>Costing a dish that uses ${lc}? Use the <a href="${base}/tools/plate-cost/">Plate Cost Calculator</a>.</p>`;
+<p>Costing a dish that uses ${lc}? Use the <a href="${base}/tools/plate-cost/?from=${slug}">Plate Cost Calculator</a>.</p>`;
   return `<h2 id="how-to-use">${h}</h2>${steps}`;
 }
 
@@ -2473,7 +2510,7 @@ function emitExpandingPage(slug, locale) {
     <p>La regla es simple: un precio se publica solo cuando podemos obtenerlo de datos públicos (USDA, BLS, FRED) con una calidad sobre la que actuaríamos nosotros mismos. Para ${lc}, la serie mayorista gratuita que necesitamos aún no está conectada. Una estimación de una sola fuente sería peor que nada.</p>
     ${yieldBlock(slug, locale)}
     <h2>Qué puedes hacer ahora</h2>
-    <p>Compara tu última factura de ${lc} con tus facturas recientes, o abre <a href="${base}/tools/cost-pulse/">la herramienta en vivo</a> para los ingredientes que sí cubrimos. Esta página se completará cuando lo hagan los datos.</p>
+    <p>Compara tu última factura de ${lc} con tus facturas recientes, o abre <a href="${base}/tools/cost-pulse/?from=${slug}">la herramienta en vivo</a> para los ingredientes que sí cubrimos. Esta página se completará cuando lo hagan los datos.</p>
     <div class="ci-cta-row">
       <a class="btn btn-ghost" href="${base}/cost-index/">Ver todas las lecturas</a>
       <a class="btn btn-ghost" href="${base}/glossary/cost-index/">Qué es un índice de costos</a>
@@ -2488,7 +2525,7 @@ function emitExpandingPage(slug, locale) {
     <p>The rule is simple: a price ships only when we can source it from public USDA, BLS or FRED data at a quality we'd act on ourselves. For ${lc}, the free wholesale series we need isn't wired up yet — and a thin, single-source guess would be worse than nothing.</p>
     ${yieldBlock(slug, locale)}
     <h2>What you can do now</h2>
-    <p>Check your last ${lc} invoice against your own recent ones, or open <a href="${base}/tools/cost-pulse/">the live tool</a> for the ingredients we do cover. This page fills in when the data does.</p>
+    <p>Check your last ${lc} invoice against your own recent ones, or open <a href="${base}/tools/cost-pulse/?from=${slug}">the live tool</a> for the ingredients we do cover. This page fills in when the data does.</p>
     <div class="ci-cta-row">
       <a class="btn btn-ghost" href="${base}/cost-index/">Browse all readings</a>
       <a class="btn btn-ghost" href="${base}/glossary/cost-index/">What is a cost index?</a>
@@ -2616,7 +2653,7 @@ function emitIngredientPage(slug, locale) {
     ${faqHtml}
     ${siblings(slug, locale)}
     <div class="ci-cta-row">
-      <a class="btn btn-primary" href="${base}/tools/cost-pulse/#ci-${slug}">${es ? 'Abrir la herramienta en vivo' : 'Open the live tool'}</a>
+      <a class="btn btn-primary" href="${base}/tools/cost-pulse/?from=${slug}#ci-${slug}">${es ? 'Abrir la herramienta en vivo' : 'Open the live tool'}</a>
       <a class="btn btn-ghost" href="${base}/cost-index/">${es ? 'Ver todas las lecturas' : 'Browse all readings'}</a>
     </div>
     <p class="ci-ledger-bridge" style="margin:16px 0 0;font-size:14.5px;line-height:1.6;color:var(--ink-soft)">${es

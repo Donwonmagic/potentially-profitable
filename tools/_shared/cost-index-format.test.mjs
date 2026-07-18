@@ -191,3 +191,23 @@ test('thenVsNow: ES localizes the verdict', () => {
   const r = ES.thenVsNow(MKT, MKT_DATES, O({ aCents: 1000, bCents: 1300, aDateStr: '2026-01-01', bDateStr: '2026-06-01' }));
   assert.match(ES.thenVsNowSay(r, 'caja').headline, /Por encima del movimiento del mercado/);
 });
+
+// ── relativeDay — on-device "how long ago" gloss for a real, already-printed asOf ─
+test('relativeDay: honest age of a real ISO date, localized; future/bad input silent', () => {
+  const NOW = Date.UTC(2026, 6, 17); // 2026-07-17, fixed so the test is deterministic
+  assert.equal(EN.relativeDay('2026-07-17', NOW), 'today');
+  assert.equal(EN.relativeDay('2026-07-16', NOW), 'yesterday');
+  assert.equal(EN.relativeDay('2026-07-14', NOW), '3 days ago');
+  assert.equal(EN.relativeDay('2026-07-08', NOW), 'about a week ago');   // 9 days → week band
+  assert.equal(EN.relativeDay('2026-06-17', NOW), '4 weeks ago');        // 30 days → round(30/7)=4
+  // Honest by construction: a future date or bad input says NOTHING (never guesses).
+  assert.equal(EN.relativeDay('2026-07-20', NOW), '');                   // future
+  assert.equal(EN.relativeDay('not-a-date', NOW), '');
+  assert.equal(EN.relativeDay(null, NOW), '');
+  assert.equal(EN.relativeDay('2026-07-14', NaN), '');                   // no clock → silent
+  // ES localizes.
+  assert.equal(ES.relativeDay('2026-07-17', NOW), 'hoy');
+  assert.equal(ES.relativeDay('2026-07-16', NOW), 'ayer');
+  assert.equal(ES.relativeDay('2026-07-14', NOW), 'hace 3 días');
+  assert.equal(ES.relativeDay('2026-06-17', NOW), 'hace 4 semanas');
+});
