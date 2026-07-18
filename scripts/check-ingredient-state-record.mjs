@@ -90,6 +90,7 @@ function check(record) {
           if (!(h.import_usd >= 0)) E(s, `harmony catchpair import_usd ${h.import_usd} < 0`);
           if (typeof h.wild_minimal !== 'boolean') E(s, `harmony catchpair wild_minimal must be boolean`);
           if (h.landings_year != null && !(h.landings_year >= 1950 && h.landings_year <= 2100)) E(s, `harmony catchpair landings_year ${h.landings_year} implausible`);
+          if (h.import_year != null && !(h.import_year >= 1950 && h.import_year <= 2100)) E(s, `harmony catchpair import_year ${h.import_year} implausible`);
           if (r.us_import_value_usd == null || r.us_landings_value_usd == null) E(s, 'harmony catchpair present without both import + landings value');
         }
         // defense in depth: no free-text string field in a harmony entry may carry banned language
@@ -124,13 +125,13 @@ function selfTest() {
       import_peak_months: [1, 2], us_import_value_usd: null, us_export_value_usd: -5, us_landings_value_usd: -9, us_landings_year: 1900, us_landings_wild_minimal: 'yes',
       import_note: 'prices will rise due to drought', specialty: true, band_pct: 5,
       harmony: [{ kind: 'reliance', reliance_pct: 200, reliance_year: 1990 }, { kind: 'persistence', n: 0, median_days: -1, comover_shared: 'x' },
-        { kind: 'catchpair', landings_usd: -1, import_usd: -2, wild_minimal: 'nope', landings_year: 1800 }, { kind: 'bogus' }] },
+        { kind: 'catchpair', landings_usd: -1, import_usd: -2, wild_minimal: 'nope', landings_year: 1800, import_year: 1799 }, { kind: 'bogus' }] },
   ] };
   const errs = check(bad);
   const want = ['cheapest_month', 'import_source_hhi', 'import_reliance_pct', 'import_peak_months length', 'banned language', 'must not carry band_pct', 'withImport',
     'us_export_value_usd', 'us_landings_value_usd', 'us_landings_year', 'us_landings_wild_minimal must be boolean',
     'harmony reliance reliance_pct', 'harmony reliance reliance_year', 'harmony persistence n', 'harmony persistence median_days', 'harmony persistence comover_shared',
-    'harmony catchpair landings_usd', 'harmony catchpair import_usd', 'harmony catchpair wild_minimal', 'harmony catchpair landings_year', 'harmony kind "bogus" unknown'];
+    'harmony catchpair landings_usd', 'harmony catchpair import_usd', 'harmony catchpair wild_minimal', 'harmony catchpair landings_year', 'harmony catchpair import_year', 'harmony kind "bogus" unknown'];
   const miss = want.filter((w) => !errs.some((e) => e.includes(w)));
   if (miss.length) { console.error('SELF-TEST FAIL — missed:', miss, '\ngot:', errs); process.exit(1); }
   console.log('✓ self-test: caught all', want.length, 'seeded violations'); process.exit(0);

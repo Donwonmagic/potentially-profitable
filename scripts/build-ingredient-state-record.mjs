@@ -368,8 +368,20 @@ export function harmonyFor(r) {
   // catchpair — the SEAFOOD analog of reliance, kept deliberately distinct: US wild landings value set
   // beside the import value, but NEVER a supply share, because the domestic figure is WILD-caught while
   // the import is largely FARMED. Two dollar figures + the wild-minimal flag; the island states the seam.
+  // The import $ is aligned to the SAME year as the landings figure when that year is in the annual
+  // series (landings run a year behind imports), so the pair is a same-year comparison, never cross-year;
+  // import_year is carried so the island can state (and, on the rare fallback, reconcile) the years.
   if (r.us_landings_value_usd != null && r.us_import_value_usd != null) {
-    H.push({ kind: 'catchpair', landings_usd: r.us_landings_value_usd, import_usd: r.us_import_value_usd, wild_minimal: !!r.us_landings_wild_minimal, landings_year: r.us_landings_year != null ? r.us_landings_year : null });
+    const ly = r.us_landings_year != null ? r.us_landings_year : null;
+    const ann = r.import_annual_usd || {};
+    let importUsd, importYear;
+    if (ly != null && ann[ly] != null) { importUsd = Math.round(ann[ly]); importYear = ly; }
+    else {
+      importUsd = r.us_import_value_usd;
+      const yrs = Object.keys(ann).map(Number).filter(Number.isFinite).sort((a, b) => b - a);
+      importYear = yrs.length ? yrs[0] : null;
+    }
+    H.push({ kind: 'catchpair', landings_usd: r.us_landings_value_usd, import_usd: importUsd, import_year: importYear, wild_minimal: !!r.us_landings_wild_minimal, landings_year: ly });
   }
   if (r.notable_events_n && r.median_shock_days != null) {
     const co = strongComover(r);

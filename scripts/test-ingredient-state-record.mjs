@@ -78,13 +78,20 @@ test('harmonyFor: persistence keeps the run-length always, names a co-mover only
 });
 
 test('harmonyFor: catchpair pairs wild landings vs imports (both sides required), never a share', () => {
-  const seafood = { us_landings_value_usd: 312_000_000, us_import_value_usd: 1_617_000_000, us_landings_wild_minimal: false, us_landings_year: 2024 };
+  // import_usd aligns to the landings YEAR when the annual series has it (never cross-year)
+  const seafood = { us_landings_value_usd: 312_000_000, us_import_value_usd: 1_617_000_000, us_landings_wild_minimal: false,
+    us_landings_year: 2024, import_annual_usd: { 2024: 1_589_800_000, 2025: 1_617_000_000 } };
   const cp = of(seafood, 'catchpair');
   assert.ok(cp, 'catchpair fires when both landings + import are present');
   assert.equal(cp.landings_usd, 312_000_000);
-  assert.equal(cp.import_usd, 1_617_000_000);
+  assert.equal(cp.import_usd, 1_589_800_000, 'import aligns to the 2024 landings year, not the 2025 latest');
+  assert.equal(cp.import_year, 2024, 'import_year matches landings_year when aligned');
   assert.equal(cp.wild_minimal, false);
   assert.equal(cp.landings_year, 2024);
+  // fallback: no same-year import -> use latest us_import_value_usd + label its year
+  const fb = of({ us_landings_value_usd: 5, us_import_value_usd: 99, us_landings_year: 2024, import_annual_usd: { 2022: 88, 2023: 99 } }, 'catchpair');
+  assert.equal(fb.import_usd, 99);
+  assert.equal(fb.import_year, 2023, 'fallback labels the latest available import year');
   // it never computes a percentage/share — only the two raw figures + the seam flag
   assert.equal(cp.reliance_pct, undefined);
   assert.equal(cp.share_pct, undefined);
