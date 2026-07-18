@@ -3,6 +3,78 @@
   "_source": "US Census Bureau, International Trade, general imports by HS6 (api.census.gov/data/timeseries/intltrade/imports/hs). Public domain.",
   "_retrievedYears": "2010-2025",
   "codes": {
+    "160413": {
+      "sdesc": "SARDINES/SARDINELLA/BRISLING, PREP/PRESERVED",
+      "slugs": [
+        "sardine"
+      ]
+    },
+    "160414": {
+      "sdesc": "TUNAS/SKIPJACK/BONITO, PREPARED OR PRESERVED",
+      "slugs": [
+        "canned-tuna"
+      ]
+    },
+    "160416": {
+      "sdesc": "ANCHOVIES, PREPARED OR PRESERVED",
+      "slugs": [
+        "anchovy"
+      ]
+    },
+    "160431": {
+      "sdesc": "CAVIAR",
+      "slugs": [
+        "caviar"
+      ]
+    },
+    "200110": {
+      "sdesc": "CUCUMBERS & GHERKINS, PREP/PRES VINEGAR",
+      "slugs": [
+        "pickles"
+      ]
+    },
+    "200210": {
+      "sdesc": "TOMATOES WHOLE/PIECES, PREPARED/PRESERVED",
+      "slugs": [
+        "canned-tomatoes"
+      ]
+    },
+    "200290": {
+      "sdesc": "TOMATO PASTE ETC",
+      "slugs": [
+        "tomato-paste"
+      ]
+    },
+    "200570": {
+      "sdesc": "OLIVES, PREPARED/PRESERVED (NOT VINEGAR), NOT FROZEN",
+      "slugs": [
+        "olives"
+      ]
+    },
+    "210210": {
+      "sdesc": "YEASTS, ACTIVE",
+      "slugs": [
+        "yeast"
+      ]
+    },
+    "210310": {
+      "sdesc": "SOY SAUCE",
+      "slugs": [
+        "soy-sauce"
+      ]
+    },
+    "210320": {
+      "sdesc": "TOMATO KETCHUP AND OTHER TOMATO SAUCES",
+      "slugs": [
+        "ketchup"
+      ]
+    },
+    "210330": {
+      "sdesc": "MUSTARD FLOUR/MEAL AND PREPARED MUSTARD",
+      "slugs": [
+        "mustard"
+      ]
+    },
     "080440": {
       "sdesc": "AVOCADOS, FRESH OR DRIED",
       "slugs": [
@@ -977,6 +1049,414 @@
       "sdesc": "SOLE, FROZEN, EXCEPT FILLETS, LIVERS AND ROES",
       "slugs": [
         "dover-sole"
+      ]
+    },
+    "081010": {
+      "sdesc": "STRAWBERRIES, FRESH",
+      "slugs": [
+        "strawberry"
+      ]
+    },
+    "080610": {
+      "sdesc": "GRAPES, FRESH",
+      "slugs": [
+        "grapes"
+      ]
+    },
+    "080450": {
+      "sdesc": "GUAVAS, MANGOES AND MANGOSTEENS, FRESH OR DRIED — combines mango with guava/mangosteen",
+      "slugs": [
+        "mango"
+      ]
+    },
+    "081050": {
+      "sdesc": "KIWI FRUIT (CHINESE GOOSEBERRIES) FRESH",
+      "slugs": [
+        "kiwi"
+      ]
+    },
+    "080720": {
+      "sdesc": "PAPAYAS (PAPAWS), FRESH",
+      "slugs": [
+        "papaya"
+      ]
+    },
+    "080929": {
+      "sdesc": "CHERRIES, FRESH, NESOI",
+      "slugs": [
+        "cherry"
+      ]
+    },
+    "080111": {
+      "sdesc": "COCONUTS, DESICCATED",
+      "slugs": [
+        "coconut"
+      ]
+    },
+    "080119": {
+      "sdesc": "COCONUTS, FRESH, NESOI",
+      "slugs": [
+        "coconut"
+      ]
+    },
+    "080410": {
+      "sdesc": "DATES, FRESH OR DRIED",
+      "slugs": [
+        "dates"
+      ]
+    },
+    "080510": {
+      "sdesc": "ORANGES, FRESH",
+      "slugs": [
+        "orange"
+      ]
+    },
+    "080132": {
+      "sdesc": "CASHEW NUTS, SHELLED",
+      "slugs": [
+        "cashew"
+      ]
+    },
+    "080212": {
+      "sdesc": "ALMONDS, FRESH OR DRIED, SHELLED",
+      "slugs": [
+        "almond"
+      ]
+    },
+    "080232": {
+      "sdesc": "WALNUTS, FRESH OR DRIED, SHELLED",
+      "slugs": [
+        "walnut"
+      ]
+    },
+    "080252": {
+      "sdesc": "PISTACHIOS, SHELLED",
+      "slugs": [
+        "pistachio"
+      ]
+    },
+    "080290": {
+      "sdesc": "PECANS",
+      "slugs": [
+        "pecan"
+      ]
+    },
+    "080299": {
+      "sdesc": "NUTS, FRESH OR DRIED, NESOI",
+      "slugs": [
+        "pecan"
+      ]
+    },
+    "080262": {
+      "sdesc": "MACADAMIA NUTS, SHELLED",
+      "slugs": [
+        "macadamia"
+      ]
+    },
+    "030461": {
+      "sdesc": "TILAPIA FILLETS, FROZEN",
+      "slugs": [
+        "tilapia"
+      ]
+    },
+    "030431": {
+      "sdesc": "TILAPIA FILLETS, FRESH OR CHILLED",
+      "slugs": [
+        "tilapia"
+      ]
+    },
+    "030323": {
+      "sdesc": "TILAPIAS, FROZEN (whole)",
+      "slugs": [
+        "tilapia"
+      ]
+    },
+    "030471": {
+      "sdesc": "COD FILLETS, FROZEN",
+      "slugs": [
+        "cod"
+      ]
+    },
+    "030366": {
+      "sdesc": "COD, FROZEN (whole)",
+      "slugs": [
+        "cod"
+      ]
+    },
+    "030251": {
+      "sdesc": "COD, FRESH OR CHILLED",
+      "slugs": [
+        "cod"
+      ]
+    },
+    "030462": {
+      "sdesc": "CATFISH FILLETS, FROZEN",
+      "slugs": [
+        "catfish"
+      ]
+    },
+    "030324": {
+      "sdesc": "CATFISH, FROZEN",
+      "slugs": [
+        "catfish"
+      ]
+    },
+    "030472": {
+      "sdesc": "HADDOCK FILLETS, FROZEN",
+      "slugs": [
+        "haddock"
+      ]
+    },
+    "030284": {
+      "sdesc": "SEABASS, FRESH OR CHILLED",
+      "slugs": [
+        "branzino"
+      ]
+    },
+    "030232": {
+      "sdesc": "YELLOWFIN TUNAS, FRESH OR CHILLED",
+      "slugs": [
+        "ahi-tuna"
+      ]
+    },
+    "030235": {
+      "sdesc": "ATLANTIC & PACIFIC BLUEFIN TUNAS, FRESH OR CHILLED",
+      "slugs": [
+        "ahi-tuna"
+      ]
+    },
+    "020422": {
+      "sdesc": "MEAT OF SHEEP, CUTS, BONE IN NESOI, FRESH",
+      "slugs": [
+        "lamb"
+      ]
+    },
+    "020423": {
+      "sdesc": "MEAT OF SHEEP, BONELESS, FRESH",
+      "slugs": [
+        "lamb"
+      ]
+    },
+    "020442": {
+      "sdesc": "MEAT OF SHEEP, CUTS WITH BONE IN, FROZEN",
+      "slugs": [
+        "lamb"
+      ]
+    },
+    "020443": {
+      "sdesc": "MEAT OF SHEEP, BONELESS, FROZEN",
+      "slugs": [
+        "lamb"
+      ]
+    },
+    "020410": {
+      "sdesc": "CARCASSES OF LAMB, FRESH",
+      "slugs": [
+        "lamb"
+      ]
+    },
+    "020430": {
+      "sdesc": "CARCASSES OF LAMB, FROZEN",
+      "slugs": [
+        "lamb"
+      ]
+    },
+    "020450": {
+      "sdesc": "MEAT OF GOATS, FRESH, CHILLED OR FROZEN",
+      "slugs": [
+        "goat"
+      ]
+    },
+    "021012": {
+      "sdesc": "MEAT OF SWINE, BELLIES (BACON ETC), CURED",
+      "slugs": [
+        "bacon"
+      ]
+    },
+    "040610": {
+      "sdesc": "CHEESE, FRESH (UNRIPENED), INCL WHEY CHEESE & CURD",
+      "slugs": [
+        "mozzarella"
+      ]
+    },
+    "040630": {
+      "sdesc": "CHEESE, PROCESSED, NOT GRATED OR POWDERED",
+      "slugs": [
+        "processed-cheese"
+      ]
+    },
+    "040320": {
+      "sdesc": "YOGURT",
+      "slugs": [
+        "yogurt"
+      ]
+    },
+    "070959": {
+      "sdesc": "MUSHROOMS, FRESH OR CHILLED, NESOI",
+      "slugs": [
+        "shiitake"
+      ]
+    },
+    "071410": {
+      "sdesc": "CASSAVA (MANIOC), FRESH OR DRIED",
+      "slugs": [
+        "cassava"
+      ]
+    },
+    "071430": {
+      "sdesc": "YAMS, FRESH, CHILLED, FROZEN OR DRIED",
+      "slugs": [
+        "yam"
+      ]
+    },
+    "090411": {
+      "sdesc": "PEPPER OF GENUS PIPER, WHOLE",
+      "slugs": [
+        "black-pepper"
+      ]
+    },
+    "090412": {
+      "sdesc": "PEPPER OF GENUS PIPER, CRUSHED OR GROUND",
+      "slugs": [
+        "black-pepper"
+      ]
+    },
+    "090421": {
+      "sdesc": "CAPSICUM/PIMENTA, DRIED",
+      "slugs": [
+        "paprika"
+      ]
+    },
+    "090422": {
+      "sdesc": "CAPSICUM/PIMENTA, CRUSHED OR GROUND",
+      "slugs": [
+        "paprika"
+      ]
+    },
+    "090510": {
+      "sdesc": "VANILLA, NEITHER CRUSHED NOR GROUND",
+      "slugs": [
+        "vanilla"
+      ]
+    },
+    "090520": {
+      "sdesc": "VANILLA, CRUSHED OR GROUND",
+      "slugs": [
+        "vanilla"
+      ]
+    },
+    "090611": {
+      "sdesc": "CINNAMON, WHOLE",
+      "slugs": [
+        "cinnamon"
+      ]
+    },
+    "090619": {
+      "sdesc": "CINNAMON-TREE FLOWERS, WHOLE",
+      "slugs": [
+        "cinnamon"
+      ]
+    },
+    "090620": {
+      "sdesc": "CINNAMON, CRUSHED OR GROUND",
+      "slugs": [
+        "cinnamon"
+      ]
+    },
+    "090931": {
+      "sdesc": "CUMIN SEEDS, WHOLE",
+      "slugs": [
+        "cumin"
+      ]
+    },
+    "090932": {
+      "sdesc": "CUMIN SEEDS, CRUSHED OR GROUND",
+      "slugs": [
+        "cumin"
+      ]
+    },
+    "091030": {
+      "sdesc": "TURMERIC (CURCUMA)",
+      "slugs": [
+        "turmeric"
+      ]
+    },
+    "090710": {
+      "sdesc": "CLOVES, WHOLE",
+      "slugs": [
+        "cloves"
+      ]
+    },
+    "090720": {
+      "sdesc": "CLOVES, CRUSHED OR GROUND",
+      "slugs": [
+        "cloves"
+      ]
+    },
+    "090811": {
+      "sdesc": "NUTMEG, WHOLE",
+      "slugs": [
+        "nutmeg"
+      ]
+    },
+    "090812": {
+      "sdesc": "NUTMEG, CRUSHED OR GROUND",
+      "slugs": [
+        "nutmeg"
+      ]
+    },
+    "090831": {
+      "sdesc": "CARDAMOMS, WHOLE",
+      "slugs": [
+        "cardamom"
+      ]
+    },
+    "090832": {
+      "sdesc": "CARDAMOMS, CRUSHED OR GROUND",
+      "slugs": [
+        "cardamom"
+      ]
+    },
+    "090921": {
+      "sdesc": "CORIANDER SEEDS, WHOLE",
+      "slugs": [
+        "coriander-seed"
+      ]
+    },
+    "090922": {
+      "sdesc": "CORIANDER SEEDS, CRUSHED OR GROUND",
+      "slugs": [
+        "coriander-seed"
+      ]
+    },
+    "091020": {
+      "sdesc": "SAFFRON",
+      "slugs": [
+        "saffron"
+      ]
+    },
+    "040900": {
+      "sdesc": "HONEY, NATURAL",
+      "slugs": [
+        "honey"
+      ]
+    },
+    "090121": {
+      "sdesc": "COFFEE, ROASTED, NOT DECAFFEINATED",
+      "slugs": [
+        "coffee"
+      ]
+    },
+    "090230": {
+      "sdesc": "BLACK TEA, PACKAGES NOV 3KG",
+      "slugs": [
+        "tea"
+      ]
+    },
+    "090240": {
+      "sdesc": "BLACK TEA, NESOI",
+      "slugs": [
+        "tea"
       ]
     }
   },

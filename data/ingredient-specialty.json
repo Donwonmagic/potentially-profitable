@@ -1,18 +1,350 @@
 {
-  "_doc": "Specialty / import-defined ingredients — NOT part of the 100-ingredient wholesale-priced corpus. These carry a US Census import stream (and, where sourced, a book yield) but NO wholesale price band, posture, seasonality or co-movement, because no USDA/BLS wholesale reference tracks them. Every such field is honestly absent. Appended to the Ingredient State Record after the 100 priced ingredients, flagged specialty:true. Import columns are US public domain; the compiled record is CC BY 4.0.",
+  "_doc": "Specialty / import-defined ingredients — NOT part of the 100-ingredient wholesale-priced corpus. These carry a US Census import stream (and, where sourced, a book yield) but NO wholesale price band, posture, seasonality or co-movement, because no USDA/BLS wholesale reference tracks them. Every such field is honestly absent. Now spans fruit, nuts, fish, meat, dairy, produce, spices, pantry/prepared and beverages — anything likely on a restaurant invoice with a real US import stream. Appended to the Ingredient State Record after the 100 priced ingredients, flagged specialty:true. Import columns are US public domain; the compiled record is CC BY 4.0.",
   "ingredients": [
-    { "slug": "tomatillo", "name": "Tomatillo", "category": "fruiting" },
-    { "slug": "plantain", "name": "Plantain", "category": "fruit" },
-    { "slug": "chayote", "name": "Chayote", "category": "fruiting" },
-    { "slug": "jicama", "name": "Jicama", "category": "root" },
-    { "slug": "nopales", "name": "Nopales (cactus paddles)", "category": "greens" },
-    { "slug": "blue-cheese", "name": "Blue cheese", "category": "dairy" },
-    { "slug": "parmesan", "name": "Parmesan (Italian grating cheese)", "category": "dairy" },
-    { "slug": "pecorino", "name": "Pecorino (sheep's-milk cheese)", "category": "dairy" },
-    { "slug": "prosciutto", "name": "Prosciutto & cured ham", "category": "meat" },
-    { "slug": "snapper", "name": "Snapper", "category": "seafood" },
-    { "slug": "grouper", "name": "Grouper", "category": "seafood" },
-    { "slug": "mahi-mahi", "name": "Mahi-mahi", "category": "seafood" },
-    { "slug": "dover-sole", "name": "Sole (Dover/lemon)", "category": "seafood" }
+    {
+      "slug": "tomatillo",
+      "name": "Tomatillo",
+      "category": "fruiting"
+    },
+    {
+      "slug": "plantain",
+      "name": "Plantain",
+      "category": "fruit"
+    },
+    {
+      "slug": "chayote",
+      "name": "Chayote",
+      "category": "fruiting"
+    },
+    {
+      "slug": "jicama",
+      "name": "Jicama",
+      "category": "root"
+    },
+    {
+      "slug": "nopales",
+      "name": "Nopales (cactus paddles)",
+      "category": "greens"
+    },
+    {
+      "slug": "blue-cheese",
+      "name": "Blue cheese",
+      "category": "dairy"
+    },
+    {
+      "slug": "parmesan",
+      "name": "Parmesan (Italian grating cheese)",
+      "category": "dairy"
+    },
+    {
+      "slug": "pecorino",
+      "name": "Pecorino (sheep's-milk cheese)",
+      "category": "dairy"
+    },
+    {
+      "slug": "prosciutto",
+      "name": "Prosciutto & cured ham",
+      "category": "meat"
+    },
+    {
+      "slug": "snapper",
+      "name": "Snapper",
+      "category": "seafood"
+    },
+    {
+      "slug": "grouper",
+      "name": "Grouper",
+      "category": "seafood"
+    },
+    {
+      "slug": "mahi-mahi",
+      "name": "Mahi-mahi",
+      "category": "seafood"
+    },
+    {
+      "slug": "dover-sole",
+      "name": "Sole (Dover/lemon)",
+      "category": "seafood"
+    },
+    {
+      "slug": "strawberry",
+      "name": "Strawberry",
+      "category": "fruit"
+    },
+    {
+      "slug": "grapes",
+      "name": "Grapes (table)",
+      "category": "fruit"
+    },
+    {
+      "slug": "mango",
+      "name": "Mango",
+      "category": "fruit"
+    },
+    {
+      "slug": "kiwi",
+      "name": "Kiwi",
+      "category": "fruit"
+    },
+    {
+      "slug": "papaya",
+      "name": "Papaya",
+      "category": "fruit"
+    },
+    {
+      "slug": "cherry",
+      "name": "Cherry (sweet)",
+      "category": "fruit"
+    },
+    {
+      "slug": "coconut",
+      "name": "Coconut",
+      "category": "fruit"
+    },
+    {
+      "slug": "dates",
+      "name": "Dates",
+      "category": "fruit"
+    },
+    {
+      "slug": "orange",
+      "name": "Orange",
+      "category": "citrus"
+    },
+    {
+      "slug": "cashew",
+      "name": "Cashew",
+      "category": "nut"
+    },
+    {
+      "slug": "almond",
+      "name": "Almond",
+      "category": "nut"
+    },
+    {
+      "slug": "walnut",
+      "name": "Walnut",
+      "category": "nut"
+    },
+    {
+      "slug": "pistachio",
+      "name": "Pistachio",
+      "category": "nut"
+    },
+    {
+      "slug": "pecan",
+      "name": "Pecan",
+      "category": "nut"
+    },
+    {
+      "slug": "macadamia",
+      "name": "Macadamia",
+      "category": "nut"
+    },
+    {
+      "slug": "tilapia",
+      "name": "Tilapia",
+      "category": "seafood"
+    },
+    {
+      "slug": "cod",
+      "name": "Cod",
+      "category": "seafood"
+    },
+    {
+      "slug": "catfish",
+      "name": "Catfish",
+      "category": "seafood"
+    },
+    {
+      "slug": "haddock",
+      "name": "Haddock",
+      "category": "seafood"
+    },
+    {
+      "slug": "branzino",
+      "name": "Branzino / sea bass",
+      "category": "seafood"
+    },
+    {
+      "slug": "ahi-tuna",
+      "name": "Ahi tuna (fresh)",
+      "category": "seafood"
+    },
+    {
+      "slug": "lamb",
+      "name": "Lamb",
+      "category": "meat"
+    },
+    {
+      "slug": "goat",
+      "name": "Goat",
+      "category": "meat"
+    },
+    {
+      "slug": "bacon",
+      "name": "Bacon (cured)",
+      "category": "meat"
+    },
+    {
+      "slug": "mozzarella",
+      "name": "Fresh mozzarella / fresh cheese",
+      "category": "dairy"
+    },
+    {
+      "slug": "processed-cheese",
+      "name": "Processed cheese (American)",
+      "category": "dairy"
+    },
+    {
+      "slug": "yogurt",
+      "name": "Yogurt",
+      "category": "dairy"
+    },
+    {
+      "slug": "shiitake",
+      "name": "Specialty mushrooms (shiitake, oyster)",
+      "category": "mushroom"
+    },
+    {
+      "slug": "cassava",
+      "name": "Cassava (yuca)",
+      "category": "root"
+    },
+    {
+      "slug": "yam",
+      "name": "Yam",
+      "category": "root"
+    },
+    {
+      "slug": "black-pepper",
+      "name": "Black pepper",
+      "category": "spice"
+    },
+    {
+      "slug": "paprika",
+      "name": "Paprika / chili powder",
+      "category": "spice"
+    },
+    {
+      "slug": "vanilla",
+      "name": "Vanilla",
+      "category": "spice"
+    },
+    {
+      "slug": "cinnamon",
+      "name": "Cinnamon",
+      "category": "spice"
+    },
+    {
+      "slug": "cumin",
+      "name": "Cumin",
+      "category": "spice"
+    },
+    {
+      "slug": "turmeric",
+      "name": "Turmeric",
+      "category": "spice"
+    },
+    {
+      "slug": "cloves",
+      "name": "Cloves",
+      "category": "spice"
+    },
+    {
+      "slug": "nutmeg",
+      "name": "Nutmeg",
+      "category": "spice"
+    },
+    {
+      "slug": "cardamom",
+      "name": "Cardamom",
+      "category": "spice"
+    },
+    {
+      "slug": "coriander-seed",
+      "name": "Coriander seed",
+      "category": "spice"
+    },
+    {
+      "slug": "saffron",
+      "name": "Saffron",
+      "category": "spice"
+    },
+    {
+      "slug": "honey",
+      "name": "Honey",
+      "category": "pantry"
+    },
+    {
+      "slug": "olives",
+      "name": "Olives",
+      "category": "pantry"
+    },
+    {
+      "slug": "tomato-paste",
+      "name": "Tomato paste",
+      "category": "pantry"
+    },
+    {
+      "slug": "canned-tomatoes",
+      "name": "Canned tomatoes",
+      "category": "pantry"
+    },
+    {
+      "slug": "pickles",
+      "name": "Pickles",
+      "category": "pantry"
+    },
+    {
+      "slug": "anchovy",
+      "name": "Anchovies",
+      "category": "pantry"
+    },
+    {
+      "slug": "canned-tuna",
+      "name": "Canned tuna",
+      "category": "pantry"
+    },
+    {
+      "slug": "sardine",
+      "name": "Sardines",
+      "category": "pantry"
+    },
+    {
+      "slug": "caviar",
+      "name": "Caviar",
+      "category": "pantry"
+    },
+    {
+      "slug": "soy-sauce",
+      "name": "Soy sauce",
+      "category": "pantry"
+    },
+    {
+      "slug": "ketchup",
+      "name": "Ketchup & tomato sauce",
+      "category": "pantry"
+    },
+    {
+      "slug": "mustard",
+      "name": "Prepared mustard",
+      "category": "pantry"
+    },
+    {
+      "slug": "yeast",
+      "name": "Yeast (baking)",
+      "category": "pantry"
+    },
+    {
+      "slug": "coffee",
+      "name": "Coffee (roasted)",
+      "category": "beverage"
+    },
+    {
+      "slug": "tea",
+      "name": "Tea (black)",
+      "category": "beverage"
+    }
   ]
 }

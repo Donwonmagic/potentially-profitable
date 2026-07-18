@@ -231,6 +231,10 @@ function build() {
   const specialty = (() => { try { return rd('data/ingredient-specialty.json').ingredients || []; } catch { return []; } })();
   for (const sp of specialty) {
     const im = imp[sp.slug];
+    // Forward-compatible: a specialty ingredient with neither an import stream nor a book yield
+    // has nothing to show yet, so it's skipped until its data lands (list it in the registry now;
+    // it appears the moment its HS codes are fetched). Keeps the record honest — no empty entries.
+    if (!im && sp.edible_yield_pct == null) continue;
     records.push({
       slug: sp.slug, name: sp.name, category: sp.category || null,
       posture: null, band_pct: null,
