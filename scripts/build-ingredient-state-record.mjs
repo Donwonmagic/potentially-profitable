@@ -241,9 +241,12 @@ function nassBySlug() {
       || nassLatest(rows, (r) => base(r) && isAgg(r))
       || nassLatest(rows, (r) => base(r));
     const prodRows = com['PRODUCTION'] || [];
-    const vol = bestOf(prodRows, (r) => r.u !== '$' && r.rp === 'YEAR' && /UTILIZED|PRODUCTION/.test(r.sd))
-             || bestOf(prodRows, (r) => r.u !== '$' && r.rp === 'YEAR');
-    const usd = bestOf(prodRows, (r) => r.u === '$' && r.rp === 'YEAR');
+    // A production VALUE unit is "$" or a "$, ..." variant (citrus reports "$, PHD EQUIV"); a VOLUME
+    // unit never starts with "$". "$ / CWT" (a price) starts with "$ " so it's excluded from both.
+    const isVal = (r) => /^\$($|,)/.test(r.u);
+    const vol = bestOf(prodRows, (r) => !/^\$/.test(r.u) && r.rp === 'YEAR' && /UTILIZED|PRODUCTION/.test(r.sd))
+             || bestOf(prodRows, (r) => !/^\$/.test(r.u) && r.rp === 'YEAR');
+    const usd = bestOf(prodRows, (r) => isVal(r) && r.rp === 'YEAR');
     // Farm price: marketing-year, a weight unit ($/CWT or $/LB) preferred over $/TON / box / parity.
     const priceRows = com['PRICE RECEIVED'] || [];
     const priceRaw = bestOf(priceRows, (r) => /^\$ \/ (CWT|LB)\b/.test(r.u) && r.rp === 'MARKETING YEAR')
