@@ -1,0 +1,94 @@
+#!/usr/bin/env node
+/**
+ * test-ingredient-state-record.mjs — pins the audit-hardened harmony computation so the honesty
+ * thresholds a 4-lens adversarial audit forced (2026-07-18) cannot silently regress. Pure-function
+ * tests only; the record-level invariants live in check-ingredient-state-record.mjs --self-test.
+ *
+ *   node --test scripts/test-ingredient-state-record.mjs
+ */
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { harmonyFor, strongComover, deriveOrigins } from './build-ingredient-state-record.mjs';
+
+const kinds = (r) => (harmonyFor(r) || []).map((h) => h.kind);
+const of = (r, kind) => (harmonyFor(r) || []).find((h) => h.kind === kind);
+
+test('deriveOrigins: "single-source" needs a >=90% top share (audit fix)', () => {
+  assert.equal(deriveOrigins({ Mexico: 100 }).import_source_concentration, 'single-source');
+  assert.equal(deriveOrigins({ Mexico: 95, Canada: 5 }).import_source_concentration, 'single-source');
+  // 81% and 88% top shares were the self-contradictory "single-source" the audit caught
+  assert.equal(deriveOrigins({ Mexico: 81, Canada: 19 }).import_source_concentration, 'concentrated');
+  assert.equal(deriveOrigins({ Mexico: 88, Peru: 12 }).import_source_concentration, 'concentrated');
+  // genuinely spread stream
+  assert.equal(deriveOrigins({ A: 20, B: 20, C: 20, D: 20, E: 20 }).import_source_concentration, 'diversified');
+  // top_share is the top country's share of the import stream
+  assert.equal(deriveOrigins({ Mexico: 81, Canada: 19 }).import_top_sources[0].share_pct, 81);
+});
+
+test('strongComover: named only on a real majority (>=3 shared AND >=half of n)', () => {
+  const co = (s) => strongComover({ comovers: [{ slug: 'x', shared_of_n: s }] });
+  assert.ok(co('3/6'), '3/6 (exactly half, >=3) is a strong co-mover');
+  assert.ok(co('3/5'), '3/5 (0.6) is strong');
+  assert.ok(co('4/6'), '4/6 is strong');
+  assert.equal(co('2/6'), null, '2/6 is winner-curse noise — dropped');
+  assert.equal(co('2/5'), null, '2/5 dropped (< 3 shared)');
+  assert.equal(co('4/10'), null, '4/10 dropped (>=3 but 0.4 < half)');
+  assert.equal(strongComover({ comovers: [] }), null);
+  assert.equal(strongComover({}), null);
+});
+
+test('harmonyFor: supplyshape fires from the origin mix', () => {
+  const r = { import_source_concentration: 'concentrated', import_source_hhi: 0.69, import_top_sources: [{ country: 'Mexico', share_pct: 81 }] };
+  const ss = of(r, 'supplyshape');
+  assert.ok(ss);
+  assert.equal(ss.concentration, 'concentrated');
+  assert.equal(ss.top_country, 'Mexico');
+  assert.equal(ss.top_share, 81);
+});
+
+test('harmonyFor: reliance carries the aligned year + anchors the origin share to imports; only when present', () => {
+  const withRel = {
+    import_reliance_pct: 30, import_reliance_year: 2023,
+    us_import_value_usd: 3, us_production_usd: 7,
+    import_top_sources: [{ country: 'Mexico', share_pct: 88 }],
+  };
+  const rel = of(withRel, 'reliance');
+  assert.ok(rel);
+  assert.equal(rel.reliance_pct, 30);
+  assert.equal(rel.reliance_year, 2023);
+  assert.equal(rel.top_country, 'Mexico'); // the island states this is 88% OF IMPORTS, not of supply
+  assert.equal(rel.top_share, 88);
+  // inert until NASS lands: no reliance value -> no reliance read
+  assert.equal(of({ import_source_concentration: 'concentrated', import_top_sources: [{ country: 'X', share_pct: 50 }] }, 'reliance'), undefined);
+});
+
+test('harmonyFor: persistence keeps the run-length always, names a co-mover only on a majority', () => {
+  const strong = { notable_events_n: 6, median_shock_days: 84, comovers: [{ slug: 'cherry-tomato', shared_of_n: '3/6' }] };
+  const p1 = of(strong, 'persistence');
+  assert.equal(p1.n, 6);
+  assert.equal(p1.median_days, 84);
+  assert.equal(p1.comover_slug, 'cherry-tomato');
+  assert.equal(p1.comover_shared, '3/6');
+
+  const noisy = { notable_events_n: 6, median_shock_days: 49, comovers: [{ slug: 'garlic', shared_of_n: '2/6' }] };
+  const p2 = of(noisy, 'persistence');
+  assert.ok(p2, 'persistence still present (the duration is honest)');
+  assert.equal(p2.comover_slug, null, 'noise co-mover dropped');
+  assert.equal(p2.comover_shared, null);
+});
+
+test('harmonyFor: the audit-dropped kinds never render, even with their inputs present', () => {
+  const r = {
+    cheapest_month: 3, import_peak_months: [1, 2, 3],       // old buyclock inputs
+    edible_yield_pct: 75, cooked_yield: 0.75,               // old served inputs
+    import_source_concentration: 'concentrated', import_top_sources: [{ country: 'Mexico', share_pct: 81 }],
+  };
+  const ks = kinds(r);
+  assert.ok(!ks.includes('buyclock'), 'buyclock dropped by the audit');
+  assert.ok(!ks.includes('served'), 'served dropped by the audit');
+  assert.deepEqual([...ks].sort(), ['supplyshape']);
+});
+
+test('harmonyFor: degrades by absence — a bare record has no harmony', () => {
+  assert.equal(harmonyFor({ slug: 'x', name: 'X' }), null);
+});

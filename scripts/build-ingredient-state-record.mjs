@@ -27,6 +27,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { pricingCards } from './lib/cost-research.mjs';
 import { loadEventsData, coMovement } from './lib/cost-events-analysis.mjs';
 
@@ -136,7 +137,7 @@ function rawOriginsByHs() {
 }
 // Derive the source-concentration shape from a per-country {name: value} map (one HS code or a
 // summed union). Top-3 sources + a Herfindahl index + a plain label. Descriptive supply diversity.
-function deriveOrigins(b) {
+export function deriveOrigins(b) {
   const title = (s) => String(s).toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
   const tot = Object.values(b).reduce((a, c) => a + c, 0); if (!tot) return null;
   const sorted = Object.entries(b).map(([c, v]) => [c, v / tot]).sort((a, b) => b[1] - a[1]);
@@ -269,13 +270,13 @@ function nassBySlug() {
 // (>=3 shared AND >=half of n). Argmax over ~100 candidates at n~6 is winner's-curse noise otherwise
 // (it manufactured implausible pairs like avocado<->acorn-squash at 2/6); below the bar we keep the
 // run-length and drop the co-mover.
-function strongComover(r) {
+export function strongComover(r) {
   const co = (r.comovers && r.comovers[0]) || null; if (!co) return null;
   const m = /^(\d+)\/(\d+)$/.exec(String(co.shared_of_n || '')); if (!m) return null;
   const k = Number(m[1]), n = Number(m[2]);
   return (k >= 3 && n > 0 && k / n >= 0.5) ? co : null;
 }
-function harmonyFor(r) {
+export function harmonyFor(r) {
   const H = [];
   if (r.import_source_concentration && Array.isArray(r.import_top_sources) && r.import_top_sources.length) {
     const t = r.import_top_sources[0];
@@ -437,6 +438,10 @@ function build() {
 }
 
 // ---- write / check ---------------------------------------------------------
+// Guarded so the module can be imported (by the unit test) without building or writing; only a
+// direct `node build-ingredient-state-record.mjs [--check]` invocation runs it. Matches the
+// main-guard pattern in build-seasonality.mjs.
+function run() {
 const out = build();
 const targets = [
   ['data/ingredient-state-record.json', out.internal],
@@ -455,3 +460,5 @@ if (process.argv.includes('--check')) {
   for (const [p, content] of targets) fs.writeFileSync(path.join(repoRoot, p), content);
   console.log(`Wrote ${targets.length} file(s): ${out.meta.count} records, ${out.meta.withImport} with US import value (2010-2025), ${out.meta.withPressure} with pressure.`);
 }
+}
+if (path.resolve(process.argv[1] || '') === fileURLToPath(import.meta.url)) run();
