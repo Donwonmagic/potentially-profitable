@@ -1,0 +1,38 @@
+{
+  "_doc": "Slug -> NOAA Fisheries commercial-landings species. The domestic (US wild-caught) pair for the seafood IMPORT streams already in the corpus, so a seafood ingredient can carry an import-vs-domestic-landings read the way crops carry import-vs-NASS-production reliance. Landings are US commercial catch VALUE + pounds (public domain, NOAA FOSS). This is a WILD-CATCH domestic figure paired against a largely-AQUACULTURE import stream — a chain seam the surface must name, never a clean supply share.",
+  "_source": "NOAA Fisheries FOSS (Fisheries One Stop Shop) commercial landings. Public domain (US Government work). Fetch runs on the operator's Mac.",
+  "_fields": "codes[slug] = { species: NOAA AFS common-name query (a name or prefix; several NOAA species may roll up to one culinary category), note? }.",
+  "_status": "BUILT AHEAD, NEEDS FIRST-PULL VERIFICATION. Species names are candidate AFS common names from culinary knowledge; the exact NOAA strings + whether a prefix or an explicit species set is needed must be confirmed against the first FOSS probe (the same build-ahead-then-verify pattern that just caught the NASS class bug). No builder consumes this yet.",
+  "codes": {
+    "shrimp":                { "species": "SHRIMP", "note": "US wild penaeid (Gulf/South Atlantic) + pandalid (cold-water); imports are mostly farmed — name the wild-vs-farmed seam." },
+    "shrimp-pd":             { "species": "SHRIMP", "note": "peeled/deveined is a cut of the same wild landing" },
+    "shrimp-head-on":        { "species": "SHRIMP", "note": "head-on is a form of the same wild landing" },
+    "salmon-fillet":         { "species": "SALMON", "note": "US wild = Pacific/Alaska (chinook, coho, sockeye, pink, chum); Atlantic salmon is farmed" },
+    "salmon-skin-on-fillet": { "species": "SALMON" },
+    "whole-salmon":          { "species": "SALMON" },
+    "cod":                   { "species": "COD", "note": "Atlantic cod + Pacific cod" },
+    "haddock":               { "species": "HADDOCK" },
+    "whole-halibut":         { "species": "HALIBUT", "note": "Pacific + Atlantic halibut" },
+    "dover-sole":            { "species": "SOLE", "note": "US 'dover sole' = Pacific dover sole (a flatfish), distinct from European Dover sole" },
+    "whole-lobster":         { "species": "LOBSTER", "note": "American (Maine) + Caribbean spiny lobster" },
+    "whole-crab":            { "species": "CRAB", "note": "blue, dungeness, king, snow/tanner roll up" },
+    "scallops":              { "species": "SCALLOP", "note": "sea + bay scallop" },
+    "clams":                 { "species": "CLAM" },
+    "squid":                 { "species": "SQUID", "note": "Pacific + Atlantic (Loligo/Illex) market squid" },
+    "octopus":               { "species": "OCTOPUS" },
+    "snapper":               { "species": "SNAPPER", "note": "red snapper + other Lutjanidae" },
+    "grouper":               { "species": "GROUPER" },
+    "mahi-mahi":             { "species": "DOLPHINFISH", "note": "mahi-mahi's AFS common name is dolphinfish — verify the exact NOAA string" },
+    "tuna-loin":             { "species": "TUNA", "note": "yellowfin/bigeye/albacore/bluefin/skipjack roll up; a loin is a cut" },
+    "ahi-tuna":              { "species": "TUNA", "note": "ahi = yellowfin/bigeye" },
+    "whole-trout":           { "species": "TROUT", "note": "US wild trout landings are small — most trout is farmed (NASS aquaculture); may degrade by absence" },
+    "anchovy":               { "species": "ANCHOVY", "note": "Pacific/northern anchovy" },
+    "sardine":               { "species": "SARDINE", "note": "Pacific sardine / pilchard" }
+  },
+  "_deliberately_absent": {
+    "tilapia": "farmed + imported; negligible US wild landing (a domestic pair would come from NASS aquaculture, not NOAA)",
+    "branzino": "European sea bass; no US wild fishery",
+    "catfish": "US catfish is farmed (NASS Catfish survey), not a NOAA wild landing",
+    "canned-tuna": "a processed product, not a landing — the wild tuna catch is carried by tuna-loin / ahi-tuna"
+  }
+}
