@@ -3,73 +3,672 @@
   "_source": "US Census Bureau, International Trade, general imports by HS6 (api.census.gov/data/timeseries/intltrade/imports/hs). Public domain.",
   "_retrievedYears": "2010-2025",
   "codes": {
-    "080440": { "sdesc": "AVOCADOS, FRESH OR DRIED", "slugs": ["avocado"] },
-    "080550": { "sdesc": "LEMONS AND LIMES, FRESH OR DRIED", "slugs": ["lime", "lemon"], "note": "HS6 combines lemons and limes; not split at 6 digits." },
-    "080540": { "sdesc": "GRAPEFRUIT AND POMELOS, FRESH OR DRIED", "slugs": ["grapefruit"] },
-    "080430": { "sdesc": "PINEAPPLES, FRESH OR DRIED", "slugs": ["pineapple"] },
-    "080390": { "sdesc": "BANANAS, FRESH OR DRIED, NESOI", "slugs": ["banana"] },
-    "080810": { "sdesc": "APPLES, FRESH", "slugs": ["apple"] },
-    "080830": { "sdesc": "PEARS, FRESH", "slugs": ["pear"] },
-    "081040": { "sdesc": "CRANBERRIES, BLUEBERRIES, ETC, FRESH", "slugs": ["blueberry"], "note": "HS6 combines cranberries, blueberries and related Vaccinium berries; the value is the group, broader than blueberries alone." },
-    "081020": { "sdesc": "RASPBERRIES/BLACKBERRIES/MULBERRIES/LOGANBERRIES", "slugs": ["raspberry"], "note": "HS6 combines raspberries, blackberries, mulberries and loganberries; broader than raspberries alone." },
-    "080711": { "sdesc": "WATERMELONS, FRESH", "slugs": ["watermelon"] },
-    "070200": { "sdesc": "TOMATOES, FRESH OR CHILLED", "slugs": ["tomato", "cherry-tomato"] },
-    "070960": { "sdesc": "FRUITS OF GENUS CAPSICUM OR PIMENTA, FRESH", "slugs": ["bell-pepper", "jalapeno", "serrano-pepper", "poblano-pepper", "habanero-pepper"], "note": "HS6 covers all fresh Capsicum peppers; not split by variety." },
-    "070700": { "sdesc": "CUCUMBERS AND GHERKINS, FRESH OR CHILLED", "slugs": ["cucumber"] },
-    "070920": { "sdesc": "ASPARAGUS, FRESH OR CHILLED", "slugs": ["asparagus"] },
-    "070320": { "sdesc": "GARLIC, FRESH OR CHILLED", "slugs": ["garlic"] },
-    "091011": { "sdesc": "GINGER, NEITHER CRUSHED NOR GROUND", "slugs": ["ginger"], "note": "Fresh ginger (not crushed or ground)." },
-    "030617": { "sdesc": "SHRIMPS AND PRAWNS, FROZEN, NESOI", "slugs": ["shrimp", "shrimp-pd", "shrimp-head-on"], "note": "Frozen shrimp/prawns (the dominant import form); fresh shrimp is a separate code." },
-    "030441": { "sdesc": "PACIFIC, ATLANTIC, DANUBE SALMON FILLETS", "slugs": ["salmon-fillet", "salmon-skin-on-fillet"], "note": "Fresh salmon fillets; whole salmon is a separate code (030214)." },
-    "030487": { "sdesc": "TUNA (GENUS THUNNUS), SKIPJACK TUNA (STRP-BEL), FRZ", "slugs": ["tuna-loin"], "note": "Frozen tuna (Thunnus + skipjack), the dominant import form; fresh tuna is separate codes." },
-    "030614": { "sdesc": "CRABS, INCLUDING IN SHELL, FROZEN", "slugs": ["whole-crab"], "note": "Frozen crab (the dominant import form); fresh/live crab is a separate code." },
-    "030612": { "sdesc": "LOBSTERS, INCLUDING IN SHELL, FROZEN", "slugs": ["whole-lobster"], "note": "Frozen lobster; fresh/live lobster is a separate code." },
-    "030729": { "sdesc": "SCALLOPS, NESOI", "slugs": ["scallops"], "note": "Scallops not elsewhere specified; some scallop trade sits under other codes." },
-    "030759": { "sdesc": "OCTOPUS, FROZEN, DRIED, SALTED OR IN BRINE", "slugs": ["octopus"] },
-    "030743": { "sdesc": "SQUID, FROZEN", "slugs": ["squid"], "note": "Frozen squid; HS6 present from 2017 (earlier years under prior codes)." },
-    "030779": { "sdesc": "CLAMS, COCKLES AND ARK SHELLS, NESOI", "slugs": ["clams"], "note": "Clams, cockles and ark shells combined (NESOI)." },
-    "030214": { "sdesc": "ATLANTIC SALMON AND DANUBE SALMON FRESH OR CHILLED", "slugs": ["whole-salmon"], "note": "Fresh whole Atlantic/Danube salmon (excludes fillets); data 2012+ (pre-2012 sat under a prior code)." },
-    "030221": { "sdesc": "HALIBUT/GREENLAND TURBOT EX FILLET, LVR, ROE FR/CH", "slugs": ["whole-halibut"], "note": "Halibut and Greenland turbot, fresh/chilled, whole (excludes fillets/livers/roes)." },
-    "030211": { "sdesc": "TROUT (SALMO TRUTTA, ETC) FRESH, CHILLED, NESOI", "slugs": ["whole-trout"], "note": "Fresh whole trout (Salmo trutta and relatives)." },
-    "070310": { "sdesc": "ONIONS AND SHALLOTS, FRESH OR CHILLED", "slugs": ["onion", "red-onion"], "note": "HS6 combines onions and shallots; not split by color/variety." },
-    "070390": { "sdesc": "LEEKS & OTHER ALLIACEOUS VEGETABLES, FRESH, CHILLD", "slugs": ["leek", "green-onion"], "note": "Leeks and other alliaceous vegetables (includes spring/green onions), combined." },
-    "070410": { "sdesc": "CAULIFLOWERS AND BROCCOLI, FRESH OR CHILLED", "slugs": ["broccoli", "cauliflower"], "note": "HS6 combines cauliflower and broccoli; not split." },
-    "070420": { "sdesc": "BRUSSELS SPROUTS, FRESH OR CHILLED", "slugs": ["brussels-sprouts"] },
-    "070490": { "sdesc": "EDIBLE BRASSICAS (CABBAGES ETC) NESOI, FR OR CHILL", "slugs": ["cabbage", "napa-cabbage", "bok-choy", "kale", "collard-greens"], "note": "The 'other brassicas' basket (cabbages, kale, kohlrabi, Chinese cabbage); broader than any single item." },
-    "070511": { "sdesc": "HEAD LETTUCE (CABBAGE LETTUCE), FRESH OR CHILLED", "slugs": ["iceberg-lettuce", "butter-lettuce"], "note": "Head/cabbage lettuce (iceberg, butterhead)." },
-    "070519": { "sdesc": "LETTUCE, EXCEPT HEAD LETTUCE, FRESH OR CHILLED", "slugs": ["romaine-lettuce", "green-leaf-lettuce", "red-leaf-lettuce"], "note": "Leaf and romaine lettuces, combined (all lettuce except head)." },
-    "070610": { "sdesc": "CARROTS AND TURNIPS, FRESH OR CHILLED", "slugs": ["carrot"], "note": "HS6 combines carrots and turnips." },
-    "070690": { "sdesc": "SALAD BEETS, RADISHES, ETC NESOI, FRESH OR CHILLED", "slugs": ["beet", "daikon", "rutabaga"], "note": "The 'other roots' basket (table beets, radishes/daikon, salsify, celeriac, swedes); broader than any single item." },
-    "070810": { "sdesc": "PEAS (PISUM SATIVUM), FRESH OR CHILLED", "slugs": ["snow-peas"], "note": "Fresh peas (Pisum sativum), including snow/snap pods; not split." },
-    "070820": { "sdesc": "BEANS (VIGNA SPP., PHASEOLUS SPP.) FRESH OR CHILLD", "slugs": ["green-beans"], "note": "Fresh leguminous beans (Vigna/Phaseolus) — green/snap beans and relatives." },
-    "070930": { "sdesc": "EGGPLANTS (AUBERGINES), FRESH OR CHILLED", "slugs": ["eggplant"] },
-    "070940": { "sdesc": "CELERY OTHER THAN CELERIAC, FRESH OR CHILLED", "slugs": ["celery"] },
-    "070951": { "sdesc": "MUSHROOMS OF THE GENUS AGARICUS, FRESH OR CHILLED", "slugs": ["button-mushroom"], "note": "Fresh Agaricus (white button / cremini)." },
-    "070970": { "sdesc": "SPINACH, NEW ZEALAND & ORACHE (GARDEN), FRSH/CHLD", "slugs": ["spinach"], "note": "Spinach, New Zealand spinach and orache, combined." },
-    "070993": { "sdesc": "PUMPKINS, SQUASH AND GOURDS, FRESH OR CHILLED", "slugs": ["zucchini", "yellow-squash", "acorn-squash", "butternut-squash"], "note": "Fresh Cucurbita (squash/zucchini/pumpkin/gourds); not split by variety; data 2012+." },
-    "080719": { "sdesc": "MELONS(EXCEPT WATERMELONS) AND PAPAYAS, FRESH", "slugs": ["cantaloupe"], "note": "HS6 combines other melons (cantaloupe/honeydew) and papayas; broader than cantaloupe alone." },
-    "070190": { "sdesc": "POTATOES, EXCEPT SEED, FRESH OR CHILLED, NESOI", "slugs": ["red-potato", "russet-potato"], "note": "Fresh table potatoes; not split by variety." },
-    "071420": { "sdesc": "SWEET POTATOES, FRESH OR DRIED, WHETHER/NT PELLETS", "slugs": ["sweet-potato"] },
-    "040510": { "sdesc": "BUTTER", "slugs": ["butter"] },
-    "040690": { "sdesc": "CHEESE, NESOI, INCLUDING CHEDDAR AND COLBY", "slugs": ["cheddar-cheese"], "note": "The 'other cheese' basket, explicitly including cheddar and colby; broader than cheddar alone." },
-    "040721": { "sdesc": "EGGS OF CHICKENS, FRESH, NESOI", "slugs": ["eggs"], "note": "Fresh chicken eggs in shell (NESOI); data 2012+." },
-    "020329": { "sdesc": "MEAT OF SWINE, NESOI, FROZEN", "slugs": ["pork-loin"], "note": "Frozen pork cuts (NESOI); HS10 has no loin-specific line, so pork-loin stays on this shared frozen-cuts stream. Belly and shoulder now have their own HS10 codes below." },
-    "0201305025": { "sdesc": "MEAT,BVNE BNELESS FR/CH US NT 3 EXC PRCSD,RIB", "slugs": ["ribeye"], "note": "The boneless beef RIB primal (fresh), of which ribeye is the principal cut; summed with its frozen twin (0202305025). HS10 splits beef by primal, not retail cut; US statistical data from 2017." },
-    "0202305025": { "sdesc": "MEAT,BVINE BONELESS FRZN US NTE 3 EXC PRCSD, RIB", "slugs": ["ribeye"] },
-    "0201305045": { "sdesc": "MEAT,BVNE BNELESS FR/CH US NT 3 EXC PRCSD,LOIN", "slugs": ["striploin", "beef-tenderloin"], "note": "The boneless beef LOIN primal (fresh) — strip loin, short loin (tenderloin) and sirloin; summed with its frozen twin (0202305045). Not split finer at HS10; data from 2017." },
-    "0202305045": { "sdesc": "MEAT,BVINE BONELESS FRZN US NTE 3 EXC PRCSD, LOIN", "slugs": ["striploin", "beef-tenderloin"] },
-    "0201305085": { "sdesc": "MEAT,BVNE BNELESS FR/CH US NT 3 EXC PRCSD,NESOI", "slugs": ["ground-beef"], "note": "Boneless beef not in a named primal (fresh) — the lean manufacturing trim that feeds grinding; summed with its frozen twin (0202305085). Data from 2017." },
-    "0202305085": { "sdesc": "MEAT,BVINE BONELESS FRZN US NTE 3 EXC PRCSD, NESOI", "slugs": ["ground-beef"] },
-    "0203194010": { "sdesc": "BELLIES OF SWINE, FRESH OR CHILLED, EXC PROCESSED", "slugs": ["pork-belly"], "note": "Fresh pork bellies specifically (the bacon cut); frozen bellies sit in the pork-cuts NESOI bucket." },
-    "0203129020": { "sdesc": "SHOULDERS & CUTS SWINE W/ BONE FR/CH EXC PROCESSED", "slugs": ["pork-shoulder"], "note": "Fresh bone-in pork shoulder, summed with the frozen ham+shoulder line (0203229000); boneless shoulder sits in the cuts NESOI bucket." },
-    "0203229000": { "sdesc": "HAMS, SHOULDERS & CUTS, SWINE, W/ BONE, FRZN NESOI", "slugs": ["pork-shoulder"] },
-    "070991": { "sdesc": "GLOBE ARTICHOKES, FRESH OR CHILLED", "slugs": ["artichoke"], "note": "Fresh globe artichokes; data 2012+." }
+    "080440": {
+      "sdesc": "AVOCADOS, FRESH OR DRIED",
+      "slugs": [
+        "avocado"
+      ]
+    },
+    "080550": {
+      "sdesc": "LEMONS AND LIMES, FRESH OR DRIED",
+      "slugs": [
+        "lime",
+        "lemon"
+      ],
+      "note": "HS6 combines lemons and limes; not split at 6 digits."
+    },
+    "080540": {
+      "sdesc": "GRAPEFRUIT AND POMELOS, FRESH OR DRIED",
+      "slugs": [
+        "grapefruit"
+      ]
+    },
+    "080430": {
+      "sdesc": "PINEAPPLES, FRESH OR DRIED",
+      "slugs": [
+        "pineapple"
+      ]
+    },
+    "080390": {
+      "sdesc": "BANANAS, FRESH OR DRIED, NESOI",
+      "slugs": [
+        "banana"
+      ]
+    },
+    "080810": {
+      "sdesc": "APPLES, FRESH",
+      "slugs": [
+        "apple"
+      ]
+    },
+    "080830": {
+      "sdesc": "PEARS, FRESH",
+      "slugs": [
+        "pear"
+      ]
+    },
+    "080711": {
+      "sdesc": "WATERMELONS, FRESH",
+      "slugs": [
+        "watermelon"
+      ]
+    },
+    "070200": {
+      "sdesc": "TOMATOES, FRESH OR CHILLED",
+      "slugs": [
+        "tomato",
+        "cherry-tomato"
+      ]
+    },
+    "070700": {
+      "sdesc": "CUCUMBERS AND GHERKINS, FRESH OR CHILLED",
+      "slugs": [
+        "cucumber"
+      ]
+    },
+    "070920": {
+      "sdesc": "ASPARAGUS, FRESH OR CHILLED",
+      "slugs": [
+        "asparagus"
+      ]
+    },
+    "070320": {
+      "sdesc": "GARLIC, FRESH OR CHILLED",
+      "slugs": [
+        "garlic"
+      ]
+    },
+    "091011": {
+      "sdesc": "GINGER, NEITHER CRUSHED NOR GROUND",
+      "slugs": [
+        "ginger"
+      ],
+      "note": "Fresh ginger (not crushed or ground)."
+    },
+    "030617": {
+      "sdesc": "SHRIMPS AND PRAWNS, FROZEN, NESOI",
+      "slugs": [
+        "shrimp",
+        "shrimp-pd",
+        "shrimp-head-on"
+      ],
+      "note": "Frozen shrimp/prawns (the dominant import form); fresh shrimp is a separate code."
+    },
+    "030441": {
+      "sdesc": "PACIFIC, ATLANTIC, DANUBE SALMON FILLETS",
+      "slugs": [
+        "salmon-fillet",
+        "salmon-skin-on-fillet"
+      ],
+      "note": "Fresh salmon fillets; whole salmon is a separate code (030214)."
+    },
+    "030487": {
+      "sdesc": "TUNA (GENUS THUNNUS), SKIPJACK TUNA (STRP-BEL), FRZ",
+      "slugs": [
+        "tuna-loin"
+      ],
+      "note": "Frozen tuna (Thunnus + skipjack), the dominant import form; fresh tuna is separate codes."
+    },
+    "030614": {
+      "sdesc": "CRABS, INCLUDING IN SHELL, FROZEN",
+      "slugs": [
+        "whole-crab"
+      ],
+      "note": "Frozen crab (the dominant import form); fresh/live crab is a separate code."
+    },
+    "030612": {
+      "sdesc": "LOBSTERS, INCLUDING IN SHELL, FROZEN",
+      "slugs": [
+        "whole-lobster"
+      ],
+      "note": "Frozen lobster; fresh/live lobster is a separate code."
+    },
+    "030729": {
+      "sdesc": "SCALLOPS, NESOI",
+      "slugs": [
+        "scallops"
+      ],
+      "note": "Scallops not elsewhere specified; some scallop trade sits under other codes."
+    },
+    "030759": {
+      "sdesc": "OCTOPUS, FROZEN, DRIED, SALTED OR IN BRINE",
+      "slugs": [
+        "octopus"
+      ]
+    },
+    "030743": {
+      "sdesc": "SQUID, FROZEN",
+      "slugs": [
+        "squid"
+      ],
+      "note": "Frozen squid; HS6 present from 2017 (earlier years under prior codes)."
+    },
+    "030779": {
+      "sdesc": "CLAMS, COCKLES AND ARK SHELLS, NESOI",
+      "slugs": [
+        "clams"
+      ],
+      "note": "Clams, cockles and ark shells combined (NESOI)."
+    },
+    "030214": {
+      "sdesc": "ATLANTIC SALMON AND DANUBE SALMON FRESH OR CHILLED",
+      "slugs": [
+        "whole-salmon"
+      ],
+      "note": "Fresh whole Atlantic/Danube salmon (excludes fillets); data 2012+ (pre-2012 sat under a prior code)."
+    },
+    "030221": {
+      "sdesc": "HALIBUT/GREENLAND TURBOT EX FILLET, LVR, ROE FR/CH",
+      "slugs": [
+        "whole-halibut"
+      ],
+      "note": "Halibut and Greenland turbot, fresh/chilled, whole (excludes fillets/livers/roes)."
+    },
+    "030211": {
+      "sdesc": "TROUT (SALMO TRUTTA, ETC) FRESH, CHILLED, NESOI",
+      "slugs": [
+        "whole-trout"
+      ],
+      "note": "Fresh whole trout (Salmo trutta and relatives)."
+    },
+    "070310": {
+      "sdesc": "ONIONS AND SHALLOTS, FRESH OR CHILLED",
+      "slugs": [
+        "onion",
+        "red-onion"
+      ],
+      "note": "HS6 combines onions and shallots; not split by color/variety."
+    },
+    "070410": {
+      "sdesc": "CAULIFLOWERS AND BROCCOLI, FRESH OR CHILLED",
+      "slugs": [
+        "cauliflower"
+      ],
+      "note": "Fresh cauliflower (HS6 combines cauliflower and broccoli, but the US schedule moved broccoli to 0704.90 in 2022, so recent years here are cauliflower-dominant; broccoli is mapped to its own HS10 line)."
+    },
+    "070420": {
+      "sdesc": "BRUSSELS SPROUTS, FRESH OR CHILLED",
+      "slugs": [
+        "brussels-sprouts"
+      ]
+    },
+    "070511": {
+      "sdesc": "HEAD LETTUCE (CABBAGE LETTUCE), FRESH OR CHILLED",
+      "slugs": [
+        "iceberg-lettuce"
+      ],
+      "note": "Head/cabbage lettuce (iceberg, butterhead)."
+    },
+    "070610": {
+      "sdesc": "CARROTS AND TURNIPS, FRESH OR CHILLED",
+      "slugs": [
+        "carrot"
+      ],
+      "note": "HS6 combines carrots and turnips."
+    },
+    "070930": {
+      "sdesc": "EGGPLANTS (AUBERGINES), FRESH OR CHILLED",
+      "slugs": [
+        "eggplant"
+      ]
+    },
+    "070940": {
+      "sdesc": "CELERY OTHER THAN CELERIAC, FRESH OR CHILLED",
+      "slugs": [
+        "celery"
+      ]
+    },
+    "070951": {
+      "sdesc": "MUSHROOMS OF THE GENUS AGARICUS, FRESH OR CHILLED",
+      "slugs": [
+        "button-mushroom"
+      ],
+      "note": "Fresh Agaricus (white button / cremini)."
+    },
+    "070970": {
+      "sdesc": "SPINACH, NEW ZEALAND & ORACHE (GARDEN), FRSH/CHLD",
+      "slugs": [
+        "spinach"
+      ],
+      "note": "Spinach, New Zealand spinach and orache, combined."
+    },
+    "080719": {
+      "sdesc": "MELONS(EXCEPT WATERMELONS) AND PAPAYAS, FRESH",
+      "slugs": [
+        "cantaloupe"
+      ],
+      "note": "HS6 combines other melons (cantaloupe/honeydew) and papayas; broader than cantaloupe alone."
+    },
+    "070190": {
+      "sdesc": "POTATOES, EXCEPT SEED, FRESH OR CHILLED, NESOI",
+      "slugs": [
+        "red-potato",
+        "russet-potato"
+      ],
+      "note": "Fresh table potatoes; not split by variety."
+    },
+    "071420": {
+      "sdesc": "SWEET POTATOES, FRESH OR DRIED, WHETHER/NT PELLETS",
+      "slugs": [
+        "sweet-potato"
+      ]
+    },
+    "040510": {
+      "sdesc": "BUTTER",
+      "slugs": [
+        "butter"
+      ]
+    },
+    "040690": {
+      "sdesc": "CHEESE, NESOI, INCLUDING CHEDDAR AND COLBY",
+      "slugs": [
+        "cheddar-cheese"
+      ],
+      "note": "The 'other cheese' basket, explicitly including cheddar and colby; broader than cheddar alone."
+    },
+    "040721": {
+      "sdesc": "EGGS OF CHICKENS, FRESH, NESOI",
+      "slugs": [
+        "eggs"
+      ],
+      "note": "Fresh chicken eggs in shell (NESOI); data 2012+."
+    },
+    "020329": {
+      "sdesc": "MEAT OF SWINE, NESOI, FROZEN",
+      "slugs": [
+        "pork-loin"
+      ],
+      "note": "Frozen pork cuts (NESOI); HS10 has no loin-specific line, so pork-loin stays on this shared frozen-cuts stream. Belly and shoulder now have their own HS10 codes below."
+    },
+    "0201305025": {
+      "sdesc": "MEAT,BVNE BNELESS FR/CH US NT 3 EXC PRCSD,RIB",
+      "slugs": [
+        "ribeye"
+      ],
+      "note": "The boneless beef RIB primal (fresh), of which ribeye is the principal cut; summed with its frozen twin (0202305025). HS10 splits beef by primal, not retail cut; US statistical data from 2017."
+    },
+    "0202305025": {
+      "sdesc": "MEAT,BVINE BONELESS FRZN US NTE 3 EXC PRCSD, RIB",
+      "slugs": [
+        "ribeye"
+      ]
+    },
+    "0201305045": {
+      "sdesc": "MEAT,BVNE BNELESS FR/CH US NT 3 EXC PRCSD,LOIN",
+      "slugs": [
+        "striploin",
+        "beef-tenderloin"
+      ],
+      "note": "The boneless beef LOIN primal (fresh) — strip loin, short loin (tenderloin) and sirloin; summed with its frozen twin (0202305045). Not split finer at HS10; data from 2017."
+    },
+    "0202305045": {
+      "sdesc": "MEAT,BVINE BONELESS FRZN US NTE 3 EXC PRCSD, LOIN",
+      "slugs": [
+        "striploin",
+        "beef-tenderloin"
+      ]
+    },
+    "0201305085": {
+      "sdesc": "MEAT,BVNE BNELESS FR/CH US NT 3 EXC PRCSD,NESOI",
+      "slugs": [
+        "ground-beef"
+      ],
+      "note": "Boneless beef not in a named primal (fresh) — the lean manufacturing trim that feeds grinding; summed with its frozen twin (0202305085). Data from 2017."
+    },
+    "0202305085": {
+      "sdesc": "MEAT,BVINE BONELESS FRZN US NTE 3 EXC PRCSD, NESOI",
+      "slugs": [
+        "ground-beef"
+      ]
+    },
+    "0203194010": {
+      "sdesc": "BELLIES OF SWINE, FRESH OR CHILLED, EXC PROCESSED",
+      "slugs": [
+        "pork-belly"
+      ],
+      "note": "Fresh pork bellies specifically (the bacon cut); frozen bellies sit in the pork-cuts NESOI bucket."
+    },
+    "0203129020": {
+      "sdesc": "SHOULDERS & CUTS SWINE W/ BONE FR/CH EXC PROCESSED",
+      "slugs": [
+        "pork-shoulder"
+      ],
+      "note": "Fresh bone-in pork shoulder, summed with the frozen ham+shoulder line (0203229000); boneless shoulder sits in the cuts NESOI bucket."
+    },
+    "0203229000": {
+      "sdesc": "HAMS, SHOULDERS & CUTS, SWINE, W/ BONE, FRZN NESOI",
+      "slugs": [
+        "pork-shoulder"
+      ]
+    },
+    "070991": {
+      "sdesc": "GLOBE ARTICHOKES, FRESH OR CHILLED",
+      "slugs": [
+        "artichoke"
+      ],
+      "note": "Fresh globe artichokes; data 2012+."
+    },
+    "07096040": {
+      "sdesc": "SWEET BELL-TYPE PEPPERS (HS8 0709.60.40, all leaves)",
+      "slugs": [
+        "bell-pepper"
+      ],
+      "note": "All sweet bell-type peppers — every color, field & greenhouse, organic or not — summed via the HS8 subheading. HS10 splits peppers into bell vs chili."
+    },
+    "0709602020": {
+      "sdesc": "JALAPENO PEPPERS, FRESH/CHILLED",
+      "slugs": [
+        "jalapeno"
+      ],
+      "note": "Jalapeño peppers specifically."
+    },
+    "0709602060": {
+      "sdesc": "SERRANO PEPPERS, FRESH/CHILLED",
+      "slugs": [
+        "serrano-pepper"
+      ],
+      "note": "Serrano peppers specifically."
+    },
+    "0709602050": {
+      "sdesc": "POBLANO PEPPERS, FRESH/CHILLED",
+      "slugs": [
+        "poblano-pepper"
+      ],
+      "note": "Poblano peppers specifically."
+    },
+    "0709602070": {
+      "sdesc": "CHILI PEPPERS, FRESH/CHILLED, NESOI",
+      "slugs": [
+        "habanero-pepper"
+      ],
+      "note": "Habanero is not separately listed at HS10; shown as the fresh chili-pepper NESOI stream (all other chilies)."
+    },
+    "0709932055": {
+      "sdesc": "ZUCCHINI SQUASH, FRESH OR CHILLED",
+      "slugs": [
+        "zucchini"
+      ],
+      "note": "Fresh zucchini, non-organic + organic (0709932020) summed."
+    },
+    "0709932020": {
+      "sdesc": "ZUCCHINI SQUASH, CERT ORGANIC",
+      "slugs": [
+        "zucchini"
+      ]
+    },
+    "0709932060": {
+      "sdesc": "BUTTERNUT SQUASH, FRESH OR CHILLED",
+      "slugs": [
+        "butternut-squash"
+      ],
+      "note": "Fresh butternut squash, non-organic + organic (0709932022) summed."
+    },
+    "0709932022": {
+      "sdesc": "BUTTERNUT SQUASH, CERT ORG",
+      "slugs": [
+        "butternut-squash"
+      ]
+    },
+    "0709932085": {
+      "sdesc": "ACORN SQUASH, FRESH OR CHILLED",
+      "slugs": [
+        "acorn-squash"
+      ],
+      "note": "Fresh acorn squash, non-organic + organic (0709932035) summed."
+    },
+    "0709932035": {
+      "sdesc": "ACORN SQUASH, CERT ORG",
+      "slugs": [
+        "acorn-squash"
+      ]
+    },
+    "0709932075": {
+      "sdesc": "YELLOW STRAIGHTNECK SQUASH, FRESH OR CHILLED",
+      "slugs": [
+        "yellow-squash"
+      ],
+      "note": "Fresh yellow straightneck squash, non-organic + organic (0709932030) summed."
+    },
+    "0709932030": {
+      "sdesc": "YELLOW STRAIGHTNECK SQUASH, CERT ORGANIC",
+      "slugs": [
+        "yellow-squash"
+      ]
+    },
+    "0709999010": {
+      "sdesc": "CILANTRO, FRESH OR CHILLED",
+      "slugs": [
+        "cilantro"
+      ],
+      "note": "Fresh cilantro specifically (its own HS10 line)."
+    },
+    "0709991400": {
+      "sdesc": "OKRA, FRESH OR CHILLED",
+      "slugs": [
+        "okra"
+      ],
+      "note": "Fresh okra specifically (its own HS10 line)."
+    },
+    "0709994500": {
+      "sdesc": "SWEET CORN, FRESH OR CHILLED",
+      "slugs": [
+        "corn-on-the-cob"
+      ],
+      "note": "Fresh sweet corn."
+    },
+    "0703900020": {
+      "sdesc": "GREEN ONIONS OTHER THAN ALLIUM CEPA, FRESH/CHILLED",
+      "slugs": [
+        "green-onion"
+      ],
+      "note": "Green onions specifically."
+    },
+    "0703900040": {
+      "sdesc": "LEEKS AND OTHER ALLIACEOUS VEGETABLES, FR/CH NESOI",
+      "slugs": [
+        "leek"
+      ],
+      "note": "Leeks and other alliaceous vegetables NESOI."
+    },
+    "0706902000": {
+      "sdesc": "RADISHES, FRESH OR CHILLED",
+      "slugs": [
+        "daikon"
+      ],
+      "note": "Radishes (daikon is a radish)."
+    },
+    "0706903000": {
+      "sdesc": "BEETS AND HORSERADISH, FRESH OR CHILLED",
+      "slugs": [
+        "beet"
+      ],
+      "note": "Salad beets and horseradish."
+    },
+    "0706904040": {
+      "sdesc": "SALSIFY & SIMILAR EDIBLE ROOTS, FR/CH",
+      "slugs": [
+        "rutabaga"
+      ],
+      "note": "Salsify and similar edible roots NESOI — swedes/rutabaga fall here; no rutabaga-specific line."
+    },
+    "0708209010": {
+      "sdesc": "BEANS (PHASEOLUS SPP.), FRESH OR CHILLED, NESOI",
+      "slugs": [
+        "green-beans"
+      ],
+      "note": "Fresh Phaseolus beans — green/snap beans."
+    },
+    "0708102020": {
+      "sdesc": "SNOW PEAS, FRESH/CHILLED (summer entry)",
+      "slugs": [
+        "snow-peas"
+      ],
+      "note": "Snow peas, summed across entry periods (0708104020)."
+    },
+    "0708104020": {
+      "sdesc": "SNOW PEAS, FRESH/CHILLED (winter entry)",
+      "slugs": [
+        "snow-peas"
+      ]
+    },
+    "0705194020": {
+      "sdesc": "LETTUCE, ROMAINE, FRESH/CHILLED (11/1-5/31)",
+      "slugs": [
+        "romaine-lettuce"
+      ],
+      "note": "Romaine, summed across entry periods (0705192020)."
+    },
+    "0705192020": {
+      "sdesc": "LETTUCE, ROMAINE, FRESH/CHILLED (6/1-10/31)",
+      "slugs": [
+        "romaine-lettuce"
+      ]
+    },
+    "0705194040": {
+      "sdesc": "LETTUCE, BUTTERHEAD, FRESH/CHILLED (11/1-5/31)",
+      "slugs": [
+        "butter-lettuce"
+      ],
+      "note": "Butterhead lettuce, summed across entry periods (0705192040)."
+    },
+    "0705192040": {
+      "sdesc": "LETTUCE, BUTTERHEAD, FRESH/CHILLED (6/1-10/31)",
+      "slugs": [
+        "butter-lettuce"
+      ]
+    },
+    "0705194060": {
+      "sdesc": "RED AND GREEN LETTUCE, FR/CH (11/1-5/31)",
+      "slugs": [
+        "red-leaf-lettuce",
+        "green-leaf-lettuce"
+      ],
+      "note": "HS10 combines red and green leaf lettuce; summed across entry periods (0705192060)."
+    },
+    "0705192060": {
+      "sdesc": "RED AND GREEN LETTUCE, FR/CH (6/1-10/31)",
+      "slugs": [
+        "red-leaf-lettuce",
+        "green-leaf-lettuce"
+      ]
+    },
+    "0704902000": {
+      "sdesc": "CABBAGE, FRESH OR CHILLED",
+      "slugs": [
+        "cabbage"
+      ],
+      "note": "Fresh cabbage specifically."
+    },
+    "0704904024": {
+      "sdesc": "BROCCOLI INCL SPROUTING, FR/CH",
+      "slugs": [
+        "broccoli"
+      ],
+      "note": "Broccoli incl sprouting, non-organic + organic (0704904022) summed. The US schedule moved broccoli to 0704.90 in 2022; earlier years sat with cauliflower under 0704.10, so this is the recent-years broccoli stream."
+    },
+    "0704904022": {
+      "sdesc": "BROCCOLI INCL SPROUTING, FR/CH, CERT ORG",
+      "slugs": [
+        "broccoli"
+      ]
+    },
+    "0704904015": {
+      "sdesc": "BOK CHOY, FRESH OR CHILLED, NESOI",
+      "slugs": [
+        "bok-choy"
+      ],
+      "note": "Bok choy specifically."
+    },
+    "0704904035": {
+      "sdesc": "KALE, FRESH OR CHILLED, NESOI",
+      "slugs": [
+        "kale"
+      ],
+      "note": "Kale specifically."
+    },
+    "0704904045": {
+      "sdesc": "NAPA CABBAGE, FRESH OR CHILLED, NESOI",
+      "slugs": [
+        "napa-cabbage"
+      ],
+      "note": "Napa (Chinese) cabbage specifically."
+    },
+    "0704904025": {
+      "sdesc": "COLLARDS, FRESH OR CHILLED, NESOI",
+      "slugs": [
+        "collard-greens"
+      ],
+      "note": "Collards, summed across the two NESOI lines (0704904028)."
+    },
+    "0704904028": {
+      "sdesc": "COLLARDS, FRESH OR CHILLED, NESOI",
+      "slugs": [
+        "collard-greens"
+      ]
+    },
+    "0810400024": {
+      "sdesc": "BLUEBERRIES, WILD, FRESH",
+      "slugs": [
+        "blueberry"
+      ],
+      "note": "Blueberries only (wild + cultivated 0810400026 org + 0810400029) — excludes the cranberries that share the HS6 code."
+    },
+    "0810400026": {
+      "sdesc": "ORGANIC BLUEBERRIES, CULTIVATED, FRESH",
+      "slugs": [
+        "blueberry"
+      ]
+    },
+    "0810400029": {
+      "sdesc": "BLUEBERRIES, CULTIVATED, FRESH NESOI",
+      "slugs": [
+        "blueberry"
+      ]
+    },
+    "0810201023": {
+      "sdesc": "RASPBERRIES, FRESH, ORGANIC (9/1-6/30)",
+      "slugs": [
+        "raspberry"
+      ],
+      "note": "Raspberries only (org + conventional across entry periods) — excludes the blackberries/mulberries that share the HS6 code."
+    },
+    "0810201028": {
+      "sdesc": "RASPBERRIES, FRESH (9/1-6/30) NESOI",
+      "slugs": [
+        "raspberry"
+      ]
+    },
+    "0810201030": {
+      "sdesc": "RASPBERRIES, FRESH, ORGANIC (9/1-6/30) NESOI",
+      "slugs": [
+        "raspberry"
+      ]
+    },
+    "0810201035": {
+      "sdesc": "RASPBERRIES, FRESH (9/1-6/30) NESOI",
+      "slugs": [
+        "raspberry"
+      ]
+    },
+    "0810209022": {
+      "sdesc": "RASPBERRIES, FRESH (7/1-8/31)",
+      "slugs": [
+        "raspberry"
+      ]
+    },
+    "0810209024": {
+      "sdesc": "RASPBERRIES, FRESH (7/1-8/31) NESOI",
+      "slugs": [
+        "raspberry"
+      ]
+    }
   },
   "_pending": {
     "resolved_2026_07": "whole-salmon (030214), whole-halibut (030221) and whole-trout (030211) are now mapped and SDESC-verified.",
     "captured_not_tracked": "mussels — SDESC-verified US import streams were pulled for both forms (030731 live/fresh, 030732 frozen) and kept in data/census-imports.jsonl for provenance, but mussels is not one of the 100 tracked ingredients, so no slug is attached; add a mapping only if mussels is ever added as a tracked ingredient (it needs its own yield/pricing spine too).",
     "hs10_cut_level_2026_07": "Beef and pork now map at HS10 (US statistical primal level, from 2017): ribeye = rib primal (0201305025 + frozen 0202305025), striploin + beef-tenderloin = loin primal (…5045), ground-beef = boneless-NESOI trim (…5085), pork-belly = fresh bellies (0203194010), pork-shoulder = bone-in shoulder + frozen ham/shoulder. Aggregated fresh+frozen per cut by the builder.",
     "deliberately_unmapped": "Left without an import code on purpose: short-rib is not isolable at HS10 (it spans the chuck/plate/rib primals); pork-loin has no loin-specific pork line (stays on the frozen-cuts NESOI); the fresh herbs other than cilantro (basil, parsley, dill, mint, oregano, rosemary, tarragon, thyme) have no HS10 line of their own; chicken and turkey are domestic-dominant and their import streams misrepresent the tracked cuts; vegetable-oil is a blend with no single HS code. Absence here is a deliberate honesty choice, not missing work.",
-    "note": "The import field is populated only for ingredients with a genuine, SDESC-verified US import stream. Where HS6 combines several tracked items under one code (peppers, lettuces, brassicas, squash, pork cuts...), the shared stream is attached to each with a 'combines / not split' note — descriptive supply context, never a per-item delivered price or volume."
+    "note": "The import field is populated only for ingredients with a genuine, SDESC-verified US import stream. Where HS6 combines several tracked items under one code (peppers, lettuces, brassicas, squash, pork cuts...), the shared stream is attached to each with a 'combines / not split' note — descriptive supply context, never a per-item delivered price or volume.",
+    "hs10_produce_2026_07": "Produce mapped to its finest HS10 level: peppers split bell (HS8 07096040) / jalapeño / serrano / poblano / habanero-as-chili-NESOI; squash into zucchini/butternut/acorn/yellow (org+non-org summed); the brassica basket into cabbage/broccoli/bok-choy/kale/napa/collard; lettuce into romaine/butterhead/red+green (iceberg stays head lettuce); blueberries exclude cranberries and raspberries exclude blackberries; green-onion & leek split; snow-peas and green-beans isolated; and three breadth wins — cilantro, okra and corn-on-the-cob — get their own lines. Tomatoes (cherry vs round) and shrimp (by size / peeled vs shell) captured in the raw subtree, mapping still pending."
   }
 }

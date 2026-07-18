@@ -160,16 +160,25 @@ function importBySlug() {
   for (const [hs, meta] of Object.entries(cross)) {
     for (const slug of meta.slugs) { (slugCodes[slug] = slugCodes[slug] || []).push(hs); if (meta.note && !slugNote[slug]) slugNote[slug] = meta.note; }
   }
+  // A crosswalk key may be an 8-digit HS8 SUBHEADING prefix: it stands for every HS10 leaf under
+  // it (e.g. 07096040 = all sweet-bell-type peppers), summed. 6- and 10-digit keys match exactly.
+  // Our data holds only HS6 (6) and HS10 (10) codes, so an 8-digit key is unambiguously a prefix.
+  const dataKeys = Object.keys(rawS);
+  const expand = (key) => (String(key).length === 8 ? dataKeys.filter((k) => k.startsWith(key)) : [key]);
   const bySlug = {};
   for (const [slug, codes] of Object.entries(slugCodes)) {
-    const present = codes.filter((hs) => rawS[hs] && rawS[hs].series.length);
+    const present = [...new Set(codes.flatMap(expand))].filter((hs) => rawS[hs] && rawS[hs].series.length);
     if (!present.length) continue;
     const series = [].concat(...present.map((hs) => rawS[hs].series));
     const der = deriveSeries({ sdesc: rawS[present[0]].sdesc, series });
     if (!der) continue;
     const originAcc = {};
     for (const hs of present) { const b = rawO[hs]; if (!b) continue; for (const [c, v] of Object.entries(b)) originAcc[c] = (originAcc[c] || 0) + v; }
-    bySlug[slug] = Object.assign({ hs6: present.join('+'), note: slugNote[slug] || null }, der, deriveOrigins(originAcc) || {});
+    // Display code: the crosswalk KEYS that carried data (an HS8 prefix stays a prefix, not its
+    // 20+ expanded leaves); collapse a long leaf set to "<HS6> (+N HS10 lines)" so the card reads.
+    const dispCodes = codes.filter((k) => expand(k).some((hs) => rawS[hs] && rawS[hs].series.length));
+    const hs6 = dispCodes.length <= 3 ? dispCodes.join('+') : dispCodes[0].slice(0, 6) + ' (+' + dispCodes.length + ' HS10 lines)';
+    bySlug[slug] = Object.assign({ hs6, note: slugNote[slug] || null }, der, deriveOrigins(originAcc) || {});
   }
   return bySlug;
 }
