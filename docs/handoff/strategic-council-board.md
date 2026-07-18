@@ -76,6 +76,14 @@ viz-spark h-scroll bug fix. This is the loop working: adversarial review → rea
   gaps at every width) now that the overflowing Contact CTA is gone → **symmetric at ALL widths** (diff 0 at
   1200/1280/1440/1512/1680/1920; was ~100px right-lean on wide monitors). Tabs are EN-desktop; ES desktop is
   hamburger-only (pre-existing `:root:lang(es)` rule — Spanish labels don't fit the row).
+  · **Active-tab detection adversarially verified across 14 page types (14/14):** Library hub+article,
+    Cost-Index hub+ingredient, Open-data, Tools hub+tool, Company(/studio/), Ledger all light the right tab;
+    home/glossary/about/methods/blog correctly light none. Feature is robust.
+  · **ES desktop tabs — TESTED & REJECTED:** even at uppercase 12.5px the ES nav-links block is ~778px
+    ("Índice de costos"/"Datos abiertos"/"Herramientas" run long) and leans right at every width (1280 →
+    last item −18px past edge; 1512 → 209/88). Re-enabling would reintroduce the lean. Shortening ES labels
+    is an editorial call, not styling. ES desktop stays hamburger (correct). Active-tab script still runs on
+    ES (harmlessly marks the hidden link).
 
 **Done surfaces:** homepage, article shell, CI ingredient, CI hub, CI events, **CI weekly+monthly
 dispatch** (funnel spine complete), library hub, vendor-benchmark, plate-cost a11y, viz-spark (shared),
