@@ -79,7 +79,8 @@ const READ_OVERRIDE = {
   'what-should-be-on-a-restaurant-website':                  { en: '/glossary/above-the-fold/',          es: '/es/glossary/above-the-fold/' },
   'como-saber-si-una-herramienta-de-restaurante-es-segura':  { es: '/es/glossary/client-side-tool/' },
   'como-salir-de-doordash-mi-restaurante':                   { es: '/es/glossary/owned-channel/' },
-  'cuanto-cuesta-una-pagina-web-para-restaurante-2026':      { es: '/es/glossary/care-plan/' },
+  // care-plan glossary term was retired; drop the override so the CTA
+  // auto-detects a live term from the body or falls back to /es/glossary/.
   'mi-restaurante-no-aparece-en-google-maps':                { es: '/es/glossary/gbp/' },
   'schema-markup-para-restaurante-ejemplo':                  { es: '/es/glossary/schema/' },
 };
