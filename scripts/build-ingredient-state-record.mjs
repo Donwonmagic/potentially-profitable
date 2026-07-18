@@ -70,6 +70,10 @@ function importSeriesByHs() {
       latest_year: last, latest_year_usd: Math.round(annual[last]),
       peak_months: peak, peak_quarter: peakQ + 1,
       peak_quarter_share: totalMean ? Math.round((q[peakQ] / totalMean) * 100) : null,
+      // 12-month seasonal fingerprint: each month's mean import value / the average month,
+      // so 1.0 = a typical month, >1 = above-average import month. A within-year ratio, so
+      // inflation-immune — the honest seasonal shape of the import stream.
+      import_seasonal_index: (() => { const av = totalMean / 12; const a = []; for (let mo = 1; mo <= 12; mo++) a.push(av > 0 && meanMonth[mo] != null ? Math.round((meanMonth[mo] / av) * 100) / 100 : null); return a; })(),
       import_yoy_pct: (annual[last] != null && annual[years[years.length - 2]] > 0) ? Math.round((annual[last] / annual[years[years.length - 2]] - 1) * 1000) / 10 : null,
       annual_usd: Object.fromEntries(years.map((y) => [y, Math.round(annual[y])])),
     };
@@ -141,6 +145,7 @@ function build() {
       import_peak_quarter_share: im ? im.peak_quarter_share : null,
       import_hs6: im ? im.hs6 : null,
       import_yoy_pct: im ? im.import_yoy_pct : null,
+      import_seasonal_index: im ? im.import_seasonal_index : null,
       import_annual_usd: im ? im.annual_usd : null,
       import_note: im ? im.note : null,
       notable_events_n: ed.notable_events_n != null ? ed.notable_events_n : null,
