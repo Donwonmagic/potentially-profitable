@@ -53,7 +53,9 @@ function check(record) {
     if (r.band_pct != null && r.band_pct < 0) E(s, `band_pct ${r.band_pct} < 0`);
     if (r.import_source_hhi != null && !(r.import_source_hhi >= 0 && r.import_source_hhi <= 1)) E(s, `import_source_hhi ${r.import_source_hhi} out of 0..1`);
     if (r.import_reliance_pct != null && !(r.import_reliance_pct >= 0 && r.import_reliance_pct <= 100)) E(s, `import_reliance_pct ${r.import_reliance_pct} out of 0..100`);
-    for (const f of ['us_import_value_usd', 'us_export_value_usd', 'us_production_usd']) if (r[f] != null && !(r[f] >= 0)) E(s, `${f} ${r[f]} < 0`);
+    for (const f of ['us_import_value_usd', 'us_export_value_usd', 'us_production_usd', 'us_landings_value_usd']) if (r[f] != null && !(r[f] >= 0)) E(s, `${f} ${r[f]} < 0`);
+    if (r.us_landings_year != null && !(r.us_landings_year >= 1950 && r.us_landings_year <= 2100)) E(s, `us_landings_year ${r.us_landings_year} out of 1950..2100`);
+    if (r.us_landings_wild_minimal != null && typeof r.us_landings_wild_minimal !== 'boolean') E(s, `us_landings_wild_minimal must be boolean or null`);
     if (Array.isArray(r.import_peak_months)) {
       if (r.import_peak_months.length !== 3) E(s, `import_peak_months length ${r.import_peak_months.length} != 3`);
       for (const m of r.import_peak_months) if (!(m >= 1 && m <= 12)) E(s, `import peak month ${m} out of 1..12`);
@@ -68,7 +70,7 @@ function check(record) {
       if (!Array.isArray(r.harmony)) E(s, 'harmony must be an array or null');
       else for (const h of r.harmony) {
         const K = h && h.kind;
-        if (!['supplyshape', 'reliance', 'persistence'].includes(K)) { E(s, `harmony kind "${K}" unknown`); continue; }
+        if (!['supplyshape', 'reliance', 'persistence', 'catchpair'].includes(K)) { E(s, `harmony kind "${K}" unknown`); continue; }
         if (K === 'supplyshape') {
           if (!['single-source', 'concentrated', 'diversified'].includes(h.concentration)) E(s, `harmony supplyshape concentration "${h.concentration}" invalid`);
           if (h.hhi != null && !(h.hhi >= 0 && h.hhi <= 1)) E(s, `harmony supplyshape hhi ${h.hhi} out of 0..1`);
@@ -82,6 +84,13 @@ function check(record) {
           if (!(h.n > 0)) E(s, `harmony persistence n ${h.n} not > 0`);
           if (!(h.median_days >= 0)) E(s, `harmony persistence median_days ${h.median_days} not >= 0`);
           if (h.comover_shared != null && !/^\d+\/\d+$/.test(String(h.comover_shared))) E(s, `harmony persistence comover_shared "${h.comover_shared}" not k/n`);
+        } else if (K === 'catchpair') {
+          // seafood wild-vs-farmed pair: two dollar figures, never a share. Both sides must be present.
+          if (!(h.landings_usd >= 0)) E(s, `harmony catchpair landings_usd ${h.landings_usd} < 0`);
+          if (!(h.import_usd >= 0)) E(s, `harmony catchpair import_usd ${h.import_usd} < 0`);
+          if (typeof h.wild_minimal !== 'boolean') E(s, `harmony catchpair wild_minimal must be boolean`);
+          if (h.landings_year != null && !(h.landings_year >= 1950 && h.landings_year <= 2100)) E(s, `harmony catchpair landings_year ${h.landings_year} implausible`);
+          if (r.us_import_value_usd == null || r.us_landings_value_usd == null) E(s, 'harmony catchpair present without both import + landings value');
         }
         // defense in depth: no free-text string field in a harmony entry may carry banned language
         for (const [hk, hv] of Object.entries(h)) { if (typeof hv !== 'string') continue; for (const re of BANNED) if (re.test(hv)) E(s, `banned language in harmony ${K}.${hk}: /${re.source}/`); }
@@ -112,13 +121,16 @@ function check(record) {
 function selfTest() {
   const bad = { count: 1, withImport: 5, ingredients: [
     { slug: 'x', name: 'X', cheapest_month: 13, import_source_hhi: 2, import_reliance_pct: 120,
-      import_peak_months: [1, 2], us_import_value_usd: null, us_export_value_usd: -5, import_note: 'prices will rise due to drought',
-      specialty: true, band_pct: 5,
-      harmony: [{ kind: 'reliance', reliance_pct: 200, reliance_year: 1990 }, { kind: 'persistence', n: 0, median_days: -1, comover_shared: 'x' }, { kind: 'bogus' }] },
+      import_peak_months: [1, 2], us_import_value_usd: null, us_export_value_usd: -5, us_landings_value_usd: -9, us_landings_year: 1900, us_landings_wild_minimal: 'yes',
+      import_note: 'prices will rise due to drought', specialty: true, band_pct: 5,
+      harmony: [{ kind: 'reliance', reliance_pct: 200, reliance_year: 1990 }, { kind: 'persistence', n: 0, median_days: -1, comover_shared: 'x' },
+        { kind: 'catchpair', landings_usd: -1, import_usd: -2, wild_minimal: 'nope', landings_year: 1800 }, { kind: 'bogus' }] },
   ] };
   const errs = check(bad);
   const want = ['cheapest_month', 'import_source_hhi', 'import_reliance_pct', 'import_peak_months length', 'banned language', 'must not carry band_pct', 'withImport',
-    'us_export_value_usd', 'harmony reliance reliance_pct', 'harmony reliance reliance_year', 'harmony persistence n', 'harmony persistence median_days', 'harmony persistence comover_shared', 'harmony kind "bogus" unknown'];
+    'us_export_value_usd', 'us_landings_value_usd', 'us_landings_year', 'us_landings_wild_minimal must be boolean',
+    'harmony reliance reliance_pct', 'harmony reliance reliance_year', 'harmony persistence n', 'harmony persistence median_days', 'harmony persistence comover_shared',
+    'harmony catchpair landings_usd', 'harmony catchpair import_usd', 'harmony catchpair wild_minimal', 'harmony catchpair landings_year', 'harmony kind "bogus" unknown'];
   const miss = want.filter((w) => !errs.some((e) => e.includes(w)));
   if (miss.length) { console.error('SELF-TEST FAIL — missed:', miss, '\ngot:', errs); process.exit(1); }
   console.log('✓ self-test: caught all', want.length, 'seeded violations'); process.exit(0);

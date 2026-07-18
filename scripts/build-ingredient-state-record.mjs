@@ -229,6 +229,24 @@ function exportBySlug() {
   return out; // slug -> { year: value }
 }
 
+// ---- US domestic wild-landings layer (NOAA FOSS) ---------------------------------------------
+// The seafood domestic pair for the import stream: US commercial WILD landings value, keyed to the
+// slugs each species group serves. Read from the already-gated derived dataset
+// (cost-index/noaa-landings-domestic.json) so the ISR and the landings explorer never diverge — a
+// single source of truth. Null until that file lands, so the whole layer is inert until then. This is
+// a WILD-CATCH figure set beside a largely-FARMED import stream; the harmony `catchpair` read NAMES
+// that seam and never collapses it into the apparent-consumption share a crop's reliance forms.
+function landingsBySlug() {
+  let doc; try { doc = rd('cost-index/noaa-landings-domestic.json'); } catch { return null; }
+  const groups = doc && doc.groups; if (!Array.isArray(groups)) return null;
+  const out = {};
+  for (const g of groups) {
+    if (g.landings_usd == null) continue; // only groups carrying a $ value
+    for (const slug of g.serves || []) out[slug] = { usd: g.landings_usd, year: g.latest_year, minimal: !!g.domestic_wild_minimal, group: g.id };
+  }
+  return out; // slug -> { usd, year, minimal, group }
+}
+
 // ---- NASS domestic-supply layer (forward-compatible) -----------------------------------------
 // Reads the raw national annual SURVEY rows the operator fetches into data/nass-domestic.jsonl
 // (one line per commodity+statisticcat query: {commodity, stat, rows:[[year,class,refPeriod,unit,
@@ -347,6 +365,12 @@ export function harmonyFor(r) {
     const t = (r.import_top_sources && r.import_top_sources[0]) || null;
     H.push({ kind: 'reliance', reliance_pct: r.import_reliance_pct, reliance_year: r.import_reliance_year != null ? r.import_reliance_year : null, top_country: t ? t.country : null, top_share: t ? t.share_pct : null });
   }
+  // catchpair — the SEAFOOD analog of reliance, kept deliberately distinct: US wild landings value set
+  // beside the import value, but NEVER a supply share, because the domestic figure is WILD-caught while
+  // the import is largely FARMED. Two dollar figures + the wild-minimal flag; the island states the seam.
+  if (r.us_landings_value_usd != null && r.us_import_value_usd != null) {
+    H.push({ kind: 'catchpair', landings_usd: r.us_landings_value_usd, import_usd: r.us_import_value_usd, wild_minimal: !!r.us_landings_wild_minimal, landings_year: r.us_landings_year != null ? r.us_landings_year : null });
+  }
   if (r.notable_events_n && r.median_shock_days != null) {
     const co = strongComover(r);
     H.push({ kind: 'persistence', n: r.notable_events_n, median_days: r.median_shock_days, comover_slug: co ? co.slug : null, comover_shared: co ? co.shared_of_n : null });
@@ -372,6 +396,16 @@ function build() {
     return { usd: Math.round(a[yrs[0]]), year: yrs[0] };
   };
   const exportAt = (slug, year) => (exp && exp[slug] && year != null && exp[slug][year] != null) ? exp[slug][year] : null;
+  const landings = landingsBySlug(); // slug -> { usd, year, minimal }; null until the file lands
+  const landingsFields = (slug) => {
+    if (!landings) return {};
+    const l = landings[slug] || null;
+    return {
+      us_landings_value_usd: l ? l.usd : null,
+      us_landings_year: l ? l.year : null,
+      us_landings_wild_minimal: l ? l.minimal : null,
+    };
+  };
   const nassFields = (slug, im) => {
     if (!nass) return {};
     const n = nass[slug] || null;
@@ -445,6 +479,7 @@ function build() {
       biggest_move_date: ed.biggest_move_date || null,
       comovers: ed.comovers || null,
       ...nassFields(c.slug, im || null),
+      ...landingsFields(c.slug),
     };
     rec.harmony = harmonyFor(rec);
     return rec;
@@ -485,6 +520,7 @@ function build() {
       notable_events_n: null, median_shock_days: null, biggest_move_pct: null, biggest_move_date: null,
       comovers: null, specialty: true,
       ...nassFields(sp.slug, im || null),
+      ...landingsFields(sp.slug),
     };
     rec.harmony = harmonyFor(rec);
     records.push(rec);
@@ -505,7 +541,7 @@ function build() {
     ingredients: records,
   };
 
-  const cols = ['slug', 'name', 'category', 'posture', 'band_pct', 'edible_yield_pct', 'trim_tax', 'cooked_yield', 'cheapest_month', 'save_pct', 'hedge_swap', 'pressure_dir', 'pressure_conf', 'us_import_value_usd', 'us_export_value_usd', 'us_production_usd', 'farm_price', 'farm_price_unit', 'import_reliance_pct', 'import_reliance_year', 'import_years', 'import_peak_months', 'import_peak_quarter_share', 'import_hs6', 'import_yoy_pct', 'import_source_concentration', 'import_source_hhi', 'import_top_sources', 'notable_events_n', 'median_shock_days', 'biggest_move_pct', 'biggest_move_date', 'comovers'];
+  const cols = ['slug', 'name', 'category', 'posture', 'band_pct', 'edible_yield_pct', 'trim_tax', 'cooked_yield', 'cheapest_month', 'save_pct', 'hedge_swap', 'pressure_dir', 'pressure_conf', 'us_import_value_usd', 'us_export_value_usd', 'us_production_usd', 'us_landings_value_usd', 'us_landings_year', 'us_landings_wild_minimal', 'farm_price', 'farm_price_unit', 'import_reliance_pct', 'import_reliance_year', 'import_years', 'import_peak_months', 'import_peak_quarter_share', 'import_hs6', 'import_yoy_pct', 'import_source_concentration', 'import_source_hhi', 'import_top_sources', 'notable_events_n', 'median_shock_days', 'biggest_move_pct', 'biggest_move_date', 'comovers'];
   const esc = (v) => { if (v == null) return ''; const s = Array.isArray(v) ? v.join(';') : String(v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
   const cell = (r, k) => {
     if (k === 'comovers') return esc((r.comovers || []).map((x) => x.slug + ':' + x.shared_of_n).join(';'));

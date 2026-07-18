@@ -77,6 +77,27 @@ test('harmonyFor: persistence keeps the run-length always, names a co-mover only
   assert.equal(p2.comover_shared, null);
 });
 
+test('harmonyFor: catchpair pairs wild landings vs imports (both sides required), never a share', () => {
+  const seafood = { us_landings_value_usd: 312_000_000, us_import_value_usd: 1_617_000_000, us_landings_wild_minimal: false, us_landings_year: 2024 };
+  const cp = of(seafood, 'catchpair');
+  assert.ok(cp, 'catchpair fires when both landings + import are present');
+  assert.equal(cp.landings_usd, 312_000_000);
+  assert.equal(cp.import_usd, 1_617_000_000);
+  assert.equal(cp.wild_minimal, false);
+  assert.equal(cp.landings_year, 2024);
+  // it never computes a percentage/share — only the two raw figures + the seam flag
+  assert.equal(cp.reliance_pct, undefined);
+  assert.equal(cp.share_pct, undefined);
+  // the wild-minimal seam is carried through (octopus: tiny wild landing beside a large import)
+  const minimal = of({ us_landings_value_usd: 300_000, us_import_value_usd: 15_800_000, us_landings_wild_minimal: true, us_landings_year: 2024 }, 'catchpair');
+  assert.equal(minimal.wild_minimal, true);
+  // degrade by absence: only one side present -> no catchpair
+  assert.equal(of({ us_landings_value_usd: 312_000_000 }, 'catchpair'), undefined, 'no import -> no catchpair');
+  assert.equal(of({ us_import_value_usd: 1_617_000_000 }, 'catchpair'), undefined, 'no landings -> no catchpair');
+  // a missing wild_minimal coerces to false (never null/undefined in the seam)
+  assert.equal(of({ us_landings_value_usd: 1, us_import_value_usd: 2 }, 'catchpair').wild_minimal, false);
+});
+
 test('harmonyFor: the audit-dropped kinds never render, even with their inputs present', () => {
   const r = {
     cheapest_month: 3, import_peak_months: [1, 2, 3],       // old buyclock inputs
