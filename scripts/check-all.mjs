@@ -647,6 +647,8 @@ const CHECKS = [
   ['Article graphics (idem)','build-article-graphics.mjs',  '--check'],
   ['Ingredient state record (idem)','build-ingredient-state-record.mjs', '--check'],
   ['Ingredient state record honesty','check-ingredient-state-record.mjs'],
+  ['Energy backdrop (idem)','build-eia-energy-backdrop.mjs', '--check'],
+  ['Energy backdrop honesty','check-eia-energy-backdrop.mjs'],
   // Audio coverage — manifest-driven audit of which written pieces
   // ship a studio audio edition in which languages. Warn-only during
   // the studio-audio rollout (pre-existing ENGLISH-IN-FOREIGN issues
