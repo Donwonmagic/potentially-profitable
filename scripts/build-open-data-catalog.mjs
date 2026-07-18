@@ -74,6 +74,10 @@ const DATASETS = [
     agency: 'Muntin Cost Index — computed from US EIA public-domain series',
     files: ['cost-index/eia-energy-backdrop.json'],
     note: 'Each energy carrier read against its own multi-decade range (percentile, band, YoY). A coincident site-wide backdrop, never a per-ingredient driver, never a forecast. Underlying series are US-gov public domain; the computed reads are CC BY 4.0.' },
+  { id: 'crop-condition-backdrop', tier: 'derived', title: 'Crop-condition backdrop (corn & soybean feed complex)',
+    agency: 'Muntin Cost Index — computed from USDA NASS public-domain crop-progress series',
+    files: ['cost-index/crop-condition-backdrop.json'],
+    note: 'Each feed crop\'s good-to-excellent share read against its own same-week history in prior seasons (percentile, band). A coincident site-wide backdrop on the feed complex, never a per-ingredient driver, never a forecast. Underlying series are US-gov public domain; the computed reads are CC BY 4.0.' },
 ];
 
 function build() {

@@ -649,6 +649,8 @@ const CHECKS = [
   ['Ingredient state record honesty','check-ingredient-state-record.mjs'],
   ['Energy backdrop (idem)','build-eia-energy-backdrop.mjs', '--check'],
   ['Energy backdrop honesty','check-eia-energy-backdrop.mjs'],
+  ['Crop-condition backdrop (idem)','build-crop-condition-backdrop.mjs', '--check'],
+  ['Crop-condition backdrop honesty','check-crop-condition-backdrop.mjs'],
   ['Open-data catalog (idem)','build-open-data-catalog.mjs', '--check'],
   ['Open-data catalog gate','check-open-data-catalog.mjs'],
   // Audio coverage — manifest-driven audit of which written pieces
