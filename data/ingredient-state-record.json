@@ -1,5 +1,5 @@
 {
-  "_doc": "One present-state record per ingredient, fusing pricing posture + own-baseline band, edible/cooked yield + trim tax, cheapest month, the price hedge swap, present pipeline direction, and the US import stream. Every field is descriptive of the tracked record — never a delivered/retail price, never a forecast, and co-occurrence is never cause. us_import_value_usd is the latest full calendar year of US general import VALUE for the ingredient's HS6 (US Census, public domain), nominal (mixes volume and price) — never import volume (not published at HS6). import_peak_months are the three highest-import calendar months averaged over 2010-2025; import_peak_quarter_share is the peak quarter's share of a typical year's import value (a within-year ratio, inflation-immune) — both descriptive seasonality, the supply-timing tell of when an ingredient leans on imports. import_annual_usd carries the full 2010-2025 annual series. Fields are null where a layer does not cover an ingredient.",
+  "_doc": "One present-state record per ingredient, fusing pricing posture + own-baseline band, edible/cooked yield + trim tax, cheapest month, the price hedge swap, present pipeline direction, and the US import stream. Every field is descriptive of the tracked record — never a delivered/retail price, never a forecast, and co-occurrence is never cause. us_import_value_usd is the latest full calendar year of US general import VALUE for the ingredient's HS6 (US Census, public domain), nominal (mixes volume and price) — never import volume (not published at HS6). import_peak_months are the three highest-import calendar months averaged over 2010-2025; import_peak_quarter_share is the peak quarter's share of a typical year's import value (a within-year ratio, inflation-immune) — both descriptive seasonality, the supply-timing tell of when an ingredient leans on imports. import_annual_usd carries the full 2010-2025 annual series; import_yoy_pct is the latest full year versus the prior year (a descriptive change, nominal). notable_events_n, median_shock_days and biggest_move_pct+date summarize the ingredient's own notable sustained price moves in the deep history (descriptive, from the events dataset — a departure from its own baseline, never a delivered price). comovers lists the ingredients that most often moved the same way in the same six-week window, as k of this ingredient's own n moves — co-occurrence, NEVER cause. Fields are null where a layer does not cover an ingredient.",
   "dateModified": "2026-07-10",
   "records": [
     {
@@ -21,8 +21,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 70,
+      "biggest_move_pct": 183,
+      "biggest_move_date": "2004-03-31",
+      "comovers": [
+        {
+          "slug": "avocado",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "bell-pepper",
+          "shared_of_n": "1/6"
+        },
+        {
+          "slug": "butternut-squash",
+          "shared_of_n": "1/6"
+        }
+      ]
     },
     {
       "slug": "banana",
@@ -47,6 +66,7 @@
       ],
       "import_peak_quarter_share": 26,
       "import_hs6": "080390",
+      "import_yoy_pct": 2.5,
       "import_annual_usd": {
         "2012": 1939541627,
         "2013": 2016160730,
@@ -63,7 +83,25 @@
         "2024": 2452553076,
         "2025": 2513367507
       },
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 2,
+      "median_shock_days": 7,
+      "biggest_move_pct": 56,
+      "biggest_move_date": "2002-10-09",
+      "comovers": [
+        {
+          "slug": "apple",
+          "shared_of_n": "1/2"
+        },
+        {
+          "slug": "beet",
+          "shared_of_n": "1/2"
+        },
+        {
+          "slug": "broccoli",
+          "shared_of_n": "1/2"
+        }
+      ]
     },
     {
       "slug": "beef-tenderloin",
@@ -84,8 +122,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 77,
+      "biggest_move_pct": -75,
+      "biggest_move_date": "2001-06-13",
+      "comovers": [
+        {
+          "slug": "artichoke",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "short-rib",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "butter",
+          "shared_of_n": "1/6"
+        }
+      ]
     },
     {
       "slug": "beet",
@@ -106,8 +163,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 84,
+      "biggest_move_pct": 58,
+      "biggest_move_date": "2014-02-19",
+      "comovers": [
+        {
+          "slug": "celery",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "cucumber",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "okra",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "bok-choy",
@@ -128,8 +204,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 4,
+      "median_shock_days": 35,
+      "biggest_move_pct": 63,
+      "biggest_move_date": "2024-08-14",
+      "comovers": [
+        {
+          "slug": "cilantro",
+          "shared_of_n": "1/4"
+        },
+        {
+          "slug": "collard-greens",
+          "shared_of_n": "1/4"
+        },
+        {
+          "slug": "dill",
+          "shared_of_n": "1/4"
+        }
+      ]
     },
     {
       "slug": "butter",
@@ -150,8 +245,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 5,
+      "median_shock_days": 98,
+      "biggest_move_pct": 47,
+      "biggest_move_date": "2014-10-04",
+      "comovers": [
+        {
+          "slug": "cheddar-cheese",
+          "shared_of_n": "2/5"
+        },
+        {
+          "slug": "beef-tenderloin",
+          "shared_of_n": "1/5"
+        },
+        {
+          "slug": "blueberry",
+          "shared_of_n": "1/5"
+        }
+      ]
     },
     {
       "slug": "butter-lettuce",
@@ -172,8 +286,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 28,
+      "biggest_move_pct": 165,
+      "biggest_move_date": "2004-12-15",
+      "comovers": [
+        {
+          "slug": "green-leaf-lettuce",
+          "shared_of_n": "3/6"
+        },
+        {
+          "slug": "iceberg-lettuce",
+          "shared_of_n": "3/6"
+        },
+        {
+          "slug": "red-leaf-lettuce",
+          "shared_of_n": "3/6"
+        }
+      ]
     },
     {
       "slug": "butternut-squash",
@@ -194,8 +327,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 56,
+      "biggest_move_pct": 800,
+      "biggest_move_date": "2024-10-09",
+      "comovers": [
+        {
+          "slug": "red-onion",
+          "shared_of_n": "3/6"
+        },
+        {
+          "slug": "celery",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "collard-greens",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "cabbage",
@@ -216,8 +368,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 70,
+      "biggest_move_pct": 72,
+      "biggest_move_date": "2016-01-13",
+      "comovers": [
+        {
+          "slug": "kale",
+          "shared_of_n": "3/6"
+        },
+        {
+          "slug": "broccoli",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "jalapeno",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "cheddar-cheese",
@@ -238,8 +409,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 5,
+      "median_shock_days": 63,
+      "biggest_move_pct": 48,
+      "biggest_move_date": "2020-11-14",
+      "comovers": [
+        {
+          "slug": "butter",
+          "shared_of_n": "2/5"
+        },
+        {
+          "slug": "asparagus",
+          "shared_of_n": "1/5"
+        },
+        {
+          "slug": "beef-tenderloin",
+          "shared_of_n": "1/5"
+        }
+      ]
     },
     {
       "slug": "cilantro",
@@ -260,8 +450,23 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 1,
+      "median_shock_days": 85,
+      "biggest_move_pct": 39,
+      "biggest_move_date": "2024-07-10",
+      "comovers": [
+        {
+          "slug": "bok-choy",
+          "shared_of_n": "1/1"
+        },
+        {
+          "slug": "dill",
+          "shared_of_n": "1/1"
+        }
+      ]
     },
     {
       "slug": "daikon",
@@ -282,8 +487,23 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 1,
+      "median_shock_days": 34,
+      "biggest_move_pct": -24,
+      "biggest_move_date": "2025-12-03",
+      "comovers": [
+        {
+          "slug": "chicken-thigh",
+          "shared_of_n": "1/1"
+        },
+        {
+          "slug": "eggs",
+          "shared_of_n": "1/1"
+        }
+      ]
     },
     {
       "slug": "dill",
@@ -304,8 +524,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 5,
+      "median_shock_days": 48,
+      "biggest_move_pct": 135,
+      "biggest_move_date": "2024-08-14",
+      "comovers": [
+        {
+          "slug": "chicken-breast",
+          "shared_of_n": "2/5"
+        },
+        {
+          "slug": "chicken-thigh",
+          "shared_of_n": "2/5"
+        },
+        {
+          "slug": "bell-pepper",
+          "shared_of_n": "1/5"
+        }
+      ]
     },
     {
       "slug": "eggplant",
@@ -326,8 +565,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 63,
+      "biggest_move_pct": 2264,
+      "biggest_move_date": "2002-05-22",
+      "comovers": [
+        {
+          "slug": "red-onion",
+          "shared_of_n": "3/6"
+        },
+        {
+          "slug": "butternut-squash",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "celery",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "garlic",
@@ -352,6 +610,7 @@
       ],
       "import_peak_quarter_share": 27,
       "import_hs6": "070320",
+      "import_yoy_pct": -9.3,
       "import_annual_usd": {
         "2010": 130097010,
         "2011": 107745470,
@@ -370,7 +629,25 @@
         "2024": 289512926,
         "2025": 262481127
       },
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 77,
+      "biggest_move_pct": 53,
+      "biggest_move_date": "2014-10-01",
+      "comovers": [
+        {
+          "slug": "asparagus",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "ribeye",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "artichoke",
+          "shared_of_n": "1/6"
+        }
+      ]
     },
     {
       "slug": "ginger",
@@ -395,6 +672,7 @@
       ],
       "import_peak_quarter_share": 26,
       "import_hs6": "091011",
+      "import_yoy_pct": -17,
       "import_annual_usd": {
         "2012": 41662067,
         "2013": 68032860,
@@ -411,7 +689,25 @@
         "2024": 143408614,
         "2025": 118969213
       },
-      "import_note": "Fresh ginger (not crushed or ground)."
+      "import_note": "Fresh ginger (not crushed or ground).",
+      "notable_events_n": 3,
+      "median_shock_days": 98,
+      "biggest_move_pct": 25,
+      "biggest_move_date": "2026-01-28",
+      "comovers": [
+        {
+          "slug": "bok-choy",
+          "shared_of_n": "1/3"
+        },
+        {
+          "slug": "brussels-sprouts",
+          "shared_of_n": "1/3"
+        },
+        {
+          "slug": "collard-greens",
+          "shared_of_n": "1/3"
+        }
+      ]
     },
     {
       "slug": "grapefruit",
@@ -436,6 +732,7 @@
       ],
       "import_peak_quarter_share": 46,
       "import_hs6": "080540",
+      "import_yoy_pct": -16,
       "import_annual_usd": {
         "2010": 2202031,
         "2011": 1844926,
@@ -454,7 +751,25 @@
         "2024": 39437060,
         "2025": 33115896
       },
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 105,
+      "biggest_move_pct": 54,
+      "biggest_move_date": "2016-10-05",
+      "comovers": [
+        {
+          "slug": "apple",
+          "shared_of_n": "3/6"
+        },
+        {
+          "slug": "carrot",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "lemon",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "habanero-pepper",
@@ -479,6 +794,7 @@
       ],
       "import_peak_quarter_share": 31,
       "import_hs6": "070960",
+      "import_yoy_pct": -7.2,
       "import_annual_usd": {
         "2010": 917457888,
         "2011": 933016163,
@@ -497,7 +813,25 @@
         "2024": 2250246741,
         "2025": 2087122984
       },
-      "import_note": "HS6 covers all fresh Capsicum peppers; not split by variety."
+      "import_note": "HS6 covers all fresh Capsicum peppers; not split by variety.",
+      "notable_events_n": 6,
+      "median_shock_days": 56,
+      "biggest_move_pct": 68,
+      "biggest_move_date": "2024-01-03",
+      "comovers": [
+        {
+          "slug": "yellow-squash",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "butter-lettuce",
+          "shared_of_n": "1/6"
+        },
+        {
+          "slug": "celery",
+          "shared_of_n": "1/6"
+        }
+      ]
     },
     {
       "slug": "leek",
@@ -518,8 +852,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 91,
+      "biggest_move_pct": 122,
+      "biggest_move_date": "2003-11-12",
+      "comovers": [
+        {
+          "slug": "artichoke",
+          "shared_of_n": "3/6"
+        },
+        {
+          "slug": "collard-greens",
+          "shared_of_n": "3/6"
+        },
+        {
+          "slug": "cauliflower",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "lemon",
@@ -544,6 +897,7 @@
       ],
       "import_peak_quarter_share": 33,
       "import_hs6": "080550",
+      "import_yoy_pct": -9,
       "import_annual_usd": {
         "2010": 214683471,
         "2011": 236885623,
@@ -562,7 +916,25 @@
         "2024": 1067791392,
         "2025": 971844855
       },
-      "import_note": "HS6 combines lemons and limes; not split at 6 digits."
+      "import_note": "HS6 combines lemons and limes; not split at 6 digits.",
+      "notable_events_n": 6,
+      "median_shock_days": 120,
+      "biggest_move_pct": 92,
+      "biggest_move_date": "2018-08-22",
+      "comovers": [
+        {
+          "slug": "apple",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "cantaloupe",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "grapefruit",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "mint",
@@ -583,8 +955,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 1,
+      "median_shock_days": 92,
+      "biggest_move_pct": 33,
+      "biggest_move_date": "2025-12-31",
+      "comovers": [
+        {
+          "slug": "brussels-sprouts",
+          "shared_of_n": "1/1"
+        },
+        {
+          "slug": "ginger",
+          "shared_of_n": "1/1"
+        },
+        {
+          "slug": "green-onion",
+          "shared_of_n": "1/1"
+        }
+      ]
     },
     {
       "slug": "onion",
@@ -605,8 +996,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 70,
+      "biggest_move_pct": 56,
+      "biggest_move_date": "2007-04-18",
+      "comovers": [
+        {
+          "slug": "short-rib",
+          "shared_of_n": "3/6"
+        },
+        {
+          "slug": "pineapple",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "pumpkin",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "pear",
@@ -631,6 +1041,7 @@
       ],
       "import_peak_quarter_share": 39,
       "import_hs6": "080830",
+      "import_yoy_pct": 0.6,
       "import_annual_usd": {
         "2012": 73806660,
         "2013": 109908536,
@@ -647,7 +1058,25 @@
         "2024": 127485316,
         "2025": 128221620
       },
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 70,
+      "biggest_move_pct": 42,
+      "biggest_move_date": "2010-07-07",
+      "comovers": [
+        {
+          "slug": "carrot",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "rutabaga",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "asparagus",
+          "shared_of_n": "1/6"
+        }
+      ]
     },
     {
       "slug": "pineapple",
@@ -672,6 +1101,7 @@
       ],
       "import_peak_quarter_share": 29,
       "import_hs6": "080430",
+      "import_yoy_pct": 2.9,
       "import_annual_usd": {
         "2010": 504576198,
         "2011": 474363702,
@@ -690,7 +1120,25 @@
         "2024": 868825056,
         "2025": 893627234
       },
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 42,
+      "biggest_move_pct": 142,
+      "biggest_move_date": "2011-08-10",
+      "comovers": [
+        {
+          "slug": "cabbage",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "onion",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "avocado",
+          "shared_of_n": "1/6"
+        }
+      ]
     },
     {
       "slug": "poblano-pepper",
@@ -715,6 +1163,7 @@
       ],
       "import_peak_quarter_share": 31,
       "import_hs6": "070960",
+      "import_yoy_pct": -7.2,
       "import_annual_usd": {
         "2010": 917457888,
         "2011": 933016163,
@@ -733,7 +1182,25 @@
         "2024": 2250246741,
         "2025": 2087122984
       },
-      "import_note": "HS6 covers all fresh Capsicum peppers; not split by variety."
+      "import_note": "HS6 covers all fresh Capsicum peppers; not split by variety.",
+      "notable_events_n": 6,
+      "median_shock_days": 84,
+      "biggest_move_pct": 78,
+      "biggest_move_date": "2022-01-05",
+      "comovers": [
+        {
+          "slug": "jalapeno",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "spinach",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "asparagus",
+          "shared_of_n": "1/6"
+        }
+      ]
     },
     {
       "slug": "pork-belly",
@@ -754,8 +1221,14 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 1,
+      "median_shock_days": 275,
+      "biggest_move_pct": 31,
+      "biggest_move_date": "2014-06-01",
+      "comovers": []
     },
     {
       "slug": "pork-loin",
@@ -776,8 +1249,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 70,
+      "biggest_move_pct": 110,
+      "biggest_move_date": "2020-05-13",
+      "comovers": [
+        {
+          "slug": "beet",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "ground-pork",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "pork-shoulder",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "pork-shoulder",
@@ -798,8 +1290,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 56,
+      "biggest_move_pct": 100,
+      "biggest_move_date": "2020-05-20",
+      "comovers": [
+        {
+          "slug": "ground-pork",
+          "shared_of_n": "6/6"
+        },
+        {
+          "slug": "pork-loin",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "striploin",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "red-onion",
@@ -820,8 +1331,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 126,
+      "biggest_move_pct": 130,
+      "biggest_move_date": "2010-04-28",
+      "comovers": [
+        {
+          "slug": "butternut-squash",
+          "shared_of_n": "3/6"
+        },
+        {
+          "slug": "eggplant",
+          "shared_of_n": "3/6"
+        },
+        {
+          "slug": "bell-pepper",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "red-potato",
@@ -842,8 +1372,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 77,
+      "biggest_move_pct": 48,
+      "biggest_move_date": "2020-06-10",
+      "comovers": [
+        {
+          "slug": "butter-lettuce",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "onion",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "acorn-squash",
+          "shared_of_n": "1/6"
+        }
+      ]
     },
     {
       "slug": "ribeye",
@@ -864,8 +1413,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 49,
+      "biggest_move_pct": 40,
+      "biggest_move_date": "2003-10-15",
+      "comovers": [
+        {
+          "slug": "garlic",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "napa-cabbage",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "pork-loin",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "russet-potato",
@@ -886,8 +1454,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 63,
+      "biggest_move_pct": 61,
+      "biggest_move_date": "2013-08-14",
+      "comovers": [
+        {
+          "slug": "carrot",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "onion",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "apple",
+          "shared_of_n": "1/6"
+        }
+      ]
     },
     {
       "slug": "short-rib",
@@ -908,8 +1495,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 98,
+      "biggest_move_pct": -100,
+      "biggest_move_date": "2001-06-20",
+      "comovers": [
+        {
+          "slug": "onion",
+          "shared_of_n": "3/6"
+        },
+        {
+          "slug": "beef-tenderloin",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "apple",
+          "shared_of_n": "1/6"
+        }
+      ]
     },
     {
       "slug": "striploin",
@@ -930,8 +1536,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 105,
+      "biggest_move_pct": 88,
+      "biggest_move_date": "2020-05-27",
+      "comovers": [
+        {
+          "slug": "ground-pork",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "pork-loin",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "pork-shoulder",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "vegetable-oil",
@@ -952,8 +1577,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 273,
+      "biggest_move_pct": 59,
+      "biggest_move_date": "2008-07-01",
+      "comovers": [
+        {
+          "slug": "carrot",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "jalapeno",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "acorn-squash",
+          "shared_of_n": "1/6"
+        }
+      ]
     },
     {
       "slug": "whole-chicken",
@@ -974,8 +1618,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 3,
+      "median_shock_days": 77,
+      "biggest_move_pct": 43,
+      "biggest_move_date": "2025-08-18",
+      "comovers": [
+        {
+          "slug": "bell-pepper",
+          "shared_of_n": "1/3"
+        },
+        {
+          "slug": "brussels-sprouts",
+          "shared_of_n": "1/3"
+        },
+        {
+          "slug": "ginger",
+          "shared_of_n": "1/3"
+        }
+      ]
     },
     {
       "slug": "whole-turkey",
@@ -996,8 +1659,19 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 1,
+      "median_shock_days": 28,
+      "biggest_move_pct": -21,
+      "biggest_move_date": "2025-02-03",
+      "comovers": [
+        {
+          "slug": "bok-choy",
+          "shared_of_n": "1/1"
+        }
+      ]
     },
     {
       "slug": "apple",
@@ -1022,6 +1696,7 @@
       ],
       "import_peak_quarter_share": 50,
       "import_hs6": "080810",
+      "import_yoy_pct": -5.6,
       "import_annual_usd": {
         "2010": 168942421,
         "2011": 133108489,
@@ -1040,7 +1715,25 @@
         "2024": 127519683,
         "2025": 120429044
       },
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 49,
+      "biggest_move_pct": -52,
+      "biggest_move_date": "2026-06-17",
+      "comovers": [
+        {
+          "slug": "grapefruit",
+          "shared_of_n": "3/6"
+        },
+        {
+          "slug": "broccoli",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "lemon",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "artichoke",
@@ -1061,8 +1754,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 63,
+      "biggest_move_pct": 113,
+      "biggest_move_date": "2019-12-31",
+      "comovers": [
+        {
+          "slug": "leek",
+          "shared_of_n": "3/6"
+        },
+        {
+          "slug": "beef-tenderloin",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "iceberg-lettuce",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "asparagus",
@@ -1087,6 +1799,7 @@
       ],
       "import_peak_quarter_share": 37,
       "import_hs6": "070920",
+      "import_yoy_pct": -18.8,
       "import_annual_usd": {
         "2010": 418216281,
         "2011": 435807020,
@@ -1105,7 +1818,25 @@
         "2024": 646819371,
         "2025": 525180705
       },
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 28,
+      "biggest_move_pct": 125,
+      "biggest_move_date": "2020-07-01",
+      "comovers": [
+        {
+          "slug": "broccoli",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "garlic",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "watermelon",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "avocado",
@@ -1130,6 +1861,7 @@
       ],
       "import_peak_quarter_share": 27,
       "import_hs6": "080440",
+      "import_yoy_pct": -3,
       "import_annual_usd": {
         "2010": 574698302,
         "2011": 912998844,
@@ -1148,7 +1880,25 @@
         "2024": 3767841541,
         "2025": 3656452928
       },
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 91,
+      "biggest_move_pct": 167,
+      "biggest_move_date": "2002-06-12",
+      "comovers": [
+        {
+          "slug": "acorn-squash",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "bell-pepper",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "brussels-sprouts",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "bell-pepper",
@@ -1173,6 +1923,7 @@
       ],
       "import_peak_quarter_share": 31,
       "import_hs6": "070960",
+      "import_yoy_pct": -7.2,
       "import_annual_usd": {
         "2010": 917457888,
         "2011": 933016163,
@@ -1191,7 +1942,25 @@
         "2024": 2250246741,
         "2025": 2087122984
       },
-      "import_note": "HS6 covers all fresh Capsicum peppers; not split by variety."
+      "import_note": "HS6 covers all fresh Capsicum peppers; not split by variety.",
+      "notable_events_n": 6,
+      "median_shock_days": 70,
+      "biggest_move_pct": 108,
+      "biggest_move_date": "2004-11-17",
+      "comovers": [
+        {
+          "slug": "avocado",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "carrot",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "cherry-tomato",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "cantaloupe",
@@ -1212,8 +1981,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 49,
+      "biggest_move_pct": 109,
+      "biggest_move_date": "2026-07-01",
+      "comovers": [
+        {
+          "slug": "cherry-tomato",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "lemon",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "tomato",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "cherry-tomato",
@@ -1238,6 +2026,7 @@
       ],
       "import_peak_quarter_share": 29,
       "import_hs6": "070200",
+      "import_yoy_pct": -21.6,
       "import_annual_usd": {
         "2010": 1798238104,
         "2011": 2137869891,
@@ -1256,7 +2045,25 @@
         "2024": 3633993909,
         "2025": 2847479076
       },
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 77,
+      "biggest_move_pct": 135,
+      "biggest_move_date": "2004-11-03",
+      "comovers": [
+        {
+          "slug": "yellow-squash",
+          "shared_of_n": "4/6"
+        },
+        {
+          "slug": "green-beans",
+          "shared_of_n": "3/6"
+        },
+        {
+          "slug": "tomato",
+          "shared_of_n": "3/6"
+        }
+      ]
     },
     {
       "slug": "chicken-breast",
@@ -1277,8 +2084,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 56,
+      "biggest_move_pct": 110,
+      "biggest_move_date": "2022-08-29",
+      "comovers": [
+        {
+          "slug": "chicken-thigh",
+          "shared_of_n": "5/6"
+        },
+        {
+          "slug": "collard-greens",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "dill",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "chicken-thigh",
@@ -1299,8 +2125,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 5,
+      "median_shock_days": 112,
+      "biggest_move_pct": 73,
+      "biggest_move_date": "2022-08-29",
+      "comovers": [
+        {
+          "slug": "chicken-breast",
+          "shared_of_n": "5/5"
+        },
+        {
+          "slug": "dill",
+          "shared_of_n": "2/5"
+        },
+        {
+          "slug": "carrot",
+          "shared_of_n": "1/5"
+        }
+      ]
     },
     {
       "slug": "corn-on-the-cob",
@@ -1321,8 +2166,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 70,
+      "biggest_move_pct": 92,
+      "biggest_move_date": "2012-03-28",
+      "comovers": [
+        {
+          "slug": "jalapeno",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "lime",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "acorn-squash",
+          "shared_of_n": "1/6"
+        }
+      ]
     },
     {
       "slug": "cucumber",
@@ -1347,6 +2211,7 @@
       ],
       "import_peak_quarter_share": 29,
       "import_hs6": "070700",
+      "import_yoy_pct": -9.8,
       "import_annual_usd": {
         "2010": 370027520,
         "2011": 386871499,
@@ -1365,7 +2230,25 @@
         "2024": 1453155223,
         "2025": 1311271843
       },
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 63,
+      "biggest_move_pct": 152,
+      "biggest_move_date": "2011-03-23",
+      "comovers": [
+        {
+          "slug": "zucchini",
+          "shared_of_n": "3/6"
+        },
+        {
+          "slug": "beet",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "butter-lettuce",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "green-beans",
@@ -1386,8 +2269,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 49,
+      "biggest_move_pct": 163,
+      "biggest_move_date": "2005-12-14",
+      "comovers": [
+        {
+          "slug": "cherry-tomato",
+          "shared_of_n": "3/6"
+        },
+        {
+          "slug": "bell-pepper",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "carrot",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "napa-cabbage",
@@ -1408,8 +2310,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 77,
+      "biggest_move_pct": 206,
+      "biggest_move_date": "2017-05-10",
+      "comovers": [
+        {
+          "slug": "brussels-sprouts",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "green-leaf-lettuce",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "red-onion",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "okra",
@@ -1430,8 +2351,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 105,
+      "biggest_move_pct": 176,
+      "biggest_move_date": "2011-01-19",
+      "comovers": [
+        {
+          "slug": "artichoke",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "beet",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "celery",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "parsley",
@@ -1452,8 +2392,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 77,
+      "biggest_move_pct": 173,
+      "biggest_move_date": "2002-12-18",
+      "comovers": [
+        {
+          "slug": "romaine-lettuce",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "asparagus",
+          "shared_of_n": "1/6"
+        },
+        {
+          "slug": "blueberry",
+          "shared_of_n": "1/6"
+        }
+      ]
     },
     {
       "slug": "red-leaf-lettuce",
@@ -1474,8 +2433,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 77,
+      "biggest_move_pct": 405,
+      "biggest_move_date": "2002-02-20",
+      "comovers": [
+        {
+          "slug": "iceberg-lettuce",
+          "shared_of_n": "5/6"
+        },
+        {
+          "slug": "romaine-lettuce",
+          "shared_of_n": "5/6"
+        },
+        {
+          "slug": "green-leaf-lettuce",
+          "shared_of_n": "4/6"
+        }
+      ]
     },
     {
       "slug": "snow-peas",
@@ -1496,8 +2474,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 77,
+      "biggest_move_pct": 167,
+      "biggest_move_date": "2017-10-25",
+      "comovers": [
+        {
+          "slug": "avocado",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "artichoke",
+          "shared_of_n": "1/6"
+        },
+        {
+          "slug": "bell-pepper",
+          "shared_of_n": "1/6"
+        }
+      ]
     },
     {
       "slug": "spinach",
@@ -1518,8 +2515,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 28,
+      "biggest_move_pct": 148,
+      "biggest_move_date": "2026-02-25",
+      "comovers": [
+        {
+          "slug": "poblano-pepper",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "red-leaf-lettuce",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "apple",
+          "shared_of_n": "1/6"
+        }
+      ]
     },
     {
       "slug": "watermelon",
@@ -1544,6 +2560,7 @@
       ],
       "import_peak_quarter_share": 54,
       "import_hs6": "080711",
+      "import_yoy_pct": 2.8,
       "import_annual_usd": {
         "2010": 249209041,
         "2011": 211540911,
@@ -1562,7 +2579,25 @@
         "2024": 440168684,
         "2025": 452535301
       },
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 126,
+      "biggest_move_pct": 7272,
+      "biggest_move_date": "2013-02-20",
+      "comovers": [
+        {
+          "slug": "asparagus",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "cabbage",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "cherry-tomato",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "broccoli",
@@ -1583,8 +2618,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 63,
+      "biggest_move_pct": 211,
+      "biggest_move_date": "2002-01-30",
+      "comovers": [
+        {
+          "slug": "cauliflower",
+          "shared_of_n": "3/6"
+        },
+        {
+          "slug": "red-leaf-lettuce",
+          "shared_of_n": "3/6"
+        },
+        {
+          "slug": "romaine-lettuce",
+          "shared_of_n": "3/6"
+        }
+      ]
     },
     {
       "slug": "brussels-sprouts",
@@ -1605,8 +2659,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 70,
+      "biggest_move_pct": 119,
+      "biggest_move_date": "2025-12-31",
+      "comovers": [
+        {
+          "slug": "avocado",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "napa-cabbage",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "red-onion",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "green-leaf-lettuce",
@@ -1627,8 +2700,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 77,
+      "biggest_move_pct": 397,
+      "biggest_move_date": "2002-02-20",
+      "comovers": [
+        {
+          "slug": "iceberg-lettuce",
+          "shared_of_n": "4/6"
+        },
+        {
+          "slug": "red-leaf-lettuce",
+          "shared_of_n": "4/6"
+        },
+        {
+          "slug": "butter-lettuce",
+          "shared_of_n": "3/6"
+        }
+      ]
     },
     {
       "slug": "raspberry",
@@ -1653,6 +2745,7 @@
       ],
       "import_peak_quarter_share": 32,
       "import_hs6": "081020",
+      "import_yoy_pct": -14.4,
       "import_annual_usd": {
         "2010": 274414465,
         "2011": 311836597,
@@ -1671,7 +2764,25 @@
         "2024": 1912354007,
         "2025": 1637656221
       },
-      "import_note": "HS6 combines raspberries, blackberries, mulberries and loganberries; broader than raspberries alone."
+      "import_note": "HS6 combines raspberries, blackberries, mulberries and loganberries; broader than raspberries alone.",
+      "notable_events_n": 6,
+      "median_shock_days": 91,
+      "biggest_move_pct": 119,
+      "biggest_move_date": "2011-01-19",
+      "comovers": [
+        {
+          "slug": "romaine-lettuce",
+          "shared_of_n": "3/6"
+        },
+        {
+          "slug": "red-leaf-lettuce",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "watermelon",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "romaine-lettuce",
@@ -1692,8 +2803,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 77,
+      "biggest_move_pct": 263,
+      "biggest_move_date": "2022-11-16",
+      "comovers": [
+        {
+          "slug": "red-leaf-lettuce",
+          "shared_of_n": "5/6"
+        },
+        {
+          "slug": "iceberg-lettuce",
+          "shared_of_n": "4/6"
+        },
+        {
+          "slug": "broccoli",
+          "shared_of_n": "3/6"
+        }
+      ]
     },
     {
       "slug": "serrano-pepper",
@@ -1718,6 +2848,7 @@
       ],
       "import_peak_quarter_share": 31,
       "import_hs6": "070960",
+      "import_yoy_pct": -7.2,
       "import_annual_usd": {
         "2010": 917457888,
         "2011": 933016163,
@@ -1736,7 +2867,25 @@
         "2024": 2250246741,
         "2025": 2087122984
       },
-      "import_note": "HS6 covers all fresh Capsicum peppers; not split by variety."
+      "import_note": "HS6 covers all fresh Capsicum peppers; not split by variety.",
+      "notable_events_n": 6,
+      "median_shock_days": 84,
+      "biggest_move_pct": 342,
+      "biggest_move_date": "2006-11-01",
+      "comovers": [
+        {
+          "slug": "collard-greens",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "green-onion",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "red-onion",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "yellow-squash",
@@ -1757,8 +2906,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 63,
+      "biggest_move_pct": 213,
+      "biggest_move_date": "2004-10-06",
+      "comovers": [
+        {
+          "slug": "cherry-tomato",
+          "shared_of_n": "4/6"
+        },
+        {
+          "slug": "bell-pepper",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "green-beans",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "basil",
@@ -1779,8 +2947,14 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": null,
+      "median_shock_days": null,
+      "biggest_move_pct": null,
+      "biggest_move_date": null,
+      "comovers": null
     },
     {
       "slug": "blueberry",
@@ -1805,6 +2979,7 @@
       ],
       "import_peak_quarter_share": 40,
       "import_hs6": "081040",
+      "import_yoy_pct": -4.1,
       "import_annual_usd": {
         "2010": 392601501,
         "2011": 438471327,
@@ -1823,7 +2998,25 @@
         "2024": 2215219075,
         "2025": 2124171241
       },
-      "import_note": "HS6 combines cranberries, blueberries and related Vaccinium berries; the value is the group, broader than blueberries alone."
+      "import_note": "HS6 combines cranberries, blueberries and related Vaccinium berries; the value is the group, broader than blueberries alone.",
+      "notable_events_n": 6,
+      "median_shock_days": 35,
+      "biggest_move_pct": 202,
+      "biggest_move_date": "2024-10-09",
+      "comovers": [
+        {
+          "slug": "bell-pepper",
+          "shared_of_n": "1/6"
+        },
+        {
+          "slug": "butter",
+          "shared_of_n": "1/6"
+        },
+        {
+          "slug": "butter-lettuce",
+          "shared_of_n": "1/6"
+        }
+      ]
     },
     {
       "slug": "button-mushroom",
@@ -1844,8 +3037,14 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 1,
+      "median_shock_days": 70,
+      "biggest_move_pct": -33,
+      "biggest_move_date": "2005-11-30",
+      "comovers": []
     },
     {
       "slug": "carrot",
@@ -1866,8 +3065,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 77,
+      "biggest_move_pct": 59,
+      "biggest_move_date": "2008-07-23",
+      "comovers": [
+        {
+          "slug": "rutabaga",
+          "shared_of_n": "4/6"
+        },
+        {
+          "slug": "avocado",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "bell-pepper",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "cauliflower",
@@ -1888,8 +3106,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 56,
+      "biggest_move_pct": 222,
+      "biggest_move_date": "2015-12-09",
+      "comovers": [
+        {
+          "slug": "broccoli",
+          "shared_of_n": "3/6"
+        },
+        {
+          "slug": "iceberg-lettuce",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "leek",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "celery",
@@ -1910,8 +3147,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 98,
+      "biggest_move_pct": 320,
+      "biggest_move_date": "2017-05-24",
+      "comovers": [
+        {
+          "slug": "beet",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "butternut-squash",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "cucumber",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "clams",
@@ -1936,6 +3192,7 @@
       ],
       "import_peak_quarter_share": 29,
       "import_hs6": "030779",
+      "import_yoy_pct": -32.7,
       "import_annual_usd": {
         "2012": 10489932,
         "2013": 10196053,
@@ -1952,7 +3209,12 @@
         "2024": 3870321,
         "2025": 2605174
       },
-      "import_note": "Clams, cockles and ark shells combined (NESOI)."
+      "import_note": "Clams, cockles and ark shells combined (NESOI).",
+      "notable_events_n": null,
+      "median_shock_days": null,
+      "biggest_move_pct": null,
+      "biggest_move_date": null,
+      "comovers": null
     },
     {
       "slug": "collard-greens",
@@ -1973,8 +3235,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 35,
+      "biggest_move_pct": 58,
+      "biggest_move_date": "2001-06-06",
+      "comovers": [
+        {
+          "slug": "leek",
+          "shared_of_n": "3/6"
+        },
+        {
+          "slug": "butternut-squash",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "chicken-breast",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "eggs",
@@ -1995,8 +3276,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 4,
+      "median_shock_days": 28,
+      "biggest_move_pct": 127,
+      "biggest_move_date": "2025-02-17",
+      "comovers": [
+        {
+          "slug": "butternut-squash",
+          "shared_of_n": "1/4"
+        },
+        {
+          "slug": "cantaloupe",
+          "shared_of_n": "1/4"
+        },
+        {
+          "slug": "chicken-breast",
+          "shared_of_n": "1/4"
+        }
+      ]
     },
     {
       "slug": "green-onion",
@@ -2017,8 +3317,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 70,
+      "biggest_move_pct": 237,
+      "biggest_move_date": "2006-09-20",
+      "comovers": [
+        {
+          "slug": "chicken-breast",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "serrano-pepper",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "apple",
+          "shared_of_n": "1/6"
+        }
+      ]
     },
     {
       "slug": "ground-beef",
@@ -2039,8 +3358,14 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": null,
+      "median_shock_days": null,
+      "biggest_move_pct": null,
+      "biggest_move_date": null,
+      "comovers": null
     },
     {
       "slug": "iceberg-lettuce",
@@ -2061,8 +3386,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 63,
+      "biggest_move_pct": 480,
+      "biggest_move_date": "2002-03-20",
+      "comovers": [
+        {
+          "slug": "red-leaf-lettuce",
+          "shared_of_n": "5/6"
+        },
+        {
+          "slug": "green-leaf-lettuce",
+          "shared_of_n": "4/6"
+        },
+        {
+          "slug": "romaine-lettuce",
+          "shared_of_n": "4/6"
+        }
+      ]
     },
     {
       "slug": "jalapeno",
@@ -2087,6 +3431,7 @@
       ],
       "import_peak_quarter_share": 31,
       "import_hs6": "070960",
+      "import_yoy_pct": -7.2,
       "import_annual_usd": {
         "2010": 917457888,
         "2011": 933016163,
@@ -2105,7 +3450,25 @@
         "2024": 2250246741,
         "2025": 2087122984
       },
-      "import_note": "HS6 covers all fresh Capsicum peppers; not split by variety."
+      "import_note": "HS6 covers all fresh Capsicum peppers; not split by variety.",
+      "notable_events_n": 6,
+      "median_shock_days": 91,
+      "biggest_move_pct": 127,
+      "biggest_move_date": "2026-04-15",
+      "comovers": [
+        {
+          "slug": "butternut-squash",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "cabbage",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "cherry-tomato",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "kale",
@@ -2126,8 +3489,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 84,
+      "biggest_move_pct": 78,
+      "biggest_move_date": "2005-05-11",
+      "comovers": [
+        {
+          "slug": "cabbage",
+          "shared_of_n": "3/6"
+        },
+        {
+          "slug": "artichoke",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "butternut-squash",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "lime",
@@ -2152,6 +3534,7 @@
       ],
       "import_peak_quarter_share": 33,
       "import_hs6": "080550",
+      "import_yoy_pct": -9,
       "import_annual_usd": {
         "2010": 214683471,
         "2011": 236885623,
@@ -2170,7 +3553,25 @@
         "2024": 1067791392,
         "2025": 971844855
       },
-      "import_note": "HS6 combines lemons and limes; not split at 6 digits."
+      "import_note": "HS6 combines lemons and limes; not split at 6 digits.",
+      "notable_events_n": 6,
+      "median_shock_days": 112,
+      "biggest_move_pct": 538,
+      "biggest_move_date": "2014-04-09",
+      "comovers": [
+        {
+          "slug": "corn-on-the-cob",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "acorn-squash",
+          "shared_of_n": "1/6"
+        },
+        {
+          "slug": "asparagus",
+          "shared_of_n": "1/6"
+        }
+      ]
     },
     {
       "slug": "octopus",
@@ -2195,6 +3596,7 @@
       ],
       "import_peak_quarter_share": 28,
       "import_hs6": "030759",
+      "import_yoy_pct": -29.6,
       "import_annual_usd": {
         "2010": 42565405,
         "2011": 76500915,
@@ -2213,7 +3615,12 @@
         "2024": 22425692,
         "2025": 15776654
       },
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": null,
+      "median_shock_days": null,
+      "biggest_move_pct": null,
+      "biggest_move_date": null,
+      "comovers": null
     },
     {
       "slug": "oregano",
@@ -2234,8 +3641,14 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": null,
+      "median_shock_days": null,
+      "biggest_move_pct": null,
+      "biggest_move_date": null,
+      "comovers": null
     },
     {
       "slug": "rosemary",
@@ -2256,8 +3669,14 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": null,
+      "median_shock_days": null,
+      "biggest_move_pct": null,
+      "biggest_move_date": null,
+      "comovers": null
     },
     {
       "slug": "rutabaga",
@@ -2278,8 +3697,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 84,
+      "biggest_move_pct": 115,
+      "biggest_move_date": "2003-07-23",
+      "comovers": [
+        {
+          "slug": "carrot",
+          "shared_of_n": "4/6"
+        },
+        {
+          "slug": "apple",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "grapefruit",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "salmon-skin-on-fillet",
@@ -2304,6 +3742,7 @@
       ],
       "import_peak_quarter_share": 26,
       "import_hs6": "030441",
+      "import_yoy_pct": -8.4,
       "import_annual_usd": {
         "2012": 663334887,
         "2013": 1045088662,
@@ -2320,7 +3759,12 @@
         "2024": 2688885435,
         "2025": 2463146905
       },
-      "import_note": "Fresh salmon fillets; whole salmon is a separate code."
+      "import_note": "Fresh salmon fillets; whole salmon is a separate code.",
+      "notable_events_n": null,
+      "median_shock_days": null,
+      "biggest_move_pct": null,
+      "biggest_move_date": null,
+      "comovers": null
     },
     {
       "slug": "salmon-fillet",
@@ -2345,6 +3789,7 @@
       ],
       "import_peak_quarter_share": 26,
       "import_hs6": "030441",
+      "import_yoy_pct": -8.4,
       "import_annual_usd": {
         "2012": 663334887,
         "2013": 1045088662,
@@ -2361,7 +3806,12 @@
         "2024": 2688885435,
         "2025": 2463146905
       },
-      "import_note": "Fresh salmon fillets; whole salmon is a separate code."
+      "import_note": "Fresh salmon fillets; whole salmon is a separate code.",
+      "notable_events_n": null,
+      "median_shock_days": null,
+      "biggest_move_pct": null,
+      "biggest_move_date": null,
+      "comovers": null
     },
     {
       "slug": "scallops",
@@ -2386,6 +3836,7 @@
       ],
       "import_peak_quarter_share": 30,
       "import_hs6": "030729",
+      "import_yoy_pct": -34,
       "import_annual_usd": {
         "2010": 204707848,
         "2011": 245009533,
@@ -2404,7 +3855,12 @@
         "2024": 32567358,
         "2025": 21485842
       },
-      "import_note": "Scallops not elsewhere specified; some scallop trade sits under other codes."
+      "import_note": "Scallops not elsewhere specified; some scallop trade sits under other codes.",
+      "notable_events_n": null,
+      "median_shock_days": null,
+      "biggest_move_pct": null,
+      "biggest_move_date": null,
+      "comovers": null
     },
     {
       "slug": "shrimp-head-on",
@@ -2429,6 +3885,7 @@
       ],
       "import_peak_quarter_share": 28,
       "import_hs6": "030617",
+      "import_yoy_pct": 8.7,
       "import_annual_usd": {
         "2012": 3202145550,
         "2013": 4008764531,
@@ -2445,7 +3902,12 @@
         "2024": 4540956427,
         "2025": 4936006356
       },
-      "import_note": "Frozen shrimp/prawns (the dominant import form); fresh shrimp is a separate code."
+      "import_note": "Frozen shrimp/prawns (the dominant import form); fresh shrimp is a separate code.",
+      "notable_events_n": null,
+      "median_shock_days": null,
+      "biggest_move_pct": null,
+      "biggest_move_date": null,
+      "comovers": null
     },
     {
       "slug": "shrimp-pd",
@@ -2470,6 +3932,7 @@
       ],
       "import_peak_quarter_share": 28,
       "import_hs6": "030617",
+      "import_yoy_pct": 8.7,
       "import_annual_usd": {
         "2012": 3202145550,
         "2013": 4008764531,
@@ -2486,7 +3949,12 @@
         "2024": 4540956427,
         "2025": 4936006356
       },
-      "import_note": "Frozen shrimp/prawns (the dominant import form); fresh shrimp is a separate code."
+      "import_note": "Frozen shrimp/prawns (the dominant import form); fresh shrimp is a separate code.",
+      "notable_events_n": null,
+      "median_shock_days": null,
+      "biggest_move_pct": null,
+      "biggest_move_date": null,
+      "comovers": null
     },
     {
       "slug": "shrimp",
@@ -2511,6 +3979,7 @@
       ],
       "import_peak_quarter_share": 28,
       "import_hs6": "030617",
+      "import_yoy_pct": 8.7,
       "import_annual_usd": {
         "2012": 3202145550,
         "2013": 4008764531,
@@ -2527,7 +3996,12 @@
         "2024": 4540956427,
         "2025": 4936006356
       },
-      "import_note": "Frozen shrimp/prawns (the dominant import form); fresh shrimp is a separate code."
+      "import_note": "Frozen shrimp/prawns (the dominant import form); fresh shrimp is a separate code.",
+      "notable_events_n": null,
+      "median_shock_days": null,
+      "biggest_move_pct": null,
+      "biggest_move_date": null,
+      "comovers": null
     },
     {
       "slug": "squid",
@@ -2552,6 +4026,7 @@
       ],
       "import_peak_quarter_share": 26,
       "import_hs6": "030743",
+      "import_yoy_pct": 4.7,
       "import_annual_usd": {
         "2017": 189808966,
         "2018": 217548037,
@@ -2563,7 +4038,12 @@
         "2024": 242155959,
         "2025": 253479956
       },
-      "import_note": "Frozen squid; HS6 present from 2017 (earlier years under prior codes)."
+      "import_note": "Frozen squid; HS6 present from 2017 (earlier years under prior codes).",
+      "notable_events_n": null,
+      "median_shock_days": null,
+      "biggest_move_pct": null,
+      "biggest_move_date": null,
+      "comovers": null
     },
     {
       "slug": "sweet-potato",
@@ -2584,8 +4064,14 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": null,
+      "median_shock_days": null,
+      "biggest_move_pct": null,
+      "biggest_move_date": null,
+      "comovers": null
     },
     {
       "slug": "tarragon",
@@ -2606,8 +4092,14 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": null,
+      "median_shock_days": null,
+      "biggest_move_pct": null,
+      "biggest_move_date": null,
+      "comovers": null
     },
     {
       "slug": "thyme",
@@ -2628,8 +4120,14 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": null,
+      "median_shock_days": null,
+      "biggest_move_pct": null,
+      "biggest_move_date": null,
+      "comovers": null
     },
     {
       "slug": "tomato",
@@ -2654,6 +4152,7 @@
       ],
       "import_peak_quarter_share": 29,
       "import_hs6": "070200",
+      "import_yoy_pct": -21.6,
       "import_annual_usd": {
         "2010": 1798238104,
         "2011": 2137869891,
@@ -2672,7 +4171,25 @@
         "2024": 3633993909,
         "2025": 2847479076
       },
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 84,
+      "biggest_move_pct": 182,
+      "biggest_move_date": "2004-11-17",
+      "comovers": [
+        {
+          "slug": "cherry-tomato",
+          "shared_of_n": "3/6"
+        },
+        {
+          "slug": "butter-lettuce",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "cantaloupe",
+          "shared_of_n": "2/6"
+        }
+      ]
     },
     {
       "slug": "tuna-loin",
@@ -2697,6 +4214,7 @@
       ],
       "import_peak_quarter_share": 27,
       "import_hs6": "030487",
+      "import_yoy_pct": -8.1,
       "import_annual_usd": {
         "2012": 286870063,
         "2013": 213807921,
@@ -2713,7 +4231,12 @@
         "2024": 474294358,
         "2025": 435883813
       },
-      "import_note": "Frozen tuna (Thunnus + skipjack), the dominant import form; fresh tuna is separate codes."
+      "import_note": "Frozen tuna (Thunnus + skipjack), the dominant import form; fresh tuna is separate codes.",
+      "notable_events_n": null,
+      "median_shock_days": null,
+      "biggest_move_pct": null,
+      "biggest_move_date": null,
+      "comovers": null
     },
     {
       "slug": "whole-crab",
@@ -2738,6 +4261,7 @@
       ],
       "import_peak_quarter_share": 50,
       "import_hs6": "030614",
+      "import_yoy_pct": 46.3,
       "import_annual_usd": {
         "2010": 611965328,
         "2011": 737257764,
@@ -2756,7 +4280,12 @@
         "2024": 1062698839,
         "2025": 1554237243
       },
-      "import_note": "Frozen crab (the dominant import form); fresh/live crab is a separate code."
+      "import_note": "Frozen crab (the dominant import form); fresh/live crab is a separate code.",
+      "notable_events_n": null,
+      "median_shock_days": null,
+      "biggest_move_pct": null,
+      "biggest_move_date": null,
+      "comovers": null
     },
     {
       "slug": "whole-halibut",
@@ -2777,8 +4306,14 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": null,
+      "median_shock_days": null,
+      "biggest_move_pct": null,
+      "biggest_move_date": null,
+      "comovers": null
     },
     {
       "slug": "whole-lobster",
@@ -2803,6 +4338,7 @@
       ],
       "import_peak_quarter_share": 34,
       "import_hs6": "030612",
+      "import_yoy_pct": -1.3,
       "import_annual_usd": {
         "2010": 351577563,
         "2011": 373604591,
@@ -2821,7 +4357,12 @@
         "2024": 649791101,
         "2025": 641565871
       },
-      "import_note": "Frozen lobster; fresh/live lobster is a separate code."
+      "import_note": "Frozen lobster; fresh/live lobster is a separate code.",
+      "notable_events_n": null,
+      "median_shock_days": null,
+      "biggest_move_pct": null,
+      "biggest_move_date": null,
+      "comovers": null
     },
     {
       "slug": "whole-salmon",
@@ -2842,8 +4383,14 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": null,
+      "median_shock_days": null,
+      "biggest_move_pct": null,
+      "biggest_move_date": null,
+      "comovers": null
     },
     {
       "slug": "whole-trout",
@@ -2864,8 +4411,14 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": null,
+      "median_shock_days": null,
+      "biggest_move_pct": null,
+      "biggest_move_date": null,
+      "comovers": null
     },
     {
       "slug": "zucchini",
@@ -2886,8 +4439,27 @@
       "import_peak_months": null,
       "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_yoy_pct": null,
       "import_annual_usd": null,
-      "import_note": null
+      "import_note": null,
+      "notable_events_n": 6,
+      "median_shock_days": 77,
+      "biggest_move_pct": 364,
+      "biggest_move_date": "2011-02-23",
+      "comovers": [
+        {
+          "slug": "cucumber",
+          "shared_of_n": "3/6"
+        },
+        {
+          "slug": "broccoli",
+          "shared_of_n": "2/6"
+        },
+        {
+          "slug": "cabbage",
+          "shared_of_n": "2/6"
+        }
+      ]
     }
   ]
 }

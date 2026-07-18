@@ -28,6 +28,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { pricingCards } from './lib/cost-research.mjs';
+import { loadEventsData, coMovement } from './lib/cost-events-analysis.mjs';
 
 const repoRoot = process.cwd();
 const rd = (p) => JSON.parse(fs.readFileSync(path.join(repoRoot, p), 'utf8'));
@@ -69,7 +70,33 @@ function importSeriesByHs() {
       latest_year: last, latest_year_usd: Math.round(annual[last]),
       peak_months: peak, peak_quarter: peakQ + 1,
       peak_quarter_share: totalMean ? Math.round((q[peakQ] / totalMean) * 100) : null,
+      import_yoy_pct: (annual[last] != null && annual[years[years.length - 2]] > 0) ? Math.round((annual[last] / annual[years[years.length - 2]] - 1) * 1000) / 10 : null,
       annual_usd: Object.fromEntries(years.map((y) => [y, Math.round(annual[y])])),
+    };
+  }
+  return out;
+}
+
+// ---- shock history + co-movement per ingredient (from the events engine) --------
+// Descriptive of the tracked record: how often an ingredient posts a notable move, how
+// long moves last, its biggest historical departure, and which ingredients co-moved with
+// it (directed: k of this ingredient's own n moves). Co-occurrence, NEVER cause.
+function eventDepthBySlug() {
+  let d; try { d = loadEventsData(repoRoot); } catch { return {}; }
+  const co = coMovement(d);
+  const out = {};
+  for (const slug of Object.keys(d.items || {})) {
+    const evs = (d.items[slug].events) || []; if (!evs.length) continue;
+    const durs = evs.map((e) => e.durationDays).filter((x) => x > 0).sort((a, b) => a - b);
+    const med = durs.length ? durs[Math.floor((durs.length - 1) * 0.5)] : null;
+    const biggest = evs.slice().sort((a, b) => Math.abs(b.pctFromNormal) - Math.abs(a.pctFromNormal))[0];
+    const c = co[slug];
+    out[slug] = {
+      notable_events_n: evs.length,
+      median_shock_days: med,
+      biggest_move_pct: biggest ? biggest.pctFromNormal : null,
+      biggest_move_date: biggest ? biggest.date : null,
+      comovers: c ? c.neighbors.slice(0, 3).map((pair) => ({ slug: pair[0], shared_of_n: pair[1] + '/' + c.n })) : null,
     };
   }
   return out;
@@ -92,10 +119,11 @@ function build() {
   const depth = (() => { try { return rd('data/ingredient-depth.json').ingredients || {}; } catch { return {}; } })();
   const pressure = (() => { try { return rd('data/cost-pressure.json').items || {}; } catch { return {}; } })();
   const imp = importBySlug();
+  const evd = eventDepthBySlug();
   const lfAsOf = (() => { try { return rd('data/cost-lockfloat.json').asOf || null; } catch { return null; } })();
 
   const records = P.cards.map((c) => {
-    const d = depth[c.slug] || {}; const pr = pressure[c.slug]; const im = imp[c.slug];
+    const d = depth[c.slug] || {}; const pr = pressure[c.slug]; const im = imp[c.slug]; const ed = evd[c.slug] || {};
     return {
       slug: c.slug, name: c.en, category: c.cat || null,
       posture: c.bucket,
@@ -112,8 +140,14 @@ function build() {
       import_peak_months: im ? im.peak_months : null,
       import_peak_quarter_share: im ? im.peak_quarter_share : null,
       import_hs6: im ? im.hs6 : null,
+      import_yoy_pct: im ? im.import_yoy_pct : null,
       import_annual_usd: im ? im.annual_usd : null,
       import_note: im ? im.note : null,
+      notable_events_n: ed.notable_events_n != null ? ed.notable_events_n : null,
+      median_shock_days: ed.median_shock_days != null ? ed.median_shock_days : null,
+      biggest_move_pct: ed.biggest_move_pct != null ? ed.biggest_move_pct : null,
+      biggest_move_date: ed.biggest_move_date || null,
+      comovers: ed.comovers || null,
     };
   });
 
@@ -123,7 +157,7 @@ function build() {
     license: 'CC BY 4.0', license_url: 'https://creativecommons.org/licenses/by/4.0/',
     attribution: 'Muntin Cost Index (muntin.digital)',
     audience: 'Food-cost intelligence for anyone who works with food — operators, chefs, home cooks, journalists, researchers. The wholesale price is a market-DIRECTION reference (your delivered or retail price tracks it with a lag and a markup); every other field is food-intrinsic and buyer-agnostic.',
-    note: "One present-state record per ingredient, fusing pricing posture + own-baseline band, edible/cooked yield + trim tax, cheapest month, the price hedge swap, present pipeline direction, and the US import stream. Every field is descriptive of the tracked record — never a delivered/retail price, never a forecast, and co-occurrence is never cause. us_import_value_usd is the latest full calendar year of US general import VALUE for the ingredient's HS6 (US Census, public domain), nominal (mixes volume and price) — never import volume (not published at HS6). import_peak_months are the three highest-import calendar months averaged over 2010-2025; import_peak_quarter_share is the peak quarter's share of a typical year's import value (a within-year ratio, inflation-immune) — both descriptive seasonality, the supply-timing tell of when an ingredient leans on imports. import_annual_usd carries the full 2010-2025 annual series. Fields are null where a layer does not cover an ingredient.",
+    note: "One present-state record per ingredient, fusing pricing posture + own-baseline band, edible/cooked yield + trim tax, cheapest month, the price hedge swap, present pipeline direction, and the US import stream. Every field is descriptive of the tracked record — never a delivered/retail price, never a forecast, and co-occurrence is never cause. us_import_value_usd is the latest full calendar year of US general import VALUE for the ingredient's HS6 (US Census, public domain), nominal (mixes volume and price) — never import volume (not published at HS6). import_peak_months are the three highest-import calendar months averaged over 2010-2025; import_peak_quarter_share is the peak quarter's share of a typical year's import value (a within-year ratio, inflation-immune) — both descriptive seasonality, the supply-timing tell of when an ingredient leans on imports. import_annual_usd carries the full 2010-2025 annual series; import_yoy_pct is the latest full year versus the prior year (a descriptive change, nominal). notable_events_n, median_shock_days and biggest_move_pct+date summarize the ingredient's own notable sustained price moves in the deep history (descriptive, from the events dataset — a departure from its own baseline, never a delivered price). comovers lists the ingredients that most often moved the same way in the same six-week window, as k of this ingredient's own n moves — co-occurrence, NEVER cause. Fields are null where a layer does not cover an ingredient.",
     rights: { corpus_columns: 'CC BY 4.0 (Muntin Cost Index)', import_columns: 'US Census general imports — public domain (US Government work)' },
     dateModified: lfAsOf,
     count: records.length,
@@ -132,9 +166,10 @@ function build() {
     ingredients: records,
   };
 
-  const cols = ['slug', 'name', 'category', 'posture', 'band_pct', 'edible_yield_pct', 'trim_tax', 'cooked_yield', 'cheapest_month', 'save_pct', 'hedge_swap', 'pressure_dir', 'pressure_conf', 'us_import_value_usd', 'import_years', 'import_peak_months', 'import_peak_quarter_share', 'import_hs6'];
+  const cols = ['slug', 'name', 'category', 'posture', 'band_pct', 'edible_yield_pct', 'trim_tax', 'cooked_yield', 'cheapest_month', 'save_pct', 'hedge_swap', 'pressure_dir', 'pressure_conf', 'us_import_value_usd', 'import_years', 'import_peak_months', 'import_peak_quarter_share', 'import_hs6', 'import_yoy_pct', 'notable_events_n', 'median_shock_days', 'biggest_move_pct', 'biggest_move_date', 'comovers'];
   const esc = (v) => { if (v == null) return ''; const s = Array.isArray(v) ? v.join(';') : String(v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
-  const csv = [cols.join(',')].concat(records.map((r) => cols.map((k) => esc(r[k])).join(','))).join('\n') + '\n';
+  const cell = (r, k) => k === 'comovers' ? esc((r.comovers || []).map((x) => x.slug + ':' + x.shared_of_n).join(';')) : esc(r[k]);
+  const csv = [cols.join(',')].concat(records.map((r) => cols.map((k) => cell(r, k)).join(','))).join('\n') + '\n';
 
   return { internal: JSON.stringify({ _doc: meta.note, dateModified: lfAsOf, records }, null, 2) + '\n', json: JSON.stringify(meta, null, 2) + '\n', csv, meta };
 }
