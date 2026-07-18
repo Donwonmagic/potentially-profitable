@@ -4712,7 +4712,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
    plus an indexable page for SEO.
    ============================================================ */
 .term-page{ padding:clamp(56px,7vw,96px) 0 clamp(40px,5vw,56px); }
-.term-page-inner{ max-width:780px; }
+.term-page-inner{ max-width:780px; margin-inline:auto; }
 .term-head{
   border-bottom:1px solid var(--line);
   padding-bottom:28px;margin-bottom:32px;
