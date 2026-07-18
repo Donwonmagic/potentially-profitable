@@ -79,11 +79,28 @@ viz-spark h-scroll bug fix. This is the loop working: adversarial review → rea
   · **Active-tab detection adversarially verified across 14 page types (14/14):** Library hub+article,
     Cost-Index hub+ingredient, Open-data, Tools hub+tool, Company(/studio/), Ledger all light the right tab;
     home/glossary/about/methods/blog correctly light none. Feature is robust.
-  · **ES desktop tabs — TESTED & REJECTED:** even at uppercase 12.5px the ES nav-links block is ~778px
-    ("Índice de costos"/"Datos abiertos"/"Herramientas" run long) and leans right at every width (1280 →
-    last item −18px past edge; 1512 → 209/88). Re-enabling would reintroduce the lean. Shortening ES labels
-    is an editorial call, not styling. ES desktop stays hamburger (correct). Active-tab script still runs on
-    ES (harmlessly marks the hidden link).
+  · **ES desktop tabs — first rejected at 12.5px, then SHIPPED smaller.** At the EN 12.5px/.085em the ES
+    row is ~778px and leaned; but at **12px / .02em / gap 18** (scoped `:lang(es)`, labels untouched) it fits
+    balanced (diff 0 at 1280). Since ES already showed the full nav >1400, the win was to apply the smaller
+    type + lower the hamburger threshold 1400→1200 → ES gets the real desktop tab bar (with active underline)
+    from 1200px up; <1200 still hamburgers. `feat(nav): ES desktop tab bar` below.
+- `3a3d17f97` — **ES desktop tab-bar parity** (12px/.02em/gap18 scoped, threshold 1400→1200). Verified
+  balanced at 1280, active tab "Índice de costos" lit, 0 overflow, ES phone still hamburgers, EN untouched.
+- **Systemic tier — led with the real-bug hunt, not the invisible refactor.** The deferred `--accent`
+  "collision" turned out to hide a **real user-facing bug**, which generalized to a whole bug class:
+  · `6378f9d06` (cost-pulse --accent) — the lockfloat/line-finder `.lf-*` styles reference
+    `var(--accent)` with NO fallback, but `--accent` was undefined on the page (only scoped to
+    `.theme-social/.theme-brand` site-wide) → drawer toggle / stars / starters / **focus outlines** rendered
+    inherited black-gray instead of teal-green (`.lf-drawer-sum` computed #16181D not #1f6f6a). Defined
+    `--accent:#1f6f6a` at page root (EN+ES). The `.cp-*` accent elements only escaped it via inline `,#1f6f6a`.
+  · `1c0d838b5` (undefined-token sweep) — built a **site-wide scanner** for the same
+    class (`var(--X)` no-fallback where `--X` defined nowhere). Found `--amber` on 404 (should be
+    `--light-amber` — the "/" slash was inheriting teal) + `--cream-1` on plate-cost EN+ES (should be
+    `--cream-2` — advice-option was transparent). **Rescan after fixes: 0 files** (was 4 files / 32 refs).
+  · **Remaining systemic items (semantic-role token migration off raw --teal/--rust; dark-mode --mtn-*/--refresh-*
+    consolidation) are genuinely INVISIBLE refactoring** — the undefined-token bugs were the only user-facing
+    defects hiding in the tier. Scanner (theme-agnostic) confirms no undefined dark tokens either. Recommend
+    against autonomous churn: regression risk across ~1200 pages for zero visible change. Reviewed session only.
 
 **Done surfaces:** homepage, article shell, CI ingredient, CI hub, CI events, **CI weekly+monthly
 dispatch** (funnel spine complete), library hub, vendor-benchmark, plate-cost a11y, viz-spark (shared),
