@@ -13,11 +13,24 @@ repo survives. Update this file as threads move.
 council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 #234–#239 product) are merged to main and closed.
 
-## ⮕ CURRENT STATE — Cost Index data-company expansion (updated 2026-07-11)
+## ⮕ CURRENT STATE — Cost Index data-company expansion (updated 2026-07-18)
 
 **Session on branch `claude/vendor-benchmark-redesign-yn273q`** (storefront `potentially-profitable`). Thread: turn the Cost Index into a genuine **data company + open library** — surface the deep price history, add the "events that moved the market" layer, and wire the HONEST use of new public data (NASS/Census/EIA). Cadence: plan → build → audit → iterate, with **expert panels at the forks**. `check-all` baseline unchanged (232–233/252; the ~19 failures are the deploy-regenerated site-wide idempotency drift, NOT ours — see Gotchas). Every cost-index/events/context gate GREEN.
 
-### ⮕ LATEST THREAD (2026-07-17): menu-pricing perfection + cost-pressure — see the full roadmap
+### ⮕ LATEST THREAD (2026-07-18): the fused corpus — Ingredient State Record + source harmony
+
+**Resume-here:** `docs/handoff/2026-07-18-corpus-expansion-overnight.md` (state · morning fetches · roadmap · presentation/harmony spec). **Decisions of record: ADR-017** (the fused multi-source Ingredient State Record; the scoped ADR-013 relaxation letting NASS farm price feed a *descriptive* domestic-supply tier, never the measured/pressure band). **This corpus work is SEPARATE from the research paper** (founder: resume the paper once the corpus picture is full).
+
+The thread aggregates many public-domain sources into **one present-state record per ingredient** (`cost-index/ingredient-state-record.json`, built by `build-ingredient-state-record.mjs`, gated by `check-ingredient-state-record.mjs`), read at runtime by the deep-linkable explorer at **`/cost-index/menu-pricing/`** (the `isrSection` island — combobox → self-assembling dossier). Founder's north star for it: the sources should **work in harmony** — combine into reads no single field gives — presented **accessibly + empoweringly** to anyone who works with food.
+
+- **Census imports — mined to completion + audited.** 113 records, 99 with a US import stream at the finest HS granularity (beef/pork by primal cut, produce by variety, seafood, cheeses, cured ham; value never volume; multi-code + HS8-prefix + wildcard-subtree aggregation, per-row `I_COMMODITY` keyed). A full food-chapter audit confirmed coverage and surfaced ~56 more restaurant-invoice ingredients.
+- **Invoice expansion — registered, pull pending.** `ingredient-specialty.json` + the HS crosswalk carry 56 new items (fruit/nuts/fish/meat/dairy/spices/pantry/beverage). The builder skips a specialty ingredient until its data lands (inert registration), so the record holds at 113 until the **invoice pull** (79 HS6 codes, ran overnight in the founder's terminal) is pushed → then ~169.
+- **NASS domestic-supply layer — built ahead, forward-compatible** (`c00b179a5`). `ingredient-nass-codes.json` (~90 ingredients) + a builder layer inert until `data/nass-domestic.jsonl` lands, then every mapped ingredient gains production volume + $ value, **farm-gate price**, area, yield, and the flagship cross-source read **import reliance** (customs value ÷ (import + farm-gate) — a descriptive value-share proxy).
+- **Honesty gate + ADR shipped** (`3bd2aa882`, `4b38bb3a5`). Every field bounded; specialty carry no wholesale layer; reliance only cross-source; forecast/causation/delivered-price language banned; `--self-test` seeds 7 violation classes.
+- **Overnight autonomous work (this session):** synthesized the source-expansion **roadmap** + the **presentation/harmony spec** into the handoff doc (workflow synth outputs were lost to context compaction → hand-synthesized, the documented recovery pattern), and built the **`harmony` synthesis field** ahead (see handoff). Corpus builder + honesty gate green in-container.
+- **MORNING (with founder):** push the invoice data → rebuild (~169); run the NASS pull → verify the builder's selection heuristics against real rows → rebuild → domestic-supply + reliance light up. Then the explorer's harmony render (a small, reviewed island change) + the paper resumes.
+
+### ⮕ PRIOR THREAD (2026-07-17): menu-pricing perfection + cost-pressure — see the full roadmap
 
 **`docs/handoff/2026-07-17-menu-pricing-pressure-roadmap.md`** is the resume-here plan for this thread. It captures **four expert-panel workflows** (visual/"greatness", scholarly audit, corpus-datasource dreaming, pressure-weather), a **shipped honesty pass** (4 commits, pushed; origin `31573c0f3`), two **grounding corrections** (do NOT "unify the yield spine" — `yields.json` is CIA-gated; the container engine is BEHIND the committed pages, so full page rebuilds belong on the Mac), and the sequenced next steps (in-container: freshness-clock fix → Dataset JSON-LD → gate scoping; Mac: the unified public-API fetch program + calibration backtest + DOI). Done: the cost-pressure **freshness-clock fix** (`tools/_shared/cost-pressure.js` — the dead staleness governor now ages the oldest input against wall-clock `now` in the live Lab; builder/gate stay deterministic; 12/12 panels decay on the 6-wk-stale snapshot; +1 regression test).
 
