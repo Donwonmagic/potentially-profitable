@@ -10,7 +10,7 @@
     "total": 9,
     "cc0": 7,
     "ccby": 2,
-    "available": 7
+    "available": 9
   },
   "datasets": [
     {
@@ -111,9 +111,15 @@
       "rights": "US Government work — public domain (17 USC 105); redistributed verbatim.",
       "source": "NOAA NCEI — Global Historical Climatology Network (Daily)",
       "honesty_note": "Daily TMIN/TMAX/PRCP (tenths) at representative stations in import-origin growing regions, 1991–present. Observed weather, never a forecast. Public domain.",
-      "downloads": [],
-      "available": false,
-      "total_bytes": 0
+      "downloads": [
+        {
+          "path": "data/weather-observations.jsonl",
+          "url": "https://muntin.digital/data/weather-observations.jsonl",
+          "bytes": 3474192
+        }
+      ],
+      "available": true,
+      "total_bytes": 3474192
     },
     {
       "id": "noaa-cpc-oni",
@@ -123,9 +129,15 @@
       "rights": "US Government work — public domain (17 USC 105); redistributed verbatim.",
       "source": "NOAA Climate Prediction Center",
       "honesty_note": "The observed El Niño / La Niña (ENSO) regime index, 3-month seasons. Observed, never a forecast. Public domain.",
-      "downloads": [],
-      "available": false,
-      "total_bytes": 0
+      "downloads": [
+        {
+          "path": "data/cpc-oni.txt",
+          "url": "https://muntin.digital/data/cpc-oni.txt",
+          "bytes": 22950
+        }
+      ],
+      "available": true,
+      "total_bytes": 22950
     },
     {
       "id": "ingredient-state-record",
