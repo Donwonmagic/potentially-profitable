@@ -46,10 +46,14 @@ touches the measured price band or the Vendor Benchmark reference.
    wholesale reference, **never** a pressure driver, **never** a delivered/retail price. It is a
    published, public-domain fact about the upstream, not a number that moves a posture.
 
-3. **Import-reliance (the first cross-source harmony read).** `import_reliance_pct` = customs import
-   value ÷ (import + farm-gate production value). A **descriptive value-share proxy** — the two are
-   measured at different points in the chain — and it renders only when **both** sources are present.
-   Never a forecast, never a risk score.
+3. **Import-vs-domestic-production ratio (the first cross-source harmony read).** `import_reliance_pct`
+   = import value ÷ (import + NASS farm-gate production value), **year-aligned** (the import value is
+   pulled to the production year, never a 2025-import / 2023-production ratio, and the year is stamped).
+   An adversarial audit sharpened this: it is a **cross-POINT dollar comparison, NOT a supply share** —
+   import value carries freight/insurance the farm-gate price does not, and exports are **not netted
+   out**, so the ratio **overstates the imported share**. The surface says so, names both dollar figures
+   rather than a bare "% of supply," anchors the origin share to *imports* (not supply), and renders only
+   when **both** sources are present. Never a forecast, never a risk score.
 
 4. **The ingredient set follows the invoice.** Beyond the 100 priced ingredients, an
    **import-defined specialty tier** carries anything likely on a restaurant invoice with a real US

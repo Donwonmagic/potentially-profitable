@@ -97,6 +97,17 @@ real rows), and is **descriptive, never a forecast/driver/delivered price**._
    natural #2. Crosswalk: slug → NOAA species. Honesty caveat to surface: wild **landings** vs largely
    **aquaculture imports** is a chain difference, so the seafood reliance read names that seam.
 
+**Tier 1½ — make the reliance read honest (the audit's denominator fix).** The adversarial audit
+showed `import ÷ (import + production)` overstates the imported share (exports aren't netted). Two
+public-domain fixes, both worth landing with NASS:
+
+- **Census exports/HS** — the *same* Census API we already use, exports endpoint. Nets exports out so
+  the denominator becomes **apparent consumption** (production + imports − exports), the correct base
+  for a supply share.
+- **USDA ERS Food Availability** (per-capita apparent consumption) — a public-domain, descriptive
+  (non-forecast) ERS series that independently frames how much of a commodity is actually consumed
+  domestically. The honest cross-check for the reliance ratio.
+
 **Tier 2 — descriptive backdrops (context, never a per-ingredient driver):**
 
 3. **EIA energy** (diesel #2, natural gas, electricity) — a **coincident site-wide backdrop only.**
@@ -119,7 +130,8 @@ real rows), and is **descriptive, never a forecast/driver/delivered price**._
 **Deliberately EXCLUDED (on principle, not availability):**
 
 - **USDA ERS Food Price Outlook** — public domain **but a forecast product**; the corpus does not
-  forecast → excluded.
+  forecast → excluded. (ERS's *descriptive* series — Food Availability, the Food Dollar — are fine and
+  are used above; only the forward-looking Outlook is out.)
 - **FAO / IMF / World Bank / UN Comtrade** — richer global data but **not redistributable** under the
   CC-BY posture → off-limits.
 
@@ -137,28 +149,43 @@ The explorer at `/cost-index/menu-pricing/` already renders a self-assembling pe
 hedge, import sparkline + seasonal fingerprint + origins/HHI, shocks + co-movers, pressure). Harmony
 is the next layer — the fields **synthesized**, not just stacked.
 
-### A. The harmony reads — BUILT AHEAD this session (the signature moment)
+### A. The harmony reads — BUILT AHEAD + ADVERSARIALLY AUDITED this session
 
 `build-ingredient-state-record.mjs` now computes a per-record **`harmony[]`** array — **structured
 params only** (bounded numbers + enums + in-corpus slugs, never free prose), so a synthesis line
 **cannot** smuggle a forecast/cause/delivered price past the gate, and the island owns the reviewed
-EN/ES sentence templates (locale parity preserved). Each read fuses ≥2 fields and appears only when
-present. Validated by `check-ingredient-state-record.mjs` (kind ∈ known set; every param bounded;
-reliance requires both cross-sources). **107/113 records already carry harmony** (`reliance` = 0
-until NASS lands — forward-compatible, exactly like the layer itself).
+EN/ES sentence templates (locale parity preserved). Validated by `check-ingredient-state-record.mjs`.
 
-| kind | fuses | fires today | proposed EN template (island renders; ES mirrors) |
+**A 4-lens adversarial audit** (fact-gate · ag-economist · accessibility · operator-empowerment,
+all default-refute) ran over the first draft and **dropped two of five kinds** — recorded so the
+reasoning survives:
+
+- ❌ **`buyclock`** (wholesale-cheapest month vs import peak) — labeled an import-**value** peak a
+  "supply/volume peak" (value-never-volume breach), the peak-quarter tie-break was an artifact on
+  low-seasonality items, and it added nothing to a buy the `cheapest_month` field already decides.
+- ❌ **`served`** (edible × cooked) — crossed two different trim bases (card edible × depth cooked),
+  **mispriced raw-portioned cuts** (cooking loss doesn't raise cost per raw-portioned steak), and its
+  grain-inversion branch was dead code (0 grains in the scored set). The served-pound teaching stays
+  where it is already properly caveated: the menu-pricing **dispatch**.
+
+The **three surviving kinds**, with their audit-corrected EN templates (ES mirrors):
+
+| kind | fuses | fires today | audit-corrected EN template (island renders) |
 |---|---|---|---|
-| **reliance** ⭐ | Census customs × NASS farm-gate | on NASS pull | "About {reliance_pct}% of the US supply **value** is imported — customs-landed against farm-gate, a rough cross-chain proxy{, led by {top_country} at {top_share}%}." |
-| **buyclock** | wholesale seasonality × import seasonality | 50 | agree: "Its cheapest month in the record ({Month}) lands inside the import supply peak (Q{q}) — price trough and supply peak fall together." · disagree: "…sits outside the import peak (Q{q}) — the wholesale and import seasons run on different calendars." |
-| **supplyshape** | import origin mix + HHI | 97 | "Imports are {concentration} — {top_country} alone is {top_share}% of the stream (a supply-diversity fact, not a risk read)." |
-| **served** | edible × cooked yield | 21 | "A pound as purchased is ~{edible}% edible; after cooking, the plated pound costs about ×{served_mult} the invoice pound." (grain inversion when served_mult<1: "…the fire gives weight back — the plated pound costs *less*.") |
-| **persistence** | events run-length + co-mover | 78 | "When it moves it runs a median ~{median_days} days and most often travels with {comover} — a co-mover, so a swap there moves with it, not against it." (co-occurrence, never cause) |
+| **reliance** ⭐ | Census import value × NASS farm-gate production value | on NASS pull | "In {reliance_year} the US farm gate took in about ${prod} for this and imports ran about ${imp} — imports are about {reliance_pct}% of the two combined. A rough cross-point comparison, **not a true supply share**: imported value carries freight the farm price doesn't, and exports aren't netted out, so it overstates the imported share. Of those imports, {top_country} was {top_share}%." |
+| **supplyshape** | import origin mix + HHI | 97 | single-source: "Almost all imports come from one country — {top_country}, {top_share}% of all imports in 2025 by value." · concentrated: "Imports come mostly from {top_country} ({top_share}% of 2025 imports by value); the rest is spread across others." · diversified: "Imports are spread across several countries (largest {top_country}, {top_share}%)." |
+| **persistence** | move run-length + co-mover | 78 | with co-mover: "Across its {n} recorded price moves the middle one ran about {median_days} days. It moved the same way as {comover} in {comover_shared} of those moves — historically {comover} did not move against it (co-occurrence, which may be coincidental, not cause)." · without: "Across its {n} recorded moves the middle one ran about {median_days} days — long enough that riding a spike out rarely pays." |
 
-**⭐ Signature harmony moment = reliance + supplyshape together** ("≈Z% of supply is imported, nearly
-all from one country") — it fuses two independent US-gov datasets into a supply picture neither agency
-publishes alone. That is the "stronger together than any single data point" the founder named. The
-data layer is built; only the render (below) waits on the NASS pull.
+**Builder fixes the audit forced** (all shipped): `single-source` now requires a top share ≥90%
+(tomato 81% / avocado 88% → **concentrated**, not the old self-contradictory "single-source"; 54→22
+single-source); the persistence co-mover is **named only on a real majority** (≥3 shared AND ≥½ of n,
+so noise pairs like ribeye→garlic 2/6 and avocado→acorn-squash 2/6 are dropped — 31 named, 47 keep
+just the run-length); reliance is **year-aligned** + stamped and reframed as a cross-point ratio.
+
+**⭐ Signature harmony moment = reliance + supplyshape together** — two independent US-gov datasets
+fused into one supply picture neither agency publishes alone ("the US farm gate took in $X, imports
+ran $Y, almost all from one country"). The data layer is built + gated; the render waits on the NASS
+pull. **107/113 carry harmony today** (supplyshape 97 + persistence 78; reliance 0 until NASS).
 
 ### B. Accessibility — "for anyone who works with food"
 
@@ -186,14 +213,44 @@ greater than the parts. Descriptive co-occurrence, never cause.
 Null **degrades by absence** — a bare ingredient renders short + honest; a rich one renders the full
 stack. Never a fabricated field to fill a gap.
 
-### Render mechanics (morning task, small + reviewed)
+### The render architecture — THE CHAIN (from the `muntin-harmony-presentation` workflow)
 
-Add a `harmonySlot(r)` to the `isrSection` island (a new slot right after the answer sentence) that
-maps `r.harmony[]` kinds → EN/ES sentences via the templates above, resolving comover/top slugs to
-names as the island already does for hedge/comovers. **Mirror the island change byte-for-byte into the
-two committed HTMLs** (`cost-index/menu-pricing/index.html` + ES) per the engine-behind runbook. It is
-a contained, reviewable change — deliberately left for founder review rather than shipped to a live
-page overnight.
+The recovered design workflow (ground→dream→judge→synth, 12/13 agents) chose a spine that turns the
+flat dossier into one oriented read: **THE CHAIN — a per-ingredient vertical `Source → Market → Your
+Plate` frame**, rendered as a new slot in the `isrSection` island right after the yield+calculator
+slot (so the reader's typed invoice feeds the top rung). It is the "price ladder" insight with its
+fatal flaw designed out: the ladder's three *price* rungs were empty today (farm-gate = 0/113), so the
+already-populated **origin/HHI read becomes the SOURCE rung** — a genuine 3-rung chain renders on ~60
+slugs now, ≥2 rungs on ~94, and the FARM price point + reliance split slot in **by absence** when NASS
+lands, no reframe. This maps directly onto the harmony field: **supplyshape → SOURCE**, **persistence
++ band/posture → MARKET**, **reliance/farm_price → the SOURCE/FARM growth**, the invoice calculator →
+**YOUR PLATE**.
+
+Rungs (top→bottom): **YOUR PLATE** (rust — the reader's typed $ × trim_tax, live) → **MARKET** (stone —
+±band direction + a one-word exposure badge + the 12-item pressure why/when) → **SOURCE** (teal —
+origin country + concentration). A left-edge axis reads **"position in the chain," never a $ scale**;
+between rungs sit **named form-transitions** ("whole animal → boxed cut → your plate"), **never a
+numeric subtraction** until a committed `chain_commensurable` flag proves same-form/same-unit end to
+end. Companion **"zoom out: the whole basket"** figure (category × trim_tax × band) sits below the
+dossier. A new `check-chain-honesty.mjs` recompute-gate asserts no `$` on SOURCE/MARKET, import value
+stays confined to its own slot, the FARM rung is absent while `farm_price` is null, and the chain is
+**suppressed for specialty items** (a one-rung chain would mislead).
+
+**CUT (from the design's own cut-list, honor these):** no ship-now three-*price*-rung ladder
+(farm-gate empty); no dollar-subtraction ribbons between rungs (deferred to `chain_commensurable`); no
+auto-supplied/defaulted delivered price to "complete" the top rung — **YOUR PLATE is only ever the
+reader's own number**; no new route (it's a slot in the existing deep-linked island); raw pressure
+weights stay in the open dataset, only top-2 indicators + direction + lead surface.
+
+**Morning build order** (small, reviewed; engine-behind runbook — mirror the island byte-for-byte into
+`cost-index/menu-pricing/index.html` + ES): (1) `chain(r, deliveredVal)` in `ISR_ISLAND` reusing the
+existing `el()/magbar()/usd()/slot()` helpers + the `isr-price-<slug>` input handler; (2) EN/ES chain
+strings into the `T` dictionary + `.isr-chain/.isr-rung/.isr-transition/.isr-badge` CSS; (3) bake
+`pressure_why[]` (top-2 contributors) + the exposure badge into the record build; (4) the hedge-vs-
+mirror sidestep chip under YOUR PLATE; (5) the two static viz figures (gate-compliant) + extend the
+noscript table/CSV with origin/band-direction/edible-cost columns; (6) `check-chain-honesty.mjs` wired
+into `check-all`; (7) reserved NASS fields (`farm_price*`, `chain_commensurable`, `chain_note`) drawn
+by absence. Deliberately **not** shipped overnight — it touches a live page and wants founder review.
 
 ---
 
