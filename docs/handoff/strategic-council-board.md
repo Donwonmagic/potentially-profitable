@@ -63,6 +63,19 @@ viz-spark h-scroll bug fix. This is the loop working: adversarial review → rea
 - `6983d5897` — **founder feedback ("leaning right"):** rebalance the golden-hour hero wash off the
   top-right corner (peak 88%→68% center-top, alpha 0.26→0.20) + `-soft` variant; verified balanced on the
   1280 render. Container is centered; the lean was purely the asymmetric warm wash stacking on the card side.
+- `d81c1a204` — **founder feedback (nav "more space left of logo than right of Contact"):** remove the
+  Contact pill from the primary nav (EN). Root cause: the filled pill was the widest right-side item, so
+  `justify-content:space-between` dumped the row's overflow onto it (logo 84px from left, Contact 17px from
+  right). Contact stays in footer + mobile menu + mobile sticky bar. `.js-window` hard-coded (no JS hook);
+  `#navWindowPulse` referenced by no JS. Also normalized 42 glossary pages missing the platform-kbd script.
+- `d5648837a` — **founder feedback ("nav looks plain… make them tabs"):** nav-links → **uppercase tab bar**
+  (12.5px, tracked, 600-wt) with an **auto-detected active tab** (best href-prefix match → `aria-current=page`
+  → teal label + persistent underline; hover fades the same underline in). Detection is a synchronous script
+  in the nav partial (runs everywhere incl. cost-index pages). Completed the ES Contact removal (was EN-only;
+  610 /es/ pages still carried it). Made the nav width-discipline **unconditional** (icon-only search + 22/16
+  gaps at every width) now that the overflowing Contact CTA is gone → **symmetric at ALL widths** (diff 0 at
+  1200/1280/1440/1512/1680/1920; was ~100px right-lean on wide monitors). Tabs are EN-desktop; ES desktop is
+  hamburger-only (pre-existing `:root:lang(es)` rule — Spanish labels don't fit the row).
 
 **Done surfaces:** homepage, article shell, CI ingredient, CI hub, CI events, **CI weekly+monthly
 dispatch** (funnel spine complete), library hub, vendor-benchmark, plate-cost a11y, viz-spark (shared),
