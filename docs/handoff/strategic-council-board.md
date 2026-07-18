@@ -125,6 +125,20 @@ viz-spark h-scroll bug fix. This is the loop working: adversarial review → rea
     version), `/es/glossary/care-plan/`; (G) `/audio/assets/course/` (~40 refs, course frozen). Re-run
     `scratchpad/scan-true.mjs` (worker-map-aware) to resume. **Scanner caveat:** a naive files+_redirects scan
     gives false positives — MUST load both `src/lib/*redirects*.js` maps (scan-true does).
+  · **A** (`b2f92a90a`) — library hub's "Browse by what you're fixing" was hand-coded against the OLD
+    7-pillar taxonomy (5 dead `/learn/topics/` links). Rebuilt from canonical `data/topics.json` (9 pillars);
+    heading now uses the `count:topics` sentinel so it can't drift. 15 → 10.
+  · **E** (`3cafef425`) — 4 ES pages linked ES posts by their English slug (404); repointed to the
+    Spanish slug / ES library home via the i18n map (href-only, hardcoded, gate byte-identical to baseline). 10 → 6.
+  · **TRUE FLOOR = 6, all needing a founder call or non-issues (F/G):** 2 are **false positives** —
+    `/audio/assets/course/` and `/blog/'+escHtml(item.articleSlug)+'/` are JS-constructed URLs inside `<script>`
+    (scan-true matches `src="…"` prefixes in JS; improve later to skip script blocks). 4 are **genuine content
+    gaps that exist NOWHERE** (create / remove-link / repoint — needs a call): `/blog/how-to-tell-if-your-
+    restaurant-has-a-data-leak/` (linked from library/how-to-tell-if-a-restaurant-tool-is-safe); the honest-
+    doordash-math post `/es/blog/an-honest-doordash-math-…` + its ES slug `…/cuentas-honestas-de-doordash-…`
+    (post never existed in any namespace; `/library/third-party-delivery-comparison` is the nearest live topic);
+    `/es/glossary/care-plan/` (no such glossary term EN or ES). **Broken-link arc for the session: 93 raw →
+    30 worker-aware → 6 (2 false-positive, 4 content-gap).**
 
 **Done surfaces:** homepage, article shell, CI ingredient, CI hub, CI events, **CI weekly+monthly
 dispatch** (funnel spine complete), library hub, vendor-benchmark, plate-cost a11y, viz-spark (shared),
