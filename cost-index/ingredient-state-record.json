@@ -4,7 +4,8 @@
   "license": "CC BY 4.0",
   "license_url": "https://creativecommons.org/licenses/by/4.0/",
   "attribution": "Muntin Cost Index (muntin.digital)",
-  "note": "One present-state record per ingredient, fusing pricing posture + own-baseline band, edible/cooked yield + trim tax, cheapest month, the price hedge swap, present pipeline direction, and the US import stream. Every field is descriptive of the tracked record — never a delivered/retail price, never a forecast, and co-occurrence is never cause. us_import_value_usd is US general import VALUE for the ingredient's HS6 (US Census, public domain) — a magnitude and seasonal shape of the import stream, never import volume (not published at HS6) and never a delivered cost. import_peak_months are the three highest-import calendar months (descriptive seasonality). Fields are null where a layer does not cover an ingredient.",
+  "audience": "Food-cost intelligence for anyone who works with food — operators, chefs, home cooks, journalists, researchers. The wholesale price is a market-DIRECTION reference (your delivered or retail price tracks it with a lag and a markup); every other field is food-intrinsic and buyer-agnostic.",
+  "note": "One present-state record per ingredient, fusing pricing posture + own-baseline band, edible/cooked yield + trim tax, cheapest month, the price hedge swap, present pipeline direction, and the US import stream. Every field is descriptive of the tracked record — never a delivered/retail price, never a forecast, and co-occurrence is never cause. us_import_value_usd is the latest full calendar year of US general import VALUE for the ingredient's HS6 (US Census, public domain), nominal (mixes volume and price) — never import volume (not published at HS6). import_peak_months are the three highest-import calendar months averaged over 2010-2025; import_peak_quarter_share is the peak quarter's share of a typical year's import value (a within-year ratio, inflation-immune) — both descriptive seasonality, the supply-timing tell of when an ingredient leans on imports. import_annual_usd carries the full 2010-2025 annual series. Fields are null where a layer does not cover an ingredient.",
   "rights": {
     "corpus_columns": "CC BY 4.0 (Muntin Cost Index)",
     "import_columns": "US Census general imports — public domain (US Government work)"
@@ -29,8 +30,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -48,12 +52,30 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 2513367507,
+      "import_years": "2012-2025",
       "import_peak_months": [
         3,
         4,
-        12
+        5
       ],
+      "import_peak_quarter_share": 26,
       "import_hs6": "080390",
+      "import_annual_usd": {
+        "2012": 1939541627,
+        "2013": 2016160730,
+        "2014": 2050747543,
+        "2015": 2080262494,
+        "2016": 2091315579,
+        "2017": 2116089535,
+        "2018": 2233085902,
+        "2019": 2210505457,
+        "2020": 2216231939,
+        "2021": 2216040312,
+        "2022": 2285895587,
+        "2023": 2396140828,
+        "2024": 2452553076,
+        "2025": 2513367507
+      },
       "import_note": null
     },
     {
@@ -71,8 +93,11 @@
       "pressure_dir": "building",
       "pressure_conf": "moderate",
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -90,8 +115,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -109,8 +137,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -128,8 +159,11 @@
       "pressure_dir": "steady",
       "pressure_conf": "moderate",
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -147,8 +181,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -166,8 +203,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -185,8 +225,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -204,8 +247,11 @@
       "pressure_dir": "building",
       "pressure_conf": "high",
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -223,8 +269,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -242,8 +291,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -261,8 +313,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -280,8 +335,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -299,12 +357,32 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 262481127,
+      "import_years": "2010-2025",
       "import_peak_months": [
         1,
         2,
-        8
+        12
       ],
+      "import_peak_quarter_share": 27,
       "import_hs6": "070320",
+      "import_annual_usd": {
+        "2010": 130097010,
+        "2011": 107745470,
+        "2012": 144340208,
+        "2013": 184305590,
+        "2014": 135126823,
+        "2015": 172231540,
+        "2016": 211313633,
+        "2017": 211042016,
+        "2018": 149499267,
+        "2019": 186598256,
+        "2020": 219479240,
+        "2021": 228771900,
+        "2022": 243495103,
+        "2023": 259300101,
+        "2024": 289512926,
+        "2025": 262481127
+      },
       "import_note": null
     },
     {
@@ -322,8 +400,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -341,12 +422,32 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 33115896,
+      "import_years": "2010-2025",
       "import_peak_months": [
         7,
         8,
         9
       ],
+      "import_peak_quarter_share": 46,
       "import_hs6": "080540",
+      "import_annual_usd": {
+        "2010": 2202031,
+        "2011": 1844926,
+        "2012": 1030652,
+        "2013": 6627634,
+        "2014": 5223998,
+        "2015": 5311585,
+        "2016": 11188210,
+        "2017": 12209623,
+        "2018": 10908858,
+        "2019": 15321818,
+        "2020": 13156110,
+        "2021": 27309505,
+        "2022": 22926588,
+        "2023": 29646473,
+        "2024": 39437060,
+        "2025": 33115896
+      },
       "import_note": null
     },
     {
@@ -364,12 +465,32 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 2087122984,
+      "import_years": "2010-2025",
       "import_peak_months": [
         1,
-        2,
-        3
+        3,
+        4
       ],
+      "import_peak_quarter_share": 31,
       "import_hs6": "070960",
+      "import_annual_usd": {
+        "2010": 917457888,
+        "2011": 933016163,
+        "2012": 1069820947,
+        "2013": 1209683664,
+        "2014": 1282282601,
+        "2015": 1226063039,
+        "2016": 1467349233,
+        "2017": 1328528339,
+        "2018": 1483150247,
+        "2019": 1675979700,
+        "2020": 1797374182,
+        "2021": 1943681229,
+        "2022": 1905956654,
+        "2023": 2003718595,
+        "2024": 2250246741,
+        "2025": 2087122984
+      },
       "import_note": "HS6 covers all fresh Capsicum peppers; not split by variety."
     },
     {
@@ -387,8 +508,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -406,12 +530,32 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 971844855,
+      "import_years": "2010-2025",
       "import_peak_months": [
-        5,
+        7,
         8,
         9
       ],
+      "import_peak_quarter_share": 33,
       "import_hs6": "080550",
+      "import_annual_usd": {
+        "2010": 214683471,
+        "2011": 236885623,
+        "2012": 219294733,
+        "2013": 260313385,
+        "2014": 368202464,
+        "2015": 377271719,
+        "2016": 463586987,
+        "2017": 509890651,
+        "2018": 606479954,
+        "2019": 638242467,
+        "2020": 601627295,
+        "2021": 819811043,
+        "2022": 906245560,
+        "2023": 1012791573,
+        "2024": 1067791392,
+        "2025": 971844855
+      },
       "import_note": "HS6 combines lemons and limes; not split at 6 digits."
     },
     {
@@ -429,8 +573,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -448,8 +595,11 @@
       "pressure_dir": "building",
       "pressure_conf": "high",
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -467,12 +617,30 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 128221620,
+      "import_years": "2012-2025",
       "import_peak_months": [
         3,
         4,
         5
       ],
+      "import_peak_quarter_share": 39,
       "import_hs6": "080830",
+      "import_annual_usd": {
+        "2012": 73806660,
+        "2013": 109908536,
+        "2014": 121116081,
+        "2015": 130975392,
+        "2016": 116325060,
+        "2017": 113554483,
+        "2018": 130299267,
+        "2019": 117389278,
+        "2020": 104743813,
+        "2021": 103320372,
+        "2022": 115031616,
+        "2023": 121570854,
+        "2024": 127485316,
+        "2025": 128221620
+      },
       "import_note": null
     },
     {
@@ -490,12 +658,32 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 893627234,
+      "import_years": "2010-2025",
       "import_peak_months": [
         4,
         5,
         6
       ],
+      "import_peak_quarter_share": 29,
       "import_hs6": "080430",
+      "import_annual_usd": {
+        "2010": 504576198,
+        "2011": 474363702,
+        "2012": 513122559,
+        "2013": 539954255,
+        "2014": 604154500,
+        "2015": 585381492,
+        "2016": 623897255,
+        "2017": 637219931,
+        "2018": 622556812,
+        "2019": 609758658,
+        "2020": 615945733,
+        "2021": 700209821,
+        "2022": 760328643,
+        "2023": 804057831,
+        "2024": 868825056,
+        "2025": 893627234
+      },
       "import_note": null
     },
     {
@@ -513,12 +701,32 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 2087122984,
+      "import_years": "2010-2025",
       "import_peak_months": [
         1,
-        2,
-        3
+        3,
+        4
       ],
+      "import_peak_quarter_share": 31,
       "import_hs6": "070960",
+      "import_annual_usd": {
+        "2010": 917457888,
+        "2011": 933016163,
+        "2012": 1069820947,
+        "2013": 1209683664,
+        "2014": 1282282601,
+        "2015": 1226063039,
+        "2016": 1467349233,
+        "2017": 1328528339,
+        "2018": 1483150247,
+        "2019": 1675979700,
+        "2020": 1797374182,
+        "2021": 1943681229,
+        "2022": 1905956654,
+        "2023": 2003718595,
+        "2024": 2250246741,
+        "2025": 2087122984
+      },
       "import_note": "HS6 covers all fresh Capsicum peppers; not split by variety."
     },
     {
@@ -536,8 +744,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -555,8 +766,11 @@
       "pressure_dir": "easing",
       "pressure_conf": "moderate",
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -574,8 +788,11 @@
       "pressure_dir": "easing",
       "pressure_conf": "moderate",
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -593,8 +810,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -612,8 +832,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -631,8 +854,11 @@
       "pressure_dir": "building",
       "pressure_conf": "moderate",
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -650,8 +876,11 @@
       "pressure_dir": "easing",
       "pressure_conf": "high",
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -669,8 +898,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -688,8 +920,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -707,8 +942,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -726,8 +964,11 @@
       "pressure_dir": "easing",
       "pressure_conf": "moderate",
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -745,8 +986,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -764,12 +1008,32 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 120429044,
+      "import_years": "2010-2025",
       "import_peak_months": [
         5,
         6,
         7
       ],
+      "import_peak_quarter_share": 50,
       "import_hs6": "080810",
+      "import_annual_usd": {
+        "2010": 168942421,
+        "2011": 133108489,
+        "2012": 163608010,
+        "2013": 216754385,
+        "2014": 240909098,
+        "2015": 209909881,
+        "2016": 268451847,
+        "2017": 233066023,
+        "2018": 198605895,
+        "2019": 208724196,
+        "2020": 157870865,
+        "2021": 171052413,
+        "2022": 175628562,
+        "2023": 195922468,
+        "2024": 127519683,
+        "2025": 120429044
+      },
       "import_note": null
     },
     {
@@ -787,8 +1051,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -806,12 +1073,32 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 525180705,
+      "import_years": "2010-2025",
       "import_peak_months": [
         1,
         2,
-        10
+        3
       ],
+      "import_peak_quarter_share": 37,
       "import_hs6": "070920",
+      "import_annual_usd": {
+        "2010": 418216281,
+        "2011": 435807020,
+        "2012": 441045705,
+        "2013": 589863891,
+        "2014": 502344522,
+        "2015": 561138418,
+        "2016": 630534678,
+        "2017": 691749605,
+        "2018": 633501233,
+        "2019": 694503069,
+        "2020": 650601648,
+        "2021": 690946958,
+        "2022": 619944036,
+        "2023": 634559750,
+        "2024": 646819371,
+        "2025": 525180705
+      },
       "import_note": null
     },
     {
@@ -829,12 +1116,32 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 3656452928,
+      "import_years": "2010-2025",
       "import_peak_months": [
         1,
-        2,
-        3
+        3,
+        4
       ],
+      "import_peak_quarter_share": 27,
       "import_hs6": "080440",
+      "import_annual_usd": {
+        "2010": 574698302,
+        "2011": 912998844,
+        "2012": 860141745,
+        "2013": 1089413449,
+        "2014": 1526374873,
+        "2015": 1631503552,
+        "2016": 1916916757,
+        "2017": 2639558615,
+        "2018": 2347649735,
+        "2019": 2761189549,
+        "2020": 2443147972,
+        "2021": 3032237094,
+        "2022": 3266820983,
+        "2023": 2980185195,
+        "2024": 3767841541,
+        "2025": 3656452928
+      },
       "import_note": null
     },
     {
@@ -852,12 +1159,32 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 2087122984,
+      "import_years": "2010-2025",
       "import_peak_months": [
         1,
-        2,
-        3
+        3,
+        4
       ],
+      "import_peak_quarter_share": 31,
       "import_hs6": "070960",
+      "import_annual_usd": {
+        "2010": 917457888,
+        "2011": 933016163,
+        "2012": 1069820947,
+        "2013": 1209683664,
+        "2014": 1282282601,
+        "2015": 1226063039,
+        "2016": 1467349233,
+        "2017": 1328528339,
+        "2018": 1483150247,
+        "2019": 1675979700,
+        "2020": 1797374182,
+        "2021": 1943681229,
+        "2022": 1905956654,
+        "2023": 2003718595,
+        "2024": 2250246741,
+        "2025": 2087122984
+      },
       "import_note": "HS6 covers all fresh Capsicum peppers; not split by variety."
     },
     {
@@ -875,8 +1202,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -894,12 +1224,32 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 2847479076,
+      "import_years": "2010-2025",
       "import_peak_months": [
         1,
         2,
-        5
+        3
       ],
+      "import_peak_quarter_share": 29,
       "import_hs6": "070200",
+      "import_annual_usd": {
+        "2010": 1798238104,
+        "2011": 2137869891,
+        "2012": 1867604613,
+        "2013": 1979769607,
+        "2014": 1964852290,
+        "2015": 1939099397,
+        "2016": 2263178344,
+        "2017": 2177333903,
+        "2018": 2380487406,
+        "2019": 2290467506,
+        "2020": 2805810616,
+        "2021": 2802195332,
+        "2022": 2882278727,
+        "2023": 3158305166,
+        "2024": 3633993909,
+        "2025": 2847479076
+      },
       "import_note": null
     },
     {
@@ -917,8 +1267,11 @@
       "pressure_dir": "easing",
       "pressure_conf": "moderate",
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -936,8 +1289,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -955,8 +1311,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -974,12 +1333,32 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 1311271843,
+      "import_years": "2010-2025",
       "import_peak_months": [
         1,
         3,
         4
       ],
+      "import_peak_quarter_share": 29,
       "import_hs6": "070700",
+      "import_annual_usd": {
+        "2010": 370027520,
+        "2011": 386871499,
+        "2012": 492070789,
+        "2013": 612300070,
+        "2014": 632871961,
+        "2015": 614418485,
+        "2016": 689976591,
+        "2017": 685866542,
+        "2018": 766604375,
+        "2019": 823920543,
+        "2020": 909831534,
+        "2021": 995761614,
+        "2022": 1132971039,
+        "2023": 1319299537,
+        "2024": 1453155223,
+        "2025": 1311271843
+      },
       "import_note": null
     },
     {
@@ -997,8 +1376,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1016,8 +1398,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1035,8 +1420,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1054,8 +1442,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1073,8 +1464,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1092,8 +1486,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1111,8 +1508,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1130,12 +1530,32 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 452535301,
+      "import_years": "2010-2025",
       "import_peak_months": [
         3,
         4,
         5
       ],
+      "import_peak_quarter_share": 54,
       "import_hs6": "080711",
+      "import_annual_usd": {
+        "2010": 249209041,
+        "2011": 211540911,
+        "2012": 237119006,
+        "2013": 294367961,
+        "2014": 297319410,
+        "2015": 322675961,
+        "2016": 328901750,
+        "2017": 305561346,
+        "2018": 318548134,
+        "2019": 367998262,
+        "2020": 339672236,
+        "2021": 368235702,
+        "2022": 393454970,
+        "2023": 439773100,
+        "2024": 440168684,
+        "2025": 452535301
+      },
       "import_note": null
     },
     {
@@ -1153,8 +1573,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1172,8 +1595,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1191,8 +1617,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1210,12 +1639,32 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 1637656221,
+      "import_years": "2010-2025",
       "import_peak_months": [
-        1,
         4,
-        5
+        5,
+        11
       ],
+      "import_peak_quarter_share": 32,
       "import_hs6": "081020",
+      "import_annual_usd": {
+        "2010": 274414465,
+        "2011": 311836597,
+        "2012": 389389192,
+        "2013": 431513958,
+        "2014": 584462506,
+        "2015": 773405692,
+        "2016": 827052844,
+        "2017": 962761433,
+        "2018": 1104705356,
+        "2019": 1323474330,
+        "2020": 1491221418,
+        "2021": 1623941956,
+        "2022": 1867707325,
+        "2023": 1983222106,
+        "2024": 1912354007,
+        "2025": 1637656221
+      },
       "import_note": "HS6 combines raspberries, blackberries, mulberries and loganberries; broader than raspberries alone."
     },
     {
@@ -1233,8 +1682,11 @@
       "pressure_dir": "building",
       "pressure_conf": "high",
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1252,12 +1704,32 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 2087122984,
+      "import_years": "2010-2025",
       "import_peak_months": [
         1,
-        2,
-        3
+        3,
+        4
       ],
+      "import_peak_quarter_share": 31,
       "import_hs6": "070960",
+      "import_annual_usd": {
+        "2010": 917457888,
+        "2011": 933016163,
+        "2012": 1069820947,
+        "2013": 1209683664,
+        "2014": 1282282601,
+        "2015": 1226063039,
+        "2016": 1467349233,
+        "2017": 1328528339,
+        "2018": 1483150247,
+        "2019": 1675979700,
+        "2020": 1797374182,
+        "2021": 1943681229,
+        "2022": 1905956654,
+        "2023": 2003718595,
+        "2024": 2250246741,
+        "2025": 2087122984
+      },
       "import_note": "HS6 covers all fresh Capsicum peppers; not split by variety."
     },
     {
@@ -1275,8 +1747,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1294,8 +1769,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1313,12 +1791,32 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 2124171241,
+      "import_years": "2010-2025",
       "import_peak_months": [
         1,
         10,
         11
       ],
+      "import_peak_quarter_share": 40,
       "import_hs6": "081040",
+      "import_annual_usd": {
+        "2010": 392601501,
+        "2011": 438471327,
+        "2012": 503814378,
+        "2013": 535975692,
+        "2014": 588308585,
+        "2015": 712334565,
+        "2016": 893471820,
+        "2017": 892328940,
+        "2018": 1159683941,
+        "2019": 1275909266,
+        "2020": 1284067047,
+        "2021": 1644653053,
+        "2022": 1807484615,
+        "2023": 1853237768,
+        "2024": 2215219075,
+        "2025": 2124171241
+      },
       "import_note": "HS6 combines cranberries, blueberries and related Vaccinium berries; the value is the group, broader than blueberries alone."
     },
     {
@@ -1336,8 +1834,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1355,8 +1856,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1374,8 +1878,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1393,8 +1900,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1412,8 +1922,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1431,8 +1944,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1450,8 +1966,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1469,8 +1988,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1488,8 +2010,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1507,8 +2032,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1526,12 +2054,32 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 2087122984,
+      "import_years": "2010-2025",
       "import_peak_months": [
         1,
-        2,
-        3
+        3,
+        4
       ],
+      "import_peak_quarter_share": 31,
       "import_hs6": "070960",
+      "import_annual_usd": {
+        "2010": 917457888,
+        "2011": 933016163,
+        "2012": 1069820947,
+        "2013": 1209683664,
+        "2014": 1282282601,
+        "2015": 1226063039,
+        "2016": 1467349233,
+        "2017": 1328528339,
+        "2018": 1483150247,
+        "2019": 1675979700,
+        "2020": 1797374182,
+        "2021": 1943681229,
+        "2022": 1905956654,
+        "2023": 2003718595,
+        "2024": 2250246741,
+        "2025": 2087122984
+      },
       "import_note": "HS6 covers all fresh Capsicum peppers; not split by variety."
     },
     {
@@ -1549,8 +2097,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1568,12 +2119,32 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 971844855,
+      "import_years": "2010-2025",
       "import_peak_months": [
-        5,
+        7,
         8,
         9
       ],
+      "import_peak_quarter_share": 33,
       "import_hs6": "080550",
+      "import_annual_usd": {
+        "2010": 214683471,
+        "2011": 236885623,
+        "2012": 219294733,
+        "2013": 260313385,
+        "2014": 368202464,
+        "2015": 377271719,
+        "2016": 463586987,
+        "2017": 509890651,
+        "2018": 606479954,
+        "2019": 638242467,
+        "2020": 601627295,
+        "2021": 819811043,
+        "2022": 906245560,
+        "2023": 1012791573,
+        "2024": 1067791392,
+        "2025": 971844855
+      },
       "import_note": "HS6 combines lemons and limes; not split at 6 digits."
     },
     {
@@ -1591,8 +2162,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1610,8 +2184,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1629,8 +2206,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1648,8 +2228,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1667,12 +2250,30 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 2463146905,
+      "import_years": "2012-2025",
       "import_peak_months": [
-        1,
-        2,
-        3
+        3,
+        4,
+        5
       ],
+      "import_peak_quarter_share": 26,
       "import_hs6": "030441",
+      "import_annual_usd": {
+        "2012": 663334887,
+        "2013": 1045088662,
+        "2014": 1255778201,
+        "2015": 1106305254,
+        "2016": 1412795197,
+        "2017": 1565138807,
+        "2018": 1796493174,
+        "2019": 1846856796,
+        "2020": 1786274208,
+        "2021": 2445278805,
+        "2022": 2768199228,
+        "2023": 2817410462,
+        "2024": 2688885435,
+        "2025": 2463146905
+      },
       "import_note": "Fresh salmon fillets; whole salmon is a separate code."
     },
     {
@@ -1690,12 +2291,30 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 2463146905,
+      "import_years": "2012-2025",
       "import_peak_months": [
-        1,
-        2,
-        3
+        3,
+        4,
+        5
       ],
+      "import_peak_quarter_share": 26,
       "import_hs6": "030441",
+      "import_annual_usd": {
+        "2012": 663334887,
+        "2013": 1045088662,
+        "2014": 1255778201,
+        "2015": 1106305254,
+        "2016": 1412795197,
+        "2017": 1565138807,
+        "2018": 1796493174,
+        "2019": 1846856796,
+        "2020": 1786274208,
+        "2021": 2445278805,
+        "2022": 2768199228,
+        "2023": 2817410462,
+        "2024": 2688885435,
+        "2025": 2463146905
+      },
       "import_note": "Fresh salmon fillets; whole salmon is a separate code."
     },
     {
@@ -1713,8 +2332,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1732,12 +2354,30 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 4936006356,
+      "import_years": "2012-2025",
       "import_peak_months": [
-        1,
-        6,
-        7
+        8,
+        10,
+        11
       ],
+      "import_peak_quarter_share": 28,
       "import_hs6": "030617",
+      "import_annual_usd": {
+        "2012": 3202145550,
+        "2013": 4008764531,
+        "2014": 5261364367,
+        "2015": 4128103989,
+        "2016": 4434693281,
+        "2017": 5037779125,
+        "2018": 4710341536,
+        "2019": 4674643541,
+        "2020": 4730068008,
+        "2021": 6067506550,
+        "2022": 5616175586,
+        "2023": 4728382844,
+        "2024": 4540956427,
+        "2025": 4936006356
+      },
       "import_note": "Frozen shrimp/prawns (the dominant import form); fresh shrimp is a separate code."
     },
     {
@@ -1755,12 +2395,30 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 4936006356,
+      "import_years": "2012-2025",
       "import_peak_months": [
-        1,
-        6,
-        7
+        8,
+        10,
+        11
       ],
+      "import_peak_quarter_share": 28,
       "import_hs6": "030617",
+      "import_annual_usd": {
+        "2012": 3202145550,
+        "2013": 4008764531,
+        "2014": 5261364367,
+        "2015": 4128103989,
+        "2016": 4434693281,
+        "2017": 5037779125,
+        "2018": 4710341536,
+        "2019": 4674643541,
+        "2020": 4730068008,
+        "2021": 6067506550,
+        "2022": 5616175586,
+        "2023": 4728382844,
+        "2024": 4540956427,
+        "2025": 4936006356
+      },
       "import_note": "Frozen shrimp/prawns (the dominant import form); fresh shrimp is a separate code."
     },
     {
@@ -1778,12 +2436,30 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 4936006356,
+      "import_years": "2012-2025",
       "import_peak_months": [
-        1,
-        6,
-        7
+        8,
+        10,
+        11
       ],
+      "import_peak_quarter_share": 28,
       "import_hs6": "030617",
+      "import_annual_usd": {
+        "2012": 3202145550,
+        "2013": 4008764531,
+        "2014": 5261364367,
+        "2015": 4128103989,
+        "2016": 4434693281,
+        "2017": 5037779125,
+        "2018": 4710341536,
+        "2019": 4674643541,
+        "2020": 4730068008,
+        "2021": 6067506550,
+        "2022": 5616175586,
+        "2023": 4728382844,
+        "2024": 4540956427,
+        "2025": 4936006356
+      },
       "import_note": "Frozen shrimp/prawns (the dominant import form); fresh shrimp is a separate code."
     },
     {
@@ -1801,8 +2477,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1820,8 +2499,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1839,8 +2521,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1858,8 +2543,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1877,12 +2565,32 @@
       "pressure_dir": "easing",
       "pressure_conf": "moderate",
       "us_import_value_usd": 2847479076,
+      "import_years": "2010-2025",
       "import_peak_months": [
         1,
         2,
-        5
+        3
       ],
+      "import_peak_quarter_share": 29,
       "import_hs6": "070200",
+      "import_annual_usd": {
+        "2010": 1798238104,
+        "2011": 2137869891,
+        "2012": 1867604613,
+        "2013": 1979769607,
+        "2014": 1964852290,
+        "2015": 1939099397,
+        "2016": 2263178344,
+        "2017": 2177333903,
+        "2018": 2380487406,
+        "2019": 2290467506,
+        "2020": 2805810616,
+        "2021": 2802195332,
+        "2022": 2882278727,
+        "2023": 3158305166,
+        "2024": 3633993909,
+        "2025": 2847479076
+      },
       "import_note": null
     },
     {
@@ -1900,8 +2608,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1919,8 +2630,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1938,8 +2652,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1957,8 +2674,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1976,8 +2696,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -1995,8 +2718,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     },
     {
@@ -2014,8 +2740,11 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "import_years": null,
       "import_peak_months": null,
+      "import_peak_quarter_share": null,
       "import_hs6": null,
+      "import_annual_usd": null,
       "import_note": null
     }
   ]

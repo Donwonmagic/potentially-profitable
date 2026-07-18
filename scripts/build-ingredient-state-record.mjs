@@ -5,18 +5,19 @@
  * corpus already computes into a single record, plus the US import stream for
  * import-relevant ingredients. Nothing here forecasts, prices a delivered pound, or
  * asserts cause — it is a descriptive join of public data read against each
- * ingredient's own record.
+ * ingredient's own record. Built for anyone who works with food, not only operators.
  *
  * Inputs (all in-repo):
  *   - pricingCards() (scripts/lib/cost-research.mjs): posture, band, edible yield,
- *     trim tax, cheapest month, save %, the hedge swap.  [wholesale refs + yields + seasonality + co-movement]
+ *     trim tax, cheapest month, save %, the hedge swap.
  *   - data/ingredient-depth.json: cooked yield (the served-pound layer).
  *   - data/cost-pressure.json: present pipeline direction + confidence (12 panels).
- *   - data/ingredient-hs-codes.json (verified crosswalk) x data/census-imports-2025.jsonl:
- *     US general import value by HS6 (public domain) -> annual value + peak-import months.
+ *   - data/ingredient-hs-codes.json (verified crosswalk) x data/census-imports.jsonl:
+ *     US general import VALUE by HS6, 2010-2025 (public domain). Derived to a latest-year
+ *     magnitude, a robust seasonal peak, and a peak-quarter concentration share.
  *
  * Outputs:
- *   - data/ingredient-state-record.json     (internal source of truth)
+ *   - data/ingredient-state-record.json     (internal source of truth; carries the annual series)
  *   - cost-index/ingredient-state-record.json / .csv   (CC-BY open-data downloads)
  *
  * Deterministic (no build clock): dateModified tracks data/cost-lockfloat.json asOf.
@@ -31,33 +32,56 @@ import { pricingCards } from './lib/cost-research.mjs';
 const repoRoot = process.cwd();
 const rd = (p) => JSON.parse(fs.readFileSync(path.join(repoRoot, p), 'utf8'));
 
-// ---- US import stream (Census HS6, public domain) -------------------------
-function importByHs() {
-  const lines = fs.readFileSync(path.join(repoRoot, 'data/census-imports-2025.jsonl'), 'utf8').trim().split('\n');
-  const out = {};
+// ---- US import stream (Census HS6 monthly value, 2010-2025, public domain) ----
+// Value only — HS6 does not publish quantity. Value is nominal (mixes volume + price),
+// so we surface the latest-year magnitude, the robust seasonal PEAK (which months
+// imports concentrate — a supply-timing tell), and the peak-QUARTER share (a within-year
+// ratio, so inflation-immune). All descriptive; never volume, never a delivered price,
+// never a forecast.
+function importSeriesByHs() {
+  const lines = fs.readFileSync(path.join(repoRoot, 'data/census-imports.jsonl'), 'utf8').trim().split('\n');
+  const acc = {};
   for (const l of lines) {
-    const hs = (l.match(/"hs":"(\d+)"/) || [])[1];
     let o; try { o = JSON.parse(l); } catch { continue; }
     const rows = o.rows; if (!Array.isArray(rows) || rows.length < 2) continue;
-    const H = rows[0], iV = H.indexOf('GEN_VAL_MO'), iM = H.indexOf('MONTH');
-    const data = rows.slice(1).filter((r) => r[iV] != null);
-    if (!data.length) continue;
-    const annual = data.reduce((a, r) => a + Number(r[iV] || 0), 0);
-    const peak = data.map((r) => [Number(r[iM]), Number(r[iV])]).sort((a, b) => b[1] - a[1]).slice(0, 3).map((x) => x[0]).sort((a, b) => a - b);
-    out[hs] = { annual, peak };
+    const H = rows[0], iS = H.indexOf('I_COMMODITY_SDESC'), iV = H.indexOf('GEN_VAL_MO'), iM = H.indexOf('MONTH'), iY = H.indexOf('YEAR');
+    const a = acc[o.hs] = acc[o.hs] || { sdesc: null, series: [] };
+    for (const r of rows.slice(1)) {
+      if (r[iV] == null) continue;
+      a.sdesc = a.sdesc || r[iS];
+      a.series.push([Number(iY >= 0 && r[iY] != null ? r[iY] : o.year), Number(r[iM]), Number(r[iV])]);
+    }
+  }
+  const out = {};
+  for (const [hs, a] of Object.entries(acc)) {
+    const s = a.series; if (!s.length) continue;
+    const years = [...new Set(s.map((x) => x[0]))].sort((x, y) => x - y);
+    const annual = {}; for (const [y, , v] of s) annual[y] = (annual[y] || 0) + v;
+    const byMonth = {}; for (const [, m, v] of s) (byMonth[m] = byMonth[m] || []).push(v);
+    const meanMonth = {}; for (const m of Object.keys(byMonth)) meanMonth[m] = byMonth[m].reduce((p, q) => p + q, 0) / byMonth[m].length;
+    const peak = Object.entries(meanMonth).sort((x, y) => y[1] - x[1]).slice(0, 3).map((x) => Number(x[0])).sort((x, y) => x - y);
+    const q = [0, 0, 0, 0]; for (const m of Object.keys(meanMonth)) q[Math.floor((Number(m) - 1) / 3)] += meanMonth[m];
+    const totalMean = q.reduce((p, x) => p + x, 0);
+    const peakQ = q.indexOf(Math.max(...q));
+    const last = years[years.length - 1];
+    out[hs] = {
+      sdesc: a.sdesc, span: years[0] + '-' + last,
+      latest_year: last, latest_year_usd: Math.round(annual[last]),
+      peak_months: peak, peak_quarter: peakQ + 1,
+      peak_quarter_share: totalMean ? Math.round((q[peakQ] / totalMean) * 100) : null,
+      annual_usd: Object.fromEntries(years.map((y) => [y, Math.round(annual[y])])),
+    };
   }
   return out;
 }
 
 function importBySlug() {
   const cross = rd('data/ingredient-hs-codes.json').codes;
-  const byHs = importByHs();
+  const byHs = importSeriesByHs();
   const bySlug = {};
   for (const [hs, meta] of Object.entries(cross)) {
-    const imp = byHs[hs]; if (!imp) continue;               // no data returned for this code
-    for (const slug of meta.slugs) {
-      bySlug[slug] = { hs6: hs, sdesc: meta.sdesc, us_import_value_usd: imp.annual, import_peak_months: imp.peak, import_note: meta.note || null };
-    }
+    const s = byHs[hs]; if (!s) continue;
+    for (const slug of meta.slugs) bySlug[slug] = { hs6: hs, note: meta.note || null, ...s };
   }
   return bySlug;
 }
@@ -72,7 +96,7 @@ function build() {
 
   const records = P.cards.map((c) => {
     const d = depth[c.slug] || {}; const pr = pressure[c.slug]; const im = imp[c.slug];
-    const rec = {
+    return {
       slug: c.slug, name: c.en, category: c.cat || null,
       posture: c.bucket,
       band_pct: c.bucket === 'withhold' ? (c.coverage ? c.bandPct : null) : c.bandPct,
@@ -83,12 +107,14 @@ function build() {
       hedge_swap: c.swap ? c.swap.en : null,
       pressure_dir: pr ? pr.direction : null,
       pressure_conf: pr ? pr.confidence : null,
-      us_import_value_usd: im ? im.us_import_value_usd : null,
-      import_peak_months: im ? im.import_peak_months : null,
+      us_import_value_usd: im ? im.latest_year_usd : null,
+      import_years: im ? im.span : null,
+      import_peak_months: im ? im.peak_months : null,
+      import_peak_quarter_share: im ? im.peak_quarter_share : null,
       import_hs6: im ? im.hs6 : null,
-      import_note: im ? im.import_note : null,
+      import_annual_usd: im ? im.annual_usd : null,
+      import_note: im ? im.note : null,
     };
-    return rec;
   });
 
   const meta = {
@@ -96,7 +122,8 @@ function build() {
     url: 'https://muntin.digital/cost-index/menu-pricing/',
     license: 'CC BY 4.0', license_url: 'https://creativecommons.org/licenses/by/4.0/',
     attribution: 'Muntin Cost Index (muntin.digital)',
-    note: "One present-state record per ingredient, fusing pricing posture + own-baseline band, edible/cooked yield + trim tax, cheapest month, the price hedge swap, present pipeline direction, and the US import stream. Every field is descriptive of the tracked record — never a delivered/retail price, never a forecast, and co-occurrence is never cause. us_import_value_usd is US general import VALUE for the ingredient's HS6 (US Census, public domain) — a magnitude and seasonal shape of the import stream, never import volume (not published at HS6) and never a delivered cost. import_peak_months are the three highest-import calendar months (descriptive seasonality). Fields are null where a layer does not cover an ingredient.",
+    audience: 'Food-cost intelligence for anyone who works with food — operators, chefs, home cooks, journalists, researchers. The wholesale price is a market-DIRECTION reference (your delivered or retail price tracks it with a lag and a markup); every other field is food-intrinsic and buyer-agnostic.',
+    note: "One present-state record per ingredient, fusing pricing posture + own-baseline band, edible/cooked yield + trim tax, cheapest month, the price hedge swap, present pipeline direction, and the US import stream. Every field is descriptive of the tracked record — never a delivered/retail price, never a forecast, and co-occurrence is never cause. us_import_value_usd is the latest full calendar year of US general import VALUE for the ingredient's HS6 (US Census, public domain), nominal (mixes volume and price) — never import volume (not published at HS6). import_peak_months are the three highest-import calendar months averaged over 2010-2025; import_peak_quarter_share is the peak quarter's share of a typical year's import value (a within-year ratio, inflation-immune) — both descriptive seasonality, the supply-timing tell of when an ingredient leans on imports. import_annual_usd carries the full 2010-2025 annual series. Fields are null where a layer does not cover an ingredient.",
     rights: { corpus_columns: 'CC BY 4.0 (Muntin Cost Index)', import_columns: 'US Census general imports — public domain (US Government work)' },
     dateModified: lfAsOf,
     count: records.length,
@@ -105,7 +132,7 @@ function build() {
     ingredients: records,
   };
 
-  const cols = ['slug', 'name', 'category', 'posture', 'band_pct', 'edible_yield_pct', 'trim_tax', 'cooked_yield', 'cheapest_month', 'save_pct', 'hedge_swap', 'pressure_dir', 'pressure_conf', 'us_import_value_usd', 'import_peak_months', 'import_hs6'];
+  const cols = ['slug', 'name', 'category', 'posture', 'band_pct', 'edible_yield_pct', 'trim_tax', 'cooked_yield', 'cheapest_month', 'save_pct', 'hedge_swap', 'pressure_dir', 'pressure_conf', 'us_import_value_usd', 'import_years', 'import_peak_months', 'import_peak_quarter_share', 'import_hs6'];
   const esc = (v) => { if (v == null) return ''; const s = Array.isArray(v) ? v.join(';') : String(v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
   const csv = [cols.join(',')].concat(records.map((r) => cols.map((k) => esc(r[k])).join(','))).join('\n') + '\n';
 
@@ -129,5 +156,5 @@ if (process.argv.includes('--check')) {
   console.log(`ingredient-state-record: OK — ${out.meta.count} records (${out.meta.withImport} with import, ${out.meta.withPressure} with pressure) in sync.`);
 } else {
   for (const [p, content] of targets) fs.writeFileSync(path.join(repoRoot, p), content);
-  console.log(`Wrote ${targets.length} file(s): ${out.meta.count} records, ${out.meta.withImport} with US import value, ${out.meta.withPressure} with pressure.`);
+  console.log(`Wrote ${targets.length} file(s): ${out.meta.count} records, ${out.meta.withImport} with US import value (2010-2025), ${out.meta.withPressure} with pressure.`);
 }
