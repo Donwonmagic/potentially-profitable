@@ -1,7 +1,7 @@
 slug,name,category,posture,band_pct,edible_yield_pct,trim_tax,cooked_yield,cheapest_month,save_pct,hedge_swap,pressure_dir,pressure_conf,us_import_value_usd,import_years,import_peak_months,import_peak_quarter_share,import_hs6,import_yoy_pct,import_source_concentration,import_source_hhi,import_top_sources,notable_events_n,median_shock_days,biggest_move_pct,biggest_move_date,comovers
 acorn-squash,Acorn squash,fruiting,lock,6,70,1.43,,12,26,,,,436961369,2012-2025,1;2;3,39,070993,-19,single-source,0.82,Mexico:90%;Canada:5%;Costa Rica:2%,6,70,183,2004-03-31,avocado:2/6;bell-pepper:1/6;butternut-squash:1/6
 banana,Banana,fruit,lock,0.6,65,1.54,,,,Apple,,,2513367507,2012-2025,3;4;5,26,080390,2.5,diversified,0.22,Guatemala:37%;Ecuador:20%;Costa Rica:14%,2,7,56,2002-10-09,apple:1/2;beet:1/2;broccoli:1/2
-beef-tenderloin,Beef tenderloin,beef,lock,3.5,85,1.18,0.75,7,20,,building,moderate,,,,,,,,,,6,77,-75,2001-06-13,artichoke:2/6;short-rib:2/6;butter:1/6
+beef-tenderloin,Beef tenderloin,beef,lock,3.5,85,1.18,0.75,7,20,,building,moderate,1094021575,2017-2025,3;6;10,26,0201305045+0202305045,8,concentrated,0.36,Canada:53%;Australia:22%;Mexico:17%,6,77,-75,2001-06-13,artichoke:2/6;short-rib:2/6;butter:1/6
 beet,Beet,root,lock,6.1,75,1.33,,8,21,,,,59367077,2010-2025,1;3;12,33,070690,-21.2,concentrated,0.44,"Mexico:55%;Canada:36%;Korea, South:3%",6,84,58,2014-02-19,celery:2/6;cucumber:2/6;okra:2/6
 bok-choy,Bok choy,greens,lock,5.8,80,1.25,,3,34,,,,485436576,2010-2025,1;3;12,31,070490,-20.7,single-source,0.68,Mexico:81%;Canada:15%;Guatemala:4%,4,35,63,2024-08-14,cilantro:1/4;collard-greens:1/4;dill:1/4
 butter,"Butter (AA, bulk)",,lock,4.4,,,,5,22,,steady,moderate,403587927,2010-2025,9;10;11,27,040510,-42.7,concentrated,0.37,Ireland:46%;New Zealand:38%;France:7%,5,98,47,2014-10-04,cheddar-cheese:2/5;beef-tenderloin:1/5;blueberry:1/5
@@ -24,15 +24,15 @@ onion,Onion,allium,lock,5.4,88,1.14,,12,44,Short rib,building,high,340952628,201
 pear,Pear,fruit,lock,1.3,78,1.28,,3,18,,,,128221620,2012-2025,3;4;5,39,080830,0.6,concentrated,0.38,"Argentina:54%;Korea, South:25%;Chile:12%",6,70,42,2010-07-07,carrot:2/6;rutabaga:2/6;asparagus:1/6
 pineapple,Pineapple,fruit,lock,5.3,50,2,,11,36,,,,893627234,2010-2025,4;5;6,29,080430,2.9,single-source,0.7,Costa Rica:83%;Mexico:7%;Ecuador:3%,6,42,142,2011-08-10,cabbage:2/6;onion:2/6;avocado:1/6
 poblano-pepper,Poblano pepper,fruiting,lock,2.9,80,1.25,,,,,,,2087122984,2010-2025,1;3;4,31,070960,-7.2,single-source,0.65,Mexico:78%;Canada:20%;Honduras:1%,6,84,78,2022-01-05,jalapeno:2/6;spinach:2/6;asparagus:1/6
-pork-belly,Pork belly,meat,lock,3.2,90,1.11,,,,,,,619880426,2010-2025,3;4;6,26,020329,-3.1,diversified,0.15,Mexico:23%;Canada:20%;Denmark:16%,1,275,31,2014-06-01,
+pork-belly,Pork belly,meat,lock,3.2,90,1.11,,,,,,,270149638,2010-2025,3;8;10,26,0203194010,11.3,single-source,0.9,Canada:95%;Mexico:5%;Brazil:0%,1,275,31,2014-06-01,
 pork-loin,Pork loin,meat,lock,1.6,85,1.18,0.75,12,18,,easing,moderate,619880426,2010-2025,3;4;6,26,020329,-3.1,diversified,0.15,Mexico:23%;Canada:20%;Denmark:16%,6,70,110,2020-05-13,beet:2/6;ground-pork:2/6;pork-shoulder:2/6
-pork-shoulder,Pork shoulder,meat,lock,4.9,75,1.33,0.65,10,21,Ground pork,easing,moderate,619880426,2010-2025,3;4;6,26,020329,-3.1,diversified,0.15,Mexico:23%;Canada:20%;Denmark:16%,6,56,100,2020-05-20,ground-pork:6/6;pork-loin:2/6;striploin:2/6
+pork-shoulder,Pork shoulder,meat,lock,4.9,75,1.33,0.65,10,21,Ground pork,easing,moderate,60286047,2010-2025,5;6;7,27,0203129020+0203229000,-29.6,single-source,0.6,Canada:76%;Brazil:11%;Spain:6%,6,56,100,2020-05-20,ground-pork:6/6;pork-loin:2/6;striploin:2/6
 red-onion,Red onion,allium,lock,5.8,88,1.14,,,,Butternut squash,,,340952628,2010-2025,3;5;11,27,070310,-30.3,concentrated,0.46,Mexico:64%;Peru:17%;Canada:15%,6,126,130,2010-04-28,butternut-squash:3/6;eggplant:3/6;bell-pepper:2/6
 red-potato,Red potato,tuber,lock,0.8,85,1.18,,6,26,,,,319512613,2010-2025,1;3;11,30,070190,-5.4,single-source,1,Canada:100%;Mexico:0%;Colombia:0%,6,77,48,2020-06-10,butter-lettuce:2/6;onion:2/6;acorn-squash:1/6
-ribeye,Ribeye,beef,lock,5.8,75,1.33,0.75,8,26,,building,moderate,,,,,,,,,,6,49,40,2003-10-15,garlic:2/6;napa-cabbage:2/6;pork-loin:2/6
+ribeye,Ribeye,beef,lock,5.8,75,1.33,0.75,8,26,,building,moderate,589972925,2017-2025,8;10;11,27,0201305025+0202305025,-3.2,concentrated,0.34,Canada:51%;Mexico:24%;Australia:15%,6,49,40,2003-10-15,garlic:2/6;napa-cabbage:2/6;pork-loin:2/6
 russet-potato,Russet potato,tuber,lock,4.5,81,1.23,,4,55,,easing,high,319512613,2010-2025,1;3;11,30,070190,-5.4,single-source,1,Canada:100%;Mexico:0%;Colombia:0%,6,63,61,2013-08-14,carrot:2/6;onion:2/6;apple:1/6
 short-rib,Short rib,beef,lock,1.8,65,1.54,0.6,,,Onion,,,,,,,,,,,,6,98,-100,2001-06-20,onion:3/6;beef-tenderloin:2/6;apple:1/6
-striploin,Striploin,beef,lock,3,80,1.25,0.75,9,40,,,,,,,,,,,,,6,105,88,2020-05-27,ground-pork:2/6;pork-loin:2/6;pork-shoulder:2/6
+striploin,Striploin,beef,lock,3,80,1.25,0.75,9,40,,,,1094021575,2017-2025,3;6;10,26,0201305045+0202305045,8,concentrated,0.36,Canada:53%;Australia:22%;Mexico:17%,6,105,88,2020-05-27,ground-pork:2/6;pork-loin:2/6;pork-shoulder:2/6
 vegetable-oil,Vegetable oil,,lock,5.1,,,,,,,,,,,,,,,,,,6,273,59,2008-07-01,carrot:2/6;jalapeno:2/6;acorn-squash:1/6
 whole-chicken,Whole chicken,meat,lock,5.7,60,1.67,0.75,5,47,,easing,moderate,,,,,,,,,,3,77,43,2025-08-18,bell-pepper:1/3;brussels-sprouts:1/3;ginger:1/3
 whole-turkey,Whole turkey,meat,lock,0.8,50,2,0.7,,,,,,,,,,,,,,,1,28,-21,2025-02-03,bok-choy:1/1
@@ -72,7 +72,7 @@ clams,Clams,shellfish,withhold,,30,3.33,,,,,,,2605174,2012-2025,6;7;8,29,030779,
 collard-greens,Collard greens,greens,withhold,,65,1.54,,,,Leek,,,485436576,2010-2025,1;3;12,31,070490,-20.7,single-source,0.68,Mexico:81%;Canada:15%;Guatemala:4%,6,35,58,2001-06-06,leek:3/6;butternut-squash:2/6;chicken-breast:2/6
 eggs,Eggs,,withhold,57.1,,,,1,80,,,,115639127,2012-2025,4;5;8,28,040721,1745.1,concentrated,0.27,Brazil:36%;Mexico:28%;Turkey:24%,4,28,127,2025-02-17,butternut-squash:1/4;cantaloupe:1/4;chicken-breast:1/4
 green-onion,Green onion,allium,withhold,62.4,65,1.54,,6,68,,,,82592944,2010-2025,1;3;12,32,070390,-10.7,single-source,0.76,Mexico:87%;Canada:11%;Ecuador:1%,6,70,237,2006-09-20,chicken-breast:2/6;serrano-pepper:2/6;apple:1/6
-ground-beef,Ground beef,beef,withhold,,100,1,0.73,,,,,,6137654372,2010-2025,5;6;7,28,020230,30.8,diversified,0.21,Australia:36%;New Zealand:18%;Brazil:18%,,,,,
+ground-beef,Ground beef,beef,withhold,,100,1,0.73,,,,,,5338810226,2017-2025,1;7;8,26,0201305085+0202305085,10.9,concentrated,0.3,Australia:49%;New Zealand:21%;Mexico:12%,,,,,
 iceberg-lettuce,Iceberg lettuce,greens,withhold,48,74,1.35,,1,63,Red leaf lettuce,,,83351075,2010-2025,3;10;11,27,070511,-13.6,single-source,0.61,Mexico:74%;Canada:25%;Guatemala:0%,6,63,480,2002-03-20,red-leaf-lettuce:5/6;green-leaf-lettuce:4/6;romaine-lettuce:4/6
 jalapeno,Jalapeño,fruiting,withhold,34,85,1.18,,,,,,,2087122984,2010-2025,1;3;4,31,070960,-7.2,single-source,0.65,Mexico:78%;Canada:20%;Honduras:1%,6,91,127,2026-04-15,butternut-squash:2/6;cabbage:2/6;cherry-tomato:2/6
 kale,Kale,greens,withhold,,70,1.43,,,,Cabbage,,,485436576,2010-2025,1;3;12,31,070490,-20.7,single-source,0.68,Mexico:81%;Canada:15%;Guatemala:4%,6,84,78,2005-05-11,cabbage:3/6;artichoke:2/6;butternut-squash:2/6

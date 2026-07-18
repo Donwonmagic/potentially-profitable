@@ -196,18 +196,58 @@
       "hedge_swap": null,
       "pressure_dir": "building",
       "pressure_conf": "moderate",
-      "us_import_value_usd": null,
-      "import_years": null,
-      "import_peak_months": null,
-      "import_peak_quarter_share": null,
-      "import_hs6": null,
-      "import_yoy_pct": null,
-      "import_seasonal_index": null,
-      "import_source_concentration": null,
-      "import_source_hhi": null,
-      "import_top_sources": null,
-      "import_annual_usd": null,
-      "import_note": null,
+      "us_import_value_usd": 1094021575,
+      "import_years": "2017-2025",
+      "import_peak_months": [
+        3,
+        6,
+        10
+      ],
+      "import_peak_quarter_share": 26,
+      "import_hs6": "0201305045+0202305045",
+      "import_yoy_pct": 8,
+      "import_seasonal_index": [
+        0.97,
+        0.83,
+        1.07,
+        0.95,
+        1.07,
+        1.08,
+        1.01,
+        1.04,
+        0.99,
+        1.07,
+        1.02,
+        0.9
+      ],
+      "import_source_concentration": "concentrated",
+      "import_source_hhi": 0.36,
+      "import_top_sources": [
+        {
+          "country": "Canada",
+          "share_pct": 53
+        },
+        {
+          "country": "Australia",
+          "share_pct": 22
+        },
+        {
+          "country": "Mexico",
+          "share_pct": 17
+        }
+      ],
+      "import_annual_usd": {
+        "2017": 143583798,
+        "2018": 372690590,
+        "2019": 430058043,
+        "2020": 568072561,
+        "2021": 785341861,
+        "2022": 844270949,
+        "2023": 1025586363,
+        "2024": 1012963109,
+        "2025": 1094021575
+      },
+      "import_note": "The boneless beef LOIN primal (fresh) — strip loin, short loin (tenderloin) and sirloin; summed with its frozen twin (0202305045). Not split finer at HS10; data from 2017.",
       "notable_events_n": 6,
       "median_shock_days": 77,
       "biggest_move_pct": -75,
@@ -2110,65 +2150,65 @@
       "hedge_swap": null,
       "pressure_dir": null,
       "pressure_conf": null,
-      "us_import_value_usd": 619880426,
+      "us_import_value_usd": 270149638,
       "import_years": "2010-2025",
       "import_peak_months": [
         3,
-        4,
-        6
+        8,
+        10
       ],
       "import_peak_quarter_share": 26,
-      "import_hs6": "020329",
-      "import_yoy_pct": -3.1,
+      "import_hs6": "0203194010",
+      "import_yoy_pct": 11.3,
       "import_seasonal_index": [
+        0.96,
+        1.02,
+        1.12,
+        0.99,
+        0.92,
         0.94,
-        0.9,
-        1.11,
-        1.1,
-        1.02,
-        1.03,
-        1.02,
         1.01,
-        0.93,
-        0.98,
-        0.98,
-        0.98
+        1.07,
+        0.99,
+        1.06,
+        1.01,
+        0.91
       ],
-      "import_source_concentration": "diversified",
-      "import_source_hhi": 0.15,
+      "import_source_concentration": "single-source",
+      "import_source_hhi": 0.9,
       "import_top_sources": [
         {
-          "country": "Mexico",
-          "share_pct": 23
-        },
-        {
           "country": "Canada",
-          "share_pct": 20
+          "share_pct": 95
         },
         {
-          "country": "Denmark",
-          "share_pct": 16
+          "country": "Mexico",
+          "share_pct": 5
+        },
+        {
+          "country": "Brazil",
+          "share_pct": 0
         }
       ],
       "import_annual_usd": {
-        "2010": 311141927,
-        "2011": 317332842,
-        "2012": 337327883,
-        "2013": 337292313,
-        "2014": 468891889,
-        "2015": 461891862,
-        "2016": 494244855,
-        "2017": 599758140,
-        "2018": 589981893,
-        "2019": 485914122,
-        "2020": 419502995,
-        "2021": 665381046,
-        "2022": 782070238,
-        "2023": 552125549,
-        "2024": 639630660,
-        "2025": 619880426
+        "2010": 159968757,
+        "2011": 227225496,
+        "2012": 237812098,
+        "2013": 339297171,
+        "2014": 339373568,
+        "2015": 271217784,
+        "2016": 249375622,
+        "2017": 234445065,
+        "2018": 185875299,
+        "2019": 157858633,
+        "2020": 124002629,
+        "2021": 203067481,
+        "2022": 312813792,
+        "2023": 220489866,
+        "2024": 242737117,
+        "2025": 270149638
       },
-      "import_note": "Frozen pork cuts (NESOI); HS6 does not split by cut, so this one shared stream describes all three pork cuts as supply context.",
+      "import_note": "Fresh pork bellies specifically (the bacon cut); frozen bellies sit in the pork-cuts NESOI bucket.",
       "notable_events_n": 1,
       "median_shock_days": 275,
       "biggest_move_pct": 31,
@@ -2247,7 +2287,7 @@
         "2024": 639630660,
         "2025": 619880426
       },
-      "import_note": "Frozen pork cuts (NESOI); HS6 does not split by cut, so this one shared stream describes all three pork cuts as supply context.",
+      "import_note": "Frozen pork cuts (NESOI); HS10 has no loin-specific line, so pork-loin stays on this shared frozen-cuts stream. Belly and shoulder now have their own HS10 codes below.",
       "notable_events_n": 6,
       "median_shock_days": 70,
       "biggest_move_pct": 110,
@@ -2281,65 +2321,65 @@
       "hedge_swap": "Ground pork",
       "pressure_dir": "easing",
       "pressure_conf": "moderate",
-      "us_import_value_usd": 619880426,
+      "us_import_value_usd": 60286047,
       "import_years": "2010-2025",
       "import_peak_months": [
-        3,
-        4,
-        6
+        5,
+        6,
+        7
       ],
-      "import_peak_quarter_share": 26,
-      "import_hs6": "020329",
-      "import_yoy_pct": -3.1,
+      "import_peak_quarter_share": 27,
+      "import_hs6": "0203129020+0203229000",
+      "import_yoy_pct": -29.6,
       "import_seasonal_index": [
+        0.95,
+        0.84,
         0.94,
-        0.9,
-        1.11,
-        1.1,
-        1.02,
-        1.03,
-        1.02,
-        1.01,
-        0.93,
-        0.98,
-        0.98,
-        0.98
+        0.96,
+        1.07,
+        1.16,
+        1.08,
+        0.95,
+        0.94,
+        0.99,
+        1.05,
+        1.05
       ],
-      "import_source_concentration": "diversified",
-      "import_source_hhi": 0.15,
+      "import_source_concentration": "single-source",
+      "import_source_hhi": 0.6,
       "import_top_sources": [
         {
-          "country": "Mexico",
-          "share_pct": 23
-        },
-        {
           "country": "Canada",
-          "share_pct": 20
+          "share_pct": 76
         },
         {
-          "country": "Denmark",
-          "share_pct": 16
+          "country": "Brazil",
+          "share_pct": 11
+        },
+        {
+          "country": "Spain",
+          "share_pct": 6
         }
       ],
       "import_annual_usd": {
-        "2010": 311141927,
-        "2011": 317332842,
-        "2012": 337327883,
-        "2013": 337292313,
-        "2014": 468891889,
-        "2015": 461891862,
-        "2016": 494244855,
-        "2017": 599758140,
-        "2018": 589981893,
-        "2019": 485914122,
-        "2020": 419502995,
-        "2021": 665381046,
-        "2022": 782070238,
-        "2023": 552125549,
-        "2024": 639630660,
-        "2025": 619880426
+        "2010": 75552916,
+        "2011": 79255878,
+        "2012": 71640706,
+        "2013": 72578151,
+        "2014": 94637412,
+        "2015": 70939406,
+        "2016": 74045850,
+        "2017": 85444979,
+        "2018": 76871807,
+        "2019": 51109521,
+        "2020": 72588380,
+        "2021": 104120595,
+        "2022": 81572617,
+        "2023": 84200559,
+        "2024": 85693031,
+        "2025": 60286047
       },
-      "import_note": "Frozen pork cuts (NESOI); HS6 does not split by cut, so this one shared stream describes all three pork cuts as supply context.",
+      "import_note": "Fresh bone-in pork shoulder, summed with the frozen ham+shoulder line (0203229000); boneless shoulder sits in the cuts NESOI bucket.",
       "notable_events_n": 6,
       "median_shock_days": 56,
       "biggest_move_pct": 100,
@@ -2557,18 +2597,58 @@
       "hedge_swap": null,
       "pressure_dir": "building",
       "pressure_conf": "moderate",
-      "us_import_value_usd": null,
-      "import_years": null,
-      "import_peak_months": null,
-      "import_peak_quarter_share": null,
-      "import_hs6": null,
-      "import_yoy_pct": null,
-      "import_seasonal_index": null,
-      "import_source_concentration": null,
-      "import_source_hhi": null,
-      "import_top_sources": null,
-      "import_annual_usd": null,
-      "import_note": null,
+      "us_import_value_usd": 589972925,
+      "import_years": "2017-2025",
+      "import_peak_months": [
+        8,
+        10,
+        11
+      ],
+      "import_peak_quarter_share": 27,
+      "import_hs6": "0201305025+0202305025",
+      "import_yoy_pct": -3.2,
+      "import_seasonal_index": [
+        0.95,
+        0.85,
+        0.94,
+        0.88,
+        1.06,
+        1.01,
+        0.98,
+        1.06,
+        1,
+        1.19,
+        1.08,
+        0.99
+      ],
+      "import_source_concentration": "concentrated",
+      "import_source_hhi": 0.34,
+      "import_top_sources": [
+        {
+          "country": "Canada",
+          "share_pct": 51
+        },
+        {
+          "country": "Mexico",
+          "share_pct": 24
+        },
+        {
+          "country": "Australia",
+          "share_pct": 15
+        }
+      ],
+      "import_annual_usd": {
+        "2017": 69147214,
+        "2018": 149877355,
+        "2019": 210364848,
+        "2020": 298682783,
+        "2021": 465808413,
+        "2022": 477277917,
+        "2023": 517492406,
+        "2024": 609439587,
+        "2025": 589972925
+      },
+      "import_note": "The boneless beef RIB primal (fresh), of which ribeye is the principal cut; summed with its frozen twin (0202305025). HS10 splits beef by primal, not retail cut; US statistical data from 2017.",
       "notable_events_n": 6,
       "median_shock_days": 49,
       "biggest_move_pct": 40,
@@ -2739,18 +2819,58 @@
       "hedge_swap": null,
       "pressure_dir": null,
       "pressure_conf": null,
-      "us_import_value_usd": null,
-      "import_years": null,
-      "import_peak_months": null,
-      "import_peak_quarter_share": null,
-      "import_hs6": null,
-      "import_yoy_pct": null,
-      "import_seasonal_index": null,
-      "import_source_concentration": null,
-      "import_source_hhi": null,
-      "import_top_sources": null,
-      "import_annual_usd": null,
-      "import_note": null,
+      "us_import_value_usd": 1094021575,
+      "import_years": "2017-2025",
+      "import_peak_months": [
+        3,
+        6,
+        10
+      ],
+      "import_peak_quarter_share": 26,
+      "import_hs6": "0201305045+0202305045",
+      "import_yoy_pct": 8,
+      "import_seasonal_index": [
+        0.97,
+        0.83,
+        1.07,
+        0.95,
+        1.07,
+        1.08,
+        1.01,
+        1.04,
+        0.99,
+        1.07,
+        1.02,
+        0.9
+      ],
+      "import_source_concentration": "concentrated",
+      "import_source_hhi": 0.36,
+      "import_top_sources": [
+        {
+          "country": "Canada",
+          "share_pct": 53
+        },
+        {
+          "country": "Australia",
+          "share_pct": 22
+        },
+        {
+          "country": "Mexico",
+          "share_pct": 17
+        }
+      ],
+      "import_annual_usd": {
+        "2017": 143583798,
+        "2018": 372690590,
+        "2019": 430058043,
+        "2020": 568072561,
+        "2021": 785341861,
+        "2022": 844270949,
+        "2023": 1025586363,
+        "2024": 1012963109,
+        "2025": 1094021575
+      },
+      "import_note": "The boneless beef LOIN primal (fresh) — strip loin, short loin (tenderloin) and sirloin; summed with its frozen twin (0202305045). Not split finer at HS10; data from 2017.",
       "notable_events_n": 6,
       "median_shock_days": 105,
       "biggest_move_pct": 88,
@@ -5877,65 +5997,58 @@
       "hedge_swap": null,
       "pressure_dir": null,
       "pressure_conf": null,
-      "us_import_value_usd": 6137654372,
-      "import_years": "2010-2025",
+      "us_import_value_usd": 5338810226,
+      "import_years": "2017-2025",
       "import_peak_months": [
-        5,
-        6,
-        7
+        1,
+        7,
+        8
       ],
-      "import_peak_quarter_share": 28,
-      "import_hs6": "020230",
-      "import_yoy_pct": 30.8,
+      "import_peak_quarter_share": 26,
+      "import_hs6": "0201305085+0202305085",
+      "import_yoy_pct": 10.9,
       "import_seasonal_index": [
-        1.07,
-        0.84,
-        1.07,
-        1.07,
+        1.17,
+        0.89,
+        1.05,
+        0.99,
+        1.05,
+        1.05,
         1.13,
-        1.13,
-        1.13,
-        1.03,
-        0.85,
-        0.87,
-        0.84,
-        0.97
+        1.08,
+        0.93,
+        0.92,
+        0.86,
+        0.88
       ],
-      "import_source_concentration": "diversified",
-      "import_source_hhi": 0.21,
+      "import_source_concentration": "concentrated",
+      "import_source_hhi": 0.3,
       "import_top_sources": [
         {
           "country": "Australia",
-          "share_pct": 36
+          "share_pct": 49
         },
         {
           "country": "New Zealand",
-          "share_pct": 18
+          "share_pct": 21
         },
         {
-          "country": "Brazil",
-          "share_pct": 18
+          "country": "Mexico",
+          "share_pct": 12
         }
       ],
       "import_annual_usd": {
-        "2010": 1276826534,
-        "2011": 1424463078,
-        "2012": 1839892293,
-        "2013": 1845461455,
-        "2014": 2910301725,
-        "2015": 3355949173,
-        "2016": 2127545474,
-        "2017": 2125812952,
-        "2018": 2125222545,
-        "2019": 2070088217,
-        "2020": 2591935322,
-        "2021": 2534542649,
-        "2022": 2903626132,
-        "2023": 3089848093,
-        "2024": 4693871262,
-        "2025": 6137654372
+        "2017": 1312317036,
+        "2018": 2697969606,
+        "2019": 2727139552,
+        "2020": 3153210216,
+        "2021": 3388645356,
+        "2022": 3428141939,
+        "2023": 3779243081,
+        "2024": 4812907972,
+        "2025": 5338810226
       },
-      "import_note": "Frozen boneless beef — the US import stream here is largely lean manufacturing trim that feeds grinding; HS6 does not isolate a retail cut, so only ground-beef is attached, never the whole-muscle steaks.",
+      "import_note": "Boneless beef not in a named primal (fresh) — the lean manufacturing trim that feeds grinding; summed with its frozen twin (0202305085). Data from 2017.",
       "notable_events_n": null,
       "median_shock_days": null,
       "biggest_move_pct": null,
