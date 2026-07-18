@@ -53,9 +53,11 @@ function check(record) {
     if (r.band_pct != null && r.band_pct < 0) E(s, `band_pct ${r.band_pct} < 0`);
     if (r.import_source_hhi != null && !(r.import_source_hhi >= 0 && r.import_source_hhi <= 1)) E(s, `import_source_hhi ${r.import_source_hhi} out of 0..1`);
     if (r.import_reliance_pct != null && !(r.import_reliance_pct >= 0 && r.import_reliance_pct <= 100)) E(s, `import_reliance_pct ${r.import_reliance_pct} out of 0..100`);
-    for (const f of ['us_import_value_usd', 'us_export_value_usd', 'us_production_usd', 'us_landings_value_usd']) if (r[f] != null && !(r[f] >= 0)) E(s, `${f} ${r[f]} < 0`);
+    for (const f of ['us_import_value_usd', 'us_export_value_usd', 'us_production_usd', 'us_landings_value_usd', 'us_percap_lbs']) if (r[f] != null && !(r[f] >= 0)) E(s, `${f} ${r[f]} < 0`);
     if (r.us_landings_year != null && !(r.us_landings_year >= 1950 && r.us_landings_year <= 2100)) E(s, `us_landings_year ${r.us_landings_year} out of 1950..2100`);
     if (r.us_landings_wild_minimal != null && typeof r.us_landings_wild_minimal !== 'boolean') E(s, `us_landings_wild_minimal must be boolean or null`);
+    if (r.us_percap_lbs != null && r.us_percap_lbs > 2000) E(s, `us_percap_lbs ${r.us_percap_lbs} implausibly large`);
+    if (r.us_percap_year != null && !(r.us_percap_year >= 1900 && r.us_percap_year <= 2030)) E(s, `us_percap_year ${r.us_percap_year} out of 1900..2030`);
     if (Array.isArray(r.import_peak_months)) {
       if (r.import_peak_months.length !== 3) E(s, `import_peak_months length ${r.import_peak_months.length} != 3`);
       for (const m of r.import_peak_months) if (!(m >= 1 && m <= 12)) E(s, `import peak month ${m} out of 1..12`);
@@ -78,6 +80,8 @@ function check(record) {
         } else if (K === 'reliance') {
           if (!(h.reliance_pct >= 0 && h.reliance_pct <= 100)) E(s, `harmony reliance reliance_pct ${h.reliance_pct} out of 0..100`);
           if (h.reliance_year != null && !(h.reliance_year >= 2000 && h.reliance_year <= 2100)) E(s, `harmony reliance reliance_year ${h.reliance_year} implausible`);
+          if (h.percap_lbs != null && !(h.percap_lbs >= 0 && h.percap_lbs <= 2000)) E(s, `harmony reliance percap_lbs ${h.percap_lbs} out of 0..2000`);
+          if (h.percap_year != null && !(h.percap_year >= 1900 && h.percap_year <= 2030)) E(s, `harmony reliance percap_year ${h.percap_year} implausible`);
           // reliance is a cross-source read: the record must actually carry both sides
           if (r.us_import_value_usd == null || r.us_production_usd == null) E(s, 'harmony reliance present without both import + production value');
         } else if (K === 'persistence') {

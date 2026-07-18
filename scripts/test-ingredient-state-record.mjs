@@ -50,6 +50,7 @@ test('harmonyFor: reliance carries the aligned year + anchors the origin share t
   const withRel = {
     import_reliance_pct: 30, import_reliance_year: 2023,
     us_import_value_usd: 3, us_production_usd: 7,
+    us_percap_lbs: 8.4, us_percap_year: 2021,
     import_top_sources: [{ country: 'Mexico', share_pct: 88 }],
   };
   const rel = of(withRel, 'reliance');
@@ -58,6 +59,12 @@ test('harmonyFor: reliance carries the aligned year + anchors the origin share t
   assert.equal(rel.reliance_year, 2023);
   assert.equal(rel.top_country, 'Mexico'); // the island states this is 88% OF IMPORTS, not of supply
   assert.equal(rel.top_share, 88);
+  // the value read carries its VOLUME companion (ERS per-capita lbs) when present, never conflated
+  assert.equal(rel.percap_lbs, 8.4);
+  assert.equal(rel.percap_year, 2021);
+  // absent ERS -> reliance still fires, percap null (degrade by absence)
+  const relNoVol = of({ import_reliance_pct: 30, import_reliance_year: 2023, us_import_value_usd: 3, us_production_usd: 7 }, 'reliance');
+  assert.equal(relNoVol.percap_lbs, null);
   // inert until NASS lands: no reliance value -> no reliance read
   assert.equal(of({ import_source_concentration: 'concentrated', import_top_sources: [{ country: 'X', share_pct: 50 }] }, 'reliance'), undefined);
 });

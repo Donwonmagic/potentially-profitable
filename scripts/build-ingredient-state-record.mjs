@@ -247,6 +247,19 @@ function landingsBySlug() {
   return out; // slug -> { usd, year, minimal, group }
 }
 
+// ---- US per-capita availability layer (USDA ERS, via cost-index/ers-food-availability.json) ----
+// The VOLUME cross-check for the value-based reliance read: lbs/person/yr available domestically (ERS's
+// supply-side proxy). Read from the already-gated derived dataset so the ISR and the ERS explorer never
+// diverge. Null until that file lands. A supply-side PROXY for consumption, never a measured intake,
+// never a price, never a forecast; published at the commodity level (a cut/variety carries its parent).
+function percapBySlug() {
+  let doc; try { doc = rd('cost-index/ers-food-availability.json'); } catch { return null; }
+  const items = doc && doc.items; if (!Array.isArray(items)) return null;
+  const out = {};
+  for (const it of items) if (it.percap_lbs != null) out[it.slug] = { lbs: it.percap_lbs, year: it.latest_year };
+  return out; // slug -> { lbs, year }
+}
+
 // ---- NASS domestic-supply layer (forward-compatible) -----------------------------------------
 // Reads the raw national annual SURVEY rows the operator fetches into data/nass-domestic.jsonl
 // (one line per commodity+statisticcat query: {commodity, stat, rows:[[year,class,refPeriod,unit,
@@ -363,7 +376,10 @@ export function harmonyFor(r) {
   }
   if (r.import_reliance_pct != null) {
     const t = (r.import_top_sources && r.import_top_sources[0]) || null;
-    H.push({ kind: 'reliance', reliance_pct: r.import_reliance_pct, reliance_year: r.import_reliance_year != null ? r.import_reliance_year : null, top_country: t ? t.country : null, top_share: t ? t.share_pct : null });
+    // the value read (import share of apparent consumption) carries its VOLUME companion when we have it:
+    // ERS per-capita availability — lbs/person/yr available domestically. Two honest views of "how much
+    // do we lean on imports": the customs-value ratio and the pounds-available proxy, never conflated.
+    H.push({ kind: 'reliance', reliance_pct: r.import_reliance_pct, reliance_year: r.import_reliance_year != null ? r.import_reliance_year : null, top_country: t ? t.country : null, top_share: t ? t.share_pct : null, percap_lbs: r.us_percap_lbs != null ? r.us_percap_lbs : null, percap_year: r.us_percap_lbs != null ? r.us_percap_year : null });
   }
   // catchpair — the SEAFOOD analog of reliance, kept deliberately distinct: US wild landings value set
   // beside the import value, but NEVER a supply share, because the domestic figure is WILD-caught while
@@ -417,6 +433,12 @@ function build() {
       us_landings_year: l ? l.year : null,
       us_landings_wild_minimal: l ? l.minimal : null,
     };
+  };
+  const percap = percapBySlug(); // slug -> { lbs, year }; null until the ERS file lands
+  const percapFields = (slug) => {
+    if (!percap) return {};
+    const p = percap[slug] || null;
+    return { us_percap_lbs: p ? p.lbs : null, us_percap_year: p ? p.year : null };
   };
   const nassFields = (slug, im) => {
     if (!nass) return {};
@@ -492,6 +514,7 @@ function build() {
       comovers: ed.comovers || null,
       ...nassFields(c.slug, im || null),
       ...landingsFields(c.slug),
+      ...percapFields(c.slug),
     };
     rec.harmony = harmonyFor(rec);
     return rec;
@@ -533,6 +556,7 @@ function build() {
       comovers: null, specialty: true,
       ...nassFields(sp.slug, im || null),
       ...landingsFields(sp.slug),
+      ...percapFields(sp.slug),
     };
     rec.harmony = harmonyFor(rec);
     records.push(rec);
