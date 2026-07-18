@@ -1,0 +1,172 @@
+{
+  "name": "Muntin Cost Index — open-data catalog",
+  "description": "Every published Muntin Cost Index dataset with its license, source, and the honesty note that travels with the data. Rights split (ADR-015/ADR-017): raw US-government passthroughs are CC0 (public domain); Muntin's value-added compilations are CC BY 4.0.",
+  "index": "https://muntin.digital/open/",
+  "splits": {
+    "gov_public_domain": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "muntin_compilation": "https://creativecommons.org/licenses/by/4.0/"
+  },
+  "counts": {
+    "total": 9,
+    "cc0": 7,
+    "ccby": 2,
+    "available": 7
+  },
+  "datasets": [
+    {
+      "id": "census-imports",
+      "title": "US import value by HS code (2010–2025)",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "rights": "US Government work — public domain (17 USC 105); redistributed verbatim.",
+      "source": "US Census Bureau — International Trade (imports/HS)",
+      "honesty_note": "General US import value (GEN_VAL_MO) by HS code, monthly, nominal — value, never volume (unpublished at HS6). Public domain.",
+      "downloads": [
+        {
+          "path": "data/census-imports.jsonl",
+          "url": "https://muntin.digital/data/census-imports.jsonl",
+          "bytes": 5298223
+        }
+      ],
+      "available": true,
+      "total_bytes": 5298223
+    },
+    {
+      "id": "census-import-origins-2025",
+      "title": "US import value by source country (2025)",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "rights": "US Government work — public domain (17 USC 105); redistributed verbatim.",
+      "source": "US Census Bureau — International Trade (imports by CTY)",
+      "honesty_note": "US import value by HS code × source country, 2025. Real countries only. A supply-diversity fact, never a risk forecast. Public domain.",
+      "downloads": [
+        {
+          "path": "data/census-import-origins-2025.jsonl",
+          "url": "https://muntin.digital/data/census-import-origins-2025.jsonl",
+          "bytes": 7124602
+        }
+      ],
+      "available": true,
+      "total_bytes": 7124602
+    },
+    {
+      "id": "census-exports",
+      "title": "US domestic export value by HS6 (2010–2025)",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "rights": "US Government work — public domain (17 USC 105); redistributed verbatim.",
+      "source": "US Census Bureau — International Trade (exports/HS, DF=1)",
+      "honesty_note": "US domestic exports (DF=1, US-produced goods excluding foreign re-exports) by HS6, monthly, nominal value. Public domain.",
+      "downloads": [
+        {
+          "path": "data/census-exports.jsonl",
+          "url": "https://muntin.digital/data/census-exports.jsonl",
+          "bytes": 3061358
+        }
+      ],
+      "available": true,
+      "total_bytes": 3061358
+    },
+    {
+      "id": "nass-domestic",
+      "title": "US domestic production, farm price, area, yield",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "rights": "US Government work — public domain (17 USC 105); redistributed verbatim.",
+      "source": "USDA National Agricultural Statistics Service — QuickStats (SURVEY)",
+      "honesty_note": "National annual production ($ + volume), farm-gate price received, area, yield. Farm price is farm-gate — a distinct point in the chain, never the wholesale reference. Public domain.",
+      "downloads": [
+        {
+          "path": "data/nass-domestic.jsonl",
+          "url": "https://muntin.digital/data/nass-domestic.jsonl",
+          "bytes": 11771173
+        }
+      ],
+      "available": true,
+      "total_bytes": 11771173
+    },
+    {
+      "id": "eia-energy",
+      "title": "US energy carriers — diesel, natural gas, electricity",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "rights": "US Government work — public domain (17 USC 105); redistributed verbatim.",
+      "source": "US Energy Information Administration",
+      "honesty_note": "Monthly No.2 diesel retail, Henry Hub natural gas spot, US average retail electricity. Public domain.",
+      "downloads": [
+        {
+          "path": "data/eia-energy.jsonl",
+          "url": "https://muntin.digital/data/eia-energy.jsonl",
+          "bytes": 36441
+        }
+      ],
+      "available": true,
+      "total_bytes": 36441
+    },
+    {
+      "id": "noaa-ghcn-weather",
+      "title": "Observed weather at import growing regions (GHCN-Daily)",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "rights": "US Government work — public domain (17 USC 105); redistributed verbatim.",
+      "source": "NOAA NCEI — Global Historical Climatology Network (Daily)",
+      "honesty_note": "Daily TMIN/TMAX/PRCP (tenths) at representative stations in import-origin growing regions, 1991–present. Observed weather, never a forecast. Public domain.",
+      "downloads": [],
+      "available": false,
+      "total_bytes": 0
+    },
+    {
+      "id": "noaa-cpc-oni",
+      "title": "CPC Oceanic Niño Index (ENSO regime)",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "rights": "US Government work — public domain (17 USC 105); redistributed verbatim.",
+      "source": "NOAA Climate Prediction Center",
+      "honesty_note": "The observed El Niño / La Niña (ENSO) regime index, 3-month seasons. Observed, never a forecast. Public domain.",
+      "downloads": [],
+      "available": false,
+      "total_bytes": 0
+    },
+    {
+      "id": "ingredient-state-record",
+      "title": "Ingredient State Record (fused corpus)",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "rights": "Compilation © Muntin Cost Index, licensed CC BY 4.0. Attribution: \"Muntin Cost Index, muntin.digital\".",
+      "source": "Muntin Cost Index — fuses Census imports/exports, NASS, and internal price/yield/events layers",
+      "honesty_note": "One present-state record per ingredient. Descriptive, never a forecast; wholesale a market-direction reference, never a delivered price; import value never volume; reliance an apparent-consumption proxy; co-occurrence never cause. Underlying import/export/production columns are US-gov public domain; the fused compilation is CC BY 4.0.",
+      "downloads": [
+        {
+          "path": "cost-index/ingredient-state-record.json",
+          "url": "https://muntin.digital/cost-index/ingredient-state-record.json",
+          "bytes": 448341
+        },
+        {
+          "path": "cost-index/ingredient-state-record.csv",
+          "url": "https://muntin.digital/cost-index/ingredient-state-record.csv",
+          "bytes": 33915
+        }
+      ],
+      "available": true,
+      "total_bytes": 482256
+    },
+    {
+      "id": "eia-energy-backdrop",
+      "title": "Energy backdrop (each carrier vs its own range)",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "rights": "Compilation © Muntin Cost Index, licensed CC BY 4.0. Attribution: \"Muntin Cost Index, muntin.digital\".",
+      "source": "Muntin Cost Index — computed from US EIA public-domain series",
+      "honesty_note": "Each energy carrier read against its own multi-decade range (percentile, band, YoY). A coincident site-wide backdrop, never a per-ingredient driver, never a forecast. Underlying series are US-gov public domain; the computed reads are CC BY 4.0.",
+      "downloads": [
+        {
+          "path": "cost-index/eia-energy-backdrop.json",
+          "url": "https://muntin.digital/cost-index/eia-energy-backdrop.json",
+          "bytes": 62666
+        }
+      ],
+      "available": true,
+      "total_bytes": 62666
+    }
+  ]
+}
