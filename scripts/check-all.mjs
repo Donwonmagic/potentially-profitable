@@ -646,6 +646,7 @@ const CHECKS = [
   // as articles are refreshed in Phase 2+.
   ['Article graphics (idem)','build-article-graphics.mjs',  '--check'],
   ['Ingredient state record (idem)','build-ingredient-state-record.mjs', '--check'],
+  ['Ingredient state record honesty','check-ingredient-state-record.mjs'],
   // Audio coverage — manifest-driven audit of which written pieces
   // ship a studio audio edition in which languages. Warn-only during
   // the studio-audio rollout (pre-existing ENGLISH-IN-FOREIGN issues
