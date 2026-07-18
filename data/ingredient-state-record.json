@@ -1,5 +1,5 @@
 {
-  "_doc": "One present-state record per ingredient, fusing pricing posture + own-baseline band, edible/cooked yield + trim tax, cheapest month, the price hedge swap, present pipeline direction, and the US import stream. Every field is descriptive of the tracked record — never a delivered/retail price, never a forecast, and co-occurrence is never cause. us_import_value_usd is the latest full calendar year of US general import VALUE for the ingredient's HS6 (US Census, public domain), nominal (mixes volume and price) — never import volume (not published at HS6). import_peak_months are the three highest-import calendar months averaged over 2010-2025; import_peak_quarter_share is the peak quarter's share of a typical year's import value (a within-year ratio, inflation-immune) — both descriptive seasonality, the supply-timing tell of when an ingredient leans on imports. import_top_sources / import_source_hhi / import_source_concentration describe the 2025 source-country mix (real countries only, trade blocs and continents excluded) and its Herfindahl concentration — a descriptive supply-diversity fact (raspberry ~100% Mexico, lobster ~99% Canada), never a risk forecast. import_annual_usd carries the full 2010-2025 annual series; import_yoy_pct is the latest full year versus the prior year (a descriptive change, nominal). notable_events_n, median_shock_days and biggest_move_pct+date summarize the ingredient's own notable sustained price moves in the deep history (descriptive, from the events dataset — a departure from its own baseline, never a delivered price). comovers lists the ingredients that most often moved the same way in the same six-week window, as k of this ingredient's own n moves — co-occurrence, NEVER cause. Fields are null where a layer does not cover an ingredient.",
+  "_doc": "One present-state record per ingredient, fusing pricing posture + own-baseline band, edible/cooked yield + trim tax, cheapest month, the price hedge swap, present pipeline direction, and the US import stream. Every field is descriptive of the tracked record — never a delivered/retail price, never a forecast, and co-occurrence is never cause. us_import_value_usd is the latest full calendar year of US general import VALUE for the ingredient's HS6 (US Census, public domain), nominal (mixes volume and price) — never import volume (not published at HS6). import_peak_months are the three highest-import calendar months averaged over 2010-2025; import_peak_quarter_share is the peak quarter's share of a typical year's import value (a within-year ratio, inflation-immune) — both descriptive seasonality, the supply-timing tell of when an ingredient leans on imports. import_top_sources / import_source_hhi / import_source_concentration describe the 2025 source-country mix (real countries only, trade blocs and continents excluded) and its Herfindahl concentration — a descriptive supply-diversity fact (raspberry ~100% Mexico, lobster ~99% Canada), never a risk forecast. import_annual_usd carries the full 2010-2025 annual series; import_yoy_pct is the latest full year versus the prior year (a descriptive change, nominal). notable_events_n, median_shock_days and biggest_move_pct+date summarize the ingredient's own notable sustained price moves in the deep history (descriptive, from the events dataset — a departure from its own baseline, never a delivered price). comovers lists the ingredients that most often moved the same way in the same six-week window, as k of this ingredient's own n moves — co-occurrence, NEVER cause. us_export_value_usd is the latest full year of US DOMESTIC exports (US Census, DF=1 = US-produced goods excluding foreign re-exports, HS6, nominal value). us_production_usd + farm_price are USDA NASS national annual figures (public domain); farm_price is a FARM-GATE price — a distinct point in the chain, never the wholesale reference. import_reliance_pct is import value as a share of APPARENT CONSUMPTION (production + imports − exports), all year-aligned — a descriptive cross-point proxy (the figures sit at different points in the chain: import value carries freight the farm-gate price does not), never a supply-security score, and withheld where the source granularities cannot form a clean share. Fields are null where a layer does not cover an ingredient.",
   "dateModified": "2026-07-10",
   "records": [
     {
@@ -17,6 +17,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 11228504,
+      "us_export_value_usd": 26608205,
+      "us_export_year": 2025,
       "import_years": "2023-2025",
       "import_peak_months": [
         1,
@@ -131,6 +133,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 2513367507,
+      "us_export_value_usd": 26546955,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         3,
@@ -256,6 +260,8 @@
       "pressure_dir": "building",
       "pressure_conf": "moderate",
       "us_import_value_usd": 1094021575,
+      "us_export_value_usd": 6617992660,
+      "us_export_year": 2025,
       "import_years": "2017-2025",
       "import_peak_months": [
         3,
@@ -376,6 +382,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 18810421,
+      "us_export_value_usd": 21393136,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         2,
@@ -462,7 +470,7 @@
       "us_yield": 233.8,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 40,
+      "import_reliance_pct": 75,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -474,7 +482,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 40,
+          "reliance_pct": 75,
           "reliance_year": 2025,
           "top_country": "Canada",
           "top_share": 51
@@ -503,6 +511,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 36039047,
+      "us_export_value_usd": 178881774,
+      "us_export_year": 2025,
       "import_years": "2022-2025",
       "import_peak_months": [
         1,
@@ -573,20 +583,13 @@
       "us_yield": 400,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "2000-2025",
-      "import_reliance_pct": 23,
-      "import_reliance_year": 2025,
+      "import_reliance_pct": null,
+      "import_reliance_year": null,
       "harmony": [
         {
           "kind": "supplyshape",
           "concentration": "concentrated",
           "hhi": 0.66,
-          "top_country": "Mexico",
-          "top_share": 78
-        },
-        {
-          "kind": "reliance",
-          "reliance_pct": 23,
-          "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 78
         },
@@ -614,6 +617,8 @@
       "pressure_dir": "steady",
       "pressure_conf": "moderate",
       "us_import_value_usd": 403587927,
+      "us_export_value_usd": 508739314,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         9,
@@ -734,6 +739,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 6685468,
+      "us_export_value_usd": 452139992,
+      "us_export_year": 2025,
       "import_years": "2023-2025",
       "import_peak_months": [
         1,
@@ -803,7 +810,7 @@
       "us_yield": 240,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1998-2025",
-      "import_reliance_pct": 0,
+      "import_reliance_pct": 1,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -815,7 +822,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 0,
+          "reliance_pct": 1,
           "reliance_year": 2025,
           "top_country": "Canada",
           "top_share": 92
@@ -844,6 +851,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 38481563,
+      "us_export_value_usd": 26608205,
+      "us_export_year": 2025,
       "import_years": "2023-2025",
       "import_peak_months": [
         1,
@@ -917,7 +926,7 @@
       "us_yield": 171.7,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "2000-2025",
-      "import_reliance_pct": 14,
+      "import_reliance_pct": 16,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -929,7 +938,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 14,
+          "reliance_pct": 16,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 95
@@ -958,6 +967,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 75894995,
+      "us_export_value_usd": 178881774,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         8,
@@ -1044,7 +1055,7 @@
       "us_yield": 444.4,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 12,
+      "import_reliance_pct": 17,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -1056,7 +1067,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 12,
+          "reliance_pct": 17,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 54
@@ -1085,6 +1096,8 @@
       "pressure_dir": "building",
       "pressure_conf": "high",
       "us_import_value_usd": 1429354808,
+      "us_export_value_usd": 1275420523,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         10,
@@ -1205,6 +1218,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 80886723,
+      "us_export_value_usd": 156793006,
+      "us_export_year": 2025,
       "import_years": "2021-2025",
       "import_peak_months": [
         1,
@@ -1310,6 +1325,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 28227186,
+      "us_export_value_usd": 21393136,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         1,
@@ -1426,6 +1443,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "us_export_value_usd": null,
+      "us_export_year": null,
       "import_years": null,
       "import_peak_months": null,
       "import_peak_quarter_share": null,
@@ -1492,6 +1511,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 94754836,
+      "us_export_value_usd": 17060433,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         1,
@@ -1612,6 +1633,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 262481127,
+      "us_export_value_usd": 13369793,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         1,
@@ -1698,7 +1721,7 @@
       "us_yield": 140,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 52,
+      "import_reliance_pct": 53,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -1710,7 +1733,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 52,
+          "reliance_pct": 53,
           "reliance_year": 2025,
           "top_country": "China",
           "top_share": 38
@@ -1739,6 +1762,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 118969213,
+      "us_export_value_usd": 1950139,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         3,
@@ -1823,7 +1848,7 @@
       "us_yield": 30000,
       "us_yield_unit": "LB / ACRE",
       "production_years": "1953-2008",
-      "import_reliance_pct": 98,
+      "import_reliance_pct": 99,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -1835,7 +1860,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 98,
+          "reliance_pct": 99,
           "reliance_year": 2025,
           "top_country": "Peru",
           "top_share": 41
@@ -1864,6 +1889,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 33115896,
+      "us_export_value_usd": 26780866,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         7,
@@ -1950,7 +1977,7 @@
       "us_yield": 267,
       "us_yield_unit": "BOXES / ACRE",
       "production_years": "1910-2026",
-      "import_reliance_pct": 18,
+      "import_reliance_pct": 21,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -1962,7 +1989,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 18,
+          "reliance_pct": 21,
           "reliance_year": 2025,
           "top_country": "South Africa",
           "top_share": 47
@@ -1991,6 +2018,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 93190843,
+      "us_export_value_usd": 110936104,
+      "us_export_year": 2025,
       "import_years": "2023-2025",
       "import_peak_months": [
         3,
@@ -2064,7 +2093,7 @@
       "us_yield": 198.8,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 47,
+      "import_reliance_pct": 100,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -2076,7 +2105,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 47,
+          "reliance_pct": 100,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 94
@@ -2105,6 +2134,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 23708144,
+      "us_export_value_usd": 5899602,
+      "us_export_year": 2025,
       "import_years": "2022-2025",
       "import_peak_months": [
         1,
@@ -2213,6 +2244,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 971844855,
+      "us_export_value_usd": 143265469,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         7,
@@ -2299,7 +2332,7 @@
       "us_yield": 442,
       "us_yield_unit": "BOXES / ACRE",
       "production_years": "1910-2026",
-      "import_reliance_pct": 57,
+      "import_reliance_pct": 62,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -2311,7 +2344,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 57,
+          "reliance_pct": 62,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 76
@@ -2340,6 +2373,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "us_export_value_usd": null,
+      "us_export_year": null,
       "import_years": null,
       "import_peak_months": null,
       "import_peak_quarter_share": null,
@@ -2406,6 +2441,8 @@
       "pressure_dir": "building",
       "pressure_conf": "high",
       "us_import_value_usd": 340952628,
+      "us_export_value_usd": 231202840,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         3,
@@ -2492,7 +2529,7 @@
       "us_yield": 599.6,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 18,
+      "import_reliance_pct": 20,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -2504,7 +2541,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 18,
+          "reliance_pct": 20,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 64
@@ -2533,6 +2570,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 128221620,
+      "us_export_value_usd": 136791793,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         3,
@@ -2617,7 +2656,7 @@
       "us_yield": 18.4,
       "us_yield_unit": "TONS / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 31,
+      "import_reliance_pct": 46,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -2629,7 +2668,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 31,
+          "reliance_pct": 46,
           "reliance_year": 2025,
           "top_country": "Argentina",
           "top_share": 54
@@ -2658,6 +2697,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 893627234,
+      "us_export_value_usd": 8790417,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         4,
@@ -2744,7 +2785,7 @@
       "us_yield": null,
       "us_yield_unit": null,
       "production_years": "1997-1999",
-      "import_reliance_pct": 90,
+      "import_reliance_pct": 91,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -2756,7 +2797,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 90,
+          "reliance_pct": 91,
           "reliance_year": 2025,
           "top_country": "Costa Rica",
           "top_share": 83
@@ -2785,6 +2826,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 40044645,
+      "us_export_value_usd": 110936104,
+      "us_export_year": 2025,
       "import_years": "2023-2025",
       "import_peak_months": [
         1,
@@ -2854,7 +2897,7 @@
       "us_yield": 198.8,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 27,
+      "import_reliance_pct": 100,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -2866,7 +2909,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 27,
+          "reliance_pct": 100,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 100
@@ -2895,6 +2938,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 270149638,
+      "us_export_value_usd": 1349275333,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         3,
@@ -3009,6 +3054,8 @@
       "pressure_dir": "easing",
       "pressure_conf": "moderate",
       "us_import_value_usd": 619880426,
+      "us_export_value_usd": 2928080593,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         3,
@@ -3136,6 +3183,8 @@
       "pressure_dir": "easing",
       "pressure_conf": "moderate",
       "us_import_value_usd": 60286047,
+      "us_export_value_usd": 2028690834,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         5,
@@ -3263,6 +3312,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 340952628,
+      "us_export_value_usd": 231202840,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         3,
@@ -3349,7 +3400,7 @@
       "us_yield": 599.6,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 18,
+      "import_reliance_pct": 20,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -3361,7 +3412,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 18,
+          "reliance_pct": 20,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 64
@@ -3390,6 +3441,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 319512613,
+      "us_export_value_usd": 326517674,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         1,
@@ -3476,7 +3529,7 @@
       "us_yield": 460,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1866-2025",
-      "import_reliance_pct": 6,
+      "import_reliance_pct": 7,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -3488,7 +3541,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 6,
+          "reliance_pct": 7,
           "reliance_year": 2025,
           "top_country": "Canada",
           "top_share": 100
@@ -3517,6 +3570,8 @@
       "pressure_dir": "building",
       "pressure_conf": "moderate",
       "us_import_value_usd": 589972925,
+      "us_export_value_usd": 6617992660,
+      "us_export_year": 2025,
       "import_years": "2017-2025",
       "import_peak_months": [
         8,
@@ -3637,6 +3692,8 @@
       "pressure_dir": "easing",
       "pressure_conf": "high",
       "us_import_value_usd": 319512613,
+      "us_export_value_usd": 326517674,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         1,
@@ -3723,7 +3780,7 @@
       "us_yield": 460,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1866-2025",
-      "import_reliance_pct": 6,
+      "import_reliance_pct": 7,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -3735,7 +3792,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 6,
+          "reliance_pct": 7,
           "reliance_year": 2025,
           "top_country": "Canada",
           "top_share": 100
@@ -3764,6 +3821,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "us_export_value_usd": null,
+      "us_export_year": null,
       "import_years": null,
       "import_peak_months": null,
       "import_peak_quarter_share": null,
@@ -3830,6 +3889,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 1094021575,
+      "us_export_value_usd": 6617992660,
+      "us_export_year": 2025,
       "import_years": "2017-2025",
       "import_peak_months": [
         3,
@@ -3950,6 +4011,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "us_export_value_usd": null,
+      "us_export_year": null,
       "import_years": null,
       "import_peak_months": null,
       "import_peak_quarter_share": null,
@@ -4016,6 +4079,8 @@
       "pressure_dir": "easing",
       "pressure_conf": "moderate",
       "us_import_value_usd": null,
+      "us_export_value_usd": null,
+      "us_export_year": null,
       "import_years": null,
       "import_peak_months": null,
       "import_peak_quarter_share": null,
@@ -4082,6 +4147,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "us_export_value_usd": null,
+      "us_export_year": null,
       "import_years": null,
       "import_peak_months": null,
       "import_peak_quarter_share": null,
@@ -4140,6 +4207,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 120429044,
+      "us_export_value_usd": 1059908853,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         5,
@@ -4226,7 +4295,7 @@
       "us_yield": 37400,
       "us_yield_unit": "LB / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 5,
+      "import_reliance_pct": 8,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -4238,7 +4307,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 5,
+          "reliance_pct": 8,
           "reliance_year": 2025,
           "top_country": "Chile",
           "top_share": 43
@@ -4267,6 +4336,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 2201328,
+      "us_export_value_usd": 5445714,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         1,
@@ -4351,7 +4422,7 @@
       "us_yield": 155,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 2,
+      "import_reliance_pct": 3,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -4363,7 +4434,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 2,
+          "reliance_pct": 3,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 96
@@ -4392,6 +4463,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 525180705,
+      "us_export_value_usd": 72931574,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         1,
@@ -4478,7 +4551,7 @@
       "us_yield": 40.5,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 89,
+      "import_reliance_pct": 100,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -4490,7 +4563,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 89,
+          "reliance_pct": 100,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 49
@@ -4519,6 +4592,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 3656452928,
+      "us_export_value_usd": 18495846,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         1,
@@ -4646,6 +4721,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 1688128702,
+      "us_export_value_usd": 110936104,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         1,
@@ -4732,7 +4809,7 @@
       "us_yield": 327.5,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 78,
+      "import_reliance_pct": 82,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -4744,7 +4821,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 78,
+          "reliance_pct": 82,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 73
@@ -4773,6 +4850,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 365431178,
+      "us_export_value_usd": 89872833,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         1,
@@ -4859,7 +4938,7 @@
       "us_yield": 245.6,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 60,
+      "import_reliance_pct": 71,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -4871,7 +4950,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 60,
+          "reliance_pct": 71,
           "reliance_year": 2025,
           "top_country": "Guatemala",
           "top_share": 58
@@ -4900,6 +4979,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 104322158,
+      "us_export_value_usd": 97488668,
+      "us_export_year": 2025,
       "import_years": "2022-2025",
       "import_peak_months": [
         1,
@@ -4974,7 +5055,7 @@
       "us_yield": 286,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 12,
+      "import_reliance_pct": 14,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -4986,7 +5067,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 12,
+          "reliance_pct": 14,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 75
@@ -5015,6 +5096,8 @@
       "pressure_dir": "easing",
       "pressure_conf": "moderate",
       "us_import_value_usd": null,
+      "us_export_value_usd": null,
+      "us_export_year": null,
       "import_years": null,
       "import_peak_months": null,
       "import_peak_quarter_share": null,
@@ -5081,6 +5164,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "us_export_value_usd": null,
+      "us_export_year": null,
       "import_years": null,
       "import_peak_months": null,
       "import_peak_quarter_share": null,
@@ -5147,6 +5232,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 67124101,
+      "us_export_value_usd": 156793006,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         1,
@@ -5231,7 +5318,7 @@
       "us_yield": 122,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 11,
+      "import_reliance_pct": 14,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -5243,7 +5330,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 11,
+          "reliance_pct": 14,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 87
@@ -5272,6 +5359,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 1311271843,
+      "us_export_value_usd": 32074884,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         1,
@@ -5358,7 +5447,7 @@
       "us_yield": 170.2,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 84,
+      "import_reliance_pct": 85,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -5370,7 +5459,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 84,
+          "reliance_pct": 85,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 54
@@ -5399,6 +5488,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 253323896,
+      "us_export_value_usd": 45083913,
+      "us_export_year": 2025,
       "import_years": "2010-2024",
       "import_peak_months": [
         1,
@@ -5471,12 +5562,12 @@
       "us_yield": 83.7,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1909-2025",
-      "import_reliance_pct": 49,
+      "import_reliance_pct": 54,
       "import_reliance_year": 2024,
       "harmony": [
         {
           "kind": "reliance",
-          "reliance_pct": 49,
+          "reliance_pct": 54,
           "reliance_year": 2024,
           "top_country": null,
           "top_share": null
@@ -5505,6 +5596,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 20123768,
+      "us_export_value_usd": 178881774,
+      "us_export_year": 2025,
       "import_years": "2023-2025",
       "import_peak_months": [
         8,
@@ -5574,7 +5667,7 @@
       "us_yield": 444.4,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 4,
+      "import_reliance_pct": 5,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -5586,7 +5679,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 4,
+          "reliance_pct": 5,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 51
@@ -5615,6 +5708,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 35603542,
+      "us_export_value_usd": 156793006,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         3,
@@ -5699,20 +5794,13 @@
       "us_yield": 60,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "2000-2001",
-      "import_reliance_pct": 81,
-      "import_reliance_year": 2025,
+      "import_reliance_pct": null,
+      "import_reliance_year": null,
       "harmony": [
         {
           "kind": "supplyshape",
           "concentration": "concentrated",
           "hhi": 0.45,
-          "top_country": "Honduras",
-          "top_share": 60
-        },
-        {
-          "kind": "reliance",
-          "reliance_pct": 81,
-          "reliance_year": 2025,
           "top_country": "Honduras",
           "top_share": 60
         },
@@ -5740,6 +5828,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "us_export_value_usd": null,
+      "us_export_year": null,
       "import_years": null,
       "import_peak_months": null,
       "import_peak_quarter_share": null,
@@ -5806,6 +5896,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 33884000,
+      "us_export_value_usd": 452139992,
+      "us_export_year": 2025,
       "import_years": "2023-2025",
       "import_peak_months": [
         1,
@@ -5875,7 +5967,7 @@
       "us_yield": 240,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1998-2025",
-      "import_reliance_pct": 2,
+      "import_reliance_pct": 4,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -5887,7 +5979,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 2,
+          "reliance_pct": 4,
           "reliance_year": 2025,
           "top_country": "Canada",
           "top_share": 53
@@ -5916,6 +6008,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 24325079,
+      "us_export_value_usd": 38211330,
+      "us_export_year": 2025,
       "import_years": "2023-2025",
       "import_peak_months": [
         1,
@@ -5989,7 +6083,7 @@
       "us_yield": 45.1,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1928-2025",
-      "import_reliance_pct": 25,
+      "import_reliance_pct": 41,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -6001,7 +6095,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 25,
+          "reliance_pct": 41,
           "reliance_year": 2025,
           "top_country": "Guatemala",
           "top_share": 51
@@ -6030,6 +6124,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 88409384,
+      "us_export_value_usd": 119242389,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         1,
@@ -6116,7 +6212,7 @@
       "us_yield": 101.6,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 17,
+      "import_reliance_pct": 22,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -6128,7 +6224,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 17,
+          "reliance_pct": 22,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 71
@@ -6157,6 +6253,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 452535301,
+      "us_export_value_usd": 81756257,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         3,
@@ -6243,7 +6341,7 @@
       "us_yield": 391.4,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 38,
+      "import_reliance_pct": 41,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -6255,7 +6353,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 38,
+          "reliance_pct": 41,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 77
@@ -6284,6 +6382,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 303364067,
+      "us_export_value_usd": 178881774,
+      "us_export_year": 2025,
       "import_years": "2023-2025",
       "import_peak_months": [
         1,
@@ -6357,7 +6457,7 @@
       "us_yield": 110,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 28,
+      "import_reliance_pct": 34,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -6369,7 +6469,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 28,
+          "reliance_pct": 34,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 91
@@ -6398,6 +6498,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 86224085,
+      "us_export_value_usd": 23624106,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         2,
@@ -6484,7 +6586,7 @@
       "us_yield": 180,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1997-2001",
-      "import_reliance_pct": 86,
+      "import_reliance_pct": 100,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -6496,7 +6598,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 86,
+          "reliance_pct": 100,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 87
@@ -6525,6 +6627,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 33884000,
+      "us_export_value_usd": 452139992,
+      "us_export_year": 2025,
       "import_years": "2023-2025",
       "import_peak_months": [
         1,
@@ -6594,7 +6698,7 @@
       "us_yield": 240,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1998-2025",
-      "import_reliance_pct": 2,
+      "import_reliance_pct": 4,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -6606,7 +6710,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 2,
+          "reliance_pct": 4,
           "reliance_year": 2025,
           "top_country": "Canada",
           "top_share": 53
@@ -6635,6 +6739,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 1039401007,
+      "us_export_value_usd": 143716226,
+      "us_export_year": 2025,
       "import_years": "2018-2025",
       "import_peak_months": [
         3,
@@ -6713,7 +6819,7 @@
       "us_yield": 11900,
       "us_yield_unit": "LB / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 74,
+      "import_reliance_pct": 83,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -6725,7 +6831,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 74,
+          "reliance_pct": 83,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 100
@@ -6754,6 +6860,8 @@
       "pressure_dir": "building",
       "pressure_conf": "high",
       "us_import_value_usd": 159408037,
+      "us_export_value_usd": 452139992,
+      "us_export_year": 2025,
       "import_years": "2023-2025",
       "import_peak_months": [
         1,
@@ -6823,7 +6931,7 @@
       "us_yield": 361.2,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1998-2025",
-      "import_reliance_pct": 5,
+      "import_reliance_pct": 6,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -6835,7 +6943,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 5,
+          "reliance_pct": 6,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 89
@@ -6864,6 +6972,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 30974507,
+      "us_export_value_usd": 110936104,
+      "us_export_year": 2025,
       "import_years": "2023-2025",
       "import_peak_months": [
         3,
@@ -6937,7 +7047,7 @@
       "us_yield": 198.8,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 22,
+      "import_reliance_pct": 100,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -6949,7 +7059,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 22,
+          "reliance_pct": 100,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 100
@@ -6978,6 +7088,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 41823416,
+      "us_export_value_usd": 26608205,
+      "us_export_year": 2025,
       "import_years": "2022-2025",
       "import_peak_months": [
         2,
@@ -7052,7 +7164,7 @@
       "us_yield": 171.7,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "2000-2025",
-      "import_reliance_pct": 15,
+      "import_reliance_pct": 17,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -7064,7 +7176,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 15,
+          "reliance_pct": 17,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 100
@@ -7093,6 +7205,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "us_export_value_usd": null,
+      "us_export_year": null,
       "import_years": null,
       "import_peak_months": null,
       "import_peak_quarter_share": null,
@@ -7138,6 +7252,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 2078884911,
+      "us_export_value_usd": 190220969,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         1,
@@ -7224,7 +7340,7 @@
       "us_yield": 7340,
       "us_yield_unit": "LB / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 90,
+      "import_reliance_pct": 99,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -7236,7 +7352,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 90,
+          "reliance_pct": 99,
           "reliance_year": 2025,
           "top_country": "Peru",
           "top_share": 56
@@ -7265,6 +7381,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 351719290,
+      "us_export_value_usd": 8097326,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         1,
@@ -7338,7 +7456,7 @@
       "us_yield": 5.15,
       "us_yield_unit": "LB / SQ FT",
       "production_years": "1997-2025",
-      "import_reliance_pct": 28,
+      "import_reliance_pct": 29,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -7350,7 +7468,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 28,
+          "reliance_pct": 29,
           "reliance_year": 2025,
           "top_country": "Canada",
           "top_share": 94
@@ -7379,6 +7497,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 164038992,
+      "us_export_value_usd": 112448070,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         1,
@@ -7506,6 +7626,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 109055998,
+      "us_export_value_usd": 202628265,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         8,
@@ -7592,7 +7714,7 @@
       "us_yield": 180.4,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 18,
+      "import_reliance_pct": 28,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -7604,7 +7726,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 18,
+          "reliance_pct": 28,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 72
@@ -7633,6 +7755,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 78383776,
+      "us_export_value_usd": 76309506,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         1,
@@ -7719,7 +7843,7 @@
       "us_yield": 540,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 14,
+      "import_reliance_pct": 16,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -7731,7 +7855,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 14,
+          "reliance_pct": 16,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 90
@@ -7760,6 +7884,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 2605174,
+      "us_export_value_usd": 274506,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         6,
@@ -7858,6 +7984,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 176702,
+      "us_export_value_usd": 178881774,
+      "us_export_year": 2025,
       "import_years": "2022-2025",
       "import_peak_months": [
         1,
@@ -7928,20 +8056,13 @@
       "us_yield": 400,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "2000-2025",
-      "import_reliance_pct": 0,
-      "import_reliance_year": 2025,
+      "import_reliance_pct": null,
+      "import_reliance_year": null,
       "harmony": [
         {
           "kind": "supplyshape",
           "concentration": "concentrated",
           "hhi": 0.53,
-          "top_country": "Mexico",
-          "top_share": 62
-        },
-        {
-          "kind": "reliance",
-          "reliance_pct": 0,
-          "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 62
         },
@@ -7969,6 +8090,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 115639127,
+      "us_export_value_usd": 235937533,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         4,
@@ -8082,6 +8205,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 58884800,
+      "us_export_value_usd": 5899602,
+      "us_export_year": 2025,
       "import_years": "2022-2025",
       "import_peak_months": [
         9,
@@ -8197,6 +8322,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 5338810226,
+      "us_export_value_usd": 6617992660,
+      "us_export_year": 2025,
       "import_years": "2017-2025",
       "import_peak_months": [
         1,
@@ -8297,6 +8424,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 83351075,
+      "us_export_value_usd": 101771548,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         3,
@@ -8424,6 +8553,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 124230399,
+      "us_export_value_usd": 110936104,
+      "us_export_year": 2025,
       "import_years": "2023-2025",
       "import_peak_months": [
         1,
@@ -8497,7 +8628,7 @@
       "us_yield": 198.8,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 54,
+      "import_reliance_pct": 100,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -8509,7 +8640,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 54,
+          "reliance_pct": 100,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 98
@@ -8538,6 +8669,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 11968947,
+      "us_export_value_usd": 178881774,
+      "us_export_year": 2025,
       "import_years": "2022-2025",
       "import_peak_months": [
         1,
@@ -8608,20 +8741,13 @@
       "us_yield": 400,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "2000-2025",
-      "import_reliance_pct": 9,
-      "import_reliance_year": 2025,
+      "import_reliance_pct": null,
+      "import_reliance_year": null,
       "harmony": [
         {
           "kind": "supplyshape",
           "concentration": "single-source",
           "hhi": 0.92,
-          "top_country": "Mexico",
-          "top_share": 96
-        },
-        {
-          "kind": "reliance",
-          "reliance_pct": 9,
-          "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 96
         },
@@ -8649,6 +8775,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 971844855,
+      "us_export_value_usd": 143265469,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         7,
@@ -8769,6 +8897,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 15776654,
+      "us_export_value_usd": 28044,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         10,
@@ -8869,6 +8999,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "us_export_value_usd": null,
+      "us_export_year": null,
       "import_years": null,
       "import_peak_months": null,
       "import_peak_quarter_share": null,
@@ -8914,6 +9046,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "us_export_value_usd": null,
+      "us_export_year": null,
       "import_years": null,
       "import_peak_months": null,
       "import_peak_quarter_share": null,
@@ -8959,6 +9093,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 11184680,
+      "us_export_value_usd": 21393136,
+      "us_export_year": 2025,
       "import_years": "2023-2025",
       "import_peak_months": [
         8,
@@ -9066,6 +9202,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 2463146905,
+      "us_export_value_usd": 19830435,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         3,
@@ -9164,6 +9302,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 2463146905,
+      "us_export_value_usd": 19830435,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         3,
@@ -9262,6 +9402,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 21485842,
+      "us_export_value_usd": 223904,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         1,
@@ -9362,6 +9504,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 1617426401,
+      "us_export_value_usd": 17622884,
+      "us_export_year": 2025,
       "import_years": "2021-2025",
       "import_peak_months": [
         1,
@@ -9451,6 +9595,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 3318448820,
+      "us_export_value_usd": 17622884,
+      "us_export_year": 2025,
       "import_years": "2021-2025",
       "import_peak_months": [
         8,
@@ -9540,6 +9686,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 1617426401,
+      "us_export_value_usd": 17622884,
+      "us_export_year": 2025,
       "import_years": "2021-2025",
       "import_peak_months": [
         1,
@@ -9629,6 +9777,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 243728609,
+      "us_export_value_usd": 203215083,
+      "us_export_year": 2025,
       "import_years": "2017-2025",
       "import_peak_months": [
         1,
@@ -9722,6 +9872,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 45466596,
+      "us_export_value_usd": 159450133,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         2,
@@ -9795,7 +9947,7 @@
       "us_yield": 208.8,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1868-2025",
-      "import_reliance_pct": 5,
+      "import_reliance_pct": 7,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -9807,7 +9959,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 5,
+          "reliance_pct": 7,
           "reliance_year": 2025,
           "top_country": "China",
           "top_share": 58
@@ -9829,6 +9981,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "us_export_value_usd": null,
+      "us_export_year": null,
       "import_years": null,
       "import_peak_months": null,
       "import_peak_quarter_share": null,
@@ -9874,6 +10028,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": null,
+      "us_export_value_usd": null,
+      "us_export_year": null,
       "import_years": null,
       "import_peak_months": null,
       "import_peak_quarter_share": null,
@@ -9919,6 +10075,8 @@
       "pressure_dir": "easing",
       "pressure_conf": "moderate",
       "us_import_value_usd": 2847479076,
+      "us_export_value_usd": 97488668,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         1,
@@ -10005,7 +10163,7 @@
       "us_yield": 286,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 79,
+      "import_reliance_pct": 81,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -10017,7 +10175,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 79,
+          "reliance_pct": 81,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 81
@@ -10046,6 +10204,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 435883813,
+      "us_export_value_usd": 2011368,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         6,
@@ -10144,6 +10304,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 1554237243,
+      "us_export_value_usd": 30379656,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         5,
@@ -10244,6 +10406,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 173877021,
+      "us_export_value_usd": 25219556,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         6,
@@ -10344,6 +10508,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 641565871,
+      "us_export_value_usd": 45253177,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         6,
@@ -10444,6 +10610,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 1084355850,
+      "us_export_value_usd": 59735771,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         3,
@@ -10542,6 +10710,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 52131098,
+      "us_export_value_usd": 4224600,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         3,
@@ -10642,6 +10812,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 189586663,
+      "us_export_value_usd": 26608205,
+      "us_export_year": 2025,
       "import_years": "2022-2025",
       "import_peak_months": [
         1,
@@ -10716,7 +10888,7 @@
       "us_yield": 171.7,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "2000-2025",
-      "import_reliance_pct": 45,
+      "import_reliance_pct": 48,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -10728,7 +10900,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 45,
+          "reliance_pct": 48,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 95
@@ -10757,6 +10929,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 136617347,
+      "us_export_value_usd": 62313455,
+      "us_export_year": 2025,
       "import_years": "2021-2024",
       "import_peak_months": [
         1,
@@ -10825,6 +10999,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 407166305,
+      "us_export_value_usd": 5961273,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         8,
@@ -10924,6 +11100,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 54268762,
+      "us_export_value_usd": 156793006,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         3,
@@ -11023,6 +11201,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 23517226,
+      "us_export_value_usd": 156793006,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         1,
@@ -11122,6 +11302,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 18386169,
+      "us_export_value_usd": 156793006,
+      "us_export_year": 2025,
       "import_years": "2023-2025",
       "import_peak_months": [
         2,
@@ -11202,6 +11384,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 33398354,
+      "us_export_value_usd": 2210567,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         9,
@@ -11303,6 +11487,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 156315447,
+      "us_export_value_usd": 1275420523,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         10,
@@ -11404,6 +11590,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 403169168,
+      "us_export_value_usd": 1275420523,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         8,
@@ -11505,6 +11693,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 291007582,
+      "us_export_value_usd": 105535931,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         8,
@@ -11606,6 +11796,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 205648874,
+      "us_export_value_usd": 420050494,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         7,
@@ -11705,6 +11897,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 62002605,
+      "us_export_value_usd": 420050494,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         1,
@@ -11804,6 +11998,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 43192804,
+      "us_export_value_usd": 15217009,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         2,
@@ -11903,6 +12099,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 19640862,
+      "us_export_value_usd": 7138056,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         3,
@@ -12004,6 +12202,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 1034135901,
+      "us_export_value_usd": 552428586,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         1,
@@ -12078,7 +12278,7 @@
       "us_yield": 504,
       "us_yield_unit": "CWT / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 19,
+      "import_reliance_pct": 21,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -12090,7 +12290,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 19,
+          "reliance_pct": 21,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 98
@@ -12112,6 +12312,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 2589597910,
+      "us_export_value_usd": 683614569,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         1,
@@ -12186,7 +12388,7 @@
       "us_yield": 5.93,
       "us_yield_unit": "TONS / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 61,
+      "import_reliance_pct": 72,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -12198,7 +12400,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 61,
+          "reliance_pct": 72,
           "reliance_year": 2025,
           "top_country": "Peru",
           "top_share": 47
@@ -12220,6 +12422,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 925453481,
+      "us_export_value_usd": 14940255,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         5,
@@ -12321,6 +12525,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 346923331,
+      "us_export_value_usd": 28598819,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         5,
@@ -12395,7 +12601,7 @@
       "us_yield": 7.8,
       "us_yield_unit": "TONS / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 75,
+      "import_reliance_pct": 80,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -12407,7 +12613,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 75,
+          "reliance_pct": 80,
           "reliance_year": 2025,
           "top_country": "New Zealand",
           "top_share": 56
@@ -12429,6 +12635,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 144816481,
+      "us_export_value_usd": 8674019,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         4,
@@ -12503,7 +12711,7 @@
       "us_yield": 14900,
       "us_yield_unit": "LB / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 96,
+      "import_reliance_pct": 100,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -12515,7 +12723,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 96,
+          "reliance_pct": 100,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 89
@@ -12537,6 +12745,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 208820452,
+      "us_export_value_usd": 471557521,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         1,
@@ -12609,7 +12819,7 @@
       "us_yield": 3.9,
       "us_yield_unit": "TONS / ACRE",
       "production_years": "1997-2026",
-      "import_reliance_pct": 24,
+      "import_reliance_pct": 51,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -12621,7 +12831,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 24,
+          "reliance_pct": 51,
           "reliance_year": 2025,
           "top_country": "Chile",
           "top_share": 71
@@ -12643,6 +12853,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 193343301,
+      "us_export_value_usd": 3650705,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         7,
@@ -12744,6 +12956,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 119564461,
+      "us_export_value_usd": 120627064,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         2,
@@ -12818,7 +13032,7 @@
       "us_yield": 3.86,
       "us_yield_unit": "TONS / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 37,
+      "import_reliance_pct": 59,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -12830,7 +13044,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 37,
+          "reliance_pct": 59,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 42
@@ -12852,6 +13066,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 281238450,
+      "us_export_value_usd": 489749954,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         7,
@@ -12926,7 +13142,7 @@
       "us_yield": 189,
       "us_yield_unit": "BOXES / ACRE",
       "production_years": "1920-2026",
-      "import_reliance_pct": 20,
+      "import_reliance_pct": 32,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -12938,7 +13154,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 20,
+          "reliance_pct": 32,
           "reliance_year": 2025,
           "top_country": "Chile",
           "top_share": 40
@@ -12960,6 +13176,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 837842754,
+      "us_export_value_usd": 5604026,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         7,
@@ -13061,6 +13279,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 10000119,
+      "us_export_value_usd": 4430563688,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         4,
@@ -13169,6 +13389,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 6131038,
+      "us_export_value_usd": 995559299,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         1,
@@ -13243,7 +13465,7 @@
       "us_yield": 2.13,
       "us_yield_unit": "TONS / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 0,
+      "import_reliance_pct": 2,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -13255,7 +13477,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 0,
+          "reliance_pct": 2,
           "reliance_year": 2025,
           "top_country": "Canada",
           "top_share": 37
@@ -13277,6 +13499,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 3162585,
+      "us_export_value_usd": 248529343,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         3,
@@ -13383,6 +13607,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 341114586,
+      "us_export_value_usd": 295160446,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         1,
@@ -13457,7 +13683,7 @@
       "us_yield": 648,
       "us_yield_unit": "LB / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 36,
+      "import_reliance_pct": 53,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -13469,7 +13695,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 36,
+          "reliance_pct": 53,
           "reliance_year": 2025,
           "top_country": "Mexico",
           "top_share": 99
@@ -13491,6 +13717,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 113542760,
+      "us_export_value_usd": 1045094,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         8,
@@ -13590,6 +13818,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 637586484,
+      "us_export_value_usd": 4063562,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         1,
@@ -13689,6 +13919,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 437360664,
+      "us_export_value_usd": 150312486,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         1,
@@ -13788,6 +14020,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 349741153,
+      "us_export_value_usd": 1890460,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         1,
@@ -13887,6 +14121,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 144316709,
+      "us_export_value_usd": 502362,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         1,
@@ -13986,6 +14222,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 121406821,
+      "us_export_value_usd": 366709,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         3,
@@ -14085,6 +14323,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 257819287,
+      "us_export_value_usd": 4948725,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         3,
@@ -14186,6 +14426,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 1490959179,
+      "us_export_value_usd": 14564662,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         3,
@@ -14260,7 +14502,7 @@
       "us_yield": null,
       "us_yield_unit": null,
       "production_years": "1988-2010",
-      "import_reliance_pct": 53,
+      "import_reliance_pct": 54,
       "import_reliance_year": 2010,
       "harmony": [
         {
@@ -14272,7 +14514,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 53,
+          "reliance_pct": 54,
           "reliance_year": 2010,
           "top_country": "Australia",
           "top_share": 72
@@ -14294,6 +14536,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 157727947,
+      "us_export_value_usd": 1205040,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         4,
@@ -14395,6 +14639,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 111478400,
+      "us_export_value_usd": 159708466,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         8,
@@ -14503,6 +14749,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 117213430,
+      "us_export_value_usd": 754621225,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         6,
@@ -14604,6 +14852,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 60439990,
+      "us_export_value_usd": 144653360,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         3,
@@ -14705,6 +14955,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 152585224,
+      "us_export_value_usd": 105672086,
+      "us_export_year": 2025,
       "import_years": "2022-2025",
       "import_peak_months": [
         4,
@@ -14794,6 +15046,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 56684067,
+      "us_export_value_usd": 4978484,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         10,
@@ -14902,6 +15156,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 146266323,
+      "us_export_value_usd": 797647,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         10,
@@ -15003,6 +15259,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 76946140,
+      "us_export_value_usd": 19114987,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         9,
@@ -15102,6 +15360,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 597681510,
+      "us_export_value_usd": 27765099,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         5,
@@ -15203,6 +15463,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 514074390,
+      "us_export_value_usd": 21871721,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         10,
@@ -15302,6 +15564,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 95954924,
+      "us_export_value_usd": 3813869,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         3,
@@ -15401,6 +15665,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 161749241,
+      "us_export_value_usd": 7068493,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         10,
@@ -15502,6 +15768,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 65616124,
+      "us_export_value_usd": 986588,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         7,
@@ -15601,6 +15869,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 51159641,
+      "us_export_value_usd": 2441988,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         5,
@@ -15702,6 +15972,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 21314264,
+      "us_export_value_usd": 287671,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         3,
@@ -15801,6 +16073,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 16004521,
+      "us_export_value_usd": 884221,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         5,
@@ -15900,6 +16174,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 42544514,
+      "us_export_value_usd": 376992,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         3,
@@ -15999,6 +16275,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 12180702,
+      "us_export_value_usd": 1827432,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         3,
@@ -16098,6 +16376,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 17283863,
+      "us_export_value_usd": 341729,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         7,
@@ -16199,6 +16479,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 657069427,
+      "us_export_value_usd": 11146615,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         5,
@@ -16300,6 +16582,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 655593841,
+      "us_export_value_usd": 9943956,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         6,
@@ -16374,7 +16658,7 @@
       "us_yield": 3.27,
       "us_yield_unit": "TONS / ACRE",
       "production_years": "1997-2025",
-      "import_reliance_pct": 83,
+      "import_reliance_pct": 84,
       "import_reliance_year": 2025,
       "harmony": [
         {
@@ -16386,7 +16670,7 @@
         },
         {
           "kind": "reliance",
-          "reliance_pct": 83,
+          "reliance_pct": 84,
           "reliance_year": 2025,
           "top_country": "Greece",
           "top_share": 35
@@ -16408,6 +16692,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 92216588,
+      "us_export_value_usd": 355797176,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         6,
@@ -16509,6 +16795,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 72596499,
+      "us_export_value_usd": 80095000,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         3,
@@ -16610,6 +16898,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 109249013,
+      "us_export_value_usd": 94740355,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         3,
@@ -16711,6 +17001,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 41242825,
+      "us_export_value_usd": 319397,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         1,
@@ -16812,6 +17104,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 1147151501,
+      "us_export_value_usd": 5684284,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         10,
@@ -16913,6 +17207,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 217873287,
+      "us_export_value_usd": 520332,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         1,
@@ -17014,6 +17310,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 62986200,
+      "us_export_value_usd": 5645139,
+      "us_export_year": 2025,
       "import_years": "2012-2025",
       "import_peak_months": [
         10,
@@ -17113,6 +17411,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 108444909,
+      "us_export_value_usd": 68910730,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         4,
@@ -17214,6 +17514,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 451164009,
+      "us_export_value_usd": 373735828,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         10,
@@ -17315,6 +17617,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 43043364,
+      "us_export_value_usd": 86489744,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         3,
@@ -17416,6 +17720,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 293110965,
+      "us_export_value_usd": 27436359,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         5,
@@ -17517,6 +17823,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 2179061589,
+      "us_export_value_usd": 787240058,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         10,
@@ -17618,6 +17926,8 @@
       "pressure_dir": null,
       "pressure_conf": null,
       "us_import_value_usd": 306130069,
+      "us_export_value_usd": 43253049,
+      "us_export_year": 2025,
       "import_years": "2010-2025",
       "import_peak_months": [
         5,

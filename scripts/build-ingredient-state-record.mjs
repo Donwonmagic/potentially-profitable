@@ -189,6 +189,46 @@ function importBySlug() {
   return bySlug;
 }
 
+// ---- US domestic exports (Census exports/HS, DF=1, HS6 monthly value) -------------------------
+// The companion to the import stream: the value of US-PRODUCED goods shipped out (DF=1 = domestic
+// exports, excluding foreign re-exports). Exports are pulled at HS6 because the US export schedule
+// (Schedule B) and import schedule (HTS) only align at HS6 — so a slug's export is summed over the
+// HS6 PARENTS of its import codes. Used to turn reliance into a true apparent-consumption share
+// (production + imports - exports). Value only, nominal — never volume, never a delivered price.
+function exportRawByHs6() {
+  let lines; try { lines = fs.readFileSync(path.join(repoRoot, 'data/census-exports.jsonl'), 'utf8').trim().split('\n'); } catch { return null; }
+  const byHs = {};
+  for (const l of lines) {
+    let o; try { o = JSON.parse(l); } catch { continue; }
+    const rows = o.rows; if (!Array.isArray(rows) || rows.length < 2) continue;
+    const H = rows[0], iV = H.indexOf('ALL_VAL_MO'), iY = H.indexOf('YEAR'), iC = H.indexOf('E_COMMODITY');
+    for (const r of rows.slice(1)) {
+      if (r[iV] == null) continue;
+      const hs6 = String(iC >= 0 && r[iC] != null ? r[iC] : o.hs).slice(0, 6);
+      const y = Number(iY >= 0 && r[iY] != null ? r[iY] : o.year);
+      const b = byHs[hs6] = byHs[hs6] || {};
+      b[y] = (b[y] || 0) + Number(r[iV]);
+    }
+  }
+  return byHs; // hs6 -> { year: domestic-export value }
+}
+function exportBySlug() {
+  const byHs6 = exportRawByHs6(); if (!byHs6) return null; // null => file not present yet
+  const cross = rd('data/ingredient-hs-codes.json').codes;
+  const slugHs6 = {};
+  for (const [code, meta] of Object.entries(cross)) {
+    const hs6 = String(code).slice(0, 6);
+    for (const slug of meta.slugs) (slugHs6[slug] = slugHs6[slug] || new Set()).add(hs6);
+  }
+  const out = {};
+  for (const [slug, set] of Object.entries(slugHs6)) {
+    const annual = {};
+    for (const hs6 of set) { const b = byHs6[hs6]; if (!b) continue; for (const [y, v] of Object.entries(b)) annual[y] = (annual[y] || 0) + v; }
+    if (Object.keys(annual).length) out[slug] = annual; // { year: export value }
+  }
+  return out; // slug -> { year: value }
+}
+
 // ---- NASS domestic-supply layer (forward-compatible) -----------------------------------------
 // Reads the raw national annual SURVEY rows the operator fetches into data/nass-domestic.jsonl
 // (one line per commodity+statisticcat query: {commodity, stat, rows:[[year,class,refPeriod,unit,
@@ -276,10 +316,10 @@ function nassBySlug() {
 // the island owns the reviewed EN/ES sentence templates and resolves slugs to names. This is a pure
 // function of the finished record (same semantics the island reads), so it is trivially testable.
 //   supplyshape where the import stream comes from — origin concentration + top source (present today)
-//   reliance    Census import VALUE vs NASS farm-gate PRODUCTION value — the flagship cross-source read.
-//               A cross-POINT dollar ratio, NEVER a supply share: import value carries freight the farm
-//               price does not, and exports are not netted out (so it overstates the imported share).
-//               Inert until NASS lands. The island states the caveat; here it is bounded params only.
+//   reliance    Import VALUE as a share of APPARENT CONSUMPTION — production + imports − exports (Census
+//               imports + Census DF=1 exports + NASS production), the flagship cross-source read. Still a
+//               cross-POINT proxy (import value carries freight the farm price does not), never exact.
+//               The island states the caveat; here it is bounded params only.
 //   persistence how long a move ran + (only when it clears the noise bar) the ingredient it most often
 //               moved WITH — past-tense, co-occurrence, NEVER cause.
 // (An earlier draft also carried `buyclock` and `served`; an adversarial audit dropped both — buyclock
@@ -325,22 +365,38 @@ function build() {
   // NASS domestic-supply layer. `nass` is null until data/nass-domestic.jsonl lands, so nassFields
   // adds NOTHING then (record schema unchanged) — forward-compatible, exactly like the specialty tier.
   const nass = nassBySlug();
+  const exp = exportBySlug(); // slug -> { year: domestic-export value }; null until the file lands
+  const exportInfo = (slug) => {
+    const a = exp && exp[slug]; if (!a) return { usd: null, year: null };
+    const yrs = Object.keys(a).map(Number).sort((x, y) => y - x);
+    return { usd: Math.round(a[yrs[0]]), year: yrs[0] };
+  };
+  const exportAt = (slug, year) => (exp && exp[slug] && year != null && exp[slug][year] != null) ? exp[slug][year] : null;
   const nassFields = (slug, im) => {
     if (!nass) return {};
     const n = nass[slug] || null;
     const prodUsd = n && n.production_usd != null ? n.production_usd : null;
     const prodYear = n && n.production_usd_year != null ? n.production_usd_year : null;
-    // Import-vs-domestic-production VALUE ratio (import value ÷ (import + NASS farm-gate production
-    // value)). NOT a supply share: the two are measured at DIFFERENT points in the chain (import value
-    // carries freight/insurance the farm-gate price does not) and exports are not netted out, so the
-    // ratio OVERSTATES the imported share. Descriptive, never a forecast. Align the import value to the
-    // production year when the series reaches it (never a 2025-import / 2023-production ratio); else use
-    // the latest import year, stamping whichever year was used. Null unless both sides are present.
+    // Import share of APPARENT CONSUMPTION: import value ÷ (production + import − export), all aligned
+    // to the production year. Netting US domestic exports (Census DF=1) out of the denominator makes
+    // this a genuine "share of what is consumed DOMESTICALLY that is imported" rather than the old
+    // import/(import+production) ratio, which ignored a big exporter's outflow and overstated the share.
+    // It remains a cross-POINT dollar comparison (import value carries freight the farm price does not),
+    // so still a proxy, never exact — descriptive, never a forecast. Align import to the production year
+    // when the series reaches it; else use the latest import year. Export defaults to 0 when we have no
+    // export figure for that year (not netted). Null unless import + production are both present — and
+    // also null when a broad-HS6 export exceeds a narrow NASS commodity's production so apparent goes
+    // <= 0 (a granularity mismatch, not a real signal): we keep the three raw dollar figures visible but
+    // never fabricate a share we can't cleanly form. Degrade by absence.
     let importUsd = im ? im.latest_year_usd : null;
     let relianceYear = im ? im.latest_year : null;
     if (im && im.annual_usd && prodYear != null && im.annual_usd[prodYear] != null) { importUsd = im.annual_usd[prodYear]; relianceYear = prodYear; }
-    const reliance = (importUsd != null && prodUsd != null && (importUsd + prodUsd) > 0)
-      ? Math.round((importUsd / (importUsd + prodUsd)) * 100) : null;
+    const exportUsd = exportAt(slug, relianceYear);
+    let reliance = null;
+    if (importUsd != null && prodUsd != null) {
+      const apparent = prodUsd + importUsd - (exportUsd || 0);
+      if (apparent > 0) reliance = Math.max(0, Math.min(100, Math.round((importUsd / apparent) * 100)));
+    }
     return {
       nass_commodity: n ? n.commodity : null,
       us_production_usd: prodUsd,
@@ -358,7 +414,7 @@ function build() {
   };
 
   const records = P.cards.map((c) => {
-    const d = depth[c.slug] || {}; const pr = pressure[c.slug]; const im = imp[c.slug]; const ed = evd[c.slug] || {};
+    const d = depth[c.slug] || {}; const pr = pressure[c.slug]; const im = imp[c.slug]; const ed = evd[c.slug] || {}; const ex = exportInfo(c.slug);
     const rec = {
       slug: c.slug, name: c.en, category: c.cat || null,
       posture: c.bucket,
@@ -371,6 +427,7 @@ function build() {
       pressure_dir: pr ? pr.direction : null,
       pressure_conf: pr ? pr.confidence : null,
       us_import_value_usd: im ? im.latest_year_usd : null,
+      us_export_value_usd: ex.usd, us_export_year: ex.usd != null ? ex.year : null,
       import_years: im ? im.span : null,
       import_peak_months: im ? im.peak_months : null,
       import_peak_quarter_share: im ? im.peak_quarter_share : null,
@@ -403,6 +460,7 @@ function build() {
     // has nothing to show yet, so it's skipped until its data lands (list it in the registry now;
     // it appears the moment its HS codes are fetched). Keeps the record honest — no empty entries.
     if (!im && sp.edible_yield_pct == null) continue;
+    const ex = exportInfo(sp.slug);
     const rec = {
       slug: sp.slug, name: sp.name, category: sp.category || null,
       posture: null, band_pct: null,
@@ -412,6 +470,7 @@ function build() {
       cheapest_month: null, save_pct: null, hedge_swap: null,
       pressure_dir: null, pressure_conf: null,
       us_import_value_usd: im ? im.latest_year_usd : null,
+      us_export_value_usd: ex.usd, us_export_year: ex.usd != null ? ex.year : null,
       import_years: im ? im.span : null,
       import_peak_months: im ? im.peak_months : null,
       import_peak_quarter_share: im ? im.peak_quarter_share : null,
@@ -437,7 +496,7 @@ function build() {
     license: 'CC BY 4.0', license_url: 'https://creativecommons.org/licenses/by/4.0/',
     attribution: 'Muntin Cost Index (muntin.digital)',
     audience: 'Food-cost intelligence for anyone who works with food — operators, chefs, home cooks, journalists, researchers. The wholesale price is a market-DIRECTION reference (your delivered or retail price tracks it with a lag and a markup); every other field is food-intrinsic and buyer-agnostic.',
-    note: "One present-state record per ingredient, fusing pricing posture + own-baseline band, edible/cooked yield + trim tax, cheapest month, the price hedge swap, present pipeline direction, and the US import stream. Every field is descriptive of the tracked record — never a delivered/retail price, never a forecast, and co-occurrence is never cause. us_import_value_usd is the latest full calendar year of US general import VALUE for the ingredient's HS6 (US Census, public domain), nominal (mixes volume and price) — never import volume (not published at HS6). import_peak_months are the three highest-import calendar months averaged over 2010-2025; import_peak_quarter_share is the peak quarter's share of a typical year's import value (a within-year ratio, inflation-immune) — both descriptive seasonality, the supply-timing tell of when an ingredient leans on imports. import_top_sources / import_source_hhi / import_source_concentration describe the 2025 source-country mix (real countries only, trade blocs and continents excluded) and its Herfindahl concentration — a descriptive supply-diversity fact (raspberry ~100% Mexico, lobster ~99% Canada), never a risk forecast. import_annual_usd carries the full 2010-2025 annual series; import_yoy_pct is the latest full year versus the prior year (a descriptive change, nominal). notable_events_n, median_shock_days and biggest_move_pct+date summarize the ingredient's own notable sustained price moves in the deep history (descriptive, from the events dataset — a departure from its own baseline, never a delivered price). comovers lists the ingredients that most often moved the same way in the same six-week window, as k of this ingredient's own n moves — co-occurrence, NEVER cause. Fields are null where a layer does not cover an ingredient.",
+    note: "One present-state record per ingredient, fusing pricing posture + own-baseline band, edible/cooked yield + trim tax, cheapest month, the price hedge swap, present pipeline direction, and the US import stream. Every field is descriptive of the tracked record — never a delivered/retail price, never a forecast, and co-occurrence is never cause. us_import_value_usd is the latest full calendar year of US general import VALUE for the ingredient's HS6 (US Census, public domain), nominal (mixes volume and price) — never import volume (not published at HS6). import_peak_months are the three highest-import calendar months averaged over 2010-2025; import_peak_quarter_share is the peak quarter's share of a typical year's import value (a within-year ratio, inflation-immune) — both descriptive seasonality, the supply-timing tell of when an ingredient leans on imports. import_top_sources / import_source_hhi / import_source_concentration describe the 2025 source-country mix (real countries only, trade blocs and continents excluded) and its Herfindahl concentration — a descriptive supply-diversity fact (raspberry ~100% Mexico, lobster ~99% Canada), never a risk forecast. import_annual_usd carries the full 2010-2025 annual series; import_yoy_pct is the latest full year versus the prior year (a descriptive change, nominal). notable_events_n, median_shock_days and biggest_move_pct+date summarize the ingredient's own notable sustained price moves in the deep history (descriptive, from the events dataset — a departure from its own baseline, never a delivered price). comovers lists the ingredients that most often moved the same way in the same six-week window, as k of this ingredient's own n moves — co-occurrence, NEVER cause. us_export_value_usd is the latest full year of US DOMESTIC exports (US Census, DF=1 = US-produced goods excluding foreign re-exports, HS6, nominal value). us_production_usd + farm_price are USDA NASS national annual figures (public domain); farm_price is a FARM-GATE price — a distinct point in the chain, never the wholesale reference. import_reliance_pct is import value as a share of APPARENT CONSUMPTION (production + imports − exports), all year-aligned — a descriptive cross-point proxy (the figures sit at different points in the chain: import value carries freight the farm-gate price does not), never a supply-security score, and withheld where the source granularities cannot form a clean share. Fields are null where a layer does not cover an ingredient.",
     rights: { corpus_columns: 'CC BY 4.0 (Muntin Cost Index)', import_columns: 'US Census general imports — public domain (US Government work)' },
     dateModified: lfAsOf,
     count: records.length,
@@ -446,7 +505,7 @@ function build() {
     ingredients: records,
   };
 
-  const cols = ['slug', 'name', 'category', 'posture', 'band_pct', 'edible_yield_pct', 'trim_tax', 'cooked_yield', 'cheapest_month', 'save_pct', 'hedge_swap', 'pressure_dir', 'pressure_conf', 'us_import_value_usd', 'import_years', 'import_peak_months', 'import_peak_quarter_share', 'import_hs6', 'import_yoy_pct', 'import_source_concentration', 'import_source_hhi', 'import_top_sources', 'notable_events_n', 'median_shock_days', 'biggest_move_pct', 'biggest_move_date', 'comovers'];
+  const cols = ['slug', 'name', 'category', 'posture', 'band_pct', 'edible_yield_pct', 'trim_tax', 'cooked_yield', 'cheapest_month', 'save_pct', 'hedge_swap', 'pressure_dir', 'pressure_conf', 'us_import_value_usd', 'us_export_value_usd', 'us_production_usd', 'farm_price', 'farm_price_unit', 'import_reliance_pct', 'import_reliance_year', 'import_years', 'import_peak_months', 'import_peak_quarter_share', 'import_hs6', 'import_yoy_pct', 'import_source_concentration', 'import_source_hhi', 'import_top_sources', 'notable_events_n', 'median_shock_days', 'biggest_move_pct', 'biggest_move_date', 'comovers'];
   const esc = (v) => { if (v == null) return ''; const s = Array.isArray(v) ? v.join(';') : String(v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
   const cell = (r, k) => {
     if (k === 'comovers') return esc((r.comovers || []).map((x) => x.slug + ':' + x.shared_of_n).join(';'));

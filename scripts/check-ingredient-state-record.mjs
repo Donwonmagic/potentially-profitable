@@ -53,6 +53,7 @@ function check(record) {
     if (r.band_pct != null && r.band_pct < 0) E(s, `band_pct ${r.band_pct} < 0`);
     if (r.import_source_hhi != null && !(r.import_source_hhi >= 0 && r.import_source_hhi <= 1)) E(s, `import_source_hhi ${r.import_source_hhi} out of 0..1`);
     if (r.import_reliance_pct != null && !(r.import_reliance_pct >= 0 && r.import_reliance_pct <= 100)) E(s, `import_reliance_pct ${r.import_reliance_pct} out of 0..100`);
+    for (const f of ['us_import_value_usd', 'us_export_value_usd', 'us_production_usd']) if (r[f] != null && !(r[f] >= 0)) E(s, `${f} ${r[f]} < 0`);
     if (Array.isArray(r.import_peak_months)) {
       if (r.import_peak_months.length !== 3) E(s, `import_peak_months length ${r.import_peak_months.length} != 3`);
       for (const m of r.import_peak_months) if (!(m >= 1 && m <= 12)) E(s, `import peak month ${m} out of 1..12`);
@@ -111,13 +112,13 @@ function check(record) {
 function selfTest() {
   const bad = { count: 1, withImport: 5, ingredients: [
     { slug: 'x', name: 'X', cheapest_month: 13, import_source_hhi: 2, import_reliance_pct: 120,
-      import_peak_months: [1, 2], us_import_value_usd: null, import_note: 'prices will rise due to drought',
+      import_peak_months: [1, 2], us_import_value_usd: null, us_export_value_usd: -5, import_note: 'prices will rise due to drought',
       specialty: true, band_pct: 5,
       harmony: [{ kind: 'reliance', reliance_pct: 200, reliance_year: 1990 }, { kind: 'persistence', n: 0, median_days: -1, comover_shared: 'x' }, { kind: 'bogus' }] },
   ] };
   const errs = check(bad);
   const want = ['cheapest_month', 'import_source_hhi', 'import_reliance_pct', 'import_peak_months length', 'banned language', 'must not carry band_pct', 'withImport',
-    'harmony reliance reliance_pct', 'harmony reliance reliance_year', 'harmony persistence n', 'harmony persistence median_days', 'harmony persistence comover_shared', 'harmony kind "bogus" unknown'];
+    'us_export_value_usd', 'harmony reliance reliance_pct', 'harmony reliance reliance_year', 'harmony persistence n', 'harmony persistence median_days', 'harmony persistence comover_shared', 'harmony kind "bogus" unknown'];
   const miss = want.filter((w) => !errs.some((e) => e.includes(w)));
   if (miss.length) { console.error('SELF-TEST FAIL — missed:', miss, '\ngot:', errs); process.exit(1); }
   console.log('✓ self-test: caught all', want.length, 'seeded violations'); process.exit(0);

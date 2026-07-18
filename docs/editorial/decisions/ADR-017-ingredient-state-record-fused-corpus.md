@@ -46,14 +46,17 @@ touches the measured price band or the Vendor Benchmark reference.
    wholesale reference, **never** a pressure driver, **never** a delivered/retail price. It is a
    published, public-domain fact about the upstream, not a number that moves a posture.
 
-3. **Import-vs-domestic-production ratio (the first cross-source harmony read).** `import_reliance_pct`
-   = import value ÷ (import + NASS farm-gate production value), **year-aligned** (the import value is
-   pulled to the production year, never a 2025-import / 2023-production ratio, and the year is stamped).
-   An adversarial audit sharpened this: it is a **cross-POINT dollar comparison, NOT a supply share** —
-   import value carries freight/insurance the farm-gate price does not, and exports are **not netted
-   out**, so the ratio **overstates the imported share**. The surface says so, names both dollar figures
-   rather than a bare "% of supply," anchors the origin share to *imports* (not supply), and renders only
-   when **both** sources are present. Never a forecast, never a risk score.
+3. **Import share of apparent consumption (the flagship cross-source read).** `import_reliance_pct`
+   = import value ÷ (production + imports − exports), **year-aligned** and stamped. It fuses **three**
+   public sources — Census imports, **Census DF=1 domestic exports** (US-produced goods, HS6, the level
+   where the export Schedule B and import HTS align), and NASS production — netting US exports out of the
+   denominator so it reads as "the share of what is consumed **domestically** that is imported," not the
+   earlier `import/(import+production)` ratio that ignored a big exporter's outflow (grapes moved 61%→72%
+   once ~$0.7B of exports were netted). It remains a **cross-POINT proxy** (import value carries freight
+   the farm-gate price does not), never exact, and is **withheld** where a broad-HS6 export exceeds a
+   narrow NASS commodity's production — a granularity mismatch that would form a bogus share; the three
+   raw dollar figures still render, only the ratio degrades by absence. Never a forecast, never a
+   supply-security score.
 
 4. **The ingredient set follows the invoice.** Beyond the 100 priced ingredients, an
    **import-defined specialty tier** carries anything likely on a restaurant invoice with a real US
