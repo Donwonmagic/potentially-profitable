@@ -57,8 +57,29 @@ reviewer that refutes scope/overflow/print/dark/regression before or right after
 review verified the breakout clean AND caught the monthly-untagged rollout gap → led to the real
 viz-spark h-scroll bug fix. This is the loop working: adversarial review → real defect found → fixed.
 
+- `a88782790` — Glossary term (~149 pages): center the reading column on wide bands.
+
 **Done surfaces:** homepage, article shell, CI ingredient, CI hub, CI events, **CI weekly+monthly
-dispatch** (funnel spine complete), library hub, vendor-benchmark, plate-cost a11y, viz-spark (shared). **Generator discipline confirmed working:**
+dispatch** (funnel spine complete), library hub, vendor-benchmark, plate-cost a11y, viz-spark (shared),
+glossary term.
+
+**Assessed & deliberately NOT changed (adversarial rigor — verified already-good or not-an-improvement):**
+footer (5 explicit responsive breakpoints, well-handled); 404 (already a composed centered masthead);
+glossary hub / about / tools-hub / methods heroes (already centered/composed, no void); **sheets-hub
+3-col catalog — TESTED on the render and REJECTED** (the elevated content-rich 2-col cards go ragged/
+cramped at 3-col; the dream's "bold" call predated the card elevation). Not every dream survives contact
+with the real render — that's the point of verifying.
+
+**Remaining work is now either checkpoint-gated or JS-dependent — surface-elevation pass is
+substantially complete:**
+- RISKY-SHARED (needs founder checkpoint per the design-language red-team): dark-mode mechanism
+  consolidation (retire Phase-5 `--mtn-*` + `--refresh-*` into the token-flip); unified `:focus-visible`
+  token (touches every interactive el + inverse-surface focus); fluid body-size (`--fs-body`) reflow;
+  radius value bumps. Each ripples ~1,200 pages and must be verified per-surface in both themes.
+- JS-DEPENDENT / lower-leverage: mobile-drawer polish + search-overlay cap (need interaction to verify);
+  tool empty/loading/validation states (per-tool inline JS work); tools-hub tier-badge/hover polish.
+- The full semantic-role adoption (migrate surfaces off raw `--teal`/`--rust` onto the Phase-1 role
+  tokens, incl. resolving the deferred `--accent` collision on cost-pulse/plate-cost/seasonality). **Generator discipline confirmed working:**
 surgical inline-CSS edits across the committed cost-index pages + mirror into `build-cost-index-pages.mjs`
 (never run it — it carries a half-finished template rollout); every ci patch verified `0 drift lines`.
 
