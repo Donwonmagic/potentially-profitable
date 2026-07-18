@@ -39,7 +39,7 @@ const rd = (p) => JSON.parse(fs.readFileSync(path.join(repoRoot, p), 'utf8'));
 // imports concentrate — a supply-timing tell), and the peak-QUARTER share (a within-year
 // ratio, so inflation-immune). All descriptive; never volume, never a delivered price,
 // never a forecast.
-function importSeriesByHs() {
+function rawSeriesByHs() {
   const lines = fs.readFileSync(path.join(repoRoot, 'data/census-imports.jsonl'), 'utf8').trim().split('\n');
   const acc = {};
   for (const l of lines) {
@@ -53,32 +53,34 @@ function importSeriesByHs() {
       a.series.push([Number(iY >= 0 && r[iY] != null ? r[iY] : o.year), Number(r[iM]), Number(r[iV])]);
     }
   }
-  const out = {};
-  for (const [hs, a] of Object.entries(acc)) {
-    const s = a.series; if (!s.length) continue;
-    const years = [...new Set(s.map((x) => x[0]))].sort((x, y) => x - y);
-    const annual = {}; for (const [y, , v] of s) annual[y] = (annual[y] || 0) + v;
-    const byMonth = {}; for (const [, m, v] of s) (byMonth[m] = byMonth[m] || []).push(v);
-    const meanMonth = {}; for (const m of Object.keys(byMonth)) meanMonth[m] = byMonth[m].reduce((p, q) => p + q, 0) / byMonth[m].length;
-    const peak = Object.entries(meanMonth).sort((x, y) => y[1] - x[1]).slice(0, 3).map((x) => Number(x[0])).sort((x, y) => x - y);
-    const q = [0, 0, 0, 0]; for (const m of Object.keys(meanMonth)) q[Math.floor((Number(m) - 1) / 3)] += meanMonth[m];
-    const totalMean = q.reduce((p, x) => p + x, 0);
-    const peakQ = q.indexOf(Math.max(...q));
-    const last = years[years.length - 1];
-    out[hs] = {
-      sdesc: a.sdesc, span: years[0] + '-' + last,
-      latest_year: last, latest_year_usd: Math.round(annual[last]),
-      peak_months: peak, peak_quarter: peakQ + 1,
-      peak_quarter_share: totalMean ? Math.round((q[peakQ] / totalMean) * 100) : null,
-      // 12-month seasonal fingerprint: each month's mean import value / the average month,
-      // so 1.0 = a typical month, >1 = above-average import month. A within-year ratio, so
-      // inflation-immune — the honest seasonal shape of the import stream.
-      import_seasonal_index: (() => { const av = totalMean / 12; const a = []; for (let mo = 1; mo <= 12; mo++) a.push(av > 0 && meanMonth[mo] != null ? Math.round((meanMonth[mo] / av) * 100) / 100 : null); return a; })(),
-      import_yoy_pct: (annual[last] != null && annual[years[years.length - 2]] > 0) ? Math.round((annual[last] / annual[years[years.length - 2]] - 1) * 1000) / 10 : null,
-      annual_usd: Object.fromEntries(years.map((y) => [y, Math.round(annual[y])])),
-    };
-  }
-  return out;
+  return acc; // hs -> { sdesc, series:[[year,month,value]] }
+}
+// Derive the per-ingredient import shape from a raw [[year,month,value]] series. Works for one
+// HS code or the UNION of several (fresh+frozen, a primal split across codes) — aggregation
+// happens on the raw series, then the seasonal / peak / YoY shape is derived once over the whole.
+function deriveSeries(a) {
+  const s = a.series; if (!s.length) return null;
+  const years = [...new Set(s.map((x) => x[0]))].sort((x, y) => x - y);
+  const annual = {}; for (const [y, , v] of s) annual[y] = (annual[y] || 0) + v;
+  const byMonth = {}; for (const [, m, v] of s) (byMonth[m] = byMonth[m] || []).push(v);
+  const meanMonth = {}; for (const m of Object.keys(byMonth)) meanMonth[m] = byMonth[m].reduce((p, q) => p + q, 0) / byMonth[m].length;
+  const peak = Object.entries(meanMonth).sort((x, y) => y[1] - x[1]).slice(0, 3).map((x) => Number(x[0])).sort((x, y) => x - y);
+  const q = [0, 0, 0, 0]; for (const m of Object.keys(meanMonth)) q[Math.floor((Number(m) - 1) / 3)] += meanMonth[m];
+  const totalMean = q.reduce((p, x) => p + x, 0);
+  const peakQ = q.indexOf(Math.max(...q));
+  const last = years[years.length - 1];
+  return {
+    sdesc: a.sdesc, span: years[0] + '-' + last,
+    latest_year: last, latest_year_usd: Math.round(annual[last]),
+    peak_months: peak, peak_quarter: peakQ + 1,
+    peak_quarter_share: totalMean ? Math.round((q[peakQ] / totalMean) * 100) : null,
+    // 12-month seasonal fingerprint: each month's mean import value / the average month,
+    // so 1.0 = a typical month, >1 = above-average import month. A within-year ratio, so
+    // inflation-immune — the honest seasonal shape of the import stream.
+    import_seasonal_index: (() => { const av = totalMean / 12; const arr = []; for (let mo = 1; mo <= 12; mo++) arr.push(av > 0 && meanMonth[mo] != null ? Math.round((meanMonth[mo] / av) * 100) / 100 : null); return arr; })(),
+    import_yoy_pct: (annual[last] != null && annual[years[years.length - 2]] > 0) ? Math.round((annual[last] / annual[years[years.length - 2]] - 1) * 1000) / 10 : null,
+    annual_usd: Object.fromEntries(years.map((y) => [y, Math.round(annual[y])])),
+  };
 }
 
 // ---- shock history + co-movement per ingredient (from the events engine) --------
@@ -111,7 +113,7 @@ function eventDepthBySlug() {
 // real countries (4-digit CTY_CODE >= 1010). Top sources + a Herfindahl concentration index +
 // a plain label. Descriptive of where the import stream came from — a supply-diversity fact,
 // never a risk forecast.
-function importOriginsByHs() {
+function rawOriginsByHs() {
   let lines; try { lines = fs.readFileSync(path.join(repoRoot, 'data/census-import-origins-2025.jsonl'), 'utf8').trim().split('\n'); } catch { return {}; }
   const byHs = {};
   for (const l of lines) {
@@ -121,30 +123,44 @@ function importOriginsByHs() {
     const b = byHs[o.hs] = byHs[o.hs] || {};
     for (const r of rows.slice(1)) { const code = r[iC]; if (!/^\d{4}$/.test(code) || Number(code) < 1010) continue; b[r[iN]] = (b[r[iN]] || 0) + Number(r[iV] || 0); }
   }
+  return byHs; // hs -> { COUNTRY_NAME: value }
+}
+// Derive the source-concentration shape from a per-country {name: value} map (one HS code or a
+// summed union). Top-3 sources + a Herfindahl index + a plain label. Descriptive supply diversity.
+function deriveOrigins(b) {
   const title = (s) => String(s).toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
-  const out = {};
-  for (const [hs, b] of Object.entries(byHs)) {
-    const tot = Object.values(b).reduce((a, c) => a + c, 0); if (!tot) continue;
-    const sorted = Object.entries(b).map(([c, v]) => [c, v / tot]).sort((a, b) => b[1] - a[1]);
-    const hhi = Math.round(sorted.reduce((a, pair) => a + pair[1] * pair[1], 0) * 100) / 100;
-    out[hs] = {
-      import_top_sources: sorted.slice(0, 3).map((pair) => ({ country: title(pair[0]), share_pct: Math.round(pair[1] * 100) })),
-      import_source_hhi: hhi,
-      import_source_concentration: hhi >= 0.5 ? 'single-source' : hhi >= 0.25 ? 'concentrated' : 'diversified',
-      import_source_countries_n: sorted.length,
-    };
-  }
-  return out;
+  const tot = Object.values(b).reduce((a, c) => a + c, 0); if (!tot) return null;
+  const sorted = Object.entries(b).map(([c, v]) => [c, v / tot]).sort((a, b) => b[1] - a[1]);
+  const hhi = Math.round(sorted.reduce((a, pair) => a + pair[1] * pair[1], 0) * 100) / 100;
+  return {
+    import_top_sources: sorted.slice(0, 3).map((pair) => ({ country: title(pair[0]), share_pct: Math.round(pair[1] * 100) })),
+    import_source_hhi: hhi,
+    import_source_concentration: hhi >= 0.5 ? 'single-source' : hhi >= 0.25 ? 'concentrated' : 'diversified',
+    import_source_countries_n: sorted.length,
+  };
 }
 
 function importBySlug() {
   const cross = rd('data/ingredient-hs-codes.json').codes;
-  const byHs = importSeriesByHs();
-  const orig = importOriginsByHs();
-  const bySlug = {};
+  const rawS = rawSeriesByHs();
+  const rawO = rawOriginsByHs();
+  // slug -> [hs codes]. A slug may draw on several codes (fresh+frozen, or a primal split across
+  // HS10 lines); those are aggregated on the raw series + origins BEFORE the shape is derived, so
+  // ribeye = the whole rib primal, not half of it. First non-empty crosswalk note wins.
+  const slugCodes = {}; const slugNote = {};
   for (const [hs, meta] of Object.entries(cross)) {
-    const s = byHs[hs]; if (!s) continue;
-    for (const slug of meta.slugs) bySlug[slug] = Object.assign({ hs6: hs, note: meta.note || null }, s, orig[hs] || {});
+    for (const slug of meta.slugs) { (slugCodes[slug] = slugCodes[slug] || []).push(hs); if (meta.note && !slugNote[slug]) slugNote[slug] = meta.note; }
+  }
+  const bySlug = {};
+  for (const [slug, codes] of Object.entries(slugCodes)) {
+    const present = codes.filter((hs) => rawS[hs] && rawS[hs].series.length);
+    if (!present.length) continue;
+    const series = [].concat(...present.map((hs) => rawS[hs].series));
+    const der = deriveSeries({ sdesc: rawS[present[0]].sdesc, series });
+    if (!der) continue;
+    const originAcc = {};
+    for (const hs of present) { const b = rawO[hs]; if (!b) continue; for (const [c, v] of Object.entries(b)) originAcc[c] = (originAcc[c] || 0) + v; }
+    bySlug[slug] = Object.assign({ hs6: present.join('+'), note: slugNote[slug] || null }, der, deriveOrigins(originAcc) || {});
   }
   return bySlug;
 }
