@@ -2489,6 +2489,9 @@ function weeklySignup(locale, opts) {
 // the price, and waste-to-value. Reference/book values labeled "verify your own," source shown. Only
 // rows with data render (a null field was dropped as uncorroboratable, so it simply doesn't appear).
 const INGREDIENT_DEPTH = (() => { try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/ingredient-depth.json'), 'utf8')).ingredients || {}; } catch { return {}; } })();
+// The Ingredient State Record, keyed by slug — feeds the per-ingredient import-context block so
+// the Census import layer (value, sources, seasonality) is plugged into the cost-index corpus.
+const ISR_RECORD = (() => { try { const a = JSON.parse(fs.readFileSync(path.join(repoRoot, 'cost-index/ingredient-state-record.json'), 'utf8')).ingredients || []; const m = {}; for (const r of a) m[r.slug] = r; return m; } catch { return {}; } })();
 function kitchenProfileBlock(slug, locale) {
   const D = INGREDIENT_DEPTH[slug]; if (!D) return '';
   const es = locale === 'es';
@@ -2518,6 +2521,33 @@ function kitchenProfileBlock(slug, locale) {
     <p class="ci-prof__note">${es ? 'Valores de referencia verificados — comprueba con tu propio despiece. También en el ' : 'Sourced reference values — verify against your own fabrication. Also in the '}<a href="${es ? '/es' : ''}/cost-index/menu-pricing/">${es ? 'manual de precios' : 'menu-pricing playbook'}</a>.</p>
     <dl class="ci-prof__grid">${dl}</dl>
     ${src ? `<p class="ci-prof__src">${es ? 'Fuente' : 'Source'}: ${escHtml(src)}</p>` : ''}
+  </section>`;
+}
+
+// Import-context block: plugs the Census import layer of the Ingredient State Record into each
+// cost-index page. Server-rendered (SEO), reuses the ci-profile styling. Absent when the
+// ingredient has no import stream. Descriptive supply context — never a delivered price or volume.
+function importContextBlock(slug, locale) {
+  const R = ISR_RECORD[slug]; if (!R || R.us_import_value_usd == null) return '';
+  const es = locale === 'es'; const base = es ? '/es' : '';
+  const MO = es ? ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'] : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const usd = (n) => { const a = Math.abs(n); if (a >= 1e9) return '$' + (n / 1e9).toFixed(2) + 'B'; if (a >= 1e6) return '$' + Math.round(n / 1e6) + 'M'; if (a >= 1e3) return '$' + Math.round(n / 1e3) + 'K'; return '$' + n; };
+  const rows = [];
+  rows.push([es ? 'Valor de importación' : 'Import value', `${usd(R.us_import_value_usd)} (${R.import_years})${R.import_yoy_pct != null ? `, ${es ? 'interanual' : 'YoY'} ${R.import_yoy_pct > 0 ? '+' : ''}${R.import_yoy_pct}%` : ''}`]);
+  if (R.import_top_sources && R.import_top_sources.length) {
+    const src = R.import_top_sources.map((s) => `${s.share_pct}% ${s.country}`).join(' · ');
+    const conc = R.import_source_concentration ? ` — ${R.import_source_concentration}${R.import_source_hhi != null ? ` (HHI ${R.import_source_hhi})` : ''}` : '';
+    rows.push([es ? 'Principales orígenes' : 'Top sources', src + conc]);
+  }
+  if (R.import_peak_months && R.import_peak_months.length) rows.push([es ? 'Meses pico de importación' : 'Peak import months', R.import_peak_months.map((m) => MO[m - 1]).join(' · ')]);
+  if (R.import_hs6) rows.push([es ? 'Código HS (Censo)' : 'HS code (Census)', R.import_hs6]);
+  const dl = rows.map(([k, v]) => `<div class="ci-prof__row"><dt>${escHtml(k)}</dt><dd>${escHtml(v)}</dd></div>`).join('');
+  const note = R.import_note ? `<p class="ci-prof__src">${escHtml(R.import_note)}</p>` : '';
+  return `<section class="ci-profile ci-import" aria-labelledby="ci-import-h">
+    <h2 id="ci-import-h">${es ? 'De dónde llega (importación)' : 'Where it comes from (imports)'}</h2>
+    <p class="ci-prof__note">${es ? 'Flujo de importación general de EE. UU. (US Census, dominio público) — valor nominal, nunca volumen ni tu precio de entrega; un contexto de suministro descriptivo. Ficha completa del ingrediente en el ' : 'US general-import stream (US Census, public domain) — nominal value, never volume or your delivered price; a descriptive supply-context read. Full ingredient record in the '}<a href="${base}/cost-index/menu-pricing/#${slug}">${es ? 'registro del ingrediente' : 'ingredient state record'}</a>.</p>
+    <dl class="ci-prof__grid">${dl}</dl>
+    ${note}
   </section>`;
 }
 
@@ -2587,6 +2617,7 @@ function emitIngredientPage(slug, locale) {
     ${notableEventsBlock(slug, locale)}
     ${howToUse(slug, locale)}
     ${kitchenProfileBlock(slug, locale)}
+    ${importContextBlock(slug, locale)}
     ${weeklySignup(locale, { id: 'ci-news-email-ing', source: 'cost-index-ingredient', compact: true, pitch: (locale === 'es'
       ? '¿No quieres revisar esto a mano? Recibe la lectura mensual — el primer martes de cada mes, lo que se movió y qué hacer. Sin relleno.'
       : 'Don’t want to check this by hand? Get the monthly read — the first Tuesday of each month, what moved and what to do. No filler, no funnels.') })}
