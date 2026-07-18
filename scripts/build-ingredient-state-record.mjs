@@ -220,19 +220,37 @@ function nassLatest(rows, pred) {
 function nassBySlug() {
   const raw = nassRaw(); if (!raw) return null; // null => file not present yet
   const cross = (() => { try { return rd('data/ingredient-nass-codes.json').codes || {}; } catch { return {}; } })();
-  const clsHit = (r, cls) => !cls || r.cls.toUpperCase().includes(cls.toUpperCase());
+  // NASS files the FRESH MARKET / HEAD / BELL qualifier in short_desc, not class_desc (which is almost
+  // always "ALL CLASSES"), so a class hit checks BOTH fields.
+  const clsHit = (r, cls) => !cls || (r.cls || '').toUpperCase().includes(cls.toUpperCase()) || (r.sd || '').toUpperCase().includes(cls.toUpperCase());
+  const isAgg = (r) => /ALL CLASSES|INCL CALVES|ALL UTILIZATION/i.test(r.cls || '');
+  // Freshness floor for the DISPLAYED farm price only: NASS carries decades of history and some
+  // commodities' latest marketing-year price is 20+ years stale (beets 1999, chickens 2007). Reliance
+  // never uses farm price — it uses production VALUE, separately year-aligned to the import year — so
+  // this guards just the displayed farm-gate tier, not the flagship cross-source read.
+  const newestYear = Math.max(0, ...Object.values(raw).flatMap((c) => Object.values(c).flat()).map((r) => Number(r[0])).filter(Boolean));
   const out = {};
   for (const [slug, meta] of Object.entries(cross)) {
     const com = raw[meta.commodity]; if (!com) continue;
     const cls = meta.class || null;
-    // production VOLUME: PRODUCTION, annual, non-$ unit, class match, prefer a "UTILIZED" fresh series
+    // Class-PREFERENCE cascade: a row carrying the crosswalk class (in class_desc or short_desc) first,
+    // else the broadest ALL-CLASSES aggregate (the right denominator for reliance), else any valid row.
+    // Recovers the 26 class-qualified crops whose $ value NASS only publishes at the ALL-CLASSES level.
+    const bestOf = (rows, base) =>
+         nassLatest(rows, (r) => base(r) && cls && clsHit(r, cls))
+      || nassLatest(rows, (r) => base(r) && isAgg(r))
+      || nassLatest(rows, (r) => base(r));
     const prodRows = com['PRODUCTION'] || [];
-    const volCand = prodRows.filter((r) => (r[3] || '') !== '$' && (r[2] || '') === 'YEAR');
-    const vol = nassLatest(volCand, (r) => clsHit(r, cls) && /UTILIZED|PRODUCTION/.test(r.sd)) || nassLatest(volCand, (r) => clsHit(r, cls));
-    const usd = nassLatest(prodRows, (r) => r.u === '$' && r.rp === 'YEAR' && clsHit(r, cls));
-    const price = nassLatest(com['PRICE RECEIVED'] || [], (r) => /\$ \//.test(r.u) && (r.rp === 'MARKETING YEAR' || r.rp === 'YEAR') && clsHit(r, cls));
-    const area = nassLatest(com['AREA HARVESTED'] || [], (r) => r.rp === 'YEAR' && clsHit(r, cls));
-    const yld = nassLatest(com['YIELD'] || [], (r) => r.rp === 'YEAR' && clsHit(r, cls));
+    const vol = bestOf(prodRows, (r) => r.u !== '$' && r.rp === 'YEAR' && /UTILIZED|PRODUCTION/.test(r.sd))
+             || bestOf(prodRows, (r) => r.u !== '$' && r.rp === 'YEAR');
+    const usd = bestOf(prodRows, (r) => r.u === '$' && r.rp === 'YEAR');
+    // Farm price: marketing-year, a weight unit ($/CWT or $/LB) preferred over $/TON / box / parity.
+    const priceRows = com['PRICE RECEIVED'] || [];
+    const priceRaw = bestOf(priceRows, (r) => /^\$ \/ (CWT|LB)\b/.test(r.u) && r.rp === 'MARKETING YEAR')
+                  || bestOf(priceRows, (r) => /^\$ \//.test(r.u) && r.rp === 'MARKETING YEAR');
+    const price = priceRaw && priceRaw.y >= newestYear - 7 ? priceRaw : null;
+    const area = bestOf(com['AREA HARVESTED'] || [], (r) => r.rp === 'YEAR');
+    const yld = bestOf(com['YIELD'] || [], (r) => r.rp === 'YEAR');
     if (!vol && !usd && !price) continue;
     const years = [...(prodRows || [])].map((r) => Number(r[0])).filter(Boolean);
     out[slug] = {
