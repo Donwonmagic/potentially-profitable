@@ -64,6 +64,10 @@ const DATASETS = [
     agency: 'NOAA Climate Prediction Center',
     files: ['data/cpc-oni.txt'],
     note: 'The observed El Niño / La Niña (ENSO) regime index, 3-month seasons. Observed, never a forecast. Public domain.' },
+  { id: 'noaa-landings', tier: 'gov', title: 'US commercial fish landings by species (1950–2024)',
+    agency: 'NOAA Fisheries — FOSS commercial landings',
+    files: ['data/noaa-landings.jsonl'],
+    note: 'US commercial (wild-caught) landings — value ($, nominal ex-vessel) and pounds (round weight) — by species and state, for the restaurant-relevant seafood categories. Confidential rows are withheld (null), never zero-padded. Public domain.' },
 
   // ---- MUNTIN VALUE-ADDED ANALYSIS → CC BY 4.0 ---------------------------------------------------
   { id: 'ingredient-state-record', tier: 'derived', title: 'Ingredient State Record (fused corpus)',
@@ -78,6 +82,10 @@ const DATASETS = [
     agency: 'Muntin Cost Index — computed from USDA NASS public-domain crop-progress series',
     files: ['cost-index/crop-condition-backdrop.json'],
     note: 'Each feed crop\'s good-to-excellent share read against its own same-week history in prior seasons (percentile, band). A coincident site-wide backdrop on the feed complex, never a per-ingredient driver, never a forecast. Underlying series are US-gov public domain; the computed reads are CC BY 4.0.' },
+  { id: 'noaa-landings-domestic', tier: 'derived', title: 'US domestic wild-landings by seafood group',
+    agency: 'Muntin Cost Index — computed from NOAA Fisheries FOSS public-domain landings',
+    files: ['cost-index/noaa-landings-domestic.json'],
+    note: 'US commercial WILD landings (value + pounds) summed to national by seafood species group — the domestic pair for each seafood import stream. A wild-catch figure set beside a largely-farmed import stream: the wild-vs-farmed seam is named per group, never collapsed into a clean apparent-consumption share; negligible wild fisheries are flagged. Underlying series are US-gov public domain; the computed reads are CC BY 4.0.' },
 ];
 
 function build() {
