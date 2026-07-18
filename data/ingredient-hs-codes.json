@@ -1,7 +1,7 @@
 {
-  "_doc": "Culinary-to-Federal crosswalk: Cost Index ingredient slugs -> US Census HS6 import commodity codes. Every code is VERIFIED against the Census I_COMMODITY_SDESC returned in data/census-imports-2025.jsonl (the description must match the ingredient). US Census general-imports data is public domain. HS6 is the finest public aggregation; some codes combine related items (noted). This is a descriptive reference of the US import stream — never a delivered/retail price, never import VOLUME (quantity is not published at HS6), never a forecast.",
+  "_doc": "Culinary-to-Federal crosswalk: Cost Index ingredient slugs -> US Census HS6 import commodity codes. Every code is VERIFIED against the Census I_COMMODITY_SDESC returned in data/census-imports.jsonl (the description must match the ingredient). US Census general-imports data is public domain. HS6 is the finest public aggregation; some codes combine related items or a single form (fresh/frozen) — noted. This is a descriptive reference of the US import stream — never a delivered/retail price, never import VOLUME (quantity is not published at HS6), never a forecast.",
   "_source": "US Census Bureau, International Trade, general imports by HS6 (api.census.gov/data/timeseries/intltrade/imports/hs). Public domain.",
-  "_retrievedYear": "2025",
+  "_retrievedYears": "2010-2025",
   "codes": {
     "080440": { "sdesc": "AVOCADOS, FRESH OR DRIED", "slugs": ["avocado"] },
     "080550": { "sdesc": "LEMONS AND LIMES, FRESH OR DRIED", "slugs": ["lime", "lemon"], "note": "HS6 combines lemons and limes; not split at 6 digits." },
@@ -18,11 +18,19 @@
     "070700": { "sdesc": "CUCUMBERS AND GHERKINS, FRESH OR CHILLED", "slugs": ["cucumber"] },
     "070920": { "sdesc": "ASPARAGUS, FRESH OR CHILLED", "slugs": ["asparagus"] },
     "070320": { "sdesc": "GARLIC, FRESH OR CHILLED", "slugs": ["garlic"] },
+    "091011": { "sdesc": "GINGER, NEITHER CRUSHED NOR GROUND", "slugs": ["ginger"], "note": "Fresh ginger (not crushed or ground)." },
     "030617": { "sdesc": "SHRIMPS AND PRAWNS, FROZEN, NESOI", "slugs": ["shrimp", "shrimp-pd", "shrimp-head-on"], "note": "Frozen shrimp/prawns (the dominant import form); fresh shrimp is a separate code." },
-    "030441": { "sdesc": "PACIFIC, ATLANTIC, DANUBE SALMON FILLETS", "slugs": ["salmon-fillet", "salmon-skin-on-fillet"], "note": "Fresh salmon fillets; whole salmon is a separate code." }
+    "030441": { "sdesc": "PACIFIC, ATLANTIC, DANUBE SALMON FILLETS", "slugs": ["salmon-fillet", "salmon-skin-on-fillet"], "note": "Fresh salmon fillets; whole salmon is a separate code." },
+    "030487": { "sdesc": "TUNA (GENUS THUNNUS), SKIPJACK TUNA (STRP-BEL), FRZ", "slugs": ["tuna-loin"], "note": "Frozen tuna (Thunnus + skipjack), the dominant import form; fresh tuna is separate codes." },
+    "030614": { "sdesc": "CRABS, INCLUDING IN SHELL, FROZEN", "slugs": ["whole-crab"], "note": "Frozen crab (the dominant import form); fresh/live crab is a separate code." },
+    "030612": { "sdesc": "LOBSTERS, INCLUDING IN SHELL, FROZEN", "slugs": ["whole-lobster"], "note": "Frozen lobster; fresh/live lobster is a separate code." },
+    "030729": { "sdesc": "SCALLOPS, NESOI", "slugs": ["scallops"], "note": "Scallops not elsewhere specified; some scallop trade sits under other codes." },
+    "030759": { "sdesc": "OCTOPUS, FROZEN, DRIED, SALTED OR IN BRINE", "slugs": ["octopus"] },
+    "030743": { "sdesc": "SQUID, FROZEN", "slugs": ["squid"], "note": "Frozen squid; HS6 present from 2017 (earlier years under prior codes)." },
+    "030779": { "sdesc": "CLAMS, COCKLES AND ARK SHELLS, NESOI", "slugs": ["clams"], "note": "Clams, cockles and ark shells combined (NESOI)." }
   },
   "_pending": {
-    "ginger": "091010 returned no data (pre-2017 code); fresh ginger is 091011 — re-fetch and add.",
-    "seafood_shellfish": "tuna, crab, lobster, scallops, octopus, squid, clams — codes not yet verified; add after an SDESC-verified fetch."
+    "unmapped_seafood": "whole-salmon, whole-halibut, whole-trout, mussels — no verified HS6 mapping yet; add after an SDESC-verified fetch (fresh vs frozen splits make these ambiguous).",
+    "note": "The import field is populated only for import-relevant ingredients; domestic-dominant items (beef, dairy, most alliums/roots) carry no import code by design."
   }
 }
