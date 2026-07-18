@@ -45,10 +45,14 @@ function rawSeriesByHs() {
   for (const l of lines) {
     let o; try { o = JSON.parse(l); } catch { continue; }
     const rows = o.rows; if (!Array.isArray(rows) || rows.length < 2) continue;
-    const H = rows[0], iS = H.indexOf('I_COMMODITY_SDESC'), iV = H.indexOf('GEN_VAL_MO'), iM = H.indexOf('MONTH'), iY = H.indexOf('YEAR');
-    const a = acc[o.hs] = acc[o.hs] || { sdesc: null, series: [] };
+    const H = rows[0], iS = H.indexOf('I_COMMODITY_SDESC'), iV = H.indexOf('GEN_VAL_MO'), iM = H.indexOf('MONTH'), iY = H.indexOf('YEAR'), iC = H.indexOf('I_COMMODITY');
     for (const r of rows.slice(1)) {
       if (r[iV] == null) continue;
+      // Key each row by its OWN HS code (the I_COMMODITY column), not the file-line wrapper, so a
+      // wildcard fetch (PARENT* -> many leaf codes in one response) groups by leaf. Falls back to
+      // the wrapper hs for older single-code lines, where the two are identical (drift-safe).
+      const code = iC >= 0 && r[iC] != null ? String(r[iC]) : String(o.hs);
+      const a = acc[code] = acc[code] || { sdesc: null, series: [] };
       a.sdesc = a.sdesc || r[iS];
       a.series.push([Number(iY >= 0 && r[iY] != null ? r[iY] : o.year), Number(r[iM]), Number(r[iV])]);
     }
@@ -119,9 +123,14 @@ function rawOriginsByHs() {
   for (const l of lines) {
     let o; try { o = JSON.parse(l); } catch { continue; }
     const rows = o.rows; if (!Array.isArray(rows) || rows.length < 2) continue;
-    const H = rows[0], iC = H.indexOf('CTY_CODE'), iN = H.indexOf('CTY_NAME'), iV = H.indexOf('GEN_VAL_MO');
-    const b = byHs[o.hs] = byHs[o.hs] || {};
-    for (const r of rows.slice(1)) { const code = r[iC]; if (!/^\d{4}$/.test(code) || Number(code) < 1010) continue; b[r[iN]] = (b[r[iN]] || 0) + Number(r[iV] || 0); }
+    const H = rows[0], iCty = H.indexOf('CTY_CODE'), iN = H.indexOf('CTY_NAME'), iV = H.indexOf('GEN_VAL_MO'), iCom = H.indexOf('I_COMMODITY');
+    for (const r of rows.slice(1)) {
+      const cty = r[iCty]; if (!/^\d{4}$/.test(cty) || Number(cty) < 1010) continue;
+      // key by the row's own HS code (wildcard-safe), fall back to the wrapper for single-code lines
+      const code = iCom >= 0 && r[iCom] != null ? String(r[iCom]) : String(o.hs);
+      const b = byHs[code] = byHs[code] || {};
+      b[r[iN]] = (b[r[iN]] || 0) + Number(r[iV] || 0);
+    }
   }
   return byHs; // hs -> { COUNTRY_NAME: value }
 }
