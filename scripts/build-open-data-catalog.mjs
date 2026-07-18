@@ -72,6 +72,10 @@ const DATASETS = [
     agency: 'USDA Economic Research Service — Food Availability (Per Capita) Data System',
     files: ['data/ers-food-availability.jsonl'],
     note: 'Per-capita food availability (pounds/person/year) and the underlying supply-and-use series by commodity and year, across 12 food groups. A supply-side proxy for consumption, never a measured intake, never a price, never a forecast. Public domain.' },
+  { id: 'ers-meat-price-spreads', tier: 'gov', title: 'US meat price spreads — farm/wholesale/retail (1970–)',
+    agency: 'USDA Economic Research Service — Meat Price Spreads',
+    files: ['data/ers-meat-price-spreads.jsonl'],
+    note: 'Monthly national-average farm value, wholesale value, retail value, and the spreads between them for beef, pork, and broilers, in cents per pound of retail equivalent. The retail figure is national-average grocery retail, never a delivered or menu price; the spreads are documented statistics, never a forecast. Public domain.' },
 
   // ---- MUNTIN VALUE-ADDED ANALYSIS → CC BY 4.0 ---------------------------------------------------
   { id: 'ingredient-state-record', tier: 'derived', title: 'Ingredient State Record (fused corpus)',
@@ -94,6 +98,10 @@ const DATASETS = [
     agency: 'Muntin Cost Index — computed from USDA ERS public-domain availability series',
     files: ['cost-index/ers-food-availability.json'],
     note: 'USDA ERS per-capita availability (lbs/person/year) mapped to tracked ingredients — the VOLUME companion to the value-based reliance read (how many pounds per person are available domestically). A supply-side proxy for consumption, published at the commodity level (a variety/cut carries its parent commodity figure), never a measured intake, never a price, never a forecast. Underlying series are US-gov public domain; the mapping/compilation is CC BY 4.0.' },
+  { id: 'meat-price-chain', tier: 'derived', title: 'Protein price chain (farm → wholesale → retail)',
+    agency: 'Muntin Cost Index — computed from USDA ERS Meat Price Spreads',
+    files: ['cost-index/meat-price-chain.json'],
+    note: 'The documented national-average farm → wholesale → retail chain for beef, pork, and broilers, with the spreads and the downstream-markup share (how much of the farm-to-retail spread sits above wholesale — downstream of where a kitchen buys). Retail is national-average grocery retail, never a delivered or menu price; a documented spread, never a forecast. Underlying series are US-gov public domain; the computed reads are CC BY 4.0.' },
 ];
 
 function build() {

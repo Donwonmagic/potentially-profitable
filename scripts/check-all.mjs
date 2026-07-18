@@ -655,6 +655,8 @@ const CHECKS = [
   ['NOAA domestic landings honesty','check-noaa-landings.mjs'],
   ['ERS per-capita availability (idem)','build-ers-availability.mjs', '--check'],
   ['ERS per-capita availability honesty','check-ers-availability.mjs'],
+  ['ERS meat price-chain (idem)','build-ers-meat-chain.mjs', '--check'],
+  ['ERS meat price-chain honesty','check-ers-meat-chain.mjs'],
   ['Open-data catalog (idem)','build-open-data-catalog.mjs', '--check'],
   ['Open-data catalog gate','check-open-data-catalog.mjs'],
   // Audio coverage — manifest-driven audit of which written pieces
