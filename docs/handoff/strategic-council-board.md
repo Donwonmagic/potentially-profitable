@@ -98,8 +98,17 @@ instrument card (`--elev-feature`) with its key price sentence (`.ci-read__line`
 clean). Applied to the build script AND directly to 192 committed pages (deterministic string+regex edit,
 idempotent, no regen → no nav drift). Rendered clean light+dark, 0 h-overflow at 1280/390. Gate 253/258,
 zero new failures. **The whole Cost Index funnel — /about/, hub composite, 94 ingredient reads — now speaks
-one instrument material.** **NEXT (optional):** receding-strata+parallax on the hub composite; the
-calibration-safe `check-cost-index-confidence.mjs` gate to lock the honesty invariants.
+one instrument material.**
+
+**SHIPPED — the honesty gate (2026-07-23):** `scripts/check-cost-index-confidence.mjs` (wired into
+`check-all.mjs` + the refresh workflow's check block) locks the framing across all three instrument
+surfaces so a future generator/injector edit can't silently drop it: every `.ci-read` carries wholesale
+framing + a confidence label; the hub composite carries confidence + "against baseline" + "not a
+week-over-week" ; the `/about/` read carries the "Not your prices"/"no es tu precio" negation + wholesale
+reference + confidence — EN and ES. It guards presence only (never invents/grades confidence). Verified:
+passes on the tree (162 reads + hub + /about/), fails the negative test (broken negation caught), gate
+count 258→259. **NEXT (optional):** receding-strata+parallax on the hub composite (only if it should
+*move* like /about/); the pre-existing revisions-log roll (founder go needed — publishes a public record).
 
 **Plan of record:** `docs/design/elevation-dream-backlog.md` — the reconciled output of two
 adversarial "dreaming" workflows (top-down design-language + bottom-up per-surface), with the

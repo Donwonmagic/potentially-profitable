@@ -390,6 +390,7 @@ const CHECKS = [
   ['Cost-index source tier','check-source-tier.mjs',    '--check'],
   ['Cost-index driver catalog','check-cost-index-drivers.mjs','--check'],
   ['Cost-index editors note','check-cost-index-editors-note.mjs','--check'],
+  ['Cost-index confidence framing','check-cost-index-confidence.mjs'],
   ['Cost-index sync',   'check-cost-index-sync.mjs',     '--check'],
   ['Cost-index sync self-test','check-cost-index-sync.mjs','--self-test'],
   // Confidence calibration (P1 #36) — min-of-gates ceiling governs precision.
