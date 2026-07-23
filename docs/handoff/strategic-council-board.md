@@ -41,6 +41,26 @@ the merge is cleaner than main there. **Gate: 255/258** — the 3 remaining are 
 idem-drift (Critical-CSS fonts, Glossary article schema, Glossary verified stamp); **0 new failures**,
 and the merge *resolved* 18 of the 21 idem-drifts our pre-merge branch carried.
 
+**Depth & immersion dream (2026-07-23):** founder idea — "make the user feel *inside* the data;
+a little visual depth; on the cutting edge of tech = empowered = comes back." Founder also stated,
+for the record, **openness to a genuinely new look**, not only additive depth. Ran a 62-agent
+coordinated dreaming workflow (ground → 7 divergent lenses → 6 adversarial critics each → 3 competing
+syntheses → merge → completeness). **Plan of record: `docs/design/depth-immersion-dream-backlog.md`.**
+All 7 lenses converged independently on ONE metaphor — *a precision instrument on a worktop*; the merge
+resolved the flash-vs-restraint tension to **restraint-as-craft** ("depth must MEAN a data fact or it
+does not ship"; honesty carried by WORDS first, visual depth a gate-enforced redundant second channel;
+the number is sacred/static). The north star unifies the three Cost-Index dialects (`ci-*`/`evh-*`/`viz-*`)
+into one "Glass Well" instrument down the whole funnel, **first shipped standalone on `/about/`** at the
+sentence that pledges "the same numbers I check on my own floor." **Completeness critic returned
+`readyToBuild:false`** and caught the headline risk: a confidence-as-*solidity* ramp (low→high) would
+encode a certainty ordering the project's OWN `cost-confidence-calibration.json` contradicts (realized
+low-tier hit-rate is negative/non-monotonic) → an honesty feature that ships an honesty breach. Resolution
+baked into the doc: ship a **calibration-monotone 2-state** now, register chip labels in `sourced-claims.json`,
+gate label-present + low<high + per-tier AA/3:1 in both themes + EN↔ES parity. Open forks for the founder:
+confidence-tier fidelity, the return-cadence privacy stance (client-only visit memory vs. of-record purity),
+dusk-warmth on the /about/ instrument (needs an ADR amendment if yes), View-Transitions ROI, events-fusion
+distance. **NEXT:** founder call on how bold to go + prototype the `/about/` Glass Well hero on the render.
+
 **Plan of record:** `docs/design/elevation-dream-backlog.md` — the reconciled output of two
 adversarial "dreaming" workflows (top-down design-language + bottom-up per-surface), with the
 north star, principles, the phased build sequence, per-surface top tier, and the completeness-
