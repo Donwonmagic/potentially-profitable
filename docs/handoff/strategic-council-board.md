@@ -13,6 +13,36 @@ repo survives. Update this file as threads move.
 council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 #234–#239 product) are merged to main and closed.
 
+## ⮕ CURRENT STATE — HONESTY-AUDIT LOOP on Ledger insight surfaces (updated 2026-07-23)
+
+**What this thread is:** a sustained `ground → build → audit → iterate` loop hardening the
+honesty-critical **insight surfaces** of the Ledger product (`Muntin-Invoice-Decoder`, same
+branch `claude/muntin-strategic-council-exsghc`). Each surface is grounded, fixed, then run
+through a multi-lens adversarial workflow (expert-lens finders → refute-by-default verify) to
+**convergence** (a re-audit that returns 0 findings after genuine review). Every increment is
+committed + pushed to both repos before the next audit — the push is the only durable artifact.
+
+**Of-record per surface:** `Muntin-Invoice-Decoder/runbooks/audits/*.md` (NOT this board — the
+runbooks carry the findings, fixes, and convergence proof). Surfaces worked this loop:
+forecast-surfaces, cross-vendor/vendor-switch, vendor-scorecard, silent-bleed, yield-truth, and
+**stress-test (E14) — ✅ CONVERGED r1→r3 (2026-07-23)**: fixed all-hold false-calm (an
+already-over dish was called "still safe"), substring over-exposure ("egg"→"Eggplant"), a
+hairline-crossing render collapse, and a hike-clamp; r2 caught + fixed a plural-matcher
+over-correction I introduced (reuse the shared `singular()`, don't hand-roll); r3 clean.
+
+**Recurring lessons (apply to every surface):**
+- **Container-revert discipline** — a worker restart can silently roll the local checkout back
+  (happened again 2026-07-23). Before each audit: `git reset --hard origin/<branch>` and verify
+  BOTH trees == origin HEAD. Push every increment.
+- **Parity** — product TS (`apps/api/src/lib/*.ts`) mirrors storefront JS
+  (`potentially-profitable/tools/_shared/*.js`); shared-logic fixes land in BOTH + both test suites.
+- **Provenance over proxies; reuse over hand-rolling** — carry a real provenance flag, not a
+  value-proxy heuristic (yield-truth); reuse the codebase's tested helper (`singular()`,
+  `yieldKeyVariants`) rather than re-deriving it (stress-test r2 regression came from a hand-rolled
+  plural strip).
+- **Convergence discipline** — a re-audit only "converges" if the agents genuinely read/ran the
+  code (check the workflow journal for real tool activity), not merely returned empty.
+
 ## ⮕ CURRENT STATE — AUTONOMOUS REDESIGN RUN (updated 2026-07-11)
 
 **⚠ OPS NOTE (2026-07-11) — container reverted TWICE; both recovered.** It has now happened twice in this
