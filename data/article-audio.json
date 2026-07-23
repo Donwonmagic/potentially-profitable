@@ -114,6 +114,13 @@
   },
   "library": {
     "_doc": "Phase 7: evergreen library articles. Same render + audit pipeline as /blog/; entries are added here as posts migrate from /blog/ into /library/ (Wave 4). Files live at /library/<slug>/audio.mp3 and audio.<lang>.json. Each entry's GUID for RSS purposes is stable across the blog→library move (see scripts/build-rss.mjs).",
+    "restaurant-prime-cost": {
+      "languages": [
+        "en",
+        "es"
+      ],
+      "status": "pending"
+    },
     "can-chatgpt-write-your-restaurant-website": {
       "languages": [
         "en",
