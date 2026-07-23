@@ -1042,6 +1042,7 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
 .isr-tile{display:flex;align-items:baseline;gap:9px;margin:9px 0 4px;flex-wrap:wrap}
 .isr-tile__n{font-size:27px;font-weight:800;color:var(--teal);font-variant-numeric:tabular-nums;line-height:1}
 .isr-tile__l{font-size:13px;color:var(--ink-soft);line-height:1.4}
+.isr-pair{display:flex;flex-direction:column;gap:7px;margin:8px 0 4px}
 .isr-calc{margin:12px 0 0}
 .isr-calc label{display:block;font-size:12px;color:var(--ink-soft);margin:0 0 5px}
 .isr-calc__in{width:130px;padding:7px 10px;font-size:15px;border:1px solid var(--line);border-radius:8px;font-variant-numeric:tabular-nums}
@@ -1109,7 +1110,10 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
     domestic:'Suministro nacional y comercio', production:'Producción a precio de campo (EE. UU.)', farmprice:'Precio de campo', exports:'Exportaciones de EE. UU.',
     relLbl:'del consumo aparente es importado (por valor)', relGrpA:'del grupo ', relGrpB:' es importado (por valor)',
     percapLbl:'lb/persona disponibles en el país',
-    relCaveat:'Una aproximación del consumo aparente — producido + importado − exportado. El valor de importación incluye flete que un precio de campo no, así que es una razón entre puntos, no un puntaje de seguridad de suministro.'
+    relCaveat:'Una aproximación del consumo aparente — producido + importado − exportado. El valor de importación incluye flete que un precio de campo no, así que es una razón entre puntos, no un puntaje de seguridad de suministro.',
+    landings:'Desembarques silvestres de EE. UU.',
+    catchCaveat:'Valor en muelle (ex-embarcación) de la captura silvestre de EE. UU. junto al valor en aduana de las importaciones (gran parte cultivada en el extranjero) — dos medidas distintas mostradas para el mismo año, no una razón de participación en el suministro.',
+    wildMinimal:'Los desembarques silvestres de EE. UU. son mínimos para esta especie — el suministro de EE. UU. es abrumadoramente importado (gran parte cultivado en el extranjero).'
   } : {
     loading:'Loading the record…', find:'Find an ingredient', none:'No matches',
     edible:'edible', trim:'trim tax', cooked:'survives cooking',
@@ -1126,7 +1130,10 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
     domestic:'Domestic supply & trade', production:'US farm-gate production', farmprice:'Farm-gate price', exports:'US exports',
     relLbl:'of apparent consumption is imported (by value)', relGrpA:'of the ', relGrpB:' group is imported (by value)',
     percapLbl:'lb/person available domestically',
-    relCaveat:'An apparent-consumption proxy — made + imported − exported. Import value carries freight that a farm-gate price does not, so this is a cross-point ratio, not a supply-security score.'
+    relCaveat:'An apparent-consumption proxy — made + imported − exported. Import value carries freight that a farm-gate price does not, so this is a cross-point ratio, not a supply-security score.',
+    landings:'US wild landings',
+    catchCaveat:'Dockside ex-vessel value of the US wild catch beside the customs value of imports (much of it farmed abroad) — two different measures shown for the same year, not a supply-share ratio.',
+    wildMinimal:'US wild landings are minimal for this species — the US supply is overwhelmingly imported (much of it farmed abroad).'
   };
 
   function usd(n){
@@ -1293,7 +1300,7 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
     }
 
     // 4b) domestic supply + trade + reliance (the SOURCE-rung cross-source read)
-    if (r.us_production_usd!=null || r.import_reliance_pct!=null || r.us_export_value_usd!=null){
+    if (r.us_production_usd!=null || r.import_reliance_pct!=null || r.us_export_value_usd!=null || r.us_landings_value_usd!=null){
       var dt=slot(T.domestic);
       if (r.us_production_usd!=null) dt.appendChild(el('p','isr-note', T.production+': '+usd(r.us_production_usd)+(r.production_years?' ('+r.production_years+')':'')));
       if (r.farm_price!=null && r.farm_price_unit) dt.appendChild(el('p','isr-note', T.farmprice+': '+r.farm_price+' '+r.farm_price_unit));
@@ -1306,6 +1313,18 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
         dt.appendChild(tile);
         if (r.us_percap_lbs!=null) dt.appendChild(el('p','isr-note', '~'+r.us_percap_lbs+' '+T.percapLbl+(r.us_percap_year?' ('+r.us_percap_year+')':'')));
         dt.appendChild(el('p','isr-fine isr-fine--warn', T.relCaveat));
+      }
+      if (r.us_landings_value_usd!=null){
+        var ly=r.us_landings_year;
+        var impSame=(r.import_annual_usd && ly!=null && r.import_annual_usd[ly]!=null) ? r.import_annual_usd[ly] : null;
+        var impVal=(impSame!=null)?impSame:r.us_import_value_usd;
+        var impYr=(impSame!=null)?ly:(r.import_year||null);
+        var mx=Math.max(r.us_landings_value_usd, impVal||0)||1;
+        var pair=el('div','isr-pair');
+        pair.appendChild(magbar(r.us_landings_value_usd, mx, 'isr-f--teal', T.landings+' · '+usd(r.us_landings_value_usd)+(ly?' ('+ly+')':'')));
+        if (impVal!=null) pair.appendChild(magbar(impVal, mx, 'isr-f--rust', T.imports+' · '+usd(impVal)+(impYr?' ('+impYr+')':'')));
+        dt.appendChild(pair);
+        dt.appendChild(el('p','isr-fine isr-fine--warn', r.us_landings_wild_minimal ? T.wildMinimal : T.catchCaveat));
       }
       card.appendChild(dt);
     }
