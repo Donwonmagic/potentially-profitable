@@ -53,6 +53,7 @@ function check(record) {
     if (r.band_pct != null && r.band_pct < 0) E(s, `band_pct ${r.band_pct} < 0`);
     if (r.import_source_hhi != null && !(r.import_source_hhi >= 0 && r.import_source_hhi <= 1)) E(s, `import_source_hhi ${r.import_source_hhi} out of 0..1`);
     if (r.import_reliance_pct != null && !(r.import_reliance_pct >= 0 && r.import_reliance_pct <= 100)) E(s, `import_reliance_pct ${r.import_reliance_pct} out of 0..100`);
+    if (r.import_reliance_scope != null && !['item', 'commodity'].includes(r.import_reliance_scope)) E(s, `import_reliance_scope "${r.import_reliance_scope}" not item/commodity`);
     for (const f of ['us_import_value_usd', 'us_export_value_usd', 'us_production_usd', 'us_landings_value_usd', 'us_percap_lbs']) if (r[f] != null && !(r[f] >= 0)) E(s, `${f} ${r[f]} < 0`);
     if (r.us_landings_year != null && !(r.us_landings_year >= 1950 && r.us_landings_year <= 2100)) E(s, `us_landings_year ${r.us_landings_year} out of 1950..2100`);
     if (r.us_landings_wild_minimal != null && typeof r.us_landings_wild_minimal !== 'boolean') E(s, `us_landings_wild_minimal must be boolean or null`);
@@ -80,6 +81,7 @@ function check(record) {
         } else if (K === 'reliance') {
           if (!(h.reliance_pct >= 0 && h.reliance_pct <= 100)) E(s, `harmony reliance reliance_pct ${h.reliance_pct} out of 0..100`);
           if (h.reliance_year != null && !(h.reliance_year >= 2000 && h.reliance_year <= 2100)) E(s, `harmony reliance reliance_year ${h.reliance_year} implausible`);
+          if (h.scope != null && !['item', 'commodity'].includes(h.scope)) E(s, `harmony reliance scope "${h.scope}" not item/commodity`);
           if (h.percap_lbs != null && !(h.percap_lbs >= 0 && h.percap_lbs <= 2000)) E(s, `harmony reliance percap_lbs ${h.percap_lbs} out of 0..2000`);
           if (h.percap_year != null && !(h.percap_year >= 1900 && h.percap_year <= 2030)) E(s, `harmony reliance percap_year ${h.percap_year} implausible`);
           // reliance is a cross-source read: the record must actually carry both sides

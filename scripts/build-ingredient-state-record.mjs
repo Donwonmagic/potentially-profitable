@@ -379,7 +379,7 @@ export function harmonyFor(r) {
     // the value read (import share of apparent consumption) carries its VOLUME companion when we have it:
     // ERS per-capita availability — lbs/person/yr available domestically. Two honest views of "how much
     // do we lean on imports": the customs-value ratio and the pounds-available proxy, never conflated.
-    H.push({ kind: 'reliance', reliance_pct: r.import_reliance_pct, reliance_year: r.import_reliance_year != null ? r.import_reliance_year : null, top_country: t ? t.country : null, top_share: t ? t.share_pct : null, percap_lbs: r.us_percap_lbs != null ? r.us_percap_lbs : null, percap_year: r.us_percap_lbs != null ? r.us_percap_year : null });
+    H.push({ kind: 'reliance', reliance_pct: r.import_reliance_pct, reliance_year: r.import_reliance_year != null ? r.import_reliance_year : null, scope: r.import_reliance_scope || null, commodity: r.nass_commodity || null, top_country: t ? t.country : null, top_share: t ? t.share_pct : null, percap_lbs: r.us_percap_lbs != null ? r.us_percap_lbs : null, percap_year: r.us_percap_lbs != null ? r.us_percap_year : null });
   }
   // catchpair — the SEAFOOD analog of reliance, kept deliberately distinct: US wild landings value set
   // beside the import value, but NEVER a supply share, because the domestic figure is WILD-caught while
@@ -440,11 +440,48 @@ function build() {
     const p = percap[slug] || null;
     return { us_percap_lbs: p ? p.lbs : null, us_percap_year: p ? p.year : null };
   };
+  // Commodity-scoped reliance: many slugs share one NASS commodity (cherry-tomato + tomato both map to
+  // TOMATOES). A variety's NARROW import over the WHOLE commodity's production is a mismatched ratio
+  // (cherry-tomato 14% vs tomato 81% off the same $754M TOMATOES production). So when >1 slug shares a
+  // commodity, compute ONE commodity-level reliance from the BROADEST member import stream (the commodity-
+  // level one) over the shared production, and apply it to every member that carries its own import —
+  // labeled reliance_scope='commodity'. Single-slug commodities stay reliance_scope='item'.
+  const commodityReliance = (() => {
+    if (!nass) return {};
+    const byCom = {};
+    for (const [slug, n] of Object.entries(nass)) {
+      if (!n || n.production_usd == null || !n.commodity) continue;
+      (byCom[n.commodity] = byCom[n.commodity] || []).push(slug);
+    }
+    const out = {};
+    for (const [com, slugs] of Object.entries(byCom)) {
+      if (slugs.length < 2) continue; // only shared commodities need the fix
+      const n0 = nass[slugs[0]];
+      const prodUsd = n0.production_usd, prodYear = n0.production_usd_year;
+      if (prodUsd == null) continue;
+      let best = null; // the broadest member import stream, aligned to the production year
+      for (const slug of slugs) {
+        const im = imp[slug]; if (!im) continue;
+        let iv = im.latest_year_usd, iy = im.latest_year;
+        if (im.annual_usd && prodYear != null && im.annual_usd[prodYear] != null) { iv = im.annual_usd[prodYear]; iy = prodYear; }
+        if (iv == null) continue;
+        if (!best || iv > best.iv) best = { slug, iv, iy };
+      }
+      if (!best) continue;
+      const exportUsd = exportAt(best.slug, best.iy);
+      const apparent = prodUsd + best.iv - (exportUsd || 0);
+      if (apparent <= 0) continue;
+      out[com] = { pct: Math.max(0, Math.min(100, Math.round((best.iv / apparent) * 100))), year: best.iy, members: slugs.slice() };
+    }
+    return out;
+  })();
   const nassFields = (slug, im) => {
     if (!nass) return {};
     const n = nass[slug] || null;
     const prodUsd = n && n.production_usd != null ? n.production_usd : null;
     const prodYear = n && n.production_usd_year != null ? n.production_usd_year : null;
+    // a shared-commodity slug that carries its own import inherits the ONE commodity-scoped reliance
+    const cr = (im && n && commodityReliance[n.commodity]) || null;
     // Import share of APPARENT CONSUMPTION: import value ÷ (production + import − export), all aligned
     // to the production year. Netting US domestic exports (Census DF=1) out of the denominator makes
     // this a genuine "share of what is consumed DOMESTICALLY that is imported" rather than the old
@@ -460,10 +497,13 @@ function build() {
     let relianceYear = im ? im.latest_year : null;
     if (im && im.annual_usd && prodYear != null && im.annual_usd[prodYear] != null) { importUsd = im.annual_usd[prodYear]; relianceYear = prodYear; }
     const exportUsd = exportAt(slug, relianceYear);
-    let reliance = null;
-    if (importUsd != null && prodUsd != null) {
+    let reliance = null, relianceScope = null;
+    if (cr) {
+      // commodity-scoped: one honest number for the whole group (avoids the narrow-numerator artifact)
+      reliance = cr.pct; relianceYear = cr.year; relianceScope = 'commodity';
+    } else if (importUsd != null && prodUsd != null) {
       const apparent = prodUsd + importUsd - (exportUsd || 0);
-      if (apparent > 0) reliance = Math.max(0, Math.min(100, Math.round((importUsd / apparent) * 100)));
+      if (apparent > 0) { reliance = Math.max(0, Math.min(100, Math.round((importUsd / apparent) * 100))); relianceScope = 'item'; }
     }
     return {
       nass_commodity: n ? n.commodity : null,
@@ -478,6 +518,7 @@ function build() {
       production_years: n ? n.production_years : null,
       import_reliance_pct: reliance,
       import_reliance_year: reliance != null ? relianceYear : null,
+      import_reliance_scope: reliance != null ? relianceScope : null,
     };
   };
 
@@ -577,7 +618,7 @@ function build() {
     ingredients: records,
   };
 
-  const cols = ['slug', 'name', 'category', 'posture', 'band_pct', 'edible_yield_pct', 'trim_tax', 'cooked_yield', 'cheapest_month', 'save_pct', 'hedge_swap', 'pressure_dir', 'pressure_conf', 'us_import_value_usd', 'us_export_value_usd', 'us_production_usd', 'us_landings_value_usd', 'us_landings_year', 'us_landings_wild_minimal', 'farm_price', 'farm_price_unit', 'import_reliance_pct', 'import_reliance_year', 'import_years', 'import_peak_months', 'import_peak_quarter_share', 'import_hs6', 'import_yoy_pct', 'import_source_concentration', 'import_source_hhi', 'import_top_sources', 'notable_events_n', 'median_shock_days', 'biggest_move_pct', 'biggest_move_date', 'comovers'];
+  const cols = ['slug', 'name', 'category', 'posture', 'band_pct', 'edible_yield_pct', 'trim_tax', 'cooked_yield', 'cheapest_month', 'save_pct', 'hedge_swap', 'pressure_dir', 'pressure_conf', 'us_import_value_usd', 'us_export_value_usd', 'us_production_usd', 'us_landings_value_usd', 'us_landings_year', 'us_landings_wild_minimal', 'farm_price', 'farm_price_unit', 'import_reliance_pct', 'import_reliance_year', 'import_reliance_scope', 'import_years', 'import_peak_months', 'import_peak_quarter_share', 'import_hs6', 'import_yoy_pct', 'import_source_concentration', 'import_source_hhi', 'import_top_sources', 'notable_events_n', 'median_shock_days', 'biggest_move_pct', 'biggest_move_date', 'comovers'];
   const esc = (v) => { if (v == null) return ''; const s = Array.isArray(v) ? v.join(';') : String(v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
   const cell = (r, k) => {
     if (k === 'comovers') return esc((r.comovers || []).map((x) => x.slug + ':' + x.shared_of_n).join(';'));

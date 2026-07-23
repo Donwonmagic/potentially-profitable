@@ -49,6 +49,7 @@ test('harmonyFor: supplyshape fires from the origin mix', () => {
 test('harmonyFor: reliance carries the aligned year + anchors the origin share to imports; only when present', () => {
   const withRel = {
     import_reliance_pct: 30, import_reliance_year: 2023,
+    import_reliance_scope: 'commodity', nass_commodity: 'TOMATOES',
     us_import_value_usd: 3, us_production_usd: 7,
     us_percap_lbs: 8.4, us_percap_year: 2021,
     import_top_sources: [{ country: 'Mexico', share_pct: 88 }],
@@ -57,6 +58,8 @@ test('harmonyFor: reliance carries the aligned year + anchors the origin share t
   assert.ok(rel);
   assert.equal(rel.reliance_pct, 30);
   assert.equal(rel.reliance_year, 2023);
+  assert.equal(rel.scope, 'commodity', 'reliance carries its scope (item vs commodity) for the render');
+  assert.equal(rel.commodity, 'TOMATOES', 'reliance carries the commodity name for the "group" label');
   assert.equal(rel.top_country, 'Mexico'); // the island states this is 88% OF IMPORTS, not of supply
   assert.equal(rel.top_share, 88);
   // the value read carries its VOLUME companion (ERS per-capita lbs) when present, never conflated
