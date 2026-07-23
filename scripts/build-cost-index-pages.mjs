@@ -720,8 +720,29 @@ function compositeBand(locale) {
     ? { high: 'confianza alta', medium: 'confianza media', moderate: 'confianza media', low: 'confianza baja' }
     : { high: 'high confidence', medium: 'medium confidence', moderate: 'moderate confidence', low: 'low confidence' };
   const confChip = confMap[b.confidence] || (es ? 'confianza sin declarar' : 'confidence unstated');
-  const asOf = b.asOf || '—';
+  // Freshness: lead the headline with the NEWEST contributing read so a current
+  // basket isn't buried behind one lagging staple, and disclose the laggards
+  // honestly (never claim the whole basket is fresher than it truly is). The
+  // machine/citation value b.asOf — the oldest-contributor floor — is untouched.
+  const cDates = contribs
+    .map((c) => { const it = (CI.ingredients || {})[c.ingredient] || {}; const p = (it.points || [])[0] || {}; return p.asOf || it.asOf || null; })
+    .filter(Boolean).sort();
+  const newestAsOf = cDates.length ? cDates[cDates.length - 1] : (b.asOf || '—');
+  const oldestAsOf = cDates.length ? cDates[0] : (b.asOf || '—');
+  const LAG_DAYS = 21;
+  const nMs = Date.parse(newestAsOf);
+  const nLag = contribs.reduce((s, c) => {
+    const it = (CI.ingredients || {})[c.ingredient] || {}; const p = (it.points || [])[0] || {};
+    const a = p.asOf || it.asOf || null;
+    return (a && isFinite(nMs) && (nMs - Date.parse(a)) > LAG_DAYS * 864e5) ? s + 1 : s;
+  }, 0);
+  const asOf = newestAsOf;
   const asOfChip = es ? `al ${asOf}` : `as of ${asOf}`;
+  const holdNote = nLag
+    ? (es
+      ? ` <strong>${nLag}</strong> de ${n} insumos mantienen su último dato desde el ${oldestAsOf}.`
+      : ` <strong>${nLag}</strong> of ${n} staples are holding last-good since ${oldestAsOf}.`)
+    : '';
   const head = es ? 'Dónde está la canasta' : 'Where the basket sits';
   const say = es
     ? `la canasta ponderada de ${n} insumos de restaurante, frente a su ventana base`
@@ -736,8 +757,8 @@ function compositeBand(locale) {
       : ` The staples are nearly evenly split (agreement ${Math.round(agree * 100)}%), so read it as a soft signal, not a precise figure.`)
     : '';
   const spread = es
-    ? `<strong>${up}</strong> de ${n} por encima de su línea base · <strong>${down}</strong> por debajo · <strong>${flat}</strong> sin cambio. Es una lectura de estado, no un movimiento respecto a la semana pasada.${splitNote}`
-    : `<strong>${up}</strong> of ${n} reading above their baseline · <strong>${down}</strong> below · <strong>${flat}</strong> flat. A state-of-play reading, not a week-over-week move.${splitNote}`;
+    ? `<strong>${up}</strong> de ${n} por encima de su línea base · <strong>${down}</strong> por debajo · <strong>${flat}</strong> sin cambio. Es una lectura de estado, no un movimiento respecto a la semana pasada.${splitNote}${holdNote}`
+    : `<strong>${up}</strong> of ${n} reading above their baseline · <strong>${down}</strong> below · <strong>${flat}</strong> flat. A state-of-play reading, not a week-over-week move.${splitNote}${holdNote}`;
   const base = es ? '/es' : '';
   const srcSummary = es ? 'Cómo se construye esta cifra' : 'How this figure is built';
   const srcBody = es
