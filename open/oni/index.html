@@ -1,0 +1,692 @@
+<title>The Zero Horizon — El Niño / La Niña (ENSO) across 76 years of observed record</title>
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="description" content="The observed three-month running sea-surface temperature anomaly in the Niño 3.4 region, the standard gauge for El Niño / La Niña. 917 overlapping seasons from DJF 1950 through AMJ 2026, with derived episode and seasonal-spread tables. Descriptive of the tracked record only — never a forecast." />
+<meta name="theme-color" content="#2A50C8" />
+<link rel="canonical" href="https://muntin.digital/open/oni/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/open/oni/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/open/oni/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/open/oni/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="es_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="The Zero Horizon — El Niño / La Niña (ENSO) across 76 years of observed record" />
+<meta property="og:description" content="The observed three-month running sea-surface temperature anomaly in the Niño 3.4 region, the standard gauge for El Niño / La Niña. 917 overlapping seasons from DJF 1950 through AMJ 2026, with derived episode and seasonal-spread tables. Descriptive of the tracked record only — never a forecast." />
+<meta property="og:url" content="https://muntin.digital/open/oni/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="The Zero Horizon — El Niño / La Niña (ENSO) across 76 years of observed record" />
+<meta name="twitter:description" content="The observed three-month running sea-surface temperature anomaly in the Niño 3.4 region, the standard gauge for El Niño / La Niña. 917 overlapping seasons from DJF 1950 through AMJ 2026, with derived episode and seasonal-spread tables. Descriptive of the tracked record only — never a forecast." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Open data","item":"https://muntin.digital/open/"},{"@type":"ListItem","position":3,"name":"The Zero Horizon","item":"https://muntin.digital/open/oni/"}]}</script>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site-core.css" />
+<style>
+/* === MUNTIN OPEN-DATA EXPLORER · shared token block === */
+:root{
+  --paper:#f7f4ee; --surface:#fffdf9; --surface-2:#f1ece2;
+  --ink:#1b1f24; --ink-soft:#4a525a; --muted:#626862;
+  --line:#e5ddce; --line-soft:#efe9dc;
+  --teal:#2f7d78; --teal-ink:#215a56; --teal-wash:#e4efed;
+  --gold:#8a6216; --rust:#a8442d;
+  --up:var(--rust); --dn:var(--teal-ink); --flat:var(--muted);
+  --focus:#1b6be0; --focus-ring:0 0 0 3px rgba(27,107,224,.55);
+  --ok-badge-bd:var(--teal); --ok-badge-ink:var(--teal-ink);
+  --font-display:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
+  --font-sans:system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --font-mono:ui-monospace,'SF Mono','Cascadia Code',Menlo,Consolas,monospace;
+  --sh:0 1px 2px rgba(20,24,29,.05),0 8px 24px rgba(20,24,29,.07);
+  --tap:44px;
+  /* warm/cool fills for the ribbon (chart-only saturations) */
+  --warm:#c25a3c; --warm-soft:#e7b9a9; --cool:#2f7d78; --cool-soft:#a9d2ce;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#13161a; --surface:#1a1e23; --surface-2:#222831;
+  --ink:#eef1f0; --ink-soft:#b7bec3; --muted:#8b949c;
+  --line:#2b3138; --line-soft:#242a30;
+  --teal:#57b7af; --teal-ink:#7fcfc7; --teal-wash:#16302e;
+  --gold:#d3a44c; --rust:#e08a72;
+  --focus:#7ab6ff; --focus-ring:0 0 0 3px rgba(122,182,255,.6);
+  --sh:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4);
+  --warm:#e08a72; --warm-soft:#5f3a30; --cool:#57b7af; --cool-soft:#274d49;
+}}
+:root[data-theme="dark"]{ --paper:#13161a;--surface:#1a1e23;--surface-2:#222831;--ink:#eef1f0;--ink-soft:#b7bec3;--muted:#8b949c;--line:#2b3138;--line-soft:#242a30;--teal:#57b7af;--teal-ink:#7fcfc7;--teal-wash:#16302e;--gold:#d3a44c;--rust:#e08a72;--focus:#7ab6ff;--focus-ring:0 0 0 3px rgba(122,182,255,.6);--sh:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4);--warm:#e08a72;--warm-soft:#5f3a30;--cool:#57b7af;--cool-soft:#274d49; }
+:root[data-theme="light"]{ --paper:#f7f4ee;--surface:#fffdf9;--surface-2:#f1ece2;--ink:#1b1f24;--ink-soft:#4a525a;--muted:#626862;--line:#e5ddce;--line-soft:#efe9dc;--teal:#2f7d78;--teal-ink:#215a56;--teal-wash:#e4efed;--gold:#8a6216;--rust:#a8442d;--focus:#1b6be0;--focus-ring:0 0 0 3px rgba(27,107,224,.55);--warm:#c25a3c;--warm-soft:#e7b9a9;--cool:#2f7d78;--cool-soft:#a9d2ce; }
+*{box-sizing:border-box}
+html{color-scheme:light dark}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-sans);line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:960px;margin:0 auto;padding:clamp(18px,3.5vw,44px) clamp(14px,4vw,30px) 90px}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+h1{font-family:var(--font-display);font-weight:600;line-height:1.03;letter-spacing:-.01em;text-wrap:balance;margin:0 0 12px;font-size:clamp(30px,6vw,52px)}
+h2,h3{font-family:var(--font-display);font-weight:600;letter-spacing:-.01em}
+a{color:var(--teal-ink)} a:hover{text-decoration:underline}
+svg{display:block;max-width:100%;height:auto}
+figure{margin:0}
+:where(a,button,select,input,summary,[tabindex]):focus-visible{outline:2px solid var(--focus);outline-offset:2px;box-shadow:var(--focus-ring);border-radius:6px}
+button,select,input{min-height:var(--tap);font:inherit}
+button,[role=button]{min-width:var(--tap)}
+input,select{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:11px 14px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.lic{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--ok-badge-bd);color:var(--ok-badge-ink);border-radius:5px;padding:1px 7px;font:600 10.5px/1.4 var(--font-mono);letter-spacing:.06em}
+.lic::before{content:'\2713'} .lic[data-lic="cc-by"]::before{content:'\24B8'}
+.honest{display:block;font:400 11.5px/1.4 var(--font-sans);color:var(--muted);font-style:italic}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+@media (forced-colors:active){.lic,.chip{border:1px solid CanvasText}[data-series]{forced-color-adjust:none}}
+
+/* --- page chrome --- */
+.skip{position:absolute;left:-999px;top:0;background:var(--surface);color:var(--ink);padding:10px 16px;border:1px solid var(--line);border-radius:8px;z-index:50}
+.skip:focus{left:8px;top:8px}
+header.mast{border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:24px}
+.kick{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-ink);margin:0 0 12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.kick .sp{flex:1}
+.tgl{display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px 10px;color:var(--ink);cursor:pointer;font:inherit;font-size:12px;min-height:var(--tap)}
+.lede{font-size:clamp(15px,2.2vw,18px);color:var(--ink-soft);max-width:64ch;margin:0}
+.lede b{color:var(--ink);font-family:var(--font-mono);font-weight:600}
+.now{margin-top:14px;display:inline-flex;flex-wrap:wrap;gap:10px 18px;align-items:baseline;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--warm);border-radius:10px;padding:12px 16px;box-shadow:var(--sh)}
+.now .big{font-family:var(--font-mono);font-weight:600;font-size:22px}
+.now .lbl{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block}
+
+section{margin:38px 0}
+section>h2{font-size:clamp(20px,3.4vw,27px);margin:0 0 4px}
+.sub{color:var(--ink-soft);max-width:66ch;margin:.35em 0 16px}
+.eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-ink);margin:0 0 6px}
+
+/* controls */
+.ctrls{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin:0 0 12px}
+.ctrls label.opt{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;color:var(--ink-soft);cursor:pointer;padding:6px 4px;min-height:var(--tap)}
+.ctrls input[type=checkbox]{width:20px;height:20px;min-height:20px;accent-color:var(--teal);cursor:pointer}
+.btn{display:inline-flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 14px;color:var(--ink);cursor:pointer;font:inherit;font-size:13.5px;font-weight:600;box-shadow:var(--sh)}
+.btn:hover{background:var(--teal-wash)}
+.btn[aria-pressed=true]{background:var(--teal-ink);color:#fff;border-color:var(--teal-ink)}
+
+/* ribbon */
+.card{border:1px solid var(--line);border-radius:14px;background:var(--surface);box-shadow:var(--sh);padding:16px}
+.ribbon-scroll{overflow-x:auto;overflow-y:hidden;border-radius:10px;background:var(--surface-2);-webkit-overflow-scrolling:touch}
+.ribbon-scroll:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.ribbon-scroll svg{width:1400px;max-width:none;height:300px}
+.scrubwrap{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:12px}
+.scrubwrap input[type=range]{flex:1;min-width:200px;accent-color:var(--teal);height:var(--tap);cursor:pointer}
+.readout{font-family:var(--font-mono);font-size:13px;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;min-width:230px}
+.readout b{font-weight:600}
+.tag{display:inline-block;font-family:var(--font-mono);font-size:11px;font-weight:600;border-radius:4px;padding:1px 7px;border:1px solid currentColor}
+.tag.warm{color:var(--rust)} .tag.cool{color:var(--teal-ink)} .tag.neu{color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:12px 18px;margin:12px 0 0;font-size:12.5px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.sw{width:16px;height:12px;border-radius:3px;display:inline-block;border:1px solid rgba(0,0,0,.18)}
+
+/* clock */
+.clock-grid{display:grid;grid-template-columns:1fr;gap:20px;align-items:start}
+@media(min-width:720px){.clock-grid{grid-template-columns:minmax(0,1fr) minmax(0,340px)}}
+.clock-note{font-size:13.5px;color:var(--ink-soft)}
+.clock-btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.spoke-btn{font-family:var(--font-mono);font-size:11.5px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:7px;padding:6px 9px;min-height:var(--tap);cursor:pointer}
+.spoke-btn[aria-pressed=true]{background:var(--teal-ink);color:#fff;border-color:var(--teal-ink)}
+
+/* span bars */
+.span-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.span-scroll svg{width:900px;max-width:none;height:auto}
+.spanbar{cursor:pointer}
+.spanbar:focus-visible rect{stroke:var(--focus);stroke-width:3}
+
+/* tables */
+.tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface);box-shadow:var(--sh);margin-top:14px}
+table.data{border-collapse:collapse;width:100%;font-size:13.5px}
+table.data caption{text-align:left;padding:12px 16px;font-size:12.5px;color:var(--muted);border-bottom:1px solid var(--line)}
+table.data th,table.data td{padding:9px 14px;text-align:left;border-top:1px solid var(--line-soft);white-space:nowrap}
+table.data thead th{background:var(--surface-2);position:sticky;top:0;z-index:1;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border-top:0}
+table.data th.num,table.data td.num{text-align:right;font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+table.data thead th button{all:unset;display:inline-flex;align-items:center;gap:5px;cursor:pointer;min-height:34px}
+table.data thead th button:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:5px}
+table.data thead th button .ar{opacity:.4;font-size:10px}
+table.data th[aria-sort=ascending] button .ar,table.data th[aria-sort=descending] button .ar{opacity:1;color:var(--teal-ink)}
+table.data tbody tr:hover{background:var(--teal-wash)}
+table.data tbody tr[aria-current=true]{background:var(--teal-wash);box-shadow:inset 3px 0 0 var(--teal-ink)}
+.rowlink{all:unset;display:inline-flex;align-items:center;gap:8px;cursor:pointer;color:var(--teal-ink);font-weight:600;min-height:34px}
+.rowlink:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:5px}
+.gl{font-family:var(--font-mono);font-weight:700}
+.gl.warm{color:var(--rust)} .gl.cool{color:var(--teal-ink)}
+
+/* insight cards */
+.cards{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:640px){.cards{grid-template-columns:1fr 1fr}}
+.icard{border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px;background:var(--surface);padding:16px 18px;box-shadow:var(--sh)}
+.icard.warm{border-left-color:var(--warm)}
+.icard h3{margin:0 0 6px;font-size:16px}
+.icard p{margin:0;font-size:13.8px;color:var(--ink-soft)}
+.icard .fig{font-family:var(--font-mono);font-weight:600;color:var(--ink)}
+
+/* detail */
+.back{display:inline-flex;align-items:center;gap:8px;background:none;border:0;color:var(--teal-ink);font:inherit;font-size:14px;cursor:pointer;padding:8px 4px;margin:0 0 12px;min-height:var(--tap)}
+.back:hover{text-decoration:underline}
+.detail-head{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline;margin-bottom:6px}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:16px 0}
+.stat{border:1px solid var(--line);border-radius:10px;background:var(--surface-2);padding:12px 14px}
+.stat .k{font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:3px}
+.stat .v{font-family:var(--font-mono);font-size:18px;font-weight:600}
+.nbrs{display:flex;justify-content:space-between;gap:12px;margin-top:18px;flex-wrap:wrap}
+.nbrs a{display:inline-flex;flex-direction:column;gap:2px;text-decoration:none;border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-height:var(--tap);justify-content:center}
+.nbrs a small{color:var(--muted);font-size:11px}
+
+footer{margin-top:56px;border-top:1px solid var(--line);padding-top:20px;font-size:13px;color:var(--ink-soft)}
+footer h2{font-size:14px;margin:0 0 10px;font-family:var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+footer a{font-weight:600}
+footer .prov{display:grid;gap:8px;max-width:70ch}
+.dl{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--teal);color:var(--teal-ink);border-radius:10px;padding:10px 16px;text-decoration:none;font-weight:600;min-height:var(--tap)}
+.dl:hover{background:var(--teal-wash);text-decoration:none}
+[hidden]{display:none!important}
+</style>
+
+<a class="skip" href="#main">Skip to the explorer</a>
+<div class="wrap">
+  <body>
+<a class="skip-link" href="#main">Skip to content</a>
+<!-- batch-banner:start --><!-- batch-banner:end -->
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital">
+      <img class="logo-mark" src="/brand/mark/mark-square-ink.svg" alt="" width="36" height="36" />
+      <span class="logo-text">Muntin Digital</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary"><a href="/open/">Open data</a><a href="/cost-index/">Cost Index</a></nav>
+  </div>
+</header>
+<header class="mast">
+    <p class="kick">
+      <span>ONI · NOAA Climate Prediction Center</span>
+      <span class="lic" data-lic="cc0">CC0 · public domain</span>
+      <span class="sp"></span>
+      <button class="tgl" id="theme" type="button" aria-label="Switch color theme">
+        <span aria-hidden="true" id="theme-ic">◐</span><span id="theme-tx">Theme</span>
+      </button>
+    </p>
+    <h1>The Zero Horizon</h1>
+    <p class="lede">Seventy-six years of the <b>Oceanic Niño Index</b> — the observed sea-surface anomaly that names each season <b>El&nbsp;Niño</b> (warm), <b>La&nbsp;Niña</b> (cool), or neutral. The horizon line <em>is</em> zero: warm fills up, cool fills down. One climate gauge, read straight from the record — never a forecast.</p>
+    <div class="now" id="nowread">
+      <div><span class="lbl">Latest observed season</span><span class="big" id="now-seas">AMJ 2026</span></div>
+      <div><span class="lbl">ONI anomaly</span><span class="big mono" id="now-val">+0.98&deg;C</span></div>
+      <div><span class="lbl">Regime as observed</span><span class="big" id="now-state">El&nbsp;Niño&nbsp;territory</span></div>
+    </div>
+    <p class="honest" style="margin-top:8px">The record ends mid-2026 climbing out of the 2025 La&nbsp;Niña trough (SON&nbsp;2025 &minus;0.51&deg;C). This is the tracked record ending on a warm upswing, described as observed. No value here is extrapolated forward.</p>
+  </header>
+
+  <main id="main">
+    <noscript>
+      <p class="honest" style="font-style:normal;color:var(--ink-soft);border:1px solid var(--line);border-left:4px solid var(--warm);border-radius:10px;padding:12px 16px;margin:0 0 20px">JavaScript is off, so the ribbon, phase-clock and span-bar figures render blank. The full observed record is still here as text: the <b>seasonal spread table</b> (under “Seasonal spread — full table”) and the <b>42-episode table</b> below carry every value the charts draw from.</p>
+    </noscript>
+    <div id="overview">
+
+      <!-- ===================== RIBBON HERO ===================== -->
+      <section aria-labelledby="rib-h">
+        <p class="eyebrow">The signature view</p>
+        <h2 id="rib-h">The zero-horizon ribbon</h2>
+        <p class="sub">Every one of the <b>917</b> overlapping three-month seasons since DJF&nbsp;1950, as a diverging area around a hard zero line. Rust fills upward for El&nbsp;Niño, teal fills downward for La&nbsp;Niña, and the guide lines mark the &plusmn;0.5&deg;C thresholds. The pale ribbon is the full record; the saturated runs are the 42 official episodes. Nearly half the record — <b>45.6%</b> — sits in the quiet neutral band, so ENSO reads as episodic punctuation, not a constant seesaw.</p>
+
+        <div class="card">
+          <div class="ctrls" role="group" aria-label="Ribbon options">
+            <label class="opt"><input type="checkbox" id="opt-episodes" checked> Highlight official episodes</label>
+            <label class="opt"><input type="checkbox" id="opt-detrend"> Show raw SST (detrend toggle)</label>
+            <button class="btn" id="sonify" type="button" aria-pressed="false" aria-describedby="sonify-note">
+              <span aria-hidden="true">♪</span> Play the ribbon
+            </button>
+          </div>
+          <p id="sonify-note" class="honest" style="margin:0 0 12px">Sonification maps anomaly to pitch (warm = higher, cool = lower) as a play-through; a moving caret and the readout track it, and every value is also in the episode and seasonal tables below. Audio is an enhancement, never the only channel.</p>
+
+          <figure>
+            <div class="ribbon-scroll" id="ribbon-scroll" tabindex="0" role="group" aria-label="Scrollable ribbon, 1950 at left to 2026 at right. Use the timeline slider below to move the read caret.">
+              <svg id="ribbon" role="img" width="1400" height="300" viewBox="0 0 1400 300" preserveAspectRatio="none">
+                <title>Diverging area chart of the Oceanic Niño Index, DJF 1950 through AMJ 2026.</title>
+                <desc id="ribbon-desc">The observed ONI anomaly around a zero horizon: warm El Niño lobes fill upward, cool La Niña lobes fill downward, threshold guides at plus and minus 0.5 degrees C. Reads the regime by which side is filled and how far. Observed record, not a forecast.</desc>
+              </svg>
+            </div>
+            <div class="legend" aria-hidden="true">
+              <span><span class="sw" style="background:var(--warm)"></span> El&nbsp;Niño (warm, &ge;+0.5)</span>
+              <span><span class="sw" style="background:var(--cool)"></span> La&nbsp;Niña (cool, &le;&minus;0.5)</span>
+              <span><span class="sw" style="background:var(--muted);opacity:.4"></span> Neutral band</span>
+              <span id="detrend-leg" hidden><span class="sw" style="background:var(--gold)"></span> Raw SST &deg;C (right scale)</span>
+            </div>
+            <figcaption class="honest" style="font-style:normal;color:var(--ink-soft)">Scroll the strip or drag the slider to read any season. El&nbsp;Niño owns the sharpest peaks (record <b class="mono">+2.75&deg;C</b>, NDJ&nbsp;2015); La&nbsp;Niña's floor is <b class="mono">&minus;2.03&deg;C</b> (NDJ&nbsp;1973).</figcaption>
+          </figure>
+
+          <div class="scrubwrap">
+            <label for="scrub" class="sr-only">Timeline scrubber: move the read caret across all 917 seasons</label>
+            <input type="range" id="scrub" min="0" max="916" value="916" step="1" aria-describedby="readout">
+            <output class="readout" id="readout" for="scrub"></output>
+          </div>
+          <p id="detrend-cap" class="honest" hidden style="margin-top:10px">ONI subtracts the trend. Raw sea-surface temperature (gold) drifts up across the decades — about <b class="mono">26.7&deg;C</b> in the 1950s to <b class="mono">~27.1&deg;C</b> lately — yet the anomaly ribbon stays centered on zero because ONI is measured against a moving 30-year base period. This index tracks the wobble, not the warming.</p>
+        </div>
+        <p class="sr-only" id="ribbon-sr"></p>
+      </section>
+
+      <!-- ===================== THE AHA / WALK ===================== -->
+      <section aria-labelledby="walk-h">
+        <p class="eyebrow">Walk the data</p>
+        <h2 id="walk-h">Scattered peaks, one heartbeat</h2>
+        <p class="sub">El&nbsp;Niño and La&nbsp;Niña can <em>begin</em> in any season. Watch where the big ones <em>peak</em>. Below are three of the strongest warm events; a tick marks the season each one topped out. Every tick lands in late autumn or winter.</p>
+        <div class="card" id="freeze">
+          <figure>
+            <svg id="freezeviz" role="img" width="720" height="150" viewBox="0 0 720 150">
+              <title>Peak season of three major El Niño events.</title>
+              <desc>1982-83 peaks at NDJ, 1997-98 peaks at OND, 2015-16 peaks at NDJ — all in the November-to-January winter window.</desc>
+            </svg>
+            <figcaption class="honest" style="font-style:normal;color:var(--ink-soft)">Across all 42 official episodes, <b>34 of 42</b> reach peak intensity in the Oct–Mar window and <b>32 of 42</b> peak specifically in OND / NDJ / DJF. ENSO doesn't peak randomly — it locks to boreal winter.</figcaption>
+          </figure>
+        </div>
+        <p class="sub" style="margin-top:14px">Now fold those scattered peaks onto a single dial. The clock below places all 76 years of every season around a ring — and the same winter seasons that caught the peaks are exactly where the ring bulges widest.</p>
+      </section>
+
+      <!-- ===================== PHASE CLOCK ===================== -->
+      <section aria-labelledby="clock-h">
+        <p class="eyebrow">The non-obvious form</p>
+        <h2 id="clock-h">The phase clock</h2>
+        <p class="sub">One spoke per overlapping season, DJF around to NDJ. Each spoke's length is the spread (standard deviation) of all 76 years of anomalies in that season. The dial bulges through <b>NDJ / DJF / OND</b> (std 1.03–1.09) and pinches to its narrowest waist at <b>AMJ / MJJ</b> (std &asymp; 0.56 — a tight spread, not zero; the radius is short, the anomalies still vary). This is the seasonal phase-lock made into one glanceable shape — ENSO's heartbeat, wide in winter, narrow in spring.</p>
+        <div class="card clock-grid">
+          <figure>
+            <svg id="clock" role="img" width="440" height="440" viewBox="0 0 440 440">
+              <title>Radial dial of ONI spread by season.</title>
+              <desc id="clock-desc">Twelve spokes, one per overlapping season. Spoke length encodes the standard deviation of the anomaly across all years. The dial is widest at NDJ, OND and DJF (winter) and narrowest at MAM, AMJ and MJJ (spring), showing the seasonal phase-lock.</desc>
+            </svg>
+          </figure>
+          <div>
+            <p class="clock-note" id="clock-live" aria-live="polite">Winter seasons carry roughly twice the spread of spring seasons. Select a season to read its spread.</p>
+            <div class="clock-btns" role="group" aria-label="Select a season to highlight on the dial" id="spoke-btns"></div>
+            <details style="margin-top:14px">
+              <summary>Seasonal spread — full table</summary>
+              <div class="tblwrap" style="margin-top:10px">
+                <table class="data">
+                  <caption>Standard deviation and median of the ONI anomaly by overlapping season, all years 1950–2026. Source: NOAA CPC ONI (CC0).</caption>
+                  <thead><tr><th scope="col">Season</th><th scope="col" class="num">Std dev &deg;C</th><th scope="col" class="num">Median</th><th scope="col" class="num">Min</th><th scope="col" class="num">Max</th></tr></thead>
+                  <tbody id="clock-rows"><tr><th scope="row">DJF</th><td class="num">1.03</td><td class="num">−0.19</td><td class="num">−1.84</td><td class="num">+2.63</td></tr><tr><th scope="row">JFM</th><td class="num">0.87</td><td class="num">−0.02</td><td class="num">−1.55</td><td class="num">+2.28</td></tr><tr><th scope="row">FMA</th><td class="num">0.70</td><td class="num">+0.06</td><td class="num">−1.29</td><td class="num">+1.71</td></tr><tr><th scope="row">MAM</th><td class="num">0.59</td><td class="num">+0.15</td><td class="num">−1.18</td><td class="num">+1.29</td></tr><tr><th scope="row">AMJ</th><td class="num">0.56</td><td class="num">+0.02</td><td class="num">−1.07</td><td class="num">+1.06</td></tr><tr><th scope="row">MJJ</th><td class="num">0.58</td><td class="num">+0.00</td><td class="num">−1.30</td><td class="num">+1.25</td></tr><tr><th scope="row">JJA</th><td class="num">0.65</td><td class="num">+0.07</td><td class="num">−1.30</td><td class="num">+1.60</td></tr><tr><th scope="row">JAS</th><td class="num">0.74</td><td class="num">−0.07</td><td class="num">−1.35</td><td class="num">+1.91</td></tr><tr><th scope="row">ASO</th><td class="num">0.86</td><td class="num">−0.12</td><td class="num">−1.56</td><td class="num">+2.21</td></tr><tr><th scope="row">SON</th><td class="num">0.97</td><td class="num">−0.17</td><td class="num">−1.71</td><td class="num">+2.47</td></tr><tr><th scope="row">OND</th><td class="num">1.07</td><td class="num">−0.15</td><td class="num">−1.95</td><td class="num">+2.64</td></tr><tr><th scope="row">NDJ</th><td class="num">1.09</td><td class="num">−0.12</td><td class="num">−2.03</td><td class="num">+2.75</td></tr></tbody>
+                </table>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== TWIN SPAN BARS + EPISODE BROWSER ===================== -->
+      <section aria-labelledby="span-h">
+        <p class="eyebrow">The asymmetry &amp; the browser</p>
+        <h2 id="span-h">Twin span-bars: the sprinter and the marathoner</h2>
+        <p class="sub">El&nbsp;Niño episodes stack above the zero line, La&nbsp;Niña below; bar length is duration in seasons. La&nbsp;Niña bars run longer and, above all, <em>repeat</em> — five distinct multi-year events, the 1998–2001 and 2021–2023 dips re-intensifying across three to four consecutive winters, a double-dip pattern El&nbsp;Niño doesn't make in this record. El&nbsp;Niño's longest runs (2014–16, 1986–88) can span three calendar years too, but each holds a single peak and fades rather than re-deepening winter after winter. And El&nbsp;Niño owns the sharper ceiling. <b>Warm events spike higher; cool events last longer and repeat.</b> Select any bar or table row to walk through that episode.</p>
+        <div class="card">
+          <figure>
+            <div class="span-scroll">
+              <svg id="spanviz" role="group" aria-label="Interactive timeline of all 42 official ENSO episodes, El Niño above the zero line and La Niña below; each bar is a link that opens that episode's rise–peak–decay walk-through." width="900" height="360" viewBox="0 0 900 360">
+                <title>Timeline of all 42 official ENSO episodes, El Niño above zero and La Niña below.</title>
+                <desc id="span-desc">Horizontal bars positioned by calendar time; bar length is episode duration in seasons. El Niño episodes sit above the center line, La Niña below. La Niña bars run longer and repeat, clustering into multi-year double-dip runs; El Niño episodes hold a single peak and, though a few span three calendar years, do not re-deepen across successive winters.</desc>
+              </svg>
+            </div>
+            <figcaption class="honest" style="font-style:normal;color:var(--ink-soft)">Longest La&nbsp;Niña: <b class="mono">32</b> seasons (1998–2001). Longest El&nbsp;Niño: <b class="mono">19</b> seasons (2014–16). El&nbsp;Niño's sharper ceiling (+2.75) versus La&nbsp;Niña's floor (&minus;2.03).</figcaption>
+          </figure>
+        </div>
+
+        <div class="tblwrap">
+          <table class="data" id="ep-table">
+            <caption>All 42 official ENSO episodes — five or more consecutive overlapping seasons past the &plusmn;0.5&deg;C threshold. Select a row to open its rise–peak–decay walk-through. Column headers sort. Source: NOAA CPC ONI (CC0, public domain).</caption>
+            <thead>
+              <tr>
+                <th scope="col"><button type="button" data-sort="phase">Episode <span class="ar" aria-hidden="true">▲▼</span></button></th>
+                <th scope="col"><button type="button" data-sort="start">Span <span class="ar" aria-hidden="true">▲▼</span></button></th>
+                <th scope="col" class="num"><button type="button" data-sort="dur">Seasons <span class="ar" aria-hidden="true">▲▼</span></button></th>
+                <th scope="col"><button type="button" data-sort="peakseas">Peak season <span class="ar" aria-hidden="true">▲▼</span></button></th>
+                <th scope="col" class="num"><button type="button" data-sort="peak">Peak &deg;C <span class="ar" aria-hidden="true">▲▼</span></button></th>
+              </tr>
+            </thead>
+            <tbody id="ep-rows"><tr data-label="1950-50" data-sign="0" data-start="0" data-dur="7" data-peak="-1.53" data-peakidx="0"><th scope="row"><a class="rowlink" href="#/ep/1950-50"><span class="gl cool" aria-hidden="true">▼</span>La Niña&nbsp;1950-50</a></th><td>DJF&nbsp;1950&ndash;JJA&nbsp;1950</td><td class="num">7</td><td>DJF&nbsp;1950</td><td class="num">−1.53</td></tr><tr data-label="1951-52" data-sign="1" data-start="17" data-dur="8" data-peak="1.15" data-peakidx="9"><th scope="row"><a class="rowlink" href="#/ep/1951-52"><span class="gl warm" aria-hidden="true">▲</span>El Niño&nbsp;1951-52</a></th><td>MJJ&nbsp;1951&ndash;DJF&nbsp;1952</td><td class="num">8</td><td>SON&nbsp;1951</td><td class="num">+1.15</td></tr><tr data-label="1953-54" data-sign="1" data-start="37" data-dur="12" data-peak="0.84" data-peakidx="9"><th scope="row"><a class="rowlink" href="#/ep/1953-54"><span class="gl warm" aria-hidden="true">▲</span>El Niño&nbsp;1953-54</a></th><td>JFM&nbsp;1953&ndash;DJF&nbsp;1954</td><td class="num">12</td><td>SON&nbsp;1953</td><td class="num">+0.84</td></tr><tr data-label="1954-56" data-sign="0" data-start="52" data-dur="28" data-peak="-1.67" data-peakidx="10"><th scope="row"><a class="rowlink" href="#/ep/1954-56"><span class="gl cool" aria-hidden="true">▼</span>La Niña&nbsp;1954-56</a></th><td>AMJ&nbsp;1954&ndash;JAS&nbsp;1956</td><td class="num">28</td><td>OND&nbsp;1955</td><td class="num">−1.67</td></tr><tr data-label="1957-58" data-sign="1" data-start="87" data-dur="16" data-peak="1.81" data-peakidx="0"><th scope="row"><a class="rowlink" href="#/ep/1957-58"><span class="gl warm" aria-hidden="true">▲</span>El Niño&nbsp;1957-58</a></th><td>MAM&nbsp;1957&ndash;JJA&nbsp;1958</td><td class="num">16</td><td>DJF&nbsp;1958</td><td class="num">+1.81</td></tr><tr data-label="1958-59" data-sign="1" data-start="106" data-dur="5" data-peak="0.62" data-peakidx="1"><th scope="row"><a class="rowlink" href="#/ep/1958-59"><span class="gl warm" aria-hidden="true">▲</span>El Niño&nbsp;1958-59</a></th><td>OND&nbsp;1958&ndash;FMA&nbsp;1959</td><td class="num">5</td><td>JFM&nbsp;1959</td><td class="num">+0.62</td></tr><tr data-label="1963-64" data-sign="1" data-start="161" data-dur="9" data-peak="1.37" data-peakidx="10"><th scope="row"><a class="rowlink" href="#/ep/1963-64"><span class="gl warm" aria-hidden="true">▲</span>El Niño&nbsp;1963-64</a></th><td>MJJ&nbsp;1963&ndash;JFM&nbsp;1964</td><td class="num">9</td><td>OND&nbsp;1963</td><td class="num">+1.37</td></tr><tr data-label="1964-65" data-sign="0" data-start="172" data-dur="9" data-peak="-0.82" data-peakidx="10"><th scope="row"><a class="rowlink" href="#/ep/1964-65"><span class="gl cool" aria-hidden="true">▼</span>La Niña&nbsp;1964-65</a></th><td>AMJ&nbsp;1964&ndash;DJF&nbsp;1965</td><td class="num">9</td><td>OND&nbsp;1964</td><td class="num">−0.82</td></tr><tr data-label="1965-66" data-sign="1" data-start="185" data-dur="11" data-peak="1.98" data-peakidx="9"><th scope="row"><a class="rowlink" href="#/ep/1965-66"><span class="gl warm" aria-hidden="true">▲</span>El Niño&nbsp;1965-66</a></th><td>MJJ&nbsp;1965&ndash;MAM&nbsp;1966</td><td class="num">11</td><td>SON&nbsp;1965</td><td class="num">+1.98</td></tr><tr data-label="1968-69" data-sign="1" data-start="225" data-dur="8" data-peak="1.13" data-peakidx="0"><th scope="row"><a class="rowlink" href="#/ep/1968-69"><span class="gl warm" aria-hidden="true">▲</span>El Niño&nbsp;1968-69</a></th><td>SON&nbsp;1968&ndash;AMJ&nbsp;1969</td><td class="num">8</td><td>DJF&nbsp;1969</td><td class="num">+1.13</td></tr><tr data-label="1969-70" data-sign="1" data-start="235" data-dur="6" data-peak="0.86" data-peakidx="9"><th scope="row"><a class="rowlink" href="#/ep/1969-70"><span class="gl warm" aria-hidden="true">▲</span>El Niño&nbsp;1969-70</a></th><td>JAS&nbsp;1969&ndash;DJF&nbsp;1970</td><td class="num">6</td><td>SON&nbsp;1969</td><td class="num">+0.86</td></tr><tr data-label="1970-72" data-sign="0" data-start="246" data-dur="19" data-peak="-1.38" data-peakidx="1"><th scope="row"><a class="rowlink" href="#/ep/1970-72"><span class="gl cool" aria-hidden="true">▼</span>La Niña&nbsp;1970-72</a></th><td>JJA&nbsp;1970&ndash;DJF&nbsp;1972</td><td class="num">19</td><td>JFM&nbsp;1971</td><td class="num">−1.38</td></tr><tr data-label="1972-73" data-sign="1" data-start="268" data-dur="11" data-peak="2.12" data-peakidx="11"><th scope="row"><a class="rowlink" href="#/ep/1972-73"><span class="gl warm" aria-hidden="true">▲</span>El Niño&nbsp;1972-73</a></th><td>AMJ&nbsp;1972&ndash;FMA&nbsp;1973</td><td class="num">11</td><td>NDJ&nbsp;1972</td><td class="num">+2.12</td></tr><tr data-label="1973-74" data-sign="0" data-start="280" data-dur="15" data-peak="-2.03" data-peakidx="11"><th scope="row"><a class="rowlink" href="#/ep/1973-74"><span class="gl cool" aria-hidden="true">▼</span>La Niña&nbsp;1973-74</a></th><td>AMJ&nbsp;1973&ndash;JJA&nbsp;1974</td><td class="num">15</td><td>NDJ&nbsp;1973</td><td class="num">−2.03</td></tr><tr data-label="1974-76" data-sign="0" data-start="297" data-dur="18" data-peak="-1.65" data-peakidx="11"><th scope="row"><a class="rowlink" href="#/ep/1974-76"><span class="gl cool" aria-hidden="true">▼</span>La Niña&nbsp;1974-76</a></th><td>SON&nbsp;1974&ndash;FMA&nbsp;1976</td><td class="num">18</td><td>NDJ&nbsp;1975</td><td class="num">−1.65</td></tr><tr data-label="1976-77" data-sign="1" data-start="320" data-dur="6" data-peak="0.86" data-peakidx="10"><th scope="row"><a class="rowlink" href="#/ep/1976-77"><span class="gl warm" aria-hidden="true">▲</span>El Niño&nbsp;1976-77</a></th><td>ASO&nbsp;1976&ndash;JFM&nbsp;1977</td><td class="num">6</td><td>OND&nbsp;1976</td><td class="num">+0.86</td></tr><tr data-label="1977-78" data-sign="1" data-start="332" data-dur="5" data-peak="0.81" data-peakidx="10"><th scope="row"><a class="rowlink" href="#/ep/1977-78"><span class="gl warm" aria-hidden="true">▲</span>El Niño&nbsp;1977-78</a></th><td>ASO&nbsp;1977&ndash;DJF&nbsp;1978</td><td class="num">5</td><td>OND&nbsp;1977</td><td class="num">+0.81</td></tr><tr data-label="1982-83" data-sign="1" data-start="388" data-dur="14" data-peak="2.23" data-peakidx="11"><th scope="row"><a class="rowlink" href="#/ep/1982-83"><span class="gl warm" aria-hidden="true">▲</span>El Niño&nbsp;1982-83</a></th><td>AMJ&nbsp;1982&ndash;MJJ&nbsp;1983</td><td class="num">14</td><td>NDJ&nbsp;1982</td><td class="num">+2.23</td></tr><tr data-label="1984-85" data-sign="0" data-start="417" data-dur="9" data-peak="-1.14" data-peakidx="11"><th scope="row"><a class="rowlink" href="#/ep/1984-85"><span class="gl cool" aria-hidden="true">▼</span>La Niña&nbsp;1984-85</a></th><td>SON&nbsp;1984&ndash;MJJ&nbsp;1985</td><td class="num">9</td><td>NDJ&nbsp;1984</td><td class="num">−1.14</td></tr><tr data-label="1986-88" data-sign="1" data-start="440" data-dur="18" data-peak="1.7" data-peakidx="7"><th scope="row"><a class="rowlink" href="#/ep/1986-88"><span class="gl warm" aria-hidden="true">▲</span>El Niño&nbsp;1986-88</a></th><td>ASO&nbsp;1986&ndash;JFM&nbsp;1988</td><td class="num">18</td><td>JAS&nbsp;1987</td><td class="num">+1.70</td></tr><tr data-label="1988-89" data-sign="0" data-start="460" data-dur="13" data-peak="-1.85" data-peakidx="11"><th scope="row"><a class="rowlink" href="#/ep/1988-89"><span class="gl cool" aria-hidden="true">▼</span>La Niña&nbsp;1988-89</a></th><td>AMJ&nbsp;1988&ndash;AMJ&nbsp;1989</td><td class="num">13</td><td>NDJ&nbsp;1988</td><td class="num">−1.85</td></tr><tr data-label="1991-92" data-sign="1" data-start="497" data-dur="13" data-peak="1.71" data-peakidx="0"><th scope="row"><a class="rowlink" href="#/ep/1991-92"><span class="gl warm" aria-hidden="true">▲</span>El Niño&nbsp;1991-92</a></th><td>MJJ&nbsp;1991&ndash;MJJ&nbsp;1992</td><td class="num">13</td><td>DJF&nbsp;1992</td><td class="num">+1.71</td></tr><tr data-label="1994-95" data-sign="1" data-start="536" data-dur="7" data-peak="1.09" data-peakidx="11"><th scope="row"><a class="rowlink" href="#/ep/1994-95"><span class="gl warm" aria-hidden="true">▲</span>El Niño&nbsp;1994-95</a></th><td>ASO&nbsp;1994&ndash;FMA&nbsp;1995</td><td class="num">7</td><td>NDJ&nbsp;1994</td><td class="num">+1.09</td></tr><tr data-label="1995-96" data-sign="0" data-start="547" data-dur="8" data-peak="-1" data-peakidx="10"><th scope="row"><a class="rowlink" href="#/ep/1995-96"><span class="gl cool" aria-hidden="true">▼</span>La Niña&nbsp;1995-96</a></th><td>JAS&nbsp;1995&ndash;FMA&nbsp;1996</td><td class="num">8</td><td>OND&nbsp;1995</td><td class="num">−1.00</td></tr><tr data-label="1997-98" data-sign="1" data-start="568" data-dur="12" data-peak="2.4" data-peakidx="10"><th scope="row"><a class="rowlink" href="#/ep/1997-98"><span class="gl warm" aria-hidden="true">▲</span>El Niño&nbsp;1997-98</a></th><td>AMJ&nbsp;1997&ndash;MAM&nbsp;1998</td><td class="num">12</td><td>OND&nbsp;1997</td><td class="num">+2.40</td></tr><tr data-label="1998-01" data-sign="0" data-start="582" data-dur="32" data-peak="-1.66" data-peakidx="0"><th scope="row"><a class="rowlink" href="#/ep/1998-01"><span class="gl cool" aria-hidden="true">▼</span>La Niña&nbsp;1998-01</a></th><td>JJA&nbsp;1998&ndash;JFM&nbsp;2001</td><td class="num">32</td><td>DJF&nbsp;2000</td><td class="num">−1.66</td></tr><tr data-label="2002-03" data-sign="1" data-start="629" data-dur="9" data-peak="1.31" data-peakidx="10"><th scope="row"><a class="rowlink" href="#/ep/2002-03"><span class="gl warm" aria-hidden="true">▲</span>El Niño&nbsp;2002-03</a></th><td>MJJ&nbsp;2002&ndash;JFM&nbsp;2003</td><td class="num">9</td><td>OND&nbsp;2002</td><td class="num">+1.31</td></tr><tr data-label="2004-05" data-sign="1" data-start="655" data-dur="7" data-peak="0.7" data-peakidx="8"><th scope="row"><a class="rowlink" href="#/ep/2004-05"><span class="gl warm" aria-hidden="true">▲</span>El Niño&nbsp;2004-05</a></th><td>JAS&nbsp;2004&ndash;JFM&nbsp;2005</td><td class="num">7</td><td>ASO&nbsp;2004</td><td class="num">+0.70</td></tr><tr data-label="2005-06" data-sign="0" data-start="670" data-dur="5" data-peak="-0.85" data-peakidx="0"><th scope="row"><a class="rowlink" href="#/ep/2005-06"><span class="gl cool" aria-hidden="true">▼</span>La Niña&nbsp;2005-06</a></th><td>OND&nbsp;2005&ndash;FMA&nbsp;2006</td><td class="num">5</td><td>DJF&nbsp;2006</td><td class="num">−0.85</td></tr><tr data-label="2006-07" data-sign="1" data-start="680" data-dur="5" data-peak="0.94" data-peakidx="10"><th scope="row"><a class="rowlink" href="#/ep/2006-07"><span class="gl warm" aria-hidden="true">▲</span>El Niño&nbsp;2006-07</a></th><td>ASO&nbsp;2006&ndash;DJF&nbsp;2007</td><td class="num">5</td><td>OND&nbsp;2006</td><td class="num">+0.94</td></tr><tr data-label="2007-08" data-sign="0" data-start="690" data-dur="12" data-peak="-1.64" data-peakidx="0"><th scope="row"><a class="rowlink" href="#/ep/2007-08"><span class="gl cool" aria-hidden="true">▼</span>La Niña&nbsp;2007-08</a></th><td>JJA&nbsp;2007&ndash;MJJ&nbsp;2008</td><td class="num">12</td><td>DJF&nbsp;2008</td><td class="num">−1.64</td></tr><tr data-label="2008-09" data-sign="0" data-start="706" data-dur="5" data-peak="-0.85" data-peakidx="0"><th scope="row"><a class="rowlink" href="#/ep/2008-09"><span class="gl cool" aria-hidden="true">▼</span>La Niña&nbsp;2008-09</a></th><td>OND&nbsp;2008&ndash;FMA&nbsp;2009</td><td class="num">5</td><td>DJF&nbsp;2009</td><td class="num">−0.85</td></tr><tr data-label="2009-10" data-sign="1" data-start="715" data-dur="8" data-peak="1.56" data-peakidx="11"><th scope="row"><a class="rowlink" href="#/ep/2009-10"><span class="gl warm" aria-hidden="true">▲</span>El Niño&nbsp;2009-10</a></th><td>JAS&nbsp;2009&ndash;FMA&nbsp;2010</td><td class="num">8</td><td>NDJ&nbsp;2009</td><td class="num">+1.56</td></tr><tr data-label="2010-11" data-sign="0" data-start="725" data-dur="11" data-peak="-1.64" data-peakidx="9"><th scope="row"><a class="rowlink" href="#/ep/2010-11"><span class="gl cool" aria-hidden="true">▼</span>La Niña&nbsp;2010-11</a></th><td>MJJ&nbsp;2010&ndash;MAM&nbsp;2011</td><td class="num">11</td><td>SON&nbsp;2010</td><td class="num">−1.64</td></tr><tr data-label="2011-12" data-sign="0" data-start="739" data-dur="7" data-peak="-1.02" data-peakidx="10"><th scope="row"><a class="rowlink" href="#/ep/2011-12"><span class="gl cool" aria-hidden="true">▼</span>La Niña&nbsp;2011-12</a></th><td>JAS&nbsp;2011&ndash;JFM&nbsp;2012</td><td class="num">7</td><td>OND&nbsp;2011</td><td class="num">−1.02</td></tr><tr data-label="2014-16" data-sign="1" data-start="777" data-dur="19" data-peak="2.75" data-peakidx="11"><th scope="row"><a class="rowlink" href="#/ep/2014-16"><span class="gl warm" aria-hidden="true">▲</span>El Niño&nbsp;2014-16</a></th><td>SON&nbsp;2014&ndash;MAM&nbsp;2016</td><td class="num">19</td><td>NDJ&nbsp;2015</td><td class="num">+2.75</td></tr><tr data-label="2017-18" data-sign="0" data-start="813" data-dur="6" data-peak="-0.86" data-peakidx="11"><th scope="row"><a class="rowlink" href="#/ep/2017-18"><span class="gl cool" aria-hidden="true">▼</span>La Niña&nbsp;2017-18</a></th><td>SON&nbsp;2017&ndash;FMA&nbsp;2018</td><td class="num">6</td><td>NDJ&nbsp;2017</td><td class="num">−0.86</td></tr><tr data-label="2018-19" data-sign="1" data-start="824" data-dur="10" data-peak="0.97" data-peakidx="10"><th scope="row"><a class="rowlink" href="#/ep/2018-19"><span class="gl warm" aria-hidden="true">▲</span>El Niño&nbsp;2018-19</a></th><td>ASO&nbsp;2018&ndash;MJJ&nbsp;2019</td><td class="num">10</td><td>OND&nbsp;2018</td><td class="num">+0.97</td></tr><tr data-label="2019-20" data-sign="1" data-start="838" data-dur="5" data-peak="0.66" data-peakidx="11"><th scope="row"><a class="rowlink" href="#/ep/2019-20"><span class="gl warm" aria-hidden="true">▲</span>El Niño&nbsp;2019-20</a></th><td>OND&nbsp;2019&ndash;FMA&nbsp;2020</td><td class="num">5</td><td>NDJ&nbsp;2019</td><td class="num">+0.66</td></tr><tr data-label="2020-21" data-sign="0" data-start="847" data-dur="9" data-peak="-1.2" data-peakidx="10"><th scope="row"><a class="rowlink" href="#/ep/2020-21"><span class="gl cool" aria-hidden="true">▼</span>La Niña&nbsp;2020-21</a></th><td>JAS&nbsp;2020&ndash;MAM&nbsp;2021</td><td class="num">9</td><td>OND&nbsp;2020</td><td class="num">−1.20</td></tr><tr data-label="2021-23" data-sign="0" data-start="860" data-dur="17" data-peak="-0.97" data-peakidx="8"><th scope="row"><a class="rowlink" href="#/ep/2021-23"><span class="gl cool" aria-hidden="true">▼</span>La Niña&nbsp;2021-23</a></th><td>ASO&nbsp;2021&ndash;DJF&nbsp;2023</td><td class="num">17</td><td>ASO&nbsp;2022</td><td class="num">−0.97</td></tr><tr data-label="2023-24" data-sign="1" data-start="880" data-dur="12" data-peak="2.06" data-peakidx="11"><th scope="row"><a class="rowlink" href="#/ep/2023-24"><span class="gl warm" aria-hidden="true">▲</span>El Niño&nbsp;2023-24</a></th><td>AMJ&nbsp;2023&ndash;MAM&nbsp;2024</td><td class="num">12</td><td>NDJ&nbsp;2023</td><td class="num">+2.06</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ===================== INSIGHTS ===================== -->
+      <section aria-labelledby="ins-h">
+        <p class="eyebrow">What the record earns</p>
+        <h2 id="ins-h">Five honest reads</h2>
+        <div class="cards">
+          <div class="icard warm"><h3>Phase-lock is real and stark</h3><p><span class="fig">32 of 42</span> official episodes peak in OND/NDJ/DJF, <span class="fig">34 of 42</span> in Oct–Mar. Seasonal spread climbs from <span class="fig">~0.56</span> in spring to <span class="fig">~1.09</span> in NDJ. The dataset has a spring waist and a winter bulge.</p></div>
+          <div class="icard"><h3>Sprinter vs marathoner</h3><p>La&nbsp;Niña reaches <span class="fig">28</span> and <span class="fig">32</span> seasons and stages <span class="fig">5</span> multi-year events; El&nbsp;Niño's longest single run is <span class="fig">19</span> and, though it can span three calendar years, it doesn't double-dip across winters. But El&nbsp;Niño owns the extremes: <span class="fig">+2.75</span> ceiling vs <span class="fig">&minus;2.03</span> floor.</p></div>
+          <div class="icard"><h3>Detrended by design</h3><p>Raw SST drifts up across decades, but the anomaly stays centered on zero — ONI is measured against a moving 30-year base. A regime index that removes the warming trend, not a climate-warming line. Flip the detrend toggle above to see it.</p></div>
+          <div class="icard"><h3>A balanced seesaw</h3><p>Over 76 years the record splits <span class="fig">26.9%</span> El&nbsp;Niño / <span class="fig">27.5%</span> La&nbsp;Niña / <span class="fig">45.6%</span> neutral — remarkably symmetric time-in-state, even though the intensity distribution is not.</p></div>
+          <div class="icard warm"><h3>The live tail (observed)</h3><p>The record ends climbing out of a La&nbsp;Niña trough — SON&nbsp;2025 <span class="fig">&minus;0.51</span> up through MAM&nbsp;2026 <span class="fig">+0.51</span> to AMJ&nbsp;2026 <span class="fig">+0.98</span>. An emerging warm signal in the observed record, described as observed — never extrapolated.</p></div>
+        </div>
+      </section>
+    </div><!-- /overview -->
+
+    <!-- ===================== DETAIL ===================== -->
+    <div id="detail" hidden></div>
+
+    <p class="sr-only" role="status" aria-live="polite" id="live"></p>
+  </main>
+
+  <footer>
+    <h2>Provenance &amp; access</h2>
+    <div class="prov">
+      <p><strong>Dataset.</strong> Oceanic Niño Index (ONI) — the observed three-month running sea-surface temperature anomaly in the Niño&nbsp;3.4 region, the standard gauge for El&nbsp;Niño / La&nbsp;Niña. <span class="lic" data-lic="cc0">CC0 · public domain</span> Published by the <strong>NOAA Climate Prediction Center</strong>. US-government public-domain data, freely redistributable.</p>
+      <p><strong>Columns used.</strong> <span class="mono">SEAS</span> (overlapping 3-month season), <span class="mono">YR</span>, <span class="mono">TOTAL</span> (raw SST &deg;C), <span class="mono">ANOM</span> (the ONI anomaly &deg;C; &ge;+0.5 El&nbsp;Niño, &le;&minus;0.5 La&nbsp;Niña). Full record parsed: 917 seasons, DJF&nbsp;1950 – AMJ&nbsp;2026. Episodes computed as the standard 5-or-more consecutive overlapping seasons past threshold.</p>
+      <p><strong>Honesty.</strong> Every figure here is the observed record. The index removes the long-term warming trend by construction; nothing on this page is a forecast, and the live tail is labeled as an in-progress observation only.</p>
+      <p>
+        <a class="dl" href="https://muntin.digital/data/cpc-oni.txt" download><span aria-hidden="true">↓</span> Download the source file (cpc-oni.txt)</a>
+      </p>
+      <p style="margin-top:6px"><a href="https://muntin.digital/cost-index/explore/">← Back to the Muntin open-data explorers</a></p>
+    </div>
+  </footer>
+</div>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Dataset","name":"Oceanic Niño Index (ONI) — observed ENSO record, 1950–2026","alternateName":"NOAA CPC ONI","description":"The observed three-month running sea-surface temperature anomaly in the Niño 3.4 region, the standard gauge for El Niño / La Niña. 917 overlapping seasons from DJF 1950 through AMJ 2026, with derived episode and seasonal-spread tables. Descriptive of the tracked record only — never a forecast.","url":"https://muntin.digital/cost-index/explore/","keywords":["ENSO","El Niño","La Niña","Oceanic Niño Index","ONI","sea-surface temperature anomaly","Niño 3.4"],"license":"https://creativecommons.org/publicdomain/zero/1.0/","isAccessibleForFree":true,"creator":{"@type":"GovernmentOrganization","name":"NOAA Climate Prediction Center","url":"https://www.cpc.ncep.noaa.gov/"},"temporalCoverage":"1950/2026","measurementTechnique":"Three-month running mean SST anomaly, Niño 3.4 region, against a centered 30-year base period","variableMeasured":["ONI anomaly (°C)","raw SST TOTAL (°C)","ENSO episode duration (seasons)","seasonal standard deviation (°C)"],"distribution":[{"@type":"DataDownload","encodingFormat":"text/plain","contentUrl":"https://muntin.digital/data/cpc-oni.txt","name":"cpc-oni.txt — NOAA CPC ONI source file"}]}</script>
+<script type="application/json" id="data">{"meta":{"source":"NOAA CPC ONI","file":"cpc-oni.txt","startYr":1950,"seasOrder":["DJF","JFM","FMA","MAM","AMJ","MJJ","JJA","JAS","ASO","SON","OND","NDJ"],"n":917,"lastSeas":"AMJ","lastYr":2026,"timeInState":{"en":26.9,"ln":27.5,"neutral":45.6},"peakWinter":32,"peakTotal":42},"anom":[-1.53,-1.34,-1.16,-1.18,-1.07,-0.85,-0.54,-0.42,-0.39,-0.44,-0.6,-0.8,-0.82,-0.54,-0.17,0.18,0.36,0.58,0.7,0.89,0.99,1.15,1.04,0.81,0.53,0.37,0.34,0.29,0.2,0,-0.08,0,0.15,0.1,0.04,0.15,0.4,0.6,0.63,0.66,0.75,0.77,0.75,0.73,0.78,0.84,0.84,0.81,0.76,0.47,-0.05,-0.41,-0.54,-0.5,-0.64,-0.84,-0.9,-0.77,-0.73,-0.66,-0.68,-0.62,-0.69,-0.8,-0.79,-0.72,-0.68,-0.75,-1.09,-1.42,-1.67,-1.47,-1.11,-0.76,-0.63,-0.54,-0.52,-0.51,-0.57,-0.55,-0.46,-0.42,-0.43,-0.43,-0.25,0.06,0.41,0.72,0.92,1.11,1.25,1.32,1.33,1.39,1.53,1.74,1.81,1.66,1.27,0.93,0.74,0.64,0.57,0.43,0.39,0.44,0.5,0.61,0.61,0.62,0.52,0.33,0.2,-0.07,-0.18,-0.28,-0.09,-0.03,0.05,-0.04,-0.1,-0.1,-0.07,0.03,0.02,0.03,0.13,0.24,0.27,0.2,0.12,0.05,0.04,0.03,0.04,0.09,0.23,0.27,0.14,-0.13,-0.3,-0.26,-0.19,-0.16,-0.24,-0.22,-0.2,-0.26,-0.28,-0.2,-0.04,-0.07,-0.11,-0.22,-0.31,-0.43,-0.4,-0.15,0.15,0.27,0.31,0.52,0.86,1.14,1.22,1.29,1.37,1.31,1.07,0.62,0.12,-0.33,-0.58,-0.58,-0.6,-0.66,-0.76,-0.8,-0.82,-0.78,-0.59,-0.28,-0.07,0.18,0.46,0.83,1.22,1.54,1.85,1.98,1.97,1.72,1.37,1.17,0.98,0.66,0.35,0.24,0.24,0.12,-0.05,-0.1,-0.18,-0.3,-0.41,-0.48,-0.53,-0.45,-0.24,0,0.05,-0.16,-0.3,-0.38,-0.34,-0.44,-0.64,-0.74,-0.62,-0.44,-0.04,0.28,0.58,0.53,0.45,0.55,0.73,0.98,1.13,1.09,0.95,0.77,0.61,0.43,0.36,0.51,0.79,0.86,0.81,0.63,0.51,0.34,0.29,0.19,0.04,-0.3,-0.63,-0.76,-0.77,-0.74,-0.86,-1.15,-1.36,-1.38,-1.12,-0.85,-0.73,-0.74,-0.8,-0.77,-0.82,-0.85,-0.96,-0.9,-0.71,-0.35,0.06,0.41,0.67,0.92,1.13,1.37,1.58,1.84,2.09,2.12,1.84,1.25,0.54,-0.1,-0.54,-0.87,-1.11,-1.28,-1.45,-1.71,-1.95,-2.03,-1.84,-1.55,-1.23,-1.03,-0.91,-0.77,-0.53,-0.37,-0.41,-0.61,-0.75,-0.64,-0.54,-0.57,-0.65,-0.73,-0.83,-0.98,-1.13,-1.2,-1.37,-1.43,-1.55,-1.65,-1.56,-1.17,-0.73,-0.47,-0.28,-0.05,0.18,0.35,0.62,0.81,0.86,0.85,0.71,0.64,0.34,0.23,0.21,0.34,0.35,0.42,0.57,0.73,0.81,0.79,0.69,0.42,0.06,-0.18,-0.31,-0.29,-0.36,-0.42,-0.42,-0.29,-0.08,0,0.03,0.07,0.2,0.28,0.23,0.05,0.04,0.17,0.33,0.45,0.52,0.64,0.59,0.46,0.34,0.38,0.48,0.46,0.25,0.03,-0.07,0.02,0.11,-0.01,-0.26,-0.5,-0.47,-0.37,-0.26,-0.29,-0.3,-0.25,-0.16,-0.13,-0.15,-0.08,-0.05,0.07,0.19,0.47,0.66,0.72,0.79,1.07,1.58,1.97,2.18,2.23,2.18,1.92,1.54,1.29,1.06,0.72,0.31,-0.08,-0.46,-0.81,-1,-0.91,-0.6,-0.42,-0.34,-0.43,-0.51,-0.45,-0.3,-0.16,-0.24,-0.56,-0.92,-1.14,-1.04,-0.85,-0.77,-0.78,-0.78,-0.63,-0.49,-0.46,-0.4,-0.35,-0.27,-0.36,-0.49,-0.47,-0.31,-0.2,-0.12,-0.04,0.22,0.44,0.71,0.94,1.14,1.22,1.23,1.19,1.06,0.95,0.97,1.22,1.51,1.7,1.65,1.48,1.25,1.11,0.81,0.54,0.14,-0.31,-0.88,-1.3,-1.3,-1.11,-1.19,-1.48,-1.8,-1.85,-1.69,-1.43,-1.08,-0.83,-0.58,-0.4,-0.31,-0.27,-0.24,-0.22,-0.16,-0.05,0.14,0.21,0.28,0.29,0.29,0.31,0.33,0.38,0.39,0.35,0.4,0.41,0.41,0.26,0.22,0.26,0.45,0.64,0.73,0.64,0.62,0.79,1.21,1.53,1.71,1.63,1.48,1.29,1.06,0.73,0.37,0.09,-0.13,-0.25,-0.28,-0.13,0.09,0.3,0.5,0.67,0.7,0.57,0.32,0.25,0.15,0.1,0.04,0.06,0.06,0.07,0.17,0.31,0.42,0.41,0.44,0.43,0.55,0.74,1.01,1.09,0.96,0.72,0.53,0.3,0.14,-0.03,-0.24,-0.54,-0.81,-0.97,-1,-0.98,-0.9,-0.75,-0.59,-0.39,-0.31,-0.3,-0.27,-0.32,-0.35,-0.4,-0.45,-0.49,-0.5,-0.36,-0.1,0.28,0.75,1.22,1.6,1.9,2.14,2.33,2.4,2.39,2.24,1.93,1.44,0.99,0.45,-0.13,-0.78,-1.12,-1.31,-1.35,-1.48,-1.57,-1.55,-1.3,-1.07,-0.98,-1.02,-1.04,-1.1,-1.11,-1.16,-1.26,-1.46,-1.65,-1.66,-1.41,-1.07,-0.81,-0.71,-0.64,-0.55,-0.51,-0.55,-0.63,-0.75,-0.74,-0.68,-0.52,-0.44,-0.34,-0.25,-0.12,-0.08,-0.13,-0.19,-0.29,-0.35,-0.31,-0.15,0.03,0.09,0.2,0.43,0.65,0.79,0.86,1.01,1.21,1.31,1.14,0.92,0.63,0.38,-0.04,-0.26,-0.16,0.08,0.21,0.26,0.29,0.35,0.35,0.37,0.31,0.23,0.17,0.17,0.28,0.47,0.64,0.7,0.67,0.66,0.69,0.64,0.58,0.45,0.43,0.29,0.11,-0.06,-0.14,-0.11,-0.29,-0.57,-0.84,-0.85,-0.77,-0.57,-0.37,-0.14,-0.03,0.1,0.3,0.54,0.77,0.94,0.94,0.66,0.22,-0.12,-0.32,-0.38,-0.47,-0.56,-0.81,-1.07,-1.34,-1.5,-1.6,-1.64,-1.52,-1.29,-1.01,-0.84,-0.61,-0.37,-0.23,-0.24,-0.35,-0.55,-0.73,-0.85,-0.79,-0.61,-0.33,0.01,0.28,0.45,0.58,0.71,1.01,1.36,1.56,1.5,1.22,0.84,0.35,-0.17,-0.66,-1.05,-1.35,-1.56,-1.64,-1.64,-1.54,-1.31,-1.04,-0.8,-0.62,-0.46,-0.37,-0.43,-0.58,-0.79,-0.96,-1.02,-0.92,-0.72,-0.57,-0.46,-0.36,-0.17,0.06,0.3,0.41,0.41,0.31,0.13,-0.1,-0.29,-0.29,-0.21,-0.19,-0.27,-0.34,-0.35,-0.28,-0.21,-0.13,-0.1,-0.15,-0.28,-0.32,-0.14,0.15,0.31,0.23,0.1,0.11,0.28,0.54,0.71,0.77,0.69,0.61,0.65,0.81,1.02,1.25,1.57,1.91,2.21,2.47,2.64,2.75,2.63,2.28,1.71,1.05,0.49,0,-0.31,-0.5,-0.58,-0.64,-0.6,-0.45,-0.19,-0.02,0.18,0.31,0.4,0.39,0.19,-0.07,-0.34,-0.6,-0.77,-0.86,-0.77,-0.71,-0.57,-0.39,-0.13,0.06,0.14,0.27,0.53,0.81,0.97,0.92,0.89,0.86,0.84,0.77,0.64,0.52,0.33,0.19,0.23,0.39,0.58,0.66,0.64,0.63,0.53,0.3,0.01,-0.23,-0.36,-0.53,-0.85,-1.12,-1.2,-1.08,-0.91,-0.79,-0.71,-0.55,-0.39,-0.3,-0.35,-0.45,-0.63,-0.76,-0.91,-0.87,-0.82,-0.79,-0.86,-0.95,-0.9,-0.78,-0.76,-0.87,-0.97,-0.94,-0.85,-0.71,-0.54,-0.29,-0.02,0.27,0.57,0.84,1.12,1.37,1.6,1.83,1.99,2.06,1.92,1.62,1.26,0.82,0.49,0.22,0.08,-0.07,-0.17,-0.21,-0.3,-0.42,-0.45,-0.24,-0.06,0.02,-0.02,-0.04,-0.14,-0.28,-0.4,-0.51,-0.55,-0.54,-0.37,-0.14,0.13,0.51,0.98],"total":[24.72,25.17,25.75,26.12,26.32,26.31,26.21,25.96,25.76,25.63,25.48,25.34,25.42,25.96,26.74,27.48,27.75,27.75,27.44,27.28,27.14,27.22,27.12,26.95,26.78,26.87,27.25,27.6,27.59,27.17,26.67,26.39,26.3,26.17,26.13,26.29,26.65,27.1,27.53,27.96,28.14,27.94,27.49,27.12,26.93,26.91,26.92,26.95,27,26.97,26.86,26.89,26.85,26.67,26.1,25.54,25.25,25.3,25.35,25.48,25.57,25.89,26.22,26.5,26.6,26.45,26.06,25.64,25.06,24.65,24.41,24.72,25.23,25.86,26.37,26.82,26.93,26.72,26.23,25.87,25.71,25.67,25.67,25.77,26.09,26.68,27.41,28.08,28.37,28.34,28.06,27.75,27.5,27.48,27.64,27.94,28.15,28.27,28.26,28.28,28.19,27.87,27.38,26.85,26.56,26.53,26.6,26.81,26.95,27.24,27.51,27.68,27.65,27.16,26.63,26.15,26.08,26.07,26.15,26.16,26.24,26.51,26.92,27.39,27.47,27.26,26.93,26.66,26.44,26.3,26.23,26.23,26.34,26.58,26.96,27.35,27.59,27.42,26.9,26.27,25.89,25.85,25.91,26,26.05,26.32,26.71,27,27.09,26.96,26.72,26.34,26.07,25.88,25.79,25.73,25.89,26.39,27.07,27.53,27.68,27.67,27.62,27.54,27.4,27.4,27.47,27.47,27.36,27.16,27.03,26.93,26.78,26.57,26.16,25.74,25.42,25.31,25.28,25.38,25.69,26.27,26.85,27.44,27.82,27.99,27.98,27.95,28.04,28.09,28.07,27.91,27.72,27.81,27.98,27.97,27.78,27.5,27.14,26.69,26.32,26.24,26.16,26.04,26.01,26.17,26.46,26.87,27.19,27.26,26.95,26.41,26.08,25.96,26,25.9,25.78,25.91,26.38,26.88,27.39,27.54,27.48,27.1,26.82,26.89,27.07,27.32,27.54,27.73,27.94,28.09,28.04,27.69,27.26,27.08,27.17,27.2,27.14,26.98,26.93,26.98,27.29,27.51,27.47,26.96,26.28,25.81,25.61,25.6,25.48,25.22,25.1,25.32,25.92,26.51,26.73,26.56,26.15,25.86,25.64,25.58,25.46,25.52,25.77,26.35,27.1,27.77,28.13,28.21,28.09,28,28.04,28.26,28.51,28.54,28.32,27.95,27.59,27.26,26.92,26.42,25.84,25.35,25.01,24.71,24.47,24.38,24.64,25.14,25.82,26.33,26.55,26.52,26.42,26.26,26.06,25.82,25.67,25.78,25.94,26.13,26.39,26.63,26.64,26.31,25.82,25.43,25.09,25,24.87,24.75,24.9,25.5,26.28,26.85,27.15,27.22,27.15,27.04,27.15,27.29,27.32,27.27,27.18,27.31,27.35,27.55,27.64,27.61,27.32,27.11,27.1,27.21,27.27,27.21,27.15,27.09,27.08,27.14,27.11,26.98,26.61,26.27,26.11,26.19,26.37,26.43,26.5,26.75,27.22,27.6,27.66,27.32,27,26.86,26.86,26.94,26.98,27.06,27.06,27.13,27.35,27.7,27.9,27.73,27.22,26.72,26.46,26.5,26.57,26.48,26.32,26.32,26.69,27.11,27.31,27.09,26.75,26.5,26.42,26.41,26.37,26.46,26.56,26.9,27.35,27.95,28.23,28.1,27.83,27.81,28.16,28.5,28.7,28.76,28.79,28.75,28.71,28.76,28.63,28.1,27.36,26.66,26.12,25.73,25.52,25.62,26.01,26.41,26.83,27.04,27.06,26.94,26.74,26.59,26.34,25.98,25.61,25.39,25.56,25.98,26.4,26.69,26.79,26.76,26.55,26.29,26.18,26.19,26.25,26.14,26.05,26.28,26.81,27.26,27.44,27.34,27.26,27.2,27.31,27.49,27.64,27.7,27.76,27.95,28.19,28.41,28.53,28.59,28.54,28.45,28.24,28.03,27.76,27.59,27.34,27.29,27.27,27.15,26.69,26.08,25.74,25.65,25.4,25.07,24.71,24.63,24.84,25.32,26.04,26.64,26.99,26.97,26.73,26.48,26.35,26.33,26.34,26.43,26.67,26.96,27.41,27.75,27.86,27.68,27.37,27.13,26.98,26.89,26.9,26.94,27.02,27.15,27.48,27.85,28.16,28.17,27.94,27.57,27.41,27.54,27.91,28.18,28.39,28.52,28.73,28.88,28.76,28.26,27.57,27.03,26.66,26.5,26.43,26.52,26.77,27.18,27.75,28.27,28.4,28.1,27.53,27.19,26.94,26.85,26.75,26.71,26.74,26.95,27.43,27.9,28.12,27.94,27.65,27.37,27.35,27.49,27.71,27.74,27.64,27.61,27.79,27.9,27.84,27.5,26.97,26.4,25.99,25.78,25.7,25.66,25.76,26.1,26.65,27.2,27.4,27.23,26.93,26.59,26.39,26.28,26.17,26.09,26.12,26.49,27.14,27.87,28.46,28.75,28.8,28.81,28.88,29.01,29.02,28.97,28.87,28.78,28.68,28.59,28.16,27.39,26.42,25.79,25.44,25.32,25.14,25.01,25.08,25.55,26.17,26.62,26.68,26.49,26.1,25.8,25.58,25.41,25.16,24.93,24.96,25.44,26.17,26.78,27,26.88,26.65,26.4,26.2,26.05,25.88,25.81,25.88,26.26,26.76,27.25,27.49,27.47,27.2,26.86,26.63,26.48,26.37,26.31,26.44,26.81,27.29,27.8,28.18,28.24,28.06,27.85,27.83,27.97,28.03,27.76,27.51,27.41,27.58,27.56,27.48,27.42,27.35,27.2,27.08,27.05,27.07,26.97,26.95,27.08,27.43,27.76,27.91,27.87,27.74,27.63,27.52,27.44,27.38,27.3,27.22,27.36,27.65,28.02,28.03,27.69,27.21,26.85,26.71,26.48,26.15,25.81,25.8,26.1,26.73,27.31,27.69,27.62,27.4,27.26,27.3,27.48,27.62,27.56,27.3,27.09,27.18,27.37,27.45,27.18,26.74,26.15,25.69,25.37,25.17,25.02,25,25.35,26.01,26.67,26.99,27.04,26.92,26.73,26.52,26.36,26.12,25.88,25.79,26.08,26.68,27.36,27.84,27.94,27.75,27.53,27.47,27.72,28.03,28.18,28.14,28.09,28.14,28.04,27.66,27,26.25,25.61,25.21,25.07,25.03,25.02,25.22,25.68,26.37,26.95,27.28,27.21,26.81,26.33,25.93,25.7,25.58,25.58,25.77,26.15,26.71,27.21,27.57,27.64,27.54,27.32,27.13,26.98,26.73,26.41,26.21,26.44,26.96,27.38,27.47,27.24,26.89,26.64,26.51,26.54,26.5,26.35,26.22,26.41,27.03,27.73,28.04,27.82,27.34,27.02,27,27.21,27.31,27.28,27.19,27.34,27.82,28.38,28.76,28.83,28.81,28.82,28.93,29.14,29.25,29.26,29.12,29.01,28.88,28.62,28.22,27.59,26.93,26.42,26.14,26.02,26.01,26.06,26.3,26.71,27.35,27.89,28.13,27.97,27.43,26.84,26.38,26.06,25.84,25.64,25.72,26.02,26.6,27.18,27.61,27.64,27.38,27.18,27.25,27.47,27.57,27.43,27.39,27.59,28.01,28.34,28.37,28.1,27.57,27.1,26.95,27.06,27.18,27.17,27.14,27.35,27.7,27.87,27.75,27.35,26.88,26.38,25.87,25.54,25.4,25.43,25.59,25.94,26.46,27.03,27.35,27.28,26.89,26.46,26.09,25.9,25.69,25.63,25.67,25.94,26.31,26.62,26.84,26.8,26.48,26.04,25.75,25.72,25.76,25.79,25.96,26.44,27.15,27.85,28.31,28.42,28.36,28.28,28.32,28.49,28.6,28.57,28.42,28.35,28.43,28.39,28.22,27.8,27.33,26.85,26.55,26.46,26.3,26.09,26.05,26.48,27.11,27.6,27.72,27.54,27.1,26.63,26.32,26.16,26.05,25.97,26.13,26.58,27.3,28.08,28.71],"clock":[{"seas":"DJF","n":77,"mean":0.006,"std":1.027,"min":-1.84,"max":2.63,"q10":-1.33,"q25":-0.71,"q50":-0.19,"q75":0.69,"q90":1.42},{"seas":"JFM","n":77,"mean":0.015,"std":0.873,"min":-1.55,"max":2.28,"q10":-1.09,"q25":-0.57,"q50":-0.02,"q75":0.6,"q90":1.2},{"seas":"FMA","n":77,"mean":0.019,"std":0.696,"min":-1.29,"max":1.71,"q10":-0.82,"q25":-0.57,"q50":0.06,"q75":0.41,"q90":0.96},{"seas":"MAM","n":77,"mean":0.02,"std":0.586,"min":-1.18,"max":1.29,"q10":-0.8,"q25":-0.39,"q50":0.15,"q75":0.35,"q90":0.79},{"seas":"AMJ","n":77,"mean":0.03,"std":0.561,"min":-1.07,"max":1.06,"q10":-0.78,"q25":-0.38,"q50":0.02,"q75":0.45,"q90":0.74},{"seas":"MJJ","n":76,"mean":0.028,"std":0.578,"min":-1.3,"max":1.25,"q10":-0.73,"q25":-0.38,"q50":0,"q75":0.44,"q90":0.75},{"seas":"JJA","n":76,"mean":0.037,"std":0.649,"min":-1.3,"max":1.6,"q10":-0.72,"q25":-0.39,"q50":0.07,"q75":0.36,"q90":0.82},{"seas":"JAS","n":76,"mean":0.035,"std":0.743,"min":-1.35,"max":1.91,"q10":-0.82,"q25":-0.47,"q50":-0.07,"q75":0.43,"q90":1.1},{"seas":"ASO","n":76,"mean":0.036,"std":0.858,"min":-1.56,"max":2.21,"q10":-1.02,"q25":-0.48,"q50":-0.12,"q75":0.56,"q90":1.27},{"seas":"SON","n":76,"mean":0.039,"std":0.972,"min":-1.71,"max":2.47,"q10":-1.19,"q25":-0.63,"q50":-0.17,"q75":0.75,"q90":1.34},{"seas":"OND","n":76,"mean":0.034,"std":1.068,"min":-1.95,"max":2.64,"q10":-1.33,"q25":-0.76,"q50":-0.15,"q75":0.82,"q90":1.37},{"seas":"NDJ","n":76,"mean":0.028,"std":1.091,"min":-2.03,"max":2.75,"q10":-1.31,"q25":-0.79,"q50":-0.12,"q75":0.81,"q90":1.54}],"episodes":[{"sign":-1,"startI":0,"endI":6,"dur":7,"startSeas":"DJF","startYr":1950,"endSeas":"JJA","endYr":1950,"peakSeas":"DJF","peakYr":1950,"peakAnom":-1.53,"label":"1950-50"},{"sign":1,"startI":17,"endI":24,"dur":8,"startSeas":"MJJ","startYr":1951,"endSeas":"DJF","endYr":1952,"peakSeas":"SON","peakYr":1951,"peakAnom":1.15,"label":"1951-52"},{"sign":1,"startI":37,"endI":48,"dur":12,"startSeas":"JFM","startYr":1953,"endSeas":"DJF","endYr":1954,"peakSeas":"SON","peakYr":1953,"peakAnom":0.84,"label":"1953-54"},{"sign":-1,"startI":52,"endI":79,"dur":28,"startSeas":"AMJ","startYr":1954,"endSeas":"JAS","endYr":1956,"peakSeas":"OND","peakYr":1955,"peakAnom":-1.67,"label":"1954-56"},{"sign":1,"startI":87,"endI":102,"dur":16,"startSeas":"MAM","startYr":1957,"endSeas":"JJA","endYr":1958,"peakSeas":"DJF","peakYr":1958,"peakAnom":1.81,"label":"1957-58"},{"sign":1,"startI":106,"endI":110,"dur":5,"startSeas":"OND","startYr":1958,"endSeas":"FMA","endYr":1959,"peakSeas":"JFM","peakYr":1959,"peakAnom":0.62,"label":"1958-59"},{"sign":1,"startI":161,"endI":169,"dur":9,"startSeas":"MJJ","startYr":1963,"endSeas":"JFM","endYr":1964,"peakSeas":"OND","peakYr":1963,"peakAnom":1.37,"label":"1963-64"},{"sign":-1,"startI":172,"endI":180,"dur":9,"startSeas":"AMJ","startYr":1964,"endSeas":"DJF","endYr":1965,"peakSeas":"OND","peakYr":1964,"peakAnom":-0.82,"label":"1964-65"},{"sign":1,"startI":185,"endI":195,"dur":11,"startSeas":"MJJ","startYr":1965,"endSeas":"MAM","endYr":1966,"peakSeas":"SON","peakYr":1965,"peakAnom":1.98,"label":"1965-66"},{"sign":1,"startI":225,"endI":232,"dur":8,"startSeas":"SON","startYr":1968,"endSeas":"AMJ","endYr":1969,"peakSeas":"DJF","peakYr":1969,"peakAnom":1.13,"label":"1968-69"},{"sign":1,"startI":235,"endI":240,"dur":6,"startSeas":"JAS","startYr":1969,"endSeas":"DJF","endYr":1970,"peakSeas":"SON","peakYr":1969,"peakAnom":0.86,"label":"1969-70"},{"sign":-1,"startI":246,"endI":264,"dur":19,"startSeas":"JJA","startYr":1970,"endSeas":"DJF","endYr":1972,"peakSeas":"JFM","peakYr":1971,"peakAnom":-1.38,"label":"1970-72"},{"sign":1,"startI":268,"endI":278,"dur":11,"startSeas":"AMJ","startYr":1972,"endSeas":"FMA","endYr":1973,"peakSeas":"NDJ","peakYr":1972,"peakAnom":2.12,"label":"1972-73"},{"sign":-1,"startI":280,"endI":294,"dur":15,"startSeas":"AMJ","startYr":1973,"endSeas":"JJA","endYr":1974,"peakSeas":"NDJ","peakYr":1973,"peakAnom":-2.03,"label":"1973-74"},{"sign":-1,"startI":297,"endI":314,"dur":18,"startSeas":"SON","startYr":1974,"endSeas":"FMA","endYr":1976,"peakSeas":"NDJ","peakYr":1975,"peakAnom":-1.65,"label":"1974-76"},{"sign":1,"startI":320,"endI":325,"dur":6,"startSeas":"ASO","startYr":1976,"endSeas":"JFM","endYr":1977,"peakSeas":"OND","peakYr":1976,"peakAnom":0.86,"label":"1976-77"},{"sign":1,"startI":332,"endI":336,"dur":5,"startSeas":"ASO","startYr":1977,"endSeas":"DJF","endYr":1978,"peakSeas":"OND","peakYr":1977,"peakAnom":0.81,"label":"1977-78"},{"sign":1,"startI":388,"endI":401,"dur":14,"startSeas":"AMJ","startYr":1982,"endSeas":"MJJ","endYr":1983,"peakSeas":"NDJ","peakYr":1982,"peakAnom":2.23,"label":"1982-83"},{"sign":-1,"startI":417,"endI":425,"dur":9,"startSeas":"SON","startYr":1984,"endSeas":"MJJ","endYr":1985,"peakSeas":"NDJ","peakYr":1984,"peakAnom":-1.14,"label":"1984-85"},{"sign":1,"startI":440,"endI":457,"dur":18,"startSeas":"ASO","startYr":1986,"endSeas":"JFM","endYr":1988,"peakSeas":"JAS","peakYr":1987,"peakAnom":1.7,"label":"1986-88"},{"sign":-1,"startI":460,"endI":472,"dur":13,"startSeas":"AMJ","startYr":1988,"endSeas":"AMJ","endYr":1989,"peakSeas":"NDJ","peakYr":1988,"peakAnom":-1.85,"label":"1988-89"},{"sign":1,"startI":497,"endI":509,"dur":13,"startSeas":"MJJ","startYr":1991,"endSeas":"MJJ","endYr":1992,"peakSeas":"DJF","peakYr":1992,"peakAnom":1.71,"label":"1991-92"},{"sign":1,"startI":536,"endI":542,"dur":7,"startSeas":"ASO","startYr":1994,"endSeas":"FMA","endYr":1995,"peakSeas":"NDJ","peakYr":1994,"peakAnom":1.09,"label":"1994-95"},{"sign":-1,"startI":547,"endI":554,"dur":8,"startSeas":"JAS","startYr":1995,"endSeas":"FMA","endYr":1996,"peakSeas":"OND","peakYr":1995,"peakAnom":-1,"label":"1995-96"},{"sign":1,"startI":568,"endI":579,"dur":12,"startSeas":"AMJ","startYr":1997,"endSeas":"MAM","endYr":1998,"peakSeas":"OND","peakYr":1997,"peakAnom":2.4,"label":"1997-98"},{"sign":-1,"startI":582,"endI":613,"dur":32,"startSeas":"JJA","startYr":1998,"endSeas":"JFM","endYr":2001,"peakSeas":"DJF","peakYr":2000,"peakAnom":-1.66,"label":"1998-01"},{"sign":1,"startI":629,"endI":637,"dur":9,"startSeas":"MJJ","startYr":2002,"endSeas":"JFM","endYr":2003,"peakSeas":"OND","peakYr":2002,"peakAnom":1.31,"label":"2002-03"},{"sign":1,"startI":655,"endI":661,"dur":7,"startSeas":"JAS","startYr":2004,"endSeas":"JFM","endYr":2005,"peakSeas":"ASO","peakYr":2004,"peakAnom":0.7,"label":"2004-05"},{"sign":-1,"startI":670,"endI":674,"dur":5,"startSeas":"OND","startYr":2005,"endSeas":"FMA","endYr":2006,"peakSeas":"DJF","peakYr":2006,"peakAnom":-0.85,"label":"2005-06"},{"sign":1,"startI":680,"endI":684,"dur":5,"startSeas":"ASO","startYr":2006,"endSeas":"DJF","endYr":2007,"peakSeas":"OND","peakYr":2006,"peakAnom":0.94,"label":"2006-07"},{"sign":-1,"startI":690,"endI":701,"dur":12,"startSeas":"JJA","startYr":2007,"endSeas":"MJJ","endYr":2008,"peakSeas":"DJF","peakYr":2008,"peakAnom":-1.64,"label":"2007-08"},{"sign":-1,"startI":706,"endI":710,"dur":5,"startSeas":"OND","startYr":2008,"endSeas":"FMA","endYr":2009,"peakSeas":"DJF","peakYr":2009,"peakAnom":-0.85,"label":"2008-09"},{"sign":1,"startI":715,"endI":722,"dur":8,"startSeas":"JAS","startYr":2009,"endSeas":"FMA","endYr":2010,"peakSeas":"NDJ","peakYr":2009,"peakAnom":1.56,"label":"2009-10"},{"sign":-1,"startI":725,"endI":735,"dur":11,"startSeas":"MJJ","startYr":2010,"endSeas":"MAM","endYr":2011,"peakSeas":"SON","peakYr":2010,"peakAnom":-1.64,"label":"2010-11"},{"sign":-1,"startI":739,"endI":745,"dur":7,"startSeas":"JAS","startYr":2011,"endSeas":"JFM","endYr":2012,"peakSeas":"OND","peakYr":2011,"peakAnom":-1.02,"label":"2011-12"},{"sign":1,"startI":777,"endI":795,"dur":19,"startSeas":"SON","startYr":2014,"endSeas":"MAM","endYr":2016,"peakSeas":"NDJ","peakYr":2015,"peakAnom":2.75,"label":"2014-16"},{"sign":-1,"startI":813,"endI":818,"dur":6,"startSeas":"SON","startYr":2017,"endSeas":"FMA","endYr":2018,"peakSeas":"NDJ","peakYr":2017,"peakAnom":-0.86,"label":"2017-18"},{"sign":1,"startI":824,"endI":833,"dur":10,"startSeas":"ASO","startYr":2018,"endSeas":"MJJ","endYr":2019,"peakSeas":"OND","peakYr":2018,"peakAnom":0.97,"label":"2018-19"},{"sign":1,"startI":838,"endI":842,"dur":5,"startSeas":"OND","startYr":2019,"endSeas":"FMA","endYr":2020,"peakSeas":"NDJ","peakYr":2019,"peakAnom":0.66,"label":"2019-20"},{"sign":-1,"startI":847,"endI":855,"dur":9,"startSeas":"JAS","startYr":2020,"endSeas":"MAM","endYr":2021,"peakSeas":"OND","peakYr":2020,"peakAnom":-1.2,"label":"2020-21"},{"sign":-1,"startI":860,"endI":876,"dur":17,"startSeas":"ASO","startYr":2021,"endSeas":"DJF","endYr":2023,"peakSeas":"ASO","peakYr":2022,"peakAnom":-0.97,"label":"2021-23"},{"sign":1,"startI":880,"endI":891,"dur":12,"startSeas":"AMJ","startYr":2023,"endSeas":"MAM","endYr":2024,"peakSeas":"NDJ","peakYr":2023,"peakAnom":2.06,"label":"2023-24"}]}</script>
+<script>
+(function(){
+  "use strict";
+  try{ document.documentElement.lang = document.documentElement.lang || "en"; }catch(e){}
+  var D = JSON.parse(document.getElementById("data").textContent);
+  var SEAS = D.meta.seasOrder, START = D.meta.startYr, A = D.anom, T = D.total, N = A.length;
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+
+  function seasOf(i){ return SEAS[i%12]; }
+  function yrOf(i){ return START + Math.floor(i/12); }
+  function fmt(v){ return (v>=0?"+":"−")+Math.abs(v).toFixed(2); }
+  function stateOf(a){ return a>=0.5?"warm":(a<=-0.5?"cool":"neu"); }
+  function stateName(a){ return a>=0.5?"El Niño":(a<=-0.5?"La Niña":"Neutral"); }
+
+  /* ---------------- THEME ---------------- */
+  (function(){
+    var btn=document.getElementById("theme"), ic=document.getElementById("theme-ic"), tx=document.getElementById("theme-tx");
+    function cur(){ var t=document.documentElement.getAttribute("data-theme"); if(t) return t;
+      return (window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light"; }
+    function apply(t,skipR){ document.documentElement.setAttribute("data-theme",t); ic.textContent=t==="dark"?"☾":"☀"; tx.textContent=t==="dark"?"Dark":"Light";
+      btn.setAttribute("aria-label","Switch to "+(t==="dark"?"light":"dark")+" theme");
+      if(!skipR){ renderRibbon(); renderClock(); renderSpan(); renderFreeze(); } }
+    apply(cur(),true); /* skip render on init — the scales (yR) aren't defined yet; INIT below paints */
+    btn.addEventListener("click",function(){ apply(cur()==="dark"?"light":"dark"); });
+  })();
+
+  var live=document.getElementById("live");
+  function announce(m){ live.textContent=""; setTimeout(function(){ live.textContent=m; },30); }
+  function css(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+
+  /* ---------------- RIBBON ---------------- */
+  var RB_W=1400, RB_H=300, MID=150, MAXA=2.95, PADX=6;
+  var xR=function(i){ return PADX + i*(RB_W-2*PADX)/(N-1); };
+  var yR=function(a){ return MID - (a/MAXA)*(MID-10); };
+  var ribbon=document.getElementById("ribbon");
+  var caretI=N-1;
+
+  function areaPath(from,to,sign){
+    var d="M"+xR(from).toFixed(1)+","+MID.toFixed(1);
+    for(var i=from;i<=to;i++){ var a=A[i]; var v=sign>0?Math.max(a,0):Math.min(a,0); d+="L"+xR(i).toFixed(1)+","+yR(v).toFixed(1); }
+    d+="L"+xR(to).toFixed(1)+","+MID.toFixed(1)+"Z"; return d;
+  }
+  function renderRibbon(){
+    var warm=css("--warm"), cool=css("--cool"), warmS=css("--warm-soft"), coolS=css("--cool-soft"),
+        line=css("--line"), muted=css("--muted"), gold=css("--gold"), inks=css("--ink-soft");
+    var showEp=document.getElementById("opt-episodes").checked;
+    var showDT=document.getElementById("opt-detrend").checked;
+    var parts=[];
+    parts.push('<rect x="0" y="'+yR(0.5).toFixed(1)+'" width="'+RB_W+'" height="'+(yR(-0.5)-yR(0.5)).toFixed(1)+'" fill="'+muted+'" opacity="0.10"/>');
+    parts.push('<path d="'+areaPath(0,N-1,1)+'" fill="'+warmS+'" opacity="0.85"/>');
+    parts.push('<path d="'+areaPath(0,N-1,-1)+'" fill="'+coolS+'" opacity="0.85"/>');
+    if(showEp){ D.episodes.forEach(function(e){ parts.push('<path d="'+areaPath(e.startI,e.endI,e.sign)+'" fill="'+(e.sign>0?warm:cool)+'" opacity="0.92"/>'); }); }
+    if(showDT){
+      var tmin=24.4, tmax=29.0, yT=function(t){ return RB_H-6 - (t-tmin)/(tmax-tmin)*(RB_H-12); };
+      var d="M"; for(var i=0;i<N;i++){ d+=(i?"L":"")+xR(i).toFixed(1)+","+yT(T[i]).toFixed(1); }
+      parts.push('<path d="'+d+'" fill="none" stroke="'+gold+'" stroke-width="1.4" opacity="0.9"/>');
+    }
+    ["0.5","-0.5"].forEach(function(t){ var y=yR(parseFloat(t)).toFixed(1);
+      parts.push('<line x1="0" y1="'+y+'" x2="'+RB_W+'" y2="'+y+'" stroke="'+muted+'" stroke-width="1" stroke-dasharray="3 4" opacity="0.55"/>'); });
+    parts.push('<line x1="0" y1="'+MID+'" x2="'+RB_W+'" y2="'+MID+'" stroke="'+inks+'" stroke-width="1.3" opacity="0.75"/>');
+    for(var y=1950;y<=2026;y+=10){ var xi=xR((y-START)*12); parts.push('<line x1="'+xi.toFixed(1)+'" y1="0" x2="'+xi.toFixed(1)+'" y2="'+RB_H+'" stroke="'+line+'" stroke-width="1" opacity="0.5"/>'); parts.push('<text x="'+(xi+3).toFixed(1)+'" y="14" font-family="ui-monospace,monospace" font-size="10" fill="'+muted+'">'+y+'</text>'); }
+    parts.push('<line id="caret" x1="'+xR(caretI).toFixed(1)+'" y1="0" x2="'+xR(caretI).toFixed(1)+'" y2="'+RB_H+'" stroke="'+css("--focus")+'" stroke-width="1.6"/>');
+    ribbon.innerHTML='<title>Diverging area chart of the Oceanic Niño Index, DJF 1950 through AMJ 2026.</title><desc>The observed ONI anomaly around a zero horizon: warm El Niño lobes fill upward, cool La Niña lobes fill downward, threshold guides at plus and minus 0.5 degrees C. Observed record, not a forecast.</desc>'+parts.join("");
+    ribbon.setAttribute("aria-label","Diverging area chart, ONI anomaly by season 1950 to 2026. "+D.episodes.length+" official episodes shown as saturated runs. Record peak plus 2.75 degrees C in NDJ 2015, floor minus 2.03 in NDJ 1973. 45.6 percent of seasons are neutral. Observed, not a forecast.");
+    var enC=D.episodes.filter(function(e){return e.sign>0;}).length, lnC=D.episodes.length-enC;
+    document.getElementById("ribbon-sr").textContent="Seasonal ONI anomaly, 1950 to 2026: "+enC+" El Niño and "+lnC+" La Niña official episodes. Warm ceiling plus 2.75 degrees C, cool floor minus 2.03. The seasonal detail is in the episode table below.";
+  }
+
+  var scrub=document.getElementById("scrub"), readout=document.getElementById("readout");
+  function updateReadout(){
+    var a=A[caretI], s=stateOf(a);
+    readout.innerHTML='<b>'+seasOf(caretI)+" "+yrOf(caretI)+'</b> &middot; ANOM <b>'+fmt(a)+'&deg;C</b> &middot; <span class="tag '+s+'">'+stateName(a)+'</span>';
+    var c=ribbon.querySelector("#caret"); if(c){ c.setAttribute("x1",xR(caretI).toFixed(1)); c.setAttribute("x2",xR(caretI).toFixed(1)); }
+  }
+  var liveT;
+  scrub.addEventListener("input",function(){ caretI=+scrub.value; updateReadout();
+    clearTimeout(liveT); liveT=setTimeout(function(){ announce(seasOf(caretI)+" "+yrOf(caretI)+", anomaly "+fmt(A[caretI])+" degrees, "+stateName(A[caretI])); },260); });
+  document.getElementById("opt-episodes").addEventListener("change",renderRibbon);
+  document.getElementById("opt-detrend").addEventListener("change",function(){
+    var on=this.checked;
+    document.getElementById("detrend-cap").hidden=!on;
+    document.getElementById("detrend-leg").hidden=!on;
+    renderRibbon();
+    announce(on?"Raw sea-surface temperature overlaid; ONI subtracts this trend":"Raw temperature hidden");
+  });
+
+  /* ---------------- SONIFY ---------------- */
+  (function(){
+    var btn=document.getElementById("sonify"), ac=null, timer=null, playing=false, idx=0;
+    function stop(){ playing=false; btn.setAttribute("aria-pressed","false"); btn.innerHTML='<span aria-hidden="true">♪</span> Play the ribbon';
+      if(timer){ clearInterval(timer); timer=null; } }
+    function step(){
+      if(idx>=N){ stop(); announce("Playback complete"); return; }
+      caretI=idx; scrub.value=idx; updateReadout();
+      if(ac){ try{ var a=A[idx]; var f=220*Math.pow(2,(a+2)/2.2); var o=ac.createOscillator(), g=ac.createGain();
+        o.frequency.value=Math.max(120,Math.min(900,f)); o.type="sine"; g.gain.value=0.0001;
+        o.connect(g); g.connect(ac.destination); var t=ac.currentTime;
+        g.gain.linearRampToValueAtTime(0.12,t+0.01); g.gain.exponentialRampToValueAtTime(0.0001,t+0.09);
+        o.start(t); o.stop(t+0.1);
+      }catch(e){} }
+      idx++;
+    }
+    btn.addEventListener("click",function(){
+      if(playing){ stop(); announce("Playback stopped"); return; }
+      try{ ac=ac||new (window.AudioContext||window.webkitAudioContext)(); if(ac.state==="suspended")ac.resume(); }catch(e){ ac=null; }
+      playing=true; idx=0; btn.setAttribute("aria-pressed","true"); btn.innerHTML='<span aria-hidden="true">■</span> Stop';
+      announce("Playing the ribbon left to right; caret and readout follow. "+(ac?"":"Audio unavailable — the visual caret still tracks."));
+      var iv=reduce?90:45; timer=setInterval(step,iv);
+    });
+  })();
+
+  /* ---------------- PHASE CLOCK ---------------- */
+  var clock=document.getElementById("clock"), CC=220;
+  var maxStd=Math.max.apply(null,D.clock.map(function(c){return c.std;}));
+  var selSpoke=-1;
+  function ang(i){ return (-90 + i*30)*Math.PI/180; }
+  function renderClock(){
+    var ink=css("--ink"), muted=css("--muted"), line=css("--line"), teal=css("--teal"), warm=css("--warm"), cool=css("--cool"), focus=css("--focus"), surf=css("--surface-2");
+    var R0=44, RMAX=180;
+    var p=['<circle cx="'+CC+'" cy="'+CC+'" r="'+R0+'" fill="'+surf+'" stroke="'+line+'"/>'];
+    [0.5,1.0].forEach(function(s){ var r=R0+(s/maxStd)*(RMAX-R0); p.push('<circle cx="'+CC+'" cy="'+CC+'" r="'+r.toFixed(1)+'" fill="none" stroke="'+line+'" stroke-dasharray="2 5" opacity="0.7"/>'); });
+    D.clock.forEach(function(c,i){
+      var aStd=ang(i), r=R0+(c.std/maxStd)*(RMAX-R0);
+      var x0=CC+Math.cos(aStd)*R0, y0=CC+Math.sin(aStd)*R0, x1=CC+Math.cos(aStd)*r, y1=CC+Math.sin(aStd)*r;
+      var col=(c.seas==="NDJ"||c.seas==="OND"||c.seas==="DJF")?warm:(c.std<0.62?cool:teal);
+      var sel=selSpoke===i;
+      p.push('<line x1="'+x0.toFixed(1)+'" y1="'+y0.toFixed(1)+'" x2="'+x1.toFixed(1)+'" y2="'+y1.toFixed(1)+'" stroke="'+col+'" stroke-width="'+(sel?11:8)+'" stroke-linecap="round" opacity="'+(sel?1:0.82)+'"/>');
+      var lr=RMAX+22, lx=CC+Math.cos(aStd)*lr, ly=CC+Math.sin(aStd)*lr;
+      p.push('<text x="'+lx.toFixed(1)+'" y="'+(ly+3).toFixed(1)+'" text-anchor="middle" font-family="ui-monospace,monospace" font-size="'+(sel?12:11)+'" font-weight="'+(sel?700:400)+'" fill="'+(sel?ink:muted)+'">'+c.seas+'</text>');
+      if(sel){ p.push('<circle cx="'+x1.toFixed(1)+'" cy="'+y1.toFixed(1)+'" r="4.5" fill="'+focus+'"/>'); }
+    });
+    p.push('<text x="'+CC+'" y="'+(CC-4)+'" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="'+muted+'">SPREAD</text>');
+    p.push('<text x="'+CC+'" y="'+(CC+10)+'" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="'+muted+'">by season</text>');
+    clock.innerHTML='<title>Radial dial of ONI spread by season.</title><desc>Twelve spokes; spoke length is the standard deviation of the anomaly across all years. Widest at NDJ, OND, DJF; narrowest at MAM, AMJ, MJJ.</desc>'+p.join("");
+    clock.setAttribute("aria-label","Radial dial of ONI seasonal spread. Winter seasons NDJ, OND and DJF have the largest spread near 1.09 degrees; spring seasons AMJ and MJJ the smallest near 0.56. The seasonal phase-lock as one shape.");
+  }
+  (function(){
+    var wrap=document.getElementById("spoke-btns"), lv=document.getElementById("clock-live");
+    D.clock.forEach(function(c,i){
+      var b=document.createElement("button"); b.type="button"; b.className="spoke-btn"; b.textContent=c.seas;
+      b.setAttribute("aria-pressed","false");
+      b.setAttribute("aria-label",c.seas+", standard deviation "+c.std.toFixed(2)+" degrees, median "+c.q50.toFixed(2));
+      b.addEventListener("click",function(){
+        var was=selSpoke===i; selSpoke=was?-1:i;
+        Array.prototype.forEach.call(wrap.children,function(el,j){ el.setAttribute("aria-pressed", (!was&&j===i)?"true":"false"); });
+        renderClock();
+        lv.textContent=was?"Selection cleared.":(c.seas+": spread "+c.std.toFixed(2)+"°C, median "+c.q50.toFixed(2)+", range "+c.min.toFixed(2)+" to "+c.max.toFixed(2)+".");
+      });
+      wrap.appendChild(b);
+    });
+  })();
+
+  /* ---------------- FREEZE / AHA ---------------- */
+  function renderFreeze(){
+    var svg=document.getElementById("freezeviz"); var W=720,H=150;
+    var warm=css("--warm"), muted=css("--muted"), ink=css("--ink"), line=css("--line");
+    var evs=[{lab:"1982-83",pk:"NDJ",v:"+2.23"},{lab:"1997-98",pk:"OND",v:"+2.40"},{lab:"2015-16",pk:"NDJ",v:"+2.75"}];
+    var months=["J","F","M","A","M","J","J","A","S","O","N","D"];
+    var pkMonth={NDJ:11,OND:10,DJF:0};
+    var p=[], colW=W/3;
+    evs.forEach(function(e,k){
+      var x0=k*colW+30, x1=(k+1)*colW-20, yb=104;
+      p.push('<text x="'+(x0).toFixed(0)+'" y="26" font-family="ui-monospace,monospace" font-size="13" font-weight="700" fill="'+ink+'">'+e.lab+'</text>');
+      p.push('<text x="'+(x0).toFixed(0)+'" y="42" font-family="ui-monospace,monospace" font-size="11" fill="'+muted+'">peak '+e.pk+' &middot; '+e.v+'&deg;C</text>');
+      p.push('<line x1="'+x0+'" y1="'+yb+'" x2="'+x1+'" y2="'+yb+'" stroke="'+line+'" stroke-width="2"/>');
+      var span=x1-x0;
+      for(var m=0;m<12;m++){ var mx=x0+span*(m+0.5)/12;
+        p.push('<text x="'+mx.toFixed(1)+'" y="'+(yb+18)+'" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="'+muted+'">'+months[m]+'</text>'); }
+      var wx0=x0+span*(9.0/12);
+      p.push('<rect x="'+wx0.toFixed(1)+'" y="'+(yb-30)+'" width="'+(x1-wx0).toFixed(1)+'" height="30" fill="'+warm+'" opacity="0.10"/>');
+      p.push('<rect x="'+x0+'" y="'+(yb-30)+'" width="'+(span*3/12).toFixed(1)+'" height="30" fill="'+warm+'" opacity="0.10"/>');
+      var pm=pkMonth[e.pk], tx=x0+span*(pm+0.5)/12;
+      p.push('<line x1="'+tx.toFixed(1)+'" y1="'+(yb-34)+'" x2="'+tx.toFixed(1)+'" y2="'+(yb+4)+'" stroke="'+warm+'" stroke-width="3"/>');
+      p.push('<circle cx="'+tx.toFixed(1)+'" cy="'+(yb-34)+'" r="4" fill="'+warm+'"/>');
+    });
+    svg.innerHTML='<title>Peak season of three major El Niño events.</title><desc>1982-83 peaks at NDJ, 1997-98 at OND, 2015-16 at NDJ, all in the shaded November-to-January winter window.</desc>'+p.join("");
+    svg.setAttribute("aria-label","Three strong El Niño events on Jan-to-Dec month strips. Peak ticks for 1982-83 (NDJ), 1997-98 (OND) and 2015-16 (NDJ) all fall in the late-autumn to winter window. 34 of 42 episodes peak in Oct to March.");
+  }
+
+  /* ---------------- SPAN BARS ---------------- */
+  var spanviz=document.getElementById("spanviz");
+  function packRows(eps){ var rows=[]; eps.slice().sort(function(a,b){return a.startI-b.startI;}).forEach(function(e){
+      var placed=false; for(var r=0;r<rows.length;r++){ if(rows[r] < e.startI-2){ rows[r]=e.endI; e._row=r; placed=true; break; } }
+      if(!placed){ e._row=rows.length; rows.push(e.endI); } }); return rows.length; }
+  function renderSpan(){
+    var W=900,H=360, padL=44, padR=14, padT=14, padB=26, midY=H/2;
+    var warm=css("--warm"), cool=css("--cool"), muted=css("--muted"), line=css("--line"), inks=css("--ink-soft");
+    var xS=function(i){ return padL + i*(W-padL-padR)/(N-1); };
+    var en=D.episodes.filter(function(e){return e.sign>0;}), ln=D.episodes.filter(function(e){return e.sign<0;});
+    packRows(en); packRows(ln);
+    var laneH=14, gap=3;
+    var p=[];
+    for(var y=1950;y<=2026;y+=10){ var xi=xS((y-START)*12);
+      p.push('<line x1="'+xi.toFixed(1)+'" y1="'+padT+'" x2="'+xi.toFixed(1)+'" y2="'+(H-padB)+'" stroke="'+line+'" stroke-width="1" opacity="0.5"/>');
+      p.push('<text x="'+(xi+3).toFixed(1)+'" y="'+(H-8)+'" font-family="ui-monospace,monospace" font-size="10" fill="'+muted+'">'+y+'</text>'); }
+    p.push('<line x1="'+padL+'" y1="'+midY+'" x2="'+(W-padR)+'" y2="'+midY+'" stroke="'+inks+'" stroke-width="1.4"/>');
+    p.push('<text x="6" y="'+(midY-6)+'" font-family="ui-monospace,monospace" font-size="10" fill="'+css("--rust")+'">El Niño ▲</text>');
+    p.push('<text x="6" y="'+(midY+16)+'" font-family="ui-monospace,monospace" font-size="10" fill="'+css("--teal-ink")+'">La Niña ▼</text>');
+    function bar(e){
+      var x0=xS(e.startI), w=Math.max(3,xS(e.endI)-x0);
+      var yy = e.sign>0 ? midY-8-(e._row+1)*(laneH+gap) : midY+8+e._row*(laneH+gap);
+      var col=e.sign>0?warm:cool;
+      var g='<a class="spanbar" href="#/ep/'+e.label+'" role="link" tabindex="0" aria-label="'+(e.sign>0?"El Niño":"La Niña")+" "+e.label+", "+e.dur+" seasons, peak "+fmt(e.peakAnom)+" degrees at "+e.peakSeas+" "+e.peakYr+'">';
+      g+='<rect x="'+x0.toFixed(1)+'" y="'+yy.toFixed(1)+'" width="'+w.toFixed(1)+'" height="'+laneH+'" rx="3" fill="'+col+'" opacity="0.9"><title>'+(e.sign>0?"El Niño":"La Niña")+' '+e.label+' · '+e.dur+' seasons · peak '+fmt(e.peakAnom)+'°C</title></rect>';
+      if(w>40){ g+='<text x="'+(x0+3).toFixed(1)+'" y="'+(yy+laneH-3).toFixed(1)+'" font-family="ui-monospace,monospace" font-size="9" fill="#fff" stroke="#14181c" stroke-width="2.4" stroke-linejoin="round" paint-order="stroke" pointer-events="none">'+e.label+'</text>'; }
+      g+='</a>'; return g;
+    }
+    en.forEach(function(e){ p.push(bar(e)); }); ln.forEach(function(e){ p.push(bar(e)); });
+    spanviz.innerHTML='<title>Timeline of all 42 official ENSO episodes.</title><desc>El Niño above the zero line, La Niña below; bar length is duration in seasons. La Niña bars run longer and cluster into multi-year runs.</desc>'+p.join("");
+  }
+
+  /* ---------------- EPISODE TABLE: sort ---------------- */
+  (function(){
+    var tbody=document.getElementById("ep-rows"), heads=document.querySelectorAll("#ep-table thead th");
+    var rows=Array.prototype.slice.call(tbody.querySelectorAll("tr"));
+    var state={key:"start",dir:1};
+    function val(tr,key){ var d=tr.dataset; if(key==="phase")return d.sign+"|"+("0000"+d.start).slice(-4); if(key==="start")return +d.start;
+      if(key==="dur")return +d.dur; if(key==="peak")return +d.peak; if(key==="peakseas")return +d.peakidx; return 0; }
+    function sortBy(key){
+      if(state.key===key) state.dir*=-1; else { state.key=key; state.dir=1; }
+      rows.sort(function(a,b){ var va=val(a,key), vb=val(b,key);
+        if(typeof va==="string"){ return va<vb?-state.dir:(va>vb?state.dir:0); }
+        return (va-vb)*state.dir; });
+      rows.forEach(function(tr){ tbody.appendChild(tr); });
+      heads.forEach(function(th){ var btn=th.querySelector("button"); if(!btn){return;}
+        if(btn.dataset.sort===key){ th.setAttribute("aria-sort",state.dir>0?"ascending":"descending"); }
+        else th.setAttribute("aria-sort","none"); });
+      announce("Sorted by "+key+", "+(state.dir>0?"ascending":"descending"));
+    }
+    heads.forEach(function(th){ var btn=th.querySelector("button"); if(!btn)return;
+      btn.addEventListener("click",function(){ sortBy(btn.dataset.sort); }); });
+  })();
+
+  /* ---------------- ROUTING / DETAIL ---------------- */
+  var overview=document.getElementById("overview"), detail=document.getElementById("detail");
+  var byLabel={}; D.episodes.forEach(function(e){ byLabel[e.label]=e; });
+  var epOrder=D.episodes.slice().sort(function(a,b){return a.startI-b.startI;});
+  var lastFocus=null;
+
+  function envelope(e){
+    var W=640,H=200,padL=40,padR=16,padT=16,padB=28,mid=(padT+H-padB)/2;
+    var lo=Math.max(0,e.startI-2), hi=Math.min(N-1,e.endI+2), n=hi-lo+1;
+    var xE=function(i){ return padL+(i-lo)*(W-padL-padR)/(n-1); };
+    var yE=function(a){ return mid - (a/MAXA)*((H-padB-padT)/2 - 6); };
+    var warm=css("--warm"),cool=css("--cool"),muted=css("--muted"),ink=css("--ink"),focus=css("--focus"),inks=css("--ink-soft");
+    var col=e.sign>0?warm:cool;
+    var p=[];
+    p.push('<line x1="'+padL+'" y1="'+mid+'" x2="'+(W-padR)+'" y2="'+mid+'" stroke="'+inks+'" stroke-width="1"/>');
+    [0.5,-0.5].forEach(function(t){ var yy=yE(t); p.push('<line x1="'+padL+'" y1="'+yy.toFixed(1)+'" x2="'+(W-padR)+'" y2="'+yy.toFixed(1)+'" stroke="'+muted+'" stroke-dasharray="3 4" opacity="0.6"/>'); });
+    var d="M"+xE(e.startI)+","+mid; for(var i=e.startI;i<=e.endI;i++){ var v=e.sign>0?Math.max(A[i],0):Math.min(A[i],0); d+="L"+xE(i).toFixed(1)+","+yE(v).toFixed(1); } d+="L"+xE(e.endI)+","+mid+"Z";
+    p.push('<path d="'+d+'" fill="'+col+'" opacity="0.85"/>');
+    var dl="M"; for(var j=lo;j<=hi;j++){ dl+=(j>lo?"L":"")+xE(j).toFixed(1)+","+yE(A[j]).toFixed(1); }
+    p.push('<path d="'+dl+'" fill="none" stroke="'+ink+'" stroke-width="1.6"/>');
+    var pi=e.startI; for(var k=e.startI;k<=e.endI;k++){ if(e.sign>0?A[k]>A[pi]:A[k]<A[pi])pi=k; }
+    p.push('<circle cx="'+xE(pi).toFixed(1)+'" cy="'+yE(A[pi]).toFixed(1)+'" r="5" fill="'+focus+'"/>');
+    p.push('<text x="'+xE(pi).toFixed(1)+'" y="'+(yE(A[pi])+(e.sign>0?-10:16)).toFixed(1)+'" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11" font-weight="700" fill="'+ink+'">'+fmt(A[pi])+'°</text>');
+    p.push('<text x="'+xE(e.startI).toFixed(1)+'" y="'+(H-8)+'" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="'+muted+'">'+seasOf(e.startI)+" "+yrOf(e.startI)+'</text>');
+    p.push('<text x="'+xE(e.endI).toFixed(1)+'" y="'+(H-8)+'" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="'+muted+'">'+seasOf(e.endI)+" "+yrOf(e.endI)+'</text>');
+    return '<svg role="img" width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" aria-label="Rise, peak and decay envelope of the '+e.label+' '+(e.sign>0?"El Niño":"La Niña")+'. Peak '+fmt(A[pi])+' degrees at '+seasOf(pi)+" "+yrOf(pi)+', duration '+e.dur+' seasons."><title>'+e.label+' envelope</title><desc>Anomaly across the episode and two neighboring seasons on each side; shaded run is the qualifying threshold crossing; dot marks the peak. Observed record.</desc>'+p.join("")+'</svg>';
+  }
+
+  function showDetail(label){
+    var e=byLabel[label]; if(!e){ location.hash=""; return; }
+    var idx=epOrder.indexOf(e), prev=epOrder[idx-1], next=epOrder[idx+1];
+    var phase=e.sign>0?"El Niño":"La Niña", gl=e.sign>0?"▲":"▼", glc=e.sign>0?"warm":"cool";
+    var winter=(e.peakSeas==="OND"||e.peakSeas==="NDJ"||e.peakSeas==="DJF");
+    var partial = (e.startI===0) ? " The observed record opens mid-event in DJF 1950, so the true onset predates this file." : "";
+    var qualNote="Qualified as an official "+phase+" by holding "+(e.sign>0?"at or above +0.5°C":"at or below −0.5°C")+" for "+e.dur+" consecutive overlapping seasons, "+seasOf(e.startI)+" "+yrOf(e.startI)+" through "+seasOf(e.endI)+" "+yrOf(e.endI)+"."+partial;
+    var html='<button class="back" id="backbtn" type="button"><span aria-hidden="true">←</span> All episodes</button>'
+      +'<div class="detail-head"><span class="gl '+glc+'" aria-hidden="true">'+gl+'</span>'
+      +'<h2 id="detail-h" tabindex="-1" style="margin:0">'+phase+' '+e.label+'</h2></div>'
+      +'<p class="sub">'+qualNote+'</p>'
+      +'<div class="card"><figure>'+envelope(e)
+      +'<figcaption class="honest" style="font-style:normal;color:var(--ink-soft)">The shaded run is the qualifying threshold crossing; the dot marks the peak. Two neighbor seasons on each side give context. '+(winter?"This event peaked in the winter window — like 32 of the 42 official episodes.":"This event peaked outside the OND/NDJ/DJF core, one of the 10 that did not.")+'</figcaption></figure></div>'
+      +'<div class="statgrid">'
+      +'<div class="stat"><span class="k">Phase</span><span class="v">'+phase+'</span></div>'
+      +'<div class="stat"><span class="k">Duration</span><span class="v">'+e.dur+' seas</span></div>'
+      +'<div class="stat"><span class="k">Peak anomaly</span><span class="v mono">'+fmt(e.peakAnom)+'°</span></div>'
+      +'<div class="stat"><span class="k">Peak season</span><span class="v">'+e.peakSeas+' '+e.peakYr+'</span></div>'
+      +'<div class="stat"><span class="k">Onset</span><span class="v mono">'+seasOf(e.startI)+' '+yrOf(e.startI)+'</span></div>'
+      +'<div class="stat"><span class="k">End</span><span class="v mono">'+seasOf(e.endI)+' '+yrOf(e.endI)+'</span></div>'
+      +'</div>'
+      +'<p class="honest">Observed record, NOAA CPC ONI (CC0). Peak values and dates read directly from the file; no value is a forecast.</p>'
+      +'<div class="nbrs">'
+      +(prev?'<a href="#/ep/'+prev.label+'"><small>← Previous episode</small>'+(prev.sign>0?"El Niño ":"La Niña ")+prev.label+'</a>':'<span></span>')
+      +(next?'<a href="#/ep/'+next.label+'" style="text-align:right"><small>Next episode →</small>'+(next.sign>0?"El Niño ":"La Niña ")+next.label+'</a>':'<span></span>')
+      +'</div>';
+    detail.innerHTML=html; detail.hidden=false; overview.hidden=true;
+    document.getElementById("backbtn").addEventListener("click",function(){ location.hash=""; });
+    var h=document.getElementById("detail-h"); if(h){ h.focus(); }
+    // mark current row
+    document.querySelectorAll("#ep-rows tr").forEach(function(tr){ tr.setAttribute("aria-current", tr.dataset.label===label?"true":"false"); });
+    announce("Showing detail for "+phase+" "+e.label+", peak "+fmt(e.peakAnom)+" degrees at "+e.peakSeas+" "+e.peakYr);
+    window.scrollTo(0,0);
+  }
+  function showOverview(){ detail.hidden=true; overview.hidden=false;
+    document.querySelectorAll("#ep-rows tr[aria-current=true]").forEach(function(tr){ tr.setAttribute("aria-current","false"); });
+    if(lastFocus && document.contains(lastFocus)){ try{ lastFocus.focus(); }catch(e){} lastFocus=null; } }
+  function route(){ var m=location.hash.match(/^#\/ep\/(.+)$/);
+    if(m){ showDetail(decodeURIComponent(m[1])); } else { showOverview(); } }
+  document.addEventListener("click",function(ev){ var a=ev.target.closest && ev.target.closest('a[href^="#/ep/"], .rowlink'); if(a){ lastFocus=a; } },true);
+  document.addEventListener("keydown",function(ev){ if((ev.key==="Enter"||ev.key===" ")){ var a=ev.target.closest && ev.target.closest('.spanbar'); if(a){ ev.preventDefault(); lastFocus=a; location.hash=a.getAttribute("href"); } } });
+  window.addEventListener("hashchange",route);
+
+  /* ---------------- INIT ---------------- */
+  renderRibbon(); renderClock(); renderSpan(); renderFreeze(); updateReadout(); route();
+  announce(D.episodes.length+" official ENSO episodes loaded across 917 observed seasons.");
+})();
+</script>

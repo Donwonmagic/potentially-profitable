@@ -1,0 +1,927 @@
+<title>The Domestic Catch — US Wild Seafood Landings vs. the Imported Plate</title>
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="description" content="US commercial WILD landings value and pounds by seafood species group, summed to national and paired against each group's import CIF value. A nominal value-to-value apparent-reliance proxy across different chain points — not a volume share, not a delivered or retail price, not a forecast. Confidenti" />
+<meta name="theme-color" content="#2A50C8" />
+<link rel="canonical" href="https://muntin.digital/open/landings/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/open/landings/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/open/landings/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/open/landings/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="es_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="The Domestic Catch — US Wild Seafood Landings vs. the Imported Plate" />
+<meta property="og:description" content="US commercial WILD landings value and pounds by seafood species group, summed to national and paired against each group's import CIF value. A nominal value-to-value apparent-reliance proxy across different chain points — not a volume share, not a delivered or retail price, not a forecast. Confidenti" />
+<meta property="og:url" content="https://muntin.digital/open/landings/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="The Domestic Catch — US Wild Seafood Landings vs. the Imported Plate" />
+<meta name="twitter:description" content="US commercial WILD landings value and pounds by seafood species group, summed to national and paired against each group's import CIF value. A nominal value-to-value apparent-reliance proxy across different chain points — not a volume share, not a delivered or retail price, not a forecast. Confidenti" />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Open data","item":"https://muntin.digital/open/"},{"@type":"ListItem","position":3,"name":"The Domestic Catch","item":"https://muntin.digital/open/landings/"}]}</script>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site-core.css" />
+<style>
+/* === MUNTIN OPEN-DATA EXPLORER · shared token block === */
+:root{
+  --paper:#f7f4ee; --surface:#fffdf9; --surface-2:#f1ece2;
+  --ink:#1b1f24; --ink-soft:#4a525a; --muted:#676b66;
+  --line:#e5ddce; --line-soft:#efe9dc;
+  --teal:#2f7d78; --teal-ink:#215a56; --teal-wash:#e4efed;
+  --gold:#8a6216; --rust:#a8442d;
+  --up:var(--rust); --dn:var(--teal-ink); --flat:var(--muted);
+  --focus:#1b6be0; --focus-ring:0 0 0 3px rgba(27,107,224,.55);
+  --ok-badge-bd:var(--teal); --ok-badge-ink:var(--teal-ink);
+  --font-display:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
+  --font-sans:system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --font-mono:ui-monospace,'SF Mono','Cascadia Code',Menlo,Consolas,monospace;
+  --sh:0 1px 2px rgba(20,24,29,.05),0 8px 24px rgba(20,24,29,.07);
+  --tap:44px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#13161a; --surface:#1a1e23; --surface-2:#222831;
+  --ink:#eef1f0; --ink-soft:#b7bec3; --muted:#8b949c;
+  --line:#2b3138; --line-soft:#242a30;
+  --teal:#57b7af; --teal-ink:#7fcfc7; --teal-wash:#16302e;
+  --gold:#d3a44c; --rust:#e08a72;
+  --focus:#7ab6ff; --focus-ring:0 0 0 3px rgba(122,182,255,.6);
+  --sh:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4);
+}}
+:root[data-theme="dark"]{ --paper:#13161a;--surface:#1a1e23;--surface-2:#222831;--ink:#eef1f0;--ink-soft:#b7bec3;--muted:#8b949c;--line:#2b3138;--line-soft:#242a30;--teal:#57b7af;--teal-ink:#7fcfc7;--teal-wash:#16302e;--gold:#d3a44c;--rust:#e08a72;--focus:#7ab6ff;--focus-ring:0 0 0 3px rgba(122,182,255,.6);--sh:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4); }
+:root[data-theme="light"]{ --paper:#f7f4ee;--surface:#fffdf9;--surface-2:#f1ece2;--ink:#1b1f24;--ink-soft:#4a525a;--muted:#676b66;--line:#e5ddce;--line-soft:#efe9dc;--teal:#2f7d78;--teal-ink:#215a56;--teal-wash:#e4efed;--gold:#8a6216;--rust:#a8442d;--focus:#1b6be0;--focus-ring:0 0 0 3px rgba(27,107,224,.55); }
+*{box-sizing:border-box}
+html{color-scheme:light dark}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-sans);line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1000px;margin:0 auto;padding:clamp(18px,3.5vw,44px) clamp(14px,4vw,30px) 90px}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+h1{font-family:var(--font-display);font-weight:600;line-height:1.03;letter-spacing:-.01em;text-wrap:balance}
+h2,h3{font-family:var(--font-display);font-weight:600;letter-spacing:-.01em}
+a{color:var(--teal-ink)} a:hover{text-decoration:underline}
+svg{display:block;max-width:100%;height:auto}
+figure{margin:0}
+:where(a,button,select,input,summary,[tabindex]):focus-visible{outline:2px solid var(--focus);outline-offset:2px;box-shadow:var(--focus-ring);border-radius:6px}
+button,select,input{min-height:var(--tap);font:inherit}
+button,[role=button]{min-width:var(--tap)}
+input,select{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:11px 14px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.lic{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--ok-badge-bd);color:var(--ok-badge-ink);border-radius:5px;padding:1px 7px;font:600 10.5px/1.4 var(--font-mono);letter-spacing:.06em}
+.lic::before{content:'\2713'} .lic[data-lic="cc-by"]::before{content:'\24B8'}
+.honest{display:block;font:400 11.5px/1.4 var(--font-sans);color:var(--muted);font-style:italic}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+@media (forced-colors:active){.lic,.chip{border:1px solid CanvasText}.bar-wild,.bar-imp{forced-color-adjust:none}}
+
+/* === page-specific === */
+header.mast{border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:8px}
+.kick{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-ink);margin:0 0 12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.mast-top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+h1{font-size:clamp(28px,5.4vw,50px);margin:0 0 12px}
+.lede{font-size:clamp(15px,2.1vw,18px);color:var(--ink-soft);max-width:64ch;margin:0}
+.lede b{color:var(--ink);font-family:var(--font-mono);font-weight:600}
+.themebtn{background:var(--surface);border:1px solid var(--line);border-radius:10px;width:var(--tap);height:var(--tap);display:inline-grid;place-items:center;cursor:pointer;font-size:17px;flex:none}
+h2{font-size:clamp(20px,3.2vw,27px);margin:36px 0 4px}
+h2:first-of-type{margin-top:24px}
+.beat-sub{color:var(--ink-soft);margin:2px 0 16px;max-width:66ch}
+.panel{border:1px solid var(--line);border-radius:14px;background:var(--surface);box-shadow:var(--sh);padding:clamp(12px,2.4vw,20px);margin:14px 0}
+.chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);border-radius:999px;padding:5px 12px;font:600 12.5px/1 var(--font-mono);cursor:pointer;min-height:34px}
+.chip[aria-pressed=true]{border-color:var(--teal);background:var(--teal-wash);color:var(--teal-ink)}
+.chip .x{font-weight:700}
+.legend{display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-size:12.5px;color:var(--ink-soft);margin:0 0 10px}
+.legend .sw{display:inline-flex;align-items:center;gap:6px}
+.legend .box{width:22px;height:12px;border-radius:3px;display:inline-block}
+.legend .box.wild{background:var(--teal)}
+.legend .box.imp{background:var(--rust)}
+.glyph{font-weight:700}
+
+/* controls */
+.controls{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 6px;align-items:center}
+.search{position:relative;flex:1;min-width:200px}
+.search input{width:100%;font-size:15px}
+.count{font-family:var(--font-mono);font-size:12px;color:var(--muted);white-space:nowrap;margin-left:auto}
+.status{font-family:var(--font-mono);font-size:12px;color:var(--teal-ink);min-height:1.2em;margin:4px 2px}
+
+/* SVG ladder */
+.ladder-scroll{overflow-x:auto}
+.rung-hit{cursor:pointer}
+.rung-hit:focus-visible rect.rung-focus{stroke:var(--focus);stroke-width:2.5}
+text{fill:var(--ink)}
+.tk{fill:var(--muted);font:11px var(--font-mono)}
+.rlabel{fill:var(--ink);font:600 13px var(--font-sans)}
+.rval{fill:var(--ink-soft);font:11.5px var(--font-mono)}
+.bar-wild{fill:var(--teal)}
+.bar-imp{fill:var(--rust)}
+.pivot{stroke:var(--gold);stroke-width:2.5}
+.pivot-lab{fill:var(--gold);font:700 12px var(--font-mono)}
+.gridline{stroke:var(--line);stroke-width:1}
+.spark-line{fill:none;stroke:var(--ink-soft);stroke-width:1.4}
+.spark-peak{fill:var(--gold)}
+.spark-caret{fill:var(--teal-ink)}
+.side-lab{font:700 11px var(--font-mono);letter-spacing:.05em;text-transform:uppercase}
+.side-own{fill:var(--teal-ink)}
+.side-abroad{fill:var(--rust)}
+
+/* region ribbon */
+.ribbon-seg{cursor:pointer}
+.ribbon-seg:focus-visible rect{stroke:var(--focus);stroke-width:2.5}
+
+/* table */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface);box-shadow:var(--sh)}
+table.data{border-collapse:collapse;width:100%;font-size:13.5px}
+table.data caption{text-align:left;padding:12px 14px 4px;color:var(--ink-soft);font-size:13px}
+table.data th,table.data td{padding:9px 12px;text-align:right;border-bottom:1px solid var(--line-soft);white-space:nowrap}
+table.data th[scope=col]{position:sticky;top:0;background:var(--surface-2);z-index:1}
+table.data th.l,table.data td.l{text-align:left}
+table.data td.l button{background:none;border:0;color:var(--teal-ink);font:inherit;font-weight:600;cursor:pointer;padding:2px 0;text-align:left;min-height:var(--tap);text-decoration:underline;text-underline-offset:2px}
+table.data tbody tr[aria-current=true]{background:var(--teal-wash)}
+th.sortable button{background:none;border:0;color:inherit;font:inherit;font-weight:700;cursor:pointer;display:inline-flex;gap:5px;align-items:center;justify-content:flex-end;width:100%;min-height:38px}
+th.l.sortable button{justify-content:flex-start}
+.sortglyph{font-size:10px;color:var(--muted)}
+th[aria-sort=ascending] .sortglyph,th[aria-sort=descending] .sortglyph{color:var(--teal-ink)}
+.tag-min{display:inline-block;border:1px solid var(--rust);color:var(--rust);border-radius:4px;padding:0 5px;font:600 10px/1.5 var(--font-mono);margin-left:6px;vertical-align:1px}
+.dir-up{color:var(--up)} .dir-dn{color:var(--dn)} .dir-flat{color:var(--flat)}
+
+/* detail view */
+#detail{display:none}
+#detail.on{display:block}
+.detail-head{display:flex;align-items:flex-start;gap:12px;justify-content:space-between;flex-wrap:wrap}
+.backbtn{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 14px;cursor:pointer;font-weight:600;color:var(--teal-ink)}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:14px 0}
+.stat{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:12px 14px}
+.stat .k{font:600 11px/1.3 var(--font-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.stat .v{font:600 22px/1.15 var(--font-display);margin:3px 0 1px}
+.roster{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.roster span{border:1px solid var(--line);background:var(--surface-2);border-radius:6px;padding:3px 8px;font:11.5px var(--font-mono);color:var(--ink-soft)}
+.dl{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--teal);color:var(--teal-ink);background:var(--surface);border-radius:10px;padding:9px 14px;font-weight:600;cursor:pointer;text-decoration:none;margin:4px 8px 4px 0}
+.provgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+footer.prov{margin-top:40px;border-top:1px solid var(--line);padding-top:20px;color:var(--ink-soft);font-size:13.5px}
+footer.prov h2{font-size:17px;margin:0 0 8px}
+footer.prov a{word-break:break-word}
+.aha{border-left:3px solid var(--gold);padding:6px 0 6px 16px;margin:14px 0;font-family:var(--font-display);font-size:clamp(17px,2.6vw,22px);line-height:1.3;color:var(--ink)}
+.nojs-note{background:var(--surface-2);border:1px dashed var(--line);border-radius:10px;padding:10px 14px;font-size:13px;color:var(--ink-soft);margin:10px 0}
+.hatch{fill:url(#hatchpat)}
+@media (max-width:560px){
+  h2{margin-top:28px}
+  .stat .v{font-size:19px}
+}
+</style>
+
+<div class="wrap">
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<!-- batch-banner:start --><!-- batch-banner:end -->
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital">
+      <img class="logo-mark" src="/brand/mark/mark-square-ink.svg" alt="" width="36" height="36" />
+      <span class="logo-text">Muntin Digital</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary"><a href="/open/">Open data</a><a href="/cost-index/">Cost Index</a></nav>
+  </div>
+</header>
+<header class="mast">
+  <div class="mast-top">
+    <div>
+      <p class="kick">
+        <span>Muntin Open Data · Explorer</span>
+        <span class="lic" data-lic="cc0" role="img" aria-label="Raw landings rows are Creative Commons Zero, public domain">CC0 raw</span>
+        <span class="lic" data-lic="cc-by" role="img" aria-label="Derived national reads are Creative Commons Attribution 4.0">CC-BY derived</span>
+      </p>
+      <h1>The Domestic Catch</h1>
+    </div>
+    <button class="themebtn" id="themeBtn" aria-label="Switch color theme" title="Switch light / dark theme">◐</button>
+    <span id="themeLive" class="sr-only" role="status" aria-live="polite"></span>
+  </div>
+  <p class="lede">The seafood America <b>eats</b> most of is the seafood it <b>lands</b> least of. Twenty seafood groups, ranked by the seam between what US boats land wild and what the same food's imports are worth — from clams (America lands essentially all it eats) to trout (the domestic wild catch is a rounding error). <span class="honest" style="margin-top:8px">A nominal value-to-value ratio across different chain points — ex-vessel landings value vs. import CIF value. An apparent-reliance proxy, never a volume share, never a delivered price, never a forecast.</span></p>
+</header>
+
+<main id="main">
+
+  <!-- ===================== OVERVIEW ===================== -->
+  <section id="overview" aria-labelledby="ov-h">
+    <h2 id="ov-h">The seam ladder</h2>
+    <p class="beat-sub">One rung per group, sorted by the import-to-wild-landings value ratio. Left of the gold pivot: <b>America lands its own</b>. Right of it: <b>the plate lives abroad</b>. Each rung pairs two bars on a shared log-dollar axis — <span class="glyph" style="color:var(--teal-ink)">▲</span> teal wild-caught domestic value and <span class="glyph" style="color:var(--rust)">●</span> rust import value — so the seam is the gap you read across. The log axis is the honest choice: no linear scale survives a 0.02× to 420× spread.</p>
+
+    <section class="panel" aria-label="Filters and controls" role="search">
+      <div class="controls">
+        <div class="search">
+          <label class="sr-only" for="q">Search seafood groups</label>
+          <input id="q" type="search" placeholder="Search a group (lobster, salmon, cod…)" autocomplete="off">
+        </div>
+        <label class="sr-only" for="sortsel">Sort ladder by</label>
+        <select id="sortsel" aria-label="Sort the ladder">
+          <option value="ratio-desc">Sort: most imported first</option>
+          <option value="ratio-asc">Sort: lands-its-own first</option>
+          <option value="wild-desc">Sort: biggest wild landings</option>
+          <option value="import-desc">Sort: biggest import stream</option>
+          <option value="peak-asc">Sort: furthest below its peak</option>
+        </select>
+        <label class="sr-only" for="regionsel">Filter the ladder by landing region</label>
+        <select id="regionsel" aria-label="Filter the ladder by landing region">
+          <option value="">Region: all</option>
+          <option value="New England">Region: New England</option>
+          <option value="Alaska">Region: Alaska</option>
+          <option value="Pacific Coast">Region: Pacific Coast</option>
+          <option value="Gulf">Region: Gulf</option>
+          <option value="Middle Atlantic">Region: Middle Atlantic</option>
+          <option value="South Atlantic">Region: South Atlantic</option>
+          <option value="Hawaii">Region: Hawaii</option>
+        </select>
+        <span class="count mono" id="count" aria-hidden="true"></span>
+      </div>
+      <div id="chips" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+      <p class="status mono" id="status" role="status" aria-live="polite"></p>
+    </section>
+
+    <figure class="panel">
+      <div class="legend" aria-hidden="true">
+        <span class="sw"><span class="glyph" style="color:var(--teal-ink)">▲</span><span class="box wild"></span> Wild-caught US landings (ex-vessel $)</span>
+        <span class="sw"><span class="glyph" style="color:var(--rust)">●</span><span class="box imp"></span> Same food's import value (CIF $)</span>
+        <span class="sw"><span style="color:var(--gold);font-weight:700">┃</span> 1.0× seam pivot</span>
+      </div>
+      <div class="ladder-scroll">
+        <svg id="ladder" role="group" width="960" aria-labelledby="ladder-t ladder-d">
+          <title id="ladder-t">The seam ladder: twenty US seafood groups ranked by import-to-wild-landings value ratio.</title>
+          <desc id="ladder-d">Each group is a rung with a teal bar for wild-caught domestic landings value and a rust bar for the same food's import value, on a shared logarithmic dollar axis. A gold pivot line marks the 1.0× crossover where imports equal domestic landings. Clams and scallops sit far left, landing far more than the US imports; shrimp, salmon, octopus, sardine and trout sit far right, where imports dwarf the domestic wild catch. This is a nominal value-to-value ratio across different points in the supply chain, an apparent-reliance proxy, not a consumption share.</desc>
+        </svg>
+      </div>
+      <figcaption class="honest">Bars use a log dollar scale; the gap between the teal and rust tip is the seam. Confidential state-species rows are withheld by NOAA and lower each domestic sum by absence, never zero-filled — the wild bar is a floor, not a ceiling.</figcaption>
+    </figure>
+
+    <p class="aha" id="aha">Shrimp and salmon — the two Americans buy hardest — sit deep on the import side. Clams and scallops, which almost nobody thinks about, are the ones the country actually catches. And every group NOAA flags as a negligible US wild fishery lands on the far right: those rungs were never a domestic plate to begin with.</p>
+
+    <!-- Region ribbon -->
+    <h3 id="reg-h" style="margin-top:30px">Where the value lands · 2024</h3>
+    <p class="beat-sub">New England (<span class="mono">34%</span>) and Alaska (<span class="mono">23%</span>) carry <b>57%</b> of the national landed value. Select a region to filter the ladder to the groups it lands, or pick a group above to see its regional split. Lobster <em>is</em> New England; salmon <em>is</em> Alaska.</p>
+    <figure class="panel">
+      <svg id="ribbon" role="group" width="960" height="86" aria-labelledby="rib-t rib-d">
+        <title id="rib-t">2024 US commercial landed value by NOAA region.</title>
+        <desc id="rib-d" class="sr-only">2024 landed value by region: New England 33.9%, Alaska 23%, Pacific Coast 16.6%, Gulf 13.8%, Middle Atlantic 6.3%, South Atlantic 3.4%, Hawaii 3%. New England and Alaska together carry 57 percent. Share of nominal ex-vessel landed value, computed from the raw CC0 rows; not a forecast.</desc>
+      </svg>
+      <figcaption class="honest">Share of 2024 ex-vessel landed value across NOAA regions, computed from the raw CC0 rows. Region segments are buttons that filter the ladder above.</figcaption>
+    </figure>
+
+    <!-- The record goes dark -->
+    <h3 id="conf-h" style="margin-top:30px">The record goes dark · 1950–2024</h3>
+    <p class="beat-sub">One thin column per year, shaded by the share of species-state rows NOAA withholds for confidentiality. Near-white across five decades, then it abruptly darkens to roughly <b>30%</b> from about 2007 on — the dataset measurably withholding itself, co-occurring with fleet consolidation. This is the site's "null degrades by absence" rule made literal (co-occurrence, never cause).</p>
+    <figure class="panel">
+      <svg id="confrib" role="img" width="960" height="96" aria-labelledby="cf-t cf-d">
+        <title id="cf-t">Share of species-state landing rows withheld for confidentiality, by year, 1950 to 2024.</title>
+        <desc id="cf-d" class="sr-only">Confidentiality suppression share by year. Zero percent of rows were withheld from 1950 through about 2005, then the share jumps and holds near 30 percent from about 2007 onward. In 2024, about 30.9 percent of species-state rows are withheld to protect fisheries with too few operations to report. Absence, stated as co-occurrence with fleet consolidation, never cause. Not a forecast.</desc>
+      </svg>
+      <figcaption class="honest">Suppression share = null-dollar rows ÷ all rows that year. A withheld row protects fisheries with too few operations to report without disclosing a business; it is absence, never a zero. Consolidation is stated as co-occurrence, not cause.</figcaption>
+    </figure>
+
+    <!-- Data table of record -->
+    <h3 id="tbl-h" style="margin-top:30px">Every rung, as data</h3>
+    <p class="nojs-note" id="nojsnote">This table is the source of record — it works with no JavaScript, and the ladder above is an enhancement of it. Column headers sort; the group name opens its walk-through.</p>
+    <div class="tablewrap">
+      <table class="data" id="tbl" aria-describedby="tbl-h">
+        <caption>US commercial wild landings vs. import value, 20 seafood groups. Wild = nominal ex-vessel landings value (round weight); Import = CIF import value of the same food; Ratio = import ÷ wild. Latest year 2024; value series 1950–2024. Groups flagged <b>min</b> have a negligible US wild fishery (NOAA <code>domestic_wild_minimal</code>).</caption>
+        <thead>
+          <tr>
+            <th scope="col" class="l sortable" aria-sort="none" data-k="label"><button type="button">Group <span class="sortglyph" aria-hidden="true">↕</span></button></th>
+            <th scope="col" class="sortable" aria-sort="descending" data-k="wild"><button type="button">Wild $ <span class="sortglyph" aria-hidden="true">▼</span></button></th>
+            <th scope="col" class="sortable" aria-sort="none" data-k="import"><button type="button">Import $ <span class="sortglyph" aria-hidden="true">↕</span></button></th>
+            <th scope="col" class="sortable" aria-sort="none" data-k="ratio"><button type="button">Import ÷ Wild <span class="sortglyph" aria-hidden="true">↕</span></button></th>
+            <th scope="col" class="sortable" aria-sort="none" data-k="pctPeak"><button type="button">% of peak <span class="sortglyph" aria-hidden="true">↕</span></button></th>
+            <th scope="col" class="sortable" aria-sort="none" data-k="upl"><button type="button">$ / lb (2024) <span class="sortglyph" aria-hidden="true">↕</span></button></th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <!-- Server-rendered rows (sorted by import÷wild, descending) — the no-JavaScript source of record. JS re-renders this tbody in place. -->
+          <tr><td class="l"><button type="button" data-id="trout">Trout (wild)</button><span class="tag-min" title="NOAA domestic_wild_minimal flag" role="img" aria-label="negligible US wild fishery">min</span></td><td class="mono">$124K</td><td class="mono">$52.1M</td><td class="mono">420× <span class="dir-up" aria-hidden="true">►</span></td><td class="mono"><span class="dir-dn" aria-hidden="true">▼</span> 4%</td><td class="mono">$0.77</td></tr>
+          <tr><td class="l"><button type="button" data-id="sardine">Sardine</button><span class="tag-min" title="NOAA domestic_wild_minimal flag" role="img" aria-label="negligible US wild fishery">min</span></td><td class="mono">$973K</td><td class="mono">$217.9M</td><td class="mono">224× <span class="dir-up" aria-hidden="true">►</span></td><td class="mono"><span class="dir-dn" aria-hidden="true">▼</span> 5%</td><td class="mono">$0.26</td></tr>
+          <tr><td class="l"><button type="button" data-id="anchovy">Anchovy</button><span class="tag-min" title="NOAA domestic_wild_minimal flag" role="img" aria-label="negligible US wild fishery">min</span></td><td class="mono">$689K</td><td class="mono">$41.2M</td><td class="mono">60× <span class="dir-up" aria-hidden="true">►</span></td><td class="mono"><span class="dir-dn" aria-hidden="true">▼</span> 21%</td><td class="mono">$0.07</td></tr>
+          <tr><td class="l"><button type="button" data-id="octopus">Octopus</button><span class="tag-min" title="NOAA domestic_wild_minimal flag" role="img" aria-label="negligible US wild fishery">min</span></td><td class="mono">$309K</td><td class="mono">$15.8M</td><td class="mono">51× <span class="dir-up" aria-hidden="true">►</span></td><td class="mono"><span class="dir-dn" aria-hidden="true">▼</span> 35%</td><td class="mono">$0.63</td></tr>
+          <tr><td class="l"><button type="button" data-id="mahi">Mahi-mahi (dolphinfish)</button><span class="tag-min" title="NOAA domestic_wild_minimal flag" role="img" aria-label="negligible US wild fishery">min</span></td><td class="mono">$2.7M</td><td class="mono">$43.2M</td><td class="mono">16× <span class="dir-up" aria-hidden="true">►</span></td><td class="mono"><span class="dir-dn" aria-hidden="true">▼</span> 33%</td><td class="mono">$4.16</td></tr>
+          <tr><td class="l"><button type="button" data-id="haddock">Haddock</button></td><td class="mono">$9.7M</td><td class="mono">$144.3M</td><td class="mono">15× <span class="dir-up" aria-hidden="true">►</span></td><td class="mono"><span class="dir-dn" aria-hidden="true">▼</span> 42%</td><td class="mono">$1.34</td></tr>
+          <tr><td class="l"><button type="button" data-id="dover-sole">Dover sole</button><span class="tag-min" title="NOAA domestic_wild_minimal flag" role="img" aria-label="negligible US wild fishery">min</span></td><td class="mono">$3.0M</td><td class="mono">$19.6M</td><td class="mono">6.49× <span class="dir-up" aria-hidden="true">►</span></td><td class="mono"><span class="dir-dn" aria-hidden="true">▼</span> 24%</td><td class="mono">$0.45</td></tr>
+          <tr><td class="l"><button type="button" data-id="salmon">Salmon (Pacific wild)</button></td><td class="mono">$394.1M</td><td class="mono">$2.46B</td><td class="mono">6.25× <span class="dir-up" aria-hidden="true">►</span></td><td class="mono"><span class="dir-dn" aria-hidden="true">▼</span> 43%</td><td class="mono">$0.94</td></tr>
+          <tr><td class="l"><button type="button" data-id="shrimp">Shrimp</button></td><td class="mono">$312.0M</td><td class="mono">$1.62B</td><td class="mono">5.18× <span class="dir-up" aria-hidden="true">►</span></td><td class="mono"><span class="dir-dn" aria-hidden="true">▼</span> 41%</td><td class="mono">$1.35</td></tr>
+          <tr><td class="l"><button type="button" data-id="cod">Cod</button></td><td class="mono">$109.3M</td><td class="mono">$437.4M</td><td class="mono">4.00× <span class="dir-up" aria-hidden="true">►</span></td><td class="mono"><span class="dir-dn" aria-hidden="true">▼</span> 35%</td><td class="mono">$0.29</td></tr>
+          <tr><td class="l"><button type="button" data-id="snapper">Snapper</button></td><td class="mono">$59.7M</td><td class="mono">$205.6M</td><td class="mono">3.44× <span class="dir-up" aria-hidden="true">►</span></td><td class="mono"><span class="dir-flat" aria-hidden="true">–</span> 100%</td><td class="mono">$5.14</td></tr>
+          <tr><td class="l"><button type="button" data-id="tuna">Tuna (all)</button></td><td class="mono">$134.2M</td><td class="mono">$435.9M</td><td class="mono">3.25× <span class="dir-up" aria-hidden="true">►</span></td><td class="mono"><span class="dir-dn" aria-hidden="true">▼</span> 60%</td><td class="mono">$3.37</td></tr>
+          <tr><td class="l"><button type="button" data-id="grouper">Grouper</button></td><td class="mono">$22.7M</td><td class="mono">$62.0M</td><td class="mono">2.73× <span class="dir-up" aria-hidden="true">►</span></td><td class="mono"><span class="dir-dn" aria-hidden="true">▼</span> 71%</td><td class="mono">$6.19</td></tr>
+          <tr><td class="l"><button type="button" data-id="ahi-tuna">Ahi tuna (yellowfin + bigeye)</button></td><td class="mono">$102.4M</td><td class="mono">$257.8M</td><td class="mono">2.52× <span class="dir-up" aria-hidden="true">►</span></td><td class="mono"><span class="dir-dn" aria-hidden="true">▼</span> 86%</td><td class="mono">$4.03</td></tr>
+          <tr><td class="l"><button type="button" data-id="squid">Squid</button></td><td class="mono">$106.4M</td><td class="mono">$243.7M</td><td class="mono">2.29× <span class="dir-up" aria-hidden="true">►</span></td><td class="mono"><span class="dir-dn" aria-hidden="true">▼</span> 69%</td><td class="mono">$0.65</td></tr>
+          <tr><td class="l"><button type="button" data-id="crab">Crab</button></td><td class="mono">$694.4M</td><td class="mono">$1.55B</td><td class="mono">2.24× <span class="dir-up" aria-hidden="true">►</span></td><td class="mono"><span class="dir-dn" aria-hidden="true">▼</span> 74%</td><td class="mono">$3.16</td></tr>
+          <tr><td class="l"><button type="button" data-id="halibut">Halibut</button></td><td class="mono">$85.5M</td><td class="mono">$173.9M</td><td class="mono">2.04× <span class="dir-up" aria-hidden="true">►</span></td><td class="mono"><span class="dir-dn" aria-hidden="true">▼</span> 38%</td><td class="mono">$3.78</td></tr>
+          <tr><td class="l"><button type="button" data-id="lobster">Lobster</button></td><td class="mono">$776.4M</td><td class="mono">$641.6M</td><td class="mono">0.83× <span class="dir-dn" aria-hidden="true">◄</span></td><td class="mono"><span class="dir-dn" aria-hidden="true">▼</span> 79%</td><td class="mono">$6.52</td></tr>
+          <tr><td class="l"><button type="button" data-id="scallop">Scallop</button></td><td class="mono">$334.0M</td><td class="mono">$21.5M</td><td class="mono">0.06× <span class="dir-dn" aria-hidden="true">◄</span></td><td class="mono"><span class="dir-dn" aria-hidden="true">▼</span> 50%</td><td class="mono">$15.66</td></tr>
+          <tr><td class="l"><button type="button" data-id="clam">Clam</button></td><td class="mono">$171.5M</td><td class="mono">$2.6M</td><td class="mono">0.01× <span class="dir-dn" aria-hidden="true">◄</span></td><td class="mono"><span class="dir-dn" aria-hidden="true">▼</span> 71%</td><td class="mono">$5.40</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="honest" style="margin-top:10px">Ratio pairs a wild-catch domestic figure against a largely-farmed import stream — never a like-for-like apparent-consumption share. Value is nominal ex-vessel dollars, never a delivered price; $/lb is round weight, never edible yield, and exists only at the 2024 edge because the file carries a 75-year value spine but a single latest-year pounds figure.</p>
+  </section>
+
+  <!-- ===================== DETAIL / WALK-THROUGH ===================== -->
+  <section id="detail" aria-labelledby="d-h" tabindex="-1">
+    <div class="detail-head">
+      <button class="backbtn" id="backBtn" type="button">← Back to the ladder</button>
+      <div id="d-badges"></div>
+    </div>
+    <h2 id="d-h" tabindex="-1"></h2>
+    <p class="beat-sub" id="d-sub"></p>
+    <p class="status mono" id="d-status" role="status" aria-live="polite"></p>
+
+    <div class="statgrid" id="d-stats"></div>
+
+    <figure class="panel">
+      <h3 style="margin:0 0 4px;font-size:16px">75-year landings value · nominal ex-vessel dollars</h3>
+      <div style="overflow-x:auto">
+        <svg id="d-series" role="img" width="920" height="240" aria-labelledby="ds-t ds-d">
+          <title id="ds-t"></title><desc id="ds-d" class="sr-only"></desc>
+        </svg>
+      </div>
+      <figcaption class="honest" id="d-series-cap"></figcaption>
+    </figure>
+
+    <figure class="panel">
+      <h3 style="margin:0 0 8px;font-size:16px">Where this group lands · 2024 by region</h3>
+      <svg id="d-region" role="img" width="920" height="64" aria-labelledby="dr-t dr-d">
+        <title id="dr-t"></title><desc id="dr-d" class="sr-only"></desc>
+      </svg>
+      <figcaption class="honest">Share of this group's 2024 landed value by NOAA region, from the raw CC0 rows.</figcaption>
+    </figure>
+
+    <h3 style="font-size:16px">Species roster <span class="honest" style="display:inline;font-style:normal" id="d-spcount"></span></h3>
+    <div class="roster" id="d-roster"></div>
+
+    <h3 style="font-size:16px;margin-top:22px">The two-license seam</h3>
+    <p id="d-license" class="beat-sub"></p>
+    <div>
+      <button class="dl" id="dl-json" type="button" aria-label="Download this group's seam card as JSON">⬇ Seam card · JSON <span class="lic" data-lic="cc-by" style="border:0;padding:0;margin-left:2px" aria-hidden="true">CC-BY</span></button>
+      <button class="dl" id="dl-csv" type="button" aria-label="Download this group's value series as CSV">⬇ Value series · CSV <span class="lic" data-lic="cc-by" style="border:0;padding:0;margin-left:2px" aria-hidden="true">CC-BY</span></button>
+    </div>
+  </section>
+
+</main>
+
+<footer class="prov" role="contentinfo">
+  <h2>Provenance &amp; downloads</h2>
+  <div class="provgrid">
+    <div>
+      <p><span class="lic" data-lic="cc0" role="img" aria-label="CC0 public domain">CC0</span> <b>Raw landing rows</b> — NOAA Fisheries FOSS commercial landings, 1950–2024, one row per year × species × state (<code>dollars</code> null where confidential). Public domain.</p>
+      <p><a id="dl-raw" href="https://muntin.digital/data/noaa-landings.jsonl">muntin.digital/data/noaa-landings.jsonl</a></p>
+    </div>
+    <div>
+      <p><span class="lic" data-lic="cc-by" role="img" aria-label="CC-BY 4.0">CC-BY</span> <b>Derived national reads</b> — Muntin Cost Index rollup: per-group value series, latest pounds, species roster, wild-vs-farmed notes. CC BY 4.0.</p>
+      <p><a id="dl-derived" href="https://muntin.digital/cost-index/noaa-landings-domestic.json">muntin.digital/cost-index/noaa-landings-domestic.json</a></p>
+    </div>
+    <div>
+      <p><b>Schema note.</b> Value = nominal ex-vessel landings dollars (round/live weight), never a delivered or retail price. Pounds are round weight, never edible yield. Import value is CIF on the served ingredient slug. The ratio is a value-to-value <em>apparent-reliance proxy</em> across different chain points — not a volume share, not a forecast. Confidential rows degrade the sum by absence.</p>
+      <p><a href="https://muntin.digital/open/">Full open-data catalog →</a></p>
+    </div>
+  </div>
+  <p class="honest" id="attrib" style="margin-top:14px"></p>
+</footer>
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "Muntin Cost Index — US Domestic Wild-Landings (NOAA FOSS)",
+  "description": "US commercial WILD landings value and pounds by seafood species group, summed to national and paired against each group's import CIF value. A nominal value-to-value apparent-reliance proxy across different chain points — not a volume share, not a delivered or retail price, not a forecast. Confidential state-species rows are withheld by NOAA and degrade the sum by absence, never zero-padded.",
+  "url": "https://muntin.digital/cost-index/",
+  "creator": { "@type": "Organization", "name": "Muntin Cost Index", "url": "https://muntin.digital/" },
+  "isBasedOn": { "@type": "Dataset", "name": "NOAA Fisheries FOSS commercial landings", "creator": { "@type": "GovernmentOrganization", "name": "NOAA Fisheries" } },
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "temporalCoverage": "1950/2024",
+  "dateModified": "2024",
+  "spatialCoverage": { "@type": "Place", "name": "United States" },
+  "keywords": ["seafood", "landings", "imports", "NOAA FOSS", "wild-caught", "apparent reliance", "ex-vessel value"],
+  "variableMeasured": [
+    { "@type": "PropertyValue", "name": "wild_landings_usd", "description": "Nominal ex-vessel landings value, round weight; never a delivered or retail price." },
+    { "@type": "PropertyValue", "name": "import_value_usd", "description": "CIF import value of the same served ingredient; nominal value, never volume." },
+    { "@type": "PropertyValue", "name": "import_to_wild_ratio", "description": "Import value divided by wild landings value; an apparent-reliance proxy across different chain points, never a consumption share." }
+  ],
+  "distribution": [
+    {
+      "@type": "DataDownload",
+      "name": "Raw landing rows (CC0)",
+      "encodingFormat": "application/x-ndjson",
+      "contentUrl": "https://muntin.digital/data/noaa-landings.jsonl",
+      "license": "https://creativecommons.org/publicdomain/zero/1.0/"
+    },
+    {
+      "@type": "DataDownload",
+      "name": "Derived national reads (CC-BY 4.0)",
+      "encodingFormat": "application/json",
+      "contentUrl": "https://muntin.digital/cost-index/noaa-landings-domestic.json",
+      "license": "https://creativecommons.org/licenses/by/4.0/"
+    }
+  ]
+}
+</script>
+
+<script type="application/json" id="landings-data">{"meta":{"dataset":"Muntin Cost Index — US Domestic Wild-Landings (NOAA FOSS)","url":"https://muntin.digital/cost-index/","license":"CC BY 4.0","license_url":"https://creativecommons.org/licenses/by/4.0/","attribution":"Muntin Cost Index (muntin.digital); underlying data NOAA Fisheries FOSS (public domain)","note":"US COMMERCIAL WILD landings (value + pounds) by seafood species group, summed to national. This is the domestic pair for each seafood import stream — but a WILD-CATCH domestic figure set beside a largely-FARMED import stream, so it is NOT a like-for-like apparent-consumption share: the wild-vs-farmed seam is named per group and, where the US wild fishery is negligible (octopus, mahi, trout), domestic_wild_minimal flags it. Value is nominal ex-vessel landings dollars, never a delivered or retail price; pounds are round/live weight landed, never edible yield. Confidential state-species rows are withheld by NOAA and degrade the sum by ABSENCE, never zero-padded. Descriptive of the landings record — it is not a forecast.","dateModified":"2024","raw_url":"https://muntin.digital/data/noaa-landings.jsonl","derived_url":"https://muntin.digital/cost-index/noaa-landings-domestic.json","catalog_url":"https://muntin.digital/open/","year0":1950,"yearN":2024,"nat2024":3274309594.24126},"regions":["New England","Alaska","Pacific Coast","Gulf","Middle Atlantic","South Atlantic","Hawaii","Great Lakes"],"natRegionShare":{"New England":33.9,"Alaska":23,"Pacific Coast":16.6,"Gulf":13.8,"Middle Atlantic":6.3,"South Atlantic":3.4,"Hawaii":3},"confRibbon":[[1950,239,0],[1951,242,0],[1952,237,0],[1953,232,0],[1954,223,0],[1955,234,0],[1956,244,0],[1957,247,0],[1958,252,0],[1959,253,0],[1960,261,0],[1961,262,0],[1962,279,0],[1963,277,0],[1964,276,0],[1965,289,0],[1966,279,0],[1967,281,0],[1968,289,0],[1969,293,0],[1970,290,0],[1971,318,0],[1972,319,0],[1973,342,0],[1974,347,0],[1975,342,0],[1976,362,0],[1977,361,0],[1978,418,0],[1979,434,0],[1980,449,0],[1981,468,0],[1982,481,0],[1983,518,0],[1984,548,0],[1985,554,0],[1986,611,0],[1987,614,0],[1988,659,0],[1989,644,0],[1990,667,0],[1991,652,0],[1992,677,0],[1993,688,0],[1994,673,0],[1995,697,0],[1996,694,0],[1997,699,0],[1998,693,0],[1999,701,0],[2000,683,0],[2001,723,0],[2002,694,0],[2003,689,0],[2004,685,8.6],[2005,646,8],[2006,637,9.4],[2007,756,26.5],[2008,786,28.2],[2009,775,28.3],[2010,774,27.3],[2011,806,30.1],[2012,801,28.2],[2013,815,28.7],[2014,800,25.8],[2015,813,30],[2016,816,29.2],[2017,827,31.3],[2018,797,28.4],[2019,790,27.3],[2020,774,31.7],[2021,772,29.1],[2022,771,30.6],[2023,750,30.1],[2024,740,30.9]],"groups":[{"id":"shrimp","label":"Shrimp","serves":["shrimp","shrimp-pd","shrimp-head-on"],"species":["SHRIMP (Palaemon)","SHRIMP, ATLANIC SEABOB","SHRIMP, BANDED CORAL","SHRIMP, BLUE MUD","SHRIMP, BRINE","SHRIMP, BROWN","SHRIMP, CLEANER","SHRIMP, FW **","SHRIMP, GHOST **","SHRIMP, GOLDEN CORAL","SHRIMP, MARINE **","SHRIMP, NORTHERN","SHRIMP, NORTHERN PINK","SHRIMP, NORTHERN WHITE","SHRIMP, OCEAN","SHRIMP, OHIO RIVER","SHRIMP, PACIFIC ROCK","SHRIMP, PANDALID **","SHRIMP, PEDERSON CLEANER","SHRIMP, PEPPERMINT","SHRIMP, ROCK","SHRIMP, ROUGHNECK **","SHRIMP, ROYAL RED","SHRIMP, SPOT","SHRIMP, SPOTTED CLEANER","SHRIMPS **","SHRIMPS, BAIT","SHRIMPS, BAIT **","SHRIMPS, CRANGON **","SHRIMPS, MANTIS **","SHRIMPS, PENAEID **","SHRIMPS, PENAEOID **","SHRIMPS, PISTOL OR SNAPPING **","SHRIMPS, ROCK **"],"species_count":34,"latest_year":2024,"wild":312004946,"lb":230329195,"avg5":420899061,"conf_rows":28,"minimal":false,"span":"1950..2024","wild_note":"US wild penaeid (Gulf/South Atlantic) + pandalid (cold-water); imports are mostly farmed — the wild-vs-farmed seam is wide here.","import":1617426401,"import_slug":"shrimp","import_name":"Shrimp (shell-on)","ratio":5.184,"peakY":2000,"peakV":769097154,"pctPeak":41,"upl":1.35,"series":[43451503,51862769,55103239,76641371,60829285,61782953,70894426,73192742,72931208,58131520,66912527,51687058,75653516,72392370,75538098,82208590,95888268,102016606,114503833,124428943,129408035,167020043,195304951,220525487,180515381,225671049,333717849,360683346,378522421,485735842,450474656,470768941,514264708,497815299,483479585,478739312,670423991,586934905,507188341,484438487,510365514,529503575,479188879,432940187,575431579,604994507,533170779,571116918,574456383,587699695,769097154,572146955,463687343,426031494,419727217,411724561,455008741,438650367,460690243,376512084,381208285,526910315,504667276,583161958,692325611,487135059,508155116,544345082,509778507,489383481,465148783,573110165,443035053,311196356,312004946],"regionShare":{"New England":0,"Alaska":1.1,"Pacific Coast":16.2,"Gulf":67.4,"Middle Atlantic":0.3,"South Atlantic":15}},{"id":"salmon","label":"Salmon (Pacific wild)","serves":["salmon-fillet","salmon-skin-on-fillet","whole-salmon"],"species":["SALMON, CHINOOK","SALMON, CHUM","SALMON, COHO","SALMON, PACIFIC **","SALMON, PINK","SALMON, SOCKEYE"],"species_count":6,"latest_year":2024,"wild":394064185,"lb":421211376,"avg5":575465656,"conf_rows":1,"minimal":false,"span":"1950..2024","wild_note":"US wild = Pacific/Alaska (chinook, coho, sockeye, pink, chum). Atlantic salmon is farmed (US wild Atlantic landing is $0/confidential every year) and is EXCLUDED from the wild figure.","import":2463146905,"import_slug":"salmon-fillet","import_name":"Salmon fillet","ratio":6.251,"peakY":1988,"peakV":924285038,"pctPeak":43,"upl":0.94,"series":[37449949,52508486,45241251,37805096,43948167,40703630,46220587,39641250,45902617,35739953,44729787,52026294,56352689,49010593,55957613,65123245,73463867,48534200,66672701,62890717,98687364,80727613,71528414,127550095,120254632,107042302,190979909,252232778,324077392,446999010,317531970,469418586,395224279,349157638,390097265,455777041,515419514,634781360,924285038,641656960,633623600,383166259,624421069,454252044,511569732,502691385,383902451,300549675,277661836,360110097,270760597,209297041,156152980,198964247,302497577,331001012,311289273,420451682,441820348,413651228,571965174,665621492,580713224,756557515,616766052,502302631,420869669,787999514,705533601,707173115,410984708,792063439,827175474,453040476,394064185],"regionShare":{"Alaska":92.4,"Pacific Coast":7.6}},{"id":"cod","label":"Cod","serves":["cod"],"species":["COD, ATLANTIC","COD, PACIFIC","CODFISHES **"],"species_count":3,"latest_year":2024,"wild":109349772,"lb":375368592,"avg5":147364465,"conf_rows":4,"minimal":false,"span":"1950..2024","wild_note":"Atlantic + Pacific cod, both wild; CODFISHES ** is the aggregate rollup.","import":437360664,"import_slug":"cod","import_name":"Cod","ratio":4,"peakY":2008,"peakV":312441176,"pctPeak":35,"upl":0.29,"series":[3918008,4150818,3729871,2576920,2833809,2653807,2611387,2759245,3601076,3977005,2960346,3143798,3451882,3455341,3022254,3402410,3713891,4059915,3804415,5071922,5939495,6930794,8736213,9829886,12565457,14602952,16346614,19045388,24012515,31633629,36861313,41516295,49753646,54142822,54964298,51188797,47665252,75341635,82282753,104806887,153949338,189199678,179026273,119025581,119577766,143577266,143471648,172099089,137880686,107160348,168727009,150166055,126844377,187152562,170652070,171556407,217677827,251918493,312441176,124022421,174460951,196745927,194192164,167056350,163079490,181777871,177571643,198853584,189082721,123810623,164567781,123579172,185430356,153895246,109349772],"regionShare":{"New England":2.6,"Alaska":97.3,"Pacific Coast":0.1,"Middle Atlantic":0}},{"id":"haddock","label":"Haddock","serves":["haddock"],"species":["HADDOCK"],"species_count":1,"latest_year":2024,"wild":9692185,"lb":7236990,"avg5":16639555,"conf_rows":1,"minimal":false,"span":"1950..2024","wild_note":"US wild Atlantic haddock.","import":144316709,"import_slug":"haddock","import_name":"Haddock","ratio":14.89,"peakY":1981,"peakV":23163445,"pctPeak":42,"upl":1.34,"series":[11833865,11967751,12505945,10527537,10010637,8101654,9587220,10195795,11731472,10937986,9398197,9907534,10913030,11705808,11844800,13629249,13943032,11094566,9290932,7765106,6043954,5602732,4302306,3159309,3023292,5327605,5566919,9322138,12987642,17795566,21333755,23163445,21642552,18976825,18349610,13545002,10912379,8521169,7021583,4595612,5977022,4582494,5582050,2671993,1035199,1239349,1495447,3593809,7884019,9110969,11575054,14513694,19047274,16946210,17143360,19136537,11424257,12294712,16478690,13656462,21715464,16316199,7847986,5933722,11090015,12536247,13181658,11948762,13352942,18904313,22373870,19920390,17959639,13251690,9692185],"regionShare":{"New England":100}},{"id":"halibut","label":"Halibut","serves":["whole-halibut"],"species":["HALIBUT, ATLANTIC","HALIBUT, CALIFORNIA","HALIBUT, GREENLAND","HALIBUT, PACIFIC"],"species_count":4,"latest_year":2024,"wild":85456964,"lb":22595957,"avg5":105699020,"conf_rows":3,"minimal":false,"span":"1950..2024","wild_note":"Pacific halibut dominates the value; Atlantic/California/Greenland roll up.","import":173877021,"import_slug":"whole-halibut","import_name":"Whole halibut","ratio":2.035,"peakY":2007,"peakV":223137365,"pctPeak":38,"upl":3.78,"series":[8681401,7086174,7977755,5856982,8277933,5350337,9191590,6716448,7849248,7919190,6392788,8638976,11866346,7216741,6310004,9621134,10090958,6763255,4527323,7573459,8926210,6842514,13589637,18676183,12202273,16518028,22520979,17504376,24224637,32138824,14965194,22075881,27628528,40313787,30793333,43221729,97702731,98025528,86783226,97088179,107468311,112009034,58741193,73408089,98490407,81349879,96900913,129544014,84733588,128898667,147709617,119403239,141037785,176830215,175165289,176240554,199195632,223137365,216677825,142555631,207577463,213989556,154394101,118805384,114608123,119913699,127965610,128385785,100179526,105131103,73979323,126474275,144751126,97833413,85456964],"regionShare":{"New England":0.6,"Alaska":87.1,"Pacific Coast":12.3}},{"id":"dover-sole","label":"Dover sole","serves":["dover-sole"],"species":["SOLE, DOVER"],"species_count":1,"latest_year":2024,"wild":3028884,"lb":6795886,"avg5":3610090,"conf_rows":0,"minimal":true,"span":"1955..2024","wild_note":"US 'dover sole' = Pacific dover sole specifically — matched alone, NOT the whole 15-species sole group.","import":19640862,"import_slug":"dover-sole","import_name":"Sole (Dover/lemon)","ratio":6.485,"peakY":1991,"peakV":12559795,"pctPeak":24,"upl":0.45,"series":[395452,391299,388361,420698,394078,520903,456337,516806,599105,560490,653868,686595,466234,577514,925185,1232997,1178176,1807688,2871616,3125484,3193349,4113773,4623584,5889051,8319910,6385548,7964829,10673084,9891572,9776038,10849441,9884153,12418535,12455473,11707931,9546392,12559795,10511472,9002605,6560176,7943847,8712467,7224810,6621119,7116640,7007062,5631954,5121895,6035719,5525590,5598098,4899976,7678331,9265439,8651074,7034820,7061783,6769429,7806823,6410469,6240135,7028171,7026164,6209425,5367827,3916286,3471451,4093884,3539945,3028884],"regionShare":{"Pacific Coast":100}},{"id":"lobster","label":"Lobster","serves":["whole-lobster"],"species":["LOBSTER, AMERICAN","LOBSTER, BANDED SPINY","LOBSTER, CALIFORNIA SPINY","LOBSTER, CARIBBEAN SPINY","LOBSTER, SPANISH **","LOBSTER, SPINY","LOBSTER, SPOTTED SPINY","LOBSTERS, SLIPPER **"],"species_count":8,"latest_year":2024,"wild":776380514,"lb":119046697,"avg5":722902915,"conf_rows":7,"minimal":false,"span":"1950..2024","wild_note":"American (Maine) + spiny lobster roll up; both wild.","import":641565871,"import_slug":"whole-lobster","import_name":"Whole lobster","ratio":0.826,"peakY":2021,"peakV":985475830,"pctPeak":79,"upl":6.52,"series":[8922868,10268695,11296406,11622354,11323701,12264558,13116266,13012273,14444724,15727640,15585835,15824359,16506981,18558327,21727759,25576754,25144373,25509466,30813292,35297207,39790367,43416630,52300861,53670350,57054777,61711104,61174031,68956668,86122231,88761269,91584520,106660298,117448438,121960394,141828196,136422701,139042162,168575381,171277558,179528804,183467448,198555336,189246817,182069088,241820614,250875286,277965651,308823876,280488031,364638530,346788955,271108234,319665031,307777447,410673242,440678080,439958296,400054744,353200884,329241272,451020549,474705509,469451606,525431524,643784019,685756949,728362720,615066044,691961798,682716847,569265111,985475830,584274377,699118744,776380514],"regionShare":{"New England":92.3,"Pacific Coast":2.7,"Gulf":4.1,"Middle Atlantic":0.4,"South Atlantic":0.5,"Hawaii":0}},{"id":"crab","label":"Crab","serves":["whole-crab"],"species":["CRAB, ATLANTIC ROCK","CRAB, ATLANTIC SAND","CRAB, BLUE","CRAB, BLUE LAND","CRAB, DUNGENESS","CRAB, FALSE ARROW","CRAB, FLORIDA STONE","CRAB, FURCATE SPIDER","CRAB, GOLDEN DEEPSEA","CRAB, GREEN","CRAB, GREEN CLINGING","CRAB, HERMIT, GIANT","CRAB, HERMIT, ORANGECLAW","CRAB, HERMIT, POLKADOTTED","CRAB, HERMIT, STAREYE","CRAB, HERMIT, THINSTRIPE","CRAB, HERMIT, TRICOLOR","CRAB, HORSESHOE","CRAB, JONAH","CRAB, KING **","CRAB, LADY","CRAB, MITHRACULUS RUBER","CRAB, NIMBLE SPRAY","CRAB, NORTHERN STONE","CRAB, PAGURISTES ERYTHROPS","CRAB, PAGURISTES PUNCTICEPS","CRAB, PORTLY SPIDER","CRAB, RED DEEPSEA","CRAB, RED PACIFIC","CRAB, RED ROCK","CRAB, RED-RIDGED CLINGING","CRAB, REDFINGER RUBBLE","CRAB, SNOW","CRAB, SNOW/TANNER **","CRAB, SOUTHERN TANNER","CRAB, SPOTTED PORCELAIN","CRAB, YELLOWLINE ARROW","CRABS, BOX **","CRABS, BRACHYURA **","CRABS, CANCER (GENUS) **","CRABS, CORAL SPIDER **","CRABS, DECAPODA (ORDER) **","CRABS, FIDDLER **","CRABS, HEMIGRAPSUS **","CRABS, HERMIT, PAGUROIDEA (SUPERFAMILY) **","CRABS, HERMIT, PAGURUS (GENUS) **","CRABS, HORSESHOE **","CRABS, LAND HERMIT **","CRABS, LIBINIA **","CRABS, MAJOIDEA **","CRABS, MITHRACULUS **","CRABS, PORCELAIN **","CRABS, SAND **","CRABS, SPIDER **","CRABS, STONE **"],"species_count":55,"latest_year":2024,"wild":694411297,"lb":219633989,"avg5":720370349,"conf_rows":46,"minimal":false,"span":"1950..2024","wild_note":"Blue, dungeness, king, snow/tanner and more roll up; all wild.","import":1554237243,"import_slug":"whole-crab","import_name":"Whole crab","ratio":2.238,"peakY":2021,"peakV":938188335,"pctPeak":74,"upl":3.16,"series":[9236135,9771875,9059427,10200456,9709646,10098198,11721968,12202570,12389823,14799230,17060311,17326008,18686385,21339140,23800654,30777259,33021613,32300070,44393242,43058223,39138401,46094357,66388440,87633472,85238362,80911747,134408009,204674774,275669718,295481946,314155766,267406636,283780175,243566417,194761690,204500517,276195040,341579703,394592946,421598210,516614260,452350420,466545796,525300041,538701453,525502046,438821018,421176497,466878241,541105334,414295147,380491730,397371341,485628132,454987564,418989947,417777201,479366763,541005721,513493136,594501593,692311060,718979456,712181444,702070370,657152199,709502502,635026657,675220067,650755034,667742343,938188335,596967027,704542744,694411297],"regionShare":{"New England":1.5,"Alaska":22.1,"Pacific Coast":38.4,"Gulf":18.8,"Middle Atlantic":12.2,"South Atlantic":7.1,"Hawaii":0}},{"id":"scallop","label":"Scallop","serves":["scallops"],"species":["SCALLOP, ATLANTIC CALICO","SCALLOP, BAY","SCALLOP, ICELAND","SCALLOP, LIONS-PAW","SCALLOP, SEA","SCALLOP, WEATHERVANE","SCALLOPS **"],"species_count":7,"latest_year":2024,"wild":334043253,"lb":21336038,"avg5":468166265,"conf_rows":4,"minimal":false,"span":"1950..2024","wild_note":"Sea + bay scallop, wild-harvested.","import":21485842,"import_slug":"scallops","import_name":"Scallops","ratio":0.064,"peakY":2021,"peakV":671003148,"pctPeak":50,"upl":15.66,"series":[10481326,9671914,12177706,11885034,8809595,12589621,11813657,11634844,10365297,12964567,10785134,11762571,12096354,10333169,10912161,14977655,9666855,9136086,16709775,12251360,12401219,13630342,17489305,13197212,12646506,22985588,39614048,46968771,87522568,107898222,120555530,136593637,100787924,131513355,125569131,93045628,103799991,144868204,141010640,143362088,158585405,159706905,165106135,111344083,97298835,93620662,103681703,95566215,81481285,126830079,164614646,174084062,203494364,230940669,319860064,436477092,387576132,387660387,373763452,377628987,458721225,588275139,564925424,471598403,432297434,444155472,490106764,516110581,541488519,574576379,488365713,671003148,484137645,363281565,334043253],"regionShare":{"New England":86,"Alaska":0,"Gulf":0,"Middle Atlantic":13.9,"South Atlantic":0}},{"id":"clam","label":"Clam","serves":["clams"],"species":["CLAM, ANGELWING","CLAM, ARK, BLOOD","CLAM, BOX, JEWEL **","CLAM, CALIFORNIA JACKKNIFE","CLAM, FILE, SPINY","CLAM, GEODUCK","CLAM, MANILA","CLAM, PACIFIC GEODUCK","CLAM, PACIFIC LITTLENECK","CLAM, PACIFIC RAZOR","CLAM, PACIFIC, GAPER **","CLAM, QUAHOG, FALSE","CLAM, QUAHOG, NORTHERN","CLAM, QUAHOG, OCEAN","CLAM, QUAHOG, SOUTHERN","CLAM, RANGIA, ATLANTIC","CLAM, RAZOR, ATLANTIC","CLAM, SOFT","CLAM, STOUT TAGELUS (STUBBY RAZOR/BAMBOO)","CLAM, SURF, ARCTIC","CLAM, SURF, ATLANTIC","CLAM, VARIABLE COQUINA","CLAM, VARNISH","CLAM, VENUS, SUNRAY","CLAMS **","CLAMS, PENSHELL **","CLAMS, PITAR **","CLAMS, QUAHOG, MERCENARIA **"],"species_count":28,"latest_year":2024,"wild":171537643,"lb":31767271,"avg5":199727004,"conf_rows":17,"minimal":false,"span":"1950..2024","wild_note":"Wild clam landings; note some clams are also aquacultured (a seam on the domestic side too).","import":2605174,"import_slug":"clams","import_name":"Clams","ratio":0.015,"peakY":2021,"peakV":241931593,"pctPeak":71,"upl":5.4,"series":[10722099,11500633,11687137,11449472,9870778,9939701,10717205,11238288,10513657,11479730,12015077,11640821,11735214,14188973,14877674,16722505,18541790,20473183,20717802,25194390,28741568,31267720,33174070,34601164,41364766,43378512,64312469,74611767,72641683,81531707,94458111,94571925,101167123,94438687,118787563,124290445,132896630,130340402,125156961,139343121,136378332,127602612,130968510,150779897,142382544,148836786,142440968,154357842,142985961,144764940,154296456,167263789,167976371,167731567,165842642,174133740,198658006,189131973,183402305,183564914,174641636,204995152,199561429,215030069,203678264,201043386,225621597,213368363,211831467,215779051,175101108,241931593,216237165,193827510,171537643],"regionShare":{"New England":26.7,"Alaska":1.8,"Pacific Coast":38.3,"Gulf":0.2,"Middle Atlantic":32.4,"South Atlantic":0.7}},{"id":"squid","label":"Squid","serves":["squid"],"species":["SQUID","SQUID, ATLANTIC BRIEF","SQUID, CALIFORNIA MARKET","SQUID, JUMBO","SQUID, LONGFIN LOLIGO","SQUID, SHORTFIN ILLEX","SQUIDS **","SQUIDS, LOLIGINIDAE **"],"species_count":8,"latest_year":2024,"wild":106444723,"lb":162981523,"avg5":107260773,"conf_rows":9,"minimal":false,"span":"1950..2024","wild_note":"Pacific (market) + Atlantic (Loligo/Illex) squid, wild.","import":243728609,"import_slug":"squid","import_name":"Squid","ratio":2.29,"peakY":2022,"peakV":155345061,"pctPeak":69,"upl":0.65,"series":[276777,611646,342728,488501,330077,411579,506827,451598,354527,574255,338529,486989,471650,529193,509186,509799,677226,663375,801408,878268,955312,1124506,965992,1226865,2451889,1669708,2351940,3049648,4362470,8412133,6221776,7633892,7687526,11015716,7846747,11517630,15154806,16463641,23874366,33740217,26142125,36693193,36512646,49251717,57741527,54976889,50542192,53785349,44518556,67865393,55168575,39938386,43541723,49418441,53165479,67249913,61280643,54523964,54272900,80722368,98157479,110197165,99909162,101511909,102868772,57354615,97690515,116004174,100971047,86640688,81879951,117147208,155345061,75486924,106444723],"regionShare":{"New England":25.1,"Pacific Coast":64,"Gulf":0,"Middle Atlantic":10.8,"South Atlantic":0}},{"id":"octopus","label":"Octopus","serves":["octopus"],"species":["OCTOPUS","OCTOPUS, ATLANTIC PYGMY","OCTOPUS, ATLANTIC WHITE-SPOTTED","OCTOPUS, CARIBBEAN REEF","OCTOPUS, COMMON","OCTOPUSES **"],"species_count":6,"latest_year":2024,"wild":309234,"lb":491730,"avg5":217293,"conf_rows":7,"minimal":true,"span":"1950..2024","wild_note":"US wild octopus landing is tiny (~$0.3M) — octopus on menus is overwhelmingly imported; degrades toward absence.","import":15776654,"import_slug":"octopus","import_name":"Octopus","ratio":51.018,"peakY":1992,"peakV":876723,"pctPeak":35,"upl":0.63,"series":[5728,3640,3495,3886,4520,4135,2402,4910,13043,11684,4102,3514,15974,12941,7560,12789,34808,5282,3920,3779,3428,6799,6157,14469,23956,37059,29074,16288,36877,99375,94983,68201,77017,44646,46808,52336,74756,105653,214024,147121,121190,200015,876723,298883,116294,101008,152251,383539,261541,55691,49798,154532,180255,162609,112502,103130,83579,390377,116072,390997,417428,538166,607405,500569,825011,691277,439425,479302,490689,506424,224953,130105,266611,155561,309234],"regionShare":{"Alaska":87.8,"Pacific Coast":1.1,"Gulf":1.7,"South Atlantic":0.2,"Hawaii":9.2}},{"id":"snapper","label":"Snapper","serves":["snapper"],"species":["SNAPPER, BINGHAMS","SNAPPER, BLACK","SNAPPER, BLACKFIN","SNAPPER, BLACKTAIL","SNAPPER, BLUESTRIPE","SNAPPER, CARIBBEAN RED","SNAPPER, CUBERA","SNAPPER, DOG","SNAPPER, GLASSEYE","SNAPPER, GRAY","SNAPPER, IRONJAW","SNAPPER, LANE","SNAPPER, MAHOGANY","SNAPPER, MUTTON","SNAPPER, PINK","SNAPPER, QUEEN","SNAPPER, RED","SNAPPER, RUBY","SNAPPER, SILK","SNAPPER, VERMILION","SNAPPER, VON SIEBOLDS","SNAPPER, YELLOWTAIL","SNAPPERS, LUTJANIDAE (FAMILY) **"],"species_count":23,"latest_year":2024,"wild":59688126,"lb":11615512,"avg5":52796668,"conf_rows":23,"minimal":false,"span":"1950..2024","wild_note":"Red snapper + the wider Lutjanidae group roll up (the import code is broad too).","import":205648874,"import_slug":"snapper","import_name":"Snapper","ratio":3.445,"peakY":2023,"peakV":59820897,"pctPeak":100,"upl":5.14,"series":[1849573,2046389,2312130,2430183,2494260,2574628,2449041,2680956,2917919,3011503,3045670,3516679,3508728,3836568,4457864,4551321,4625433,4693099,4745791,5070726,5071554,5333526,6095710,6561909,7553524,7755773,8333319,8243332,9088119,10237016,11496739,15012841,17519625,17822454,16804873,18650071,19840174,20943143,21755959,23638613,23270640,21409799,19486203,23457476,21880566,20465214,20356941,21913160,21705783,23300424,24430695,23041142,22889832,22023313,23779606,22645698,24444401,22422641,23964422,26309415,24071210,29891743,31521509,35895471,40235779,43474720,43168414,47356870,45530302,49839890,43874321,46868083,53731913,59820897,59688126],"regionShare":{"New England":0,"Gulf":90.4,"South Atlantic":7.9,"Hawaii":1.6}},{"id":"grouper","label":"Grouper","serves":["grouper"],"species":["GROUPER, BLACK","GROUPER, CONEY","GROUPER, GAG","GROUPER, GOLIATH","GROUPER, HAWAIIAN","GROUPER, MARBLED","GROUPER, MISTY","GROUPER, NASSAU","GROUPER, PEACOCK","GROUPER, RED","GROUPER, SNOWY","GROUPER, TIGER","GROUPER, WARSAW","GROUPER, YELLOWEDGE","GROUPER, YELLOWFIN","GROUPER, YELLOWMOUTH","GROUPERS, SERRANIDAE (FAMILY) **"],"species_count":17,"latest_year":2024,"wild":22694263,"lb":3668720,"avg5":24379606,"conf_rows":27,"minimal":false,"span":"1950..2024","wild_note":"Black/gag/red and the wider Epinephelidae group roll up.","import":62002605,"import_slug":"grouper","import_name":"Grouper","ratio":2.732,"peakY":2014,"peakV":32040605,"pctPeak":71,"upl":6.19,"series":[685878,884213,878593,676073,756428,616641,709779,812297,597161,812438,823852,789294,903550,839162,1019066,1117819,1110266,1133901,1371389,1659132,1574623,1556658,2039150,1899300,2576870,3364497,3834064,4040842,5201451,7114977,8269137,12945359,14881999,14705970,16639445,19930818,23198643,23937572,20936883,25079682,21649194,20281379,18259263,22586528,20767426,19435264,19209005,20919190,21679159,26011798,27054545,28920076,27613890,27293692,28714397,27780414,26364462,25038711,27086656,20571265,16642541,22772331,26150054,26399801,32040605,29169283,29245354,23412540,21025976,22744678,22323653,26525428,25977609,24377075,22694263],"regionShare":{"Gulf":93.3,"South Atlantic":6.6,"Hawaii":0.1}},{"id":"mahi","label":"Mahi-mahi (dolphinfish)","serves":["mahi-mahi"],"species":["DOLPHINFISH","DOLPHINFISH **"],"species_count":2,"latest_year":2024,"wild":2689772,"lb":646105,"avg5":3600825,"conf_rows":4,"minimal":true,"span":"1950..2024","wild_note":"AFS common name is dolphinfish. US wild landing is small (~$2.7M) — mahi is largely imported; a wide seam.","import":43192804,"import_slug":"mahi-mahi","import_name":"Mahi-mahi","ratio":16.058,"peakY":2014,"peakV":8063903,"pctPeak":33,"upl":4.16,"series":[590,2679,2630,1975,3636,721,567,2396,1881,2083,1439,2292,1813,825,2475,3182,7217,19010,11943,7825,11628,9656,14813,20643,21973,33589,37904,52134,68302,60130,103283,100750,241672,259984,404754,447659,689646,756593,912502,1692968,1783090,2790085,1276893,1631609,2213039,3628193,2390936,2395817,1406200,1913446,1652093,2986515,3478761,4250791,6607569,4686674,4875382,5751753,5224667,5522320,4784432,6507133,7944149,6303566,8063903,7824395,7543130,5672997,5177563,5799459,2919844,4292137,4314480,3787892,2689772],"regionShare":{"New England":0.3,"Pacific Coast":1.5,"Gulf":1.7,"Middle Atlantic":1.7,"South Atlantic":5.6,"Hawaii":89.3}},{"id":"tuna","label":"Tuna (all)","serves":["tuna-loin"],"species":["TUNA, ALBACORE","TUNA, BIGEYE","TUNA, BLACK SKIPJACK","TUNA, BLACKFIN","TUNA, BLUEFIN","TUNA, BLUEFIN PACIFIC","TUNA, KAWAKAWA","TUNA, LITTLE TUNNY","TUNA, SKIPJACK","TUNA, YELLOWFIN","TUNAS **"],"species_count":11,"latest_year":2024,"wild":134204896,"lb":39836647,"avg5":143168114,"conf_rows":36,"minimal":false,"span":"1950..2024","wild_note":"Yellowfin/bigeye/albacore/bluefin/skipjack roll up; a loin is a cut of the same landing.","import":435883813,"import_slug":"tuna-loin","import_name":"Tuna loin","ratio":3.248,"peakY":1980,"peakV":221873649,"pctPeak":60,"upl":3.37,"series":[61341537,47807256,49235613,46852105,53018521,39494214,43424718,37528033,43188565,35202631,35837679,40363491,43195177,38417742,37491735,39072078,42733059,42201067,45202461,52682985,72443251,71092249,88267101,86925447,115052145,102434649,145056677,126495169,167280514,151238380,221873649,206953166,139566793,134831406,113241511,54858821,58229617,99671937,123809657,108851162,106229043,74962146,89608213,95601866,104293941,98904535,111059137,110197499,94898662,90848323,99277445,85925040,84825081,86854750,89208107,86199770,85663465,93099396,106783601,95072482,107100610,135972515,163950996,146195366,134155085,139977296,157051189,153461960,148158142,142214846,118302386,153407119,172254378,137671790,134204896],"regionShare":{"New England":27.7,"Pacific Coast":55.9,"Gulf":0.7,"Middle Atlantic":3,"South Atlantic":8.2,"Hawaii":4.5}},{"id":"ahi-tuna","label":"Ahi tuna (yellowfin + bigeye)","serves":["ahi-tuna"],"species":["TUNA, BIGEYE","TUNA, YELLOWFIN"],"species_count":2,"latest_year":2024,"wild":102373732,"lb":25389362,"avg5":106863214,"conf_rows":10,"minimal":false,"span":"1950..2024","wild_note":"Ahi = yellowfin + bigeye specifically — matched as that pair, not the whole tuna group.","import":257819287,"import_slug":"ahi-tuna","import_name":"Ahi tuna (fresh)","ratio":2.518,"peakY":2021,"peakV":119604711,"pctPeak":86,"upl":4.03,"series":[28823213,25005851,28338201,21313013,20576081,18868987,20410208,18274493,16805281,14099647,23566388,24438767,18756392,14585763,19885519,21857788,23692299,19407195,23870176,33202200,42752841,32663239,54669445,58034757,72794045,63201620,84237876,78733706,82467200,89523577,109961335,104999342,79054529,68485887,48442862,25819760,40828153,68436596,80686622,74179027,69321030,46738192,53436470,53744223,55871833,54680274,51405737,55667181,49696439,46481536,55420739,41294639,50940267,48628678,52015279,56432629,55810770,65555194,69945721,57985685,66261686,77906553,101194048,94466885,90499252,98964434,102670601,106302730,109202844,101534361,82251332,119604711,117999597,112086698,102373732],"regionShare":{"New England":1.1,"Pacific Coast":2.3,"Gulf":2.3,"Middle Atlantic":1.1,"South Atlantic":2.8,"Hawaii":90.4}},{"id":"trout","label":"Trout (wild)","serves":["whole-trout"],"species":["TROUT, BROOK","TROUT, BROWN","TROUT, LAKE","TROUT, RAINBOW"],"species_count":4,"latest_year":2024,"wild":124217,"lb":160620,"avg5":117861,"conf_rows":2,"minimal":true,"span":"1950..2024","wild_note":"US wild trout landing is tiny (~$0.1M, mostly lake trout). Menu trout is overwhelmingly farmed (NASS aquaculture) — degrades toward absence on the wild side.","import":52131098,"import_slug":"whole-trout","import_name":"Whole trout","ratio":419.678,"peakY":1988,"peakV":3456679,"pctPeak":4,"upl":0.77,"series":[172940,266532,305352,386665,332390,286261,226988,204083,207547,172756,249974,243141,306181,395944,124641,136130,159851,174855,191284,215428,191043,446756,474011,410109,320522,1240833,1199395,514559,1205684,1139660,1734223,1261793,1166135,1169847,1299564,1369145,2545265,3040646,3456679,1738304,1398345,937445,1162303,821788,797554,639197,766907,640950,732496,740678,748005,600158,382687,384737,566339,554659,703191,893581,876272,927410,1040841,1335215,1250070,1553617,1609112,1836694,1731922,1306285,1196344,68436,156882,60073,166435,81699,124217],"regionShare":{"Pacific Coast":100}},{"id":"anchovy","label":"Anchovy","serves":["anchovy"],"species":["ANCHOVY, BAY","ANCHOVY, NORTHERN"],"species_count":2,"latest_year":2024,"wild":689141,"lb":9864579,"avg5":841384,"conf_rows":1,"minimal":true,"span":"1981..2024","wild_note":"Pacific/northern anchovy, wild (reduction + bait fishery); small food landing.","import":41242825,"import_slug":"anchovy","import_name":"Anchovies","ratio":59.847,"peakY":1981,"peakV":3273442,"pctPeak":21,"upl":0.07,"series":[3273442,2164778,417296,405087,238550,234517,309471,417078,697596,625228,651311,223735,477913,550318,368175,700432,811582,245134,959397,1445486,1433052,621582,341915,755318,1091289,1297419,1136655,1657489,505651,462741,685788,371150,1064937,1621048,2006095,1216871,853729,2016452,1291932,777494,1494613,638461,607211,689141],"regionShare":{"Pacific Coast":100}},{"id":"sardine","label":"Sardine","serves":["sardine"],"species":["SARDINE, PACIFIC","SARDINE, SCALED","SARDINE, SPANISH","SARDINES, SCALY ** **"],"species_count":4,"latest_year":2024,"wild":972836,"lb":3684285,"avg5":3451372,"conf_rows":2,"minimal":true,"span":"1950..2024","wild_note":"Pacific sardine / pilchard, wild; landings swing with the stock's boom-bust cycle.","import":217873287,"import_slug":"sardine","import_name":"Sardines","ratio":223.957,"peakY":2012,"peakV":21513810,"pctPeak":5,"upl":0.26,"series":[12140322,7247606,523120,527703,3700540,3069453,1673501,1796457,5441507,1474953,1186197,1147214,491234,298879,500142,130304,156420,35622,23533,27788,122848,76769,63612,35973,60143,25895,119684,71154,193215,223692,250376,285872,252860,292762,313381,378232,601760,815460,488108,453324,516615,1209019,2190342,1820325,1845866,3640505,3406927,4807888,3881084,5355509,8178452,9517579,10824395,7553743,10128211,10078693,9217526,13274951,15029183,12714610,12632263,7879534,21513810,15302950,9153080,1476501,451257,329337,627352,2069503,2780191,10193624,1979975,1330232,972836],"regionShare":{"Pacific Coast":68.6,"Gulf":28.8,"South Atlantic":2.6}}]}</script>
+<script>
+(function(){
+  "use strict";
+  var DATA = JSON.parse(document.getElementById("landings-data").textContent);
+  var GROUPS = DATA.groups, META = DATA.meta, REGIONS = DATA.regions;
+  var Y0 = META.year0, YN = META.yearN;
+  var reduce = matchMedia("(prefers-reduced-motion:reduce)").matches;
+
+  // ---- helpers ----
+  function usd(n){
+    if(n==null) return "—";
+    if(n>=1e9) return "$"+(n/1e9).toFixed(2)+"B";
+    if(n>=1e6) return "$"+(n/1e6).toFixed(1)+"M";
+    if(n>=1e3) return "$"+(n/1e3).toFixed(0)+"K";
+    return "$"+n;
+  }
+  function ratioStr(r){ if(r==null) return "—"; return r>=10? r.toFixed(0)+"×" : r.toFixed(2)+"×"; }
+  function el(tag,attrs,txt){
+    var e=document.createElementNS("http://www.w3.org/2000/svg",tag);
+    if(attrs) for(var k in attrs) e.setAttribute(k,attrs[k]);
+    if(txt!=null) e.textContent=txt;
+    return e;
+  }
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+  // clear an SVG's drawn content while preserving its <title>/<desc> accessibility nodes
+  function clearDraw(svg){
+    var kids=[].slice.call(svg.childNodes);
+    for(var i=0;i<kids.length;i++){ var t=kids[i].tagName; if(t!=="title"&&t!=="desc") svg.removeChild(kids[i]); }
+  }
+  var side = function(r){ return r<1 ? "own":"abroad"; };
+
+  // ---- state ----
+  var state = { q:"", sort:"ratio-desc", region:null };
+
+  function filtered(){
+    var q = state.q.trim().toLowerCase();
+    var list = GROUPS.filter(function(g){
+      if(q && g.label.toLowerCase().indexOf(q)<0 && g.id.indexOf(q)<0) return false;
+      if(state.region && !(g.regionShare && g.regionShare[state.region])) return false;
+      return true;
+    });
+    var s = state.sort;
+    list.sort(function(a,b){
+      if(s==="ratio-desc") return b.ratio-a.ratio;
+      if(s==="ratio-asc") return a.ratio-b.ratio;
+      if(s==="wild-desc") return b.wild-a.wild;
+      if(s==="import-desc") return b.import-a.import;
+      if(s==="peak-asc") return a.pctPeak-b.pctPeak;
+      return 0;
+    });
+    return list;
+  }
+
+  // ================= LADDER =================
+  var LAD = document.getElementById("ladder");
+  // log-dollar axis
+  var allVals = []; GROUPS.forEach(function(g){ allVals.push(g.wild, g.import); });
+  var vMin = Math.max(5e4, Math.min.apply(null, allVals.filter(function(v){return v>0;})));
+  var vMax = Math.max.apply(null, allVals);
+  var lMin = Math.floor(Math.log10(vMin)), lMax = Math.ceil(Math.log10(vMax));
+  function xForVal(padL,padR,W){ return function(v){ var t=(Math.log10(Math.max(v,Math.pow(10,lMin)))-lMin)/(lMax-lMin); return padL + t*(W-padL-padR); }; }
+
+  function drawLadder(){
+    clearDraw(LAD);
+    var list = filtered();
+    var W=960, padL=150, padR=118, top=30, rowH=Math.max(30, Math.min(40, 640/Math.max(list.length,1))), gap=6;
+    var H = top + list.length*(rowH+gap) + 26;
+    LAD.setAttribute("viewBox","0 0 "+W+" "+H); LAD.setAttribute("height",H);
+    var X = xForVal(padL,padR,W);
+    var axisTop=top-8, axisBot=top+list.length*(rowH+gap);
+
+    // gridlines + ticks at each power of ten
+    for(var p=lMin;p<=lMax;p++){
+      var gx=X(Math.pow(10,p));
+      LAD.appendChild(el("line",{x1:gx,x2:gx,y1:axisTop,y2:axisBot,class:"gridline","aria-hidden":"true"}));
+      var lab = p>=9? "$"+Math.pow(10,p-9)+"B" : p>=6? "$"+Math.pow(10,p-6)+"M" : "$"+Math.pow(10,p-3)+"K";
+      LAD.appendChild(el("text",{x:gx,y:axisBot+18,class:"tk","text-anchor":"middle","aria-hidden":"true"},lab));
+    }
+
+    // find pivot crossover position in a ratio-sorted list; else skip global pivot
+    var isRatioSort = state.sort==="ratio-desc"||state.sort==="ratio-asc";
+    var crossIdx=-1;
+    if(isRatioSort){
+      for(var i=0;i<list.length;i++){
+        var prev = i===0? null : list[i-1];
+        if(list[i].ratio>=1 && (!prev || prev.ratio<1) && state.sort==="ratio-asc"){ crossIdx=i; break; }
+        if(list[i].ratio<1 && (!prev || prev.ratio>=1) && state.sort==="ratio-desc"){ crossIdx=i; break; }
+      }
+    }
+
+    list.forEach(function(g,i){
+      var y = top + i*(rowH+gap);
+      var gEl = el("g",{class:"rung-hit",tabindex:"0",role:"button",
+        "aria-label":g.label+": wild landings "+usd(g.wild)+", import value "+usd(g.import)+", ratio "+ratioStr(g.ratio)+", "+(g.ratio<1?"America lands more than it imports":"imports exceed domestic landings by "+ratioStr(g.ratio))+(g.minimal?", negligible US wild fishery":"")+". Activate to open its walk-through."});
+      gEl.setAttribute("data-id",g.id);
+      // focus rect
+      gEl.appendChild(el("rect",{class:"rung-focus",x:2,y:y-1,width:W-4,height:rowH+2,rx:7,fill:"transparent"}));
+      // label + ratio
+      gEl.appendChild(el("text",{x:padL-10,y:y+rowH*0.42,class:"rlabel","text-anchor":"end"},g.label));
+      var rt = el("text",{x:padL-10,y:y+rowH*0.86,class:"rval","text-anchor":"end"},ratioStr(g.ratio)+" "+(g.ratio<1?"◄ own":"► abroad"));
+      rt.setAttribute("fill", g.ratio<1? "var(--teal-ink)":"var(--rust)");
+      gEl.appendChild(rt);
+      // bars: wild (teal) upper, import (rust) lower
+      var bh=Math.max(6,(rowH-8)/2-1), x0=X(Math.pow(10,lMin));
+      var wx=X(g.wild), ix=X(g.import);
+      gEl.appendChild(el("rect",{class:"bar-wild",x:x0,y:y+2,width:Math.max(2,wx-x0),height:bh,rx:2}));
+      gEl.appendChild(el("rect",{class:"bar-imp",x:x0,y:y+2+bh+2,width:Math.max(2,ix-x0),height:bh,rx:2}));
+      // tip glyphs (shape channel, not color-alone)
+      gEl.appendChild(el("text",{x:wx+4,y:y+2+bh-1,fill:"var(--teal-ink)",font:"700 11px "+"var(--font-mono)"},"▲"));
+      gEl.appendChild(el("text",{x:ix+4,y:y+2+bh*2+3,fill:"var(--rust)",font:"700 10px var(--font-mono)"},"●"));
+      // record-spark gutter
+      drawSpark(gEl, g, W-padR+8, y+2, padR-16, rowH-4);
+      // interactions
+      gEl.addEventListener("click",function(){ openDetail(g.id, gEl); });
+      gEl.addEventListener("keydown",function(ev){
+        if(ev.key==="Enter"||ev.key===" "){ ev.preventDefault(); openDetail(g.id, gEl); }
+        else if(ev.key==="ArrowDown"||ev.key==="ArrowRight"){ ev.preventDefault(); focusRung(i+1); }
+        else if(ev.key==="ArrowUp"||ev.key==="ArrowLeft"){ ev.preventDefault(); focusRung(i-1); }
+        else if(ev.key==="Home"){ ev.preventDefault(); focusRung(0); }
+        else if(ev.key==="End"){ ev.preventDefault(); focusRung(list.length-1); }
+      });
+      LAD.appendChild(gEl);
+    });
+
+    // pivot line + labels
+    if(crossIdx>=0){
+      var py = top + crossIdx*(rowH+gap) - gap/2 - 1;
+      LAD.appendChild(el("line",{x1:padL-2,x2:W-padR,y1:py,y2:py,class:"pivot"}));
+      LAD.appendChild(el("text",{x:padL+6,y:py-5,class:"pivot-lab"},"1.0× — the seam"));
+      LAD.appendChild(el("text",{x:padL+6,y:top+18,class:"side-lab side-own"},"◄ America lands its own"));
+      LAD.appendChild(el("text",{x:W-padR-6,y:axisBot-6,class:"side-lab side-abroad","text-anchor":"end"},"the plate lives abroad ►"));
+    }
+    // animate in
+    if(!reduce){
+      var rects=LAD.querySelectorAll("rect.bar-wild,rect.bar-imp");
+      rects.forEach(function(r,k){ var w=r.getAttribute("width"); r.setAttribute("width",0); r.style.transition="width .5s ease "+(k*10)+"ms"; requestAnimationFrame(function(){ requestAnimationFrame(function(){ r.setAttribute("width",w); }); }); });
+    }
+  }
+  function focusRung(i){
+    var rungs=LAD.querySelectorAll("g.rung-hit");
+    if(i<0) i=0; if(i>=rungs.length) i=rungs.length-1;
+    if(rungs[i]) rungs[i].focus();
+  }
+  function drawSpark(parent, g, x, y, w, h){
+    var s=g.series, n=s.length;
+    var vals=s.filter(function(v){return v!=null;});
+    var mx=Math.max.apply(null,vals), mn=0;
+    var pts=[], px=function(i){return x + i/(n-1)*w;}, py=function(v){return y+h - (v-mn)/(mx-mn)*h;};
+    var d="", started=false;
+    for(var i=0;i<n;i++){ if(s[i]==null){ started=false; continue; } d+=(started?"L":"M")+px(i).toFixed(1)+" "+py(s[i]).toFixed(1)+" "; started=true; }
+    var gg=el("g",{"aria-hidden":"true"});
+    gg.appendChild(el("path",{class:"spark-line",d:d}));
+    // peak dot
+    var peakI = s.indexOf(g.peakV); if(peakI<0){ for(var j=0;j<n;j++) if(s[j]===g.peakV){peakI=j;break;} }
+    if(peakI>=0) gg.appendChild(el("circle",{class:"spark-peak",cx:px(peakI),cy:py(g.peakV),r:2.4}));
+    // 2021 caret
+    var i21=2021-Y0; if(i21>=0&&i21<n&&s[i21]!=null) gg.appendChild(el("path",{class:"spark-caret",d:"M"+px(i21)+" "+(y+h+2)+" l-3 4 l6 0 z"}));
+    // % of peak label
+    gg.appendChild(el("text",{x:x+w,y:y+9,class:"rval","text-anchor":"end",fill:"var(--muted)"},g.pctPeak+"% of peak"));
+    parent.appendChild(gg);
+  }
+
+  // ================= REGION RIBBON =================
+  function drawRibbon(){
+    var R=document.getElementById("ribbon");
+    clearDraw(R);
+    var shares=DATA.natRegionShare, W=960, x=0, h=40, y=16, pad=2;
+    var segs=REGIONS.filter(function(r){return shares[r];});
+    // Alaska green + South Atlantic orange darkened so white segment labels clear WCAG AA (≥4.5:1)
+    var pal=["#2f7d78","#3f7d49","#8a6216","#a8442d","#6a5acd","#a85b18","#3a7ca5","#777"];
+    var desc="2024 landed value by region: "+segs.map(function(r){return r+" "+shares[r]+"%";}).join(", ")+". New England and Alaska together carry 57 percent.";
+    document.getElementById("rib-d").textContent=desc;
+    segs.forEach(function(r,i){
+      var w=shares[r]/100*W;
+      var b=el("g",{class:"ribbon-seg",tabindex:"0",role:"button","aria-pressed":state.region===r?"true":"false",
+        "aria-label":r+", "+shares[r]+" percent of 2024 landed value. "+(state.region===r?"Currently filtering the ladder to this region. Activate to clear.":"Activate to filter the ladder to groups landed here.")});
+      var rect=el("rect",{x:x+pad,y:y,width:Math.max(1,w-pad*2),height:h,rx:4,fill:pal[i%pal.length]});
+      if(state.region===r) rect.setAttribute("stroke","var(--ink)"), rect.setAttribute("stroke-width","2.5");
+      b.appendChild(rect);
+      if(w>62){
+        b.appendChild(el("text",{x:x+w/2,y:y+16,"text-anchor":"middle",fill:"#fff",font:"600 11px var(--font-mono)"},r.replace("Atlantic","Atl.")));
+        b.appendChild(el("text",{x:x+w/2,y:y+31,"text-anchor":"middle",fill:"#fff",font:"700 12px var(--font-mono)"},shares[r]+"%"));
+      }
+      b.addEventListener("click",function(){ toggleRegion(r); });
+      b.addEventListener("keydown",function(ev){ if(ev.key==="Enter"||ev.key===" "){ ev.preventDefault(); toggleRegion(r);} });
+      R.appendChild(b);
+      x+=w;
+    });
+    R.appendChild(el("text",{x:0,y:y+h+18,class:"tk"},"Segments are buttons · select one to filter the ladder"));
+  }
+  function toggleRegion(r){
+    state.region = state.region===r? null : r;
+    syncChips(); syncRegionSelect(); render(); announce();
+    drawRibbon();
+  }
+
+  // ================= CONFIDENTIALITY RIBBON =================
+  function drawConf(){
+    var C=document.getElementById("confrib");
+    clearDraw(C);
+    var rows=DATA.confRibbon, W=960, h=52, y=10, n=rows.length, bw=W/n;
+    var maxSup=Math.max.apply(null,rows.map(function(r){return r[2];}));
+    rows.forEach(function(r,i){
+      var t=r[2]/30; if(t>1)t=1; // shade scaled to ~30% ceiling
+      var col = "rgba(168,68,45,"+(0.12+t*0.8).toFixed(3)+")"; // rust ink at increasing opacity
+      C.appendChild(el("rect",{x:i*bw,y:y,width:Math.max(0.6,bw-0.3),height:h,fill: r[2]===0? "var(--surface-2)":col,"aria-hidden":"true"}));
+    });
+    // decade ticks
+    [1950,1970,1990,2007,2024].forEach(function(yr){
+      var i=yr-Y0, gx=i*bw+bw/2;
+      C.appendChild(el("line",{x1:gx,x2:gx,y1:y+h,y2:y+h+4,stroke:"var(--muted)","aria-hidden":"true"}));
+      C.appendChild(el("text",{x:gx,y:y+h+18,class:"tk","text-anchor":"middle","aria-hidden":"true"},String(yr)));
+    });
+    var last=rows[rows.length-1];
+    var first0 = rows.find(function(r){return r[2]>5;});
+    document.getElementById("cf-d").textContent="Confidentiality suppression share by year. Zero percent of rows were withheld from 1950 through about 2005, then the share jumps and holds near 30 percent from about "+(first0?first0[0]:2007)+" onward. In "+last[0]+", about "+last[2]+" percent of species-state rows are withheld to protect fisheries with too few operations to report. Absence, stated as co-occurrence with fleet consolidation, never cause.";
+    C.appendChild(el("text",{x:W,y:y+h+18,class:"tk","text-anchor":"end",fill:"var(--rust)"},last[0]+": ~"+last[2]+"% withheld"));
+  }
+
+  // ================= TABLE =================
+  var tbody=document.getElementById("tbody");
+  function renderTable(){
+    var list=filtered();
+    tbody.innerHTML="";
+    list.forEach(function(g){
+      var tr=document.createElement("tr");
+      if(currentId===g.id) tr.setAttribute("aria-current","true");
+      var dirGlyph = g.pctPeak>=100? '<span class="dir-flat" aria-hidden="true">–</span>' : '<span class="dir-dn" aria-hidden="true">▼</span>';
+      tr.innerHTML =
+        '<td class="l"><button type="button" data-id="'+g.id+'">'+esc(g.label)+'</button>'+(g.minimal?'<span class="tag-min" title="NOAA domestic_wild_minimal flag" role="img" aria-label="negligible US wild fishery">min</span>':'')+'</td>'+
+        '<td class="mono">'+usd(g.wild)+'</td>'+
+        '<td class="mono">'+usd(g.import)+'</td>'+
+        '<td class="mono">'+ratioStr(g.ratio)+' '+(g.ratio<1?'<span class="dir-dn" aria-hidden="true">◄</span>':'<span class="dir-up" aria-hidden="true">►</span>')+'</td>'+
+        '<td class="mono">'+dirGlyph+' '+g.pctPeak+'%</td>'+
+        '<td class="mono">'+(g.upl!=null?"$"+g.upl.toFixed(2):"—")+'</td>';
+      tbody.appendChild(tr);
+    });
+    tbody.querySelectorAll("button[data-id]").forEach(function(b){
+      b.addEventListener("click",function(){ openDetail(b.getAttribute("data-id"), b); });
+    });
+  }
+
+  // sort headers
+  document.querySelectorAll("th.sortable").forEach(function(th){
+    th.querySelector("button").addEventListener("click",function(){
+      var k=th.getAttribute("data-k");
+      var map={label:"label",wild:"wild-desc",import:"import-desc",ratio:"ratio-desc",pctPeak:"peak-asc",upl:"upl"};
+      // toggle asc/desc
+      var cur=th.getAttribute("aria-sort");
+      if(k==="wild") state.sort= cur==="descending"?"wild-asc":"wild-desc";
+      else if(k==="import") state.sort= cur==="descending"?"import-asc":"import-desc";
+      else if(k==="ratio") state.sort= cur==="descending"?"ratio-asc":"ratio-desc";
+      else if(k==="pctPeak") state.sort= cur==="ascending"?"peak-desc":"peak-asc";
+      else if(k==="upl") state.sort= cur==="descending"?"upl-asc":"upl-desc";
+      else if(k==="label") state.sort= cur==="ascending"?"label-desc":"label-asc";
+      updateSortHeaders(); syncSortSelect(); render(); announce();
+    });
+  });
+  function updateSortHeaders(){
+    document.querySelectorAll("th.sortable").forEach(function(th){
+      var k=th.getAttribute("data-k"), s=state.sort, val="none", gl="↕";
+      if(s.indexOf(k)===0){ var dir=s.split("-")[1]; if(dir){ val=dir==="asc"?"ascending":"descending"; gl=dir==="asc"?"▲":"▼"; } }
+      // ratio/peak/label special
+      if(k==="ratio"&&(s==="ratio-desc"||s==="ratio-asc")){ val=s==="ratio-desc"?"descending":"ascending"; gl=s==="ratio-desc"?"▼":"▲"; }
+      if(k==="pctPeak"&&(s==="peak-asc"||s==="peak-desc")){ val=s==="peak-asc"?"ascending":"descending"; gl=s==="peak-asc"?"▲":"▼"; }
+      if(k==="wild"&&(s==="wild-desc"||s==="wild-asc")){ val=s==="wild-desc"?"descending":"ascending"; gl=s==="wild-desc"?"▼":"▲"; }
+      if(k==="import"&&(s==="import-desc"||s==="import-asc")){ val=s==="import-desc"?"descending":"ascending"; gl=s==="import-desc"?"▼":"▲"; }
+      if(k==="upl"&&(s==="upl-desc"||s==="upl-asc")){ val=s==="upl-desc"?"descending":"ascending"; gl=s==="upl-desc"?"▼":"▲"; }
+      if(k==="label"&&(s==="label-asc"||s==="label-desc")){ val=s==="label-asc"?"ascending":"descending"; gl=s==="label-asc"?"▲":"▼"; }
+      th.setAttribute("aria-sort",val);
+      var sg=th.querySelector(".sortglyph"); if(sg) sg.textContent=gl;
+    });
+  }
+  // extend filtered() sort keys
+  var _filtered=filtered;
+  filtered=function(){
+    var q=state.q.trim().toLowerCase();
+    var list=GROUPS.filter(function(g){
+      if(q && g.label.toLowerCase().indexOf(q)<0 && g.id.indexOf(q)<0) return false;
+      if(state.region && !(g.regionShare&&g.regionShare[state.region])) return false;
+      return true;
+    });
+    var s=state.sort;
+    var cmp={
+      "ratio-desc":function(a,b){return b.ratio-a.ratio;},"ratio-asc":function(a,b){return a.ratio-b.ratio;},
+      "wild-desc":function(a,b){return b.wild-a.wild;},"wild-asc":function(a,b){return a.wild-b.wild;},
+      "import-desc":function(a,b){return b.import-a.import;},"import-asc":function(a,b){return a.import-b.import;},
+      "peak-asc":function(a,b){return a.pctPeak-b.pctPeak;},"peak-desc":function(a,b){return b.pctPeak-a.pctPeak;},
+      "upl-desc":function(a,b){return (b.upl||0)-(a.upl||0);},"upl-asc":function(a,b){return (a.upl||0)-(b.upl||0);},
+      "label-asc":function(a,b){return a.label.localeCompare(b.label);},"label-desc":function(a,b){return b.label.localeCompare(a.label);}
+    };
+    if(cmp[s]) list.sort(cmp[s]);
+    return list;
+  };
+
+  function syncSortSelect(){
+    var sel=document.getElementById("sortsel");
+    var opt=["ratio-desc","ratio-asc","wild-desc","import-desc","peak-asc"].indexOf(state.sort);
+    // when a table-header sort isn't representable in the select, deselect it rather than show a stale value
+    if(opt>=0) sel.value=state.sort; else sel.selectedIndex=-1;
+  }
+  function syncRegionSelect(){
+    var sel=document.getElementById("regionsel"); if(sel) sel.value=state.region||"";
+  }
+
+  // ================= CHIPS + STATUS =================
+  function syncChips(){
+    var c=document.getElementById("chips"); c.innerHTML="";
+    if(state.region){
+      var b=document.createElement("button"); b.className="chip"; b.setAttribute("aria-pressed","true");
+      b.innerHTML='Region: '+esc(state.region)+' <span class="x" aria-hidden="true">✕</span>';
+      b.setAttribute("aria-label","Clear region filter "+state.region);
+      b.addEventListener("click",function(){ state.region=null; syncChips(); syncRegionSelect(); drawRibbon(); render(); announce(); });
+      c.appendChild(b);
+    }
+    if(state.q){
+      var b2=document.createElement("button"); b2.className="chip"; b2.setAttribute("aria-pressed","true");
+      b2.innerHTML='Search: “'+esc(state.q)+'” <span class="x" aria-hidden="true">✕</span>';
+      b2.setAttribute("aria-label","Clear search "+state.q);
+      b2.addEventListener("click",function(){ state.q=""; document.getElementById("q").value=""; syncChips(); render(); announce(); });
+      c.appendChild(b2);
+    }
+  }
+  var sortLabel={ "ratio-desc":"most imported first","ratio-asc":"lands-its-own first","wild-desc":"biggest wild landings","wild-asc":"smallest wild landings","import-desc":"biggest import stream","import-asc":"smallest import stream","peak-asc":"furthest below peak","peak-desc":"nearest its peak","upl-desc":"highest dollar per pound","upl-asc":"lowest dollar per pound","label-asc":"A to Z","label-desc":"Z to A" };
+  function announce(){
+    var n=filtered().length;
+    var msg=n+" of "+GROUPS.length+" groups shown, sorted by "+(sortLabel[state.sort]||state.sort)+(state.region?", region "+state.region:"")+(state.q?', matching “'+state.q+'”':"")+".";
+    document.getElementById("status").textContent=msg;
+    document.getElementById("count").textContent=n+" / "+GROUPS.length;
+  }
+
+  function render(){ drawLadder(); renderTable(); }
+
+  // ================= DETAIL =================
+  var currentId=null, originEl=null;
+  function openDetail(id, origin){
+    var g=GROUPS.find(function(x){return x.id===id;}); if(!g) return;
+    currentId=id; originEl=origin||originEl;
+    try{ if(location.hash!=="#"+id){ history.pushState? history.pushState(null,"","#"+id) : (location.hash=id); } }catch(e){ location.hash=id; }
+    showDetail(g);
+  }
+  function showDetail(g){
+    document.getElementById("overview").style.display="none";
+    var d=document.getElementById("detail"); d.classList.add("on");
+    // badges
+    document.getElementById("d-badges").innerHTML =
+      '<span class="lic" data-lic="cc0" role="img" aria-label="Underlying rows CC0">CC0 rows</span> '+
+      '<span class="lic" data-lic="cc-by" role="img" aria-label="Derived read CC-BY">CC-BY read</span>'+
+      (g.minimal?' <span class="tag-min" role="img" aria-label="NOAA flags this a negligible US wild fishery">domestic_wild_minimal</span>':'');
+    var h=document.getElementById("d-h");
+    h.textContent=g.label+" — "+ratioStr(g.ratio)+" "+(g.ratio<1?"lands its own":"imported");
+    document.getElementById("d-sub").textContent=g.wild_note;
+    // stats
+    var below = g.pctPeak<100;
+    document.getElementById("d-stats").innerHTML=[
+      stat("Wild landings · 2024", usd(g.wild), "nominal ex-vessel value, round weight"),
+      stat("Import value", usd(g.import), "CIF value of "+(g.import_name||g.import_slug)),
+      stat("Import ÷ wild", ratioStr(g.ratio)+' '+(g.ratio<1?'◄':'►'), g.ratio<1?"America lands more than it imports":"imports exceed the wild catch"),
+      stat("Peak year", g.peakY+" · "+g.pctPeak+"% now", below?"below its own nominal peak":"at its nominal peak"),
+      stat("Latest $ / lb", g.upl!=null?"$"+g.upl.toFixed(2):"—", "ex-vessel, round weight, 2024 only"),
+      stat("Species in group", g.species_count+"", g.conf_rows+" confidential rows withheld in 2024")
+    ].join("");
+    drawDetailSeries(g);
+    drawDetailRegion(g);
+    // roster
+    document.getElementById("d-spcount").textContent="("+g.species_count+" matched species · "+g.conf_rows+" rows withheld 2024)";
+    var ro=document.getElementById("d-roster"); ro.innerHTML="";
+    g.species.slice(0,60).forEach(function(sp){ var s=document.createElement("span"); s.textContent=sp; ro.appendChild(s); });
+    // license text
+    document.getElementById("d-license").textContent=
+      "The teal wild figure is a CC-BY derived national read, summed from the CC0 raw rows below it; the rust import figure is the CIF value on the served slug “"+(g.import_slug)+"”. Withheld (null-dollar) rows are never zero-filled — they lower the wild sum by absence. Export a citable seam card, rung by rung:";
+    // downloads
+    setupDownloads(g);
+    document.getElementById("d-status").textContent="Showing detail for "+g.label+", ratio "+ratioStr(g.ratio)+", "+g.pctPeak+" percent of its "+g.peakY+" peak.";
+    // move focus to heading
+    h.focus();
+    window.scrollTo(0, reduce?0:0);
+    renderTable();
+  }
+  function stat(k,v,note){ return '<div class="stat"><div class="k">'+esc(k)+'</div><div class="v mono">'+esc(v)+'</div><div class="honest">'+esc(note)+'</div></div>'; }
+
+  function drawDetailSeries(g){
+    var S=document.getElementById("d-series");
+    clearDraw(S);
+    var W=920,H=240,padL=64,padR=20,padT=18,padB=30;
+    var s=g.series,n=s.length, vals=s.filter(function(v){return v!=null;});
+    var mx=Math.max.apply(null,vals);
+    var px=function(i){return padL+i/(n-1)*(W-padL-padR);}, py=function(v){return H-padB-(v/mx)*(H-padT-padB);};
+    // y ticks
+    for(var t=0;t<=3;t++){ var v=mx*t/3, yy=py(v);
+      S.appendChild(el("line",{x1:padL,x2:W-padR,y1:yy,y2:yy,class:"gridline","aria-hidden":"true"}));
+      S.appendChild(el("text",{x:padL-8,y:yy+4,class:"tk","text-anchor":"end","aria-hidden":"true"},usd(v)));
+    }
+    // x ticks
+    [1950,1970,1990,2010,2024].forEach(function(yr){ var i=yr-Y0; if(i<0||i>=n)return; S.appendChild(el("text",{x:px(i),y:H-8,class:"tk","text-anchor":"middle","aria-hidden":"true"},String(yr))); });
+    // path (break at nulls)
+    var d="",started=false;
+    for(var i=0;i<n;i++){ if(s[i]==null){started=false;continue;} d+=(started?"L":"M")+px(i).toFixed(1)+" "+py(s[i]).toFixed(1)+" "; started=true; }
+    var p=el("path",{d:d,fill:"none",stroke:"var(--teal)","stroke-width":2,"aria-hidden":"true"}); S.appendChild(p);
+    if(!reduce){ var len=p.getTotalLength?p.getTotalLength():0; if(len){ p.style.strokeDasharray=len; p.style.strokeDashoffset=len; p.style.transition="stroke-dashoffset 1.1s ease"; requestAnimationFrame(function(){requestAnimationFrame(function(){p.style.strokeDashoffset=0;});}); } }
+    // peak marker
+    var pi=g.series.indexOf(g.peakV);
+    if(pi>=0){ S.appendChild(el("circle",{cx:px(pi),cy:py(g.peakV),r:4,fill:"var(--gold)","aria-hidden":"true"}));
+      S.appendChild(el("text",{x:px(pi),y:py(g.peakV)-9,class:"tk","text-anchor":"middle",fill:"var(--gold)","aria-hidden":"true"},"peak "+g.peakY)); }
+    // 2021 caret
+    var i21=2021-Y0; if(i21>=0&&i21<n&&s[i21]!=null){ S.appendChild(el("path",{d:"M"+px(i21)+" "+(H-padB+2)+" l-4 6 l8 0 z",fill:"var(--teal-ink)","aria-hidden":"true"})); }
+    // titles + sr alt
+    document.getElementById("ds-t").textContent=g.label+" landings value, "+Y0+" to "+YN+", nominal ex-vessel dollars.";
+    var firstV=null,lastV=null; for(var k=0;k<n;k++){ if(s[k]!=null){ if(firstV==null)firstV=s[k]; lastV=s[k]; } }
+    document.getElementById("ds-d").textContent="Nominal landings value peaked in "+g.peakY+" at "+usd(g.peakV)+" and now sits at "+usd(lastV)+", "+g.pctPeak+" percent of that peak. Value is nominal, so being below peak resists inflation. Gaps in the line are years with confidential withheld rows. Not a forecast.";
+    document.getElementById("d-series-cap").textContent="Peak "+g.peakY+" ("+usd(g.peakV)+"); 2024 = "+usd(lastV)+", "+g.pctPeak+"% of peak. Gold dot = peak year, teal caret = 2021. Nominal dollars — no inflation adjustment; line breaks are confidential years.";
+  }
+  function drawDetailRegion(g){
+    var R=document.getElementById("d-region");
+    clearDraw(R);
+    var rs=g.regionShare||{}, entries=REGIONS.filter(function(r){return rs[r];}).map(function(r){return [r,rs[r]];}).sort(function(a,b){return b[1]-a[1];});
+    var W=920,h=34,y=8,x=0, pal={"New England":"#2f7d78","Alaska":"#3f7d49","Pacific Coast":"#8a6216","Gulf":"#a8442d","Middle Atlantic":"#6a5acd","South Atlantic":"#a85b18","Hawaii":"#3a7ca5","Great Lakes":"#777"};
+    if(entries.length===0){ R.appendChild(el("text",{x:0,y:24,class:"tk"},"No non-confidential 2024 regional value for this group.")); }
+    entries.forEach(function(e){
+      var w=e[1]/100*W;
+      R.appendChild(el("rect",{x:x+1,y:y,width:Math.max(1,w-2),height:h,rx:3,fill:pal[e[0]]||"#777","aria-hidden":"true"}));
+      if(w>70){ R.appendChild(el("text",{x:x+w/2,y:y+14,"text-anchor":"middle",fill:"#fff",font:"600 10px var(--font-mono)"},e[0].replace("Atlantic","Atl.")));
+        R.appendChild(el("text",{x:x+w/2,y:y+27,"text-anchor":"middle",fill:"#fff",font:"700 11px var(--font-mono)"},e[1]+"%")); }
+      x+=w;
+    });
+    document.getElementById("dr-t").textContent=g.label+" 2024 landed value by NOAA region.";
+    document.getElementById("dr-d").textContent=entries.length? (g.label+" 2024 landings concentrate in "+entries[0][0]+" at "+entries[0][1]+" percent"+(entries[1]?", then "+entries[1][0]+" at "+entries[1][1]+" percent":"")+".") : "No regional value available.";
+  }
+
+  // downloads (seam card)
+  function setupDownloads(g){
+    var card={
+      dataset:"Muntin Cost Index — seam card", group:g.id, label:g.label,
+      license:"CC BY 4.0", attribution:META.attribution, source_raw:META.raw_url, source_derived:META.derived_url,
+      wild_landings_usd_2024:g.wild, wild_landings_lb_2024:g.lb, unit_value_usd_per_lb_2024:g.upl,
+      import_value_usd:g.import, import_slug:g.import_slug,
+      import_to_wild_ratio:g.ratio, domestic_wild_minimal:g.minimal,
+      peak_year:g.peakY, peak_value_usd:g.peakV, pct_of_peak_now:g.pctPeak,
+      species_count:g.species_count, confidential_rows_2024:g.conf_rows,
+      wild_note:g.wild_note,
+      caveat:"Nominal ex-vessel landings value vs CIF import value — an apparent-reliance proxy across different chain points, not a volume share or forecast. Pounds are round weight, not edible yield. Confidential rows degrade the sum by absence.",
+      value_series:g.series.map(function(v,i){return {year:Y0+i, landings_usd:v};})
+    };
+    bindDL("dl-json", g.id+"-seam-card.json", JSON.stringify(card,null,2), "application/json");
+    var csv="year,landings_usd_nominal\n"+g.series.map(function(v,i){return (Y0+i)+","+(v==null?"":v);}).join("\n")+"\n";
+    bindDL("dl-csv", g.id+"-landings-series.csv", csv, "text/csv");
+  }
+  function bindDL(btnId, fname, content, mime){
+    var b=document.getElementById(btnId); b.onclick=function(){
+      var blob=new Blob([content],{type:mime}), url=URL.createObjectURL(blob), a=document.createElement("a");
+      a.href=url; a.download=fname; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){URL.revokeObjectURL(url);},1000);
+    };
+  }
+
+  function closeDetail(){
+    document.getElementById("detail").classList.remove("on");
+    document.getElementById("overview").style.display="";
+    currentId=null; renderTable();
+    if(location.hash){ try{ history.pushState? history.pushState(null,"",location.pathname+location.search) : (location.hash=""); }catch(e){ try{location.hash="";}catch(_){} } }
+    if(originEl && originEl.focus) originEl.focus();
+    else { var oh=document.getElementById("ov-h"); if(oh){ oh.setAttribute("tabindex","-1"); oh.focus(); } } // deep-link load had no origin element: send focus to a stable landmark
+    originEl=null;
+    announce();
+  }
+  document.getElementById("backBtn").addEventListener("click",closeDetail);
+
+  // ================= ROUTING =================
+  function routeFromHash(){
+    var id=location.hash.replace(/^#/,"");
+    if(id && GROUPS.some(function(g){return g.id===id;})){ var g=GROUPS.find(function(x){return x.id===id;}); currentId=id; showDetail(g); }
+    else { document.getElementById("detail").classList.remove("on"); document.getElementById("overview").style.display=""; currentId=null; }
+  }
+  window.addEventListener("hashchange",routeFromHash);
+
+  // ================= CONTROLS =================
+  var qEl=document.getElementById("q"), qTimer;
+  qEl.addEventListener("input",function(){ clearTimeout(qTimer); qTimer=setTimeout(function(){ state.q=qEl.value; syncChips(); render(); announce(); },160); });
+  document.getElementById("sortsel").addEventListener("change",function(){ state.sort=this.value; updateSortHeaders(); render(); announce(); });
+  document.getElementById("regionsel").addEventListener("change",function(){ state.region=this.value||null; syncChips(); drawRibbon(); render(); announce(); });
+
+  // theme toggle
+  var tb=document.getElementById("themeBtn");
+  function curTheme(){ return document.documentElement.getAttribute("data-theme") || (matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light"); }
+  tb.addEventListener("click",function(){
+    var next=curTheme()==="dark"?"light":"dark";
+    document.documentElement.setAttribute("data-theme",next);
+    tb.setAttribute("aria-label","Switch to "+(next==="dark"?"light":"dark")+" theme");
+    try{ localStorage.setItem("muntin-theme",next); }catch(e){}
+    var live=document.getElementById("themeLive"); if(live) live.textContent=(next==="dark"?"Dark":"Light")+" theme on.";
+    // recolor SVGs that read tokens at draw time
+    render(); drawRibbon(); drawConf(); if(currentId){ var g=GROUPS.find(function(x){return x.id===currentId;}); if(g){drawDetailSeries(g);drawDetailRegion(g);} }
+  });
+
+  // ================= INIT =================
+  document.getElementById("attrib").textContent=META.attribution+" · Dataset: "+META.dataset+" · updated "+META.dateModified+".";
+  // restore persisted theme before the first paint so SVGs read the right tokens
+  try{ var savedTheme=localStorage.getItem("muntin-theme"); if(savedTheme==="dark"||savedTheme==="light"){ document.documentElement.setAttribute("data-theme",savedTheme); tb.setAttribute("aria-label","Switch to "+(savedTheme==="dark"?"light":"dark")+" theme"); } }catch(e){}
+  updateSortHeaders(); syncChips(); syncRegionSelect(); render(); drawRibbon(); drawConf(); announce();
+  routeFromHash();
+})();
+</script>

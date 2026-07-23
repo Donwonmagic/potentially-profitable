@@ -1,0 +1,903 @@
+<title>The American Plate — a century of US per-capita food availability (USDA ERS)</title>
+<meta name="description" content="Walk through a century of the American plate: 71 foods and 50 commodities ranked by pounds available per person per year (USDA ERS), 1909–2022. A supply-side proxy for consumption, never a measured intake and never a price.">
+<meta property="og:title" content="The American Plate — a century of US per-capita food availability">
+<meta property="og:description" content="71 foods, 50 commodities, one century. Chicken overtakes beef in 2010; eggs round-trip; tropicals explode post-1990. Pounds available per person — a supply-side proxy, not intake.">
+<meta property="og:type" content="website">
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="description" content="Per-capita food availability in pounds per person per year for 50 commodities mapped to 71 tracked foods, from USDA ERS. A supply-side proxy for consumption (production plus imports minus exports and non-food/loss uses), not a measured intake and not a price." />
+<meta name="theme-color" content="#2A50C8" />
+<link rel="canonical" href="https://muntin.digital/open/availability/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/open/availability/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/open/availability/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/open/availability/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="es_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="The American Plate — a century of US per-capita food availability (USDA ERS)" />
+<meta property="og:description" content="Per-capita food availability in pounds per person per year for 50 commodities mapped to 71 tracked foods, from USDA ERS. A supply-side proxy for consumption (production plus imports minus exports and non-food/loss uses), not a measured intake and not a price." />
+<meta property="og:url" content="https://muntin.digital/open/availability/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="The American Plate — a century of US per-capita food availability (USDA ERS)" />
+<meta name="twitter:description" content="Per-capita food availability in pounds per person per year for 50 commodities mapped to 71 tracked foods, from USDA ERS. A supply-side proxy for consumption (production plus imports minus exports and non-food/loss uses), not a measured intake and not a price." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Open data","item":"https://muntin.digital/open/"},{"@type":"ListItem","position":3,"name":"The American Plate","item":"https://muntin.digital/open/availability/"}]}</script>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site-core.css" />
+<style>
+  /* ===== muntin open-data explorer — shared token block (inlined verbatim) ===== */
+  :root{
+    --paper:#f7f4ee; --surface:#fffdf9; --surface-2:#f1ece2;
+    --ink:#1b1f24; --ink-soft:#4a525a; --muted:#8a8f8a;
+    --line:#e5ddce; --line-soft:#efe9dc;
+    --teal:#2f7d78; --teal-ink:#215a56; --teal-wash:#e4efed;
+    --gold:#a9791f; --rust:#a8442d;
+    --up:var(--rust); --dn:var(--teal-ink); --flat:var(--muted);
+    --focus:#2f7d78; --focus-ring:0 0 0 3px rgba(47,125,120,.45);
+    --badge-cc0:var(--teal); --badge-ccby:var(--gold);
+    --font-display:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
+    --font-sans:system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    --font-mono:ui-monospace,'SF Mono','Cascadia Code',Menlo,Consolas,monospace;
+    --sh:0 1px 2px rgba(20,24,29,.05),0 8px 24px rgba(20,24,29,.07);
+    --tap:44px;
+    /* dream-specific semantic hues — risers teal, fallers rust, always paired with a glyph+label, never color-alone */
+    --riser:var(--teal); --faller:var(--rust); --steady:var(--muted);
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --paper:#13161a; --surface:#1a1e23; --surface-2:#222831;
+    --ink:#eef1f0; --ink-soft:#b7bec3; --muted:#7e8790;
+    --line:#2b3138; --line-soft:#242a30;
+    --teal:#57b7af; --teal-ink:#7fcfc7; --teal-wash:#16302e;
+    --gold:#d3a44c; --rust:#d9765f;
+    --up:var(--rust); --dn:var(--teal-ink); --flat:var(--muted);
+    --focus:#57b7af; --focus-ring:0 0 0 3px rgba(87,183,175,.5);
+    --badge-cc0:var(--teal); --badge-ccby:var(--gold);
+    --sh:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4);
+    --riser:var(--teal); --faller:var(--rust); --steady:var(--muted);
+  }}
+  :root[data-theme="dark"]{ --paper:#13161a;--surface:#1a1e23;--surface-2:#222831;--ink:#eef1f0;--ink-soft:#b7bec3;--muted:#7e8790;--line:#2b3138;--line-soft:#242a30;--teal:#57b7af;--teal-ink:#7fcfc7;--teal-wash:#16302e;--gold:#d3a44c;--rust:#d9765f;--focus:#57b7af;--focus-ring:0 0 0 3px rgba(87,183,175,.5);--sh:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4);--riser:var(--teal);--faller:var(--rust);--steady:var(--muted); }
+  :root[data-theme="light"]{ --paper:#f7f4ee;--surface:#fffdf9;--surface-2:#f1ece2;--ink:#1b1f24;--ink-soft:#4a525a;--muted:#8a8f8a;--line:#e5ddce;--line-soft:#efe9dc;--teal:#2f7d78;--teal-ink:#215a56;--teal-wash:#e4efed;--gold:#a9791f;--rust:#a8442d;--focus:#2f7d78;--focus-ring:0 0 0 3px rgba(47,125,120,.45);--sh:0 1px 2px rgba(20,24,29,.05),0 8px 24px rgba(20,24,29,.07);--riser:var(--teal);--faller:var(--rust);--steady:var(--muted); }
+  /* ===== base element rules ===== */
+  *{box-sizing:border-box}
+  html{color-scheme:light dark}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-sans);line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:960px;margin:0 auto;padding:clamp(18px,3.5vw,44px) clamp(14px,4vw,30px) 90px}
+  h1{font-family:var(--font-display);font-weight:600;letter-spacing:-.01em;text-wrap:balance}
+  h2,h3{font-family:var(--font-display);font-weight:600}
+  .mono,.num{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+  a{color:var(--teal-ink)}
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--focus);outline-offset:2px;box-shadow:var(--focus-ring)}
+  input,select,button{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px}
+  button,[role="button"],a,summary,input,select{min-height:var(--tap)}
+  svg{display:block;max-width:100%;height:auto;overflow:visible}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+  .cc0,.ccby{border-radius:5px;padding:1px 6px;font-size:10.5px;letter-spacing:.06em;font-family:var(--font-mono)}
+  .cc0{border:1px solid var(--badge-cc0);color:var(--teal-ink)} .ccby{border:1px solid var(--badge-ccby);color:var(--gold)}
+  .up{color:var(--up)} .dn{color:var(--dn)} .flat{color:var(--flat)}
+  @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+  @media (forced-colors:active){.up,.dn,.flat,.riser,.faller,.steady{forced-color-adjust:none} :where(button,a):focus-visible{outline:2px solid CanvasText}}
+
+  /* ===== masthead ===== */
+  header.mast{border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:14px}
+  .kick{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--teal-ink);margin:0 0 10px;display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+  h1{font-size:clamp(29px,6vw,50px);line-height:1.03;margin:0 0 12px}
+  .lede{font-size:clamp(15px,2.2vw,18px);color:var(--ink-soft);max-width:64ch;margin:0 0 4px}
+  .lede b{color:var(--ink);font-family:var(--font-mono);font-weight:600}
+  .honest{font-size:13px;color:var(--muted);max-width:70ch;margin:12px 0 0;font-style:italic}
+
+  /* ===== access bar (download + license + schema + catalog) ===== */
+  .access{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin:16px 0 4px}
+  .dl{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);text-decoration:none;font-size:13px;box-shadow:var(--sh)}
+  .dl:hover{border-color:var(--teal)}
+  .dl b{font-family:var(--font-mono);font-weight:600}
+  .dl .sz{color:var(--muted);font-family:var(--font-mono);font-size:11px}
+  .schema-note{font-size:12px;color:var(--ink-soft);font-family:var(--font-mono);line-height:1.6;margin:12px 0 0;padding:10px 13px;background:var(--surface-2);border-radius:10px;border:1px solid var(--line-soft)}
+  .schema-note code{color:var(--teal-ink)}
+  nav.xnav{margin:14px 0 0;font-size:12.5px;font-family:var(--font-mono)}
+  nav.xnav a{margin-right:14px;white-space:nowrap;display:inline-block;line-height:1.9}
+
+  /* ===== section scaffold ===== */
+  section.view{margin:34px 0 0;scroll-margin-top:12px}
+  section.view>h2{font-size:clamp(21px,3.6vw,29px);margin:0 0 4px;letter-spacing:-.01em;outline:none}
+  .sub{font-size:14px;color:var(--ink-soft);max-width:66ch;margin:0 0 16px}
+  .sub b{color:var(--ink)}
+  figure{margin:0}
+  figcaption{font-size:12.5px;color:var(--ink-soft);margin-top:8px;max-width:66ch}
+  .fine{font-size:11.5px;color:var(--muted);margin:8px 0 0}
+  details.tbl{margin-top:10px;font-size:13px}
+  details.tbl>summary{cursor:pointer;color:var(--teal-ink);font-family:var(--font-mono);font-size:12px;padding:8px 0;min-height:var(--tap)}
+  details.tbl table{border-collapse:collapse;width:100%;margin-top:8px;font-size:12.5px}
+  details.tbl th,details.tbl td{border:1px solid var(--line);padding:4px 8px;text-align:left}
+  details.tbl thead th{background:var(--surface-2)}
+  .card{border:1px solid var(--line);border-radius:14px;background:var(--surface);box-shadow:var(--sh);padding:16px clamp(12px,2.5vw,20px)}
+  .axis{font-family:var(--font-mono);font-size:10px;fill:var(--muted)}
+  .glab{font-family:var(--font-mono);font-size:11px;fill:var(--ink)}
+  .tip{font-family:var(--font-mono);font-size:12px;fill:var(--paper);font-variant-numeric:tabular-nums}
+
+  /* ===== chips / toggles ===== */
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+  .chip{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:7px 14px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink);font-size:13px;cursor:pointer}
+  .chip[aria-pressed="true"]{background:var(--teal-wash);border-color:var(--teal);color:var(--teal-ink);font-weight:600}
+  .chip:hover{border-color:var(--teal)}
+
+  /* ===== scrubber ===== */
+  .scrub{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:6px 0 12px}
+  .scrub label{font-size:12.5px;font-family:var(--font-mono);color:var(--ink-soft);white-space:nowrap}
+  .scrub input[type=range]{flex:1;min-width:200px;height:var(--tap);background:transparent;border:0;accent-color:var(--teal)}
+  .yr{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-weight:600;font-size:19px;color:var(--teal-ink);min-width:4ch}
+
+  /* ===== ribbon readout list ===== */
+  .rr{list-style:none;margin:12px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:2px 18px;font-size:13px}
+  @media(max-width:560px){.rr{grid-template-columns:1fr}}
+  .rr li{padding:1px 0;border-bottom:1px solid var(--line-soft)}
+  .rr li.foc{background:var(--teal-wash);border-radius:6px}
+  .rr .rk{font-family:var(--font-mono);color:var(--muted);width:2.4ch;text-align:right;display:inline-block}
+  .rr .cn{overflow:hidden;text-overflow:ellipsis}
+  .rr .vv{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-weight:600}
+
+  /* legend */
+  .legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin:10px 0 0;font-size:12.5px;font-family:var(--font-mono);color:var(--ink-soft)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .sw{width:14px;height:14px;border-radius:3px;display:inline-block;border:1px solid rgba(0,0,0,.15)}
+
+  /* plate legend */
+  .plate-wrap{display:flex;gap:22px;flex-wrap:wrap;align-items:center}
+  .plate-legend{list-style:none;margin:0;padding:0;min-width:230px;flex:1}
+  .plate-legend li{display:grid;grid-template-columns:16px 1fr auto auto;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--line-soft);font-size:13.5px}
+  .plate-legend .pv{font-family:var(--font-mono);font-weight:600;font-variant-numeric:tabular-nums}
+  .plate-legend .pp{font-family:var(--font-mono);color:var(--muted);font-size:12px;min-width:5ch;text-align:right}
+
+  /* ===== ranked list (cross-section) ===== */
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 12px;align-items:center}
+  .search{position:relative;flex:1;min-width:200px}
+  .search input{width:100%;padding:11px 14px;font-size:15px}
+  select{padding:11px 12px;font-size:14px}
+  .count{font-family:var(--font-mono);font-size:12px;color:var(--muted);white-space:nowrap}
+  .list{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface);box-shadow:var(--sh)}
+  .rowhead,.row{display:grid;grid-template-columns:26px 1.7fr 150px 78px 84px 44px;align-items:center;gap:10px;padding:0 14px}
+  .rowhead{background:var(--surface-2);border-bottom:1px solid var(--line);min-height:40px}
+  .rowhead button{background:none;border:0;padding:6px 2px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);cursor:pointer;text-align:left;min-height:auto;border-radius:6px}
+  .rowhead button:hover{color:var(--ink)}
+  .rowhead .r{text-align:right}
+  .rowhead .r button{text-align:right;width:100%}
+  .row{border-top:1px solid var(--line-soft);cursor:pointer;background:none;width:100%;text-align:left;color:inherit;min-height:52px;border-radius:0}
+  .row:hover{background:var(--teal-wash)}
+  .row .rank{font-family:var(--font-mono);font-size:12px;color:var(--muted)}
+  .row .nm{font-weight:600;font-size:14.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .row .nm small{display:block;font-weight:400;font-size:11px;color:var(--muted);letter-spacing:.02em}
+  .row .spark{height:28px}
+  .row .val{font-family:var(--font-mono);font-size:14px;font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+  .row .chg{font-family:var(--font-mono);font-size:12px;text-align:right;font-variant-numeric:tabular-nums}
+  .row .add{font-size:20px;color:var(--teal-ink);text-align:center;line-height:1;min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;border-radius:8px}
+  .row .add:hover{background:var(--surface-2)}
+  .riser{color:var(--riser)} .faller{color:var(--faller)} .steady{color:var(--steady)}
+  @media(max-width:640px){.rowhead,.row{grid-template-columns:22px 1.5fr 74px 74px 44px;gap:8px}.row .spark,.rowhead .cs{display:none}}
+
+  /* ===== basket ===== */
+  .basket{margin:0 0 16px;border:1px dashed var(--teal);border-radius:14px;background:var(--teal-wash);padding:14px 16px}
+  .basket h3{margin:0 0 6px;font-size:16px}
+  .basket .bl{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0}
+  .basket .bp{display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 6px 4px 12px;font-size:13px}
+  .basket .bp button{border:0;background:none;color:var(--rust);font-size:18px;cursor:pointer;line-height:1;padding:0 6px;min-height:44px}
+  .basket .tot{font-family:var(--font-mono);font-weight:600}
+
+  /* ===== detail / walk-through ===== */
+  .back{display:inline-flex;align-items:center;gap:6px;background:none;border:0;color:var(--teal-ink);font-size:14px;cursor:pointer;padding:8px 2px;margin:0 0 8px;min-height:var(--tap)}
+  .back:hover{text-decoration:underline}
+  .story{border:1px solid var(--line);border-radius:16px;background:var(--surface);box-shadow:var(--sh);overflow:hidden}
+  .shead{padding:22px clamp(16px,3vw,26px) 18px;border-bottom:1px solid var(--line)}
+  .shead .cat{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  .shead h2{font-size:clamp(25px,4.5vw,36px);margin:4px 0 12px;letter-spacing:-.01em}
+  .bignum{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .bignum .n{font-family:var(--font-mono);font-size:clamp(28px,6vw,42px);font-weight:600;color:var(--teal-ink);line-height:1}
+  .bignum .lab{font-size:13px;color:var(--ink-soft);max-width:38ch}
+  .beat{padding:20px clamp(16px,3vw,26px);border-top:1px solid var(--line-soft)}
+  .beat .step{font-family:var(--font-mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--teal-ink);margin:0 0 3px}
+  .beat h3{font-size:19px;margin:0 0 6px}
+  .beat .read{font-size:14px;color:var(--ink-soft);margin:0 0 14px;max-width:66ch}
+  .beat .read b{color:var(--ink)}
+  .insight{border-left:3px solid var(--gold);padding:2px 0 2px 14px;margin:0 0 14px;font-size:14px;color:var(--ink)}
+  .cuts{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  .cuts span{font-size:12px;font-family:var(--font-mono);background:var(--surface-2);border:1px solid var(--line-soft);border-radius:999px;padding:3px 10px;text-transform:capitalize}
+  .cite{margin-top:10px;font-size:12.5px;font-family:var(--font-mono);color:var(--ink-soft);background:var(--surface-2);border-radius:10px;padding:10px 12px;line-height:1.7}
+  .cite code{color:var(--teal-ink)}
+
+  /* footer */
+  footer.foot{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-family:var(--font-mono);font-size:11.5px;color:var(--muted);line-height:1.7}
+  footer.foot a{color:var(--teal-ink)}
+  .status{position:fixed;bottom:0;left:0}
+</style>
+
+<div class="wrap">
+  <body>
+<a class="skip-link" href="#main">Skip to content</a>
+<!-- batch-banner:start --><!-- batch-banner:end -->
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital">
+      <img class="logo-mark" src="/brand/mark/mark-square-ink.svg" alt="" width="36" height="36" />
+      <span class="logo-text">Muntin Digital</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary"><a href="/open/">Open data</a><a href="/cost-index/">Cost Index</a></nav>
+  </div>
+</header>
+<header class="mast">
+    <p class="kick"><span>Muntin Cost Index · Open data</span> <span class="ccby">CC-BY (reads)</span> <span class="cc0">CC0 (raw)</span> <span>USDA ERS</span></p>
+    <h1>The American Plate</h1>
+    <p class="lede">A century of what one American had available to eat, in pounds. Walk <b>1909&nbsp;→&nbsp;2022</b> across <b>71</b> tracked foods and <b>50</b> commodities. Watch the plate reorder — chicken passing beef, tropicals arriving, the potato changing form.</p>
+    <p class="honest">Every number is <b>pounds available per person per year</b> — USDA ERS food availability (production + imports − exports − non-food/loss). It is a national <b>supply-side proxy for consumption</b>, never a measured intake, never a price, never a forecast. Figures are published at the commodity level, so a cut or variety carries its parent commodity's per-capita figure.</p>
+
+    <div class="access">
+      <a class="dl" href="https://muntin.digital/data/ers-food-availability.jsonl" download><span class="cc0">CC0 · public domain</span> <b>ers-food-availability.jsonl</b> <span class="sz">raw tidy · ~118 KB</span></a>
+      <a class="dl" href="https://muntin.digital/cost-index/ers-food-availability.json" download><span class="ccby">CC-BY 4.0</span> <b>ers-food-availability.json</b> <span class="sz">derived reads · ~271 KB</span></a>
+    </div>
+    <p class="schema-note"><b>Schema.</b> Raw <code>.jsonl</code> (CC0, one JSON object per line): <code>{group, commodity, year, attribute, value}</code> — <code>value</code> in lbs per capita per year. Derived <code>.json</code> (CC-BY, Muntin): <code>items[]</code> of <code>{slug, commodity, group, percap_lbs, latest_year, span, series:[[year,lbs]]}</code>. <code>span</code> is first..last year of coverage; missing early years are true absence, never zero.</p>
+    <nav class="xnav" aria-label="Open-data catalog and related links">
+      <a href="https://muntin.digital/cost-index/open-data-catalog.json">Open-data catalog (JSON)</a>
+      <a href="https://muntin.digital/cost-index/">Muntin Cost Index</a>
+      <a href="https://muntin.digital/open/">All open-data explorers</a>
+    </nav>
+  </header>
+
+  <p id="status" class="sr-only status" role="status" aria-live="polite"></p>
+
+  <main id="app">
+    <!-- No-JS fallback: the full ranked cross-section renders before hydration and stays if scripting is off -->
+    <div id="static-fallback">
+      <h2>Ranked cross-section — 50 commodities by pounds available per person (latest year)</h2>
+      <p class="sub">Interactive views — a rank ribbon, a scrubbable plate, a century slopegraph, and per-food walk-throughs — load with JavaScript. The full data table below is always available and citable.</p>
+      <div style="overflow-x:auto">
+      <table>
+        <caption class="sr-only">US per-capita food availability by commodity, ranked by latest-year pounds per person, with span and first-to-latest change. Source USDA ERS. A supply-side proxy for consumption, not a measured intake.</caption>
+        <thead><tr><th scope="col">#</th><th scope="col">Commodity</th><th scope="col">Group</th><th scope="col">Lbs/person (latest)</th><th scope="col">Span</th><th scope="col">First → latest (lbs)</th><th scope="col">Change</th></tr></thead>
+        <tbody>
+<tr><td class="num">1</td><th scope="row">Total chicken <span class="muted">(3 cuts/varieties)</span></th><td>Meat &amp; poultry</td><td class="num">68.10</td><td class="num">1909..2021</td><td class="num">10.4 → 68.1</td><td>▲ +552.9% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">2</td><th scope="row">Beef <span class="muted">(5 cuts/varieties)</span></th><td>Meat &amp; poultry</td><td class="num">56.18</td><td class="num">1909..2021</td><td class="num">51.1 → 56.2</td><td>▲ +9.9% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">3</td><th scope="row">Pork <span class="muted">(4 cuts/varieties)</span></th><td>Meat &amp; poultry</td><td class="num">47.50</td><td class="num">1909..2021</td><td class="num">41.1 → 47.5</td><td>▲ +15.4% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">4</td><th scope="row">Eggs: Per capita availability</th><td>Eggs</td><td class="num">36.04</td><td class="num">1909..2021</td><td class="num">37.2 → 36.0</td><td>● -3% <span class="sr-only">(flat)</span></td></tr>
+<tr><td class="num">5</td><th scope="row">potatoes <span class="muted">(2 cuts/varieties)</span></th><td>Vegetables</td><td class="num">28.41</td><td class="num">1960..2022</td><td class="num">81.0 → 28.4</td><td>▼ -64.9% <span class="sr-only">(fell)</span></td></tr>
+<tr><td class="num">6</td><th scope="row">bananas</th><td>Fruit</td><td class="num">26.86</td><td class="num">1970..2021</td><td class="num">17.4 → 26.9</td><td>▲ +54.5% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">7</td><th scope="row">onions <span class="muted">(3 cuts/varieties)</span></th><td>Vegetables</td><td class="num">19.17</td><td class="num">1970..2022</td><td class="num">10.1 → 19.2</td><td>▲ +89.1% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">8</td><th scope="row">tomatoes (field and hothouse) <span class="muted">(2 cuts/varieties)</span></th><td>Vegetables</td><td class="num">19.03</td><td class="num">1960..2022</td><td class="num">12.6 → 19.0</td><td>▲ +51.6% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">9</td><th scope="row">apples</th><td>Fruit</td><td class="num">15.81</td><td class="num">1970..2021</td><td class="num">17.2 → 15.8</td><td>▼ -8.2% <span class="sr-only">(fell)</span></td></tr>
+<tr><td class="num">10</td><th scope="row">watermelon</th><td>Fruit</td><td class="num">14.39</td><td class="num">1970..2021</td><td class="num">13.5 → 14.4</td><td>▲ +6.7% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">11</td><th scope="row">romaine and leaf lettuce <span class="muted">(3 cuts/varieties)</span></th><td>Vegetables</td><td class="num">12.70</td><td class="num">1985..2022</td><td class="num">3.3 → 12.7</td><td>▲ +288.4% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">12</td><th scope="row">Turkey</th><td>Meat &amp; poultry</td><td class="num">12.07</td><td class="num">1909..2021</td><td class="num">0.8 → 12.1</td><td>▲ +1427.8% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">13</td><th scope="row">bell peppers</th><td>Vegetables</td><td class="num">11.06</td><td class="num">1960..2022</td><td class="num">2.1 → 11.1</td><td>▲ +431.7% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">14</td><th scope="row">head lettuce <span class="muted">(2 cuts/varieties)</span></th><td>Vegetables</td><td class="num">10.34</td><td class="num">1960..2022</td><td class="num">21.4 → 10.3</td><td>▼ -51.7% <span class="sr-only">(fell)</span></td></tr>
+<tr><td class="num">15</td><th scope="row">grapes</th><td>Fruit</td><td class="num">8.50</td><td class="num">1970..2021</td><td class="num">2.9 → 8.5</td><td>▲ +191.1% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">16</td><th scope="row">avocados</th><td>Fruit</td><td class="num">8.45</td><td class="num">1970..2021</td><td class="num">0.5 → 8.4</td><td>▲ +1777.8% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">17</td><th scope="row">carrots</th><td>Vegetables</td><td class="num">8.38</td><td class="num">1960..2022</td><td class="num">7.2 → 8.4</td><td>▲ +16.1% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">18</td><th scope="row">oranges and temples</th><td>Fruit</td><td class="num">8.25</td><td class="num">1970..2022</td><td class="num">16.1 → 8.3</td><td>▼ -48.7% <span class="sr-only">(fell)</span></td></tr>
+<tr><td class="num">19</td><th scope="row">cucumbers</th><td>Vegetables</td><td class="num">8.15</td><td class="num">1960..2022</td><td class="num">3.0 → 8.2</td><td>▲ +172.6% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">20</td><th scope="row">pineapples</th><td>Fruit</td><td class="num">7.87</td><td class="num">1970..2021</td><td class="num">0.7 → 7.9</td><td>▲ +1024.3% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">21</td><th scope="row">strawberries</th><td>Fruit</td><td class="num">7.30</td><td class="num">1970..2021</td><td class="num">1.7 → 7.3</td><td>▲ +322% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">22</td><th scope="row">cabbage <span class="muted">(2 cuts/varieties)</span></th><td>Vegetables</td><td class="num">6.17</td><td class="num">1960..2022</td><td class="num">10.5 → 6.2</td><td>▼ -41.4% <span class="sr-only">(fell)</span></td></tr>
+<tr><td class="num">23</td><th scope="row">sweet potatoes</th><td>Vegetables</td><td class="num">5.67</td><td class="num">1965..2022</td><td class="num">6.6 → 5.7</td><td>▼ -14.6% <span class="sr-only">(fell)</span></td></tr>
+<tr><td class="num">24</td><th scope="row">squash <span class="muted">(4 cuts/varieties)</span></th><td>Vegetables</td><td class="num">5.26</td><td class="num">1970..2022</td><td class="num">1.3 → 5.3</td><td>▲ +295.5% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">25</td><th scope="row">broccoli</th><td>Vegetables</td><td class="num">5.24</td><td class="num">1960..2022</td><td class="num">0.4 → 5.2</td><td>▲ +1210% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">26</td><th scope="row">cantaloupe</th><td>Fruit</td><td class="num">5.16</td><td class="num">1970..2021</td><td class="num">7.0 → 5.2</td><td>▼ -26.4% <span class="sr-only">(fell)</span></td></tr>
+<tr><td class="num">27</td><th scope="row">lemons</th><td>Fruit</td><td class="num">4.94</td><td class="num">1970..2022</td><td class="num">2.1 → 4.9</td><td>▲ +139.8% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">28</td><th scope="row">limes</th><td>Fruit</td><td class="num">4.59</td><td class="num">1970..2022</td><td class="num">0.2 → 4.6</td><td>▲ +2600% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">29</td><th scope="row">celery</th><td>Vegetables</td><td class="num">4.15</td><td class="num">1960..2022</td><td class="num">8.0 → 4.2</td><td>▼ -48.1% <span class="sr-only">(fell)</span></td></tr>
+<tr><td class="num">30</td><th scope="row">sweet corn</th><td>Vegetables</td><td class="num">4.11</td><td class="num">1960..2022</td><td class="num">8.4 → 4.1</td><td>▼ -51% <span class="sr-only">(fell)</span></td></tr>
+<tr><td class="num">31</td><th scope="row">mangoes</th><td>Fruit</td><td class="num">3.66</td><td class="num">1970..2021</td><td class="num">0.1 → 3.7</td><td>▲ +5128.6% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">32</td><th scope="row">pears</th><td>Fruit</td><td class="num">3.12</td><td class="num">1970..2021</td><td class="num">1.9 → 3.1</td><td>▲ +62.5% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">33</td><th scope="row">blueberries</th><td>Fruit</td><td class="num">2.54</td><td class="num">1980..2021</td><td class="num">0.2 → 2.5</td><td>▲ +1311.1% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">34</td><th scope="row">mushrooms <span class="muted">(2 cuts/varieties)</span></th><td>Vegetables</td><td class="num">2.50</td><td class="num">1965..2021</td><td class="num">0.2 → 2.5</td><td>▲ +1462.5% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">35</td><th scope="row">garlic</th><td>Vegetables</td><td class="num">2.39</td><td class="num">1960..2022</td><td class="num">0.3 → 2.4</td><td>▲ +856% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">36</td><th scope="row">spinach</th><td>Vegetables</td><td class="num">2.15</td><td class="num">1960..2022</td><td class="num">0.8 → 2.1</td><td>▲ +156% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">37</td><th scope="row">cauliflower</th><td>Vegetables</td><td class="num">2.12</td><td class="num">1960..2022</td><td class="num">1.3 → 2.1</td><td>▲ +65.6% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">38</td><th scope="row">asparagus</th><td>Vegetables</td><td class="num">1.68</td><td class="num">1960..2022</td><td class="num">0.7 → 1.7</td><td>▲ +136.6% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">39</td><th scope="row">artichokes</th><td>Vegetables</td><td class="num">1.52</td><td class="num">1960..2022</td><td class="num">0.2 → 1.5</td><td>▲ +560.9% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">40</td><th scope="row">papayas</th><td>Fruit</td><td class="num">1.34</td><td class="num">1970..2021</td><td class="num">0.1 → 1.3</td><td>▲ +1016.7% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">41</td><th scope="row">collard greens</th><td>Vegetables</td><td class="num">1.32</td><td class="num">1997..2022</td><td class="num">0.8 → 1.3</td><td>▲ +67.1% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">42</td><th scope="row">snap beans</th><td>Vegetables</td><td class="num">1.24</td><td class="num">1960..2022</td><td class="num">2.5 → 1.2</td><td>▼ -51.4% <span class="sr-only">(fell)</span></td></tr>
+<tr><td class="num">43</td><th scope="row">grapefruit</th><td>Fruit</td><td class="num">1.15</td><td class="num">1970..2022</td><td class="num">8.2 → 1.1</td><td>▼ -86% <span class="sr-only">(fell)</span></td></tr>
+<tr><td class="num">44</td><th scope="row">brussels sprouts</th><td>Vegetables</td><td class="num">1.06</td><td class="num">1970..2022</td><td class="num">0.3 → 1.1</td><td>▲ +231.3% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">45</td><th scope="row">eggplant</th><td>Vegetables</td><td class="num">1.01</td><td class="num">1960..2022</td><td class="num">0.3 → 1.0</td><td>▲ +274.1% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">46</td><th scope="row">Lamb</th><td>Meat &amp; poultry</td><td class="num">1.00</td><td class="num">1909..2021</td><td class="num">4.4 → 1.0</td><td>▼ -77.3% <span class="sr-only">(fell)</span></td></tr>
+<tr><td class="num">47</td><th scope="row">kale</th><td>Vegetables</td><td class="num">0.98</td><td class="num">1997..2022</td><td class="num">0.4 → 1.0</td><td>▲ +133.3% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">48</td><th scope="row">raspberries</th><td>Fruit</td><td class="num">0.92</td><td class="num">1992..2021</td><td class="num">0.0 → 0.9</td><td>▲ +2200% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">49</td><th scope="row">kiwifruit</th><td>Fruit</td><td class="num">0.80</td><td class="num">1982..2021</td><td class="num">0.1 → 0.8</td><td>▲ +700% <span class="sr-only">(rose)</span></td></tr>
+<tr><td class="num">50</td><th scope="row">okra</th><td>Vegetables</td><td class="num">0.57</td><td class="num">1974..2022</td><td class="num">0.2 → 0.6</td><td>▲ +235.3% <span class="sr-only">(rose)</span></td></tr>
+
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </main>
+
+  <footer class="foot">
+    Source: <b>USDA Economic Research Service</b> — Food Availability (Per Capita) Data System, per-capita food availability, coverage <b>1909–2022</b> depending on commodity group; USDA ERS series are US-Government works in the <b>public domain</b>. Derived reads (rankings, spans, series mapping) are <b>© Muntin Cost Index, CC-BY 4.0</b> — attribution: "Muntin Cost Index (muntin.digital); underlying data USDA ERS (public domain)." Vintage / dateModified: <b>2022</b>. Figures are a supply-side proxy for consumption (production + imports − exports − non-food/loss), never a measured intake, never a price.<br>
+    Raw (CC0): <a href="https://muntin.digital/data/ers-food-availability.jsonl">ers-food-availability.jsonl</a> · Reads (CC-BY): <a href="https://muntin.digital/cost-index/ers-food-availability.json">ers-food-availability.json</a> · Catalog: <a href="https://muntin.digital/cost-index/open-data-catalog.json">open-data-catalog.json</a>
+  </footer>
+</div>
+
+<script type="application/json" id="data">{"dataset":"Muntin Cost Index — US per-capita food availability (USDA ERS)","note":"Per-capita food availability (pounds per person per year) from USDA ERS, mapped to tracked ingredients. This is a national supply-side PROXY for consumption (ERS: production + imports − exports − non-food/loss uses), NOT a measured intake, NOT a price, and NOT a forecast. Availability is published at the COMMODITY level, so a variety or cut carries its parent commodity's per-capita figure (scope=commodity), never a per-cut number. It is the VOLUME companion to the value-based reliance read — how many pounds per person are available domestically, beside how much of the value is imported. Underlying series are USDA ERS, public domain.","dateModified":"2022","license":"CC BY 4.0","attribution":"Muntin Cost Index (muntin.digital); underlying data USDA ERS (public domain)","nFoods":71,"nCommodities":50,"yearMin":1909,"yearMax":2022,"commodities":[{"id":"total-chicken","c":"Total chicken","g":"meat","gl":"Meat & poultry","pc":68.1,"ly":2021,"span":"1909..2021","y0":1909,"v0":10.43,"y1":2021,"v1":68.1,"pk":[2021,68.1],"pct":552.9,"dir":"up","cuts":["chicken-breast","chicken-thigh","whole-chicken"],"s":[[1909,10.43],[1910,10.98],[1911,11.09],[1912,10.59],[1913,10.33],[1914,10.27],[1915,10.22],[1916,9.62],[1917,9.37],[1918,9.39],[1919,10.14],[1920,9.74],[1921,9.47],[1922,10.06],[1923,10.36],[1924,9.7],[1925,10.15],[1926,10.06],[1927,10.81],[1928,10.37],[1929,10.13],[1930,11.14],[1931,9.98],[1932,10.2],[1933,10.44],[1934,9.58],[1935,9.3],[1936,9.61],[1937,9.7],[1938,8.97],[1939,9.98],[1940,9.97],[1941,11.01],[1942,12.75],[1943,15.96],[1944,15.3],[1945,15.07],[1946,13.91],[1947,12.54],[1948,12.59],[1949,13.47],[1950,14.26],[1951,14.99],[1952,15.2],[1953,15.06],[1954,15.65],[1955,14.65],[1956,16.75],[1957,17.48],[1958,19.25],[1959,19.73],[1960,19.15],[1961,20.52],[1962,20.53],[1963,21],[1964,21.27],[1965,22.84],[1966,24.48],[1967,25.08],[1968,25.22],[1969,26.3],[1970,27.41],[1971,27.36],[1972,28.33],[1973,27.07],[1974,26.98],[1975,26.4],[1976,28.49],[1977,29],[1978,30.38],[1979,32.83],[1980,32.69],[1981,33.71],[1982,33.88],[1983,34.04],[1984,35.26],[1985,36.38],[1986,37.19],[1987,39.39],[1988,39.56],[1989,40.47],[1990,42.42],[1991,44.11],[1992,46.46],[1993,48.14],[1994,48.75],[1995,48.2],[1996,48.63],[1997,50.03],[1998,50.43],[1999,53.57],[2000,54.24],[2001,54.01],[2002,56.82],[2003,57.59],[2004,59.33],[2005,60.54],[2006,60.9],[2007,59.91],[2008,58.75],[2009,56.07],[2010,58.02],[2011,58.38],[2012,56.67],[2013,57.7],[2014,58.8],[2015,62.62],[2016,63.18],[2017,64.08],[2018,65.19],[2019,67.02],[2020,67.87],[2021,68.1]]},{"id":"beef","c":"Beef","g":"meat","gl":"Meat & poultry","pc":56.18,"ly":2021,"span":"1909..2021","y0":1909,"v0":51.11,"y1":2021,"v1":56.18,"pk":[1976,88.78],"pct":9.9,"dir":"up","cuts":["beef-tenderloin","ground-beef","ribeye","short-rib","striploin"],"s":[[1909,51.11],[1910,48.52],[1911,47.17],[1912,44.47],[1913,43.63],[1914,42.71],[1915,38.84],[1916,40.57],[1917,44.55],[1918,47.23],[1919,42.38],[1920,40.73],[1921,38.24],[1922,40.71],[1923,41.06],[1924,40.97],[1925,40.97],[1926,41.52],[1927,37.53],[1928,33.57],[1929,34.22],[1930,33.68],[1931,33.44],[1932,32.15],[1933,35.46],[1934,43.94],[1935,36.62],[1936,41.61],[1937,37.97],[1938,37.42],[1939,37.65],[1940,37.84],[1941,42.65],[1942,45.95],[1943,42.98],[1944,46.56],[1945,47.96],[1946,44.25],[1947,49.25],[1948,44.18],[1949,44.74],[1950,44.63],[1951,41.17],[1952,43.92],[1953,54.55],[1954,55.98],[1955,57.18],[1956,59.49],[1957,58.69],[1958,55.94],[1959,56.61],[1960,59.07],[1961,60.99],[1962,61.67],[1963,65.39],[1964,70.55],[1965,70.45],[1966,73.67],[1967,75.31],[1968,77.33],[1969,77.84],[1970,79.83],[1971,79.18],[1972,80.45],[1973,75.95],[1974,80.75],[1975,83.16],[1976,88.78],[1977,86.35],[1978,82.18],[1979,73.52],[1980,72.07],[1981,72.78],[1982,72.5],[1983,74.07],[1984,73.84],[1985,74.56],[1986,74.36],[1987,69.55],[1988,68.57],[1989,65.14],[1990,63.9],[1991,62.89],[1992,62.42],[1993,61],[1994,62.9],[1995,63.54],[1996,64.02],[1997,62.63],[1998,63.56],[1999,64.33],[2000,64.55],[2001,63.12],[2002,64.51],[2003,61.94],[2004,63.02],[2005,62.47],[2006,62.77],[2007,62.12],[2008,59.38],[2009,58.08],[2010,56.67],[2011,54.42],[2012,54.54],[2013,53.59],[2014,51.56],[2015,51.43],[2016,52.94],[2017,54.32],[2018,54.58],[2019,55.36],[2020,55.7],[2021,56.18]]},{"id":"pork","c":"Pork","g":"meat","gl":"Meat & poultry","pc":47.5,"ly":2021,"span":"1909..2021","y0":1909,"v0":41.15,"y1":2021,"v1":47.5,"pk":[1944,53.56],"pct":15.4,"dir":"up","cuts":["bacon","pork-belly","pork-loin","pork-shoulder"],"s":[[1909,41.15],[1910,38.25],[1911,42.4],[1912,40.94],[1913,41.06],[1914,39.98],[1915,40.85],[1916,42.38],[1917,36.18],[1918,37.49],[1919,39.23],[1920,39.02],[1921,39.76],[1922,40.37],[1923,45.58],[1924,45.47],[1925,41],[1926,39.38],[1927,41.56],[1928,43.54],[1929,42.78],[1930,41.1],[1931,41.92],[1932,43.37],[1933,43.4],[1934,39.52],[1935,29.67],[1936,33.82],[1937,34.21],[1938,35.69],[1939,39.71],[1940,45.08],[1941,42.25],[1942,42.21],[1943,51.65],[1944,53.56],[1945,43.38],[1946,46.84],[1947,43.24],[1948,41.96],[1949,41.87],[1950,42.96],[1951,45.15],[1952,45],[1953,39.24],[1954,37.16],[1955,50.39],[1956,51.04],[1957,46.42],[1958,45.33],[1959,51.05],[1960,48.63],[1961,46.76],[1962,47.43],[1963,48.54],[1964,48.79],[1965,43.6],[1966,42.75],[1967,47.03],[1968,48.28],[1969,46.92],[1970,48.51],[1971,52.97],[1972,48.11],[1973,43.16],[1974,46.96],[1975,38.44],[1976,40.68],[1977,42.27],[1978,42.33],[1979,48.56],[1980,52.09],[1981,49.93],[1982,44.86],[1983,47.42],[1984,47.23],[1985,47.7],[1986,45.2],[1987,45.59],[1988,48.8],[1989,48.4],[1990,46.38],[1991,46.76],[1992,49.14],[1993,48.5],[1994,48.99],[1995,48.37],[1996,45.22],[1997,44.73],[1998,48.26],[1999,49.27],[2000,47.76],[2001,47.01],[2002,48.19],[2003,48.48],[2004,47.94],[2005,46.52],[2006,46],[2007,47.21],[2008,45.95],[2009,46.55],[2010,44.35],[2011,42.36],[2012,42.58],[2013,43.49],[2014,42.6],[2015,46.3],[2016,46.63],[2017,46.71],[2018,47.44],[2019,48.8],[2020,48.37],[2021,47.5]]},{"id":"eggs-per-capita-availability","c":"Eggs: Per capita availability","g":"eggs","gl":"Eggs","pc":36.04,"ly":2021,"span":"1909..2021","y0":1909,"v0":37.16,"y1":2021,"v1":36.04,"pk":[1945,52.93],"pct":-3,"dir":"flat","cuts":["eggs"],"s":[[1909,37.16],[1910,38.83],[1911,41.78],[1912,39.52],[1913,38.49],[1914,37.48],[1915,39.71],[1916,37.97],[1917,35.7],[1918,36.08],[1919,38.47],[1920,38.01],[1921,38.01],[1922,40.09],[1923,41.44],[1924,41.15],[1925,40.36],[1926,42.96],[1927,43.4],[1928,42.93],[1929,42.44],[1930,42.01],[1931,42.19],[1932,39.71],[1933,37.6],[1934,36.6],[1935,35.44],[1936,36.6],[1937,39.05],[1938,39.34],[1939,39.69],[1940,40.46],[1941,39.74],[1942,40.77],[1943,45.26],[1944,46.92],[1945,52.93],[1946,48.37],[1947,48.93],[1948,50.23],[1949,48.8],[1950,49.67],[1951,50.3],[1952,49.5],[1953,48.15],[1954,47.71],[1955,47.1],[1956,46.78],[1957,45.88],[1958,44.91],[1959,44.63],[1960,42.36],[1961,41.63],[1962,41.35],[1963,40.21],[1964,40.35],[1965,39.92],[1966,40.08],[1967,41.12],[1968,40.48],[1969,39.62],[1970,39.54],[1971,39.68],[1972,38.81],[1973,36.95],[1974,36.27],[1975,35.38],[1976,34.61],[1977,34.26],[1978,34.85],[1979,35.51],[1980,34.82],[1981,33.97],[1982,33.95],[1983,33.46],[1984,33.45],[1985,32.83],[1986,32.63],[1987,32.67],[1988,31.75],[1989,30.53],[1990,30.17],[1991,30.01],[1992,30.11],[1993,30.11],[1994,30.29],[1995,29.93],[1996,30.08],[1997,30.19],[1998,30.83],[1999,32.19],[2000,32.31],[2001,32.51],[2002,32.81],[2003,32.79],[2004,33.11],[2005,32.87],[2006,33.19],[2007,32.21],[2008,31.81],[2009,31.78],[2010,31.72],[2011,31.86],[2012,32.62],[2013,33.52],[2014,34.68],[2015,33.38],[2016,35.82],[2017,36.09],[2018,37.01],[2019,37.76],[2020,36.89],[2021,36.04]]},{"id":"potatoes","c":"potatoes","g":"veg","gl":"Vegetables","pc":28.41,"ly":2022,"span":"1960..2022","y0":1960,"v0":81,"y1":2022,"v1":28.41,"pk":[1960,81],"pct":-64.9,"dir":"dn","cuts":["red-potato","russet-potato"],"s":[[1960,81],[1961,80.7],[1962,76.1],[1963,78.6],[1964,74.8],[1965,66.7],[1966,71.7],[1967,60.4],[1968,65.3],[1969,62.6],[1970,61.81],[1971,56.07],[1972,57.85],[1973,52.42],[1974,49.35],[1975,52.64],[1976,49.45],[1977,50.08],[1978,45.97],[1979,49.35],[1980,51.12],[1981,45.84],[1982,47.11],[1983,49.79],[1984,48.3],[1985,46.3],[1986,48.82],[1987,47.94],[1988,49.61],[1989,50.03],[1990,46.74],[1991,50.21],[1992,48.33],[1993,50.13],[1994,49.63],[1995,49.22],[1996,49.94],[1997,47.31],[1998,46.86],[1999,47.71],[2000,47.15],[2001,46.57],[2002,44.27],[2003,46.78],[2004,45.84],[2005,41.27],[2006,38.58],[2007,38.71],[2008,37.83],[2009,36.65],[2010,36.81],[2011,34.07],[2012,34.56],[2013,34.57],[2014,33.62],[2015,34.16],[2016,33.73],[2017,34.86],[2018,33.05],[2019,30.07],[2020,30.26],[2021,28.56],[2022,28.41]]},{"id":"bananas","c":"bananas","g":"fruit","gl":"Fruit","pc":26.86,"ly":2021,"span":"1970..2021","y0":1970,"v0":17.38,"y1":2021,"v1":26.86,"pk":[1999,30.69],"pct":54.5,"dir":"up","cuts":["banana"],"s":[[1970,17.38],[1971,18.06],[1972,17.92],[1973,18.16],[1974,18.49],[1975,17.64],[1976,19.25],[1977,19.21],[1978,20.19],[1979,20.98],[1980,20.77],[1981,21.48],[1982,22.54],[1983,21.25],[1984,22.18],[1985,23.48],[1986,25.82],[1987,25.02],[1988,24.29],[1989,24.71],[1990,24.34],[1991,25.03],[1992,27.1],[1993,26.58],[1994,27.76],[1995,27.06],[1996,27.58],[1997,27.14],[1998,28],[1999,30.69],[2000,28.45],[2001,26.63],[2002,26.78],[2003,26.17],[2004,25.78],[2005,25.18],[2006,25.11],[2007,25.95],[2008,25.04],[2009,22.01],[2010,25.61],[2011,25.55],[2013,27.99],[2014,27.86],[2015,27.93],[2016,27.44],[2017,28.61],[2018,28.28],[2019,27.38],[2020,27.22],[2021,26.86]]},{"id":"onions","c":"onions","g":"veg","gl":"Vegetables","pc":19.17,"ly":2022,"span":"1970..2022","y0":1970,"v0":10.14,"y1":2022,"v1":19.17,"pk":[2017,25.04],"pct":89.1,"dir":"up","cuts":["green-onion","onion","red-onion"],"s":[[1970,10.14],[1971,10.73],[1972,10.7],[1973,10.24],[1974,11.19],[1975,10.5],[1976,11.01],[1977,11.07],[1978,10.92],[1979,11.44],[1980,11.38],[1981,10.73],[1982,12.24],[1983,12.17],[1984,13.08],[1985,13.62],[1986,13.74],[1987,13.41],[1988,14.55],[1989,14.76],[1990,15.06],[1991,15.69],[1992,16.1],[1993,17.17],[1994,16.92],[1995,17.78],[1996,18.32],[1997,18.84],[1998,18.4],[1999,18.48],[2000,18.87],[2001,18.47],[2002,19.32],[2003,19.51],[2004,21.92],[2005,20.9],[2006,19.92],[2007,21.61],[2008,20.18],[2009,19.58],[2010,19.58],[2011,19.13],[2012,19.31],[2013,18.49],[2014,18.37],[2015,18.26],[2016,22.74],[2017,25.04],[2018,20.56],[2019,19.85],[2020,20.82],[2021,20.81],[2022,19.17]]},{"id":"tomatoes-field-and-hothouse","c":"tomatoes (field and hothouse)","g":"veg","gl":"Vegetables","pc":19.03,"ly":2022,"span":"1960..2022","y0":1960,"v0":12.55,"y1":2022,"v1":19.03,"pk":[2011,20.97],"pct":51.6,"dir":"up","cuts":["cherry-tomato","tomato"],"s":[[1960,12.55],[1961,12.53],[1962,12.61],[1963,12],[1964,12.13],[1965,12.03],[1966,12.37],[1967,12.31],[1968,11.83],[1969,11.88],[1970,12.15],[1971,11.34],[1972,12.09],[1973,12.48],[1974,11.84],[1975,12],[1976,12.56],[1977,12.36],[1978,12.92],[1979,12.42],[1980,12.83],[1981,12.31],[1982,12.88],[1983,13.47],[1984,14.2],[1985,14.85],[1986,15.8],[1987,15.85],[1988,16.83],[1989,16.84],[1990,15.52],[1991,15.36],[1992,15.45],[1993,16.3],[1994,16.21],[1995,16.84],[1996,17.4],[1997,17.29],[1998,18.5],[1999,19.07],[2000,18.98],[2001,19.2],[2002,20.31],[2003,19.41],[2004,19.95],[2005,20.15],[2006,19.77],[2007,19.21],[2008,18.51],[2009,19.59],[2010,20.55],[2011,20.97],[2012,20.79],[2013,20.24],[2014,20.63],[2015,20.56],[2016,20.31],[2017,20.13],[2018,20.24],[2019,18.33],[2020,18.22],[2021,18.79],[2022,19.03]]},{"id":"apples","c":"apples","g":"fruit","gl":"Fruit","pc":15.81,"ly":2021,"span":"1970..2021","y0":1970,"v0":17.23,"y1":2021,"v1":15.81,"pk":[1989,21.43],"pct":-8.2,"dir":"dn","cuts":["apple"],"s":[[1970,17.23],[1971,16.62],[1972,15.68],[1973,16.28],[1974,16.56],[1975,19.68],[1976,17.24],[1977,16.69],[1978,18.14],[1979,17.34],[1980,19.41],[1981,17.01],[1982,17.7],[1983,18.43],[1984,18.52],[1985,17.42],[1986,18],[1987,21.02],[1988,20.02],[1989,21.43],[1990,19.81],[1991,18.33],[1992,19.37],[1993,19.22],[1994,19.58],[1995,18.89],[1996,18.88],[1997,18.28],[1998,19.19],[1999,18.71],[2000,17.64],[2001,15.76],[2002,16.16],[2003,17.06],[2004,18.97],[2005,16.81],[2006,17.9],[2007,16.55],[2008,16.02],[2009,16.34],[2010,15.39],[2011,15.56],[2012,16.15],[2013,17.54],[2014,18.84],[2015,17.6],[2016,19.28],[2017,18.17],[2018,16.9],[2019,17.67],[2020,16.27],[2021,15.81]]},{"id":"watermelon","c":"watermelon","g":"fruit","gl":"Fruit","pc":14.39,"ly":2021,"span":"1970..2021","y0":1970,"v0":13.49,"y1":2021,"v1":14.39,"pk":[1996,16.59],"pct":6.7,"dir":"up","cuts":["watermelon"],"s":[[1970,13.49],[1971,13.04],[1972,12.31],[1973,12.74],[1974,11.32],[1975,11.44],[1976,12.63],[1977,12.62],[1978,11.89],[1979,11.4],[1980,10.65],[1981,11.65],[1982,12.48],[1983,11.31],[1984,14.42],[1985,13.5],[1986,12.75],[1987,12.98],[1988,13.55],[1989,13.62],[1990,13.28],[1991,12.73],[1992,14.7],[1993,14.19],[1994,15],[1995,15.16],[1996,16.59],[1997,15.49],[1998,14.34],[1999,15.21],[2000,13.82],[2001,15.01],[2002,14.04],[2003,13.54],[2004,12.99],[2005,13.55],[2006,15.12],[2007,14.41],[2008,15.56],[2009,14.92],[2010,15.7],[2011,13.83],[2012,13.89],[2013,14.48],[2014,13.91],[2015,14.87],[2016,16.57],[2017,16.25],[2018,15.85],[2019,15.18],[2020,14.35],[2021,14.39]]},{"id":"romaine-and-leaf-lettuce","c":"romaine and leaf lettuce","g":"veg","gl":"Vegetables","pc":12.7,"ly":2022,"span":"1985..2022","y0":1985,"v0":3.27,"y1":2022,"v1":12.7,"pk":[2017,14.96],"pct":288.4,"dir":"up","cuts":["green-leaf-lettuce","red-leaf-lettuce","romaine-lettuce"],"s":[[1985,3.27],[1986,2.37],[1987,2.52],[1988,3.2],[1989,3.56],[1990,3.77],[1991,4],[1992,4.67],[1993,5.04],[1994,5.68],[1995,5.89],[1996,5.82],[1997,6.59],[1998,6.61],[1999,7.59],[2000,8.39],[2001,8.03],[2002,9.59],[2003,10.82],[2004,11.98],[2005,9.67],[2006,11.98],[2007,11.54],[2008,10.41],[2009,10],[2010,12.01],[2011,11.73],[2012,11.93],[2013,11.43],[2014,10.8],[2015,11.89],[2016,14.53],[2017,14.96],[2018,12.06],[2019,12.29],[2020,14.26],[2021,12.52],[2022,12.7]]},{"id":"turkey","c":"Turkey","g":"meat","gl":"Meat & poultry","pc":12.07,"ly":2021,"span":"1909..2021","y0":1909,"v0":0.79,"y1":2021,"v1":12.07,"pk":[1996,14.34],"pct":1427.8,"dir":"up","cuts":["whole-turkey"],"s":[[1909,0.79],[1910,0.79],[1911,0.87],[1912,0.87],[1913,0.87],[1914,0.87],[1915,0.95],[1916,0.95],[1917,0.95],[1918,0.95],[1919,1.03],[1920,1.03],[1921,1.03],[1922,1.03],[1923,1.03],[1924,1.03],[1925,1.03],[1926,1.03],[1927,1.11],[1928,1.11],[1929,1.14],[1930,1.18],[1931,1.12],[1932,1.35],[1933,1.52],[1934,1.44],[1935,1.38],[1936,1.73],[1937,1.8],[1938,1.8],[1939,1.92],[1940,2.29],[1941,2.32],[1942,2.44],[1943,2.27],[1944,2.44],[1945,2.73],[1946,3.01],[1947,2.92],[1948,2.47],[1949,2.63],[1950,3.29],[1951,3.61],[1952,3.8],[1953,3.88],[1954,4.24],[1955,4.03],[1956,4.18],[1957,4.7],[1958,4.75],[1959,5.01],[1960,4.9],[1961,5.91],[1962,5.61],[1963,5.47],[1964,5.87],[1965,5.98],[1966,6.27],[1967,6.84],[1968,6.38],[1969,6.59],[1970,6.39],[1971,6.62],[1972,7.09],[1973,6.64],[1974,6.85],[1975,6.52],[1976,7.02],[1977,6.91],[1978,6.88],[1979,7.29],[1980,8.08],[1981,8.34],[1982,8.34],[1983,8.69],[1984,8.7],[1985,9.14],[1986,10.17],[1987,11.64],[1988,12.38],[1989,13.08],[1990,13.77],[1991,14.04],[1992,14],[1993,13.86],[1994,13.9],[1995,13.9],[1996,14.34],[1997,13.62],[1998,13.92],[1999,13.83],[2000,13.66],[2001,13.82],[2002,13.97],[2003,13.75],[2004,13.45],[2005,13.17],[2006,13.33],[2007,13.8],[2008,13.87],[2009,13.33],[2010,12.92],[2011,12.65],[2012,12.6],[2013,12.61],[2014,12.48],[2015,12.59],[2016,13.13],[2017,12.97],[2018,12.76],[2019,12.62],[2020,12.41],[2021,12.07]]},{"id":"bell-peppers","c":"bell peppers","g":"veg","gl":"Vegetables","pc":11.06,"ly":2022,"span":"1960..2022","y0":1960,"v0":2.08,"y1":2022,"v1":11.06,"pk":[2017,11.3],"pct":431.7,"dir":"up","cuts":["bell-pepper"],"s":[[1960,2.08],[1961,2.18],[1962,2.02],[1963,2.13],[1964,2.02],[1965,2.02],[1966,2.1],[1967,2.26],[1968,2.5],[1969,2.29],[1970,2.16],[1971,2.26],[1972,2.4],[1973,2.53],[1974,2.72],[1975,2.48],[1976,2.67],[1977,2.8],[1978,2.77],[1979,2.94],[1980,2.89],[1981,2.79],[1982,2.97],[1983,3.33],[1984,3.62],[1985,3.8],[1986,3.97],[1987,4.23],[1988,4.48],[1989,4.69],[1990,5.88],[1991,6.3],[1992,7.1],[1993,7.63],[1994,7.06],[1995,7.01],[1996,8.07],[1997,7.33],[1998,7.76],[1999,7.72],[2000,8.19],[2001,8.12],[2002,8.26],[2003,8.41],[2004,8.64],[2005,9.21],[2006,9.46],[2007,9.36],[2008,9.48],[2009,9.8],[2010,10.33],[2011,10.57],[2012,10.75],[2013,10.03],[2014,10.72],[2015,10.73],[2016,11.08],[2017,11.3],[2018,11.17],[2019,10.87],[2020,10.73],[2021,11.16],[2022,11.06]]},{"id":"head-lettuce","c":"head lettuce","g":"veg","gl":"Vegetables","pc":10.34,"ly":2022,"span":"1960..2022","y0":1960,"v0":21.41,"y1":2022,"v1":10.34,"pk":[1989,28.69],"pct":-51.7,"dir":"dn","cuts":["butter-lettuce","iceberg-lettuce"],"s":[[1960,21.41],[1961,20.67],[1962,20.06],[1963,20.82],[1964,20.41],[1965,21.01],[1966,20.93],[1967,21.4],[1968,21.83],[1969,21.84],[1970,22.38],[1971,22.38],[1972,22.44],[1973,23.12],[1974,23.5],[1975,23.54],[1976,24.23],[1977,25.82],[1978,25.07],[1979,25.1],[1980,25.63],[1981,24.91],[1982,24.94],[1983,22.44],[1984,24.94],[1985,23.67],[1986,21.94],[1987,25.71],[1988,27.04],[1989,28.69],[1990,27.75],[1991,26.04],[1992,25.79],[1993,24.4],[1994,25.01],[1995,22.17],[1996,21.57],[1997,23.9],[1998,22.32],[1999,24.91],[2000,23.46],[2001,22.99],[2002,22.54],[2003,22.23],[2004,21.26],[2005,20.91],[2006,20.05],[2007,18.38],[2008,16.85],[2009,16.11],[2010,15.93],[2011,15.79],[2012,15.95],[2013,14.1],[2014,14.49],[2015,13.57],[2016,16.74],[2017,15.21],[2018,12.26],[2019,12.84],[2020,11.65],[2021,10.58],[2022,10.34]]},{"id":"grapes","c":"grapes","g":"fruit","gl":"Fruit","pc":8.5,"ly":2021,"span":"1970..2021","y0":1970,"v0":2.92,"y1":2021,"v1":8.5,"pk":[2005,8.68],"pct":191.1,"dir":"up","cuts":["grapes"],"s":[[1970,2.92],[1971,2.56],[1972,2.54],[1973,2.91],[1974,3.17],[1975,3.65],[1976,3.57],[1977,3.58],[1978,3.12],[1979,3.49],[1980,4.01],[1981,4.09],[1982,5.77],[1983,5.64],[1984,6.14],[1985,6.91],[1986,7.16],[1987,7.11],[1988,7.77],[1989,8.02],[1990,7.91],[1991,7.35],[1992,7.21],[1993,7.06],[1994,7.11],[1995,7.54],[1996,6.8],[1997,7.85],[1998,7.25],[1999,8.06],[2000,7.52],[2001,7.45],[2002,8.5],[2003,7.73],[2004,7.87],[2005,8.68],[2006,7.67],[2007,8.09],[2008,8.34],[2009,7.73],[2010,7.98],[2011,7.4],[2012,7.63],[2013,7.81],[2014,7.73],[2015,7.92],[2016,8.14],[2017,8.27],[2018,8.1],[2019,8.42],[2020,8.22],[2021,8.5]]},{"id":"avocados","c":"avocados","g":"fruit","gl":"Fruit","pc":8.45,"ly":2021,"span":"1970..2021","y0":1970,"v0":0.45,"y1":2021,"v1":8.45,"pk":[2020,9.28],"pct":1777.8,"dir":"up","cuts":["avocado"],"s":[[1970,0.45],[1971,0.83],[1972,0.43],[1973,0.71],[1974,1.25],[1975,0.73],[1976,1.19],[1977,1.13],[1978,1.27],[1979,0.85],[1980,2.1],[1981,1.56],[1982,1.86],[1983,2.21],[1984,1.84],[1985,1.52],[1986,2.37],[1987,1.59],[1988,1.57],[1989,1.08],[1990,1.42],[1991,1.44],[1992,2.18],[1993,1.34],[1994,1.37],[1995,1.59],[1996,1.6],[1997,1.75],[1998,1.54],[1999,1.94],[2000,2.26],[2001,2.47],[2002,2.45],[2003,2.69],[2004,3.2],[2005,3.49],[2006,3.54],[2007,3.53],[2008,3.87],[2009,4.28],[2010,4.03],[2011,5.14],[2012,5.66],[2013,6.16],[2014,7.03],[2015,7.25],[2016,6.91],[2017,8.06],[2018,8.51],[2019,8.22],[2020,9.28],[2021,8.45]]},{"id":"carrots","c":"carrots","g":"veg","gl":"Vegetables","pc":8.38,"ly":2022,"span":"1960..2022","y0":1960,"v0":7.22,"y1":2022,"v1":8.38,"pk":[1997,14.11],"pct":16.1,"dir":"up","cuts":["carrot"],"s":[[1960,7.22],[1961,6.78],[1962,6.85],[1963,7.2],[1964,6.77],[1965,6.89],[1966,6.29],[1967,6.41],[1968,7.35],[1969,5.88],[1970,5.97],[1971,6.12],[1972,6.54],[1973,6.7],[1974,6.91],[1975,6.44],[1976,6.41],[1977,5.31],[1978,5.31],[1979,5.89],[1980,6.15],[1981,6.12],[1982,6.6],[1983,6.49],[1984,6.68],[1985,6.49],[1986,6.48],[1987,8.3],[1988,7.09],[1989,8.09],[1990,8.29],[1991,7.71],[1992,8.29],[1993,10.85],[1994,12.68],[1995,11.19],[1996,12.37],[1997,14.11],[1998,9.53],[1999,9.25],[2000,9.2],[2001,9.38],[2002,8.42],[2003,8.78],[2004,8.72],[2005,8.66],[2006,8.11],[2007,8.05],[2008,8.07],[2009,7.39],[2010,7.76],[2011,7.5],[2012,7.95],[2013,8.02],[2014,8.49],[2015,8.8],[2016,7.82],[2017,7.35],[2018,12.21],[2019,8.31],[2020,8.1],[2021,8.1],[2022,8.38]]},{"id":"oranges-and-temples","c":"oranges and temples","g":"fruit","gl":"Fruit","pc":8.25,"ly":2022,"span":"1970..2022","y0":1970,"v0":16.09,"y1":2022,"v1":8.25,"pk":[1970,16.09],"pct":-48.7,"dir":"dn","cuts":["orange"],"s":[[1970,16.09],[1971,15.69],[1972,14.41],[1973,14.35],[1974,14.35],[1975,15.81],[1976,14.68],[1977,13.38],[1978,13.39],[1979,11.44],[1980,14.24],[1981,12.33],[1982,11.68],[1983,15.01],[1984,11.85],[1985,11.59],[1986,13.42],[1987,12.81],[1988,13.9],[1989,12.17],[1990,12.36],[1991,8.43],[1992,12.83],[1993,14.13],[1994,12.93],[1995,11.82],[1996,12.57],[1997,13.91],[1998,14.6],[1999,8.37],[2000,11.74],[2001,11.88],[2002,11.74],[2003,11.9],[2004,10.8],[2005,11.43],[2006,10.24],[2007,7.46],[2008,9.93],[2009,9.06],[2010,9.68],[2011,9.97],[2012,10.47],[2013,10.39],[2014,9.38],[2015,8.68],[2016,9.18],[2017,8.04],[2018,8.2],[2019,8.46],[2020,9.4],[2021,8.15],[2022,8.25]]},{"id":"cucumbers","c":"cucumbers","g":"veg","gl":"Vegetables","pc":8.15,"ly":2022,"span":"1960..2022","y0":1960,"v0":2.99,"y1":2022,"v1":8.15,"pk":[2022,8.15],"pct":172.6,"dir":"up","cuts":["cucumber"],"s":[[1960,2.99],[1961,3],[1962,2.78],[1963,3.07],[1964,2.99],[1965,3.09],[1966,2.92],[1967,3.1],[1968,2.89],[1969,3.13],[1970,2.82],[1971,2.79],[1972,2.97],[1973,2.75],[1974,2.96],[1975,2.8],[1976,3.08],[1977,3.5],[1978,3.81],[1979,3.83],[1980,3.86],[1981,4],[1982,4.19],[1983,4.54],[1984,4.65],[1985,4.39],[1986,4.62],[1987,5.07],[1988,4.82],[1989,4.78],[1990,4.67],[1991,4.56],[1992,4.93],[1993,5.21],[1994,5.36],[1995,5.61],[1996,5.93],[1997,6.42],[1998,6.49],[1999,6.73],[2000,6.35],[2001,6.27],[2002,6.62],[2003,6.16],[2004,6.43],[2005,6.19],[2006,6.14],[2007,6.42],[2008,6.39],[2009,6.8],[2010,6.73],[2011,6.38],[2012,7.12],[2013,7.32],[2014,7.43],[2015,7.56],[2016,8.12],[2017,7.43],[2018,7.99],[2019,7.83],[2020,7.55],[2021,7.97],[2022,8.15]]},{"id":"pineapples","c":"pineapples","g":"fruit","gl":"Fruit","pc":7.87,"ly":2021,"span":"1970..2021","y0":1970,"v0":0.7,"y1":2021,"v1":7.87,"pk":[2021,7.87],"pct":1024.3,"dir":"up","cuts":["pineapple"],"s":[[1970,0.7],[1971,0.64],[1972,0.77],[1973,0.91],[1974,0.9],[1975,1.03],[1976,1.14],[1977,1.36],[1978,1.43],[1979,1.45],[1980,1.49],[1981,1.54],[1982,1.65],[1983,1.68],[1984,1.5],[1985,1.47],[1986,1.72],[1987,1.62],[1988,1.76],[1989,1.96],[1990,2.05],[1991,1.91],[1992,1.99],[1993,2.04],[1994,2.02],[1995,1.91],[1996,1.89],[1997,2.34],[1998,2.75],[1999,3.03],[2000,3.22],[2001,3.16],[2002,3.82],[2003,4.39],[2004,4.43],[2005,4.9],[2006,5.2],[2007,5.02],[2008,5.07],[2009,5.09],[2010,5.7],[2011,5.72],[2012,6.42],[2013,6.74],[2014,7.19],[2015,6.99],[2016,7.28],[2017,7.76],[2018,7.81],[2019,7.64],[2020,7.3],[2021,7.87]]},{"id":"strawberries","c":"strawberries","g":"fruit","gl":"Fruit","pc":7.3,"ly":2021,"span":"1970..2021","y0":1970,"v0":1.73,"y1":2021,"v1":7.3,"pk":[2021,7.3],"pct":322,"dir":"up","cuts":["strawberry"],"s":[[1970,1.73],[1971,1.83],[1972,1.67],[1973,1.58],[1974,1.83],[1975,1.8],[1976,1.66],[1977,1.91],[1978,2.12],[1979,1.9],[1980,1.97],[1981,2.17],[1982,2.37],[1983,2.32],[1984,2.96],[1985,2.99],[1986,2.89],[1987,3.11],[1988,3.33],[1989,3.25],[1990,3.24],[1991,3.57],[1992,3.59],[1993,3.61],[1994,4.04],[1995,4.1],[1996,4.32],[1997,4.1],[1998,3.92],[1999,4.57],[2000,3.36],[2001,3.16],[2002,3.77],[2003,4.11],[2004,4.26],[2005,3.87],[2006,3.93],[2007,4.08],[2008,4.1],[2009,4.82],[2010,5.01],[2011,5.03],[2012,5.62],[2013,5.63],[2014,5.69],[2015,5.46],[2016,5.75],[2017,5.94],[2018,6.32],[2019,6.01],[2020,7.13],[2021,7.3]]},{"id":"cabbage","c":"cabbage","g":"veg","gl":"Vegetables","pc":6.17,"ly":2022,"span":"1960..2022","y0":1960,"v0":10.53,"y1":2022,"v1":6.17,"pk":[1960,10.53],"pct":-41.4,"dir":"dn","cuts":["cabbage","napa-cabbage"],"s":[[1960,10.53],[1961,9.82],[1962,9.81],[1963,9.78],[1964,9.35],[1965,9.09],[1966,8.75],[1967,9.27],[1968,9.28],[1969,8.84],[1970,8.67],[1971,8.82],[1972,8.37],[1973,8.86],[1974,8.83],[1975,8.91],[1976,8.36],[1977,8.28],[1978,8.55],[1979,8.05],[1980,8],[1981,8.15],[1982,8.56],[1983,8.21],[1984,8.57],[1985,8.74],[1986,8.64],[1987,9.08],[1988,9.01],[1989,8.6],[1990,8.34],[1991,8.2],[1992,8.66],[1993,9.32],[1994,9.08],[1995,8.12],[1996,8.26],[1997,9.01],[1998,8.43],[1999,7.55],[2000,8.9],[2001,8.83],[2002,8.3],[2003,7.4],[2004,8.04],[2005,7.76],[2006,7.75],[2007,7.95],[2008,8.05],[2009,7.25],[2010,7.46],[2011,6.56],[2012,6.26],[2013,6.93],[2014,6.7],[2015,6.29],[2016,5.91],[2017,6.2],[2018,5.68],[2019,6.35],[2020,6.13],[2021,5.89],[2022,6.17]]},{"id":"sweet-potatoes","c":"sweet potatoes","g":"veg","gl":"Vegetables","pc":5.67,"ly":2022,"span":"1965..2022","y0":1965,"v0":6.64,"y1":2022,"v1":5.67,"pk":[2017,8.01],"pct":-14.6,"dir":"dn","cuts":["sweet-potato"],"s":[[1965,6.64],[1966,5.9],[1967,5.84],[1968,6.05],[1969,5.87],[1970,5.41],[1971,4.93],[1972,4.86],[1973,5.03],[1974,4.9],[1975,5.37],[1976,5.38],[1977,4.72],[1978,4.9],[1979,5.07],[1980,4.39],[1981,4.67],[1982,5.39],[1983,4.49],[1984,4.83],[1985,5.26],[1986,4.26],[1987,4.3],[1988,3.93],[1989,3.92],[1990,4.4],[1991,3.87],[1992,4.08],[1993,3.66],[1994,4.46],[1995,4.21],[1996,4.29],[1997,4.26],[1998,3.85],[1999,3.72],[2000,4.2],[2001,4.37],[2002,3.76],[2003,4.7],[2004,4.7],[2005,4.54],[2006,4.65],[2007,5.09],[2008,5.07],[2009,5.25],[2010,6.34],[2011,7.11],[2012,6.89],[2013,6.29],[2014,7.49],[2015,7.56],[2016,7.22],[2017,8.01],[2018,5.56],[2019,7.14],[2020,6.53],[2021,6.36],[2022,5.67]]},{"id":"squash","c":"squash","g":"veg","gl":"Vegetables","pc":5.26,"ly":2022,"span":"1970..2022","y0":1970,"v0":1.33,"y1":2022,"v1":5.26,"pk":[2019,5.77],"pct":295.5,"dir":"up","cuts":["acorn-squash","butternut-squash","yellow-squash","zucchini"],"s":[[1970,1.33],[1971,1.39],[1972,1.47],[1973,1.52],[1974,1.59],[1975,1.67],[1976,1.77],[1977,1.91],[1978,1.98],[1979,2.16],[1980,2.31],[1981,2.32],[1982,2.46],[1983,2.56],[1984,2.62],[1985,2.67],[1986,2.78],[1987,2.88],[1988,3.08],[1989,3.45],[1990,3.51],[1991,3.67],[1992,3.81],[1993,3.78],[1994,3.93],[1995,3.75],[1996,3.69],[1997,3.85],[1998,4.16],[1999,4.1],[2000,4.43],[2001,4.2],[2002,4.61],[2003,4.29],[2004,4.26],[2005,4.42],[2006,4.58],[2007,4.13],[2008,4.15],[2009,4.39],[2010,4.31],[2011,4.39],[2012,4.65],[2013,4.44],[2014,4.6],[2015,4.64],[2016,5.73],[2017,5.69],[2018,5.64],[2019,5.77],[2020,5.65],[2021,5.71],[2022,5.26]]},{"id":"broccoli","c":"broccoli","g":"veg","gl":"Vegetables","pc":5.24,"ly":2022,"span":"1960..2022","y0":1960,"v0":0.4,"y1":2022,"v1":5.24,"pk":[2016,7.45],"pct":1210,"dir":"up","cuts":["broccoli"],"s":[[1960,0.4],[1961,0.44],[1962,0.33],[1963,0.37],[1964,0.33],[1965,0.32],[1966,0.31],[1967,0.29],[1968,0.44],[1969,0.46],[1970,0.53],[1971,0.72],[1972,0.7],[1973,0.76],[1974,0.79],[1975,0.99],[1976,1.08],[1977,1.23],[1978,0.99],[1979,1.2],[1980,1.4],[1981,1.66],[1982,1.99],[1983,2.03],[1984,2.46],[1985,2.58],[1986,3.05],[1987,3.09],[1988,3.77],[1989,3.8],[1990,3.37],[1991,3.04],[1992,3.42],[1993,3.33],[1994,4.43],[1995,4.31],[1996,4.52],[1997,4.97],[1998,5.04],[1999,6.16],[2000,5.89],[2001,5.4],[2002,5.35],[2003,5.35],[2004,5.31],[2005,5.34],[2006,5.76],[2007,5.64],[2008,6.03],[2009,6.21],[2010,5.95],[2011,5.94],[2012,6.31],[2013,6.93],[2014,6.65],[2015,7.41],[2016,7.45],[2017,7.12],[2018,5.94],[2019,5.91],[2020,5.86],[2021,5.06],[2022,5.24]]},{"id":"cantaloupe","c":"cantaloupe","g":"fruit","gl":"Fruit","pc":5.16,"ly":2021,"span":"1970..2021","y0":1970,"v0":7.01,"y1":2021,"v1":5.16,"pk":[1999,11.38],"pct":-26.4,"dir":"dn","cuts":["cantaloupe"],"s":[[1970,7.01],[1971,6.64],[1972,6.77],[1973,5.88],[1974,5.14],[1975,5.05],[1976,5.05],[1977,5.52],[1978,6.58],[1979,6.12],[1980,5.85],[1981,6.12],[1982,7.67],[1983,6.54],[1984,7.67],[1985,8.47],[1986,9.43],[1987,9.15],[1988,7.86],[1989,10.36],[1990,9.23],[1991,8.64],[1992,8.47],[1993,8.61],[1994,8.38],[1995,8.97],[1996,10.28],[1997,10.52],[1998,10.64],[1999,11.38],[2000,11.12],[2001,11.16],[2002,11.1],[2003,10.79],[2004,9.81],[2005,9.58],[2006,9.25],[2007,9.58],[2008,8.87],[2009,9.05],[2010,8.54],[2011,8.65],[2012,7.52],[2013,8.28],[2014,6.6],[2015,6.77],[2016,7.55],[2017,7.34],[2018,7.05],[2019,5.7],[2020,5.36],[2021,5.16]]},{"id":"lemons","c":"lemons","g":"fruit","gl":"Fruit","pc":4.94,"ly":2022,"span":"1970..2022","y0":1970,"v0":2.06,"y1":2022,"v1":4.94,"pk":[2022,4.94],"pct":139.8,"dir":"up","cuts":["lemon"],"s":[[1970,2.06],[1971,2.25],[1972,1.87],[1973,1.94],[1974,2.01],[1975,1.95],[1976,1.89],[1977,2.11],[1978,2.13],[1979,1.91],[1980,1.92],[1981,2.01],[1982,2.07],[1983,2.32],[1984,2.16],[1985,2.3],[1986,2.47],[1987,2.48],[1988,2.47],[1989,2.39],[1990,2.6],[1991,2.6],[1992,2.53],[1993,2.63],[1994,2.65],[1995,2.83],[1996,2.86],[1997,2.76],[1998,2.46],[1999,2.61],[2000,2.44],[2001,2.97],[2002,3.34],[2003,3.33],[2004,3.12],[2005,2.95],[2006,4.15],[2007,2.81],[2008,1.97],[2009,3.12],[2010,2.79],[2011,3.46],[2012,3.94],[2013,3.48],[2014,3.42],[2015,3.6],[2016,4.15],[2017,4.26],[2018,4.23],[2019,4.88],[2020,4.9],[2021,4.91],[2022,4.94]]},{"id":"limes","c":"limes","g":"fruit","gl":"Fruit","pc":4.59,"ly":2022,"span":"1970..2022","y0":1970,"v0":0.17,"y1":2022,"v1":4.59,"pk":[2021,4.66],"pct":2600,"dir":"up","cuts":["lime"],"s":[[1970,0.17],[1971,0.17],[1972,0.21],[1973,0.21],[1974,0.2],[1975,0.22],[1976,0.25],[1977,0.23],[1978,0.22],[1979,0.27],[1980,0.36],[1981,0.42],[1982,0.38],[1983,0.52],[1984,0.45],[1985,0.56],[1986,0.58],[1987,0.51],[1988,0.56],[1989,0.69],[1990,0.66],[1991,0.75],[1992,1.02],[1993,0.95],[1994,0.97],[1995,1.18],[1996,1.14],[1997,1.15],[1998,1.4],[1999,1.33],[2000,1.39],[2001,1.5],[2002,1.1],[2003,1.77],[2004,1.85],[2005,2.09],[2006,2.26],[2007,2.27],[2008,2.48],[2009,2.55],[2010,2.57],[2011,2.5],[2012,2.57],[2013,2.96],[2014,3.07],[2015,3.02],[2016,3.48],[2017,3.75],[2018,4.06],[2019,4.1],[2020,4.27],[2021,4.66],[2022,4.59]]},{"id":"celery","c":"celery","g":"veg","gl":"Vegetables","pc":4.15,"ly":2022,"span":"1960..2022","y0":1960,"v0":7.99,"y1":2022,"v1":4.15,"pk":[1960,7.99],"pct":-48.1,"dir":"dn","cuts":["celery"],"s":[[1960,7.99],[1961,7.78],[1962,7.22],[1963,7.11],[1964,6.86],[1965,6.77],[1966,6.97],[1967,6.86],[1968,7.2],[1969,7.33],[1970,7.27],[1971,7.27],[1972,7.13],[1973,7.56],[1974,7.35],[1975,6.94],[1976,7.36],[1977,7.05],[1978,7.07],[1979,7.07],[1980,7.37],[1981,7.27],[1982,7.41],[1983,7],[1984,7.12],[1985,6.88],[1986,6.49],[1987,6.59],[1988,7.15],[1989,7.47],[1990,7.19],[1991,6.73],[1992,7.32],[1993,7.26],[1994,7.24],[1995,6.93],[1996,7.03],[1997,6.55],[1998,6.47],[1999,6.53],[2000,6.27],[2001,6.41],[2002,6.3],[2003,6.27],[2004,6.23],[2005,5.92],[2006,6.08],[2007,6.29],[2008,6.22],[2009,6.17],[2010,6.13],[2011,5.98],[2012,5.96],[2013,5.48],[2014,5.54],[2015,5.15],[2016,5.04],[2017,4.74],[2018,4.9],[2019,5.17],[2020,5.11],[2021,4.72],[2022,4.15]]},{"id":"sweet-corn","c":"sweet corn","g":"veg","gl":"Vegetables","pc":4.11,"ly":2022,"span":"1960..2022","y0":1960,"v0":8.38,"y1":2022,"v1":4.11,"pk":[1998,9.33],"pct":-51,"dir":"dn","cuts":["corn-on-the-cob"],"s":[[1960,8.38],[1961,8.44],[1962,8.3],[1963,8.22],[1964,7.73],[1965,7.98],[1966,7.35],[1967,7.91],[1968,7.73],[1969,7.85],[1970,7.78],[1971,7.46],[1972,7.77],[1973,7.91],[1974,7.73],[1975,7.77],[1976,8.01],[1977,7.56],[1978,6.59],[1979,6.48],[1980,6.5],[1981,6.23],[1982,6.02],[1983,6.14],[1984,6.44],[1985,6.41],[1986,6.06],[1987,6.26],[1988,5.82],[1989,6.53],[1990,6.74],[1991,5.91],[1992,6.87],[1993,6.98],[1994,8.15],[1995,7.82],[1996,8.33],[1997,8.29],[1998,9.33],[1999,9.09],[2000,9.04],[2001,9.17],[2002,8.97],[2003,9.17],[2004,8.96],[2005,8.65],[2006,8.33],[2007,9.22],[2008,9.14],[2009,9.17],[2010,9.25],[2011,8.17],[2012,8.68],[2013,8.88],[2014,7.65],[2015,8.62],[2016,7.1],[2017,7.22],[2018,6.81],[2019,5.11],[2020,4.27],[2021,4.26],[2022,4.11]]},{"id":"mangoes","c":"mangoes","g":"fruit","gl":"Fruit","pc":3.66,"ly":2021,"span":"1970..2021","y0":1970,"v0":0.07,"y1":2021,"v1":3.66,"pk":[2021,3.66],"pct":5128.6,"dir":"up","cuts":["mango"],"s":[[1970,0.07],[1971,0.09],[1972,0.09],[1973,0.11],[1974,0.13],[1975,0.16],[1976,0.19],[1977,0.15],[1978,0.21],[1979,0.21],[1980,0.25],[1981,0.2],[1982,0.29],[1983,0.43],[1984,0.43],[1985,0.43],[1986,0.49],[1987,0.56],[1988,0.38],[1989,0.51],[1990,0.54],[1991,0.85],[1992,0.67],[1993,0.89],[1994,0.97],[1995,1.12],[1996,1.34],[1997,1.43],[1998,1.49],[1999,1.62],[2000,1.75],[2001,1.79],[2002,1.97],[2003,2.06],[2004,2.02],[2005,1.88],[2006,2.1],[2007,2.1],[2008,2.1],[2009,2.02],[2010,2.24],[2011,2.53],[2012,2.49],[2013,2.88],[2014,2.52],[2015,2.6],[2016,2.97],[2017,3.22],[2018,3.17],[2019,3.25],[2020,3.63],[2021,3.66]]},{"id":"pears","c":"pears","g":"fruit","gl":"Fruit","pc":3.12,"ly":2021,"span":"1970..2021","y0":1970,"v0":1.92,"y1":2021,"v1":3.12,"pk":[1999,3.57],"pct":62.5,"dir":"up","cuts":["pear"],"s":[[1970,1.92],[1971,2.57],[1972,2.31],[1973,2.59],[1974,2.51],[1975,2.77],[1976,2.85],[1977,2.39],[1978,2.31],[1979,2.31],[1980,2.64],[1981,2.85],[1982,2.87],[1983,3.02],[1984,2.56],[1985,2.81],[1986,3],[1987,3.54],[1988,3.25],[1989,3.23],[1990,3.26],[1991,3.18],[1992,3.16],[1993,3.39],[1994,3.48],[1995,3.39],[1996,3.09],[1997,3.43],[1998,3.47],[1999,3.57],[2000,3.43],[2001,3.28],[2002,3.09],[2003,3.11],[2004,2.98],[2005,2.94],[2006,3.22],[2007,3.12],[2008,3.14],[2009,3.21],[2010,2.93],[2011,3.24],[2012,2.78],[2013,2.86],[2014,2.87],[2015,2.68],[2016,2.78],[2017,2.71],[2018,2.94],[2019,2.74],[2020,2.86],[2021,3.12]]},{"id":"blueberries","c":"blueberries","g":"fruit","gl":"Fruit","pc":2.54,"ly":2021,"span":"1980..2021","y0":1980,"v0":0.18,"y1":2021,"v1":2.54,"pk":[2021,2.54],"pct":1311.1,"dir":"up","cuts":["blueberry"],"s":[[1980,0.18],[1981,0.16],[1982,0.16],[1983,0.14],[1984,0.24],[1985,0.25],[1986,0.19],[1987,0.19],[1988,0.25],[1989,0.23],[1990,0.11],[1991,0.17],[1992,0.2],[1993,0.26],[1994,0.27],[1995,0.32],[1996,0.27],[1997,0.29],[1998,0.32],[1999,0.31],[2000,0.26],[2001,0.34],[2002,0.39],[2003,0.38],[2004,0.53],[2005,0.44],[2006,0.56],[2007,0.59],[2008,0.8],[2009,0.96],[2010,1.12],[2011,1.29],[2012,1.33],[2013,1.41],[2014,1.52],[2015,1.6],[2016,1.78],[2017,1.74],[2018,2],[2019,2.33],[2020,2.34],[2021,2.54]]},{"id":"mushrooms","c":"mushrooms","g":"veg","gl":"Vegetables","pc":2.5,"ly":2021,"span":"1965..2021","y0":1965,"v0":0.16,"y1":2021,"v1":2.5,"pk":[2015,2.99],"pct":1462.5,"dir":"up","cuts":["button-mushroom","shiitake"],"s":[[1965,0.16],[1966,0.21],[1967,0.24],[1968,0.28],[1969,0.31],[1970,0.29],[1971,0.32],[1972,0.37],[1973,0.48],[1974,0.59],[1975,0.66],[1976,0.7],[1977,0.87],[1978,1.04],[1979,1.14],[1980,1.21],[1981,1.39],[1982,1.46],[1983,1.66],[1984,1.78],[1985,1.79],[1986,1.9],[1987,1.94],[1988,2],[1989,2.06],[1990,2.02],[1991,1.95],[1992,2.01],[1993,2],[1994,2.04],[1995,2.05],[1996,2.1],[1997,2.34],[1998,2.48],[1999,2.51],[2000,2.6],[2001,2.59],[2002,2.63],[2003,2.66],[2004,2.62],[2005,2.65],[2006,2.58],[2007,2.48],[2008,2.46],[2009,2.44],[2010,2.6],[2011,2.76],[2012,2.74],[2013,2.75],[2014,2.92],[2015,2.99],[2016,2.96],[2017,2.94],[2018,2.79],[2019,2.81],[2020,2.6],[2021,2.5]]},{"id":"garlic","c":"garlic","g":"veg","gl":"Vegetables","pc":2.39,"ly":2022,"span":"1960..2022","y0":1960,"v0":0.25,"y1":2022,"v1":2.39,"pk":[1999,3.29],"pct":856,"dir":"up","cuts":["garlic"],"s":[[1960,0.25],[1961,0.15],[1962,0.15],[1963,0.21],[1964,0.26],[1965,0.28],[1966,0.17],[1967,0.25],[1968,0.39],[1969,0.51],[1970,0.44],[1971,0.3],[1972,0.39],[1973,0.52],[1974,0.65],[1975,0.72],[1976,0.48],[1977,0.6],[1978,0.62],[1979,0.92],[1980,0.86],[1981,0.66],[1982,0.76],[1983,1],[1984,0.77],[1985,1.06],[1986,0.77],[1987,1.19],[1988,1.09],[1989,1.01],[1990,1.41],[1991,1.49],[1992,1.46],[1993,1.75],[1994,1.8],[1995,1.85],[1996,2.29],[1997,2],[1998,2.58],[1999,3.29],[2000,2.22],[2001,2.42],[2002,2.5],[2003,2.83],[2004,2.57],[2005,2.44],[2006,2.69],[2007,2.72],[2008,2.76],[2009,2.45],[2010,2.34],[2011,2.32],[2012,2.3],[2013,2.26],[2014,2.24],[2015,2.38],[2016,2.89],[2017,2.97],[2018,2.38],[2019,1.82],[2020,1.71],[2021,1.72],[2022,2.39]]},{"id":"spinach","c":"spinach","g":"veg","gl":"Vegetables","pc":2.15,"ly":2022,"span":"1960..2022","y0":1960,"v0":0.84,"y1":2022,"v1":2.15,"pk":[2019,2.43],"pct":156,"dir":"up","cuts":["spinach"],"s":[[1960,0.84],[1961,0.7],[1962,0.6],[1963,0.59],[1964,0.55],[1965,0.51],[1966,0.44],[1967,0.44],[1968,0.39],[1969,0.3],[1970,0.3],[1971,0.3],[1972,0.28],[1973,0.3],[1974,0.28],[1975,0.29],[1976,0.31],[1977,0.38],[1978,0.34],[1979,0.4],[1980,0.44],[1981,0.53],[1982,0.55],[1983,0.51],[1984,0.53],[1985,0.67],[1986,0.58],[1987,0.58],[1988,0.6],[1989,0.64],[1990,0.76],[1991,0.8],[1992,0.82],[1993,0.66],[1994,0.75],[1995,0.67],[1996,0.63],[1997,1.11],[1998,0.97],[1999,0.97],[2000,1.37],[2001,1.07],[2002,1.43],[2003,1.61],[2004,1.85],[2005,2.33],[2006,1.96],[2007,1.61],[2008,1.71],[2009,2.03],[2010,1.68],[2011,1.79],[2012,1.56],[2013,1.59],[2014,1.67],[2015,1.73],[2016,1.97],[2017,1.86],[2018,1.87],[2019,2.43],[2020,1.82],[2021,1.75],[2022,2.15]]},{"id":"cauliflower","c":"cauliflower","g":"veg","gl":"Vegetables","pc":2.12,"ly":2022,"span":"1960..2022","y0":1960,"v0":1.28,"y1":2022,"v1":2.12,"pk":[2019,3.03],"pct":65.6,"dir":"up","cuts":["cauliflower"],"s":[[1960,1.28],[1961,1.12],[1962,1.15],[1963,1.11],[1964,1.03],[1965,1.01],[1966,0.95],[1967,0.93],[1968,0.96],[1969,0.89],[1970,0.74],[1971,0.69],[1972,0.83],[1973,0.76],[1974,0.79],[1975,0.92],[1976,1.03],[1977,1.09],[1978,0.79],[1979,1.09],[1980,1.13],[1981,1.37],[1982,1.33],[1983,1.41],[1984,1.82],[1985,1.84],[1986,2.19],[1987,2.13],[1988,2.19],[1989,2.31],[1990,2.19],[1991,1.95],[1992,1.81],[1993,2.09],[1994,2.02],[1995,1.64],[1996,1.72],[1997,1.77],[1998,1.46],[1999,1.76],[2000,1.74],[2001,1.52],[2002,1.43],[2003,1.56],[2004,1.56],[2005,1.75],[2006,1.7],[2007,1.68],[2008,1.57],[2009,1.73],[2010,1.33],[2011,1.25],[2012,1.18],[2013,1.33],[2014,1.29],[2015,1.58],[2016,1.66],[2017,2.37],[2018,2.5],[2019,3.03],[2020,2.65],[2021,2.25],[2022,2.12]]},{"id":"asparagus","c":"asparagus","g":"veg","gl":"Vegetables","pc":1.68,"ly":2022,"span":"1960..2022","y0":1960,"v0":0.71,"y1":2022,"v1":1.68,"pk":[2021,1.96],"pct":136.6,"dir":"up","cuts":["asparagus"],"s":[[1960,0.71],[1961,0.63],[1962,0.58],[1963,0.57],[1964,0.54],[1965,0.55],[1966,0.45],[1967,0.44],[1968,0.46],[1969,0.4],[1970,0.44],[1971,0.38],[1972,0.4],[1973,0.4],[1974,0.39],[1975,0.41],[1976,0.43],[1977,0.34],[1978,0.29],[1979,0.25],[1980,0.29],[1981,0.31],[1982,0.38],[1983,0.43],[1984,0.41],[1985,0.47],[1986,0.6],[1987,0.57],[1988,0.58],[1989,0.57],[1990,0.59],[1991,0.6],[1992,0.6],[1993,0.57],[1994,0.56],[1995,0.56],[1996,0.58],[1997,0.66],[1998,0.73],[1999,0.89],[2000,0.96],[2001,0.92],[2002,0.96],[2003,1.04],[2004,1.12],[2005,1.12],[2006,1.13],[2007,1.16],[2008,1.18],[2009,1.29],[2010,1.37],[2011,1.38],[2012,1.45],[2013,1.42],[2014,1.65],[2015,1.46],[2016,1.56],[2017,1.62],[2018,1.76],[2019,1.76],[2020,1.81],[2021,1.96],[2022,1.68]]},{"id":"artichokes","c":"artichokes","g":"veg","gl":"Vegetables","pc":1.52,"ly":2022,"span":"1960..2022","y0":1960,"v0":0.23,"y1":2022,"v1":1.52,"pk":[2011,1.7],"pct":560.9,"dir":"up","cuts":["artichoke"],"s":[[1960,0.23],[1961,0.28],[1962,0.24],[1963,0.25],[1964,0.29],[1965,0.33],[1966,0.34],[1967,0.37],[1968,0.29],[1969,0.32],[1970,0.47],[1971,0.51],[1972,0.56],[1973,0.49],[1974,0.51],[1975,0.49],[1976,0.55],[1977,0.46],[1978,0.48],[1979,0.61],[1980,0.59],[1981,0.75],[1982,0.82],[1983,0.73],[1984,0.95],[1985,1.02],[1986,0.94],[1987,0.99],[1988,0.91],[1989,0.97],[1990,0.85],[1991,0.83],[1992,0.88],[1993,0.86],[1994,1.27],[1995,0.92],[1996,0.99],[1997,1.01],[1998,1.18],[1999,1.32],[2000,1.24],[2001,1.23],[2002,1.32],[2003,1.44],[2004,1.36],[2005,1.4],[2006,1.68],[2007,1.55],[2008,1.54],[2009,1.52],[2010,1.47],[2011,1.7],[2012,1.46],[2013,1.28],[2014,1.44],[2015,1.41],[2016,1.39],[2017,1.43],[2018,1.35],[2019,1.37],[2020,1.19],[2021,1.23],[2022,1.52]]},{"id":"papayas","c":"papayas","g":"fruit","gl":"Fruit","pc":1.34,"ly":2021,"span":"1970..2021","y0":1970,"v0":0.12,"y1":2021,"v1":1.34,"pk":[2016,1.43],"pct":1016.7,"dir":"up","cuts":["papaya"],"s":[[1970,0.12],[1971,0.1],[1972,0.11],[1973,0.14],[1974,0.16],[1975,0.16],[1976,0.2],[1977,0.25],[1978,0.25],[1979,0.17],[1980,0.21],[1981,0.22],[1982,0.16],[1983,0.18],[1984,0.26],[1985,0.18],[1986,0.18],[1987,0.19],[1988,0.16],[1989,0.14],[1990,0.18],[1991,0.17],[1992,0.24],[1993,0.28],[1994,0.3],[1995,0.37],[1996,0.54],[1997,0.47],[1998,0.47],[1999,0.62],[2000,0.68],[2001,0.78],[2002,0.79],[2003,0.87],[2004,1.03],[2005,0.94],[2006,1.04],[2007,1.08],[2008,0.98],[2009,1.2],[2010,1.17],[2011,1.05],[2012,0.97],[2013,1.12],[2014,1.14],[2015,1.33],[2016,1.43],[2017,1.36],[2018,1.26],[2019,1.27],[2020,1.27],[2021,1.34]]},{"id":"collard-greens","c":"collard greens","g":"veg","gl":"Vegetables","pc":1.32,"ly":2022,"span":"1997..2022","y0":1997,"v0":0.79,"y1":2022,"v1":1.32,"pk":[2014,1.41],"pct":67.1,"dir":"up","cuts":["collard-greens"],"s":[[1997,0.79],[1998,0.79],[1999,0.78],[2000,0.77],[2001,0.77],[2002,0.76],[2003,0.87],[2004,0.85],[2005,0.74],[2006,0.65],[2007,1.03],[2008,1.05],[2009,1.06],[2010,1.28],[2011,0.8],[2012,1.01],[2013,1.17],[2014,1.41],[2015,1.2],[2016,1.01],[2017,1.19],[2018,1.3],[2019,1.28],[2020,1.29],[2021,1.27],[2022,1.32]]},{"id":"snap-beans","c":"snap beans","g":"veg","gl":"Vegetables","pc":1.24,"ly":2022,"span":"1960..2022","y0":1960,"v0":2.55,"y1":2022,"v1":1.24,"pk":[1960,2.55],"pct":-51.4,"dir":"dn","cuts":["green-beans"],"s":[[1960,2.55],[1961,2.49],[1962,2.24],[1963,2.19],[1964,2.05],[1965,2],[1966,1.9],[1967,1.96],[1968,1.85],[1969,1.76],[1970,1.55],[1971,1.51],[1972,1.53],[1973,1.43],[1974,1.36],[1975,1.45],[1976,1.45],[1977,1.34],[1978,1.29],[1979,1.31],[1980,1.31],[1981,1.26],[1982,1.26],[1983,1.24],[1984,1.34],[1985,1.26],[1986,1.26],[1987,1.22],[1988,1.19],[1989,1.19],[1990,1.07],[1991,1.12],[1992,1.45],[1993,1.52],[1994,1.54],[1995,1.64],[1996,1.45],[1997,1.35],[1998,1.64],[1999,1.9],[2000,2.02],[2001,2.17],[2002,2.09],[2003,1.97],[2004,1.88],[2005,1.8],[2006,2.08],[2007,2.2],[2008,1.98],[2009,1.75],[2010,1.88],[2011,1.73],[2012,1.63],[2013,1.62],[2014,1.47],[2015,1.59],[2016,1.7],[2017,1.55],[2018,1.63],[2019,1.38],[2020,1.32],[2021,1.26],[2022,1.24]]},{"id":"grapefruit","c":"grapefruit","g":"fruit","gl":"Fruit","pc":1.15,"ly":2022,"span":"1970..2022","y0":1970,"v0":8.22,"y1":2022,"v1":1.15,"pk":[1976,9.26],"pct":-86,"dir":"dn","cuts":["grapefruit"],"s":[[1970,8.22],[1971,8.55],[1972,8.56],[1973,8.57],[1974,8.21],[1975,8.36],[1976,9.26],[1977,7.73],[1978,8.35],[1979,7.29],[1980,7.3],[1981,6.65],[1982,7.2],[1983,7.83],[1984,5.98],[1985,5.51],[1986,6.13],[1987,6.35],[1988,6.69],[1989,6.6],[1990,4.59],[1991,5.86],[1992,5.92],[1993,6.19],[1994,6.07],[1995,5.99],[1996,5.84],[1997,6.18],[1998,5.93],[1999,5.75],[2000,5.09],[2001,4.85],[2002,4.63],[2003,4.1],[2004,4.14],[2005,2.65],[2006,2.31],[2007,2.84],[2008,3.16],[2009,2.8],[2010,2.76],[2011,2.71],[2012,2.37],[2013,2.64],[2014,2.4],[2015,2.24],[2016,1.97],[2017,1.92],[2018,1.56],[2019,1.43],[2020,1.68],[2021,1.47],[2022,1.15]]},{"id":"brussels-sprouts","c":"brussels sprouts","g":"veg","gl":"Vegetables","pc":1.06,"ly":2022,"span":"1970..2022","y0":1970,"v0":0.32,"y1":2022,"v1":1.06,"pk":[2020,1.3],"pct":231.3,"dir":"up","cuts":["brussels-sprouts"],"s":[[1970,0.32],[1971,0.3],[1972,0.28],[1973,0.27],[1974,0.33],[1975,0.31],[1976,0.35],[1977,0.35],[1978,0.35],[1979,0.37],[1980,0.29],[1981,0.36],[1982,0.32],[1983,0.29],[1984,0.31],[1985,0.33],[1986,0.33],[1987,0.26],[1988,0.26],[1989,0.34],[1990,0.32],[1991,0.3],[1992,0.28],[1993,0.35],[1994,0.32],[1995,0.34],[1996,0.33],[1997,0.25],[1998,0.28],[1999,0.26],[2000,0.28],[2001,0.23],[2002,0.2],[2003,0.24],[2004,0.25],[2005,0.29],[2006,0.28],[2007,0.3],[2008,0.32],[2009,0.28],[2010,0.28],[2011,0.35],[2012,0.41],[2013,0.43],[2014,0.46],[2015,0.7],[2016,0.83],[2017,0.85],[2018,0.92],[2019,0.97],[2020,1.3],[2021,0.99],[2022,1.06]]},{"id":"eggplant","c":"eggplant","g":"veg","gl":"Vegetables","pc":1.01,"ly":2022,"span":"1960..2022","y0":1960,"v0":0.27,"y1":2022,"v1":1.01,"pk":[2022,1.01],"pct":274.1,"dir":"up","cuts":["eggplant"],"s":[[1960,0.27],[1961,0.31],[1962,0.29],[1963,0.27],[1964,0.27],[1965,0.29],[1966,0.26],[1967,0.28],[1968,0.21],[1969,0.32],[1970,0.33],[1971,0.32],[1972,0.39],[1973,0.43],[1974,0.41],[1975,0.45],[1976,0.46],[1977,0.44],[1978,0.49],[1979,0.48],[1980,0.48],[1981,0.46],[1982,0.51],[1983,0.51],[1984,0.47],[1985,0.46],[1986,0.47],[1987,0.47],[1988,0.39],[1989,0.4],[1990,0.4],[1991,0.41],[1992,0.47],[1993,0.47],[1994,0.52],[1995,0.47],[1996,0.6],[1997,0.65],[1998,0.7],[1999,0.67],[2000,0.81],[2001,0.83],[2002,0.72],[2003,0.73],[2004,0.72],[2005,0.85],[2006,0.85],[2007,0.86],[2008,0.78],[2009,0.81],[2010,0.74],[2011,0.71],[2012,0.81],[2013,0.85],[2014,0.85],[2015,0.85],[2016,0.86],[2017,0.97],[2018,0.81],[2019,0.8],[2020,0.97],[2021,0.96],[2022,1.01]]},{"id":"lamb","c":"Lamb","g":"meat","gl":"Meat & poultry","pc":1,"ly":2021,"span":"1909..2021","y0":1909,"v0":4.41,"y1":2021,"v1":1,"pk":[1912,5.03],"pct":-77.3,"dir":"dn","cuts":["lamb"],"s":[[1909,4.41],[1910,4.24],[1911,4.84],[1912,5.03],[1913,4.74],[1914,4.7],[1915,4.01],[1916,3.84],[1917,2.95],[1918,3.14],[1919,3.75],[1920,3.57],[1921,4.01],[1922,3.38],[1923,3.48],[1924,3.44],[1925,3.44],[1926,3.57],[1927,3.49],[1928,3.61],[1929,3.71],[1930,4.4],[1931,4.7],[1932,4.64],[1933,4.44],[1934,4.15],[1935,4.77],[1936,4.36],[1937,4.37],[1938,4.53],[1939,4.36],[1940,4.35],[1941,4.51],[1942,4.87],[1943,4.63],[1944,4.64],[1945,4.87],[1946,4.44],[1947,3.58],[1948,3.31],[1949,2.72],[1950,2.61],[1951,2.23],[1952,2.7],[1953,3.05],[1954,2.98],[1955,3.02],[1956,2.89],[1957,2.74],[1958,2.73],[1959,3.1],[1960,3.12],[1961,3.31],[1962,3.35],[1963,3.16],[1964,2.74],[1965,2.44],[1966,2.6],[1967,2.53],[1968,2.44],[1969,2.26],[1970,2.15],[1971,2.08],[1972,2.17],[1973,1.75],[1974,1.5],[1975,1.33],[1976,1.2],[1977,1.11],[1978,1.02],[1979,0.97],[1980,1.01],[1981,1.04],[1982,1.09],[1983,1.09],[1984,1.11],[1985,1.07],[1986,1.03],[1987,0.98],[1988,1.04],[1989,1.03],[1990,1.04],[1991,1.03],[1992,0.99],[1993,0.96],[1994,0.86],[1995,0.85],[1996,0.81],[1997,0.8],[1998,0.86],[1999,0.84],[2000,0.82],[2001,0.85],[2002,0.87],[2003,0.83],[2004,0.84],[2005,0.79],[2006,0.78],[2007,0.84],[2008,0.74],[2009,0.72],[2010,0.67],[2011,0.62],[2012,0.63],[2013,0.67],[2014,0.7],[2015,0.73],[2016,0.78],[2017,0.8],[2018,0.83],[2019,0.84],[2020,0.9],[2021,1]]},{"id":"kale","c":"kale","g":"veg","gl":"Vegetables","pc":0.98,"ly":2022,"span":"1997..2022","y0":1997,"v0":0.42,"y1":2022,"v1":0.98,"pk":[2021,1.05],"pct":133.3,"dir":"up","cuts":["kale"],"s":[[1997,0.42],[1998,0.4],[1999,0.39],[2000,0.38],[2001,0.37],[2002,0.35],[2003,0.31],[2004,0.32],[2005,0.28],[2006,0.37],[2007,0.39],[2008,0.38],[2009,0.36],[2010,0.36],[2011,0.36],[2012,0.33],[2013,0.41],[2014,0.39],[2015,0.45],[2016,0.42],[2017,0.56],[2018,0.65],[2019,0.65],[2020,0.68],[2021,1.05],[2022,0.98]]},{"id":"raspberries","c":"raspberries","g":"fruit","gl":"Fruit","pc":0.92,"ly":2021,"span":"1992..2021","y0":1992,"v0":0.04,"y1":2021,"v1":0.92,"pk":[2020,0.97],"pct":2200,"dir":"up","cuts":["raspberry"],"s":[[1992,0.04],[1993,0.06],[1994,0.08],[1995,0.05],[1996,0.05],[1997,0.05],[1998,0.04],[1999,0.05],[2000,0.06],[2001,0.06],[2002,0.06],[2003,0.14],[2004,0.13],[2005,0.1],[2006,0.25],[2007,0.18],[2008,0.15],[2009,0.27],[2010,0.2],[2011,0.31],[2012,0.32],[2013,0.38],[2014,0.74],[2015,0.91],[2016,0.78],[2017,0.88],[2018,0.81],[2019,0.87],[2020,0.97],[2021,0.92]]},{"id":"kiwifruit","c":"kiwifruit","g":"fruit","gl":"Fruit","pc":0.8,"ly":2021,"span":"1982..2021","y0":1982,"v0":0.1,"y1":2021,"v1":0.8,"pk":[2021,0.8],"pct":700,"dir":"up","cuts":["kiwi"],"s":[[1982,0.1],[1983,0.1],[1984,0.14],[1985,0.18],[1986,0.21],[1987,0.28],[1988,0.34],[1989,0.48],[1990,0.48],[1991,0.32],[1992,0.51],[1993,0.52],[1994,0.51],[1995,0.51],[1996,0.46],[1997,0.52],[1998,0.53],[1999,0.52],[2000,0.56],[2001,0.44],[2002,0.38],[2003,0.38],[2004,0.41],[2005,0.45],[2006,0.47],[2007,0.44],[2008,0.46],[2009,0.5],[2010,0.5],[2011,0.58],[2012,0.55],[2013,0.46],[2014,0.56],[2015,0.63],[2016,0.58],[2017,0.61],[2018,0.62],[2019,0.64],[2020,0.73],[2021,0.8]]},{"id":"okra","c":"okra","g":"veg","gl":"Vegetables","pc":0.57,"ly":2022,"span":"1974..2022","y0":1974,"v0":0.17,"y1":2022,"v1":0.57,"pk":[2020,0.67],"pct":235.3,"dir":"up","cuts":["okra"],"s":[[1974,0.17],[1975,0.18],[1976,0.12],[1977,0.17],[1978,0.35],[1979,0.38],[1980,0.31],[1981,0.34],[1982,0.32],[1983,0.45],[1984,0.45],[1985,0.38],[1986,0.29],[1987,0.21],[1988,0.41],[1989,0.44],[1990,0.24],[1991,0.25],[1992,0.28],[1993,0.38],[1994,0.24],[1995,0.38],[1996,0.34],[1997,0.23],[1998,0.29],[1999,0.27],[2000,0.21],[2001,0.27],[2002,0.22],[2003,0.33],[2004,0.39],[2005,0.44],[2006,0.41],[2007,0.45],[2008,0.45],[2009,0.45],[2010,0.41],[2011,0.46],[2012,0.42],[2013,0.31],[2014,0.41],[2015,0.39],[2016,0.55],[2017,0.49],[2018,0.54],[2019,0.64],[2020,0.67],[2021,0.6],[2022,0.57]]}]}</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Dataset",
+  "name":"US per-capita food availability by commodity (USDA ERS), 1909–2022",
+  "description":"Per-capita food availability in pounds per person per year for 50 commodities mapped to 71 tracked foods, from USDA ERS. A supply-side proxy for consumption (production plus imports minus exports and non-food/loss uses), not a measured intake and not a price.",
+  "url":"https://muntin.digital/cost-index/",
+  "license":"https://creativecommons.org/licenses/by/4.0/",
+  "creator":{"@type":"Organization","name":"Muntin Cost Index","url":"https://muntin.digital/"},
+  "isBasedOn":{"@type":"Dataset","name":"USDA ERS Food Availability (Per Capita) Data System","creator":{"@type":"GovernmentOrganization","name":"USDA Economic Research Service"},"license":"https://www.usda.gov/ (US Government work, public domain)"},
+  "temporalCoverage":"1909/2022",
+  "variableMeasured":{"@type":"PropertyValue","name":"per-capita food availability","unitText":"pounds per person per year"},
+  "distribution":[
+    {"@type":"DataDownload","encodingFormat":"application/x-ndjson","contentUrl":"https://muntin.digital/data/ers-food-availability.jsonl","name":"Raw tidy JSONL (CC0)"},
+    {"@type":"DataDownload","encodingFormat":"application/json","contentUrl":"https://muntin.digital/cost-index/ers-food-availability.json","name":"Derived reads JSON (CC-BY 4.0)"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"Does this measure how much Americans actually eat?","acceptedAnswer":{"@type":"Answer","text":"No. USDA ERS food availability is a supply-side proxy for consumption — production plus imports minus exports and non-food or loss uses — divided by population. It is not a measured intake and it does not account for plate waste. Read every figure as pounds available per person, not pounds eaten."}},
+    {"@type":"Question","name":"Is any of this a price?","acceptedAnswer":{"@type":"Answer","text":"No. Every figure is a physical quantity in pounds per person per year. There are no dollars in this dataset; it is the volume companion to a value-based read, never a cost."}},
+    {"@type":"Question","name":"Did chicken really pass beef?","acceptedAnswer":{"@type":"Answer","text":"In 2010, for the first time in the tracked record, the U.S. had more chicken than beef available per person — about 58 pounds of chicken to 57 of beef. Chicken rose from 10.4 lbs in 1909 to 68.1 in 2021 while beef, which peaked at 88.8 lbs in 1976, has shed roughly a third. This is a supply-side proxy for consumption, not a measured intake."}},
+    {"@type":"Question","name":"Why do a cut like ribeye and the parent Beef show the same number?","acceptedAnswer":{"@type":"Answer","text":"USDA ERS publishes availability at the commodity level. Individual cuts and varieties are not measured separately, so a cut carries its parent commodity's per-capita figure. That is why 71 tracked foods map to 50 commodity series."}},
+    {"@type":"Question","name":"Why does a food's line start partway through the century instead of at zero?","acceptedAnswer":{"@type":"Answer","text":"Coverage begins in different years by commodity group — 1909 for meats and eggs, 1960 to 1970 for most produce, later for niche items. Years before a commodity's series begins are true absence of data, shown as an explicit gap and never filled in with zero, which would be a false reading."}}
+  ]
+}
+</script>
+
+<script>
+(function(){
+  "use strict";
+  var DB = JSON.parse(document.getElementById('data').textContent);
+  var COMS = DB.commodities;
+  var BY = {}; COMS.forEach(function(c){ BY[c.id]=c; });
+  var app = document.getElementById('app');
+  var statusNode = document.getElementById('status');
+  var svgNS='http://www.w3.org/2000/svg';
+
+  function el(t,c,x){ var e=document.createElement(t); if(c)e.className=c; if(x!=null)e.textContent=x; return e; }
+  function S(t,a){ var e=document.createElementNS(svgNS,t); if(a)for(var k in a)e.setAttribute(k,a[k]); return e; }
+  function clear(n){ while(n.firstChild)n.removeChild(n.firstChild); }
+  function say(msg){ statusNode.textContent=msg; }
+  function fmt(n,d){ return Number(n).toFixed(d==null?1:d); }
+  function glyphFor(dir){ return dir==='up'?'▲':dir==='dn'?'▼':'●'; }
+  function dirClass(dir){ return dir==='up'?'riser':dir==='dn'?'faller':'steady'; }
+  function dirWord(dir){ return dir==='up'?'rose':dir==='dn'?'fell':'held flat'; }
+  function colFor(dir){ return dir==='up'?'var(--riser)':dir==='dn'?'var(--faller)':'var(--steady)'; }
+  function valAt(c,y){ for(var i=0;i<c.s.length;i++){ if(c.s[i][0]===y) return c.s[i][1]; } return null; }
+  var GROUPS=[{k:'meat',l:'Meat & poultry'},{k:'fruit',l:'Fruit'},{k:'veg',l:'Vegetables'},{k:'eggs',l:'Eggs'}];
+  var GLBL={}; GROUPS.forEach(function(g){GLBL[g.k]=g.l;});
+  var GCOLOR={meat:'var(--rust)',fruit:'var(--gold)',veg:'var(--teal)',eggs:'var(--ink-soft)'};
+
+  // curated, source-grounded insight lines keyed by commodity id (every number traces to the embedded series)
+  var INSIGHT={
+    'total-chicken':"The plate flipped from red to white meat in 2010: chicken (10.4 lbs available in 1909 → 68.1 in 2021) passed beef for the first time in the tracked record. A supply-side proxy for consumption, not a measured intake.",
+    'beef':"Beef peaked in 1976 at 88.8 lbs available per person and has shed roughly a third since. In 2010 chicken overtook it for the first time in the tracked record.",
+    'eggs':"A near-perfect century round-trip a flat endpoint hides: 37.2 lbs (1909) → 52.9 peak (WWII, 1945) → back to 36.0 (2021). The whole boom-and-cholesterol-bust arc lives between two nearly identical numbers.",
+    'potatoes':"Fresh potatoes fell from 81 to 28 lbs — a form-shift, not a vanishing. The raw CC0 processed-and-frozen line shows the pounds migrated to fries; the fresh-only read understates it (a composition story, co-occurrence, never a measured cause).",
+    'avocados':"Avocado availability rose about +1,778% since 1970 — part of a tropical-fruit surge that clusters strictly after 1990 and only among fruits that ship and ripen off-tree. A cold-chain-and-trade signature, not a claimable taste change.",
+    'mangoes':"Mango availability rose about +5,129% since 1970, the steepest climb in the set — a post-1990, ships-and-ripens-off-tree cold-chain signature, not a measured change in taste.",
+    'limes':"Lime availability rose about +2,600% since 1970 — a post-1990 cold-chain-and-trade climb, not a claimable taste change.",
+    'pineapples':"Pineapple availability rose about +1,024% since 1970 — the fresh cold-chain arriving, not a measured shift in preference.",
+    'grapefruit':"Grapefruit availability fell about −86% since 1970 while tropicals surged. 'More fruit' and 'less fruit' are simultaneously true — direction depends entirely on which fruit you name.",
+    'oranges-and-temples':"Fresh oranges fell about −49% since 1970 as tropical fruits surged — fresh citrus cratering while the overall fruit story splits by commodity.",
+    'head-lettuce':"Head (iceberg) lettuce collapsed from a 1989 peak of 28.7 lbs to 10.3 as romaine and leaf lettuce rose — an iceberg-to-salad-greens substitution visible only because ERS split the series; the category total barely moves.",
+    'romaine-and-leaf-lettuce':"Romaine and leaf lettuce rose to about 12.7 lbs as head (iceberg) lettuce collapsed — the salad-greens half of a substitution the category total hides.",
+    'pork':"The century's flat anchor: pork has held roughly 41–53 lbs for 110 years, barely moving while chicken and beef reordered around it.",
+    'turkey':"Turkey quietly peaked in 1996 at 14.3 lbs and has declined since — the Butterball plateau is over."
+  };
+
+  /* ============================ SPARKLINE ============================ */
+  function spark(c){
+    var A=c.s, W=140,H=28,p=3, vals=A.map(function(x){return x[1];});
+    var mn=Math.min.apply(null,vals),mx=Math.max.apply(null,vals),sp=(mx-mn)||1;
+    var xs=function(i){return p+i*(W-2*p)/(A.length-1);};
+    var ys=function(v){return H-p-(v-mn)*(H-2*p)/sp;};
+    var svg=S('svg',{viewBox:'0 0 '+W+' '+H,width:W,height:H,'aria-hidden':'true'});
+    var pts=A.map(function(a,i){return xs(i)+','+ys(a[1]).toFixed(1);}).join(' ');
+    var col=colFor(c.dir);
+    svg.appendChild(S('polyline',{points:pts,fill:'none',stroke:col,'stroke-width':1.5,'stroke-linejoin':'round'}));
+    svg.appendChild(S('circle',{cx:xs(A.length-1),cy:ys(vals[vals.length-1]),r:2,fill:col}));
+    return svg;
+  }
+
+  /* ============================ OVERVIEW STATE ============================ */
+  var ribbonGroup='meat', ribbonYear=2010, ribbonFocus=null;
+  // The composite plate is only coherent up to the last year the meat+egg spine reports (produce runs one year longer);
+  // beyond it, meat/eggs would read as absent — the exact "absence vs zero" trap we refuse. So cap the plate there.
+  var PLATE_MAX = Math.min.apply(null, GROUPS.map(function(g){ var ys=COMS.filter(function(c){return c.g===g.k;}).map(function(c){return c.y1;}); return ys.length?Math.max.apply(null,ys):9999; }));
+  var plateYear=PLATE_MAX;
+  var query='', listGroup='all', sortKey='pc', sortDir=-1, dirFilter='all';
+  var basket=[];
+
+  function groupYearRange(g){
+    var cs=COMS.filter(function(c){return c.g===g;});
+    var mn=Infinity,mx=-Infinity; cs.forEach(function(c){ if(c.y0<mn)mn=c.y0; if(c.y1>mx)mx=c.y1; });
+    return [mn,mx];
+  }
+
+  function renderOverview(focusYearParam){
+    clear(app);
+    if(focusYearParam){ ribbonGroup='meat'; ribbonYear=focusYearParam; }
+
+    /* ---- SECTION 1: THE RANK RIBBON (hero) ---- */
+    var s1=el('section','view'); s1.id='ribbon'; s1.setAttribute('aria-labelledby','h-ribbon');
+    var h1=el('h2',null,'The Rank Ribbon — how the plate reorders'); h1.id='h-ribbon'; h1.tabIndex=-1; s1.appendChild(h1);
+    var sub1=el('p','sub'); sub1.innerHTML='Each thread is a commodity, running the full century; its height is its rank within the group, so threads cross where the plate reorders. <b>Teal threads rose</b> (▲) over their record, <b>rust threads fell</b> (▼). Slide the year to read every rank; select a thread to focus it against a ghost-field of the rest.';
+    s1.appendChild(sub1);
+
+    var chips=el('div','chips'); chips.setAttribute('role','group'); chips.setAttribute('aria-label','Choose commodity group for the ribbon');
+    GROUPS.filter(function(g){return COMS.filter(function(c){return c.g===g.k;}).length>=2;}).forEach(function(g){
+      var b=el('button','chip',g.l); b.type='button'; b.setAttribute('aria-pressed',String(g.k===ribbonGroup));
+      b.onclick=function(){ ribbonGroup=g.k; ribbonFocus=null; var mn=groupYearRange(g.k); if(ribbonYear<mn[0])ribbonYear=mn[0]; if(ribbonYear>mn[1])ribbonYear=mn[1]; renderOverview(); say(g.l+' ribbon, '+COMS.filter(function(c){return c.g===g.k;}).length+' commodities, year '+ribbonYear); var el2=document.getElementById('h-ribbon'); if(el2)el2.focus(); };
+      chips.appendChild(b);
+    });
+    s1.appendChild(chips);
+
+    var range=groupYearRange(ribbonGroup);
+    if(ribbonYear<range[0])ribbonYear=range[0]; if(ribbonYear>range[1])ribbonYear=range[1];
+    var scrub=el('div','scrub');
+    var lab=el('label',null,'Year'); lab.htmlFor='ribbon-year'; scrub.appendChild(lab);
+    var rng=el('input'); rng.type='range'; rng.id='ribbon-year'; rng.min=range[0]; rng.max=range[1]; rng.step=1; rng.value=ribbonYear;
+    rng.setAttribute('aria-label','Ribbon year, '+range[0]+' to '+range[1]);
+    scrub.appendChild(rng);
+    var yr=el('span','yr',rng.value); scrub.appendChild(yr);
+    s1.appendChild(scrub);
+
+    var figWrap=el('figure');
+    var ribHost=el('div'); figWrap.appendChild(ribHost);
+    var cap=el('figcaption'); cap.id='ribbon-cap'; figWrap.appendChild(cap);
+    s1.appendChild(figWrap);
+
+    var readH=el('p','fine'); readH.id='ribbon-readh'; s1.appendChild(readH);
+    var readList=el('ol','rr'); readList.id='ribbon-read'; s1.appendChild(readList);
+
+    function drawRibbon(){
+      ribbonYear=parseInt(rng.value,10); yr.textContent=ribbonYear;
+      clear(ribHost); ribHost.appendChild(buildRibbon(ribbonGroup,ribbonYear,ribbonFocus,cap,readH,readList));
+    }
+    rng.addEventListener('input',function(){ drawRibbon(); say('Year '+rng.value); });
+    drawRibbon();
+    app.appendChild(s1);
+
+    /* ---- SECTION 2: PLATE GLYPH SCRUB ---- */
+    var s2=el('section','view'); s2.id='plate'; s2.setAttribute('aria-labelledby','h-plate');
+    var h2=el('h2',null,'The Plate — how its composition shifts'); h2.id='h-plate'; h2.tabIndex=-1; s2.appendChild(h2);
+    var sub2=el('p','sub'); sub2.innerHTML='Drag the handle and the plate recomposes: each wedge is a food group’s share of the <b>tracked</b> pounds that year — meat &amp; poultry, vegetables, fruit, eggs. This is the balance among tracked commodities, <b>not a share of the whole diet</b>. Before produce was tracked, the plate is honestly meat &amp; eggs only (absence, not zero); it stops at '+PLATE_MAX+', the last year the meat and egg series report.';
+    s2.appendChild(sub2);
+    var scrub2=el('div','scrub');
+    var lab2=el('label',null,'Year'); lab2.htmlFor='plate-year'; scrub2.appendChild(lab2);
+    var rng2=el('input'); rng2.type='range'; rng2.id='plate-year'; rng2.min=DB.yearMin; rng2.max=PLATE_MAX; rng2.step=1; rng2.value=plateYear;
+    rng2.setAttribute('aria-label','Plate year, '+DB.yearMin+' to '+PLATE_MAX); scrub2.appendChild(rng2);
+    var yr2=el('span','yr',plateYear); scrub2.appendChild(yr2);
+    s2.appendChild(scrub2);
+    var card2=el('div','card');
+    var pfig=el('figure'); var pwrap=el('div','plate-wrap');
+    var phost=el('div'); pwrap.appendChild(phost);
+    var plegend=el('ul','plate-legend'); plegend.id='plate-legend'; pwrap.appendChild(plegend);
+    pfig.appendChild(pwrap);
+    var pcap=el('figcaption'); pcap.id='plate-cap'; pfig.appendChild(pcap);
+    card2.appendChild(pfig); s2.appendChild(card2);
+    function drawPlate(){ plateYear=parseInt(rng2.value,10); yr2.textContent=plateYear; clear(phost); phost.appendChild(buildPlate(plateYear,plegend,pcap)); }
+    rng2.addEventListener('input',function(){ drawPlate(); say('Plate year '+rng2.value); });
+    drawPlate();
+    app.appendChild(s2);
+
+    /* ---- SECTION 3: CENTURY FAN (log slopegraph) ---- */
+    var s3=el('section','view'); s3.id='fan'; s3.setAttribute('aria-labelledby','h-fan');
+    var h3=el('h2',null,'The Century Fan — origin year to latest'); h3.id='h-fan'; h3.tabIndex=-1; s3.appendChild(h3);
+    var sub3=el('p','sub'); sub3.innerHTML='One honest, <b>log-scaled</b> frame so a +5,129% mango and a −86% grapefruit share a chart without crushing the beef line. Each thread runs from a commodity’s first tracked year to its latest. <b>Teal rose, rust fell.</b> The scale reads pounds <b>available</b> per person, never eaten.';
+    s3.appendChild(sub3);
+    var f3=el('figure'); f3.appendChild(buildFan());
+    f3.appendChild(el('figcaption',null,'Slope of each of 50 commodities from its first tracked year to its latest, log-scaled on pounds available per person. Extremes are labeled; the full endpoints are in the table below.'));
+    s3.appendChild(f3);
+    s3.appendChild(fanTable());
+    app.appendChild(s3);
+
+    /* ---- SECTION 4: RANKED CROSS-SECTION + BASKET ---- */
+    var s4=el('section','view'); s4.id='ranked'; s4.setAttribute('aria-labelledby','h-ranked');
+    var h4=el('h2',null,'Ranked — the whole plate, searchable'); h4.id='h-ranked'; h4.tabIndex=-1; s4.appendChild(h4);
+    var sub4=el('p','sub'); sub4.innerHTML='All 50 commodities by pounds available per person in the latest year. Filter by group, split risers from fallers, or open any food for its century walk-through. Add foods to <b>Build your plate</b> for a one-click CC0 export of exactly that slice.';
+    s4.appendChild(sub4);
+    s4.appendChild(buildRankedControls());
+    var basketHost=el('div'); basketHost.id='basket-host'; s4.appendChild(basketHost);
+    var listHost=el('div'); listHost.id='list-host'; s4.appendChild(listHost);
+    app.appendChild(s4);
+    drawRanked();
+    drawBasket();
+
+    if(focusYearParam){ var el3=document.getElementById('h-ribbon'); if(el3)el3.focus(); say('In 2010, for the first time in the tracked record, the U.S. had more chicken than beef available per person — a supply-side proxy for consumption, not a measured intake.'); }
+  }
+
+  /* ---- RIBBON builder ---- */
+  function buildRibbon(g,year,focusId,cap,readH,readList){
+    var cs=COMS.filter(function(c){return c.g===g;});
+    var range=groupYearRange(g);
+    function ranksAt(y){
+      var present=cs.filter(function(c){return valAt(c,y)!=null;});
+      present.sort(function(a,b){return valAt(b,y)-valAt(a,y);});
+      var m={}; present.forEach(function(c,i){ m[c.id]=i+1; }); return {m:m,n:present.length};
+    }
+    var N=cs.length;
+    var rowH=Math.max(28,Math.min(46,360/Math.max(1,N-1)));
+    var W=900, pt=16, pb=30, pl=8, pr=180;
+    var H=pt+pb+rowH*(N-1)+24;
+    var xs=function(y){ return pl+(y-range[0])/(range[1]-range[0])*(W-pl-pr); };
+    var ys=function(rank){ return pt+12+(rank-1)*rowH; };
+    var svg=S('svg',{viewBox:'0 0 '+W+' '+H,role:'img'});
+    svg.setAttribute('aria-label','Rank ribbon: '+cs.length+' '+GLBL[g].toLowerCase()+' commodities ranked by pounds available per person each year from '+range[0]+' to '+range[1]+'. Position one (top) is the most available. Teal threads rose over their record, rust threads fell. The ranked list follows this chart as a text alternative.');
+    for(var d=Math.ceil(range[0]/10)*10; d<=range[1]; d+=10){
+      svg.appendChild(S('line',{x1:xs(d),x2:xs(d),y1:pt,y2:H-pb,stroke:'var(--line-soft)','stroke-width':1}));
+      var tl=S('text',{x:xs(d),y:H-pb+16,'text-anchor':'middle',class:'axis'}); tl.textContent=d; svg.appendChild(tl);
+    }
+    var years=[]; for(var y=range[0];y<=range[1];y++) years.push(y);
+    var threads={};
+    cs.forEach(function(c){
+      var pts=[]; years.forEach(function(yy){ var v=valAt(c,yy); if(v!=null){ pts.push([xs(yy),ys(ranksAt(yy).m[c.id])]); } });
+      threads[c.id]=pts;
+    });
+    cs.forEach(function(c){
+      var pts=threads[c.id]; if(pts.length<2) return;
+      var focused = focusId? (c.id===focusId): false;
+      var faint = focusId? !focused : false;
+      svg.appendChild(S('polyline',{points:pts.map(function(p){return p[0]+','+p[1].toFixed(1);}).join(' '),fill:'none',stroke:colFor(c.dir),'stroke-width':focused?3.6:2,'stroke-linejoin':'round','stroke-linecap':'round',opacity: faint?0.13:(focusId?0.97:0.72)}));
+    });
+    var cx=xs(year);
+    svg.appendChild(S('line',{x1:cx,x2:cx,y1:pt,y2:H-pb,stroke:'var(--teal-ink)','stroke-width':1.5,'stroke-dasharray':'3 3',opacity:.85}));
+    var yhead=S('text',{x:cx,y:pt-1,'text-anchor':'middle',class:'glab'}); yhead.setAttribute('font-weight','700'); yhead.textContent=year;
+    if(cx>W-pr-30) yhead.setAttribute('text-anchor','end'); svg.appendChild(yhead);
+    var rObj=ranksAt(year);
+    cs.forEach(function(c){
+      var v=valAt(c,year); if(v==null) return;
+      var yy2=ys(rObj.m[c.id]);
+      var focused = focusId? (c.id===focusId): false;
+      var op = focusId? (focused?1:0.16):1;
+      svg.appendChild(S('circle',{cx:cx,cy:yy2,r:focused?5:3.6,fill:colFor(c.dir),stroke:'var(--surface)','stroke-width':1.5,opacity:op}));
+      var lab=S('text',{x:W-pr+10,y:yy2+4,class:'glab',opacity:op});
+      lab.textContent=glyphFor(c.dir)+' '+c.c+' — '+fmt(v)+' lb';
+      svg.appendChild(lab);
+    });
+    if(g==='meat'){
+      var bx=xs(2010); var r10=ranksAt(2010);
+      if(r10.m['beef']&&r10.m['total-chicken']){
+        var my=(ys(r10.m['beef'])+ys(r10.m['total-chicken']))/2;
+        if(Math.abs(bx-cx)>44){ var xm=S('text',{x:bx,y:my+4,'text-anchor':'middle',class:'glab'}); xm.setAttribute('font-weight','700'); xm.setAttribute('fill','var(--teal-ink)'); xm.textContent='✕ 2010'; svg.appendChild(xm); }
+      }
+    }
+    var hit=S('rect',{x:pl,y:pt,width:W-pl-pr,height:H-pt-pb,fill:'transparent'});
+    hit.addEventListener('mousemove',function(ev){
+      var box=svg.getBoundingClientRect(); var rx=(ev.clientX-box.left)/box.width*W;
+      var yy=Math.round(range[0]+(rx-pl)/(W-pl-pr)*(range[1]-range[0])); yy=Math.max(range[0],Math.min(range[1],yy));
+      var slider=document.getElementById('ribbon-year'); if(slider && parseInt(slider.value,10)!==yy){ slider.value=yy; slider.dispatchEvent(new Event('input')); }
+    });
+    svg.appendChild(hit);
+
+    var ordered=cs.filter(function(c){return valAt(c,year)!=null;}).sort(function(a,b){return rObj.m[a.id]-rObj.m[b.id];});
+    readH.textContent='Ranked availability in '+year+' ('+ordered.length+' of '+cs.length+' commodities tracked that year), pounds per person. Select a thread to focus it.';
+    clear(readList);
+    ordered.forEach(function(c){
+      var li=el('li'); if(focusId===c.id) li.className='foc';
+      var b=el('button'); b.type='button'; b.style.cssText='width:100%;text-align:left;border:0;background:none;padding:3px 6px;min-height:44px;display:flex;align-items:center;gap:8px;color:inherit;border-radius:6px';
+      b.setAttribute('aria-pressed',String(focusId===c.id));
+      b.setAttribute('aria-label','Rank '+rObj.m[c.id]+', '+c.c+', '+fmt(valAt(c,year))+' pounds per person, '+dirWord(c.dir)+' over its record. '+(focusId===c.id?'Clear focus.':'Focus this thread.'));
+      var g1=el('span','rk',rObj.m[c.id]);
+      var g2=el('span','cn'); g2.innerHTML='<span class="'+dirClass(c.dir)+'">'+glyphFor(c.dir)+'</span> '+c.c;
+      var g3=el('span','vv',fmt(valAt(c,year))+' lb');
+      b.appendChild(g1); b.appendChild(g2); b.appendChild(g3);
+      b.onclick=function(){ ribbonFocus = (ribbonFocus===c.id)?null:c.id; renderOverview(); var e=document.getElementById('h-ribbon'); if(e)e.focus(); say(ribbonFocus?('Focused '+c.c):'Cleared focus'); };
+      li.appendChild(b); readList.appendChild(li);
+    });
+    cap.textContent='Rank within '+GLBL[g].toLowerCase()+' at '+year+'. '+(g==='meat'?'In 2010, for the first time in the tracked record, chicken passed beef — a supply-side proxy for consumption, not a measured intake.':'Pounds available per person; a supply-side proxy for consumption, not a measured intake.');
+    return svg;
+  }
+
+  /* ---- PLATE builder (group composition) ---- */
+  function buildPlate(year,legend,cap){
+    var totals={meat:0,fruit:0,veg:0,eggs:0};
+    COMS.forEach(function(c){ var v=valAt(c,year); if(v!=null) totals[c.g]+=v; });
+    var order=['meat','veg','fruit','eggs'];
+    var sum=order.reduce(function(a,k){return a+totals[k];},0);
+    var R=96, cxp=110, cyp=110, W=220,H=220;
+    var svg=S('svg',{viewBox:'0 0 '+W+' '+H,role:'img'});
+    var parts=order.filter(function(k){return totals[k]>0;}).map(function(k){return GLBL[k]+' '+Math.round(totals[k]/sum*100)+'%';});
+    svg.setAttribute('aria-label','Plate composition in '+year+': share of tracked pounds available per person by food group — '+parts.join(', ')+'. This is the balance among tracked commodities, not a share of the whole diet. Values are in the legend beside the chart.');
+    svg.appendChild(S('circle',{cx:cxp,cy:cyp,r:R+7,fill:'none',stroke:'var(--line)','stroke-width':2}));
+    var ang=-Math.PI/2;
+    if(sum>0){
+      order.forEach(function(k){
+        var frac=totals[k]/sum; if(frac<=0) return;
+        var a2=ang+frac*Math.PI*2;
+        var x1=cxp+R*Math.cos(ang), y1=cyp+R*Math.sin(ang);
+        var x2=cxp+R*Math.cos(a2), y2=cyp+R*Math.sin(a2);
+        var large=frac>0.5?1:0;
+        var d='M'+cxp+','+cyp+' L'+x1.toFixed(2)+','+y1.toFixed(2)+' A'+R+','+R+' 0 '+large+' 1 '+x2.toFixed(2)+','+y2.toFixed(2)+' Z';
+        svg.appendChild(S('path',{d:d,fill:GCOLOR[k],stroke:'var(--surface)','stroke-width':2,opacity:.92}));
+        if(frac>0.07){ var mid=(ang+a2)/2; var lx=cxp+R*0.62*Math.cos(mid), ly=cyp+R*0.62*Math.sin(mid);
+          var t=S('text',{x:lx,y:ly+3,'text-anchor':'middle',class:'glab'}); t.setAttribute('fill','#fff'); t.setAttribute('font-weight','700'); t.textContent=Math.round(frac*100)+'%'; svg.appendChild(t); }
+        ang=a2;
+      });
+    }
+    clear(legend);
+    order.forEach(function(k){
+      var li=el('li');
+      var sw=el('span','sw'); sw.style.background=GCOLOR[k];
+      var nm=el('span',null,GLBL[k]);
+      var pv=el('span','pv',totals[k]>0?fmt(totals[k])+' lb':'—');
+      var pp=el('span','pp',sum>0&&totals[k]>0?Math.round(totals[k]/sum*100)+'%':'');
+      li.appendChild(sw); li.appendChild(nm); li.appendChild(pv); li.appendChild(pp); legend.appendChild(li);
+    });
+    var lead=order.filter(function(k){return totals[k]>0;}).sort(function(a,b){return totals[b]-totals[a];})[0];
+    cap.textContent='In '+year+', among tracked commodities, '+(lead?GLBL[lead].toLowerCase()+' led the plate at '+Math.round(totals[lead]/sum*100)+'% of tracked pounds':'no data')+'. Share of tracked pounds available, not of the whole diet.';
+    return svg;
+  }
+
+  /* ---- CENTURY FAN (log slopegraph) ---- */
+  function buildFan(){
+    var W=900,H=460,pl=64,pr=182,pt=26,pb=30;
+    var minV=Infinity,maxV=-Infinity;
+    COMS.forEach(function(c){ [c.v0,c.v1].forEach(function(v){ if(v<minV)minV=v; if(v>maxV)maxV=v; }); });
+    minV=Math.max(0.05,minV);
+    var lmin=Math.log10(minV), lmax=Math.log10(maxV);
+    var ys=function(v){ return H-pb-(Math.log10(Math.max(0.05,v))-lmin)/(lmax-lmin)*(H-pt-pb); };
+    var xL=pl, xR=W-pr;
+    var svg=S('svg',{viewBox:'0 0 '+W+' '+H,role:'img'});
+    svg.setAttribute('aria-label','Century fan: each of 50 commodities drawn as a line from its first tracked-year value to its latest, on a log scale of pounds available per person. Teal lines rose, rust lines fell. Full endpoints are in the data table below.');
+    [0.1,1,10,100].forEach(function(gv){ if(gv<minV*0.9||gv>maxV*1.1) return; var gy=ys(gv);
+      svg.appendChild(S('line',{x1:xL,x2:xR,y1:gy,y2:gy,stroke:'var(--line-soft)','stroke-width':1}));
+      var t=S('text',{x:xL-8,y:gy+3,'text-anchor':'end',class:'axis'}); t.textContent=gv+' lb'; svg.appendChild(t);
+    });
+    var ao=S('text',{x:xL,y:pt-10,'text-anchor':'middle',class:'glab'}); ao.textContent='first year'; svg.appendChild(ao);
+    var al=S('text',{x:xR,y:pt-10,'text-anchor':'middle',class:'glab'}); al.textContent='latest'; svg.appendChild(al);
+    var labelIds={'mangoes':1,'beef':1,'total-chicken':1,'grapefruit':1,'potatoes':1,'avocados':1,'eggs':1,'pineapples':1};
+    var arr=COMS.slice().sort(function(a,b){return (labelIds[a.id]?1:0)-(labelIds[b.id]?1:0);});
+    arr.forEach(function(c){
+      var col=colFor(c.dir);
+      var y1=ys(c.v0), y2=ys(c.v1);
+      var big=labelIds[c.id];
+      var ln=S('line',{x1:xL,y1:y1.toFixed(1),x2:xR,y2:y2.toFixed(1),stroke:col,'stroke-width':big?2.6:1.3,opacity:big?0.98:0.5,'stroke-linecap':'round'});
+      var tt=S('title'); tt.textContent=c.c+': '+fmt(c.v0)+' lb ('+c.y0+') → '+fmt(c.v1)+' lb ('+c.y1+'), '+(c.pct==null?'n/a':(c.pct>0?'+':'')+c.pct+'%'); ln.appendChild(tt);
+      svg.appendChild(ln);
+      if(big){
+        svg.appendChild(S('circle',{cx:xR,cy:y2,r:3.2,fill:col}));
+        var lab=S('text',{x:xR+9,y:y2+3.5,class:'glab'}); lab.textContent=glyphFor(c.dir)+' '+c.c+' '+(c.pct>0?'+':'')+Math.round(c.pct)+'%'; svg.appendChild(lab);
+      }
+    });
+    return svg;
+  }
+  function fanTable(){
+    var d=el('details','tbl'); d.appendChild(el('summary',null,'Show the century-fan endpoints as a table'));
+    var t=el('table');
+    t.innerHTML='<caption class="sr-only">First-year and latest availability per commodity with percent change, ranked by change.</caption><thead><tr><th scope="col">Commodity</th><th scope="col">First (lb, year)</th><th scope="col">Latest (lb, year)</th><th scope="col">Change</th></tr></thead>';
+    var tb=el('tbody');
+    COMS.slice().sort(function(a,b){return (b.pct==null?-1e9:b.pct)-(a.pct==null?-1e9:a.pct);}).forEach(function(c){
+      var tr=el('tr');
+      tr.innerHTML='<th scope="row">'+c.c+'</th><td class="num">'+fmt(c.v0)+' ('+c.y0+')</td><td class="num">'+fmt(c.v1)+' ('+c.y1+')</td><td class="num '+dirClass(c.dir)+'">'+glyphFor(c.dir)+' '+(c.pct==null?'n/a':(c.pct>0?'+':'')+c.pct+'%')+'</td>';
+      tb.appendChild(tr);
+    });
+    t.appendChild(tb); d.appendChild(t); return d;
+  }
+
+  /* ---- RANKED controls + list ---- */
+  function buildRankedControls(){
+    var box=el('div');
+    var ctr=el('div','controls');
+    var sw=el('div','search'); var inp=el('input'); inp.type='search'; inp.id='q'; inp.placeholder='Search foods & commodities…'; inp.value=query; inp.setAttribute('aria-label','Search foods and commodities'); sw.appendChild(inp); ctr.appendChild(sw);
+    var sel=el('select'); sel.id='gsel'; sel.setAttribute('aria-label','Filter by food group');
+    var o0=el('option',null,'All groups'); o0.value='all'; sel.appendChild(o0);
+    GROUPS.forEach(function(g){ var o=el('option',null,g.l); o.value=g.k; if(g.k===listGroup)o.selected=true; sel.appendChild(o); });
+    ctr.appendChild(sel);
+    var cnt=el('span','count'); cnt.id='rcount'; ctr.appendChild(cnt);
+    inp.oninput=function(){ query=inp.value; drawRanked(); };
+    sel.onchange=function(){ listGroup=sel.value; drawRanked(); };
+    box.appendChild(ctr);
+    var chips=el('div','chips'); chips.setAttribute('role','group'); chips.setAttribute('aria-label','Split risers and fallers');
+    [['all','All'],['up','▲ Risers'],['dn','▼ Fallers'],['flat','● Steady']].forEach(function(p){
+      var b=el('button','chip',p[1]); b.type='button'; b.setAttribute('aria-pressed',String(p[0]===dirFilter));
+      b.onclick=function(){ dirFilter=p[0]; drawRanked(); };
+      chips.appendChild(b);
+    });
+    box.appendChild(chips);
+    return box;
+  }
+  function currentRows(){
+    var rows=COMS.filter(function(c){
+      return (listGroup==='all'||c.g===listGroup) &&
+             (dirFilter==='all'||c.dir===dirFilter) &&
+             (!query || (c.c+' '+c.cuts.join(' ')).toLowerCase().indexOf(query.toLowerCase())>=0);
+    });
+    rows.sort(function(a,b){
+      if(sortKey==='c') return a.c.localeCompare(b.c)*sortDir;
+      var va=a[sortKey],vb=b[sortKey]; if(va==null)va=-Infinity; if(vb==null)vb=-Infinity; return (va-vb)*sortDir;
+    });
+    return rows;
+  }
+  function drawRanked(){
+    var host=document.getElementById('list-host'); if(!host) return; clear(host);
+    var list=el('div','list');
+    var head=el('div','rowhead');
+    head.appendChild(el('span',null,'#'));
+    var hName=el('button',null,'Commodity'); hName.setAttribute('aria-sort', sortKey==='c'?(sortDir>0?'ascending':'descending'):'none');
+    var hSpark=el('span','cs','Century');
+    var hValW=el('span','r'); var hVal=el('button',null,'Lbs/person'+(sortKey==='pc'?(sortDir<0?' ▾':' ▴'):'')); hVal.setAttribute('aria-sort', sortKey==='pc'?(sortDir<0?'descending':'ascending'):'none'); hValW.appendChild(hVal);
+    var hChgW=el('span','r'); var hChg=el('button',null,'Change'+(sortKey==='pct'?(sortDir<0?' ▾':' ▴'):'')); hChg.setAttribute('aria-sort', sortKey==='pct'?(sortDir<0?'descending':'ascending'):'none'); hChgW.appendChild(hChg);
+    var hAdd=el('span','r','Add');
+    head.appendChild(hName); head.appendChild(hSpark); head.appendChild(hValW); head.appendChild(hChgW); head.appendChild(hAdd);
+    hName.onclick=function(){ setSort('c',1); }; hVal.onclick=function(){ setSort('pc',-1); }; hChg.onclick=function(){ setSort('pct',-1); };
+    function setSort(k,def){ if(sortKey===k)sortDir=-sortDir; else{sortKey=k;sortDir=def;} drawRanked(); }
+    list.appendChild(head);
+    var body=el('div'); list.appendChild(body);
+    var rows=currentRows();
+    rows.forEach(function(c,i){
+      var r=el('button','row'); r.type='button'; r.setAttribute('aria-label',(i+1)+'. '+c.c+', '+fmt(c.pc)+' pounds per person, '+dirWord(c.dir)+' '+(c.pct==null?'not available':(c.pct>0?'plus ':'')+c.pct+' percent')+' over '+c.span+'. Open century walk-through.');
+      r.appendChild(el('span','rank',i+1));
+      var nm=el('div','nm',c.c); nm.appendChild(el('small',null,c.gl+(c.cuts.length>1?' · '+c.cuts.length+' cuts':''))); r.appendChild(nm);
+      var sp=el('div','spark'); sp.appendChild(spark(c)); r.appendChild(sp);
+      r.appendChild(el('div','val',fmt(c.pc)));
+      r.appendChild(function(){var chg=el('div','chg '+dirClass(c.dir)); chg.textContent=glyphFor(c.dir)+' '+(c.pct==null?'n/a':(c.pct>0?'+':'')+c.pct+'%'); return chg;}());
+      var add=el('div','add'); var inB=basket.indexOf(c.id)>=0; add.textContent=inB?'✓':'＋'; add.setAttribute('role','button'); add.setAttribute('tabindex','0'); add.setAttribute('aria-label',(inB?'Remove ':'Add ')+c.c+(inB?' from':' to')+' your plate'); r.appendChild(add);
+      r.onclick=function(){ location.hash='c='+c.id; };
+      add.addEventListener('click',function(ev){ ev.stopPropagation(); toggleBasket(c.id); });
+      add.addEventListener('keydown',function(ev){ if(ev.key==='Enter'||ev.key===' '){ ev.preventDefault(); ev.stopPropagation(); toggleBasket(c.id); } });
+      body.appendChild(r);
+    });
+    host.appendChild(list);
+    var cnt=document.getElementById('rcount'); var extra=(listGroup==='all'?'':' · '+GLBL[listGroup])+(dirFilter==='all'?'':' · '+({up:'risers',dn:'fallers',flat:'steady'}[dirFilter]));
+    if(cnt) cnt.textContent=rows.length+' commodities'+extra;
+    say(rows.length+' commodities'+(listGroup==='all'?'':', '+GLBL[listGroup])+(dirFilter==='all'?'':', '+({up:'risers',dn:'fallers',flat:'steady'}[dirFilter]))+', sorted by '+({pc:'availability',pct:'change',c:'name'}[sortKey]));
+  }
+  function toggleBasket(id){ var i=basket.indexOf(id); if(i>=0)basket.splice(i,1); else basket.push(id); drawBasket(); drawRanked(); say(i>=0?('Removed '+BY[id].c+' from your plate'):('Added '+BY[id].c+' to your plate, '+basket.length+' items')); }
+  function drawBasket(){
+    var host=document.getElementById('basket-host'); if(!host) return; clear(host);
+    if(!basket.length) return;
+    var b=el('div','basket'); b.setAttribute('role','region'); b.setAttribute('aria-label','Your plate');
+    b.appendChild(el('h3',null,'Build your plate — '+basket.length+' selected'));
+    var tot=basket.reduce(function(a,id){return a+BY[id].pc;},0);
+    var p=el('p',null); p.innerHTML='Combined latest availability: <span class="tot">'+fmt(tot)+' lb</span> per person per year. Export exactly this slice as CC0.';
+    b.appendChild(p);
+    var bl=el('div','bl');
+    basket.forEach(function(id){ var c=BY[id]; var bp=el('span','bp'); bp.appendChild(document.createTextNode(c.c+' · '+fmt(c.pc)+' lb'));
+      var x=el('button',null,'×'); x.setAttribute('aria-label','Remove '+c.c); x.onclick=function(){ toggleBasket(id); }; bp.appendChild(x); bl.appendChild(bp); });
+    b.appendChild(bl);
+    var exp=el('button','chip','⬇ Export CC0 CSV'); exp.type='button'; exp.onclick=exportBasket; b.appendChild(exp);
+    var clr=el('button','chip','Clear'); clr.type='button'; clr.style.marginLeft='8px'; clr.onclick=function(){ basket=[]; drawBasket(); drawRanked(); say('Plate cleared'); }; b.appendChild(clr);
+    host.appendChild(b);
+  }
+  function exportBasket(){
+    var lines=['# US per-capita food availability (lbs/person/yr) — USDA ERS, CC0 public domain. Supply-side proxy for consumption, not intake, not price.','commodity,group,year,lbs_per_capita'];
+    basket.forEach(function(id){ var c=BY[id]; c.s.forEach(function(p){ lines.push('"'+c.c.replace(/"/g,'""')+'",'+c.g+','+p[0]+','+p[1]); }); });
+    try{
+      var blob=new Blob([lines.join('\n')],{type:'text/csv'});
+      var url=URL.createObjectURL(blob); var a=document.createElement('a'); a.href=url; a.download='my-plate-ers-availability.csv'; document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(function(){URL.revokeObjectURL(url);},2000);
+      say('Exported '+basket.length+' commodities as CC0 CSV');
+    }catch(e){ say('Export not available in this context'); }
+  }
+
+  /* ============================ DETAIL WALK-THROUGH ============================ */
+  function trendChart(c){
+    var A=c.s, W=880,H=260,pl=52,pr=16,pt=22,pb=30;
+    var xMin=DB.yearMin, xMax=DB.yearMax;
+    var vals=A.map(function(x){return x[1];}), mx=Math.max.apply(null,vals)*1.12, mn=0;
+    var xs=function(y){ return pl+(y-xMin)/(xMax-xMin)*(W-pl-pr); };
+    var ys=function(v){ return H-pb-(v-mn)*(H-pt-pb)/(mx-mn); };
+    var svg=S('svg',{viewBox:'0 0 '+W+' '+H,role:'img'});
+    svg.setAttribute('aria-label','Century trend of '+c.c+' availability, '+c.y0+' to '+c.y1+', from '+fmt(c.v0)+' to '+fmt(c.v1)+' pounds available per person per year, peaking at '+fmt(c.pk[1])+' in '+c.pk[0]+'. Years before '+c.y0+' are shown as an explicit gap, not zero. Every year is in the table below.');
+    for(var g=0;g<=3;g++){ var gv=mx*g/3, gy=ys(gv); svg.appendChild(S('line',{x1:pl,x2:W-pr,y1:gy,y2:gy,stroke:'var(--line-soft)','stroke-width':1}));
+      var yl=S('text',{x:pl-8,y:gy+3,'text-anchor':'end',class:'axis'}); yl.textContent=fmt(gv,0)+' lb'; svg.appendChild(yl); }
+    for(var d=Math.ceil(xMin/20)*20; d<=xMax; d+=20){ var t=S('text',{x:xs(d),y:H-8,'text-anchor':'middle',class:'axis'}); t.textContent=d; svg.appendChild(t); }
+    if(c.y0>xMin){
+      var gy0=ys(0);
+      svg.appendChild(S('line',{x1:pl,x2:xs(c.y0),y1:gy0,y2:gy0,stroke:'var(--muted)','stroke-width':1.5,'stroke-dasharray':'2 4',opacity:.7}));
+      var note=S('text',{x:(pl+xs(c.y0))/2,y:gy0-7,'text-anchor':'middle',class:'axis'}); note.textContent='no ERS series before '+c.y0; svg.appendChild(note);
+    }
+    var col=colFor(c.dir);
+    var pts=A.map(function(a){return xs(a[0])+','+ys(a[1]).toFixed(1);}).join(' ');
+    var area=xs(A[0][0])+','+ys(0)+' '+pts+' '+xs(A[A.length-1][0])+','+ys(0);
+    svg.appendChild(S('polygon',{points:area,fill:col,opacity:.10}));
+    svg.appendChild(S('polyline',{points:pts,fill:'none',stroke:col,'stroke-width':2.2,'stroke-linejoin':'round','stroke-linecap':'round'}));
+    svg.appendChild(S('circle',{cx:xs(c.pk[0]),cy:ys(c.pk[1]),r:3.5,fill:'var(--gold)'}));
+    var pkl=S('text',{x:xs(c.pk[0]),y:ys(c.pk[1])-8,'text-anchor':'middle',class:'glab'}); pkl.setAttribute('fill','var(--gold)'); pkl.textContent='peak '+fmt(c.pk[1])+' ('+c.pk[0]+')'; svg.appendChild(pkl);
+    svg.appendChild(S('circle',{cx:xs(c.y1),cy:ys(c.v1),r:3.5,fill:col}));
+    var cross=S('line',{x1:0,x2:0,y1:pt,y2:H-pb,stroke:col,'stroke-width':1,opacity:0});
+    var dot=S('circle',{r:4,fill:col,stroke:'var(--surface)','stroke-width':1.5,opacity:0});
+    var tb=S('rect',{rx:5,fill:'var(--ink)',opacity:0,height:22}); var tt=S('text',{class:'tip',opacity:0,'text-anchor':'middle'});
+    svg.appendChild(cross); svg.appendChild(dot); svg.appendChild(tb); svg.appendChild(tt);
+    var hit=S('rect',{x:pl,y:pt,width:W-pl-pr,height:H-pt-pb,fill:'transparent'});
+    function showAt(yr){
+      var best=A[0],bd=1e9; A.forEach(function(a){ var dd=Math.abs(a[0]-yr); if(dd<bd){bd=dd;best=a;} });
+      var x=xs(best[0]),y=ys(best[1]);
+      cross.setAttribute('x1',x); cross.setAttribute('x2',x); cross.setAttribute('opacity',.5);
+      dot.setAttribute('cx',x); dot.setAttribute('cy',y); dot.setAttribute('opacity',1);
+      var label=best[0]+'  '+fmt(best[1])+' lb'; tt.textContent=label;
+      var tw=label.length*7.2+16, tx=Math.max(pl+tw/2,Math.min(W-pr-tw/2,x));
+      tt.setAttribute('x',tx); tt.setAttribute('y',pt+2); tt.setAttribute('opacity',1);
+      tb.setAttribute('x',tx-tw/2); tb.setAttribute('y',pt-14); tb.setAttribute('width',tw); tb.setAttribute('opacity',.92);
+    }
+    hit.addEventListener('mousemove',function(ev){ var box=svg.getBoundingClientRect(); var rx=(ev.clientX-box.left)/box.width*W; var yr=Math.round(xMin+(rx-pl)/(W-pl-pr)*(xMax-xMin)); showAt(yr); });
+    hit.addEventListener('mouseleave',function(){ [cross,dot,tb,tt].forEach(function(e){e.setAttribute('opacity',0);}); });
+    svg.appendChild(hit);
+    return svg;
+  }
+  function detailTable(c){
+    var d=el('details','tbl'); d.appendChild(el('summary',null,'Show every year for '+c.c+' as a table'));
+    var t=el('table');
+    t.innerHTML='<caption class="sr-only">Yearly pounds available per person for '+c.c+', USDA ERS.</caption><thead><tr><th scope="col">Year</th><th scope="col">Lbs/person</th></tr></thead>';
+    var tb=el('tbody'); c.s.forEach(function(p){ var tr=el('tr'); tr.innerHTML='<th scope="row" class="num">'+p[0]+'</th><td class="num">'+fmt(p[1])+'</td>'; tb.appendChild(tr); }); t.appendChild(tb); d.appendChild(t); return d;
+  }
+  function renderDetail(c){
+    clear(app);
+    var back=el('button','back','← Back to the whole plate'); back.onclick=function(){ location.hash=''; }; app.appendChild(back);
+    var st=el('div','story');
+    var h=el('div','shead');
+    h.appendChild(el('div','cat',c.gl+' · commodity-level ERS series · '+c.span));
+    var hh=el('h2',null,c.c); hh.id='detail-h'; hh.tabIndex=-1; h.appendChild(hh);
+    var bn=el('div','bignum'); bn.appendChild(el('span','n',fmt(c.pc)+' lb'));
+    bn.appendChild(el('span','lab','available per person in '+c.ly+' — a supply-side proxy for consumption, not a measured intake and not a price'));
+    h.appendChild(bn);
+    st.appendChild(h);
+
+    var b1=el('div','beat'); b1.appendChild(el('p','step','01 · The century'));
+    b1.appendChild(el('h3',null,'A hundred years, one thread'));
+    var r1=el('p','read'); r1.innerHTML='Availability of '+c.c.toLowerCase()+' went from <b>'+fmt(c.v0)+' lb</b> in '+c.y0+' to <b>'+fmt(c.v1)+' lb</b> in '+c.y1+' — it '+dirWord(c.dir)+' about <b>'+(c.pct==null?'n/a':(c.pct>0?'+':'')+c.pct+'%')+'</b>, peaking at <b>'+fmt(c.pk[1])+' lb</b> in '+c.pk[0]+'. Hover the line or open the table for any year.';
+    b1.appendChild(r1);
+    if(INSIGHT[c.id]){ var ins=el('p','insight'); ins.textContent=INSIGHT[c.id]; b1.appendChild(ins); }
+    var fig=el('figure'); fig.appendChild(trendChart(c)); fig.appendChild(el('figcaption',null,'Pounds available per person per year, '+c.y0+'–'+c.y1+'. Years before '+c.y0+' are an explicit gap (true absence of data), never zero. Peak marked in gold.')); b1.appendChild(fig);
+    b1.appendChild(detailTable(c));
+    st.appendChild(b1);
+
+    var b2=el('div','beat'); b2.appendChild(el('p','step','02 · What this figure covers'));
+    b2.appendChild(el('h3',null, c.cuts.length>1? (c.cuts.length+' tracked foods carry this one number') : 'A commodity-level figure'));
+    var r2=el('p','read'); r2.innerHTML='USDA ERS publishes availability at the commodity level, so every cut or variety below carries the same parent per-capita figure — cuts are <b>not</b> measured separately.';
+    b2.appendChild(r2);
+    var cutsB=el('div','cuts'); c.cuts.forEach(function(cu){ cutsB.appendChild(el('span',null,cu.replace(/-/g,' '))); }); b2.appendChild(cutsB);
+    st.appendChild(b2);
+
+    var b3=el('div','beat'); b3.appendChild(el('p','step','03 · Cite & reuse'));
+    b3.appendChild(el('h3',null,'Take this number honestly'));
+    var r3=el('p','read'); r3.innerHTML='Cite it as pounds <b>available</b> per person per year (USDA ERS), a supply-side proxy for consumption — never as pounds eaten and never as a price.';
+    b3.appendChild(r3);
+    var cite=el('div','cite'); cite.innerHTML='<b>'+c.c+'</b> — '+fmt(c.pc)+' lb/person available ('+c.ly+'); '+c.y0+'→'+c.y1+' '+(c.pct==null?'n/a':(c.pct>0?'+':'')+c.pct+'%')+'. Source: USDA ERS Food Availability (Per Capita) Data System (public domain). Reads: Muntin Cost Index, CC-BY 4.0. Deep link: <code>#c='+c.id+'</code>';
+    b3.appendChild(cite);
+    var dlrow=el('div','access');
+    var a1=el('a','dl'); a1.href='https://muntin.digital/data/ers-food-availability.jsonl'; a1.setAttribute('download',''); a1.innerHTML='<span class="cc0">CC0</span> raw JSONL'; dlrow.appendChild(a1);
+    var a2=el('a','dl'); a2.href='https://muntin.digital/cost-index/ers-food-availability.json'; a2.setAttribute('download',''); a2.innerHTML='<span class="ccby">CC-BY</span> reads JSON'; dlrow.appendChild(a2);
+    b3.appendChild(dlrow);
+    st.appendChild(b3);
+
+    app.appendChild(st);
+    document.title=c.c+' — a century of US availability | The American Plate';
+    var hn=document.getElementById('detail-h'); if(hn) hn.focus();
+    say('Opened '+c.c+': '+fmt(c.pc)+' pounds per person available in '+c.ly+', '+dirWord(c.dir)+' '+(c.pct==null?'n/a':(c.pct>0?'+':'')+c.pct+' percent')+' since '+c.y0+'.');
+    window.scrollTo(0,0);
+  }
+
+  /* ============================ ROUTER ============================ */
+  function parseHash(){
+    var h=location.hash.slice(1); var out={};
+    h.split('&').forEach(function(kv){ var i=kv.indexOf('='); if(i>0) out[kv.slice(0,i)]=decodeURIComponent(kv.slice(i+1)); });
+    return out;
+  }
+  function route(){
+    var p=parseHash();
+    var qy=null; try{ qy=new URLSearchParams(location.search||'').get('year'); }catch(e){}
+    if(p.c && BY[p.c]){ renderDetail(BY[p.c]); return; }
+    document.title='The American Plate — a century of US per-capita food availability (USDA ERS)';
+    var yr = p.year? parseInt(p.year,10) : (qy? parseInt(qy,10): null);
+    renderOverview(yr && !isNaN(yr) ? yr : null);
+  }
+  window.addEventListener('hashchange',route);
+  var sf=document.getElementById('static-fallback'); if(sf) sf.parentNode.removeChild(sf);
+  route();
+})();
+</script>

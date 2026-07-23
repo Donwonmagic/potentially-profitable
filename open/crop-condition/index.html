@@ -1,0 +1,936 @@
+<title>The Feed Complex — Corn &amp; Soybean Crop Health</title>
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="description" content="Weekly USDA NASS good-to-excellent condition share for US corn and soybeans, each week read only against that crop's own ~40-year same-week history (percentile, band). A coincident, observed backdrop on the feed complex — descriptive of the tracked condition record, never a forecast, never a deliver" />
+<meta name="theme-color" content="#2A50C8" />
+<link rel="canonical" href="https://muntin.digital/open/crop-condition/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/open/crop-condition/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/open/crop-condition/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/open/crop-condition/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="es_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="The Feed Complex — Corn &amp;amp; Soybean Crop Health" />
+<meta property="og:description" content="Weekly USDA NASS good-to-excellent condition share for US corn and soybeans, each week read only against that crop's own ~40-year same-week history (percentile, band). A coincident, observed backdrop on the feed complex — descriptive of the tracked condition record, never a forecast, never a deliver" />
+<meta property="og:url" content="https://muntin.digital/open/crop-condition/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="The Feed Complex — Corn &amp;amp; Soybean Crop Health" />
+<meta name="twitter:description" content="Weekly USDA NASS good-to-excellent condition share for US corn and soybeans, each week read only against that crop's own ~40-year same-week history (percentile, band). A coincident, observed backdrop on the feed complex — descriptive of the tracked condition record, never a forecast, never a deliver" />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Open data","item":"https://muntin.digital/open/"},{"@type":"ListItem","position":3,"name":"The Feed Complex","item":"https://muntin.digital/open/crop-condition/"}]}</script>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site-core.css" />
+<style>
+/* === MUNTIN OPEN-DATA EXPLORER · shared token block === */
+:root{
+  --paper:#f7f4ee; --surface:#fffdf9; --surface-2:#f1ece2;
+  --ink:#1b1f24; --ink-soft:#4a525a; --muted:#676b66;
+  --line:#e5ddce; --line-soft:#efe9dc;
+  --teal:#2f7d78; --teal-ink:#215a56; --teal-wash:#e4efed;
+  --gold:#8a6216; --rust:#a8442d;
+  --focus:#1b6be0; --focus-ring:0 0 0 3px rgba(27,107,224,.55);
+  --ok-badge-bd:var(--teal); --ok-badge-ink:var(--teal-ink);
+  --font-display:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
+  --font-sans:system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --font-mono:ui-monospace,'SF Mono','Cascadia Code',Menlo,Consolas,monospace;
+  --sh:0 1px 2px rgba(20,24,29,.05),0 8px 24px rgba(20,24,29,.07);
+  --tap:44px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#13161a; --surface:#1a1e23; --surface-2:#222831;
+  --ink:#eef1f0; --ink-soft:#b7bec3; --muted:#8b949c;
+  --line:#2b3138; --line-soft:#242a30;
+  --teal:#57b7af; --teal-ink:#7fcfc7; --teal-wash:#16302e;
+  --gold:#d3a44c; --rust:#e08a72;
+  --focus:#7ab6ff; --focus-ring:0 0 0 3px rgba(122,182,255,.6);
+  --sh:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4);
+}}
+:root[data-theme="dark"]{ --paper:#13161a;--surface:#1a1e23;--surface-2:#222831;--ink:#eef1f0;--ink-soft:#b7bec3;--muted:#8b949c;--line:#2b3138;--line-soft:#242a30;--teal:#57b7af;--teal-ink:#7fcfc7;--teal-wash:#16302e;--gold:#d3a44c;--rust:#e08a72;--focus:#7ab6ff;--focus-ring:0 0 0 3px rgba(122,182,255,.6);--sh:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4); }
+:root[data-theme="light"]{ --paper:#f7f4ee;--surface:#fffdf9;--surface-2:#f1ece2;--ink:#1b1f24;--ink-soft:#4a525a;--muted:#676b66;--line:#e5ddce;--line-soft:#efe9dc;--teal:#2f7d78;--teal-ink:#215a56;--teal-wash:#e4efed;--gold:#8a6216;--rust:#a8442d;--focus:#1b6be0;--focus-ring:0 0 0 3px rgba(27,107,224,.55); }
+*{box-sizing:border-box}
+html{color-scheme:light dark}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-sans);line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:960px;margin:0 auto;padding:clamp(18px,3.5vw,44px) clamp(14px,4vw,30px) 90px}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+h1{font-family:var(--font-display);font-weight:600;line-height:1.03;letter-spacing:-.01em;text-wrap:balance}
+h2,h3{font-family:var(--font-display);font-weight:600;letter-spacing:-.01em}
+a{color:var(--teal-ink)} a:hover{text-decoration:underline}
+svg{display:block;max-width:100%;height:auto}
+figure{margin:0}
+:where(a,button,select,input,summary,[tabindex]):focus-visible{outline:2px solid var(--focus);outline-offset:2px;box-shadow:var(--focus-ring);border-radius:6px}
+button,select,input{min-height:var(--tap);font:inherit}
+button,[role=button]{min-width:var(--tap)}
+input,select{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:11px 14px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.lic{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--ok-badge-bd);color:var(--ok-badge-ink);border-radius:5px;padding:1px 7px;font:600 10.5px/1.4 var(--font-mono);letter-spacing:.06em}
+.lic::before{content:'\2713'} .lic[data-lic="cc-by"]::before{content:'\24B8'}
+.honest{display:block;font:400 11.5px/1.4 var(--font-sans);color:var(--muted);font-style:italic}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+@media (forced-colors:active){.lic,.chip{border:1px solid CanvasText}[data-series]{forced-color-adjust:none}}
+
+/* === masthead === */
+header.mast{border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:22px}
+.kick{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-ink);margin:0 0 12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+h1{font-size:clamp(30px,6.4vw,54px);margin:0 0 10px}
+.lede{font-size:clamp(15px,2.2vw,18px);color:var(--ink-soft);max-width:64ch;margin:0}
+.lede b{color:var(--ink);font-family:var(--font-mono);font-weight:600}
+
+/* === controls / toolbar === */
+.toolbar{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin:0 0 20px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface);box-shadow:var(--sh)}
+.seg button{min-height:var(--tap);border:0;background:none;color:var(--ink-soft);font:600 14px/1 var(--font-sans);padding:0 16px;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--teal-wash);color:var(--teal-ink)}
+.seg button .sw{width:12px;height:12px;border-radius:3px;flex:none}
+.spacer{flex:1 1 auto}
+.ttoggle{min-height:var(--tap);min-width:var(--tap);border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink-soft);cursor:pointer;font-size:16px;display:inline-flex;align-items:center;justify-content:center}
+.status{font-family:var(--font-mono);font-size:12px;color:var(--muted);flex-basis:100%;margin:2px 0 0}
+
+/* === overview cards === */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.cards{grid-template-columns:1fr}}
+.card{border:1px solid var(--line);border-radius:16px;background:var(--surface);box-shadow:var(--sh);padding:0;text-align:left;font:inherit;color:inherit;cursor:pointer;display:flex;flex-direction:column;overflow:hidden}
+.card:hover,.card:focus-visible{border-color:var(--teal)}
+.card-h{padding:16px 18px 10px}
+.card-h .role{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+.card-h h2{font-size:24px;margin:0 0 8px}
+.card-big{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.card-big .n{font-family:var(--font-mono);font-size:38px;font-weight:600;color:var(--teal-ink);line-height:1;letter-spacing:-.02em}
+.card-big .u{font-size:12px;color:var(--ink-soft);max-width:22ch}
+.card-band{margin:10px 0 0;font-size:13px;color:var(--ink-soft)}
+.card-band .dir{font-weight:600;font-family:var(--font-mono)}
+.card figure{padding:4px 12px 12px}
+.card .go{padding:10px 18px;border-top:1px solid var(--line-soft);font-family:var(--font-mono);font-size:12px;color:var(--teal-ink);display:flex;justify-content:space-between;align-items:center}
+
+/* comparison figure on overview */
+.compare{margin:22px 0 0;border:1px solid var(--line);border-radius:16px;background:var(--surface);box-shadow:var(--sh);padding:18px 20px 20px}
+.compare h2{font-size:20px;margin:0 0 4px}
+.compare .read{font-size:14px;color:var(--ink-soft);max-width:64ch;margin:0 0 14px}
+
+/* === detail story === */
+.back{display:inline-flex;align-items:center;gap:7px;min-height:var(--tap);background:none;border:0;color:var(--teal-ink);font:inherit;font-size:14px;cursor:pointer;padding:0 4px 0 0;margin:0 0 10px}
+.back:hover{text-decoration:underline}
+.story{border:1px solid var(--line);border-radius:18px;background:var(--surface);box-shadow:var(--sh);overflow:hidden}
+.shead{padding:22px 24px 20px;border-bottom:1px solid var(--line)}
+.shead .role{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 4px}
+.shead h2{font-size:clamp(26px,4.6vw,38px);margin:2px 0 14px;outline:none}
+.shead h2:focus-visible{outline:2px solid var(--focus);outline-offset:3px;box-shadow:var(--focus-ring);border-radius:6px}
+.bignum{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.bignum .n{font-family:var(--font-mono);font-size:clamp(30px,6vw,46px);font-weight:600;color:var(--teal-ink);line-height:1;letter-spacing:-.02em}
+.bignum .lab{font-size:13px;color:var(--ink-soft);max-width:40ch}
+.beat{padding:22px 24px;border-top:1px solid var(--line-soft)}
+.beat .step{font-family:var(--font-mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--teal-ink);margin:0 0 4px}
+.beat h3{font-size:21px;font-weight:600;margin:0 0 6px}
+.beat .read{font-size:14px;color:var(--ink-soft);margin:0 0 16px;max-width:66ch}
+.beat .read b{color:var(--ink)}
+.beat .read .num{font-family:var(--font-mono);font-weight:600;color:var(--ink)}
+.fine{font-size:11.5px;color:var(--muted);margin:12px 0 0;font-style:italic;max-width:66ch}
+.lic-line{font-family:var(--font-mono);font-size:11px;color:var(--muted);margin:12px 0 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+/* chart chrome */
+.axis{font-family:var(--font-mono);font-size:10px;fill:var(--muted)}
+.axlab{font-family:var(--font-mono);font-size:10.5px;fill:var(--ink-soft)}
+.grid{stroke:var(--line);stroke-width:1}
+.tip-box{fill:var(--surface);stroke:var(--teal);stroke-width:1}
+.tip-tx{font-family:var(--font-mono);font-size:11.5px;fill:var(--ink);font-variant-numeric:tabular-nums}
+
+/* legend / chips */
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin:12px 0 0;font-family:var(--font-mono);font-size:11.5px;color:var(--ink-soft)}
+.legend .k{display:inline-flex;align-items:center;gap:6px}
+.legend .k .m{width:16px;height:11px;border-radius:2px;flex:none;border:1px solid var(--line)}
+.legend .k .ln{width:18px;height:0;border-top-width:3px;border-top-style:solid;flex:none}
+
+/* trace picker */
+.tracebar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0 0}
+.tracebar label{font-family:var(--font-mono);font-size:12px;color:var(--ink-soft)}
+.tracebar select{min-width:150px}
+.qbtn{min-height:var(--tap);border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--teal-ink);font:600 12.5px/1 var(--font-mono);padding:0 12px;cursor:pointer}
+.qbtn[aria-pressed="true"]{background:var(--teal-wash);border-color:var(--teal)}
+
+/* aha player */
+.aha-ctl{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:0 0 14px}
+.playbtn{min-height:var(--tap);border:1px solid var(--teal);border-radius:12px;background:var(--teal-wash);color:var(--teal-ink);font:600 14px/1 var(--font-sans);padding:0 18px;cursor:pointer;display:inline-flex;gap:8px;align-items:center}
+.counter{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.counter .pc{font-size:34px;font-weight:600;color:var(--teal-ink);line-height:1}
+.counter .cl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+
+/* composition ribbon */
+.ribbon-legend{display:flex;flex-wrap:wrap;gap:6px 12px;margin:10px 0 0;font-family:var(--font-mono);font-size:11.5px}
+.ribbon-legend .k{display:inline-flex;align-items:center;gap:6px;color:var(--ink-soft)}
+.ribbon-legend .k .m{width:14px;height:11px;border-radius:2px;flex:none;border:1px solid rgba(0,0,0,.15)}
+
+/* data tables */
+.tables{margin:30px 0 0}
+.tables-h{font-size:22px;margin:0 0 2px}
+.tables-sub{font-size:13.5px;color:var(--ink-soft);margin:0 0 16px}
+.src{border:1px solid var(--line);border-radius:14px;background:var(--surface);margin:0 0 14px;overflow:hidden}
+.src>summary{cursor:pointer;padding:14px 18px;font-weight:600;font-size:14.5px;list-style:none;display:flex;align-items:center;gap:10px;min-height:var(--tap)}
+.src>summary::before{content:'\25B8';color:var(--teal-ink);font-size:12px}
+.src[open]>summary::before{content:'\25BE'}
+.src>summary::-webkit-details-marker{display:none}
+.src-body{padding:4px 18px 18px;overflow-x:auto}
+.dtab{border-collapse:collapse;width:100%;min-width:440px;margin:12px 0 0;font-size:13px}
+.dtab caption{text-align:left;font-size:12px;color:var(--muted);font-style:italic;margin:0 0 10px;max-width:70ch}
+.dtab th,.dtab td{padding:6px 10px;text-align:right;border-bottom:1px solid var(--line-soft)}
+.dtab thead th{text-align:right;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface)}
+.dtab tbody th[scope=row]{text-align:left;color:var(--ink-soft)}
+.dtab td.mono,.dtab th.mono{font-variant-numeric:tabular-nums}
+
+/* footer */
+.foot{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-soft);line-height:1.65}
+.foot p{margin:0 0 10px;max-width:78ch}
+.foot a{color:var(--teal-ink);word-break:break-word}
+.foot .mono{font-size:11.5px}
+.ns{border:1px solid var(--gold);border-radius:10px;padding:12px 14px;color:var(--ink-soft);font-size:13px}
+
+</style>
+
+<div class="wrap">
+  <body>
+<a class="skip-link" href="#main">Skip to content</a>
+<!-- batch-banner:start --><!-- batch-banner:end -->
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital">
+      <img class="logo-mark" src="/brand/mark/mark-square-ink.svg" alt="" width="36" height="36" />
+      <span class="logo-text">Muntin Digital</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary"><a href="/open/">Open data</a><a href="/cost-index/">Cost Index</a></nav>
+  </div>
+</header>
+<header class="mast">
+    <p class="kick">
+      <span>Muntin Cost Index · Open data</span>
+      <span class="lic" data-lic="cc0">CC0</span>
+      <span class="lic" data-lic="cc-by">CC-BY</span>
+      <span>USDA NASS · Crop Progress</span>
+    </p>
+    <h1>The Feed Complex</h1>
+    <p class="lede">Walk a growing season with the two crops that stand behind the feed cost of nearly every animal-protein and dairy price — <b>corn</b> and <b>soybeans</b>. Each week's <b>good-to-excellent</b> share is read only against its own <b>~40 years</b> of same-week history: an <b>observed present-state rating</b>, never a forecast of yield or price, and never a per-ingredient driver.</p>
+  </header>
+
+  <main id="app">
+    <noscript>
+      <p class="ns">This explorer enhances the tables below with interactive charts when JavaScript is on. Every figure is present here as a data table regardless.</p>
+    </noscript>
+    <div id="view"></div>
+
+    <section aria-label="Full data tables" class="tables">
+      <h2 class="tables-h">The record, in full</h2>
+      <p class="tables-sub">The source of record. The charts above are drawn entirely from these numbers.</p>
+      <details class="src" id="table-corn"><summary>Data table — Corn (every week's min / median / mean / max / n and the 2026 value)</summary>
+<div class="src-body">
+<p class="lic-line"><span class="lic">CC0</span> Raw class-week source · <a href="https://muntin.digital/data/nass-crop-condition.jsonl">nass-crop-condition.jsonl</a></p>
+<table class="dtab"><caption>Corn — historical same-week envelope of good-to-excellent share (%), 1988–2025, against 2026. Source: USDA NASS crop-condition raw class-week file (CC0).</caption>
+<thead><tr><th scope="col">Week</th><th scope="col">Min</th><th scope="col">Median</th><th scope="col">Mean</th><th scope="col">Max</th><th scope="col">Years (n)</th><th scope="col">2026</th></tr></thead>
+<tbody><tr><th scope="row" class="mono">W20</th><td class="mono">63</td><td class="mono">71</td><td class="mono">71</td><td class="mono">78</td><td class="mono">7</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W21</th><td class="mono">43</td><td class="mono">70.5</td><td class="mono">69.9</td><td class="mono">79</td><td class="mono">22</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W22</th><td class="mono">47</td><td class="mono">69.5</td><td class="mono">67.6</td><td class="mono">81</td><td class="mono">36</td><td class="mono">67</td></tr><tr><th scope="row" class="mono">W23</th><td class="mono">46</td><td class="mono">69</td><td class="mono">66.9</td><td class="mono">81</td><td class="mono">37</td><td class="mono">67</td></tr><tr><th scope="row" class="mono">W24</th><td class="mono">37</td><td class="mono">69</td><td class="mono">66.6</td><td class="mono">78</td><td class="mono">38</td><td class="mono">68</td></tr><tr><th scope="row" class="mono">W25</th><td class="mono">21</td><td class="mono">67.5</td><td class="mono">66.1</td><td class="mono">79</td><td class="mono">38</td><td class="mono">68</td></tr><tr><th scope="row" class="mono">W26</th><td class="mono">23</td><td class="mono">68</td><td class="mono">66.3</td><td class="mono">83</td><td class="mono">38</td><td class="mono">67</td></tr><tr><th scope="row" class="mono">W27</th><td class="mono">14</td><td class="mono">68</td><td class="mono">65.1</td><td class="mono">85</td><td class="mono">38</td><td class="mono">67</td></tr><tr><th scope="row" class="mono">W28</th><td class="mono">18</td><td class="mono">66</td><td class="mono">64.6</td><td class="mono">86</td><td class="mono">38</td><td class="mono">68</td></tr><tr><th scope="row" class="mono">W29</th><td class="mono">20</td><td class="mono">65.5</td><td class="mono">63.6</td><td class="mono">86</td><td class="mono">38</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W30</th><td class="mono">19</td><td class="mono">65</td><td class="mono">63.3</td><td class="mono">85</td><td class="mono">38</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W31</th><td class="mono">18</td><td class="mono">65</td><td class="mono">62.5</td><td class="mono">84</td><td class="mono">38</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W32</th><td class="mono">18</td><td class="mono">64</td><td class="mono">61.8</td><td class="mono">83</td><td class="mono">38</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W33</th><td class="mono">16</td><td class="mono">61.5</td><td class="mono">60.9</td><td class="mono">81</td><td class="mono">38</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W34</th><td class="mono">18</td><td class="mono">62</td><td class="mono">60.3</td><td class="mono">79</td><td class="mono">38</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W35</th><td class="mono">17</td><td class="mono">61</td><td class="mono">59.6</td><td class="mono">80</td><td class="mono">38</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W36</th><td class="mono">19</td><td class="mono">61</td><td class="mono">59.3</td><td class="mono">84</td><td class="mono">38</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W37</th><td class="mono">24</td><td class="mono">61</td><td class="mono">60.4</td><td class="mono">83</td><td class="mono">37</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W38</th><td class="mono">24</td><td class="mono">61</td><td class="mono">60.6</td><td class="mono">85</td><td class="mono">37</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W39</th><td class="mono">25</td><td class="mono">63</td><td class="mono">61.3</td><td class="mono">86</td><td class="mono">37</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W40</th><td class="mono">44</td><td class="mono">62</td><td class="mono">61.8</td><td class="mono">79</td><td class="mono">29</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W41</th><td class="mono">46</td><td class="mono">64</td><td class="mono">63.2</td><td class="mono">79</td><td class="mono">23</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W42</th><td class="mono">45</td><td class="mono">63</td><td class="mono">63.6</td><td class="mono">79</td><td class="mono">15</td><td class="mono">—</td></tr></tbody></table>
+<table class="dtab"><caption>Corn — condition-class composition for WEEK #28 (week ending 2026-07-12), 2026. Good + Excellent = 68%. Source: USDA NASS (CC0).</caption>
+<thead><tr><th scope="col">Class</th><th scope="col">% of crop</th></tr></thead><tbody><tr><th scope="row">Very poor</th><td class="mono">2</td></tr><tr><th scope="row">Poor</th><td class="mono">6</td></tr><tr><th scope="row">Fair</th><td class="mono">24</td></tr><tr><th scope="row">Good</th><td class="mono">53</td></tr><tr><th scope="row">Excellent</th><td class="mono">15</td></tr></tbody></table>
+</div></details>
+<details class="src" id="table-soybeans"><summary>Data table — Soybeans (every week's min / median / mean / max / n and the 2026 value)</summary>
+<div class="src-body">
+<p class="lic-line"><span class="lic">CC0</span> Raw class-week source · <a href="https://muntin.digital/data/nass-crop-condition.jsonl">nass-crop-condition.jsonl</a></p>
+<table class="dtab"><caption>Soybeans — historical same-week envelope of good-to-excellent share (%), 1988–2025, against 2026. Source: USDA NASS crop-condition raw class-week file (CC0).</caption>
+<thead><tr><th scope="col">Week</th><th scope="col">Min</th><th scope="col">Median</th><th scope="col">Mean</th><th scope="col">Max</th><th scope="col">Years (n)</th><th scope="col">2026</th></tr></thead>
+<tbody><tr><th scope="row" class="mono">W21</th><td class="mono">61</td><td class="mono">63.5</td><td class="mono">63.5</td><td class="mono">66</td><td class="mono">2</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W22</th><td class="mono">56</td><td class="mono">68.5</td><td class="mono">67.7</td><td class="mono">75</td><td class="mono">14</td><td class="mono">66</td></tr><tr><th scope="row" class="mono">W23</th><td class="mono">32</td><td class="mono">66.5</td><td class="mono">64.6</td><td class="mono">74</td><td class="mono">28</td><td class="mono">65</td></tr><tr><th scope="row" class="mono">W24</th><td class="mono">23</td><td class="mono">67</td><td class="mono">63.4</td><td class="mono">73</td><td class="mono">34</td><td class="mono">66</td></tr><tr><th scope="row" class="mono">W25</th><td class="mono">17</td><td class="mono">65</td><td class="mono">62.2</td><td class="mono">73</td><td class="mono">37</td><td class="mono">66</td></tr><tr><th scope="row" class="mono">W26</th><td class="mono">18</td><td class="mono">64</td><td class="mono">61.6</td><td class="mono">75</td><td class="mono">38</td><td class="mono">65</td></tr><tr><th scope="row" class="mono">W27</th><td class="mono">16</td><td class="mono">62</td><td class="mono">60.6</td><td class="mono">79</td><td class="mono">38</td><td class="mono">64</td></tr><tr><th scope="row" class="mono">W28</th><td class="mono">20</td><td class="mono">61.5</td><td class="mono">60.3</td><td class="mono">79</td><td class="mono">38</td><td class="mono">65</td></tr><tr><th scope="row" class="mono">W29</th><td class="mono">25</td><td class="mono">61.5</td><td class="mono">59.9</td><td class="mono">83</td><td class="mono">38</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W30</th><td class="mono">24</td><td class="mono">61</td><td class="mono">59.8</td><td class="mono">80</td><td class="mono">38</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W31</th><td class="mono">23</td><td class="mono">60.5</td><td class="mono">59.2</td><td class="mono">79</td><td class="mono">38</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W32</th><td class="mono">23</td><td class="mono">60</td><td class="mono">59.1</td><td class="mono">79</td><td class="mono">38</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W33</th><td class="mono">19</td><td class="mono">59</td><td class="mono">58</td><td class="mono">75</td><td class="mono">38</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W34</th><td class="mono">20</td><td class="mono">58.5</td><td class="mono">57.5</td><td class="mono">73</td><td class="mono">38</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W35</th><td class="mono">22</td><td class="mono">57</td><td class="mono">56.8</td><td class="mono">73</td><td class="mono">38</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W36</th><td class="mono">20</td><td class="mono">56</td><td class="mono">56.3</td><td class="mono">74</td><td class="mono">38</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W37</th><td class="mono">23</td><td class="mono">55.5</td><td class="mono">55.8</td><td class="mono">75</td><td class="mono">38</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W38</th><td class="mono">35</td><td class="mono">57</td><td class="mono">57</td><td class="mono">78</td><td class="mono">37</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W39</th><td class="mono">35</td><td class="mono">57</td><td class="mono">57.4</td><td class="mono">79</td><td class="mono">37</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W40</th><td class="mono">37</td><td class="mono">58.5</td><td class="mono">58.2</td><td class="mono">78</td><td class="mono">30</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W41</th><td class="mono">38</td><td class="mono">61</td><td class="mono">60.6</td><td class="mono">78</td><td class="mono">17</td><td class="mono">—</td></tr><tr><th scope="row" class="mono">W42</th><td class="mono">54</td><td class="mono">65</td><td class="mono">64.4</td><td class="mono">79</td><td class="mono">7</td><td class="mono">—</td></tr></tbody></table>
+<table class="dtab"><caption>Soybeans — condition-class composition for WEEK #28 (week ending 2026-07-12), 2026. Good + Excellent = 65%. Source: USDA NASS (CC0).</caption>
+<thead><tr><th scope="col">Class</th><th scope="col">% of crop</th></tr></thead><tbody><tr><th scope="row">Very poor</th><td class="mono">2</td></tr><tr><th scope="row">Poor</th><td class="mono">6</td></tr><tr><th scope="row">Fair</th><td class="mono">27</td></tr><tr><th scope="row">Good</th><td class="mono">53</td></tr><tr><th scope="row">Excellent</th><td class="mono">12</td></tr></tbody></table>
+</div></details>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p><strong>Two files, two licenses — both shown here.</strong></p>
+    <p><span class="lic" data-lic="cc0">CC0</span> <b>Raw class-week series</b> — USDA NASS QuickStats, Crop Progress (weekly condition, 1986–present). A US-Government work, public domain.<br>
+    Download: <a href="https://muntin.digital/data/nass-crop-condition.jsonl">https://muntin.digital/data/nass-crop-condition.jsonl</a><br>
+    Schema: one JSON object per line — <span class="mono">{crop, year, period:"WEEK #NN", week_ending, unit:"PCT GOOD"|"PCT EXCELLENT"|…, value}</span>. The envelope (min / median / mean / max per week-of-season) is computed here from prior seasons in this file.</p>
+    <p><span class="lic" data-lic="cc-by">CC-BY</span> <b>Derived reads</b> — the Muntin Cost Index crop-condition backdrop (percentile, same-week average, band). CC BY 4.0 — attribute “Muntin Cost Index (muntin.digital); underlying data USDA NASS.”<br>
+    Download: <a href="https://muntin.digital/cost-index/crop-condition-backdrop.json">https://muntin.digital/cost-index/crop-condition-backdrop.json</a></p>
+    <p class="honest">This is a coincident backdrop on the feed complex — the observed health of the corn and soybean crop. It is not a driver of any single tracked food price, carries no ingredient reference, and forecasts nothing. A rising percentile describes the historical record, never what comes next.</p>
+    <p>Catalog: <a href="https://muntin.digital/cost-index/">the Muntin Cost Index</a> · Data last modified 2026-07-12 · Comparison window 1988..2025 (38 summers; 1986-87 partial, excluded to match the published read).</p>
+  </footer>
+</div>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Dataset","name":"Muntin Cost Index — Crop-Condition Backdrop (Corn & Soybeans)","description":"Weekly USDA NASS good-to-excellent condition share for US corn and soybeans, each week read only against that crop's own ~40-year same-week history (percentile, band). A coincident, observed backdrop on the feed complex — descriptive of the tracked condition record, never a forecast, never a delivered or retail price, and never a per-ingredient driver.","url":"https://muntin.digital/cost-index/","identifier":"muntin-cost-index-crop-condition-backdrop","license":"https://creativecommons.org/publicdomain/zero/1.0/","isAccessibleForFree":true,"creator":{"@type":"Organization","name":"Muntin Cost Index","url":"https://muntin.digital/"},"publisher":{"@type":"Organization","name":"Muntin Cost Index","url":"https://muntin.digital/"},"sourceOrganization":{"@type":"GovernmentOrganization","name":"USDA National Agricultural Statistics Service (NASS)","url":"https://quickstats.nass.usda.gov/"},"isBasedOn":"https://quickstats.nass.usda.gov/","temporalCoverage":"1986/2026","dateModified":"2026-07-12","spatialCoverage":{"@type":"Place","name":"United States"},"variableMeasured":"Percent of crop rated good-to-excellent (weekly, national)","measurementTechnique":"USDA NASS Crop Progress survey — condition ratings","keywords":["corn","soybeans","crop condition","USDA NASS","feed complex","good-to-excellent","open data"],"distribution":[{"@type":"DataDownload","name":"Raw class-week series (CC0, public domain)","encodingFormat":"application/x-ndjson","contentUrl":"https://muntin.digital/data/nass-crop-condition.jsonl","license":"https://creativecommons.org/publicdomain/zero/1.0/"},{"@type":"DataDownload","name":"Derived reads — percentile, same-week average, band (CC BY 4.0)","encodingFormat":"application/json","contentUrl":"https://muntin.digital/cost-index/crop-condition-backdrop.json","license":"https://creativecommons.org/licenses/by/4.0/"}]}
+</script>
+<script type="application/json" id="crop-data">{"meta":{"dataset":"Muntin Cost Index — Crop-Condition Backdrop","note":"A coincident, site-wide backdrop — the observed health of the US corn and soybean crop, the feed complex that stands behind the animal-protein and dairy complex broadly. Each crop's latest good-to-excellent share is read only against its OWN same-week history in prior seasons (percentile, band) — descriptive of the published condition series. This is an OBSERVED present-state rating, NOT a forecast of yield or price; it is NOT a driver of any tracked food price, NOT a measured link to a single ingredient, and it carries no ingredient reference. The feed complex stands behind animal protein and dairy in general, but no single ingredient's price is attributed to it here. Underlying series are USDA NASS, public domain.","dateModified":"2026-07-12","raw_url":"https://muntin.digital/data/nass-crop-condition.jsonl","derived_url":"https://muntin.digital/cost-index/crop-condition-backdrop.json","catalog_url":"https://muntin.digital/cost-index/","span":"1986..2026","window":"1988..2025 (38 summers; 1986-87 partial, excluded to match the published read)","season_year":2026},"crops":[{"key":"corn","title":"Corn","role":"the primary US feed grain behind the animal-protein and dairy complex","unit":"pct of crop rated good-to-excellent","source":"USDA NASS QuickStats — Crop Progress (SURVEY, NATIONAL, CONDITION)","as_of_week":28,"as_of_week_label":"WEEK #28","as_of_week_ending":"2026-07-12","classes":{"very_poor":2,"poor":6,"fair":24,"good":53,"excellent":15},"good_excellent_pct":68,"same_week_percentile":61,"same_week_n":38,"same_week_avg_pct":64.5,"vs_same_week_avg_pts":3.5,"band":"above the typical rating for this week of the season","envelope":[{"w":20,"min":63,"med":71,"max":78,"mean":71,"n":7,"cur":null},{"w":21,"min":43,"med":70.5,"max":79,"mean":69.9,"n":22,"cur":null},{"w":22,"min":47,"med":69.5,"max":81,"mean":67.6,"n":36,"cur":67},{"w":23,"min":46,"med":69,"max":81,"mean":66.9,"n":37,"cur":67},{"w":24,"min":37,"med":69,"max":78,"mean":66.6,"n":38,"cur":68},{"w":25,"min":21,"med":67.5,"max":79,"mean":66.1,"n":38,"cur":68},{"w":26,"min":23,"med":68,"max":83,"mean":66.3,"n":38,"cur":67},{"w":27,"min":14,"med":68,"max":85,"mean":65.1,"n":38,"cur":67},{"w":28,"min":18,"med":66,"max":86,"mean":64.6,"n":38,"cur":68},{"w":29,"min":20,"med":65.5,"max":86,"mean":63.6,"n":38,"cur":null},{"w":30,"min":19,"med":65,"max":85,"mean":63.3,"n":38,"cur":null},{"w":31,"min":18,"med":65,"max":84,"mean":62.5,"n":38,"cur":null},{"w":32,"min":18,"med":64,"max":83,"mean":61.8,"n":38,"cur":null},{"w":33,"min":16,"med":61.5,"max":81,"mean":60.9,"n":38,"cur":null},{"w":34,"min":18,"med":62,"max":79,"mean":60.3,"n":38,"cur":null},{"w":35,"min":17,"med":61,"max":80,"mean":59.6,"n":38,"cur":null},{"w":36,"min":19,"med":61,"max":84,"mean":59.3,"n":38,"cur":null},{"w":37,"min":24,"med":61,"max":83,"mean":60.4,"n":37,"cur":null},{"w":38,"min":24,"med":61,"max":85,"mean":60.6,"n":37,"cur":null},{"w":39,"min":25,"med":63,"max":86,"mean":61.3,"n":37,"cur":null},{"w":40,"min":44,"med":62,"max":79,"mean":61.8,"n":29,"cur":null},{"w":41,"min":46,"med":64,"max":79,"mean":63.2,"n":23,"cur":null},{"w":42,"min":45,"med":63,"max":79,"mean":63.6,"n":15,"cur":null}],"cur2026":[[22,67],[23,67],[24,68],[25,68],[26,67],[27,67],[28,68]],"dots":[[1988,18],[1989,58],[1990,75],[1991,66],[1992,66],[1993,49],[1994,86],[1995,62],[1996,61],[1997,73],[1998,68],[1999,72],[2000,75],[2001,65],[2002,49],[2003,74],[2004,74],[2005,55],[2006,62],[2007,64],[2008,64],[2009,71],[2010,72],[2011,66],[2012,31],[2013,66],[2014,76],[2015,69],[2016,76],[2017,64],[2018,72],[2019,58],[2020,69],[2021,65],[2022,64],[2023,57],[2024,68],[2025,74]],"dotWeek":28,"traces":{"1988":[[21,64],[22,55],[23,47],[24,37],[25,21],[26,23],[27,14],[28,18],[29,20],[30,19],[31,18],[32,18],[33,16],[34,18],[35,17],[36,19]],"1989":[[22,64],[23,64],[24,63],[25,65],[26,73],[27,61],[28,58],[29,70],[30,71],[31,71],[32,63],[33,59],[34,59],[35,64],[36,65],[37,68],[38,67],[39,66]],"1990":[[22,51],[23,52],[24,63],[25,64],[26,65],[27,68],[28,75],[29,74],[30,75],[31,76],[32,76],[33,76],[34,78],[35,79],[36,76],[37,76],[38,75],[39,77],[40,76],[41,75]],"1991":[[22,81],[23,81],[24,78],[25,79],[26,75],[27,68],[28,66],[29,58],[30,53],[31,47],[32,47],[33,47],[34,47],[35,45],[36,48],[37,48],[38,51],[39,52],[40,53]],"1992":[[21,71],[22,47],[23,46],[24,52],[25,59],[26,55],[27,52],[28,66],[29,75],[30,76],[31,79],[32,78],[33,79],[34,79],[35,78],[36,77],[37,77],[38,78],[39,80],[40,79],[41,79],[42,79]],"1993":[[22,51],[23,57],[24,57],[25,57],[26,54],[27,51],[28,49],[29,49],[30,53],[31,52],[32,51],[33,52],[34,55],[35,51],[36,53],[37,50],[38,49],[39,49],[40,49],[41,46],[42,45]],"1994":[[21,79],[22,73],[23,73],[24,77],[25,79],[26,83],[27,85],[28,86],[29,86],[30,85],[31,84],[32,83],[33,81],[34,77],[35,80],[36,84],[37,83],[38,85],[39,86]],"1995":[[24,60],[25,60],[26,63],[27,66],[28,62],[29,60],[30,61],[31,64],[32,66],[33,67],[34,63],[35,60],[36,58],[37,55],[38,53],[39,52],[40,52]],"1996":[[22,51],[23,50],[24,56],[25,60],[26,61],[27,61],[28,61],[29,61],[30,61],[31,62],[32,64],[33,62],[34,62],[35,62],[36,62],[37,61],[38,62],[39,65],[40,65],[41,66]],"1997":[[22,60],[23,65],[24,66],[25,67],[26,74],[27,75],[28,73],[29,68],[30,68],[31,66],[32,58],[33,60],[34,63],[35,62],[36,63],[37,61],[38,62],[39,65],[40,64]],"1998":[[22,76],[23,74],[24,70],[25,66],[26,67],[27,66],[28,68],[29,66],[30,68],[31,68],[32,68],[33,68],[34,68],[35,69],[36,67],[37,65],[38,68],[39,69]],"1999":[[21,75],[22,76],[23,75],[24,75],[25,77],[26,77],[27,78],[28,72],[29,70],[30,63],[31,60],[32,58],[33,58],[34,57],[35,59],[36,58],[37,58],[38,58],[39,60]],"2000":[[20,70],[21,70],[22,71],[23,69],[24,72],[25,73],[26,74],[27,74],[28,75],[29,75],[30,74],[31,72],[32,71],[33,69],[34,67],[35,66],[36,62],[37,64],[38,63],[39,63]],"2001":[[20,72],[21,70],[22,64],[23,62],[24,63],[25,69],[26,69],[27,69],[28,65],[29,59],[30,64],[31,60],[32,57],[33,54],[34,55],[35,53],[36,54],[37,56],[38,56],[39,57],[40,58]],"2002":[[21,43],[22,54],[23,59],[24,62],[25,62],[26,58],[27,53],[28,49],[29,42],[30,42],[31,41],[32,39],[33,40],[34,42],[35,41],[36,41],[37,42],[38,42],[39,43],[40,44]],"2003":[[22,68],[23,69],[24,71],[25,73],[26,75],[27,73],[28,74],[29,72],[30,69],[31,67],[32,65],[33,60],[34,50],[35,46],[36,44],[37,44],[38,46],[39,49],[40,50],[41,51],[42,53]],"2004":[[21,71],[22,68],[23,68],[24,70],[25,70],[26,71],[27,73],[28,74],[29,76],[30,77],[31,76],[32,76],[33,73],[34,71],[35,70],[36,69],[37,69],[38,70],[39,71],[40,73],[41,74],[42,75]],"2005":[[20,63],[21,62],[22,64],[23,67],[24,68],[25,65],[26,62],[27,58],[28,55],[29,53],[30,53],[31,52],[32,51],[33,50],[34,52],[35,51],[36,51],[37,52],[38,52],[39,55],[40,56],[41,57]],"2006":[[20,66],[21,70],[22,71],[23,70],[24,68],[25,71],[26,68],[27,63],[28,62],[29,59],[30,56],[31,57],[32,57],[33,58],[34,57],[35,59],[36,59],[37,61],[38,61],[39,61],[40,61],[41,61],[42,63]],"2007":[[20,78],[21,78],[22,78],[23,77],[24,70],[25,73],[26,73],[27,70],[28,64],[29,62],[30,58],[31,56],[32,56],[33,58],[34,59],[35,59],[36,61],[37,63],[38,63],[39,63],[40,63],[41,65]],"2008":[[22,63],[23,60],[24,57],[25,59],[26,61],[27,62],[28,64],[29,65],[30,66],[31,66],[32,67],[33,67],[34,64],[35,61],[36,61],[37,61],[38,59],[39,61],[40,61],[41,62],[42,62]],"2009":[[22,70],[23,69],[24,70],[25,70],[26,72],[27,71],[28,71],[29,71],[30,70],[31,68],[32,68],[33,68],[34,70],[35,69],[36,69],[37,69],[38,68],[39,68],[40,70],[41,70],[42,70]],"2010":[[20,71],[21,76],[22,76],[23,77],[24,75],[25,73],[26,71],[27,73],[28,72],[29,72],[30,71],[31,71],[32,69],[33,70],[34,70],[35,69],[36,68],[37,68],[38,66],[39,66],[40,68]],"2011":[[21,63],[22,67],[23,69],[24,70],[25,68],[26,69],[27,69],[28,66],[29,62],[30,62],[31,60],[32,60],[33,57],[34,54],[35,52],[36,53],[37,51],[38,52],[39,52],[40,53],[41,53],[42,54]],"2012":[[20,77],[21,72],[22,72],[23,66],[24,63],[25,56],[26,48],[27,40],[28,31],[29,26],[30,24],[31,23],[32,23],[33,23],[34,22],[35,22],[36,22],[37,24],[38,24],[39,25]],"2013":[[22,63],[23,63],[24,64],[25,65],[26,67],[27,68],[28,66],[29,63],[30,63],[31,64],[32,64],[33,61],[34,59],[35,56],[36,54],[37,53],[38,55],[39,55],[42,60]],"2014":[[22,76],[23,75],[24,76],[25,74],[26,75],[27,75],[28,76],[29,76],[30,75],[31,73],[32,73],[33,72],[34,73],[35,74],[36,74],[37,74],[38,74],[39,74],[40,74],[41,74],[42,74]],"2015":[[21,74],[22,74],[23,74],[24,73],[25,71],[26,68],[27,69],[28,69],[29,69],[30,70],[31,70],[32,70],[33,69],[34,69],[35,68],[36,68],[37,68],[38,68],[39,68],[40,68],[41,68],[42,68]],"2016":[[21,72],[22,75],[23,75],[24,75],[25,75],[26,75],[27,76],[28,76],[29,76],[30,76],[31,74],[32,74],[33,75],[34,75],[35,74],[36,74],[37,74],[38,74],[39,73],[40,73],[41,74]],"2017":[[21,65],[22,68],[23,67],[24,67],[25,67],[26,68],[27,65],[28,64],[29,62],[30,61],[31,60],[32,62],[33,62],[34,62],[35,61],[36,61],[37,61],[38,61],[39,63],[40,64],[41,65],[42,66]],"2018":[[21,79],[22,78],[23,77],[24,78],[25,77],[26,76],[27,75],[28,72],[29,72],[30,72],[31,71],[32,70],[33,68],[34,68],[35,67],[36,68],[37,68],[38,69],[39,69],[40,68],[41,68],[42,68]],"2019":[[23,59],[24,59],[25,56],[26,56],[27,57],[28,58],[29,57],[30,58],[31,57],[32,57],[33,56],[34,57],[35,58],[36,55],[37,55],[38,57],[39,57],[40,56],[41,55],[42,56]],"2020":[[21,70],[22,74],[23,75],[24,71],[25,72],[26,73],[27,71],[28,69],[29,69],[30,72],[31,72],[32,71],[33,69],[34,64],[35,62],[36,61],[37,60],[38,61],[39,61],[40,62],[41,61],[42,61]],"2021":[[21,76],[22,72],[23,68],[24,65],[25,64],[26,64],[27,65],[28,65],[29,64],[30,62],[31,64],[32,62],[33,60],[34,60],[35,59],[36,58],[37,59],[38,59],[39,59],[40,60],[41,60]],"2022":[[22,73],[23,72],[24,70],[25,67],[26,64],[27,64],[28,64],[29,61],[30,61],[31,58],[32,57],[33,55],[34,54],[35,54],[36,53],[37,52],[38,52],[39,52],[40,54],[41,53]],"2023":[[21,69],[22,64],[23,61],[24,55],[25,50],[26,51],[27,55],[28,57],[29,57],[30,55],[31,57],[32,59],[33,58],[34,56],[35,53],[36,52],[37,51],[38,53],[39,53],[40,53],[41,53]],"2024":[[22,75],[23,74],[24,72],[25,69],[26,67],[27,68],[28,68],[29,67],[30,68],[31,67],[32,67],[33,67],[34,65],[35,65],[36,64],[37,65],[38,65],[39,64],[40,64],[41,64]],"2025":[[21,68],[22,69],[23,71],[24,72],[25,70],[26,73],[27,74],[28,74],[29,74],[30,73],[31,73],[32,72],[33,71],[34,71],[35,69],[36,68],[37,67],[38,66],[39,66]]},"aha":{"weeks":[22,23,24,25,26,27,28],"line":[67,67,68,68,67,67,68],"median":[69.5,69,69,67.5,68,68,66],"mean":[67.6,66.9,66.6,66.1,66.3,65.1,64.6],"pctile":[38,41,47,51,41,45,58],"n":[36,37,38,38,38,38,38]}},{"key":"soybeans","title":"Soybeans","role":"the primary US protein meal behind the animal-protein and dairy complex","unit":"pct of crop rated good-to-excellent","source":"USDA NASS QuickStats — Crop Progress (SURVEY, NATIONAL, CONDITION)","as_of_week":28,"as_of_week_label":"WEEK #28","as_of_week_ending":"2026-07-12","classes":{"very_poor":2,"poor":6,"fair":27,"good":53,"excellent":12},"good_excellent_pct":65,"same_week_percentile":66,"same_week_n":38,"same_week_avg_pct":59.8,"vs_same_week_avg_pts":5.2,"band":"above the typical rating for this week of the season","envelope":[{"w":21,"min":61,"med":63.5,"max":66,"mean":63.5,"n":2,"cur":null},{"w":22,"min":56,"med":68.5,"max":75,"mean":67.7,"n":14,"cur":66},{"w":23,"min":32,"med":66.5,"max":74,"mean":64.6,"n":28,"cur":65},{"w":24,"min":23,"med":67,"max":73,"mean":63.4,"n":34,"cur":66},{"w":25,"min":17,"med":65,"max":73,"mean":62.2,"n":37,"cur":66},{"w":26,"min":18,"med":64,"max":75,"mean":61.6,"n":38,"cur":65},{"w":27,"min":16,"med":62,"max":79,"mean":60.6,"n":38,"cur":64},{"w":28,"min":20,"med":61.5,"max":79,"mean":60.3,"n":38,"cur":65},{"w":29,"min":25,"med":61.5,"max":83,"mean":59.9,"n":38,"cur":null},{"w":30,"min":24,"med":61,"max":80,"mean":59.8,"n":38,"cur":null},{"w":31,"min":23,"med":60.5,"max":79,"mean":59.2,"n":38,"cur":null},{"w":32,"min":23,"med":60,"max":79,"mean":59.1,"n":38,"cur":null},{"w":33,"min":19,"med":59,"max":75,"mean":58,"n":38,"cur":null},{"w":34,"min":20,"med":58.5,"max":73,"mean":57.5,"n":38,"cur":null},{"w":35,"min":22,"med":57,"max":73,"mean":56.8,"n":38,"cur":null},{"w":36,"min":20,"med":56,"max":74,"mean":56.3,"n":38,"cur":null},{"w":37,"min":23,"med":55.5,"max":75,"mean":55.8,"n":38,"cur":null},{"w":38,"min":35,"med":57,"max":78,"mean":57,"n":37,"cur":null},{"w":39,"min":35,"med":57,"max":79,"mean":57.4,"n":37,"cur":null},{"w":40,"min":37,"med":58.5,"max":78,"mean":58.2,"n":30,"cur":null},{"w":41,"min":38,"med":61,"max":78,"mean":60.6,"n":17,"cur":null},{"w":42,"min":54,"med":65,"max":79,"mean":64.4,"n":7,"cur":null}],"cur2026":[[22,66],[23,65],[24,66],[25,66],[26,65],[27,64],[28,65]],"dots":[[1988,20],[1989,53],[1990,58],[1991,61],[1992,64],[1993,42],[1994,79],[1995,55],[1996,55],[1997,66],[1998,61],[1999,67],[2000,66],[2001,57],[2002,50],[2003,70],[2004,68],[2005,53],[2006,57],[2007,62],[2008,59],[2009,66],[2010,67],[2011,64],[2012,34],[2013,65],[2014,72],[2015,62],[2016,71],[2017,61],[2018,69],[2019,54],[2020,68],[2021,60],[2022,61],[2023,55],[2024,68],[2025,70]],"dotWeek":28,"traces":{"1988":[[23,32],[24,23],[25,17],[26,18],[27,16],[28,20],[29,25],[30,24],[31,23],[32,23],[33,19],[34,20],[35,22],[36,20],[37,23]],"1989":[[23,55],[24,55],[25,56],[26,61],[27,55],[28,53],[29,62],[30,62],[31,63],[32,53],[33,48],[34,47],[35,55],[36,54],[37,55],[38,57],[39,53]],"1990":[[24,58],[25,55],[26,54],[27,54],[28,58],[29,60],[30,59],[31,56],[32,57],[33,56],[34,59],[35,58],[36,52],[37,51],[38,51],[39,54],[40,57],[41,56]],"1991":[[24,68],[25,70],[26,68],[27,61],[28,61],[29,52],[30,46],[31,37],[32,42],[33,42],[34,41],[35,39],[36,42],[37,42],[38,46],[39,43],[40,49]],"1992":[[24,51],[25,55],[26,53],[27,52],[28,64],[29,73],[30,73],[31,73],[32,74],[33,75],[34,72],[35,71],[36,73],[37,73],[38,73],[39,76],[40,78],[41,78],[42,79]],"1993":[[23,55],[24,54],[25,54],[26,49],[27,46],[28,42],[29,40],[30,45],[31,45],[32,47],[33,47],[34,49],[35,46],[36,47],[37,45],[38,46],[39,46],[40,47],[41,47]],"1994":[[24,68],[25,71],[26,75],[27,79],[28,79],[29,83],[30,80],[31,79],[32,79],[33,71],[34,66],[35,72],[36,74],[37,75],[38,78],[39,79]],"1995":[[25,58],[26,60],[27,59],[28,55],[29,54],[30,57],[31,59],[32,62],[33,62],[34,60],[35,54],[36,51],[37,49],[38,47],[39,44],[40,46]],"1996":[[26,58],[27,58],[28,55],[29,53],[30,55],[31,57],[32,58],[33,56],[34,57],[35,57],[36,55],[37,53],[38,55],[39,57],[40,59],[41,60]],"1997":[[25,61],[26,65],[27,68],[28,66],[29,62],[30,62],[31,60],[32,55],[33,57],[34,60],[35,61],[36,60],[37,58],[38,59],[39,60],[40,61]],"1998":[[23,70],[24,67],[25,62],[26,60],[27,59],[28,61],[29,61],[30,64],[31,65],[32,66],[33,67],[34,65],[35,65],[36,63],[37,60],[38,59],[39,61]],"1999":[[22,70],[23,69],[24,69],[25,69],[26,71],[27,71],[28,67],[29,65],[30,57],[31,54],[32,51],[33,48],[34,47],[35,46],[36,45],[37,44],[38,44],[39,44]],"2000":[[21,66],[22,66],[23,65],[24,68],[25,66],[26,66],[27,66],[28,66],[29,68],[30,66],[31,65],[32,65],[33,62],[34,58],[35,55],[36,52],[37,53],[38,52],[39,54]],"2001":[[21,61],[22,56],[23,55],[24,58],[25,60],[26,60],[27,61],[28,57],[29,55],[30,60],[31,57],[32,54],[33,52],[34,52],[35,52],[36,53],[37,55],[38,53],[39,55],[40,54]],"2002":[[23,60],[24,62],[25,62],[26,56],[27,52],[28,50],[29,43],[30,45],[31,43],[32,42],[33,44],[34,46],[35,46],[36,45],[37,44],[38,44],[39,43],[40,45]],"2003":[[23,66],[24,68],[25,70],[26,70],[27,70],[28,70],[29,68],[30,66],[31,63],[32,62],[33,56],[34,48],[35,45],[36,43],[37,41],[38,40],[39,39],[40,38],[41,38]],"2004":[[23,65],[24,68],[25,67],[26,66],[27,67],[28,68],[29,68],[30,69],[31,70],[32,73],[33,69],[34,67],[35,64],[36,62],[37,63],[38,64],[39,66],[40,66],[41,66]],"2005":[[22,62],[23,64],[24,63],[25,59],[26,58],[27,54],[28,53],[29,54],[30,54],[31,51],[32,51],[33,52],[34,53],[35,54],[36,54],[37,53],[38,55],[39,56],[40,57]],"2006":[[22,70],[23,67],[24,67],[25,67],[26,64],[27,58],[28,57],[29,54],[30,53],[31,53],[32,56],[33,58],[34,59],[35,59],[36,60],[37,61],[38,62],[39,62],[40,62]],"2007":[[22,71],[23,70],[24,65],[25,66],[26,68],[27,65],[28,62],[29,61],[30,58],[31,56],[32,56],[33,54],[34,55],[35,56],[36,56],[37,56],[38,58],[39,57],[40,58]],"2008":[[23,57],[24,56],[25,57],[26,58],[27,59],[28,59],[29,61],[30,62],[31,63],[32,63],[33,62],[34,61],[35,57],[36,57],[37,57],[38,57],[39,57],[40,57],[41,57],[42,57]],"2009":[[24,66],[25,67],[26,68],[27,66],[28,66],[29,67],[30,67],[31,67],[32,66],[33,66],[34,69],[35,69],[36,68],[37,68],[38,67],[39,66],[40,67],[41,65],[42,65]],"2010":[[22,75],[23,73],[24,69],[25,67],[26,66],[27,65],[28,67],[29,67],[30,66],[31,66],[32,66],[33,64],[34,64],[35,64],[36,63],[37,63],[38,63],[39,64],[40,64]],"2011":[[23,67],[24,68],[25,65],[26,66],[27,66],[28,64],[29,62],[30,60],[31,61],[32,61],[33,59],[34,57],[35,56],[36,56],[37,53],[38,53],[39,54],[40,56]],"2012":[[22,65],[23,60],[24,56],[25,53],[26,45],[27,40],[28,34],[29,31],[30,29],[31,29],[32,30],[33,31],[34,30],[35,30],[36,32],[37,33],[38,35],[39,35],[40,37]],"2013":[[24,64],[25,65],[26,67],[27,67],[28,65],[29,64],[30,63],[31,64],[32,64],[33,62],[34,58],[35,54],[36,52],[37,50],[38,50],[39,53],[42,57]],"2014":[[23,74],[24,73],[25,72],[26,72],[27,72],[28,72],[29,73],[30,71],[31,71],[32,70],[33,71],[34,70],[35,72],[36,72],[37,72],[38,71],[39,72],[40,73],[41,73],[42,73]],"2015":[[23,69],[24,67],[25,65],[26,63],[27,63],[28,62],[29,62],[30,62],[31,63],[32,63],[33,63],[34,63],[35,63],[36,63],[37,61],[38,63],[39,62],[40,64],[41,64]],"2016":[[22,72],[23,74],[24,73],[25,72],[26,70],[27,71],[28,71],[29,71],[30,72],[31,72],[32,72],[33,72],[34,73],[35,73],[36,73],[37,73],[38,73],[39,74],[40,74],[41,74]],"2017":[[23,66],[24,67],[25,66],[26,64],[27,62],[28,61],[29,57],[30,59],[31,60],[32,59],[33,60],[34,61],[35,61],[36,60],[37,59],[38,60],[39,60],[40,61],[41,61]],"2018":[[22,75],[23,74],[24,73],[25,73],[26,71],[27,71],[28,69],[29,70],[30,70],[31,67],[32,66],[33,65],[34,66],[35,66],[36,68],[37,67],[38,68],[39,68],[40,68],[41,66],[42,66]],"2019":[[25,54],[26,54],[27,53],[28,54],[29,54],[30,54],[31,54],[32,54],[33,53],[34,55],[35,55],[36,55],[37,54],[38,54],[39,55],[40,53],[41,54],[42,54]],"2020":[[22,70],[23,72],[24,72],[25,70],[26,71],[27,71],[28,68],[29,69],[30,72],[31,73],[32,74],[33,72],[34,69],[35,66],[36,65],[37,63],[38,63],[39,64],[40,64],[41,63]],"2021":[[22,67],[23,62],[24,60],[25,60],[26,59],[27,59],[28,60],[29,58],[30,60],[31,60],[32,57],[33,56],[34,56],[35,57],[36,57],[37,58],[38,58],[39,58],[40,59]],"2022":[[23,70],[24,68],[25,65],[26,63],[27,62],[28,61],[29,59],[30,60],[31,59],[32,58],[33,57],[34,57],[35,57],[36,56],[37,55],[38,55],[39,55],[40,57],[41,57]],"2023":[[22,62],[23,59],[24,54],[25,51],[26,50],[27,51],[28,55],[29,54],[30,52],[31,54],[32,59],[33,59],[34,58],[35,53],[36,52],[37,52],[38,50],[39,52],[40,51],[41,52]],"2024":[[23,72],[24,70],[25,67],[26,67],[27,68],[28,68],[29,68],[30,67],[31,68],[32,68],[33,68],[34,67],[35,65],[36,65],[37,64],[38,64],[39,64],[40,63]],"2025":[[22,67],[23,68],[24,66],[25,66],[26,66],[27,66],[28,70],[29,68],[30,70],[31,69],[32,68],[33,68],[34,69],[35,65],[36,64],[37,63],[38,61],[39,62]]},"aha":{"weeks":[22,23,24,25,26,27,28],"line":[66,65,66,66,65,64,65],"median":[68.5,66.5,67,65,64,62,61.5],"mean":[67.7,64.6,63.4,62.2,61.6,60.6,60.3],"pctile":[32,39,44,59,54,55,62],"n":[14,28,34,37,38,38,38]}}]}</script>
+<script>
+(function(){
+'use strict';
+var DATA = JSON.parse(document.getElementById('crop-data').textContent);
+var CROPS = DATA.crops;
+var BY = {}; CROPS.forEach(function(c){ BY[c.key] = c; });
+var view = document.getElementById('view');
+var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+var lastViewed = null;      // crop key we just left, to restore card focus
+var restoreFocus = null;    // 'card' | 'theme' | null
+var teardowns = [];         // cleanup fns (e.g. running intervals) to run before a view rebuild
+function runTeardowns(){ teardowns.forEach(function(fn){ try{ fn(); }catch(e){} }); teardowns = []; }
+
+/* series colours pulled from CSS tokens */
+function tok(n){ return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+function palette(){
+  return {
+    line2026: tok('--teal'),
+    line2026ink: tok('--teal-ink'),
+    median: tok('--gold'),
+    edge: tok('--ink-soft'),
+    band: tok('--teal-wash'),
+    basement: tok('--rust'),
+    ghost: tok('--rust'),
+    ink: tok('--ink'),
+    muted: tok('--muted'),
+    surface: tok('--surface'),
+    line: tok('--line')
+  };
+}
+
+/* ---------- tiny helpers ---------- */
+function h(tag, attrs, kids){
+  var e = document.createElement(tag);
+  if(attrs) for(var k in attrs){
+    if(k === 'class') e.className = attrs[k];
+    else if(k === 'html') e.innerHTML = attrs[k];
+    else if(k === 'text') e.textContent = attrs[k];
+    else if(k.slice(0,2) === 'on') e.addEventListener(k.slice(2), attrs[k]);
+    else e.setAttribute(k, attrs[k]);
+  }
+  if(kids) kids.forEach(function(c){ if(c) e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
+  return e;
+}
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fmt(n){ return (Math.round(n*10)/10).toString(); }
+function dir(v){ return v > 0.05 ? {g:'▲', w:'above', cls:'up'} : v < -0.05 ? {g:'▼', w:'below', cls:'dn'} : {g:'–', w:'level with', cls:'flat'}; }
+
+/* WCAG helpers — pick a label ink that meets contrast on a filled bar */
+function hexRgb(hx){ hx = String(hx||'').replace('#','').trim(); if(hx.length===3) hx = hx.replace(/(.)/g,'$1$1'); return [parseInt(hx.slice(0,2),16)||0, parseInt(hx.slice(2,4),16)||0, parseInt(hx.slice(4,6),16)||0]; }
+function relLum(r,g,b){ var a = [r,g,b].map(function(v){ v/=255; return v<=0.03928 ? v/12.92 : Math.pow((v+0.055)/1.055, 2.4); }); return 0.2126*a[0] + 0.7152*a[1] + 0.0722*a[2]; }
+function contrast(l1,l2){ var hi = Math.max(l1,l2), lo = Math.min(l1,l2); return (hi+0.05)/(lo+0.05); }
+/* effective bar colour = fill over surface at fill-opacity; return #000-ish or #fff for max contrast */
+function labelInk(fillHex, opacity, surfaceHex){
+  var fg = hexRgb(fillHex), bg = hexRgb(surfaceHex), o = (opacity==null?1:opacity);
+  var er = fg[0]*o + bg[0]*(1-o), eg = fg[1]*o + bg[1]*(1-o), eb = fg[2]*o + bg[2]*(1-o);
+  var L = relLum(er, eg, eb);
+  return contrast(L, 0) >= contrast(L, 1) ? '#0e1114' : '#ffffff';
+}
+
+/* live status region (aria-live polite) */
+var status = h('p', {'class':'status', role:'status', 'aria-live':'polite'});
+function say(msg){ status.textContent = msg; }
+
+/* ---------- THE SEASONAL FAN ---------- */
+function fanModel(c){
+  var env = c.envelope;
+  var w0 = env[0].w, w1 = env[env.length-1].w;
+  var W = 720, H = 340, ml = 40, mr = 64, mt = 16, mb = 36;
+  var pw = W - ml - mr, ph = H - mt - mb;
+  var yMin = 0, yMax = 100;
+  var xOf = function(w){ return ml + (w - w0) / (w1 - w0) * pw; };
+  var yOf = function(v){ return mt + (yMax - v) / (yMax - yMin) * ph; };
+  return { c:c, env:env, w0:w0, w1:w1, W:W, H:H, ml:ml, mr:mr, mt:mt, mb:mb, pw:pw, ph:ph, xOf:xOf, yOf:yOf };
+}
+function fanSVG(m, ghostYear){
+  var c = m.c, env = m.env, P = palette();
+  var s = '';
+  var titleId = 'fanTitle-' + c.key, descId = 'fanDesc-' + c.key;
+  // gridlines + y labels
+  for(var g = 0; g <= 100; g += 25){
+    s += '<line class="grid" x1="'+m.ml+'" y1="'+m.yOf(g).toFixed(1)+'" x2="'+(m.W-m.mr)+'" y2="'+m.yOf(g).toFixed(1)+'" aria-hidden="true"/>';
+    s += '<text class="axis" x="'+(m.ml-6)+'" y="'+(m.yOf(g)+3).toFixed(1)+'" text-anchor="end" aria-hidden="true">'+g+'</text>';
+  }
+  // per-week quads: full band (min..max) then basement (min..median), opacity scaled by n
+  function op(n){ return (0.20 + 0.55 * Math.min(1, n/40)).toFixed(3); }
+  for(var i=0; i<env.length-1; i++){
+    var a = env[i], b = env[i+1];
+    var xa = m.xOf(a.w).toFixed(1), xb = m.xOf(b.w).toFixed(1);
+    // full envelope band
+    s += '<path aria-hidden="true" fill="'+P.band+'" fill-opacity="'+op((a.n+b.n)/2)+'" stroke="none" d="M'+xa+' '+m.yOf(a.max).toFixed(1)+' L'+xb+' '+m.yOf(b.max).toFixed(1)+' L'+xb+' '+m.yOf(b.min).toFixed(1)+' L'+xa+' '+m.yOf(a.min).toFixed(1)+' Z"/>';
+    // drought basement (min..median), rust wash
+    s += '<path aria-hidden="true" fill="'+P.basement+'" fill-opacity="'+(op((a.n+b.n)/2)*0.34).toFixed(3)+'" stroke="none" d="M'+xa+' '+m.yOf(a.med).toFixed(1)+' L'+xb+' '+m.yOf(b.med).toFixed(1)+' L'+xb+' '+m.yOf(b.min).toFixed(1)+' L'+xa+' '+m.yOf(a.min).toFixed(1)+' Z"/>';
+  }
+  // envelope edge strokes (min = muted, max = teal-ink), median = gold
+  function poly(key, stroke, wdt, dash){
+    var d = env.map(function(e,i){ return (i?'L':'M') + m.xOf(e.w).toFixed(1) + ' ' + m.yOf(e[key]).toFixed(1); }).join(' ');
+    return '<path aria-hidden="true" fill="none" stroke="'+stroke+'" stroke-width="'+wdt+'"'+(dash?' stroke-dasharray="'+dash+'"':'')+' d="'+d+'"/>';
+  }
+  s += poly('max', P.edge, 1.2, '2 3');
+  s += poly('min', P.edge, 1.2, '2 3');
+  s += poly('med', P.median, 2.2, null);
+  // ghost trace
+  if(ghostYear && c.traces[ghostYear]){
+    var t = c.traces[ghostYear];
+    var dg = t.map(function(p,i){ return (i?'L':'M') + m.xOf(p[0]).toFixed(1) + ' ' + m.yOf(p[1]).toFixed(1); }).join(' ');
+    s += '<path aria-hidden="true" fill="none" stroke="'+P.ghost+'" stroke-width="2" stroke-dasharray="5 4" d="'+dg+'"/>';
+    // end label
+    var last = t[t.length-1];
+    s += '<text class="axlab" x="'+(m.xOf(last[0])+4).toFixed(1)+'" y="'+(m.yOf(last[1])+3).toFixed(1)+'" fill="'+P.ghost+'" aria-hidden="true">'+ghostYear+'</text>';
+  }
+  // 2026 bold line + dots
+  var cur = env.filter(function(e){ return e.cur != null; });
+  if(cur.length){
+    var d26 = cur.map(function(e,i){ return (i?'L':'M') + m.xOf(e.w).toFixed(1) + ' ' + m.yOf(e.cur).toFixed(1); }).join(' ');
+    s += '<path aria-hidden="true" fill="none" stroke="'+P.line2026+'" stroke-width="3.2" stroke-linejoin="round" d="'+d26+'"/>';
+    cur.forEach(function(e){ s += '<circle aria-hidden="true" cx="'+m.xOf(e.w).toFixed(1)+'" cy="'+m.yOf(e.cur).toFixed(1)+'" r="3" fill="'+P.surface+'" stroke="'+P.line2026+'" stroke-width="2"/>'; });
+    var le = cur[cur.length-1];
+    s += '<text class="axlab" x="'+(m.xOf(le.w)+5).toFixed(1)+'" y="'+(m.yOf(le.cur)+3).toFixed(1)+'" fill="'+P.line2026ink+'" font-weight="700" aria-hidden="true">2026</text>';
+  }
+  // median direct label near right edge
+  var lm = env[env.length-1];
+  s += '<text class="axlab" x="'+(m.xOf(lm.w)+5).toFixed(1)+'" y="'+(m.yOf(lm.med)+3).toFixed(1)+'" fill="'+P.median+'" aria-hidden="true">median</text>';
+  // x axis ticks every 4 weeks
+  for(var w=m.w0; w<=m.w1; w++){
+    if(w % 4 !== 0) continue;
+    s += '<text class="axis" x="'+m.xOf(w).toFixed(1)+'" y="'+(m.H-m.mb+16)+'" text-anchor="middle" aria-hidden="true">W'+w+'</text>';
+  }
+  s += '<text class="axlab" x="'+(m.ml+m.pw/2)+'" y="'+(m.H-2)+'" text-anchor="middle" aria-hidden="true">week of season</text>';
+  // cursor group (updated interactively)
+  s += '<g id="cur-'+c.key+'" opacity="0" aria-hidden="true">'
+     + '<line id="curline-'+c.key+'" y1="'+m.mt+'" y2="'+(m.mt+m.ph)+'" stroke="'+P.ink+'" stroke-width="1"/>'
+     + '<g id="curbox-'+c.key+'"></g></g>';
+  // interaction hit-rect
+  s += '<rect id="fanhit-'+c.key+'" x="'+m.ml+'" y="'+m.mt+'" width="'+m.pw+'" height="'+m.ph+'" fill="transparent" style="cursor:crosshair"/>';
+
+  var label = c.title + ' good-to-excellent share, 2026 vs the 1988–2025 same-week envelope. The shaded fan is asymmetric: the median rides high near ' + fmt(env[env.length-1].med) + ', while the lower whisker plunges to the mid-teens in a drought basement and the upper cap sits in the mid-80s — condition can collapse but cannot soar. The fan narrows at the season edges where only a handful of years report. 2026 walks through the upper-middle of the band through midseason (W22–28), the weeks reported so far. This is an observed rating, not a forecast.';
+  return '<svg viewBox="0 0 '+m.W+' '+m.H+'" role="img" aria-labelledby="'+titleId+'" aria-describedby="'+descId+'" preserveAspectRatio="xMidYMid meet">'
+    + '<title id="'+titleId+'">The seasonal fan: '+esc(c.title)+', 2026 against ~40 years of same-week history</title>'
+    + '<desc id="'+descId+'">'+esc(label)+'</desc>' + s + '</svg>';
+}
+
+function wireFan(m, container){
+  var c = m.c;
+  var group = container.querySelector('#cur-'+c.key);
+  var line = container.querySelector('#curline-'+c.key);
+  var box = container.querySelector('#curbox-'+c.key);
+  var hit = container.querySelector('#fanhit-'+c.key);
+  var srlive = container.querySelector('#fanlive-'+c.key);
+  function nearest(px){
+    var w = Math.round(m.w0 + (px - m.ml)/m.pw * (m.w1 - m.w0));
+    return Math.max(m.w0, Math.min(m.w1, w));
+  }
+  function setCursor(w, announce){
+    var e = m.env.filter(function(x){ return x.w === w; })[0];
+    if(!e){ group.setAttribute('opacity','0'); return; }
+    group.setAttribute('opacity','1');
+    var x = m.xOf(w);
+    line.setAttribute('x1', x.toFixed(1)); line.setAttribute('x2', x.toFixed(1));
+    var lines = ['W'+w+'  n='+e.n, 'median '+fmt(e.med), 'range '+e.min+'–'+e.max];
+    if(e.cur != null) lines.unshift('2026: '+e.cur);
+    var bw = 96, bh = 14*lines.length + 12;
+    var bx = x + 10 + bw > m.W - m.mr ? x - bw - 10 : x + 10;
+    var by = m.mt + 6;
+    var P = palette();
+    var html = '<rect class="tip-box" x="'+bx.toFixed(1)+'" y="'+by+'" width="'+bw+'" height="'+bh+'" rx="7"/>';
+    lines.forEach(function(t,i){ html += '<text class="tip-tx" x="'+(bx+9).toFixed(1)+'" y="'+(by+17+i*14)+'">'+esc(t)+'</text>'; });
+    box.innerHTML = html;
+    if(announce && srlive){
+      var t = 'Week '+w+': 2026 '+(e.cur!=null?e.cur:'not yet reported')+'; historical median '+fmt(e.med)+', range '+e.min+' to '+e.max+' across '+e.n+' years.';
+      srlive.textContent = t;
+    }
+  }
+  hit.addEventListener('pointermove', function(ev){
+    var pt = container.querySelector('svg').getBoundingClientRect();
+    var svgW = m.W, scale = pt.width / svgW;
+    var px = (ev.clientX - pt.left) / scale;
+    setCursor(nearest(px), false);
+  });
+  hit.addEventListener('pointerleave', function(){ group.setAttribute('opacity','0'); });
+  return setCursor;
+}
+
+/* ---------- THE 38-SUMMERS DOTSTRIP (beeswarm) ---------- */
+function dotstripSVG(c){
+  var P = palette();
+  var W = 300, H = 360, mt = 18, mb = 26, cx = W*0.52;
+  var ph = H - mt - mb;
+  var yOf = function(v){ return mt + (100 - v)/100 * ph; };
+  var s = '';
+  for(var g=0; g<=100; g+=25){
+    s += '<line class="grid" x1="30" y1="'+yOf(g).toFixed(1)+'" x2="'+(W-14)+'" y2="'+yOf(g).toFixed(1)+'" aria-hidden="true"/>';
+    s += '<text class="axis" x="24" y="'+(yOf(g)+3).toFixed(1)+'" text-anchor="end" aria-hidden="true">'+g+'</text>';
+  }
+  // beeswarm layout: sort by value, offset colliding dots
+  var dots = c.dots.slice().sort(function(a,b){ return a[1]-b[1]; });
+  var placed = [];
+  var R = 5.4;
+  dots.forEach(function(d){
+    var y = yOf(d[1]);
+    var step = 0;
+    // find a free x near center
+    var x = cx, tries = 0;
+    while(tries < 40){
+      var clash = placed.some(function(p){ var dx=p.x-x, dy=p.y-y; return (dx*dx+dy*dy) < (R*2)*(R*2); });
+      if(!clash) break;
+      step++;
+      x = cx + (Math.ceil(step/2) * (step%2? 1:-1)) * (R*1.9);
+      tries++;
+    }
+    placed.push({x:x, y:y, year:d[0], val:d[1]});
+  });
+  placed.forEach(function(p){
+    var is88 = p.year === 1988;
+    s += '<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+(is88?4.6:4)+'" fill="'+(is88?P.basement:P.median)+'" fill-opacity="'+(is88?1:0.62)+'" stroke="'+P.surface+'" stroke-width="0.8" aria-hidden="true"/>';
+  });
+  // 1988 floor label
+  var d88 = placed.filter(function(p){ return p.year===1988; })[0];
+  if(d88){
+    s += '<line x1="'+(d88.x+6).toFixed(1)+'" y1="'+d88.y.toFixed(1)+'" x2="'+(W-70)+'" y2="'+d88.y.toFixed(1)+'" stroke="'+P.basement+'" stroke-width="1" aria-hidden="true"/>';
+    s += '<text class="axlab" x="'+(W-66)+'" y="'+(d88.y-4).toFixed(1)+'" fill="'+P.basement+'" aria-hidden="true">1988</text>';
+    s += '<text class="axis" x="'+(W-66)+'" y="'+(d88.y+9).toFixed(1)+'" fill="'+P.basement+'" aria-hidden="true">the floor ('+d88.val+')</text>';
+  }
+  // 2026 ringed marker
+  var y26 = yOf(c.good_excellent_pct);
+  s += '<circle cx="'+cx.toFixed(1)+'" cy="'+y26.toFixed(1)+'" r="8.5" fill="none" stroke="'+P.line2026+'" stroke-width="2.4" aria-hidden="true"/>';
+  s += '<circle cx="'+cx.toFixed(1)+'" cy="'+y26.toFixed(1)+'" r="3.4" fill="'+P.line2026+'" aria-hidden="true"/>';
+  s += '<text class="axlab" x="'+(cx+14).toFixed(1)+'" y="'+(y26+3).toFixed(1)+'" fill="'+P.line2026ink+'" font-weight="700" aria-hidden="true">2026 = '+c.good_excellent_pct+'</text>';
+  s += '<text class="axlab" x="'+(W/2)+'" y="'+(H-6)+'" text-anchor="middle" aria-hidden="true">'+c.same_week_n+' prior summers at W'+c.dotWeek+'</text>';
+
+  var label = c.title + ' at week ' + c.dotWeek + ': one dot per prior summer’s good-to-excellent share, jittered into a swarm, with 2026 ringed at ' + c.good_excellent_pct + '%. The mass clusters in the fifties through seventies with a lonely 1988 drought dot near ' + (c.dots.reduce(function(m,d){return Math.min(m,d[1]);},100)) + '% dragging the average down. That left skew is why ' + c.good_excellent_pct + '% lands at the published ' + c.same_week_percentile + 'th percentile — a single number would hide the spread and the outlier; this swarm shows both, honestly.';
+  return '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-labelledby="dsT-'+c.key+'" aria-describedby="dsD-'+c.key+'" preserveAspectRatio="xMidYMid meet">'
+    + '<title id="dsT-'+c.key+'">The 38-summers dotstrip: '+esc(c.title)+' at week '+c.dotWeek+'</title>'
+    + '<desc id="dsD-'+c.key+'">'+esc(label)+'</desc>' + s + '</svg>';
+}
+
+/* ---------- CLASS-COMPOSITION RIBBON ---------- */
+function ribbonSVG(c){
+  var P = palette();
+  var order = [['very_poor','Very poor','vp'],['poor','Poor','p'],['fair','Fair','f'],['good','Good','g'],['excellent','Excellent','e']];
+  // fills: a diverging-ish ramp, rust(bad) -> muted -> teal(good); patterns add non-colour cues
+  var fills = { very_poor:P.basement, poor:P.ghost, fair:P.muted, good:P.line2026, excellent:P.median };
+  var opac  = { very_poor:0.9, poor:0.6, fair:0.4, good:0.85, excellent:0.95 };
+  var W = 720, H = 70, x = 0;
+  var s = '<defs><pattern id="hatch-'+c.key+'" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="'+P.basement+'"/><line x1="0" y1="0" x2="0" y2="6" stroke="'+P.surface+'" stroke-width="2"/></pattern></defs>';
+  order.forEach(function(o){
+    var v = c.classes[o[0]]; var w = v/100*W;
+    var fill = o[0]==='very_poor' ? 'url(#hatch-'+c.key+')' : fills[o[0]];
+    s += '<rect x="'+x.toFixed(1)+'" y="16" width="'+w.toFixed(1)+'" height="30" fill="'+fill+'" fill-opacity="'+opac[o[0]]+'" stroke="'+P.surface+'" stroke-width="1" aria-hidden="true"/>';
+    // direct label above/inside — ink chosen by bar luminance so 4.5:1 holds in both themes
+    if(w > 34){
+      var barInk = labelInk(fills[o[0]], opac[o[0]], P.surface);
+      s += '<text class="axlab" x="'+(x+w/2).toFixed(1)+'" y="36" text-anchor="middle" fill="'+barInk+'" font-weight="600" aria-hidden="true">'+v+'</text>';
+      s += '<text class="axis" x="'+(x+w/2).toFixed(1)+'" y="60" text-anchor="middle" aria-hidden="true">'+o[1]+'</text>';
+    } else {
+      s += '<text class="axis" x="'+(x+w/2).toFixed(1)+'" y="10" text-anchor="middle" aria-hidden="true">'+o[1]+' '+v+'</text>';
+    }
+    x += w;
+  });
+  // bracket the good+excellent portion
+  var gx = (c.classes.very_poor + c.classes.poor + c.classes.fair)/100*W;
+  s += '<line x1="'+gx.toFixed(1)+'" y1="12" x2="'+W+'" y2="12" stroke="'+P.line2026+'" stroke-width="2" aria-hidden="true"/>';
+  var ge = c.classes.good + c.classes.excellent;
+  s += '<text class="axlab" x="'+((gx+W)/2).toFixed(1)+'" y="8" text-anchor="middle" fill="'+P.line2026ink+'" font-weight="700" aria-hidden="true">good + excellent = '+ge+'%</text>';
+  var label = c.title + ' condition on the reported week decomposes into five rating classes: very poor ' + c.classes.very_poor + ', poor ' + c.classes.poor + ', fair ' + c.classes.fair + ', good ' + c.classes.good + ', excellent ' + c.classes.excellent + ' percent. The headline metric this whole explorer tracks — good plus excellent, ' + ge + ' percent — is this rating composition, not a yield and not a price.';
+  return '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-labelledby="rbT-'+c.key+'" aria-describedby="rbD-'+c.key+'" preserveAspectRatio="none" style="width:100%;height:'+H+'px">'
+    + '<title id="rbT-'+c.key+'">Condition-class composition: '+esc(c.title)+'</title>'
+    + '<desc id="rbD-'+c.key+'">'+esc(label)+'</desc>' + s + '</svg>';
+}
+
+/* ---------- AHA: median sinks under a flat 2026 line ---------- */
+function ahaModel(c){
+  var a = c.aha;
+  var W = 560, H = 260, ml = 38, mr = 20, mt = 16, mb = 34;
+  var pw = W-ml-mr, ph = H-mt-mb;
+  var n = a.weeks.length;
+  var lo = 55, hi = 75; // zoomed y window to make the crossing legible
+  var xOf = function(i){ return ml + (n<2?0:i/(n-1))*pw; };
+  var yOf = function(v){ return mt + (hi - v)/(hi-lo) * ph; };
+  return { c:c, a:a, W:W, H:H, ml:ml, mr:mr, mt:mt, mb:mb, pw:pw, ph:ph, n:n, lo:lo, hi:hi, xOf:xOf, yOf:yOf };
+}
+function ahaSVG(m, step){
+  var a = m.a, P = palette();
+  var s = '';
+  for(var g=m.lo; g<=m.hi; g+=5){
+    s += '<line class="grid" x1="'+m.ml+'" y1="'+m.yOf(g).toFixed(1)+'" x2="'+(m.W-m.mr)+'" y2="'+m.yOf(g).toFixed(1)+'" aria-hidden="true"/>';
+    s += '<text class="axis" x="'+(m.ml-6)+'" y="'+(m.yOf(g)+3).toFixed(1)+'" text-anchor="end" aria-hidden="true">'+g+'</text>';
+  }
+  a.weeks.forEach(function(w,i){ s += '<text class="axis" x="'+m.xOf(i).toFixed(1)+'" y="'+(m.H-m.mb+16)+'" text-anchor="middle" aria-hidden="true">W'+w+'</text>'; });
+  // 2026 flat line (always fully drawn)
+  var d26 = a.line.map(function(v,i){ return (i?'L':'M')+m.xOf(i).toFixed(1)+' '+m.yOf(v).toFixed(1); }).join(' ');
+  s += '<path aria-hidden="true" fill="none" stroke="'+P.line2026+'" stroke-width="3.2" d="'+d26+'"/>';
+  // median line revealed up to `step`
+  var upto = Math.max(1, Math.min(a.weeks.length, step+1));
+  var dm = a.median.slice(0,upto).map(function(v,i){ return (i?'L':'M')+m.xOf(i).toFixed(1)+' '+m.yOf(v).toFixed(1); }).join(' ');
+  s += '<path aria-hidden="true" fill="none" stroke="'+P.median+'" stroke-width="2.4" d="'+dm+'"/>';
+  // gap shading between line and median at current step
+  var cs = Math.min(step, a.weeks.length-1);
+  var xi = m.xOf(cs), y1 = m.yOf(a.line[cs]), y2 = m.yOf(a.median[cs]);
+  s += '<line x1="'+xi.toFixed(1)+'" y1="'+y1.toFixed(1)+'" x2="'+xi.toFixed(1)+'" y2="'+y2.toFixed(1)+'" stroke="'+P.muted+'" stroke-width="1.4" stroke-dasharray="3 3" aria-hidden="true"/>';
+  // dots
+  a.line.forEach(function(v,i){ s += '<circle cx="'+m.xOf(i).toFixed(1)+'" cy="'+m.yOf(v).toFixed(1)+'" r="3" fill="'+P.surface+'" stroke="'+P.line2026+'" stroke-width="2" aria-hidden="true"/>'; });
+  a.median.slice(0,upto).forEach(function(v,i){ s += '<circle cx="'+m.xOf(i).toFixed(1)+'" cy="'+m.yOf(v).toFixed(1)+'" r="2.6" fill="'+P.median+'" aria-hidden="true"/>'; });
+  // labels
+  s += '<text class="axlab" x="'+(m.xOf(a.weeks.length-1)-2).toFixed(1)+'" y="'+(m.yOf(a.line[a.weeks.length-1])-8).toFixed(1)+'" text-anchor="end" fill="'+P.line2026ink+'" font-weight="700" aria-hidden="true">2026 (flat)</text>';
+  s += '<text class="axlab" x="'+m.xOf(0).toFixed(1)+'" y="'+(m.yOf(a.median[0])-8).toFixed(1)+'" fill="'+P.median+'" aria-hidden="true">median</text>';
+  var label = m.c.title + ': across weeks ' + a.weeks[0] + ' to ' + a.weeks[a.weeks.length-1] + ', the 2026 line is essentially flat (' + a.line.join(', ') + ') while the historical same-week median sinks from ' + a.median[0] + ' to ' + a.median[a.median.length-1] + ' as accumulated summer damage enters the peer set. The crop held; the competition faded. That is what a rising percentile means here — a description of the record, never a forecast.';
+  return '<svg viewBox="0 0 '+m.W+' '+m.H+'" role="img" aria-labelledby="ahT-'+m.c.key+'" aria-describedby="ahD-'+m.c.key+'" preserveAspectRatio="xMidYMid meet">'
+    + '<title id="ahT-'+m.c.key+'">2026 rises by standing still: '+esc(m.c.title)+'</title>'
+    + '<desc id="ahD-'+m.c.key+'">'+esc(label)+'</desc>' + s + '</svg>';
+}
+
+/* ---------- OVERVIEW ---------- */
+function cardSpark(c){
+  // compact fan sparkline for the card
+  var m = fanModel(c); var P = palette();
+  var W = 300, H = 96, ml = 4, mr = 4, mt = 6, mb = 6, pw = W-ml-mr, ph = H-mt-mb;
+  var env = c.envelope, w0 = env[0].w, w1 = env[env.length-1].w;
+  var xOf = function(w){ return ml + (w-w0)/(w1-w0)*pw; };
+  var yOf = function(v){ return mt + (100-v)/100*ph; };
+  var up = env.map(function(e,i){ return (i?'L':'M')+xOf(e.w).toFixed(1)+' '+yOf(e.max).toFixed(1); }).join(' ');
+  var dn = env.slice().reverse().map(function(e){ return 'L'+xOf(e.w).toFixed(1)+' '+yOf(e.min).toFixed(1); }).join(' ');
+  var med = env.map(function(e,i){ return (i?'L':'M')+xOf(e.w).toFixed(1)+' '+yOf(e.med).toFixed(1); }).join(' ');
+  var cur = env.filter(function(e){return e.cur!=null;});
+  var c26 = cur.map(function(e,i){ return (i?'L':'M')+xOf(e.w).toFixed(1)+' '+yOf(e.cur).toFixed(1); }).join(' ');
+  return '<svg viewBox="0 0 '+W+' '+H+'" aria-hidden="true" focusable="false" preserveAspectRatio="none" style="width:100%;height:70px">'
+    + '<path d="'+up+' '+dn+' Z" fill="'+P.band+'" fill-opacity="0.6"/>'
+    + '<path d="'+med+'" fill="none" stroke="'+P.median+'" stroke-width="1.6"/>'
+    + '<path d="'+c26+'" fill="none" stroke="'+P.line2026+'" stroke-width="2.6"/></svg>';
+}
+function renderOverview(){
+  view.innerHTML = '';
+  var toolbar = h('div', {'class':'toolbar', role:'group', 'aria-label':'View controls'});
+  toolbar.appendChild(h('span', {'class':'mono', style:'font-size:12px;color:var(--muted)', text:'Two crops · the feed complex'}));
+  toolbar.appendChild(h('span', {'class':'spacer'}));
+  toolbar.appendChild(themeToggle());
+  view.appendChild(toolbar);
+  view.appendChild(status);
+
+  var cards = h('div', {'class':'cards'});
+  CROPS.forEach(function(c){
+    var d = dir(c.vs_same_week_avg_pts);
+    var card = h('button', {'class':'card', type:'button', 'data-crop':c.key, 'aria-label':'Open the '+c.title+' walk-through. 2026 good to excellent '+c.good_excellent_pct+' percent, '+d.w+' the same-week average.', onclick:function(){ location.hash = c.key; }});
+    var head = h('div', {'class':'card-h'});
+    head.appendChild(h('p', {'class':'role', text:c.role}));
+    head.appendChild(h('h2', {text:c.title}));
+    var big = h('div', {'class':'card-big'});
+    big.appendChild(h('span', {'class':'n', text:c.good_excellent_pct + '%'}));
+    big.appendChild(h('span', {'class':'u', text:'good-to-excellent, ' + c.as_of_week_label.toLowerCase() + ' (' + c.as_of_week_ending + ')'}));
+    head.appendChild(big);
+    head.appendChild(h('p', {'class':'card-band', html:'<span class="dir '+d.cls+'">'+d.g+' '+fmt(Math.abs(c.vs_same_week_avg_pts))+' pts</span> ' + esc(d.w) + ' the same-week average · <b class="mono">'+c.same_week_percentile+'th</b> percentile of ' + c.same_week_n + ' summers'}));
+    card.appendChild(head);
+    var fig = h('figure');
+    fig.innerHTML = cardSpark(c);
+    fig.appendChild(h('figcaption', {'class':'sr-only', text:c.title + ' seasonal fan: 2026 walks the upper-middle of the ' + c.same_week_n + '-summer envelope through midseason (W22–28); the median line and drought-basement lower whisker are shown. Full figures in the data table.'}));
+    card.appendChild(fig);
+    card.appendChild(h('div', {'class':'go', html:'<span>Walk the season</span><span aria-hidden="true">→</span>'}));
+    cards.appendChild(card);
+  });
+  view.appendChild(cards);
+
+  // dual-crop comparison with shared cursor
+  view.appendChild(compareFigure());
+
+  var lede = h('p', {'class':'fine', html:'A coincident backdrop, never a driver. Each crop is read only against its own same-week history. <span class="lic" data-lic="cc0">CC0</span> raw class-week series · <span class="lic" data-lic="cc-by">CC-BY</span> derived percentile &amp; average.'});
+  view.appendChild(lede);
+  say(CROPS.length + ' crops shown — corn and soybeans, the feed complex. Select a crop to walk its season.');
+  document.title = 'The Feed Complex — Corn & Soybean Crop Health';
+  // return focus to the card we came from, per the a11y focus-order contract
+  if(restoreFocus === 'card' && lastViewed){
+    var back = view.querySelector('.card[data-crop="'+lastViewed+'"]');
+    if(back) back.focus();
+  } else if(restoreFocus === 'theme'){
+    var tb = view.querySelector('.ttoggle'); if(tb) tb.focus();
+  }
+  restoreFocus = null;
+}
+
+function compareFigure(){
+  var wrap = h('section', {'class':'compare', 'aria-label':'Corn and soybeans compared'});
+  wrap.appendChild(h('h2', {text:'Soybeans shadow corn — a band below'}));
+  wrap.appendChild(h('p', {'class':'read', html:'Both crops trace the same seasonal shape, but soy sits <b>4–6 points lower</b> and runs choppier. Scrub the shared week cursor to read both fans at once. Both are above their own bands this year — corn <b class="mono">+'+fmt(BY.corn.vs_same_week_avg_pts)+'</b>, soy <b class="mono">+'+fmt(BY.soybeans.vs_same_week_avg_pts)+'</b> pts vs their same-week average.'}));
+  var stack = h('div');
+  CROPS.forEach(function(c){
+    var m = fanModel(c);
+    var fig = h('figure', {style:'margin:0 0 6px'});
+    fig.innerHTML = '<div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin:2px 0">'+esc(c.title)+'</div>' + fanSVG(m, null);
+    fig.appendChild(h('figcaption', {'class':'sr-only', text:c.title + ' seasonal fan, 2026 vs the ' + c.same_week_n + '-summer envelope; figures in the data table below.'}));
+    fig.appendChild(h('span', {'class':'sr-only', id:'fanlive-'+c.key, 'aria-live':'polite'}));
+    stack.appendChild(fig);
+    setTimeout(function(){ wireFan(m, fig); }, 0);
+  });
+  wrap.appendChild(stack);
+  // shared slider
+  var w0 = BY.corn.envelope[0].w, w1 = BY.corn.envelope[BY.corn.envelope.length-1].w;
+  var sl = h('input', {type:'range', min:w0, max:w1, value:BY.corn.as_of_week, step:1, 'aria-label':'Shared week cursor — moves both fans', id:'sharedslider', style:'width:100%;margin-top:8px'});
+  sl.addEventListener('input', function(){
+    var w = parseInt(sl.value,10);
+    CROPS.forEach(function(c){
+      var m = fanModel(c);
+      var fig = stack.children[CROPS.indexOf(c)];
+      // rebuild cursor via a fresh wire each time is wasteful; find group directly
+      var group = fig.querySelector('#cur-'+c.key);
+      if(!group) return;
+      var e = c.envelope.filter(function(x){return x.w===w;})[0];
+      if(!e){ group.setAttribute('opacity','0'); return; }
+      group.setAttribute('opacity','1');
+      var x = m.xOf(w);
+      var line = fig.querySelector('#curline-'+c.key);
+      line.setAttribute('x1', x.toFixed(1)); line.setAttribute('x2', x.toFixed(1));
+      var box = fig.querySelector('#curbox-'+c.key); var P = palette();
+      var lines = ['W'+w+'  n='+e.n,'median '+fmt(e.med),'range '+e.min+'–'+e.max];
+      if(e.cur!=null) lines.unshift('2026: '+e.cur);
+      var bw=96, bh=14*lines.length+12, bx = x+10+bw>m.W-m.mr ? x-bw-10 : x+10, by=m.mt+6;
+      var html='<rect class="tip-box" x="'+bx.toFixed(1)+'" y="'+by+'" width="'+bw+'" height="'+bh+'" rx="7"/>';
+      lines.forEach(function(t,i){ html+='<text class="tip-tx" x="'+(bx+9).toFixed(1)+'" y="'+(by+17+i*14)+'">'+esc(t)+'</text>'; });
+      box.innerHTML = html;
+    });
+    say('Week ' + w + ' — corn ' + readAt(BY.corn,w) + ', soybeans ' + readAt(BY.soybeans,w) + '.');
+  });
+  var slwrap = h('div');
+  slwrap.appendChild(h('label', {'class':'mono', style:'font-size:12px;color:var(--ink-soft);display:block;margin-top:8px', for:'sharedslider', text:'Shared week cursor'}));
+  slwrap.appendChild(sl);
+  wrap.appendChild(slwrap);
+  wrap.appendChild(h('p', {'class':'lic-line', html:'<span class="lic" data-lic="cc0">CC0</span> envelope computed from the raw class-week file · <span class="lic" data-lic="cc-by">CC-BY</span> 2026 reads'}));
+  return wrap;
+}
+function readAt(c, w){
+  var e = c.envelope.filter(function(x){return x.w===w;})[0];
+  if(!e) return 'no data';
+  return (e.cur!=null? '2026 '+e.cur+', ':'') + 'median '+fmt(e.med)+' (n='+e.n+')';
+}
+
+/* ---------- DETAIL / STORY ---------- */
+function renderDetail(c){
+  lastViewed = c.key;
+  view.innerHTML = '';
+  var toolbar = h('div', {'class':'toolbar'});
+  var back = h('button', {'class':'back', type:'button', html:'<span aria-hidden="true">←</span> Both crops', 'aria-label':'Back to both crops', onclick:function(){ restoreFocus = 'card'; location.hash=''; }});
+  toolbar.appendChild(back);
+  toolbar.appendChild(h('span', {'class':'spacer'}));
+  toolbar.appendChild(cropSwitch(c));
+  toolbar.appendChild(themeToggle());
+  view.appendChild(toolbar);
+  view.appendChild(status);
+
+  var story = h('article', {'class':'story'});
+  // head
+  var head = h('div', {'class':'shead'});
+  head.appendChild(h('p', {'class':'role', text:c.role}));
+  var d = dir(c.vs_same_week_avg_pts);
+  var hd = h('h2', {tabindex:'-1', text:c.title + ' — walking the 2026 season'});
+  head.appendChild(hd);
+  var big = h('div', {'class':'bignum'});
+  big.appendChild(h('span', {'class':'n', text:c.good_excellent_pct + '%'}));
+  big.appendChild(h('span', {'class':'lab', html:'good-to-excellent at <b>'+esc(c.as_of_week_label.toLowerCase())+'</b> (week ending '+c.as_of_week_ending+') — <b class="'+d.cls+'">'+d.g+' '+fmt(Math.abs(c.vs_same_week_avg_pts))+' pts</b> vs the same-week average, at the <b class="mono">'+c.same_week_percentile+'th</b> percentile of '+c.same_week_n+' summers.'}));
+  head.appendChild(big);
+  head.appendChild(h('p', {'class':'honest', text:c.band + ' — an observed present-state rating, read only against this crop’s own history. Not a forecast of yield or price, and not a driver of any single ingredient.'}));
+  story.appendChild(head);
+
+  story.appendChild(beatFan(c));
+  story.appendChild(beatDotstrip(c));
+  story.appendChild(beatRibbon(c));
+  story.appendChild(beatAha(c));
+
+  view.appendChild(story);
+  say('Showing the ' + c.title + ' walk-through.');
+  document.title = c.title + ' — The Feed Complex';
+  if(restoreFocus === 'theme'){ var tb = view.querySelector('.ttoggle'); if(tb) tb.focus(); restoreFocus = null; }
+  else requestAnimationFrame(function(){ hd.focus(); });
+}
+
+function cropSwitch(active){
+  var seg = h('div', {'class':'seg', role:'group', 'aria-label':'Choose crop'});
+  CROPS.forEach(function(c){
+    seg.appendChild(h('button', {type:'button', 'aria-pressed': String(c.key===active.key), text:c.title, onclick:function(){ location.hash = c.key; }}));
+  });
+  return seg;
+}
+
+function beatFan(c){
+  var m = fanModel(c);
+  var beat = h('section', {'class':'beat'});
+  beat.appendChild(h('p', {'class':'step', text:'Signature · the seasonal fan'}));
+  beat.appendChild(h('h3', {text:'The band is asymmetric — condition can collapse, it can’t soar'}));
+  beat.appendChild(h('p', {'class':'read', html:'Each week draws the historical <b>min / median / max</b> of good-to-excellent as a shaded fan; 2026 walks through in bold teal. The median rides high near <span class="num">'+fmt(c.envelope[c.envelope.length-1].med)+'</span>, yet the lower whisker plunges into a <b>drought basement</b> (the rust-tinted stretch below median), while the upper cap barely clears the mid-80s. The fan <b>narrows at the season’s edges</b>, where only a handful of years report, and its fill fades where <b>n</b> is thin — the chart down-weights its own sparse evidence.'}));
+  var fig = h('figure');
+  fig.innerHTML = fanSVG(m, null);
+  fig.appendChild(h('figcaption', {'class':'sr-only', text:m.c.title + ' seasonal fan. ' + '2026 good-to-excellent walks the upper-middle of the 1988–2025 same-week envelope through midseason (W22–28); the median sits high while the lower whisker collapses into a drought basement. Full weekly figures are in the data table below.'}));
+  fig.appendChild(h('span', {'class':'sr-only', id:'fanlive-'+c.key, 'aria-live':'polite'}));
+  beat.appendChild(fig);
+  // legend
+  beat.appendChild(h('div', {'class':'legend', html:
+    '<span class="k"><span class="ln" style="border-top-color:var(--teal)"></span>2026</span>'
+    + '<span class="k"><span class="ln" style="border-top-color:var(--gold)"></span>historical median</span>'
+    + '<span class="k"><span class="m" style="background:var(--teal-wash)"></span>min–max envelope (opacity ∝ n)</span>'
+    + '<span class="k"><span class="m" style="background:var(--rust);opacity:.34"></span>drought basement (min–median)</span>'}));
+  // week scrubber
+  var slwrap = h('div', {'class':'tracebar'});
+  slwrap.appendChild(h('label', {for:'fanslider-'+c.key, text:'Week cursor'}));
+  var sl = h('input', {type:'range', id:'fanslider-'+c.key, min:m.w0, max:m.w1, value:c.as_of_week, step:1, 'aria-label':'Week cursor — read the fan week by week', style:'flex:1;min-width:180px'});
+  slwrap.appendChild(sl);
+  beat.appendChild(slwrap);
+  // trace picker
+  var tb = h('div', {'class':'tracebar'});
+  tb.appendChild(h('label', {for:'trace-'+c.key, text:'Trace a past summer'}));
+  var sel = h('select', {id:'trace-'+c.key, 'aria-label':'Overlay a single past summer as a ghost line'});
+  sel.appendChild(h('option', {value:'', text:'— none —'}));
+  Object.keys(c.traces).map(Number).sort(function(a,b){return b-a;}).forEach(function(y){
+    sel.appendChild(h('option', {value:String(y), text:String(y)}));
+  });
+  tb.appendChild(sel);
+  var q88 = h('button', {'class':'qbtn', type:'button', 'aria-pressed':'false', text:'1988 drought', 'aria-label':'Overlay the 1988 drought — the floor of the fan'});
+  var q12 = h('button', {'class':'qbtn', type:'button', 'aria-pressed':'false', text:'2012 drought'});
+  tb.appendChild(q88); tb.appendChild(q12);
+  beat.appendChild(tb);
+  var note = h('p', {'class':'fine', html:'<b>The floor has one face.</b> The 1988 drought alone owns the entire lower whisker from about W25 through W38 (values in the mid-teens to low-20s) — a single named year defines “worst case” for a dozen mid-season weeks across all ~40 years. Overlay it to watch the floor form.'});
+  beat.appendChild(note);
+  beat.appendChild(h('p', {'class':'lic-line', html:'<span class="lic" data-lic="cc0">CC0</span> envelope + traces computed from <a href="'+esc(DATA.meta.raw_url)+'">nass-crop-condition.jsonl</a> · <span class="lic" data-lic="cc-by">CC-BY</span> 2026 reads'}));
+
+  setTimeout(function(){
+    var sc = wireFan(m, fig);
+    sl.addEventListener('input', function(){ sc(parseInt(sl.value,10), true); });
+    function setGhost(y){
+      fig.querySelector('svg').outerHTML = fanSVG(m, y);
+      // re-wire after replace; slider closure reads the refreshed sc
+      sc = wireFan(m, fig);
+      var yr = y ? (', overlaying '+y) : '';
+      say(c.title + ' fan' + yr + '.');
+    }
+    sel.addEventListener('change', function(){
+      var y = sel.value ? parseInt(sel.value,10) : null;
+      q88.setAttribute('aria-pressed', String(y===1988));
+      q12.setAttribute('aria-pressed', String(y===2012));
+      setGhost(y);
+    });
+    function quick(btn, y){
+      btn.addEventListener('click', function(){
+        var on = btn.getAttribute('aria-pressed') === 'true';
+        var ny = on ? null : y;
+        sel.value = ny ? String(ny) : '';
+        q88.setAttribute('aria-pressed', String(ny===1988));
+        q12.setAttribute('aria-pressed', String(ny===2012));
+        setGhost(ny);
+      });
+    }
+    quick(q88, 1988); quick(q12, 2012);
+  }, 0);
+  return beat;
+}
+
+function beatDotstrip(c){
+  var beat = h('section', {'class':'beat'});
+  beat.appendChild(h('p', {'class':'step', text:'The gauge, done honestly'}));
+  beat.appendChild(h('h3', {text:'The 38-summers dotstrip'}));
+  beat.appendChild(h('p', {'class':'read', html:'Instead of an arc gauge that hides everything behind one needle, here is one dot per prior summer at <b>W'+c.dotWeek+'</b>, jittered into a swarm, with 2026 ringed at its true value. You see <b>n</b>, the full spread, and the left skew at a glance: the mass clusters in the fifties-through-seventies with a lonely <b>1988</b> dot near '+ (c.dots.reduce(function(mn,d){return Math.min(mn,d[1]);},100)) +'% dragging the mean down. That is why <span class="num">'+c.good_excellent_pct+'%</span> lands at the published <span class="num">'+c.same_week_percentile+'th</span> percentile — a single number would hide the outlier and the shape.'}));
+  var fig = h('figure', {style:'max-width:340px;margin:0 auto'});
+  fig.innerHTML = dotstripSVG(c);
+  fig.appendChild(h('figcaption', {'class':'sr-only', text:c.title + ' at week ' + c.dotWeek + ': ' + c.same_week_n + ' prior-summer good-to-excellent values as a swarm; 2026 = ' + c.good_excellent_pct + '% at the published ' + c.same_week_percentile + 'th percentile; the 1988 drought is the lone low outlier. Values in the data table.'}));
+  beat.appendChild(fig);
+  beat.appendChild(h('p', {'class':'fine', html:'<b>The typical year beats the average year.</b> The prior-year mean (<span class="mono">'+fmt(c.same_week_avg_pct)+'</span>) sits below the median (<span class="mono">'+fmt(c.envelope.filter(function(e){return e.w===c.dotWeek;})[0].med)+'</span>) — the fingerprint of a left-skewed envelope. Reporting “vs the average” actually <b>understates</b> how normal 2026 is, because a few disaster years drag the mean down. The median comparison is the fairer read.'}));
+  beat.appendChild(h('p', {'class':'lic-line', html:'<span class="lic" data-lic="cc0">CC0</span> per-year values from the raw file · <span class="lic" data-lic="cc-by">CC-BY</span> published '+c.same_week_percentile+'th-percentile read'}));
+  return beat;
+}
+
+function beatRibbon(c){
+  var beat = h('section', {'class':'beat'});
+  beat.appendChild(h('p', {'class':'step', text:'What the metric actually is'}));
+  beat.appendChild(h('h3', {text:'A rating composition, not a yield or a price'}));
+  var ge = c.classes.good + c.classes.excellent;
+  beat.appendChild(h('p', {'class':'read', html:'The headline <b>good + excellent = '+ge+'%</b> is the top of a five-class rating stack that always sums to 100. This ribbon decomposes it — a reminder that the tracked number is surveyors’ <b>condition ratings</b>, an observed present state, never a bushels-per-acre yield and never a market price.'}));
+  var fig = h('figure');
+  fig.innerHTML = ribbonSVG(c);
+  fig.appendChild(h('figcaption', {'class':'sr-only', text:c.title + ' condition classes: very poor ' + c.classes.very_poor + ', poor ' + c.classes.poor + ', fair ' + c.classes.fair + ', good ' + c.classes.good + ', excellent ' + c.classes.excellent + ' percent. Good plus excellent is ' + ge + ' percent.'}));
+  beat.appendChild(fig);
+  var P = 'ribbon-legend';
+  beat.appendChild(h('div', {'class':P, html:
+    '<span class="k"><span class="m" style="background:var(--rust)"></span>Very poor '+c.classes.very_poor+'</span>'
+    + '<span class="k"><span class="m" style="background:var(--rust);opacity:.6"></span>Poor '+c.classes.poor+'</span>'
+    + '<span class="k"><span class="m" style="background:var(--muted);opacity:.55"></span>Fair '+c.classes.fair+'</span>'
+    + '<span class="k"><span class="m" style="background:var(--teal)"></span>Good '+c.classes.good+'</span>'
+    + '<span class="k"><span class="m" style="background:var(--gold)"></span>Excellent '+c.classes.excellent+'</span>'}));
+  return beat;
+}
+
+function beatAha(c){
+  var m = ahaModel(c);
+  var beat = h('section', {'class':'beat'});
+  beat.appendChild(h('p', {'class':'step', text:'The aha · percentile motion is not crop motion'}));
+  beat.appendChild(h('h3', {text:'2026 rises by standing still'}));
+  beat.appendChild(h('p', {'class':'read', html:c.title+'’s good-to-excellent is eerily flat across W'+m.a.weeks[0]+'–W'+m.a.weeks[m.a.weeks.length-1]+' ('+m.a.line.join(', ')+') — yet its same-week percentile climbs. Play it: the 2026 line never moves. Only the <b>historical median sinks</b> beneath it, week by week, as accumulated summer damage enters the peer band. <b>The crop held; the competition faded.</b>'}));
+  // controls + counter
+  var ctl = h('div', {'class':'aha-ctl'});
+  var play = h('button', {'class':'playbtn', type:'button', html:'<span aria-hidden="true">▶</span> ' + (reduce?'Show the crossing':'Play the crossing')});
+  var reset = h('button', {'class':'qbtn', type:'button', text:'Reset'});
+  var counter = h('div', {'class':'counter', 'aria-hidden':'true'});
+  counter.innerHTML = '<div class="pc" id="ahapc-'+c.key+'">'+m.a.pctile[0]+'th</div><div class="cl">same-week percentile · W<span id="ahawk-'+c.key+'">'+m.a.weeks[0]+'</span></div>';
+  ctl.appendChild(play); ctl.appendChild(reset); ctl.appendChild(counter);
+  beat.appendChild(ctl);
+  var fig = h('figure');
+  fig.innerHTML = ahaSVG(m, 0);
+  fig.appendChild(h('figcaption', {'class':'sr-only', text:'Weeks '+m.a.weeks[0]+' to '+m.a.weeks[m.a.weeks.length-1]+': 2026 line flat at '+m.a.line.join(', ')+'; historical median sinks '+m.a.median[0]+' to '+m.a.median[m.a.median.length-1]+'; percentile moves '+m.a.pctile[0]+' to '+m.a.pctile[m.a.pctile.length-1]+'. Figures in the data table.'}));
+  fig.appendChild(h('span', {'class':'sr-only', id:'ahalive-'+c.key, 'aria-live':'polite'}));
+  beat.appendChild(fig);
+  beat.appendChild(h('p', {'class':'honest', text:'That is what a rising percentile means here — a description of the record, never a forecast of what comes next.'}));
+  if(c.key === 'soybeans'){
+    beat.appendChild(h('p', {'class':'fine', html:'<b>Small-denominator caution.</b> Soy’s percentile is jumpier than corn’s off tiny value moves (W25 to W28 swings on one- and two-point shifts) — an honesty note that a same-week gauge built on thin early-season n can move more than the crop does.'}));
+  }
+  beat.appendChild(h('p', {'class':'lic-line', html:'<span class="lic" data-lic="cc0">CC0</span> 2026 line + median computed from the raw file · percentile via mid-rank within the '+c.same_week_n+' summers; the published as-of read is '+c.same_week_percentile+'th'}));
+
+  var pc = counter.querySelector('#ahapc-'+c.key), wk = counter.querySelector('#ahawk-'+c.key);
+  var live = fig.querySelector('#ahalive-'+c.key);
+  var timer = null, step = 0;
+  function frame(s){
+    step = s;
+    fig.querySelector('svg').outerHTML = ahaSVG(m, s);
+    pc.textContent = m.a.pctile[s] + 'th';
+    wk.textContent = m.a.weeks[s];
+    live.textContent = 'Week ' + m.a.weeks[s] + ': 2026 at ' + m.a.line[s] + ', historical median ' + m.a.median[s] + ', percentile ' + m.a.pctile[s] + '.';
+  }
+  function stop(){ if(timer){ clearInterval(timer); timer = null; play.innerHTML = '<span aria-hidden="true">▶</span> ' + (reduce?'Show the crossing':'Play the crossing'); } }
+  teardowns.push(stop); // clear a running player if the user navigates away mid-play
+  play.addEventListener('click', function(){
+    if(reduce){ frame(m.a.weeks.length-1); say(c.title+': median crossed from '+m.a.median[0]+' down to '+m.a.median[m.a.median.length-1]+' while 2026 held flat; percentile '+m.a.pctile[0]+' to '+m.a.pctile[m.a.pctile.length-1]+'.'); return; }
+    if(timer){ stop(); return; }
+    if(step >= m.a.weeks.length-1) frame(0);
+    play.innerHTML = '<span aria-hidden="true">❙❙</span> Pause';
+    timer = setInterval(function(){
+      if(step >= m.a.weeks.length-1){ stop(); say(c.title+': the line held flat; the median sank beneath it; that is the rising percentile.'); return; }
+      frame(step+1);
+    }, 720);
+  });
+  reset.addEventListener('click', function(){ stop(); frame(0); });
+  return beat;
+}
+
+/* ---------- theme toggle ---------- */
+function themeToggle(){
+  var cur = document.documentElement.getAttribute('data-theme');
+  var btn = h('button', {'class':'ttoggle', type:'button', 'aria-label':'Toggle light or dark theme', title:'Toggle theme'});
+  function paint(){
+    var t = document.documentElement.getAttribute('data-theme');
+    var dark = t === 'dark' || (!t && window.matchMedia && window.matchMedia('(prefers-color-scheme:dark)').matches);
+    btn.innerHTML = '<span role="img" aria-hidden="true">' + (dark ? '☀️' : '☽') + '</span>';
+  }
+  paint();
+  btn.addEventListener('click', function(){
+    var t = document.documentElement.getAttribute('data-theme');
+    var dark = t === 'dark' || (!t && window.matchMedia && window.matchMedia('(prefers-color-scheme:dark)').matches);
+    document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
+    paint();
+    // repaint charts (palette tokens changed) by re-routing; keep focus on the toggle
+    restoreFocus = 'theme';
+    route();
+  });
+  return btn;
+}
+
+/* ---------- router ---------- */
+function route(){
+  runTeardowns();
+  var key = decodeURIComponent(location.hash.replace(/^#/, ''));
+  if(BY[key]) renderDetail(BY[key]);
+  else renderOverview();
+}
+window.addEventListener('hashchange', route);
+route();
+})();
+
+</script>
