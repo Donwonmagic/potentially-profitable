@@ -81,8 +81,18 @@ Honesty holds: number static, "medium confidence" word leads, "Not your prices" 
 "3 of 16 holding last-good since 2026-06-01" all present. Audited on the headless render (0 h-overflow at
 1280/390, both themes) + full gate **253/258, zero new failures**. Wired into `cost-index-refresh.yml`
 (build + `--check`) so it refreshes daily with the data. Movers read against their own baseline; romaine
-tagged seasonal. **NEXT (optional):** carry the instrument shell down the hub/ingredient funnel; the
-calibration-safe confidence gate (`check-cost-index-confidence.mjs`) as a follow-up.
+tagged seasonal.
+
+**SHIPPED — hub composite depth (2026-07-23):** carried the Glass Well material onto the Cost Index hub's
+"Where the basket sits" composite band (`compositeBand()` in `build-cost-index-pages.mjs`). The reading now
+sits recessed in a lit Glass Well inside an elevated instrument frame (`--elev-feature`), with a dark-theme
+inset-shadow override — unifying the hub hero's material with `/about/`. Scoped, additive (wrapped the
+existing read+spread in `.ci-composite__well`, elevated `.ci-composite`); NO strata/parallax on the hub yet
+(restraint-forward first step; the table below carries the per-ingredient depth). Applied to the build
+script AND directly to the committed EN+ES hubs (deterministic string edit — no regen, so no nav-strip
+drift; exactly 3 files). Audited on the render: 0 h-overflow at 1280/390, both themes legible, well recessed
+in dark. **NEXT (optional):** the receding-strata + parallax on the hub composite (match /about/ fully);
+carry the well onto ingredient pages; the calibration-safe `check-cost-index-confidence.mjs` gate.
 
 **Plan of record:** `docs/design/elevation-dream-backlog.md` — the reconciled output of two
 adversarial "dreaming" workflows (top-down design-language + bottom-up per-surface), with the

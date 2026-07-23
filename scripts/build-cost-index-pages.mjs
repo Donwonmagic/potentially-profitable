@@ -766,15 +766,17 @@ function compositeBand(locale) {
     : `Weighted composite of ${n} tracked staples, each read against its own baseline window from public U.S. market data (USDA, BLS, FRED, EIA, NOAA). A reading against baseline — not a price, and not a change since last week. See all ${n} weights and how the composite is assembled in <a href="${base}/cost-index/basket/">The Muntin Restaurant Basket</a>, or <a href="${base}/cost-index/methodology/">how the index is built</a>.`;
   return `<section class="ci-composite" data-band="${band}" aria-label="${es ? 'Lectura de la canasta' : 'Basket reading'}">
     <p class="ci-composite__head">${head}</p>
-    <div class="ci-composite__read">
-      <span class="ci-composite__num">${pctStr}</span>
-      <span class="ci-composite__say">${say}</span>
+    <div class="ci-composite__well">
+      <div class="ci-composite__read">
+        <span class="ci-composite__num">${pctStr}</span>
+        <span class="ci-composite__say">${say}</span>
+      </div>
+      <p class="ci-composite__spread">${spread}</p>
     </div>
     <div class="ci-composite__meta">
       <span class="ci-composite__chip">${confChip}</span>
       <span class="ci-composite__chip ci-asof" data-asof="${asOf}">${asOfChip}</span>
     </div>
-    <p class="ci-composite__spread">${spread}</p>
     <details class="ci-composite__src"><summary>${srcSummary}</summary><div>${srcBody}</div></details>
   </section>`;
 }
@@ -1662,9 +1664,12 @@ main{padding-top:64px}
 .ci-sibs-label{display:inline-block;font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:11px;margin-right:8px}
 .ci-sibs a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 8px}
-.ci-composite{margin:22px 0 6px;padding:20px 22px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--ink-soft);border-radius:12px;font-variant-numeric:tabular-nums}
+.ci-composite{position:relative;margin:22px 0 6px;padding:18px 20px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--ink-soft);border-radius:12px;font-variant-numeric:tabular-nums;box-shadow:var(--elev-feature)}
 .ci-composite[data-band="up"]{border-left-color:#A23B2D}
 .ci-composite[data-band="down"]{border-left-color:var(--teal)}
+.ci-composite__well{margin:2px 0 0;padding:15px 16px;background:var(--surface-inset);border-radius:8px;box-shadow:inset 0 1px 1px rgba(20,22,26,.09),inset 0 0 0 1px var(--line)}
+:root[data-theme="dark"] .ci-composite__well{box-shadow:inset 0 1px 2px rgba(0,0,0,.5),inset 0 0 0 1px var(--line)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .ci-composite__well{box-shadow:inset 0 1px 2px rgba(0,0,0,.5),inset 0 0 0 1px var(--line)}}
 .ci-composite__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px}
 .ci-composite__read{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;margin:0}
 .ci-composite__num{font-family:var(--font-display);font-size:clamp(30px,6vw,44px);font-weight:500;line-height:1;color:var(--ink)}

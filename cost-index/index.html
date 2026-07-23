@@ -134,9 +134,12 @@ main{padding-top:64px}
 .ci-sibs-label{display:inline-block;font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:11px;margin-right:8px}
 .ci-sibs a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 8px}
-.ci-composite{margin:22px 0 6px;padding:20px 22px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--ink-soft);border-radius:12px;font-variant-numeric:tabular-nums}
+.ci-composite{position:relative;margin:22px 0 6px;padding:18px 20px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--ink-soft);border-radius:12px;font-variant-numeric:tabular-nums;box-shadow:var(--elev-feature)}
 .ci-composite[data-band="up"]{border-left-color:#A23B2D}
 .ci-composite[data-band="down"]{border-left-color:var(--teal)}
+.ci-composite__well{margin:2px 0 0;padding:15px 16px;background:var(--surface-inset);border-radius:8px;box-shadow:inset 0 1px 1px rgba(20,22,26,.09),inset 0 0 0 1px var(--line)}
+:root[data-theme="dark"] .ci-composite__well{box-shadow:inset 0 1px 2px rgba(0,0,0,.5),inset 0 0 0 1px var(--line)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .ci-composite__well{box-shadow:inset 0 1px 2px rgba(0,0,0,.5),inset 0 0 0 1px var(--line)}}
 .ci-composite__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px}
 .ci-composite__read{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;margin:0}
 .ci-composite__num{font-family:var(--font-display);font-size:clamp(30px,6vw,44px);font-weight:500;line-height:1;color:var(--ink)}
@@ -652,15 +655,17 @@ main{padding-top:64px}
     </div>
     <section class="ci-composite" data-band="down" aria-label="Basket reading">
     <p class="ci-composite__head">Where the basket sits</p>
-    <div class="ci-composite__read">
+    <div class="ci-composite__well">
+      <div class="ci-composite__read">
       <span class="ci-composite__num">−0.5%</span>
       <span class="ci-composite__say">the weighted basket of 16 restaurant staples, against its baseline window</span>
+    </div>
+      <p class="ci-composite__spread"><strong>5</strong> of 16 reading above their baseline · <strong>8</strong> below · <strong>3</strong> flat. A state-of-play reading, not a week-over-week move. The staples are nearly evenly split (agreement 51%), so read it as a soft signal, not a precise figure. <strong>3</strong> of 16 staples are holding last-good since 2026-06-01.</p>
     </div>
     <div class="ci-composite__meta">
       <span class="ci-composite__chip">medium confidence</span>
       <span class="ci-composite__chip ci-asof" data-asof="2026-07-21">as of 2026-07-21</span>
     </div>
-    <p class="ci-composite__spread"><strong>5</strong> of 16 reading above their baseline · <strong>8</strong> below · <strong>3</strong> flat. A state-of-play reading, not a week-over-week move. The staples are nearly evenly split (agreement 51%), so read it as a soft signal, not a precise figure. <strong>3</strong> of 16 staples are holding last-good since 2026-06-01.</p>
     <details class="ci-composite__src"><summary>How this figure is built</summary><div>Weighted composite of 16 tracked staples, each read against its own baseline window from public U.S. market data (USDA, BLS, FRED, EIA, NOAA). A reading against baseline — not a price, and not a change since last week. See all 16 weights and how the composite is assembled in <a href="/cost-index/basket/">The Muntin Restaurant Basket</a>, or <a href="/cost-index/methodology/">how the index is built</a>.</div></details>
   </section>
     <section class="ci-scorecard" aria-label="Calibration scorecard" style="margin:22px 0 8px;padding:20px 24px;background:var(--surface-1,#fff);border:1px solid var(--line);border-top:3px solid var(--ink);border-radius:12px;box-shadow:var(--elev-1)">
