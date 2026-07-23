@@ -79,8 +79,19 @@ function injectFaq(html, faq) {
         const idm = json.slice(faqIdx).match(/"@id":"([^"]*)#faq"/);
         const url = idm ? idm[1] : '';
         const q = JSON.stringify({ '@type': 'Question', '@id': url + '#faq-supply', name: faq.q, acceptedAnswer: { '@type': 'Answer', text: faq.a } });
-        json = json.slice(0, at) + q + ',' + json.slice(at);
+        const emptyME = json[at] === ']'; // a synthesized FAQPage emptied by removeSupplyQ — no trailing comma
+        json = json.slice(0, at) + q + (emptyME ? '' : ',') + json.slice(at);
       }
+    } else {
+      // scaffold pages carry no FAQPage node — synthesize a minimal one so the seafood/scaffold supply
+      // answer still reaches answer engines, and append it to @graph (idempotent: re-runs refill it)
+      const urlm = json.match(/"@type":"WebPage".*?"url":"([^"]+)"/) || json.match(/"url":"([^"]+)"/);
+      const langm = json.match(/"inLanguage":"([^"]+)"/);
+      const url = urlm ? urlm[1] : '';
+      const q = { '@type': 'Question', '@id': url + '#faq-supply', name: faq.q, acceptedAnswer: { '@type': 'Answer', text: faq.a } };
+      const faqPage = JSON.stringify({ '@type': 'FAQPage', '@id': url + '#faq', inLanguage: langm ? langm[1] : 'en-US', mainEntity: [q] });
+      const lb = json.lastIndexOf(']'); // the @graph array close (last ] before the final })
+      if (lb >= 0) json = json.slice(0, lb) + ',' + faqPage + json.slice(lb);
     }
   }
   return html.slice(0, cStart) + json + html.slice(cEnd);
@@ -89,7 +100,10 @@ function injectFaq(html, faq) {
 function processPage(file, slug, locale) {
   let html = fs.readFileSync(file, 'utf8');
   const before = html;
-  const { html: block, faq } = supplyPicture(BY[slug], locale);
+  // localized display name straight off the page's own <h1> (EN or ES), so the FAQ/prose read naturally
+  const h1m = html.match(/<h1[^>]*>([^<]*)<\/h1>/);
+  const name = h1m ? h1m[1].trim() : (BY[slug].name || slug);
+  const { html: block, faq } = supplyPicture(BY[slug], locale, { name });
 
   // 1) idempotent removal of any prior injection (body block + head CSS + a stray blank line)
   html = strip(html, SUPPLY_SENTINEL.start, SUPPLY_SENTINEL.end);
