@@ -90,13 +90,14 @@ test('harmonyFor: persistence keeps the run-length always, names a co-mover only
 test('harmonyFor: catchpair pairs wild landings vs imports (both sides required), never a share', () => {
   // import_usd aligns to the landings YEAR when the annual series has it (never cross-year)
   const seafood = { us_landings_value_usd: 312_000_000, us_import_value_usd: 1_617_000_000, us_landings_wild_minimal: false,
-    us_landings_year: 2024, import_annual_usd: { 2024: 1_589_800_000, 2025: 1_617_000_000 } };
+    import_mostly_farmed: true, us_landings_year: 2024, import_annual_usd: { 2024: 1_589_800_000, 2025: 1_617_000_000 } };
   const cp = of(seafood, 'catchpair');
   assert.ok(cp, 'catchpair fires when both landings + import are present');
   assert.equal(cp.landings_usd, 312_000_000);
   assert.equal(cp.import_usd, 1_589_800_000, 'import aligns to the 2024 landings year, not the 2025 latest');
   assert.equal(cp.import_year, 2024, 'import_year matches landings_year when aligned');
   assert.equal(cp.wild_minimal, false);
+  assert.equal(cp.mostly_farmed, true, 'carries the per-species farmed-import flag (shrimp = farmed)');
   assert.equal(cp.landings_year, 2024);
   // fallback: no same-year import -> use latest us_import_value_usd + label its year
   const fb = of({ us_landings_value_usd: 5, us_import_value_usd: 99, us_landings_year: 2024, import_annual_usd: { 2022: 88, 2023: 99 } }, 'catchpair');
@@ -108,6 +109,7 @@ test('harmonyFor: catchpair pairs wild landings vs imports (both sides required)
   // the wild-minimal seam is carried through (octopus: tiny wild landing beside a large import)
   const minimal = of({ us_landings_value_usd: 300_000, us_import_value_usd: 15_800_000, us_landings_wild_minimal: true, us_landings_year: 2024 }, 'catchpair');
   assert.equal(minimal.wild_minimal, true);
+  assert.equal(minimal.mostly_farmed, false, 'a wild-import species (no flag) coerces to mostly_farmed=false — no false farming claim');
   // degrade by absence: only one side present -> no catchpair
   assert.equal(of({ us_landings_value_usd: 312_000_000 }, 'catchpair'), undefined, 'no import -> no catchpair');
   assert.equal(of({ us_import_value_usd: 1_617_000_000 }, 'catchpair'), undefined, 'no landings -> no catchpair');

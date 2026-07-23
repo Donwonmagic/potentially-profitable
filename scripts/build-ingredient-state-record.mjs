@@ -236,6 +236,20 @@ function exportBySlug() {
 // single source of truth. Null until that file lands, so the whole layer is inert until then. This is
 // a WILD-CATCH figure set beside a largely-FARMED import stream; the harmony `catchpair` read NAMES
 // that seam and never collapses it into the apparent-consumption share a crop's reliance forms.
+// Which seafood species' US IMPORTS are predominantly AQUACULTURE (farmed abroad) vs wild-caught. The
+// catchpair caveat may only assert "much of it farmed abroad" for these; for every OTHER seafood slug the
+// imported supply is wild-caught and the caveat must stay mode-neutral (an earlier version hard-coded the
+// farming claim on all 24 seafood records — false for octopus, lobster, squid, crab, cod, halibut, sole,
+// grouper, snapper, mahi, anchovy, sardine, tuna, and US-import scallops/clams, which are wild-caught).
+// Basis: the dominant farmed seafood imports to the US are shrimp, Atlantic salmon, and rainbow trout
+// (NOAA FishWatch / FAO aquaculture). Editorial classification, not a fetched statistic — kept small and
+// conservative (claim farming only where it is clearly the majority of the import stream).
+const MOSTLY_FARMED_IMPORT = new Set([
+  'shrimp', 'shrimp-head-on', 'shrimp-pd',
+  'salmon-fillet', 'salmon-skin-on-fillet', 'whole-salmon',
+  'whole-trout',
+]);
+
 function landingsBySlug() {
   let doc; try { doc = rd('cost-index/noaa-landings-domestic.json'); } catch { return null; }
   const groups = doc && doc.groups; if (!Array.isArray(groups)) return null;
@@ -397,7 +411,7 @@ export function harmonyFor(r) {
       const yrs = Object.keys(ann).map(Number).filter(Number.isFinite).sort((a, b) => b - a);
       importYear = yrs.length ? yrs[0] : null;
     }
-    H.push({ kind: 'catchpair', landings_usd: r.us_landings_value_usd, import_usd: importUsd, import_year: importYear, wild_minimal: !!r.us_landings_wild_minimal, landings_year: ly });
+    H.push({ kind: 'catchpair', landings_usd: r.us_landings_value_usd, import_usd: importUsd, import_year: importYear, wild_minimal: !!r.us_landings_wild_minimal, mostly_farmed: !!r.import_mostly_farmed, landings_year: ly });
   }
   if (r.notable_events_n && r.median_shock_days != null) {
     const co = strongComover(r);
@@ -432,6 +446,7 @@ function build() {
       us_landings_value_usd: l ? l.usd : null,
       us_landings_year: l ? l.year : null,
       us_landings_wild_minimal: l ? l.minimal : null,
+      import_mostly_farmed: l ? MOSTLY_FARMED_IMPORT.has(slug) : null,
     };
   };
   const percap = percapBySlug(); // slug -> { lbs, year }; null until the ERS file lands
@@ -471,7 +486,9 @@ function build() {
       const exportUsd = exportAt(best.slug, best.iy);
       const apparent = prodUsd + best.iv - (exportUsd || 0);
       if (apparent <= 0) continue;
-      out[com] = { pct: Math.max(0, Math.min(100, Math.round((best.iv / apparent) * 100))), year: best.iy, members: slugs.slice() };
+      // NOT clamped to 100: when a commodity is re-exported heavily its import can exceed apparent
+      // consumption (>100%), a real signal the render surfaces as "imports exceed apparent consumption".
+      out[com] = { pct: Math.max(0, Math.round((best.iv / apparent) * 100)), year: best.iy, members: slugs.slice() };
     }
     return out;
   })();
@@ -503,7 +520,10 @@ function build() {
       reliance = cr.pct; relianceYear = cr.year; relianceScope = 'commodity';
     } else if (importUsd != null && prodUsd != null) {
       const apparent = prodUsd + importUsd - (exportUsd || 0);
-      if (apparent > 0) { reliance = Math.max(0, Math.min(100, Math.round((importUsd / apparent) * 100))); relianceScope = 'item'; }
+      // NOT clamped to 100 — a re-exporter's import can exceed apparent consumption (brussels-sprouts,
+      // papaya, asparagus, banana all land ~101-112%); the render labels >100% as a re-export signal
+      // rather than masking it as a flat "100%".
+      if (apparent > 0) { reliance = Math.max(0, Math.round((importUsd / apparent) * 100)); relianceScope = 'item'; }
     }
     return {
       nass_commodity: n ? n.commodity : null,
@@ -618,7 +638,7 @@ function build() {
     ingredients: records,
   };
 
-  const cols = ['slug', 'name', 'category', 'posture', 'band_pct', 'edible_yield_pct', 'trim_tax', 'cooked_yield', 'cheapest_month', 'save_pct', 'hedge_swap', 'pressure_dir', 'pressure_conf', 'us_import_value_usd', 'us_export_value_usd', 'us_production_usd', 'us_landings_value_usd', 'us_landings_year', 'us_landings_wild_minimal', 'farm_price', 'farm_price_unit', 'import_reliance_pct', 'import_reliance_year', 'import_reliance_scope', 'import_years', 'import_peak_months', 'import_peak_quarter_share', 'import_hs6', 'import_yoy_pct', 'import_source_concentration', 'import_source_hhi', 'import_top_sources', 'notable_events_n', 'median_shock_days', 'biggest_move_pct', 'biggest_move_date', 'comovers'];
+  const cols = ['slug', 'name', 'category', 'posture', 'band_pct', 'edible_yield_pct', 'trim_tax', 'cooked_yield', 'cheapest_month', 'save_pct', 'hedge_swap', 'pressure_dir', 'pressure_conf', 'us_import_value_usd', 'us_export_value_usd', 'us_production_usd', 'us_landings_value_usd', 'us_landings_year', 'us_landings_wild_minimal', 'import_mostly_farmed', 'farm_price', 'farm_price_unit', 'import_reliance_pct', 'import_reliance_year', 'import_reliance_scope', 'import_years', 'import_peak_months', 'import_peak_quarter_share', 'import_hs6', 'import_yoy_pct', 'import_source_concentration', 'import_source_hhi', 'import_top_sources', 'notable_events_n', 'median_shock_days', 'biggest_move_pct', 'biggest_move_date', 'comovers'];
   const esc = (v) => { if (v == null) return ''; const s = Array.isArray(v) ? v.join(';') : String(v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
   const cell = (r, k) => {
     if (k === 'comovers') return esc((r.comovers || []).map((x) => x.slug + ':' + x.shared_of_n).join(';'));
