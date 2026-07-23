@@ -60,6 +60,7 @@ import { createRequire } from 'node:module';
 // no two surfaces can drift. Co-occurrence, never cause — bounded, directed counts only.
 import { coMovement, companyStat } from './lib/cost-events-analysis.mjs';
 import { researchTargets } from './lib/cost-research.mjs';
+import { supplyPicture, SUPPLY_CSS } from './lib/supply-picture.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
@@ -1841,6 +1842,7 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+${SUPPLY_CSS}
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=${SHELL_HASH.core}" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=${SHELL_HASH.article}" onload="this.onload=null;this.rel='stylesheet'">
@@ -2413,6 +2415,7 @@ function emitExpandingPage(slug, locale) {
     ${yieldBlock(slug, locale)}
     <h2>Qué puedes hacer ahora</h2>
     <p>Compara tu última factura de ${lc} con tus facturas recientes, o abre <a href="${base}/tools/cost-pulse/">la herramienta en vivo</a> para los ingredientes que sí cubrimos. Esta página se completará cuando lo hagan los datos.</p>
+    ${importContextBlock(slug, locale)}
     <div class="ci-cta-row">
       <a class="btn btn-ghost" href="${base}/cost-index/">Ver todas las lecturas</a>
       <a class="btn btn-ghost" href="${base}/glossary/cost-index/">Qué es un índice de costos</a>
@@ -2428,6 +2431,7 @@ function emitExpandingPage(slug, locale) {
     ${yieldBlock(slug, locale)}
     <h2>What you can do now</h2>
     <p>Check your last ${lc} invoice against your own recent ones, or open <a href="${base}/tools/cost-pulse/">the live tool</a> for the ingredients we do cover. This page fills in when the data does.</p>
+    ${importContextBlock(slug, locale)}
     <div class="ci-cta-row">
       <a class="btn btn-ghost" href="${base}/cost-index/">Browse all readings</a>
       <a class="btn btn-ghost" href="${base}/glossary/cost-index/">What is a cost index?</a>
@@ -2524,31 +2528,13 @@ function kitchenProfileBlock(slug, locale) {
   </section>`;
 }
 
-// Import-context block: plugs the Census import layer of the Ingredient State Record into each
-// cost-index page. Server-rendered (SEO), reuses the ci-profile styling. Absent when the
-// ingredient has no import stream. Descriptive supply context — never a delivered price or volume.
+// Supply-picture block (ADR-018 surface 2): the audited Ingredient-State-Record SOURCE seams —
+// import stream, domestic production/farm-price/exports, value-reliance, and the seafood catchpair —
+// as prose that survives verbatim extraction with its caveat intact. The generator is shared with
+// inject-supply-picture.mjs (scripts/lib/supply-picture.mjs) so the built page and the injected
+// committed page are byte-identical. Descriptive supply context — never a delivered price or a forecast.
 function importContextBlock(slug, locale) {
-  const R = ISR_RECORD[slug]; if (!R || R.us_import_value_usd == null) return '';
-  const es = locale === 'es'; const base = es ? '/es' : '';
-  const MO = es ? ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'] : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  const usd = (n) => { const a = Math.abs(n); if (a >= 1e9) return '$' + (n / 1e9).toFixed(2) + 'B'; if (a >= 1e6) return '$' + Math.round(n / 1e6) + 'M'; if (a >= 1e3) return '$' + Math.round(n / 1e3) + 'K'; return '$' + n; };
-  const rows = [];
-  rows.push([es ? 'Valor de importación' : 'Import value', `${usd(R.us_import_value_usd)} (${R.import_years})${R.import_yoy_pct != null ? `, ${es ? 'interanual' : 'YoY'} ${R.import_yoy_pct > 0 ? '+' : ''}${R.import_yoy_pct}%` : ''}`]);
-  if (R.import_top_sources && R.import_top_sources.length) {
-    const src = R.import_top_sources.map((s) => `${s.share_pct}% ${s.country}`).join(' · ');
-    const conc = R.import_source_concentration ? ` — ${R.import_source_concentration}${R.import_source_hhi != null ? ` (HHI ${R.import_source_hhi})` : ''}` : '';
-    rows.push([es ? 'Principales orígenes' : 'Top sources', src + conc]);
-  }
-  if (R.import_peak_months && R.import_peak_months.length) rows.push([es ? 'Meses pico de importación' : 'Peak import months', R.import_peak_months.map((m) => MO[m - 1]).join(' · ')]);
-  if (R.import_hs6) rows.push([es ? 'Código HS (Censo)' : 'HS code (Census)', R.import_hs6]);
-  const dl = rows.map(([k, v]) => `<div class="ci-prof__row"><dt>${escHtml(k)}</dt><dd>${escHtml(v)}</dd></div>`).join('');
-  const note = R.import_note ? `<p class="ci-prof__src">${escHtml(R.import_note)}</p>` : '';
-  return `<section class="ci-profile ci-import" aria-labelledby="ci-import-h">
-    <h2 id="ci-import-h">${es ? 'De dónde llega (importación)' : 'Where it comes from (imports)'}</h2>
-    <p class="ci-prof__note">${es ? 'Flujo de importación general de EE. UU. (US Census, dominio público) — valor nominal, nunca volumen ni tu precio de entrega; un contexto de suministro descriptivo. Ficha completa del ingrediente en el ' : 'US general-import stream (US Census, public domain) — nominal value, never volume or your delivered price; a descriptive supply-context read. Full ingredient record in the '}<a href="${base}/cost-index/menu-pricing/#${slug}">${es ? 'registro del ingrediente' : 'ingredient state record'}</a>.</p>
-    <dl class="ci-prof__grid">${dl}</dl>
-    ${note}
-  </section>`;
+  return supplyPicture(ISR_RECORD[slug], locale === 'es' ? 'es' : 'en').html;
 }
 
 function emitIngredientPage(slug, locale) {

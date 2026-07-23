@@ -652,6 +652,9 @@ const CHECKS = [
   // never a share, rungs seal SOURCE→MARKET→YOUR PLATE, EN/ES T-key parity (ADR-018).
   ['Menu-pricing render self-test','check-menu-pricing-render.mjs','--self-test'],
   ['Menu-pricing render contract','check-menu-pricing-render.mjs'],
+  // Supply-picture (ADR-018 surface 2): the committed per-ingredient pages must stay in sync with the
+  // shared generator (scripts/lib/supply-picture.mjs) — re-run the injector to refresh if this fails.
+  ['Supply-picture pages in sync','inject-supply-picture.mjs','--check'],
   ['Energy backdrop (idem)','build-eia-energy-backdrop.mjs', '--check'],
   ['Energy backdrop honesty','check-eia-energy-backdrop.mjs'],
   ['Crop-condition backdrop (idem)','build-crop-condition-backdrop.mjs', '--check'],

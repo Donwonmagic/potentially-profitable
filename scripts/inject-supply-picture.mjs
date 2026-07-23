@@ -40,10 +40,56 @@ function strip(s, start, end) {
   return out;
 }
 
+// Remove any previously-injected supply Question from the JSON-LD (brace-balanced around its @id marker),
+// so a re-run is idempotent. Surgical string edit — never re-stringifies the whole graph.
+function removeSupplyQ(json) {
+  const MARK = '#faq-supply"';
+  let idx = json.indexOf(MARK);
+  while (idx >= 0) {
+    const open = json.lastIndexOf('{', idx);
+    let depth = 0, end = -1;
+    for (let i = open; i < json.length; i++) {
+      if (json[i] === '{') depth++;
+      else if (json[i] === '}') { depth--; if (depth === 0) { end = i; break; } }
+    }
+    if (open < 0 || end < 0) break;
+    let after = end + 1;
+    if (json[after] === ',') after++;            // supply Q is inserted first-with-trailing-comma
+    else if (json[open - 1] === ',') { json = json.slice(0, open - 1) + json.slice(after); idx = json.indexOf(MARK); continue; }
+    json = json.slice(0, open) + json.slice(after);
+    idx = json.indexOf(MARK);
+  }
+  return json;
+}
+
+// Insert the supply Q&A as the first item of the FAQPage mainEntity (caveat lives inside the answer).
+function injectFaq(html, faq) {
+  const s = html.indexOf('<script type="application/ld+json">');
+  if (s < 0) return html;
+  const cStart = html.indexOf('>', s) + 1;
+  const cEnd = html.indexOf('</script>', cStart);
+  if (cEnd < 0) return html;
+  let json = removeSupplyQ(html.slice(cStart, cEnd));
+  if (faq) {
+    const faqIdx = json.indexOf('"@type":"FAQPage"');
+    if (faqIdx >= 0) {
+      const meOpen = json.indexOf('"mainEntity":[', faqIdx);
+      if (meOpen >= 0) {
+        const at = meOpen + '"mainEntity":['.length;
+        const idm = json.slice(faqIdx).match(/"@id":"([^"]*)#faq"/);
+        const url = idm ? idm[1] : '';
+        const q = JSON.stringify({ '@type': 'Question', '@id': url + '#faq-supply', name: faq.q, acceptedAnswer: { '@type': 'Answer', text: faq.a } });
+        json = json.slice(0, at) + q + ',' + json.slice(at);
+      }
+    }
+  }
+  return html.slice(0, cStart) + json + html.slice(cEnd);
+}
+
 function processPage(file, slug, locale) {
   let html = fs.readFileSync(file, 'utf8');
   const before = html;
-  const { html: block } = supplyPicture(BY[slug], locale);
+  const { html: block, faq } = supplyPicture(BY[slug], locale);
 
   // 1) idempotent removal of any prior injection (body block + head CSS + a stray blank line)
   html = strip(html, SUPPLY_SENTINEL.start, SUPPLY_SENTINEL.end);
@@ -63,6 +109,9 @@ function processPage(file, slug, locale) {
     const indent = html.slice(lineStart, aIdx);
     html = html.slice(0, lineStart) + block + '\n' + indent + html.slice(lineStart + indent.length);
   }
+
+  // 3) supply FAQ into the FAQPage JSON-LD (idempotent; removed first, re-added when faq present)
+  html = injectFaq(html, block ? faq : null);
 
   const changed = html !== before;
   if (changed && !CHECK) fs.writeFileSync(file, html);
