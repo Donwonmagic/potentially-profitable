@@ -319,6 +319,12 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* supply-picture-css:start */
+.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
+.ci-supply__rel strong{font-weight:700}
+.ci-supply__caveat{color:var(--ink-soft)}
+.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
+/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=25763285dde3" onload="this.onload=null;this.rel='stylesheet'">
@@ -451,6 +457,13 @@ main{padding-top:64px}
     <dl class="ci-prof__grid"><div class="ci-prof__row"><dt>Edible yield</dt><dd>87% (trim tax ×1.15)</dd></div><div class="ci-prof__row"><dt>Keeps</dt><dd>~90 days refrigerated · freezer ~6 months</dd></div><div class="ci-prof__row"><dt>Storage</dt><dd>Hold whole bulbs cool, dry, dark, and airy (open bowl or mesh); do NOT refrigerate whole heads (triggers sprouting and rubbery cloves) and do NOT seal in plastic.</dd></div><div class="ci-prof__row"><dt>Best season</dt><dd>mid to late summer at harvest; year-round from cured storage</dd></div><div class="ci-prof__row"><dt>A swap that helps</dt><dd>garlic powder — moves on its own, so it also hedges the price</dd></div><div class="ci-prof__row"><dt>Waste to value</dt><dd>garlic skins and clove ends -&gt; stock or infused-oil base</dd></div></dl>
     <p class="ci-prof__src">Source: USDA FoodData Central garlic refuse ~13% (edible ~0.87), corroborated by US Foods/Chefs Resources 87% peeled cloves; freezer ~6 mo is a soft quality window (NCHFP notes garlic strengthens/softens frozen).</p>
   </section>
+<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
+    <h2 id="ci-supply-h">Where it comes from</h2>
+    <p class="ci-supply__note">This ingredient's public supply picture — trade, domestic production, and (for seafood) wild landings. Descriptive context, never a forecast or your delivered price. Full record in the <a href="/cost-index/menu-pricing/#garlic">ingredient state record</a>.</p>
+    <p class="ci-supply__p">US general-import value was $262M (2025), series 2010-2025, YoY -9.3%. Top origins: 38% China · 22% Spain · 16% Argentina (concentrated, HHI 0.25). Peak import months: Jan · Feb · Dec. <span class="ci-supply__caveat">Nominal customs value (US Census, public domain) — mixes price and quantity, never volume or your delivered price.</span> <span class="ci-supply__meta">HS code 070320.</span></p>
+    <p class="ci-supply__p">US farm-gate production was $245M (1997-2025). Farm-gate price: 70.2 $ / CWT (≈ $0.70/lb). US exports: $13M (2025). <span class="ci-supply__caveat">Farm-gate value (USDA NASS) — what the grower earns, not a wholesale or delivered price.</span></p>
+    <p class="ci-supply__p ci-supply__rel"><strong>In 2025, imports were about 53% of apparent consumption by value (made + imported − exported).</strong> About 2.39 lb/person/yr are available domestically (2022). <span class="ci-supply__caveat">Counts import dollars (which carry freight a farm-gate price does not) against domestic apparent consumption — a dollar comparison, not how much of what is on your shelf came from abroad, and not a supply-security score.</span></p>
+  </section><!-- /supply-picture:end -->
     <div class="ci-signup ci-signup--compact">
       <div class="foot-newsletter">
         <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en" data-surface="cost-index-ingredient">

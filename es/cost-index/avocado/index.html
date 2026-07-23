@@ -308,6 +308,12 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* supply-picture-css:start */
+.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
+.ci-supply__rel strong{font-weight:700}
+.ci-supply__caveat{color:var(--ink-soft)}
+.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
+/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=25763285dde3" onload="this.onload=null;this.rel='stylesheet'">
@@ -440,6 +446,13 @@ main{padding-top:64px}
   <li>Observa la dirección unas semanas antes de re-cotizar un platillo — una sola semana es ruido.</li>
 </ol>
 <p>¿Vas a costear un platillo que lleva aguacate? Usa la <a href="/es/tools/plate-cost/">Calculadora de Costo por Platillo</a>.</p>
+<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
+    <h2 id="ci-supply-h">De dónde llega</h2>
+    <p class="ci-supply__note">El panorama de suministro público de este ingrediente — comercio, producción nacional y (para mariscos) desembarques silvestres. Contexto descriptivo, nunca un pronóstico ni tu precio de entrega. Ficha completa en el <a href="/es/cost-index/menu-pricing/#avocado">registro del ingrediente</a>.</p>
+    <p class="ci-supply__p">El valor de importación general de EE. UU. fue de $3.66B (2025), serie 2010-2025, interanual -3%. Principales orígenes: 88% Mexico · 6% Peru · 3% Colombia (concentrated, HHI 0.78). Meses pico de importación: ene · mar · abr. <span class="ci-supply__caveat">Valor de aduana nominal (US Census, dominio público) — mezcla precio y cantidad, nunca volumen ni tu precio de entrega.</span> <span class="ci-supply__meta">Código HS 080440.</span></p>
+    <p class="ci-supply__p">La producción a precio de campo (EE. UU.) fue de $508M (1997-2025). Precio de campo: 2750 $ / TON. Exportaciones de EE. UU.: $18M (2025). <span class="ci-supply__caveat">Valor a precio de campo (USDA NASS) — lo que gana el productor, no un precio mayorista ni de entrega.</span></p>
+    <p class="ci-supply__p ci-supply__rel"><strong>En 2025, las importaciones fueron alrededor del 88% del consumo aparente por valor (producido + importado − exportado).</strong> Hay alrededor de 8.45 lb/persona/año disponibles en el país (2021). <span class="ci-supply__caveat">Compara dólares de importación (que incluyen flete que un precio de campo no) con el consumo aparente nacional — una comparación de dólares, no cuánto de lo que tienes en el estante vino del extranjero, ni un puntaje de seguridad de suministro.</span></p>
+  </section><!-- /supply-picture:end -->
     <div class="ci-signup ci-signup--compact">
       <div class="foot-newsletter">
         <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="es" data-surface="cost-index-ingredient">

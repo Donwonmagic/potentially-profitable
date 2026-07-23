@@ -319,6 +319,12 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* supply-picture-css:start */
+.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
+.ci-supply__rel strong{font-weight:700}
+.ci-supply__caveat{color:var(--ink-soft)}
+.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
+/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=25763285dde3" onload="this.onload=null;this.rel='stylesheet'">
@@ -451,6 +457,13 @@ main{padding-top:64px}
     <dl class="ci-prof__grid"><div class="ci-prof__row"><dt>Edible yield</dt><dd>78% (trim tax ×1.28)</dd></div><div class="ci-prof__row"><dt>Keeps</dt><dd>~5 days refrigerated · freezer ~10 months</dd></div><div class="ci-prof__row"><dt>Storage</dt><dd>Ripen at room temp until the neck yields, then refrigerate (3-5 days ripe; firm pears hold 1-2+ weeks cold); do NOT fridge rock-hard pears (they won&#39;t ripen) or wait for the belly to soften.</dd></div><div class="ci-prof__row"><dt>Best season</dt><dd>late summer through fall (August-November)</dd></div><div class="ci-prof__row"><dt>A swap that helps</dt><dd>apple — moves on its own, so it also hedges the price</dd></div><div class="ci-prof__row"><dt>Waste to value</dt><dd>peels + cores -&gt; simmered syrup, jelly, or poaching liquid (cores are pectin-rich)</dd></div></dl>
     <p class="ci-prof__src">Source: US Foods (per USDA Ag. Handbook 102) &#39;without pit &amp; skin&#39; = peeled &amp; cored = 78%; USDA FoodData Central refuse ~8-10% skin-on (cored-only ~0.90); NCHFP frozen-fruit 8-12 mo. (spec corrected: 0.78 is the peeled-AND-cored value, not cored skin-on).</p>
   </section>
+<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
+    <h2 id="ci-supply-h">Where it comes from</h2>
+    <p class="ci-supply__note">This ingredient's public supply picture — trade, domestic production, and (for seafood) wild landings. Descriptive context, never a forecast or your delivered price. Full record in the <a href="/cost-index/menu-pricing/#pear">ingredient state record</a>.</p>
+    <p class="ci-supply__p">US general-import value was $128M (2025), series 2012-2025, YoY +0.6%. Top origins: 54% Argentina · 25% Korea, South · 12% Chile (concentrated, HHI 0.38). Peak import months: Mar · Apr · May. <span class="ci-supply__caveat">Nominal customs value (US Census, public domain) — mixes price and quantity, never volume or your delivered price.</span> <span class="ci-supply__meta">HS code 080830.</span></p>
+    <p class="ci-supply__p">US farm-gate production was $287M (1997-2025). Farm-gate price: 459 $ / TON. US exports: $137M (2025). <span class="ci-supply__caveat">Farm-gate value (USDA NASS) — what the grower earns, not a wholesale or delivered price.</span></p>
+    <p class="ci-supply__p ci-supply__rel"><strong>In 2025, imports were about 46% of apparent consumption by value (made + imported − exported).</strong> About 3.12 lb/person/yr are available domestically (2021). <span class="ci-supply__caveat">Counts import dollars (which carry freight a farm-gate price does not) against domestic apparent consumption — a dollar comparison, not how much of what is on your shelf came from abroad, and not a supply-security score.</span></p>
+  </section><!-- /supply-picture:end -->
     <div class="ci-signup ci-signup--compact">
       <div class="foot-newsletter">
         <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en" data-surface="cost-index-ingredient">

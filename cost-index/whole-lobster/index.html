@@ -308,6 +308,12 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* supply-picture-css:start */
+.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
+.ci-supply__rel strong{font-weight:700}
+.ci-supply__caveat{color:var(--ink-soft)}
+.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
+/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=25763285dde3" onload="this.onload=null;this.rel='stylesheet'">
@@ -351,6 +357,13 @@ main{padding-top:64px}
     </aside>
     <h2>What you can do now</h2>
     <p>Check your last whole lobster invoice against your own recent ones, or open <a href="/tools/cost-pulse/">the live tool</a> for the ingredients we do cover. This page fills in when the data does.</p>
+<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
+    <h2 id="ci-supply-h">Where it comes from</h2>
+    <p class="ci-supply__note">This ingredient's public supply picture — trade, domestic production, and (for seafood) wild landings. Descriptive context, never a forecast or your delivered price. Full record in the <a href="/cost-index/menu-pricing/#whole-lobster">ingredient state record</a>.</p>
+    <p class="ci-supply__p">US general-import value was $642M (2025), series 2010-2025, YoY -1.3%. Top origins: 99% Canada · 0% United Arab Emirates · 0% Indonesia (single-source, HHI 0.98). Peak import months: Jun · Aug · Oct. <span class="ci-supply__caveat">Nominal customs value (US Census, public domain) — mixes price and quantity, never volume or your delivered price.</span> <span class="ci-supply__meta">HS code 030612.</span> <span class="ci-supply__meta">Frozen lobster; fresh/live lobster is a separate code.</span></p>
+    <p class="ci-supply__p">US exports: $45M (2025). <span class="ci-supply__caveat">US domestic-export value (US Census, DF=1) — nominal value, never your delivered price.</span></p>
+    <p class="ci-supply__p ci-supply__rel"><strong>US wild landings were $776M (2024), beside $650M of imports the same year (2024).</strong> <span class="ci-supply__caveat">Two different measures — dockside ex-vessel (first-sale) value of the wild catch vs the customs value of imports — not a supply-share ratio.</span></p>
+  </section><!-- /supply-picture:end -->
     <div class="ci-cta-row">
       <a class="btn btn-ghost" href="/cost-index/">Browse all readings</a>
       <a class="btn btn-ghost" href="/glossary/cost-index/">What is a cost index?</a>

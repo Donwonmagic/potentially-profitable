@@ -319,6 +319,12 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* supply-picture-css:start */
+.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
+.ci-supply__rel strong{font-weight:700}
+.ci-supply__caveat{color:var(--ink-soft)}
+.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
+/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=25763285dde3" onload="this.onload=null;this.rel='stylesheet'">
@@ -451,6 +457,13 @@ main{padding-top:64px}
     <dl class="ci-prof__grid"><div class="ci-prof__row"><dt>Edible yield</dt><dd>74% (trim tax ×1.35)</dd></div><div class="ci-prof__row"><dt>Keeps</dt><dd>~5 days refrigerated · freezer ~12 months</dd></div><div class="ci-prof__row"><dt>Storage</dt><dd>Store WHOLE in a cool, dry, dark spot ~50-55F for 1-2 months; do NOT refrigerate whole or store near apples/tomatoes (ethylene shortens life) — cut pieces refrigerate ~5 days.</dd></div><div class="ci-prof__row"><dt>Best season</dt><dd>fall</dd></div><div class="ci-prof__row"><dt>A swap that helps</dt><dd>butternut squash — moves on its own, so it also hedges the price</dd></div><div class="ci-prof__row"><dt>Waste to value</dt><dd>seeds -&gt; roast into pepitas</dd></div></dl>
     <p class="ci-prof__src">Source: US Foods Common Product Yields (acorn flesh, raw 74%) — confirmed via search. Freeze: NCHFP (cook/mash, then freeze).</p>
   </section>
+<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
+    <h2 id="ci-supply-h">Where it comes from</h2>
+    <p class="ci-supply__note">This ingredient's public supply picture — trade, domestic production, and (for seafood) wild landings. Descriptive context, never a forecast or your delivered price. Full record in the <a href="/cost-index/menu-pricing/#acorn-squash">ingredient state record</a>.</p>
+    <p class="ci-supply__p">US general-import value was $11M (2025), series 2023-2025, YoY -0.5%. Top origins: 98% Mexico · 2% Canada · 0% Honduras (single-source, HHI 0.95). Peak import months: Jan · Feb · Nov. <span class="ci-supply__caveat">Nominal customs value (US Census, public domain) — mixes price and quantity, never volume or your delivered price.</span> <span class="ci-supply__meta">HS code 0709932085+0709932035.</span> <span class="ci-supply__meta">Fresh acorn squash, non-organic + organic (0709932035) summed.</span></p>
+    <p class="ci-supply__p">US farm-gate production was $229M (2000-2025). Farm-gate price: 36.1 $ / CWT (≈ $0.36/lb). US exports: $27M (2025). <span class="ci-supply__caveat">Farm-gate value (USDA NASS) — what the grower earns, not a wholesale or delivered price.</span></p>
+    <p class="ci-supply__p ci-supply__rel"><strong>In 2025, imports were about 48% of the squash group by value (made + imported − exported).</strong> About 5.26 lb/person/yr are available domestically (2022). <span class="ci-supply__caveat">Counts import dollars (which carry freight a farm-gate price does not) against domestic apparent consumption — a dollar comparison, not how much of what is on your shelf came from abroad, and not a supply-security score.</span></p>
+  </section><!-- /supply-picture:end -->
     <div class="ci-signup ci-signup--compact">
       <div class="foot-newsletter">
         <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en" data-surface="cost-index-ingredient">

@@ -319,6 +319,12 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* supply-picture-css:start */
+.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
+.ci-supply__rel strong{font-weight:700}
+.ci-supply__caveat{color:var(--ink-soft)}
+.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
+/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=25763285dde3" onload="this.onload=null;this.rel='stylesheet'">
@@ -429,6 +435,11 @@ main{padding-top:64px}
     <dl class="ci-prof__grid"><div class="ci-prof__row"><dt>Rendimiento comestible</dt><dd>50% (merma ×2)</dd></div><div class="ci-prof__row"><dt>Rendimiento cocido</dt><dd>70%</dd></div><div class="ci-prof__row"><dt>Dura</dt><dd>~2 días refrigerado · congelador ~12 meses</dd></div><div class="ci-prof__row"><dt>Conservación</dt><dd>Refrigerate FRESH raw turkey at 40F or below on the bottom shelf in a leak-proof tray; use within 1-2 days or freeze. Do NOT wash raw turkey; thaw a frozen bird in the fridge (never on the counter).</dd></div><div class="ci-prof__row"><dt>Mejor temporada</dt><dd>late fall (fresh whole birds Thanksgiving through December); frozen supplied year-round</dd></div><div class="ci-prof__row"><dt>Sustituto</dt><dd>whole chicken (scale up by weight (2-4 chickens per turkey))</dd></div><div class="ci-prof__row"><dt>De la merma al valor</dt><dd>carcass, neck, wingtips, and giblets -&gt; stock and gravy base; rendered turkey fat -&gt; schmaltz</dd></div></dl>
     <p class="ci-prof__src">Fuente: Freeze: FSIS / FoodSafety.gov Cold Food Storage Chart (whole poultry = 12 mo). Edible ~0.50 cooked pickable meat = central value of the 40-50% foodservice planning range. Roast shrink ~0.70 within the corroborated ~0.68-0.72 whole-turkey roast band (~25-30% loss; USDA cooking-yield-class references).</p>
   </section>
+<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
+    <h2 id="ci-supply-h">De dónde llega</h2>
+    <p class="ci-supply__note">El panorama de suministro público de este ingrediente — comercio, producción nacional y (para mariscos) desembarques silvestres. Contexto descriptivo, nunca un pronóstico ni tu precio de entrega. Ficha completa en el <a href="/es/cost-index/menu-pricing/#whole-turkey">registro del ingrediente</a>.</p>
+    <p class="ci-supply__p">La producción a precio de campo (EE. UU.) fue de $5.58B (1929-2026). <span class="ci-supply__caveat">Valor a precio de campo (USDA NASS) — lo que gana el productor, no un precio mayorista ni de entrega.</span></p>
+  </section><!-- /supply-picture:end -->
     <div class="ci-signup ci-signup--compact">
       <div class="foot-newsletter">
         <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="es" data-surface="cost-index-ingredient">

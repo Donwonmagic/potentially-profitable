@@ -319,6 +319,12 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* supply-picture-css:start */
+.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
+.ci-supply__rel strong{font-weight:700}
+.ci-supply__caveat{color:var(--ink-soft)}
+.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
+/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=25763285dde3" onload="this.onload=null;this.rel='stylesheet'">
@@ -451,6 +457,13 @@ main{padding-top:64px}
     <dl class="ci-prof__grid"><div class="ci-prof__row"><dt>Dura</dt><dd>~14 días refrigerado · congelador ~6 meses</dd></div><div class="ci-prof__row"><dt>Conservación</dt><dd>Refrigerate dry in a paper bag in the crisper, ~40-45F; do NOT wash until use or seal wet in plastic (they rot fast at the stem).</dd></div><div class="ci-prof__row"><dt>Mejor temporada</dt><dd>late summer to fall (long-season pepper)</dd></div><div class="ci-prof__row"><dt>Sustituto</dt><dd>Scotch bonnet (1:1)</dd></div><div class="ci-prof__row"><dt>De la merma al valor</dt><dd>ribs and seeds -&gt; infuse oil or vinegar; surplus -&gt; ferment into hot sauce</dd></div></dl>
     <p class="ci-prof__src">Fuente: No authoritative per-variety yield table for habanero — edibleYield withheld. Freeze: chiles freeze raw whole, cooked-use (NCHFP).</p>
   </section>
+<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
+    <h2 id="ci-supply-h">De dónde llega</h2>
+    <p class="ci-supply__note">El panorama de suministro público de este ingrediente — comercio, producción nacional y (para mariscos) desembarques silvestres. Contexto descriptivo, nunca un pronóstico ni tu precio de entrega. Ficha completa en el <a href="/es/cost-index/menu-pricing/#habanero-pepper">registro del ingrediente</a>.</p>
+    <p class="ci-supply__p">El valor de importación general de EE. UU. fue de $93M (2025), serie 2023-2025, interanual -8.1%. Principales orígenes: 94% Mexico · 5% Dominican Republic · 1% Canada (single-source, HHI 0.88). Meses pico de importación: mar · abr · may. <span class="ci-supply__caveat">Valor de aduana nominal (US Census, dominio público) — mezcla precio y cantidad, nunca volumen ni tu precio de entrega.</span> <span class="ci-supply__meta">Código HS 0709602070.</span> <span class="ci-supply__meta">Habanero is not separately listed at HS10; shown as the fresh chili-pepper NESOI stream (all other chilies).</span></p>
+    <p class="ci-supply__p">La producción a precio de campo (EE. UU.) fue de $107M (1997-2025). Precio de campo: 41 $ / CWT (≈ $0.41/lb). Exportaciones de EE. UU.: $111M (2025). <span class="ci-supply__caveat">Valor a precio de campo (USDA NASS) — lo que gana el productor, no un precio mayorista ni de entrega.</span></p>
+    <p class="ci-supply__p ci-supply__rel"><strong>En 2025, las importaciones fueron alrededor del 82% del grupo chiles por valor (producido + importado − exportado).</strong> <span class="ci-supply__caveat">Compara dólares de importación (que incluyen flete que un precio de campo no) con el consumo aparente nacional — una comparación de dólares, no cuánto de lo que tienes en el estante vino del extranjero, ni un puntaje de seguridad de suministro.</span></p>
+  </section><!-- /supply-picture:end -->
     <div class="ci-signup ci-signup--compact">
       <div class="foot-newsletter">
         <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="es" data-surface="cost-index-ingredient">

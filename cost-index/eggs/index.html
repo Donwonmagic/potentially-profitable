@@ -308,6 +308,12 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* supply-picture-css:start */
+.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
+.ci-supply__rel strong{font-weight:700}
+.ci-supply__caveat{color:var(--ink-soft)}
+.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
+/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=25763285dde3" onload="this.onload=null;this.rel='stylesheet'">
@@ -428,6 +434,12 @@ main{padding-top:64px}
   <li>Watch the direction over a few weeks before re-pricing a dish — one week is noise.</li>
 </ol>
 <p>Costing a dish that uses eggs? Use the <a href="/tools/plate-cost/">Plate Cost Calculator</a>.</p>
+<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
+    <h2 id="ci-supply-h">Where it comes from</h2>
+    <p class="ci-supply__note">This ingredient's public supply picture — trade, domestic production, and (for seafood) wild landings. Descriptive context, never a forecast or your delivered price. Full record in the <a href="/cost-index/menu-pricing/#eggs">ingredient state record</a>.</p>
+    <p class="ci-supply__p">US general-import value was $116M (2025), series 2012-2025, YoY +1745.1%. Top origins: 36% Brazil · 28% Mexico · 24% Turkey (concentrated, HHI 0.27). Peak import months: Apr · May · Aug. <span class="ci-supply__caveat">Nominal customs value (US Census, public domain) — mixes price and quantity, never volume or your delivered price.</span> <span class="ci-supply__meta">HS code 040721.</span> <span class="ci-supply__meta">Fresh chicken eggs in shell (NESOI); data 2012+.</span></p>
+    <p class="ci-supply__p">Farm-gate price: 3.75 $ / DOZEN. US exports: $236M (2025). <span class="ci-supply__caveat">Farm-gate value (USDA NASS) — what the grower earns, not a wholesale or delivered price.</span></p>
+  </section><!-- /supply-picture:end -->
     <div class="ci-signup ci-signup--compact">
       <div class="foot-newsletter">
         <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en" data-surface="cost-index-ingredient">

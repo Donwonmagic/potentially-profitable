@@ -319,6 +319,12 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* supply-picture-css:start */
+.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
+.ci-supply__rel strong{font-weight:700}
+.ci-supply__caveat{color:var(--ink-soft)}
+.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
+/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=25763285dde3" onload="this.onload=null;this.rel='stylesheet'">
@@ -416,6 +422,13 @@ main{padding-top:64px}
     <dl class="ci-prof__grid"><div class="ci-prof__row"><dt>Edible yield</dt><dd>90% (trim tax ×1.11)</dd></div><div class="ci-prof__row"><dt>Cooked yield</dt><dd>45%</dd></div><div class="ci-prof__row"><dt>Keeps</dt><dd>~7 days refrigerated · freezer ~9 months</dd></div><div class="ci-prof__row"><dt>Storage</dt><dd>Refrigerate 34-40F in a paper bag or the original carton in the main compartment, not the crisper; do NOT seal in plastic or wash until use — trapped moisture makes them slimy.</dd></div><div class="ci-prof__row"><dt>Best season</dt><dd>year-round (commercially cultivated indoors)</dd></div><div class="ci-prof__row"><dt>Substitute</dt><dd>cremini (baby bella) (1:1)</dd></div><div class="ci-prof__row"><dt>Waste to value</dt><dd>trimmed stem ends and stems -&gt; mushroom stock or duxelles</dd></div></dl>
     <p class="ci-prof__src">Source: US Foods &#39;Common Product Yields&#39; chart (mushrooms 90% edible, corroborated via search); USDA Food Buying Guide (1 lb AP whole = 0.98 lb sliced and 0.43 lb cooked-drained, so ~0.44-0.45 cooked/raw); NCHFP Freezing Mushrooms (cook/blanch first) + extension blanched-vegetable freezer guidance (8-12 mo) support ~9 mo cook-first. Not citrus (juice null).</p>
   </section>
+<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
+    <h2 id="ci-supply-h">Where it comes from</h2>
+    <p class="ci-supply__note">This ingredient's public supply picture — trade, domestic production, and (for seafood) wild landings. Descriptive context, never a forecast or your delivered price. Full record in the <a href="/cost-index/menu-pricing/#button-mushroom">ingredient state record</a>.</p>
+    <p class="ci-supply__p">US general-import value was $352M (2025), series 2010-2025, YoY -7.3%. Top origins: 94% Canada · 6% Mexico · 0% China (single-source, HHI 0.88). Peak import months: Jan · Nov · Dec. <span class="ci-supply__caveat">Nominal customs value (US Census, public domain) — mixes price and quantity, never volume or your delivered price.</span> <span class="ci-supply__meta">HS code 070951.</span> <span class="ci-supply__meta">Fresh Agaricus (white button / cremini).</span></p>
+    <p class="ci-supply__p">US farm-gate production was $889M (1997-2025). Farm-gate price: 1.64 $ / LB. US exports: $8M (2025). <span class="ci-supply__caveat">Farm-gate value (USDA NASS) — what the grower earns, not a wholesale or delivered price.</span></p>
+    <p class="ci-supply__p ci-supply__rel"><strong>In 2025, imports were about 29% of the mushrooms group by value (made + imported − exported).</strong> About 2.5 lb/person/yr are available domestically (2021). <span class="ci-supply__caveat">Counts import dollars (which carry freight a farm-gate price does not) against domestic apparent consumption — a dollar comparison, not how much of what is on your shelf came from abroad, and not a supply-security score.</span></p>
+  </section><!-- /supply-picture:end -->
     <div class="ci-signup ci-signup--compact">
       <div class="foot-newsletter">
         <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en" data-surface="cost-index-ingredient">

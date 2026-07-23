@@ -319,6 +319,12 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* supply-picture-css:start */
+.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
+.ci-supply__rel strong{font-weight:700}
+.ci-supply__caveat{color:var(--ink-soft)}
+.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
+/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=25763285dde3" onload="this.onload=null;this.rel='stylesheet'">
@@ -467,6 +473,13 @@ main{padding-top:64px}
     <dl class="ci-prof__grid"><div class="ci-prof__row"><dt>Edible yield</dt><dd>85% (trim tax ×1.18)</dd></div><div class="ci-prof__row"><dt>Cooked yield</dt><dd>75%</dd></div><div class="ci-prof__row"><dt>Keeps</dt><dd>~5 days refrigerated · freezer ~6 months</dd></div><div class="ci-prof__row"><dt>Storage</dt><dd>Refrigerate at 40F or below (ideally 32-36F) on the bottom shelf in a drip tray, wrapped; do NOT store above ready-to-eat foods, and do NOT leave out over 2 hours.</dd></div><div class="ci-prof__row"><dt>Best season</dt><dd>year-round (US commodity beef holds consistent quality all year)</dd></div><div class="ci-prof__row"><dt>Substitute</dt><dd>teres major (shoulder tender / petite tender) (1:1 for medallions)</dd></div><div class="ci-prof__row"><dt>Waste to value</dt><dd>the trimmed &#39;chain&#39; muscle and silverskin-trimmed ends -&gt; grind for tartare or burgers; head/tail tips -&gt; stroganoff or skewers</dd></div></dl>
     <p class="ci-prof__src">Source: US Foods / NAMP fabrication yields (peeled-from-PSMO ~52%; already-peeled further-trim ~0.85); USDA Nutrient Data Set for Retail Beef Cuts cooking reference (0.74-0.75); USDA/FSIS FoodSafety.gov Cold Food Storage Chart (fresh beef 4-12 mo).</p>
   </section>
+<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
+    <h2 id="ci-supply-h">Where it comes from</h2>
+    <p class="ci-supply__note">This ingredient's public supply picture — trade, domestic production, and (for seafood) wild landings. Descriptive context, never a forecast or your delivered price. Full record in the <a href="/cost-index/menu-pricing/#beef-tenderloin">ingredient state record</a>.</p>
+    <p class="ci-supply__p">US general-import value was $1.09B (2025), series 2017-2025, YoY +8%. Top origins: 53% Canada · 22% Australia · 17% Mexico (concentrated, HHI 0.36). Peak import months: Mar · Jun · Oct. <span class="ci-supply__caveat">Nominal customs value (US Census, public domain) — mixes price and quantity, never volume or your delivered price.</span> <span class="ci-supply__meta">HS code 0201305045+0202305045.</span> <span class="ci-supply__meta">The boneless beef LOIN primal (fresh) — strip loin, short loin (tenderloin) and sirloin; summed with its frozen twin (0202305045). Not split finer at HS10; data from 2017.</span></p>
+    <p class="ci-supply__p">US farm-gate production was $99.77B (1988-2025). Farm-gate price: 417 $ / CWT (≈ $4.17/lb). US exports: $6.62B (2025). <span class="ci-supply__caveat">Farm-gate value (USDA NASS) — what the grower earns, not a wholesale or delivered price.</span></p>
+    <p class="ci-supply__p ci-supply__rel"><strong>In 2025, imports were about 5% of the cattle group by value (made + imported − exported).</strong> About 56.18 lb/person/yr are available domestically (2021). <span class="ci-supply__caveat">Counts import dollars (which carry freight a farm-gate price does not) against domestic apparent consumption — a dollar comparison, not how much of what is on your shelf came from abroad, and not a supply-security score.</span></p>
+  </section><!-- /supply-picture:end -->
     <div class="ci-signup ci-signup--compact">
       <div class="foot-newsletter">
         <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en" data-surface="cost-index-ingredient">

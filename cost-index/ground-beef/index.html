@@ -319,6 +319,12 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* supply-picture-css:start */
+.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
+.ci-supply__rel strong{font-weight:700}
+.ci-supply__caveat{color:var(--ink-soft)}
+.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
+/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=25763285dde3" onload="this.onload=null;this.rel='stylesheet'">
@@ -391,6 +397,13 @@ main{padding-top:64px}
     <dl class="ci-prof__grid"><div class="ci-prof__row"><dt>Edible yield</dt><dd>100% (trim tax ×1)</dd></div><div class="ci-prof__row"><dt>Cooked yield</dt><dd>73%</dd></div><div class="ci-prof__row"><dt>Keeps</dt><dd>~2 days refrigerated · freezer ~4 months</dd></div><div class="ci-prof__row"><dt>Storage</dt><dd>Refrigerate at 40F or below on the coldest (bottom) shelf, sealed; use within 1-2 days or freeze same-day. Do NOT leave at room temp over 2 hours, and do NOT refreeze after a room-temp thaw.</dd></div><div class="ci-prof__row"><dt>Best season</dt><dd>year-round (US commodity beef holds consistent quality all year)</dd></div><div class="ci-prof__row"><dt>Substitute</dt><dd>ground pork (1:1 or blend)</dd></div></dl>
     <p class="ci-prof__src">Source: USDA FoodData Central / Table of Cooking Yields (80/20 patty, pan-broiled ~0.727); USDA/FSIS FoodSafety.gov Cold Food Storage Chart (ground meats 3-4 mo).</p>
   </section>
+<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
+    <h2 id="ci-supply-h">Where it comes from</h2>
+    <p class="ci-supply__note">This ingredient's public supply picture — trade, domestic production, and (for seafood) wild landings. Descriptive context, never a forecast or your delivered price. Full record in the <a href="/cost-index/menu-pricing/#ground-beef">ingredient state record</a>.</p>
+    <p class="ci-supply__p">US general-import value was $5.34B (2025), series 2017-2025, YoY +10.9%. Top origins: 49% Australia · 21% New Zealand · 12% Mexico (concentrated, HHI 0.3). Peak import months: Jan · Jul · Aug. <span class="ci-supply__caveat">Nominal customs value (US Census, public domain) — mixes price and quantity, never volume or your delivered price.</span> <span class="ci-supply__meta">HS code 0201305085+0202305085.</span> <span class="ci-supply__meta">Boneless beef not in a named primal (fresh) — the lean manufacturing trim that feeds grinding; summed with its frozen twin (0202305085). Data from 2017.</span></p>
+    <p class="ci-supply__p">US farm-gate production was $99.77B (1988-2025). Farm-gate price: 417 $ / CWT (≈ $4.17/lb). US exports: $6.62B (2025). <span class="ci-supply__caveat">Farm-gate value (USDA NASS) — what the grower earns, not a wholesale or delivered price.</span></p>
+    <p class="ci-supply__p ci-supply__rel"><strong>In 2025, imports were about 5% of the cattle group by value (made + imported − exported).</strong> About 56.18 lb/person/yr are available domestically (2021). <span class="ci-supply__caveat">Counts import dollars (which carry freight a farm-gate price does not) against domestic apparent consumption — a dollar comparison, not how much of what is on your shelf came from abroad, and not a supply-security score.</span></p>
+  </section><!-- /supply-picture:end -->
     <div class="ci-signup ci-signup--compact">
       <div class="foot-newsletter">
         <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en" data-surface="cost-index-ingredient">

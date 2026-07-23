@@ -319,6 +319,12 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* supply-picture-css:start */
+.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
+.ci-supply__rel strong{font-weight:700}
+.ci-supply__caveat{color:var(--ink-soft)}
+.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
+/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=25763285dde3" onload="this.onload=null;this.rel='stylesheet'">
@@ -451,6 +457,11 @@ main{padding-top:64px}
     <dl class="ci-prof__grid"><div class="ci-prof__row"><dt>Edible yield</dt><dd>60% (trim tax ×1.67)</dd></div><div class="ci-prof__row"><dt>Cooked yield</dt><dd>75%</dd></div><div class="ci-prof__row"><dt>Keeps</dt><dd>~2 days refrigerated · freezer ~12 months</dd></div><div class="ci-prof__row"><dt>Storage</dt><dd>Refrigerate at 40F or below on the bottom shelf in a leak-proof tray/bag; use within 1-2 days or freeze. Do NOT wash raw poultry (splashing spreads bacteria) and do NOT let juices drip onto ready-to-eat foods.</dd></div><div class="ci-prof__row"><dt>Best season</dt><dd>year-round (farm-raised, no growing season)</dd></div><div class="ci-prof__row"><dt>A swap that helps</dt><dd>whole turkey — moves on its own, so it also hedges the price</dd></div><div class="ci-prof__row"><dt>Waste to value</dt><dd>backs, necks, wingtips, and roasted carcass -&gt; stock/broth; trimmed skin and fat -&gt; rendered schmaltz</dd></div></dl>
     <p class="ci-prof__src">Source: Freeze: USDA FSIS / FoodSafety.gov Cold Food Storage Chart (whole poultry = 12 mo). Edible ~0.60 skinless / ~0.65 skin-on bone-out (USDA FBG-derived guides + independent butchery-yield sources). Roast shrink ~0.75 = the ~25% whole-bird roast loss corroborated across multiple culinary yield references (consensus multiplier ~0.75; e.g. 1.5 kg raw → ~1.1 kg roasted).</p>
   </section>
+<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
+    <h2 id="ci-supply-h">Where it comes from</h2>
+    <p class="ci-supply__note">This ingredient's public supply picture — trade, domestic production, and (for seafood) wild landings. Descriptive context, never a forecast or your delivered price. Full record in the <a href="/cost-index/menu-pricing/#whole-chicken">ingredient state record</a>.</p>
+    <p class="ci-supply__p">US farm-gate production was $44.57B (1960-2026). <span class="ci-supply__caveat">Farm-gate value (USDA NASS) — what the grower earns, not a wholesale or delivered price.</span></p>
+  </section><!-- /supply-picture:end -->
     <div class="ci-signup ci-signup--compact">
       <div class="foot-newsletter">
         <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en" data-surface="cost-index-ingredient">

@@ -319,6 +319,12 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* supply-picture-css:start */
+.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
+.ci-supply__rel strong{font-weight:700}
+.ci-supply__caveat{color:var(--ink-soft)}
+.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
+/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=25763285dde3" onload="this.onload=null;this.rel='stylesheet'">
@@ -451,6 +457,13 @@ main{padding-top:64px}
     <dl class="ci-prof__grid"><div class="ci-prof__row"><dt>Edible yield</dt><dd>95% (trim tax ×1.05)</dd></div><div class="ci-prof__row"><dt>Keeps</dt><dd>~10 days refrigerated · freezer ~12 months</dd></div><div class="ci-prof__row"><dt>Storage</dt><dd>Refrigerate unwashed and dry in a vented container (about 1-2 weeks); do NOT wash until use and do NOT seal airtight; sort out soft/moldy berries.</dd></div><div class="ci-prof__row"><dt>Best season</dt><dd>summer (June-August)</dd></div><div class="ci-prof__row"><dt>Substitute</dt><dd>blackberries (1:1)</dd></div><div class="ci-prof__row"><dt>Waste to value</dt><dd>soft/overripe berries -&gt; compote, jam, or syrup; freeze surplus for baking</dd></div></dl>
     <p class="ci-prof__src">Source: USDA FoodData Central cultivated-blueberry refuse ~0 (edible ~1.0); 0.95 reflects normal culling of soft berries; NCHFP/USDA FoodKeeper berries ~12 mo (blueberries freeze excellently).</p>
   </section>
+<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
+    <h2 id="ci-supply-h">Where it comes from</h2>
+    <p class="ci-supply__note">This ingredient's public supply picture — trade, domestic production, and (for seafood) wild landings. Descriptive context, never a forecast or your delivered price. Full record in the <a href="/cost-index/menu-pricing/#blueberry">ingredient state record</a>.</p>
+    <p class="ci-supply__p">US general-import value was $2.08B (2025), series 2010-2025, YoY -4.5%. Top origins: 56% Peru · 24% Mexico · 10% Chile (concentrated, HHI 0.39). Peak import months: Jan · Feb · Oct. <span class="ci-supply__caveat">Nominal customs value (US Census, public domain) — mixes price and quantity, never volume or your delivered price.</span> <span class="ci-supply__meta">HS code 0810400024+0810400026+0810400029.</span> <span class="ci-supply__meta">Blueberries only (wild + cultivated 0810400026 org + 0810400029) — excludes the cranberries that share the HS6 code.</span></p>
+    <p class="ci-supply__p">US farm-gate production was $221M (1997-2025). US exports: $190M (2025). <span class="ci-supply__caveat">Farm-gate value (USDA NASS) — what the grower earns, not a wholesale or delivered price.</span></p>
+    <p class="ci-supply__p ci-supply__rel"><strong>In 2025, imports were about 99% of apparent consumption by value (made + imported − exported).</strong> About 2.54 lb/person/yr are available domestically (2021). <span class="ci-supply__caveat">Counts import dollars (which carry freight a farm-gate price does not) against domestic apparent consumption — a dollar comparison, not how much of what is on your shelf came from abroad, and not a supply-security score.</span></p>
+  </section><!-- /supply-picture:end -->
     <div class="ci-signup ci-signup--compact">
       <div class="foot-newsletter">
         <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en" data-surface="cost-index-ingredient">

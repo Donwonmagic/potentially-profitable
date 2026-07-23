@@ -319,6 +319,12 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* supply-picture-css:start */
+.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
+.ci-supply__rel strong{font-weight:700}
+.ci-supply__caveat{color:var(--ink-soft)}
+.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
+/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=25763285dde3" onload="this.onload=null;this.rel='stylesheet'">
@@ -433,6 +439,12 @@ main{padding-top:64px}
     <dl class="ci-prof__grid"><div class="ci-prof__row"><dt>Edible yield</dt><dd>77% (trim tax ×1.3)</dd></div><div class="ci-prof__row"><dt>Keeps</dt><dd>~7 days refrigerated</dd></div><div class="ci-prof__row"><dt>Storage</dt><dd>Refrigerate unwashed in a perforated bag with a lightly damp paper towel; do NOT wash until use — it wants some humidity but rots if held wet.</dd></div><div class="ci-prof__row"><dt>Best season</dt><dd>spring and fall</dd></div><div class="ci-prof__row"><dt>A swap that helps</dt><dd>napa cabbage — moves on its own, so it also hedges the price</dd></div><div class="ci-prof__row"><dt>Waste to value</dt><dd>root base and tough stem ends -&gt; vegetable/stir-fry stock (leafy tops always stay usable)</dd></div></dl>
     <p class="ci-prof__src">Source: USDA FBG Section 2 (bok choy whole: 1 lb AP = 0.77 lb ready-to-serve, ~3.5 cups). Not sensibly frozen (very high water, goes limp) — freezeMonths null.</p>
   </section>
+<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
+    <h2 id="ci-supply-h">Where it comes from</h2>
+    <p class="ci-supply__note">This ingredient's public supply picture — trade, domestic production, and (for seafood) wild landings. Descriptive context, never a forecast or your delivered price. Full record in the <a href="/cost-index/menu-pricing/#bok-choy">ingredient state record</a>.</p>
+    <p class="ci-supply__p">US general-import value was $36M (2025), series 2022-2025, YoY -9.4%. Top origins: 78% Mexico · 22% Canada (concentrated, HHI 0.66). Peak import months: Jan · Sep · Dec. <span class="ci-supply__caveat">Nominal customs value (US Census, public domain) — mixes price and quantity, never volume or your delivered price.</span> <span class="ci-supply__meta">HS code 0704904015.</span> <span class="ci-supply__meta">Bok choy specifically.</span></p>
+    <p class="ci-supply__p">US farm-gate production was $124M (2000-2025). US exports: $179M (2025). <span class="ci-supply__caveat">Farm-gate value (USDA NASS) — what the grower earns, not a wholesale or delivered price.</span></p>
+  </section><!-- /supply-picture:end -->
     <div class="ci-signup ci-signup--compact">
       <div class="foot-newsletter">
         <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en" data-surface="cost-index-ingredient">

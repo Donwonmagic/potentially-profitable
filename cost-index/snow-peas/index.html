@@ -319,6 +319,12 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* supply-picture-css:start */
+.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
+.ci-supply__rel strong{font-weight:700}
+.ci-supply__caveat{color:var(--ink-soft)}
+.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
+/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=25763285dde3" onload="this.onload=null;this.rel='stylesheet'">
@@ -451,6 +457,13 @@ main{padding-top:64px}
     <dl class="ci-prof__grid"><div class="ci-prof__row"><dt>Edible yield</dt><dd>95% (trim tax ×1.05)</dd></div><div class="ci-prof__row"><dt>Keeps</dt><dd>~5 days refrigerated · freezer ~12 months</dd></div><div class="ci-prof__row"><dt>Storage</dt><dd>Refrigerate cold (~32-40F) unwashed in a bag; do NOT hold warm — the sugars fade to starch quickly — and use within a few days.</dd></div><div class="ci-prof__row"><dt>Best season</dt><dd>spring to early summer (cool-season; a second fall crop)</dd></div><div class="ci-prof__row"><dt>Substitute</dt><dd>sugar snap peas (1:1)</dd></div></dl>
     <p class="ci-prof__src">Source: USDA FoodData Central refuse ~5% (peas, edible-podded, raw — stem + string) → 0.95. Freeze: NCHFP blanched 8–12 mo.</p>
   </section>
+<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
+    <h2 id="ci-supply-h">Where it comes from</h2>
+    <p class="ci-supply__note">This ingredient's public supply picture — trade, domestic production, and (for seafood) wild landings. Descriptive context, never a forecast or your delivered price. Full record in the <a href="/cost-index/menu-pricing/#snow-peas">ingredient state record</a>.</p>
+    <p class="ci-supply__p">US general-import value was $24M (2025), series 2023-2025, YoY -25.8%. Top origins: 51% Guatemala · 28% Mexico · 20% Peru (concentrated, HHI 0.38). Peak import months: Jan · Mar · Dec. <span class="ci-supply__caveat">Nominal customs value (US Census, public domain) — mixes price and quantity, never volume or your delivered price.</span> <span class="ci-supply__meta">HS code 0708102020+0708104020.</span> <span class="ci-supply__meta">Snow peas, summed across entry periods (0708104020).</span></p>
+    <p class="ci-supply__p">US farm-gate production was $73M (1928-2025). Farm-gate price: 15.7 $ / CWT (≈ $0.16/lb). US exports: $38M (2025). <span class="ci-supply__caveat">Farm-gate value (USDA NASS) — what the grower earns, not a wholesale or delivered price.</span></p>
+    <p class="ci-supply__p ci-supply__rel"><strong>In 2025, imports were about 41% of apparent consumption by value (made + imported − exported).</strong> <span class="ci-supply__caveat">Counts import dollars (which carry freight a farm-gate price does not) against domestic apparent consumption — a dollar comparison, not how much of what is on your shelf came from abroad, and not a supply-security score.</span></p>
+  </section><!-- /supply-picture:end -->
     <div class="ci-signup ci-signup--compact">
       <div class="foot-newsletter">
         <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en" data-surface="cost-index-ingredient">

@@ -319,6 +319,12 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* supply-picture-css:start */
+.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
+.ci-supply__rel strong{font-weight:700}
+.ci-supply__caveat{color:var(--ink-soft)}
+.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
+/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=25763285dde3" onload="this.onload=null;this.rel='stylesheet'">
@@ -468,6 +474,13 @@ main{padding-top:64px}
     <dl class="ci-prof__grid"><div class="ci-prof__row"><dt>Edible yield</dt><dd>76% (trim tax ×1.32)</dd></div><div class="ci-prof__row"><dt>Keeps</dt><dd>~14 days refrigerated</dd></div><div class="ci-prof__row"><dt>Storage</dt><dd>Refrigerate the whole head unwashed in the crisper; core with a firm whack (not a knife) and don&#39;t wash until use; keep away from ethylene fruit to avoid russet spotting, and tear rather than cut to slow edge browning.</dd></div><div class="ci-prof__row"><dt>Best season</dt><dd>spring and fall</dd></div><div class="ci-prof__row"><dt>A swap that helps</dt><dd>green cabbage (shredded) — moves on its own, so it also hedges the price</dd></div><div class="ci-prof__row"><dt>Waste to value</dt><dd>outer leaves and core -&gt; lettuce soup or braise; blend trim into vegetable stock</dd></div></dl>
     <p class="ci-prof__src">Source: USDA FBG Section 2 (iceberg untrimmed head: 1 lb AP = 0.76 lb ready-to-serve, ~5.5 cups shredded); US Foods / Chefs-Resources charts (trimmed &amp; cored ~62%).</p>
   </section>
+<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
+    <h2 id="ci-supply-h">Where it comes from</h2>
+    <p class="ci-supply__note">This ingredient's public supply picture — trade, domestic production, and (for seafood) wild landings. Descriptive context, never a forecast or your delivered price. Full record in the <a href="/cost-index/menu-pricing/#iceberg-lettuce">ingredient state record</a>.</p>
+    <p class="ci-supply__p">US general-import value was $83M (2025), series 2010-2025, YoY -13.6%. Top origins: 74% Mexico · 25% Canada · 0% Guatemala (concentrated, HHI 0.61). Peak import months: Mar · Oct · Nov. <span class="ci-supply__caveat">Nominal customs value (US Census, public domain) — mixes price and quantity, never volume or your delivered price.</span> <span class="ci-supply__meta">HS code 070511.</span> <span class="ci-supply__meta">Head/cabbage lettuce (iceberg, butterhead).</span></p>
+    <p class="ci-supply__p">US farm-gate production was $1.68B (1998-2025). Farm-gate price: 43.7 $ / CWT (≈ $0.44/lb). US exports: $102M (2025). <span class="ci-supply__caveat">Farm-gate value (USDA NASS) — what the grower earns, not a wholesale or delivered price.</span></p>
+    <p class="ci-supply__p ci-supply__rel"><strong>In 2025, imports were about 12% of the lettuce group by value (made + imported − exported).</strong> About 10.34 lb/person/yr are available domestically (2022). <span class="ci-supply__caveat">Counts import dollars (which carry freight a farm-gate price does not) against domestic apparent consumption — a dollar comparison, not how much of what is on your shelf came from abroad, and not a supply-security score.</span></p>
+  </section><!-- /supply-picture:end -->
     <div class="ci-signup ci-signup--compact">
       <div class="foot-newsletter">
         <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en" data-surface="cost-index-ingredient">

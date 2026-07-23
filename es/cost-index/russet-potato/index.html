@@ -319,6 +319,12 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* supply-picture-css:start */
+.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
+.ci-supply__rel strong{font-weight:700}
+.ci-supply__caveat{color:var(--ink-soft)}
+.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
+/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=25763285dde3" onload="this.onload=null;this.rel='stylesheet'">
@@ -457,6 +463,13 @@ main{padding-top:64px}
     <dl class="ci-prof__grid"><div class="ci-prof__row"><dt>Rendimiento comestible</dt><dd>81% (merma ×1.23)</dd></div><div class="ci-prof__row"><dt>Dura</dt><dd>~45 días refrigerado</dd></div><div class="ci-prof__row"><dt>Conservación</dt><dd>Store cool (45-55F), dark, and ventilated; do NOT refrigerate (cold turns starch to sugar and fries dark) and keep away from onions.</dd></div><div class="ci-prof__row"><dt>Mejor temporada</dt><dd>fall harvest; stored year-round</dd></div><div class="ci-prof__row"><dt>Un cambio que ayuda</dt><dd>Yukon Gold potato — se mueve por su cuenta, así que también cubre el precio</dd></div><div class="ci-prof__row"><dt>De la merma al valor</dt><dd>peels -&gt; crispy fried potato skins</dd></div></dl>
     <p class="ci-prof__src">Fuente: USDA Food Buying Guide / The Book of Yields peeled-mature-potato ~0.78-0.81; freezeMonths null because NCHFP lists raw/whole potatoes as poor freezers (only cooked/mashed hold).</p>
   </section>
+<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
+    <h2 id="ci-supply-h">De dónde llega</h2>
+    <p class="ci-supply__note">El panorama de suministro público de este ingrediente — comercio, producción nacional y (para mariscos) desembarques silvestres. Contexto descriptivo, nunca un pronóstico ni tu precio de entrega. Ficha completa en el <a href="/es/cost-index/menu-pricing/#russet-potato">registro del ingrediente</a>.</p>
+    <p class="ci-supply__p">El valor de importación general de EE. UU. fue de $320M (2025), serie 2010-2025, interanual -5.4%. Principales orígenes: 100% Canada · 0% Mexico · 0% Colombia (single-source, HHI 1). Meses pico de importación: ene · mar · nov. <span class="ci-supply__caveat">Valor de aduana nominal (US Census, dominio público) — mezcla precio y cantidad, nunca volumen ni tu precio de entrega.</span> <span class="ci-supply__meta">Código HS 070190.</span> <span class="ci-supply__meta">Fresh table potatoes; not split by variety.</span></p>
+    <p class="ci-supply__p">La producción a precio de campo (EE. UU.) fue de $4.62B (1866-2025). Precio de campo: 11.2 $ / CWT (≈ $0.11/lb). Exportaciones de EE. UU.: $327M (2025). <span class="ci-supply__caveat">Valor a precio de campo (USDA NASS) — lo que gana el productor, no un precio mayorista ni de entrega.</span></p>
+    <p class="ci-supply__p ci-supply__rel"><strong>En 2025, las importaciones fueron alrededor del 7% del grupo papa por valor (producido + importado − exportado).</strong> Hay alrededor de 28.41 lb/persona/año disponibles en el país (2022). <span class="ci-supply__caveat">Compara dólares de importación (que incluyen flete que un precio de campo no) con el consumo aparente nacional — una comparación de dólares, no cuánto de lo que tienes en el estante vino del extranjero, ni un puntaje de seguridad de suministro.</span></p>
+  </section><!-- /supply-picture:end -->
     <div class="ci-signup ci-signup--compact">
       <div class="foot-newsletter">
         <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="es" data-surface="cost-index-ingredient">

@@ -319,6 +319,12 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* supply-picture-css:start */
+.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
+.ci-supply__rel strong{font-weight:700}
+.ci-supply__caveat{color:var(--ink-soft)}
+.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
+/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=25763285dde3" onload="this.onload=null;this.rel='stylesheet'">
@@ -457,6 +463,13 @@ main{padding-top:64px}
     <dl class="ci-prof__grid"><div class="ci-prof__row"><dt>Edible yield</dt><dd>90% (trim tax ×1.11)</dd></div><div class="ci-prof__row"><dt>Keeps</dt><dd>~7 days refrigerated · freezer ~12 months</dd></div><div class="ci-prof__row"><dt>Storage</dt><dd>Refrigerate cold (32-40F), unwashed, in its clamshell/bag with a dry paper towel to catch moisture; do NOT wash until use — wet spinach slimes within a day or two.</dd></div><div class="ci-prof__row"><dt>Best season</dt><dd>spring and fall</dd></div><div class="ci-prof__row"><dt>A swap that helps</dt><dd>Swiss chard (leaves, cooked) — moves on its own, so it also hedges the price</dd></div><div class="ci-prof__row"><dt>Waste to value</dt><dd>tough stems and past-prime leaves -&gt; cook down for soups, fillings, or blend into pesto/smoothies</dd></div></dl>
     <p class="ci-prof__src">Source: USDA FBG / trade yield charts (bunch spinach ~0.72-0.92 depending on stemming, triple-washed bagged ≈ 1.0); NCHFP &#39;Freezing Greens Including Spinach&#39; (blanch, then use within one year at 0°F).</p>
   </section>
+<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
+    <h2 id="ci-supply-h">Where it comes from</h2>
+    <p class="ci-supply__note">This ingredient's public supply picture — trade, domestic production, and (for seafood) wild landings. Descriptive context, never a forecast or your delivered price. Full record in the <a href="/cost-index/menu-pricing/#spinach">ingredient state record</a>.</p>
+    <p class="ci-supply__p">US general-import value was $88M (2025), series 2010-2025, YoY -8.6%. Top origins: 71% Mexico · 29% Canada · 0% United Kingdom (concentrated, HHI 0.59). Peak import months: Jan · Mar · Dec. <span class="ci-supply__caveat">Nominal customs value (US Census, public domain) — mixes price and quantity, never volume or your delivered price.</span> <span class="ci-supply__meta">HS code 070970.</span> <span class="ci-supply__meta">Spinach, New Zealand spinach and orache, combined.</span></p>
+    <p class="ci-supply__p">US farm-gate production was $435M (1997-2025). Farm-gate price: 81 $ / CWT (≈ $0.81/lb). US exports: $119M (2025). <span class="ci-supply__caveat">Farm-gate value (USDA NASS) — what the grower earns, not a wholesale or delivered price.</span></p>
+    <p class="ci-supply__p ci-supply__rel"><strong>In 2025, imports were about 22% of apparent consumption by value (made + imported − exported).</strong> About 2.15 lb/person/yr are available domestically (2022). <span class="ci-supply__caveat">Counts import dollars (which carry freight a farm-gate price does not) against domestic apparent consumption — a dollar comparison, not how much of what is on your shelf came from abroad, and not a supply-security score.</span></p>
+  </section><!-- /supply-picture:end -->
     <div class="ci-signup ci-signup--compact">
       <div class="foot-newsletter">
         <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en" data-surface="cost-index-ingredient">

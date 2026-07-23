@@ -319,6 +319,12 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* supply-picture-css:start */
+.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
+.ci-supply__rel strong{font-weight:700}
+.ci-supply__caveat{color:var(--ink-soft)}
+.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
+/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=25763285dde3" onload="this.onload=null;this.rel='stylesheet'">
@@ -451,6 +457,12 @@ main{padding-top:64px}
     <dl class="ci-prof__grid"><div class="ci-prof__row"><dt>Edible yield</dt><dd>67% (trim tax ×1.49)</dd></div><div class="ci-prof__row"><dt>Keeps</dt><dd>~7 days refrigerated · freezer ~12 months</dd></div><div class="ci-prof__row"><dt>Storage</dt><dd>Refrigerate unwashed, loosely wrapped in a bag with a paper towel; do NOT wash until use — a hardy green that tolerates the coldest part of the fridge.</dd></div><div class="ci-prof__row"><dt>Best season</dt><dd>fall through winter (sweeter after frost)</dd></div><div class="ci-prof__row"><dt>A swap that helps</dt><dd>collard greens — moves on its own, so it also hedges the price</dd></div><div class="ci-prof__row"><dt>Waste to value</dt><dd>tough center stems/ribs -&gt; finely chop and saute, blitz into pesto, or add to stock</dd></div></dl>
     <p class="ci-prof__src">Source: USDA FBG Section 2 (kale untrimmed: 1 lb AP = 0.67 lb ready-to-cook; trimmed-with-stem = 0.73; without-stem ≈ 1.0); NCHFP &#39;Freezing Greens&#39; (blanch, use within one year at 0°F).</p>
   </section>
+<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
+    <h2 id="ci-supply-h">Where it comes from</h2>
+    <p class="ci-supply__note">This ingredient's public supply picture — trade, domestic production, and (for seafood) wild landings. Descriptive context, never a forecast or your delivered price. Full record in the <a href="/cost-index/menu-pricing/#kale">ingredient state record</a>.</p>
+    <p class="ci-supply__p">US general-import value was $12M (2025), series 2022-2025, YoY -36.3%. Top origins: 96% Mexico · 4% Canada (single-source, HHI 0.92). Peak import months: Jan · Feb · Mar. <span class="ci-supply__caveat">Nominal customs value (US Census, public domain) — mixes price and quantity, never volume or your delivered price.</span> <span class="ci-supply__meta">HS code 0704904035.</span> <span class="ci-supply__meta">Kale specifically.</span></p>
+    <p class="ci-supply__p">US farm-gate production was $124M (2000-2025). US exports: $179M (2025). <span class="ci-supply__caveat">Farm-gate value (USDA NASS) — what the grower earns, not a wholesale or delivered price.</span></p>
+  </section><!-- /supply-picture:end -->
     <div class="ci-signup ci-signup--compact">
       <div class="foot-newsletter">
         <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en" data-surface="cost-index-ingredient">
