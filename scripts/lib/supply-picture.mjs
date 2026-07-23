@@ -15,6 +15,17 @@
 //     "farmed abroad" clause appears only when import_mostly_farmed is true
 //   · degrade by absence — any missing layer is simply not written
 
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+// Curated ES translations of the HS-scope import notes (keyed by exact EN text). Absent entry -> the note
+// is simply not shown on the ES page (degrade by absence; never machine-translated inline).
+const NOTE_ES = (() => {
+  try { return JSON.parse(fs.readFileSync(path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../data/import-notes-es.json'), 'utf8')); }
+  catch { return {}; }
+})();
+
 export const SUPPLY_SENTINEL = { start: '<!-- supply-picture:start -->', end: '<!-- /supply-picture:end -->' };
 export const SUPPLY_CSS_SENTINEL = { start: '/* supply-picture-css:start */', end: '/* supply-picture-css:end */' };
 // Reuses the pages' existing ci-profile card + CSS custom props (--ink, --ink-soft). Caveats are NOT
@@ -69,6 +80,7 @@ export function supplyPicture(R, locale, opts = {}) {
   // ---- import stream ----
   if (hasImport) {
     const lastYr = R.import_years ? String(R.import_years).split('-').pop() : null;
+    const noteTxt = R.import_note ? (es ? (NOTE_ES[R.import_note] || '') : R.import_note) : '';
     const bits = [];
     bits.push((es ? 'El valor de importación general de EE. UU. fue de ' : 'US general-import value was ') + usd(R.us_import_value_usd) + (lastYr ? ` (${lastYr})` : '') + (R.import_years ? `, ${es ? 'serie' : 'series'} ${R.import_years}` : '') + (R.import_yoy_pct != null ? `, ${es ? 'interanual' : 'YoY'} ${R.import_yoy_pct > 0 ? '+' : ''}${R.import_yoy_pct}%` : '') + '.');
     if (R.import_top_sources && R.import_top_sources.length) {
@@ -78,7 +90,7 @@ export function supplyPicture(R, locale, opts = {}) {
       bits.push((es ? 'Principales orígenes: ' : 'Top origins: ') + src + conc + '.');
     }
     if (R.import_peak_months && R.import_peak_months.length) bits.push((es ? 'Meses pico de importación: ' : 'Peak import months: ') + R.import_peak_months.map((m) => MO[m - 1]).join(' · ') + '.');
-    P.push(`<p class="ci-supply__p">${bits.join(' ')} <span class="ci-supply__caveat">${es ? 'Valor de aduana nominal (US Census, dominio público) — mezcla precio y cantidad, nunca volumen ni tu precio de entrega.' : 'Nominal customs value (US Census, public domain) — mixes price and quantity, never volume or your delivered price.'}</span>${R.import_hs6 ? ` <span class="ci-supply__meta">${es ? 'Código HS' : 'HS code'} ${esc(R.import_hs6)}.</span>` : ''}${(R.import_note && !es) ? ` <span class="ci-supply__meta">${esc(R.import_note)}</span>` : ''}</p>`);
+    P.push(`<p class="ci-supply__p">${bits.join(' ')} <span class="ci-supply__caveat">${es ? 'Valor de aduana nominal (US Census, dominio público) — mezcla precio y cantidad, nunca volumen ni tu precio de entrega.' : 'Nominal customs value (US Census, public domain) — mixes price and quantity, never volume or your delivered price.'}</span>${R.import_hs6 ? ` <span class="ci-supply__meta">${es ? 'Código HS' : 'HS code'} ${esc(R.import_hs6)}.</span>` : ''}${noteTxt ? ` <span class="ci-supply__meta">${esc(noteTxt)}</span>` : ''}</p>`);
   }
 
   // ---- domestic production + farm price + exports ----
