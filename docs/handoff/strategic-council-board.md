@@ -59,7 +59,18 @@ baked into the doc: ship a **calibration-monotone 2-state** now, register chip l
 gate label-present + low<high + per-tier AA/3:1 in both themes + EN↔ES parity. Open forks for the founder:
 confidence-tier fidelity, the return-cadence privacy stance (client-only visit memory vs. of-record purity),
 dusk-warmth on the /about/ instrument (needs an ADR amendment if yes), View-Transitions ROI, events-fusion
-distance. **NEXT:** founder call on how bold to go + prototype the `/about/` Glass Well hero on the render.
+distance.
+
+**Depth *feel* LOCKED (2026-07-23, founder-approved after 3 live prototypes):** depth = **layer
+separation + parallax by translation, NOT rotation** (the plane stays square; a rotate tilt was rejected
+as "screen motion, not depth"). Certified basket floats nearest; measured movers recede as separate,
+dimmer/blurrier strata behind it (distance = provenance). Gentle pointer parallax (front slides across the
+strata → you look *around* the read), ~3° resting recline, dark-mode-forward, and a first-class flat
+fallback (`Depth off` ≡ reduced-motion / low-end / no-JS → fully-composed flat read, number/label/"Not your
+prices" intact). Feel spec + reference prototype: `docs/design/depth-immersion-dream-backlog.md` §Locked +
+`docs/design/prototypes/depth-instrument.html`. **NEXT:** wire the feel to the real `/about/` read
+(generator-produced from newest `cost-index-editions.json`, EN+ES) behind the calibration-safe confidence
+2-state — gated on confirming what the editions snapshot actually emits for confidence.
 
 **Plan of record:** `docs/design/elevation-dream-backlog.md` — the reconciled output of two
 adversarial "dreaming" workflows (top-down design-language + bottom-up per-surface), with the

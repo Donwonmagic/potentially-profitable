@@ -64,6 +64,42 @@ for one person, we sequence pragmatically: Phase 1 is the cheap, reusable, high-
 trust core (it pays for itself standalone), motion and the return loop come second, frontier
 garnish comes last and is the first thing cut if budget is tight.
 
+## Locked — the depth *feel* (2026-07-23 prototype, founder-approved)
+
+The founder reviewed three live prototypes and locked the interaction on the third
+(`docs/design/prototypes/depth-instrument.html` — open in a browser). The resolved feel,
+the target every depth surface builds toward:
+
+- **Depth is layer separation + parallax, NOT rotation.** The read plane stays square to
+  the viewer. A rotate-left/right tilt was tried and rejected — it read as *screen motion*,
+  not depth ("this feels like a lot of screen motion, rather than depth"). The rotation is
+  gone; the plane never swings.
+- **Separated strata.** The certified basket floats nearest; its measured movers recede as
+  distinct planes behind it (`translateZ` ≈ −46 / −118 / −192 px), each dimmer and softer
+  (opacity + blur) the deeper it sits. **Distance encodes provenance** — the number you
+  trust most is closest, its parts sit behind it. This is the "separate lines at different
+  distances" the founder responded to.
+- **Parallax by translation only.** On pointer move, each stratum shifts *opposite* the
+  pointer, nearer = more (coefficients ≈ read .85 / m1 .42 / m2 .26 / m3 .15 of a ±11px
+  drive), so the front slides across the strata behind — you look *around* the read into
+  its parts. Gentle; the differential, not the magnitude, carries the depth. Snap-free ease
+  back to rest on pointer-leave.
+- **A barely-there ~3° resting recline** so dimensionality reads before any interaction
+  (perspective ≈1600px, origin 50% 42%). Can go to a dead-flat 0° if preferred.
+- **Dark-mode-forward.** The chamber (a masked floor grid + volumetric glow) sells depth
+  most in dark; light leans on shadow + atmospheric blur.
+- **Honest fallback is first-class.** A `Depth off` toggle (≡ `prefers-reduced-motion` /
+  low-end GPU / no-JS) collapses the whole thing to a fully-composed *flat* read — same
+  number, same "measured", same "Not your prices". Nothing meaningful lives only in the 3D.
+
+This is the *feel* spec. The honesty/data rules elsewhere in this doc (sacred static number,
+word-first confidence, calibration-monotone tiers, warmth quarantine, per-tier AA in both
+themes) still govern the *content* — the 3D is a shell around a read that is correct flat.
+
+**Open before production:** confirm what `data/cost-index-editions.json` actually emits for
+the `/about/` read (confidence field + tiers) so the visible confidence scale is
+calibration-monotone, not synthesized — the one fork that still gates the build.
+
 ## Guiding principles
 
 1. **The number is sacred, static, and always fully legible.** Every digit stays in certified
