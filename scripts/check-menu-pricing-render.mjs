@@ -58,17 +58,23 @@ function tKeySets(island) {
 
 // --- the render-contract tokens the island MUST contain (positive assertions) ---
 const REQUIRED = [
-  // reliance seam: guarded, scope-aware, carries its caveat + year
+  // reliance seam: guarded, scope-aware, carries its caveat + year + the >100% re-export note
   ['reliance guard', "r.import_reliance_pct!=null"],
   ['reliance scope-aware', "r.import_reliance_scope==='commodity'"],
   ['reliance caveat rendered', 'T.relCaveat'],
   ['reliance year rendered', 'r.import_reliance_year'],
-  // catchpair seam: guarded, year-aligned, paired bars, caveat + wild-minimal variant
+  ['reliance over-100 re-export note', 'r.import_reliance_pct>100'],
+  ['reliance re-export label', 'T.relOver'],
+  // catchpair seam: guarded, year-aligned, TWO INDEPENDENT STAT TILES (never a shared-axis bar that
+  // would imply the supply-share the caveat forbids), caveat + wild-minimal variant + conditional
+  // farmed clause (asserted only when the import is actually farmed, never hard-coded on all seafood)
   ['catchpair guard', 'r.us_landings_value_usd!=null'],
   ['catchpair year-aligned', 'r.import_annual_usd[ly]'],
-  ['catchpair paired bar (landings)', "magbar(r.us_landings_value_usd, mx, 'isr-f--teal'"],
+  ['catchpair stat-tile helper', 'function cpStat('],
+  ['catchpair stat tiles', 'cp.appendChild(cpStat('],
   ['catchpair caveat', 'T.catchCaveat'],
   ['catchpair wild-minimal variant', 'T.wildMinimal'],
+  ['catchpair farmed clause conditional', 'r.import_mostly_farmed?'],
   // other seams all behind null guards
   ['import guard', 'r.us_import_value_usd!=null'],
   ['band guard', 'r.band_pct!=null'],
@@ -139,14 +145,15 @@ function selfTest() {
   const goodIsland = [
     "(function(){ var ES=false;",
     "var T = ES ? {",
-    "  relCaveat:'x', catchCaveat:'x', wildMinimal:'x', comove:'y', present:'z', nominalNote:'n', rungSource:'o', rungMarket:'m', rungPlate:'p'",
+    "  relCaveat:'x', relOver:'o', catchCaveat:'x', wildMinimal:'x', farmedClause:'f', comove:'y', present:'z', nominalNote:'n', rungSource:'o', rungMarket:'m', rungPlate:'p'",
     "} : {",
-    "  relCaveat:'x', catchCaveat:'x', wildMinimal:'x', comove:'Have moved together', present:'present state, not a forecast', nominalNote:'US import value', rungSource:'Source', rungMarket:'Market', rungPlate:'Your plate'",
+    "  relCaveat:'x', relOver:'Over 100%', catchCaveat:'x', wildMinimal:'x', farmedClause:'farmed', comove:'Have moved together', present:'present state, not a forecast', nominalNote:'US import value', rungSource:'Source', rungMarket:'Market', rungPlate:'Your plate'",
     "};",
     "function seal(rg, name, sub){ if (!rg.childNodes.length) return; }",
+    "function cpStat(tone, val, label, yr){ return el(); }",
     "if (r.us_import_value_usd!=null){}",
-    "if (r.import_reliance_pct!=null){ var s=(r.import_reliance_scope==='commodity'); T.relCaveat; r.import_reliance_year; }",
-    "if (r.us_landings_value_usd!=null){ var impSame=r.import_annual_usd[ly]; magbar(r.us_landings_value_usd, mx, 'isr-f--teal', l); T.catchCaveat; T.wildMinimal; }",
+    "if (r.import_reliance_pct!=null){ var s=(r.import_reliance_scope==='commodity'); T.relCaveat; r.import_reliance_year; if (r.import_reliance_pct>100) T.relOver; }",
+    "if (r.us_landings_value_usd!=null){ var impSame=r.import_annual_usd[ly]; cp.appendChild(cpStat('teal', v, l, y)); T.catchCaveat; T.wildMinimal; var cav=(r.import_mostly_farmed?T.farmedClause:''); }",
     "srcRung.appendChild(dt);",
     "if (r.band_pct!=null){} if (r.notable_events_n){} if (r.pressure_dir){} if (r.edible_yield_pct!=null){} if (r.hedge_swap){}",
     "seal(srcRung, T.rungSource, T.rungSourceSub); seal(mktRung, T.rungMarket, T.rungMarketSub); seal(plateRung, T.rungPlate, T.rungPlateSub);",

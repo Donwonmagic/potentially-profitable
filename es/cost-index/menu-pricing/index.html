@@ -987,7 +987,17 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
 .isr-tile{display:flex;align-items:baseline;gap:9px;margin:9px 0 4px;flex-wrap:wrap}
 .isr-tile__n{font-size:27px;font-weight:800;color:var(--teal);font-variant-numeric:tabular-nums;line-height:1}
 .isr-tile__l{font-size:13px;color:var(--ink-soft);line-height:1.4}
-.isr-pair{display:flex;flex-direction:column;gap:7px;margin:8px 0 4px}
+.isr-cp{display:flex;gap:18px;flex-wrap:wrap;margin:9px 0 4px}
+.isr-cp__s{display:flex;flex-direction:column;gap:1px;padding-left:10px;border-left:3px solid var(--line)}
+.isr-cp__s--teal{border-left-color:var(--teal)}
+.isr-cp__s--rust{border-left-color:#b0472f}
+.isr-cp__v{font-size:19px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1.15}
+.isr-cp__l{font-size:12px;color:var(--ink-soft);line-height:1.35}
+@media (prefers-color-scheme:dark){.isr-f--rust{background:#ed9a8e}.isr-cp__s--rust{border-left-color:#ed9a8e}}
+:root[data-theme="dark"] .isr-f--rust{background:#ed9a8e}
+:root[data-theme="dark"] .isr-cp__s--rust{border-left-color:#ed9a8e}
+:root[data-theme="light"] .isr-f--rust{background:#b0472f}
+:root[data-theme="light"] .isr-cp__s--rust{border-left-color:#b0472f}
 .isr-rung{display:block;animation:isr-rise .4s ease both}
 .isr-rung:nth-of-type(2){animation-delay:.05s}
 .isr-rung:nth-of-type(3){animation-delay:.1s}
@@ -1049,6 +1059,7 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
     float:   ES ? 'flotar'  : 'float',
     withhold:ES ? 'reservar': 'withhold'
   };
+  var COM_ES = {TOMATOES:'tomates',CATTLE:'res',HOGS:'cerdo',PEPPERS:'chiles',SQUASH:'calabaza',LETTUCE:'lechuga',ONIONS:'cebolla',POTATOES:'papa',CABBAGE:'col',MUSHROOMS:'hongos',MELONS:'melones'};
   var T = ES ? {
     loading:'Cargando la ficha…', find:'Escribe un ingrediente', none:'Sin coincidencias',
     edible:'comestible', trim:'impuesto de merma', cooked:'sobrevive a la cocción',
@@ -1065,10 +1076,13 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
     domestic:'Suministro nacional y comercio', production:'Producción a precio de campo (EE. UU.)', farmprice:'Precio de campo', exports:'Exportaciones de EE. UU.',
     relLbl:'del consumo aparente es importado (por valor)', relGrpA:'del grupo ', relGrpB:' es importado (por valor)',
     percapLbl:'lb/persona disponibles en el país',
-    relCaveat:'Una aproximación del consumo aparente — producido + importado − exportado. El valor de importación incluye flete que un precio de campo no, así que es una razón entre puntos, no un puntaje de seguridad de suministro.',
-    landings:'Desembarques silvestres de EE. UU.',
-    catchCaveat:'Valor en muelle (ex-embarcación) de la captura silvestre de EE. UU. junto al valor en aduana de las importaciones (gran parte cultivada en el extranjero) — dos medidas distintas mostradas para el mismo año, no una razón de participación en el suministro.',
-    wildMinimal:'Los desembarques silvestres de EE. UU. son mínimos para esta especie — el suministro de EE. UU. es abrumadoramente importado (gran parte cultivado en el extranjero).',
+    relCaveat:'Compara dólares de importación (que incluyen flete que un precio de campo no) con el consumo aparente nacional — producido + importado − exportado. Es una comparación de dólares, no cuánto de lo que tienes en el estante vino del extranjero, ni un puntaje de seguridad de suministro.',
+    relOver:'Más de 100% significa que las importaciones superan el consumo aparente — EE. UU. reexporta parte de su suministro.',
+    landings:'Desembarques silvestres de EE. UU.', cpImports:'Importaciones de EE. UU., mismo año',
+    catchCaveat:'Valor en muelle (primera venta) de la captura silvestre de EE. UU. junto al valor en aduana de las importaciones — dos medidas distintas mostradas para el mismo año, no una razón de participación en el suministro.',
+    wildMinimal:'Los desembarques silvestres de EE. UU. son mínimos para esta especie — el suministro de EE. UU. es abrumadoramente importado.',
+    farmedClause:'La mayoría de las importaciones de esta especie son de cultivo (acuicultura) en el extranjero.',
+    mktEmpty:'Aún no se sigue una serie de precios mayoristas para este artículo — ve el flujo de importación arriba.', perLb:'/lb',
     rungSource:'Origen', rungSourceSub:'de dónde viene', rungMarket:'Mercado', rungMarketSub:'qué hace el precio', rungPlate:'Tu plato', rungPlateSub:'lo que te cuesta'
   } : {
     loading:'Loading the record…', find:'Find an ingredient', none:'No matches',
@@ -1086,10 +1100,13 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
     domestic:'Domestic supply & trade', production:'US farm-gate production', farmprice:'Farm-gate price', exports:'US exports',
     relLbl:'of apparent consumption is imported (by value)', relGrpA:'of the ', relGrpB:' group is imported (by value)',
     percapLbl:'lb/person available domestically',
-    relCaveat:'An apparent-consumption proxy — made + imported − exported. Import value carries freight that a farm-gate price does not, so this is a cross-point ratio, not a supply-security score.',
-    landings:'US wild landings',
-    catchCaveat:'Dockside ex-vessel value of the US wild catch beside the customs value of imports (much of it farmed abroad) — two different measures shown for the same year, not a supply-share ratio.',
-    wildMinimal:'US wild landings are minimal for this species — the US supply is overwhelmingly imported (much of it farmed abroad).',
+    relCaveat:'Counts import dollars (which carry freight a farm-gate price does not) against domestic apparent consumption — made + imported − exported. A dollar comparison, not how much of what is on your shelf came from abroad, and not a supply-security score.',
+    relOver:'Over 100% means imports exceed apparent consumption — the US re-exports part of its supply.',
+    landings:'US wild landings', cpImports:'US imports, same year',
+    catchCaveat:'Dockside ex-vessel (first-sale) value of the US wild catch beside the customs value of imports — two different measures shown for the same year, not a supply-share ratio.',
+    wildMinimal:'US wild landings are minimal for this species — the US supply is overwhelmingly imported.',
+    farmedClause:'Most imports of this species are farmed abroad.',
+    mktEmpty:'No wholesale price series tracked for this item yet — see the import stream above.', perLb:'/lb',
     rungSource:'Source', rungSourceSub:'where it comes from', rungMarket:'Market', rungMarketSub:'what the price is doing', rungPlate:'Your plate', rungPlateSub:'what it costs you'
   };
 
@@ -1149,6 +1166,12 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
   function slot(title){
     var s=el('div','isr-slot'); if(title){ s.appendChild(el('h4','isr-slot__h', title)); } return s;
   }
+  function cpStat(tone, val, label, yr){
+    var t=el('div','isr-cp__s isr-cp__s--'+tone);
+    t.appendChild(el('span','isr-cp__v', val));
+    t.appendChild(el('span','isr-cp__l', label+(yr?' · '+yr:'')));
+    return t;
+  }
 
   function rung(){ return el('section','isr-rung'); }
   function seal(rg, name, sub){
@@ -1187,7 +1210,8 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
     // import stream + within-year timing + origins (34+ only)
     if (r.us_import_value_usd!=null){
       var im=slot(T.imports);
-      var hd=el('p','isr-imp__hd', usd(r.us_import_value_usd)+' · '+r.import_years+(r.import_yoy_pct!=null?' · YoY '+(r.import_yoy_pct>0?'+':'')+r.import_yoy_pct+'%':''));
+      var impLastYr=r.import_years?(''+r.import_years).split('-').pop():null;
+      var hd=el('p','isr-imp__hd', usd(r.us_import_value_usd)+(impLastYr?' ('+impLastYr+')':'')+' · '+r.import_years+(r.import_yoy_pct!=null?' · YoY '+(r.import_yoy_pct>0?'+':'')+r.import_yoy_pct+'%':''));
       im.appendChild(hd);
       if (r.import_annual_usd){ var sp=sparkline(r.import_annual_usd); if(sp) im.appendChild(sp); }
       // within-year seasonal fingerprint
@@ -1202,7 +1226,6 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
         im.appendChild(strip);
         im.appendChild(el('p','isr-fine', T.within));
       }
-      if (r.import_peak_quarter_share!=null) im.appendChild(el('p','isr-note', T.peakQ+': '+r.import_peak_quarter_share+'%'));
       // top sources + concentration
       if (r.import_top_sources && r.import_top_sources.length){
         var srcTxt=r.import_top_sources.map(function(x){return x.share_pct+'% '+x.country;}).join(' · ');
@@ -1219,28 +1242,30 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
     if (r.us_production_usd!=null || r.import_reliance_pct!=null || r.us_export_value_usd!=null || r.us_landings_value_usd!=null){
       var dt=slot(T.domestic);
       if (r.us_production_usd!=null) dt.appendChild(el('p','isr-note', T.production+': '+usd(r.us_production_usd)+(r.production_years?' ('+r.production_years+')':'')));
-      if (r.farm_price!=null && r.farm_price_unit) dt.appendChild(el('p','isr-note', T.farmprice+': '+r.farm_price+' '+r.farm_price_unit));
+      if (r.farm_price!=null && r.farm_price_unit){ var fpx=(/cwt/i.test(r.farm_price_unit)?' (≈ $'+(r.farm_price/100).toFixed(2)+T.perLb+')':''); dt.appendChild(el('p','isr-note', T.farmprice+': '+r.farm_price+' '+r.farm_price_unit+fpx)); }
       if (r.us_export_value_usd!=null) dt.appendChild(el('p','isr-note', T.exports+': '+usd(r.us_export_value_usd)+(r.us_export_year?' ('+r.us_export_year+')':'')));
       if (r.import_reliance_pct!=null){
         var tile=el('div','isr-tile');
         tile.appendChild(el('span','isr-tile__n', r.import_reliance_pct+'%'));
-        var rl=(r.import_reliance_scope==='commodity' && r.nass_commodity) ? (T.relGrpA+r.nass_commodity.toLowerCase()+T.relGrpB) : T.relLbl;
+        var comNm=(ES && COM_ES[r.nass_commodity]) ? COM_ES[r.nass_commodity] : (r.nass_commodity?r.nass_commodity.toLowerCase():'');
+        var rl=(r.import_reliance_scope==='commodity' && r.nass_commodity) ? (T.relGrpA+comNm+T.relGrpB) : T.relLbl;
         tile.appendChild(el('span','isr-tile__l', rl+(r.import_reliance_year?' · '+r.import_reliance_year:'')));
         dt.appendChild(tile);
         if (r.us_percap_lbs!=null) dt.appendChild(el('p','isr-note', '~'+r.us_percap_lbs+' '+T.percapLbl+(r.us_percap_year?' ('+r.us_percap_year+')':'')));
         dt.appendChild(el('p','isr-fine isr-fine--warn', T.relCaveat));
+        if (r.import_reliance_pct>100) dt.appendChild(el('p','isr-fine isr-fine--warn', T.relOver));
       }
       if (r.us_landings_value_usd!=null){
         var ly=r.us_landings_year;
         var impSame=(r.import_annual_usd && ly!=null && r.import_annual_usd[ly]!=null) ? r.import_annual_usd[ly] : null;
         var impVal=(impSame!=null)?impSame:r.us_import_value_usd;
         var impYr=(impSame!=null)?ly:(r.import_year||null);
-        var mx=Math.max(r.us_landings_value_usd, impVal||0)||1;
-        var pair=el('div','isr-pair');
-        pair.appendChild(magbar(r.us_landings_value_usd, mx, 'isr-f--teal', T.landings+' · '+usd(r.us_landings_value_usd)+(ly?' ('+ly+')':'')));
-        if (impVal!=null) pair.appendChild(magbar(impVal, mx, 'isr-f--rust', T.imports+' · '+usd(impVal)+(impYr?' ('+impYr+')':'')));
-        dt.appendChild(pair);
-        dt.appendChild(el('p','isr-fine isr-fine--warn', r.us_landings_wild_minimal ? T.wildMinimal : T.catchCaveat));
+        var cp=el('div','isr-cp');
+        cp.appendChild(cpStat('teal', usd(r.us_landings_value_usd), T.landings, ly));
+        if (impVal!=null) cp.appendChild(cpStat('rust', usd(impVal), T.cpImports, impYr));
+        dt.appendChild(cp);
+        var cav=(r.us_landings_wild_minimal ? T.wildMinimal : T.catchCaveat)+(r.import_mostly_farmed?' '+T.farmedClause:'');
+        dt.appendChild(el('p','isr-fine isr-fine--warn', cav));
       }
       srcRung.appendChild(dt);
     }
@@ -1334,7 +1359,9 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
     }
 
     // descend the chain — draw only the rungs that carry data
+    var srcHas=srcRung.childNodes.length;
     seal(srcRung, T.rungSource, T.rungSourceSub);
+    if (!mktRung.childNodes.length && srcHas){ var mstub=slot(null); mstub.appendChild(el('p','isr-fine', T.mktEmpty)); mktRung.appendChild(mstub); }
     seal(mktRung, T.rungMarket, T.rungMarketSub);
     seal(plateRung, T.rungPlate, T.rungPlateSub);
 

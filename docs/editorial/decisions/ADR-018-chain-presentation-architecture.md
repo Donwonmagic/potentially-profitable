@@ -68,11 +68,21 @@ Null layers **degrade by absence** — an empty rung is not drawn; a bare ingred
 
 - **reliance** ⭐ — "In {reliance_year} imports were about {reliance_pct}% of apparent consumption by value
   (made + imported − exported); about {percap_lbs} lb/person/yr are available domestically ({percap_year}).
-  A cross-point value ratio, not a supply-security score — import value carries freight a farm price
-  doesn't. Of those imports, {top_country} was {top_share}%."
+  A dollar comparison — not how much of what is on your shelf came from abroad — not a supply-security
+  score; import value carries freight a farm price doesn't. Of those imports, {top_country} was
+  {top_share}%." The `%` is **NOT clamped to 100**: a heavy re-exporter's imports can exceed apparent
+  consumption (brussels-sprouts ~112%), and the render appends "Over 100% means imports exceed apparent
+  consumption — the US re-exports part of its supply" rather than masking it. Commodity-scope names the
+  group in the reader's own language (an EN→ES map, so the ES tile reads "del grupo tomates", not the raw
+  English "tomatoes").
 - **supplyshape** — concentration verdict + top source, a share-of-import-stream bar (never share-of-supply).
-- **catchpair** — "US wild landings of about ${landings} ({landings_year}) beside about ${import} of a
-  largely-farmed import ({import_year}) — a wild-vs-farmed seam, not a supply share." `wild_minimal` names
+- **catchpair** — two INDEPENDENT stat figures (NOT a shared-axis bar pair, which an adversarial audit
+  showed implies the very supply-share the seam forbids — "shrimp landings are 1/6 of imports → 84%
+  imported"): "US wild landings ${landings} ({landings_year})" beside "US imports, same year ${import}
+  ({import_year})". Caveat is mode-neutral ("dockside ex-vessel first-sale value … beside the customs
+  value of imports — two different measures, not a supply-share ratio"); the farming clause ("Most
+  imports of this species are farmed abroad") is appended ONLY when `import_mostly_farmed` — never
+  hard-coded, because octopus/lobster/squid/crab/cod/etc. are wild-caught imports. `wild_minimal` names
   the negligible-wild case.
 - **persistence** — run-length always; a co-mover named only on a real majority, tagged "shared timing,
   not cause."
