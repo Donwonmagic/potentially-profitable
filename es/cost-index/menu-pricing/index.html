@@ -988,6 +988,16 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
 .isr-tile__n{font-size:27px;font-weight:800;color:var(--teal);font-variant-numeric:tabular-nums;line-height:1}
 .isr-tile__l{font-size:13px;color:var(--ink-soft);line-height:1.4}
 .isr-pair{display:flex;flex-direction:column;gap:7px;margin:8px 0 4px}
+.isr-rung{display:block;animation:isr-rise .4s ease both}
+.isr-rung:nth-of-type(2){animation-delay:.05s}
+.isr-rung:nth-of-type(3){animation-delay:.1s}
+.isr-rung__eb{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin:26px 0 0;padding:0 0 7px;border-bottom:1px solid var(--line)}
+.isr-rung:first-of-type .isr-rung__eb{margin-top:14px}
+.isr-rung__n{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
+.isr-rung__s{font-size:12.5px;color:var(--ink-soft);font-style:italic}
+.isr-rung__eb + .isr-slot{border-top:none;margin-top:12px;padding-top:0}
+@keyframes isr-rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.isr-rung{animation:none}}
 .isr-calc{margin:12px 0 0}
 .isr-calc label{display:block;font-size:12px;color:var(--ink-soft);margin:0 0 5px}
 .isr-calc__in{width:130px;padding:7px 10px;font-size:15px;border:1px solid var(--line);border-radius:8px;font-variant-numeric:tabular-nums}
@@ -1058,7 +1068,8 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
     relCaveat:'Una aproximación del consumo aparente — producido + importado − exportado. El valor de importación incluye flete que un precio de campo no, así que es una razón entre puntos, no un puntaje de seguridad de suministro.',
     landings:'Desembarques silvestres de EE. UU.',
     catchCaveat:'Valor en muelle (ex-embarcación) de la captura silvestre de EE. UU. junto al valor en aduana de las importaciones (gran parte cultivada en el extranjero) — dos medidas distintas mostradas para el mismo año, no una razón de participación en el suministro.',
-    wildMinimal:'Los desembarques silvestres de EE. UU. son mínimos para esta especie — el suministro de EE. UU. es abrumadoramente importado (gran parte cultivado en el extranjero).'
+    wildMinimal:'Los desembarques silvestres de EE. UU. son mínimos para esta especie — el suministro de EE. UU. es abrumadoramente importado (gran parte cultivado en el extranjero).',
+    rungSource:'Origen', rungSourceSub:'de dónde viene', rungMarket:'Mercado', rungMarketSub:'qué hace el precio', rungPlate:'Tu plato', rungPlateSub:'lo que te cuesta'
   } : {
     loading:'Loading the record…', find:'Find an ingredient', none:'No matches',
     edible:'edible', trim:'trim tax', cooked:'survives cooking',
@@ -1078,7 +1089,8 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
     relCaveat:'An apparent-consumption proxy — made + imported − exported. Import value carries freight that a farm-gate price does not, so this is a cross-point ratio, not a supply-security score.',
     landings:'US wild landings',
     catchCaveat:'Dockside ex-vessel value of the US wild catch beside the customs value of imports (much of it farmed abroad) — two different measures shown for the same year, not a supply-share ratio.',
-    wildMinimal:'US wild landings are minimal for this species — the US supply is overwhelmingly imported (much of it farmed abroad).'
+    wildMinimal:'US wild landings are minimal for this species — the US supply is overwhelmingly imported (much of it farmed abroad).',
+    rungSource:'Source', rungSourceSub:'where it comes from', rungMarket:'Market', rungMarketSub:'what the price is doing', rungPlate:'Your plate', rungPlateSub:'what it costs you'
   };
 
   function usd(n){
@@ -1138,6 +1150,16 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
     var s=el('div','isr-slot'); if(title){ s.appendChild(el('h4','isr-slot__h', title)); } return s;
   }
 
+  function rung(){ return el('section','isr-rung'); }
+  function seal(rg, name, sub){
+    if (!rg.childNodes.length) return;                 // degrade by absence — an empty rung is never drawn
+    var eb=el('div','isr-rung__eb');
+    eb.appendChild(el('span','isr-rung__n', name));
+    if (sub) eb.appendChild(el('span','isr-rung__s', sub));
+    rg.insertBefore(eb, rg.firstChild);
+    card.appendChild(rg);
+  }
+
   // ---- the self-assembling dossier ----
   function render(r){
     ACTIVE = r; clearNode(card);
@@ -1156,64 +1178,13 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
     if (r.us_import_value_usd!=null) bits.push((ES?'un flujo de importación de ':'a ')+usd(r.us_import_value_usd)+(ES?'':' import stream'));
     card.appendChild(el('p','isr-answer', bits.join(' · ') + '.'));
 
-    // 1) yield + trim + calculator
-    if (r.edible_yield_pct!=null){
-      var y=slot(null); y.classList.add('isr-two');
-      var yl=el('div','isr-yl');
-      yl.appendChild(magbar(r.edible_yield_pct,100,'isr-f--teal', r.edible_yield_pct+'% '+T.edible));
-      if (r.trim_tax!=null) yl.appendChild(el('span','isr-chip isr-chip--tax','×'+r.trim_tax.toFixed(2)+' '+T.trim));
-      if (r.cooked_yield!=null) yl.appendChild(el('p','isr-note', (r.cooked_yield<1?Math.round(r.cooked_yield*100)+'%':'×'+r.cooked_yield)+' '+T.cooked));
-      y.appendChild(yl);
-      if (r.trim_tax!=null){
-        var calc=el('div','isr-calc');
-        var lbl=el('label',null,T.calc); var ci='isr-price-'+r.slug; lbl.setAttribute('for',ci);
-        var inp=el('input','isr-calc__in'); inp.id=ci; inp.type='text'; inp.inputMode='decimal'; inp.setAttribute('autocomplete','off'); inp.placeholder='0.79';
-        var out=el('p','isr-calc__out','');
-        inp.addEventListener('input',function(){
-          var v=parseFloat(inp.value.replace(/[^0-9.]/g,''));
-          if(!isFinite(v)||v<=0){ out.textContent=''; return; }
-          out.textContent = (ES?'A $':'At $')+v.toFixed(2)+(ES?'/lb, ':'/lb, ')+T.calcOut+' = $'+(v*r.trim_tax).toFixed(2)+'/lb  ('+v.toFixed(2)+' × '+r.trim_tax.toFixed(2)+')';
-        });
-        calc.appendChild(lbl); calc.appendChild(inp); calc.appendChild(out);
-        y.appendChild(calc);
-      }
-      card.appendChild(y);
-    }
+    // the CHAIN — a walk the reader descends: SOURCE -> MARKET -> YOUR PLATE.
+    // each seam lands on exactly one rung so honesty-distinct numbers never collide;
+    // an empty rung is never drawn (degrade by absence).
+    var srcRung=rung(), mktRung=rung(), plateRung=rung();
 
-    // 2) own-baseline band
-    if (r.band_pct!=null){
-      var b=slot(T.band);
-      b.appendChild(magbar(r.band_pct,62.4,'isr-f--band','±'+r.band_pct+'%'));
-      b.appendChild(el('p','isr-fine', ES
-        ? 'Cuánto se ha movido su referencia mayorista alrededor de su propia base — una dirección de mercado, nunca un $/lb que pagas.'
-        : "How wide this ingredient's wholesale reference has swung around its own baseline — a market-direction spread, never a $/lb you pay."));
-      card.appendChild(b);
-    }
-
-    // 3) cheapest-month chip + save%
-    if (r.cheapest_month!=null){
-      var s=slot(null); s.classList.add('isr-two');
-      var mo=el('div','isr-season');
-      var chip=el('span','isr-chip isr-chip--month', MONTHS[r.cheapest_month-1]);
-      mo.appendChild(chip);
-      if (r.save_pct!=null){
-        mo.appendChild(el('span','isr-season__t', '~'+r.save_pct+'% '+T.under));
-        mo.appendChild(magbar(r.save_pct,60,'isr-f--rust','−'+r.save_pct+'%'));
-      }
-      s.appendChild(mo);
-      // hedge co-mover
-      if (r.hedge_swap){
-        var slugTo = BY_NAME[String(r.hedge_swap).toLowerCase()];
-        var h=el('div','isr-hedge');
-        h.appendChild(el('span','isr-hedge__lab',T.hedge+':'));
-        if (slugTo){ var a=el('a','isr-hedge__lnk',r.hedge_swap+' →'); a.href='#'+slugTo; h.appendChild(a); }
-        else h.appendChild(el('span','isr-hedge__lnk',r.hedge_swap));
-        s.appendChild(h);
-      }
-      card.appendChild(s);
-    }
-
-    // 4) import block (34+ only)
+    // ===== SOURCE — where it comes from =====
+    // import stream + within-year timing + origins (34+ only)
     if (r.us_import_value_usd!=null){
       var im=slot(T.imports);
       var hd=el('p','isr-imp__hd', usd(r.us_import_value_usd)+' · '+r.import_years+(r.import_yoy_pct!=null?' · YoY '+(r.import_yoy_pct>0?'+':'')+r.import_yoy_pct+'%':''));
@@ -1241,10 +1212,10 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
       if (r.import_hs6) im.appendChild(el('p','isr-fine', T.hs+' '+r.import_hs6));
       im.appendChild(el('p','isr-fine isr-fine--warn', T.nominalNote+'.'));
       if (r.import_note) im.appendChild(el('p','isr-fine', r.import_note));
-      card.appendChild(im);
+      srcRung.appendChild(im);
     }
 
-    // 4b) domestic supply + trade + reliance (the SOURCE-rung cross-source read)
+    // domestic supply + trade + reliance + catchpair (the cross-source read)
     if (r.us_production_usd!=null || r.import_reliance_pct!=null || r.us_export_value_usd!=null || r.us_landings_value_usd!=null){
       var dt=slot(T.domestic);
       if (r.us_production_usd!=null) dt.appendChild(el('p','isr-note', T.production+': '+usd(r.us_production_usd)+(r.production_years?' ('+r.production_years+')':'')));
@@ -1271,10 +1242,35 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
         dt.appendChild(pair);
         dt.appendChild(el('p','isr-fine isr-fine--warn', r.us_landings_wild_minimal ? T.wildMinimal : T.catchCaveat));
       }
-      card.appendChild(dt);
+      srcRung.appendChild(dt);
     }
 
-    // 5) shocks + co-movers
+    // ===== MARKET — what the price is doing =====
+    // own-baseline band
+    if (r.band_pct!=null){
+      var b=slot(T.band);
+      b.appendChild(magbar(r.band_pct,62.4,'isr-f--band','±'+r.band_pct+'%'));
+      b.appendChild(el('p','isr-fine', ES
+        ? 'Cuánto se ha movido su referencia mayorista alrededor de su propia base — una dirección de mercado, nunca un $/lb que pagas.'
+        : "How wide this ingredient's wholesale reference has swung around its own baseline — a market-direction spread, never a $/lb you pay."));
+      mktRung.appendChild(b);
+    }
+
+    // cheapest-month chip + save%
+    if (r.cheapest_month!=null){
+      var s=slot(null); s.classList.add('isr-two');
+      var mo=el('div','isr-season');
+      var chip=el('span','isr-chip isr-chip--month', MONTHS[r.cheapest_month-1]);
+      mo.appendChild(chip);
+      if (r.save_pct!=null){
+        mo.appendChild(el('span','isr-season__t', '~'+r.save_pct+'% '+T.under));
+        mo.appendChild(magbar(r.save_pct,60,'isr-f--rust','−'+r.save_pct+'%'));
+      }
+      s.appendChild(mo);
+      mktRung.appendChild(s);
+    }
+
+    // notable events + persistence co-mover
     if (r.notable_events_n){
       var sh=slot(null);
       var line=T.shocks+': '+r.notable_events_n+' '+T.moves;
@@ -1289,16 +1285,58 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
         });
         sh.appendChild(cm);
       }
-      card.appendChild(sh);
+      mktRung.appendChild(sh);
     }
 
-    // 6) present-state pressure (12 only)
+    // present-state pressure (12 only)
     if (r.pressure_dir){
       var pr=slot(null);
       pr.appendChild(el('span','isr-chip isr-chip--pressure', T.pressure+': '+r.pressure_dir+(r.pressure_conf?' · '+r.pressure_conf+' '+T.conf:'')));
       pr.appendChild(el('span','isr-present', '('+T.present+')'));
-      card.appendChild(pr);
+      mktRung.appendChild(pr);
     }
+
+    // ===== YOUR PLATE — what it costs you =====
+    // edible + cooked yield, trim tax, and the pricing math
+    if (r.edible_yield_pct!=null){
+      var y=slot(null); y.classList.add('isr-two');
+      var yl=el('div','isr-yl');
+      yl.appendChild(magbar(r.edible_yield_pct,100,'isr-f--teal', r.edible_yield_pct+'% '+T.edible));
+      if (r.trim_tax!=null) yl.appendChild(el('span','isr-chip isr-chip--tax','×'+r.trim_tax.toFixed(2)+' '+T.trim));
+      if (r.cooked_yield!=null) yl.appendChild(el('p','isr-note', (r.cooked_yield<1?Math.round(r.cooked_yield*100)+'%':'×'+r.cooked_yield)+' '+T.cooked));
+      y.appendChild(yl);
+      if (r.trim_tax!=null){
+        var calc=el('div','isr-calc');
+        var lbl=el('label',null,T.calc); var ci='isr-price-'+r.slug; lbl.setAttribute('for',ci);
+        var inp=el('input','isr-calc__in'); inp.id=ci; inp.type='text'; inp.inputMode='decimal'; inp.setAttribute('autocomplete','off'); inp.placeholder='0.79';
+        var out=el('p','isr-calc__out','');
+        inp.addEventListener('input',function(){
+          var v=parseFloat(inp.value.replace(/[^0-9.]/g,''));
+          if(!isFinite(v)||v<=0){ out.textContent=''; return; }
+          out.textContent = (ES?'A $':'At $')+v.toFixed(2)+(ES?'/lb, ':'/lb, ')+T.calcOut+' = $'+(v*r.trim_tax).toFixed(2)+'/lb  ('+v.toFixed(2)+' × '+r.trim_tax.toFixed(2)+')';
+        });
+        calc.appendChild(lbl); calc.appendChild(inp); calc.appendChild(out);
+        y.appendChild(calc);
+      }
+      plateRung.appendChild(y);
+    }
+
+    // hedge swap — a cheaper co-moving stand-in (renders whenever present)
+    if (r.hedge_swap){
+      var hs=slot(null);
+      var slugTo = BY_NAME[String(r.hedge_swap).toLowerCase()];
+      var h=el('div','isr-hedge');
+      h.appendChild(el('span','isr-hedge__lab',T.hedge+':'));
+      if (slugTo){ var a=el('a','isr-hedge__lnk',r.hedge_swap+' →'); a.href='#'+slugTo; h.appendChild(a); }
+      else h.appendChild(el('span','isr-hedge__lnk',r.hedge_swap));
+      hs.appendChild(h);
+      plateRung.appendChild(hs);
+    }
+
+    // descend the chain — draw only the rungs that carry data
+    seal(srcRung, T.rungSource, T.rungSourceSub);
+    seal(mktRung, T.rungMarket, T.rungMarketSub);
+    seal(plateRung, T.rungPlate, T.rungPlateSub);
 
     if (live) live.textContent = r.name;
   }
