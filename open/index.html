@@ -414,7 +414,7 @@ main{padding-top:64px}
   <hr class="od-rule">
   <section aria-labelledby="od-sets">
     <h2 class="od-h2" id="od-sets">The datasets</h2>
-    <p class="od-sub">Seven datasets, one posture: every figure traces to public data and downloads in open formats.</p>
+    <p class="od-sub">The headline products, one posture: every figure traces to public data and downloads in open formats. The raw series behind them are below.</p>
     <div class="od-grid">
       <div class="od-card" style="--accent:var(--teal)">
         <h3>Cost Index</h3>
@@ -458,6 +458,91 @@ main{padding-top:64px}
         <p class="od-card__desc">One record per ingredient — pricing posture, edible &amp; cooked yield, cheapest month, the hedge swap, present pressure direction, and the 2010–2025 US import stream. Descriptive, never a forecast.</p>
         <div class="od-card__links"><a href="/cost-index/menu-pricing/">Browse the playbook</a><a href="/cost-index/ingredient-state-record.csv" download>CSV</a><a href="/cost-index/ingredient-state-record.json" download>JSON</a><span class="od-lic">CC-BY</span></div>
       </div></div>
+  </section>
+  <hr class="od-rule">
+  <section aria-labelledby="od-series">
+    <h2 class="od-h2" id="od-series">Explore the public series</h2>
+    <p class="od-sub">Thirteen interactive explorers — one per raw public dataset behind the Cost Index. Each runs in the browser, downloads in an open format, and states its own source and license. US-government data is public domain (CC0); Muntin's derivations are CC-BY 4.0.</p>
+    <div class="od-grid">
+      <div class="od-card" style="--accent:var(--teal)">
+        <h3>The Import Shelf</h3>
+        <p class="od-card__stat">US food imports · 2010–2025</p>
+        <p class="od-card__desc">Every tracked food's US import value by year, its 12-month seasonal fingerprint, origin mix and source concentration. Nominal customs value, never volume or a delivered price.</p>
+        <div class="od-card__links"><a href="/open/imports/">Explore</a><a href="/data/census-imports.jsonl" download>JSONL</a><span class="od-lic">CC0</span></div>
+      </div>
+      <div class="od-card" style="--accent:var(--season)">
+        <h3>The Export Ledger</h3>
+        <p class="od-card__stat">US domestic food exports · HS6</p>
+        <p class="od-card__desc">The nominal dollar value of US-produced food shipped abroad, monthly and annual, by commodity — the outflow that nets against imports in the reliance read.</p>
+        <div class="od-card__links"><a href="/open/exports/">Explore</a><a href="/data/census-exports.jsonl" download>JSONL</a><span class="od-lic">CC0</span></div>
+      </div>
+      <div class="od-card" style="--accent:var(--gold)">
+        <h3>Import Origins</h3>
+        <p class="od-card__stat">155 foods · ~$63B/yr</p>
+        <p class="od-card__desc">Where America's imported food actually comes from — the country-of-origin mix and concentration for every tracked import stream.</p>
+        <div class="od-card__links"><a href="/open/origins/">Explore</a><a href="/data/census-import-origins-2025.jsonl" download>JSONL</a><span class="od-lic">CC-BY</span></div>
+      </div>
+      <div class="od-card" style="--accent:var(--teal)">
+        <h3>The American Harvest</h3>
+        <p class="od-card__stat">US domestic supply · USDA NASS</p>
+        <p class="od-card__desc">Production volume and value, farm-gate price, area and yield for the crops and livestock America grows — and the value-reliance read they anchor.</p>
+        <div class="od-card__links"><a href="/open/nass-domestic/">Explore</a><a href="/data/nass-domestic.jsonl" download>JSONL</a><span class="od-lic">CC0</span></div>
+      </div>
+      <div class="od-card" style="--accent:var(--season)">
+        <h3>The Domestic Catch</h3>
+        <p class="od-card__stat">US wild seafood landings · NOAA</p>
+        <p class="od-card__desc">US commercial wild landings value beside the imported plate — the wild-vs-farmed seam, never collapsed into a supply share.</p>
+        <div class="od-card__links"><a href="/open/landings/">Explore</a><a href="/data/noaa-landings.jsonl" download>JSONL</a><span class="od-lic">CC0</span></div>
+      </div>
+      <div class="od-card" style="--accent:var(--gold)">
+        <h3>The American Plate</h3>
+        <p class="od-card__stat">per-capita lbs · a century · ERS</p>
+        <p class="od-card__desc">Pounds per person per year available for 50 commodities across a century — the supply-side volume cross-check on the value-reliance read.</p>
+        <div class="od-card__links"><a href="/open/availability/">Explore</a><a href="/data/ers-food-availability.jsonl" download>JSONL</a><span class="od-lic">CC0</span></div>
+      </div>
+      <div class="od-card" style="--accent:var(--teal)">
+        <h3>The Cut and the Chain</h3>
+        <p class="od-card__stat">farm → wholesale → retail · ERS</p>
+        <p class="od-card__desc">National-average net-farm, wholesale and grocery values for beef, pork and chicken — and how the spread splits down the chain.</p>
+        <div class="od-card__links"><a href="/open/meat-chain/">Explore</a><a href="/data/ers-meat-price-spreads.jsonl" download>JSONL</a><span class="od-lic">CC0</span></div>
+      </div>
+      <div class="od-card" style="--accent:var(--season)">
+        <h3>The Food Dollar</h3>
+        <p class="od-card__stat">where 100 cents go · ERS</p>
+        <p class="od-card__desc">How each dollar Americans spend on domestic food splits across farm, processing, transport, retail and food-service — three decades of the marketing bill.</p>
+        <div class="od-card__links"><a href="/open/food-dollar/">Explore</a><a href="/cost-index/food-dollar.json" download>JSON</a><span class="od-lic">CC0</span></div>
+      </div>
+      <div class="od-card" style="--accent:var(--gold)">
+        <h3>The Feed Complex</h3>
+        <p class="od-card__stat">corn &amp; soybean health · NASS</p>
+        <p class="od-card__desc">Weekly good-to-excellent condition for US corn and soybeans, each week read only against its own history — a coincident feed-cost backdrop, never a per-ingredient driver.</p>
+        <div class="od-card__links"><a href="/open/crop-condition/">Explore</a><a href="/data/nass-crop-condition.jsonl" download>JSONL</a><span class="od-lic">CC0</span></div>
+      </div>
+      <div class="od-card" style="--accent:var(--teal)">
+        <h3>The Energy Backdrop</h3>
+        <p class="od-card__stat">diesel · gas · power · EIA</p>
+        <p class="od-card__desc">What moves, heats and cools food — diesel, gasoline and electricity levels against their own multi-decade range. A coincident backdrop, never a cause.</p>
+        <div class="od-card__links"><a href="/open/energy/">Explore</a><a href="/data/eia-energy.jsonl" download>JSONL</a><span class="od-lic">CC0</span></div>
+      </div>
+      <div class="od-card" style="--accent:var(--season)">
+        <h3>The Origin Climate Envelope</h3>
+        <p class="od-card__stat">growing-region weather · NOAA</p>
+        <p class="od-card__desc">Observed daily temperature at a representative station in each produce import region — the climate at the source, observed, never forecast.</p>
+        <div class="od-card__links"><a href="/open/weather/">Explore</a><a href="/data/weather-observations.jsonl" download>JSONL</a><span class="od-lic">CC0</span></div>
+      </div>
+      <div class="od-card" style="--accent:var(--gold)">
+        <h3>The Zero Horizon</h3>
+        <p class="od-card__stat">El Niño / La Niña · 76 yr · NOAA</p>
+        <p class="od-card__desc">The observed ENSO record — the sea-surface anomaly that reshapes growing seasons worldwide, across 917 seasons. Observed, never a forecast.</p>
+        <div class="od-card__links"><a href="/open/oni/">Explore</a><a href="/data/cpc-oni.txt" download>TXT</a><span class="od-lic">CC0</span></div>
+      </div>
+      <div class="od-card" style="--accent:var(--teal)">
+        <h3>The Ingredient State Record</h3>
+        <p class="od-card__stat">169 foods · one dossier each</p>
+        <p class="od-card__desc">The fused per-ingredient browser — posture, own-baseline band, imports, domestic supply, reliance and the seafood catchpair, one record at a time.</p>
+        <div class="od-card__links"><a href="/open/record/">Explore</a><a href="/cost-index/ingredient-state-record.json" download>JSON</a><span class="od-lic">CC-BY</span></div>
+      </div>
+      </div>
   </section>
   <hr class="od-rule">
   <section class="od-prose" aria-labelledby="od-research">
