@@ -17,6 +17,20 @@ council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 
 **Session on branch `claude/vendor-benchmark-redesign-yn273q`** (storefront `potentially-profitable`). Thread: turn the Cost Index into a genuine **data company + open library** — surface the deep price history, add the "events that moved the market" layer, and wire the HONEST use of new public data (NASS/Census/EIA). Cadence: plan → build → audit → iterate, with **expert panels at the forks**. `check-all` baseline unchanged (232–233/252; the ~19 failures are the deploy-regenerated site-wide idempotency drift, NOT ours — see Gotchas). Every cost-index/events/context gate GREEN.
 
+### ⮕ LATEST THREAD (2026-07-23): the CHAIN render — making the fused corpus visible
+
+**Decision of record: ADR-018** (the CHAIN — Source→Market→Your-Plate — as info-architecture + honesty device). The corpus was complete (19 datasets) but the menu-pricing island rendered none of the seams; this thread renders them, in bounded increments, each mirrored across the committed EN page + ES page + the `ISR_ISLAND`/`ISR_CSS` engine strings in `scripts/lib/cost-research.mjs`, each verified via HTTP-served headless Chromium.
+
+- **inc 1 (`1c144c6c`)** — commodity-scoped reliance denominator: slugs sharing a `nass_commodity` get ONE reliance from the broadest member's import over shared production (tomato+cherry-tomato both 81%); `reliance_scope` = `commodity`|`item`.
+- **inc 2 (`a641dfb2e`)** — reliance seam render: the SOURCE-rung "Domestic supply & trade" slot shows production/farm-price/exports + a big `import_reliance_pct` tile (scope-aware label) + ERS per-capita + the apparent-consumption caveat.
+- **inc 3 (`301216724`)** — catchpair seam: for seafood (`us_landings_value_usd`, no NASS), shared-scale paired bars — teal wild landings vs rust **same-year** imports (`import_annual_usd[landings_year]`, not the latest) — never a share; `wild_minimal` caveat variant (octopus/dover-sole).
+- **inc 4 (`25fe5130e`)** — the frame: `render()` restructured into three sealed `<section>` rungs (SOURCE→MARKET→YOUR PLATE), each drawn only if non-empty (shrimp skips MARKET); teal eyebrow + italic sub + hairline; hedge decoupled into YOUR PLATE; reduced-motion-safe stagger.
+- **inc 5 (this commit)** — `scripts/check-menu-pricing-render.mjs` (wired into check-all): byte-parity engine↔both pages + render-contract tokens (reliance caveat/year/scope, catchpair year-aligned & never-a-share, seam null-guards, rung order) + EN/ES T-key parity; `--self-test` seeds 5 violation classes. Makes the engine-behind-pages hazard CI-safe.
+
+**Two `.replace()` gotchas burned here (for the next editor):** the ISR island is a **double-quoted** engine string — escape `\` then `"` then `\n` to mirror into it (single quotes stay literal); and mirror with **`split().join()`, never `String.replace(a,b)`** — the island's calculator code contains `$'`, which `.replace()`'s replacement string reads as a special pattern and corrupts the file.
+
+**Still ahead on the CHAIN:** citable per-ingredient "Supply picture" block + schema.org (surface 2, AEO/SEO); publish the 13 open-data explorers (surface 3); optional co-mover "shared timing, not cause" chip caveat.
+
 ### ⮕ LATEST THREAD (2026-07-18): the fused corpus — Ingredient State Record + source harmony
 
 **Resume-here:** `docs/handoff/2026-07-18-corpus-expansion-overnight.md` (state · morning fetches · roadmap · presentation/harmony spec). **Decisions of record: ADR-017** (the fused multi-source Ingredient State Record; the scoped ADR-013 relaxation letting NASS farm price feed a *descriptive* domestic-supply tier, never the measured/pressure band). **This corpus work is SEPARATE from the research paper** (founder: resume the paper once the corpus picture is full).

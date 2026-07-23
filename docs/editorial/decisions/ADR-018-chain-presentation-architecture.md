@@ -82,9 +82,15 @@ Null layers **degrade by absence** — an empty rung is not drawn; a bare ingred
 - The seams' honesty is pinned by `check-ingredient-state-record.mjs` (bounded params, no forecast/cause,
   reliance/catchpair require both sides, year-aligned) + the pin-test; the island render must not restate a
   raw field twice (compose the seam sentence as the single source).
-- A follow-up may add a render-contract assertion to the gate (the committed island emits the caveat token
-  beside reliance + its year, names catchpair as paired values, attaches the co-occurrence caveat to any
-  co-mover chip, guards every seam behind a null check) so the render can't silently drift.
+- **Landed (2026-07-23): `scripts/check-menu-pricing-render.mjs`** (wired into `check-all`, `--self-test` +
+  live). It pins the render so it can't silently drift: (1) **byte-parity** — the engine's `ISR_ISLAND`
+  and `ISR_CSS` (unescaped) appear verbatim in BOTH committed pages, which is the single guarantee that
+  engine == EN == ES for the island; (2) the **render contract** — reliance emits its caveat + year +
+  scope, catchpair renders year-aligned paired value bars and **never a `%`/share** or a `reliance`
+  reference, every seam sits behind a null guard, and the rungs seal in SOURCE→MARKET→YOUR PLATE order
+  behind the degrade-by-absence check; (3) **EN/ES T-key parity** (no untranslated or orphaned render
+  string). This is what makes the engine-behind-pages hazard safe: any hand-edit or engine regen that
+  desyncs the three files, or drops a seam caveat, fails CI.
 - This ADR consolidates the `muntin-isr-improvement-loop` findings (menu-pricing island, Vendor Benchmark,
   events explorer, seasonality hub) + the events-explorer visual-depth/AEO-SEO pass. The loop's
   adversarial-verify refinements are folded in as they land; the architecture above is fixed.

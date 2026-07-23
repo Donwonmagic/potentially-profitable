@@ -647,6 +647,11 @@ const CHECKS = [
   ['Article graphics (idem)','build-article-graphics.mjs',  '--check'],
   ['Ingredient state record (idem)','build-ingredient-state-record.mjs', '--check'],
   ['Ingredient state record honesty','check-ingredient-state-record.mjs'],
+  // Menu-pricing CHAIN island render-contract: engine ISR_ISLAND/ISR_CSS byte-identical
+  // in both committed pages, reliance/catchpair caveats + year-alignment intact, catchpair
+  // never a share, rungs seal SOURCE→MARKET→YOUR PLATE, EN/ES T-key parity (ADR-018).
+  ['Menu-pricing render self-test','check-menu-pricing-render.mjs','--self-test'],
+  ['Menu-pricing render contract','check-menu-pricing-render.mjs'],
   ['Energy backdrop (idem)','build-eia-energy-backdrop.mjs', '--check'],
   ['Energy backdrop honesty','check-eia-energy-backdrop.mjs'],
   ['Crop-condition backdrop (idem)','build-crop-condition-backdrop.mjs', '--check'],
