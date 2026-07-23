@@ -24,11 +24,15 @@ committed + pushed to both repos before the next audit — the push is the only 
 
 **Of-record per surface:** `Muntin-Invoice-Decoder/runbooks/audits/*.md` (NOT this board — the
 runbooks carry the findings, fixes, and convergence proof). Surfaces worked this loop:
-forecast-surfaces, cross-vendor/vendor-switch, vendor-scorecard, silent-bleed, yield-truth, and
-**stress-test (E14) — ✅ CONVERGED r1→r3 (2026-07-23)**: fixed all-hold false-calm (an
-already-over dish was called "still safe"), substring over-exposure ("egg"→"Eggplant"), a
-hairline-crossing render collapse, and a hike-clamp; r2 caught + fixed a plural-matcher
-over-correction I introduced (reuse the shared `singular()`, don't hand-roll); r3 clean.
+forecast-surfaces, cross-vendor/vendor-switch, vendor-scorecard, silent-bleed, yield-truth,
+**stress-test (E14) — ✅ CONVERGED r1→r3 (2026-07-23)** (all-hold false-calm; substring
+over-exposure "egg"→"Eggplant"; hairline render collapse; hike-clamp; r2 caught + fixed a
+plural-matcher over-correction I introduced — reuse the shared `singular()`, don't hand-roll),
+and **blast-radius (E5) — ✅ CONVERGED r1→r2 (2026-07-23)**: an empty-string `canonical_id`
+lumped DISTINCT unmapped ingredients into one false fan-out card because Postgres `'' IS NOT NULL`
+is TRUE (Neon let `''` through) while the stub filtered it via `!canonical_id` — a **Neon-vs-stub
+divergence that made the whole stub-backed test suite structurally blind to it**. Fixed at the
+write boundary (`toLineInput` blank→null), the Neon read filters (`<> ''`), and a digest guard.
 
 **Recurring lessons (apply to every surface):**
 - **Container-revert discipline** — a worker restart can silently roll the local checkout back
@@ -40,6 +44,12 @@ over-correction I introduced (reuse the shared `singular()`, don't hand-roll); r
   value-proxy heuristic (yield-truth); reuse the codebase's tested helper (`singular()`,
   `yieldKeyVariants`) rather than re-deriving it (stress-test r2 regression came from a hand-rolled
   plural strip).
+- **Store parity (stub == Neon)** — a divergence between the Neon SQL store and the in-memory stub
+  hides bugs from the ENTIRE test suite (all tests run on the stub). The blast-radius `''`-canonical
+  lump existed only on Neon (`'' IS NOT NULL` TRUE) while the stub filtered it (`!canonical_id`), so
+  CI was green while prod misled. When a store method has two impls, diff their filters for SQL-vs-JS
+  truthiness gaps (`IS NOT NULL` ≠ `!x`), and prefer fixing at the write boundary so bad data never
+  persists in either.
 - **Convergence discipline** — a re-audit only "converges" if the agents genuinely read/ran the
   code (check the workflow journal for real tool activity), not merely returned empty.
 
