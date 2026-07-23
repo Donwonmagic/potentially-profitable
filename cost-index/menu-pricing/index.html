@@ -1124,7 +1124,7 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
     sources:'Principales orígenes', conc:'concentración', hs:'código HS',
     shocks:'En el registro seguido', moves:'movimientos notables', biggest:'el mayor',
     around:'hacia', lasts:'un movimiento dura una mediana de', days:'días',
-    comove:'Se han movido juntos', pressure:'Presión de la cadena', conf:'confianza',
+    comove:'Se han movido juntos', comoveCaveat:'Coincidencia en el tiempo, no causa — se movieron en algunas de las mismas semanas, lo que no significa que uno mueva al otro.', pressure:'Presión de la cadena', conf:'confianza',
     present:'estado presente, no un pronóstico', calc:'Escribe tu precio de factura',
     calcOut:'tu costo por porción comestible', nominalNote:'valor de importación de EE. UU. (USD, nominal) — mezcla precio y cantidad, no toneladas; no ajustado por inflación',
     within:'ritmo de importación dentro del año (índice, inmune a la inflación)',
@@ -1148,7 +1148,7 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
     sources:'Top origins', conc:'concentration', hs:'HS code',
     shocks:'In the tracked record', moves:'notable moves', biggest:'the biggest',
     around:'around', lasts:'the median move lasts', days:'days',
-    comove:'Have moved together', pressure:'Pipeline pressure', conf:'confidence',
+    comove:'Have moved together', comoveCaveat:'Shared timing, not cause — they moved in some of the same weeks, which does not mean one moves the other.', pressure:'Pipeline pressure', conf:'confidence',
     present:'present state, not a forecast', calc:'Type your invoice price',
     calcOut:'your edible-portion cost', nominalNote:'US import value (USD, nominal) — mixes price and quantity, not tonnage; not inflation-adjusted',
     within:'within-year import timing (index, inflation-immune)',
@@ -1364,6 +1364,7 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
           if (to){ var a=el('a','isr-chip isr-chip--co', to.name+' '+c.shared_of_n); a.href='#'+c.slug; cm.appendChild(a); }
         });
         sh.appendChild(cm);
+        sh.appendChild(el('p','isr-fine', T.comoveCaveat));
       }
       mktRung.appendChild(sh);
     }

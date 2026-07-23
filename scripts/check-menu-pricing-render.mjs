@@ -82,8 +82,9 @@ const REQUIRED = [
   ['pressure guard', 'r.pressure_dir'],
   ['yield guard', 'r.edible_yield_pct!=null'],
   ['hedge guard', 'r.hedge_swap'],
-  // co-occurrence framing (never causal): the co-mover label + the present-state disclaimer
+  // co-occurrence framing (never causal): the co-mover label, its shared-timing caveat, + present-state
   ['co-mover co-occurrence label (EN)', "comove:'Have moved together'"],
+  ['co-mover shared-timing caveat', 'T.comoveCaveat'],
   ['present-not-forecast (EN)', "present:'present state, not a forecast'"],
   ['import nominal caveat (EN)', 'nominalNote:'],
   // CHAIN rung frame + degrade-by-absence
@@ -145,9 +146,9 @@ function selfTest() {
   const goodIsland = [
     "(function(){ var ES=false;",
     "var T = ES ? {",
-    "  relCaveat:'x', relOver:'o', catchCaveat:'x', wildMinimal:'x', farmedClause:'f', comove:'y', present:'z', nominalNote:'n', rungSource:'o', rungMarket:'m', rungPlate:'p'",
+    "  relCaveat:'x', relOver:'o', catchCaveat:'x', wildMinimal:'x', farmedClause:'f', comove:'y', comoveCaveat:'c', present:'z', nominalNote:'n', rungSource:'o', rungMarket:'m', rungPlate:'p'",
     "} : {",
-    "  relCaveat:'x', relOver:'Over 100%', catchCaveat:'x', wildMinimal:'x', farmedClause:'farmed', comove:'Have moved together', present:'present state, not a forecast', nominalNote:'US import value', rungSource:'Source', rungMarket:'Market', rungPlate:'Your plate'",
+    "  relCaveat:'x', relOver:'Over 100%', catchCaveat:'x', wildMinimal:'x', farmedClause:'farmed', comove:'Have moved together', comoveCaveat:'Shared timing, not cause', present:'present state, not a forecast', nominalNote:'US import value', rungSource:'Source', rungMarket:'Market', rungPlate:'Your plate'",
     "};",
     "function seal(rg, name, sub){ if (!rg.childNodes.length) return; }",
     "function cpStat(tone, val, label, yr){ return el(); }",
@@ -155,7 +156,7 @@ function selfTest() {
     "if (r.import_reliance_pct!=null){ var s=(r.import_reliance_scope==='commodity'); T.relCaveat; r.import_reliance_year; if (r.import_reliance_pct>100) T.relOver; }",
     "if (r.us_landings_value_usd!=null){ var impSame=r.import_annual_usd[ly]; cp.appendChild(cpStat('teal', v, l, y)); T.catchCaveat; T.wildMinimal; var cav=(r.import_mostly_farmed?T.farmedClause:''); }",
     "srcRung.appendChild(dt);",
-    "if (r.band_pct!=null){} if (r.notable_events_n){} if (r.pressure_dir){} if (r.edible_yield_pct!=null){} if (r.hedge_swap){}",
+    "if (r.band_pct!=null){} if (r.notable_events_n){ T.comoveCaveat; } if (r.pressure_dir){} if (r.edible_yield_pct!=null){} if (r.hedge_swap){}",
     "seal(srcRung, T.rungSource, T.rungSourceSub); seal(mktRung, T.rungMarket, T.rungMarketSub); seal(plateRung, T.rungPlate, T.rungPlateSub);",
     "})();",
   ].join('\n');
