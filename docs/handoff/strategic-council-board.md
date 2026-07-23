@@ -91,8 +91,15 @@ existing read+spread in `.ci-composite__well`, elevated `.ci-composite`); NO str
 (restraint-forward first step; the table below carries the per-ingredient depth). Applied to the build
 script AND directly to the committed EN+ES hubs (deterministic string edit — no regen, so no nav-strip
 drift; exactly 3 files). Audited on the render: 0 h-overflow at 1280/390, both themes legible, well recessed
-in dark. **NEXT (optional):** the receding-strata + parallax on the hub composite (match /about/ fully);
-carry the well onto ingredient pages; the calibration-safe `check-cost-index-confidence.mjs` gate.
+in dark. **SHIPPED — ingredient-pages depth (2026-07-23):** carried the Glass Well material onto the ~94×2
+per-ingredient "Market read" blocks (`.ci-read`, `marketReadBlock()`). Each read is now an elevated
+instrument card (`--elev-feature`) with its key price sentence (`.ci-read__line`) recessed in a lit well
+(dark-shadow override); the sparkline/verdict/provenance stay outside the well (content-rich block kept
+clean). Applied to the build script AND directly to 192 committed pages (deterministic string+regex edit,
+idempotent, no regen → no nav drift). Rendered clean light+dark, 0 h-overflow at 1280/390. Gate 253/258,
+zero new failures. **The whole Cost Index funnel — /about/, hub composite, 94 ingredient reads — now speaks
+one instrument material.** **NEXT (optional):** receding-strata+parallax on the hub composite; the
+calibration-safe `check-cost-index-confidence.mjs` gate to lock the honesty invariants.
 
 **Plan of record:** `docs/design/elevation-dream-backlog.md` — the reconciled output of two
 adversarial "dreaming" workflows (top-down design-language + bottom-up per-surface), with the

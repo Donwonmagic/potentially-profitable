@@ -70,7 +70,11 @@ main{padding-top:64px}
 .ci-body>p:not([class]),.ci-body>ol,.ci-body>ul{max-width:68ch}
 .ci-body ol,.ci-body ul{margin:0 0 16px;padding-left:22px;font-size:16px;line-height:1.7}
 .ci-body li{margin:0 0 8px}
-.ci-read{margin:22px 0 8px;padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px;font-variant-numeric:tabular-nums}
+.ci-read{position:relative;margin:22px 0 8px;padding:18px 20px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px;font-variant-numeric:tabular-nums;box-shadow:var(--elev-feature)}
+.ci-read__well{margin:2px 0 0;padding:13px 15px;background:var(--surface-inset);border-radius:8px;box-shadow:inset 0 1px 1px rgba(20,22,26,.09),inset 0 0 0 1px var(--line)}
+.ci-read__well .ci-read__line{margin:0}
+:root[data-theme="dark"] .ci-read__well{box-shadow:inset 0 1px 2px rgba(0,0,0,.5),inset 0 0 0 1px var(--line)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .ci-read__well{box-shadow:inset 0 1px 2px rgba(0,0,0,.5),inset 0 0 0 1px var(--line)}}
 .ci-read__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
 .ci-read__badge{font-weight:600;text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink-soft);margin-left:8px}
 .ci-read__line{font-size:17px;font-weight:600;line-height:1.55;color:var(--ink);margin:0}
@@ -591,7 +595,7 @@ main{padding-top:64px}
   <div class="ci-body">
     <aside class="ci-read ci-read--pending" aria-label="Cobertura en preparación">
       <p class="ci-read__head">Cobertura en preparación</p>
-      <p class="ci-read__line">Seguimos fletán (entero) para el índice, pero todavía no tenemos una lectura mayorista gratuita y completa que respaldaríamos — así que no publicamos una cifra. El índice muestra un precio solo cuando los datos públicos lo sostienen.</p>
+      <div class="ci-read__well"><p class="ci-read__line">Seguimos fletán (entero) para el índice, pero todavía no tenemos una lectura mayorista gratuita y completa que respaldaríamos — así que no publicamos una cifra. El índice muestra un precio solo cuando los datos públicos lo sostienen.</p></div>
     </aside>
     <h2>Por qué aún no hay número</h2>
     <p>La regla es simple: un precio se publica solo cuando podemos obtenerlo de datos públicos (USDA, BLS, FRED) con una calidad sobre la que actuaríamos nosotros mismos. Para fletán (entero), la serie mayorista gratuita que necesitamos aún no está conectada. Una estimación de una sola fuente sería peor que nada.</p>
