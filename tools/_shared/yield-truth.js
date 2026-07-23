@@ -79,28 +79,33 @@
     if (!scored.length) return none(ing, book, learned, 'no-dishes');
 
     var direction = diff > 0 ? 'beats' : 'under';
-    var hasCovers = scored.some(function (s) { return s.coversPerWeek; });
+    var coversDishes = scored.filter(function (s) { return s.coversPerWeek; });
+    var hasCovers = coversDishes.length > 0;
     var weeklyTotalCents = hasCovers
-      ? scored.reduce(function (sum, s) { return sum + (s.coversPerWeek ? s.savingCents * s.coversPerWeek : 0); }, 0)
+      ? coversDishes.reduce(function (sum, s) { return sum + s.savingCents * s.coversPerWeek; }, 0)
       : null;
     var count = scored.length;
     var top = scored[0];
     var dishWord = tt(locale, count === 1 ? ' dish' : ' dishes', count === 1 ? ' platillo' : ' platillos');
+    // The weekly figure sums ONLY covers-bearing dishes, so the "$X/week" clause
+    // must count over that SAME set — not scored.length (parity with yield-truth.ts).
+    var weeklyCount = coversDishes.length;
+    var weeklyDishWord = tt(locale, weeklyCount === 1 ? ' dish' : ' dishes', weeklyCount === 1 ? ' platillo' : ' platillos');
 
     var headline;
     if (direction === 'beats') {
       headline = hasCovers
         ? tt(locale,
-            'You measured it: ' + ing + ' yields ' + yPct(learned) + ' in your kitchen, not the book’s ' + yPct(book) + '. Across ' + count + dishWord + ' that trims about ' + money(weeklyTotalCents) + '/week — your costs now match your kitchen, not a manual.',
-            'Lo mediste: ' + ing + ' rinde ' + yPct(learned) + ' en tu cocina, no el ' + yPct(book) + ' del libro. En ' + count + dishWord + ' eso recorta como ' + money(weeklyTotalCents) + ' por semana — tus costos ahora reflejan tu cocina, no un manual.')
+            'You measured it: ' + ing + ' yields ' + yPct(learned) + ' in your kitchen, not the book’s ' + yPct(book) + '. Across ' + weeklyCount + weeklyDishWord + ' that trims about ' + money(weeklyTotalCents) + '/week — your costs now match your kitchen, not a manual.',
+            'Lo mediste: ' + ing + ' rinde ' + yPct(learned) + ' en tu cocina, no el ' + yPct(book) + ' del libro. En ' + weeklyCount + weeklyDishWord + ' eso recorta como ' + money(weeklyTotalCents) + ' por semana — tus costos ahora reflejan tu cocina, no un manual.')
         : tt(locale,
             'You measured it: ' + ing + ' yields ' + yPct(learned) + ' in your kitchen, not the book’s ' + yPct(book) + '. That lowers your cost on ' + count + dishWord + ' — ' + top.dish + ' drops ' + money(top.savingCents) + '/plate. Your costs now match your kitchen, not a manual.',
             'Lo mediste: ' + ing + ' rinde ' + yPct(learned) + ' en tu cocina, no el ' + yPct(book) + ' del libro. Eso baja tu costo en ' + count + dishWord + ' — ' + top.dish + ' baja ' + money(top.savingCents) + ' por plato. Tus costos ahora reflejan tu cocina, no un manual.');
     } else {
       headline = hasCovers
         ? tt(locale,
-            'Heads up: you measured ' + ing + ' at ' + yPct(learned) + ', below the book’s ' + yPct(book) + '. Your real cost on ' + count + dishWord + ' runs about ' + money(weeklyTotalCents) + '/week higher than the book showed — better to know than to guess.',
-            'Aviso: mediste ' + ing + ' en ' + yPct(learned) + ', debajo del ' + yPct(book) + ' del libro. Tu costo real en ' + count + dishWord + ' es como ' + money(weeklyTotalCents) + ' por semana más de lo que mostraba el libro — mejor saberlo que adivinarlo.')
+            'Heads up: you measured ' + ing + ' at ' + yPct(learned) + ', below the book’s ' + yPct(book) + '. Your real cost on ' + weeklyCount + weeklyDishWord + ' runs about ' + money(weeklyTotalCents) + '/week higher than the book showed — better to know than to guess.',
+            'Aviso: mediste ' + ing + ' en ' + yPct(learned) + ', debajo del ' + yPct(book) + ' del libro. Tu costo real en ' + weeklyCount + weeklyDishWord + ' es como ' + money(weeklyTotalCents) + ' por semana más de lo que mostraba el libro — mejor saberlo que adivinarlo.')
         : tt(locale,
             'Heads up: you measured ' + ing + ' at ' + yPct(learned) + ', below the book’s ' + yPct(book) + '. Your real cost on ' + count + dishWord + ' is higher than the book showed — ' + top.dish + ' is ' + money(top.savingCents) + '/plate more. Better to know.',
             'Aviso: mediste ' + ing + ' en ' + yPct(learned) + ', debajo del ' + yPct(book) + ' del libro. Tu costo real en ' + count + dishWord + ' es mayor de lo que mostraba el libro — ' + top.dish + ' cuesta ' + money(top.savingCents) + ' por plato más. Mejor saberlo.');

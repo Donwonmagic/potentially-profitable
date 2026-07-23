@@ -29,6 +29,19 @@ test('BEATS + covers (EN): weekly saving, "match your kitchen, not a manual"', (
   assert.deepEqual(c.options[0], { kind: 'apply_yield', ingredient: 'whole chicken', label: 'Apply to all' });
 });
 
+test('HONESTY: the "$X/week" clause counts only covers-bearing dishes, not scored.length', () => {
+  // Two dishes affected, but only one has covers — the weekly figure and its
+  // dish count must share that basis (the no-covers dish contributes $0/week).
+  const c = build({ ingredient: 'whole chicken', bookYield: 0.60, learnedYield: 0.66, dishes: [
+    { dish: 'Roast chicken', ingredientCostCents: 154, coversPerWeek: 100 },
+    { dish: 'Chicken salad', ingredientCostCents: 154, coversPerWeek: null },
+  ], locale: 'en' });
+  assert.equal(c.count, 2); // both dishes are lowered per-plate
+  assert.equal(c.weeklyTotalCents, 1400); // only the 1 covers-bearing dish
+  assert.match(c.headline, /Across 1 dish that trims/);
+  assert.doesNotMatch(c.headline, /Across 2 dishes/);
+});
+
 test('BEATS + covers (ES): full Spanish', () => {
   const c = build({ ingredient: 'pollo entero', bookYield: 0.60, learnedYield: 0.66, dishes: CHICKEN, locale: 'es' });
   assert.match(c.headline, /rinde 66%/);
