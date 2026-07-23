@@ -82,3 +82,66 @@ test('HONESTY: a non-positive hike is not a stress test', () => {
   assert.equal(c.show, false);
   assert.equal(c.reason, 'no-hike');
 });
+
+test("HONESTY: an already-over dish (no NEW crossing) is never called 'still safe'/'under your line'", () => {
+  // Base 40% (already over the 30% line); stressed 48%. No dish newly crosses.
+  const c = build({
+    ingredient: 'Beef', hikePct: 20, targetPct: 0.30,
+    dishes: [{ dish: 'Braised beef', plateCostCents: 600, menuPriceCents: 1500, exposedCents: 600 }],
+    locale: 'en',
+  });
+  assert.equal(c.show, true);
+  assert.equal(c.reason, 'already-over');
+  assert.deepEqual(c.crossed, []);
+  assert.equal(c.dishes[0].status, 'already-over');
+  assert.doesNotMatch(c.headline, /still safe/);
+  assert.doesNotMatch(c.headline, /stay under your/);
+  assert.match(c.headline, /no new dish crosses your 30% line/);
+  assert.match(c.headline, /1 dish is already over it: Braised beef/);
+  assert.match(c.headline, /Braised beef runs 40.0% now, 48.0% after/);
+  assert.deepEqual(c.options[0], { kind: 'open_dish', dish: 'Braised beef', label: 'Look at Braised beef' });
+});
+
+test('HONESTY: already-over + safe (none newly crossing) reports already-over, not all-hold', () => {
+  const c = build({
+    ingredient: 'beef', hikePct: 10, targetPct: 0.30,
+    dishes: [
+      { dish: 'Burger', plateCostCents: 500, menuPriceCents: 1500, exposedCents: 150 }, // 33.3% already over
+      { dish: 'Beef stew', plateCostCents: 400, menuPriceCents: 1600, exposedCents: 100 }, // 25% -> 25.6% safe
+    ],
+    locale: 'en',
+  });
+  assert.equal(c.reason, 'already-over');
+  assert.deepEqual(c.crossed, []);
+  assert.match(c.headline, /no new dish crosses/);
+  assert.match(c.headline, /1 dish is already over it: Burger/);
+  assert.doesNotMatch(c.headline, /still safe/);
+});
+
+test("HONESTY (ES): already-over never says 'aún seguro'/'se quedan bajo'", () => {
+  const c = build({
+    ingredient: 'Res', hikePct: 20, targetPct: 0.30,
+    dishes: [{ dish: 'Birria', plateCostCents: 600, menuPriceCents: 1500, exposedCents: 600 }],
+    locale: 'es',
+  });
+  assert.equal(c.reason, 'already-over');
+  assert.match(c.headline, /^Supongamos:/);
+  assert.match(c.headline, /ningún platillo nuevo cruza tu línea de 30%/);
+  assert.match(c.headline, /1 platillo ya está por encima: Birria/);
+  assert.doesNotMatch(c.headline, /aún seguro/);
+  assert.doesNotMatch(c.headline, /se quedan bajo/);
+});
+
+test("RENDER: a hairline crossing shows visible movement, not '30.0% to 30.0%'", () => {
+  // base 29.98%, stressed 30.01% — a real crossing the 1-decimal render used to
+  // collapse to "moves from 30.0% to 30.0%".
+  const c = build({
+    ingredient: 'Beef', hikePct: 20, targetPct: 0.30,
+    dishes: [{ dish: 'Line-straddler', plateCostCents: 1499, menuPriceCents: 5000, exposedCents: 8 }],
+    locale: 'en',
+  });
+  assert.equal(c.reason, 'dishes-cross');
+  assert.deepEqual(c.crossed, ['Line-straddler']);
+  assert.doesNotMatch(c.headline, /moves from 30.0% to 30.0%/);
+  assert.match(c.headline, /moves from 29.98% to 30.01%/);
+});

@@ -41,6 +41,18 @@
   function tt(locale, en, es) { return locale === 'es' ? es : en; }
   function fcPct(frac) { return (frac * 100).toFixed(1) + '%'; }
   function targetStr(frac) { return Math.round(frac * 100) + '%'; }
+  // Render a base→stressed food-cost pair. If both collapse to the same string at
+  // one decimal (a hairline move near the line), step precision up so the movement
+  // the prose describes is actually visible — never "moves from 30.0% to 30.0%".
+  function movePair(baseFrac, stressedFrac) {
+    var dps = [1, 2, 3, 4];
+    for (var i = 0; i < dps.length; i++) {
+      var b = (baseFrac * 100).toFixed(dps[i]);
+      var s = (stressedFrac * 100).toFixed(dps[i]);
+      if (b !== s) return [b + '%', s + '%'];
+    }
+    return [(baseFrac * 100).toFixed(4) + '%', (stressedFrac * 100).toFixed(4) + '%'];
+  }
 
   function build(input) {
     input = input || {};
@@ -87,28 +99,54 @@
 
     var headline;
     var options = [];
+    var reason;
     if (crossed.length) {
       var top = crossed[0];
       var list = crossedNames.join(', ');
+      var xp = movePair(top.baseFoodPct, top.stressedFoodPct);
       headline = whatif + tt(locale,
         'if ' + ingredient + ' jumps ' + hikePct + '%, ' + crossed.length + (crossed.length === 1 ? ' dish' : ' dishes') +
-          ' would cross your ' + targetStr(targetPct) + ' line — ' + list + '. ' + top.dish + ' moves from ' + fcPct(top.baseFoodPct) + ' to ' + fcPct(top.stressedFoodPct) + '.',
+          ' would cross your ' + targetStr(targetPct) + ' line — ' + list + '. ' + top.dish + ' moves from ' + xp[0] + ' to ' + xp[1] + '.',
         'si ' + ingredient + ' sube ' + hikePct + '%, ' + crossed.length + (crossed.length === 1 ? ' platillo' : ' platillos') +
-          ' cruzarían tu línea de ' + targetStr(targetPct) + ' — ' + list + '. ' + top.dish + ' pasa de ' + fcPct(top.baseFoodPct) + ' a ' + fcPct(top.stressedFoodPct) + '.');
+          ' cruzarían tu línea de ' + targetStr(targetPct) + ' — ' + list + '. ' + top.dish + ' pasa de ' + xp[0] + ' a ' + xp[1] + '.');
       options = [{ kind: 'open_dish', dish: top.dish, label: tt(locale, 'Look at ' + top.dish, 'Mira ' + top.dish) }];
+      reason = 'dishes-cross';
     } else {
-      var mostExposed = scored[0];
-      headline = whatif + tt(locale,
-        'even if ' + ingredient + ' jumps ' + hikePct + '%, all ' + scored.length + ' of your ' + ingredient + ' dishes stay under your ' + targetStr(targetPct) + ' line. ' +
-          mostExposed.dish + ' moves to ' + fcPct(mostExposed.stressedFoodPct) + ' — still safe.',
-        'aunque ' + ingredient + ' suba ' + hikePct + '%, los ' + scored.length + ' platillos con ' + ingredient + ' se quedan bajo tu línea de ' + targetStr(targetPct) + '. ' +
-          mostExposed.dish + ' llega a ' + fcPct(mostExposed.stressedFoodPct) + ' — aún seguro.');
+      // No dish NEWLY crosses. But "no new crossing" is not "all safe": a dish
+      // whose base cost already exceeds the owner's line is already-over, never
+      // safe. Split them — the calm "all stay under / still safe" copy may only
+      // speak for genuinely-safe dishes, and an over-the-line dish must never be
+      // called safe (honesty contract: never misstate calm).
+      var alreadyOver = scored.filter(function (s) { return s.status === 'already-over'; });
+      var safe = scored.filter(function (s) { return s.status === 'safe'; });
+      if (alreadyOver.length) {
+        var topOver = alreadyOver[0];
+        var overList = alreadyOver.map(function (s) { return s.dish; }).join(', ');
+        var m = alreadyOver.length;
+        var op = movePair(topOver.baseFoodPct, topOver.stressedFoodPct);
+        headline = whatif + tt(locale,
+          'even if ' + ingredient + ' jumps ' + hikePct + '%, no new dish crosses your ' + targetStr(targetPct) + ' line — but ' +
+            m + (m === 1 ? ' dish is' : ' dishes are') + ' already over it: ' + overList + '. ' + topOver.dish + ' runs ' + op[0] + ' now, ' + op[1] + ' after.',
+          'aunque ' + ingredient + ' suba ' + hikePct + '%, ningún platillo nuevo cruza tu línea de ' + targetStr(targetPct) + ' — pero ' +
+            m + (m === 1 ? ' platillo ya está' : ' platillos ya están') + ' por encima: ' + overList + '. ' + topOver.dish + ' está en ' + op[0] + ' ahora, ' + op[1] + ' después.');
+        options = [{ kind: 'open_dish', dish: topOver.dish, label: tt(locale, 'Look at ' + topOver.dish, 'Mira ' + topOver.dish) }];
+        reason = 'already-over';
+      } else {
+        // Genuinely calm: every exposed dish stays under the line, before & after.
+        var mostExposed = safe[0] || scored[0];
+        headline = whatif + tt(locale,
+          'even if ' + ingredient + ' jumps ' + hikePct + '%, all ' + scored.length + ' of your ' + ingredient + ' dishes stay under your ' + targetStr(targetPct) + ' line. ' +
+            mostExposed.dish + ' moves to ' + fcPct(mostExposed.stressedFoodPct) + ' — still safe.',
+          'aunque ' + ingredient + ' suba ' + hikePct + '%, los ' + scored.length + ' platillos con ' + ingredient + ' se quedan bajo tu línea de ' + targetStr(targetPct) + '. ' +
+            mostExposed.dish + ' llega a ' + fcPct(mostExposed.stressedFoodPct) + ' — aún seguro.');
+        reason = 'all-hold';
+      }
     }
 
     return {
       show: true, ingredient: ingredient, hikePct: hikePct, targetPct: targetPct,
       dishes: scored, crossed: crossedNames, headline: headline,
-      options: options, reason: crossed.length ? 'dishes-cross' : 'all-hold'
+      options: options, reason: reason
     };
   }
 
