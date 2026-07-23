@@ -984,6 +984,9 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
 .isr-note{margin:8px 0 0;font-size:13px;color:var(--ink-soft);line-height:1.5}
 .isr-fine{margin:6px 0 0;font-size:11.5px;color:var(--stone);line-height:1.45}
 .isr-fine--warn{font-style:italic}
+.isr-tile{display:flex;align-items:baseline;gap:9px;margin:9px 0 4px;flex-wrap:wrap}
+.isr-tile__n{font-size:27px;font-weight:800;color:var(--teal);font-variant-numeric:tabular-nums;line-height:1}
+.isr-tile__l{font-size:13px;color:var(--ink-soft);line-height:1.4}
 .isr-calc{margin:12px 0 0}
 .isr-calc label{display:block;font-size:12px;color:var(--ink-soft);margin:0 0 5px}
 .isr-calc__in{width:130px;padding:7px 10px;font-size:15px;border:1px solid var(--line);border-radius:8px;font-variant-numeric:tabular-nums}
@@ -1047,7 +1050,11 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
     comove:'Se han movido juntos', pressure:'Presión de la cadena', conf:'confianza',
     present:'estado presente, no un pronóstico', calc:'Escribe tu precio de factura',
     calcOut:'tu costo por porción comestible', nominalNote:'valor de importación de EE. UU. (USD, nominal) — mezcla precio y cantidad, no toneladas; no ajustado por inflación',
-    within:'ritmo de importación dentro del año (índice, inmune a la inflación)'
+    within:'ritmo de importación dentro del año (índice, inmune a la inflación)',
+    domestic:'Suministro nacional y comercio', production:'Producción a precio de campo (EE. UU.)', farmprice:'Precio de campo', exports:'Exportaciones de EE. UU.',
+    relLbl:'del consumo aparente es importado (por valor)', relGrpA:'del grupo ', relGrpB:' es importado (por valor)',
+    percapLbl:'lb/persona disponibles en el país',
+    relCaveat:'Una aproximación del consumo aparente — producido + importado − exportado. El valor de importación incluye flete que un precio de campo no, así que es una razón entre puntos, no un puntaje de seguridad de suministro.'
   } : {
     loading:'Loading the record…', find:'Find an ingredient', none:'No matches',
     edible:'edible', trim:'trim tax', cooked:'survives cooking',
@@ -1060,7 +1067,11 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
     comove:'Have moved together', pressure:'Pipeline pressure', conf:'confidence',
     present:'present state, not a forecast', calc:'Type your invoice price',
     calcOut:'your edible-portion cost', nominalNote:'US import value (USD, nominal) — mixes price and quantity, not tonnage; not inflation-adjusted',
-    within:'within-year import timing (index, inflation-immune)'
+    within:'within-year import timing (index, inflation-immune)',
+    domestic:'Domestic supply & trade', production:'US farm-gate production', farmprice:'Farm-gate price', exports:'US exports',
+    relLbl:'of apparent consumption is imported (by value)', relGrpA:'of the ', relGrpB:' group is imported (by value)',
+    percapLbl:'lb/person available domestically',
+    relCaveat:'An apparent-consumption proxy — made + imported − exported. Import value carries freight that a farm-gate price does not, so this is a cross-point ratio, not a supply-security score.'
   };
 
   function usd(n){
@@ -1224,6 +1235,24 @@ a.isr-chip--co:hover{background:var(--teal-wash);color:var(--teal)}
       im.appendChild(el('p','isr-fine isr-fine--warn', T.nominalNote+'.'));
       if (r.import_note) im.appendChild(el('p','isr-fine', r.import_note));
       card.appendChild(im);
+    }
+
+    // 4b) domestic supply + trade + reliance (the SOURCE-rung cross-source read)
+    if (r.us_production_usd!=null || r.import_reliance_pct!=null || r.us_export_value_usd!=null){
+      var dt=slot(T.domestic);
+      if (r.us_production_usd!=null) dt.appendChild(el('p','isr-note', T.production+': '+usd(r.us_production_usd)+(r.production_years?' ('+r.production_years+')':'')));
+      if (r.farm_price!=null && r.farm_price_unit) dt.appendChild(el('p','isr-note', T.farmprice+': '+r.farm_price+' '+r.farm_price_unit));
+      if (r.us_export_value_usd!=null) dt.appendChild(el('p','isr-note', T.exports+': '+usd(r.us_export_value_usd)+(r.us_export_year?' ('+r.us_export_year+')':'')));
+      if (r.import_reliance_pct!=null){
+        var tile=el('div','isr-tile');
+        tile.appendChild(el('span','isr-tile__n', r.import_reliance_pct+'%'));
+        var rl=(r.import_reliance_scope==='commodity' && r.nass_commodity) ? (T.relGrpA+r.nass_commodity.toLowerCase()+T.relGrpB) : T.relLbl;
+        tile.appendChild(el('span','isr-tile__l', rl+(r.import_reliance_year?' · '+r.import_reliance_year:'')));
+        dt.appendChild(tile);
+        if (r.us_percap_lbs!=null) dt.appendChild(el('p','isr-note', '~'+r.us_percap_lbs+' '+T.percapLbl+(r.us_percap_year?' ('+r.us_percap_year+')':'')));
+        dt.appendChild(el('p','isr-fine isr-fine--warn', T.relCaveat));
+      }
+      card.appendChild(dt);
     }
 
     // 5) shocks + co-movers
