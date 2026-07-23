@@ -145,3 +145,19 @@ test("RENDER: a hairline crossing shows visible movement, not '30.0% to 30.0%'",
   assert.doesNotMatch(c.headline, /moves from 30.0% to 30.0%/);
   assert.match(c.headline, /moves from 29.98% to 30.01%/);
 });
+
+test('RENDER: a crossing whose base sits exactly on the target still shows movement', () => {
+  // base = 450/1500 = 30.0000% exactly; a 1% hike on a 1c exposure crosses by a
+  // hair. The rounded public value collapses to 0.3, so movePair must read the
+  // UNROUNDED fraction.
+  const c = build({
+    ingredient: 'Beef', hikePct: 1, targetPct: 0.30,
+    dishes: [{ dish: 'Tartare', plateCostCents: 450, menuPriceCents: 1500, exposedCents: 1 }],
+    locale: 'en',
+  });
+  assert.equal(c.reason, 'dishes-cross');
+  assert.deepEqual(c.crossed, ['Tartare']);
+  assert.doesNotMatch(c.headline, /moves from 30.0000% to 30.0000%/);
+  assert.match(c.headline, /moves from 30.000% to 30.001%/);
+  assert.equal(c.dishes[0].baseFoodPct, 0.3); // public value stays 4dp
+});

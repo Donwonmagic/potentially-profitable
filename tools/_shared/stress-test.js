@@ -42,16 +42,18 @@
   function fcPct(frac) { return (frac * 100).toFixed(1) + '%'; }
   function targetStr(frac) { return Math.round(frac * 100) + '%'; }
   // Render a base→stressed food-cost pair. If both collapse to the same string at
-  // one decimal (a hairline move near the line), step precision up so the movement
-  // the prose describes is actually visible — never "moves from 30.0% to 30.0%".
+  // one decimal (a hairline move near the line — including a base that sits exactly
+  // on the target), step precision up so the movement the prose describes is
+  // actually visible — never "moves from 30.0% to 30.0%". Fed the UNROUNDED
+  // fractions so a real crossing always separates at some precision.
   function movePair(baseFrac, stressedFrac) {
-    var dps = [1, 2, 3, 4];
+    var dps = [1, 2, 3, 4, 5, 6];
     for (var i = 0; i < dps.length; i++) {
       var b = (baseFrac * 100).toFixed(dps[i]);
       var s = (stressedFrac * 100).toFixed(dps[i]);
       if (b !== s) return [b + '%', s + '%'];
     }
-    return [(baseFrac * 100).toFixed(4) + '%', (stressedFrac * 100).toFixed(4) + '%'];
+    return [(baseFrac * 100).toFixed(6) + '%', (stressedFrac * 100).toFixed(6) + '%'];
   }
 
   function build(input) {
@@ -81,8 +83,11 @@
           : (stressedFoodPct > targetPct ? 'crossed' : 'safe');
         return {
           dish: d.dish,
-          baseFoodPct: +baseFoodPct.toFixed(4),
-          stressedFoodPct: +stressedFoodPct.toFixed(4),
+          // Raw fractions kept internally — movePair/fcPct/sort read these; the
+          // public dishes array rounds them to 4dp at the return, so a hairline
+          // crossing still separates when rendered.
+          baseFoodPct: baseFoodPct,
+          stressedFoodPct: stressedFoodPct,
           deltaPp: +((stressedFoodPct - baseFoodPct) * 100).toFixed(1),
           status: status
         };
@@ -145,7 +150,13 @@
 
     return {
       show: true, ingredient: ingredient, hikePct: hikePct, targetPct: targetPct,
-      dishes: scored, crossed: crossedNames, headline: headline,
+      dishes: scored.map(function (s) {
+        return {
+          dish: s.dish, baseFoodPct: +s.baseFoodPct.toFixed(4),
+          stressedFoodPct: +s.stressedFoodPct.toFixed(4), deltaPp: s.deltaPp, status: s.status
+        };
+      }),
+      crossed: crossedNames, headline: headline,
       options: options, reason: reason
     };
   }
