@@ -126,6 +126,10 @@ jobs:
           node scripts/backtest-cost-forecast.mjs
           # Re-render hub / per-ingredient / lab pages.
           node scripts/build-cost-index-pages.mjs
+          # Re-stamp the /about/ live basket read (same data the hub composite
+          # features) so the pledge "the numbers I check on my shifts" never
+          # freezes at last build. Reads data/cost-index.json; EN + ES.
+          node scripts/inject-about-cost-read.mjs
           # Re-render the ingredient-yield library pages — their market-read block
           # (live edible-unit cost, measured band, percentile, buy/hold verdict)
           # reads data/cost-index.json at BUILD time, so without this they freeze
@@ -205,6 +209,7 @@ jobs:
           node scripts/inject-cost-index-calibration.mjs --check
           node scripts/build-cost-index-embed.mjs --check
           node scripts/build-cost-index-feed.mjs --check
+          node scripts/inject-about-cost-read.mjs --check
           node scripts/build-cost-revisions.mjs --check
           node scripts/build-cost-index-reproduce.mjs --check
           node scripts/build-cost-confidence-calibration.mjs --check

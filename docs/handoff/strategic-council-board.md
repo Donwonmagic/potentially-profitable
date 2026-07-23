@@ -68,9 +68,21 @@ dimmer/blurrier strata behind it (distance = provenance). Gentle pointer paralla
 strata → you look *around* the read), ~3° resting recline, dark-mode-forward, and a first-class flat
 fallback (`Depth off` ≡ reduced-motion / low-end / no-JS → fully-composed flat read, number/label/"Not your
 prices" intact). Feel spec + reference prototype: `docs/design/depth-immersion-dream-backlog.md` §Locked +
-`docs/design/prototypes/depth-instrument.html`. **NEXT:** wire the feel to the real `/about/` read
-(generator-produced from newest `cost-index-editions.json`, EN+ES) behind the calibration-safe confidence
-2-state — gated on confirming what the editions snapshot actually emits for confidence.
+`docs/design/prototypes/depth-instrument.html`.
+
+**SHIPPED — the `/about/` depth read (2026-07-23):** `scripts/inject-about-cost-read.mjs` stamps a
+sentinel-bracketed instrument at the pledge ("the numbers I check on my shifts"), EN + ES, from the LIVE
+`data/cost-index.json` basket — the same read the hub now features (so they agree). The locked depth feel
+realized: the composite floats in front, its 3 biggest real movers (eggs +72% / romaine −67% seasonal /
+chicken −25%) recede as separate strata behind it; parallax by translation, no rotation; **flat-first**
+(reduced-motion / no-JS / low-end → a fully-composed flat stack, verified `is-3d:false`), 3D as
+progressive enhancement with the height locked to the flat height so **CLS = 0** (flat 526px == 3D 526px).
+Honesty holds: number static, "medium confidence" word leads, "Not your prices" + `as of 2026-07-21` +
+"3 of 16 holding last-good since 2026-06-01" all present. Audited on the headless render (0 h-overflow at
+1280/390, both themes) + full gate **253/258, zero new failures**. Wired into `cost-index-refresh.yml`
+(build + `--check`) so it refreshes daily with the data. Movers read against their own baseline; romaine
+tagged seasonal. **NEXT (optional):** carry the instrument shell down the hub/ingredient funnel; the
+calibration-safe confidence gate (`check-cost-index-confidence.mjs`) as a follow-up.
 
 **Plan of record:** `docs/design/elevation-dream-backlog.md` — the reconciled output of two
 adversarial "dreaming" workflows (top-down design-language + bottom-up per-surface), with the
