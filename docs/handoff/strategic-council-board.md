@@ -28,11 +28,19 @@ forecast-surfaces, cross-vendor/vendor-switch, vendor-scorecard, silent-bleed, y
 **stress-test (E14) — ✅ CONVERGED r1→r3 (2026-07-23)** (all-hold false-calm; substring
 over-exposure "egg"→"Eggplant"; hairline render collapse; hike-clamp; r2 caught + fixed a
 plural-matcher over-correction I introduced — reuse the shared `singular()`, don't hand-roll),
-and **blast-radius (E5) — ✅ CONVERGED r1→r2 (2026-07-23)**: an empty-string `canonical_id`
+**blast-radius (E5) — ✅ CONVERGED r1→r2 (2026-07-23)**: an empty-string `canonical_id`
 lumped DISTINCT unmapped ingredients into one false fan-out card because Postgres `'' IS NOT NULL`
 is TRUE (Neon let `''` through) while the stub filtered it via `!canonical_id` — a **Neon-vs-stub
 divergence that made the whole stub-backed test suite structurally blind to it**. Fixed at the
 write boundary (`toLineInput` blank→null), the Neon read filters (`<> ''`), and a digest guard.
+And **margin-map (E6) — ✅ CONVERGED r1→r3 (2026-07-24)**: "None are emergencies" was asserted
+UNCONDITIONALLY — a money-losing dish (food-cost ≥100%) was called a calm non-emergency; and a
+priced-but-uncostable dish (food-cost=0, not null) was folded into a false "every dish is fine"
+all-clear. Fixed with owner-anchored severity framing (mild menus keep the reassuring copy; well
+over 1.5× target / losing money get honest wording) + exclude zero-coverage dishes and surface
+them as uncosted. r2 caught + fixed an over-correction (a vacuous "every costed dish" when NOTHING
+was costed). **Open editorial knob:** the 1.5×-target "well over" threshold + severe wording (a
+doctrine-anchored default; the ≥100% "losing money" floor is objective) — founder may retune.
 
 **Recurring lessons (apply to every surface):**
 - **Container-revert discipline** — a worker restart can silently roll the local checkout back
